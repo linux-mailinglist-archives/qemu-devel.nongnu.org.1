@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8D071746B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 05:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C513717478
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 05:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4CdC-0008Rp-4g; Tue, 30 May 2023 23:36:14 -0400
+	id 1q4Cmp-0003PZ-7H; Tue, 30 May 2023 23:46:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q4CdA-0008Re-Cq
- for qemu-devel@nongnu.org; Tue, 30 May 2023 23:36:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1q4Cmm-0003PG-UZ
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 23:46:08 -0400
+Received: from mga18.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q4Cd8-0001us-TW
- for qemu-devel@nongnu.org; Tue, 30 May 2023 23:36:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685504170;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qMNl2ohd0bSpYzPDhvmJ+tNwQt8m8GsT/OU4FnOK+zw=;
- b=Ec4boSiFINjhgH23ztliwqq5e/Hs7O/A0gjkLCGXVjT8sqdHuQlgLUNWpoPl79dCjKuufb
- MWSEHs+9FTdMBUQJSsJgbP5G7Mic3LyHATVdf7GpRJxhZuiyn+fBwpGbGfDDaVQe6MRjl1
- MYxe+xvmhoZ2VzCBiBCD3bnWUtoUgvo=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-NZEjTAn2Oaudt-QGadylkA-1; Tue, 30 May 2023 23:36:08 -0400
-X-MC-Unique: NZEjTAn2Oaudt-QGadylkA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2af2790f4a2so28531921fa.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 20:36:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685504166; x=1688096166;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qMNl2ohd0bSpYzPDhvmJ+tNwQt8m8GsT/OU4FnOK+zw=;
- b=ONjw3vcwwM6fhw9esoQsGXqRUTKQ3tFZaUPwIRZGoG+FF6xOJX7KkqVybtk6HMB4hu
- frPjLfNPuwhKPOiu5JldnJPTHMp+kf9N3Sod9daa9aGLEiDu36H9hPJCmIL/Srj8Gv6f
- vBa1NwIqM8EsKidgXS01Qadm1gnkONKvgk9ywo5LRsmuzXdmuzFBHfUIBztyJsrgXFUa
- pI0yO15GljLNN/Nnl/TeE1bKcoteduy9mGP5fYixSHJqMrYuLor+PQ1Ad7kAuJwBqMIs
- CFPR06qJdoj/gdlDonAnL9xRB+VXptBRy7qytcRuB1DyEDnoZw2LyLz61TNe0WGeGfLX
- WvIw==
-X-Gm-Message-State: AC+VfDxi4qYuRQSGnrCgfvu0Ud6RLD3hDuTFqwiTh8aLF+wdSXiC4qc9
- s686+pTN6nz1+9M1nVb4TwjeKLeNt44wpfNqh9q8GNM2j8sK4HHWdG9sb6miPqNTIVK0hG27A+u
- J+K+0jvdl8Drl6RdSLR8Bf5IoCEgDGAPAXf4P1PzOPGz6
-X-Received: by 2002:a2e:a170:0:b0:2ad:8380:770d with SMTP id
- u16-20020a2ea170000000b002ad8380770dmr1852967ljl.21.1685504166712; 
- Tue, 30 May 2023 20:36:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5Zm3aY8K8rrtRbIb+e1RW9fywUs+HVW9EbRCQXZR06sypUumCPmiWX4p3jldAX+lqpOa61qOpBmgM+gU6ChhY=
-X-Received: by 2002:a2e:a170:0:b0:2ad:8380:770d with SMTP id
- u16-20020a2ea170000000b002ad8380770dmr1852962ljl.21.1685504166403; Tue, 30
- May 2023 20:36:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1q4Cmk-0003NJ-Ek
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 23:46:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1685504766; x=1717040766;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=oHn7T8yNwxa+AbzdsiEBFHCufnORPKF96rmxuSedbfM=;
+ b=RaCUnd9iUhRzflMsf3y/6aY6TDe/jrN+UkHeLlGvvmxbPYyjYQjZ6Qim
+ 1Wz8m/QoY20Bye159MdFm5FtFC9+5owhgii7ZSEdt+FrPy5vW6SoQUUOe
+ k2cb4rhtpVVwW5bOfxqtaIDOf29Lfb/M3GzwxLbeS28USiGHS9ivSjOuS
+ Cdu95EmdLIDmjGkB84LU9aLsdpp3bPiIxWB8oGYYpY9QuRf9LabCfhg01
+ WQS/+sh9XlmN1x7aVfkmT1ySbo7Oq16fcF4cQ17EW2w+Y9Mj708+jwFMo
+ yNpVXWJESrdahq4CI2Coq5CNJOqLYLFOxEp0v1NFcAOTEKCMAX41acnCg g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="339718307"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="339718307"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2023 20:46:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="706710230"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="706710230"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.254.213.251])
+ ([10.254.213.251])
+ by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2023 20:46:00 -0700
+Message-ID: <48b25232-b487-e056-92c0-a6c2d02e61fe@intel.com>
+Date: Wed, 31 May 2023 11:45:58 +0800
 MIME-Version: 1.0
-References: <20230531031645.44335-1-jon@nutanix.com>
- <CACGkMEvA6ren7Xb_ujYjeajjCEMKw=imYqf3-pNvn6wFxp0a=Q@mail.gmail.com>
-In-Reply-To: <CACGkMEvA6ren7Xb_ujYjeajjCEMKw=imYqf3-pNvn6wFxp0a=Q@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 31 May 2023 11:35:55 +0800
-Message-ID: <CACGkMEtCLmi5CzpWye=tNgs_xhYoysCndDTQ+Mf8WoAGQv894g@mail.gmail.com>
-Subject: Re: [PATCH] tap: introduce IFF_NAPI
-To: Jon Kohler <jon@nutanix.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.11.2
+Subject: Re: [PATCH v2 1/1] target/i386: add support for LAM in CPUID
+ enumeration
+Content-Language: en-US
+To: Binbin Wu <binbin.wu@linux.intel.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, chao.gao@intel.com, robert.hu@linux.intel.com
+References: <20230531013250.18311-1-binbin.wu@linux.intel.com>
+ <20230531013250.18311-2-binbin.wu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20230531013250.18311-2-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.126;
+ envelope-from=xiaoyao.li@intel.com; helo=mga18.intel.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-0.09,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,92 +83,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 11:32=E2=80=AFAM Jason Wang <jasowang@redhat.com> w=
-rote:
->
-> On Wed, May 31, 2023 at 11:17=E2=80=AFAM Jon Kohler <jon@nutanix.com> wro=
-te:
-> >
-> > If kernel supports IFF_NAPI, lets use it, which is especially useful
-> > on kernels containing fb3f903769e8 ("tun: support NAPI for packets
-> > received from batched XDP buffs"), as IFF_NAPI allows the
-> > vhost_tx_batch path to use NAPI on XDP buffs.
-> >
-> > Benchmark w/ iperf -c (remote srv) -P (thread count) -l (stream size)
-> > from a guest running kernel 5.10.105 to remote bare metal running
-> > patched code on kernel 5.10.139. Guests were configured 1x virtio-net
-> > device with 4x queues, resulting in 4x vhost-worker threads. Hosts are
-> > identical with Intel ICX 4314 @ 2.4 GHz with Mellanox CX5 25GbE NIC ->
-> > Arista 25GbE switch. vhost-worker threads largely maxed out on CPU on
-> > "Before" and around ~50-60% utilization "After".
-> >
-> > Single Stream: iperf -P 1
-> > iperf -l size | Before          | After          | Increase
-> > 64B           | 593 Mbits/sec   | 712 Mbits/sec  | ~20%
-> > 128B          | 1.00 Gbits/sec  | 1.18 Gbits/sec | ~18%
-> > 4KB           | 17.6 Gbits/sec  | 22.7 Gbits/sec | ~29%
-> >
-> > Multiple Stream: iperf -P 12
-> > iperf -l size | Before          | After          | Increase
-> > 64B           | 6.35 Gbits/sec  | 7.78 Gbits/sec | ~23%
-> > 128B          | 10.8 Gbits/sec  | 14.2 Gbits/sec | ~31%
-> > 4KB           | 23.6 Gbits/sec  | 23.6 Gbits/sec | (line speed)
-> >
-> > Signed-off-by: Jon Kohler <jon@nutanix.com>
->
-> Great, but I would suggest having an option.
->
-> So we can:
->
-> 1) ease the debug and compare
-> 2) enable this by default only for 8.1, disable it for pre 8.1
+On 5/31/2023 9:32 AM, Binbin Wu wrote:
+> From: Robert Hoo <robert.hu@linux.intel.com>
+> 
+> Linear Address Masking (LAM) is a new Intel CPU feature, which allows software
+> to use of the untranslated address bits for metadata.
+> 
+> The bit definition:
+> CPUID.(EAX=7,ECX=1):EAX[26]
+> 
+> Add CPUID definition for LAM.
+> 
+> More info can be found in Intel ISE Chapter "LINEAR ADDRESS MASKING (LAM)"
+> https://cdrdv2.intel.com/v1/dl/getContent/671368
 
-More thought, if the performance boost only after fb3f903769e8, we
-probably need to disable it by default and let the mgmt layer to
-enable it.
+LAM defines new bits in CR3 and CR4. I think it needs corresponding 
+support in QEMU as well.
 
-Thanks
-
->
-> Thanks
->
-> Thanks
->
-> > ---
-> >  net/tap-linux.c | 4 ++++
-> >  net/tap-linux.h | 1 +
-> >  2 files changed, 5 insertions(+)
-> >
-> > diff --git a/net/tap-linux.c b/net/tap-linux.c
-> > index f54f308d359..fd94df166e0 100644
-> > --- a/net/tap-linux.c
-> > +++ b/net/tap-linux.c
-> > @@ -62,6 +62,10 @@ int tap_open(char *ifname, int ifname_size, int *vne=
-t_hdr,
-> >          ifr.ifr_flags |=3D IFF_ONE_QUEUE;
-> >      }
-> >
-> > +    if (features & IFF_NAPI) {
-> > +        ifr.ifr_flags |=3D IFF_NAPI;
-> > +    }
-> > +
-> >      if (*vnet_hdr) {
-> >          if (features & IFF_VNET_HDR) {
-> >              *vnet_hdr =3D 1;
-> > diff --git a/net/tap-linux.h b/net/tap-linux.h
-> > index bbbb62c2a75..f4d8e55270b 100644
-> > --- a/net/tap-linux.h
-> > +++ b/net/tap-linux.h
-> > @@ -37,6 +37,7 @@
-> >
-> >  /* TUNSETIFF ifr flags */
-> >  #define IFF_TAP          0x0002
-> > +#define IFF_NAPI         0x0010
-> >  #define IFF_NO_PI        0x1000
-> >  #define IFF_ONE_QUEUE    0x2000
-> >  #define IFF_VNET_HDR     0x4000
-> > --
-> > 2.30.1 (Apple Git-130)
-> >
+> Signed-off-by: Robert Hoo <robert.hu@linux.intel.com>
+> Co-developed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> ---
+>   target/i386/cpu.c | 2 +-
+>   target/i386/cpu.h | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 1242bd541a..f4436b3657 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -881,7 +881,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+>               "fsrc", NULL, NULL, NULL,
+>               NULL, NULL, NULL, NULL,
+>               NULL, "amx-fp16", NULL, "avx-ifma",
+> -            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, "lam", NULL,
+>               NULL, NULL, NULL, NULL,
+>           },
+>           .cpuid = {
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 7201a71de8..eb800ba2e2 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -924,6 +924,8 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+>   #define CPUID_7_1_EAX_AMX_FP16          (1U << 21)
+>   /* Support for VPMADD52[H,L]UQ */
+>   #define CPUID_7_1_EAX_AVX_IFMA          (1U << 23)
+> +/* Linear Address Masking */
+> +#define CPUID_7_1_EAX_LAM               (1U << 26)
+>   
+>   /* Support for VPDPB[SU,UU,SS]D[,S] */
+>   #define CPUID_7_1_EDX_AVX_VNNI_INT8     (1U << 4)
 
 
