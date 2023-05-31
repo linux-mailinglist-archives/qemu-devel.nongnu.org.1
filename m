@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360137185BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB217185C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:10:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NRj-00014J-K7; Wed, 31 May 2023 11:09:07 -0400
+	id 1q4NRm-00015w-0Q; Wed, 31 May 2023 11:09:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRZ-0000tB-M8
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRZ-0000t9-M7
  for qemu-devel@nongnu.org; Wed, 31 May 2023 11:08:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRX-0004Dd-Hg
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRW-0004DY-W8
  for qemu-devel@nongnu.org; Wed, 31 May 2023 11:08:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1685545734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bTaWo4gLPbMdtV/vSjQMW6kRyuL7BB1+PhhPoxdkGmA=;
- b=FTmhx9HnE3bticER4GaNpsLpqqXliU7GuiWE3mxbkTeiKK4FX9FJLVC80ytB5O0fgwnGb6
- wgQ3IL4cud8T5hYNkoeCsUSvfQF51vRE5Xm1Df/B/UA2SvSw7XItFBt8GMW5TEvEqfhpBN
- ci46X/oo4ZfBaYXJ1YuSA0G+Tz2uVC0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HVuzBMnkfJNSJsyI+pl3jmQ0YmPp+bKGi9FVckju4oA=;
+ b=d2DuxI/qOFjm4z0LFJW9indHGbilMHPdVMBKm2NkJQlK2u2oa7O9VSvc+yIL5gRj3uq7yi
+ lKZWVjq7D1Lvnmdq9aHgPNe3KiUAYnB3QnvZnNbc3jitcag1BKc3rSbEPEQNP5lBChc6Eg
+ UC1cJy27lOC5igBk+/GIaa8D3pphCnQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-iZWkD89FPVuMa0apaOhm8A-1; Wed, 31 May 2023 11:08:51 -0400
-X-MC-Unique: iZWkD89FPVuMa0apaOhm8A-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f41a04a297so26136975e9.3
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:08:50 -0700 (PDT)
+ us-mta-106-4hWFgmunMbqnAPYmzvTbpA-1; Wed, 31 May 2023 11:08:52 -0400
+X-MC-Unique: 4hWFgmunMbqnAPYmzvTbpA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso27295085e9.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:08:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685545729; x=1688137729;
+ d=1e100.net; s=20221208; t=1685545730; x=1688137730;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bTaWo4gLPbMdtV/vSjQMW6kRyuL7BB1+PhhPoxdkGmA=;
- b=DwZkvZNFX+bdexLEdlZawggC8SeZ5igP7FF3i+jdpIZkK/NBc64RDr5ld2s1oF9HNQ
- FWuy5DdRHX2D217UxJU5UgPocJbfEs5gIlGWTeWbhZqrnNTOHFVZXQx5e+JKbrth+IeR
- tufn2iQjJzYZZ+MAybkJ3dOkxCJHRWolFw0peokNTFKjWE0s/edA7lBwNGoS0zhYai89
- ZqI6ZbWX4Hy8mS6uMTvf7e8LEGl9NehFebLcFhUF/ur5R16javGnCI8V0Nw+y1Era0+t
- gytfaMuDx4Gx45M8ZRtj7QGcJk1vzlsndNYJBfP02T221axUtQifbNqZ1DlXMkM43dPv
- piBw==
-X-Gm-Message-State: AC+VfDwgEge82np8P5owYa7IuiUu3VdR33TPZcDTfWvBNjga9uW2y8gu
- AZ/CJDngS2rew8fh1p2wVFYF9o/a1pOuGt0x8ZzTXH62m1wZBpY16EbpC0FOLKykQDetslKO/yF
- rlA75vaBmJOMDT9fHFXbT9EP3DT2LeWjZRqkZzDF2X4a8gMTKcrjK4zIVPmeEqeNDL3pfr/dk
-X-Received: by 2002:a05:6000:4c:b0:306:2aa0:ce81 with SMTP id
- k12-20020a056000004c00b003062aa0ce81mr4909643wrx.30.1685545729559; 
- Wed, 31 May 2023 08:08:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6WhjUZ5zN5Gtmwt30KP+osdwk8UDJqKm/GuBD2o5izinC3zkH6wejHyyj8KIcAQWrH8uq/SA==
-X-Received: by 2002:a05:6000:4c:b0:306:2aa0:ce81 with SMTP id
- k12-20020a056000004c00b003062aa0ce81mr4909628wrx.30.1685545729303; 
- Wed, 31 May 2023 08:08:49 -0700 (PDT)
+ bh=HVuzBMnkfJNSJsyI+pl3jmQ0YmPp+bKGi9FVckju4oA=;
+ b=FaTi5OC/oePLkYobEblITY+3CVMxUYMIGTkaY5mtY5EInK3CpC8ia7OTcsaXLjOE9i
+ hu3g96L31LRway9IRq5fycGT2AAs9X4DhA3sQhvYGsPIk4ENC6RAyv0DBYv80i23IajJ
+ rTXMXF733ZWb6Ir1KrloM89V+MflNbrkWHH+YivagYkUgJ1EwZZguiV8lD+KTKcg44Li
+ O3c0EcD8r5EoKO5vFiJaxionM6ETsntDrzjVM+dNQqfjF51WqjnkerW9W5Xt4alonQWO
+ UJIh+T7QC/ppqUG7YRQZbHIuExIpjTo3rUHIeIc6LmJ0XKQOullGYkTK9u00wKIFlzEA
+ bmOw==
+X-Gm-Message-State: AC+VfDztSl3VrXgZ5LJUjh6MsZdnm2kvsu4qHKXLxxnoV8yqHpDDCqHr
+ 0JGPMH1tCgeGZ5IFG9S3P6fs/NArnnsJ046r5VUx+DUJyZdYsXovGZH6fDytLCQs0FYtX2oyEb/
+ Na1xDx3iPp8vBUCmhWhUPWEWsCgIid3E2Z8nmmxUF8GQrMCJf6kL71lkIUcC4oDxkpb30qq5S
+X-Received: by 2002:a05:600c:2294:b0:3f1:8c5f:dfc5 with SMTP id
+ 20-20020a05600c229400b003f18c5fdfc5mr4169904wmf.39.1685545730349; 
+ Wed, 31 May 2023 08:08:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4bb9T0iYTICI52GbprKZ1zhoeDrwixgrhlyH23QDZgMArn1bjcufLnLm20NYxZHWzAT7hbDA==
+X-Received: by 2002:a05:600c:2294:b0:3f1:8c5f:dfc5 with SMTP id
+ 20-20020a05600c229400b003f18c5fdfc5mr4169891wmf.39.1685545730178; 
+ Wed, 31 May 2023 08:08:50 -0700 (PDT)
 Received: from localhost.localdomain ([2001:b07:ad4:d988:c2cd:bd04:c2d7:61e3])
  by smtp.gmail.com with ESMTPSA id
- g15-20020adff40f000000b00307972e46fasm7090499wro.107.2023.05.31.08.08.48
+ g15-20020adff40f000000b00307972e46fasm7090499wro.107.2023.05.31.08.08.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 31 May 2023 08:08:49 -0700 (PDT)
 From: Camilla Conte <cconte@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, richard.henderson@linaro.org, alex.bennee@linaro.org,
  Camilla Conte <cconte@redhat.com>
-Subject: [PATCH 4/5] gitlab-ci: Use container template for opensbi
-Date: Wed, 31 May 2023 16:08:23 +0100
-Message-Id: <20230531150824.32349-5-cconte@redhat.com>
+Subject: [PATCH 5/5] gitlab-ci: Replace Docker with Kaniko
+Date: Wed, 31 May 2023 16:08:24 +0100
+Message-Id: <20230531150824.32349-6-cconte@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230531150824.32349-1-cconte@redhat.com>
 References: <20230531150824.32349-1-cconte@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=cconte@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -97,75 +98,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the same template for all the jobs in the "container" stage.
+Previous attempt by Alex Bennée, for the records:
+https://lore.kernel.org/qemu-devel/20230330101141.30199-12-alex.bennee@linaro.org/
 
-Changes the URL of the "opensbi-cross-build" images by
-using the same URL pattern as the other images.
+Does not enable caching, as suggested in a previous review:
+https://lore.kernel.org/qemu-devel/ZCVpMDLPJcdnkAJz@redhat.com/
 
-Removes pushing the image to the additional CI_COMMIT_SHA tag.
-It seems unnecessary.
+Does not specify a context since no Dockerfile is using COPY or ADD instructions.
 
-Example of the old URLs:
-- registry.gitlab.com/qemu-project/qemu:00a0bdc...
-- registry.gitlab.com/qemu-project/qemu:opensbi-cross-build
-
-Example of the new URL:
-- registry.gitlab.com/qemu-project/qemu/qemu/opensbi-cross-build
+Does not enable reproducible builds as
+that results in builds failing with an out of memory error.
+See issue "Using --reproducible loads entire image into memory":
+https://github.com/GoogleContainerTools/kaniko/issues/862
 
 Signed-off-by: Camilla Conte <cconte@redhat.com>
 ---
- .gitlab-ci.d/opensbi.yml | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ .gitlab-ci.d/container-template.yml           | 25 +++++--------------
+ .gitlab-ci.d/opensbi.yml                      |  1 -
+ .../ci/gitlab-kubernetes-runners/values.yaml  | 12 ---------
+ 3 files changed, 6 insertions(+), 32 deletions(-)
 
-diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
-index d0221632f6..bb90c56bcf 100644
---- a/.gitlab-ci.d/opensbi.yml
-+++ b/.gitlab-ci.d/opensbi.yml
-@@ -1,3 +1,6 @@
-+include:
-+  - local: '/.gitlab-ci.d/container-template.yml'
-+
- # All jobs needing docker-opensbi must use the same rules it uses.
- .opensbi_job_rules:
-   rules:
-@@ -40,24 +43,14 @@
-       when: on_success
- 
- docker-opensbi:
-+  extends: .container_job_template
-   rules:
-     - !reference [.opensbi_job_rules, rules]
--  stage: containers
+diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
+index d146d1d197..0e93f5f13e 100644
+--- a/.gitlab-ci.d/container-template.yml
++++ b/.gitlab-ci.d/container-template.yml
+@@ -1,27 +1,14 @@
+ .container_job_template:
+   extends: .base_job_template
+   stage: containers
 -  image: docker:stable
 -  services:
 -    - docker:stable-dind
++  image:
++    name: gcr.io/kaniko-project/executor:debug
++    entrypoint: [""]
    variables:
-     GIT_DEPTH: 3
--    IMAGE_TAG: $CI_REGISTRY_IMAGE:opensbi-cross-build
+     TAG: "$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
+-    COMMON_TAG: "$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
+     DOCKERFILE: "$CI_PROJECT_DIR/tests/docker/dockerfiles/$NAME.docker"
+-    BUILD_CONTEXT: "$CI_PROJECT_DIR"
 -  before_script:
--    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+-    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
 -    - until docker info; do sleep 1; done
--  script:
--    - docker pull $IMAGE_TAG || true
--    - docker build --cache-from $IMAGE_TAG --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
--                                           --tag $IMAGE_TAG .gitlab-ci.d/opensbi
--    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
--    - docker push $IMAGE_TAG
-+    NAME: opensbi-cross-build
-+    DOCKERFILE: "$CI_PROJECT_DIR/.gitlab-ci.d/opensbi/Dockerfile"
-+    BUILD_CONTEXT: "$CI_PROJECT_DIR/.gitlab-ci.d/opensbi"
+   script:
+     - echo "TAG:$TAG"
+-    - echo "COMMON_TAG:$COMMON_TAG"
+-    - >
+-      docker build
+-      --tag "$TAG"
+-      --cache-from "$TAG"
+-      --cache-from "$COMMON_TAG"
+-      --build-arg BUILDKIT_INLINE_CACHE=1
+-      -f "$DOCKERFILE" "$BUILD_CONTEXT"
+-    - docker push "$TAG"
+-  after_script:
+-    - docker logout
++    - /kaniko/executor
++      --dockerfile "$DOCKERFILE"
++      --destination "$TAG"
+diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+index bb90c56bcf..e531ce2728 100644
+--- a/.gitlab-ci.d/opensbi.yml
++++ b/.gitlab-ci.d/opensbi.yml
+@@ -50,7 +50,6 @@ docker-opensbi:
+     GIT_DEPTH: 3
+     NAME: opensbi-cross-build
+     DOCKERFILE: "$CI_PROJECT_DIR/.gitlab-ci.d/opensbi/Dockerfile"
+-    BUILD_CONTEXT: "$CI_PROJECT_DIR/.gitlab-ci.d/opensbi"
  
  build-opensbi:
    rules:
-@@ -72,7 +65,7 @@ build-opensbi:
-       - opensbi32-generic-stderr.log
-       - opensbi64-generic-stdout.log
-       - opensbi64-generic-stderr.log
--  image: $CI_REGISTRY_IMAGE:opensbi-cross-build
-+  image: $CI_REGISTRY_IMAGE/qemu/opensbi-cross-build:latest
-   variables:
-     GIT_DEPTH: 3
-   script: # Clone the required submodules and build OpenSBI
+diff --git a/scripts/ci/gitlab-kubernetes-runners/values.yaml b/scripts/ci/gitlab-kubernetes-runners/values.yaml
+index 204a96a842..ed6c5894bc 100644
+--- a/scripts/ci/gitlab-kubernetes-runners/values.yaml
++++ b/scripts/ci/gitlab-kubernetes-runners/values.yaml
+@@ -4,27 +4,15 @@ rbac:
+   create: true
+ concurrent: 200
+ runners:
+-  privileged: true
+   config: |
+     [[runners]]
+       limit = 100
+-      environment = [
+-        "DOCKER_HOST=tcp://docker:2376",
+-        "DOCKER_TLS_CERTDIR=/certs",
+-        "DOCKER_TLS_VERIFY=1",
+-        "DOCKER_CERT_PATH=/certs/client"
+-      ]
+       [runners.kubernetes]
+         poll_timeout = 1200
+-        image = "ubuntu:20.04"
+         cpu_request = "0.5"
+         service_cpu_request = "0.5"
+         helper_cpu_request = "0.25"
+         cpu_request_overwrite_max_allowed = "7"
+         memory_request_overwrite_max_allowed = "30Gi"
+-      [[runners.kubernetes.volumes.empty_dir]]
+-        name = "docker-certs"
+-        mount_path = "/certs/client"
+-        medium = "Memory"
+       [runners.kubernetes.node_selector]
+         agentpool = "jobs"
 -- 
 2.40.1
 
