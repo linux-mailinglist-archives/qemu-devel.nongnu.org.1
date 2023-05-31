@@ -2,68 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051337185D5
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BD17185D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:14:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NVd-0001cT-IZ; Wed, 31 May 2023 11:13:09 -0400
+	id 1q4NWH-0002LD-2v; Wed, 31 May 2023 11:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4NVc-0001cK-Db
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:13:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
+ id 1q4NWB-0002Ju-JI; Wed, 31 May 2023 11:13:43 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4NVZ-0005CQ-Iu
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:13:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685545981;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=K+KxspMQr/rnzaKeb0YMRWd5kruI0IIEHGvkHvLTPOg=;
- b=b688+4T+W3Tdzd42YBwV4OqO6aSstCD2HtjnGchssGfHog5s5YqtYQx4OpMwZKTztvYjYm
- Lgw7lMo9uxbbu2MUoftPWZVXWuKsI9qRDBT7MQxghPd3kqCRb6ImrkjDGRw7Mk1+wFPpZ/
- c++K+EaAWG70glhWvhfNuBRl6SlJb4k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-628-i6ONGLFWP_OE8KV9YaYI3Q-1; Wed, 31 May 2023 11:12:58 -0400
-X-MC-Unique: i6ONGLFWP_OE8KV9YaYI3Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
+ id 1q4NW8-0005M7-UL; Wed, 31 May 2023 11:13:43 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWXpR5Mzgz4x49;
+ Thu,  1 Jun 2023 01:13:35 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 54646802355;
- Wed, 31 May 2023 15:12:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.177])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A3DB421C3;
- Wed, 31 May 2023 15:12:57 +0000 (UTC)
-Date: Wed, 31 May 2023 16:12:54 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Camilla Conte <cconte@redhat.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org
-Subject: Re: [PATCH 3/5] gitlab-ci: Move variables outside script
-Message-ID: <ZHdj9u/kyuH8HYM6@redhat.com>
-References: <20230531150824.32349-1-cconte@redhat.com>
- <20230531150824.32349-4-cconte@redhat.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWXpP6SvXz4x42;
+ Thu,  1 Jun 2023 01:13:33 +1000 (AEST)
+Message-ID: <f529c668-7c27-4368-4e21-faa8afeb744c@kaod.org>
+Date: Wed, 31 May 2023 17:13:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230531150824.32349-4-cconte@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] pnv/xive2: Quiet down some error messages
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230531150537.369350-1-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230531150537.369350-1-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=vahk=BU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,77 +60,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 04:08:22PM +0100, Camilla Conte wrote:
-> Also split long line for clarity.
-
-
+On 5/31/23 17:05, Frederic Barrat wrote:
+> When dumping the END and NVP tables ("info pic" from the HMP) on the
+> P10 model, we're likely to be flooded with error messages such as:
 > 
-> Docs:
-> https://docs.gitlab.com/ee/ci/variables/#use-cicd-variables-in-other-variables
-> Signed-off-by: Camilla Conte <cconte@redhat.com>
+>    XIVE[0] - VST: invalid NVPT entry f33800 !?
+> 
+> The error is printed when finding an empty VSD in an indirect
+> table (thus END and NVP tables with skiboot), which is going to happen
+> when dumping the xive state. So let's tune down those messages. They
+> can be re-enabled easily with a macro if needed.
+> 
+> Those errors were already hidden on xive/P9, for the same reason.
+
+yes.
+
+  
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
 > ---
->  .gitlab-ci.d/container-template.yml | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
+>   hw/intc/pnv_xive2.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
-> diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
-> index fd7deb1c29..d146d1d197 100644
-> --- a/.gitlab-ci.d/container-template.yml
-> +++ b/.gitlab-ci.d/container-template.yml
-> @@ -1,20 +1,27 @@
->  .container_job_template:
->    extends: .base_job_template
-> -  image: docker:stable
->    stage: containers
-> +  image: docker:stable
->    services:
->      - docker:stable-dind
-> +  variables:
-> +    TAG: "$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
-> +    COMMON_TAG: "$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
-> +    DOCKERFILE: "$CI_PROJECT_DIR/tests/docker/dockerfiles/$NAME.docker"
-> +    BUILD_CONTEXT: "$CI_PROJECT_DIR"
->    before_script:
-> -    - export TAG="$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
-> -    - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
->      - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
->      - until docker info; do sleep 1; done
->    script:
->      - echo "TAG:$TAG"
->      - echo "COMMON_TAG:$COMMON_TAG"
-> -    - docker build --tag "$TAG" --cache-from "$TAG" --cache-from "$COMMON_TAG"
-> +    - >
-
-This leading '>' seems redundant
-
-> +      docker build
-> +      --tag "$TAG"
-> +      --cache-from "$TAG"
-> +      --cache-from "$COMMON_TAG"
->        --build-arg BUILDKIT_INLINE_CACHE=1
-> -      -f "tests/docker/dockerfiles/$NAME.docker" "."
-> +      -f "$DOCKERFILE" "$BUILD_CONTEXT"
-
-This is a functional change as $BUILD_CONTEXT expands
-to something different that '.'.
-
-IOW, this should be a separate commit
-
->      - docker push "$TAG"
->    after_script:
->      - docker logout
-> -- 
-> 2.40.1
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index c80316657a..397679390c 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -163,7 +163,9 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
+>       ldq_be_dma(&address_space_memory, vsd_addr, &vsd, MEMTXATTRS_UNSPECIFIED);
+>   
+>       if (!(vsd & VSD_ADDRESS_MASK)) {
+> +#ifdef XIVE2_DEBUG
+>           xive2_error(xive, "VST: invalid %s entry %x !?", info->name, idx);
+> +#endif
+>           return 0;
+>       }
+>   
+> @@ -185,7 +187,9 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
+>                      MEMTXATTRS_UNSPECIFIED);
+>   
+>           if (!(vsd & VSD_ADDRESS_MASK)) {
+> +#ifdef XIVE2_DEBUG
+>               xive2_error(xive, "VST: invalid %s entry %x !?", info->name, idx);
+> +#endif
+>               return 0;
+>           }
+>   
 
 
