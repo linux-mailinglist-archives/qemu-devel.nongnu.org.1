@@ -2,69 +2,171 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225DE71726A
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 02:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF66C7172B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 02:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q49gy-0006IZ-HZ; Tue, 30 May 2023 20:27:56 -0400
+	id 1q49zg-0005bi-CK; Tue, 30 May 2023 20:47:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q49gw-0006I6-1Q; Tue, 30 May 2023 20:27:54 -0400
-Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q49gt-0004fw-50; Tue, 30 May 2023 20:27:53 -0400
-Received: from [192.168.0.120] (unknown [61.165.37.98])
- by APP-05 (Coremail) with SMTP id zQCowADHzHB2lHZk0sNiCA--.10358S2;
- Wed, 31 May 2023 08:27:35 +0800 (CST)
-Message-ID: <a669092a-8ef1-a70b-9896-5e7b6c78bb4a@iscas.ac.cn>
-Date: Wed, 31 May 2023 08:27:34 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q49zd-0005bF-UU
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 20:47:13 -0400
+Received: from mga03.intel.com ([134.134.136.65])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q49za-0007wP-RL
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 20:47:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1685494030; x=1717030030;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=dGXZ7oI75bqomKit7aTdT4RU2wN/1YzMK3m4TjOjApk=;
+ b=BYMy5JQkQ5d2oMcM3S9cw5+ZBW3FESDGhCCYO2e61WJug3LU2d4YGd5k
+ +iFlCCywLM2CUTk1ingzWtCBHr4oF6UMmfRsDjXh2BkUnfL2W7yHqAI9p
+ JA73G+Qw3fAy9uIImL032244XxOx7oE8fEQuaX1Cux4dqu3O8Sl+6A9m2
+ lGQ587Txf6Be0eNdFQVbZSB3RCArJz0mG0MGXC2ySW5nFYjmg6PuQt11T
+ 9Loahh4gloNhKeD6K2kU9PrwD7vaW7Bm6EEju6WMyg8qr56Bni1C2N1Rc
+ rvni+tQ/ZPkHmpDVQI/TBxRHUHwXphrLIB0TFKR70d1zL9AD8oYpSVzF+ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="358348223"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="358348223"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2023 17:47:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="700866924"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="700866924"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orsmga007.jf.intel.com with ESMTP; 30 May 2023 17:47:05 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 30 May 2023 17:47:04 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 30 May 2023 17:47:04 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Tue, 30 May 2023 17:47:04 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.49) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Tue, 30 May 2023 17:47:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jh5D38fDaylAL5tRoSV2C6yoPYRs6p1CGAfeVb3o6dPU0SVsojwUSnES29khFQPyvdxdj+mGg4agkDjECQlEhsACib0f19Rk8n3RInWNnu704cSRE5NMqbD3x1dEgr+erjVtTmqlKtKIXxpif6S36p7ERl+eIcGM+DVtbt0tq3PsNuu6wMEWSC51jflakmjgGpO91ckDX6E7sihl5udFX/WOGhvCrkaiIm+Yyu98bSQhm+q7jj1PalIN9XnQec0mm/StCpwMjM/BV2ZnYxz1AGeFl1/09GpMjA/wfZL72oz6cN8vgAhL8M0U5iutmhBzIIbFXxl/mpJlvZGEa2u/Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/GagAqjHHIY88So0m5+NkGE0Mz99sZQUIhE+6aCq7sI=;
+ b=AWcENODTSM7hr7yg4N3MaYsBaQdD1nZmoNV/9vOtLQ+SVaL8/u8dKiUACDsoz+xj+bsb1v1zroEhXF7THm0o7s3W3SYbo9q1Xt3o9siaPO7dUJJXbAFVhiADcMJAOdkZpyLhN/duPuyXRjvxmwilBWNrkHkCyUlYrnqejQPPuC5oIkaDqHaU1X5f1p3WSBAAIfOuy78AWBHnpGyDX9XtSCxszFSraY81IUxXBSPH4p3hr2YAGE0jBd67YQHKQsV/xeR605KseP4B3mQ1JvLGXdW9Pvbpa/3KedsP6wnSd0Hl6vlomQTLApR5qaLqTLdZ6E5/pJzBqUG2BrzPB8p9+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BY5PR11MB4500.namprd11.prod.outlook.com (2603:10b6:a03:1c3::24)
+ by IA1PR11MB7943.namprd11.prod.outlook.com (2603:10b6:208:3fc::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Wed, 31 May
+ 2023 00:47:01 +0000
+Received: from BY5PR11MB4500.namprd11.prod.outlook.com
+ ([fe80::6660:3269:205:8c6]) by BY5PR11MB4500.namprd11.prod.outlook.com
+ ([fe80::6660:3269:205:8c6%3]) with mapi id 15.20.6433.022; Wed, 31 May 2023
+ 00:47:01 +0000
+Message-ID: <db66436b-b42c-82f8-955b-6cba2bbce368@intel.com>
+Date: Wed, 31 May 2023 08:46:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 1/4] target/riscv: Make MPV only work when MPP != PRV_M
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
- <20230529121719.179507-2-liweiwei@iscas.ac.cn>
- <d0a208a3-9973-b7e4-8fcf-d71ec0eab9b1@ventanamicro.com>
+Subject: Re: [PATCH v13 04/10] accel/tcg: add jit stats and time to
+ TBStatistics
 Content-Language: en-US
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-In-Reply-To: <d0a208a3-9973-b7e4-8fcf-d71ec0eab9b1@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+CC: Richard Henderson <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>, 
+ "Vanderson M . do Rosario" <vandersonmr2@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>, Thomas Huth
+ <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+References: <20230529114947.2123652-1-fei2.wu@intel.com>
+ <20230529114947.2123652-5-fei2.wu@intel.com>
+ <98196efc-213f-3351-1564-5008ccd90f36@linaro.org>
+ <ddc552ba-c95d-4b31-01d2-a6d70a978f1c@intel.com>
+ <a6a88248-4142-baa6-dc86-b6d471477384@intel.com> <87cz2idt3m.fsf@linaro.org>
+From: "Wu, Fei" <fei2.wu@intel.com>
+In-Reply-To: <87cz2idt3m.fsf@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowADHzHB2lHZk0sNiCA--.10358S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuryDGw1ktF1rtryUCFykZrb_yoW5Gry5pr
- 1kGrW7KFWDCrWkG3Wftr1UGry5Jr1UGw1UJr1kAF1UJr45Jr4q9F4UXr1jgr1UJr48Jr1j
- vF1UZryDZF47XF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
- 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
- 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
- c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVWDMxAIw28IcxkI7VAKI48JMx
- C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
- wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
- vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
- 0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
- WUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUn5rcUUUUU
-X-Originating-IP: [61.165.37.98]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+X-ClientProxiedBy: SG2PR02CA0132.apcprd02.prod.outlook.com
+ (2603:1096:4:188::15) To BY5PR11MB4500.namprd11.prod.outlook.com
+ (2603:10b6:a03:1c3::24)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR11MB4500:EE_|IA1PR11MB7943:EE_
+X-MS-Office365-Filtering-Correlation-Id: df0e6cb2-fbf9-42a9-99b7-08db61708b57
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LbGJ4GNJ1UTYsVxQkTyN9Yw4LO1wvkhLkVCevW+a+Gv7ZOwAAWwS8GYloI1UW94OrV72YNTWMVtodwbDSvGMW4jRXeDa99NcGDd7v+bjRDcro9tUvWruALV1BaGqtsM8vUEUgU9FZ1T/1BAu5SrJ6LoB7s7AqTNzTtTdtd5R3jpRQKt6bVNTCEhWHEVICyuWqONiKASdg1onOW7b3Ifwq28Q3z9rp+RKNFveU1CsReta2Wqk47UJpcuuTDoakWH2/dHD9O8xhstHJgnnDUywBcYGF235C4nnfOTvy0yusPyJTjRBrH9wB6nZH/7OuOabTj0UDlgAv3T5/fxHADtTI4kHG66zgjZ3bi8nHn4U8mM+4AVu0756yq8bXr9uh95T0leXmeKgTJbiU9SJWh2rlqeiHTDuk+ds0zfldA08KiuekYMwyRuo1duua/p5mPLo3trGaXgt6qjQT4A33RjgjsLL0SmtQA8RAq+9p7DHK9Hh3ID9AlSueATZDLa9AWRALJp16LtFqmhVFzk+//iCayWIFcQtXagAMGqiRn6aVwLUg+y6+KvlM8NH8R75fvlxZNieUpZin2+al6OxAzH8xdPl5fhAks7bLarAjIrAiMgkP31i8TaJHbNd/06Ktzw+QeuCh21O2ho4ROSE4CIxUWvAnJsQo1I7NDL/T6CLBQE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR11MB4500.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(136003)(346002)(376002)(39860400002)(366004)(396003)(451199021)(186003)(26005)(53546011)(6506007)(6486002)(6512007)(316002)(6666004)(2906002)(5660300002)(41300700001)(36756003)(8676002)(8936002)(478600001)(82960400001)(38100700002)(31686004)(31696002)(54906003)(6916009)(4326008)(86362001)(66574015)(66946007)(83380400001)(2616005)(66556008)(66476007)(21314003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlpqUXBPQVAxcEZDN1BLYzR0bytqenBvRmk4OTh5cW9ZT3hPeFRLRmQ4d1JG?=
+ =?utf-8?B?ZXFGT3hmRmh1ZUdjS1Rzc2JtNTFXTUlCeWFTS0RWTVNwZ3BGNGVyZjV6NTEx?=
+ =?utf-8?B?b2ZxS3c0elFJQmFmK1NtM2JjdW1iYVZCc3FZdUxRNnQxZEd2amM3ejRzb25C?=
+ =?utf-8?B?OUQrWEl4dUI1b0c1M0NyQ1FQd2dpMjdIbGlmeGVlczNJMFZwTk10R01pSTlz?=
+ =?utf-8?B?RXJmYkFYY0YveUhnMExWUE43QjVDanRrYndlUlBodjFBcVJwVUxab0k4VTBs?=
+ =?utf-8?B?ZWRiVkRnR0pXRDhVVG93bFliNWlWcSsvOFBvOEt0Myt3aCsrazRzbHhBTXFJ?=
+ =?utf-8?B?cnNFUS9kdFNOZCtqVnd4RDRKdEFDOHFGTkU0OHpCc2hUc05CbGRVUzdZK3Zx?=
+ =?utf-8?B?ODA2K3hPbjc3bkNPVHVudURlQkxxMnJlcVpTRElDdkFOUHBKRDJROEllRU9D?=
+ =?utf-8?B?Uk1COGl0UkpuQWpVVktWYWtMSjN6QTB5VEZneS9HN0xwT2s4K1dpQi9LMDY1?=
+ =?utf-8?B?Mmp4YnA4M0lhWGxReUdyWnpVRmwveDRneU50ZkFSUm5FRTNRNkc2a1g5cExZ?=
+ =?utf-8?B?MHZ4dzhWTDhtbzcxZS9acjFTQVdkQUNJRUYwaE9QKzZVemxFU0xFRHVxRVo3?=
+ =?utf-8?B?bEZSUit0ajFYZmxxWmRna0JqWmJSNTdUUTlwN1p3eHI2Y2VBUEtwbCtBUE95?=
+ =?utf-8?B?Mjk5V0JrMTkyYi9LN3Bta09WV0ErRlZmWTJFVnpzRUlteVFaNmZTdmdqaE84?=
+ =?utf-8?B?TkZuaXR4OHVFUC9OekVTcldOdnRJeFJPNGJPYUFqRDZ2b2pwUGMxLzBaMnN3?=
+ =?utf-8?B?R1RqeVhjbEVKaHdJUjE0ajU3MnE3UGlwYVJRalpVOTVJMVlvVTg1RU5pZjFm?=
+ =?utf-8?B?NXA0N0tmSW12YVg3ZU9XVUFoMVJlNFE0U1BZRWUvTXpMeTdxUE1ETUJrd082?=
+ =?utf-8?B?TGt1TWdTdkdPVWM2blYzaEl6NzhKKzBMVlFvZ1JEV3lEZlA0bFArU1J5bWhs?=
+ =?utf-8?B?Q1R4Z0ZwdHBnd0xtamRkZndLNzEvTEN1VVRPWXZWc1NKVHhab1A5QjlueDIx?=
+ =?utf-8?B?WGcveExrbmVmc2ZQcE41SFMrdG5LZGQ5SUI4ZlpFSWU4UmRkUk4waDhMVFZ0?=
+ =?utf-8?B?UWVQSkozKzJLc1huOVFxMVdUL2lnUFFsbUsxMDAwcEp6TFlyZ0l0MU9lU05N?=
+ =?utf-8?B?cjRybS9DUmtJVVZRbVZDV0xBc3ZNQ1hnUmJMbXVxeVpyeGtZeEJxOTVCVUFP?=
+ =?utf-8?B?aWFmYlVoUmhGOEUvMGduU3VZRERBZVV6Ym84dzZ0TnpQYWZod1N2SXRNSTB0?=
+ =?utf-8?B?UllCQk1wdXZNcFhyU0JIM0g5c2lzdEJlNitWelBFbDRKcG13bzNPQ2F3N2lT?=
+ =?utf-8?B?SmlWYitNVFFtZEtJcDNFdXJ6MXQ2ZTBGMEcybnRZcjh4d1VBY3pySGVmeDR5?=
+ =?utf-8?B?Q1FzM0VJZUc5YXhCZktyamRmNFlaMUZGNVdERGlsMUJxajNnaW5nbklKeFM5?=
+ =?utf-8?B?LzdQVWlPMHFDS1RIVjVYN1RMUDlmRmh3Ti8zZzBWd0FtSXJMbWRwVXVHbllq?=
+ =?utf-8?B?SHltRGViQ2U0UFVmQnNKby9hTG8rNlRaZjVUalRXSzZhTUNFYTA1YW5HVnZz?=
+ =?utf-8?B?dFpoaVFiN0QzeGNYVnVlcUQ0N1djVmVMNXdicVhsNjdETWdzZFpsaHdiV29s?=
+ =?utf-8?B?S1F5ZDlJVWlXUEtsdHQ5ZFN1b2h1Tm1ZUkFpK0Z3RUs4R0JhWjdVUTRxcXJK?=
+ =?utf-8?B?bFArd1p4TTVTYVBlbmdFdG5lQnZYV3ZFUHZxZlowYnpUbG1wM3hjS25hMDdK?=
+ =?utf-8?B?dzAwVTBjZFNrYVN3TTJJdkgzNFdBRTQreVk0bGZORjlKRE5CSFF5bjc4bGYw?=
+ =?utf-8?B?Q05WWnpMcUlqRHk5dFJLbTFwRmp2Z1VRc204ODZEQWxJYjlPL1FTTUZoWW4v?=
+ =?utf-8?B?cnhwb3Mreld5d1M3MFp2ZFVmeXl0cmMzb0Ywd0ZrblFmMi9BUExYSzZlRUU0?=
+ =?utf-8?B?UzF5SlhWZURnU1d4ZDE2SHVFalc0UHczYy9TOVdLV2dRcXdsT2M4aE9iODFX?=
+ =?utf-8?B?MGREWFFqTmVMUEozMEtKM050bmNYK1pqV1dlYmd2M2YvTlhUbE9XZ0RLUmJl?=
+ =?utf-8?Q?Ebv0pYNkqXbESS+MQfE88DrgO?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: df0e6cb2-fbf9-42a9-99b7-08db61708b57
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4500.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2023 00:47:00.7986 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QHX8w0rgUoFtop7gGat3ZdBM7TWjHK9oyVBBROU+Z2kgz1DY4Dxw018HDjWbEFd7jynwhrgKE67ZTfwUOQFO/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7943
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=fei2.wu@intel.com;
+ helo=mga03.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,68 +182,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 5/30/2023 6:08 PM, Alex Bennée wrote:
+> 
+> "Wu, Fei" <fei2.wu@intel.com> writes:
+> 
+>> On 5/30/2023 1:01 PM, Wu, Fei wrote:
+>>> On 5/30/2023 12:07 PM, Richard Henderson wrote:
+>>>> On 5/29/23 04:49, Fei Wu wrote:
+>>>>> +/*
+>>>>> + * The TCGProfile structure holds data for analysing the quality of
+>>>>> + * the code generation. The data is split between stuff that is valid
+>>>>> + * for the lifetime of a single translation and things that are valid
+>>>>> + * for the lifetime of the translator. As the former is reset for each
+>>>>> + * new translation so it should be copied elsewhere if you want to
+>>>>> + * keep it.
+>>>>> + *
+>>>>> + * The structure is safe to access within the context of translation
+>>>>> + * but accessing the data from elsewhere should be done with safe
+>>>>> + * work.
+>>>>> + */
+> <snip>
+>>>>> +    int64_t cpu_exec_time;
+>>>>> +    int64_t op_count; /* total insn count */
+>>>>> +    int64_t code_in_len;
+>>>>> +    int64_t code_out_len;
+>>>>> +    int64_t search_out_len;
+>>>>> +
+>>>>> +    /* Timestamps during translation  */
+>>>>> +    uint64_t gen_start_time;
+>>>>> +    uint64_t gen_ir_done_time;
+>>>>> +    uint64_t gen_opt_done_time;
+>>>>> +    uint64_t gen_la_done_time;
+>>>>> +    uint64_t gen_code_done_time;
+>>>>> +
+>>>>> +    /* Lifetime count of TCGOps per TCGContext */
+>>>>> +    uint64_t table_op_count[NB_OPS];
+>>>>> +} TCGProfile;
+>>>>> +
+>>>>
+>>>> Why have you added this back?
+>>>>
+>>>> The whole point of removing CONFIG_PROFILE to begin was to have all new
+>>>> code.  Not to remove it then reintroduce it unchanged.
+>>>>
+>>>> In tcg_gen_code, you have access to the TranslationBlock as s->gen_tb. 
+>>>> There is zero point to accumulating into TCGProfile, when you could be
+>>>> accumulating into TCGStatistics directly.
+>>>>
+>>> TCGProfile contains global wide (per TCGContext) stats, but TBStatistics
+>>> is TB specific, some info in TCGProfile such as table_op_count is not
+>>> able to be summed up from TBStatistics. The per-translation stats in
+>>> TCGProfile may be removed indeed.
+>>>
+>> After some cleanup locally, these are the remains in TCGProfile:
+>> * cpu_exec_time - which is not guarded by tb_stats_enabled, it could be
+>> moved out as an individual variable?
+>> * gen_xxx_time - which in kinda global variables across functions to
+>> calc ts->gen_times
+> 
+> Given the work on JIT profiling I think there is an argument to drop the
+> time profile bits and pieces. I think you can get the same information
+> from a perf run although it does amortise the cost of generation over
+> all translations. Do we see any particular TBs that are particularly
+> expensive to translate by more than a standard deviation?
+> 
+I haven't seen this before, but it may be different if we sort the TBs
+by these times. Perhaps we can get some idea of some kinds of code takes
+more time to optimize than others?
 
-On 2023/5/31 04:23, Daniel Henrique Barboza wrote:
->
->
-> On 5/29/23 09:17, Weiwei Li wrote:
->> Upon MRET or explicit memory access with MPRV=1, MPV should be ignored
->> when MPP=PRV_M.
+>> * table_op_count - it's indeed guarded by tb_stats_enabled, but it's a
+>> large array, it might be too large to put into TBStaticstics.
+> 
+> Probably. This is probably more interesting information as an aggregate
+> than per TB.
+> 
+Yes, I kept this here in v14.
+
+Thanks,
+Fei.
+
 >>
->> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
->> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
->> ---
->>   target/riscv/cpu_helper.c | 3 ++-
->>   target/riscv/op_helper.c  | 3 ++-
->>   2 files changed, 4 insertions(+), 2 deletions(-)
+>> Thanks,
+>> Fei.
 >>
->> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
->> index 09ea227ceb..bd892c05d4 100644
->> --- a/target/riscv/cpu_helper.c
->> +++ b/target/riscv/cpu_helper.c
->> @@ -46,7 +46,8 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool 
->> ifetch)
->>             if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
->>               mode = get_field(env->mstatus, MSTATUS_MPP);
->> -            virt = get_field(env->mstatus, MSTATUS_MPV);
->> +            virt = get_field(env->mstatus, MSTATUS_MPV) &&
->> +                   (mode != PRV_M);
->
-> This change makes more sense in patch 2 where you also removed the 'mode'
-> check for MPRV. As it is now I read the code above and thought "but mode
-> is guaranteed to be == PRV_M, so (mode !=  PRV_M) is guaranteed to be
-> false every time".
-
-No, this 'mode' (get from MPP) is not the previous 'mode'(the current 
-privilege mode).
-
-Regards,
-
-Weiwei Li
-
->
-> The change in helper_mret() below is fine.
->
-> Thanks,
->
-> Daniel
->
->>               if (virt) {
->>                   status = env->vsstatus;
->>               }
->> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
->> index f563dc3981..9cdb9cdd06 100644
->> --- a/target/riscv/op_helper.c
->> +++ b/target/riscv/op_helper.c
->> @@ -335,7 +335,8 @@ target_ulong helper_mret(CPURISCVState *env)
->>           riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, 
->> GETPC());
->>       }
->>   -    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV);
->> +    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV) &&
->> +                             (prev_priv != PRV_M);
->>       mstatus = set_field(mstatus, MSTATUS_MIE,
->>                           get_field(mstatus, MSTATUS_MPIE));
->>       mstatus = set_field(mstatus, MSTATUS_MPIE, 1);
+>>> Thanks,
+>>> Fei.
+>>>
+>>>>
+>>>> r~
+>>>
+> 
+> 
 
 
