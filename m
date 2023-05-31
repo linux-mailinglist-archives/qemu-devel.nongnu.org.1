@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB247174B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 439F57174BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D3t-000769-P4; Wed, 31 May 2023 00:03:49 -0400
+	id 1q4D3v-00076h-Tp; Wed, 31 May 2023 00:03:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D3p-0006sl-Ii
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:45 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1q4D3q-0006wr-Bl
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:47 -0400
+Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D3n-0006An-GK
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:44 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-64d5b4c400fso5913628b3a.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:41 -0700 (PDT)
+ id 1q4D3n-0006B7-LS
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:46 -0400
+Received: by mail-il1-x131.google.com with SMTP id
+ e9e14a558f8ab-33bdab7b4caso1891035ab.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685505820; x=1688097820;
+ d=linaro.org; s=google; t=1685505821; x=1688097821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lLJ+OrJ6ZDoNmYA/4Pv3PzTB4pxZ5PUcgKGyl5lAA2g=;
- b=LUiCXAJTu77xq4A3gkmcONvnBd4ybBhi7enh9S43dotqsgy4EO4U50IaP0EQw3TFsC
- OKahk8heBUdU5MMJs18zINVDYvcPyI/obB8szuD9QV/yit9zoK88fqm2aZXUGTyZoy8b
- z85fV7/0/hcHf/PRMBdgU/FNitAbgiOekFF+K2PlKCMPmf8mGBZfuFnZ9U01UCfJGQHP
- npDk5GZ9LvTwGOPRT6/KolBmtS4vfF7g9uvR0gyflsUuEWtNGaNmQ1ufd3/6WUeIlh/h
- 1D2+IpgxMbvnTYLv8cfoFuUFd8mtOIqrPpdDYWiqSTT/Rj03rTqYRbB4JE4b7qmbmHyr
- S5Hw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ebG/JBGVQUzhkBt/ZqcczxWo6SU1DNkNqSEwarGUTCU=;
+ b=vjsJrWaJVVqJBMPVoMZvP7TU5vCbhGX52ahQOAe87IuS5ZuZMKeQIAkZAxifzejYtI
+ HaMVbpQK6tqSfdoy51S4QnQlGQFoAaRw0t9f//liDUO3Y1Z2fTS9C2wROgfsnjb8B6Mn
+ i1dILwqsnnKXie3FNrlcjeiMDDUTLYpGaCUQo8fGBEgsnqP369Qnz1W5bNs84yYzVnCI
+ OX8wxXSYzA5UtUot3xxHQGdNSNiXAAQaCt02mJVs1IFTQqRqci9LtVs37a7om0h5Xbhh
+ /CF3r9UVMUaYFE4xvZI8hY6WH+IBjzLJo1goVYF7j/of38mc+SPxtSxqedwhetlDsJu5
+ VSmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685505820; x=1688097820;
+ d=1e100.net; s=20221208; t=1685505821; x=1688097821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lLJ+OrJ6ZDoNmYA/4Pv3PzTB4pxZ5PUcgKGyl5lAA2g=;
- b=IGALE3UYxTDtveEVpca6vIjWuIoXgmX5ZZBLnjz7XD2J1pd3LNgPY3Cvqkd5ZVs90z
- inurFMNTnzyGkj5X11Gx118+nA+w1slAoPnbUKvD5suJWrpzau1id/oNQzeqDBnh5glE
- 2Cn4NU3xKBopPenwksN6wvAyNNBY6h17BlZ87zpd2Fi6sdbUhn5s5oNqjlGLB0AS/wrW
- DK0CriNnftYp406vp94t2fsQf361lklYeM7P7FGtJVKkL6X6fAgCF3W1TFvvszbHFZ6b
- C0ntVHvXKWtSikKRb5VRCxFkwQzmFxuZX8AZgfjxdXzKcfWu8nkIcOYKBfQjPr3+fdp8
- ZvFA==
-X-Gm-Message-State: AC+VfDxcT/ZKsNQJ+NEiDMW0CShTGnkS7xj/qyIvFr55frdKcFatAAQX
- AGrimfBMa6Pu7IakXVxYZUyHjoqQeymPID0OPy0=
-X-Google-Smtp-Source: ACHHUZ7U+4l+L8EqqRu8zEbaV1TXPeLhRLYXVY8JZLLZSDfslIwXfYPDeFjdRi6QlCkxRzyGYg/OUQ==
-X-Received: by 2002:a05:6a20:7491:b0:10f:7e62:3806 with SMTP id
- p17-20020a056a20749100b0010f7e623806mr5391743pzd.22.1685505820572; 
- Tue, 30 May 2023 21:03:40 -0700 (PDT)
+ bh=ebG/JBGVQUzhkBt/ZqcczxWo6SU1DNkNqSEwarGUTCU=;
+ b=dNBmWaeXQsO3Cs4OikisMLQHvH9wCGLAUW1rmIRY1kun+Vdvhq70Rhkv0opNnKSy7U
+ FFievf+qfz3BuN1h5JWPG2VkkurDllIHeDgMcf5M6b5XN7pYozPgHKs3gh0+SInro8y4
+ ifhD7vXxWpqnmv18/DNmBupHG9rW7ckYEE0GMFR9SeXEBWUFuDamlvB76G1Vei+kZ8Wt
+ Ev1x+Q8au+mVbMOhO8jovYaCcoz0XBAJHhwrjpDal+y979zoU++m2xY2h7399U2IoSVg
+ rHuXdNkXdoVO4WMyoUiwM+uemQDwhTZ8y5FOqwJifyWMKv3hTv0iOret4bnzQnGVJzr3
+ Bqtg==
+X-Gm-Message-State: AC+VfDzN00FfmQ0LYhLW9XkP71H80uKiixtUC0Xfcm2DKmDzRwYSrxAV
+ HIpIjnO4PPEgGQLjCeTwhgUCYYkeWbWxuoNzGnw=
+X-Google-Smtp-Source: ACHHUZ4XbC/SG+mBV8NqDfkV7LoQF0tLDp4kpPu6eiii6hOeoKSsLf41V/4Tzs77ZwTdW5VdJ5ynAw==
+X-Received: by 2002:a92:d581:0:b0:33b:ad59:a8a9 with SMTP id
+ a1-20020a92d581000000b0033bad59a8a9mr968457iln.9.1685505821397; 
+ Tue, 30 May 2023 21:03:41 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  by smtp.gmail.com with ESMTPSA id
- j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.39
- for <qemu-devel@nongnu.org>
+ j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 21:03:40 -0700 (PDT)
+ Tue, 30 May 2023 21:03:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 12/48] target/arm: Fix test of TCG_OVERSIZED_GUEST
-Date: Tue, 30 May 2023 21:02:54 -0700
-Message-Id: <20230531040330.8950-13-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 13/48] tcg: Split out tcg/oversized-guest.h
+Date: Tue, 30 May 2023 21:02:55 -0700
+Message-Id: <20230531040330.8950-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::131;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,46 +92,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The symbol is always defined, even if to 0.
-We wanted to test for TCG_OVERSIZED_GUEST == 0.
+Move a use of TARGET_LONG_BITS out of tcg/tcg.h.
+Include the new file only where required.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/exec/cpu_ldst.h       |  3 +--
+ include/tcg/oversized-guest.h | 23 +++++++++++++++++++++++
+ include/tcg/tcg.h             |  9 ---------
+ accel/tcg/cputlb.c            |  1 +
+ accel/tcg/tcg-all.c           |  1 +
+ target/arm/ptw.c              |  1 +
+ target/riscv/cpu_helper.c     |  1 +
+ 7 files changed, 28 insertions(+), 11 deletions(-)
+ create mode 100644 include/tcg/oversized-guest.h
 
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index a43b34e46b..896f305ff3 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -326,8 +326,7 @@ static inline void clear_helper_retaddr(void)
+ 
+ #else
+ 
+-/* Needed for TCG_OVERSIZED_GUEST */
+-#include "tcg/tcg.h"
++#include "tcg/oversized-guest.h"
+ 
+ static inline target_ulong tlb_read_idx(const CPUTLBEntry *entry,
+                                         MMUAccessType access_type)
+diff --git a/include/tcg/oversized-guest.h b/include/tcg/oversized-guest.h
+new file mode 100644
+index 0000000000..641b9749ff
+--- /dev/null
++++ b/include/tcg/oversized-guest.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Define TCG_OVERSIZED_GUEST
++ * Copyright (c) 2008 Fabrice Bellard
++ */
++
++#ifndef EXEC_TCG_OVERSIZED_GUEST_H
++#define EXEC_TCG_OVERSIZED_GUEST_H
++
++#include "tcg-target-reg-bits.h"
++#include "cpu-param.h"
++
++/*
++ * Oversized TCG guests make things like MTTCG hard
++ * as we can't use atomics for cputlb updates.
++ */
++#if TARGET_LONG_BITS > TCG_TARGET_REG_BITS
++#define TCG_OVERSIZED_GUEST 1
++#else
++#define TCG_OVERSIZED_GUEST 0
++#endif
++
++#endif
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 5fe90cbb42..021fc903ad 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -59,15 +59,6 @@ typedef uint64_t tcg_target_ulong;
+ #error unsupported
+ #endif
+ 
+-/* Oversized TCG guests make things like MTTCG hard
+- * as we can't use atomics for cputlb updates.
+- */
+-#if TARGET_LONG_BITS > TCG_TARGET_REG_BITS
+-#define TCG_OVERSIZED_GUEST 1
+-#else
+-#define TCG_OVERSIZED_GUEST 0
+-#endif
+-
+ #if TCG_TARGET_NB_REGS <= 32
+ typedef uint32_t TCGRegSet;
+ #elif TCG_TARGET_NB_REGS <= 64
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 6beaeb0a81..32a4817139 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -40,6 +40,7 @@
+ #include "qemu/plugin-memory.h"
+ #endif
+ #include "tcg/tcg-ldst.h"
++#include "tcg/oversized-guest.h"
+ #include "exec/helper-proto.h"
+ 
+ /* DEBUG defines, enable DEBUG_TLB_LOG to log to the CPU_LOG_MMU target */
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index a831f8d7c3..02af6a2891 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -28,6 +28,7 @@
+ #include "exec/replay-core.h"
+ #include "sysemu/cpu-timers.h"
+ #include "tcg/tcg.h"
++#include "tcg/oversized-guest.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "qemu/accel.h"
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 69c05cd9da..b0d2a05403 100644
+index b0d2a05403..b2dc223525 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -418,6 +418,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-                              uint64_t new_val, S1Translate *ptw,
-                              ARMMMUFaultInfo *fi)
+@@ -14,6 +14,7 @@
+ #include "cpu.h"
+ #include "internals.h"
+ #include "idau.h"
++#include "tcg/oversized-guest.h"
+ 
+ 
+ typedef struct S1Translate {
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 57d04385f1..56381aaf26 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -31,6 +31,7 @@
+ #include "sysemu/cpu-timers.h"
+ #include "cpu_bits.h"
+ #include "debug.h"
++#include "tcg/oversized-guest.h"
+ 
+ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
  {
-+#ifdef TARGET_AARCH64
-     uint64_t cur_val;
-     void *host = ptw->out_host;
- 
-@@ -473,7 +474,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-      * we know that TCG_OVERSIZED_GUEST is set, which means that we are
-      * running in round-robin mode and could only race with dma i/o.
-      */
--#ifndef TCG_OVERSIZED_GUEST
-+#if !TCG_OVERSIZED_GUEST
- # error "Unexpected configuration"
- #endif
-     bool locked = qemu_mutex_iothread_locked();
-@@ -497,6 +498,10 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
- #endif
- 
-     return cur_val;
-+#else
-+    /* AArch32 does not have FEAT_HADFS. */
-+    g_assert_not_reached();
-+#endif
- }
- 
- static bool get_level1_table_address(CPUARMState *env, ARMMMUIdx mmu_idx,
 -- 
 2.34.1
 
