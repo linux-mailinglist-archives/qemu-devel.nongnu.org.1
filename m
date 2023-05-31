@@ -2,55 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E622B71773F
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 784EC717742
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:56:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4FjF-0005gw-4Z; Wed, 31 May 2023 02:54:41 -0400
+	id 1q4FkQ-0006NA-T1; Wed, 31 May 2023 02:55:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
- id 1q4Fhl-0004sL-4T; Wed, 31 May 2023 02:53:09 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1q4Fk3-0006Kl-Qh
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 02:55:31 -0400
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
- id 1q4Fhi-0006pB-Kc; Wed, 31 May 2023 02:53:08 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWKhp0s6Sz4x2k;
- Wed, 31 May 2023 16:52:58 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWKhm1DPbz4x42;
- Wed, 31 May 2023 16:52:55 +1000 (AEST)
-Message-ID: <2968749b-2114-2890-11f8-6608671efa52@kaod.org>
-Date: Wed, 31 May 2023 08:52:53 +0200
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1q4Fjy-0007QO-Ni
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 02:55:30 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R111e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045192;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=5; SR=0;
+ TI=SMTPD_---0VjwWFGL_1685516118; 
+Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VjwWFGL_1685516118) by smtp.aliyun-inc.com;
+ Wed, 31 May 2023 14:55:19 +0800
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+To: qemu-devel@nongnu.org
+Cc: aurelien@aurel32.net, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH] fpu: Add conversions between bfloat16 and [u]int8
+Date: Wed, 31 May 2023 14:54:57 +0800
+Message-Id: <20230531065458.2082-1-zhiwei_liu@linux.alibaba.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v1] target/ppc: Support directed privileged doorbell
- interrupt (SDOOR)
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230530130526.372701-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230530130526.372701-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=vahk=BU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.133;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-133.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,51 +60,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 15:05, Nicholas Piggin wrote:
-> BookS msgsndp instruction to self or DPDES register can cause SDOOR
-> interrupts which crash QEMU with exception not implemented.
-> 
-> Linux does not use msgsndp in SMT1, and KVM only uses DPDES to cause
-> doorbells when emulating a SMT guest (which is not the default), so
-> this has gone unnoticed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+We missed these functions when upstreaming the bfloat16 support.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+---
+ fpu/softfloat.c         | 58 +++++++++++++++++++++++++++++++++++++++++
+ include/fpu/softfloat.h | 12 +++++++++
+ 2 files changed, 70 insertions(+)
 
-
-> ---
-> Another stable candidate.
-
-Cc: qemu-stable@nongnu.org
-
-Thanks,
-
-C.
-
-> 
->   target/ppc/excp_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index fea9221501..add2bc6bfe 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -1539,6 +1539,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
->       case POWERPC_EXCP_DSEG:      /* Data segment exception                   */
->       case POWERPC_EXCP_ISEG:      /* Instruction segment exception            */
->       case POWERPC_EXCP_TRACE:     /* Trace exception                          */
-> +    case POWERPC_EXCP_SDOOR:     /* Doorbell interrupt                       */
->           break;
->       case POWERPC_EXCP_HISI:      /* Hypervisor instruction storage exception */
->           msr |= env->error_code;
-> @@ -1584,7 +1585,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
->       case POWERPC_EXCP_PERFM:     /* Embedded performance monitor interrupt   */
->       case POWERPC_EXCP_VPUA:      /* Vector assist exception                  */
->       case POWERPC_EXCP_MAINT:     /* Maintenance exception                    */
-> -    case POWERPC_EXCP_SDOOR:     /* Doorbell interrupt                       */
->       case POWERPC_EXCP_HV_MAINT:  /* Hypervisor Maintenance exception         */
->           cpu_abort(cs, "%s exception not implemented\n",
->                     powerpc_excp_name(excp));
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 108f9cb224..576b026f4e 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -3113,6 +3113,15 @@ int64_t float64_to_int64_scalbn(float64 a, FloatRoundMode rmode, int scale,
+     return parts_float_to_sint(&p, rmode, scale, INT64_MIN, INT64_MAX, s);
+ }
+ 
++int8_t bfloat16_to_int8_scalbn(bfloat16 a, FloatRoundMode rmode, int scale,
++                               float_status *s)
++{
++    FloatParts64 p;
++
++    bfloat16_unpack_canonical(&p, a, s);
++    return parts_float_to_sint(&p, rmode, scale, INT8_MIN, INT8_MAX, s);
++}
++
+ int16_t bfloat16_to_int16_scalbn(bfloat16 a, FloatRoundMode rmode, int scale,
+                                  float_status *s)
+ {
+@@ -3379,6 +3388,11 @@ int64_t floatx80_to_int64_round_to_zero(floatx80 a, float_status *s)
+     return floatx80_to_int64_scalbn(a, float_round_to_zero, 0, s);
+ }
+ 
++int8_t bfloat16_to_int8(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_int8_scalbn(a, s->float_rounding_mode, 0, s);
++}
++
+ int16_t bfloat16_to_int16(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_int16_scalbn(a, s->float_rounding_mode, 0, s);
+@@ -3394,6 +3408,11 @@ int64_t bfloat16_to_int64(bfloat16 a, float_status *s)
+     return bfloat16_to_int64_scalbn(a, s->float_rounding_mode, 0, s);
+ }
+ 
++int8_t bfloat16_to_int8_round_to_zero(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_int8_scalbn(a, float_round_to_zero, 0, s);
++}
++
+ int16_t bfloat16_to_int16_round_to_zero(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_int16_scalbn(a, float_round_to_zero, 0, s);
+@@ -3503,6 +3522,15 @@ uint64_t float64_to_uint64_scalbn(float64 a, FloatRoundMode rmode, int scale,
+     return parts_float_to_uint(&p, rmode, scale, UINT64_MAX, s);
+ }
+ 
++uint8_t bfloat16_to_uint8_scalbn(bfloat16 a, FloatRoundMode rmode,
++                                 int scale, float_status *s)
++{
++    FloatParts64 p;
++
++    bfloat16_unpack_canonical(&p, a, s);
++    return parts_float_to_uint(&p, rmode, scale, UINT8_MAX, s);
++}
++
+ uint16_t bfloat16_to_uint16_scalbn(bfloat16 a, FloatRoundMode rmode,
+                                    int scale, float_status *s)
+ {
+@@ -3728,6 +3756,11 @@ Int128 float128_to_uint128_round_to_zero(float128 a, float_status *s)
+     return float128_to_uint128_scalbn(a, float_round_to_zero, 0, s);
+ }
+ 
++uint8_t bfloat16_to_uint8(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_uint8_scalbn(a, s->float_rounding_mode, 0, s);
++}
++
+ uint16_t bfloat16_to_uint16(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_uint16_scalbn(a, s->float_rounding_mode, 0, s);
+@@ -3743,6 +3776,11 @@ uint64_t bfloat16_to_uint64(bfloat16 a, float_status *s)
+     return bfloat16_to_uint64_scalbn(a, s->float_rounding_mode, 0, s);
+ }
+ 
++uint8_t bfloat16_to_uint8_round_to_zero(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_uint8_scalbn(a, float_round_to_zero, 0, s);
++}
++
+ uint16_t bfloat16_to_uint16_round_to_zero(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_uint16_scalbn(a, float_round_to_zero, 0, s);
+@@ -3898,6 +3936,11 @@ bfloat16 int16_to_bfloat16_scalbn(int16_t a, int scale, float_status *status)
+     return int64_to_bfloat16_scalbn(a, scale, status);
+ }
+ 
++bfloat16 int8_to_bfloat16_scalbn(int8_t a, int scale, float_status *status)
++{
++    return int64_to_bfloat16_scalbn(a, scale, status);
++}
++
+ bfloat16 int64_to_bfloat16(int64_t a, float_status *status)
+ {
+     return int64_to_bfloat16_scalbn(a, 0, status);
+@@ -3913,6 +3956,11 @@ bfloat16 int16_to_bfloat16(int16_t a, float_status *status)
+     return int64_to_bfloat16_scalbn(a, 0, status);
+ }
+ 
++bfloat16 int8_to_bfloat16(int8_t a, float_status *status)
++{
++    return int64_to_bfloat16_scalbn(a, 0, status);
++}
++
+ float128 int128_to_float128(Int128 a, float_status *status)
+ {
+     FloatParts128 p = { };
+@@ -4108,6 +4156,11 @@ bfloat16 uint16_to_bfloat16_scalbn(uint16_t a, int scale, float_status *status)
+     return uint64_to_bfloat16_scalbn(a, scale, status);
+ }
+ 
++bfloat16 uint8_to_bfloat16_scalbn(uint8_t a, int scale, float_status *status)
++{
++    return uint64_to_bfloat16_scalbn(a, scale, status);
++}
++
+ bfloat16 uint64_to_bfloat16(uint64_t a, float_status *status)
+ {
+     return uint64_to_bfloat16_scalbn(a, 0, status);
+@@ -4123,6 +4176,11 @@ bfloat16 uint16_to_bfloat16(uint16_t a, float_status *status)
+     return uint64_to_bfloat16_scalbn(a, 0, status);
+ }
+ 
++bfloat16 uint8_to_bfloat16(uint8_t a, float_status *status)
++{
++    return uint64_to_bfloat16_scalbn(a, 0, status);
++}
++
+ float128 uint64_to_float128(uint64_t a, float_status *status)
+ {
+     FloatParts128 p;
+diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
+index 3dcf20e3a2..6d02f619d0 100644
+--- a/include/fpu/softfloat.h
++++ b/include/fpu/softfloat.h
+@@ -366,6 +366,8 @@ float32 bfloat16_to_float32(bfloat16, float_status *status);
+ bfloat16 float64_to_bfloat16(float64 a, float_status *status);
+ float64 bfloat16_to_float64(bfloat16 a, float_status *status);
+ 
++int8_t bfloat16_to_int8_scalbn(bfloat16, FloatRoundMode,
++                               int, float_status *status);
+ int16_t bfloat16_to_int16_scalbn(bfloat16, FloatRoundMode,
+                                  int, float_status *status);
+ int32_t bfloat16_to_int32_scalbn(bfloat16, FloatRoundMode,
+@@ -373,14 +375,18 @@ int32_t bfloat16_to_int32_scalbn(bfloat16, FloatRoundMode,
+ int64_t bfloat16_to_int64_scalbn(bfloat16, FloatRoundMode,
+                                  int, float_status *status);
+ 
++int8_t bfloat16_to_int8(bfloat16, float_status *status);
+ int16_t bfloat16_to_int16(bfloat16, float_status *status);
+ int32_t bfloat16_to_int32(bfloat16, float_status *status);
+ int64_t bfloat16_to_int64(bfloat16, float_status *status);
+ 
++int8_t bfloat16_to_int8_round_to_zero(bfloat16, float_status *status);
+ int16_t bfloat16_to_int16_round_to_zero(bfloat16, float_status *status);
+ int32_t bfloat16_to_int32_round_to_zero(bfloat16, float_status *status);
+ int64_t bfloat16_to_int64_round_to_zero(bfloat16, float_status *status);
+ 
++uint8_t bfloat16_to_uint8_scalbn(bfloat16 a, FloatRoundMode,
++                                 int, float_status *status);
+ uint16_t bfloat16_to_uint16_scalbn(bfloat16 a, FloatRoundMode,
+                                    int, float_status *status);
+ uint32_t bfloat16_to_uint32_scalbn(bfloat16 a, FloatRoundMode,
+@@ -388,24 +394,30 @@ uint32_t bfloat16_to_uint32_scalbn(bfloat16 a, FloatRoundMode,
+ uint64_t bfloat16_to_uint64_scalbn(bfloat16 a, FloatRoundMode,
+                                    int, float_status *status);
+ 
++uint8_t bfloat16_to_uint8(bfloat16 a, float_status *status);
+ uint16_t bfloat16_to_uint16(bfloat16 a, float_status *status);
+ uint32_t bfloat16_to_uint32(bfloat16 a, float_status *status);
+ uint64_t bfloat16_to_uint64(bfloat16 a, float_status *status);
+ 
++uint8_t bfloat16_to_uint8_round_to_zero(bfloat16 a, float_status *status);
+ uint16_t bfloat16_to_uint16_round_to_zero(bfloat16 a, float_status *status);
+ uint32_t bfloat16_to_uint32_round_to_zero(bfloat16 a, float_status *status);
+ uint64_t bfloat16_to_uint64_round_to_zero(bfloat16 a, float_status *status);
+ 
++bfloat16 int8_to_bfloat16_scalbn(int8_t a, int, float_status *status);
+ bfloat16 int16_to_bfloat16_scalbn(int16_t a, int, float_status *status);
+ bfloat16 int32_to_bfloat16_scalbn(int32_t a, int, float_status *status);
+ bfloat16 int64_to_bfloat16_scalbn(int64_t a, int, float_status *status);
++bfloat16 uint8_to_bfloat16_scalbn(uint8_t a, int, float_status *status);
+ bfloat16 uint16_to_bfloat16_scalbn(uint16_t a, int, float_status *status);
+ bfloat16 uint32_to_bfloat16_scalbn(uint32_t a, int, float_status *status);
+ bfloat16 uint64_to_bfloat16_scalbn(uint64_t a, int, float_status *status);
+ 
++bfloat16 int8_to_bfloat16(int8_t a, float_status *status);
+ bfloat16 int16_to_bfloat16(int16_t a, float_status *status);
+ bfloat16 int32_to_bfloat16(int32_t a, float_status *status);
+ bfloat16 int64_to_bfloat16(int64_t a, float_status *status);
++bfloat16 uint8_to_bfloat16(uint8_t a, float_status *status);
+ bfloat16 uint16_to_bfloat16(uint16_t a, float_status *status);
+ bfloat16 uint32_to_bfloat16(uint32_t a, float_status *status);
+ bfloat16 uint64_to_bfloat16(uint64_t a, float_status *status);
+-- 
+2.17.1
 
 
