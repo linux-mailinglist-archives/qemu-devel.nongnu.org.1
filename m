@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081C17188A9
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029D67188B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Pq2-0000WW-PP; Wed, 31 May 2023 13:42:22 -0400
+	id 1q4PrJ-0001Kl-0l; Wed, 31 May 2023 13:43:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4Ppv-0000Vt-Of
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:42:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4Ppu-0003yl-1r
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:42:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685554932;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8kE0WdaCab60zTzYqMdhI0/Jl3oy1rvvys29jTONFhA=;
- b=gQEAq2xkFYmDz5a8Abeqoz4GJ3jduoLHMtYlkxzBXVUR+HSvdoVIccMb+0TEiq5BeEJB8u
- p5DZRelN4rryBudpiMVuahD4481CU0T0IL0rwrCvxtKkh3M3Fx3uV4Bl+BsMgCr5ezTeDW
- xL6Ku6zq+UskfsUv5JH14VMLjN1NrrQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-628-2fKSXdRuOoKBJJQvAHaWeA-1; Wed, 31 May 2023 13:42:07 -0400
-X-MC-Unique: 2fKSXdRuOoKBJJQvAHaWeA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAB89101B04F;
- Wed, 31 May 2023 17:42:06 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5731A421D7;
- Wed, 31 May 2023 17:42:06 +0000 (UTC)
-Date: Wed, 31 May 2023 13:42:04 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Riku Voipio <riku.voipio@iki.fi>,
- Markus Armbruster <armbru@redhat.com>, Kyle Evans <kevans@freebsd.org>,
- Eduardo Habkost <eduardo@habkost.net>, Warner Losh <imp@bsdimp.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Greg Kurz <groug@kaod.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, libvir-list@redhat.com,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: Re: [PATCH v6 00/11] tracing: remove dynamic vcpu state
-Message-ID: <20230531174204.GK1248296@fedora>
-References: <20230526165401.574474-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4PrF-0001KG-Dy
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:43:38 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4PrD-0004HQ-Ap
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:43:36 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-30b023b0068so25637f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 10:43:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685555013; x=1688147013;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CO2Kxj0x6pMj+0gW1b+xk5neti5EyFtccsK7Kw/B6hk=;
+ b=sP5qK5MAkniQrREQJiGbEaN0GJ4uF/HGfbhCx5FDDl/NhVgztdAlWCMzOjDq0iu3nw
+ zAg1bDCRsAEdXw2YKcFH2/5IH+fYOxEfwv7EgsR7w70R5F+2EFBNO0L4y0/GgRoASW7F
+ 3UcfVvqRJo/outGw5sXkjR5M+NCDZfo0e08SB9Bu9UH8DZkpA1mIjybNq7gskJb63N9N
+ 8Vv2Y+Ab8cVgF4F1YDY6jliBGg6M4QFrn09NRf5dnBKB6fNkntWOpTPYK5VSYRiv4qG5
+ bmM83RQ4fVKhDeI5RVJBKAYhCsBtiP9ZAUFJQjIdtCzmR56RG/CFFMvEv7eRTANVshlK
+ octw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685555013; x=1688147013;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CO2Kxj0x6pMj+0gW1b+xk5neti5EyFtccsK7Kw/B6hk=;
+ b=cgm/v77PLuuXqWDaKdG1jp+0GuGcjJug+h2qgfZsx9RQWD+TIq1smQMbfpDx8xoWDA
+ 0vOkOBsObcCyPuMfGXHKdKT1bg13+5+0TPbIQjpstPjE+ZdSGQLquF0kNmbU9JoKkFdz
+ 4hsxO7qolTFlv7paUzFksxaw9igR487UXhe+k3Ga+z7+UJ05Ll8FBNYe/hk/tYXb8usv
+ zCL4864jIuhtJyOF+6uPb1j87fEnMZKm5qL4qKPivl1H4sD9gATfjOUubNXijFUfoOoF
+ ZJPcLKsrmGx7CsLPYgbucHwNdyANyPfNfJT8wrJCX0tky3UBkN6+UL0U22y607t9BJv8
+ is3g==
+X-Gm-Message-State: AC+VfDz/GUIQIDpOKwcBFq4UxBXCrj/d1J1Did20L1qS5Rgkg8uN5OLs
+ zx1a4bR0JHBXS/BeVJW3Jlk5ivcxfj1PaeIKcmk=
+X-Google-Smtp-Source: ACHHUZ6UD7ogwCdC7SPotc403yPkjvbf0wUgj3l6h0zh7cwnMuVCRdMX4CfeF9LVHGQe90vf39bY/g==
+X-Received: by 2002:a5d:4108:0:b0:30c:2b30:ec82 with SMTP id
+ l8-20020a5d4108000000b0030c2b30ec82mr2065752wrp.18.1685555013487; 
+ Wed, 31 May 2023 10:43:33 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.146.12])
+ by smtp.gmail.com with ESMTPSA id
+ y5-20020a7bcd85000000b003f09d7b6e20sm21585491wmj.2.2023.05.31.10.43.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 10:43:32 -0700 (PDT)
+Message-ID: <edd9f126-526e-ee57-767b-a1d307008a4d@linaro.org>
+Date: Wed, 31 May 2023 19:43:31 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="E8sSfFR28V4ZyRK3"
-Content-Disposition: inline
-In-Reply-To: <20230526165401.574474-1-alex.bennee@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,96 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 31/5/23 14:53, Mark Cave-Ayland wrote:
+> Also change the instantiation of the CPU to use object_initialize_child()
+> followed by a separate realisation.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/m68k/q800.c         | 13 ++++++++-----
+>   include/hw/m68k/q800.h |  2 ++
+>   2 files changed, 10 insertions(+), 5 deletions(-)
 
---E8sSfFR28V4ZyRK3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 26, 2023 at 05:53:50PM +0100, Alex Benn=E9e wrote:
-> Hi Stefan,
->=20
-> The references dynamic vcpu tracing support was removed when the
-> original TCG trace points where removed. However there was still a
-> legacy of dynamic trace state to track this in cpu.h and extra hash
-> variables to track TBs. While the removed vcpu tracepoints are not in
-> generated code (or helpers) they still bring in a bunch of machinery
-> to manage the state so I've pulled them out. We keep and rename one
-> (cpu_reset) to a static trace points which dump vcpu->index as it is
-> useful to f4bug.
->=20
-> v6 new patch to shuffle deprecated, added rth's rb, qapi doc cleanups
->=20
-> Please queue into your tree.
->=20
-> Alex Benn=E9e (11):
->   *-user: remove the guest_user_syscall tracepoints
->   trace-events: remove the remaining vcpu trace events
->   trace: remove vcpu_id from the TraceEvent structure
->   scripts/qapi: document the tool that generated the file
->   docs/deprecated: move QMP events bellow QMP command section
->   qapi: make the vcpu parameters deprecated for 8.1
->   trace: remove code that depends on setting vcpu
->   trace: remove control-vcpu.h
->   tcg: remove the final vestiges of dstate
->   hw/9pfs: use qemu_xxhash4
->   accel/tcg: include cs_base in our hash calculations
->=20
->  docs/about/deprecated.rst     |  25 +++++---
->  qapi/trace.json               |  40 ++++++-------
->  accel/tcg/tb-hash.h           |   6 +-
->  include/exec/exec-all.h       |   3 -
->  include/hw/core/cpu.h         |   5 --
->  include/qemu/xxhash.h         |  23 +++++--
->  include/user/syscall-trace.h  |   4 --
->  trace/control-internal.h      |  10 ----
->  trace/control-vcpu.h          |  63 --------------------
->  trace/control.h               |  48 ---------------
->  trace/event-internal.h        |   2 -
->  accel/tcg/cpu-exec.c          |   7 +--
->  accel/tcg/tb-maint.c          |   5 +-
->  accel/tcg/translate-all.c     |   6 --
->  bsd-user/freebsd/os-syscall.c |   2 -
->  hw/9pfs/9p.c                  |   5 +-
->  hw/core/cpu-common.c          |   6 +-
->  stubs/trace-control.c         |  13 ----
->  trace/control-target.c        | 109 +++-------------------------------
->  trace/control.c               |  28 ---------
->  trace/qmp.c                   |  76 +++---------------------
->  trace/trace-hmp-cmds.c        |  18 +-----
->  util/qsp.c                    |   2 +-
->  hw/core/trace-events          |   3 +
->  scripts/qapi/gen.py           |   9 ++-
->  scripts/tracetool/format/c.py |   6 --
->  scripts/tracetool/format/h.py |  16 +----
->  trace-events                  |  50 ----------------
->  28 files changed, 94 insertions(+), 496 deletions(-)
->  delete mode 100644 trace/control-vcpu.h
->=20
-> --=20
-> 2.39.2
->=20
+> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+>       }
+>   
+>       /* init CPUs */
+> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+> -    qemu_register_reset(main_cpu_reset, cpu);
+> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+> +                            M68K_CPU_TYPE_NAME("m68040"));
 
-Thanks, applied to my tracing tree:
-https://gitlab.com/stefanha/qemu/commits/tracing
+Shouldn't we keep using machine->cpu_type?
 
-Stefan
+If the m68040 is the single CPU usable, we should set
+MachineClass::valid_cpu_types[] in q800_machine_class_init().
 
---E8sSfFR28V4ZyRK3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmR3huwACgkQnKSrs4Gr
-c8gmsgf8DoCpa70EsD47gBqDkaI9GyFzISYR0UTJb7xFyCqAnO6oDbKxE2FB/QwS
-rV0dYmIzcME3mjSmEsr61e/WVJoOU6GpayrVux+qCLJeoyeUeCsGoUqOEUC/+VXE
-bpT9ncAhOXdkyP5MWEy4Oh8K3OBWVwSdU9O3pg/ThkOBrlHn6xukaiOxzUlzE5u0
-/c4cmwxUesieMDja2Xm9FqjaRb67SpQ+2x90HjrUsl7CCBVgb7GIBRmXVJhrYGjV
-MNVT989+OkM8zRqwtYBGaljRGY2uUCVhk62onjoM9/+knVX+g48wkf1/M+azXHws
-iVsRMQjcYs11FZRVZUhnOSylkPfrTQ==
-=7mng
------END PGP SIGNATURE-----
-
---E8sSfFR28V4ZyRK3--
+> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
+> +    qemu_register_reset(main_cpu_reset, &m->cpu);
 
 
