@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE01718E02
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFCC718E03
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 00:04:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4TuP-0008LB-Ad; Wed, 31 May 2023 18:03:09 -0400
+	id 1q4Tus-0000MC-9a; Wed, 31 May 2023 18:03:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
- id 1q4TuM-0008KD-Hi
- for qemu-devel@nongnu.org; Wed, 31 May 2023 18:03:06 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1q4Tuo-0000Ef-5r
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 18:03:34 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
- id 1q4TuK-0004td-5g
- for qemu-devel@nongnu.org; Wed, 31 May 2023 18:03:06 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9700219be87so4889766b.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 15:03:02 -0700 (PDT)
+ id 1q4Tum-0004xa-Fz
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 18:03:33 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-96f6a9131fdso4831766b.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 15:03:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=streamhpc-com.20221208.gappssmtp.com; s=20221208; t=1685570581; x=1688162581;
+ d=streamhpc-com.20221208.gappssmtp.com; s=20221208; t=1685570610; x=1688162610;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Im8aOBIWTtUHcfwyThVpTz4sidYrwta5mdpCqc6P3Hk=;
- b=upBkNLOOKWIqzkZ5+Odvk4OLEqcBXrAikrGFM1RGH8yTCfexSN36n4g2FnaZmiWy96
- 8b0ROD8QFEwULuQJwvlK9RGatQJ4CHK7F/p5r38J6xRTKjltWFZyWg8hbK6lPmfH8JU/
- J2crf9972Dd4Oi8Ywwr5VLN35r3SyLESfGbwNMzB7KIYTh3QUOnj8UQ02YUi7MepPs5A
- GEivyBrYNcQij3qsm153ogaedYM4rlut3CkC1yPAcxSDfKaFYBil0Y+xDDZFqYPtIdk8
- H4hLLKD/BAtdF7UU75KYk/18Fur+RatMWaqmSJTrsZhMivKjDeAcb4KwZ/aV786AaJen
- Zdyw==
+ bh=Y61AYZ/YcY5Em/65cYpf5XkCjZPYAIOwqhb1xwUDk5c=;
+ b=p8vLl4FNCKlikqPVNa/la57B1TZOZJEh5e+QfeM0mreq970MtZfcavu+l5iDs/V1/l
+ 9xzKPia10KaYZTOXeZNgG+gHlGh99JnXba1JfxYLdN3v7mu0rYr+4ZGa7QU1+P31Li8u
+ v/mL8hdmbYCmU+YnjDQxMoV/hF9cSbP4m8cqDzVFcV9AopaWTBjdIhWwyfUDNFzkk7jp
+ TmZaGDtcWUMaXIYUCExbYeuvHs8t0WGVPaflwIMm58RRcVhzCF/GHaMRwA7limDAmWpB
+ KCzWy6Wl/dq+HOC6SxkeuDRvhKCrgei2BhzxlhaO6SKU++M7bVIxEINdtaYU7gCI3ZpZ
+ yztw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685570581; x=1688162581;
+ d=1e100.net; s=20221208; t=1685570610; x=1688162610;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Im8aOBIWTtUHcfwyThVpTz4sidYrwta5mdpCqc6P3Hk=;
- b=M8hViX3q6XMj9lK7vMogljQejgMy4I4ju2T6FRRf16UbaK2EjBNa6DuW8kxVKkSKRV
- h6H1FPDKt6oDwOh5iSInaYtFTFYLfgRYYacrbEXfNciRuGUWkBDmwQZgPZt38jL1VDSB
- hAOh/pieon/2RwZ3i1LL7GVdJM/17X6MTky2O2uAGYrp9sjBv13uUzqJo9yr6c1IuLHr
- MYqYH5xUqB3eLnxzkEckFBvi/b5fGJdC/Nl/kemO7HDLf73wEejPvRgjY9Px872ZRJ60
- G69qJZo4foN+8QWZ+H2yPOr8g175gbR9AnwxxKz01AMSgBDur/qMdnqcQNeLek8O4Cbo
- ACxg==
-X-Gm-Message-State: AC+VfDxjhamKxiTuRSvPktQOTn0A3Ftzs189ku3a+xsakrbMKT30AwWO
- YxqClpKpAl0DdpdZSoEAkpl2CQ==
-X-Google-Smtp-Source: ACHHUZ4Rj68UsIaoQeiUMvKeUqmS2z5tmO/P/PzqBsVY33YP3XMdw2IwD31mvPtYOyp6qgzeeKQjvg==
-X-Received: by 2002:a17:907:72cb:b0:974:1d8b:ca5e with SMTP id
- du11-20020a17090772cb00b009741d8bca5emr6381956ejc.14.1685570581698; 
- Wed, 31 May 2023 15:03:01 -0700 (PDT)
+ bh=Y61AYZ/YcY5Em/65cYpf5XkCjZPYAIOwqhb1xwUDk5c=;
+ b=cJ1rDaoBbwfmLOq9Am4gNGajthjBrCrjOV8xJMxwHa6aHXQVJ+nO5W1w8vNQ9MjTyQ
+ RHMKeABzRZ/bmAqHi1Thq60Fv2ldXkFrf0EfYRgP1Tsbz4cUOK/MmM5X5bKZieI6NXgh
+ N+YfX3Q+wOOCD9n8PZN7UPHFbver0A5xyRV6crtwofbQ8pps1AVaZudk/gacbW3waAOZ
+ aG9c8FT66lF4LNKhHihK8fZJngINPp2/XPmfeKK+nG5wKTQF7JXT0KjJxqLRFSKIsV0f
+ pR6eHIAVjNjFMm302BDE0Hizlkdxt1Oo+h6SttunkBNnYCJj5gLJu3gFFoulro/40Cdq
+ l6+A==
+X-Gm-Message-State: AC+VfDxMJJPvp7Pjk9pZWiagb1M8EyaBo2t7cDzP2X7ZtXY3O5alHQZK
+ LDc0i0tUQGPknrwelp2PnNuPqQ==
+X-Google-Smtp-Source: ACHHUZ45+Pq/2BY84a+NfuDiqM2l16x8a1aN7ZsIcuOTHbBtxzyrpcZNuwrz6oEaSpNbXZGcG5P0Sw==
+X-Received: by 2002:a17:907:6d93:b0:959:5407:3e65 with SMTP id
+ sb19-20020a1709076d9300b0095954073e65mr7132080ejc.55.1685570610563; 
+ Wed, 31 May 2023 15:03:30 -0700 (PDT)
 Received: from [192.168.178.121] (dhcp-077-251-030-138.chello.nl.
  [77.251.30.138]) by smtp.gmail.com with ESMTPSA id
- k9-20020a17090666c900b0097073f1ed84sm9619973ejp.4.2023.05.31.15.03.00
+ q9-20020a170906940900b009545230e682sm9663945ejx.91.2023.05.31.15.03.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 15:03:01 -0700 (PDT)
-Message-ID: <9ddfb5ef-a096-7171-8d12-c18b32c694b1@streamhpc.com>
-Date: Thu, 1 Jun 2023 00:02:59 +0200
+ Wed, 31 May 2023 15:03:30 -0700 (PDT)
+Message-ID: <8fcc0a5d-ee66-246b-8d0e-2503fbb32633@streamhpc.com>
+Date: Thu, 1 Jun 2023 00:03:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: Re: [RFC PATCH v2 3/4] pcie: Add a PCIe capability version helper
+Subject: Re: [RFC PATCH v2 4/4] vfio/pci: Enable AtomicOps completers on root
+ ports
 Content-Language: en-US
 To: Alex Williamson <alex.williamson@redhat.com>, mst@redhat.com,
  marcel.apfelbaum@gmail.com
 Cc: qemu-devel@nongnu.org, clg@redhat.com
 References: <20230526231558.1660396-1-alex.williamson@redhat.com>
- <20230526231558.1660396-4-alex.williamson@redhat.com>
+ <20230526231558.1660396-5-alex.williamson@redhat.com>
 From: Robin Voetter <robin@streamhpc.com>
-In-Reply-To: <20230526231558.1660396-4-alex.williamson@redhat.com>
+In-Reply-To: <20230526231558.1660396-5-alex.williamson@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=robin@streamhpc.com; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=robin@streamhpc.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -96,10 +97,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+
+
 On 5/27/23 01:15, Alex Williamson wrote:
-> Report the PCIe capability version for a device
+> Dynamically enable Atomic Ops completer support around realize/exit of
+> vfio-pci devices reporting host support for these accesses and adhering
+> to a minimal configuration standard.  While the Atomic Ops completer
+> bits in the root port device capabilities2 register are read-only, the
+> PCIe spec does allow RO bits to change to reflect hardware state.  We
+> take advantage of that here around the realize and exit functions of
+> the vfio-pci device.
 > 
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>Reviewed-by: Robin Voetter <robin@streamhpc.com>
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Robin Voetter <robin@streamhpc.com>
 Tested-by: Robin Voetter <robin@streamhpc.com>
 
 Kind regards,
