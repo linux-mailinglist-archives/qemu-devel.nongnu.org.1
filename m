@@ -2,65 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 956B0718575
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58748718599
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NK9-0003DA-28; Wed, 31 May 2023 11:01:17 -0400
+	id 1q4NMd-0004pS-SR; Wed, 31 May 2023 11:03:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4NJp-00035P-KM
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:01:02 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4NMY-0004mM-Sn
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:03:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4NJn-0002IE-ES
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:00:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4NMW-0002iA-PM
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:03:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685545252;
+ s=mimecast20190719; t=1685545422;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1AVHRPSdXGr7Tc6c1oEet1V9TPbcI8MoRqSD/MDMrlM=;
- b=dbwpshQ9v8WgqLUg5sv6u0gboVuahd/WyDrekD/MGn6QQWEGUN/ONlJBq6wWU/mKeMqIEA
- aW8kG+5x5zhWunvBX0umrDJoSQWxg4HX2jFkhrXYuvJPQECGLxUd7uWym0msu0VUrzaFk8
- kJwVdPuMHKMz2oqPLtygyW+d+C+hRuc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-611-GuoawuakMU2j-pPOlBzW_Q-1; Wed, 31 May 2023 11:00:50 -0400
-X-MC-Unique: GuoawuakMU2j-pPOlBzW_Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A01B3C397CC;
- Wed, 31 May 2023 15:00:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2BDBF2166B25;
- Wed, 31 May 2023 15:00:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1377E21E692E; Wed, 31 May 2023 17:00:49 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  laurent@vivier.eu,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
-References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
- <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
-Date: Wed, 31 May 2023 17:00:49 +0200
-In-Reply-To: <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 31 May 2023 15:40:21
- +0200")
-Message-ID: <87jzwoczq6.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=NhxrCPb9J0NW3ELxaOEWfBxb5kuRA0dvJn6W5ONUGVU=;
+ b=ZRvv7iI4NLZSEY54N8Hg9zyhRcHhTXEEVhP4vIOSk4PAWBm9zHq97E4VTQWSkrzjSJHrGw
+ D0d5fUs6zk+DGA52a/cpX6pMNVMtwasxLJIDVtO5BY1aMFeraZNGOELnj3ln7uUePGttmf
+ yF2+bQpvvnm7yQr7jHtMOqdzkF9eD7k=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-EphYErtcPeW05PgoIU94Sg-1; Wed, 31 May 2023 11:03:41 -0400
+X-MC-Unique: EphYErtcPeW05PgoIU94Sg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-3f8283a3a66so5059421cf.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:03:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685545421; x=1688137421;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NhxrCPb9J0NW3ELxaOEWfBxb5kuRA0dvJn6W5ONUGVU=;
+ b=EeDzk9x2arYjW5h78A/fIgZM2XvWKh8jwpG21GGpzJwjVxuYLIH0QVYa5W6eTZJ2vl
+ 7oZYxIkcbGVWU36pYxux2LwPSzSvp+v1kQ7LZmvMNt12kEKMufTR+nRtPWTIqG+NaaOo
+ q/PAP2zPmdxcisal7NnO7s05zgi2tcLoHJ8Qm8xGq3NfbbAwsl4RSmIHxvWSuqbiHXRZ
+ SpG2+K+L6dr2jsjefwnv5lTTH8tPcO+epm2bLXBZKWmBWA/yrrUa/jehtGjKcsX3e2v7
+ k3wkdfq/Pt9Qy/YtkmJy3J3avPLXSN8T1QF6PjnHPVA8tAqtoUrqDHJ6Ym1HbPxRLsbb
+ ZsNw==
+X-Gm-Message-State: AC+VfDwt67KQMoOTcAO52kHDKnTeoyuyAo1ml1TjpkDsb7WNL+744MSG
+ 2wPgszhlsiuA8oPQeV3cJ7X47xPxKsywyEcGnpLbvfss8my5Ybmhadpde8mN++s0D2txaQYy/s8
+ re/sqtZH8FPeKObA=
+X-Received: by 2002:ac8:5c50:0:b0:3f5:315f:5c1d with SMTP id
+ j16-20020ac85c50000000b003f5315f5c1dmr3733223qtj.4.1685545420727; 
+ Wed, 31 May 2023 08:03:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5eiCoalt+B8Z53Vv2GeTWPQy2rFSVOHaF7LAYcmGi5S3IV04OWQMJbwjgCCmL/0fuZCDyy+g==
+X-Received: by 2002:ac8:5c50:0:b0:3f5:315f:5c1d with SMTP id
+ j16-20020ac85c50000000b003f5315f5c1dmr3733132qtj.4.1685545419715; 
+ Wed, 31 May 2023 08:03:39 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ cf18-20020a05622a401200b003f6ac526568sm6020351qtb.39.2023.05.31.08.03.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 08:03:38 -0700 (PDT)
+Date: Wed, 31 May 2023 11:03:37 -0400
+From: Peter Xu <peterx@redhat.com>
+To: gudkov.andrei@huawei.com
+Cc: qemu-devel@nongnu.org, quintela@redhat.com, eblake@redhat.com,
+ armbru@redhat.com, berrange@redhat.com, zhengchuan@huawei.com
+Subject: Re: [PATCH v2 0/4] Migration time prediction using calc-dirty-rate
+Message-ID: <ZHdhycvhn/lWJQxy@x1n>
+References: <cover.1682598010.git.gudkov.andrei@huawei.com>
+ <ZHYaajucX3WbO5oW@x1n>
+ <ZHdd0BDefsv02SWX@DESKTOP-0LHM7NF.china.huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+In-Reply-To: <ZHdd0BDefsv02SWX@DESKTOP-0LHM7NF.china.huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -84,42 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On Wed, May 31, 2023 at 05:46:40PM +0300, gudkov.andrei@huawei.com wrote:
+> On Tue, May 30, 2023 at 11:46:50AM -0400, Peter Xu wrote:
+> > Hi, Andrei,
+> > 
+> > On Thu, Apr 27, 2023 at 03:42:56PM +0300, Andrei Gudkov via wrote:
+> > > Afterwards we tried to migrate VM after randomly selecting max downtime
+> > > and bandwidth limit. Typical prediction error is 6-7%, with only 180 out
+> > > of 5779 experiments failing badly: prediction error >=25% or incorrectly
+> > > predicting migration success when in fact it didn't converge.
+> > 
+> > What's the normal size of the VMs when you did the measurements?
+> 
+> VM size in all experiments was 32GiB. However, since some of the pages
+> are zero, the effective VM size was smaller. I checked the value of
+> precopy-bytes counter after the first migration iteration. Median value
+> among all experiments is 24.3GiB.
+> 
+> > 
+> > A major challenge of convergence issues come from huge VMs and I'm
+> > wondering whether those are covered in the prediction verifications.
+> 
+> Hmmm... My understanding is that convergence primarily depends on how
+> agressive VM dirties pages and not on VM size. Small VM with agressive
+> writes would be impossible to migrate without throttling. On the contrary,
+> migration of the huge dormant VM will converge in just single iteration
+> (although a long one). The only reason I can imagine why large VM size can
+> negatively affect convergence is due to the following reasoning: larger VM
+> size => bigger number of vCPUs => more memory writes per second.
+> Or do you probably mean that during each iteration we perform
+> KVM_CLEAR_DIRTY_LOG, which is (I suspect) linear in time and can become
+> bottleneck for large VMs?
 
-> On 31/5/23 14:53, Mark Cave-Ayland wrote:
->> Also change the instantiation of the CPU to use object_initialize_child()
->> followed by a separate realisation.
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/m68k/q800.c         | 13 ++++++++-----
->>   include/hw/m68k/q800.h |  2 ++
->>   2 files changed, 10 insertions(+), 5 deletions(-)
->> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
->> index 3730b30dd1..c34b2548ca 100644
->> --- a/hw/m68k/q800.c
->> +++ b/hw/m68k/q800.c
->> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] =3D {
->>     static void q800_machine_init(MachineState *machine)
->>   {
->> -    M68kCPU *cpu =3D NULL;
->> +    Q800MachineState *m =3D Q800_MACHINE(machine);
->>       int linux_boot;
->>       int32_t kernel_size;
->>       uint64_t elf_entry;
->> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
->>       }
->>         /* init CPUs */
->> -    cpu =3D M68K_CPU(cpu_create(machine->cpu_type));
->> -    qemu_register_reset(main_cpu_reset, cpu);
->> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
->> +                            M68K_CPU_TYPE_NAME("m68040"));
->> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_=
-fatal);
->
-> CPUs are QDev-based, shouldn't we use qdev_realize()?
+Partly yes, but not explicitly to CLEAR_LOG, more to the whole process that
+may still be relevant to size of guest memory, and I was curious whether it
+can keep being accurate even if mem size grows.
 
-Yes, we should.
+I assume huge VM normally should have more cores too, and it's even less
+likely to be idle if there's a real customer using it (rather than in labs,
+if I'm a huge VM tenant I won't want to make it idle anytime).  Then with
+more cores there's definitely more chance of having higher dirty rates,
+especially with the larger mem pool.
 
-[...]
+> Anyway, I will conduct experiments with large VMs.
+
+Thanks.
+
+> 
+> I think that the easiest way to predict whether VM migration will converge
+> or not is the following. Run calc-dirty-rate with calc-time equal to
+> desired downtime. If it reports that the volume of dirtied memory over
+> calc-time period is larger than you can copy over network in the same time,
+> then you are out of luck. Alas, at the current moment calc-time accepts
+> values in units of seconds, while reasonable downtime lies in range 50-300ms.
+> I am preparing a separate patch that will allow to specify calc-time in
+> milliseconds. I hope that this approach will be cleaner than an array of
+> hardcoded values I introduced in my original patch.
+
+I actually haven't personally gone through the details of the new
+interface, but what you said sounds reasonable, and happy to read the new
+version.
+
+-- 
+Peter Xu
 
 
