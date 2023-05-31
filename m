@@ -2,61 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2F9718B6C
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A26FA718B6F
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:52:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Shz-0003H0-60; Wed, 31 May 2023 16:46:15 -0400
+	id 1q4Smr-0000GT-W6; Wed, 31 May 2023 16:51:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4Shw-0003Fm-80
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:46:12 -0400
-Received: from mout.kundenserver.de ([217.72.192.74])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q4Smq-0000Fm-17
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:51:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4Shs-0005bG-Uc
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:46:11 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1N6t3Z-1q91s00JiB-018GRt; Wed, 31 May 2023 22:46:07 +0200
-Message-ID: <3872e933-449a-1e9d-e978-7a94717dcac2@vivier.eu>
-Date: Wed, 31 May 2023 22:46:06 +0200
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q4Smd-0006M6-5J
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:51:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685566262;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4ca+LllBtIFFp9a8BpUlQw+NqiE3XwGl9bJLEUmKFa4=;
+ b=K9z22K6lLxLNx1d0aVrnZd9lK1ryM0MPelqv3slRo+QAiTXw4YuaNk321O1+fhckwsqR+A
+ gGNu9c232dtQG3q9tb7eXzVPaPbA35Ib0AqFRUhBWjXSqXkLsUseH/LmqcxELYq3rYCRDm
+ enxuAMaUVixZZLoHnQmxCelOb89fd2o=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-io1fWgDvNWKxYn8l8SV-wg-1; Wed, 31 May 2023 16:51:01 -0400
+X-MC-Unique: io1fWgDvNWKxYn8l8SV-wg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30aeef6f601so43799f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 13:51:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685566260; x=1688158260;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4ca+LllBtIFFp9a8BpUlQw+NqiE3XwGl9bJLEUmKFa4=;
+ b=Qehi0JDApmqPbpSzmns29lvK6ZObLt52sQ+M30Xe/7R+gbYXUBUUy+sDEwDdhmaeBP
+ ogRDWx+JrVIAb6XPQtqjsiRvEcQgY5I0GoBJdpPE/bFtAtWARJ+JaZD+m6UnExsX8nyw
+ rpbAj+lt9gtVyNQkx49dew2si4RGH4cqeeZjAeqbD87YnPFrR3S+AVtzbuYqC7sJai/A
+ UkBDt/viJkGvnlSYiqcWjxiGcgdOLAa7tqjERPgI2ScsAX+18SejNg6y+N6KGTSLxPCv
+ 1FXLLPDz9cJpd7PNnLHj8/p852Zvk/Vtpq1e25XU+ugIt8fYod0B4GKrIs8s1XRD20TG
+ zxzQ==
+X-Gm-Message-State: AC+VfDxyu3xii3D5YU01X3zFfq8Xz9EDD+QfP3yTJeYpQtGtC9Ai0d/Z
+ AD3aDk7BbC0OhdFI0HyfPSG7E/7NgZwsEYPYy02QxiJ6U3L8rP/862SuYwSMy/Vl6JzDF3gN8rt
+ 8xT+1wrcNd+hSuzo=
+X-Received: by 2002:a5d:6e56:0:b0:30a:e892:e2d0 with SMTP id
+ j22-20020a5d6e56000000b0030ae892e2d0mr230372wrz.46.1685566259865; 
+ Wed, 31 May 2023 13:50:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5zic3g/6NA/Y6n81NRdMNGlt6V0Yo4ywbd6C1L1ZSYDuazCvdKzxcK4pD4GC2ZkMfKzT5rEg==
+X-Received: by 2002:a5d:6e56:0:b0:30a:e892:e2d0 with SMTP id
+ j22-20020a5d6e56000000b0030ae892e2d0mr230350wrz.46.1685566259609; 
+ Wed, 31 May 2023 13:50:59 -0700 (PDT)
+Received: from redhat.com ([2.52.11.69]) by smtp.gmail.com with ESMTPSA id
+ e16-20020adfe390000000b003048477729asm7930297wrm.81.2023.05.31.13.50.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 13:50:59 -0700 (PDT)
+Date: Wed, 31 May 2023 16:50:53 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ David Hildenbrand <david@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-s390x@nongnu.org,
+ Cornelia Huck <cohuck@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH v2 00/10] hw/virtio: Build various target-agnostic
+ objects just once
+Message-ID: <20230531165040-mutt-send-email-mst@kernel.org>
+References: <20230524093744.88442-1-philmd@linaro.org>
+ <816d1209-09ba-7d28-95c7-5381be0b2c06@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 20/23] q800: don't access Nubus bus directly from the
- mac-nubus-bridge device
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-21-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230531125400.288917-21-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:YSAI1cM8qNO8O6A4lqPt+efRp+iHpyduq1SWwKcgcgGF9IsCNIt
- AMfAAHk7yI5L2hBmHw3c9msEBPbDp8vHAR7rCaA0gy8utv83B0RQMRzrA/UFtyJAOPCQ8qv
- BtR5zJ7sijSfo9ZCLsjKqOzzS8uy+Kn/y3XlvPTKDxNzkMSj180x/a4uYe3YkZyRaSFy/hM
- bMl9v2OE2gZaHPyHB+QUA==
-UI-OutboundReport: notjunk:1;M01:P0:UIx9V/XMsmM=;QaPGYpqpIzSVUitQB6PBsxDDXsG
- f3X8dmS7fh5ZkCahLz40ankCRhgCXs4m6U0PPRPNmOY4vuvh3ibPIpN8O/27zCR9x6j/6yOs6
- 4bZI59EBVxGa6FQL2n4/oJGQaqMxwenEfZ2Gtkg3BC4fNx8J39ktC/dLOWHQE1gSHIWi0WSHx
- DYfai5nijzJl4iVGQF/AgWJVJh7f10pHVLuDbKKcThUfYZrrdAu4QdtU0oy4nmfFkqHHtEj6n
- wc1nu9vPNaHdgFsCdYgItuy3K9unQcaxfjDltlYG0unG7e2Yn3I9vdp4kbE4O4DKDHh8Kqy/k
- rvle3SCqGMU7aMYUhu09GCdc996yJo/fM4ftakWsn+YHgCxp03EQPbkvTGg0OI9sH0c4dVruA
- tVQldNe7SssRcpZH2J15yl6dfe4Lpyb8PsnzzgYI7fWMFtd9cnfV4m6Py6XErzMrMDbaFVWNi
- o7xKLIl+Dreft1Ag9RU4AqtqkRrisMPO079CjXYDceDdHeCHfWQUBBfwFSP5ed61wMfqZNqzu
- 8DcC6FyD1IHsUN2FNfKlYKVdVvoEYzj++ClqkGwA0QsEozTRVwFEraGi0bzSqm6iR4Dqrngsy
- ncYA5EQhVIZAgCa4B1rW8D+jSe0CJuCoLh7+m9uX8FJTdwLT4t0EAxFamFLsE1ZkcgmDXVbN5
- lWDsYMiD2rfDg34YxEGAvzDq117xMDvyp5L2QeIgfA==
-Received-SPF: none client-ip=217.72.192.74; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+In-Reply-To: <816d1209-09ba-7d28-95c7-5381be0b2c06@linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,29 +112,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 31/05/2023 Ã  14:53, Mark Cave-Ayland a Ã©critÂ :
-> Instead use the qdev_get_child_bus() function which is intended for this exact
-> purpose.
+On Wed, May 31, 2023 at 10:39:48PM +0200, Philippe Mathieu-Daudé wrote:
+> Hi Michael,
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/m68k/q800.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> On 24/5/23 11:37, Philippe Mathieu-Daudé wrote:
+> > All patches reviewed.
 > 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index d02a1a7a1f..946cb09e30 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -445,7 +445,7 @@ static void q800_machine_init(MachineState *machine)
->                             qdev_get_gpio_in_named(DEVICE(&m->via2), "nubus-irq",
->                                                    VIA2_NUBUS_IRQ_9));
->   
-> -    nubus = &NUBUS_BRIDGE(dev)->bus;
-> +    nubus = NUBUS_BUS(qdev_get_child_bus(dev, "nubus-bus.0"));
->   
->       /* framebuffer in nubus slot #9 */
->   
+> Could you take this series via your virtio tree?
+> 
+> Thanks!
+> 
+> Phil.
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Will do, in next pull. Thanks!
+
+> > Less controvertial than my first approach [*] which caches
+> > the access_is_big_endian value in VirtIODevice state, this
+> > series just remove a unnecessary / pointless dependency on
+> > "virtio-access.h", allowing to build various virtio objects
+> > once for all targets.
+> > 
+> > [*] https://lore.kernel.org/qemu-devel/20221212230517.28872-11-philmd@linaro.org/
+> > 
+> > Philippe Mathieu-Daudé (10):
+> >    softmmu: Introduce qemu_target_page_mask() helper
+> >    hw/scsi: Introduce VHOST_SCSI_COMMON symbol in Kconfig
+> >    hw/scsi: Rearrange meson.build
+> >    hw/scsi: Rename target-specific source set as
+> >      'specific_virtio_scsi_ss'
+> >    hw/virtio: Introduce VHOST_VSOCK_COMMON symbol in Kconfig
+> >    hw/virtio/virtio-mem: Use qemu_ram_get_fd() helper
+> >    hw/virtio/vhost-vsock: Include missing 'virtio/virtio-bus.h' header
+> >    hw/virtio/virtio-iommu: Use target-agnostic qemu_target_page_mask()
+> >    hw/virtio: Remove unnecessary 'virtio-access.h' header
+> >    hw/virtio: Build various target-agnostic objects just once
 
 
