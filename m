@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CAA7181EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 883187181FE
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LuE-0006Yq-Dm; Wed, 31 May 2023 09:30:27 -0400
+	id 1q4LxP-0007pJ-6J; Wed, 31 May 2023 09:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Lu1-0006Xw-I1
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:30:15 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1q4LxG-0007lM-T4; Wed, 31 May 2023 09:33:35 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ltx-0005q9-OK
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:30:13 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30af86a966eso1475246f8f.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:30:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1q4LxF-0006RZ-6f; Wed, 31 May 2023 09:33:34 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2af2e1725bdso12561261fa.0; 
+ Wed, 31 May 2023 06:33:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685539803; x=1688131803;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3BFKUZg0jQcaYDbVumMdm4J067GgtUMgiaV2++h2izs=;
- b=E/qnULBwEEIyu+Z0Ozvtss9KNPKTDE3fOBIIxkr4XkE2ldEFQP5vF/vylWRfF63+Ga
- DcgOn/MAx3zgjd1drRsfR2H/iS0n37Ap+LTdFTIucsQx1J3JBIoddAWh2NQPuUjpMWyq
- 6W9I2xDNLWDlmGALhaqzhlw+0Wht9DrN2FtKtcdx5hKMZnW2z8gTiuCpNad31Dg7lDdD
- l/EPkdcEgSOynJZfXC0Za+UrMeg7Wqs0hHq8ri0vnszD456f4qmN7aGqVO4PQGtJLHo3
- 2ZcD5BPAjqNhv5W497cguiSObOgu4vBAGEKg8r8+yJwJ+YMjPaiOw98MeBdcEZxI8flL
- wdLw==
+ d=gmail.com; s=20221208; t=1685539991; x=1688131991;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=J1RytyhQ0oV637TaHLX45YBZhp6cUmV18ZaxLVemerc=;
+ b=US2RdHlHtcraNgsO5biVvXnnErLRmd9JJdV0l7g4JuC17r48pg6/6cE0prELOj5E3u
+ yT7LxVVbTBS9geUIRRLAynmm0UJeAvpPtX9HfDlvLAqJfX5iuxtv5si3SD+bo84Jorjk
+ 1pKT0nLz5Os3JhX0tyg3aAWLaZ2osj21Y0bHaaWv97YSEQoQCmMH02kKyWb3x9DcAB15
+ B6oy5xLsuq77Wda10n4//ARvLzV6wGkwy2sOYobig/FIvBWw3CPDtXe614nR+njHE3lF
+ udqwvocTdzfCI1XZOnMtXG2h3BfG40xzTCKz9Ho2agFqmvjzo+Xhso5DJqA+93L0nlh6
+ +vLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685539803; x=1688131803;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3BFKUZg0jQcaYDbVumMdm4J067GgtUMgiaV2++h2izs=;
- b=iQZJzT/BuEmPegH+kW0ply7JPjXD4eNm/dtAbw55S3g8txaBE6XkksJ+5vl4PYLpdJ
- 9bsfPbMZzR1yJEd46cpKcq8Z0dICPi1HwTZk6aH8r122fX+1Y3uisQ4Cy5P9T7DKkZTO
- C+7WjNJKNjfSdz0IF/HSSduuLzoPyTxYBhZQ8Vr86BBHxfRVpnUptlZWxIIK5Fgx0gKN
- z+7Fi139qqJZjIeKwLj8DSO2rTJRnOXFt5MuwEgKBOHFEwW47joC2xjByeQRX5Rx5+28
- KKU4BPCmezUdIp/AWltJ+HXiQ87hmPE53o/hZz4yZraD/i1J2GaquMbkJSBoNSCydgCS
- 2htw==
-X-Gm-Message-State: AC+VfDz88VlnYws8GmlNIDtSwFQc3hzXsHBQCJdzZmEpquAd83pTeobI
- KHtfpPgQXNqMns4dh79n5ArZ2A==
-X-Google-Smtp-Source: ACHHUZ5HIhF+I6c0bmTbih6BcPSbCTeMQUewrFY8TWyVBs+qJZzUR1XSixCRK9i3aqDL5hYeUuMKwQ==
-X-Received: by 2002:a05:6000:91:b0:306:44d0:2bcd with SMTP id
- m17-20020a056000009100b0030644d02bcdmr3983986wrx.9.1685539803048; 
- Wed, 31 May 2023 06:30:03 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.146.12])
- by smtp.gmail.com with ESMTPSA id
- f8-20020a1c6a08000000b003f41bb52834sm24636427wmc.38.2023.05.31.06.30.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 06:30:02 -0700 (PDT)
-Message-ID: <364e5f10-693a-4e3d-0031-865ad4e79b67@linaro.org>
-Date: Wed, 31 May 2023 15:30:00 +0200
+ d=1e100.net; s=20221208; t=1685539991; x=1688131991;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=J1RytyhQ0oV637TaHLX45YBZhp6cUmV18ZaxLVemerc=;
+ b=BijxdknM71h6m7OpW4oVnmtuXf8HYJDIXr1ZZVjn4zjsTSRyBsps44EXLJ2MiXbHRK
+ 7iaiOK0TmyUTC4iFGCC1n5WhZh0hLd71KRNAb8QONB+8OYo4c6YjArnSl9vD59312Grn
+ QQcCTopbz2dHQqCcALERtDgwV/nys12gQ4DB3o8wyjCcpeTiea860YD/IEORu7EobXDW
+ /MC24EGp10YePeEK0/PHC1PYMRSQLRk9vr7RyvKZkIqlX8omtbQ7ZZQDF0JmTbFg60L0
+ KZ60SvO1Th31VLQr4QgBtYA0WOznGezRNrxf/HsLBFuhTI9Pyo09uN44YVL1oxwCeaZM
+ Feiw==
+X-Gm-Message-State: AC+VfDz9ZIZ0aJVzo3LDJ0Xdq4G2WANddIaq+vIgjBsrayyyTIDfyjYJ
+ GzMX0D6Ekxg0OmwjJL/+rScEtaUAgYfq0YaiyH2SPI+vWNOhvg==
+X-Google-Smtp-Source: ACHHUZ5j+j1+FS2H3h4lv/ilwLgucRUlSMhlJvKNPSVw97xTVyyXI/xHpfDMsiAqWhI25RI0iZ3VhANSr2LPR2rPvTQ=
+X-Received: by 2002:a2e:9048:0:b0:2b0:721c:1a0e with SMTP id
+ n8-20020a2e9048000000b002b0721c1a0emr1910193ljg.1.1685539991145; Wed, 31 May
+ 2023 06:33:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v1 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-Content-Language: en-US
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
- peter.maydell@linaro.org
-Cc: quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20230531095845.365019-1-wangyuquan1236@phytium.com.cn>
- <20230531095845.365019-2-wangyuquan1236@phytium.com.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531095845.365019-2-wangyuquan1236@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230531093902.70695-1-thuth@redhat.com>
+In-Reply-To: <20230531093902.70695-1-thuth@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 31 May 2023 17:32:59 +0400
+Message-ID: <CAJ+F1CKOxCE23UnN=1iT5oJqzNaWeN_wNXrCuAZU=VVE9xSCUQ@mail.gmail.com>
+Subject: Re: [PATCH] meson.build: Use -Wno-undef only for SDL 2.0.8 and older
+To: Thomas Huth <thuth@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-trivial@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000006d534c05fcfd5c81"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,36 +85,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Yuquan,
+--0000000000006d534c05fcfd5c81
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 31/5/23 11:58, Yuquan Wang wrote:
-> The current sbsa-ref cannot use EHCI controller which is only
-> able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
-> Hence, this uses XHCI to provide a usb controller with 64-bit
-> DMA capablity instead of EHCI.
-> 
-> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-> Change-Id: I1376f8bbc0e25dcd9d8a22b6e061cb56b3486394
+On Wed, May 31, 2023 at 1:40=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
+e:
+
+> There is no need to disable this useful compiler warning for
+> newer versions of the SDL anymore.
+>
+> This also enables the printing of the version number with
+> newer versions of the SDL in the summary of the meson output
+> again.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>
+
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+
 > ---
->   hw/arm/sbsa-ref.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
+>  meson.build | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/meson.build b/meson.build
+> index bc76ea96bf..8ccd928dca 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -1273,10 +1273,12 @@ if not get_option('sdl').auto() or have_system
+>    sdl_image =3D not_found
+>  endif
+>  if sdl.found()
+> -  # work around 2.0.8 bug
+> -  sdl =3D declare_dependency(compile_args: '-Wno-undef',
+> -                           dependencies: sdl,
+> -                           version: sdl.version())
+> +  if sdl.version().version_compare('<=3D2.0.8')
+> +    # work around 2.0.8 bug
+> +    sdl =3D declare_dependency(compile_args: '-Wno-undef',
+> +                             dependencies: sdl,
+> +                             version: sdl.version())
+> +  endif
+>    sdl_image =3D dependency('SDL2_image', required: get_option('sdl_image=
+'),
+>                           method: 'pkg-config')
+>  else
+> --
+> 2.31.1
+>
+>
+>
 
+--=20
+Marc-Andr=C3=A9 Lureau
 
-> -static void create_ehci(const SBSAMachineState *sms)
-> +static void create_xhci(const SBSAMachineState *sms)
->   {
-> -    hwaddr base = sbsa_ref_memmap[SBSA_EHCI].base;
-> -    int irq = sbsa_ref_irqmap[SBSA_EHCI];
-> +    hwaddr base = sbsa_ref_memmap[SBSA_XHCI].base;
-> +    int irq = sbsa_ref_irqmap[SBSA_XHCI];
->   
-> -    sysbus_create_simple("platform-ehci-usb", base
-> +    sysbus_create_simple("sysbus-xhci", base,
+--0000000000006d534c05fcfd5c81
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Please use the definition: TYPE_XHCI_SYSBUS.
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 31, 2023 at 1:40=E2=80=AF=
+PM Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com">thuth@redhat.com</a>=
+&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Ther=
+e is no need to disable this useful compiler warning for<br>
+newer versions of the SDL anymore.<br>
+<br>
+This also enables the printing of the version number with<br>
+newer versions of the SDL in the summary of the meson output<br>
+again.<br>
+<br>
+Signed-off-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=
+=3D"_blank">thuth@redhat.com</a>&gt;<br></blockquote><div><br></div><div>Re=
+viewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@re=
+dhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>=C2=A0<br></div><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0meson.build | 10 ++++++----<br>
+=C2=A01 file changed, 6 insertions(+), 4 deletions(-)<br>
+<br>
+diff --git a/meson.build b/meson.build<br>
+index bc76ea96bf..8ccd928dca 100644<br>
+--- a/meson.build<br>
++++ b/meson.build<br>
+@@ -1273,10 +1273,12 @@ if not get_option(&#39;sdl&#39;).auto() or have_sys=
+tem<br>
+=C2=A0 =C2=A0sdl_image =3D not_found<br>
+=C2=A0endif<br>
+=C2=A0if sdl.found()<br>
+-=C2=A0 # work around 2.0.8 bug<br>
+-=C2=A0 sdl =3D declare_dependency(compile_args: &#39;-Wno-undef&#39;,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0dependencies: sdl,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0version: sdl.version())<br>
++=C2=A0 if sdl.version().version_compare(&#39;&lt;=3D2.0.8&#39;)<br>
++=C2=A0 =C2=A0 # work around 2.0.8 bug<br>
++=C2=A0 =C2=A0 sdl =3D declare_dependency(compile_args: &#39;-Wno-undef&#39=
+;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dependencies: sdl,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version: sdl.version())<br>
++=C2=A0 endif<br>
+=C2=A0 =C2=A0sdl_image =3D dependency(&#39;SDL2_image&#39;, required: get_o=
+ption(&#39;sdl_image&#39;),<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 method: &#39;pkg-config&#39;)<br>
+=C2=A0else<br>
+-- <br>
+2.31.1<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
 
->                            qdev_get_gpio_in(sms->gic, irq));
->   }
-
-
+--0000000000006d534c05fcfd5c81--
 
