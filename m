@@ -2,69 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AEB717B9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 11:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291DD717BEE
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 11:30:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4HyI-0003Wr-Ni; Wed, 31 May 2023 05:18:22 -0400
+	id 1q4I8E-0005Yl-HO; Wed, 31 May 2023 05:28:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
- id 1q4HyD-0003Wh-1U
- for qemu-devel@nongnu.org; Wed, 31 May 2023 05:18:17 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhaotianrui@loongson.cn>) id 1q4Hy9-0004kM-9T
- for qemu-devel@nongnu.org; Wed, 31 May 2023 05:18:16 -0400
-Received: from loongson.cn (unknown [10.20.42.86])
- by gateway (Coremail) with SMTP id _____8Dx+fHPEHdkduoCAA--.6558S3;
- Wed, 31 May 2023 17:18:07 +0800 (CST)
-Received: from [10.20.42.86] (unknown [10.20.42.86])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxLL7MEHdkGCaCAA--.14875S3; 
- Wed, 31 May 2023 17:18:05 +0800 (CST)
-Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
-To: Zhao Liu <zhao1.liu@intel.com>, Ani Sinha <anisinha@redhat.com>
-References: <20230530122034.547109-1-zhaotianrui@loongson.cn>
- <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
-Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, maobibo@loongson.cn,
- gaosong@loongson.cn, Zhenyu Wang <zhenyu.z.wang@intel.com>
-From: Tianrui Zhao <zhaotianrui@loongson.cn>
-Message-ID: <53a2307f-6516-813b-7ef8-bd5b96a1ed43@loongson.cn>
-Date: Wed, 31 May 2023 17:18:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q4I8C-0005YX-KO
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 05:28:36 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q4I8B-0006ul-2H
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 05:28:36 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-397f3aec11aso519181b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 02:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1685525313; x=1688117313;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9ycEeIxRqgkRIW4MGkFCnucdnGd5u7XIlHGBP7fmPjk=;
+ b=cX76OKLXwm6KUuSwL3oJhQDYjX/+9IxV/Yol++e0jPYLNzpb0NtOM6K0eMPnCaZwLy
+ KGJUZ9gx9IOrcN0h35v3ErZSxUbgltYlutakt9G9j4RRPXSSEdgo5Itm9Kv6eXUDH5Nq
+ HIAZKb8Y0AV9VMZxUJqcHF30w7ZDCPGJDKvsZtuhE9ybHMDkTZ1GmYmRWZZRJuHi/tfB
+ 6hiFap2He5Eaw3EVnAeMyZei/yobZRKVbl5I/Qzv/XqUAES6qvQZ+PnyRNBdh263cS8I
+ fPDTDayQSaLZsUwdDmTyheost47SbRXi8etLGnLcPNfHkeMMh5P83dWKHoElPrJoLgUR
+ ZqYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685525313; x=1688117313;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9ycEeIxRqgkRIW4MGkFCnucdnGd5u7XIlHGBP7fmPjk=;
+ b=gKSpZdvh0qsVE0mKzREYOhMS3TkSTdxCo+QqqkdF9zvUNZvZmi+NtfB8Cz1i8jFllO
+ 5ZjUs79AdMx4wE9EVxhlJ242eH0XVAHtzZcJOCXoDHMeJKdqKXW+9XfQ9P+wkeNpS92q
+ 9VFOT6AgYOlEki7BIzJ2uTPQy9p/8Sfv5i3jx/U5D1hzJFm1PTcFfbVhqN8iTrojaBlP
+ IH9hLxNVQFKzAL+Dp6hWCeHyGz97GFLgNqrU2osp9kOGSFZuIZBqRx8FaxAy2VHZS7oW
+ 5f+dS6rRa/SXOW71VgZUhHM0aFTbbvu557TO3Xd/lYsOK0CHWWeMbeo/TxNDPFtb84od
+ cZrg==
+X-Gm-Message-State: AC+VfDwLnNVQZmAudjwbZGbnDUA3xgzVpaBzZtCTiwRSEVbL9DL5EXDD
+ cEMitR08KoZqUTwHpCCWosBgmw==
+X-Google-Smtp-Source: ACHHUZ6J12TFVOuWDTrX5qAoSkvtJnGQjh+2xXSOtzIqC6Zah4Pa5qFbrlQEfPZq/PO9vhd71rQiDw==
+X-Received: by 2002:aca:c20b:0:b0:39a:3dbd:d26d with SMTP id
+ s11-20020acac20b000000b0039a3dbdd26dmr1899633oif.5.1685525313454; 
+ Wed, 31 May 2023 02:28:33 -0700 (PDT)
+Received: from [192.168.68.107] ([177.198.100.141])
+ by smtp.gmail.com with ESMTPSA id
+ q133-20020acaf28b000000b00399ee6330a9sm329684oih.52.2023.05.31.02.28.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 02:28:32 -0700 (PDT)
+Message-ID: <9f6f15a2-4592-a05c-48ca-1077576ed292@ventanamicro.com>
+Date: Wed, 31 May 2023 06:28:27 -0300
 MIME-Version: 1.0
-In-Reply-To: <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 1/4] target/riscv: Make MPV only work when MPP != PRV_M
+Content-Language: en-US
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-2-liweiwei@iscas.ac.cn>
+ <d0a208a3-9973-b7e4-8fcf-d71ec0eab9b1@ventanamicro.com>
+ <a669092a-8ef1-a70b-9896-5e7b6c78bb4a@iscas.ac.cn>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <a669092a-8ef1-a70b-9896-5e7b6c78bb4a@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxLL7MEHdkGCaCAA--.14875S3
-X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBjvJXoWxGF15Aw13tr18trWUJFW5Wrg_yoW5CF1kpr
- yktFWqgF1rGr1I9w4xZ3WfWFy0vrsYgayUX3yjq3yFy398Kw4Fqa4ktw45JFZ2yF1kKa40
- qw1UuF4S9F1vvr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- bxkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
- 1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
- wVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwA2z4
- x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdM2AI
- xVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64
- kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm
- 72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCF04
- k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
- MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr4
- 1lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1l
- IxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4
- A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8czVUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x230.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,96 +101,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-在 2023年05月31日 16:42, Zhao Liu 写道:
-> On Tue, May 30, 2023 at 08:20:34PM +0800, Tianrui Zhao wrote:
->> Date: Tue, 30 May 2023 20:20:34 +0800
->> From: Tianrui Zhao <zhaotianrui@loongson.cn>
->> Subject: [PATCH] hw/smbios: fix thead count field in type 4 table
->> X-Mailer: git-send-email 2.39.1
+On 5/30/23 21:27, Weiwei Li wrote:
+> 
+> On 2023/5/31 04:23, Daniel Henrique Barboza wrote:
 >>
->> The thread_count value in smbios type_4 table should be
->> (ms->smp.cores * ms->smp.threads). As according to smbios spec 7.5
->> Processor Information (Type 4), the field "Thread Count" means the
->> "Number of threads per processor socket" rather than number of
->> threads per core.
 >>
->> When apply this patch, use "-smp 4,sockets=1,cores=2,threads=2" to
->> boot VM, the dmidecode -t 4 shows like:
+>> On 5/29/23 09:17, Weiwei Li wrote:
+>>> Upon MRET or explicit memory access with MPRV=1, MPV should be ignored
+>>> when MPP=PRV_M.
+>>>
+>>> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+>>> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+>>> ---
+>>>   target/riscv/cpu_helper.c | 3 ++-
+>>>   target/riscv/op_helper.c  | 3 ++-
+>>>   2 files changed, 4 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>>> index 09ea227ceb..bd892c05d4 100644
+>>> --- a/target/riscv/cpu_helper.c
+>>> +++ b/target/riscv/cpu_helper.c
+>>> @@ -46,7 +46,8 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
+>>>             if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
+>>>               mode = get_field(env->mstatus, MSTATUS_MPP);
+>>> -            virt = get_field(env->mstatus, MSTATUS_MPV);
+>>> +            virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>>> +                   (mode != PRV_M);
 >>
->> Handle 0x0400, DMI type 4, 48 bytes
->> Processor Information
->>          Socket Designation: CPU 0
->>          ...
->>          Core Count: 2
->>          Core Enabled: 2
->>          Thread Count: 4
->>          Characteristics: None
->>
->> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
->> ---
->>   hw/smbios/smbios.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
->> index d2007e70fb..56aeaa069d 100644
->> --- a/hw/smbios/smbios.c
->> +++ b/hw/smbios/smbios.c
->> @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->>   {
->>       char sock_str[128];
->>       size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
->> +    int count;
->>   
->>       if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
->>           tbl_len = SMBIOS_TYPE_4_LEN_V30;
->> @@ -749,15 +750,15 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->>   
->>       t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
->>       t->core_enabled = t->core_count;
->> -
->> -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
->> +    count = ms->smp.cores * ms->smp.threads;
-> Hi Ani & Tianrui,
->
->  From the comment of CpuTopology (include/hw/boards.h):
->
-> ms->cores means the "the number of cores in one cluster".
-> ms->threads means the "the number of threads in one core".
->
-> So ms->cores * ms->threads means the number of threads in one cluster
-> not one socket.
->
-> That's why I count the number of threads in a socket by "ms->smp.max_cpus
-> / ms->smp.sockets" in [1].
->
-> The other correct way is:
-> ms->smp.cluster * ms->smp.cores * ms->smp.threads.
->
-> [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07229.html
->
-> Thanks,
-> Zhao
-Thanks for your explanations for  the meaning of the number of threads 
-per socket, I look up the relevant code again and I agree with your 
-patch [1].
+>> This change makes more sense in patch 2 where you also removed the 'mode'
+>> check for MPRV. As it is now I read the code above and thought "but mode
+>> is guaranteed to be == PRV_M, so (mode !=  PRV_M) is guaranteed to be
+>> false every time".
+> 
+> No, this 'mode' (get from MPP) is not the previous 'mode'(the current privilege mode).
 
-Thanks
-Tianrui Zhao
->> +    t->thread_count = (count > 255) ? 0xFF : count;
->>   
->>       t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
->>       t->processor_family2 = cpu_to_le16(0x01); /* Other */
->>   
->>       if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
->>           t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
->> -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
->> +        t->thread_count2 = cpu_to_le16(count);
->>       }
->>   
->>       SMBIOS_BUILD_TABLE_POST;
->> -- 
->> 2.39.1
->>
->>
+Oh, right:
 
+>>>             if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
+>>>               mode = get_field(env->mstatus, MSTATUS_MPP);
+
+'mode' is being reassigned here.
+
+
+
+> 
+> Regards,
+> 
+> Weiwei Li
+> 
+>>
+>> The change in helper_mret() below is fine.
+>>
+>> Thanks,
+>>
+>> Daniel
+>>
+>>>               if (virt) {
+>>>                   status = env->vsstatus;
+>>>               }
+>>> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+>>> index f563dc3981..9cdb9cdd06 100644
+>>> --- a/target/riscv/op_helper.c
+>>> +++ b/target/riscv/op_helper.c
+>>> @@ -335,7 +335,8 @@ target_ulong helper_mret(CPURISCVState *env)
+>>>           riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, GETPC());
+>>>       }
+>>>   -    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV);
+>>> +    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>>> +                             (prev_priv != PRV_M);
+>>>       mstatus = set_field(mstatus, MSTATUS_MIE,
+>>>                           get_field(mstatus, MSTATUS_MPIE));
+>>>       mstatus = set_field(mstatus, MSTATUS_MPIE, 1);
+> 
 
