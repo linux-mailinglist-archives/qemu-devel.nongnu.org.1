@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E24718B55
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62ADF718B4A
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:37:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4SYo-0007ro-Mq; Wed, 31 May 2023 16:36:46 -0400
+	id 1q4SZ3-0008SA-2J; Wed, 31 May 2023 16:37:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4SYn-0007rG-82
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:36:45 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4SYu-0008Cy-78
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:36:56 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4SYl-0003Ki-Nc
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:36:44 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-30af56f5f52so54687f8f.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 13:36:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4SYr-0003LQ-FW
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:36:51 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f6a6b9c079so881945e9.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 13:36:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685565402; x=1688157402;
+ d=linaro.org; s=google; t=1685565407; x=1688157407;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bxI8oOMi+OTgw+TcZSVgrTxV90PbWEXNzhwY3LKFlJ0=;
- b=w14v5IeB4aFlnV+gVzbxiX9fKxJQ8doL0ZdQ8mTnyHdU2JtCi2MnUX4uQOYYvBL0jJ
- IT9n3wjpilxQHV4kEyy9+sP2PS+3P8QDqXKY3grBXysI11EWUs8LPWtwQYNTwtsB+jib
- ABzt8+prwsgGpHEdyAp357eecu7Ft8HiWX28vKmku0fBwADJFbu/Oatf1k11pEed5Fvf
- gwb/MG0xxb8dfSrqKeYECcQ7A73VBsiYTS+9SHzBlxt/7C7YAX9LAAo4Li4/xJewcoWj
- xRfBwh4gzCBB7vgx6Jj0a8dNLovuhZ1umr2cK57dqp/jJYgj4kDWJsdWCPIQn5V3UcOl
- hqxg==
+ bh=cqmxkSyXDcjXzwtphH1bFAgAKMWrKTeKoHsfOWjfasw=;
+ b=fpTM2ur8d/1G9NkfRgb3I606Jl5/sSIsRAUzCAFXspxNnWuxpdNYTgjl2RhyO8Gwuv
+ QSSeXsorCiy9TQtZZ1fj1BIIFT95XvUZlg0pEnxGdvNm8mKdO8DIqQC+BcM1HodT45dw
+ /cEam/MijEDaBdK9k5MLeFB3Ln3DUUIsD22xI05ob8GsKt30/53v7G2IqPtoD8Tmi4eI
+ kvLyOHXDph0AwitdCnjhaP5Plsw3yNQhQM+jPrH7AkduaETdNjpEFqaCV7VAku/ii9kl
+ IbOBevb5yl4sp/ntWilSFV3ibriKdJZRbRP5DXy3vbAm1xNhzT5MGkSPVVBzDbXM1pmS
+ OZdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685565402; x=1688157402;
+ d=1e100.net; s=20221208; t=1685565407; x=1688157407;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bxI8oOMi+OTgw+TcZSVgrTxV90PbWEXNzhwY3LKFlJ0=;
- b=TUoY+Lm93fhR91eWlv+m2RuAYik6FxrWDIDzCAuu0kUeB8lXE5QC7Phs2ulD3LcYEH
- e0Ky5hFOpvMWwNEoyDEQqDYdQT03woaMOREJVy0Z4p8MLtX0STvot+p9V0CXAQ5Qy8CQ
- KomwKvuJg8uGRDYBxSyVsrdpqXwq7cNNG2anZOtpdFwVNPOA4/fW/oBqlK7Zr6Ew3cBU
- qoQ7TfVMk5a2nThbyhG9HGhiS1Mbh6XbgSOX+dEqNDq24k1c3CUFR4UvUF1/p6aTsIPl
- NiDaV2K0DSHrG3Pxav6qE6FfQrdoXkrvfVoJavrsjecA2qgKddZCrsJXis6vjU4AKHPO
- dTNw==
-X-Gm-Message-State: AC+VfDzpaeW4oxxSz+m3zauHkT5kfGSkxc+SKCsvPbMuNg+U82VvLN2D
- xVie6t3mO2z3WOsdiWxEnJPrDH5q9OSuuz1i+s8=
-X-Google-Smtp-Source: ACHHUZ5D6VksYp3cDxusKzD5RZt+J8n4dcFprX65y2zFu3pBRdn5FmiwL+lLValRHK6WGiKgfU1hrA==
-X-Received: by 2002:a5d:65d2:0:b0:30a:bf2b:e03c with SMTP id
- e18-20020a5d65d2000000b0030abf2be03cmr162255wrw.23.1685565402265; 
- Wed, 31 May 2023 13:36:42 -0700 (PDT)
+ bh=cqmxkSyXDcjXzwtphH1bFAgAKMWrKTeKoHsfOWjfasw=;
+ b=fgCPxgCV52CG47aTEzBtTxBYSN+W+eTIIMth0D47pMClGbAcv3BKDJ+1oZMzxLXlPU
+ dYacB7XrKaTATVu9rtsB8PUiPDsM5s/a5BUErcCtVmV6dhD0OnNzPuQcvHLT6iwoTKXb
+ +3++Or+FtZsIc/403bmOlit3PoQwcCAVOC8r12Yd/1MuAphttA0f0eK2r3qedh7YTc0R
+ bRdFr1Q8sGFP1b47YU43Bi6wcO9B6y5zkrXhqIIdfpFEX4q9N40alUuKK5LIfX4GIM3Q
+ RxaBlUsOymXDjbrdSZJaZNzJ34vxrVfqCHKfu2Z9zAI7a5vpTu6guss5fAlZlrD0rltY
+ ywuQ==
+X-Gm-Message-State: AC+VfDwCYrg2bemu6u3UIQiNufbEV+yg49cs2nz532k8kj+MDVLRV5k5
+ HGsiAz2BvXyX9nbVh1/2diWew4n29AOcULZWiTE=
+X-Google-Smtp-Source: ACHHUZ7jfKG/4zD3LGDwJ7cNnm34FZkrPsrBMmEFFM213tG6PMlxQ5mFCmzcGUm/Q4u8pr8mFXi9aA==
+X-Received: by 2002:a1c:cc03:0:b0:3f6:d40:c89 with SMTP id
+ h3-20020a1ccc03000000b003f60d400c89mr306190wmb.12.1685565407595; 
+ Wed, 31 May 2023 13:36:47 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- u15-20020a05600c210f00b003f42d8dd7d1sm25676262wml.7.2023.05.31.13.36.41
+ x21-20020a05600c21d500b003f6041f5a6csm21998812wmj.12.2023.05.31.13.36.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 31 May 2023 13:36:41 -0700 (PDT)
+ Wed, 31 May 2023 13:36:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Sergey Kambalin <serg.oker@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 07/15] hw/timer/arm_timer: Extract arm_timer_reset()
-Date: Wed, 31 May 2023 22:35:51 +0200
-Message-Id: <20230531203559.29140-8-philmd@linaro.org>
+Subject: [PATCH 08/15] hw/timer/arm_timer: Rename arm_timer_init() ->
+ arm_timer_new()
+Date: Wed, 31 May 2023 22:35:52 +0200
+Message-Id: <20230531203559.29140-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230531203559.29140-1-philmd@linaro.org>
 References: <20230531203559.29140-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,38 +94,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract arm_timer_reset() before converting this model to QOM/QDev
-in few commits. This will become our DeviceReset handler.
+QDev models often use foo_new() as the combination of
+foo_init() + foo_realize(). Here arm_timer_init() is
+a such combination, so rename it as arm_timer_new() to
+emphasis the returned device is already realized.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/timer/arm_timer.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/timer/arm_timer.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
-index 2cd8c99b4e..54318d0a57 100644
+index 54318d0a57..1f4d66291a 100644
 --- a/hw/timer/arm_timer.c
 +++ b/hw/timer/arm_timer.c
-@@ -172,13 +172,18 @@ static const VMStateDescription vmstate_arm_timer = {
-     }
- };
+@@ -177,7 +177,7 @@ static void arm_timer_reset(ArmTimerState *s)
+     s->control = TIMER_CTRL_IE;
+ }
  
-+static void arm_timer_reset(ArmTimerState *s)
-+{
-+    s->control = TIMER_CTRL_IE;
-+}
-+
- static ArmTimerState *arm_timer_init(uint32_t freq)
+-static ArmTimerState *arm_timer_init(uint32_t freq)
++static ArmTimerState *arm_timer_new(uint32_t freq)
  {
      ArmTimerState *s;
  
-     s = g_new0(ArmTimerState, 1);
-     s->freq = freq;
--    s->control = TIMER_CTRL_IE;
-+    arm_timer_reset(s);
+@@ -308,8 +308,8 @@ static void sp804_realize(DeviceState *dev, Error **errp)
+ {
+     SP804State *s = SP804(dev);
  
-     s->timer = ptimer_init(arm_timer_tick, s, PTIMER_POLICY_LEGACY);
-     vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_arm_timer, s);
+-    s->timer[0] = arm_timer_init(s->freq0);
+-    s->timer[1] = arm_timer_init(s->freq1);
++    s->timer[0] = arm_timer_new(s->freq0);
++    s->timer[1] = arm_timer_new(s->freq1);
+     s->timer[0]->irq = qemu_allocate_irq(sp804_set_irq, s, 0);
+     s->timer[1]->irq = qemu_allocate_irq(sp804_set_irq, s, 1);
+ }
+@@ -394,10 +394,10 @@ static void icp_pit_init(Object *obj)
+     SysBusDevice *dev = SYS_BUS_DEVICE(obj);
+ 
+     /* Timer 0 runs at the system clock speed (40MHz).  */
+-    s->timer[0] = arm_timer_init(40000000);
++    s->timer[0] = arm_timer_new(40000000);
+     /* The other two timers run at 1MHz.  */
+-    s->timer[1] = arm_timer_init(1000000);
+-    s->timer[2] = arm_timer_init(1000000);
++    s->timer[1] = arm_timer_new(1000000);
++    s->timer[2] = arm_timer_new(1000000);
+ 
+     sysbus_init_irq(dev, &s->timer[0]->irq);
+     sysbus_init_irq(dev, &s->timer[1]->irq);
 -- 
 2.38.1
 
