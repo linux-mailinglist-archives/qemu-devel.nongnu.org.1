@@ -2,69 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B9E717DEF
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D195D717E35
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:38:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Jv1-0008Vg-A2; Wed, 31 May 2023 07:23:07 -0400
+	id 1q4K9M-0005OO-Rf; Wed, 31 May 2023 07:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4Jun-0008U7-Om; Wed, 31 May 2023 07:22:54 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4Jul-0006Or-5Q; Wed, 31 May 2023 07:22:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 26BDD632BA;
- Wed, 31 May 2023 11:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FD5C433EF;
- Wed, 31 May 2023 11:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1685532168;
- bh=8xiqqVg7tiHXOk5GpmDCi/SEGuHbChkOD4tRdQxDAVM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=mDccMu92PiRP89OacNslpfsJo8P5d8KeklD+n+730OcCoNufGY081JLC9dTGsUxd3
- OHWAdBfCxiOUDeWq0D3zBzgZL8k5SevPup0awbJp1M0Mv2nDHBsG/JC8nGfsX/Ksda
- WJT5ZmfJzkVv1SIoDS+0XQgeIc6YVlEbkuYOmLdjK5eYo0mGukA8OVCMqmENGMNHZe
- 2e1d5qV9JzFLuvSG0aFIII/iS2VHy2B6yOHHmf9zu8pNVcjA4KIJkhgL3UTmcDOYPg
- SYZvLky9KYZjpqSyAW5Ooi0hm/Hi9QqSWvungIdmt9cRO48lArgvyxn/fZeXPx95ow
- 0vRtgxF7LcDiA==
-From: Ard Biesheuvel <ardb@kernel.org>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PATCH v2 2/2] target/i386: Implement AES instructions using AArch64
- counterparts
-Date: Wed, 31 May 2023 13:22:39 +0200
-Message-Id: <20230531112239.3164777-3-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230531112239.3164777-1-ardb@kernel.org>
-References: <20230531112239.3164777-1-ardb@kernel.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q4K9G-0005Nq-Oy
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 07:37:51 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q4K9E-0000h7-6I
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 07:37:50 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-30ae967ef74so2733704f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 04:37:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685533066; x=1688125066;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:user-agent:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fh64C8hkWvIxoEEFtvqDZZB+RBg5ssruAXb7wVEo5B8=;
+ b=fWNWclVCP7yb6PRGdaHwJU36vdosmEtILhVpHh1Dft7yjU5+tpffc0T3bKIHaLvVa5
+ 6GUlw4ZT2w4JSrjJX35NsQEpGu4Pq37gCstpF8uBjvHfW9J9eStHKGh/zhokAxRC0eO6
+ S9RVU7Dyf2hRn1j4oo04JPj5FtiFCcnLQB1ZKU8ozGdJdStwMGXaAwuuf1Ob/PfcIs2S
+ 5AVV6a5NomIoKYT6rX4Cm4s2WpsB4Xd2b5aE8oQtK1rB4KyQhTkyutJo/36YNf90ikHc
+ ugblG3MrlEcPUWYoMXlaHWxsBYww6mVY1fxqJTIW1bHm/NRbH7hQTrTiMRF9IdkjOzwW
+ 4qtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685533066; x=1688125066;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:user-agent:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Fh64C8hkWvIxoEEFtvqDZZB+RBg5ssruAXb7wVEo5B8=;
+ b=jDHcUIW/WF6iVHjgQTJ7Ozz5Sg81qxElLWtKyW0MZxUYs4sQ/5R+CXatFnJFA1eTUd
+ PjkAnrrwE3M57lZWsSwiARYKSRQG1zh6+YV/IbgcsuAN2uIwTrpqKMrFJYIU5GPK2nUm
+ uCIPAeLYtMWGMMizpsncpcFQ11F63aGNiMq2H5uDDrryD59y7Uz826gTvAF7PBgldKDW
+ hKDf6Ix+QD27BRJ663OzU7iXoNeSbR4v3jHnw1Q1YcnpcRHOuEBqIAe1Z/H6noxIl8rC
+ +3oum2n7aqEJsQyaCJQYDSQzqJhQitMXaZdOUNEa1y+raO13Zja8FZSIsXwHYUACqqYF
+ Y93Q==
+X-Gm-Message-State: AC+VfDyayF3ZK/k8LyJmoloJqyh2KFCieXlTZWilX/GMHg63rXg+0QMc
+ BnPsJejJzzn4nAlFI9s5+oF3Vw==
+X-Google-Smtp-Source: ACHHUZ6jnp2FzjY3fQcGeDHSIt1/q0pWik8dCMLsPJ6NzDzQyWupB/Uwo9GtMWd9+TBeAlnUgIhO9w==
+X-Received: by 2002:a5d:50ca:0:b0:30c:2bbf:bf75 with SMTP id
+ f10-20020a5d50ca000000b0030c2bbfbf75mr392223wrt.26.1685533066074; 
+ Wed, 31 May 2023 04:37:46 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ q13-20020a05600c46cd00b003f1978bbcd6sm3030231wmo.3.2023.05.31.04.37.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 04:37:45 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4BC041FFBB;
+ Wed, 31 May 2023 12:37:45 +0100 (BST)
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>,
+ Erik Skultety <eskultet@redhat.com>, Brian Cain <bcain@quicinc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>
+Subject: How do you represent a host gcc and a cross gcc in lcitool?
+Date: Wed, 31 May 2023 12:23:34 +0100
+Message-ID: <87wn0obuk6.fsf@linaro.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5479; i=ardb@kernel.org;
- h=from:subject; bh=8xiqqVg7tiHXOk5GpmDCi/SEGuHbChkOD4tRdQxDAVM=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaVc94+dwX+2p6lmybXLFGTly/dwtKW47zGex8qadis1w
- 4W1SbejlIVBjINBVkyRRWD233c7T0+UqnWeJQszh5UJZAgDF6cATCR/JSPDdovAS+dWTtarydm7
- eanSiYyyfxfiNOdoRa694Mx4favvc4b/eWfsj/qd05x9eeF9kZR5jZ+OCUqz2/4XDHzNE7j7CEM
- uPwA=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp;
- fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,160 +95,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When available, use the AArch64 AES instructions to implement the x86
-ones. These are not a 1:1 fit, but considerably more efficient, and
-without data dependent timing.
+Hi,
 
-For a typical benchmark (linux tcrypt mode=500), this gives a 2-3x
-speedup when running on ThunderX2.
+While trying to convert the debian-riscv64-cross docker container to an
+lcitool based one I ran into a problem building QEMU. The configure step
+fails because despite cross compiling we still need a host compiler to
+build the hexagon codegen tooling.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- host/include/aarch64/host/cpuinfo.h |  1 +
- target/i386/ops_sse.h               | 69 ++++++++++++++++++++
- util/cpuinfo-aarch64.c              |  1 +
- 3 files changed, 71 insertions(+)
+After scratching my head for a while I discovered we did have host GCC's
+in our cross images despite there being no explicit request for them in
+the docker description. It turned out that the gcovr requirement pulled
+in lcov which itself had a dependency on gcc. However this is a bug:
 
-diff --git a/host/include/aarch64/host/cpuinfo.h b/host/include/aarch64/host/cpuinfo.h
-index 82227890b4b4db03..05feeb4f4369fc19 100644
---- a/host/include/aarch64/host/cpuinfo.h
-+++ b/host/include/aarch64/host/cpuinfo.h
-@@ -9,6 +9,7 @@
- #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
- #define CPUINFO_LSE             (1u << 1)
- #define CPUINFO_LSE2            (1u << 2)
-+#define CPUINFO_AES             (1u << 3)
- 
- /* Initialized with a constructor. */
- extern unsigned cpuinfo;
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index fb63af7afa21588d..db79132778efd211 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -20,6 +20,11 @@
- 
- #include "crypto/aes.h"
- 
-+#ifdef __aarch64__
-+#include "host/cpuinfo.h"
-+typedef uint8_t aes_vec_t __attribute__((vector_size(16)));
-+#endif
-+
- #if SHIFT == 0
- #define Reg MMXReg
- #define XMM_ONLY(...)
-@@ -2165,6 +2170,20 @@ void glue(helper_aesdec, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
-     Reg st = *v;
-     Reg rk = *s;
- 
-+#ifdef __aarch64__
-+    if (cpuinfo & CPUINFO_AES) {
-+        asm("   .arch_extension aes             \n"
-+            "   aesd    %0.16b, %1.16b          \n"
-+            "   aesimc  %0.16b, %0.16b          \n"
-+            "   eor     %0.16b, %0.16b, %2.16b  \n"
-+            :   "=w"(*(aes_vec_t *)d)
-+            :   "w"((aes_vec_t){}),
-+                "w"(*(aes_vec_t *)s),
-+                "0"(*(aes_vec_t *)v));
-+        return;
-+    }
-+#endif
-+
-     for (i = 0 ; i < 2 << SHIFT ; i++) {
-         int j = i & 3;
-         d->L(i) = rk.L(i) ^ bswap32(AES_Td0[st.B(AES_ishifts[4 * j + 0])] ^
-@@ -2180,6 +2199,19 @@ void glue(helper_aesdeclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
-     Reg st = *v;
-     Reg rk = *s;
- 
-+#ifdef __aarch64__
-+    if (cpuinfo & CPUINFO_AES) {
-+        asm("   .arch_extension aes             \n"
-+            "   aesd    %0.16b, %1.16b          \n"
-+            "   eor     %0.16b, %0.16b, %2.16b  \n"
-+            :   "=w"(*(aes_vec_t *)d)
-+            :   "w"((aes_vec_t){}),
-+                "w"(*(aes_vec_t *)s),
-+                "0"(*(aes_vec_t *)v));
-+        return;
-+    }
-+#endif
-+
-     for (i = 0; i < 8 << SHIFT; i++) {
-         d->B(i) = rk.B(i) ^ (AES_isbox[st.B(AES_ishifts[i & 15] + (i & ~15))]);
-     }
-@@ -2191,6 +2223,20 @@ void glue(helper_aesenc, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
-     Reg st = *v;
-     Reg rk = *s;
- 
-+#ifdef __aarch64__
-+    if (cpuinfo & CPUINFO_AES) {
-+        asm("   .arch_extension aes             \n"
-+            "   aese    %0.16b, %1.16b          \n"
-+            "   aesmc   %0.16b, %0.16b          \n"
-+            "   eor     %0.16b, %0.16b, %2.16b  \n"
-+            :   "=w"(*(aes_vec_t *)d)
-+            :   "w"((aes_vec_t){}),
-+                "w"(*(aes_vec_t *)s),
-+                "0"(*(aes_vec_t *)v));
-+        return;
-+    }
-+#endif
-+
-     for (i = 0 ; i < 2 << SHIFT ; i++) {
-         int j = i & 3;
-         d->L(i) = rk.L(i) ^ bswap32(AES_Te0[st.B(AES_shifts[4 * j + 0])] ^
-@@ -2206,6 +2252,19 @@ void glue(helper_aesenclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
-     Reg st = *v;
-     Reg rk = *s;
- 
-+#ifdef __aarch64__
-+    if (cpuinfo & CPUINFO_AES) {
-+        asm("   .arch_extension aes             \n"
-+            "   aese    %0.16b, %1.16b          \n"
-+            "   eor     %0.16b, %0.16b, %2.16b  \n"
-+            :   "=w"(*(aes_vec_t *)d)
-+            :   "w"((aes_vec_t){}),
-+                "w"(*(aes_vec_t *)s),
-+                "0"(*(aes_vec_t *)v));
-+        return;
-+    }
-+#endif
-+
-     for (i = 0; i < 8 << SHIFT; i++) {
-         d->B(i) = rk.B(i) ^ (AES_sbox[st.B(AES_shifts[i & 15] + (i & ~15))]);
-     }
-@@ -2217,6 +2276,16 @@ void glue(helper_aesimc, SUFFIX)(CPUX86State *env, Reg *d, Reg *s)
-     int i;
-     Reg tmp = *s;
- 
-+#ifdef __aarch64__
-+    if (cpuinfo & CPUINFO_AES) {
-+        asm("   .arch_extension aes             \n"
-+            "   aesimc  %0.16b, %1.16b          \n"
-+            :   "=w"(*(aes_vec_t *)d)
-+            :   "w"(*(aes_vec_t *)s));
-+        return;
-+    }
-+#endif
-+
-     for (i = 0 ; i < 4 ; i++) {
-         d->L(i) = bswap32(AES_imc[tmp.B(4 * i + 0)][0] ^
-                           AES_imc[tmp.B(4 * i + 1)][1] ^
-diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
-index f99acb788454e5ab..769cdfeb2fc32d5e 100644
---- a/util/cpuinfo-aarch64.c
-+++ b/util/cpuinfo-aarch64.c
-@@ -56,6 +56,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-     unsigned long hwcap = qemu_getauxval(AT_HWCAP);
-     info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
-     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
-+    info |= (hwcap & HWCAP_AES ? CPUINFO_AES : 0);
- #endif
- #ifdef CONFIG_DARWIN
-     info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE") * CPUINFO_LSE;
--- 
-2.39.2
+  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D987818
 
+which has been fixed in bookworm (and of course sid which is the only
+way we can get a riscv64 build of QEMU at the moment). Hence my hacky
+attempts to get gcc via side effect of another package failed.
+
+Hence the question in $SUBJECT. I tried to add a mapping to lcitool for
+a pseudo hostgcc package:
+
++  hostgcc:
++    default: gcc
++    pkg:
++    MacOS:
++    cross-policy-default: skip
+
+however this didn't work. Do we need a new mechanism for this or am I
+missing a way to do this?
+
+RiscV guys,
+
+It's clear that relying on Debian Sid for the QEMU cross build for RiscV
+is pretty flakey. Are you guys aware of any other distros that better
+support cross compiling to a riscv64 target or is Debian still the best
+bet? Could you be persuaded to build a binary docker image with the
+cross compilers and libraries required for a decent cross build as an
+alternative?
+
+Thanks,
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
