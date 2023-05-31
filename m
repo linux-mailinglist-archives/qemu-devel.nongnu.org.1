@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C1B7174EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A797174E1
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D7X-0004ce-FQ; Wed, 31 May 2023 00:07:35 -0400
+	id 1q4D7H-0003U3-Qa; Wed, 31 May 2023 00:07:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D7B-0003CH-3U
+ id 1q4D7B-0003DB-Cl
  for qemu-devel@nongnu.org; Wed, 31 May 2023 00:07:14 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D75-0006v6-O0
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:07:12 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-39a523e8209so23410b6e.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:07:05 -0700 (PDT)
+ id 1q4D76-0006vI-06
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:07:13 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-33b1e83e1daso5402115ab.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1685506025; x=1688098025;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=H24fyidw2Mts4UgybMsZXcSBtkvN1xbQ1AV6r3ckQ6Y=;
- b=G/pSZ3rHfbBc9FT/9EhIqO1JQHpC6oBXoh6ZpcAdeEfW8zBL8i8VI3hiSQOsxwa2SD
- jwL7aNWqW4Or9oCWX/308ICQUrRTjo1T22IyS09DovSiML2dEfC4D3WrIdsFtuWlr6Gv
- B+4D0YYx3O52gEXNKmMkAnMrAvthRA1nXPBRDnUHufqq+Gz6ZEcOFq/1+XfCgdKZJdRF
- yiclVOTDC85ImGEQ9ytv1SrmZF38B64ftsd7VRfIKZ+vynsuvYT7hA0jKfPMKzkm2x2D
- t2cs4nugi9kA+WV3rGXTh261b8bjxMpBFCg8ZwfMx/uMcs/MGV2NbX512gzD0RRM/VvN
- nxNw==
+ :reply-to; bh=Br8zXaVAOKNlB9xv5g9cPNHLqbtW8oBpWMoxXID7zwE=;
+ b=JkjY80sN/xIzZs3jW1dXf1x9YB1B3+ml++vbzcmpCNqkuHMUGHYQMGMtp9W25QyB8X
+ mMrST86zk1QZE7U/yupamBEiaqQR2At1sOPewGnHTK5FmpSTIl+pbqrHEeETLzV+5EEs
+ s+QEkGzJ56StWc98IYNxnhTVMLqvarj1pWOKQhaQKNM2qFPHKt8GsUT6KvOkpWiqSsl5
+ THYwzpalefNJ0IwN+VmJEND4+2T0aWDp2QQeik/B9MMxP6wM2FrGoSr+s93DsT0pvQEu
+ 0im4ydKkif0gg2HJ8LSc45jXCMzfc4LaSiOwP6kO62WznOViRNpJOzCQ5tSIfvjxEAEh
+ /WNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1685506025; x=1688098025;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H24fyidw2Mts4UgybMsZXcSBtkvN1xbQ1AV6r3ckQ6Y=;
- b=TE1qkfhuvC2fIIHdFDgDxONPscAeNNejfyLfaOyVYkUFk4CHDiwqqf4+NQMNdvedyD
- qqquoXPIUDsTkS25l64KiOFtj/CGBFBtx2epcesRjOZNxGoqmVBngCsCHRwG1mig17va
- 4ngO46vXHb+8KxBCATwwlkrnJUtvhklzfTuHH1BZc6V5LSmy6nOeeezh2fcQxzQl26bV
- QSwdK/ka7a8fzPuIuGImKE/a4yUSSnlenV6gWSj9YUnALTOFgsw2wHQ8R6deLyHC2Na8
- p+HVj4S7gLRPpim0Gfq9O6LPrrGSoNZvbjsulAcfw2Nd2xX+HR5Z7d6851c1yCbWp+Vk
- xeJg==
-X-Gm-Message-State: AC+VfDxm9o/ztGZkeFPp+LpOR/jwFw6sqy2rgD0O/Rb1Ns0U3WBJK5uT
- xbQ+9Fb0oatU2/Twby88vdNMfF3ivL/GDR9LQlg=
-X-Google-Smtp-Source: ACHHUZ7++cWADdqLkq5tBe8zHQk/uSkBinvC5UwM9ny79mk3abx6mCCWg9huucn4F4nMW4fvPuXBkw==
-X-Received: by 2002:a05:6808:2a6d:b0:397:c038:54ef with SMTP id
- fu13-20020a0568082a6d00b00397c03854efmr2459995oib.0.1685506024829; 
- Tue, 30 May 2023 21:07:04 -0700 (PDT)
+ bh=Br8zXaVAOKNlB9xv5g9cPNHLqbtW8oBpWMoxXID7zwE=;
+ b=ftqR+vG6RMOdpP4zQ1TD8T1kx6mYJsOrTujrQXV/OMZwgtAINAvR1Oqc1YXhcnVue3
+ 5+sTX2C3O3E6mpolO0gApSBRWdMIhMjqMomffRP18H9W6IxOoXNxS/Xx+Vgmyuva06iw
+ BrJqDuelo4DQ1iMogdz5FV7Ncc4MxvemNO+LOydiw7UJye6gjS7GgtrR6eNet1wlYk8i
+ 2iILBsb4Q7wfsX+YLfFd8K0VDoRoLixvWzamsj1ni7n7iSBiEAWCTlfUfHojCXBZrqHz
+ M788glgblPMyX0+eHmL7VKi+XjYYq3Wl9rZYMPiVupBlt8rEXh43eAVEwbJxyJ/Wz6lK
+ z6uA==
+X-Gm-Message-State: AC+VfDy3rubPy70IiJz9zp2doaffj1xNjpYk3bHn5r80s3itXDtuwuoF
+ bsgBtyjVq5Gwjsgg5gHrGLETPhJ9KVMHv6wCbFs=
+X-Google-Smtp-Source: ACHHUZ4hYIWYhXnXwaQ3Mu5DkwDuh7jPtMiKxqyMmkx4XjKn1aWkkF9TEV1WojfBMDppGBXfQjBphA==
+X-Received: by 2002:a05:6e02:5cf:b0:335:9028:d6d1 with SMTP id
+ l15-20020a056e0205cf00b003359028d6d1mr999753ils.32.1685506025671; 
+ Tue, 30 May 2023 21:07:05 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  by smtp.gmail.com with ESMTPSA id
- h13-20020a170902f7cd00b001aadd0d7364sm151797plw.83.2023.05.30.21.07.04
+ h13-20020a170902f7cd00b001aadd0d7364sm151797plw.83.2023.05.30.21.07.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 21:07:04 -0700 (PDT)
+ Tue, 30 May 2023 21:07:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 42/48] tcg: Fix PAGE/PROT confusion
-Date: Tue, 30 May 2023 21:03:24 -0700
-Message-Id: <20230531040330.8950-43-richard.henderson@linaro.org>
+Subject: [PATCH v3 43/48] tcg: Move env defines out of NEED_CPU_H in
+ helper-head.h
+Date: Tue, 30 May 2023 21:03:25 -0700
+Message-Id: <20230531040330.8950-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,66 +91,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The bug was hidden because they happen to have the same values.
+Since the change to CPUArchState, we have a common typedef
+that can always be used.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/region.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ include/exec/helper-head.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tcg/region.c b/tcg/region.c
-index bef4c4756f..f8410ba5db 100644
---- a/tcg/region.c
-+++ b/tcg/region.c
-@@ -505,6 +505,14 @@ static int alloc_code_gen_buffer(size_t tb_size, int splitwx, Error **errp)
-     return PROT_READ | PROT_WRITE;
- }
- #elif defined(_WIN32)
-+/*
-+ * Local source-level compatibility with Unix.
-+ * Used by tcg_region_init below.
-+ */
-+#define PROT_READ   1
-+#define PROT_WRITE  2
-+#define PROT_EXEC   4
-+
- static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
- {
-     void *buf;
-@@ -525,7 +533,7 @@ static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
-     region.start_aligned = buf;
-     region.total_size = size;
- 
--    return PAGE_READ | PAGE_WRITE | PAGE_EXEC;
-+    return PROT_READ | PROT_WRITE | PROT_EXEC;
- }
- #else
- static int alloc_code_gen_buffer_anon(size_t size, int prot,
-@@ -794,10 +802,10 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
-      * buffer -- let that one use hugepages throughout.
-      * Work with the page protections set up with the initial mapping.
-      */
--    need_prot = PAGE_READ | PAGE_WRITE;
-+    need_prot = PROT_READ | PROT_WRITE;
- #ifndef CONFIG_TCG_INTERPRETER
-     if (tcg_splitwx_diff == 0) {
--        need_prot |= PAGE_EXEC;
-+        need_prot |= PROT_EXEC;
-     }
+diff --git a/include/exec/helper-head.h b/include/exec/helper-head.h
+index a355ef8ebe..28ceab0a46 100644
+--- a/include/exec/helper-head.h
++++ b/include/exec/helper-head.h
+@@ -22,6 +22,7 @@
+ #define dh_alias_f64 i64
+ #define dh_alias_ptr ptr
+ #define dh_alias_cptr ptr
++#define dh_alias_env ptr
+ #define dh_alias_void void
+ #define dh_alias_noreturn noreturn
+ #define dh_alias(t) glue(dh_alias_, t)
+@@ -37,6 +38,7 @@
+ #define dh_ctype_f64 float64
+ #define dh_ctype_ptr void *
+ #define dh_ctype_cptr const void *
++#define dh_ctype_env CPUArchState *
+ #define dh_ctype_void void
+ #define dh_ctype_noreturn G_NORETURN void
+ #define dh_ctype(t) dh_ctype_##t
+@@ -52,9 +54,6 @@
+ #  endif
+ # endif
+ # define dh_ctype_tl target_ulong
+-# define dh_alias_env ptr
+-# define dh_ctype_env CPUArchState *
+-# define dh_typecode_env dh_typecode_ptr
  #endif
-     for (size_t i = 0, n = region.n; i < n; i++) {
-@@ -807,9 +815,9 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
-         if (have_prot != need_prot) {
-             int rc;
  
--            if (need_prot == (PAGE_READ | PAGE_WRITE | PAGE_EXEC)) {
-+            if (need_prot == (PROT_READ | PROT_WRITE | PROT_EXEC)) {
-                 rc = qemu_mprotect_rwx(start, end - start);
--            } else if (need_prot == (PAGE_READ | PAGE_WRITE)) {
-+            } else if (need_prot == (PROT_READ | PROT_WRITE)) {
-                 rc = qemu_mprotect_rw(start, end - start);
-             } else {
-                 g_assert_not_reached();
+ /* We can't use glue() here because it falls foul of C preprocessor
+@@ -96,6 +95,7 @@
+ #define dh_typecode_f32 dh_typecode_i32
+ #define dh_typecode_f64 dh_typecode_i64
+ #define dh_typecode_cptr dh_typecode_ptr
++#define dh_typecode_env dh_typecode_ptr
+ #define dh_typecode(t) dh_typecode_##t
+ 
+ #define dh_callflag_i32  0
 -- 
 2.34.1
 
