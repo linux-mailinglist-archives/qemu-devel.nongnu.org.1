@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788EF718B69
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFE4718B66
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:44:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Sfn-00062Q-Ik; Wed, 31 May 2023 16:43:59 -0400
+	id 1q4Sfq-00063K-Ad; Wed, 31 May 2023 16:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4Sfk-0005zO-Pm
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:43:56 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4Sfo-00062v-OW
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:44:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4Sfd-0004uq-EW
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:43:55 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4SfZ-0004to-1K
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:44:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685565827;
+ s=mimecast20190719; t=1685565824;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CBT/weJlxAYWQ0SKX//myh2hjHsaYiMvG8gg0FAgmVM=;
- b=JeAxRZUGLhZ+mY/ytD3yWUWRqG+RkITo8IE1ZJTpXn0qIylzQKmJ0AlkaOPhxJTnYVcJRC
- Eo0YYGTi05AQnT2CtFFtyguNJrTzajLYyHwVCE5tWQ1UUCn+Yh8O8I8LI1/qSM7vtLhsLp
- iM1yWGhDTGRxhLmC7NhhNBEJMHLo5Ec=
+ bh=S/mcmFGBhzkNPflpwHQgx/rQKKYb1f2hRywVQ68hhXE=;
+ b=XvMgmN6ox0xxPGBbTCkkLuvBqgnJBGOpuTiCppENPNBN5tqaik/W1kJL8tiLYLBlgtnwaP
+ eb04c/g+xzY8JCsIT7oD7dSE64GI56b+JDyopqPBvtHro7MfBo+shI1fEs2KIamuXaCsv6
+ BQKwGEmAGtKDwYQnv+bh6ugJsQG8eAY=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-311-syhp03j6NNmmjVX804C_IQ-1; Wed, 31 May 2023 16:43:42 -0400
-X-MC-Unique: syhp03j6NNmmjVX804C_IQ-1
+ us-mta-357-CWoNsEiANTKbYcJQUQJlrw-1; Wed, 31 May 2023 16:43:43 -0400
+X-MC-Unique: CWoNsEiANTKbYcJQUQJlrw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F040A29AA3B4;
- Wed, 31 May 2023 20:43:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8921C1C08DA7;
+ Wed, 31 May 2023 20:43:42 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.9.159])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7033A2029F6D;
- Wed, 31 May 2023 20:43:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 07F3C200B68F;
+ Wed, 31 May 2023 20:43:42 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
@@ -52,9 +52,9 @@ Cc: Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PULL 4/5] python/qmp/legacy: remove open_with_socket() calls
-Date: Wed, 31 May 2023 16:43:37 -0400
-Message-Id: <20230531204338.1656158-5-jsnow@redhat.com>
+Subject: [PULL 5/5] Revert "python/qmp/protocol: add open_with_socket()"
+Date: Wed, 31 May 2023 16:43:38 -0400
+Message-Id: <20230531204338.1656158-6-jsnow@redhat.com>
 In-Reply-To: <20230531204338.1656158-1-jsnow@redhat.com>
 References: <20230531204338.1656158-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -67,8 +67,8 @@ X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,108 +84,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Favor using connect() when passing a socket instead of
-open_with_socket(). Simultaneously, update constructor calls to use the
-combined address argument for QEMUMonitorProtocol().
+This reverts commit a3cfea92e2030926e00a2519d299384ea648e36e.
+
+(It's being rolled back in favor of a different API, which brings the
+in-tree and out-of-tree versions of qemu.qmp back in sync.)
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-id: 20230517163406.2593480-5-jsnow@redhat.com
+Message-id: 20230517163406.2593480-6-jsnow@redhat.com
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/qemu/machine/machine.py |  7 ++++---
- python/qemu/qmp/legacy.py      | 29 ++++++++++++-----------------
- 2 files changed, 16 insertions(+), 20 deletions(-)
+ python/qemu/qmp/protocol.py | 24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index cc636cb6bd..c16a0b6fed 100644
---- a/python/qemu/machine/machine.py
-+++ b/python/qemu/machine/machine.py
-@@ -337,16 +337,17 @@ def _pre_launch(self) -> None:
-             self._remove_files.append(self._console_address)
+diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
+index d534db4631..753182131f 100644
+--- a/python/qemu/qmp/protocol.py
++++ b/python/qemu/qmp/protocol.py
+@@ -297,19 +297,6 @@ async def start_server_and_accept(
+         await self.accept()
+         assert self.runstate == Runstate.RUNNING
  
-         if self._qmp_set:
--            sock = None
-             if self._monitor_address is None:
-                 self._sock_pair = socket.socketpair()
-                 sock = self._sock_pair[1]
-             if isinstance(self._monitor_address, str):
-                 self._remove_files.append(self._monitor_address)
- 
-+            sock_or_addr = self._monitor_address or sock
-+            assert sock_or_addr is not None
-+
-             self._qmp_connection = QEMUMonitorProtocol(
--                address=self._monitor_address,
--                sock=sock,
-+                sock_or_addr,
-                 server=bool(self._monitor_address),
-                 nickname=self._name
-             )
-diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
-index b1eb3f360f..e1e9383978 100644
---- a/python/qemu/qmp/legacy.py
-+++ b/python/qemu/qmp/legacy.py
-@@ -68,34 +68,31 @@ class QEMUMonitorProtocol:
-     Provide an API to connect to QEMU via QEMU Monitor Protocol (QMP)
-     and then allow to handle commands and events.
- 
--    :param address:  QEMU address, can be either a unix socket path (string)
--                     or a tuple in the form ( address, port ) for a TCP
--                     connection or None
--    :param sock:     a socket or None
-+    :param address:  QEMU address, can be a unix socket path (string), a tuple
-+                     in the form ( address, port ) for a TCP connection, or an
-+                     existing `socket.socket` object.
-     :param server:   Act as the socket server. (See 'accept')
-+                     Not applicable when passing a socket directly.
-     :param nickname: Optional nickname used for logging.
-     """
- 
-     def __init__(self,
--                 address: Optional[SocketAddrT] = None,
--                 sock: Optional[socket.socket] = None,
-+                 address: Union[SocketAddrT, socket.socket],
-                  server: bool = False,
-                  nickname: Optional[str] = None):
- 
--        assert address or sock
-+        if server and isinstance(address, socket.socket):
-+            raise ValueError(
-+                "server argument should be False when passing a socket")
-+
-         self._qmp = QMPClient(nickname)
-         self._aloop = asyncio.get_event_loop()
-         self._address = address
--        self._sock = sock
-         self._timeout: Optional[float] = None
- 
-         if server:
--            if sock:
--                assert self._sock is not None
--                self._sync(self._qmp.open_with_socket(self._sock))
--            else:
--                assert self._address is not None
--                self._sync(self._qmp.start_server(self._address))
-+            assert not isinstance(self._address, socket.socket)
-+            self._sync(self._qmp.start_server(self._address))
- 
-     _T = TypeVar('_T')
- 
-@@ -150,13 +147,11 @@ def connect(self, negotiate: bool = True) -> Optional[QMPMessage]:
-         :return: QMP greeting dict, or None if negotiate is false
-         :raise ConnectError: on connection errors
+-    @upper_half
+-    @require(Runstate.IDLE)
+-    async def open_with_socket(self, sock: socket.socket) -> None:
+-        """
+-        Start connection with given socket.
+-
+-        :param sock: A socket.
+-
+-        :raise StateError: When the `Runstate` is not `IDLE`.
+-        """
+-        self._reader, self._writer = await asyncio.open_connection(sock=sock)
+-        self._set_state(Runstate.CONNECTING)
+-
+     @upper_half
+     @require(Runstate.IDLE)
+     async def start_server(self, address: SocketAddrT,
+@@ -357,12 +344,11 @@ async def accept(self) -> None:
+             protocol-level failure occurs while establishing a new
+             session, the wrapped error may also be an `QMPError`.
          """
--        addr_or_sock = self._address or self._sock
--        assert addr_or_sock is not None
-         self._qmp.await_greeting = negotiate
-         self._qmp.negotiate = negotiate
- 
-         self._sync(
--            self._qmp.connect(addr_or_sock)
-+            self._qmp.connect(self._address)
-         )
-         return self._get_greeting()
- 
+-        if not self._reader:
+-            if self._accepted is None:
+-                raise QMPError("Cannot call accept() before start_server().")
+-            await self._session_guard(
+-                self._do_accept(),
+-                'Failed to establish connection')
++        if self._accepted is None:
++            raise QMPError("Cannot call accept() before start_server().")
++        await self._session_guard(
++            self._do_accept(),
++            'Failed to establish connection')
+         await self._session_guard(
+             self._establish_session(),
+             'Failed to establish session')
 -- 
 2.40.1
 
