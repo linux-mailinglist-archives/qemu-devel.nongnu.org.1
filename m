@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025BD718852
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A10F718889
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:35:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4PUh-0000EZ-CR; Wed, 31 May 2023 13:20:19 -0400
+	id 1q4PiR-0004cY-0e; Wed, 31 May 2023 13:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4PUd-0000Dm-LK
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:20:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4PUb-0007Il-KZ
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:20:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685553611;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Da+xrLUci78d/ORr9Op6aR57X/Ol8SxoWfYz9URD31E=;
- b=AXpyU3KDKiMitPBWWiCTzAc90LNzCnfMEmFPCPvlgyrkbaBHT+MBERY6b+RZe1KPXyzawS
- YMX6ln9UAU0DF6nXqEM/ZWMB9MFXP1NrJtSobYCoxIRtK9dk0OWO0SV5mywg+zdMzgraxE
- 6CuQYuCOn7s41NlDn79us2iUGeT5EJA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-614-0kF5Ggz3M_SIaq9dTk7tYw-1; Wed, 31 May 2023 13:20:08 -0400
-X-MC-Unique: 0kF5Ggz3M_SIaq9dTk7tYw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 654201C068ED;
- Wed, 31 May 2023 17:20:05 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7657E492B0A;
- Wed, 31 May 2023 17:20:04 +0000 (UTC)
-Date: Wed, 31 May 2023 13:20:02 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Riku Voipio <riku.voipio@iki.fi>,
- Markus Armbruster <armbru@redhat.com>, Kyle Evans <kevans@freebsd.org>,
- Eduardo Habkost <eduardo@habkost.net>, Warner Losh <imp@bsdimp.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Greg Kurz <groug@kaod.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, libvir-list@redhat.com,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: Re: [PATCH v6 05/11] docs/deprecated: move QMP events bellow QMP
- command section
-Message-ID: <20230531172002.GJ1248296@fedora>
-References: <20230526165401.574474-1-alex.bennee@linaro.org>
- <20230526165401.574474-6-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4PiO-0004bb-9a
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:34:28 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4PiL-0002AC-H1
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:34:28 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-30ae95c4e75so4223719f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 10:34:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685554455; x=1688146455;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YWF1WEFVEDNFVwf4rvHb/PtCZTNHIffH0745yjINvOI=;
+ b=K5lmt6V2fGTilCiuNMfUZI4fLcEjGi1fy/LvB7i1uwgrNyfSDsZ5u4tqArPqAPJSWW
+ M9GFpCLMrunGnWhcHdDuIhZHGrX+oNohpIe2fLfIelYszMCCqm4qAFUMk0j5qtbm4OIm
+ FOhrY4CMZonE3pK78LZkCkJQwbMTt5L/GDKJH08FluG6hjN5177eW+qT8ZTcgH3n8izx
+ GCHh4D9z64fQCTbDEF73p/kXJYR+YESA0iZlHu4d/9+gfyoKB+RzOxAraXLoLySNOGY0
+ ht9JjkqQerxA7iqYZ6wzFJGGItIqdos03htvEIq/sJBv5ESUUvF6reazRBjeeJesBriG
+ 2LmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685554455; x=1688146455;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YWF1WEFVEDNFVwf4rvHb/PtCZTNHIffH0745yjINvOI=;
+ b=BuOuOYNcC6+VeoRNK+8BBnU+S+rbJ1AQls0MJDKlvwHZsZoqdYbZC5fqlYDh8+3U3w
+ DQx8s9pkSXli0Hx4Lmq0lQ32AUC0QdfhQPtLI0+Q1mRBFyJi4B/M4Kn0MpuRacmlmn5P
+ JCeGXl3wmQELalDkHTye9RLZ9csaAhpzZKzzli67fBOsv6kySSOwalwMKDnkbZKgz55w
+ ft2R4jLIXfIRmgA8HssSO8IBSqIW0r3VDgX/9r4m9/tyflz4PpKhpRL9CYOiqaHmhpYs
+ IqWiPacCgKWUn5Nq7DPq7IObAOpAqTR5ALdPshShFPU/+U4FV0lcKU8Aa7K6wfTqjmeS
+ obWg==
+X-Gm-Message-State: AC+VfDxoLeQV73vSstnnt9wwykOD6rh3U8yveXi+NLWXBAUJhWQBHJEO
+ RFW4DZCdR2cnJd8LI2fWvNoFjw==
+X-Google-Smtp-Source: ACHHUZ7EqpHgf0vOKmThQH5OrtGLbCHW62Es606hEFpBRaFp7SVsuDBp/yWAiePWpm5SLdi5WhF9tw==
+X-Received: by 2002:adf:d84e:0:b0:2f8:2d4:74ef with SMTP id
+ k14-20020adfd84e000000b002f802d474efmr4600532wrl.43.1685554455308; 
+ Wed, 31 May 2023 10:34:15 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.146.12])
+ by smtp.gmail.com with ESMTPSA id
+ n13-20020adfe78d000000b003078681a1e8sm7473927wrm.54.2023.05.31.10.34.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 10:34:14 -0700 (PDT)
+Message-ID: <5b407848-2a4c-6447-6726-cf85f278f3e7@linaro.org>
+Date: Wed, 31 May 2023 19:34:12 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="8P/M8Rfy4TRbInXD"
-Content-Disposition: inline
-In-Reply-To: <20230526165401.574474-6-alex.bennee@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] Use named constants in BCM props
+Content-Language: en-US
+To: Sergey Kambalin <serg.oker@gmail.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Sergey Kambalin <sergey.kambalin@auriga.com>
+References: <20230531155258.8361-1-sergey.kambalin@auriga.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230531155258.8361-1-sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,39 +92,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Sergey,
 
---8P/M8Rfy4TRbInXD
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, May 26, 2023 at 05:53:55PM +0100, Alex Benn=E9e wrote:
-> Also rename the section to make the fact this is part of the
-> management protocol even clearer.
->=20
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Alex Benn=E9e <alex.bennee@linaro.org>
+On 31/5/23 17:52, Sergey Kambalin wrote:
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
->  docs/about/deprecated.rst | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>   hw/misc/bcm2835_property.c            | 120 ++++++++++---------
+>   include/hw/arm/raspi_platform.h       |   6 +
+>   include/hw/misc/raspberrypi-fw-defs.h | 163 ++++++++++++++++++++++++++
+>   3 files changed, 236 insertions(+), 53 deletions(-)
+>   create mode 100644 include/hw/misc/raspberrypi-fw-defs.h
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---8P/M8Rfy4TRbInXD
-Content-Type: application/pgp-signature; name="signature.asc"
+> diff --git a/include/hw/arm/raspi_platform.h b/include/hw/arm/raspi_platform.h
+> index 4a56dd4b89..92a317950a 100644
+> --- a/include/hw/arm/raspi_platform.h
+> +++ b/include/hw/arm/raspi_platform.h
+> @@ -170,4 +170,10 @@
+>   #define INTERRUPT_ILLEGAL_TYPE0        6
+>   #define INTERRUPT_ILLEGAL_TYPE1        7
+>   
+> +/* Clock rates */
+> +#define RPI_FIRMWARE_EMMC_CLK_RATE    50000000
+> +#define RPI_FIRMWARE_UART_CLK_RATE    3000000
+> +#define RPI_FIRMWARE_CORE_CLK_RATE    350000000
+> +#define RPI_FIRMWARE_DEFAULT_CLK_RATE 700000000
 
------BEGIN PGP SIGNATURE-----
+Are these VideoCore constants?
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmR3gcIACgkQnKSrs4Gr
-c8hflAf/VbfUG65BQ29q38V+rIlQbqCSk/k75EjhDGLUQpVEie0huxmpRNLm790e
-zkyIGJW1uz/ZFclOARGD7Y6mKbjE1aOunEt6ss8tMyXzFYWIcZEqx2pIAveMYkxo
-yID8oWXUKKtMKP2mRHixqUrkr66s03UKB9B4QzsVTSS73FEAWMMkYxAbN2uXy/Pp
-g+3K14+QA5+V91ToiJUobiIDLdhe9PQLb2lsT/Vt2XA3LxE0m1Q+p4P0G9keIM97
-/Z6ArkbeXdNKAdgKlMnAIY56NsOXqPWY3dVtSxf6qB7KjmUXyxfiUjTQEUKUfsso
-AbV88UoFcwB4Q5DEOxZy5TMPQNTs9A==
-=WvtQ
------END PGP SIGNATURE-----
+>   #endif
+> diff --git a/include/hw/misc/raspberrypi-fw-defs.h b/include/hw/misc/raspberrypi-fw-defs.h
+> new file mode 100644
+> index 0000000000..4551fe7450
+> --- /dev/null
+> +++ b/include/hw/misc/raspberrypi-fw-defs.h
+> @@ -0,0 +1,163 @@
+> +/*
+> + * Raspberry Pi firmware definitions
+> + *
+> + * Copyright (C) 2022  Auriga LLC, based on Linux kernel
+> + *   `include/soc/bcm2835/raspberrypi-firmware.h` (Copyright © 2015 Broadcom)
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
+> +#define INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
+> +
+> +#include "qemu/osdep.h"
 
---8P/M8Rfy4TRbInXD--
+See https://qemu-project.gitlab.io/qemu/devel/style.html#include-directives:
 
+   Do not include “qemu/osdep.h” from header files since the .c
+   file will have already included it.
+
+Otherwise your patch looks good!
+
+I hope you are using the 'git cherry-pick -p' command to split
+your previous big patch in multiple smaller, and not rewritting
+the patches from scratch.
 
