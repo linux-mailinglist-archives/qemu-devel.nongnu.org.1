@@ -2,95 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBBF7185A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C517185C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NOk-0007Wb-1Y; Wed, 31 May 2023 11:06:02 -0400
+	id 1q4NS7-0002D3-KM; Wed, 31 May 2023 11:09:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1q4NOe-0007K7-QD; Wed, 31 May 2023 11:05:58 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NS5-0002CR-QB
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:09:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1q4NOc-0003Yf-4f; Wed, 31 May 2023 11:05:56 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34VEwmQe000991; Wed, 31 May 2023 15:05:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Q4PTH5OqwStcssdZCDUh1Zh7ZKWk7rlkK2Wx2bEOkAE=;
- b=Z5qdtrSbpwUSAalHbZuNgO9isMPgtP8KTv4ecxlGeK5AfWuTmYd+p07pAHAQ8fdzn4Fs
- sZocVIsiFWQ5t5Lywa00MmJQc7UesWtvT8Xt0IIQVQUtF9y+/O2bW4PQCTBmV/rplVnA
- +cFagQSvd8qh+40fRGICAP22d+FjObdBLgyD2TC0CcG2jG9FpbHywKQP+vZ0FyXwksdv
- q+v+LjHcWpC+Jb/06ZxOhKBV+pwwpbVdcAJLdmXxvqezLbIdK035kKipY0+1vHa3jsQT
- XajhfWgh0pQAy7Yp0SS/r1eY2I7c4ETr+T8TbEqqBKiUlDr4W7og84U0eKnNIwMCJbSw 4A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx8fs0a3u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 15:05:43 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34VExKSe002183;
- Wed, 31 May 2023 15:05:42 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx8fs0a14-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 15:05:42 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34V8c1D5005587;
- Wed, 31 May 2023 15:05:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3qu9g51qtj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 15:05:39 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34VF5bdY60883354
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 May 2023 15:05:37 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2A6320043;
- Wed, 31 May 2023 15:05:37 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5264220040;
- Wed, 31 May 2023 15:05:37 +0000 (GMT)
-Received: from borneo.ibmuc.com (unknown [9.171.16.101])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 31 May 2023 15:05:37 +0000 (GMT)
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-To: clg@kaod.org, danielhb413@gmail.com, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] pnv/xive2: Quiet down some error messages
-Date: Wed, 31 May 2023 17:05:37 +0200
-Message-Id: <20230531150537.369350-1-fbarrat@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NS2-0004D8-Rm
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:09:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685545728;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=82+E05NEJaSZFJYLuV5eK0dcfbNXYsn75+wq2gqKti8=;
+ b=QVbCmUbBFTKijiKo9+jzbAd/BZ0MAswj4LSzcZzT9eEc6SR4ujqKrZc454uC+tF2VMXK03
+ MEfCZ8CQUbOisqvFdVRwSDRnr9UIT9wuRDh7yLY/mDl1aJh+fdpx6Yw0Y3HZwyQTsFzl95
+ 8ooZ28LXvQG6ajp0aTmP/tqm2OOqWeA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-e--DHv2IN6qZjlSjcoRikA-1; Wed, 31 May 2023 11:08:47 -0400
+X-MC-Unique: e--DHv2IN6qZjlSjcoRikA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30634323dfeso2621180f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:08:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685545725; x=1688137725;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=82+E05NEJaSZFJYLuV5eK0dcfbNXYsn75+wq2gqKti8=;
+ b=NkRMWIdpLZrVruJqWfHDyrN5ExoLmFDQ5M6raAT9PltlAvZ2OnmIUOU6ORrtlXx3zX
+ eJ9o2qqqzV3F9uUu2ZUDvmAAQ9fRuz77WokItYr4FyTq3cld2pi/cd4Y/l6FtXkZzaal
+ F6UF2YeEvL3jIw0PpfLiivlgJL+ObhXQ4TPDrEMJs2E15rhNDIYb547xyHsU/j1lZvFz
+ Q+bY/x4ltUeoBjxxb/kXfVRm8fPTstqwMVsXoHAMol0D1O4OgmJy/9XDetChJaGB4eof
+ GRcDstApnGBGtGV6g4ZeQzXOrbxsRRrtGgHH8xnW1/tDdPtAsxTcvlncz7BWYFns16D4
+ 6pQA==
+X-Gm-Message-State: AC+VfDz1RW0CRzM8JDJycSIPm7iz8lkBfcF6R5uET17cn09SVpTblerY
+ QKQrh/EJ0QmhhbGIrMXYhZcjCLR5DBYSLcnOGhZ28vCtXPcYmHMOJpyJCUTCLCKGxGA4B1oWleo
+ /MkuNhxTdQYrlu3ReiR0Ltqx3/eQYrtfSIQayMeJ/swqqZvuMKLMH43H+J0sNLcO/DwYmyeT2
+X-Received: by 2002:a5d:5383:0:b0:307:83a4:3d3b with SMTP id
+ d3-20020a5d5383000000b0030783a43d3bmr4530659wrv.54.1685545725865; 
+ Wed, 31 May 2023 08:08:45 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ68u36qecBYu948Op47P4IxyFaKQu3MVYsCGJb6yDAOLCb+9JJfBR5EFhlbhwVJkwwDB1p/VQ==
+X-Received: by 2002:a5d:5383:0:b0:307:83a4:3d3b with SMTP id
+ d3-20020a5d5383000000b0030783a43d3bmr4530646wrv.54.1685545725593; 
+ Wed, 31 May 2023 08:08:45 -0700 (PDT)
+Received: from localhost.localdomain ([2001:b07:ad4:d988:c2cd:bd04:c2d7:61e3])
+ by smtp.gmail.com with ESMTPSA id
+ g15-20020adff40f000000b00307972e46fasm7090499wro.107.2023.05.31.08.08.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 08:08:45 -0700 (PDT)
+From: Camilla Conte <cconte@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, richard.henderson@linaro.org, alex.bennee@linaro.org
+Subject: Improvements to Gitlab CI container builds
+Date: Wed, 31 May 2023 16:08:19 +0100
+Message-Id: <20230531150824.32349-1-cconte@redhat.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LsG56aqL4agpTT5TnZS_TNnD7-oGNNYO
-X-Proofpoint-ORIG-GUID: Skm8DewaFxbA66RrjtXXG_d8jybaRYRp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_10,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=956
- lowpriorityscore=0 suspectscore=0 clxscore=1015 priorityscore=1501
- mlxscore=0 adultscore=0 impostorscore=0 phishscore=0 malwarescore=0
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305310128
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cconte@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,48 +93,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When dumping the END and NVP tables ("info pic" from the HMP) on the
-P10 model, we're likely to be flooded with error messages such as:
+Given my recent deep-dive in this part of the Gitlab CI, I
+figured I could propose some improvements that came to mind
+along the way.
 
-  XIVE[0] - VST: invalid NVPT entry f33800 !?
+The last patch removes the need for Docker in Docker.
 
-The error is printed when finding an empty VSD in an indirect
-table (thus END and NVP tables with skiboot), which is going to happen
-when dumping the xive state. So let's tune down those messages. They
-can be re-enabled easily with a macro if needed.
-
-Those errors were already hidden on xive/P9, for the same reason.
-
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
----
- hw/intc/pnv_xive2.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index c80316657a..397679390c 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -163,7 +163,9 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
-     ldq_be_dma(&address_space_memory, vsd_addr, &vsd, MEMTXATTRS_UNSPECIFIED);
- 
-     if (!(vsd & VSD_ADDRESS_MASK)) {
-+#ifdef XIVE2_DEBUG
-         xive2_error(xive, "VST: invalid %s entry %x !?", info->name, idx);
-+#endif
-         return 0;
-     }
- 
-@@ -185,7 +187,9 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
-                    MEMTXATTRS_UNSPECIFIED);
- 
-         if (!(vsd & VSD_ADDRESS_MASK)) {
-+#ifdef XIVE2_DEBUG
-             xive2_error(xive, "VST: invalid %s entry %x !?", info->name, idx);
-+#endif
-             return 0;
-         }
- 
--- 
-2.40.1
 
 
