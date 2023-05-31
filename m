@@ -2,57 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D566D71812C
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0649C718166
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:23:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Ldw-0006mw-Io; Wed, 31 May 2023 09:13:36 -0400
+	id 1q4Llq-0000u2-LV; Wed, 31 May 2023 09:21:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4Ldl-0006ZK-EH; Wed, 31 May 2023 09:13:25 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1q4Llj-0000tB-Id; Wed, 31 May 2023 09:21:41 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4Ldj-000239-9n; Wed, 31 May 2023 09:13:25 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QWV5j0yQXz67nPF;
- Wed, 31 May 2023 21:11:37 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
- 2023 14:13:18 +0100
-Date: Wed, 31 May 2023 14:13:17 +0100
-To: Klaus Jensen <its@irrelevant.dk>
-CC: <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>, Keith Busch
- <kbusch@kernel.org>, Jason Wang <jasowang@redhat.com>, Lior Weintraub
- <liorw@pliops.com>, Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr
- <jk@codeconstruct.com.au>, <qemu-arm@nongnu.org>, Matt Johnston
- <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
- <qemu-block@nongnu.org>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, <gost.dev@samsung.com>
-Subject: Re: [PATCH v3 1/3] hw/i2c: add smbus pec utility function
-Message-ID: <20230531141317.00001912@Huawei.com>
-In-Reply-To: <20230531114744.9946-2-its@irrelevant.dk>
-References: <20230531114744.9946-1-its@irrelevant.dk>
- <20230531114744.9946-2-its@irrelevant.dk>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1q4Lld-000401-3s; Wed, 31 May 2023 09:21:37 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34VCiDXd031052; Wed, 31 May 2023 13:21:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=lwd41rv865siONu2+ETpcfyX8ebf5aa2tsZh+zkXBGg=;
+ b=H0gMRhpgfqhqBIlQyvt4+0mniJ3pNPpo1y/ofZc2DVcsBK9eCIsmUV49WooOlxOJszYh
+ rPt5WGWE5scZeibKAsQKzNTyoc2DY+M8BRjL8ytZYJ+lubgs/HXz7zhJ2R4h/mLetmoN
+ xRW9RJ2/0c1VWDPJTCAS9w24CcDZ81LG8rQvg6Okl4DIyHr2kocHHpCjuPqML0pz4guQ
+ A94YjvGu4kYy4wxIYBcEdhpGQaQEKdow+2Wq4jVOjocCHryo7va6b2o1nFJsD78oryp6
+ Ie1yeFrHNZSMuqMpOzkOhCqqG3ngs8qSOhDZWibU8ctbTLLYTx5Rzo6JIttXe1i39Al6 CA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx6ggh8f2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 May 2023 13:21:31 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34VCiX58031717;
+ Wed, 31 May 2023 13:21:30 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx6ggh8ev-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 May 2023 13:21:30 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34VBLt6R008119;
+ Wed, 31 May 2023 13:21:30 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
+ by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3qu9g8btr3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 May 2023 13:21:30 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34VDLS3E3801616
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 31 May 2023 13:21:28 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F2DF58055;
+ Wed, 31 May 2023 13:21:28 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8BFF558043;
+ Wed, 31 May 2023 13:21:27 +0000 (GMT)
+Received: from [9.61.88.233] (unknown [9.61.88.233])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 31 May 2023 13:21:27 +0000 (GMT)
+Message-ID: <cc329c28-2727-5a2e-8798-82d01a095c73@linux.ibm.com>
+Date: Wed, 31 May 2023 09:21:27 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 1/2] linux-headers: Update with vfio_ap IRQ index mapping
+Content-Language: en-US
+To: Cornelia Huck <cohuck@redhat.com>, Matthew Rosato
+ <mjrosato@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, jjherne@linux.ibm.com, pasic@linux.ibm.com,
+ fiuczy@linux.ibm.com, thuth@redhat.com, farman@linux.ibm.com,
+ borntraeger@linux.ibm.com
+References: <20230530225544.280031-1-akrowiak@linux.ibm.com>
+ <20230530225544.280031-2-akrowiak@linux.ibm.com>
+ <06630472-57c8-89dd-ad80-75fb4d0d7de9@linux.ibm.com>
+ <76dd7f44-56a5-91fd-13c2-fb1579c588ab@linux.ibm.com>
+ <87sfbck5sz.fsf@redhat.com>
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <87sfbck5sz.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TtLmr7xw0voHsR8ouwZCb5DnCfTQXCGl
+X-Proofpoint-ORIG-GUID: _HOVu6umuq-NfjfP5nZ99U_8u5yidy6e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-31_08,2023-05-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 mlxscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305310112
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -67,80 +117,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 13:47:42 +0200
-Klaus Jensen <its@irrelevant.dk> wrote:
 
-> From: Klaus Jensen <k.jensen@samsung.com>
+
+On 5/31/23 9:07 AM, Cornelia Huck wrote:
+> On Wed, May 31 2023, Anthony Krowiak <akrowiak@linux.ibm.com> wrote:
 > 
-> Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
-> message.
+>> On 5/30/23 8:56 PM, Matthew Rosato wrote:
+>>> On 5/30/23 6:55 PM, Tony Krowiak wrote:
+>>>> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+>>>> ---
+>>>>    linux-headers/linux/vfio.h | 9 +++++++++
+>>>>    1 file changed, 9 insertions(+)
+>>>
+>>> Worth nothing here that linux-headers patches should be generated using scripts/update-linux-headers.sh.
+>>>
+>>> Since this linux-headers update includes changes that aren't merged into the kernel yet, I would still use update-linux-headers.sh -- but also include in the commit message that this is a placeholder patch that includes unmerged uapi changes.  Then once the kernel changes merge you can just have a proper linux-headers update patch in a subsequent qemu series.
+>>
+>> I guess I do not understand the procedure here. I first determined the
+>> latest kernel release in which the vfio.h file was updated with the
+>> following command:
+>> git log --oneline origin/master -- linux-headers/linux/vfio.h
+>>
+>> According to the git log, the vfio.h file was last updated in kernel
+>> v6.3-rc5. I cloned that kernel from
+>> git.kernel.org/pub/scm/linux/kernel/git/stable and checked out kernel
+>> 6.3-rc5. I then made the changes to the linux-headers/linux/vfio.h file
+>> and ran the update-linux-headers.sh script and created this patch from
+>> that. Where did I go wrong?
 > 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-LGTM
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
->  hw/i2c/smbus_master.c         | 28 ++++++++++++++++++++++++++++
->  include/hw/i2c/smbus_master.h |  2 ++
->  2 files changed, 30 insertions(+)
+> I think your procedure is fine for changes that are local to a single
+> header file. The one thing I'd recommend is to put an explicit "dummy
+> patch, to be replaced by a proper headers update" note into the patch,
+> so that it doesn't get merged by accident.
 > 
-> diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
-> index 6a53c34e70b7..47f9eb24e033 100644
-> --- a/hw/i2c/smbus_master.c
-> +++ b/hw/i2c/smbus_master.c
-> @@ -15,6 +15,34 @@
->  #include "hw/i2c/i2c.h"
->  #include "hw/i2c/smbus_master.h"
->  
-> +static uint8_t crc8(uint16_t data)
-> +{
-> +#define POLY (0x1070U << 3)
-> +    int i;
-> +
-> +    for (i = 0; i < 8; i++) {
-> +        if (data & 0x8000) {
-> +            data = data ^ POLY;
-> +        }
-> +
-> +        data = data << 1;
-> +    }
-> +
-> +    return (uint8_t)(data >> 8);
-> +#undef POLY
-> +}
-> +
-> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len)
-> +{
-> +    int i;
-> +
-> +    for (i = 0; i < len; i++) {
-> +        crc = crc8((crc ^ buf[i]) << 8);
-> +    }
-> +
-> +    return crc;
-> +}
-> +
->  /* Master device commands.  */
->  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read)
->  {
-> diff --git a/include/hw/i2c/smbus_master.h b/include/hw/i2c/smbus_master.h
-> index bb13bc423c22..d90f81767d86 100644
-> --- a/include/hw/i2c/smbus_master.h
-> +++ b/include/hw/i2c/smbus_master.h
-> @@ -27,6 +27,8 @@
->  
->  #include "hw/i2c/i2c.h"
->  
-> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len);
-> +
->  /* Master device commands.  */
->  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read);
->  int smbus_receive_byte(I2CBus *bus, uint8_t addr);
+> (For complex changes, headers update + explicit note might be better,
+> but the simple approach works in most cases.)
 
+Will do.
+
+> 
 
