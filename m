@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAE371806E
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109A6718077
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:55:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LLi-0007Dv-0I; Wed, 31 May 2023 08:54:46 -0400
+	id 1q4LLj-0007EP-8V; Wed, 31 May 2023 08:54:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LLc-0007BU-Sw
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:41 -0400
+ id 1q4LLf-0007D6-BN
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:43 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LLa-0006mc-Rw
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:40 -0400
+ id 1q4LLd-0006n6-GE
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=L/oNTY3b8TUVy638ADdD2WSFfGo4JzvoXYfBpNyyMeU=; b=UQ+1VkvVf+87fr740MqHnZPCNM
- OkXZISeGuc+a7bpx2LnnhwEMMe0L7/8ZHmY2dCG30VQNxJwM0gllva138Ys4eJFQEaKhTJy0E4bWj
- NZCUd3yEE2GMpZDdm6W3tEDZQOUZSyRqRhvFrj2/t17AedMA1bUgON/efzL3T/p57XO2O8RnhOL73
- 96cUK6RWNztDBDxvlhSchsrK3msVXZkqYaCyHDbPRlNVNhxWXVFOhNPfvOJpZbfHWesVMOYx7r+pW
- wxFVfaTkSTHwNiY71fqMlosKkMOrSvf/vrMwYNChr4LUgrh2VQmDi31ku7JbXeLSeb5XBMUsOH6a7
- ei6y9nBndaPInMzdZWBiiTUdjVjcS7zVe8dkyD3c8bFiavKB4l3fKzH5s2DXDj4sILbwAmZ+LFDvr
- wdWZew9GPU0c7jdGXI9X4QWNzLcgt2EcLi6lvWgNoyBgq6CMRvhzWqK/goqwVh1rw9jo0GpK2V1IC
- EU6Parfsl3tOYBB82OZ3AQ6GKVyq4THnUoXwiOfxrou0MrfuBWjbmetQDAyB+q0Cje846kaSRdTfM
- G4sluv9xiBB5Xlk4fKfJk9g2rnPgrYVXH3AojD4S+FH/79fqIcoDd7UkjRPIp+9vIIoBNJvtieGNC
- 7ijkoCW8lMAeHnC5NZCo72SRSrYac/M+zrzay8gNY=;
+ bh=G1PTh/215G42j3AwR3rcSWj9cXdCIZl1IOqT7+r1HKA=; b=DP3usvGlXDJNMDAX4yARUWjzyO
+ dkmC+RSCckpJD3KxOAiasOXtvpw7hOPN0cngTeCf6w8u//Sv+OGoUyiSeV2CfOWiSlmxQNNb2/Jvr
+ oAroaClVHpxCyBVtV5Q68yNAMYY3JB11d3SpoQkJjhpTM5EcGRKtqbkffJmgkeMH1ks6wKlQsyCya
+ MKlgWjsjIU6/COP8ITcyoEvSHPeX+gTBnvDLZqiPm62jBHTIXUlmH1bfoPQfl894ccX17tktv1NJQ
+ 4jK3ifVbgd4ODHGh3/s/7HO3jng20UaXNJN2UzICrSK7lWVc22iqaqXHfSOpTBkxPk0ymZe+qZD2+
+ UPRhAMPOqaeb1SDEh3BQwmDlV1AFLqIVTuvWuoG0N1jFoBsIuUQKUOoMm8cz7KDLnUw31vTdtmjvx
+ g/mVuiBuys4wIIDEKeKg780jQME7Z30uvzFQw511393FsIvA7wNsYsRGWt+/Go0Ht+1Pjxl+tNMAF
+ xohCbE2/2Hfnqaq7VgX14dx3eIgTg4pdcBuUk1g8LPBbTb8Nl4P1wVSyWXGx0t3gYctN+ap+OLsl6
+ aO6o8mORgSOB0jZUzAfvyUvbbWrQjUuTJConCh4TEmsZqoHOukbzmFxRVAgyEAXtsNMD2+OTAN4lb
+ WJ6TqPCxMKisCmnPKdPCSCl1gu2bmhDGDssbnc6YA=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LLP-0008vd-Hu; Wed, 31 May 2023 13:54:31 +0100
+ id 1q4LLT-0008vd-Oq; Wed, 31 May 2023 13:54:35 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 31 May 2023 13:53:41 +0100
-Message-Id: <20230531125400.288917-5-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 31 May 2023 13:53:42 +0100
+Message-Id: <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 04/23] q800: rename q800_init() to q800_machine_init()
+Subject: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,39 +77,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will enable us later to distinguish between QOM initialisation and machine
-initialisation.
+Also change the instantiation of the CPU to use object_initialize_child()
+followed by a separate realisation.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/m68k/q800.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/m68k/q800.c         | 13 ++++++++-----
+ include/hw/m68k/q800.h |  2 ++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 93a3f96991..3730b30dd1 100644
+index 3730b30dd1..c34b2548ca 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -362,7 +362,7 @@ static uint8_t fake_mac_rom[] = {
-     0x60, 0xFE                          /* bras [self] */
+@@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+ 
+ static void q800_machine_init(MachineState *machine)
+ {
+-    M68kCPU *cpu = NULL;
++    Q800MachineState *m = Q800_MACHINE(machine);
+     int linux_boot;
+     int32_t kernel_size;
+     uint64_t elf_entry;
+@@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+     }
+ 
+     /* init CPUs */
+-    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+-    qemu_register_reset(main_cpu_reset, cpu);
++    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
++                            M68K_CPU_TYPE_NAME("m68040"));
++    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
++    qemu_register_reset(main_cpu_reset, &m->cpu);
+ 
+     /* RAM */
+     memory_region_add_subregion(get_system_memory(), 0, machine->ram);
+@@ -430,7 +432,8 @@ static void q800_machine_init(MachineState *machine)
+ 
+     /* IRQ Glue */
+     glue = qdev_new(TYPE_GLUE);
+-    object_property_set_link(OBJECT(glue), "cpu", OBJECT(cpu), &error_abort);
++    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
++                             &error_abort);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
+ 
+     /* VIA 1 */
+@@ -605,7 +608,7 @@ static void q800_machine_init(MachineState *machine)
+ 
+     macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
+ 
+-    cs = CPU(cpu);
++    cs = CPU(&m->cpu);
+     if (linux_boot) {
+         uint64_t high;
+         void *param_blob, *param_ptr, *param_rng_seed;
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index 76ea6560b2..0f54f1c2cf 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -29,6 +29,8 @@
+ 
+ struct Q800MachineState {
+     MachineState parent_obj;
++
++    M68kCPU cpu;
  };
  
--static void q800_init(MachineState *machine)
-+static void q800_machine_init(MachineState *machine)
- {
-     M68kCPU *cpu = NULL;
-     int linux_boot;
-@@ -738,8 +738,9 @@ static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
- static void q800_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-+
-     mc->desc = "Macintosh Quadra 800";
--    mc->init = q800_init;
-+    mc->init = q800_machine_init;
-     mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
-     mc->max_cpus = 1;
-     mc->block_default_type = IF_SCSI;
+ #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 -- 
 2.30.2
 
