@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398D3718605
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B7D0718648
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:27:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NdT-0006AJ-MQ; Wed, 31 May 2023 11:21:15 -0400
+	id 1q4NiM-0007du-UZ; Wed, 31 May 2023 11:26:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4NdM-0006A3-DP
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:21:08 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4NdH-0006xC-Os
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:21:08 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b01d912924so48246445ad.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685546461; x=1688138461;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TQZdbKQGqfsm8cKbHbYrCoCvbK7EOhjeQAgyrtYW1Qo=;
- b=OXauaZViWqMBhdGk5CjOCyEq7WLMF+Byyqs4UGXXYOq7A2+4rgCkeXt5oU1/V3gCEN
- OxRNhwxGeuSppbhkKc2t+O4AnVtB+gqL4ay36jjbCuW0DkGZ/aoJjBzRtgk0vr4Y6kOU
- OGJStFNv6VNRNX90s+q+gCI31jPGDYvdxATFfIWOIRE9ZJ46M/JarPFY7ZFmVEQiqtH1
- j76frWqN2KdMzHLGl+GTRYS+KLBDD+lS1Vqx7MGRe3UpgkMX2A8757wFlolFBHBjXv2c
- RhPlO/HBnTI2n7t0ZotWaYCjSmcXDtSvDEj+ZbNQmEdvf27TSYbWSlJQx/vOZUtEsdk+
- WEHg==
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NiK-0007dT-UL
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:26:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NiI-0007u7-FH
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:26:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685546773;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vJ0jG4K9ITQ95SWZj3aGT+I4DmumPIpYTQ9qwKxCeNc=;
+ b=MWJyO4OmQ+UgzikrVYhmWnlyUaPel2T8T1rS1sQQnmaluyYCVuRfEkpmkhDdzJH3YJzl6R
+ zbMy/YGwweLLGqRWO+2MvZBymzRxWiqum8vJ4EOf+cHB4fWixELDLcxbWPrnwaSf2+96xx
+ VAOvcZEjyesa3hKadQN+4G9Nrv2U1Ww=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-kGzfnWA0NJaaLNsa6mMitw-1; Wed, 31 May 2023 11:26:12 -0400
+X-MC-Unique: kGzfnWA0NJaaLNsa6mMitw-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-3f6bb50f250so73553701cf.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:26:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685546461; x=1688138461;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TQZdbKQGqfsm8cKbHbYrCoCvbK7EOhjeQAgyrtYW1Qo=;
- b=TQd9TBPivGfAav1Ip119fg6gfDyIWAktIJwx9oyNWYLM9YnSQ1PeSf6pr+52s29akv
- 1lpJyxQ6YH4Y973A7pD+wb0lGxnZDJ9kGJBgulamXg4PUv+GI2CGP/5bbRdOxkLdg+Cs
- OpqSfCWwXyIYnKIf1ogXBlux8LYwL40FdlhsBEqIU4QngK1cBjSpB+Rst3d4BB66gIKG
- vBzZ3QjScUE4eoZKmAtKPUXpqKnyo6mpvrOA2GUllLQpck4f0ZYKb9KGuRXmUiGMcx7C
- uKNA4XLt35FVmjWt0fPrDoTYJjoLxTQi+O8WKSqkEHCP9EezP2Fu+fmtl9XGQ3xgjsPc
- CrSA==
-X-Gm-Message-State: AC+VfDxfsjF0NEoCOJi9Ccyt4L6fl1j4ovRf4wcBxV1fKPkpM7iOB86A
- tl3xSPTsnpOneAZxox3t05Znew==
-X-Google-Smtp-Source: ACHHUZ4FSJd8p8kurLwDSOULGjzRTU8F9BGNUhSfUvVKRE2DpoHGIGfclJOB9khHWRAyIzMb9kvOSw==
-X-Received: by 2002:a17:902:d70c:b0:1ac:83d1:9269 with SMTP id
- w12-20020a170902d70c00b001ac83d19269mr4763341ply.16.1685546461282; 
- Wed, 31 May 2023 08:21:01 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
- ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
- by smtp.gmail.com with ESMTPSA id
- k6-20020a170902760600b001b1920cffdasm130806pll.204.2023.05.31.08.21.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 08:21:00 -0700 (PDT)
-Message-ID: <898303d1-2278-beca-b5ce-6dff46e0faab@linaro.org>
-Date: Wed, 31 May 2023 08:20:58 -0700
+ d=1e100.net; s=20221208; t=1685546771; x=1688138771;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vJ0jG4K9ITQ95SWZj3aGT+I4DmumPIpYTQ9qwKxCeNc=;
+ b=eYWpsImfIyA19ua7Rr0YcbOFqLd/H9yQ8dvZdJVcqFgJyPSBFDISepKdJPGKfVyJve
+ 5BjR4jzxOdQLuKZl4Q6PYUQfdG+/DhWS6A2jnDslRumOiAlOvRLBY7YJQN9yPLwFa2Rc
+ N0zdSFRnz6PAJKAPsVzf1i56Q5wHkrKI9Ed5MKd0WUgiT5zI4rXVTqfM71LgbhKP3LW4
+ dwXpf/1ZJPkGeWh3jHS5qCY+SmMGIMBebn1KGLSo27H2+dasoo+aamq6bpVuo13C9KOC
+ KiGiqTPLnp7ZnGHixBxq/BscnIYARiLbStviv2wg9UfqGrbgTc1StI4EuvjUfvhkkLmD
+ wlfQ==
+X-Gm-Message-State: AC+VfDycUAEEkLBcLhywcb206SZxfuQSh6O+OCVsw2cmmMXxPGwUXDO4
+ s9sY1sRxs3+ddmiKBqCDi7yXP23hExRKHnWjgSF8iLwFBIcYwQecF7TGJy6UWNafFPXDHB+rWSh
+ E6TF/RClsBp+qsQf+tWCaGtGTXnz3gIo=
+X-Received: by 2002:a05:622a:15d1:b0:3f6:9cfd:ca49 with SMTP id
+ d17-20020a05622a15d100b003f69cfdca49mr5809306qty.58.1685546771627; 
+ Wed, 31 May 2023 08:26:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5ZC0qjVC5Ff36dvgoqR+ro8ejxphjDtVC0YAk12bWU3aYtu1K8yNL0LcoPJAjV2USVVp6v5SB8RpQa9KmQJu4=
+X-Received: by 2002:a05:622a:15d1:b0:3f6:9cfd:ca49 with SMTP id
+ d17-20020a05622a15d100b003f69cfdca49mr5809285qty.58.1685546771334; Wed, 31
+ May 2023 08:26:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] tests/avocado/virtio-gpu: Cancel test if drm rendering is
- not available
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230530180330.48722-1-thuth@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230530180330.48722-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230531140654.1141145-1-berrange@redhat.com>
+In-Reply-To: <20230531140654.1141145-1-berrange@redhat.com>
+From: Camilla Conte <cconte@redhat.com>
+Date: Wed, 31 May 2023 16:25:35 +0100
+Message-ID: <CACPOWh3x=YA1U4DNaoWm8aoZyFUkqTWXqpPuAuYp4KH5i4jyHw@mail.gmail.com>
+Subject: Re: [PATCH] gitlab: switch from 'stable' to 'latest' docker container
+ tags
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cconte@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,44 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 11:03, Thomas Huth wrote:
-> The test_vhost_user_vga_virgl test currently fails on some CI
-> machines with:
-> 
->   qemu-system-x86_64: egl: no drm render node available
->   qemu-system-x86_64: egl: render node init failed
-> 
-> The other test in this file already checks whether there is
-> an error while starting QEMU - we should do the same for the
-> test_vhost_user_vga_virgl test, too.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On Wed, May 31, 2023 at 3:07=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> The 'stable' and 'stable-dind' tags are not documented as supported
+> tags at:
+>
+>   https://hub.docker.com/_/docker
+>
+> Looking at their content they reflect docker 19.x.x release series,
+> were last built in Dec 2020, and have 3 critical and 20 high rated
+> CVEs unfixed. This obsolete status is attested by this commit:
+>
+>   https://github.com/docker-library/docker/commit/606c63960a4845af7077721=
+eb3900c706f5d0c5e
+>
+> The 'stable-dind' tag in particular appears buggy as it is unable to
+> resolve DNS for Fedora repos:
+>
+>   - Curl error (6): Couldn't resolve host name for https://mirrors.fedora=
+project.org/metalink?repo=3Dfedora-37&arch=3Dx86_64&countme=3D1 [getaddrinf=
+o() thread failed to start]
+>
+> We used the 'stable' tag previously at the recommendation of GitLab
+> docs, but those docs are wrong and pending a fix:
+>
+>   https://gitlab.com/gitlab-org/gitlab/-/issues/409430
+>
+> Fixes: 5f63a67adb58478974b91f5e5c2b1222b5c7f2cc
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 > ---
->   tests/avocado/virtio-gpu.py | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+>  .gitlab-ci.d/container-template.yml | 4 ++--
+>  .gitlab-ci.d/opensbi.yml            | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container=
+-template.yml
+> index 9ac4a0ee25..8c1370b8f0 100644
+> --- a/.gitlab-ci.d/container-template.yml
+> +++ b/.gitlab-ci.d/container-template.yml
+> @@ -1,9 +1,9 @@
+>  .container_job_template:
+>    extends: .base_job_template
+> -  image: docker:stable
+> +  image: docker:latest
+>    stage: containers
+>    services:
+> -    - docker:stable-dind
+> +    - docker:dind
+>    before_script:
+>      - export TAG=3D"$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
+>      - export COMMON_TAG=3D"$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:lat=
+est"
+> diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+> index 2e9d51764e..b4d7eef688 100644
+> --- a/.gitlab-ci.d/opensbi.yml
+> +++ b/.gitlab-ci.d/opensbi.yml
+> @@ -42,9 +42,9 @@
+>  docker-opensbi:
+>    extends: .opensbi_job_rules
+>    stage: containers
+> -  image: docker:stable
+> +  image: docker:latest
+>    services:
+> -    - docker:stable-dind
+> +    - docker:dind
+>    variables:
+>      GIT_DEPTH: 3
+>      IMAGE_TAG: $CI_REGISTRY_IMAGE:opensbi-cross-build
+> --
+> 2.40.1
+>
 
-Thanks.  I have applied this to master directly, trying to green the board.
-
-
-r~
-
-> 
-> diff --git a/tests/avocado/virtio-gpu.py b/tests/avocado/virtio-gpu.py
-> index e3b58fe799..89bfecc715 100644
-> --- a/tests/avocado/virtio-gpu.py
-> +++ b/tests/avocado/virtio-gpu.py
-> @@ -143,7 +143,11 @@ def test_vhost_user_vga_virgl(self):
->               "-append",
->               self.KERNEL_COMMAND_LINE,
->           )
-> -        self.vm.launch()
-> +        try:
-> +            self.vm.launch()
-> +        except:
-> +            # TODO: probably fails because we are missing the VirGL features
-> +            self.cancel("VirGL not enabled?")
->           self.wait_for_console_pattern("as init process")
->           exec_command_and_wait_for_pattern(
->               self, "/usr/sbin/modprobe virtio_gpu", ""
+Reviewed-by: Camilla Conte <cconte@redhat.com>
 
 
