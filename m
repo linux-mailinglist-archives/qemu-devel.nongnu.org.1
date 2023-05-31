@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32890718078
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C26C7180AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:57:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LLu-0007Nk-Be; Wed, 31 May 2023 08:54:59 -0400
+	id 1q4LLy-0007UF-GY; Wed, 31 May 2023 08:55:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LLp-0007Fw-D8
+ id 1q4LLp-0007G3-PP
  for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:53 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LLn-0006oO-RO
+ id 1q4LLo-0006oR-6z
  for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
@@ -24,26 +24,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=+EoYpk79DRnwCqz7NTD90XLsiCWepCWMd4Vqjezfi0U=; b=stlCki5i0KeU90EK/P6t/ihOzi
- WW6wZyxMCAvdTnPe7qSEy+mR1AVtXLwWXJzdwhsQB9Wkm5txZ5hSb3en7RxxX4CmZkiY2wzzp/5Nr
- EZ2uA5fdC0hyHqinJFtjMKuQx0fKomCsHcFR/+8t6lrKfr0kbgI4Ss73kHCByOx7kKcsVKUiRfPys
- Vlq0UKqnql/8q0dIMBQ2Z63PO/BkSJ0YCnEnRfZfgmTij0dvXZFqmLz6BoU8gK/Z4tFTzZBT+DxWP
- k69+2CSj7HL7S0c1sBYniYZcxuxhdxf8iT+/mOFDTmqKnhMitXxE3Ah033+tIHkej6JaBzBFmMRam
- 6F1MmEKGoZ/Yzm7L2Hg7afSSMjDC6c1Sr4rf30Pv8mqLtVb41vV0YV0i7xQMAXaiPIHQcRdZeCJhO
- hM+RLpNKC/l/zj9Rcsijb4gu5hyZZ9rXBeuthU1FUpxR/NdOiup2zMk/Tq9P4k+Zepw9vRvwqB3np
- BlCsdZSyCAolpUL1p4fhYUSEKKvMUdJbMVEI3W6YgClXFji/y410zRWoBHJBw5YE0c3brpJsl06nF
- hzlMASDfPr0UPWI6yk6auk0804/ihDB5HFRtsMyRu77VhvnwRk1yxixh4dQyF1rxzS/qfuC2VUnGo
- XG+aQiPflVVJDp6w8WAeVWQlaANFCsHpwJMyKKwQQ=;
+ bh=ODJ/kno/6QYjZEa/ptLFF5r0Qh1T/UZPOItOZTLhqhs=; b=SrzQMjxICVHjfuahhX1S0qyf0p
+ u2XN8Ry+Djgos53uwC54UrovMM0QBI91Dx4/mE+3jT/TuihbmKRHlpQ6WKTvPO6qXdqnopAqCYeTV
+ XT0juZTPJZ0LSUew0n1j/fCtwe4I3ZOLTbApO29QWSm308gaUNkPAsM5lp1QhJHFr+5XRoVXPw+D3
+ V96AUmfktQ24D4NY4k2Mr9vpTdfZWbprChIUcnsFvfRbEvwRazcgy9Sf1ZwJnxsT5q8VcpgXZ656/
+ UalMJGejD90UAcTL6FdsI5N7QuuXay36G4Rt49NWvxxkkE4kFp7IJPyogSlfnlXjoF/97purq2xO7
+ gbfxWezzG9wT7pR49hcjG/2W1CRcJgNdxTxn0SXD8ETQU8fixgFYy2UMdounn/m7Lo2cCcNy1nUx1
+ Gu9k7rO2ao+6L8fFIvI5TlfAC0uoY4Tm0xdtyspNaZDiRJhV0G/19Yl+RlBdk5PuZAS4Nhi+HtsO7
+ w77jO4eAG+TCotWlzJXsSKMUwNLeDkerCOeTrD3uhaJQVPfLNWpvcA1BGcf/wiMRn1EZ1W0iGSM+1
+ /MeIHiCQpp3nOQRrNh9+H16zaHAjLYgl8faF8FzRZlnKW1ec/EMvnQThk1qFn0MzWT5w/O6/O4jf4
+ lEehDVfLHjinzO9fLBAookLIeKoqUk9JdGynh2liE=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LLg-0008vd-FY; Wed, 31 May 2023 13:54:46 +0100
+ id 1q4LLi-0008vd-CR; Wed, 31 May 2023 13:54:46 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 31 May 2023 13:53:45 +0100
-Message-Id: <20230531125400.288917-9-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 31 May 2023 13:53:46 +0100
+Message-Id: <20230531125400.288917-10-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 08/23] q800: move GLUE device to Q800MachineState
+Subject: [PATCH v2 09/23] q800: introduce mac-io container memory region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,112 +77,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also change the instantiation of the GLUE device to use object_initialize_child().
+Move all devices from the IO region to within the container in preparation
+for updating the IO aliasing mechanism.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/q800.c         | 24 ++++++++++++++----------
- include/hw/m68k/q800.h |  3 +++
- 2 files changed, 17 insertions(+), 10 deletions(-)
+ hw/m68k/q800.c         | 6 ++++++
+ include/hw/m68k/q800.h | 1 +
+ 2 files changed, 7 insertions(+)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 1d9dad60b3..7bd8e795d2 100644
+index 7bd8e795d2..2394d14c97 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -158,7 +158,6 @@ static void q800_machine_init(MachineState *machine)
-     SysBusDevice *sysbus;
-     BusState *adb_bus;
-     NubusBus *nubus;
--    DeviceState *glue;
-     DriveInfo *dinfo;
-     uint8_t rng_seed[32];
+@@ -178,6 +178,12 @@ static void q800_machine_init(MachineState *machine)
+     /* RAM */
+     memory_region_add_subregion(get_system_memory(), 0, machine->ram);
  
-@@ -195,10 +194,10 @@ static void q800_machine_init(MachineState *machine)
-     }
- 
-     /* IRQ Glue */
--    glue = qdev_new(TYPE_GLUE);
--    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
-+    object_initialize_child(OBJECT(machine), "glue", &m->glue, TYPE_GLUE);
-+    object_property_set_link(OBJECT(&m->glue), "cpu", OBJECT(&m->cpu),
-                              &error_abort);
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
-+    sysbus_realize(SYS_BUS_DEVICE(&m->glue), &error_fatal);
- 
-     /* VIA 1 */
-     via1_dev = qdev_new(TYPE_MOS6522_Q800_VIA1);
-@@ -209,10 +208,12 @@ static void q800_machine_init(MachineState *machine)
-     sysbus = SYS_BUS_DEVICE(via1_dev);
-     sysbus_realize_and_unref(sysbus, &error_fatal);
-     sysbus_mmio_map(sysbus, 1, VIA_BASE);
--    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(glue, GLUE_IRQ_IN_VIA1));
-+    sysbus_connect_irq(sysbus, 0,
-+                       qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_VIA1));
-     /* A/UX mode */
-     qdev_connect_gpio_out(via1_dev, 0,
--                          qdev_get_gpio_in_named(glue, "auxmode", 0));
-+                          qdev_get_gpio_in_named(DEVICE(&m->glue),
-+                                                 "auxmode", 0));
- 
-     adb_bus = qdev_get_child_bus(via1_dev, "adb.0");
-     dev = qdev_new(TYPE_ADB_KEYBOARD);
-@@ -225,7 +226,8 @@ static void q800_machine_init(MachineState *machine)
-     sysbus = SYS_BUS_DEVICE(via2_dev);
-     sysbus_realize_and_unref(sysbus, &error_fatal);
-     sysbus_mmio_map(sysbus, 1, VIA_BASE + VIA_SIZE);
--    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(glue, GLUE_IRQ_IN_VIA2));
-+    sysbus_connect_irq(sysbus, 0,
-+                       qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_VIA2));
- 
-     /* MACSONIC */
- 
-@@ -258,7 +260,8 @@ static void q800_machine_init(MachineState *machine)
-     sysbus = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(sysbus, &error_fatal);
-     sysbus_mmio_map(sysbus, 0, SONIC_BASE);
--    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(glue, GLUE_IRQ_IN_SONIC));
-+    sysbus_connect_irq(sysbus, 0,
-+                       qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_SONIC));
- 
-     memory_region_init_rom(dp8393x_prom, NULL, "dp8393x-q800.prom",
-                            SONIC_PROM_SIZE, &error_fatal);
-@@ -295,7 +298,8 @@ static void q800_machine_init(MachineState *machine)
-     sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(escc_orgate, 0));
-     sysbus_connect_irq(sysbus, 1, qdev_get_gpio_in(escc_orgate, 1));
-     qdev_connect_gpio_out(DEVICE(escc_orgate), 0,
--                          qdev_get_gpio_in(glue, GLUE_IRQ_IN_ESCC));
-+                          qdev_get_gpio_in(DEVICE(&m->glue),
-+                                           GLUE_IRQ_IN_ESCC));
-     sysbus_mmio_map(sysbus, 0, SCC_BASE);
- 
-     /* SCSI */
-@@ -350,7 +354,7 @@ static void q800_machine_init(MachineState *machine)
-      * Since the framebuffer in slot 0x9 uses a separate IRQ, wire the unused
-      * IRQ via GLUE for use by SONIC Ethernet in classic mode
-      */
--    qdev_connect_gpio_out(glue, GLUE_IRQ_NUBUS_9,
-+    qdev_connect_gpio_out(DEVICE(&m->glue), GLUE_IRQ_NUBUS_9,
-                           qdev_get_gpio_in_named(via2_dev, "nubus-irq",
-                                                  VIA2_NUBUS_IRQ_9));
- 
++    /*
++     * Create container for all IO devices
++     */
++    memory_region_init(&m->macio, OBJECT(machine), "mac-io", IO_SLICE);
++    memory_region_add_subregion(get_system_memory(), IO_BASE, &m->macio);
++
+     /*
+      * Memory from IO_BASE to IO_BASE + IO_SLICE is repeated
+      * from IO_BASE + IO_SLICE to IO_BASE + IO_SIZE
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 3e41f0e297..8e1bb0735d 100644
+index 8e1bb0735d..b9de8e36cd 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -23,6 +23,8 @@
- #ifndef HW_Q800_H
- #define HW_Q800_H
- 
-+#include "hw/m68k/q800-glue.h"
-+
- /*
-  * The main Q800 machine
-  */
-@@ -32,6 +34,7 @@ struct Q800MachineState {
- 
+@@ -35,6 +35,7 @@ struct Q800MachineState {
      M68kCPU cpu;
      MemoryRegion rom;
-+    GLUEState glue;
+     GLUEState glue;
++    MemoryRegion macio;
  };
  
  #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
