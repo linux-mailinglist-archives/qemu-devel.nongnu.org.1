@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21A1718723
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8812F718729
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:16:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4OSQ-0006h2-GS; Wed, 31 May 2023 12:13:55 -0400
+	id 1q4OUR-0007yc-8O; Wed, 31 May 2023 12:15:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4ORZ-0006UN-0h
- for qemu-devel@nongnu.org; Wed, 31 May 2023 12:13:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ernunes@redhat.com>)
+ id 1q4OSq-000719-AM
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 12:14:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4ORO-000172-TF
- for qemu-devel@nongnu.org; Wed, 31 May 2023 12:12:59 -0400
+ (Exim 4.90_1) (envelope-from <ernunes@redhat.com>)
+ id 1q4OSo-0001kY-Kc
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 12:14:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685549566;
+ s=mimecast20190719; t=1685549657;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zgxupfJVM49EWzcz406UgK9SUb0t90kmFdlOVXcnu4c=;
- b=H+uyNENTiASQVCFtC9/qdD/fmKRvd+5J5bBhlgpBmmQfCClcyWpNXhzF0amfLBgkcAOJz+
- AVSZTWj5WBpbnIODEsgUXUaYo3oJWVw5trizbfniTOrkSPTrbZMN4afUuvbPjjQRZSD124
- xNO5J7htmMPGObpcELYAliZCmjoTFPE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mOGdo6Z/cP6eypmggAOurHpMCJPAEYWRHpbvmrQbNj8=;
+ b=Q/P8lqGDds9NhRwRk1V9smdGh7Mi1zYZeLUUPmOThSGSwY6qhm5xVZ+H8dTIVxrXjiUNDY
+ UP2PueBkzoPJuYxbCp2tubyobnIdugcL/3eyMeAVkuDoWhz1itZhu9sVZK/l9+slXIoJxW
+ NvCFjiF78VkEEPArP340amq7IlyCCxg=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-Qq0xW_0cMEucmVUaTCcwyA-1; Wed, 31 May 2023 12:12:45 -0400
-X-MC-Unique: Qq0xW_0cMEucmVUaTCcwyA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f6ffc45209so6035675e9.0
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 09:12:44 -0700 (PDT)
+ us-mta-207-3Pw2Fn1bNfaPLPOcS5xC2Q-1; Wed, 31 May 2023 12:14:15 -0400
+X-MC-Unique: 3Pw2Fn1bNfaPLPOcS5xC2Q-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-96f6fee8123so486301666b.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 09:14:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685549564; x=1688141564;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1685549655; x=1688141655;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zgxupfJVM49EWzcz406UgK9SUb0t90kmFdlOVXcnu4c=;
- b=IXjcSJMOgy6kB5KoKN9mNDlvUnP32c8qqtieIat8bTBTfzp2rInb6vqfeoGP1sLwhh
- mexfW64UJ7l8C+Vvib+uNMAyLWA2CPx9Tk0nDPauEvdWzJC4cB/pjpmButS0m3kpx3cv
- A2PhhdEYavTECdIa5Mj94kbMpL9A6SW2aDrr+ZXK3FFtYscdYSFCwt8YRgHdWsFvSw/v
- NOB0vaCas6vfZ7Nu19Go8bghG7E4EYS9ZeEOz2dkg6u6qHRPFA0Ptc7oM4mEH45ApKAW
- pVzqDSjiWNjJq+JCr2ZBxnz2TJFYBOZvAHzKb+OEWjGkWU0iMQKr3w6duUige17FBYh8
- mFeQ==
-X-Gm-Message-State: AC+VfDyucjtr7XK1VUuZc8FT69xpV22rGO9hjHsGuPbtDhdoJMaIEKhx
- UTK/daa2uKf9waMsBPRbhz6ojErEKCe6B7umFVJzJeMzbuTdq96S9MWud4sg97qb/BFx6ujj0qg
- SXlQvYUWMqaA+8paZ/bUdsxQ=
-X-Received: by 2002:a05:600c:35c8:b0:3f7:174b:bdbd with SMTP id
- r8-20020a05600c35c800b003f7174bbdbdmr1742086wmq.5.1685549564046; 
- Wed, 31 May 2023 09:12:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4ODviv1Z1Vv5ushKqQ76Bzs+ubhIaCjKhGm4bc/QwyyHFir6QjicHGeJjROzzduyXmyL7zKg==
-X-Received: by 2002:a05:600c:35c8:b0:3f7:174b:bdbd with SMTP id
- r8-20020a05600c35c800b003f7174bbdbdmr1742074wmq.5.1685549563740; 
- Wed, 31 May 2023 09:12:43 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-178-4.web.vodafone.de. [109.43.178.4])
+ bh=mOGdo6Z/cP6eypmggAOurHpMCJPAEYWRHpbvmrQbNj8=;
+ b=klExs3iKqrz772hN6RXtKLuxWL7n/bTX7dezq7mnd5tciWQvbJUR02QisUqgZXPwM4
+ 1CJ+kqs0vQilInuW1lTbWB9z2Lvzsk7G03wRH38fbjtDxEbLGNiWgs20xB99TlIKE5fA
+ Ek2+UdXKsl+dZVt8+K994IYwbmRUxPsMAmSrqnWMFw9orKcN76Jqd8Pk2/OGUiQbpIde
+ IqjZ8UWpvV3VA4LUNgGex7auvf2XabFAXQlz8BzCWegCh1+2Fz0vBApKeDWQOmowofNW
+ JWUPALE5EIM6uaI/rXYtgmtEXdZnpIyXQZ7pMufFjatVS0+WJPgmWebFtkci2IwZNI1c
+ Z0lA==
+X-Gm-Message-State: AC+VfDxfw7t35v7WQ+ae9hsvidboftLDaC0v1cYiQsR9RJp8/iq4nGb/
+ tZOra7BNrB8rsx/ncvBpUNfDquiuVQL0BRIQSMPR2xs341+GR7gSgDweRmpDUbpKYbaIKo1N+D/
+ WpLxuC/trfT453MU=
+X-Received: by 2002:a17:907:160f:b0:974:1ced:6a59 with SMTP id
+ hb15-20020a170907160f00b009741ced6a59mr5188586ejc.3.1685549654829; 
+ Wed, 31 May 2023 09:14:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6Qk0HCIsZk5bMUOhscMJXS9ZsN3RQmGOS0lK4WXbcwcENsK34642rTAsm8L4Mxe7sXKjhARQ==
+X-Received: by 2002:a17:907:160f:b0:974:1ced:6a59 with SMTP id
+ hb15-20020a170907160f00b009741ced6a59mr5188570ejc.3.1685549654568; 
+ Wed, 31 May 2023 09:14:14 -0700 (PDT)
+Received: from [10.43.17.57] (nat-pool-brq-t.redhat.com. [213.175.37.10])
  by smtp.gmail.com with ESMTPSA id
- n13-20020adfe78d000000b003078681a1e8sm7276173wrm.54.2023.05.31.09.12.42
+ am10-20020a170906568a00b0096ae152115bsm9319830ejc.175.2023.05.31.09.14.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 09:12:43 -0700 (PDT)
-Message-ID: <d0c21bbb-0448-4539-beae-893ef120fca4@redhat.com>
-Date: Wed, 31 May 2023 18:12:42 +0200
+ Wed, 31 May 2023 09:14:13 -0700 (PDT)
+Message-ID: <770c292c-9b74-fc68-19b4-09c806de1c4c@redhat.com>
+Date: Wed, 31 May 2023 18:14:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PULL 00/27] tcg patch queue
+Subject: Re: [PATCH 0/2] vhost-user-gpu get_edid feature
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, kraxel@redhat.com
+References: <20230511125803.594963-1-ernunes@redhat.com>
+ <CAJ+F1CK8+kPrGZfhWnk=91tUQCAggH=qHXjZ73K9ZF0t-1aTBA@mail.gmail.com>
+ <c42827cb-5201-1e2e-1dae-099527081d60@redhat.com>
+ <CAJ+F1C+eGxZtdu033HP-UdowLKrz94LdKwkRB=hfDm3amv1C-g@mail.gmail.com>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230530185949.410208-1-richard.henderson@linaro.org>
- <a2fd61cb-190b-9658-c6ef-0252679f1c5c@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <a2fd61cb-190b-9658-c6ef-0252679f1c5c@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Erico Nunes <ernunes@redhat.com>
+In-Reply-To: <CAJ+F1C+eGxZtdu033HP-UdowLKrz94LdKwkRB=hfDm3amv1C-g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ernunes@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -99,42 +104,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/05/2023 03.08, Richard Henderson wrote:
-> On 5/30/23 11:59, Richard Henderson wrote:
->> The following changes since commit 7fe6cb68117ac856e03c93d18aca09de015392b0:
->>
->>    Merge tag 'pull-target-arm-20230530-1' 
->> ofhttps://git.linaro.org/people/pmaydell/qemu-arm  into staging 
->> (2023-05-30 08:02:05 -0700)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20230530
->>
->> for you to fetch changes up to 276d77de503e8f5f5cbd3f7d94302ca12d1d982e:
->>
->>    tests/decode: Add tests for various named-field cases (2023-05-30 
->> 10:55:39 -0700)
->>
->> ----------------------------------------------------------------
->> Improvements to 128-bit atomics:
->>    - Separate __int128_t type and arithmetic detection
->>    - Support 128-bit load/store in backend for i386, aarch64, ppc64, s390x
->>    - Accelerate atomics via host/include/
->> Decodetree:
->>    - Add named field syntax
->>    - Move tests to meson
+On 24/05/2023 13:23, Marc-André Lureau wrote:
+> Hi Erico
 > 
-> Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as 
-> appropriate.
+> On Wed, May 17, 2023 at 8:09 PM Erico Nunes <ernunes@redhat.com
+> <mailto:ernunes@redhat.com>> wrote:
+> 
+>     On 15/05/2023 13:38, Marc-André Lureau wrote:
+>     > However, I worry about using the new backend (calling GET_EDID)
+>     with an
+>     > older front-end/QEMU. It may just hang, since
+>     > vhost_user_gpu_handle_display() won't reply to unknown messages.
+>     That's
+>     > what PROTOCOL_FEATURES were meant for, iirc. Can you check? thanks
+> 
+>     Indeed as you say, there is a hang with older qemu.
+> 
+>     From what I see there are the generic protocol_features and also a
+>     vhost-user-gpu message for them. I assume it is so that we don't have to
+>     add vhost-user-gpu specific features to the generic set?
+>     In any case, the current vhost-user-gpu specific protocol_features
+>     negotiation happens too late to enable or disable virtio-gpu features
+>     (triggered by VHOST_USER_GPU_SET_SOCKET). I suppose we could move it
+>     earlier to the time the generic protocol_features are negotiated,
+>     through the callback hooks that already exist in the vhost-user layer
+>     (not implemented so far by vhost-user-gpu though).
+>     So I guess we could remove the protocol_features negotiation that is
+>     currently triggered by VHOST_USER_GPU_SET_SOCKET and use that to prevent
+>     exposing VIRTIO_GPU_F_EDID at all. Does that make sense?
+> 
+> 
+> Wouldn't this work?
+> 
+> If VIRTIO_GPU_F_EDID is set and during protocol_features the GET_EDID
+> feature is not negotiated, exit the gpu backend with an error.
 
-Too bad that we've run out of CI minutes for the Windows jobs ... FYI, this 
-is causing now failure in the msys2 jobs:
+I sent v2 implementing it this way.
+It seems that qemu always requests the virtio feature though (even if
+you do pass edid=off to the device, it just doesn't expose it to the
+user but does request the feature bit). So given we can't change past
+qemu builds I'm not sure if there is a way to make an older qemu with an
+updated vhost-user-gpu work at all. The new implementation does print an
+error message in that case though.
 
-  https://gitlab.com/thuth/qemu/-/jobs/4385862382#L4821
-  https://gitlab.com/thuth/qemu/-/jobs/4385862378#L4632
+Thanks
 
-  Thomas
-
+Erico
 
 
