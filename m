@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D4D71842C
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 16:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A477718443
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 16:08:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4MRg-0000O3-1a; Wed, 31 May 2023 10:05:00 -0400
+	id 1q4MTx-00026l-0L; Wed, 31 May 2023 10:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MRe-0000Nj-3F
- for qemu-devel@nongnu.org; Wed, 31 May 2023 10:04:58 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MRT-0006ZF-H7
- for qemu-devel@nongnu.org; Wed, 31 May 2023 10:04:57 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3f6e1393f13so43962435e9.0
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 07:04:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685541886; x=1688133886;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RxhR/DyY8yQi+QxVJygV+w6JwUe1tsx8e6Je+gQnxS8=;
- b=JnPtvT54tEPDZ0xPdYbQVS/E9Hnzk5Rw3mZH779dCefdmBbDHEFNtI/h5WUPKerlV+
- nWXY7ybgEcNXFEI9Wacrd5KTt/cODGfv7Mj6z+mkqUUEKhXWCMlwRJxGnWAoo8gZOSTQ
- zRNZGKnwNeR6yLJL1ycfXQFesrarBbUBSt87jG2stttr9yu4jXpHyzoCgRbzb+779cdT
- EFeHs3m08KRCax2uk96Fmla415vC2wNbLrMeVqdylT1scM2lxvTx7d4wDIMRrkWMBMvq
- SjRyhMeIa2AfIpM3avbuyAymsLi04eJQF9xR2yyNjQ9vX5qfkyeuhs95NX4CpdNCo3ig
- +6bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685541886; x=1688133886;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RxhR/DyY8yQi+QxVJygV+w6JwUe1tsx8e6Je+gQnxS8=;
- b=MKGjQohrY7uAwTOYp7KymH0AtPisrWSatljR61t1Ywq1ee58SfJ+j+Z95NLge0CTvW
- Lu+3QZhO3d6MHFZiCikzVkzNRXMcMz1k7YuOZWdmbX/fFnxzZp5RHFDnNKIm0UgljrTo
- 12KDnkVzDbdLIrbJndYH2AKfZHHdlboVcJ8iuq6sVg3XxejtcpLYjQrvJkdJ8aH5J3HY
- V76l6E8H2PzUQuuY7KT6mPlH19372KrBh6aOAsZcSpFYxgqXyB0Z0oDsUz7hvSRCTmwT
- Vo27AW016PxSAWHiBMH5MCMy/xnRfWOjWFA4OFRWvpAj3LEAVipHnJ2YW+1RFGaQ17//
- mcSg==
-X-Gm-Message-State: AC+VfDybLS+wWkU+TT7AKj48NvsmZNMKBXnuhxme7epCm7994pJiDDwc
- +2WWJLmtzkTdvTL9qDXoqWjLIQ==
-X-Google-Smtp-Source: ACHHUZ7/iNGYNS5VL1+XALrhoNwMNg293i7tZ3MQlWLl3CFKLl597UMcJ7UTk+8W+DFSuNI8sNTihw==
-X-Received: by 2002:a05:600c:2186:b0:3f7:5d:4a17 with SMTP id
- e6-20020a05600c218600b003f7005d4a17mr3852595wme.4.1685541885869; 
- Wed, 31 May 2023 07:04:45 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.146.12])
- by smtp.gmail.com with ESMTPSA id
- q25-20020a7bce99000000b003f4268f51f5sm21089690wmj.0.2023.05.31.07.04.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 07:04:45 -0700 (PDT)
-Message-ID: <128d27a8-a2e4-6dc5-d32d-f1b4a671959c@linaro.org>
-Date: Wed, 31 May 2023 16:04:43 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4MTu-00026P-Fo
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 10:07:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4MTs-0007NR-63
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 10:07:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685542034;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YDRTt3QA395WCblD2uVJc4hRFAaDqkrnfRfZ8FVmcSA=;
+ b=Iyf3jEFLYYk+JWT2xHGPGw+F1Eo+Q2HAcDX1QuxamDnoZnbINEKqbu3srBqz6sVHOgr+ll
+ fMX9N8GBwaEGru6DWZsZyUcFeQx4Fo0KjeShIfDZBXh9v/jTomhgNhCXCSU5UJA9QpoKOo
+ nziOwlbXnBQU7uMAzlckHx/Gy9joMfk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-84-Hn-CEy-sPQijrwmFQgUg2w-1; Wed, 31 May 2023 10:07:05 -0400
+X-MC-Unique: Hn-CEy-sPQijrwmFQgUg2w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3E35811E7F;
+ Wed, 31 May 2023 14:06:56 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.177])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 780372029F6D;
+ Wed, 31 May 2023 14:06:55 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Camilla Conte <cconte@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH] gitlab: switch from 'stable' to 'latest' docker container tags
+Date: Wed, 31 May 2023 15:06:54 +0100
+Message-Id: <20230531140654.1141145-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 11/48] tcg: Split out tcg-target-reg-bits.h
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-12-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-12-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,42 +81,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 06:02, Richard Henderson wrote:
-> Often, the only thing we need to know about the TCG host
-> is the register size.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg.h                     | 12 +-----------
->   tcg/aarch64/tcg-target-reg-bits.h     | 12 ++++++++++++
->   tcg/arm/tcg-target-reg-bits.h         | 12 ++++++++++++
->   tcg/i386/tcg-target-reg-bits.h        | 16 ++++++++++++++++
->   tcg/i386/tcg-target.h                 |  2 --
->   tcg/loongarch64/tcg-target-reg-bits.h | 21 +++++++++++++++++++++
->   tcg/loongarch64/tcg-target.h          | 11 -----------
->   tcg/mips/tcg-target-reg-bits.h        | 18 ++++++++++++++++++
->   tcg/mips/tcg-target.h                 |  8 --------
->   tcg/ppc/tcg-target-reg-bits.h         | 16 ++++++++++++++++
->   tcg/ppc/tcg-target.h                  |  5 -----
->   tcg/riscv/tcg-target-reg-bits.h       | 19 +++++++++++++++++++
->   tcg/riscv/tcg-target.h                |  9 ---------
->   tcg/s390x/tcg-target-reg-bits.h       | 17 +++++++++++++++++
->   tcg/sparc64/tcg-target-reg-bits.h     | 12 ++++++++++++
->   tcg/tci/tcg-target-reg-bits.h         | 18 ++++++++++++++++++
->   tcg/tci/tcg-target.h                  |  8 --------
->   tcg/s390x/tcg-target.c.inc            |  5 -----
->   18 files changed, 162 insertions(+), 59 deletions(-)
->   create mode 100644 tcg/aarch64/tcg-target-reg-bits.h
->   create mode 100644 tcg/arm/tcg-target-reg-bits.h
->   create mode 100644 tcg/i386/tcg-target-reg-bits.h
->   create mode 100644 tcg/loongarch64/tcg-target-reg-bits.h
->   create mode 100644 tcg/mips/tcg-target-reg-bits.h
->   create mode 100644 tcg/ppc/tcg-target-reg-bits.h
->   create mode 100644 tcg/riscv/tcg-target-reg-bits.h
->   create mode 100644 tcg/s390x/tcg-target-reg-bits.h
->   create mode 100644 tcg/sparc64/tcg-target-reg-bits.h
->   create mode 100644 tcg/tci/tcg-target-reg-bits.h
+The 'stable' and 'stable-dind' tags are not documented as supported
+tags at:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  https://hub.docker.com/_/docker
+
+Looking at their content they reflect docker 19.x.x release series,
+were last built in Dec 2020, and have 3 critical and 20 high rated
+CVEs unfixed. This obsolete status is attested by this commit:
+
+  https://github.com/docker-library/docker/commit/606c63960a4845af7077721eb3900c706f5d0c5e
+
+The 'stable-dind' tag in particular appears buggy as it is unable to
+resolve DNS for Fedora repos:
+
+  - Curl error (6): Couldn't resolve host name for https://mirrors.fedoraproject.org/metalink?repo=fedora-37&arch=x86_64&countme=1 [getaddrinfo() thread failed to start]
+
+We used the 'stable' tag previously at the recommendation of GitLab
+docs, but those docs are wrong and pending a fix:
+
+  https://gitlab.com/gitlab-org/gitlab/-/issues/409430
+
+Fixes: 5f63a67adb58478974b91f5e5c2b1222b5c7f2cc
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ .gitlab-ci.d/container-template.yml | 4 ++--
+ .gitlab-ci.d/opensbi.yml            | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
+index 9ac4a0ee25..8c1370b8f0 100644
+--- a/.gitlab-ci.d/container-template.yml
++++ b/.gitlab-ci.d/container-template.yml
+@@ -1,9 +1,9 @@
+ .container_job_template:
+   extends: .base_job_template
+-  image: docker:stable
++  image: docker:latest
+   stage: containers
+   services:
+-    - docker:stable-dind
++    - docker:dind
+   before_script:
+     - export TAG="$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
+     - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
+diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+index 2e9d51764e..b4d7eef688 100644
+--- a/.gitlab-ci.d/opensbi.yml
++++ b/.gitlab-ci.d/opensbi.yml
+@@ -42,9 +42,9 @@
+ docker-opensbi:
+   extends: .opensbi_job_rules
+   stage: containers
+-  image: docker:stable
++  image: docker:latest
+   services:
+-    - docker:stable-dind
++    - docker:dind
+   variables:
+     GIT_DEPTH: 3
+     IMAGE_TAG: $CI_REGISTRY_IMAGE:opensbi-cross-build
+-- 
+2.40.1
 
 
