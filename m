@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11AE7174D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120857174EA
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:12:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D4C-0007Yg-80; Wed, 31 May 2023 00:04:08 -0400
+	id 1q4D47-0007NZ-Eb; Wed, 31 May 2023 00:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D44-0007Lt-CM
+ id 1q4D44-0007Lv-Cu
  for qemu-devel@nongnu.org; Wed, 31 May 2023 00:04:00 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D41-0006Bq-If
+ id 1q4D41-0006Hf-RF
  for qemu-devel@nongnu.org; Wed, 31 May 2023 00:04:00 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-39a505b901dso125299b6e.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:56 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id
+ af79cd13be357-75b0f2ce4b7so334366285a.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685505836; x=1688097836;
+ d=linaro.org; s=google; t=1685505837; x=1688097837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/cR/peA90/m8AWfSpNA4WQLXA6g1Wt3Wt5txPWSbWq0=;
- b=uEoZSfOaNWJv9Cz57ASjmMMu6dy+BG2uj7aCstHboVlctleL6x9ICzWri6C38RnS/Z
- mJfCeU0I5qOpg3pnYDTT1W3i9UW4AtrDuXrvt4yUyyx8OaoPdIlTihkaYfIIZctZydrs
- CSQklaR0t6r1mbqvkBGC38MGA+KVdSMeBsWIrKUJEh1v0ljMPVNdRAbc+ejfsJnQAaDT
- OcdBHWxwbPmfgLvpLG2ReIOtbbTOL62j1VVzzjEvdnCfxV09Z/6Gj8W34KI8S9MhfS4v
- YDJhqyOnmSXLbKaNkbhGJc6SVo1VlhbsjcbqxFTRAM9F3kJXZ7h6zvKLaxfIw7yXbwgc
- hE9Q==
+ :reply-to; bh=g9Z7ehG7+swOH6zB5dODu6bYg//xIYbQwbOdJN6xAFw=;
+ b=nEz0OSDvPXLzVXOgg7OFOgSwfgRwNJHW9XIFd34CZWk2KMXDYjiZojRPMLAeOtBIGD
+ 3/LqyuTW8PZ8ob1EfydMITubWgnt4LWRwoZBB5mcNW7ZOcPiWXADFLGRubmGLOYhwzuc
+ ShYoPb7XnjX96H4pkTDNF6oB55NLMdHmQnzwQ8YzCGPAh/UuwboK3M5EeBMkcO7Ndnhi
+ a/cZTA/McaEPShcBdEODsNEmBqp9gBY/MXylEx5pjaDPEgtuzUYNwR2bWEabmUyNXt6C
+ ziEFhjzfzxk9UvomXmVKd3UZNvLy8d8/dmijZLoSzWPIOFTeWZr7UkSql4XuexT3cPYq
+ /smA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685505836; x=1688097836;
+ d=1e100.net; s=20221208; t=1685505837; x=1688097837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/cR/peA90/m8AWfSpNA4WQLXA6g1Wt3Wt5txPWSbWq0=;
- b=Qo5VH2gE7J26rgU5Hakte4FjP8pRb7pCurrvdxeYnlXijP7Elsk1OFXj7QhLJAXDSn
- PCjTHM9/wJ+XgGJfnjr82jgZHkS0L6mdQLGBNTglY2Q7q3oDG7LeQ50G3jDnX43wTPML
- kADLF6mkRFU3+JWOpuCJButZy+t2SWSB2Msn9qG3ImuzHLq+Rssja09sJQ40VLTHZ6Q3
- VLvUiZv9QRP/5DntcOvXl1bP6HB6EBj+yLtuYOeO/amXh1MDmwKWd6ul65msvCjKnVsC
- xW5WgJuF1hs3fx8kvUnRmxRgKMidPAFSmwMCbjGgbebf1ztghcviVnFeGcXbEZb+zQ54
- /OKQ==
-X-Gm-Message-State: AC+VfDxBNmP8ZAZ0Arh8uqfpjEW/BhTEAwVNYr7kZxATznwHIdB1DC8B
- lZq4fHUCofeKQz6Fw4XEjfo1LzwAHAC25Df0zMk=
-X-Google-Smtp-Source: ACHHUZ7JNHdbnQqP2T3ypwLVdRBaw/dK9qKU1xc/6CKeTygQsWwCWyKINLKox4s6KYIkirj3kjck3w==
-X-Received: by 2002:a05:6808:1144:b0:398:26f0:67a9 with SMTP id
- u4-20020a056808114400b0039826f067a9mr3422322oiu.55.1685505836156; 
+ bh=g9Z7ehG7+swOH6zB5dODu6bYg//xIYbQwbOdJN6xAFw=;
+ b=TZyHnMadLj5Wlfs2YxjhHH8fQWaISp0rH+qZlwf33weOpJNQsZfX09t4tUO8qjFOOK
+ GJPZRiQ0CMm6R2UP72QoQ0OCzRPYC9UWN0OxqQy79o2i7eFN6CExGCoDd+Fzs0FmahCS
+ CeaeEOSXDCK1pT7hS2oOInC0cu5bVCJ+kMYpCIwFqcufx1YF9gVFgoR/UJW6c7jRO7NO
+ PsWoLE2B22eA9Q9azH8eQ89bsaATWGUAwSgsyBfcjgo7qhn1TzXId+nrbOLOBJZSOvlw
+ 0NFYD21MmS82z8vUdRa410F6JAGCBdmF7erAX+4z2bg6wEcRJQLItKagOHtbnFekM6fo
+ BWqQ==
+X-Gm-Message-State: AC+VfDy1fdWjSpPHq/QomdPJmaAVCw9WvHOIVdS3TeUk8FRN1642UIqO
+ l03FcXWPPnQMzvvOXK5CY6bLM5yS8tQ+7ME3+x4=
+X-Google-Smtp-Source: ACHHUZ51kpX3rnYsazrs9mPEDVOVVa/54j51viSnSc3vA1xJ1nA+IW768O1G19Du67xmDcLpQHxNEw==
+X-Received: by 2002:a37:489:0:b0:75b:23a0:d9ce with SMTP id
+ 131-20020a370489000000b0075b23a0d9cemr4333924qke.36.1685505836842; 
  Tue, 30 May 2023 21:03:56 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  by smtp.gmail.com with ESMTPSA id
- j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.55
+ j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 21:03:55 -0700 (PDT)
+ Tue, 30 May 2023 21:03:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 32/48] tcg: Spit out exec/translation-block.h
-Date: Tue, 30 May 2023 21:03:14 -0700
-Message-Id: <20230531040330.8950-33-richard.henderson@linaro.org>
+Subject: [PATCH v3 33/48] include/exec: Remove CODE_GEN_AVG_BLOCK_SIZE
+Date: Tue, 30 May 2023 21:03:15 -0700
+Message-Id: <20230531040330.8950-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,353 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is all that is required by tcg/ from exec-all.h.
+The last use was removed with 2ac01d6dafab.
 
+Fixes: 2ac01d6dafab ("translate-all: use a binary search tree to track TBs in TBContext")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/exec-all.h          | 135 +--------------------------
- include/exec/translation-block.h | 152 +++++++++++++++++++++++++++++++
- tcg/tcg-op-ldst.c                |   2 +-
- 3 files changed, 154 insertions(+), 135 deletions(-)
- create mode 100644 include/exec/translation-block.h
+ include/exec/exec-all.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index a09d754624..f01c7d57e8 100644
+index f01c7d57e8..698943d58f 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -24,20 +24,9 @@
- #ifdef CONFIG_TCG
- #include "exec/cpu_ldst.h"
- #endif
--#include "qemu/interval-tree.h"
-+#include "exec/translation-block.h"
- #include "qemu/clang-tsa.h"
- 
--/* Page tracking code uses ram addresses in system mode, and virtual
--   addresses in userspace mode.  Define tb_page_addr_t to be an appropriate
--   type.  */
--#if defined(CONFIG_USER_ONLY)
--typedef vaddr tb_page_addr_t;
--#define TB_PAGE_ADDR_FMT "%" VADDR_PRIx
--#else
--typedef ram_addr_t tb_page_addr_t;
--#define TB_PAGE_ADDR_FMT RAM_ADDR_FMT
--#endif
--
- /**
-  * cpu_unwind_state_data:
-  * @cpu: the cpu context
-@@ -478,8 +467,6 @@ int probe_access_full(CPUArchState *env, target_ulong addr, int size,
+@@ -467,16 +467,6 @@ int probe_access_full(CPUArchState *env, target_ulong addr, int size,
                        CPUTLBEntryFull **pfull, uintptr_t retaddr);
  #endif
  
--#define CODE_GEN_ALIGN           16 /* must be >= of the size of a icache line */
--
- /* Estimated block size for TB allocation.  */
- /* ??? The following is based on a 2015 survey of x86_64 host output.
-    Better would seem to be some sort of dynamically sized TB array,
-@@ -490,126 +477,6 @@ int probe_access_full(CPUArchState *env, target_ulong addr, int size,
- #define CODE_GEN_AVG_BLOCK_SIZE 150
- #endif
- 
--/*
-- * Translation Cache-related fields of a TB.
-- * This struct exists just for convenience; we keep track of TB's in a binary
-- * search tree, and the only fields needed to compare TB's in the tree are
-- * @ptr and @size.
-- * Note: the address of search data can be obtained by adding @size to @ptr.
-- */
--struct tb_tc {
--    const void *ptr;    /* pointer to the translated code */
--    size_t size;
--};
--
--struct TranslationBlock {
--    /*
--     * Guest PC corresponding to this block.  This must be the true
--     * virtual address.  Therefore e.g. x86 stores EIP + CS_BASE, and
--     * targets like Arm, MIPS, HP-PA, which reuse low bits for ISA or
--     * privilege, must store those bits elsewhere.
--     *
--     * If CF_PCREL, the opcodes for the TranslationBlock are written
--     * such that the TB is associated only with the physical page and
--     * may be run in any virtual address context.  In this case, PC
--     * must always be taken from ENV in a target-specific manner.
--     * Unwind information is taken as offsets from the page, to be
--     * deposited into the "current" PC.
--     */
--    vaddr pc;
--
--    /*
--     * Target-specific data associated with the TranslationBlock, e.g.:
--     * x86: the original user, the Code Segment virtual base,
--     * arm: an extension of tb->flags,
--     * s390x: instruction data for EXECUTE,
--     * sparc: the next pc of the instruction queue (for delay slots).
--     */
--    uint64_t cs_base;
--
--    uint32_t flags; /* flags defining in which context the code was generated */
--    uint32_t cflags;    /* compile flags */
--
--/* Note that TCG_MAX_INSNS is 512; we validate this match elsewhere. */
--#define CF_COUNT_MASK    0x000001ff
--#define CF_NO_GOTO_TB    0x00000200 /* Do not chain with goto_tb */
--#define CF_NO_GOTO_PTR   0x00000400 /* Do not chain with goto_ptr */
--#define CF_SINGLE_STEP   0x00000800 /* gdbstub single-step in effect */
--#define CF_LAST_IO       0x00008000 /* Last insn may be an IO access.  */
--#define CF_MEMI_ONLY     0x00010000 /* Only instrument memory ops */
--#define CF_USE_ICOUNT    0x00020000
--#define CF_INVALID       0x00040000 /* TB is stale. Set with @jmp_lock held */
--#define CF_PARALLEL      0x00080000 /* Generate code for a parallel context */
--#define CF_NOIRQ         0x00100000 /* Generate an uninterruptible TB */
--#define CF_PCREL         0x00200000 /* Opcodes in TB are PC-relative */
--#define CF_CLUSTER_MASK  0xff000000 /* Top 8 bits are cluster ID */
--#define CF_CLUSTER_SHIFT 24
--
--    /* Per-vCPU dynamic tracing state used to generate this TB */
--    uint32_t trace_vcpu_dstate;
--
--    /*
--     * Above fields used for comparing
--     */
--
--    /* size of target code for this block (1 <= size <= TARGET_PAGE_SIZE) */
--    uint16_t size;
--    uint16_t icount;
--
--    struct tb_tc tc;
--
--    /*
--     * Track tb_page_addr_t intervals that intersect this TB.
--     * For user-only, the virtual addresses are always contiguous,
--     * and we use a unified interval tree.  For system, we use a
--     * linked list headed in each PageDesc.  Within the list, the lsb
--     * of the previous pointer tells the index of page_next[], and the
--     * list is protected by the PageDesc lock(s).
--     */
--#ifdef CONFIG_USER_ONLY
--    IntervalTreeNode itree;
+-/* Estimated block size for TB allocation.  */
+-/* ??? The following is based on a 2015 survey of x86_64 host output.
+-   Better would seem to be some sort of dynamically sized TB array,
+-   adapting to the block sizes actually being produced.  */
+-#if defined(CONFIG_SOFTMMU)
+-#define CODE_GEN_AVG_BLOCK_SIZE 400
 -#else
--    uintptr_t page_next[2];
--    tb_page_addr_t page_addr[2];
+-#define CODE_GEN_AVG_BLOCK_SIZE 150
 -#endif
--
--    /* jmp_lock placed here to fill a 4-byte hole. Its documentation is below */
--    QemuSpin jmp_lock;
--
--    /* The following data are used to directly call another TB from
--     * the code of this one. This can be done either by emitting direct or
--     * indirect native jump instructions. These jumps are reset so that the TB
--     * just continues its execution. The TB can be linked to another one by
--     * setting one of the jump targets (or patching the jump instruction). Only
--     * two of such jumps are supported.
--     */
--#define TB_JMP_OFFSET_INVALID 0xffff /* indicates no jump generated */
--    uint16_t jmp_reset_offset[2]; /* offset of original jump target */
--    uint16_t jmp_insn_offset[2];  /* offset of direct jump insn */
--    uintptr_t jmp_target_addr[2]; /* target address */
--
--    /*
--     * Each TB has a NULL-terminated list (jmp_list_head) of incoming jumps.
--     * Each TB can have two outgoing jumps, and therefore can participate
--     * in two lists. The list entries are kept in jmp_list_next[2]. The least
--     * significant bit (LSB) of the pointers in these lists is used to encode
--     * which of the two list entries is to be used in the pointed TB.
--     *
--     * List traversals are protected by jmp_lock. The destination TB of each
--     * outgoing jump is kept in jmp_dest[] so that the appropriate jmp_lock
--     * can be acquired from any origin TB.
--     *
--     * jmp_dest[] are tagged pointers as well. The LSB is set when the TB is
--     * being invalidated, so that no further outgoing jumps from it can be set.
--     *
--     * jmp_lock also protects the CF_INVALID cflag; a jump must not be chained
--     * to a destination TB that has CF_INVALID set.
--     */
--    uintptr_t jmp_list_head;
--    uintptr_t jmp_list_next[2];
--    uintptr_t jmp_dest[2];
--};
 -
  /* Hide the qatomic_read to make code a little easier on the eyes */
  static inline uint32_t tb_cflags(const TranslationBlock *tb)
  {
-diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
-new file mode 100644
-index 0000000000..37aa979e20
---- /dev/null
-+++ b/include/exec/translation-block.h
-@@ -0,0 +1,152 @@
-+/* SPDX-License-Identifier: LGPL-2.1-or-later */
-+/*
-+ * Definition of TranslationBlock.
-+ *  Copyright (c) 2003 Fabrice Bellard
-+ */
-+
-+#ifndef EXEC_TRANSLATION_BLOCK_H
-+#define EXEC_TRANSLATION_BLOCK_H
-+
-+#include "qemu/atomic.h"
-+#include "qemu/thread.h"
-+#include "qemu/interval-tree.h"
-+#include "exec/cpu-common.h"
-+#include "exec/target_page.h"
-+
-+/*
-+ * Page tracking code uses ram addresses in system mode, and virtual
-+ * addresses in userspace mode.  Define tb_page_addr_t to be an
-+ * appropriate type.
-+ */
-+#if defined(CONFIG_USER_ONLY)
-+typedef vaddr tb_page_addr_t;
-+#define TB_PAGE_ADDR_FMT "%" VADDR_PRIx
-+#else
-+typedef ram_addr_t tb_page_addr_t;
-+#define TB_PAGE_ADDR_FMT RAM_ADDR_FMT
-+#endif
-+
-+/*
-+ * Translation Cache-related fields of a TB.
-+ * This struct exists just for convenience; we keep track of TB's in a binary
-+ * search tree, and the only fields needed to compare TB's in the tree are
-+ * @ptr and @size.
-+ * Note: the address of search data can be obtained by adding @size to @ptr.
-+ */
-+struct tb_tc {
-+    const void *ptr;    /* pointer to the translated code */
-+    size_t size;
-+};
-+
-+struct TranslationBlock {
-+    /*
-+     * Guest PC corresponding to this block.  This must be the true
-+     * virtual address.  Therefore e.g. x86 stores EIP + CS_BASE, and
-+     * targets like Arm, MIPS, HP-PA, which reuse low bits for ISA or
-+     * privilege, must store those bits elsewhere.
-+     *
-+     * If CF_PCREL, the opcodes for the TranslationBlock are written
-+     * such that the TB is associated only with the physical page and
-+     * may be run in any virtual address context.  In this case, PC
-+     * must always be taken from ENV in a target-specific manner.
-+     * Unwind information is taken as offsets from the page, to be
-+     * deposited into the "current" PC.
-+     */
-+    vaddr pc;
-+
-+    /*
-+     * Target-specific data associated with the TranslationBlock, e.g.:
-+     * x86: the original user, the Code Segment virtual base,
-+     * arm: an extension of tb->flags,
-+     * s390x: instruction data for EXECUTE,
-+     * sparc: the next pc of the instruction queue (for delay slots).
-+     */
-+    uint64_t cs_base;
-+
-+    uint32_t flags; /* flags defining in which context the code was generated */
-+    uint32_t cflags;    /* compile flags */
-+
-+/* Note that TCG_MAX_INSNS is 512; we validate this match elsewhere. */
-+#define CF_COUNT_MASK    0x000001ff
-+#define CF_NO_GOTO_TB    0x00000200 /* Do not chain with goto_tb */
-+#define CF_NO_GOTO_PTR   0x00000400 /* Do not chain with goto_ptr */
-+#define CF_SINGLE_STEP   0x00000800 /* gdbstub single-step in effect */
-+#define CF_LAST_IO       0x00008000 /* Last insn may be an IO access.  */
-+#define CF_MEMI_ONLY     0x00010000 /* Only instrument memory ops */
-+#define CF_USE_ICOUNT    0x00020000
-+#define CF_INVALID       0x00040000 /* TB is stale. Set with @jmp_lock held */
-+#define CF_PARALLEL      0x00080000 /* Generate code for a parallel context */
-+#define CF_NOIRQ         0x00100000 /* Generate an uninterruptible TB */
-+#define CF_PCREL         0x00200000 /* Opcodes in TB are PC-relative */
-+#define CF_CLUSTER_MASK  0xff000000 /* Top 8 bits are cluster ID */
-+#define CF_CLUSTER_SHIFT 24
-+
-+    /* Per-vCPU dynamic tracing state used to generate this TB */
-+    uint32_t trace_vcpu_dstate;
-+
-+    /*
-+     * Above fields used for comparing
-+     */
-+
-+    /* size of target code for this block (1 <= size <= TARGET_PAGE_SIZE) */
-+    uint16_t size;
-+    uint16_t icount;
-+
-+    struct tb_tc tc;
-+
-+    /*
-+     * Track tb_page_addr_t intervals that intersect this TB.
-+     * For user-only, the virtual addresses are always contiguous,
-+     * and we use a unified interval tree.  For system, we use a
-+     * linked list headed in each PageDesc.  Within the list, the lsb
-+     * of the previous pointer tells the index of page_next[], and the
-+     * list is protected by the PageDesc lock(s).
-+     */
-+#ifdef CONFIG_USER_ONLY
-+    IntervalTreeNode itree;
-+#else
-+    uintptr_t page_next[2];
-+    tb_page_addr_t page_addr[2];
-+#endif
-+
-+    /* jmp_lock placed here to fill a 4-byte hole. Its documentation is below */
-+    QemuSpin jmp_lock;
-+
-+    /* The following data are used to directly call another TB from
-+     * the code of this one. This can be done either by emitting direct or
-+     * indirect native jump instructions. These jumps are reset so that the TB
-+     * just continues its execution. The TB can be linked to another one by
-+     * setting one of the jump targets (or patching the jump instruction). Only
-+     * two of such jumps are supported.
-+     */
-+#define TB_JMP_OFFSET_INVALID 0xffff /* indicates no jump generated */
-+    uint16_t jmp_reset_offset[2]; /* offset of original jump target */
-+    uint16_t jmp_insn_offset[2];  /* offset of direct jump insn */
-+    uintptr_t jmp_target_addr[2]; /* target address */
-+
-+    /*
-+     * Each TB has a NULL-terminated list (jmp_list_head) of incoming jumps.
-+     * Each TB can have two outgoing jumps, and therefore can participate
-+     * in two lists. The list entries are kept in jmp_list_next[2]. The least
-+     * significant bit (LSB) of the pointers in these lists is used to encode
-+     * which of the two list entries is to be used in the pointed TB.
-+     *
-+     * List traversals are protected by jmp_lock. The destination TB of each
-+     * outgoing jump is kept in jmp_dest[] so that the appropriate jmp_lock
-+     * can be acquired from any origin TB.
-+     *
-+     * jmp_dest[] are tagged pointers as well. The LSB is set when the TB is
-+     * being invalidated, so that no further outgoing jumps from it can be set.
-+     *
-+     * jmp_lock also protects the CF_INVALID cflag; a jump must not be chained
-+     * to a destination TB that has CF_INVALID set.
-+     */
-+    uintptr_t jmp_list_head;
-+    uintptr_t jmp_list_next[2];
-+    uintptr_t jmp_dest[2];
-+};
-+
-+/* The alignment given to TranslationBlock during allocation. */
-+#define CODE_GEN_ALIGN  16
-+
-+#endif /* EXEC_TRANSLATION_BLOCK_H */
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 46a5977b35..a4f51bfb6e 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -23,11 +23,11 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "exec/exec-all.h"
- #include "tcg/tcg.h"
- #include "tcg/tcg-temp-internal.h"
- #include "tcg/tcg-op-common.h"
- #include "tcg/tcg-mo.h"
-+#include "exec/translation-block.h"
- #include "exec/plugin-gen.h"
- #include "tcg-internal.h"
- 
 -- 
 2.34.1
 
