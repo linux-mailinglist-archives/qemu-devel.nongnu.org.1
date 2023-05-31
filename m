@@ -2,95 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54E9717858
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C042717872
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:40:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4GLi-0002kc-Ci; Wed, 31 May 2023 03:34:26 -0400
+	id 1q4GQo-0005fq-62; Wed, 31 May 2023 03:39:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q4GLA-0002gi-Bm
- for qemu-devel@nongnu.org; Wed, 31 May 2023 03:33:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q4GL8-00075D-JV
- for qemu-devel@nongnu.org; Wed, 31 May 2023 03:33:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685518429;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8jvYQlhKuHyKtL4mNj/znMLADcf3tcavTDhI4smE8dw=;
- b=XsNxPhP/8MBxxQyXBXzhG681qCuVcjMEiE5HzTG4zJ3zQVnHZfq4wr4G3Y5EpRi/4kHdlO
- z8iT9E/Dh9LpWsn2YTjU5Fg54tydZBrvg43qGtE/bk7u5xjhdZSEHYgFa3hrPIMNgv+Akh
- y2byYSKQPMeew0R+A/UJlI9r3ikeq4U=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-JAfCi0K0NOyTZtYm2XdOcg-1; Wed, 31 May 2023 03:33:45 -0400
-X-MC-Unique: JAfCi0K0NOyTZtYm2XdOcg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2af32c170c8so29372121fa.3
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 00:33:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4GQk-0005fO-Tm
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 03:39:39 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4GQj-0008B7-49
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 03:39:38 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f6d3f83d0cso57344875e9.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 00:39:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685518774; x=1688110774;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VfI7uFPwssBLXE12qhBQRZBisDlkfu+WyG0nQatXIG0=;
+ b=J9murRE94kkAB9nnCI0n0Yh6Jr3zV6w+0czSzJ+Cwz/6nKnpzT9KIKx3+70Kb0veAk
+ 4eDwHheI7HEuQHEn6EZwuZ7A8RDPbIdC/yS4Zr5ju4kA5dsSkVg5Ju7CeDPipStX4p+y
+ c0ekL6oayxAbAkZQLwj00fJ/e6599lDEAJrzQi3IQh9cYSh/Wv+ls8vYRMBFo+h+w+Mr
+ pgqDG8UR2U4+QX6vYYeykEo5ZNK59PPEex7N8EPxvGBGRmz3k4lqc5wXVd/ZBO2WqRJf
+ /7ROBaROD0Whk3LzZKy95TGlEU+Xk3Qn06W+9w/aTsj0jwRMm63hviSf2olW+03W2f4Z
+ rSzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685518424; x=1688110424;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8jvYQlhKuHyKtL4mNj/znMLADcf3tcavTDhI4smE8dw=;
- b=Shg3Vk9UfpZo5psPmP3UK1uVKHKwId8pvpc9meZ4sVTCcO4Lj2jgvkJYfb4LohmBS0
- hCcdYS0s8XtUji1A9qqkMIqdglULja+dtOu1j2/U69qW/pfLHwh9J5hLI22f4OZhFLok
- EtYrkFK1PvnNwuUXa6bixkwH7EGOlUDKtuI38IzTzkXKzHtRVE75lGEs6+T9mV3ex1X/
- OFES5giWiLA6MFDFsLQ1v18MiOwDgrF5JYlFNaMXhFZoUg1I5O85FKB39NJAJxxhQXCr
- 9FIpKd0Ispemsg9iz1NNsNJgWz7B5d/i7qcbXdoEKESRyI7JQ9CHFb4drE+CNj709SUq
- +sow==
-X-Gm-Message-State: AC+VfDxwu5m+ArdQ/ITZi9bExXuU8dfVXQyiVsHv9iV8DUeB/b72agNC
- Q1HGK4aTdHOzAAkiTlWfR0n+QzmEvSvOKLeDKOTvbE2AWKsM0Tc18YoQGBhVQjsnqD2o3vujdZg
- gjKHQ8xwohzOSNNM=
-X-Received: by 2002:a2e:9e47:0:b0:2af:a696:3691 with SMTP id
- g7-20020a2e9e47000000b002afa6963691mr2125454ljk.40.1685518424310; 
- Wed, 31 May 2023 00:33:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ551RIeF9bnzkTrz/lia8+/hteNl9cJtKk1XRyhXQesUA8vv9D1oOPKoklfR2VDrpxdBxuWZw==
-X-Received: by 2002:a2e:9e47:0:b0:2af:a696:3691 with SMTP id
- g7-20020a2e9e47000000b002afa6963691mr2125438ljk.40.1685518423940; 
- Wed, 31 May 2023 00:33:43 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-16.business.telecomitalia.it.
- [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
- i13-20020a17090685cd00b0096f83b16ab1sm8499433ejy.136.2023.05.31.00.33.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 May 2023 00:33:43 -0700 (PDT)
-Date: Wed, 31 May 2023 09:33:41 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- eblake@redhat.com, Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- qemu-block@nongnu.org, xen-devel@lists.xenproject.org, 
- Julia Suvorova <jusual@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paul Durrant <paul@xen.org>, Kevin Wolf <kwolf@redhat.com>, 
- Anthony Perard <anthony.perard@citrix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Aarushi Mehta <mehta.aaru20@gmail.com>
-Subject: Re: [PATCH v3 5/6] block/linux-aio: convert to blk_io_plug_call() API
-Message-ID: <olpmomsccllt6s5yuzzznwoaf6mpx3vmcex5bt477uviettgra@owpdleplwg36>
-References: <20230530180959.1108766-1-stefanha@redhat.com>
- <20230530180959.1108766-6-stefanha@redhat.com>
+ d=1e100.net; s=20221208; t=1685518774; x=1688110774;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VfI7uFPwssBLXE12qhBQRZBisDlkfu+WyG0nQatXIG0=;
+ b=QyKe6kRkQ7H1/WMmsVQnzsgZYLD0zKqOr6gh9iS96z0JzBfnnvpAEGsj1Pk1JNtUh9
+ VSXr2HNxlyKIgkm9LvYJag9w/PTFFr+uJK9GEy8HVEdm78gswvQbzexhvig7vl7wUfWf
+ eP44WNQULT+h3ULiLpUgWyK3mFdyQtdBdjzeYSl3BgLAWpcMP5B+rzmRO9b+enfxS9CD
+ kMHuPufwS0ClgRO8PQUAtk92kI77iwmdaBxpmaNM834Sk1Pejjm+Jyr+1jKFVaGtYZvh
+ ui6HpWryiw/rcPMxJSM1Jz35AZTRk/4njDkNbWV/eFCrJZx/DVMqh0EoRKLDplShp7R8
+ UVeA==
+X-Gm-Message-State: AC+VfDyqeVE0H9ENnR4YimS1CjMhjilBT5AthwYAZP1E/WTuDb/g7pWy
+ 3MRLIHFU8Qnl2V6Xlq0qf2sgog==
+X-Google-Smtp-Source: ACHHUZ6oOpdO1Us94RqdBIsr8u2+UvGeFCYxuGGI0rLLnSuVDTE471XGtaLgxjpOkqrDegGJoUvxsw==
+X-Received: by 2002:a7b:c442:0:b0:3f6:4c4:d0ce with SMTP id
+ l2-20020a7bc442000000b003f604c4d0cemr3543940wmi.8.1685518774421; 
+ Wed, 31 May 2023 00:39:34 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.146.12])
+ by smtp.gmail.com with ESMTPSA id
+ x4-20020a05600c21c400b003f0aefcc457sm23466290wmj.45.2023.05.31.00.39.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 00:39:34 -0700 (PDT)
+Message-ID: <36c9bda8-3af2-ebf5-f8b9-599cafea0735@linaro.org>
+Date: Wed, 31 May 2023 09:39:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230530180959.1108766-6-stefanha@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 05/12] hw/ssi: Introduce a ssi_get_cs() helper
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ Alistair Francis <alistair@alistair23.me>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eduardo Habkost <eduardo@habkost.net>, Bernhard Beschow <shentey@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20230508075859.3326566-1-clg@kaod.org>
+ <20230508075859.3326566-6-clg@kaod.org>
+ <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
+ <0d11b78e-56f7-553a-3e85-0edef9b649ac@linaro.org>
+ <523179dd-7842-7f03-14d6-678ed680a017@kaod.org>
+ <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
+ <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,33 +103,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 02:09:58PM -0400, Stefan Hajnoczi wrote:
->Stop using the .bdrv_co_io_plug() API because it is not multi-queue
->block layer friendly. Use the new blk_io_plug_call() API to batch I/O
->submission instead.
->
->Note that a dev_max_batch check is dropped in laio_io_unplug() because
->the semantics of unplug_fn() are different from .bdrv_co_unplug():
->1. unplug_fn() is only called when the last blk_io_unplug() call occurs,
->   not every time blk_io_unplug() is called.
->2. unplug_fn() is per-thread, not per-BlockDriverState, so there is no
->   way to get per-BlockDriverState fields like dev_max_batch.
->
->Therefore this condition cannot be moved to laio_unplug_fn(). It is not
->obvious that this condition affects performance in practice, so I am
->removing it instead of trying to come up with a more complex mechanism
->to preserve the condition.
->
->Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->Reviewed-by: Eric Blake <eblake@redhat.com>
->---
-> include/block/raw-aio.h |  7 -------
-> block/file-posix.c      | 28 ----------------------------
-> block/linux-aio.c       | 41 +++++++++++------------------------------
-> 3 files changed, 11 insertions(+), 65 deletions(-)
+On 31/5/23 08:36, Cédric Le Goater wrote:
+> On 5/31/23 08:17, Philippe Mathieu-Daudé wrote:
+>> +QOM tinkerers
+>>
+>> On 31/5/23 07:59, Cédric Le Goater wrote:
+>>> On 5/30/23 23:15, Philippe Mathieu-Daudé wrote:
+>>>> On 30/5/23 22:34, Philippe Mathieu-Daudé wrote:
+>>>>> On 8/5/23 09:58, Cédric Le Goater wrote:
+>>>>>> Simple routine to retrieve a DeviceState object on a SPI bus using 
+>>>>>> its
+>>>>>> address/cs. It will be useful for the board to wire the CS lines.
+>>>>>>
+>>>>>> Cc: Alistair Francis <alistair@alistair23.me>
+>>>>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>>>>> ---
+>>>>>>   include/hw/ssi/ssi.h |  2 ++
+>>>>>>   hw/ssi/ssi.c         | 15 +++++++++++++++
+>>>>>>   2 files changed, 17 insertions(+)
+>>>>>>
+>>>>>> diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
+>>>>>> index ffd3a34ba4..c7beabdb09 100644
+>>>>>> --- a/include/hw/ssi/ssi.h
+>>>>>> +++ b/include/hw/ssi/ssi.h
+>>>>>> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, 
+>>>>>> const char *name);
+>>>>>>   uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
+>>>>>> +DeviceState *ssi_get_cs(SSIBus *bus, int addr);
+>>>>
+>>>> Also, this helper should (preferably) return a SSIPeripheral type.
+>>>
+>>> Well, having a DeviceState is handy for the callers (today) and
+>>> ssi_create_peripheral() returns a DeviceState. Let's keep it that
+>>> way.
+>>
+>> Yes I know it is handy :) I'm not against your patch; besides other
+>> APIs do that. I'm wondering about QOM design here. Having Foo device,
+>> should FOO API return the common qdev abstract type (DeviceState) or
+>> a Foo type? Either ways we keep QOM-casting around, but I still tend
+>> to consider FOO API returning Foo pointer provides some type check
+>> safety, and also provides the API user hints about what is used.
+>> Need more coffee.
+> 
+> It is used in two code paths today:
+> 
+>      ...
+>          DeviceState *dev = ssi_get_cs(bmc->soc.fmc.spi, 0);
+>          BlockBackend *fmc0 = dev ? m25p80_get_blk(dev) : NULL;
+>      ...
+> and
+>      ...
+>          DeviceState *dev = ssi_get_cs(s->spi, i);
+>          if (dev) {
+>              qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 
+> 0);
+>      ...
+> 
+> 
+> Changing the interface is not a radical change, it will add two QOM-casts.
+> I can give it a try in v2.
 
-LGTM!
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
+Hold on, lets see what others think first.
 
