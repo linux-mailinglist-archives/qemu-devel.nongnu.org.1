@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5E9718402
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B9371840C
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 16:01:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4MJV-00044l-P2; Wed, 31 May 2023 09:56:33 -0400
+	id 1q4MMC-0006XR-MM; Wed, 31 May 2023 09:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MJT-00044N-SW
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:56:32 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MMB-0006XH-EC
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:59:19 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MJS-0004bJ-3S
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:56:31 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f6e4554453so43746165e9.3
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:56:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MM9-0005HZ-On
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:59:19 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3094910b150so5970675f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685541388; x=1688133388;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1685541556; x=1688133556;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f+cMeePrQDBg82crLgeu8VxFbIIryvV8p/+yDeBbwLY=;
- b=tCQMGRMHChSPhitKDgpE6p+oS4YksRgmjE4BoxeRIX1M080fq8AEUATg8fZObRK/NV
- baI9lWGbbu7VrCWpBlAq5+DxZhMffwjZwGnnn+m997g0H7gLWuB0eG8SHUBFBaz3xfAy
- VwXQw+lOqoemkPQjWkIDW/2g9tBxfE6JZ1TJeCr3gqx8Bol+KRrqEFMhayZpHVYwrf6w
- 5UOijv9MeonDzYus8URycqqnZkEkYgkdxiRXUMoAophNTZL0DHwd8iZmTW2A9NXAMTq7
- DzGLrTgizC5InfBBuEWEMDyfD6DPvVwvZAorTpu828EP/I29pmAxYv8X9d5ABIWEwoOe
- xNdQ==
+ bh=yHwOlIOtU6Q8C9cHYFHhw1FPR8QlyfcS7ejg9NfmHl8=;
+ b=LmIMAJ3NmLeHHMr12QVu5oCcW3uu+mTTQ+5tkLyuXQekt/C49ocUtjMeSnjpds+jqQ
+ OgZkBqOvskJZLk2Zfv9PMUH2QJeM8b/g5SwBVieClgj+exCdzaKhqqERXowXmTDHiVmp
+ dY5VMzZi5qjAbn//pY5yTxR617AC/z6y0Lrg+sJZdnZvAV2odcKvOZX4Pbg9Qvzr2rOc
+ k/NQ+oYST/yYaBgGVNAvCKOL+GNhWEemXWGp966Wh5Pob/HY7u5BXzXs0aOo9y3j7XQ2
+ 5WHnq0H/KNZdQUn1heXv35vIM85d8yT+9j8UBW9m+w4yUscXBZsFZ4TJ0cMpLr2Vk0F+
+ q/pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685541388; x=1688133388;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1685541556; x=1688133556;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f+cMeePrQDBg82crLgeu8VxFbIIryvV8p/+yDeBbwLY=;
- b=AjKDU4hwjJf9CfWfRdvFL9AtasreHx/5m5taO7A6qG+kb7nexhH8iAB1qFuGmxntQz
- mjNKZoqbN98JBaWl5UBBMdef1by1Drh0vnEkt6OSN6+8VDN3+LPosQIRVnwnMkUMx8d2
- 3qNRwKiuBOc2AjjFt2ugWujNuXKyen0l1J3dggRit0gP8ZdumEjR5giNnfUI67asuUQ4
- Eny7CZU1McJi4uSyzq2MqXeaEYbVJuIovL8GA1BIdJs3kgtuC++SGHS9wlHt+JVLRiFT
- uvdm4b/G/EPXOKtm4eDFGjhU+lkIK8sm2YDat+73sGqrDC7AUCQpCg+SC1Kd95aLSXRT
- IdhA==
-X-Gm-Message-State: AC+VfDxPyDVCS7wmfTaTLkVI0aS6oOWFhRPYd2Z123Mbqed9ehZy4cV2
- edAElcHlStYmlKfu9X6FQuLryw==
-X-Google-Smtp-Source: ACHHUZ4yuCjsjgLrc9qYTOcPFbNNhaZyK8Cw4YdSipes8VkgFwlI9Dt8yLTlnN1N8OcXIcUkXwR6Eg==
-X-Received: by 2002:a1c:7401:0:b0:3f5:d313:db68 with SMTP id
- p1-20020a1c7401000000b003f5d313db68mr3732105wmc.5.1685541388273; 
- Wed, 31 May 2023 06:56:28 -0700 (PDT)
+ bh=yHwOlIOtU6Q8C9cHYFHhw1FPR8QlyfcS7ejg9NfmHl8=;
+ b=VoLaKxTqBWpemo8/L4aES8OUIm3dxFLlDnug9FbicK1ljocfb61L1+PLdGNNa93T4u
+ nU7fYO5/3qnpNb3LQytdOiZtQAhqY82PhQf8cqAkchVyiWunjI6D8Xo5llXor32YydNF
+ ojhHGkUFTBSuWHddG+p7DijiQxyzrV8/2O+8VDybnv5POiHbtQGeHRmLOfZRAt0EF+GX
+ /NBO/tVBmgEBZmbz5uMSczqsh9KrFTrTRGQiIkL+Wvy/WDwDB1Wte960HAv/U1OUaX9f
+ rkEZUQT/ZMnuARkGiRZNMwxOEdV3MjcdxdAYChgz6Lb3O+Y13MNQvY+UFVjKU8eH4slR
+ y2Fg==
+X-Gm-Message-State: AC+VfDyGiZXsthyaCwHieKnVgCPSCqOlBLT1aLNWDL+tR3P9kbJ9eHxF
+ VVwazjvuNErp1v4Tni+6gJ+AoA==
+X-Google-Smtp-Source: ACHHUZ4+2vPjRbu9BeYYIt87r8CkwHbgbP2e+se3pxqwDkpgHTrJBfvqNsmAVzFbq9uKChQjyg+oJQ==
+X-Received: by 2002:a05:6000:1378:b0:30a:e92c:25fa with SMTP id
+ q24-20020a056000137800b0030ae92c25famr4353889wrz.60.1685541556095; 
+ Wed, 31 May 2023 06:59:16 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- l5-20020adffe85000000b00307a83ea722sm7008362wrr.58.2023.05.31.06.56.27
+ x14-20020adff0ce000000b0030aedb8156esm6890264wro.102.2023.05.31.06.59.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 06:56:27 -0700 (PDT)
-Message-ID: <4e76c989-a665-fb9a-cc13-9eb7b1f92b43@linaro.org>
-Date: Wed, 31 May 2023 15:56:26 +0200
+ Wed, 31 May 2023 06:59:15 -0700 (PDT)
+Message-ID: <fb2e75c7-ed49-8af4-c328-63eb8b0219f2@linaro.org>
+Date: Wed, 31 May 2023 15:59:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 01/23] q800: fix up minor spacing issues in
- hw_compat_q800 GlobalProperty array
+Subject: Re: [PATCH v3 10/15] intel-iommu: Implement IOMMU_ATTR_MAX_IOVA
+ get_attr() attribute
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-2-mark.cave-ayland@ilande.co.uk>
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
+References: <20230530175937.24202-1-joao.m.martins@oracle.com>
+ <20230530175937.24202-11-joao.m.martins@oracle.com>
+ <20790526-6640-3fd0-920a-ef09e5b306c0@linaro.org>
+ <5c018403-f6fe-12ec-1c58-7dfa6abab53a@oracle.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531125400.288917-2-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <5c018403-f6fe-12ec-1c58-7dfa6abab53a@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,16 +104,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 14:53, Mark Cave-Ayland wrote:
-> Ensure there is a space before the final closing brace for all global
-> properties.
+On 31/5/23 11:54, Joao Martins wrote:
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-> ---
->   hw/m68k/q800.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> On 30/05/2023 22:45, Philippe Mathieu-Daudé wrote:
+>> On 30/5/23 19:59, Joao Martins wrote:
+>>> From: Avihai Horon <avihaih@nvidia.com>
+>>>
+>>> Implement get_attr() method and use the address width property to report
+>>> the IOMMU_ATTR_MAX_IOVA attribute.
+>>>
+>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+>>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+>>> ---
+>>>    hw/i386/intel_iommu.c | 7 +++++++
+>>>    1 file changed, 7 insertions(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>>> +    case IOMMU_ATTR_MAX_IOVA:
+>>> +    {
+>>> +        hwaddr *max_iova = data;
+>>
+>> Shouldn't we cast to uintptr_t to be safe?
+>>
+> Perhaps you mean something like this:
+> 
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 829dd6eadc6c..479307f1228f 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3878,7 +3878,7 @@ static int vtd_iommu_get_attr(IOMMUMemoryRegion *iommu_mr,
+>       }
+>       case IOMMU_ATTR_MAX_IOVA:
+>       {
+> -        hwaddr *max_iova = data;
+> +        hwaddr *max_iova = (hwaddr *)(uintptr_t) data;
+> 
+>           *max_iova = (1ULL << s->aw_bits) - 1;
+>           break;
+> 
+> I guess the thinking is to prevent 32-bit failures.
+
+Exactly.
+
+>>> +        *max_iova = (1ULL << s->aw_bits) - 1;
+>>
+>> Alternatively:
+>>
+>>             *max_iova = MAKE_64BIT_MASK(0, s->aw_bits);
+>>
+> 
+> I'll switch to your suggestion. Wasn't aware of this macro :)
+
+Thanks, it is a no-brainer when reviewing.
 
 
