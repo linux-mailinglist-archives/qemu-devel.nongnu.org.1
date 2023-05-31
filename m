@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7677174F4
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D547174D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:08:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D3s-00072O-7x; Wed, 31 May 2023 00:03:48 -0400
+	id 1q4D44-0007L6-8d; Wed, 31 May 2023 00:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D3l-0006qf-N2
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:43 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ id 1q4D3n-0006rc-VD
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:45 -0400
+Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D3j-0006AE-9B
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:40 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-19f454bd2c8so3188989fac.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:38 -0700 (PDT)
+ id 1q4D3j-0006AL-IZ
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:41 -0400
+Received: by mail-qk1-x734.google.com with SMTP id
+ af79cd13be357-75afeacb5e4so619894485a.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685505817; x=1688097817;
+ d=linaro.org; s=google; t=1685505818; x=1688097818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pETdULDQ5wVmC1hpPClhoopHjiyEI8tGTGOipI84kxM=;
- b=LbP560zKuDlRw0qodstBmUBOZsiyZQffkqwgzUNqDH42Z9UYDn2JSmxOpnxiPKJj2J
- swCDMRCDHVemeT4rWyRELm0znxaBmgREwBPuo/HyYUADKdQWCmV+BKXtHTJzaKuTY3oz
- BO9g1HCwgGBqyJ2t5KpS2zhR/2EwYUw3zzPNFHAMZmaVXA3fDeekjVAdvbUPzIQtncxa
- V9jSEwafWdJKUD3ZCqHIcaWCK96SVRoSMEzT5V8e8yJucxp3tI6C3QWm0aKfVGhZdvA4
- Y6jxjsXmeiBZuTXyKQkYZDtkMx4IgISR0r9Y8nxU31VRr0eDxy2Bmze2x3qTcRVxorqU
- Eoig==
+ :reply-to; bh=FMynriKgHY7/a7Zeekt4jsXQMXu8INdJVu2wztuImV0=;
+ b=b+FVgTIvy9k3CoLgJ5zGTG3QFzNfEHoo3cKdyiWRQqkNvI8I9GYb5wMd37JePoXETn
+ S6ETjXrI2zDexxJqgz1L7bBbvuJ8N+xDQYRpgXjshP2r5A17KYODyvtO45R1/Uf5MiUZ
+ ruw2vceP84lnOoZPu9BJHBhynYHfz/1hmBUpRTTY+Q5giHbwDi5ComLozHSD2Dkm5bGa
+ gFG6kTz7C0gczvSo+6nEzmaGEvexNY2z7vzC/dFRPvGYXHwzxaeiWQpfhafh2pHwhFnA
+ UIlM/3GkvcCzVQdG/HMCt5wKkw8XXVFwf8GzrIPGhhrtEvziRFB2eRiV788lcOHcBgrv
+ zZDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685505817; x=1688097817;
+ d=1e100.net; s=20221208; t=1685505818; x=1688097818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pETdULDQ5wVmC1hpPClhoopHjiyEI8tGTGOipI84kxM=;
- b=k7d6OtWZW3nWhHUWX5lVNbDVSG709PCVSp/GnMEnWo18QACL1yaVHQAPmO5z5mP9wt
- FCL6OyMQ42MlrusOX5Pk7iWF1pPMATSp4wi7coKB32hSHLtm9A1Ym2K6kqINbtT78B5Z
- 6nTCYw8jQA6Ky0wANCEX8fsNC6Wrdzm0kjAoiTrSUYWMJeAIyt3+0fqdZFZHyGtYPybV
- wFZ6F2+gaaruh9QIW4vQa4wDuUsXiLY8+djFfKs4fk5lCGHVD6JYgo4cimTSTHMwf6do
- VlW75ab7BdRkfJhee00hJ2YIss34CdcNf2JDatMQVuOoX4PIefeUbdAHs52tXcnOwPXY
- cyTw==
-X-Gm-Message-State: AC+VfDy6qjnEv1PqmxpkUnb8hQpiolg6tG17+bRNHQTRBIYK8KQb36ay
- gZ6avv/E504JnBYkQlC7nzKHV0ukkXUwse2mZjg=
-X-Google-Smtp-Source: ACHHUZ7kIQq7qBSVmiPdcRLQpsqm2h39UzBEQD2dgBKPPeBqAFRQK/L/upLQhCDKJ9VQhoEG+jfH4Q==
-X-Received: by 2002:a05:6358:919c:b0:123:5851:f09f with SMTP id
- j28-20020a056358919c00b001235851f09fmr671317rwa.23.1685505817607; 
- Tue, 30 May 2023 21:03:37 -0700 (PDT)
+ bh=FMynriKgHY7/a7Zeekt4jsXQMXu8INdJVu2wztuImV0=;
+ b=gpPW24junAGwnODtfayt+eN2Max4TAMse5QD2t6Zy6dGRnwyA/cD1+UlUqM7gF8B57
+ +uam1ktekUzHD7a2atHZfyN+ktEeBtTQMh8geo6NxbLweOFb1L+HOgZJK+LpPt1sTamm
+ gzeyd5mBWuAkMhvF1JVKdjRGrbFiydwAQAIHgWsnssiVebH/tbg2ICWYzBl4rLYG+Cle
+ 720n7i5u6tuZN0o1CRVnhj0iwA1jz2rGIaMSldF+6X96Hx5luxNxzIW2fYBddTFegPD2
+ lX4SLTrhji5s53hGphAXDUxYZZpAF+EU8m6br/7Afx5OI18Lygf3Pn8yddlcZvyQ/D8Q
+ 4sIw==
+X-Gm-Message-State: AC+VfDzewgjcurNrlRJrcSIZhfBvV95zYh+/Xqq0ArkG8oiuvIx5zr/H
+ h6UBfGJveg92m9fJ39u+1FE0HEwnmWgfkdkdHAY=
+X-Google-Smtp-Source: ACHHUZ7eJv1ahn4M39y1FKVrQ3pZWeglEe4fepyEa1cZHTj3A/NxttdjexmILojOC7mm5BaM9bmpCw==
+X-Received: by 2002:a37:6885:0:b0:75b:23a1:360b with SMTP id
+ d127-20020a376885000000b0075b23a1360bmr4501961qkc.28.1685505818313; 
+ Tue, 30 May 2023 21:03:38 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  by smtp.gmail.com with ESMTPSA id
  j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.37
@@ -58,16 +58,16 @@ Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  Tue, 30 May 2023 21:03:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 08/48] *: Add missing includes of qemu/error-report.h
-Date: Tue, 30 May 2023 21:02:50 -0700
-Message-Id: <20230531040330.8950-9-richard.henderson@linaro.org>
+Subject: [PATCH v3 09/48] *: Add missing includes of tcg/debug-assert.h
+Date: Tue, 30 May 2023 21:02:51 -0700
+Message-Id: <20230531040330.8950-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x734.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,21 +95,60 @@ via exec/exec-all.h, but the include of tcg.h will be removed.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/avr/cpu.c      | 1 +
+ target/rx/cpu.c       | 1 +
+ target/rx/op_helper.c | 1 +
+ target/tricore/cpu.c  | 1 +
+ 4 files changed, 4 insertions(+)
 
-diff --git a/target/avr/helper.c b/target/avr/helper.c
-index 156dde4e92..2bad242a66 100644
---- a/target/avr/helper.c
-+++ b/target/avr/helper.c
-@@ -20,6 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/log.h"
-+#include "qemu/error-report.h"
- #include "cpu.h"
- #include "hw/core/tcg-cpu-ops.h"
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index a24c23c247..8f741f258c 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -24,6 +24,7 @@
  #include "exec/exec-all.h"
+ #include "cpu.h"
+ #include "disas/dis-asm.h"
++#include "tcg/debug-assert.h"
+ 
+ static void avr_cpu_set_pc(CPUState *cs, vaddr value)
+ {
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 67452e310c..157e57da0f 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -24,6 +24,7 @@
+ #include "exec/exec-all.h"
+ #include "hw/loader.h"
+ #include "fpu/softfloat.h"
++#include "tcg/debug-assert.h"
+ 
+ static void rx_cpu_set_pc(CPUState *cs, vaddr value)
+ {
+diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
+index acce650185..dc0092ca99 100644
+--- a/target/rx/op_helper.c
++++ b/target/rx/op_helper.c
+@@ -23,6 +23,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/cpu_ldst.h"
+ #include "fpu/softfloat.h"
++#include "tcg/debug-assert.h"
+ 
+ static inline G_NORETURN
+ void raise_exception(CPURXState *env, int index,
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index d0a9272961..7fa113fed2 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -22,6 +22,7 @@
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "qemu/error-report.h"
++#include "tcg/debug-assert.h"
+ 
+ static inline void set_feature(CPUTriCoreState *env, int feature)
+ {
 -- 
 2.34.1
 
