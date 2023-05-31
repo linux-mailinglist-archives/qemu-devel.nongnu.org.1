@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120857174EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D5D7174C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:07:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D47-0007NZ-Eb; Wed, 31 May 2023 00:04:03 -0400
+	id 1q4D48-0007RI-0w; Wed, 31 May 2023 00:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D44-0007Lv-Cu
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:04:00 -0400
-Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
+ id 1q4D45-0007Mc-0p
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:04:01 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D41-0006Hf-RF
+ id 1q4D42-0006Hv-VU
  for qemu-devel@nongnu.org; Wed, 31 May 2023 00:04:00 -0400
-Received: by mail-qk1-x72a.google.com with SMTP id
- af79cd13be357-75b0f2ce4b7so334366285a.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:57 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-64d577071a6so6133833b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1685505837; x=1688097837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=g9Z7ehG7+swOH6zB5dODu6bYg//xIYbQwbOdJN6xAFw=;
- b=nEz0OSDvPXLzVXOgg7OFOgSwfgRwNJHW9XIFd34CZWk2KMXDYjiZojRPMLAeOtBIGD
- 3/LqyuTW8PZ8ob1EfydMITubWgnt4LWRwoZBB5mcNW7ZOcPiWXADFLGRubmGLOYhwzuc
- ShYoPb7XnjX96H4pkTDNF6oB55NLMdHmQnzwQ8YzCGPAh/UuwboK3M5EeBMkcO7Ndnhi
- a/cZTA/McaEPShcBdEODsNEmBqp9gBY/MXylEx5pjaDPEgtuzUYNwR2bWEabmUyNXt6C
- ziEFhjzfzxk9UvomXmVKd3UZNvLy8d8/dmijZLoSzWPIOFTeWZr7UkSql4XuexT3cPYq
- /smA==
+ :reply-to; bh=YHMznhDZOucZiZnqaYMteWVjZfl00HdpVCrzNF7XO3s=;
+ b=Vm5UWtd/g15asgOZLWQ5+opLxlP0WPtoFvTbPeoSc9WrUSdKKRcMslq8skl/g9qTqz
+ +IIrXuscvUXCD0fwKqZrAs+g/TWnqLRuSjWhLSRP0FJHcVPWRTk+KiG8W0xNw8tu6Ppl
+ lZVS1ePJ+axC5Y/A4A1ZGWywMpC1hjARwc4DhT+d/z4eW++GcTpGfMUkrx2KnJ1TrSVJ
+ 2GzRBHSy/LPm5GWaogKrUg9eo3G+aiVWn6+QcoIVnOqTba3GdBxXdyjAY902pUJkT/fx
+ dm/AuGWTg1k64o4VAqx3XTdTjdja4of/vqnB6hZVFzoc5rCpM+06xoqaUVTRH0DPU+gc
+ GE2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1685505837; x=1688097837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g9Z7ehG7+swOH6zB5dODu6bYg//xIYbQwbOdJN6xAFw=;
- b=TZyHnMadLj5Wlfs2YxjhHH8fQWaISp0rH+qZlwf33weOpJNQsZfX09t4tUO8qjFOOK
- GJPZRiQ0CMm6R2UP72QoQ0OCzRPYC9UWN0OxqQy79o2i7eFN6CExGCoDd+Fzs0FmahCS
- CeaeEOSXDCK1pT7hS2oOInC0cu5bVCJ+kMYpCIwFqcufx1YF9gVFgoR/UJW6c7jRO7NO
- PsWoLE2B22eA9Q9azH8eQ89bsaATWGUAwSgsyBfcjgo7qhn1TzXId+nrbOLOBJZSOvlw
- 0NFYD21MmS82z8vUdRa410F6JAGCBdmF7erAX+4z2bg6wEcRJQLItKagOHtbnFekM6fo
- BWqQ==
-X-Gm-Message-State: AC+VfDy1fdWjSpPHq/QomdPJmaAVCw9WvHOIVdS3TeUk8FRN1642UIqO
- l03FcXWPPnQMzvvOXK5CY6bLM5yS8tQ+7ME3+x4=
-X-Google-Smtp-Source: ACHHUZ51kpX3rnYsazrs9mPEDVOVVa/54j51viSnSc3vA1xJ1nA+IW768O1G19Du67xmDcLpQHxNEw==
-X-Received: by 2002:a37:489:0:b0:75b:23a0:d9ce with SMTP id
- 131-20020a370489000000b0075b23a0d9cemr4333924qke.36.1685505836842; 
- Tue, 30 May 2023 21:03:56 -0700 (PDT)
+ bh=YHMznhDZOucZiZnqaYMteWVjZfl00HdpVCrzNF7XO3s=;
+ b=AyZciXvbo/E067rv91CsIxCUSGeu5kz/ii1QVW/omXotorWTVMhJcqfDgOE93GHcQb
+ feYwIkDgMH1U5xVtwis4TMbhKf+qovWTU4rQomXiaY6gm37y3PAdfc/csstVgXvAna5z
+ 8BisnnLjKlGURIlJtiGtzOPXcRyVoiAxz6yhe+NUQN7J6wFEudUgMVWXY4EkNFtcK5s2
+ nD/txkOUG57oA8qi9oSOVxpGweXegq0hAq0p0CeLolLzOAtnT5rNiWBav54psa7NmsTb
+ b+G4S4pXkvk7BZC8PZ42d9nn/jwzzdjPZC5lr4GPm3Z4mLGeTOUYTQNQZ2h51+eFmwXs
+ zCAQ==
+X-Gm-Message-State: AC+VfDz4rN3zPJJ40melvWeW7wSBufbN4zpVAe126HPeRoPHV5IzSJkW
+ hk9y5ntvaktXCPFoxF2VOdXQ7P+c6hQrMOwW2kA=
+X-Google-Smtp-Source: ACHHUZ4uhZzt6h4BI0XZXwFhwhN4xoBt7SxyUnduA5EN2+CzHtoLWDQC6Z3zWSt/aWZNkf2CUiRYjQ==
+X-Received: by 2002:a05:6a20:6a25:b0:109:2f11:8b77 with SMTP id
+ p37-20020a056a206a2500b001092f118b77mr5566369pzk.1.1685505837531; 
+ Tue, 30 May 2023 21:03:57 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  by smtp.gmail.com with ESMTPSA id
  j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 21:03:56 -0700 (PDT)
+ Tue, 30 May 2023 21:03:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 33/48] include/exec: Remove CODE_GEN_AVG_BLOCK_SIZE
-Date: Tue, 30 May 2023 21:03:15 -0700
-Message-Id: <20230531040330.8950-34-richard.henderson@linaro.org>
+Subject: [PATCH v3 34/48] accel/tcg: Move most of gen-icount.h into
+ translator.c
+Date: Tue, 30 May 2023 21:03:16 -0700
+Message-Id: <20230531040330.8950-35-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,35 +91,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The last use was removed with 2ac01d6dafab.
+The only usage of gen_tb_start and gen_tb_end are here.
+Move the static icount_start_insn variable into a local
+within translator_loop.  Simplify the two subroutines
+by passing in the existing local cflags variable.
 
-Fixes: 2ac01d6dafab ("translate-all: use a binary search tree to track TBs in TBContext")
+Leave only the declaration of gen_io_start in gen-icount.h.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/exec-all.h | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/exec/gen-icount.h | 79 +------------------------------------
+ accel/tcg/translator.c    | 83 ++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 82 insertions(+), 80 deletions(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index f01c7d57e8..698943d58f 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -467,16 +467,6 @@ int probe_access_full(CPUArchState *env, target_ulong addr, int size,
-                       CPUTLBEntryFull **pfull, uintptr_t retaddr);
- #endif
+diff --git a/include/exec/gen-icount.h b/include/exec/gen-icount.h
+index f6de79a6b4..6006af4c06 100644
+--- a/include/exec/gen-icount.h
++++ b/include/exec/gen-icount.h
+@@ -1,83 +1,6 @@
+ #ifndef GEN_ICOUNT_H
+ #define GEN_ICOUNT_H
  
--/* Estimated block size for TB allocation.  */
--/* ??? The following is based on a 2015 survey of x86_64 host output.
--   Better would seem to be some sort of dynamically sized TB array,
--   adapting to the block sizes actually being produced.  */
--#if defined(CONFIG_SOFTMMU)
--#define CODE_GEN_AVG_BLOCK_SIZE 400
--#else
--#define CODE_GEN_AVG_BLOCK_SIZE 150
--#endif
+-#include "exec/exec-all.h"
 -
- /* Hide the qatomic_read to make code a little easier on the eyes */
- static inline uint32_t tb_cflags(const TranslationBlock *tb)
+-/* Helpers for instruction counting code generation.  */
+-
+-static TCGOp *icount_start_insn;
+-
+-static inline void gen_io_start(void)
+-{
+-    tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
+-                   offsetof(ArchCPU, parent_obj.can_do_io) -
+-                   offsetof(ArchCPU, env));
+-}
+-
+-static inline void gen_tb_start(const TranslationBlock *tb)
+-{
+-    TCGv_i32 count = tcg_temp_new_i32();
+-
+-    tcg_gen_ld_i32(count, cpu_env,
+-                   offsetof(ArchCPU, neg.icount_decr.u32) -
+-                   offsetof(ArchCPU, env));
+-
+-    if (tb_cflags(tb) & CF_USE_ICOUNT) {
+-        /*
+-         * We emit a sub with a dummy immediate argument. Keep the insn index
+-         * of the sub so that we later (when we know the actual insn count)
+-         * can update the argument with the actual insn count.
+-         */
+-        tcg_gen_sub_i32(count, count, tcg_constant_i32(0));
+-        icount_start_insn = tcg_last_op();
+-    }
+-
+-    /*
+-     * Emit the check against icount_decr.u32 to see if we should exit
+-     * unless we suppress the check with CF_NOIRQ. If we are using
+-     * icount and have suppressed interruption the higher level code
+-     * should have ensured we don't run more instructions than the
+-     * budget.
+-     */
+-    if (tb_cflags(tb) & CF_NOIRQ) {
+-        tcg_ctx->exitreq_label = NULL;
+-    } else {
+-        tcg_ctx->exitreq_label = gen_new_label();
+-        tcg_gen_brcondi_i32(TCG_COND_LT, count, 0, tcg_ctx->exitreq_label);
+-    }
+-
+-    if (tb_cflags(tb) & CF_USE_ICOUNT) {
+-        tcg_gen_st16_i32(count, cpu_env,
+-                         offsetof(ArchCPU, neg.icount_decr.u16.low) -
+-                         offsetof(ArchCPU, env));
+-        /*
+-         * cpu->can_do_io is cleared automatically here at the beginning of
+-         * each translation block.  The cost is minimal and only paid for
+-         * -icount, plus it would be very easy to forget doing it in the
+-         * translator. Doing it here means we don't need a gen_io_end() to
+-         * go with gen_io_start().
+-         */
+-        tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
+-                       offsetof(ArchCPU, parent_obj.can_do_io) -
+-                       offsetof(ArchCPU, env));
+-    }
+-}
+-
+-static inline void gen_tb_end(const TranslationBlock *tb, int num_insns)
+-{
+-    if (tb_cflags(tb) & CF_USE_ICOUNT) {
+-        /*
+-         * Update the num_insn immediate parameter now that we know
+-         * the actual insn count.
+-         */
+-        tcg_set_insn_param(icount_start_insn, 2,
+-                           tcgv_i32_arg(tcg_constant_i32(num_insns)));
+-    }
+-
+-    if (tcg_ctx->exitreq_label) {
+-        gen_set_label(tcg_ctx->exitreq_label);
+-        tcg_gen_exit_tb(tb, TB_EXIT_REQUESTED);
+-    }
+-}
++void gen_io_start(void);
+ 
+ #endif
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 6120ef2a92..b0d0015c70 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -18,6 +18,84 @@
+ #include "exec/plugin-gen.h"
+ #include "exec/replay-core.h"
+ 
++
++void gen_io_start(void)
++{
++    tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
++                   offsetof(ArchCPU, parent_obj.can_do_io) -
++                   offsetof(ArchCPU, env));
++}
++
++static TCGOp *gen_tb_start(uint32_t cflags)
++{
++    TCGv_i32 count = tcg_temp_new_i32();
++    TCGOp *icount_start_insn = NULL;
++
++    tcg_gen_ld_i32(count, cpu_env,
++                   offsetof(ArchCPU, neg.icount_decr.u32) -
++                   offsetof(ArchCPU, env));
++
++    if (cflags & CF_USE_ICOUNT) {
++        /*
++         * We emit a sub with a dummy immediate argument. Keep the insn index
++         * of the sub so that we later (when we know the actual insn count)
++         * can update the argument with the actual insn count.
++         */
++        tcg_gen_sub_i32(count, count, tcg_constant_i32(0));
++        icount_start_insn = tcg_last_op();
++    }
++
++    /*
++     * Emit the check against icount_decr.u32 to see if we should exit
++     * unless we suppress the check with CF_NOIRQ. If we are using
++     * icount and have suppressed interruption the higher level code
++     * should have ensured we don't run more instructions than the
++     * budget.
++     */
++    if (cflags & CF_NOIRQ) {
++        tcg_ctx->exitreq_label = NULL;
++    } else {
++        tcg_ctx->exitreq_label = gen_new_label();
++        tcg_gen_brcondi_i32(TCG_COND_LT, count, 0, tcg_ctx->exitreq_label);
++    }
++
++    if (cflags & CF_USE_ICOUNT) {
++        tcg_gen_st16_i32(count, cpu_env,
++                         offsetof(ArchCPU, neg.icount_decr.u16.low) -
++                         offsetof(ArchCPU, env));
++        /*
++         * cpu->can_do_io is cleared automatically here at the beginning of
++         * each translation block.  The cost is minimal and only paid for
++         * -icount, plus it would be very easy to forget doing it in the
++         * translator. Doing it here means we don't need a gen_io_end() to
++         * go with gen_io_start().
++         */
++        tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
++                       offsetof(ArchCPU, parent_obj.can_do_io) -
++                       offsetof(ArchCPU, env));
++    }
++
++    return icount_start_insn;
++}
++
++static void gen_tb_end(const TranslationBlock *tb, uint32_t cflags,
++                       TCGOp *icount_start_insn, int num_insns)
++{
++    if (cflags & CF_USE_ICOUNT) {
++        /*
++         * Update the num_insn immediate parameter now that we know
++         * the actual insn count.
++         */
++        tcg_set_insn_param(icount_start_insn, 2,
++                           tcgv_i32_arg(tcg_constant_i32(num_insns)));
++    }
++
++    if (tcg_ctx->exitreq_label) {
++        gen_set_label(tcg_ctx->exitreq_label);
++        tcg_gen_exit_tb(tb, TB_EXIT_REQUESTED);
++    }
++}
++
+ bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
  {
+     /* Suppress goto_tb if requested. */
+@@ -34,6 +112,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+                      const TranslatorOps *ops, DisasContextBase *db)
+ {
+     uint32_t cflags = tb_cflags(tb);
++    TCGOp *icount_start_insn;
+     bool plugin_enabled;
+ 
+     /* Initialize DisasContext */
+@@ -55,7 +134,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+ 
+     /* Start translating.  */
+-    gen_tb_start(db->tb);
++    icount_start_insn = gen_tb_start(cflags);
+     ops->tb_start(db, cpu);
+     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+ 
+@@ -112,7 +191,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+ 
+     /* Emit code to exit the TB, as indicated by db->is_jmp.  */
+     ops->tb_stop(db, cpu);
+-    gen_tb_end(db->tb, db->num_insns);
++    gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
+ 
+     if (plugin_enabled) {
+         plugin_gen_tb_end(cpu);
 -- 
 2.34.1
 
