@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92006717616
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDBD71761A
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:24:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4EI0-0006kF-S4; Wed, 31 May 2023 01:22:28 -0400
+	id 1q4EJI-0007VU-90; Wed, 31 May 2023 01:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4EHP-0006h9-Tx
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:21:51 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4EIw-0007UC-6Y
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:23:26 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4EHO-0004LQ-9F
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:21:51 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3f6da07feb2so54544745e9.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:21:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4EIu-0004jM-0I
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:23:25 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3f6da07ff00so56188985e9.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:23:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685510508; x=1688102508;
+ d=linaro.org; s=google; t=1685510602; x=1688102602;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=j92EyHohY+K+XZN8ZVYgvtHhu7LGWGGhix4W5PYooSE=;
- b=q5+FUOsca+WwnnB1QbEyj9QTN6rddwWik0mHkLQ1o9OYmk7cjBG/bPYzJa8NcAp3c1
- ZnBnmm0COh33bTK1wXAfsRKdHMrjJwCazew+Cii8WDsHsgRveHpvq7N0dnZ86dK2LYT5
- ZpPa9B1EEdeekcjf1LAgjOwm8bv20SknvEkLaKJlWp/uttSGaSxGrXqSF4gDCUx92+MR
- ntS5Yvh1WnRxWkgCU+KCoau4F5u39hgggmFfpewK2oraY7ZZgAZSoSg173TYG1YQWtOf
- 0tbYsg55YtIFknMVINWvPYE9pe9Uib36634aS7xc9qqjHRVWj9ve2wLQEYTxBu+yO3hw
- by1Q==
+ bh=nI1PAHNdz5yHy6T2h+UfeiFJDtJrWjn8WZijdphdb/E=;
+ b=udlGScS7YBvIbZxgVH5kbN+3AWULuHcvgp8Ae8s4TjITW+KDgJD2QcsPkYuHo+ibh6
+ 9z9/JLIczn3YTMtDuK/J/8yggKVzr0L0CJaWvoMPZlZcWxxP54c4g3sjj/bBBdXmP64s
+ KDYHnpyy4/HO/c/mg4+XNQWxxs6/uUgoCyb/JNCRIAUf7lYouu6CDY99W2pTDhSWk8kd
+ kdqiBsmh74pHGlE9u8fvTnFmaemcSR96dsshbv2O2oWQWRFvvNavrbGM78LbCNgG8Y7N
+ AjnH+asSdKyIL+OQJMN0EHIzo2cg/VRVeaS01qL1ZjoCnhz8IXsOnxCyJjWv6rXIf4Hz
+ 1p8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685510508; x=1688102508;
+ d=1e100.net; s=20221208; t=1685510602; x=1688102602;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j92EyHohY+K+XZN8ZVYgvtHhu7LGWGGhix4W5PYooSE=;
- b=QC96HWBgkKep6VIXlVe9uvLXKTFJTMvFLsLVOy/w35nRQtWQ5aPzav5a9/OfgfUkVn
- /em5TMu939LFrshzq08yTgyd9ugw55hHXzjo0i2oQJgHpDY9F7krTxsgQhWO0rmgM9+j
- kHz+GL4R55+sVOjJFr0KG0WOcpe1r4wy8JFgkmeuYeVSr9aAc5Fcy4DbtFoc9DNOxkq7
- lRN9U4yimQVFp6QESzxzf+uRxvQdrg0ipeL+MF5ZYTswl2zS4ipOz7gx2F/HXV+au7OF
- r2oKFerGcjGT92sKSszWMUQbkDfR7LK8l1gDNRgy9y4+BakIQFpsTllsYLKh2kcAdBnH
- bzWQ==
-X-Gm-Message-State: AC+VfDw1BehzG7WFenWE0NRDnCleAoF6un0qbBWYegAGK5tl1r3+ew1M
- NPTBX+PB5ay9bxmLw6lLq8DCmQ==
-X-Google-Smtp-Source: ACHHUZ4dQ55qL41ec3GWaBNiaH7q/JnrqOKpZvX+HpYi9Cx4gg/m2mIxDIMnIIQTQPEK0JxzIjs/pw==
-X-Received: by 2002:a7b:c048:0:b0:3f6:d2:d8c0 with SMTP id
- u8-20020a7bc048000000b003f600d2d8c0mr3442159wmc.19.1685510508342; 
- Tue, 30 May 2023 22:21:48 -0700 (PDT)
+ bh=nI1PAHNdz5yHy6T2h+UfeiFJDtJrWjn8WZijdphdb/E=;
+ b=GtVpKcPwQ0UVqqWOhladw0Yo0VWiBHA5um7v6X+fYMFP7S9c6qMSMEUAazco9ub+X+
+ utWTfurJznQ505K2TD/dEhKkROKggnCLvMDiFTU/c0un3gj4Pkpyvp2W2LevKCltH6AD
+ f717/J0wT8AlNd0E2M9IZzTOK2liL50G+DfjkPmwd+8fiD8TdjWkfnlGjOZwZEuVd/4T
+ a2bQfjINW9Znz850KsACdaJIEGb3SM1W8cLU1KcDLpoaZgA8whJRJ2g6eHgKTVJNzS39
+ 2iVhugKY0QVBUCfnxeeCAh0ia8INzfz/P3AQwHcOhOEfl7JWyiZk6KOPOvgRJ4CWB8yS
+ tkyA==
+X-Gm-Message-State: AC+VfDzvF/ryWFLzKVlkCX3FO+Oij3fFtTaddq/R56DzmZK0/POSb+oq
+ fr6LS68WMLRsFvoZu/TbVR5VigUO3PKVL9g0cunf4g==
+X-Google-Smtp-Source: ACHHUZ4RNx2xU5VKBx6l7lfG2mXyq1OP6S6PpqrmOwIQMx6FAWlfb5TDc5AQfpku6fc3KLKAwOaZ1g==
+X-Received: by 2002:a1c:7412:0:b0:3f6:53a:6665 with SMTP id
+ p18-20020a1c7412000000b003f6053a6665mr3498151wmc.19.1685510602187; 
+ Tue, 30 May 2023 22:23:22 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- y8-20020a1c4b08000000b003f4289b18a7sm19364285wma.5.2023.05.30.22.21.47
+ y8-20020a7bcd88000000b003f6038faa19sm22501435wmj.19.2023.05.30.22.23.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 22:21:48 -0700 (PDT)
-Message-ID: <b7c8083e-1bf5-9cd9-bb8c-fd7db2d429dc@linaro.org>
-Date: Wed, 31 May 2023 07:21:46 +0200
+ Tue, 30 May 2023 22:23:21 -0700 (PDT)
+Message-ID: <bef04806-3f6c-bd06-4f6b-211953391276@linaro.org>
+Date: Wed, 31 May 2023 07:23:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 34/48] accel/tcg: Move most of gen-icount.h into
- translator.c
+Subject: Re: [PATCH v3 37/48] target/arm: Tidy helpers for translation
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-35-richard.henderson@linaro.org>
+ <20230531040330.8950-38-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-35-richard.henderson@linaro.org>
+In-Reply-To: <20230531040330.8950-38-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,20 +93,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 31/5/23 06:03, Richard Henderson wrote:
-> The only usage of gen_tb_start and gen_tb_end are here.
-> Move the static icount_start_insn variable into a local
-> within translator_loop.  Simplify the two subroutines
-> by passing in the existing local cflags variable.
-> 
-> Leave only the declaration of gen_io_start in gen-icount.h.
+> Move most includes from *translate*.c to translate.h, ensuring
+> that we get the ordering correct.  Ensure cpu.h is first.
+> Use disas/disas.h instead of exec/log.h.
+> Drop otherwise unused includes.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/exec/gen-icount.h | 79 +------------------------------------
->   accel/tcg/translator.c    | 83 ++++++++++++++++++++++++++++++++++++++-
->   2 files changed, 82 insertions(+), 80 deletions(-)
-
-Nice!
+>   target/arm/tcg/translate.h        |  3 +++
+>   target/arm/tcg/translate-a64.c    | 17 +++++------------
+>   target/arm/tcg/translate-m-nocp.c |  2 --
+>   target/arm/tcg/translate-mve.c    |  3 ---
+>   target/arm/tcg/translate-neon.c   |  3 ---
+>   target/arm/tcg/translate-sme.c    |  6 ------
+>   target/arm/tcg/translate-sve.c    |  9 ---------
+>   target/arm/tcg/translate-vfp.c    |  3 ---
+>   target/arm/tcg/translate.c        | 17 +++++------------
+>   9 files changed, 13 insertions(+), 50 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
