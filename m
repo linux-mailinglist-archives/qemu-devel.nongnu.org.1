@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A2C71883D
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979D4718845
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:15:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4PNp-0004Gi-LT; Wed, 31 May 2023 13:13:13 -0400
+	id 1q4PPK-0005hc-C3; Wed, 31 May 2023 13:14:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4PNn-0004Fb-M0
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:13:11 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1q4PPI-0005hG-EO
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:14:44 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4PNm-0005oD-6J
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:13:11 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so5353521a12.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 10:13:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1q4PPG-0005y1-Ox
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:14:44 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-b9a6eec8611so1847052276.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 10:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685553188; x=1688145188;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UbGZWoyBpqZ1b2Xq4238aMV8PCe970ho30HBemnWEc4=;
- b=AxemYN5s8SgVf0OLrmXTGTP8+BlKkYfo+KJFh0yILLz1NXttV623vdBLQIiNMsJE9b
- zbXVfvHreL22f3kmydHmlslauqo/JO5I5NdazBzRMvJxF0uPjC7x4WXM6kuMwMKEk7xd
- HoIUKLn4pxRTTkqLzbQZVzF226b084wKUVPetkCX8lUbMmKxRDMUaMvB3oKkNF0bOKs9
- MoHwXT19UfhMx6sLVGFzJsHHKLeeXSadl/h6EKgLsyB8KMV1VlgYZdW9hQrPrNXc4eCL
- Q0ZY/OnJUPQwqcsow9GDbsHz62uYwavgqNtfFzlqpMY/ozIGa4PuTwtqsYGCOY0ZHiuP
- BJNQ==
+ d=gmail.com; s=20221208; t=1685553281; x=1688145281;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+2V/BUjvFbxsY3KM12YozPSGI7tDXiX1mBGhr4Yha7s=;
+ b=X+qCB2hjV7JqXIJq6GKXW7/Q+yx05zMO2jQ1KW8QPTpkhlZNa5XWds84vD1IDZsbh6
+ yaov0ogpq/9e3yoRXEFeclRkan1OUbf/ucPFXVSMsS3bZ0oQvqMS24pxFIdev1cCd/h1
+ IcbVihZ2oaczpsoKIu32gL8kCBflqJTo7LjE4PUJ3kCQNNL9Zgki333DbvhsDYowr745
+ vodxIsYiDhLbDXrcqkWsOOk6oWyUMvMsQwnV8LdS+1AccLtYhRtv6CvMNpxfvVWt4u8L
+ iJR1P/EfGV9ivx2nAjXAriwoafpngezakXpT7igbzvFrhrSQm//ZNlWuCa67B7Kj+63H
+ 7PeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685553188; x=1688145188;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UbGZWoyBpqZ1b2Xq4238aMV8PCe970ho30HBemnWEc4=;
- b=NaSzML6O1i3SuXEo8GgqF0+Rb6P0khpHrbX6uSIU+tf/tuk1Z43+KpeLFD75LG4Ato
- pliOtTbCvuVE8jMxOOwQB3xEGg+DMUDmwF1qaZQSF1Gey2GgiNkzSXyy1Yf84VAoGC89
- szKxKeKsAZ1T3AS5pqHtUgSOHdZmmlhsMQNv7zTERdtNsrICSC3gRUfWBXoSGq3KnbJz
- sHV7xrzHm7qhyijjaJ+2TDJuBZ40de9D3Mh1pX0TRcOSbLUY2sflqmOnpkdgDdr5AHub
- B+Rt/DQhKuzulZoDem/175FTKMjFfjnrg3vpusyTLHhp5slRdKJzITgeiQIaMet5honV
- JXog==
-X-Gm-Message-State: AC+VfDw/kECRSkMV+Gk6RXk47Nbaw0QeLk3JOjgIwc2xGTVrs9O1o0ow
- uSJgqxtVpL6mJlUpsR0AT6HrNQ==
-X-Google-Smtp-Source: ACHHUZ4JrsnRKtKXi3pKGMa6jfC83GV/vntrPM6mp22vXOP2/vjuiUKzGJGf9YsGJTtovAd8C7SQ4A==
-X-Received: by 2002:a05:6a20:d90b:b0:10c:89cc:bc5f with SMTP id
- jd11-20020a056a20d90b00b0010c89ccbc5fmr6357822pzb.20.1685553188351; 
- Wed, 31 May 2023 10:13:08 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
- ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
- by smtp.gmail.com with ESMTPSA id
- 23-20020aa79157000000b0064fff9f540csm2780991pfi.164.2023.05.31.10.13.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 10:13:07 -0700 (PDT)
-Message-ID: <5c5c64f4-7b69-5513-0ee4-6e23678e8177@linaro.org>
-Date: Wed, 31 May 2023 10:13:06 -0700
+ d=1e100.net; s=20221208; t=1685553281; x=1688145281;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+2V/BUjvFbxsY3KM12YozPSGI7tDXiX1mBGhr4Yha7s=;
+ b=CnG+s82ZvX1mkWT83OIAMZXOMJTPu2XC6pyzF7plbhDTCHxOe0ouUqlX0Ef1CGR8qu
+ vYpo8nYGQcyfrhhzU6+74vGn6Lc3QykLSWXwBhEyXvtkpo3Uq0mu6XzhdMEN4HTzgJGB
+ /rZe7oPx6daXzVEzMHxRDJtYurx5O/S10DTuOMUUz4xHm2mjdKvyp/gpGrb3GGucE3TU
+ dBpSZYIM4FTuedhipqwWjZNWlix+eZjf77udpdo9nKI2eW0dzTIUnRtINsGV26TWBUh5
+ LkLG/FWbgIW316F8saQOeqi/HgFqC3EsHzz6EoBJEQ87ySiD652O4PrTSSzzOkGRI4CD
+ HV2Q==
+X-Gm-Message-State: AC+VfDxoLLrP/S37W6rxPXBDxtMhIaI5Hret5ejMF62JCzSCpGZ3PPsc
+ 6ZcUxcvW2SO6Pu/Ue83tfIdbzSr/f05rhcEfyoE=
+X-Google-Smtp-Source: ACHHUZ4CItqJoKv9ZRHruPhW9C7noBc+sC5Yhj9WHNRn2HTuJejhpT2nD/VrRI8rmEUjJkSSqVbkUzr4n5/b+woYALE=
+X-Received: by 2002:a25:211:0:b0:ba7:4c49:95e with SMTP id
+ 17-20020a250211000000b00ba74c49095emr7221687ybc.7.1685553281311; 
+ Wed, 31 May 2023 10:14:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] target/i386: Implement AES instructions using
- AArch64 counterparts
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-References: <20230531112239.3164777-1-ardb@kernel.org>
- <20230531112239.3164777-3-ardb@kernel.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230531112239.3164777-3-ardb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <ed0f3a6a-75f3-c6d5-8eb9-3f1575fc0766@redhat.com>
+ <CAJSP0QWRLsFyzfP_Hn-frAgh6Xrz_5_JJCoxBQPnY6M60vfLag@mail.gmail.com>
+ <34c16474-2022-455a-a506-58a8d2b6c3a6@redhat.com>
+ <CAJSP0QUw3YAQoWNutnjoPWoVg4Cp-Cug7RR1MnVWFnes-fC-nQ@mail.gmail.com>
+ <3584ed8c-e60c-54bd-1abe-8294e985119a@redhat.com>
+In-Reply-To: <3584ed8c-e60c-54bd-1abe-8294e985119a@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 31 May 2023 13:14:29 -0400
+Message-ID: <CAJSP0QUc504kE_zM7fb0NQLG49eK2prWJZm9o=S6SosYqntEZA@mail.gmail.com>
+Subject: Re: Performance improvement with
+ 6d740fb01b9f0f5ea7a82f4d5e458d91940a19ee
+To: =?UTF-8?B?THVrw6HFoSBEb2t0b3I=?= <ldoktor@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=stefanha@gmail.com; helo=mail-yb1-xb2c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,20 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 04:22, Ard Biesheuvel wrote:
-> +++ b/util/cpuinfo-aarch64.c
-> @@ -56,6 +56,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
->       unsigned long hwcap = qemu_getauxval(AT_HWCAP);
->       info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
->       info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
-> +    info |= (hwcap & HWCAP_AES ? CPUINFO_AES : 0);
->   #endif
->   #ifdef CONFIG_DARWIN
->       info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE") * CPUINFO_LSE;
+On Wed, 31 May 2023 at 12:50, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.com> w=
+rote:
+>
+> Dne 26. 05. 23 v 12:56 Stefan Hajnoczi napsal(a):
+> > On Fri, 26 May 2023 at 04:07, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.co=
+m> wrote:
+> >>
+> >> Dne 25. 05. 23 v 17:21 Stefan Hajnoczi napsal(a):
+> >>> On Thu, 25 May 2023 at 06:18, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.=
+com> wrote:
+> >>>> the perf-ci detected and bisected the 6d740fb - aio-posix: do not ne=
+st poll handlers - as a performance improvement when using multiple concurr=
+ent jobs and 4k (22%) as well as 1024k (63%) blocks on aarch64 (on a slow r=
+otational disk).
+> >>>>
+> >>>>     https://ldoktor.github.io/tmp/RedHat-virtlab-arm09/v8.0.0/150-im=
+provement.html
+> >>>>
+> >>>> Based on the commit message I guess it's expected so take this just =
+as a record of an improvement.
+> >>>
+> >>> The commit was not intended to change performance and I'm not sure wh=
+y
+> >>> it happens!
+> >>>
+> >>
+> >> It had and today the x86_64 pipeline finished which shows similar impr=
+ovement just not in read but rather in write instead and only for 4k blocks=
+ (~40%). For 1024k blocks I can see it scoring a bit better (~1.5%). Reads =
+are too jittery to really tell anything on that machine. Anyway I have not =
+done any thorough testing, just a bisection with the most significant setti=
+ng.
+> >>
+> >> From around the same time I can see a NVMe regression in 4k writes, bu=
+t first bisection job showed nothing. I'll increase the range and try again=
+ as each job since that day shows similar drop.
+> >
+>
+> Hello Stefan, folks,
+>
+> the regression proved to be there and stably reproducible. With NVMe 4k w=
+rites with jobs=3D10 and iodepth=3D4 I can see a 50% regression on my machi=
+ne:
+>
+>     https://ldoktor.github.io/tmp/RedHat-virtlab722/v8.0.0/150-regression=
+.html
+>
+> The rest of the cases doesn't show any change at all. I can provide more =
+data if someone is interested.
 
-FYI, "hw.optional.arm.FEAT_AES" exists for darwin, and is set for Apple M1.
-I'll incorporate that when adding the probing.
+Which commit caused the regression?
 
-
-r~
+Stefan
 
