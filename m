@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E695F7187DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10197187EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4P7B-0001C9-F5; Wed, 31 May 2023 12:56:01 -0400
+	id 1q4PC7-0004Cz-EM; Wed, 31 May 2023 13:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3GXx3ZAQKCho5BMK6EE6B4.2ECG4CK-34L4BDED6DK.EH6@flex--flwu.bounces.google.com>)
- id 1q4P78-0001BM-9l
- for qemu-devel@nongnu.org; Wed, 31 May 2023 12:55:58 -0400
-Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3GXx3ZAQKCho5BMK6EE6B4.2ECG4CK-34L4BDED6DK.EH6@flex--flwu.bounces.google.com>)
- id 1q4P75-0002hD-SJ
- for qemu-devel@nongnu.org; Wed, 31 May 2023 12:55:57 -0400
-Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-53f2128ab1bso3109325a12.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 09:55:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1685552154; x=1688144154;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=hRYLWzhdqiApyYA5TJlPzr8zZQfvw70K7aAt35D1jk0=;
- b=MbishWFgnoCHx1ckdl0CLoD5Wl7WND3ifGl1NMX4sR0SMJ/hP7VB923SbGDkSGxQfk
- +ydQI7fjV9GId6ZXT04mwWOax9nONms1QyWHFaCalM/erqnl0omK3Ez1IkQ2VFMCTvdZ
- mMnSmPbuAFoPySEkFZ9Pfz2Q7Y3RGBTvr1len2FveywSvX1znGg1ggX1j1PfVhhdzlTL
- 8RF44JcVOxWrjiIyIIhaFJ2Z881tf+cML4NJ0HTd8jm0Hx+Cme6uK8REFkl5p4iK/Gs4
- +/qFfxWKZFhdb4stnsLqz8/PPyp/poO8x2PlxJlZzDsX7Xic2XWmMNkWxBpkknrjUIcX
- fOVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685552154; x=1688144154;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hRYLWzhdqiApyYA5TJlPzr8zZQfvw70K7aAt35D1jk0=;
- b=LWMQHrtK4qHKvehXPpjvw5BUV7VpwzIxzTUrfz+WtHItT/eNo3VzdFtt/dslWDkgba
- 7SnIbcyibBRaQ5mR9IFdD5hoFf/BGQ9w3Y7LggV0LzBess93NSfA+fDroBvGD7vuBKX1
- BgqNgB6T6l/ox2nU8KxL8Oj76nbMqiLm4J6FUo60P8AGzxSn337QpuNqcKxEG6+IDC1Y
- PK3VmJYmIRweX3AENKgweZhuyZGBK3Brh1p85j3k0GN0lVufY+22DrL5U4GE0PbYo8wT
- UX3rLt6wBu7HVHspVrzCVIJhC/Sd9k1wviX0LVFo+hr5leyTtUAytXylcEv49S/N0Nby
- rdyQ==
-X-Gm-Message-State: AC+VfDwW1odXwlg0sheK9zSBFLyGqTQD/BIUfFgRYeeTUXvOR6k3RqJ0
- St3LlmgB2+lFpprR42p7N8l8wKqG
-X-Google-Smtp-Source: ACHHUZ5IB9HtNRQTHTp6ljJfkjjK6/01xjDIhobJp1PYiRXWDhlQsjnchs5mp52Qs62dnGZvm8nrxHvD
-X-Received: from flwu.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:2200])
- (user=flwu job=sendgmr) by 2002:a63:495f:0:b0:53f:7713:5e0e with
- SMTP id
- y31-20020a63495f000000b0053f77135e0emr1197520pgk.5.1685552153974; Wed, 31 May
- 2023 09:55:53 -0700 (PDT)
-Date: Wed, 31 May 2023 16:55:37 +0000
-In-Reply-To: <20230531165537.3721999-1-flwu@google.com>
-Mime-Version: 1.0
-References: <20230531165537.3721999-1-flwu@google.com>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230531165537.3721999-3-flwu@google.com>
-Subject: [PATCH 2/2] tests/qtest: Add qtest for for ASPEED GPIO gpio-set
- property
-From: Jingbo Wu <flwu@google.com>
-To: clg@kaod.org, peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Felix Wu <flwu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=3GXx3ZAQKCho5BMK6EE6B4.2ECG4CK-34L4BDED6DK.EH6@flex--flwu.bounces.google.com;
- helo=mail-pg1-x549.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4PC2-0004Bp-JJ; Wed, 31 May 2023 13:01:03 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4PBy-0003cc-Ce; Wed, 31 May 2023 13:01:01 -0400
+Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:a49a:0:640:edd6:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id D0CF763363;
+ Wed, 31 May 2023 20:00:44 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
+ [2a02:6b8:b081:a512::1:34])
+ by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id h0Rats3OquQ0-F5Bqhhe1; Wed, 31 May 2023 20:00:43 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1685552443; bh=38S2vJmL/yGtKl97zQmkxTpWLgZJClHd09SHH+t3+WY=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=qRZ+b3KgUy/VojzXtkBivIAi+GBN/Q1EG+aWo7D3U1S3DVXXL6IKF6U8L4c7XMAKD
+ KUlz9B6Dw+fEid0Pg/0yCB4vWE99tjj/eKfyvK43QjBW/CJd3dh+E1OXQrXP400a6S
+ cu/Gq55jhTHAKZpXr0+244fXh4kyhyi6J6IWTIpw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <f2f89a4e-816e-165e-2d6a-7076f1ced823@yandex-team.ru>
+Date: Wed, 31 May 2023 20:00:43 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 11/14] nbd/client: Accept 64-bit block status chunks
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-12-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230515195343.1915857-12-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,184 +77,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Felix Wu <flwu@google.com>
+On 15.05.23 22:53, Eric Blake wrote:
+> Because we use NBD_CMD_FLAG_REQ_ONE with NBD_CMD_BLOCK_STATUS, a
+> client in narrow mode should not be able to provoke a server into
+> sending a block status result larger than the client's 32-bit request.
+> But in extended mode, a 64-bit status request must be able to handle a
+> 64-bit status result, once a future patch enables the client
+> requesting extended mode.  We can also tolerate a non-compliant server
+> sending the new chunk even when it should not.
+> 
+> In normal execution, we are only requesting "base:allocation" which
+> never exceeds 32 bits. But during testing with x-dirty-bitmap, we can
+> force qemu to connect to some other context that might have 64-bit
+> status bit; however, we ignore those upper bits (other than mapping
+> qemu:allocation-depth into something that 'qemu-img map --output=json'
+> can expose), and since it is only testing, we really don't bother with
+> checking whether more than the two least-significant bits are set.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   block/nbd.c        | 39 ++++++++++++++++++++++++++++-----------
+>   block/trace-events |  1 +
+>   2 files changed, 29 insertions(+), 11 deletions(-)
+> 
+> diff --git a/block/nbd.c b/block/nbd.c
+> index d6caea44928..150dfe7170c 100644
+> --- a/block/nbd.c
+> +++ b/block/nbd.c
+> @@ -610,13 +610,16 @@ static int nbd_parse_offset_hole_payload(BDRVNBDState *s,
+>    */
+>   static int nbd_parse_blockstatus_payload(BDRVNBDState *s,
+>                                            NBDStructuredReplyChunk *chunk,
+> -                                         uint8_t *payload, uint64_t orig_length,
+> -                                         NBDExtent *extent, Error **errp)
+> +                                         uint8_t *payload, bool wide,
+> +                                         uint64_t orig_length,
+> +                                         NBDExtentExt *extent, Error **errp)
+>   {
+>       uint32_t context_id;
+> +    uint32_t count = 0;
+> +    size_t len = wide ? sizeof(*extent) : sizeof(NBDExtent);
+> 
+>       /* The server succeeded, so it must have sent [at least] one extent */
+> -    if (chunk->length < sizeof(context_id) + sizeof(*extent)) {
+> +    if (chunk->length < sizeof(context_id) + wide * sizeof(count) + len) {
+>           error_setg(errp, "Protocol error: invalid payload for "
+>                            "NBD_REPLY_TYPE_BLOCK_STATUS");
+>           return -EINVAL;
+> @@ -631,8 +634,14 @@ static int nbd_parse_blockstatus_payload(BDRVNBDState *s,
+>           return -EINVAL;
+>       }
+> 
+> -    extent->length = payload_advance32(&payload);
+> -    extent->flags = payload_advance32(&payload);
+> +    if (wide) {
+> +        count = payload_advance32(&payload);
+> +        extent->length = payload_advance64(&payload);
+> +        extent->flags = payload_advance64(&payload);
+> +    } else {
+> +        extent->length = payload_advance32(&payload);
+> +        extent->flags = payload_advance32(&payload);
+> +    }
+> 
+>       if (extent->length == 0) {
+>           error_setg(errp, "Protocol error: server sent status chunk with "
+> @@ -672,7 +681,8 @@ static int nbd_parse_blockstatus_payload(BDRVNBDState *s,
+>        * connection; just ignore trailing extents, and clamp things to
+>        * the length of our request.
+>        */
+> -    if (chunk->length > sizeof(context_id) + sizeof(*extent)) {
+> +    if (count != wide ||
 
- - Added qtests to test gpio-set property for ASPEED.
- - Added function to get uint in qdict.
+hard to read for me. Could it be simply "count > 1 ||" ?
 
-Signed-off-by: Felix Wu <flwu@google.com>
----
- include/qapi/qmp/qdict.h       |   1 +
- qobject/qdict.c                |  13 ++++
- tests/qtest/aspeed_gpio-test.c | 105 ++++++++++++++++++++++++++++++---
- 3 files changed, 110 insertions(+), 9 deletions(-)
+> +        chunk->length > sizeof(context_id) + wide * sizeof(count) + len) {
+>           trace_nbd_parse_blockstatus_compliance("more than one extent");
+>       }
+>       if (extent->length > orig_length) {
+> @@ -1117,7 +1127,7 @@ static int coroutine_fn nbd_co_receive_cmdread_reply(BDRVNBDState *s, uint64_t h
+> 
+>   static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+>                                                            uint64_t handle, uint64_t length,
+> -                                                         NBDExtent *extent,
+> +                                                         NBDExtentExt *extent,
+>                                                            int *request_ret, Error **errp)
+>   {
+>       NBDReplyChunkIter iter;
+> @@ -1125,6 +1135,7 @@ static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+>       void *payload = NULL;
+>       Error *local_err = NULL;
+>       bool received = false;
+> +    bool wide = false;
+> 
+>       assert(!extent->length);
+>       NBD_FOREACH_REPLY_CHUNK(s, iter, handle, false, NULL, &reply, &payload) {
+> @@ -1134,7 +1145,13 @@ static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+>           assert(nbd_reply_is_structured(&reply));
+> 
+>           switch (chunk->type) {
+> +        case NBD_REPLY_TYPE_BLOCK_STATUS_EXT:
+> +            wide = true;
+> +            /* fallthrough */
+>           case NBD_REPLY_TYPE_BLOCK_STATUS:
+> +            if (s->info.extended_headers != wide) {
+> +                trace_nbd_extended_headers_compliance("block_status");
 
-diff --git a/include/qapi/qmp/qdict.h b/include/qapi/qmp/qdict.h
-index 82e90fc072..50046f4285 100644
---- a/include/qapi/qmp/qdict.h
-+++ b/include/qapi/qmp/qdict.h
-@@ -57,6 +57,7 @@ void qdict_put_str(QDict *qdict, const char *key, const char *value);
- 
- double qdict_get_double(const QDict *qdict, const char *key);
- int64_t qdict_get_int(const QDict *qdict, const char *key);
-+uint64_t qdict_get_uint(const QDict *qdict, const char *key);
- bool qdict_get_bool(const QDict *qdict, const char *key);
- QList *qdict_get_qlist(const QDict *qdict, const char *key);
- QDict *qdict_get_qdict(const QDict *qdict, const char *key);
-diff --git a/qobject/qdict.c b/qobject/qdict.c
-index 8faff230d3..916467958d 100644
---- a/qobject/qdict.c
-+++ b/qobject/qdict.c
-@@ -209,6 +209,19 @@ int64_t qdict_get_int(const QDict *qdict, const char *key)
-     return qnum_get_int(qobject_to(QNum, qdict_get(qdict, key)));
- }
- 
-+/**
-+ * qdict_get_uint(): Get an unsigned integer mapped by 'key'
-+ *
-+ * This function assumes that 'key' exists and it stores a
-+ * QNum representable as uint.
-+ *
-+ * Return unsigned integer mapped by 'key'.
-+ */
-+uint64_t qdict_get_uint(const QDict *qdict, const char *key)
-+{
-+    return qnum_get_uint(qobject_to(QNum, qdict_get(qdict, key)));
-+}
-+
- /**
-  * qdict_get_bool(): Get a bool mapped by 'key'
-  *
-diff --git a/tests/qtest/aspeed_gpio-test.c b/tests/qtest/aspeed_gpio-test.c
-index d38f51d719..38000c7868 100644
---- a/tests/qtest/aspeed_gpio-test.c
-+++ b/tests/qtest/aspeed_gpio-test.c
-@@ -27,28 +27,115 @@
- #include "qemu/timer.h"
- #include "qapi/qmp/qdict.h"
- #include "libqtest-single.h"
-+#include "qemu/typedefs.h"
- 
- #define AST2600_GPIO_BASE 0x1E780000
- 
- #define GPIO_ABCD_DATA_VALUE 0x000
- #define GPIO_ABCD_DIRECTION  0x004
- 
-+static uint32_t qtest_qom_get_uint32(QTestState *s, const char *path,
-+                                     const char *property)
-+{
-+    QDict *r;
-+
-+    uint32_t res;
-+    r = qtest_qmp(s, "{ 'execute': 'qom-get', 'arguments': "
-+                     "{ 'path': %s, 'property': %s } }", path, property);
-+    res = qdict_get_uint(r, "return");
-+    qobject_unref(r);
-+
-+    return res;
-+}
-+
-+static void qtest_qom_set_uint32(QTestState *s, const char *path,
-+                                 const char *property, uint32_t value)
-+{
-+    QDict *r;
-+
-+    r = qtest_qmp(s, "{ 'execute': 'qom-set', 'arguments': "
-+                     "{ 'path': %s, 'property': %s, 'value': %" PRIu32 " } }",
-+                     path, property, value);
-+    qobject_unref(r);
-+}
-+
-+static const char *resp_get_error(QDict *r, const char* error_key)
-+{
-+    QDict *qdict;
-+
-+    g_assert(r);
-+
-+    qdict = qdict_get_qdict(r, "error");
-+    if (qdict) {
-+        return qdict_get_str(qdict, error_key);
-+    }
-+
-+    return NULL;
-+}
-+
-+static bool qtest_qom_check_error(QTestState *s, const char *path,
-+                                  const char *property, const char *error_msg,
-+                                  const char *error_msg_key)
-+{
-+    QDict *r;
-+    bool b;
-+
-+    r = qtest_qmp(s, "{ 'execute': 'qom-get', 'arguments': "
-+                     "{ 'path': %s, 'property': %s } }", path, property);
-+    b = g_str_equal(resp_get_error(r, error_msg_key), error_msg);
-+    qobject_unref(r);
-+
-+    return b;
-+}
-+
- static void test_set_colocated_pins(const void *data)
- {
-     QTestState *s = (QTestState *)data;
--
-+    const char path[] = "/machine/soc/gpio";
-     /*
-      * gpioV4-7 occupy bits within a single 32-bit value, so we want to make
-      * sure that modifying one doesn't affect the other.
-      */
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV4", true);
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV5", false);
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV6", true);
--    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV7", false);
--    g_assert(qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV4"));
--    g_assert(!qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV5"));
--    g_assert(qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV6"));
--    g_assert(!qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV7"));
-+    qtest_qom_set_bool(s, path, "gpioV4", true);
-+    qtest_qom_set_bool(s, path, "gpioV5", false);
-+    qtest_qom_set_bool(s, path, "gpioV6", true);
-+    qtest_qom_set_bool(s, path, "gpioV7", false);
-+    g_assert(qtest_qom_get_bool(s, path, "gpioV4"));
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioV5"));
-+    g_assert(qtest_qom_get_bool(s, path, "gpioV6"));
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioV7"));
-+
-+    /*
-+     * Testing the gpio-set[%d] properties, using individual gpio boolean
-+     * properties to do cross check.
-+     * We use gpioR4-7 for test, Setting them to be 0b1010.
-+     */
-+    qtest_qom_set_uint32(s, path, "gpio-set[4]", 0x0);
-+    g_assert(qtest_qom_get_uint32(s, path, "gpio-set[4]") == 0x0);
-+    qtest_qom_set_uint32(s, path, "gpio-set[4]", 0xa000);
-+    g_assert(qtest_qom_get_uint32(s, path, "gpio-set[4]") == 0xa000);
-+
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioR4"));
-+    g_assert(qtest_qom_get_bool(s, path, "gpioR5"));
-+    g_assert(!qtest_qom_get_bool(s, path, "gpioR6"));
-+    g_assert(qtest_qom_get_bool(s, path, "gpioR7"));
-+
-+    /*
-+     * Testing the invalid indexing, the response info should contain following
-+     * info:
-+     * {key: "class", value: "GenericError"}
-+     *
-+     * For pins, it should follow "gpio%2[A-Z]%1d" or "gpio%3[18A-E]%1d" format.
-+     */
-+    const char error_msg[] = "GenericError";
-+    const char error_msg_key [] = "class";
-+
-+    g_assert(qtest_qom_check_error(s, path, "gpioR+1", error_msg,
-+                                   error_msg_key));
-+    g_assert(qtest_qom_check_error(s, path, "gpio-set[99]", error_msg,
-+                                   error_msg_key));
-+    g_assert(qtest_qom_check_error(s, path, "gpio-set[-3]", error_msg,
-+                                   error_msg_key));
- }
- 
- static void test_set_input_pins(const void *data)
+You set wide to true once, on first "NBD_REPLY_TYPE_BLOCK_STATUS_EXT", and then parse following "NBD_REPLY_TYPE_BLOCK_STATUS" if the come with wide=true.
+
+Should it be:
+
+--- a/block/nbd.c
++++ b/block/nbd.c
+@@ -1135,7 +1135,7 @@ static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+      void *payload = NULL;
+      Error *local_err = NULL;
+      bool received = false;
+-    bool wide = false;
++    bool wide;
+  
+      assert(!extent->length);
+      NBD_FOREACH_REPLY_CHUNK(s, iter, handle, false, NULL, &reply, &payload) {
+@@ -1146,9 +1146,8 @@ static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+  
+          switch (chunk->type) {
+          case NBD_REPLY_TYPE_BLOCK_STATUS_EXT:
+-            wide = true;
+-            /* fallthrough */
+          case NBD_REPLY_TYPE_BLOCK_STATUS:
++            wide = chunk->type == NBD_REPLY_TYPE_BLOCK_STATUS_EXT;
+              if (s->info.extended_headers != wide) {
+                  trace_nbd_extended_headers_compliance("block_status");
+              }
+
+
+> +            }
+>               if (received) {
+>                   nbd_channel_error(s, -EINVAL);
+>                   error_setg(&local_err, "Several BLOCK_STATUS chunks in reply");
+> @@ -1142,9 +1159,9 @@ static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+>               }
+>               received = true;
+> 
+> -            ret = nbd_parse_blockstatus_payload(s, &reply.structured,
+> -                                                payload, length, extent,
+> -                                                &local_err);
+> +            ret = nbd_parse_blockstatus_payload(
+> +                s, &reply.structured, payload, wide,
+> +                length, extent, &local_err);
+>               if (ret < 0) {
+>                   nbd_channel_error(s, ret);
+>                   nbd_iter_channel_error(&iter, ret, &local_err);
+> @@ -1374,7 +1391,7 @@ static int coroutine_fn GRAPH_RDLOCK nbd_client_co_block_status(
+>           int64_t *pnum, int64_t *map, BlockDriverState **file)
+>   {
+>       int ret, request_ret;
+> -    NBDExtent extent = { 0 };
+> +    NBDExtentExt extent = { 0 };
+>       BDRVNBDState *s = (BDRVNBDState *)bs->opaque;
+>       Error *local_err = NULL;
+> 
+> diff --git a/block/trace-events b/block/trace-events
+> index 48dbf10c66f..afb32fcce5b 100644
+> --- a/block/trace-events
+> +++ b/block/trace-events
+> @@ -168,6 +168,7 @@ iscsi_xcopy(void *src_lun, uint64_t src_off, void *dst_lun, uint64_t dst_off, ui
+>   # nbd.c
+>   nbd_parse_blockstatus_compliance(const char *err) "ignoring extra data from non-compliant server: %s"
+>   nbd_structured_read_compliance(const char *type) "server sent non-compliant unaligned read %s chunk"
+> +nbd_extended_headers_compliance(const char *type) "server sent non-compliant %s chunk not matching choice of extended headers"
+>   nbd_read_reply_entry_fail(int ret, const char *err) "ret = %d, err: %s"
+>   nbd_co_request_fail(uint64_t from, uint32_t len, uint64_t handle, uint16_t flags, uint16_t type, const char *name, int ret, const char *err) "Request failed { .from = %" PRIu64", .len = %" PRIu32 ", .handle = %" PRIu64 ", .flags = 0x%" PRIx16 ", .type = %" PRIu16 " (%s) } ret = %d, err: %s"
+>   nbd_client_handshake(const char *export_name) "export '%s'"
+
 -- 
-2.41.0.rc0.172.g3f132b7071-goog
+Best regards,
+Vladimir
 
 
