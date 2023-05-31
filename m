@@ -2,54 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A92717820
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE3E717834
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:28:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4GD6-0006ne-1f; Wed, 31 May 2023 03:25:32 -0400
+	id 1q4GFp-0007kO-NA; Wed, 31 May 2023 03:28:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
- id 1q4GD1-0006nL-8E; Wed, 31 May 2023 03:25:27 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4GFm-0007jh-1f; Wed, 31 May 2023 03:28:18 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
- id 1q4GCy-00059v-SH; Wed, 31 May 2023 03:25:27 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWLQ76b1Wz4x46;
- Wed, 31 May 2023 17:25:19 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWLQ54jf3z4x2k;
- Wed, 31 May 2023 17:25:17 +1000 (AEST)
-Message-ID: <fa528286-13f7-ef7c-0472-8e02d0340c10@kaod.org>
-Date: Wed, 31 May 2023 09:25:14 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4GFi-0005cO-UE; Wed, 31 May 2023 03:28:17 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0d:3786:0:640:7c97:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 425BD61DC7;
+ Wed, 31 May 2023 10:28:04 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
+ [2a02:6b8:b081:a512::1:34])
+ by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 2SHmgV5Me4Y0-1b4Hwnln; Wed, 31 May 2023 10:28:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1685518083; bh=QMkxd62VFk8EV417UUVj/25yVDpSo40/9FGxxMN47L4=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VgEZczmopm+nj3o2mTiMFyySgeiBCfa3foaitKBvx8q/ITyWV0ViuNPFTbSXU8iLL
+ IsBxgB1xXayd6ZTk/G8xmR7VJJL+bADhODT0duydDC3t63dgazggDCLFEj3s62vFK1
+ y531wcknFzw/zM2Le9NOe7ppdZm3IoirV+WAzlxQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <75188c78-2bcf-326e-1d85-43ca81e4648a@yandex-team.ru>
+Date: Wed, 31 May 2023 10:28:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC PATCH 2/5] target/ppc: Add initial flags and helpers for SMT
- support
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 03/14] nbd/server: Prepare for alternate-size headers
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-3-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230531012313.19891-3-npiggin@gmail.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, libguestfs@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-4-eblake@redhat.com>
+ <7f9afa94-4817-d33a-4565-20b654190e3d@yandex-team.ru>
+ <xheanhxhevlqm7fcnvnvpjv3e3bnmjbf2nwfnu7g54pzeu2jn4@rybss73nu4gq>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <xheanhxhevlqm7fcnvnvpjv3e3bnmjbf2nwfnu7g54pzeu2jn4@rybss73nu4gq>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=vahk=BU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,101 +79,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 03:23, Nicholas Piggin wrote:
-> SMT TCG emulation needs to be able to iterate over siblings in a core,
-> and needs to serialise core access to shared SPRs and state.
+On 30.05.23 19:29, Eric Blake wrote:
+> On Mon, May 29, 2023 at 05:26:50PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>> On 15.05.23 22:53, Eric Blake wrote:
+>>> Upstream NBD now documents[1] an extension that supports 64-bit effect
+>>> lengths in requests.  As part of that extension, the size of the reply
+>>> headers will change in order to permit a 64-bit length in the reply
+>>> for symmetry[2].  Additionally, where the reply header is currently
+>>> 16 bytes for simple reply, and 20 bytes for structured reply; with the
+>>> extension enabled, there will only be one structured reply type, of 32
+>>> bytes.  Since we are already wired up to use iovecs, it is easiest to
+>>> allow for this change in header size by splitting each structured
+>>> reply across two iovecs, one for the header (which will become
+>>> variable-length in a future patch according to client negotiation),
+>>> and the other for the payload, and removing the header from the
+>>> payload struct definitions.  Interestingly, the client side code never
+>>> utilized the packed types, so only the server code needs to be
+>>> updated.
+>>
+>> Actually, it does, since previous patch :) But, it becomes even better now? Anyway some note somewhere is needed I think.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   target/ppc/cpu.h       |  9 +++++++++
->   target/ppc/cpu_init.c  |  5 +++++
->   target/ppc/translate.c | 20 ++++++++++++++++++++
->   3 files changed, 34 insertions(+)
+> Oh, indeed - but only in a sizeof expression for an added assertion
+> check, and not actually for in-memory storage.
 > 
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index 1f23b81e90..b594408a8d 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -672,6 +672,8 @@ enum {
->       POWERPC_FLAG_TM       = 0x00100000,
->       /* Has SCV (ISA 3.00)                                                    */
->       POWERPC_FLAG_SCV      = 0x00200000,
-> +    /* Has >1 thread per core                                                */
-> +    POWERPC_FLAG_SMT      = 0x00400000,
->   };
->   
->   /*
-> @@ -1266,6 +1268,13 @@ struct CPUArchState {
->       uint64_t pmu_base_time;
->   };
->   
-> +#define _CORE_ID(cs)                                            \
-> +    (POWERPC_CPU(cs)->env.spr_cb[SPR_PIR].default_value & ~(cs->nr_threads - 1))
-> +
-> +#define THREAD_SIBLING_FOREACH(cs, cs_sibling)			\
-> +    CPU_FOREACH(cs_sibling)                                     \
-> +        if (_CORE_ID(cs) == _CORE_ID(cs_sibling))
-> +
+> If you are envisioning a comment addition, where are you thinking it
+> should be placed?
 
+Thinking of it again, the check in 02 is incorrect originally, as it calculates NBDStructuredReplyChunk as part of payload, and with 03 it becomes correct. So, swapping 02 and 03 commits will make everything correct with no additional comments.
 
-May be introduce these helpers when needed (and if needed).
+> 
+>>
+>>>
+>>> -static inline void set_be_chunk(NBDStructuredReplyChunk *chunk, uint16_t flags,
+>>> -                                uint16_t type, uint64_t handle, uint32_t length)
+>>> +static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
+>>
+>> Suggestion: pass niov here too, and caluculate "length" as a sum of iov lengths starting from second extent automatically.
+> 
+> Makes sense.
+> 
+>>
+>> Also, worth documenting that set_be_chunk() expects half-initialized iov, with .iov_base pointing to NBDReply (IN parameter) and .iov_len unset (OUT parameter), as that's not usual practice
+> 
+> Yeah, I'm not sure if there is a better interface, but either I come
+> up with one, or at least better document what I landed on.
+> 
+>>
+>>> +                                uint16_t flags, uint16_t type,
+>>> +                                uint64_t handle, uint32_t length)
+>>>    {
+>>> +    NBDStructuredReplyChunk *chunk = iov->iov_base;
+>>> +
+>>> +    iov->iov_len = sizeof(*chunk);
+>>>        stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
+>>>        stw_be_p(&chunk->flags, flags);
+>>>        stw_be_p(&chunk->type, type);
+>>
+>> [..]
+>>
+>> -- 
+>> Best regards,
+>> Vladimir
+>>
+> 
 
->   #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
->   do {                                            \
->       env->fit_period[0] = (a_);                  \
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index aa364f36f6..5035f6dada 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -6754,6 +6754,7 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
->   {
->       CPUState *cs = CPU(dev);
->       PowerPCCPU *cpu = POWERPC_CPU(dev);
-> +    CPUPPCState *env = &cpu->env;
->       PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
->       Error *local_err = NULL;
->   
-> @@ -6785,6 +6786,10 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
->   
->       pcc->parent_realize(dev, errp);
->   
-> +    if (env_cpu(env)->nr_threads > 1) {
-> +        env->flags |= POWERPC_FLAG_SMT;
-> +    }
-> +
->       return;
->   
->   unrealize:
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index b6bab4c234..72270c2163 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -227,6 +227,26 @@ struct opc_handler_t {
->       void (*handler)(DisasContext *ctx);
->   };
->   
-> +static inline bool gen_serialize(DisasContext *ctx)
-> +{
-> +    if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
-> +        /* Restart with exclusive lock.  */
-> +        gen_helper_exit_atomic(cpu_env);
-> +        ctx->base.is_jmp = DISAS_NORETURN;
-> +        return false;
-> +    }
-> +    return true;
-> +}
-> +
-> +static inline bool gen_serialize_core(DisasContext *ctx)
-> +{
-> +    if (ctx->flags & POWERPC_FLAG_SMT) {
-> +        return gen_serialize(ctx);
-> +    }
-> +
-> +    return true;
-> +}
-> +
->   /* SPR load/store helpers */
->   static inline void gen_load_spr(TCGv t, int reg)
->   {
+-- 
+Best regards,
+Vladimir
 
 
