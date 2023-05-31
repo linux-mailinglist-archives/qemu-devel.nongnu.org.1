@@ -2,79 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3B17173D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 04:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3F7717450
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 05:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Bfm-00008H-DI; Tue, 30 May 2023 22:34:50 -0400
+	id 1q4CLA-00028k-C6; Tue, 30 May 2023 23:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1q4Bfk-000082-OL
- for qemu-devel@nongnu.org; Tue, 30 May 2023 22:34:48 -0400
-Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
+ (Exim 4.90_1) (envelope-from <jon@nutanix.com>) id 1q4CL8-00027q-F3
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 23:17:34 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1q4Bfi-00087M-GS
- for qemu-devel@nongnu.org; Tue, 30 May 2023 22:34:48 -0400
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="118889708"
-X-IronPort-AV: E=Sophos;i="6.00,205,1681138800"; d="scan'208";a="118889708"
-Received: from unknown (HELO yto-r3.gw.nic.fujitsu.com) ([218.44.52.219])
- by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2023 11:34:41 +0900
-Received: from yto-m1.gw.nic.fujitsu.com (yto-nat-yto-m1.gw.nic.fujitsu.com
- [192.168.83.64])
- by yto-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id 32A65E428B
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 11:34:39 +0900 (JST)
-Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
- [192.51.206.22])
- by yto-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id 803DACF7D1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 11:34:38 +0900 (JST)
-Received: from cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 0846B68957
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 11:34:38 +0900 (JST)
-Received: from G08CNEXHBPEKD10.g08.fujitsu.local (unknown [10.167.33.114])
- by cn.fujitsu.com (Postfix) with ESMTP id 7A8A14D6A375;
- Wed, 31 May 2023 10:34:36 +0800 (CST)
-Received: from G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.209) by
- G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 31 May 2023 10:34:36 +0800
-Received: from localhost.localdomain (10.167.234.230) by
- G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.1.2507.23 via Frontend Transport; Wed, 31 May 2023 10:34:36 +0800
-From: Li Zhijian <lizhijian@cn.fujitsu.com>
-To: <jonathan.cameron@huawei.com>, <fan.ni@samsung.com>
-CC: <qemu-devel@nongnu.org>, Li Zhijian <lizhijian@cn.fujitsu.com>
-Subject: [PATCH v2] hw/cxl: Fix CFMW config memory leak
-Date: Wed, 31 May 2023 10:34:33 +0800
-Message-ID: <20230531023433.8732-1-lizhijian@cn.fujitsu.com>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <jon@nutanix.com>) id 1q4CL2-0006Qu-Oi
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 23:17:31 -0400
+Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34V0Q3qM020062; Tue, 30 May 2023 20:17:25 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=proofpoint20171006;
+ bh=J1TVz6rZi+VkghRkZpDPbtsvt8T5zsI7yzYxB5dsRAg=;
+ b=CLW6mPy4sMH11uWIvzX9sbf5lEkzz0lY2XPMX67djWgPujJyFK4D8h2kxc0L2PZVexfC
+ DxJNoTt7kvHe7xM3Q5lGpYYms+Ia+kbMP/GxCeGEgGY6GhVpfgxwIuI62MEBtE9j2I2z
+ /Q2eseIj2ZL13vBEC579FakvZcJeDzA9LpDovv82cEv5Ysqx7VzzRwl4wKKwsC/4hn1V
+ k6um45rLgFb7bfcnaKonfzgjIRXMl8xMJ0vr9RZss9BmETka7T2gcrTRD5CPKs0JHFHz
+ xxcw4gcRXkvQQKW3CzdeEK2/uFFTYk4VGtdI/oOOK7kxzGgT4dre3HABiDNyDkyT4NRE Xg== 
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12lp2172.outbound.protection.outlook.com [104.47.55.172])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3quhcxrthp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 20:17:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Hpw/fieiJb2wi3/N+Y3yoQVflb6Tun9Uo4zYFW6O2aJPlzm+N6UxXI1wYeGq2JaL9yErEdDhKLHeBZLGRyDJhSY+9WcGa+K8rHOWPeCI4ly5CHbtxf3rWgzS7RLFR7Nt2WssKbYLIEfgb52mIdJWCIeGpVlKJa0+HhKY3YjLCySB8iIecYAoZZDdm+pTf/JxJ+3JmZEkQZZLAl2oGrJ6Uk8dybIl615FzySTm4NdC0IG1280mAAxzIV/PRShxGLgv/wIyn0dwU0HevVqN1OMY1LBDFBWC9ai7gVPNOvPZT0vySGlqh/t4EGkKpY8vI/V8qGGjszyU5JYXnl0YkYLAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J1TVz6rZi+VkghRkZpDPbtsvt8T5zsI7yzYxB5dsRAg=;
+ b=ZPMQ/59qLBdL6difYMlYq6ZM+GcSHtdmqDojGY1OQ1Kemoh6jwqbYes/QTdpaPSocReOS3aRHGttaeB82y0d0AmWN4RMXTmFtkVbjH+tC3WBjgjt/TqijQyLoVM3QMEz6kkPnMYWP/FKu7glt+STJD2sFpkmuVf/FFA194xO3P5BrqdgDIzQ8VN4snE9rTZt8RTZbbZkX3eNs0t2WJEyASUhRWvn7TRlVw9TeM7YUFfUsQIkihF+t1NiOIVeLdvGRJaa/+tHO2R/SiRP87/IU4JBi8/X2rFxX01B1JLPTSyu2/v5T7+bNKNSB8KsOxaaa8QEuWKC0Tmn72ezAJ+fuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J1TVz6rZi+VkghRkZpDPbtsvt8T5zsI7yzYxB5dsRAg=;
+ b=WESJ5sLagRkHuOdzz5dQqoKAUzSo/TeYxwY5bXfzil6r5813hY1gU3mPgAny3JqF/IVqwyrQHZNpjmheUiphnWnRR2DxRuz03Jcfi/p2FrzzM0WYAOpgio42nrdgvh/8sa7+J2Bsb6F0RwwaAG9mgy3fHn3AdM6j2+pRKzCHjJeaA+m0RAyAr55A7TdwbqTAdU0dppBpbt4//nbYR+JUTIaudx/u1g1BCXc88GJE2cu/0SstfHwU5AWnrlZnaHQUVvQGldQG3oEaqm1ZbqJ3vjBtMnBEJ0FyCHyEaxcw6R+VSQyDqVUgCF6wNM8GT/yt4Yol808AWA5MjQ8b+luUIw==
+Received: from BL0PR02MB4579.namprd02.prod.outlook.com (2603:10b6:208:4b::10)
+ by SJ0PR02MB8612.namprd02.prod.outlook.com (2603:10b6:a03:3f8::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Wed, 31 May
+ 2023 03:17:22 +0000
+Received: from BL0PR02MB4579.namprd02.prod.outlook.com
+ ([fe80::b138:ab35:d489:67f]) by BL0PR02MB4579.namprd02.prod.outlook.com
+ ([fe80::b138:ab35:d489:67f%4]) with mapi id 15.20.6433.022; Wed, 31 May 2023
+ 03:17:22 +0000
+From: Jon Kohler <jon@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: Jon Kohler <jon@nutanix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PATCH] tap: introduce IFF_NAPI
+Date: Tue, 30 May 2023 23:16:45 -0400
+Message-Id: <20230531031645.44335-1-jon@nutanix.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-yoursite-MailScanner-ID: 7A8A14D6A375.ADC31
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: lizhijian@fujitsu.com
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-27662.004
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-27662.004
-X-TMASE-Result: 10--0.485200-10.000000
-X-TMASE-MatchedRID: giRLZTsVNVsCVvo5Hft/7khwlOfYeSqxwTlc9CcHMZerwqxtE531VIPc
- XuILVCbaNP1f3JWj4BeAnHscbjEAWl2gPt42KpU6zr16YOzjZ12ZmLDnd2pI3/oAii4Kx7QE4nP
- T8jZv1NHi8zVgXoAltuJ5hXsnxp7jC24oEZ6SpSmcfuxsiY4QFIDF1RCAXu1bbK5anZWeoKp9jb
- mVHonKnzZ+hbi8wND/p3DQCWjEVPO2TTTzz7d9uEE636HIzx6OzfWA7Bxn4IB004EXndD/L9VGK
- sGTt2/S6yORifnpUaoNUYeVfcC2R3iZNoNUzKgUYDttQUGqHZU=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=207.54.90.48; envelope-from=lizhijian@fujitsu.com;
- helo=esa2.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-ClientProxiedBy: SJ0PR05CA0195.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::20) To BL0PR02MB4579.namprd02.prod.outlook.com
+ (2603:10b6:208:4b::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR02MB4579:EE_|SJ0PR02MB8612:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80f3d353-d778-481a-72ab-08db61858c9a
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7j5N88TKZqAdC+NIu+y9q4TyPexSl9SbVqus31x+SsZI6bMIg06U7ZRVnIQIh0bFWthAtcqvMIYUgZoLEknrBfpZsSwNcVFRIVNqG6PPtKBYzwA0gKbJareIFXHR4jaj0GAnKxnXHUouokj5y28tB7D/HBFe+qo4VqfOxMC5K77c9uQJgADVoeCMXtllfF3xc0dAHBDT42JW9HKtFWHVCZv4FXtpIaMGLlj/iHPhlx8k1l9qehxA1jVgSy0zRNtLgXp8FZIi9/OETQwqHbc/Kt7B+d4LjxyulSiCURK8t5miQ4x6FsBuwtOI89vV58/Hx4y0iEfEzUUgRzM2ZHDTXZM4wkMMtI9+/4C6ohC6Lj9yv4gf+KqV24C4TN0LMpdBqzCTRZUm0sX/0SfZmULJG9lP4F2zknzsNbwKqmx2fIaM5HshfR7Bvpp8RoiECLOBd3YhV3U0vJSTn/NvaQTdziECXIZu7wEZEPHerDnAkQbdbm7CH0GwoA0a63iKT7wbJJcSWOeDqppHm8HPdWzy8knlnYH35z6yyJuAzvmhCavdx27ryN0tXaVN0lVgHATB
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL0PR02MB4579.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(366004)(346002)(136003)(396003)(39860400002)(376002)(451199021)(478600001)(54906003)(8676002)(8936002)(5660300002)(66476007)(36756003)(2906002)(86362001)(66556008)(4326008)(6916009)(66946007)(316002)(41300700001)(38100700002)(1076003)(6512007)(6506007)(186003)(2616005)(6486002)(6666004)(52116002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9mO4JwF05uGUDTecNR0f6DevikXdJedcp18yHA3V3z2ChTYgkJme/b+z1idv?=
+ =?us-ascii?Q?sl/+RLqFKoVFScxrg5nX/8E9n4+CEBegI+X3cMFuh52MassKFJ0Kz0VJpqR2?=
+ =?us-ascii?Q?DDI8DNPaQXwEearFpgYOdUb7xr1J1OUqrGv5FrwH5Xe/jRpvBi86RCE5xWq1?=
+ =?us-ascii?Q?JVFFbvZeKNGTMqq5HiKxNRSJufsqEwWKuZuIdhDy58yDF81sM8wdTStVOXVR?=
+ =?us-ascii?Q?3MCGeX8N0/MUJB0w/QC9SmyAF5pDR4QPbRiVsnQvI1TRG0dBZwght4muPj+X?=
+ =?us-ascii?Q?y4ilAzJSpDS5qZcldB40GBHODuZDLUXZ0+AxPeceuwlQme36ki4s7WRPKAxD?=
+ =?us-ascii?Q?K5c4kq/thsluZywI01ikoMDV0TpLSSg7aW899UdFsdHM+SNSingmfadH5Hrl?=
+ =?us-ascii?Q?SnOyfAIFL/QA/afrS6Vx0ujyJo3NQaRGTGz+ey4HzO35IEmlv5RCGZ4xDeaF?=
+ =?us-ascii?Q?FPJ2SuKLo8Z3+APSxkztYvhBS5KaQWB/gkNiGoWqW+PrTseaWplNHsclx+Il?=
+ =?us-ascii?Q?/hQMHnEuIDOpT4hzRHJM+v5+Vv54ORanawWi8h5lODW/GO9dUdYBXTJtfzWG?=
+ =?us-ascii?Q?z1yOSoW+CmtwOvNJCtWaFdD1RSrqsbEcC43d4sD3kvX0bcmttJEjOZvFitHe?=
+ =?us-ascii?Q?4l/CkVbZF3v3DlzjL2z4+SJ3f8x3Wa1C0/ltsOnhKHxCVLGieW8bzml4VIEQ?=
+ =?us-ascii?Q?8lMSj4d/tWA0y2tpH4DwveDE0GDvFJQqDbNqHdkCMoYDyXBn92G6rAqxNHuG?=
+ =?us-ascii?Q?d8b6MVPO57095xPdPqniENQOj8WabppkJZ+I9a+cRCtwODm3iN179gNgjX8f?=
+ =?us-ascii?Q?QDJOWHwVMVaCvFFTaeij8iJgkHFZrhR9lorLFs5n3aeN1j8J50duRxZNpxF6?=
+ =?us-ascii?Q?sXLlH7L9Ar7LcLTczO92iQNsmFBo0Zxj9JPYXgVX9Vcf/TMyYG3fQ7oYD/OO?=
+ =?us-ascii?Q?7gHmTLaZKYSNWYWKVG9B5WZY4Nz0SL01Go8hBbFUOnG3K+rh7chJXcmhQUUj?=
+ =?us-ascii?Q?7wPLqA001eP389/v/LBEKvR5rhxHuOa/FtWy1IQaFGcaJHWQsTRd+J230bzu?=
+ =?us-ascii?Q?iYH8jnhvV/JOS+qof+Db0YVCjdWNUsB/Hqgh3D6r6ZcI5hg/XmpdaClXYpHj?=
+ =?us-ascii?Q?F5jtqTiRxSaHNW3iZ+2C8lXswbz+OBfk7PumW6dn6Dl+NiZ3qvZgWEHgfSCE?=
+ =?us-ascii?Q?I8YmgWhJtOwnoGzfErgoY6CDtIimdEp136A89mewyWmaUIB7rLhWNpk7iDVk?=
+ =?us-ascii?Q?LZOj1D5H4fBAYu0ehtW4HK+QmRNzexMhPa/v1Gnfi0lYbH4uJoWZX1EB78K6?=
+ =?us-ascii?Q?Q2aX0dWhqae0rmTioYCBI8Ew3mKXUAyfalTG41uN79dzR0cWNXvl4k4BMgod?=
+ =?us-ascii?Q?9WVnvkBdHozUQ6uKt3HDGEPABICifbDjaD/8NPJDrl86CGubwQMW52TIO+aj?=
+ =?us-ascii?Q?xLFLS4swuFQi7LgLsUKTUgW4ncZIY5COPJJ5NgTA1YvdxKCGD5gsqHhc2UrB?=
+ =?us-ascii?Q?ftVajGArawhSLyef5VUrCrbdr2n8FjCamgr+8EuzsXoA5hijnv5Dm+VmNIlF?=
+ =?us-ascii?Q?+869m8AqHth1WWaXJvE7OzBvmCpACAJnl7GLjuSOKmne2WbKzyPHmNTzdl91?=
+ =?us-ascii?Q?Y4/K4beUJNlFqYpnQ+6dbjypOBpMHbxyyu99p4iexsR2drGd3XiieVmz60XT?=
+ =?us-ascii?Q?Ew4HRA=3D=3D?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80f3d353-d778-481a-72ab-08db61858c9a
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR02MB4579.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2023 03:17:22.3962 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M9xqbaUsrhQ5Ud+3DKqL726KnVPx82HtAG7S7NYEXk/Za8DAcs/kPgj+l3vuFrAylX8fe3NZiv/rsrY2TYuDFWptbTFq4tE2CE6OtLyIirA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB8612
+X-Proofpoint-ORIG-GUID: Bvzxh89cPypKNkgoBoIk0VOSH072PQNz
+X-Proofpoint-GUID: Bvzxh89cPypKNkgoBoIk0VOSH072PQNz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-30_18,2023-05-30_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=jon@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,54 +153,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only 'fw' pointer is marked as g_autofree, so we shoud free other
-resource manually in error path.
+If kernel supports IFF_NAPI, lets use it, which is especially useful
+on kernels containing fb3f903769e8 ("tun: support NAPI for packets
+received from batched XDP buffs"), as IFF_NAPI allows the
+vhost_tx_batch path to use NAPI on XDP buffs.
 
-Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
----
-V2: Delete unnecesarry check
----
- hw/cxl/cxl-host.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Benchmark w/ iperf -c (remote srv) -P (thread count) -l (stream size)
+from a guest running kernel 5.10.105 to remote bare metal running
+patched code on kernel 5.10.139. Guests were configured 1x virtio-net
+device with 4x queues, resulting in 4x vhost-worker threads. Hosts are
+identical with Intel ICX 4314 @ 2.4 GHz with Mellanox CX5 25GbE NIC ->
+Arista 25GbE switch. vhost-worker threads largely maxed out on CPU on
+"Before" and around ~50-60% utilization "After".
 
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 034c7805b3e..787a2e779d2 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -48,7 +48,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-     if (object->size % (256 * MiB)) {
-         error_setg(errp,
-                    "Size of a CXL fixed memory window must be a multiple of 256MiB");
--        return;
-+        goto err_free;
+Single Stream: iperf -P 1
+iperf -l size | Before          | After          | Increase
+64B           | 593 Mbits/sec   | 712 Mbits/sec  | ~20%
+128B          | 1.00 Gbits/sec  | 1.18 Gbits/sec | ~18%
+4KB           | 17.6 Gbits/sec  | 22.7 Gbits/sec | ~29%
+
+Multiple Stream: iperf -P 12
+iperf -l size | Before          | After          | Increase
+64B           | 6.35 Gbits/sec  | 7.78 Gbits/sec | ~23%
+128B          | 10.8 Gbits/sec  | 14.2 Gbits/sec | ~31%
+4KB           | 23.6 Gbits/sec  | 23.6 Gbits/sec | (line speed)
+
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+---
+ net/tap-linux.c | 4 ++++
+ net/tap-linux.h | 1 +
+ 2 files changed, 5 insertions(+)
+
+diff --git a/net/tap-linux.c b/net/tap-linux.c
+index f54f308d359..fd94df166e0 100644
+--- a/net/tap-linux.c
++++ b/net/tap-linux.c
+@@ -62,6 +62,10 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+         ifr.ifr_flags |= IFF_ONE_QUEUE;
      }
-     fw->size = object->size;
  
-@@ -57,7 +57,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-             cxl_interleave_granularity_enc(object->interleave_granularity,
-                                            errp);
-         if (*errp) {
--            return;
-+            goto err_free;
-         }
-     } else {
-         /* Default to 256 byte interleave */
-@@ -68,6 +68,12 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-                                              g_steal_pointer(&fw));
- 
-     return;
-+
-+err_free:
-+    for (i = 0; i < fw->num_targets; i++) {
-+        g_free(fw->targets[i]);
++    if (features & IFF_NAPI) {
++        ifr.ifr_flags |= IFF_NAPI;
 +    }
-+    g_free(fw->targets);
- }
++
+     if (*vnet_hdr) {
+         if (features & IFF_VNET_HDR) {
+             *vnet_hdr = 1;
+diff --git a/net/tap-linux.h b/net/tap-linux.h
+index bbbb62c2a75..f4d8e55270b 100644
+--- a/net/tap-linux.h
++++ b/net/tap-linux.h
+@@ -37,6 +37,7 @@
  
- void cxl_fmws_link_targets(CXLState *cxl_state, Error **errp)
+ /* TUNSETIFF ifr flags */
+ #define IFF_TAP          0x0002
++#define IFF_NAPI         0x0010
+ #define IFF_NO_PI        0x1000
+ #define IFF_ONE_QUEUE    0x2000
+ #define IFF_VNET_HDR     0x4000
 -- 
-2.31.1
-
-
+2.30.1 (Apple Git-130)
 
 
