@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27C3718400
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5E9718402
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:56:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4MIp-0003d6-0T; Wed, 31 May 2023 09:55:51 -0400
+	id 1q4MJV-00044l-P2; Wed, 31 May 2023 09:56:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MIl-0003cr-55
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:55:48 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MJT-00044N-SW
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:56:32 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MIi-0004Va-5e
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:55:46 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3090d3e9c92so5758608f8f.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:55:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MJS-0004bJ-3S
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:56:31 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f6e4554453so43746165e9.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:56:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685541340; x=1688133340;
+ d=linaro.org; s=google; t=1685541388; x=1688133388;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=tH3ur2M3INdt82gTYuNAeRE4aw7Dy7lg/JVbA9G/Q6M=;
- b=HhRABIDP9WAA8Crt8sC7KLgDngCxXZKMxGSgs9Ry0Z+SV6tT2/6D1b9tzEFUlxBFJ1
- bXwhHSyI+Q/ojxF4cIl6B4Cn5HtMP3ZcCwej0x4mQE1NiDQmWeE7RILZGthsL2UAeGD6
- dTKxJ93T0WKHctcrQRzoJOGqk/D0AGuAJbpku1WWrzanRYJ8D3H2uuNJD8GClrHaciQ0
- u+Sd5T0Cu1JLMVu0KpDlZEF5XbPoH/Jewt+dAmGJv7mCPrAfuoW8m7fgwigMlyk4//PO
- caiaZxUsEg0pad6U4pBwHYxoHq/0nIoxnebH7vr+Lb1K28x22zfbe+koDyCOsidkgfEf
- rzpg==
+ bh=f+cMeePrQDBg82crLgeu8VxFbIIryvV8p/+yDeBbwLY=;
+ b=tCQMGRMHChSPhitKDgpE6p+oS4YksRgmjE4BoxeRIX1M080fq8AEUATg8fZObRK/NV
+ baI9lWGbbu7VrCWpBlAq5+DxZhMffwjZwGnnn+m997g0H7gLWuB0eG8SHUBFBaz3xfAy
+ VwXQw+lOqoemkPQjWkIDW/2g9tBxfE6JZ1TJeCr3gqx8Bol+KRrqEFMhayZpHVYwrf6w
+ 5UOijv9MeonDzYus8URycqqnZkEkYgkdxiRXUMoAophNTZL0DHwd8iZmTW2A9NXAMTq7
+ DzGLrTgizC5InfBBuEWEMDyfD6DPvVwvZAorTpu828EP/I29pmAxYv8X9d5ABIWEwoOe
+ xNdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685541340; x=1688133340;
+ d=1e100.net; s=20221208; t=1685541388; x=1688133388;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tH3ur2M3INdt82gTYuNAeRE4aw7Dy7lg/JVbA9G/Q6M=;
- b=B5Dhcd/RdA5dVR5az8KrAb3pTxuvTDHP4B4xYCmZPVgqVBTu/hdy5SGxXRSj/iBlYg
- Xt5vsCmejDI9Ap7Urgkri9Y/o6fU1i7Xhe1lDOBsI44chGz3JmzjeaUx1gwne2mGHe1m
- xvqojjHHlRVnSd7AGX2OBITbkZFwSfFsYsy4D4OofDZ79M/XA9xi2L/SvnVhaJvrzCKA
- VJxR/zhpZHcZIchYiFHAfMZu1evQUOd2T1AxNZk0V3oQ8nNCmqLq0vyvgMPRQ+T6zLs7
- oYASEfpaPAkH2WeqVzYzs4iYsn5KWI28HvdbTesgpzU2upcEUN+wy0VEmdKoSIhban+p
- TFIg==
-X-Gm-Message-State: AC+VfDwbSUd5ZqKtoShzAgI/0weqjUSAQpI4mPK7aYw7rjQkqrqNFyy1
- cSv5ahmABgI6t2Nelg2ZKtO3tqefoWpgJwJYewg=
-X-Google-Smtp-Source: ACHHUZ4tjRvucBYNCvk/UTfZJIgS0vBoRbMQq9sIvt/5rqt1pRgQF8Y0+mrsx1ejga7dYH2xpJqicA==
-X-Received: by 2002:adf:fdcb:0:b0:30a:d2e6:6a78 with SMTP id
- i11-20020adffdcb000000b0030ad2e66a78mr3975680wrs.24.1685541340418; 
- Wed, 31 May 2023 06:55:40 -0700 (PDT)
+ bh=f+cMeePrQDBg82crLgeu8VxFbIIryvV8p/+yDeBbwLY=;
+ b=AjKDU4hwjJf9CfWfRdvFL9AtasreHx/5m5taO7A6qG+kb7nexhH8iAB1qFuGmxntQz
+ mjNKZoqbN98JBaWl5UBBMdef1by1Drh0vnEkt6OSN6+8VDN3+LPosQIRVnwnMkUMx8d2
+ 3qNRwKiuBOc2AjjFt2ugWujNuXKyen0l1J3dggRit0gP8ZdumEjR5giNnfUI67asuUQ4
+ Eny7CZU1McJi4uSyzq2MqXeaEYbVJuIovL8GA1BIdJs3kgtuC++SGHS9wlHt+JVLRiFT
+ uvdm4b/G/EPXOKtm4eDFGjhU+lkIK8sm2YDat+73sGqrDC7AUCQpCg+SC1Kd95aLSXRT
+ IdhA==
+X-Gm-Message-State: AC+VfDxPyDVCS7wmfTaTLkVI0aS6oOWFhRPYd2Z123Mbqed9ehZy4cV2
+ edAElcHlStYmlKfu9X6FQuLryw==
+X-Google-Smtp-Source: ACHHUZ4yuCjsjgLrc9qYTOcPFbNNhaZyK8Cw4YdSipes8VkgFwlI9Dt8yLTlnN1N8OcXIcUkXwR6Eg==
+X-Received: by 2002:a1c:7401:0:b0:3f5:d313:db68 with SMTP id
+ p1-20020a1c7401000000b003f5d313db68mr3732105wmc.5.1685541388273; 
+ Wed, 31 May 2023 06:56:28 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- bf3-20020a0560001cc300b00307b5376b2csm6829067wrb.90.2023.05.31.06.55.39
+ l5-20020adffe85000000b00307a83ea722sm7008362wrr.58.2023.05.31.06.56.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 06:55:39 -0700 (PDT)
-Message-ID: <3594a2c2-5526-deae-6259-9906d79c5e3c@linaro.org>
-Date: Wed, 31 May 2023 15:55:38 +0200
+ Wed, 31 May 2023 06:56:27 -0700 (PDT)
+Message-ID: <4e76c989-a665-fb9a-cc13-9eb7b1f92b43@linaro.org>
+Date: Wed, 31 May 2023 15:56:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 21/23] q800: move macfb device to Q800MachineState
+Subject: Re: [PATCH v2 01/23] q800: fix up minor spacing issues in
+ hw_compat_q800 GlobalProperty array
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
  qemu-devel@nongnu.org
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-22-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-2-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531125400.288917-22-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230531125400.288917-2-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,29 +95,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 31/5/23 14:53, Mark Cave-Ayland wrote:
-> Also change the instantiation of the macfb device to use object_initialize_child().
+> Ensure there is a space before the final closing brace for all global
+> properties.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 > ---
->   hw/m68k/q800.c         | 6 ++++--
->   include/hw/m68k/q800.h | 2 ++
->   2 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index 946cb09e30..0e7451e77a 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -449,7 +449,9 @@ static void q800_machine_init(MachineState *machine)
->   
->       /* framebuffer in nubus slot #9 */
->   
-> -    dev = qdev_new(TYPE_NUBUS_MACFB);
-> +    object_initialize_child(OBJECT(machine), "macfb", &m->macfb,
-
-Alternatively "framebuffer" or "fb". Regardless,
+>   hw/m68k/q800.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +                            TYPE_NUBUS_MACFB);
 
 
