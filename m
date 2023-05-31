@@ -2,91 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170B471867D
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48E371868C
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:41:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NqP-0002Lg-Le; Wed, 31 May 2023 11:34:37 -0400
+	id 1q4Nvk-0004Af-Ca; Wed, 31 May 2023 11:40:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4NqM-0002LO-Ov
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:34:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q4Nvh-0004AL-U2; Wed, 31 May 2023 11:40:05 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4NqI-0000zU-B0
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:34:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685547265;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=umgitms0WDA+J6n4PBGFnFBxJfVSSct62UU2xiE9bh8=;
- b=DJpahYJxogqPSBNj0Z6LpURo7ttAvtBEoT7upTheqJ16goM1gz32o8LRrcO45XXqR/WgbU
- IgAmyhTUDNqRkle1zH3E6gQeLVWnBgqF4uHFQD7BdYJME28bOj51Su4B967zpZTW1RqEHr
- QCoILtvWrKWkqhnFfGuoSOC9VChzh4o=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-270-TkWelEWwM_CsuAHfJeV1hA-1; Wed, 31 May 2023 11:34:24 -0400
-X-MC-Unique: TkWelEWwM_CsuAHfJeV1hA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f612a1b0fdso34312625e9.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:34:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685547262; x=1688139262;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=umgitms0WDA+J6n4PBGFnFBxJfVSSct62UU2xiE9bh8=;
- b=lVN0PCnd+5pP3riqVNwlB21T88c8MPRBiFLKD1ty5DveOBGtyYSzL4JaiUvNqTmirc
- 5Dr/Qi/eQ7fL0BnQWZknjzPGYxn5QKHr9F7c2tBW23JAwCg4Jd2MiFahqQ85Kfaup84u
- JhwGHR0YESeBR4cczeZKlzFeq9aq+fNxew+di8ch1ZpocAlyAg8daZg5THpqcLGsvemj
- EQornwVwCIE+LxaSHRt4h8Gr2zUfScOclpl8XO3I5dPeu9tj+rGgSEgUdsG8UZiPNu4q
- ykroSzunc6ctxm1+CclQvkpe6K6ScL2vt6qfvmGM8751vnHUDReudLBM+POB/ms2yPTI
- /Lqg==
-X-Gm-Message-State: AC+VfDzrns+9oMp40J6TcVDydDBHK2NtZbPvd8X5N7y133rBBBPn37iY
- mGRCJFqbiWvnuKqV9GwlODqf4kNIqVq1f7sMXG2Q0Do5ZwyEOSurrMQuQp9oj2QS+pqyTxcSvnz
- IOIZWA5O6BbgbWQk=
-X-Received: by 2002:a5d:5083:0:b0:304:b967:956f with SMTP id
- a3-20020a5d5083000000b00304b967956fmr5865098wrt.8.1685547262114; 
- Wed, 31 May 2023 08:34:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5qmRLaAjOTsTojZd4boW8sMOfJa3tWYmjYWLPBbJmPnX6Ii4n9FuX2unlbdZTYzRDECgLPjA==
-X-Received: by 2002:a5d:5083:0:b0:304:b967:956f with SMTP id
- a3-20020a5d5083000000b00304b967956fmr5865082wrt.8.1685547261861; 
- Wed, 31 May 2023 08:34:21 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-178-4.web.vodafone.de. [109.43.178.4])
- by smtp.gmail.com with ESMTPSA id
- l16-20020adffe90000000b0030ae93bd196sm7173571wrr.21.2023.05.31.08.34.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 08:34:21 -0700 (PDT)
-Message-ID: <035823a1-e5f9-0f4c-9732-d69a39cdef93@redhat.com>
-Date: Wed, 31 May 2023 17:34:19 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q4Nve-0001rO-TD; Wed, 31 May 2023 11:40:05 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QWYLw420qz67ftX;
+ Wed, 31 May 2023 23:38:16 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
+ 2023 16:39:57 +0100
+Date: Wed, 31 May 2023 16:39:57 +0100
+To: Klaus Jensen <its@irrelevant.dk>
+CC: <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>, Keith Busch
+ <kbusch@kernel.org>, Jason Wang <jasowang@redhat.com>, Lior Weintraub
+ <liorw@pliops.com>, Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr
+ <jk@codeconstruct.com.au>, <qemu-arm@nongnu.org>, Matt Johnston
+ <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
+ <qemu-block@nongnu.org>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
+ <peter.maydell@linaro.org>, <gost.dev@samsung.com>
+Subject: Re: [PATCH v3 3/3] hw/nvme: add nvme management interface model
+Message-ID: <20230531163957.0000494e@Huawei.com>
+In-Reply-To: <20230531114744.9946-4-its@irrelevant.dk>
+References: <20230531114744.9946-1-its@irrelevant.dk>
+ <20230531114744.9946-4-its@irrelevant.dk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] meson.build: Use -Wno-undef only for SDL 2.0.8 and older
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org
-References: <20230531093902.70695-1-thuth@redhat.com>
-In-Reply-To: <20230531093902.70695-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,46 +67,286 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/05/2023 11.39, Thomas Huth wrote:
-> There is no need to disable this useful compiler warning for
-> newer versions of the SDL anymore.
+On Wed, 31 May 2023 13:47:44 +0200
+Klaus Jensen <its@irrelevant.dk> wrote:
+
+> From: Klaus Jensen <k.jensen@samsung.com>
 > 
-> This also enables the printing of the version number with
-> newer versions of the SDL in the summary of the meson output
-> again.
+> Add the 'nmi-i2c' device that emulates an NVMe Management Interface
+> controller.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   meson.build | 10 ++++++----
->   1 file changed, 6 insertions(+), 4 deletions(-)
+> Initial support is very basic (Read NMI DS, Configuration Get).
 > 
-> diff --git a/meson.build b/meson.build
-> index bc76ea96bf..8ccd928dca 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1273,10 +1273,12 @@ if not get_option('sdl').auto() or have_system
->     sdl_image = not_found
->   endif
->   if sdl.found()
-> -  # work around 2.0.8 bug
-> -  sdl = declare_dependency(compile_args: '-Wno-undef',
-> -                           dependencies: sdl,
-> -                           version: sdl.version())
-> +  if sdl.version().version_compare('<=2.0.8')
-> +    # work around 2.0.8 bug
-> +    sdl = declare_dependency(compile_args: '-Wno-undef',
-> +                             dependencies: sdl,
-> +                             version: sdl.version())
-> +  endif
+> This is based on previously posted code by Padmakar Kalghatgi, Arun
+> Kumar Agasar and Saurav Kumar.
+> 
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 
-Drat, never mind, this still fails with the SDL2 from MinGW:
+A few comments inline - I dug into the specs this time so some
+new questions.
 
-  https://gitlab.com/thuth/qemu/-/jobs/4385862312#L3048
+Jonathan
 
-  Thomas
+> diff --git a/hw/nvme/nmi-i2c.c b/hw/nvme/nmi-i2c.c
+> new file mode 100644
+> index 000000000000..38e43e48fa51
+> --- /dev/null
+> +++ b/hw/nvme/nmi-i2c.c
+> @@ -0,0 +1,367 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * SPDX-FileCopyrightText: Copyright (c) 2022 Samsung Electronics Co., Ltd.
+
+Update to 2023?
+
+> +typedef struct NMIRequest {
+> +   uint8_t opc;
+> +   uint8_t rsvd1[3];
+> +   uint32_t dw0;
+> +   uint32_t dw1;
+> +   uint32_t mic;
+> +} NMIRequest;
+> +
+> +typedef struct NMIResponse {
+> +    uint8_t status;
+> +    uint8_t response[3];
+> +    uint8_t payload[]; /* includes the Message Integrity Check */
+> +} NMIResponse;
+
+Not used.
+
+> +
+> +typedef enum NMIReadDSType {
+> +    NMI_CMD_READ_NMI_DS_SUBSYSTEM       = 0x0,
+> +    NMI_CMD_READ_NMI_DS_PORTS           = 0x1,
+> +    NMI_CMD_READ_NMI_DS_CTRL_LIST       = 0x2,
+> +    NMI_CMD_READ_NMI_DS_CTRL_INFO       = 0x3,
+> +    NMI_CMD_READ_NMI_DS_CMD_SUPPORT     = 0x4,
+> +    NMI_CMD_READ_NMI_DS_MEB_CMD_SUPPORT = 0x5,
+> +} NMIReadDSType;
+> +
+> +static void nmi_set_parameter_error(NMIDevice *nmi, uint8_t bit, uint16_t byte)
+> +{
+> +    nmi->scratch[nmi->pos++] = 0x4;
+> +    nmi->scratch[nmi->pos++] = bit;
+
+Mask bit to only 3 bits?
+
+> +    nmi->scratch[nmi->pos++] = (byte >> 4) & 0xf;
+> +    nmi->scratch[nmi->pos++] = byte & 0xf;
+
+Not following how byte is split up.  Figure 29 in 1.1d suggests it should be
+in bits 23:08 and this doesn't match that.  Perhaps a reference given I guess
+I'm looking at wrong thing.
+
+> +}
+
+> +static void nmi_handle_mi_read_nmi_ds(NMIDevice *nmi, NMIRequest *request)
+> +{
+> +    I2CSlave *i2c = I2C_SLAVE(nmi);
+> +
+> +    uint32_t dw0 = le32_to_cpu(request->dw0);
+> +    uint8_t dtyp = (dw0 >> 24) & 0xf;
+> +    uint8_t *buf;
+> +    size_t len;
+> +
+> +    trace_nmi_handle_mi_read_nmi_ds(dtyp);
+> +
+> +    static uint8_t nmi_ds_subsystem[36] = {
+> +        0x00,       /* success */
+> +        0x20,       /* response data length */
+
+Not the easiest datasheet to read, but I think length is 2 bytes.
+Figure 93 in the 1.2b NMI spec has it as bits 15:00 in
+a 24 bit field. Ah. I see this is 1.1 definition, in that it's
+the same but in figure 89.
 
 
+> +        0x00, 0x00, /* reserved */
+> +        0x00,       /* number of ports */
+> +        0x01,       /* major version */
+> +        0x01,       /* minor version */
+> +    };
+> +
+> +    static uint8_t nmi_ds_ports[36] = {
+> +        0x00,       /* success */
+> +        0x20,       /* response data length */
+
+As above - this is 2 bytes.
+
+> +        0x00, 0x00, /* reserved */
+> +        0x02,       /* port type (smbus) */
+> +        0x00,       /* reserved */
+> +        0x40, 0x00, /* maximum mctp transission unit size (64 bytes) */
+> +        0x00, 0x00, 0x00, 0x00, /* management endpoint buffer size */
+> +        0x00, 0x00, /* vpd i2c address/freq */
+
+Give separate bytes for the two things, why not just have two lines and
+a comment for each one?
+
+> +        0x00, 0x01, /* management endpoint i2c address/freq */
+
+Same here though second byte isn't anything to do with frequency. Documnted
+as NVMe Basic Management and indicates if that command is supported.
+
+> +    };
+> +
+> +    static uint8_t nmi_ds_empty[8] = {
+> +        0x00,       /* success */
+> +        0x02,       /* response data length */
+> +        0x00, 0x00, /* reserved */
+> +        0x00, 0x00, /* number of controllers */
+A reference for this would be good as I'm not sure it's defined in the NMI spec.
+Is it the controller list from 4.4.1 in the main NVME 2.0 spec?
+
+
+> +        0x00, 0x00, /* padding */
+> +    };
+> +
+> +    switch (dtyp) {
+> +    case NMI_CMD_READ_NMI_DS_SUBSYSTEM:
+> +        len = 36;
+sizeof(nmi_ds_subsystem)  Might as well keep that 36 in just one place.
+> +        buf = nmi_ds_subsystem;
+> +
+> +        break;
+> +
+> +    case NMI_CMD_READ_NMI_DS_PORTS:
+> +        len = 36;
+> +        buf = nmi_ds_ports;
+same here?
+> +
+> +        /* patch in the i2c address of the endpoint */
+> +        buf[14] = i2c->address;
+
+If you have multiple instances of this as they will
+race over the static buffer.  Just make it non static and add
+a comment on why.
+
+> +
+> +        break;
+> +
+> +    case NMI_CMD_READ_NMI_DS_CTRL_LIST:
+> +    case NMI_CMD_READ_NMI_DS_CMD_SUPPORT:
+> +    case NMI_CMD_READ_NMI_DS_MEB_CMD_SUPPORT:
+> +        len = 8;
+> +        buf = nmi_ds_empty;
+> +
+> +        break;
+> +
+> +    default:
+> +        nmi_set_parameter_error(nmi, offsetof(NMIRequest, dw0) + 4, 0);
+> +
+> +        return;
+> +    }
+> +
+> +    memcpy(nmi->scratch + nmi->pos, buf, len);
+> +    nmi->pos += len;
+> +}
+> +
+> +enum {
+> +    NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ                = 0x1,
+> +    NMI_CMD_CONFIGURATION_GET_HEALTH_STATUS_CHANGE      = 0x2,
+> +    NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT    = 0x3,
+> +};
+> +
+> +static void nmi_handle_mi_config_get(NMIDevice *nmi, NMIRequest *request)
+> +{
+> +    uint32_t dw0 = le32_to_cpu(request->dw0);
+> +    uint8_t identifier = dw0 & 0xff;
+> +    uint8_t *buf;
+> +
+> +    static uint8_t smbus_freq[4] = {
+> +        0x00,               /* success */
+> +        0x01, 0x00, 0x00,   /* 100 kHz */
+> +    };
+> +
+> +    static uint8_t mtu[4] = {
+> +        0x00,               /* success */
+> +        0x40, 0x00, 0x00,   /* 64 */
+
+2 bytes only I think with another reserved.
+Figure 66 in 1.1d
+
+> +    };
+> +
+> +    trace_nmi_handle_mi_config_get(identifier);
+> +
+> +    switch (identifier) {
+> +    case NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ:
+> +        buf = smbus_freq;
+> +        break;
+> +
+> +    case NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT:
+> +        buf = mtu;
+> +        break;
+> +
+> +    default:
+> +        nmi_set_parameter_error(nmi, 0x0, offsetof(NMIRequest, dw0));
+> +        return;
+> +    }
+> +
+> +    memcpy(nmi->scratch + nmi->pos, buf, 4);
+> +    nmi->pos += 4;
+> +}
+> +
+> +enum {
+> +    NMI_CMD_READ_NMI_DS         = 0x0,
+> +    NMI_CMD_CONFIGURATION_GET   = 0x4,
+> +};
+> +
+> +static void nmi_handle_mi(NMIDevice *nmi, NMIMessage *msg)
+> +{
+> +    NMIRequest *request = (NMIRequest *)msg->payload;
+> +
+> +    trace_nmi_handle_mi(request->opc);
+> +
+> +    switch (request->opc) {
+> +    case NMI_CMD_READ_NMI_DS:
+> +        nmi_handle_mi_read_nmi_ds(nmi, request);
+> +        break;
+> +
+> +    case NMI_CMD_CONFIGURATION_GET:
+> +        nmi_handle_mi_config_get(nmi, request);
+> +        break;
+> +
+> +    default:
+> +        nmi_set_parameter_error(nmi, 0x0, 0x0);
+> +        fprintf(stderr, "nmi command 0x%x not handled\n", request->opc);
+> +
+> +        break;
+> +    }
+> +}
+> +
+> +enum {
+> +    NMI_MESSAGE_TYPE_NMI = 0x1,
+> +};
+> +
+
+
+
+> +static size_t nmi_get_types(MCTPI2CEndpoint *mctp, const uint8_t **data)
+> +{
+> +    static const uint8_t buf[] = {
+> +        0x0, 0x1, MCTP_MESSAGE_TYPE_NMI,
+> +    };
+
+Perhaps a comment that the 0x1 is the length.  Or you could define
+a structure for this with a variable length final field?
+
+Also, should the control type be reported?  I couldn't find a statement
+that it shouldn't and it has a message ID.
+
+> +
+> +    *data = buf;
+> +
+> +    return sizeof(buf);
+> +}
+> +
 
