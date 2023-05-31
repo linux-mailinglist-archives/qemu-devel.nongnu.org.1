@@ -2,73 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFE4718B66
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2F9718B6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:46:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Sfq-00063K-Ad; Wed, 31 May 2023 16:44:02 -0400
+	id 1q4Shz-0003H0-60; Wed, 31 May 2023 16:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4Sfo-00062v-OW
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:44:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4Shw-0003Fm-80
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:46:12 -0400
+Received: from mout.kundenserver.de ([217.72.192.74])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4SfZ-0004to-1K
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:44:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685565824;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S/mcmFGBhzkNPflpwHQgx/rQKKYb1f2hRywVQ68hhXE=;
- b=XvMgmN6ox0xxPGBbTCkkLuvBqgnJBGOpuTiCppENPNBN5tqaik/W1kJL8tiLYLBlgtnwaP
- eb04c/g+xzY8JCsIT7oD7dSE64GI56b+JDyopqPBvtHro7MfBo+shI1fEs2KIamuXaCsv6
- BQKwGEmAGtKDwYQnv+bh6ugJsQG8eAY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-357-CWoNsEiANTKbYcJQUQJlrw-1; Wed, 31 May 2023 16:43:43 -0400
-X-MC-Unique: CWoNsEiANTKbYcJQUQJlrw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8921C1C08DA7;
- Wed, 31 May 2023 20:43:42 +0000 (UTC)
-Received: from scv.redhat.com (unknown [10.22.9.159])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 07F3C200B68F;
- Wed, 31 May 2023 20:43:42 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PULL 5/5] Revert "python/qmp/protocol: add open_with_socket()"
-Date: Wed, 31 May 2023 16:43:38 -0400
-Message-Id: <20230531204338.1656158-6-jsnow@redhat.com>
-In-Reply-To: <20230531204338.1656158-1-jsnow@redhat.com>
-References: <20230531204338.1656158-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4Shs-0005bG-Uc
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:46:11 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1N6t3Z-1q91s00JiB-018GRt; Wed, 31 May 2023 22:46:07 +0200
+Message-ID: <3872e933-449a-1e9d-e978-7a94717dcac2@vivier.eu>
+Date: Wed, 31 May 2023 22:46:06 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 20/23] q800: don't access Nubus bus directly from the
+ mac-nubus-bridge device
+Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-21-mark.cave-ayland@ilande.co.uk>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <20230531125400.288917-21-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-Provags-ID: V03:K1:YSAI1cM8qNO8O6A4lqPt+efRp+iHpyduq1SWwKcgcgGF9IsCNIt
+ AMfAAHk7yI5L2hBmHw3c9msEBPbDp8vHAR7rCaA0gy8utv83B0RQMRzrA/UFtyJAOPCQ8qv
+ BtR5zJ7sijSfo9ZCLsjKqOzzS8uy+Kn/y3XlvPTKDxNzkMSj180x/a4uYe3YkZyRaSFy/hM
+ bMl9v2OE2gZaHPyHB+QUA==
+UI-OutboundReport: notjunk:1;M01:P0:UIx9V/XMsmM=;QaPGYpqpIzSVUitQB6PBsxDDXsG
+ f3X8dmS7fh5ZkCahLz40ankCRhgCXs4m6U0PPRPNmOY4vuvh3ibPIpN8O/27zCR9x6j/6yOs6
+ 4bZI59EBVxGa6FQL2n4/oJGQaqMxwenEfZ2Gtkg3BC4fNx8J39ktC/dLOWHQE1gSHIWi0WSHx
+ DYfai5nijzJl4iVGQF/AgWJVJh7f10pHVLuDbKKcThUfYZrrdAu4QdtU0oy4nmfFkqHHtEj6n
+ wc1nu9vPNaHdgFsCdYgItuy3K9unQcaxfjDltlYG0unG7e2Yn3I9vdp4kbE4O4DKDHh8Kqy/k
+ rvle3SCqGMU7aMYUhu09GCdc996yJo/fM4ftakWsn+YHgCxp03EQPbkvTGg0OI9sH0c4dVruA
+ tVQldNe7SssRcpZH2J15yl6dfe4Lpyb8PsnzzgYI7fWMFtd9cnfV4m6Py6XErzMrMDbaFVWNi
+ o7xKLIl+Dreft1Ag9RU4AqtqkRrisMPO079CjXYDceDdHeCHfWQUBBfwFSP5ed61wMfqZNqzu
+ 8DcC6FyD1IHsUN2FNfKlYKVdVvoEYzj++ClqkGwA0QsEozTRVwFEraGi0bzSqm6iR4Dqrngsy
+ ncYA5EQhVIZAgCa4B1rW8D+jSe0CJuCoLh7+m9uX8FJTdwLT4t0EAxFamFLsE1ZkcgmDXVbN5
+ lWDsYMiD2rfDg34YxEGAvzDq117xMDvyp5L2QeIgfA==
+Received-SPF: none client-ip=217.72.192.74; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,61 +73,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit a3cfea92e2030926e00a2519d299384ea648e36e.
+Le 31/05/2023 à 14:53, Mark Cave-Ayland a écrit :
+> Instead use the qdev_get_child_bus() function which is intended for this exact
+> purpose.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/m68k/q800.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index d02a1a7a1f..946cb09e30 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -445,7 +445,7 @@ static void q800_machine_init(MachineState *machine)
+>                             qdev_get_gpio_in_named(DEVICE(&m->via2), "nubus-irq",
+>                                                    VIA2_NUBUS_IRQ_9));
+>   
+> -    nubus = &NUBUS_BRIDGE(dev)->bus;
+> +    nubus = NUBUS_BUS(qdev_get_child_bus(dev, "nubus-bus.0"));
+>   
+>       /* framebuffer in nubus slot #9 */
+>   
 
-(It's being rolled back in favor of a different API, which brings the
-in-tree and out-of-tree versions of qemu.qmp back in sync.)
-
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-id: 20230517163406.2593480-6-jsnow@redhat.com
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- python/qemu/qmp/protocol.py | 24 +++++-------------------
- 1 file changed, 5 insertions(+), 19 deletions(-)
-
-diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
-index d534db4631..753182131f 100644
---- a/python/qemu/qmp/protocol.py
-+++ b/python/qemu/qmp/protocol.py
-@@ -297,19 +297,6 @@ async def start_server_and_accept(
-         await self.accept()
-         assert self.runstate == Runstate.RUNNING
- 
--    @upper_half
--    @require(Runstate.IDLE)
--    async def open_with_socket(self, sock: socket.socket) -> None:
--        """
--        Start connection with given socket.
--
--        :param sock: A socket.
--
--        :raise StateError: When the `Runstate` is not `IDLE`.
--        """
--        self._reader, self._writer = await asyncio.open_connection(sock=sock)
--        self._set_state(Runstate.CONNECTING)
--
-     @upper_half
-     @require(Runstate.IDLE)
-     async def start_server(self, address: SocketAddrT,
-@@ -357,12 +344,11 @@ async def accept(self) -> None:
-             protocol-level failure occurs while establishing a new
-             session, the wrapped error may also be an `QMPError`.
-         """
--        if not self._reader:
--            if self._accepted is None:
--                raise QMPError("Cannot call accept() before start_server().")
--            await self._session_guard(
--                self._do_accept(),
--                'Failed to establish connection')
-+        if self._accepted is None:
-+            raise QMPError("Cannot call accept() before start_server().")
-+        await self._session_guard(
-+            self._do_accept(),
-+            'Failed to establish connection')
-         await self._session_guard(
-             self._establish_session(),
-             'Failed to establish session')
--- 
-2.40.1
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
 
