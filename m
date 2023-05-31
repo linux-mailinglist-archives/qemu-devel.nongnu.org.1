@@ -2,66 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62DF7176D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 908B07176F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:38:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4FKK-0003Yx-Tm; Wed, 31 May 2023 02:28:56 -0400
+	id 1q4FSK-0006v1-L0; Wed, 31 May 2023 02:37:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1q4FK5-0003YN-F0
- for qemu-devel@nongnu.org; Wed, 31 May 2023 02:28:41 -0400
-Received: from 5.mo552.mail-out.ovh.net ([188.165.45.220])
+ (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
+ id 1q4FS5-0006Yd-Vn; Wed, 31 May 2023 02:36:57 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1q4FK3-0001w6-7B
- for qemu-devel@nongnu.org; Wed, 31 May 2023 02:28:41 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.109.138.233])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 60D1E263DF;
- Wed, 31 May 2023 06:28:35 +0000 (UTC)
-Received: from kaod.org (37.59.142.101) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
- 2023 08:28:34 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-101G00437b43e1d-77cd-428a-b431-32d72408f43f,
- AD4A5C7A17A66D4AFB6DE796C11E1CF112258E66) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <aeb9f6a3-30e4-ce5d-c041-600a5097b27e@kaod.org>
-Date: Wed, 31 May 2023 08:28:34 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
+ id 1q4FS3-0003UP-9l; Wed, 31 May 2023 02:36:57 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWKL34nKYz4x46;
+ Wed, 31 May 2023 16:36:43 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWKKy0wc8z4x42;
+ Wed, 31 May 2023 16:36:37 +1000 (AEST)
+Message-ID: <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
+Date: Wed, 31 May 2023 08:36:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 11/12] aspeed: Introduce a "uart" machine option
+Subject: Re: [PATCH 05/12] hw/ssi: Introduce a ssi_get_cs() helper
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- <qemu-arm@nongnu.org>
-CC: <qemu-devel@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>, Joel
- Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>, Abhishek Singh
- Dagur <abhishek@drut.io>
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ Alistair Francis <alistair@alistair23.me>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eduardo Habkost <eduardo@habkost.net>, Bernhard Beschow <shentey@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
 References: <20230508075859.3326566-1-clg@kaod.org>
- <20230508075859.3326566-12-clg@kaod.org>
- <d0dedd1a-e2b7-5db9-d710-595e94b084a0@linaro.org>
+ <20230508075859.3326566-6-clg@kaod.org>
+ <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
+ <0d11b78e-56f7-553a-3e85-0edef9b649ac@linaro.org>
+ <523179dd-7842-7f03-14d6-678ed680a017@kaod.org>
+ <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <d0dedd1a-e2b7-5db9-d710-595e94b084a0@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+In-Reply-To: <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.101]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: 2cdb972e-613b-4805-b959-bcc10539c6e4
-X-Ovh-Tracer-Id: 16794767436449549161
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekkedguddtlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepffdufeeliedujeeffffhjeffiefghffhhfdvkeeijeehledvueffhfejtdehgeegnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutddupdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeotghlgheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehphhhilhhmugeslhhinhgrrhhordhorhhgpdhqvghmuhdqrghrmhesnhhonhhgnhhurdhorhhgpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdpjhhovghlsehjmhhsrdhiugdrrghupdgrnhgurhgvfiesrghjrdhiugdrrghupdgrsghhihhshhgvkhesughruhhtrdhiohdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
-Received-SPF: pass client-ip=188.165.45.220; envelope-from=clg@kaod.org;
- helo=5.mo552.mail-out.ovh.net
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=vahk=BU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,145 +75,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 23:22, Philippe Mathieu-Daudé wrote:
-> On 8/5/23 09:58, Cédric Le Goater wrote:
->> Most of the Aspeed machines use the UART5 device for the boot console,
->> and QEMU connects the first serial Chardev to this SoC device for this
->> purpose. See routine connect_serial_hds_to_uarts().
->>
->> Nevertheless, some machines use another boot console, such as the fuji,
->> and commit 5d63d0c76c ("hw/arm/aspeed: Allow machine to set UART
->> default") introduced a SoC class attribute 'uart_default' and property
->> to be able to change the boot console device. It was later changed by
->> commit d2b3eaefb4 ("aspeed: Refactor UART init for multi-SoC machines").
->>
->> The "uart" machine option goes a step further and lets the user define
->> the UART device from the QEMU command line without introducing a new
->> machine definition. For instance, to use device UART3 (mapped on
->> /dev/ttyS2 under Linux) instead of the default UART5, one would use :
->>
->>    -M ast2500-evb,uart=uart3
->>
->> Cc: Abhishek Singh Dagur <abhishek@drut.io>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   docs/system/arm/aspeed.rst | 10 ++++++++++
->>   hw/arm/aspeed.c            | 39 ++++++++++++++++++++++++++++++++++++--
->>   2 files changed, 47 insertions(+), 2 deletions(-)
->>
->> diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
->> index d4e293e7f9..e70f0aeea3 100644
->> --- a/docs/system/arm/aspeed.rst
->> +++ b/docs/system/arm/aspeed.rst
->> @@ -122,6 +122,10 @@ Options specific to Aspeed machines are :
->>    * ``spi-model`` to change the SPI Flash model.
->> + * ``uart`` to change the default console device. Most of the machines
->> +   use the ``UART5`` device for a boot console, which is mapped on
->> +   ``/dev/ttyS4`` under Linux, but it is not always the case.
+On 5/31/23 08:17, Philippe Mathieu-Daudé wrote:
+> +QOM tinkerers
 > 
-> This comment ...
+> On 31/5/23 07:59, Cédric Le Goater wrote:
+>> On 5/30/23 23:15, Philippe Mathieu-Daudé wrote:
+>>> On 30/5/23 22:34, Philippe Mathieu-Daudé wrote:
+>>>> On 8/5/23 09:58, Cédric Le Goater wrote:
+>>>>> Simple routine to retrieve a DeviceState object on a SPI bus using its
+>>>>> address/cs. It will be useful for the board to wire the CS lines.
+>>>>>
+>>>>> Cc: Alistair Francis <alistair@alistair23.me>
+>>>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>>>> ---
+>>>>>   include/hw/ssi/ssi.h |  2 ++
+>>>>>   hw/ssi/ssi.c         | 15 +++++++++++++++
+>>>>>   2 files changed, 17 insertions(+)
+>>>>>
+>>>>> diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
+>>>>> index ffd3a34ba4..c7beabdb09 100644
+>>>>> --- a/include/hw/ssi/ssi.h
+>>>>> +++ b/include/hw/ssi/ssi.h
+>>>>> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, const char *name);
+>>>>>   uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
+>>>>> +DeviceState *ssi_get_cs(SSIBus *bus, int addr);
+>>>
+>>> Also, this helper should (preferably) return a SSIPeripheral type.
+>>
+>> Well, having a DeviceState is handy for the callers (today) and
+>> ssi_create_peripheral() returns a DeviceState. Let's keep it that
+>> way.
 > 
->>   For instance, to start the ``ast2500-evb`` machine with a different
->>   FMC chip and a bigger (64M) SPI chip, use :
->> @@ -129,6 +133,12 @@ FMC chip and a bigger (64M) SPI chip, use :
->>     -M ast2500-evb,fmc-model=mx25l25635e,spi-model=mx66u51235f
->> +To change the boot console and use device ``UART3`` (``/dev/ttyS2``
->> +under Linux), use :
-> 
-> ... and this one suggest 'boot-console' could be a better name.
-> 
-> Or 'boot-console-index'.
+> Yes I know it is handy :) I'm not against your patch; besides other
+> APIs do that. I'm wondering about QOM design here. Having Foo device,
+> should FOO API return the common qdev abstract type (DeviceState) or
+> a Foo type? Either ways we keep QOM-casting around, but I still tend
+> to consider FOO API returning Foo pointer provides some type check
+> safety, and also provides the API user hints about what is used.
+> Need more coffee.
 
-you might be right. people expect to find the console messages on
-this device. I will think about it.
+It is used in two code paths today:
 
-> 
->> +.. code-block:: bash
->> +
->> +  -M ast2500-evb,uart=uart3
->>   Aspeed minibmc family boards (``ast1030-evb``)
->>   ==================================================================
->> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
->> index 3d5488faf7..6c32f674b9 100644
->> --- a/hw/arm/aspeed.c
->> +++ b/hw/arm/aspeed.c
->> @@ -43,6 +43,7 @@ struct AspeedMachineState {
->>       AspeedSoCState soc;
->>       MemoryRegion boot_rom;
->>       bool mmio_exec;
->> +    uint32_t uart_chosen;
->>       char *fmc_model;
->>       char *spi_model;
->>   };
->> @@ -331,10 +332,11 @@ static void connect_serial_hds_to_uarts(AspeedMachineState *bmc)
->>       AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
->>       AspeedSoCState *s = &bmc->soc;
->>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
->> +    int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
->> -    aspeed_soc_uart_set_chr(s, amc->uart_default, serial_hd(0));
->> +    aspeed_soc_uart_set_chr(s, uart_chosen, serial_hd(0));
->>       for (int i = 1, uart = ASPEED_DEV_UART1; i < sc->uarts_num; i++, uart++) {
->> -        if (uart == amc->uart_default) {
->> +        if (uart == uart_chosen) {
->>               continue;
->>           }
->>           aspeed_soc_uart_set_chr(s, uart, serial_hd(i));
->> @@ -1077,6 +1079,35 @@ static void aspeed_set_spi_model(Object *obj, const char *value, Error **errp)
->>       bmc->spi_model = g_strdup(value);
->>   }
->> +static char *aspeed_get_uart(Object *obj, Error **errp)
->> +{
->> +    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
->> +    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
->> +    int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
->> +
->> +    return g_strdup_printf("uart%d", uart_chosen - ASPEED_DEV_UART1 + 1);
->> +}
->> +
->> +static void aspeed_set_uart(Object *obj, const char *value, Error **errp)
->> +{
->> +    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
->> +    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
->> +    AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
->> +    int val;
->> +
->> +    if (sscanf(value, "uart%u", &val) != 1) {
->> +        error_setg(errp, "Bad value for \"uart\" property");
-> 
-> Why are you asking for a string and not an index?
+	...
+         DeviceState *dev = ssi_get_cs(bmc->soc.fmc.spi, 0);
+         BlockBackend *fmc0 = dev ? m25p80_get_blk(dev) : NULL;
+	...
+and
+	...
+         DeviceState *dev = ssi_get_cs(s->spi, i);
+         if (dev) {
+             qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
+	...
 
-because the literal name is what people find in the DT. See files
-arch/arm/boot/dts/aspeed-bmc-* under Linux.
+
+Changing the interface is not a radical change, it will add two QOM-casts.
+I can give it a try in v2.
 
 Thanks,
 
 C.
-
-> 
->> +        return;
->> +    }
->> +
->> +    /* The number of UART depends on the SoC */
->> +    if (val < 1 || val > sc->uarts_num) {
->> +        error_setg(errp, "\"uart\" should be in range [1 - %d]", sc->uarts_num);
->> +        return;
->> +    }
->> +    bmc->uart_chosen = ASPEED_DEV_UART1 + val - 1;
->> +}
->> +
->>   static void aspeed_machine_class_props_init(ObjectClass *oc)
->>   {
->>       object_class_property_add_bool(oc, "execute-in-place",
->> @@ -1085,6 +1116,10 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
->>       object_class_property_set_description(oc, "execute-in-place",
->>                              "boot directly from CE0 flash device");
->> +    object_class_property_add_str(oc, "uart", aspeed_get_uart, aspeed_set_uart);
->> +    object_class_property_set_description(oc, "uart",
->> +                           "Change the default UART to \"uartX\"");
->> +
->>       object_class_property_add_str(oc, "fmc-model", aspeed_get_fmc_model,
->>                                      aspeed_set_fmc_model);
->>       object_class_property_set_description(oc, "fmc-model",
-> 
 
 
