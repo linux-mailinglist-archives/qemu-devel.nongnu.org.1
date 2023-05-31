@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E39C7174D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 924DB7174B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:04:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D46-0007Mz-1F; Wed, 31 May 2023 00:04:02 -0400
+	id 1q4D49-0007Uh-0B; Wed, 31 May 2023 00:04:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D3y-0007FJ-UV
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:55 -0400
-Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ id 1q4D3z-0007GH-VI
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:56 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D3v-0006EW-SF
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:54 -0400
-Received: by mail-oi1-x22f.google.com with SMTP id
- 5614622812f47-39810ce3e13so3636546b6e.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:51 -0700 (PDT)
+ id 1q4D3x-0006Er-N9
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 00:03:55 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-19f0e612589so3520613fac.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685505830; x=1688097830;
+ d=linaro.org; s=google; t=1685505831; x=1688097831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8veyYMi3VgVX9zE+8wtGeHzrHykLo9kSxrpsGVlLpCs=;
- b=jjjrfUHTekT5cIGekLaOSPCDPVUk6kr2hbl5/s583bVOatsuf/efghFFjJd90wu2yW
- dLAUEYW79YBrHOgViV2z7Bqo06/PIakNVgZQzDPolX+f8EZKUgwsFcnwql8KwB1Vi6FG
- LYclEvcPejdOQgPA8mUgudMz/kremDmT6SeENqYc+WIk7ICzI+i8IR3rT9drG4uHB0Iy
- EKTCgCaX/ysbZ0wqTPlXtJZ6KiJ+4rBRoYQYF5UsLKSu5ybwcbp0uZi98xEI+kQL+7Yy
- hocWTXJXW52N06A/mrw4oUyw0m6QLSRGHs+tMNMbkLBas8EvgmjzyGYkZ5QYRF2QslSo
- FgoQ==
+ :reply-to; bh=9aXuPsURqhPhLqx/28EbBnQZsWqWz9MC6q73z7SWJdQ=;
+ b=Yq3mQgUb5/6emPH3ykyZ1Jj2s3AAWiEEiFlm/aIQnm7S+NGPQTnZtxknu6ArUMxKY1
+ ey3Nsf0IGG0bMz2ZC5ba00bwD49VRzAPgEZXyj0R9zSa6C2mt62XOCUlMtiDynO6LuFz
+ 68p2w4z9cTbtd4GOglYSMa/Kqb4Bdq5+u3MPBTiWBgeRJgB/3JZLZiTvB/Uji0v23Hz8
+ OjKN4Jb4/IxScSsm8Xup9e3X//Imb7E2cMVVCKrLr3F6cyMn4W7R/tQMRo00qRIWqtVA
+ q7EImH6KlnmrxszCaC+Gp9qzEq0YeVdv8shPY4VxhnBGEh9PNF1ucNJr50h/seF3HENq
+ 6TzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685505830; x=1688097830;
+ d=1e100.net; s=20221208; t=1685505831; x=1688097831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8veyYMi3VgVX9zE+8wtGeHzrHykLo9kSxrpsGVlLpCs=;
- b=dp8Yj1pUIq0Ar4yJqANzzb3aCqJaDyMIS+jPupnckTbLNTOYc7tFX+QLOhf0U18B72
- J8cXmzokpOyzG7OznX0DaX0wmy5JQ54amspeBVr8IwL0CM42iFLjg98w1LvfsGqzTFe+
- AX2AXuGL8FHlB13zGgvUxK8u9W40mJ3vMLCPcvSgSyyZOjM0RKUFnB/JKAxd1mciPPj0
- 0mThMVkVYVq2gZyTJCl+3kc476OU3uLlEMTlQlIuEnqdFKJBbIPoXTg88GT2FLf/wC94
- MVcOwEtiex5keQ+QTnPS4UKGkEmJY4QK3KYGNMHlz3fV8VQLaZjbfp3QQjeEitz6EtC9
- SfYA==
-X-Gm-Message-State: AC+VfDw30tH6GmbWwoY7t16gG9vne20K5qHPRgkXoMMOGxfkewNoGMdh
- OJo6x0RNSFn4PjvxiriNOk90RrC26p2IRRlCH2k=
-X-Google-Smtp-Source: ACHHUZ4VMlBI1oU4NQgrhrPPqLzqKL73pni3MJw/5pUnIMAUHUt4EXxkmy03JRJNTco7EHdvhUWp0A==
-X-Received: by 2002:a05:6808:1926:b0:398:5929:fac1 with SMTP id
- bf38-20020a056808192600b003985929fac1mr3723003oib.28.1685505830630; 
- Tue, 30 May 2023 21:03:50 -0700 (PDT)
+ bh=9aXuPsURqhPhLqx/28EbBnQZsWqWz9MC6q73z7SWJdQ=;
+ b=Dclcp4mfPZyYfgIuuZqRLRanrsjj+qUDZ/6IUQdZdavhISRGcUmNHzkakOlnRd5ZK+
+ 0N4S2245M9MfgyBj5Fwxw7RamerNTFnOdtEOBUotzSn32KDVdSr3l1PwHg5q/SMgbjYy
+ p2zAvJn4OUqCkA1U0furuwo/bRxQTx1zAwmkPTWvrI/dxdvIlT7lXWqMnta8cJFbPSYe
+ n+y2BPZHwhQfqulKoFmfzajoHqnvUOJgRbCBS1Z+HzgZ+KIfCCqgDSADRPp7rjaCHBVi
+ hjvInVbXb7pW6JEh0vaPBlwz9ib42ysvPJbguK7+6V+QxpeKhEpASE20QMkV17vjDhC6
+ R5Iw==
+X-Gm-Message-State: AC+VfDxVNvWs64dgu7pkMRnGeNBnS0NqSyINn+fDh/NzUq6jnNedLfns
+ Cqd4glKZP9H5cLVk8RZrog2B+C8Z1aBs+Ty1tgg=
+X-Google-Smtp-Source: ACHHUZ5Ev92ZR21HCV8AWrRJFPmXJNnSYRs/gP/A7K6JFa4MJCVcVIByVPHkq/RXHN8aibW7E7LNqQ==
+X-Received: by 2002:a54:4588:0:b0:398:2f01:ec40 with SMTP id
+ z8-20020a544588000000b003982f01ec40mr2798428oib.57.1685505831442; 
+ Tue, 30 May 2023 21:03:51 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
  by smtp.gmail.com with ESMTPSA id
  j12-20020a63fc0c000000b005348af1b84csm194814pgi.74.2023.05.30.21.03.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 21:03:50 -0700 (PDT)
+ Tue, 30 May 2023 21:03:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 25/48] tcg: Add insn_start_words to TCGContext
-Date: Tue, 30 May 2023 21:03:07 -0700
-Message-Id: <20230531040330.8950-26-richard.henderson@linaro.org>
+Subject: [PATCH v3 26/48] tcg: Add guest_mo to TCGContext
+Date: Tue, 30 May 2023 21:03:08 -0700
+Message-Id: <20230531040330.8950-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,312 +90,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will enable replacement of TARGET_INSN_START_WORDS in tcg.c.
-Split out "tcg/insn-start-words.h" and use it in target/.
+This replaces of TCG_GUEST_DEFAULT_MO in tcg-op-ldst.c.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/insn-start-words.h | 17 +++++++++++++++++
- include/tcg/tcg-op.h           |  8 ++++----
- include/tcg/tcg-opc.h          |  6 +++---
- include/tcg/tcg.h              |  9 ++-------
- accel/tcg/perf.c               |  8 ++++++--
- accel/tcg/translate-all.c      | 13 ++++++++-----
- target/i386/helper.c           |  2 +-
- target/openrisc/sys_helper.c   |  2 +-
- tcg/tcg.c                      | 16 +++++++++++-----
- 9 files changed, 53 insertions(+), 28 deletions(-)
- create mode 100644 include/tcg/insn-start-words.h
+ include/tcg/tcg.h         | 1 +
+ accel/tcg/translate-all.c | 5 +++++
+ tcg/tcg-op-ldst.c         | 4 +---
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/tcg/insn-start-words.h b/include/tcg/insn-start-words.h
-new file mode 100644
-index 0000000000..50c18bd326
---- /dev/null
-+++ b/include/tcg/insn-start-words.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define TARGET_INSN_START_WORDS
-+ * Copyright (c) 2008 Fabrice Bellard
-+ */
-+
-+#ifndef TARGET_INSN_START_WORDS
-+
-+#include "cpu.h"
-+
-+#ifndef TARGET_INSN_START_EXTRA_WORDS
-+# define TARGET_INSN_START_WORDS 1
-+#else
-+# define TARGET_INSN_START_WORDS (1 + TARGET_INSN_START_EXTRA_WORDS)
-+#endif
-+
-+#endif /* TARGET_INSN_START_WORDS */
-diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index 47f1dce816..d63683c47b 100644
---- a/include/tcg/tcg-op.h
-+++ b/include/tcg/tcg-op.h
-@@ -22,20 +22,20 @@
- # error
- #endif
- 
--#if TARGET_INSN_START_WORDS == 1
-+#ifndef TARGET_INSN_START_EXTRA_WORDS
- static inline void tcg_gen_insn_start(target_ulong pc)
- {
-     TCGOp *op = tcg_emit_op(INDEX_op_insn_start, 64 / TCG_TARGET_REG_BITS);
-     tcg_set_insn_start_param(op, 0, pc);
- }
--#elif TARGET_INSN_START_WORDS == 2
-+#elif TARGET_INSN_START_EXTRA_WORDS == 1
- static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1)
- {
-     TCGOp *op = tcg_emit_op(INDEX_op_insn_start, 2 * 64 / TCG_TARGET_REG_BITS);
-     tcg_set_insn_start_param(op, 0, pc);
-     tcg_set_insn_start_param(op, 1, a1);
- }
--#elif TARGET_INSN_START_WORDS == 3
-+#elif TARGET_INSN_START_EXTRA_WORDS == 2
- static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1,
-                                       target_ulong a2)
- {
-@@ -45,7 +45,7 @@ static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1,
-     tcg_set_insn_start_param(op, 2, a2);
- }
- #else
--# error "Unhandled number of operands to insn_start"
-+#error Unhandled TARGET_INSN_START_EXTRA_WORDS value
- #endif
- 
- #if TARGET_LONG_BITS == 32
-diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
-index 21594c1590..acfa5ba753 100644
---- a/include/tcg/tcg-opc.h
-+++ b/include/tcg/tcg-opc.h
-@@ -188,9 +188,9 @@ DEF(mulsh_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_mulsh_i64))
- 
- #define DATA64_ARGS  (TCG_TARGET_REG_BITS == 64 ? 1 : 2)
- 
--/* QEMU specific */
--DEF(insn_start, 0, 0, DATA64_ARGS * TARGET_INSN_START_WORDS,
--    TCG_OPF_NOT_PRESENT)
-+/* There are tcg_ctx->insn_start_words here, not just one. */
-+DEF(insn_start, 0, 0, DATA64_ARGS, TCG_OPF_NOT_PRESENT)
-+
- DEF(exit_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
- DEF(goto_tb, 0, 0, 1, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
- DEF(goto_ptr, 0, 1, 0, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
 diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 7c1bbba673..813c733910 100644
+index 813c733910..9f607e2664 100644
 --- a/include/tcg/tcg.h
 +++ b/include/tcg/tcg.h
-@@ -173,12 +173,6 @@ typedef uint64_t TCGRegSet;
- #define TCG_TARGET_HAS_v256             0
- #endif
- 
--#ifndef TARGET_INSN_START_EXTRA_WORDS
--# define TARGET_INSN_START_WORDS 1
--#else
--# define TARGET_INSN_START_WORDS (1 + TARGET_INSN_START_EXTRA_WORDS)
--#endif
--
- typedef enum TCGOpcode {
- #define DEF(name, oargs, iargs, cargs, flags) INDEX_op_ ## name,
- #include "tcg/tcg-opc.h"
-@@ -526,6 +520,7 @@ struct TCGContext {
-     uint8_t page_bits;
+@@ -521,6 +521,7 @@ struct TCGContext {
      uint8_t tlb_dyn_max_bits;
  #endif
-+    uint8_t insn_start_words;
+     uint8_t insn_start_words;
++    TCGBar guest_mo;
  
      TCGRegSet reserved_regs;
      intptr_t current_frame_offset;
-@@ -597,7 +592,7 @@ struct TCGContext {
-     TCGTemp *reg_to_temp[TCG_TARGET_NB_REGS];
- 
-     uint16_t gen_insn_end_off[TCG_MAX_INSNS];
--    uint64_t gen_insn_data[TCG_MAX_INSNS][TARGET_INSN_START_WORDS];
-+    uint64_t *gen_insn_data;
- 
-     /* Exit to translator on overflow. */
-     sigjmp_buf jmp_trans;
-diff --git a/accel/tcg/perf.c b/accel/tcg/perf.c
-index 65e35ea3b9..f5a1eda39f 100644
---- a/accel/tcg/perf.c
-+++ b/accel/tcg/perf.c
-@@ -311,7 +311,8 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
-                       const void *start)
- {
-     struct debuginfo_query *q;
--    size_t insn;
-+    size_t insn, start_words;
-+    uint64_t *gen_insn_data;
- 
-     if (!perfmap && !jitdump) {
-         return;
-@@ -325,9 +326,12 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
-     debuginfo_lock();
- 
-     /* Query debuginfo for each guest instruction. */
-+    gen_insn_data = tcg_ctx->gen_insn_data;
-+    start_words = tcg_ctx->insn_start_words;
-+
-     for (insn = 0; insn < tb->icount; insn++) {
-         /* FIXME: This replicates the restore_state_to_opc() logic. */
--        q[insn].address = tcg_ctx->gen_insn_data[insn][0];
-+        q[insn].address = gen_insn_data[insn * start_words + 0];
-         if (tb_cflags(tb) & CF_PCREL) {
-             q[insn].address |= (guest_pc & TARGET_PAGE_MASK);
-         } else {
 diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 594f1db1a7..7cff2c5915 100644
+index 7cff2c5915..7ea927be3c 100644
 --- a/accel/tcg/translate-all.c
 +++ b/accel/tcg/translate-all.c
-@@ -64,6 +64,7 @@
- #include "tb-context.h"
- #include "internal.h"
- #include "perf.h"
-+#include "tcg/insn-start-words.h"
- 
- /* Make sure all possible CPU event bits fit in tb->trace_vcpu_dstate */
- QEMU_BUILD_BUG_ON(CPU_TRACE_DSTATE_MAX_EVENTS >
-@@ -132,19 +133,20 @@ static int64_t decode_sleb128(const uint8_t **pp)
- static int encode_search(TranslationBlock *tb, uint8_t *block)
- {
-     uint8_t *highwater = tcg_ctx->code_gen_highwater;
-+    uint64_t *insn_data = tcg_ctx->gen_insn_data;
-     uint8_t *p = block;
-     int i, j, n;
- 
-     for (i = 0, n = tb->icount; i < n; ++i) {
-         uint64_t prev;
- 
--        for (j = 0; j < TARGET_INSN_START_WORDS; ++j) {
-+        for (j = 0; j < TARGET_INSN_START_WORDS; ++j, ++insn_data) {
-             if (i == 0) {
-                 prev = (!(tb_cflags(tb) & CF_PCREL) && j == 0 ? tb->pc : 0);
-             } else {
--                prev = tcg_ctx->gen_insn_data[i - 1][j];
-+                prev = insn_data[-TARGET_INSN_START_WORDS];
-             }
--            p = encode_sleb128(p, tcg_ctx->gen_insn_data[i][j] - prev);
-+            p = encode_sleb128(p, *insn_data - prev);
-         }
-         prev = (i == 0 ? 0 : tcg_ctx->gen_insn_end_off[i - 1]);
-         p = encode_sleb128(p, tcg_ctx->gen_insn_end_off[i] - prev);
-@@ -364,6 +366,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-     tcg_ctx->tlb_fast_offset =
+@@ -367,6 +367,11 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
          (int)offsetof(ArchCPU, neg.tlb.f) - (int)offsetof(ArchCPU, env);
  #endif
-+    tcg_ctx->insn_start_words = TARGET_INSN_START_WORDS;
+     tcg_ctx->insn_start_words = TARGET_INSN_START_WORDS;
++#ifdef TCG_GUEST_DEFAULT_MO
++    tcg_ctx->guest_mo = TCG_GUEST_DEFAULT_MO;
++#else
++    tcg_ctx->guest_mo = TCG_MO_ALL;
++#endif
  
   tb_overflow:
  
-@@ -457,7 +460,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-             fprintf(logfile, "OUT: [size=%d]\n", gen_code_size);
-             fprintf(logfile,
-                     "  -- guest addr 0x%016" PRIx64 " + tb prologue\n",
--                    tcg_ctx->gen_insn_data[insn][0]);
-+                    tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS]);
-             chunk_start = tcg_ctx->gen_insn_end_off[insn];
-             disas(logfile, tb->tc.ptr, chunk_start);
+diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
+index 3c00bf0c95..9bcf63b041 100644
+--- a/tcg/tcg-op-ldst.c
++++ b/tcg/tcg-op-ldst.c
+@@ -104,9 +104,7 @@ static void gen_ldst_i64(TCGOpcode opc, TCGv_i64 v, TCGTemp *addr, MemOpIdx oi)
  
-@@ -470,7 +473,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-                 size_t chunk_end = tcg_ctx->gen_insn_end_off[insn];
-                 if (chunk_end > chunk_start) {
-                     fprintf(logfile, "  -- guest addr 0x%016" PRIx64 "\n",
--                            tcg_ctx->gen_insn_data[insn][0]);
-+                            tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS]);
-                     disas(logfile, tb->tc.ptr + chunk_start,
-                           chunk_end - chunk_start);
-                     chunk_start = chunk_end;
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 682d10d98a..36bf2107e7 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -29,7 +29,7 @@
- #endif
- #include "qemu/log.h"
- #ifdef CONFIG_TCG
--#include "tcg/tcg.h"
-+#include "tcg/insn-start-words.h"
- #endif
- 
- void cpu_sync_avx_hflag(CPUX86State *env)
-diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
-index 110f157601..782a5751b7 100644
---- a/target/openrisc/sys_helper.c
-+++ b/target/openrisc/sys_helper.c
-@@ -26,7 +26,7 @@
- #ifndef CONFIG_USER_ONLY
- #include "hw/boards.h"
- #endif
--#include "tcg/tcg.h"
-+#include "tcg/insn-start-words.h"
- 
- #define TO_SPR(group, number) (((group) << 11) + (number))
- 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index d369367c5a..a339e3e3d8 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1501,6 +1501,8 @@ void tcg_func_start(TCGContext *s)
-     tcg_debug_assert(s->tlb_fast_offset < 0);
-     tcg_debug_assert(s->tlb_fast_offset >= MIN_TLB_MASK_TABLE_OFS);
- #endif
-+
-+    tcg_debug_assert(s->insn_start_words > 0);
- }
- 
- static TCGTemp *tcg_temp_alloc(TCGContext *s)
-@@ -2445,7 +2447,7 @@ static void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs)
-             nb_oargs = 0;
-             col += ne_fprintf(f, "\n ----");
- 
--            for (i = 0; i < TARGET_INSN_START_WORDS; ++i) {
-+            for (i = 0, k = s->insn_start_words; i < k; ++i) {
-                 col += ne_fprintf(f, " %016" PRIx64,
-                                   tcg_get_insn_start_param(op, i));
-             }
-@@ -6024,7 +6026,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
- #ifdef CONFIG_PROFILER
-     TCGProfile *prof = &s->prof;
- #endif
--    int i, num_insns;
-+    int i, start_words, num_insns;
-     TCGOp *op;
- 
- #ifdef CONFIG_PROFILER
-@@ -6147,6 +6149,10 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-     s->pool_labels = NULL;
- #endif
- 
-+    start_words = s->insn_start_words;
-+    s->gen_insn_data =
-+        tcg_malloc(sizeof(uint64_t) * s->gen_tb->icount * start_words);
-+
-     num_insns = -1;
-     QTAILQ_FOREACH(op, &s->ops, link) {
-         TCGOpcode opc = op->opc;
-@@ -6172,8 +6178,8 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-                 assert(s->gen_insn_end_off[num_insns] == off);
-             }
-             num_insns++;
--            for (i = 0; i < TARGET_INSN_START_WORDS; ++i) {
--                s->gen_insn_data[num_insns][i] =
-+            for (i = 0; i < start_words; ++i) {
-+                s->gen_insn_data[num_insns * start_words + i] =
-                     tcg_get_insn_start_param(op, i);
-             }
-             break;
-@@ -6219,7 +6225,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-             return -2;
-         }
-     }
--    tcg_debug_assert(num_insns >= 0);
-+    tcg_debug_assert(num_insns + 1 == s->gen_tb->icount);
-     s->gen_insn_end_off[num_insns] = tcg_current_code_size(s);
- 
-     /* Generate TB finalization at the end of block */
+ static void tcg_gen_req_mo(TCGBar type)
+ {
+-#ifdef TCG_GUEST_DEFAULT_MO
+-    type &= TCG_GUEST_DEFAULT_MO;
+-#endif
++    type &= tcg_ctx->guest_mo;
+     type &= ~TCG_TARGET_DEFAULT_MO;
+     if (type) {
+         tcg_gen_mb(type | TCG_BAR_SC);
 -- 
 2.34.1
 
