@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D9B7175FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 971AB717600
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:07:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Dz6-0005j6-Fv; Wed, 31 May 2023 01:02:56 -0400
+	id 1q4E2N-0007te-QF; Wed, 31 May 2023 01:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4Dyj-0005f7-JC
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:02:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4E1k-0007oo-P0
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:05:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4Dyh-0000Qb-ND
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:02:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4E1h-0001AI-M0
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:05:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685509350;
+ s=mimecast20190719; t=1685509536;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RLG5bUflCJgftCCTm6vyDy7J1U464Pa/HMI3BA+Wobk=;
- b=Hi3/2k9PvSZ2ZPVEKSMTStbtShuyNipEu4PhGCzbRoDmSx9d4w71IUNqY6eNeBr+stsoqH
- VJ6mIDfKZ2XMVw3kmtST7A/i5dRhd4tXIqhn+bwIjZUO0GvRRfPQzJtN0o190oxY/D+s5D
- yTmwImegvuepzjIvEQ13Lh2KQiFgC1o=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kcjTIlyEV57eSFFLiw1M6vs6xSF071LDpzjutOgIraM=;
+ b=BEgOWUuYvwI67/vAPv3ifol4jAeVCid2WU3D8+9kogTIobpee3cToeEaKlm1yS8SN9qdN7
+ g6sfRlSq4oAWxb1QFcLip0pPi1dSwBfgyYtBRdYtXFeJQ6Vpv4+YuZc8m20XjYdkQY5MPX
+ +GEBhBscIQEvSc3iM8y6dT1G1ESbQkQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-446-knmlab4oPLOPb4Pdpwugiw-1; Wed, 31 May 2023 01:02:28 -0400
-X-MC-Unique: knmlab4oPLOPb4Pdpwugiw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-514b8a3c0d3so549598a12.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:02:28 -0700 (PDT)
+ us-mta-448-Z0rT-FhnMRWVBcHozL1bRA-1; Wed, 31 May 2023 01:05:27 -0400
+X-MC-Unique: Z0rT-FhnMRWVBcHozL1bRA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-96f6e83685eso554747966b.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:05:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685509347; x=1688101347;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1685509526; x=1688101526;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RLG5bUflCJgftCCTm6vyDy7J1U464Pa/HMI3BA+Wobk=;
- b=XtGWn6004Zb8IAXE0fucTM+jSJAjzaPZOZHUeiyVnxjx2ja+x9qRxmf7VMgrvQhUoN
- M1mswZjLJ4Ia3AIZqpPrp1b6Wmq9ISEgoc32KxFCP7jEZAeHDYATB4MiYs1YLPBbGVAf
- pBQuo7ll+gAfzpFHI5bpCaOidgTehgto3IHhRbCWl94TKMg/peNg37IwW0YsgRRDw/42
- 2zKYcOcM4S38FQ9E12jGBSaV2FBPzZRMJ9Sh3z4LJKk+BTj7kznI11LDOeZhaGhujPWG
- iQcaAbJM1DUeXGisS5qM+rWNKDyQc+StoM51PpqZw41KbmOjc+KKR1XMNxbPmOHJ0aBe
- aT8Q==
-X-Gm-Message-State: AC+VfDweVrZKR7LlCKYO49KLC0kxf5cPqx4dKTAxgFgOWH5Kc+vDsNJV
- nFwe617Har2MVXlFZ6kwIrmDH8s6DYnQFGLy/ZcCbL1ynb58Cj4qFGgCt0O5GNQCkd/s/kaXVoL
- hS+V/K5WRiYDY44o=
-X-Received: by 2002:a17:907:a42a:b0:973:d06d:545f with SMTP id
- sg42-20020a170907a42a00b00973d06d545fmr3817766ejc.24.1685509347432; 
- Tue, 30 May 2023 22:02:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6zdM+NwwmkOkn1/FbJiRjlucehj0T4IXHzXCwALDcIa2VL48lW4yslmlS4LHzaV6iE2vr57g==
-X-Received: by 2002:a17:907:a42a:b0:973:d06d:545f with SMTP id
- sg42-20020a170907a42a00b00973d06d545fmr3817753ejc.24.1685509347078; 
- Tue, 30 May 2023 22:02:27 -0700 (PDT)
+ bh=kcjTIlyEV57eSFFLiw1M6vs6xSF071LDpzjutOgIraM=;
+ b=Heq9zfByKabDmPpCZTWR88i5j2K144DmVwsKLWUdnZyklixNvvpaCsVrKWUhjB/cH1
+ U5gKAiysgx3ak1mBlxzsYW/bVO3/mVc3fcqEsUVDTzp6AzW8nZwpEVebZE1AHY2xumgX
+ g4CLiZmX2g2ocFavTgm6/ZhWeJWivy2ft3l9bxc36foJZ+kWEcjlvBuUTtyZ1z/Bx9Sa
+ I9aUixV7LDhmbZp2UozEqLMKOKDhutuhcNzVgayt4iHN3SIa+SOSZDRrahuNf/WvZWrU
+ XN0bUppm55DxfJUYw9nbYD0omj8cYeiGn07GFjY8/780RGclcMT1XumaeSLJ6c9wRaZW
+ vqTA==
+X-Gm-Message-State: AC+VfDwlx6n4GvVLmjDZ3otPAz/YfHniNgm5V3hkJyPEtExZJMj95apk
+ R7IbxQQUxQUxeGpTkDGgEV4A4hcFywH9/GsOHbSONv98OX3X9HZP3BxBeg6hW18SPJMc0QuMwBA
+ mHtGVBRkpPKts5+b/ZuPjUFM=
+X-Received: by 2002:a17:907:6ea5:b0:96b:559e:7f2f with SMTP id
+ sh37-20020a1709076ea500b0096b559e7f2fmr4891616ejc.38.1685509526320; 
+ Tue, 30 May 2023 22:05:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7UiYQ/mOy1kv0TJ1V8ySJdnABtB3wzPEgR4cMAJbqBfunw5LoGLBYyT3xUdhOBpc12CHuyxQ==
+X-Received: by 2002:a17:907:6ea5:b0:96b:559e:7f2f with SMTP id
+ sh37-20020a1709076ea500b0096b559e7f2fmr4891601ejc.38.1685509526019; 
+ Tue, 30 May 2023 22:05:26 -0700 (PDT)
 Received: from [192.168.8.105] (tmo-065-8.customers.d1-online.com.
  [80.187.65.8]) by smtp.gmail.com with ESMTPSA id
- b13-20020a056402138d00b0050690bc07a3sm5259041edv.18.2023.05.30.22.02.25
+ r10-20020a1709063d6a00b009737b8d47b6sm8174430ejf.203.2023.05.30.22.05.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 22:02:26 -0700 (PDT)
-Message-ID: <cc482875-6007-466d-808a-fc3ddec2a659@redhat.com>
-Date: Wed, 31 May 2023 07:02:24 +0200
+ Tue, 30 May 2023 22:05:25 -0700 (PDT)
+Message-ID: <af86b279-a0d2-bece-34e8-7429cf9e41d5@redhat.com>
+Date: Wed, 31 May 2023 07:05:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 3/4] tests/qtest: Fix a comment typo in vhost-user-test.c
+Subject: Re: [PATCH 4/4] tests/qtest: enable tests for virtio-scmi
+Content-Language: en-US
 To: Milan Zamazal <mzamazal@redhat.com>, qemu-devel@nongnu.org
 Cc: mst@redhat.com, stefanha@redhat.com, alex.bennee@linaro.org
 References: <cover.1685476786.git.mzamazal@redhat.com>
- <89d88ee1cab67b8412617e593ea786f1014d737b.1685476786.git.mzamazal@redhat.com>
-Content-Language: en-US
+ <e20e0b6dae56d520619cbf2883aa4c3004fa06b7.1685476786.git.mzamazal@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <89d88ee1cab67b8412617e593ea786f1014d737b.1685476786.git.mzamazal@redhat.com>
+In-Reply-To: <e20e0b6dae56d520619cbf2883aa4c3004fa06b7.1685476786.git.mzamazal@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -100,30 +100,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/05/2023 15.34, Milan Zamazal wrote:
+On 23/05/2023 16.38, Milan Zamazal wrote:
+> We don't have a virtio-scmi implementation in QEMU and only support a
+> vhost-user backend.  This is very similar to virtio-gpio and we add the same
+> set of tests, just passing some vhost-user messages over the control socket.
+> 
 > Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
 > ---
->   tests/qtest/vhost-user-test.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-> index e4f95b2858..8ab10732f8 100644
-> --- a/tests/qtest/vhost-user-test.c
-> +++ b/tests/qtest/vhost-user-test.c
-> @@ -281,7 +281,7 @@ static void read_guest_mem_server(QTestState *qts, TestServer *s)
->       /* iterate all regions */
->       for (i = 0; i < s->fds_num; i++) {
->   
-> -        /* We'll check only the region statring at 0x0*/
-> +        /* We'll check only the region starting at 0x0*/
+>   MAINTAINERS                      |   1 +
+>   tests/qtest/libqos/meson.build   |   1 +
+>   tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
+>   tests/qtest/libqos/virtio-scmi.h |  34 ++++++
+>   tests/qtest/vhost-user-test.c    |  44 ++++++++
+>   5 files changed, 254 insertions(+)
+>   create mode 100644 tests/qtest/libqos/virtio-scmi.c
+>   create mode 100644 tests/qtest/libqos/virtio-scmi.h
 
-While you're at it, I'd also add a space between the "0x0" and the "*/".
 
-Anyway:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-
->           if (s->memory.regions[i].guest_phys_addr != 0x0) {
->               continue;
->           }
+Acked-by: Thomas Huth <thuth@redhat.com>
 
 
