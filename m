@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5C37174F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 06:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D9B7175FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:04:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4D7I-0003cA-QC; Wed, 31 May 2023 00:07:20 -0400
+	id 1q4Dz6-0005j6-Fv; Wed, 31 May 2023 01:02:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D7B-0003Da-OL
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:07:14 -0400
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4D79-0006wV-9J
- for qemu-devel@nongnu.org; Wed, 31 May 2023 00:07:13 -0400
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-33b89956cccso11265485ab.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 21:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685506030; x=1688098030;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nI2w8QPEk+92crMZ+axm4/ERglLN4PhhZ5orQ1/925g=;
- b=Cq/ick6QqV21lNpPIiztpihzt90oE0OQ9olUycH7V6jW2qet34KzeBexM++Xw9AW5A
- 0gQ6uYUwjwG6vtL5O5nr02EZvDwHpu/usUztxaPrLOAxgg91w1iIXdfl5MBLmssO4wDh
- Pzp8WzFOX6/Div3exW3xy5Rn3+RIHPN4zAfZcQrYRwleEEAolyqKGH0R/IM1WMLRTcjo
- eV0YN02MlXe6AXBxY15Fk7J3XFYVkkTuY+mhlaHrDTiQjrBpxMkbF1TJ3j1jOGsJVODc
- l6mgNt6N1s+ZubIxWshEE43IXgLJ62wMlt2ZA4mNc+foiRwF+us82aaJQRHJubn5agkn
- A2vQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4Dyj-0005f7-JC
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:02:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4Dyh-0000Qb-ND
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:02:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685509350;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RLG5bUflCJgftCCTm6vyDy7J1U464Pa/HMI3BA+Wobk=;
+ b=Hi3/2k9PvSZ2ZPVEKSMTStbtShuyNipEu4PhGCzbRoDmSx9d4w71IUNqY6eNeBr+stsoqH
+ VJ6mIDfKZ2XMVw3kmtST7A/i5dRhd4tXIqhn+bwIjZUO0GvRRfPQzJtN0o190oxY/D+s5D
+ yTmwImegvuepzjIvEQ13Lh2KQiFgC1o=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-446-knmlab4oPLOPb4Pdpwugiw-1; Wed, 31 May 2023 01:02:28 -0400
+X-MC-Unique: knmlab4oPLOPb4Pdpwugiw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-514b8a3c0d3so549598a12.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:02:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685506030; x=1688098030;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nI2w8QPEk+92crMZ+axm4/ERglLN4PhhZ5orQ1/925g=;
- b=GHmAl3/b848OUF91BDAca+Z0ybey1yRqzS1lKGVfsleDJKOtnaxFY5CayvJfjas2Wk
- ik3L/FD8WRCXzanig6JW47XrEdxMRxGzKHxzZy99AcMqsxSXBKlZHMtpCBYizi/ud8HZ
- 5Di/k/H99MSTNrTbGxp+cPEzmu3Vq34EpdG4Gayw5KA+i8NMkEoi7eaLpwToaOFnIr6u
- XNEMqQ1o8f2TYEfLef1/iwGOH6Sp2BPk0v6D4mNIsPhP6WMV2kqY1aep4TOFhhXCpffk
- Yx4+B8IgER94as3vlph6pTIgd9nlwst/VEIxHOOctjwseKvehKMYyd2IJZf0M4b9lZhG
- JkCw==
-X-Gm-Message-State: AC+VfDzCvsjoyLdCwrdJc9mCrJVWX6ovSdH1/hZV6cqIcqR4jIX7U0+7
- a38NhofEfsaqndL4wd97vXE5aR3uCoNGhVJC6IA=
-X-Google-Smtp-Source: ACHHUZ6/NS44O30FprAJBKwGVxpu3dqlwwtmV6b6+M+FS6xCc4JhVZxy220LvcUl/VVnvzwUi5OYgg==
-X-Received: by 2002:a92:d7c2:0:b0:33b:ed95:26df with SMTP id
- g2-20020a92d7c2000000b0033bed9526dfmr819572ilq.32.1685506030138; 
- Tue, 30 May 2023 21:07:10 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:1cd:ec7a:a720:ce9a])
- by smtp.gmail.com with ESMTPSA id
- h13-20020a170902f7cd00b001aadd0d7364sm151797plw.83.2023.05.30.21.07.09
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 21:07:09 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH v3 48/48] tcg: Build once for system and once for user-only
-Date: Tue, 30 May 2023 21:03:30 -0700
-Message-Id: <20230531040330.8950-49-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230531040330.8950-1-richard.henderson@linaro.org>
-References: <20230531040330.8950-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1685509347; x=1688101347;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RLG5bUflCJgftCCTm6vyDy7J1U464Pa/HMI3BA+Wobk=;
+ b=XtGWn6004Zb8IAXE0fucTM+jSJAjzaPZOZHUeiyVnxjx2ja+x9qRxmf7VMgrvQhUoN
+ M1mswZjLJ4Ia3AIZqpPrp1b6Wmq9ISEgoc32KxFCP7jEZAeHDYATB4MiYs1YLPBbGVAf
+ pBQuo7ll+gAfzpFHI5bpCaOidgTehgto3IHhRbCWl94TKMg/peNg37IwW0YsgRRDw/42
+ 2zKYcOcM4S38FQ9E12jGBSaV2FBPzZRMJ9Sh3z4LJKk+BTj7kznI11LDOeZhaGhujPWG
+ iQcaAbJM1DUeXGisS5qM+rWNKDyQc+StoM51PpqZw41KbmOjc+KKR1XMNxbPmOHJ0aBe
+ aT8Q==
+X-Gm-Message-State: AC+VfDweVrZKR7LlCKYO49KLC0kxf5cPqx4dKTAxgFgOWH5Kc+vDsNJV
+ nFwe617Har2MVXlFZ6kwIrmDH8s6DYnQFGLy/ZcCbL1ynb58Cj4qFGgCt0O5GNQCkd/s/kaXVoL
+ hS+V/K5WRiYDY44o=
+X-Received: by 2002:a17:907:a42a:b0:973:d06d:545f with SMTP id
+ sg42-20020a170907a42a00b00973d06d545fmr3817766ejc.24.1685509347432; 
+ Tue, 30 May 2023 22:02:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6zdM+NwwmkOkn1/FbJiRjlucehj0T4IXHzXCwALDcIa2VL48lW4yslmlS4LHzaV6iE2vr57g==
+X-Received: by 2002:a17:907:a42a:b0:973:d06d:545f with SMTP id
+ sg42-20020a170907a42a00b00973d06d545fmr3817753ejc.24.1685509347078; 
+ Tue, 30 May 2023 22:02:27 -0700 (PDT)
+Received: from [192.168.8.105] (tmo-065-8.customers.d1-online.com.
+ [80.187.65.8]) by smtp.gmail.com with ESMTPSA id
+ b13-20020a056402138d00b0050690bc07a3sm5259041edv.18.2023.05.30.22.02.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 22:02:26 -0700 (PDT)
+Message-ID: <cc482875-6007-466d-808a-fc3ddec2a659@redhat.com>
+Date: Wed, 31 May 2023 07:02:24 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 3/4] tests/qtest: Fix a comment typo in vhost-user-test.c
+To: Milan Zamazal <mzamazal@redhat.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com, stefanha@redhat.com, alex.bennee@linaro.org
+References: <cover.1685476786.git.mzamazal@redhat.com>
+ <89d88ee1cab67b8412617e593ea786f1014d737b.1685476786.git.mzamazal@redhat.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <89d88ee1cab67b8412617e593ea786f1014d737b.1685476786.git.mzamazal@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,58 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create two static libraries for use by each execution mode.
+On 24/05/2023 15.34, Milan Zamazal wrote:
+> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+> ---
+>   tests/qtest/vhost-user-test.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
+> index e4f95b2858..8ab10732f8 100644
+> --- a/tests/qtest/vhost-user-test.c
+> +++ b/tests/qtest/vhost-user-test.c
+> @@ -281,7 +281,7 @@ static void read_guest_mem_server(QTestState *qts, TestServer *s)
+>       /* iterate all regions */
+>       for (i = 0; i < s->fds_num; i++) {
+>   
+> -        /* We'll check only the region statring at 0x0*/
+> +        /* We'll check only the region starting at 0x0*/
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/meson.build | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+While you're at it, I'd also add a space between the "0x0" and the "*/".
 
-diff --git a/tcg/meson.build b/tcg/meson.build
-index bdc185a485..565c60bc96 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -1,3 +1,7 @@
-+if not get_option('tcg').allowed()
-+   subdir_done()
-+endif
-+
- tcg_ss = ss.source_set()
- 
- tcg_ss.add(files(
-@@ -14,8 +18,28 @@ tcg_ss.add(files(
- if get_option('tcg_interpreter')
-   libffi = dependency('libffi', version: '>=3.0', required: true,
-                       method: 'pkg-config')
--  specific_ss.add(libffi)
--  specific_ss.add(files('tci.c'))
-+  tcg_ss.add(libffi)
-+  tcg_ss.add(files('tci.c'))
- endif
- 
--specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
-+tcg_ss = tcg_ss.apply(config_host, strict: false)
-+
-+libtcg_user = static_library('tcg_user',
-+                             tcg_ss.sources() + genh,
-+                             name_suffix: 'fa',
-+                             c_args: '-DCONFIG_USER_ONLY',
-+                             build_by_default: have_user)
-+
-+tcg_user = declare_dependency(link_with: libtcg_user,
-+                              dependencies: tcg_ss.dependencies())
-+user_ss.add(tcg_user)
-+
-+libtcg_softmmu = static_library('tcg_softmmu',
-+                                tcg_ss.sources() + genh,
-+                                name_suffix: 'fa',
-+                                c_args: '-DCONFIG_SOFTMMU',
-+                                build_by_default: have_system)
-+
-+tcg_softmmu = declare_dependency(link_with: libtcg_softmmu,
-+                                 dependencies: tcg_ss.dependencies())
-+softmmu_ss.add(tcg_softmmu)
--- 
-2.34.1
+Anyway:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
+>           if (s->memory.regions[i].guest_phys_addr != 0x0) {
+>               continue;
+>           }
 
 
