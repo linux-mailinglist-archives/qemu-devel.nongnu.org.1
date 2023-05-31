@@ -2,53 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA7C718548
+	by mail.lfdr.de (Postfix) with ESMTPS id 5178D718549
 	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 16:48:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4N6Y-0004cL-RR; Wed, 31 May 2023 10:47:14 -0400
+	id 1q4N6d-0004kD-6z; Wed, 31 May 2023 10:47:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1q4N6R-0004ai-1D
- for qemu-devel@nongnu.org; Wed, 31 May 2023 10:47:08 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4N6b-0004hP-59; Wed, 31 May 2023 10:47:17 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1q4N6J-0007IX-Gd
- for qemu-devel@nongnu.org; Wed, 31 May 2023 10:47:03 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QWX926mqGz67bZK;
- Wed, 31 May 2023 22:44:38 +0800 (CST)
-Received: from localhost (10.199.58.101) by lhrpeml500004.china.huawei.com
- (7.191.163.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
- 2023 15:46:46 +0100
-Date: Wed, 31 May 2023 17:46:40 +0300
-To: Peter Xu <peterx@redhat.com>
-CC: <qemu-devel@nongnu.org>, <quintela@redhat.com>, <eblake@redhat.com>,
- <armbru@redhat.com>, <berrange@redhat.com>, <zhengchuan@huawei.com>
-Subject: Re: [PATCH v2 0/4] Migration time prediction using calc-dirty-rate
-Message-ID: <ZHdd0BDefsv02SWX@DESKTOP-0LHM7NF.china.huawei.com>
-References: <cover.1682598010.git.gudkov.andrei@huawei.com>
- <ZHYaajucX3WbO5oW@x1n>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4N6Y-0007J5-1H; Wed, 31 May 2023 10:47:16 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:151e:0:640:1960:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 8E7F260516;
+ Wed, 31 May 2023 17:46:56 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
+ [2a02:6b8:b081:a512::1:34])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id tkOtw45OdOs0-5ft1mk8B; Wed, 31 May 2023 17:46:55 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1685544415; bh=LeyNUhZf8g0b4isNfquBzCjcPzFSDcwbS5kGWmmHG28=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=FaHiqIkmlrZKM6N2CxQWw+ONScP/89XpWyYfea6VLNLFBCsT0ykijMBzV+kBq89I/
+ yMAbaZVWzou6/2lp6SWLgWnS5HQmH+b17aY05k6qlQng/tH52TvPFK0KgZ+yosWb65
+ XtARN1UZkAXYYD0t40TrkcGpd1rm2ADHaCGoQdis=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <21c33b7e-d2b2-e40b-9388-1caffe9ed5c2@yandex-team.ru>
+Date: Wed, 31 May 2023 17:46:55 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZHYaajucX3WbO5oW@x1n>
-X-Originating-IP: [10.199.58.101]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- lhrpeml500004.china.huawei.com (7.191.163.9)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 09/14] nbd/server: Initial support for extended headers
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-10-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230515195343.1915857-10-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,57 +72,140 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  <gudkov.andrei@huawei.com>
-From: gudkov.andrei--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 11:46:50AM -0400, Peter Xu wrote:
-> Hi, Andrei,
+On 15.05.23 22:53, Eric Blake wrote:
+> Time to support clients that request extended headers.  Now we can
+> finally reach the code added across several previous patches.
 > 
-> On Thu, Apr 27, 2023 at 03:42:56PM +0300, Andrei Gudkov via wrote:
-> > Afterwards we tried to migrate VM after randomly selecting max downtime
-> > and bandwidth limit. Typical prediction error is 6-7%, with only 180 out
-> > of 5779 experiments failing badly: prediction error >=25% or incorrectly
-> > predicting migration success when in fact it didn't converge.
+> Even though the NBD spec has been altered to allow us to accept
+> NBD_CMD_READ larger than the max payload size (provided our response
+> is a hole or broken up over more than one data chunk), we are not
+> planning to take advantage of that, and continue to cap NBD_CMD_READ
+> to 32M regardless of header size.
 > 
-> What's the normal size of the VMs when you did the measurements?
-
-VM size in all experiments was 32GiB. However, since some of the pages
-are zero, the effective VM size was smaller. I checked the value of
-precopy-bytes counter after the first migration iteration. Median value
-among all experiments is 24.3GiB.
-
+> For NBD_CMD_WRITE_ZEROES and NBD_CMD_TRIM, the block layer already
+> supports 64-bit operations without any effort on our part.  For
+> NBD_CMD_BLOCK_STATUS, the client's length is a hint, and the previous
+> patch took care of implementing the required
+> NBD_REPLY_TYPE_BLOCK_STATUS_EXT.
 > 
-> A major challenge of convergence issues come from huge VMs and I'm
-> wondering whether those are covered in the prediction verifications.
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   nbd/nbd-internal.h |   5 +-
 
-Hmmm... My understanding is that convergence primarily depends on how
-agressive VM dirties pages and not on VM size. Small VM with agressive
-writes would be impossible to migrate without throttling. On the contrary,
-migration of the huge dormant VM will converge in just single iteration
-(although a long one). The only reason I can imagine why large VM size can
-negatively affect convergence is due to the following reasoning: larger VM
-size => bigger number of vCPUs => more memory writes per second.
-Or do you probably mean that during each iteration we perform
-KVM_CLEAR_DIRTY_LOG, which is (I suspect) linear in time and can become
-bottleneck for large VMs? Anyway, I will conduct experiments with
-large VMs.
-
-
-I think that the easiest way to predict whether VM migration will converge
-or not is the following. Run calc-dirty-rate with calc-time equal to
-desired downtime. If it reports that the volume of dirtied memory over
-calc-time period is larger than you can copy over network in the same time,
-then you are out of luck. Alas, at the current moment calc-time accepts
-values in units of seconds, while reasonable downtime lies in range 50-300ms.
-I am preparing a separate patch that will allow to specify calc-time in
-milliseconds. I hope that this approach will be cleaner than an array of
-hardcoded values I introduced in my original patch.
+[..]
 
 > 
-> Thanks,
+>   static inline void set_be_simple_reply(NBDClient *client, struct iovec *iov,
+> -                                       uint64_t error, NBDRequest *request)
+> +                                       uint32_t error, NBDStructuredError *err,
+> +                                       NBDRequest *request)
+>   {
+> -    NBDSimpleReply *reply = iov->iov_base;
+> +    if (client->header_style >= NBD_HEADER_EXTENDED) {
+> +        NBDExtendedReplyChunk *chunk = iov->iov_base;
 > 
-> -- 
-> Peter Xu
+> -    iov->iov_len = sizeof(*reply);
+> -    stl_be_p(&reply->magic, NBD_SIMPLE_REPLY_MAGIC);
+> -    stl_be_p(&reply->error, error);
+> -    stq_be_p(&reply->handle, request->handle);
+> +        iov->iov_len = sizeof(*chunk);
+> +        stl_be_p(&chunk->magic, NBD_EXTENDED_REPLY_MAGIC);
+> +        stw_be_p(&chunk->flags, NBD_REPLY_FLAG_DONE);
+> +        stq_be_p(&chunk->handle, request->handle);
+> +        stq_be_p(&chunk->offset, request->from);
+> +        if (error) {
+> +            assert(!iov[1].iov_base);
+> +            iov[1].iov_base = err;
+> +            iov[1].iov_len = sizeof(*err);
+> +            stw_be_p(&chunk->type, NBD_REPLY_TYPE_ERROR);
+> +            stq_be_p(&chunk->length, sizeof(*err));
+> +            stl_be_p(&err->error, error);
+> +            stw_be_p(&err->message_length, 0);
+> +        } else {
+> +            stw_be_p(&chunk->type, NBD_REPLY_TYPE_NONE);
+> +            stq_be_p(&chunk->length, 0);
+> +        }
+> +    } else {
+> +        NBDSimpleReply *reply = iov->iov_base;
+> +
+> +        iov->iov_len = sizeof(*reply);
+> +        stl_be_p(&reply->magic, NBD_SIMPLE_REPLY_MAGIC);
+> +        stl_be_p(&reply->error, error);
+> +        stq_be_p(&reply->handle, request->handle);
+> +    }
+>   }
+> 
+>   static int coroutine_fn nbd_co_send_simple_reply(NBDClient *client,
+> @@ -1906,30 +1966,44 @@ static int coroutine_fn nbd_co_send_simple_reply(NBDClient *client,
+
+So, that's not _simple_ now.. The function should be renamed. As well as set_be_simple_reply(). _simple_or_extended_ ? a bit too long. But continuing to use "simple" is in bad relation with use of "simple" word in specification.
+
+Probably better to update callers? The only caller isi nbd_send_generic_reply(). So, could we just add nbd_co_send_single_extended_reply() to call from nbd_send_generic_reply() in case of EXTENDED?
+
+Also, transformation of set_be_simple_reply() do look like it should be two separate functions.
+
+>   {
+>       NBDReply hdr;
+>       int nbd_err = system_errno_to_nbd_errno(error);
+> +    NBDStructuredError err;
+>       struct iovec iov[] = {
+>           {.iov_base = &hdr},
+>           {.iov_base = data, .iov_len = len}
+>       };
+> 
+> +    assert(!len || !nbd_err);
+>       trace_nbd_co_send_simple_reply(request->handle, nbd_err,
+>                                      nbd_err_lookup(nbd_err), len);
+> -    set_be_simple_reply(client, &iov[0], nbd_err, request);
+> +    set_be_simple_reply(client, &iov[0], nbd_err, &err, request);
+> 
+> -    return nbd_co_send_iov(client, iov, len ? 2 : 1, errp);
+> +    return nbd_co_send_iov(client, iov, iov[1].iov_len ? 2 : 1, errp);
+>   }
+> 
+>   static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
+>                                   uint16_t flags, uint16_t type,
+>                                   NBDRequest *request, uint32_t length)
+>   {
+> -    NBDStructuredReplyChunk *chunk = iov->iov_base;
+> +    if (client->header_style >= NBD_HEADER_EXTENDED) {
+> +        NBDExtendedReplyChunk *chunk = iov->iov_base;
+> 
+> -    iov->iov_len = sizeof(*chunk);
+> -    stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
+> -    stw_be_p(&chunk->flags, flags);
+> -    stw_be_p(&chunk->type, type);
+> -    stq_be_p(&chunk->handle, request->handle);
+> -    stl_be_p(&chunk->length, length);
+> +        iov->iov_len = sizeof(*chunk);
+> +        stl_be_p(&chunk->magic, NBD_EXTENDED_REPLY_MAGIC);
+> +        stw_be_p(&chunk->flags, flags);
+> +        stw_be_p(&chunk->type, type);
+> +        stq_be_p(&chunk->handle, request->handle);
+> +        stq_be_p(&chunk->offset, request->from);
+> +        stq_be_p(&chunk->length, length);
+> +    } else {
+> +        NBDStructuredReplyChunk *chunk = iov->iov_base;
+> +
+> +        iov->iov_len = sizeof(*chunk);
+> +        stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
+> +        stw_be_p(&chunk->flags, flags);
+> +        stw_be_p(&chunk->type, type);
+> +        stq_be_p(&chunk->handle, request->handle);
+> +        stl_be_p(&chunk->length, length);
+> +    }
+>   }
+> 
+>   static int coroutine_fn nbd_co_send_structured_done(NBDClient *client,
+
+
+
+
+-- 
+Best regards,
+Vladimir
+
 
