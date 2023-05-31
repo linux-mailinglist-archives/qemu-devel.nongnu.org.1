@@ -2,83 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1CA717988
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 10:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04451717987
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 10:05:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Gp0-0008Hb-7E; Wed, 31 May 2023 04:04:42 -0400
+	id 1q4Gp6-0008Iv-IX; Wed, 31 May 2023 04:04:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q4GoX-00083F-Ub
- for qemu-devel@nongnu.org; Wed, 31 May 2023 04:04:13 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q4GoW-0005RM-4w
- for qemu-devel@nongnu.org; Wed, 31 May 2023 04:04:13 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f6042d605dso40161965e9.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 01:04:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685520250; x=1688112250;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GP7ltB3f8lWOmf7sLDdQWCWCkAFSQ9WZw+PAQ26UGwE=;
- b=fIMs29oOlgRRU+sUAoNdgvgmO1fQuweQ2dXJS/UAzwg2OFo/jFM0YFq5NIT2Mi4sEr
- /Ck7wdvtK/D3o+3NeEXWD6FC+K+8cM1SxzCKu97LxDc8iJc8+3FPAozBM8T4j111lc70
- as5tXGqVnCCtYK8snD5zo2231PH/7j1NCjEsL5BDupuqGExbs2Ixk21C6MEvLiLtzS79
- xfy5UpcqBpvaSvRy0+sxxIEu7vnBP2Fd3/zUl//F54wHMhze6HcnOvSlnD3XlfaHthXv
- aBiIk11gEEIY0uBNsi8qNpib/0LRdrfDdpSYhxU/cheoCX4DwvnYgfOgB1LvwN/SN5XC
- 0JLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685520250; x=1688112250;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=GP7ltB3f8lWOmf7sLDdQWCWCkAFSQ9WZw+PAQ26UGwE=;
- b=ZyiMIwOEsdsdV814aCHDmdxf8xwQhcozcmy8vJ1SlmCsyVriYJRBWFU6za+pXVi3Ti
- KfOxMBkbKs+hb3MqkcCYRWB1y/UnJGLuPfz2nk1WJtOtzQ4A2iEUmcEr79r6U6nS84sv
- YpJ1AXBnV+1Tst1XfkezXcAfFY1Xhi3HQwzQs98SwnUvW1tV6ZwNA/WVRZ2uOhucDJ8t
- mh8rxprZCeCZy++hpMxTnsOePKVdzKLiLs8jBqvskqRaHbDw1rPf88bNTZERASW9ihCx
- qqsf/fjxwoIx92wl5kMXg6B00ITYNH2SD8OMCKmh2Z3ecUfsBXg3qgRINyvEQNGkZmVM
- hNzw==
-X-Gm-Message-State: AC+VfDxAvDJTpkbmdxQDJdyYtfszMu6MU8e/cxkax+aBY8QpDeBWaj4w
- LSmcSvW1l1vfhueTLb/uttaA+Q==
-X-Google-Smtp-Source: ACHHUZ40LoaQsCKAnYramW2PPI5plTaoLWoLZRVD2deCO/OxsjmqHWlNjnb9KK1TyEZNiuMMBwNABw==
-X-Received: by 2002:a1c:7717:0:b0:3f6:15c:96fc with SMTP id
- t23-20020a1c7717000000b003f6015c96fcmr3549676wmi.17.1685520250429; 
- Wed, 31 May 2023 01:04:10 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- x4-20020a05600c21c400b003f0aefcc457sm23551506wmj.45.2023.05.31.01.04.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 May 2023 01:04:10 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 9CA541FFBB;
- Wed, 31 May 2023 09:04:09 +0100 (BST)
-References: <20230530142430.45834-1-fufuyqqqqqq@gmail.com>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC] Native Library Calls
-Date: Wed, 31 May 2023 09:02:12 +0100
-In-reply-to: <20230530142430.45834-1-fufuyqqqqqq@gmail.com>
-Message-ID: <87mt1lc4g6.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4Gok-00086W-1F; Wed, 31 May 2023 04:04:26 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4Gog-0005Qr-34; Wed, 31 May 2023 04:04:25 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:1421:0:640:53a0:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 6E7E861382;
+ Wed, 31 May 2023 11:04:09 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
+ [2a02:6b8:b081:a512::1:34])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 84ISHb6OiCg0-apgvScSb; Wed, 31 May 2023 11:04:08 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1685520248; bh=Y7lV1XJm3p+mxZ7RvYxTYTIq+5CDlCVIJX6OH4Vhh6s=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=ltRt9sP9W3KTNGQjKFbL0UBfkIKJGknM1Glam6CUzjAy1D38zRReou9b0vJu9UcUd
+ kKLPfSjZ2OmOW2ktu/8GYcQ6/MF1loCTfEKU0ocVa0yto9UJ0xNZlPMofhrm3U1Phk
+ XB+vyOonYwcIELnvZ37YsgF1qpGAvW+p3ezwAgAA=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <71fe2382-4738-6f6b-8541-629edc726464@yandex-team.ru>
+Date: Wed, 31 May 2023 11:04:08 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 06/14] nbd/server: Refactor handling of request payload
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-7-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230515195343.1915857-7-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,112 +76,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
-
-> This patch introduces a set of feature instructions for native calls
-> and provides helpers to translate these instructions to corresponding
-> native functions. A shared library is also implemented, where native
-> functions are rewritten as feature instructions. At runtime, user
-> programs load the shared library, and feature instructions are
-> executed when native functions are called. This patch is applicable
-> to user programs with architectures x86, x86_64, arm, aarch64, mips,
-> and mips64. To build, compile libnative.c into a shared library for
-> the user program's architecture and run the
-> '../configure --enable-user-native-call && make' command.
->
-> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+On 15.05.23 22:53, Eric Blake wrote:
+> Upcoming additions to support NBD 64-bit effect lengths allow for the
+> possibility to distinguish between payload length (capped at 32M) and
+> effect length (up to 63 bits).  Without that extension, only the
+> NBD_CMD_WRITE request has a payload; but with the extension, it makes
+> sense to allow at least NBD_CMD_BLOCK_STATUS to have both a payload
+> and effect length (where the payload is a limited-size struct that in
+> turns gives the real effect length as well as a subset of known ids
+> for which status is requested).  Other future NBD commands may also
+> have a request payload, so the 64-bit extension introduces a new
+> NBD_CMD_FLAG_PAYLOAD_LEN that distinguishes between whether the header
+> length is a payload length or an effect length, rather than
+> hard-coding the decision based on the command.  Note that we do not
+> support the payload version of BLOCK_STATUS yet.
+> 
+> For this patch, no semantic change is intended for a compliant client.
+> For a non-compliant client, it is possible that the error behavior
+> changes (a different message, a change on whether the connection is
+> killed or remains alive for the next command, or so forth), but all
+> errors should still be handled gracefully.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 > ---
->  include/exec/user/native-func.h      |  8 +++
->  libnative.c                          | 76 ++++++++++++++++++++++++++++
-<snip>
-> --- /dev/null
-> +++ b/libnative.c
-> @@ -0,0 +1,76 @@
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +
-> +#define NATIVE_MEMCPY 0x1001
-> +#define NATIVE_MEMCMP 0x1002
-> +#define NATIVE_MEMSET 0x1003
-> +#define NATIVE_STRCPY 0x1004
-> +#define NATIVE_STRCMP 0x1005
-> +#define NATIVE_STRCAT 0x1006
-> +
-> +void *memcpy(void *dest, const void *src, size_t n);
-> +int memcmp(const void *s1, const void *s2, size_t n);
-> +void *memset(void *s, int c, size_t n);
-> +char *strcpy(char *dest, const char *src);
-> +int strcmp(const char *s1, const char *s2);
-> +char *strcat(char *dest, const char *src);
-> +
-> +#define STR_MACRO(str) #str
-> +#define STR(num) STR_MACRO(num)
-> +
-> +#if defined(TARGET_X86_64) || defined(TARGET_I386)
-> +
-> +/* unused opcode */
-> +#define __PREFIX_INSTR \
-> +    ".byte 0x0f,0xff;"
-> +
-> +#define NATIVE_CALL_EXPR(func) \
-> +    __PREFIX_INSTR             \
-> +    ".word " STR(func) ";" : : :
-> +#endif
-> +
-> +#if defined(TARGET_ARM) || defined(TARGET_AARCH64)
-> +
-> +/* unused syscall number */
-> +#define __PREFIX_INSTR \
-> +    "svc 0xff;"
-> +
-> +#define NATIVE_CALL_EXPR(func) \
-> +    __PREFIX_INSTR             \
-> +    ".word " STR(func) ";" : : :
-> +
-> +#endif
-> +
-> +#if defined(TARGET_MIPS) || defined(TARGET_MIPS64)
-> +
-> +/* unused bytes in syscall instructions */
-> +#define NATIVE_CALL_EXPR(func) \
-> +    ".long " STR((0x1 << 24) + (func << 8) + 0xC) ";" : : :
-> +
-> +#endif
-> +
-> +void *memcpy(void *dest, const void *src, size_t n)
-> +{
-> +    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_MEMCPY));
-> +}
-> +
-> +int memcmp(const void *s1, const void *s2, size_t n)
-> +{
-> +    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_MEMCMP));
-> +}
-> +void *memset(void *s, int c, size_t n)
-> +{
-> +    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_MEMSET));
-> +}
-> +char *strcpy(char *dest, const char *src)
-> +{
-> +    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_STRCPY));
-> +}
-> +int strcmp(const char *s1, const char *s2)
-> +{
-> +    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_STRCMP));
-> +}
-> +char *strcat(char *dest, const char *src)
-> +{
-> +    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_STRCAT));
-> +}
+>   nbd/server.c     | 55 +++++++++++++++++++++++++++++++++---------------
+>   nbd/trace-events |  1 +
+>   2 files changed, 39 insertions(+), 17 deletions(-)
+> 
+> diff --git a/nbd/server.c b/nbd/server.c
+> index cf38a104d9a..5812a773ace 100644
+> --- a/nbd/server.c
+> +++ b/nbd/server.c
+> @@ -2316,6 +2316,8 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+>                                                  Error **errp)
+>   {
+>       NBDClient *client = req->client;
+> +    bool extended_with_payload;
+> +    int payload_len = 0;
+>       int valid_flags;
+>       int ret;
+> 
+> @@ -2329,27 +2331,41 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+>       trace_nbd_co_receive_request_decode_type(request->handle, request->type,
+>                                                nbd_cmd_lookup(request->type));
+> 
+> -    if (request->type != NBD_CMD_WRITE) {
+> -        /* No payload, we are ready to read the next request.  */
+> -        req->complete = true;
+> -    }
+> -
+>       if (request->type == NBD_CMD_DISC) {
+>           /* Special case: we're going to disconnect without a reply,
+>            * whether or not flags, from, or len are bogus */
+> +        req->complete = true;
+>           return -EIO;
+>       }
+> 
+> +    /* Payload and buffer handling. */
+> +    extended_with_payload = client->header_style >= NBD_HEADER_EXTENDED &&
+> +        (request->flags & NBD_CMD_FLAG_PAYLOAD_LEN);
+>       if (request->type == NBD_CMD_READ || request->type == NBD_CMD_WRITE ||
+> -        request->type == NBD_CMD_CACHE)
+> -    {
+> +        request->type == NBD_CMD_CACHE || extended_with_payload) {
+>           if (request->len > NBD_MAX_BUFFER_SIZE) {
+>               error_setg(errp, "len (%" PRIu64" ) is larger than max len (%u)",
+>                          request->len, NBD_MAX_BUFFER_SIZE);
 
-I've just realised we don't actually plumb libnative into the build. We
-do have cross compilers available so we should use them when we have
-them. See tests/tcg/$ARCH-linux-user/config-target.mak.
+hmm pre-patch, here req->complete is set to true, except for WRITE request
 
-We also use these to build some of the firmware when needed.
+>               return -EINVAL;
+>           }
+> 
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+the whole big if with sub-ifs becomes really hard to read. At least, I think, no reason to keep the following two ifs inside the bigger if, as small ifs just check the same conditions.
+
+> -        if (request->type != NBD_CMD_CACHE) {
+> +        if (request->type == NBD_CMD_WRITE || extended_with_payload) {
+> +            payload_len = request->len;
+> +            if (request->type != NBD_CMD_WRITE) {
+> +                /*
+> +                 * For now, we don't support payloads on other
+> +                 * commands; but we can keep the connection alive.
+> +                 */
+> +                request->len = 0;
+> +            } else if (client->header_style >= NBD_HEADER_EXTENDED &&
+> +                       !extended_with_payload) {
+> +                /* The client is noncompliant. Trace it, but proceed. */
+> +                trace_nbd_co_receive_ext_payload_compliance(request->from,
+> +                                                            request->len);
+> +            }
+> +        }
+> +
+> +        if (request->type == NBD_CMD_WRITE || request->type == NBD_CMD_READ) {
+>               req->data = blk_try_blockalign(client->exp->common.blk,
+>                                              request->len);
+>               if (req->data == NULL) {
+> @@ -2359,18 +2375,20 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+>           }
+>       }
+> 
+> -    if (request->type == NBD_CMD_WRITE) {
+> -        assert(request->len <= NBD_MAX_BUFFER_SIZE);
+> -        if (nbd_read(client->ioc, req->data, request->len, "CMD_WRITE data",
+> -                     errp) < 0)
+> -        {
+> +    if (payload_len) {
+> +        if (req->data) {
+> +            ret = nbd_read(client->ioc, req->data, payload_len,
+> +                           "CMD_WRITE data", errp);
+> +        } else {
+> +            ret = nbd_drop(client->ioc, payload_len, errp);
+> +        }
+> +        if (ret < 0) {
+>               return -EIO;
+>           }
+> -        req->complete = true;
+> -
+>           trace_nbd_co_receive_request_payload_received(request->handle,
+> -                                                      request->len);
+> +                                                      payload_len);
+>       }
+> +    req->complete = true;
+> 
+>       /* Sanity checks. */
+>       if (client->exp->nbdflags & NBD_FLAG_READ_ONLY &&
+> @@ -2400,7 +2418,10 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+>                                                 client->check_align);
+>       }
+>       valid_flags = NBD_CMD_FLAG_FUA;
+> -    if (request->type == NBD_CMD_READ &&
+> +    if (request->type == NBD_CMD_WRITE &&
+> +        client->header_style >= NBD_HEADER_EXTENDED) {
+> +        valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
+> +    } else if (request->type == NBD_CMD_READ &&
+>           client->header_style >= NBD_HEADER_STRUCTURED) {
+>           valid_flags |= NBD_CMD_FLAG_DF;
+>       } else if (request->type == NBD_CMD_WRITE_ZEROES) {
+> diff --git a/nbd/trace-events b/nbd/trace-events
+> index e2c1d68688d..adf5666e207 100644
+> --- a/nbd/trace-events
+> +++ b/nbd/trace-events
+> @@ -71,6 +71,7 @@ nbd_co_send_extents(uint64_t handle, unsigned int extents, uint32_t id, uint64_t
+>   nbd_co_send_structured_error(uint64_t handle, int err, const char *errname, const char *msg) "Send structured error reply: handle = %" PRIu64 ", error = %d (%s), msg = '%s'"
+>   nbd_co_receive_request_decode_type(uint64_t handle, uint16_t type, const char *name) "Decoding type: handle = %" PRIu64 ", type = %" PRIu16 " (%s)"
+>   nbd_co_receive_request_payload_received(uint64_t handle, uint64_t len) "Payload received: handle = %" PRIu64 ", len = %" PRIu64
+> +nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
+>   nbd_co_receive_align_compliance(const char *op, uint64_t from, uint64_t len, uint32_t align) "client sent non-compliant unaligned %s request: from=0x%" PRIx64 ", len=0x%" PRIx64 ", align=0x%" PRIx32
+>   nbd_trip(void) "Reading request"
+> 
+
+-- 
+Best regards,
+Vladimir
+
 
