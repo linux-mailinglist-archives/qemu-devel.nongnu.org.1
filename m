@@ -2,65 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D82717D9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC13717DAC
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:07:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4JcR-0007hN-FF; Wed, 31 May 2023 07:03:55 -0400
+	id 1q4Jfr-0006zd-IM; Wed, 31 May 2023 07:07:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q4Jc2-0007Ui-Tq
- for qemu-devel@nongnu.org; Wed, 31 May 2023 07:03:31 -0400
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q4JfX-0006nv-6S
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 07:07:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q4Jbu-0001gX-JB
- for qemu-devel@nongnu.org; Wed, 31 May 2023 07:03:29 -0400
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q4JfU-0002tT-Ns
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 07:07:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685530977;
+ s=mimecast20190719; t=1685531223;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gBEA0DPzWSZSHotzqBjK5sGIr315dzasDadYZ/PEi0I=;
- b=WIxeZhA9OnVYikFRIU0MEq+oeiD0XnUa64rmleNHve8wb6liPkpdz6Ir6sx1teCEbwpChX
- vm3wyfKLiDFOhahsiyZj6+7ScTRPXvW8V6CljAqV+jClBLFG2+vv2N2jZnSjug/oJL6I/x
- Qi8HIxVbMz9yEoeYVb+ZsJKaaPkrUZE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-554-dL4TJfb0OiywsA_qyswqOQ-1; Wed, 31 May 2023 07:02:56 -0400
-X-MC-Unique: dL4TJfb0OiywsA_qyswqOQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B46103802003;
- Wed, 31 May 2023 11:02:55 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.194.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2C05C2029F6D;
- Wed, 31 May 2023 11:02:54 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, stefanha@redhat.com, hreitz@redhat.com,
- eblake@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH 11/11] Revert "graph-lock: Disable locking for now"
-Date: Wed, 31 May 2023 13:02:31 +0200
-Message-Id: <20230531110231.262251-12-kwolf@redhat.com>
-In-Reply-To: <20230531110231.262251-1-kwolf@redhat.com>
-References: <20230531110231.262251-1-kwolf@redhat.com>
+ bh=/vIx6llZCg7zStJE2lMasPApUjV/9UPzEy3eJ/kLTXo=;
+ b=awQ3XNzwv1lBGBjYHSYxN8hAwWWTyYQuwQyktXzz6xEIEmR68wc4Bxt66Wwc00ww6iQDb4
+ xVzqHKDPJmAQ5JtqRflioi+zEvW68HMUeejqaDURvWDR4DALOHe57gEa3KFjL2M/RS2tk7
+ D2WKkSAeTF7Ylo1ClUpm8EMbwmxCDhc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-coEUADjVMsC_iqlHBzsQLA-1; Wed, 31 May 2023 07:07:00 -0400
+X-MC-Unique: coEUADjVMsC_iqlHBzsQLA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f60911a417so25559735e9.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 04:06:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685531219; x=1688123219;
+ h=mime-version:user-agent:message-id:in-reply-to:date:references
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/vIx6llZCg7zStJE2lMasPApUjV/9UPzEy3eJ/kLTXo=;
+ b=RAKtVoifZKtrOSbWg2NzRaclcQwbKIU1r3nNUNdV+0erneh/MAQH+XUNiQLiLKtS7y
+ C+mm168Ct3oSbDNxufmvbJiufp7WlZw8k7QSnj7UiNp4CoVOQW/NHdriQgdMYwGSrSbR
+ 74OZonQQJuH61guRDTvCiFi46vQtDPsajxwgGifB06YnuNyWT7u+QsAjiGXAvN3Atk+t
+ kJukFd3x9UY27e8HVfxnfGRkXgNjEAZFpMOviTnPld42lcQrnnUAGcJhcvKw4+9QRvpq
+ Ixp01U69LxTEapTTm5s6X9YoBf+QK078Pq8jpm+FOlaZA43Pa+QXuYrDFLF3zJTec1lz
+ 5HfQ==
+X-Gm-Message-State: AC+VfDx+PDdvlHr0XqUzh6RFLuJbEsbq2t4IIG+j66sc4540M7EvYSOx
+ N36xMShbkZ2x/zeUM/zyrxCe4JlXv+2BxxQ5Qfi0nYfQb2C/asKVR/ig/NV2wqqmC9T2D7h49wc
+ dN8cHSrO9Dpqf1DU=
+X-Received: by 2002:a1c:4b09:0:b0:3f6:d09:5d46 with SMTP id
+ y9-20020a1c4b09000000b003f60d095d46mr4046647wma.20.1685531219036; 
+ Wed, 31 May 2023 04:06:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ42MBVrNR71i4dUlKOjmv/eZU34y4gjjum1F7SgNEVe+VJM6jBZ4fVbYQgczwyKTIS3zPz6ZQ==
+X-Received: by 2002:a1c:4b09:0:b0:3f6:d09:5d46 with SMTP id
+ y9-20020a1c4b09000000b003f60d095d46mr4046637wma.20.1685531218740; 
+ Wed, 31 May 2023 04:06:58 -0700 (PDT)
+Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ by smtp.gmail.com with ESMTPSA id
+ t19-20020a7bc3d3000000b003f423508c6bsm20068302wmj.44.2023.05.31.04.06.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 04:06:57 -0700 (PDT)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: mst@redhat.com,  stefanha@redhat.com,  alex.bennee@linaro.org
+Subject: Re: [PATCH 3/4] tests/qtest: Fix a comment typo in vhost-user-test.c
+References: <cover.1685476786.git.mzamazal@redhat.com>
+ <89d88ee1cab67b8412617e593ea786f1014d737b.1685476786.git.mzamazal@redhat.com>
+ <cc482875-6007-466d-808a-fc3ddec2a659@redhat.com>
+Date: Wed, 31 May 2023 13:06:53 +0200
+In-Reply-To: <cc482875-6007-466d-808a-fc3ddec2a659@redhat.com> (Thomas Huth's
+ message of "Wed, 31 May 2023 07:02:24 +0200")
+Message-ID: <87pm6g7oaa.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,131 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that bdrv_graph_wrlock() temporarily drops the AioContext lock that
-its caller holds, it can poll without causing deadlocks. We can now
-re-enable graph locking.
+Thomas Huth <thuth@redhat.com> writes:
 
-This reverts commit ad128dff0bf4b6f971d05eb4335a627883a19c1d.
+> On 24/05/2023 15.34, Milan Zamazal wrote:
+>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+>> ---
+>
+>>   tests/qtest/vhost-user-test.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> diff --git a/tests/qtest/vhost-user-test.c
+>> b/tests/qtest/vhost-user-test.c
+>> index e4f95b2858..8ab10732f8 100644
+>> --- a/tests/qtest/vhost-user-test.c
+>> +++ b/tests/qtest/vhost-user-test.c
+>> @@ -281,7 +281,7 @@ static void read_guest_mem_server(QTestState *qts, TestServer *s)
+>>       /* iterate all regions */
+>>       for (i = 0; i < s->fds_num; i++) {
+>>   -        /* We'll check only the region statring at 0x0*/
+>> +        /* We'll check only the region starting at 0x0*/
+>
+> While you're at it, I'd also add a space between the "0x0" and the "*/".
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- block/graph-lock.c | 23 -----------------------
- 1 file changed, 23 deletions(-)
+I'll add it in the next patch iteration, thanks for pointing this out.
 
-diff --git a/block/graph-lock.c b/block/graph-lock.c
-index 3bf2591dc4..4c2e63ed1d 100644
---- a/block/graph-lock.c
-+++ b/block/graph-lock.c
-@@ -30,10 +30,8 @@ BdrvGraphLock graph_lock;
- /* Protects the list of aiocontext and orphaned_reader_count */
- static QemuMutex aio_context_list_lock;
- 
--#if 0
- /* Written and read with atomic operations. */
- static int has_writer;
--#endif
- 
- /*
-  * A reader coroutine could move from an AioContext to another.
-@@ -90,7 +88,6 @@ void unregister_aiocontext(AioContext *ctx)
-     g_free(ctx->bdrv_graph);
- }
- 
--#if 0
- static uint32_t reader_count(void)
- {
-     BdrvGraphRWlock *brdv_graph;
-@@ -108,21 +105,13 @@ static uint32_t reader_count(void)
-     assert((int32_t)rd >= 0);
-     return rd;
- }
--#endif
- 
- void bdrv_graph_wrlock(BlockDriverState *bs)
- {
-     AioContext *ctx = NULL;
- 
-     GLOBAL_STATE_CODE();
--    /*
--     * TODO Some callers hold an AioContext lock when this is called, which
--     * causes deadlocks. Reenable once the AioContext locking is cleaned up (or
--     * AioContext locks are gone).
--     */
--#if 0
-     assert(!qatomic_read(&has_writer));
--#endif
- 
-     /*
-      * Release only non-mainloop AioContext. The mainloop often relies on the
-@@ -137,7 +126,6 @@ void bdrv_graph_wrlock(BlockDriverState *bs)
-         }
-     }
- 
--#if 0
-     /* Make sure that constantly arriving new I/O doesn't cause starvation */
-     bdrv_drain_all_begin_nopoll();
- 
-@@ -166,7 +154,6 @@ void bdrv_graph_wrlock(BlockDriverState *bs)
-     } while (reader_count() >= 1);
- 
-     bdrv_drain_all_end();
--#endif
- 
-     if (ctx) {
-         aio_context_acquire(bdrv_get_aio_context(bs));
-@@ -176,7 +163,6 @@ void bdrv_graph_wrlock(BlockDriverState *bs)
- void bdrv_graph_wrunlock(void)
- {
-     GLOBAL_STATE_CODE();
--#if 0
-     QEMU_LOCK_GUARD(&aio_context_list_lock);
-     assert(qatomic_read(&has_writer));
- 
-@@ -188,13 +174,10 @@ void bdrv_graph_wrunlock(void)
- 
-     /* Wake up all coroutine that are waiting to read the graph */
-     qemu_co_enter_all(&reader_queue, &aio_context_list_lock);
--#endif
- }
- 
- void coroutine_fn bdrv_graph_co_rdlock(void)
- {
--    /* TODO Reenable when wrlock is reenabled */
--#if 0
-     BdrvGraphRWlock *bdrv_graph;
-     bdrv_graph = qemu_get_current_aio_context()->bdrv_graph;
- 
-@@ -254,12 +237,10 @@ void coroutine_fn bdrv_graph_co_rdlock(void)
-             qemu_co_queue_wait(&reader_queue, &aio_context_list_lock);
-         }
-     }
--#endif
- }
- 
- void coroutine_fn bdrv_graph_co_rdunlock(void)
- {
--#if 0
-     BdrvGraphRWlock *bdrv_graph;
-     bdrv_graph = qemu_get_current_aio_context()->bdrv_graph;
- 
-@@ -277,7 +258,6 @@ void coroutine_fn bdrv_graph_co_rdunlock(void)
-     if (qatomic_read(&has_writer)) {
-         aio_wait_kick();
-     }
--#endif
- }
- 
- void bdrv_graph_rdlock_main_loop(void)
-@@ -306,8 +286,5 @@ void assert_bdrv_graph_readable(void)
- void assert_bdrv_graph_writable(void)
- {
-     assert(qemu_in_main_thread());
--    /* TODO Reenable when wrlock is reenabled */
--#if 0
-     assert(qatomic_read(&has_writer));
--#endif
- }
--- 
-2.40.1
+> Anyway:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>
+>>           if (s->memory.regions[i].guest_phys_addr != 0x0) {
+>>               continue;
+>>           }
 
 
