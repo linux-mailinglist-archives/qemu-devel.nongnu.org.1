@@ -2,87 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24561717A38
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 10:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F28D718179
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:23:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4HJA-0006B5-Pr; Wed, 31 May 2023 04:35:52 -0400
+	id 1q4Lmv-0001WI-Bn; Wed, 31 May 2023 09:22:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q4HJ3-0006AP-OL
- for qemu-devel@nongnu.org; Wed, 31 May 2023 04:35:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1q4HGX-0004JV-1E
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 04:33:11 -0400
+Received: from mga12.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q4HJ1-0003pw-Of
- for qemu-devel@nongnu.org; Wed, 31 May 2023 04:35:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685522142;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LI7bR7ZLvORYNmLvS/izqM2QTDrpbzXLsm0uKqwgOPI=;
- b=DLzhCOrxWfe2Rxm4tDS0laeYKVYEJdAn0GsyyrCHrqYxq2Bg0lxTktvrt8TOPeTW5cHSc/
- 3FA3qY0vIZZN+b6I0VVhMLQCSUNh+LZ1yRmPl8RN39dfqpDmudNeV3BaKhsgGoqzL6vrb/
- Qw9YoYAPawmX3HfM0lT7tJIn+vD+EEo=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-ltuuhd9wMr-l_y2cbtQ6gg-1; Wed, 31 May 2023 04:35:41 -0400
-X-MC-Unique: ltuuhd9wMr-l_y2cbtQ6gg-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-568a85f180dso41658817b3.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 01:35:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685522141; x=1688114141;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LI7bR7ZLvORYNmLvS/izqM2QTDrpbzXLsm0uKqwgOPI=;
- b=V2HbKgLkdPMPWZJ2wTU8wXgmY4bv8DRi5goMNTv0MPNxtc1qxi+ljTUI8MrqodT2lC
- dm30baaPUhC4jATZMUx4ov1DCyoS/2393HBcLOdu+1zqR2NUu5t+WhwXHhCnAjJANM4P
- 7aDu1mhNdLuLceq0f4jY/sir7y3oWPspm4uhVaAueaMXljFokyFnjcCgZlm4IroXuZHl
- //yfXBHYzfC5bE10mEGbMGiYjSA1JJ+zY4jvrb5WkKyp9PL97DdxgW2X+T23xF6f3fQc
- KT30VkmzT1ZbXRY9CvyEATgbnmclsFrvftRnKRLiEL4ia5GVpklvZS2Qi0GMWhuX3Lkz
- bM2A==
-X-Gm-Message-State: AC+VfDyhUljN3ruihONhjeDceabVmq5a+huDzK7o35XefOuAqeC4eI9g
- B9MUXdxAf2prA/fM8dh7ao+ThQcdjb4AL7NPx62FKVaEhph3RA5usbaOdNn/LsKCbpmucezdn98
- FPdkl7XPY1P8obWi85jghpcQgtuqR5aU=
-X-Received: by 2002:a81:52cb:0:b0:565:ea7f:2c98 with SMTP id
- g194-20020a8152cb000000b00565ea7f2c98mr5327029ywb.28.1685522140810; 
- Wed, 31 May 2023 01:35:40 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ70UFquqs+PXbDLOKKl47t1e6YAVRfKcbrs8xm4Umwh9Z6dIFnEr0bodv5J72CXRqxc6NiNEoQXl3ua4voa/sw=
-X-Received: by 2002:a81:52cb:0:b0:565:ea7f:2c98 with SMTP id
- g194-20020a8152cb000000b00565ea7f2c98mr5327021ywb.28.1685522140579; Wed, 31
- May 2023 01:35:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1q4HGP-0003AP-DO
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 04:33:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1685521981; x=1717057981;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Qk0yjT5sevPx9h50t5LSOQV52zBQzlOlgPqDorFv4oI=;
+ b=AqEw5krCRiUOaBNSkRC4NUrJE/kvbvadg0symSThdmLohD0GsJzOYEJk
+ 86VbeOJuVpJIdDzIUrDRCpAkJmeqOmf2sLtGUEebnvjr7onW0EwWo6rOu
+ b53sQpHg8R2rzcmyychtBP8z0qfc+KkNb2pPvgVOnj6TLa6JOYZn2X76f
+ K3gC5MrfZt4wn4E9TBvg87HGjRU0NhokQvt0T3jsWXc+Wsbs24ruVNokk
+ RbwCbv3F6YNvyIBDzOyKNY4uZx/kmb1+m/YM+PVeNV6TEDYJ7hE5vJQHf
+ A1+cB9VNrZ41kUY8Eg0Yn3IuAPXKdj+1U5pJ+eHvujxp70Td1qV2bgKpK w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="334796341"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="334796341"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 May 2023 01:32:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="739861569"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="739861569"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.28])
+ by orsmga001.jf.intel.com with ESMTP; 31 May 2023 01:32:53 -0700
+Date: Wed, 31 May 2023 16:42:25 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Ani Sinha <anisinha@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, maobibo@loongson.cn,
+ gaosong@loongson.cn, Zhenyu Wang <zhenyu.z.wang@intel.com>
+Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
+Message-ID: <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
+References: <20230530122034.547109-1-zhaotianrui@loongson.cn>
 MIME-Version: 1.0
-References: <cover.1685359572.git.yin31149@gmail.com>
- <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
- <CAJaqyWcURXY7GxM2goKHp55pfb-pCjOSYfDwzjsXbtSP1SnSkg@mail.gmail.com>
- <CAKrof1Njyuf5aeA4bX6Z1ryzq6dVK7AFVxrHUfEBi+94ymYNHQ@mail.gmail.com>
-In-Reply-To: <CAKrof1Njyuf5aeA4bX6Z1ryzq6dVK7AFVxrHUfEBi+94ymYNHQ@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 31 May 2023 10:35:04 +0200
-Message-ID: <CAJaqyWci2EMo0aORTzYX32hEq=01pKHp83iHvxrszxomrv5Qqw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] vdpa: Add vhost_vdpa_net_load_offloads
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: Jason Wang <jasowang@redhat.com>, 18801353760@163.com,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230530122034.547109-1-zhaotianrui@loongson.cn>
+Received-SPF: pass client-ip=192.55.52.136; envelope-from=zhao1.liu@intel.com;
+ helo=mga12.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 31 May 2023 09:22:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,116 +80,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 10:23=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com=
-> wrote:
->
-> On 2023/5/30 0:19, Eugenio Perez Martin wrote:
-> > On Mon, May 29, 2023 at 3:18=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.=
-com> wrote:
-> >>
-> >> This patch introduces vhost_vdpa_net_load_offloads() to
-> >> restore offloads state at device's startup.
-> >>
-> >> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> >> ---
-> >>   net/vhost-vdpa.c | 26 ++++++++++++++++++++++++++
-> >>   1 file changed, 26 insertions(+)
-> >>
-> >> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> >> index 37cdc84562..682c749b19 100644
-> >> --- a/net/vhost-vdpa.c
-> >> +++ b/net/vhost-vdpa.c
-> >> @@ -680,6 +680,28 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState =
-*s,
-> >>       return *s->status !=3D VIRTIO_NET_OK;
-> >>   }
-> >>
-> >> +static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-> >> +                                        const VirtIONet *n)
-> >> +{
-> >> +    uint64_t features, offloads;
-> >> +    ssize_t dev_written;
-> >> +
-> >> +    features =3D n->parent_obj.guest_features;
-> >> +    if (!(features & BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))) {
-> >> +        return 0;
-> >> +    }
-> >> +
-> >
-> > Maybe we can avoid sending this CVQ command if the guest already uses
-> > the default values?
->
-> Hi Eugenio,
->
-> Thanks for the review. However, I'm curious why we don't need to send
-> this CVQ command if the guest is using the default values. Is it because
-> the device automatically applies these default offloads, when the
-> VIRTIO_NET_F_CTRL_GUEST_OFFLOADS feature is negotiated and QEMU doesn't
-> send the CVQ command?
->
+On Tue, May 30, 2023 at 08:20:34PM +0800, Tianrui Zhao wrote:
+> Date: Tue, 30 May 2023 20:20:34 +0800
+> From: Tianrui Zhao <zhaotianrui@loongson.cn>
+> Subject: [PATCH] hw/smbios: fix thead count field in type 4 table
+> X-Mailer: git-send-email 2.39.1
+> 
+> The thread_count value in smbios type_4 table should be
+> (ms->smp.cores * ms->smp.threads). As according to smbios spec 7.5
+> Processor Information (Type 4), the field "Thread Count" means the
+> "Number of threads per processor socket" rather than number of
+> threads per core.
+> 
+> When apply this patch, use "-smp 4,sockets=1,cores=2,threads=2" to
+> boot VM, the dmidecode -t 4 shows like:
+> 
+> Handle 0x0400, DMI type 4, 48 bytes
+> Processor Information
+>         Socket Designation: CPU 0
+>         ...
+>         Core Count: 2
+>         Core Enabled: 2
+>         Thread Count: 4
+>         Characteristics: None
+> 
+> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+> ---
+>  hw/smbios/smbios.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+> index d2007e70fb..56aeaa069d 100644
+> --- a/hw/smbios/smbios.c
+> +++ b/hw/smbios/smbios.c
+> @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>  {
+>      char sock_str[128];
+>      size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
+> +    int count;
+>  
+>      if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+>          tbl_len = SMBIOS_TYPE_4_LEN_V30;
+> @@ -749,15 +750,15 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>  
+>      t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+>      t->core_enabled = t->core_count;
+> -
+> -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
+> +    count = ms->smp.cores * ms->smp.threads;
 
-Exactly. You can check that either by the standard text or (sometimes
-easier) qemu virtio or virtio-net device code.
+Hi Ani & Tianrui,
 
-The standard text says that:
-"Upon feature negotiation corresponding offload gets enabled to
-preserve backward compatibility."
+From the comment of CpuTopology (include/hw/boards.h):
 
-And you can check in the qemu code by
-hw/net/virtio-net:virtio_net_set_features(vdev, features), this chunk
-of code:
-n->curr_guest_offloads =3D virtio_net_guest_offloads_by_features(features);
-virtio_net_apply_guest_offloads(n);
+ms->cores means the "the number of cores in one cluster".
+ms->threads means the "the number of threads in one core".
 
-Thanks!
+So ms->cores * ms->threads means the number of threads in one cluster
+not one socket.
 
-> Thanks!
->
->
-> >
-> > By default all features are enabled if I'm not wrong. I think the best
-> > way is to expose virtio_net_supported_guest_offloads or
-> > virtio_net_guest_offloads_by_features and then check if
-> > n->curr_guest_offloads is the same.
-> >
-> > We should do the same with vhost_vdpa_net_load_mq, but that is out of
-> > the scope of this series.
-> >
-> > Thanks!
-> >
-> >> +    offloads =3D cpu_to_le64(n->curr_guest_offloads);
-> >> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_=
-OFFLOADS,
-> >> +                                          VIRTIO_NET_CTRL_GUEST_OFFLO=
-ADS_SET,
-> >> +                                          &offloads, sizeof(offloads)=
-);
-> >> +    if (unlikely(dev_written < 0)) {
-> >> +        return dev_written;
-> >> +    }
-> >> +
-> >> +    return *s->status !=3D VIRTIO_NET_OK;
-> >> +}
-> >> +
-> >>   static int vhost_vdpa_net_load(NetClientState *nc)
-> >>   {
-> >>       VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> >> @@ -702,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc=
-)
-> >>       if (unlikely(r)) {
-> >>           return r;
-> >>       }
-> >> +    r =3D vhost_vdpa_net_load_offloads(s, n);
-> >> +    if (unlikely(r)) {
-> >> +        return r;
-> >> +    }
-> >>
-> >>       return 0;
-> >>   }
-> >> --
-> >> 2.25.1
-> >>
-> >
->
+That's why I count the number of threads in a socket by "ms->smp.max_cpus
+/ ms->smp.sockets" in [1].
 
+The other correct way is:
+ms->smp.cluster * ms->smp.cores * ms->smp.threads.
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07229.html
+
+Thanks,
+Zhao
+
+> +    t->thread_count = (count > 255) ? 0xFF : count;
+>  
+>      t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+>      t->processor_family2 = cpu_to_le16(0x01); /* Other */
+>  
+>      if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+>          t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+> -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
+> +        t->thread_count2 = cpu_to_le16(count);
+>      }
+>  
+>      SMBIOS_BUILD_TABLE_POST;
+> -- 
+> 2.39.1
+> 
+> 
 
