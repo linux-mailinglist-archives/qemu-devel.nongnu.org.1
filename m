@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FEB6717335
+	by mail.lfdr.de (Postfix) with ESMTPS id 85637717336
 	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 03:34:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Ai3-0001QT-3k; Tue, 30 May 2023 21:33:07 -0400
+	id 1q4Ai3-0001S6-0D; Tue, 30 May 2023 21:33:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1q4Ai0-0001Kt-6v
+ id 1q4Ai0-0001LP-RD
  for qemu-devel@nongnu.org; Tue, 30 May 2023 21:33:04 -0400
 Received: from mga07.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1q4Ahy-0006ky-5I
- for qemu-devel@nongnu.org; Tue, 30 May 2023 21:33:03 -0400
+ id 1q4Ahy-0006l7-SB
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 21:33:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1685496782; x=1717032782;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=DO5x2+DWGEXbWvKLRfxQOweivEb6sDShmIWAaT0myJE=;
- b=ST6okmg5UiKC94OH89hxhIceVE/jYHYvXDTA7Iwfb9qoM9oqx9QTe3vj
- SO2WkXiC4CTxKQsMohCp/dnrpVg4BWTbDt7uKMv/2pwCFt38nd4vZUEik
- b1P862pBTyVUrl6tl8UxEWg0k/mMPI7DsH4Bf9fhTSokfK0FlYry/+WOm
- MAIzsEJmpXIBhbszJ068BlliI8PKCErOxhd3gboRHRHkjkc5MSC7a4PH/
- 3OoDG4pyu+YpfO2/SmgHDzPm6/LtEzuV0T1Cfo5GRiNc23eoN5OpvRW2Q
- leGeG2gqL70u55XoNg1EhelNrbaWV4Caf7KWX6R3+PRQOHbek8nAy5RYC A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="420861862"
-X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="420861862"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Zsq+hvfNQwS85hL3oR3fwOxOVihCHzchO6BgwimsaeU=;
+ b=W4oNs4a9IH04BClDof3MoSYtF94OzPMLsfFl+eaFuEqtLz0SKgqUInVU
+ xL4iS9o2lfsiyIDBu20SGnGM59HHs20eyu2EF7vqxt8i54+gQIxsuW1oE
+ 8AlG+JiZ3GVh1jyzCH2TqC7rnSvihA30cDRDdVirW6Xl6IRu2MEvgICiO
+ /DBiNOHbopytIsYSk/f33zOGJc0YHAYQ/hAy1op5Dgvfg5rCIcfQGi0e9
+ VzMXDNrATXDlIPYwldBoWc/AKGNIiyAKWXvE2oK2kAfbWS/eD14yaHNRF
+ y45W1I0im1aJqRsXRztmJ0hCL5GWjnJpTjy2qpZTg98kVMZ4t+Ef/bSxa w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="420861871"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="420861871"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2023 18:32:58 -0700
+ 30 May 2023 18:33:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="851024449"
-X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="851024449"
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="851024463"
+X-IronPort-AV: E=Sophos;i="6.00,205,1681196400"; d="scan'208";a="851024463"
 Received: from binbinwu-mobl.ccr.corp.intel.com ([10.255.31.25])
  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2023 18:32:56 -0700
+ 30 May 2023 18:32:58 -0700
 From: Binbin Wu <binbin.wu@linux.intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, chao.gao@intel.com,
  robert.hu@linux.intel.com, binbin.wu@linux.intel.com
-Subject: [PATCH v2 0/1] target/i386: add support for LAM in CPUID enumeration
-Date: Wed, 31 May 2023 09:32:49 +0800
-Message-Id: <20230531013250.18311-1-binbin.wu@linux.intel.com>
+Subject: [PATCH v2 1/1] target/i386: add support for LAM in CPUID enumeration
+Date: Wed, 31 May 2023 09:32:50 +0800
+Message-Id: <20230531013250.18311-2-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230531013250.18311-1-binbin.wu@linux.intel.com>
+References: <20230531013250.18311-1-binbin.wu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=134.134.136.100;
@@ -75,36 +77,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Linear-address masking (LAM) [1], modifies the checking that is applied to
-*64-bit* linear addresses, allowing software to use of the untranslated address
-bits for metadata and masks the metadata bits before using them as linear 
-addresses to access memory.
+From: Robert Hoo <robert.hu@linux.intel.com>
 
-When the feature is virtualized and exposed to guest, it can be used for efficient
-address sanitizers (ASAN) implementation and for optimizations in JITs and virtual
-machines.
+Linear Address Masking (LAM) is a new Intel CPU feature, which allows software
+to use of the untranslated address bits for metadata.
 
-[1] Intel ISE https://cdrdv2.intel.com/v1/dl/getContent/671368
-    Chapter Linear Address Masking (LAM)
+The bit definition:
+CPUID.(EAX=7,ECX=1):EAX[26]
 
+Add CPUID definition for LAM.
+
+More info can be found in Intel ISE Chapter "LINEAR ADDRESS MASKING (LAM)"
+https://cdrdv2.intel.com/v1/dl/getContent/671368
+
+Signed-off-by: Robert Hoo <robert.hu@linux.intel.com>
+Co-developed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
-Changelog
-v2:
-- Add macro of CPUID definition for LAM bit
-
-v1:
-- https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg08036.html
-
-
-Robert Hoo (1):
-  target/i386: add support for LAM in CPUID enumeration
-
  target/i386/cpu.c | 2 +-
  target/i386/cpu.h | 2 ++
  2 files changed, 3 insertions(+), 1 deletion(-)
 
-
-base-commit: 51bdb0b57a2d9e84d6915fbae7b5d76c8820cf3c
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1242bd541a..f4436b3657 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -881,7 +881,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "fsrc", NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, "amx-fp16", NULL, "avx-ifma",
+-            NULL, NULL, NULL, NULL,
++            NULL, NULL, "lam", NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .cpuid = {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 7201a71de8..eb800ba2e2 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -924,6 +924,8 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define CPUID_7_1_EAX_AMX_FP16          (1U << 21)
+ /* Support for VPMADD52[H,L]UQ */
+ #define CPUID_7_1_EAX_AVX_IFMA          (1U << 23)
++/* Linear Address Masking */
++#define CPUID_7_1_EAX_LAM               (1U << 26)
+ 
+ /* Support for VPDPB[SU,UU,SS]D[,S] */
+ #define CPUID_7_1_EDX_AVX_VNNI_INT8     (1U << 4)
 -- 
 2.25.1
 
