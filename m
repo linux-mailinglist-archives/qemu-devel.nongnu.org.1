@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C042717872
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0F671789C
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4GQo-0005fq-62; Wed, 31 May 2023 03:39:42 -0400
+	id 1q4GZ3-0000oE-37; Wed, 31 May 2023 03:48:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4GQk-0005fO-Tm
- for qemu-devel@nongnu.org; Wed, 31 May 2023 03:39:39 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4GYj-0000jB-35
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 03:47:53 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4GQj-0008B7-49
- for qemu-devel@nongnu.org; Wed, 31 May 2023 03:39:38 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f6d3f83d0cso57344875e9.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 00:39:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4GYh-0001ij-F7
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 03:47:52 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-30aeee7c8a0so498720f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 00:47:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685518774; x=1688110774;
+ d=linaro.org; s=google; t=1685519270; x=1688111270;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VfI7uFPwssBLXE12qhBQRZBisDlkfu+WyG0nQatXIG0=;
- b=J9murRE94kkAB9nnCI0n0Yh6Jr3zV6w+0czSzJ+Cwz/6nKnpzT9KIKx3+70Kb0veAk
- 4eDwHheI7HEuQHEn6EZwuZ7A8RDPbIdC/yS4Zr5ju4kA5dsSkVg5Ju7CeDPipStX4p+y
- c0ekL6oayxAbAkZQLwj00fJ/e6599lDEAJrzQi3IQh9cYSh/Wv+ls8vYRMBFo+h+w+Mr
- pgqDG8UR2U4+QX6vYYeykEo5ZNK59PPEex7N8EPxvGBGRmz3k4lqc5wXVd/ZBO2WqRJf
- /7ROBaROD0Whk3LzZKy95TGlEU+Xk3Qn06W+9w/aTsj0jwRMm63hviSf2olW+03W2f4Z
- rSzQ==
+ bh=vhp1eH68oQGsqdwowJaDRJJqZ0y6oVu12E49kh7J3pY=;
+ b=GbdZPB9P4I35lBa4K4cMz7jZk8jakR3wwymwzWthhstDs+zcojrouVs5zGaThCwwPe
+ k6BFlGRKQoXtQWNn2Av+W9o+wzR2lD5LcR9xPKQ2hVDg+MPXHvWa3fpjBNe8do6+0Rfj
+ 9n6J7CmAlMCFZ6AghZisQtm33sehls+XfaPvbg0ukDONLn9aL7Ssy/UTdO0Boerq9Urs
+ L/5nywCPkv5n/w5/JbKgRQ7LVs0i/4i73ddBMJfkd1euQJ8kpM8XMaWVKD6/jsJXYiJL
+ 4yf1/lnlL9p2z++B+82D+JhCZyb54ONjM9lMKl1Qj16R06ugbtkY5938G5AVOmHmrPNA
+ yCVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685518774; x=1688110774;
+ d=1e100.net; s=20221208; t=1685519270; x=1688111270;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VfI7uFPwssBLXE12qhBQRZBisDlkfu+WyG0nQatXIG0=;
- b=QyKe6kRkQ7H1/WMmsVQnzsgZYLD0zKqOr6gh9iS96z0JzBfnnvpAEGsj1Pk1JNtUh9
- VSXr2HNxlyKIgkm9LvYJag9w/PTFFr+uJK9GEy8HVEdm78gswvQbzexhvig7vl7wUfWf
- eP44WNQULT+h3ULiLpUgWyK3mFdyQtdBdjzeYSl3BgLAWpcMP5B+rzmRO9b+enfxS9CD
- kMHuPufwS0ClgRO8PQUAtk92kI77iwmdaBxpmaNM834Sk1Pejjm+Jyr+1jKFVaGtYZvh
- ui6HpWryiw/rcPMxJSM1Jz35AZTRk/4njDkNbWV/eFCrJZx/DVMqh0EoRKLDplShp7R8
- UVeA==
-X-Gm-Message-State: AC+VfDyqeVE0H9ENnR4YimS1CjMhjilBT5AthwYAZP1E/WTuDb/g7pWy
- 3MRLIHFU8Qnl2V6Xlq0qf2sgog==
-X-Google-Smtp-Source: ACHHUZ6oOpdO1Us94RqdBIsr8u2+UvGeFCYxuGGI0rLLnSuVDTE471XGtaLgxjpOkqrDegGJoUvxsw==
-X-Received: by 2002:a7b:c442:0:b0:3f6:4c4:d0ce with SMTP id
- l2-20020a7bc442000000b003f604c4d0cemr3543940wmi.8.1685518774421; 
- Wed, 31 May 2023 00:39:34 -0700 (PDT)
+ bh=vhp1eH68oQGsqdwowJaDRJJqZ0y6oVu12E49kh7J3pY=;
+ b=S4UtPAvpNOK/8z+1k1rgr8Ss7GKsHloW4xThHqc96NL26PE/nqTszzX+wgmFQe6jHY
+ 0u+ZsB+knovH+0hI49EU+pabRo+qfc2oXbRoDtjd6HeTvfSmSfPnsmHvXwc0yMmXAMdk
+ urxd1c4s8/ERgmrGVfuhx1IQyN/tcHK35xJBeIbaN+KVCyD0hBnwpNdE4/VcE4XGSJJF
+ mgaj2c37flE78ttspF/3aC+bOnE4a8VfHGQUtzHeq/4/ZW6rTZv7VFqAQVJQrgw7Vodz
+ kF/ubpVPwRUBNW9x9nG2PVbUQWhu9tSTqYAC4FFXt6sbrqV4bFPCSesy4ZsOK2LHtagW
+ gCaw==
+X-Gm-Message-State: AC+VfDxgWaFs7CShIIQXt3a6/yXyzy4DCP/+z3vCupkrKZyKLXB7CVsw
+ KI6iOE8fYqvNxHAJgz5U6QNjAg==
+X-Google-Smtp-Source: ACHHUZ5pNezXA3+NYZdB6FeVSuKE/kW+viED3SNrdMVusD7C33U2nDQ3lCC96XWNnJvMeI2y7iJsEA==
+X-Received: by 2002:a05:6000:11ce:b0:307:869c:99ce with SMTP id
+ i14-20020a05600011ce00b00307869c99cemr4056530wrx.21.1685519269817; 
+ Wed, 31 May 2023 00:47:49 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- x4-20020a05600c21c400b003f0aefcc457sm23466290wmj.45.2023.05.31.00.39.33
+ p13-20020a5d638d000000b0030ae3a6be5bsm5766684wru.78.2023.05.31.00.47.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 00:39:34 -0700 (PDT)
-Message-ID: <36c9bda8-3af2-ebf5-f8b9-599cafea0735@linaro.org>
-Date: Wed, 31 May 2023 09:39:32 +0200
+ Wed, 31 May 2023 00:47:49 -0700 (PDT)
+Message-ID: <f29df320-5392-b6c0-9bb4-c5f0330fe91c@linaro.org>
+Date: Wed, 31 May 2023 09:47:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 05/12] hw/ssi: Introduce a ssi_get_cs() helper
+Subject: Re: [PATCH 09/12] m25p80: Introduce an helper to retrieve the
+ BlockBackend of a device
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- Alistair Francis <alistair@alistair23.me>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, Bernhard Beschow <shentey@gmail.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
+ Alistair Francis <alistair@alistair23.me>
 References: <20230508075859.3326566-1-clg@kaod.org>
- <20230508075859.3326566-6-clg@kaod.org>
- <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
- <0d11b78e-56f7-553a-3e85-0edef9b649ac@linaro.org>
- <523179dd-7842-7f03-14d6-678ed680a017@kaod.org>
- <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
- <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
+ <20230508075859.3326566-10-clg@kaod.org>
+ <5587a39e-1c17-2997-f679-d43a023149c6@linaro.org>
+ <516d4f95-a070-a03c-317c-2276cd42e871@kaod.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
+In-Reply-To: <516d4f95-a070-a03c-317c-2276cd42e871@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -103,65 +98,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 08:36, Cédric Le Goater wrote:
-> On 5/31/23 08:17, Philippe Mathieu-Daudé wrote:
->> +QOM tinkerers
->>
->> On 31/5/23 07:59, Cédric Le Goater wrote:
->>> On 5/30/23 23:15, Philippe Mathieu-Daudé wrote:
->>>> On 30/5/23 22:34, Philippe Mathieu-Daudé wrote:
->>>>> On 8/5/23 09:58, Cédric Le Goater wrote:
->>>>>> Simple routine to retrieve a DeviceState object on a SPI bus using 
->>>>>> its
->>>>>> address/cs. It will be useful for the board to wire the CS lines.
->>>>>>
->>>>>> Cc: Alistair Francis <alistair@alistair23.me>
->>>>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>>>>> ---
->>>>>>   include/hw/ssi/ssi.h |  2 ++
->>>>>>   hw/ssi/ssi.c         | 15 +++++++++++++++
->>>>>>   2 files changed, 17 insertions(+)
->>>>>>
->>>>>> diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
->>>>>> index ffd3a34ba4..c7beabdb09 100644
->>>>>> --- a/include/hw/ssi/ssi.h
->>>>>> +++ b/include/hw/ssi/ssi.h
->>>>>> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, 
->>>>>> const char *name);
->>>>>>   uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
->>>>>> +DeviceState *ssi_get_cs(SSIBus *bus, int addr);
->>>>
->>>> Also, this helper should (preferably) return a SSIPeripheral type.
+On 31/5/23 08:48, Cédric Le Goater wrote:
+> On 5/30/23 23:14, Philippe Mathieu-Daudé wrote:
+>> On 8/5/23 09:58, Cédric Le Goater wrote:
+>>> It will help in getting rid of some drive_get(IF_MTD) calls by
+>>> retrieving the BlockBackend directly from the m25p80 device.
 >>>
->>> Well, having a DeviceState is handy for the callers (today) and
->>> ssi_create_peripheral() returns a DeviceState. Let's keep it that
->>> way.
+>>> Cc: Alistair Francis <alistair@alistair23.me>
+>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>> ---
+>>>   include/hw/block/flash.h | 4 ++++
+>>>   hw/block/m25p80.c        | 6 ++++++
+>>>   2 files changed, 10 insertions(+)
+>>>
+>>> diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
+>>> index 7198953702..de93756cbe 100644
+>>> --- a/include/hw/block/flash.h
+>>> +++ b/include/hw/block/flash.h
+>>> @@ -76,4 +76,8 @@ uint8_t ecc_digest(ECCState *s, uint8_t sample);
+>>>   void ecc_reset(ECCState *s);
+>>>   extern const VMStateDescription vmstate_ecc_state;
+>>> +/* m25p80.c */
+>>> +
+>>> +BlockBackend *m25p80_get_blk(DeviceState *dev);
 >>
->> Yes I know it is handy :) I'm not against your patch; besides other
->> APIs do that. I'm wondering about QOM design here. Having Foo device,
->> should FOO API return the common qdev abstract type (DeviceState) or
->> a Foo type? Either ways we keep QOM-casting around, but I still tend
->> to consider FOO API returning Foo pointer provides some type check
->> safety, and also provides the API user hints about what is used.
->> Need more coffee.
+>> - Option 1, declare QOM typedef and use proper type:
+>>
+>>    #define TYPE_M25P80 "m25p80-generic"
+>>    OBJECT_DECLARE_TYPE(Flash, M25P80Class, M25P80)
+>>
+>>    BlockBackend *m25p80_get_blk(Flash *dev);
+>>
+>> - Option 2, preliminary patch renaming 'Flash' type to
+>> 'M25P80' then option 1 again
 > 
-> It is used in two code paths today:
-> 
->      ...
->          DeviceState *dev = ssi_get_cs(bmc->soc.fmc.spi, 0);
->          BlockBackend *fmc0 = dev ? m25p80_get_blk(dev) : NULL;
->      ...
-> and
->      ...
->          DeviceState *dev = ssi_get_cs(s->spi, i);
->          if (dev) {
->              qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 
-> 0);
->      ...
-> 
-> 
-> Changing the interface is not a radical change, it will add two QOM-casts.
-> I can give it a try in v2.
+> That's a large change
 
-Hold on, lets see what others think first.
+Yes, it can be done later if you rather.
+
+> and we would need to introduce a m25p80.h with
+> these definitions.
+
+FlashPartInfo is used as pointer so can be forward-declared.
+Then we only need to move M25P80_INTERNAL_DATA_BUFFER_SZ.
+For 5 lines, "hw/block/flash.h" is good enough IMO, keeping
+all the rest to m25p80.c.
+
+> Given that the caller needs a DeviceState in the
+> end, may be not worth the extra hassle.
+> 
+> How would you rename 'Flash' ? 'SpiFlash' ?
+
+Since you ask, my preference is SpiNorFlash :)
+
+But again, this can be done later on top.
+
+Thanks,
+
+Phil.
+
 
