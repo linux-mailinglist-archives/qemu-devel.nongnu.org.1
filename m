@@ -2,63 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908B07176F9
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 586A27176FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:38:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4FSK-0006v1-L0; Wed, 31 May 2023 02:37:12 -0400
+	id 1q4FTO-0008Kr-LV; Wed, 31 May 2023 02:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
- id 1q4FS5-0006Yd-Vn; Wed, 31 May 2023 02:36:57 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q4FTL-0008Hb-1q
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 02:38:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
- id 1q4FS3-0003UP-9l; Wed, 31 May 2023 02:36:57 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWKL34nKYz4x46;
- Wed, 31 May 2023 16:36:43 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWKKy0wc8z4x42;
- Wed, 31 May 2023 16:36:37 +1000 (AEST)
-Message-ID: <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
-Date: Wed, 31 May 2023 08:36:33 +0200
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q4FTJ-0003gz-DJ
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 02:38:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685515091;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bMoM3odhQ/OWVUI7PLYpKZMrIOS3ZoddrChJVCHjGN4=;
+ b=BbTFvl9IfJ7YnbkTwo2sOO9k+OP5l0bpjPhozUaitn7U1QBLN4OmIakyW4fin2XV//0MKR
+ ChwNjk5x7GGyESOCkNncDChAbKDNslr+ko6luMTN83KOx7XU4/QYxBiqx2+LYlCv6f6fmD
+ aX9/0ABEnFaM8B6pqTnD6yhllR/2uDI=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-wVXD4AWqMbSFNj-IBKSNfQ-1; Wed, 31 May 2023 02:38:10 -0400
+X-MC-Unique: wVXD4AWqMbSFNj-IBKSNfQ-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5689bcc5f56so41837867b3.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 23:38:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685515089; x=1688107089;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bMoM3odhQ/OWVUI7PLYpKZMrIOS3ZoddrChJVCHjGN4=;
+ b=PmOb9Y+HSKmLiQgl10GDtkDHaEC5zwYs/MXfe0wBfxyOVc8mOfWx4J/Q0dDRl+j4Zx
+ ZOLLO1ZnkO4eqYCChjtLaFfe3luo8Zs/zzfWYmWV1wv7CpLKodYlUpCG0SYyMIg/IeY3
+ KHwc6zNkatwlB6DiomodKoNjg4qqjfResYM2tPb0GS02O8eK6vL9usTZ0e/UyyeXBTNQ
+ XF78utGt0Dzr8erL6JBr1rmk5Pdzkf8232OCnXwFMZjiGEtGTf/n6NsnjFNZRonjDIj4
+ 39vSpw0dPTeAfqOiq0Z4JwEapC8If/qBiZE1jyQW7EOTUpkqtyTMzZvp9ZEn0wOJHc0r
+ 4dGQ==
+X-Gm-Message-State: AC+VfDzE+OI9mrTf0RV/OcYWz8Edz7xbQxbzCDmxW1rqjl7ZD82EwOoa
+ 1wUDIh24Dh12sUCCH/la4K5c1iMno4QlB9m9R5e4H61JLIjf+wKmPwW8VtqtPjvke/jgdhM3w9C
+ DycFl9uyIYdPuVu5VX/pVrHUweoJveYU=
+X-Received: by 2002:a81:8645:0:b0:565:f14b:6cdb with SMTP id
+ w66-20020a818645000000b00565f14b6cdbmr5751980ywf.21.1685515089683; 
+ Tue, 30 May 2023 23:38:09 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5RJU5xsf78TzwwxiJwB3X8cqMnoOGok0+qvDmgN7qD3I4qdLhg5hL3FELza5OPA+203aBnSeUm4rthM7mMTxM=
+X-Received: by 2002:a81:8645:0:b0:565:f14b:6cdb with SMTP id
+ w66-20020a818645000000b00565f14b6cdbmr5751970ywf.21.1685515089463; Tue, 30
+ May 2023 23:38:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 05/12] hw/ssi: Introduce a ssi_get_cs() helper
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- Alistair Francis <alistair@alistair23.me>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, Bernhard Beschow <shentey@gmail.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
-References: <20230508075859.3326566-1-clg@kaod.org>
- <20230508075859.3326566-6-clg@kaod.org>
- <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
- <0d11b78e-56f7-553a-3e85-0edef9b649ac@linaro.org>
- <523179dd-7842-7f03-14d6-678ed680a017@kaod.org>
- <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=vahk=BU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+References: <cover.1685359572.git.yin31149@gmail.com>
+ <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
+ <CACGkMEvza0nAWqbQ1-KiLGRRxSxYvJoTrtTgUPV-KQpSuJFB6g@mail.gmail.com>
+In-Reply-To: <CACGkMEvza0nAWqbQ1-KiLGRRxSxYvJoTrtTgUPV-KQpSuJFB6g@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 31 May 2023 08:37:33 +0200
+Message-ID: <CAJaqyWe7e4OAZU+-i73OQ76QtM3Kv0V0LrfCMEjgnNmMH=TGZQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] vdpa: Add vhost_vdpa_net_load_offloads
+To: Jason Wang <jasowang@redhat.com>
+Cc: Hawkins Jiawei <yin31149@gmail.com>, 18801353760@163.com,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,64 +96,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 08:17, Philippe Mathieu-Daudé wrote:
-> +QOM tinkerers
-> 
-> On 31/5/23 07:59, Cédric Le Goater wrote:
->> On 5/30/23 23:15, Philippe Mathieu-Daudé wrote:
->>> On 30/5/23 22:34, Philippe Mathieu-Daudé wrote:
->>>> On 8/5/23 09:58, Cédric Le Goater wrote:
->>>>> Simple routine to retrieve a DeviceState object on a SPI bus using its
->>>>> address/cs. It will be useful for the board to wire the CS lines.
->>>>>
->>>>> Cc: Alistair Francis <alistair@alistair23.me>
->>>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>>>> ---
->>>>>   include/hw/ssi/ssi.h |  2 ++
->>>>>   hw/ssi/ssi.c         | 15 +++++++++++++++
->>>>>   2 files changed, 17 insertions(+)
->>>>>
->>>>> diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
->>>>> index ffd3a34ba4..c7beabdb09 100644
->>>>> --- a/include/hw/ssi/ssi.h
->>>>> +++ b/include/hw/ssi/ssi.h
->>>>> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, const char *name);
->>>>>   uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
->>>>> +DeviceState *ssi_get_cs(SSIBus *bus, int addr);
->>>
->>> Also, this helper should (preferably) return a SSIPeripheral type.
->>
->> Well, having a DeviceState is handy for the callers (today) and
->> ssi_create_peripheral() returns a DeviceState. Let's keep it that
->> way.
-> 
-> Yes I know it is handy :) I'm not against your patch; besides other
-> APIs do that. I'm wondering about QOM design here. Having Foo device,
-> should FOO API return the common qdev abstract type (DeviceState) or
-> a Foo type? Either ways we keep QOM-casting around, but I still tend
-> to consider FOO API returning Foo pointer provides some type check
-> safety, and also provides the API user hints about what is used.
-> Need more coffee.
+On Wed, May 31, 2023 at 3:47=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> On Mon, May 29, 2023 at 9:18=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
+> >
+> > This patch introduces vhost_vdpa_net_load_offloads() to
+> > restore offloads state at device's startup.
+> >
+> > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> > ---
+> >  net/vhost-vdpa.c | 26 ++++++++++++++++++++++++++
+> >  1 file changed, 26 insertions(+)
+> >
+> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > index 37cdc84562..682c749b19 100644
+> > --- a/net/vhost-vdpa.c
+> > +++ b/net/vhost-vdpa.c
+> > @@ -680,6 +680,28 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *=
+s,
+> >      return *s->status !=3D VIRTIO_NET_OK;
+> >  }
+> >
+> > +static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
+> > +                                        const VirtIONet *n)
+> > +{
+> > +    uint64_t features, offloads;
+> > +    ssize_t dev_written;
+> > +
+> > +    features =3D n->parent_obj.guest_features;
+>
+> Any reason you need to do tricks like this instead of using
+> virtio_xxx_has_features()?
+>
 
-It is used in two code paths today:
+It can be replaced by virtio_vdev_has_feature, yes.
 
-	...
-         DeviceState *dev = ssi_get_cs(bmc->soc.fmc.spi, 0);
-         BlockBackend *fmc0 = dev ? m25p80_get_blk(dev) : NULL;
-	...
-and
-	...
-         DeviceState *dev = ssi_get_cs(s->spi, i);
-         if (dev) {
-             qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
-	...
+Current code of vhost_vdpa_net_load_mac and vhost_vdpa_net_load_mq
+access to guest_features directly too, so I think we should change all
+of them at once.
 
+Thanks!
 
-Changing the interface is not a radical change, it will add two QOM-casts.
-I can give it a try in v2.
-
-Thanks,
-
-C.
+> > +    if (!(features & BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    offloads =3D cpu_to_le64(n->curr_guest_offloads);
+> > +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_O=
+FFLOADS,
+> > +                                          VIRTIO_NET_CTRL_GUEST_OFFLOA=
+DS_SET,
+> > +                                          &offloads, sizeof(offloads))=
+;
+> > +    if (unlikely(dev_written < 0)) {
+> > +        return dev_written;
+> > +    }
+> > +
+> > +    return *s->status !=3D VIRTIO_NET_OK;
+> > +}
+> > +
+> >  static int vhost_vdpa_net_load(NetClientState *nc)
+> >  {
+> >      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> > @@ -702,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+> >      if (unlikely(r)) {
+> >          return r;
+> >      }
+> > +    r =3D vhost_vdpa_net_load_offloads(s, n);
+> > +    if (unlikely(r)) {
+> > +        return r;
+> > +    }
+> >
+> >      return 0;
+> >  }
+> > --
+> > 2.25.1
+> >
+>
 
 
