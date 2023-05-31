@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC73A717C3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 11:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 556F8717C76
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 11:54:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ILU-0005yu-87; Wed, 31 May 2023 05:42:20 -0400
+	id 1q4IVM-00082b-3y; Wed, 31 May 2023 05:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1q4ILR-0005yO-7z
- for qemu-devel@nongnu.org; Wed, 31 May 2023 05:42:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1q4ILP-0001qQ-7K
- for qemu-devel@nongnu.org; Wed, 31 May 2023 05:42:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685526134;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NZivEnteBfONsuBRZZcGuKeR1/Oqa3UVSac4f5vWWrY=;
- b=FFps5RbhG9Az4Se7i4Fduci5Da/Ys60AM0TFRDl9yfTwtj09LArOH5511wmk7yCSBEopwr
- iJwoY10cM9qq5Dz1I2VSRugRT72EZtMdRMXZB2nLj/zkJGYTd74lBvATLNYXx//Z1jRyp4
- 8BapV6x1AsCv9Fy3vVt81cPX0oRueBc=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-CpYYPha2Ni61brw-q1PZUQ-1; Wed, 31 May 2023 05:42:13 -0400
-X-MC-Unique: CpYYPha2Ni61brw-q1PZUQ-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6af86dd9ae9so4659549a34.3
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 02:42:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4IVH-00080X-IT
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 05:52:27 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4IVF-0003ke-9A
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 05:52:27 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-30ad8f33f1aso4007632f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 02:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685526743; x=1688118743;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=alYyHoDFqXTFqaUkXhwD4SS2OXrK6wO15AbJrZ0kvsY=;
+ b=o1pC6nhCjwqkS/HJnoX54rQiwnczrxTtuxqPAAB9J67Z06VigHlhrGM9FgeBi0x6Ci
+ txW927+aE6YP3Sngzi0O+UltxAEpOaEA61QYHq4CqFUwAieFE81IWbOoHwzGaIaz7Uze
+ LYNnJPzKG6KfJ3BZGWrwzdZuBXOfWJOy6sKF+eT84+DFEFoEQaORDQsTSK332g1mupzB
+ Dworq4FEZEj7mh76/PgxHQMPj2QDw1EoJKSY2qATT0sbIa5K79aR24dUlf9kAKhhGvEM
+ BCUE6kVgUWz4xQMfI1DbDsxGyAlHa5soV1tW9DfED6XVd6nIxrKQgagMay3O1BZuELUc
+ Y9Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685526132; x=1688118132;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NZivEnteBfONsuBRZZcGuKeR1/Oqa3UVSac4f5vWWrY=;
- b=Mc8xN43lbVwraKCCgNqvSuiuYmAS84Uv1bz992AaJaqkHinv/0tNcBndudCf2iQhEK
- IuqvqkVKiE/rxI2kajPIfLQRQrDRP9f4FH/VBrXxqpBKEP6TikrHXGkrtle5CUcROXnA
- 4oqHX+A5x9eS2OeGteg9bBbgGNvX/B8nXzghc5S4gzRmrWLFUVUXG85FO3LHMErTAsst
- /uf0eiYfQyvYCxpXTqPkJHCJ/XlOfROwCaG8baz1N2eINvMB2sfd5L4SuTgntBseuNgj
- eZzAK5qAUjK7pm15MYffJspRqevBxKB84p3k7/8qoFa/5D0cMU45IglOUn2ZbjH8vH7t
- 2bCQ==
-X-Gm-Message-State: AC+VfDwkErnUdTXtKejUYut3q2o69E/ZWs4rJMTj/V1NfGWw/FbHVnAd
- yT4773g2b+4nMEUaUoFIKyU5sPiQCnwouwK+MiSqacYT91dkUvxEMaZjqf0fUTG55HjfLeH8dJx
- ILDIrOt9/RyKCgHXjaUAHT4g=
-X-Received: by 2002:a05:6358:4303:b0:122:f227:581d with SMTP id
- r3-20020a056358430300b00122f227581dmr1795704rwc.24.1685526132275; 
- Wed, 31 May 2023 02:42:12 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7aaHN76EVzfuqWS0uZ6Q03hLoK1bOFg8L15vVtzoV0X3TlOHZwVYNLzdRaRM0cp3oFmZNKfw==
-X-Received: by 2002:a05:6358:4303:b0:122:f227:581d with SMTP id
- r3-20020a056358430300b00122f227581dmr1795682rwc.24.1685526131985; 
- Wed, 31 May 2023 02:42:11 -0700 (PDT)
-Received: from smtpclient.apple ([49.207.196.14])
+ d=1e100.net; s=20221208; t=1685526743; x=1688118743;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=alYyHoDFqXTFqaUkXhwD4SS2OXrK6wO15AbJrZ0kvsY=;
+ b=b06orvpp2+38x8+v0zIXCVbDHC1BUmn19Firj4aXtmc6wqom5VVUVq8Uk0sEZoNiKH
+ fikW0mxjIT4CFo8WlnupCxQdYgjUfER8IT0Lbn7OPEeVoTBHHktH0NWQyRR1AzdJ70ea
+ GbZOJ2eEp0KGjKeNvYHayEhwXRwR300QPvz5O6c4UqzXmFaHVCCmFzl9HdAw3PaOhuLg
+ JIiXAJB9PPjmTPxELUpxvana0AeoxnMh934FhbBB6Xu1TmmLNLWLd0kM5GxaEmhuMudH
+ KEojO4+K/0lwMu6nkdzgWE9uOLLC46ekymk+2KrEiV40YLdN0O8ccbluHtIgFEbDWsJZ
+ XDHQ==
+X-Gm-Message-State: AC+VfDxijSGfPMk43r4PBwifx/L+LPnvjxcRn8VRxp4GBexPbLBrN5jn
+ iu9qYYbXDd2WnjDdGzkXdZcs0A==
+X-Google-Smtp-Source: ACHHUZ4q4BkQBcyJMIXRsLdQxstlHnYi6K7t+kpZwqqM0fWIbAQlaNzKR2QnfyDL6b2dTPbxS2bqgA==
+X-Received: by 2002:a5d:4952:0:b0:2f5:ace2:8737 with SMTP id
+ r18-20020a5d4952000000b002f5ace28737mr3800722wrs.32.1685526742856; 
+ Wed, 31 May 2023 02:52:22 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- 23-20020a17090a005700b0025374fedab4sm896570pjb.22.2023.05.31.02.42.09
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 31 May 2023 02:42:11 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
-Date: Wed, 31 May 2023 15:12:07 +0530
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, maobibo@loongson.cn,
- gaosong@loongson.cn, Zhenyu Wang <zhenyu.z.wang@intel.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7C9CDE0B-29C3-4952-B547-B39A6C3DF9B0@redhat.com>
-References: <20230530122034.547109-1-zhaotianrui@loongson.cn>
- <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
-To: Zhao Liu <zhao1.liu@intel.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+ v11-20020adfedcb000000b0030ae87bd3e3sm6047365wro.18.2023.05.31.02.52.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 02:52:22 -0700 (PDT)
+Message-ID: <a1b5449d-b5cd-e443-daa3-04f46c2b7b96@linaro.org>
+Date: Wed, 31 May 2023 11:52:20 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] tests/vm/freebsd: Install more feature libraries in the
+ FreeBSD VM
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Ed Maste <emaste@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230531090415.40421-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230531090415.40421-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,108 +95,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Thomas,
 
+On 31/5/23 11:04, Thomas Huth wrote:
+> The standalone freebsd VM image misses a lot of libraries compared
+> to the image that we use in the Gitlab-CI (see the file
+> .gitlab-ci.d/cirrus/freebsd-13.vars). Let's extend the list here
+> and while we're at it, re-arrange the list in alphabetical order
+> without the cumbersome grouping into categories.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/vm/freebsd | 76 +++++++++++++++++++++++++++++-------------------
+>   1 file changed, 46 insertions(+), 30 deletions(-)
+> 
+> diff --git a/tests/vm/freebsd b/tests/vm/freebsd
+> index 11de6473f4..8143637905 100755
+> --- a/tests/vm/freebsd
+> +++ b/tests/vm/freebsd
+> @@ -32,43 +32,59 @@ class FreeBSDVM(basevm.BaseVM):
+>       csum = "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
+>       size = "20G"
+>       pkgs = [
+> -        # build tools
+> -        "git",
+> -        "pkgconf",
+> -        "bzip2",
+> -        "python39",
+> -        "ninja",
+> -
+> -        # gnu tools
+> +        "alsa-lib",
+>           "bash",
+> -        "gmake",
+> -        "gsed",
+> +        "bison",
+> +        "bzip2",
+> +        "capstone4",
+> +        "curl",
+> +        "cyrus-sasl",
+> +        "dbus",
+> +        "diffutils",
+> +        "dtc",
+> +        "flex",
+> +        "fusefs-libs3",
+>           "gettext",
+> -
+> -        # libs: crypto
+> +        "git",
+> +        "glib",
+> +        "gmake",
+>           "gnutls",
+> -
+> -        # libs: images
+> -        "jpeg-turbo",
+> -        "png",
+> -
+> -        # libs: ui
+> -        "sdl2",
+> +        "gsed",
+>           "gtk3",
+> -        "libxkbcommon",
+> -
+> -        # libs: opengl
+>           "libepoxy",
+> -        "mesa-libs",
+> -
+> -        # libs: migration
+> -        "zstd",
+> -
+> -        # libs: networking
+> +        "libffi",
+> +        "libgcrypt",
+> +        "libjpeg-turbo",
+> +        "libnfs",
+>           "libslirp",
+> -
+> -        # libs: sndio
+> +        "libspice-server",
+> +        "libssh",
+> +        "libtasn1",
+> +        "libxkbcommon",
+> +        "lzo2",
+> +        "mesa-libs",
+> +        "meson",
+> +        "ncurses",
+> +        "nettle",
+> +        "ninja",
+> +        "pixman",
+> +        "pkgconf",
+> +        "png",
+> +        "py39-pip",
+> +        "py39-sphinx",
+> +        "py39-sphinx_rtd_theme",
+> +        "py39-yaml",
+> +        "python3",
+> +        "sdl2",
+> +        "sdl2_image",
+> +        "snappy",
+>           "sndio",
+> +        "spice-protocol",
+> +        "usbredir",
+> +        "virglrenderer",
+> +        "vte3",
+> +        "xorriso",
+> +        "zstd",
+>       ]
 
-> On 31-May-2023, at 2:12 PM, Zhao Liu <zhao1.liu@intel.com> wrote:
->=20
-> On Tue, May 30, 2023 at 08:20:34PM +0800, Tianrui Zhao wrote:
->> Date: Tue, 30 May 2023 20:20:34 +0800
->> From: Tianrui Zhao <zhaotianrui@loongson.cn>
->> Subject: [PATCH] hw/smbios: fix thead count field in type 4 table
->> X-Mailer: git-send-email 2.39.1
->>=20
->> The thread_count value in smbios type_4 table should be
->> (ms->smp.cores * ms->smp.threads). As according to smbios spec 7.5
->> Processor Information (Type 4), the field "Thread Count" means the
->> "Number of threads per processor socket" rather than number of
->> threads per core.
->>=20
->> When apply this patch, use "-smp 4,sockets=3D1,cores=3D2,threads=3D2" =
-to
->> boot VM, the dmidecode -t 4 shows like:
->>=20
->> Handle 0x0400, DMI type 4, 48 bytes
->> Processor Information
->>        Socket Designation: CPU 0
->>        ...
->>        Core Count: 2
->>        Core Enabled: 2
->>        Thread Count: 4
->>        Characteristics: None
->>=20
->> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
->> ---
->> hw/smbios/smbios.c | 7 ++++---
->> 1 file changed, 4 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
->> index d2007e70fb..56aeaa069d 100644
->> --- a/hw/smbios/smbios.c
->> +++ b/hw/smbios/smbios.c
->> @@ -713,6 +713,7 @@ static void =
-smbios_build_type_4_table(MachineState *ms, unsigned instance)
->> {
->>     char sock_str[128];
->>     size_t tbl_len =3D SMBIOS_TYPE_4_LEN_V28;
->> +    int count;
->>=20
->>     if (smbios_ep_type =3D=3D SMBIOS_ENTRY_POINT_TYPE_64) {
->>         tbl_len =3D SMBIOS_TYPE_4_LEN_V30;
->> @@ -749,15 +750,15 @@ static void =
-smbios_build_type_4_table(MachineState *ms, unsigned instance)
->>=20
->>     t->core_count =3D (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
->>     t->core_enabled =3D t->core_count;
->> -
->> -    t->thread_count =3D (ms->smp.threads > 255) ? 0xFF : =
-ms->smp.threads;
->> +    count =3D ms->smp.cores * ms->smp.threads;
->=20
-> Hi Ani & Tianrui,
->=20
-> =46rom the comment of CpuTopology (include/hw/boards.h):
->=20
-> ms->cores means the "the number of cores in one cluster".
-> ms->threads means the "the number of threads in one core".
->=20
-> So ms->cores * ms->threads means the number of threads in one cluster
-> not one socket.
+What about directly filling pkgs[] from 
+.gitlab-ci.d/cirrus/freebsd-13.vars's PKGS line? Quick & dirty example:
 
-Yes ok other than arm/virt I do not see any other arch that supports =
-clusters.
-
->=20
-> That's why I count the number of threads in a socket by =
-"ms->smp.max_cpus
-> / ms->smp.sockets" in [1].
->=20
-> The other correct way is:
-> ms->smp.cluster * ms->smp.cores * ms->smp.threads.
->=20
-
-Sure, I prefer this calculation than what you have used.
-
-
-> [1]: =
-https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07229.html
->=20
-> Thanks,
-> Zhao
->=20
->> +    t->thread_count =3D (count > 255) ? 0xFF : count;
->>=20
->>     t->processor_characteristics =3D cpu_to_le16(0x02); /* Unknown */
->>     t->processor_family2 =3D cpu_to_le16(0x01); /* Other */
->>=20
->>     if (tbl_len =3D=3D SMBIOS_TYPE_4_LEN_V30) {
->>         t->core_count2 =3D t->core_enabled2 =3D =
-cpu_to_le16(ms->smp.cores);
->> -        t->thread_count2 =3D cpu_to_le16(ms->smp.threads);
->> +        t->thread_count2 =3D cpu_to_le16(count);
->>     }
->>=20
->>     SMBIOS_BUILD_TABLE_POST;
->> --=20
->> 2.39.1
-
+ >>> list(filter(lambda y: y.startswith('PKGS'), 
+open('.gitlab-ci.d/cirrus/freebsd-13.vars', 
+'r').readlines()))[0].split("'")[1].split()
+['alsa-lib', 'bash', 'bison', 'bzip2', 'ca_root_nss', 'capstone4', 
+'ccache', 'cmocka', 'ctags', 'curl', 'cyrus-sasl', 'dbus', 'diffutils', 
+'dtc', 'flex', 'fusefs-libs3', 'gettext', 'git', 'glib', 'gmake', 
+'gnutls', 'gsed', 'gtk3', 'json-c', 'libepoxy', 'libffi', 'libgcrypt', 
+'libjpeg-turbo', 'libnfs', 'libslirp', 'libspice-server', 'libssh', 
+'libtasn1', 'llvm', 'lzo2', 'meson', 'mtools', 'ncurses', 'nettle', 
+'ninja', 'opencv', 'pixman', 'pkgconf', 'png', 'py39-numpy', 
+'py39-pillow', 'py39-pip', 'py39-sphinx', 'py39-sphinx_rtd_theme', 
+'py39-yaml', 'python3', 'rpm2cpio', 'sdl2', 'sdl2_image', 'snappy', 
+'sndio', 'socat', 'spice-protocol', 'tesseract', 'usbredir', 
+'virglrenderer', 'vte3', 'xorriso', 'zstd']
 
