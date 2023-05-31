@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D195D717E35
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3808C717E28
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:36:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4K9M-0005OO-Rf; Wed, 31 May 2023 07:37:56 -0400
+	id 1q4K6c-0004Rj-8B; Wed, 31 May 2023 07:35:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q4K9G-0005Nq-Oy
- for qemu-devel@nongnu.org; Wed, 31 May 2023 07:37:51 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q4K9E-0000h7-6I
- for qemu-devel@nongnu.org; Wed, 31 May 2023 07:37:50 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-30ae967ef74so2733704f8f.0
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 04:37:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685533066; x=1688125066;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:user-agent:from:to:cc:subject:date:message-id:reply-to;
- bh=Fh64C8hkWvIxoEEFtvqDZZB+RBg5ssruAXb7wVEo5B8=;
- b=fWNWclVCP7yb6PRGdaHwJU36vdosmEtILhVpHh1Dft7yjU5+tpffc0T3bKIHaLvVa5
- 6GUlw4ZT2w4JSrjJX35NsQEpGu4Pq37gCstpF8uBjvHfW9J9eStHKGh/zhokAxRC0eO6
- S9RVU7Dyf2hRn1j4oo04JPj5FtiFCcnLQB1ZKU8ozGdJdStwMGXaAwuuf1Ob/PfcIs2S
- 5AVV6a5NomIoKYT6rX4Cm4s2WpsB4Xd2b5aE8oQtK1rB4KyQhTkyutJo/36YNf90ikHc
- ugblG3MrlEcPUWYoMXlaHWxsBYww6mVY1fxqJTIW1bHm/NRbH7hQTrTiMRF9IdkjOzwW
- 4qtg==
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q4K6a-0004RR-Og
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 07:35:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q4K6Z-0000Eu-D0
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 07:35:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685532902;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jDiSI3vVNNW4ONR2xkquJ6tBSn++CiI99ICO2F2mtCE=;
+ b=cwLbzsft1jr11M7F0u+xEIG+/Whz11Wz06CflYe4zEsFIgSMae/yg6sPiZXdsV/efjehLa
+ n7RwD5b0zVba5hj8Y/NkdgerAlyKIjc3SD7y2VbTNlU0On+V17iJl6E6kvLluPLmeal9rf
+ RXSP4rK5lp1WdZxVnCVk+DRzBb306wY=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-LrQhDA5-NyWOqh2BVot-Yw-1; Wed, 31 May 2023 07:35:01 -0400
+X-MC-Unique: LrQhDA5-NyWOqh2BVot-Yw-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-25665d2a250so3779919a91.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 04:35:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685533066; x=1688125066;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:user-agent:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fh64C8hkWvIxoEEFtvqDZZB+RBg5ssruAXb7wVEo5B8=;
- b=jDHcUIW/WF6iVHjgQTJ7Ozz5Sg81qxElLWtKyW0MZxUYs4sQ/5R+CXatFnJFA1eTUd
- PjkAnrrwE3M57lZWsSwiARYKSRQG1zh6+YV/IbgcsuAN2uIwTrpqKMrFJYIU5GPK2nUm
- uCIPAeLYtMWGMMizpsncpcFQ11F63aGNiMq2H5uDDrryD59y7Uz826gTvAF7PBgldKDW
- hKDf6Ix+QD27BRJ663OzU7iXoNeSbR4v3jHnw1Q1YcnpcRHOuEBqIAe1Z/H6noxIl8rC
- +3oum2n7aqEJsQyaCJQYDSQzqJhQitMXaZdOUNEa1y+raO13Zja8FZSIsXwHYUACqqYF
- Y93Q==
-X-Gm-Message-State: AC+VfDyayF3ZK/k8LyJmoloJqyh2KFCieXlTZWilX/GMHg63rXg+0QMc
- BnPsJejJzzn4nAlFI9s5+oF3Vw==
-X-Google-Smtp-Source: ACHHUZ6jnp2FzjY3fQcGeDHSIt1/q0pWik8dCMLsPJ6NzDzQyWupB/Uwo9GtMWd9+TBeAlnUgIhO9w==
-X-Received: by 2002:a5d:50ca:0:b0:30c:2bbf:bf75 with SMTP id
- f10-20020a5d50ca000000b0030c2bbfbf75mr392223wrt.26.1685533066074; 
- Wed, 31 May 2023 04:37:46 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- q13-20020a05600c46cd00b003f1978bbcd6sm3030231wmo.3.2023.05.31.04.37.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 May 2023 04:37:45 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 4BC041FFBB;
- Wed, 31 May 2023 12:37:45 +0100 (BST)
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>,
- Erik Skultety <eskultet@redhat.com>, Brian Cain <bcain@quicinc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
- <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>
-Subject: How do you represent a host gcc and a cross gcc in lcitool?
-Date: Wed, 31 May 2023 12:23:34 +0100
-Message-ID: <87wn0obuk6.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1685532900; x=1688124900;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+ :mime-version:references:from:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=jDiSI3vVNNW4ONR2xkquJ6tBSn++CiI99ICO2F2mtCE=;
+ b=KoZopDlYa3aW+/mzfhjrl/StsDpZC5L7p/QRwe/8cifNGSVNnR63xQleTRg01Pvn6n
+ SIvrEd6UbTOo4q59qAyathjAVTyMYrji0BxpBFfrfe7llq+cPpP2FY0ayW7aAhLw4RnE
+ 2iSD+ItS3dobbub+oHK/RY8/+q8sBVy4ohb38UF3gKUIoxkMs+GkvKhljHJG63LIUeSY
+ vyHh67O0QCfEs4Etu3gMBi8lKr1IziRSZmZW8mfeP4YNbDRmPcTTyQE8qeNqrQ2cmB13
+ qdKHyOlTygN+VmmjQZW0TPbv3Uy4uo0UQJax7RyGxlClMhQDzefqIOehnl9FaAARiX3Q
+ /4AQ==
+X-Gm-Message-State: AC+VfDyIAopS+QXVqQiCJ88X17hq3+IGB6L14h6yIaBcKmM1GyXixcs1
+ UHiPscyqxw8QGN/2uwlXZRvZtYFyKqVhs62F3ZW0yMGAtOnrE55YefVYRT9GOQQkLQ/yEBWB2rX
+ Xm7n+Z5Bk4StsU4RzcazhC8FuiljIU8k=
+X-Received: by 2002:a17:90b:1089:b0:255:2dde:17cc with SMTP id
+ gj9-20020a17090b108900b002552dde17ccmr5077174pjb.47.1685532900083; 
+ Wed, 31 May 2023 04:35:00 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5UFn0DrtY7cEtq2HNQ+nQTlUNGV1MbWlW38ko2B90+Lf/obY66I/7xRNpjUTkS8hl3zaMSKOhngMkqwqnFt/A=
+X-Received: by 2002:a17:90b:1089:b0:255:2dde:17cc with SMTP id
+ gj9-20020a17090b108900b002552dde17ccmr5077156pjb.47.1685532899771; Wed, 31
+ May 2023 04:34:59 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 31 May 2023 04:34:58 -0700
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20230526121006.76388-1-sunilvl@ventanamicro.com>
+ <CAK9=C2VRF-QobT_-qObOAnjqk8haxOUkmnsPCtCKuRk3pL+jPw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAK9=C2VRF-QobT_-qObOAnjqk8haxOUkmnsPCtCKuRk3pL+jPw@mail.gmail.com>
+Date: Wed, 31 May 2023 04:34:58 -0700
+Message-ID: <CABJz62M_98hwGSHc2iJ7T+7AT+rQUa4xwc8s1WHo=TTbfCmbGA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] hw/riscv/virt: pflash improvements
+To: Anup Patel <apatel@ventanamicro.com>
+Cc: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,48 +101,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Wed, May 31, 2023 at 10:46:17AM +0530, Anup Patel wrote:
+> On Fri, May 26, 2023 at 5:41=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.c=
+om> wrote:
+> >   hw/riscv: virt: Assume M-mode FW in pflash0 only when "-bios none"
+> >   riscv/virt: Support using pflash via -blockdev option
+> >   docs/system: riscv: Add pflash usage details
+>
+> In case of KVM guests, there is no M-mode so pflash0 will always
+> contain S-mode FW.
+>
+> I suggest improving this series to consider KVM guests as well
+> such that the same EDK2 S-mode works for KVM and TCG guests.
 
-While trying to convert the debian-riscv64-cross docker container to an
-lcitool based one I ran into a problem building QEMU. The configure step
-fails because despite cross compiling we still need a host compiler to
-build the hexagon codegen tooling.
+After these patches are applied, pflash0 is assumed to contain S-mode
+code *unless* you go out of your way and add -bios none to the
+command line.
 
-After scratching my head for a while I discovered we did have host GCC's
-in our cross images despite there being no explicit request for them in
-the docker description. It turned out that the gcovr requirement pulled
-in lcov which itself had a dependency on gcc. However this is a bug:
-
-  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D987818
-
-which has been fixed in bookworm (and of course sid which is the only
-way we can get a riscv64 build of QEMU at the moment). Hence my hacky
-attempts to get gcc via side effect of another package failed.
-
-Hence the question in $SUBJECT. I tried to add a mapping to lcitool for
-a pseudo hostgcc package:
-
-+  hostgcc:
-+    default: gcc
-+    pkg:
-+    MacOS:
-+    cross-policy-default: skip
-
-however this didn't work. Do we need a new mechanism for this or am I
-missing a way to do this?
-
-RiscV guys,
-
-It's clear that relying on Debian Sid for the QEMU cross build for RiscV
-is pretty flakey. Are you guys aware of any other distros that better
-support cross compiling to a riscv64 target or is Debian still the best
-bet? Could you be persuaded to build a binary docker image with the
-cross compilers and libraries required for a decent cross build as an
-alternative?
-
-Thanks,
+It seems to me that this default behavior will work fine for KVM
+guests too, based on what you wrote above. Isn't that the case?
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Andrea Bolognani / Red Hat / Virtualization
+
 
