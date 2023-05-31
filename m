@@ -2,105 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFBB718066
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1922718098
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:57:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LK5-0006D0-42; Wed, 31 May 2023 08:53:05 -0400
+	id 1q4LLc-0007AC-LH; Wed, 31 May 2023 08:54:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
- id 1q4LK2-0006Ce-4y; Wed, 31 May 2023 08:53:02 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4LLO-00078U-Tg
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:27 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
- id 1q4LK0-0006Sp-CI; Wed, 31 May 2023 08:53:01 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34VCbUx1014401; Wed, 31 May 2023 12:52:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4CGDojlVgYF+V/sONprKjy1P+w+As001BW8hlPv5D5w=;
- b=Zb7KL1JIPPzYPrTFkyh5v+H/H3PJxMbLczOE+C1BW4p6Q27HLIuPFxfsRHvIrpZgOxtu
- azGQ0SAI3o7NGYH6/Eiksl5xfEOFJfG/Ew9T4LioIOZ49ULSSkL/IAnnNk1IAAvfFOPI
- 0ifGKaOJot2U47eCEagkBRIK4YHW5D2CUbj2rJKOF6r1K4Q+AZVpLHUHrWX4V4AxndOi
- QM7rMDcvo6ie/qJdcfLL3+/zt6RuVj0JZyBOf74eGrIQpW1xgGFzvLFsSyhn/pPSgtt5
- qh6/mELrI6/Ga3HfabvWvXeJf4vSgNmmP+A+4vmLn1jNjXp+aeJ+uZCgSBlY+wQuSXrm eg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx62d91uh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 12:52:58 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34VCdKQO025870;
- Wed, 31 May 2023 12:52:57 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx62d91u6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 12:52:57 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34VBhOHa012710;
- Wed, 31 May 2023 12:52:57 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
- by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3qu9g5umqc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 12:52:57 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34VCqunC37421808
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 May 2023 12:52:56 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA53158055;
- Wed, 31 May 2023 12:52:55 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48F3058043;
- Wed, 31 May 2023 12:52:55 +0000 (GMT)
-Received: from [9.61.88.233] (unknown [9.61.88.233])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 31 May 2023 12:52:55 +0000 (GMT)
-Message-ID: <76dd7f44-56a5-91fd-13c2-fb1579c588ab@linux.ibm.com>
-Date: Wed, 31 May 2023 08:52:54 -0400
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4LLL-0006kk-Ny
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:54:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=HgIL3wcpT3xjOv235N/hzA2HcPIdV72O3KpqbB8sHRo=; b=YO6ibPX/QI7AyQ3aUL6cDZBVdR
+ SUdaTu2WUy7eOW9CQAZzzZBUAAADT8DcOFYf3oUxkFs44SFSNsOMVdGenOipbCKldFh6EVKwVER7c
+ P0qjtzn/E3NE3MQjv1/am94Ja25UAJMrmOE5anfswi2SxJioV63WzSH9JgElfNLMUYiXdZ5SAXKBV
+ HuWiJubZ6RLGq5OhrBQk+/JGccox5l1H7q5BfAU1Y4sE8rjV6Q68in9OJjBkJmfwqrZBVXljqYCh/
+ qJEoojLQHYO/34Tae92fuN2XIyzTkOsgLRDa0XNBSqpB+TAxqtloaQLi2hDNEQMkfThPrLMvrnJLd
+ BJvKMjMStXyt8MPZYrTdtK9tK2ohuPmDq8uakUUY2AZs0C2m2nO+u+VCG3YrQ8s++BDLcUJ7MzF3h
+ eJLuuhQ2DThe4UFVPXFfF7K2b3OU878EEP5Q3xE40mwTaEJ0IYzfoBu0WEbQTQuDFr64huDi6HIOf
+ OSSXbS7Pg9aSZRiOVmzXkoZYuB8heP7D3wUH7D6335HXm17w8dt79oVmnNFislOuC7gXMORPz49RC
+ ELGOb0PVVSD4ppo+KoVF6UE8ejK2avxediLyR+z2P3wgY8hHC3AToF68ZbMfwCaEyL09IG6jvW0lP
+ DibjPEH0bvgo+5FYQemTCZDIpV5nkjH2UPqAyV7mQ=;
+Received: from host86-130-37-216.range86-130.btcentralplus.com
+ ([86.130.37.216] helo=kentang.home)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4LL8-0008vd-HF; Wed, 31 May 2023 13:54:14 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu,
+	qemu-devel@nongnu.org
+Date: Wed, 31 May 2023 13:53:37 +0100
+Message-Id: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/2] linux-headers: Update with vfio_ap IRQ index mapping
-Content-Language: en-US
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, jjherne@linux.ibm.com, pasic@linux.ibm.com,
- fiuczy@linux.ibm.com, thuth@redhat.com, farman@linux.ibm.com,
- borntraeger@linux.ibm.com
-References: <20230530225544.280031-1-akrowiak@linux.ibm.com>
- <20230530225544.280031-2-akrowiak@linux.ibm.com>
- <06630472-57c8-89dd-ad80-75fb4d0d7de9@linux.ibm.com>
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <06630472-57c8-89dd-ad80-75fb4d0d7de9@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UEkkoFL-9z4FNTLh1oBgPxAtq6Qw4myW
-X-Proofpoint-ORIG-GUID: zrmG-RGIUmynrzrsiYYX3KG6X-lDb3wx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_08,2023-05-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 phishscore=0 malwarescore=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305310108
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=akrowiak@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.130.37.216
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v2 00/23] q800: add support for booting MacOS Classic - part 1
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,52 +76,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+[MCA: the original series has now been split into 2 separate parts based upon
+Phil's comments re: QOM parenting for objects in Q800MachineState. Part 1
+consists of the Q800MachineState patches along with QOM parenting fixes and
+the 2 mac_via RTC patches.]
+
+This series contains the remaining patches needed to allow QEMU's q800
+machine to boot MacOS Classic when used in conjunction with a real
+Quadra 800 ROM image. In fact with this series applied it is possible
+to boot all of the following OSs:
+
+  - MacOS 7.1 - 8.1, with or without virtual memory enabled
+  - A/UX 3.0.1
+  - NetBSD 9.3
+  - Linux (via EMILE)
+
+If you are ready to experience some 90s nostalgia then all you need is
+to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+suitable install ISO as follows:
+
+  # Prepare a PRAM image
+  $ qemu-img create -f raw pram.img 256b
+
+  # Launch QEMU with blank disk and install CDROM
+  $ ./qemu-system-m68k \
+      -M q800 \
+      -m 128 \
+      -bios Quadra800.rom \
+      -drive file=pram.img,format=raw,if=mtd \
+      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+      -device scsi-hd,scsi-id=0,drive=hd \
+      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+      -device scsi-cd,scsi-id=3,drive=cd
+
+And off you go! For more in-depth information about the installation process
+I highly recommend the installation guide over at emaculation.com [1].
+Compatibility is generally very good, and I'm pleased to report it is possible
+to run one of the most popular productivity apps from the 90s [2].
+
+I'd like to add a big thank you to all the people who have helped me work on
+this series, including testing on real hardware, answering questions about
+MacOS Classic internals and helping to diagnose and fix bugs in the 68k
+emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
+Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
+Elliot Nunn, and SolraBizna.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1] https://www.emaculation.com/doku.php/qemu
+[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
 
 
-On 5/30/23 8:56 PM, Matthew Rosato wrote:
-> On 5/30/23 6:55 PM, Tony Krowiak wrote:
->> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
->> ---
->>   linux-headers/linux/vfio.h | 9 +++++++++
->>   1 file changed, 9 insertions(+)
-> 
-> Worth nothing here that linux-headers patches should be generated using scripts/update-linux-headers.sh.
-> 
-> Since this linux-headers update includes changes that aren't merged into the kernel yet, I would still use update-linux-headers.sh -- but also include in the commit message that this is a placeholder patch that includes unmerged uapi changes.  Then once the kernel changes merge you can just have a proper linux-headers update patch in a subsequent qemu series.
+v2:
+- Split series into 2 parts (this is part 1)
+- Update QOM parenting for objects in Q800MachineState (Phil)
+- Split GLUE device into separate glue.c and glue.h files
+- Split TYPE_DP8393X and dp8393xState into dp8393x.h
+- Add R-B tags from Laurent (where I still believe they are valid)
 
-I guess I do not understand the procedure here. I first determined the 
-latest kernel release in which the vfio.h file was updated with the 
-following command:
-git log --oneline origin/master -- linux-headers/linux/vfio.h
 
-According to the git log, the vfio.h file was last updated in kernel 
-v6.3-rc5. I cloned that kernel from 
-git.kernel.org/pub/scm/linux/kernel/git/stable and checked out kernel 
-6.3-rc5. I then made the changes to the linux-headers/linux/vfio.h file 
-and ran the update-linux-headers.sh script and created this patch from 
-that. Where did I go wrong?
+Mark Cave-Ayland (23):
+  q800: fix up minor spacing issues in hw_compat_q800 GlobalProperty
+    array
+  q800: add missing space after parent object in GLUEState
+  q800: introduce Q800MachineState
+  q800: rename q800_init() to q800_machine_init()
+  q800: move CPU object into Q800MachineState
+  q800: move ROM memory region to Q800MachineState
+  q800: move GLUE device into separate q800-glue.c file
+  q800: move GLUE device to Q800MachineState
+  q800: introduce mac-io container memory region
+  q800: reimplement mac-io region aliasing using IO memory region
+  q800: move VIA1 device to Q800MachineState
+  q800: move VIA2 device to Q800MachineState
+  hw/net/dp8393x.c: move TYPE_DP8393X and dp8393xState into dp8393x.h
+  q800: move dp8393x device to Q800MachineState
+  q800: move ESCC device to Q800MachineState
+  q800: move escc_orgate device to Q800MachineState
+  q800: move ESP device to Q800MachineState
+  q800: move SWIM device to Q800MachineState
+  q800: move mac-nubus-bridge device to Q800MachineState
+  q800: don't access Nubus bus directly from the mac-nubus-bridge device
+  q800: move macfb device to Q800MachineState
+  mac_via: fix rtc command decoding from PRAM addresses 0x0 to 0xf
+  mac_via: fix rtc command decoding for the PRAM seconds registers
 
-> 
->>
->> diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
->> index 4a534edbdcba..2658fda219e8 100644
->> --- a/linux-headers/linux/vfio.h
->> +++ b/linux-headers/linux/vfio.h
->> @@ -646,6 +646,15 @@ enum {
->>   	VFIO_CCW_NUM_IRQS
->>   };
->>   
->> +/*
->> + * The vfio-ap bus driver makes use of the following IRQ index mapping.
->> + * Unimplemented IRQ types return a count of zero.
->> + */
->> +enum {
->> +	VFIO_AP_REQ_IRQ_INDEX,
->> +	VFIO_AP_NUM_IRQS
->> +};
->> +
->>   /**
->>    * VFIO_DEVICE_GET_PCI_HOT_RESET_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 12,
->>    *					      struct vfio_pci_hot_reset_info)
-> 
+ MAINTAINERS                 |   3 +
+ hw/m68k/meson.build         |   2 +-
+ hw/m68k/q800-glue.c         | 252 ++++++++++++++++++
+ hw/m68k/q800.c              | 505 +++++++++++++-----------------------
+ hw/misc/mac_via.c           |  13 +-
+ hw/net/dp8393x.c            |  32 +--
+ include/hw/m68k/q800-glue.h |  50 ++++
+ include/hw/m68k/q800.h      |  62 +++++
+ include/hw/net/dp8393x.h    |  60 +++++
+ 9 files changed, 619 insertions(+), 360 deletions(-)
+ create mode 100644 hw/m68k/q800-glue.c
+ create mode 100644 include/hw/m68k/q800-glue.h
+ create mode 100644 include/hw/m68k/q800.h
+ create mode 100644 include/hw/net/dp8393x.h
+
+-- 
+2.30.2
+
 
