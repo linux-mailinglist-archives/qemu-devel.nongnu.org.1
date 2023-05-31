@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4F27180A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 270D87180C8
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:58:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LMi-0001B5-Gt; Wed, 31 May 2023 08:55:48 -0400
+	id 1q4LMl-0001kx-IA; Wed, 31 May 2023 08:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LMX-0000ZD-QE
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:39 -0400
+ id 1q4LMb-0000rQ-3d
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:43 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LMW-00078h-8L
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:37 -0400
+ id 1q4LMZ-00079T-LX
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=nkhn94biz/ijNagHmnaKLFeGPYGGzRN+yDLCbkRdx00=; b=rqCkuovg6U7Bdvz6s4dLTv298A
- 3pAhFiI/wYH9Ll0lP2fKJN2PNTYhlebfilKYJ5RbRWuykyeaO4c4idkS71Rx3N1lowYPANAec5sbF
- 4+1QJaJlk6Vcv1KBnZ0pOBMqWeTu8dNNjffJUW9mgoR4EhkmmDNeSY7Dwl2/1o+vbpiFIt01d2KiZ
- J1Kl82/XFPRVsA5T1NZ1nCiwAL1eQFzIDBPud3CRRb+aq+pu26cCmb8Yz3GXVCkaGJzwZ4dUNg1bE
- Esl1HCRY2XQwlkgEDLZvaugFyQrmlNandL7cvw9y4KwLPrKduW2as3D4mVfyPjqRFfoiJNfD5yGCD
- B6Y85MzkPb5EdBBOspr9oqMDm+3QmNkmy2o7Xa3aLN2OIo7d8Xt+/8KcBLdWdQChAvWS7MxZ1ddz4
- LpyNTRgLC0/nm6W3z9VCDiAGCneibrTfIU8wlUnPZUBcVc3eAGMvvDyPKR90BlS5kn/o7IS2m16ko
- xWF5hRXj1VeeEaDtVgiq0AfdkGxipbgUltcDpX1b0/bB9oOXMdn+/K8Bz1Fb6JeeB9gU3NVxNkNhn
- r2jizWdMJBBh6CFMUrTWz5ALw1+KpPKwcGXYbF9z+QKdfcQs7hDC/MJflIUxv0UmQ1z+Yv0f+Iu60
- eR+MzKURVgcUVWcak3GJqDLG3KCNk7svh7Ek/Pn10=;
+ bh=FLgk3x1zkkh+bFdaen4SKpw14JiJMofGQ5nOc7X9/gQ=; b=GG4cUlszWUcqKlOiZPUt4k+4O4
+ vHmr6o8F0SzcLZa+Jk/jzK3I0fL1pwqQopzn+Heg6wr0Dbpr7xzEObjxZvtTYuIoJD4GuP9OCaHIc
+ bi/0NQCIKCEN6EZPjwiYLgW008vGZGhuGkqnEU8z+5FY5eLe0KKfLp2VzkdWv+Qc1CDOsYOsFSZJJ
+ 1l32n9TUTv555iEmLJmH/W7T2ztbsofN3YYyG9CeULAQUBZjOdQnPStlw1AvpRzrdOz22NHcsXVeG
+ wod0Wvqg8uw4scP0/rm2r/5ccOHCkz7lZ0GetV35MI0cgR66BQ0SeF7jdNZF+pvBoRwMNcuVurYXx
+ 8oijBm9E68HJ4K/gyZZP8w+ovZsMSVLjYWu46FOWfUWvBMYScNplmmMGRkmOtSbKr9zHMn75d/bfA
+ vMv8bxTU83oBKZMyn8+k+TDITesoOQvUYEo9e9emQHUmwUtOG3mDak7+We2TKnKyFPsePgkbhHCsQ
+ 9gXjpRqQClN6zTFeRZYutX777rdnjsVZ2s85xkSicn5K38zVgjLu+N8k7B6KNTQ4kp+tj1MZCc9AH
+ 2CNW0kHZICO2su9FNdQ67cidc88t9ubcXW5Szh4ACucltUnGjrPxGstFZZCSDjaGPzkka96HEHbWo
+ XDS9R97R7BM+2ltec1DeG2LKLs9A4hf3qDgDCus5o=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LMF-0008vd-DX; Wed, 31 May 2023 13:55:19 +0100
+ id 1q4LMF-0008vd-Of; Wed, 31 May 2023 13:55:23 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 31 May 2023 13:53:57 +0100
-Message-Id: <20230531125400.288917-21-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 31 May 2023 13:53:58 +0100
+Message-Id: <20230531125400.288917-22-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 20/23] q800: don't access Nubus bus directly from the
- mac-nubus-bridge device
+Subject: [PATCH v2 21/23] q800: move macfb device to Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,27 +77,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead use the qdev_get_child_bus() function which is intended for this exact
-purpose.
+Also change the instantiation of the macfb device to use object_initialize_child().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/q800.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/m68k/q800.c         | 6 ++++--
+ include/hw/m68k/q800.h | 2 ++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index d02a1a7a1f..946cb09e30 100644
+index 946cb09e30..0e7451e77a 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -445,7 +445,7 @@ static void q800_machine_init(MachineState *machine)
-                           qdev_get_gpio_in_named(DEVICE(&m->via2), "nubus-irq",
-                                                  VIA2_NUBUS_IRQ_9));
- 
--    nubus = &NUBUS_BRIDGE(dev)->bus;
-+    nubus = NUBUS_BUS(qdev_get_child_bus(dev, "nubus-bus.0"));
+@@ -449,7 +449,9 @@ static void q800_machine_init(MachineState *machine)
  
      /* framebuffer in nubus slot #9 */
  
+-    dev = qdev_new(TYPE_NUBUS_MACFB);
++    object_initialize_child(OBJECT(machine), "macfb", &m->macfb,
++                            TYPE_NUBUS_MACFB);
++    dev = DEVICE(&m->macfb);
+     qdev_prop_set_uint32(dev, "slot", 9);
+     qdev_prop_set_uint32(dev, "width", graphic_width);
+     qdev_prop_set_uint32(dev, "height", graphic_height);
+@@ -459,7 +461,7 @@ static void q800_machine_init(MachineState *machine)
+     } else {
+         qdev_prop_set_uint8(dev, "display", MACFB_DISPLAY_VGA);
+     }
+-    qdev_realize_and_unref(dev, BUS(nubus), &error_fatal);
++    qdev_realize(dev, BUS(nubus), &error_fatal);
+ 
+     macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
+ 
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index 3f3e87b3dc..48d2443d74 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -31,6 +31,7 @@
+ #include "hw/scsi/esp.h"
+ #include "hw/block/swim.h"
+ #include "hw/nubus/mac-nubus-bridge.h"
++#include "hw/display/macfb.h"
+ 
+ /*
+  * The main Q800 machine
+@@ -50,6 +51,7 @@ struct Q800MachineState {
+     SysBusESPState esp;
+     Swim swim;
+     MacNubusBridge mac_nubus_bridge;
++    MacfbNubusState macfb;
+     MemoryRegion macio;
+     MemoryRegion macio_alias;
+ };
 -- 
 2.30.2
 
