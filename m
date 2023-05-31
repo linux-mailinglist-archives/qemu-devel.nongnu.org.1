@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BB6717660
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 158A5717664
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:54:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4EjG-0002Pc-Sl; Wed, 31 May 2023 01:50:39 -0400
+	id 1q4EmE-0003Q6-IT; Wed, 31 May 2023 01:53:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ehu-0002C7-KZ
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:49:14 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Em3-0003PE-A7
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:53:34 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ehr-0001yM-BM
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:49:14 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-30aef0b8837so2197476f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:49:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Em1-0002qK-Hn
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:53:30 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-30af56f5f52so1354286f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:53:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685512149; x=1688104149;
+ d=linaro.org; s=google; t=1685512407; x=1688104407;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rBI9hBuG/hf9zfvHVQ5J84vkTGt/9ZLJ83giy3VSzuI=;
- b=qRpuLaHx80vNWjSrJkFWnHXLTKjA6/LDpKGkYBK0no6fcxE9jktJ/W/DINpNHkUEVM
- FS+8vCgFWX4sewSKhGX4/TKejHFlW2RHKMkldT5zUIDcP21PfqReX3utQoFbOSIPe4qi
- kJlwzedcEF/1lL0SdThDOWCkvTQQ5hRbl3jiOn8gtt6EKiG9LQumgkpdDXtfLgvk6cZ7
- 5S/AzyPip7dPBl7s4DJcf1qp1FMFVx4QGzxNVY8wN6dZyduQGOVn9Fk1+UtqYXnZkql8
- iGfb2ai/bkpLVlxZrOyU2gxNBpAV4PFchRpQfFyVk4N3Jdiwq/qvAvQwsEYYp8twX/2T
- Ztiw==
+ bh=m0NYvbESkfPbVA7Uj/A3Mc+DWgHjZSxUtYHePhJjb2I=;
+ b=ymgJMEXTuJIFyf6H8FB2ND4ULma67CwEbWwzrfW4p8uvNWQ5/7EHsRlLVAFKA9G7Vz
+ rMDLlMeTlQyDD7Ne3dcO/A2PPmguaVr0ZPfecWk967k6CBRTopgPX9pZhXQbWwxl67gE
+ 4Z07OvVVREVSApnqgIDu1GeCdoCo4pRQF72M+qTBCL2SYcV4aS/qanB1dsYHSdvmWaRo
+ 5aswYAOYw/vHoAoAwGVCfFPXwEnc7fR++9vbwBdnKZ0nNxEmKcghyMvbnBht1WNFSjoq
+ nQRX6oXlrFvRupsVUwj/lOqaBPAHuGpq86Nvqzc71Ra21kM2kJCWxWYeFtH6dWyTp3DA
+ 4LvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685512149; x=1688104149;
+ d=1e100.net; s=20221208; t=1685512407; x=1688104407;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rBI9hBuG/hf9zfvHVQ5J84vkTGt/9ZLJ83giy3VSzuI=;
- b=i9s4J9QaHoTR9V61cjmJzvgZlhje8NO3wd/0vaXavbxmjR7bN3O1/BEy2r/9/AmmQb
- UlUIHUZ+bdNU3FXvYbnAYSCtuETauigtSeMtzZpV+6a5cJz3xmWWs4Cc0R+BvmnF0n0d
- PJbhoqVhkxBBAsf/7eW9GHrTebOofs0tSNWgpT3pCdVCcbwe2oarE4HcvZ+wtf3H1Fnl
- oflUy8mX/QrfgqTTTzXiBQl2ogBysDl4lg8ffxRubWOKC2qx+pHGCMzRSi2XVR6BvUvp
- CX1vyuOe/5XHDonDe/+HyKjG+MtmrajJTuX8/agX0mCS4eEqrnziPNF53DO2b3DP5mdr
- PmSw==
-X-Gm-Message-State: AC+VfDxWt99fkrPDIzKVWrQboqtjMQkrb6caBYukXMVfwqC92yv2TEr0
- 42YVgHNnrNOYQkKmML/clVYaJA==
-X-Google-Smtp-Source: ACHHUZ6fTRaQ1mJrc92C79+6uIFB5p9NDYxQAp2j5TA2ojx8vpFU4AIw0+Dl8Mb+p8UchmfmJ7Hy8Q==
-X-Received: by 2002:a5d:65d0:0:b0:309:4988:7f83 with SMTP id
- e16-20020a5d65d0000000b0030949887f83mr2991128wrw.20.1685512149271; 
- Tue, 30 May 2023 22:49:09 -0700 (PDT)
+ bh=m0NYvbESkfPbVA7Uj/A3Mc+DWgHjZSxUtYHePhJjb2I=;
+ b=LPR2UJP9IANmoizqYpu7DgA+telhHldkUKWgTdJPer3U38Pl9oO13SVzEqB1gb9V9x
+ bHD0wWD4dgWuq1DEvRLkK1BDmhaVF5SECZrN2MpBvpp1BzYh5S27UO3fT8CNOt7ET8Ui
+ 5EUQGl87K4XTJSK2BoTUO/cm7Lh/vJ2jY37tYj4+T6lLDra4vZGgf9cks6M7gWn1L2Ma
+ z3nalmHrgryz2ETxPMSN6UMrzDT65lehXf+TbgVD31QdtLTHM+ovH3QPbOX/JCnIXMmQ
+ U9SHvXWue5wZgOf0AFrXpQOILiEKxu4pSVVWFviSbJWHAlBQkKodDyUmFYJEi4fp0fg7
+ x8vA==
+X-Gm-Message-State: AC+VfDwrWm0Jmx2ZWxyIpGRs3yBPPkSSclFO2O7pmlflCV/2XgExqlTg
+ X0A2a69jf/VnSfsF+uOkB2nJvg==
+X-Google-Smtp-Source: ACHHUZ5ocjIlnmRjbuCQPj8ziVwvQVfbU+9RCM2M2hgCqy03Kql8SQauCarDkLGIrf7+Z9FiHGXRBw==
+X-Received: by 2002:adf:f20c:0:b0:309:36e9:5834 with SMTP id
+ p12-20020adff20c000000b0030936e95834mr3031661wro.61.1685512406922; 
+ Tue, 30 May 2023 22:53:26 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- j18-20020a5d4492000000b002ffbf2213d4sm5394665wrq.75.2023.05.30.22.49.07
+ h17-20020a5d4fd1000000b003095bd71159sm5506544wrw.7.2023.05.30.22.53.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 22:49:08 -0700 (PDT)
-Message-ID: <19c434db-b1ac-656d-474f-938cdbf96fcd@linaro.org>
-Date: Wed, 31 May 2023 07:49:06 +0200
+ Tue, 30 May 2023 22:53:26 -0700 (PDT)
+Message-ID: <d49f59ba-ee8e-70de-4a94-5ecb7ca9dcac@linaro.org>
+Date: Wed, 31 May 2023 07:53:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [RFC PATCH 1/5] target/ppc: gdbstub init spr gdb_id for all CPUs
+Subject: Re: [PATCH] tests/avocado/virtio-gpu: Cancel test if drm rendering is
+ not available
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Fabiano Rosas <farosas@suse.de>
-References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-2-npiggin@gmail.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230530180330.48722-1-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531012313.19891-2-npiggin@gmail.com>
+In-Reply-To: <20230530180330.48722-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,67 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 03:23, Nicholas Piggin wrote:
-> Make sure each CPU gets its state set up for gdb, not just the ones
-> before PowerPCCPUClass has had its gdb state set up.
+On 30/5/23 20:03, Thomas Huth wrote:
+> The test_vhost_user_vga_virgl test currently fails on some CI
+> machines with:
 > 
+>   qemu-system-x86_64: egl: no drm render node available
+>   qemu-system-x86_64: egl: render node init failed
+> 
+> The other test in this file already checks whether there is
+> an error while starting QEMU - we should do the same for the
+> test_vhost_user_vga_virgl test, too.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 707c7c2ee1 ("target/ppc: Enable reporting of SPRs to GDB")
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   target/ppc/gdbstub.c | 30 +++++++++++++++++++-----------
->   1 file changed, 19 insertions(+), 11 deletions(-)
+>   tests/avocado/virtio-gpu.py | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-> index 63c9abe4f1..ca39efdc35 100644
-> --- a/target/ppc/gdbstub.c
-> +++ b/target/ppc/gdbstub.c
-> @@ -327,6 +327,25 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
->       unsigned int num_regs = 0;
->       int i;
->   
-> +    for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
-> +        ppc_spr_t *spr = &env->spr_cb[i];
-> +
-> +        if (!spr->name) {
-> +            continue;
-> +        }
-> +
-> +        /*
-> +         * GDB identifies registers based on the order they are
-> +         * presented in the XML. These ids will not match QEMU's
-> +         * representation (which follows the PowerISA).
-> +         *
-> +         * Store the position of the current register description so
-> +         * we can make the correspondence later.
-> +         */
-> +        spr->gdb_id = num_regs;
-> +        num_regs++;
-> +    }
-> +
->       if (pcc->gdb_spr_xml) {
->           return;
->       }
-> @@ -348,17 +367,6 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
->   
->           g_string_append_printf(xml, " bitsize=\"%d\"", TARGET_LONG_BITS);
->           g_string_append(xml, " group=\"spr\"/>");
-> -
-> -        /*
-> -         * GDB identifies registers based on the order they are
-> -         * presented in the XML. These ids will not match QEMU's
-> -         * representation (which follows the PowerISA).
-> -         *
-> -         * Store the position of the current register description so
-> -         * we can make the correspondence later.
-> -         */
-> -        spr->gdb_id = num_regs;
-> -        num_regs++;
->       }
->   
->       g_string_append(xml, "</feature>");
+> diff --git a/tests/avocado/virtio-gpu.py b/tests/avocado/virtio-gpu.py
+> index e3b58fe799..89bfecc715 100644
+> --- a/tests/avocado/virtio-gpu.py
+> +++ b/tests/avocado/virtio-gpu.py
+> @@ -143,7 +143,11 @@ def test_vhost_user_vga_virgl(self):
+>               "-append",
+>               self.KERNEL_COMMAND_LINE,
+>           )
+> -        self.vm.launch()
+> +        try:
+> +            self.vm.launch()
+> +        except:
+> +            # TODO: probably fails because we are missing the VirGL features
+> +            self.cancel("VirGL not enabled?")
+>           self.wait_for_console_pattern("as init process")
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
