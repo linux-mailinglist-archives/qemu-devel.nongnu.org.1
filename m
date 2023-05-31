@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A10F718889
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405957188A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:41:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4PiR-0004cY-0e; Wed, 31 May 2023 13:34:31 -0400
+	id 1q4PoA-0006vq-J6; Wed, 31 May 2023 13:40:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4PiO-0004bb-9a
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:34:28 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4PiL-0002AC-H1
- for qemu-devel@nongnu.org; Wed, 31 May 2023 13:34:28 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-30ae95c4e75so4223719f8f.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 10:34:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685554455; x=1688146455;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YWF1WEFVEDNFVwf4rvHb/PtCZTNHIffH0745yjINvOI=;
- b=K5lmt6V2fGTilCiuNMfUZI4fLcEjGi1fy/LvB7i1uwgrNyfSDsZ5u4tqArPqAPJSWW
- M9GFpCLMrunGnWhcHdDuIhZHGrX+oNohpIe2fLfIelYszMCCqm4qAFUMk0j5qtbm4OIm
- FOhrY4CMZonE3pK78LZkCkJQwbMTt5L/GDKJH08FluG6hjN5177eW+qT8ZTcgH3n8izx
- GCHh4D9z64fQCTbDEF73p/kXJYR+YESA0iZlHu4d/9+gfyoKB+RzOxAraXLoLySNOGY0
- ht9JjkqQerxA7iqYZ6wzFJGGItIqdos03htvEIq/sJBv5ESUUvF6reazRBjeeJesBriG
- 2LmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685554455; x=1688146455;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YWF1WEFVEDNFVwf4rvHb/PtCZTNHIffH0745yjINvOI=;
- b=BuOuOYNcC6+VeoRNK+8BBnU+S+rbJ1AQls0MJDKlvwHZsZoqdYbZC5fqlYDh8+3U3w
- DQx8s9pkSXli0Hx4Lmq0lQ32AUC0QdfhQPtLI0+Q1mRBFyJi4B/M4Kn0MpuRacmlmn5P
- JCeGXl3wmQELalDkHTye9RLZ9csaAhpzZKzzli67fBOsv6kySSOwalwMKDnkbZKgz55w
- ft2R4jLIXfIRmgA8HssSO8IBSqIW0r3VDgX/9r4m9/tyflz4PpKhpRL9CYOiqaHmhpYs
- IqWiPacCgKWUn5Nq7DPq7IObAOpAqTR5ALdPshShFPU/+U4FV0lcKU8Aa7K6wfTqjmeS
- obWg==
-X-Gm-Message-State: AC+VfDxoLeQV73vSstnnt9wwykOD6rh3U8yveXi+NLWXBAUJhWQBHJEO
- RFW4DZCdR2cnJd8LI2fWvNoFjw==
-X-Google-Smtp-Source: ACHHUZ7EqpHgf0vOKmThQH5OrtGLbCHW62Es606hEFpBRaFp7SVsuDBp/yWAiePWpm5SLdi5WhF9tw==
-X-Received: by 2002:adf:d84e:0:b0:2f8:2d4:74ef with SMTP id
- k14-20020adfd84e000000b002f802d474efmr4600532wrl.43.1685554455308; 
- Wed, 31 May 2023 10:34:15 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.146.12])
- by smtp.gmail.com with ESMTPSA id
- n13-20020adfe78d000000b003078681a1e8sm7473927wrm.54.2023.05.31.10.34.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 10:34:14 -0700 (PDT)
-Message-ID: <5b407848-2a4c-6447-6726-cf85f278f3e7@linaro.org>
-Date: Wed, 31 May 2023 19:34:12 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4Pnw-0006uq-Lo; Wed, 31 May 2023 13:40:13 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q4Pnp-0003HH-NJ; Wed, 31 May 2023 13:40:11 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0d:3786:0:640:7c97:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 464C961DAA;
+ Wed, 31 May 2023 20:39:55 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
+ [2a02:6b8:b081:a512::1:34])
+ by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id sdRjRd5MeSw0-b39VKY0B; Wed, 31 May 2023 20:39:54 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1685554794; bh=KsPuSIMh+7o+C2fPDGfJum0T8YZ/Arl/+7GOB6zbQ1I=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=P266/+/tC7bwdqZQhxscT8qiW8B7M6lt4piJakFXCrLOgSEJtE1KsMaxVHgpUVnzU
+ Wp9uK+9iU+pk3Fs7eBXfLIaS2tZUS7awNVg5eyW2LXFbY6pkSLfFoDRscw52Xuupxd
+ UV1CnlnxYeuM4l+13C1IVoU6AC7Wjx84ZePO6EwQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <1af7f692-b5de-c767-2568-1fc024a57133@yandex-team.ru>
+Date: Wed, 31 May 2023 20:39:53 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH] Use named constants in BCM props
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 12/14] nbd/client: Request extended headers during
+ negotiation
 Content-Language: en-US
-To: Sergey Kambalin <serg.oker@gmail.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Sergey Kambalin <sergey.kambalin@auriga.com>
-References: <20230531155258.8361-1-sergey.kambalin@auriga.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531155258.8361-1-sergey.kambalin@auriga.com>
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-13-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230515195343.1915857-13-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,63 +77,363 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Sergey,
+On 15.05.23 22:53, Eric Blake wrote:
+> All the pieces are in place for a client to finally request extended
+> headers.  Note that we must not request extended headers when qemu-nbd
 
-On 31/5/23 17:52, Sergey Kambalin wrote:
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+why must not? It should gracefully report ENOTSUP? Or not?
+
+> is used to connect to the kernel module (as nbd.ko does not expect
+> them), but there is no harm in all other clients requesting them.
+> 
+> Extended headers are not essential to the information collected during
+> 'qemu-nbd --list', but probing for it gives us one more piece of
+> information in that output.  Update the iotests affected by the new
+> line of output.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 > ---
->   hw/misc/bcm2835_property.c            | 120 ++++++++++---------
->   include/hw/arm/raspi_platform.h       |   6 +
->   include/hw/misc/raspberrypi-fw-defs.h | 163 ++++++++++++++++++++++++++
->   3 files changed, 236 insertions(+), 53 deletions(-)
->   create mode 100644 include/hw/misc/raspberrypi-fw-defs.h
+>   block/nbd.c                                   |  5 +--
+>   nbd/client-connection.c                       |  2 +-
+>   nbd/client.c                                  | 38 ++++++++++++-------
+>   qemu-nbd.c                                    |  3 ++
+>   tests/qemu-iotests/223.out                    |  6 +++
+>   tests/qemu-iotests/233.out                    |  5 +++
+>   tests/qemu-iotests/241.out                    |  3 ++
+>   tests/qemu-iotests/307.out                    |  5 +++
+>   .../tests/nbd-qemu-allocation.out             |  1 +
+>   9 files changed, 51 insertions(+), 17 deletions(-)
+> 
+> diff --git a/block/nbd.c b/block/nbd.c
+> index 150dfe7170c..db107ff0806 100644
+> --- a/block/nbd.c
+> +++ b/block/nbd.c
+> @@ -1146,10 +1146,9 @@ static int coroutine_fn nbd_co_receive_blockstatus_reply(BDRVNBDState *s,
+> 
+>           switch (chunk->type) {
+>           case NBD_REPLY_TYPE_BLOCK_STATUS_EXT:
+> -            wide = true;
+> -            /* fallthrough */
+>           case NBD_REPLY_TYPE_BLOCK_STATUS:
+> -            if (s->info.extended_headers != wide) {
+> +            wide = chunk->type == NBD_REPLY_TYPE_BLOCK_STATUS_EXT;
+> +            if ((s->info.header_style == NBD_HEADER_EXTENDED) != wide) {
 
+O, that's a part of previous commit. Also, initialization of wide to false becomes unneeded.
 
-> diff --git a/include/hw/arm/raspi_platform.h b/include/hw/arm/raspi_platform.h
-> index 4a56dd4b89..92a317950a 100644
-> --- a/include/hw/arm/raspi_platform.h
-> +++ b/include/hw/arm/raspi_platform.h
-> @@ -170,4 +170,10 @@
->   #define INTERRUPT_ILLEGAL_TYPE0        6
->   #define INTERRUPT_ILLEGAL_TYPE1        7
->   
-> +/* Clock rates */
-> +#define RPI_FIRMWARE_EMMC_CLK_RATE    50000000
-> +#define RPI_FIRMWARE_UART_CLK_RATE    3000000
-> +#define RPI_FIRMWARE_CORE_CLK_RATE    350000000
-> +#define RPI_FIRMWARE_DEFAULT_CLK_RATE 700000000
+>                   trace_nbd_extended_headers_compliance("block_status");
+>               }
+>               if (received) {
+> diff --git a/nbd/client-connection.c b/nbd/client-connection.c
+> index 62d75af0bb3..8e0606cadf0 100644
+> --- a/nbd/client-connection.c
+> +++ b/nbd/client-connection.c
+> @@ -93,7 +93,7 @@ NBDClientConnection *nbd_client_connection_new(const SocketAddress *saddr,
+>           .do_negotiation = do_negotiation,
+> 
+>           .initial_info.request_sizes = true,
+> -        .initial_info.header_style = NBD_HEADER_STRUCTURED,
+> +        .initial_info.header_style = NBD_HEADER_EXTENDED,
+>           .initial_info.base_allocation = true,
+>           .initial_info.x_dirty_bitmap = g_strdup(x_dirty_bitmap),
+>           .initial_info.name = g_strdup(export_name ?: "")
+> diff --git a/nbd/client.c b/nbd/client.c
+> index e5db3c8b79d..7edddfd2f83 100644
+> --- a/nbd/client.c
+> +++ b/nbd/client.c
+> @@ -879,11 +879,12 @@ static int nbd_list_meta_contexts(QIOChannel *ioc,
+>    *          1: server is newstyle, but can only accept EXPORT_NAME
+>    *          2: server is newstyle, but lacks structured replies
+>    *          3: server is newstyle and set up for structured replies
+> + *          4: server is newstyle and set up for extended headers
+>    */
+>   static int nbd_start_negotiate(AioContext *aio_context, QIOChannel *ioc,
+>                                  QCryptoTLSCreds *tlscreds,
+>                                  const char *hostname, QIOChannel **outioc,
+> -                               bool structured_reply, bool *zeroes,
+> +                               NBDHeaderStyle style, bool *zeroes,
+>                                  Error **errp)
+>   {
+>       ERRP_GUARD();
+> @@ -961,15 +962,23 @@ static int nbd_start_negotiate(AioContext *aio_context, QIOChannel *ioc,
+>           if (fixedNewStyle) {
+>               int result = 0;
+> 
+> -            if (structured_reply) {
+> +            if (style >= NBD_HEADER_EXTENDED) {
+> +                result = nbd_request_simple_option(ioc,
+> +                                                   NBD_OPT_EXTENDED_HEADERS,
+> +                                                   false, errp);
+> +                if (result) {
+> +                    return result < 0 ? -EINVAL : 4;
+> +                }
+> +            }
+> +            if (style >= NBD_HEADER_STRUCTURED) {
+>                   result = nbd_request_simple_option(ioc,
+>                                                      NBD_OPT_STRUCTURED_REPLY,
+>                                                      false, errp);
+> -                if (result < 0) {
+> -                    return -EINVAL;
+> +                if (result) {
+> +                    return result < 0 ? -EINVAL : 3;
+>                   }
+>               }
+> -            return 2 + result;
+> +            return 2;
+>           } else {
+>               return 1;
+>           }
+> @@ -1031,8 +1040,7 @@ int nbd_receive_negotiate(AioContext *aio_context, QIOChannel *ioc,
+>       trace_nbd_receive_negotiate_name(info->name);
+> 
+>       result = nbd_start_negotiate(aio_context, ioc, tlscreds, hostname, outioc,
+> -                                 info->header_style >= NBD_HEADER_STRUCTURED,
+> -                                 &zeroes, errp);
+> +                                 info->header_style, &zeroes, errp);
+> 
+>       info->header_style = NBD_HEADER_SIMPLE;
+>       info->base_allocation = false;
+> @@ -1041,8 +1049,10 @@ int nbd_receive_negotiate(AioContext *aio_context, QIOChannel *ioc,
+>       }
+> 
+>       switch (result) {
+> +    case 4: /* newstyle, with extended headers */
+>       case 3: /* newstyle, with structured replies */
+> -        info->header_style = NBD_HEADER_STRUCTURED;
+> +        /* Relies on encoding of _STRUCTURED and _EXTENDED */
+> +        info->header_style = result - 2;
 
-Are these VideoCore constants?
+I'd prefer explicit
 
->   #endif
-> diff --git a/include/hw/misc/raspberrypi-fw-defs.h b/include/hw/misc/raspberrypi-fw-defs.h
-> new file mode 100644
-> index 0000000000..4551fe7450
-> --- /dev/null
-> +++ b/include/hw/misc/raspberrypi-fw-defs.h
-> @@ -0,0 +1,163 @@
-> +/*
-> + * Raspberry Pi firmware definitions
-> + *
-> + * Copyright (C) 2022  Auriga LLC, based on Linux kernel
-> + *   `include/soc/bcm2835/raspberrypi-firmware.h` (Copyright © 2015 Broadcom)
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+info->header_style = (result == 4 ? NBD_HEADER_EXTENDED : NBD_HEADER_STRUCTURED);
+
+with no comment
+
+>           if (base_allocation) {
+>               result = nbd_negotiate_simple_meta_context(ioc, info, errp);
+>               if (result < 0) {
+> @@ -1151,8 +1161,8 @@ int nbd_receive_export_list(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+>       QIOChannel *sioc = NULL;
+> 
+>       *info = NULL;
+> -    result = nbd_start_negotiate(NULL, ioc, tlscreds, hostname, &sioc, true,
+> -                                 NULL, errp);
+> +    result = nbd_start_negotiate(NULL, ioc, tlscreds, hostname, &sioc,
+> +                                 NBD_HEADER_EXTENDED, NULL, errp);
+>       if (tlscreds && sioc) {
+>           ioc = sioc;
+>       }
+> @@ -1160,6 +1170,7 @@ int nbd_receive_export_list(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+>       switch (result) {
+>       case 2:
+>       case 3:
+> +    case 4:
+>           /* newstyle - use NBD_OPT_LIST to populate array, then try
+>            * NBD_OPT_INFO on each array member. If structured replies
+>            * are enabled, also try NBD_OPT_LIST_META_CONTEXT. */
+> @@ -1180,8 +1191,9 @@ int nbd_receive_export_list(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+>               memset(&array[count - 1], 0, sizeof(*array));
+>               array[count - 1].name = name;
+>               array[count - 1].description = desc;
+> -            array[count - 1].header_style = result == 3 ?
+> -                NBD_HEADER_STRUCTURED : NBD_HEADER_SIMPLE;
 > +
-> +#ifndef INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
-> +#define INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
-> +
-> +#include "qemu/osdep.h"
+> +            /* Depends on values of _SIMPLE, _STRUCTURED, and _EXTENDED */
+> +            array[count - 1].header_style = result - 2;
 
-See https://qemu-project.gitlab.io/qemu/devel/style.html#include-directives:
+Personally, I don't like enum-based arithmetics.. It's something to be very careful with and check enum definition every time.
 
-   Do not include “qemu/osdep.h” from header files since the .c
-   file will have already included it.
+Maybe, add enum NBDConnectionStyle : NBD_STYLE_OLD, NBD_STYLE_EXPORT_NAME, NBD_STYLE_SIMPLE, NBD_STYLE_STRUCTURED, NBD_STYLE_EXTENDED,
+and a simple function nbd_con_style_to_hdr_style: NBDConnectionStyle -> NBDHeaderStyle
 
-Otherwise your patch looks good!
+Or, better, nbd_start_negotiate() may return only 0/1/2 as success values, and additionally set OUT argument *header_style?
 
-I hope you are using the 'git cherry-pick -p' command to split
-your previous big patch in multiple smaller, and not rewritting
-the patches from scratch.
+And anyway, 0/1/2/3/4 - sounds like too much magic numeric logic
+
+
+(I feel, that's all a kind of taste and don't want to insist anyway)
+
+>           }
+> 
+>           for (i = 0; i < count; i++) {
+> @@ -1197,7 +1209,7 @@ int nbd_receive_export_list(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+>                   break;
+>               }
+> 
+> -            if (result == 3 &&
+> +            if (result >= 3 &&
+>                   nbd_list_meta_contexts(ioc, &array[i], errp) < 0) {
+>                   goto out;
+>               }
+> diff --git a/qemu-nbd.c b/qemu-nbd.c
+> index 6ff45308a9c..8c35442626a 100644
+> --- a/qemu-nbd.c
+> +++ b/qemu-nbd.c
+> @@ -238,6 +238,9 @@ static int qemu_nbd_client_list(SocketAddress *saddr, QCryptoTLSCreds *tls,
+>               printf("  opt block: %u\n", list[i].opt_block);
+>               printf("  max block: %u\n", list[i].max_block);
+>           }
+> +        printf("  transaction size: %s\n",
+> +               list[i].header_style >= NBD_HEADER_EXTENDED ?
+> +               "64-bit" : "32-bit");
+>           if (list[i].n_contexts) {
+>               printf("  available meta contexts: %d\n", list[i].n_contexts);
+>               for (j = 0; j < list[i].n_contexts; j++) {
+> diff --git a/tests/qemu-iotests/223.out b/tests/qemu-iotests/223.out
+> index 26fb347c5da..b98582c38ea 100644
+> --- a/tests/qemu-iotests/223.out
+> +++ b/tests/qemu-iotests/223.out
+> @@ -87,6 +87,7 @@ exports available: 3
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:dirty-bitmap:b
+> @@ -97,6 +98,7 @@ exports available: 3
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:dirty-bitmap:b2
+> @@ -106,6 +108,7 @@ exports available: 3
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:dirty-bitmap:b3
+> @@ -206,6 +209,7 @@ exports available: 3
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:dirty-bitmap:b
+> @@ -216,6 +220,7 @@ exports available: 3
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:dirty-bitmap:b2
+> @@ -225,6 +230,7 @@ exports available: 3
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:dirty-bitmap:b3
+> diff --git a/tests/qemu-iotests/233.out b/tests/qemu-iotests/233.out
+> index 237c82767ea..33cb622ecf0 100644
+> --- a/tests/qemu-iotests/233.out
+> +++ b/tests/qemu-iotests/233.out
+> @@ -53,6 +53,11 @@ exports available: 1
+>    export: ''
+>     size:  67108864
+>     min block: 1
+> +  opt block: 4096
+> +  max block: 33554432
+> +  transaction size: 64-bit
+> +  available meta contexts: 1
+> +   base:allocation
+> 
+>   == check TLS with different CA fails ==
+>   qemu-img: Could not open 'driver=nbd,host=127.0.0.1,port=PORT,tls-creds=tls0': The certificate hasn't got a known issuer
+> diff --git a/tests/qemu-iotests/241.out b/tests/qemu-iotests/241.out
+> index 88e8cfcd7e2..a9efb876521 100644
+> --- a/tests/qemu-iotests/241.out
+> +++ b/tests/qemu-iotests/241.out
+> @@ -6,6 +6,7 @@ exports available: 1
+>    export: ''
+>     size:  1024
+>     min block: 1
+> +  transaction size: 64-bit
+>   [{ "start": 0, "length": 1000, "depth": 0, "present": true, "zero": false, "data": true, "offset": OFFSET},
+>   { "start": 1000, "length": 24, "depth": 0, "present": true, "zero": true, "data": false, "offset": OFFSET}]
+>   1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
+> @@ -16,6 +17,7 @@ exports available: 1
+>    export: ''
+>     size:  1024
+>     min block: 512
+> +  transaction size: 64-bit
+>   [{ "start": 0, "length": 1024, "depth": 0, "present": true, "zero": false, "data": true, "offset": OFFSET}]
+>   1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
+>   WARNING: Image format was not specified for 'TEST_DIR/t.raw' and probing guessed raw.
+> @@ -28,6 +30,7 @@ exports available: 1
+>    export: ''
+>     size:  1024
+>     min block: 1
+> +  transaction size: 64-bit
+>   [{ "start": 0, "length": 1000, "depth": 0, "present": true, "zero": false, "data": true, "offset": OFFSET},
+>   { "start": 1000, "length": 24, "depth": 0, "present": true, "zero": true, "data": false, "offset": OFFSET}]
+>   1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
+> diff --git a/tests/qemu-iotests/307.out b/tests/qemu-iotests/307.out
+> index 390f05d1b78..2b9a6a67a1a 100644
+> --- a/tests/qemu-iotests/307.out
+> +++ b/tests/qemu-iotests/307.out
+> @@ -19,6 +19,7 @@ exports available: 1
+>     min block: XXX
+>     opt block: XXX
+>     max block: XXX
+> +  transaction size: 64-bit
+>     available meta contexts: 1
+>      base:allocation
+> 
+> @@ -47,6 +48,7 @@ exports available: 1
+>     min block: XXX
+>     opt block: XXX
+>     max block: XXX
+> +  transaction size: 64-bit
+>     available meta contexts: 1
+>      base:allocation
+> 
+> @@ -78,6 +80,7 @@ exports available: 2
+>     min block: XXX
+>     opt block: XXX
+>     max block: XXX
+> +  transaction size: 64-bit
+>     available meta contexts: 1
+>      base:allocation
+>    export: 'export1'
+> @@ -87,6 +90,7 @@ exports available: 2
+>     min block: XXX
+>     opt block: XXX
+>     max block: XXX
+> +  transaction size: 64-bit
+>     available meta contexts: 1
+>      base:allocation
+> 
+> @@ -113,6 +117,7 @@ exports available: 1
+>     min block: XXX
+>     opt block: XXX
+>     max block: XXX
+> +  transaction size: 64-bit
+>     available meta contexts: 1
+>      base:allocation
+> 
+> diff --git a/tests/qemu-iotests/tests/nbd-qemu-allocation.out b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
+> index 9d938db24e6..659276032b0 100644
+> --- a/tests/qemu-iotests/tests/nbd-qemu-allocation.out
+> +++ b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
+> @@ -21,6 +21,7 @@ exports available: 1
+>     min block: 1
+>     opt block: 4096
+>     max block: 33554432
+> +  transaction size: 64-bit
+>     available meta contexts: 2
+>      base:allocation
+>      qemu:allocation-depth
+
+-- 
+Best regards,
+Vladimir
+
 
