@@ -2,82 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D07718212
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA775718216
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:38:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4M0x-0002Rn-0D; Wed, 31 May 2023 09:37:23 -0400
+	id 1q4M18-0002S7-8V; Wed, 31 May 2023 09:37:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4M0s-0002RF-ES
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:37:19 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4M0q-0007Se-Pl
- for qemu-devel@nongnu.org; Wed, 31 May 2023 09:37:18 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-30ae5f2ac94so4196610f8f.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:37:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685540235; x=1688132235;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w6N9RJJmIUUpPqiihXzaDd1Rlc3oJrQsIFXe5vOYn0M=;
- b=dsH+wmAsKU2UWRLoY7SY4yZ1uV5bWNoFADeshowNEoP0b8Itla4yYsHbTzL3JV7mvs
- zgg/OklOP9ZBlHtQ/Kitz7ILW7mWKJ4KqvaflgYFp242htEFH97gcYWF79STZvgLhOKj
- Oq+C6212qGZAO25yanj4vnuNuoM0ZTlYYZwzICuKxy7V8tUBy/ecQbkAkL8VaETDOgnv
- lsD+kKzgZIuZUOgbFYk35N6IrmBt7D1EMBse7zHjjzHi9DPsYN0B4TAomemQgfeOfe4O
- 0k9z1jzo9fgwyvXeUWYSso5PrTzzXJOj0gBJTSyg2mbaMKYz09A6QEW5sDFKxPe5Qz1B
- +Tvw==
+ (Exim 4.90_1) (envelope-from <jjongsma@redhat.com>)
+ id 1q4M0u-0002RR-AR
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:37:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jjongsma@redhat.com>)
+ id 1q4M0s-0007Sk-Cx
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:37:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685540237;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/dkq6k6orcgofiAXe93Jjv/0SVZd7q+tUisrzzz1wps=;
+ b=Cb2AmQjTV6F6EzBoikB5mtTdSa0tYu3n82rnGxpunIhg4a84qTYE35pTDrhTd12mbQR+bL
+ 5h/hdgFyCcZIZFF9Eg5rqcssB393nDC0NVwh6LaQhqQdK0FTiwyhUhyGGQWUDjsfEitXxC
+ /yov/xefh6G8IXQgWgdQO4YlHTp6xEM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-120-rn1ROHN_PPit4k7JyzRKFg-1; Wed, 31 May 2023 09:37:16 -0400
+X-MC-Unique: rn1ROHN_PPit4k7JyzRKFg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6237c937691so6943866d6.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:37:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1685540235; x=1688132235;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w6N9RJJmIUUpPqiihXzaDd1Rlc3oJrQsIFXe5vOYn0M=;
- b=HJieCTu/TZlLlVAcdaU6YCroncFTf3h/hE1/ZEFdBevnVI7tULcppAPJv/JZuqnaT9
- SBBaL6geQ+w+QiEm242LDEEgze6cbUn9qvNfPsKkD/J27iMQg3wthRHDXEFC06ffceh+
- ME8XoULgJA1HwxOFBZGOAo2kK8k3nFk8LsEZkZPTr4eHfz70iso6nNShMKO5nT9x9S9T
- kLhAliao5AsYme1hMfr6s2/r864lKjUG4mhiNba2JPSNtoR1ZGsAA6MWd1XtQehua6nM
- 0CDhvZhvFr6DSnTMYDfD3lcTX28Xbj2Ktx+BuT697S4N1lqzC0k9ksoY/UiCqq0gO0Yb
- wzeg==
-X-Gm-Message-State: AC+VfDyYaxQhb6cj8IWD/ZkZs0dB4XRM6j6tegrf4nhQlCf8LO4KwfAT
- qnhlytGZZ29Ssc4zbRFrb/sxMqfmZ909Ks1DTZM=
-X-Google-Smtp-Source: ACHHUZ63X7rVbp/VtUtIhaodsrO0RR6ropRCnP8mORGX/73FLZZfsP19/x49IgZMnC/CRz5dj5dZBw==
-X-Received: by 2002:a05:6000:1003:b0:2fb:1d3a:93ff with SMTP id
- a3-20020a056000100300b002fb1d3a93ffmr3891572wrx.61.1685540235211; 
+ bh=/dkq6k6orcgofiAXe93Jjv/0SVZd7q+tUisrzzz1wps=;
+ b=R1x2bx71+VoUJuR5a4dw+tiil6qjSGNfMU3n15aM0UeJGVILc/dz7+o4VyW30eIQvw
+ hJbbmk2A/uPnDq0LZ51lXCWuqQH41fltDcOz/7qoziJ/6/aGVjfFZ8fhcGYO/3JzWSIA
+ Qw6oPTSwzG+pJGx3JU9naL6NR4RhYOecBkHaVaHvmE+m/voE0rw16stCoM8cAEsRZOi2
+ x76wFT6mkoBHkjhs5I3Xx5KvMl/ApJvIKbGgUXjt+q8EnODcYh6lArTzqyr1YrbiDCX5
+ ZYExd4yNFipt+qkWW1l5bvNSHZRmqFFpmP05PlGK1yzdWsr2exXP8OsZX5jD2X4gzyRz
+ fEaQ==
+X-Gm-Message-State: AC+VfDwgP5jvE//u+bTtRCndLAe8VzcnRWhYxl46eayTqdxymZ963nQb
+ AvhIqATIZin7iRHMj4pT4cJj7ojh3nfFtXUcIVZt6k4BXQZWZokBudMeFbXffRaqXrijYZ2NTpf
+ lFESvlPV5fDnMbFg=
+X-Received: by 2002:a05:6214:21a5:b0:626:7e5:ddc5 with SMTP id
+ t5-20020a05621421a500b0062607e5ddc5mr5503332qvc.16.1685540235404; 
  Wed, 31 May 2023 06:37:15 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.146.12])
- by smtp.gmail.com with ESMTPSA id
- j12-20020a5d564c000000b0030af31c8c63sm6159361wrw.47.2023.05.31.06.37.14
+X-Google-Smtp-Source: ACHHUZ5wvHafzLtHsn3B7gKHH2i6Yy3KYMuPEecf/DLj5x6UgbbYN8yB+N1BKhW3ftibdWYFlyQJrg==
+X-Received: by 2002:a05:6214:21a5:b0:626:7e5:ddc5 with SMTP id
+ t5-20020a05621421a500b0062607e5ddc5mr5503306qvc.16.1685540235161; 
+ Wed, 31 May 2023 06:37:15 -0700 (PDT)
+Received: from [192.168.0.245] (207-153-48-138.fttp.usinternet.com.
+ [207.153.48.138]) by smtp.gmail.com with ESMTPSA id
+ z5-20020ad44145000000b005e37909a7fcsm4030195qvp.13.2023.05.31.06.37.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
  Wed, 31 May 2023 06:37:14 -0700 (PDT)
-Message-ID: <e5edd116-b6cf-8bf4-7a9f-2a827355994a@linaro.org>
-Date: Wed, 31 May 2023 15:37:13 +0200
+Message-ID: <3301427e-0c93-287d-fdfb-3be3c532c9b6@redhat.com>
+Date: Wed, 31 May 2023 08:37:13 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 03/23] q800: introduce Q800MachineState
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v5 0/2] block/blkio: support fd passing for
+ virtio-blk-vhost-vdpa driver
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-4-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531125400.288917-4-mark.cave-ayland@ilande.co.uk>
+To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+References: <20230530071941.8954-1-sgarzare@redhat.com>
+From: Jonathon Jongsma <jjongsma@redhat.com>
+In-Reply-To: <20230530071941.8954-1-sgarzare@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jjongsma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,101 +109,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 14:53, Mark Cave-Ayland wrote:
-> This provides an overall container and owner for Machine-related objects such
-> as MemoryRegions.
+On 5/30/23 2:19 AM, Stefano Garzarella wrote:
+> v5:
+> - moved `features` to the object level to simplify libvirt code [Jonathon]
+> - wrapped a line too long in the documentation [Markus]
+> - added Stefan R-b tags
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-> ---
->   MAINTAINERS            |  1 +
->   hw/m68k/q800.c         |  2 ++
->   include/hw/m68k/q800.h | 37 +++++++++++++++++++++++++++++++++++++
->   3 files changed, 40 insertions(+)
->   create mode 100644 include/hw/m68k/q800.h
+> v4: https://lore.kernel.org/qemu-devel/20230526150304.158206-1-sgarzare@redhat.com/
+> - added patch 02 to allow libvirt to discover we support fdset [Markus]
+> - modified the commit description of patch 01
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 4b025a7b63..51e62efe1b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1234,6 +1234,7 @@ F: include/hw/misc/mac_via.h
->   F: include/hw/nubus/*
->   F: include/hw/display/macfb.h
->   F: include/hw/block/swim.h
-> +F: include/hw/m68k/q800.h
->   
->   virt
->   M: Laurent Vivier <laurent@vivier.eu>
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index bb9e857632..93a3f96991 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -38,6 +38,7 @@
->   #include "standard-headers/asm-m68k/bootinfo.h"
->   #include "standard-headers/asm-m68k/bootinfo-mac.h"
->   #include "bootinfo.h"
-> +#include "hw/m68k/q800.h"
->   #include "hw/misc/mac_via.h"
->   #include "hw/input/adb.h"
->   #include "hw/nubus/mac-nubus-bridge.h"
-> @@ -749,6 +750,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
->   static const TypeInfo q800_machine_typeinfo = {
->       .name       = MACHINE_TYPE_NAME("q800"),
->       .parent     = TYPE_MACHINE,
-> +    .instance_size = sizeof(Q800MachineState),
->       .class_init = q800_machine_class_init,
->   };
->   
-> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-> new file mode 100644
-> index 0000000000..76ea6560b2
-> --- /dev/null
-> +++ b/include/hw/m68k/q800.h
-> @@ -0,0 +1,37 @@
-> +/*
-> + * QEMU Motorla 680x0 Macintosh hardware System Emulator
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-> + */
-> +
-> +#ifndef HW_Q800_H
-> +#define HW_Q800_H
-> +
-> +/*
-> + * The main Q800 machine
-> + */
-> +
-> +struct Q800MachineState {
-> +    MachineState parent_obj;
+> v3: https://lore.kernel.org/qemu-devel/20230511091527.46620-1-sgarzare@redhat.com/
+> - use qemu_open() on `path` to simplify libvirt code [Jonathon]
+> - remove patch 01 since we are not using monitor_fd_param() anymore
+> 
+> v2: https://lore.kernel.org/qemu-devel/20230504092843.62493-1-sgarzare@redhat.com/
+> - added patch 01 to use monitor_fd_param() in the blkio module
+> - use monitor_fd_param() to parse the fd like vhost devices [Stefan]
+> 
+> v1: https://lore.kernel.org/qemu-devel/20230502145050.224615-1-sgarzare@redhat.com/
+> 
+> The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the new
+> 'fd' property. Let's expose this to the user, so the management layer
+> can pass the file descriptor of an already opened vhost-vdpa character
+> device. This is useful especially when the device can only be accessed
+> with certain privileges.
+> 
+> Stefano Garzarella (2):
+>    block/blkio: use qemu_open() to support fd passing for virtio-blk
+>    qapi: add '@fdset' feature for BlockdevOptionsVirtioBlkVhostVdpa
+> 
+>   meson.build          |  4 ++++
+>   qapi/block-core.json |  6 +++++
+>   block/blkio.c        | 53 ++++++++++++++++++++++++++++++++++++--------
+>   3 files changed, 54 insertions(+), 9 deletions(-)
+> 
 
-Declared in "hw/boards.h",
 
-> +};
-> +
-> +#define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
-> +OBJECT_DECLARE_SIMPLE_TYPE(Q800MachineState, Q800_MACHINE)
+Looks good from my perspective as a libvirt developer.
 
-defined in "qom/object.h".
-
-> +#endif
-
-With the 2 missing includes:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks,
+Jonathon
 
 
