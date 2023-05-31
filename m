@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59424718E92
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 00:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA40718E98
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 00:36:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4UON-0002yC-0p; Wed, 31 May 2023 18:34:07 -0400
+	id 1q4UOR-0003Mm-H2; Wed, 31 May 2023 18:34:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UOL-0002sc-KT
- for qemu-devel@nongnu.org; Wed, 31 May 2023 18:34:05 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UOO-0003Ae-RC
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 18:34:08 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UOH-000541-D5
- for qemu-devel@nongnu.org; Wed, 31 May 2023 18:34:04 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f60e730bf2so1773465e9.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 15:34:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UOM-00054j-Kn
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 18:34:08 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3f603ff9c02so1845285e9.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 15:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685572440; x=1688164440;
+ d=linaro.org; s=google; t=1685572445; x=1688164445;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=huoGF1vYpA+J+Saxjh1v1lIbOm2BUrExA4kLN7TpUYc=;
- b=XZ/ae1B+AbGLfAiYT+qvhpC/hTbBlAdYbyxYK/eCFXw+MZswDkKYkq7h8JRPg4MLqq
- nODQkjZA6MWrJXbqtmKLuZ3W5hULG8Q9a9PVg0g+/8cB4Dor5CDrhDx9RuNfzDAZWraW
- deMLKuOjI4GOzUBJ7zuPBfZeoDwHqIRwc4VQrHmYzWpilCO0QlQ91HjsaZtHMAtASpDh
- MNsO2KNHEjNqbLXsIBSmM9eC6TMKRvRP4iF678pDHMvkgBeBvE27fVKeO0zoSnWdDXmH
- +CP+I5F55TOQSBaPRg2ZC8uFuToGmDVup7LOjGOOH5Wwv3Rn9DpLDNcdqtMCTkMbNSZ4
- caiw==
+ bh=b5ueUgIQTlD0vpS7sELdcFGXSEew10rN9NLHJA/jJ1g=;
+ b=jHMY5DoTxQ7YAUVMoM48yiG7puIlcKtdgWhlj2cFlzMDgEbz00rQ4sg1k1sZwi9FKO
+ FgBsAKh2MXxTclcZn89RPydJOA9wNCyABqDCLCq7Ecfd3wx7XBY1oCzwNaFY/UW06hFj
+ fUrRv9ApXiEVg2MWxfgFbNsnyyVefp/AHy0dl6WrmoAkxVKMjniJzY3ZCdG5rtemNPwD
+ mU/ARzFyn/2cmcddYGAraxK/74rdNrtXDb2Xhd/xKDqTT6rvYqCi3/xowsn7/96ASkCy
+ rXyKBPuV6uA2tYwHX34JNzCaUSJf6bcCT8Slxu5GDYufDWGecwY38YbNxVQ7fmJc6AFA
+ VWoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685572440; x=1688164440;
+ d=1e100.net; s=20221208; t=1685572445; x=1688164445;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=huoGF1vYpA+J+Saxjh1v1lIbOm2BUrExA4kLN7TpUYc=;
- b=YqqvSAgRw+MnPn8Dm16RC1D6FNHPr86DSna76Q9EEkSoMcUwNpHTCv0QgULZ+qtIco
- /9keToLiAzPaBaZskBrHTEd0jQufgBBxmOi3x29kfe7yQ9YaGmBc4eI60UwJvvR/FF4I
- ZxnzqSgjd58zlRevykMnmsbeJwqrxl09EFGcLbwjDYHu4NcA+09ANXBmJky/XGRW4dz9
- XPFvj3eu3iJPjvGAvydgC8bG50RkxNinV3Cz2ZwsDgu4iSzRi777+UY97+PGEVWQd2gN
- FnfItp/JVlh64wYZbKt7GnPosf9Gyw6dEPGSJyuL00gQ7HgRE8og6IkkhVS0UFFJppxq
- Au9Q==
-X-Gm-Message-State: AC+VfDxVMtmb3q73z8rxrwvAReTMlLibDZqXzhhhulJJHTqVbaIJNdJ0
- 2yoH2CS2ou7MPAkzVldC720eF1Ft7WA38TEIdRM=
-X-Google-Smtp-Source: ACHHUZ5mGnanumaW7KPt9mwiynik5qTF/iqDxogXPrviH1DfOIxFOW5uSg4t118Tu/9DQ1Vfb2xV/Q==
-X-Received: by 2002:a05:600c:114f:b0:3f5:ce4:6c3f with SMTP id
- z15-20020a05600c114f00b003f50ce46c3fmr611316wmz.7.1685572439802; 
- Wed, 31 May 2023 15:33:59 -0700 (PDT)
+ bh=b5ueUgIQTlD0vpS7sELdcFGXSEew10rN9NLHJA/jJ1g=;
+ b=bybk8gfV2mACFzH7feqCOJnLPPasrKbpQdqyEPCNNcYf4ULhJ5WI5AgHI1uVRtmPmh
+ hUbGSxFjU5s/8xybPuiTidUaBB7aglL7vYbHER33NXvzia+u35MDF6imX00C5oQYJD4g
+ Y1YT7K2px3nLfZkoBImnoWFDLnhUUzupbgnBIRAUDQJ2oG5CqPNi/oqCEecIa5XNJn4f
+ 3m6WUuG98eSGq0fZPaCwuClK3fmD6MkWOg805IxP08Z6DUBNQ+6GtDxRE6oDZrexTqCu
+ BSAwFsBOylZpu3pePEHzNnj6YJUXLwlOpe8aIc5SHgS9psYLrOrE4Fx4D8naEkiL3RcI
+ l9hg==
+X-Gm-Message-State: AC+VfDxl9//EZpoG0ng/S91RBe+qiZWcGGahDVuDnGF5yjLkNmu/jibr
+ Ex+QEVkNtot6VKWQmB34e90kl9g44oMeT0T3kRM=
+X-Google-Smtp-Source: ACHHUZ67nu2QLfu/wqLt/VlORD5mlqkW+LdcKRzena704TjAHhrnMu+wqgq48bniC2t1X3LAoetOLw==
+X-Received: by 2002:a05:600c:3650:b0:3f6:2d8:4823 with SMTP id
+ y16-20020a05600c365000b003f602d84823mr538248wmq.3.1685572445190; 
+ Wed, 31 May 2023 15:34:05 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- b9-20020adfe309000000b003079986fd71sm8325422wrj.88.2023.05.31.15.33.58
+ n23-20020a7bc5d7000000b003f6041f5a6csm114610wmk.12.2023.05.31.15.34.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 31 May 2023 15:33:59 -0700 (PDT)
+ Wed, 31 May 2023 15:34:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,17 +62,17 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/7] hw/sysbus: Introduce sysbus_init_irqs()
-Date: Thu,  1 Jun 2023 00:33:37 +0200
-Message-Id: <20230531223341.34827-4-philmd@linaro.org>
+Subject: [PATCH 4/7] hw/usb/hcd-xhci: Use sysbus_init_irqs()
+Date: Thu,  1 Jun 2023 00:33:38 +0200
+Message-Id: <20230531223341.34827-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230531223341.34827-1-philmd@linaro.org>
 References: <20230531223341.34827-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,51 +95,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SysBus API currently only provides a method to initialize
-a single IRQ: sysbus_init_irq(). When we want to initialize
-multiple SysBus IRQs, we have to call this function multiple
-times. In order to allow further simplifications, introduce
-the sysbus_init_irqs() method.
+The SYSBUS_DEVICE_GPIO_IRQ definition should be internal to
+the SysBus API. Use the recently introduced sysbus_init_irqs()
+method to avoid using this internal definition.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/sysbus.h | 1 +
- hw/core/sysbus.c    | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/usb/hcd-xhci-sysbus.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
-index 3564b7b6a2..bc174b2dc3 100644
---- a/include/hw/sysbus.h
-+++ b/include/hw/sysbus.h
-@@ -70,6 +70,7 @@ typedef void FindSysbusDeviceFunc(SysBusDevice *sbdev, void *opaque);
- void sysbus_init_mmio(SysBusDevice *dev, MemoryRegion *memory);
- MemoryRegion *sysbus_mmio_get_region(SysBusDevice *dev, int n);
- void sysbus_init_irq(SysBusDevice *dev, qemu_irq *p);
-+void sysbus_init_irqs(SysBusDevice *dev, qemu_irq *p, unsigned count);
- void sysbus_pass_irq(SysBusDevice *dev, SysBusDevice *target);
- void sysbus_init_ioports(SysBusDevice *dev, uint32_t ioport, uint32_t size);
+diff --git a/hw/usb/hcd-xhci-sysbus.c b/hw/usb/hcd-xhci-sysbus.c
+index faf57b4797..e512849b34 100644
+--- a/hw/usb/hcd-xhci-sysbus.c
++++ b/hw/usb/hcd-xhci-sysbus.c
+@@ -40,9 +40,6 @@ static void xhci_sysbus_realize(DeviceState *dev, Error **errp)
+     if (!qdev_realize(DEVICE(&s->xhci), NULL, errp)) {
+         return;
+     }
+-    s->irq = g_new0(qemu_irq, s->xhci.numintrs);
+-    qdev_init_gpio_out_named(dev, s->irq, SYSBUS_DEVICE_GPIO_IRQ,
+-                             s->xhci.numintrs);
+     if (s->xhci.dma_mr) {
+         s->xhci.as =  g_malloc0(sizeof(AddressSpace));
+         address_space_init(s->xhci.as, s->xhci.dma_mr, NULL);
+@@ -50,6 +47,8 @@ static void xhci_sysbus_realize(DeviceState *dev, Error **errp)
+         s->xhci.as = &address_space_memory;
+     }
  
-diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
-index 35f902b582..a1b4c362c9 100644
---- a/hw/core/sysbus.c
-+++ b/hw/core/sysbus.c
-@@ -175,10 +175,15 @@ void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
-     sysbus_mmio_map_common(dev, n, addr, true, priority);
++    s->irq = g_new0(qemu_irq, s->xhci.numintrs);
++    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, s->xhci.numintrs);
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->xhci.mem);
  }
  
-+void sysbus_init_irqs(SysBusDevice *dev, qemu_irq *p, unsigned count)
-+{
-+    qdev_init_gpio_out_named(DEVICE(dev), p, SYSBUS_DEVICE_GPIO_IRQ, count);
-+}
-+
- /* Request an IRQ source.  The actual IRQ object may be populated later.  */
- void sysbus_init_irq(SysBusDevice *dev, qemu_irq *p)
- {
--    qdev_init_gpio_out_named(DEVICE(dev), p, SYSBUS_DEVICE_GPIO_IRQ, 1);
-+    sysbus_init_irqs(dev, p, 1);
- }
- 
- /* Pass IRQs from a target device.  */
 -- 
 2.38.1
 
