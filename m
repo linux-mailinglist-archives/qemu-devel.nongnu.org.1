@@ -2,84 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586A27176FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CED717729
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 08:51:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4FTO-0008Kr-LV; Wed, 31 May 2023 02:38:18 -0400
+	id 1q4Fem-0003gw-8Q; Wed, 31 May 2023 02:50:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q4FTL-0008Hb-1q
- for qemu-devel@nongnu.org; Wed, 31 May 2023 02:38:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
+ id 1q4Fdt-0003Xz-Bo; Wed, 31 May 2023 02:49:09 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q4FTJ-0003gz-DJ
- for qemu-devel@nongnu.org; Wed, 31 May 2023 02:38:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685515091;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bMoM3odhQ/OWVUI7PLYpKZMrIOS3ZoddrChJVCHjGN4=;
- b=BbTFvl9IfJ7YnbkTwo2sOO9k+OP5l0bpjPhozUaitn7U1QBLN4OmIakyW4fin2XV//0MKR
- ChwNjk5x7GGyESOCkNncDChAbKDNslr+ko6luMTN83KOx7XU4/QYxBiqx2+LYlCv6f6fmD
- aX9/0ABEnFaM8B6pqTnD6yhllR/2uDI=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-wVXD4AWqMbSFNj-IBKSNfQ-1; Wed, 31 May 2023 02:38:10 -0400
-X-MC-Unique: wVXD4AWqMbSFNj-IBKSNfQ-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-5689bcc5f56so41837867b3.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 23:38:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685515089; x=1688107089;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bMoM3odhQ/OWVUI7PLYpKZMrIOS3ZoddrChJVCHjGN4=;
- b=PmOb9Y+HSKmLiQgl10GDtkDHaEC5zwYs/MXfe0wBfxyOVc8mOfWx4J/Q0dDRl+j4Zx
- ZOLLO1ZnkO4eqYCChjtLaFfe3luo8Zs/zzfWYmWV1wv7CpLKodYlUpCG0SYyMIg/IeY3
- KHwc6zNkatwlB6DiomodKoNjg4qqjfResYM2tPb0GS02O8eK6vL9usTZ0e/UyyeXBTNQ
- XF78utGt0Dzr8erL6JBr1rmk5Pdzkf8232OCnXwFMZjiGEtGTf/n6NsnjFNZRonjDIj4
- 39vSpw0dPTeAfqOiq0Z4JwEapC8If/qBiZE1jyQW7EOTUpkqtyTMzZvp9ZEn0wOJHc0r
- 4dGQ==
-X-Gm-Message-State: AC+VfDzE+OI9mrTf0RV/OcYWz8Edz7xbQxbzCDmxW1rqjl7ZD82EwOoa
- 1wUDIh24Dh12sUCCH/la4K5c1iMno4QlB9m9R5e4H61JLIjf+wKmPwW8VtqtPjvke/jgdhM3w9C
- DycFl9uyIYdPuVu5VX/pVrHUweoJveYU=
-X-Received: by 2002:a81:8645:0:b0:565:f14b:6cdb with SMTP id
- w66-20020a818645000000b00565f14b6cdbmr5751980ywf.21.1685515089683; 
- Tue, 30 May 2023 23:38:09 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5RJU5xsf78TzwwxiJwB3X8cqMnoOGok0+qvDmgN7qD3I4qdLhg5hL3FELza5OPA+203aBnSeUm4rthM7mMTxM=
-X-Received: by 2002:a81:8645:0:b0:565:f14b:6cdb with SMTP id
- w66-20020a818645000000b00565f14b6cdbmr5751970ywf.21.1685515089463; Tue, 30
- May 2023 23:38:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=vahk=BU=kaod.org=clg@ozlabs.org>)
+ id 1q4Fdq-0005pD-Ma; Wed, 31 May 2023 02:49:08 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWKcD0GBxz4x48;
+ Wed, 31 May 2023 16:49:00 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWKc84LvVz4whk;
+ Wed, 31 May 2023 16:48:56 +1000 (AEST)
+Message-ID: <516d4f95-a070-a03c-317c-2276cd42e871@kaod.org>
+Date: Wed, 31 May 2023 08:48:53 +0200
 MIME-Version: 1.0
-References: <cover.1685359572.git.yin31149@gmail.com>
- <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
- <CACGkMEvza0nAWqbQ1-KiLGRRxSxYvJoTrtTgUPV-KQpSuJFB6g@mail.gmail.com>
-In-Reply-To: <CACGkMEvza0nAWqbQ1-KiLGRRxSxYvJoTrtTgUPV-KQpSuJFB6g@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 31 May 2023 08:37:33 +0200
-Message-ID: <CAJaqyWe7e4OAZU+-i73OQ76QtM3Kv0V0LrfCMEjgnNmMH=TGZQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] vdpa: Add vhost_vdpa_net_load_offloads
-To: Jason Wang <jasowang@redhat.com>
-Cc: Hawkins Jiawei <yin31149@gmail.com>, 18801353760@163.com,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 09/12] m25p80: Introduce an helper to retrieve the
+ BlockBackend of a device
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ Alistair Francis <alistair@alistair23.me>
+References: <20230508075859.3326566-1-clg@kaod.org>
+ <20230508075859.3326566-10-clg@kaod.org>
+ <5587a39e-1c17-2997-f679-d43a023149c6@linaro.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <5587a39e-1c17-2997-f679-d43a023149c6@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=vahk=BU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,84 +70,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 3:47=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Mon, May 29, 2023 at 9:18=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
-m> wrote:
-> >
-> > This patch introduces vhost_vdpa_net_load_offloads() to
-> > restore offloads state at device's startup.
-> >
-> > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> > ---
-> >  net/vhost-vdpa.c | 26 ++++++++++++++++++++++++++
-> >  1 file changed, 26 insertions(+)
-> >
-> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > index 37cdc84562..682c749b19 100644
-> > --- a/net/vhost-vdpa.c
-> > +++ b/net/vhost-vdpa.c
-> > @@ -680,6 +680,28 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *=
-s,
-> >      return *s->status !=3D VIRTIO_NET_OK;
-> >  }
-> >
-> > +static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-> > +                                        const VirtIONet *n)
-> > +{
-> > +    uint64_t features, offloads;
-> > +    ssize_t dev_written;
-> > +
-> > +    features =3D n->parent_obj.guest_features;
->
-> Any reason you need to do tricks like this instead of using
-> virtio_xxx_has_features()?
->
+On 5/30/23 23:14, Philippe Mathieu-Daudé wrote:
+> On 8/5/23 09:58, Cédric Le Goater wrote:
+>> It will help in getting rid of some drive_get(IF_MTD) calls by
+>> retrieving the BlockBackend directly from the m25p80 device.
+>>
+>> Cc: Alistair Francis <alistair@alistair23.me>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   include/hw/block/flash.h | 4 ++++
+>>   hw/block/m25p80.c        | 6 ++++++
+>>   2 files changed, 10 insertions(+)
+>>
+>> diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
+>> index 7198953702..de93756cbe 100644
+>> --- a/include/hw/block/flash.h
+>> +++ b/include/hw/block/flash.h
+>> @@ -76,4 +76,8 @@ uint8_t ecc_digest(ECCState *s, uint8_t sample);
+>>   void ecc_reset(ECCState *s);
+>>   extern const VMStateDescription vmstate_ecc_state;
+>> +/* m25p80.c */
+>> +
+>> +BlockBackend *m25p80_get_blk(DeviceState *dev);
+> 
+> - Option 1, declare QOM typedef and use proper type:
+> 
+>    #define TYPE_M25P80 "m25p80-generic"
+>    OBJECT_DECLARE_TYPE(Flash, M25P80Class, M25P80)
+> 
+>    BlockBackend *m25p80_get_blk(Flash *dev);
+> 
+> - Option 2, preliminary patch renaming 'Flash' type to
+> 'M25P80' then option 1 again
 
-It can be replaced by virtio_vdev_has_feature, yes.
+That's a large change and we would need to introduce a m25p80.h with
+these definitions. Given that the caller needs a DeviceState in the
+end, may be not worth the extra hassle.
 
-Current code of vhost_vdpa_net_load_mac and vhost_vdpa_net_load_mq
-access to guest_features directly too, so I think we should change all
-of them at once.
+How would you rename 'Flash' ? 'SpiFlash' ?
 
-Thanks!
+Thanks,
 
-> > +    if (!(features & BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    offloads =3D cpu_to_le64(n->curr_guest_offloads);
-> > +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_O=
-FFLOADS,
-> > +                                          VIRTIO_NET_CTRL_GUEST_OFFLOA=
-DS_SET,
-> > +                                          &offloads, sizeof(offloads))=
-;
-> > +    if (unlikely(dev_written < 0)) {
-> > +        return dev_written;
-> > +    }
-> > +
-> > +    return *s->status !=3D VIRTIO_NET_OK;
-> > +}
-> > +
-> >  static int vhost_vdpa_net_load(NetClientState *nc)
-> >  {
-> >      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> > @@ -702,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-> >      if (unlikely(r)) {
-> >          return r;
-> >      }
-> > +    r =3D vhost_vdpa_net_load_offloads(s, n);
-> > +    if (unlikely(r)) {
-> > +        return r;
-> > +    }
-> >
-> >      return 0;
-> >  }
-> > --
-> > 2.25.1
-> >
->
+C.
+
+> 
+> - Option 3: no change.
+> 
+> With the QOM style we try to enforce, I'd go for #2.
+> 
+> Still,
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+>>   #endif
+>> diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+>> index dc5ffbc4ff..afc3fdf4d6 100644
+>> --- a/hw/block/m25p80.c
+>> +++ b/hw/block/m25p80.c
+>> @@ -25,6 +25,7 @@
+>>   #include "qemu/units.h"
+>>   #include "sysemu/block-backend.h"
+>>   #include "hw/block/block.h"
+>> +#include "hw/block/flash.h"
+>>   #include "hw/qdev-properties.h"
+>>   #include "hw/qdev-properties-system.h"
+>>   #include "hw/ssi/ssi.h"
+>> @@ -1830,3 +1831,8 @@ static void m25p80_register_types(void)
+>>   }
+>>   type_init(m25p80_register_types)
+>> +
+>> +BlockBackend *m25p80_get_blk(DeviceState *dev)
+>> +{
+>> +    return M25P80(dev)->blk;
+>> +}
+> 
 
 
