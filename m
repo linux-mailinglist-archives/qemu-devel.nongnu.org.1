@@ -2,59 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D48E371868C
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF4C7186AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:48:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Nvk-0004Af-Ca; Wed, 31 May 2023 11:40:08 -0400
+	id 1q4O2N-0007jl-Th; Wed, 31 May 2023 11:46:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4Nvh-0004AL-U2; Wed, 31 May 2023 11:40:05 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q4O2L-0007iq-2s
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:46:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4Nve-0001rO-TD; Wed, 31 May 2023 11:40:05 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QWYLw420qz67ftX;
- Wed, 31 May 2023 23:38:16 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
- 2023 16:39:57 +0100
-Date: Wed, 31 May 2023 16:39:57 +0100
-To: Klaus Jensen <its@irrelevant.dk>
-CC: <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>, Keith Busch
- <kbusch@kernel.org>, Jason Wang <jasowang@redhat.com>, Lior Weintraub
- <liorw@pliops.com>, Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr
- <jk@codeconstruct.com.au>, <qemu-arm@nongnu.org>, Matt Johnston
- <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
- <qemu-block@nongnu.org>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, <gost.dev@samsung.com>
-Subject: Re: [PATCH v3 3/3] hw/nvme: add nvme management interface model
-Message-ID: <20230531163957.0000494e@Huawei.com>
-In-Reply-To: <20230531114744.9946-4-its@irrelevant.dk>
-References: <20230531114744.9946-1-its@irrelevant.dk>
- <20230531114744.9946-4-its@irrelevant.dk>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q4O2I-0003bI-S6
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:46:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685548013;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zq6Pix1TqInszYAXqZ6/JoAYdKUJG35SCaXU6rF01cg=;
+ b=KqNx57/5dXlzSQW4U/lqpvcAIn3JCiYQdUFB07HKBbj87qg9R9Y8tJqYp75J3i0TjzWZp2
+ Qd7QkDZ0cahljeqZtEjXDWptscx295zXFua6tS2C/3UzHx3UDMWWOlFJ6nD4UsjnbSv2By
+ F8IKYrSnWhDl/MyVyFyky5soWsdGcQ8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-hQRDPwTPMJ6TKrdBQm2Ylg-1; Wed, 31 May 2023 11:46:52 -0400
+X-MC-Unique: hQRDPwTPMJ6TKrdBQm2Ylg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-970e0152da7so617617766b.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:46:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685548009; x=1688140009;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zq6Pix1TqInszYAXqZ6/JoAYdKUJG35SCaXU6rF01cg=;
+ b=S7RPoYO7/rQqjqvhJeHTP2zcoyumdQuVkPL8T+JzYcO6kn6joLvkyNsCK2iz5oH0Py
+ VXEtgCYd+PU77hbcOHMAZmcewXZgrVJtWxFRwfcql6/P4DtIkXd7/BHPtW/cJVtnPSzj
+ My87Zn08qPvm338UoiGV4kO2Tp0f/FoS6T+yqYfpymxc8gDVUifv6h8fFxek4HvrR+Z5
+ PAnwPTZykLB++09lZUusHKP06iDPXCJbg9Wg+9uy+sVQAOrEQodgVkel4DhrjZvVUgUI
+ K+QvplPW7o+qW/IxCQuaYA6pGDj6ksqoWuB/kOV9QKn7MzJHMJstjA83qiDWszpYUtl2
+ 4Kxw==
+X-Gm-Message-State: AC+VfDy7c6YnZ0YGoauuilontoxUWIxZ7dwpKqZk1pgLj94qfLBuHXV5
+ EYbbitWnHmA1fhbacZlvmJ/tCEo8VRwVOygnIFWr3u/7YO1K4QcWUXgDdq+uInii4TZQF3tCvqN
+ FEHPP18ap5TMBGavKwePE68w=
+X-Received: by 2002:a17:907:8a11:b0:96f:9cea:a351 with SMTP id
+ sc17-20020a1709078a1100b0096f9ceaa351mr6648542ejc.37.1685548009675; 
+ Wed, 31 May 2023 08:46:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7LF4yFp2xnJ2Z5HN1GvX2Y1B3s+1YWQhEDi9+pPBYspib43hgBi8m46I1GVAeKq+jtnRdZSQ==
+X-Received: by 2002:a17:907:8a11:b0:96f:9cea:a351 with SMTP id
+ sc17-20020a1709078a1100b0096f9ceaa351mr6648532ejc.37.1685548009407; 
+ Wed, 31 May 2023 08:46:49 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ a8-20020a1709062b0800b00970f0e2dab2sm9081226ejg.112.2023.05.31.08.46.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 08:46:48 -0700 (PDT)
+Date: Wed, 31 May 2023 17:46:48 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu
+ <zhao1.liu@intel.com>
+Subject: Re: [PATCH 3/3] hw/smbios: Fix core count in type4
+Message-ID: <20230531174648.46adda5b@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230529164343.467793-4-zhao1.liu@linux.intel.com>
+References: <20230529164343.467793-1-zhao1.liu@linux.intel.com>
+ <20230529164343.467793-4-zhao1.liu@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,286 +99,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 13:47:44 +0200
-Klaus Jensen <its@irrelevant.dk> wrote:
+On Tue, 30 May 2023 00:43:43 +0800
+Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 
-> From: Klaus Jensen <k.jensen@samsung.com>
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> Add the 'nmi-i2c' device that emulates an NVMe Management Interface
-> controller.
+> From SMBIOS 3.0 specification, core count field means:
 > 
-> Initial support is very basic (Read NMI DS, Configuration Get).
+> Core Count is the number of cores detected by the BIOS for this
+> processor socket. [1]
 > 
-> This is based on previously posted code by Padmakar Kalghatgi, Arun
-> Kumar Agasar and Saurav Kumar.
+> Before 003f230e37d7 ("machine: Tweak the order of topology members in
+> struct CpuTopology"), MachineState.smp.cores means "the number of cores
+> in one package", and it's correct to use smp.cores for core count.
 > 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> But 003f230e37d7 changes the smp.cores' meaning to "the number of cores
+> in one die" and doesn't change the original smp.cores' use in smbios as
+> well, which makes core count in type4 go wrong.
+> 
+> Fix this issue with the correct "cores per socket" caculation.
+> 
+> [1] SMBIOS 3.0.0, section 7.5.6, Processor Information - Core Count
+> 
+> Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  hw/smbios/smbios.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+> index f80a701cdfc1..32e26bffa2df 100644
+> --- a/hw/smbios/smbios.c
+> +++ b/hw/smbios/smbios.c
+> @@ -714,6 +714,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>      char sock_str[128];
+>      size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
+>      unsigned cpus_per_socket = ms->smp.max_cpus / ms->smp.sockets;
+> +    unsigned cores_per_socket = cpus_per_socket / ms->smp.threads;
+wouldn't be
+   smp.dies * smp.clusters * smp.cores
+cleaner and more self-describing
 
-A few comments inline - I dug into the specs this time so some
-new questions.
+and then you can add sanity check 
+      g_assert(cores_per_socket != (cpus_per_socket / ms->smp.threads))
+so we won't miss change to CpuTopology in the future?
+ 
+>  
+>      if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+>          tbl_len = SMBIOS_TYPE_4_LEN_V30;
+> @@ -748,7 +749,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>      SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
+>      SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
+>  
+> -    t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+> +    t->core_count = (cores_per_socket > 255) ? 0xFF : cores_per_socket;
+>      t->core_enabled = t->core_count;
+>  
+>      t->thread_count = (cpus_per_socket > 255) ? 0xFF : cpus_per_socket;
+> @@ -757,7 +758,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>      t->processor_family2 = cpu_to_le16(0x01); /* Other */
+>  
+>      if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+> -        t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+> +        t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
+>          t->thread_count2 = cpu_to_le16(cpus_per_socket);
+>      }
+>  
 
-Jonathan
-
-> diff --git a/hw/nvme/nmi-i2c.c b/hw/nvme/nmi-i2c.c
-> new file mode 100644
-> index 000000000000..38e43e48fa51
-> --- /dev/null
-> +++ b/hw/nvme/nmi-i2c.c
-> @@ -0,0 +1,367 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * SPDX-FileCopyrightText: Copyright (c) 2022 Samsung Electronics Co., Ltd.
-
-Update to 2023?
-
-> +typedef struct NMIRequest {
-> +   uint8_t opc;
-> +   uint8_t rsvd1[3];
-> +   uint32_t dw0;
-> +   uint32_t dw1;
-> +   uint32_t mic;
-> +} NMIRequest;
-> +
-> +typedef struct NMIResponse {
-> +    uint8_t status;
-> +    uint8_t response[3];
-> +    uint8_t payload[]; /* includes the Message Integrity Check */
-> +} NMIResponse;
-
-Not used.
-
-> +
-> +typedef enum NMIReadDSType {
-> +    NMI_CMD_READ_NMI_DS_SUBSYSTEM       = 0x0,
-> +    NMI_CMD_READ_NMI_DS_PORTS           = 0x1,
-> +    NMI_CMD_READ_NMI_DS_CTRL_LIST       = 0x2,
-> +    NMI_CMD_READ_NMI_DS_CTRL_INFO       = 0x3,
-> +    NMI_CMD_READ_NMI_DS_CMD_SUPPORT     = 0x4,
-> +    NMI_CMD_READ_NMI_DS_MEB_CMD_SUPPORT = 0x5,
-> +} NMIReadDSType;
-> +
-> +static void nmi_set_parameter_error(NMIDevice *nmi, uint8_t bit, uint16_t byte)
-> +{
-> +    nmi->scratch[nmi->pos++] = 0x4;
-> +    nmi->scratch[nmi->pos++] = bit;
-
-Mask bit to only 3 bits?
-
-> +    nmi->scratch[nmi->pos++] = (byte >> 4) & 0xf;
-> +    nmi->scratch[nmi->pos++] = byte & 0xf;
-
-Not following how byte is split up.  Figure 29 in 1.1d suggests it should be
-in bits 23:08 and this doesn't match that.  Perhaps a reference given I guess
-I'm looking at wrong thing.
-
-> +}
-
-> +static void nmi_handle_mi_read_nmi_ds(NMIDevice *nmi, NMIRequest *request)
-> +{
-> +    I2CSlave *i2c = I2C_SLAVE(nmi);
-> +
-> +    uint32_t dw0 = le32_to_cpu(request->dw0);
-> +    uint8_t dtyp = (dw0 >> 24) & 0xf;
-> +    uint8_t *buf;
-> +    size_t len;
-> +
-> +    trace_nmi_handle_mi_read_nmi_ds(dtyp);
-> +
-> +    static uint8_t nmi_ds_subsystem[36] = {
-> +        0x00,       /* success */
-> +        0x20,       /* response data length */
-
-Not the easiest datasheet to read, but I think length is 2 bytes.
-Figure 93 in the 1.2b NMI spec has it as bits 15:00 in
-a 24 bit field. Ah. I see this is 1.1 definition, in that it's
-the same but in figure 89.
-
-
-> +        0x00, 0x00, /* reserved */
-> +        0x00,       /* number of ports */
-> +        0x01,       /* major version */
-> +        0x01,       /* minor version */
-> +    };
-> +
-> +    static uint8_t nmi_ds_ports[36] = {
-> +        0x00,       /* success */
-> +        0x20,       /* response data length */
-
-As above - this is 2 bytes.
-
-> +        0x00, 0x00, /* reserved */
-> +        0x02,       /* port type (smbus) */
-> +        0x00,       /* reserved */
-> +        0x40, 0x00, /* maximum mctp transission unit size (64 bytes) */
-> +        0x00, 0x00, 0x00, 0x00, /* management endpoint buffer size */
-> +        0x00, 0x00, /* vpd i2c address/freq */
-
-Give separate bytes for the two things, why not just have two lines and
-a comment for each one?
-
-> +        0x00, 0x01, /* management endpoint i2c address/freq */
-
-Same here though second byte isn't anything to do with frequency. Documnted
-as NVMe Basic Management and indicates if that command is supported.
-
-> +    };
-> +
-> +    static uint8_t nmi_ds_empty[8] = {
-> +        0x00,       /* success */
-> +        0x02,       /* response data length */
-> +        0x00, 0x00, /* reserved */
-> +        0x00, 0x00, /* number of controllers */
-A reference for this would be good as I'm not sure it's defined in the NMI spec.
-Is it the controller list from 4.4.1 in the main NVME 2.0 spec?
-
-
-> +        0x00, 0x00, /* padding */
-> +    };
-> +
-> +    switch (dtyp) {
-> +    case NMI_CMD_READ_NMI_DS_SUBSYSTEM:
-> +        len = 36;
-sizeof(nmi_ds_subsystem)  Might as well keep that 36 in just one place.
-> +        buf = nmi_ds_subsystem;
-> +
-> +        break;
-> +
-> +    case NMI_CMD_READ_NMI_DS_PORTS:
-> +        len = 36;
-> +        buf = nmi_ds_ports;
-same here?
-> +
-> +        /* patch in the i2c address of the endpoint */
-> +        buf[14] = i2c->address;
-
-If you have multiple instances of this as they will
-race over the static buffer.  Just make it non static and add
-a comment on why.
-
-> +
-> +        break;
-> +
-> +    case NMI_CMD_READ_NMI_DS_CTRL_LIST:
-> +    case NMI_CMD_READ_NMI_DS_CMD_SUPPORT:
-> +    case NMI_CMD_READ_NMI_DS_MEB_CMD_SUPPORT:
-> +        len = 8;
-> +        buf = nmi_ds_empty;
-> +
-> +        break;
-> +
-> +    default:
-> +        nmi_set_parameter_error(nmi, offsetof(NMIRequest, dw0) + 4, 0);
-> +
-> +        return;
-> +    }
-> +
-> +    memcpy(nmi->scratch + nmi->pos, buf, len);
-> +    nmi->pos += len;
-> +}
-> +
-> +enum {
-> +    NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ                = 0x1,
-> +    NMI_CMD_CONFIGURATION_GET_HEALTH_STATUS_CHANGE      = 0x2,
-> +    NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT    = 0x3,
-> +};
-> +
-> +static void nmi_handle_mi_config_get(NMIDevice *nmi, NMIRequest *request)
-> +{
-> +    uint32_t dw0 = le32_to_cpu(request->dw0);
-> +    uint8_t identifier = dw0 & 0xff;
-> +    uint8_t *buf;
-> +
-> +    static uint8_t smbus_freq[4] = {
-> +        0x00,               /* success */
-> +        0x01, 0x00, 0x00,   /* 100 kHz */
-> +    };
-> +
-> +    static uint8_t mtu[4] = {
-> +        0x00,               /* success */
-> +        0x40, 0x00, 0x00,   /* 64 */
-
-2 bytes only I think with another reserved.
-Figure 66 in 1.1d
-
-> +    };
-> +
-> +    trace_nmi_handle_mi_config_get(identifier);
-> +
-> +    switch (identifier) {
-> +    case NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ:
-> +        buf = smbus_freq;
-> +        break;
-> +
-> +    case NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT:
-> +        buf = mtu;
-> +        break;
-> +
-> +    default:
-> +        nmi_set_parameter_error(nmi, 0x0, offsetof(NMIRequest, dw0));
-> +        return;
-> +    }
-> +
-> +    memcpy(nmi->scratch + nmi->pos, buf, 4);
-> +    nmi->pos += 4;
-> +}
-> +
-> +enum {
-> +    NMI_CMD_READ_NMI_DS         = 0x0,
-> +    NMI_CMD_CONFIGURATION_GET   = 0x4,
-> +};
-> +
-> +static void nmi_handle_mi(NMIDevice *nmi, NMIMessage *msg)
-> +{
-> +    NMIRequest *request = (NMIRequest *)msg->payload;
-> +
-> +    trace_nmi_handle_mi(request->opc);
-> +
-> +    switch (request->opc) {
-> +    case NMI_CMD_READ_NMI_DS:
-> +        nmi_handle_mi_read_nmi_ds(nmi, request);
-> +        break;
-> +
-> +    case NMI_CMD_CONFIGURATION_GET:
-> +        nmi_handle_mi_config_get(nmi, request);
-> +        break;
-> +
-> +    default:
-> +        nmi_set_parameter_error(nmi, 0x0, 0x0);
-> +        fprintf(stderr, "nmi command 0x%x not handled\n", request->opc);
-> +
-> +        break;
-> +    }
-> +}
-> +
-> +enum {
-> +    NMI_MESSAGE_TYPE_NMI = 0x1,
-> +};
-> +
-
-
-
-> +static size_t nmi_get_types(MCTPI2CEndpoint *mctp, const uint8_t **data)
-> +{
-> +    static const uint8_t buf[] = {
-> +        0x0, 0x1, MCTP_MESSAGE_TYPE_NMI,
-> +    };
-
-Perhaps a comment that the 0x1 is the length.  Or you could define
-a structure for this with a variable length final field?
-
-Also, should the control type be reported?  I couldn't find a statement
-that it shouldn't and it has a message ID.
-
-> +
-> +    *data = buf;
-> +
-> +    return sizeof(buf);
-> +}
-> +
 
