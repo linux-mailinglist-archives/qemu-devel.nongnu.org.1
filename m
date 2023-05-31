@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270D87180C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 050817180AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:57:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LMl-0001kx-IA; Wed, 31 May 2023 08:55:51 -0400
+	id 1q4LMj-0001OJ-Dp; Wed, 31 May 2023 08:55:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LMb-0000rQ-3d
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:43 -0400
+ id 1q4LMg-0001B8-RX
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:47 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LMZ-00079T-LX
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:40 -0400
+ id 1q4LMd-0007A1-ML
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 08:55:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=FLgk3x1zkkh+bFdaen4SKpw14JiJMofGQ5nOc7X9/gQ=; b=GG4cUlszWUcqKlOiZPUt4k+4O4
- vHmr6o8F0SzcLZa+Jk/jzK3I0fL1pwqQopzn+Heg6wr0Dbpr7xzEObjxZvtTYuIoJD4GuP9OCaHIc
- bi/0NQCIKCEN6EZPjwiYLgW008vGZGhuGkqnEU8z+5FY5eLe0KKfLp2VzkdWv+Qc1CDOsYOsFSZJJ
- 1l32n9TUTv555iEmLJmH/W7T2ztbsofN3YYyG9CeULAQUBZjOdQnPStlw1AvpRzrdOz22NHcsXVeG
- wod0Wvqg8uw4scP0/rm2r/5ccOHCkz7lZ0GetV35MI0cgR66BQ0SeF7jdNZF+pvBoRwMNcuVurYXx
- 8oijBm9E68HJ4K/gyZZP8w+ovZsMSVLjYWu46FOWfUWvBMYScNplmmMGRkmOtSbKr9zHMn75d/bfA
- vMv8bxTU83oBKZMyn8+k+TDITesoOQvUYEo9e9emQHUmwUtOG3mDak7+We2TKnKyFPsePgkbhHCsQ
- 9gXjpRqQClN6zTFeRZYutX777rdnjsVZ2s85xkSicn5K38zVgjLu+N8k7B6KNTQ4kp+tj1MZCc9AH
- 2CNW0kHZICO2su9FNdQ67cidc88t9ubcXW5Szh4ACucltUnGjrPxGstFZZCSDjaGPzkka96HEHbWo
- XDS9R97R7BM+2ltec1DeG2LKLs9A4hf3qDgDCus5o=;
+ bh=mEdEKrn8U4oFpRm6aYVrdum8IY3Swn/ona6HoA0rkf8=; b=gxTnZoQCyDvhewuKUq51erLUnR
+ XuyXUefmSXTtl7l1ZXuHUA6Zo4aAEaabYgbeBM6A5gxuX/+77y8zTgGdbjZz6k7UPw8Zc4BJvVQvi
+ i4LXWJOOSGzsPnanrzXg4MZ59RtIpK8SFjQRtmdQd8ZyzWwGYONcw8wTR7KiKIGSBUHKBowEwrOQL
+ ryw0TVGWKAT/hpsU1/9T6QXRXz+6rd4/BhWsD9+PeIICzpnM1bxQsa0Uw1nF+M35313I7QtKFKxQY
+ 36E6lvW/2av7dqOBo5HZzneZkFBIQNM2tWvnzLCkAa9iRI5miq6HbMaGGgfnQ7CaOeC3oV1UVLNWm
+ Yga4A7yBz/kpt9LJzx+T8vUZMbh5uHQ96q7kc6dQTrOPhmyQDS7NTG0o50cA91bEwNfcQqSRtsLJ1
+ AttLlSQPkMtyTrxXr820I/FKlI0GhsRRc/PPEnUoNo4Hz4uFSfGX1AYtGZLwNPjy6W3/xPyFhkvFb
+ iWrHSzP3BvojEdXk8r6GmyniWUKoQjW0aoS+fL+yOsLk0Nuka49GyRKYt2/eodyG8ZKZ5VQkT2/FG
+ Z5RXmUIox5w8wqYORdpCc1YFzfG9F+Y3K6qRCtIatPeLM9ITpJPUNL65/kYxRlugUlmnKIwG98qoE
+ G43RFZ8blbG5dZi7YO52Va0qZssBRydEYykJixnqE=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4LMF-0008vd-Of; Wed, 31 May 2023 13:55:23 +0100
+ id 1q4LMK-0008vd-1Z; Wed, 31 May 2023 13:55:28 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 31 May 2023 13:53:58 +0100
-Message-Id: <20230531125400.288917-22-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 31 May 2023 13:53:59 +0100
+Message-Id: <20230531125400.288917-23-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 21/23] q800: move macfb device to Q800MachineState
+Subject: [PATCH v2 22/23] mac_via: fix rtc command decoding from PRAM
+ addresses 0x0 to 0xf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,58 +78,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also change the instantiation of the macfb device to use object_initialize_child().
+A comparison between the rtc command table included in the comment and the code
+itself shows that the decoding for PRAM addresses 0x0 to 0xf is being done on
+the raw command, and not the shifted version held in value.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/m68k/q800.c         | 6 ++++--
- include/hw/m68k/q800.h | 2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ hw/misc/mac_via.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 946cb09e30..0e7451e77a 100644
---- a/hw/m68k/q800.c
-+++ b/hw/m68k/q800.c
-@@ -449,7 +449,9 @@ static void q800_machine_init(MachineState *machine)
- 
-     /* framebuffer in nubus slot #9 */
- 
--    dev = qdev_new(TYPE_NUBUS_MACFB);
-+    object_initialize_child(OBJECT(machine), "macfb", &m->macfb,
-+                            TYPE_NUBUS_MACFB);
-+    dev = DEVICE(&m->macfb);
-     qdev_prop_set_uint32(dev, "slot", 9);
-     qdev_prop_set_uint32(dev, "width", graphic_width);
-     qdev_prop_set_uint32(dev, "height", graphic_height);
-@@ -459,7 +461,7 @@ static void q800_machine_init(MachineState *machine)
-     } else {
-         qdev_prop_set_uint8(dev, "display", MACFB_DISPLAY_VGA);
-     }
--    qdev_realize_and_unref(dev, BUS(nubus), &error_fatal);
-+    qdev_realize(dev, BUS(nubus), &error_fatal);
- 
-     macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
- 
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 3f3e87b3dc..48d2443d74 100644
---- a/include/hw/m68k/q800.h
-+++ b/include/hw/m68k/q800.h
-@@ -31,6 +31,7 @@
- #include "hw/scsi/esp.h"
- #include "hw/block/swim.h"
- #include "hw/nubus/mac-nubus-bridge.h"
-+#include "hw/display/macfb.h"
- 
- /*
-  * The main Q800 machine
-@@ -50,6 +51,7 @@ struct Q800MachineState {
-     SysBusESPState esp;
-     Swim swim;
-     MacNubusBridge mac_nubus_bridge;
-+    MacfbNubusState macfb;
-     MemoryRegion macio;
-     MemoryRegion macio_alias;
- };
+diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
+index 076d18e5fd..85c2e65856 100644
+--- a/hw/misc/mac_via.c
++++ b/hw/misc/mac_via.c
+@@ -399,7 +399,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
+         } else if ((value & 0x1c) == 0x08) {
+             /* RAM address 0x10 to 0x13 */
+             return read | (REG_PRAM_ADDR + 0x10 + (value & 0x03));
+-        } else if ((value & 0x43) == 0x41) {
++        } else if ((value & 0x10) == 0x10) {
+             /* RAM address 0x00 to 0x0f */
+             return read | (REG_PRAM_ADDR + (value & 0x0f));
+         }
 -- 
 2.30.2
 
