@@ -2,93 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D333718F06
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 01:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1827718F0E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 01:25:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4V7s-0004XX-H1; Wed, 31 May 2023 19:21:08 -0400
+	id 1q4VBu-0005or-OQ; Wed, 31 May 2023 19:25:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4V7q-0004Wg-Mm
- for qemu-devel@nongnu.org; Wed, 31 May 2023 19:21:06 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1q4VBr-0005ob-8y
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 19:25:15 -0400
+Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4V7m-0007k5-53
- for qemu-devel@nongnu.org; Wed, 31 May 2023 19:21:06 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-394c7ba4cb5so55245b6e.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 16:21:01 -0700 (PDT)
+ id 1q4VBp-0008QN-4h
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 19:25:15 -0400
+Received: by mail-qv1-xf32.google.com with SMTP id
+ 6a1803df08f44-626149fbc8eso3535356d6.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 16:25:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685575260; x=1688167260;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FLyvxyqbTyxjr/g4QUbA5aHjKQRhcPg6eZKmEKEMm5c=;
- b=TzoXoglLmQAf211B+pLqMExNqjAoCRQ+eCSwfj2nuZeJiRPkhK43j8StK43I/MIzrA
- boxHDwoIJDqBu28dQDpqrmXBqsZcVuC0UkI13fhiYiQvOT4ChwFseYKtocqLuv8g8RSK
- 3w1Q6C/W2Q60tCmjlAkJ4ekpfOT7oIzk6K3jnCp1lYNuTEBKFJ1bph5dLWD5hDGYvgxt
- Sk4MN2h/cSytFnFfJZtIKY2rrJqIvKK2nNMveyDLJvpVTUZPKArG6M+Zv3UyMiLN5N/N
- cS3A+78nhxchktlP7Fkhtpc/pQrPVkJheWeRl16xDr4pCygJVDdMbtt3st5DifsxWjYI
- q4ng==
+ d=linaro.org; s=google; t=1685575512; x=1688167512;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HK9K9jzzWlfIFdB7uwHlISI/daPJAK4dkCrRI+Fx+Fo=;
+ b=RH1b012fi3japYXU+BEbGrFtloSDD+Ou5sib3p/v1MKgNuH2Hr5E8AFU3s1irRwRcY
+ RwfC7ARbAiWHkXfzoOQLi2x3V6sNGYDES8BIwi8zKNp68Hpi5bNjS9WotnZnafulyNgm
+ KQaOzZhHGpvp98YoVDkPlLP0EXeLBAI6rKUh3Y7b1Urn2F9zH1ELGdVZ5iKXvb028Mbo
+ 0VM9Yrx0BwBAxrBBpzwnvuvdCSE4yAlXTLO00R6LhBXKjrvhAvFXavfYYYYhPoSvb4rR
+ kfu18xWVepmkHWE7WHQ4lxAvygMxqBSwK0sAFEXhgy4qwB9D2g4gkMwzgAd0QkRUl0h5
+ ZomA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685575260; x=1688167260;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FLyvxyqbTyxjr/g4QUbA5aHjKQRhcPg6eZKmEKEMm5c=;
- b=cXMImPGpyUyA4tUQoDgXI76OAIDRk+VraxwsOmEgufDldub0V6BrhNSDM3IU12lVRf
- dWrcxoD6ZuNcMCWCAzs6/g/wph84vv/kNVrZtLTWRhA317S6bxn1QpZ2of05qLeMHFMd
- ryFMA/5rxrqk9mLeNI9ufHltHtYi8d4khwP1xsxyIa5ppm1TkWC47k21NJ+bG6654G2m
- /rrzfPjjXTyxFjq0cpLX2Os6X69mfut2N2+5GV80+SfyUyUwpsPuG+MybCBq76eVGNm5
- 9N0ULI4v8uxsaoTwZu6/L5r4ZlWUZNxnsMSeXv6Nn9YUDcswr3IFZ2+0/hD3nwQ5MWfb
- zhMw==
-X-Gm-Message-State: AC+VfDwpQ1+APsWIQqybWr3/Ie9b3skC1vCCnhV0gKdB9TrUkKXZfH24
- /DiexaLUvV++5y7CgOldWMWShA==
-X-Google-Smtp-Source: ACHHUZ7Gl5SfIDO6IhvfW/40tbMqBkHQq5BOnBzIHAJM6gdqbBG6SI4QldVTH/9MRTEn4wMSS1RtZQ==
-X-Received: by 2002:a05:6808:11c5:b0:398:3152:fee1 with SMTP id
- p5-20020a05680811c500b003983152fee1mr6065210oiv.20.1685575260560; 
- Wed, 31 May 2023 16:21:00 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
- ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
+ d=1e100.net; s=20221208; t=1685575512; x=1688167512;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HK9K9jzzWlfIFdB7uwHlISI/daPJAK4dkCrRI+Fx+Fo=;
+ b=Yeg6Z5s4I1yuz7cGdpShSEDT5HrffZattFKJqQeqt4mCUaibS3X52pY4MZiya7DZJT
+ Hx8uWDgD0FB2MiKvw3DGdQmNQ4NwFwNF4+S+JRk+KTEIxOQXsWXyldtdElM1wCMN3ZOm
+ dxeMytHXaWM6nyVHiSO8TsJTKegx6Y9Ovy7kQRToRzritlJnYKTcZRbbtGDHAFUF7i6C
+ ecmSiL1Ftj45nTgoBUU+jYPoTEVB4Xe9Mh2metMPfT22DI2Fp8Kf/lIdToq3mUlnI5x2
+ Dxv9iRoW6a9a98tcnK7rJ66nZ62l3flxgmAxCZX973zVo1UuVdQB8yZcfqBK2+GpBZcI
+ CbOQ==
+X-Gm-Message-State: AC+VfDwin3oxOzSdkGSAbXSxPpZJp3TCOFrJ31xz6AUzrZPy9KKELrcl
+ BK13yuODg0N3Vuta/w6OGNoHfDJZsqgyjoj9Nuk=
+X-Google-Smtp-Source: ACHHUZ6/QEKlRY5DVJGS59pjMFEMbfn6N3hqrDIxNP3mpFS8h3RGUUW8u2ZCHzR4qgZ4K6JQLo29Ow==
+X-Received: by 2002:a05:6214:21a6:b0:625:aa49:9ab5 with SMTP id
+ t6-20020a05621421a600b00625aa499ab5mr8135862qvc.57.1685575511760; 
+ Wed, 31 May 2023 16:25:11 -0700 (PDT)
+Received: from stoup.. ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
  by smtp.gmail.com with ESMTPSA id
- y13-20020a17090aca8d00b0025632363477sm68341pjt.14.2023.05.31.16.20.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 16:21:00 -0700 (PDT)
-Message-ID: <e77bf733-ff18-17ba-567a-c496f8468682@linaro.org>
-Date: Wed, 31 May 2023 16:20:58 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 0/5] Python patches
-Content-Language: en-US
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-References: <20230531204338.1656158-1-jsnow@redhat.com>
+ x19-20020aa784d3000000b0063b6451cd01sm3788360pfn.121.2023.05.31.16.25.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 16:25:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230531204338.1656158-1-jsnow@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] decodetree: Add --output-null for meson testing
+Date: Wed, 31 May 2023 16:25:10 -0700
+Message-Id: <20230531232510.66985-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,25 +88,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 13:43, John Snow wrote:
-> The following changes since commit ab7252279727da51c01cdaf41c5fe563bbded3a6:
-> 
->    gitlab: switch from 'stable' to 'latest' docker container tags (2023-05-31 10:29:14 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/jsnow/qemu.git  tags/python-pull-request
-> 
-> for you to fetch changes up to c76e7652c786683edcc846ee0a7a65b587787792:
-> 
->    Revert "python/qmp/protocol: add open_with_socket()" (2023-05-31 16:25:35 -0400)
-> 
-> ----------------------------------------------------------------
-> Python: synchronize python-qemu-qmp
+Using "-o /dev/null" fails on Windows.  Rather that working
+around this in meson, add a separate command-line option so
+that we can use python's os.devnull.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Reported-by: Thomas Huth <thuth@redhat.com>
+Fixes: 656666dc7d1b ("tests/decode: Convert tests to meson")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ scripts/decodetree.py    | 18 ++++++++++--------
+ tests/decode/meson.build |  4 ++--
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-
-r~
+diff --git a/scripts/decodetree.py b/scripts/decodetree.py
+index 13db585d04..a8a6cb69cd 100644
+--- a/scripts/decodetree.py
++++ b/scripts/decodetree.py
+@@ -42,6 +42,7 @@
+ input_file = ''
+ output_file = None
+ output_fd = None
++output_null = False
+ insntype = 'uint32_t'
+ decode_function = 'decode'
+ 
+@@ -145,12 +146,7 @@ def error_with_file(file, lineno, *args):
+ 
+     if output_file and output_fd:
+         output_fd.close()
+-        # Do not try to remove e.g. -o /dev/null
+-        if not output_file.startswith("/dev"):
+-            try:
+-                os.remove(output_file)
+-            except PermissionError:
+-                pass
++        os.remove(output_file)
+     exit(0 if testforerror else 1)
+ # end error_with_file
+ 
+@@ -1501,6 +1497,7 @@ def main():
+     global translate_prefix
+     global output_fd
+     global output_file
++    global output_null
+     global input_file
+     global insnwidth
+     global insntype
+@@ -1514,7 +1511,8 @@ def main():
+     decode_scope = 'static '
+ 
+     long_opts = ['decode=', 'translate=', 'output=', 'insnwidth=',
+-                 'static-decode=', 'varinsnwidth=', 'test-for-error']
++                 'static-decode=', 'varinsnwidth=', 'test-for-error',
++                 'output-null']
+     try:
+         (opts, args) = getopt.gnu_getopt(sys.argv[1:], 'o:vw:', long_opts)
+     except getopt.GetoptError as err:
+@@ -1545,6 +1543,8 @@ def main():
+                 error(0, 'cannot handle insns of width', insnwidth)
+         elif o == '--test-for-error':
+             testforerror = True
++        elif o == '--output-null':
++            output_null = True
+         else:
+             assert False, 'unhandled option'
+ 
+@@ -1574,7 +1574,9 @@ def main():
+         stree = build_size_tree(toppat.pats, 8, 0, 0)
+         prop_size(stree)
+ 
+-    if output_file:
++    if output_null:
++        output_fd = open(os.devnull, 'wt', encoding='utf-8', errors="ignore")
++    elif output_file:
+         output_fd = open(output_file, 'wt', encoding='utf-8')
+     else:
+         output_fd = io.TextIOWrapper(sys.stdout.buffer,
+diff --git a/tests/decode/meson.build b/tests/decode/meson.build
+index 38a0629d67..b13fada980 100644
+--- a/tests/decode/meson.build
++++ b/tests/decode/meson.build
+@@ -53,12 +53,12 @@ decodetree = find_program(meson.project_source_root() / 'scripts/decodetree.py')
+ 
+ foreach t: err_tests
+     test(fs.replace_suffix(t, ''),
+-         decodetree, args: ['-o', '/dev/null', '--test-for-error', files(t)],
++         decodetree, args: ['--output-null', '--test-for-error', files(t)],
+          suite: suite)
+ endforeach
+ 
+ foreach t: succ_tests
+     test(fs.replace_suffix(t, ''),
+-         decodetree, args: ['-o', '/dev/null', files(t)],
++         decodetree, args: ['--output-null', files(t)],
+          suite: suite)
+ endforeach
+-- 
+2.34.1
 
 
