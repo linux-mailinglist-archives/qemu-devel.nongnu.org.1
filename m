@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BBD718E82
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 00:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 401E4718E8B
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 00:30:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4UJ2-0005rT-W7; Wed, 31 May 2023 18:28:37 -0400
+	id 1q4UKb-0007PF-JA; Wed, 31 May 2023 18:30:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UJ1-0005r5-28
- for qemu-devel@nongnu.org; Wed, 31 May 2023 18:28:35 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UKS-0007Kb-3m
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 18:30:05 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UIz-0003Xt-AI
- for qemu-devel@nongnu.org; Wed, 31 May 2023 18:28:34 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f60dfc6028so1944905e9.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 15:28:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4UKO-0003xf-0A
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 18:30:03 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-30ae901a9ffso118087f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 15:29:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685572111; x=1688164111;
+ d=linaro.org; s=google; t=1685572198; x=1688164198;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7IzajN4ylAtTfGVYTugWsPyoZtm0kDNJJ8LRNpf/QvA=;
- b=D0RZ8HLWbIgbzUAGJ2dkdSx2M1uNB8L3YY/lFAZNfk0fW8E4qug/medKH3M58LDexP
- 4B0PGJyCvwIr9Z8iIHPjzK5RdVDoAqWtlAti5YSrt2Nm1VJdvY1JIPxMCm/jpFuspwlQ
- uzUm5EmojpS8/ADLKC+ZU4t2IDIGmlfukV9IkHkdtK0a/cgMJH0sU2weAX7mnxlKHuFl
- mWg95A2ZP3sYTvH2EE8kyG+nvL94z2xOntiXgMtfPcs7wb07n5yA9oiJTNIpAwcqBvTR
- 75HWgTpTNtJLvwOYmH36ZIrajfSl0ddwfM2cwy+JOCMakxOso+KTgYaltAJbUJwLeA5/
- qlIQ==
+ bh=dPxfrbhvP5n7KvhTOwA7fiECQV3dIU+BFmbqVlP1ikQ=;
+ b=iZMLZzjHKTj/tnWeKJHssqL5VG79iRk5+gItdWwYpJ4J5O9HsZTjFsVbc1RBCFr6CE
+ V7XDw6CYwF2AX1Y9RK/zqUXjGfJck12i+Fgxj3D8OXwqSfZVDUsXsOW9BD1J1bCPUETs
+ +ebr8hn0hchVuKIZNYBhFAFxnQVU1kWelDjr174vRqLZuUr/e5sdERKwDKwgZFBvesGF
+ QVpvfZ5Im77HeKbBAtCNULukCZSSg2B8rsjhN2ggbbiChmFvbICkRzqzryzaNTYq/nPx
+ xjXaK25McQTIaNuUyq1Owgyy+L8oh1ToSBRaYLpClO51QoUOLWN8kJxo1va6kOm49vYL
+ mN9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685572111; x=1688164111;
+ d=1e100.net; s=20221208; t=1685572198; x=1688164198;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7IzajN4ylAtTfGVYTugWsPyoZtm0kDNJJ8LRNpf/QvA=;
- b=a8HtoQ5BUa8E2xS6zMCl9an7IqpEHoafcQenuHuBlKIg06FYwkAcjjbsOdAMezuMor
- tf9+lyugfaiNciEO4gEvWNWSB2grF4ri6w46NSqt5rNKrnNLscR4ZZ+puUEXgtn3cokG
- IwzkJ+XfI8gHlq2Xd9rpraooZAIz0l2qdDe4gSKapfIccFTj6iFyTtIJHWbOYXunD/4K
- 5p3ehTauylUbNYL5g9HJfWr0dZ7AW7KKwkH5QZYRtIsEOLorJXf6y5Wl7mPoeICP3sn6
- lvSWTUwUCeaoC3A5Wv612MkFj/k63uQKG8BiD5VLdt11Rf+SPX01bn/ADNsKhdrsAxlD
- D41g==
-X-Gm-Message-State: AC+VfDzZjUhje1UMzDneHL5mEiP+BiZ+qWh3Vu+X4TAU2PuYIouJm6c/
- xVWUk8HPxNiYGFrW83msTBsXCw==
-X-Google-Smtp-Source: ACHHUZ7BW2SHG+kvNMCzMd9od6jc9y0Jkwnx7AZEkmiBaNMEJm/7eNXTOr6G2Hhk/D4xDvCVewfesA==
-X-Received: by 2002:adf:eacc:0:b0:309:3828:2bde with SMTP id
- o12-20020adfeacc000000b0030938282bdemr278354wrn.60.1685572111469; 
- Wed, 31 May 2023 15:28:31 -0700 (PDT)
+ bh=dPxfrbhvP5n7KvhTOwA7fiECQV3dIU+BFmbqVlP1ikQ=;
+ b=hPtd1R1AXcEwFw5JM7FJ2qtt4QBYrFeOUFpbvx3TEgQsD5/dk/H4IDVEJWbc84p8sw
+ aHHeuPljpUl2Aq6awxOa/Bc+3QwFdYHse6ZXCDbWIbkFzZ800Wej8ALkZliBwQTLKJno
+ 69rZZWw+yBcPsRQdgo24ynzIvY6omL9AA4IjQwbyN5PHRE4ofcOx7ZlV57L/Ko1GbMXT
+ RwgWoWpkQ7Z8aFkWNZeyyYiNae2IqUC6f7J597Jp4QK8D4VfcH1fZDXQLN3xZrFakDpS
+ MBC5mkFQ4NMqHH6Y1CSFJjPXenAZoxy+VF5sGSJhMRUFxjKacK1ZH2yaX2pxkpJgBNet
+ zd9Q==
+X-Gm-Message-State: AC+VfDw/Ek+61vlgL/0bXvfV62YgKrm/e7A4JYDD1nMWpKQNHlooLwLL
+ 837B3wpWf1hwHVFjTjnjRKEuBw==
+X-Google-Smtp-Source: ACHHUZ7VR9ebjXcjq4Qtm0ieXux8e5LrAYVvNGTodmZULNEmg3fRFJJReRkqsUr4Hs/XS++Geg8kLA==
+X-Received: by 2002:a5d:6a92:0:b0:307:873d:2ea with SMTP id
+ s18-20020a5d6a92000000b00307873d02eamr371799wru.47.1685572198260; 
+ Wed, 31 May 2023 15:29:58 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- e1-20020a5d65c1000000b00301a351a8d6sm8108157wrw.84.2023.05.31.15.28.30
+ t7-20020a5d4607000000b0030647449730sm8078049wrq.74.2023.05.31.15.29.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 15:28:31 -0700 (PDT)
-Message-ID: <67426e91-4777-16de-2a9d-b0e3b7254210@linaro.org>
-Date: Thu, 1 Jun 2023 00:28:29 +0200
+ Wed, 31 May 2023 15:29:57 -0700 (PDT)
+Message-ID: <806908a3-11a8-7d17-e13f-8f516bf43744@linaro.org>
+Date: Thu, 1 Jun 2023 00:29:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [RFC PATCH v2 4/4] vfio/pci: Enable AtomicOps completers on root
- ports
+Subject: Re: [RFC PATCH v2 0/4] vfio/pci: Atomic Ops completer support
 Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>, robin@streamhpc.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com
-Cc: qemu-devel@nongnu.org, clg@redhat.com
+To: Alex Williamson <alex.williamson@redhat.com>,
+ Robin Voetter <robin@streamhpc.com>
+Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, qemu-devel@nongnu.org,
+ clg@redhat.com
 References: <20230526231558.1660396-1-alex.williamson@redhat.com>
- <20230526231558.1660396-5-alex.williamson@redhat.com>
+ <4301d6f4-a394-02e3-4773-823976b2e593@streamhpc.com>
+ <20230531162446.2bc9a26c.alex.williamson@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230526231558.1660396-5-alex.williamson@redhat.com>
+In-Reply-To: <20230531162446.2bc9a26c.alex.williamson@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,103 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/5/23 01:15, Alex Williamson wrote:
-> Dynamically enable Atomic Ops completer support around realize/exit of
-> vfio-pci devices reporting host support for these accesses and adhering
-> to a minimal configuration standard.  While the Atomic Ops completer
-> bits in the root port device capabilities2 register are read-only, the
-> PCIe spec does allow RO bits to change to reflect hardware state.  We
-> take advantage of that here around the realize and exit functions of
-> the vfio-pci device.
+On 1/6/23 00:24, Alex Williamson wrote:
+> On Wed, 31 May 2023 23:55:41 +0200
+> Robin Voetter <robin@streamhpc.com> wrote:
 > 
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-> ---
->   hw/vfio/pci.c | 78 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   hw/vfio/pci.h |  1 +
->   2 files changed, 79 insertions(+)
+>> Hi Alex,
+>>
+>> Thanks for taking the time to implement support for Atomic Op completer
+>> support properly :). I have tested out these patches and the kernel
+>> patch, and apart from a minor issue with patch 2 everything works fine;
+> 
+> Yes, Cedric noted the extra semicolon as well, I'm about to post that
+> patch as non-RFC since it has no dependencies on anything else.
 
 
-> +static void vfio_pci_enable_rp_atomics(VFIOPCIDevice *vdev)
-> +{
-> +    struct vfio_device_info_cap_pci_atomic_comp *cap;
-> +    g_autofree struct vfio_device_info *info = NULL;
-> +    PCIBus *bus = pci_get_bus(&vdev->pdev);
-> +    PCIDevice *parent = bus->parent_dev;
-> +    struct vfio_info_cap_header *hdr;
-> +    uint32_t mask = 0;
-> +    uint8_t *pos;
-> +
-> +    /*
-> +     * PCIe Atomic Ops completer support is only added automatically for single
-> +     * function devices downstream of a root port supporting DEVCAP2.  Support
-> +     * is added during realize and, if added, removed during device exit.  The
-> +     * single function requirement avoids conflicting requirements should a
-> +     * slot be composed of multiple devices with differing capabilities.
-> +     */
-> +    if (pci_bus_is_root(bus) || !parent || !parent->exp.exp_cap ||
-> +        pcie_cap_get_type(parent) != PCI_EXP_TYPE_ROOT_PORT ||
-> +        pcie_cap_get_version(parent) != PCI_EXP_FLAGS_VER2 ||
-> +        vdev->pdev.devfn ||
-> +        vdev->pdev.cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
-> +        return;
-> +    }
-> +
-> +    pos = parent->config + parent->exp.exp_cap + PCI_EXP_DEVCAP2;
-> +
-> +    /* Abort if there'a already an Atomic Ops configuration on the root port */
+> Policy decisions like that are generally left to management tools, so
+> there would always be a means to enable or disable the feature.  In
+> fact, that's specifically why I test that the Atomic Op completer bits
+> are unset in the root port before changing them so that this automatic
+> enablement could live alongside a command line option to statically
+> enable some bits.
+> 
+> That does however remind me that it is often good with these sorts of
+> "clever" automatic features to have an opt-out, so I'll likely add an
+> x-no-rp-atomics device option in the next version to provide that.
 
-Optional here: trace event logging pci_get_long(pos).
-
-> +    if (pci_get_long(pos) & (PCI_EXP_DEVCAP2_ATOMIC_COMP32 |
-> +                             PCI_EXP_DEVCAP2_ATOMIC_COMP64 |
-> +                             PCI_EXP_DEVCAP2_ATOMIC_COMP128)) {
-> +        return;
-> +    }
-> +
-> +    info = vfio_get_device_info(vdev->vbasedev.fd);
-> +    if (!info) {
-> +        return;
-> +    }
-> +
-> +    hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_PCI_ATOMIC_COMP);
-> +    if (!hdr) {
-> +        return;
-> +    }
-> +
-> +    cap = (void *)hdr;
-> +    if (cap->flags & VFIO_PCI_ATOMIC_COMP32) {
-> +        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP32;
-> +    }
-> +    if (cap->flags & VFIO_PCI_ATOMIC_COMP64) {
-> +        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP64;
-> +    }
-> +    if (cap->flags & VFIO_PCI_ATOMIC_COMP128) {
-> +        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP128;
-> +    }
-> +
-> +    if (!mask) {
-> +        return;
-> +    }
-
-Similarly optional, trace event logging (cap->flags, mask).
-
-> +
-> +    pci_long_test_and_set_mask(pos, mask);
-> +    vdev->clear_parent_atomics_on_exit = true;
-> +}
-> +
-> +static void vfio_pci_disable_rp_atomics(VFIOPCIDevice *vdev)
-> +{
-> +    if (vdev->clear_parent_atomics_on_exit) {
-> +        PCIDevice *parent = pci_get_bus(&vdev->pdev)->parent_dev;
-> +        uint8_t *pos = parent->config + parent->exp.exp_cap + PCI_EXP_DEVCAP2;
-> +
-> +        pci_long_test_and_clear_mask(pos, PCI_EXP_DEVCAP2_ATOMIC_COMP32 |
-> +                                          PCI_EXP_DEVCAP2_ATOMIC_COMP64 |
-> +                                          PCI_EXP_DEVCAP2_ATOMIC_COMP128);
-> +    }
-> +}
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I was just going to suggest that, just in case :)
 
 
