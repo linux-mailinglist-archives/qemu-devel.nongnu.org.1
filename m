@@ -2,73 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7427F71979A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A2271979D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4etm-0005By-Jt; Thu, 01 Jun 2023 05:47:14 -0400
+	id 1q4euE-00061W-CQ; Thu, 01 Jun 2023 05:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q4ete-00051l-06
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:06 -0400
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q4etb-0004MR-OM
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:05 -0400
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-568928af8f5so10824197b3.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:47:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685612822; x=1688204822;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5bnPVCo2bIG5oNB5Qm57u1zkOjkXBPcKVD+O/r6uWzc=;
- b=mVEdneuGaNSM5A+c8ZP3N4N0JOmFzIXPRuYrPiwa0HHXfGJXe88DDaUdGTpkhkjqMo
- /gLpvGHaxM4PhQyXnfrd6bCIsnA+Zjxc0PmDgY+oYjcZuP3Hyl8aPASKccfSZCGMSYKb
- 6kH8+dD0EFRYvOXYQ9AFXllWBgt73ZV02zmVfIFxI9HyfnQMMRiu5ypDMXWGnHoDLBlB
- cP6k/PgiinDQZ2xsVPmxJrVVvEs/5ze6GXgAWCS1Cf0R8hPaXGYaBUrFBKTtQPuSPV0c
- 6/5MT/IXMZ+wItSRrr0XV6rm1JI1Vl1omfFv5KCv+GWwQeriXIhQLxHVJhrnvI3pYi5T
- 7vBA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4euC-00060S-6K
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4euA-0004UV-BT
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685612857;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qUfpQGGQHBRxaPS3zUMosZgBun6AcqccGHN2Nr/2M2c=;
+ b=SHRRX7K6g8ljsyuFOLgWO/JA5QQWOklaBxZnfOweUP+z/110FTSrVy1lATL3IhSe3rvC6l
+ E3jPWKkMoxGaBxEReRL9CECpK+0nBKZAY8fWejP5hdI6rdgqPgzMDknb3yfTSHSL8grLjD
+ aSq6IrCXXOef2A4fU/hcliR7VpCkdbU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-226-d1qf91pjM3iyI8yAH7gnKA-1; Thu, 01 Jun 2023 05:47:35 -0400
+X-MC-Unique: d1qf91pjM3iyI8yAH7gnKA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30ae18b11bfso372773f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:47:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685612822; x=1688204822;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5bnPVCo2bIG5oNB5Qm57u1zkOjkXBPcKVD+O/r6uWzc=;
- b=alJPO0fyPnc2wBgnsmOAXhRft1Nzb/e8fnTJP6BAwVH3Kfxv6c2rc5cK+s3o8Shtpv
- ZssjVNF6PIAtfiPWk4lyT2+jVhj5MXPcpyBr6Rt8aU3A8Ty8OrO1PMU68GSYI+YHsblq
- 0bNbkZFQsKKYf0dLIoBke1gRBb2EAm+PqJ4ArP72NYTrqRXjD2wg1lTRzYRO0kWB5H6e
- VDTVma3uRMFpYpnpMqEKIBFJSbymEw5UvlXHKd83EzKeFCKGJ/F9yRc8UlwfE/dnhlSM
- KvGyF8GUjqpF6rHeUGP0h2vnS55VKFqmeR90c9Bq+ndjjkY/jV6nHA3u3psIbIeDuCB6
- F6Bg==
-X-Gm-Message-State: AC+VfDwhDqiud6FjkCmIt529lzzeWUvWxRex6ujfoP5rT6gDVi5RLUiZ
- nfQFHiz/3rnaP+zsJKALlyj8MkkBVUbS/IXqWps=
-X-Google-Smtp-Source: ACHHUZ4Zt7hpyNLwDBrND2/qYXViUygq/WNX8+eLlwQvbEMm5iUZOWGthTd14Rcm41U9CvdctraInGsDdYv78x+4UoY=
-X-Received: by 2002:a0d:fe85:0:b0:561:b53d:d1f1 with SMTP id
- o127-20020a0dfe85000000b00561b53dd1f1mr1206676ywf.19.1685612822258; Thu, 01
- Jun 2023 02:47:02 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685612854; x=1688204854;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qUfpQGGQHBRxaPS3zUMosZgBun6AcqccGHN2Nr/2M2c=;
+ b=S0PLkl/Y35y9Q5XPuyXDxLi5MnbKF21p9DfnCJaDRHjcvapohGvd3SqRUFVpDYOsHF
+ /tSiNpnER0lYRRGvcpR8xZeCIL2XlMJXXSaA81lg1iHQKIyH9JXs2RIPbHEG22qqY+uu
+ deJM7n8DKG3VAs8agqc5lD/I5OjHp7w/jsCj1zblvk2fr/JshQDyDyZ85IrFDpgBorXR
+ 3QQGDG1neJ2P0Zc52YhviR7xdli3xDKt77B//HPY2Ysb7sQqLQlqerLxvjqwfXLBoTTk
+ lnvkglXp7ebmfPhJjS8gBcYhE/4cLVfS22YkqEanA3g+7QTcbNEDaH2jvO4BV72PZNk2
+ g+bg==
+X-Gm-Message-State: AC+VfDwgSNZRW10hHQBhXI2x3HLiZSXuMQGf9EZvE7rs3vRpzn5xa9QY
+ bvm0RarLY1+9q7Bc3Bb0rMMrkG3sdwVTNY4F4fAwHJlMBAJTdmjfZYYaNNmGCT3aMGTd8emb13R
+ 7JNYczbP/iWjuAr5skxPjt/A=
+X-Received: by 2002:a05:6000:180c:b0:30a:f60a:dc3c with SMTP id
+ m12-20020a056000180c00b0030af60adc3cmr1048717wrh.24.1685612854660; 
+ Thu, 01 Jun 2023 02:47:34 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6QLGBxrTBaV+WSGro2wVj+9JNKcFoRy6M4I9wFLGPR+cnwAXbW2YUuJtkp01Jg4YXZPNnjFA==
+X-Received: by 2002:a05:6000:180c:b0:30a:f60a:dc3c with SMTP id
+ m12-20020a056000180c00b0030af60adc3cmr1048689wrh.24.1685612854399; 
+ Thu, 01 Jun 2023 02:47:34 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-178-86.web.vodafone.de.
+ [109.43.178.86]) by smtp.gmail.com with ESMTPSA id
+ cs1-20020a056000088100b002e5f6f8fc4fsm9817809wrb.100.2023.06.01.02.47.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 02:47:33 -0700 (PDT)
+Message-ID: <4d3b985b-fdbe-aadb-a0a9-dc682bca87fe@redhat.com>
+Date: Thu, 1 Jun 2023 11:47:32 +0200
 MIME-Version: 1.0
-References: <CAJSP0QX5XFw81XrHHn9p1pX+1y7tc+xMJLVx9YgRsMCkUwjW7Q@mail.gmail.com>
- <ZHhW5Qff1p2x0oB+@redhat.com>
-In-Reply-To: <ZHhW5Qff1p2x0oB+@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 1 Jun 2023 05:46:51 -0400
-Message-ID: <CAJSP0QXQouMgshcPwrnq4WUDZT0N8eVs19R9zqeA6vh0fB+N=g@mail.gmail.com>
-Subject: Re: Using json: in common.rc's TEST_IMG
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Hanna Reitz <hreitz@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000007fe85405fd0e51a7"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=stefanha@gmail.com; helo=mail-yw1-x112c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
+ scenarios run non-live
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-9-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230531132400.1129576-9-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,36 +104,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000007fe85405fd0e51a7
-Content-Type: text/plain; charset="UTF-8"
+On 31/05/2023 15.23, Daniel P. Berrangé wrote:
+> There are 27 pre-copy live migration scenarios being tested. In all of
+> these we force non-convergance and run for one iteration, then let it
+> converge and wait for completion during the second (or following)
+> iterations. At 3 mbps bandwidth limit the first iteration takes a very
+> long time (~30 seconds).
+> 
+> While it is important to test the migration passes and convergance
 
-Thanks, Hanna and Kevin!
+s/convergance/convergence/ (also in the first paragraph)
 
-I didn't implement bdrv_parse_filename() because I didn't want to invent
-more legacy syntax. But maybe that legacy syntax does have a use and I just
-didn't realize it :).
+> logic, it is overkill to do this for all 27 pre-copy scenarios. The
+> TLS migration scenarios in particular are merely exercising different
+> code paths during connection establishment.
+> 
+> To optimize time taken, switch most of the test scenarios to run
+> non-live (ie guest CPUs paused) with no bandwidth limits. This gives
+> a massive speed up for most of the test scenarios.
+> 
+> For test coverage the following scenarios are unchanged
+> 
+>   * Precopy with UNIX sockets
+>   * Precopy with UNIX sockets and dirty ring tracking
+>   * Precopy with XBZRLE
+>   * Precopy with UNIX compress
+>   * Precopy with UNIX compress (nowait)
+>   * Precopy with multifd
+> 
+> On a test machine this reduces execution time from 13 minutes to
+> 8 minutes.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   tests/qtest/migration-test.c | 81 +++++++++++++++++++++++++++++-------
+>   1 file changed, 66 insertions(+), 15 deletions(-)
 
-It's easy for io_uring, we can just take the filename and not worry about
-other parameters (they can largely be set via existing QEMU command-line
-syntax already).
+Tested-by: Thomas Huth <thuth@redhat.com>
 
-I'll give it a try.
-
-Stefan
-
---0000000000007fe85405fd0e51a7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Thanks, Hanna and Kevin!<div dir=3D"auto"><br></div><div =
-dir=3D"auto">I didn&#39;t implement bdrv_parse_filename() because I didn&#3=
-9;t want to invent more legacy syntax. But maybe that legacy syntax does ha=
-ve a use and I just didn&#39;t realize it :).</div><div dir=3D"auto"><br></=
-div><div dir=3D"auto">It&#39;s easy for io_uring, we can just take the file=
-name and not worry about other parameters (they can largely be set via exis=
-ting QEMU command-line syntax already).<br><div dir=3D"auto"><br></div><div=
- dir=3D"auto">I&#39;ll give it a try.</div><div dir=3D"auto"><br></div><div=
- dir=3D"auto">Stefan</div></div></div>
-
---0000000000007fe85405fd0e51a7--
 
