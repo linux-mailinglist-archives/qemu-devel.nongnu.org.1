@@ -2,57 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6DD719363
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 08:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DABD271937B
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 08:44:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4bxS-0002Z8-03; Thu, 01 Jun 2023 02:38:50 -0400
+	id 1q4c21-0002oI-HS; Thu, 01 Jun 2023 02:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1q4bxH-0002BH-1q; Thu, 01 Jun 2023 02:38:39 -0400
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1q4bxF-0004gB-4C; Thu, 01 Jun 2023 02:38:38 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwCXXdPhPXhk18A8AQ--.34485S2;
- Thu, 01 Jun 2023 14:42:41 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
- by mail (Coremail) with SMTP id AQAAfwD3JV_iPHhkoIgAAA--.5009S4;
- Thu, 01 Jun 2023 14:38:30 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: rad@semihalf.com,
-	peter.maydell@linaro.org
-Cc: quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH v2 1/1] hw/arm/sbsa-ref: add XHCI controller on PCIe
-Date: Thu,  1 Jun 2023 14:37:37 +0800
-Message-Id: <20230601063737.464751-2-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230601063737.464751-1-wangyuquan1236@phytium.com.cn>
-References: <20230601063737.464751-1-wangyuquan1236@phytium.com.cn>
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q4c1w-0002nV-9y; Thu, 01 Jun 2023 02:43:30 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q4c1t-00060C-HU; Thu, 01 Jun 2023 02:43:28 -0400
+Received: from [192.168.81.181] (unknown [61.242.129.184])
+ by APP-05 (Coremail) with SMTP id zQCowADn7Ij9PXhklSwlCQ--.43340S2;
+ Thu, 01 Jun 2023 14:43:09 +0800 (CST)
+Message-ID: <18e4da39-cbd4-aa60-7628-7105a788b6e8@iscas.ac.cn>
+Date: Thu, 1 Jun 2023 14:43:07 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/4] target/riscv: Remove check on mode for MPRV
+To: Alistair Francis <alistair23@gmail.com>, Weiwei Li <liweiwei@iscas.ac.cn>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-3-liweiwei@iscas.ac.cn>
+ <CAKmqyKPmXXoVdSndTF+aF7A-3PqVrnw-NFG26sQQicxybwWpQA@mail.gmail.com>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <CAKmqyKPmXXoVdSndTF+aF7A-3PqVrnw-NFG26sQQicxybwWpQA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwD3JV_iPHhkoIgAAA--.5009S4
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQARAWR3nCkCLwAAsa
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvdXoW7JryDXF1UZw1UuF1ftr4kCrg_yoWxKrX_Gr
- WfXwn5Wr4qyr9ru3sayF4DCry09w1FgrsFg3Z7WFW2ya4UAF1rWrZ7t3sYvF15WrWUWF4f
- Aa15ArW3tF4UujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrnU
- Uv73VFW2AGmfu7jjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUU
- UUUU=
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: zQCowADn7Ij9PXhklSwlCQ--.43340S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw48Zr4Dtr1rCr4fKrWkXrb_yoW8Jw13pr
+ WrGayxCa98WrZrGa4Igr4Yg3W5trZ8GryDGw4v9rn3ZrsxJrZxuFZxGw15Wr9rJFy0krWY
+ va1UZF95AF47ZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+ 6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
+ 4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+ 7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+ 1j6r4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+ n2kIc2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVW8AwCF04k20xvY0x0EwI
+ xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+ Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+ IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+ 6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+ AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU-J5rUUUUU=
+X-Originating-IP: [61.242.129.184]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,30 +79,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current sbsa-ref cannot use EHCI controller which is only
-able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
-Hence, this add an XHCI on PCIe to provide a usb controller with 64-bit
-DMA capablity.
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
- hw/arm/sbsa-ref.c | 2 ++
- 1 file changed, 2 insertions(+)
+On 2023/6/1 13:27, Alistair Francis wrote:
+> On Mon, May 29, 2023 at 10:19 PM Weiwei Li <liweiwei@iscas.ac.cn> wrote:
+>> Normally, MPRV can be set to 1 only in M mode (It will be cleared
+>> when returning to lower-privilege mode by MRET/SRET).
+>>
+>> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+>> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+>> ---
+>>   target/riscv/cpu_helper.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>> index bd892c05d4..45baf95c77 100644
+>> --- a/target/riscv/cpu_helper.c
+>> +++ b/target/riscv/cpu_helper.c
+>> @@ -44,7 +44,7 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
+>>       if (!ifetch) {
+>>           uint64_t status = env->mstatus;
+>>
+>> -        if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
+>> +        if (get_field(status, MSTATUS_MPRV)) {
+> The original check is correct though, why remove it?
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index de21200ff9..a33cd80d69 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -668,6 +668,8 @@ static void create_pcie(SBSAMachineState *sms)
- 
-     pci_create_simple(pci->bus, -1, "bochs-display");
- 
-+    pci_create_simple(pci->bus, -1, "qemu-xhci");
-+
-     create_smmu(sms, pci->bus);
- }
- 
--- 
-2.34.1
+Yeah. As described in the commit message, I think MPRV can only be set 
+to 1 in M mode normally
+
+which means check on MPRV is enough in this case. So I remove the check 
+on mode here.
+
+Regards,
+
+Weiwei Li
+
+>
+> Alistair
+>
+>>               mode = get_field(env->mstatus, MSTATUS_MPP);
+>>               virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>>                      (mode != PRV_M);
+>> --
+>> 2.25.1
+>>
+>>
 
 
