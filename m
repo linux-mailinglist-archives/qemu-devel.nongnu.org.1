@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0131671919F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 06:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C0B7191A0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 06:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ZcF-0007Ks-36; Thu, 01 Jun 2023 00:08:47 -0400
+	id 1q4Ze2-0000jd-0Q; Thu, 01 Jun 2023 00:10:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4Zc9-0007Ff-0t
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 00:08:44 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1q4Zdz-0000jF-FP
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 00:10:35 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4Zc7-0004dB-Ec
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 00:08:40 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-392116b8f31so139928b6e.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 21:08:39 -0700 (PDT)
+ id 1q4Zdx-00050r-OM
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 00:10:35 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-64d3578c25bso549002b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 21:10:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685592518; x=1688184518;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1685592632; x=1688184632;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EpvVmzqeddbaeLR//NYYOjtq5SDhaE/nOLFYxPd2yGU=;
- b=YGCJY4GbUxg32QdmKliOmZZ0YC06osFJagLhQP1AeNdwd+bo5oBUl+iVvWP3VFkDWn
- khbLvJ0vnGY4SLu+Czm56sYX/BgJ0wJFVwaLX2ul4KlJ+jUlQp/n9Z3yoH28xZAwZcyf
- vw7hhKLQj4ZrsF7EyhYpEDxTqRN7OncZWTwnhCCfVfENqJBF5YaqI9kDd+MmhIKmtrc8
- RybumJ72f3xlF2iq9wZV2TS7nIwwQRbn2hzRUAoMZpf3FYjeFbHPljkCiQ/xGtrWf5vS
- WVmPVKqBr0tbJX8U8dEQEV5O+DREg/REZKQ6zI1x4Epdu6XPiplRRLDnHeZhqmHb0gAR
- e2+A==
+ bh=3o+e8GmsOn5rGqT27wLWvGYBEfpCPrKplX8XoKc0rjM=;
+ b=NdQZaFumrVcB4UEAIbxmjIJqsBGlyfqrDqiPuQfUyDe3uiji4+XVVfXGmU8onCPstU
+ fvKf4d1KbCJh7vzHEwGLbWa2YKfuq05DQMXvPId0uht8VOvia+qraG/cb4nZi595Zeux
+ 2bQeO29Qvwn2zjzOCLutCK+QjPAkwFu7pDxG/qRGSg22w36lDVpn2cfTL77o1RK8yNcs
+ BLbAU1ItwykkENjqdxWINZGvYB3uf440p3b10CZrL+2ANavF0zM9qFu2fc6IeUQdusUb
+ Bp+zv/95C0HfHf67tBTqpeHK22omsV07sCXJuVdzoxDTO9VWuvRygeL3zgnoYrnyc7Le
+ xAYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685592518; x=1688184518;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20221208; t=1685592632; x=1688184632;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EpvVmzqeddbaeLR//NYYOjtq5SDhaE/nOLFYxPd2yGU=;
- b=jO9zsJCe+xsp4foDYuiClTu/PJVbWolHYNrvJBnIiblyP+MmkwU7r1CZgXNmQT1hMk
- wWpQEafe1EMbnIILkOI0vIM0ofxhyKtn5tyMAxnoEK+pPfX8JbhgTFibbg1cywk68R8u
- z2ZL+3DppUpRnfQqQQcNVq5/jYRufXqZ//FKgRlt4gTMQMeP7TRfljOKm8zOVFz9gUrt
- 7HtPmVPRyOHUdvclOWix5Sw055uuqoCaIqEbYdN9Jwg4S98BEl5KPYn0/Wy/IyMM9Dqg
- MIWf5RSzGP4spP/Mu810TPe8BWcTbnnWrf8OGMg+JoEVn66tcT8lL4w6IxwnXUhTBH5g
- JV/Q==
-X-Gm-Message-State: AC+VfDx55QcEBFUFaZTak3L/hxCLCwoBsjzzet0yyVDkW9Is5IiPINOU
- gg6oInSic12GrD9h/hITPiQMCg==
-X-Google-Smtp-Source: ACHHUZ5iBVBa9RpIglrbqX8s1RAgs0aVo33WtuxlfRA63wz28nf3fWN0XmSfmV8OREgDfDHv3D4Uvg==
-X-Received: by 2002:aca:641:0:b0:398:2eeb:a9c2 with SMTP id
- 62-20020aca0641000000b003982eeba9c2mr4863346oig.32.1685592516491; 
- Wed, 31 May 2023 21:08:36 -0700 (PDT)
+ bh=3o+e8GmsOn5rGqT27wLWvGYBEfpCPrKplX8XoKc0rjM=;
+ b=ce4QJKLNzihjJGVwCpXL5ZAz4k7+7JAEWRf7Qo5B38d5lYHJw/2ou0jUPnpixlj0+d
+ 5ByP/4zLu6OpmK85yrrGL9E59mzMbR1EE86DA/qJzQQ6iHAzsx3RDYMCoC5KTGn0TMCo
+ 6A5q/MtSJjm6JKiIC+FqZDqPdNdCdxHBVO+eZUMZwzKbofQuTsMlpXNNf8kJ1Iy6ZXTf
+ Busk5N4Rlv9oUzziLHe9fiQxk+ub+Kbddwbunpuzrz4IytHvjHyu3exXrPU1u0OZfFQ4
+ MOKwgOMeGU9/RnZG7EPBxR3hGPvey91b/9pKdv3kE2lBvJBlzpL5tMBBZqQBkF7UWkrA
+ JQxA==
+X-Gm-Message-State: AC+VfDxL7i1zq0Y4QOpFZ/oDjQywncWAKVck59bns+ydM3fVEBIUdz0P
+ H8fWiFMjKjHn2WmYCauCRBFqdw==
+X-Google-Smtp-Source: ACHHUZ7jqe0U/t6/+mVOJFNbXwVpvWKgvwI9tJAIgWXSvRUMDq4fM3bwa6UR6FMtmzxqcyfzJvtEBg==
+X-Received: by 2002:a05:6a20:d397:b0:104:a096:6ac7 with SMTP id
+ iq23-20020a056a20d39700b00104a0966ac7mr7566513pzb.34.1685592631845; 
+ Wed, 31 May 2023 21:10:31 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
  ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
  by smtp.gmail.com with ESMTPSA id
- u11-20020a170902b28b00b001b1920d000bsm819323plr.234.2023.05.31.21.08.35
+ i28-20020a63541c000000b0053efb8fae02sm2089119pgb.24.2023.05.31.21.10.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 21:08:35 -0700 (PDT)
-Message-ID: <bd19daca-6b9c-0302-04e6-427a0cfe8072@linaro.org>
-Date: Wed, 31 May 2023 21:08:34 -0700
+ Wed, 31 May 2023 21:10:31 -0700 (PDT)
+Message-ID: <cfca5d8b-9caf-d2be-bd01-3d37e0d5f5e7@linaro.org>
+Date: Wed, 31 May 2023 21:10:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 0/2] Implement AES on ARM using x86 instructions and vv
+Subject: Re: [PATCH] decodetree: Add --output-null for meson testing
 Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+References: <20230531232510.66985-1-richard.henderson@linaro.org>
+ <731efff0-3230-e3f6-5caa-1b2d1082f266@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-References: <20230531112239.3164777-1-ardb@kernel.org>
- <722d7683-80b4-bb23-3ca2-77f8de23b801@linaro.org>
- <CAMj1kXEH4zFcOZGz0HvTbpcMUup+cyZEr0JQxH1uXpGcbAc6ow@mail.gmail.com>
- <c8499cae-befb-7130-3114-350ee97bf49d@linaro.org>
-In-Reply-To: <c8499cae-befb-7130-3114-350ee97bf49d@linaro.org>
+In-Reply-To: <731efff0-3230-e3f6-5caa-1b2d1082f266@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -101,35 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 10:08, Richard Henderson wrote:
-> On 5/31/23 09:47, Ard Biesheuvel wrote:
->> On Wed, 31 May 2023 at 18:33, Richard Henderson
->>> Thanks.  I spent some time yesterday looking at this, with an encrypted disk test case and
->>> could only measure 0.6% and 0.5% for total overhead of decrypt and encrypt respectively.
->>>
+On 5/31/23 18:51, Thomas Huth wrote:
+> On 01/06/2023 01.25, Richard Henderson wrote:
+>> Using "-o /dev/null" fails on Windows.  Rather that working
+>> around this in meson, add a separate command-line option so
+>> that we can use python's os.devnull.
 >>
->> I don't understand what 'overhead' means in this context. Are you
->> saying you saw barely any improvement?
+>> Reported-by: Thomas Huth <thuth@redhat.com>
+>> Fixes: 656666dc7d1b ("tests/decode: Convert tests to meson")
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   scripts/decodetree.py    | 18 ++++++++++--------
+>>   tests/decode/meson.build |  4 ++--
+>>   2 files changed, 12 insertions(+), 10 deletions(-)
 > 
-> I saw, without changes, just over 1% of total system emulation time was devoted to aes, 
-> which gives an upper limit to the runtime improvement possible there.  But I'll have a 
-> look at tcrypt.
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> 
+> 
 
-Using
-
-# insmod /lib/modules/5.10.0-21-arm64/kernel/crypto/tcrypt.ko mode=600 sec=10
-
-I see
-
-   25.50%  qemu-system-aar  qemu-system-aarch64      [.] helper_crypto_aese
-   25.36%  qemu-system-aar  qemu-system-aarch64      [.] helper_crypto_aesmc
-    6.66%  qemu-system-aar  qemu-system-aarch64      [.] rebuild_hflags_a64
-    3.25%  qemu-system-aar  qemu-system-aarch64      [.] tb_lookup
-    2.52%  qemu-system-aar  qemu-system-aarch64      [.] fp_exception_el
-    2.35%  qemu-system-aar  qemu-system-aarch64      [.] helper_lookup_tb_ptr
-
-Obviously a crypto-heavy test, but 51% of runtime is certainly worth more work.
-
+Thanks.  Applied, with typo in the first line above fixed, to master in preparation for 
+tomorrow's refresh of ci minutes.
 
 r~
 
