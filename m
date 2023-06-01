@@ -2,57 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602DC719E78
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 395BA719E91
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4iZy-0005v0-6w; Thu, 01 Jun 2023 09:43:03 -0400
+	id 1q4ibI-00079Q-EA; Thu, 01 Jun 2023 09:44:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4iZw-0005sy-Dn
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:43:00 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q4ibG-00079E-VX
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:44:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4iZu-0007gm-W3
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:43:00 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q4ibF-0007qg-IQ
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:44:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685626978;
+ s=mimecast20190719; t=1685627059;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a9DzCBzotLVAP/9aKe7SAtSy7h/nGdvjuvGWbdqlqKY=;
- b=F5ejigs/aHSrLISzkdp1oI56WSH6JtfNGB8V0Od9A94d5M72HfUaXUZy0f3Ui2fsL9aNwM
- /INbnaaCQuz0BkHRcJE6jLXVX1pYtKc0Z7XQ+yS3+CK9zJeARdMpfergjMA7rv/FPcyfaC
- T8Bd+Ga0cYUSAjjALOcfZw/2TMb3Hcw=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-641-lEie-499OdqIVNAKDGtbRQ-1; Thu, 01 Jun 2023 09:42:56 -0400
-X-MC-Unique: lEie-499OdqIVNAKDGtbRQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2ED4C3C14AAE;
- Thu,  1 Jun 2023 13:42:56 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.76])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C0192492B00;
- Thu,  1 Jun 2023 13:42:55 +0000 (UTC)
-Date: Thu, 1 Jun 2023 08:42:54 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, qemu-block@nongnu.org
-Subject: Re: [PATCH v2 0/3] block: remove separate bdrv_file_open callback
-Message-ID: <fpjgdbgqxxknfjtz27qqcvw6pvpgifjia3a6k2g7syug2bmm22@x3xzgsganrg2>
-References: <20230601115139.196369-1-pbonzini@redhat.com>
+ bh=09dG3ngs3N+0l1d4fZmd4NzcTnstX2opJKC3vhwp/BE=;
+ b=A1x3nvBe/wZ6QET6BoX92D3O10mni93j4SRSLGWkEFyUgRduGZfgtNcb3Wewm3nHJciVQy
+ 7i6X4NJ9MisZwOy2UcM0TP7NchU7GIKIwTqv9H1lvDwMRmHOBbc0p7nDh3twOhC9TYZpk7
+ e88EGPBUpGnbBUbn0lt4r+lq7/nzz3A=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-591-D1HtUAMPPs-9YtxvXX5NSA-1; Thu, 01 Jun 2023 09:44:16 -0400
+X-MC-Unique: D1HtUAMPPs-9YtxvXX5NSA-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-6b0ca3d311eso788917a34.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 06:44:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685627056; x=1688219056;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=09dG3ngs3N+0l1d4fZmd4NzcTnstX2opJKC3vhwp/BE=;
+ b=ERM1Nt+Z0Tr8WUmxpHtM15fD0EWtwA2M4yFs2P2vxSA8zceDLafV2z6JmUyAv6SL53
+ G80ZpU01p4iP9RRQbnyKDoQw6uoRSjWtukZRvQiKxQM5J6laVyEhYKKkCJgwqt7ox5mN
+ Eeh406zjKzRvX6mhnYCvG+/Q/PQFi9pk2K9rP7gxMKNkfsQzvLfz3W9yKNfErI9QU+fq
+ vlJs73LM8Go9Qs0UrhbeTcVhKtEUA6eC2KonVM6gE8ZaMIkXQ4VUtX6U89hmldiG5TaM
+ bSr6KNy3CnOe3YpSfDjQ5NYZFAiObXyZytJfJ+ADN1OjOgEb0w4FDim4neJCPdnAAL52
+ JyuQ==
+X-Gm-Message-State: AC+VfDxV1ZdJ2yvtfp6RDCvDs2Q0tELqRjDiSsi6WVJ9P6ScllYFTsNL
+ R/Nh5N2nTvG985PEf/SH7gKEqcRHWWhpuzst0cBqvd7DtiP83XHbxGWmE6KU4AZ8R1n2GP5h23T
+ jVuER5AOouZTCYgxlR1YbHFG8IIZddAM=
+X-Received: by 2002:a05:6830:cf:b0:6ad:e8ad:bb1e with SMTP id
+ x15-20020a05683000cf00b006ade8adbb1emr4529915oto.21.1685627055979; 
+ Thu, 01 Jun 2023 06:44:15 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Lu4Xf71SX7z85r46Z3M05cx5pXZPKYzU+E8YtTWJlDZDRyyu1gjEr/3poq1tdzxnJQE31Tzv7GH/4X6GOOPU=
+X-Received: by 2002:a05:6830:cf:b0:6ad:e8ad:bb1e with SMTP id
+ x15-20020a05683000cf00b006ade8adbb1emr4529903oto.21.1685627055752; Thu, 01
+ Jun 2023 06:44:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601115139.196369-1-pbonzini@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+References: <cover.1685584543.git.yin31149@gmail.com>
+ <39fddc462ad4c7619843a4cd7cba92e0bbc48c45.1685584543.git.yin31149@gmail.com>
+ <CAKrof1OyEL5RGTWgHjgfMSkMC-afiWW8VAF5qirCy3juErWSqA@mail.gmail.com>
+In-Reply-To: <CAKrof1OyEL5RGTWgHjgfMSkMC-afiWW8VAF5qirCy3juErWSqA@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 1 Jun 2023 15:43:38 +0200
+Message-ID: <CAJaqyWewHKZebftQc6HrhDQEV5cTWiJUkVL4NgzOVqoGdP+6Sw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] virtio-net: expose
+ virtio_net_supported_guest_offloads()
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -76,30 +96,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 01:51:36PM +0200, Paolo Bonzini wrote:
-> The value of the bdrv_file_open is sometimes checked to distinguish
-> protocol and format drivers, but apart from that there is no difference
-> between bdrv_file_open and bdrv_open.
-> 
-> However, they can all be distinguished by the non-NULL .protocol_name
-> member.  Change the checks to use .protocol_name instead of .bdrv_file_open,
-> and unify the two callbacks.
-> 
-> Paolo
-> 
-> v1->v2: fix bisectability
-> 
-> Paolo Bonzini (3):
->   block: make assertion more generic
->   block: do not check bdrv_file_open
->   block: remove separate bdrv_file_open callback
+On Thu, Jun 1, 2023 at 11:05=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> On Thu, 1 Jun 2023 at 16:48, Hawkins Jiawei <yin31149@gmail.com> wrote:
+> >
+> > To support restoring offloads state in vdpa, need to expose
+> > the function virtio_net_supported_guest_offloads(), then vdpa
+> > uses this function to get the guest supported offloads.
+>
+> Here it should be changed to "then QEMU uses this function
+> to get the guest supported offloads.". I will correct the commit
+> message in the v3 patch.
+>
 
-Series:
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Maybe "to get the device supported offloads allow qemu to know the
+defaults, so it can skip the control message sending if they match
+with the driver's configuration"?
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.           +1-919-301-3266
-Virtualization:  qemu.org | libvirt.org
+We can also add "This will be the default at guest's startup, these
+values can mismatch only at live migration".
+
+What do you think?
+
+Thanks!
+
+> Thanks!
+>
+> >
+> > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> > ---
+> >  hw/net/virtio-net.c            | 2 +-
+> >  include/hw/virtio/virtio-net.h | 1 +
+> >  2 files changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> > index 7b27dad6c4..7e8897a8bc 100644
+> > --- a/hw/net/virtio-net.c
+> > +++ b/hw/net/virtio-net.c
+> > @@ -874,7 +874,7 @@ static uint64_t virtio_net_guest_offloads_by_featur=
+es(uint32_t features)
+> >      return guest_offloads_mask & features;
+> >  }
+> >
+> > -static inline uint64_t virtio_net_supported_guest_offloads(const VirtI=
+ONet *n)
+> > +uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n)
+> >  {
+> >      VirtIODevice *vdev =3D VIRTIO_DEVICE(n);
+> >      return virtio_net_guest_offloads_by_features(vdev->guest_features)=
+;
+> > diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-=
+net.h
+> > index ef234ffe7e..5f5dcb4572 100644
+> > --- a/include/hw/virtio/virtio-net.h
+> > +++ b/include/hw/virtio/virtio-net.h
+> > @@ -227,5 +227,6 @@ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vde=
+v,
+> >                                    unsigned out_num);
+> >  void virtio_net_set_netclient_name(VirtIONet *n, const char *name,
+> >                                     const char *type);
+> > +uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n);
+> >
+> >  #endif
+> > --
+> > 2.25.1
+> >
+>
 
 
