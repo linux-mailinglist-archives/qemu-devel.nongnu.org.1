@@ -2,72 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49542719C18
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E800719C1A
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:27:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hOC-0002O3-Pw; Thu, 01 Jun 2023 08:26:48 -0400
+	id 1q4hOj-0002rr-RC; Thu, 01 Jun 2023 08:27:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4hOA-0002L2-4X; Thu, 01 Jun 2023 08:26:46 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4hOh-0002p1-43
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:27:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4hO8-0001Iw-BY; Thu, 01 Jun 2023 08:26:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=XjebpvKdCmosHLZZ/q4ifLbxq6eCYwbT+mgk90aja7A=; b=M4qVzlOUe2dcq383yo39wo4MSH
- Bee7RG50prWSrFF9sl/NpgbO/HvhzRDjZbHnpxGy/f7T2akC2fSp7b2pseHM0jphAPW4KFXfpsVcj
- UHpdklc1RM2YlvUiaulQX7HDPOD7G5NyJaEJzxp+o8FgEgcxek+oJrZyqoM6eh7j3L17bSZLVBalW
- OXvx0SmWkWPka3aPZ43/n0WvJrGqidHZFixsmqoCAUV8T8f+PKcaNl1zCe1Rv7Q3l4KORwzPj8kR8
- BAvbidocS6YNaE38SE/EkwFaEFsysKz0+3oisYaJlZYFUcQ3Py2C1zSMhpLpd+jPG13ZN1/XkxGR+
- Me/IwLuYjYXtWHSjfzkU5GpI7iWPm5Rl12DFl3rY2cUGGH+k3JLvH39AYktf3/7a3jvCgkzrVYglD
- W3lbUXyklJYQX5VggAmzL+HVhGTOHMddS05wPySlRO8MVv1088kuvpo/Vc4k9SCh1iDv1KZVcaAsC
- qzs7d6cPyRuEnaK/mX4tw1RXf77c/gJE0tgZRCY2qcqmYRglFD7STuWF8XAm+LCDn6PQE4WHoL0CM
- TtYINaxYOiuy2vYPY8T4gGPKyGRAYFx1z62qa31IKhk6JVr4EpTA8dCEDSngOVX+Y0dgbdQbaStnc
- dcPbfqg/jg1MJEpsL6WUoAsQ2kVptLVo6F2Eu19Ng=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q4hNq-0006BW-5x; Thu, 01 Jun 2023 13:26:30 +0100
-Message-ID: <61c5b391-aaf1-dc60-6480-6361b9d7e8b6@ilande.co.uk>
-Date: Thu, 1 Jun 2023 13:26:30 +0100
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4hOf-0001L5-Cx
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:27:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685622436;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gKTWO+rvYFAnRi2NxkmZWiOUH34CH8BQLYPvmvrfxak=;
+ b=jEWBY+Zy13oajyY4WUntiC/y78O3mKC0B03opsOHOtuld9K+Is1AJVkCaOWc9hiiV2tQwb
+ iYoOKBhbEUSPFFA6i6FUjHvA7GGmqCB8j5Q6ZrCXQj6MqbfR/Nzu66xJlKXDAd0ql4SW30
+ +QlaINSW/09KmYiAtPCLTyLa2NI7gM0=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-ZutT1LWVMU2iHiAMfz-s2Q-1; Thu, 01 Jun 2023 08:27:15 -0400
+X-MC-Unique: ZutT1LWVMU2iHiAMfz-s2Q-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4f495fc7a43so839761e87.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:27:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685622433; x=1688214433;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gKTWO+rvYFAnRi2NxkmZWiOUH34CH8BQLYPvmvrfxak=;
+ b=JP0ROEBS09O603Phq6TcgDPP0maMEsROs8lRAemaSfHd3W1qmcpKVFYfW/IisxC2hw
+ JBqH9u39K8VV6NDsiOZ55Fa6VsD8Ai8bCxNJduNIWwfG1th1AcPKejfdRjguJyVPoZuK
+ as47DW24qNLroBHL4h7T7rZRBRPhp6dSM8JGR+mwDZWv4QOLFJTfguybgEm9IVeLJfh5
+ Iupfeoew8QBPZlHI/BhXo9v0DMU7JtPzIQbkEVmOjzvS+r6G5dt3D+Tf+vMwPFztnSSs
+ ZTNyEKU/uS+GYo55RGsoNrlK4mzoC30spCoql5eFeaDl2IF5uxfqKxiPgxmPc7CyfDTP
+ UpyA==
+X-Gm-Message-State: AC+VfDwSTMM2558gPJHCZncgEMtVEHmX+ZXnrS7e5qWUX7NXNT63+3IQ
+ sVprLTK35uh0CuCjZuQGz28ohsavD4zQMl0VP0qjouWOs8e2qDBKTPchtdH9MZbglXvKrZCt3KM
+ 8D+qOerHut+nEqn0=
+X-Received: by 2002:ac2:5d52:0:b0:4f3:a820:dd98 with SMTP id
+ w18-20020ac25d52000000b004f3a820dd98mr1136890lfd.7.1685622433669; 
+ Thu, 01 Jun 2023 05:27:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6eOIRXB0wlNUfrz4NBrfluQFrDxav2zGKdW+MxR4VV7x8mf2Uo7Z+fwVcB11nM7ANH4RFlQA==
+X-Received: by 2002:ac2:5d52:0:b0:4f3:a820:dd98 with SMTP id
+ w18-20020ac25d52000000b004f3a820dd98mr1136874lfd.7.1685622433346; 
+ Thu, 01 Jun 2023 05:27:13 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ q12-20020a05600c040c00b003f6f6a6e769sm2234906wmb.17.2023.06.01.05.27.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 05:27:12 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 6/9] tests/qtest: replace wait_command() with
+ qtest_qmp_assert_success
+In-Reply-To: <20230531132400.1129576-7-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:57
+ +0100")
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-7-berrange@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 01 Jun 2023 14:27:11 +0200
+Message-ID: <87ilc7s6zk.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-ppc@nongnu.org, qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, BALATON Zoltan <balaton@eik.bme.hu>
-References: <20230531211043.41724-1-shentey@gmail.com>
- <20230531211043.41724-8-shentey@gmail.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230531211043.41724-8-shentey@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v3 7/7] hw/ide/piix: Move registration of
- VMStateDescription to DeviceClass
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,81 +103,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/05/2023 22:10, Bernhard Beschow wrote:
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+> Most usage of wait_command() is followed by qobject_unref(), which
+> is just a verbose re-implementation of qtest_qmp_assert_success().
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
-> The modern, declarative way to set up VM state handling is to assign to
-> DeviceClass::vmsd attribute.
-> 
-> There shouldn't be any change in behavior since dc->vmsd causes
-> vmstate_register_with_alias_id() to be called on the instance during
-> the instance init phase. vmstate_register() was also called during the
-> instance init phase which forwards to vmstate_register_with_alias_id()
-> internally. Checking the migration schema before and after this patch confirms:
-> 
-> before:
->> qemu-system-x86_64 -S
->> qemu > migrate -d exec:cat>before.mig
-> 
-> after:
->> qemu-system-x86_64 -S
->> qemu > migrate -d exec:cat>after.mig
-> 
->> analyze-migration.py -d desc -f before.mig > before.json
->> analyze-migration.py -d desc -f after.mig > after.json
->> diff before.json after.json
-> -> empty
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   hw/ide/piix.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-> index 47e0b474c3..151f206046 100644
-> --- a/hw/ide/piix.c
-> +++ b/hw/ide/piix.c
-> @@ -28,7 +28,6 @@
->    */
->   
->   #include "qemu/osdep.h"
-> -#include "migration/vmstate.h"
->   #include "qapi/error.h"
->   #include "hw/pci/pci.h"
->   #include "hw/ide/piix.h"
-> @@ -159,8 +158,6 @@ static void pci_piix_ide_realize(PCIDevice *dev, Error **errp)
->       bmdma_setup_bar(d);
->       pci_register_bar(dev, 4, PCI_BASE_ADDRESS_SPACE_IO, &d->bmdma_bar);
->   
-> -    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_pci, d);
-> -
->       for (unsigned i = 0; i < 2; i++) {
->           if (!pci_piix_init_bus(d, i, errp)) {
->               return;
-> @@ -186,6 +183,7 @@ static void piix3_ide_class_init(ObjectClass *klass, void *data)
->       PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
->   
->       dc->reset = piix_ide_reset;
-> +    dc->vmsd = &vmstate_ide_pci;
->       k->realize = pci_piix_ide_realize;
->       k->exit = pci_piix_ide_exitfn;
->       k->vendor_id = PCI_VENDOR_ID_INTEL;
-> @@ -208,6 +206,7 @@ static void piix4_ide_class_init(ObjectClass *klass, void *data)
->       PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
->   
->       dc->reset = piix_ide_reset;
-> +    dc->vmsd = &vmstate_ide_pci;
->       k->realize = pci_piix_ide_realize;
->       k->exit = pci_piix_ide_exitfn;
->       k->vendor_id = PCI_VENDOR_ID_INTEL;
-
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
-ATB,
 
-Mark.
+> -    qobject_unref(rsp);
+> +    qtest_qmp_fds_assert_success(to, &(pair[0]), 1,
+
+I was wondering about the parens, and then saw Thomas message O:-)
+
+Later, Juan.
 
 
