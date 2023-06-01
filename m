@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC00719B3F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 13:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9409A719B48
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 13:55:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4gqi-0001Hi-72; Thu, 01 Jun 2023 07:52:13 -0400
+	id 1q4gqe-0001IL-4r; Thu, 01 Jun 2023 07:52:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q4gqX-0000st-9Z
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q4gqZ-00014D-L3
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q4gqU-0000LU-3s
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:00 -0400
+ id 1q4gqX-0000M0-1m
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685620317;
+ s=mimecast20190719; t=1685620319;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9njw4Wxx0XeRAgmG7XlsOr0DLciSKleqOdESpyjG1rU=;
- b=PNcjjBAj7xL/8soQW+qz6yVj6+4BhZGU8zfaS4n07ENYlHY0i6iV5kdZ7H3WKhhKtypZLh
- ebcyCmq+GAsdEDF+04kTExZyQhh2QjDTC3hsaHDDu2z2K9ffwSR0mGz1EFSBtRqrKl3HeF
- tLHMPrVNTdAJjy9Aozv0+hcL+dT90Ng=
+ bh=s9kOsnTIfr8LoecIGmkq1o/fbSu4HEOyb00hkoyFBiI=;
+ b=W1P8ve4Z2quHoYPn57adH3eUGB56qxq7bnF/3hVzp9rgEFSB8rMShVloCw3tPHVzSyIxER
+ Y5wFtntExFtGF8L6oJwZtLbOyCSKnifGEuozx/cEPfOLBz1OfrQ+fInfQiqTFbtEfjt98J
+ 7NyQwjYea0+Sqd+xOcexO0i2HFWIrqo=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-sr1Het0NPgCFYN33XbvQ_Q-1; Thu, 01 Jun 2023 07:51:56 -0400
-X-MC-Unique: sr1Het0NPgCFYN33XbvQ_Q-1
+ us-mta-246-kVlOH6zfNJWXhbE5GmXY3g-1; Thu, 01 Jun 2023 07:51:58 -0400
+X-MC-Unique: kVlOH6zfNJWXhbE5GmXY3g-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-96fe843f61eso55370466b.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 04:51:56 -0700 (PDT)
+ a640c23a62f3a-96f9aa23593so52997466b.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 04:51:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685620315; x=1688212315;
+ d=1e100.net; s=20221208; t=1685620316; x=1688212316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9njw4Wxx0XeRAgmG7XlsOr0DLciSKleqOdESpyjG1rU=;
- b=AlOa9lbP/IAZAm1vPHwlzCxjMNPtGzzjxYt+zmvgSkx2dlbcOaDYWOkuy+AxFIb+U0
- oXsZLZ42klb2owhHO8wS0x+VeKlU0m2Uep1gQ3dLs5DsZTv8TLwOqKllYRdTJczNOvQy
- /i/ZLbUX2mKaYtXYvmaR0xLJ0obKjHV1tYWhSK9nAG8cD9B4pNdQyJmTJprZmf4vyzm5
- tUmEyqJ44M4F/kf+ZU8WP08EZKAWaz2DHuw5mjfYaarBrDDj/taJSWetRTsbZeVu90hh
- VFg3q8iGvt0UMPQBCwCYaclNP8IkuTCg3A8SyG+hXbBk+X4YQ1XjQr1HpDaA1+c3Qrs9
- nWFA==
-X-Gm-Message-State: AC+VfDzvJh/HkC3alSdAtwq+Cuatr7+ID96Sq1oTwDcVBI3gqzIDW9t0
- tESr++LdFkWGKWj0ouuDO4BsVPBJrL4Tqh6Q7IjPGvKlkz/pJaVO3ZDUIclEbibe+3m8XZPqIaU
- KRusHn4CgDdpyB8vjgMY+XXwikaEzP7TH8mSSc/wHQkYU0fsOFCSNOaYDM/rqfZq9dQLYB9rv8v
- k=
-X-Received: by 2002:aa7:ccd1:0:b0:514:75c3:269b with SMTP id
- y17-20020aa7ccd1000000b0051475c3269bmr5159105edt.41.1685620314852; 
- Thu, 01 Jun 2023 04:51:54 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ41w+Nr7HmXymW5WeHUQVtpndmgok1IQVhAqFhS4MOlmP+eb9WuK9cXV3LSmQQb3ghm1TxbrQ==
-X-Received: by 2002:aa7:ccd1:0:b0:514:75c3:269b with SMTP id
- y17-20020aa7ccd1000000b0051475c3269bmr5159095edt.41.1685620314650; 
- Thu, 01 Jun 2023 04:51:54 -0700 (PDT)
+ bh=s9kOsnTIfr8LoecIGmkq1o/fbSu4HEOyb00hkoyFBiI=;
+ b=lENSjqHpbXhBievVk5JcYbguhz3YAJO4hdRsOx8gt8iPlvxwAihs8vTPmqUfYqG0+r
+ LMnV/8SAXbTlNYcaEJyP5kK4eGLtQSBCYowgDXfyWZtLwnvC+peDtqzHiTkVAAS4TuvC
+ M7sFGmQY94usX6WCGrMkDzeJrmrVJPiVfujCOt8MWvCWYf3LlF/iVJfJjVRMHUAVRxlM
+ O4Sq7vuJPLwbhs4AYvoggC73fLlKYDFW3Ci0mwJS1JxG9CW5Lw7J/Ly62MmaBhyYd2sG
+ XXaiQnGYGrr3Z3MtN9dZ1Ho0O1HPv8Kzk+37v3FHxzfHBwQ7xBPNtXAzQehyXFf+cxSs
+ afqA==
+X-Gm-Message-State: AC+VfDwIGiTuv+2AeYWba/oMXEtOworjaqZcCQwh7lrWvy3iU1c3IAQu
+ HvdwQj2sx6F84T9+dPeFhyNKME4+z/llOqCahaqdsuc7+eHMLnt6v0+SRgN1pPaRvV6fqRqukt8
+ zUw+up6iFy+cx6JeAIGYxwuYshF2C97ATV4nsxMoJpstFfe94K+ryr5xYwVRI+gWbYVehsWovoB
+ o=
+X-Received: by 2002:a17:907:a426:b0:96f:c988:93b with SMTP id
+ sg38-20020a170907a42600b0096fc988093bmr8487682ejc.35.1685620316436; 
+ Thu, 01 Jun 2023 04:51:56 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4P2xh7UnML4pw2fmW4w4oc8vwIV//SO3pXMkNNQ5danwkusOKFGdBZ/NzRDEsxzy7OUhAZOA==
+X-Received: by 2002:a17:907:a426:b0:96f:c988:93b with SMTP id
+ sg38-20020a170907a42600b0096fc988093bmr8487672ejc.35.1685620316133; 
+ Thu, 01 Jun 2023 04:51:56 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- l19-20020a056402345300b00504ecc4fa96sm7043082edc.95.2023.06.01.04.51.53
+ jx10-20020a170906ca4a00b00966293c06e9sm10405407ejb.126.2023.06.01.04.51.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 04:51:54 -0700 (PDT)
+ Thu, 01 Jun 2023 04:51:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-block@nongnu.org
-Subject: [PATCH 05/12] block: mark another function as coroutine_fns and
- GRAPH_UNLOCKED
-Date: Thu,  1 Jun 2023 13:51:38 +0200
-Message-Id: <20230601115145.196465-6-pbonzini@redhat.com>
+Subject: [PATCH 06/12] cloop: mark more functions as coroutine_fns and
+ GRAPH_RDLOCK
+Date: Thu,  1 Jun 2023 13:51:39 +0200
+Message-Id: <20230601115145.196465-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601115145.196465-1-pbonzini@redhat.com>
 References: <20230601115145.196465-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -86,7 +86,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,48 +103,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Mark functions as coroutine_fn when they are only called by other coroutine_fns
-and they can suspend.  Because this function operates on a BlockBackend, mark it
-GRAPH_UNLOCKED.
+and they can suspend.  Change calls to co_wrappers to use the non-wrapped
+functions, which in turn requires adding GRAPH_RDLOCK annotations.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- block.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ block/cloop.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/block.c b/block.c
-index 113e3d90fd52..98cba7d11a56 100644
---- a/block.c
-+++ b/block.c
-@@ -555,8 +555,9 @@ int coroutine_fn bdrv_co_create(BlockDriver *drv, const char *filename,
-  * On success, return @blk's actual length.
-  * Otherwise, return -errno.
-  */
--static int64_t create_file_fallback_truncate(BlockBackend *blk,
--                                             int64_t minimum_size, Error **errp)
-+static int64_t coroutine_fn GRAPH_UNLOCKED
-+create_file_fallback_truncate(BlockBackend *blk, int64_t minimum_size,
-+                              Error **errp)
+diff --git a/block/cloop.c b/block/cloop.c
+index 1e5a52d6b2dc..835a0fe3da0a 100644
+--- a/block/cloop.c
++++ b/block/cloop.c
+@@ -212,7 +212,8 @@ static void cloop_refresh_limits(BlockDriverState *bs, Error **errp)
+     bs->bl.request_alignment = BDRV_SECTOR_SIZE; /* No sub-sector I/O */
+ }
+ 
+-static inline int cloop_read_block(BlockDriverState *bs, int block_num)
++static int coroutine_fn GRAPH_RDLOCK
++cloop_read_block(BlockDriverState *bs, int block_num)
  {
-     Error *local_err = NULL;
-     int64_t size;
-@@ -564,14 +565,14 @@ static int64_t create_file_fallback_truncate(BlockBackend *blk,
+     BDRVCloopState *s = bs->opaque;
  
-     GLOBAL_STATE_CODE();
+@@ -220,8 +221,8 @@ static inline int cloop_read_block(BlockDriverState *bs, int block_num)
+         int ret;
+         uint32_t bytes = s->offsets[block_num + 1] - s->offsets[block_num];
  
--    ret = blk_truncate(blk, minimum_size, false, PREALLOC_MODE_OFF, 0,
--                       &local_err);
-+    ret = blk_co_truncate(blk, minimum_size, false, PREALLOC_MODE_OFF, 0,
-+                          &local_err);
-     if (ret < 0 && ret != -ENOTSUP) {
-         error_propagate(errp, local_err);
-         return ret;
-     }
+-        ret = bdrv_pread(bs->file, s->offsets[block_num], bytes,
+-                         s->compressed_block, 0);
++        ret = bdrv_co_pread(bs->file, s->offsets[block_num], bytes,
++                            s->compressed_block, 0);
+         if (ret < 0) {
+             return -1;
+         }
+@@ -244,7 +245,7 @@ static inline int cloop_read_block(BlockDriverState *bs, int block_num)
+     return 0;
+ }
  
--    size = blk_getlength(blk);
-+    size = blk_co_getlength(blk);
-     if (size < 0) {
-         error_free(local_err);
-         error_setg_errno(errp, -size,
+-static int coroutine_fn
++static int coroutine_fn GRAPH_RDLOCK
+ cloop_co_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
+                 QEMUIOVector *qiov, BdrvRequestFlags flags)
+ {
 -- 
 2.40.1
 
