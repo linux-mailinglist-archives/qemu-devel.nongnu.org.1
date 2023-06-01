@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237AF71F647
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B09071F649
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:53:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4r7t-0005RE-8V; Thu, 01 Jun 2023 18:50:37 -0400
+	id 1q4r9k-0007JZ-Ju; Thu, 01 Jun 2023 18:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4r7q-0005Qq-Nw
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:50:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q4r9i-0007JM-Uy
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:52:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4r7p-0005oy-1b
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:50:34 -0400
+ id 1q4r9h-0006Sl-EW
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:52:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685659832;
+ s=mimecast20190719; t=1685659948;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jOUatqZ90/j1ux2D4xeC5ICT9akjXAhvlX/uynrd+LQ=;
- b=EHFfc+US+aFUEfS8pC/Nq+7p6IrVpTkh7IAM4NagkWCd2NeqQszk7LD3x6NN5CiKghWTKM
- 7uGv2vxxFpssj6u8P3qo+OTnhPu3dzXze53vbfKmxeNOiR8DWgXRxPAodb2apIo6UOmaXP
- 4Shz9GgERRJHtwuq4TrM6COxm/EOCqg=
+ bh=2qxn32C2pe769dYjSeIsOBM4MVx3lPy71PFCesZnrwo=;
+ b=S5B2QBv2ynRSecCAHSHgdjFiZ9fL5drU6nnjJo4+zN0d7n7EF+A5MLZ98VRcAHTYRayPXH
+ IQUMJySNwDvu3h2Rx6W8C41Z3l7KZYA/DO+VTNspc+CeTil2+Tg3xwgNOyqdcnJtI65MKW
+ jfFUjFsOEtnRPVqeB8FRSxKnYXVNV7c=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-LjkAKbI8Nc-0qtEsA4K9Dw-1; Thu, 01 Jun 2023 18:50:31 -0400
-X-MC-Unique: LjkAKbI8Nc-0qtEsA4K9Dw-1
+ us-mta-68-dIBh0OnMP86qzvX-UYJw2Q-1; Thu, 01 Jun 2023 18:52:27 -0400
+X-MC-Unique: dIBh0OnMP86qzvX-UYJw2Q-1
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30ad885addcso1268447f8f.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 15:50:29 -0700 (PDT)
+ ffacd0b85a97d-30c3ad3238bso640309f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 15:52:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685659829; x=1688251829;
+ d=1e100.net; s=20221208; t=1685659946; x=1688251946;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jOUatqZ90/j1ux2D4xeC5ICT9akjXAhvlX/uynrd+LQ=;
- b=OEUU3NQzN1+FFQ7niFMLB8Dhf2wiTwjn9SPZFE2nxMz14sZkmddRLRuCfROKkb+aKI
- +y5kzYMwg9CXmRaMyF8lFAlkaueNso1xvkmHQlL1lJPAkdrLJhUVh2z5FgceY8pYiL8n
- e7spMUfOUqVrptPCYM1rHtabwaKCzFXKh1Ok/CRLi9jHRbGrFTVPEWlGJTh111cLzL9v
- TiYFfDinFs6JEcq0CYMr++j6riO5p6yizR9BXPbmknNUUlzXqwKzaQNLUcUMing69J44
- k4TIhs0UczOsfkb4e737sVZ8LoOF0Q35nVLm8r+x2Nf8Hoe1ZJuKST7Azzf/QKPi1WMX
- 3eAQ==
-X-Gm-Message-State: AC+VfDyhA9pHXcBAwE1d63vZv45vdypobOYgW4rNSA+4dBCjPFXPvQzU
- cItPefMM81RmvKvhi+GKpaOHvRsTphSsNP2IuxjKYKpVGHoXTVxcThWkyxh1qb1frFu5MHdSu9S
- dI6fqUu7udbDFXxM=
-X-Received: by 2002:a5d:470d:0:b0:309:4642:8795 with SMTP id
- y13-20020a5d470d000000b0030946428795mr2908215wrq.12.1685659829030; 
- Thu, 01 Jun 2023 15:50:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4RgFUA5zb+UAY7/0mSx0+hV0j4V6E2X4cz6ejnMG6JSqLh+vGx8tq/eGNSdG/flfSH6v+ikw==
-X-Received: by 2002:a5d:470d:0:b0:309:4642:8795 with SMTP id
- y13-20020a5d470d000000b0030946428795mr2908202wrq.12.1685659828762; 
- Thu, 01 Jun 2023 15:50:28 -0700 (PDT)
+ bh=2qxn32C2pe769dYjSeIsOBM4MVx3lPy71PFCesZnrwo=;
+ b=jhVOkqA2WUg1j7Is5xwLir9qPiUx6avoDg9Ml1gAFM21KobtGSP9SQ3n14MNHFQ/xj
+ TuAvns5QxC0iTfCvHFxR+lc/reQtNcJqMK8U+Pu2YYdEBQZX38evspHHhDPOC9IrBigL
+ mtE5aW84Ex1HRKbbMqPzHIgQQNEwy/VBn5GntdkqAgw8AVs8O5i1Q7qeLkqJ1NTUMF5h
+ 0so3NQoBnJvTVK57igDUox+VsU2oayL9hnzPQ/wuqc0c4OCcJdooswNP3s5XX7wuUKUY
+ 7R6hi4rERYrEJQFah8ZfnfPTTcAzZkZWtMQfNOwiSOLq8CUdDGqKBp1QwqE+8ilZtHon
+ L4gg==
+X-Gm-Message-State: AC+VfDwovILP/XZF7TDNm9TNyFNlozsYhhczeeHuqZA8jAwK9O4CIsvu
+ ze95pSRtb6uaZAZlHK/Y1L0R84SDkGuTaQ3Dm6cS0aD2g3V11WwdTX7M+VNLDRcQBFAx8bfi1W6
+ gem6td2lAQJnzcxc=
+X-Received: by 2002:a5d:62d1:0:b0:309:3698:8006 with SMTP id
+ o17-20020a5d62d1000000b0030936988006mr2911932wrv.34.1685659946395; 
+ Thu, 01 Jun 2023 15:52:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7UtA97pNHR5Gyp4N9xPzYbpFGnlCGg6tYtk5kea07GxpwjcJz4Yz1bUHtvvnX76+H1HLtK/A==
+X-Received: by 2002:a5d:62d1:0:b0:309:3698:8006 with SMTP id
+ o17-20020a5d62d1000000b0030936988006mr2911926wrv.34.1685659946146; 
+ Thu, 01 Jun 2023 15:52:26 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- x15-20020adfdd8f000000b0030ae3a6be4asm11534126wrl.72.2023.06.01.15.50.27
+ r7-20020a5d4e47000000b00307c46f4f08sm11592607wrt.79.2023.06.01.15.52.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 15:50:28 -0700 (PDT)
+ Thu, 01 Jun 2023 15:52:24 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v4 09/10] tests/qtest: make more migration pre-copy
- scenarios run non-live
-In-Reply-To: <20230601161347.1803440-10-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Thu, 1 Jun 2023 17:13:46
- +0100")
-References: <20230601161347.1803440-1-berrange@redhat.com>
- <20230601161347.1803440-10-berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Laurent Vivier
+ <lvivier@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH] qtest/migration: Document live=true cases
+In-Reply-To: <20230601172935.175726-1-peterx@redhat.com> (Peter Xu's message
+ of "Thu, 1 Jun 2023 13:29:35 -0400")
+References: <20230601172935.175726-1-peterx@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Fri, 02 Jun 2023 00:50:27 +0200
-Message-ID: <87jzwmre4s.fsf@secure.mitica>
+Date: Fri, 02 Jun 2023 00:52:23 +0200
+Message-ID: <87fs7are1k.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -107,36 +105,16 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> There are 27 pre-copy live migration scenarios being tested. In all of
-> these we force non-convergence and run for one iteration, then let it
-> converge and wait for completion during the second (or following)
-> iterations. At 3 mbps bandwidth limit the first iteration takes a very
-> long time (~30 seconds).
+Peter Xu <peterx@redhat.com> wrote:
+> Document every single live=3Dtrue use cases on why it should be done in t=
+he
+> live manner.  Also document on the parameter so new precopy cases should
+> always use live=3Doff unless with explicit reasonings.
 >
-> While it is important to test the migration passes and convergence
-> logic, it is overkill to do this for all 27 pre-copy scenarios. The
-> TLS migration scenarios in particular are merely exercising different
-> code paths during connection establishment.
->
-> To optimize time taken, switch most of the test scenarios to run
-> non-live (ie guest CPUs paused) with no bandwidth limits. This gives
-> a massive speed up for most of the test scenarios.
->
-> For test coverage the following scenarios are unchanged
->
->  * Precopy with UNIX sockets
->  * Precopy with UNIX sockets and dirty ring tracking
->  * Precopy with XBZRLE
->  * Precopy with UNIX compress
->  * Precopy with UNIX compress (nowait)
->  * Precopy with multifd
->
-> On a test machine this reduces execution time from 13 minutes to
-> 8 minutes.
->
-> Tested-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Thomas Huth <thuth@redhat.com>
+> Cc: Juan Quintela <quintela@redhat.com>
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 
