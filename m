@@ -2,75 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB6C7197E9
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A817197F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:58:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4f3g-0001Bp-BO; Thu, 01 Jun 2023 05:57:28 -0400
+	id 1q4f3s-0001JJ-4P; Thu, 01 Jun 2023 05:57:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q4f3d-0000s8-9D
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:57:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4f3q-0001Hm-9A
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:57:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q4f3W-0007Hf-Uy
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:57:21 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4f3o-0007RJ-E8
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:57:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685613419;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685613453;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TZO+o63Px9u/QtirsfxTDyg861boMW9mJYaRkKi9n80=;
- b=V7x4M65JPkdvgm0ceOXniVn/cak9p4BIEPUyNiP4LsGjpxeVP2D0EytG2NAl8vWRMvJc4b
- 8Q2CF5Z9ckcmhx+DKT6TqCbxtGujiygUm6UvtAD4hVb6H1ymkFsuhl9inDv/7zSEtAA3IC
- kTzS7QiL74WaiGM10RkblXBW7vxfJzU=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447--QHrvC5uPliAf_M_Aet2dw-1; Thu, 01 Jun 2023 05:56:58 -0400
-X-MC-Unique: -QHrvC5uPliAf_M_Aet2dw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5142da822cbso610254a12.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:56:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685613417; x=1688205417;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TZO+o63Px9u/QtirsfxTDyg861boMW9mJYaRkKi9n80=;
- b=M0vE1VML+8h+E2VI6peqtgizzZOS2N4OcvvDmdkfKrdGPzkMkva4YGNhZdaXPMxGHG
- dScQIXCiwan2V5xtof7Q2zYImSgoJBsIh4LO+/xz2ALsbCt41tQxlRoCBSzZqdS4b3wS
- WzClbKjrAxe4WdEigFxoWznKq8OXdBxztWLeAhsF+7aoXO/fNwjzZaHP6fxKCyMYvITp
- GEpgompNJU6aqJk87zukK8l6ZelbsH0D2vSJcecK/aIT3szh/fa9phYwldiYDpuzeWhQ
- kPcqpyRx1zkLONT5nwttut7y9NnykteUIzdLQrDuVsfCP8rTMZl0BIPbOyfdswY0r70p
- vjrQ==
-X-Gm-Message-State: AC+VfDxUR4YTOHr24bAFTCkaw09JuW0uRhcv+QTGn/WgKzx2xdoa47gV
- 2S0MLqnbGYt0Q0jKknOrSkpz7NHoOpCKswfErzRXnAvhKFO107biT6nwNT5R8Vq/R4mzboHLK1N
- 535KwOEKVOg4oxZBfDeXSD1/qYMsi2wY=
-X-Received: by 2002:a05:6402:1219:b0:510:db93:f034 with SMTP id
- c25-20020a056402121900b00510db93f034mr5413275edw.36.1685613417146; 
- Thu, 01 Jun 2023 02:56:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5dVCUxX1NrIeaVCvDBZX5RSd2PG51PMhu/MzuXxLwMnMvUN9Tl+Ssaqdm7uPKhm6KxnqnCLzQSLNH2TseP3jI=
-X-Received: by 2002:a05:6402:1219:b0:510:db93:f034 with SMTP id
- c25-20020a056402121900b00510db93f034mr5413256edw.36.1685613416850; Thu, 01
- Jun 2023 02:56:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1685584543.git.yin31149@gmail.com>
-In-Reply-To: <cover.1685584543.git.yin31149@gmail.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Thu, 1 Jun 2023 17:56:20 +0800
-Message-ID: <CAPpAL=yn=Js841iHzXM42+yPrLW7s=YLwY36BBxPDAvPGVaG0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] Vhost-vdpa Shadow Virtqueue Offloads support
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
+ bh=ZbaqjqA7zBV27kCpyH0V4ALMnsOi9OZ2dLHA2lBhUP4=;
+ b=QVkP82gJYSdjsvkGY6wMPN/X4k+b7JdCyISGg/cpUQq04DhMFyyfaLFzeudsoK38G03k+J
+ rUoTIWUFR2cr1N7ArdPN2gWpUZKy3Tt1w/ZoU7k/NbWVKB/kavMUlqTgaqplenvfApc0m8
+ T3cG7lRYkcnYvcHZeNwvRwdh6mafC4s=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-632-5nU0jifBNgGhVoxb4Gy4kg-1; Thu, 01 Jun 2023 05:57:31 -0400
+X-MC-Unique: 5nU0jifBNgGhVoxb4Gy4kg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E67A2A59540;
+ Thu,  1 Jun 2023 09:57:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.153])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B706C40C6EC4;
+ Thu,  1 Jun 2023 09:57:30 +0000 (UTC)
+Date: Thu, 1 Jun 2023 10:57:27 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Erik Skultety <eskultet@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+Subject: Re: [PATCH 2/3] tests/vm: Introduce
+ get_qemu_packages_from_lcitool_vars() helper
+Message-ID: <ZHhrh1tJjvC3xF62@redhat.com>
+References: <20230531200906.17790-1-philmd@linaro.org>
+ <20230531200906.17790-3-philmd@linaro.org>
+ <ZHhKe3fzmau7qsMn@ridgehead.home.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZHhKe3fzmau7qsMn@ridgehead.home.lan>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -91,51 +82,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm a QE responsible for vhost_vdpa parts. Could you please provide me
-with the test steps for this series? I can test it in my environment
-and update the test results.
+On Thu, Jun 01, 2023 at 09:36:27AM +0200, Erik Skultety wrote:
+> On Wed, May 31, 2023 at 10:09:05PM +0200, Philippe Mathieu-Daudé wrote:
+> > The 'lcitool variables $OS qemu' command produces a file containing
+> > consistent environment variables helpful to build QEMU on $OS.
+> > In particular the $PKGS variable contains the packages required to
+> > build QEMU.
+> > 
+> > Since some of these files are committed in the repository (see
+> > 0e103a65ba "gitlab: support for FreeBSD 12, 13 and macOS 11 via
+> > cirrus-run"), we can parse these files to get the package list
+> > required to build a VM.
+> > 
+> > Add the get_qemu_packages_from_lcitool_vars() helper which return
+> > such package list from a lcitool env var file.
+> > 
+> > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > ---
+> >  tests/vm/basevm.py | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+> > index 8ec021ddcf..2632c3d41a 100644
+> > --- a/tests/vm/basevm.py
+> > +++ b/tests/vm/basevm.py
+> > @@ -522,6 +522,12 @@ def get_qemu_version(qemu_path):
+> >      version_num = re.split(' |\(', version_line)[3].split('.')[0]
+> >      return int(version_num)
+> >  
+> > +def get_qemu_packages_from_lcitool_vars(vars_path):
+> > +    """Parse a lcitool variables file and return the PKGS list."""
+> > +    with open(vars_path, 'r') as fd:
+> > +        line = list(filter(lambda y: y.startswith('PKGS'), fd.readlines()))[0]
+> > +        return line.split("'")[1].split()
+> 
+> Nothing wrong with this one, it's also less lines of code, but just an FYI in
+> case you wanted a slightly more readable (yet a tiny bit less performant piece
+> of code) you could make use of the JSON format with 'variables --format json'.
+
+Specifically we could do
+
+   with open(vars_path, 'r') as fh:
+     return json.load(fh)['pkgs']
 
 
-
-
-
-On Thu, Jun 1, 2023 at 4:29=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com> =
-wrote:
->
-> This series enables shadowed CVQ to intercept Offloads commands
-> through shadowed CVQ, update the virtio NIC device model so qemu
-> send it in a migration, and the restore of that Offloads state
-> in the destination.
->
-> Changelog
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D
-> v2:
->   - make some function arguments const
->   - reuse virtio_vdev_has_feature() suggested by Eugenio and Jason
->   - avoid sending CVQ command in default state suggested by Eugenio
->
-> v1: https://lore.kernel.org/all/cover.1685359572.git.yin31149@gmail.com/
->
-> Hawkins Jiawei (6):
->   include/hw/virtio: make some VirtIODevice const
->   vdpa: reuse virtio_vdev_has_feature()
->   hw/net/virtio-net: make some VirtIONet const
->   virtio-net: expose virtio_net_supported_guest_offloads()
->   vdpa: Add vhost_vdpa_net_load_offloads()
->   vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
->
->  hw/net/virtio-net.c            |  2 +-
->  include/hw/virtio/virtio-net.h |  1 +
->  include/hw/virtio/virtio.h     |  2 +-
->  net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++++++++---
->  4 files changed, 44 insertions(+), 6 deletions(-)
->
-> --
-> 2.25.1
->
->
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
