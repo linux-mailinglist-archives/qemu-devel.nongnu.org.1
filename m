@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998C171F3ED
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAC071F414
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ozw-0003i8-L2; Thu, 01 Jun 2023 16:34:16 -0400
+	id 1q4p8i-0008KJ-KW; Thu, 01 Jun 2023 16:43:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4ozn-0003ga-Th
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 16:34:08 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q4p8c-0008J0-P6; Thu, 01 Jun 2023 16:43:14 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4ozm-0002ln-BZ
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 16:34:07 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f623adec61so13880995e9.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 13:34:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q4p8F-0005zB-EH; Thu, 01 Jun 2023 16:43:05 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6af812703b6so843186a34.1; 
+ Thu, 01 Jun 2023 13:42:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685651644; x=1688243644;
+ d=gmail.com; s=20221208; t=1685652170; x=1688244170;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=+JAka0+tEHpDMSyk+O+xQR7Yhske2YdqVaIN/w1k4wU=;
- b=PXyD/cFN7q9Apt/IR/diU11MArJVf3BsZWzWERCCM/M7cdkxfmRvWr75rhkbO9snqp
- XOqtep3+xjPHkS/+V0AVDVY108QD30yQ47/dxKOgRGkx66kmPCks4/rMx4aqt6B6cIlc
- G3hgCWXr62VE1wz5bi7FIfXVC8Gi5WAFNQcqNaYEYx7FutQ5Zbs9znA6ZDEx9kYIJYl5
- gbbzEpdvvGf5C1LWQV5H1AN5jmECqwQjIr1xfLJxchYLAaxU+PkYrETNPW2iDHfignhf
- i8YiDIJj4wiI/gRk6OLoYgEOSJvuv221Ge8oK370chhIh5Q8Xm/496Irfzzz0aOI5PFo
- EaLg==
+ bh=RBbqvzQ9PANoSxRwOwh2h1Q8ROC3TUBAnF4UJh7W6r4=;
+ b=GQCG0YMjtjUJKzWLonX5AX5d5e1dJJhyfIedIg+9kUKXGTsWFEOb+5ntu+23SqPJH2
+ 1u6sBk0soNSPR27ZS8m+U1bOUye65o4D36XDqbtd8oGWsppWkI1X3dIB7WdZ7FddWFy+
+ HTVOyWgpTmINo58xPYsGcIfGE6yM0mDeIkz7u4q2AyzdY1rDkHE045rGRVGhAnCUGimT
+ eVfvj5lzASiFJD+eE4sHV1QArppma6jMDrL2bFj+uOVlk6BAP3m+MSahJ1QxzLNB8Wrv
+ 3QiLZDqDdEzZj90No3Q+8V9BRFgmszjtsvcc+vfPIgHf1dUOXom/BedLI0zFAoaTq+py
+ TBqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685651644; x=1688243644;
+ d=1e100.net; s=20221208; t=1685652170; x=1688244170;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+JAka0+tEHpDMSyk+O+xQR7Yhske2YdqVaIN/w1k4wU=;
- b=MB94VctXfwVujXD9rg7kMEub7L0jeliik2W/FF1SxDEiWYsiK11HDGQ4hQFVOR+EuH
- GcaDGe/ixVIuKEOdssN6+aqfUMz2hVekb6vKsIohWkB7kSTk8ndW6eokiHsZzSCwxdJE
- ATam9yL9ggRZJCpMTuE/ZZ3GFKNsWi4JcDpIA3Jkacn0uqt47GNwzqpFX4hJue9UIlsW
- trjGv2WpmxEpuHfbmrVYkG97BIAsAhGDr1FUF+XAlw9oED+h3Kq20zFr6di4p5NV1YrP
- C0pE5OejTbR8RKC+38UWzylHor/kOBBfjQ1R7sLiCxsoBONN3o24taYi/9JshE4fECCe
- Ox5A==
-X-Gm-Message-State: AC+VfDy5eiNmxn8ZchE7A7ELaLbEsy0xQNLKako8bPMsWq0ts7A08ynt
- WPD8+27VRrT8SwlqzM7C+stLGw==
-X-Google-Smtp-Source: ACHHUZ6NrL3rnGBxRAGack5ThemG8fzk7gKw0/hc+SlchVF5lgx9Hiuq2Z4Brl6PqP6FBHDt46br+Q==
-X-Received: by 2002:a1c:7208:0:b0:3f6:7f0:c9a9 with SMTP id
- n8-20020a1c7208000000b003f607f0c9a9mr382524wmc.33.1685651644731; 
- Thu, 01 Jun 2023 13:34:04 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.141.224])
+ bh=RBbqvzQ9PANoSxRwOwh2h1Q8ROC3TUBAnF4UJh7W6r4=;
+ b=ZRrC8oZJUhC0Zh2SKIkEUHkWvy4ZJ1RmMqbeYcimxz/QRMD/uWIRHBbEPM/TOC43Fm
+ g+3M++B5CQuU4tBbty6FZYK+pESB8vCO3z1O9PWsLG2ZBe+wp4eatB0t6n2GljLe/L+U
+ QtWY0WHsNBRgwMdR2Fi1GF9nUq5U9wZdfKKUWHTHQ+R35EVQWQVc3asCD1VxztVOivH1
+ pQdPiDA81yuBckNimb7JlBDPgKlb6dhvQyzyZJBAT4ixKBjusHzqPMwOJE9WZ7QzbLHM
+ ByzD4jkFs0Ya+cisMeeiLu7o6kbuwkWo3tuCVn9sFq8OhAeuNLk2S4PiK8gWRzcNPHRo
+ tIhg==
+X-Gm-Message-State: AC+VfDwyQ5ggYzWy9Xn91b5pJRg22Bo3U17KhXG4PVOOqduKyWOpEbI9
+ pugdGt9bIN0dorhs6NdZDSs=
+X-Google-Smtp-Source: ACHHUZ73iWx29coWA3MIRPIJqV2AZix22D0SBhcZqx3tDJxj7Hfhu2h3cGU7TD99PfVePrIiDEuRpQ==
+X-Received: by 2002:a05:6830:1e2b:b0:6af:a4b8:28d with SMTP id
+ t11-20020a0568301e2b00b006afa4b8028dmr497864otr.21.1685652169673; 
+ Thu, 01 Jun 2023 13:42:49 -0700 (PDT)
+Received: from [192.168.68.107] ([177.198.100.141])
  by smtp.gmail.com with ESMTPSA id
- 8-20020a05600c230800b003f6cf9afc25sm3410029wmo.40.2023.06.01.13.34.02
+ z23-20020a05683020d700b006abb3b660a9sm1899155otq.54.2023.06.01.13.42.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 13:34:04 -0700 (PDT)
-Message-ID: <c2ed4756-1a5e-88b4-b02b-21660c041f7c@linaro.org>
-Date: Thu, 1 Jun 2023 22:34:01 +0200
+ Thu, 01 Jun 2023 13:42:49 -0700 (PDT)
+Message-ID: <a1a2262d-5a1d-9779-6f26-99e02845636d@gmail.com>
+Date: Thu, 1 Jun 2023 17:42:46 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/3] hw/i2c: add smbus pec utility function
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] target/ppc: Fix nested-hv HEAI delivery
 Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org
-Cc: Corey Minyard <cminyard@mvista.com>, Keith Busch <kbusch@kernel.org>,
- Jason Wang <jasowang@redhat.com>, Lior Weintraub <liorw@pliops.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
- qemu-arm@nongnu.org, Matt Johnston <matt@codeconstruct.com.au>,
- Peter Delevoryas <peter@pjd.dev>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-block@nongnu.org,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, gost.dev@samsung.com
-References: <20230531114744.9946-1-its@irrelevant.dk>
- <20230531114744.9946-2-its@irrelevant.dk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531114744.9946-2-its@irrelevant.dk>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, balaton@eik.bme.hu,
+ Fabiano Rosas <farosas@suse.de>
+References: <20230530132127.385001-1-npiggin@gmail.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230530132127.385001-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x329.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,49 +95,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 13:47, Klaus Jensen wrote:
-> From: Klaus Jensen <k.jensen@samsung.com>
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+
+
+Daniel
+
+On 5/30/23 10:21, Nicholas Piggin wrote:
+> ppc hypervisors turn HEAI interrupts into program interrupts injected
+> into the guest that executed the illegal instruction, if the hypervisor
+> doesn't handle it some other way.
 > 
-> Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
-> message.
+> The nested-hv implementation failed to account for this HEAI->program
+> conversion. The virtual hypervisor wants to see the HEAI when running
+> a nested guest, so that interrupt type can be returned to its KVM
+> caller.
 > 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> Fixes: 7cebc5db2eba6 ("target/ppc: Introduce a vhyp framework for nested HV support")
+> Cc: balaton@eik.bme.hu
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   hw/i2c/smbus_master.c         | 28 ++++++++++++++++++++++++++++
->   include/hw/i2c/smbus_master.h |  2 ++
->   2 files changed, 30 insertions(+)
+> Since v1:
+> - Address review comments style and typo fixes
 > 
-> diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
-> index 6a53c34e70b7..47f9eb24e033 100644
-> --- a/hw/i2c/smbus_master.c
-> +++ b/hw/i2c/smbus_master.c
-> @@ -15,6 +15,34 @@
->   #include "hw/i2c/i2c.h"
->   #include "hw/i2c/smbus_master.h"
+>   target/ppc/excp_helper.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index d69bd0033a..0f7ed58673 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -1387,9 +1387,12 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
 >   
-> +static uint8_t crc8(uint16_t data)
-> +{
-> +#define POLY (0x1070U << 3)
-
-static const unsigned crc8_poly = ..., but why not inline the single use?
-   data ^= 0x1070U << 3;
-and
-   data <<= 1;
-
-> +    int i;
-> +
-> +    for (i = 0; i < 8; i++) {
-> +        if (data & 0x8000) {
-> +            data = data ^ POLY;
-> +        }
-> +
-> +        data = data << 1;
-> +    }
-> +
-> +    return (uint8_t)(data >> 8);
-> +#undef POLY
-> +}
-
-We have "qemu/crc32c.h", maybe we could have a similar crc8.h. Just 
-wondering...
+>       /*
+>        * We don't want to generate a Hypervisor Emulation Assistance
+> -     * Interrupt if we don't have HVB in msr_mask (PAPR mode).
+> +     * Interrupt if we don't have HVB in msr_mask (PAPR mode),
+> +     * unless running a nested-hv guest, in which case the L1
+> +     * kernel wants the interrupt.
+>        */
+> -    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB)) {
+> +    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB) &&
+> +            !books_vhyp_handles_hv_excp(cpu)) {
+>           excp = POWERPC_EXCP_PROGRAM;
+>       }
+>   
 
