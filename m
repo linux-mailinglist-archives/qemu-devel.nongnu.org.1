@@ -2,74 +2,166 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB63B719675
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 969A2719685
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:13:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4eFi-0004a2-Ke; Thu, 01 Jun 2023 05:05:50 -0400
+	id 1q4eM5-0000wQ-GS; Thu, 01 Jun 2023 05:12:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4eFh-0004ZO-AF
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:05:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
+ id 1q4eM2-0000pc-S0
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:12:23 -0400
+Received: from mga18.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4eFf-0001xR-DI
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:05:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685610346;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MVePi6rnXyisfMbna+L187RVxOFeJF9DyEAMHKiouIs=;
- b=hcRWAdqYV+AgsxiLY2/l0zLfdHhT9ghHs5+7uH7/9ymx7KwTLIKYiXwlathwduIObApOqq
- 67GkPGiEIlBq6wNlohBQYLf2KF2VB9W4xp8GIUlgPsszzt/sKWfaZ/PZ4IimksjWBFqfDB
- jetOC2rvyl978mkCnkx04NVefEiGU98=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-114-4mp18cdINb2KrE7QhN400g-1; Thu, 01 Jun 2023 05:05:43 -0400
-X-MC-Unique: 4mp18cdINb2KrE7QhN400g-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACD7638035A6;
- Thu,  1 Jun 2023 09:05:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0BAF548205E;
- Thu,  1 Jun 2023 09:05:39 +0000 (UTC)
-Date: Thu, 1 Jun 2023 10:05:36 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Juan Quintela <quintela@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PULL 00/21] Migration 20230530 patches
-Message-ID: <ZHhfYMuk69mA+FqM@redhat.com>
-References: <20230530182531.6371-1-quintela@redhat.com>
- <cba70806-7186-fdb2-1ebd-2056871c6bc7@linaro.org>
- <87mt1ktdr8.fsf@secure.mitica> <ZHhWXSU3vvobddP2@redhat.com>
+ (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
+ id 1q4eM0-0003AK-GV
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:12:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1685610740; x=1717146740;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=U2sG6xLUROGjL1Zu/GkRk8k4ZTnkRTXCTF+DLm3mT7k=;
+ b=CiXQcVkhypkX99OcGDxZRfNL9DF1oc+tDqQFkGhHjI+KQoaLlgK9T8qp
+ RkxNIZDhW4z/PuXHFnHwvGDT8lAEIynLe82z6ksddthISz0db5VqiSwMk
+ +Lf3/shL5+Bze5Ann56/HeRkNAutEd793eUQ+DcZ7gyMl38doVfUItoEB
+ zw5aEtdjJ0H4kMgb1zemMwSrlePnRVyq2k7mUVJ4jwB34nHg620wasOfX
+ kMKlRpQNCWGJQncgUfYKkmJhVJvvj/aOCGLZe+dFl6z+024ZOxCW7rlJd
+ k/3NjFNdsdP6wf+cHWreh8l+HufjRjsYvlXsKjMuMFUU4756vVXHE9eYE g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="340105131"
+X-IronPort-AV: E=Sophos;i="6.00,209,1681196400"; d="scan'208";a="340105131"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jun 2023 02:12:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="772352360"
+X-IronPort-AV: E=Sophos;i="6.00,209,1681196400"; d="scan'208";a="772352360"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmsmga008.fm.intel.com with ESMTP; 01 Jun 2023 02:12:17 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 1 Jun 2023 02:12:16 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Thu, 1 Jun 2023 02:12:16 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Thu, 1 Jun 2023 02:12:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SS0WRXd1fSNprE2cJU7Irv3WAHFBfCOEjnNgAfS1vFRJFpagJSvwaDavDVeoIJHkmSsqRw7q0GKUQKBLFPLN0XBkR8h/GptGOaRE2ZO6HfCiy1sIYSL2x9s1+z3/R953BKulDtJ2z+jc9qL9AvGgdUydiNHZVRFO6kqCB+lEGyEzJ2s2eYN9L5F+Ue/5lAJE/BN1Y822KMlb3Zhe+9E51HgUQas5bALesAF7kpAVPTFmUZ+TkcG21sLLJ0L6qaUzoOPIX21X5zWXPyqKnH0ubtSn2xDcM7bp4BUhFXB0HMf9TZ2j7UXgsoWrWNgUgeSwQD+hnydudjS9MgH7BAbtGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U2sG6xLUROGjL1Zu/GkRk8k4ZTnkRTXCTF+DLm3mT7k=;
+ b=j3mwwiLkL/lm+u1aXilDWbk1zWOJg+cGNlpiygYJhcFX4fGLkncgOHzNjprHt4AnzcMnAbAk5l6LwM5w4vF/YsARBZB2SZbC5JtJnFIEgTdH8+/M55MMEY39BQoppGRu8NwcWkvDnDwN9MxLFooFufQYu7OelBLoZ1O/LT9vOd84eKDqAx7vxzBlwtZRecgjuEAkFNFTMRfOMGWKyTwpyF/Axz/SQehcHktCAjD0W75Urvnwuqn9yMAtNHZk6kG/LXy+FnUB0e7v37++gap/SqClG6yRvMLVstQxnGFJ8Jpcp5wGEUC7o2oZ5S9HU1HtKxlHt/hEbKocQLWK96ixvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DS0PR11MB6373.namprd11.prod.outlook.com (2603:10b6:8:cb::20) by
+ DS0PR11MB7578.namprd11.prod.outlook.com (2603:10b6:8:141::16) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6455.23; Thu, 1 Jun 2023 09:12:14 +0000
+Received: from DS0PR11MB6373.namprd11.prod.outlook.com
+ ([fe80::14c:205:c858:1ef6]) by DS0PR11MB6373.namprd11.prod.outlook.com
+ ([fe80::14c:205:c858:1ef6%7]) with mapi id 15.20.6411.021; Thu, 1 Jun 2023
+ 09:12:14 +0000
+From: "Wang, Wei W" <wei.w.wang@intel.com>
+To: Peter Xu <peterx@redhat.com>
+CC: "quintela@redhat.com" <quintela@redhat.com>, "Wang, Lei4"
+ <lei4.wang@intel.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: RE: [PATCH v2 2/2] qtest/migration-tests.c: use "-incoming defer" for
+ postcopy tests
+Thread-Topic: [PATCH v2 2/2] qtest/migration-tests.c: use "-incoming defer"
+ for postcopy tests
+Thread-Index: AQHZktWTIexX3rIWCUy8lvegBejjAa9y4+mAgAC7pwCAALnpgIABSg2w
+Date: Thu, 1 Jun 2023 09:12:13 +0000
+Message-ID: <DS0PR11MB63731922AFD16473CCDAEACADC499@DS0PR11MB6373.namprd11.prod.outlook.com>
+References: <20230530090259.189462-1-wei.w.wang@intel.com>
+ <20230530090259.189462-3-wei.w.wang@intel.com> <ZHYLDSZiP+BQXv6K@x1n>
+ <DS0PR11MB6373797A00F0A4E6B22EF639DC489@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <ZHdEa0jQJTAvg3RM@xz-m1.local>
+In-Reply-To: <ZHdEa0jQJTAvg3RM@xz-m1.local>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR11MB6373:EE_|DS0PR11MB7578:EE_
+x-ms-office365-filtering-correlation-id: 6da2acb7-e0eb-41f3-880f-08db628049e2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: MwHIRq/meTrydVL86rCm/VKN/qXnHW9NCjT4EEbtTR6tpI7qIMyWfRzZnt1WhTl64aIM/MZmTqNic38twSIVQDzwO9/esAGd5wvdKU6hpgbFjz72hCPm2ALydHwvD0S6u+xFc4Ssm6vadIGPwzuRDxbUMsPw7Vpwwndpdrhfq9fYSgk5j6+mZJbJVcm4Jgy3vfOs1CCZCMWNsZhETSbJWoICTjFccjioiZbZS/hDU1wvyT9P4Ee1U5LaYsMJKIL4yYPEh/+DC1QbtPcNGG4rMZzYExUy/uaHbi840a/7s6ZZhFTcpzyedH4YjLVcrQ8tXZd2GnqXC/cfO6X042CsGf7o6xY0Dm+SjAlC/cjQmUj8gKVdOQir3j7imY06FHFT3nMYdJOHFB+XEPcl+oMrsmYxwyaeXLfhRHvXYCSaJ1WJ2XMcAQ5MavXnHtSuoNzPkEUhfYCg7Z9WzHlvdCTM1EFbi/lNbH5F/TFpQr3YyNVu9nA9K0drCwKHQlu4ABALXIrPzAIFFnv+mDj4qcP3oxKH2bp238Jh5PhYMkFbPfqDVrFj9agKS9qoDkLZY8PBa+oXgveihz5iEyrnETd7tFQkMkHkbInmgi19WYaYQ2k+sMo8a+Vv8FGvZt7NhFAv
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB6373.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(346002)(136003)(366004)(376002)(396003)(39860400002)(451199021)(2906002)(5660300002)(52536014)(41300700001)(8676002)(8936002)(76116006)(6916009)(66446008)(66556008)(64756008)(66946007)(66476007)(316002)(4326008)(54906003)(71200400001)(7696005)(478600001)(82960400001)(55016003)(6506007)(53546011)(26005)(186003)(83380400001)(9686003)(33656002)(122000001)(38100700002)(86362001)(38070700005);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZHJGYXdMMGx3M01PM09yZFNkNTQ1Zkt0YmJGd216d2ZNYXlIUzhZREVnaFdo?=
+ =?utf-8?B?cEZVNFBNdldXRDVSRnpjMDNDZjRiM0l6TEtTcWJqQlYwalJNS1UvMWwwOFdZ?=
+ =?utf-8?B?Q0JRaDd1c253c0h5MTZWZWloU1lMTysyUHZnTXZ6ZVozVUxUVm8wRkN5QSsv?=
+ =?utf-8?B?Yyt2S28vT2NMeUFSQTZMY2JMSFFFTHBQMTlaem1HRUtFbzc0dXMwbzhwWW4z?=
+ =?utf-8?B?NFJXSE16bnJiUVVjLzN4NCtScHlTNXpiV1BHU0xUdWF4OGh1NlBVS3lqNVRk?=
+ =?utf-8?B?M0hXeHJyWkpvUHd2Ly9jUVlmaWZQVDhUMUt3M1JrL0JBdFFLd1N4d2FhZWpU?=
+ =?utf-8?B?QUxTalFwR0xVamFmQXNXT2xzOURVQmVYN21pTzJVRklIS1dFQkdseGJRTDBa?=
+ =?utf-8?B?V2I0c0hnZUxqSjZSYWVaVHNyU0c3OS9UWVRORW1WZDFweWhSU0cwWmkwdW0z?=
+ =?utf-8?B?aUF6MDZFSWZhVkJuekZOTkpXOFM1cHZxeHJ0VnEzS3NYM2dNd3B5Q1FxQWxV?=
+ =?utf-8?B?TzdwMERtemljcXlubzBBQVNZQjdqSVA3cnpEazBBazlTRWNJc0tGRnFvZ2FQ?=
+ =?utf-8?B?amVXUW1pOXZiZUdRU2lycy9vSWRUN0o2VVZiZFlpK3cvck1QOFk5ZWJhRHV0?=
+ =?utf-8?B?Q1RlYiticUppNCtyaG9TSERtUks3WWNISnlWT29vNlp5SEVOVGEzL3V5NStS?=
+ =?utf-8?B?NWtjS2VQcEVoSXkrR1FKODhESjJiUXQrRkpLamZLTUhKYzg2Qmx2QjRkc2Na?=
+ =?utf-8?B?aVJ3eEM4Z2x6RWhtbUkzdUR1ZGpNSVRvZjNhZUNoTmxDSWdEMmtTSkd3aTdm?=
+ =?utf-8?B?c2JtMHNwMUJob2g3TzlkcnpXRmdMNXY3TUo1U0xEdWpUVnM1bUw1VWZWRUxT?=
+ =?utf-8?B?V2lPeXc3RXNiL0pnVzNlT0tTZGM1dFN3b1l3RkttbkFnSHcrWFE1cTVOVXZ6?=
+ =?utf-8?B?aitpV2FKYlE2M0xmbWp3NE5MVERRVzNiNmo2NFFoTlpxb0RsMXVaTzlwSnJV?=
+ =?utf-8?B?K2QvRGN3MmZnbTE0endkTnNoNFhxNk03UHdVVU0rYS94TEE5MzFwZ3M5ek0w?=
+ =?utf-8?B?ZUZWU3VFNVdWQkVHUkNCcGZ1VmtiTzJrMXNtTTBKRXk4V28waHJOWGo2NEpl?=
+ =?utf-8?B?QUNPelNXaVlWb1JqeGRhOEoyS3o0d21qQzFtcHM5cUpvMkxDMkFaR1ltVDZs?=
+ =?utf-8?B?bkpXakd2RTN3bktCczNNcGpUZjBMc3dXam9YazVOVHBMRFFrU0hZNFBoQnhO?=
+ =?utf-8?B?VW9DZWcxSm9yNldqMTFMQWhFcHJHakM4MUEycEZqTTBOdFUwRzdyRWJOaFUv?=
+ =?utf-8?B?a0V5ZjJVYlhPZWhLTS9wZXdqczE1SlhsR0p5SVB4d0NpNzk0SDdqTCtGNkd6?=
+ =?utf-8?B?c244Y2tTTmoyWjd6OXdKOGlwNUFGWEdob2lrVnVmUjRvY0owOTU5ZWtYanZl?=
+ =?utf-8?B?RW5FM0Z3dnFUeXdaSHVKSTMrT3Fsc0wrYkFrR2RxZ1Z0U2Z0dzViakYwTkxa?=
+ =?utf-8?B?NUZheTZmOGZ0eG9IUXZPazdUQWdVZGlQNkJxODZubmhIRk1GdTFNbVUrQkcr?=
+ =?utf-8?B?bUlyUGNETG5rcXJQMm9qSjZtVkhNdlpVT1VzY21GakpyUFBmM093d0JPQzda?=
+ =?utf-8?B?Y0ZOVnB6cDVnZmtzdWdXSGF6aU9NTks4cTVDcDBZd2J6Vyt1ck5MYWNhRkdF?=
+ =?utf-8?B?TTZERkQ2RWVUT1g0bFRPeWVUSzZQUlEwTVFRREx0bHpXekRUQ2wyTFVxbEN5?=
+ =?utf-8?B?Q3FteUJhUXhUUzZYaUc4cWFmck84OXdQVHdPalRndnZRZHRGRlZsZkdRRUUy?=
+ =?utf-8?B?ODhYTml3cHBvNDV0bHVqaHh4RTVmSmtHZldqZ3o2M29SbUkrNk9FcHVHbkNX?=
+ =?utf-8?B?ZlFWakZndDRMdGp2V2FsVURCTjVCZXFDcGkyWTVsbFoxNjA5aUNqcDVrQmxJ?=
+ =?utf-8?B?U1pUS1N6THVLcXgzL0RXem9NUmdZVmUzb2ppSVhjRHRBWEVnSm0xWkc4c205?=
+ =?utf-8?B?eDVkYWJCcDNBVWlNU1BlcjR4bDRuK2FsWEJvZDlFVk4vckV5SmFNenlIUXEx?=
+ =?utf-8?B?WTNGeFZFSVM4MkJ5c0xmcU9yWDBvaU0xbVpZajUyVm01bVdjdVR6a3NQME13?=
+ =?utf-8?Q?aTx3jWqZZyY0EqnZWYOofPnqi?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZHhWXSU3vvobddP2@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB6373.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6da2acb7-e0eb-41f3-880f-08db628049e2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2023 09:12:13.7519 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: G3ULAVFN4WFnhY33lR2ePCAcEP+v/EupPpDmbzwGxkplLiOqcEXnl0Zy8Y7NEINAMhrfG6Ev7RjTFyy58eyC/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7578
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.126;
+ envelope-from=wei.w.wang@intel.com; helo=mga18.intel.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,113 +175,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 09:27:09AM +0100, Daniel P. Berrangé wrote:
-> On Wed, May 31, 2023 at 11:03:23PM +0200, Juan Quintela wrote:
-> > Richard Henderson <richard.henderson@linaro.org> wrote:
-> > > On 5/30/23 11:25, Juan Quintela wrote:
-> > >> The following changes since commit aa9bbd865502ed517624ab6fe7d4b5d89ca95e43:
-> > >>    Merge tag 'pull-ppc-20230528' of https://gitlab.com/danielhb/qemu
-> > >> into staging (2023-05-29 14:31:52 -0700)
-> > >> are available in the Git repository at:
-> > >>    https://gitlab.com/juan.quintela/qemu.git
-> > >> tags/migration-20230530-pull-request
-> > >> for you to fetch changes up to
-> > >> c63c544005e6b1375a9c038f0e0fb8dfb8b249f4:
-> > >>    migration/rdma: Check sooner if we are in postcopy for
-> > >> save_page() (2023-05-30 19:23:50 +0200)
-> > >> ----------------------------------------------------------------
-> > 
-> > Added Markus and Daniel.
-> > 
-> > >> Migration 20230530 Pull request (take 2)
-> > >> Hi
-> > >> Resend last PULL request, this time it compiles when CONFIG_RDMA is
-> > >> not configured in.
-> > >> [take 1]
-> > >> On this PULL request:
-> > >> - Set vmstate migration failure right (vladimir)
-> > >> - Migration QEMUFileHook removal (juan)
-> > >> - Migration Atomic counters (juan)
-> > >> Please apply.
-> > >> ----------------------------------------------------------------
-> > >> Juan Quintela (16):
-> > >>    migration: Don't abuse qemu_file transferred for RDMA
-> > >>    migration/RDMA: It is accounting for zero/normal pages in two places
-> > >>    migration/rdma: Remove QEMUFile parameter when not used
-> > >>    migration/rdma: Don't use imaginary transfers
-> > >>    migration: Remove unused qemu_file_credit_transfer()
-> > >>    migration/rdma: Simplify the function that saves a page
-> > >>    migration: Create migrate_rdma()
-> > >>    migration/rdma: Unfold ram_control_before_iterate()
-> > >>    migration/rdma: Unfold ram_control_after_iterate()
-> > >>    migration/rdma: Remove all uses of RAM_CONTROL_HOOK
-> > >>    migration/rdma: Unfold hook_ram_load()
-> > >>    migration/rdma: Create rdma_control_save_page()
-> > >>    qemu-file: Remove QEMUFileHooks
-> > >>    migration/rdma: Move rdma constants from qemu-file.h to rdma.h
-> > >>    migration/rdma: Remove qemu_ prefix from exported functions
-> > >>    migration/rdma: Check sooner if we are in postcopy for save_page()
-> > >> Vladimir Sementsov-Ogievskiy (5):
-> > >>    runstate: add runstate_get()
-> > >>    migration: never fail in global_state_store()
-> > >>    runstate: drop unused runstate_store()
-> > >>    migration: switch from .vm_was_running to .vm_old_state
-> > >>    migration: restore vmstate on migration failure
-> > >
-> > > Appears to introduce multiple avocado failures:
-> > >
-> > > https://gitlab.com/qemu-project/qemu/-/jobs/4378066518#L286
-> > >
-> > > Test summary:
-> > > tests/avocado/migration.py:X86_64.test_migration_with_exec: ERROR
-> > > tests/avocado/migration.py:X86_64.test_migration_with_tcp_localhost: ERROR
-> > > tests/avocado/migration.py:X86_64.test_migration_with_unix: ERROR
-> > > make: *** [/builds/qemu-project/qemu/tests/Makefile.include:142: check-avocado] Error 1
-> > >
-> > > https://gitlab.com/qemu-project/qemu/-/jobs/4378066523#L387
-> > >
-> > > Test summary:
-> > > tests/avocado/migration.py:X86_64.test_migration_with_tcp_localhost: ERROR
-> > > tests/avocado/migration.py:X86_64.test_migration_with_unix: ERROR
-> > > make: *** [/builds/qemu-project/qemu/tests/Makefile.include:142: check-avocado] Error 1
-> > >
-> > > Also fails QTEST_QEMU_BINARY=./qemu-system-aarch64 ./tests/qtest/migration-test
-> > >
-> > > ../src/migration/rdma.c:408:QIO_CHANNEL_RDMA: Object 0xaaaaf7bba680 is
-> > > not an instance of type qio-channel-rdma
-> > 
-> > I am looking at the other errors, but this one is weird.  It is failing
-> > here:
-> > 
-> > #define TYPE_QIO_CHANNEL_RDMA "qio-channel-rdma"
-> > OBJECT_DECLARE_SIMPLE_TYPE(QIOChannelRDMA, QIO_CHANNEL_RDMA)
-> > 
-> > In the OBJECT line.
-> > 
-> > I have no clue what problem are we having here with the object system to
-> > decide at declaration time that a variable is not of the type that we
-> > are declaring.
-> > 
-> > I am missing something obvious here?
-> 
-> I expect somewhere in the code has either corrupted memory, or is
-> using free'd memory. Either way you'll need to get a stack trace
-> to debug this kind of thing
-
-I've replied to the patches pointing out 4 places where the code
-casts to QIOChannelRDMA, without first checking that this is an
-RDMA migration, which look likely to be the cause of this.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+T24gV2VkbmVzZGF5LCBNYXkgMzEsIDIwMjMgODo1OCBQTSwgUGV0ZXIgWHUgd3JvdGU6DQo+ID4g
+PiBIbW0uLiBzbyB3ZSB1c2VkIHRvIGRvIHNvY2tldF9zdGFydF9pbmNvbWluZ19taWdyYXRpb25f
+aW50ZXJuYWwoKQ0KPiA+ID4gYmVmb3JlIHNldHRpbmcgdGhlIHJpZ2h0IG51bSBmb3IgdGhlIHBy
+ZWVtcHQgdGVzdCwgdGhlbiBJJ20gY3VyaW91cw0KPiA+ID4gd2h5IGl0IHdhc24ndCBmYWlsaW5n
+IGJlZm9yZSB0aGlzIHBhdGNoIHdoZW4gdHJ5aW5nIHRvIGNvbm5lY3Qgd2l0aCB0aGUNCj4gcHJl
+ZW1wdCBjaGFubmVsLi4NCj4gPiA+DQo+ID4gPiBXZWksIGRvIHlvdSBrbm93Pw0KPiA+DQo+ID4g
+SSB0aGluayB0aGVyZSBhcmUgdHdvIHJlYXNvbnM6DQo+ID4gIzEgImJhY2tsb2ciIHNwZWNpZmll
+cyB0aGUgbnVtYmVyIG9mIHBlbmRpbmcgY29ubmVjdGlvbnMuIEFzIGxvbmcgYXMNCj4gPiB0aGUg
+c2VydmVyIGFjY2VwdHMgdGhlIGNvbm5lY3Rpb25zIGZhc3RlciB0aGFuIHRoZSBjbGllbnRzIHNp
+ZGUNCj4gPiBjb25uZWN0aW5nLCBjb25uZWN0aW9uIHdpbGwgc3VjY2VlZC4gRm9yIHRoZSBwcmVl
+bXB0IHRlc3QsIGl0IHVzZXMNCj4gPiBvbmx5IDIgY2hhbm5lbHMsIHNvIHZlcnkgbGlrZWx5IHRv
+IG5vdCBoYXZlIHBlbmRpbmcgY29ubmVjdGlvbnMuIChUaGlzDQo+ID4gaXMgZWFzaWVyIHRvIHRy
+aWdnZXIgZm9yIHRoZSBtdWx0aWZkIGNhc2UsIGUuZy4gdXNlIGEgbXVjaCBsYXJnZXIgbnVtYmVy
+IGxpa2UNCj4gMTYpLg0KPiA+ICMyIHBlciBteSB0ZXN0cyAob24ga2VybmVsIDYuMiksIHRoZSBu
+dW1iZXIgb2YgcGVuZGluZyBjb25uZWN0aW9ucw0KPiA+IGFsbG93ZWQgaXMgYWN0dWFsbHkgImJh
+Y2tsb2cgKyAxIiwgd2hpY2ggaXMgMiBpbiB0aGlzIGNhc2UuIEFkZGluZw0KPiA+IG1vcmUgcGVu
+ZGluZyBjb25uZWN0aW9ucyB3aWxsIHRoZW4gYmUgZHJvcHBlZC4gSSdtIG5vdCBzdXJlIGlmICIg
+YmFja2xvZyArDQo+IDEiIGlzIHRydWUgZm9yIG9sZGVyIHZlcnNpb25zIG9mIGtlcm5lbCwgdGhv
+dWdoLg0KPiANCj4gSW50ZXJlc3RpbmcgdG8ga25vdywgdGhhbmtzLg0KPiANCj4gSWYgdGhlcmUn
+bGwgYmUgYSBuZXcgdmVyc2lvbiwgcGxlYXNlIGNvbnNpZGVyIGFkZGluZyBzb21lIG9mIHRob3Nl
+IGludG8gdGhlDQo+IGNvbW1pdCBtZXNzYWdlLg0KDQpPSywgd2lsbCByZXNlbmQgd2l0aCBjb21t
+aXQgdXBkYXRlLg0KUGxhbiB0byB3YWl0IGEgYml0IGluIGNhc2UgdGhlcmUgd291bGQgYmUgb3Ro
+ZXIgZmVlZGJhY2tzLg0KDQo+IA0KPiBSZXZpZXdlZC1ieTogUGV0ZXIgWHUgPHBldGVyeEByZWRo
+YXQuY29tPg0KPiANCj4gLS0NCj4gUGV0ZXIgWHUNCg0K
 
