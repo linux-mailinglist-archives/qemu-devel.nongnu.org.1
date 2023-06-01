@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B2A71A1B3
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467B871A1E2
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4joj-0005k9-ON; Thu, 01 Jun 2023 11:02:21 -0400
+	id 1q4jtE-0007VD-RH; Thu, 01 Jun 2023 11:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q4joL-0005ft-Tg
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:57 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q4joK-0006wl-0M
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:57 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b1a819b8d8so2524831fa.3
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685631714; x=1688223714;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=1Inb+o5+rvctMnASN8Pvu3E+8lkwKhWrDXjz+5/swP4=;
- b=WZOV8A327sQKuI1CqQyaSK65NT7biptDAvWEe5guQHoBvvWwRtGDFvAyoo56/JD11m
- 2wkan8GTTceZ27QiaefX1WVzk/4uBRlQc6FkMPk8h7KOH7wX7LF/OJWZ0GsXMpgwEvMU
- GYel7FV4IFT5QVxcaNk/bm00qVYUqGnaKdENSuFcR1YUHYQAsrf6SGPs8hvy8WRc7r+k
- PE2VbVM2qFykAxk8IgRuM+Pn3IqXoNfx5K7zMbts4FymXRhkV4U90JHPckCEF9RVlUJs
- GxxnBKmQcSStEPL9yVw60px6YLd3iE+QgX1Qw4wmz5b9nU5shy82qf23ei0NiG9abpti
- o1rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685631714; x=1688223714;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1Inb+o5+rvctMnASN8Pvu3E+8lkwKhWrDXjz+5/swP4=;
- b=WowJhFoUU/IMCSDf/yrq2r1gcG8vk9m7HucPoG4PHEWzv3M7fcjP9G74M3NRJJgN+M
- LtAYRICruA+pKl2UxbddkOIQdXUIYxOPIajYtrVjCbPFDWhpqmTwjj7HUYF8NrcyVvJV
- Q28dWeuQmOvmqSMm7E+vlJyi9hr7oTIGf7Cr9oPe2Ah+D9vu1Bm7UFXNTUSdrh0FyK+P
- kjvMII3ZBkstV77b8m8VvoXdm5piTojQ6nX7nV3kXcpIwz2HjyKhkRPk+oTXRR3uEi7y
- Fpu+VHWIHTDWwcOOIdIa5MHUQDV6fwSTbwZVyBhbYm1liA9xkBZzmqG8cX9paxJijHHg
- 4ikQ==
-X-Gm-Message-State: AC+VfDx8VQqnjBL3E6qpAIfyo+R4jkAt680CWhOnQ7zb2gL6MjjdwO9F
- +MKun6y9l0E/VekoX0Co41UVZrXP7B+vymD6S3vmqQ==
-X-Google-Smtp-Source: ACHHUZ5BKRGs+s9u9phXtY2feRyO8f9fvalIaY+HgGfYExC5PDFCLMny3BvwzK+lg7DtIW5h73RJp10ZL2OvUkDel7Y=
-X-Received: by 2002:a2e:8050:0:b0:2a8:c75d:8167 with SMTP id
- p16-20020a2e8050000000b002a8c75d8167mr5287085ljg.4.1685631714120; Thu, 01 Jun
- 2023 08:01:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q4jtC-0007Uv-96
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:06:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q4jtA-0007jn-B6
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:06:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685632014;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mLQFZ/a0faj7yXedrwziwyPiO5DMy2B8D5sF62Dbcjo=;
+ b=QIqAfRk27ZJ4Mwel0K8ruFck2bLLZZopUQDZgtMJKntI/Y6OxNjsMaVZ6ENUvcci7DxlMH
+ ozxbvnAiHY4ArRhptzBd1gkJDOPcf/ItqZddiSYE46Pa/fEqi7Gom6GfGbGIj4s6cbcteW
+ IBDx+zdYSxSJ1ymbCbkSmsgzHLf0PfE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-604-dFh5s2paMsOzrwwPACNPWQ-1; Thu, 01 Jun 2023 11:06:53 -0400
+X-MC-Unique: dFh5s2paMsOzrwwPACNPWQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C1D229AB3E9;
+ Thu,  1 Jun 2023 15:06:52 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F0F8540CFD45;
+ Thu,  1 Jun 2023 15:06:50 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Warner Losh <imp@bsdimp.com>, Michael Roth <michael.roth@amd.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <rth@twiddle.net>, Kyle Evans <kevans@freebsd.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Riku Voipio <riku.voipio@iki.fi>,
+ Greg Kurz <groug@kaod.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, libvir-list@redhat.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>
+Subject: [PULL v2 00/11] Tracing patches
+Date: Thu,  1 Jun 2023 11:06:38 -0400
+Message-Id: <20230601150649.1591095-1-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20230531070229.334124-1-wangyuquan1236@phytium.com.cn>
- <20230531070229.334124-2-wangyuquan1236@phytium.com.cn>
- <lfcmvvqjp64wngrdk33bvkb3k7op53l24lcoslah2evsyh3esc@at7jnsnrto7h>
- <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
- <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
-In-Reply-To: <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 1 Jun 2023 16:01:43 +0100
-Message-ID: <CAFEAcA_9Prr1xV2s1q2+GpWEnrsEEFT57bbLDnop5Hw3MaxM0A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-To: Leif Lindholm <quic_llindhol@quicinc.com>
-Cc: Graeme Gregory <graeme@xora.org.uk>, wangyuquan1236@phytium.com.cn, 
- chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,57 +86,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 at 17:37, Leif Lindholm <quic_llindhol@quicinc.com> wrote:
->
-> On 2023-05-31 16:27, Peter Maydell wrote:
-> > On Wed, 31 May 2023 at 15:58, Graeme Gregory <graeme@xora.org.uk> wrote:
-> >>> The current sbsa-ref cannot use EHCI controller which is only
-> >>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM above 4GB.
-> >>> Hence, this uses XHCI to provide a usb controller with 64-bit
-> >>> DMA capablity instead of EHCI.
-> >>
-> >> Should this be below 4G?
-> >
-> > It would be pretty disruptive to try to rearrange the memory
-> > map to put RAM below 4GB at this point, though in theory it's
-> > possible I guess. (I have a vague recollection that there was
-> > some reason the RAM was all put above 4GB, but can't find
-> > anything about that in my email archives. Perhaps Leif remembers?)
->
-> I think Graeme was just pointing out a typo in Marcin's email.
->
-> Yeah, we're not changing the DRAM base at this stage.
-> I think the reason we put no RAM below 4GB was simply that we had
-> several real-world platforms where that was true, and given the intended
-> use-case for the platform, we explicitly wanted to trigger issues those
-> platforms might encounter.
->
-> >> Also has EHCI never worked, or has it worked in some modes and so this
-> >> change should be versioned?
-> >
-> > AIUI, EHCI has never worked and can never have worked, because
-> > this board's RAM is all above 4G and the QEMU EHCI controller
-> > implementation only allows DMA descriptors with 32-bit addresses.
-> >
-> > Looking back at the archives, it seems we discussed XHCI vs
-> > EHCI when the sbsa-ref board went in, and the conclusion was
-> > that XHCI would be better. But there wasn't a sysbus XHCI device
-> > at that point, so we ended up committing the sbsa-ref board
-> > with EHCI and a plan to switch to XHCI when the sysbus-xhci
-> > device was done, which we then forgot about:
-> > https://mail.gnu.org/archive/html/qemu-arm/2018-11/msg00638.html
->
-> Ah, thanks! That explains why we did the thing that made no sense :)
->
-> To skip the migration hazard, my prefernece is we just leave the EHCI
-> device in for now, and add a separate XHCI on PCIe. We can drop the
-> EHCI device at some point in the future.
+The following changes since commit c6a5fc2ac76c5ab709896ee1b0edd33685a67ed1:
 
-Why PCIe for the XHCI and not sysbus? At the time the board
-was originally added the argument was in favour of using
-a sysbus USB controller (you can see Ard making that point
-in the linked archive thread).
+  decodetree: Add --output-null for meson testing (2023-05-31 19:56:42 -0700)
 
-thanks
--- PMM
+are available in the Git repository at:
+
+  https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
+
+for you to fetch changes up to 367189efae8b53ec2ade37a1c079fd8f69244b9e:
+
+  accel/tcg: include cs_base in our hash calculations (2023-06-01 11:05:05 -0400)
+
+----------------------------------------------------------------
+Pull request
+
+This pull request contains Alex Bennée's vcpu trace events removal patches.
+
+----------------------------------------------------------------
+
+Alex Bennée (11):
+  *-user: remove the guest_user_syscall tracepoints
+  trace-events: remove the remaining vcpu trace events
+  trace: remove vcpu_id from the TraceEvent structure
+  scripts/qapi: document the tool that generated the file
+  docs/deprecated: move QMP events bellow QMP command section
+  qapi: make the vcpu parameters deprecated for 8.1
+  trace: remove code that depends on setting vcpu
+  trace: remove control-vcpu.h
+  tcg: remove the final vestiges of dstate
+  hw/9pfs: use qemu_xxhash4
+  accel/tcg: include cs_base in our hash calculations
+
+ docs/about/deprecated.rst     |  25 +++++---
+ qapi/trace.json               |  40 ++++++-------
+ accel/tcg/tb-hash.h           |   6 +-
+ include/exec/exec-all.h       |   3 -
+ include/hw/core/cpu.h         |   5 --
+ include/qemu/xxhash.h         |  23 +++++--
+ include/user/syscall-trace.h  |   4 --
+ trace/control-internal.h      |  10 ----
+ trace/control-vcpu.h          |  63 --------------------
+ trace/control.h               |  48 ---------------
+ trace/event-internal.h        |   2 -
+ accel/tcg/cpu-exec.c          |   7 +--
+ accel/tcg/tb-maint.c          |   5 +-
+ accel/tcg/translate-all.c     |   6 --
+ bsd-user/freebsd/os-syscall.c |   3 -
+ hw/9pfs/9p.c                  |   5 +-
+ hw/core/cpu-common.c          |   6 +-
+ stubs/trace-control.c         |  13 ----
+ trace/control-target.c        | 109 +++-------------------------------
+ trace/control.c               |  28 ---------
+ trace/qmp.c                   |  76 +++---------------------
+ trace/trace-hmp-cmds.c        |  18 +-----
+ util/qsp.c                    |   2 +-
+ hw/core/trace-events          |   3 +
+ scripts/qapi/gen.py           |   9 ++-
+ scripts/tracetool/format/c.py |   6 --
+ scripts/tracetool/format/h.py |  16 +----
+ trace-events                  |  50 ----------------
+ 28 files changed, 94 insertions(+), 497 deletions(-)
+ delete mode 100644 trace/control-vcpu.h
+
+-- 
+2.40.1
+
 
