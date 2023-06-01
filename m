@@ -2,66 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F07A71A0C0
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 16:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CE371A0FF
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 16:52:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4jYW-0005JE-Om; Thu, 01 Jun 2023 10:45:36 -0400
+	id 1q4jdq-0000m7-SZ; Thu, 01 Jun 2023 10:51:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q4jYI-0005Is-PM
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:45:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q4jYG-0003PJ-Su
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:45:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685630719;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=NITtXpTE7BCLkawwlIXFp9Ajmlqyypv78zAXUrrsDVA=;
- b=EZ5kkVCB0mAqai3UHnXkLbskg3LCg+BhBCCJJL0eEDQWcMrElw4TZ2uOzF87wR8W601ET2
- M4mrD/uuPjWAR6Mspo2dsexuV0bCheTNwgQOI1bSQ/1oYkW1iJ2z2gtGYcrfCbqZLUZFyG
- ny1+f3s/BvMQRfwWGCx9ivAHMHPN7eU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-74-TmurjrJHN-GkX43qwaXWcA-1; Thu, 01 Jun 2023 10:45:16 -0400
-X-MC-Unique: TmurjrJHN-GkX43qwaXWcA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 02D7B85A5BA;
- Thu,  1 Jun 2023 14:45:16 +0000 (UTC)
-Received: from omen.home.shazbot.org (unknown [10.22.17.157])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3F4F82166B25;
- Thu,  1 Jun 2023 14:45:15 +0000 (UTC)
-From: Alex Williamson <alex.williamson@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, clg@redhat.com,
- robin@streamhpc.com, philmd@linaro.org
-Subject: [PATCH] vfio: Implement a common device info helper
-Date: Thu,  1 Jun 2023 08:45:06 -0600
-Message-Id: <20230601144506.2105353-1-alex.williamson@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4jdp-0000lv-JW
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:51:05 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4jdl-0004iT-TR
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:51:05 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1b01d3bb571so4122495ad.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 07:51:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685631060; x=1688223060;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ADxdaf120RRlsuYU+GFR6xzszWSZcLsh+bs1NIJtiZw=;
+ b=ftZjAb19b1kNiKDdGuXw+lI92CqzGBxB3eU9Q6SqKSJbLWZdqczd6QlxWyqaS5EdXf
+ 0LYB+cEixM55o8XK/N9MB4MYryHgvhNfyMHO8pJLgMsTSr4oZDd/tD2AmPHBROcAPf95
+ lOdLScRXpY/t6FTjTaCybSAguY2vaB6a8FMx4VbHkcL3Ut5AwnNmn6rj/FTxBfXgS5rR
+ +uUiJrh9uqUS3QsVJocFXIFdclNyLRc2fDdZ64rMXQS2P4zwj4e7b0chtpzNoD2HFm1r
+ 5hTOdZljBcsv+9IVTpJEf7yLk9ZBSZiUypGiUVDQbBzSu+MbtK5uLjiJdM+n0Lbyfc8H
+ N4/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685631060; x=1688223060;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ADxdaf120RRlsuYU+GFR6xzszWSZcLsh+bs1NIJtiZw=;
+ b=b3vNkxoG1yJZVSrcw8Fz/uzcUiySP3K215sMF72ViCPqkt9KZc5Gj1ZwuQnPijV7tc
+ 9DLsFt4O4vDd/4Bn9CWZqAZC0/GySlUHSt/ztbmb13J5HpD/LHWYu9mRHIdHgCtY2n7+
+ Iar3LNm+LWJ8Doy2fnxtwVFQYlyq03VB0VZg4dw5IrFXO2eqfszAc2vXDzM1oT5Z550E
+ ImtXGit30dJpll6BEDFuoomG4JqEXnt3wFLWVbm3oSa61L5dgvyJMV1MDNj9jX8s0jiE
+ kMtNsAbUgY6oXaMEbgO1VYiqt21EevnygD9sVwMP2fjaIG5xphSk9aIZaExJtGY7loMx
+ 9hkg==
+X-Gm-Message-State: AC+VfDwHlgU+hIOV0ANJUpB3x9OxgOg5q5Sars6uCaL7u3nsPrQe+ZzD
+ KQR4nZP/0pthdF+TiECy9zjOqw==
+X-Google-Smtp-Source: ACHHUZ4zxs6YUOjJWqAcm2CEwxAJuin/Hlpe6P4dSui1OLaf+GFat5e0ldzKRHX5Tj+08n7hqJg7Eg==
+X-Received: by 2002:a17:902:e5c2:b0:1ab:63e:67b0 with SMTP id
+ u2-20020a170902e5c200b001ab063e67b0mr6685308plf.54.1685631060318; 
+ Thu, 01 Jun 2023 07:51:00 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:c935:f07f:4b59:7091?
+ ([2602:ae:1598:4c01:c935:f07f:4b59:7091])
+ by smtp.gmail.com with ESMTPSA id
+ b21-20020a170902d31500b001a221d14179sm3556135plc.302.2023.06.01.07.50.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 07:50:59 -0700 (PDT)
+Message-ID: <392a7a42-bf1d-c9c6-4e11-2ff68036dd10@linaro.org>
+Date: Thu, 1 Jun 2023 07:50:57 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/1] hw/arm/sbsa-ref: add XHCI controller on PCIe
+Content-Language: en-US
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
+ peter.maydell@linaro.org
+Cc: quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20230601063737.464751-1-wangyuquan1236@phytium.com.cn>
+ <20230601063737.464751-2-wangyuquan1236@phytium.com.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230601063737.464751-2-wangyuquan1236@phytium.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,176 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A common helper implementing the realloc algorithm for handling
-capabilities.
+On 5/31/23 23:37, Yuquan Wang wrote:
+> The current sbsa-ref cannot use EHCI controller which is only
+> able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
+> Hence, this add an XHCI on PCIe to provide a usb controller with 64-bit
+> DMA capablity.
+> 
+> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+> ---
+>   hw/arm/sbsa-ref.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index de21200ff9..a33cd80d69 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -668,6 +668,8 @@ static void create_pcie(SBSAMachineState *sms)
+>   
+>       pci_create_simple(pci->bus, -1, "bochs-display");
+>   
+> +    pci_create_simple(pci->bus, -1, "qemu-xhci");
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
----
+Better to use TYPE_QEMU_XHCI.
+Need to remove the EHCI controler.
 
-RFCv2 -> v1: Remove spurious semicolon
 
- hw/s390x/s390-pci-vfio.c      | 37 ++++------------------------
- hw/vfio/common.c              | 46 ++++++++++++++++++++++++++---------
- include/hw/vfio/vfio-common.h |  1 +
- 3 files changed, 41 insertions(+), 43 deletions(-)
-
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index f51190d4662f..59a2e03873bd 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -289,38 +289,11 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
-     memcpy(pbdev->zpci_fn.pfip, cap->pfip, CLP_PFIP_NR_SEGMENTS);
- }
- 
--static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev,
--                                                uint32_t argsz)
-+static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev)
- {
--    struct vfio_device_info *info = g_malloc0(argsz);
--    VFIOPCIDevice *vfio_pci;
--    int fd;
-+    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
- 
--    vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
--    fd = vfio_pci->vbasedev.fd;
--
--    /*
--     * If the specified argsz is not large enough to contain all capabilities
--     * it will be updated upon return from the ioctl.  Retry until we have
--     * a big enough buffer to hold the entire capability chain.  On error,
--     * just exit and rely on CLP defaults.
--     */
--retry:
--    info->argsz = argsz;
--
--    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
--        trace_s390_pci_clp_dev_info(vfio_pci->vbasedev.name);
--        g_free(info);
--        return NULL;
--    }
--
--    if (info->argsz > argsz) {
--        argsz = info->argsz;
--        info = g_realloc(info, argsz);
--        goto retry;
--    }
--
--    return info;
-+    return vfio_get_device_info(vfio_pci->vbasedev.fd);
- }
- 
- /*
-@@ -335,7 +308,7 @@ bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
- 
-     assert(fh);
- 
--    info = get_device_info(pbdev, sizeof(*info));
-+    info = get_device_info(pbdev);
-     if (!info) {
-         return false;
-     }
-@@ -356,7 +329,7 @@ void s390_pci_get_clp_info(S390PCIBusDevice *pbdev)
- {
-     g_autofree struct vfio_device_info *info = NULL;
- 
--    info = get_device_info(pbdev, sizeof(*info));
-+    info = get_device_info(pbdev);
-     if (!info) {
-         return;
-     }
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 78358ede2764..ed142296e9fe 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -2843,11 +2843,35 @@ void vfio_put_group(VFIOGroup *group)
-     }
- }
- 
-+struct vfio_device_info *vfio_get_device_info(int fd)
-+{
-+    struct vfio_device_info *info;
-+    uint32_t argsz = sizeof(*info);
-+
-+    info = g_malloc0(argsz);
-+
-+retry:
-+    info->argsz = argsz;
-+
-+    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
-+        g_free(info);
-+        return NULL;
-+    }
-+
-+    if (info->argsz > argsz) {
-+        argsz = info->argsz;
-+        info = g_realloc(info, argsz);
-+        goto retry;
-+    }
-+
-+    return info;
-+}
-+
- int vfio_get_device(VFIOGroup *group, const char *name,
-                     VFIODevice *vbasedev, Error **errp)
- {
--    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
--    int ret, fd;
-+    g_autofree struct vfio_device_info *info = NULL;
-+    int fd;
- 
-     fd = ioctl(group->fd, VFIO_GROUP_GET_DEVICE_FD, name);
-     if (fd < 0) {
-@@ -2859,11 +2883,11 @@ int vfio_get_device(VFIOGroup *group, const char *name,
-         return fd;
-     }
- 
--    ret = ioctl(fd, VFIO_DEVICE_GET_INFO, &dev_info);
--    if (ret) {
-+    info = vfio_get_device_info(fd);
-+    if (!info) {
-         error_setg_errno(errp, errno, "error getting device info");
-         close(fd);
--        return ret;
-+        return -1;
-     }
- 
-     /*
-@@ -2891,14 +2915,14 @@ int vfio_get_device(VFIOGroup *group, const char *name,
-     vbasedev->group = group;
-     QLIST_INSERT_HEAD(&group->device_list, vbasedev, next);
- 
--    vbasedev->num_irqs = dev_info.num_irqs;
--    vbasedev->num_regions = dev_info.num_regions;
--    vbasedev->flags = dev_info.flags;
-+    vbasedev->num_irqs = info->num_irqs;
-+    vbasedev->num_regions = info->num_regions;
-+    vbasedev->flags = info->flags;
-+
-+    trace_vfio_get_device(name, info->flags, info->num_regions, info->num_irqs);
- 
--    trace_vfio_get_device(name, dev_info.flags, dev_info.num_regions,
--                          dev_info.num_irqs);
-+    vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
- 
--    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
-     return 0;
- }
- 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index eed244f25f34..a8dcda592c08 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -212,6 +212,7 @@ void vfio_region_finalize(VFIORegion *region);
- void vfio_reset_handler(void *opaque);
- VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
- void vfio_put_group(VFIOGroup *group);
-+struct vfio_device_info *vfio_get_device_info(int fd);
- int vfio_get_device(VFIOGroup *group, const char *name,
-                     VFIODevice *vbasedev, Error **errp);
- 
--- 
-2.39.2
-
+r~
 
