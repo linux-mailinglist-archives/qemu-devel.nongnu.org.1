@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D3D719EF2
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4DA719EFE
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 16:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ipB-0003u0-Uj; Thu, 01 Jun 2023 09:58:45 -0400
+	id 1q4is8-0005dn-Py; Thu, 01 Jun 2023 10:01:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q4ipA-0003ts-Js
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:58:44 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q4ip7-0002dg-S8
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:58:44 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2af1e290921so11875341fa.3
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 06:58:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685627920; x=1688219920;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QFbvsThDHpgKgiYv5DRWbvA5PEE+69CAIs/RpxM1Lyo=;
- b=WObKgLKIlUezZ/7ymzLNW18AbkH0OuYcYg4Cc8GZPuYdvMLK5BpNxcxLDPnUo62YOS
- 4sfY/wuKA3CUu0Ql4myvqWA4W8WGgO+v7jn4y3KWqfOv7kn1Ax8iToxKIIT5RSSmqEWC
- yCuXgAbnexZxMdM9DhbCgxIQCoCASLWn24IxiC4HFq55J2ZsFXNBUd7gdYc0o5fL+UrZ
- hCYJ7sKGa8H9lak6rOH1yzGkxgtPQiBVnRkEHRgEcANVJOByGcOrqBeKfP7Gj5l+1nl6
- HF5CBuwWDCJMXepNoW1+Te9bYx2WTrjLbo33NoMqqwXTev39UC5meAPTMk1StVfZ4nzg
- 3pDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685627920; x=1688219920;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QFbvsThDHpgKgiYv5DRWbvA5PEE+69CAIs/RpxM1Lyo=;
- b=Vly/0c7++tcg8CjkRxe9oOfYwHwLYCI0ydBSR2OOXkCQE9MZV8KrI/NoKwAgervY0z
- a103sC4ppNVhNkRTGMenGKZEMMGRKQajX3QdcfVP7wWZR5RDypXQhdWzGFB2l1iRKnTy
- Fjr0IEYlDqtfdgrudeIZt1+EKCEbV8m2l0xBVyHDQ4CL1ZMwma+powGHDyzZBKIY1az+
- 8wOi39xQJJYpCpsN04/Xlp7YauNDHBg5bm8Km9GkAHkvWJENPVDyMXaVk7st1Rp6gYuL
- 3dbLcq1KJmD3b06aeOBJLs8Lzr8X/UduvtwnMQhCvhfrFrm0UgNp+ntUMrEKFQ/sN6ds
- 7DSg==
-X-Gm-Message-State: AC+VfDxuvfIsntUGwI6BJobxhdpz9MMZF1DslZQXcIjVrrEW4YdtzF2r
- A0BfiEreQjaecd4hdgyp+rq7FuVQubnjKBBSUwicVGX1H4hd3TNYPoE=
-X-Google-Smtp-Source: ACHHUZ50uhJHPcDjFAqiNy8+Oyr3aViue2XVg5U/4bLTsXX6cGNP9XB11lzn6Rxba+6vPQBKIRcTq+bRXP9Hz7pB+P8=
-X-Received: by 2002:a2e:9b86:0:b0:2ad:b1cb:faed with SMTP id
- z6-20020a2e9b86000000b002adb1cbfaedmr4849786lji.7.1685627919364; Thu, 01 Jun
- 2023 06:58:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1q4is6-0005WT-QL
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:01:46 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1q4irz-0003Dv-Ex
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:01:42 -0400
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 351B58BS022285; Thu, 1 Jun 2023 14:01:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=po+r+BOyDl7w66v4xIHlopy5PSinGNJ6JR4ttVafKDQ=;
+ b=ahtPDq0SXMtnP1tEfNnMsNHt/xHbHXkop4NMG0CU22j1AtVGBbxyTgHBGlStZt0+bek+
+ xw2F9b3dZJzsFdUxyAjsmoK7pgpzLCRbdhcETtDozl6wXC0gcna0y6i0QAV+qPr1CUqR
+ j6XbE+lovzUEzVbvJKIB4DYXreBqPwvwko9Ay5gGVWVBai7LYVxgTI9/EwORCDuTQRfi
+ ucmUsS1fn9aL0wKNGDObcwfdFO5yYlay4fsgJe8W0OafRbaaMrW1tdbISEGBjBiFgaZe
+ Gg9mEm6wFoJqOpHdWJzJNFFrjAHhYXHYkrVNAKnyTnX1tJLmDApXcZ1MgQF00zv/8yPN AA== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qxdr9a1br-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jun 2023 14:01:31 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 351E1MPF005296
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 1 Jun 2023 14:01:22 GMT
+Received: from acaggian1-mac.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Thu, 1 Jun 2023 07:01:21 -0700
+From: Antonio Caggiano <quic_acaggian@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
+ <marcandre.lureau@redhat.com>
+Subject: [PATCH] SDL: OpenGL 3 window context
+Date: Thu, 1 Jun 2023 16:00:19 +0200
+Message-ID: <20230601140019.66013-1-quic_acaggian@quicinc.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-References: <cover.1685584543.git.yin31149@gmail.com>
- <39fddc462ad4c7619843a4cd7cba92e0bbc48c45.1685584543.git.yin31149@gmail.com>
- <CAKrof1OyEL5RGTWgHjgfMSkMC-afiWW8VAF5qirCy3juErWSqA@mail.gmail.com>
- <CAJaqyWewHKZebftQc6HrhDQEV5cTWiJUkVL4NgzOVqoGdP+6Sw@mail.gmail.com>
-In-Reply-To: <CAJaqyWewHKZebftQc6HrhDQEV5cTWiJUkVL4NgzOVqoGdP+6Sw@mail.gmail.com>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Thu, 1 Jun 2023 21:58:27 +0800
-Message-ID: <CAKrof1N0s2prVBUUz=quD-DofUcwJC=Ck_2gry9d2E+14y=Ypw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] virtio-net: expose
- virtio_net_supported_guest_offloads()
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: Q7bhUr9sliDa_tp0AyiGsLLy_nLB5UdQ
+X-Proofpoint-GUID: Q7bhUr9sliDa_tp0AyiGsLLy_nLB5UdQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=823
+ suspectscore=0 malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306010123
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_acaggian@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,90 +95,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/6/1 21:43, Eugenio Perez Martin wrote:
-> On Thu, Jun 1, 2023 at 11:05=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.co=
-m> wrote:
->>
->> On Thu, 1 Jun 2023 at 16:48, Hawkins Jiawei <yin31149@gmail.com> wrote:
->>>
->>> To support restoring offloads state in vdpa, need to expose
->>> the function virtio_net_supported_guest_offloads(), then vdpa
->>> uses this function to get the guest supported offloads.
->>
->> Here it should be changed to "then QEMU uses this function
->> to get the guest supported offloads.". I will correct the commit
->> message in the v3 patch.
->>
->
-> Maybe "to get the device supported offloads allow qemu to know the
-> defaults, so it can skip the control message sending if they match
-> with the driver's configuration"?
->
-> We can also add "This will be the default at guest's startup, these
-> values can mismatch only at live migration".
+SDL renderer creates an OpenGL 2.1 context while QEMU expects minimum
+OpenGL version 3.3 or ES 3.0. To fix this we create an OpenGL context
+directly, ignoring the SDL renderer when OpenGL is enabled.
 
-Hi Eugenio,
+Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+---
+ ui/sdl2.c | 34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-I sent the v3 patch before seeing this email:(.
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 9d703200bf..42512588b5 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -104,7 +104,24 @@ void sdl2_window_create(struct sdl2_console *scon)
+                                          surface_width(scon->surface),
+                                          surface_height(scon->surface),
+                                          flags);
++
+     if (scon->opengl) {
++        /* Set the minimum version required by the texture blit shaders */
++        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
++        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
++
++        if (scon->opts->gl == DISPLAYGL_MODE_ES) {
++            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
++                                SDL_GL_CONTEXT_PROFILE_ES);
++            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
++        }
++
++        scon->winctx = SDL_GL_CreateContext(scon->real_window);
++    } else {
++        /*
++         * The SDL renderer is only used by sdl2 2D callbacks, when OpenGL is
++         * disabled at configuration time
++         */
+         const char *driver = "opengl";
+ 
+         if (scon->opts->gl == DISPLAYGL_MODE_ES) {
+@@ -113,11 +130,8 @@ void sdl2_window_create(struct sdl2_console *scon)
+ 
+         SDL_SetHint(SDL_HINT_RENDER_DRIVER, driver);
+         SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
+-    }
+-    scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
+ 
+-    if (scon->opengl) {
+-        scon->winctx = SDL_GL_CreateContext(scon->real_window);
++        scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
+     }
+     sdl_update_caption(scon);
+ }
+@@ -128,10 +142,14 @@ void sdl2_window_destroy(struct sdl2_console *scon)
+         return;
+     }
+ 
+-    SDL_GL_DeleteContext(scon->winctx);
+-    scon->winctx = NULL;
+-    SDL_DestroyRenderer(scon->real_renderer);
+-    scon->real_renderer = NULL;
++    if (scon->winctx) {
++        SDL_GL_DeleteContext(scon->winctx);
++        scon->winctx = NULL;
++    }
++    if (scon->real_renderer) {
++        SDL_DestroyRenderer(scon->real_renderer);
++        scon->real_renderer = NULL;
++    }
+     SDL_DestroyWindow(scon->real_window);
+     scon->real_window = NULL;
+ }
+-- 
+2.40.0
 
-I refactor the commit message to
-"To support restoring offloads state in vdpa, need to expose
-the function virtio_net_supported_guest_offloads().
-QEMU uses this function to get the guest supported offloads
-and no needs to send the corresponding CVQ command if guest
-enables all supported features." in v3 patch.
-
-Do you think there is still some refactoring needed here?
-
-Thanks!
-
-
->
-> What do you think?
->
-> Thanks!
->
->> Thanks!
->>
->>>
->>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
->>> ---
->>>   hw/net/virtio-net.c            | 2 +-
->>>   include/hw/virtio/virtio-net.h | 1 +
->>>   2 files changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
->>> index 7b27dad6c4..7e8897a8bc 100644
->>> --- a/hw/net/virtio-net.c
->>> +++ b/hw/net/virtio-net.c
->>> @@ -874,7 +874,7 @@ static uint64_t virtio_net_guest_offloads_by_featur=
-es(uint32_t features)
->>>       return guest_offloads_mask & features;
->>>   }
->>>
->>> -static inline uint64_t virtio_net_supported_guest_offloads(const VirtI=
-ONet *n)
->>> +uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n)
->>>   {
->>>       VirtIODevice *vdev =3D VIRTIO_DEVICE(n);
->>>       return virtio_net_guest_offloads_by_features(vdev->guest_features=
-);
->>> diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-=
-net.h
->>> index ef234ffe7e..5f5dcb4572 100644
->>> --- a/include/hw/virtio/virtio-net.h
->>> +++ b/include/hw/virtio/virtio-net.h
->>> @@ -227,5 +227,6 @@ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vde=
-v,
->>>                                     unsigned out_num);
->>>   void virtio_net_set_netclient_name(VirtIONet *n, const char *name,
->>>                                      const char *type);
->>> +uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n);
->>>
->>>   #endif
->>> --
->>> 2.25.1
->>>
->>
->
 
