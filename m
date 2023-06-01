@@ -2,67 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BE6719674
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAB871967E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:11:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4eEM-0003RV-Sj; Thu, 01 Jun 2023 05:04:26 -0400
+	id 1q4eFV-0004R2-Sx; Thu, 01 Jun 2023 05:05:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4eD2-0002cn-Ls
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:03:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4eD0-0001EA-Us
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:03:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685610182;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=SNeeSau94R7ND3ozEwowWElvP7x0UEvY8oyvIybsrKM=;
- b=Cqkgi0Cu8enuYomO2ivbQ0ecZOP2ybctRMfox3uvWuMbt9b6jrfIH0pmtFQOlFDFTn48hA
- xMaapMKy6EAj5gh+3JY10WsIER5tAYzBVamKOhpepY232LfXK+LV5/L97kHZc0GD9QwhcO
- 6wFKPHpFNq4lmbYW3+zA2gO8KcVZh6U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-595-Iag6WJVKPfGtebwUW6BFog-1; Thu, 01 Jun 2023 05:03:01 -0400
-X-MC-Unique: Iag6WJVKPfGtebwUW6BFog-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA6AA811E7C
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 09:03:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B0614C154D7;
- Thu,  1 Jun 2023 09:02:46 +0000 (UTC)
-Date: Thu, 1 Jun 2023 10:02:41 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PULL 16/21] migration/rdma: Unfold hook_ram_load()
-Message-ID: <ZHhesX4O2hNOLraR@redhat.com>
-References: <20230530182531.6371-1-quintela@redhat.com>
- <20230530182531.6371-17-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1q4eFN-0004Li-9u
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:05:29 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1q4eFL-0001u5-G6
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:05:29 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2af2c7f2883so8078161fa.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:05:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685610325; x=1688202325;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rlh/W45Vljqm7i1FF8k1di11zxjfzH92w/tMkvnt15M=;
+ b=DtH3CsTdjscMFMfOjJHV+XdZVlTgKVl1wbTb6tm9NiqiIGpu6xvy/j3aVIwstjPSvN
+ ma3dDkgSoInqILBAz/hOuEhLzhUOLb008HY7TtGK6JhPNO4c8NbWfiXiZSzRy42FkbQi
+ zCwCQu7aYH7Sv17fP/IgaVAl3pZVnAWnLu3PYCZ2lhnd9OTM4T1ZDy7oRyLi6gPmsQa3
+ Nq6Ozc04Ki1EWQrEvpF6CNxXglcJqvVQxE20Vm2bnJoeFR2jjiBIjmcTd+2qLWp97PUB
+ wYeLbCjMcfKLhxgCoFKRHx7XI6VcFjYvDPnTEc+KcyV4OtWh2BQuUKgui/KyMvL7Xc9/
+ 5mmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685610325; x=1688202325;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Rlh/W45Vljqm7i1FF8k1di11zxjfzH92w/tMkvnt15M=;
+ b=lFu7Ljx6N1JHUFKT0IQNSzrvqZ49xUiApWBrnCZ7uuPkt5wZHTqcdymnXAyfXJ85W6
+ B65QdP557At4gcRWuXhqkjl1cJyVhu9WTDzYqOtOkqagnschAR2+NOfkGkK3vYCDHcma
+ Kkw34Y5cTq9ZzHqU7lmohaTB19Z0T+YH+Ok1EspySa0yZj+rsq2V9CGSu/i4a2hDs4nv
+ WeteVGr8K6Rmi8DgjGD2LqiaDcEhG4GUO/kru8jAyNUh+OMI/lXjilqfMKNVJCFuPOk4
+ mLtb2vgxuJrXO+boKTpjlO249DOtqn47j99P6WkZH9D5yLr12kJAhUfeNr0eE692Nphs
+ BrOQ==
+X-Gm-Message-State: AC+VfDyEGivKcUkjp5+l8JTjstht4r4xvynm2DkoHqmtVT/vuhErhDoc
+ B6zUP0m1xdvvH/9Jbq+QXp+vozy2UEWVOlxCmTc=
+X-Google-Smtp-Source: ACHHUZ60T8SKYQRIUo+xx1M7GOaW2h1TpqLeF6kF0tW3H+P2MFffsQe9ybkYuO/C52qBkLvXx0eXj+V6aGcjUXNYZ3I=
+X-Received: by 2002:a2e:9cd8:0:b0:2a8:ac69:bfe with SMTP id
+ g24-20020a2e9cd8000000b002a8ac690bfemr4395750ljj.42.1685610324202; Thu, 01
+ Jun 2023 02:05:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230530182531.6371-17-quintela@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+References: <cover.1685584543.git.yin31149@gmail.com>
+ <39fddc462ad4c7619843a4cd7cba92e0bbc48c45.1685584543.git.yin31149@gmail.com>
+In-Reply-To: <39fddc462ad4c7619843a4cd7cba92e0bbc48c45.1685584543.git.yin31149@gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Thu, 1 Jun 2023 17:05:12 +0800
+Message-ID: <CAKrof1OyEL5RGTWgHjgfMSkMC-afiWW8VAF5qirCy3juErWSqA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] virtio-net: expose
+ virtio_net_supported_guest_offloads()
+To: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,67 +84,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 08:25:26PM +0200, Juan Quintela wrote:
-> There is only one flag called with: RAM_CONTROL_BLOCK_REG.
-> 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> Message-Id: <20230509120700.78359-6-quintela@redhat.com>
+On Thu, 1 Jun 2023 at 16:48, Hawkins Jiawei <yin31149@gmail.com> wrote:
+>
+> To support restoring offloads state in vdpa, need to expose
+> the function virtio_net_supported_guest_offloads(), then vdpa
+> uses this function to get the guest supported offloads.
+
+Here it should be changed to "then QEMU uses this function
+to get the guest supported offloads.". I will correct the commit
+message in the v3 patch.
+
+Thanks!
+
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 > ---
->  migration/qemu-file.h | 11 -----------
->  migration/rdma.h      |  3 +++
->  migration/qemu-file.c | 10 ----------
->  migration/ram.c       |  6 ++++--
->  migration/rdma.c      | 29 +++++++++--------------------
->  5 files changed, 16 insertions(+), 43 deletions(-)
-
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index a477985c6d..948e93256d 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -3811,20 +3811,22 @@ out:
+>  hw/net/virtio-net.c            | 2 +-
+>  include/hw/virtio/virtio-net.h | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index 7b27dad6c4..7e8897a8bc 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -874,7 +874,7 @@ static uint64_t virtio_net_guest_offloads_by_features(uint32_t features)
+>      return guest_offloads_mask & features;
 >  }
->  
->  /* Destination:
-> - * Called via a ram_control_load_hook during the initial RAM load section which
-> - * lists the RAMBlocks by name.  This lets us know the order of the RAMBlocks
-> - * on the source.
-> - * We've already built our local RAMBlock list, but not yet sent the list to
-> - * the source.
-> + * Called during the initial RAM load section which lists the
-> + * RAMBlocks by name.  This lets us know the order of the RAMBlocks on
-> + * the source.  We've already built our local RAMBlock list, but not
-> + * yet sent the list to the source.
->   */
-> -static int
-> -rdma_block_notification_handle(QEMUFile *f, const char *name)
-> +int rdma_block_notification_handle(QEMUFile *f, const char *name)
+>
+> -static inline uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n)
+> +uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n)
 >  {
->      RDMAContext *rdma;
->      QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(qemu_file_get_ioc(f));
-
-Casting to QIOChannelRDMA ...
-
->      int curr;
->      int found = -1;
->  
-> +    if (!migrate_rdma()) {
-
-..before checking if this is RDMA
-
-> +        return 0;
-> +    }
-> +
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+>      VirtIODevice *vdev = VIRTIO_DEVICE(n);
+>      return virtio_net_guest_offloads_by_features(vdev->guest_features);
+> diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+> index ef234ffe7e..5f5dcb4572 100644
+> --- a/include/hw/virtio/virtio-net.h
+> +++ b/include/hw/virtio/virtio-net.h
+> @@ -227,5 +227,6 @@ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
+>                                    unsigned out_num);
+>  void virtio_net_set_netclient_name(VirtIONet *n, const char *name,
+>                                     const char *type);
+> +uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n);
+>
+>  #endif
+> --
+> 2.25.1
+>
 
