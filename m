@@ -2,75 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752847192E4
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 08:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8476A719380
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 08:47:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4bLg-0002BQ-Gk; Thu, 01 Jun 2023 01:59:48 -0400
+	id 1q4c4p-0004Hq-Ks; Thu, 01 Jun 2023 02:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4bLe-0002Ap-1n
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 01:59:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1q4c4n-0004H6-Hb
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 02:46:25 -0400
+Received: from mga07.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4bLc-00020p-2I
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 01:59:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685599182;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=c4+nJawB5C/rpOtXXJPGg1t+YY5vW5g1GOG7XGwr1/8=;
- b=Bb5S9MCASQ1bweD4ExxgsROc9Z5V1GqBN2QXRTbUFufmfEVCyXeEuHUZBw+u6jNqdHBKVF
- 6Lp04TBP4OeH2pT6IHaojyXrf2HofruVwe8ZRMs/54Pgsw5FBIiAwOa8IM350YUS/wgWxs
- lAsv6IxSl8dTWiUriaPR8hWCogWFvL0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-325-Y6dswbWWOYq4fL-wNMgC9Q-1; Thu, 01 Jun 2023 01:59:36 -0400
-X-MC-Unique: Y6dswbWWOYq4fL-wNMgC9Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAB5E1C05137;
- Thu,  1 Jun 2023 05:59:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 914C4492B0A;
- Thu,  1 Jun 2023 05:59:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7CD2021E692E; Thu,  1 Jun 2023 07:59:34 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  Eduardo Habkost
- <eduardo@habkost.net>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH 7/7] hw: Simplify using sysbus_init_irqs() [manual]
-References: <20230531223341.34827-1-philmd@linaro.org>
- <20230531223341.34827-8-philmd@linaro.org>
-Date: Thu, 01 Jun 2023 07:59:34 +0200
-In-Reply-To: <20230531223341.34827-8-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 1 Jun 2023 00:33:41
- +0200")
-Message-ID: <87mt1jafjt.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1q4c4l-00072j-1x
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 02:46:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1685601982; x=1717137982;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=hEOxUjycGRiDea9C06uSOfcvuD3cHL4VQf4u/4D15GU=;
+ b=fFHVD+ekXy+CFCCuLO9Tv5ts4UMS+C+u9UQApAfD3HBKasL9rcPj7K/4
+ +GzHiO59zfWvlsnWaMS8Gq0Nz0uGU1vgpS5O6FxEp8rwYyfAFa1VRKxFG
+ qBUtcfbKq0HdZAGQLAfJzHcLJ3hXtuOq+3aa0grrfAb6mZFdT0IZ5Ropn
+ Fw5sD6u5Tp7O7QQiUoKX7CLbQmS31JJGX08IlgigPcCjtWT3HCICPzuBK
+ iKge3OPY8TkYsVq+4gCi/drabBRl60hNKUwUYerxfyGJewMra3tJZbjSZ
+ rTCMB0y5E+LbwC3ViMZCbSotYCb9RlijEXbciGM8uNiFv9IqY9Dowdl8g A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="421249303"
+X-IronPort-AV: E=Sophos;i="6.00,209,1681196400"; d="scan'208";a="421249303"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 May 2023 23:46:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="953953048"
+X-IronPort-AV: E=Sophos;i="6.00,209,1681196400"; d="scan'208";a="953953048"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 May 2023 23:46:13 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, peterx@redhat.com, jasowang@redhat.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, alex.williamson@redhat.com, clg@redhat.com,
+ david@redhat.com, philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
+ yi.l.liu@intel.com, chao.p.peng@intel.com
+Subject: [PATCH v2 0/4] Optimize UNMAP call and bug fix
+Date: Thu,  1 Jun 2023 14:33:16 +0800
+Message-Id: <20230601063320.139308-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.100;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga07.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,99 +78,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Hi All,
 
-> Audit the sysbus_init_irq() calls and manually convert
-> to sysbus_init_irqs() when a loop is involved.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/intc/loongarch_extioi.c | 3 +--
->  hw/intc/omap_intc.c        | 3 +--
->  hw/pci-host/gpex.c         | 2 +-
->  hw/timer/renesas_tmr.c     | 9 +++------
->  4 files changed, 6 insertions(+), 11 deletions(-)
->
-> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-> index db941de20e..c579636215 100644
-> --- a/hw/intc/loongarch_extioi.c
-> +++ b/hw/intc/loongarch_extioi.c
-> @@ -275,8 +275,7 @@ static void loongarch_extioi_instance_init(Object *ob=
-j)
->      LoongArchExtIOI *s =3D LOONGARCH_EXTIOI(obj);
->      int cpu, pin;
->=20=20
-> -    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, EXTIOI_IRQS);
-> -
-> +    sysbus_init_irqs(dev, s->irq, EXTIOI_IRQS);
+This is an extention to original patch [1] based on discuss in [2].
 
-Commit message claims "when a loop is involved".  No loop here.  That
-work was actually done in the previous patch:
+1. Fixed a potential VFIO migration issue Peter found, and optimize
+   VFIO dirty page sync in intel_iommu incidentally.
 
-  diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-  index 0e7a3e32f3..db941de20e 100644
-  --- a/hw/intc/loongarch_extioi.c
-  +++ b/hw/intc/loongarch_extioi.c
-  @@ -273,11 +273,9 @@ static void loongarch_extioi_instance_init(Object *o=
-bj)
-   {
-       SysBusDevice *dev =3D SYS_BUS_DEVICE(obj);
-       LoongArchExtIOI *s =3D LOONGARCH_EXTIOI(obj);
-  -    int i, cpu, pin;
-  +    int cpu, pin;
+2. Clarify the definition of replay() to match existent optimization
+   in intel_iommu.
 
-  -    for (i =3D 0; i < EXTIOI_IRQS; i++) {
-  -        sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
-  -    }
-  +    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, EXTIOI_IRQS);
+3. Optimize out some potential UNMAP calls
 
-       qdev_init_gpio_in(DEVICE(obj), extioi_setirq, EXTIOI_IRQS);
+Tested net card passthrough, ping/ssh pass
+Tested DSA vdev passthrough, start dmatest then do live migration, pass.
+I checked the LM performance before and after patch, no explicit difference.
+I think it may because dirty page sync isn't an important factor in LM
+and it's small in number in my test, 4 or 5.
 
-In this patch, you merely delete a superfluous type conversion that is
-present even before your series.
+[1] https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg05549.html
+[2] https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06708.html
 
-There are more of them in this function.  Please delete them all, and in
-a separate patch.
+Thanks
 
-Actually, there are more elsewhere.  Coccinelle script
+Zhenzhong Duan (4):
+  util: Add iova_tree_foreach_range_data
+  intel_iommu: Fix a potential issue in VFIO dirty page sync
+  memory: Document update on replay()
+  intel_iommu: Optimize out some unnecessary UNMAP calls
 
-    @@
-    typedef SysBusDevice;
-    SysBusDevice *dev;
-    @@
-    -    SYS_BUS_DEVICE(dev)
-    +    dev
+ hw/i386/intel_iommu.c    | 75 +++++++++++++++++++++++++++++-----------
+ hw/vfio/common.c         |  2 +-
+ include/exec/memory.h    | 19 ++++++++--
+ include/qemu/iova-tree.h | 17 +++++++--
+ softmmu/memory.c         |  4 +++
+ util/iova-tree.c         | 31 +++++++++++++++++
+ 6 files changed, 122 insertions(+), 26 deletions(-)
 
-finds some in hw/arm/xlnx-versal.c and hw/rx/rx62n.c, too.
-
-Would be nice to do this for every QOM type, but I don't know how
-without duplicating the semantic patch for each of them.  There are
-almost 150 uses os OBJECT_DECLARE_TYPE()...
-
-You might want to address this in a separate series, to not delay this
-one.
-
->      qdev_init_gpio_in(DEVICE(obj), extioi_setirq, EXTIOI_IRQS);
->=20=20
->      for (cpu =3D 0; cpu < EXTIOI_CPUS; cpu++) {
-> diff --git a/hw/intc/omap_intc.c b/hw/intc/omap_intc.c
-> index 647bf324a8..f324b640e3 100644
-> --- a/hw/intc/omap_intc.c
-> +++ b/hw/intc/omap_intc.c
-> @@ -627,8 +627,7 @@ static void omap2_intc_init(Object *obj)
->=20=20
->      s->level_only =3D 1;
->      s->nbanks =3D 3;
-> -    sysbus_init_irq(sbd, &s->parent_intr[0]);
-> -    sysbus_init_irq(sbd, &s->parent_intr[1]);
-> +    sysbus_init_irqs(sbd, s->parent_intr, ARRAY_SIZE(s->parent_intr));
-
-Unrolled loop.  s->parent_intr[] indeed has 2 elements.  Okay.
-
->      qdev_init_gpio_in(dev, omap_set_intr_noedge, s->nbanks * 32);
->      memory_region_init_io(&s->mmio, obj, &omap2_inth_mem_ops, s,
->                            "omap2-intc", 0x1000);
-
-[...]
+-- 
+2.34.1
 
 
