@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7747E71EF6A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB6871EF5D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:43:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kzR-0005lI-Ez; Thu, 01 Jun 2023 12:17:29 -0400
+	id 1q4kzj-0006oW-Nr; Thu, 01 Jun 2023 12:17:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kzK-0005ff-4F
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:17:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4kzg-0006jv-Tt
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:17:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kzG-0004UX-TB
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:17:21 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4kzf-0004aB-80
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:17:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685636237;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1685636262;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=URP6T37Q595GI4L/uv/azw/lNI2RJFirAjYpfkBqpp4=;
- b=hCIP067X57GalXsr8lmYuTS4qxXUsjpAmKczXblMsezypG9Ei8xwlUjlI6kKB8LnJ7w5b6
- S0e7XnJLrOBh0SVmURZgJ+Yl4B0/+KjTmBtSu8GPo9Ta8JB6TAG5W2AT7N877ACMQIfmK8
- wlYtTJRhhr1MP4zcf/XaOUbB5Ys9Ag0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-94-aRVtiLN3PJm5O-1QjqMWXg-1; Thu, 01 Jun 2023 12:17:16 -0400
-X-MC-Unique: aRVtiLN3PJm5O-1QjqMWXg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9F0D2999B46
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:17:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 59E87112132C;
- Thu,  1 Jun 2023 16:17:14 +0000 (UTC)
-Date: Thu, 1 Jun 2023 17:17:11 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: quintela@redhat.com, qemu-devel@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+ bh=ssEqADB5z0ighSnrov3StSs0E+58rN5buTzYNH9Kad4=;
+ b=BC0OAx5cbdrs7/V2HduvMfGKWKqCr/D56u956HKXa50Hkn5dZV/DI87cy/Ia0ZZOCNH75Z
+ M3q1mvBFqKVTlHQMha0WzNcd3xDjzDV3taxS2V1s4TxafgxRrS/BclpD8jU2fFVvwvg0oU
+ L9gRCR1yVGYprydcMuBoQ6dyQKXWLso=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-xaXVXeOLO9aPhfeFC9ap6g-1; Thu, 01 Jun 2023 12:17:41 -0400
+X-MC-Unique: xaXVXeOLO9aPhfeFC9ap6g-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-3f7d72d552fso2639341cf.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 09:17:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685636261; x=1688228261;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ssEqADB5z0ighSnrov3StSs0E+58rN5buTzYNH9Kad4=;
+ b=Uv8PeIGe7E3F0O0TA8e9vlys9/U+Rc1c6dujaR3bMsE/qJmyUcI9iA2AR6nBBQPhJE
+ iSdPqPPEaLb191M1HakMBy+FhwoCPzSp46PdSjsYXAg+mFBtTH48Wr9jIFJ2Nc9kKtey
+ NZLudBjEW+TUCQumt7GU83G5RGRXl6ev1aMOmJ6uXveirjy4I1D1OxJ3XIlT19DKZhR+
+ hsRxti8kpb4tZenarL8YYCObSYovg95OH9gRAFncIcmu8cXEeLXiIv5v/h/HniPUEsr0
+ 3HbIlMNf3DfdC9DnZr2Ew66J2g1FtIjqtf5KUOESucpkvTlPNigqjUy4JPqmSL+m6wxR
+ KvAg==
+X-Gm-Message-State: AC+VfDy0gHklwEa8R9yRzY6taMMgu5aYvnQF8iPP5cuMLegO/7I7zVKg
+ +1WJb2vaw0jz8Ic6BkexoCfOAuCrdSkmjbfOrPrjePTR8GZBUp3+wZFEQrUNzwTRVcEw1jksv6v
+ xxyq2qqDhY7nMaGw=
+X-Received: by 2002:a05:622a:19a5:b0:3f2:38d:5c84 with SMTP id
+ u37-20020a05622a19a500b003f2038d5c84mr7652279qtc.4.1685636260784; 
+ Thu, 01 Jun 2023 09:17:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ66PQ4otmR0I8P0wSI217fc2IXxJjJITfhQTttoTX2rvC5LDeFaniK7pCslYofQ/fBRP25Llg==
+X-Received: by 2002:a05:622a:19a5:b0:3f2:38d:5c84 with SMTP id
+ u37-20020a05622a19a500b003f2038d5c84mr7652251qtc.4.1685636260429; 
+ Thu, 01 Jun 2023 09:17:40 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ i22-20020ac84896000000b003f6c49da398sm7801443qtq.76.2023.06.01.09.17.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 09:17:39 -0700 (PDT)
+Date: Thu, 1 Jun 2023 12:17:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
 Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
  scenarios run non-live
-Message-ID: <ZHjEh5GSgS+3i8HQ@redhat.com>
+Message-ID: <ZHjEohiecAsu3ht6@x1n>
 References: <20230531132400.1129576-1-berrange@redhat.com>
  <20230531132400.1129576-9-berrange@redhat.com>
- <87a5xjs6ob.fsf@secure.mitica>
- <7c02b1c2-1636-24d9-8466-3bcc6c88acbd@redhat.com>
+ <ZHi5gmd+5pQhDqBF@x1n> <ZHi7xLhUp0+5cay7@redhat.com>
+ <ZHi+7bgcHPUisc8d@x1n> <ZHi/beg2UqoEnk/b@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7c02b1c2-1636-24d9-8466-3bcc6c88acbd@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <ZHi/beg2UqoEnk/b@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -84,61 +101,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 06:09:44PM +0200, Thomas Huth wrote:
-> On 01/06/2023 14.33, Juan Quintela wrote:
-> > Daniel P. Berrangé <berrange@redhat.com> wrote:
-> ...
-> > > On a test machine this reduces execution time from 13 minutes to
-> > > 8 minutes.
+On Thu, Jun 01, 2023 at 04:55:25PM +0100, Daniel P. Berrangé wrote:
+> On Thu, Jun 01, 2023 at 11:53:17AM -0400, Peter Xu wrote:
+> > On Thu, Jun 01, 2023 at 04:39:48PM +0100, Daniel P. Berrangé wrote:
+> > > On Thu, Jun 01, 2023 at 11:30:10AM -0400, Peter Xu wrote:
+> > > > Thanks for looking into this.. definitely worthwhile.
+> > > > 
+> > > > On Wed, May 31, 2023 at 02:23:59PM +0100, Daniel P. Berrangé wrote:
+> > > > > There are 27 pre-copy live migration scenarios being tested. In all of
+> > > > > these we force non-convergance and run for one iteration, then let it
+> > > > > converge and wait for completion during the second (or following)
+> > > > > iterations. At 3 mbps bandwidth limit the first iteration takes a very
+> > > > > long time (~30 seconds).
+> > > > > 
+> > > > > While it is important to test the migration passes and convergance
+> > > > > logic, it is overkill to do this for all 27 pre-copy scenarios. The
+> > > > > TLS migration scenarios in particular are merely exercising different
+> > > > > code paths during connection establishment.
+> > > > > 
+> > > > > To optimize time taken, switch most of the test scenarios to run
+> > > > > non-live (ie guest CPUs paused) with no bandwidth limits. This gives
+> > > > > a massive speed up for most of the test scenarios.
+> > > > > 
+> > > > > For test coverage the following scenarios are unchanged
+> > > > 
+> > > > Curious how are below chosen?  I assume..
 > > > 
-> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > > Chosen based on whether they exercise code paths that are unique
+> > > and interesting during the RAM transfer phase.
+> > > 
+> > > Essentially the goal is that if we have N% code coverage before this
+> > > patch, then we should still have the same N% code coverage after this
+> > > patch.
+> > > 
+> > > The TLS tests exercise code paths that are unique during the migration
+> > > establishment phase. Once establishd they don't exercise anything
+> > > "interesting" during RAM transfer phase. Thus we don't loose code coverage
+> > > by runing TLS tests non-live.
+> > > 
+> > > > 
+> > > > > 
+> > > > >  * Precopy with UNIX sockets
+> > > > 
+> > > > this one verifies dirty log.
+> > > > 
+> > > > >  * Precopy with UNIX sockets and dirty ring tracking
+> > > > 
+> > > > ... dirty ring...
+> > > > 
+> > > > >  * Precopy with XBZRLE
+> > > > 
+> > > > ... xbzrle I think needs a diff on old/new, makes sense.
+> > > > 
+> > > > >  * Precopy with UNIX compress
+> > > > >  * Precopy with UNIX compress (nowait)
+> > > > >  * Precopy with multifd
+> > > > 
+> > > > What about the rest three?  Especially for two compression tests.
+> > > 
+> > > The compress thread logic is unique/interesting during RAM transfer
+> > > so benefits from running live. The wait vs non-wait scenario tests
+> > > a distinct codepath/logic.
 > > 
-> > Hi
-> > 
-> > I have a different idea to get the migration tests faster.  Namely, just
-> > stop letting enter the completation stage until we are ready to use it.
-> > 
-> > I need that functionality also for vfio migration, so as I have to
-> > create the patches, can we put on hold the last two patches and give me
-> > a couple of days?
+> > I assume you mean e.g. when compressing with guest page being modified and
+> > we should survive that rather than crashing the compressor?
 > 
-> A couple of days are certainly OK ... but could we please avoid being stuck
-> in the current situation for many more weeks?
-
-Also as I mentioned in my reply to Peter, I'm wary of an approach that
-puts in a synchronization between the test suite and the migrate code,
-because that's making migration run in a manner which doesn't actually
-match how it'll run in the real world. So I think if there was a feature
-to add a sync before the final iteration, we'd still want to test without
-using that feature so we get proper coverage.
-
-Could we merge this series as-is, and simply re-visit the last patch
-afterwards, once we have time to debate the feature about completion
-phase synchronization.
-
->                                               The slowness of the migration
-> tests are really slowing down my turnaround times, and I think they
-> contribute to the timeouts of the Travis CI tests that I'm currently facing,
-> and likely also contributed to the issue that the QEMU project ran out of
-> Gitlab CI minutes again last month (which is thankfully mostly hidden by the
-> new private Linux runners, but some things like the Windows runners were not
-> available anymore). So I'd appreciate if we'd rather get a speed up here
-> merged rather sooner than later.
+> No, i mean the compression code has a significant behaviour difference
+> between its two tests, because they toggle:
 > 
-> > Thomas, do you care if I get the whole sets of patches through the
-> > migration tree?
+>  @compress-wait-thread: Controls behavior when all compression
+>      threads are currently busy.  If true (default), wait for a free
+>      compression thread to become available; otherwise, send the page
+>      uncompressed.  (Since 3.1)
 > 
-> That's fine, please take them through your tree!
+> so we need to exercise the code path that falls back to sending
+> uncompressed, as well as the code path that waits for free threads.
 
-With regards,
-Daniel
+But then the question is why live is needed?
+
+IIUC whether the wait thing triggers have nothing directly related to VM is
+live or not, but whether all compress thread busy.  IOW, IIUC all compress
+paths will be tested even if non-live as long as we feed enough pages to
+the compressor threads.
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
