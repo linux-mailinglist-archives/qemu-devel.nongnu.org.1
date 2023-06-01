@@ -2,64 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BD871F585
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FE571F5EF
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:30:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4qOd-0008Ao-QS; Thu, 01 Jun 2023 18:03:51 -0400
+	id 1q4qnG-0002el-Og; Thu, 01 Jun 2023 18:29:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qOO-00085C-Q3
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <chaosdefinition@hotmail.com>)
+ id 1q4qnC-0002dU-L8; Thu, 01 Jun 2023 18:29:14 -0400
+Received: from mail-bn8nam11olkn20800.outbound.protection.outlook.com
+ ([2a01:111:f400:7eae::800]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qOB-00042M-NF
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685657003;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uZS6lBiIs7h+Pp9mL55On0qTrp/x23kzJgKrA0T+08g=;
- b=L1KXttx4KHiN+1MFecmSJFb/YFmyXlDKBlRGI4tyD0Ckw2wFp/bcwyX72RHWo0BkOuZ57i
- b+a0buorwANA4ygVa7JasyvZjL1jQfZafGjc+Csxc/OzjbWBBlyKpbsSgu+YUyH+sDHu+r
- YbzOBGSOuoL9YOwaYNeaW0wwX4v/QJY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-98-phZdedWVNW-fqbi8l1cIMg-1; Thu, 01 Jun 2023 18:03:22 -0400
-X-MC-Unique: phZdedWVNW-fqbi8l1cIMg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B816F38184E0
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 22:03:21 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.76])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7719E492B0A;
- Thu,  1 Jun 2023 22:03:21 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <chaosdefinition@hotmail.com>)
+ id 1q4qnA-0004sJ-71; Thu, 01 Jun 2023 18:29:14 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VT0Hy5rl1KkzhmUM9RcPuSrLPaTHGs1JJFwX84bBk58Yj2+OP8Xb6ugW77+whPeXwrMpq/RR8aHJ78K0EB23wKsf3j2x6q/anOUivvd8+strf+eTB2SpwYT15zVfNq2IUqG0YtiwMjskDlUfifLY7MpFM/trxyp6P2GSoqngqcwjml2MVapY+munBnldymBKzTJB5jL9lYoI73p0XEw7AYUC+zCnVgzapMJqDbTeGsZJ5ts5Ew0paf0vDFfCfo5EmYPhc/950gIhdijWZn4VG9dN0WWI5Wl7/U9BRBGDxolITuBRgooh+TrrwMV4uUCyz8YdsSCk8huoK+BHzhE/fA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ofzy86fv1JAB4tbaMqMQuizFKU69szd2GZ6Egdq+UYQ=;
+ b=TOwnncLcj5Z1MlaRFSgL76g98TrOPTtsttevbt0tGV9A4cDlSLVKwVwO85K9Ie5ogxlYoAX8Fs0hhP8hGTcv/S9XgDzPE08l77Zq2qpiOAptFh2FtAaBfqIU/czNfZjq+HE+Gq8JYb/mofXxVCOEdww6EXtE/KXcm09EoBoNKriGlrcdMDdj64qOZyJZ58JrfVEQSTTiIUqU+cxklfsqhJUlt7lEXJCe28ZFGgheCnanOAYb743d3eMgS6WBwnBb1v/qYUKO+uHqiVuUKl6AEHK5rWg3yzD6yP4DG1bw7r6D+g35E3K4+R1qlvwIZEYX69ReE7Vdz4QB3po5qNJSWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ofzy86fv1JAB4tbaMqMQuizFKU69szd2GZ6Egdq+UYQ=;
+ b=i3AZTKq85xxD7jMeaNyVqB8uzr98cJRdsqdg2XJeUISiS/CRBN1vBcbK7Obx9N5lWrj7Ez1s3Dpget5kN5bTwqFUD3KdWpH+0krikQcClAi0ICaceawyNhmlMK63nNsQ7agqlxphx1UxbyZ5yZs4eLNNsGnZ+tj3fO9MVMTnOjkQEeg4T+XkUU07Xx7IQwEl6M8/Wl135kpHuljQRIyOxCQED0yUKJ94rt3GUQdL9CAB3h5yhNhAPaLcgioQjSdFDM3K6f3PmymxPi9Pn88yGjesGKvMJFraII/h18GbvU7F507wN/kWgprVR8z69O+3hGcyfMoDSU7L0DeQErYHaw==
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com (2603:10b6:8:96::19) by
+ DS0PR12MB7748.namprd12.prod.outlook.com (2603:10b6:8:130::22) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6455.24; Thu, 1 Jun 2023 22:29:08 +0000
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::20b8:bc4d:e007:4fbf]) by DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::20b8:bc4d:e007:4fbf%2]) with mapi id 15.20.6455.020; Thu, 1 Jun 2023
+ 22:29:08 +0000
+From: Zhuojia Shen <chaosdefinition@hotmail.com>
 To: qemu-devel@nongnu.org
-Cc: Hanna Czenczek <hreitz@redhat.com>
-Subject: [PULL 21/21] cutils: Improve qemu_strtosz handling of fractions
-Date: Thu,  1 Jun 2023 17:03:05 -0500
-Message-Id: <20230601220305.2130121-22-eblake@redhat.com>
-In-Reply-To: <20230601220305.2130121-1-eblake@redhat.com>
-References: <20230601220305.2130121-1-eblake@redhat.com>
-MIME-Version: 1.0
-Content-type: text/plain
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ Zhuojia Shen <chaosdefinition@hotmail.com>
+Subject: [PATCH v4 1/2] target/arm: allow DC CVA[D]P in user mode emulation
+Date: Thu,  1 Jun 2023 15:11:57 -0700
+Message-ID: <DS7PR12MB6309408A6BB4A469862CCA34AC49A@DS7PR12MB6309.namprd12.prod.outlook.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <DS7PR12MB6309FD700EF00EF1EB541CA7AC49A@DS7PR12MB6309.namprd12.prod.outlook.com>
+References: <DS7PR12MB6309FD700EF00EF1EB541CA7AC49A@DS7PR12MB6309.namprd12.prod.outlook.com>
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain
+X-TMN: [s0UomxEUSJRSqg5WZuvgXBKEIGak6LOx]
+X-ClientProxiedBy: SJ0PR13CA0126.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::11) To DS7PR12MB6309.namprd12.prod.outlook.com
+ (2603:10b6:8:96::19)
+X-Microsoft-Original-Message-ID: <20230601221158.48705-1-chaosdefinition@hotmail.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6309:EE_|DS0PR12MB7748:EE_
+X-MS-Office365-Filtering-Correlation-Id: 539d1aa7-2992-4e3c-e876-08db62ef9d44
+X-MS-Exchange-SLBlob-MailProps: AZnQBsB9Xmo7HDJh1DrTtBBfugGKTjxKNzyt/Mu7Cb6bY/Q35eL3yuNVZTvglCTg6jl0HUaJ1rgooJ/TT7cXWF2YrBujTC3GMSX3uiYu4fQk2wTKXCo4pDGXpQRn5a2R6KwKIc1yO8GlQC5MR5DpgF9fH4C2MCS05hYWndL+aeV3Co2KjSVMcWMw/JmNZ5dkTtos+uZvigKL75ol0LamaYCNbqOdv2I5yedwFOW7wHsdTrVDyjZbsb/bIFteBY68Vw0oliDZXXWr8oQx1lAJnVHoLzu8zsy8UubpFLUytPXz+QzG0jzFmE8XjXSdPt3tOvNUE4FmfCJ1ViNUWu+VO5KXUJrLwp4eqi1QvLC1ixVFLKByEN9y7wrbJcUppwvF5T5Tn2GIETNHarC5Nk9MULo1Fi1SMTA9vaFbp8EGvnSZ++PtbBQzpuNxIcYook4H8/ZwyoaetuChRcZM1mUrYeIcS0fAG5y0eF2wQ0cvgBJe3VuLPLyEBD/vy1/2VLil8ks70Eyvqsl70M+oveVulofiyLtbTYa1jyUIoqALLOAFmwKtLItM6+o4/IM4znSnsu8JgAjMPU5rN1rk+r/uSRb8J3v2xmu49SbLgs/mhAZJFNGa9yoLdW+Ds3pxQc/2pIkHhLUZtTYVJTTfszJq+dAAKO3nVkVnhSf0X6a3K567Kp12nDkMPBWewRPwbLb6PFReTtX7G9FQQWVIZBpZ6m4Hnk0JF9fCaSA0sbfiKfp3jQhoQeadrWQS7UQZNj6xlBDjn9DwfCU=
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TWd1JxkGhv9e18CgRZBKABxmGy9NAkg3mEa5ksy8+2aVwV38dV3gvAOi3wi0bD/Y4MI5bzjQP+lFk/T06WCjbs4MKAJ4K/TU/GLivN9NG0hcT7husxauMz8QxkeSDYuUlLgSnuC1FBsS20M4yYW3kN60zUZrBwBBxmjSzj4ryiLEW0dMLBGo+KGSy29BHjrkMCrkiMGvpDdka653Mh4dAclhCqfvTT2FwmCB8muqt7d7xzTT5JIdMfolDfyUj8YbKyrigzeFL+RTjU/ycfIANaQr9w50PJI69pg2ncd1up907/vAiCS2tID1zQHXI+KthrUjzP4+OY5ZNeYCD98H49CIm90dmbx9u+wGdAp9Rg62GgQCcJ7ZXi9xl7plc57IhmhIqjujr/t72S/7bOOFrxMWBgHzF/qpGgW0f2rFhl5ham9IO4Ve5cqbK5dujgMurfeavKK8ikUb1tXVDfihqm0+WDadfzMWBJpDsyczun7kURREBJNrxVSOEwlFSSizRqCYhOGC8Gk/XZ4B7+aj7h06h95/9+Jk25sCkOT4Slz0MySXIAxaqltso3XHQuT1IsyG96qebsCUG4Ve97hEiCS6WSbFr3TwvkvlXHSbP6OnOpypcOhP4qQmHM+9Q9oL
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?v//h2MQedw36QhkdCIgc/ix9G3Qjr7ZaJQnJ+VJ4LAp3z/K8cRYrP0PR4U/E?=
+ =?us-ascii?Q?rgkaNRFkMT0G0AD1jIcZmOZF25niEivM2olVypMoF5vZRh0SA43OEVVHCYmS?=
+ =?us-ascii?Q?EsTGcLx8D8gIEdtiznasAwXivV2U7lFQBRGWWN6XF5SCA/TkntkLqu1o/kLJ?=
+ =?us-ascii?Q?R/ugx+v3moac+Fz9bh+hcD0sXWtDBullkVbDAlrG7ejvYP4hvtd2lXTFtV5J?=
+ =?us-ascii?Q?1AVhDeI3bB3OoE7lGdCXd5uNyu5czsSkwQlrL9duKzjC2Mn2qxVwHdojKhhr?=
+ =?us-ascii?Q?1zOMe+OFXT7Jo0RK4hQ8ygYcxc12Nvr67X8O+F0lH476hDkx754Wzg+5X4Jq?=
+ =?us-ascii?Q?VWys6z4TfCxRxVH7lfEGfNymKr2oJhPfK4rNBKv4g6bfVnwugtGXKhXN9c4n?=
+ =?us-ascii?Q?8j2VPnKQESooFTPK/tqAF169zgL75Qk51EUrKoPbvbGc5d+xcuQMidu5VS7f?=
+ =?us-ascii?Q?u5pWdGfR9GC2lKm2v6GuKqoM8T8MiblrP/7Zs5SlM5jp1jtcH4ZRdERlHnzS?=
+ =?us-ascii?Q?f//LpooHCvCgWzxw3ZC+RXHUy5F2WXvRNMI2OZAwZiyUCjsAlv48vdvxd78s?=
+ =?us-ascii?Q?t7Nqvia5vH5/Vl4JxIfNk7Kiu7x9YB/rfPlKyvfdV0b+rXU0Tg2fYduuwTq+?=
+ =?us-ascii?Q?BMsj5XzxchYQxATQpgEb32BRgukQCHw44ukHVvcbD41JDA0gOmozgkp5BlEj?=
+ =?us-ascii?Q?ZQ3VM5/b4pLGolk/sbGrnWPnu7W/i32rS6ekB+wUmfkDFMU+6bEk9r0FCzdm?=
+ =?us-ascii?Q?73OlCSQ3cBPnLR+YgwCDw/EAILZUHzWFUJixRpbMe+fV8w5x6I7g+yXzA+TU?=
+ =?us-ascii?Q?l2VmUXjYnaEbUJ3tI0giAsJHwc/Z3H1Ju8GiyHaOZGWFhFl+9J7M4AwPjc/o?=
+ =?us-ascii?Q?YldoM5xK4ZXFjwxVblgTdH/zqTtcq7bMYZycyJ8t9Eqr9Ao1Cr8RLb9grXSa?=
+ =?us-ascii?Q?h0yUh04DUlAFGe4CxlKq15NZqugjCeYgfw3DtgQ73h2MRqG74LfODccPZ1kf?=
+ =?us-ascii?Q?QrTaiaqW3cO+TUsVT5zKs3faobzO+DsuO/e0ECFzCdI0pSnMuvaNuw8KtNwL?=
+ =?us-ascii?Q?/SfHycH8qE3ka4K8ZClKmgLwPqyOZNBE9Xh3FlP3PEjqXcolEJHH/ZrG1wNP?=
+ =?us-ascii?Q?yjFvLqd0zgCzT0nS8lsNnSn7VfWD30IlNvK3eh1Tovh5gTQZ1kvctLKxCQwS?=
+ =?us-ascii?Q?ZBRuNdFIzuiBGlOQ71/hco8iP7GtgVTcfB/qBuR1QBg0z+Jhqjnb0bDnYXM?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-71ea3.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 539d1aa7-2992-4e3c-e876-08db62ef9d44
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6309.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 22:29:08.3130 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7748
+Received-SPF: pass client-ip=2a01:111:f400:7eae::800;
+ envelope-from=chaosdefinition@hotmail.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,293 +124,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have several limitations and bugs worth fixing; they are
-inter-related enough that it is not worth splitting this patch into
-smaller pieces:
+DC CVAP and DC CVADP instructions can be executed in EL0 on Linux,
+either directly when SCTLR_EL1.UCI == 1 or emulated by the kernel (see
+user_cache_maint_handler() in arch/arm64/kernel/traps.c).
 
-* ".5k" should work to specify 512, just as "0.5k" does
-* "1.9999k" and "1." + "9"*50 + "k" should both produce the same
-  result of 2048 after rounding
-* "1." + "0"*350 + "1B" should not be treated the same as "1.0B";
-  underflow in the fraction should not be lost
-* "7.99e99" and "7.99e999" look similar, but our code was doing a
-  read-out-of-bounds on the latter because it was not expecting ERANGE
-  due to overflow. While we document that scientific notation is not
-  supported, and the previous patch actually fixed
-  qemu_strtod_finite() to no longer return ERANGE overflows, it is
-  easier to pre-filter than to try and determine after the fact if
-  strtod() consumed more than we wanted.  Note that this is a
-  low-level semantic change (when endptr is not NULL, we can now
-  successfully parse with a scale of 'E' and then report trailing
-  junk, instead of failing outright with EINVAL); but an earlier
-  commit already argued that this is not a high-level semantic change
-  since the only caller passing in a non-NULL endptr also checks that
-  the tail is whitespace-only.
+This patch enables execution of the two instructions in user mode
+emulation.
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1629
-Fixes: cf923b78 ("utils: Improve qemu_strtosz() to have 64 bits of precision", 6.0.0)
-Fixes: 7625a1ed ("utils: Use fixed-point arithmetic in qemu_strtosz", 6.0.0)
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Message-Id: <20230522190441.64278-20-eblake@redhat.com>
-[eblake: tweak function comment for accuracy]
+Signed-off-by: Zhuojia Shen <chaosdefinition@hotmail.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/unit/test-cutils.c | 50 +++++++++-------------
- util/cutils.c            | 90 ++++++++++++++++++++++++++++++----------
- 2 files changed, 87 insertions(+), 53 deletions(-)
+ target/arm/helper.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
-index 0a589567461..1db411489f0 100644
---- a/tests/unit/test-cutils.c
-+++ b/tests/unit/test-cutils.c
-@@ -3408,19 +3408,18 @@ static void test_qemu_strtosz_float(void)
-     /* An empty fraction tail is tolerated */
-     do_strtosz("1.k", 0, 1024, 3);
-
--    /* FIXME An empty fraction head should be tolerated */
--    do_strtosz(" .5k", -EINVAL /* FIXME 0 */, 0 /* FIXME 512 */,
--               0 /* FIXME 4 */);
-+    /* An empty fraction head is tolerated */
-+    do_strtosz(" .5k", 0, 512, 4);
-
-     /* For convenience, we permit values that are not byte-exact */
-     do_strtosz("12.345M", 0, (uint64_t) (12.345 * MiB + 0.5), 7);
-
--    /* FIXME Fraction tail should round correctly */
-+    /* Fraction tail can round up */
-     do_strtosz("1.9999k", 0, 2048, 7);
-     do_strtosz("1.9999999999999999999999999999999999999999999999999999k", 0,
--               1024 /* FIXME 2048 */, 55);
-+               2048, 55);
-
--    /* FIXME ERANGE underflow in the fraction tail should not matter for 'k' */
-+    /* ERANGE underflow in the fraction tail does not matter for 'k' */
-     do_strtosz("1."
-                "00000000000000000000000000000000000000000000000000"
-                "00000000000000000000000000000000000000000000000000"
-@@ -3429,7 +3428,7 @@ static void test_qemu_strtosz_float(void)
-                "00000000000000000000000000000000000000000000000000"
-                "00000000000000000000000000000000000000000000000000"
-                "00000000000000000000000000000000000000000000000000"
--               "1k", 0, 1 /* FIXME 1024 */, 354);
-+               "1k", 0, 1024, 354);
- }
-
- static void test_qemu_strtosz_invalid(void)
-@@ -3453,10 +3452,9 @@ static void test_qemu_strtosz_invalid(void)
-     do_strtosz("1.1B", -EINVAL, 0, 0);
-     do_strtosz("1.1", -EINVAL, 0, 0);
-
--    /* FIXME underflow in the fraction tail should matter for 'B' */
-+    /* 'B' cannot have any nonzero fraction, even with rounding or underflow */
-     do_strtosz("1.00001B", -EINVAL, 0, 0);
--    do_strtosz("1.00000000000000000001B", 0 /* FIXME -EINVAL */,
--               1 /* FIXME 0 */, 23 /* FIXME 0 */);
-+    do_strtosz("1.00000000000000000001B", -EINVAL, 0, 0);
-     do_strtosz("1."
-                "00000000000000000000000000000000000000000000000000"
-                "00000000000000000000000000000000000000000000000000"
-@@ -3465,8 +3463,7 @@ static void test_qemu_strtosz_invalid(void)
-                "00000000000000000000000000000000000000000000000000"
-                "00000000000000000000000000000000000000000000000000"
-                "00000000000000000000000000000000000000000000000000"
--               "1B", 0 /* FIXME -EINVAL */, 1 /* FIXME 0 */,
--               354 /* FIXME 0 */);
-+               "1B", -EINVAL, 0, 0);
-
-     /* No hex fractions */
-     do_strtosz("0x1.8k", -EINVAL, 0, 0);
-@@ -3512,28 +3509,20 @@ static void test_qemu_strtosz_trailing(void)
-     do_strtosz_full("123-45", qemu_strtosz, 0, 123, 3, -EINVAL, 0);
-     do_strtosz_full(" 123 - 45", qemu_strtosz, 0, 123, 4, -EINVAL, 0);
-
--    /* FIXME should stop parse after 'e'. No floating point exponents */
--    do_strtosz_full("1.5e1k", qemu_strtosz, -EINVAL /* FIXME 0 */,
--                    0 /* FIXME EiB * 1.5 */, 0 /* FIXME 4 */,
--                    -EINVAL, 0);
--    do_strtosz_full("1.5E+0k", qemu_strtosz, -EINVAL /* FIXME 0 */,
--                    0 /* FIXME EiB * 1.5 */, 0 /* FIXME 4 */,
--                    -EINVAL, 0);
--
--    /* FIXME overflow in fraction is still buggy */
--    do_strtosz_full("1.5E999", qemu_strtosz, 0, 1 /* FIXME EiB * 1.5 */,
--                    2 /* FIXME 4 */, -EINVAL, 0);
-+    /* Parse stops at 'e', which is not a floating point exponent */
-+    do_strtosz_full("1.5e1k", qemu_strtosz, 0, EiB * 1.5, 4, -EINVAL, 0);
-+    do_strtosz_full("1.5E+0k", qemu_strtosz, 0, EiB * 1.5, 4, -EINVAL, 0);
-+    do_strtosz_full("1.5E999", qemu_strtosz, 0, EiB * 1.5, 4, -EINVAL, 0);
- }
-
- static void test_qemu_strtosz_erange(void)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 0b7fd2e7e6..d4bee43bd0 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -7405,7 +7405,6 @@ static const ARMCPRegInfo rndr_reginfo[] = {
+       .access = PL0_R, .readfn = rndr_readfn },
+ };
+ 
+-#ifndef CONFIG_USER_ONLY
+ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+                           uint64_t value)
  {
--    /* FIXME negative values fit better as ERANGE */
-+    /* no negative values */
-     do_strtosz(" -0", -ERANGE, 0, 3);
-     do_strtosz("-1", -ERANGE, 0, 2);
-     do_strtosz_full("-2M", qemu_strtosz, -ERANGE, 0, 2, -EINVAL, 0);
--    do_strtosz(" -.0", -EINVAL /* FIXME -ERANGE */, 0, 0 /* FIXME 4 */);
--    do_strtosz_full("-.1k", qemu_strtosz, -EINVAL /* FIXME -ERANGE */, 0,
--                    0 /* FIXME 3 */, -EINVAL, 0);
-+    do_strtosz(" -.0", -ERANGE, 0, 4);
-+    do_strtosz_full("-.1k", qemu_strtosz, -ERANGE, 0, 3, -EINVAL, 0);
-     do_strtosz_full(" -."
-                     "00000000000000000000000000000000000000000000000000"
-                     "00000000000000000000000000000000000000000000000000"
-@@ -3542,17 +3531,16 @@ static void test_qemu_strtosz_erange(void)
-                     "00000000000000000000000000000000000000000000000000"
-                     "00000000000000000000000000000000000000000000000000"
-                     "00000000000000000000000000000000000000000000000000"
--                    "1M", qemu_strtosz, -EINVAL /* FIXME -ERANGE */, 0,
--                    0 /* FIXME 354 */, -EINVAL, 0);
-+                    "1M", qemu_strtosz, -ERANGE, 0, 354, -EINVAL, 0);
-
-     /* 2^64; see strtosz_simple for 2^64-1 */
-     do_strtosz("18446744073709551616", -ERANGE, 0, 20);
-
-     do_strtosz("20E", -ERANGE, 0, 3);
-
--    /* FIXME Fraction tail can cause ERANGE overflow */
-+    /* Fraction tail can cause ERANGE overflow */
-     do_strtosz("15.9999999999999999999999999999999999999999999999999999E",
--               0 /* FIXME -ERANGE */, 15ULL * EiB /* FIXME 0 */, 56);
-+               -ERANGE, 0, 56);
-
-     /* EINVAL has priority over ERANGE */
-     do_strtosz_full("100000Pjunk", qemu_strtosz, -ERANGE, 0, 7, -EINVAL, 0);
-diff --git a/util/cutils.c b/util/cutils.c
-index bde2da59bdd..25373198adc 100644
---- a/util/cutils.c
-+++ b/util/cutils.c
-@@ -194,15 +194,19 @@ static int64_t suffix_mul(char suffix, int64_t unit)
-  * - 12345 - decimal, scale determined by @default_suffix and @unit
-  * - 12345{bBkKmMgGtTpPeE} - decimal, scale determined by suffix and @unit
-  * - 12345.678{kKmMgGtTpPeE} - decimal, scale determined by suffix, and
-- *   fractional portion is truncated to byte
-+ *   fractional portion is truncated to byte, either side of . may be empty
-  * - 0x7fEE - hexadecimal, unit determined by @default_suffix
-  *
-  * The following are intentionally not supported
-- * - hex with scaling suffix, such as 0x20M
-- * - octal, such as 08
-- * - fractional hex, such as 0x1.8
-- * - negative values, including -0
-- * - floating point exponents, such as 1e3
-+ * - hex with scaling suffix, such as 0x20M or 0x1p3 (both fail with
-+ *   -EINVAL), while 0x1b is 27 (not 1 with byte scale)
-+ * - octal, such as 08 (parsed as decimal instead)
-+ * - binary, such as 0b1000 (parsed as 0b with trailing garbage "1000")
-+ * - fractional hex, such as 0x1.8 (parsed as 0 with trailing garbage "x1.8")
-+ * - negative values, including -0 (fail with -ERANGE)
-+ * - floating point exponents, such as 1e3 (parsed as 1e with trailing
-+ *   garbage "3") or 0x1p3 (rejected as hex with scaling suffix)
-+ * - non-finite values, such as inf or NaN (fail with -EINVAL)
-  *
-  * The end pointer will be returned in *end, if not NULL.  If there is
-  * no fraction, the input can be decimal or hexadecimal; if there is a
-@@ -221,17 +225,17 @@ static int do_strtosz(const char *nptr, const char **end,
-                       uint64_t *result)
- {
-     int retval;
--    const char *endptr, *f;
-+    const char *endptr;
-     unsigned char c;
--    uint64_t val, valf = 0;
-+    uint64_t val = 0, valf = 0;
-     int64_t mul;
-
-     /* Parse integral portion as decimal. */
-     retval = parse_uint(nptr, &endptr, 10, &val);
--    if (retval) {
-+    if (retval == -ERANGE || !nptr) {
-         goto out;
-     }
--    if (val == 0 && (*endptr == 'x' || *endptr == 'X')) {
-+    if (retval == 0 && val == 0 && (*endptr == 'x' || *endptr == 'X')) {
-         /* Input looks like hex; reparse, and insist on no fraction or suffix. */
-         retval = qemu_strtou64(nptr, &endptr, 16, &val);
-         if (retval) {
-@@ -242,27 +246,69 @@ static int do_strtosz(const char *nptr, const char **end,
-             retval = -EINVAL;
-             goto out;
+@@ -7420,6 +7419,7 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+     /* This won't be crossing page boundaries */
+     haddr = probe_read(env, vaddr, dline_size, mem_idx, GETPC());
+     if (haddr) {
++#ifndef CONFIG_USER_ONLY
+ 
+         ram_addr_t offset;
+         MemoryRegion *mr;
+@@ -7430,6 +7430,7 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+         if (mr) {
+             memory_region_writeback(mr, offset, dline_size);
          }
--    } else if (*endptr == '.') {
-+    } else if (*endptr == '.' || (endptr == nptr && strchr(nptr, '.'))) {
-         /*
-          * Input looks like a fraction.  Make sure even 1.k works
--         * without fractional digits.  If we see an exponent, treat
--         * the entire input as invalid instead.
-+         * without fractional digits.  strtod tries to treat 'e' as an
-+         * exponent, but we want to treat it as a scaling suffix;
-+         * doing this requires modifying a copy of the fraction.
-          */
--        double fraction;
-+        double fraction = 0.0;
-
--        f = endptr;
--        retval = qemu_strtod_finite(f, &endptr, &fraction);
--        if (retval) {
-+        if (retval == 0 && *endptr == '.' && !isdigit(endptr[1])) {
-+            /* If we got here, we parsed at least one digit already. */
-             endptr++;
--        } else if (memchr(f, 'e', endptr - f) || memchr(f, 'E', endptr - f)) {
--            endptr = nptr;
--            retval = -EINVAL;
--            goto out;
-         } else {
--            /* Extract into a 64-bit fixed-point fraction. */
-+            char *e;
-+            const char *tail;
-+            g_autofree char *copy = g_strdup(endptr);
-+
-+            e = strchr(copy, 'e');
-+            if (e) {
-+                *e = '\0';
-+            }
-+            e = strchr(copy, 'E');
-+            if (e) {
-+                *e = '\0';
-+            }
-+            /*
-+             * If this is a floating point, we are guaranteed that '.'
-+             * appears before any possible digits in copy.  If it is
-+             * not a floating point, strtod will fail.  Either way,
-+             * there is now no exponent in copy, so if it parses, we
-+             * know 0.0 <= abs(result) <= 1.0 (after rounding), and
-+             * ERANGE is only possible on underflow which is okay.
-+             */
-+            retval = qemu_strtod_finite(copy, &tail, &fraction);
-+            endptr += tail - copy;
-+            if (signbit(fraction)) {
-+                retval = -ERANGE;
-+                goto out;
-+            }
-+        }
-+
-+        /* Extract into a 64-bit fixed-point fraction. */
-+        if (fraction == 1.0) {
-+            if (val == UINT64_MAX) {
-+                retval = -ERANGE;
-+                goto out;
-+            }
-+            val++;
-+        } else if (retval == -ERANGE) {
-+            /* See comments above about underflow */
-+            valf = 1;
-+            retval = 0;
-+        } else {
-+            /* We want non-zero valf for any non-zero fraction */
-             valf = (uint64_t)(fraction * 0x1p64);
-+            if (valf == 0 && fraction > 0.0) {
-+                valf = 1;
-+            }
++#endif /*CONFIG_USER_ONLY*/
+     }
+ }
+ 
+@@ -7448,7 +7449,6 @@ static const ARMCPRegInfo dcpodp_reg[] = {
+       .fgt = FGT_DCCVADP,
+       .accessfn = aa64_cacheop_poc_access, .writefn = dccvap_writefn },
+ };
+-#endif /*CONFIG_USER_ONLY*/
+ 
+ static CPAccessResult access_aa64_tid5(CPUARMState *env, const ARMCPRegInfo *ri,
+                                        bool isread)
+@@ -9092,7 +9092,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+     if (cpu_isar_feature(aa64_tlbios, cpu)) {
+         define_arm_cp_regs(cpu, tlbios_reginfo);
+     }
+-#ifndef CONFIG_USER_ONLY
+     /* Data Cache clean instructions up to PoP */
+     if (cpu_isar_feature(aa64_dcpop, cpu)) {
+         define_one_arm_cp_reg(cpu, dcpop_reg);
+@@ -9101,7 +9100,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+             define_one_arm_cp_reg(cpu, dcpodp_reg);
          }
      }
-+    if (retval) {
-+        goto out;
-+    }
-     c = *endptr;
-     mul = suffix_mul(c, unit);
-     if (mul > 0) {
+-#endif /*CONFIG_USER_ONLY*/
+ 
+     /*
+      * If full MTE is enabled, add all of the system registers.
 -- 
 2.40.1
 
