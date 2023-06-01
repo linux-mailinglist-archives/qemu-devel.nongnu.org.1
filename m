@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D5B71979B
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C78719797
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4etj-00059O-Te; Thu, 01 Jun 2023 05:47:11 -0400
+	id 1q4etj-00050d-8h; Thu, 01 Jun 2023 05:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4etX-0004sQ-Dw
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4etX-0004sR-EJ
  for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:00 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4etQ-0004IU-QM
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4etV-0004Kp-4h
  for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:46:58 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30ae901a9ffso574333f8f.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:46:51 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3f60804faf4so6042285e9.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685612810; x=1688204810;
+ d=linaro.org; s=google; t=1685612815; x=1688204815;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ytKJ4206h8h9MIhh3K2ca9hAIyIqwQjtRMy0/wxoB3g=;
- b=wg47OOV5b8F3NyTo4A43okoBT+ngjyaXy1BoODOnpRuXOZtaajxJvbn7NYLBxnQVFe
- E+C1LPP2ZezHhVFA9xFI2HwjPtDVaQBwwYKkt4CTCespHOjh4LDTGph8JrIbbbnorKDb
- UtOh6mdvIcayOJgu5HCgZYXIhqJRUSXq/LAvbvPWOx2govt+SLKn0WMd4mZ2oIF9s6FU
- YaFvqpla/jd3yGWRGCTiw3TH58bEWAkcqyhzrm+zhXWh0t2SnRXUtHSl+pOA6rs3j8Hp
- 0v+kFVeTenKezV4fOo1285/Ovq8r7angbnzq7rS1FVf3F/RR33XiuZ6I+tyw0ExTbVb3
- eISw==
+ bh=RYVCBEhA1iXQ5tL/suTEeLd5NADdFT/NM2XcFcptWG4=;
+ b=j2K14w8VbPOtHENin/CDLGNvJAyQAvBSboBXMlWdiRU0+5ItuT6cg4CrGcxC8QpHOf
+ 83h+F7wa/9Ssbe0l+PqpXho6YfJm3qUvdr1Ce8AlwWkA2NlxQfKiJiy0l8CvKvJxyePP
+ ThYEMCi5w3UgiEUc5iQVMncMOZCNOFJy45aZFk3N4JKfNXQ3cwEtzZf5kIQTUSd1XAs3
+ +2ERdKEA86B9QfmpKNaNKW8JJPJzBQ4FGUqrW+f3qrNgwEpZYiqOFI6tT0kmZa/JXVpb
+ v9Z24uIJbzmYqHkgz/xojtZlFx4loqpkp71Z5k5bkCXrzx4i0Myy7QMWZSnIFrYnca9P
+ pM8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685612810; x=1688204810;
+ d=1e100.net; s=20221208; t=1685612815; x=1688204815;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ytKJ4206h8h9MIhh3K2ca9hAIyIqwQjtRMy0/wxoB3g=;
- b=ULTfdQM7zPxJ3yK5ozXsxHvWvRjpXTmNbzWnKPtIkg07bACZzweRpOKVvQ+xcnzA5E
- 6poGwluFbYQPqE4yGEsKhs4fHBukNWJQd9TyOMZ3UCgoYcnOUH8xSySyPn+KZG/Aj25c
- xzeM0ohM+qa+wKKbfBHfPiSeHLercjY197l3GFLdGxIhirDX2wnpm+cx4UNQfQYBQs1b
- CdcZmyDaTkrkaD3150rEQkj2tihpCeiacWYdMo4oOJbY17pRvy+428ofAA3xFPIfiYMI
- sY0WA0kuzZ+P1882VBpeTTfyBYSEMUKd27l1gJy/YnVx51oJcpHi/3BeLxyoiLHjd15Q
- Vxpw==
-X-Gm-Message-State: AC+VfDzXDqcBISgbDyoprHgztIH9OsiNdQ5sO9EFjBCRo/eIQxlFGTTX
- /n6uD3+8/iYWvNLSuZDvhn7Z78pDtjkytDdwpGU=
-X-Google-Smtp-Source: ACHHUZ6RF0EEkq24xKBrxOG4dSAuFeWtLUfJrkBXPswHV90go2KG/P8AUXtxIOqRfW+VBo0uSBodwQ==
-X-Received: by 2002:a5d:4249:0:b0:309:3bb5:7968 with SMTP id
- s9-20020a5d4249000000b003093bb57968mr1504958wrr.16.1685612810153; 
- Thu, 01 Jun 2023 02:46:50 -0700 (PDT)
+ bh=RYVCBEhA1iXQ5tL/suTEeLd5NADdFT/NM2XcFcptWG4=;
+ b=QTrxtSZdfiISZVv9cl+9Iok7E1GpgMRIKOGJuu0LrnefaKfRKa7qAJz1H8CPkZUdcQ
+ IMqmYvkXXv5n4gX2ZKHOa94N2JGjbw9gEqrSnK0E3Mp7J0/WV5jNVVCCCe91BGZNSpqU
+ X6vlzuEBM0+vh31TKKRdHwbhQN04eOQX1FG18WUoYd7zd+TEDKvFu6ZrhUDomp+CC+oh
+ vu6amlq/3CBKSbpD3iED9+2iHWrTLgqNLB3LdNuxM2L19vTzUy0UVMM4wHHwDlwk5Yqx
+ S6MOo7X1UWdWpXaJydAf5ni3mz4p7+oTVCAx06R/genyRgF6ng3wCMnB4ubRSTifMe+e
+ xImw==
+X-Gm-Message-State: AC+VfDxsatGZm4C5+rH/WFIq11koO6K9KdRsbJRS/rVY6P76MAmo2rEw
+ nyMmDJrl+CNNkrfjBeWKv0uAJT8Y6pzg8aXgjB4=
+X-Google-Smtp-Source: ACHHUZ7R/I6L8mBKAoxzbkxy5W5MUgdJ3LBkvhbWjMwHw4wLc7lpacvxCrVaomdNba5q7jnmoJGucA==
+X-Received: by 2002:a7b:c5c9:0:b0:3f6:683:628b with SMTP id
+ n9-20020a7bc5c9000000b003f60683628bmr1764527wmk.3.1685612815467; 
+ Thu, 01 Jun 2023 02:46:55 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.141.224])
  by smtp.gmail.com with ESMTPSA id
- o13-20020a5d474d000000b0030af54c5f33sm8276554wrs.113.2023.06.01.02.46.48
+ v6-20020a05600c214600b003f607875e5csm1685600wml.24.2023.06.01.02.46.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 Jun 2023 02:46:49 -0700 (PDT)
+ Thu, 01 Jun 2023 02:46:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -63,24 +63,24 @@ Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 4/7] hw/usb/hcd-xhci: Use sysbus_init_irqs()
-Date: Thu,  1 Jun 2023 11:46:22 +0200
-Message-Id: <20230601094625.39569-5-philmd@linaro.org>
+Subject: [PATCH v2 5/7] hw/sysbus: Make SYSBUS_DEVICE_GPIO_IRQ API internal
+Date: Thu,  1 Jun 2023 11:46:23 +0200
+Message-Id: <20230601094625.39569-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230601094625.39569-1-philmd@linaro.org>
 References: <20230601094625.39569-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SYSBUS_DEVICE_GPIO_IRQ definition should be internal to
-the SysBus API. Use the recently introduced sysbus_init_irqs()
-method to avoid using this internal definition.
+Since we don't have any use of the SYSBUS_DEVICE_GPIO_IRQ definition
+outside of sysbus.c, we can reduce its scope, making it internal to
+the API.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/usb/hcd-xhci-sysbus.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/hw/sysbus.h | 2 --
+ hw/core/sysbus.c    | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/usb/hcd-xhci-sysbus.c b/hw/usb/hcd-xhci-sysbus.c
-index faf57b4797..e512849b34 100644
---- a/hw/usb/hcd-xhci-sysbus.c
-+++ b/hw/usb/hcd-xhci-sysbus.c
-@@ -40,9 +40,6 @@ static void xhci_sysbus_realize(DeviceState *dev, Error **errp)
-     if (!qdev_realize(DEVICE(&s->xhci), NULL, errp)) {
-         return;
-     }
--    s->irq = g_new0(qemu_irq, s->xhci.numintrs);
--    qdev_init_gpio_out_named(dev, s->irq, SYSBUS_DEVICE_GPIO_IRQ,
--                             s->xhci.numintrs);
-     if (s->xhci.dma_mr) {
-         s->xhci.as =  g_malloc0(sizeof(AddressSpace));
-         address_space_init(s->xhci.as, s->xhci.dma_mr, NULL);
-@@ -50,6 +47,8 @@ static void xhci_sysbus_realize(DeviceState *dev, Error **errp)
-         s->xhci.as = &address_space_memory;
-     }
+diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
+index bc174b2dc3..cdd83c555e 100644
+--- a/include/hw/sysbus.h
++++ b/include/hw/sysbus.h
+@@ -26,8 +26,6 @@ OBJECT_DECLARE_TYPE(SysBusDevice, SysBusDeviceClass,
+  * classes overriding it are not required to invoke its implementation.
+  */
  
-+    s->irq = g_new0(qemu_irq, s->xhci.numintrs);
-+    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, s->xhci.numintrs);
-     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->xhci.mem);
- }
+-#define SYSBUS_DEVICE_GPIO_IRQ "sysbus-irq"
+-
+ struct SysBusDeviceClass {
+     /*< private >*/
+     DeviceClass parent_class;
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index a1b4c362c9..f0ba57dcbf 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -24,6 +24,8 @@
+ #include "monitor/monitor.h"
+ #include "exec/address-spaces.h"
+ 
++#define SYSBUS_DEVICE_GPIO_IRQ "sysbus-irq"
++
+ static void sysbus_dev_print(Monitor *mon, DeviceState *dev, int indent);
+ static char *sysbus_get_fw_dev_path(DeviceState *dev);
  
 -- 
 2.38.1
