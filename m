@@ -2,93 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A2271979D
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B137197DD
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:56:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4euE-00061W-CQ; Thu, 01 Jun 2023 05:47:42 -0400
+	id 1q4f1p-0007pt-Ur; Thu, 01 Jun 2023 05:55:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4euC-00060S-6K
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:40 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4f1j-0007nc-EE
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:55:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4euA-0004UV-BT
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:47:39 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4f1a-0006lP-W0
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:55:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685612857;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685613317;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qUfpQGGQHBRxaPS3zUMosZgBun6AcqccGHN2Nr/2M2c=;
- b=SHRRX7K6g8ljsyuFOLgWO/JA5QQWOklaBxZnfOweUP+z/110FTSrVy1lATL3IhSe3rvC6l
- E3jPWKkMoxGaBxEReRL9CECpK+0nBKZAY8fWejP5hdI6rdgqPgzMDknb3yfTSHSL8grLjD
- aSq6IrCXXOef2A4fU/hcliR7VpCkdbU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-d1qf91pjM3iyI8yAH7gnKA-1; Thu, 01 Jun 2023 05:47:35 -0400
-X-MC-Unique: d1qf91pjM3iyI8yAH7gnKA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30ae18b11bfso372773f8f.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:47:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685612854; x=1688204854;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qUfpQGGQHBRxaPS3zUMosZgBun6AcqccGHN2Nr/2M2c=;
- b=S0PLkl/Y35y9Q5XPuyXDxLi5MnbKF21p9DfnCJaDRHjcvapohGvd3SqRUFVpDYOsHF
- /tSiNpnER0lYRRGvcpR8xZeCIL2XlMJXXSaA81lg1iHQKIyH9JXs2RIPbHEG22qqY+uu
- deJM7n8DKG3VAs8agqc5lD/I5OjHp7w/jsCj1zblvk2fr/JshQDyDyZ85IrFDpgBorXR
- 3QQGDG1neJ2P0Zc52YhviR7xdli3xDKt77B//HPY2Ysb7sQqLQlqerLxvjqwfXLBoTTk
- lnvkglXp7ebmfPhJjS8gBcYhE/4cLVfS22YkqEanA3g+7QTcbNEDaH2jvO4BV72PZNk2
- g+bg==
-X-Gm-Message-State: AC+VfDwgSNZRW10hHQBhXI2x3HLiZSXuMQGf9EZvE7rs3vRpzn5xa9QY
- bvm0RarLY1+9q7Bc3Bb0rMMrkG3sdwVTNY4F4fAwHJlMBAJTdmjfZYYaNNmGCT3aMGTd8emb13R
- 7JNYczbP/iWjuAr5skxPjt/A=
-X-Received: by 2002:a05:6000:180c:b0:30a:f60a:dc3c with SMTP id
- m12-20020a056000180c00b0030af60adc3cmr1048717wrh.24.1685612854660; 
- Thu, 01 Jun 2023 02:47:34 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6QLGBxrTBaV+WSGro2wVj+9JNKcFoRy6M4I9wFLGPR+cnwAXbW2YUuJtkp01Jg4YXZPNnjFA==
-X-Received: by 2002:a05:6000:180c:b0:30a:f60a:dc3c with SMTP id
- m12-20020a056000180c00b0030af60adc3cmr1048689wrh.24.1685612854399; 
- Thu, 01 Jun 2023 02:47:34 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-178-86.web.vodafone.de.
- [109.43.178.86]) by smtp.gmail.com with ESMTPSA id
- cs1-20020a056000088100b002e5f6f8fc4fsm9817809wrb.100.2023.06.01.02.47.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 02:47:33 -0700 (PDT)
-Message-ID: <4d3b985b-fdbe-aadb-a0a9-dc682bca87fe@redhat.com>
-Date: Thu, 1 Jun 2023 11:47:32 +0200
+ bh=34JWIeUvG8wOxusmTQHP8jX1IRf1+5+KrqgdbCa3PNs=;
+ b=IFkfSa0NWvyTxDNpcv8LZhDGf/ZVaLwljgA0dGElkgGLYrr1loS1Y3lft7yBh+UiNuXqoP
+ vLE7WHIlgC87FTvhRhp1X2n5BxZnT7Ue9OCvshoOC0h7+HHrKx8xIbev7BQ4l3IDlNzfwG
+ fvDqwz53ulZm2/oE3q4UY+zw6c7csuE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-290-3yNDAp0xNZelGxYMAIl_WQ-1; Thu, 01 Jun 2023 05:55:14 -0400
+X-MC-Unique: 3yNDAp0xNZelGxYMAIl_WQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28050381494A;
+ Thu,  1 Jun 2023 09:55:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.153])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8B5CE170EB;
+ Thu,  1 Jun 2023 09:55:11 +0000 (UTC)
+Date: Thu, 1 Jun 2023 10:55:02 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Ed Maste <emaste@freebsd.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Kyle Evans <kevans@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ Erik Skultety <eskultet@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Warner Losh <imp@bsdimp.com>
+Subject: Re: [PATCH 3/3] tests/vm/freebsd: Get up-to-date package list from
+ lcitool vars file
+Message-ID: <ZHhq9tvTtHQwHdm/@redhat.com>
+References: <20230531200906.17790-1-philmd@linaro.org>
+ <20230531200906.17790-4-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
- scenarios run non-live
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-9-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230531132400.1129576-9-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+In-Reply-To: <20230531200906.17790-4-philmd@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,45 +86,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/05/2023 15.23, Daniel P. Berrangé wrote:
-> There are 27 pre-copy live migration scenarios being tested. In all of
-> these we force non-convergance and run for one iteration, then let it
-> converge and wait for completion during the second (or following)
-> iterations. At 3 mbps bandwidth limit the first iteration takes a very
-> long time (~30 seconds).
+On Wed, May 31, 2023 at 10:09:06PM +0200, Philippe Mathieu-Daudé wrote:
+> See previous commit for rationale on using lcitool vars file to
+> get an up-to-date package list. Since there is a such file generated
+> for FreeBSD 13 available in the repository, use it. That way we
+> don't need to manually keep this array in sync.
 > 
-> While it is important to test the migration passes and convergance
-
-s/convergance/convergence/ (also in the first paragraph)
-
-> logic, it is overkill to do this for all 27 pre-copy scenarios. The
-> TLS migration scenarios in particular are merely exercising different
-> code paths during connection establishment.
-> 
-> To optimize time taken, switch most of the test scenarios to run
-> non-live (ie guest CPUs paused) with no bandwidth limits. This gives
-> a massive speed up for most of the test scenarios.
-> 
-> For test coverage the following scenarios are unchanged
-> 
->   * Precopy with UNIX sockets
->   * Precopy with UNIX sockets and dirty ring tracking
->   * Precopy with XBZRLE
->   * Precopy with UNIX compress
->   * Precopy with UNIX compress (nowait)
->   * Precopy with multifd
-> 
-> On a test machine this reduces execution time from 13 minutes to
-> 8 minutes.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> Inspired-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/qtest/migration-test.c | 81 +++++++++++++++++++++++++++++-------
->   1 file changed, 66 insertions(+), 15 deletions(-)
+>  tests/vm/freebsd | 44 ++++----------------------------------------
+>  1 file changed, 4 insertions(+), 40 deletions(-)
+> 
+> diff --git a/tests/vm/freebsd b/tests/vm/freebsd
+> index 6a0d7a4569..4f12878645 100755
+> --- a/tests/vm/freebsd
+> +++ b/tests/vm/freebsd
+> @@ -31,45 +31,7 @@ class FreeBSDVM(basevm.BaseVM):
+>      link = "https://download.freebsd.org/releases/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BASIC-CI.raw.xz"
+>      csum = "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
+>      size = "20G"
+> -    pkgs = [
+> -        # build tools
+> -        "git",
+> -        "pkgconf",
+> -        "bzip2",
+> -        "python39",
+> -        "ninja",
+> -
+> -        # gnu tools
+> -        "bash",
+> -        "gmake",
+> -        "gsed",
+> -        "gettext",
+> -
+> -        # libs: crypto
+> -        "gnutls",
+> -
+> -        # libs: images
+> -        "jpeg-turbo",
+> -        "png",
+> -
+> -        # libs: ui
+> -        "sdl2",
+> -        "gtk3",
+> -        "libxkbcommon",
+> -
+> -        # libs: opengl
+> -        "libepoxy",
+> -        "mesa-libs",
+> -
+> -        # libs: migration
+> -        "zstd",
+> -
+> -        # libs: networking
+> -        "libslirp",
+> -
+> -        # libs: sndio
+> -        "sndio",
+> -    ]
+> +    lcitool_vars = ".gitlab-ci.d/cirrus/freebsd-13.vars"
 
-Tested-by: Thomas Huth <thuth@redhat.com>
+So we have various other distros in the tests/vm/ directory, for which
+we have lcitool support, but for which there's no existing vars file.
+
+I'm wondering if we're better off just putting the data files we need
+directly in the tests/vm/ directory, and keeping it indepenant of the
+cirrus CI data files. It is all auto-generated, so the duplication
+would not be a maint burden.
+
+eg just have a 'freebsd.json' file, alongside the 'freebsd' script.
+
+We should also expand lcitool to cover haiku, netbsd and openbsd
+distros one day.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
