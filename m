@@ -2,94 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527FE719C01
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EB1719C09
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:25:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hL3-00068k-JE; Thu, 01 Jun 2023 08:23:33 -0400
+	id 1q4hMW-0000ZN-Lr; Thu, 01 Jun 2023 08:25:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4hKq-0005Wi-Ux
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:23:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4hMM-0000Sq-N7; Thu, 01 Jun 2023 08:24:54 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4hKm-0000JI-MW
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:23:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685622195;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xlYre14tlpo8VNvwd+Nt5jCH5DONFu9BrrLOZx4XA/8=;
- b=ODqwaZQKM/xvKJqDNHbn37jpiys1sd77fSLaXtxBDfLLZyx6tWo2CWE0lFt1oCUNCxqVFk
- 5yISUKWyrXmMz743u9X87kY7hnLvAFkkQPxALlXr5/4on4t5y08JrgS/zp91mm3bSfkJNW
- gh3KElmR2o+9KKDK8My/cKVfKkskxmY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-Sn0XOqqvN-a7ieazvnZEKg-1; Thu, 01 Jun 2023 08:23:14 -0400
-X-MC-Unique: Sn0XOqqvN-a7ieazvnZEKg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-30ae4ed92eeso421614f8f.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:23:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685622193; x=1688214193;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xlYre14tlpo8VNvwd+Nt5jCH5DONFu9BrrLOZx4XA/8=;
- b=I7Rj8K0o8nxsqBJHJqeuNxkrTbSFed/InxBRO+JF0c2rzqtPub/0JY8ZuRTjrt+KEY
- wZP6maP7u8RZQmWAqKCWmxLkz6yOmvDOp37PrfiaXZ2MUTuYmutqdmttXhHadnyb/Mbg
- 9zDFXjCwKFKZvXNsuF7Tt08w8sFNsRoJINoAMfo3E41n/ti7uhvJ7Y+LDcjj67m5xFeZ
- UO1Rlh06J3tXTgZaI4YtPIs377oytrFCIzUlted0PVcw/7+PqLzGAie+a5oYv931L1rL
- DAJeL11GFRSsTpW8mrE0LivHVpbn6joWUyMfTc7em8kbrZsO73WHvZKAWDbZhr8UaYnt
- fVIA==
-X-Gm-Message-State: AC+VfDxXkHk9KJzPb27a6A58mGnwDL/G/IDgwwcg0UUIuTcMed4i3yxU
- Jo2ORlJlaFI8VeN7cEteMxTujeNx9NhRQw5R7fwn5HpudWOd12RBTuWL0UxHMfrcpQVC4/bPIQm
- lXDo1ojWRwg8PlCU=
-X-Received: by 2002:a5d:6146:0:b0:307:41a1:a125 with SMTP id
- y6-20020a5d6146000000b0030741a1a125mr1839330wrt.12.1685622193553; 
- Thu, 01 Jun 2023 05:23:13 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7IRjt+jSFDy29kmSY5mEQ+J770vvPK0o5QSQxnMB9z23HbRZCHF9jeIS/AJ/HEki+vHdHqkQ==
-X-Received: by 2002:a5d:6146:0:b0:307:41a1:a125 with SMTP id
- y6-20020a5d6146000000b0030741a1a125mr1839305wrt.12.1685622193218; 
- Thu, 01 Jun 2023 05:23:13 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- k5-20020adff5c5000000b0030af1d87342sm10353852wrp.6.2023.06.01.05.23.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 05:23:12 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 5/9] tests/qtest: switch to using event callbacks for
- STOP event
-In-Reply-To: <20230531132400.1129576-6-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:56
- +0100")
-References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-6-berrange@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 01 Jun 2023 14:23:11 +0200
-Message-ID: <87mt1js768.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4hML-0000hs-8O; Thu, 01 Jun 2023 08:24:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=NnpBeUUg+cltRHYUyZY5RluKk1bnz8HwoK4B9WuSOY8=; b=yTOeA0mXw3nNOjXuY9cpT2yZAr
+ Fm3UL5whgaSePoiW+c3CiXKTzKuPpt1Rjt0j8rUwZ6jgWTTZaLECwtiqykUpIkSia6BRCpFpEdQpn
+ ZOZ7/xo6GlQUvK7e5HTUaO88qgD6741Jo9eUVG+nDX4mnGZZOMDqKFmx5REwvJOQpHAMcJcYqWKln
+ 63xUVQbgvr0wZcYg3D5NQO/9513Fk0zbmzmeTBfkDA6Zx//U6cJ/hthKu5TjyEuCWq7xwG9gc117H
+ 5QvYAwrLvY1tE7Db2csM5dfXegViQFx1tan2Ev+zMhgLh9q7SrfwIdzrENZ57QpaBK/qaHGe8BU6d
+ Z/E/MeGLI15QyGMIxq5zLr0cBQvR7CFnaOQxOICd77GqI7qBPM5DvoqYTujr3Wy9FJBzrjeusi0ZS
+ 30wLm02/Y5KY2PYX+nOUlC2kx83SV5YxNO61KqbkfHE51WqcyjX3xJlSAsWzcAwjYsi7VjtlkEReG
+ Bli5P6mFF3jALLC1E/eawdDGbPyAK9SB8zo7JdDvzCJvFff6uRVsWNcL6S1HEbbhRMbQ4r3j66mG0
+ Y2VfG/d5UGpqEYGICcwGqx/+c2SGFXVqrryDhjN4pfGxvC9vbhe5CL0xFEHb6K/4P/8QxpztBrFFY
+ AvTPIv8URfDMgt1PghruLmLVfOAgMP2dlJKZIJifE=;
+Received: from host86-130-37-216.range86-130.btcentralplus.com
+ ([86.130.37.216] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4hM6-0006A7-Ec; Thu, 01 Jun 2023 13:24:42 +0100
+Message-ID: <b354b585-9f7f-c068-8d3c-1a1eca03111d@ilande.co.uk>
+Date: Thu, 1 Jun 2023 13:24:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-ppc@nongnu.org, qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, BALATON Zoltan <balaton@eik.bme.hu>
+References: <20230531211043.41724-1-shentey@gmail.com>
+ <20230531211043.41724-7-shentey@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230531211043.41724-7-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 86.130.37.216
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v3 6/7] hw/ide/pci: Replace some magic numbers by constants
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,42 +80,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> Change the migration test to use the new qtest event callback to watch
-> for the stop event. This ensures that we only watch for the STOP event
-> on the source QEMU. The previous code would set the single 'got_stop'
-> flag when either source or dest QEMU got the STOP event.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+On 31/05/2023 22:10, Bernhard Beschow wrote:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   hw/ide/pci.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+> index 0b26a4ce9f..a25b352537 100644
+> --- a/hw/ide/pci.c
+> +++ b/hw/ide/pci.c
+> @@ -320,7 +320,8 @@ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val)
+>   
+>   void bmdma_status_writeb(BMDMAState *bm, uint32_t val)
+>   {
+> -    bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
+> +    bm->status = (val & 0x60) | (bm->status & BM_STATUS_DMAING)
+> +                 | (bm->status & ~val & (BM_STATUS_ERROR | BM_STATUS_INT));
+>   }
+>   
+>   static uint64_t bmdma_addr_read(void *opaque, hwaddr addr,
 
-If you agreed with my proposed change to patch 1
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-> -bool got_stop;
-> -
-> -static void check_stop_event(QTestState *who)
-> +bool migrate_watch_for_stop(QTestState *who, const char *name,
-> +                            QDict *event, void *opaque)
->  {
-> -    QDict *event =3D qtest_qmp_event_ref(who, "STOP");
-> -    if (event) {
-> -        got_stop =3D true;
-> -        qobject_unref(event);
-> +    bool *seen =3D opaque;
-> +
-> +    if (g_str_equal(name, "STOP")) {
-> +        *seen =3D true;
 
-You should
-           return true;
+ATB,
 
-here.
-
-Later, Juan.
+Mark.
 
 
