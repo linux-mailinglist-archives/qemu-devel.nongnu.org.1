@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F021719EBC
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D16E719EBD
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:47:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4idf-0000CH-0Y; Thu, 01 Jun 2023 09:46:53 -0400
+	id 1q4ieV-0001Xo-BR; Thu, 01 Jun 2023 09:47:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q4icp-0008W0-VQ; Thu, 01 Jun 2023 09:46:00 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1q4idT-0000bK-2J; Thu, 01 Jun 2023 09:46:46 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q4ico-0008Fy-6S; Thu, 01 Jun 2023 09:45:59 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-4f4e71a09a7so1191129e87.1; 
- Thu, 01 Jun 2023 06:45:57 -0700 (PDT)
+ id 1q4idR-0008OO-1r; Thu, 01 Jun 2023 09:46:38 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2afb2874e83so12356071fa.0; 
+ Thu, 01 Jun 2023 06:46:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685627156; x=1688219156;
+ d=1e100.net; s=20221208; t=1685627195; x=1688219195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=stzNPKEEsb93NVPera4GoUbdc/j/tKWSRzl0WF+RC+A=;
- b=i7Wo51JZYFabcx0SsYO77405OI/bQ0OjiFSXsmKujfsqtmNJxAUw6hqcqvW3V8ghM5
- 45z8chTK8a5ghzPXFLaK5o/ZgmkEEmpea8P1OUjCK2047m7K3LvD1YQUoMb38Q54xEP4
- qce1N+fMYOWS2UOoXRKMcjEi3gwwWlzFg8kNzu3jWAaVBb/Zt1mqO2lkHmIP2dnO7sbH
- 40WbEA+Dx1uDZF+G3NuIwV1ObrCLXwWKJ/OAmD7MEwBIFoFAKrfTCX2BMcZ4w7lLUhsJ
- FHEaf9PacpDOo6tqZdWGD4b7azJZc4UF72xNI30J4aLlXOW3MeThGBQ9FP+3lviQdv3T
- Ej/w==
-X-Gm-Message-State: AC+VfDxxCCN5wTjlkD6k/O1PNCk/DdlcCWxhVl4zB5wITVUitggcRkXU
- Yswf4UnFACv3OPxPi6hPq4UcusxnDgAgQrb0
-X-Google-Smtp-Source: ACHHUZ6x/DoFfqzZgRyN0Bg9Wz6BmWELEci+CgUlzS6sYUPVr8GgNaJEAtBxciQmGu/ylcpJLCsDZw==
-X-Received: by 2002:ac2:4c35:0:b0:4f4:b38c:1f87 with SMTP id
- u21-20020ac24c35000000b004f4b38c1f87mr610556lfq.12.1685627155767; 
- Thu, 01 Jun 2023 06:45:55 -0700 (PDT)
+ bh=/ev5aaWOMtzj7uhrV2SRo+Ugfi/ZJw07xZsuBD2beIE=;
+ b=eVXz+l6Rs3/Xs7gwK5DrU9BYu7MxTW0ga0AwKe5UcwW1pOtbPLNpBcIUHEnlctAzpn
+ L/9kK6tNFdD2wz9BxglgbtzQkSEvTGsB0o12nv3Bgbpj8h7kpGVhnnsFUYZXv4/GgOuV
+ Uekb1ObppRz1b6vo2kQHtOLmc5dwQqD+YizKjd1lTlDAv6Ik51xhQRnFzYH91RWUu7YQ
+ S0QrVzN0UQB91W447d1MeuoBXHaswbpnXMNsACZ1fnItaCNCqL67rOKxsaOf+HJVOXlM
+ 8hzrTX7SHSfQvOmMMaMkOCU/oaN84vr9y91mgmrbi7/mZtXtWCIC1hwvBY2p6KZleLGl
+ zegw==
+X-Gm-Message-State: AC+VfDzgW1Q0Le52eMYmpnsuhr4jzWVtOYlJR8YdBSLT5oj6JQD4EyT1
+ pw6CNAsUeNfPH2jwTTdVJFOe3sN2OtPm04s7
+X-Google-Smtp-Source: ACHHUZ47S+I6WerkFdBKU9/WJFZdiO7yYLCEK3gqfbeMSsjF6nXSLCu8dqo1cqQ/pfPbJOwBZJRdYQ==
+X-Received: by 2002:a2e:99cb:0:b0:2af:e006:b83 with SMTP id
+ l11-20020a2e99cb000000b002afe0060b83mr5099367ljj.18.1685627194664; 
+ Thu, 01 Jun 2023 06:46:34 -0700 (PDT)
 Received: from flawful.org (c-fcf6e255.011-101-6d6c6d3.bbcust.telenor.se.
  [85.226.246.252]) by smtp.gmail.com with ESMTPSA id
- q24-20020a19a418000000b004f388c5f25dsm1089869lfc.257.2023.06.01.06.45.55
+ l20-20020a2e7014000000b002ab5421959fsm3799701ljc.90.2023.06.01.06.46.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 06:45:55 -0700 (PDT)
+ Thu, 01 Jun 2023 06:46:34 -0700 (PDT)
 Received: by flawful.org (Postfix, from userid 112)
- id AA09550A; Thu,  1 Jun 2023 15:45:54 +0200 (CEST)
+ id 26AD44E8; Thu,  1 Jun 2023 15:46:26 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1685627154; bh=Q3Hm6FMI2aGPQjjUBTN4kaiW9jrcrf+oWe6LEXPzIxY=;
+ t=1685627186; bh=+crhlsOe8XqLHrztrhhxdpb8tqjExwekFotXDvFGgAE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=omiLWQKK3Kmdm283EFQTYENys7gXUQZaSMIdJ/ZMTvWBSkNJnAPp2oO3d5/VPC00s
- rHUNh1tnZb4bynnHp9bwQQqenXI8bZdb/XwgNc1U5NZ0z/UvOAQVJCxuHSCO5AJCe3
- 6C6zl6vyDuG5raNidMU2aOSXSdAjnd7cYCg2FEFA=
+ b=BLZZ/qCT+v6SZYzPE7NjpqgbV2sYKdDsCalo7m+TLS0aeeyzL/5qckd3hNr70I/Ab
+ 8BwMl4Pw3+OltH5LLSI8TwFTSO5CExvzgdFavASflrg3k+ehHeV21frvupWQSZkgrx
+ wI32jiItpCtVOQ0/OWZgZqfmz9kyeGrWLRwFRouA=
 Received: from x1-carbon.lan (unknown [129.253.182.62])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id 3743A18B;
- Thu,  1 Jun 2023 15:45:24 +0200 (CEST)
+ by flawful.org (Postfix) with ESMTPSA id D8A9B4D7;
+ Thu,  1 Jun 2023 15:45:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1685627128; bh=Q3Hm6FMI2aGPQjjUBTN4kaiW9jrcrf+oWe6LEXPzIxY=;
+ t=1685627135; bh=+crhlsOe8XqLHrztrhhxdpb8tqjExwekFotXDvFGgAE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UblLAnNZLBn4xhY9IkVZwuPUHNuCUhZP5mWL4ifl9IKCn1lwtvkCrNbNQbSGNs5/W
- Z8N+S7Pw+cfcWzjicTK4DFg4NsKt3Nb+feLQvNTlY67Jv4czkiyoGnOZ28zaBmXFkC
- 3OxsqeHF5qvY3K6zUn9CN+x7ovq/5GWXPnLjhNfg=
+ b=e0YJ86U1b0fK2JsaKm2cOleAeYENO9LmdqZvXuZ6dc5HNNl1U1dGTcla7Ils1kgx4
+ yaIWailYBPCsjKWPfHorGnOI/O4cnR/fWSu9N1G/0/57/Si4zJXaz4wvVDuQbzgrfl
+ YE5EKsXdmEA3rgsYLWfKgTMK9YxeDYFNhx7fUoCs=
 From: Niklas Cassel <nks@flawful.org>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
  Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v2 3/8] hw/ide/ahci: write D2H FIS on when processing NCQ
- command
-Date: Thu,  1 Jun 2023 15:44:29 +0200
-Message-Id: <20230601134434.519805-4-nks@flawful.org>
+Subject: [PATCH v2 4/8] hw/ide/ahci: simplify and document PxCI handling
+Date: Thu,  1 Jun 2023 15:44:30 +0200
+Message-Id: <20230601134434.519805-5-nks@flawful.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601134434.519805-1-nks@flawful.org>
 References: <20230601134434.519805-1-nks@flawful.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -102,106 +101,232 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-The way that BUSY + PxCI is cleared for NCQ (FPDMA QUEUED) commands is
-described in SATA 3.5a Gold:
+The AHCI spec states that:
+For NCQ, PxCI is cleared on command queued successfully.
 
-11.15 FPDMA QUEUED command protocol
-DFPDMAQ2: ClearInterfaceBsy
-"Transmit Register Device to Host FIS with the BSY bit cleared to zero
-and the DRQ bit cleared to zero and Interrupt bit cleared to zero to
-mark interface ready for the next command."
+For non-NCQ, PxCI is cleared on command completed successfully.
+(A non-NCQ command that completes with error does not clear PxCI.)
 
-PxCI is currently cleared by handle_cmd(), but we don't write the D2H
-FIS to the FIS Receive Area that actually caused PxCI to be cleared.
+The current QEMU implementation either clears PxCI in check_cmd(),
+or in ahci_cmd_done().
 
-Similar to how ahci_pio_transfer() calls ahci_write_fis_pio() with an
-additional parameter to write a PIO Setup FIS without raising an IRQ,
-add a parameter to ahci_write_fis_d2h() so that ahci_write_fis_d2h()
-also can write the FIS to the FIS Receive Area without raising an IRQ.
+check_cmd() will clear PxCI for a command if handle_cmd() returns 0.
+handle_cmd() will return -1 if BUSY or DRQ is set.
 
-Change process_ncq_command() to call ahci_write_fis_d2h() without
-raising an IRQ (similar to ahci_pio_transfer()), such that the FIS
-Receive Area is in sync with the PxTFD shadow register.
+The QEMU implementation for NCQ commands will currently not set BUSY
+or DRQ, so they will always have PxCI cleared by handle_cmd().
+ahci_cmd_done() will never even get called for NCQ commands.
 
-E.g. Linux reads status and error fields from the FIS Receive Area
-directly, so it is wise to keep the FIS Receive Area and the PxTFD
-shadow register in sync.
+Non-NCQ commands are executed by ide_bus_exec_cmd().
+Non-NCQ commands in QEMU are implemented either in a sync or in an async
+way.
+
+For non-NCQ commands implemented in a sync way, the command handler will
+return true, and when ide_bus_exec_cmd() sees that a command handler
+returns true, it will call ide_cmd_done() (which will call
+ahci_cmd_done()). For a command implemented in a sync way,
+ahci_cmd_done() will do nothing (since busy_slot is not set). Instead,
+after ide_bus_exec_cmd() has finished, check_cmd() will clear PxCI for
+these commands.
+
+For non-NCQ commands implemented in an async way (using either aiocb or
+pio_aiocb), the command handler will return false, ide_bus_exec_cmd()
+will not call ide_cmd_done(), instead it is expected that the async
+callback function will call ide_cmd_done() once the async command is
+done. handle_cmd() will set busy_slot, if and only if BUSY or DRQ is
+set, and this is checked _after_ ide_bus_exec_cmd() has returned.
+handle_cmd() will return -1, so check_cmd() will not clear PxCI.
+When the async callback calls ide_cmd_done() (which will call
+ahci_cmd_done()), it will see that busy_slot is set, and
+ahci_cmd_done() will clear PxCI.
+
+This seems racy, since busy_slot is set _after_ ide_bus_exec_cmd() has
+returned. The callback might come before busy_slot gets set. And it is
+quite confusing that ahci_cmd_done() will be called for all non-NCQ
+commands when the command is done, but will only clear PxCI in certain
+cases, even though it will always write a D2H FIS and raise an IRQ.
+
+Even worse, in the case where ahci_cmd_done() does not clear PxCI, it
+still raises an IRQ. Host software might thus read an old PxCI value,
+since PxCI is cleared (by check_cmd()) after the IRQ has been raised.
+
+Try to simplify this by always setting busy_slot for non-NCQ commands,
+such that ahci_cmd_done() will always be responsible for clearing PxCI
+for non-NCQ commands.
+
+For NCQ commands, clear PxCI when we receive the D2H FIS, but before
+raising the IRQ, see AHCI 1.3.1, section 5.3.8, states RegFIS:Entry and
+RegFIS:ClearCI.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 ---
- hw/ide/ahci.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ hw/ide/ahci.c | 70 ++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 50 insertions(+), 20 deletions(-)
 
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 48d550f633..4b272397fd 100644
+index 4b272397fd..3deaf01add 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -43,7 +43,7 @@
+@@ -41,9 +41,10 @@
+ #include "trace.h"
+ 
  static void check_cmd(AHCIState *s, int port);
- static int handle_cmd(AHCIState *s, int port, uint8_t slot);
+-static int handle_cmd(AHCIState *s, int port, uint8_t slot);
++static void handle_cmd(AHCIState *s, int port, uint8_t slot);
  static void ahci_reset_port(AHCIState *s, int port);
--static bool ahci_write_fis_d2h(AHCIDevice *ad);
-+static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i);
+ static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i);
++static void ahci_clear_cmd_issue(AHCIDevice *ad, uint8_t slot);
  static void ahci_init_d2h(AHCIDevice *ad);
  static int ahci_dma_prepare_buf(const IDEDMA *dma, int32_t limit);
  static bool ahci_map_clb_address(AHCIDevice *ad);
-@@ -618,7 +618,7 @@ static void ahci_init_d2h(AHCIDevice *ad)
+@@ -591,9 +592,8 @@ static void check_cmd(AHCIState *s, int port)
+ 
+     if ((pr->cmd & PORT_CMD_START) && pr->cmd_issue) {
+         for (slot = 0; (slot < 32) && pr->cmd_issue; slot++) {
+-            if ((pr->cmd_issue & (1U << slot)) &&
+-                !handle_cmd(s, port, slot)) {
+-                pr->cmd_issue &= ~(1U << slot);
++            if (pr->cmd_issue & (1U << slot)) {
++                handle_cmd(s, port, slot);
+             }
+         }
+     }
+@@ -1123,6 +1123,22 @@ static void process_ncq_command(AHCIState *s, int port, const uint8_t *cmd_fis,
          return;
      }
  
--    if (ahci_write_fis_d2h(ad)) {
-+    if (ahci_write_fis_d2h(ad, true)) {
-         ad->init_d2h_sent = true;
-         /* We're emulating receiving the first Reg H2D Fis from the device;
-          * Update the SIG register, but otherwise proceed as normal. */
-@@ -850,7 +850,7 @@ static void ahci_write_fis_pio(AHCIDevice *ad, uint16_t len, bool pio_fis_i)
-     }
- }
- 
--static bool ahci_write_fis_d2h(AHCIDevice *ad)
-+static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i)
- {
-     AHCIPortRegs *pr = &ad->port_regs;
-     uint8_t *d2h_fis;
-@@ -864,7 +864,7 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
-     d2h_fis = &ad->res_fis[RES_FIS_RFIS];
- 
-     d2h_fis[0] = SATA_FIS_TYPE_REGISTER_D2H;
--    d2h_fis[1] = (1 << 6); /* interrupt bit */
-+    d2h_fis[1] = d2h_fis_i ? (1 << 6) : 0; /* interrupt bit */
-     d2h_fis[2] = s->status;
-     d2h_fis[3] = s->error;
- 
-@@ -890,7 +890,10 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
-         ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_TFES);
-     }
- 
--    ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
-+    if (d2h_fis_i) {
-+        ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
-+    }
++    /*
++     * A NCQ command clears the bit in PxCI after the command has been QUEUED
++     * successfully (ERROR not set, BUSY and DRQ cleared).
++     *
++     * For NCQ commands, PxCI will always be cleared here.
++     *
++     * (Once the NCQ command is COMPLETED, the device will send a SDB FIS with
++     * the interrupt bit set, which will clear PxSACT and raise an interrupt.)
++     */
++    ahci_clear_cmd_issue(ad, slot);
 +
-     return true;
- }
++    /*
++     * In reality, for NCQ commands, PxCI is cleared after receiving a D2H FIS
++     * without the interrupt bit set, but since ahci_write_fis_d2h() can raise
++     * an IRQ on error, we need to call them in reverse order.
++     */
+     ahci_write_fis_d2h(ad, false);
  
-@@ -1120,6 +1123,8 @@ static void process_ncq_command(AHCIState *s, int port, const uint8_t *cmd_fis,
-         return;
-     }
- 
-+    ahci_write_fis_d2h(ad, false);
-+
      ncq_tfs->used = 1;
-     ncq_tfs->drive = ad;
-     ncq_tfs->slot = slot;
-@@ -1506,7 +1511,7 @@ static void ahci_cmd_done(const IDEDMA *dma)
+@@ -1197,6 +1213,7 @@ static void handle_reg_h2d_fis(AHCIState *s, int port,
+ {
+     IDEState *ide_state = &s->dev[port].port.ifs[0];
+     AHCICmdHdr *cmd = get_cmd_header(s, port, slot);
++    AHCIDevice *ad = &s->dev[port];
+     uint16_t opts = le16_to_cpu(cmd->opts);
+ 
+     if (cmd_fis[1] & 0x0F) {
+@@ -1273,11 +1290,19 @@ static void handle_reg_h2d_fis(AHCIState *s, int port,
+     /* Reset transferred byte counter */
+     cmd->status = 0;
+ 
++    /*
++     * A non-NCQ command clears the bit in PxCI after the command has COMPLETED
++     * successfully (ERROR not set, BUSY and DRQ cleared).
++     *
++     * For non-NCQ commands, PxCI will always be cleared by ahci_cmd_done().
++     */
++    ad->busy_slot = slot;
++
+     /* We're ready to process the command in FIS byte 2. */
+     ide_bus_exec_cmd(&s->dev[port].port, cmd_fis[2]);
+ }
+ 
+-static int handle_cmd(AHCIState *s, int port, uint8_t slot)
++static void handle_cmd(AHCIState *s, int port, uint8_t slot)
+ {
+     IDEState *ide_state;
+     uint64_t tbl_addr;
+@@ -1288,12 +1313,12 @@ static int handle_cmd(AHCIState *s, int port, uint8_t slot)
+     if (s->dev[port].port.ifs[0].status & (BUSY_STAT|DRQ_STAT)) {
+         /* Engine currently busy, try again later */
+         trace_handle_cmd_busy(s, port);
+-        return -1;
++        return;
      }
  
-     /* update d2h status */
--    ahci_write_fis_d2h(ad);
-+    ahci_write_fis_d2h(ad, true);
+     if (!s->dev[port].lst) {
+         trace_handle_cmd_nolist(s, port);
+-        return -1;
++        return;
+     }
+     cmd = get_cmd_header(s, port, slot);
+     /* remember current slot handle for later */
+@@ -1303,7 +1328,7 @@ static int handle_cmd(AHCIState *s, int port, uint8_t slot)
+     ide_state = &s->dev[port].port.ifs[0];
+     if (!ide_state->blk) {
+         trace_handle_cmd_badport(s, port);
+-        return -1;
++        return;
+     }
+ 
+     tbl_addr = le64_to_cpu(cmd->tbl_addr);
+@@ -1312,7 +1337,7 @@ static int handle_cmd(AHCIState *s, int port, uint8_t slot)
+                              DMA_DIRECTION_TO_DEVICE, MEMTXATTRS_UNSPECIFIED);
+     if (!cmd_fis) {
+         trace_handle_cmd_badfis(s, port);
+-        return -1;
++        return;
+     } else if (cmd_len != 0x80) {
+         ahci_trigger_irq(s, &s->dev[port], AHCI_PORT_IRQ_BIT_HBFS);
+         trace_handle_cmd_badmap(s, port, cmd_len);
+@@ -1336,15 +1361,6 @@ static int handle_cmd(AHCIState *s, int port, uint8_t slot)
+ out:
+     dma_memory_unmap(s->as, cmd_fis, cmd_len, DMA_DIRECTION_TO_DEVICE,
+                      cmd_len);
+-
+-    if (s->dev[port].port.ifs[0].status & (BUSY_STAT|DRQ_STAT)) {
+-        /* async command, complete later */
+-        s->dev[port].busy_slot = slot;
+-        return -1;
+-    }
+-
+-    /* done handling the command */
+-    return 0;
+ }
+ 
+ /* Transfer PIO data between RAM and device */
+@@ -1498,6 +1514,16 @@ static int ahci_dma_rw_buf(const IDEDMA *dma, bool is_write)
+     return 1;
+ }
+ 
++static void ahci_clear_cmd_issue(AHCIDevice *ad, uint8_t slot)
++{
++    IDEState *ide_state = &ad->port.ifs[0];
++
++    if (!(ide_state->status & (BUSY_STAT | DRQ_STAT))) {
++        ad->port_regs.cmd_issue &= ~(1 << slot);
++    }
++}
++
++/* Non-NCQ command is done - This function is never called for NCQ commands. */
+ static void ahci_cmd_done(const IDEDMA *dma)
+ {
+     AHCIDevice *ad = DO_UPCAST(AHCIDevice, dma, dma);
+@@ -1506,11 +1532,15 @@ static void ahci_cmd_done(const IDEDMA *dma)
+ 
+     /* no longer busy */
+     if (ad->busy_slot != -1) {
+-        ad->port_regs.cmd_issue &= ~(1 << ad->busy_slot);
++        ahci_clear_cmd_issue(ad, ad->busy_slot);
+         ad->busy_slot = -1;
+     }
+ 
+-    /* update d2h status */
++    /*
++     * In reality, for non-NCQ commands, PxCI is cleared after receiving a D2H
++     * FIS with the interrupt bit set, but since ahci_write_fis_d2h() will raise
++     * an IRQ, we need to call them in reverse order.
++     */
+     ahci_write_fis_d2h(ad, true);
  
      if (ad->port_regs.cmd_issue && !ad->check_bh) {
-         ad->check_bh = qemu_bh_new_guarded(ahci_check_cmd_bh, ad,
 -- 
 2.40.1
 
