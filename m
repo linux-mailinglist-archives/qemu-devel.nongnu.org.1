@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A2A71EF40
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9F671EF58
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kHU-0005Or-VL; Thu, 01 Jun 2023 11:32:04 -0400
+	id 1q4kHU-0005Ob-C1; Thu, 01 Jun 2023 11:32:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <francesco.cagnin@gmail.com>)
- id 1q4kHJ-0005Em-DH; Thu, 01 Jun 2023 11:31:54 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1q4kHM-0005G7-Rg; Thu, 01 Jun 2023 11:31:57 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <francesco.cagnin@gmail.com>)
- id 1q4kHH-0005EK-4f; Thu, 01 Jun 2023 11:31:53 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6094cb2d2so10462535e9.2; 
- Thu, 01 Jun 2023 08:31:49 -0700 (PDT)
+ id 1q4kHI-0005H5-V6; Thu, 01 Jun 2023 11:31:56 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f603ff9c02so9971075e9.2; 
+ Thu, 01 Jun 2023 08:31:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685633508; x=1688225508;
+ d=gmail.com; s=20221208; t=1685633511; x=1688225511;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zgispT2VFmJJSQrK3RjyDRscZ7/mfNgTtr14jmA6kIY=;
- b=b1O2z+3n3b0O/BcXawaq41DlI7xlL5zZYMvsNKa3kO+Q94y7arX3NUNlARb8eoHUIB
- H9eEW/fH0LWU4O4vfziEG2ni45COcg1kqUAMaFmNvMP8RrdaZ7DCVCvWPoA1Eot08eXn
- lDsJ1MBCLP5gj+WxmP8alGymKSjfMvgPVDB6vl26ACuEbIRFouGhddomkoMSFpDFRhsv
- wr6p8uCmkmiMAvLu7+3ynZPB3IKSQIU3DAAWlK/9+JCyjKNlHPCNtfPl+iCvvv1uD4Vh
- 7x5guQRhsljnrfymmCgAHVVKNYtqw4fe6AG8taB0/2cnz2c/D1uvhWgItghBSFY7KFCE
- bqKA==
+ bh=8Zn0c0UKseOi7S7AmGeZn7dlkhsld3M/mRfedn+v9cM=;
+ b=rzmOLT3EWQCxJHTGNK5Q6+Naag9EhDfuVh1E0pBTebiOjN0q0LowerSCGLbHPrwyBF
+ ReSL/9hXMLUILsLovi0GPQfuUV279sI/YAPtPw84HQ/7RRzZptT8eKDJ/9L9rmLqQp3n
+ S8sFX4SrqG2sZtk08fDgxXhn+N0kiwlsiaVOf3ydrLR8bd1q6pUcF9gA9DquzQ0UO6Px
+ TnCGgDXvky+XHQYnHCH9hWxpxrxkR/mty6Gs8rWaoJhl8eVz3uRMsXeIv+12AKWMPv/W
+ EdDq/xeNIg1gc4PRWa4VfwMkBjJH46voixKNxdi549+dCvUeYOoT6c5mXAi8mfa7glAn
+ EvNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685633508; x=1688225508;
+ d=1e100.net; s=20221208; t=1685633511; x=1688225511;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zgispT2VFmJJSQrK3RjyDRscZ7/mfNgTtr14jmA6kIY=;
- b=B0VJ5M7mMxaEwDhCQQJp0ZWMw2A8xFONyQiAG5SUT7KO5diC+g56UMrQyg49QBopy9
- juciMqP6+StW3FZYdOEML3vWXphKPbvbEuExutKWvJcYcXr7xSpoLPpquU9qyI/+GrK6
- gwZjri2vv36te3i0PJR2fO2+ywS1qODFA6LUfhNuD49i+WoB5WbtGzh3B0KTPntr2eEK
- Gnn2SsH/dev1qh0st1Yniqf7rGA0cBaLjjyztb0QFrfUoqL9QNcffg+Xj5MNXdhAhjft
- nKRNlDGK2n4TK+VpPBxgg6WLjMOJyk2NH9tVMbv2X99IEu6srOhHvyN/Sv7dju49QMTi
- l3HQ==
-X-Gm-Message-State: AC+VfDxtZgp+Jagd1rb08q2NqBU7S+7CodMGRTzIIDxAQ3FnNNweCFPi
- 1NVDyjTEyAQRmz1QdLMt1VJp4DYZhN94qQ==
-X-Google-Smtp-Source: ACHHUZ58honX7TV1LvRzvsjlQEZh7setEsAJkZxYVLz4y04hcBBqYgB6RDS7gSupXz75ZXuYes2hGg==
-X-Received: by 2002:a1c:7c1a:0:b0:3f6:7f0:c9a9 with SMTP id
- x26-20020a1c7c1a000000b003f607f0c9a9mr2463096wmc.33.1685633508226; 
- Thu, 01 Jun 2023 08:31:48 -0700 (PDT)
+ bh=8Zn0c0UKseOi7S7AmGeZn7dlkhsld3M/mRfedn+v9cM=;
+ b=XEOzeT64A+KHgfFvjIUdNukDObJRKo/i+OpbRyFU94/GBnRlS3MO71Ey0uW8nxv1ED
+ CmM/q9ifZCv3F+5gDbE5GJcA27aEneuOFDS67AsbjAsygn4l/hA4TUzU7S69zTyju6l/
+ Ag+kqFDphCgInnwN5+rSIGcMm3VCMbhJRuJAHhwtFTklGcKkpgdkkftE26WNFjEGf5UU
+ EUOuppVrxRoC8yf9j6AInIzxl0xYCBrb9htH0VDMYN2VlMDJfzKRCJSpulbxWuNeAeN5
+ lukQLr98aqH+ieeDsNGAth91iKgHtV9jGIyHIF6ICfgOXYADRTf5QDKFW8ohXn/TLXVw
+ Jgww==
+X-Gm-Message-State: AC+VfDwvvTv4KvBJ3txoM0mScXbgf3Y/GXVWJuC28gktZjUcqQEkaeVZ
+ Qr0dkibPGJqezH3lmrWG94kyWOeX/Jk3KA==
+X-Google-Smtp-Source: ACHHUZ5Ej6TmJrh1xUuWnLnlJgkIPcjr0ZCnM+lIvAq0s0+swzy4QxWX2FCNCXKFy8nJBa7YiMSxrw==
+X-Received: by 2002:a1c:7206:0:b0:3f6:3486:1396 with SMTP id
+ n6-20020a1c7206000000b003f634861396mr2563471wmc.33.1685633510990; 
+ Thu, 01 Jun 2023 08:31:50 -0700 (PDT)
 Received: from omega.guest.bzh.qb (177.23.22.93.rev.sfr.net. [93.22.23.177])
  by smtp.gmail.com with ESMTPSA id
- l14-20020a1ced0e000000b003f4289b18a7sm2763975wmh.5.2023.06.01.08.31.47
+ l14-20020a1ced0e000000b003f4289b18a7sm2763975wmh.5.2023.06.01.08.31.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 Jun 2023 08:31:47 -0700 (PDT)
+ Thu, 01 Jun 2023 08:31:50 -0700 (PDT)
 From: francesco.cagnin@gmail.com
 X-Google-Original-From: fcagnin@quarkslab.com
 To: qemu-devel@nongnu.org
@@ -61,16 +61,17 @@ Cc: mads@ynddal.dk, dirty@apple.com, peter.maydell@linaro.org,
  qemu-arm@nongnu.org, agraf@csgraf.de, pbonzini@redhat.com,
  alex.bennee@linaro.org, philmd@linaro.org,
  Francesco Cagnin <fcagnin@quarkslab.com>
-Subject: [PATCH v5 3/4] hvf: add breakpoint handlers
-Date: Thu,  1 Jun 2023 17:31:06 +0200
-Message-Id: <20230601153107.81955-4-fcagnin@quarkslab.com>
+Subject: [PATCH v5 4/4] hvf: add guest debugging handlers for Apple Silicon
+ hosts
+Date: Thu,  1 Jun 2023 17:31:07 +0200
+Message-Id: <20230601153107.81955-5-fcagnin@quarkslab.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601153107.81955-1-fcagnin@quarkslab.com>
 References: <20230601153107.81955-1-fcagnin@quarkslab.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=francesco.cagnin@gmail.com; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=francesco.cagnin@gmail.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,344 +96,695 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Francesco Cagnin <fcagnin@quarkslab.com>
 
-Required for guest debugging. The code has been structured like the KVM
-counterpart.
+Guests can now be debugged through the gdbstub. Support is added for
+single-stepping, software breakpoints, hardware breakpoints and
+watchpoints. The code has been structured like the KVM counterpart.
+
+While guest debugging is enabled, the guest can still read and write the
+DBG*_EL1 registers but they don't have any effect.
 
 Signed-off-by: Francesco Cagnin <fcagnin@quarkslab.com>
 ---
- accel/hvf/hvf-accel-ops.c | 109 ++++++++++++++++++++++++++++++++++++++
- accel/hvf/hvf-all.c       |  17 ++++++
- include/sysemu/hvf.h      |  22 ++++++++
+ accel/hvf/hvf-accel-ops.c |  10 +
+ accel/hvf/hvf-all.c       |   6 +
+ include/sysemu/hvf.h      |  15 ++
  include/sysemu/hvf_int.h  |   1 +
- target/arm/hvf/hvf.c      |  63 ++++++++++++++++++++++
- target/i386/hvf/hvf.c     |  24 +++++++++
- 6 files changed, 236 insertions(+)
+ target/arm/hvf/hvf.c      | 474 +++++++++++++++++++++++++++++++++++++-
+ target/arm/hvf_arm.h      |   7 +
+ target/i386/hvf/hvf.c     |   9 +
+ 7 files changed, 520 insertions(+), 2 deletions(-)
 
 diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 24913ca9c4..92601b1369 100644
+index 92601b1369..9c3da03c94 100644
 --- a/accel/hvf/hvf-accel-ops.c
 +++ b/accel/hvf/hvf-accel-ops.c
-@@ -52,6 +52,7 @@
- #include "qemu/main-loop.h"
- #include "exec/address-spaces.h"
- #include "exec/exec-all.h"
-+#include "exec/gdbstub.h"
- #include "sysemu/cpus.h"
- #include "sysemu/hvf.h"
- #include "sysemu/hvf_int.h"
-@@ -334,6 +335,8 @@ static int hvf_accel_init(MachineState *ms)
-         s->slots[x].slot_id = x;
-     }
- 
-+    QTAILQ_INIT(&s->hvf_sw_breakpoints);
-+
-     hvf_state = s;
-     memory_listener_register(&hvf_memory_listener, &address_space_memory);
- 
-@@ -462,6 +465,108 @@ static void hvf_start_vcpu_thread(CPUState *cpu)
-                        cpu, QEMU_THREAD_JOINABLE);
+@@ -343,12 +343,18 @@ static int hvf_accel_init(MachineState *ms)
+     return hvf_arch_init();
  }
  
-+static int hvf_insert_breakpoint(CPUState *cpu, int type, hwaddr addr, hwaddr len)
++static inline int hvf_gdbstub_sstep_flags(void)
 +{
-+    struct hvf_sw_breakpoint *bp;
-+    int err;
-+
-+    if (type == GDB_BREAKPOINT_SW) {
-+        bp = hvf_find_sw_breakpoint(cpu, addr);
-+        if (bp) {
-+            bp->use_count++;
-+            return 0;
-+        }
-+
-+        bp = g_new(struct hvf_sw_breakpoint, 1);
-+        bp->pc = addr;
-+        bp->use_count = 1;
-+        err = hvf_arch_insert_sw_breakpoint(cpu, bp);
-+        if (err) {
-+            g_free(bp);
-+            return err;
-+        }
-+
-+        QTAILQ_INSERT_HEAD(&hvf_state->hvf_sw_breakpoints, bp, entry);
-+    } else {
-+        err = hvf_arch_insert_hw_breakpoint(addr, len, type);
-+        if (err) {
-+            return err;
-+        }
-+    }
-+
-+    CPU_FOREACH(cpu) {
-+        err = hvf_update_guest_debug(cpu);
-+        if (err) {
-+            return err;
-+        }
-+    }
-+    return 0;
++    return SSTEP_ENABLE | SSTEP_NOIRQ;
 +}
 +
-+static int hvf_remove_breakpoint(CPUState *cpu, int type, hwaddr addr, hwaddr len)
-+{
-+    struct hvf_sw_breakpoint *bp;
-+    int err;
-+
-+    if (type == GDB_BREAKPOINT_SW) {
-+        bp = hvf_find_sw_breakpoint(cpu, addr);
-+        if (!bp) {
-+            return -ENOENT;
-+        }
-+
-+        if (bp->use_count > 1) {
-+            bp->use_count--;
-+            return 0;
-+        }
-+
-+        err = hvf_arch_remove_sw_breakpoint(cpu, bp);
-+        if (err) {
-+            return err;
-+        }
-+
-+        QTAILQ_REMOVE(&hvf_state->hvf_sw_breakpoints, bp, entry);
-+        g_free(bp);
-+    } else {
-+        err = hvf_arch_remove_hw_breakpoint(addr, len, type);
-+        if (err) {
-+            return err;
-+        }
-+    }
-+
-+    CPU_FOREACH(cpu) {
-+        err = hvf_update_guest_debug(cpu);
-+        if (err) {
-+            return err;
-+        }
-+    }
-+    return 0;
-+}
-+
-+static void hvf_remove_all_breakpoints(CPUState *cpu)
-+{
-+    struct hvf_sw_breakpoint *bp, *next;
-+    CPUState *tmpcpu;
-+
-+    QTAILQ_FOREACH_SAFE(bp, &hvf_state->hvf_sw_breakpoints, entry, next) {
-+        if (hvf_arch_remove_sw_breakpoint(cpu, bp) != 0) {
-+            /* Try harder to find a CPU that currently sees the breakpoint. */
-+            CPU_FOREACH(tmpcpu)
-+            {
-+                if (hvf_arch_remove_sw_breakpoint(tmpcpu, bp) == 0) {
-+                    break;
-+                }
-+            }
-+        }
-+        QTAILQ_REMOVE(&hvf_state->hvf_sw_breakpoints, bp, entry);
-+        g_free(bp);
-+    }
-+    hvf_arch_remove_all_hw_breakpoints();
-+
-+    CPU_FOREACH(cpu) {
-+        hvf_update_guest_debug(cpu);
-+    }
-+}
-+
- static void hvf_accel_ops_class_init(ObjectClass *oc, void *data)
+ static void hvf_accel_class_init(ObjectClass *oc, void *data)
  {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
-@@ -473,6 +578,10 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, void *data)
-     ops->synchronize_post_init = hvf_cpu_synchronize_post_init;
-     ops->synchronize_state = hvf_cpu_synchronize_state;
-     ops->synchronize_pre_loadvm = hvf_cpu_synchronize_pre_loadvm;
+     AccelClass *ac = ACCEL_CLASS(oc);
+     ac->name = "HVF";
+     ac->init_machine = hvf_accel_init;
+     ac->allowed = &hvf_allowed;
++    ac->gdbstub_supported_sstep_flags = hvf_gdbstub_sstep_flags;
+ }
+ 
+ static const TypeInfo hvf_accel_type = {
+@@ -398,6 +404,8 @@ static int hvf_init_vcpu(CPUState *cpu)
+     cpu->vcpu_dirty = 1;
+     assert_hvf_ok(r);
+ 
++    cpu->hvf->guest_debug_enabled = false;
 +
-+    ops->insert_breakpoint = hvf_insert_breakpoint;
-+    ops->remove_breakpoint = hvf_remove_breakpoint;
-+    ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
+     return hvf_arch_init_vcpu(cpu);
+ }
+ 
+@@ -582,6 +590,8 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, void *data)
+     ops->insert_breakpoint = hvf_insert_breakpoint;
+     ops->remove_breakpoint = hvf_remove_breakpoint;
+     ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
++    ops->update_guest_debug = hvf_update_guest_debug;
++    ops->supports_guest_debug = hvf_arch_supports_guest_debug;
  };
  static const TypeInfo hvf_accel_ops_type = {
      .name = ACCEL_OPS_NAME("hvf"),
 diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 0043f4d308..e983c23ad7 100644
+index e983c23ad7..754707dbfb 100644
 --- a/accel/hvf/hvf-all.c
 +++ b/accel/hvf/hvf-all.c
-@@ -44,3 +44,20 @@ void assert_hvf_ok(hv_return_t ret)
- 
-     abort();
+@@ -61,3 +61,9 @@ int hvf_sw_breakpoints_active(CPUState *cpu)
+ {
+     return !QTAILQ_EMPTY(&hvf_state->hvf_sw_breakpoints);
  }
 +
-+struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu, target_ulong pc)
++int hvf_update_guest_debug(CPUState *cpu)
 +{
-+    struct hvf_sw_breakpoint *bp;
-+
-+    QTAILQ_FOREACH(bp, &hvf_state->hvf_sw_breakpoints, entry) {
-+        if (bp->pc == pc) {
-+            return bp;
-+        }
-+    }
-+    return NULL;
-+}
-+
-+int hvf_sw_breakpoints_active(CPUState *cpu)
-+{
-+    return !QTAILQ_EMPTY(&hvf_state->hvf_sw_breakpoints);
++    hvf_arch_update_guest_debug(cpu);
++    return 0;
 +}
 diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
-index bb70082e45..386020a29c 100644
+index 386020a29c..70549b9158 100644
 --- a/include/sysemu/hvf.h
 +++ b/include/sysemu/hvf.h
-@@ -17,6 +17,7 @@
- #include "qom/object.h"
- 
- #ifdef NEED_CPU_H
-+#include "cpu.h"
- 
- #ifdef CONFIG_HVF
- uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-@@ -36,4 +37,25 @@ typedef struct HVFState HVFState;
- DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
-                          TYPE_HVF_ACCEL)
- 
-+#ifdef NEED_CPU_H
-+struct hvf_sw_breakpoint {
-+    target_ulong pc;
-+    target_ulong saved_insn;
-+    int use_count;
-+    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
-+};
+@@ -56,6 +56,21 @@ int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len,
+ int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len,
+                                   int type);
+ void hvf_arch_remove_all_hw_breakpoints(void);
 +
-+struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
-+                                                 target_ulong pc);
-+int hvf_sw_breakpoints_active(CPUState *cpu);
++/*
++ * hvf_update_guest_debug:
++ * @cs: CPUState for the CPU to update
++ *
++ * Update guest to enable or disable debugging. Per-arch specifics will be
++ * handled by calling down to hvf_arch_update_guest_debug.
++ */
++int hvf_update_guest_debug(CPUState *cpu);
++void hvf_arch_update_guest_debug(CPUState *cpu);
 +
-+int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
-+int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
-+int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len,
-+                                  int type);
-+int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len,
-+                                  int type);
-+void hvf_arch_remove_all_hw_breakpoints(void);
-+#endif /* NEED_CPU_H */
-+
++/*
++ * Return whether the guest supports debugging.
++ */
++bool hvf_arch_supports_guest_debug(void);
+ #endif /* NEED_CPU_H */
+ 
  #endif
 diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
-index 6545f7cd61..3592239fdc 100644
+index 3592239fdc..6ab119e49f 100644
 --- a/include/sysemu/hvf_int.h
 +++ b/include/sysemu/hvf_int.h
-@@ -45,6 +45,7 @@ struct HVFState {
- 
-     hvf_vcpu_caps *hvf_caps;
-     uint64_t vtimer_offset;
-+    QTAILQ_HEAD(, hvf_sw_breakpoint) hvf_sw_breakpoints;
+@@ -54,6 +54,7 @@ struct hvf_vcpu_state {
+     void *exit;
+     bool vtimer_masked;
+     sigset_t unblock_ipi_mask;
++    bool guest_debug_enabled;
  };
- extern HVFState *hvf_state;
  
+ void assert_hvf_ok(hv_return_t ret);
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index e221e37055..bb83627727 100644
+index bb83627727..2bd0a35cba 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -31,6 +31,8 @@
- #include "trace/trace-target_arm_hvf.h"
- #include "migration/vmstate.h"
+@@ -33,6 +33,116 @@
  
-+#include "exec/gdbstub.h"
+ #include "exec/gdbstub.h"
+ 
++#define MDSCR_EL1_SS_SHIFT  0
++#define MDSCR_EL1_MDE_SHIFT 15
++
++static uint16_t dbgbcr_regs[] = {
++    HV_SYS_REG_DBGBCR0_EL1,
++    HV_SYS_REG_DBGBCR1_EL1,
++    HV_SYS_REG_DBGBCR2_EL1,
++    HV_SYS_REG_DBGBCR3_EL1,
++    HV_SYS_REG_DBGBCR4_EL1,
++    HV_SYS_REG_DBGBCR5_EL1,
++    HV_SYS_REG_DBGBCR6_EL1,
++    HV_SYS_REG_DBGBCR7_EL1,
++    HV_SYS_REG_DBGBCR8_EL1,
++    HV_SYS_REG_DBGBCR9_EL1,
++    HV_SYS_REG_DBGBCR10_EL1,
++    HV_SYS_REG_DBGBCR11_EL1,
++    HV_SYS_REG_DBGBCR12_EL1,
++    HV_SYS_REG_DBGBCR13_EL1,
++    HV_SYS_REG_DBGBCR14_EL1,
++    HV_SYS_REG_DBGBCR15_EL1,
++};
++static uint16_t dbgbvr_regs[] = {
++    HV_SYS_REG_DBGBVR0_EL1,
++    HV_SYS_REG_DBGBVR1_EL1,
++    HV_SYS_REG_DBGBVR2_EL1,
++    HV_SYS_REG_DBGBVR3_EL1,
++    HV_SYS_REG_DBGBVR4_EL1,
++    HV_SYS_REG_DBGBVR5_EL1,
++    HV_SYS_REG_DBGBVR6_EL1,
++    HV_SYS_REG_DBGBVR7_EL1,
++    HV_SYS_REG_DBGBVR8_EL1,
++    HV_SYS_REG_DBGBVR9_EL1,
++    HV_SYS_REG_DBGBVR10_EL1,
++    HV_SYS_REG_DBGBVR11_EL1,
++    HV_SYS_REG_DBGBVR12_EL1,
++    HV_SYS_REG_DBGBVR13_EL1,
++    HV_SYS_REG_DBGBVR14_EL1,
++    HV_SYS_REG_DBGBVR15_EL1,
++};
++static uint16_t dbgwcr_regs[] = {
++    HV_SYS_REG_DBGWCR0_EL1,
++    HV_SYS_REG_DBGWCR1_EL1,
++    HV_SYS_REG_DBGWCR2_EL1,
++    HV_SYS_REG_DBGWCR3_EL1,
++    HV_SYS_REG_DBGWCR4_EL1,
++    HV_SYS_REG_DBGWCR5_EL1,
++    HV_SYS_REG_DBGWCR6_EL1,
++    HV_SYS_REG_DBGWCR7_EL1,
++    HV_SYS_REG_DBGWCR8_EL1,
++    HV_SYS_REG_DBGWCR9_EL1,
++    HV_SYS_REG_DBGWCR10_EL1,
++    HV_SYS_REG_DBGWCR11_EL1,
++    HV_SYS_REG_DBGWCR12_EL1,
++    HV_SYS_REG_DBGWCR13_EL1,
++    HV_SYS_REG_DBGWCR14_EL1,
++    HV_SYS_REG_DBGWCR15_EL1,
++};
++static uint16_t dbgwvr_regs[] = {
++    HV_SYS_REG_DBGWVR0_EL1,
++    HV_SYS_REG_DBGWVR1_EL1,
++    HV_SYS_REG_DBGWVR2_EL1,
++    HV_SYS_REG_DBGWVR3_EL1,
++    HV_SYS_REG_DBGWVR4_EL1,
++    HV_SYS_REG_DBGWVR5_EL1,
++    HV_SYS_REG_DBGWVR6_EL1,
++    HV_SYS_REG_DBGWVR7_EL1,
++    HV_SYS_REG_DBGWVR8_EL1,
++    HV_SYS_REG_DBGWVR9_EL1,
++    HV_SYS_REG_DBGWVR10_EL1,
++    HV_SYS_REG_DBGWVR11_EL1,
++    HV_SYS_REG_DBGWVR12_EL1,
++    HV_SYS_REG_DBGWVR13_EL1,
++    HV_SYS_REG_DBGWVR14_EL1,
++    HV_SYS_REG_DBGWVR15_EL1,
++};
++
++static inline int hvf_arm_num_brps(hv_vcpu_config_t config)
++{
++    uint64_t val;
++    hv_return_t ret;
++    ret = hv_vcpu_config_get_feature_reg(config, HV_FEATURE_REG_ID_AA64DFR0_EL1,
++                                         &val);
++    assert_hvf_ok(ret);
++    return FIELD_EX64(val, ID_AA64DFR0, BRPS) + 1;
++}
++
++static inline int hvf_arm_num_wrps(hv_vcpu_config_t config)
++{
++    uint64_t val;
++    hv_return_t ret;
++    ret = hv_vcpu_config_get_feature_reg(config, HV_FEATURE_REG_ID_AA64DFR0_EL1,
++                                         &val);
++    assert_hvf_ok(ret);
++    return FIELD_EX64(val, ID_AA64DFR0, WRPS) + 1;
++}
++
++void hvf_arm_init_debug(void)
++{
++    hv_vcpu_config_t config;
++    config = hv_vcpu_config_create();
++
++    max_hw_bps = hvf_arm_num_brps(config);
++    hw_breakpoints =
++        g_array_sized_new(true, true, sizeof(HWBreakpoint), max_hw_bps);
++
++    max_hw_wps = hvf_arm_num_wrps(config);
++    hw_watchpoints =
++        g_array_sized_new(true, true, sizeof(HWWatchpoint), max_hw_wps);
++}
 +
  #define HVF_SYSREG(crn, crm, op0, op1, op2) \
          ENCODE_AA64_CP_REG(CP_REG_ARM64_SYSREG_CP, crn, crm, op0, op1, op2)
  #define PL1_WRITE_MASK 0x4
-@@ -1711,3 +1713,64 @@ int hvf_arch_init(void)
+@@ -465,6 +575,92 @@ int hvf_get_registers(CPUState *cpu)
+             continue;
+         }
+ 
++        if (cpu->hvf->guest_debug_enabled) {
++            /* Handle debug registers */
++            switch (hvf_sreg_match[i].reg) {
++            case HV_SYS_REG_DBGBVR0_EL1:
++            case HV_SYS_REG_DBGBCR0_EL1:
++            case HV_SYS_REG_DBGWVR0_EL1:
++            case HV_SYS_REG_DBGWCR0_EL1:
++            case HV_SYS_REG_DBGBVR1_EL1:
++            case HV_SYS_REG_DBGBCR1_EL1:
++            case HV_SYS_REG_DBGWVR1_EL1:
++            case HV_SYS_REG_DBGWCR1_EL1:
++            case HV_SYS_REG_DBGBVR2_EL1:
++            case HV_SYS_REG_DBGBCR2_EL1:
++            case HV_SYS_REG_DBGWVR2_EL1:
++            case HV_SYS_REG_DBGWCR2_EL1:
++            case HV_SYS_REG_DBGBVR3_EL1:
++            case HV_SYS_REG_DBGBCR3_EL1:
++            case HV_SYS_REG_DBGWVR3_EL1:
++            case HV_SYS_REG_DBGWCR3_EL1:
++            case HV_SYS_REG_DBGBVR4_EL1:
++            case HV_SYS_REG_DBGBCR4_EL1:
++            case HV_SYS_REG_DBGWVR4_EL1:
++            case HV_SYS_REG_DBGWCR4_EL1:
++            case HV_SYS_REG_DBGBVR5_EL1:
++            case HV_SYS_REG_DBGBCR5_EL1:
++            case HV_SYS_REG_DBGWVR5_EL1:
++            case HV_SYS_REG_DBGWCR5_EL1:
++            case HV_SYS_REG_DBGBVR6_EL1:
++            case HV_SYS_REG_DBGBCR6_EL1:
++            case HV_SYS_REG_DBGWVR6_EL1:
++            case HV_SYS_REG_DBGWCR6_EL1:
++            case HV_SYS_REG_DBGBVR7_EL1:
++            case HV_SYS_REG_DBGBCR7_EL1:
++            case HV_SYS_REG_DBGWVR7_EL1:
++            case HV_SYS_REG_DBGWCR7_EL1:
++            case HV_SYS_REG_DBGBVR8_EL1:
++            case HV_SYS_REG_DBGBCR8_EL1:
++            case HV_SYS_REG_DBGWVR8_EL1:
++            case HV_SYS_REG_DBGWCR8_EL1:
++            case HV_SYS_REG_DBGBVR9_EL1:
++            case HV_SYS_REG_DBGBCR9_EL1:
++            case HV_SYS_REG_DBGWVR9_EL1:
++            case HV_SYS_REG_DBGWCR9_EL1:
++            case HV_SYS_REG_DBGBVR10_EL1:
++            case HV_SYS_REG_DBGBCR10_EL1:
++            case HV_SYS_REG_DBGWVR10_EL1:
++            case HV_SYS_REG_DBGWCR10_EL1:
++            case HV_SYS_REG_DBGBVR11_EL1:
++            case HV_SYS_REG_DBGBCR11_EL1:
++            case HV_SYS_REG_DBGWVR11_EL1:
++            case HV_SYS_REG_DBGWCR11_EL1:
++            case HV_SYS_REG_DBGBVR12_EL1:
++            case HV_SYS_REG_DBGBCR12_EL1:
++            case HV_SYS_REG_DBGWVR12_EL1:
++            case HV_SYS_REG_DBGWCR12_EL1:
++            case HV_SYS_REG_DBGBVR13_EL1:
++            case HV_SYS_REG_DBGBCR13_EL1:
++            case HV_SYS_REG_DBGWVR13_EL1:
++            case HV_SYS_REG_DBGWCR13_EL1:
++            case HV_SYS_REG_DBGBVR14_EL1:
++            case HV_SYS_REG_DBGBCR14_EL1:
++            case HV_SYS_REG_DBGWVR14_EL1:
++            case HV_SYS_REG_DBGWCR14_EL1:
++            case HV_SYS_REG_DBGBVR15_EL1:
++            case HV_SYS_REG_DBGBCR15_EL1:
++            case HV_SYS_REG_DBGWVR15_EL1:
++            case HV_SYS_REG_DBGWCR15_EL1: {
++                /*
++                 * If the guest is being debugged, the vCPU's debug registers
++                 * are holding the gdbstub's view of the registers (set in
++                 * hvf_arch_update_guest_debug()).
++                 * Since the environment is used to store only the guest's view
++                 * of the registers, don't update it with the values from the
++                 * vCPU but simply keep the values from the previous
++                 * environment.
++                 */
++                const ARMCPRegInfo *ri;
++                ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_sreg_match[i].key);
++                val = read_raw_cp_reg(env, ri);
++
++                arm_cpu->cpreg_values[hvf_sreg_match[i].cp_idx] = val;
++                continue;
++            }
++            }
++        }
++
+         ret = hv_vcpu_get_sys_reg(cpu->hvf->fd, hvf_sreg_match[i].reg, &val);
+         assert_hvf_ok(ret);
+ 
+@@ -516,6 +712,82 @@ int hvf_put_registers(CPUState *cpu)
+             continue;
+         }
+ 
++        if (cpu->hvf->guest_debug_enabled) {
++            /* Handle debug registers */
++            switch (hvf_sreg_match[i].reg) {
++            case HV_SYS_REG_DBGBVR0_EL1:
++            case HV_SYS_REG_DBGBCR0_EL1:
++            case HV_SYS_REG_DBGWVR0_EL1:
++            case HV_SYS_REG_DBGWCR0_EL1:
++            case HV_SYS_REG_DBGBVR1_EL1:
++            case HV_SYS_REG_DBGBCR1_EL1:
++            case HV_SYS_REG_DBGWVR1_EL1:
++            case HV_SYS_REG_DBGWCR1_EL1:
++            case HV_SYS_REG_DBGBVR2_EL1:
++            case HV_SYS_REG_DBGBCR2_EL1:
++            case HV_SYS_REG_DBGWVR2_EL1:
++            case HV_SYS_REG_DBGWCR2_EL1:
++            case HV_SYS_REG_DBGBVR3_EL1:
++            case HV_SYS_REG_DBGBCR3_EL1:
++            case HV_SYS_REG_DBGWVR3_EL1:
++            case HV_SYS_REG_DBGWCR3_EL1:
++            case HV_SYS_REG_DBGBVR4_EL1:
++            case HV_SYS_REG_DBGBCR4_EL1:
++            case HV_SYS_REG_DBGWVR4_EL1:
++            case HV_SYS_REG_DBGWCR4_EL1:
++            case HV_SYS_REG_DBGBVR5_EL1:
++            case HV_SYS_REG_DBGBCR5_EL1:
++            case HV_SYS_REG_DBGWVR5_EL1:
++            case HV_SYS_REG_DBGWCR5_EL1:
++            case HV_SYS_REG_DBGBVR6_EL1:
++            case HV_SYS_REG_DBGBCR6_EL1:
++            case HV_SYS_REG_DBGWVR6_EL1:
++            case HV_SYS_REG_DBGWCR6_EL1:
++            case HV_SYS_REG_DBGBVR7_EL1:
++            case HV_SYS_REG_DBGBCR7_EL1:
++            case HV_SYS_REG_DBGWVR7_EL1:
++            case HV_SYS_REG_DBGWCR7_EL1:
++            case HV_SYS_REG_DBGBVR8_EL1:
++            case HV_SYS_REG_DBGBCR8_EL1:
++            case HV_SYS_REG_DBGWVR8_EL1:
++            case HV_SYS_REG_DBGWCR8_EL1:
++            case HV_SYS_REG_DBGBVR9_EL1:
++            case HV_SYS_REG_DBGBCR9_EL1:
++            case HV_SYS_REG_DBGWVR9_EL1:
++            case HV_SYS_REG_DBGWCR9_EL1:
++            case HV_SYS_REG_DBGBVR10_EL1:
++            case HV_SYS_REG_DBGBCR10_EL1:
++            case HV_SYS_REG_DBGWVR10_EL1:
++            case HV_SYS_REG_DBGWCR10_EL1:
++            case HV_SYS_REG_DBGBVR11_EL1:
++            case HV_SYS_REG_DBGBCR11_EL1:
++            case HV_SYS_REG_DBGWVR11_EL1:
++            case HV_SYS_REG_DBGWCR11_EL1:
++            case HV_SYS_REG_DBGBVR12_EL1:
++            case HV_SYS_REG_DBGBCR12_EL1:
++            case HV_SYS_REG_DBGWVR12_EL1:
++            case HV_SYS_REG_DBGWCR12_EL1:
++            case HV_SYS_REG_DBGBVR13_EL1:
++            case HV_SYS_REG_DBGBCR13_EL1:
++            case HV_SYS_REG_DBGWVR13_EL1:
++            case HV_SYS_REG_DBGWCR13_EL1:
++            case HV_SYS_REG_DBGBVR14_EL1:
++            case HV_SYS_REG_DBGBCR14_EL1:
++            case HV_SYS_REG_DBGWVR14_EL1:
++            case HV_SYS_REG_DBGWCR14_EL1:
++            case HV_SYS_REG_DBGBVR15_EL1:
++            case HV_SYS_REG_DBGBCR15_EL1:
++            case HV_SYS_REG_DBGWVR15_EL1:
++            case HV_SYS_REG_DBGWCR15_EL1:
++                /*
++                 * If the guest is being debugged, the vCPU's debug registers
++                 * are already holding the gdbstub's view of the registers (set
++                 * in hvf_arch_update_guest_debug()).
++                 */
++                continue;
++            }
++        }
++
+         val = arm_cpu->cpreg_values[hvf_sreg_match[i].cp_idx];
+         ret = hv_vcpu_set_sys_reg(cpu->hvf->fd, hvf_sreg_match[i].reg, val);
+         assert_hvf_ok(ret);
+@@ -1532,11 +1804,13 @@ int hvf_vcpu_exec(CPUState *cpu)
+ {
+     ARMCPU *arm_cpu = ARM_CPU(cpu);
+     CPUARMState *env = &arm_cpu->env;
++    int ret;
+     hv_vcpu_exit_t *hvf_exit = cpu->hvf->exit;
+     hv_return_t r;
+     bool advance_pc = false;
+ 
+-    if (hvf_inject_interrupts(cpu)) {
++    if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
++        hvf_inject_interrupts(cpu)) {
+         return EXCP_INTERRUPT;
+     }
+ 
+@@ -1554,6 +1828,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+     uint64_t syndrome = hvf_exit->exception.syndrome;
+     uint32_t ec = syn_get_ec(syndrome);
+ 
++    ret = 0;
+     qemu_mutex_lock_iothread();
+     switch (exit_reason) {
+     case HV_EXIT_REASON_EXCEPTION:
+@@ -1573,6 +1848,49 @@ int hvf_vcpu_exec(CPUState *cpu)
+     hvf_sync_vtimer(cpu);
+ 
+     switch (ec) {
++    case EC_SOFTWARESTEP: {
++        ret = EXCP_DEBUG;
++
++        if (!cpu->singlestep_enabled) {
++            error_report("EC_SOFTWARESTEP but single-stepping not enabled");
++        }
++        break;
++    }
++    case EC_AA64_BKPT: {
++        ret = EXCP_DEBUG;
++
++        cpu_synchronize_state(cpu);
++
++        if (!hvf_find_sw_breakpoint(cpu, env->pc)) {
++            /* Re-inject into the guest */
++            ret = 0;
++            hvf_raise_exception(cpu, EXCP_BKPT, syn_aa64_bkpt(0));
++        }
++        break;
++    }
++    case EC_BREAKPOINT: {
++        ret = EXCP_DEBUG;
++
++        cpu_synchronize_state(cpu);
++
++        if (!find_hw_breakpoint(cpu, env->pc)) {
++            error_report("EC_BREAKPOINT but unknown hw breakpoint");
++        }
++        break;
++    }
++    case EC_WATCHPOINT: {
++        ret = EXCP_DEBUG;
++
++        cpu_synchronize_state(cpu);
++
++        CPUWatchpoint *wp =
++            find_hw_watchpoint(cpu, hvf_exit->exception.virtual_address);
++        if (!wp) {
++            error_report("EXCP_DEBUG but unknown hw watchpoint");
++        }
++        cpu->watchpoint_hit = wp;
++        break;
++    }
+     case EC_DATAABORT: {
+         bool isv = syndrome & ARM_EL_ISV;
+         bool iswrite = (syndrome >> 6) & 1;
+@@ -1677,9 +1995,14 @@ int hvf_vcpu_exec(CPUState *cpu)
+         pc += 4;
+         r = hv_vcpu_set_reg(cpu->hvf->fd, HV_REG_PC, pc);
+         assert_hvf_ok(r);
++
++        /* Handle single-stepping over instructions which trigger a VM exit */
++        if (cpu->singlestep_enabled) {
++            ret = EXCP_DEBUG;
++        }
+     }
+ 
+-    return 0;
++    return ret;
+ }
+ 
+ static const VMStateDescription vmstate_hvf_vtimer = {
+@@ -1711,6 +2034,9 @@ int hvf_arch_init(void)
+     hvf_state->vtimer_offset = mach_absolute_time();
+     vmstate_register(NULL, 0, &vmstate_hvf_vtimer, &vtimer);
      qemu_add_vm_change_state_handler(hvf_vm_state_change, &vtimer);
++
++    hvf_arm_init_debug();
++
      return 0;
  }
-+
-+static const uint32_t brk_insn = 0xd4200000;
-+
-+int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp)
-+{
-+    if (cpu_memory_rw_debug(cpu, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
-+        cpu_memory_rw_debug(cpu, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
-+        return -EINVAL;
-+    }
-+    return 0;
-+}
-+
-+int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp)
-+{
-+    static uint32_t brk;
-+
-+    if (cpu_memory_rw_debug(cpu, bp->pc, (uint8_t *)&brk, 4, 0) ||
-+        brk != brk_insn ||
-+        cpu_memory_rw_debug(cpu, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
-+        return -EINVAL;
-+    }
-+    return 0;
-+}
-+
-+int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len, int type)
-+{
-+    switch (type) {
-+    case GDB_BREAKPOINT_HW:
-+        return insert_hw_breakpoint(addr);
-+    case GDB_WATCHPOINT_READ:
-+    case GDB_WATCHPOINT_WRITE:
-+    case GDB_WATCHPOINT_ACCESS:
-+        return insert_hw_watchpoint(addr, len, type);
-+    default:
-+        return -ENOSYS;
-+    }
-+}
-+
-+int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len, int type)
-+{
-+    switch (type) {
-+    case GDB_BREAKPOINT_HW:
-+        return delete_hw_breakpoint(addr);
-+    case GDB_WATCHPOINT_READ:
-+    case GDB_WATCHPOINT_WRITE:
-+    case GDB_WATCHPOINT_ACCESS:
-+        return delete_hw_watchpoint(addr, len, type);
-+    default:
-+        return -ENOSYS;
-+    }
-+}
-+
-+void hvf_arch_remove_all_hw_breakpoints(void)
-+{
-+    if (cur_hw_wps > 0) {
-+        g_array_remove_range(hw_watchpoints, 0, cur_hw_wps);
-+    }
-+    if (cur_hw_bps > 0) {
-+        g_array_remove_range(hw_breakpoints, 0, cur_hw_bps);
-+    }
-+}
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 8d2248bb3f..08bc96ecbc 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -679,3 +679,27 @@ int hvf_vcpu_exec(CPUState *cpu)
  
-     return ret;
+@@ -1774,3 +2100,147 @@ void hvf_arch_remove_all_hw_breakpoints(void)
+         g_array_remove_range(hw_breakpoints, 0, cur_hw_bps);
+     }
  }
 +
-+int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp)
++/*
++ * Update the vCPU with the gdbstub's view of debug registers. This view
++ * consists of all hardware breakpoints and watchpoints inserted so far while
++ * debugging the guest.
++ */
++static void hvf_put_gdbstub_debug_registers(CPUState *cpu)
 +{
-+    return -ENOSYS;
++    hv_return_t r = HV_SUCCESS;
++    int i;
++
++    for (i = 0; i < cur_hw_bps; i++) {
++        HWBreakpoint *bp = get_hw_bp(i);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbcr_regs[i], bp->bcr);
++        assert_hvf_ok(r);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbvr_regs[i], bp->bvr);
++        assert_hvf_ok(r);
++    }
++    for (i = cur_hw_bps; i < max_hw_bps; i++) {
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbcr_regs[i], 0);
++        assert_hvf_ok(r);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbvr_regs[i], 0);
++        assert_hvf_ok(r);
++    }
++
++    for (i = 0; i < cur_hw_wps; i++) {
++        HWWatchpoint *wp = get_hw_wp(i);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwcr_regs[i], wp->wcr);
++        assert_hvf_ok(r);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwvr_regs[i], wp->wvr);
++        assert_hvf_ok(r);
++    }
++    for (i = cur_hw_wps; i < max_hw_wps; i++) {
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwcr_regs[i], 0);
++        assert_hvf_ok(r);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwvr_regs[i], 0);
++        assert_hvf_ok(r);
++    }
 +}
 +
-+int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp)
++/*
++ * Update the vCPU with the guest's view of debug registers. This view is kept
++ * in the environment at all times.
++ */
++static void hvf_put_guest_debug_registers(CPUState *cpu)
 +{
-+    return -ENOSYS;
++    ARMCPU *arm_cpu = ARM_CPU(cpu);
++    CPUARMState *env = &arm_cpu->env;
++    hv_return_t r = HV_SUCCESS;
++    int i;
++
++    for (i = 0; i < max_hw_bps; i++) {
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbcr_regs[i],
++                                env->cp15.dbgbcr[i]);
++        assert_hvf_ok(r);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbvr_regs[i],
++                                env->cp15.dbgbvr[i]);
++        assert_hvf_ok(r);
++    }
++
++    for (i = 0; i < max_hw_wps; i++) {
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwcr_regs[i],
++                                env->cp15.dbgwcr[i]);
++        assert_hvf_ok(r);
++        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwvr_regs[i],
++                                env->cp15.dbgwvr[i]);
++        assert_hvf_ok(r);
++    }
 +}
 +
-+int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len, int type)
++static inline bool hvf_arm_hw_debug_active(CPUState *cpu)
 +{
-+    return -ENOSYS;
++    return ((cur_hw_wps > 0) || (cur_hw_bps > 0));
 +}
 +
-+int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len, int type)
++static void hvf_arch_set_traps(void)
 +{
-+    return -ENOSYS;
++    CPUState *cpu;
++    bool should_enable_traps = false;
++    hv_return_t r = HV_SUCCESS;
++
++    /* Check whether guest debugging is enabled for at least one vCPU; if it
++     * is, enable exiting the guest on all vCPUs */
++    CPU_FOREACH(cpu) {
++        should_enable_traps |= cpu->hvf->guest_debug_enabled;
++    }
++    CPU_FOREACH(cpu) {
++        /* Set whether debug exceptions exit the guest */
++        r = hv_vcpu_set_trap_debug_exceptions(cpu->hvf->fd,
++                                              should_enable_traps);
++        assert_hvf_ok(r);
++
++        /* Set whether accesses to debug registers exit the guest */
++        r = hv_vcpu_set_trap_debug_reg_accesses(cpu->hvf->fd,
++                                                should_enable_traps);
++        assert_hvf_ok(r);
++    }
 +}
 +
-+void hvf_arch_remove_all_hw_breakpoints(void)
++void hvf_arch_update_guest_debug(CPUState *cpu)
 +{
++    ARMCPU *arm_cpu = ARM_CPU(cpu);
++    CPUARMState *env = &arm_cpu->env;
++
++    /* Check whether guest debugging is enabled */
++    cpu->hvf->guest_debug_enabled = cpu->singlestep_enabled ||
++                                    hvf_sw_breakpoints_active(cpu) ||
++                                    hvf_arm_hw_debug_active(cpu);
++
++    /* Update debug registers */
++    if (cpu->hvf->guest_debug_enabled) {
++        hvf_put_gdbstub_debug_registers(cpu);
++    } else {
++        hvf_put_guest_debug_registers(cpu);
++    }
++
++    cpu_synchronize_state(cpu);
++
++    /* Enable/disable single-stepping */
++    if (cpu->singlestep_enabled) {
++        env->cp15.mdscr_el1 =
++            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_SS_SHIFT, 1, 1);
++        pstate_write(env, pstate_read(env) | PSTATE_SS);
++    } else {
++        env->cp15.mdscr_el1 =
++            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_SS_SHIFT, 1, 0);
++    }
++
++    /* Enable/disable Breakpoint exceptions */
++    if (hvf_arm_hw_debug_active(cpu)) {
++        env->cp15.mdscr_el1 =
++            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_MDE_SHIFT, 1, 1);
++    } else {
++        env->cp15.mdscr_el1 =
++            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_MDE_SHIFT, 1, 0);
++    }
++
++    hvf_arch_set_traps();
++}
++
++inline bool hvf_arch_supports_guest_debug(void)
++{
++    return true;
++}
+diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
+index 9a9d1a0bf5..e848c1d27d 100644
+--- a/target/arm/hvf_arm.h
++++ b/target/arm/hvf_arm.h
+@@ -13,6 +13,13 @@
+ 
+ #include "cpu.h"
+ 
++/**
++ * hvf_arm_init_debug() - initialize guest debug capabilities
++ *
++ * Should be called only once before using guest debug capabilities.
++ */
++void hvf_arm_init_debug(void);
++
+ void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
+ 
+ #endif
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 08bc96ecbc..f6775c942a 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -703,3 +703,12 @@ int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len, int type)
+ void hvf_arch_remove_all_hw_breakpoints(void)
+ {
+ }
++
++void hvf_arch_update_guest_debug(CPUState *cpu)
++{
++}
++
++inline bool hvf_arch_supports_guest_debug(void)
++{
++    return false;
 +}
 -- 
 2.40.1
