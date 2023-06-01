@@ -2,81 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED95971F2C8
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 21:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834A171F2DB
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 21:22:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4nnm-00038g-C3; Thu, 01 Jun 2023 15:17:38 -0400
+	id 1q4nrg-0004bi-9k; Thu, 01 Jun 2023 15:21:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4nnk-00038H-JQ
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 15:17:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_mburton@quicinc.com>)
+ id 1q4nrd-0004bO-3P; Thu, 01 Jun 2023 15:21:37 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4nni-0003j2-UM
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 15:17:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685647053;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BDNlZ2BU0kcrxY3KQfA58CsjR+aO3w9e8AMQwiT53YE=;
- b=OKetDwO239leW9+twKSzdyqUPdICxMzd9+3tudX2IlzHzKzGauP6JDUi9LdrO/HG0qUlzH
- PKT+466db6apaJaOnMlLeQPfO9XcmZZStwXps/vQdy+9YFW4DnS6UPutoixJxB4LzrKc0Z
- Wo1RqH+E4AHlX9qePEEHu8jQJw9+C+o=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-T_DmrLdfP6S8DzN6d1V01g-1; Thu, 01 Jun 2023 15:17:32 -0400
-X-MC-Unique: T_DmrLdfP6S8DzN6d1V01g-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2568caac092so531879a91.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 12:17:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685647051; x=1688239051;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BDNlZ2BU0kcrxY3KQfA58CsjR+aO3w9e8AMQwiT53YE=;
- b=L8kgnnBvKcpO98Gx1hKV1F0al8p02naJMsCOrMlM1uJsOHsCTrKyCPL+pA5SgNHLSh
- 27pc84obOhjpGcb5IoryYBSRi4Y6feOu3DNw87HTIk2pf2xEObnGAp6PpS6Elm57CYPp
- jCWFdT47vZqBFyYJ17MGCY4+wtlsktHrDIIIeT4SzCbSFFn+KeWSWAUe5NoDCrhka2kT
- sfvgvQbRH8LIGFifKkC+rargw7ZtnE3o07rzYm6D0CsXiSmf9I+cT+ayknYzjdQc3OTI
- EIL8rTpNYQiyzLa3Yv7oesKuFPreSNjpgGk0BKEkCITACi6igjASpqhhO0wCVTxeQkNW
- tZLA==
-X-Gm-Message-State: AC+VfDynwCevsWw3wkXbR4675uYw1N0r5c0a8az0VpbeuJbAevPpKO+O
- NI5W2LbVbnxTc05ZICF8s9PnH3dUp4TFnFEYR1IfQsLbhgSI55lwF7iVnXVf3PgAmMewJH1c7KZ
- icbFTvnU63k1fPWCiskW7qK7prRixlrA=
-X-Received: by 2002:a17:90a:5907:b0:255:8063:c8dd with SMTP id
- k7-20020a17090a590700b002558063c8ddmr279563pji.18.1685647051467; 
- Thu, 01 Jun 2023 12:17:31 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7RaiKKmX4PQXKVgBJ0Zidi9rwOwmnu2Pz1m2dzlGN/GWrs+qHtlkNZb22TQh/2Jwo/QaIg0UrJPXKal3lfgWE=
-X-Received: by 2002:a17:90a:5907:b0:255:8063:c8dd with SMTP id
- k7-20020a17090a590700b002558063c8ddmr279546pji.18.1685647051074; Thu, 01 Jun
- 2023 12:17:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230601134434.519805-1-nks@flawful.org>
-In-Reply-To: <20230601134434.519805-1-nks@flawful.org>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 1 Jun 2023 15:17:19 -0400
-Message-ID: <CAFn=p-bDmZmGyYrjij_5HtXEvyob8=yXYLZUNL4F9VHyYj0MGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] misc AHCI cleanups
-To: Niklas Cassel <nks@flawful.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <quic_mburton@quicinc.com>)
+ id 1q4nrb-0004dL-3z; Thu, 01 Jun 2023 15:21:36 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 351CcSqF013666; Thu, 1 Jun 2023 19:21:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=qcppdkim1;
+ bh=jy7Vz7+QoAV1gYOjVqIajxeJCEfuMb3sj9YDg0s+HeQ=;
+ b=IgxesAb7exQx6PXReL2H85A8gX0dBRTtVpw7QTTDOydOR352K2ryCLUQPwVc2KjFmiOt
+ P5B99R2sEjt+FHRIXOCcF3miuENISgQdY0cwiwS2ojZ3IkTkHD2etl9DJvgMjDkL7pnN
+ wgcrDlDmSj48RSx3Ghh1O7PoBALUv2fGoFolQpiIO9uLAYW9jqLRD4OI3UUe45s5eRXV
+ 75uIBKE3qaSQtgQ7Bq22gKHG5JheoW1nhW1T2evpiPqJur0YQ2C2qW6R+m9B6JNULSHs
+ 4PWBAVRnYafQOjdp7NuRo11QSNBhvXAsPyvBM8SZMmeoPSvgdaIGGOMOo6YwxnvtRc7L GA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qxugr8ytg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jun 2023 19:21:28 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
+ [10.47.209.197])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 351JLRvF007729
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 1 Jun 2023 19:21:27 GMT
+Received: from smtpclient.apple (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 1 Jun 2023
+ 12:21:25 -0700
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH] hvf: Handle EC_INSNABORT
+From: Mark Burton <quic_mburton@quicinc.com>
+In-Reply-To: <CAFEAcA8tCZ0shxEiA4hOVsHhOBvGmQ6HLJq1dPKDuSqBXKdtJw@mail.gmail.com>
+Date: Thu, 1 Jun 2023 21:21:21 +0200
+CC: Antonio Caggiano <quic_acaggian@quicinc.com>, "qemu-devel@nongnu.org
+ Developers" <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alexander Graf
+ <agraf@csgraf.de>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Message-ID: <033C707D-C8DF-4DA7-BE50-F19DE2A17FB4@quicinc.com>
+References: <20230601143312.69691-1-quic_acaggian@quicinc.com>
+ <CAFEAcA-92-zExcOFMwaNYvP5pXLTUETsYi3mpuvTp2txfVEp9Q@mail.gmail.com>
+ <11f8fb60-abe7-d99d-c3bb-aaa405425668@quicinc.com>
+ <B0A9BD1B-B98C-4710-987D-03ADDBB993B7@quicinc.com>
+ <CAFEAcA8tCZ0shxEiA4hOVsHhOBvGmQ6HLJq1dPKDuSqBXKdtJw@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: jL5a4r5oUDnE4qHSP8wyYbTb6lVt96Tw
+X-Proofpoint-ORIG-GUID: jL5a4r5oUDnE4qHSP8wyYbTb6lVt96Tw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 mlxlogscore=637 phishscore=0
+ bulkscore=0 clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2304280000 definitions=main-2306010167
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_mburton@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,73 +104,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 1, 2023 at 9:45=E2=80=AFAM Niklas Cassel <nks@flawful.org> wrot=
-e:
->
-> From: Niklas Cassel <niklas.cassel@wdc.com>
->
-> Hello John,
->
-> Here comes some misc AHCI cleanups.
->
-> Most are related to error handling.
->
-> Please review.
->
-> (I'm also working on a second series which will add support for
-> READ LOG EXT and READ LOG DMA EXT, but I will send that one out
-> once it is ready. (It might take a couple of weeks still, since
-> I've been a bit busy lately.))
->
->
-> Changes since v1:
-> -Picked up Reviewed-by tags.
->  (I did not convert your ACK to explicit Acked-by tags, since I assume
->  that the patches will go via your tree).
 
-Guess so! I haven't been involved with IDE for a minute so I left the
-ACKs in case I wandered off to signify that I hadn't reviewed them
-thoroughly, but they *looked* good. Since I haven't wandered off,
-guess I will actually take this and send an MR. I'll try to do this
-Friday, June 2nd.
 
-Thanks again for the very detailed commit messages, which make this easy. :=
-)
+> On 1 Jun 2023, at 18:45, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+>=20
+> WARNING: This email originated from outside of Qualcomm. Please be =
+wary of any links or attachments, and do not enable macros.
+>=20
+> On Thu, 1 Jun 2023 at 17:00, Mark Burton <quic_mburton@quicinc.com> =
+wrote:
+>> This patch came from a discussion on the KVM call the other day.
+>> It may well be the case there is a better/different implementation
+>> - so the patch is more by way of asking the question.
+>>=20
+>> Re-phrasing your question - I think it boils down to =E2=80=9Cshould =
+HVF
+>> (and KVM) support executing instructions from IO space?=E2=80=9D.
+>=20
+> I think this falls into "might theoretically be nice but is
+> probably too painful to actually implement". In practice
+> well-behaved guests don't try to execute out of MMIO devices.
+>=20
 
---js
+>> In that case, this is a =E2=80=98partial=E2=80=99 answer to providing =
+such
+>> support for HVF - partial in that it relies upon a memory
+>> region being created =E2=80=9Cdynamically=E2=80=9D for the IO space =
+that
+>> has been accessed as a side-effect of a normal access.
+>=20
+> But nothing in (upstream) QEMU magically creates MemoryRegions
+> just because the guest tries to access them. Either there's
+> nothing there in the AddressSpace at all (definitely can't
+> execute from it) or there's already RAM (happy case) or there's
+> already a device there. If there's already a device there
+> then something would need to do a "put a bit of RAM in
+> temporarily, fill in the single instruction by doing an
+> address_space_read() to find the data value and writing it
+> to the scratch RAM, tell KVM/HVF to do a single-step, undo
+> everything again".
+>=20
 
-> -Rebased on master in order to fix a conflict in patch
->  "hw/ide/ahci: simplify and document PxCI handling".
-> -Dropped patch "hw/ide/ahci: trigger either error IRQ or regular IRQ, not=
- both"
->  for now, as it caused a boot time regression in SeaBIOS.
->  This appears to be a bug in SeaBIOS, for more info see:
->  https://mail.coreboot.org/hyperkitty/list/seabios@seabios.org/thread/RIH=
-V3FZ4EVMAJA4TEDPASKNYV7V72O4C/
->  I will resend the QEMU patch separately once the SeaBIOS patch has been
->  merged, and once QEMU has updated to a SeaBIOS tag that includes the fix=
-.
->
->
-> Kind regards,
-> Niklas
->
-> Niklas Cassel (8):
->   hw/ide/ahci: remove stray backslash
->   hw/ide/core: set ERR_STAT in unsupported command completion
->   hw/ide/ahci: write D2H FIS on when processing NCQ command
->   hw/ide/ahci: simplify and document PxCI handling
->   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
->   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
->   hw/ide/ahci: fix ahci_write_fis_sdb()
->   hw/ide/ahci: fix broken SError handling
->
->  hw/ide/ahci.c | 112 +++++++++++++++++++++++++++++++++++---------------
->  hw/ide/core.c |   2 +-
->  2 files changed, 81 insertions(+), 33 deletions(-)
->
-> --
-> 2.40.1
->
+Indeed, that=E2=80=99s basically what we=E2=80=99re implementing. In TCG =
+mode you =E2=80=99see=E2=80=99 the access, we=E2=80=99re just making it =
+so that in HVF you equally =E2=80=98see=E2=80=99 such accesses to the =
+=E2=80=98device=E2=80=99 (so you can put the bit of RAM in, out, shake =
+it all about). A cleaner implementation may be some sort of =
+=E2=80=9Cpre-i-side-access-op I=E2=80=99m about to access this =
+device/address please register a =E2=80=98memory region=E2=80=99 I can =
+use (temporarily)=E2=80=9D. I=E2=80=99d have thought that could be =
+useful any time you execute from e.g. a temporary ram of any sort =
+(whatever the accelerator).
+
+Cheers
+Mark.
+
+
+> -- PMM
 
 
