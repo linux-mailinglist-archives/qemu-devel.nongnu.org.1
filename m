@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0047A71EF2E
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4694F71EF32
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:37:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4lGk-0006vj-9h; Thu, 01 Jun 2023 12:35:22 -0400
+	id 1q4lIC-0008QS-PB; Thu, 01 Jun 2023 12:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4lGe-0006ti-GP
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:35:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q4lIA-0008Os-Iu
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:36:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4lGc-0007zh-H9
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:35:16 -0400
+ id 1q4lI8-0008CM-92
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:36:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685637314;
+ s=mimecast20190719; t=1685637407;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aZNCUXSX8Ip7QY158iWI/ETsjn76AQ/qdMh1ZHGrA2s=;
- b=hCfrmTROeKBztOHRtNHm0TPdlzz3va849zwuQlsKUaJU6jXYGWkEq+GWc5o3jdrT2G86Yg
- bQK3eSXxqEBREcLUJiwf+6QE0ffel4U9ZSc67sufXN7h4WVa7+Y2Fpk4kBLzHwKuuxnuwV
- Oof7VZdFqGoXzsgTlFt80edZvK+gL/Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=y5jXlziP3sjlQZpZx3sJofdu5MVfGJ2tlmj9s5+PaI8=;
+ b=hHos+HBQgoXIPuegcieeiLGSdLbwTyKB/6tmiV7fBVS3ThH0PumXV9kXdySFKiLD9XRi99
+ 49om8/hPqtopupBHlRQKlwe69WuvxfiTBNkXzLAl/ylJ2/PbHRQCeeEBMhyODUyUBwhiDr
+ RGh2zK5fGc/dALPxaZ9oYHMiVuqVAnY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-509-ICUlpVDjPIGfGzPw25Uxmg-1; Thu, 01 Jun 2023 12:35:12 -0400
-X-MC-Unique: ICUlpVDjPIGfGzPw25Uxmg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-296-rEtJ6TmiMAqUZTX09lqoCA-1; Thu, 01 Jun 2023 12:36:46 -0400
+X-MC-Unique: rEtJ6TmiMAqUZTX09lqoCA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8779285A5BD
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:35:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2BE3280AA32
+ for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:36:45 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3488A14171BB;
- Thu,  1 Jun 2023 16:35:11 +0000 (UTC)
-Date: Thu, 1 Jun 2023 17:35:07 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BE346202696C;
+ Thu,  1 Jun 2023 16:36:44 +0000 (UTC)
+Date: Thu, 1 Jun 2023 17:36:42 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Peter Xu <peterx@redhat.com>
 Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
  Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
- scenarios run non-live
-Message-ID: <ZHjIu+RU51m0bF0q@redhat.com>
+Subject: Re: [PATCH v3 9/9] tests/qtest: massively speed up migration-test
+Message-ID: <ZHjJGjZKgyaT4EO5@redhat.com>
 References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-9-berrange@redhat.com>
- <ZHi5gmd+5pQhDqBF@x1n> <ZHi7xLhUp0+5cay7@redhat.com>
- <ZHi+7bgcHPUisc8d@x1n> <ZHi/beg2UqoEnk/b@redhat.com>
- <ZHjEohiecAsu3ht6@x1n>
+ <20230531132400.1129576-10-berrange@redhat.com>
+ <ZHi9OQz8PGuHMPpN@x1n> <ZHjBw2E+eJKNsniO@redhat.com>
+ <ZHjFzH9zT34MIBEv@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZHjEohiecAsu3ht6@x1n>
+In-Reply-To: <ZHjFzH9zT34MIBEv@x1n>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -90,93 +88,109 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 12:17:38PM -0400, Peter Xu wrote:
-> On Thu, Jun 01, 2023 at 04:55:25PM +0100, Daniel P. Berrangé wrote:
-> > On Thu, Jun 01, 2023 at 11:53:17AM -0400, Peter Xu wrote:
-> > > On Thu, Jun 01, 2023 at 04:39:48PM +0100, Daniel P. Berrangé wrote:
-> > > > On Thu, Jun 01, 2023 at 11:30:10AM -0400, Peter Xu wrote:
-> > > > > Thanks for looking into this.. definitely worthwhile.
-> > > > > 
-> > > > > On Wed, May 31, 2023 at 02:23:59PM +0100, Daniel P. Berrangé wrote:
-> > > > > > There are 27 pre-copy live migration scenarios being tested. In all of
-> > > > > > these we force non-convergance and run for one iteration, then let it
-> > > > > > converge and wait for completion during the second (or following)
-> > > > > > iterations. At 3 mbps bandwidth limit the first iteration takes a very
-> > > > > > long time (~30 seconds).
-> > > > > > 
-> > > > > > While it is important to test the migration passes and convergance
-> > > > > > logic, it is overkill to do this for all 27 pre-copy scenarios. The
-> > > > > > TLS migration scenarios in particular are merely exercising different
-> > > > > > code paths during connection establishment.
-> > > > > > 
-> > > > > > To optimize time taken, switch most of the test scenarios to run
-> > > > > > non-live (ie guest CPUs paused) with no bandwidth limits. This gives
-> > > > > > a massive speed up for most of the test scenarios.
-> > > > > > 
-> > > > > > For test coverage the following scenarios are unchanged
-> > > > > 
-> > > > > Curious how are below chosen?  I assume..
+On Thu, Jun 01, 2023 at 12:22:36PM -0400, Peter Xu wrote:
+> On Thu, Jun 01, 2023 at 05:05:23PM +0100, Daniel P. Berrangé wrote:
+> > On Thu, Jun 01, 2023 at 11:46:01AM -0400, Peter Xu wrote:
+> > > On Wed, May 31, 2023 at 02:24:00PM +0100, Daniel P. Berrangé wrote:
+> > > > The migration test cases that actually exercise live migration want to
+> > > > ensure there is a minimum of two iterations of pre-copy, in order to
+> > > > exercise the dirty tracking code.
 > > > > 
-> > > > Chosen based on whether they exercise code paths that are unique
-> > > > and interesting during the RAM transfer phase.
+> > > > Historically we've queried the migration status, looking for the
+> > > > 'dirty-sync-count' value to increment to track iterations. This was
+> > > > not entirely reliable because often all the data would get transferred
+> > > > quickly enough that the migration would finish before we wanted it
+> > > > to. So we massively dropped the bandwidth and max downtime to
+> > > > guarantee non-convergance. This had the unfortunate side effect
+> > > > that every migration took at least 30 seconds to run (100 MB of
+> > > > dirty pages / 3 MB/sec).
 > > > > 
-> > > > Essentially the goal is that if we have N% code coverage before this
-> > > > patch, then we should still have the same N% code coverage after this
-> > > > patch.
+> > > > This optimization takes a different approach to ensuring that a
+> > > > mimimum of two iterations. Rather than waiting for dirty-sync-count
+> > > > to increment, directly look for an indication that the source VM
+> > > > has dirtied RAM that has already been transferred.
 > > > > 
-> > > > The TLS tests exercise code paths that are unique during the migration
-> > > > establishment phase. Once establishd they don't exercise anything
-> > > > "interesting" during RAM transfer phase. Thus we don't loose code coverage
-> > > > by runing TLS tests non-live.
+> > > > On the source VM a magic marker is written just after the 3 MB
+> > > > offset. The destination VM is now montiored to detect when the
+> > > > magic marker is transferred. This gives a guarantee that the
+> > > > first 3 MB of memory have been transferred. Now the source VM
+> > > > memory is monitored at exactly the 3MB offset until we observe
+> > > > a flip in its value. This gives us a guaranteed that the guest
+> > > > workload has dirtied a byte that has already been transferred.
 > > > > 
-> > > > > 
-> > > > > > 
-> > > > > >  * Precopy with UNIX sockets
-> > > > > 
-> > > > > this one verifies dirty log.
-> > > > > 
-> > > > > >  * Precopy with UNIX sockets and dirty ring tracking
-> > > > > 
-> > > > > ... dirty ring...
-> > > > > 
-> > > > > >  * Precopy with XBZRLE
-> > > > > 
-> > > > > ... xbzrle I think needs a diff on old/new, makes sense.
-> > > > > 
-> > > > > >  * Precopy with UNIX compress
-> > > > > >  * Precopy with UNIX compress (nowait)
-> > > > > >  * Precopy with multifd
-> > > > > 
-> > > > > What about the rest three?  Especially for two compression tests.
+> > > > Since we're looking at a place that is only 3 MB from the start
+> > > > of memory, with the 3 MB/sec bandwidth, this test should complete
+> > > > in 1 second, instead of 30 seconds.
 > > > > 
-> > > > The compress thread logic is unique/interesting during RAM transfer
-> > > > so benefits from running live. The wait vs non-wait scenario tests
-> > > > a distinct codepath/logic.
+> > > > Once we've proved there is some dirty memory, migration can be
+> > > > set back to full speed for the remainder of the 1st iteration,
+> > > > and the entire of the second iteration at which point migration
+> > > > should be complete.
+> > > > 
+> > > > On a test machine this further reduces the migration test time
+> > > > from 8 minutes to 1 minute 40.
 > > > 
-> > > I assume you mean e.g. when compressing with guest page being modified and
-> > > we should survive that rather than crashing the compressor?
+> > > The outcome is definitely nice, but it does looks slightly hacky to me and
+> > > make the test slightly more complicated.
+> > > 
+> > > If it's all about making sure we finish the 1st iteration, can we simply
+> > > add a src qemu parameter "switchover-hold"?  If it's set, src never
+> > > switchover to dst but keeps the iterations.
 > > 
-> > No, i mean the compression code has a significant behaviour difference
-> > between its two tests, because they toggle:
+> > For *most* of the tests, we want to ensure there are a minimum
+> > of 2 iterations. For the XBZRLE test we want to ensure there are
+> > a minimum of 3 iterations, so the cache gets  workout.
 > > 
-> >  @compress-wait-thread: Controls behavior when all compression
-> >      threads are currently busy.  If true (default), wait for a free
-> >      compression thread to become available; otherwise, send the page
-> >      uncompressed.  (Since 3.1)
+> > > Then migrate_ensure_non_converge() will be as simple as setting
+> > > switchover-hold to true.
+> > > 
+> > > I am even thinking whether there can even be real-life use case for that,
+> > > e.g., where a user might want to have a pre-heat of a migration of some VM,
+> > > and trigger it immediately when the admin really wants (the pre-heats moved
+> > > most of the pages and keep doing so).
+> > > 
+> > > It'll be also similar to what Avihai proposed here on switchover-ack, just
+> > > an ack mechanism on the src side:
+> > > 
+> > > https://lore.kernel.org/r/20230530144821.1557-3-avihaih@nvidia.com
 > > 
-> > so we need to exercise the code path that falls back to sending
-> > uncompressed, as well as the code path that waits for free threads.
+> > In general I strongly wanted to avoid adding special logic to the
+> > migration code that makes it directly synchronize with the  test
+> > suite, because once we do that I don't think the test suite is a
+> > providing coverage of the real world usage scenario.
 > 
-> But then the question is why live is needed?
->
-> IIUC whether the wait thing triggers have nothing directly related to VM is
-> live or not, but whether all compress thread busy.  IOW, IIUC all compress
-> paths will be tested even if non-live as long as we feed enough pages to
-> the compressor threads.
+> The problem is non-live is already not real world usage in most cases.  It
+> seems we all agreed that it's the code paths to cover not real world usages
+> in the tests, or maybe not?
 
-If non-live the guest won't have dirtied any pages, so I wasn't
-confident there would be sufficient amount of dirty ram to send
-to trigger this. Possibly that's being too paranoid though
+The cases that i made run non-live are exercising code paths that
+are only relevant during migration setup, so the non-live vs live
+status is irrelevant to the code coverage attained for those tests.
+Other remaining live tests give sufficient coverage for the live
+scenario
+ 
+> > IOW, if we add a switchover-ack feature, we should certainly have
+> > *a* test that uses it, but we should not modify other tests because
+> > we want to exercise the logic as it would run with apps that don't
+> > rely on switchover-ack.
+> > 
+> > Also, this slow migration test is incredibly painful for people right
+> > now, so I'd like to see us get a speed up committed to git quickly.
+> > I don't want to block it on a feature proposal that might yet take
+> > months to merge.
+> 
+> That'll be trivial, afaict.
+> 
+> I just worry that this patch will bring complexity to the test cases,
+> that's another burden we need to carry besides QEMU itself.
+> 
+> If you want, I can try to prepare such a patch before this weekend, and if
+> it's complicated enough and take more than next week to review feel free to
+> go ahead with this one.
+> 
+> I understand the migration test issue was there for a long time.  But still
+> to me it's important on which may be cleaner for the long term too.
+
 
 With regards,
 Daniel
