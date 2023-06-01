@@ -2,58 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE248719BCD
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D57719BD7
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:19:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hCl-0000K4-UK; Thu, 01 Jun 2023 08:15:00 -0400
+	id 1q4hDI-0000Xy-Q8; Thu, 01 Jun 2023 08:15:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCi-00007X-9m
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCl-0000Ov-DP
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCg-0006NF-7n
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:55 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCj-0006Oc-O9
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685621692;
+ s=mimecast20190719; t=1685621697;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=nGACEA2aET2msOqUDIABoGnBLI/7CCZG+nBmgrENL+k=;
- b=NuZrFlmJQXfj0/Gpx6LXDmK6GCf15ZISP1QGDZQkF/hcaosELXsI+iYsD1jRimyhLPNdTW
- 3YRBHUz9i+mvtlcUC8Nmfry/lpY2vFtYuRASWgJwCo3lkD45z9TFGZBFPRU3JgzIw5jm8g
- SkQM181dvH+QtkitmQnA2pktWkutMfc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cNKityIJKk4fsDWWD+cw7VqvMuSsZHYQ4JYdtwxB4TU=;
+ b=f0E4uLQtUPaTjH6FeOp+Kik5TYok5x1g2Lj73MhthVDX+qUxtQJvj5tBY7dZ6j6ztLvrF4
+ l7yoEr7bLCzMM42Fhdy/gF1L+Bk6vdEBToehduqdKCTxP1ijNiZUxPvwJlfzAOA4DXElXs
+ JIcm/QVQscg6lDXNKc1apnCP5aXRuXA=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-487-OL41OmOHPOyGwmlVhlVyPg-1; Thu, 01 Jun 2023 08:14:49 -0400
-X-MC-Unique: OL41OmOHPOyGwmlVhlVyPg-1
+ us-mta-590-TC1fEM2SOKyqpo7Wy9Mw-w-1; Thu, 01 Jun 2023 08:14:52 -0400
+X-MC-Unique: TC1fEM2SOKyqpo7Wy9Mw-w-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD875811E8D;
- Thu,  1 Jun 2023 12:14:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A2393C14AB0;
+ Thu,  1 Jun 2023 12:14:52 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.22.8.170])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CD8452166B25;
- Thu,  1 Jun 2023 12:14:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0C6C22166B25;
+ Thu,  1 Jun 2023 12:14:48 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  Igor Mammedov <imammedo@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH] memory-device: Track used region size in DeviceMemoryState
-Date: Thu,  1 Jun 2023 14:14:36 +0200
-Message-Id: <20230601121447.272487-1-david@redhat.com>
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: [PATCH v3 00/10] memory-device: Some cleanups
+Date: Thu,  1 Jun 2023 14:14:37 +0200
+Message-Id: <20230601121447.272487-2-david@redhat.com>
+In-Reply-To: <20230601121447.272487-1-david@redhat.com>
+References: <20230601121447.272487-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -77,92 +90,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's avoid iterating over all devices and simply track it in the
-DeviceMemoryState.
+Working on adding multi-memslot support for virtio-mem (teaching memory
+device code about memory devices that can consume multiple memslots), I
+have some preparatory cleanups in my queue that make sense independent of
+the actual memory-device/virtio-mem extensions.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/mem/memory-device.c | 22 +++-------------------
- include/hw/boards.h    |  2 ++
- 2 files changed, 5 insertions(+), 19 deletions(-)
+v2 -> v3:
+- "memory-device: Introduce machine_memory_devices_init()"
+-- Declare the function in hw/boards.h
+- "hw/loongarch/virt: Use machine_memory_devices_init()"
+-- Use VIRT_HIGHMEM_BASE
+-- No need to include memory-device.h
+- "hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZ"
+-- Add more details why it's ok to the patch description
+- Adjust to memory_devices_init() -> machine_memory_devices_init()
+- Add RBs
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index 00c7755557..667d56bd29 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -52,28 +52,11 @@ static int memory_device_build_list(Object *obj, void *opaque)
-     return 0;
- }
- 
--static int memory_device_used_region_size(Object *obj, void *opaque)
--{
--    uint64_t *size = opaque;
--
--    if (object_dynamic_cast(obj, TYPE_MEMORY_DEVICE)) {
--        const DeviceState *dev = DEVICE(obj);
--        const MemoryDeviceState *md = MEMORY_DEVICE(obj);
--
--        if (dev->realized) {
--            *size += memory_device_get_region_size(md, &error_abort);
--        }
--    }
--
--    object_child_foreach(obj, memory_device_used_region_size, opaque);
--    return 0;
--}
--
- static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-                                         Error **errp)
- {
-+    const uint64_t used_region_size = ms->device_memory->used_region_size;
-     const uint64_t size = memory_region_size(mr);
--    uint64_t used_region_size = 0;
- 
-     /* we will need a new memory slot for kvm and vhost */
-     if (kvm_enabled() && !kvm_has_free_slot(ms)) {
-@@ -86,7 +69,6 @@ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-     }
- 
-     /* will we exceed the total amount of memory specified */
--    memory_device_used_region_size(OBJECT(ms), &used_region_size);
-     if (used_region_size + size < used_region_size ||
-         used_region_size + size > ms->maxram_size - ms->ram_size) {
-         error_setg(errp, "not enough space, currently 0x%" PRIx64
-@@ -292,6 +274,7 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
-     mr = mdc->get_memory_region(md, &error_abort);
-     g_assert(ms->device_memory);
- 
-+    ms->device_memory->used_region_size += memory_region_size(mr);
-     memory_region_add_subregion(&ms->device_memory->mr,
-                                 addr - ms->device_memory->base, mr);
-     trace_memory_device_plug(DEVICE(md)->id ? DEVICE(md)->id : "", addr);
-@@ -310,6 +293,7 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
-     g_assert(ms->device_memory);
- 
-     memory_region_del_subregion(&ms->device_memory->mr, mr);
-+    ms->device_memory->used_region_size -= memory_region_size(mr);
-     trace_memory_device_unplug(DEVICE(md)->id ? DEVICE(md)->id : "",
-                                mdc->get_addr(md));
- }
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index be06e8a41f..fcaf40b9da 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -296,11 +296,13 @@ struct MachineClass {
-  * address space for memory devices starts
-  * @mr: address space container for memory devices
-  * @dimm_size: the sum of plugged DIMMs' sizes
-+ * @used_region_size: the part of @mr already used by memory devices
-  */
- typedef struct DeviceMemoryState {
-     hwaddr base;
-     MemoryRegion mr;
-     uint64_t dimm_size;
-+    uint64_t used_region_size;
- } DeviceMemoryState;
- 
- /**
+v1 -> v2:
+- Allocate ms->device_memory only if the size > 0.
+- Split it up and include more cleanups
+
+David Hildenbrand (10):
+  memory-device: Unify enabled vs. supported error messages
+  memory-device: Introduce machine_memory_devices_init()
+  hw/arm/virt: Use machine_memory_devices_init()
+  hw/ppc/spapr: Use machine_memory_devices_init()
+  hw/loongarch/virt: Use machine_memory_devices_init()
+  hw/i386/pc: Use machine_memory_devices_init()
+  hw/i386/acpi-build: Rely on machine->device_memory when building SRAT
+  hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
+  memory-device: Refactor memory_device_pre_plug()
+  memory-device: Track used region size in DeviceMemoryState
+
+ hw/arm/virt.c          |  9 +-----
+ hw/i386/acpi-build.c   |  9 ++----
+ hw/i386/pc.c           | 36 +++-------------------
+ hw/loongarch/virt.c    | 12 ++------
+ hw/mem/memory-device.c | 69 +++++++++++++++++++-----------------------
+ hw/ppc/spapr.c         | 37 +++++++++++-----------
+ hw/ppc/spapr_hcall.c   |  2 +-
+ include/hw/boards.h    |  4 +++
+ include/hw/i386/pc.h   |  1 -
+ 9 files changed, 67 insertions(+), 112 deletions(-)
+
 -- 
 2.40.1
 
