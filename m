@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AE071EED6
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FE971EED2
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:26:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4l7k-0003XX-0L; Thu, 01 Jun 2023 12:26:04 -0400
+	id 1q4l7l-0003b8-2F; Thu, 01 Jun 2023 12:26:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q4l7f-0003UD-Ev; Thu, 01 Jun 2023 12:26:01 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1q4l7h-0003Vn-TH; Thu, 01 Jun 2023 12:26:01 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q4l7c-00062C-LC; Thu, 01 Jun 2023 12:25:59 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ id 1q4l7e-00065F-Pf; Thu, 01 Jun 2023 12:26:00 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 351GELGF030680; Thu, 1 Jun 2023 16:25:54 GMT
+ 351GEorh014068; Thu, 1 Jun 2023 16:25:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=grDo/rhldMf7MtETJfVDpiwIhxhJY26o1W8IPAVQ/GE=;
- b=RGNWMOrbzDJz2IPiCHhcSBx2ssxbkmRdU1rncGOOjiwjV0XMHDWWEYU82RKhtcnehlsG
- Oi/xMXV1TlsmB+grRWtnHJrUQaZdI2iwwn94vnq7rjBsaC/wlZXVVRGOinkTqg4kkiiW
- jaL5cSChiqRkv8xIKwiFnEdZbpJ5CcNwFeYhO1PkDLI433GsLfo4bqkTfTu5mTFUYn4P
- sGND9ir4LdMp43ygPG6JPukoy+0ypn6t3htfs/I4T8Yl/Shl65cbePX1KGl8YEdvhuKc
- cjRhNmVRieQUGUazgdtl+Oy3S+KeLElO2wYC1FpVJwfsyZHGnWjAd1bA1K2UWhpGYnmf mA== 
+ bh=rtNBVnsFazn1pD1wC2LLAqVhPLfBxFMSUBohEltDyKo=;
+ b=eyGx6WnsmGFxOf+oCgSBEsNZFiASTEVmhjuDLp7R2Xb6UQEojMU5tWgqPtRHWICW/ZhE
+ Ic/DwfilS+3Sx5v1dHKSTxqODGsN9C170b4ghiYLb4t+TuCZX0kagjNxC8WIKKPKpXwM
+ GjQKTqbBVKytZqNJQnLXN91CbUTYzrTaN/rglV3Ia3RcrZxQcmZLbTNkRnQxZ6PxLXQ3
+ flwI+wti49okguXRbOTeUrwAF2IQoaffJNAcFK1NKDPF4aB4D1cXvbL0djaEFGcnQgaJ
+ s9Dl2G4pzXRFG3SMNQXySQvau/l0RzD9EGUGcDfnNmX9yPLfeUtLpdGfcP894FG19s8A Ig== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxp10akp-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxpc09fe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jun 2023 16:25:53 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 351GFc5o001654;
+ Thu, 01 Jun 2023 16:25:55 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 351GJA52024401;
+ Thu, 1 Jun 2023 16:25:55 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxpc09e5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jun 2023 16:25:55 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35196vBw018354;
  Thu, 1 Jun 2023 16:25:53 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxp10aju-1
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3qu9g5a5y7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jun 2023 16:25:53 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3510vbbQ006682;
- Thu, 1 Jun 2023 16:25:51 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qu94e2mju-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jun 2023 16:25:51 +0000
+ Thu, 01 Jun 2023 16:25:52 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 351GPnWP43450804
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 351GPoa621693020
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jun 2023 16:25:49 GMT
+ Thu, 1 Jun 2023 16:25:50 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09FFD2004D;
- Thu,  1 Jun 2023 16:25:49 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 96D6020040;
+ Thu,  1 Jun 2023 16:25:50 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9155F20040;
- Thu,  1 Jun 2023 16:25:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 20D0F20043;
+ Thu,  1 Jun 2023 16:25:50 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.86.130])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  1 Jun 2023 16:25:48 +0000 (GMT)
+ Thu,  1 Jun 2023 16:25:50 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>, 
  Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 1/4] s390x/tcg: Fix CPU address returned by STIDP
-Date: Thu,  1 Jun 2023 18:25:38 +0200
-Message-Id: <20230601162541.689621-2-iii@linux.ibm.com>
+Subject: [PATCH 2/4] linux-user/elfload: Expose get_elf_hwcap() on s390x
+Date: Thu,  1 Jun 2023 18:25:39 +0200
+Message-Id: <20230601162541.689621-3-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601162541.689621-1-iii@linux.ibm.com>
 References: <20230601162541.689621-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cE1pggHTdAI76k9diCW24_Sr8flRPXQU
-X-Proofpoint-ORIG-GUID: qGAWVzpBVuOyuIFKmu_p2Cf-gcq5LBnC
+X-Proofpoint-ORIG-GUID: jnEd3HPWBU8af0-MwHcZYnM-b7cTHe63
+X-Proofpoint-GUID: 29YPBAA8CIBA1FDdzXmx9-fo1RiuMxbb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- bulkscore=0 suspectscore=0 adultscore=0 mlxlogscore=828 phishscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ phishscore=0 clxscore=1015 mlxlogscore=999 impostorscore=0 spamscore=0
+ adultscore=0 mlxscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2304280000 definitions=main-2306010139
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -113,63 +113,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In qemu-user-s390x, /proc/cpuinfo contains:
+It is required for implementing /proc/cpuinfo emulation.
 
-    cpu number      : 0
-    identification  : 000000
-
-    cpu number      : 1
-    identification  : 400000
-
-The highest nibble is supposed to contain the CPU address, but it's off
-by 2 bits. Fix the shift value and provide a symbolic constant for it.
-
-Fixes: 076d4d39b65f ("s390x/cpumodel: wire up cpu type + id for TCG")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/cpu_models.c |  4 ++--
- target/s390x/cpu_models.h | 10 +++++++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ linux-user/elfload.c | 2 +-
+ linux-user/loader.h  | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 457b5cb10c4..ae8880e81dc 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -607,8 +607,8 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
- #if !defined(CONFIG_USER_ONLY)
-     cpu->env.cpuid = s390_cpuid_from_cpu_model(cpu->model);
-     if (tcg_enabled()) {
--        /* basic mode, write the cpu address into the first 4 bit of the ID */
--        cpu->env.cpuid = deposit64(cpu->env.cpuid, 54, 4, cpu->env.core_id);
-+        cpu->env.cpuid = deposit64(cpu->env.cpuid, CPU_PHYS_ADDR_SHIFT,
-+                                   CPU_PHYS_ADDR_BITS, cpu->env.core_id);
-     }
- #endif
- }
-diff --git a/target/s390x/cpu_models.h b/target/s390x/cpu_models.h
-index fb1adc8b210..cc7305ec213 100644
---- a/target/s390x/cpu_models.h
-+++ b/target/s390x/cpu_models.h
-@@ -96,10 +96,18 @@ static inline bool s390_known_cpu_type(uint16_t type)
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 418ad92598c..49ec9ccc944 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1583,7 +1583,7 @@ static inline void init_thread(struct target_pt_regs *regs,
+ #define GET_FEATURE(_feat, _hwcap) \
+     do { if (s390_has_feat(_feat)) { hwcap |= _hwcap; } } while (0)
+ 
+-static uint32_t get_elf_hwcap(void)
++uint32_t get_elf_hwcap(void)
  {
-     return s390_get_gen_for_cpu_type(type) != 0;
- }
-+#define CPU_ID_SHIFT 32
-+#define CPU_ID_BITS 24
-+/*
-+ * When cpu_id_format is 0 (basic mode), the leftmost 4 bits of cpu_id contain
-+ * the rightmost 4 bits of the physical CPU address.
-+ */
-+#define CPU_PHYS_ADDR_BITS 4
-+#define CPU_PHYS_ADDR_SHIFT (CPU_ID_SHIFT + CPU_ID_BITS - CPU_PHYS_ADDR_BITS)
- static inline uint64_t s390_cpuid_from_cpu_model(const S390CPUModel *model)
- {
-     return ((uint64_t)model->cpu_ver << 56) |
--           ((uint64_t)model->cpu_id << 32) |
-+           ((uint64_t)model->cpu_id << CPU_ID_SHIFT) |
-            ((uint64_t)model->def->type << 16) |
-            (model->def->gen == 7 ? 0 : (uint64_t)model->cpu_id_format << 15);
- }
+     /*
+      * Let's assume we always have esan3 and zarch.
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index f375ee0679b..ad6ca9dbe35 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -56,4 +56,8 @@ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+ 
+ extern unsigned long guest_stack_size;
+ 
++#ifdef TARGET_S390X
++uint32_t get_elf_hwcap(void);
++#endif
++
+ #endif /* LINUX_USER_LOADER_H */
 -- 
 2.40.1
 
