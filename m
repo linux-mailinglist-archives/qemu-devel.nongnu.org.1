@@ -2,111 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C745571948F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F327194D3
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4cwS-00020c-Ow; Thu, 01 Jun 2023 03:41:52 -0400
+	id 1q4dBI-0006EU-OZ; Thu, 01 Jun 2023 03:57:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q4cwQ-0001zu-Ky
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 03:41:50 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q4cwN-0001Er-Jh
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 03:41:50 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-64d293746e0so699654b3a.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 00:41:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685605306; x=1688197306;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bc1VxBw2ts7gzODbDt725l/y9yXi0D1Tw4esM7ANdJo=;
- b=YDujPal7wEEBLnpAJsvdWRdpTPTHWkcgLybiafBwUGy8Gv4A9m7mFoizaRlbqOxVAf
- 03TR1Kk/2g2omrqvungoh3GSuN6YGNnQ6+SC/j2J0RV9XQL4RlXW1yU3OPhywzp3Jf//
- 9b6khcU6Pts1pUs9oG4fuoQOnQCbreK6yl0+QmtMj5pxtbUdsoixB1RGMWMD7rYbgX9M
- qFEUyRjOuqJ6OHPGLRC4g1LVzc0fxo5FFO71B3bljyarT6gj2y+dhL21gOSzKxZqqKJX
- WjvAeU8+st8NK021a35W+pNz1SaePj0A6/zFrLF9k9tA5OTc6g+RSqyHAXZHG0FZ/TDN
- ZmJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685605306; x=1688197306;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bc1VxBw2ts7gzODbDt725l/y9yXi0D1Tw4esM7ANdJo=;
- b=BQkD+Hnfb6mliGc3BxXBGlN/8UDTA8VbUh0Fc2xiHbnpgVzrhRCGSmzd6oiRYBkUJg
- 1hUr/21BRxwC4VdFMCn3w82jvhFtQjiG3RT7+ZkvYHuuu9mSCYQG95795OINzbXNU/JT
- e3sVmvC6Z6pDvqf1mr4l/o0xQgrTMMBcwSGcGyI0vMsibo0mCuXdaKxpEbFNczPK8oQh
- INB0U1VF+9rBliDBAfJwQ+R21CcrPlnitW/WxOEuNN9wWmywgofF8uqJLHMaYoAWtjPw
- iEOYRw2ISD7kvI0IVNRJDtuIF1K36D+I47eRdasv/hbPe0VjukleXfqkw94h/cTx14W+
- utAg==
-X-Gm-Message-State: AC+VfDwm8gKwFHKj4SWPPJr6/flox9cHp8gGMetcAId6BnwWJpGrqGYT
- WWeQcR+4JZHMJimiwY8S7PGHmg==
-X-Google-Smtp-Source: ACHHUZ7TDkTXVGJ/r9kX7PKwjBkqfm4bwdAX6ZtU3aCnPohgVAZ1rbRjP2ABSRQr4SAKEAvK6nYpfA==
-X-Received: by 2002:a05:6a20:3d0c:b0:10b:4539:fa0a with SMTP id
- y12-20020a056a203d0c00b0010b4539fa0amr11339542pzi.1.1685605305794; 
- Thu, 01 Jun 2023 00:41:45 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- h22-20020a62b416000000b0064d1349dc31sm4424818pfn.199.2023.06.01.00.41.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 00:41:45 -0700 (PDT)
-Message-ID: <233b42b2-6fbb-3882-6158-d2a82bf88be1@daynix.com>
-Date: Thu, 1 Jun 2023 16:41:36 +0900
+ (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
+ id 1q4dBG-0006E6-15; Thu, 01 Jun 2023 03:57:10 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
+ id 1q4dBD-0004jI-JB; Thu, 01 Jun 2023 03:57:09 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWz4D4cfMz4x4G;
+ Thu,  1 Jun 2023 17:57:00 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWz4C0Xrrz4whk;
+ Thu,  1 Jun 2023 17:56:58 +1000 (AEST)
+Message-ID: <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
+Date: Thu, 1 Jun 2023 09:56:55 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 0/2] net: Update MemReentrancyGuard for NIC
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: Mauro Matteo Cascella <mcascell@redhat.com>, P J P
- <pj.pandit@yahoo.co.in>, Alexander Bulekov <alxndr@bu.edu>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, Sriram Yagnaraman
- <sriram.yagnaraman@est.tech>, Thomas Huth <huth@tuxfamily.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
- Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Sven Schnelle <svens@stackframe.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Rob Herring <robh@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- xen-devel@lists.xenproject.org
-References: <20230601031859.7115-1-akihiko.odaki@daynix.com>
- <72ccd4c2-7c60-e015-2322-721d09a8334b@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 0/5] target/ppc: initial SMT support in TCG
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <72ccd4c2-7c60-e015-2322-721d09a8334b@linaro.org>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230531012313.19891-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230531012313.19891-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::431;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=vOrz=BV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,60 +62,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/06/01 16:16, Philippe Mathieu-Daudé wrote:
-> On 1/6/23 05:18, Akihiko Odaki wrote:
->> Recently MemReentrancyGuard was added to DeviceState to record that the
->> device is engaging in I/O. The network device backend needs to update it
->> when delivering a packet to a device.
->>
->> This implementation follows what bottom half does, but it does not add
->> a tracepoint for the case that the network device backend started
->> delivering a packet to a device which is already engaging in I/O. This
->> is because such reentrancy frequently happens for
->> qemu_flush_queued_packets() and is insignificant.
->>
->> This series consists of two patches. The first patch makes a bulk 
->> change to
->> add a new parameter to qemu_new_nic() and does not contain behavioral 
->> changes.
->> The second patch actually implements MemReentrancyGuard update.
-> 
-> /me look at the 'net' API.
-> 
-> So the NetReceive* handlers from NetClientInfo process the HW NIC
-> data flow, independently from the CPUs.
-> 
-> IIUC MemReentrancyGuard is supposed to protect reentrancy abuse from
-> CPUs.
-> 
-> NetReceive* handlers aren't restricted to any particular API, they
-> just consume blob of data. Looking at e1000_receive_iov(), this data
-> is filled into memory using the pci_dma_rw() API. pci_dma_rw() gets
-> the AddressSpace to use calling pci_get_address_space(), which returns
-> PCIDevice::bus_master_as. Then we use the dma_memory_rw(), followed
-> by address_space_rw(). Beh, I fail to see why there is reentrancy
-> checks from this NIC DMA HW path.
-> 
-> Maybe the MemoryRegion API isn't the correct place to check for
-> reentrancy abuse and we should do that at the AddressSpace level,
-> keeping DMA ASes clear and only protecting CPU ASes?
+Hello Nick,
 
-The involvement of CPU is not essential in my understanding. A typical 
-scenario of DMA reentrancy is like the following:
-1) The guest configures the DMA destination address register the device 
-has to the address of another device register.
-2) The DMA gets triggered.
-3) The device performs the DMA, writing its own register.
-4) The write causes reentrancy.
-5) The re-entered device code corrupts the device state.
+On 5/31/23 03:23, Nicholas Piggin wrote:
+> Hi,
+> 
+> I'm posting this now just to get some first thoughts. I wouldn't say
+> it's ready but it does actually work with some basic tests including
+> pseries booting a Linux distro. I have powernv booting too, it just
+> requires some more SPRs converted, nothing fundamentally different so
+> for the purpose of this RFC I leave it out.
+> 
+> A couple of things, I don't know the object model well enough to do
+> something nice with topology. Iterating siblings I would have thought
+> should be going to parent core then iterating its children CPUs. Should
+> that be done with the object model, or is it better to add direct
+> pointers in CPUs to core and core to CPUs? It is (semi) important for> performance so maybe that is better than object iterators. If we go that
+> way, the PnvCore and SpaprCore have pointers to the SMT threads already,
+> should those be abstracted go in the CPUCore?
 
-I guess 2) is done by CPU in most cases, but sometimes it happen with 
-another cause. In fact, the current reentrancy protection code covers 
-the case that bottom half handlers triggers DMA. The intention of this 
-series is to extend the coverage and handles the case that incoming 
-network traffic triggers DMA.
+You should be able to move the thread array into the CPUCore. If you do
+that, please check that migration compat is not impacted by the state
+change. However, I am not sure you can use the CPUCore model under the
+insn modeling. Something to check.
 
-The essence of DMA reentrancy is in 3). This happens when the DMA 
-address space contains the MMIO region of the device and there is no 
-involvement of CPU here.
+Anyhow, the way you implemented the loop on the siblings is sufficiently
+fast for a small numbers of CPU and safe, w.r.t to CPU hotplug. So
+I would leave that part for now, if it runs decently with 4*4 vCPUs in
+TCG it should be fine.
+
+Thanks,
+
+C.
+
+
+  
+> The other thing is the serialisation of access. It's using the atomic
+> single stepping for this which... I guess should be sufficient? Is it
+> the best way to do it though? Can a lock be used somehow instead?
+> 
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (5):
+>    target/ppc: gdbstub init spr gdb_id for all CPUs
+>    target/ppc: Add initial flags and helpers for SMT support
+>    target/ppc: Add support for SMT CTRL register
+>    target/ppc: Add msgsnd/p and DPDES SMT support
+>    spapr: Allow up to 8 threads SMT configuration
+> 
+>   hw/ppc/ppc.c                                  |  6 ++
+>   hw/ppc/spapr.c                                |  4 +-
+>   hw/ppc/spapr_cpu_core.c                       |  7 +-
+>   include/hw/ppc/ppc.h                          |  1 +
+>   target/ppc/cpu.h                              | 16 +++-
+>   target/ppc/cpu_init.c                         |  5 +
+>   target/ppc/excp_helper.c                      | 86 ++++++++++++-----
+>   target/ppc/gdbstub.c                          | 32 ++++---
+>   target/ppc/helper.h                           |  4 +-
+>   target/ppc/misc_helper.c                      | 93 +++++++++++++++++--
+>   target/ppc/translate.c                        | 46 ++++++++-
+>   .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
+>   12 files changed, 252 insertions(+), 50 deletions(-)
+> 
+
 
