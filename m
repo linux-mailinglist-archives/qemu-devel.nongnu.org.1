@@ -2,87 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11AE719BBD
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE248719BCD
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:17:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hC5-00068c-3u; Thu, 01 Jun 2023 08:14:17 -0400
+	id 1q4hCl-0000K4-UK; Thu, 01 Jun 2023 08:15:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4hC3-00068L-Cc
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCi-00007X-9m
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4hC1-0006FE-Hv
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:15 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCg-0006NF-7n
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:14:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685621652;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qMKzxvIrC/cJU2/wSGnSwxFp5K4ZX/+ctfA242HtQcI=;
- b=TI8Tv3LPcvo11KquELIKdXXsD9Xa6VUm0GCrM3HROT/b1+DhYdc1B7marTOwyEB112eBiJ
- z7PNc4mOv69M63mU1JysoVnAbRR1kZl8W0oH6HiZV3WZvF6Du/bAuOi/MZjd58CbiRLbCk
- lry27f5AD9EUVzaKtcPTst/xX82j2J8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-q6scuusaP4eVO_8nAld3Aw-1; Thu, 01 Jun 2023 08:14:11 -0400
-X-MC-Unique: q6scuusaP4eVO_8nAld3Aw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30a5d4e5731so404312f8f.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:14:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685621650; x=1688213650;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qMKzxvIrC/cJU2/wSGnSwxFp5K4ZX/+ctfA242HtQcI=;
- b=eHeV7dyBwDGlx+DjQ+TBODAMVrN0RRUkdczxrWKM5gFzbHkmnLxF11q1I0Ohr9Ag9E
- zHx6gFUtjntO5M4NswwxOAm6UQUnA9RU/Vl99qeZHRRo6yfQAjvMewG3K72NvsULd+Su
- YDkQ7WVAi4poZ6R3yGgOM0GHDKOdxoAE3qsl/iVHjFtqgQJoaKbERzvkSRnBqCYLyN8j
- Kcixu06Aov3vnrPLHoQgpDGpMPPYaHedcy9a6v8E95iFbWCSht+QnXKBgkDKlZmV7wrG
- 4Jbl6Lks3JBrNzH0uFRg8h+2uuhNT6W+TUaYvyWN6whdexf2eme7/DHux2jTTeX36F18
- SvIg==
-X-Gm-Message-State: AC+VfDwcL2oam6GQutgYoha9PT6dw9t0jymoJgFxOddE6rmQh9VNQUIa
- TlyiSjsT66IVViHbg0OFlnhRxTwUBp09hYYV0wK5k1XQosHaV7siL+6Vri1xcB3WxBARVvlOVLp
- Unz+zt0PIQE3IDeM=
-X-Received: by 2002:adf:e611:0:b0:30a:f033:10d0 with SMTP id
- p17-20020adfe611000000b0030af03310d0mr1672489wrm.6.1685621650027; 
- Thu, 01 Jun 2023 05:14:10 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6zz7/ABkbXbIGnsqksRODvtb8TeXYNdDOC0uxLcdIODI/CkhUnZ5EOlSRfMehwzCgkoIq95A==
-X-Received: by 2002:adf:e611:0:b0:30a:f033:10d0 with SMTP id
- p17-20020adfe611000000b0030af03310d0mr1672472wrm.6.1685621649730; 
- Thu, 01 Jun 2023 05:14:09 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- p5-20020a5d4585000000b0030796e103a1sm10267749wrq.5.2023.06.01.05.14.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 05:14:09 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 2/9] tests/qtest: add support for callback to receive
- QMP events
-In-Reply-To: <20230531132400.1129576-3-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:53
- +0100")
-References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-3-berrange@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 01 Jun 2023 14:14:08 +0200
-Message-ID: <87zg5js7lb.fsf@secure.mitica>
+ s=mimecast20190719; t=1685621692;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nGACEA2aET2msOqUDIABoGnBLI/7CCZG+nBmgrENL+k=;
+ b=NuZrFlmJQXfj0/Gpx6LXDmK6GCf15ZISP1QGDZQkF/hcaosELXsI+iYsD1jRimyhLPNdTW
+ 3YRBHUz9i+mvtlcUC8Nmfry/lpY2vFtYuRASWgJwCo3lkD45z9TFGZBFPRU3JgzIw5jm8g
+ SkQM181dvH+QtkitmQnA2pktWkutMfc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-487-OL41OmOHPOyGwmlVhlVyPg-1; Thu, 01 Jun 2023 08:14:49 -0400
+X-MC-Unique: OL41OmOHPOyGwmlVhlVyPg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD875811E8D;
+ Thu,  1 Jun 2023 12:14:48 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.22.8.170])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CD8452166B25;
+ Thu,  1 Jun 2023 12:14:47 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH] memory-device: Track used region size in DeviceMemoryState
+Date: Thu,  1 Jun 2023 14:14:36 +0200
+Message-Id: <20230601121447.272487-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -103,55 +74,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> Currently code must call one of the qtest_qmp_event* functions to
-> fetch events. These are only usable if the immediate caller knows
-> the particular event they want to capture, and are only interested
-> in one specific event type. Adding ability to register an event
-> callback lets the caller capture a range of events over any period
-> of time.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+Let's avoid iterating over all devices and simply track it in the
+DeviceMemoryState.
 
-First of all, I *love* the idea of the patch, but ...
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ hw/mem/memory-device.c | 22 +++-------------------
+ include/hw/boards.h    |  2 ++
+ 2 files changed, 5 insertions(+), 19 deletions(-)
 
->  static GHookList abrt_hooks;
-> @@ -703,8 +705,14 @@ QDict *qtest_qmp_receive(QTestState *s)
->          if (!qdict_get_try_str(response, "event")) {
->              return response;
->          }
-> -        /* Stash the event for a later consumption */
-> -        s->pending_events =3D g_list_append(s->pending_events, response);
-> +
-> +        if (s->eventCB) {
-> +            s->eventCB(s, qdict_get_str(response, "event"),
-> +                       response, s->eventData);
-> +        } else {
-> +            /* Stash the event for a later consumption */
-> +            s->pending_events =3D g_list_append(s->pending_events, respo=
-nse);
-> +        }
->      }
-
-s->eventCB returns a bool that you are not using.  I think this part of
-the code would be more usefule if:
-
-        if (!s->eventCB || !s->eventCB(s, qdict_get_str(response, "event"),
-                                       response, s->eventData)) {
-            /* Stash the event for a later consumption */
-            s->pending_events =3D g_list_append(s->pending_events, response=
-);
-        }
-
-So if we are not handling the event, we put it on the pending_events
-list.
-
-What do you think?
-
-Later, Juan.
+diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+index 00c7755557..667d56bd29 100644
+--- a/hw/mem/memory-device.c
++++ b/hw/mem/memory-device.c
+@@ -52,28 +52,11 @@ static int memory_device_build_list(Object *obj, void *opaque)
+     return 0;
+ }
+ 
+-static int memory_device_used_region_size(Object *obj, void *opaque)
+-{
+-    uint64_t *size = opaque;
+-
+-    if (object_dynamic_cast(obj, TYPE_MEMORY_DEVICE)) {
+-        const DeviceState *dev = DEVICE(obj);
+-        const MemoryDeviceState *md = MEMORY_DEVICE(obj);
+-
+-        if (dev->realized) {
+-            *size += memory_device_get_region_size(md, &error_abort);
+-        }
+-    }
+-
+-    object_child_foreach(obj, memory_device_used_region_size, opaque);
+-    return 0;
+-}
+-
+ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
+                                         Error **errp)
+ {
++    const uint64_t used_region_size = ms->device_memory->used_region_size;
+     const uint64_t size = memory_region_size(mr);
+-    uint64_t used_region_size = 0;
+ 
+     /* we will need a new memory slot for kvm and vhost */
+     if (kvm_enabled() && !kvm_has_free_slot(ms)) {
+@@ -86,7 +69,6 @@ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
+     }
+ 
+     /* will we exceed the total amount of memory specified */
+-    memory_device_used_region_size(OBJECT(ms), &used_region_size);
+     if (used_region_size + size < used_region_size ||
+         used_region_size + size > ms->maxram_size - ms->ram_size) {
+         error_setg(errp, "not enough space, currently 0x%" PRIx64
+@@ -292,6 +274,7 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
+     mr = mdc->get_memory_region(md, &error_abort);
+     g_assert(ms->device_memory);
+ 
++    ms->device_memory->used_region_size += memory_region_size(mr);
+     memory_region_add_subregion(&ms->device_memory->mr,
+                                 addr - ms->device_memory->base, mr);
+     trace_memory_device_plug(DEVICE(md)->id ? DEVICE(md)->id : "", addr);
+@@ -310,6 +293,7 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
+     g_assert(ms->device_memory);
+ 
+     memory_region_del_subregion(&ms->device_memory->mr, mr);
++    ms->device_memory->used_region_size -= memory_region_size(mr);
+     trace_memory_device_unplug(DEVICE(md)->id ? DEVICE(md)->id : "",
+                                mdc->get_addr(md));
+ }
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index be06e8a41f..fcaf40b9da 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -296,11 +296,13 @@ struct MachineClass {
+  * address space for memory devices starts
+  * @mr: address space container for memory devices
+  * @dimm_size: the sum of plugged DIMMs' sizes
++ * @used_region_size: the part of @mr already used by memory devices
+  */
+ typedef struct DeviceMemoryState {
+     hwaddr base;
+     MemoryRegion mr;
+     uint64_t dimm_size;
++    uint64_t used_region_size;
+ } DeviceMemoryState;
+ 
+ /**
+-- 
+2.40.1
 
 
