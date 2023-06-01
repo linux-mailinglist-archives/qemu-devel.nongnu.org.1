@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2924F71F3DF
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:31:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 998C171F3ED
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:35:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4oww-0008Q4-9y; Thu, 01 Jun 2023 16:31:10 -0400
+	id 1q4ozw-0003i8-L2; Thu, 01 Jun 2023 16:34:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q4ows-0008LD-DW; Thu, 01 Jun 2023 16:31:06 -0400
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4ozn-0003ga-Th
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 16:34:08 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q4owq-0001xk-8U; Thu, 01 Jun 2023 16:31:06 -0400
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-1a2188fdf17so1236026fac.0; 
- Thu, 01 Jun 2023 13:31:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4ozm-0002ln-BZ
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 16:34:07 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f623adec61so13880995e9.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 13:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685651462; x=1688243462;
+ d=linaro.org; s=google; t=1685651644; x=1688243644;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=r+LMo9avxpIpot6AzgBFtzvQ6QgB1DQfSz/pXLKMJiQ=;
- b=pW3rwJCWf1eYWOo5GOgZRBXzGSQQ7HJsdor9TlvjOU/Rf3n2U2P4VNczTeeXSisky8
- ZNBNAudIy+KysCD/FNOf9Y5PjTlenvwZ58VU0LSsHBYUeMcDXc8XxvLZtZlqSqWfUTIE
- WGSaEFYgupca5kcrxaIyxygb4sg4KL5n/Pd6YIwL/ROjKqMCZOHumFX7EeZvNn210ISH
- Tglk8lV3+vj+geOPoR6I/ob3PvQUyoyThIXmoDACGWY7Lseb1bBhp1Kk4p5n4Z7Pzuw0
- wc18oPlnGbgsiKfEI/QvKky25oJ/Y3f8QTY/yDfiTExu4ht0cvNzeMbDbcxxPrZyQoOJ
- CO/w==
+ bh=+JAka0+tEHpDMSyk+O+xQR7Yhske2YdqVaIN/w1k4wU=;
+ b=PXyD/cFN7q9Apt/IR/diU11MArJVf3BsZWzWERCCM/M7cdkxfmRvWr75rhkbO9snqp
+ XOqtep3+xjPHkS/+V0AVDVY108QD30yQ47/dxKOgRGkx66kmPCks4/rMx4aqt6B6cIlc
+ G3hgCWXr62VE1wz5bi7FIfXVC8Gi5WAFNQcqNaYEYx7FutQ5Zbs9znA6ZDEx9kYIJYl5
+ gbbzEpdvvGf5C1LWQV5H1AN5jmECqwQjIr1xfLJxchYLAaxU+PkYrETNPW2iDHfignhf
+ i8YiDIJj4wiI/gRk6OLoYgEOSJvuv221Ge8oK370chhIh5Q8Xm/496Irfzzz0aOI5PFo
+ EaLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685651462; x=1688243462;
+ d=1e100.net; s=20221208; t=1685651644; x=1688243644;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=r+LMo9avxpIpot6AzgBFtzvQ6QgB1DQfSz/pXLKMJiQ=;
- b=FCROGS+ZvoZnLQpJM/paKfG37x+vRRYv0Qz550gvFUEJke1eaNS2e8cMgOZOcbHSop
- ixBjccx005iRLVbY9aUQbHKCoAY3rgYPSCMuA+tOCFfdyJjp92vMExD/HSa5Ylm7vJg7
- uQ4UuvES5lccZ6yTFfE6PylGAdm6XQhzbIl0gb4vARPqHDncMJm1rFnUi0cV6zKQfWIa
- 6gJxtW0FyIqvH5DvL0G8WPoN0t1t9MrxjBtbb1lwbLurvON3IDdib/BIVg1XboPjw35n
- KOcU7B1OGRkZ0Gdhw/8mKof6fFvrKBTUK5r7cbwilsFjmv5FhQJ++ZOvvlZlt4Hcn3eG
- ReXQ==
-X-Gm-Message-State: AC+VfDyGvqVKxGnL/2P1wABwS2hfkL40smfB3W2x2zNUkMVWuikeSAWe
- EA4D1Z3znusOupm4qhgckUfDDIhWKZ0=
-X-Google-Smtp-Source: ACHHUZ6aiEHZsekcfAJxv0AirNKYMRgTjtH6fkBRpQX+CxEwgsO30hA+mdRkKsFDSW7ixH73ZYU0Vg==
-X-Received: by 2002:a05:6870:712:b0:187:7af4:4cfa with SMTP id
- ea18-20020a056870071200b001877af44cfamr318797oab.9.1685651461740; 
- Thu, 01 Jun 2023 13:31:01 -0700 (PDT)
-Received: from [192.168.68.107] ([177.198.100.141])
+ bh=+JAka0+tEHpDMSyk+O+xQR7Yhske2YdqVaIN/w1k4wU=;
+ b=MB94VctXfwVujXD9rg7kMEub7L0jeliik2W/FF1SxDEiWYsiK11HDGQ4hQFVOR+EuH
+ GcaDGe/ixVIuKEOdssN6+aqfUMz2hVekb6vKsIohWkB7kSTk8ndW6eokiHsZzSCwxdJE
+ ATam9yL9ggRZJCpMTuE/ZZ3GFKNsWi4JcDpIA3Jkacn0uqt47GNwzqpFX4hJue9UIlsW
+ trjGv2WpmxEpuHfbmrVYkG97BIAsAhGDr1FUF+XAlw9oED+h3Kq20zFr6di4p5NV1YrP
+ C0pE5OejTbR8RKC+38UWzylHor/kOBBfjQ1R7sLiCxsoBONN3o24taYi/9JshE4fECCe
+ Ox5A==
+X-Gm-Message-State: AC+VfDy5eiNmxn8ZchE7A7ELaLbEsy0xQNLKako8bPMsWq0ts7A08ynt
+ WPD8+27VRrT8SwlqzM7C+stLGw==
+X-Google-Smtp-Source: ACHHUZ6NrL3rnGBxRAGack5ThemG8fzk7gKw0/hc+SlchVF5lgx9Hiuq2Z4Brl6PqP6FBHDt46br+Q==
+X-Received: by 2002:a1c:7208:0:b0:3f6:7f0:c9a9 with SMTP id
+ n8-20020a1c7208000000b003f607f0c9a9mr382524wmc.33.1685651644731; 
+ Thu, 01 Jun 2023 13:34:04 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.141.224])
  by smtp.gmail.com with ESMTPSA id
- ef17-20020a0568701a9100b0017243edbe5bsm2087394oab.58.2023.06.01.13.30.59
+ 8-20020a05600c230800b003f6cf9afc25sm3410029wmo.40.2023.06.01.13.34.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 13:31:01 -0700 (PDT)
-Message-ID: <749b68b2-20fa-8a8d-2473-daac5f092151@gmail.com>
-Date: Thu, 1 Jun 2023 17:30:58 -0300
+ Thu, 01 Jun 2023 13:34:04 -0700 (PDT)
+Message-ID: <c2ed4756-1a5e-88b4-b02b-21660c041f7c@linaro.org>
+Date: Thu, 1 Jun 2023 22:34:01 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4] target/ppc: Fix PMU hflags calculation
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v3 1/3] hw/i2c: add smbus pec utility function
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230530130447.372617-1-npiggin@gmail.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230530130447.372617-1-npiggin@gmail.com>
+To: Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org
+Cc: Corey Minyard <cminyard@mvista.com>, Keith Busch <kbusch@kernel.org>,
+ Jason Wang <jasowang@redhat.com>, Lior Weintraub <liorw@pliops.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
+ qemu-arm@nongnu.org, Matt Johnston <matt@codeconstruct.com.au>,
+ Peter Delevoryas <peter@pjd.dev>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-block@nongnu.org,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
+ <peter.maydell@linaro.org>, gost.dev@samsung.com
+References: <20230531114744.9946-1-its@irrelevant.dk>
+ <20230531114744.9946-2-its@irrelevant.dk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230531114744.9946-2-its@irrelevant.dk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x33.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,328 +101,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
-
-and queued. Thanks,
-
-
-Daniel
-
-On 5/30/23 10:04, Nicholas Piggin wrote:
-> Some of the PMU hflags bits can go out of synch, for example a store to
-> MMCR0 with PMCjCE=1 fails to update hflags correctly and results in
-> hflags mismatch:
+On 31/5/23 13:47, Klaus Jensen wrote:
+> From: Klaus Jensen <k.jensen@samsung.com>
 > 
->    qemu: fatal: TCG hflags mismatch (current:0x2408003d rebuilt:0x240a003d)
+> Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
+> message.
 > 
-> This can be reproduced by running perf on a recent machine.
-> 
-> Some of the fragility here is the duplication of PMU hflags calculations.
-> This change consolidates that in a single place to update pmu-related
-> hflags, to be called after a well defined state changes.
-> 
-> The post-load PMU update is pulled out of the MSR update because it does
-> not depend on the MSR value.
-> 
-> Fixes: 8b3d1c49a9f0 ("target/ppc: Add new PMC HFLAGS")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 > ---
-> This is a significant rework from v3, which missed a couple of hflags.
-> I think it's more robust.
+>   hw/i2c/smbus_master.c         | 28 ++++++++++++++++++++++++++++
+>   include/hw/i2c/smbus_master.h |  2 ++
+>   2 files changed, 30 insertions(+)
 > 
-> Question came up whether we should rearm overflow timers in something
-> like cpu post load, but that's for a later patch.
-> 
-> This is probably a stable candidate but I will wait for upstream
-> before ccing.
-> 
-> Thanks,
-> Nick
-> ---
-> 
->   target/ppc/cpu_init.c    |  2 +-
->   target/ppc/helper_regs.c | 73 ++++++++++++++++++++++++++++++----------
->   target/ppc/helper_regs.h |  1 +
->   target/ppc/machine.c     |  8 ++---
->   target/ppc/power8-pmu.c  | 38 ++++++++++++---------
->   target/ppc/power8-pmu.h  |  4 +--
->   6 files changed, 85 insertions(+), 41 deletions(-)
-> 
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 05bf73296b..398f2d9966 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -7083,7 +7083,7 @@ static void ppc_cpu_reset_hold(Object *obj)
->           if (env->mmu_model != POWERPC_MMU_REAL) {
->               ppc_tlb_invalidate_all(env);
->           }
-> -        pmu_update_summaries(env);
-> +        pmu_mmcr01_updated(env);
->       }
+> diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
+> index 6a53c34e70b7..47f9eb24e033 100644
+> --- a/hw/i2c/smbus_master.c
+> +++ b/hw/i2c/smbus_master.c
+> @@ -15,6 +15,34 @@
+>   #include "hw/i2c/i2c.h"
+>   #include "hw/i2c/smbus_master.h"
 >   
->       /* clean any pending stop state */
-> diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-> index fb351c303f..bc7e9d7eda 100644
-> --- a/target/ppc/helper_regs.c
-> +++ b/target/ppc/helper_regs.c
-> @@ -47,6 +47,48 @@ void hreg_swap_gpr_tgpr(CPUPPCState *env)
->       env->tgpr[3] = tmp;
->   }
->   
-> +static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
+> +static uint8_t crc8(uint16_t data)
 > +{
-> +    uint32_t hflags = 0;
+> +#define POLY (0x1070U << 3)
+
+static const unsigned crc8_poly = ..., but why not inline the single use?
+   data ^= 0x1070U << 3;
+and
+   data <<= 1;
+
+> +    int i;
 > +
-> +#if defined(TARGET_PPC64)
-> +    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC0) {
-> +        hflags |= 1 << HFLAGS_PMCC0;
-> +    }
-> +    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC1) {
-> +        hflags |= 1 << HFLAGS_PMCC1;
-> +    }
-> +    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE) {
-> +        hflags |= 1 << HFLAGS_PMCJCE;
+> +    for (i = 0; i < 8; i++) {
+> +        if (data & 0x8000) {
+> +            data = data ^ POLY;
+> +        }
+> +
+> +        data = data << 1;
 > +    }
 > +
-> +#ifndef CONFIG_USER_ONLY
-> +    if (env->pmc_ins_cnt) {
-> +        hflags |= 1 << HFLAGS_INSN_CNT;
-> +    }
-> +    if (env->pmc_ins_cnt & 0x1e) {
-> +        hflags |= 1 << HFLAGS_PMC_OTHER;
-> +    }
-> +#endif
-> +#endif
-> +
-> +    return hflags;
+> +    return (uint8_t)(data >> 8);
+> +#undef POLY
 > +}
-> +
-> +/* Mask of all PMU hflags */
-> +static uint32_t hreg_compute_pmu_hflags_mask(CPUPPCState *env)
-> +{
-> +    uint32_t hflags_mask = 0;
-> +#if defined(TARGET_PPC64)
-> +    hflags_mask |= 1 << HFLAGS_PMCC0;
-> +    hflags_mask |= 1 << HFLAGS_PMCC1;
-> +    hflags_mask |= 1 << HFLAGS_PMCJCE;
-> +    hflags_mask |= 1 << HFLAGS_INSN_CNT;
-> +    hflags_mask |= 1 << HFLAGS_PMC_OTHER;
-> +#endif
-> +    return hflags_mask;
-> +}
-> +
->   static uint32_t hreg_compute_hflags_value(CPUPPCState *env)
->   {
->       target_ulong msr = env->msr;
-> @@ -104,30 +146,12 @@ static uint32_t hreg_compute_hflags_value(CPUPPCState *env)
->       if (env->spr[SPR_LPCR] & LPCR_HR) {
->           hflags |= 1 << HFLAGS_HR;
->       }
-> -    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC0) {
-> -        hflags |= 1 << HFLAGS_PMCC0;
-> -    }
-> -    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC1) {
-> -        hflags |= 1 << HFLAGS_PMCC1;
-> -    }
-> -    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE) {
-> -        hflags |= 1 << HFLAGS_PMCJCE;
-> -    }
->   
->   #ifndef CONFIG_USER_ONLY
->       if (!env->has_hv_mode || (msr & (1ull << MSR_HV))) {
->           hflags |= 1 << HFLAGS_HV;
->       }
->   
-> -#if defined(TARGET_PPC64)
-> -    if (env->pmc_ins_cnt) {
-> -        hflags |= 1 << HFLAGS_INSN_CNT;
-> -    }
-> -    if (env->pmc_ins_cnt & 0x1e) {
-> -        hflags |= 1 << HFLAGS_PMC_OTHER;
-> -    }
-> -#endif
-> -
->       /*
->        * This is our encoding for server processors. The architecture
->        * specifies that there is no such thing as userspace with
-> @@ -172,6 +196,8 @@ static uint32_t hreg_compute_hflags_value(CPUPPCState *env)
->       hflags |= dmmu_idx << HFLAGS_DMMU_IDX;
->   #endif
->   
-> +    hflags |= hreg_compute_pmu_hflags_value(env);
-> +
->       return hflags | (msr & msr_mask);
->   }
->   
-> @@ -180,6 +206,17 @@ void hreg_compute_hflags(CPUPPCState *env)
->       env->hflags = hreg_compute_hflags_value(env);
->   }
->   
-> +/*
-> + * This can be used as a lighter-weight alternative to hreg_compute_hflags
-> + * when PMU MMCR0 or pmc_ins_cnt changes. pmc_ins_cnt is changed by
-> + * pmu_update_summaries.
-> + */
-> +void hreg_update_pmu_hflags(CPUPPCState *env)
-> +{
-> +    env->hflags &= ~hreg_compute_pmu_hflags_mask(env);
-> +    env->hflags |= hreg_compute_pmu_hflags_value(env);
-> +}
-> +
->   #ifdef CONFIG_DEBUG_TCG
->   void cpu_get_tb_cpu_state(CPUPPCState *env, target_ulong *pc,
->                             target_ulong *cs_base, uint32_t *flags)
-> diff --git a/target/ppc/helper_regs.h b/target/ppc/helper_regs.h
-> index 42f26870b9..8196c1346d 100644
-> --- a/target/ppc/helper_regs.h
-> +++ b/target/ppc/helper_regs.h
-> @@ -22,6 +22,7 @@
->   
->   void hreg_swap_gpr_tgpr(CPUPPCState *env);
->   void hreg_compute_hflags(CPUPPCState *env);
-> +void hreg_update_pmu_hflags(CPUPPCState *env);
->   void cpu_interrupt_exittb(CPUState *cs);
->   int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv);
->   
-> diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-> index be6eb3d968..134b16c625 100644
-> --- a/target/ppc/machine.c
-> +++ b/target/ppc/machine.c
-> @@ -21,10 +21,6 @@ static void post_load_update_msr(CPUPPCState *env)
->        */
->       env->msr ^= env->msr_mask & ~((1ULL << MSR_TGPR) | MSR_HVB);
->       ppc_store_msr(env, msr);
-> -
-> -    if (tcg_enabled()) {
-> -        pmu_update_summaries(env);
-> -    }
->   }
->   
->   static int get_avr(QEMUFile *f, void *pv, size_t size,
-> @@ -317,6 +313,10 @@ static int cpu_post_load(void *opaque, int version_id)
->   
->       post_load_update_msr(env);
->   
-> +    if (tcg_enabled()) {
-> +        pmu_mmcr01_updated(env);
-> +    }
-> +
->       return 0;
->   }
->   
-> diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
-> index 64a64865d7..c4c331c6b5 100644
-> --- a/target/ppc/power8-pmu.c
-> +++ b/target/ppc/power8-pmu.c
-> @@ -31,7 +31,11 @@ static bool pmc_has_overflow_enabled(CPUPPCState *env, int sprn)
->       return env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE;
->   }
->   
-> -void pmu_update_summaries(CPUPPCState *env)
-> +/*
-> + * Called after MMCR0 or MMCR1 changes to update pmc_ins_cnt and pmc_cyc_cnt.
-> + * hflags must subsequently be updated.
-> + */
-> +static void pmu_update_summaries(CPUPPCState *env)
->   {
->       target_ulong mmcr0 = env->spr[SPR_POWER_MMCR0];
->       target_ulong mmcr1 = env->spr[SPR_POWER_MMCR1];
-> @@ -39,7 +43,7 @@ void pmu_update_summaries(CPUPPCState *env)
->       int cyc_cnt = 0;
->   
->       if (mmcr0 & MMCR0_FC) {
-> -        goto hflags_calc;
-> +        goto out;
->       }
->   
->       if (!(mmcr0 & MMCR0_FC14) && mmcr1 != 0) {
-> @@ -73,10 +77,19 @@ void pmu_update_summaries(CPUPPCState *env)
->       ins_cnt |= !(mmcr0 & MMCR0_FC56) << 5;
->       cyc_cnt |= !(mmcr0 & MMCR0_FC56) << 6;
->   
-> - hflags_calc:
-> + out:
->       env->pmc_ins_cnt = ins_cnt;
->       env->pmc_cyc_cnt = cyc_cnt;
-> -    env->hflags = deposit32(env->hflags, HFLAGS_INSN_CNT, 1, ins_cnt != 0);
-> +}
-> +
-> +void pmu_mmcr01_updated(CPUPPCState *env)
-> +{
-> +    pmu_update_summaries(env);
-> +    hreg_update_pmu_hflags(env);
-> +    /*
-> +     * Should this update overflow timers (if mmcr0 is updated) so they
-> +     * get set in cpu_post_load?
-> +     */
->   }
->   
->   static bool pmu_increment_insns(CPUPPCState *env, uint32_t num_insns)
-> @@ -234,18 +247,11 @@ static void pmu_delete_timers(CPUPPCState *env)
->   
->   void helper_store_mmcr0(CPUPPCState *env, target_ulong value)
->   {
-> -    bool hflags_pmcc0 = (value & MMCR0_PMCC0) != 0;
-> -    bool hflags_pmcc1 = (value & MMCR0_PMCC1) != 0;
-> -
->       pmu_update_cycles(env);
->   
->       env->spr[SPR_POWER_MMCR0] = value;
->   
-> -    /* MMCR0 writes can change HFLAGS_PMCC[01] and HFLAGS_INSN_CNT */
-> -    env->hflags = deposit32(env->hflags, HFLAGS_PMCC0, 1, hflags_pmcc0);
-> -    env->hflags = deposit32(env->hflags, HFLAGS_PMCC1, 1, hflags_pmcc1);
-> -
-> -    pmu_update_summaries(env);
-> +    pmu_mmcr01_updated(env);
->   
->       /* Update cycle overflow timers with the current MMCR0 state */
->       pmu_update_overflow_timers(env);
-> @@ -257,8 +263,7 @@ void helper_store_mmcr1(CPUPPCState *env, uint64_t value)
->   
->       env->spr[SPR_POWER_MMCR1] = value;
->   
-> -    /* MMCR1 writes can change HFLAGS_INSN_CNT */
-> -    pmu_update_summaries(env);
-> +    pmu_mmcr01_updated(env);
->   }
->   
->   target_ulong helper_read_pmc(CPUPPCState *env, uint32_t sprn)
-> @@ -287,8 +292,8 @@ static void fire_PMC_interrupt(PowerPCCPU *cpu)
->           env->spr[SPR_POWER_MMCR0] &= ~MMCR0_FCECE;
->           env->spr[SPR_POWER_MMCR0] |= MMCR0_FC;
->   
-> -        /* Changing MMCR0_FC requires a new HFLAGS_INSN_CNT calc */
-> -        pmu_update_summaries(env);
-> +        /* Changing MMCR0_FC requires summaries and hflags update */
-> +        pmu_mmcr01_updated(env);
->   
->           /*
->            * Delete all pending timers if we need to freeze
-> @@ -299,6 +304,7 @@ static void fire_PMC_interrupt(PowerPCCPU *cpu)
->       }
->   
->       if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMAE) {
-> +        /* These MMCR0 bits do not require summaries or hflags update. */
->           env->spr[SPR_POWER_MMCR0] &= ~MMCR0_PMAE;
->           env->spr[SPR_POWER_MMCR0] |= MMCR0_PMAO;
->       }
-> diff --git a/target/ppc/power8-pmu.h b/target/ppc/power8-pmu.h
-> index c0093e2219..775e640053 100644
-> --- a/target/ppc/power8-pmu.h
-> +++ b/target/ppc/power8-pmu.h
-> @@ -18,10 +18,10 @@
->   #define PMC_COUNTER_NEGATIVE_VAL 0x80000000UL
->   
->   void cpu_ppc_pmu_init(CPUPPCState *env);
-> -void pmu_update_summaries(CPUPPCState *env);
-> +void pmu_mmcr01_updated(CPUPPCState *env);
->   #else
->   static inline void cpu_ppc_pmu_init(CPUPPCState *env) { }
-> -static inline void pmu_update_summaries(CPUPPCState *env) { }
-> +static inline void pmu_mmcr01_updated(CPUPPCState *env) { }
->   #endif
->   
->   #endif
+
+We have "qemu/crc32c.h", maybe we could have a similar crc8.h. Just 
+wondering...
 
