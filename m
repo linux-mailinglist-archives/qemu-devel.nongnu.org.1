@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00E971A161
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE55F71A175
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:01:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4jn7-0004FJ-BT; Thu, 01 Jun 2023 11:00:42 -0400
+	id 1q4jnh-0004TK-Fd; Thu, 01 Jun 2023 11:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4jmn-00047C-9g
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:00:25 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
+ id 1q4jne-0004Rv-SN
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:14 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4jmk-0006cH-Dv
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:00:21 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-64fd7723836so619743b3a.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:00:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
+ id 1q4jnb-0006to-Li
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:14 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-973bf581759so135588366b.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:01:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685631616; x=1688223616;
+ d=streamhpc-com.20221208.gappssmtp.com; s=20221208; t=1685631669; x=1688223669;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=+8rwAKfFTzaxsQnHIy4Xv+vjlBMMTYcf/gqqPYZmY4o=;
- b=jxNfv/5w9pF7kPvkuyV5NKv0mPhkn1KcuAtavuj0V3QACnFbL2kdTnqbs5ZOo70BqU
- zNFslfsH+5Dlty3Evon19OOSgOnF/4nP2jzFaS/HSZamZWhSaroN1aAGX+TOlmltCVRA
- +iw04ZdZgy79Yp3rWLpgj6/8AI1LVIleZnErJ+qn4T5pM5vV2+rdqaJFf/vqMP0lw1my
- qwq5+70KfHoYZZ0WG0c3Lz1l1Z387j6NgNJ+3oG/Ee+kHGhprl4OoJlnhMECxAIPGwqS
- wILxGy1IaUOrS+1/CnA3xIufaIWUZrM+zKsbiTtZ9KJ0/+7rmIpB4alg9RbmGUdmI2rf
- Op2A==
+ bh=wR6iaCRu6kOBQfYwToBY3fa3qUbFrqLJXX7vZRcNXYU=;
+ b=aLs6ZPkSS5IvNTqLR7tJF03n3mtAhjDLcKUjhqRX1d/LpJ7oVpHXy7eWLkLr/pvEN8
+ 88yRGRPfkulChENRCzB12XYeTPBbaGHniYFweh0FOtvjQO1CrpoXN2jWHgcdGxIjk8nd
+ d31NGnihPCSTErmzeNEoEpvi3bG3Q88PUUMKUJlHAdBSNykwXDVeFBfD42gI27PHaJ0W
+ chJQSbGaGHdKdAcdCezxUpLVIgd52lTjhfOyTKZRa6KlGYgGj3eli3OqBxKFCBWbRxlT
+ Vo3EEQN9NVGJJZu9OU4ugTcpcI/7+l8SYZQYOmQKWZm8D0XHpUSZvS+jGSdiiPV6RdYT
+ t54A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685631616; x=1688223616;
+ d=1e100.net; s=20221208; t=1685631669; x=1688223669;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+8rwAKfFTzaxsQnHIy4Xv+vjlBMMTYcf/gqqPYZmY4o=;
- b=JZtEn03bRMky/qBryY5KdFk/vAbwiOrzEZMjDhVa0QXm0Nd7h1OpLDAwAg6mQhSCYk
- 4/lkuwBpah46o7YzjmjE5/pVtjazA6GZ8hpW1TiWr7yfZioZIlodCTTmw1mz6j9vrjCA
- Boa44O1Sp5Uaw1kcm/jzGeVXjTETRqbbS73mAdPaCXPpy3ukA9+4Gx+66r+PSPZV0W3I
- hnRKtxOnBJcJhPB95rcQN4tYfR5La6Jk6Q98KhPR3Y08vlAOhi/hSz8tXneOzLDX9Xf/
- 0ye9FFBe6aDh306vHPBGyid3LT+oVJnYR30qd6DgmQYxbVVpmf8MWwag4s9o663D7UnX
- qb1g==
-X-Gm-Message-State: AC+VfDyoNof4+mq0rX6n7ETtvtKdx0orIEC7+LIiQLtZPAHsxjWIDGnF
- bX7T5ywU1YBk0DgDMGxa/iHK3A==
-X-Google-Smtp-Source: ACHHUZ4GV1+OR2sd4npWTEGbWudGc+rhoZB4UtZv5qsbPWFZ/UzHbRa6Xs8O/N/Dv1BCfTGABnEjRg==
-X-Received: by 2002:a05:6a00:c82:b0:64d:22db:1023 with SMTP id
- a2-20020a056a000c8200b0064d22db1023mr8813391pfv.22.1685631615716; 
- Thu, 01 Jun 2023 08:00:15 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c935:f07f:4b59:7091?
- ([2602:ae:1598:4c01:c935:f07f:4b59:7091])
- by smtp.gmail.com with ESMTPSA id
- j10-20020aa78d0a000000b0063b6cccd5dfsm4034446pfe.195.2023.06.01.08.00.14
+ bh=wR6iaCRu6kOBQfYwToBY3fa3qUbFrqLJXX7vZRcNXYU=;
+ b=i3j6/UrrrH/S18kLRakOzypVRfpyvbLwQpD1AVJbeC+Em0Fjlw0jGxCCbvjy/F3004
+ slDzfrZxU0thARkZ/VO7MTPexVbue4lclHYzhoZE2/t9u2N0nf9hMTXU/NjPwlOEQeI7
+ rUusQiE2xDNXbtVOY6G7yee557OrSgHl5mM67+wcw5xoBtUyGDpEoIOBuUFkkRE3JEag
+ 5PObuZ1OuIeMd1N+KggFInkJs2b2vDK2IaWh+Yhjy7zBOw0hkeq5yIL61r7L0pLiIlnO
+ l16CJ3JEGnU8rQcbif/qgORcLGgd4vSsR2/2vxBn46r2ePtJASz4I2mg0mVC+GkKd6Yh
+ NXmQ==
+X-Gm-Message-State: AC+VfDz4UozSSilTOA81M/c/5RzBdjxc1SC4Wz7is2dApopVo3mkZQxf
+ 5dMjKxZLaLf6g8jDoVXSW3YUtw==
+X-Google-Smtp-Source: ACHHUZ7wA+eAgJ6/WAAjDBPC9z1gk0kX5uXfGL7F8RbG84kAi0y4t6PrzhFA1ooclgmmsfqfcGfFKA==
+X-Received: by 2002:a17:907:a09:b0:974:5480:171e with SMTP id
+ bb9-20020a1709070a0900b009745480171emr555457ejc.32.1685631668829; 
+ Thu, 01 Jun 2023 08:01:08 -0700 (PDT)
+Received: from [192.168.8.135] (095-097-139-014.static.chello.nl.
+ [95.97.139.14]) by smtp.gmail.com with ESMTPSA id
+ s15-20020a170906960f00b00966069b78absm10599201ejx.192.2023.06.01.08.01.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 08:00:15 -0700 (PDT)
-Message-ID: <f2596b97-01e1-0ea4-c82e-1d53e5172dc1@linaro.org>
-Date: Thu, 1 Jun 2023 08:00:13 -0700
+ Thu, 01 Jun 2023 08:01:08 -0700 (PDT)
+Message-ID: <0de45ad8-0b7d-f4db-e9df-0f74cb9527cb@streamhpc.com>
+Date: Thu, 1 Jun 2023 17:01:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/2] bulk: Remove pointless QOM casts
+ Thunderbird/102.10.1
+Subject: Re: [PATCH] vfio: Implement a common device info helper
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: qemu-riscv@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org
-References: <20230601093452.38972-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230601093452.38972-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org
+Cc: clg@redhat.com, philmd@linaro.org
+References: <20230601144506.2105353-1-alex.williamson@redhat.com>
+From: Robin Voetter <robin@streamhpc.com>
+In-Reply-To: <20230601144506.2105353-1-alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=robin@streamhpc.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,21 +94,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/23 02:34, Philippe Mathieu-Daudé wrote:
-> As per Markus suggestion in [*], use Coccinelle to remove
-> pointless QOM cast macro uses. Since we have more than 1000
-> QOM types, add a script to generate the semantic patch.
+
+
+On 6/1/23 16:45, Alex Williamson wrote:
+> A common helper implementing the realloc algorithm for handling
+> capabilities.
 > 
-> [*]https://lore.kernel.org/qemu-devel/87mt1jafjt.fsf@pond.sub.org/
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+
+Reviewed-by: Robin Voetter <robin@streamhpc.com>
+
+> ---
 > 
-> Philippe Mathieu-Daudé (2):
->    scripts: Add qom-cast-macro-clean-cocci-gen.py
->    bulk: Remove pointless QOM casts
-
-Cool!
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+> RFCv2 -> v1: Remove spurious semicolon
+> 
+>  hw/s390x/s390-pci-vfio.c      | 37 ++++------------------------
+>  hw/vfio/common.c              | 46 ++++++++++++++++++++++++++---------
+>  include/hw/vfio/vfio-common.h |  1 +
+>  3 files changed, 41 insertions(+), 43 deletions(-)
+> 
+> diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
+> index f51190d4662f..59a2e03873bd 100644
+> --- a/hw/s390x/s390-pci-vfio.c
+> +++ b/hw/s390x/s390-pci-vfio.c
+> @@ -289,38 +289,11 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
+>      memcpy(pbdev->zpci_fn.pfip, cap->pfip, CLP_PFIP_NR_SEGMENTS);
+>  }
+>  
+> -static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev,
+> -                                                uint32_t argsz)
+> +static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev)
+>  {
+> -    struct vfio_device_info *info = g_malloc0(argsz);
+> -    VFIOPCIDevice *vfio_pci;
+> -    int fd;
+> +    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
+>  
+> -    vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
+> -    fd = vfio_pci->vbasedev.fd;
+> -
+> -    /*
+> -     * If the specified argsz is not large enough to contain all capabilities
+> -     * it will be updated upon return from the ioctl.  Retry until we have
+> -     * a big enough buffer to hold the entire capability chain.  On error,
+> -     * just exit and rely on CLP defaults.
+> -     */
+> -retry:
+> -    info->argsz = argsz;
+> -
+> -    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
+> -        trace_s390_pci_clp_dev_info(vfio_pci->vbasedev.name);
+> -        g_free(info);
+> -        return NULL;
+> -    }
+> -
+> -    if (info->argsz > argsz) {
+> -        argsz = info->argsz;
+> -        info = g_realloc(info, argsz);
+> -        goto retry;
+> -    }
+> -
+> -    return info;
+> +    return vfio_get_device_info(vfio_pci->vbasedev.fd);
+>  }
+>  
+>  /*
+> @@ -335,7 +308,7 @@ bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
+>  
+>      assert(fh);
+>  
+> -    info = get_device_info(pbdev, sizeof(*info));
+> +    info = get_device_info(pbdev);
+>      if (!info) {
+>          return false;
+>      }
+> @@ -356,7 +329,7 @@ void s390_pci_get_clp_info(S390PCIBusDevice *pbdev)
+>  {
+>      g_autofree struct vfio_device_info *info = NULL;
+>  
+> -    info = get_device_info(pbdev, sizeof(*info));
+> +    info = get_device_info(pbdev);
+>      if (!info) {
+>          return;
+>      }
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 78358ede2764..ed142296e9fe 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -2843,11 +2843,35 @@ void vfio_put_group(VFIOGroup *group)
+>      }
+>  }
+>  
+> +struct vfio_device_info *vfio_get_device_info(int fd)
+> +{
+> +    struct vfio_device_info *info;
+> +    uint32_t argsz = sizeof(*info);
+> +
+> +    info = g_malloc0(argsz);
+> +
+> +retry:
+> +    info->argsz = argsz;
+> +
+> +    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
+> +        g_free(info);
+> +        return NULL;
+> +    }
+> +
+> +    if (info->argsz > argsz) {
+> +        argsz = info->argsz;
+> +        info = g_realloc(info, argsz);
+> +        goto retry;
+> +    }
+> +
+> +    return info;
+> +}
+> +
+>  int vfio_get_device(VFIOGroup *group, const char *name,
+>                      VFIODevice *vbasedev, Error **errp)
+>  {
+> -    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
+> -    int ret, fd;
+> +    g_autofree struct vfio_device_info *info = NULL;
+> +    int fd;
+>  
+>      fd = ioctl(group->fd, VFIO_GROUP_GET_DEVICE_FD, name);
+>      if (fd < 0) {
+> @@ -2859,11 +2883,11 @@ int vfio_get_device(VFIOGroup *group, const char *name,
+>          return fd;
+>      }
+>  
+> -    ret = ioctl(fd, VFIO_DEVICE_GET_INFO, &dev_info);
+> -    if (ret) {
+> +    info = vfio_get_device_info(fd);
+> +    if (!info) {
+>          error_setg_errno(errp, errno, "error getting device info");
+>          close(fd);
+> -        return ret;
+> +        return -1;
+>      }
+>  
+>      /*
+> @@ -2891,14 +2915,14 @@ int vfio_get_device(VFIOGroup *group, const char *name,
+>      vbasedev->group = group;
+>      QLIST_INSERT_HEAD(&group->device_list, vbasedev, next);
+>  
+> -    vbasedev->num_irqs = dev_info.num_irqs;
+> -    vbasedev->num_regions = dev_info.num_regions;
+> -    vbasedev->flags = dev_info.flags;
+> +    vbasedev->num_irqs = info->num_irqs;
+> +    vbasedev->num_regions = info->num_regions;
+> +    vbasedev->flags = info->flags;
+> +
+> +    trace_vfio_get_device(name, info->flags, info->num_regions, info->num_irqs);
+>  
+> -    trace_vfio_get_device(name, dev_info.flags, dev_info.num_regions,
+> -                          dev_info.num_irqs);
+> +    vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
+>  
+> -    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
+>      return 0;
+>  }
+>  
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index eed244f25f34..a8dcda592c08 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -212,6 +212,7 @@ void vfio_region_finalize(VFIORegion *region);
+>  void vfio_reset_handler(void *opaque);
+>  VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
+>  void vfio_put_group(VFIOGroup *group);
+> +struct vfio_device_info *vfio_get_device_info(int fd);
+>  int vfio_get_device(VFIOGroup *group, const char *name,
+>                      VFIODevice *vbasedev, Error **errp);
+>  
 
