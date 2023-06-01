@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31D1719BEA
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59175719BF5
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:22:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hFu-0004pT-3J; Thu, 01 Jun 2023 08:18:14 -0400
+	id 1q4hJA-0000yV-5J; Thu, 01 Jun 2023 08:21:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4hFk-0004iR-2l
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:18:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q4hIP-0000U8-GX
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:20:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q4hFi-0007Wj-80
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:18:03 -0400
+ id 1q4hIG-0008KQ-QS
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:20:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685621881;
+ s=mimecast20190719; t=1685622039;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y1Lcbnstuoh/s8pbif3HHwPXfN1pJEC/Zf1ZwnYWND4=;
- b=BQgOapN6WTVwqaWxGISJIpoKCuSCXECovreztVv8ddNzoXmaX6c6Q0ccknA/kNH6h609Op
- 5cOoqR0Zx702qgVnzVodilfCALUzJ/vsKF3twujuapfRF0Qaev/cgntBUC2ffFEXnQRS5H
- uXnqPEQEyywKr0J7M1ErZpzLT3StwIQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oRrQ9tkVapgOodtMzHj88IpGNoUxHpryTzy01XzUn68=;
+ b=jH8O7nYv2kZySoloRRVMwToFygtSj9UnAsFPTYp+tUSlfNyargbhzspxziEfzagaLfEUK7
+ AimJsfVoWuHafuXpQE49z2KxfrISiiXlVOjdByPFY/4J6kyyOVPNzk+fc1cHPZVRoFk+S+
+ ubdFVQWNwIGTdp+LLGlEN0yIwiBkzLo=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-U0QlJHH8OMC-2fcF3DTFBg-1; Thu, 01 Jun 2023 08:17:59 -0400
-X-MC-Unique: U0QlJHH8OMC-2fcF3DTFBg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f6f2f18ecbso4975325e9.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:17:59 -0700 (PDT)
+ us-mta-359-JWcb9hs9PS2NASTPFRQamQ-1; Thu, 01 Jun 2023 08:20:38 -0400
+X-MC-Unique: JWcb9hs9PS2NASTPFRQamQ-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2af28aae675so6875891fa.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:20:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685621872; x=1688213872;
+ d=1e100.net; s=20221208; t=1685622037; x=1688214037;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y1Lcbnstuoh/s8pbif3HHwPXfN1pJEC/Zf1ZwnYWND4=;
- b=T0aGZ4mQqRNcyz9YgJU+IcC5RMmbm/9gKoOpzSoO4zkmz/SX5HoA2OUMnw+6jhgNPu
- GTfr0gSJUkqLWYs5qc7llmRJFOq0jeMPAT18LSfSUPDeR5hOsQGpjhDFTAYlrnvOxljH
- qt8HsgLZoxm2gHmtWu0QmPOfNtYHCW2pVgw06EVTBOKCSjkJzCyGAXiXfu44qW1Eg82t
- Sd3fx/caOXulXmKh6yVyY74ed6dx0E6SF40be2KL1C9B8sYZ0N8syI2Hj1qxyt4azB79
- naxHYpARvTqXCUfz+LsbypWng99TJfOUbWTA5mtHKMuHOh9v7MR+/dmOAu36QC29wRYG
- 1IuQ==
-X-Gm-Message-State: AC+VfDxdY+aFKd/0fzeXJNgreW9Wew5quBe/F+iW7C4BBgMz641EXN5N
- Ap35dCikVeNZslBwmRgE5rqVbZxIJwS0I3wSPKk2bEIFLnIMglwlFDnHa8xCT7Gy/KW/6iaaVEA
- jLOO8nX5WmMqbGjE=
-X-Received: by 2002:a7b:c5d4:0:b0:3f6:ffe:9ef1 with SMTP id
- n20-20020a7bc5d4000000b003f60ffe9ef1mr1879894wmk.36.1685621872744; 
- Thu, 01 Jun 2023 05:17:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Y21JtkJn/+vRpL+WrCYlhVMa2qHTiwzBnQkgJn45RikzSRFUfarfOXjYwLLhHd9vIYr7Rcw==
-X-Received: by 2002:a7b:c5d4:0:b0:3f6:ffe:9ef1 with SMTP id
- n20-20020a7bc5d4000000b003f60ffe9ef1mr1879873wmk.36.1685621872400; 
- Thu, 01 Jun 2023 05:17:52 -0700 (PDT)
+ bh=oRrQ9tkVapgOodtMzHj88IpGNoUxHpryTzy01XzUn68=;
+ b=KEVYkJW6KYmhkL8299a5NgJ35a6XTbRFptxfG3EGkB5y84NXcr0PhhFVaVL5cNi584
+ 8o6ZlkrlJqd1/wLMct27f4WT9N5wlN4YXPi1P2YAa2I81VunQysEkNQr2sRTFA+QKHJR
+ sYJ3OWiy2osnsO2FcCbJbXDeZooi0b5E0RTP1t0K1ICl1OqvhR4Qle55Ggi597p16qPw
+ Bf2pbLI6zofe4PDI8iIo//dIRQIesNVSerays7izQnSjJjlTymseL9IAyO1dj3yRV9AD
+ iKN2feWsUfnmC7VmZxFe2CO3cU86AybecByITacrKq/yy+V2r0j6PvguT0Ik6CmSurJ5
+ rBkw==
+X-Gm-Message-State: AC+VfDyxH70h5Y5aFmLfQz2/OV+82w8nR8TCF0c4jotrYYtwFFkbYj7R
+ 8CFcThHIwJlOMBuq3PBB6S1Kt1xSSgihjtmvw6XqRCUji0agnC0rEJ4GqSyklJPHp4/6gYOtzFR
+ NZoo8XB1raxiFlLS0O/efxxJkxA==
+X-Received: by 2002:a2e:9955:0:b0:2af:23b3:afad with SMTP id
+ r21-20020a2e9955000000b002af23b3afadmr4184169ljj.10.1685622036812; 
+ Thu, 01 Jun 2023 05:20:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6S+2OdxwJRmhIr17R33W/eu+r+/3Rfo/+PIKXPRo5guw1WcU201/5l9dvSLnjDNkr1YdvRMg==
+X-Received: by 2002:a2e:9955:0:b0:2af:23b3:afad with SMTP id
+ r21-20020a2e9955000000b002af23b3afadmr4184152ljj.10.1685622036388; 
+ Thu, 01 Jun 2023 05:20:36 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- 9-20020a05600c028900b003f60482024fsm2215844wmk.30.2023.06.01.05.17.51
+ l9-20020adfe589000000b00307c8d6b4a0sm10238300wrm.26.2023.06.01.05.20.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 05:17:51 -0700 (PDT)
+ Thu, 01 Jun 2023 05:20:35 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
  <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
  <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 3/9] tests/qtest: get rid of 'qmp_command' helper in
- migration test
-In-Reply-To: <20230531132400.1129576-4-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:54
+Subject: Re: [PATCH v3 1/9] tests/qtest: add various
+ qtest_qmp_assert_success() variants
+In-Reply-To: <20230531132400.1129576-2-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:52
  +0100")
 References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-4-berrange@redhat.com>
+ <20230531132400.1129576-2-berrange@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 01 Jun 2023 14:17:51 +0200
-Message-ID: <87v8g7s7f4.fsf@secure.mitica>
+Date: Thu, 01 Jun 2023 14:20:34 +0200
+Message-ID: <87r0qvs7al.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -108,13 +108,297 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> This function duplicates logic of qtest_qmp_assert_success_ref
+> Add several counterparts of qtest_qmp_assert_success() that can
+>
+>  * Use va_list instead of ...
+>  * Accept a list of FDs to send
+>  * Return the response data
 >
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  tests/qtest/libqtest.c |  99 +++++++++++++++++++++++++++++++++--
+>  tests/qtest/libqtest.h | 115 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 209 insertions(+), 5 deletions(-)
+>
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index c3a0ef5bb4..603c26d955 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -1229,14 +1229,23 @@ void qtest_memset(QTestState *s, uint64_t addr, u=
+int8_t pattern, size_t size)
+>      qtest_rsp(s);
+>  }
+>=20=20
+> -void qtest_qmp_assert_success(QTestState *qts, const char *fmt, ...)
+> +void qtest_vqmp_assert_success(QTestState *qts,
+> +                               const char *fmt, va_list args)
+>  {
+> -    va_list ap;
+>      QDict *response;
+>=20=20
+> -    va_start(ap, fmt);
+> -    response =3D qtest_vqmp(qts, fmt, ap);
+> -    va_end(ap);
+> +    response =3D qtest_vqmp_assert_success_ref(qts, fmt, args);
+> +
+> +    qobject_unref(response);
+> +}
+> +
+> +QDict *qtest_vqmp_assert_success_ref(QTestState *qts,
+> +                                     const char *fmt, va_list args)
+> +{
+> +    QDict *response;
+> +    QDict *ret;
+> +
+> +    response =3D qtest_vqmp(qts, fmt, args);
+>=20=20
+>      g_assert(response);
+>      if (!qdict_haskey(response, "return")) {
+> @@ -1245,8 +1254,88 @@ void qtest_qmp_assert_success(QTestState *qts, con=
+st char *fmt, ...)
+>          g_string_free(s, true);
+>      }
+>      g_assert(qdict_haskey(response, "return"));
+> +    ret =3D qdict_get_qdict(response, "return");
+> +    qobject_ref(ret);
+> +    qobject_unref(response);
+> +
+> +    return ret;
+> +}
+> +
+> +#ifndef _WIN32
+> +QDict *qtest_vqmp_fds_assert_success_ref(QTestState *qts, int *fds, size=
+_t nfds,
+> +                                         const char *fmt, va_list args)
+> +{
+> +    QDict *response;
+> +    QDict *ret;
+> +
+> +    response =3D qtest_vqmp_fds(qts, fds, nfds, fmt, args);
+> +
+> +    g_assert(response);
+> +    if (!qdict_haskey(response, "return")) {
+> +        GString *s =3D qobject_to_json_pretty(QOBJECT(response), true);
+> +        g_test_message("%s", s->str);
+> +        g_string_free(s, true);
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+I know we are not consistent ot this file, but what about using autoptr her=
+e?
 
-Much better that the current code.  And as you answer to Thomas, better
-messages in case of errors.
+        g_autoptr(GString) *s =3D qobject_to_json_pretty(QOBJECT(response),=
+ true);
+        g_test_message("%s", s->str);
+
+??
+
+> +    }
+> +    g_assert(qdict_haskey(response, "return"));
+> +    ret =3D qdict_get_qdict(response, "return");
+> +    qobject_ref(ret);
+> +    qobject_unref(response);
+> +
+> +    return ret;
+> +}
+> +
+> +void qtest_vqmp_fds_assert_success(QTestState *qts, int *fds, size_t nfd=
+s,
+> +                                   const char *fmt, va_list args)
+> +{
+> +    QDict *response;
+> +    response =3D qtest_vqmp_fds_assert_success_ref(qts, fds, nfds, fmt, =
+args);
+>      qobject_unref(response);
+>  }
+> +#endif /* !_WIN32 */
+> +
+> +void qtest_qmp_assert_success(QTestState *qts, const char *fmt, ...)
+> +{
+> +    QDict *response;
+> +    va_list ap;
+> +    va_start(ap, fmt);
+> +    response =3D qtest_vqmp_assert_success_ref(qts, fmt, ap);
+> +    va_end(ap);
+> +    qobject_unref(response);
+> +}
+> +
+> +QDict *qtest_qmp_assert_success_ref(QTestState *qts, const char *fmt, ..=
+.)
+> +{
+> +    QDict *response;
+> +    va_list ap;
+> +    va_start(ap, fmt);
+> +    response =3D qtest_vqmp_assert_success_ref(qts, fmt, ap);
+> +    va_end(ap);
+> +    return response;
+> +}
+> +
+> +#ifndef _WIN32
+> +void qtest_qmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+> +                                  const char *fmt, ...)
+> +{
+> +    QDict *response;
+> +    va_list ap;
+> +    va_start(ap, fmt);
+> +    response =3D qtest_vqmp_fds_assert_success_ref(qts, fds, nfds, fmt, =
+ap);
+> +    va_end(ap);
+> +    qobject_unref(response);
+> +}
+> +
+> +QDict *qtest_qmp_fds_assert_success_ref(QTestState *qts, int *fds, size_=
+t nfds,
+> +                                        const char *fmt, ...)
+> +{
+> +    QDict *response;
+> +    va_list ap;
+> +    va_start(ap, fmt);
+> +    response =3D qtest_vqmp_fds_assert_success_ref(qts, fds, nfds, fmt, =
+ap);
+> +    va_end(ap);
+> +    return response;
+> +}
+> +#endif /* !_WIN32 */
+>=20=20
+>  bool qtest_big_endian(QTestState *s)
+>  {
+> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+> index 8d7d450963..41bc6633bd 100644
+> --- a/tests/qtest/libqtest.h
+> +++ b/tests/qtest/libqtest.h
+> @@ -693,6 +693,73 @@ void qtest_add_abrt_handler(GHookFunc fn, const void=
+ *data);
+>   */
+>  void qtest_remove_abrt_handler(void *data);
+>=20=20
+> +/**
+> + * qtest_vqmp_assert_success:
+> + * @qts: QTestState instance to operate on
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + * @args: variable arguments for @fmt
+> + *
+> + * Sends a QMP message to QEMU and asserts that a 'return' key is presen=
+t in
+> + * the response.
+> + */
+> +void qtest_vqmp_assert_success(QTestState *qts,
+> +                               const char *fmt, va_list args)
+> +    G_GNUC_PRINTF(2, 0);
+> +
+> +/**
+> + * qtest_vqmp_assert_success_ref:
+> + * @qts: QTestState instance to operate on
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + * @args: variable arguments for @fmt
+> + *
+> + * Sends a QMP message to QEMU, asserts that a 'return' key is present in
+> + * the response, and returns the response.
+> + */
+> +QDict *qtest_vqmp_assert_success_ref(QTestState *qts,
+> +                                     const char *fmt, va_list args)
+> +    G_GNUC_PRINTF(2, 0);
+> +
+> +#ifndef _WIN32
+> +/**
+> + * qtest_vqmp_fds_assert_success:
+> + * @qts: QTestState instance to operate on
+> + * @fds: the file descriptors to send
+> + * @nfds: number of @fds to send
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + * @args: variable arguments for @fmt
+> + *
+> + * Sends a QMP message with file descriptors to QEMU and
+> + * asserts that a 'return' key is present in the response.
+> + */
+> +void qtest_vqmp_fds_assert_success(QTestState *qts, int *fds, size_t nfd=
+s,
+> +                                   const char *fmt, va_list args)
+> +    G_GNUC_PRINTF(4, 0);
+> +
+> +/**
+> + * qtest_vqmp_fds_assert_success_ref:
+> + * @qts: QTestState instance to operate on
+> + * @fds: the file descriptors to send
+> + * @nfds: number of @fds to send
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + * @args: variable arguments for @fmt
+> + *
+> + * Sends a QMP message with file descriptors to QEMU,
+> + * asserts that a 'return' key is present in the response,
+> + * and returns the response.
+> + */
+> +QDict *qtest_vqmp_fds_assert_success_ref(QTestState *qts, int *fds, size=
+_t nfds,
+> +                                         const char *fmt, va_list args)
+> +    G_GNUC_PRINTF(4, 0);
+> +#endif /* !_WIN32 */
+> +
+>  /**
+>   * qtest_qmp_assert_success:
+>   * @qts: QTestState instance to operate on
+> @@ -706,6 +773,54 @@ void qtest_remove_abrt_handler(void *data);
+>  void qtest_qmp_assert_success(QTestState *qts, const char *fmt, ...)
+>      G_GNUC_PRINTF(2, 3);
+>=20=20
+> +/**
+> + * qtest_qmp_assert_success_ref:
+> + * @qts: QTestState instance to operate on
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + *
+> + * Sends a QMP message to QEMU, asserts that a 'return' key is present in
+> + * the response, and returns the response.
+> + */
+> +QDict *qtest_qmp_assert_success_ref(QTestState *qts, const char *fmt, ..=
+.)
+> +    G_GNUC_PRINTF(2, 3);
+> +
+> +#ifndef _WIN32
+> +/**
+> + * qtest_qmp_fd_assert_success:
+> + * @qts: QTestState instance to operate on
+> + * @fds: the file descriptors to send
+> + * @nfds: number of @fds to send
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + *
+> + * Sends a QMP message with file descriptors to QEMU and
+> + * asserts that a 'return' key is present in the response.
+> + */
+> +void qtest_qmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+> +                                  const char *fmt, ...)
+> +    G_GNUC_PRINTF(4, 5);
+> +
+> +/**
+> + * qtest_qmp_fd_assert_success_ref:
+> + * @qts: QTestState instance to operate on
+> + * @fds: the file descriptors to send
+> + * @nfds: number of @fds to send
+> + * @fmt: QMP message to send to qemu, formatted like
+> + * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
+> + * supported after '%'.
+> + *
+> + * Sends a QMP message with file descriptors to QEMU,
+> + * asserts that a 'return' key is present in the response,
+> + * and returns the response.
+> + */
+> +QDict *qtest_qmp_fds_assert_success_ref(QTestState *qts, int *fds, size_=
+t nfds,
+> +                                        const char *fmt, ...)
+> +    G_GNUC_PRINTF(4, 5);
+> +#endif /* !_WIN32 */
+> +
+>  /**
+>   * qtest_cb_for_every_machine:
+>   * @cb: Pointer to the callback function
 
 
