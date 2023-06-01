@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546B271EFB7
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4398571F057
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 19:11:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kwF-0008Ps-2h; Thu, 01 Jun 2023 12:14:11 -0400
+	id 1q4kwO-0000Bs-LB; Thu, 01 Jun 2023 12:14:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kwB-0008PB-Np
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:14:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q4kwM-0000BO-4F
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:14:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kwA-0003uu-5z
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:14:07 -0400
+ id 1q4kwK-0003vT-BB
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:14:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685636045;
+ s=mimecast20190719; t=1685636055;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XOkw5tS/V0vb3gyOWJKM6iTwjgyZVasEj+VXHeAVfcg=;
- b=i7jv5XO+sgNTbMpYrrY2dbNQ5d+tZY/OylHv8kP1h8avpueGdNHQX2CtT7xLCzgO+gvOIe
- 2p5e4g/9/EQQVfo5dxG5FFScZaBMH9ZkXnWO1RPpKHGqURVeVkTVyGrP3EavxDIhoc96cB
- HJ2iNak+32lyWn6Q910iNETzwiQbXVk=
+ bh=BZz96HuNZsKcMVLwCNqPw/+EZH5b+eCzSpmMX22tHD4=;
+ b=XBeZv9FdrrHKslQOfCYEM9fTBguhciMj/etnrBrsthZ+WVEIR60kxnVmNqtuINyxnbnmcD
+ 0NAtFWaA9N5VeiF0xi/5qyS3b9PYJqwoh23q7Jbp3a9Bh/SeU8ejpuxhMWG3ewyIIyQRrp
+ c2CA26BtkSxDRzhGy23N13qWEMS7DAo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-175-32vBP4jZMtSEpKUb-9s2Bw-1; Thu, 01 Jun 2023 12:14:04 -0400
-X-MC-Unique: 32vBP4jZMtSEpKUb-9s2Bw-1
+ us-mta-144-wzfCCeZgMRahOvdujjmDlA-1; Thu, 01 Jun 2023 12:14:07 -0400
+X-MC-Unique: wzfCCeZgMRahOvdujjmDlA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 250EC811E78
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:14:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AAB04801182
+ for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:14:06 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7A64714171BB;
- Thu,  1 Jun 2023 16:14:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 900F714171BC;
+ Thu,  1 Jun 2023 16:14:04 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
  Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 08/10] tests/qtest: distinguish src/dst migration VM
- stop/resume events
-Date: Thu,  1 Jun 2023 17:13:45 +0100
-Message-Id: <20230601161347.1803440-9-berrange@redhat.com>
+Subject: [PATCH v4 09/10] tests/qtest: make more migration pre-copy scenarios
+ run non-live
+Date: Thu,  1 Jun 2023 17:13:46 +0100
+Message-Id: <20230601161347.1803440-10-berrange@redhat.com>
 In-Reply-To: <20230601161347.1803440-1-berrange@redhat.com>
 References: <20230601161347.1803440-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -82,122 +82,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'got_stop' and 'got_resume' global variables apply to the src and
-dst migration VM respectively. Change their names to make this explicit
-to developers.
+There are 27 pre-copy live migration scenarios being tested. In all of
+these we force non-convergence and run for one iteration, then let it
+converge and wait for completion during the second (or following)
+iterations. At 3 mbps bandwidth limit the first iteration takes a very
+long time (~30 seconds).
 
+While it is important to test the migration passes and convergence
+logic, it is overkill to do this for all 27 pre-copy scenarios. The
+TLS migration scenarios in particular are merely exercising different
+code paths during connection establishment.
+
+To optimize time taken, switch most of the test scenarios to run
+non-live (ie guest CPUs paused) with no bandwidth limits. This gives
+a massive speed up for most of the test scenarios.
+
+For test coverage the following scenarios are unchanged
+
+ * Precopy with UNIX sockets
+ * Precopy with UNIX sockets and dirty ring tracking
+ * Precopy with XBZRLE
+ * Precopy with UNIX compress
+ * Precopy with UNIX compress (nowait)
+ * Precopy with multifd
+
+On a test machine this reduces execution time from 13 minutes to
+8 minutes.
+
+Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/qtest/migration-test.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ tests/qtest/migration-test.c | 81 +++++++++++++++++++++++++++++-------
+ 1 file changed, 66 insertions(+), 15 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 0948d13e14..23fb61506c 100644
+index 23fb61506c..0b9d045152 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -43,8 +43,8 @@
- unsigned start_address;
- unsigned end_address;
- static bool uffd_feature_thread_id;
--static bool got_stop;
--static bool got_resume;
-+static bool got_src_stop;
-+static bool got_dst_resume;
+@@ -577,9 +577,12 @@ typedef struct {
+         MIG_TEST_FAIL_DEST_QUIT_ERR,
+     } result;
  
- /*
-  * Dirtylimit stop working if dirty page rate error
-@@ -227,7 +227,7 @@ static void wait_for_migration_pass(QTestState *who)
-     uint64_t pass;
+-    /* Optional: set number of migration passes to wait for */
++    /* Optional: set number of migration passes to wait for, if live==true */
+     unsigned int iterations;
  
-     /* Wait for the 1st sync */
--    while (!got_stop && !initial_pass) {
-+    while (!got_src_stop && !initial_pass) {
-         usleep(1000);
-         initial_pass = get_migration_pass(who);
++    /* Optional: whether the guest CPUs should be running during migration */
++    bool live;
++
+     /* Postcopy specific fields */
+     void *postcopy_data;
+     bool postcopy_preempt;
+@@ -1385,8 +1388,6 @@ static void test_precopy_common(MigrateCommon *args)
+         return;
      }
-@@ -235,7 +235,7 @@ static void wait_for_migration_pass(QTestState *who)
-     do {
-         usleep(1000);
-         pass = get_migration_pass(who);
--    } while (pass == initial_pass && !got_stop);
-+    } while (pass == initial_pass && !got_src_stop);
+ 
+-    migrate_ensure_non_converge(from);
+-
+     if (args->start_hook) {
+         data_hook = args->start_hook(from, to);
+     }
+@@ -1396,6 +1397,31 @@ static void test_precopy_common(MigrateCommon *args)
+         wait_for_serial("src_serial");
+     }
+ 
++    if (args->live) {
++        /*
++         * Testing live migration, we want to ensure that some
++         * memory is re-dirtied after being transferred, so that
++         * we exercise logic for dirty page handling. We achieve
++         * this with a ridiculosly low bandwidth that guarantees
++         * non-convergance.
++         */
++        migrate_ensure_non_converge(from);
++    } else {
++        /*
++         * Testing non-live migration, we allow it to run at
++         * full speed to ensure short test case duration.
++         * For tests expected to fail, we don't need to
++         * change anything.
++         */
++        if (args->result == MIG_TEST_SUCCEED) {
++            qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
++            if (!got_src_stop) {
++                qtest_qmp_eventwait(from, "STOP");
++            }
++            migrate_ensure_converge(from);
++        }
++    }
++
+     if (!args->connect_uri) {
+         g_autofree char *local_connect_uri =
+             migrate_get_socket_address(to, "socket-address");
+@@ -1413,25 +1439,41 @@ static void test_precopy_common(MigrateCommon *args)
+             qtest_set_expected_status(to, EXIT_FAILURE);
+         }
+     } else {
+-        if (args->iterations) {
+-            while (args->iterations--) {
++        if (args->live) {
++            if (args->iterations) {
++                while (args->iterations--) {
++                    wait_for_migration_pass(from);
++                }
++            } else {
+                 wait_for_migration_pass(from);
+             }
+-        } else {
+-            wait_for_migration_pass(from);
+-        }
+ 
+-        migrate_ensure_converge(from);
++            migrate_ensure_converge(from);
+ 
+-        /* We do this first, as it has a timeout to stop us
+-         * hanging forever if migration didn't converge */
+-        wait_for_migration_complete(from);
++            /*
++             * We do this first, as it has a timeout to stop us
++             * hanging forever if migration didn't converge
++             */
++            wait_for_migration_complete(from);
+ 
+-        if (!got_src_stop) {
+-            qtest_qmp_eventwait(from, "STOP");
++            if (!got_src_stop) {
++                qtest_qmp_eventwait(from, "STOP");
++            }
++        } else {
++            wait_for_migration_complete(from);
++            /*
++             * Must wait for dst to finish reading all incoming
++             * data on the socket before issuing 'cont' otherwise
++             * it'll be ignored
++             */
++            wait_for_migration_complete(to);
++
++            qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
+         }
+ 
+-        qtest_qmp_eventwait(to, "RESUME");
++        if (!got_dst_resume) {
++            qtest_qmp_eventwait(to, "RESUME");
++        }
+ 
+         wait_for_serial("dest_serial");
+     }
+@@ -1449,6 +1491,8 @@ static void test_precopy_unix_plain(void)
+     MigrateCommon args = {
+         .listen_uri = uri,
+         .connect_uri = uri,
++
++        .live = true,
+     };
+ 
+     test_precopy_common(&args);
+@@ -1464,6 +1508,8 @@ static void test_precopy_unix_dirty_ring(void)
+         },
+         .listen_uri = uri,
+         .connect_uri = uri,
++
++        .live = true,
+     };
+ 
+     test_precopy_common(&args);
+@@ -1575,6 +1621,7 @@ static void test_precopy_unix_xbzrle(void)
+         .start_hook = test_migrate_xbzrle_start,
+ 
+         .iterations = 2,
++        .live = true,
+     };
+ 
+     test_precopy_common(&args);
+@@ -1592,6 +1639,7 @@ static void test_precopy_unix_compress(void)
+          * the previous iteration.
+          */
+         .iterations = 2,
++        .live = true,
+     };
+ 
+     test_precopy_common(&args);
+@@ -1609,6 +1657,7 @@ static void test_precopy_unix_compress_nowait(void)
+          * the previous iteration.
+          */
+         .iterations = 2,
++        .live = true,
+     };
+ 
+     test_precopy_common(&args);
+@@ -2017,6 +2066,8 @@ static void test_multifd_tcp_none(void)
+     MigrateCommon args = {
+         .listen_uri = "defer",
+         .start_hook = test_migrate_precopy_tcp_multifd_start,
++
++        .live = true,
+     };
+     test_precopy_common(&args);
  }
- 
- static void check_guests_ram(QTestState *who)
-@@ -487,7 +487,7 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
- {
-     qtest_qmp_assert_success(from, "{ 'execute': 'migrate-start-postcopy' }");
- 
--    if (!got_stop) {
-+    if (!got_src_stop) {
-         qtest_qmp_eventwait(from, "STOP");
-     }
- 
-@@ -607,8 +607,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         }
-     }
- 
--    got_stop = false;
--    got_resume = false;
-+    got_src_stop = false;
-+    got_dst_resume = false;
-     bootpath = g_strdup_printf("%s/bootsect", tmpfs);
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         /* the assembled x86 boot sector should be exactly one sector large */
-@@ -696,7 +696,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         *from = qtest_init(cmd_source);
-         qtest_qmp_set_event_callback(*from,
-                                      migrate_watch_for_stop,
--                                     &got_stop);
-+                                     &got_src_stop);
-     }
- 
-     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg%s%s "
-@@ -716,7 +716,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     *to = qtest_init(cmd_target);
-     qtest_qmp_set_event_callback(*to,
-                                  migrate_watch_for_resume,
--                                 &got_resume);
-+                                 &got_dst_resume);
- 
-     /*
-      * Remove shmem file immediately to avoid memory leak in test failed case.
-@@ -1427,7 +1427,7 @@ static void test_precopy_common(MigrateCommon *args)
-          * hanging forever if migration didn't converge */
-         wait_for_migration_complete(from);
- 
--        if (!got_stop) {
-+        if (!got_src_stop) {
-             qtest_qmp_eventwait(from, "STOP");
-         }
- 
-@@ -1537,7 +1537,7 @@ static void test_ignore_shared(void)
- 
-     wait_for_migration_pass(from);
- 
--    if (!got_stop) {
-+    if (!got_src_stop) {
-         qtest_qmp_eventwait(from, "STOP");
-     }
- 
-@@ -1942,7 +1942,7 @@ static void test_migrate_auto_converge(void)
-             break;
-         }
-         usleep(20);
--        g_assert_false(got_stop);
-+        g_assert_false(got_src_stop);
-     } while (true);
-     /* The first percentage of throttling should be at least init_pct */
-     g_assert_cmpint(percentage, >=, init_pct);
-@@ -2275,7 +2275,7 @@ static void test_multifd_tcp_cancel(void)
- 
-     wait_for_migration_pass(from);
- 
--    if (!got_stop) {
-+    if (!got_src_stop) {
-         qtest_qmp_eventwait(from, "STOP");
-     }
-     qtest_qmp_eventwait(to2, "RESUME");
 -- 
 2.40.1
 
