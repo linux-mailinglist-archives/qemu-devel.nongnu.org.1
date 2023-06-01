@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A83171F2EA
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 21:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2A071F2ED
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 21:30:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4nyg-0006jt-44; Thu, 01 Jun 2023 15:28:54 -0400
+	id 1q4nyi-0006mQ-5w; Thu, 01 Jun 2023 15:28:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q4nyX-0006jJ-FJ; Thu, 01 Jun 2023 15:28:45 -0400
+ id 1q4nyY-0006jh-NT; Thu, 01 Jun 2023 15:28:46 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q4nyV-0005mD-OB; Thu, 01 Jun 2023 15:28:45 -0400
+ id 1q4nyV-0005mB-RE; Thu, 01 Jun 2023 15:28:46 -0400
 Received: from dev005.ch-qa.vzint.dev ([172.29.1.10])
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1q4nyC-00DLDg-0h;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1q4nyC-00DLDg-0s;
  Thu, 01 Jun 2023 21:28:36 +0200
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 2/6] qemu-iotests: 024: add rebasing test case for
- overlay_size > backing_size
-Date: Thu,  1 Jun 2023 22:28:32 +0300
-Message-Id: <20230601192836.598602-3-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH 3/6] qemu-img: rebase: use backing files' BlockBackend for
+ buffer alignment
+Date: Thu,  1 Jun 2023 22:28:33 +0300
+Message-Id: <20230601192836.598602-4-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
 References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
@@ -56,124 +56,32 @@ From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before previous commit, rebase was getting infitely stuck in case of
-rebasing within the same backing chain and when overlay_size > backing_size.
-Let's add this case to the rebasing test 024 to make sure it doesn't
-break again.
+Since commit bb1c05973cf ("qemu-img: Use qemu_blockalign"), buffers for
+the data read from the old and new backing files are aligned using
+BlockDriverState (or BlockBackend later on) referring to the target image.
+However, this isn't quite right, because target image is only being
+written to and has nothing to do with those buffers.  Let's fix that.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- tests/qemu-iotests/024     | 57 ++++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/024.out | 30 ++++++++++++++++++++
- 2 files changed, 87 insertions(+)
+ qemu-img.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qemu-iotests/024 b/tests/qemu-iotests/024
-index 25a564a150..98a7c8fd65 100755
---- a/tests/qemu-iotests/024
-+++ b/tests/qemu-iotests/024
-@@ -199,6 +199,63 @@ echo
- # $BASE_OLD and $BASE_NEW)
- $QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
+diff --git a/qemu-img.c b/qemu-img.c
+index 78433f3746..60f4c06487 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -3746,8 +3746,8 @@ static int img_rebase(int argc, char **argv)
+         int64_t n;
+         float local_progress = 0;
  
-+# Check that rebase within the chain is working when
-+# overlay_size > old_backing_size
-+#
-+# base_new <-- base_old <-- overlay
-+#
-+# Backing (new): 11 11 11 11 11
-+# Backing (old): 22 22 22 22
-+# Overlay:       -- -- -- -- --
-+#
-+# As a result, overlay should contain data identical to base_old, with the
-+# last cluster remaining unallocated.
-+
-+echo
-+echo "=== Test rebase within one backing chain ==="
-+echo
-+
-+echo "Creating backing chain"
-+echo
-+
-+TEST_IMG=$BASE_NEW _make_test_img $(( CLUSTER_SIZE * 5 ))
-+TEST_IMG=$BASE_OLD _make_test_img -b "$BASE_NEW" -F $IMGFMT \
-+    $(( CLUSTER_SIZE * 4 ))
-+TEST_IMG=$OVERLAY _make_test_img -b "$BASE_OLD" -F $IMGFMT \
-+    $(( CLUSTER_SIZE * 5 ))
-+
-+echo
-+echo "Fill backing files with data"
-+echo
-+
-+$QEMU_IO "$BASE_NEW" -c "write -P 0x11 0 $(( CLUSTER_SIZE * 5 ))" \
-+    | _filter_qemu_io
-+$QEMU_IO "$BASE_OLD" -c "write -P 0x22 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+
-+echo
-+echo "Check the last cluster is zeroed in overlay before the rebase"
-+echo
-+$QEMU_IO "$OVERLAY" -c "read -P 0x00 $(( CLUSTER_SIZE * 4 )) $CLUSTER_SIZE" \
-+    | _filter_qemu_io
-+
-+echo
-+echo "Rebase onto another image in the same chain"
-+echo
-+
-+$QEMU_IMG rebase -b "$BASE_NEW" -F $IMGFMT "$OVERLAY"
-+
-+echo "Verify that data is read the same before and after rebase"
-+echo
-+
-+# Verify the first 4 clusters are still read the same as in the old base
-+$QEMU_IO "$OVERLAY" -c "read -P 0x22 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+# Verify the last cluster still reads as zeroes
-+$QEMU_IO "$OVERLAY" -c "read -P 0x00 $(( CLUSTER_SIZE * 4 )) $CLUSTER_SIZE" \
-+    | _filter_qemu_io
-+
-+echo
+-        buf_old = blk_blockalign(blk, IO_BUF_SIZE);
+-        buf_new = blk_blockalign(blk, IO_BUF_SIZE);
++        buf_old = blk_blockalign(blk_old_backing, IO_BUF_SIZE);
++        buf_new = blk_blockalign(blk_new_backing, IO_BUF_SIZE);
  
- # success, all done
- echo "*** done"
-diff --git a/tests/qemu-iotests/024.out b/tests/qemu-iotests/024.out
-index 973a5a3711..245fe8b1d1 100644
---- a/tests/qemu-iotests/024.out
-+++ b/tests/qemu-iotests/024.out
-@@ -171,4 +171,34 @@ read 65536/65536 bytes at offset 196608
- Offset          Length          File
- 0               0x30000         TEST_DIR/subdir/t.IMGFMT
- 0x30000         0x10000         TEST_DIR/subdir/t.IMGFMT.base_new
-+
-+=== Test rebase within one backing chain ===
-+
-+Creating backing chain
-+
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_new', fmt=IMGFMT size=327680
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_old', fmt=IMGFMT size=262144 backing_file=TEST_DIR/subdir/t.IMGFMT.base_new backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/subdir/t.IMGFMT', fmt=IMGFMT size=327680 backing_file=TEST_DIR/subdir/t.IMGFMT.base_old backing_fmt=IMGFMT
-+
-+Fill backing files with data
-+
-+wrote 327680/327680 bytes at offset 0
-+320 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Check the last cluster is zeroed in overlay before the rebase
-+
-+read 65536/65536 bytes at offset 262144
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Rebase onto another image in the same chain
-+
-+Verify that data is read the same before and after rebase
-+
-+read 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 65536/65536 bytes at offset 262144
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
- *** done
+         size = blk_getlength(blk);
+         if (size < 0) {
 -- 
 2.31.1
 
