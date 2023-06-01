@@ -2,61 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D2E71F582
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C85A671F589
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:05:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4qOJ-000810-5e; Thu, 01 Jun 2023 18:03:31 -0400
+	id 1q4qOT-00081o-52; Thu, 01 Jun 2023 18:03:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qOB-000802-TS
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qOB-000800-Si
  for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qO4-0003yr-EO
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685656991;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EJHTp0xclZt5/5JUMmTISEfNWeI+pvsEbtzWCRF31Og=;
- b=XY9UCNG4EbdfAusXX1FFWYr6xRiMZgboIcsSDpP8hYa/kXA4omfVEliRz98ocVN4wAaeV+
- mHTSNx3UtxuRtoo2Gt7HvbJwiMkDYiM2bFMgk+KZIRI1nOPEZOBE/306MdQsKtgDBn4m2A
- w+sVeJRHwqVu64MVn07ncP+qRd8+7T0=
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qO4-0003z8-HT
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:22 -0400
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-133-XwWFS5MQNd-PL8QUVhwUcw-1; Thu, 01 Jun 2023 18:03:10 -0400
-X-MC-Unique: XwWFS5MQNd-PL8QUVhwUcw-1
+ us-mta-277-H1LjDXy4NDyOdzP25AMVPg-1; Thu, 01 Jun 2023 18:03:10 -0400
+X-MC-Unique: H1LjDXy4NDyOdzP25AMVPg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9FAE8015D8
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 22:03:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 783F2101AA72;
+ Thu,  1 Jun 2023 22:03:10 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.76])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 981C0492B0B
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 22:03:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 04583492B0A;
+ Thu,  1 Jun 2023 22:03:09 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/21] NBD and miscellaneous patches for 2023-06-01
-Date: Thu,  1 Jun 2023 17:02:44 -0500
-Message-Id: <20230601220305.2130121-1-eblake@redhat.com>
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org (open list:Block layer core)
+Subject: [PULL 01/21] iotests: Fix test 104 under NBD
+Date: Thu,  1 Jun 2023 17:02:45 -0500
+Message-Id: <20230601220305.2130121-2-eblake@redhat.com>
+In-Reply-To: <20230601220305.2130121-1-eblake@redhat.com>
+References: <20230601220305.2130121-1-eblake@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,70 +67,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 19a720b74fde7e859d19f12c66a72e545947a657:
+In the past, commit a231cb27 ("iotests: Fix 104 for NBD", v2.3.0)
+added an additional filter to _filter_img_info to rewrite NBD URIs
+into the expected output form.  This recently broke when we tweaked
+tests to run in a per-format directory, which did not match the regex,
+because _img_info itself is now already changing
+SOCK_DIR=/tmp/tmpphjfbphd/raw-nbd-104 into
+/tmp/tmpphjfbphd/IMGFMT-nbd-104 prior to _img_info_filter getting a
+chance to further filter things.
 
-  Merge tag 'tracing-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-06-01 08:30:29 -0700)
+While diagnosing the problem, I also noticed some filter lines
+rendered completely useless by a typo when we switched from TCP to
+Unix sockets for NBD (in shell, '\\+' is different from "\\+" (one
+gives two backslash to the regex, matching the literal 2-byte sequence
+<\+> after a single digit; the other gives one backslash to the regex,
+as the metacharacter \+ to match one or more of <[0-9]>); since the
+literal string <nbd://127.0.0.1:0\+> is not a valid URI, that regex
+hasn't been matching anything for years so it is fine to just drop it
+rather than fix the typo.
 
-are available in the Git repository at:
+Fixes: f3923a72 ("iotests: Switch nbd tests to use Unix rather than TCP", v4.2.0)
+Fixes: 5ba7db09 ("iotests: always use a unique sub-directory per test", v8.0.0)
+Signed-off-by: Eric Blake <eblake@redhat.com>
+Message-Id: <20230519150216.2599189-1-eblake@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ tests/qemu-iotests/common.filter | 4 +---
+ tests/qemu-iotests/common.rc     | 3 ++-
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-06-01
+diff --git a/tests/qemu-iotests/common.filter b/tests/qemu-iotests/common.filter
+index 6b32c7fbfa1..fc3c64bcb8e 100644
+--- a/tests/qemu-iotests/common.filter
++++ b/tests/qemu-iotests/common.filter
+@@ -1,6 +1,6 @@
+ #!/usr/bin/env bash
+ #
+-# Copyright (C) 2009 Red Hat, Inc.
++# Copyright Red Hat
+ # Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.
+ #
+ # This program is free software; you can redistribute it and/or
+@@ -131,7 +131,6 @@ _filter_img_create_filenames()
+         -e "s#$SOCK_DIR#SOCK_DIR#g" \
+         -e 's#SOCK_DIR/fuse-#TEST_DIR/#g' \
+         -e "s#$IMGFMT#IMGFMT#g" \
+-        -e 's#nbd:127.0.0.1:[0-9]\\+#TEST_DIR/t.IMGFMT#g' \
+         -e 's#nbd+unix:///\??socket=SOCK_DIR/nbd#TEST_DIR/t.IMGFMT#g'
+ }
 
-for you to fetch changes up to 58516caac47c4bc7ed3ad6a8e2f565404a563dd3:
-
-  cutils: Improve qemu_strtosz handling of fractions (2023-06-01 16:55:25 -0500)
-
-----------------------------------------------------------------
-nbd and misc patches for 2023-06-01
-
-- Eric Blake: Fix iotest 104 for NBD
-- Eric Blake: Improve qcow2 spec on padding bytes
-- Eric Blake: Fix read-beyond-bounds bug in qemu_strtosz
-
-----------------------------------------------------------------
-Eric Blake (21):
-      iotests: Fix test 104 under NBD
-      qcow2: Explicit mention of padding bytes
-      test-cutils: Avoid g_assert in unit tests
-      test-cutils: Use g_assert_cmpuint where appropriate
-      test-cutils: Test integral qemu_strto* value on failures
-      test-cutils: Test more integer corner cases
-      cutils: Fix wraparound parsing in qemu_strtoui
-      cutils: Document differences between parse_uint and qemu_strtou64
-      cutils: Adjust signature of parse_uint[_full]
-      cutils: Allow NULL endptr in parse_uint()
-      test-cutils: Add coverage of qemu_strtod
-      test-cutils: Prepare for upcoming semantic change in qemu_strtosz
-      test-cutils: Refactor qemu_strtosz tests for less boilerplate
-      cutils: Allow NULL str in qemu_strtosz
-      numa: Check for qemu_strtosz_MiB error
-      test-cutils: Add more coverage to qemu_strtosz
-      cutils: Set value in all qemu_strtosz* error paths
-      cutils: Set value in all integral qemu_strto* error paths
-      cutils: Use parse_uint in qemu_strtosz for negative rejection
-      cutils: Improve qemu_strtod* error paths
-      cutils: Improve qemu_strtosz handling of fractions
-
- docs/interop/qcow2.txt           |    1 +
- include/qemu/cutils.h            |    5 +-
- audio/audio_legacy.c             |    4 +-
- block/gluster.c                  |    4 +-
- block/nfs.c                      |    4 +-
- blockdev.c                       |    4 +-
- contrib/ivshmem-server/main.c    |    4 +-
- hw/core/numa.c                   |   11 +-
- qapi/opts-visitor.c              |   10 +-
- tests/unit/test-cutils.c         | 2469 ++++++++++++++++++++++++++++----------
- ui/vnc.c                         |    4 +-
- util/cutils.c                    |  263 ++--
- util/guest-random.c              |    4 +-
- util/qemu-sockets.c              |   10 +-
- tests/qemu-iotests/common.filter |    4 +-
- tests/qemu-iotests/common.rc     |    3 +-
- tests/qemu-iotests/049.out       |    7 +-
- tests/qemu-iotests/178.out.qcow2 |    3 +-
- tests/qemu-iotests/178.out.raw   |    3 +-
- 19 files changed, 2035 insertions(+), 782 deletions(-)
-
+@@ -229,7 +228,6 @@ _filter_img_info()
+         -e "s#$TEST_DIR#TEST_DIR#g" \
+         -e "s#$SOCK_DIR#SOCK_DIR#g" \
+         -e "s#$IMGFMT#IMGFMT#g" \
+-        -e 's#nbd://127.0.0.1:[0-9]\\+$#TEST_DIR/t.IMGFMT#g' \
+         -e 's#nbd+unix:///\??socket=SOCK_DIR/nbd#TEST_DIR/t.IMGFMT#g' \
+         -e 's#SOCK_DIR/fuse-#TEST_DIR/#g' \
+         -e "/encrypted: yes/d" \
+diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+index f4476b62f7d..d145f08201c 100644
+--- a/tests/qemu-iotests/common.rc
++++ b/tests/qemu-iotests/common.rc
+@@ -1,6 +1,6 @@
+ #!/usr/bin/env bash
+ #
+-# Copyright (C) 2009 Red Hat, Inc.
++# Copyright Red Hat
+ # Copyright (c) 2000-2006 Silicon Graphics, Inc.  All Rights Reserved.
+ #
+ # This program is free software; you can redistribute it and/or modify
+@@ -717,6 +717,7 @@ _img_info()
+             -e "s#$IMGPROTO:$TEST_DIR#TEST_DIR#g" \
+             -e "s#$TEST_DIR#TEST_DIR#g" \
+             -e "s#$SOCK_DIR/fuse-#TEST_DIR/#g" \
++            -e "s#$SOCK_DIR/#SOCK_DIR/#g" \
+             -e "s#$IMGFMT#IMGFMT#g" \
+             -e 's/\(compression type: \)\(zlib\|zstd\)/\1COMPRESSION_TYPE/' \
+             -e "/^disk size:/ D" \
 -- 
 2.40.1
 
