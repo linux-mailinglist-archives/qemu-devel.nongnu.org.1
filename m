@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E4C71979C
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F355719795
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4et8-0004gH-KC; Thu, 01 Jun 2023 05:46:34 -0400
+	id 1q4etD-0004hk-Fa; Thu, 01 Jun 2023 05:46:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4et5-0004fY-WB
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:46:32 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4etB-0004h7-Oa
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:46:37 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4et3-0004AM-Ro
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:46:31 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-30ae95c4e75so669093f8f.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:46:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4et9-0004Bd-Dw
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:46:37 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f606912ebaso6755995e9.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685612788; x=1688204788;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xVGSZwAt7AXVa/ubDegQbPdDRtDFbRsFr2MQJ9cPIiE=;
- b=TlJ63ut9BFXRdiXzOqlxWZ1yDXZxaxHNwX4J/hVyeTUwmtzEc8J7bvyC0eTrIEIeSr
- UsTCT5oTJuEW5xPytKJEtm+ML4VbZmgJUdu5n4X+fGVhTAUHDPqiY2cOsckIdpjE+1zD
- CyfjzTectE8NyToPpq6dTWOV+x5fkHJI17fTk9xI6RU0xrWTs1ix/UC84zeEz0Kwoam4
- Gpxb7rgdto/Za3gCZj5VOjZ3cpMt7rXs1pp+8kHWBEIjSBnRTExYFPz8v41uBRzxxbVW
- RqQ65WDNUoJTPW1rsOSwN3rrjmmEFFmi4YE7BtJk9w7i6b4l3VxGtS338m9MP0qF/w1A
- fAaw==
+ d=linaro.org; s=google; t=1685612794; x=1688204794;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vY/PoCZ3Ec5EYMAMd5EtE2RxWZcVnX6V92z8a0JGnWI=;
+ b=xbOS1AhFoorwp4b4xkMClFMty4NklH1wCrWv+kCAtiFdYRyn8TNuqgfafNInrS8SGp
+ M0ia6xiUYJK6sOQAPUc5ayfUtQcTOUsVWIA7eIKxtS+F/HIIVTkuZsBfJFimOY6OQAxv
+ Mew98DkL9m/WUK/r+SoOfCygw6IUUONs+tXAcl64BGwOgFb2lCyWzRUhKdP8FRTxE7B3
+ yMzG4bUosPDD+vEo+x4U1It4gHn81ZJseCqG0Po7ne65TuR80CcIEDpJ9Z4Z5NYTGqs9
+ r9Y0aiFPx+mPbT0TEhoKO+CDvl4OMh2ZgWh4tsbDLQOg6tEPj/4IBjxpElfSegibSk68
+ j4zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685612788; x=1688204788;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xVGSZwAt7AXVa/ubDegQbPdDRtDFbRsFr2MQJ9cPIiE=;
- b=J+9A9KUD15cVqCx6eUucLUwzqb2NtNEgagJG538Ci95re+g25V2hgfFxJQMQ5p0vjc
- 01sMRJnHZT4fY46heEOC8TTM/Doc9nkgET0WZhoFNKLR7wTTlqUhbuvtxzWI96fty3CD
- DYMsdOg0UAs0u6ps73BM8X2mBtq/CResrrYLCKtAdVUSyFaBgUCSRZBhWarOqE/QXvlg
- Ss5Q+yIuE7eEIhTGxMzJgxIqexp+p+dslssKBv16ymdtg0fnl23Qno86jZiKWPCoKlZ1
- wKaE11TgADkDT9kCZJ6NDK8SBxQq/MBUcGsZqilUFoBE/iUVUGul0YWvldGwWnf+Qz3O
- 32fQ==
-X-Gm-Message-State: AC+VfDwyDMWHB8pbAvTy2KXvPu8BIrbk4Ov3gjV2SJKAAYUtLA6EYy/+
- v5fL7zW22BU/xb8IHh+WbwXw48FhhQ+bSOY+K5c=
-X-Google-Smtp-Source: ACHHUZ4RtNnMlkjKTA1/XOPhA3HScNTfTyrs+XAV23R0vjZWpNmWRmkieAa83C1QXDTuVnLEo979RQ==
-X-Received: by 2002:a5d:564b:0:b0:306:45ff:b527 with SMTP id
- j11-20020a5d564b000000b0030645ffb527mr1287541wrw.45.1685612788093; 
- Thu, 01 Jun 2023 02:46:28 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685612794; x=1688204794;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vY/PoCZ3Ec5EYMAMd5EtE2RxWZcVnX6V92z8a0JGnWI=;
+ b=lORIO2BkSjxzZxAtrCyAoGBg2K3AS4JRWI0XwyZ4qiIyCygm4u4H9bxnMOM9CApemZ
+ q+zJ87PJeYFIuGYRDmHY6qVXlwDcDcLATFpJsNRPt/gtPYCUcgqUc7emGWw3E8noc8ts
+ euLIMO9c20C9xMJHsAJZe7BuDa3gbtdyNUQThjALNuKwhddY+l7VJtyE9qosRbCoUi14
+ o8dZaewEfJJ6ZPLc0C7EvBoMwmiZfEI3CE6wsvXIhqC0N1rOv9chQGVIhNXJHUTfDfHd
+ B597titCN318mNQrBc42P+FsD+N8HhuN9PBeGOZsUEdip7HNDIBmyGd+c2LhPmakr6R0
+ fncA==
+X-Gm-Message-State: AC+VfDx8v633NUfb9eny4UeJrqIoc//pnBkJR9/jnDBIPoLYTapYLpdZ
+ EN/1Tp5dH/urL+K6+c3nG67MwPtUPnlsaum/dvU=
+X-Google-Smtp-Source: ACHHUZ7oiKq5icPbeSO2Lui18+Bo9iPjDQK+7+W3OemN5R34TJOEEkd6+aYCjV1cAWMzi+yt4jfQmg==
+X-Received: by 2002:a7b:cd15:0:b0:3f4:21ff:b91f with SMTP id
+ f21-20020a7bcd15000000b003f421ffb91fmr1305050wmj.28.1685612793736; 
+ Thu, 01 Jun 2023 02:46:33 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.141.224])
  by smtp.gmail.com with ESMTPSA id
- t7-20020a5d4607000000b0030647449730sm9635446wrq.74.2023.06.01.02.46.26
+ k7-20020a05600c0b4700b003f4f89bc48dsm1709017wmr.15.2023.06.01.02.46.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 Jun 2023 02:46:27 -0700 (PDT)
+ Thu, 01 Jun 2023 02:46:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -60,17 +61,20 @@ Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/7] hw/sysbus: Add sysbus_init_irqs and reduce
- SYSBUS_DEVICE_GPIO_IRQ scope
-Date: Thu,  1 Jun 2023 11:46:18 +0200
-Message-Id: <20230601094625.39569-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 1/7] hw/arm/xlnx-versal: Do not open-code
+ sysbus_connect_irq()
+Date: Thu,  1 Jun 2023 11:46:19 +0200
+Message-Id: <20230601094625.39569-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230601094625.39569-1-philmd@linaro.org>
+References: <20230601094625.39569-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,89 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Removed pointless QOM casts on a preliminary series [*] (Markus)
-- Added Richard R-b tags
+The SYSBUS_DEVICE_GPIO_IRQ definition should be internal to
+the SysBus API. Here we simply open-coded sysbus_connect_irq().
+Replace to use the proper API.
 
-This series:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ hw/arm/xlnx-versal.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-- Remove uses (out of sysbus.c) to the SYSBUS_DEVICE_GPIO_IRQ
-  definition, using proper SysBus API methods,
-- Reduce SYSBUS_DEVICE_GPIO_IRQ scope, making it SysBus API
-  internal,
-- Convert various for() loops iterating over sysbus_init_irq()
-  by calling a single sysbus_init_irqs() instead. Mostly an
-  automatic convertion except 4 files.
-
-The resulting code looks nicer IMHO, and is possibly less
-bug prone.
-
-Based-on: <20230601093452.38972-1-philmd@linaro.org>
-          "bulk: Remove pointless QOM casts"
-[*] https://lore.kernel.org/qemu-devel/20230601093452.38972-1-philmd@linaro.org/
-
-Philippe Mathieu-Daudé (7):
-  hw/arm/xlnx-versal: Do not open-code sysbus_connect_irq()
-  hw/usb/xlnx: Do not open-code sysbus_pass_irq()
-  hw/sysbus: Introduce sysbus_init_irqs()
-  hw/usb/hcd-xhci: Use sysbus_init_irqs()
-  hw/sysbus: Make SYSBUS_DEVICE_GPIO_IRQ API internal
-  hw: Simplify using sysbus_init_irqs() [automatic]
-  hw: Simplify using sysbus_init_irqs() [manual]
-
- include/hw/sysbus.h           |  3 +--
- hw/arm/smmuv3.c               |  6 +-----
- hw/arm/stellaris.c            |  5 +----
- hw/arm/strongarm.c            |  5 +----
- hw/arm/versatilepb.c          |  5 +----
- hw/arm/xlnx-versal.c          |  4 +---
- hw/char/pl011.c               |  5 +----
- hw/char/renesas_sci.c         |  5 +----
- hw/core/platform-bus.c        |  5 +----
- hw/core/sysbus.c              |  9 ++++++++-
- hw/dma/pl330.c                |  4 +---
- hw/dma/sifive_pdma.c          |  5 +----
- hw/gpio/sifive_gpio.c         |  5 +----
- hw/i386/kvm/xen_evtchn.c      |  5 +----
- hw/intc/arm_gic_common.c      | 20 +++++---------------
- hw/intc/arm_gicv2m.c          |  5 +----
- hw/intc/exynos4210_combiner.c |  5 +----
- hw/intc/loongarch_extioi.c    |  7 ++-----
- hw/intc/loongson_liointc.c    |  5 +----
- hw/intc/omap_intc.c           |  3 +--
- hw/intc/openpic.c             |  6 ++----
- hw/intc/slavio_intctl.c       |  6 ++----
- hw/misc/avr_power.c           |  4 +---
- hw/misc/macio/gpio.c          |  5 +----
- hw/misc/stm32f4xx_exti.c      |  5 +----
- hw/net/cadence_gem.c          |  5 +----
- hw/net/mcf_fec.c              |  5 +----
- hw/pci-host/designware.c      |  5 +----
- hw/pci-host/gpex.c            |  2 +-
- hw/pci-host/ppce500.c         |  4 +---
- hw/pci-host/raven.c           |  4 +---
- hw/pci-host/sh_pci.c          |  5 +----
- hw/pci-host/versatile.c       |  4 +---
- hw/ppc/ppc405_uc.c            | 10 ++--------
- hw/ppc/ppc440_uc.c            |  6 ++----
- hw/ppc/ppc4xx_devs.c          |  4 +---
- hw/ppc/ppc4xx_pci.c           |  5 +----
- hw/ssi/ibex_spi_host.c        |  5 +----
- hw/ssi/imx_spi.c              |  5 +----
- hw/ssi/sifive_spi.c           |  5 +----
- hw/ssi/xilinx_spi.c           |  5 +----
- hw/ssi/xilinx_spips.c         |  4 +---
- hw/ssi/xlnx-versal-ospi.c     |  4 +---
- hw/timer/allwinner-a10-pit.c  |  4 +---
- hw/timer/exynos4210_mct.c     |  4 +---
- hw/timer/hpet.c               |  4 +---
- hw/timer/renesas_cmt.c        |  5 +----
- hw/timer/renesas_tmr.c        |  9 +++------
- hw/timer/sifive_pwm.c         |  5 +----
- hw/usb/hcd-xhci-sysbus.c      |  5 ++---
- hw/usb/xlnx-usb-subsystem.c   |  2 +-
- 51 files changed, 70 insertions(+), 197 deletions(-)
-
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index db1e0dee6e..79133afa71 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -704,9 +704,7 @@ static void versal_unimp(Versal *s)
+                                 gpio_in);
+ 
+     gpio_in = qdev_get_gpio_in_named(DEVICE(s), "irq-parity-imr-dummy", 0);
+-    qdev_connect_gpio_out_named(DEVICE(&s->pmc.iou.slcr),
+-                                SYSBUS_DEVICE_GPIO_IRQ, 0,
+-                                gpio_in);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pmc.iou.slcr), 0, gpio_in);
+ }
+ 
+ static void versal_realize(DeviceState *dev, Error **errp)
 -- 
 2.38.1
 
