@@ -2,76 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AE771F51F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 23:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5121071F5AC
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4qDo-0001Cl-Cv; Thu, 01 Jun 2023 17:52:40 -0400
+	id 1q4qUb-0005yz-A0; Thu, 01 Jun 2023 18:10:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q4qDk-0001CF-EF
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 17:52:36 -0400
-Received: from smtp-190d.mail.infomaniak.ch ([2001:1600:3:17::190d])
+ (Exim 4.90_1) (envelope-from <chaosdefinition@hotmail.com>)
+ id 1q4qUY-0005yQ-HU; Thu, 01 Jun 2023 18:09:58 -0400
+Received: from mail-sn1nam02olkn20825.outbound.protection.outlook.com
+ ([2a01:111:f400:7ea9::825]
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q4qDg-0000eZ-Av
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 17:52:35 -0400
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
- by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QXKc77569zMqSL0;
- Thu,  1 Jun 2023 23:52:23 +0200 (CEST)
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA
- id 4QXKc326PxzMpyf6; Thu,  1 Jun 2023 23:52:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
- s=20191114; t=1685656343;
- bh=Y4IDHny7hGy+XnSKBvFZqlpnWAHCn1rWumxGCLA50bQ=;
- h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
- b=H6zZL510qVdfzZeh/i5GoA9yME1fspu+DZZ0Oi5ZVA8yOwTq7CQKGpshOTn5FYk2m
- fNE71TN9vpCm+pbkovBsqfYJ/zEMqsdW5HgzDcg4v5qxa6E4ngCPALSTCeNgrwWESi
- 5/j+zhczJVB0aePMSXY+seCsa5XOfmyxFayW64i8=
-Message-ID: <9a4edc66-a0a3-73e4-09c5-db68d4cfbb68@digikod.net>
-Date: Thu, 1 Jun 2023 23:52:18 +0200
-MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [ANNOUNCE] KVM Microconference at LPC 2023
-Content-Language: en-US
-From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- James Morris <jamorris@linux.microsoft.com>
-Cc: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Kees Cook <keescook@chromium.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- John Andersen <john.s.andersen@intel.com>, Liran Alon
- <liran.alon@oracle.com>,
- "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
- =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-References: <2f19f26e-20e5-8198-294e-27ea665b706f@redhat.com>
- <4142c8dc-5385-fb1d-4f8b-2a98bb3f99af@digikod.net>
-In-Reply-To: <4142c8dc-5385-fb1d-4f8b-2a98bb3f99af@digikod.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <chaosdefinition@hotmail.com>)
+ id 1q4qUW-0006PP-QI; Thu, 01 Jun 2023 18:09:58 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=O9zzKo4e7GO12Wfis07VbOU7ZBN166avqtkZ/qY7MtJR3cHakSKwJA6f5ri0gMdGvmcCNbjnUa+NMJPAN+BylrK+x+h/X5v+AHJ2jcRmIVUskTqrq1OjKi5IcsIc88VggAurTKEAztaaWLoFWEDZU/RyrcoMoOW8rGtEaGI2a2y6rCyzCq130fFBgglBVQYjUvNw1apEqrbd1CLy4tXZCMW8e+OB5EBXWTOUKyxlhSkjREEBU9qlQohJ/i2Yxn1qNxAn7uOXt14kyD1+1XfzOPbJ6UURv9JFhH6+MG+YP8Q132hT9KEhZ1p43Ml1M0RMrjrslysIFt0WLVrQBj3rVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1wdh7C33PkfQ8iCckr52XNo9VqThGdwM6gHu8w6bDRw=;
+ b=DCAOKLjJu/nh2GDocodjZlIeLROHswliM6Ba6PoCkoHEFqOmpE2wL3Bh/mGEFcOmZJOHrP77vcjwpBx5hQT9A/AhFg0w6gIT1BLFre+R8L4JztIA4JiLIboysrevdhkkmaZlnOFRREhjaSWJwAbTUayZj0drntsvB/3sXtWNGhxxPznArj2IEamUxel5En5EHTr3rjj4CzA7B6bFGnV2j3Us5l1kzWpthiZCEzmaYVNcA6Q1K/6NlQUS7SitD5aSP4kIMQxtDE1xFKvPShgFmnFvnxc/SMWD5f0Cd4yX0TETKqhr6lc1HnBCfdIfowMQOiPWqh8mpmtgLXzOizHYrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1wdh7C33PkfQ8iCckr52XNo9VqThGdwM6gHu8w6bDRw=;
+ b=ZEHtXhzlqjy5OXqPH353tBELsIYzdBJnQe/WZ5jY0654RW84cQZ7xVoKmYcVeon8/dDkipPgofV9fZf+K6QzKTewVt6mm2LNzkCmDcTbMoLGgwnUct9C9HkClluy3PA47a8sN/EJYvG0z0oTYU4QfMJAKEyrIZIOpi9GmOZnDgeYj6ilo9079WKHp6xc2h7xX5WWdlXhZ7acQZUFjMU7tWH/O1A2wIkHquEralzXrkIFyFBH8J/IfmrlUM8aNPQ6VE1XKYL4C3+B3nJHi+aQP+Cni6mL3s2esdL7LRuNyAsQ/nNf/D7zo/bouojgG6T14MQak595hZN1+gQHnBaVnw==
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com (2603:10b6:8:96::19) by
+ SN7PR12MB7417.namprd12.prod.outlook.com (2603:10b6:806:2a4::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Thu, 1 Jun
+ 2023 22:09:53 +0000
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::20b8:bc4d:e007:4fbf]) by DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::20b8:bc4d:e007:4fbf%2]) with mapi id 15.20.6455.020; Thu, 1 Jun 2023
+ 22:09:53 +0000
+From: Zhuojia Shen <chaosdefinition@hotmail.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ Zhuojia Shen <chaosdefinition@hotmail.com>
+Subject: [PATCH v4 0/2] target/arm: allow DC CVA[D]P in user mode emulation
+Date: Thu,  1 Jun 2023 14:53:38 -0700
+Message-ID: <DS7PR12MB6309FD700EF00EF1EB541CA7AC49A@DS7PR12MB6309.namprd12.prod.outlook.com>
+X-Mailer: git-send-email 2.40.1
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-Received-SPF: pass client-ip=2001:1600:3:17::190d;
- envelope-from=mic@digikod.net; helo=smtp-190d.mail.infomaniak.ch
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain
+X-TMN: [cIsFpNHng84ldKWPDXugJu6+D7HcQDnM]
+X-ClientProxiedBy: BYAPR06CA0023.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::36) To DS7PR12MB6309.namprd12.prod.outlook.com
+ (2603:10b6:8:96::19)
+X-Microsoft-Original-Message-ID: <20230601215338.48600-1-chaosdefinition@hotmail.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6309:EE_|SN7PR12MB7417:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec954702-d0f4-4820-fe6e-08db62eced10
+X-MS-Exchange-SLBlob-MailProps: AZnQBsB9Xmo7HDJh1DrTtBBfugGKTjxKNzyt/Mu7Cb4cfrz9glysO5RUfA6om+STjZoXBJd3W6sTOj2ExmkGVuSbKdP3i0rWXEOnrHxvQJdtpSwaYLwSJ6Nc2nXaiMs880fZPv59RNXpXubjj/k2I0rzcUlgx42L0Y5JToSPhc4ws7wEZCSR6DmXt52USMDNa/xXIxXkNyE0m9J4momUn1PzGfdfyU+K4gglwOrASrotGkmXjg0balVcgPzR42vwviGgLo01J+kWalfBOo3GFdgJU48iP/zW0Qy43wX+/NPw9hbDUCftCy127bU7RAUdlUGXaX0Fz2I3c8Ehxo0E3ia8tPcfT39D8NdT89yV62kqVhAANTmXv2PQb1STFiKfxCVgtpy33JwJBkesPiJvMPslHnkvgNJ5jfTXkmfdiYlop7EIGnAmMNrzL2sLMjb1fp2llDTF3eCo8ZsfrdwirkgB0Xox9A83Rrhw2i0Ohbmvp+72i6YBv7LhlgnvQKQOQFZiMpgDAwN0rT6Vq6ArE73HGdIhlCbNZLCqXWbaW1ajE2YxqnF6uqeRAMMVEDvvJVmlt4kFdCyJvmQXfkUCFoOMck05X+a5KtSuyWVqJar3RBmL2pD1qSwdeTuY6aqfFJZozI/pUw40qPZXlkXM0EF+4spinVQmqUowX/7ddtbFAbPRIoHzOOwPmIUktYwz00ns3wfGzQjHF2CD+krfugzluEMBG6e2FF+Np1rQXUR9TIv7VDzSYJW6HDEPYD0WRsUvcGTjbnA=
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xFHHGkz7mTYtF8wsgBdHva+1mN5smb/oJNSXM/+xbTaG7+gjFKgMFffTD2BdQH+yEXA7F02nPtjNgjBCQpczIokvA5Ipe+7ax3uS0PkhtQBfqM8NcfpWvxswwJa9XsvmTKi62yUwD500SlIIuXpdzQrVXKckXWuPiguoQcHFIdK8eWWTVLVkZEd7EcmcuDv6MvmPdmAbedV3vAf98bqFRAPKfVXEk0dPoTndghEumAe1hWVtQsAv7s5MQr0TWfA3UhxAM6ehdz5lo97LHkEjvZn/GFwCvZzeK8vO66pZ8soKJBI3x7JMxFY/xmI0UDU+pQjbcZjnFQdcELvT/J1dOUetYGw03M8Dj98O/IphqEsOR/RCK59WL6KiglXrwDd54luOwdT8K7tz3+WMN7s6mdORJ6Tl8ZVRCQQjcmrgKhZph8iJ+9vjq3R5at8D6JnheEXrSnaKD5EwBKmfITN2zJ41XAypEApuC1HW3ysLkbnCp8QDiR/uZt1CeO0xU2eRlUEuLXHZTdUgdnHnlmid3fFoOOV8onF8/E5qcQ7stofsZ3a6yW/eFvABWEAVIgKEjK9bNTtKvPQsa1ls2xvTZX6gWY3JbxpPoBCpv9cS7JI=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8jFXbLezLe2/dT5YaT0Yi2JQFD78pxcggbhMCXeXyxvOecjRQ1dJ299UUpJM?=
+ =?us-ascii?Q?5iT//6PBwyrsqh83fAdYwqiuWN0WiWI2eNDYeutBTKj9JOnTb1Q8oJE24R0z?=
+ =?us-ascii?Q?1daVrIiVPAHOd7CdQnVhcyW5x9ng+ycZEIEM2feyOUYxz9RgqS2X5Xaq1zlE?=
+ =?us-ascii?Q?4Mr00w2L3h9B2G/J+QUhvtnc2yD2fSkMsVoTOl1qoWiJrDzUF5PyylyLXTse?=
+ =?us-ascii?Q?0ZGg1aBR6krDSgRnrsf72Azi0XnFrPvwxhchCz5QSvYxTAWrchbIRdzbACpR?=
+ =?us-ascii?Q?/ksnjBrPKFRk+6oWasOOb1TSnc3rPOwf/zF/GuojTEiZIFEDnhiIrknL8TPq?=
+ =?us-ascii?Q?WHmq2L1pFz3XxBMkfpoMzyFx8zWl9i33vWOIKOipd7TV3RIBn8NfCX6hy5Cs?=
+ =?us-ascii?Q?ktbvJiCx4q0eXKDA6s48OKlrN6PSgeUX2SyitCX6wu8XIYzPwUBXLGmRkGoF?=
+ =?us-ascii?Q?9vc6Rmqbg5ydRkv5GWTEQC+crfmTb5lAy7nyR1R+Ft7WNAXhd5X/rcdMkyQJ?=
+ =?us-ascii?Q?wn9PocZSRJjKv5s4Tvqdn6UpWeO7QxrsZZWXn0N7SDXvrca25PGGbG+mMsyG?=
+ =?us-ascii?Q?ze+de5ZKBcJBJb7G/KRyS7dEdean7MgA4x7alJzy/jHOMbBkLhnJfmLBKl4W?=
+ =?us-ascii?Q?LvHMVz432pvOb80mw3WBADwOr1vGAcK73uNDi9blSV0rxkUveRyIYFYDoVda?=
+ =?us-ascii?Q?ofnx7HKWnBm7I148QJJrVa8IPjdJaO9y0JuFbiTy49ViSHv6X4/JFE9z7Smh?=
+ =?us-ascii?Q?f9dN0hrX/OzBBEyZfKcuzCN3UI6qbg8kfuRo2dd+I45DhpgIU2JTGbeE0JTw?=
+ =?us-ascii?Q?cXXDLnoCnzNuuPLchVdqojcpWmd8O6+jIFwv64CNfJ9mviQRDeko5vKVAyAW?=
+ =?us-ascii?Q?f49/rS9ydY9CrQQMeVrf5vwEkPVuNsM87OnGOK5DNj+gkp+O5Iu34axrATPQ?=
+ =?us-ascii?Q?7S9T3rFYF/ezB8eM+bueJcOeHKtiPuGMQjZAxiHAo66NiWH5UuNckwIhj9WL?=
+ =?us-ascii?Q?nL7yieEUtp1h1sIJR5ZR50PcTh3O5c0aIUEcNJNwA/7SMGqZNV0KlX4ZE1e4?=
+ =?us-ascii?Q?+YKkehB4rt45CCtYQjMuuCMtQbSqjzaQFq7uINjYwCw3h2uYFbHJIK7KVljF?=
+ =?us-ascii?Q?YNSuLfYc1siTRYoGf6dPCTxCibCPcZmxLOnGVHmmgayUdUb0shRX9rhSLSxg?=
+ =?us-ascii?Q?FvfreUYSa0uGsLQ732U+uI3Gy7U86lRcKK3zi+fRDNcxRWoVbOm/ofP4VMg?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-71ea3.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec954702-d0f4-4820-fe6e-08db62eced10
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6309.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 22:09:53.6887 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7417
+Received-SPF: pass client-ip=2a01:111:f400:7ea9::825;
+ envelope-from=chaosdefinition@hotmail.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,118 +122,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+This patch series enables executing DC CVAP and DC CVADP instructions in
+AArch64 Linux user mode emulation and adds proper TCG tests.
 
-What is the status of this microconference proposal? We'd be happy to 
-talk about Heki [1] and potentially other hypervisor supports.
+Changes in v4:
+- Add copyright and license header in new files
 
-Regards,
-  Mickaël
+Changes in v3:
+- Fix typo of HWCAP2_DCPODP
+- Split tests into a separate patch
+- Remove unnecessary handling of SIGILL in tests
+- Merge 4 tests into 2
 
+Changes in v2:
+- Fix code to deal with unmapped address
+- Add tests for DC'ing unmapped address
 
-[1] https://lore.kernel.org/all/20230505152046.6575-1-mic@digikod.net/
+Zhuojia Shen (2):
+  target/arm: allow DC CVA[D]P in user mode emulation
+  tests/tcg/aarch64: add DC CVA[D]P tests
 
+ target/arm/helper.c               |  6 +--
+ tests/tcg/aarch64/Makefile.target | 11 ++++++
+ tests/tcg/aarch64/dcpodp.c        | 63 +++++++++++++++++++++++++++++++
+ tests/tcg/aarch64/dcpop.c         | 63 +++++++++++++++++++++++++++++++
+ 4 files changed, 139 insertions(+), 4 deletions(-)
+ create mode 100644 tests/tcg/aarch64/dcpodp.c
+ create mode 100644 tests/tcg/aarch64/dcpop.c
 
-On 26/05/2023 18:09, Mickaël Salaün wrote:
-> See James Morris's proposal here:
-> https://lore.kernel.org/all/17f62cb1-a5de-2020-2041-359b8e96b8c0@linux.microsoft.com/
-> 
-> On 26/05/2023 04:36, James Morris wrote:
->   > [Side topic]
->   >
->   > Would folks be interested in a Linux Plumbers Conference MC on this
->   > topic generally, across different hypervisors, VMMs, and architectures?
->   >
->   > If so, please let me know who the key folk would be and we can try
-> writing
->   > up an MC proposal.
-> 
-> The fine-grain memory management proposal from James Gowans looks
-> interesting, especially the "side-car" virtual machines:
-> https://lore.kernel.org/all/88db2d9cb42e471692ff1feb0b9ca855906a9d95.camel@amazon.com/
-> 
-> 
-> On 09/05/2023 11:55, Paolo Bonzini wrote:
->> Hi all!
->>
->> We are planning on submitting a CFP to host a KVM Microconference at
->> Linux Plumbers Conference 2023. To help justify the proposal, we would
->> like to gather a list of folks that would likely attend, and crowdsource
->> a list of topics to include in the proposal.
->>
->> For both this year and future years, the intent is that a KVM
->> Microconference will complement KVM Forum, *NOT* supplant it. As you
->> probably noticed, KVM Forum is going through a somewhat radical change in
->> how it's organized; the conference is now free and (with some help from
->> Red Hat) organized directly by the KVM and QEMU communities. Despite the
->> unexpected changes and some teething pains, community response to KVM
->> Forum continues to be overwhelmingly positive! KVM Forum will remain
->> the venue of choice for KVM/userspace collaboration, for educational
->> content covering both KVM and userspace, and to discuss new features in
->> QEMU and other userspace projects.
->>
->> At least on the x86 side, however, the success of KVM Forum led us
->> virtualization folks to operate in relative isolation. KVM depends on
->> and impacts multiple subsystems (MM, scheduler, perf) in profound ways,
->> and recently we’ve seen more and more ideas/features that require
->> non-trivial changes outside KVM and buy-in from stakeholders that
->> (typically) do not attend KVM Forum. Linux Plumbers Conference is a
->> natural place to establish such collaboration within the kernel.
->>
->> Therefore, the aim of the KVM Microconference will be:
->> * to provide a setting in which to discuss KVM and kernel internals
->> * to increase collaboration and reduce friction with other subsystems
->> * to discuss system virtualization issues that require coordination with
->> other subsystems (such as VFIO, or guest support in arch/)
->>
->> Below is a rough draft of the planned CFP submission.
->>
->> Thanks!
->>
->> Paolo Bonzini (KVM Maintainer)
->> Sean Christopherson (KVM x86 Co-Maintainer)
->> Marc Zyngier (KVM ARM Co-Maintainer)
->>
->>
->> ===================
->> KVM Microconference
->> ===================
->>
->> KVM (Kernel-based Virtual Machine) enables the use of hardware features
->> to improve the efficiency, performance, and security of virtual machines
->> created and managed by userspace.  KVM was originally developed to host
->> and accelerate "full" virtual machines running a traditional kernel and
->> operating system, but has long since expanded to cover a wide array of use
->> cases, e.g. hosting real time workloads, sandboxing untrusted workloads,
->> deprivileging third party code, reducing the trusted computed base of
->> security sensitive workloads, etc.  As KVM's use cases have grown, so too
->> have the requirements placed on KVM and the interactions between it and
->> other kernel subsystems.
->>
->> The KVM Microconference will focus on how to evolve KVM and adjacent
->> subsystems in order to satisfy new and upcoming requirements: serving
->> guest memory that cannot be accessed by host userspace[1], providing
->> accurate, feature-rich PMU/perf virtualization in cloud VMs[2], etc.
->>
->>
->> Potential Topics:
->>      - Serving inaccessible/unmappable memory for KVM guests (protected VMs)
->>      - Optimizing mmu_notifiers, e.g. reducing TLB flushes and spurious zapping
->>      - Supporting multiple KVM modules (for non-disruptive upgrades)
->>      - Improving and hardening KVM+perf interactions
->>      - Implementing arch-agnostic abstractions in KVM (e.g. MMU)
->>      - Defining KVM requirements for hardware vendors
->>      - Utilizing "fault" injection to increase test coverage of edge cases
->>      - KVM vs VFIO (e.g. memory types, a rather hot topic on the ARM side)
->>
->>
->> Key Attendees:
->>      - Paolo Bonzini <pbonzini@redhat.com> (KVM Maintainer)
->>      - Sean Christopherson <seanjc@google.com>  (KVM x86 Co-Maintainer)
->>      - Your name could be here!
->>
->> [1] https://lore.kernel.org/all/20221202061347.1070246-1-chao.p.peng@linux.intel.com
->> [2] https://lore.kernel.org/all/CALMp9eRBOmwz=mspp0m5Q093K3rMUeAsF3vEL39MGV5Br9wEQQ@mail.gmail.com
->>
->>
+-- 
+2.40.1
+
 
