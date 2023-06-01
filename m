@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B8D71962E
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 10:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE94719652
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:04:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4e99-00080m-71; Thu, 01 Jun 2023 04:59:03 -0400
+	id 1q4eBG-0001Uv-O4; Thu, 01 Jun 2023 05:01:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4e94-00080I-Ln
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:58:59 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4e92-0000Eg-Vn
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:58:58 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3f6e72a1464so5810315e9.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 01:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685609935; x=1688201935;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xIwKH5GgGG4g4zJF7CHtSnylZPdtOpqpBpfI/qqJcMM=;
- b=BiO1ovaq8xlBWW2jITKXCXe3SDaOeHEZPlD3WJImRyp0DKECfhcWN+ppr+G+kG/5Sl
- +SgQHab1GtWG0zOC5GKh5hRpa43ylNQDJWQQEQb2sn0EOn1uKVCYfLdA3cYd2fsIDDE+
- tOFYhi3tJWBYtlt/qkkJUPkOaZ8DiZTB6854RIeYFN2SVMHdiEFKBpBVpZoiOwHkKg01
- RuTjUPRdobpwGyH6+V/t6UTc/NrsoUBAh61watX2eNS8XZ0ZdOl6ajawi2QFG/BGQJaU
- 6pj5EfVA2mR1qMAiI/RfKwjJA+hjwVBI8HdRJa+DHj3aTUwY0f9CI1f/VpTp7mWJk0hj
- kDTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685609935; x=1688201935;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xIwKH5GgGG4g4zJF7CHtSnylZPdtOpqpBpfI/qqJcMM=;
- b=LRwgrs0i9EC5yVcrtk0XQaNMqCYYY4msTdfCfjaxQFcWrrNjekFr7u6mzxDkPx3SSF
- y0R+j4WwnLAIJ0lWKvXNitqm2HOONMenRhvS6Eh07tGdlxc6DMRioOi6zTmvhPG1cvge
- FOpFuiSn5Dka3rmloqMhnZDgtCdlO1O4CYvTQXR1k5FzuHhUjLRfTwnC/m3Z0tn7hrf3
- 4GBcBN/nMT1SdD1GpJ4ZTMqfJ0B2/THIAQ/Vvka9aaV9kJV0YJz1VzG2aqV6S5aaijXy
- 7SF8nVcLnh+jfx3hyi49LZwGn0q3e/IV8My7weGUEuS3+q/JDMUhlMQlpdwq+Zd/9Zur
- WcxQ==
-X-Gm-Message-State: AC+VfDxO9sLcs9U4JMAUGftltWJtF/tilWkLcVaBGwZULr1DDfKmejf1
- fRs1bL+uLQACQxJW5kAt/zyX8g==
-X-Google-Smtp-Source: ACHHUZ5OguhEEhy1lPp1tN+5VJJ59KmeSzRpwDPFY2GdQ1eZUDjESjvhCQC5GqFGOS1hlO08chTNOg==
-X-Received: by 2002:a1c:f313:0:b0:3f5:ff24:27de with SMTP id
- q19-20020a1cf313000000b003f5ff2427demr1314422wmq.32.1685609935139; 
- Thu, 01 Jun 2023 01:58:55 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.141.224])
- by smtp.gmail.com with ESMTPSA id
- u3-20020a7bc043000000b003f1751016desm1534788wmc.28.2023.06.01.01.58.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 01:58:54 -0700 (PDT)
-Message-ID: <a47c2841-8a76-ff40-20a4-1710ed17e47a@linaro.org>
-Date: Thu, 1 Jun 2023 10:58:53 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4eAg-0001F7-No
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:00:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4eAf-0000tF-59
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:00:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685610036;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uYzJKyMm8JKwbDit39SmDgZQgUaYcq9OcZP871om2qs=;
+ b=HksgD9cNecR9PMs3xfbvLyMi/KIV7zXWSaW1Teye2jjhLWu0+zCyX+yPtyjY+O9SLH35RJ
+ +KWKR6BVRsTko5c1DJezs227+RlzoDs2hLih5mvuqoajOo36dLG8L/lpIZg1avu/TBYdwD
+ SjWFkMHEReHe/g1ymGi+oGKeOgkWjEU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-189-uC3R8f4kPZO1QMmeTZ3cog-1; Thu, 01 Jun 2023 05:00:25 -0400
+X-MC-Unique: uC3R8f4kPZO1QMmeTZ3cog-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 27740185A78F;
+ Thu,  1 Jun 2023 09:00:25 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.170])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F1A03140E963;
+ Thu,  1 Jun 2023 09:00:24 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E990D21E692E; Thu,  1 Jun 2023 11:00:23 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+ <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
+ <87jzwoczq6.fsf@pond.sub.org>
+ <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk>
+Date: Thu, 01 Jun 2023 11:00:23 +0200
+In-Reply-To: <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk> (Mark
+ Cave-Ayland's message of "Thu, 1 Jun 2023 09:00:42 +0100")
+Message-ID: <87y1l38sm0.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 7/7] hw: Simplify using sysbus_init_irqs() [manual]
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20230531223341.34827-1-philmd@linaro.org>
- <20230531223341.34827-8-philmd@linaro.org> <87mt1jafjt.fsf@pond.sub.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <87mt1jafjt.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,79 +85,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/6/23 07:59, Markus Armbruster wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> Audit the sysbus_init_irq() calls and manually convert
->> to sysbus_init_irqs() when a loop is involved.
+Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
+
+> On 31/05/2023 16:00, Markus Armbruster wrote:
+>
+>> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>>=20
+>>> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>>>> Also change the instantiation of the CPU to use object_initialize_chil=
+d()
+>>>> followed by a separate realisation.
+>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>> ---
+>>>>    hw/m68k/q800.c         | 13 ++++++++-----
+>>>>    include/hw/m68k/q800.h |  2 ++
+>>>>    2 files changed, 10 insertions(+), 5 deletions(-)
+>>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>>>> index 3730b30dd1..c34b2548ca 100644
+>>>> --- a/hw/m68k/q800.c
+>>>> +++ b/hw/m68k/q800.c
+>>>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] =3D {
+>>>>      static void q800_machine_init(MachineState *machine)
+>>>>    {
+>>>> -    M68kCPU *cpu =3D NULL;
+>>>> +    Q800MachineState *m =3D Q800_MACHINE(machine);
+>>>>        int linux_boot;
+>>>>        int32_t kernel_size;
+>>>>        uint64_t elf_entry;
+>>>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machi=
+ne)
+>>>>        }
+>>>>          /* init CPUs */
+>>>> -    cpu =3D M68K_CPU(cpu_create(machine->cpu_type));
+>>>> -    qemu_register_reset(main_cpu_reset, cpu);
+>>>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>>>> +                            M68K_CPU_TYPE_NAME("m68040"));
+>>>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &erro=
+r_fatal);
+>>>
+>>> CPUs are QDev-based, shouldn't we use qdev_realize()?
 >>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   hw/intc/loongarch_extioi.c | 3 +--
->>   hw/intc/omap_intc.c        | 3 +--
->>   hw/pci-host/gpex.c         | 2 +-
->>   hw/timer/renesas_tmr.c     | 9 +++------
->>   4 files changed, 6 insertions(+), 11 deletions(-)
->>
->> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
->> index db941de20e..c579636215 100644
->> --- a/hw/intc/loongarch_extioi.c
->> +++ b/hw/intc/loongarch_extioi.c
->> @@ -275,8 +275,7 @@ static void loongarch_extioi_instance_init(Object *obj)
->>       LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
->>       int cpu, pin;
->>   
->> -    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, EXTIOI_IRQS);
->> -
->> +    sysbus_init_irqs(dev, s->irq, EXTIOI_IRQS);
-> 
-> Commit message claims "when a loop is involved".  No loop here.  That
-> work was actually done in the previous patch:
-> 
->    diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
->    index 0e7a3e32f3..db941de20e 100644
->    --- a/hw/intc/loongarch_extioi.c
->    +++ b/hw/intc/loongarch_extioi.c
->    @@ -273,11 +273,9 @@ static void loongarch_extioi_instance_init(Object *obj)
->     {
->         SysBusDevice *dev = SYS_BUS_DEVICE(obj);
->         LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
->    -    int i, cpu, pin;
->    +    int cpu, pin;
-> 
->    -    for (i = 0; i < EXTIOI_IRQS; i++) {
->    -        sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
->    -    }
->    +    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, EXTIOI_IRQS);
-> 
->         qdev_init_gpio_in(DEVICE(obj), extioi_setirq, EXTIOI_IRQS);
-> 
-> In this patch, you merely delete a superfluous type conversion that is
-> present even before your series.
+>> Yes, we should.
+>> [...]
+>
+> Interesting. I remember thinking that CPUs were different, so I'm fairly =
+sure I borrowed this from some similar code in hw/arm :)
+>
+> Shouldn't the above be directly equivalent to qdev_realize(dev, NULL, &er=
+ror_fatal) given that the CPU doesn't connect to a bus?
 
-Right. I guess I did that automatically "why are we casting the same
-type?" without even noticing.
+It's been a while since I worked on this...
 
-> There are more of them in this function.  Please delete them all, and in
-> a separate patch.
-
-OK.
-
-> Actually, there are more elsewhere.  Coccinelle script
-> 
->      @@
->      typedef SysBusDevice;
->      SysBusDevice *dev;
->      @@
->      -    SYS_BUS_DEVICE(dev)
->      +    dev
-> 
-> finds some in hw/arm/xlnx-versal.c and hw/rx/rx62n.c, too.
-> 
-> Would be nice to do this for every QOM type, but I don't know how
-> without duplicating the semantic patch for each of them.  There are
-> almost 150 uses os OBJECT_DECLARE_TYPE()...
-
-Checking all QOM macros, I counted 1076 types...
+Commit ce189ab230b (qdev: Convert bus-less devices to qdev_realize()
+with Coccinelle) looks like you're right.
 
 
