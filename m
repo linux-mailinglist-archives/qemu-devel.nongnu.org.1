@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DB071F242
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 20:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E2471F257
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 20:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4nHp-0007CO-BC; Thu, 01 Jun 2023 14:44:37 -0400
+	id 1q4nKv-0000tC-Ua; Thu, 01 Jun 2023 14:47:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4nHm-00077b-Or
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 14:44:34 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1q4nKu-0000sF-42
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 14:47:48 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4nHl-0005Bm-2Q
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 14:44:34 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-650bacd6250so632935b3a.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 11:44:31 -0700 (PDT)
+ id 1q4nKs-0005lt-Hc
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 14:47:47 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-256531ad335so901195a91.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 11:47:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685645070; x=1688237070;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1685645265; x=1688237265;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8Cqrl+WClwhxVzZlS3zZOutI5i9NsBX/IJ3KU8h9dYA=;
- b=t2a0gHmPo/9VaM+QSOiuk52+nsEsaGVqlxbvfJZ4l9xuZnCoS74HKpylMbarxKBUfO
- +sN6rtqlBs+l7pEDwvNB3EhH0zpxtk7IoKkBC3wbj9bHrXDqoeUui6jqzLpCGY0Ytdu7
- 9IJ4fr3lKHGV8jS42KWECEcylvRK3OU+03FLB2xpETV3hup/g+PNY4PoQKFuBoqHWGWR
- VQIjlPjbIkCTQXV5o7golT1a1JQFWvWhrpB+MlVSpXRYx9kXDRJ6r6cmLaucUhLudFgY
- wbTNmpt9+eHI5Awy2k0VVpqOqiSwdnKg9tONj9fZ2TNDqdIf1HsWDmrwVoFUcFouOTwk
- 3KAg==
+ bh=DJ/bRm7ihLLng19cWGK3MQwR5rUFmuWOEgcl1k6Ad24=;
+ b=E+xLV3AbP4dvuXowNeizC29lFuYQJ86bdOQ3SnxewLuak/LfV4Kb7uV31/CRczlY30
+ v5xGQC6pQBxWwD9xnMiW+4Z0muTUrDerk7nqT7bXoicGjs5wFilehvIdZzV1BIKSrNRO
+ YwZJ9ncJuBEOwmN0wB0zUy4xQnFM+sb+KOGypyFm3XLx4igmTX65HNXd0Nom/jsgfNB/
+ AG6JYBn+Btu4+WKpjLgNcvXNqeezTM+oGoZzk1o4maTCSURlGXrASJfXy4Jx1uMMjv1Z
+ tq4JXOS4wc+f6o5E6tQZ0JBiBqGHQbWGdll+g6jx7yFZsB0KJhqFHTL5I4S9ELFjKeck
+ vS8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685645070; x=1688237070;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1685645265; x=1688237265;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8Cqrl+WClwhxVzZlS3zZOutI5i9NsBX/IJ3KU8h9dYA=;
- b=XYwW1Yk72TLUDe1RJujrhix7VKzFZESSZxkf+HF4FT+7k+Sl/K+AQhGbgbWf16U9ZD
- 1KUd9R4jNM2gouV5JbqQGWyDUQxXXuUhpoxSIHPEmsm7pYgzXQtehB9+5CGQkyYKNOqP
- UE3N6/jHmJY4Uuxpf3nAHgkIeJgyAKWd2ZRuNTpbUxcYUdfgo/wRYerzExn7oKztzIAS
- l4QALXCFVObAq4G97mvDtr27TniwfOu7qmgI5xNIPw5hfelvXCraxU5+P7lynWLzHjqM
- k8ndmFUpn2Lt4mtcvXmfIvgyB+vcEDlYZFuWPz3fthMlMLxLkXqSkFENJwxeqbQ6qchV
- 78Rg==
-X-Gm-Message-State: AC+VfDwrlYf4Z5na/rVbnAPSeZiKWgFXzssKUemxUpFz18Yjnm7oIqUz
- GfsJxSi6rYTx8gRSUFk9Fxof0Q==
-X-Google-Smtp-Source: ACHHUZ6l6QUh6T0B0ZoWFr9vOJMxwmvNRvybVvEttuNI+jrQuAkZdXCbDcRv+ycKmAE+xp6E6W4TLQ==
-X-Received: by 2002:a05:6a20:6f03:b0:103:d538:5ea6 with SMTP id
- gt3-20020a056a206f0300b00103d5385ea6mr7110078pzb.48.1685645070543; 
- Thu, 01 Jun 2023 11:44:30 -0700 (PDT)
+ bh=DJ/bRm7ihLLng19cWGK3MQwR5rUFmuWOEgcl1k6Ad24=;
+ b=GBx+lBzCH9B5mQjNAStzi1AKsRydmPwS7/5v1Cr3G/HvEcJN4HtFDIwSdzNrItBxwk
+ NxYTPWhx2B+aQjlH25Og/dNdanRy5sUvQjYxZvsSTPSLxYraQ4Kp0I9MwMLyr8ib8VKH
+ V+Nzq/GcOLIMJ7z0WsecJ8onG4CVtaveVzIrXwZgJZ7qwHIS2wn/l4nwJleBLmSBl/Pp
+ j7mp/P0cOgbgAYBiUtBa326uFl7RArISjy+rR9Ht7R1Tkb9+ZP8aUL5kCzjQcPeKpqx0
+ kddWaLb0TqUKSZpMqLNA6pI2edyO2oe28fTukwtO2v/osrXX3gFD6v2Fdg849SNFaxkZ
+ vGog==
+X-Gm-Message-State: AC+VfDx7p/IDD4QeqagS5PHODZ19W359Pnj0E3cqc4VgPt7g59xB9dB+
+ 4O7hF6PgEVNaTaaBsxJnnc1QiHrw8gifarfMk6U=
+X-Google-Smtp-Source: ACHHUZ62zsMCaKhC4sl1Qc0+cU/JJiTuHF1Gr4dSdOiKv+n6x9AelLaN+6gcjnDtnUe42tuRRAlwyQ==
+X-Received: by 2002:a17:90a:fc94:b0:256:845f:333a with SMTP id
+ ci20-20020a17090afc9400b00256845f333amr239147pjb.19.1685645265250; 
+ Thu, 01 Jun 2023 11:47:45 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:c935:f07f:4b59:7091?
  ([2602:ae:1598:4c01:c935:f07f:4b59:7091])
  by smtp.gmail.com with ESMTPSA id
- e13-20020a62aa0d000000b0064f7c56d8b7sm5344983pff.219.2023.06.01.11.44.29
+ t3-20020a17090b018300b002535a337d45sm1712107pjs.3.2023.06.01.11.47.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 11:44:30 -0700 (PDT)
-Message-ID: <342a3b0b-05f5-54f2-a544-a1bc732b5c32@linaro.org>
-Date: Thu, 1 Jun 2023 11:44:28 -0700
+ Thu, 01 Jun 2023 11:47:44 -0700 (PDT)
+Message-ID: <4afee714-2d42-7ce5-e27f-5f5826253dd1@linaro.org>
+Date: Thu, 1 Jun 2023 11:47:43 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 0/6] tests: enable meson test timeouts to improve
- debuggability
+Subject: Re: [PULL v2 00/11] Tracing patches
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20230601163123.1805282-1-berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+References: <20230601150649.1591095-1-stefanha@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230601163123.1805282-1-berrange@redhat.com>
+In-Reply-To: <20230601150649.1591095-1-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,17 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/23 09:31, Daniel P. Berrangé wrote:
-> Daniel P. Berrangé (6):
->    qtest: bump min meson timeout to 60 seconds
->    qtest: bump migration-test timeout to 5 minutes
->    qtest: bump qom-test timeout to 7 minutes
->    qtest: bump aspeed_smc-test timeout to 2 minutes
->    qtest: bump bios-table-test timeout to 6 minutes
->    mtest2make: stop disabling meson test timeouts
+On 6/1/23 08:06, Stefan Hajnoczi wrote:
+> The following changes since commit c6a5fc2ac76c5ab709896ee1b0edd33685a67ed1:
+> 
+>    decodetree: Add --output-null for meson testing (2023-05-31 19:56:42 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/stefanha/qemu.git  tags/tracing-pull-request
+> 
+> for you to fetch changes up to 367189efae8b53ec2ade37a1c079fd8f69244b9e:
+> 
+>    accel/tcg: include cs_base in our hash calculations (2023-06-01 11:05:05 -0400)
+> 
+> ----------------------------------------------------------------
+> Pull request
+> 
+> This pull request contains Alex Bennée's vcpu trace events removal patches.
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
