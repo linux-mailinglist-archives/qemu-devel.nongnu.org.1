@@ -2,70 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458237195E2
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 10:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD824719601
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 10:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4duA-0008TU-ID; Thu, 01 Jun 2023 04:43:34 -0400
+	id 1q4dz5-0001wl-4P; Thu, 01 Jun 2023 04:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q4du2-0008Sq-QQ; Thu, 01 Jun 2023 04:43:26 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q4dtz-00054G-LD; Thu, 01 Jun 2023 04:43:26 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:286:0:640:8489:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id BB5C36069D;
- Thu,  1 Jun 2023 11:43:08 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b6ad::1:35] (unknown
- [2a02:6b8:b081:b6ad::1:35])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 7hJqL00OkqM0-jRhmMMfB; Thu, 01 Jun 2023 11:43:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1685608987; bh=hRFzgpmxyBgintcyVn46nKFqVqeGJ/WyBPtyeKtViuk=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=x1xsgHrBNumqk/Oqd9uNZWNHSfkttfVe2OV9BSTXitLIPm/qDNoYcfNUnBQVGeMgh
- D2mMB3Giy3VMYgZfD5EdLIbiQdEnIqU4AmtB3BBUxMViwm9WfjkcFGnARua4aEVwiM
- RLdC++H54JAOJPlZoq3kQqIB/z1c6idWGETlDfKk=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <6e365263-c5c4-648c-639e-d30c59d81d6c@yandex-team.ru>
-Date: Thu, 1 Jun 2023 11:43:07 +0300
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1q4dz0-0001w6-Md
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:48:34 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1q4dyz-0006F4-31
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:48:34 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1b04706c974so4998355ad.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 01:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685609311; x=1688201311;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XG/vGXSzD1X2DKFaeuOHuABz/AWh01w+UQ5wuAYsDFc=;
+ b=VC9/fW6sc/V8UYBRccGkdo2wq/3jzaM/E/RrUDdIf7EpSClpNSHBYrXvpXMM2y6RX6
+ 3Ci2U8qKoeIZpsKViSqn0YPKg1GqLpwQXVPOrxZxAd+8nwJMf3OoHR+ym3rbiSLWhljG
+ zYOuyCZ1vuKCMfvILBQfA4KHpdiDJWR3LUpGnvtnIL3seMC86esIwnuJZxYscjlPQx65
+ 5pB3Dyl0fPHlV1rW3bZi842WDBsci0cqN107TCr4NpazCFJ/cfwP7WLVy2HxbQ9oMBOv
+ YGTvJwbErdUjEqN5HjLQB4kn3U2fq2nUoAY8kFgIRpu8IZVxJmSfTFqmxMpAFEQ91NJh
+ rt5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685609311; x=1688201311;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XG/vGXSzD1X2DKFaeuOHuABz/AWh01w+UQ5wuAYsDFc=;
+ b=P0DDJ83f0J292hM7lLNik9XH2Ceozpnh38R922SWp/ovX4hlFf0+ejPNM0DeLQcZgh
+ jw3q0QIbwPzUJU6c9w9NBdA1AYBI84XUvlz65wHGOyB/036PmophRI68QFurf4GG1B19
+ 8sVVbukIyMS4tTKeVnqoPYNOrP3h6nFRBXzp+27LU5tsB8SAe4FpExm5F6Ajm7CoSZTy
+ Gpu/sUbiIzpzSwJSPaELRFcodBO0iLHuqsvpf7MhrvemPN3kqUgLhNH3TlOlkVeQLUhN
+ Ow4x+2pzmx+Jk4MJj1mj/lgMTEKeUywTz273NZvBtXiYzQ3fRbFe3ej9M3u9M9W2NNsa
+ bhgQ==
+X-Gm-Message-State: AC+VfDyxNIIuD1ElL0iozc7KkFfaVutxV13BqjDT1j3f/nHcOg+3iJ54
+ 5r1TFIVl+xcHt8HboV3VKYk=
+X-Google-Smtp-Source: ACHHUZ48Wulsp0cKE6Q4Rl1n34wjHUCaQ2eb8l+xpUqERNXWzbdT29U0hehdL6AqF44M23ILwe9yXA==
+X-Received: by 2002:a17:902:b10a:b0:1af:d812:d27 with SMTP id
+ q10-20020a170902b10a00b001afd8120d27mr6775204plr.9.1685609311360; 
+ Thu, 01 Jun 2023 01:48:31 -0700 (PDT)
+Received: from localhost ([117.136.38.170]) by smtp.gmail.com with ESMTPSA id
+ b21-20020a170902d31500b001a221d14179sm2824091plc.302.2023.06.01.01.48.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 01:48:30 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yin31149@gmail.com
+Subject: [PATCH v2 1/6] include/hw/virtio: make some VirtIODevice const
+Date: Thu,  1 Jun 2023 16:48:15 +0800
+Message-Id: <194d91a57682c661d3550a9d12006033adc8b803.1685584543.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1685584543.git.yin31149@gmail.com>
+References: <cover.1685584543.git.yin31149@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 12/14] nbd/client: Request extended headers during
- negotiation
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, libguestfs@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-References: <20230515195343.1915857-1-eblake@redhat.com>
- <20230515195343.1915857-13-eblake@redhat.com>
- <1af7f692-b5de-c767-2568-1fc024a57133@yandex-team.ru>
- <cqb3yww5ceeinh2pb5nqaljrsllu3ejkjsdueuw32cwcocumsn@okgujto2lzmn>
- <cd83b0bc-0e6b-fc94-1cc2-9bf00d516140@yandex-team.ru>
- <hbjtjovry4e5kb6oyii4g2hncetfo2uic67r5ipufcikvgyb5x@idenexfxits4>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <hbjtjovry4e5kb6oyii4g2hncetfo2uic67r5ipufcikvgyb5x@idenexfxits4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=yin31149@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,57 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31.05.23 23:26, Eric Blake wrote:
-> On Wed, May 31, 2023 at 09:33:20PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> On 31.05.23 20:54, Eric Blake wrote:
->>> On Wed, May 31, 2023 at 08:39:53PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->>>> On 15.05.23 22:53, Eric Blake wrote:
->>>>> All the pieces are in place for a client to finally request extended
->>>>> headers.  Note that we must not request extended headers when qemu-nbd
->>>>
->>>> why must not? It should gracefully report ENOTSUP? Or not?
->>>
->>> The kernel code does not yet know how to send extended requests; once
->>> extended mode is negotiated, sending a simple request requires the
->>
->> but how it could be negotiated if kernel doesn't support it?
-> 
-> That's the problem.  The kernel doesn't do the negotiation, userspace
+The VirtIODevice structure is not modified in
+virtio_vdev_has_feature(). Therefore, make it const
+to allow this function to accept const variables.
 
-oh yes, I totally forget these mechanics
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
+ include/hw/virtio/virtio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> does.  There is an ioctl for the userspace to tell the kernel what
-> flags were advertised as part of the negotiation, but that does not
-> include a flag for extended operation.  The kernel ONLY takes care of
-> NBD_CMD_ operations, it does not do NBD_OPT_ operations.  So when
-> qemu-nbd is preparing to connect to /dev/nbdN, it first has to
-> negotiate in userspace, avoiding any attempt to use extended headers,
-> then call the right ioctls for the kernel to take over command phase
-> using the older compact headers.
-
-> 
->>
->> I mean if we request extended headers during negotiation with kernel, the kernel will just say "unsupported option", isn't it?
-> 
-> If we request extended headers in userspace before calling the ioctl
-> to tell the kernel to start transmission, then the kernel's first
-> command will use the compact style, which the server is not expecting,
-> and while we can hope the server will hang up on the kernel, I didn't
-> test what actually happens.
-> 
-> 
->>
->> Or, in other words, I understand that kernel doesn't support it, I don't understand why you note it here. Is kernel different from other NBD server implementations which doesn't support extended requests at the moment?
-> 
-> The kernel is an NBD client, not a server.  But if we are about to
-> connect an NBD server over to the kernel for /dev/nbdN, we better make
-> sure the server is not using any features the kernel doesn't support.
-> 
-
-thanks!
-
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index af86ed7249..0492d26900 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -402,7 +402,7 @@ static inline bool virtio_has_feature(uint64_t features, unsigned int fbit)
+     return !!(features & (1ULL << fbit));
+ }
+ 
+-static inline bool virtio_vdev_has_feature(VirtIODevice *vdev,
++static inline bool virtio_vdev_has_feature(const VirtIODevice *vdev,
+                                            unsigned int fbit)
+ {
+     return virtio_has_feature(vdev->guest_features, fbit);
 -- 
-Best regards,
-Vladimir
+2.25.1
 
 
