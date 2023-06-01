@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4AE71F65A
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 01:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2A771F6CB
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 01:45:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4rKU-0005Cl-9b; Thu, 01 Jun 2023 19:03:38 -0400
+	id 1q4rxW-0005HS-Nd; Thu, 01 Jun 2023 19:43:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q4rKS-0005CE-1d; Thu, 01 Jun 2023 19:03:36 -0400
-Received: from mail-vs1-xe33.google.com ([2607:f8b0:4864:20::e33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q4rKP-0000V7-Lp; Thu, 01 Jun 2023 19:03:35 -0400
-Received: by mail-vs1-xe33.google.com with SMTP id
- ada2fe7eead31-4393e3951ecso366124137.2; 
- Thu, 01 Jun 2023 16:03:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685660612; x=1688252612;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GsJCUBcjeYjCImvFt2yEgzH45sZb1I//HbDAVqWWfRM=;
- b=OGR2J52pWgLw7KxoudXdcNpZMdWyzyLcl56hljyz6JIHfyNefynZKtAAa1Q85kslq4
- rKE7VKPexU58XD+Gxpcrs5DZ7JEupTRimI1+rPyHmemH+JfXUXPgXWTi+q8PnqXYgW8o
- lVYKb9BpRU5EVzjDjW+xzuMdAycxob2URjWBd/C17iLrouSThMVe0hfkqdjIGEHUEI6/
- gPLIgYLLYiCnTJ3vhDOdBJhGUFvjimjjLET5o7ikJsSWfvcx805azmYBkGkJVpKzG8Ju
- So8RrM5yieUE9l4e5ldbVG+pz4uGe5UelyZXsQBReUSZmjNZ9gal2bZn92222kmWOSJi
- BkeA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4rxP-0005Dm-3l
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 19:43:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4rxN-0000Ut-G8
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 19:43:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685663027;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2ENKWbPC6eauYMq2OLdmfI92FLlFJyhLU1OkBxxz1cc=;
+ b=URuUN0AwZb2U0Zq3uMogWD+RZlRk8dTB6x6NLtElHTt8SxWkmFfET9+9gLJ4gUe62c9jxK
+ sDfXac7a9gLkZwTA7CsZhgd/xzji8EHrSmA+PFTfW2gY2rkxXBXnbcFg5RciRsXnxmPn17
+ ith08VKuCRLbob5t8tiEI2MZQGFpSzI=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-167-yeD6S1zCNvGwSQHNEmHkxg-1; Thu, 01 Jun 2023 19:43:46 -0400
+X-MC-Unique: yeD6S1zCNvGwSQHNEmHkxg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-75b337f2504so8189385a.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 16:43:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685660612; x=1688252612;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GsJCUBcjeYjCImvFt2yEgzH45sZb1I//HbDAVqWWfRM=;
- b=J1txYp/Sod3uIqURV7QyDwoUWETAZw3a2YYQzwxmncb+wgZWj9+TXB+IC/TEnN8a1S
- MkrfAwlz3PstUbnz2sIDlbH9ueNeA81eu1DEF7DnaiJNpWFdoiT6GHC11knEVZZeJ8Ep
- YbFmo7wStVM5xxFewyvVTfuu8vpO0/zoMH5UlR0fYpriJbUVgY93wWAOKNNPJBUi2UAb
- iWc8Db/V7R6QoGFOrnVDhPpm0HQ5Gkd2SyM5mO9LKMCjI8c8R1WwXGY4+uYzCaa8DU6X
- SNqON5icGakmmIhddvs7BTD1OPkwmXQBXbNjkQRQZQ096QpvbwWWu5OCj1lVwipG2IZC
- CCxQ==
-X-Gm-Message-State: AC+VfDxm7w6MpclCdu1dhpy+mzxMijzxFuAzAPO8vPGAWY45F8krbH6i
- ha0xyKvG4LepuOyP3zd3EMJBL8bCNjqdT4807Ik=
-X-Google-Smtp-Source: ACHHUZ6dIbZMZuGdSqVkFd0p1W58RIG/yAs0+P962VSKQiWgLdkxVVJtNzq6wzjjCC6IWlVjrSKLA12j8bGm23FJk1s=
-X-Received: by 2002:a67:f7d5:0:b0:436:4dda:ee63 with SMTP id
- a21-20020a67f7d5000000b004364ddaee63mr4763900vsp.0.1685660611949; Thu, 01 Jun
- 2023 16:03:31 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685663026; x=1688255026;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2ENKWbPC6eauYMq2OLdmfI92FLlFJyhLU1OkBxxz1cc=;
+ b=G2nxZTg+tOtryH/p3ot4Nxz9ZUZEVlq9FeZHQng8Am2su24DUnthKTarjVszCGjP48
+ Vj+3PUIF4ogKndSzR3jH8OuUgM5BDQhBMjh8Miur4smh9q4FC6mw5AaanGlkHk8pMQ98
+ 6SjvCHDGCiK6aAPOfG9/ggU1kSdZzA6Bh2sryFgvBaTIhT1QAEZPXPlowDUhfLipPrYU
+ m1IHtsQtwR3U8ntTANLv9ruN3SH7kyxMxsdWAHa1hqec0pv+7RTFESqmhOvfy81iBhxW
+ 9IuTaMhtD6+qQBcCzkRyBA3qgDb2Iazmy3V1WQ1zbmaavinBsU9BoFp3sKVdbwhnf7wt
+ Oeqw==
+X-Gm-Message-State: AC+VfDzL0/e8UkKAswwrJNPs9bh3dcNW1n+yFgR93tOAt2Mu31BqF8LU
+ dnagonHtVF0NOt8yLyidNgm197fN+t783GyKhgpcT4+K02ruGfgKcMM9c1i82olyKuAs2JBA453
+ t6CJwk3CVkZ/+bzA=
+X-Received: by 2002:a05:6214:300a:b0:61a:36d6:41a5 with SMTP id
+ ke10-20020a056214300a00b0061a36d641a5mr11760909qvb.5.1685663025790; 
+ Thu, 01 Jun 2023 16:43:45 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4DXAvoafUVGyI3fP6UIDruRwgrp9VYg7JFZh2hIjaQZLS3QYLZz6P1FgIZu7fyeNdnaTxUVQ==
+X-Received: by 2002:a05:6214:300a:b0:61a:36d6:41a5 with SMTP id
+ ke10-20020a056214300a00b0061a36d641a5mr11760887qvb.5.1685663025509; 
+ Thu, 01 Jun 2023 16:43:45 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ c1-20020a05621401c100b005dd8b9345dbsm50489qvt.115.2023.06.01.16.43.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 16:43:44 -0700 (PDT)
+Date: Thu, 1 Jun 2023 19:43:43 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 9/9] tests/qtest: massively speed up migration-test
+Message-ID: <ZHktL1tZwSmT+Pcn@x1n>
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-10-berrange@redhat.com>
+ <ZHi9OQz8PGuHMPpN@x1n> <87353ardol.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
- <20230529121719.179507-3-liweiwei@iscas.ac.cn>
- <CAKmqyKPmXXoVdSndTF+aF7A-3PqVrnw-NFG26sQQicxybwWpQA@mail.gmail.com>
- <18e4da39-cbd4-aa60-7628-7105a788b6e8@iscas.ac.cn>
-In-Reply-To: <18e4da39-cbd4-aa60-7628-7105a788b6e8@iscas.ac.cn>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 2 Jun 2023 09:03:05 +1000
-Message-ID: <CAKmqyKMP0aX=_3ffQXSNQ0pWCjeXEF+h=QgPbL80=0J8v_gOrA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] target/riscv: Remove check on mode for MPRV
-To: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e33;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe33.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87353ardol.fsf@secure.mitica>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,64 +100,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 1, 2023 at 4:43=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> wro=
-te:
->
->
-> On 2023/6/1 13:27, Alistair Francis wrote:
-> > On Mon, May 29, 2023 at 10:19=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.c=
-n> wrote:
-> >> Normally, MPRV can be set to 1 only in M mode (It will be cleared
-> >> when returning to lower-privilege mode by MRET/SRET).
-> >>
-> >> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> >> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-> >> ---
-> >>   target/riscv/cpu_helper.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> >> index bd892c05d4..45baf95c77 100644
-> >> --- a/target/riscv/cpu_helper.c
-> >> +++ b/target/riscv/cpu_helper.c
-> >> @@ -44,7 +44,7 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ife=
-tch)
-> >>       if (!ifetch) {
-> >>           uint64_t status =3D env->mstatus;
-> >>
-> >> -        if (mode =3D=3D PRV_M && get_field(status, MSTATUS_MPRV)) {
-> >> +        if (get_field(status, MSTATUS_MPRV)) {
-> > The original check is correct though, why remove it?
->
-> Yeah. As described in the commit message, I think MPRV can only be set
-> to 1 in M mode normally
+On Fri, Jun 02, 2023 at 01:00:10AM +0200, Juan Quintela wrote:
+> That was basically my idea and that is why I am holding the last two
+> patches and see if I can came with something in the next couple of days.
 
-That's true. I do feel that keeping the check makes the code easier to
-follow. Otherwise future developers need to check to see how MPRV can
-be set. The current code is explicit and obviously follows the spec.
+Ah! ...
 
-For a performance gain I think it's worth making the trade off, but it
-doesn't sound like we really get any gain here.
+If you haven't started, please hold off for one day.  I'll see whether I
+can post mine tomorrow.
 
-Alistair
+-- 
+Peter Xu
 
->
-> which means check on MPRV is enough in this case. So I remove the check
-> on mode here.
->
-> Regards,
->
-> Weiwei Li
->
-> >
-> > Alistair
-> >
-> >>               mode =3D get_field(env->mstatus, MSTATUS_MPP);
-> >>               virt =3D get_field(env->mstatus, MSTATUS_MPV) &&
-> >>                      (mode !=3D PRV_M);
-> >> --
-> >> 2.25.1
-> >>
-> >>
->
 
