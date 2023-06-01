@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3027719CD9
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D77D719CDD
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:03:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hvT-0005t1-LT; Thu, 01 Jun 2023 09:01:11 -0400
+	id 1q4hwU-0006Zn-D0; Thu, 01 Jun 2023 09:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q4hvQ-0005qJ-No
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:01:08 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q4hvN-00083b-PX
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:01:08 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f5021faa16so956730e87.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 06:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685624463; x=1688216463;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Jf+2LrbrzbTmkdZVcT04IKm82iTnVpk5mMk8DbFhBDU=;
- b=lCLZfu35eQJ9jU1Xc3SvlozzX7Jxjj8HckNfnwRXQqOxhi6EP/zu+LWPeFRtMglajJ
- +0f9PcP8JYH3EEU0l9yvFXrY7sdvAC16Z+eHmFKj4glhp7GLcdhLcodGI+NNvp+pPaGC
- JcfNmbeQ9WF5L6U0i4UnTKycu6LPsKgEvTFURtkldZlXVW+971MxX7yIULmQAjO/Y2EI
- CX/OYOa9mc2a4S6KnpTbzuKoq3QFL43b0ZPleC7tE4izYcIcBJEi2gD1yfg1oKr5V9UW
- +xapPqigYXa5gjXGKyWI/ik5DH7zhxWCYdQIYgwCUwCOefAZlyJnAo98KRaYR7GKVNCM
- YsQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685624463; x=1688216463;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Jf+2LrbrzbTmkdZVcT04IKm82iTnVpk5mMk8DbFhBDU=;
- b=DwiZ1DAq/VbKz5ILZkSarSrdLUbLYPJH4Ds7A9EyZv1BBaQXEX9v5N0Rsn6Rh4Q/gA
- YYxzr8KraT6Lmo8Ake3GuULEjPTHkcC4u4B3ym7xOU6WpVliy3K9Yxit6Q5o3p2jDS4D
- YmO4xkX9HhAz/kU1Rvm+HHiyB+cwwfdWnuR2SHEehVhM6yPKQgdZy01jUhG+djzulrDR
- +9tWyuXVkx5PG7ZlpzM/xJKXUAAVLbC1EZHR8aGkRXuMl0B9Ky9j9/kBJgBzOAoxKdfU
- L1zYsWsmPikcu844WZIWMkb6hVBimHZJm8xFpymWP7/lLThTI4cKkhyLjij5+r9LWXjO
- /Dnw==
-X-Gm-Message-State: AC+VfDzpGIeJuK+H34YLxjnEpowgQbz7eCtFQI/6z4YXTVIiCANEfdwK
- 4YE8n8Uuf0Tb4qpKwQz6+yER8LgNrkKg8IzSVQIFeQ==
-X-Google-Smtp-Source: ACHHUZ685jAnGbXmsLOT2LVFmO4PsIx1cjdBpqSDXY2dgNA4g066aAiWcTXHLidY/C1FxrXP6ItWkQs3oYfC7wwQ/R0=
-X-Received: by 2002:a19:f708:0:b0:4f3:b32d:f739 with SMTP id
- z8-20020a19f708000000b004f3b32df739mr1444581lfe.19.1685624463318; Thu, 01 Jun
- 2023 06:01:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q4hwM-0006T2-Uz
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:02:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q4hwK-00088l-9t
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:02:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685624523;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QboDf9paz2VtErB2nR94ZAPz+TKHWRCWhSaiL0KRaBA=;
+ b=bG4Qr4HzUjL0F3UiqOeQ7I1oJTSzJnlqM2vpEPQlIdU4Ugu3VmZrb/HhUTkfHdjR5NWohF
+ 4PbxjZOXftRgrtPY7tXXsFFvQr6aYy/P8qfnjwHy3d2CGIO9m1XkknHuHuGG9FDxebiNo0
+ 4lT1/AkOLXfWzsDFatIiA4jIBiXbZUA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-607--nc5GY8eOiuW2vQmY4_7kg-1; Thu, 01 Jun 2023 09:02:00 -0400
+X-MC-Unique: -nc5GY8eOiuW2vQmY4_7kg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4EE0803C99;
+ Thu,  1 Jun 2023 13:01:59 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 450CB400F17;
+ Thu,  1 Jun 2023 13:01:59 +0000 (UTC)
+Date: Thu, 1 Jun 2023 09:01:57 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, eblake@redhat.com,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ sgarzare@redhat.com, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, Julia Suvorova <jusual@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Paul Durrant <paul@xen.org>, Kevin Wolf <kwolf@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Aarushi Mehta <mehta.aaru20@gmail.com>
+Subject: Re: [PATCH v3 0/6] block: add blk_io_plug_call() API
+Message-ID: <20230601130157.GB1538357@fedora>
+References: <20230530180959.1108766-1-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20230601123332.3297404-1-ardb@kernel.org>
- <20230601123332.3297404-2-ardb@kernel.org>
-In-Reply-To: <20230601123332.3297404-2-ardb@kernel.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 1 Jun 2023 14:00:52 +0100
-Message-ID: <CAFEAcA_Z_3xNC6HjuyvRtf+s9pJjGsZeSZ87VG03J2yZZ60Wtw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/arm: Use x86 intrinsics to implement PMULL.P64
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="+rqeetX7bJGZaj5e"
+Content-Disposition: inline
+In-Reply-To: <20230530180959.1108766-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,77 +87,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 1 Jun 2023 at 13:33, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  host/include/i386/host/cpuinfo.h |  1 +
->  target/arm/tcg/vec_helper.c      | 26 +++++++++++++++++++-
->  util/cpuinfo-i386.c              |  1 +
->  3 files changed, 27 insertions(+), 1 deletion(-)
->
-> diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-> index 073d0a426f31487d..cf4ced844760d28f 100644
-> --- a/host/include/i386/host/cpuinfo.h
-> +++ b/host/include/i386/host/cpuinfo.h
-> @@ -27,6 +27,7 @@
->  #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
->  #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
->  #define CPUINFO_AES             (1u << 18)
-> +#define CPUINFO_PMULL           (1u << 19)
->
->  /* Initialized with a constructor. */
->  extern unsigned cpuinfo;
-> diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-> index f59d3b26eacf08f8..fb422627588439b3 100644
-> --- a/target/arm/tcg/vec_helper.c
-> +++ b/target/arm/tcg/vec_helper.c
-> @@ -25,6 +25,14 @@
->  #include "qemu/int128.h"
->  #include "vec_internal.h"
->
-> +#ifdef __x86_64__
-> +#include "host/cpuinfo.h"
-> +#include <wmmintrin.h>
-> +#define TARGET_PMULL  __attribute__((__target__("pclmul")))
-> +#else
-> +#define TARGET_PMULL
-> +#endif
-> +
->  /*
->   * Data for expanding active predicate bits to bytes, for byte elements.
->   *
-> @@ -2010,12 +2018,28 @@ void HELPER(gvec_pmul_b)(void *vd, void *vn, void *vm, uint32_t desc)
->   * Because of the lanes are not accessed in strict columns,
->   * this probably cannot be turned into a generic helper.
->   */
-> -void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
-> +void TARGET_PMULL HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
->  {
->      intptr_t i, j, opr_sz = simd_oprsz(desc);
->      intptr_t hi = simd_data(desc);
->      uint64_t *d = vd, *n = vn, *m = vm;
->
-> +#ifdef __x86_64__
-> +    if (cpuinfo & CPUINFO_PMULL) {
-> +       switch (hi) {
-> +       case 0:
-> +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x0);
-> +               break;
-> +       case 1:
-> +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x11);
-> +               break;
-> +       default:
-> +               g_assert_not_reached();
-> +       }
-> +        return;
-> +    }
-> +#endif
 
-This needs to cope with the input vectors being more than
-just 128 bits wide, I think. Also you probably still
-need the clear_tail() to clear any high bits of the register.
+--+rqeetX7bJGZaj5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-thanks
--- PMM
+On Tue, May 30, 2023 at 02:09:53PM -0400, Stefan Hajnoczi wrote:
+> v3
+> - Patch 5: Mention why dev_max_batch condition was dropped [Stefano]
+> v2
+> - Patch 1: "is not be freed" -> "is not freed" [Eric]
+> - Patch 2: Remove unused nvme_process_completion_queue_plugged trace event
+>   [Stefano]
+> - Patch 3: Add missing #include and fix blkio_unplug_fn() prototype [Stef=
+ano]
+> - Patch 4: Removed whitespace hunk [Eric]
+>=20
+> The existing blk_io_plug() API is not block layer multi-queue friendly be=
+cause
+> the plug state is per-BlockDriverState.
+>=20
+> Change blk_io_plug()'s implementation so it is thread-local. This is done=
+ by
+> introducing the blk_io_plug_call() function that block drivers use to bat=
+ch
+> calls while plugged. It is relatively easy to convert block drivers from
+> .bdrv_co_io_plug() to blk_io_plug_call().
+>=20
+> Random read 4KB performance with virtio-blk on a host NVMe block device:
+>=20
+> iodepth   iops   change vs today
+> 1        45612   -4%
+> 2        87967   +2%
+> 4       129872   +0%
+> 8       171096   -3%
+> 16      194508   -4%
+> 32      208947   -1%
+> 64      217647   +0%
+> 128     229629   +0%
+>=20
+> The results are within the noise for these benchmarks. This is to be expe=
+cted
+> because the plugging behavior for a single thread hasn't changed in this =
+patch
+> series, only that the state is thread-local now.
+>=20
+> The following graph compares several approaches:
+> https://vmsplice.net/~stefan/blk_io_plug-thread-local.png
+> - v7.2.0: before most of the multi-queue block layer changes landed.
+> - with-blk_io_plug: today's post-8.0.0 QEMU.
+> - blk_io_plug-thread-local: this patch series.
+> - no-blk_io_plug: what happens when we simply remove plugging?
+> - call-after-dispatch: what if we integrate plugging into the event loop?=
+ I
+>   decided against this approach in the end because it's more likely to
+>   introduce performance regressions since I/O submission is deferred unti=
+l the
+>   end of the event loop iteration.
+>=20
+> Aside from the no-blk_io_plug case, which bottlenecks much earlier than t=
+he
+> others, we see that all plugging approaches are more or less equivalent i=
+n this
+> benchmark. It is also clear that QEMU 8.0.0 has lower performance than 7.=
+2.0.
+>=20
+> The Ansible playbook, fio results, and a Jupyter notebook are available h=
+ere:
+> https://github.com/stefanha/qemu-perf/tree/remove-blk_io_plug
+>=20
+> Stefan Hajnoczi (6):
+>   block: add blk_io_plug_call() API
+>   block/nvme: convert to blk_io_plug_call() API
+>   block/blkio: convert to blk_io_plug_call() API
+>   block/io_uring: convert to blk_io_plug_call() API
+>   block/linux-aio: convert to blk_io_plug_call() API
+>   block: remove bdrv_co_io_plug() API
+>=20
+>  MAINTAINERS                       |   1 +
+>  include/block/block-io.h          |   3 -
+>  include/block/block_int-common.h  |  11 ---
+>  include/block/raw-aio.h           |  14 ---
+>  include/sysemu/block-backend-io.h |  13 +--
+>  block/blkio.c                     |  43 ++++----
+>  block/block-backend.c             |  22 -----
+>  block/file-posix.c                |  38 -------
+>  block/io.c                        |  37 -------
+>  block/io_uring.c                  |  44 ++++-----
+>  block/linux-aio.c                 |  41 +++-----
+>  block/nvme.c                      |  44 +++------
+>  block/plug.c                      | 159 ++++++++++++++++++++++++++++++
+>  hw/block/dataplane/xen-block.c    |   8 +-
+>  hw/block/virtio-blk.c             |   4 +-
+>  hw/scsi/virtio-scsi.c             |   6 +-
+>  block/meson.build                 |   1 +
+>  block/trace-events                |   6 +-
+>  18 files changed, 239 insertions(+), 256 deletions(-)
+>  create mode 100644 block/plug.c
+>=20
+> --=20
+> 2.40.1
+>=20
+
+Thanks, applied to my block tree:
+https://gitlab.com/stefanha/qemu/commits/block
+
+Stefan
+
+--+rqeetX7bJGZaj5e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmR4lsUACgkQnKSrs4Gr
+c8hKywf6Ai2z8xv51+za7a/ioPSmYCxE+4OzREj4aifqUETMKNTd5V4vS3Ee4Zy1
+Ab/olnSS3uMy4XXM53+gEeegrXZwIRBx/8f60zTsVnYJSDTKjKfp5+muGOVjCCgI
+ejDkkuuHCdD2dmuCSBoD2FR4AQhzkImOTEo0l50GXUe2ORa7EA5Yr82WHI74LZQM
+mwH8nYhjjNOXyMq3WY1ibRkwMfDKvf9ZOFBTAsRXR2ibFR0G8xQ5V4j8x0EJ1OSp
+20vrK/R+c3R+9QC7DgiSteb3BTFxIwMiAc8IJ4d2mpfkG7sRjCfuUpS7FcGKNAUj
+otBYNx/Hsgk7UghmZb1y5Z2Gi7yOwA==
+=gggu
+-----END PGP SIGNATURE-----
+
+--+rqeetX7bJGZaj5e--
+
 
