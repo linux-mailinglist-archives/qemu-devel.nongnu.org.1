@@ -2,52 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5167193F7
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA56E7193F9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:16:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4cVJ-0002zM-6A; Thu, 01 Jun 2023 03:13:49 -0400
+	id 1q4cXd-0003y0-44; Thu, 01 Jun 2023 03:16:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
- id 1q4cVD-0002yh-76; Thu, 01 Jun 2023 03:13:44 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
- id 1q4cV8-0003Vi-4i; Thu, 01 Jun 2023 03:13:42 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWy5w4bB7z4x41;
- Thu,  1 Jun 2023 17:13:24 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWy5t215fz4x3g;
- Thu,  1 Jun 2023 17:13:21 +1000 (AEST)
-Message-ID: <60f0d393-f0b5-cc06-feff-a8f00e5a32b3@kaod.org>
-Date: Thu, 1 Jun 2023 09:13:17 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4cXb-0003xK-BP
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 03:16:11 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4cXZ-00048E-GN
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 03:16:11 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3f603ff9c02so5247185e9.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 00:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685603768; x=1688195768;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WxzX/yCNlI8j55zMId0+95rQUKgWabv2ID5tlei60QM=;
+ b=Gen2Cia+8jwTVAFZKVgGWlirQvMrtFyXZ9UoEsuR/bvjDIJOGRMO1lVO1gSIX4316Q
+ +OJNvgZk8IX1ihXqQXwqenIpLkmpItGw5/co228wbljIfirJPEqEEgVld+V61ZA3s5zA
+ Cic5VL9KIipJMomumYYWISL9cGH3jPqHF99y/q15gHBv7D12a5Mw/5ZIymC48Sm9y5sS
+ qkuas5BNYbHlymXURf3sSCAO+av/DtT0fuSx5WKZ/JOXOBF75uwl7oSoOb0rAt2dV4es
+ MGwK0yAJHxO7sI6vCYvZEVfTWDmIkQU2ZD82keOoDRTLpHyLMypa+6jxdJ6OWGPlyBA3
+ 5Bjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685603768; x=1688195768;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WxzX/yCNlI8j55zMId0+95rQUKgWabv2ID5tlei60QM=;
+ b=k5gIBbcLNxQGiLZuLh11B1NUjIR2y/4tjSyg9gacejGiHxShO5HiDWIsMAREoelgLl
+ puSlr1FNU6OznolmQxzgowtQUMq2tuvvJcNNTF9pBPGDZox4fhifbZGJDjAfjP7/5lK1
+ uUtxk9L+fW07E9ahW+TrMC18l0o73fFetzD5G8wAxNWbvGYvkkEXGYV27lVsr7BJk4oo
+ 1Nd788I7mbN4fJfNXPMvwFaWOgEMAJmYJ06uqtHS5u7j1rt86e4I3FnLSbgMb7wS8j0U
+ D7ZWDuCg1QCvFc6O09YPH4VAnIE9UqjZ++9p7/RLn8ItlppdptP6SJHiuHqaQGHRCJNn
+ v2mQ==
+X-Gm-Message-State: AC+VfDycphep+sk7x0FJJz/fvNgxof1jIFInhfkx/pvX32qUBMuJVSvz
+ /ZiBdSWxnUpSY0nffK3TN50pcw==
+X-Google-Smtp-Source: ACHHUZ4hON2fkLvrpZTHSEtZk4pe9Oj8d4QR+Z+nkJfpLOiDJ009Fgvl5JdUmRVI16HmDclpVVxrAQ==
+X-Received: by 2002:a7b:c5d4:0:b0:3f6:ffe:9ef1 with SMTP id
+ n20-20020a7bc5d4000000b003f60ffe9ef1mr1110012wmk.36.1685603767760; 
+ Thu, 01 Jun 2023 00:16:07 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.141.224])
+ by smtp.gmail.com with ESMTPSA id
+ f15-20020a7bcd0f000000b003f4272c2d0csm1185408wmj.36.2023.06.01.00.16.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 00:16:07 -0700 (PDT)
+Message-ID: <72ccd4c2-7c60-e015-2322-721d09a8334b@linaro.org>
+Date: Thu, 1 Jun 2023 09:16:03 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC PATCH 4/5] target/ppc: Add msgsnd/p and DPDES SMT support
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v2 0/2] net: Update MemReentrancyGuard for NIC
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-5-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230531012313.19891-5-npiggin@gmail.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mauro Matteo Cascella <mcascell@redhat.com>, P J P
+ <pj.pandit@yahoo.co.in>, Alexander Bulekov <alxndr@bu.edu>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>, Sriram Yagnaraman
+ <sriram.yagnaraman@est.tech>, Thomas Huth <huth@tuxfamily.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sven Schnelle <svens@stackframe.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Rob Herring <robh@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ xen-devel@lists.xenproject.org
+References: <20230601031859.7115-1-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230601031859.7115-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=vOrz=BV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,370 +118,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 03:23, Nicholas Piggin wrote:
-> Doorbells in SMT need to coordinate msgsnd/msgclr and DPDES access from
-> multiple threads that affect the same state.
+On 1/6/23 05:18, Akihiko Odaki wrote:
+> Recently MemReentrancyGuard was added to DeviceState to record that the
+> device is engaging in I/O. The network device backend needs to update it
+> when delivering a packet to a device.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/ppc/ppc.c                                  |  6 ++
->   include/hw/ppc/ppc.h                          |  1 +
->   target/ppc/cpu.h                              |  7 +-
->   target/ppc/excp_helper.c                      | 86 +++++++++++++------
->   target/ppc/gdbstub.c                          |  2 +-
->   target/ppc/helper.h                           |  2 +-
->   target/ppc/misc_helper.c                      | 60 +++++++++++--
->   target/ppc/translate.c                        |  8 ++
->   .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
->   9 files changed, 140 insertions(+), 34 deletions(-)
+> This implementation follows what bottom half does, but it does not add
+> a tracepoint for the case that the network device backend started
+> delivering a packet to a device which is already engaging in I/O. This
+> is because such reentrancy frequently happens for
+> qemu_flush_queued_packets() and is insignificant.
 > 
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index 80b4706db2..e30853413b 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -1434,6 +1434,12 @@ int ppc_cpu_pir(PowerPCCPU *cpu)
->       return env->spr_cb[SPR_PIR].default_value;
->   }
->   
-> +int ppc_cpu_tir(PowerPCCPU *cpu)
-> +{
-> +    CPUPPCState *env = &cpu->env;
-> +    return env->spr_cb[SPR_PIR].default_value;
+> This series consists of two patches. The first patch makes a bulk change to
+> add a new parameter to qemu_new_nic() and does not contain behavioral changes.
+> The second patch actually implements MemReentrancyGuard update.
 
-PIR or TIR ?
+/me look at the 'net' API.
 
-> +}
-> +
->   PowerPCCPU *ppc_get_vcpu_by_pir(int pir)
->   {
->       CPUState *cs;
-> diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
-> index 02af03ada2..e095c002dc 100644
-> --- a/include/hw/ppc/ppc.h
-> +++ b/include/hw/ppc/ppc.h
-> @@ -6,6 +6,7 @@
->   void ppc_set_irq(PowerPCCPU *cpu, int n_IRQ, int level);
->   PowerPCCPU *ppc_get_vcpu_by_pir(int pir);
->   int ppc_cpu_pir(PowerPCCPU *cpu);
-> +int ppc_cpu_tir(PowerPCCPU *cpu);
->   
->   /* PowerPC hardware exceptions management helpers */
->   typedef void (*clk_setup_cb)(void *opaque, uint32_t freq);
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index b594408a8d..b04b309c71 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -1056,7 +1056,12 @@ FIELD(FPSCR, FI, FPSCR_FI, 1)
->   
->   #define DBELL_TYPE_DBELL_SERVER        (0x05 << DBELL_TYPE_SHIFT)
->   
-> -#define DBELL_BRDCAST                  PPC_BIT(37)
-> +/* XXX: make sure this does not break BookE */
-> +#define DBELL_BRDCAST_MASK             PPC_BITMASK(37, 38)
-> +#define DBELL_BRDCAST_SHIFT            25
-> +#define DBELL_BRDCAST_SUBPROC          (0x1 << DBELL_BRDCAST_SHIFT)
-> +#define DBELL_BRDCAST_CORE             (0x2 << DBELL_BRDCAST_SHIFT)
-> +
->   #define DBELL_LPIDTAG_SHIFT            14
->   #define DBELL_LPIDTAG_MASK             (0xfff << DBELL_LPIDTAG_SHIFT)
->   #define DBELL_PIRTAG_MASK              0x3fff
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 4925996cf3..5fc2e17269 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -3085,7 +3085,7 @@ void helper_msgsnd(target_ulong rb)
->           PowerPCCPU *cpu = POWERPC_CPU(cs);
->           CPUPPCState *cenv = &cpu->env;
->   
-> -        if ((rb & DBELL_BRDCAST) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
-> +        if ((rb & DBELL_BRDCAST_MASK) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
->               ppc_set_irq(cpu, irq, 1);
->           }
->       }
-> @@ -3104,6 +3104,16 @@ static bool dbell_type_server(target_ulong rb)
->       return (rb & DBELL_TYPE_MASK) == DBELL_TYPE_DBELL_SERVER;
->   }
->   
-> +static inline bool dbell_type_bcast_core(target_ulong rb)
-> +{
-> +    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_CORE;
-> +}
-> +
-> +static inline bool dbell_type_bcast_subproc(target_ulong rb)
-> +{
-> +    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
-> +}
-> +
->   void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
->   {
->       if (!dbell_type_server(rb)) {
-> @@ -3113,32 +3123,40 @@ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
->       ppc_set_irq(env_archcpu(env), PPC_INTERRUPT_HDOORBELL, 0);
->   }
->   
-> -static void book3s_msgsnd_common(int pir, int irq)
-> +void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
->   {
-> -    CPUState *cs;
-> -
-> -    qemu_mutex_lock_iothread();
-> -    CPU_FOREACH(cs) {
-> -        PowerPCCPU *cpu = POWERPC_CPU(cs);
-> -        CPUPPCState *cenv = &cpu->env;
-> +    int pir = rb & DBELL_PROCIDTAG_MASK;
-> +    int brdcast = rb & DBELL_BRDCAST_MASK;
-> +    CPUState *cs, *ccs;
-> +    PowerPCCPU *cpu;
->   
-> -        /* TODO: broadcast message to all threads of the same  processor */
-> -        if (cenv->spr_cb[SPR_PIR].default_value == pir) {
-> -            ppc_set_irq(cpu, irq, 1);
-> -        }
-> +    if (!dbell_type_server(rb)) {
-> +        return;
->       }
-> -    qemu_mutex_unlock_iothread();
-> -}
->   
-> -void helper_book3s_msgsnd(target_ulong rb)
-> -{
-> -    int pir = rb & DBELL_PROCIDTAG_MASK;
-> +    cpu = ppc_get_vcpu_by_pir(pir);
-> +    if (!cpu) {
-> +        return;
-> +    }
-> +    cs = CPU(cpu);
->   
-> -    if (!dbell_type_server(rb)) {
-> +    if (cs->nr_threads == 1 || !brdcast) {
-> +        ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
->           return;
->       }
->   
-> -    book3s_msgsnd_common(pir, PPC_INTERRUPT_HDOORBELL);
-> +    /* WHy does iothread need to be locked for walking CPU list? */
-> +    /* Answer seems to be because ppc irq handling needs it, but it now takes
-> +     * the lock itself if needed. Could remove this then.
-> +     */
-> +    qemu_mutex_lock_iothread();
-> +    THREAD_SIBLING_FOREACH(cs, ccs) {
-> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-> +        if (cpu != ccpu) {
-> +            ppc_set_irq(ccpu, PPC_INTERRUPT_HDOORBELL, 1);
-> +        }
-> +    }
-> +    qemu_mutex_unlock_iothread();
->   }
->   
->   #if defined(TARGET_PPC64)
-> @@ -3154,22 +3172,42 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
->   }
->   
->   /*
-> - * sends a message to other threads that are on the same
-> + * sends a message to another thread  on the same
->    * multi-threaded processor
->    */
->   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
->   {
-> -    int pir = env->spr_cb[SPR_PIR].default_value;
-> +    CPUState *cs = env_cpu(env);
-> +    PowerPCCPU *cpu = POWERPC_CPU(cs);
-> +    CPUState *ccs;
-> +    uint32_t nr_threads = cs->nr_threads;
-> +    int ttir = rb & PPC_BITMASK(57, 63);
->   
->       helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
->   
-> -    if (!dbell_type_server(rb)) {
-> +    if (!dbell_type_server(rb) || ttir >= nr_threads) {
+So the NetReceive* handlers from NetClientInfo process the HW NIC
+data flow, independently from the CPUs.
 
-may be log bad ttir values ? even if the insn is a no-op in that case,
-telling the user would be good since it should be a guest os issue
+IIUC MemReentrancyGuard is supposed to protect reentrancy abuse from
+CPUs.
 
-> +        return;
-> +    }
-> +
-> +    if (nr_threads == 1) {
-> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
->           return;
->       }
->   
-> -    /* TODO: TCG supports only one thread */
-> +    /* WHy does iothread need to be locked for walking CPU list? */
-> +    qemu_mutex_lock_iothread();
-> +    THREAD_SIBLING_FOREACH(cs, ccs) {
-> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
-> +        uint32_t thread_id = ppc_cpu_tir(ccpu);
-> +
-> +        if (ttir == thread_id) {
-> +            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
-> +            qemu_mutex_unlock_iothread();
-> +            return;
-> +        }
-> +    }
->   
-> -    book3s_msgsnd_common(pir, PPC_INTERRUPT_DOORBELL);
-> +    assert(0);
->   }
->   #endif /* TARGET_PPC64 */
->   
-> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-> index ca39efdc35..f0304e5bb6 100644
-> --- a/target/ppc/gdbstub.c
-> +++ b/target/ppc/gdbstub.c
-> @@ -117,7 +117,7 @@ void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
->    * regs and PC, MSR, CR, and so forth.  We hack round this by giving
->    * the FP regs zero size when talking to a newer gdb.
->    */
-> -
-> +/* XXX: read/write dpdes correctly */
->   int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
->   {
->       PowerPCCPU *cpu = POWERPC_CPU(cs);
-> diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-> index fda40b8a60..5ce49c7ebc 100644
-> --- a/target/ppc/helper.h
-> +++ b/target/ppc/helper.h
-> @@ -690,7 +690,7 @@ DEF_HELPER_FLAGS_3(store_sr, TCG_CALL_NO_RWG, void, env, tl, tl)
->   
->   DEF_HELPER_1(msgsnd, void, tl)
->   DEF_HELPER_2(msgclr, void, env, tl)
-> -DEF_HELPER_1(book3s_msgsnd, void, tl)
-> +DEF_HELPER_2(book3s_msgsnd, void, env, tl)
->   DEF_HELPER_2(book3s_msgclr, void, env, tl)
->   #endif
->   
-> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-> index ffe54a4310..ca84f1b134 100644
-> --- a/target/ppc/misc_helper.c
-> +++ b/target/ppc/misc_helper.c
-> @@ -192,14 +192,38 @@ void helper_store_pcr(CPUPPCState *env, target_ulong value)
->    */
->   target_ulong helper_load_dpdes(CPUPPCState *env)
->   {
-> +    CPUState *cs = env_cpu(env);
-> +    CPUState *ccs;
-> +    uint32_t nr_threads = cs->nr_threads;
-> +    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
+NetReceive* handlers aren't restricted to any particular API, they
+just consume blob of data. Looking at e1000_receive_iov(), this data
+is filled into memory using the pci_dma_rw() API. pci_dma_rw() gets
+the AddressSpace to use calling pci_get_address_space(), which returns
+PCIDevice::bus_master_as. Then we use the dma_memory_rw(), followed
+by address_space_rw(). Beh, I fail to see why there is reentrancy
+checks from this NIC DMA HW path.
 
-you could add an helper for the above.
-
->       target_ulong dpdes = 0;
->   
-> +    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
-> +
->       helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
->   
-> -    /* TODO: TCG supports only one thread */
-> -    if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
-> -        dpdes = 1;
-> +    if (nr_threads == 1) {
-> +        if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
-> +            dpdes = 1;
-> +        }
-> +        return dpdes;
-> +    }
-> +
-> +    qemu_mutex_lock_iothread();
-> +    CPU_FOREACH(ccs) {
-> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-> +        uint32_t ccore_id = cenv->spr[SPR_PIR] & ~(nr_threads - 1);
-> +        uint32_t thread_id = cenv->spr[SPR_TIR];
-> +
-> +        assert(ccore_id == cenv->spr[SPR_PIR] - cenv->spr[SPR_TIR]);
-> +
-> +        if (ccore_id == core_id) {
-> +            if (cenv->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
-> +                dpdes |= (0x1 << thread_id);
-> +            }
-> +        }
->       }
-> +    qemu_mutex_unlock_iothread();
->   
->       return dpdes;
->   }
-> @@ -207,17 +231,41 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
->   void helper_store_dpdes(CPUPPCState *env, target_ulong val)
->   {
->       PowerPCCPU *cpu = env_archcpu(env);
-> +    CPUState *cs = env_cpu(env);
-> +    CPUState *ccs;
-> +    uint32_t nr_threads = cs->nr_threads;
-> +    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
-> +
-> +    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
->   
->       helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
->   
-> -    /* TODO: TCG supports only one thread */
-> -    if (val & ~0x1) {
-> +    if (val & ~(nr_threads - 1)) {
->           qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
->                         TARGET_FMT_lx"\n", val);
-> +        val &= ~(nr_threads - 1);
-> +        /* Ignore the invalid bits */
-> +    }
-> +
-> +    if (nr_threads == 1) {
-> +        /* XXX: don't need iothread lock? */
-> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
->           return;
->       }
->   
-> -    ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
-> +    qemu_mutex_lock_iothread();
-> +    CPU_FOREACH(ccs) {
-> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-> +        uint32_t ccore_id = cenv->spr[SPR_PIR] & ~(nr_threads - 1);
-> +        uint32_t thread_id = cenv->spr[SPR_TIR];
-> +
-> +        assert(ccore_id == cenv->spr[SPR_PIR] - cenv->spr[SPR_TIR]);
-> +
-> +        if (ccore_id == core_id) {
-> +            ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
-> +        }
-> +    }
-> +    qemu_mutex_unlock_iothread();
->   }
->   #endif /* defined(TARGET_PPC64) */
->   
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index 31821f92f5..0aa49323d3 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -820,11 +820,19 @@ void spr_write_pcr(DisasContext *ctx, int sprn, int gprn)
->   /* DPDES */
->   void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
->   {
-> +    if (!gen_serialize_core(ctx)) {
-> +        return;
-> +    }
-> +
->       gen_helper_load_dpdes(cpu_gpr[gprn], cpu_env);
->   }
->   
->   void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
->   {
-> +    if (!gen_serialize_core(ctx)) {
-> +        return;
-> +    }
-> +
->       gen_helper_store_dpdes(cpu_env, cpu_gpr[gprn]);
->   }
->   #endif
-> diff --git a/target/ppc/translate/processor-ctrl-impl.c.inc b/target/ppc/translate/processor-ctrl-impl.c.inc
-> index cc7a50d579..7dfbcd781f 100644
-> --- a/target/ppc/translate/processor-ctrl-impl.c.inc
-> +++ b/target/ppc/translate/processor-ctrl-impl.c.inc
-> @@ -59,7 +59,7 @@ static bool trans_MSGSND(DisasContext *ctx, arg_X_rb *a)
->   
->   #if !defined(CONFIG_USER_ONLY)
->       if (is_book3s_arch2x(ctx)) {
-> -        gen_helper_book3s_msgsnd(cpu_gpr[a->rb]);
-> +        gen_helper_book3s_msgsnd(cpu_env, cpu_gpr[a->rb]);
->       } else {
->           gen_helper_msgsnd(cpu_gpr[a->rb]);
->       }
-
+Maybe the MemoryRegion API isn't the correct place to check for
+reentrancy abuse and we should do that at the AddressSpace level,
+keeping DMA ASes clear and only protecting CPU ASes?
 
