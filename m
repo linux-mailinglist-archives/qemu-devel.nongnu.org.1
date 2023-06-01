@@ -2,88 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4ACF7197FC
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7361B719849
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 12:06:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4f4v-0003jv-Qs; Thu, 01 Jun 2023 05:58:45 -0400
+	id 1q4fAn-0005oq-4B; Thu, 01 Jun 2023 06:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q4f4s-0003ix-2I
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:58:43 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q4f4q-0007aV-Iy
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:58:41 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3f6e72a1464so6330405e9.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:58:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685613519; x=1688205519;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t9fUA5Qr05oyVdMGrNkNFiNMyb/8hs+zWOhpUPoWbFA=;
- b=YuARdQ28V9Cm3efz7Wf8ownCwN0aSOpMLuW6a+Wa6fa9tINUV1z4+e2IQUIy6H6ip0
- UeDNT053H24k/Tk1oBUDxjxWvRpcx69pfHO6VfooGEKhLxyivJciHAQiceZyna2KthCj
- 7OWPv739HbkQ2RJ3Hiythh5YO3d1RNoeVdSguTgO2MdRq7gajSogsLoq0iTTJk2nGeuw
- jRab8LAeVejfijQ3ep9kmZyhGfaUfh5LUG1BIjRkUNzlhI9SOH9wQY5Uozwm0G3sREOw
- dLpyFUya9MYJNo3yY8IBg91ppgJWdK3MfNhQe42FtJNdEWWPnekqC85VKsBR1OOEeEyW
- eIfw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4fAk-0005og-Cw
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 06:04:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4fAi-0000Ji-7M
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 06:04:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685613883;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bKdcqpfaYAMLO2bg6oB59tRKjV3VuqjNTMa/XBA0jt0=;
+ b=h8waoetKVOQXp4eLiw3NM1JLLZv0t5UkrRDs0gD+gjqCRJmSWzr/qxjKQa1SRXF0GYUNEn
+ qeorqVFmJLlEqV6ArLovQLSU0NVlf588bn1dLRZSoGbzHJyuiR7nV+QFSRDWyHxP3MkJcs
+ wxueETkpwfgHaoGp9l6wX3dPDePMmXA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660-AKZY5RhtMQmwXCQC4f4Eyw-1; Thu, 01 Jun 2023 06:04:36 -0400
+X-MC-Unique: AKZY5RhtMQmwXCQC4f4Eyw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f70f9995aeso4571735e9.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 03:04:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685613519; x=1688205519;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=t9fUA5Qr05oyVdMGrNkNFiNMyb/8hs+zWOhpUPoWbFA=;
- b=f8zkvQgVt8Z/uKCUcKT3Qow0JTZH+879CHKMk66wpwG9vtgdL+agIV5H5ssEPohyLT
- kKABvbQNr3HIQ/GS+K3sYc9HlsS9nBeWTgn/71HdKG9MbX6gYMIbPClgj6SI8p7ENAZL
- zrLc6hgx0J0OobtMXlUwIvxmIv121P+EgkPW50QSJJkcVE+EjLOHK0aLbyYNj6CDzos/
- KE0EygHVFu+4m2v0aibDvNn1iKW/HJ4zMIiyPfBvAvGHFPGYQxzOozVps20cmw70Gs2m
- 4TQP7v+7RgGHQMfAZVke5LqU0ZuPeJFbYwzNvGytYpTUyH7SOyE2TLnZpd6Ree+CDMQm
- VR0w==
-X-Gm-Message-State: AC+VfDwD97h7GiyaAyHItuHl989GOMHXwPMO6882XlCNMg10cMZ4Av6F
- WfscNIHHB18erS1Jn+y+XYwFlA==
-X-Google-Smtp-Source: ACHHUZ4KE676W7S72B6/wJCMfT2cq0nIe6zbJo2tBYxsXuIoQUm32rg7BJNTXA0PBbXiRAgOa9aCMw==
-X-Received: by 2002:a7b:ce06:0:b0:3f6:be1:b8d9 with SMTP id
- m6-20020a7bce06000000b003f60be1b8d9mr1552764wmc.6.1685613518806; 
- Thu, 01 Jun 2023 02:58:38 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- o13-20020a5d474d000000b0030af54c5f33sm8320406wrs.113.2023.06.01.02.58.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 02:58:38 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id EDF221FFBB;
- Thu,  1 Jun 2023 10:58:37 +0100 (BST)
-References: <cover.1685528076.git.eskultet@redhat.com>
- <c9b00e573a7a80fc6ce5c68595382f5c916a9195.1685528076.git.eskultet@redhat.com>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Erik Skultety <eskultet@redhat.com>
-Cc: qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Wainer dos Santos Moschetta
- <wainersm@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 2/2] tests: lcitool: refresh: Bump container versions
-Date: Thu, 01 Jun 2023 10:58:01 +0100
-In-reply-to: <c9b00e573a7a80fc6ce5c68595382f5c916a9195.1685528076.git.eskultet@redhat.com>
-Message-ID: <87fs7bbj1u.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1685613876; x=1688205876;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bKdcqpfaYAMLO2bg6oB59tRKjV3VuqjNTMa/XBA0jt0=;
+ b=bSm7pXnVOHdkwAb/eCg/5aGfbaMNvnRlJ8FpQLNK81A10iYVE0KSE03JVCHaWbPgfQ
+ 4axmUfZ8Gf4oc4sX10OWaTU4fVrkISjGWnzKdT3dnvwD/k+YykpGeKVxlfe5y676RYDa
+ 4ip07BeRXp4DeYScepUdQJLe+U2qPQuul88nuqGc6+sYRVnn1KWmKQzdKfbNBqE0PUJs
+ 10pV778PxdRRptOHEgZ830HcAd0LbdfTSSGCsK4QZJJolOTK0/3DY8J4B4ZAxlr+ooom
+ 6xKVw/IDhPd2+pDdnZQZ9RROH1MZC0QBVWLQe6tafPREaL3fkBG3Zmj6NM2M2TQRgxeC
+ gpwA==
+X-Gm-Message-State: AC+VfDyJ5ziv8k3EP8FI7g55/O7q8VhNt+RDy8gB/qca+jMZ/wEq0k0G
+ ToPuKjg2KN/bxN8fX5CoTaxf/citPslKImDlvm+b5BeHo48dDnIQ3Pu5QuBbMKICTJ1Jj2Rhm0U
+ JZ4YL8ODEbf7mPeY=
+X-Received: by 2002:a1c:f01a:0:b0:3f7:5e3:c1f8 with SMTP id
+ a26-20020a1cf01a000000b003f705e3c1f8mr1448080wmb.2.1685613875857; 
+ Thu, 01 Jun 2023 03:04:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Mhc0szG+bAyA0X5HE6ghPK71yQATNDCzmAVZIO7AHTv+Uv5XC35ODg4vlN++oYVyrLME0LA==
+X-Received: by 2002:a1c:f01a:0:b0:3f7:5e3:c1f8 with SMTP id
+ a26-20020a1cf01a000000b003f705e3c1f8mr1448069wmb.2.1685613875519; 
+ Thu, 01 Jun 2023 03:04:35 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-178-86.web.vodafone.de.
+ [109.43.178.86]) by smtp.gmail.com with ESMTPSA id
+ m11-20020a7bce0b000000b003f1958eeadcsm1773738wmc.17.2023.06.01.03.04.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 03:04:34 -0700 (PDT)
+Message-ID: <ce154c2c-6059-5669-1aff-a2af73a707d6@redhat.com>
+Date: Thu, 1 Jun 2023 12:04:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 9/9] tests/qtest: massively speed up migration-test
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-10-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230531132400.1129576-10-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,20 +103,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 31/05/2023 15.24, Daniel P. Berrangé wrote:
+> The migration test cases that actually exercise live migration want to
+> ensure there is a minimum of two iterations of pre-copy, in order to
+> exercise the dirty tracking code.
+> 
+> Historically we've queried the migration status, looking for the
+> 'dirty-sync-count' value to increment to track iterations. This was
+> not entirely reliable because often all the data would get transferred
+> quickly enough that the migration would finish before we wanted it
+> to. So we massively dropped the bandwidth and max downtime to
+> guarantee non-convergance. This had the unfortunate side effect
 
-Erik Skultety <eskultet@redhat.com> writes:
+convergence
 
-> Alpine 3.16 -> 3.18
-> Fedora 37 -> 38
->
-> Signed-off-by: Erik Skultety <eskultet@redhat.com>
+> that every migration took at least 30 seconds to run (100 MB of
+> dirty pages / 3 MB/sec).
+> 
+> This optimization takes a different approach to ensuring that a
+> mimimum of two iterations. Rather than waiting for dirty-sync-count
 
-I've cherry picked this (minus alpine) into testing/next as I've got a
-slightly newer lcitool refresh patch in my tree already.
+minimum
 
-Thanks.
+> to increment, directly look for an indication that the source VM
+> has dirtied RAM that has already been transferred.
+> 
+> On the source VM a magic marker is written just after the 3 MB
+> offset. The destination VM is now montiored to detect when the
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+monitored
+
+...
+> @@ -445,6 +459,91 @@ static void migrate_ensure_converge(QTestState *who)
+>       migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
+>   }
+>   
+> +/*
+> + * Our goal is to ensure that we run a single full migration
+> + * iteration, and also dirty memory, ensuring that at least
+> + * one further iteration is required.
+> + *
+> + * We can't directly synchronize with the start of a migration
+> + * so we have to apply some tricks monitoring memory that is
+> + * transferred.
+> + *
+> + * Initially we set the migration bandwidth to an insanely
+> + * low value, with tiny max downtime too. This basically
+> + * guarantees migration will never complete.
+> + *
+> + * This will result in a test that is unacceptably slow though,
+> + * so we can't let the entire migration pass run at this speed.
+> + * Our intent is to let it run just long enough that we can
+> + * prove data prior to the marker has been transferred *AND*
+> + * also prove this transferred data is dirty again.
+> + *
+> + * Before migration starts, we write a 64-bit magic marker
+> + * into a fixed location in the src VM RAM.
+> + *
+> + * Then watch dst memory until the marker appears. This is
+> + * proof that start_address -> MAGIC_OFFSET_BASE has been
+> + * transferred.
+> + *
+> + * Finally we go back to the source and read a byte just
+> + * before the marker untill we see it flip in value. This
+
+until
+
+It's indeed much faster now, thank you very much for tackling this!
+
+Tested-by: Thomas Huth <thuth@redhat.com>
+
+
 
