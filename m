@@ -2,51 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F327194D3
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 455737194F2
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 10:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4dBI-0006EU-OZ; Thu, 01 Jun 2023 03:57:12 -0400
+	id 1q4dF2-0007Eg-60; Thu, 01 Jun 2023 04:01:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
- id 1q4dBG-0006E6-15; Thu, 01 Jun 2023 03:57:10 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4dEw-0007E9-E7
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:00:58 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
- id 1q4dBD-0004jI-JB; Thu, 01 Jun 2023 03:57:09 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWz4D4cfMz4x4G;
- Thu,  1 Jun 2023 17:57:00 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWz4C0Xrrz4whk;
- Thu,  1 Jun 2023 17:56:58 +1000 (AEST)
-Message-ID: <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
-Date: Thu, 1 Jun 2023 09:56:55 +0200
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4dEu-0005RK-TW
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:00:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=VkNZPN5dsVETiF16izii/FkOQWYfxuJIwTSW3JfDFHg=; b=IBRaYddXUgaVhFZDTRHCYhTzqb
+ WKDEt/wBD2UDzokkWsVj2kt6TrcHe17dFlaX2b0aHlq55PTjy/PPw5Xdu3+/yt0L+FH9fURpnq9Wg
+ BM60BkooUd7fBYAE8YgIdRdjG+ONFl0K8KwYLOHbZXd7B48JFLwi9hXeZthQV7lT3ARCFZObQAOfG
+ aVCNdrxDCq/+7HRa2WP1c+LdUbSD+JoPaJyVhnCmUD94HW0Fi31crCbjjmyhn5OsPS4cYcHmD5PfU
+ gI1MkA3Og/4QqB39SjIfsF2tINQsR/MSytbIsVfueR0uDb5HmLdV30D/z5yGIHjSwDsh0LkvuXP4F
+ WGUX3vl5IPtvHr18FT/rxbh4xXRNQ9VyNHm78exbfXZyfNjY+NcxYQUZO7m168DQoaUz6pmuGIoJZ
+ EmfzX2EAclr7dTCYJuewaTZMEcyCbO6YyNmOHbPcwfuO3ym5jWF/zuoeLPoVQIzjuO4vNRmHoY3jy
+ IATUjya8ExhiuCrzU++u/KRANeqwhZUBbrCk/hMlyldCqbGOOyyg9+drvY0qrUsdqHYAQ7+0jxYUf
+ eltRlNM3yMP57RIsEc05Hi1Ayvnhbu3N5tffeqMPycEjufAuMtTN5HIv8xCyVQ1A2XeLKYvtYFzhZ
+ 359R6nJfXfn/SkCoL9TZLkQCG9e+AcumhPeWofqHs=;
+Received: from host86-130-37-216.range86-130.btcentralplus.com
+ ([86.130.37.216] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q4dEh-0004Td-3a; Thu, 01 Jun 2023 09:00:47 +0100
+Message-ID: <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk>
+Date: Thu, 1 Jun 2023 09:00:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [RFC PATCH 0/5] target/ppc: initial SMT support in TCG
+To: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: laurent@vivier.eu, qemu-devel@nongnu.org
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+ <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
+ <87jzwoczq6.fsf@pond.sub.org>
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230531012313.19891-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230531012313.19891-1-npiggin@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <87jzwoczq6.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=vOrz=BV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.130.37.216
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,68 +85,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Nick,
+On 31/05/2023 16:00, Markus Armbruster wrote:
 
-On 5/31/23 03:23, Nicholas Piggin wrote:
-> Hi,
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
 > 
-> I'm posting this now just to get some first thoughts. I wouldn't say
-> it's ready but it does actually work with some basic tests including
-> pseries booting a Linux distro. I have powernv booting too, it just
-> requires some more SPRs converted, nothing fundamentally different so
-> for the purpose of this RFC I leave it out.
+>> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>>> Also change the instantiation of the CPU to use object_initialize_child()
+>>> followed by a separate realisation.
+>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>> ---
+>>>    hw/m68k/q800.c         | 13 ++++++++-----
+>>>    include/hw/m68k/q800.h |  2 ++
+>>>    2 files changed, 10 insertions(+), 5 deletions(-)
+>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>>> index 3730b30dd1..c34b2548ca 100644
+>>> --- a/hw/m68k/q800.c
+>>> +++ b/hw/m68k/q800.c
+>>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+>>>      static void q800_machine_init(MachineState *machine)
+>>>    {
+>>> -    M68kCPU *cpu = NULL;
+>>> +    Q800MachineState *m = Q800_MACHINE(machine);
+>>>        int linux_boot;
+>>>        int32_t kernel_size;
+>>>        uint64_t elf_entry;
+>>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+>>>        }
+>>>          /* init CPUs */
+>>> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+>>> -    qemu_register_reset(main_cpu_reset, cpu);
+>>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>>> +                            M68K_CPU_TYPE_NAME("m68040"));
+>>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
+>>
+>> CPUs are QDev-based, shouldn't we use qdev_realize()?
 > 
-> A couple of things, I don't know the object model well enough to do
-> something nice with topology. Iterating siblings I would have thought
-> should be going to parent core then iterating its children CPUs. Should
-> that be done with the object model, or is it better to add direct
-> pointers in CPUs to core and core to CPUs? It is (semi) important for> performance so maybe that is better than object iterators. If we go that
-> way, the PnvCore and SpaprCore have pointers to the SMT threads already,
-> should those be abstracted go in the CPUCore?
-
-You should be able to move the thread array into the CPUCore. If you do
-that, please check that migration compat is not impacted by the state
-change. However, I am not sure you can use the CPUCore model under the
-insn modeling. Something to check.
-
-Anyhow, the way you implemented the loop on the siblings is sufficiently
-fast for a small numbers of CPU and safe, w.r.t to CPU hotplug. So
-I would leave that part for now, if it runs decently with 4*4 vCPUs in
-TCG it should be fine.
-
-Thanks,
-
-C.
-
-
-  
-> The other thing is the serialisation of access. It's using the atomic
-> single stepping for this which... I guess should be sufficient? Is it
-> the best way to do it though? Can a lock be used somehow instead?
+> Yes, we should.
 > 
-> Thanks,
-> Nick
-> 
-> Nicholas Piggin (5):
->    target/ppc: gdbstub init spr gdb_id for all CPUs
->    target/ppc: Add initial flags and helpers for SMT support
->    target/ppc: Add support for SMT CTRL register
->    target/ppc: Add msgsnd/p and DPDES SMT support
->    spapr: Allow up to 8 threads SMT configuration
-> 
->   hw/ppc/ppc.c                                  |  6 ++
->   hw/ppc/spapr.c                                |  4 +-
->   hw/ppc/spapr_cpu_core.c                       |  7 +-
->   include/hw/ppc/ppc.h                          |  1 +
->   target/ppc/cpu.h                              | 16 +++-
->   target/ppc/cpu_init.c                         |  5 +
->   target/ppc/excp_helper.c                      | 86 ++++++++++++-----
->   target/ppc/gdbstub.c                          | 32 ++++---
->   target/ppc/helper.h                           |  4 +-
->   target/ppc/misc_helper.c                      | 93 +++++++++++++++++--
->   target/ppc/translate.c                        | 46 ++++++++-
->   .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
->   12 files changed, 252 insertions(+), 50 deletions(-)
-> 
+> [...]
+
+Interesting. I remember thinking that CPUs were different, so I'm fairly sure I 
+borrowed this from some similar code in hw/arm :)
+
+Shouldn't the above be directly equivalent to qdev_realize(dev, NULL, &error_fatal) 
+given that the CPU doesn't connect to a bus?
+
+
+ATB,
+
+Mark.
 
 
