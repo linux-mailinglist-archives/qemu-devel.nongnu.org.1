@@ -2,61 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C7771F047
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 19:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7747E71EF6A
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:46:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kwH-00007J-UV; Thu, 01 Jun 2023 12:14:13 -0400
+	id 1q4kzR-0005lI-Ez; Thu, 01 Jun 2023 12:17:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kwG-00006k-7N
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:14:12 -0400
+ id 1q4kzK-0005ff-4F
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:17:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kwE-0003vC-5P
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:14:11 -0400
+ id 1q4kzG-0004UX-TB
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:17:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685636049;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685636237;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ryCbGEttsUUm9yVEWeKO0JsvqZ6dygGasud7gPPH4yw=;
- b=g18OgZTlJTe/sg1dOwiCmVapaIhEzMuOnxu07Wc8buzOQ4XgFrmxXLt44lkachOYvH9pvY
- KwUezUZoWb1FxfnuhjurSkVvEmZVw3Fa1EpuSxiixd7ws0ZKhrPaKaxwSNxU3rnusEu1KB
- l1hVCZM/k7i0rjXyl2gREe+q6szaZO0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=URP6T37Q595GI4L/uv/azw/lNI2RJFirAjYpfkBqpp4=;
+ b=hCIP067X57GalXsr8lmYuTS4qxXUsjpAmKczXblMsezypG9Ei8xwlUjlI6kKB8LnJ7w5b6
+ S0e7XnJLrOBh0SVmURZgJ+Yl4B0/+KjTmBtSu8GPo9Ta8JB6TAG5W2AT7N877ACMQIfmK8
+ wlYtTJRhhr1MP4zcf/XaOUbB5Ys9Ag0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-44-rif-f0TUPxyw10QFhE5trw-1; Thu, 01 Jun 2023 12:14:08 -0400
-X-MC-Unique: rif-f0TUPxyw10QFhE5trw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-94-aRVtiLN3PJm5O-1QjqMWXg-1; Thu, 01 Jun 2023 12:17:16 -0400
+X-MC-Unique: aRVtiLN3PJm5O-1QjqMWXg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06A71101A59E
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:14:08 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DCB5D14171BB;
- Thu,  1 Jun 2023 16:14:06 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 10/10] tests/qtest: massively speed up migration-test
-Date: Thu,  1 Jun 2023 17:13:47 +0100
-Message-Id: <20230601161347.1803440-11-berrange@redhat.com>
-In-Reply-To: <20230601161347.1803440-1-berrange@redhat.com>
-References: <20230601161347.1803440-1-berrange@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9F0D2999B46
+ for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:17:15 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.153])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 59E87112132C;
+ Thu,  1 Jun 2023 16:17:14 +0000 (UTC)
+Date: Thu, 1 Jun 2023 17:17:11 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: quintela@redhat.com, qemu-devel@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
+ scenarios run non-live
+Message-ID: <ZHjEh5GSgS+3i8HQ@redhat.com>
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-9-berrange@redhat.com>
+ <87a5xjs6ob.fsf@secure.mitica>
+ <7c02b1c2-1636-24d9-8466-3bcc6c88acbd@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+In-Reply-To: <7c02b1c2-1636-24d9-8466-3bcc6c88acbd@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -78,288 +84,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The migration test cases that actually exercise live migration want to
-ensure there is a minimum of two iterations of pre-copy, in order to
-exercise the dirty tracking code.
+On Thu, Jun 01, 2023 at 06:09:44PM +0200, Thomas Huth wrote:
+> On 01/06/2023 14.33, Juan Quintela wrote:
+> > Daniel P. Berrangé <berrange@redhat.com> wrote:
+> ...
+> > > On a test machine this reduces execution time from 13 minutes to
+> > > 8 minutes.
+> > > 
+> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > 
+> > Hi
+> > 
+> > I have a different idea to get the migration tests faster.  Namely, just
+> > stop letting enter the completation stage until we are ready to use it.
+> > 
+> > I need that functionality also for vfio migration, so as I have to
+> > create the patches, can we put on hold the last two patches and give me
+> > a couple of days?
+> 
+> A couple of days are certainly OK ... but could we please avoid being stuck
+> in the current situation for many more weeks?
 
-Historically we've queried the migration status, looking for the
-'dirty-sync-count' value to increment to track iterations. This was
-not entirely reliable because often all the data would get transferred
-quickly enough that the migration would finish before we wanted it
-to. So we massively dropped the bandwidth and max downtime to
-guarantee non-convergance. This had the unfortunate side effect
-that every migration took at least 30 seconds to run (100 MB of
-dirty pages / 3 MB/sec).
+Also as I mentioned in my reply to Peter, I'm wary of an approach that
+puts in a synchronization between the test suite and the migrate code,
+because that's making migration run in a manner which doesn't actually
+match how it'll run in the real world. So I think if there was a feature
+to add a sync before the final iteration, we'd still want to test without
+using that feature so we get proper coverage.
 
-This optimization takes a different approach to ensuring that a
-mimimum of two iterations. Rather than waiting for dirty-sync-count
-to increment, directly look for an indication that the source VM
-has dirtied RAM that has already been transferred.
+Could we merge this series as-is, and simply re-visit the last patch
+afterwards, once we have time to debate the feature about completion
+phase synchronization.
 
-On the source VM a magic marker is written just after the 3 MB
-offset. The destination VM is now montiored to detect when the
-magic marker is transferred. This gives a guarantee that the
-first 3 MB of memory have been transferred. Now the source VM
-memory is monitored at exactly the 3MB offset until we observe
-a flip in its value. This gives us a guaranteed that the guest
-workload has dirtied a byte that has already been transferred.
+>                                               The slowness of the migration
+> tests are really slowing down my turnaround times, and I think they
+> contribute to the timeouts of the Travis CI tests that I'm currently facing,
+> and likely also contributed to the issue that the QEMU project ran out of
+> Gitlab CI minutes again last month (which is thankfully mostly hidden by the
+> new private Linux runners, but some things like the Windows runners were not
+> available anymore). So I'd appreciate if we'd rather get a speed up here
+> merged rather sooner than later.
+> 
+> > Thomas, do you care if I get the whole sets of patches through the
+> > migration tree?
+> 
+> That's fine, please take them through your tree!
 
-Since we're looking at a place that is only 3 MB from the start
-of memory, with the 3 MB/sec bandwidth, this test should complete
-in 1 second, instead of 30 seconds.
-
-Once we've proved there is some dirty memory, migration can be
-set back to full speed for the remainder of the 1st iteration,
-and the entire of the second iteration at which point migration
-should be complete.
-
-On a test machine this further reduces the migration test time
-from 8 minutes to 1 minute 40.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- tests/qtest/migration-test.c | 143 ++++++++++++++++++++++++++++++-----
- 1 file changed, 125 insertions(+), 18 deletions(-)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 0b9d045152..298291f01c 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -46,6 +46,20 @@ static bool uffd_feature_thread_id;
- static bool got_src_stop;
- static bool got_dst_resume;
- 
-+/*
-+ * An initial 3 MB offset is used as that corresponds
-+ * to ~1 sec of data transfer with our bandwidth setting.
-+ */
-+#define MAGIC_OFFSET_BASE (3 * 1024 * 1024)
-+/*
-+ * A further 1k is added to ensure we're not a multiple
-+ * of TEST_MEM_PAGE_SIZE, thus avoid clash with writes
-+ * from the migration guest workload.
-+ */
-+#define MAGIC_OFFSET_SHUFFLE 1024
-+#define MAGIC_OFFSET (MAGIC_OFFSET_BASE + MAGIC_OFFSET_SHUFFLE)
-+#define MAGIC_MARKER 0xFEED12345678CAFEULL
-+
- /*
-  * Dirtylimit stop working if dirty page rate error
-  * value less than DIRTYLIMIT_TOLERANCE_RANGE
-@@ -445,6 +459,91 @@ static void migrate_ensure_converge(QTestState *who)
-     migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
- }
- 
-+/*
-+ * Our goal is to ensure that we run a single full migration
-+ * iteration, and also dirty memory, ensuring that at least
-+ * one further iteration is required.
-+ *
-+ * We can't directly synchronize with the start of a migration
-+ * so we have to apply some tricks monitoring memory that is
-+ * transferred.
-+ *
-+ * Initially we set the migration bandwidth to an insanely
-+ * low value, with tiny max downtime too. This basically
-+ * guarantees migration will never complete.
-+ *
-+ * This will result in a test that is unacceptably slow though,
-+ * so we can't let the entire migration pass run at this speed.
-+ * Our intent is to let it run just long enough that we can
-+ * prove data prior to the marker has been transferred *AND*
-+ * also prove this transferred data is dirty again.
-+ *
-+ * Before migration starts, we write a 64-bit magic marker
-+ * into a fixed location in the src VM RAM.
-+ *
-+ * Then watch dst memory until the marker appears. This is
-+ * proof that start_address -> MAGIC_OFFSET_BASE has been
-+ * transferred.
-+ *
-+ * Finally we go back to the source and read a byte just
-+ * before the marker untill we see it flip in value. This
-+ * is proof that start_address -> MAGIC_OFFSET_BASE
-+ * is now dirty again.
-+ *
-+ * IOW, we're guaranteed at least a 2nd migration pass
-+ * at this point.
-+ *
-+ * We can now let migration run at full speed to finish
-+ * the test
-+ */
-+static void migrate_prepare_for_dirty_mem(QTestState *from)
-+{
-+    /*
-+     * The guest workflow iterates from start_address to
-+     * end_address, writing 1 byte every TEST_MEM_PAGE_SIZE
-+     * bytes.
-+     *
-+     * IOW, if we write to mem at a point which is NOT
-+     * a multiple of TEST_MEM_PAGE_SIZE, our write won't
-+     * conflict with the migration workflow.
-+     *
-+     * We put in a marker here, that we'll use to determine
-+     * when the data has been transferred to the dst.
-+     */
-+    qtest_writeq(from, start_address + MAGIC_OFFSET, MAGIC_MARKER);
-+}
-+
-+static void migrate_wait_for_dirty_mem(QTestState *from,
-+                                       QTestState *to)
-+{
-+    uint64_t watch_address = start_address + MAGIC_OFFSET_BASE;
-+    uint64_t marker_address = start_address + MAGIC_OFFSET;
-+    uint8_t watch_byte;
-+
-+    /*
-+     * Wait for the MAGIC_MARKER to get transferred, as an
-+     * indicator that a migration pass has made some known
-+     * amount of progress.
-+     */
-+    do {
-+        usleep(1000 * 10);
-+    } while (qtest_readq(to, marker_address) != MAGIC_MARKER);
-+
-+    /*
-+     * Now ensure that already transferred bytes are
-+     * dirty again from the guest workload. Note the
-+     * guest byte value will wrap around and by chance
-+     * match the original watch_byte. This is harmless
-+     * as we'll eventually see a different value if we
-+     * keep watching
-+     */
-+    watch_byte = qtest_readb(from, watch_address);
-+    do {
-+        usleep(1000 * 10);
-+    } while (qtest_readb(from, watch_address) == watch_byte);
-+}
-+
-+
- static void migrate_pause(QTestState *who)
- {
-     qtest_qmp_assert_success(who, "{ 'execute': 'migrate-pause' }");
-@@ -577,7 +676,10 @@ typedef struct {
-         MIG_TEST_FAIL_DEST_QUIT_ERR,
-     } result;
- 
--    /* Optional: set number of migration passes to wait for, if live==true */
-+    /*
-+     * Optional: set number of migration passes to wait for, if live==true.
-+     * If zero, then merely wait for a few MB of dirty data
-+     */
-     unsigned int iterations;
- 
-     /* Optional: whether the guest CPUs should be running during migration */
-@@ -1158,12 +1260,14 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
- 
-     migrate_ensure_non_converge(from);
- 
-+    migrate_prepare_for_dirty_mem(from);
-+
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
- 
-     migrate_qmp(from, uri, "{}");
- 
--    wait_for_migration_pass(from);
-+    migrate_wait_for_dirty_mem(from, to);
- 
-     *from_ptr = from;
-     *to_ptr = to;
-@@ -1398,14 +1502,8 @@ static void test_precopy_common(MigrateCommon *args)
-     }
- 
-     if (args->live) {
--        /*
--         * Testing live migration, we want to ensure that some
--         * memory is re-dirtied after being transferred, so that
--         * we exercise logic for dirty page handling. We achieve
--         * this with a ridiculosly low bandwidth that guarantees
--         * non-convergance.
--         */
-         migrate_ensure_non_converge(from);
-+        migrate_prepare_for_dirty_mem(from);
-     } else {
-         /*
-          * Testing non-live migration, we allow it to run at
-@@ -1440,13 +1538,16 @@ static void test_precopy_common(MigrateCommon *args)
-         }
-     } else {
-         if (args->live) {
--            if (args->iterations) {
--                while (args->iterations--) {
--                    wait_for_migration_pass(from);
--                }
--            } else {
-+            /*
-+             * For initial iteration(s) we must do a full pass,
-+             * but for the final iteration, we need only wait
-+             * for some dirty mem before switching to converge
-+             */
-+            while (args->iterations > 1) {
-                 wait_for_migration_pass(from);
-+                args->iterations--;
-             }
-+            migrate_wait_for_dirty_mem(from, to);
- 
-             migrate_ensure_converge(from);
- 
-@@ -1573,6 +1674,9 @@ static void test_ignore_shared(void)
-         return;
-     }
- 
-+    migrate_ensure_non_converge(from);
-+    migrate_prepare_for_dirty_mem(from);
-+
-     migrate_set_capability(from, "x-ignore-shared", true);
-     migrate_set_capability(to, "x-ignore-shared", true);
- 
-@@ -1581,7 +1685,7 @@ static void test_ignore_shared(void)
- 
-     migrate_qmp(from, uri, "{}");
- 
--    wait_for_migration_pass(from);
-+    migrate_wait_for_dirty_mem(from, to);
- 
-     if (!got_src_stop) {
-         qtest_qmp_eventwait(from, "STOP");
-@@ -2273,6 +2377,7 @@ static void test_multifd_tcp_cancel(void)
-     }
- 
-     migrate_ensure_non_converge(from);
-+    migrate_prepare_for_dirty_mem(from);
- 
-     migrate_set_parameter_int(from, "multifd-channels", 16);
-     migrate_set_parameter_int(to, "multifd-channels", 16);
-@@ -2291,7 +2396,7 @@ static void test_multifd_tcp_cancel(void)
- 
-     migrate_qmp(from, uri, "{}");
- 
--    wait_for_migration_pass(from);
-+    migrate_wait_for_dirty_mem(from, to);
- 
-     migrate_cancel(from);
- 
-@@ -2320,11 +2425,13 @@ static void test_multifd_tcp_cancel(void)
- 
-     wait_for_migration_status(from, "cancelled", NULL);
- 
--    migrate_ensure_converge(from);
-+    migrate_ensure_non_converge(from);
- 
-     migrate_qmp(from, uri, "{}");
- 
--    wait_for_migration_pass(from);
-+    migrate_wait_for_dirty_mem(from, to);
-+
-+    migrate_ensure_converge(from);
- 
-     if (!got_src_stop) {
-         qtest_qmp_eventwait(from, "STOP");
+With regards,
+Daniel
 -- 
-2.40.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
