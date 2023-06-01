@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B7E71A1EE
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB4B71A1EF
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:09:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4jtm-0007b6-UE; Thu, 01 Jun 2023 11:07:34 -0400
+	id 1q4juw-0003Pf-0L; Thu, 01 Jun 2023 11:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4jtN-0007Wt-9W
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:07:09 -0400
+ id 1q4jut-00035v-BH
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:08:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4jtL-0007pz-LB
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:07:09 -0400
+ id 1q4jur-00082d-0Y
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:08:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685632026;
+ s=mimecast20190719; t=1685632117;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jmwIuqbKSBmYUUYZl+TDEkyLmw0sm6/vkiGhVfu4wao=;
- b=DwOZTkha4/XDjIF+tqzNev/k4kmtD/BKXyVETz4cdVMQF4+Dd+3XsCK8LUwTMH6AzrqkYV
- Q5Sit4yGlSWJjplOi8Je7Ukq/Qne4p3PYvnP3dtCsyuOd4s/8+XZQcUnIhZl888dJUgPxn
- 6BTEOcKmEhXIpjDaBFQ4ZacTXRJ9FIc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wKrE0cU6y/KvEa0jIUQsGcMo+tubjSZxaQI6tRZgCYg=;
+ b=LtWMkYE6DZtmJubk81I8YEAGffzkCgjNJsLD+20WWbVuiM4WcftdceALGoj0ieKg4QJM8r
+ doqJxkIE1vR41mj+Sob9suPPw8vy7YsgUfMRy2iwA0WdA59sOTWk9Y5/r5p75GsdSFjRuP
+ SgJCn1Avedq+moaE2M/kgKVnKWAAoUU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-7-tgD9to2cO1-qlAEGMlgP8w-1; Thu, 01 Jun 2023 11:07:01 -0400
-X-MC-Unique: tgD9to2cO1-qlAEGMlgP8w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-5-mJyahbADPlCd1sqxogp_NQ-1; Thu, 01 Jun 2023 11:08:10 -0400
+X-MC-Unique: mJyahbADPlCd1sqxogp_NQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DDB2329AB3E8;
- Thu,  1 Jun 2023 15:06:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F19E4101B042;
+ Thu,  1 Jun 2023 15:07:03 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 67608112132D;
- Thu,  1 Jun 2023 15:06:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 704B59E63;
+ Thu,  1 Jun 2023 15:07:02 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>,
@@ -57,16 +57,16 @@ Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL v2 04/11] scripts/qapi: document the tool that generated the
- file
-Date: Thu,  1 Jun 2023 11:06:42 -0400
-Message-Id: <20230601150649.1591095-5-stefanha@redhat.com>
+Subject: [PULL v2 05/11] docs/deprecated: move QMP events bellow QMP command
+ section
+Date: Thu,  1 Jun 2023 11:06:43 -0400
+Message-Id: <20230601150649.1591095-6-stefanha@redhat.com>
 In-Reply-To: <20230601150649.1591095-1-stefanha@redhat.com>
 References: <20230601150649.1591095-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -93,62 +93,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Bennée <alex.bennee@linaro.org>
 
-This makes it a little easier for developers to find where things
-where being generated.
+Also rename the section to make the fact this is part of the
+management protocol even clearer.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20230526165401.574474-5-alex.bennee@linaro.org
-Message-Id: <20230524133952.3971948-5-alex.bennee@linaro.org>
+Message-id: 20230526165401.574474-6-alex.bennee@linaro.org
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- scripts/qapi/gen.py | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ docs/about/deprecated.rst | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
-index 8f8f784f4a..70bc576a10 100644
---- a/scripts/qapi/gen.py
-+++ b/scripts/qapi/gen.py
-@@ -13,6 +13,7 @@
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index e934e0a13a..7c45a64363 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -218,6 +218,15 @@ instruction per translated block" mode (which can be set on the
+ command line or via the HMP, but not via QMP). The information remains
+ available via the HMP 'info jit' command.
  
- from contextlib import contextmanager
- import os
-+import sys
- import re
- from typing import (
-     Dict,
-@@ -162,7 +163,7 @@ def __init__(self, fname: str, blurb: str, pydoc: str):
++QEMU Machine Protocol (QMP) events
++----------------------------------
++
++``MEM_UNPLUG_ERROR`` (since 6.2)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
++
++
+ Human Monitor Protocol (HMP) commands
+ -------------------------------------
  
-     def _top(self) -> str:
-         return mcgen('''
--/* AUTOMATICALLY GENERATED, DO NOT MODIFY */
-+/* AUTOMATICALLY GENERATED by %(tool)s DO NOT MODIFY */
- 
- /*
- %(blurb)s
-@@ -174,6 +175,7 @@ def _top(self) -> str:
-  */
- 
- ''',
-+                     tool=os.path.basename(sys.argv[0]),
-                      blurb=self._blurb, copyright=self._copyright)
- 
-     def _bottom(self) -> str:
-@@ -195,7 +197,10 @@ def _bottom(self) -> str:
- 
- class QAPIGenTrace(QAPIGen):
-     def _top(self) -> str:
--        return super()._top() + '# AUTOMATICALLY GENERATED, DO NOT MODIFY\n\n'
-+        return (super()._top()
-+                + '# AUTOMATICALLY GENERATED by '
-+                + os.path.basename(sys.argv[0])
-+                + ', DO NOT MODIFY\n\n')
+@@ -251,15 +260,6 @@ it. Since all recent x86 hardware from the past >10 years is capable of the
+ 64-bit x86 extensions, a corresponding 64-bit OS should be used instead.
  
  
- @contextmanager
+-QEMU API (QAPI) events
+-----------------------
+-
+-``MEM_UNPLUG_ERROR`` (since 6.2)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
+-
+-
+ System emulator machines
+ ------------------------
+ 
 -- 
 2.40.1
 
