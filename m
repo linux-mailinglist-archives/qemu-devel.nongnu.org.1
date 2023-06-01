@@ -2,62 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725B9719096
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1010C719097
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4YCf-0003K7-LK; Wed, 31 May 2023 22:38:17 -0400
+	id 1q4YEl-00053g-0e; Wed, 31 May 2023 22:40:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenbaozi@phytium.com.cn>)
- id 1q4YCc-0003Jt-T0; Wed, 31 May 2023 22:38:14 -0400
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <chenbaozi@phytium.com.cn>)
- id 1q4YCa-0003mS-Cg; Wed, 31 May 2023 22:38:14 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBX09iCBXhk55w3AQ--.47009S2;
- Thu, 01 Jun 2023 10:42:10 +0800 (CST)
-Received: from smtpclient.apple (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwAnVV6CBHhkeF4AAA--.424S3;
- Thu, 01 Jun 2023 10:37:55 +0800 (CST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-From: Chen Baozi <chenbaozi@phytium.com.cn>
-In-Reply-To: <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
-Date: Thu, 1 Jun 2023 10:37:44 +0800
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Graeme Gregory <graeme@xora.org.uk>, wangyuquan1236@phytium.com.cn,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F9D991CE-BC05-483E-8289-93BE111CC7D6@phytium.com.cn>
-References: <20230531070229.334124-1-wangyuquan1236@phytium.com.cn>
- <20230531070229.334124-2-wangyuquan1236@phytium.com.cn>
- <lfcmvvqjp64wngrdk33bvkb3k7op53l24lcoslah2evsyh3esc@at7jnsnrto7h>
- <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
- <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
-To: Leif Lindholm <quic_llindhol@quicinc.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-CM-TRANSID: AQAAfwAnVV6CBHhkeF4AAA--.424S3
-X-CM-SenderInfo: hfkh0updr2xqxsk13x1xpou0fpof0/1tbiAQAREWR3nCkBUQAAs3
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=chenbaozi@
- phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7KF13Kw48AF4UGF4kAw1UWrg_yoW8KFWUpF
- W5Ja47Kr4vka1Syrsavw1YvF43Aa1xZFy5Jr15Jry8AFZxJ34a9rWfKw15ua9xZw1fA34j
- qrWYq34fC3W3ZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=chenbaozi@phytium.com.cn;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4YEi-0004vd-S8
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 22:40:24 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4YEg-0004NC-6v
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 22:40:24 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1b075e13a5eso2880925ad.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 19:40:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685587214; x=1688179214;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=itDNqqim0gz7ylOBEBOoILHcq8T0JBsppFgzSe0askM=;
+ b=yBk11ffrUzL/TJmN5btvNu1UpZgm/Ms/J13xGHwDbGM+I4B9u9qY27JEcc/50I+RlV
+ dxfpk9Yk9+RdtzykqHwVYAByEQJsFRsGUftC1Bz0SrF+lr9JhkptFKb0wq0Wr+aJUc8m
+ iS0GxyvB9wBIYDc74EIN1U5IEm52EwQgtMwDGBSQ3YQFz1IeopLo9Kqo+M0F0xU5sL4t
+ MbKKlLHTbcdHxg8Oo26dYN8a4n4woURWoRveGv3uZUkEHcS1/PuKtSl6/7Ah8w6oI1ik
+ 3KTAbQvFbh/HhYQADdW4YrVAUztMGJk13e2a9YBhvIJRJcm4xjQVcBaNIMNaeBRAmTOW
+ ywwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685587214; x=1688179214;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=itDNqqim0gz7ylOBEBOoILHcq8T0JBsppFgzSe0askM=;
+ b=iF24FXbqD88OfSgprquXqTQDJ0bENEG8Uh1hp46r09dxXCel6BSCtWCHZqmm5TOj4J
+ +xNzNQQIDhNA5QzYi/VaO0OlTEG0eZWpmL9mcDsYg6X3h+3XIkcPQIeyngeX2Ip0osxF
+ 74RhcGqDsxb6VRss2sz3fLX2WsGwOw4Tn83HNG1OWqGgoQjd1RnN0IBV56QSZ4z/7Ldi
+ 9ZN1RPF0bNroMIWOB04ecfXkTeLZncE+GM/xEgTEH1oZVtgBax7H70vmQqyknkK/xYID
+ oc5sUOXYP1H8Oli1n6i9DJBPYbBnUlmUQm4rrgR160qQOWdtBa3SCv/GU4rzN6kMfu1n
+ MrvA==
+X-Gm-Message-State: AC+VfDxOSq44v3G0PVj21LNdesinXbymVxdvkBEf1gMpmHeRk0rWD2ro
+ uwvIzgUGzM42PWkMauOpre9sOA==
+X-Google-Smtp-Source: ACHHUZ76KIfT/xBxBTEC13iS31HyP3Ck83qmUIYnzIUcmu7tZmx9K6ZuldAWU3LxZdrc4s3v0AU9wg==
+X-Received: by 2002:a17:903:2284:b0:1b0:45e2:ef38 with SMTP id
+ b4-20020a170903228400b001b045e2ef38mr8442945plh.26.1685587213847; 
+ Wed, 31 May 2023 19:40:13 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
+ ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
+ by smtp.gmail.com with ESMTPSA id
+ u7-20020a170902714700b001a260b5319bsm2145007plm.91.2023.05.31.19.40.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 19:40:13 -0700 (PDT)
+Message-ID: <387127a0-4030-32b9-ccbb-db2f95bd618b@linaro.org>
+Date: Wed, 31 May 2023 19:40:11 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v14 08/10] Adding info [tb-list|tb] commands to HMP (WIP)
+Content-Language: en-US
+To: Fei Wu <fei2.wu@intel.com>, alex.bennee@linaro.org, qemu-devel@nongnu.org
+Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+References: <20230530083526.2174430-1-fei2.wu@intel.com>
+ <20230530083526.2174430-9-fei2.wu@intel.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230530083526.2174430-9-fei2.wu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,60 +99,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Leif,
+On 5/30/23 01:35, Fei Wu wrote:
+> +static void do_dump_tbs_info(int total, int sort_by)
+> +{
+> +    id = 1;
+> +    GList *i;
+> +    int count = total;
+> +
+> +    g_list_free(last_search);
+> +    last_search = NULL;
+> +
+> +    qht_iter(&tb_ctx.tb_stats, collect_tb_stats, NULL);
+> +
+> +    last_search = g_list_sort_with_data(last_search, inverse_sort_tbs,
+> +                                        &sort_by);
+> +
 
-> On Jun 1, 2023, at 00:36, Leif Lindholm <quic_llindhol@quicinc.com> =
-wrote:
->=20
-> On 2023-05-31 16:27, Peter Maydell wrote:
->> On Wed, 31 May 2023 at 15:58, Graeme Gregory <graeme@xora.org.uk> =
-wrote:
->>>> The current sbsa-ref cannot use EHCI controller which is only
->>>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM above 4GB.
->>>> Hence, this uses XHCI to provide a usb controller with 64-bit
->>>> DMA capablity instead of EHCI.
->>>=20
->>> Should this be below 4G?
->> It would be pretty disruptive to try to rearrange the memory
->> map to put RAM below 4GB at this point, though in theory it's
->> possible I guess. (I have a vague recollection that there was
->> some reason the RAM was all put above 4GB, but can't find
->> anything about that in my email archives. Perhaps Leif remembers?)
->=20
-> I think Graeme was just pointing out a typo in Marcin's email.
->=20
-> Yeah, we're not changing the DRAM base at this stage.
-> I think the reason we put no RAM below 4GB was simply that we had =
-several real-world platforms where that was true, and given the intended =
-use-case for the platform, we explicitly wanted to trigger issues those =
-platforms might encounter.
->=20
->>> Also has EHCI never worked, or has it worked in some modes and so =
-this
->>> change should be versioned?
->> AIUI, EHCI has never worked and can never have worked, because
->> this board's RAM is all above 4G and the QEMU EHCI controller
->> implementation only allows DMA descriptors with 32-bit addresses.
->> Looking back at the archives, it seems we discussed XHCI vs
->> EHCI when the sbsa-ref board went in, and the conclusion was
->> that XHCI would be better. But there wasn't a sysbus XHCI device
->> at that point, so we ended up committing the sbsa-ref board
->> with EHCI and a plan to switch to XHCI when the sysbus-xhci
->> device was done, which we then forgot about:
->> https://mail.gnu.org/archive/html/qemu-arm/2018-11/msg00638.html
->=20
-> Ah, thanks! That explains why we did the thing that made no sense :)
->=20
-> To skip the migration hazard, my prefernece is we just leave the EHCI =
-device in for now, and add a separate XHCI on PCIe. We can drop the
-> EHCI device at some point in the future.
+Why are you sorting on a list and not an array?
+Intuitively, sorting a list of 1 million elements seems like the wrong choice.
 
-What about introducing another SMMU for all the platform devices on =
-sbsa-ref? I was thinking over this solution for some time. If that can =
-be feasible, we then also have a prototype of IOMMU for platform device.
+Why did you put all the comparisons in one inverse_sort_tbs function, and require 
+examining sort_by?  Better would be N sorting functions where sort_by is evaluated once 
+before starting the sort.
 
-Regards,
 
-Baozi.=
+> +++ b/disas/disas.c
+> @@ -8,6 +8,8 @@
+>  #include "hw/core/cpu.h"
+>  #include "exec/memory.h"
+>  
+> +#include "qemu/log-for-trace.h"
+> +
+>  /* Filled in by elfload.c.  Simplistic, but will do for now. */
+>  struct syminfo *syminfos = NULL;
+>  
+> @@ -199,6 +201,24 @@ static void initialize_debug_host(CPUDebug *s)
+>  #endif
+>  }
+>  
+> +static int
+> +__attribute__((format(printf, 2, 3)))
+> +fprintf_log(FILE *a, const char *b, ...)
+> +{
+> +    va_list ap;
+> +    va_start(ap, b);
+> +
+> +    if (!to_string) {
+> +        vfprintf(a, b, ap);
+> +    } else {
+> +        qemu_vlog(b, ap);
+> +    }
+> +
+> +    va_end(ap);
+> +
+> +    return 1;
+> +}
+> +
 
+Not need on this either.  Global variable being checked on each callback, instead of 
+selecting the proper callback earlier -- preferably without the global variable.
+
+Did you really need something different than monitor_disas?  You almost certainly want to 
+read physical memory and not virtual anyway.
+
+> +void qemu_log_to_monitor(bool enable)
+> +{
+> +    to_monitor = enable;
+> +}
+> +
+> +void qemu_log_to_string(bool enable, GString *s)
+> +{
+> +    to_string = enable;
+> +    string = s;
+> +}
+
+What are these for, and why do you need them?
+Why would to_string ever be anything other than (string != NULL)?
+Why are you using such very generic names for global variables?
+
+
+r~
 
