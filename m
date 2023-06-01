@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE55F71A175
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B2A71A1B3
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:02:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4jnh-0004TK-Fd; Thu, 01 Jun 2023 11:01:17 -0400
+	id 1q4joj-0005k9-ON; Thu, 01 Jun 2023 11:02:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
- id 1q4jne-0004Rv-SN
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:14 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q4joL-0005ft-Tg
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:57 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
- id 1q4jnb-0006to-Li
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:14 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-973bf581759so135588366b.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:01:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q4joK-0006wl-0M
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:01:57 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2b1a819b8d8so2524831fa.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:01:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=streamhpc-com.20221208.gappssmtp.com; s=20221208; t=1685631669; x=1688223669;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wR6iaCRu6kOBQfYwToBY3fa3qUbFrqLJXX7vZRcNXYU=;
- b=aLs6ZPkSS5IvNTqLR7tJF03n3mtAhjDLcKUjhqRX1d/LpJ7oVpHXy7eWLkLr/pvEN8
- 88yRGRPfkulChENRCzB12XYeTPBbaGHniYFweh0FOtvjQO1CrpoXN2jWHgcdGxIjk8nd
- d31NGnihPCSTErmzeNEoEpvi3bG3Q88PUUMKUJlHAdBSNykwXDVeFBfD42gI27PHaJ0W
- chJQSbGaGHdKdAcdCezxUpLVIgd52lTjhfOyTKZRa6KlGYgGj3eli3OqBxKFCBWbRxlT
- Vo3EEQN9NVGJJZu9OU4ugTcpcI/7+l8SYZQYOmQKWZm8D0XHpUSZvS+jGSdiiPV6RdYT
- t54A==
+ d=linaro.org; s=google; t=1685631714; x=1688223714;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Inb+o5+rvctMnASN8Pvu3E+8lkwKhWrDXjz+5/swP4=;
+ b=WZOV8A327sQKuI1CqQyaSK65NT7biptDAvWEe5guQHoBvvWwRtGDFvAyoo56/JD11m
+ 2wkan8GTTceZ27QiaefX1WVzk/4uBRlQc6FkMPk8h7KOH7wX7LF/OJWZ0GsXMpgwEvMU
+ GYel7FV4IFT5QVxcaNk/bm00qVYUqGnaKdENSuFcR1YUHYQAsrf6SGPs8hvy8WRc7r+k
+ PE2VbVM2qFykAxk8IgRuM+Pn3IqXoNfx5K7zMbts4FymXRhkV4U90JHPckCEF9RVlUJs
+ GxxnBKmQcSStEPL9yVw60px6YLd3iE+QgX1Qw4wmz5b9nU5shy82qf23ei0NiG9abpti
+ o1rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685631669; x=1688223669;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wR6iaCRu6kOBQfYwToBY3fa3qUbFrqLJXX7vZRcNXYU=;
- b=i3j6/UrrrH/S18kLRakOzypVRfpyvbLwQpD1AVJbeC+Em0Fjlw0jGxCCbvjy/F3004
- slDzfrZxU0thARkZ/VO7MTPexVbue4lclHYzhoZE2/t9u2N0nf9hMTXU/NjPwlOEQeI7
- rUusQiE2xDNXbtVOY6G7yee557OrSgHl5mM67+wcw5xoBtUyGDpEoIOBuUFkkRE3JEag
- 5PObuZ1OuIeMd1N+KggFInkJs2b2vDK2IaWh+Yhjy7zBOw0hkeq5yIL61r7L0pLiIlnO
- l16CJ3JEGnU8rQcbif/qgORcLGgd4vSsR2/2vxBn46r2ePtJASz4I2mg0mVC+GkKd6Yh
- NXmQ==
-X-Gm-Message-State: AC+VfDz4UozSSilTOA81M/c/5RzBdjxc1SC4Wz7is2dApopVo3mkZQxf
- 5dMjKxZLaLf6g8jDoVXSW3YUtw==
-X-Google-Smtp-Source: ACHHUZ7wA+eAgJ6/WAAjDBPC9z1gk0kX5uXfGL7F8RbG84kAi0y4t6PrzhFA1ooclgmmsfqfcGfFKA==
-X-Received: by 2002:a17:907:a09:b0:974:5480:171e with SMTP id
- bb9-20020a1709070a0900b009745480171emr555457ejc.32.1685631668829; 
- Thu, 01 Jun 2023 08:01:08 -0700 (PDT)
-Received: from [192.168.8.135] (095-097-139-014.static.chello.nl.
- [95.97.139.14]) by smtp.gmail.com with ESMTPSA id
- s15-20020a170906960f00b00966069b78absm10599201ejx.192.2023.06.01.08.01.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 08:01:08 -0700 (PDT)
-Message-ID: <0de45ad8-0b7d-f4db-e9df-0f74cb9527cb@streamhpc.com>
-Date: Thu, 1 Jun 2023 17:01:07 +0200
+ d=1e100.net; s=20221208; t=1685631714; x=1688223714;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1Inb+o5+rvctMnASN8Pvu3E+8lkwKhWrDXjz+5/swP4=;
+ b=WowJhFoUU/IMCSDf/yrq2r1gcG8vk9m7HucPoG4PHEWzv3M7fcjP9G74M3NRJJgN+M
+ LtAYRICruA+pKl2UxbddkOIQdXUIYxOPIajYtrVjCbPFDWhpqmTwjj7HUYF8NrcyVvJV
+ Q28dWeuQmOvmqSMm7E+vlJyi9hr7oTIGf7Cr9oPe2Ah+D9vu1Bm7UFXNTUSdrh0FyK+P
+ kjvMII3ZBkstV77b8m8VvoXdm5piTojQ6nX7nV3kXcpIwz2HjyKhkRPk+oTXRR3uEi7y
+ Fpu+VHWIHTDWwcOOIdIa5MHUQDV6fwSTbwZVyBhbYm1liA9xkBZzmqG8cX9paxJijHHg
+ 4ikQ==
+X-Gm-Message-State: AC+VfDx8VQqnjBL3E6qpAIfyo+R4jkAt680CWhOnQ7zb2gL6MjjdwO9F
+ +MKun6y9l0E/VekoX0Co41UVZrXP7B+vymD6S3vmqQ==
+X-Google-Smtp-Source: ACHHUZ5BKRGs+s9u9phXtY2feRyO8f9fvalIaY+HgGfYExC5PDFCLMny3BvwzK+lg7DtIW5h73RJp10ZL2OvUkDel7Y=
+X-Received: by 2002:a2e:8050:0:b0:2a8:c75d:8167 with SMTP id
+ p16-20020a2e8050000000b002a8c75d8167mr5287085ljg.4.1685631714120; Thu, 01 Jun
+ 2023 08:01:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] vfio: Implement a common device info helper
-Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org
-Cc: clg@redhat.com, philmd@linaro.org
-References: <20230601144506.2105353-1-alex.williamson@redhat.com>
-From: Robin Voetter <robin@streamhpc.com>
-In-Reply-To: <20230601144506.2105353-1-alex.williamson@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=robin@streamhpc.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230531070229.334124-1-wangyuquan1236@phytium.com.cn>
+ <20230531070229.334124-2-wangyuquan1236@phytium.com.cn>
+ <lfcmvvqjp64wngrdk33bvkb3k7op53l24lcoslah2evsyh3esc@at7jnsnrto7h>
+ <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
+ <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
+In-Reply-To: <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 1 Jun 2023 16:01:43 +0100
+Message-ID: <CAFEAcA_9Prr1xV2s1q2+GpWEnrsEEFT57bbLDnop5Hw3MaxM0A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
+To: Leif Lindholm <quic_llindhol@quicinc.com>
+Cc: Graeme Gregory <graeme@xora.org.uk>, wangyuquan1236@phytium.com.cn, 
+ chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,179 +89,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, 31 May 2023 at 17:37, Leif Lindholm <quic_llindhol@quicinc.com> wrote:
+>
+> On 2023-05-31 16:27, Peter Maydell wrote:
+> > On Wed, 31 May 2023 at 15:58, Graeme Gregory <graeme@xora.org.uk> wrote:
+> >>> The current sbsa-ref cannot use EHCI controller which is only
+> >>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM above 4GB.
+> >>> Hence, this uses XHCI to provide a usb controller with 64-bit
+> >>> DMA capablity instead of EHCI.
+> >>
+> >> Should this be below 4G?
+> >
+> > It would be pretty disruptive to try to rearrange the memory
+> > map to put RAM below 4GB at this point, though in theory it's
+> > possible I guess. (I have a vague recollection that there was
+> > some reason the RAM was all put above 4GB, but can't find
+> > anything about that in my email archives. Perhaps Leif remembers?)
+>
+> I think Graeme was just pointing out a typo in Marcin's email.
+>
+> Yeah, we're not changing the DRAM base at this stage.
+> I think the reason we put no RAM below 4GB was simply that we had
+> several real-world platforms where that was true, and given the intended
+> use-case for the platform, we explicitly wanted to trigger issues those
+> platforms might encounter.
+>
+> >> Also has EHCI never worked, or has it worked in some modes and so this
+> >> change should be versioned?
+> >
+> > AIUI, EHCI has never worked and can never have worked, because
+> > this board's RAM is all above 4G and the QEMU EHCI controller
+> > implementation only allows DMA descriptors with 32-bit addresses.
+> >
+> > Looking back at the archives, it seems we discussed XHCI vs
+> > EHCI when the sbsa-ref board went in, and the conclusion was
+> > that XHCI would be better. But there wasn't a sysbus XHCI device
+> > at that point, so we ended up committing the sbsa-ref board
+> > with EHCI and a plan to switch to XHCI when the sysbus-xhci
+> > device was done, which we then forgot about:
+> > https://mail.gnu.org/archive/html/qemu-arm/2018-11/msg00638.html
+>
+> Ah, thanks! That explains why we did the thing that made no sense :)
+>
+> To skip the migration hazard, my prefernece is we just leave the EHCI
+> device in for now, and add a separate XHCI on PCIe. We can drop the
+> EHCI device at some point in the future.
 
+Why PCIe for the XHCI and not sysbus? At the time the board
+was originally added the argument was in favour of using
+a sysbus USB controller (you can see Ard making that point
+in the linked archive thread).
 
-On 6/1/23 16:45, Alex Williamson wrote:
-> A common helper implementing the realloc algorithm for handling
-> capabilities.
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-
-Reviewed-by: Robin Voetter <robin@streamhpc.com>
-
-> ---
-> 
-> RFCv2 -> v1: Remove spurious semicolon
-> 
->  hw/s390x/s390-pci-vfio.c      | 37 ++++------------------------
->  hw/vfio/common.c              | 46 ++++++++++++++++++++++++++---------
->  include/hw/vfio/vfio-common.h |  1 +
->  3 files changed, 41 insertions(+), 43 deletions(-)
-> 
-> diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-> index f51190d4662f..59a2e03873bd 100644
-> --- a/hw/s390x/s390-pci-vfio.c
-> +++ b/hw/s390x/s390-pci-vfio.c
-> @@ -289,38 +289,11 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
->      memcpy(pbdev->zpci_fn.pfip, cap->pfip, CLP_PFIP_NR_SEGMENTS);
->  }
->  
-> -static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev,
-> -                                                uint32_t argsz)
-> +static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev)
->  {
-> -    struct vfio_device_info *info = g_malloc0(argsz);
-> -    VFIOPCIDevice *vfio_pci;
-> -    int fd;
-> +    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
->  
-> -    vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
-> -    fd = vfio_pci->vbasedev.fd;
-> -
-> -    /*
-> -     * If the specified argsz is not large enough to contain all capabilities
-> -     * it will be updated upon return from the ioctl.  Retry until we have
-> -     * a big enough buffer to hold the entire capability chain.  On error,
-> -     * just exit and rely on CLP defaults.
-> -     */
-> -retry:
-> -    info->argsz = argsz;
-> -
-> -    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
-> -        trace_s390_pci_clp_dev_info(vfio_pci->vbasedev.name);
-> -        g_free(info);
-> -        return NULL;
-> -    }
-> -
-> -    if (info->argsz > argsz) {
-> -        argsz = info->argsz;
-> -        info = g_realloc(info, argsz);
-> -        goto retry;
-> -    }
-> -
-> -    return info;
-> +    return vfio_get_device_info(vfio_pci->vbasedev.fd);
->  }
->  
->  /*
-> @@ -335,7 +308,7 @@ bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
->  
->      assert(fh);
->  
-> -    info = get_device_info(pbdev, sizeof(*info));
-> +    info = get_device_info(pbdev);
->      if (!info) {
->          return false;
->      }
-> @@ -356,7 +329,7 @@ void s390_pci_get_clp_info(S390PCIBusDevice *pbdev)
->  {
->      g_autofree struct vfio_device_info *info = NULL;
->  
-> -    info = get_device_info(pbdev, sizeof(*info));
-> +    info = get_device_info(pbdev);
->      if (!info) {
->          return;
->      }
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 78358ede2764..ed142296e9fe 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -2843,11 +2843,35 @@ void vfio_put_group(VFIOGroup *group)
->      }
->  }
->  
-> +struct vfio_device_info *vfio_get_device_info(int fd)
-> +{
-> +    struct vfio_device_info *info;
-> +    uint32_t argsz = sizeof(*info);
-> +
-> +    info = g_malloc0(argsz);
-> +
-> +retry:
-> +    info->argsz = argsz;
-> +
-> +    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
-> +        g_free(info);
-> +        return NULL;
-> +    }
-> +
-> +    if (info->argsz > argsz) {
-> +        argsz = info->argsz;
-> +        info = g_realloc(info, argsz);
-> +        goto retry;
-> +    }
-> +
-> +    return info;
-> +}
-> +
->  int vfio_get_device(VFIOGroup *group, const char *name,
->                      VFIODevice *vbasedev, Error **errp)
->  {
-> -    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
-> -    int ret, fd;
-> +    g_autofree struct vfio_device_info *info = NULL;
-> +    int fd;
->  
->      fd = ioctl(group->fd, VFIO_GROUP_GET_DEVICE_FD, name);
->      if (fd < 0) {
-> @@ -2859,11 +2883,11 @@ int vfio_get_device(VFIOGroup *group, const char *name,
->          return fd;
->      }
->  
-> -    ret = ioctl(fd, VFIO_DEVICE_GET_INFO, &dev_info);
-> -    if (ret) {
-> +    info = vfio_get_device_info(fd);
-> +    if (!info) {
->          error_setg_errno(errp, errno, "error getting device info");
->          close(fd);
-> -        return ret;
-> +        return -1;
->      }
->  
->      /*
-> @@ -2891,14 +2915,14 @@ int vfio_get_device(VFIOGroup *group, const char *name,
->      vbasedev->group = group;
->      QLIST_INSERT_HEAD(&group->device_list, vbasedev, next);
->  
-> -    vbasedev->num_irqs = dev_info.num_irqs;
-> -    vbasedev->num_regions = dev_info.num_regions;
-> -    vbasedev->flags = dev_info.flags;
-> +    vbasedev->num_irqs = info->num_irqs;
-> +    vbasedev->num_regions = info->num_regions;
-> +    vbasedev->flags = info->flags;
-> +
-> +    trace_vfio_get_device(name, info->flags, info->num_regions, info->num_irqs);
->  
-> -    trace_vfio_get_device(name, dev_info.flags, dev_info.num_regions,
-> -                          dev_info.num_irqs);
-> +    vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
->  
-> -    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
->      return 0;
->  }
->  
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index eed244f25f34..a8dcda592c08 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -212,6 +212,7 @@ void vfio_region_finalize(VFIORegion *region);
->  void vfio_reset_handler(void *opaque);
->  VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
->  void vfio_put_group(VFIOGroup *group);
-> +struct vfio_device_info *vfio_get_device_info(int fd);
->  int vfio_get_device(VFIOGroup *group, const char *name,
->                      VFIODevice *vbasedev, Error **errp);
->  
+thanks
+-- PMM
 
