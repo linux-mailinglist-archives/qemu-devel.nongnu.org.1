@@ -2,59 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132B7719CCA
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3027719CD9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:02:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hrX-0003jO-Nb; Thu, 01 Jun 2023 08:57:07 -0400
+	id 1q4hvT-0005t1-LT; Thu, 01 Jun 2023 09:01:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1q4hrV-0003iD-BQ
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:57:05 -0400
-Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1q4hrS-00071n-5J
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:57:05 -0400
-Received: from [IPV6:2a02:a03f:eaf7:ff01:cc6b:6666:e19c:b63f] (unknown
- [IPv6:2a02:a03f:eaf7:ff01:cc6b:6666:e19c:b63f])
- by apollo.dupie.be (Postfix) with ESMTPSA id CFB2B1520DD7;
- Thu,  1 Jun 2023 14:56:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1685624213;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FN1IK2LlSXs5bsgUJYUAdKJDXcmL9dInPgc6boi4F48=;
- b=SEUJ0qt9CacXGbeP0oSFW+qQv99fO5tdlr0GMndNAGVVOTK0wzkq6WVZEv5/eXlZF+wox1
- 0OPo7MYi3oBXKVOkyLxRNGJl4khlv8HQz6Hw+bDuFJmXnDaQ6OfeGRa6TvKjPVuGj2ekE/
- B6SQxRsK+kp4wCh4CdpYFvIquLvR2O6Jd4MVkzHCsVVDWf1H/iDUlIO7/01Tetp09VM1GO
- NsOHcc7PFXtGUDzoPqDmrfh6796OkMERkDuIP35LD61qj0kGcHpHkJfmzyeR/HFelrv3Wq
- dcqFiiXlwp8iH14YCriR+HwT2iRYqOXKEyBZItv8CmK1ZALkJUw/d+bnX6Xd7Q==
-Message-ID: <08a88b12-ec0a-110a-ad64-2116712065e8@dupond.be>
-Date: Thu, 1 Jun 2023 14:56:53 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q4hvQ-0005qJ-No
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:01:08 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q4hvN-00083b-PX
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:01:08 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-4f5021faa16so956730e87.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 06:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685624463; x=1688216463;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jf+2LrbrzbTmkdZVcT04IKm82iTnVpk5mMk8DbFhBDU=;
+ b=lCLZfu35eQJ9jU1Xc3SvlozzX7Jxjj8HckNfnwRXQqOxhi6EP/zu+LWPeFRtMglajJ
+ +0f9PcP8JYH3EEU0l9yvFXrY7sdvAC16Z+eHmFKj4glhp7GLcdhLcodGI+NNvp+pPaGC
+ JcfNmbeQ9WF5L6U0i4UnTKycu6LPsKgEvTFURtkldZlXVW+971MxX7yIULmQAjO/Y2EI
+ CX/OYOa9mc2a4S6KnpTbzuKoq3QFL43b0ZPleC7tE4izYcIcBJEi2gD1yfg1oKr5V9UW
+ +xapPqigYXa5gjXGKyWI/ik5DH7zhxWCYdQIYgwCUwCOefAZlyJnAo98KRaYR7GKVNCM
+ YsQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685624463; x=1688216463;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jf+2LrbrzbTmkdZVcT04IKm82iTnVpk5mMk8DbFhBDU=;
+ b=DwiZ1DAq/VbKz5ILZkSarSrdLUbLYPJH4Ds7A9EyZv1BBaQXEX9v5N0Rsn6Rh4Q/gA
+ YYxzr8KraT6Lmo8Ake3GuULEjPTHkcC4u4B3ym7xOU6WpVliy3K9Yxit6Q5o3p2jDS4D
+ YmO4xkX9HhAz/kU1Rvm+HHiyB+cwwfdWnuR2SHEehVhM6yPKQgdZy01jUhG+djzulrDR
+ +9tWyuXVkx5PG7ZlpzM/xJKXUAAVLbC1EZHR8aGkRXuMl0B9Ky9j9/kBJgBzOAoxKdfU
+ L1zYsWsmPikcu844WZIWMkb6hVBimHZJm8xFpymWP7/lLThTI4cKkhyLjij5+r9LWXjO
+ /Dnw==
+X-Gm-Message-State: AC+VfDzpGIeJuK+H34YLxjnEpowgQbz7eCtFQI/6z4YXTVIiCANEfdwK
+ 4YE8n8Uuf0Tb4qpKwQz6+yER8LgNrkKg8IzSVQIFeQ==
+X-Google-Smtp-Source: ACHHUZ685jAnGbXmsLOT2LVFmO4PsIx1cjdBpqSDXY2dgNA4g066aAiWcTXHLidY/C1FxrXP6ItWkQs3oYfC7wwQ/R0=
+X-Received: by 2002:a19:f708:0:b0:4f3:b32d:f739 with SMTP id
+ z8-20020a19f708000000b004f3b32df739mr1444581lfe.19.1685624463318; Thu, 01 Jun
+ 2023 06:01:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH] qcow2: add discard-no-unref option
-Content-Language: en-US
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org, kwolf@redhat.com
-References: <20230515073644.166677-1-jean-louis@dupond.be>
- <5cc0ec56-8a13-c651-0b4e-da644c9f6900@redhat.com>
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <5cc0ec56-8a13-c651-0b4e-da644c9f6900@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
- envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
+References: <20230601123332.3297404-1-ardb@kernel.org>
+ <20230601123332.3297404-2-ardb@kernel.org>
+In-Reply-To: <20230601123332.3297404-2-ardb@kernel.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 1 Jun 2023 14:00:52 +0100
+Message-ID: <CAFEAcA_Z_3xNC6HjuyvRtf+s9pJjGsZeSZ87VG03J2yZZ60Wtw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/arm: Use x86 intrinsics to implement PMULL.P64
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,232 +88,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/05/2023 17:05, Hanna Czenczek wrote:
-> On 15.05.23 09:36, Jean-Louis Dupond wrote:
->> When we for example have a sparse qcow2 image and discard: unmap is 
->> enabled,
->> there can be a lot of fragmentation in the image after some time. 
->> Surely on VM's
+On Thu, 1 Jun 2023 at 13:33, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> s/. Surely/, especially/
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  host/include/i386/host/cpuinfo.h |  1 +
+>  target/arm/tcg/vec_helper.c      | 26 +++++++++++++++++++-
+>  util/cpuinfo-i386.c              |  1 +
+>  3 files changed, 27 insertions(+), 1 deletion(-)
 >
->> that do a lot of writes/deletes.
->> This causes the qcow2 image to grow even over 110% of its virtual size,
->> because the free gaps in the image get to small to allocate new
+> diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+> index 073d0a426f31487d..cf4ced844760d28f 100644
+> --- a/host/include/i386/host/cpuinfo.h
+> +++ b/host/include/i386/host/cpuinfo.h
+> @@ -27,6 +27,7 @@
+>  #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
+>  #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+>  #define CPUINFO_AES             (1u << 18)
+> +#define CPUINFO_PMULL           (1u << 19)
 >
-> s/to small/too small/
+>  /* Initialized with a constructor. */
+>  extern unsigned cpuinfo;
+> diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+> index f59d3b26eacf08f8..fb422627588439b3 100644
+> --- a/target/arm/tcg/vec_helper.c
+> +++ b/target/arm/tcg/vec_helper.c
+> @@ -25,6 +25,14 @@
+>  #include "qemu/int128.h"
+>  #include "vec_internal.h"
 >
->> continuous clusters. So it allocates new space as the end of the image.
+> +#ifdef __x86_64__
+> +#include "host/cpuinfo.h"
+> +#include <wmmintrin.h>
+> +#define TARGET_PMULL  __attribute__((__target__("pclmul")))
+> +#else
+> +#define TARGET_PMULL
+> +#endif
+> +
+>  /*
+>   * Data for expanding active predicate bits to bytes, for byte elements.
+>   *
+> @@ -2010,12 +2018,28 @@ void HELPER(gvec_pmul_b)(void *vd, void *vn, void *vm, uint32_t desc)
+>   * Because of the lanes are not accessed in strict columns,
+>   * this probably cannot be turned into a generic helper.
+>   */
+> -void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
+> +void TARGET_PMULL HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
+>  {
+>      intptr_t i, j, opr_sz = simd_oprsz(desc);
+>      intptr_t hi = simd_data(desc);
+>      uint64_t *d = vd, *n = vn, *m = vm;
 >
-> s/as/at/
->
->> Disabling discard is not an option, as discard is needed to keep the
->> incremental backup size as low as possible. Without discard, the
->> incremental backups would become large, as qemu thinks it's just dirty
->> blocks but it doesn't know the blocks are empty/useless.
->> So we need to avoid fragmentation but also 'empty' the useless blocks in
->
-> s/useless/unneeded/ in both lines?
->
->> the image to have a small incremental backup.
->>
->> Next to that we also want to send the discards futher down the stack, so
->
-> s/Next to that/In addition/, s/futher/further/
->
->> the underlying blocks are still discarded.
->>
->> Therefor we introduce a new qcow2 option "discard-no-unref". When
->> setting this option to true (defaults to false), the discard requests
->> will still be executed, but it will keep the offset of the cluster. And
->> it will also pass the discard request further down the stack (if
->> discard:unmap is enabled).
->
-> I think this could be more explicit, e.g. “When setting this option to 
-> true, discards will no longer have the qcow2 driver relinquish cluster 
-> allocations. Other than that, the request is handled as normal: All 
-> clusters in range are marked as zero, and, if pass-discard-request is 
-> true, it is passed further down the stack. The only difference is that 
-> the now-zero clusters are preallocated instead of being unallocated.”
->
->> This will avoid fragmentation and for example on a fully preallocated
->> qcow2 image, this will make sure the image is perfectly continuous.
->
-> Well, on the qcow2 layer, yes.
-All above -> Fixed :)
->
->> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
->> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
->> ---
->>   block/qcow2-cluster.c  |  16 ++++-
->>   block/qcow2-refcount.c | 136 ++++++++++++++++++++++++-----------------
->>   block/qcow2.c          |  12 ++++
->>   block/qcow2.h          |   3 +
->>   qapi/block-core.json   |   4 ++
->>   qemu-options.hx        |   6 ++
->>   6 files changed, 120 insertions(+), 57 deletions(-)
->>
->> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
->> index 39cda7f907..88da70db5e 100644
->> --- a/block/qcow2-cluster.c
->> +++ b/block/qcow2-cluster.c
->> @@ -1943,10 +1943,22 @@ static int 
->> discard_in_l2_slice(BlockDriverState *bs, uint64_t offset,
->>               new_l2_entry = new_l2_bitmap = 0;
->>           } else if (bs->backing || 
->> qcow2_cluster_is_allocated(cluster_type)) {
->>               if (has_subclusters(s)) {
->> -                new_l2_entry = 0;
->> +                if (s->discard_no_unref && (type & 
->> QCOW2_DISCARD_REQUEST)) {
->
-> As far as I understand the discard type is just a plain enum, not a 
-> bit field.  So I think this should be `type == QCOW2_DISCARD_REQUEST`, 
-> not an `&`.  (Same below.)
->
-Ack
->> +                    new_l2_entry = old_l2_entry;
->> +                } else {
->> +                    new_l2_entry = 0;
->> +                }
->>                   new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
->>               } else {
->> -                new_l2_entry = s->qcow_version >= 3 ? 
->> QCOW_OFLAG_ZERO : 0;
->> +                if (s->qcow_version >= 3) {
->> +                    if (s->discard_no_unref && (type & 
->> QCOW2_DISCARD_REQUEST)) {
->> +                        new_l2_entry |= QCOW_OFLAG_ZERO;
->> +                    } else {
->> +                        new_l2_entry = QCOW_OFLAG_ZERO;
->> +                    }
->> +                } else {
->> +                    new_l2_entry = 0;
->> +                }
->>               }
->>           }
->
-> Context below:
->
->         if (old_l2_entry == new_l2_entry && old_l2_bitmap == 
-> new_l2_bitmap) {
->             continue;
->         }
->
->         /* First remove L2 entries */
->         qcow2_cache_entry_mark_dirty(s->l2_table_cache, l2_slice);
->         set_l2_entry(s, l2_slice, l2_index + i, new_l2_entry);
->         if (has_subclusters(s)) {
->             set_l2_bitmap(s, l2_slice, l2_index + i, new_l2_bitmap);
->         }
->         /* Then decrease the refcount */
->         qcow2_free_any_cluster(bs, old_l2_entry, type);
->
-> If we keep the allocation, I don’t see why we would call 
-> qcow2_free_any_cluster().  If we simply skip the call (if 
-> `qcow2_is_allocated(qcow2_get_cluster_type(bs, new_l2_entry))`), I 
-> think you could drop the modification to update_refcount().
->
-If we don't call qcow2_free_any_cluster, the discard will not get passed 
-to the lower layer.
-We also call it in zero_in_l2_slice for example to discard lower layer.
-> [...]
->
->> diff --git a/block/qcow2.c b/block/qcow2.c
->> index 5bde3b8401..9dde2ac1a5 100644
->> --- a/block/qcow2.c
->> +++ b/block/qcow2.c
->
-> [...]
->
->> @@ -725,6 +726,11 @@ static QemuOptsList qcow2_runtime_opts = {
->>               .type = QEMU_OPT_BOOL,
->>               .help = "Generate discard requests when other clusters 
->> are freed",
->>           },
->> +        {
->> +            .name = QCOW2_OPT_DISCARD_NO_UNREF,
->> +            .type = QEMU_OPT_BOOL,
->> +            .help = "Do not dereference discarded clusters",
->
-> I wouldn’t call it “dereference” because of the overloaded meaning in 
-> C, but “unreference” instead.
->
-ack
->> +        },
->>           {
->>               .name = QCOW2_OPT_OVERLAP,
->>               .type = QEMU_OPT_STRING,
->
-> [...]
->
->> diff --git a/qapi/block-core.json b/qapi/block-core.json
->> index 187e35d473..63aa792e9c 100644
->> --- a/qapi/block-core.json
->> +++ b/qapi/block-core.json
->> @@ -3432,6 +3432,9 @@
->>   # @pass-discard-other: whether discard requests for the data source
->>   #     should be issued on other occasions where a cluster gets freed
->>   #
->> +# @discard-no-unref: don't dereference the cluster when we do a discard
->> +#     this to avoid fragmentation of the qcow2 image (since 8.1)
->
-> Because this comment is used to build different documentation than 
-> qemu-options.hx is, I would duplicate the full comment you put into 
-> qemu-options.hx here (to provide the best documentation possible).
->
-ack
->> +#
->>   # @overlap-check: which overlap checks to perform for writes to the
->>   #     image, defaults to 'cached' (since 2.2)
->>   #
->> @@ -3470,6 +3473,7 @@
->>               '*pass-discard-request': 'bool',
->>               '*pass-discard-snapshot': 'bool',
->>               '*pass-discard-other': 'bool',
->> +            '*discard-no-unref': 'bool',
->>               '*overlap-check': 'Qcow2OverlapChecks',
->>               '*cache-size': 'int',
->>               '*l2-cache-size': 'int',
->> diff --git a/qemu-options.hx b/qemu-options.hx
->> index 42b9094c10..17ac701d0d 100644
->> --- a/qemu-options.hx
->> +++ b/qemu-options.hx
->> @@ -1431,6 +1431,12 @@ SRST
->>               issued on other occasions where a cluster gets freed
->>               (on/off; default: off)
->>   +        ``discard-no-unref``
->> +            When enabled, a discard in the guest does not cause the
->> +            cluster inside the qcow2 image to be dereferenced. This
->
-> Like above, I’d prefer “unreferenced”, or “the cluster’s allocation 
-> […] to be relinquished”.
->
-ack
->> +            was added to avoid qcow2 fragmentation whithin the image.
->> +            (on/off; default: off)
->
-> I wouldn’t describe history here, but instead what this is for. E.g.: 
-> “When enabled, discards from the guest will not cause cluster 
-> allocations to be relinquished. This prevents qcow2 fragmentation that 
-> would be caused by such discards. Besides potential performance 
-> degradation, such fragmentation can lead to increased allocation of 
-> clusters past the end of the image file, resulting in image files 
-> whose file length can grow much larger than their guest disk size 
-> would suggest. If image file length is of concern (e.g. when storing 
-> qcow2 images directly on block devices), you should consider enabling 
-> this option.”
-ack
->
-> What do you think?
+> +#ifdef __x86_64__
+> +    if (cpuinfo & CPUINFO_PMULL) {
+> +       switch (hi) {
+> +       case 0:
+> +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x0);
+> +               break;
+> +       case 1:
+> +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x11);
+> +               break;
+> +       default:
+> +               g_assert_not_reached();
+> +       }
+> +        return;
+> +    }
+> +#endif
 
-Let me know your opinion on the qcow2_free_any_cluster call, and then 
-I'll post a new patch version.
+This needs to cope with the input vectors being more than
+just 128 bits wide, I think. Also you probably still
+need the clear_tail() to clear any high bits of the register.
 
->
-> Hanna
->
-
-Jean-Louis
-
+thanks
+-- PMM
 
