@@ -2,85 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BD271EEDB
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2D671EF18
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:32:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4l8G-0004Oc-Sk; Thu, 01 Jun 2023 12:26:36 -0400
+	id 1q4lD4-0002W6-Nu; Thu, 01 Jun 2023 12:31:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4l8D-0004NE-Us
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:26:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4lD2-0002Vb-Fq
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4l8C-0006Cc-ES
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:26:33 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q4lD0-0007FA-Mv
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685636791;
+ s=mimecast20190719; t=1685637089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6eu+Go4JSvIlN29GYYS/ekiIT19pG/vAhiC/MaOgR+U=;
- b=KUepFc8rqhXsJsu8qbCHKkD5bLyTMz0zeYjwKfvjNTCnMdyEqchsE2aKB79eAsExP5+aTm
- wKzYoMlNwRDze/sLMS3QZU2ZDnXNFJy93EeRzZEWxdt+SY145ZEjWiJmL4ki0oMu7nrVQa
- Ocu3aLYyg9UATdMeKjU9tFCGcPNTLX4=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-vSi4JcevOw2J0iRU_wIrTw-1; Thu, 01 Jun 2023 12:26:29 -0400
-X-MC-Unique: vSi4JcevOw2J0iRU_wIrTw-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-3f7d72d552fso2660961cf.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 09:26:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685636789; x=1688228789;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6eu+Go4JSvIlN29GYYS/ekiIT19pG/vAhiC/MaOgR+U=;
- b=S5KLGgE1O/4HS5amjYrwSpPbNs0Zt8fvtp3WZXlwePYiVS+XHr2focpQDSpvTp9VCN
- 3koc5M4FZPwQhQz0MYJasXbOkyLI5fRE7fbzl0XkpRBhKTlZx9yhXWjzCAlvp6mduXOq
- kyYdM45JI5pOp6Uufz1ugvAsQm3TjBFhRxu0k5WAtWjPWJyTiEmHIL+7tvPYPWe3IomL
- MxOCNLA8kwDidDESidTOOVhMG+RTVZqeMG1XGUvkCreZLViKr8vBlAt2dDGY+oj5tEHh
- dQsDGNDA6vwOP6tWLkfmnWkjrovjZv0T+fsLeO/onh6Phc+JyHHJGWgjUS0GlXuk5pW9
- G5Gw==
-X-Gm-Message-State: AC+VfDxj5zLP0+4WtnCQ9kUDCd0EamByq2KHczgeSDpXLdB2HZm76Jtd
- doBNLENTP1IGOKayc0PXrwDfFSfDWrg+DjHr1brqoFF0lWL2ruoSkXmSTeYvMuw3PJU+UROAUjj
- 7JD5Qw25oNoi5uVY=
-X-Received: by 2002:a05:622a:180d:b0:3f6:a8e2:127b with SMTP id
- t13-20020a05622a180d00b003f6a8e2127bmr9063090qtc.5.1685636789224; 
- Thu, 01 Jun 2023 09:26:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6OR27kVMdElSHQQiLaLZM0wJHy+0zn0EX2Nor/4pVEOgVTiLeraTYlXfRp1ogajRoene2UKA==
-X-Received: by 2002:a05:622a:180d:b0:3f6:a8e2:127b with SMTP id
- t13-20020a05622a180d00b003f6a8e2127bmr9063072qtc.5.1685636789009; 
- Thu, 01 Jun 2023 09:26:29 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- ch6-20020a05622a40c600b003f5352907a5sm7858001qtb.88.2023.06.01.09.26.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 09:26:28 -0700 (PDT)
-Date: Thu, 1 Jun 2023 12:26:27 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, quintela@redhat.com,
- qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
- scenarios run non-live
-Message-ID: <ZHjGs8TeSyl22kUq@x1n>
-References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-9-berrange@redhat.com>
- <87a5xjs6ob.fsf@secure.mitica>
- <7c02b1c2-1636-24d9-8466-3bcc6c88acbd@redhat.com>
- <ZHjEh5GSgS+3i8HQ@redhat.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gLjqzzdiskjaUYNfvxkCygJlMWGcu53CK/3YZWV5Q7k=;
+ b=MWr79uiCNojzdyyVtXlB1lLxPT8dT6cpqvWZnWxvfTG7IyeMNeTv0EPvjWP5QUOPNF47kM
+ P6/hq6lkyRqkQv7ydP6LQcNnbN2HHPcwG8nBzdUtgRMTx8cH6g+rSDIDKoN9qTsmO45li7
+ P53TaeIvtKfiPbj8E1hkgchATHLByBQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-510--t2gxMXoNEy1RwKzA7qV8Q-1; Thu, 01 Jun 2023 12:31:26 -0400
+X-MC-Unique: -t2gxMXoNEy1RwKzA7qV8Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23137101AA44;
+ Thu,  1 Jun 2023 16:31:26 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.153])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 91E862166B25;
+ Thu,  1 Jun 2023 16:31:24 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/6] tests: enable meson test timeouts to improve debuggability
+Date: Thu,  1 Jun 2023 17:31:17 +0100
+Message-Id: <20230601163123.1805282-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZHjEh5GSgS+3i8HQ@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -104,14 +79,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 05:17:11PM +0100, Daniel P. Berrangé wrote:
-> Could we merge this series as-is, and simply re-visit the last patch
-> afterwards, once we have time to debate the feature about completion
-> phase synchronization.
+Perhaps the most painful of all the GitLab CI failures we see are
+the enforced job timeouts:
 
-This sounds good to me too.
+   "ERROR: Job failed: execution took longer than 1h15m0s seconds"
+
+   https://gitlab.com/qemu-project/qemu/-/jobs/4387047648
+
+when that hits the CI log shows what has *already* run, but figuring
+out what was currently running (or rather stuck) is an horrendously
+difficult.
+
+The initial meson port disabled the meson test timeouts, in order to
+limit the scope for introducing side effects from the port that would
+complicate adoption.
+
+Now that the meson port is basically finished we can take advantage of
+more of its improved features. It has the ability to set timeouts for
+test programs, defaulting to 30 seconds, but overridable per test. This
+is further helped by fact that we changed the iotests integration so
+that each iotests was a distinct meson test, instead of having one
+single giant (slow) test.
+
+We already set overrides for a bunch of tests, but they've not been
+kept up2date since we had timeouts disabled. So this series first
+updates the timeout overrides such that all tests pass when run in
+my test gitlab CI pipeline. Then it enables use of meson timeouts.
+
+We might still hit timeouts due to non-deterministic performance of
+gitlab CI runners. So we'll probably have to increase a few more
+timeouts in the short term. Fortunately this is going to be massively
+easier to diagnose. For example this job during my testing:
+
+   https://gitlab.com/berrange/qemu/-/jobs/4392029495
+
+we can immediately see  the problem tests
+
+Summary of Failures:
+  6/252 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                TIMEOUT        120.02s   killed by signal 15 SIGTERM
+  7/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test          TIMEOUT        120.03s   killed by signal 15 SIGTERM
+ 64/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test                  TIMEOUT        300.03s   killed by signal 15 SIGTERM
+
+The full meson testlog.txt will show each individual TAP log output,
+so we can then see exactly which test case we got stuck on.
+
+NB, the artifacts are missing on the job links above, until this
+patch merges:
+
+   https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04668.html
+
+NB, this series sets the migration-test timeout to 5 minutes, which
+is only valid if this series is merged to make the migration test
+not suck:
+
+  https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg00286.html
+
+without that series, we'll need to set the migration-test timeout to
+30 minutes instead.
+
+Daniel P. Berrangé (6):
+  qtest: bump min meson timeout to 60 seconds
+  qtest: bump migration-test timeout to 5 minutes
+  qtest: bump qom-test timeout to 7 minutes
+  qtest: bump aspeed_smc-test timeout to 2 minutes
+  qtest: bump bios-table-test timeout to 6 minutes
+  mtest2make: stop disabling meson test timeouts
+
+ scripts/mtest2make.py   |  3 ++-
+ tests/qtest/meson.build | 16 ++++++----------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
 -- 
-Peter Xu
+2.40.1
 
 
