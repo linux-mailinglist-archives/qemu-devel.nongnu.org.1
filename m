@@ -2,67 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EE171962F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B8D71962E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 10:59:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4e9Z-0008AT-J9; Thu, 01 Jun 2023 04:59:32 -0400
+	id 1q4e99-00080m-71; Thu, 01 Jun 2023 04:59:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4e9P-00083d-Tu
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:59:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4e9N-0000JJ-Vc
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:59:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685609957;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=XYC0DC/7eTzxPNa+Ms91rrv8vKvxw1L4Dlre5wpJ02M=;
- b=OpZ/znam9/NCA3tpvivQ9krFOnFyJgXsZ0VThB0hHfYZ3Bf4k12MEbDZNWlNDyF12LdurD
- ZMsyIKZ2WEg7LEgfIY+BaYKXE27jNhzlP96QFW00CEDqUsqTo2tP6jsiC+LbXcrR80SgU7
- O82fBVbcTpgFQOk4Jtafk1h7O9imXUg=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-96-7nmOho0-M3OVhHaN3jnnsQ-1; Thu, 01 Jun 2023 04:59:16 -0400
-X-MC-Unique: 7nmOho0-M3OVhHaN3jnnsQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF8941C05AAA
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 08:59:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E89E6492B00;
- Thu,  1 Jun 2023 08:59:12 +0000 (UTC)
-Date: Thu, 1 Jun 2023 09:58:45 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PULL 14/21] migration/rdma: Unfold ram_control_after_iterate()
-Message-ID: <ZHhdxQJHn25Qjmh2@redhat.com>
-References: <20230530182531.6371-1-quintela@redhat.com>
- <20230530182531.6371-15-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4e94-00080I-Ln
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:58:59 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4e92-0000Eg-Vn
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:58:58 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3f6e72a1464so5810315e9.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 01:58:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685609935; x=1688201935;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xIwKH5GgGG4g4zJF7CHtSnylZPdtOpqpBpfI/qqJcMM=;
+ b=BiO1ovaq8xlBWW2jITKXCXe3SDaOeHEZPlD3WJImRyp0DKECfhcWN+ppr+G+kG/5Sl
+ +SgQHab1GtWG0zOC5GKh5hRpa43ylNQDJWQQEQb2sn0EOn1uKVCYfLdA3cYd2fsIDDE+
+ tOFYhi3tJWBYtlt/qkkJUPkOaZ8DiZTB6854RIeYFN2SVMHdiEFKBpBVpZoiOwHkKg01
+ RuTjUPRdobpwGyH6+V/t6UTc/NrsoUBAh61watX2eNS8XZ0ZdOl6ajawi2QFG/BGQJaU
+ 6pj5EfVA2mR1qMAiI/RfKwjJA+hjwVBI8HdRJa+DHj3aTUwY0f9CI1f/VpTp7mWJk0hj
+ kDTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685609935; x=1688201935;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xIwKH5GgGG4g4zJF7CHtSnylZPdtOpqpBpfI/qqJcMM=;
+ b=LRwgrs0i9EC5yVcrtk0XQaNMqCYYY4msTdfCfjaxQFcWrrNjekFr7u6mzxDkPx3SSF
+ y0R+j4WwnLAIJ0lWKvXNitqm2HOONMenRhvS6Eh07tGdlxc6DMRioOi6zTmvhPG1cvge
+ FOpFuiSn5Dka3rmloqMhnZDgtCdlO1O4CYvTQXR1k5FzuHhUjLRfTwnC/m3Z0tn7hrf3
+ 4GBcBN/nMT1SdD1GpJ4ZTMqfJ0B2/THIAQ/Vvka9aaV9kJV0YJz1VzG2aqV6S5aaijXy
+ 7SF8nVcLnh+jfx3hyi49LZwGn0q3e/IV8My7weGUEuS3+q/JDMUhlMQlpdwq+Zd/9Zur
+ WcxQ==
+X-Gm-Message-State: AC+VfDxO9sLcs9U4JMAUGftltWJtF/tilWkLcVaBGwZULr1DDfKmejf1
+ fRs1bL+uLQACQxJW5kAt/zyX8g==
+X-Google-Smtp-Source: ACHHUZ5OguhEEhy1lPp1tN+5VJJ59KmeSzRpwDPFY2GdQ1eZUDjESjvhCQC5GqFGOS1hlO08chTNOg==
+X-Received: by 2002:a1c:f313:0:b0:3f5:ff24:27de with SMTP id
+ q19-20020a1cf313000000b003f5ff2427demr1314422wmq.32.1685609935139; 
+ Thu, 01 Jun 2023 01:58:55 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.141.224])
+ by smtp.gmail.com with ESMTPSA id
+ u3-20020a7bc043000000b003f1751016desm1534788wmc.28.2023.06.01.01.58.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 01:58:54 -0700 (PDT)
+Message-ID: <a47c2841-8a76-ff40-20a4-1710ed17e47a@linaro.org>
+Date: Thu, 1 Jun 2023 10:58:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230530182531.6371-15-quintela@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 7/7] hw: Simplify using sysbus_init_irqs() [manual]
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20230531223341.34827-1-philmd@linaro.org>
+ <20230531223341.34827-8-philmd@linaro.org> <87mt1jafjt.fsf@pond.sub.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <87mt1jafjt.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,59 +94,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 08:25:24PM +0200, Juan Quintela wrote:
-> Once there:
-> - Remove unused data parameter
-> - unfold it in its callers
-> - change all callers to call qemu_rdma_registration_stop()
+On 1/6/23 07:59, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
 > 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> Message-Id: <20230509120700.78359-4-quintela@redhat.com>
-> ---
->  migration/qemu-file.h |  2 --
->  migration/rdma.h      |  3 +++
->  migration/qemu-file.c | 12 ------------
->  migration/ram.c       | 17 ++++++++++++++---
->  migration/rdma.c      |  6 ++----
->  5 files changed, 19 insertions(+), 21 deletions(-)
+>> Audit the sysbus_init_irq() calls and manually convert
+>> to sysbus_init_irqs() when a loop is involved.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   hw/intc/loongarch_extioi.c | 3 +--
+>>   hw/intc/omap_intc.c        | 3 +--
+>>   hw/pci-host/gpex.c         | 2 +-
+>>   hw/timer/renesas_tmr.c     | 9 +++------
+>>   4 files changed, 6 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
+>> index db941de20e..c579636215 100644
+>> --- a/hw/intc/loongarch_extioi.c
+>> +++ b/hw/intc/loongarch_extioi.c
+>> @@ -275,8 +275,7 @@ static void loongarch_extioi_instance_init(Object *obj)
+>>       LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
+>>       int cpu, pin;
+>>   
+>> -    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, EXTIOI_IRQS);
+>> -
+>> +    sysbus_init_irqs(dev, s->irq, EXTIOI_IRQS);
 > 
+> Commit message claims "when a loop is involved".  No loop here.  That
+> work was actually done in the previous patch:
+> 
+>    diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
+>    index 0e7a3e32f3..db941de20e 100644
+>    --- a/hw/intc/loongarch_extioi.c
+>    +++ b/hw/intc/loongarch_extioi.c
+>    @@ -273,11 +273,9 @@ static void loongarch_extioi_instance_init(Object *obj)
+>     {
+>         SysBusDevice *dev = SYS_BUS_DEVICE(obj);
+>         LoongArchExtIOI *s = LOONGARCH_EXTIOI(obj);
+>    -    int i, cpu, pin;
+>    +    int cpu, pin;
+> 
+>    -    for (i = 0; i < EXTIOI_IRQS; i++) {
+>    -        sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
+>    -    }
+>    +    sysbus_init_irqs(SYS_BUS_DEVICE(dev), s->irq, EXTIOI_IRQS);
+> 
+>         qdev_init_gpio_in(DEVICE(obj), extioi_setirq, EXTIOI_IRQS);
+> 
+> In this patch, you merely delete a superfluous type conversion that is
+> present even before your series.
 
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index 6ca89ff090..8001dcb960 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -3891,15 +3891,14 @@ int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags)
->   * Inform dest that dynamic registrations are done for now.
->   * First, flush writes, if any.
->   */
-> -static int qemu_rdma_registration_stop(QEMUFile *f,
-> -                                       uint64_t flags, void *data)
-> +int qemu_rdma_registration_stop(QEMUFile *f, uint64_t flags)
->  {
->      QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(qemu_file_get_ioc(f));
+Right. I guess I did that automatically "why are we casting the same
+type?" without even noticing.
 
-Again casting to a QIOChannelRDMA....
+> There are more of them in this function.  Please delete them all, and in
+> a separate patch.
 
->      RDMAContext *rdma;
->      RDMAControlHeader head = { .len = 0, .repeat = 1 };
->      int ret = 0;
->  
-> -    if (migration_in_postcopy()) {
-> +    if (!migrate_rdma() || migration_in_postcopy()) {
+OK.
 
-...before checking if this is actually an RDMA migration
+> Actually, there are more elsewhere.  Coccinelle script
+> 
+>      @@
+>      typedef SysBusDevice;
+>      SysBusDevice *dev;
+>      @@
+>      -    SYS_BUS_DEVICE(dev)
+>      +    dev
+> 
+> finds some in hw/arm/xlnx-versal.c and hw/rx/rx62n.c, too.
+> 
+> Would be nice to do this for every QOM type, but I don't know how
+> without duplicating the semantic patch for each of them.  There are
+> almost 150 uses os OBJECT_DECLARE_TYPE()...
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Checking all QOM macros, I counted 1076 types...
 
 
