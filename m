@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2390719EAB
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66096719EB5
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:46:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4icP-0007pV-8X; Thu, 01 Jun 2023 09:45:33 -0400
+	id 1q4icf-00085m-PL; Thu, 01 Jun 2023 09:45:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q4icK-0007ox-G5; Thu, 01 Jun 2023 09:45:28 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1q4icZ-0007uW-Ke; Thu, 01 Jun 2023 09:45:46 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q4icH-00087d-ET; Thu, 01 Jun 2023 09:45:28 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4f3b39cea1eso1042998e87.3; 
- Thu, 01 Jun 2023 06:45:22 -0700 (PDT)
+ id 1q4icX-000896-If; Thu, 01 Jun 2023 09:45:43 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2b1a3fa2cd2so7952381fa.1; 
+ Thu, 01 Jun 2023 06:45:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685627121; x=1688219121;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=h45ZE4RSOZgdndZiFusKiJgOMBv4RUgJcvgsXvq6New=;
- b=H+sR844cWL3i2RU9Mm8BPj9NAJ1WJeG9mOR72K9gHRQIK/1tcQrMKR1eD0SJroY/m0
- HTqIqcEy4vr+glB8+QZHHguBl90MO9MUGZBSjyL+OAr6VmJz7yVZTun8eWpHy93I4W+S
- KUiipfCVKmeDKu81QHfJ01W7+X7/7bp1Oz42MUhYG8BF+meRXs8PnD3XIEX2vqh37tWd
- bW2xSxIEJT1lqHhzvxKXsAiadcV9YDhTwzD4bR+n53TgGQ8eUDOouck6IOrWsSdlKbot
- L1BOKW1QlRJO/4+Ed3K0jB9w9ogNn9SAsxbU+6SAUzUGg/FMK+r18/+2sL7mZetFFic4
- MU+Q==
-X-Gm-Message-State: AC+VfDyF7korErEfeNymjpCWqsw7/xRwK320q3NRwEl0SJDisyWTaVaQ
- 0ZI+0OsrcbeuwSE8GJXB/SM1O1MgDpKvTg==
-X-Google-Smtp-Source: ACHHUZ7rQA1IPdOPyFQJ7ehUv3PoEFBkhOLMWLT7a9xAUfihbxsnXEKrZREsMsT4hRar1huHiU0bLw==
-X-Received: by 2002:a19:7604:0:b0:4f5:e688:25c3 with SMTP id
- c4-20020a197604000000b004f5e68825c3mr1487375lff.44.1685627121122; 
- Thu, 01 Jun 2023 06:45:21 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685627139; x=1688219139;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=laqE+jDbGMxNloibp38IdoI5cMDWlF6ShBRxAGY56M8=;
+ b=lt3cIbG8uWdGBKQTvqaB0Dv2XfYipjQai1dLtFujS8ZnzU89UGzGvOMNAat7E///sE
+ QAMkgKQEmudYh3L4VvyWjEVK6cMP9ccl8fXqjQ3K6gAUIqOPWorfQvFk1pl1M32Of5w8
+ rnquLzoTDsWmHqnBe3fW9RG+Td5Sxp14Tm48gKuUeNJq1J6ieWumcqv1f4IqFDt/BoR6
+ 3ufXWsgXQ8qLhbFMGgNQua+US2l6fMq5qThfx/+dsCH5nyTnm9eBEIYpazaCjilH/efY
+ s3g8RnuQFCPAcgHsfbzv0q8lMXGa8+qbYJ3PvIcwiHCyAoM8Sr6fahzuuXJAb5D9XUJP
+ i57w==
+X-Gm-Message-State: AC+VfDyv/IX4uXueDqxA+dOO8Zon99jBqi3Kd9idbDhMb1jUw/VkSoei
+ H3aVZlF6abU91cQp9bCRwp5lfVeovG9WUmt6
+X-Google-Smtp-Source: ACHHUZ6XElCyJNIqClx1J0XDu4W665uCGGOi1Eg5/RHroRKWHtInHuI10UzIreyz2SxD6HE7IwN1nA==
+X-Received: by 2002:a2e:9591:0:b0:2af:21d3:a4ca with SMTP id
+ w17-20020a2e9591000000b002af21d3a4camr4871263ljh.47.1685627139235; 
+ Thu, 01 Jun 2023 06:45:39 -0700 (PDT)
 Received: from flawful.org (c-fcf6e255.011-101-6d6c6d3.bbcust.telenor.se.
  [85.226.246.252]) by smtp.gmail.com with ESMTPSA id
- w17-20020a05651204d100b004f1d884a4efsm1090753lfq.242.2023.06.01.06.45.20
+ o11-20020a2e730b000000b002a8c409f1f5sm3772670ljc.110.2023.06.01.06.45.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 06:45:20 -0700 (PDT)
+ Thu, 01 Jun 2023 06:45:39 -0700 (PDT)
 Received: by flawful.org (Postfix, from userid 112)
- id 8EE934E8; Thu,  1 Jun 2023 15:45:16 +0200 (CEST)
+ id 4134F7A7; Thu,  1 Jun 2023 15:45:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1685627119; bh=lkpzRjRjR10M8bOxOdDgIgd1V3261IV3j6rJ+kA5l6A=;
- h=From:To:Cc:Subject:Date:From;
- b=LMrGVyAvb14SHZEP7aOHW+r2gbt2VWC6gq7r6aN3Ly9ptZhPl3k93410fWiTfq0Tw
- LZOtGx9PyQj8LP6Q2QPtJ3WlYNpFgIUnJP3XxdFvkfbNVaU11z9OBUDyKp5WMiyHf+
- ZCGtSLjmqYFT6S6owA02InzlIZoiCgbr4C9eoYEA=
+ t=1685627136; bh=+7Lfn6Z7q7WKc/uSkZhwLaBrCOUaYvjqYUoBgBJpe9g=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=RbQk2vsVquc08z9v2k8sQg/fhwAApKnkh7D+tOWm74x0sQszgXzrsX1Kq46rOcq09
+ l0p6BpJ9EDguJIWwjcgHeyTGZx6Lnaw1rS1yU0Q+fS7bIaKzYPlMDA1j6PJgcZrCCK
+ Wh/e59A2fnxVi/IhgePSqfhIppB0CIGf6qJyGEoQ=
 Received: from x1-carbon.lan (unknown [129.253.182.62])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id 916DA18B;
- Thu,  1 Jun 2023 15:44:54 +0200 (CEST)
+ by flawful.org (Postfix) with ESMTPSA id 32E4A4C9;
+ Thu,  1 Jun 2023 15:45:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1685627108; bh=lkpzRjRjR10M8bOxOdDgIgd1V3261IV3j6rJ+kA5l6A=;
- h=From:To:Cc:Subject:Date:From;
- b=beEY8GSR0174dx5NH9WhGFrHQDuoE4o/kFJRNZSJzUNJreTp9aWpeUmB0mGN3WGfn
- 1hk36q1rUHlx9vJ6m3NMtlfkhiN1XUpWPFeenWPM5m0occrKjKmmlXyRlcU2uDgNMz
- FM23bYapOGhUxkpkVaTDn6tEM6H8MAE0EjZ3prSw=
+ t=1685627116; bh=+7Lfn6Z7q7WKc/uSkZhwLaBrCOUaYvjqYUoBgBJpe9g=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=ZeO5/z/Z+ivdiJ1L3CXM94hHJA+1ipMLowSLEnM49McpDUUIqmyffMmzfBwwde7SV
+ plRAz/vVBg8PbWNxKqXfXQScTa/QWQUTq8lwZTubEWFcBFlrslLSDWaZbPD2WBtkWT
+ pidddvjgvvLSstzW15muHc1jvzkyvs6LOMQx06VQ=
 From: Niklas Cassel <nks@flawful.org>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v2 0/8] misc AHCI cleanups
-Date: Thu,  1 Jun 2023 15:44:26 +0200
-Message-Id: <20230601134434.519805-1-nks@flawful.org>
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 1/8] hw/ide/ahci: remove stray backslash
+Date: Thu,  1 Jun 2023 15:44:27 +0200
+Message-Id: <20230601134434.519805-2-nks@flawful.org>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230601134434.519805-1-nks@flawful.org>
+References: <20230601134434.519805-1-nks@flawful.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -100,51 +103,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-Hello John,
+This backslash obviously does not belong here, so remove it.
 
-Here comes some misc AHCI cleanups.
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: John Snow <jsnow@redhat.com>
+---
+ hw/ide/ahci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Most are related to error handling.
-
-Please review.
-
-(I'm also working on a second series which will add support for
-READ LOG EXT and READ LOG DMA EXT, but I will send that one out
-once it is ready. (It might take a couple of weeks still, since
-I've been a bit busy lately.))
-
-
-Changes since v1:
--Picked up Reviewed-by tags.
- (I did not convert your ACK to explicit Acked-by tags, since I assume
- that the patches will go via your tree).
--Rebased on master in order to fix a conflict in patch
- "hw/ide/ahci: simplify and document PxCI handling".
--Dropped patch "hw/ide/ahci: trigger either error IRQ or regular IRQ, not both"
- for now, as it caused a boot time regression in SeaBIOS.
- This appears to be a bug in SeaBIOS, for more info see:
- https://mail.coreboot.org/hyperkitty/list/seabios@seabios.org/thread/RIHV3FZ4EVMAJA4TEDPASKNYV7V72O4C/
- I will resend the QEMU patch separately once the SeaBIOS patch has been
- merged, and once QEMU has updated to a SeaBIOS tag that includes the fix.
-
-
-Kind regards,
-Niklas
-
-Niklas Cassel (8):
-  hw/ide/ahci: remove stray backslash
-  hw/ide/core: set ERR_STAT in unsupported command completion
-  hw/ide/ahci: write D2H FIS on when processing NCQ command
-  hw/ide/ahci: simplify and document PxCI handling
-  hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
-  hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
-  hw/ide/ahci: fix ahci_write_fis_sdb()
-  hw/ide/ahci: fix broken SError handling
-
- hw/ide/ahci.c | 112 +++++++++++++++++++++++++++++++++++---------------
- hw/ide/core.c |   2 +-
- 2 files changed, 81 insertions(+), 33 deletions(-)
-
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index 4e76d6b191..48d550f633 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -690,7 +690,7 @@ static void ahci_reset_port(AHCIState *s, int port)
+ 
+     s->dev[port].port_state = STATE_RUN;
+     if (ide_state->drive_kind == IDE_CD) {
+-        ahci_set_signature(d, SATA_SIGNATURE_CDROM);\
++        ahci_set_signature(d, SATA_SIGNATURE_CDROM);
+         ide_state->status = SEEK_STAT | WRERR_STAT | READY_STAT;
+     } else {
+         ahci_set_signature(d, SATA_SIGNATURE_DISK);
 -- 
 2.40.1
 
