@@ -2,56 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85A671F589
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BCC71F583
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 00:04:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4qOT-00081o-52; Thu, 01 Jun 2023 18:03:42 -0400
+	id 1q4qOA-0007zj-Up; Thu, 01 Jun 2023 18:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qOB-000800-Si
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:24 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qO7-0007z7-R2
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qO4-0003z8-HT
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:22 -0400
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4qO4-0003zW-HV
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 18:03:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685656994;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Dh1WAnICC19i2Hq2jRJuF9K4xcQCInEJRvDYJ1ntc9A=;
+ b=X3/FugGwuzivm4Vjg3rHZTp+wzGWZ12KUNcpkmzpGRjVRMSa42uFjb3Az8R3qccDCzoYaF
+ rj/BFTtzZ1Brc8HqyQo/3+iCchpkm/ZVCjSwafixr8nmxgkpBD8rLbY3ifIIytlGpf0I84
+ hyPP5oz6ovEIf72OT0bt+Zb7Mz7xp/o=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-277-H1LjDXy4NDyOdzP25AMVPg-1; Thu, 01 Jun 2023 18:03:10 -0400
-X-MC-Unique: H1LjDXy4NDyOdzP25AMVPg-1
+ us-mta-93-suPUrokcMe2ZAndt3IMZeA-1; Thu, 01 Jun 2023 18:03:11 -0400
+X-MC-Unique: suPUrokcMe2ZAndt3IMZeA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 783F2101AA72;
- Thu,  1 Jun 2023 22:03:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3DAD21C05AB6;
+ Thu,  1 Jun 2023 22:03:11 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.76])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 04583492B0A;
- Thu,  1 Jun 2023 22:03:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A323D492B0A;
+ Thu,  1 Jun 2023 22:03:10 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Block layer core)
-Subject: [PULL 01/21] iotests: Fix test 104 under NBD
-Date: Thu,  1 Jun 2023 17:02:45 -0500
-Message-Id: <20230601220305.2130121-2-eblake@redhat.com>
+ qemu-block@nongnu.org (open list:qcow2)
+Subject: [PULL 02/21] qcow2: Explicit mention of padding bytes
+Date: Thu,  1 Jun 2023 17:02:46 -0500
+Message-Id: <20230601220305.2130121-3-eblake@redhat.com>
 In-Reply-To: <20230601220305.2130121-1-eblake@redhat.com>
 References: <20230601220305.2130121-1-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,83 +78,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the past, commit a231cb27 ("iotests: Fix 104 for NBD", v2.3.0)
-added an additional filter to _filter_img_info to rewrite NBD URIs
-into the expected output form.  This recently broke when we tweaked
-tests to run in a per-format directory, which did not match the regex,
-because _img_info itself is now already changing
-SOCK_DIR=/tmp/tmpphjfbphd/raw-nbd-104 into
-/tmp/tmpphjfbphd/IMGFMT-nbd-104 prior to _img_info_filter getting a
-chance to further filter things.
+Although we already covered the need for padding bytes with our
+changes in commit 3ae3fcfa, commit 66fcbca5 (both v5.0.0) added one
+byte and relied on the rest of the text for implicitly covering 7
+padding bytes.  For consistency with other parts of the header (such
+as the header extension format listing padding from n - m, or the
+snapshot table entry listing variable padding), we might as well call
+out the remaining 7 bytes as padding until such time (as any) as they
+gain another meaning.
 
-While diagnosing the problem, I also noticed some filter lines
-rendered completely useless by a typo when we switched from TCP to
-Unix sockets for NBD (in shell, '\\+' is different from "\\+" (one
-gives two backslash to the regex, matching the literal 2-byte sequence
-<\+> after a single digit; the other gives one backslash to the regex,
-as the metacharacter \+ to match one or more of <[0-9]>); since the
-literal string <nbd://127.0.0.1:0\+> is not a valid URI, that regex
-hasn't been matching anything for years so it is fine to just drop it
-rather than fix the typo.
-
-Fixes: f3923a72 ("iotests: Switch nbd tests to use Unix rather than TCP", v4.2.0)
-Fixes: 5ba7db09 ("iotests: always use a unique sub-directory per test", v8.0.0)
 Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-Id: <20230519150216.2599189-1-eblake@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-Id: <20230522184631.47211-1-eblake@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- tests/qemu-iotests/common.filter | 4 +---
- tests/qemu-iotests/common.rc     | 3 ++-
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ docs/interop/qcow2.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qemu-iotests/common.filter b/tests/qemu-iotests/common.filter
-index 6b32c7fbfa1..fc3c64bcb8e 100644
---- a/tests/qemu-iotests/common.filter
-+++ b/tests/qemu-iotests/common.filter
-@@ -1,6 +1,6 @@
- #!/usr/bin/env bash
- #
--# Copyright (C) 2009 Red Hat, Inc.
-+# Copyright Red Hat
- # Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.
- #
- # This program is free software; you can redistribute it and/or
-@@ -131,7 +131,6 @@ _filter_img_create_filenames()
-         -e "s#$SOCK_DIR#SOCK_DIR#g" \
-         -e 's#SOCK_DIR/fuse-#TEST_DIR/#g' \
-         -e "s#$IMGFMT#IMGFMT#g" \
--        -e 's#nbd:127.0.0.1:[0-9]\\+#TEST_DIR/t.IMGFMT#g' \
-         -e 's#nbd+unix:///\??socket=SOCK_DIR/nbd#TEST_DIR/t.IMGFMT#g'
- }
+diff --git a/docs/interop/qcow2.txt b/docs/interop/qcow2.txt
+index e7f036c286b..2c4618375ad 100644
+--- a/docs/interop/qcow2.txt
++++ b/docs/interop/qcow2.txt
+@@ -226,6 +226,7 @@ version 2.
+                     <https://www.zlib.net/> in QEMU. However, clusters with the
+                     deflate compression type do not have zlib headers.
 
-@@ -229,7 +228,6 @@ _filter_img_info()
-         -e "s#$TEST_DIR#TEST_DIR#g" \
-         -e "s#$SOCK_DIR#SOCK_DIR#g" \
-         -e "s#$IMGFMT#IMGFMT#g" \
--        -e 's#nbd://127.0.0.1:[0-9]\\+$#TEST_DIR/t.IMGFMT#g' \
-         -e 's#nbd+unix:///\??socket=SOCK_DIR/nbd#TEST_DIR/t.IMGFMT#g' \
-         -e 's#SOCK_DIR/fuse-#TEST_DIR/#g' \
-         -e "/encrypted: yes/d" \
-diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-index f4476b62f7d..d145f08201c 100644
---- a/tests/qemu-iotests/common.rc
-+++ b/tests/qemu-iotests/common.rc
-@@ -1,6 +1,6 @@
- #!/usr/bin/env bash
- #
--# Copyright (C) 2009 Red Hat, Inc.
-+# Copyright Red Hat
- # Copyright (c) 2000-2006 Silicon Graphics, Inc.  All Rights Reserved.
- #
- # This program is free software; you can redistribute it and/or modify
-@@ -717,6 +717,7 @@ _img_info()
-             -e "s#$IMGPROTO:$TEST_DIR#TEST_DIR#g" \
-             -e "s#$TEST_DIR#TEST_DIR#g" \
-             -e "s#$SOCK_DIR/fuse-#TEST_DIR/#g" \
-+            -e "s#$SOCK_DIR/#SOCK_DIR/#g" \
-             -e "s#$IMGFMT#IMGFMT#g" \
-             -e 's/\(compression type: \)\(zlib\|zstd\)/\1COMPRESSION_TYPE/' \
-             -e "/^disk size:/ D" \
++        105 - 111:  Padding, contents defined below.
+
+ === Header padding ===
+
 -- 
 2.40.1
 
