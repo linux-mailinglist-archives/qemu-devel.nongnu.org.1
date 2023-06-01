@@ -2,87 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B8F7190B1
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E06897190B4
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:51:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4YMb-0006ly-IH; Wed, 31 May 2023 22:48:33 -0400
+	id 1q4YOf-000838-Gx; Wed, 31 May 2023 22:50:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q4YMY-0006lc-Vd
- for qemu-devel@nongnu.org; Wed, 31 May 2023 22:48:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q4YMW-0005ym-5M
- for qemu-devel@nongnu.org; Wed, 31 May 2023 22:48:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685587706;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7I8e8nwFfquRhV9qYkigVtYY7kRKK9n7H+XSrOZGB34=;
- b=VNwkhYDINBf+uB3VMaaQefo9zYxlleqY26I5hVKNzITavsU1qFgTAmzj6hO5RPfzVRsbFs
- 0zk2u10Z/gY4R8xYu9j2K0CqaYNCWhUzHl2QYdOztkFxtu66uTDIRq0Ae+tb9r/uO085Cq
- wa9m2sJuMSFHCOPJUUVRIcSDOlpn8d0=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-rvzSL2f1PSySm-Q_PWY5ZA-1; Wed, 31 May 2023 22:48:25 -0400
-X-MC-Unique: rvzSL2f1PSySm-Q_PWY5ZA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2af2ffb4e5aso2543931fa.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 19:48:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685587703; x=1688179703;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7I8e8nwFfquRhV9qYkigVtYY7kRKK9n7H+XSrOZGB34=;
- b=e+p5XRZDrLInocnsLYaV+4ksV0keiM7QC2z1XbJOaLF72HDxBDA/9lUNxz3hOZ4TCk
- lr/cZ1CqC8BeI9xwOWcBK4/eLoNy5AaEe8pkyGVyUjn5WzjBYzxBDTWqgbBwRKOBPv3Q
- nPuQom9a6bbNOafts79VQWDY/4hf+YXjK4vYokxOO81bqezCJPJDq4unfsw5bqoVjIf2
- 7uL37j+20MNFDR3aleG4m3owSFQ/VEIlvQBax3PnPPefFeQ/EQMVCjFncN+62drstcIP
- jZ1uj75AezHtoFfusG9KQembogyBrBBmFT7RyHBhUSskz06NaUL0mIBweib1E6DhMVET
- ij3g==
-X-Gm-Message-State: AC+VfDyd/0oMceVLIriYPFGfdZwbkCAU3AN0AxfbN5uFADJ9Wx5OojaY
- NhIHsgpu88SJpg9DPr/z03368KrsbKt+bHm9ZovEfPjumA7D6oJdpczrFtWsATj9pysB1XZ9Vb9
- +ICuLwWt5ht+jEAC9W041NWU7BP+Jf8g=
-X-Received: by 2002:a2e:9a8e:0:b0:2b0:5f62:8b8 with SMTP id
- p14-20020a2e9a8e000000b002b05f6208b8mr3719436lji.42.1685587703594; 
- Wed, 31 May 2023 19:48:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ73kCkeYxpkcMv8kp/InFPnCjC+kUQjE5K+MhI6P0NrXDuDkAlMcyonKMV60xfkOnSaTQXy/f2b+QfUsbuPEq0=
-X-Received: by 2002:a2e:9a8e:0:b0:2b0:5f62:8b8 with SMTP id
- p14-20020a2e9a8e000000b002b05f6208b8mr3719433lji.42.1685587703178; Wed, 31
- May 2023 19:48:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1q4YOb-00082g-Ke
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 22:50:38 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1q4YOW-0006Nf-M1
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 22:50:36 -0400
+Received: from loongson.cn (unknown [10.20.42.170])
+ by gateway (Coremail) with SMTP id _____8AxR_F0B3hk8SkDAA--.7113S3;
+ Thu, 01 Jun 2023 10:50:28 +0800 (CST)
+Received: from [10.20.42.170] (unknown [10.20.42.170])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bxab1xB3hkz3KDAA--.15406S3; 
+ Thu, 01 Jun 2023 10:50:25 +0800 (CST)
+Message-ID: <c1f996bc-4b20-7f90-114a-620b6e09ee71@loongson.cn>
+Date: Thu, 1 Jun 2023 10:50:25 +0800
 MIME-Version: 1.0
-References: <20230531031645.44335-1-jon@nutanix.com>
- <CACGkMEvA6ren7Xb_ujYjeajjCEMKw=imYqf3-pNvn6wFxp0a=Q@mail.gmail.com>
- <CACGkMEtCLmi5CzpWye=tNgs_xhYoysCndDTQ+Mf8WoAGQv894g@mail.gmail.com>
- <42F3C35E-EB0C-4AA9-8863-618E60792842@nutanix.com>
- <CACGkMEu51T2JHF+mGM5xfgmA5N=oSTZgCtRy1JG0c6yDxcVDtQ@mail.gmail.com>
- <CACGkMEtXtdqrOeS1QZvBtVC3_FOi9s=_28uTDtR=nLKFrTvoXQ@mail.gmail.com>
- <94C45D0D-3ED9-442D-B35E-03B1023C0346@nutanix.com>
-In-Reply-To: <94C45D0D-3ED9-442D-B35E-03B1023C0346@nutanix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 1 Jun 2023 10:48:12 +0800
-Message-ID: <CACGkMEtL+1j9WoiV2aeKyohBtY+9hfuu=udVXPCgUkGaRY5AFg@mail.gmail.com>
-Subject: Re: [PATCH] tap: introduce IFF_NAPI
-To: Jon Kohler <jon@nutanix.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Ani Sinha <anisinha@redhat.com>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ gaosong@loongson.cn, Zhenyu Wang <zhenyu.z.wang@intel.com>
+References: <20230530122034.547109-1-zhaotianrui@loongson.cn>
+ <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
+ <9d514025-2b95-03c2-5391-662c392fe185@loongson.cn>
+ <ZHgB4DVk0pIEzuIS@liuzhao-OptiPlex-7080>
+From: "bibo, mao" <maobibo@loongson.cn>
+In-Reply-To: <ZHgB4DVk0pIEzuIS@liuzhao-OptiPlex-7080>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Bxab1xB3hkz3KDAA--.15406S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvJXoWxJFWUWw4xCryDZF45Wr1DAwb_yoWrXFWxpr
+ yDJF4qgr4rGr10gws2v3WYgry0yrsYqa1UXw42q34Fy34DK3WFqa48tr4YkFn2yF1kK3W0
+ qr4UuF4akF1vvr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ bI8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
+ 1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+ wVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
+ x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
+ e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2
+ IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4U
+ McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67vIY487Mx
+ AIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_
+ Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwI
+ xGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8
+ JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
+ C2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,198 +85,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 9:46=E2=80=AFPM Jon Kohler <jon@nutanix.com> wrote:
->
->
->
-> > On May 31, 2023, at 1:27 AM, Jason Wang <jasowang@redhat.com> wrote:
-> >
-> > On Wed, May 31, 2023 at 11:55=E2=80=AFAM Jason Wang <jasowang@redhat.co=
-m> wrote:
-> >>
-> >> On Wed, May 31, 2023 at 11:47=E2=80=AFAM Jon Kohler <jon@nutanix.com> =
-wrote:
-> >>>
-> >>>
-> >>>
-> >>>> On May 30, 2023, at 11:35 PM, Jason Wang <jasowang@redhat.com> wrote=
-:
-> >>>>
-> >>>> On Wed, May 31, 2023 at 11:32=E2=80=AFAM Jason Wang <jasowang@redhat=
-.com> wrote:
-> >>>>>
-> >>>>> On Wed, May 31, 2023 at 11:17=E2=80=AFAM Jon Kohler <jon@nutanix.co=
-m> wrote:
-> >>>>>>
-> >>>>>> If kernel supports IFF_NAPI, lets use it, which is especially usef=
-ul
-> >>>>>> on kernels containing fb3f903769e8 ("tun: support NAPI for packets
-> >>>>>> received from batched XDP buffs"), as IFF_NAPI allows the
-> >>>>>> vhost_tx_batch path to use NAPI on XDP buffs.
-> >>>>>>
-> >>>>>> Benchmark w/ iperf -c (remote srv) -P (thread count) -l (stream si=
-ze)
-> >>>>>> from a guest running kernel 5.10.105 to remote bare metal running
-> >>>>>> patched code on kernel 5.10.139. Guests were configured 1x virtio-=
-net
-> >>>>>> device with 4x queues, resulting in 4x vhost-worker threads. Hosts=
- are
-> >>>>>> identical with Intel ICX 4314 @ 2.4 GHz with Mellanox CX5 25GbE NI=
-C ->
-> >>>>>> Arista 25GbE switch. vhost-worker threads largely maxed out on CPU=
- on
-> >>>>>> "Before" and around ~50-60% utilization "After".
-> >>>>>>
-> >>>>>> Single Stream: iperf -P 1
-> >>>>>> iperf -l size | Before          | After          | Increase
-> >>>>>> 64B           | 593 Mbits/sec   | 712 Mbits/sec  | ~20%
-> >>>>>> 128B          | 1.00 Gbits/sec  | 1.18 Gbits/sec | ~18%
-> >>>>>> 4KB           | 17.6 Gbits/sec  | 22.7 Gbits/sec | ~29%
-> >>>>>>
-> >>>>>> Multiple Stream: iperf -P 12
-> >>>>>> iperf -l size | Before          | After          | Increase
-> >>>>>> 64B           | 6.35 Gbits/sec  | 7.78 Gbits/sec | ~23%
-> >>>>>> 128B          | 10.8 Gbits/sec  | 14.2 Gbits/sec | ~31%
-> >>>>>> 4KB           | 23.6 Gbits/sec  | 23.6 Gbits/sec | (line speed)
-> >>>>>>
-> >>>>>> Signed-off-by: Jon Kohler <jon@nutanix.com>
-> >>>>>
-> >>>>> Great, but I would suggest having an option.
-> >>>>>
-> >>>>> So we can:
-> >>>>>
-> >>>>> 1) ease the debug and compare
-> >>>>> 2) enable this by default only for 8.1, disable it for pre 8.1
-> >>>
-> >>> Fair enough, one favor to ask though -
-> >>> Would you be able to point me to an existing option like what you=E2=
-=80=99re
-> >>> proposing so I could make sure I=E2=80=99m on the same page?
-> >>
-> >> For example, the vhost option for tap. Maybe we can have an napi optio=
-n.
->
-> OK thanks, I=E2=80=99ll see what I can do there.
->
-> >>
-> >>>
-> >>>>
-> >>>> More thought, if the performance boost only after fb3f903769e8, we
-> >>>> probably need to disable it by default and let the mgmt layer to
-> >>>> enable it.
-> >>>>
-> >>>
-> >>> I focused my testing with that commit, but I could take it out and
-> >>> we still should get benefit. Would you like me to profile that to val=
-idate?
-> >>>
-> >>
-> >> One problem is that NAPI for TAP was originally used for kernel
-> >> hardening. Looking at the history, it introduces a lot of bugs.
-> >>
-> >> Consider:
-> >>
-> >> 1) it has been merged for several years
-> >> 2) tap has been widely used for a long time as well
-> >>
-> >> I think it would be still safe to keep the option off (at least for
-> >> pre 8.1 machines).
-> >>
-> >>> Asking as NAPI support in tun.c has been there for a while, guessing
-> >>> at first glance that there would be non-zero gains, with little downs=
-ides.
-> >>> Looking at git blame, seems about ~5-6 years of support.
-> >>
-> >> Yes.
-> >>
-> >>>
-> >>> Also for posterity, that commit has been in since 5.18, so a little o=
-ver 1 year.
-> >>
-> >> Then I think we can make it enabled by default for 8.1 and see.
->
-> OK, I=E2=80=99ll see what I can come up with.
->
-> >
-> > Btw, it would be better if we can have some PPS benchmark as well.
-> >
-> > Thanks
->
-> Is there a set of specific benchmark(s) that you want to see? Certain pac=
-ket
-> sizes? TCP/UDP? Certain tool (netperf, iperf, etc)?
 
-It could be like this:
 
-1) Netperf TCP_STREAM with various packet size 64 to maximum
-2) Pktgen test from guest to host
+在 2023/6/1 10:26, Zhao Liu 写道:
+> On Thu, Jun 01, 2023 at 09:09:13AM +0800, bibo, mao wrote:
+>> Date: Thu, 1 Jun 2023 09:09:13 +0800
+>> From: "bibo, mao" <maobibo@loongson.cn>
+>> Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
+>>
+>>
+>>
+>> 在 2023/5/31 16:42, Zhao Liu 写道:
+>>> On Tue, May 30, 2023 at 08:20:34PM +0800, Tianrui Zhao wrote:
+>>>> Date: Tue, 30 May 2023 20:20:34 +0800
+>>>> From: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>>> Subject: [PATCH] hw/smbios: fix thead count field in type 4 table
+>>>> X-Mailer: git-send-email 2.39.1
+>>>>
+>>>> The thread_count value in smbios type_4 table should be
+>>>> (ms->smp.cores * ms->smp.threads). As according to smbios spec 7.5
+>>>> Processor Information (Type 4), the field "Thread Count" means the
+>>>> "Number of threads per processor socket" rather than number of
+>>>> threads per core.
+>>>>
+>>>> When apply this patch, use "-smp 4,sockets=1,cores=2,threads=2" to
+>>>> boot VM, the dmidecode -t 4 shows like:
+>>>>
+>>>> Handle 0x0400, DMI type 4, 48 bytes
+>>>> Processor Information
+>>>>           Socket Designation: CPU 0
+>>>>           ...
+>>>>           Core Count: 2
+>>>>           Core Enabled: 2
+>>>>           Thread Count: 4
+>>>>           Characteristics: None
+>>>>
+>>>> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>>> ---
+>>>>    hw/smbios/smbios.c | 7 ++++---
+>>>>    1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+>>>> index d2007e70fb..56aeaa069d 100644
+>>>> --- a/hw/smbios/smbios.c
+>>>> +++ b/hw/smbios/smbios.c
+>>>> @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>>>>    {
+>>>>        char sock_str[128];
+>>>>        size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
+>>>> +    int count;
+>>>>        if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+>>>>            tbl_len = SMBIOS_TYPE_4_LEN_V30;
+>>>> @@ -749,15 +750,15 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+>>>>        t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+>>>>        t->core_enabled = t->core_count;
+>>>> -
+>>>> -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
+>>>> +    count = ms->smp.cores * ms->smp.threads;
+>>>
+>>> Hi Ani & Tianrui,
+>>>
+>>>   From the comment of CpuTopology (include/hw/boards.h):
+>>>
+>>> ms->cores means the "the number of cores in one cluster".
+>>> ms->threads means the "the number of threads in one core".
+>>>
+>>> So ms->cores * ms->threads means the number of threads in one cluster
+>>> not one socket.
+>>>
+>>> That's why I count the number of threads in a socket by "ms->smp.max_cpus
+>>> / ms->smp.sockets" in [1].
+>>>
+>>> The other correct way is:
+>>> ms->smp.cluster * ms->smp.cores * ms->smp.threads.
+>>>
+>>> [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07229.html
+>> ohh, we do not notice your patch. Your patch is better than us. one small
+>> nit about core_count calcuation if cluster/die is support. core count should
+>> be core number
+>>   per package rather than per cluster or per die.
+>>
+>> so it should be something like this?
+>>      t->core_count = cpus_per_socket / ms->smp.threads
+>> rather than ms->smp.cores
+> 
+> Yes, I also fixed this in the third patch of my patch series [2].
+> 
+> [2]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07231.html
 
-> The existing benchmarks
-> in the commit msg have both single and multi stream and multiple payload
-> sizes, all of which are a corollary to PPS, no?
+Great, that sounds good to me.
 
-The problem is that it's the PPS of the TCP, various layers in the
-middle. For example, if TCP coalesce usersapce write to larger
-packets, we will end up with a low PPS.
+Regards
+Bibo, Mao
 
-Using pktgen may help to know if TAP can deal with more packets per second.
-
-Thanks
-
->
-> Happy to do more profiling, just want to make sure I get you exactly what=
- you
-> want.
->
-> >
-> >>
-> >> Thanks
-> >>
-> >>>
-> >>>> Thanks
-> >>>>
-> >>>>>
-> >>>>> Thanks
-> >>>>>
-> >>>>> Thanks
-> >>>>>
-> >>>>>> ---
-> >>>>>> net/tap-linux.c | 4 ++++
-> >>>>>> net/tap-linux.h | 1 +
-> >>>>>> 2 files changed, 5 insertions(+)
-> >>>>>>
-> >>>>>> diff --git a/net/tap-linux.c b/net/tap-linux.c
-> >>>>>> index f54f308d359..fd94df166e0 100644
-> >>>>>> --- a/net/tap-linux.c
-> >>>>>> +++ b/net/tap-linux.c
-> >>>>>> @@ -62,6 +62,10 @@ int tap_open(char *ifname, int ifname_size, int=
- *vnet_hdr,
-> >>>>>>        ifr.ifr_flags |=3D IFF_ONE_QUEUE;
-> >>>>>>    }
-> >>>>>>
-> >>>>>> +    if (features & IFF_NAPI) {
-> >>>>>> +        ifr.ifr_flags |=3D IFF_NAPI;
-> >>>>>> +    }
-> >>>>>> +
-> >>>>>>    if (*vnet_hdr) {
-> >>>>>>        if (features & IFF_VNET_HDR) {
-> >>>>>>            *vnet_hdr =3D 1;
-> >>>>>> diff --git a/net/tap-linux.h b/net/tap-linux.h
-> >>>>>> index bbbb62c2a75..f4d8e55270b 100644
-> >>>>>> --- a/net/tap-linux.h
-> >>>>>> +++ b/net/tap-linux.h
-> >>>>>> @@ -37,6 +37,7 @@
-> >>>>>>
-> >>>>>> /* TUNSETIFF ifr flags */
-> >>>>>> #define IFF_TAP          0x0002
-> >>>>>> +#define IFF_NAPI         0x0010
-> >>>>>> #define IFF_NO_PI        0x1000
-> >>>>>> #define IFF_ONE_QUEUE    0x2000
-> >>>>>> #define IFF_VNET_HDR     0x4000
-> >>>>>> --
-> >>>>>> 2.30.1 (Apple Git-130)
-> >>>
-> >
->
+> 
+> Regards,
+> Zhao
+> 
+>>
+>>
+>> Regards
+>> Bibo, mao
+>>>
+>>> Thanks,
+>>> Zhao
+>>>
+>>>> +    t->thread_count = (count > 255) ? 0xFF : count;
+>>>>        t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+>>>>        t->processor_family2 = cpu_to_le16(0x01); /* Other */
+>>>>        if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+>>>>            t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+>>>> -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
+>>>> +        t->thread_count2 = cpu_to_le16(count);
+>>>>        }
+>>>>        SMBIOS_BUILD_TABLE_POST;
+>>>> -- 
+>>>> 2.39.1
+>>>>
+>>>>
+>>
+>>
 
 
