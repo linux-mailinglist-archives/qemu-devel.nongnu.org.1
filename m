@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E78A9719B46
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 13:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18157719B32
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 13:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4gqT-0000jq-Te; Thu, 01 Jun 2023 07:51:57 -0400
+	id 1q4gqW-0000lW-0m; Thu, 01 Jun 2023 07:52:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q4gqP-0000Wr-Oe
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:51:53 -0400
+ id 1q4gqS-0000jI-75
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:51:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q4gqO-0000JH-18
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:51:53 -0400
+ id 1q4gqP-0000Jl-Ce
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:51:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685620311;
+ s=mimecast20190719; t=1685620312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iMWulZHTaScQd9/JU/TApJQLCHaMO0Wjq3Q9vGaYfHU=;
- b=JlUOC+ZdN3qTLJ4TbjCvNhmOpqbT5jbwlmAIFRbxeIiW7zAdbatjczz76FFBymNglpueGg
- HnwepURF0CO5oVcgObfdaAwLNr800kH98fxhlT+hrfrvWcrW1ieFmVbRYQck6x3/gXx/vC
- 6IJqd+vFulIV+o2oeXe8WL0ZbqTnWt0=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zTnSEqDBVt1yhSZOW2KDdJhR08dElUQEsWstYjHBXcc=;
+ b=Vf9HGbsv6/PxyrP5Xf4fA3il1U3yQ8fjETDm7iAII2+4m+DnzZdzpiKPcIrATGUzCBe7jT
+ 6C2PAPDCdlnhdxEf5/1sj0AphLGgfEUw/ZiL7410Q9Ool5qDB9XP/R+C1vGa4sLh++2Dzu
+ WjAHzqgSvfw6V4kIHgTdg3NDpPRCAlY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-zMNzUBFnNzyf2wUMBTAsMg-1; Thu, 01 Jun 2023 07:51:50 -0400
-X-MC-Unique: zMNzUBFnNzyf2wUMBTAsMg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-96f4d917e06so249380066b.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 04:51:49 -0700 (PDT)
+ us-mta-664-MqUi__lGPTe0MTs50xm1tg-1; Thu, 01 Jun 2023 07:51:51 -0400
+X-MC-Unique: MqUi__lGPTe0MTs50xm1tg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-96f4d917e06so249383266b.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 04:51:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685620308; x=1688212308;
+ d=1e100.net; s=20221208; t=1685620310; x=1688212310;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iMWulZHTaScQd9/JU/TApJQLCHaMO0Wjq3Q9vGaYfHU=;
- b=fjCbUnnY+Xs0VFhdSjiFVNVZuGEpt56jK1Hkk+3Q1ZlDQ8zeeAArrjBw8JgahAh7pF
- WmJgpzvsWlrxB1HadH8+BcmMCC268wGEwJWFzPw1tZh3I97iRbqjI5qH5OOFPqgyw23k
- 0HlGPnD/GGP0hm5zeQNrNbaGka7zsrIhY9N1D2OMtVcoZ2UoOBmtBGqg2fZgZbCVuOob
- J4cQqeGU7i90ynIidabmN/UMmBfcPRVta6JVwCsMgAokMww8oTUmfVOqJZbBSas/zRsq
- AGcHO65g4QNm7xj/xq/y6arNJc4rE5IehptI+BQamgv5aEyjKUYUuQ4jDZLJ/NZttZMM
- Gq+w==
-X-Gm-Message-State: AC+VfDw7jTASFs45dzt886ygsBK3s6+sF3NB6QKYO9u1DRiK21/EASKA
- wSPE0A3U5rnAOXZG/rVCE9Vj5Iurgh82CLmDiiT9yEv/ICe7LlPAdODUzSRW6/QRSJc8sBzNq0i
- SKylgq/AAcseMrFew9XYJfBhSQ8SPp3PODUOzkPjlD5MkvNrn4YF2Xjun5YbQ5IiTz+N950ZLU4
- o=
-X-Received: by 2002:a17:907:9445:b0:973:84b0:b077 with SMTP id
- dl5-20020a170907944500b0097384b0b077mr1379959ejc.33.1685620308679; 
- Thu, 01 Jun 2023 04:51:48 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5q6mOFXZ5qDaaNBM34xR8MAFtmYRDWlkHbcC7yg+C8gMTlR/lLhGueChez+D0/QCux86Y0Bw==
-X-Received: by 2002:a17:907:9445:b0:973:84b0:b077 with SMTP id
- dl5-20020a170907944500b0097384b0b077mr1379942ejc.33.1685620308416; 
- Thu, 01 Jun 2023 04:51:48 -0700 (PDT)
+ bh=zTnSEqDBVt1yhSZOW2KDdJhR08dElUQEsWstYjHBXcc=;
+ b=kYMJ8rlWUEToVY1P0muSzAzofSU2S5uXdB2Ha83WlWx/wW45m1nuptPDUGMLrU2jHL
+ jZ9OdMpPAQ2xhKaSqK7JNbNs069soT+AulbL1cIJPE2Csa0cYmut0vOiTBykiuyqcPHV
+ ynUxZjjonw9S9YwyArdfclnhTwF6S1EBwmXKSuFUUYRi7IXlSBP7e5kvcBminTfEX92L
+ wWT8/Mtq16rAZgzT9b3rQ3axt1rj/3jfjojiDtKO6f5sFoUCDKrqDbWXJEFYjvEpPrM/
+ xSSfMTTZVcbw+4GFDBVdIfI9a2hQspyWYI2OSCib5u20OKLFXDqmPBSEsls4Wjq/MbK0
+ qQ3Q==
+X-Gm-Message-State: AC+VfDzW0KHey4vxRD/1wgpXZl07QqwTZjGgK9aX8SEEDVsE8K6PEiCu
+ RIkjHHnEMor1/GbT26NibtVUh11I3kGE0K5t5R4FeTXXLPzDNwEREJQLpHeG6vcQ7WFeDHYZ9ng
+ xgjEZyWJsHrNDV/smxUQ/LxXZHDT5wkO/jXUtqWhRoFXJW3i8X6JHoLJMykf1Q4ylrOK3Q88Oj2
+ w=
+X-Received: by 2002:a17:907:7ea4:b0:96f:d04c:1d84 with SMTP id
+ qb36-20020a1709077ea400b0096fd04c1d84mr1458996ejc.12.1685620310228; 
+ Thu, 01 Jun 2023 04:51:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4zlD1h9jOAz6d1mvQR9rSI7v/x2xw8ooXL4LrAPorgye4C9ccuF0taDPmvmaWpMHb3sovn1w==
+X-Received: by 2002:a17:907:7ea4:b0:96f:d04c:1d84 with SMTP id
+ qb36-20020a1709077ea400b0096fd04c1d84mr1458977ejc.12.1685620309978; 
+ Thu, 01 Jun 2023 04:51:49 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- f26-20020a170906561a00b009664e25c425sm10558794ejq.95.2023.06.01.04.51.47
+ lt16-20020a170906fa9000b00973f1cd586fsm6747865ejb.1.2023.06.01.04.51.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 04:51:47 -0700 (PDT)
+ Thu, 01 Jun 2023 04:51:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-block@nongnu.org
-Subject: [PATCH 01/12] file-posix: remove incorrect coroutine_fn calls
-Date: Thu,  1 Jun 2023 13:51:34 +0200
-Message-Id: <20230601115145.196465-2-pbonzini@redhat.com>
+Subject: [PATCH 02/12] qed: mark more functions as coroutine_fns and
+ GRAPH_RDLOCK
+Date: Thu,  1 Jun 2023 13:51:35 +0200
+Message-Id: <20230601115145.196465-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601115145.196465-1-pbonzini@redhat.com>
 References: <20230601115145.196465-1-pbonzini@redhat.com>
@@ -101,142 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-raw_co_getlength is called by handle_aiocb_write_zeroes, which is not a coroutine
-function.  This is harmless because raw_co_getlength does not actually suspend,
-but in the interest of clarity make it a non-coroutine_fn that is just wrapped
-by the coroutine_fn raw_co_getlength.  Likewise, check_cache_dropped was only
-a coroutine_fn because it called raw_co_getlength, so it can be made non-coroutine
-as well.
+Mark functions as coroutine_fn when they are only called by other coroutine_fns
+and they can suspend.  Change calls to co_wrappers to use the non-wrapped
+functions, which in turn requires adding GRAPH_RDLOCK annotations.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- block/file-posix.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ block/qed-check.c | 5 +++--
+ block/qed.c       | 7 ++++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 942f529f6ffc..5e0afaba69a5 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -193,7 +193,7 @@ static int fd_open(BlockDriverState *bs)
-     return -EIO;
- }
- 
--static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs);
-+static int64_t raw_getlength(BlockDriverState *bs);
- 
- typedef struct RawPosixAIOData {
-     BlockDriverState *bs;
-@@ -1974,7 +1974,7 @@ static int handle_aiocb_write_zeroes(void *opaque)
- #ifdef CONFIG_FALLOCATE
-     /* Last resort: we are trying to extend the file with zeroed data. This
-      * can be done via fallocate(fd, 0) */
--    len = raw_co_getlength(aiocb->bs);
-+    len = raw_getlength(aiocb->bs);
-     if (s->has_fallocate && len >= 0 && aiocb->aio_offset >= len) {
-         int ret = do_fallocate(s->fd, 0, aiocb->aio_offset, aiocb->aio_nbytes);
-         if (ret == 0 || ret != -ENOTSUP) {
-@@ -2696,7 +2696,7 @@ static int coroutine_fn raw_co_truncate(BlockDriverState *bs, int64_t offset,
+diff --git a/block/qed-check.c b/block/qed-check.c
+index 8fd94f405ed7..6a01b94f9c9c 100644
+--- a/block/qed-check.c
++++ b/block/qed-check.c
+@@ -200,7 +200,8 @@ static void qed_check_for_leaks(QEDCheck *check)
+ /**
+  * Mark an image clean once it passes check or has been repaired
+  */
+-static void qed_check_mark_clean(BDRVQEDState *s, BdrvCheckResult *result)
++static void coroutine_fn GRAPH_RDLOCK
++qed_check_mark_clean(BDRVQEDState *s, BdrvCheckResult *result)
+ {
+     /* Skip if there were unfixable corruptions or I/O errors */
+     if (result->corruptions > 0 || result->check_errors > 0) {
+@@ -213,7 +214,7 @@ static void qed_check_mark_clean(BDRVQEDState *s, BdrvCheckResult *result)
      }
  
-     if (S_ISCHR(st.st_mode) || S_ISBLK(st.st_mode)) {
--        int64_t cur_length = raw_co_getlength(bs);
-+        int64_t cur_length = raw_getlength(bs);
+     /* Ensure fixes reach storage before clearing check bit */
+-    bdrv_flush(s->bs);
++    bdrv_co_flush(s->bs);
  
-         if (offset != cur_length && exact) {
-             error_setg(errp, "Cannot resize device files");
-@@ -2714,7 +2714,7 @@ static int coroutine_fn raw_co_truncate(BlockDriverState *bs, int64_t offset,
- }
- 
- #ifdef __OpenBSD__
--static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-+static int64_t raw_getlength(BlockDriverState *bs)
+     s->header.features &= ~QED_F_NEED_CHECK;
+     qed_write_header_sync(s);
+diff --git a/block/qed.c b/block/qed.c
+index 8e08f89bbd01..382c05c83fef 100644
+--- a/block/qed.c
++++ b/block/qed.c
+@@ -195,14 +195,15 @@ static bool qed_is_image_size_valid(uint64_t image_size, uint32_t cluster_size,
+  *
+  * The string is NUL-terminated.
+  */
+-static int qed_read_string(BdrvChild *file, uint64_t offset, size_t n,
+-                           char *buf, size_t buflen)
++static int coroutine_fn GRAPH_RDLOCK
++qed_read_string(BdrvChild *file, uint64_t offset,
++                size_t n, char *buf, size_t buflen)
  {
-     BDRVRawState *s = bs->opaque;
-     int fd = s->fd;
-@@ -2733,7 +2733,7 @@ static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-         return st.st_size;
- }
- #elif defined(__NetBSD__)
--static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-+static int64_t raw_getlength(BlockDriverState *bs)
- {
-     BDRVRawState *s = bs->opaque;
-     int fd = s->fd;
-@@ -2758,7 +2758,7 @@ static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-         return st.st_size;
- }
- #elif defined(__sun__)
--static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-+static int64_t raw_getlength(BlockDriverState *bs)
- {
-     BDRVRawState *s = bs->opaque;
-     struct dk_minfo minfo;
-@@ -2789,7 +2789,7 @@ static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-     return size;
- }
- #elif defined(CONFIG_BSD)
--static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-+static int64_t raw_getlength(BlockDriverState *bs)
- {
-     BDRVRawState *s = bs->opaque;
-     int fd = s->fd;
-@@ -2861,7 +2861,7 @@ again:
-     return size;
- }
- #else
--static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-+static int64_t raw_getlength(BlockDriverState *bs)
- {
-     BDRVRawState *s = bs->opaque;
      int ret;
-@@ -2880,6 +2880,11 @@ static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
- }
- #endif
- 
-+static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
-+{
-+    return raw_getlength(bs);
-+}
-+
- static int64_t coroutine_fn raw_co_get_allocated_file_size(BlockDriverState *bs)
- {
-     struct stat st;
-@@ -3245,7 +3250,7 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
-          * round up if necessary.
-          */
-         if (!QEMU_IS_ALIGNED(*pnum, bs->bl.request_alignment)) {
--            int64_t file_length = raw_co_getlength(bs);
-+            int64_t file_length = raw_getlength(bs);
-             if (file_length > 0) {
-                 /* Ignore errors, this is just a safeguard */
-                 assert(hole == file_length);
-@@ -3267,7 +3272,7 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
- 
- #if defined(__linux__)
- /* Verify that the file is not in the page cache */
--static void coroutine_fn check_cache_dropped(BlockDriverState *bs, Error **errp)
-+static void check_cache_dropped(BlockDriverState *bs, Error **errp)
- {
-     const size_t window_size = 128 * 1024 * 1024;
-     BDRVRawState *s = bs->opaque;
-@@ -3282,7 +3287,7 @@ static void coroutine_fn check_cache_dropped(BlockDriverState *bs, Error **errp)
-     page_size = sysconf(_SC_PAGESIZE);
-     vec = g_malloc(DIV_ROUND_UP(window_size, page_size));
- 
--    end = raw_co_getlength(bs);
-+    end = raw_getlength(bs);
- 
-     for (offset = 0; offset < end; offset += window_size) {
-         void *new_window;
-@@ -4504,7 +4509,7 @@ static int cdrom_reopen(BlockDriverState *bs)
- 
- static bool coroutine_fn cdrom_co_is_inserted(BlockDriverState *bs)
- {
--    return raw_co_getlength(bs) > 0;
-+    return raw_getlength(bs) > 0;
- }
- 
- static void coroutine_fn cdrom_co_eject(BlockDriverState *bs, bool eject_flag)
+     if (n >= buflen) {
+         return -EINVAL;
+     }
+-    ret = bdrv_pread(file, offset, n, buf, 0);
++    ret = bdrv_co_pread(file, offset, n, buf, 0);
+     if (ret < 0) {
+         return ret;
+     }
 -- 
 2.40.1
 
