@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F867719943
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 12:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE9B71996E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 12:20:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4fNO-0001Lv-7G; Thu, 01 Jun 2023 06:17:50 -0400
+	id 1q4fP2-0002TL-1A; Thu, 01 Jun 2023 06:19:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4fNI-0001LO-67
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 06:17:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4fNF-00037F-87
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 06:17:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685614659;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=qNcMLbMB+M/UiQW5N8WcSoOX0hLqXoFVHZoOZgRsTeo=;
- b=K6UAHsbntWW+YSQO4VCGG217dL8O1d6G++KXqJhNISQhlkm+IpRMhmbk+otZn60MNwvS7T
- wAFMGTAWFG8iI0gSHBa2dqcrfvqpp9Sub7kF66gHKE4BT9PygpVpjIFQ7VwUVBGB4eK/XQ
- P0DtiMgm1KYeZlwX1pyePbIaNjlptjw=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-160-lwN0LN_INRyI60u3xkYU5A-1; Thu, 01 Jun 2023 06:17:36 -0400
-X-MC-Unique: lwN0LN_INRyI60u3xkYU5A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A7BC3813F26;
- Thu,  1 Jun 2023 10:17:35 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A982F40C6EC4;
- Thu,  1 Jun 2023 10:17:33 +0000 (UTC)
-Date: Thu, 1 Jun 2023 11:17:30 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- qemu-devel@nongnu.org, pbonzini@redhat.com,
- richard.henderson@linaro.org, eduardo@habkost.net, mst@redhat.com,
- marcel.apfelbaum@gmail.com, imammedo@redhat.com, jusual@redhat.com,
- jon.grimm@amd.com, santosh.Shukla@amd.com,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v2] pc: q35: Bump max_cpus to 1024
-Message-ID: <ZHhwOrfXMjjOmcAK@redhat.com>
-References: <20230531225127.331998-1-suravee.suthikulpanit@amd.com>
- <39a49814-28d8-ffc8-42b4-3af14bb9dd47@oracle.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q4fOz-0002SM-Bd
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 06:19:29 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q4fOx-0003KQ-OS
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 06:19:29 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-514953b3aa6so1037975a12.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 03:19:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685614766; x=1688206766;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zUPPTHrrmmF7AmHwkQAkl81gL1fMGaREzxmlmvZ1Y8Y=;
+ b=y4cLi2HAWtxX0aIAFzW4SLV05StnHRsulNklN+R0xB0BUHtUfBo6ATBnnYC1wG4Gjh
+ B8KXUgywKXLTXQWegKBcFIec54lDj1wFdczK6fZGrA7znYuMt55/1fwaKryFrMfm9Z8B
+ F3wpqXxPxDd5uYI5+yl0WCo/9zT5Xy+HuUV9Qm9KAooJWhl2KGI2ZoRD3dhwloqjJbgH
+ vv2/WKqbXPNZjPuwI5PGSbgiAQDSl3xtVaK4y7SNo7P+Y/auy1g93UV6nRom5YmwPTkb
+ ck+5grW/cIzCH6e9K42J1CIjcGLmNywhG1hlKty9bj+pNXfn8O7HmJAoW0n50rDjHQ2a
+ zhvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685614766; x=1688206766;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zUPPTHrrmmF7AmHwkQAkl81gL1fMGaREzxmlmvZ1Y8Y=;
+ b=Ui0PKXmVI/Vzuf8TUYI1QTGzyNLrj1YWciqvxyb08UYs6exUIXSB+4jletvQ+JqvKN
+ KVgkhx40NZR0E3MokRHAgWOHYfRYNkbfkd91q/ABq6X+ClGsGDZ4posH+2RzNzdH5AJ/
+ BAdkq3DLj+FeP1xhqaaCvaHwEdqZNLM1UK7kdQjHpJWmiGztJTmQrBywJyAxv4n1JORD
+ 5hnw0Gk5boGXw3t4oHw+6uI5ioTsHximfhdrDM09pbwTeiH5p53aByMgZqfMICB06Ym3
+ jtVmuELHe4jbeF2gIcdbAVo+mjDZ/oe6ao0oGmtQl3TbKexHH8pN3DYnHpgJjT7Ni9kF
+ OTMg==
+X-Gm-Message-State: AC+VfDxhWRfe0va66UV+fSvRjpv1aUy0DRgIgaqfime8p5fLcO2xtjz+
+ HsWrT4Bho0fw95CxYeLB2wzK8uing8secw+mAhSWww==
+X-Google-Smtp-Source: ACHHUZ7RPkqkjR1tX/Ia6GBMMZsol8QBghKtDw+QXmV5S0ZBxdKbOsttAe6djyAfbpy5XN39FTFMnyJwu4fdyzHx0Yo=
+X-Received: by 2002:a05:6402:3ce:b0:514:eb2c:4822 with SMTP id
+ t14-20020a05640203ce00b00514eb2c4822mr3057478edw.4.1685614765959; Thu, 01 Jun
+ 2023 03:19:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <39a49814-28d8-ffc8-42b4-3af14bb9dd47@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+References: <20230601094625.39569-1-philmd@linaro.org>
+ <20230601094625.39569-8-philmd@linaro.org>
+In-Reply-To: <20230601094625.39569-8-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 1 Jun 2023 11:19:14 +0100
+Message-ID: <CAFEAcA8wgaEJd03G8gNtFOUFT0jpm=KLfaZSjeYcOgvTYdvhJQ@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] hw: Simplify using sysbus_init_irqs() [manual]
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-ppc@nongnu.org, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,56 +89,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 11:09:45AM +0100, Joao Martins wrote:
-> 
-> 
-> On 31/05/2023 23:51, Suravee Suthikulpanit wrote:
-> > Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
-> > arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
-> > 
-> > In case KVM could not support the specified number of vcpus, QEMU would
-> > return the following error message:
-> > 
-> >   qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid argument
-> > 
-> > Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> > ---
-> > 
-> > Changes from V1:
-> > (https://lore.kernel.org/all/YnkDGsIi1vFvXmiP@redhat.com/T/)
-> >  * Bump from 512 to KVM_MAX_VCPUS (per Igor's suggestion)
-> > 
-> > Note:
-> >  From the last discussion, Daniel mentioned that SMBIO 2.1 tables might
-> >  cause overflow at approx 720 CPUs, and it might require using the
-> >  SMBIO 3.0 entry point. Also, we might need to change the default for
-> >  the x86 machine type to SMBIO 3.0. However, I do not know the status
-> >  of this.
-> > 
-> I suspect smbios 3.0 (64-bit entry point) is already supported.
-> 
-> With current qemu and all the smbios fixes in the last cycle, perhaps this is
-> mainly just setting smbios_entry_point_type to SMBIOS_ENTRY_POINT_TYPE_64 if
-> MachineState::smp::max_cpus is bigger than 720 (e.g. in pc_q35_init()?)
+On Thu, 1 Jun 2023 at 10:48, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Audit the sysbus_init_irq() calls and manually convert
+> to sysbus_init_irqs() when a loop is involved.
+>
+> In omap2_intc_init(), the parent_intr[] array contains
+> 2 elements: use ARRAY_SIZE() to iterate over.
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-The need for the 64-bit entry point depends on a combination of RAM config
-and CPU count. IMHO we need to unconditionally switch the latest machine
-types to use the 64-bit entry point by default, rather than trying to infer
-some special condition to dynamically change on the fly.
+> diff --git a/hw/timer/renesas_tmr.c b/hw/timer/renesas_tmr.c
+> index c15f654738..dd2929d6e7 100644
+> --- a/hw/timer/renesas_tmr.c
+> +++ b/hw/timer/renesas_tmr.c
+> @@ -428,17 +428,14 @@ static void rtmr_init(Object *obj)
+>  {
+>      SysBusDevice *d =3D SYS_BUS_DEVICE(obj);
+>      RTMRState *tmr =3D RTMR(obj);
+> -    int i;
+>
+>      memory_region_init_io(&tmr->memory, OBJECT(tmr), &tmr_ops,
+>                            tmr, "renesas-tmr", 0x10);
+>      sysbus_init_mmio(d, &tmr->memory);
+>
+> -    for (i =3D 0; i < ARRAY_SIZE(tmr->ovi); i++) {
+> -        sysbus_init_irq(d, &tmr->cmia[i]);
+> -        sysbus_init_irq(d, &tmr->cmib[i]);
+> -        sysbus_init_irq(d, &tmr->ovi[i]);
+> -    }
+> +    sysbus_init_irqs(d, tmr->cmia, ARRAY_SIZE(tmr->cmia));
+> +    sysbus_init_irqs(d, tmr->cmib, ARRAY_SIZE(tmr->cmib));
+> +    sysbus_init_irqs(d, tmr->ovi, ARRAY_SIZE(tmr->ovi));
 
-Before doing that we need confirmation that our firmware builds in qemu.git
-(SeaBIOS and EDK2) will be happy with the 64-bit EP. I suspect they should
-be fine by now, but I've CC'd Gerd to confirm.
+Doesn't this change the order of the IRQs? Previously
+we had channel 0 CMIA, channel 0 CMIA, channel 0 OVI,
+channel 1 CMIA, channel 1 CMIB, channel 1 OVI. Now
+we have channel 0 CMIA, channel 1 CMIA, channel 0 CMIB,
+channel 1 CMIB, channel 0 OVI, channel 1 OVI. So they'll
+get miswired in the board code now...
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
