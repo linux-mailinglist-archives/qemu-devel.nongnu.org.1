@@ -2,109 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E17C71A254
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E46B71A05F
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 16:37:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4k4m-0002Bx-At; Thu, 01 Jun 2023 11:18:56 -0400
+	id 1q4jQf-0001nV-Jd; Thu, 01 Jun 2023 10:37:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.vnet.ibm.com>)
- id 1q4k4k-0002Bp-Dc
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:18:54 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q4jQb-0001lB-VN
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:37:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.vnet.ibm.com>)
- id 1q4k4i-0001Zf-Ce
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:18:54 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 351EMNsm012479; Thu, 1 Jun 2023 14:39:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=w1wVGRGnQhiIsvaLLPoQ2pVm/1vr9VeVIV76ZkS7tIc=;
- b=piksCgyXYsSPmuBOXF6YOuwWWljCjQdNir1Q4ibsHCVhOjDr04tleNvqOsfikoCKqNZJ
- QGyrstJ1P7AeTiezDNf8zuyqzMTCyR7HYCENhMFPR8gianlJS4tkAfI3kL5n9MAYz3W5
- iG9SEDFd7mJmRJuMGiIhAHrjFSF4jYDob3jFU5ONmsLNEgkiqqioAmWQLZYB+xP1iN/y
- AQu63X2qBD0pqgOZ+RUTJSTBeje3uQ1Yap5MxxukdiToIucIfsk9slblLMA2VYeDAvCz
- kdLcCf6qvLPGAqnnZhJVd3JlCHAfUNDrf8o84XjswBZe2aPawXRs4CJCZLM5L3/ixLDu Ag== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxw1q8nsr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jun 2023 14:39:46 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 351DDN2B019382;
- Thu, 1 Jun 2023 14:36:47 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
- by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3qu9g70dby-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jun 2023 14:36:47 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 351EakEV64028972
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jun 2023 14:36:46 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 250AF5805A;
- Thu,  1 Jun 2023 14:36:46 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D25455803F;
- Thu,  1 Jun 2023 14:36:45 +0000 (GMT)
-Received: from [9.61.87.138] (unknown [9.61.87.138])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  1 Jun 2023 14:36:45 +0000 (GMT)
-Message-ID: <57a102e4-f837-b5c5-cd77-60bf2ee945fa@linux.vnet.ibm.com>
-Date: Thu, 1 Jun 2023 09:36:45 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/1] hw/arm/aspeed:Add vpd data for Rainier machine
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>
-Cc: Ninad Palsule <ninad@linux.ibm.com>,
- Cameron Esfahani via <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9_via?= <qemu-arm@nongnu.org>
-References: <20230523214520.2102894-1-ninad@linux.ibm.com>
- <20230523214520.2102894-2-ninad@linux.ibm.com>
- <7fadea2f-39e0-902f-848a-8f9bd7ff1f52@kaod.org>
- <CACPK8XeSBh+SMWPZ68rkeRnOcTFE0_SFcCNoYZr85DLhzGsgtQ@mail.gmail.com>
- <80168e3a-b0f6-463e-b473-8488a897ef16@app.fastmail.com>
- <164e53c1-03dd-a530-8c91-357a10517556@kaod.org>
- <ba1e794c-ee3a-0dff-b008-7fac4b007255@linux.vnet.ibm.com>
- <72d241c8-635c-0c8d-4822-15a35fb9748d@kaod.org>
-Content-Language: en-US
-From: Ninad Palsule <ninad@linux.vnet.ibm.com>
-In-Reply-To: <72d241c8-635c-0c8d-4822-15a35fb9748d@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fz-WIqeBeiyKgMwWOTM7J0m2quDyNBXm
-X-Proofpoint-ORIG-GUID: fz-WIqeBeiyKgMwWOTM7J0m2quDyNBXm
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q4jQT-0001Yd-5p
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 10:37:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685630234;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CjWPm8/seOc+I32CVwyLov08i9XEn5i9AkTXXoaVIZE=;
+ b=Nspn7RpkR64JxLsD2tfTpiVORLy1gQ+NC9hani6295x6qvUdwcE9NkzIzCj48MhJhdVLDU
+ P4Tzr7aZBc21+FvOg2OOGu8P8XvH2yQYUbS3SfzwcrJbq/QP30/EHz56Bz202SqKP9wgYV
+ SfQ0zByU1/JKdrcE50xZPfqh9oJHKlY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-375-2jVvB_TBM1iAbO9eFUUU6g-1; Thu, 01 Jun 2023 10:37:13 -0400
+X-MC-Unique: 2jVvB_TBM1iAbO9eFUUU6g-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f6f58e269eso5710545e9.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 07:37:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685630232; x=1688222232;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CjWPm8/seOc+I32CVwyLov08i9XEn5i9AkTXXoaVIZE=;
+ b=eDZxEREj3kw8jhe3DRqobRRWEcjUB/AOTlAmkYDtURarna9K4zpS2JUAoX2YInV4Zj
+ d4iNZjbJRfWHehTEtK4nIgqhs+SqaSEHJJQA63f/N1f8RbWkOneZHKkDVtKSi3fwRyRE
+ RkP9pE4lBfvn/zRMlfRT7oGImYirDd/bq+7BRert3NwS3+jAJtBKmXM8pcVDP3CishIL
+ XWzHTB0bTb1WvAzEBQKik/CZUM9RGqAz+4G2R79Niz4pKao3crfMriJ4XKVPwFXT91o2
+ EftFSfYtKz/9J0m66YmRg1vmynYGTR17MUUxAwCLYM+nImuVh0ro9KIIPBWAYtNvIzzb
+ ITNA==
+X-Gm-Message-State: AC+VfDyDGJjmav051oyaTLelfqtz8WgeOM2Taptildo/2aRuibdw553d
+ Mz6yB97nldvagBCFiCMSTZZKN47HzDH8bbloCL+d7Kst66FRpksYiDay4pdN48ni5QT0/YgJ+qN
+ 8YE5oxnIDq9aejxY=
+X-Received: by 2002:a7b:cd8a:0:b0:3f6:cfc7:8bd0 with SMTP id
+ y10-20020a7bcd8a000000b003f6cfc78bd0mr2201295wmj.36.1685630231797; 
+ Thu, 01 Jun 2023 07:37:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6q4xlhj+jTaKwFhPwN/rlLUXKLSFDPubdwE79j2dHd5EhWOcCkRfE4Svxn8XYWNRD/oGM8dQ==
+X-Received: by 2002:a7b:cd8a:0:b0:3f6:cfc7:8bd0 with SMTP id
+ y10-20020a7bcd8a000000b003f6cfc78bd0mr2201276wmj.36.1685630231361; 
+ Thu, 01 Jun 2023 07:37:11 -0700 (PDT)
+Received: from redhat.com ([2.55.41.2]) by smtp.gmail.com with ESMTPSA id
+ v4-20020a05600c214400b003f42328b5d9sm2558657wml.39.2023.06.01.07.37.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 07:37:10 -0700 (PDT)
+Date: Thu, 1 Jun 2023 10:37:06 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Michael Tokarev <mjt@tls.msk.ru>, qemu-arm@nongnu.org,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 0/3] Trivial cleanups
+Message-ID: <20230601103652-mutt-send-email-mst@kernel.org>
+References: <20230523195608.125820-1-shentey@gmail.com>
+ <c138717c-5085-3b4b-5a46-0fa93179f6a8@ilande.co.uk>
+ <20230601080655-mutt-send-email-mst@kernel.org>
+ <5982629b-0ff1-2525-e16a-309257710a20@ilande.co.uk>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 mlxscore=0 bulkscore=0
- adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306010128
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=ninad@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5982629b-0ff1-2525-e16a-309257710a20@ilande.co.uk>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,58 +105,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+On Thu, Jun 01, 2023 at 01:45:47PM +0100, Mark Cave-Ayland wrote:
+> On 01/06/2023 13:07, Michael S. Tsirkin wrote:
+> 
+> > On Thu, May 25, 2023 at 05:03:15PM +0100, Mark Cave-Ayland wrote:
+> > > On 23/05/2023 20:56, Bernhard Beschow wrote:
+> > > 
+> > > > This series:
+> > > > * Removes dead code from omap_uart and i82378
+> > > > * Resolves redundant code in the i8254 timer devices
+> > > > 
+> > > > v3:
+> > > > * Drop TYPE_ISA_PARALLEL since they became obsolete by
+> > > >     https://lore.kernel.org/qemu-devel/20230522115014.1110840-9-thuth@redhat.com/
+> > > 
+> > > Oh I didn't see that this had already been merged :/
+> > > 
+> > > It's not a reason to block this series, but I'd still like to see your
+> > > changes to ParallelState and ISAParallelState merged separately since they
+> > > are a better match for our QOM coding standards.
+> > > 
+> > > > v2:
+> > > > * Export ParallelState and ISAParallelState (Mark)
+> > > > 
+> > > > Testing done:
+> > > > * `make check`
+> > > > 
+> > > > Bernhard Beschow (3):
+> > > >     hw/timer/i8254_common: Share "iobase" property via base class
+> > > >     hw/arm/omap: Remove unused omap_uart_attach()
+> > > >     hw/isa/i82378: Remove unused "io" attribute
+> > > > 
+> > > >    include/hw/arm/omap.h   | 1 -
+> > > >    hw/char/omap_uart.c     | 9 ---------
+> > > >    hw/i386/kvm/i8254.c     | 1 -
+> > > >    hw/isa/i82378.c         | 1 -
+> > > >    hw/timer/i8254.c        | 6 ------
+> > > >    hw/timer/i8254_common.c | 6 ++++++
+> > > >    6 files changed, 6 insertions(+), 18 deletions(-)
+> > > 
+> > > Do we know who is going to pick up these series? I can send a PR if no-one minds?
+> > > 
+> > 
+> > 
+> > Go ahead:
+> > 
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> Thanks Michael! Is there any objection to also including
+> https://patchew.org/QEMU/20230531211043.41724-1-shentey@gmail.com/ at the
+> same time?
 
-On 5/26/23 1:18 AM, Cédric Le Goater wrote:
-> On 5/25/23 21:57, Ninad Palsule wrote:
->> Hello Cedric,
->>
->>
->> On 5/25/23 1:37 AM, Cédric Le Goater wrote:
->>> [ ... ]
->>>
->>>> However, regarding Cédric's log above, a reboot is expected on the 
->>>> first
->>>> boot of a fresh image when there's valid VPD available. For the first
->>>> boot of a fresh image we configure the kernel with a minimal 
->>>> devicetree
->>>> that allows us to read the VPD data. This determines the system we're
->>>> actually on and configures an appropriate devicetree for subsequent
->>>> boots. We then reboot to pick up the new devicetree.
->>>
->>> Yes. Then, the behavior looks correct under QEMU :
->>>
->>>   https://www.kaod.org/qemu/aspeed/rainier/rainer.log
->>>
->>> Here are the services which still have with some issues :
->>>
->>> * clear-once.service                loaded failed failed Clear one 
->>> time boot overrides
->>> * ncsi-linkspeed@eth0.service       loaded failed failed          
->>> Set eth0 gigabit link speed
->>> * ncsi-linkspeed@eth1.service       loaded failed failed          
->>> Set eth1 gigabit link speed
->>> * obmc-flash-bios-init.service      loaded failed failed Setup Host 
->>> FW directories
->>> * system-vpd.service                loaded failed failed System VPD 
->>> Collection
->>> * trace-enable.service              loaded failed failed Enable 
->>> Linux trace events in the boot loader
->>
->> On my system system-vpd.service was active. I couldn't run your build 
->> on my development machine.
->
-> That's how I run it :
->
->   qemu-system-arm -M rainier-bmc -net user -drive 
-> file=./mmc-p10bmc.qcow2,format=qcow2,if=sd,id=sd2,index=2 -nographic 
-> -snapshot -serial mon:stdio
->
-> You will need to use my branch to have emmc support.
-ok, Thanks you!
->
-> Thanks,
->
-> C.
->
+I don't know, I wasn't copied on that one.
+
+> Bernhard: if you are able to submit a rebased version of the ISA_PARALLEL
+> cleanups at
+> https://patchew.org/QEMU/20230521123049.312349-1-shentey@gmail.com/ I think
+> it is worth considering those for inclusion in the PR as well (note the
+> comments re: an updated commit message and register definitions, but I can't
+> really do this myself because of the missing SoB).
+> 
+> 
+> ATB,
+> 
+> Mark.
+
 
