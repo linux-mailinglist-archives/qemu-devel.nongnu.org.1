@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8EA971F08A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 19:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBC071A3A1
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:04:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kEk-0002eo-BO; Thu, 01 Jun 2023 11:29:14 -0400
+	id 1q4kFq-0003bA-6Q; Thu, 01 Jun 2023 11:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4kEi-0002eH-6d; Thu, 01 Jun 2023 11:29:12 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4kFp-0003az-5M
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:30:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4kEg-0004WP-8p; Thu, 01 Jun 2023 11:29:11 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 01FC56342E;
- Thu,  1 Jun 2023 15:29:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6552DC4339B;
- Thu,  1 Jun 2023 15:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1685633347;
- bh=vBJv4Uc0t8gua2ApVQioKbg9Il4lz1BvPgF/JwElDj0=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=oka4Sma6u+AVM2PxFUaalPuy06uADBcKT81IaJMQ/3zqMoiK52u3sak9OSa5YdS0U
- mjj2vDfgXwgLDVRn4AkI+KOghn7XBf3XqWo57rhQvmZ2bHhV2/wjCZAwr3JfAAnDJe
- piTRlPcocJ9tF3NhbI4lPSG4SLeC5W4lDpM0ubnGdtPqXfr5IQDLD1D004tNgl6DS2
- otHd5vG8nmGbH7Gx4sRpoq+9fsdh5nIqqMgqpyWXA3FVAxWKbmYFBRedmoaeKVleXP
- LSpv46f/pnZQFPtxxqsssD+0fL/r/JUfBbaQHOKnKlNDkedwHjBDiAY825/X8wS78K
- luWfyx0DZYg9w==
-Received: by mail-lj1-f173.google.com with SMTP id
- 38308e7fff4ca-2b1a653b409so6355491fa.0; 
- Thu, 01 Jun 2023 08:29:07 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzb10mY2R6cYbR371Zvib+OwVmRnP2mMYYeRXOV84RNWFiHLHlT
- ICD7h++4jZo4+Jo31rb+LI7xvkPxY3lF2tx2vJg=
-X-Google-Smtp-Source: ACHHUZ4mY/itY6ayiLHHVX8o4S1srmJ2SljhxZbAwBT8PedtCwbkQfOLrfMpMs7NZLGczcUrXWdgQklLMtIZCcwJYbc=
-X-Received: by 2002:a2e:8195:0:b0:2a2:ac00:4de4 with SMTP id
- e21-20020a2e8195000000b002a2ac004de4mr829023ljg.22.1685633345317; Thu, 01 Jun
- 2023 08:29:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4kFn-0004v3-LP
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:30:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685633418;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w3L/6eR5+dveULfxTSg8I+OUqBv/1yBCey8pXXlOGjw=;
+ b=LzeEY20yATb75/VgWSEX9ZJoOkmcoP4ZlK+NVk60b6L+1wIbC8r0+7g8r3MV6oSYATU/kI
+ j2rcrqdauhZmgoEivZwdv0WXhrRuv5XcMcztSprftXGfzsNzn4JmamFvQ4DmqgbKmZTSJh
+ PzNa/3Zs1Q5sEtSBk2anxM4kTNT8gXE=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-434-LV6gjPgwO6-PSeGfzHtNKg-1; Thu, 01 Jun 2023 11:30:15 -0400
+X-MC-Unique: LV6gjPgwO6-PSeGfzHtNKg-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-3f7d72d552fso2518381cf.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:30:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685633414; x=1688225414;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=w3L/6eR5+dveULfxTSg8I+OUqBv/1yBCey8pXXlOGjw=;
+ b=hF1IQ4eDYFOvRXr6mFYnLNV9TCHHe50x5DDqpgmYl45Etf5f7URJ6suct2mQoOx6tz
+ bfdpIKagvOAohQLDi4gfmeTR1IvRRbSOl7S/wlOsggy5N1PVv3hwDzQlug+ibXOPuXro
+ mvlJXnSreIoVsTtw3zRjhUja3vTxg+KLWAV9Rs61CO67Z9c2D0lkOvnfYA1S17+o4GtB
+ BX5fjcd6XtWQuCzYMm/nX1qW62bxHiQhmNzaJQjXWK7sENJaxe93OADfxdonLOR6smSq
+ xhgCBxIRG2Y9hxF0CPasPVDUQ9v8CDiR7yKDcabnnsnyf/jXI5ny6tuAky2pIpbD8w5v
+ r6VA==
+X-Gm-Message-State: AC+VfDz9NnUt8KZobVygTDwM35UpUQL5ilx3gBOJGTbcMwKwHPb6Jgdf
+ LAWm/ZjAn+gAbWe+Gvnm0Ek2sgvLLIVeLYfrYHFF5crT2pKjhq7tQIodMgIXQJYtPjt/w2n3tl9
+ 2lZOYmkbbphy3OR8=
+X-Received: by 2002:a05:6214:529c:b0:61b:73b2:85ca with SMTP id
+ kj28-20020a056214529c00b0061b73b285camr6341043qvb.5.1685633414603; 
+ Thu, 01 Jun 2023 08:30:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6iKNwzcn5VX5QDdnhollSq050oKY6zBVJ0S6QL1gKLZXdkEeXuARUaEEPGoJQvjY/OuZWQRQ==
+X-Received: by 2002:a05:6214:529c:b0:61b:73b2:85ca with SMTP id
+ kj28-20020a056214529c00b0061b73b285camr6341008qvb.5.1685633414166; 
+ Thu, 01 Jun 2023 08:30:14 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ es1-20020a056214192100b00626195bdbbdsm5547193qvb.132.2023.06.01.08.30.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 08:30:12 -0700 (PDT)
+Date: Thu, 1 Jun 2023 11:30:10 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
+ scenarios run non-live
+Message-ID: <ZHi5gmd+5pQhDqBF@x1n>
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-9-berrange@redhat.com>
 MIME-Version: 1.0
-References: <20230601123332.3297404-1-ardb@kernel.org>
- <20230601123332.3297404-2-ardb@kernel.org>
- <CAFEAcA_Z_3xNC6HjuyvRtf+s9pJjGsZeSZ87VG03J2yZZ60Wtw@mail.gmail.com>
-In-Reply-To: <CAFEAcA_Z_3xNC6HjuyvRtf+s9pJjGsZeSZ87VG03J2yZZ60Wtw@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 1 Jun 2023 17:28:54 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEUUfvVRebCe0mAU5PBZzWHbe9r-1n2MOsJW+sDK86HcQ@mail.gmail.com>
-Message-ID: <CAMj1kXEUUfvVRebCe0mAU5PBZzWHbe9r-1n2MOsJW+sDK86HcQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/arm: Use x86 intrinsics to implement PMULL.P64
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230531132400.1129576-9-berrange@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,79 +102,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 1 Jun 2023 at 15:01, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Thu, 1 Jun 2023 at 13:33, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  host/include/i386/host/cpuinfo.h |  1 +
-> >  target/arm/tcg/vec_helper.c      | 26 +++++++++++++++++++-
-> >  util/cpuinfo-i386.c              |  1 +
-> >  3 files changed, 27 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-> > index 073d0a426f31487d..cf4ced844760d28f 100644
-> > --- a/host/include/i386/host/cpuinfo.h
-> > +++ b/host/include/i386/host/cpuinfo.h
-> > @@ -27,6 +27,7 @@
-> >  #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
-> >  #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
-> >  #define CPUINFO_AES             (1u << 18)
-> > +#define CPUINFO_PMULL           (1u << 19)
-> >
-> >  /* Initialized with a constructor. */
-> >  extern unsigned cpuinfo;
-> > diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-> > index f59d3b26eacf08f8..fb422627588439b3 100644
-> > --- a/target/arm/tcg/vec_helper.c
-> > +++ b/target/arm/tcg/vec_helper.c
-> > @@ -25,6 +25,14 @@
-> >  #include "qemu/int128.h"
-> >  #include "vec_internal.h"
-> >
-> > +#ifdef __x86_64__
-> > +#include "host/cpuinfo.h"
-> > +#include <wmmintrin.h>
-> > +#define TARGET_PMULL  __attribute__((__target__("pclmul")))
-> > +#else
-> > +#define TARGET_PMULL
-> > +#endif
-> > +
-> >  /*
-> >   * Data for expanding active predicate bits to bytes, for byte elements.
-> >   *
-> > @@ -2010,12 +2018,28 @@ void HELPER(gvec_pmul_b)(void *vd, void *vn, void *vm, uint32_t desc)
-> >   * Because of the lanes are not accessed in strict columns,
-> >   * this probably cannot be turned into a generic helper.
-> >   */
-> > -void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
-> > +void TARGET_PMULL HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
-> >  {
-> >      intptr_t i, j, opr_sz = simd_oprsz(desc);
-> >      intptr_t hi = simd_data(desc);
-> >      uint64_t *d = vd, *n = vn, *m = vm;
-> >
-> > +#ifdef __x86_64__
-> > +    if (cpuinfo & CPUINFO_PMULL) {
-> > +       switch (hi) {
-> > +       case 0:
-> > +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x0);
-> > +               break;
-> > +       case 1:
-> > +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x11);
-> > +               break;
-> > +       default:
-> > +               g_assert_not_reached();
-> > +       }
-> > +        return;
-> > +    }
-> > +#endif
->
-> This needs to cope with the input vectors being more than
-> just 128 bits wide, I think. Also you probably still
-> need the clear_tail() to clear any high bits of the register.
->
+Thanks for looking into this.. definitely worthwhile.
 
-Ah yes, I missed that completely.
+On Wed, May 31, 2023 at 02:23:59PM +0100, Daniel P. Berrangé wrote:
+> There are 27 pre-copy live migration scenarios being tested. In all of
+> these we force non-convergance and run for one iteration, then let it
+> converge and wait for completion during the second (or following)
+> iterations. At 3 mbps bandwidth limit the first iteration takes a very
+> long time (~30 seconds).
+> 
+> While it is important to test the migration passes and convergance
+> logic, it is overkill to do this for all 27 pre-copy scenarios. The
+> TLS migration scenarios in particular are merely exercising different
+> code paths during connection establishment.
+> 
+> To optimize time taken, switch most of the test scenarios to run
+> non-live (ie guest CPUs paused) with no bandwidth limits. This gives
+> a massive speed up for most of the test scenarios.
+> 
+> For test coverage the following scenarios are unchanged
+
+Curious how are below chosen?  I assume..
+
+> 
+>  * Precopy with UNIX sockets
+
+this one verifies dirty log.
+
+>  * Precopy with UNIX sockets and dirty ring tracking
+
+... dirty ring...
+
+>  * Precopy with XBZRLE
+
+... xbzrle I think needs a diff on old/new, makes sense.
+
+>  * Precopy with UNIX compress
+>  * Precopy with UNIX compress (nowait)
+>  * Precopy with multifd
+
+What about the rest three?  Especially for two compression tests.
+
+> 
+> On a test machine this reduces execution time from 13 minutes to
+> 8 minutes.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+
+Thanks,
+
+-- 
+Peter Xu
+
 
