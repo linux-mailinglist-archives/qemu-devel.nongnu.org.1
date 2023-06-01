@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467B871A1E2
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8128771A1E5
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4jtE-0007VD-RH; Thu, 01 Jun 2023 11:07:00 -0400
+	id 1q4jte-0007Zr-Vp; Thu, 01 Jun 2023 11:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4jtC-0007Uv-96
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:06:58 -0400
+ id 1q4jtN-0007Ws-8U
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:07:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4jtA-0007jn-B6
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:06:58 -0400
+ id 1q4jtL-0007pv-Kp
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:07:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685632014;
+ s=mimecast20190719; t=1685632026;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mLQFZ/a0faj7yXedrwziwyPiO5DMy2B8D5sF62Dbcjo=;
- b=QIqAfRk27ZJ4Mwel0K8ruFck2bLLZZopUQDZgtMJKntI/Y6OxNjsMaVZ6ENUvcci7DxlMH
- ozxbvnAiHY4ArRhptzBd1gkJDOPcf/ItqZddiSYE46Pa/fEqi7Gom6GfGbGIj4s6cbcteW
- IBDx+zdYSxSJ1ymbCbkSmsgzHLf0PfE=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lBQXTlVHI0XajC/IcilAyjpiqM2BywFex0dWI0WCr9c=;
+ b=eN+L7YcbFRUAraWBGxEqrR5tlpl/hdmQ1DFUjxF27Bealmrx+8PiJxHUy6djuE1iUnNCge
+ cfYqAykcukvDlQ9OItNzOJ8ZSF3cK1dyLHdlJI3DFWaiNwbVWN8tE8BvagFaFRitco5ZiG
+ E9vKw+q8KJXnU8B1q25J1OsvvFZ2F6g=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-604-dFh5s2paMsOzrwwPACNPWQ-1; Thu, 01 Jun 2023 11:06:53 -0400
-X-MC-Unique: dFh5s2paMsOzrwwPACNPWQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-648-N4VUpPuZOH2VesT600u7Aw-1; Thu, 01 Jun 2023 11:07:02 -0400
+X-MC-Unique: N4VUpPuZOH2VesT600u7Aw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C1D229AB3E9;
- Thu,  1 Jun 2023 15:06:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20DCC3C13933;
+ Thu,  1 Jun 2023 15:06:54 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F0F8540CFD45;
- Thu,  1 Jun 2023 15:06:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 91CA8492B0A;
+ Thu,  1 Jun 2023 15:06:53 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>,
@@ -54,14 +55,17 @@ Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>, libvir-list@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>
-Subject: [PULL v2 00/11] Tracing patches
-Date: Thu,  1 Jun 2023 11:06:38 -0400
-Message-Id: <20230601150649.1591095-1-stefanha@redhat.com>
+ Eric Blake <eblake@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL v2 01/11] *-user: remove the guest_user_syscall tracepoints
+Date: Thu,  1 Jun 2023 11:06:39 -0400
+Message-Id: <20230601150649.1591095-2-stefanha@redhat.com>
+In-Reply-To: <20230601150649.1591095-1-stefanha@redhat.com>
+References: <20230601150649.1591095-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -86,69 +90,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c6a5fc2ac76c5ab709896ee1b0edd33685a67ed1:
+From: Alex Bennée <alex.bennee@linaro.org>
 
-  decodetree: Add --output-null for meson testing (2023-05-31 19:56:42 -0700)
+This is pure duplication now. Both bsd-user and linux-user have
+builtin strace support and we can also track syscalls via the plugins
+system.
 
-are available in the Git repository at:
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20230526165401.574474-2-alex.bennee@linaro.org
+Message-Id: <20230524133952.3971948-2-alex.bennee@linaro.org>
+[Remove unused variable in do_freebsd_syscall() reported by Richard
+Henderson.
+--Stefan]
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ include/user/syscall-trace.h  |  4 ----
+ bsd-user/freebsd/os-syscall.c |  3 ---
+ trace-events                  | 19 -------------------
+ 3 files changed, 26 deletions(-)
 
-  https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
-
-for you to fetch changes up to 367189efae8b53ec2ade37a1c079fd8f69244b9e:
-
-  accel/tcg: include cs_base in our hash calculations (2023-06-01 11:05:05 -0400)
-
-----------------------------------------------------------------
-Pull request
-
-This pull request contains Alex Bennée's vcpu trace events removal patches.
-
-----------------------------------------------------------------
-
-Alex Bennée (11):
-  *-user: remove the guest_user_syscall tracepoints
-  trace-events: remove the remaining vcpu trace events
-  trace: remove vcpu_id from the TraceEvent structure
-  scripts/qapi: document the tool that generated the file
-  docs/deprecated: move QMP events bellow QMP command section
-  qapi: make the vcpu parameters deprecated for 8.1
-  trace: remove code that depends on setting vcpu
-  trace: remove control-vcpu.h
-  tcg: remove the final vestiges of dstate
-  hw/9pfs: use qemu_xxhash4
-  accel/tcg: include cs_base in our hash calculations
-
- docs/about/deprecated.rst     |  25 +++++---
- qapi/trace.json               |  40 ++++++-------
- accel/tcg/tb-hash.h           |   6 +-
- include/exec/exec-all.h       |   3 -
- include/hw/core/cpu.h         |   5 --
- include/qemu/xxhash.h         |  23 +++++--
- include/user/syscall-trace.h  |   4 --
- trace/control-internal.h      |  10 ----
- trace/control-vcpu.h          |  63 --------------------
- trace/control.h               |  48 ---------------
- trace/event-internal.h        |   2 -
- accel/tcg/cpu-exec.c          |   7 +--
- accel/tcg/tb-maint.c          |   5 +-
- accel/tcg/translate-all.c     |   6 --
- bsd-user/freebsd/os-syscall.c |   3 -
- hw/9pfs/9p.c                  |   5 +-
- hw/core/cpu-common.c          |   6 +-
- stubs/trace-control.c         |  13 ----
- trace/control-target.c        | 109 +++-------------------------------
- trace/control.c               |  28 ---------
- trace/qmp.c                   |  76 +++---------------------
- trace/trace-hmp-cmds.c        |  18 +-----
- util/qsp.c                    |   2 +-
- hw/core/trace-events          |   3 +
- scripts/qapi/gen.py           |   9 ++-
- scripts/tracetool/format/c.py |   6 --
- scripts/tracetool/format/h.py |  16 +----
- trace-events                  |  50 ----------------
- 28 files changed, 94 insertions(+), 497 deletions(-)
- delete mode 100644 trace/control-vcpu.h
-
+diff --git a/include/user/syscall-trace.h b/include/user/syscall-trace.h
+index 90bda7631c..557f881a79 100644
+--- a/include/user/syscall-trace.h
++++ b/include/user/syscall-trace.h
+@@ -26,9 +26,6 @@ static inline void record_syscall_start(void *cpu, int num,
+                                         abi_long arg5, abi_long arg6,
+                                         abi_long arg7, abi_long arg8)
+ {
+-    trace_guest_user_syscall(cpu, num,
+-                             arg1, arg2, arg3, arg4,
+-                             arg5, arg6, arg7, arg8);
+     qemu_plugin_vcpu_syscall(cpu, num,
+                              arg1, arg2, arg3, arg4,
+                              arg5, arg6, arg7, arg8);
+@@ -36,7 +33,6 @@ static inline void record_syscall_start(void *cpu, int num,
+ 
+ static inline void record_syscall_return(void *cpu, int num, abi_long ret)
+ {
+-    trace_guest_user_syscall_ret(cpu, num, ret);
+     qemu_plugin_vcpu_syscall_ret(cpu, num, ret);
+ }
+ 
+diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
+index c8f998ecec..de36c4b71c 100644
+--- a/bsd-user/freebsd/os-syscall.c
++++ b/bsd-user/freebsd/os-syscall.c
+@@ -528,10 +528,8 @@ abi_long do_freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+                             abi_long arg5, abi_long arg6, abi_long arg7,
+                             abi_long arg8)
+ {
+-    CPUState *cpu = env_cpu(cpu_env);
+     abi_long ret;
+ 
+-    trace_guest_user_syscall(cpu, num, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+     if (do_strace) {
+         print_freebsd_syscall(num, arg1, arg2, arg3, arg4, arg5, arg6);
+     }
+@@ -541,7 +539,6 @@ abi_long do_freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+     if (do_strace) {
+         print_freebsd_syscall_ret(num, ret);
+     }
+-    trace_guest_user_syscall_ret(cpu, num, ret);
+ 
+     return ret;
+ }
+diff --git a/trace-events b/trace-events
+index b6b84b175e..691c3533e4 100644
+--- a/trace-events
++++ b/trace-events
+@@ -85,22 +85,3 @@ vcpu guest_cpu_exit(void)
+ # Targets: all
+ vcpu guest_cpu_reset(void)
+ 
+-# include/user/syscall-trace.h
+-
+-# @num: System call number.
+-# @arg*: System call argument value.
+-#
+-# Start executing a guest system call in syscall emulation mode.
+-#
+-# Mode: user
+-# Targets: TCG(all)
+-vcpu guest_user_syscall(uint64_t num, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4, uint64_t arg5, uint64_t arg6, uint64_t arg7, uint64_t arg8) "num=0x%016"PRIx64" arg1=0x%016"PRIx64" arg2=0x%016"PRIx64" arg3=0x%016"PRIx64" arg4=0x%016"PRIx64" arg5=0x%016"PRIx64" arg6=0x%016"PRIx64" arg7=0x%016"PRIx64" arg8=0x%016"PRIx64
+-
+-# @num: System call number.
+-# @ret: System call result value.
+-#
+-# Finish executing a guest system call in syscall emulation mode.
+-#
+-# Mode: user
+-# Targets: TCG(all)
+-vcpu guest_user_syscall_ret(uint64_t num, uint64_t ret) "num=0x%016"PRIx64" ret=0x%016"PRIx64
 -- 
 2.40.1
 
