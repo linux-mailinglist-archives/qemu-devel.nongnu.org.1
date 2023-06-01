@@ -2,168 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5F57193CD
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5167193F7
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 09:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4cIC-0001oC-II; Thu, 01 Jun 2023 03:00:16 -0400
+	id 1q4cVJ-0002zM-6A; Thu, 01 Jun 2023 03:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q4cI1-0001nw-LS
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 03:00:06 -0400
-Received: from mga05.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
+ id 1q4cVD-0002yh-76; Thu, 01 Jun 2023 03:13:44 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q4cHy-0000sR-Bc
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 03:00:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685602802; x=1717138802;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=sH716KP7w/P4GoQSk7uJC1Mql2HC1KY4TfQe0bdtbEk=;
- b=QrTG5rDGjtB5PqnCkGcCD49b81zdWAsndb0RHeN5kheZMwNgt559ZR4z
- BJRqUQyFg2+ruFNZL3hTjwXwtp33IfAv+hIZdGiC0p6rRjBornBty1nS9
- 8QR33BPuRrvGxpmPIqc/Dn+Lr0ewsirp52gQi1+Xu3s3oYwK/R9r74c/W
- m1UT6uSfT4+W7LDzPwq7SNcI/hjiW7oTDQyv8wVTvvohbx5/CzdqlO079
- GQ/v0XaYfQbwWi1txlSnvdeu53gzP1+1VIw3roZ/RBxmG5sixjiNdadx3
- N7TTu9Vg8R6Z89FsT8Op7inQR/0+rVCF6mkt90sCR6ZvgC11Dp1Nfb/LI g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="441831817"
-X-IronPort-AV: E=Sophos;i="6.00,209,1681196400"; d="scan'208";a="441831817"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2023 23:59:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="831469575"
-X-IronPort-AV: E=Sophos;i="6.00,209,1681196400"; d="scan'208";a="831469575"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orsmga004.jf.intel.com with ESMTP; 31 May 2023 23:59:55 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 31 May 2023 23:59:55 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 31 May 2023 23:59:54 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Wed, 31 May 2023 23:59:54 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Wed, 31 May 2023 23:59:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CBWhPnAaOh+6wjdE0EOkk5plbgO+ORKoPUxj17YEHumcvfrtKUeCpaptVqgUjAaqICQHHcSUx0KpJwAAWPBwrOTqckTMv3E9MdAstgUJ5uABGGzHK3fT7Ou8WEjoQ4+bZfQdw9Et09KHMi20u0J+SK1IQK9uvgy52VJHnE6D8ALhv8sdKQZF1uYC/3agQbv9av7WnsK01FLNkyIGax1FhjJ5WMEF+RbY1/uwfRT05c0O519XcnhXGx238KVYCccwfIFVBgINLhqVDfa8m3i/OKMXlEmWx5b4y7Sc7e3EQyU+GT0qH+yuE/M4KgN8RH8K/TljKOnalub5VaEPhKn/yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KKIgIWhLBqtdVMgEzUQIjzErzZQJKlH3Jho3Ps0IAQU=;
- b=GBxf5lXT9JytfA5c/wSQHAfIi42mpkFGSYyJzgas9uhXttmjyYZTRqZdvkJwm6Bki2/jwMZ9lZn+kL7wdsJSbB6nRIvsm9BYHqkKxoHr+Ld8pyGX3m9zwQ4MLT90z9us4yqgxM6su9UgJyPQfQuS3ofkgb6O4quFJBYNyXKz5qZF4TfdlTHBnaLNO5vM0uybHa+LKzw4h6EwxnuSj8BoEUVOtC5V7ngl690Etmu5arrPSkib2A3V2TFzC2w0Gg3FVYaLxLn7/JxC1qbiB7YtWb62S6IRwczzmj4X24N4/9WARtfkUKJleRkVTFZUbWdDMOgljvCDE1gkOUBJuLAQzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BY5PR11MB4500.namprd11.prod.outlook.com (2603:10b6:a03:1c3::24)
- by DS7PR11MB7805.namprd11.prod.outlook.com (2603:10b6:8:ea::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.24; Thu, 1 Jun
- 2023 06:59:44 +0000
-Received: from BY5PR11MB4500.namprd11.prod.outlook.com
- ([fe80::db38:4ad3:bc43:5602]) by BY5PR11MB4500.namprd11.prod.outlook.com
- ([fe80::db38:4ad3:bc43:5602%4]) with mapi id 15.20.6455.020; Thu, 1 Jun 2023
- 06:59:43 +0000
-Message-ID: <23f9d94c-6c4f-d915-b1e4-c195404afe65@intel.com>
-Date: Thu, 1 Jun 2023 14:59:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v14 05/10] debug: add -d tb_stats to control TBStatistics
- collection:
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
-CC: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-References: <20230530083526.2174430-1-fei2.wu@intel.com>
- <20230530083526.2174430-6-fei2.wu@intel.com>
- <4c32a2e4-1370-b81f-9fec-2603648c60c3@linaro.org>
-From: "Wu, Fei" <fei2.wu@intel.com>
-In-Reply-To: <4c32a2e4-1370-b81f-9fec-2603648c60c3@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR06CA0237.apcprd06.prod.outlook.com
- (2603:1096:4:ac::21) To BY5PR11MB4500.namprd11.prod.outlook.com
- (2603:10b6:a03:1c3::24)
+ (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
+ id 1q4cV8-0003Vi-4i; Thu, 01 Jun 2023 03:13:42 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QWy5w4bB7z4x41;
+ Thu,  1 Jun 2023 17:13:24 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWy5t215fz4x3g;
+ Thu,  1 Jun 2023 17:13:21 +1000 (AEST)
+Message-ID: <60f0d393-f0b5-cc06-feff-a8f00e5a32b3@kaod.org>
+Date: Thu, 1 Jun 2023 09:13:17 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR11MB4500:EE_|DS7PR11MB7805:EE_
-X-MS-Office365-Filtering-Correlation-Id: 544b8dc4-a062-4e36-99ed-08db626dc70c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zq/p03lf/GHFfIDUrlsrTJTqVzVK6v4JTfa2ILXh81bH1wxqYCKW64zLZjQZr2EJ5xa46uD2xNgaFfLu1nTkkh1G1Ou6GxMhhoJuMRuK7OBigBAhRvoq7Q7UOAA7sIv/9GJOgSTNsi2GR2Sp5soPJhQuTJoROyf+UcRQVM3i3KASBDR1vkUYVGLGKV88KzR+nqrDLupZKTdgkwHCVEy6nwvmYmPH/55AN6HFj68hOrGrwasrwLgth+HLlZeAn9piNpVcY9IwPmut56+oIumOuDElv8Z0YF8TpaHeg7CuQL1IKzqTz0IplbQJFxxy1ZoA+LVWll+ba5xrTzlel5vJcguHmWUiCzAc1ANI5xaYi8FnDdnl0uDepq5da1wSjBcViWurf6EMR9OccSAMAXT3TXeDflKc0eCQEWZJKa4HClqQO8RUMLOqwbJsC+55B4JZ2hw+ZjnbRa3U9lRnX1iPafoad0dqw7ABRT6aVjbQ+ShbD6s2P2Q0683k4cnhxXRLe9H7pX8x+pDRnv/DSd9gGxFxc7lS8OsTZ0LJ8he3pxtw4I7eSP8IJ34xA3ff75kYr1GJIQEIKlLkDAa0nQaOTUKB/Oj3ZuYJGHVJJpYUCo/4LzXDD4BXCA03p73uJouBygM+I3ERyZQIHy8Ru4cnzg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR11MB4500.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(39860400002)(366004)(136003)(376002)(346002)(451199021)(82960400001)(38100700002)(36756003)(31696002)(86362001)(31686004)(8676002)(8936002)(41300700001)(26005)(6506007)(6512007)(53546011)(5660300002)(66946007)(186003)(2616005)(83380400001)(316002)(66556008)(66476007)(6486002)(4744005)(54906003)(478600001)(6666004)(4326008)(2906002)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aXRSWnlWamdSOVB6NGcxKzR4WUtxTlBCMVh0cTdGakRDb2pqT1RIU3U0cndS?=
- =?utf-8?B?cVR0Sk1EL2xGdmU3alkwSWZ2MmpKM3l5UlJaQnZLR3hyaTltTHZkemNLNDZ5?=
- =?utf-8?B?NnhabC9uVTF0RlU4Q1RSWm5KcU9qNzk1NitqblRFNDZQRDhBT3M2eW1RUDN3?=
- =?utf-8?B?R3NaOEgrUmkrbFdrWi8vT3o5QzgvdzJTTWZ5U1JRNnN1MEh0bllJOHZYRDRS?=
- =?utf-8?B?bmZjMmd6cFRJcjA0Mm1Uc0VDWHpiQldkdjVKQjNqUVN3WXFzdWVNb3Ntd3Za?=
- =?utf-8?B?R0FsYUY5R09GaDlMWnZ2Mng4ZjF0ZUdPT3JXU2p3V094T0w2R0E4c1hyeG5T?=
- =?utf-8?B?K0UwQXdPM1pYTGhhZUQvWC9IcmZDOXBmd2VZUjFFT3NUZllpWDg2Mk1IR3V1?=
- =?utf-8?B?U0VBWWxHZVVOSzZUV2l6a0Q1R1hIaGVseTBaNkdESSt1dmVZZ1huNy9hV3dz?=
- =?utf-8?B?WVhsekVmVGR5VkZTUGo3alZZMWcraEZrME1VZ1ROU3FoMysxcE43eGVOcGc4?=
- =?utf-8?B?NWtjZWNrVzRSYUlkSEl4WFBXWjFRbnplWldoZG1mY1gwZFUzTUJRY1BRZyty?=
- =?utf-8?B?QWNGNjFDSWg5M0R5ZTRPUUVCQTJ4TzJxTXZ5d0JEM1VjWFJsNVg2R20xaG5S?=
- =?utf-8?B?bDVtOGUzbTFzdEhvWHpZdFg4SG41NzZmd0UyR2FYc3FTUUNTNjFiUzdoQVBL?=
- =?utf-8?B?aTgrem1sY09FMmpnUlNualBLOTFnYUdtcGpDaWNGMXhhK1RjNXBiQ2Y2VWtw?=
- =?utf-8?B?SS83OHB3OU9LS0hOS2p5UlN0bmxHYUpXcVRseU5yamh0c2JUQmlTYnR6K2dw?=
- =?utf-8?B?MDh2V1JySnhrRGR6ekdhaGVZQ3JQZDhwaG5vVGdZdGRhS3gyTnVzTkZYOEZT?=
- =?utf-8?B?eEZ4QzJRVm4ySExEWk9XejhQaWNuT2N6bEpvS2FnV1RyeTlHaldKNHZHWGZ2?=
- =?utf-8?B?MnZrZHBFUjZBVk9TNDVQRC9yWGdJeG13S05pT012L3U4V1VOUVd5dndMUUFO?=
- =?utf-8?B?UVI0emZ5dkEvVmlUSkxiZytyMURvYmpmUUJoUFI4dE5mMmRLR3JiNytqTXdU?=
- =?utf-8?B?NHlNYkxJZjZ1MDB2NnJFejJXZXR2QmZVUGZ6RElxQXdsZ2FyS1p6ZUxwWTl3?=
- =?utf-8?B?Mm1UbXY4dkpFWERkSUU2TUc2UDlyQWJpOEV4cm03N2kwdHQ1c1ZCRFYvTTVw?=
- =?utf-8?B?cXZrVys1SE1rWWlzMDJnUnBMcmtJTHlmYWphZ3FIdGt4UXNUUU9iV01QdCsr?=
- =?utf-8?B?RkhuZld3VXVCVEJSeDBpbVZtSStjdThWT0NzU0R3ZE9uZ0pSbDBzU1o4V05j?=
- =?utf-8?B?WExzdC9XMDdXUUx1T2t0aGEyNVdRdG00cWRoc1ZKNGdWNjkrS2s5cnBjek9C?=
- =?utf-8?B?TVpqWGY3YnRnYU9xUzJGcU9wVFZlRitoVGtNT0RBUXFQU25wWkR1Um9qVGNN?=
- =?utf-8?B?RUNROWVXWVYvczZ1ckM0eE4yOGNmZUdzUzVmYkgzYWpVdUhjRVZoQk9uTXhH?=
- =?utf-8?B?UUlQcHc2TnVsRXdlTW12Q0RiYkdCZnZvdmhCMHl0NlhTS3hWWjJPR0tiaEs1?=
- =?utf-8?B?aUcyM29BVjI0dEhMWGVkRzU0M0Z0c1NSVGt6VzBNS1dRSitrQU1WOHNVWEJY?=
- =?utf-8?B?VklhM3ZUeFVmT2I0cTV0dmFtSHdXdjdSM2loWk5vaUVkdjV4ZWlGYy9EQkNt?=
- =?utf-8?B?MVJ0ZFQ0MFcrNUR2V3BmV3BlanZoTkh4a1hHdWh3KzNrWkZWT0YxTXpyV3NX?=
- =?utf-8?B?bDNkOTU1TGZLekZmSktJdnZVem1CaXdYWTc4RktSM1BUbE5xR0lPdEk4SDQ2?=
- =?utf-8?B?VFE0UlRsVm4xWEphZHUvRThlY1ZXNGRoelpBV1VtczZjVHEzWE9FSEVJNm5M?=
- =?utf-8?B?cFRHamdwWktNNmJDZnRrOGkxQ1hBZTFVVFJvZ1RKOUdmWXlxNFNJblMvUFA1?=
- =?utf-8?B?aUcyQUJjQXF1KzBZQlZXNWpIVHcvWE9UQ1BveUszbTJyeHlzOFNLaFh4ak1n?=
- =?utf-8?B?SDFEOXJUblp1MHlFNDljQzFWbnNnUWtYMmJNVlJzNDYxWmZRL045Z3QzN2pH?=
- =?utf-8?B?Sks5cnQrZzFhSkVydG5ZbW04YXdQVGF4dzlHdTllWExKZDhhWDhneHBTUUM2?=
- =?utf-8?Q?dsgbozlpgPcpMQjjToaUhRPcG?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 544b8dc4-a062-4e36-99ed-08db626dc70c
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4500.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 06:59:43.6647 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pf/3JsrSuifejIIBV0JbJqhqNNhyml8VrR4gfC8aAwmQWKaqalyjrT+m1WNVo+ti4KjsijanCmiBfKFfs/eiNA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7805
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.43; envelope-from=fei2.wu@intel.com;
- helo=mga05.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 4/5] target/ppc: Add msgsnd/p and DPDES SMT support
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230531012313.19891-1-npiggin@gmail.com>
+ <20230531012313.19891-5-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230531012313.19891-5-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=vOrz=BV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -179,38 +63,370 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/2023 9:18 AM, Richard Henderson wrote:
-> On 5/30/23 01:35, Fei Wu wrote:
->> From: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>
->>
->>   -d tb_stats[[,level=(+all+jit+exec+time)][,dump_limit=<number>]]
->>
->> "dump_limit" is used to limit the number of dumped TBStats in
->> linux-user mode.
+On 5/31/23 03:23, Nicholas Piggin wrote:
+> Doorbells in SMT need to coordinate msgsnd/msgclr and DPDES access from
+> multiple threads that affect the same state.
 > 
-> Why is user-mode special?
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   hw/ppc/ppc.c                                  |  6 ++
+>   include/hw/ppc/ppc.h                          |  1 +
+>   target/ppc/cpu.h                              |  7 +-
+>   target/ppc/excp_helper.c                      | 86 +++++++++++++------
+>   target/ppc/gdbstub.c                          |  2 +-
+>   target/ppc/helper.h                           |  2 +-
+>   target/ppc/misc_helper.c                      | 60 +++++++++++--
+>   target/ppc/translate.c                        |  8 ++
+>   .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
+>   9 files changed, 140 insertions(+), 34 deletions(-)
 > 
-Should be an issue in comment, not in code.
+> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+> index 80b4706db2..e30853413b 100644
+> --- a/hw/ppc/ppc.c
+> +++ b/hw/ppc/ppc.c
+> @@ -1434,6 +1434,12 @@ int ppc_cpu_pir(PowerPCCPU *cpu)
+>       return env->spr_cb[SPR_PIR].default_value;
+>   }
+>   
+> +int ppc_cpu_tir(PowerPCCPU *cpu)
+> +{
+> +    CPUPPCState *env = &cpu->env;
+> +    return env->spr_cb[SPR_PIR].default_value;
 
->>
->> [all+jit+exec+time] control the profilling level used
->> by the TBStats. Can be used as follow:
->>
->> -d tb_stats
->> -d tb_stats,level=jit+time
-> 
-> Comma is already used to separate different -d options.
-> You should not overload that.
-> 
-> "level" doesn't make sense for things that aren't hierarchical.
-> 
-> What's wrong with tb-stats-{all,jit,time,exec}?
-> 
-Let me try.
+PIR or TIR ?
 
-Thanks,
-Fei.
-> 
-> r~
+> +}
+> +
+>   PowerPCCPU *ppc_get_vcpu_by_pir(int pir)
+>   {
+>       CPUState *cs;
+> diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
+> index 02af03ada2..e095c002dc 100644
+> --- a/include/hw/ppc/ppc.h
+> +++ b/include/hw/ppc/ppc.h
+> @@ -6,6 +6,7 @@
+>   void ppc_set_irq(PowerPCCPU *cpu, int n_IRQ, int level);
+>   PowerPCCPU *ppc_get_vcpu_by_pir(int pir);
+>   int ppc_cpu_pir(PowerPCCPU *cpu);
+> +int ppc_cpu_tir(PowerPCCPU *cpu);
+>   
+>   /* PowerPC hardware exceptions management helpers */
+>   typedef void (*clk_setup_cb)(void *opaque, uint32_t freq);
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index b594408a8d..b04b309c71 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -1056,7 +1056,12 @@ FIELD(FPSCR, FI, FPSCR_FI, 1)
+>   
+>   #define DBELL_TYPE_DBELL_SERVER        (0x05 << DBELL_TYPE_SHIFT)
+>   
+> -#define DBELL_BRDCAST                  PPC_BIT(37)
+> +/* XXX: make sure this does not break BookE */
+> +#define DBELL_BRDCAST_MASK             PPC_BITMASK(37, 38)
+> +#define DBELL_BRDCAST_SHIFT            25
+> +#define DBELL_BRDCAST_SUBPROC          (0x1 << DBELL_BRDCAST_SHIFT)
+> +#define DBELL_BRDCAST_CORE             (0x2 << DBELL_BRDCAST_SHIFT)
+> +
+>   #define DBELL_LPIDTAG_SHIFT            14
+>   #define DBELL_LPIDTAG_MASK             (0xfff << DBELL_LPIDTAG_SHIFT)
+>   #define DBELL_PIRTAG_MASK              0x3fff
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 4925996cf3..5fc2e17269 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -3085,7 +3085,7 @@ void helper_msgsnd(target_ulong rb)
+>           PowerPCCPU *cpu = POWERPC_CPU(cs);
+>           CPUPPCState *cenv = &cpu->env;
+>   
+> -        if ((rb & DBELL_BRDCAST) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
+> +        if ((rb & DBELL_BRDCAST_MASK) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
+>               ppc_set_irq(cpu, irq, 1);
+>           }
+>       }
+> @@ -3104,6 +3104,16 @@ static bool dbell_type_server(target_ulong rb)
+>       return (rb & DBELL_TYPE_MASK) == DBELL_TYPE_DBELL_SERVER;
+>   }
+>   
+> +static inline bool dbell_type_bcast_core(target_ulong rb)
+> +{
+> +    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_CORE;
+> +}
+> +
+> +static inline bool dbell_type_bcast_subproc(target_ulong rb)
+> +{
+> +    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
+> +}
+> +
+>   void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
+>   {
+>       if (!dbell_type_server(rb)) {
+> @@ -3113,32 +3123,40 @@ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
+>       ppc_set_irq(env_archcpu(env), PPC_INTERRUPT_HDOORBELL, 0);
+>   }
+>   
+> -static void book3s_msgsnd_common(int pir, int irq)
+> +void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
+>   {
+> -    CPUState *cs;
+> -
+> -    qemu_mutex_lock_iothread();
+> -    CPU_FOREACH(cs) {
+> -        PowerPCCPU *cpu = POWERPC_CPU(cs);
+> -        CPUPPCState *cenv = &cpu->env;
+> +    int pir = rb & DBELL_PROCIDTAG_MASK;
+> +    int brdcast = rb & DBELL_BRDCAST_MASK;
+> +    CPUState *cs, *ccs;
+> +    PowerPCCPU *cpu;
+>   
+> -        /* TODO: broadcast message to all threads of the same  processor */
+> -        if (cenv->spr_cb[SPR_PIR].default_value == pir) {
+> -            ppc_set_irq(cpu, irq, 1);
+> -        }
+> +    if (!dbell_type_server(rb)) {
+> +        return;
+>       }
+> -    qemu_mutex_unlock_iothread();
+> -}
+>   
+> -void helper_book3s_msgsnd(target_ulong rb)
+> -{
+> -    int pir = rb & DBELL_PROCIDTAG_MASK;
+> +    cpu = ppc_get_vcpu_by_pir(pir);
+> +    if (!cpu) {
+> +        return;
+> +    }
+> +    cs = CPU(cpu);
+>   
+> -    if (!dbell_type_server(rb)) {
+> +    if (cs->nr_threads == 1 || !brdcast) {
+> +        ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
+>           return;
+>       }
+>   
+> -    book3s_msgsnd_common(pir, PPC_INTERRUPT_HDOORBELL);
+> +    /* WHy does iothread need to be locked for walking CPU list? */
+> +    /* Answer seems to be because ppc irq handling needs it, but it now takes
+> +     * the lock itself if needed. Could remove this then.
+> +     */
+> +    qemu_mutex_lock_iothread();
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+> +        if (cpu != ccpu) {
+> +            ppc_set_irq(ccpu, PPC_INTERRUPT_HDOORBELL, 1);
+> +        }
+> +    }
+> +    qemu_mutex_unlock_iothread();
+>   }
+>   
+>   #if defined(TARGET_PPC64)
+> @@ -3154,22 +3172,42 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+>   }
+>   
+>   /*
+> - * sends a message to other threads that are on the same
+> + * sends a message to another thread  on the same
+>    * multi-threaded processor
+>    */
+>   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+>   {
+> -    int pir = env->spr_cb[SPR_PIR].default_value;
+> +    CPUState *cs = env_cpu(env);
+> +    PowerPCCPU *cpu = POWERPC_CPU(cs);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +    int ttir = rb & PPC_BITMASK(57, 63);
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
+>   
+> -    if (!dbell_type_server(rb)) {
+> +    if (!dbell_type_server(rb) || ttir >= nr_threads) {
+
+may be log bad ttir values ? even if the insn is a no-op in that case,
+telling the user would be good since it should be a guest os issue
+
+> +        return;
+> +    }
+> +
+> +    if (nr_threads == 1) {
+> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
+>           return;
+>       }
+>   
+> -    /* TODO: TCG supports only one thread */
+> +    /* WHy does iothread need to be locked for walking CPU list? */
+> +    qemu_mutex_lock_iothread();
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+> +        uint32_t thread_id = ppc_cpu_tir(ccpu);
+> +
+> +        if (ttir == thread_id) {
+> +            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
+> +            qemu_mutex_unlock_iothread();
+> +            return;
+> +        }
+> +    }
+>   
+> -    book3s_msgsnd_common(pir, PPC_INTERRUPT_DOORBELL);
+> +    assert(0);
+>   }
+>   #endif /* TARGET_PPC64 */
+>   
+> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+> index ca39efdc35..f0304e5bb6 100644
+> --- a/target/ppc/gdbstub.c
+> +++ b/target/ppc/gdbstub.c
+> @@ -117,7 +117,7 @@ void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
+>    * regs and PC, MSR, CR, and so forth.  We hack round this by giving
+>    * the FP regs zero size when talking to a newer gdb.
+>    */
+> -
+> +/* XXX: read/write dpdes correctly */
+>   int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+>   {
+>       PowerPCCPU *cpu = POWERPC_CPU(cs);
+> diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+> index fda40b8a60..5ce49c7ebc 100644
+> --- a/target/ppc/helper.h
+> +++ b/target/ppc/helper.h
+> @@ -690,7 +690,7 @@ DEF_HELPER_FLAGS_3(store_sr, TCG_CALL_NO_RWG, void, env, tl, tl)
+>   
+>   DEF_HELPER_1(msgsnd, void, tl)
+>   DEF_HELPER_2(msgclr, void, env, tl)
+> -DEF_HELPER_1(book3s_msgsnd, void, tl)
+> +DEF_HELPER_2(book3s_msgsnd, void, env, tl)
+>   DEF_HELPER_2(book3s_msgclr, void, env, tl)
+>   #endif
+>   
+> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+> index ffe54a4310..ca84f1b134 100644
+> --- a/target/ppc/misc_helper.c
+> +++ b/target/ppc/misc_helper.c
+> @@ -192,14 +192,38 @@ void helper_store_pcr(CPUPPCState *env, target_ulong value)
+>    */
+>   target_ulong helper_load_dpdes(CPUPPCState *env)
+>   {
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
+
+you could add an helper for the above.
+
+>       target_ulong dpdes = 0;
+>   
+> +    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
+> +
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
+>   
+> -    /* TODO: TCG supports only one thread */
+> -    if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+> -        dpdes = 1;
+> +    if (nr_threads == 1) {
+> +        if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+> +            dpdes = 1;
+> +        }
+> +        return dpdes;
+> +    }
+> +
+> +    qemu_mutex_lock_iothread();
+> +    CPU_FOREACH(ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        uint32_t ccore_id = cenv->spr[SPR_PIR] & ~(nr_threads - 1);
+> +        uint32_t thread_id = cenv->spr[SPR_TIR];
+> +
+> +        assert(ccore_id == cenv->spr[SPR_PIR] - cenv->spr[SPR_TIR]);
+> +
+> +        if (ccore_id == core_id) {
+> +            if (cenv->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+> +                dpdes |= (0x1 << thread_id);
+> +            }
+> +        }
+>       }
+> +    qemu_mutex_unlock_iothread();
+>   
+>       return dpdes;
+>   }
+> @@ -207,17 +231,41 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
+>   void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+>   {
+>       PowerPCCPU *cpu = env_archcpu(env);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
+> +
+> +    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
+>   
+> -    /* TODO: TCG supports only one thread */
+> -    if (val & ~0x1) {
+> +    if (val & ~(nr_threads - 1)) {
+>           qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
+>                         TARGET_FMT_lx"\n", val);
+> +        val &= ~(nr_threads - 1);
+> +        /* Ignore the invalid bits */
+> +    }
+> +
+> +    if (nr_threads == 1) {
+> +        /* XXX: don't need iothread lock? */
+> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+>           return;
+>       }
+>   
+> -    ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+> +    qemu_mutex_lock_iothread();
+> +    CPU_FOREACH(ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        uint32_t ccore_id = cenv->spr[SPR_PIR] & ~(nr_threads - 1);
+> +        uint32_t thread_id = cenv->spr[SPR_TIR];
+> +
+> +        assert(ccore_id == cenv->spr[SPR_PIR] - cenv->spr[SPR_TIR]);
+> +
+> +        if (ccore_id == core_id) {
+> +            ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
+> +        }
+> +    }
+> +    qemu_mutex_unlock_iothread();
+>   }
+>   #endif /* defined(TARGET_PPC64) */
+>   
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 31821f92f5..0aa49323d3 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -820,11 +820,19 @@ void spr_write_pcr(DisasContext *ctx, int sprn, int gprn)
+>   /* DPDES */
+>   void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
+>   {
+> +    if (!gen_serialize_core(ctx)) {
+> +        return;
+> +    }
+> +
+>       gen_helper_load_dpdes(cpu_gpr[gprn], cpu_env);
+>   }
+>   
+>   void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core(ctx)) {
+> +        return;
+> +    }
+> +
+>       gen_helper_store_dpdes(cpu_env, cpu_gpr[gprn]);
+>   }
+>   #endif
+> diff --git a/target/ppc/translate/processor-ctrl-impl.c.inc b/target/ppc/translate/processor-ctrl-impl.c.inc
+> index cc7a50d579..7dfbcd781f 100644
+> --- a/target/ppc/translate/processor-ctrl-impl.c.inc
+> +++ b/target/ppc/translate/processor-ctrl-impl.c.inc
+> @@ -59,7 +59,7 @@ static bool trans_MSGSND(DisasContext *ctx, arg_X_rb *a)
+>   
+>   #if !defined(CONFIG_USER_ONLY)
+>       if (is_book3s_arch2x(ctx)) {
+> -        gen_helper_book3s_msgsnd(cpu_gpr[a->rb]);
+> +        gen_helper_book3s_msgsnd(cpu_env, cpu_gpr[a->rb]);
+>       } else {
+>           gen_helper_msgsnd(cpu_gpr[a->rb]);
+>       }
 
 
