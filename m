@@ -2,94 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF8071EFE0
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8EA971F08A
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 19:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kCB-0004by-S1; Thu, 01 Jun 2023 11:26:37 -0400
+	id 1q4kEk-0002eo-BO; Thu, 01 Jun 2023 11:29:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4kC7-0004al-KS
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:26:31 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4kBj-0003SI-9u
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:26:31 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-651f2f38634so284676b3a.0
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685633164; x=1688225164;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Op1fcO/KreHhs6nVLwSa9byRMpmdLVPcA9LfX4O4UwM=;
- b=leQYftY+trsk4uI4mRqyn47xYAG0PeZzn/s4r1n7dt0V7V/gzXYqBpSTCzZG659rbh
- IQjeniPK/EO8Dm8HPUUQT11z7BwMFcOwWKb98RuwS3DJRXRaMMPX6QYcOfzqKTxfF5hZ
- M2SR2JuHnDT1iNqVU9LIln+To2J2mZvO41QnJ21e+JDd13glIwewNFUbfAEYqDUgceYx
- vKS11DugbcQU+E7pJEv88QynnQT3/rOe+s29jW7H9hlCHbhIBPmDbnybfyaFbno3ZT7l
- EPEQMfrHrBPwaznjUIXMPEvdA/Uns7OJC06lmXav80BP0f0vrtAiJNdt63LoK4mS8sFn
- Xj5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685633164; x=1688225164;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Op1fcO/KreHhs6nVLwSa9byRMpmdLVPcA9LfX4O4UwM=;
- b=NcPGFjcr4eIibjvdj06b7mpGMKhcKim8Uwc11XpQCu8MP8/Ou7QAL5xT315zjvkJSp
- w975vwAt6SGpSFXRPt2YGxSzF4AZ/vPYrSwVY4Edd8CJblYKOWsosR1tqNs5I0mzazfK
- o8wD0tfntG/c5rq3J9QiYgTmUAmiuhzF+T8VTixO6sT4ulotnAEBFquuZEYMKMTWfpCV
- z70SvS1aUtQCE8m1wcV+iUCqz7rCyiUbc0xja1BMuE16ukJCYSzmbjzaw+4m5PkdFf04
- v36yP7PRnfMBb+iEslebPiBDaTnbM+Ec6sFNarWW2/uCIc5brFAuR9xVgI11vMvJijCJ
- MnVw==
-X-Gm-Message-State: AC+VfDykQmkbMjyYMwG9xIf+K9ygp0YVsfnHTcCzVSVayNFU6G1BK9Q1
- nvxtmAFqoFO4PuxVet5IK4YmsA==
-X-Google-Smtp-Source: ACHHUZ6t2oYdzN0befqhSkJT/y+3kECHcPsW7wI2gYmkwUbjCT7mcAG+etT9WZE+DtwnQVxG+3/cKA==
-X-Received: by 2002:a05:6a00:1693:b0:64f:e997:5107 with SMTP id
- k19-20020a056a00169300b0064fe9975107mr12465730pfc.1.1685633164018; 
- Thu, 01 Jun 2023 08:26:04 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c935:f07f:4b59:7091?
- ([2602:ae:1598:4c01:c935:f07f:4b59:7091])
- by smtp.gmail.com with ESMTPSA id
- a3-20020aa780c3000000b0064ff855751fsm4836896pfn.4.2023.06.01.08.26.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 08:26:03 -0700 (PDT)
-Message-ID: <1ee7584b-7cb5-44f3-eeca-cb93a143e7f2@linaro.org>
-Date: Thu, 1 Jun 2023 08:26:01 -0700
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
+ id 1q4kEi-0002eH-6d; Thu, 01 Jun 2023 11:29:12 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
+ id 1q4kEg-0004WP-8p; Thu, 01 Jun 2023 11:29:11 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 01FC56342E;
+ Thu,  1 Jun 2023 15:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6552DC4339B;
+ Thu,  1 Jun 2023 15:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1685633347;
+ bh=vBJv4Uc0t8gua2ApVQioKbg9Il4lz1BvPgF/JwElDj0=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=oka4Sma6u+AVM2PxFUaalPuy06uADBcKT81IaJMQ/3zqMoiK52u3sak9OSa5YdS0U
+ mjj2vDfgXwgLDVRn4AkI+KOghn7XBf3XqWo57rhQvmZ2bHhV2/wjCZAwr3JfAAnDJe
+ piTRlPcocJ9tF3NhbI4lPSG4SLeC5W4lDpM0ubnGdtPqXfr5IQDLD1D004tNgl6DS2
+ otHd5vG8nmGbH7Gx4sRpoq+9fsdh5nIqqMgqpyWXA3FVAxWKbmYFBRedmoaeKVleXP
+ LSpv46f/pnZQFPtxxqsssD+0fL/r/JUfBbaQHOKnKlNDkedwHjBDiAY825/X8wS78K
+ luWfyx0DZYg9w==
+Received: by mail-lj1-f173.google.com with SMTP id
+ 38308e7fff4ca-2b1a653b409so6355491fa.0; 
+ Thu, 01 Jun 2023 08:29:07 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzb10mY2R6cYbR371Zvib+OwVmRnP2mMYYeRXOV84RNWFiHLHlT
+ ICD7h++4jZo4+Jo31rb+LI7xvkPxY3lF2tx2vJg=
+X-Google-Smtp-Source: ACHHUZ4mY/itY6ayiLHHVX8o4S1srmJ2SljhxZbAwBT8PedtCwbkQfOLrfMpMs7NZLGczcUrXWdgQklLMtIZCcwJYbc=
+X-Received: by 2002:a2e:8195:0:b0:2a2:ac00:4de4 with SMTP id
+ e21-20020a2e8195000000b002a2ac004de4mr829023ljg.22.1685633345317; Thu, 01 Jun
+ 2023 08:29:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v13 04/10] accel/tcg: add jit stats and time to
- TBStatistics
-Content-Language: en-US
-To: "Wu, Fei" <fei2.wu@intel.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "Vanderson M . do Rosario"
- <vandersonmr2@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-References: <20230529114947.2123652-1-fei2.wu@intel.com>
- <20230529114947.2123652-5-fei2.wu@intel.com>
- <98196efc-213f-3351-1564-5008ccd90f36@linaro.org>
- <ddc552ba-c95d-4b31-01d2-a6d70a978f1c@intel.com>
- <a6a88248-4142-baa6-dc86-b6d471477384@intel.com> <87cz2idt3m.fsf@linaro.org>
- <ec09d167-18af-9170-3d35-2d55fa6112d8@intel.com> <87bkhzbdrx.fsf@linaro.org>
- <810dbb1d-50d5-8f69-fe07-62afa7d63465@intel.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <810dbb1d-50d5-8f69-fe07-62afa7d63465@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230601123332.3297404-1-ardb@kernel.org>
+ <20230601123332.3297404-2-ardb@kernel.org>
+ <CAFEAcA_Z_3xNC6HjuyvRtf+s9pJjGsZeSZ87VG03J2yZZ60Wtw@mail.gmail.com>
+In-Reply-To: <CAFEAcA_Z_3xNC6HjuyvRtf+s9pJjGsZeSZ87VG03J2yZZ60Wtw@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 1 Jun 2023 17:28:54 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEUUfvVRebCe0mAU5PBZzWHbe9r-1n2MOsJW+sDK86HcQ@mail.gmail.com>
+Message-ID: <CAMj1kXEUUfvVRebCe0mAU5PBZzWHbe9r-1n2MOsJW+sDK86HcQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/arm: Use x86 intrinsics to implement PMULL.P64
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,57 +82,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/23 05:48, Wu, Fei wrote:
-> On 6/1/2023 7:51 PM, Alex Bennée wrote:
->>
->> "Wu, Fei" <fei2.wu@intel.com> writes:
->>
->>> On 5/30/2023 6:08 PM, Alex Bennée wrote:
->>>>
->>>> "Wu, Fei" <fei2.wu@intel.com> writes:
->>>>
->>>>> On 5/30/2023 1:01 PM, Wu, Fei wrote:
->>>>>> On 5/30/2023 12:07 PM, Richard Henderson wrote:
->>>>>>> On 5/29/23 04:49, Fei Wu wrote:
->> <snip>
->>> ----------------
->>> IN:
->>> Priv: 1; Virt: 0
->>>
->>> 0xffffffff800abe14:  864a              mv                      a2,s2
->>> 0xffffffff800abe16:  85ce              mv                      a1,s3
->>> 0xffffffff800abe18:  8526              mv                      a0,s1
->>> 0xffffffff800abe1a:  46bd              addi                    a3,zero,15
->>> 0xffffffff800abe1c:  fffff097          auipc                   ra,-4096
->>>                # 0xffffffff800aae1c
->>> 0xffffffff800abe20:  cc0080e7          jalr                    ra,ra,-832
->>> ------------------------------
->>>
->>> Look at the tb with phys:0x2abe14, although the first time IR takes
->>> 75274ns, but in the second command we can see it takes much less time
->>> (Note IR time is accumulated).
->>>
->>> So if the time for the same TB is not consistent, and the deviation
->>> could be dominated by system events such as memory allocation instead of
->>> codegen itself (?), I think it's less useful.
->>>
->>> Alex, regarding dropping time profile, do you mean remove TB_JIT_TIME
->>> completely?
->>
->> I think so - perf would do a better job of separating system events from
->> the core code as it has better visibility of the whole system.
->>
-> OK, got it.
-> 
-> Richard, can we reach the agreement here? If yes, I will remove
-> TB_JIT_TIME and all the time stuffs (dev_time, cpu_exec_time)
-> completely. We can still add it back if it proves to be useful. The only
-> concern is that tbstats replaces CONFIG_PROFILER but drops this function
-> from it.
+On Thu, 1 Jun 2023 at 15:01, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Thu, 1 Jun 2023 at 13:33, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  host/include/i386/host/cpuinfo.h |  1 +
+> >  target/arm/tcg/vec_helper.c      | 26 +++++++++++++++++++-
+> >  util/cpuinfo-i386.c              |  1 +
+> >  3 files changed, 27 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+> > index 073d0a426f31487d..cf4ced844760d28f 100644
+> > --- a/host/include/i386/host/cpuinfo.h
+> > +++ b/host/include/i386/host/cpuinfo.h
+> > @@ -27,6 +27,7 @@
+> >  #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
+> >  #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+> >  #define CPUINFO_AES             (1u << 18)
+> > +#define CPUINFO_PMULL           (1u << 19)
+> >
+> >  /* Initialized with a constructor. */
+> >  extern unsigned cpuinfo;
+> > diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+> > index f59d3b26eacf08f8..fb422627588439b3 100644
+> > --- a/target/arm/tcg/vec_helper.c
+> > +++ b/target/arm/tcg/vec_helper.c
+> > @@ -25,6 +25,14 @@
+> >  #include "qemu/int128.h"
+> >  #include "vec_internal.h"
+> >
+> > +#ifdef __x86_64__
+> > +#include "host/cpuinfo.h"
+> > +#include <wmmintrin.h>
+> > +#define TARGET_PMULL  __attribute__((__target__("pclmul")))
+> > +#else
+> > +#define TARGET_PMULL
+> > +#endif
+> > +
+> >  /*
+> >   * Data for expanding active predicate bits to bytes, for byte elements.
+> >   *
+> > @@ -2010,12 +2018,28 @@ void HELPER(gvec_pmul_b)(void *vd, void *vn, void *vm, uint32_t desc)
+> >   * Because of the lanes are not accessed in strict columns,
+> >   * this probably cannot be turned into a generic helper.
+> >   */
+> > -void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
+> > +void TARGET_PMULL HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
+> >  {
+> >      intptr_t i, j, opr_sz = simd_oprsz(desc);
+> >      intptr_t hi = simd_data(desc);
+> >      uint64_t *d = vd, *n = vn, *m = vm;
+> >
+> > +#ifdef __x86_64__
+> > +    if (cpuinfo & CPUINFO_PMULL) {
+> > +       switch (hi) {
+> > +       case 0:
+> > +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x0);
+> > +               break;
+> > +       case 1:
+> > +               *(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x11);
+> > +               break;
+> > +       default:
+> > +               g_assert_not_reached();
+> > +       }
+> > +        return;
+> > +    }
+> > +#endif
+>
+> This needs to cope with the input vectors being more than
+> just 128 bits wide, I think. Also you probably still
+> need the clear_tail() to clear any high bits of the register.
+>
 
-Yes, I'm quite happy to drop all of the time stuff.
-
-
-r~
-
+Ah yes, I missed that completely.
 
