@@ -2,88 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34BD719EC5
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F37719EC7
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4if2-0002zh-W6; Thu, 01 Jun 2023 09:48:18 -0400
+	id 1q4igP-0005GK-FI; Thu, 01 Jun 2023 09:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q4ieK-0001Wq-2m; Thu, 01 Jun 2023 09:47:40 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1q4igM-00051f-A2
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:49:38 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q4ieH-00004u-Iq; Thu, 01 Jun 2023 09:47:31 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4f4b80bf93aso1059724e87.0; 
- Thu, 01 Jun 2023 06:47:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1q4igK-0000SS-Bn
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:49:37 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-65242634690so37070b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 06:49:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685627374; x=1688219374;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ahPC1cPtV0qi1LQg79/SimC+0KWmuMtx+CYP9Ne1Ihc=;
+ b=HgMvPmQF8VF2ddfmUnMpU7XEOiL9b/wPHHbayojtjpA8yMHcv0pUPZ8WsZtZdL/SNh
+ y5m3QawA8H2GqQKAoekx6c/OwiEvCCh7OsvzM/vOqylTbnJu4tW444WX0t/OFBoCCOef
+ c9Zu21AP136/kzOCkBZi0s7O3tB1LxfxnL2az+NtKSpkEDIRt+J/BKBGBZb0sFJz7Wkc
+ laCs2Gg7OjdfGz/WEiFOXVZLzt9xSiMmuGGf7a+HymKsi5O61U819J5jLtZHXd7uxpw1
+ NLzc91fxPMbDoAmJxn5GjPh7tZV4/5588TbbWaHWhtYVwgj7HOR1zU16dcqf07xe+ViQ
+ B/gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685627225; x=1688219225;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vpw0xLuydvT7GFr8RIfSnERhs9PDAhGa5JWXYO3jpus=;
- b=ky31UTFqWAmchhdgPFH20hFYC7p6JKXw9qxMQNX292NV5nsJdJKpr0j0KkT/37alo7
- VCap6DY4q45i7wEjSSRRluSlMCCDTHzjSuTCkZ8E2Jbh9bSurVY+uoi919XKSWaaGx8z
- 1IawkovElOrJ+WLxZqZSW/4URWMneJL6z12qIlsFdraWrdsIpeVkrzJJ8TOQWI+pVgkq
- +CnQsdV9sgRKDJFtiY4+w2sTChTZ5yCuYzNUNClxlFcxkVHEbuhIyA7s/Yb+t/S7IM1n
- J1Q8WOK7oBNoFD2jNW9q1502JSxEj3dXsc+fhhRikJtjctFfE5AIiqngjxByHqh6zvaw
- CvCw==
-X-Gm-Message-State: AC+VfDzWCfPEEySea2lv/2HBG2MepXAEaZ8WEVucVRcbI8YWySVY2XcV
- 7tJ+cHGjgGi8RHcXJ1ZMEml66mHuQq7n9h+5
-X-Google-Smtp-Source: ACHHUZ5PftWmFiLdgIXZk9KAGRijf23HCno8HFOF81O80BhsfozKdE5yWJ36F9XTBXjhPnuqaWFehw==
-X-Received: by 2002:ac2:548e:0:b0:4f4:7afe:c36 with SMTP id
- t14-20020ac2548e000000b004f47afe0c36mr1766690lfk.10.1685627224535; 
- Thu, 01 Jun 2023 06:47:04 -0700 (PDT)
-Received: from flawful.org (c-fcf6e255.011-101-6d6c6d3.bbcust.telenor.se.
- [85.226.246.252]) by smtp.gmail.com with ESMTPSA id
- q10-20020ac25a0a000000b004f0199e8770sm1100184lfn.65.2023.06.01.06.47.04
+ d=1e100.net; s=20221208; t=1685627374; x=1688219374;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ahPC1cPtV0qi1LQg79/SimC+0KWmuMtx+CYP9Ne1Ihc=;
+ b=bCzH6hLd99+bIVDpsnRGk5NfomTW4oR9ufcK9KhuaZYeth6s+LaeFBtkk2UC0LS3an
+ BO9LAj4zPzfGMn142O1xxy3T/+1Mza9D1QyXJVHdjHJVW2JjNLSLNVI/N8etsRBDT1NZ
+ Ki3C7gAMMEaaOHvwF9fen88sTVtfXFkVbbs9Ev1gpHZEZFI5IA+UJRV9aRr3kCH4MgtO
+ gUcrzFcwParUzR5E0dcfaRjAgwMZk9XqxElAAWTK9TC/tOH1BJHI4sgXE2LW1neNnrkc
+ TvUHZqzICBS0dmRaFQ9e4soh5ftTelvpbdIos7AMRJLI6zdqDbBSnBU6asg++AiXgzp2
+ BDfw==
+X-Gm-Message-State: AC+VfDx3RfPpc345elrtgD8cV5G4qhD36mRH61G0fNxNeNtkt0ZvIFUc
+ Z69iE7/oVmuCauKbt+uOpCs=
+X-Google-Smtp-Source: ACHHUZ5oYqjSsCuSFZvF4v9/oZdzwCtW34KFk0SKdJ3vsx+dtwbsmu6kbtae3Z8IWF7uiiM76onsHw==
+X-Received: by 2002:a05:6a20:8f2a:b0:10b:f980:18d3 with SMTP id
+ b42-20020a056a208f2a00b0010bf98018d3mr8363369pzk.1.1685627373913; 
+ Thu, 01 Jun 2023 06:49:33 -0700 (PDT)
+Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
+ c24-20020a62e818000000b0064cb464e08fsm5279546pfi.15.2023.06.01.06.49.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 06:47:04 -0700 (PDT)
-Received: by flawful.org (Postfix, from userid 112)
- id 8E2D64E8; Thu,  1 Jun 2023 15:46:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1685627223; bh=wq7rsN/ynAZulkdl9oezyNlPiXKk6FZZrfXY0CHj0x0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=HKekHvV0VbIDRnFD9w2n7wrZMVc6960Sxcdt1pOYEfmij5rrtRtvibw9rW7fjyRG0
- 9MrQtszd7OdqA3PNdkDtHbrLsCxj7j82Xf8dClkrwh+rVirhao5p7JQERatd58aSvB
- Ygzm7dBHhthA3tadHA/hL0uquNXfpSeY88ysJo3o=
-Received: from x1-carbon.lan (unknown [129.253.182.62])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id A3160781;
- Thu,  1 Jun 2023 15:45:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1685627157; bh=wq7rsN/ynAZulkdl9oezyNlPiXKk6FZZrfXY0CHj0x0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=bKMjdaoculQwaKvSnLZzFSh6s52oB+ycgmva3rXKuySnf7K6NT3UuRDB2HOgnvYt7
- 8f8HNmpUdIusJZIwnaN/LGWhivUN3kmuhe+f5PuUE57yi3awQz6T+H0oXi8+4d1/oq
- gIOS57GqTpmD4jI4qHhR10GBWJLF5aEtLobWfoWs=
-From: Niklas Cassel <nks@flawful.org>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v2 8/8] hw/ide/ahci: fix broken SError handling
-Date: Thu,  1 Jun 2023 15:44:34 +0200
-Message-Id: <20230601134434.519805-9-nks@flawful.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601134434.519805-1-nks@flawful.org>
-References: <20230601134434.519805-1-nks@flawful.org>
+ Thu, 01 Jun 2023 06:49:33 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yin31149@gmail.com,
+	18801353760@163.com
+Subject: [PATCH v3 0/6] Vhost-vdpa Shadow Virtqueue Offloads support
+Date: Thu,  1 Jun 2023 21:48:19 +0800
+Message-Id: <cover.1685623090.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.248,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,50 +92,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+This series enables shadowed CVQ to intercept Offloads commands
+through shadowed CVQ, update the virtio NIC device model so qemu
+send it in a migration, and the restore of that Offloads state
+in the destination.
 
-When encountering an NCQ error, you should not write the NCQ tag to the
-SError register. This is completely wrong.
+Changelog
+=========
+v3:
+  - refactor the commit message in patch
+"virtio-net: expose virtio_net_supported_guest_offloads()"
 
-The SError register has a clear definition, where each bit represents a
-different error, see PxSERR definition in AHCI 1.3.1.
+v2: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg00044.html
 
-If we write a random value (like the NCQ tag) in SError, e.g. Linux will
-read SError, and will trigger arbitrary error handling depending on the
-NCQ tag that happened to be executing.
+v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg07198.html
 
-In case of success, ncq_cb() will call ncq_finish().
-In case of error, ncq_cb() will call ncq_err() (which will clear
-ncq_tfs->used), and then call ncq_finish(), thus using ncq_tfs->used is
-sufficient to tell if finished should get set or not.
+Hawkins Jiawei (6):
+  include/hw/virtio: make some VirtIODevice const
+  vdpa: reuse virtio_vdev_has_feature()
+  hw/net/virtio-net: make some VirtIONet const
+  virtio-net: expose virtio_net_supported_guest_offloads()
+  vdpa: Add vhost_vdpa_net_load_offloads()
+  vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
 
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
----
- hw/ide/ahci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/net/virtio-net.c            |  2 +-
+ include/hw/virtio/virtio-net.h |  1 +
+ include/hw/virtio/virtio.h     |  2 +-
+ net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++++++++---
+ 4 files changed, 44 insertions(+), 6 deletions(-)
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index ef6c9fc378..d0a774bc17 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1012,7 +1012,6 @@ static void ncq_err(NCQTransferState *ncq_tfs)
- 
-     ide_state->error = ABRT_ERR;
-     ide_state->status = READY_STAT | ERR_STAT;
--    ncq_tfs->drive->port_regs.scr_err |= (1 << ncq_tfs->tag);
-     qemu_sglist_destroy(&ncq_tfs->sglist);
-     ncq_tfs->used = 0;
- }
-@@ -1022,7 +1021,7 @@ static void ncq_finish(NCQTransferState *ncq_tfs)
-     /* If we didn't error out, set our finished bit. Errored commands
-      * do not get a bit set for the SDB FIS ACT register, nor do they
-      * clear the outstanding bit in scr_act (PxSACT). */
--    if (!(ncq_tfs->drive->port_regs.scr_err & (1 << ncq_tfs->tag))) {
-+    if (ncq_tfs->used) {
-         ncq_tfs->drive->finished |= (1 << ncq_tfs->tag);
-     }
- 
 -- 
-2.40.1
+2.25.1
 
 
