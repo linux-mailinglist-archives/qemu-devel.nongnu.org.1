@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0081371A1E4
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FEB71A20D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:09:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4juJ-0000Wr-Mm; Thu, 01 Jun 2023 11:08:07 -0400
+	id 1q4jvb-00062d-OY; Thu, 01 Jun 2023 11:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4juC-0008Nr-8f
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:08:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q4jvY-0005zQ-Mb
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:09:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q4juA-0007xK-3s
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:08:00 -0400
+ id 1q4jvW-0008BV-Uw
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:09:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685632076;
+ s=mimecast20190719; t=1685632162;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l0bRHaw6a/XCO9x1BsFkywdp6jnak01uQbrcuI2sOX0=;
- b=iBtytNUMNOJ9z2cPv0Vgr3cHS/o+5lvVXNqHA2fY6LurSZakXTMLf0Sp2fN86mD6d/yCqU
- QjEECutrjGnYqOrYNDCoPXwn8I9YJhoklKlCfBN3wRTFvOg5BI+fC2++yyxToidKyEc59u
- 8d501l8xGMyoS3ZDyibtqxgGHEyvH2U=
+ bh=jUQgbDTpCAzO5VGq2dBCJCxrIj9VxKLOvL/0Z/FWYAo=;
+ b=MUBkoFArIfukvMSOAj6IdBqPburrnP/MP2SRLNs6KbhdXKwgjPJ3uFqHD24g9WmJxJBo3D
+ LDTqx+DAt80x2U7EfUEtGzaDKOxYdLyi8AbeyUfM2NILZgYP37RjwfDEWAlMMFUaM4fRka
+ Ep3MBqCCTxwcwVmBUjN2TuXSjCk+QZs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-185-yV8fRbvrMzyRO8ZoQRNWzw-1; Thu, 01 Jun 2023 11:07:48 -0400
-X-MC-Unique: yV8fRbvrMzyRO8ZoQRNWzw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-622-WdEvXNgPPOm8Onk5Lo0Spg-1; Thu, 01 Jun 2023 11:08:58 -0400
+X-MC-Unique: WdEvXNgPPOm8Onk5Lo0Spg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89031806031;
- Thu,  1 Jun 2023 15:07:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7244B81B535;
+ Thu,  1 Jun 2023 15:08:41 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 10F5440CFD46;
- Thu,  1 Jun 2023 15:07:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E9EBD9E84;
+ Thu,  1 Jun 2023 15:08:40 +0000 (UTC)
+Date: Thu, 1 Jun 2023 11:08:39 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Warner Losh <imp@bsdimp.com>, Michael Roth <michael.roth@amd.com>,
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <rth@twiddle.net>, Kyle Evans <kevans@freebsd.org>,
- Eduardo Habkost <eduardo@habkost.net>, Riku Voipio <riku.voipio@iki.fi>,
- Greg Kurz <groug@kaod.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, libvir-list@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL v2 11/11] accel/tcg: include cs_base in our hash calculations
-Date: Thu,  1 Jun 2023 11:06:49 -0400
-Message-Id: <20230601150649.1591095-12-stefanha@redhat.com>
-In-Reply-To: <20230601150649.1591095-1-stefanha@redhat.com>
-References: <20230601150649.1591095-1-stefanha@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Jonathon Jongsma <jjongsma@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v5 0/2] block/blkio: support fd passing for
+ virtio-blk-vhost-vdpa driver
+Message-ID: <20230601150839.GG1538357@fedora>
+References: <20230530071941.8954-1-sgarzare@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="NglMROGCZpsJkPMk"
+Content-Disposition: inline
+In-Reply-To: <20230530071941.8954-1-sgarzare@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -74,7 +71,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,196 +87,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
 
-We weren't using cs_base in the hash calculations before. Since the
-arm front end moved a chunk of flags in a378206a20 (target/arm: Move
-mode specific TB flags to tb->cs_base) they comprise of an important
-part of the execution state.
+--NglMROGCZpsJkPMk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Widen the tb_hash_func to include cs_base and expand to qemu_xxhash8()
-to accommodate it.
+On Tue, May 30, 2023 at 09:19:39AM +0200, Stefano Garzarella wrote:
+> v5:
+> - moved `features` to the object level to simplify libvirt code [Jonathon]
+> - wrapped a line too long in the documentation [Markus]
+> - added Stefan R-b tags
+>=20
+> v4: https://lore.kernel.org/qemu-devel/20230526150304.158206-1-sgarzare@r=
+edhat.com/
+> - added patch 02 to allow libvirt to discover we support fdset [Markus]
+> - modified the commit description of patch 01
+>=20
+> v3: https://lore.kernel.org/qemu-devel/20230511091527.46620-1-sgarzare@re=
+dhat.com/
+> - use qemu_open() on `path` to simplify libvirt code [Jonathon]
+> - remove patch 01 since we are not using monitor_fd_param() anymore
+>=20
+> v2: https://lore.kernel.org/qemu-devel/20230504092843.62493-1-sgarzare@re=
+dhat.com/
+> - added patch 01 to use monitor_fd_param() in the blkio module
+> - use monitor_fd_param() to parse the fd like vhost devices [Stefan]
+>=20
+> v1: https://lore.kernel.org/qemu-devel/20230502145050.224615-1-sgarzare@r=
+edhat.com/
+>=20
+> The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the new
+> 'fd' property. Let's expose this to the user, so the management layer
+> can pass the file descriptor of an already opened vhost-vdpa character
+> device. This is useful especially when the device can only be accessed
+> with certain privileges.
+>=20
+> Stefano Garzarella (2):
+>   block/blkio: use qemu_open() to support fd passing for virtio-blk
+>   qapi: add '@fdset' feature for BlockdevOptionsVirtioBlkVhostVdpa
+>=20
+>  meson.build          |  4 ++++
+>  qapi/block-core.json |  6 +++++
+>  block/blkio.c        | 53 ++++++++++++++++++++++++++++++++++++--------
+>  3 files changed, 54 insertions(+), 9 deletions(-)
+>=20
+> --=20
+> 2.40.1
+>=20
 
-My initial benchmark shows very little difference in the
-runtime.
+Thanks, applied to my block tree:
+https://gitlab.com/stefanha/qemu/commits/block
 
-Before:
+Stefan
 
-armhf
+--NglMROGCZpsJkPMk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-➜  hyperfine -w 2 -m 20 "./arm-softmmu/qemu-system-arm -cpu cortex-a15 -machine type=virt,highmem=off -display none -m 2048 -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-armhf -device scsi-hd,drive=hd -smp 4 -kernel /home/alex/lsrc/linux.git/builds/arm/arch/arm/boot/zImage -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark.service' -snapshot"
-Benchmark 1: ./arm-softmmu/qemu-system-arm -cpu cortex-a15 -machine type=virt,highmem=off -display none -m 2048 -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-armhf -device scsi-hd,drive=hd -smp 4 -kernel /home/alex/lsrc/linux.git/builds/arm/arch/arm/boot/zImage -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark.service' -snapshot
-  Time (mean ± σ):     24.627 s ±  2.708 s    [User: 34.309 s, System: 1.797 s]
-  Range (min … max):   22.345 s … 29.864 s    20 runs
+-----BEGIN PGP SIGNATURE-----
 
-arm64
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmR4tHcACgkQnKSrs4Gr
+c8gXuQf+I0CQQu3gn4RJ13WaS7mOeGOHgX8BF+KbKlimr7Db3biP+5hYepsfRzX4
+IvtQRSotejyDi06IdLkuorHhc/VatTGqkWFCDLW6fK13JWGqNHHi2Mxxu1KZTQkY
+WAS1QdKxCca5Wq3nr9QnglJ01wflWHZZQZFhH5THTgFzh2VuYZ2rk0bSrLpme3XB
+aK5A2+tQJXhOqJuXYjkc8j8wMrYVTqse2vSeaVXJPdwfNczDE1ObznM54FvKnhh2
+TThMyGUuUaXBOkiHAri6+ZQaS3+igzdeKmWKd/ob3/V8cO7/p405XoxIUZem/Wyx
+u1sUft7BkqEDwo1rQr5YiWF3/wMjqg==
+=6IJv
+-----END PGP SIGNATURE-----
 
-➜  hyperfine -w 2 -n 20 "./qemu-system-aarch64 -cpu max,pauth-impdef=on -machine type=virt,virtualization=on,gic-version=3 -display none -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22,hostfwd=tcp::1234-:1234 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-arm64 -device scsi-hd,drive=hd -smp 4 -kernel ~/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image.gz -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark-pigz.service' -snapshot"
-Benchmark 1: 20
-  Time (mean ± σ):     62.559 s ±  2.917 s    [User: 189.115 s, System: 4.089 s]
-  Range (min … max):   59.997 s … 70.153 s    10 runs
-
-After:
-
-armhf
-
-Benchmark 1: ./arm-softmmu/qemu-system-arm -cpu cortex-a15 -machine type=virt,highmem=off -display none -m 2048 -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-armhf -device scsi-hd,drive=hd -smp 4 -kernel /home/alex/lsrc/linux.git/builds/arm/arch/arm/boot/zImage -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark.service' -snapshot
-  Time (mean ± σ):     24.223 s ±  2.151 s    [User: 34.284 s, System: 1.906 s]
-  Range (min … max):   22.000 s … 28.476 s    20 runs
-
-arm64
-
-hyperfine -w 2 -n 20 "./qemu-system-aarch64 -cpu max,pauth-impdef=on -machine type=virt,virtualization=on,gic-version=3 -display none -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22,hostfwd=tcp::1234-:1234 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-arm64 -device scsi-hd,drive=hd -smp 4 -kernel ~/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image.gz -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark-pigz.service' -snapshot"
-Benchmark 1: 20
-  Time (mean ± σ):     62.769 s ±  1.978 s    [User: 188.431 s, System: 5.269 s]
-  Range (min … max):   60.285 s … 66.868 s    10 runs
-
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230526165401.574474-12-alex.bennee@linaro.org
-Message-Id: <20230524133952.3971948-11-alex.bennee@linaro.org>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- accel/tcg/tb-hash.h   |  4 ++--
- include/qemu/xxhash.h | 23 +++++++++++++++++------
- accel/tcg/cpu-exec.c  |  2 +-
- accel/tcg/tb-maint.c  |  4 ++--
- util/qsp.c            |  2 +-
- 5 files changed, 23 insertions(+), 12 deletions(-)
-
-diff --git a/accel/tcg/tb-hash.h b/accel/tcg/tb-hash.h
-index 1d19c69caa..2ba2193731 100644
---- a/accel/tcg/tb-hash.h
-+++ b/accel/tcg/tb-hash.h
-@@ -62,9 +62,9 @@ static inline unsigned int tb_jmp_cache_hash_func(target_ulong pc)
- 
- static inline
- uint32_t tb_hash_func(tb_page_addr_t phys_pc, target_ulong pc,
--                      uint32_t flags, uint32_t cf_mask)
-+                      uint32_t flags, uint64_t flags2, uint32_t cf_mask)
- {
--    return qemu_xxhash6(phys_pc, pc, flags, cf_mask);
-+    return qemu_xxhash8(phys_pc, pc, flags2, flags, cf_mask);
- }
- 
- #endif
-diff --git a/include/qemu/xxhash.h b/include/qemu/xxhash.h
-index c2dcccadbf..0259bbef18 100644
---- a/include/qemu/xxhash.h
-+++ b/include/qemu/xxhash.h
-@@ -48,8 +48,8 @@
-  * xxhash32, customized for input variables that are not guaranteed to be
-  * contiguous in memory.
-  */
--static inline uint32_t
--qemu_xxhash7(uint64_t ab, uint64_t cd, uint32_t e, uint32_t f, uint32_t g)
-+static inline uint32_t qemu_xxhash8(uint64_t ab, uint64_t cd, uint64_t ef,
-+                                    uint32_t g, uint32_t h)
- {
-     uint32_t v1 = QEMU_XXHASH_SEED + PRIME32_1 + PRIME32_2;
-     uint32_t v2 = QEMU_XXHASH_SEED + PRIME32_2;
-@@ -59,6 +59,8 @@ qemu_xxhash7(uint64_t ab, uint64_t cd, uint32_t e, uint32_t f, uint32_t g)
-     uint32_t b = ab >> 32;
-     uint32_t c = cd;
-     uint32_t d = cd >> 32;
-+    uint32_t e = ef;
-+    uint32_t f = ef >> 32;
-     uint32_t h32;
- 
-     v1 += a * PRIME32_2;
-@@ -89,6 +91,9 @@ qemu_xxhash7(uint64_t ab, uint64_t cd, uint32_t e, uint32_t f, uint32_t g)
-     h32 += g * PRIME32_3;
-     h32  = rol32(h32, 17) * PRIME32_4;
- 
-+    h32 += h * PRIME32_3;
-+    h32  = rol32(h32, 17) * PRIME32_4;
-+
-     h32 ^= h32 >> 15;
-     h32 *= PRIME32_2;
-     h32 ^= h32 >> 13;
-@@ -100,23 +105,29 @@ qemu_xxhash7(uint64_t ab, uint64_t cd, uint32_t e, uint32_t f, uint32_t g)
- 
- static inline uint32_t qemu_xxhash2(uint64_t ab)
- {
--    return qemu_xxhash7(ab, 0, 0, 0, 0);
-+    return qemu_xxhash8(ab, 0, 0, 0, 0);
- }
- 
- static inline uint32_t qemu_xxhash4(uint64_t ab, uint64_t cd)
- {
--    return qemu_xxhash7(ab, cd, 0, 0, 0);
-+    return qemu_xxhash8(ab, cd, 0, 0, 0);
- }
- 
- static inline uint32_t qemu_xxhash5(uint64_t ab, uint64_t cd, uint32_t e)
- {
--    return qemu_xxhash7(ab, cd, e, 0, 0);
-+    return qemu_xxhash8(ab, cd, 0, e, 0);
- }
- 
- static inline uint32_t qemu_xxhash6(uint64_t ab, uint64_t cd, uint32_t e,
-                                     uint32_t f)
- {
--    return qemu_xxhash7(ab, cd, e, f, 0);
-+    return qemu_xxhash8(ab, cd, 0, e, f);
-+}
-+
-+static inline uint32_t qemu_xxhash7(uint64_t ab, uint64_t cd, uint64_t ef,
-+                                    uint32_t g)
-+{
-+    return qemu_xxhash8(ab, cd, ef, g, 0);
- }
- 
- /*
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 4a1dce98ff..60ca9e229e 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -233,7 +233,7 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, target_ulong pc,
-     }
-     desc.page_addr0 = phys_pc;
-     h = tb_hash_func(phys_pc, (cflags & CF_PCREL ? 0 : pc),
--                     flags, cflags);
-+                     flags, cs_base, cflags);
-     return qht_lookup_custom(&tb_ctx.htable, &desc, h, tb_lookup_cmp);
- }
- 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index bc1961ea55..892eecda2d 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -887,7 +887,7 @@ static void do_tb_phys_invalidate(TranslationBlock *tb, bool rm_from_page_list)
-     /* remove the TB from the hash list */
-     phys_pc = tb_page_addr0(tb);
-     h = tb_hash_func(phys_pc, (orig_cflags & CF_PCREL ? 0 : tb->pc),
--                     tb->flags, orig_cflags);
-+                     tb->flags, tb->cs_base, orig_cflags);
-     if (!qht_remove(&tb_ctx.htable, tb, h)) {
-         return;
-     }
-@@ -968,7 +968,7 @@ TranslationBlock *tb_link_page(TranslationBlock *tb, tb_page_addr_t phys_pc,
- 
-     /* add in the hash table */
-     h = tb_hash_func(phys_pc, (tb->cflags & CF_PCREL ? 0 : tb->pc),
--                     tb->flags, tb->cflags);
-+                     tb->flags, tb->cs_base, tb->cflags);
-     qht_insert(&tb_ctx.htable, tb, h, &existing_tb);
- 
-     /* remove TB from the page(s) if we couldn't insert it */
-diff --git a/util/qsp.c b/util/qsp.c
-index 8562b14a87..2fe3764906 100644
---- a/util/qsp.c
-+++ b/util/qsp.c
-@@ -144,7 +144,7 @@ uint32_t do_qsp_callsite_hash(const QSPCallSite *callsite, uint64_t ab)
-     uint32_t e = callsite->line;
-     uint32_t f = callsite->type;
- 
--    return qemu_xxhash6(ab, cd, e, f);
-+    return qemu_xxhash8(ab, cd, 0, e, f);
- }
- 
- static inline
--- 
-2.40.1
+--NglMROGCZpsJkPMk--
 
 
