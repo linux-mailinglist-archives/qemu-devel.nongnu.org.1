@@ -2,70 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B137197DD
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB6C7197E9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 11:57:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4f1p-0007pt-Ur; Thu, 01 Jun 2023 05:55:33 -0400
+	id 1q4f3g-0001Bp-BO; Thu, 01 Jun 2023 05:57:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4f1j-0007nc-EE
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:55:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1q4f3d-0000s8-9D
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:57:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4f1a-0006lP-W0
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:55:24 -0400
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1q4f3W-0007Hf-Uy
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 05:57:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685613317;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1685613419;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=34JWIeUvG8wOxusmTQHP8jX1IRf1+5+KrqgdbCa3PNs=;
- b=IFkfSa0NWvyTxDNpcv8LZhDGf/ZVaLwljgA0dGElkgGLYrr1loS1Y3lft7yBh+UiNuXqoP
- vLE7WHIlgC87FTvhRhp1X2n5BxZnT7Ue9OCvshoOC0h7+HHrKx8xIbev7BQ4l3IDlNzfwG
- fvDqwz53ulZm2/oE3q4UY+zw6c7csuE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-290-3yNDAp0xNZelGxYMAIl_WQ-1; Thu, 01 Jun 2023 05:55:14 -0400
-X-MC-Unique: 3yNDAp0xNZelGxYMAIl_WQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28050381494A;
- Thu,  1 Jun 2023 09:55:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8B5CE170EB;
- Thu,  1 Jun 2023 09:55:11 +0000 (UTC)
-Date: Thu, 1 Jun 2023 10:55:02 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Ed Maste <emaste@freebsd.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Kyle Evans <kevans@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
- Erik Skultety <eskultet@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Warner Losh <imp@bsdimp.com>
-Subject: Re: [PATCH 3/3] tests/vm/freebsd: Get up-to-date package list from
- lcitool vars file
-Message-ID: <ZHhq9tvTtHQwHdm/@redhat.com>
-References: <20230531200906.17790-1-philmd@linaro.org>
- <20230531200906.17790-4-philmd@linaro.org>
+ bh=TZO+o63Px9u/QtirsfxTDyg861boMW9mJYaRkKi9n80=;
+ b=V7x4M65JPkdvgm0ceOXniVn/cak9p4BIEPUyNiP4LsGjpxeVP2D0EytG2NAl8vWRMvJc4b
+ 8Q2CF5Z9ckcmhx+DKT6TqCbxtGujiygUm6UvtAD4hVb6H1ymkFsuhl9inDv/7zSEtAA3IC
+ kTzS7QiL74WaiGM10RkblXBW7vxfJzU=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447--QHrvC5uPliAf_M_Aet2dw-1; Thu, 01 Jun 2023 05:56:58 -0400
+X-MC-Unique: -QHrvC5uPliAf_M_Aet2dw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5142da822cbso610254a12.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 02:56:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685613417; x=1688205417;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TZO+o63Px9u/QtirsfxTDyg861boMW9mJYaRkKi9n80=;
+ b=M0vE1VML+8h+E2VI6peqtgizzZOS2N4OcvvDmdkfKrdGPzkMkva4YGNhZdaXPMxGHG
+ dScQIXCiwan2V5xtof7Q2zYImSgoJBsIh4LO+/xz2ALsbCt41tQxlRoCBSzZqdS4b3wS
+ WzClbKjrAxe4WdEigFxoWznKq8OXdBxztWLeAhsF+7aoXO/fNwjzZaHP6fxKCyMYvITp
+ GEpgompNJU6aqJk87zukK8l6ZelbsH0D2vSJcecK/aIT3szh/fa9phYwldiYDpuzeWhQ
+ kPcqpyRx1zkLONT5nwttut7y9NnykteUIzdLQrDuVsfCP8rTMZl0BIPbOyfdswY0r70p
+ vjrQ==
+X-Gm-Message-State: AC+VfDxUR4YTOHr24bAFTCkaw09JuW0uRhcv+QTGn/WgKzx2xdoa47gV
+ 2S0MLqnbGYt0Q0jKknOrSkpz7NHoOpCKswfErzRXnAvhKFO107biT6nwNT5R8Vq/R4mzboHLK1N
+ 535KwOEKVOg4oxZBfDeXSD1/qYMsi2wY=
+X-Received: by 2002:a05:6402:1219:b0:510:db93:f034 with SMTP id
+ c25-20020a056402121900b00510db93f034mr5413275edw.36.1685613417146; 
+ Thu, 01 Jun 2023 02:56:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5dVCUxX1NrIeaVCvDBZX5RSd2PG51PMhu/MzuXxLwMnMvUN9Tl+Ssaqdm7uPKhm6KxnqnCLzQSLNH2TseP3jI=
+X-Received: by 2002:a05:6402:1219:b0:510:db93:f034 with SMTP id
+ c25-20020a056402121900b00510db93f034mr5413256edw.36.1685613416850; Thu, 01
+ Jun 2023 02:56:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230531200906.17790-4-philmd@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+References: <cover.1685584543.git.yin31149@gmail.com>
+In-Reply-To: <cover.1685584543.git.yin31149@gmail.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Thu, 1 Jun 2023 17:56:20 +0800
+Message-ID: <CAPpAL=yn=Js841iHzXM42+yPrLW7s=YLwY36BBxPDAvPGVaG0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] Vhost-vdpa Shadow Virtqueue Offloads support
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -86,90 +91,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 10:09:06PM +0200, Philippe Mathieu-Daudé wrote:
-> See previous commit for rationale on using lcitool vars file to
-> get an up-to-date package list. Since there is a such file generated
-> for FreeBSD 13 available in the repository, use it. That way we
-> don't need to manually keep this array in sync.
-> 
-> Inspired-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  tests/vm/freebsd | 44 ++++----------------------------------------
->  1 file changed, 4 insertions(+), 40 deletions(-)
-> 
-> diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-> index 6a0d7a4569..4f12878645 100755
-> --- a/tests/vm/freebsd
-> +++ b/tests/vm/freebsd
-> @@ -31,45 +31,7 @@ class FreeBSDVM(basevm.BaseVM):
->      link = "https://download.freebsd.org/releases/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BASIC-CI.raw.xz"
->      csum = "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
->      size = "20G"
-> -    pkgs = [
-> -        # build tools
-> -        "git",
-> -        "pkgconf",
-> -        "bzip2",
-> -        "python39",
-> -        "ninja",
-> -
-> -        # gnu tools
-> -        "bash",
-> -        "gmake",
-> -        "gsed",
-> -        "gettext",
-> -
-> -        # libs: crypto
-> -        "gnutls",
-> -
-> -        # libs: images
-> -        "jpeg-turbo",
-> -        "png",
-> -
-> -        # libs: ui
-> -        "sdl2",
-> -        "gtk3",
-> -        "libxkbcommon",
-> -
-> -        # libs: opengl
-> -        "libepoxy",
-> -        "mesa-libs",
-> -
-> -        # libs: migration
-> -        "zstd",
-> -
-> -        # libs: networking
-> -        "libslirp",
-> -
-> -        # libs: sndio
-> -        "sndio",
-> -    ]
-> +    lcitool_vars = ".gitlab-ci.d/cirrus/freebsd-13.vars"
-
-So we have various other distros in the tests/vm/ directory, for which
-we have lcitool support, but for which there's no existing vars file.
-
-I'm wondering if we're better off just putting the data files we need
-directly in the tests/vm/ directory, and keeping it indepenant of the
-cirrus CI data files. It is all auto-generated, so the duplication
-would not be a maint burden.
-
-eg just have a 'freebsd.json' file, alongside the 'freebsd' script.
-
-We should also expand lcitool to cover haiku, netbsd and openbsd
-distros one day.
+I'm a QE responsible for vhost_vdpa parts. Could you please provide me
+with the test steps for this series? I can test it in my environment
+and update the test results.
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
+
+
+On Thu, Jun 1, 2023 at 4:29=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com> =
+wrote:
+>
+> This series enables shadowed CVQ to intercept Offloads commands
+> through shadowed CVQ, update the virtio NIC device model so qemu
+> send it in a migration, and the restore of that Offloads state
+> in the destination.
+>
+> Changelog
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> v2:
+>   - make some function arguments const
+>   - reuse virtio_vdev_has_feature() suggested by Eugenio and Jason
+>   - avoid sending CVQ command in default state suggested by Eugenio
+>
+> v1: https://lore.kernel.org/all/cover.1685359572.git.yin31149@gmail.com/
+>
+> Hawkins Jiawei (6):
+>   include/hw/virtio: make some VirtIODevice const
+>   vdpa: reuse virtio_vdev_has_feature()
+>   hw/net/virtio-net: make some VirtIONet const
+>   virtio-net: expose virtio_net_supported_guest_offloads()
+>   vdpa: Add vhost_vdpa_net_load_offloads()
+>   vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
+>
+>  hw/net/virtio-net.c            |  2 +-
+>  include/hw/virtio/virtio-net.h |  1 +
+>  include/hw/virtio/virtio.h     |  2 +-
+>  net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++++++++---
+>  4 files changed, 44 insertions(+), 6 deletions(-)
+>
+> --
+> 2.25.1
+>
+>
 
 
