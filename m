@@ -2,135 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FAA71F43F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F81D71F464
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 23:08:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4pJd-0003T6-Vl; Thu, 01 Jun 2023 16:54:38 -0400
+	id 1q4pVa-0006fg-96; Thu, 01 Jun 2023 17:06:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q4pJU-0003SF-5l; Thu, 01 Jun 2023 16:54:28 -0400
-Received: from mail-he1eur01on072e.outbound.protection.outlook.com
- ([2a01:111:f400:fe1e::72e]
- helo=EUR01-HE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4pVW-0006fG-Q8
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 17:06:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q4pJP-0000sx-Ot; Thu, 01 Jun 2023 16:54:25 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LB2HMQYWdE+uqfCliws+KPY4rJDc4cYFaIi6dYb+V+qkiiOlHJjwNuqqWxbIs4Voqdwx4LNmKTCm4/CmDfE9df+vMg96mrIPH7Dve56oN5j//2xfAVnGSpAoYFu8REgdv+ndC1GBOxQTwKyc8/SktXI0TF6fdY0BcmQqOyR+N3eA9caUuRnHm4otsFMqFFrk1VhsvFBt8wVNtmweqejaesAJLn1wMpUbD2HY18K/FAnQMt23Jr+MT2pit/BP/PMMFwRKC5ivSHpgrTA4xoQKNir+gIDhfMu1W2u/9ctgcQvblJi5UYKiiPhyYHUkt57bvxB3vdDVIo7DKbxViR+BBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D8jBdea61RJHUF8xcKN0sx2Ark7vZNnN3qvWFIrou6E=;
- b=ln1K3dRqcq+Js7N7VVbVBAHmrxr94FQhcDnEMx7P5ME97A52pnD7MNP5Hz/iIzT9akhO+c7mF7BV91HrjH0MMThOcH3UHAdJ2/BApyE+6UGCiXzunwkLB1eKq/ZiCvPjkJT3v1QjRd2atLCvaSMYPgxajp4sKYakspFh89yqCVv0vKRON9VNjWeb8G8Kt9DAtKfeBkLTlNbP30jkIzeMBcJl5AfmZQ3T+clHAEbE0X2gEMzVYtr733UW/svrpgIygWsQqO9s2DtbT4D/lIwigTpvprGzq9Iu5C+djHo9OtqJ8K0vED5rnOrlt8trIvy3qwCIjQ7xZY+X6cS/bAZF+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D8jBdea61RJHUF8xcKN0sx2Ark7vZNnN3qvWFIrou6E=;
- b=H+pXlExi/kFHTSD1xWuQgU11BqWe1m0WjlC1+nzht9bDKqfMRGk5SLgtR0AK/gYkCuQmYsVARHHQn1xaDMWqFm2sf2aeiH8uId955JvjKRkR6AMe+L48x6TNAJ/AxmzWFavO617eUNocdQrNfLQ12nnulGpbU/bgdLu4zz1zPR767qKFb6ys8RxZOG15pXgXAVqKUkH1LBdip0z1XZjb/+ICJW/NPga+zwCmlkWfEczuWnjiSm6S2K1Hbc21yrwgJwZPkapYlyk0XvB3bGRaGS/F3B2l9yJazyFhjKbUkA+bRmhlVdq7WbxNO/FNY7tu1Qy3uhYONmZxDbZt1V0K/g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AM4PR08MB2932.eurprd08.prod.outlook.com (2603:10a6:205:e::33)
- by DU0PR08MB8164.eurprd08.prod.outlook.com (2603:10a6:10:3ef::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.22; Thu, 1 Jun
- 2023 20:54:19 +0000
-Received: from AM4PR08MB2932.eurprd08.prod.outlook.com
- ([fe80::21b0:d0a:6ec5:11bb]) by AM4PR08MB2932.eurprd08.prod.outlook.com
- ([fe80::21b0:d0a:6ec5:11bb%6]) with mapi id 15.20.6433.022; Thu, 1 Jun 2023
- 20:54:18 +0000
-Message-ID: <f7322d55-4054-7814-4831-44ca55a1ac03@virtuozzo.com>
-Date: Thu, 1 Jun 2023 23:54:52 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH v2 0/2] qemu-img: fix getting stuck in infinite loop on
- in-chain rebase
-Content-Language: en-US
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, shmuel.eiderman@oracle.com,
- den@virtuozzo.com
-References: <20230525180213.902012-1-andrey.drobyshev@virtuozzo.com>
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20230525180213.902012-1-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0020.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1c::21) To AM4PR08MB2932.eurprd08.prod.outlook.com
- (2603:10a6:205:e::33)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4pVT-0004tp-PV
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 17:06:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685653609;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type; bh=VCn3S2bO7vVd+tqaJY9r0VUIq35cYk4x6kXRS+a8ero=;
+ b=g8s/IS+cfP5lxTnSq/pMEARghRLZY79EJUlfcUr3qV1vxmQwMRpHgZ8r9Ptughz091To/v
+ dCtxe8VmJ+42jPGN1YZsOwrbIx5C0WoCIgkbGEVmnpuh2dQJeAyfdFlHUbY47RfOMDZeE0
+ Ezxd3ZsQ9YPGdHt5SCjZLMqLAm9niq8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-106-8M4no7l7Ou-rlCEU5uZI4A-1; Thu, 01 Jun 2023 17:06:48 -0400
+X-MC-Unique: 8M4no7l7Ou-rlCEU5uZI4A-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30af779d6e6so763050f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 14:06:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685653606; x=1688245606;
+ h=mime-version:message-id:date:reply-to:user-agent:subject:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VCn3S2bO7vVd+tqaJY9r0VUIq35cYk4x6kXRS+a8ero=;
+ b=cudkPeVSK0xXlXJ5EdTCZACeWc6g7TefH3xWje3Gj2mt93iCPgvuIh2tIh89yBI/jc
+ wZTNeKX1jK6Foo3nONUXJ2tHAWqzxIoSb35ifI1tp5gCjvEYTG7EnEfgpDMZ/LZtuPpo
+ iMYOWGkboQ/jLo/IuCZ6zohcLeIETpE/UUCBmIojpK0A5YypqMeBgxl6/qRASnNMnIAp
+ k+79I6+ctnBz4wiun7V9hSq7VCNa2Ge092e5Hx91ig3hchsoFjSlb+hFHpoBZCIo/arv
+ oOWzd/c8QOZ6CN3Rcacj+xF6ui0hBiTiX3P2WfoDX0fG4Rqb1prbtQlMg8ihNXgdsrS5
+ Iw3g==
+X-Gm-Message-State: AC+VfDymxKQigvCkJthno/YQYLX8WNAdD1s6xNZ96oEvd2xTh+u6h/5B
+ yd/TRs4X2vPtU7LUeKSyR3hNzZPGyNUta/Tglz/4oLqe2LLvGc5+lSMLNvU/L/8fiUdnk4PU/D6
+ okA8ieuCd82a46X8dS96QPUA2RBbLyn2erueRf95uD/z9q1+Hn+qGNiAJ+F8mEhuJNO0vERn4/h
+ p+FQ==
+X-Received: by 2002:adf:e8c1:0:b0:306:3021:2304 with SMTP id
+ k1-20020adfe8c1000000b0030630212304mr2755469wrn.60.1685653605704; 
+ Thu, 01 Jun 2023 14:06:45 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7I6nSvmxzV04Yn3IFyymNUDGW1l/P8kr9YfYBJHbHkDWLmBPFGvHA+LlkZrxLFgYCO/ueTfQ==
+X-Received: by 2002:adf:e8c1:0:b0:306:3021:2304 with SMTP id
+ k1-20020adfe8c1000000b0030630212304mr2755452wrn.60.1685653605223; 
+ Thu, 01 Jun 2023 14:06:45 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ u3-20020a5d6ac3000000b003062ad45243sm11435660wrw.14.2023.06.01.14.06.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 14:06:43 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org, peter.maydell@linaro.org, Richard Henderson
+ <rth@twiddle.net>, Daniel Berrange <berrange@redhat.com>
+Subject: Big TCG slowdown when using zstd with aarch64
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 01 Jun 2023 23:06:42 +0200
+Message-ID: <87y1l2rixp.fsf@secure.mitica>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM4PR08MB2932:EE_|DU0PR08MB8164:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2842fcde-b879-4e9f-9fb7-08db62e25e1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mLwLT9PZbUj8gAgSPpqYC+KjyODV5gI0HR0VRbHJlDKmCAk1/8jhYBx6FYHEj0RwR+hmtIB+E3YJKDPFWNuVSVor80gOZGrqy1oXxwm+kUV5gSsW6Cu6/nKNr3DoV21BF+6gqDDYGLsP2xexd+hv0BqP8Jqrxm67gVmFZ49Glj+6mm39/tliATcWDgxVmCO7uIUIhsf2D9e384wKIvRHf1AsokcmY7W5QZNaodNYhPWkUvcE8rfn1zijwfyPL9y/VfwEYZmXKu5oqLT1moL1l2zdj84kyupBY5EIXi/unVPpMp1yujAPHWZyAjpb09DpmsCf0L0K9yiu8sLh3gdJeH+hryOoz+pxaAgIwHmQzmpztx5mN2ywefOu+s0J4FdIOVSSByF3VjxciTepcr8GtQgRjmQOkHBl748z62BZ32fJF5jAZrT9R3jF3Lp52LqvDcSfKmWVha6juedGkIuO1QKm47E3CJHcJvUZGH9AiEUpJYyC9JfE8LqCj94/6oZNm7U1FGBshMpBB1nKw4Y9AjqWVQa+YcxImeW+inHr/qhwDaaSbxyk2RWw6Hcfzyt8fevYSSkZeH+sJI3WP/BtOpfw7jvnBPNcqLlJSBRNNiePENzb1qupumoTrUzJ/+USn6j2RX7y4YKGy+v03fafAQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM4PR08MB2932.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(39850400004)(346002)(376002)(366004)(396003)(136003)(451199021)(8936002)(8676002)(5660300002)(107886003)(36756003)(41300700001)(316002)(26005)(478600001)(38100700002)(6512007)(53546011)(6506007)(186003)(66476007)(4326008)(2616005)(6916009)(66946007)(966005)(66556008)(4744005)(2906002)(44832011)(31686004)(6666004)(6486002)(86362001)(31696002)(83380400001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cmc1dEVrTk1GQllvMG0yM3FTZXJnbU9DdlhrYUxKblFuTnA2bDVjZFQzQUt3?=
- =?utf-8?B?N004OVhKY3l2M2JDK0tuVzBxUElRTkc3S1dxN255ZWFiS1p4WHkxVm8yR21i?=
- =?utf-8?B?M1c4U3VpT2diVVBYcnB0ZlNSYWR4dk9uM0ZWQm8zSjNnZlhrZk1USU9Wd3Nz?=
- =?utf-8?B?cWpoVnhKaWpCWkZMelFoYWQvMCtZci9vWmF2THB2Qys5ZHJpSTVXSW04MnBy?=
- =?utf-8?B?YW1JdEgxV2ZFSDRRZWtuaGVOTEt3dFhuTEpEdFc1dWl3N1hwZ0NnQlFTQ21D?=
- =?utf-8?B?QlY1akJnV3BQVUJvM29nYy9KOWpYQVdiMjFXYk1uTmxNbkZjNVRTQ2xQSFEy?=
- =?utf-8?B?bm4xRm9ibm5kVk1mcFdpaExpdjRtV0FkR2dUOFZIR2Zydy9WRzNXY09qbmRo?=
- =?utf-8?B?Zy9ZQTJEZWdWZUorRlM4Sk84R29mUTNXV3Z4SllZRzBzMXZsdHh5ZmdVMUNF?=
- =?utf-8?B?ZDZtUXFxbHhFanh5cDlVRm5TcUNZVmp6VnNXZGNMRVJiRlVnNmxqR0FjS0N4?=
- =?utf-8?B?L29VYlpqNVN1K2RkYXQ5OFp3NmIxZ2lLR3VQSFdZQ1NXYzV1ZGlwaDdEc0N4?=
- =?utf-8?B?eGk4Mm1xdGRZNGM3RHpsbzdzeGdoNDloWUhVc09YL25JWDJGQ2xXaEpPN2Nx?=
- =?utf-8?B?TG9HZ1dCZXRQUUljemRiTml5ZkZ6dGNDaVVXTDhaWUtvVTM0alhkOTJtaXY3?=
- =?utf-8?B?SzQ1OU84SDNwUWJlNjZ5QUc3bWVMdHlsSVRXMG9HeFpmbWJiRWxGYXRkbFRm?=
- =?utf-8?B?a1ZhM0NzNXNSWER2M3pVS3dERStzS1VGRDNWVS9uM0ZXa1FsZVVXS0VNM013?=
- =?utf-8?B?eDFSeDF2RENmMGJXNkhzOVVDY09UQ0FCS2lwS3h1cWxiT3RjbTZYSDIvbU5G?=
- =?utf-8?B?NXIzeUQ3WmxFaklBanVPclFGUkpKWVVYZmJSMjBJYlIyeVdHZVlVOUpMN0VY?=
- =?utf-8?B?QnlCWDJyTkhzdEFGc1Q3a00vZXA3NWJYd0VpMVVEaEcwNUd1V1plaVZsYlJG?=
- =?utf-8?B?aXFBTjVlYUJvVEdXa1pGY21JUis3Z2hBYXhzMHdhelIwVlAxUWZ2SithbjZL?=
- =?utf-8?B?UGJUZlZwa3pZWEZIdGRITHA1aVhNNWk4RjlCQklUNlNwU2Q1dGw0Z1hQSXlL?=
- =?utf-8?B?WlM4cmFYWXlxczUveWVqWHBzRG1raStwU0hBT1BZejJZdzlPcnBVaVE4dExo?=
- =?utf-8?B?b1pFQUdsbHBQTTJuNmFzdVlYclJxYldQYk1OL3FqdnRJemlKbXdwU1hIcEdI?=
- =?utf-8?B?cGUwako0MXV0QzlacE9BeWVTcjVKM2NXN2JlemNSYUdQdkU5UE9wU255TEFL?=
- =?utf-8?B?V2tRKzVsdzJHY2l2THlSbGNYRkVSNG15c3Z5REZnemVTa0tXeFBkb1RCc1FG?=
- =?utf-8?B?ZG1IV1V0MTI3MXEwbEsxeng4bU13cWZEWC9IcEtBaXJCQU9aNTJxeGo4TXZs?=
- =?utf-8?B?L1A1aDRjZUswVWV2NmRldStuNFRJdDFFMTVZSGxuQnhWR2NyQ1BsSGhYdHJa?=
- =?utf-8?B?WUFVQ3pVd2VkUXh0TTRkcWVyaFF1QWdHaXRqTlZWeW4vNDlIUjQ4Rnh4UE9i?=
- =?utf-8?B?SE1xL0k5Tmx2dmNoZmRXb0tVSWRkQ0ROZTZtNEJtWjVmVUJCY1FpRzZ4ZDNK?=
- =?utf-8?B?TTdnNEZFTzk1VjB3S3NtcFFTNkNFV1NETE9SMXQ3UjAxR3o2ZVJWUnhveEpL?=
- =?utf-8?B?YVRZZTdvMHVJT0l1aXpJbFlFZWU3WXRWQ0NFT2NaUldKcFFXUFpUcW01NHdB?=
- =?utf-8?B?Ui92U2pNdWJxNGRoV2t1K05Md0MwRzlUaloyako1Wm8rNXlqK2J2cmgwNk9H?=
- =?utf-8?B?WS9ibVdyNW94R2JtTEpNS2NybjNaZkMzQlI3N0pDd3krYWE1Wk13Y0dDbEgw?=
- =?utf-8?B?dGpBSDdzNXRGdXJkNWZUOGFqUm50MTZqUkEwZk9iS3ZUbnc5M0tFTGk1R3VB?=
- =?utf-8?B?YXgwbW9yMFN0bEZnZkVqYm5qbFNzSGFzczNSUVE1RWdpRDhtMjhsb2dxbFh6?=
- =?utf-8?B?MkdEUThuNHZYSVFRVjNsYUpvYUo0MVgxZTZIOW1vQ3YzZjg4dkpuaHRqZE9W?=
- =?utf-8?B?UE80OXgwTFFpY29LUXU5djB0enYxUEhvdG15WGp4aUtBaUY3M3lEWXp3Qndm?=
- =?utf-8?B?UnRmV1ovd0RkRGtGTzFDUlhzeFRWVDZVNjI3UXhvL2hSVzRaYkozT055QkFE?=
- =?utf-8?Q?hQcA50taDstcl3Uno3F4rAg=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2842fcde-b879-4e9f-9fb7-08db62e25e1c
-X-MS-Exchange-CrossTenant-AuthSource: AM4PR08MB2932.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 20:54:18.6002 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f6NKTmI/FZAku3NmwCn3azN3Y004acwKXUIwMgpcD/hf8FJhlmsODxHd/FVXx/wlMHKuGVZQktZ1c7EKofO3u0fRKzKEzop29LDRlRa0mYc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8164
-Received-SPF: pass client-ip=2a01:111:f400:fe1e::72e;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=EUR01-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -144,32 +91,185 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/25/23 21:02, Andrey Drobyshev wrote:
-> v1 -> v2:
-> 
->   * Avoid breaking the loop just yet, as the offsets beyond the old
->     backing size need to be explicitly zeroed;
->   * Amend the commit message accordingly;
->   * Alter the added test case to take the last zeroed cluster into
->     consideration.
-> 
-> v1: https://lists.nongnu.org/archive/html/qemu-block/2023-05/msg00674.html
-> 
-> Andrey Drobyshev (2):
->   qemu-img: rebase: stop when reaching EOF of old backing file
->   qemu-iotests: 024: add rebasing test case for overlay_size >
->     backing_size
-> 
->  qemu-img.c                 | 13 ++++++++-
->  tests/qemu-iotests/024     | 57 ++++++++++++++++++++++++++++++++++++++
->  tests/qemu-iotests/024.out | 30 ++++++++++++++++++++
->  3 files changed, 99 insertions(+), 1 deletion(-)
-> 
 
-Since there're no comments so far, I've included this same bugfix into
-the bigger series regarding "qemu-img rebase".  Please refer to
-https://lists.nongnu.org/archive/html/qemu-block/2023-06/msg00068.html.
+Hi
+
+Before I continue investigating this further, do you have any clue what
+is going on here.  I am running qemu-system-aarch64 on x86_64.
+
+$ time ./tests/qtest/migration-test -p /aarch64/migration/multifd/tcp/plain/none
+TAP version 13
+# random seed: R02S3d50a0e874b28727af4b862a3cc4214e
+# Start of aarch64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2888203.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2888203.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-WT9151/src_serial -cpu max -kernel /tmp/migration-test-WT9151/bootsect     -accel qtest
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2888203.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2888203.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-WT9151/dest_serial -incoming defer -cpu max -kernel /tmp/migration-test-WT9151/bootsect    -accel qtest
+ok 1 /aarch64/migration/multifd/tcp/plain/none
+# End of plain tests
+# End of tcp tests
+# End of multifd tests
+# End of migration tests
+# End of aarch64 tests
+1..1
+
+real	0m4.559s
+user	0m4.898s
+sys	0m1.156s
+$ time ./tests/qtest/migration-test -p /aarch64/migration/multifd/tcp/plain/zlib
+TAP version 13
+# random seed: R02S014dd197350726bdd95aea37b81d3898
+# Start of aarch64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2888278.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2888278.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-25U151/src_serial -cpu max -kernel /tmp/migration-test-25U151/bootsect     -accel qtest
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2888278.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2888278.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-25U151/dest_serial -incoming defer -cpu max -kernel /tmp/migration-test-25U151/bootsect    -accel qtest
+ok 1 /aarch64/migration/multifd/tcp/plain/zlib
+# End of plain tests
+# End of tcp tests
+# End of multifd tests
+# End of migration tests
+# End of aarch64 tests
+1..1
+
+real	0m1.645s
+user	0m3.484s
+sys	0m0.512s
+$ time ./tests/qtest/migration-test -p /aarch64/migration/multifd/tcp/plain/zstd
+TAP version 13
+# random seed: R02Se49afe2ea9d2b76a1eda1fa2bc8d812c
+# Start of aarch64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2888353.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2888353.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-UILY51/src_serial -cpu max -kernel /tmp/migration-test-UILY51/bootsect     -accel qtest
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2888353.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2888353.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-UILY51/dest_serial -incoming defer -cpu max -kernel /tmp/migration-test-UILY51/bootsect    -accel qtest
+
+
+
+ok 1 /aarch64/migration/multifd/tcp/plain/zstd
+# End of plain tests
+# End of tcp tests
+# End of multifd tests
+# End of migration tests
+# End of aarch64 tests
+1..1
+
+real	0m48.022s
+user	8m17.306s
+sys	0m35.217s
+
+
+This test is very amenable to compression, basically we only modify one
+byte for each page, and basically all the pages are the same.
+
+no compression: 4.5 seconds
+zlib compression: 1.6 seconds (inside what I would expect)
+zstd compression: 48 seconds, what is going on here?
+
+As a comparison, this are the times for x86_64 running natively, values
+much more reasonable.
+
+$ time ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/none
+TAP version 13
+# random seed: R02S579fbe8739386c3a3336486f2adbfecd
+# Start of x86_64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3002254.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3002254.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-KA6Z51/src_serial -drive file=/tmp/migration-test-KA6Z51/bootsect,format=raw     -accel qtest
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3002254.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3002254.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-KA6Z51/dest_serial -incoming defer -drive file=/tmp/migration-test-KA6Z51/bootsect,format=raw    -accel qtest
+ok 1 /x86_64/migration/multifd/tcp/plain/none
+# End of plain tests
+# End of tcp tests
+# End of multifd tests
+# End of migration tests
+# End of x86_64 tests
+1..1
+
+real	0m3.889s
+user	0m4.264s
+sys	0m1.295s
+$ time ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/zlib
+TAP version 13
+# random seed: R02S968738d716d2c0dc8c8279716ff3dd9a
+# Start of x86_64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3002385.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3002385.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-9JTZ51/src_serial -drive file=/tmp/migration-test-9JTZ51/bootsect,format=raw     -accel qtest
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3002385.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3002385.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-9JTZ51/dest_serial -incoming defer -drive file=/tmp/migration-test-9JTZ51/bootsect,format=raw    -accel qtest
+ok 1 /x86_64/migration/multifd/tcp/plain/zlib
+# End of plain tests
+# End of tcp tests
+# End of multifd tests
+# End of migration tests
+# End of x86_64 tests
+1..1
+
+real	0m1.464s
+user	0m2.868s
+sys	0m0.534s
+$ time ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/zstd
+TAP version 13
+# random seed: R02Sba4a923c284ad824bc82fd488044a5df
+# Start of x86_64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3006857.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3006857.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-ALK251/src_serial -drive file=/tmp/migration-test-ALK251/bootsect,format=raw     -accel qtest
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3006857.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3006857.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-ALK251/dest_serial -incoming defer -drive file=/tmp/migration-test-ALK251/bootsect,format=raw    -accel qtest
+ok 1 /x86_64/migration/multifd/tcp/plain/zstd
+# End of plain tests
+# End of tcp tests
+# End of multifd tests
+# End of migration tests
+# End of x86_64 tests
+1..1
+
+real	0m1.298s
+user	0m2.540s
+sys	0m0.662s
+
+3.88, 1.46 and 1.29 seconds, what I would have expected.
+
+And if you ask why is this so important: with 48 seconds, we are very
+near the limit.  If I am running 2 or more migration tests at the same
+time:
+
+# random seed: R02Sfb0b65ab5484a997057ef94daed7072f
+# Start of aarch64 tests
+# Start of migration tests
+# Start of multifd tests
+# Start of tcp tests
+# Start of plain tests
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2754383.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2754383.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-L93051/src_serial -cpu max -kernel /tmp/migration-test-L93051/bootsect     -accel qtest
+# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-2754383.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-2754383.qmp,id=char0 -mon chardev=char0,mode=control -display none -net none -accel kvm -accel tcg -machine virt,gic-version=max -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-L93051/dest_serial -incoming defer -cpu max -kernel /tmp/migration-test-L93051/bootsect    -accel qtest
+**
+ERROR:../../../../mnt/code/qemu/multifd/tests/qtest/migration-helpers.c:143:wait_for_migration_status: assertion failed: (g_test_timer_elapsed() < MIGRATION_STATUS_WAIT_TIMEOUT)
+not ok /aarch64/migration/multifd/tcp/plain/zstd - ERROR:../../../../mnt/code/qemu/multifd/tests/qtest/migration-helpers.c:143:wait_for_migration_status: assertion failed: (g_test_timer_elapsed() < MIGRATION_STATUS_WAIT_TIMEOUT)
+Bail out!
+qemu-system-aarch64: multifd_send_pages: channel 0 has already quit!
+qemu-system-aarch64: Unable to write to socket: Connection reset by peer
+Aborted (core dumped)
+
+real	2m0.928s
+user	16m15.671s
+sys	1m11.431s
+
+
+Later, Juan.
+
 
