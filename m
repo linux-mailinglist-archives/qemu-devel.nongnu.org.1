@@ -2,68 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7679671EEDF
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD1F71A305
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 17:47:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4kPH-0003VZ-R0; Thu, 01 Jun 2023 11:40:07 -0400
+	id 1q4kV9-0005Ji-Pg; Thu, 01 Jun 2023 11:46:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kPF-0003V8-P4
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:40:05 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4kV8-0005Io-Fd
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:46:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4kPD-0006LA-Kq
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:40:05 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4kV5-0007Pq-St
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 11:46:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685634002;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1685634367;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dYLXDoBiWowzoMIFoHjTuk0SVsemWSF69WtkA7++nYY=;
- b=YNtSI53BOWDmhiy6Ue8wpmflzVPqWwok5Tw+EyhRow9csPpGZiz3Usin446OU9o+bLfTYS
- E7Ewge3qabq7E6bQZwrvKYmEHPW7HQJ/r5SI2PKGfSA8pKSnZT8krj/AWcRfCyOTwexJ69
- UXE3+cyhh5XxIjOSXwPdLbO+GFchJJ0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-173-o5l5HoBHPr6-7NCR5OxdNA-1; Thu, 01 Jun 2023 11:39:56 -0400
-X-MC-Unique: o5l5HoBHPr6-7NCR5OxdNA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03B7C29DD9B6
- for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 15:39:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 37E4B40CFD45;
- Thu,  1 Jun 2023 15:39:51 +0000 (UTC)
-Date: Thu, 1 Jun 2023 16:39:48 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
+ bh=ui7n38g9s1EteqMIhMLplly7qBSmVGu+pcxs5Pb+0OM=;
+ b=RBLF1cn6kQygcp+tOtXwBm3wov0GVcZoLgLztT/h+hTfheGJKpMNc0szisleU3Nv2tpqCy
+ XTdGG/00CMSpMS4SVftHjJRsnnZovdIs21NktkTqz2nqxQwS+OlXKYc54dz+jxa/W5um3i
+ 6/Jl7Ylc8zqhyX5uLN0NfTN76b1T/lc=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-qHGNxLSnOAqTX9IYABFHYg-1; Thu, 01 Jun 2023 11:46:06 -0400
+X-MC-Unique: qHGNxLSnOAqTX9IYABFHYg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-75b147a2548so19891785a.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 08:46:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685634365; x=1688226365;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ui7n38g9s1EteqMIhMLplly7qBSmVGu+pcxs5Pb+0OM=;
+ b=SmvDrVIW7D4sUQEouktSRCArfr5/GWNKLK4omlpr/uCe+5+hPMn5QXp+wfVndFwB18
+ pCqjHcYFOReGVWIlQsZHsA0V8t5VToFcUT82NHzikPqoWhDJj0Zf+6U7W0+z/m/3Tp8/
+ Cz1Owcg7PW+/st0ymnRNpMv8WfFGpOp5thIsQTE6YZ+VeqjmlZN/uyIvgjL2/V0u6mU2
+ +VL6YVJeVQEenOdysMG1JCP6zdUN9ctNgMutY6ohIFbKph7cpW1PG2kMPy2uCO4eVVw0
+ Rkz3VgOA8Hl05FOCS07IBgm4AkndoKRMTcuxI+MtxBFTbn4yb/ZQZ5aWgopQ4WTTR0p6
+ v2PQ==
+X-Gm-Message-State: AC+VfDxHUlOgfbbIelZO+5tFxa9+IaMLcbvby/I5lzsWJrfWGJHZQlg7
+ wfJlo77FCAHbsnj2ykSNcW9hBHi59xGexKGaWbr+zWzPnU3qVLJcvmGbWzWdIJO63e5W91ZLTWm
+ p3ukgLCp5d+5Ur4o=
+X-Received: by 2002:a05:620a:6542:b0:75b:23a1:69ee with SMTP id
+ qc2-20020a05620a654200b0075b23a169eemr6411971qkn.5.1685634365254; 
+ Thu, 01 Jun 2023 08:46:05 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6TjqMEHoPEtG+zXsKsw9bz34Z274SSEfns8bJlbs4MZemacoLyTpD9O17G5WS6vItcyOYgHA==
+X-Received: by 2002:a05:620a:6542:b0:75b:23a1:69ee with SMTP id
+ qc2-20020a05620a654200b0075b23a169eemr6411939qkn.5.1685634364930; 
+ Thu, 01 Jun 2023 08:46:04 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ s11-20020ae9f70b000000b007594a7aedb2sm6761761qkg.105.2023.06.01.08.46.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 08:46:04 -0700 (PDT)
+Date: Thu, 1 Jun 2023 11:46:01 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
  Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
- scenarios run non-live
-Message-ID: <ZHi7xLhUp0+5cay7@redhat.com>
+Subject: Re: [PATCH v3 9/9] tests/qtest: massively speed up migration-test
+Message-ID: <ZHi9OQz8PGuHMPpN@x1n>
 References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-9-berrange@redhat.com>
- <ZHi5gmd+5pQhDqBF@x1n>
+ <20230531132400.1129576-10-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZHi5gmd+5pQhDqBF@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <20230531132400.1129576-10-berrange@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -84,78 +98,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 11:30:10AM -0400, Peter Xu wrote:
-> Thanks for looking into this.. definitely worthwhile.
+On Wed, May 31, 2023 at 02:24:00PM +0100, Daniel P. Berrangé wrote:
+> The migration test cases that actually exercise live migration want to
+> ensure there is a minimum of two iterations of pre-copy, in order to
+> exercise the dirty tracking code.
 > 
-> On Wed, May 31, 2023 at 02:23:59PM +0100, Daniel P. Berrangé wrote:
-> > There are 27 pre-copy live migration scenarios being tested. In all of
-> > these we force non-convergance and run for one iteration, then let it
-> > converge and wait for completion during the second (or following)
-> > iterations. At 3 mbps bandwidth limit the first iteration takes a very
-> > long time (~30 seconds).
-> > 
-> > While it is important to test the migration passes and convergance
-> > logic, it is overkill to do this for all 27 pre-copy scenarios. The
-> > TLS migration scenarios in particular are merely exercising different
-> > code paths during connection establishment.
-> > 
-> > To optimize time taken, switch most of the test scenarios to run
-> > non-live (ie guest CPUs paused) with no bandwidth limits. This gives
-> > a massive speed up for most of the test scenarios.
-> > 
-> > For test coverage the following scenarios are unchanged
+> Historically we've queried the migration status, looking for the
+> 'dirty-sync-count' value to increment to track iterations. This was
+> not entirely reliable because often all the data would get transferred
+> quickly enough that the migration would finish before we wanted it
+> to. So we massively dropped the bandwidth and max downtime to
+> guarantee non-convergance. This had the unfortunate side effect
+> that every migration took at least 30 seconds to run (100 MB of
+> dirty pages / 3 MB/sec).
 > 
-> Curious how are below chosen?  I assume..
+> This optimization takes a different approach to ensuring that a
+> mimimum of two iterations. Rather than waiting for dirty-sync-count
+> to increment, directly look for an indication that the source VM
+> has dirtied RAM that has already been transferred.
+> 
+> On the source VM a magic marker is written just after the 3 MB
+> offset. The destination VM is now montiored to detect when the
+> magic marker is transferred. This gives a guarantee that the
+> first 3 MB of memory have been transferred. Now the source VM
+> memory is monitored at exactly the 3MB offset until we observe
+> a flip in its value. This gives us a guaranteed that the guest
+> workload has dirtied a byte that has already been transferred.
+> 
+> Since we're looking at a place that is only 3 MB from the start
+> of memory, with the 3 MB/sec bandwidth, this test should complete
+> in 1 second, instead of 30 seconds.
+> 
+> Once we've proved there is some dirty memory, migration can be
+> set back to full speed for the remainder of the 1st iteration,
+> and the entire of the second iteration at which point migration
+> should be complete.
+> 
+> On a test machine this further reduces the migration test time
+> from 8 minutes to 1 minute 40.
 
-Chosen based on whether they exercise code paths that are unique
-and interesting during the RAM transfer phase.
+The outcome is definitely nice, but it does looks slightly hacky to me and
+make the test slightly more complicated.
 
-Essentially the goal is that if we have N% code coverage before this
-patch, then we should still have the same N% code coverage after this
-patch.
+If it's all about making sure we finish the 1st iteration, can we simply
+add a src qemu parameter "switchover-hold"?  If it's set, src never
+switchover to dst but keeps the iterations.
 
-The TLS tests exercise code paths that are unique during the migration
-establishment phase. Once establishd they don't exercise anything
-"interesting" during RAM transfer phase. Thus we don't loose code coverage
-by runing TLS tests non-live.
+Then migrate_ensure_non_converge() will be as simple as setting
+switchover-hold to true.
 
-> 
-> > 
-> >  * Precopy with UNIX sockets
-> 
-> this one verifies dirty log.
-> 
-> >  * Precopy with UNIX sockets and dirty ring tracking
-> 
-> ... dirty ring...
-> 
-> >  * Precopy with XBZRLE
-> 
-> ... xbzrle I think needs a diff on old/new, makes sense.
-> 
-> >  * Precopy with UNIX compress
-> >  * Precopy with UNIX compress (nowait)
-> >  * Precopy with multifd
-> 
-> What about the rest three?  Especially for two compression tests.
+I am even thinking whether there can even be real-life use case for that,
+e.g., where a user might want to have a pre-heat of a migration of some VM,
+and trigger it immediately when the admin really wants (the pre-heats moved
+most of the pages and keep doing so).
 
-The compress thread logic is unique/interesting during RAM transfer
-so benefits from running live. The wait vs non-wait scenario tests
-a distinct codepath/logic.
+It'll be also similar to what Avihai proposed here on switchover-ack, just
+an ack mechanism on the src side:
 
-multifd has been a massive source of bugs and has very different
-codepaths from non-multifd, so is needed for codeage.
+https://lore.kernel.org/r/20230530144821.1557-3-avihaih@nvidia.com
 
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
