@@ -2,62 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B12719BD9
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31D1719BEA
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:21:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hFI-0003G0-Kz; Thu, 01 Jun 2023 08:17:36 -0400
+	id 1q4hFu-0004pT-3J; Thu, 01 Jun 2023 08:18:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hD0-0000p8-KS
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:15:18 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4hFk-0004iR-2l
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:18:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q4hCy-0006V2-Ho
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:15:14 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4hFi-0007Wj-80
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:18:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685621710;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685621881;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nGACEA2aET2msOqUDIABoGnBLI/7CCZG+nBmgrENL+k=;
- b=KJTthjsvCQhXdyRxcBvTDQOCMH7ZJI7wevmLl7S7Jez3c7Te/a6YugQMfFZKOUKmFcXa73
- JlwBfVNZiVnofHSKONhT10xVDiHR43JINpVvByyoo1sS8DaIMQF3e+FHDZwLd0dbGPwWr0
- tor/YQqhklGZSxKpYwncOeRSUayWS3Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-190-FoQahh1bNZ-KThBYHPnyXA-1; Thu, 01 Jun 2023 08:15:07 -0400
-X-MC-Unique: FoQahh1bNZ-KThBYHPnyXA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B93E485A5BB;
- Thu,  1 Jun 2023 12:15:06 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.22.8.170])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BD8D22166B25;
- Thu,  1 Jun 2023 12:15:05 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 10/10] memory-device: Track used region size in
- DeviceMemoryState
-Date: Thu,  1 Jun 2023 14:14:47 +0200
-Message-Id: <20230601121447.272487-12-david@redhat.com>
-In-Reply-To: <20230601121447.272487-1-david@redhat.com>
-References: <20230601121447.272487-1-david@redhat.com>
+ bh=y1Lcbnstuoh/s8pbif3HHwPXfN1pJEC/Zf1ZwnYWND4=;
+ b=BQgOapN6WTVwqaWxGISJIpoKCuSCXECovreztVv8ddNzoXmaX6c6Q0ccknA/kNH6h609Op
+ 5cOoqR0Zx702qgVnzVodilfCALUzJ/vsKF3twujuapfRF0Qaev/cgntBUC2ffFEXnQRS5H
+ uXnqPEQEyywKr0J7M1ErZpzLT3StwIQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-548-U0QlJHH8OMC-2fcF3DTFBg-1; Thu, 01 Jun 2023 08:17:59 -0400
+X-MC-Unique: U0QlJHH8OMC-2fcF3DTFBg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f6f2f18ecbso4975325e9.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:17:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685621872; x=1688213872;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y1Lcbnstuoh/s8pbif3HHwPXfN1pJEC/Zf1ZwnYWND4=;
+ b=T0aGZ4mQqRNcyz9YgJU+IcC5RMmbm/9gKoOpzSoO4zkmz/SX5HoA2OUMnw+6jhgNPu
+ GTfr0gSJUkqLWYs5qc7llmRJFOq0jeMPAT18LSfSUPDeR5hOsQGpjhDFTAYlrnvOxljH
+ qt8HsgLZoxm2gHmtWu0QmPOfNtYHCW2pVgw06EVTBOKCSjkJzCyGAXiXfu44qW1Eg82t
+ Sd3fx/caOXulXmKh6yVyY74ed6dx0E6SF40be2KL1C9B8sYZ0N8syI2Hj1qxyt4azB79
+ naxHYpARvTqXCUfz+LsbypWng99TJfOUbWTA5mtHKMuHOh9v7MR+/dmOAu36QC29wRYG
+ 1IuQ==
+X-Gm-Message-State: AC+VfDxdY+aFKd/0fzeXJNgreW9Wew5quBe/F+iW7C4BBgMz641EXN5N
+ Ap35dCikVeNZslBwmRgE5rqVbZxIJwS0I3wSPKk2bEIFLnIMglwlFDnHa8xCT7Gy/KW/6iaaVEA
+ jLOO8nX5WmMqbGjE=
+X-Received: by 2002:a7b:c5d4:0:b0:3f6:ffe:9ef1 with SMTP id
+ n20-20020a7bc5d4000000b003f60ffe9ef1mr1879894wmk.36.1685621872744; 
+ Thu, 01 Jun 2023 05:17:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6Y21JtkJn/+vRpL+WrCYlhVMa2qHTiwzBnQkgJn45RikzSRFUfarfOXjYwLLhHd9vIYr7Rcw==
+X-Received: by 2002:a7b:c5d4:0:b0:3f6:ffe:9ef1 with SMTP id
+ n20-20020a7bc5d4000000b003f60ffe9ef1mr1879873wmk.36.1685621872400; 
+ Thu, 01 Jun 2023 05:17:52 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ 9-20020a05600c028900b003f60482024fsm2215844wmk.30.2023.06.01.05.17.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 05:17:51 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 3/9] tests/qtest: get rid of 'qmp_command' helper in
+ migration test
+In-Reply-To: <20230531132400.1129576-4-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:54
+ +0100")
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-4-berrange@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 01 Jun 2023 14:17:51 +0200
+Message-ID: <87v8g7s7f4.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -65,7 +90,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,96 +103,18 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's avoid iterating over all devices and simply track it in the
-DeviceMemoryState.
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+> This function duplicates logic of qtest_qmp_assert_success_ref
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/mem/memory-device.c | 22 +++-------------------
- include/hw/boards.h    |  2 ++
- 2 files changed, 5 insertions(+), 19 deletions(-)
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index 00c7755557..667d56bd29 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -52,28 +52,11 @@ static int memory_device_build_list(Object *obj, void *opaque)
-     return 0;
- }
- 
--static int memory_device_used_region_size(Object *obj, void *opaque)
--{
--    uint64_t *size = opaque;
--
--    if (object_dynamic_cast(obj, TYPE_MEMORY_DEVICE)) {
--        const DeviceState *dev = DEVICE(obj);
--        const MemoryDeviceState *md = MEMORY_DEVICE(obj);
--
--        if (dev->realized) {
--            *size += memory_device_get_region_size(md, &error_abort);
--        }
--    }
--
--    object_child_foreach(obj, memory_device_used_region_size, opaque);
--    return 0;
--}
--
- static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-                                         Error **errp)
- {
-+    const uint64_t used_region_size = ms->device_memory->used_region_size;
-     const uint64_t size = memory_region_size(mr);
--    uint64_t used_region_size = 0;
- 
-     /* we will need a new memory slot for kvm and vhost */
-     if (kvm_enabled() && !kvm_has_free_slot(ms)) {
-@@ -86,7 +69,6 @@ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-     }
- 
-     /* will we exceed the total amount of memory specified */
--    memory_device_used_region_size(OBJECT(ms), &used_region_size);
-     if (used_region_size + size < used_region_size ||
-         used_region_size + size > ms->maxram_size - ms->ram_size) {
-         error_setg(errp, "not enough space, currently 0x%" PRIx64
-@@ -292,6 +274,7 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
-     mr = mdc->get_memory_region(md, &error_abort);
-     g_assert(ms->device_memory);
- 
-+    ms->device_memory->used_region_size += memory_region_size(mr);
-     memory_region_add_subregion(&ms->device_memory->mr,
-                                 addr - ms->device_memory->base, mr);
-     trace_memory_device_plug(DEVICE(md)->id ? DEVICE(md)->id : "", addr);
-@@ -310,6 +293,7 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
-     g_assert(ms->device_memory);
- 
-     memory_region_del_subregion(&ms->device_memory->mr, mr);
-+    ms->device_memory->used_region_size -= memory_region_size(mr);
-     trace_memory_device_unplug(DEVICE(md)->id ? DEVICE(md)->id : "",
-                                mdc->get_addr(md));
- }
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index be06e8a41f..fcaf40b9da 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -296,11 +296,13 @@ struct MachineClass {
-  * address space for memory devices starts
-  * @mr: address space container for memory devices
-  * @dimm_size: the sum of plugged DIMMs' sizes
-+ * @used_region_size: the part of @mr already used by memory devices
-  */
- typedef struct DeviceMemoryState {
-     hwaddr base;
-     MemoryRegion mr;
-     uint64_t dimm_size;
-+    uint64_t used_region_size;
- } DeviceMemoryState;
- 
- /**
--- 
-2.40.1
+Much better that the current code.  And as you answer to Thomas, better
+messages in case of errors.
 
 
