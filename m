@@ -2,55 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F91A719C00
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 527FE719C01
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:23:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hL0-0005fp-KR; Thu, 01 Jun 2023 08:23:31 -0400
+	id 1q4hL3-00068k-JE; Thu, 01 Jun 2023 08:23:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
- id 1q4hKn-0005Oq-9p; Thu, 01 Jun 2023 08:23:17 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4hKq-0005Wi-Ux
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:23:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=vOrz=BV=kaod.org=clg@ozlabs.org>)
- id 1q4hKk-0000Hc-N5; Thu, 01 Jun 2023 08:23:17 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QX4zD2Mpwz4x4L;
- Thu,  1 Jun 2023 22:23:04 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QX4zB5C2jz4x3y;
- Thu,  1 Jun 2023 22:23:02 +1000 (AEST)
-Message-ID: <a82e948c-e53e-edf5-e697-112b046866a5@kaod.org>
-Date: Thu, 1 Jun 2023 14:22:58 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4hKm-0000JI-MW
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 08:23:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685622195;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xlYre14tlpo8VNvwd+Nt5jCH5DONFu9BrrLOZx4XA/8=;
+ b=ODqwaZQKM/xvKJqDNHbn37jpiys1sd77fSLaXtxBDfLLZyx6tWo2CWE0lFt1oCUNCxqVFk
+ 5yISUKWyrXmMz743u9X87kY7hnLvAFkkQPxALlXr5/4on4t5y08JrgS/zp91mm3bSfkJNW
+ gh3KElmR2o+9KKDK8My/cKVfKkskxmY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-354-Sn0XOqqvN-a7ieazvnZEKg-1; Thu, 01 Jun 2023 08:23:14 -0400
+X-MC-Unique: Sn0XOqqvN-a7ieazvnZEKg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30ae4ed92eeso421614f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 05:23:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685622193; x=1688214193;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xlYre14tlpo8VNvwd+Nt5jCH5DONFu9BrrLOZx4XA/8=;
+ b=I7Rj8K0o8nxsqBJHJqeuNxkrTbSFed/InxBRO+JF0c2rzqtPub/0JY8ZuRTjrt+KEY
+ wZP6maP7u8RZQmWAqKCWmxLkz6yOmvDOp37PrfiaXZ2MUTuYmutqdmttXhHadnyb/Mbg
+ 9zDFXjCwKFKZvXNsuF7Tt08w8sFNsRoJINoAMfo3E41n/ti7uhvJ7Y+LDcjj67m5xFeZ
+ UO1Rlh06J3tXTgZaI4YtPIs377oytrFCIzUlted0PVcw/7+PqLzGAie+a5oYv931L1rL
+ DAJeL11GFRSsTpW8mrE0LivHVpbn6joWUyMfTc7em8kbrZsO73WHvZKAWDbZhr8UaYnt
+ fVIA==
+X-Gm-Message-State: AC+VfDxXkHk9KJzPb27a6A58mGnwDL/G/IDgwwcg0UUIuTcMed4i3yxU
+ Jo2ORlJlaFI8VeN7cEteMxTujeNx9NhRQw5R7fwn5HpudWOd12RBTuWL0UxHMfrcpQVC4/bPIQm
+ lXDo1ojWRwg8PlCU=
+X-Received: by 2002:a5d:6146:0:b0:307:41a1:a125 with SMTP id
+ y6-20020a5d6146000000b0030741a1a125mr1839330wrt.12.1685622193553; 
+ Thu, 01 Jun 2023 05:23:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7IRjt+jSFDy29kmSY5mEQ+J770vvPK0o5QSQxnMB9z23HbRZCHF9jeIS/AJ/HEki+vHdHqkQ==
+X-Received: by 2002:a5d:6146:0:b0:307:41a1:a125 with SMTP id
+ y6-20020a5d6146000000b0030741a1a125mr1839305wrt.12.1685622193218; 
+ Thu, 01 Jun 2023 05:23:13 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ k5-20020adff5c5000000b0030af1d87342sm10353852wrp.6.2023.06.01.05.23.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 05:23:12 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 5/9] tests/qtest: switch to using event callbacks for
+ STOP event
+In-Reply-To: <20230531132400.1129576-6-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 31 May 2023 14:23:56
+ +0100")
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-6-berrange@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 01 Jun 2023 14:23:11 +0200
+Message-ID: <87mt1js768.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 4/5] pnv/xive2: Introduce macros to manipulate TIMA
- addresses
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230601121331.487207-1-fbarrat@linux.ibm.com>
- <20230601121331.487207-5-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230601121331.487207-5-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=vOrz=BV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,108 +103,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/23 14:13, Frederic Barrat wrote:
-> TIMA addresses are somewhat special and are split in several bit
-> fields with different meanings. This patch describes it and introduce
-> macros to more easily access the various fields.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+> Change the migration test to use the new qtest event callback to watch
+> for the stop event. This ensures that we only watch for the STOP event
+> on the source QEMU. The previous code would set the single 'got_stop'
+> flag when either source or dest QEMU got the STOP event.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+If you agreed with my proposed change to patch 1
 
-Thanks,
-
-C.
-
-
-> ---
->   hw/intc/xive.c             | 14 +++++++-------
->   include/hw/ppc/xive_regs.h | 16 ++++++++++++++++
->   2 files changed, 23 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index a986b96843..ebe399bc09 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -249,7 +249,7 @@ static const uint8_t *xive_tm_views[] = {
->   static uint64_t xive_tm_mask(hwaddr offset, unsigned size, bool write)
->   {
->       uint8_t page_offset = (offset >> TM_SHIFT) & 0x3;
-> -    uint8_t reg_offset = offset & 0x3F;
-> +    uint8_t reg_offset = offset & TM_REG_OFFSET;
->       uint8_t reg_mask = write ? 0x1 : 0x2;
->       uint64_t mask = 0x0;
->       int i;
-> @@ -266,8 +266,8 @@ static uint64_t xive_tm_mask(hwaddr offset, unsigned size, bool write)
->   static void xive_tm_raw_write(XiveTCTX *tctx, hwaddr offset, uint64_t value,
->                                 unsigned size)
->   {
-> -    uint8_t ring_offset = offset & 0x30;
-> -    uint8_t reg_offset = offset & 0x3F;
-> +    uint8_t ring_offset = offset & TM_RING_OFFSET;
-> +    uint8_t reg_offset = offset & TM_REG_OFFSET;
->       uint64_t mask = xive_tm_mask(offset, size, true);
->       int i;
->   
-> @@ -296,8 +296,8 @@ static void xive_tm_raw_write(XiveTCTX *tctx, hwaddr offset, uint64_t value,
->   
->   static uint64_t xive_tm_raw_read(XiveTCTX *tctx, hwaddr offset, unsigned size)
->   {
-> -    uint8_t ring_offset = offset & 0x30;
-> -    uint8_t reg_offset = offset & 0x3F;
-> +    uint8_t ring_offset = offset & TM_RING_OFFSET;
-> +    uint8_t reg_offset = offset & TM_REG_OFFSET;
->       uint64_t mask = xive_tm_mask(offset, size, false);
->       uint64_t ret;
->       int i;
-> @@ -534,7 +534,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->       /*
->        * First, check for special operations in the 2K region
->        */
-> -    if (offset & 0x800) {
-> +    if (offset & TM_SPECIAL_OP) {
->           xto = xive_tm_find_op(offset, size, true);
->           if (!xto) {
->               qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid write access at TIMA "
-> @@ -573,7 +573,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->       /*
->        * First, check for special operations in the 2K region
->        */
-> -    if (offset & 0x800) {
-> +    if (offset & TM_SPECIAL_OP) {
->           xto = xive_tm_find_op(offset, size, false);
->           if (!xto) {
->               qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid read access to TIMA"
-> diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
-> index b7fde2354e..4a3c9badd3 100644
-> --- a/include/hw/ppc/xive_regs.h
-> +++ b/include/hw/ppc/xive_regs.h
-> @@ -48,6 +48,22 @@
->   
->   #define TM_SHIFT                16
->   
-> +/*
-> + * TIMA addresses are 12-bits (4k page).
-> + * The MSB indicates a special op with side effect, which can be
-> + * refined with bit 10 (see below).
-> + * The registers, logically grouped in 4 rings (a quad-word each), are
-> + * defined on the 6 LSBs (offset below 0x40)
-> + * In between, we can add a cache line index from 0...3 (ie, 0, 0x80,
-> + * 0x100, 0x180) to select a specific snooper. Those 'snoop port
-> + * address' bits should be dropped when processing the operations as
-> + * they are all equivalent.
-> + */
-> +#define TM_ADDRESS_MASK         0xC3F
-> +#define TM_SPECIAL_OP           0x800
-> +#define TM_RING_OFFSET          0x30
-> +#define TM_REG_OFFSET           0x3F
+> -bool got_stop;
+> -
+> -static void check_stop_event(QTestState *who)
+> +bool migrate_watch_for_stop(QTestState *who, const char *name,
+> +                            QDict *event, void *opaque)
+>  {
+> -    QDict *event =3D qtest_qmp_event_ref(who, "STOP");
+> -    if (event) {
+> -        got_stop =3D true;
+> -        qobject_unref(event);
+> +    bool *seen =3D opaque;
 > +
->   /* TM register offsets */
->   #define TM_QW0_USER             0x000 /* All rings */
->   #define TM_QW1_OS               0x010 /* Ring 0..2 */
+> +    if (g_str_equal(name, "STOP")) {
+> +        *seen =3D true;
+
+You should
+           return true;
+
+here.
+
+Later, Juan.
 
 
