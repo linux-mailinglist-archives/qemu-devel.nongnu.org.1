@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1010C719097
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E527190B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:49:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4YEl-00053g-0e; Wed, 31 May 2023 22:40:27 -0400
+	id 1q4YMI-0006ju-NY; Wed, 31 May 2023 22:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4YEi-0004vd-S8
- for qemu-devel@nongnu.org; Wed, 31 May 2023 22:40:24 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1q4YMG-0006jH-Qm
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 22:48:12 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4YEg-0004NC-6v
- for qemu-devel@nongnu.org; Wed, 31 May 2023 22:40:24 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1b075e13a5eso2880925ad.3
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 19:40:15 -0700 (PDT)
+ id 1q4YMF-0005wz-9Y
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 22:48:12 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-397f13944f2so229538b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 19:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685587214; x=1688179214;
+ d=linaro.org; s=google; t=1685587689; x=1688179689;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=itDNqqim0gz7ylOBEBOoILHcq8T0JBsppFgzSe0askM=;
- b=yBk11ffrUzL/TJmN5btvNu1UpZgm/Ms/J13xGHwDbGM+I4B9u9qY27JEcc/50I+RlV
- dxfpk9Yk9+RdtzykqHwVYAByEQJsFRsGUftC1Bz0SrF+lr9JhkptFKb0wq0Wr+aJUc8m
- iS0GxyvB9wBIYDc74EIN1U5IEm52EwQgtMwDGBSQ3YQFz1IeopLo9Kqo+M0F0xU5sL4t
- MbKKlLHTbcdHxg8Oo26dYN8a4n4woURWoRveGv3uZUkEHcS1/PuKtSl6/7Ah8w6oI1ik
- 3KTAbQvFbh/HhYQADdW4YrVAUztMGJk13e2a9YBhvIJRJcm4xjQVcBaNIMNaeBRAmTOW
- ywwA==
+ bh=L/eGAZNNy5ekExubn9tdH1R9J6sUFzSLjFysRi+efOU=;
+ b=r9463slEyCFZzqh/dQzqSB+qawmUiQaOAw3AaQwg3eQep7y1b10V+L31Pu3xmsIN1R
+ 2ObVF0L+OWwvhC3vBZcgmQD1qL3hxUEdK+BFnU2sm8qmQbBRS+y73Ofy4keuF4Ztz2zC
+ IW+C6m7WMgdCHJV+J4HjzUMMLxw3si5Vq2Rh/AiSwyY6o623EGKYD4WYneVvjY5rrjtv
+ yY9+goQBjg5ofRb2R2urHxEFkbehGY7DznTNe2Kixi/4Z9ExTS+aggZNeRFNXxiIferL
+ p9X0uxlzhIJN4jVDi5Yc1ZaJcSXa12j0khVzuUP0TJMS7Ionly+GKxnDL0qautYSvjSo
+ M9ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685587214; x=1688179214;
+ d=1e100.net; s=20221208; t=1685587689; x=1688179689;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=itDNqqim0gz7ylOBEBOoILHcq8T0JBsppFgzSe0askM=;
- b=iF24FXbqD88OfSgprquXqTQDJ0bENEG8Uh1hp46r09dxXCel6BSCtWCHZqmm5TOj4J
- +xNzNQQIDhNA5QzYi/VaO0OlTEG0eZWpmL9mcDsYg6X3h+3XIkcPQIeyngeX2Ip0osxF
- 74RhcGqDsxb6VRss2sz3fLX2WsGwOw4Tn83HNG1OWqGgoQjd1RnN0IBV56QSZ4z/7Ldi
- 9ZN1RPF0bNroMIWOB04ecfXkTeLZncE+GM/xEgTEH1oZVtgBax7H70vmQqyknkK/xYID
- oc5sUOXYP1H8Oli1n6i9DJBPYbBnUlmUQm4rrgR160qQOWdtBa3SCv/GU4rzN6kMfu1n
- MrvA==
-X-Gm-Message-State: AC+VfDxOSq44v3G0PVj21LNdesinXbymVxdvkBEf1gMpmHeRk0rWD2ro
- uwvIzgUGzM42PWkMauOpre9sOA==
-X-Google-Smtp-Source: ACHHUZ76KIfT/xBxBTEC13iS31HyP3Ck83qmUIYnzIUcmu7tZmx9K6ZuldAWU3LxZdrc4s3v0AU9wg==
-X-Received: by 2002:a17:903:2284:b0:1b0:45e2:ef38 with SMTP id
- b4-20020a170903228400b001b045e2ef38mr8442945plh.26.1685587213847; 
- Wed, 31 May 2023 19:40:13 -0700 (PDT)
+ bh=L/eGAZNNy5ekExubn9tdH1R9J6sUFzSLjFysRi+efOU=;
+ b=aJu/LXai6d7wNqsyWSnbFIY1DbMswzxMz3eWnAL71S650L/oBpN4PRotmnpSQ2SiEB
+ 7i31Yih+xQAlcRq48vfWVjTm1IF79Y7FZp+pmDwqLtlSF7kBaLR1e06kHdpC9IYkFus+
+ cnXQBOyJj5qDdyWwaXgFgPnS1fdtRixPld3tQ+L7s8gZqZP5aDI04+v08Oa6ejbYgWi0
+ fgKGOzZ+e31Erzi+gj+wJE3r5R1kSNJdVl8gLqZow29BSwZc2B2dg8rQSC45P2jUlQIq
+ r6Z2hQ+Z5VUD7PHz9CUfCoO51cif4FxsTxw7Fe98n+6Lw4FEF/Os5tKYF9B53q+JziT1
+ QmnA==
+X-Gm-Message-State: AC+VfDwpLMocOrXgUTjegL0Q3ooIYCAIeP6xYIfi363lpiSb5YF0YAHr
+ LKDwGucpMo9pXlEWqBOAIuBNJQ==
+X-Google-Smtp-Source: ACHHUZ4Rfn8ZGRSz2v6zrMl04V8CtTx/CbeGWi6OPUa5vuSb2wWQMSyQSMVSMts2lC/h72s/w43DHA==
+X-Received: by 2002:aca:b98b:0:b0:398:4217:e890 with SMTP id
+ j133-20020acab98b000000b003984217e890mr6013649oif.2.1685587689681; 
+ Wed, 31 May 2023 19:48:09 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
  ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
  by smtp.gmail.com with ESMTPSA id
- u7-20020a170902714700b001a260b5319bsm2145007plm.91.2023.05.31.19.40.13
+ d4-20020aa78684000000b00640d80c8a2bsm4020009pfo.50.2023.05.31.19.48.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 19:40:13 -0700 (PDT)
-Message-ID: <387127a0-4030-32b9-ccbb-db2f95bd618b@linaro.org>
-Date: Wed, 31 May 2023 19:40:11 -0700
+ Wed, 31 May 2023 19:48:09 -0700 (PDT)
+Message-ID: <fad791ac-c855-4930-e0be-0dff4fbfe1df@linaro.org>
+Date: Wed, 31 May 2023 19:48:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v14 08/10] Adding info [tb-list|tb] commands to HMP (WIP)
+Subject: Re: [PATCH v14 02/10] accel/tcg: introduce TBStatistics structure
 Content-Language: en-US
-To: Fei Wu <fei2.wu@intel.com>, alex.bennee@linaro.org, qemu-devel@nongnu.org
+To: "Wu, Fei" <fei2.wu@intel.com>, alex.bennee@linaro.org,
+ qemu-devel@nongnu.org
 Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
+ Paolo Bonzini <pbonzini@redhat.com>
 References: <20230530083526.2174430-1-fei2.wu@intel.com>
- <20230530083526.2174430-9-fei2.wu@intel.com>
+ <20230530083526.2174430-3-fei2.wu@intel.com>
+ <3653fd43-6fde-7974-f723-51f1c06c069f@linaro.org>
+ <beb21871-3661-3096-2317-2cfb16bb0327@intel.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230530083526.2174430-9-fei2.wu@intel.com>
+In-Reply-To: <beb21871-3661-3096-2317-2cfb16bb0327@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -99,83 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 01:35, Fei Wu wrote:
-> +static void do_dump_tbs_info(int total, int sort_by)
-> +{
-> +    id = 1;
-> +    GList *i;
-> +    int count = total;
-> +
-> +    g_list_free(last_search);
-> +    last_search = NULL;
-> +
-> +    qht_iter(&tb_ctx.tb_stats, collect_tb_stats, NULL);
-> +
-> +    last_search = g_list_sort_with_data(last_search, inverse_sort_tbs,
-> +                                        &sort_by);
-> +
+On 5/31/23 18:30, Wu, Fei wrote:
+> On 6/1/2023 7:59 AM, Richard Henderson wrote:
+>> On 5/30/23 01:35, Fei Wu wrote:
+>>> +    /*
+>>> +     * We want to fetch the stats structure before we start code
+>>> +     * generation so we can count interesting things about this
+>>> +     * generation.
+>>> +     */
+>>> +    if (tb_stats_collection_enabled()) {
+>>> +        tb->tb_stats = tb_get_stats(phys_pc, pc, cs_base, flags);
+>>
+>> If cflags & CF_PCREL, then 'pc' should not be cached or matched.
+>> Using 'phys_pc' will suffice, so pass 0 in that case.
+>>
+> OK, tb_get_stats(phys_pc, (cflags & CF_PCREL ? 0 : pc), cs_base, flags);
+> 
+> btw, is it possible to drop 'pc' even w/o CF_PCREL setting in cflags?
+> Two TBs with different 'pc' but same 'phys_pc', are they the same?
 
-Why are you sorting on a list and not an array?
-Intuitively, sorting a list of 1 million elements seems like the wrong choice.
+For the purpose of statistics, yes, plausibly.
 
-Why did you put all the comparisons in one inverse_sort_tbs function, and require 
-examining sort_by?  Better would be N sorting functions where sort_by is evaluated once 
-before starting the sort.
-
-
-> +++ b/disas/disas.c
-> @@ -8,6 +8,8 @@
->  #include "hw/core/cpu.h"
->  #include "exec/memory.h"
->  
-> +#include "qemu/log-for-trace.h"
-> +
->  /* Filled in by elfload.c.  Simplistic, but will do for now. */
->  struct syminfo *syminfos = NULL;
->  
-> @@ -199,6 +201,24 @@ static void initialize_debug_host(CPUDebug *s)
->  #endif
->  }
->  
-> +static int
-> +__attribute__((format(printf, 2, 3)))
-> +fprintf_log(FILE *a, const char *b, ...)
-> +{
-> +    va_list ap;
-> +    va_start(ap, b);
-> +
-> +    if (!to_string) {
-> +        vfprintf(a, b, ap);
-> +    } else {
-> +        qemu_vlog(b, ap);
-> +    }
-> +
-> +    va_end(ap);
-> +
-> +    return 1;
-> +}
-> +
-
-Not need on this either.  Global variable being checked on each callback, instead of 
-selecting the proper callback earlier -- preferably without the global variable.
-
-Did you really need something different than monitor_disas?  You almost certainly want to 
-read physical memory and not virtual anyway.
-
-> +void qemu_log_to_monitor(bool enable)
-> +{
-> +    to_monitor = enable;
-> +}
-> +
-> +void qemu_log_to_string(bool enable, GString *s)
-> +{
-> +    to_string = enable;
-> +    string = s;
-> +}
-
-What are these for, and why do you need them?
-Why would to_string ever be anything other than (string != NULL)?
-Why are you using such very generic names for global variables?
+Knowing how many different translations of the same bit of libc.so, for a guest that does 
+not support CF_PCREL, could be revealing.  In any case, you can get back to the virtual 
+addresses via tb_stats->tbs[i]->pc, so long as tb_stats->tb[i].cflags & CF_PCREL is not set.
 
 
 r~
