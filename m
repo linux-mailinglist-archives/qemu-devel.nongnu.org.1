@@ -2,43 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611FF71F2E8
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 21:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C0171F321
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 21:44:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4nye-0006jx-Ci; Thu, 01 Jun 2023 15:28:53 -0400
+	id 1q4oCf-0002fN-S7; Thu, 01 Jun 2023 15:43:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q4nyX-0006jU-UL; Thu, 01 Jun 2023 15:28:45 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q4nyV-0005mA-Bd; Thu, 01 Jun 2023 15:28:45 -0400
-Received: from dev005.ch-qa.vzint.dev ([172.29.1.10])
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1q4nyC-00DLDg-1O;
- Thu, 01 Jun 2023 21:28:37 +0200
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 6/6] iotests: add test 314 for "qemu-img rebase" with
- compression
-Date: Thu,  1 Jun 2023 22:28:36 +0300
-Message-Id: <20230601192836.598602-7-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
-References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1q4oCU-0002eH-UB; Thu, 01 Jun 2023 15:43:11 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1q4oCS-0008Gg-P3; Thu, 01 Jun 2023 15:43:10 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6af6df840ffso1048584a34.1; 
+ Thu, 01 Jun 2023 12:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685648585; x=1688240585;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5z3sfd+u9XMiVAAiY2wszfBYA0kxwter/jGnF+RQ+IE=;
+ b=hjNoE8Th3bNcNBZHmxkrCQPmV9mPM2Bt+UVu6EnAQfcfB8qlWB0lMxugfBonc435tk
+ 0aazZDcQLxiLqJHn4NvdSBlAr2F9GariiO1cLd4Mn1Ao8OsRCfuIsWJ96fHzOInteVgM
+ 2VrhzxZSVYJxQrw0e4iHIXHHWXhdS1XCj2tWZOjC2oFkjltrkfh8AF7eu07P/dbd6khf
+ JDbrivy/kJm/HNpIFafO8oBXfP0mrqMZhxQZLXxlRE+bnXW/oBurD/iXWQNPV2DxzWgA
+ OSorlxwYyTbvm3eslGJ5n2cfzZQAcyGyQTUDRBFSjaxBp+UG9pwcmBMXEwRKH7yzLfBO
+ +l1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685648585; x=1688240585;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=5z3sfd+u9XMiVAAiY2wszfBYA0kxwter/jGnF+RQ+IE=;
+ b=MyBjGnr9zA0Q2ttSsC2zkc+PSQ5aDweJDwGZe4nWpC+iOXRiYWh/IU7e7E6WWzENqw
+ e4xNHgaV3cbdwzEr4J+zm9uQbvHtVp2l9UgKr0xnzVlUAdxriebMNGEhbygWitWay9u5
+ 96GTXwKTXn15LcdGa49hisiG0QrY14pqEonYaGcRHXfmL0HOICF7LaAW9YwVphv8m0MW
+ L3iXQdhfoJohDgSb3SRZ4N2kF6xMBijaQJiWvInteRWTjJV3x9WBoNc2IXJJQvO2pmDg
+ MYJ5YTRE+rWTEBoWEanXCt0L6u08ay9AMwZP+nDJxHIPH1T3ijcG0G+vaAXZtf+oOFsg
+ YE7Q==
+X-Gm-Message-State: AC+VfDxjM8oMDuP0weHTvmX6nY0sa6oE1hzFzWmY5vI656YWksNM/7CV
+ 7Wnt123fNvCfk309xDMRAg==
+X-Google-Smtp-Source: ACHHUZ74EJQqgVepHwDNq3npGia8sjlW8rn8L+TkHUzWHrYyoeY/gds3B+UYZrjtY55Fy1bs3wZomg==
+X-Received: by 2002:a05:6830:18e:b0:6a4:4252:47aa with SMTP id
+ q14-20020a056830018e00b006a4425247aamr397410ota.21.1685648585294; 
+ Thu, 01 Jun 2023 12:43:05 -0700 (PDT)
+Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
+ by smtp.gmail.com with ESMTPSA id
+ r12-20020a9d750c000000b006af886703f2sm1857662otk.37.2023.06.01.12.43.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jun 2023 12:43:04 -0700 (PDT)
+Received: from mail.minyard.net (unknown
+ [IPv6:2001:470:b8f6:1b:4d5a:813b:a2b2:477c])
+ by serve.minyard.net (Postfix) with ESMTPSA id A0AF7180047;
+ Thu,  1 Jun 2023 19:42:59 +0000 (UTC)
+Date: Thu, 1 Jun 2023 14:42:58 -0500
+From: Corey Minyard <minyard@acm.org>
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, Corey Minyard <cminyard@mvista.com>,
+ Keith Busch <kbusch@kernel.org>, Jason Wang <jasowang@redhat.com>,
+ Lior Weintraub <liorw@pliops.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Jeremy Kerr <jk@codeconstruct.com.au>, qemu-arm@nongnu.org,
+ Matt Johnston <matt@codeconstruct.com.au>,
+ Peter Delevoryas <peter@pjd.dev>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-block@nongnu.org,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Klaus Jensen <k.jensen@samsung.com>,
+ Peter Maydell <peter.maydell@linaro.org>, gost.dev@samsung.com
+Subject: Re: [PATCH v3 0/3] hw/{i2c, nvme}: mctp endpoint, nvme management
+ interface model
+Message-ID: <ZHj0wnVHdY2HzL20@mail.minyard.net>
+References: <20230531114744.9946-1-its@irrelevant.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230531114744.9946-1-its@irrelevant.dk>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=tcminyard@gmail.com; helo=mail-ot1-x335.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.248,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -51,287 +101,140 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
+Reply-To: minyard@acm.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test cases considered so far:
+On Wed, May 31, 2023 at 01:47:41PM +0200, Klaus Jensen wrote:
+> From: Klaus Jensen <k.jensen@samsung.com>
+> 
+> This adds a generic MCTP endpoint model that other devices may derive
+> from. I'm not 100% happy with the design of the class methods, but it's
+> a start.
+> 
+> Also included is a very basic implementation of an NVMe-MI device,
+> supporting only a small subset of the required commands. Lior (CC'ed) has some
+> patches coming up that adds futher support.
+> 
+> Since this all relies on i2c target mode, this can currently only be
+> used with an SoC that includes the Aspeed I2C controller.
+> 
+> The easiest way to get up and running with this, is to grab my buildroot
+> overlay[1]. It includes modified a modified dts as well as a couple of
+> required packages.
+> 
+> QEMU can then be launched along these lines:
+> 
+>   qemu-system-arm \
+>     -nographic \
+>     -M ast2600-evb \
+>     -kernel output/images/zImage \
+>     -initrd output/images/rootfs.cpio \
+>     -dtb output/images/aspeed-ast2600-evb-nmi.dtb \
+>     -nic user,hostfwd=tcp::2222-:22 \
+>     -device nmi-i2c,address=0x3a \
+>     -serial mon:stdio
+> 
+> From within the booted system,
+> 
+>   mctp addr add 8 dev mctpi2c15
+>   mctp link set mctpi2c15 up
+>   mctp route add 9 via mctpi2c15
+>   mctp neigh add 9 dev mctpi2c15 lladdr 0x3a
+>   mi-mctp 1 9 info
+> 
+> Comments are very welcome!
+> 
+>   [1]: https://github.com/birkelund/buildroots/tree/main/mctp-i2c
+> 
+> Changes since v2
+> ~~~~~~~~~~~~~~~~
+> 
+>   - Applied a bunch of feedback from Jonathan:
+>     + Moved a lot of internally used structs out of the include headers
+>       and into the source files.
+>     + Added spec references in various places
+>     + Split the patch for i2c_smbus_pec() into its own
+>     + Fix a compile error (and bug) in nmi-i2c.c.
+> 
+>   - From Corey:
+>     + Reworked the buffer handling. The deriving devices now returns a
+>       pointer to their own buffer that the mctp core copies into.
 
-1. Check that compression mode isn't compatible with "-f raw" (raw
-   format doesn't support compression).
-2. Check that rebasing an image onto no backing file preserves the data
-   and writes the copied clusters actually compressed.
-3. Same as 2, but with a raw backing file (i.e. the clusters copied from the
-   backing are originally uncompressed -- we check they end up compressed
-   after being merged).
-4. Remove a single delta from a backing chain, perform the same checks
-   as in 2.
-5. Check that even when backing and overlay are initially uncompressed,
-   copied clusters end up compressed when rebase with compression is
-   performed.
+You didn't do what I asked here, I guess I wasn't clear.  You have:
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- tests/qemu-iotests/314     | 165 +++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/314.out |  75 +++++++++++++++++
- 2 files changed, 240 insertions(+)
- create mode 100755 tests/qemu-iotests/314
- create mode 100644 tests/qemu-iotests/314.out
-
-diff --git a/tests/qemu-iotests/314 b/tests/qemu-iotests/314
-new file mode 100755
-index 0000000000..96d7b4d258
---- /dev/null
-+++ b/tests/qemu-iotests/314
-@@ -0,0 +1,165 @@
-+#!/usr/bin/env bash
-+# group: rw backing auto quick
-+#
-+# Test qemu-img rebase with compression
-+#
-+# Copyright (c) 2023 Virtuozzo International GmbH.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+# creator
-+owner=andrey.drobyshev@virtuozzo.com
-+
-+seq=`basename $0`
-+echo "QA output created by $seq"
-+
-+status=1	# failure is the default!
-+
-+_cleanup()
++static void i2c_mctp_handle_control_set_eid(MCTPI2CEndpoint *mctp, uint8_t eid)
 +{
-+    _cleanup_test_img
-+    _rm_test_img "$TEST_IMG.base"
-+    _rm_test_img "$TEST_IMG.itmd"
++    mctp->my_eid = eid;
++
++    uint8_t buf[] = {
++        0x0, 0x0, eid, 0x0,
++    };
++
++    memcpy(i2c_mctp_control_data(mctp->buffer), buf, sizeof(buf));
++    mctp->len += sizeof(buf);
 +}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ./common.rc
-+. ./common.filter
-+
-+_supported_fmt qcow2
-+_supported_proto file
-+_supported_os Linux
-+
-+# Want the size divisible by 2 and 3
-+size=$(( 48 * 1024 * 1024 ))
-+half_size=$(( size / 2 ))
-+third_size=$(( size / 3 ))
-+
-+# 1. "qemu-img rebase -c" should refuse working with any format which doesn't
-+# support compression.  We only check "-f raw" here.
-+echo
-+echo "=== Testing compressed rebase format compatibility ==="
-+echo
-+
-+$QEMU_IMG create -f raw "$TEST_IMG" "$size" | _filter_img_create
-+$QEMU_IMG rebase -c -f raw -b "" "$TEST_IMG"
-+
-+# 2. Write the 1st half of $size to backing file (compressed), 2nd half -- to
-+# the top image (also compressed).  Rebase the top image onto no backing file,
-+# with compression (i.e. "qemu-img -c -b ''").  Check that the resulting image
-+# has the written data preserved, and "qemu-img check" reports 100% clusters
-+# as compressed.
-+echo
-+echo "=== Testing rebase with compression onto no backing file ==="
-+echo
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $size
-+_make_test_img -b "$TEST_IMG.base" -F $IMGFMT $size
-+
-+$QEMU_IO -c "write -c -P 0xaa 0 $half_size" "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xbb $half_size $half_size" "$TEST_IMG" \
-+    | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "" "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $half_size" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xbb $half_size $half_size" "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# 3. Same as the previous one, but with raw backing file (hence write to
-+# the backing is uncompressed).
-+echo
-+echo "=== Testing rebase with compression with raw backing file ==="
-+echo
-+
-+$QEMU_IMG create -f raw "$TEST_IMG.base" "$half_size" | _filter_img_create
-+_make_test_img -b "$TEST_IMG.base" -F raw $size
-+
-+$QEMU_IO -f raw -c "write -P 0xaa 0 $half_size" "$TEST_IMG.base" \
-+    | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xbb $half_size $half_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "" "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $half_size" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xbb $half_size $half_size" "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# 4. Create a backing chain base<--itmd<--img, filling 1st, 2nd and 3rd
-+# thirds of them, respectively (with compression).  Rebase img onto base,
-+# effectively deleting itmd from the chain, and check that written data is
-+# preserved in the resulting image.  Also check that "qemu-img check" reports
-+# 100% clusters as compressed.
-+echo
-+echo "=== Testing compressed rebase removing single delta from the chain ==="
-+echo
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $size
-+TEST_IMG="$TEST_IMG.itmd" _make_test_img -b "$TEST_IMG.base" -F $IMGFMT $size
-+_make_test_img -b "$TEST_IMG.itmd" -F $IMGFMT $size
-+
-+$QEMU_IO -c "write -c -P 0xaa 0 $third_size" \
-+    "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xbb $third_size $third_size" \
-+    "$TEST_IMG.itmd" | _filter_qemu_io
-+$QEMU_IO -c "write -c -P 0xcc $((third_size * 2 )) $third_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "$TEST_IMG.base" -F $IMGFMT "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $third_size" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xbb $third_size $third_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IO -c "read -P 0xcc $(( third_size * 2 )) $third_size" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# 5. Create one-cluster backing and overlay images, and fill only the first
-+# (half - 1) bytes of the backing with data (uncompressed).  Rebase the
-+# overlay onto no backing file with compression.  Check that data is still
-+# read correctly, and that cluster is now really compressed ("qemu-img check"
-+# reports 100% clusters as compressed.
-+echo
-+echo "=== Testing compressed rebase with unaligned unmerged data ==="
-+echo
-+
-+CLUSTER_SIZE=65536
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img $CLUSTER_SIZE
-+_make_test_img -b "$TEST_IMG.base" -F $IMGFMT $CLUSTER_SIZE
-+
-+$QEMU_IO -c "write -P 0xaa 0 $(( CLUSTER_SIZE / 2 - 1 ))" $TEST_IMG.base \
-+    | _filter_qemu_io
-+
-+$QEMU_IMG rebase -c -f $IMGFMT -b "" "$TEST_IMG"
-+
-+$QEMU_IO -c "read -P 0xaa 0 $(( CLUSTER_SIZE / 2 - 1 ))" "$TEST_IMG" \
-+    | _filter_qemu_io
-+$QEMU_IO -c \
-+    "read -P 0x00 $(( CLUSTER_SIZE / 2 - 1 )) $(( CLUSTER_SIZE / 2 + 1 ))" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+$QEMU_IMG check "$TEST_IMG" | _filter_testdir
-+
-+# success, all done
-+echo
-+echo '*** done'
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/314.out b/tests/qemu-iotests/314.out
-new file mode 100644
-index 0000000000..ac9337a543
---- /dev/null
-+++ b/tests/qemu-iotests/314.out
-@@ -0,0 +1,75 @@
-+QA output created by 314
-+
-+=== Testing compressed rebase format compatibility ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=raw size=50331648
-+qemu-img: Compression not supported for this file format
-+
-+=== Testing rebase with compression onto no backing file ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=50331648
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+wrote 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+768/768 = 100.00% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 458752
-+
-+=== Testing rebase with compression with raw backing file ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=raw size=25165824
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=raw
-+wrote 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 0
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 25165824/25165824 bytes at offset 25165824
-+24 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+768/768 = 100.00% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 458752
-+
-+=== Testing compressed rebase removing single delta from the chain ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=50331648
-+Formatting 'TEST_DIR/t.IMGFMT.itmd', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=50331648 backing_file=TEST_DIR/t.IMGFMT.itmd backing_fmt=IMGFMT
-+wrote 16777216/16777216 bytes at offset 0
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 16777216/16777216 bytes at offset 16777216
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 16777216/16777216 bytes at offset 33554432
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 16777216/16777216 bytes at offset 0
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 16777216/16777216 bytes at offset 16777216
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 16777216/16777216 bytes at offset 33554432
-+16 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+512/768 = 66.67% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 458752
-+
-+=== Testing compressed rebase with unaligned unmerged data ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=65536
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=65536 backing_file=TEST_DIR/t.IMGFMT.base backing_fmt=IMGFMT
-+wrote 32767/32767 bytes at offset 0
-+31.999 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 32767/32767 bytes at offset 0
-+31.999 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 32769/32769 bytes at offset 32767
-+32.001 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+No errors were found on the image.
-+1/1 = 100.00% allocated, 100.00% fragmented, 100.00% compressed clusters
-+Image end offset: 393216
-+
-+*** done
--- 
-2.31.1
 
+That style of programming can lead to buffer overruns as code changes,
+as you aren't checking the length of the target buffer.  I don't think
+there are any issues now, but as people change the code you might end up
+with one if someone gets a length wrong.
+
+What I would like is for you to create a function like:
+
+  i2c_mctp_add_bytes(mctp, buf, len)
+
+that checks that len bytes will fit, then does the addition of the
+bytes.  You need to adjust this to fit how you are doing things, and you
+probably want one that adds just one byte, but hopefully you get the idea.
+
+I'm sorry to be picky, but I've seen and fixed too many buffer overruns
+(including one in the qemu i2c code) in situations like this.  Corey's
+rule is: Never add anything to a buffer without checking the length.
+
+Everything else looks good.
+
+-corey
+
+>     + Added a couple of extra debugging trace events.
+> 
+> Changes since v1
+> ~~~~~~~~~~~~~~~~
+> 
+>   - Fix SPDX-License tag for hw/nvme/nmi-i2c.c (Philippe)
+>   - Add some asserts to verify buffer indices (by request from Corey).
+>   - Drop short packets that could result in underflow (Corey)
+>   - Move i2c_smbus_pec() to smbus common code (Corey)
+>   - A couple of logic fixes (patch from Jeremy squashed in)
+>   - Added a patch to handle messages with dest eid 0 (Matt)
+>     Maybe squash this as well.
+> 
+> Klaus Jensen (3):
+>   hw/i2c: add smbus pec utility function
+>   hw/i2c: add mctp core
+>   hw/nvme: add nvme management interface model
+> 
+>  MAINTAINERS                   |   7 +
+>  hw/arm/Kconfig                |   1 +
+>  hw/i2c/Kconfig                |   4 +
+>  hw/i2c/mctp.c                 | 398 ++++++++++++++++++++++++++++++++++
+>  hw/i2c/meson.build            |   1 +
+>  hw/i2c/smbus_master.c         |  28 +++
+>  hw/i2c/trace-events           |  13 ++
+>  hw/nvme/meson.build           |   1 +
+>  hw/nvme/nmi-i2c.c             | 367 +++++++++++++++++++++++++++++++
+>  hw/nvme/trace-events          |   6 +
+>  include/hw/i2c/mctp.h         | 137 ++++++++++++
+>  include/hw/i2c/smbus_master.h |   2 +
+>  include/net/mctp.h            |  28 +++
+>  13 files changed, 993 insertions(+)
+>  create mode 100644 hw/i2c/mctp.c
+>  create mode 100644 hw/nvme/nmi-i2c.c
+>  create mode 100644 include/hw/i2c/mctp.h
+>  create mode 100644 include/net/mctp.h
+> 
+> -- 
+> 2.40.0
+> 
+> 
 
