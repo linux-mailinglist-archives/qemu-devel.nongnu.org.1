@@ -2,63 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D7071EF0C
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:32:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0047A71EF2E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:35:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4lDE-0002Yf-IO; Thu, 01 Jun 2023 12:31:44 -0400
+	id 1q4lGk-0006vj-9h; Thu, 01 Jun 2023 12:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4lDB-0002YA-72
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q4lGe-0006ti-GP
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:35:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4lD9-0007IS-Lm
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:40 -0400
+ id 1q4lGc-0007zh-H9
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:35:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685637098;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685637314;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=23vcARQxIY7gh1NYVRtuGbogmRD03bZ7QlD5l2q1H+U=;
- b=D7pP4orsVSKHuL6D6jHuKvvENNjRShUs6PHqJxFHqU2Wmx/JcQXzhh8ORAbvk9n2Zjk/Kz
- rG6wwSvHHbLVyZ+ebreg/sBSAWPz8BqJjp2uW6eA0PfTt/oY/aBB1YVtzN6t3pBDGPI5x5
- T05nfj6+iIFUR7XOGb1lPOmh0a2RLeM=
+ bh=aZNCUXSX8Ip7QY158iWI/ETsjn76AQ/qdMh1ZHGrA2s=;
+ b=hCfrmTROeKBztOHRtNHm0TPdlzz3va849zwuQlsKUaJU6jXYGWkEq+GWc5o3jdrT2G86Yg
+ bQK3eSXxqEBREcLUJiwf+6QE0ffel4U9ZSc67sufXN7h4WVa7+Y2Fpk4kBLzHwKuuxnuwV
+ Oof7VZdFqGoXzsgTlFt80edZvK+gL/Y=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-388-rK08IfCONKKFfKcn6WNWMQ-1; Thu, 01 Jun 2023 12:31:37 -0400
-X-MC-Unique: rK08IfCONKKFfKcn6WNWMQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-509-ICUlpVDjPIGfGzPw25Uxmg-1; Thu, 01 Jun 2023 12:35:12 -0400
+X-MC-Unique: ICUlpVDjPIGfGzPw25Uxmg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B50688582BE;
- Thu,  1 Jun 2023 16:31:35 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A452D2166B28;
- Thu,  1 Jun 2023 16:31:34 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 6/6] mtest2make: stop disabling meson test timeouts
-Date: Thu,  1 Jun 2023 17:31:23 +0100
-Message-Id: <20230601163123.1805282-7-berrange@redhat.com>
-In-Reply-To: <20230601163123.1805282-1-berrange@redhat.com>
-References: <20230601163123.1805282-1-berrange@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8779285A5BD
+ for <qemu-devel@nongnu.org>; Thu,  1 Jun 2023 16:35:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.153])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3488A14171BB;
+ Thu,  1 Jun 2023 16:35:11 +0000 (UTC)
+Date: Thu, 1 Jun 2023 17:35:07 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 8/9] tests/qtest: make more migration pre-copy
+ scenarios run non-live
+Message-ID: <ZHjIu+RU51m0bF0q@redhat.com>
+References: <20230531132400.1129576-1-berrange@redhat.com>
+ <20230531132400.1129576-9-berrange@redhat.com>
+ <ZHi5gmd+5pQhDqBF@x1n> <ZHi7xLhUp0+5cay7@redhat.com>
+ <ZHi+7bgcHPUisc8d@x1n> <ZHi/beg2UqoEnk/b@redhat.com>
+ <ZHjEohiecAsu3ht6@x1n>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <ZHjEohiecAsu3ht6@x1n>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -79,58 +86,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mtest2make.py script passes the arg '-t 0' to 'meson test' which
-disables all test timeouts. This is a major source of pain when running
-in GitLab CI and a test gets stuck. It will stall until GitLab kills the
-CI job. This leaves us with little easily consumable information about
-the stalled test. The TAP format doesn't show the test name until it is
-completed, and TAP output from multiple tests it interleaved. So we
-have to analyse the log to figure out what tests had un-finished TAP
-output present and thus infer which test case caused the hang. This is
-very time consuming and error prone.
+On Thu, Jun 01, 2023 at 12:17:38PM -0400, Peter Xu wrote:
+> On Thu, Jun 01, 2023 at 04:55:25PM +0100, Daniel P. Berrangé wrote:
+> > On Thu, Jun 01, 2023 at 11:53:17AM -0400, Peter Xu wrote:
+> > > On Thu, Jun 01, 2023 at 04:39:48PM +0100, Daniel P. Berrangé wrote:
+> > > > On Thu, Jun 01, 2023 at 11:30:10AM -0400, Peter Xu wrote:
+> > > > > Thanks for looking into this.. definitely worthwhile.
+> > > > > 
+> > > > > On Wed, May 31, 2023 at 02:23:59PM +0100, Daniel P. Berrangé wrote:
+> > > > > > There are 27 pre-copy live migration scenarios being tested. In all of
+> > > > > > these we force non-convergance and run for one iteration, then let it
+> > > > > > converge and wait for completion during the second (or following)
+> > > > > > iterations. At 3 mbps bandwidth limit the first iteration takes a very
+> > > > > > long time (~30 seconds).
+> > > > > > 
+> > > > > > While it is important to test the migration passes and convergance
+> > > > > > logic, it is overkill to do this for all 27 pre-copy scenarios. The
+> > > > > > TLS migration scenarios in particular are merely exercising different
+> > > > > > code paths during connection establishment.
+> > > > > > 
+> > > > > > To optimize time taken, switch most of the test scenarios to run
+> > > > > > non-live (ie guest CPUs paused) with no bandwidth limits. This gives
+> > > > > > a massive speed up for most of the test scenarios.
+> > > > > > 
+> > > > > > For test coverage the following scenarios are unchanged
+> > > > > 
+> > > > > Curious how are below chosen?  I assume..
+> > > > 
+> > > > Chosen based on whether they exercise code paths that are unique
+> > > > and interesting during the RAM transfer phase.
+> > > > 
+> > > > Essentially the goal is that if we have N% code coverage before this
+> > > > patch, then we should still have the same N% code coverage after this
+> > > > patch.
+> > > > 
+> > > > The TLS tests exercise code paths that are unique during the migration
+> > > > establishment phase. Once establishd they don't exercise anything
+> > > > "interesting" during RAM transfer phase. Thus we don't loose code coverage
+> > > > by runing TLS tests non-live.
+> > > > 
+> > > > > 
+> > > > > > 
+> > > > > >  * Precopy with UNIX sockets
+> > > > > 
+> > > > > this one verifies dirty log.
+> > > > > 
+> > > > > >  * Precopy with UNIX sockets and dirty ring tracking
+> > > > > 
+> > > > > ... dirty ring...
+> > > > > 
+> > > > > >  * Precopy with XBZRLE
+> > > > > 
+> > > > > ... xbzrle I think needs a diff on old/new, makes sense.
+> > > > > 
+> > > > > >  * Precopy with UNIX compress
+> > > > > >  * Precopy with UNIX compress (nowait)
+> > > > > >  * Precopy with multifd
+> > > > > 
+> > > > > What about the rest three?  Especially for two compression tests.
+> > > > 
+> > > > The compress thread logic is unique/interesting during RAM transfer
+> > > > so benefits from running live. The wait vs non-wait scenario tests
+> > > > a distinct codepath/logic.
+> > > 
+> > > I assume you mean e.g. when compressing with guest page being modified and
+> > > we should survive that rather than crashing the compressor?
+> > 
+> > No, i mean the compression code has a significant behaviour difference
+> > between its two tests, because they toggle:
+> > 
+> >  @compress-wait-thread: Controls behavior when all compression
+> >      threads are currently busy.  If true (default), wait for a free
+> >      compression thread to become available; otherwise, send the page
+> >      uncompressed.  (Since 3.1)
+> > 
+> > so we need to exercise the code path that falls back to sending
+> > uncompressed, as well as the code path that waits for free threads.
+> 
+> But then the question is why live is needed?
+>
+> IIUC whether the wait thing triggers have nothing directly related to VM is
+> live or not, but whether all compress thread busy.  IOW, IIUC all compress
+> paths will be tested even if non-live as long as we feed enough pages to
+> the compressor threads.
 
-By allowing meson to kill stalled tests, we get a direct display of what
-test program got stuck, which lets us more directly focus in on what
-specific test case within the test program hung.
+If non-live the guest won't have dirtied any pages, so I wasn't
+confident there would be sufficient amount of dirty ram to send
+to trigger this. Possibly that's being too paranoid though
 
-The other issue with disabling meson test timeouts by default is that it
-makes it more likely that maintainers inadvertantly introduce slowdowns.
-For example the recent-ish change that accidentally made migrate-test
-take 15-20 minutes instead of around 1 minute.
-
-The main risk of this change is that the individual test timeouts might
-be too short to allow completion in high load scenarios. Thus, there is
-likely to be some short term pain where we have to bump the timeouts for
-certain tests to make them reliable enough. The preceeding few patches
-raised the timeouts for all failures that were immediately apparent
-in GitLab CI.
-
-Even with the possible short term instability, this should still be a
-net win for debuggability of failed CI pipelines over the long term.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- scripts/mtest2make.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index 179dd54871..eb01a05ddb 100644
---- a/scripts/mtest2make.py
-+++ b/scripts/mtest2make.py
-@@ -27,7 +27,8 @@ def names(self, base):
- .speed.slow = $(foreach s,$(sort $(filter-out %-thorough, $1)), --suite $s)
- .speed.thorough = $(foreach s,$(sort $1), --suite $s)
- 
--.mtestargs = --no-rebuild -t 0
-+TIMEOUT_MULTIPLIER = 1
-+.mtestargs = --no-rebuild -t $(TIMEOUT_MULTIPLIER)
- ifneq ($(SPEED), quick)
- .mtestargs += --setup $(SPEED)
- endif
+With regards,
+Daniel
 -- 
-2.40.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
