@@ -2,72 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4721F71907A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 725B9719096
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 04:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4XsN-0002tY-Mx; Wed, 31 May 2023 22:17:19 -0400
+	id 1q4YCf-0003K7-LK; Wed, 31 May 2023 22:38:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1q4XsJ-0002px-L5
- for qemu-devel@nongnu.org; Wed, 31 May 2023 22:17:15 -0400
-Received: from mga05.intel.com ([192.55.52.43])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1q4XsH-000735-9z
- for qemu-devel@nongnu.org; Wed, 31 May 2023 22:17:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685585833; x=1717121833;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Dn3xDvHM6pmDpS85vpHKR5TlpNCGbhWu7rq7rCbdbHU=;
- b=ZJUTME88vhHCvRTh21dlq9AmgMME8Yl+BD8kgEQsL62cHMDwp3suUclo
- y73MpWYbCXIOeNHDqlte+sd/0nalJIlwd9qECy0R3vRnIdhruJ0upkoFE
- 3HjeLCGdVdQv+DoMsbJNmXdpYoKMA6XywX5YI3UdFBEk9+0X4wQFfK5Pn
- bVApdNRdjK7xyNK+n9SfH1cJXxzNkXHOu+zvmG9rviLMsIO3wtRIlD6ED
- i+9mkaM1lEOc3q+KKLS979g2ZXqdkiGO+UX/zgUA+shEIZNvwcBv7VSyK
- xAdR81fNaWPgdkqJn+xCScQEeEraOwNd+apr6u/jfyBDDVbK5aaRlU/H4 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="441785837"
-X-IronPort-AV: E=Sophos;i="6.00,207,1681196400"; d="scan'208";a="441785837"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2023 19:17:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="707133839"
-X-IronPort-AV: E=Sophos;i="6.00,207,1681196400"; d="scan'208";a="707133839"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by orsmga002.jf.intel.com with ESMTP; 31 May 2023 19:17:07 -0700
-Date: Thu, 1 Jun 2023 10:26:40 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "bibo, mao" <maobibo@loongson.cn>
-Cc: Zhao Liu <zhao1.liu@intel.com>, Ani Sinha <anisinha@redhat.com>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, gaosong@loongson.cn,
- Zhenyu Wang <zhenyu.z.wang@intel.com>
-Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
-Message-ID: <ZHgB4DVk0pIEzuIS@liuzhao-OptiPlex-7080>
-References: <20230530122034.547109-1-zhaotianrui@loongson.cn>
- <ZHcIcaQIlnQVsmbP@liuzhao-OptiPlex-7080>
- <9d514025-2b95-03c2-5391-662c392fe185@loongson.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9d514025-2b95-03c2-5391-662c392fe185@loongson.cn>
-Received-SPF: none client-ip=192.55.52.43;
- envelope-from=zhao1.liu@linux.intel.com; helo=mga05.intel.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- MIME_CHARSET_FARAWAY=2.45, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <chenbaozi@phytium.com.cn>)
+ id 1q4YCc-0003Jt-T0; Wed, 31 May 2023 22:38:14 -0400
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <chenbaozi@phytium.com.cn>)
+ id 1q4YCa-0003mS-Cg; Wed, 31 May 2023 22:38:14 -0400
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBX09iCBXhk55w3AQ--.47009S2;
+ Thu, 01 Jun 2023 10:42:10 +0800 (CST)
+Received: from smtpclient.apple (unknown [218.76.62.144])
+ by mail (Coremail) with SMTP id AQAAfwAnVV6CBHhkeF4AAA--.424S3;
+ Thu, 01 Jun 2023 10:37:55 +0800 (CST)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
+From: Chen Baozi <chenbaozi@phytium.com.cn>
+In-Reply-To: <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
+Date: Thu, 1 Jun 2023 10:37:44 +0800
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Graeme Gregory <graeme@xora.org.uk>, wangyuquan1236@phytium.com.cn,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F9D991CE-BC05-483E-8289-93BE111CC7D6@phytium.com.cn>
+References: <20230531070229.334124-1-wangyuquan1236@phytium.com.cn>
+ <20230531070229.334124-2-wangyuquan1236@phytium.com.cn>
+ <lfcmvvqjp64wngrdk33bvkb3k7op53l24lcoslah2evsyh3esc@at7jnsnrto7h>
+ <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
+ <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
+To: Leif Lindholm <quic_llindhol@quicinc.com>
+X-Mailer: Apple Mail (2.3731.600.7)
+X-CM-TRANSID: AQAAfwAnVV6CBHhkeF4AAA--.424S3
+X-CM-SenderInfo: hfkh0updr2xqxsk13x1xpou0fpof0/1tbiAQAREWR3nCkBUQAAs3
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=chenbaozi@
+ phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoW7KF13Kw48AF4UGF4kAw1UWrg_yoW8KFWUpF
+ W5Ja47Kr4vka1Syrsavw1YvF43Aa1xZFy5Jr15Jry8AFZxJ34a9rWfKw15ua9xZw1fA34j
+ qrWYq34fC3W3ZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+ UUUUU
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=chenbaozi@phytium.com.cn;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,115 +73,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 09:09:13AM +0800, bibo, mao wrote:
-> Date: Thu, 1 Jun 2023 09:09:13 +0800
-> From: "bibo, mao" <maobibo@loongson.cn>
-> Subject: Re: [PATCH] hw/smbios: fix thead count field in type 4 table
-> 
-> 
-> 
-> ÔÚ 2023/5/31 16:42, Zhao Liu Ð´µÀ:
-> > On Tue, May 30, 2023 at 08:20:34PM +0800, Tianrui Zhao wrote:
-> > > Date: Tue, 30 May 2023 20:20:34 +0800
-> > > From: Tianrui Zhao <zhaotianrui@loongson.cn>
-> > > Subject: [PATCH] hw/smbios: fix thead count field in type 4 table
-> > > X-Mailer: git-send-email 2.39.1
-> > > 
-> > > The thread_count value in smbios type_4 table should be
-> > > (ms->smp.cores * ms->smp.threads). As according to smbios spec 7.5
-> > > Processor Information (Type 4), the field "Thread Count" means the
-> > > "Number of threads per processor socket" rather than number of
-> > > threads per core.
-> > > 
-> > > When apply this patch, use "-smp 4,sockets=1,cores=2,threads=2" to
-> > > boot VM, the dmidecode -t 4 shows like:
-> > > 
-> > > Handle 0x0400, DMI type 4, 48 bytes
-> > > Processor Information
-> > >          Socket Designation: CPU 0
-> > >          ...
-> > >          Core Count: 2
-> > >          Core Enabled: 2
-> > >          Thread Count: 4
-> > >          Characteristics: None
-> > > 
-> > > Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-> > > ---
-> > >   hw/smbios/smbios.c | 7 ++++---
-> > >   1 file changed, 4 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> > > index d2007e70fb..56aeaa069d 100644
-> > > --- a/hw/smbios/smbios.c
-> > > +++ b/hw/smbios/smbios.c
-> > > @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-> > >   {
-> > >       char sock_str[128];
-> > >       size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
-> > > +    int count;
-> > >       if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
-> > >           tbl_len = SMBIOS_TYPE_4_LEN_V30;
-> > > @@ -749,15 +750,15 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-> > >       t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
-> > >       t->core_enabled = t->core_count;
-> > > -
-> > > -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
-> > > +    count = ms->smp.cores * ms->smp.threads;
-> > 
-> > Hi Ani & Tianrui,
-> > 
-> >  From the comment of CpuTopology (include/hw/boards.h):
-> > 
-> > ms->cores means the "the number of cores in one cluster".
-> > ms->threads means the "the number of threads in one core".
-> > 
-> > So ms->cores * ms->threads means the number of threads in one cluster
-> > not one socket.
-> > 
-> > That's why I count the number of threads in a socket by "ms->smp.max_cpus
-> > / ms->smp.sockets" in [1].
-> > 
-> > The other correct way is:
-> > ms->smp.cluster * ms->smp.cores * ms->smp.threads.
-> > 
-> > [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07229.html
-> ohh, we do not notice your patch. Your patch is better than us. one small
-> nit about core_count calcuation if cluster/die is support. core count should
-> be core number
->  per package rather than per cluster or per die.
-> 
-> so it should be something like this?
->     t->core_count = cpus_per_socket / ms->smp.threads
-> rather than ms->smp.cores
+Hi Leif,
 
-Yes, I also fixed this in the third patch of my patch series [2].
+> On Jun 1, 2023, at 00:36, Leif Lindholm <quic_llindhol@quicinc.com> =
+wrote:
+>=20
+> On 2023-05-31 16:27, Peter Maydell wrote:
+>> On Wed, 31 May 2023 at 15:58, Graeme Gregory <graeme@xora.org.uk> =
+wrote:
+>>>> The current sbsa-ref cannot use EHCI controller which is only
+>>>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM above 4GB.
+>>>> Hence, this uses XHCI to provide a usb controller with 64-bit
+>>>> DMA capablity instead of EHCI.
+>>>=20
+>>> Should this be below 4G?
+>> It would be pretty disruptive to try to rearrange the memory
+>> map to put RAM below 4GB at this point, though in theory it's
+>> possible I guess. (I have a vague recollection that there was
+>> some reason the RAM was all put above 4GB, but can't find
+>> anything about that in my email archives. Perhaps Leif remembers?)
+>=20
+> I think Graeme was just pointing out a typo in Marcin's email.
+>=20
+> Yeah, we're not changing the DRAM base at this stage.
+> I think the reason we put no RAM below 4GB was simply that we had =
+several real-world platforms where that was true, and given the intended =
+use-case for the platform, we explicitly wanted to trigger issues those =
+platforms might encounter.
+>=20
+>>> Also has EHCI never worked, or has it worked in some modes and so =
+this
+>>> change should be versioned?
+>> AIUI, EHCI has never worked and can never have worked, because
+>> this board's RAM is all above 4G and the QEMU EHCI controller
+>> implementation only allows DMA descriptors with 32-bit addresses.
+>> Looking back at the archives, it seems we discussed XHCI vs
+>> EHCI when the sbsa-ref board went in, and the conclusion was
+>> that XHCI would be better. But there wasn't a sysbus XHCI device
+>> at that point, so we ended up committing the sbsa-ref board
+>> with EHCI and a plan to switch to XHCI when the sysbus-xhci
+>> device was done, which we then forgot about:
+>> https://mail.gnu.org/archive/html/qemu-arm/2018-11/msg00638.html
+>=20
+> Ah, thanks! That explains why we did the thing that made no sense :)
+>=20
+> To skip the migration hazard, my prefernece is we just leave the EHCI =
+device in for now, and add a separate XHCI on PCIe. We can drop the
+> EHCI device at some point in the future.
 
-[2]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07231.html
+What about introducing another SMMU for all the platform devices on =
+sbsa-ref? I was thinking over this solution for some time. If that can =
+be feasible, we then also have a prototype of IOMMU for platform device.
 
 Regards,
-Zhao
 
-> 
-> 
-> Regards
-> Bibo, mao
-> > 
-> > Thanks,
-> > Zhao
-> > 
-> > > +    t->thread_count = (count > 255) ? 0xFF : count;
-> > >       t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
-> > >       t->processor_family2 = cpu_to_le16(0x01); /* Other */
-> > >       if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
-> > >           t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
-> > > -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
-> > > +        t->thread_count2 = cpu_to_le16(count);
-> > >       }
-> > >       SMBIOS_BUILD_TABLE_POST;
-> > > -- 
-> > > 2.39.1
-> > > 
-> > > 
-> 
-> 
+Baozi.=
+
 
