@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2D671EF18
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 174DA71EF16
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4lD4-0002W6-Nu; Thu, 01 Jun 2023 12:31:34 -0400
+	id 1q4lD8-0002Ww-4t; Thu, 01 Jun 2023 12:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4lD2-0002Vb-Fq
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:32 -0400
+ id 1q4lD6-0002WW-9S
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4lD0-0007FA-Mv
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:32 -0400
+ id 1q4lD4-0007Fm-RX
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:31:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685637089;
+ s=mimecast20190719; t=1685637094;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=gLjqzzdiskjaUYNfvxkCygJlMWGcu53CK/3YZWV5Q7k=;
- b=MWr79uiCNojzdyyVtXlB1lLxPT8dT6cpqvWZnWxvfTG7IyeMNeTv0EPvjWP5QUOPNF47kM
- P6/hq6lkyRqkQv7ydP6LQcNnbN2HHPcwG8nBzdUtgRMTx8cH6g+rSDIDKoN9qTsmO45li7
- P53TaeIvtKfiPbj8E1hkgchATHLByBQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=v9Oi51bhCX5qIbsmMbnbS5ABJuc4m/obv+3BSa/y2jo=;
+ b=MYgNv2jb6hYcQVESn63Ckf9DjTWTRIzgSzS/V+zl16GwCEdjaZF380V1wOcMsbXlXQNw8P
+ 08op/l+LmCnQju9ZfPnMkWZVUwJUAyUqP7tb5/DJ80Z97NhGtvh/KLpzUZhARMWgKHX43U
+ rgOQCahuM4Fx0SEnjU+uDS70lirO80Y=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-510--t2gxMXoNEy1RwKzA7qV8Q-1; Thu, 01 Jun 2023 12:31:26 -0400
-X-MC-Unique: -t2gxMXoNEy1RwKzA7qV8Q-1
+ us-mta-212-v6TiPR27PP6y1hN62cAMeg-1; Thu, 01 Jun 2023 12:31:29 -0400
+X-MC-Unique: v6TiPR27PP6y1hN62cAMeg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23137101AA44;
- Thu,  1 Jun 2023 16:31:26 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77A6D1C0693A;
+ Thu,  1 Jun 2023 16:31:27 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.153])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 91E862166B25;
- Thu,  1 Jun 2023 16:31:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5995E2166B25;
+ Thu,  1 Jun 2023 16:31:26 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -48,11 +49,13 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/6] tests: enable meson test timeouts to improve debuggability
-Date: Thu,  1 Jun 2023 17:31:17 +0100
-Message-Id: <20230601163123.1805282-1-berrange@redhat.com>
+Subject: [PATCH 1/6] qtest: bump min meson timeout to 60 seconds
+Date: Thu,  1 Jun 2023 17:31:18 +0100
+Message-Id: <20230601163123.1805282-2-berrange@redhat.com>
+In-Reply-To: <20230601163123.1805282-1-berrange@redhat.com>
+References: <20230601163123.1805282-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -79,76 +82,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Perhaps the most painful of all the GitLab CI failures we see are
-the enforced job timeouts:
+Even some of the relatively fast qtests can sometimes hit the 30 second
+timeout in GitLab CI under high parallelism/load conditions. Bump the
+min to 60 seconds to give a higher margin for reliability.
 
-   "ERROR: Job failed: execution took longer than 1h15m0s seconds"
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ tests/qtest/meson.build | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-   https://gitlab.com/qemu-project/qemu/-/jobs/4387047648
-
-when that hits the CI log shows what has *already* run, but figuring
-out what was currently running (or rather stuck) is an horrendously
-difficult.
-
-The initial meson port disabled the meson test timeouts, in order to
-limit the scope for introducing side effects from the port that would
-complicate adoption.
-
-Now that the meson port is basically finished we can take advantage of
-more of its improved features. It has the ability to set timeouts for
-test programs, defaulting to 30 seconds, but overridable per test. This
-is further helped by fact that we changed the iotests integration so
-that each iotests was a distinct meson test, instead of having one
-single giant (slow) test.
-
-We already set overrides for a bunch of tests, but they've not been
-kept up2date since we had timeouts disabled. So this series first
-updates the timeout overrides such that all tests pass when run in
-my test gitlab CI pipeline. Then it enables use of meson timeouts.
-
-We might still hit timeouts due to non-deterministic performance of
-gitlab CI runners. So we'll probably have to increase a few more
-timeouts in the short term. Fortunately this is going to be massively
-easier to diagnose. For example this job during my testing:
-
-   https://gitlab.com/berrange/qemu/-/jobs/4392029495
-
-we can immediately see  the problem tests
-
-Summary of Failures:
-  6/252 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                TIMEOUT        120.02s   killed by signal 15 SIGTERM
-  7/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test          TIMEOUT        120.03s   killed by signal 15 SIGTERM
- 64/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test                  TIMEOUT        300.03s   killed by signal 15 SIGTERM
-
-The full meson testlog.txt will show each individual TAP log output,
-so we can then see exactly which test case we got stuck on.
-
-NB, the artifacts are missing on the job links above, until this
-patch merges:
-
-   https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04668.html
-
-NB, this series sets the migration-test timeout to 5 minutes, which
-is only valid if this series is merged to make the migration test
-not suck:
-
-  https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg00286.html
-
-without that series, we'll need to set the migration-test timeout to
-30 minutes instead.
-
-Daniel P. Berrangé (6):
-  qtest: bump min meson timeout to 60 seconds
-  qtest: bump migration-test timeout to 5 minutes
-  qtest: bump qom-test timeout to 7 minutes
-  qtest: bump aspeed_smc-test timeout to 2 minutes
-  qtest: bump bios-table-test timeout to 6 minutes
-  mtest2make: stop disabling meson test timeouts
-
- scripts/mtest2make.py   |  3 ++-
- tests/qtest/meson.build | 16 ++++++----------
- 2 files changed, 8 insertions(+), 11 deletions(-)
-
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 087f2dc9d7..18d046b53c 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -1,12 +1,7 @@
+ slow_qtests = {
+-  'ahci-test' : 60,
+   'bios-tables-test' : 120,
+-  'boot-serial-test' : 60,
+   'migration-test' : 150,
+   'npcm7xx_pwm-test': 150,
+-  'prom-env-test' : 60,
+-  'pxe-test' : 60,
+-  'qos-test' : 60,
+   'qom-test' : 300,
+   'test-hmp' : 120,
+ }
+@@ -373,8 +368,8 @@ foreach dir : target_dirs
+          env: qtest_env,
+          args: ['--tap', '-k'],
+          protocol: 'tap',
+-         timeout: slow_qtests.get(test, 30),
+-         priority: slow_qtests.get(test, 30),
++         timeout: slow_qtests.get(test, 60),
++         priority: slow_qtests.get(test, 60),
+          suite: ['qtest', 'qtest-' + target_base])
+   endforeach
+ endforeach
 -- 
 2.40.1
 
