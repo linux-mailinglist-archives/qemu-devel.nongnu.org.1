@@ -2,163 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428A9719621
+	by mail.lfdr.de (Postfix) with ESMTPS id C4991719622
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 10:57:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4e6y-0005BQ-6r; Thu, 01 Jun 2023 04:56:48 -0400
+	id 1q4e6f-00059P-6d; Thu, 01 Jun 2023 04:56:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1q4e6s-0005B0-Vj
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:56:43 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1q4e6k-0008PD-NF
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:56:42 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3512S5vO032500; Thu, 1 Jun 2023 01:56:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint20171006;
- bh=bXiRc4Chg/TBqqCE3pgvt9j9+t60DT/3TbR5tPqMXWs=;
- b=prIB5LDsXIb6kYR8yobdEZAjn5e8Y3FPa80qc5HUpzbR1zmagbzlljui33ZGrcWWJ6U2
- 0hPQKH4Ry73Gn63JqKXVEgSL6ea9PzDbI08wgl+MMgbwYR0br1Y4TJI9BctMmbQXELfv
- V4ZFIiKEGk861Uq0lziEyqApuvEDDfy2GgqO/Eqb4ttD01VYBROuHOWFKvVJ/ZbM+/9e
- EzKAaY5Y+NFifXe79t4/d+6gtMx8vjqLJKNU4XiIgsAlGLvWn7NBbrv9MYe2dl4M1yrw
- nTOpu1Fi8GrmBCYjWZtZrEascqmVeyuXpIfuPm+kF8Fc3yEDLcU7AfJ9wgnXjXOzmlDt 7w== 
-Received: from nam12-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam12lp2173.outbound.protection.outlook.com [104.47.55.173])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3qxdh9h2fk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jun 2023 01:56:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=exdllirTwMxx9w4OUwwlKuCfexxRJJ7NrVmFs1pXgygCjpjeMZzpG8iKNQ36y0/fXLrSjLb3YlkzPS1EgISqv6ybRGxFGmr+J+o7vv15Dj5i9iwsy+zcdxHJd9FjZeWr3VySwsx2XzyZs1qiSNgHnxkZHu48vq4Ho3boKsEpEWNdqkPtV5H+zFv/iZLzx2eq2YaLOalii4U5Bjtm8WBlWs/lNbItniNky9fzfmJ38AGMsrbWdUd3enmHVuheeXWgNczrw0GjrUfENLRbWXEMNDPA340C8wtvWSSXByZ/yqegkRoWMsm9cDFk561mBN9H8ePfDR5yfKi4+xWufO67/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bXiRc4Chg/TBqqCE3pgvt9j9+t60DT/3TbR5tPqMXWs=;
- b=j+PGseEvF7oPTCeMtxy9SZutlgUDe4gtQSIVYmQsUMfRctVeuopMi3fBIg+FFg152EK5xzXjo9Wl//FIE0r1OfLFH0rHXk9bRwk0Ju5/K5h/YjXmWQ/T64DH/aKsObNqx/a14gqcPFd3tMSpWHXiYWj2PRu+dgsuQ2RumjtihWG31U0d5egg5xMWedORfRFxCzQ0kSmlr5MkZk2sP2tjiBnrXl2cRCIXVQ4h4RVe4Y4dTFg6CM2qVu+FawY5LQY5Ha8ov267BkD2Nvv5KJDS5tPYBSleb30T5j93pSYhyXCoQ2ZLNzlukSpFUQt3OBtZ6uSWrtQuOWajI6NqUZNOFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bXiRc4Chg/TBqqCE3pgvt9j9+t60DT/3TbR5tPqMXWs=;
- b=rhioMj98sHMhkZujmOa6SWsGipoRVFX9VzGHAZTcg0qLsRxh1tA2SOCx2YJgB+O2vFV/EFbc+pJtbUKRd6y6X8jcQbvAma9PoYdzC021IEEqZnw/fx9iG5ZKcofWPdI3L9RE4e7eWwhTfItKCG/fwTvb14KX16f3Kbpck9TaHgmAtdKKxDq6ktgZUrSndAXIjofAi7V9LNjVIgklQ5ZCcX58x/r2RD3f1HjFuOK4enbLf5UqQ1z+dS1tsPdlqzxZA+AHyeWMj/YivrvnQHP/vfx5AfpcTGDA/UVbR1i5/kfFxeKy8rWPVdTtgo9SoLvQ3dFG2vmigo2jbH1KdqJTRA==
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
- by SJ2PR02MB9772.namprd02.prod.outlook.com (2603:10b6:a03:53f::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.23; Thu, 1 Jun
- 2023 08:56:28 +0000
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::1a4c:7e55:b776:43cb]) by BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::1a4c:7e55:b776:43cb%6]) with mapi id 15.20.6433.022; Thu, 1 Jun 2023
- 08:56:28 +0000
-Message-ID: <e60ba9ca-9802-4034-242e-ea61566db175@nutanix.com>
-Date: Thu, 1 Jun 2023 14:26:15 +0530
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4e6c-00058w-5y
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:56:26 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4e6Z-0008Nx-2B
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 04:56:24 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f601c57d8dso4705655e9.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 01:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685609781; x=1688201781;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OPcIYzogUvkAuZPoOm75OhqrBG7H/WeIx3UuNAUp5fo=;
+ b=FX6eJkI6/zkoli5SwaO19QQzfQhZzeBHLijCM7/sPrm4NI9OhHW9t+FcxPIBhJiY/m
+ O/P6jVqhnrLbZmmZxN/as/m1wSc/IxtdqvZkPC9QgPdztN3nYYMffqOyqUn/BEG0VDfM
+ P2EToh2ekvhHYUfHsXHkjCJuE6gonTAL/QwKumqXUkd+4QDYsaFqwrKOTbIHYkYlCYpl
+ 1/WlWRKYzg71AqKvRRmIefjMRNJdnXaSrF/Mp+ysQfvqA+ZGD7clQLws9JQlFq463kwH
+ Mokl5Sllh2jLO3Hddpx2Ug+3B0+b45xGMPOvdMV0benz0hP7oSebjDPf4FDb1FsegM2u
+ IWqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685609781; x=1688201781;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OPcIYzogUvkAuZPoOm75OhqrBG7H/WeIx3UuNAUp5fo=;
+ b=MEBwAO3cnQRZF+zZFbtE5PDPl/6KkYjT4qg+EysO/sjmMIZT/LjggX4LGOAGHuA0mq
+ kKQninDGtmuDJPJJMwDlkMC0cLbrcp8+E/r1l0sNwjHLhgdCxIJLaZuUQHsHOFGyf6O7
+ YnhDCYG92nGHtpX6o8TyeWIwFfkyNfCwxaHO4ntayoi+jwl6qoP05Rfe04kFuvUdUShm
+ Dif5y1HYTz5qULqEXtCE8O0bVChkZ7ZuAlFrvqGywX8uchq+efsZ76ARudLRlLZDWG60
+ s2SSuZHPCJbMUs2shxg1ZHP/HuaTM8edXQthXZRJ9IjgyBTRy+KaerE/zEU+bC4nAl7H
+ gl0g==
+X-Gm-Message-State: AC+VfDy2TVE51p2WA3ZNiasP2AigfKUFnwIkNRxiqjhUnI/fZndSQ5ja
+ UDWXhQZzoR7Iz+bOIlugaZcyGQ==
+X-Google-Smtp-Source: ACHHUZ5qrcatzjgrO8GKXy9lGrNgCmQz1mWlw+kzyIt9WRRCbvhU9sqM/XTVz/7lLNRR51FSMvcHTg==
+X-Received: by 2002:a05:600c:218d:b0:3f6:3486:1391 with SMTP id
+ e13-20020a05600c218d00b003f634861391mr915286wme.13.1685609781082; 
+ Thu, 01 Jun 2023 01:56:21 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.141.224])
+ by smtp.gmail.com with ESMTPSA id
+ a7-20020a05600c224700b003f421979398sm1537847wmm.26.2023.06.01.01.56.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 01:56:20 -0700 (PDT)
+Message-ID: <f3dc3d82-3928-c75c-18cf-dc42b9060c65@linaro.org>
+Date: Thu, 1 Jun 2023 10:56:17 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v5 1/9] migration: introduced 'MigrateAddress' in QAPI for
- migration wire protocol.
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20230519094617.7078-1-het.gala@nutanix.com>
- <20230519094617.7078-2-het.gala@nutanix.com> <87sfbkjow3.fsf@pond.sub.org>
- <af2e5fbe-75f5-d6dd-df8c-8894cc5b0056@nutanix.com>
- <87edmyuwzc.fsf@pond.sub.org>
- <99b3e516-2a4a-aa48-8bc2-7bb886b8db52@nutanix.com>
- <ZHXnsidOhgjs+oV2@redhat.com>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <ZHXnsidOhgjs+oV2@redhat.com>
+Subject: Re: [PATCH v2 0/2] net: Update MemReentrancyGuard for NIC
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mauro Matteo Cascella <mcascell@redhat.com>, P J P
+ <pj.pandit@yahoo.co.in>, Alexander Bulekov <alxndr@bu.edu>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>, Sriram Yagnaraman
+ <sriram.yagnaraman@est.tech>, Thomas Huth <huth@tuxfamily.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sven Schnelle <svens@stackframe.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Rob Herring <robh@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ xen-devel@lists.xenproject.org
+References: <20230601031859.7115-1-akihiko.odaki@daynix.com>
+ <72ccd4c2-7c60-e015-2322-721d09a8334b@linaro.org>
+ <233b42b2-6fbb-3882-6158-d2a82bf88be1@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <233b42b2-6fbb-3882-6158-d2a82bf88be1@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MAXP287CA0014.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::25) To BYAPR02MB4343.namprd02.prod.outlook.com
- (2603:10b6:a03:57::18)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|SJ2PR02MB9772:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fdb93c0-118d-4de7-ce3e-08db627e157b
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: D8KhC9+DimSLMJkT+SNvfqWnUj/I5nWGjnRoB9qBQXILkDAAu7C2X4UhzXzmDVUdNrwIiqPUeB/Ex1CGgHDi8psO6TAShTh1ZQwHhM5ma7N8D844RPh7MHFYnvf3bgCS9JZahQhSNeN14v+/ZDGqKJu/ivKRbc1/HY1UQfL2bWKb31TNAXCRCD9jNJnCM0eww3J36nVJhjNvoL3OfJ6mbPYbPTOM+o110t0aJsk9W/QpaME7jDjXV7AXhROBAENTpZlluPfF/XhoidIouXMzmhVaV3nC7CRrVj36vsXu+C85GDJlUmlFhphtqUUdEFbq3bSvVEzEAAfa9T23DLXTVIMphKCqq8AhxUJnuOAElAnCVoXEvuW1esGuLxnam3Ihms7vWRYgbpUIycnn7aF/43kZaLr2xt4OziSusIl3Fn8qkB6te36b3Exrubvg6fLGYHU0aZDjL3EoTv3NT6TQNfL+pNn//Q2B31uWRdfynMHbWpvg9eLjMCH5/lbxWETwciyWI0XvPDuvEZs+o+rHk+NFfOBE6/q1cOXRxDaWdEm90iedeEnbB2vmxcI4DwVW6a1Z9qRuQXvRKh/DUmDLW+L7kPh1wbw/XbeOnmJBBdYrTp1XmfpPH2rOdawK9q4dxsGWyySR2FDVmzza8+1ZQg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(346002)(136003)(396003)(39860400002)(376002)(451199021)(6666004)(6486002)(478600001)(36756003)(186003)(6506007)(53546011)(6512007)(83380400001)(2616005)(38100700002)(31696002)(86362001)(26005)(107886003)(316002)(4326008)(41300700001)(66556008)(66476007)(66946007)(44832011)(31686004)(2906002)(8676002)(5660300002)(8936002)(110136005)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dGNEVi9yQWNhMnlSNWRUSThHeEh2K25mUE5kS2ZVZU11cWFnZ3JLTHpGU1F4?=
- =?utf-8?B?dWgrK3BNbW85US80cTFwclI4TzFXQXFrWjkwTnpEeC94UEFwYVA1bmorV2I5?=
- =?utf-8?B?M05qRTE2VEU5Q2k2ZEtDNHIxbDdVVzlWSm8xQ2UzRnBBL0wzOGNDUzExTjJY?=
- =?utf-8?B?UzlBQkJMTDZJT0pMMnVRWXRvcTN4Skl4Q2dQMi9NTWVtQmRCYjNlMzJaTlp2?=
- =?utf-8?B?REhMRGZ0d3c0YVlmNEUwbTlCRkk3cTgrSjlGdTBtRTJTbGVmK1piODc3cHRq?=
- =?utf-8?B?TEpwOWNtL0UySytWN2FQMDI5MHNtV0lZb2ZibUs1TTdvMDcvaU1ESE9KYVVH?=
- =?utf-8?B?MkJDQk0xNU1UV0hUeXRlRmd3cy9xRkhpSlo1ZmZPamc0b3BEWlpFaTBjeGFq?=
- =?utf-8?B?a0p1QnFBWG82RzhFRXFweTlTVFRyTUNTWEVXNWx3cTVHQnl2ZEJ5bVp0STVt?=
- =?utf-8?B?SzRKNHVQQVRYZzd6b09sOUl5eS9tRmFIMDJRaWpHOXdlNnlReGdUemdsZmVu?=
- =?utf-8?B?S0loMTNXMDlWQzMwRDkyblNJMUZxTW9GY1FjYnQza2NkcHJrSjRxc09YaTdN?=
- =?utf-8?B?ay9FWkwxd3lPQmlZL0ZYekpsTVpkRUdRV1lmc1BaTGx1cDFOTFRtZVB5NHFK?=
- =?utf-8?B?SlB1dVdqOFJiSTFTc3kzMEx6UjBxclI3cGhFeFhiM24rK3ZtbVM0aGIvVWZS?=
- =?utf-8?B?ZlVBdEpwOGpPaTc5UThvTWNFQXpFUE5hYk5kSDcvZHQ2K093L1A1Qm8xYURk?=
- =?utf-8?B?TjlEQnZ0bGxFRWorUzhIWEcrSy9zeG05enYveEJLTEdZank2ckFoRDNhVVY4?=
- =?utf-8?B?RWdhZjNkUjlmT1FPa2NZZjNXN1NWNVhiQkc5ekxvekJOMHBjNi9obE1UWmtI?=
- =?utf-8?B?M0RZeXNBY20zNWJYbVRKT3FMckI0UEJiTHkvNWxaWXFZNkx5ckNxeFAxWFNq?=
- =?utf-8?B?cEZkL2ZYWkNjbi82Qmc3WjlPM2NRNU9PazJuSm9jbEJnTFpZcHc0R3VpdHJz?=
- =?utf-8?B?ZE5uM3htL0MzTndQWlVGWHlHZjlHanRXV2ZrYXNKaXJxWWhLZStoaC9SMVkz?=
- =?utf-8?B?QThWbzJ0R1FIeTF5OEpaVUJQUUF3Z0ZpL3BFdWRWZE4vQ0lqRWdoNm9PSGlT?=
- =?utf-8?B?bkxtZVNFTnRwRTRXUDc3VTBScXdhSllta3ZsUU9tV0FQM3hrM21ZUnFjSzJX?=
- =?utf-8?B?WWlvQ2pvZElIT2xha1Npd3RBWnc0dWNJU3l1MW5Kd1R6QWtpMms1Z0VxU0kw?=
- =?utf-8?B?Q2tZQ3pEK0J6ZGhCRlE4cG96VzVTSU4xNC9QNnVXVjU4UEU1eTZnNFY0TDJ0?=
- =?utf-8?B?Q1dONzhEZlpmUDQ5K25QcEZOdXJlK0ZZeWs0SkR3NjE5NVZ3djF4eWhQeDRY?=
- =?utf-8?B?eXVvbGNVdFVUaUR5VWE4YXVTeTMydDJpTlllZDhXaWVmclRSMTR2TFh4cU8y?=
- =?utf-8?B?Qk1pLzVZd0tZU2VuaUo0KzVxbW16QnU0WUkrOUdQMkFtSnJraEU0R0dGa3ZM?=
- =?utf-8?B?ekZoTWlWbzh3WUFUdW1Qam85a3ZDWVBFWklTcCtjR2hPblhRZTBSS3ovYUw3?=
- =?utf-8?B?cFhmZHlLK01PSGgzRy9vTElvWmFEQVBTc2l3TWhucHEzbnJUR0hFaFJiVy9M?=
- =?utf-8?B?ZFBVQnJEbVhuN29iOXdhZDg5MkpTOWpNYzJ6ZHZ3ZkxqcWpQOFJRMktkNmF5?=
- =?utf-8?B?em4way8ySFFFNjIyK0NUblVaYkZPMnRucGJaMnBtVVhGMEJOVi9XOWVWNHpP?=
- =?utf-8?B?end3alN6bW4wVlpYcWRvZlZPZGhVbEpSZkFmZnIrSG1uOGhvYitnOW1uRUxS?=
- =?utf-8?B?V3c0bEV2bjZKRU5EdnhaZEJ4TFpSWDBlZnl6Rmk0Vm1aaXN1WWovVWNpVHpB?=
- =?utf-8?B?a3BXODVrTityRUcxMHlGVGdPbWUxa05NT1B4K1pzZ1dtbi9tcUltYnhhWFpt?=
- =?utf-8?B?dzJaRXY0VUZUc1pWME1PcDBGdmt0RkNYRS9SODlwN05FZVZLVnlvbk50MlI3?=
- =?utf-8?B?SDhUTWU5bkhZeHZZVTVIN2JmdGpZRVlObGNHanhrNHVUMUNuSG1nQVpaWDlJ?=
- =?utf-8?B?WUZRWGlwNmlVOThkNmxFeklWSXVUa084Q0lLZERsNE9IR2U1d0d1dmVralN4?=
- =?utf-8?Q?egLUr4+MnKbKl+rlX7ZmQYpBv?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fdb93c0-118d-4de7-ce3e-08db627e157b
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 08:56:27.4788 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QazlrCcsTEqLqpWsDZAyGw899X5CfKPmn6Cr9VrEGQDT0oK3UHBFrUPc0wHKvJ157k1fN+KbzzH7JieI3DqYtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR02MB9772
-X-Proofpoint-ORIG-GUID: BgFyCUGe-oGPZOusRZ_OJOLPhzEagRGO
-X-Proofpoint-GUID: BgFyCUGe-oGPZOusRZ_OJOLPhzEagRGO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-01_06,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -175,61 +120,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/6/23 09:41, Akihiko Odaki wrote:
+> On 2023/06/01 16:16, Philippe Mathieu-Daudé wrote:
+>> On 1/6/23 05:18, Akihiko Odaki wrote:
+>>> Recently MemReentrancyGuard was added to DeviceState to record that the
+>>> device is engaging in I/O. The network device backend needs to update it
+>>> when delivering a packet to a device.
+>>>
+>>> This implementation follows what bottom half does, but it does not add
+>>> a tracepoint for the case that the network device backend started
+>>> delivering a packet to a device which is already engaging in I/O. This
+>>> is because such reentrancy frequently happens for
+>>> qemu_flush_queued_packets() and is insignificant.
+>>>
+>>> This series consists of two patches. The first patch makes a bulk 
+>>> change to
+>>> add a new parameter to qemu_new_nic() and does not contain behavioral 
+>>> changes.
+>>> The second patch actually implements MemReentrancyGuard update.
+>>
+>> /me look at the 'net' API.
+>>
+>> So the NetReceive* handlers from NetClientInfo process the HW NIC
+>> data flow, independently from the CPUs.
+>>
+>> IIUC MemReentrancyGuard is supposed to protect reentrancy abuse from
+>> CPUs.
+>>
+>> NetReceive* handlers aren't restricted to any particular API, they
+>> just consume blob of data. Looking at e1000_receive_iov(), this data
+>> is filled into memory using the pci_dma_rw() API. pci_dma_rw() gets
+>> the AddressSpace to use calling pci_get_address_space(), which returns
+>> PCIDevice::bus_master_as. Then we use the dma_memory_rw(), followed
+>> by address_space_rw(). Beh, I fail to see why there is reentrancy
+>> checks from this NIC DMA HW path.
+>>
+>> Maybe the MemoryRegion API isn't the correct place to check for
+>> reentrancy abuse and we should do that at the AddressSpace level,
+>> keeping DMA ASes clear and only protecting CPU ASes?
+> 
+> The involvement of CPU is not essential in my understanding. A typical 
+> scenario of DMA reentrancy is like the following:
+> 1) The guest configures the DMA destination address register the device 
+> has to the address of another device register.
+> 2) The DMA gets triggered.
+> 3) The device performs the DMA, writing its own register.
+> 4) The write causes reentrancy.
+> 5) The re-entered device code corrupts the device state.
+> 
+> I guess 2) is done by CPU in most cases, but sometimes it happen with 
+> another cause. In fact, the current reentrancy protection code covers 
+> the case that bottom half handlers triggers DMA. The intention of this 
+> series is to extend the coverage and handles the case that incoming 
+> network traffic triggers DMA.
+> 
+> The essence of DMA reentrancy is in 3). This happens when the DMA 
+> address space contains the MMIO region of the device and there is no 
+> involvement of CPU here.
 
-On 30/05/23 5:40 pm, Daniel P. Berrangé wrote:
-> On Tue, May 30, 2023 at 01:02:27PM +0530, Het Gala wrote:
->> On 30/05/23 12:28 pm, Markus Armbruster wrote:
->>> Het Gala<het.gala@nutanix.com>  writes:
->>>
->>>
-[...]
->>>>>> +##
->>>>>> +{ 'enum': 'MigrateTransport',
->>>>>> +  'data': ['socket', 'exec', 'rdma'] }
->>>>>> +
->>>>>> +##
->>>>>> +# @MigrateExecCommand:
->>>>> Documentation of @args is missing.
->>>> Ack. Should the naming '@args' be replaced by '@filepath' or @path' or something similar ?
->>> Depends on what @args means.
->>>
->>> I guess its [program, arg1, arg2, ...].
-> Yes, that is correct. Essentially this ends up calling
->
->     execve(@args[0], @args)
->
->>> You could split off the program:
->>>
->>>       'program: 'str',
->>>       'args': [ 'str' ]
-> Now you also have to declare whether '@args' includes or excludes
-> 'program' as @args[0]. execve() style would be to have '@args[0]'
-> duplicate 'program'. Personally I think that's overkill for QEMU's
-> needs. If we don't include 'program' in @args, then we have to
-> document this, as it isn't discoverable from the QAPI design.
->
-> Not separating 'program' and 'args' in QAPI makes it unambiguous
-> that 'args' must include everything.
-Yes, we need to make user aware of args[0], so keeping it @args along 
-with adding a note that @args[0] - path to the new program ? is the best 
-alternative here ? - Markus, Daniel
->>> Try to write clear documentation for both alternatives.  Such an
->>> exercise tends to lead me to the one I prefer.
->> Hmm, basically here the @args means, for example ['/bin/bash', args1, args2,
->> ..., <command>], where command -> /some/file/path.
->>
->> Does it even make sense now to break into 3 different parts ?
->>
->> 	'program': 'str'
->> 	'args': [ 'str' ]
->> 	'command': 'str'
-> Definitely not. This encodes an assumption that we're spawning via a
-> shell. The intent with the new design is that it lets mgmt apps fully
-> eliminate use of shell, and directly invoke the program, thus eliminating
-> potential (security) pitfalls with shell metacharacters.
-Got your point Daniel. Thanks.
-> With regards,
-> Daniel
-Regards,
-Het Gala
+OK, thanks for the explanation.
 
