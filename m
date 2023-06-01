@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31352719B35
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 13:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C26C7719B4E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 13:55:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4gqp-0001Tk-OJ; Thu, 01 Jun 2023 07:52:19 -0400
+	id 1q4gqo-0001RM-Rb; Thu, 01 Jun 2023 07:52:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q4gqe-0001L0-Dh
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q4gqb-0001C8-2Y
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q4gqb-0000Ns-RA
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:07 -0400
+ id 1q4gqZ-0000Mu-Cr
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 07:52:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685620325;
+ s=mimecast20190719; t=1685620322;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+OV1Wjlf5YFldxkwSVEmSX2qCVj1nsZjcStFqGwzolQ=;
- b=BvSZZMtTQ1iZBnHICikeIk8Y7THykGFFAcEvm9MxgzVcWOoV7Oz71zoNknEOR0u7NSWcRu
- dOevel/ClgyH5UECZHCe3tZZok2o7FcCfo4VgEXDGeXcjhre7SDXVsq+zPLpG/8ZqJaJdq
- 93LnBG7lXQIbEcqcuod3aoFLa+hno/U=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p505Phhkx6YtNgSh3YBugYQztGZodw4U0C8ss9gsYXA=;
+ b=BWc578JzRKl363Zj8FIOFIwFAVkQzoAGA6E7qayHHVF1ySS8xUmIEaCJact0JQ012rJnKT
+ Rg0oqZWy4TGrPT9JSZ1ttWM9HQ4q5D1Gya71+oBxpY6fm3GaJNF7hRbf3NuZVMI2mqwFXQ
+ TrCX1QZBsAysiryJnP1AGgkPUmInCd8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-x03aBadfPEGQPwq_LIOp0A-1; Thu, 01 Jun 2023 07:51:59 -0400
-X-MC-Unique: x03aBadfPEGQPwq_LIOp0A-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-506beab6a73so693121a12.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 04:51:59 -0700 (PDT)
+ us-mta-359-T-PfM9dwP0Si8680Lbkiyw-1; Thu, 01 Jun 2023 07:52:01 -0400
+X-MC-Unique: T-PfM9dwP0Si8680Lbkiyw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9737cde2ce8so103222966b.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 04:52:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685620318; x=1688212318;
+ d=1e100.net; s=20221208; t=1685620320; x=1688212320;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+OV1Wjlf5YFldxkwSVEmSX2qCVj1nsZjcStFqGwzolQ=;
- b=LdNeplctlQVyfFwqgv1Fth7utt6SeSeSnU71rwaL40mY5MnujvdVPA20ix8FBOnc+b
- d2JKlLiayMRV99Be1YOFS+G9lGoIMTikglB+UZs5FJ3fig4n9FyYLMjAHFT46/3OqkwH
- EV4Q1zxznOE8kkkeWi49p4sVqzyPrLsev3LyWCq3J7TD2g8YN99JLc4iibSfQL//842R
- qxDcDb5rNb8zMYxvux5HgG3Og86tvg8pl0lluF6rkilS4EMynGB7VnnQ8PJWfeZ5TnMY
- QERn2n3WTajWV4b9mF6sOyBGFGfXJeWOQbIWuXlkj7qRTusF5ja6a4yXzuc36QhQtpJJ
- 87tA==
-X-Gm-Message-State: AC+VfDx6TX9tBnr4vyhjmmpMZRMpTJ70BFWue9WkN9VhytdtBD3f1T7l
- 8fU6ENH4ByknDjHa3yn8ZJj/RKGWU3iWDmiEBabgKOoPpXxwZ3F4eRNJ1ZB5XanrGe46Oiuk60n
- TKy+rR5aad8oiJqPu7xEHzSR4Y1+0PxMkF29P0LdOP0E3A5r1Np+/m4jPsAWMZLu5HFJMD8jfNi
- 8=
-X-Received: by 2002:aa7:d594:0:b0:514:80d1:2790 with SMTP id
- r20-20020aa7d594000000b0051480d12790mr5508291edq.35.1685620317927; 
- Thu, 01 Jun 2023 04:51:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5U9q/rOclgfZ4AjrmqK21hiDzbxo/NPkb8peqWRFtyf3E25aGATzyIH0nY4oZm4L/aA600GA==
-X-Received: by 2002:aa7:d594:0:b0:514:80d1:2790 with SMTP id
- r20-20020aa7d594000000b0051480d12790mr5508283edq.35.1685620317701; 
- Thu, 01 Jun 2023 04:51:57 -0700 (PDT)
+ bh=p505Phhkx6YtNgSh3YBugYQztGZodw4U0C8ss9gsYXA=;
+ b=bm8ww0erom2xx4z7kk+rbInmWJfgDN0G7CPQmQ5Fcp7AGkl5i4OxX91F0RaLOMuJhx
+ n+e5Jo+qvQNieZrqOp4K5UsBDErvATg+QvewuPS83nBsVunocTpxchwgUIYhrLipcUhY
+ ri2LB/uUujIAw4JNp7ypHoj7l8Ol1olyAO4Nx66fX8Xhpvb3eABMdTz/jnkuF9LjnnAK
+ yx0cRsoZUpXNas6RrKq1X5vwtc+j5TdxlaQPRvO7EoOi7dafC0cnjkesLoKn1CFLMREp
+ pYPfa7l+e53rUEiC4inHrlOf75E/uv8VERC+pnel6b4M0SAJYXDR23bBTNSqRPE+K+8E
+ om3g==
+X-Gm-Message-State: AC+VfDwG11TS9wV2OLzzT54QR/pEAc1suiss4SEmvxTf3HbsTlstkJbT
+ U3fxk2UQI9zvuNXqy2wk9pTGH9Q+NJ8I/9a/yy0aoXzChSisqCTn41a9l79WRsJrEF6wgp3Q6x+
+ j+UrQMV6XbJ0gDMhqr02Q+ZkXRjMzJ0ZAqORAdlj1q0xz7gVEmDax5fpqrLOXZGhxJodIvY0NUr
+ M=
+X-Received: by 2002:a17:907:3f2a:b0:96f:7d0a:5981 with SMTP id
+ hq42-20020a1709073f2a00b0096f7d0a5981mr1361261ejc.36.1685620319901; 
+ Thu, 01 Jun 2023 04:51:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7/ys4qwIWzcNy2ek7sGMt6Y0WclhJcpIReni+mGiHV5jLBQtFIQohf4eWU9220LuOepZA8uw==
+X-Received: by 2002:a17:907:3f2a:b0:96f:7d0a:5981 with SMTP id
+ hq42-20020a1709073f2a00b0096f7d0a5981mr1361250ejc.36.1685620319633; 
+ Thu, 01 Jun 2023 04:51:59 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- n15-20020a05640206cf00b004fbdfbb5acesm7071254edy.89.2023.06.01.04.51.56
+ lk15-20020a170906cb0f00b0096f5781205fsm10444397ejb.165.2023.06.01.04.51.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 04:51:57 -0700 (PDT)
+ Thu, 01 Jun 2023 04:51:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-block@nongnu.org
-Subject: [PATCH 07/12] dmg: mark more functions as coroutine_fns and
+Subject: [PATCH 08/12] vmdk: mark more functions as coroutine_fns and
  GRAPH_RDLOCK
-Date: Thu,  1 Jun 2023 13:51:40 +0200
-Message-Id: <20230601115145.196465-8-pbonzini@redhat.com>
+Date: Thu,  1 Jun 2023 13:51:41 +0200
+Message-Id: <20230601115145.196465-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601115145.196465-1-pbonzini@redhat.com>
 References: <20230601115145.196465-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -108,76 +108,105 @@ functions, which in turn requires adding GRAPH_RDLOCK annotations.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- block/dmg.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ block/vmdk.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/block/dmg.c b/block/dmg.c
-index 2769900359f8..06a0244a9c16 100644
---- a/block/dmg.c
-+++ b/block/dmg.c
-@@ -616,7 +616,8 @@ err:
-     return s->n_chunks; /* error */
+diff --git a/block/vmdk.c b/block/vmdk.c
+index a864069a5a1f..419868a42ae2 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -339,7 +339,8 @@ out:
+     return ret;
  }
  
--static inline int dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
+-static int vmdk_write_cid(BlockDriverState *bs, uint32_t cid)
 +static int coroutine_fn GRAPH_RDLOCK
-+dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
++vmdk_write_cid(BlockDriverState *bs, uint32_t cid)
  {
-     BDRVDMGState *s = bs->opaque;
+     char *desc, *tmp_desc;
+     char *p_name, *tmp_str;
+@@ -348,7 +349,7 @@ static int vmdk_write_cid(BlockDriverState *bs, uint32_t cid)
  
-@@ -633,8 +634,8 @@ static inline int dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
-         case UDZO: { /* zlib compressed */
-             /* we need to buffer, because only the chunk as whole can be
-              * inflated. */
--            ret = bdrv_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
--                             s->compressed_chunk, 0);
-+            ret = bdrv_co_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
-+                                s->compressed_chunk, 0);
-             if (ret < 0) {
-                 return -1;
-             }
-@@ -659,8 +660,8 @@ static inline int dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
-             }
-             /* we need to buffer, because only the chunk as whole can be
-              * inflated. */
--            ret = bdrv_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
--                             s->compressed_chunk, 0);
-+            ret = bdrv_co_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
-+                                s->compressed_chunk, 0);
-             if (ret < 0) {
-                 return -1;
-             }
-@@ -680,8 +681,8 @@ static inline int dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
-             }
-             /* we need to buffer, because only the chunk as whole can be
-              * inflated. */
--            ret = bdrv_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
--                             s->compressed_chunk, 0);
-+            ret = bdrv_co_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
-+                                s->compressed_chunk, 0);
-             if (ret < 0) {
-                 return -1;
-             }
-@@ -696,8 +697,8 @@ static inline int dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
-             }
-             break;
-         case UDRW: /* copy */
--            ret = bdrv_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
--                             s->uncompressed_chunk, 0);
-+            ret = bdrv_co_pread(bs->file, s->offsets[chunk], s->lengths[chunk],
-+                                s->uncompressed_chunk, 0);
-             if (ret < 0) {
-                 return -1;
-             }
-@@ -713,7 +714,7 @@ static inline int dmg_read_chunk(BlockDriverState *bs, uint64_t sector_num)
-     return 0;
+     desc = g_malloc0(DESC_SIZE);
+     tmp_desc = g_malloc0(DESC_SIZE);
+-    ret = bdrv_pread(bs->file, s->desc_offset, DESC_SIZE, desc, 0);
++    ret = bdrv_co_pread(bs->file, s->desc_offset, DESC_SIZE, desc, 0);
+     if (ret < 0) {
+         goto out;
+     }
+@@ -368,7 +369,7 @@ static int vmdk_write_cid(BlockDriverState *bs, uint32_t cid)
+         pstrcat(desc, DESC_SIZE, tmp_desc);
+     }
+ 
+-    ret = bdrv_pwrite_sync(bs->file, s->desc_offset, DESC_SIZE, desc, 0);
++    ret = bdrv_co_pwrite_sync(bs->file, s->desc_offset, DESC_SIZE, desc, 0);
+ 
+ out:
+     g_free(desc);
+@@ -2165,7 +2166,7 @@ vmdk_co_pwrite_zeroes(BlockDriverState *bs, int64_t offset, int64_t bytes,
+     return ret;
  }
  
--static int coroutine_fn
-+static int coroutine_fn GRAPH_RDLOCK
- dmg_co_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
-               QEMUIOVector *qiov, BdrvRequestFlags flags)
+-static int GRAPH_UNLOCKED
++static int coroutine_fn GRAPH_UNLOCKED
+ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+                  bool zeroed_grain, Error **errp)
  {
+@@ -2176,7 +2177,7 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+     int gd_buf_size;
+ 
+     if (flat) {
+-        ret = blk_truncate(blk, filesize, false, PREALLOC_MODE_OFF, 0, errp);
++        ret = blk_co_truncate(blk, filesize, false, PREALLOC_MODE_OFF, 0, errp);
+         goto exit;
+     }
+     magic = cpu_to_be32(VMDK4_MAGIC);
+@@ -2228,19 +2229,19 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+     header.check_bytes[3] = 0xa;
+ 
+     /* write all the data */
+-    ret = blk_pwrite(blk, 0, sizeof(magic), &magic, 0);
++    ret = blk_co_pwrite(blk, 0, sizeof(magic), &magic, 0);
+     if (ret < 0) {
+         error_setg(errp, QERR_IO_ERROR);
+         goto exit;
+     }
+-    ret = blk_pwrite(blk, sizeof(magic), sizeof(header), &header, 0);
++    ret = blk_co_pwrite(blk, sizeof(magic), sizeof(header), &header, 0);
+     if (ret < 0) {
+         error_setg(errp, QERR_IO_ERROR);
+         goto exit;
+     }
+ 
+-    ret = blk_truncate(blk, le64_to_cpu(header.grain_offset) << 9, false,
+-                       PREALLOC_MODE_OFF, 0, errp);
++    ret = blk_co_truncate(blk, le64_to_cpu(header.grain_offset) << 9, false,
++                          PREALLOC_MODE_OFF, 0, errp);
+     if (ret < 0) {
+         goto exit;
+     }
+@@ -2252,8 +2253,8 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+          i < gt_count; i++, tmp += gt_size) {
+         gd_buf[i] = cpu_to_le32(tmp);
+     }
+-    ret = blk_pwrite(blk, le64_to_cpu(header.rgd_offset) * BDRV_SECTOR_SIZE,
+-                     gd_buf_size, gd_buf, 0);
++    ret = blk_co_pwrite(blk, le64_to_cpu(header.rgd_offset) * BDRV_SECTOR_SIZE,
++                        gd_buf_size, gd_buf, 0);
+     if (ret < 0) {
+         error_setg(errp, QERR_IO_ERROR);
+         goto exit;
+@@ -2264,8 +2265,8 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+          i < gt_count; i++, tmp += gt_size) {
+         gd_buf[i] = cpu_to_le32(tmp);
+     }
+-    ret = blk_pwrite(blk, le64_to_cpu(header.gd_offset) * BDRV_SECTOR_SIZE,
+-                     gd_buf_size, gd_buf, 0);
++    ret = blk_co_pwrite(blk, le64_to_cpu(header.gd_offset) * BDRV_SECTOR_SIZE,
++                        gd_buf_size, gd_buf, 0);
+     if (ret < 0) {
+         error_setg(errp, QERR_IO_ERROR);
+     }
 -- 
 2.40.1
 
