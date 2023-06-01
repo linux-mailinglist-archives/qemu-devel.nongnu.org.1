@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0164719C37
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA569719C38
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 14:34:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4hUv-000639-82; Thu, 01 Jun 2023 08:33:45 -0400
+	id 1q4hUv-00062q-6g; Thu, 01 Jun 2023 08:33:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4hUr-000629-Ui; Thu, 01 Jun 2023 08:33:41 -0400
+ id 1q4hUs-00062Q-Vh; Thu, 01 Jun 2023 08:33:43 -0400
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4hUq-0002aK-9h; Thu, 01 Jun 2023 08:33:41 -0400
+ id 1q4hUr-0002aZ-C5; Thu, 01 Jun 2023 08:33:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id D583B64405;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id C445F608D5;
+ Thu,  1 Jun 2023 12:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3353C4339C;
  Thu,  1 Jun 2023 12:33:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9E1C433D2;
- Thu,  1 Jun 2023 12:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1685622817;
- bh=rLxj2oUWIU5RgAo0EkYZR3VP3cndRSAtSYfcni3t3Kc=;
- h=From:To:Cc:Subject:Date:From;
- b=nYF5Z1V21by5bPs50EtqopAEpDg1gywM3ihhw9V9wnckO1GZS7cCdi+cocSlYNhZk
- QeIvjhmcfTnuhGCdq3luIW05XpOK82LNXVDo56Frx1yafFx+YrdrLWqJOhW108A6kc
- CYDCO9NUsn9BnkbUzTzWRHD9bnrhhDu6NhfKM6uvyTDrnIjVumWtO0hl76xSbiBPkj
- Ul15/yFaDoVtToGn/+tCYyO+ripEH5SN+JPNGI42o2qC678kog4aUGzC/qs9DQIvTo
- OUNRm/Di6AVXudMd0d3VtOW4JsjRbVMXpQmzDuNxrLtIargm7hCzIF/ADfHEQ1fKjC
- Kc7sQBNnZHocA==
+ s=k20201202; t=1685622819;
+ bh=ybhCCaRaMtEWM/hqlDKZlEwr5UC1ZUvXv1DqWaYk9MA=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=LdBq8ScUOELwb9t043Oo96oEIYYaBTlNLZzhG4nhfAVcb52kUYZIjTynJSAd9o46r
+ 6HzLJI6SwsVNM7VxuQZZNWz6JMyARKEObO5CaDx5iUcoiBkOo7E9fp9NuuhvigtC0t
+ ecdDvBCx0HGuvqwcgkXbotefMAXbpj0iQrXZfe+pXOW3uRhxQONBbClWxnLMZBrvwF
+ 7+WQLEGPy4L9LuTHEtLoArrb+fcxHvrh4Q7WBMllFQ1OasO7IBa4gV4g+OwJ1pcr+z
+ YhHz4hyxbOxhA73ZK6QvMuwdS3Mmmpez9Fy6Xqb/l7uOLFfQZZ+CLb4a+0TplRDXcl
+ hm0cbzHVqlgxA==
 From: Ard Biesheuvel <ardb@kernel.org>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -40,20 +40,21 @@ Cc: qemu-devel@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PATCH 0/2] Implement PMULL using host intrinsics
-Date: Thu,  1 Jun 2023 14:33:30 +0200
-Message-Id: <20230601123332.3297404-1-ardb@kernel.org>
+Subject: [PATCH 1/2] target/arm: Use x86 intrinsics to implement PMULL.P64
+Date: Thu,  1 Jun 2023 14:33:31 +0200
+Message-Id: <20230601123332.3297404-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230601123332.3297404-1-ardb@kernel.org>
+References: <20230601123332.3297404-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1613; i=ardb@kernel.org;
- h=from:subject; bh=rLxj2oUWIU5RgAo0EkYZR3VP3cndRSAtSYfcni3t3Kc=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaVigkhwtbxr169I+/0mpbotosFPEk+phHLvsHLcpbldR
- XnK9EsdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCKBqxj+Bzdt1D15h0e6RvT5
- fF+mVy/sdrALTlFjEbi3Nenf/a7Kt4wMp7hLHfOPxGzKLmuNjGYtO5nGsPu9g6mXTWh6/vF9BYn
- MAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2850; i=ardb@kernel.org;
+ h=from:subject; bh=ybhCCaRaMtEWM/hqlDKZlEwr5UC1ZUvXv1DqWaYk9MA=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaViglixxrJ5/yNtmaMur5FTufNlysLajHyX/+emhLWl6
+ ig9s3/aUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACZSEcrIsHex0Z1na8PK9BYe
+ VgkSTCljm3zOdU/V3KMzHQPs/vCuWsPwVz43oJbD7KbbT4PySzs3nt8qfMdk/cp3zru+TLr8W+z
+ rVnYA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp;
  fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2604:1380:4641:c500::1;
  envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
@@ -79,41 +80,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Another set of RFC patches - this time for 64x64->128 polynomial
-multiplication. Playing round with this on top of the AES changes I sent
-out earlier this week, I noticed that the speedup is rather substantial.
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ host/include/i386/host/cpuinfo.h |  1 +
+ target/arm/tcg/vec_helper.c      | 26 +++++++++++++++++++-
+ util/cpuinfo-i386.c              |  1 +
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
-PMULL is relevant for GCM encryption, which combines AES in counter mode
-with GHASH, which is based on multiplication in GF(2^128). The
-significance of PMULL to this encryption mode is basically why PMULL is
-part of the AES crypto extension on AArch64.
-
-Note that user emulation on a AArch64 host of x86 binaries that perform
-any kind of HTTPS communication under the hood would likely benefit from
-this.
-
-Again, this approach is likely too ad-hoc, but it helps span the space
-of what we might want to cover in terms of host acceleration API. (I'm
-not a TCG expert, but I guess this raises the question what to cover in
-helpers and what to cover using native TCG ops?)
-
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Philippe Mathieu-Daudé <f4bug@amsat.org>
-
-Ard Biesheuvel (2):
-  target/arm: Use x86 intrinsics to implement PMULL.P64
-  target/i386: Implement PCLMULQDQ using AArch64 PMULL instructions
-
- host/include/aarch64/host/cpuinfo.h |  1 +
- host/include/i386/host/cpuinfo.h    |  1 +
- target/arm/tcg/vec_helper.c         | 26 +++++++++++++++++++-
- target/i386/ops_sse.h               | 24 ++++++++++++++++++
- util/cpuinfo-aarch64.c              |  1 +
- util/cpuinfo-i386.c                 |  1 +
- 6 files changed, 53 insertions(+), 1 deletion(-)
-
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index 073d0a426f31487d..cf4ced844760d28f 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -27,6 +27,7 @@
+ #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
+ #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+ #define CPUINFO_AES             (1u << 18)
++#define CPUINFO_PMULL           (1u << 19)
+ 
+ /* Initialized with a constructor. */
+ extern unsigned cpuinfo;
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index f59d3b26eacf08f8..fb422627588439b3 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -25,6 +25,14 @@
+ #include "qemu/int128.h"
+ #include "vec_internal.h"
+ 
++#ifdef __x86_64__
++#include "host/cpuinfo.h"
++#include <wmmintrin.h>
++#define TARGET_PMULL  __attribute__((__target__("pclmul")))
++#else
++#define TARGET_PMULL
++#endif
++
+ /*
+  * Data for expanding active predicate bits to bytes, for byte elements.
+  *
+@@ -2010,12 +2018,28 @@ void HELPER(gvec_pmul_b)(void *vd, void *vn, void *vm, uint32_t desc)
+  * Because of the lanes are not accessed in strict columns,
+  * this probably cannot be turned into a generic helper.
+  */
+-void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
++void TARGET_PMULL HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
+ {
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     intptr_t hi = simd_data(desc);
+     uint64_t *d = vd, *n = vn, *m = vm;
+ 
++#ifdef __x86_64__
++    if (cpuinfo & CPUINFO_PMULL) {
++	switch (hi) {
++	case 0:
++		*(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x0);
++		break;
++	case 1:
++		*(__m128i *)vd = _mm_clmulepi64_si128(*(__m128i *)vm, *(__m128i *)vn, 0x11);
++		break;
++	default:
++		g_assert_not_reached();
++	}
++        return;
++    }
++#endif
++
+     for (i = 0; i < opr_sz / 8; i += 2) {
+         uint64_t nn = n[i + hi];
+         uint64_t mm = m[i + hi];
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index 3043f066c0182dc8..8930e13451201a64 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -40,6 +40,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
+         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
+         info |= (c & bit_AES ? CPUINFO_AES : 0);
++        info |= (c & bit_PCLMULQDQ ? CPUINFO_PMULL : 0);
+ 
+         /* For AVX features, we must check available and usable. */
+         if ((c & bit_AVX) && (c & bit_OSXSAVE)) {
 -- 
 2.39.2
 
