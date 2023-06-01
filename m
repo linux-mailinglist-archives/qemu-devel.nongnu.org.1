@@ -2,59 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A7A719D17
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F14719D2D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 15:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4i76-00028P-RD; Thu, 01 Jun 2023 09:13:12 -0400
+	id 1q4iC1-0006iU-9G; Thu, 01 Jun 2023 09:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1q4i74-00028B-3f
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:13:10 -0400
-Received: from apollo.dupie.be ([51.159.20.238])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q4iBt-0006hf-TI
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:18:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1q4i71-0001nS-NN
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:13:09 -0400
-Received: from [IPV6:2a02:a03f:eaf7:ff01:cc6b:6666:e19c:b63f] (unknown
- [IPv6:2a02:a03f:eaf7:ff01:cc6b:6666:e19c:b63f])
- by apollo.dupie.be (Postfix) with ESMTPSA id 94CD21520DD7;
- Thu,  1 Jun 2023 15:13:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1685625183;
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q4iBr-0002pf-IO
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 09:18:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685625486;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=93PrNSE89goW6sR7hYBRjSTinep5uECnBBeIzdgPN70=;
- b=PU0xqxIvbyCmLwWHka82+jnYE0aHziwc86K8TRo1sfvca6UUQFgJt2yG+/CmkUJQcPqQEt
- ss2Xld1/+k6S0u9f2ODtsWcApl1bo/bCcK+wL3V3Qy8oVOIQM8w1cYM66HcL55uul6VHpi
- yFLRyZWu2DAcmqT/kQlWvIxdTM9z8ITluN9U8TfqIenFqht+Mhl04cNu5gYsp0OPOSzoex
- e/4J4zSDihBHo4qb+6dRilUVitER6Zq9ejzLam5wKLdyjJrfXvZJBssDVUyIYslg3D5BeD
- oS90+C/ZBxF3JrQVKNqH83vZc4EDKYwbhaDV5HMfINLxOe1QV9xB23EkQpp4SQ==
-Message-ID: <fd7d81af-c69a-e5fb-0ebd-ce0124517626@dupond.be>
-Date: Thu, 1 Jun 2023 15:13:03 +0200
+ bh=s1oHRD2FrvYDtBzunw8ehneh7jdPHUY38x6ImHPiTfs=;
+ b=SBRZ6ON60JF1EMBGCQW/X1C3/HJ1Dnj7qXIzpwl5FXbxtKd8npBsaR/R2ECExfidFZO5ww
+ J1WcI/Be++ul2sdud0L64WZ94p52dzSnBKnolvo8rdQ+ZGFszca21zvnGbSZSZXuBbnTuS
+ wpR+96N3iRzR6dp1YXteBqpnn15KYK8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-543-3mDHGk81PguLD52fVfEqQQ-1; Thu, 01 Jun 2023 09:17:59 -0400
+X-MC-Unique: 3mDHGk81PguLD52fVfEqQQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 30072862F5E;
+ Thu,  1 Jun 2023 13:17:39 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AEF68111F3B0;
+ Thu,  1 Jun 2023 13:17:38 +0000 (UTC)
+Date: Thu, 1 Jun 2023 09:17:37 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: =?utf-8?B?THVrw6HFoQ==?= Doktor <ldoktor@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>,
+	qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: Performance improvement and regression with
+ 6d740fb01b9f0f5ea7a82f4d5e458d91940a19ee
+Message-ID: <20230601131737.GD1538357@fedora>
+References: <ed0f3a6a-75f3-c6d5-8eb9-3f1575fc0766@redhat.com>
+ <CAJSP0QWRLsFyzfP_Hn-frAgh6Xrz_5_JJCoxBQPnY6M60vfLag@mail.gmail.com>
+ <34c16474-2022-455a-a506-58a8d2b6c3a6@redhat.com>
+ <CAJSP0QUw3YAQoWNutnjoPWoVg4Cp-Cug7RR1MnVWFnes-fC-nQ@mail.gmail.com>
+ <3584ed8c-e60c-54bd-1abe-8294e985119a@redhat.com>
+ <CAJSP0QUc504kE_zM7fb0NQLG49eK2prWJZm9o=S6SosYqntEZA@mail.gmail.com>
+ <36fd7ce5-38d2-59db-d182-3ded498319ee@redhat.com>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH] qcow2: add discard-no-unref option
-Content-Language: en-US
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org, kwolf@redhat.com
-References: <20230515073644.166677-1-jean-louis@dupond.be>
- <aa75a5a7-c643-0ef0-bf1f-cb2bfecbecb0@redhat.com>
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <aa75a5a7-c643-0ef0-bf1f-cb2bfecbecb0@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=51.159.20.238; envelope-from=jean-louis@dupond.be;
- helo=apollo.dupie.be
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Qh/wfGWfio0BDnIx"
+Content-Disposition: inline
+In-Reply-To: <36fd7ce5-38d2-59db-d182-3ded498319ee@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,85 +87,92 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 31/05/2023 17:16, Hanna Czenczek wrote:
-> On 15.05.23 09:36, Jean-Louis Dupond wrote:
->> When we for example have a sparse qcow2 image and discard: unmap is 
->> enabled,
->> there can be a lot of fragmentation in the image after some time. 
->> Surely on VM's
->> that do a lot of writes/deletes.
->> This causes the qcow2 image to grow even over 110% of its virtual size,
->> because the free gaps in the image get to small to allocate new
->> continuous clusters. So it allocates new space as the end of the image.
->>
->> Disabling discard is not an option, as discard is needed to keep the
->> incremental backup size as low as possible. Without discard, the
->> incremental backups would become large, as qemu thinks it's just dirty
->> blocks but it doesn't know the blocks are empty/useless.
->> So we need to avoid fragmentation but also 'empty' the useless blocks in
->> the image to have a small incremental backup.
->>
->> Next to that we also want to send the discards futher down the stack, so
->> the underlying blocks are still discarded.
->>
->> Therefor we introduce a new qcow2 option "discard-no-unref". When
->> setting this option to true (defaults to false), the discard requests
->> will still be executed, but it will keep the offset of the cluster. And
->> it will also pass the discard request further down the stack (if
->> discard:unmap is enabled).
->> This will avoid fragmentation and for example on a fully preallocated
->> qcow2 image, this will make sure the image is perfectly continuous.
->>
->> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
->> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
->> ---
->>   block/qcow2-cluster.c  |  16 ++++-
->>   block/qcow2-refcount.c | 136 ++++++++++++++++++++++++-----------------
->>   block/qcow2.c          |  12 ++++
->>   block/qcow2.h          |   3 +
->>   qapi/block-core.json   |   4 ++
->>   qemu-options.hx        |   6 ++
->>   6 files changed, 120 insertions(+), 57 deletions(-)
->>
->> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
->> index 39cda7f907..88da70db5e 100644
->> --- a/block/qcow2-cluster.c
->> +++ b/block/qcow2-cluster.c
->> @@ -1943,10 +1943,22 @@ static int 
->> discard_in_l2_slice(BlockDriverState *bs, uint64_t offset,
->>               new_l2_entry = new_l2_bitmap = 0;
->>           } else if (bs->backing || 
->> qcow2_cluster_is_allocated(cluster_type)) {
->>               if (has_subclusters(s)) {
->> -                new_l2_entry = 0;
->> +                if (s->discard_no_unref && (type & 
->> QCOW2_DISCARD_REQUEST)) {
->> +                    new_l2_entry = old_l2_entry;
->> +                } else {
->> +                    new_l2_entry = 0;
->> +                }
->>                   new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
->>               } else {
->> -                new_l2_entry = s->qcow_version >= 3 ? 
->> QCOW_OFLAG_ZERO : 0;
->> +                if (s->qcow_version >= 3) {
->> +                    if (s->discard_no_unref && (type & 
->> QCOW2_DISCARD_REQUEST)) {
->> +                        new_l2_entry |= QCOW_OFLAG_ZERO;
->> +                    } else {
->> +                        new_l2_entry = QCOW_OFLAG_ZERO;
->> +                    }
->> +                } else {
->> +                    new_l2_entry = 0;
->> +                }
->>               }
->>           }
->
-> Forgot to note something: So this option only works for qcow2 v3. Can 
-> we have qcow2_update_options_prepare() return an error if 
-> s->qcow_version < 3 and discard_no_unref is set?
-Added :)
->
-> Hanna
->
+--Qh/wfGWfio0BDnIx
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jun 01, 2023 at 06:23:21AM +0200, Luk=C3=A1=C5=A1 Doktor wrote:
+> Dne 31. 05. 23 v 19:14 Stefan Hajnoczi napsal(a):
+> > On Wed, 31 May 2023 at 12:50, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.co=
+m> wrote:
+> >>
+> >> Dne 26. 05. 23 v 12:56 Stefan Hajnoczi napsal(a):
+> >>> On Fri, 26 May 2023 at 04:07, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.=
+com> wrote:
+> >>>>
+> >>>> Dne 25. 05. 23 v 17:21 Stefan Hajnoczi napsal(a):
+> >>>>> On Thu, 25 May 2023 at 06:18, Luk=C3=A1=C5=A1 Doktor <ldoktor@redha=
+t.com> wrote:
+> >>>>>> the perf-ci detected and bisected the 6d740fb - aio-posix: do not =
+nest poll handlers - as a performance improvement when using multiple concu=
+rrent jobs and 4k (22%) as well as 1024k (63%) blocks on aarch64 (on a slow=
+ rotational disk).
+> >>>>>>
+> >>>>>>     https://ldoktor.github.io/tmp/RedHat-virtlab-arm09/v8.0.0/150-=
+improvement.html
+> >>>>>>
+> >>>>>> Based on the commit message I guess it's expected so take this jus=
+t as a record of an improvement.
+> >>>>>
+> >>>>> The commit was not intended to change performance and I'm not sure =
+why
+> >>>>> it happens!
+> >>>>>
+> >>>>
+> >>>> It had and today the x86_64 pipeline finished which shows similar im=
+provement just not in read but rather in write instead and only for 4k bloc=
+ks (~40%). For 1024k blocks I can see it scoring a bit better (~1.5%). Read=
+s are too jittery to really tell anything on that machine. Anyway I have no=
+t done any thorough testing, just a bisection with the most significant set=
+ting.
+> >>>>
+> >>>> From around the same time I can see a NVMe regression in 4k writes, =
+but first bisection job showed nothing. I'll increase the range and try aga=
+in as each job since that day shows similar drop.
+> >>>
+> >>
+> >> Hello Stefan, folks,
+> >>
+> >> the regression proved to be there and stably reproducible. With NVMe 4=
+k writes with jobs=3D10 and iodepth=3D4 I can see a 50% regression on my ma=
+chine:
+> >>
+> >>     https://ldoktor.github.io/tmp/RedHat-virtlab722/v8.0.0/150-regress=
+ion.html
+> >>
+> >> The rest of the cases doesn't show any change at all. I can provide mo=
+re data if someone is interested.
+> >=20
+> > Which commit caused the regression?
+>=20
+> Hello Stefan,
+>=20
+> the same one that caused the improvement on rotational disks: 6d740fb01b9=
+f0f5ea7a82f4d5e458d91940a19ee
+
+Thanks. This commit definitely needs more investigation. I didn't expect
+it to have a noticeable effect.
+
+I will take a look in July.
+
+Stefan
+
+--Qh/wfGWfio0BDnIx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmR4mnEACgkQnKSrs4Gr
+c8hmqQf+MpC48qQJrrm1sL5kO9EB33p14qrDIYpq+aQ3ihwHrHJ8hEU8x2j+DQU9
+WGvAceBgpdOx2px6GDO+At0K1sKtMzECVh3bfT1VrBDjcKEIKfddfLF24CaSQT5V
+thOXz+aA+tatbGXp40caydqN44PC4z2r/hx1Ykhl/uPbkzjAY2g76dPj0Ix/qsO7
+WOrTowLYPV507aO2PY4lJQPeUVNTU92m9rtMYEgQr+BCVNCfRCXBKYXlO+R1Xr5J
+asQcTSXH6k8bD4JbXYktesIJi86ZRDt2e67Q1LhtTty+tGJNmYdI2+IWhqd8vMcp
+GX46UZ7Wx1xpv/Z7tKb/dQ83x2yq3A==
+=lmba
+-----END PGP SIGNATURE-----
+
+--Qh/wfGWfio0BDnIx--
+
 
