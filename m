@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF2E71F3CB
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E57971F3DE
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 22:31:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4oq2-00061s-09; Thu, 01 Jun 2023 16:24:02 -0400
+	id 1q4owI-00084O-Lr; Thu, 01 Jun 2023 16:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4oq0-00061c-0N
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 16:24:00 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q4owE-00083L-TN; Thu, 01 Jun 2023 16:30:26 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4opy-00004s-IW
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 16:23:59 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-30ae901a9ffso1210928f8f.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 13:23:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q4ow1-0001Xi-CK; Thu, 01 Jun 2023 16:30:26 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-555828f66deso951618eaf.0; 
+ Thu, 01 Jun 2023 13:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685651036; x=1688243036;
+ d=gmail.com; s=20221208; t=1685651410; x=1688243410;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EgXFvi+1DyLx6ht2YH+tJYGurG2t7PM0Iz0ChWassvo=;
- b=c3ZoqGOHIOx6q5ju63af0Dp3vDT9rLNnZ3+CQbliIe92wsw94RIkeseUWO5IxFKKyR
- C1Jj1f2aspiyLhQRErzlGA0T6SZuLmDjpbRTcdnMOZ5L57BrjmeyhPzfcP5CWzIq4Svf
- U4F3KnkN3c25vMc7UaKGLXoO2mtHRAMtJrzTuoXCWywNg8lSH0LS5LtN7nLg1JfDZWmt
- Kkf2K4lqQbGq1VRgSNph9G+Z5WBjl3fz/2bmhZUAOGAbAQI128UEe05+ncyzbrobEZyq
- AoFk2EFOpp6jNdfJ/1THCUJ+a6uWa4UPxnjW6aIF3a03ISH2QFWutufx5pwvVfpLC+WX
- 6bBg==
+ bh=U20J1xPcLoTRVvsFJ5+IaeKsRqrTrauTkGgGXOmTDRI=;
+ b=lygxICQzdsSwjdTCQIeZsg9m/ewHIy2PARPMdqgUJdg8vojufDv1ZZ78RqGxb3CRMn
+ ECPShEi3w0Bt7sc47vncxtLbtYfSOiPWmKMr/UZmiVEor8Gg2JQQwhj2bxcBUx2qUj8y
+ MPxJIGUsIEpJ0U5nbfW9xPJDploTm6c8/Op8TTYY6nzsxWWwLz0SJtscvtdan8/YiZYp
+ aFKPFLYORPfPk4v7CsH8xCb4ar3OzJGBcRdpnCHDrKLoIMhz84fjIAbd7qh2l4L6Ssnx
+ hcf1Hyh6amNuNt2NGTn1MrvGA0lrQ/XPJQkyAk2VhOVFm3WBNOw83GoqNkDR/AoapIaR
+ 8l3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685651036; x=1688243036;
+ d=1e100.net; s=20221208; t=1685651410; x=1688243410;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EgXFvi+1DyLx6ht2YH+tJYGurG2t7PM0Iz0ChWassvo=;
- b=RHS6sjS7wVtOaOVEjnNh1zekrSIfXJuOGyLYhVkqJJ+xiBojKqBp19LCRyC+9+fKDK
- uq9sYI2G+vZDGSc421GsNxTZoTaX4mQpDNq9+AKNzlGJFy35HkKj6wtcGEOEfQh5RKx1
- C8bckVATJj+8yWiMhcuWGORj0epdnW34BmV5vXo/jhDtWB+LUTIaeP4EbHwx/1FYhBNy
- gfkNFHKLFaR9vtAKboNvcxLkvUz3NgqY/IjxGDeAHaaHmzCqclG6ARoPa1ldEqhcC4fu
- 6juB6mCEQc7vBaKNr365gqGyI1bmK+hTUYxOOnFPFf6KcXZ+CULCqx6JCuPvW8NP6hha
- 8ZsQ==
-X-Gm-Message-State: AC+VfDybWNsrGj1fTpQC14RkjH0SoC//ZG1CMGnrDR0hySZsCRmk/QKp
- 58cX2qYlfJMb9bdJ61ja2upMsKEz8ScWzfX5pKU=
-X-Google-Smtp-Source: ACHHUZ4bjiLGcJrYp7gi/b1n6QUApiHIFr/gH8aFHA8lN/bmbzI/STkl2GF8CBbH4Y4rOjK3saczRw==
-X-Received: by 2002:adf:ee49:0:b0:30a:e369:5aca with SMTP id
- w9-20020adfee49000000b0030ae3695acamr2723047wro.25.1685651036628; 
- Thu, 01 Jun 2023 13:23:56 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.141.224])
+ bh=U20J1xPcLoTRVvsFJ5+IaeKsRqrTrauTkGgGXOmTDRI=;
+ b=HVccq9BqsuANZvLigwgB7CdAG6USFaGl4aKBSQ6RZuh6Jo8O2Qidlj2tDUZbhhKrGS
+ Ce26PONNcyVhOS3QvrOwWQ3uNk7NmpleakAemg0G1/u8gKMiLZeXIHNUb0dFm7mdY7Yv
+ giKhGozFji0488UIDTkUgUyZUPNGL2Xp2/PfLvr2ePCVNwP/ZJqL3sOMIoCJO0oeoOmL
+ h9Lo5FvfN41AY8EHyzVtWl6cJeP2qX775r6I076oiPbzp4S2nNvmIYKbij4gVSVE6JSc
+ cgjMJYdzsj48Xy7A3bvVYk1rQAt17+bjmrVjkduirIqZ90LmjC7eJKZbN8S5rPO+hBZt
+ eOtw==
+X-Gm-Message-State: AC+VfDwL7KVwqcb3s15vquyuDunDvyzxoD+7vuUcolUbXaleaCenyujH
+ bU3Zb1k+/eO4s7iCENvbA9E=
+X-Google-Smtp-Source: ACHHUZ717NhavsSfTRwPAmy3nZm9sr3kShqrhM17Dl9RMihK/ST1cxLvYI5k+aqP8Ik13Q3TFSkNHw==
+X-Received: by 2002:a4a:4f14:0:b0:555:4735:e801 with SMTP id
+ c20-20020a4a4f14000000b005554735e801mr5795736oob.3.1685651410437; 
+ Thu, 01 Jun 2023 13:30:10 -0700 (PDT)
+Received: from [192.168.68.107] ([177.198.100.141])
  by smtp.gmail.com with ESMTPSA id
- i1-20020a05600011c100b00306c5900c10sm11385206wrx.9.2023.06.01.13.23.55
+ l20-20020a4ad9d4000000b005526bfbf131sm7578252oou.26.2023.06.01.13.30.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 13:23:56 -0700 (PDT)
-Message-ID: <f930ef34-9c6b-5c68-bb55-f4886360fbac@linaro.org>
-Date: Thu, 1 Jun 2023 22:23:55 +0200
+ Thu, 01 Jun 2023 13:30:10 -0700 (PDT)
+Message-ID: <dacb0b18-f43f-7101-1987-342ec89eaf82@gmail.com>
+Date: Thu, 1 Jun 2023 17:30:07 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 32/48] tcg: Spit out exec/translation-block.h
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] pnv/xive2: Quiet down some error messages
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-33-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-33-richard.henderson@linaro.org>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230531150537.369350-1-fbarrat@linux.ibm.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230531150537.369350-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc2c.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,17 +93,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 06:03, Richard Henderson wrote:
-> This is all that is required by tcg/ from exec-all.h.
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+
+
+Daniel
+
+On 5/31/23 12:05, Frederic Barrat wrote:
+> When dumping the END and NVP tables ("info pic" from the HMP) on the
+> P10 model, we're likely to be flooded with error messages such as:
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>    XIVE[0] - VST: invalid NVPT entry f33800 !?
+> 
+> The error is printed when finding an empty VSD in an indirect
+> table (thus END and NVP tables with skiboot), which is going to happen
+> when dumping the xive state. So let's tune down those messages. They
+> can be re-enabled easily with a macro if needed.
+> 
+> Those errors were already hidden on xive/P9, for the same reason.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > ---
->   include/exec/exec-all.h          | 135 +--------------------------
->   include/exec/translation-block.h | 152 +++++++++++++++++++++++++++++++
->   tcg/tcg-op-ldst.c                |   2 +-
->   3 files changed, 154 insertions(+), 135 deletions(-)
->   create mode 100644 include/exec/translation-block.h
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+>   hw/intc/pnv_xive2.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index c80316657a..397679390c 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -163,7 +163,9 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
+>       ldq_be_dma(&address_space_memory, vsd_addr, &vsd, MEMTXATTRS_UNSPECIFIED);
+>   
+>       if (!(vsd & VSD_ADDRESS_MASK)) {
+> +#ifdef XIVE2_DEBUG
+>           xive2_error(xive, "VST: invalid %s entry %x !?", info->name, idx);
+> +#endif
+>           return 0;
+>       }
+>   
+> @@ -185,7 +187,9 @@ static uint64_t pnv_xive2_vst_addr_indirect(PnvXive2 *xive, uint32_t type,
+>                      MEMTXATTRS_UNSPECIFIED);
+>   
+>           if (!(vsd & VSD_ADDRESS_MASK)) {
+> +#ifdef XIVE2_DEBUG
+>               xive2_error(xive, "VST: invalid %s entry %x !?", info->name, idx);
+> +#endif
+>               return 0;
+>           }
+>   
 
