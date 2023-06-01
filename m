@@ -2,90 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57D571EF5B
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCA171EED8
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Jun 2023 18:26:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4l4Y-0001gM-Po; Thu, 01 Jun 2023 12:22:46 -0400
+	id 1q4l7j-0003XQ-Vx; Thu, 01 Jun 2023 12:26:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4l4W-0001gD-TD
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:22:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1q4l7e-0003Tk-77; Thu, 01 Jun 2023 12:26:01 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4l4U-0005UM-Mm
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 12:22:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685636561;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VxMKunyLIKsUnX86jRLnw1L+UCCM9fD4gyIuOYKeuR4=;
- b=VSjAPaJJMfCtAtqPWEUNmB6DjaqPnFs68KvOKaQrcMuHMJaR0tfcWreXm3AM/Jbb6l6YFK
- I8+qhaeG8q74EMDVYAqez7ajiYgSwC04BGVuiK7gdNG69wX5+2m1LLb0DEEGOqhaNFkXFu
- HJ+NyKsHSJL5y7cwIwZ1ajb0DiY+t20=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-SVdv-enLP7y5GVW8PV4ugg-1; Thu, 01 Jun 2023 12:22:39 -0400
-X-MC-Unique: SVdv-enLP7y5GVW8PV4ugg-1
-Received: by mail-oa1-f69.google.com with SMTP id
- 586e51a60fabf-19fa053d958so209204fac.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 09:22:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685636558; x=1688228558;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VxMKunyLIKsUnX86jRLnw1L+UCCM9fD4gyIuOYKeuR4=;
- b=g2Yh5IWWCo37AFzIGdqBM7bk//zD0//fXMI1T3NdPv1ZDa+OB96UXOHAkp5MlKoLmU
- RV1qWQLq/EsRmTJV6WXRyocm8o3IwsC6FQKwNaXP7CypMo24e5RUVtkkiZUF9tZ3ZMRL
- 1SYvANo53AuCFLk4Um/CJgEzW6Oue6/sejOCL9chWxt6Ofw92k3h3zN0sf+akJozI9v3
- U6AdWpxcr5RCDdzSuLjoNoCWOtDHxqdaJzTf+k6XrptJWXc0ZCFs1ma6cVOzzG0KPMoC
- JreMH9zZCDmvJq2ulg42JaYgld8JGd5YFVN6wPUPZxx/M8EwLo8x96KgHtWBypyECSI7
- dTxA==
-X-Gm-Message-State: AC+VfDxzm/gP+xfrDt6E4YuJ//qhti1KVS8mCnraVhSVoS9YIPC8p/Hw
- 0Stm1hYDR3ycNHib5dkeaiL2zMrncT3KsPUukteQl1C4Yv7sQXuwO6o+tz5K92oYKR6lTE3699W
- 45uxy5SddUppOgbUCcquMSp0=
-X-Received: by 2002:aca:62c5:0:b0:394:25b9:db19 with SMTP id
- w188-20020aca62c5000000b0039425b9db19mr3540642oib.2.1685636558320; 
- Thu, 01 Jun 2023 09:22:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7CGDqow8YnA48Y65zJIaf3AY7SxKFJNKQJEq+735f6DAShR525NfRfbzssE0p7NyYLCZq2BQ==
-X-Received: by 2002:aca:62c5:0:b0:394:25b9:db19 with SMTP id
- w188-20020aca62c5000000b0039425b9db19mr3540628oib.2.1685636557923; 
- Thu, 01 Jun 2023 09:22:37 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- mz17-20020a0562142d1100b0061b7f6b5e15sm7472435qvb.140.2023.06.01.09.22.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 09:22:37 -0700 (PDT)
-Date: Thu, 1 Jun 2023 12:22:36 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 9/9] tests/qtest: massively speed up migration-test
-Message-ID: <ZHjFzH9zT34MIBEv@x1n>
-References: <20230531132400.1129576-1-berrange@redhat.com>
- <20230531132400.1129576-10-berrange@redhat.com>
- <ZHi9OQz8PGuHMPpN@x1n> <ZHjBw2E+eJKNsniO@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1q4l7b-00061E-Re; Thu, 01 Jun 2023 12:25:57 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 351GEHC5030488; Thu, 1 Jun 2023 16:25:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=YlY1/41wc3olGOSP9Y8dv6dWOJuiVKYI2r++96bTURY=;
+ b=juHOnfz9gVR8CDvnHCQ6CkfM5HobfsZNW/KVjES0Ces9KhUQ7Q5d5AiOMKByp4dqYcw1
+ wJcSeGBPpkNZDS8+AAp4CvYgJ4uVUblo3tb3elHMm4I7Du2mHgIw1TV2ov/hpf7NS5wt
+ o6xq8Gm/jW8UfznKWoJsMNaxxQl9Ic9TL8aSs5ILORWiZnFMUvxIjQ5pVO0qyhflPuQE
+ XvAdeMHn0b90HgR3o+VrfVy8mh3EhoFRFDGBNhzX21w9W4p5AkzX3I/D+j3KNfVc+5RL
+ PkHUT4Zd8ucDlKO0+oiWruLAP0FlxBeo45rQiGzb2Rk3ltjck3LlJ8iN0OpGSOWR2oYt zQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxp10ak2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jun 2023 16:25:52 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 351GFE6w000500;
+ Thu, 1 Jun 2023 16:25:52 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxp10aj3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jun 2023 16:25:52 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3513grdx013792;
+ Thu, 1 Jun 2023 16:25:50 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qu94e2mjt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jun 2023 16:25:50 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 351GPkkM31982134
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Jun 2023 16:25:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A63CC20043;
+ Thu,  1 Jun 2023 16:25:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B3DB20040;
+ Thu,  1 Jun 2023 16:25:46 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.86.130])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  1 Jun 2023 16:25:46 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 0/4] linux-user: Emulate /proc/cpuinfo on s390x
+Date: Thu,  1 Jun 2023 18:25:37 +0200
+Message-Id: <20230601162541.689621-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: b-M7PK-99RULSYubFH-g94G2bexARNS1
+X-Proofpoint-ORIG-GUID: rm_vrGF9PYFhdzGnyozQIEfnsyS61w_9
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZHjBw2E+eJKNsniO@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 adultscore=0 mlxlogscore=999 phishscore=0
+ lowpriorityscore=0 impostorscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306010139
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,104 +111,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 05:05:23PM +0100, Daniel P. Berrangé wrote:
-> On Thu, Jun 01, 2023 at 11:46:01AM -0400, Peter Xu wrote:
-> > On Wed, May 31, 2023 at 02:24:00PM +0100, Daniel P. Berrangé wrote:
-> > > The migration test cases that actually exercise live migration want to
-> > > ensure there is a minimum of two iterations of pre-copy, in order to
-> > > exercise the dirty tracking code.
-> > > 
-> > > Historically we've queried the migration status, looking for the
-> > > 'dirty-sync-count' value to increment to track iterations. This was
-> > > not entirely reliable because often all the data would get transferred
-> > > quickly enough that the migration would finish before we wanted it
-> > > to. So we massively dropped the bandwidth and max downtime to
-> > > guarantee non-convergance. This had the unfortunate side effect
-> > > that every migration took at least 30 seconds to run (100 MB of
-> > > dirty pages / 3 MB/sec).
-> > > 
-> > > This optimization takes a different approach to ensuring that a
-> > > mimimum of two iterations. Rather than waiting for dirty-sync-count
-> > > to increment, directly look for an indication that the source VM
-> > > has dirtied RAM that has already been transferred.
-> > > 
-> > > On the source VM a magic marker is written just after the 3 MB
-> > > offset. The destination VM is now montiored to detect when the
-> > > magic marker is transferred. This gives a guarantee that the
-> > > first 3 MB of memory have been transferred. Now the source VM
-> > > memory is monitored at exactly the 3MB offset until we observe
-> > > a flip in its value. This gives us a guaranteed that the guest
-> > > workload has dirtied a byte that has already been transferred.
-> > > 
-> > > Since we're looking at a place that is only 3 MB from the start
-> > > of memory, with the 3 MB/sec bandwidth, this test should complete
-> > > in 1 second, instead of 30 seconds.
-> > > 
-> > > Once we've proved there is some dirty memory, migration can be
-> > > set back to full speed for the remainder of the 1st iteration,
-> > > and the entire of the second iteration at which point migration
-> > > should be complete.
-> > > 
-> > > On a test machine this further reduces the migration test time
-> > > from 8 minutes to 1 minute 40.
-> > 
-> > The outcome is definitely nice, but it does looks slightly hacky to me and
-> > make the test slightly more complicated.
-> > 
-> > If it's all about making sure we finish the 1st iteration, can we simply
-> > add a src qemu parameter "switchover-hold"?  If it's set, src never
-> > switchover to dst but keeps the iterations.
-> 
-> For *most* of the tests, we want to ensure there are a minimum
-> of 2 iterations. For the XBZRLE test we want to ensure there are
-> a minimum of 3 iterations, so the cache gets  workout.
-> 
-> > Then migrate_ensure_non_converge() will be as simple as setting
-> > switchover-hold to true.
-> > 
-> > I am even thinking whether there can even be real-life use case for that,
-> > e.g., where a user might want to have a pre-heat of a migration of some VM,
-> > and trigger it immediately when the admin really wants (the pre-heats moved
-> > most of the pages and keep doing so).
-> > 
-> > It'll be also similar to what Avihai proposed here on switchover-ack, just
-> > an ack mechanism on the src side:
-> > 
-> > https://lore.kernel.org/r/20230530144821.1557-3-avihaih@nvidia.com
-> 
-> In general I strongly wanted to avoid adding special logic to the
-> migration code that makes it directly synchronize with the  test
-> suite, because once we do that I don't think the test suite is a
-> providing coverage of the real world usage scenario.
+Hi,
 
-The problem is non-live is already not real world usage in most cases.  It
-seems we all agreed that it's the code paths to cover not real world usages
-in the tests, or maybe not?
+This series introduces /proc/cpuinfo linux-user emulation for s390x.
+/proc/cpuinfo emulation already exists for sparc, hppa and riscv; this
+series follows the pattern established for these platforms.
 
-> 
-> IOW, if we add a switchover-ack feature, we should certainly have
-> *a* test that uses it, but we should not modify other tests because
-> we want to exercise the logic as it would run with apps that don't
-> rely on switchover-ack.
-> 
-> Also, this slow migration test is incredibly painful for people right
-> now, so I'd like to see us get a speed up committed to git quickly.
-> I don't want to block it on a feature proposal that might yet take
-> months to merge.
+Patch 1 is a fix for an issue that I noticed while looking for ways to
+get to the "identification" field.
 
-That'll be trivial, afaict.
+Patches 2 and 3 introduce the necessary helpers.
 
-I just worry that this patch will bring complexity to the test cases,
-that's another burden we need to carry besides QEMU itself.
+Patch 4 is the actual implementation.
 
-If you want, I can try to prepare such a patch before this weekend, and if
-it's complicated enough and take more than next week to review feel free to
-go ahead with this one.
+The trigger for this work is a bug report filed by Tulio [1], which has
+to do with the llvm-project testcases failing under qemu-user.
 
-I understand the migration test issue was there for a long time.  But still
-to me it's important on which may be cleaner for the long term too.
+[1] https://bugzilla.redhat.com/show_bug.cgi?id=2211472
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (4):
+  s390x/tcg: Fix CPU address returned by STIDP
+  linux-user/elfload: Expose get_elf_hwcap() on s390x
+  linux-user/elfload: Introduce elf_hwcap_str() on s390x
+  linux-user: Emulate /proc/cpuinfo on s390x
+
+ linux-user/elfload.c      |  29 ++++++++++-
+ linux-user/loader.h       |   5 ++
+ linux-user/syscall.c      | 106 +++++++++++++++++++++++++++++++++++++-
+ target/s390x/cpu_models.c |   4 +-
+ target/s390x/cpu_models.h |  10 +++-
+ 5 files changed, 149 insertions(+), 5 deletions(-)
 
 -- 
-Peter Xu
+2.40.1
 
 
