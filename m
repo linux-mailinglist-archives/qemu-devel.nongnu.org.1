@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB3E71FB5F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B29F71FB61
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4zZH-0000yR-2z; Fri, 02 Jun 2023 03:51:27 -0400
+	id 1q4zaF-00024M-J5; Fri, 02 Jun 2023 03:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4zZE-0000xm-Op
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:51:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4za0-0001oz-3K
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:52:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4zZC-0002xt-7s
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:51:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4zZy-0003h7-LQ
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:52:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685692278;
+ s=mimecast20190719; t=1685692330;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K18TlroRjGqv1Gmp07uKYoxP1D+ClHal2grnG4fZbiw=;
- b=RSgZ+4uY/n6mB6g7C+M9C3EweG+m3fWjKwm4WOvInWbC9c5auVVu8B9I246cBRdmijG7CN
- FvRVUZPGg0AJhu1U2CvSxLmw/qS3862n+tUZciEvY3Y6LsB2oRZ6nxvt0QMpvwMB1Xo18Z
- t9AvUIEb2YxRJbYMnGTXGTc+kWBvCoA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Vd+sU2J4fZvWweIVk5f6JlMjcWzOoTVfIIklTqVlWjc=;
+ b=ZnSXnCU6mCEoNezusqOJqDLPNorbUMjlu5mWanQKqVutq1rvMEcwGb/AIlV9rrApXapHeK
+ eEXVVgSIjAKreE/mDDGgkC+BArv88R7c0xvnjhuGZpa0Moat6Vt/FsgmZGoSMKOpu0gBmq
+ oWzsjhgKKNU2wFeRMBCNYeVyEaR990U=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-NxPDTDdQNCyluluNYvI60w-1; Fri, 02 Jun 2023 03:51:17 -0400
-X-MC-Unique: NxPDTDdQNCyluluNYvI60w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f6f2f18ecbso10103275e9.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 00:51:16 -0700 (PDT)
+ us-mta-551-PACpRGIBOZWU9gXR5KLnJg-1; Fri, 02 Jun 2023 03:52:08 -0400
+X-MC-Unique: PACpRGIBOZWU9gXR5KLnJg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30af81cf4dbso894636f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 00:52:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685692276; x=1688284276;
+ d=1e100.net; s=20221208; t=1685692327; x=1688284327;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=K18TlroRjGqv1Gmp07uKYoxP1D+ClHal2grnG4fZbiw=;
- b=N3MU0FTWukfK2Z23/m5U260/r3sSEEroJb5bG1PElAzF8/rMz5kMlsSM3BmIwFyWbO
- I9MLEwyzCEanVfgbeGoLgtmYZ0ESfnGWUKLhc91AbstaKojyKUkRL9G9H5pu9CTBIlJs
- 0pkOxozKUoq6nRbx8GByBjG3+RJEc3UeUIZCwXPUaoFhl+qSsNp9njYtUCNP/YKloZmb
- cnqpJSNcH3gXZTmem6YnxDrsig/xwT5G8tqr/qELxlqVluz+JTBmZ3jOhTEdok1KgFCJ
- TeN96Afp7clrZE+yq+eSCZCuaLg2ACjvpV3twWu0lsB30uNd32y3+v6vWgYbrr9/Prji
- nfDw==
-X-Gm-Message-State: AC+VfDyZaRh3CjrA/AEziccDCEJJFE56wCF90mpwf0pKzTheMnP1i4R+
- YOK/2TCDrPiJrYipAjo8d7VW1BFDP2y377g+AjZByHErayttob4Pa3XbMDtWMRchWvF5pTVJ4hC
- yoTZ0hU62m0LAIQc=
-X-Received: by 2002:a7b:cc94:0:b0:3f6:a81:eb52 with SMTP id
- p20-20020a7bcc94000000b003f60a81eb52mr1304026wma.21.1685692276103; 
- Fri, 02 Jun 2023 00:51:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6J+mo+ToT5rAv8TqSZXAeMl3zx/Aqizpks3dISnUc6EqhIKAtGVxh3faKBrulcoUy62bJlHQ==
-X-Received: by 2002:a7b:cc94:0:b0:3f6:a81:eb52 with SMTP id
- p20-20020a7bcc94000000b003f60a81eb52mr1304008wma.21.1685692275812; 
- Fri, 02 Jun 2023 00:51:15 -0700 (PDT)
+ bh=Vd+sU2J4fZvWweIVk5f6JlMjcWzOoTVfIIklTqVlWjc=;
+ b=XL9woK4727/4FT6ULDKQZJJJcAbzizbERuwNIZ7rrLrZ0cNaFQUqiZSqXxGKxsdXft
+ 4dzrw3GCsxNFsPIv4eb2Dgiyihcona8HbzUkTlPmK0p7oF+4YmzSDxjWzxU0YGDz6EkK
+ 8maHKy+ouZ1UqVaUuDMYJoqMos3aGflSGi6uKDopyo+I7hH3na1KOHIqmZsguH6v9SOz
+ B8JBNPjIhUtemiYc9JwjWE2ODL8FG+k4PfeoftEBetCy0WiwpznDmWUyosk657XRPHVo
+ kIj0/8YaeLBro45zjamw28U+28ogpDVHof7mkNrsQ1cCdwttfVJtoFTI7zo2t9NB8xGe
+ tMww==
+X-Gm-Message-State: AC+VfDyLeuTjX2qLr1DgV9QZMVinGrkcffaE76SQvfnWoIcPztOQWek8
+ ioX1eotJdUhYragzpJMf23YbmXt+eWwdd3TwBhBgzru3g2XZ6zuUxcrsNq0Z1SDhZokanR/uTtt
+ Sn7SPfRYRPYhC8ps=
+X-Received: by 2002:a05:6000:136d:b0:2ff:6906:7169 with SMTP id
+ q13-20020a056000136d00b002ff69067169mr3825127wrz.68.1685692327599; 
+ Fri, 02 Jun 2023 00:52:07 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4zJZQAghpv0B51aqS6w06eQVmnZyvP5DN1FHaw2sTjDwfOn/KazHGnzwPtz7DaOUj+QD8fCg==
+X-Received: by 2002:a05:6000:136d:b0:2ff:6906:7169 with SMTP id
+ q13-20020a056000136d00b002ff69067169mr3825118wrz.68.1685692327366; 
+ Fri, 02 Jun 2023 00:52:07 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-176-14.web.vodafone.de.
  [109.43.176.14]) by smtp.gmail.com with ESMTPSA id
- u8-20020a7bc048000000b003f4b6bcbd8bsm1073429wmc.31.2023.06.02.00.51.14
+ s15-20020a5d69cf000000b0030af31c8c63sm877514wrw.47.2023.06.02.00.52.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 00:51:15 -0700 (PDT)
-Message-ID: <1febcf01-9891-acd9-f906-4a516bf54a1d@redhat.com>
-Date: Fri, 2 Jun 2023 09:51:14 +0200
+ Fri, 02 Jun 2023 00:52:06 -0700 (PDT)
+Message-ID: <38d8b6a0-abb4-3e00-8f6f-d8caaaca26fc@redhat.com>
+Date: Fri, 2 Jun 2023 09:52:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v4 02/10] tests/qtest: add support for callback to receive
- QMP events
+Subject: Re: [PATCH v4 03/10] tests/qtest: get rid of 'qmp_command' helper in
+ migration test
 Content-Language: en-US
 To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
@@ -75,9 +75,9 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
 References: <20230601161347.1803440-1-berrange@redhat.com>
- <20230601161347.1803440-3-berrange@redhat.com>
+ <20230601161347.1803440-4-berrange@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230601161347.1803440-3-berrange@redhat.com>
+In-Reply-To: <20230601161347.1803440-4-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -105,18 +105,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 01/06/2023 18.13, Daniel P. Berrangé wrote:
-> Currently code must call one of the qtest_qmp_event* functions to
-> fetch events. These are only usable if the immediate caller knows
-> the particular event they want to capture, and are only interested
-> in one specific event type. Adding ability to register an event
-> callback lets the caller capture a range of events over any period
-> of time.
+> This function duplicates logic of qtest_qmp_assert_success_ref.
+> The qtest_qmp_assert_success_ref method has better diagnostics
+> on failure because it prints the entire QMP response, instead
+> of just asserting on existance of the 'error' key.
 > 
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   tests/qtest/libqtest.c | 18 ++++++++++++++++--
->   tests/qtest/libqtest.h | 43 ++++++++++++++++++++++++++++++++++++++++--
->   2 files changed, 57 insertions(+), 4 deletions(-)
+>   tests/qtest/migration-helpers.c | 22 ----------------------
+>   tests/qtest/migration-helpers.h |  3 ---
+>   tests/qtest/migration-test.c    | 29 +++++++++++++++--------------
+>   3 files changed, 15 insertions(+), 39 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
