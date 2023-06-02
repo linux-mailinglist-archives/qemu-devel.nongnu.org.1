@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A939D71FA6C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E8271FA81
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:01:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ykp-0002LL-Om; Fri, 02 Jun 2023 02:59:19 -0400
+	id 1q4ymf-0003CU-Gq; Fri, 02 Jun 2023 03:01:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4ykn-0002Km-IH; Fri, 02 Jun 2023 02:59:17 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1q4ymd-0003BY-Gh; Fri, 02 Jun 2023 03:01:11 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4ykl-0005RM-Tg; Fri, 02 Jun 2023 02:59:17 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-64d18d772bdso2011679b3a.3; 
- Thu, 01 Jun 2023 23:59:15 -0700 (PDT)
+ id 1q4ymb-0005o3-T6; Fri, 02 Jun 2023 03:01:11 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6af873d1d8bso1405130a34.3; 
+ Fri, 02 Jun 2023 00:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685689154; x=1688281154;
+ d=gmail.com; s=20221208; t=1685689268; x=1688281268;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MqlwG3P5LdQIZlz6m894YPiIP/VY4aaNRPlJ1+2s4J0=;
- b=LYeXryVFTq82QbQtv2loDx+BOcDU/fTwEWBROp/47vSAc5CwPwXqGQrL4AF7GWq/si
- TdjDijLbv8df9+kg5bgAM7nzeQsSHZtFSPCwkS7x7KRF5e4DlQ5FdwGC1KGMci4OTavy
- gKEBc0Gy11kkc7RhLcT20MS+XWUuzPvj6gEFMtPXRtCF3ot/lh6h9jYI2OI+854VsJql
- yAoYY5PV9dyIahaqd1aVig/QcrMRTC68anl3Pdnj6wwKCp0ySFOS7N/zFq0/R4aQQOMw
- pnhzk5SQXOhpsyJuMrZg2Pi42oco1T9o+b7Rh7XMr0ZWWHKXrE4hj3Z2ps34OC5Zvy2Z
- NuDA==
+ bh=pAXL1s/3a9BraSRSJRdD0e3CEMGB7Z17L6dMEyvSrzc=;
+ b=gZZEGZYRX3wvgGktdFobkRjcqVtPyFw3xPtNeXDSPoak2IU7lnuOEXK1JJSdGBDlxh
+ ZMeC6NnWDHD7Vt46RMEKwZ09e+71rS7e7wKtNtFVW6mKRhG0YygmuEzQ6dq0zGJeGYbM
+ C7fC4HRAC0pMosnm3EjTYwx/TuKrQiIkKDsEi1UrJiig4L2esSLPLvt1DBGqrhqyiTtO
+ 0A49sRnVeFWjCAxGwHMDSSsJG8Tt+JlYDVOb5vUjor2Oxljc8Lq7uysIu8x9+pctPPb4
+ HWdPWfFraLw7rSP//VylXM0xM5UpCUiGesorpJVVNdzbjS3CKkoGHCpTSPos+6Z46yxZ
+ HZGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685689154; x=1688281154;
+ d=1e100.net; s=20221208; t=1685689268; x=1688281268;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=MqlwG3P5LdQIZlz6m894YPiIP/VY4aaNRPlJ1+2s4J0=;
- b=d56eKzGWBn3qrZpXuC9kR26/qXsKxVL2Pu7koTR7Z86hTUpv0DMvcIQEbzDRkdziMI
- jLb6mTMtLpb8raUmWUVXkFqTmhXzcxu9rW1thx5o0+CbvEsDQKPiQdcsMs7EL5cv0mTf
- FlbgKgdW/U65by5Zbm/EdDgxKTwCIuyx4/c5b3BOKBuiEzyjHZvpG5Zu2EigVDahNGR4
- vHnKpkx79HyE9uFRyH6O3f9mLrxbav1OSJY+Xfg80ph0ozlnwd7wg7F6UzYJ5mL//Fcq
- KU6PsMIV37/EyBriTQjsbX0isXOTT8H5zoBRnSMzkbi8cYfN1GALZBtkrqZnUlU0l8uG
- s23A==
-X-Gm-Message-State: AC+VfDye4rAoBCNIDMFH0SekRBVmSvHj9jk0p9Phbwc/bZ3Cj5LJwIdh
- WR5mQsp9czMgU4n12GapQHI=
-X-Google-Smtp-Source: ACHHUZ50nZPnObMDpj0ZKj5Lv+gSB49IZgpUAqzRjBjTWHwXVVPhhlqUJFPw3NldekuGtZzjAHKRrQ==
-X-Received: by 2002:a05:6a21:9995:b0:10b:91c5:45a8 with SMTP id
- ve21-20020a056a21999500b0010b91c545a8mr13828414pzb.15.1685689153848; 
- Thu, 01 Jun 2023 23:59:13 -0700 (PDT)
+ bh=pAXL1s/3a9BraSRSJRdD0e3CEMGB7Z17L6dMEyvSrzc=;
+ b=jxF7afXCa7lnRT5EdO0M2NhLswZzfgg5fiSO3jLNCBzChAqCmqpBw8NsOu5gYtu2He
+ TFtIwnZO/L5A6xc1Ffquu3f3CBTXlHFLT6TUuhgMqtEIuyLB8IMJVJWvC28MCB6zctJR
+ gyuR/PNlFfxPwe7Vvs2gzfv05Y7eE+1G/s4fpY9xp6UpWU1uA58+xl7r1RfnXgPxJgBb
+ xY+D6pYEfhD/4hHjTEYz6z0Vu+Bpy5BQvgMS1tI4CNP9XGxjBT4NzCi6oCjjA33rzcN6
+ +mQnseDPH1XpqJITjnnJKXWTlkGA3eA6VzRxWgOjlGGWZr63/qi4rJHxnLm1TQQhkBB2
+ Oy4A==
+X-Gm-Message-State: AC+VfDxjxLLixXy2zIoKWryKMS4CyOlT4aqaEV2iY/nyHSPMXXls5qpz
+ a6RGjAL1/DHLD9vAHn3PMj8=
+X-Google-Smtp-Source: ACHHUZ7LyN/B5VbdByaH0JqEoLNoFhRjJj6qXkaYX4beO4vKuT4gn3owR0gp2UFIpBcf+jqmqrgSfw==
+X-Received: by 2002:a05:6830:1356:b0:6af:7491:d6e5 with SMTP id
+ r22-20020a056830135600b006af7491d6e5mr1444082otq.17.1685689268302; 
+ Fri, 02 Jun 2023 00:01:08 -0700 (PDT)
 Received: from localhost ([1.146.22.171]) by smtp.gmail.com with ESMTPSA id
- h13-20020a63e14d000000b0053fed3131e6sm526734pgk.65.2023.06.01.23.59.10
+ c13-20020a62e80d000000b0063d3fbf4783sm372397pfi.80.2023.06.02.00.01.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 23:59:13 -0700 (PDT)
+ Fri, 02 Jun 2023 00:01:07 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 02 Jun 2023 16:59:06 +1000
-Message-Id: <CT1YXJ6J1W97.3RLRVO5ZNY61F@wheely>
+Date: Fri, 02 Jun 2023 17:01:01 +1000
+Message-Id: <CT1YZ02RYMRT.1LL84FLYLC3DO@wheely>
 Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
  <dbarboza@ventanamicro.com>
-Subject: Re: [RFC PATCH 5/5] spapr: Allow up to 8 threads SMT configuration
+Subject: Re: [RFC PATCH 0/5] target/ppc: initial SMT support in TCG
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.14.0
 References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-6-npiggin@gmail.com>
- <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
-In-Reply-To: <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+ <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
+In-Reply-To: <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,83 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Jun 1, 2023 at 5:20 PM AEST, C=C3=A9dric Le Goater wrote:
+On Thu Jun 1, 2023 at 5:56 PM AEST, C=C3=A9dric Le Goater wrote:
+> Hello Nick,
+>
 > On 5/31/23 03:23, Nicholas Piggin wrote:
-> > TCG now supports multi-threaded configuration at least enough for
-> > pseries to be functional enough to boot Linux.
+> > Hi,
 > >=20
-> > This requires PIR and TIR be set, because that's how sibling thread
-> > matching is done.
+> > I'm posting this now just to get some first thoughts. I wouldn't say
+> > it's ready but it does actually work with some basic tests including
+> > pseries booting a Linux distro. I have powernv booting too, it just
+> > requires some more SPRs converted, nothing fundamentally different so
+> > for the purpose of this RFC I leave it out.
 > >=20
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >   hw/ppc/spapr.c          | 4 ++--
-> >   hw/ppc/spapr_cpu_core.c | 7 +++++--
-> >   2 files changed, 7 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> > index dcb7f1c70a..11074cefea 100644
-> > --- a/hw/ppc/spapr.c
-> > +++ b/hw/ppc/spapr.c
-> > @@ -2524,8 +2524,8 @@ static void spapr_set_vsmt_mode(SpaprMachineState=
- *spapr, Error **errp)
-> >       int ret;
-> >       unsigned int smp_threads =3D ms->smp.threads;
-> >  =20
-> > -    if (!kvm_enabled() && (smp_threads > 1)) {
-> > -        error_setg(errp, "TCG cannot support more than 1 thread/core "
-> > +    if (!kvm_enabled() && (smp_threads > 8)) {
-> > +        error_setg(errp, "TCG cannot support more than 8 threads/core =
-"
-> >                      "on a pseries machine");
+> > A couple of things, I don't know the object model well enough to do
+> > something nice with topology. Iterating siblings I would have thought
+> > should be going to parent core then iterating its children CPUs. Should
+> > that be done with the object model, or is it better to add direct
+> > pointers in CPUs to core and core to CPUs? It is (semi) important for> =
+performance so maybe that is better than object iterators. If we go that
+> > way, the PnvCore and SpaprCore have pointers to the SMT threads already=
+,
+> > should those be abstracted go in the CPUCore?
 >
-> I think we should add test on the CPU also.
+> You should be able to move the thread array into the CPUCore. If you do
+> that, please check that migration compat is not impacted by the state
+> change. However, I am not sure you can use the CPUCore model under the
+> insn modeling. Something to check.
 
-On the CPU type, POWER7 can have 1/2/4, POWER8 can have 1/2/4/8?
-POWER9 could also switch PVR between big and small core depending
-on whether you select SMT8 I suppose.
+Okay.
 
-> >           return;
-> >       }
-> > diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-> > index 9b88dd549a..f35ee600f1 100644
-> > --- a/hw/ppc/spapr_cpu_core.c
-> > +++ b/hw/ppc/spapr_cpu_core.c
-> > @@ -255,7 +255,7 @@ static void spapr_cpu_core_unrealize(DeviceState *d=
-ev)
-> >   }
-> >  =20
-> >   static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *sp=
-apr,
-> > -                               SpaprCpuCore *sc, Error **errp)
-> > +                               SpaprCpuCore *sc, int thread_nr, Error =
-**errp)
->
-> thread_index may be ?
+> Anyhow, the way you implemented the loop on the siblings is sufficiently
+> fast for a small numbers of CPU and safe, w.r.t to CPU hotplug. So
+> I would leave that part for now, if it runs decently with 4*4 vCPUs in
+> TCG it should be fine.
 
-Sure.
-
-> >   {
-> >       CPUPPCState *env =3D &cpu->env;
-> >       CPUState *cs =3D CPU(cpu);
-> > @@ -267,6 +267,9 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, Spa=
-prMachineState *spapr,
-> >       cpu_ppc_set_vhyp(cpu, PPC_VIRTUAL_HYPERVISOR(spapr));
-> >       kvmppc_set_papr(cpu);
->
-> so, spapr_create_vcpu() set cs->cpu_index :
->      cs->cpu_index =3D cc->core_id + i;
->
-> and spapr_realize_vcpu :
->    =20
-> > +    env->spr_cb[SPR_PIR].default_value =3D cs->cpu_index;
-> > +    env->spr_cb[SPR_TIR].default_value =3D thread_nr;
-> > +
-> it would be cleaner to do the SPR assignment in one place.
-
-I'll try that, it sounds good.
+Yeah you're right I'm overly paranoid about it but we don't do hundreds
+of CPUs in TCG so it should be fine. Maybe I will defer it for now
+then and just do the CPU iteration.
 
 Thanks,
 Nick
-
 
