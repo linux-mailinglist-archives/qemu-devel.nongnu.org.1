@@ -2,71 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEEB71FC5F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 10:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4374B71FCC5
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 10:54:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q50OQ-0006yI-1Q; Fri, 02 Jun 2023 04:44:18 -0400
+	id 1q50XL-0000qa-35; Fri, 02 Jun 2023 04:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q50ON-0006xr-1S
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 04:44:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q50XJ-0000q6-3r
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 04:53:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q50OK-0008WO-W7
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 04:44:14 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q50XH-0003g4-0m
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 04:53:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685695451;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=13/Fy9jdtd8VG1ggNAGISvgx+ddqOHrEsXg9kYkbumo=;
- b=hYETHrWjQIPessuTfEBtNUelCOv1jHV7aYDctAnQPHFJp2wv9SW94bOQ4wIfWIzv93MVgg
- NOQwZQ4cFMnrLQOoqt693SB3NTo5lQYSC2dTURiLK/ImnXMoGL6Uuvr7gZaiIX9+feY7NZ
- DPG2JsJMyRZtI682Be/lZBTrWBxku1A=
+ s=mimecast20190719; t=1685696005;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6AW9AR9M+iotOzHt0+t1JvwiGhnvklmj7HnUs4y1BEM=;
+ b=Bvrn4UbZSkR5whCBfVpAaa3fke4O3U8NcfThFm/3s49f+WiDc3n5q1uHb9/WMka+Q+actP
+ XrzDPdKBxuYiMx9ty0cFh3cB3YvKXpI1rzigk2+fv/RYaRCng3njZDaYwvP/zkuidP9vNo
+ xBJuCr0YYhH0rDWz0j9buqFU1avewpg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-649-iTRyMmBeM5yU8JkeIcaZkQ-1; Fri, 02 Jun 2023 04:44:06 -0400
-X-MC-Unique: iTRyMmBeM5yU8JkeIcaZkQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-304-BlzvUoYcMpGXKxmE0Qk8FQ-1; Fri, 02 Jun 2023 04:53:24 -0400
+X-MC-Unique: BlzvUoYcMpGXKxmE0Qk8FQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76D3F101A53A;
- Fri,  2 Jun 2023 08:44:05 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.158])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6502A2166B25;
- Fri,  2 Jun 2023 08:43:48 +0000 (UTC)
-Date: Fri, 2 Jun 2023 09:43:45 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Suthikulpanit, Suravee" <suravee.suthikulpanit@amd.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- imammedo@redhat.com, jusual@redhat.com, jon.grimm@amd.com,
- santosh.Shukla@amd.com, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v2] pc: q35: Bump max_cpus to 1024
-Message-ID: <ZHmrwaQ52dhF8l0d@redhat.com>
-References: <20230531225127.331998-1-suravee.suthikulpanit@amd.com>
- <39a49814-28d8-ffc8-42b4-3af14bb9dd47@oracle.com>
- <ZHhwOrfXMjjOmcAK@redhat.com>
- <20230601070912-mutt-send-email-mst@kernel.org>
- <a82c2529-7e9f-3379-779d-4a3fcd03b16a@amd.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D049811E7F
+ for <qemu-devel@nongnu.org>; Fri,  2 Jun 2023 08:53:24 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.193.168])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1DC1140C6EC4;
+ Fri,  2 Jun 2023 08:53:22 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Subject: [PATCH 0/2] vdpa: map shadow vrings with MAP_SHARED
+Date: Fri,  2 Jun 2023 10:53:19 +0200
+Message-Id: <20230602085321.1814165-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a82c2529-7e9f-3379-779d-4a3fcd03b16a@amd.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -87,72 +74,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 02:54:54PM -0700, Suthikulpanit, Suravee wrote:
-> 
-> 
-> On 6/1/2023 6:09 PM, Michael S. Tsirkin wrote:
-> > On Thu, Jun 01, 2023 at 11:17:30AM +0100, Daniel P. Berrangé wrote:
-> > > On Thu, Jun 01, 2023 at 11:09:45AM +0100, Joao Martins wrote:
-> > > > 
-> > > > On 31/05/2023 23:51, Suravee Suthikulpanit wrote:
-> > > > > Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
-> > > > > arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
-> > > > > 
-> > > > > In case KVM could not support the specified number of vcpus, QEMU would
-> > > > > return the following error message:
-> > > > > 
-> > > > >    qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid argument
-> > > > > 
-> > > > > Signed-off-by: Suravee Suthikulpanit<suravee.suthikulpanit@amd.com>
-> > > > > ---
-> > > > > 
-> > > > > Changes from V1:
-> > > > > (https://lore.kernel.org/all/YnkDGsIi1vFvXmiP@redhat.com/T/)
-> > > > >   * Bump from 512 to KVM_MAX_VCPUS (per Igor's suggestion)
-> > > > > 
-> > > > > Note:
-> > > > >   From the last discussion, Daniel mentioned that SMBIO 2.1 tables might
-> > > > >   cause overflow at approx 720 CPUs, and it might require using the
-> > > > >   SMBIO 3.0 entry point. Also, we might need to change the default for
-> > > > >   the x86 machine type to SMBIO 3.0. However, I do not know the status
-> > > > >   of this.
-> > > > > 
-> > > > I suspect smbios 3.0 (64-bit entry point) is already supported.
-> > > > 
-> > > > With current qemu and all the smbios fixes in the last cycle, perhaps this is
-> > > > mainly just setting smbios_entry_point_type to SMBIOS_ENTRY_POINT_TYPE_64 if
-> > > > MachineState::smp::max_cpus is bigger than 720 (e.g. in pc_q35_init()?)
-> > > >> The need for the 64-bit entry point depends on a combination of
-> > > RAM
-> config
-> > > and CPU count. IMHO we need to unconditionally switch the latest machine
-> > > types to use the 64-bit entry point by default, rather than trying to infer
-> > > some special condition to dynamically change on the fly.
-> > Yes, makes sense.
-> 
-> Thanks all for the feedback. So, IIUC, here is how the SMBIOS entry point
-> types would be affected by the QEMU options:
-> 
-> - pc-q35-8.1 and later, default to SMBIOS EP type 64.
-> - pc-q35-8.0 and older, default to SMBIOS EP type 32.
-> - User can override the type w/ QEMU option "-M ..,
-> smbios-entry-point-type=[32|64]"
-> 
-> Please let me know if I am missing anything. If this is accurate, I'll send
-> out v3 with this change.
-
-Yes, and for pc-i440fx* too
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+The vdpa devices that use va addresses neeeds these maps shared.  Otherwise=
+,=0D
+vhost_vdpa checks will refuse to accept the maps.=0D
+=0D
+Discovered this issue while testing SVQ with vdpa sim, now defaulting to=0D
+use_va=3Don.=0D
+=0D
+Eugenio P=C3=A9rez (2):=0D
+  vdpa: reorder vhost_vdpa_net_cvq_cmd_page_len function=0D
+  vdpa: map shadow vrings with MAP_SHARED=0D
+=0D
+ hw/virtio/vhost-shadow-virtqueue.c | 16 +++++-----=0D
+ net/vhost-vdpa.c                   | 47 +++++++++++++++---------------=0D
+ 2 files changed, 30 insertions(+), 33 deletions(-)=0D
+=0D
+-- =0D
+2.31.1=0D
+=0D
 
 
