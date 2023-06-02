@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA057207F2
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 18:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D399720803
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 18:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q580f-0003YE-RF; Fri, 02 Jun 2023 12:52:17 -0400
+	id 1q5871-0004mf-GS; Fri, 02 Jun 2023 12:58:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q580d-0003Vt-CV
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 12:52:15 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1q586x-0004m8-L2
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 12:58:47 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q580b-0001qq-HO
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 12:52:15 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5147e441c33so4947170a12.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 09:52:12 -0700 (PDT)
+ id 1q586v-000477-Sd
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 12:58:47 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-514924b4f8cso3318560a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 09:58:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685724730; x=1688316730;
+ d=linaro.org; s=google; t=1685725124; x=1688317124;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Sff7bInCDdmadu0pclO55dmrQPtENAgkIJ6z/J/eXzo=;
- b=zycFv3nNrCXhICyiP2hfWl03I9A0Fw22BP+DUvwbTV9qMHywDYJpxwpmQaCJJ+l8Yg
- IvfXksxvvytfyE4gHuHvpDPG8TE9jPad9yVJBGyDm4xHZGJpbkhv0cKUKb3gg5GhkwdK
- KnFmwRnpL5Gik8AsEjFcXwEh9yHY+bceUw8u9pP4p5L2IE+C0IX/1HU3rDLPflnzsdD5
- UL3kjWIhEHZWU+ENMtHD4qM2YZTAiE9l7EdEs3i+Vdz4K0/HN7TkiciIEvneU1mz77aS
- miZbMhfwkijtBrw16svrciFqldTxf45Vfof4sS4ZU9nZIVcWnhvSOu0cW7kewWlzzeh1
- MNYA==
+ bh=9MJ/q4b2JQ5MmeMtLqiu76U2JvAHvFLoGFE6utYs/OE=;
+ b=NbhJM1sFoRv1mVKD9w7SvgxWi19soyjDTvTHvGa1V+wtoRezaMeDjzemv9D0duVmEQ
+ TqLQ8j+nqN0dLDIYSnFgZ5A+gEK3QIgrk6jdXRADN0d5Ny3Jrj+hfO1OyOh9jBPG5RlZ
+ VfbMh0QKmXBDYtOkXPWpqUjfDayY++NlReJpl/qm2iiAt+dLpA+sWSSIr7oFfHVLrJVj
+ gmsR6O+HB2ThoHUBqEdv3jyBZ4fkzC6wYCi+e3trHXNfg1260mQ3iLvkT91dT/GT5XuE
+ y6K8U7AQA55BlgTf92we5bJmN5DnaFGGnIDA3QuOLQIEiFN064opcVwGMqse/GH47K2i
+ wMDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685724731; x=1688316731;
+ d=1e100.net; s=20221208; t=1685725124; x=1688317124;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Sff7bInCDdmadu0pclO55dmrQPtENAgkIJ6z/J/eXzo=;
- b=g7SD0/CHBfso5yC5EaNDwYrHFnJ0dC8wTykRcKtvb36u4Ms5t5eMotluzFGR87bFdu
- YwG4XDI2kz2h972b5fsghjOzcIDdp6T2sX9mdNMVwzZ5EfOiZCKw3vCuLVMN7OZFlxE+
- bndctD1Vv+EKaAUdu5Mr8l7ViQPit9IsLwAid/MH1znSTjXz/jTkOX4qz+ABUz21AzDi
- yDgVfUTciR2dyix+DPXRH5b24K5/MbKrbf+SkQcPnaI7qqQxcLYoh/anLpXpwU5BSTPY
- 9tD+pt9lVjO7AxjX5bMPU/ct+qUo2j0p1UdjI30ULr7Ol3Wj2EVnHPN6qOMZnKn3L8TH
- EgMw==
-X-Gm-Message-State: AC+VfDyWPkalZq3qwSW/N2yxhhQXrzu17elfGwXZ4TgAEZMxJ8N3jJlz
- UOScxd6nakhsLF6rZi8xAOA1lEY1Zj2QiG7FOKz/rw==
-X-Google-Smtp-Source: ACHHUZ48GIu3kcVCKoUhs6C0La9ICHZ4Pv25CaMQNiLfJ9zUa6lDlaoSxOF6UZMIO+xjYkU7iGptnZm2+Xtr9aJuNcA=
-X-Received: by 2002:a05:6402:50ce:b0:510:e8dc:f2a7 with SMTP id
- h14-20020a05640250ce00b00510e8dcf2a7mr3366440edb.7.1685724730737; Fri, 02 Jun
- 2023 09:52:10 -0700 (PDT)
+ bh=9MJ/q4b2JQ5MmeMtLqiu76U2JvAHvFLoGFE6utYs/OE=;
+ b=IDBVaEOAaYQEgQAK8Dy7tfD6dsNDq/SKtg6YdMvgl6e9a0+E/mPcvBLBtX3ltSNXXh
+ 84ODirHHQhz2YJLz/hWNFKJK77fmdhITVlA781sUUAmgLO5a2MV+3lHxPEZ0HDdtNdZH
+ Oly+VoE0cJSWcwBou71tRREraT2/rOsv/HEYXuNwRKlzSxB5R/YxgJLZSiUysgPgEwDz
+ T7JU23V110/JkZHd8Tbl99fgs4RH8qeQAqZRsEE37dW5vwSirIMF75uACoFxLZ4LYNFL
+ WSq2DffSm0TGLTwczT+aO195mKRmavnwjalbk6PtfyU3g+W/t2lIdFSI1XLDgWQ/SXPu
+ 85Hg==
+X-Gm-Message-State: AC+VfDzr3oYa5gYyAmfrBZJMew8F7EC4bu2AtyLswcTtcxL6qqkCNGIh
+ tH8uBBxj0Sdc8qIuPgd7eqHHT2aNtXTI9YCaZ0xwjg==
+X-Google-Smtp-Source: ACHHUZ5lQGHWjNNVfJqvxS/YY7WTq1wBJAG6Zykv//p08eAhBXGyqAczmPRjZw5ozB7nToWUY75JB82kVGqjQfZ50cs=
+X-Received: by 2002:a05:6402:1846:b0:514:8e56:4cae with SMTP id
+ v6-20020a056402184600b005148e564caemr2272299edy.8.1685725124013; Fri, 02 Jun
+ 2023 09:58:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230515160506.1776883-1-stefanha@redhat.com>
- <20230515160506.1776883-11-stefanha@redhat.com>
-In-Reply-To: <20230515160506.1776883-11-stefanha@redhat.com>
+References: <20230302123029.153265-1-pbonzini@redhat.com>
+ <20230302123029.153265-33-pbonzini@redhat.com>
+ <CAFEAcA-s+sNDn4z_kXd70koFGSLXqjMUXB5Gn9VzTnaSbr2B_Q@mail.gmail.com>
+ <d61333c6394697d88dd08d48cc7fa730ff8e1987.camel@infradead.org>
+In-Reply-To: <d61333c6394697d88dd08d48cc7fa730ff8e1987.camel@infradead.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 Jun 2023 17:51:59 +0100
-Message-ID: <CAFEAcA9bDh12FSk8CjEkBZjQOEBVd6-=fVwnM9bx8aoXvQdMuw@mail.gmail.com>
-Subject: Re: [PULL v2 10/16] block: introduce zone append write for zoned
- devices
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Sam Li <faithilikerun@gmail.com>, Dmitry Fomichev <dmitry.fomichev@wdc.com>
+Date: Fri, 2 Jun 2023 17:58:33 +0100
+Message-ID: <CAFEAcA_CR0PraF1DuDxw6q9U=Atut_=v0L1gHr6VfgxHCbmJXw@mail.gmail.com>
+Subject: Re: [PATCH] i386/xen: consistent locking around Xen singleshot timers
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Paul Durrant <paul@xen.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,79 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 15 May 2023 at 17:06, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+On Mon, 22 May 2023 at 19:52, David Woodhouse <dwmw2@infradead.org> wrote:
 >
-> From: Sam Li <faithilikerun@gmail.com>
+> From: David Woodhouse <dwmw@amazon.co.uk>
 >
-> A zone append command is a write operation that specifies the first
-> logical block of a zone as the write position. When writing to a zoned
-> block device using zone append, the byte offset of the call may point at
-> any position within the zone to which the data is being appended. Upon
-> completion the device will respond with the position where the data has
-> been written in the zone.
+> Coverity points out (CID 1507534) that we sometimes access
+> env->xen_singleshot_timer_ns under the protection of
+> env->xen_timers_lock (eg in xen_vcpu_singleshot_timer_event()) and
+> sometimes not (the specific case Coverity complains about is in
+> do_vcpu_soft_reset()).
 >
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Message-id: 20230508051510.177850-3-faithilikerun@gmail.com
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-
-Hi; Coverity flagged up a possible bug here (CID 1512459):
-
-> @@ -2453,8 +2454,12 @@ static int coroutine_fn raw_co_prw(BlockDriverState *bs, uint64_t offset,
->      if (fd_open(bs) < 0)
->          return -EIO;
->  #if defined(CONFIG_BLKZONED)
-> -    if (type & QEMU_AIO_WRITE && bs->wps) {
-> +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && bs->wps) {
-
-Here we check for bs->wps being NULL, which implies that it might be NULL...
-
->          qemu_co_mutex_lock(&bs->wps->colock);
-> +        if (type & QEMU_AIO_ZONE_APPEND && bs->bl.zone_size) {
-> +            int index = offset / bs->bl.zone_size;
-> +            offset = bs->wps->wp[index];
-> +        }
->      }
->  #endif
+> This isn't strictly an issue. There are two modes for the timers; if
+> the kernel supports the EVTCHN_SEND capability then it handles all the
+> timer hypercalls and delivery internally, and all we need to do is an
+> ioctl to get/set the next timer as part of the vCPU state. If the
+> kernel doesn't have that support, then we do all the emulation within
+> qemu, and *those* are the code paths where we actually care about the
+> locking.
 >
-> @@ -2502,9 +2507,13 @@ out:
->  {
->      BlockZoneWps *wps = bs->wps;
->      if (ret == 0) {
-> -        if (type & QEMU_AIO_WRITE && wps && bs->bl.zone_size) {
-> +        if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))
-> +            && wps && bs->bl.zone_size) {
->              uint64_t *wp = &wps->wp[offset / bs->bl.zone_size];
->              if (!BDRV_ZT_IS_CONV(*wp)) {
-> +                if (type & QEMU_AIO_ZONE_APPEND) {
-> +                    *s->offset = *wp;
-> +                }
->                  /* Advance the wp if needed */
->                  if (offset + bytes > *wp) {
->                      *wp = offset + bytes;
-> @@ -2512,12 +2521,12 @@ out:
->              }
->          }
->      } else {
-> -        if (type & QEMU_AIO_WRITE) {
-> +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
-
-...but here we do not, even though update_zones_wp() can
-dereference bs->wps in some code paths.
-
-Should we be checking for NULL here before calling, or
-should update_zones_wp() handle a NULL bs->wps, or something else?
-
->              update_zones_wp(bs, s->fd, 0, 1);
->          }
->      }
+> But it doesn't hurt to be a little bit more consistent and avoid having
+> to explain *why* it's OK.
 >
-> -    if (type & QEMU_AIO_WRITE && wps) {
-> +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && wps) {
->          qemu_co_mutex_unlock(&wps->colock);
->      }
->  }
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+
+Looking a bit more closely at the Coverity lists, there's also
+CID 1507968 which is for the access to env->xen_singleshot_timer_ns
+in kvm_get_xen_state(), which this patch doesn't touch, I think ?
 
 thanks
 -- PMM
