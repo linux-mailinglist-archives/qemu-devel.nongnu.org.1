@@ -2,75 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4101A71FE17
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD17A71FE1F
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51Hd-0002TU-Rr; Fri, 02 Jun 2023 05:41:21 -0400
+	id 1q51Id-00037G-Cm; Fri, 02 Jun 2023 05:42:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q51Ha-0002T3-QL
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:41:19 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q51HX-0000D9-IK
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:41:18 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f5021faa16so2485369e87.2
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:41:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1685698873; x=1688290873; 
- h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
- :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=le0QAAql+itTBpRz4mqbwg7nbDKJXpWGcULIraLJ6gs=;
- b=YAkIZpClkGm12/y2mCPaAEI0BCQCsKSP+Ue1zmJC2IKEkjEJ9Vgkbcf4LwFNI1Bcu8
- EfDqS0CMhTxlRKKh023H3lIT8SIkOuCpdASP5G1u5JaPzQwam0IK5kjwBZZ/kn8n//0s
- WCG35xARzovH67Nf0IKexzfAB4PXpXrlfGk/OLZvT354BYZbrn5Uwg4oT11hEKnJUPIH
- 450XcLtoSQLDoNg9GjQsQZ09kQdpbrJsYVTvAz6oKz9jmJxVz6LeKf9uEr+WQ6K+LTC8
- h8MbUQ6wzjc5knChC85JeUbOY9lgK+x6K66jDYlvPyI5+YjQUFMJ8XHfrMsOAYINubSB
- oxcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685698873; x=1688290873;
- h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
- :subject:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=le0QAAql+itTBpRz4mqbwg7nbDKJXpWGcULIraLJ6gs=;
- b=RYEF3WmrQQBwHVSTNjSYMa+We9CFQGLQIWRpXYIlEfMSRiDrn0gbgCQb49Of0DZSX/
- Q2D1035dhOVb3WL2U/ClffeA+kVDiHvug/y4t7cC297wavCDBUALRntXxMWxkRVIc8u3
- kMdGiee/v/pXpLHD4BIkRMQSKLPgB53qsC/HUzMYQuUfPd1JEq4NHhFi9DgtNexQJ6WW
- t/KiEnLhELMqbO8XDhbw5kQdUDDwcCqeu7PVcwSW1xi7Fznz8r8wQ8fQdvAvn6XNuwfn
- Koooan0zIX8ePuWvpZFcAXr9C6NHf6Oklj3+4GxVYPAxf72mo2SCXkrQFlRYvaEjH/AZ
- UPMA==
-X-Gm-Message-State: AC+VfDxdw35Sk02mHj93B4I2UwscrQucjZKjZ1BOOxZXYFGFNWKGwBH6
- scLBQmHiB+ywdJJULAml76lIFQzo/rImT4XLbLAgAg==
-X-Google-Smtp-Source: ACHHUZ4sXF9WGhk8qBs83IDqR6DGcKxw03a20cWB6J5z580EDG99tpPVHd+WXTSJeRVEAfVF+PP9dA==
-X-Received: by 2002:a19:c214:0:b0:4f4:b92c:eef5 with SMTP id
- l20-20020a19c214000000b004f4b92ceef5mr1508280lfc.68.1685698873670; 
- Fri, 02 Jun 2023 02:41:13 -0700 (PDT)
-Received: from [192.168.50.45] (h-155-4-92-80.A980.priv.bahnhof.se.
- [155.4.92.80]) by smtp.gmail.com with ESMTPSA id
- c24-20020ac25318000000b004eefdd8b37fsm105942lfh.194.2023.06.02.02.41.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 02:41:13 -0700 (PDT)
-Message-ID: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
-Subject: [RFC v2] linux-user/riscv: Add syscall riscv_hwprobe
-From: Robbin Ehn <rehn@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, qemu-riscv@nongnu.org, richard.henderson@linaro.org
-Date: Fri, 02 Jun 2023 11:41:11 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+ (Exim 4.90_1) (envelope-from <pmenzel@molgen.mpg.de>)
+ id 1q51IZ-00036q-8N
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:42:19 -0400
+Received: from mx3.molgen.mpg.de ([141.14.17.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pmenzel@molgen.mpg.de>)
+ id 1q51IU-0000Hs-DO
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:42:19 -0400
+Received: from [192.168.0.2] (ip5f5aebf4.dynamic.kabel-deutschland.de
+ [95.90.235.244])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5FFB461E4052B;
+ Fri,  2 Jun 2023 11:41:46 +0200 (CEST)
+Message-ID: <84950b01-b88e-fec5-fe5f-eb4eeddee3d1@molgen.mpg.de>
+Date: Fri, 2 Jun 2023 11:41:46 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=rehn@rivosinc.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Intel-wired-lan] [PATCH] e1000e: Add ICR clearing by
+ corresponding IMS bit
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ intel-wired-lan@lists.osuosl.org, Benjamin Poirier <bpoirier@suse.com>
+References: <20230602072516.42502-1-akihiko.odaki@daynix.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20230602072516.42502-1-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=141.14.17.11; envelope-from=pmenzel@molgen.mpg.de;
+ helo=mx3.molgen.mpg.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,178 +66,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds the new syscall for the
-"RISC-V Hardware Probing Interface"
-(https://docs.kernel.org/riscv/hwprobe.html).
+Dear Akihiko,
 
-Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
----
-v1->v2: Moved to syscall.c
----
- linux-user/riscv/syscall32_nr.h |   1 +
- linux-user/riscv/syscall64_nr.h |   1 +
- linux-user/syscall.c            | 109 ++++++++++++++++++++++++++++++++
- 3 files changed, 111 insertions(+)
 
-diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall32_n=
-r.h
-index 1327d7dffa..412e58e5b2 100644
---- a/linux-user/riscv/syscall32_nr.h
-+++ b/linux-user/riscv/syscall32_nr.h
-@@ -228,6 +228,7 @@
- #define TARGET_NR_accept4 242
- #define TARGET_NR_arch_specific_syscall 244
- #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15=
-)
-+#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
- #define TARGET_NR_prlimit64 261
- #define TARGET_NR_fanotify_init 262
- #define TARGET_NR_fanotify_mark 263
-diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall64_n=
-r.h
-index 6659751933..29e1eb2075 100644
---- a/linux-user/riscv/syscall64_nr.h
-+++ b/linux-user/riscv/syscall64_nr.h
-@@ -251,6 +251,7 @@
- #define TARGET_NR_recvmmsg 243
- #define TARGET_NR_arch_specific_syscall 244
- #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15=
-)
-+#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
- #define TARGET_NR_wait4 260
- #define TARGET_NR_prlimit64 261
- #define TARGET_NR_fanotify_init 262
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 89b58b386b..cd394bbe26 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8772,6 +8772,74 @@ static int do_getdents64(abi_long dirfd, abi_long ar=
-g2, abi_long count)
- }
- #endif /* TARGET_NR_getdents64 */
-=20
-+#if defined(TARGET_RISCV)
-+
-+#define RISCV_HWPROBE_KEY_MVENDORID     0
-+#define RISCV_HWPROBE_KEY_MARCHID       1
-+#define RISCV_HWPROBE_KEY_MIMPID        2
-+
-+#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
-+#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
-+
-+#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
-+#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
-+#define     RISCV_HWPROBE_IMA_C        (1 << 1)
-+
-+#define RISCV_HWPROBE_KEY_CPUPERF_0     5
-+#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
-+
-+struct riscv_hwprobe {
-+    int64_t  key;
-+    uint64_t value;
-+};
-+
-+static void risc_hwprobe_fill_pairs(CPURISCVState *env,
-+                                    struct riscv_hwprobe *pair,
-+                                    size_t pair_count)
-+{
-+    const RISCVCPUConfig *cfg =3D riscv_cpu_cfg(env);
-+
-+    for (; pair_count > 0; pair_count--, pair++) {
-+        pair->value =3D 0;
-+        switch (pair->key) {
-+        case RISCV_HWPROBE_KEY_MVENDORID:
-+            pair->value =3D cfg->mvendorid;
-+            break;
-+        case RISCV_HWPROBE_KEY_MARCHID:
-+            pair->value =3D cfg->marchid;
-+            break;
-+        case RISCV_HWPROBE_KEY_MIMPID:
-+            pair->value =3D cfg->mimpid;
-+            break;
-+        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
-+            pair->value =3D riscv_has_ext(env, RVI) &&
-+                          riscv_has_ext(env, RVM) &&
-+                          riscv_has_ext(env, RVA) ?
-+                          RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
-+            break;
-+        case RISCV_HWPROBE_KEY_IMA_EXT_0:
-+            pair->value =3D riscv_has_ext(env, RVF) &&
-+                          riscv_has_ext(env, RVD) ?
-+                          RISCV_HWPROBE_IMA_FD : 0;
-+            pair->value |=3D riscv_has_ext(env, RVC) ?
-+                           RISCV_HWPROBE_IMA_C : pair->value;
-+            break;
-+        case RISCV_HWPROBE_KEY_CPUPERF_0:
-+            pair->value =3D RISCV_HWPROBE_MISALIGNED_UNKNOWN;
-+            break;
-+        default:
-+            pair->key =3D -1;
-+        break;
-+        }
-+    }
-+}
-+#endif
-+
- #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
- _syscall2(int, pivot_root, const char *, new_root, const char *, put_old)
- #endif
-@@ -13469,6 +13537,47 @@ static abi_long do_syscall1(CPUArchState *cpu_env,=
- int num, abi_long arg1,
-         return ret;
- #endif
-=20
-+#if defined(TARGET_RISCV)
-+    case TARGET_NR_riscv_hwprobe:
-+        {
-+            struct riscv_hwprobe *host_pairs;
-+
-+            /* flags must be 0 */
-+            if (arg5 !=3D 0) {
-+                return -TARGET_EINVAL;
-+            }
-+
-+            /* check cpu_set */
-+            if (arg3 !=3D 0) {
-+                int ccpu;
-+                size_t cpu_setsize =3D CPU_ALLOC_SIZE(arg3);
-+                cpu_set_t *host_cpus =3D lock_user(VERIFY_READ, arg4,
-+                                                 cpu_setsize, 0);
-+                if (!host_cpus) {
-+                    return -TARGET_EFAULT;
-+                }
-+                ccpu =3D CPU_COUNT_S(cpu_setsize, host_cpus);
-+                unlock_user(host_cpus, arg4, cpu_setsize);
-+                /* no selected cpu */
-+                if (ccpu =3D=3D 0) {
-+                    return -TARGET_EINVAL;
-+                }
-+            } else if (arg4 !=3D 0) {
-+                return -TARGET_EINVAL;
-+            }
-+
-+            host_pairs =3D lock_user(VERIFY_WRITE, arg1,
-+                                   sizeof(*host_pairs) * (size_t)arg2, 0);
-+            if (host_pairs =3D=3D NULL) {
-+                return -TARGET_EFAULT;
-+            }
-+            risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
-+            unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_t)ar=
-g2);
-+            ret =3D 0;
-+        }
-+        return ret;
-+#endif
-+
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
-         return -TARGET_ENOSYS;
---=20
-2.39.2
+Thank you for your patch.
 
+After looking at the diff, it looks like this is a QEMU patch, and not 
+one for the Linux kernel. I leave my inline comments anyway.
+
+
+Am 02.06.23 um 09:25 schrieb Akihiko Odaki:
+
+It’d be nice if you started by summarizing the bug.
+
+> The datasheet does not say what happens when interrupt was asserted
+> (ICR.INT_ASSERT=1) and auto mask is *not* active.
+
+Personal nit: For better legibility, I’d separate paragraphs by an empty 
+line, or – in this case – I wouldn’t wrap the line, just because a 
+sentence ends.
+
+> However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+> Software Developer’s Manual, which were written for older devices,
+> namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+> 82573E/82573V/82573L, does say:
+>> If IMS = 0b, then the ICR register is always clear-on-read. If IMS is
+>> not 0b, but some ICR bit is set where the corresponding IMS bit is not
+>> set, then a read does not clear the ICR register. For example, if
+>> IMS = 10101010b and ICR = 01010101b, then a read to the ICR register
+>> does not clear it. If IMS = 10101010b and ICR = 0101011b, then a read
+>> to the ICR register clears it entirely (ICR.INT_ASSERTED = 1b).
+> 
+> Linux does no longer activate auto mask since commit
+> 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware clears
+> ICR even in such a case so we also should do so.
+
+… since commit 0a8047ac68e5 (e1000e: Fix msi-x interrupt automask) …
+
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1707441
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> Supersedes: <20201203133236.222207-1-andrew@daynix.com>
+> ("[PATCH v2] e1000e: Added ICR clearing by corresponding IMS bit.")
+> 
+>   hw/net/e1000e_core.c | 38 ++++++++++++++++++++++++++++++++------
+>   hw/net/trace-events  |  1 +
+>   2 files changed, 33 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+> index 9785ef279c..338bbbf4f4 100644
+> --- a/hw/net/e1000e_core.c
+> +++ b/hw/net/e1000e_core.c
+> @@ -2607,12 +2607,38 @@ e1000e_mac_icr_read(E1000ECore *core, int index)
+>           e1000e_lower_interrupts(core, ICR, 0xffffffff);
+>       }
+>   
+> -    if ((core->mac[ICR] & E1000_ICR_ASSERTED) &&
+> -        (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME)) {
+> -        trace_e1000e_irq_icr_clear_iame();
+> -        e1000e_lower_interrupts(core, ICR, 0xffffffff);
+> -        trace_e1000e_irq_icr_process_iame();
+> -        e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
+> +    if (core->mac[ICR] & E1000_ICR_ASSERTED) {
+> +        if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME) {
+> +            trace_e1000e_irq_icr_clear_iame();
+> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
+> +            trace_e1000e_irq_icr_process_iame();
+> +            e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
+> +        }
+> +
+> +        /*
+> +         * The datasheet does not say what happens when interrupt was asserted
+
+I believe the network subsystem has a different commenting style than 
+the rest of the Linux source code.
+
+> +         * (ICR.INT_ASSERT=1) and auto mask is *not* active.
+> +         * However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+> +         * Software Developer’s Manual, which were written for older devices,
+> +         * namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+> +         * 82573E/82573V/82573L, does say:
+
+I’d add a blank line below.
+
+> +         * > If IMS = 0b, then the ICR register is always clear-on-read. If IMS
+> +         * > is not 0b, but some ICR bit is set where the corresponding IMS bit
+> +         * > is not set, then a read does not clear the ICR register. For
+> +         * > example, if IMS = 10101010b and ICR = 01010101b, then a read to the
+> +         * > ICR register does not clear it. If IMS = 10101010b and
+> +         * > ICR = 0101011b, then a read to the ICR register clears it entirely
+> +         * > (ICR.INT_ASSERTED = 1b).
+> +         *
+> +         * Linux does no longer activate auto mask since commit
+> +         * 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware
+> +         * clears ICR even in such a case so we also should do so.
+> +         */
+> +        if (core->mac[ICR] & core->mac[IMS]) {
+> +            trace_e1000e_irq_icr_clear_icr_bit_ims(core->mac[ICR],
+> +                                                   core->mac[IMS]);
+> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
+> +        }
+>       }
+>   
+>       return ret;
+> diff --git a/hw/net/trace-events b/hw/net/trace-events
+> index e97e9dc17b..9103488e17 100644
+> --- a/hw/net/trace-events
+> +++ b/hw/net/trace-events
+> @@ -217,6 +217,7 @@ e1000e_irq_read_ims(uint32_t ims) "Current IMS: 0x%x"
+>   e1000e_irq_icr_clear_nonmsix_icr_read(void) "Clearing ICR on read due to non MSI-X int"
+>   e1000e_irq_icr_clear_zero_ims(void) "Clearing ICR on read due to zero IMS"
+>   e1000e_irq_icr_clear_iame(void) "Clearing ICR on read due to IAME"
+> +e1000e_irq_icr_clear_icr_bit_ims(uint32_t icr, uint32_t ims) "Clearing ICR on read due corresponding IMS bit: 0x%x & 0x%x"
+>   e1000e_irq_iam_clear_eiame(uint32_t iam, uint32_t cause) "Clearing IMS due to EIAME, IAM: 0x%X, cause: 0x%X"
+>   e1000e_irq_icr_clear_eiac(uint32_t icr, uint32_t eiac) "Clearing ICR bits due to EIAC, ICR: 0x%X, EIAC: 0x%X"
+>   e1000e_irq_ims_clear_set_imc(uint32_t val) "Clearing IMS bits due to IMC write 0x%x"
+
+
+Kind regards,
+
+Paul
 
