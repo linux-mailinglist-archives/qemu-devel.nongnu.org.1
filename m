@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C7872005A
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 13:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B4972006D
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 13:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q52vI-0001UY-Bk; Fri, 02 Jun 2023 07:26:24 -0400
+	id 1q52zP-0003YF-Td; Fri, 02 Jun 2023 07:30:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q52vG-0001UQ-9k
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:26:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q52zN-0003Y6-PM
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:30:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q52vE-0003au-Ep
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:26:22 -0400
+ id 1q52zM-00054t-4Y
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:30:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685705178;
+ s=mimecast20190719; t=1685705435;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tswRMf0PmgiywwBRPI9dmV+fDDs+fyujGVTq2ILoNg4=;
- b=h6RCRnAsx645tbhTfYRAbArDmmsR0H0Y9WeuGVO/uhk7ZgPcv1CHeX6Me6aRfrdCr7KFB1
- Vaaek+dwmro9aUlFrhDy+ibv4XoH97leTcdzb1iLJwV8WnchCGS0GuIuAiiDPP8oH9MtAu
- 4IOJ+d7ZEAb1PdwAtecMO4rgspomaWc=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zKFSZHw/lZX9fNOdZEtXLHPFoPiaq+rDpI+cEcJS3Lo=;
+ b=b1w2b3CICyZVX8AWypJ//EpZpE8+RYUA7tFiMdfbYPLTcIt3Jtm/6DYPxX1S8kg4vIpkw5
+ G1ifUpBcKlB9v8vY1DflwircJUwzPNW9CFaELncg7X6NusAmlf8i2bsJinhNbb2pQ6dDhV
+ egZciUu2BY7/pTCfmo9vN6WSUcpYj6k=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-177-r2h8aQpRMSa_s9gx8Tobvw-1; Fri, 02 Jun 2023 07:26:17 -0400
-X-MC-Unique: r2h8aQpRMSa_s9gx8Tobvw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5147e3dfccdso1318508a12.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 04:26:16 -0700 (PDT)
+ us-mta-376-1OmIR0v7PE-hHkSRjR22WA-1; Fri, 02 Jun 2023 07:30:33 -0400
+X-MC-Unique: 1OmIR0v7PE-hHkSRjR22WA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5128dcbdfc1so1368196a12.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 04:30:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685705176; x=1688297176;
+ d=1e100.net; s=20221208; t=1685705432; x=1688297432;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tswRMf0PmgiywwBRPI9dmV+fDDs+fyujGVTq2ILoNg4=;
- b=gdSHS3eWBwiAqeX2Ve5u6i4p2iXWnayAiIDchcAMOTTveTYVFlOv9N1bQbby08Wcli
- 6sDnEl77ZiJN8WNfPpZ5yWuGhEb12Zphr1nXT8fytXrA0pZbzh7ua9jn6Ngbh+tI56aU
- CVAGfYt2usf9VDS/71J0MQGEG1wpnizk9c8LgWWsOuc4BLFciP37Ibu7kRSx5WF5VTXV
- hGTxS0jlQcpjxPWs6LHPsQ4L5HC/ouqpaFkIjdCsHyqE9a6ubJjQZZtucgjBPgpMZb5a
- WUEkC6KFgfEM/aEpPDClhnAFYO+8fkpwUM75S/piJCmAB3GTVjAXR5/hJ4yTMkO7tVID
- qUNQ==
-X-Gm-Message-State: AC+VfDwAGWnLWiEL1Rtg2qwOaJJuvd8g2WYRy9nURUIHBUk0t6zgevUj
- 4JlDpQJ2adgTl60tQ/RdHUdBwqfGEQUxpWq3d2Uxx5PtB/Qpa/T6lvnxvbB8B+yoxE2N+J+YBGm
- yBPf3gdI4uZ4svxPJxovZFbqGxK5pmfk=
-X-Received: by 2002:a05:6402:658:b0:514:9b64:e16b with SMTP id
- u24-20020a056402065800b005149b64e16bmr1579778edx.35.1685705175909; 
- Fri, 02 Jun 2023 04:26:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4k+wfVBfpmEHgdHXMMEMHyJ4yIkm5fmz8L8w5Sik+kOC0rEDiT7XOoR+a0ejY2mJ8jJ0iUD2VZKkA+346N+Og=
-X-Received: by 2002:a05:6402:658:b0:514:9b64:e16b with SMTP id
- u24-20020a056402065800b005149b64e16bmr1579764edx.35.1685705175569; Fri, 02
- Jun 2023 04:26:15 -0700 (PDT)
+ bh=zKFSZHw/lZX9fNOdZEtXLHPFoPiaq+rDpI+cEcJS3Lo=;
+ b=b+hzBsw0iomOqJJ5Kmj+wN/4tvWRPGpU6FQSMsVcctx+ERM3nq+H1De45pIQDPZD6K
+ 3chzMDsQH2vkBl2bUceoBs4/Eu85kpJUbZkbdxZCVPfhAGD5FOkJDTI9bBsMFJr4nfra
+ XVyKy1PtT3gVXOfDLxP4L4hbrWmgVFIT+l/vgZwAa0jxQIEjp7ZuKi2+4hOAQSa/Ojox
+ MTjSoseyOhUxEca3kcYpZoFd6wQKdFb7xKhwzq/DNLzFxfALT9AKZPg4zfeKvfMt4twX
+ N5QOs4kY5pbPcc2I9ge8b4uMxMkKTicmHCV98X7Z12DEHfycI/F652+cWZDWic7RzEQ5
+ /xlA==
+X-Gm-Message-State: AC+VfDw7Gjk2zK7yCvpW5gPbnU3kccJV7CJyPIrQIJJ1SsayvTtDnSPp
+ WIDq/faHKANogcdsq7OezaOLo24Q4U2KcWywH9Lc43+jY3Irof8NjtFCMqPaY5TvHyniyTs3nTZ
+ 5jfkF793LVj5cGle7R+hTZAA0Imz5w5zTYLoTMRoac9Ds
+X-Received: by 2002:aa7:d0c4:0:b0:50c:358:1eba with SMTP id
+ u4-20020aa7d0c4000000b0050c03581ebamr1673258edo.35.1685705432039; 
+ Fri, 02 Jun 2023 04:30:32 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5xcqPrWeqPSgEqlh9QJtPizB+eW5n9MoEHEH8D+dB/f51x9ZVbBFIJwg3EiD+A4FwmCKdCT+4pVjs/H/2xbv4=
+X-Received: by 2002:aa7:d0c4:0:b0:50c:358:1eba with SMTP id
+ u4-20020aa7d0c4000000b0050c03581ebamr1673244edo.35.1685705431749; Fri, 02 Jun
+ 2023 04:30:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1685623090.git.yin31149@gmail.com>
-In-Reply-To: <cover.1685623090.git.yin31149@gmail.com>
+References: <20230526153143.470745-1-eperezma@redhat.com>
+In-Reply-To: <20230526153143.470745-1-eperezma@redhat.com>
 From: Lei Yang <leiyang@redhat.com>
-Date: Fri, 2 Jun 2023 19:25:39 +0800
-Message-ID: <CAPpAL=wCZUghxGqApE6kW6PpFwWWDrrpGt_XwcOU39RUqcwRQw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] Vhost-vdpa Shadow Virtqueue Offloads support
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
- qemu-devel@nongnu.org, 18801353760@163.com
+Date: Fri, 2 Jun 2023 19:29:55 +0800
+Message-ID: <CAPpAL=ypo551yeF2rah7++qPrKQvvAA09-UM-OLGwcm-PuwqpA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] Move ASID test to vhost-vdpa net initialization
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, longpeng2@huawei.com, 
+ Shannon Nelson <snelson@pensando.io>, Laurent Vivier <lvivier@redhat.com>,
+ si-wei.liu@oracle.com, 
+ Cindy Lu <lulu@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>, 
+ Liuxiangdong <liuxiangdong5@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ alvaro.karsz@solid-run.com, Zhu Lingshan <lingshan.zhu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -94,60 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Hawkins
-
-QE based on the qemu command line [1] to test this series with the
-following scenarios: reboot,shutdown,hotplug/unplug,ping, and
-offloads(tx,sg,tso,gso,gro), everything is working fine. It's just
-that even without applying your patch to test offload there is no
-error like "vdpa svq is not available for feature 4".
-
-[1] -device '{"driver": "virtio-net-pci", "mac": "00:11:22:33:44:00",
-"id": "net0", "netdev": "hostnet0", "ctrl_guest_offloads": true,
-"bus": "pcie-root-port-3", "addr": "0x0"}'  \
--netdev vhost-vdpa,id=3Dhostnet0,vhostdev=3D/dev/vhost-vdpa-0,x-svq=3Don \
+QE did a sanity test on v4 of this series using the vdpa_sim
+device,everything is working fine.
 
 Tested-by: Lei Yang <leiyang@redhat.com>
 
-
-
-
-On Thu, Jun 1, 2023 at 9:49=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com> =
-wrote:
+On Fri, May 26, 2023 at 11:31=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redha=
+t.com> wrote:
 >
-> This series enables shadowed CVQ to intercept Offloads commands
-> through shadowed CVQ, update the virtio NIC device model so qemu
-> send it in a migration, and the restore of that Offloads state
-> in the destination.
+> QEMU v8.0 is able to switch dynamically between vhost-vdpa passthrough
+> and SVQ mode as long as the net device does not have CVQ.  The net device
+> state followed (and migrated) by CVQ requires special care.
 >
-> Changelog
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> A pre-requisite to add CVQ to that framework is to determine if devices w=
+ith
+> CVQ are migratable or not at initialization time.  The solution to it is =
+to
+> always shadow only CVQ, and vq groups and ASID are used for that.
+>
+> However, current qemu version only checks ASID at device start (as "drive=
+r set
+> DRIVER_OK status bit"), not at device initialization.  A check at
+> initialization time is required.  Otherwise, the guest would be able to s=
+et
+> and remove migration blockers at will [1].
+>
+> This series is a requisite for migration of vhost-vdpa net devices with C=
+VQ.
+> However it already makes sense by its own, as it reduces the number of io=
+ctls
+> at migration time, decreasing the error paths there.
+>
+> [1] https://lore.kernel.org/qemu-devel/2616f0cd-f9e8-d183-ea78-db1be4825d=
+9c@redhat.com/
+> ---
+> v4:
+> * Only probe one of MQ or !MQ.
+> * Merge vhost_vdpa_cvq_is_isolated in vhost_vdpa_probe_cvq_isolation
+> * Call ioctl directly instead of adding functions.
+>
 > v3:
->   - refactor the commit message in patch
-> "virtio-net: expose virtio_net_supported_guest_offloads()"
+> * Only record cvq_isolated, true if the device have cvq isolated in both =
+!MQ
+> * and MQ configurations.
+> * Drop the cache of cvq group, it can be done on top
 >
-> v2: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg00044.htm=
-l
+> v2:
+> * Take out the reset of the device from vhost_vdpa_cvq_is_isolated
+>   (reported by Lei Yang).
+> * Expand patch messages by Stefano G. questions.
 >
-> v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg07198.htm=
-l
+> Eugenio P=C3=A9rez (2):
+>   vdpa: return errno in vhost_vdpa_get_vring_group error
+>   vdpa: move CVQ isolation check to net_init_vhost_vdpa
 >
-> Hawkins Jiawei (6):
->   include/hw/virtio: make some VirtIODevice const
->   vdpa: reuse virtio_vdev_has_feature()
->   hw/net/virtio-net: make some VirtIONet const
->   virtio-net: expose virtio_net_supported_guest_offloads()
->   vdpa: Add vhost_vdpa_net_load_offloads()
->   vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
->
->  hw/net/virtio-net.c            |  2 +-
->  include/hw/virtio/virtio-net.h |  1 +
->  include/hw/virtio/virtio.h     |  2 +-
->  net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++++++++---
->  4 files changed, 44 insertions(+), 6 deletions(-)
+>  net/vhost-vdpa.c | 147 ++++++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 112 insertions(+), 35 deletions(-)
 >
 > --
-> 2.25.1
+> 2.31.1
 >
 >
 
