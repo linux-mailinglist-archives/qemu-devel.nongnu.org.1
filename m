@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE64371F7A1
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 03:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7306971F7F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 03:32:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4tPY-0004wC-3U; Thu, 01 Jun 2023 21:17:00 -0400
+	id 1q4tdf-00032X-3g; Thu, 01 Jun 2023 21:31:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4tPS-0004t0-Sy
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 21:16:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4tPE-0004aV-CL
- for qemu-devel@nongnu.org; Thu, 01 Jun 2023 21:16:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685668598;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TIo5OtYDpneOq4iOVikPjWn4PZGIfasZYoWfPJ3RI3Q=;
- b=CAz5ndbYpkNBi5ZyLOdZF3r3NgqrXKSc21nUxlN2Sr/32rwh+8p4Av//xL51xRy90jY15T
- SXQ45CdWgaxk6TY+LMs5GdUsdwewIqKAaThQBOXi6Itk9X+LlZWkjV5NP5YUbhyz2QJbpX
- rMAVJ7HEPrBzgs4em04vKPffWM8IJhc=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-AX5DFAmGMsaHMVvKN4EGWQ-1; Thu, 01 Jun 2023 21:16:37 -0400
-X-MC-Unique: AX5DFAmGMsaHMVvKN4EGWQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-62849c5e9f0so901716d6.1
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 18:16:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685668596; x=1688260596;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TIo5OtYDpneOq4iOVikPjWn4PZGIfasZYoWfPJ3RI3Q=;
- b=GpmRCrXBsmEyKaMsCwJ7Aj8thY48IKRUbDMHMRbxIfvYoZ2uWhKXCaCHTJhFqgQAZE
- tU33ctJKrXRTgrsiq5lpfzGh+gDnABQ38a/MMvk3C2XoNd8E7TkXB0CKPjsxlwyAUVX0
- Em4RgGpRDVxyj9IL0nucIUuhoZIgSyrieUK3+XNfHIPEsbYeTOksLwhV9fATIfW108NR
- x9vR754pz7TTgwrbgmEuATiK/GA90tSZMFywMkpWziUkkb/Hroa60i2XDlTxBFZfImSn
- ddB9jfVktsXixhCf903r11zR29Tj93tvUtZZJ2tf5/2sf+KKV5nN8hJOKHLEP5b8hWlB
- OVoA==
-X-Gm-Message-State: AC+VfDzeCILvLkYj7cZmEqu+GPCw11HUEPeCvADyEwXKOTvCOUYElMWN
- ZeJkQZHd/LKtNWyFenZHFwAvPlRyQie+zPwcyYnamdmsCzfGQb3aJAoSba0m4u5ARwXRfegBwH1
- s5B4zHMFNXQDrZ/56eVukBQXRGmWAivp1bkfBURgR5j3dBo2JOzXyqdVCyUQ+9Eo8za6S46bo
-X-Received: by 2002:a05:6214:2aa1:b0:628:7923:b3e1 with SMTP id
- js1-20020a0562142aa100b006287923b3e1mr1408492qvb.2.1685668596599; 
- Thu, 01 Jun 2023 18:16:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6pWYfPULq+IGgsXOT0w1hcb6nr+JAsjz2qvokKcgmY1tLIOGzUwpoBNo/9SSuUmXTuFap2sQ==
-X-Received: by 2002:a05:6214:2aa1:b0:628:7923:b3e1 with SMTP id
- js1-20020a0562142aa100b006287923b3e1mr1408461qvb.2.1685668596254; 
- Thu, 01 Jun 2023 18:16:36 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- l20-20020ad44454000000b006261e6a88c7sm170462qvt.36.2023.06.01.18.16.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Jun 2023 18:16:35 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Avihai Horon <avihaih@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Juan Quintela <quintela@redhat.com>, peterx@redhat.com,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH RFC 3/3] qtest/migration: Use switchover-hold to speedup
-Date: Thu,  1 Jun 2023 21:16:26 -0400
-Message-Id: <20230602011626.226640-4-peterx@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230602011626.226640-1-peterx@redhat.com>
-References: <20230602011626.226640-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q4tdb-00031m-4V; Thu, 01 Jun 2023 21:31:32 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q4tdX-00035i-IK; Thu, 01 Jun 2023 21:31:30 -0400
+Received: from [192.168.194.181] (unknown [61.242.130.78])
+ by APP-01 (Coremail) with SMTP id qwCowABXXPBjRnlk+HDBCQ--.19064S2;
+ Fri, 02 Jun 2023 09:31:16 +0800 (CST)
+Message-ID: <be90143f-1c8b-eb31-3c75-ae9846f00a22@iscas.ac.cn>
+Date: Fri, 2 Jun 2023 09:31:15 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+Subject: Re: [PATCH 2/4] target/riscv: Remove check on mode for MPRV
+Content-Language: en-US
+To: Alistair Francis <alistair23@gmail.com>
+References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-3-liweiwei@iscas.ac.cn>
+ <CAKmqyKPmXXoVdSndTF+aF7A-3PqVrnw-NFG26sQQicxybwWpQA@mail.gmail.com>
+ <18e4da39-cbd4-aa60-7628-7105a788b6e8@iscas.ac.cn>
+ <CAKmqyKMP0aX=_3ffQXSNQ0pWCjeXEF+h=QgPbL80=0J8v_gOrA@mail.gmail.com>
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <CAKmqyKMP0aX=_3ffQXSNQ0pWCjeXEF+h=QgPbL80=0J8v_gOrA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-CM-TRANSID: qwCowABXXPBjRnlk+HDBCQ--.19064S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7urWkurykCr4UJF4fGFW5Awb_yoW8KFW5pF
+ WrGayxKrZ8GrZ7Ga4Igr4Yga17trZ8KF1DWw1kWr17Xrs8trZ3uFsxAw45Wr9rCF1xKrWj
+ vF1jyF93ZF1UZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+ 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+ c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMx
+ C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+ wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+ vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v2
+ 0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+ W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbLiSPUUUUU==
+X-Originating-IP: [61.242.130.78]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,70 +82,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the switchover-hold flag rather than tuning bw+downtime to guide test
-convergence.
 
-This can achieve similar goal of previous patch "tests/qtest: massively
-speed up migration-test" but without magic offset to write or monitoring.
+On 2023/6/2 07:03, Alistair Francis wrote:
+> On Thu, Jun 1, 2023 at 4:43 PM Weiwei Li <liweiwei@iscas.ac.cn> wrote:
+>>
+>> On 2023/6/1 13:27, Alistair Francis wrote:
+>>> On Mon, May 29, 2023 at 10:19 PM Weiwei Li <liweiwei@iscas.ac.cn> wrote:
+>>>> Normally, MPRV can be set to 1 only in M mode (It will be cleared
+>>>> when returning to lower-privilege mode by MRET/SRET).
+>>>>
+>>>> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+>>>> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+>>>> ---
+>>>>    target/riscv/cpu_helper.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>>>> index bd892c05d4..45baf95c77 100644
+>>>> --- a/target/riscv/cpu_helper.c
+>>>> +++ b/target/riscv/cpu_helper.c
+>>>> @@ -44,7 +44,7 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
+>>>>        if (!ifetch) {
+>>>>            uint64_t status = env->mstatus;
+>>>>
+>>>> -        if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
+>>>> +        if (get_field(status, MSTATUS_MPRV)) {
+>>> The original check is correct though, why remove it?
+>> Yeah. As described in the commit message, I think MPRV can only be set
+>> to 1 in M mode normally
+> That's true. I do feel that keeping the check makes the code easier to
+> follow. Otherwise future developers need to check to see how MPRV can
+> be set. The current code is explicit and obviously follows the spec.
+>
+> For a performance gain I think it's worth making the trade off, but it
+> doesn't sound like we really get any gain here.
 
-The initial solution can reduce migration-test time from 8min to 1min40s,
-this patch can further reduce it from 1m40s to 1m1s per my local test.
+Yeah. It's acceptable to me.
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- tests/qtest/migration-test.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+Just another question: whether MPRV is truly limited to work on M mode?
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b0c355bbd9..62bdd67fd9 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -433,16 +433,15 @@ static void migrate_set_parameter_bool(QTestState *who, const char *parameter,
- 
- static void migrate_ensure_non_converge(QTestState *who)
- {
--    /* Can't converge with 1ms downtime + 3 mbs bandwidth limit */
--    migrate_set_parameter_int(who, "max-bandwidth", 3 * 1000 * 1000);
--    migrate_set_parameter_int(who, "downtime-limit", 1);
-+    /* Hold off switchover for precopy only */
-+    migrate_set_parameter_bool(who, "switchover-hold", true);
- }
- 
- static void migrate_ensure_converge(QTestState *who)
- {
--    /* Should converge with 30s downtime + 1 gbs bandwidth limit */
--    migrate_set_parameter_int(who, "max-bandwidth", 1 * 1000 * 1000 * 1000);
--    migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
-+    /* No limitation on bandwidth so converge faster */
-+    migrate_set_parameter_int(who, "max-bandwidth", 0);
-+    migrate_set_parameter_bool(who, "switchover-hold", false);
- }
- 
- static void migrate_pause(QTestState *who)
-@@ -492,6 +491,13 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
-     }
- 
-     qtest_qmp_eventwait(to, "RESUME");
-+
-+    /*
-+     * Now allow precopy switchover (which will allow completion).  This
-+     * needs to be done after migrate-start-postcopy to make sure we switch
-+     * to postcopy first.
-+     */
-+    migrate_ensure_converge(from);
- }
- 
- typedef struct {
-@@ -1164,6 +1170,8 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     }
- 
-     migrate_ensure_non_converge(from);
-+    /* Still use unlimited precopy speed to finish 1st iteration fast */
-+    migrate_set_parameter_int(from, "max-bandwidth", 0);
- 
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
--- 
-2.40.1
+I can only find following description in the note:
+
+"The MPRV and MXR mechanisms *were* conceived to improve the efficiency 
+of M-mode routines
+that emulate missing hardware features, e.g., misaligned loads and stores."
+
+To some degree, It seems not limit them to work on other mode.
+
+Even though MPRV normally can be set to 1 in M mode, it seems possible 
+to set it to 1 in other mode by gdbstub.
+
+Regards,
+
+Weiwei Li
+
+> Alistair
+>
+>> which means check on MPRV is enough in this case. So I remove the check
+>> on mode here.
+>>
+>> Regards,
+>>
+>> Weiwei Li
+>>
+>>> Alistair
+>>>
+>>>>                mode = get_field(env->mstatus, MSTATUS_MPP);
+>>>>                virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>>>>                       (mode != PRV_M);
+>>>> --
+>>>> 2.25.1
+>>>>
+>>>>
 
 
