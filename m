@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D36720AEC
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 23:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A52D3720AED
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 23:20:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5C9g-0003il-NB; Fri, 02 Jun 2023 17:17:52 -0400
+	id 1q5CBo-0004kx-Jf; Fri, 02 Jun 2023 17:20:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5C9c-0003i8-Sk
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:17:48 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5CBn-0004kn-2I
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:20:03 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5C9b-0004lN-5n
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:17:48 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f6dfc4dffaso24341835e9.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 14:17:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5CBk-00052r-Ah
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:20:02 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-30af86a96b4so2384100f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 14:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685740665; x=1688332665;
+ d=linaro.org; s=google; t=1685740791; x=1688332791;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JkREzvBGYw+S/pUq/JQ6X3rp88ktrpWKwGCX1EQ6ga0=;
- b=YwFqzLY8/a/8pbIHjtmQifseyFFwBn6Rw/X1Q1UzFLhk+vzv9b6jUtYMxWeLWLsgxb
- Zmz5uR68OzBH76YehAJQ4RFEJWEx3gKuGVrOty9P3NYjPu1/hIniQyk9fdEDlnvHqYtg
- NPXFTv0p5screWhDi4EPRSjq6fHSR+E5QiOLAMn6TpCXNmjsdCuIACGgOdJnTREywfYQ
- WfHcbnA4NNwyk0L2ZDOQXx85jrnkPjPObl+jAgHDWfyz7d+XYf30xYiAKlbKOCJILI4k
- 6cHwlLXgGshGIQ9jJxEX5YQpY5rZMB2DJGUpPTFDE4NBEKNmZAPa7TJB6Kh+1gakZy6i
- YHRw==
+ bh=fXCob+dvizOKq7h30N6Pi9yhy3km1gi91+XYvj1Pv0M=;
+ b=tTGY7TwTSuD08ILBaHVmDy2f+eSWSlcLU/fiQLuFj2+sH2AZ0rE4rhTQORZX2PFfkn
+ RTt0Et09wsxk7lh7b1ZhKmIPvZjz0+IOJ5a/q42QQYP/U0lW3pOJRfcvmQinR9CLrHoG
+ 8i0pxT6mvDxmiCsvrpp5GHAHtYkaRJne7jqLkD6sm/G19ExFsu7lXr7E12yfaVjb1iKL
+ ZJ13oc/e2FpCHg1eloRThokMOmebmjCTlCzRxhbOqBTtneo9t2hMC1NH3ZFWta2VYdnh
+ DUxxxm/ldrSPzMpisfL5+47MOpnLHPRWopzi0I3A2VkBN7gH8bK7fLbQ6JsVl2DILeum
+ wIBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685740665; x=1688332665;
+ d=1e100.net; s=20221208; t=1685740791; x=1688332791;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JkREzvBGYw+S/pUq/JQ6X3rp88ktrpWKwGCX1EQ6ga0=;
- b=LFRFZOu9MVVklQggtU9Cg3JpU4U9vliTlkklx6KLPD5G9/KURhwehOxGFsJxQ2X39V
- cy+xyNVpFuE/gYV5k0H2hKgGGCebdikf4s1p1dCsqdYE0s9PUTGPEJNg+6+d0qnhNSmP
- nBbQEujbKbZQZEDns/9FLanJddRHO3pBE8/dLfV4NMzxqsoEznm3mE1HW9cRn+CbdW3a
- 6KBMey61IHErGXI6REHlk2jBQyo4hlq2YrF9XCUM2/sG+U4su/58vE2uv1n6k9cmm5V2
- P0N8RxrajActLsHEPjN/+fJqh8CLyYFHfKXxhpmpKXhQuSj+YEBRo5OoIVQ6w2Naky3G
- ZYlw==
-X-Gm-Message-State: AC+VfDwWvZIKu2hG96+v3c9ixSqXyqxg55tAIf9Sq8b7ecie1jTtEvDZ
- XJPu+7qgrqvhklNDyUK1x0prmKaI6RH8trvSkWI=
-X-Google-Smtp-Source: ACHHUZ62Zxvje+Fpi4d83mY3jqqh5N32fanSlscXHVeZjINS5MHStPJ71opG9UGSp67PpyL8IvUiQA==
-X-Received: by 2002:a05:600c:24e:b0:3f5:fc21:5426 with SMTP id
- 14-20020a05600c024e00b003f5fc215426mr2893991wmj.41.1685740665647; 
- Fri, 02 Jun 2023 14:17:45 -0700 (PDT)
+ bh=fXCob+dvizOKq7h30N6Pi9yhy3km1gi91+XYvj1Pv0M=;
+ b=i2gpQYmgTLWDGK9w0puePulcTnbDymaMy07KUvFhPgNadIvt9kdg9gVmkMTgPx5PNa
+ Z3BCYEaB1jgXduwlQtjBjGJEdw/myl/8hshfQyGXNvOfUV9fVFOYd1JR2a+dFkek7Uqb
+ 1Wz5QKVNmgV1SJ5pwraS6FWhzgFiyA8noiBla11vCfdO/DihwxpZs4N85nBwn0F/Wu3S
+ rJpzjRTwbbN0qqu9LhVfjDLQ4F17esyNvnW3nftULUBRNtXJLX2Yxj/EJqmd0ROcYG/H
+ uqpC6F48/Xpd2Ed4XIGnLk5mShgKbgoIhmXzrJZ61Wrwppn4i6EFODSJKYyDOuoaAzzP
+ YFwA==
+X-Gm-Message-State: AC+VfDxeCfQG+3bnD+IDnpw10gmz3+rZ0LZS3glr5rOUdHzpVGvqFHu+
+ 6kogFmMOrsUk4KrsGZ8GKdP8fKVbbedIPuzNnfw=
+X-Google-Smtp-Source: ACHHUZ7YPrm/vQ5H/aQ3+p+A18hu5EyriLxKw+cSIZZ5i/g7NtwRLzZyiBHeDau4fou0Ni/G1tMphQ==
+X-Received: by 2002:a5d:46c4:0:b0:309:1532:8287 with SMTP id
+ g4-20020a5d46c4000000b0030915328287mr807150wrs.19.1685740791359; 
+ Fri, 02 Jun 2023 14:19:51 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- h8-20020adfe988000000b0030ae5a0516csm2666248wrm.17.2023.06.02.14.17.44
+ w6-20020a5d6806000000b0030630de6fbdsm2645534wru.13.2023.06.02.14.19.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 14:17:45 -0700 (PDT)
-Message-ID: <ab5b8c14-b85c-5f97-981a-f1ad85d30318@linaro.org>
-Date: Fri, 2 Jun 2023 23:17:43 +0200
+ Fri, 02 Jun 2023 14:19:51 -0700 (PDT)
+Message-ID: <b21cad75-1382-f3f0-efee-dc341fd77603@linaro.org>
+Date: Fri, 2 Jun 2023 23:19:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 23/48] tcg: Split helper-gen.h
+Subject: Re: [PATCH v3 22/48] tcg: Split tcg_gen_callN
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-24-richard.henderson@linaro.org>
+ <20230531040330.8950-23-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-24-richard.henderson@linaro.org>
+In-Reply-To: <20230531040330.8950-23-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,50 +93,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 31/5/23 06:03, Richard Henderson wrote:
-> Create helper-gen-common.h without the target specific portion.
-> Use that in tcg-op-common.h.  Reorg headers in target/arm to
-> ensure that helper-gen.h is included before helper-info.c.inc.
-> All other targets are already correct in this regard.
+> Make tcg_gen_callN a static function.  Create tcg_gen_call[0-7]
+> functions for use by helper-gen.h.inc.
+> 
+> Removes a multiplicty of calls to __stack_chk_fail, saving up
+> to 143kiB of .text space as measured on an x86_64 host.
+> 
+>      Old     New Less    %Change
+> 8888680	8741816	146864	1.65%	qemu-system-aarch64
+> 5911832	5856152	55680	0.94%	qemu-system-riscv64
+> 5816728	5767512	49216	0.85%	qemu-system-mips64
+> 6707832	6659144	48688	0.73%	qemu-system-ppc64
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/exec/helper-gen-common.h |  17 ++++++
->   include/exec/helper-gen.h        | 101 ++-----------------------------
->   include/tcg/tcg-op-common.h      |   2 +-
->   include/exec/helper-gen.h.inc    | 101 +++++++++++++++++++++++++++++++
->   target/arm/tcg/translate.c       |   8 +--
->   5 files changed, 126 insertions(+), 103 deletions(-)
->   create mode 100644 include/exec/helper-gen-common.h
->   create mode 100644 include/exec/helper-gen.h.inc
+>   include/exec/helper-gen.h | 40 ++++++++++++++---------------
+>   include/tcg/tcg.h         | 14 +++++++++-
+>   tcg/tcg.c                 | 54 ++++++++++++++++++++++++++++++++++++++-
+>   3 files changed, 86 insertions(+), 22 deletions(-)
 
-
-> diff --git a/include/exec/helper-gen.h.inc b/include/exec/helper-gen.h.inc
-> new file mode 100644
-> index 0000000000..83bfa5b23f
-> --- /dev/null
-> +++ b/include/exec/helper-gen.h.inc
-> @@ -0,0 +1,101 @@
-> +/*
-> + * Helper file for declaring TCG helper functions.
-> + * This one expands generation functions for tcg opcodes.
-> + * Define HELPER_H for the header file to be expanded,
-> + * and static inline to change from global file scope.
-> + */
-> +
-> +#include "tcg/tcg.h"
-> +#include "tcg/helper-info.h"
-> +#include "exec/helper-head.h"
-> +
-> +#define DEF_HELPER_FLAGS_0(name, flags, ret)                            \
-> +extern TCGHelperInfo glue(helper_info_, name);                          \
-> +static inline void glue(gen_helper_, name)(dh_retvar_decl0(ret))        \
-> +{                                                                       \
-> +    tcg_gen_call0(&glue(helper_info_, name), dh_retvar(ret));           \
-> +}
-[...]
-
-File not guarded for multiple inclusions, otherwise:
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
 
