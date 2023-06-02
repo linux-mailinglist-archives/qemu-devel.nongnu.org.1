@@ -2,78 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A189171FB03
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A0571FB28
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:41:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4zFE-0001oJ-4i; Fri, 02 Jun 2023 03:30:44 -0400
+	id 1q4zNt-0003gJ-8O; Fri, 02 Jun 2023 03:39:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q4zFA-0001l9-2n
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:30:40 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q4zF8-0003vh-2S
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:30:39 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2af1822b710so24936571fa.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 00:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685691036; x=1688283036;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bmjsx7/aQuPxY7+koDqYM+GmeGduwQa3k44K3VetQRk=;
- b=lKz84+StebpvxCDNlKAFETywGW361KNRj7H6qBA42jHX2+Ca2H7vMyNN90PWRGQ9bW
- TE4P7j/JvvBd0uv8dSRk6YPZU4HvXEuloya4rdCEABsqTlaSnEllIxw3CsrIhyL6bVAn
- eV3U4+/6614rgOzuIr/id5uTZOstPLoa7YzIai53oQqoSPYiKk6oOYzgaoq0I/AkLhjb
- 8O44r5hHfXupejR58gdKGgFNHnOttvFI8KKcAadCoKa7Z2ENYrfiHXktKFLRdlhA4QEk
- UwdYrCfb4Cf8aB3pWgfVI5+gEoZLeVr4s+rjaYXbNx4PnJekcneiF3lFj0XURd2OH4Wz
- CL3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685691036; x=1688283036;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bmjsx7/aQuPxY7+koDqYM+GmeGduwQa3k44K3VetQRk=;
- b=UGJPrkpcTiNwpHtzH/JLG2DO1YWR3bLurMifS4/REgrgGPGXex7pZb++tFJiaQshSS
- zK4VMp0s7CoivOy1ujWSzvFQXfjsoh42k2BgN6wWOlVzH9RbpvGjS0Ag22t3HDEDKDSb
- f9KOWkx+HcdigqBszUJGGO7kVrLVMAlosQ+LYQd36w3eE4DSCq+bSlz95w7+61gwrrls
- YneKjOQD6iHArkMgIt0pNP2XjxAbYkb9ClQXLJpazGA+RaLOt3CE3Sm1HhIC9gNIwIYA
- xWQOzbOOaR0s4CbD5oQMqzrGIyj5E34YHzDh9sGQJixsFYcAoiN0+hRDA4gp+7dbn7RL
- J7iw==
-X-Gm-Message-State: AC+VfDxGVBYeNa+8YxKMC5OwcuAHxHmyRdmnmZUcXunv2ewzrnmxVwFr
- jUf6rgQzDUpHdKMV/7kdqCwZACh7XQ0qfqPs2e8=
-X-Google-Smtp-Source: ACHHUZ5aLOict8l5X5vbuRiuUWEjxIs1VfCYDWUMmyXLew3V/apJ/MdR7Q641yw2hwol/AxBPJ2ApNOPf6V52AnYCDs=
-X-Received: by 2002:a2e:300f:0:b0:2b0:a4b1:df6 with SMTP id
- w15-20020a2e300f000000b002b0a4b10df6mr1021117ljw.49.1685691035701; Fri, 02
- Jun 2023 00:30:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1q4zNn-0003fV-Uw
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:39:36 -0400
+Received: from mx20.baidu.com ([111.202.115.85] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1q4zNj-0005Bz-Nh
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:39:34 -0400
+From: Shiyuan Gao <gaoshiyuan@baidu.com>
+To: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <kvm@vger.kernel.org>,
+ <qemu-devel@nongnu.org>
+CC: <likexu@tencent.com>, Shiyuan Gao <gaoshiyuan@baidu.com>
+Subject: [PATCH] kvm: limit the maximum CPUID.0xA.edx[0..4] to 3
+Date: Fri, 2 Jun 2023 15:38:57 +0800
+Message-ID: <20230602073857.96790-1-gaoshiyuan@baidu.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 MIME-Version: 1.0
-References: <cover.1685623090.git.yin31149@gmail.com>
- <afa2e25ae333dba5867e3d839fba785d5d3508c0.1685623090.git.yin31149@gmail.com>
- <CAJaqyWcS6enrAxwcGsi2qVt+7pHOkZg4E+t-=rmvsdPFbN-S6w@mail.gmail.com>
-In-Reply-To: <CAJaqyWcS6enrAxwcGsi2qVt+7pHOkZg4E+t-=rmvsdPFbN-S6w@mail.gmail.com>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Fri, 2 Jun 2023 15:30:23 +0800
-Message-ID: <CAKrof1OSb=0rQJeWgvhiND3jszwYu2X8cNe5o88q7eX61vNehg@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] vdpa: Add vhost_vdpa_net_load_offloads()
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x236.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BJHW-Mail-Ex14.internal.baidu.com (10.127.64.37) To
+ bjkjy-mail-ex26.internal.baidu.com (172.31.50.42)
+X-FEAS-Client-IP: 172.31.51.58
+X-FE-Policy-ID: 15:10:21:SYSTEM
+Received-SPF: pass client-ip=111.202.115.85; envelope-from=gaoshiyuan@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,93 +57,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/6/1 22:12, Eugenio Perez Martin wrote:
-> On Thu, Jun 1, 2023 at 3:49=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com=
-> wrote:
->>
->> This patch introduces vhost_vdpa_net_load_offloads() to
->> restore offloads state at device's startup.
->>
->> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
->> ---
->>   net/vhost-vdpa.c | 38 ++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 38 insertions(+)
->>
->> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->> index e907a3c792..0e647886d1 100644
->> --- a/net/vhost-vdpa.c
->> +++ b/net/vhost-vdpa.c
->> @@ -678,6 +678,40 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
-,
->>       return *s->status !=3D VIRTIO_NET_OK;
->>   }
->>
->> +static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
->> +                                        const VirtIONet *n)
->> +{
->> +    uint64_t offloads;
->> +    ssize_t dev_written;
->> +
->> +    if (!virtio_vdev_has_feature(&n->parent_obj,
->> +                                 VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
->> +        return 0;
->> +    }
->> +
->> +    offloads =3D cpu_to_le64(n->curr_guest_offloads);
->
-> n->curr_guest_offloads is already stored in CPU order, we should only
-> byte-swap it by the time of sending.
+Now, the CPUID.0xA depends on the KVM report. The value of CPUID.0xA.edx[0..4]
+and num_architectural_pmu_fixed_counters are inconsistent when the host kernel
+before this commit 2e8cd7a3b828 ("kvm: x86: limit the maximum number of vPMU
+fixed counters to 3") on icelake microarchitecture.
 
-Yes, you are right.
+This also break the live-migration between source host kernel before commit
+2e8cd7a3b828 and dest host kernel after the commit on icelake microarchitecture.
 
-I will correct it in the v4 patch.
+Signed-off-by: Shiyuan Gao <gaoshiyuan@baidu.com>
+---
+ target/i386/kvm/kvm.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Thanks!
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index de531842f6..e77129b737 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -1761,7 +1761,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+ 
+     X86CPU *cpu = X86_CPU(cs);
+     CPUX86State *env = &cpu->env;
+-    uint32_t limit, i, j, cpuid_i;
++    uint32_t limit, i, j, cpuid_i, cpuid_0xa;
+     uint32_t unused;
+     struct kvm_cpuid_entry2 *c;
+     uint32_t signature[3];
+@@ -1773,6 +1773,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     memset(&cpuid_data, 0, sizeof(cpuid_data));
+ 
+     cpuid_i = 0;
++    cpuid_0xa = 0;
+ 
+     has_xsave2 = kvm_check_extension(cs->kvm_state, KVM_CAP_XSAVE2);
+ 
+@@ -2045,6 +2046,9 @@ int kvm_arch_init_vcpu(CPUState *cs)
+             c->function = i;
+             c->flags = 0;
+             cpu_x86_cpuid(env, i, 0, &c->eax, &c->ebx, &c->ecx, &c->edx);
++            if (0x0a == i) {
++                cpuid_0xa = cpuid_i - 1;
++            }
+             if (!c->eax && !c->ebx && !c->ecx && !c->edx) {
+                 /*
+                  * KVM already returns all zeroes if a CPUID entry is missing,
+@@ -2059,7 +2063,11 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     if (limit >= 0x0a) {
+         uint32_t eax, edx;
+ 
+-        cpu_x86_cpuid(env, 0x0a, 0, &eax, &unused, &unused, &edx);
++        assert(cpuid_0xa >= 0x0a);
++
++        c = &cpuid_data.entries[cpuid_0xa];
++        eax = c->eax;
++        edx = c->edx;
+ 
+         has_architectural_pmu_version = eax & 0xff;
+         if (has_architectural_pmu_version > 0) {
+@@ -2078,6 +2086,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+ 
+                 if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+                     num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
++                    c->edx = (edx & ~0x1f) | num_architectural_pmu_fixed_counters;
+                 }
+             }
+         }
+-- 
+2.36.1
 
-
->
-> Thanks!
->
->> +
->> +    if (offloads =3D=3D virtio_net_supported_guest_offloads(n)) {
->> +        /*
->> +         * According to VirtIO standard, "Upon feature negotiation
->> +         * corresponding offload gets enabled to preserve
->> +         * backward compatibility."
->> +         * So we do not need to send this CVQ command if the guest
->> +         * also enables all supported offloads.
->> +         */
->> +        return 0;
->> +    }
->> +
->> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OF=
-FLOADS,
->> +                                          VIRTIO_NET_CTRL_GUEST_OFFLOAD=
-S_SET,
->> +                                          &offloads, sizeof(offloads));
->> +    if (unlikely(dev_written < 0)) {
->> +        return dev_written;
->> +    }
->> +
->> +    return *s->status !=3D VIRTIO_NET_OK;
->> +}
->> +
->>   static int vhost_vdpa_net_load(NetClientState *nc)
->>   {
->>       VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
->> @@ -700,6 +734,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
->>       if (unlikely(r)) {
->>           return r;
->>       }
->> +    r =3D vhost_vdpa_net_load_offloads(s, n);
->> +    if (unlikely(r)) {
->> +        return r;
->> +    }
->>
->>       return 0;
->>   }
->> --
->> 2.25.1
->>
->
 
