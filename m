@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8332671FA61
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 08:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB13771FA65
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 08:57:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4yg4-0006Rx-1j; Fri, 02 Jun 2023 02:54:24 -0400
+	id 1q4yiK-0008O6-Fz; Fri, 02 Jun 2023 02:56:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4yg1-0006R5-74; Fri, 02 Jun 2023 02:54:21 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1q4yiI-0008Ma-8F; Fri, 02 Jun 2023 02:56:42 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4yfz-0001a6-JY; Fri, 02 Jun 2023 02:54:20 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-53063897412so1657194a12.0; 
- Thu, 01 Jun 2023 23:54:18 -0700 (PDT)
+ id 1q4yiG-00042P-J5; Fri, 02 Jun 2023 02:56:42 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-39a523e8209so1164945b6e.0; 
+ Thu, 01 Jun 2023 23:56:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685688857; x=1688280857;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20221208; t=1685688999; x=1688280999;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mhsP7kPghhCnOJGguJUOYnjJ0tIplNDiIlEM7LnbqiI=;
- b=Se02nxvupDaRaP3noQSi7VwUJy1BcnQKe/UmMkDZHb9MK10DBAAZz+G4p1sZsEnrcr
- tY7IF6Mjjne2uYm+DXg+pAdSwdRlfFUfMHhb8AatjTrS1GIo+3YOQOsuVEhYRwbzpssf
- C97RCiobw06N943ne0boxw0lm3E7FNJH20cKf4bp5azCP5hLsAUyshShxdkwjX22yayB
- NxqwRCT05ub5herre4rNRUwNqDwB4oI4tyEONyhFyVj2BbWpi3DnA9E/u7v4zUBWheY9
- kVoQEGCKl9cJYa1oR0C5/cBHo73pYSpfwqxzMADgoxXbdvdwznlVHRM/SkBWERy9mfpN
- Qouw==
+ bh=BssOITr/RZ0nrm7d0WqGL+8ATaMqZUE2V2wM8kNVZvg=;
+ b=O+kdxt6JxWAOO6DaUXL2CujDtiumwKNcr8/j9IN2fkNdqy+aSsAsfHiePROh6jZqA1
+ 8FYfwyHswKUyYP6PexAGhJbfRhcfnul2n/dsWBEyKJC75p5nZMdmEtV4OLY/CxZaE+0y
+ Rmno9Ph3sDsM2D9tYClOF/dzQuPT2AWrLpWuMuZGfOktIKj+qsyqk7W/vtx6sTHwQCMI
+ w7NIuLvvpf3yS3ZUu47RQS5+fR7qi9fMyYSP3+8rKmeiltc7DmZbXKonIejTUxEx7Ksg
+ vMXO0mArka56jwyZTUXU/OcX9lBpo1pVaZ/B/u08TF/aYRj9BwqAxkDPKnlNSml39lkS
+ wbkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685688857; x=1688280857;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20221208; t=1685688999; x=1688280999;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=mhsP7kPghhCnOJGguJUOYnjJ0tIplNDiIlEM7LnbqiI=;
- b=OEqw7WG7kXzEaEimIT5qWquFngHZ7T/nfE5NZHWsUuwHnoMht/R9N30c4OXPeSZLV6
- N6cCzv7hl7QSVwCyBQBR/p192y2bjSX5XTw75IDdzOm+QvHjo6ESox6nuCGnUtCoRpIJ
- NduQW1d6fYYOAf2zNvo+8xpULgekUYUpYgI+OMt1MnLi79jzysplsxgx7Ih8KCW9Ueku
- IgoaVoK0rxuWbn41V6f3vLINmk3Ik+KdGT2Y05CbeLUWxGWGuXIdCVh0vF3PUSfEdY2A
- +L/44rgIdNcj77raNUCBG5Hq1QojmFp/HnzPB0zo4ZBcPUyLRrXJ2ffRmVXel4vYo7Mh
- h4Jw==
-X-Gm-Message-State: AC+VfDyWr6DyoYuE3ojsJn0pFHuDFxmC6xQ0Ch+IWe6Yv9Qj+nzM9BwU
- l1Qo7cUBcOS3cPa9rJywDho=
-X-Google-Smtp-Source: ACHHUZ6YYSzczIRm7Rur7m9u4VfQdfVdfR/KU1Pz329IYm7wWjcGr6P9PpvBirMZIEY+EBU21vxFSA==
-X-Received: by 2002:a17:90a:9d87:b0:258:9174:20ca with SMTP id
- k7-20020a17090a9d8700b00258917420camr1612560pjp.15.1685688857039; 
- Thu, 01 Jun 2023 23:54:17 -0700 (PDT)
+ bh=BssOITr/RZ0nrm7d0WqGL+8ATaMqZUE2V2wM8kNVZvg=;
+ b=CxJpvJbU7pOY7krtHQcY6mCw22v79BOpBKLo3KnfNGFF4AcYIRrvE3X2zPc4oMXxey
+ y55qVOHdrQfYnImjBlwfKAh0cxo7on8glsP7pvCdkWJA9j4a25rCtFk352FfOfpBaZN3
+ ojpO7AG/EJOMpC7K2cSPVNhIgeTa9QK2qhKRBOHG/kordSiNp1KD+P5Lq/IRj7cD2hmx
+ RntWnsyXCqTI+Gz/s4v014P1VBrH5yENqwSWeLZ1YGlgzfngPp/ELs6TIE5M459WvmZT
+ hJ6TZp+u62ksed8FM/t7zUMKCZvxaEEVh15B8gO73VfiIIZJedQn4Tny3j9nzPk0qWsq
+ ohtg==
+X-Gm-Message-State: AC+VfDw0E/JEPFjt+IYZHBBP0brsTeBssglbKa9g/OOHWh0oBW9eQSI9
+ SgqSqBNBh00XWQ/Jp/5vSYM=
+X-Google-Smtp-Source: ACHHUZ6yAyhJojngDmelAgMoWfUG2/5zYnuw+KRe2KjAQp/1UqR1Vj1UcfAy+Qfvd3q4kkEcZTfHiQ==
+X-Received: by 2002:aca:1b18:0:b0:395:dd8c:f852 with SMTP id
+ b24-20020aca1b18000000b00395dd8cf852mr1177906oib.42.1685688999029; 
+ Thu, 01 Jun 2023 23:56:39 -0700 (PDT)
 Received: from localhost ([1.146.22.171]) by smtp.gmail.com with ESMTPSA id
- 10-20020a17090a194a00b00250cf4e7d25sm2553326pjh.41.2023.06.01.23.54.13
+ u4-20020aa78484000000b0064381853bfcsm361687pfn.89.2023.06.01.23.56.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 23:54:16 -0700 (PDT)
+ Thu, 01 Jun 2023 23:56:38 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 02 Jun 2023 16:54:10 +1000
-Message-Id: <CT1YTR278291.2FJPGF168R0VU@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>
-Subject: Re: [RFC PATCH 2/5] target/ppc: Add initial flags and helpers for
- SMT support
+Date: Fri, 02 Jun 2023 16:56:31 +1000
+Message-Id: <CT1YVK35L3UT.2CY7LU5L7GDG4@wheely>
+Subject: Re: [RFC PATCH 4/5] target/ppc: Add msgsnd/p and DPDES SMT support
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <dbarboza@ventanamicro.com>
 X-Mailer: aerc 0.14.0
 References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-3-npiggin@gmail.com>
- <fa528286-13f7-ef7c-0472-8e02d0340c10@kaod.org>
-In-Reply-To: <fa528286-13f7-ef7c-0472-8e02d0340c10@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x533.google.com
+ <20230531012313.19891-5-npiggin@gmail.com>
+ <60f0d393-f0b5-cc06-feff-a8f00e5a32b3@kaod.org>
+In-Reply-To: <60f0d393-f0b5-cc06-feff-a8f00e5a32b3@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,52 +92,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed May 31, 2023 at 5:25 PM AEST, C=C3=A9dric Le Goater wrote:
+On Thu Jun 1, 2023 at 5:13 PM AEST, C=C3=A9dric Le Goater wrote:
 > On 5/31/23 03:23, Nicholas Piggin wrote:
-> > SMT TCG emulation needs to be able to iterate over siblings in a core,
-> > and needs to serialise core access to shared SPRs and state.
+> > Doorbells in SMT need to coordinate msgsnd/msgclr and DPDES access from
+> > multiple threads that affect the same state.
 > >=20
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
-> >   target/ppc/cpu.h       |  9 +++++++++
-> >   target/ppc/cpu_init.c  |  5 +++++
-> >   target/ppc/translate.c | 20 ++++++++++++++++++++
-> >   3 files changed, 34 insertions(+)
+> >   hw/ppc/ppc.c                                  |  6 ++
+> >   include/hw/ppc/ppc.h                          |  1 +
+> >   target/ppc/cpu.h                              |  7 +-
+> >   target/ppc/excp_helper.c                      | 86 +++++++++++++-----=
+-
+> >   target/ppc/gdbstub.c                          |  2 +-
+> >   target/ppc/helper.h                           |  2 +-
+> >   target/ppc/misc_helper.c                      | 60 +++++++++++--
+> >   target/ppc/translate.c                        |  8 ++
+> >   .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
+> >   9 files changed, 140 insertions(+), 34 deletions(-)
 > >=20
-> > diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> > index 1f23b81e90..b594408a8d 100644
-> > --- a/target/ppc/cpu.h
-> > +++ b/target/ppc/cpu.h
-> > @@ -672,6 +672,8 @@ enum {
-> >       POWERPC_FLAG_TM       =3D 0x00100000,
-> >       /* Has SCV (ISA 3.00)                                            =
-        */
-> >       POWERPC_FLAG_SCV      =3D 0x00200000,
-> > +    /* Has >1 thread per core                                         =
-       */
-> > +    POWERPC_FLAG_SMT      =3D 0x00400000,
-> >   };
+> > diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+> > index 80b4706db2..e30853413b 100644
+> > --- a/hw/ppc/ppc.c
+> > +++ b/hw/ppc/ppc.c
+> > @@ -1434,6 +1434,12 @@ int ppc_cpu_pir(PowerPCCPU *cpu)
+> >       return env->spr_cb[SPR_PIR].default_value;
+> >   }
+> >  =20
+> > +int ppc_cpu_tir(PowerPCCPU *cpu)
+> > +{
+> > +    CPUPPCState *env =3D &cpu->env;
+> > +    return env->spr_cb[SPR_PIR].default_value;
+>
+> PIR or TIR ?
+
+Good catch, I think I "tidied" that up before sending it :\
+
+> > @@ -3154,22 +3172,42 @@ void helper_book3s_msgclrp(CPUPPCState *env, ta=
+rget_ulong rb)
+> >   }
 > >  =20
 > >   /*
-> > @@ -1266,6 +1268,13 @@ struct CPUArchState {
-> >       uint64_t pmu_base_time;
-> >   };
+> > - * sends a message to other threads that are on the same
+> > + * sends a message to another thread  on the same
+> >    * multi-threaded processor
+> >    */
+> >   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+> >   {
+> > -    int pir =3D env->spr_cb[SPR_PIR].default_value;
+> > +    CPUState *cs =3D env_cpu(env);
+> > +    PowerPCCPU *cpu =3D POWERPC_CPU(cs);
+> > +    CPUState *ccs;
+> > +    uint32_t nr_threads =3D cs->nr_threads;
+> > +    int ttir =3D rb & PPC_BITMASK(57, 63);
 > >  =20
-> > +#define _CORE_ID(cs)                                            \
-> > +    (POWERPC_CPU(cs)->env.spr_cb[SPR_PIR].default_value & ~(cs->nr_thr=
-eads - 1))
-> > +
-> > +#define THREAD_SIBLING_FOREACH(cs, cs_sibling)			\
-> > +    CPU_FOREACH(cs_sibling)                                     \
-> > +        if (_CORE_ID(cs) =3D=3D _CORE_ID(cs_sibling))
-> > +
+> >       helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_=
+MSGP);
+> >  =20
+> > -    if (!dbell_type_server(rb)) {
+> > +    if (!dbell_type_server(rb) || ttir >=3D nr_threads) {
 >
->
-> May be introduce these helpers when needed (and if needed).
+> may be log bad ttir values ? even if the insn is a no-op in that case,
+> telling the user would be good since it should be a guest os issue
 
-Yeah that's a good idea, I tried to structure it so you could see
-the main components first, but for a real patch it might indeed be
-better add them as needed.
+Yeah. We don't seem to do that on a systematic basis in PPC but we
+probably should. It's certainly helped me before when I've got
+something wrong. Good idea.
+
+> > @@ -192,14 +192,38 @@ void helper_store_pcr(CPUPPCState *env, target_ul=
+ong value)
+> >    */
+> >   target_ulong helper_load_dpdes(CPUPPCState *env)
+> >   {
+> > +    CPUState *cs =3D env_cpu(env);
+> > +    CPUState *ccs;
+> > +    uint32_t nr_threads =3D cs->nr_threads;
+> > +    uint32_t core_id =3D env->spr[SPR_PIR] & ~(nr_threads - 1);
+>
+> you could add an helper for the above.
+
+Yes.
 
 Thanks,
 Nick
