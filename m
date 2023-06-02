@@ -2,55 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1B371FE3E
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3279E71FE60
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:55:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51QD-0006iL-DX; Fri, 02 Jun 2023 05:50:16 -0400
+	id 1q51Ug-0000xQ-1M; Fri, 02 Jun 2023 05:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmenzel@molgen.mpg.de>)
- id 1q51Q6-0006i7-2t
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:50:06 -0400
-Received: from mx3.molgen.mpg.de ([141.14.17.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmenzel@molgen.mpg.de>)
- id 1q51Q1-0003fU-6U
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:50:03 -0400
-Received: from [192.168.0.2] (ip5f5aebf4.dynamic.kabel-deutschland.de
- [95.90.235.244])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 1B42461EA1BFF;
- Fri,  2 Jun 2023 11:49:41 +0200 (CEST)
-Message-ID: <922a692d-8968-06f7-ac2b-85eb52668c89@molgen.mpg.de>
-Date: Fri, 2 Jun 2023 11:49:40 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51Ud-0000wE-Rs
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:54:47 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51Ub-0006VI-LJ
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:54:47 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3f6094cb2d2so18923805e9.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:54:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685699683; x=1688291683;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0R8n9l1An4oHkYxacOYdoliX3xQxde1GXBo5VdICKE0=;
+ b=xm5N2zhsAHo9ha4Ztn841vhyal1i/oi4rB/I4MFoyJc17YuzPFP+cz69ejwI4Qhhsd
+ tzc6ayE1oAqwvVHf+zKzbBrSZXjFLoi1+0Qli/dopc21vDnextqoTXKekaecORaQxAlC
+ 5hMHxr5aKECwEKTivLx0zhFa3vGtmKuAu6jzMb8jlx/5onRhoj73ilSqXzrkHnG1cIBe
+ jpbl51cdqJ81KUgBEY3e7/R/7qB95Z4seKxsE4JxKZUWsV+rw6xGWSSEPLBOpZkVzNhZ
+ JmIkVOyOv6Zq6+vS3RBjSIk4QMt6w7WqcjnanfozySv77EITL2G63Wx41pPBvvUHxEED
+ xynQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685699683; x=1688291683;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0R8n9l1An4oHkYxacOYdoliX3xQxde1GXBo5VdICKE0=;
+ b=DaWTId5AV/48XKMNa7vlEsqljJpjIDd40U6pr4a06QGc8ENoHqt++jEmz5WTcdBbLy
+ AWxyjzMLsRalqExqBolobi6aJ/nPde9iICsuXH5c+47HTQrTKa2lCca3lmaSOBsgQ+IU
+ w9QlJTRnr1410SsvPCSVfYjYS0nwId2SEMxb2KZOtfLGBFp34UXjpgRSQIw8Vdwefkqb
+ A6fGyCaHaNBy121qsHbfEo1MraNgc9ozl5tMpRyRB10SqzPcuE1vG/i423Lvb+lWn6lY
+ wVbVWIY2qTTWCSCUGQjVcJF1h+cQ8WMPefzKSik5x/RYPR839PE/cITd/GnPDd5HRLPI
+ SxEQ==
+X-Gm-Message-State: AC+VfDw6cl5ObG+ctv3wl9vfrfGhzITSwE/eBha7XrXkxI4mm3Yc6i9D
+ Jst8vN1jBw5plPvFlfAU3bFC0bUVEA4XLg5EJR8=
+X-Google-Smtp-Source: ACHHUZ42YZR157J7QqAiyTL2xLBFJUxWwXNVHSDY2mx8KhmMYT7tPxPWU/MMJ+rXeJ5YQzKEHdh/Dw==
+X-Received: by 2002:a1c:f719:0:b0:3f6:766:f76f with SMTP id
+ v25-20020a1cf719000000b003f60766f76fmr1468299wmh.36.1685699682811; 
+ Fri, 02 Jun 2023 02:54:42 -0700 (PDT)
+Received: from localhost.localdomain ([176.187.218.254])
+ by smtp.gmail.com with ESMTPSA id
+ o10-20020a1c750a000000b003f60482024fsm1408320wmc.30.2023.06.02.02.54.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 02 Jun 2023 02:54:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Greg Kurz <groug@kaod.org>, David Gibson <david@gibson.dropbear.id.au>,
+ qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 35.5] target/pcc: Inline gen_icount_io_start()
+Date: Fri,  2 Jun 2023 11:54:39 +0200
+Message-Id: <20230602095439.48102-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230531040330.8950-36-richard.henderson@linaro.org>
+References: <20230531040330.8950-36-richard.henderson@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [Intel-wired-lan] [PATCH] e1000e: Add ICR clearing by
- corresponding IMS bit
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Andrew Melnychenko <andrew@daynix.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
- <jasowang@redhat.com>, qemu-devel@nongnu.org,
- intel-wired-lan@lists.osuosl.org
-References: <20230602072516.42502-1-akihiko.odaki@daynix.com>
- <84950b01-b88e-fec5-fe5f-eb4eeddee3d1@molgen.mpg.de>
-In-Reply-To: <84950b01-b88e-fec5-fe5f-eb4eeddee3d1@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=141.14.17.11; envelope-from=pmenzel@molgen.mpg.de;
- helo=mx3.molgen.mpg.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,127 +94,319 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[Removed bpoirier@suse.com from Cc: again.]
+Now that gen_icount_io_start() is a simple wrapper to
+translator_io_start(), inline it.
 
-Am 02.06.23 um 11:41 schrieb Paul Menzel:
-> Dear Akihiko,
-> 
-> 
-> Thank you for your patch.
-> 
-> After looking at the diff, it looks like this is a QEMU patch, and not 
-> one for the Linux kernel. I leave my inline comments anyway.
-> 
-> 
-> Am 02.06.23 um 09:25 schrieb Akihiko Odaki:
-> 
-> It’d be nice if you started by summarizing the bug.
-> 
->> The datasheet does not say what happens when interrupt was asserted
->> (ICR.INT_ASSERT=1) and auto mask is *not* active.
-> 
-> Personal nit: For better legibility, I’d separate paragraphs by an empty 
-> line, or – in this case – I wouldn’t wrap the line, just because a 
-> sentence ends.
-> 
->> However, section of 13.3.27 the PCIe* GbE Controllers Open Source
->> Software Developer’s Manual, which were written for older devices,
->> namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
->> 82573E/82573V/82573L, does say:
->>> If IMS = 0b, then the ICR register is always clear-on-read. If IMS is
->>> not 0b, but some ICR bit is set where the corresponding IMS bit is not
->>> set, then a read does not clear the ICR register. For example, if
->>> IMS = 10101010b and ICR = 01010101b, then a read to the ICR register
->>> does not clear it. If IMS = 10101010b and ICR = 0101011b, then a read
->>> to the ICR register clears it entirely (ICR.INT_ASSERTED = 1b).
->>
->> Linux does no longer activate auto mask since commit
->> 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware clears
->> ICR even in such a case so we also should do so.
-> 
-> … since commit 0a8047ac68e5 (e1000e: Fix msi-x interrupt automask) …
-> 
->> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1707441
->> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->> Supersedes: <20201203133236.222207-1-andrew@daynix.com>
->> ("[PATCH v2] e1000e: Added ICR clearing by corresponding IMS bit.")
->>
->>   hw/net/e1000e_core.c | 38 ++++++++++++++++++++++++++++++++------
->>   hw/net/trace-events  |  1 +
->>   2 files changed, 33 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
->> index 9785ef279c..338bbbf4f4 100644
->> --- a/hw/net/e1000e_core.c
->> +++ b/hw/net/e1000e_core.c
->> @@ -2607,12 +2607,38 @@ e1000e_mac_icr_read(E1000ECore *core, int index)
->>           e1000e_lower_interrupts(core, ICR, 0xffffffff);
->>       }
->> -    if ((core->mac[ICR] & E1000_ICR_ASSERTED) &&
->> -        (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME)) {
->> -        trace_e1000e_irq_icr_clear_iame();
->> -        e1000e_lower_interrupts(core, ICR, 0xffffffff);
->> -        trace_e1000e_irq_icr_process_iame();
->> -        e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
->> +    if (core->mac[ICR] & E1000_ICR_ASSERTED) {
->> +        if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME) {
->> +            trace_e1000e_irq_icr_clear_iame();
->> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
->> +            trace_e1000e_irq_icr_process_iame();
->> +            e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
->> +        }
->> +
->> +        /*
->> +         * The datasheet does not say what happens when interrupt was asserted
-> 
-> I believe the network subsystem has a different commenting style than 
-> the rest of the Linux source code.
-> 
->> +         * (ICR.INT_ASSERT=1) and auto mask is *not* active.
->> +         * However, section of 13.3.27 the PCIe* GbE Controllers Open Source
->> +         * Software Developer’s Manual, which were written for older devices,
->> +         * namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
->> +         * 82573E/82573V/82573L, does say:
-> 
-> I’d add a blank line below.
-> 
->> +         * > If IMS = 0b, then the ICR register is always clear-on-read. If IMS
->> +         * > is not 0b, but some ICR bit is set where the corresponding IMS bit
->> +         * > is not set, then a read does not clear the ICR register. For
->> +         * > example, if IMS = 10101010b and ICR = 01010101b, then a read to the
->> +         * > ICR register does not clear it. If IMS = 10101010b and
->> +         * > ICR = 0101011b, then a read to the ICR register clears it entirely
->> +         * > (ICR.INT_ASSERTED = 1b).
->> +         *
->> +         * Linux does no longer activate auto mask since commit
->> +         * 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware
->> +         * clears ICR even in such a case so we also should do so.
->> +         */
->> +        if (core->mac[ICR] & core->mac[IMS]) {
->> +            trace_e1000e_irq_icr_clear_icr_bit_ims(core->mac[ICR],
->> +                                                   core->mac[IMS]);
->> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
->> +        }
->>       }
->>       return ret;
->> diff --git a/hw/net/trace-events b/hw/net/trace-events
->> index e97e9dc17b..9103488e17 100644
->> --- a/hw/net/trace-events
->> +++ b/hw/net/trace-events
->> @@ -217,6 +217,7 @@ e1000e_irq_read_ims(uint32_t ims) "Current IMS: 0x%x"
->>   e1000e_irq_icr_clear_nonmsix_icr_read(void) "Clearing ICR on read 
->> due to non MSI-X int"
->>   e1000e_irq_icr_clear_zero_ims(void) "Clearing ICR on read due to zero IMS"
->>   e1000e_irq_icr_clear_iame(void) "Clearing ICR on read due to IAME"
->> +e1000e_irq_icr_clear_icr_bit_ims(uint32_t icr, uint32_t ims) "Clearing ICR on read due corresponding IMS bit: 0x%x & 0x%x"
->>   e1000e_irq_iam_clear_eiame(uint32_t iam, uint32_t cause) "Clearing IMS due to EIAME, IAM: 0x%X, cause: 0x%X"
->>   e1000e_irq_icr_clear_eiac(uint32_t icr, uint32_t eiac) "Clearing ICR bits due to EIAC, ICR: 0x%X, EIAC: 0x%X"
->>   e1000e_irq_ims_clear_set_imc(uint32_t val) "Clearing IMS bits due to IMC write 0x%x"
-> 
-> 
-> Kind regards,
-> 
-> Paul
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/ppc/translate.c                 | 63 ++++++++++++--------------
+ target/ppc/power8-pmu-regs.c.inc       | 10 ++--
+ target/ppc/translate/branch-impl.c.inc |  2 +-
+ 3 files changed, 35 insertions(+), 40 deletions(-)
+
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 519f66bb05..37fd431870 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -296,15 +296,10 @@ static void gen_exception_nip(DisasContext *ctx, uint32_t excp,
+     ctx->base.is_jmp = DISAS_NORETURN;
+ }
+ 
+-static void gen_icount_io_start(DisasContext *ctx)
+-{
+-    translator_io_start(&ctx->base);
+-}
+-
+ #if !defined(CONFIG_USER_ONLY)
+ static void gen_ppc_maybe_interrupt(DisasContext *ctx)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_ppc_maybe_interrupt(cpu_env);
+ }
+ #endif
+@@ -541,13 +536,13 @@ void spr_write_ureg(DisasContext *ctx, int sprn, int gprn)
+ #if !defined(CONFIG_USER_ONLY)
+ void spr_read_decr(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_decr(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_write_decr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_decr(cpu_env, cpu_gpr[gprn]);
+ }
+ #endif
+@@ -556,13 +551,13 @@ void spr_write_decr(DisasContext *ctx, int sprn, int gprn)
+ /* Time base */
+ void spr_read_tbl(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_tbl(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_read_tbu(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_tbu(cpu_gpr[gprn], cpu_env);
+ }
+ 
+@@ -579,13 +574,13 @@ void spr_read_atbu(DisasContext *ctx, int gprn, int sprn)
+ #if !defined(CONFIG_USER_ONLY)
+ void spr_write_tbl(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_tbl(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_write_tbu(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_tbu(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+@@ -602,44 +597,44 @@ void spr_write_atbu(DisasContext *ctx, int sprn, int gprn)
+ #if defined(TARGET_PPC64)
+ void spr_read_purr(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_purr(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_write_purr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_purr(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ /* HDECR */
+ void spr_read_hdecr(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_hdecr(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_write_hdecr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_hdecr(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_read_vtb(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_vtb(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_write_vtb(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_vtb(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_write_tbu40(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_tbu40(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+@@ -784,19 +779,19 @@ void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
+ #if !defined(CONFIG_USER_ONLY)
+ void spr_read_40x_pit(DisasContext *ctx, int gprn, int sprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_load_40x_pit(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_write_40x_pit(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_40x_pit(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_write_40x_dbcr0(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_store_spr(sprn, cpu_gpr[gprn]);
+     gen_helper_store_40x_dbcr0(cpu_env, cpu_gpr[gprn]);
+     /* We must stop translation as we may have rebooted */
+@@ -805,19 +800,19 @@ void spr_write_40x_dbcr0(DisasContext *ctx, int sprn, int gprn)
+ 
+ void spr_write_40x_sler(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_40x_sler(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_write_40x_tcr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_40x_tcr(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_write_40x_tsr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_40x_tsr(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+@@ -830,13 +825,13 @@ void spr_write_40x_pid(DisasContext *ctx, int sprn, int gprn)
+ 
+ void spr_write_booke_tcr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_booke_tcr(cpu_env, cpu_gpr[gprn]);
+ }
+ 
+ void spr_write_booke_tsr(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_booke_tsr(cpu_env, cpu_gpr[gprn]);
+ }
+ #endif
+@@ -2462,7 +2457,7 @@ static void gen_darn(DisasContext *ctx)
+     if (l > 2) {
+         tcg_gen_movi_i64(cpu_gpr[rD(ctx->opcode)], -1);
+     } else {
+-        gen_icount_io_start(ctx);
++        translator_io_start(&ctx->base);
+         if (l == 0) {
+             gen_helper_darn32(cpu_gpr[rD(ctx->opcode)]);
+         } else {
+@@ -4056,7 +4051,7 @@ static void pmu_count_insns(DisasContext *ctx)
+      * running with icount and we do not handle it beforehand,
+      * the helper can trigger a 'bad icount read'.
+      */
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+ 
+     /* Avoid helper calls when only PMC5-6 are enabled. */
+     if (!ctx->pmc_other) {
+@@ -4369,7 +4364,7 @@ static void gen_rfi(DisasContext *ctx)
+     }
+     /* Restore CPU state */
+     CHK_SV(ctx);
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_update_cfar(ctx, ctx->cia);
+     gen_helper_rfi(cpu_env);
+     ctx->base.is_jmp = DISAS_EXIT;
+@@ -4384,7 +4379,7 @@ static void gen_rfid(DisasContext *ctx)
+ #else
+     /* Restore CPU state */
+     CHK_SV(ctx);
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_update_cfar(ctx, ctx->cia);
+     gen_helper_rfid(cpu_env);
+     ctx->base.is_jmp = DISAS_EXIT;
+@@ -4399,7 +4394,7 @@ static void gen_rfscv(DisasContext *ctx)
+ #else
+     /* Restore CPU state */
+     CHK_SV(ctx);
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_update_cfar(ctx, ctx->cia);
+     gen_helper_rfscv(cpu_env);
+     ctx->base.is_jmp = DISAS_EXIT;
+@@ -4724,7 +4719,7 @@ static void gen_mtmsrd(DisasContext *ctx)
+     t0 = tcg_temp_new();
+     t1 = tcg_temp_new();
+ 
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+ 
+     if (ctx->opcode & 0x00010000) {
+         /* L=1 form only updates EE and RI */
+@@ -4764,7 +4759,7 @@ static void gen_mtmsr(DisasContext *ctx)
+     t0 = tcg_temp_new();
+     t1 = tcg_temp_new();
+ 
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     if (ctx->opcode & 0x00010000) {
+         /* L=1 form only updates EE and RI */
+         mask &= (1ULL << MSR_RI) | (1ULL << MSR_EE);
+diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
+index d900e13cad..c82feedaff 100644
+--- a/target/ppc/power8-pmu-regs.c.inc
++++ b/target/ppc/power8-pmu-regs.c.inc
+@@ -103,9 +103,9 @@ static void write_MMCR0_common(DisasContext *ctx, TCGv val)
+     /*
+      * helper_store_mmcr0 will make clock based operations that
+      * will cause 'bad icount read' errors if we do not execute
+-     * gen_icount_io_start() beforehand.
++     * translator_io_start() beforehand.
+      */
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_mmcr0(cpu_env, val);
+ 
+     /*
+@@ -179,7 +179,7 @@ void spr_read_PMC(DisasContext *ctx, int gprn, int sprn)
+ {
+     TCGv_i32 t_sprn = tcg_constant_i32(sprn);
+ 
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_read_pmc(cpu_gpr[gprn], cpu_env, t_sprn);
+ }
+ 
+@@ -212,7 +212,7 @@ void spr_write_PMC(DisasContext *ctx, int sprn, int gprn)
+ {
+     TCGv_i32 t_sprn = tcg_constant_i32(sprn);
+ 
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_pmc(cpu_env, t_sprn, cpu_gpr[gprn]);
+ }
+ 
+@@ -248,7 +248,7 @@ void spr_write_MMCR0(DisasContext *ctx, int sprn, int gprn)
+ 
+ void spr_write_MMCR1(DisasContext *ctx, int sprn, int gprn)
+ {
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_store_mmcr1(cpu_env, cpu_gpr[gprn]);
+ }
+ #else
+diff --git a/target/ppc/translate/branch-impl.c.inc b/target/ppc/translate/branch-impl.c.inc
+index 29cfa11854..f9931b9d73 100644
+--- a/target/ppc/translate/branch-impl.c.inc
++++ b/target/ppc/translate/branch-impl.c.inc
+@@ -16,7 +16,7 @@ static bool trans_RFEBB(DisasContext *ctx, arg_XL_s *arg)
+ {
+     REQUIRE_INSNS_FLAGS2(ctx, ISA207S);
+ 
+-    gen_icount_io_start(ctx);
++    translator_io_start(&ctx->base);
+     gen_update_cfar(ctx, ctx->cia);
+     gen_helper_rfebb(cpu_env, cpu_gpr[arg->s]);
+ 
+-- 
+2.38.1
+
 
