@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3BD71F915
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 06:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8DA71F93B
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 06:19:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4w07-0004Ia-Pi; Fri, 02 Jun 2023 00:02:55 -0400
+	id 1q4wEn-00075m-9V; Fri, 02 Jun 2023 00:18:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4w05-0004IR-P0
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 00:02:53 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q4wEl-00075Q-By; Fri, 02 Jun 2023 00:18:03 -0400
+Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q4w04-0006t0-6i
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 00:02:53 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6af81142b6dso1502932a34.2
- for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 21:02:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q4wEj-0005fn-5v; Fri, 02 Jun 2023 00:18:02 -0400
+Received: by mail-ua1-x92d.google.com with SMTP id
+ a1e0cc1a2514c-783f88ce557so602788241.3; 
+ Thu, 01 Jun 2023 21:18:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685678571; x=1688270571;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WXT42PC1uIWrRxogdNu3uLfbr804fzBo9BWphs3Puhk=;
- b=Ov1nh+p4gDf+QHGc0bmzqt91fj/J4CCIdxZrcKP2vNqllmf4pWClvC+PPsAtt5BDZT
- 89bg+6Kwr0vNIIQPjN+8VZ9qZTRbxWkOXfZupCvSA0ijONDwL5NEXWgPfzYUoLKI59Es
- cPvuYuTaB2HaT/2BDnm/0uGNAKvAMRiD3tE874ZephI7t1W3QN5O1e4AlC62FlOVdmgj
- 4nO0Hc+Rw2A/dWznshz9fdESxYJ1Nxktly+ZIDN2wPJYk/DFOCij4DKUT6JQ9cwmQyhq
- Pheyq9BIWct1efcGgcaXfqMn7dM0KW1uriPPj/fK1kpM5MEl0nSNmR007TuBYxs1wKo5
- YQeQ==
+ d=gmail.com; s=20221208; t=1685679479; x=1688271479;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sfnS3Ss2unv4dgYVAG7D50gKcm9DhNLu2TnjcCoEDto=;
+ b=ciNBFsES5aUnkLVJWmrgV3O6NiL72a27qXV7Ulz6aN1sBex06fG/RtXxcdQz1X8ZFR
+ mpgVHBO5gmt3D2MYKfXUJPMSHONpf8Q9/1OZl9D8Rf5XWmg0ikiUU9tVDZZKKooNflli
+ EAWwSFLWQDGxCV+rSmX6qNuK2of0qoKn0bJktMdvhwLwAv2gXcsC+65CTEKTmxpd0n7o
+ IBzAI7QeIAg7m6q9jmRuSC8jwQs1qOG1i4252OFNv+XMIw7h9DssVDpkSutQpZ7XJ5OT
+ zPInzl7MPhfjTABbHcjEUhcF2w/5V9bbp36pjouaO8HIgqSIjLNCyjfDafAgUrQLWmQT
+ Sy0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685678571; x=1688270571;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WXT42PC1uIWrRxogdNu3uLfbr804fzBo9BWphs3Puhk=;
- b=Lue3Hlh+lHQqQuvjbo6LUfsnPAyIjRkHbZPjkqoKTV3jsmhLc1n/sFGxAhHv4kSrOu
- 4/cqRttQ9ZJOrj4oFx8h9dvPnZV4zKeKuA8tPTRUfz83hKgzldogylkAw3RSRlSll1pa
- XhuCP8xSYjn49/NcLxNgqvSqrustRPTqvMbC4LSsDKV1pXSFXOdYvDqwj/iKZAuvg4NV
- BE6IW1D6KEpCXKeIDQmFR5iuYmXve8iScpwW9i6lM8Oer/2Ae9rQWGcKa55Av4hXSz8V
- xHpceUlfLEJ9rS8aPvFuJBemDYwGISEtGxUP1fQ3XPUhU7ZamOxUgnv2tWZnwtg7YRNF
- ++/Q==
-X-Gm-Message-State: AC+VfDzZujoKJJREblf/LzuLNb4Fa6Db5TFFbnaIxHkBpI04Mjqibe+q
- 1P5ts4rscet49Cqa0kuWWJKWLw==
-X-Google-Smtp-Source: ACHHUZ7FEjgcsHXqunXNnRpnmLclA4yFrwEPPpRuy2uMDeAunfwf27pGrzJBuw6Vkp6yzNutX8TuTw==
-X-Received: by 2002:a05:6830:3b07:b0:6b0:49d:15a with SMTP id
- dk7-20020a0568303b0700b006b0049d015amr1397609otb.3.1685678570988; 
- Thu, 01 Jun 2023 21:02:50 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:a70d:ae79:598f:409b?
- ([2602:ae:1598:4c01:a70d:ae79:598f:409b])
- by smtp.gmail.com with ESMTPSA id
- u25-20020aa78499000000b00627fafe49f9sm63687pfn.106.2023.06.01.21.02.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 21:02:50 -0700 (PDT)
-Message-ID: <14a9b8f2-738f-779d-6167-bfbe71dbd82d@linaro.org>
-Date: Thu, 1 Jun 2023 21:02:48 -0700
+ d=1e100.net; s=20221208; t=1685679479; x=1688271479;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sfnS3Ss2unv4dgYVAG7D50gKcm9DhNLu2TnjcCoEDto=;
+ b=fVtFtQC2QhNvQuExc3B8Yv+xxge7N61RoXlFpYR0vPqJIvqAup9YJ31wo/qwDq0fTX
+ T9Io9kXkhVmv3pPPw0KczXqvZJFkS/7Ga7iFIRruceLXL5Ugt2wjA2Whk/Cxivq2cR+P
+ RJOeuXUjP3zz8nUGvbtr2Z/EBg4MlDk53MYnxs4pDhDbJ3MLOXQKO89iOp/NMMrj7BGE
+ pnHcGux99S6MvnDy0pzoOpIb/PWDxGvWKpBqmkRW5gTr3fNv/sDP+3EqfXZWEtv1XiHy
+ DGLtilDuu26QIg0c06YQ5VC11SmC4wAn9J1dIfY5mz+Ksgut14+fPeVvY9uRqbwgkrf5
+ HrhA==
+X-Gm-Message-State: AC+VfDwKQNAF9+Y2x9QdpPxb1+3W58977iohg++DJ1JAJqeubhYO6ern
+ q6ZhTWbEFetwXZgxtSKPhBJUnc87+wkI4GBBEJI=
+X-Google-Smtp-Source: ACHHUZ75ZNDbKLbwacZjdT4fxf8WW2BF93LwFnjed0xtQ8uhkI03Ijrwf13di5VYNWYCvBOEVETJPMzHg/DRWTM6c7g=
+X-Received: by 2002:a1f:4192:0:b0:461:3f81:aa43 with SMTP id
+ o140-20020a1f4192000000b004613f81aa43mr6254vka.2.1685679479644; Thu, 01 Jun
+ 2023 21:17:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v14 03/10] accel: collecting TB execution count
-Content-Language: en-US
-To: "Wu, Fei" <fei2.wu@intel.com>, alex.bennee@linaro.org,
- qemu-devel@nongnu.org
-Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230530083526.2174430-1-fei2.wu@intel.com>
- <20230530083526.2174430-4-fei2.wu@intel.com>
- <fe705139-31e9-974b-4e45-2f0c653359da@linaro.org>
- <2ef489e6-4412-d792-7a33-153a30db3289@intel.com>
- <1b8dceed-548f-d155-b4fb-80e76408db7d@linaro.org>
- <ea8032cc-63c7-da86-a9d3-7bf0c25ed8c1@intel.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ea8032cc-63c7-da86-a9d3-7bf0c25ed8c1@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-2-dbarboza@ventanamicro.com>
+In-Reply-To: <20230530194623.272652-2-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 2 Jun 2023 14:17:33 +1000
+Message-ID: <CAKmqyKMqtx4VPQeBfYGL1soUWX+33pZpt3YoP5faOww7P6FwFA@mail.gmail.com>
+Subject: Re: [PATCH 01/16] target/riscv: skip features setup for KVM CPUs
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,18 +88,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/23 18:54, Wu, Fei wrote:
->> We are not *checking* the tb->tb_stats->stats_enabled bit except at code
->> generation time, not code execution time.  Therefore nothing ever reads
->> the TB_PAUSED bit (or, correspondingly, the clearing of the other
->> bits).  The setting of the bit is permanent.
->>
-> At dump time, it does check stats_enabled e.g. in dump_tb_header(). So
-> the question is whether FILTER is necessary at all? If not, we can
-> remove FILTER together with PAUSE, and only keep START & STOP in hmp cmd.
+On Wed, May 31, 2023 at 5:49=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> As it is today it's not possible to use '-cpu host' if the RISC-V host
+> has RVH enabled. This is the resulting error:
+>
+> $ sudo ./qemu/build/qemu-system-riscv64 \
+>     -machine virt,accel=3Dkvm -m 2G -smp 1 \
+>     -nographic -snapshot -kernel ./guest_imgs/Image  \
+>     -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
+>     -append "earlycon=3Dsbi root=3D/dev/ram rw" \
+>     -cpu host
+> qemu-system-riscv64: H extension requires priv spec 1.12.0
+>
+> This happens because we're checking for priv spec for all CPUs, and
+> since we're not setting  env->priv_ver for the 'host' CPU, it's being
+> default to zero (i.e. PRIV_SPEC_1_10_0).
+>
+> In reality env->priv_ver does not make sense when running with the KVM
+> 'host' CPU. It's used to gate certain CSRs/extensions during translation
+> to make them unavailable if the hart declares an older spec version. It
+> doesn't have any other use. E.g. OpenSBI version 1.2 retrieves the spec
+> checking if the CSR_MCOUNTEREN, CSR_MCOUNTINHIBIT and CSR_MENVCFG CSRs
+> are available [1].
+>
+> 'priv_ver' is just one example. We're doing a lot of feature validation
+> and setup during riscv_cpu_realize() that it doesn't apply KVM CPUs.
+> Validating the feature set for those CPUs is a KVM problem that should
+> be handled in KVM specific code.
+>
+> The new riscv_cpu_realize_features() helper contains all validation
+> logic that are not applicable to KVM CPUs. riscv_cpu_realize() verifies
+> if we're dealing with a KVM CPU and, if not, execute the new helper to
+> proceed with the usual realize() logic for all other CPUs.
+>
+> [1] lib/sbi/sbi_hart.c, hart_detect_features()
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Let's start simpler and remove FILTER and PAUSE.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
+Alistair
 
-r~
+> ---
+>  target/riscv/cpu.c | 41 ++++++++++++++++++++++++++++++++---------
+>  1 file changed, 32 insertions(+), 9 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 938c7bd87b..72f5433776 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -331,6 +331,15 @@ static void set_satp_mode_default_map(RISCVCPU *cpu)
+>  }
+>  #endif
+>
+> +static bool riscv_running_KVM(void)
+> +{
+> +#ifndef CONFIG_USER_ONLY
+> +    return kvm_enabled();
+> +#else
+> +    return false;
+> +#endif
+> +}
+> +
+>  static void riscv_any_cpu_init(Object *obj)
+>  {
+>      RISCVCPU *cpu =3D RISCV_CPU(obj);
+> @@ -1295,20 +1304,12 @@ static void riscv_cpu_validate_misa_priv(CPURISCV=
+State *env, Error **errp)
+>      }
+>  }
+>
+> -static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+> +static void riscv_cpu_realize_features(DeviceState *dev, Error **errp)
+>  {
+> -    CPUState *cs =3D CPU(dev);
+>      RISCVCPU *cpu =3D RISCV_CPU(dev);
+>      CPURISCVState *env =3D &cpu->env;
+> -    RISCVCPUClass *mcc =3D RISCV_CPU_GET_CLASS(dev);
+>      Error *local_err =3D NULL;
+>
+> -    cpu_exec_realizefn(cs, &local_err);
+> -    if (local_err !=3D NULL) {
+> -        error_propagate(errp, local_err);
+> -        return;
+> -    }
+> -
+>      riscv_cpu_validate_misa_mxl(cpu, &local_err);
+>      if (local_err !=3D NULL) {
+>          error_propagate(errp, local_err);
+> @@ -1354,6 +1355,28 @@ static void riscv_cpu_realize(DeviceState *dev, Er=
+ror **errp)
+>          }
+>       }
+>  #endif
+> +}
+> +
+> +static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+> +{
+> +    CPUState *cs =3D CPU(dev);
+> +    RISCVCPU *cpu =3D RISCV_CPU(dev);
+> +    RISCVCPUClass *mcc =3D RISCV_CPU_GET_CLASS(dev);
+> +    Error *local_err =3D NULL;
+> +
+> +    cpu_exec_realizefn(cs, &local_err);
+> +    if (local_err !=3D NULL) {
+> +        error_propagate(errp, local_err);
+> +        return;
+> +    }
+> +
+> +    if (!riscv_running_KVM()) {
+> +        riscv_cpu_realize_features(dev, &local_err);
+> +        if (local_err !=3D NULL) {
+> +            error_propagate(errp, local_err);
+> +            return;
+> +        }
+> +    }
+>
+>      riscv_cpu_finalize_features(cpu, &local_err);
+>      if (local_err !=3D NULL) {
+> --
+> 2.40.1
+>
+>
 
