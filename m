@@ -2,55 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157F871FAE4
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B03D771FAEA
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:26:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4z6U-0002dD-Es; Fri, 02 Jun 2023 03:21:42 -0400
+	id 1q4zAB-0005i2-3r; Fri, 02 Jun 2023 03:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=WIde=BW=kaod.org=clg@ozlabs.org>)
- id 1q4z6L-0002Us-Pv; Fri, 02 Jun 2023 03:21:36 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=WIde=BW=kaod.org=clg@ozlabs.org>)
- id 1q4z6J-000614-2d; Fri, 02 Jun 2023 03:21:33 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QXZDg72W2z4x4H;
- Fri,  2 Jun 2023 17:21:23 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QXZDf2dtfz4x41;
- Fri,  2 Jun 2023 17:21:22 +1000 (AEST)
-Message-ID: <d828bb88-4a8d-3f89-0ca9-2db2b5e6f24c@kaod.org>
-Date: Fri, 2 Jun 2023 09:21:20 +0200
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q4zA8-0005fA-S0
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:25:28 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q4zA6-0007W9-Jv
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:25:28 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-39a3f26688bso1404435b6e.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 00:25:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685690725; x=1688282725;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gf8W1Xf2Y7RWDSr3IHqzLWdnQ7xsXqcQcsDxS67Q/m0=;
+ b=31PQvYTSVnGBTgW0tWfUa/dgmsZ2jR2ZCkNW4Pzxrz24sFLSTjDNNXF1rgan7Xmgb0
+ AUNBoYUkcFh5PNPV0UdA+zV498rVHnoWXcaR+NgFWT/zUeV/2y/RFFAIHgPHC7ZdgXEF
+ VFCxoD41T0cF1Hc/45CtC6ASHyEpM47Kvquznpvtgap3wxoQfgIiD/vtjOoAvzl8SpxZ
+ 0C1LBMZJsttnRXnsvD4Ik4rF2e/r9bF53J3bdzwbAmrfHnQkwPDGumG5O8Q0iINYZRmZ
+ AbCCVQhTvJbAvZysQvQWTTI4II+q6n1rE61RHhB+aqdmvVJxgtzFpaHakdiRdXHgoTjq
+ evrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685690725; x=1688282725;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gf8W1Xf2Y7RWDSr3IHqzLWdnQ7xsXqcQcsDxS67Q/m0=;
+ b=XwcnqCqs6Y4NQXx/Br8sODjzHap1yKv6y5gOKRl4zpzFVSI2B+ZrNAP93Yf0lL0H24
+ GELtyUJ4B1Mgsi/EfxoeKP/gW9KF+MNyw1cUTxk2a4Oaz604kWVXAKkCNRVBZK4LpFo6
+ PrKwzDDUpmZWd1EyNWeWtw+M9Zqu8TyXblyRCjI3VvEtFho+kbF4EZckBXEtnX2pji7V
+ 4z3JeMsGlv8j3vR8VRzQaj8BzyplSHUv0DqCF1M7O+4zoWQcSu5mjAAnBgeIyenucg0L
+ f+CF64v4sURHPCDD/+eEVqqI/Rigm7n64p0rfVbnqPzC4xQkqE1WE/ZN8p9Bv6+nSUJZ
+ prSg==
+X-Gm-Message-State: AC+VfDxHo5t8dBh4JxAd6Iua+y5yV7CObg6Ucdvasoo476wLxiGGPo4w
+ jLGMNI+KUVAcNR24VSmk4AJgBQ==
+X-Google-Smtp-Source: ACHHUZ7F5CHCtNGSo/ggdYthVmAaThYDjJ5hOQaNIpm2mWXuVvrZub3S98vio+deVXsuvQt/3yE5oQ==
+X-Received: by 2002:a05:6808:91:b0:39a:bf0:4fe0 with SMTP id
+ s17-20020a056808009100b0039a0bf04fe0mr1585786oic.15.1685690725263; 
+ Fri, 02 Jun 2023 00:25:25 -0700 (PDT)
+Received: from alarm.. ([157.82.204.254]) by smtp.gmail.com with ESMTPSA id
+ j4-20020a170902c3c400b001add2ba4459sm625780plj.32.2023.06.02.00.25.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 Jun 2023 00:25:24 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: intel-wired-lan@lists.osuosl.org, qemu-devel@nongnu.org,
+ alexander.duyck@gmail.com, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>
+Subject: [PATCH] e1000e: Add ICR clearing by corresponding IMS bit
+Date: Fri,  2 Jun 2023 16:25:16 +0900
+Message-Id: <20230602072516.42502-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC PATCH 0/5] target/ppc: initial SMT support in TCG
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230531012313.19891-1-npiggin@gmail.com>
- <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
- <CT1YZ02RYMRT.1LL84FLYLC3DO@wheely>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CT1YZ02RYMRT.1LL84FLYLC3DO@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=WIde=BW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,66 +90,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/2/23 09:01, Nicholas Piggin wrote:
-> On Thu Jun 1, 2023 at 5:56 PM AEST, Cédric Le Goater wrote:
->> Hello Nick,
->>
->> On 5/31/23 03:23, Nicholas Piggin wrote:
->>> Hi,
->>>
->>> I'm posting this now just to get some first thoughts. I wouldn't say
->>> it's ready but it does actually work with some basic tests including
->>> pseries booting a Linux distro. I have powernv booting too, it just
->>> requires some more SPRs converted, nothing fundamentally different so
->>> for the purpose of this RFC I leave it out.
->>>
->>> A couple of things, I don't know the object model well enough to do
->>> something nice with topology. Iterating siblings I would have thought
->>> should be going to parent core then iterating its children CPUs. Should
->>> that be done with the object model, or is it better to add direct
->>> pointers in CPUs to core and core to CPUs? It is (semi) important for> performance so maybe that is better than object iterators. If we go that
->>> way, the PnvCore and SpaprCore have pointers to the SMT threads already,
->>> should those be abstracted go in the CPUCore?
->>
->> You should be able to move the thread array into the CPUCore. If you do
->> that, please check that migration compat is not impacted by the state
->> change. However, I am not sure you can use the CPUCore model under the
->> insn modeling. Something to check.
-> 
-> Okay.
-> 
->> Anyhow, the way you implemented the loop on the siblings is sufficiently
->> fast for a small numbers of CPU and safe, w.r.t to CPU hotplug. So
->> I would leave that part for now, if it runs decently with 4*4 vCPUs in
->> TCG it should be fine.
-> 
-> Yeah you're right I'm overly paranoid about it but we don't do hundreds
-> of CPUs in TCG so it should be fine. 
+The datasheet does not say what happens when interrupt was asserted
+(ICR.INT_ASSERT=1) and auto mask is *not* active.
+However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+Software Developer’s Manual, which were written for older devices,
+namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+82573E/82573V/82573L, does say:
+> If IMS = 0b, then the ICR register is always clear-on-read. If IMS is
+> not 0b, but some ICR bit is set where the corresponding IMS bit is not
+> set, then a read does not clear the ICR register. For example, if
+> IMS = 10101010b and ICR = 01010101b, then a read to the ICR register
+> does not clear it. If IMS = 10101010b and ICR = 0101011b, then a read
+> to the ICR register clears it entirely (ICR.INT_ASSERTED = 1b).
 
-The PowerNV did run with 64 CPUs at some point. Boot was slow bc of
-contention in some areas when starting the secondaries. When stabilized,
-perf was decent.
+Linux does no longer activate auto mask since commit
+0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware clears
+ICR even in such a case so we also should do so.
 
-I think that a realistic goal for book3s is to support 2 sockets * 2 cores
-* 4 threads on PowerNV and 16 vCPUs on pseries, this to exercise the various
-ways to IPI on the different HV implementations.
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1707441
+Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Supersedes: <20201203133236.222207-1-andrew@daynix.com>
+("[PATCH v2] e1000e: Added ICR clearing by corresponding IMS bit.")
 
-> Maybe I will defer it for now then and just do the CPU iteration.
+ hw/net/e1000e_core.c | 38 ++++++++++++++++++++++++++++++++------
+ hw/net/trace-events  |  1 +
+ 2 files changed, 33 insertions(+), 6 deletions(-)
 
-May be there is some value to store a CPU siblings under the PowerPC
-CPU descriptor. IT could be useful for instructions that apply to the
-current CPU but for others requiring a PIR value, you will have to
-find a starting point in the CPU list, so it won't make much difference
-I think.
-
-Thanks,
-
-C.
-
-
-
-> 
-> Thanks,
-> Nick
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 9785ef279c..338bbbf4f4 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -2607,12 +2607,38 @@ e1000e_mac_icr_read(E1000ECore *core, int index)
+         e1000e_lower_interrupts(core, ICR, 0xffffffff);
+     }
+ 
+-    if ((core->mac[ICR] & E1000_ICR_ASSERTED) &&
+-        (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME)) {
+-        trace_e1000e_irq_icr_clear_iame();
+-        e1000e_lower_interrupts(core, ICR, 0xffffffff);
+-        trace_e1000e_irq_icr_process_iame();
+-        e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
++    if (core->mac[ICR] & E1000_ICR_ASSERTED) {
++        if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME) {
++            trace_e1000e_irq_icr_clear_iame();
++            e1000e_lower_interrupts(core, ICR, 0xffffffff);
++            trace_e1000e_irq_icr_process_iame();
++            e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
++        }
++
++        /*
++         * The datasheet does not say what happens when interrupt was asserted
++         * (ICR.INT_ASSERT=1) and auto mask is *not* active.
++         * However, section of 13.3.27 the PCIe* GbE Controllers Open Source
++         * Software Developer’s Manual, which were written for older devices,
++         * namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
++         * 82573E/82573V/82573L, does say:
++         * > If IMS = 0b, then the ICR register is always clear-on-read. If IMS
++         * > is not 0b, but some ICR bit is set where the corresponding IMS bit
++         * > is not set, then a read does not clear the ICR register. For
++         * > example, if IMS = 10101010b and ICR = 01010101b, then a read to the
++         * > ICR register does not clear it. If IMS = 10101010b and
++         * > ICR = 0101011b, then a read to the ICR register clears it entirely
++         * > (ICR.INT_ASSERTED = 1b).
++         *
++         * Linux does no longer activate auto mask since commit
++         * 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware
++         * clears ICR even in such a case so we also should do so.
++         */
++        if (core->mac[ICR] & core->mac[IMS]) {
++            trace_e1000e_irq_icr_clear_icr_bit_ims(core->mac[ICR],
++                                                   core->mac[IMS]);
++            e1000e_lower_interrupts(core, ICR, 0xffffffff);
++        }
+     }
+ 
+     return ret;
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index e97e9dc17b..9103488e17 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -217,6 +217,7 @@ e1000e_irq_read_ims(uint32_t ims) "Current IMS: 0x%x"
+ e1000e_irq_icr_clear_nonmsix_icr_read(void) "Clearing ICR on read due to non MSI-X int"
+ e1000e_irq_icr_clear_zero_ims(void) "Clearing ICR on read due to zero IMS"
+ e1000e_irq_icr_clear_iame(void) "Clearing ICR on read due to IAME"
++e1000e_irq_icr_clear_icr_bit_ims(uint32_t icr, uint32_t ims) "Clearing ICR on read due corresponding IMS bit: 0x%x & 0x%x"
+ e1000e_irq_iam_clear_eiame(uint32_t iam, uint32_t cause) "Clearing IMS due to EIAME, IAM: 0x%X, cause: 0x%X"
+ e1000e_irq_icr_clear_eiac(uint32_t icr, uint32_t eiac) "Clearing ICR bits due to EIAC, ICR: 0x%X, EIAC: 0x%X"
+ e1000e_irq_ims_clear_set_imc(uint32_t val) "Clearing IMS bits due to IMC write 0x%x"
+-- 
+2.40.1
 
 
