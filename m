@@ -2,70 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34547202E5
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 15:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A375C720318
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 15:20:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q54bm-0008Cg-L0; Fri, 02 Jun 2023 09:14:22 -0400
+	id 1q54gT-0000uI-2y; Fri, 02 Jun 2023 09:19:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q54bl-0008CX-7b
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 09:14:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q54gR-0000uA-Bo
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 09:19:11 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q54bj-0006iN-0i
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 09:14:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685711657;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jxs1ZphyWuCDlx+hhWSWStEMKEfOm2Hse2M2PjI3fqk=;
- b=do+eueNNImS1jEw/q09+P6X/L5a8crblUvy4oicoQ+exwzIBkxsleoENCO8IxWoF5z5Id5
- 0nKDoU3ZrKwk5GcuxxAkn6vFQBSHN29D0HnVLfbJnNk7fF/us/BBJz+N6dLbTOV3bIMhob
- 6YoAmvGo81XLgtg0bR3V0OIefUUAtV8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-290-IrBnVG8COXGL7iQYzlf7lQ-1; Fri, 02 Jun 2023 09:14:16 -0400
-X-MC-Unique: IrBnVG8COXGL7iQYzlf7lQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0D27101B041;
- Fri,  2 Jun 2023 13:14:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.76])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 20ABEC154D7;
- Fri,  2 Jun 2023 13:14:14 +0000 (UTC)
-Date: Fri, 2 Jun 2023 08:14:13 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>, 
- libguestfs@redhat.com
-Subject: Re: [Libguestfs] [PATCH v3 14/14] nbd/server: Add FLAG_PAYLOAD
- support to CMD_BLOCK_STATUS
-Message-ID: <7gitbsbbtwd66yy2v3t7ie5yxrvib7tytroge7eptkg3szi7gq@b2bzlyuse2rx>
-References: <20230515195343.1915857-1-eblake@redhat.com>
- <20230515195343.1915857-15-eblake@redhat.com>
- <085e5837-4e5c-4972-a5d8-bbe2d3d27658@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q54gP-00083C-IS
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 09:19:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+ Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=mIqUPbvc/7luhL8e+TGlAGBhLYOF+Afx0vjaPB2QS8Q=; b=T+x2I4VU8O63Fx2rDW7F+aR4KC
+ b3tzo0R7izS345VN7qu2Kdzns0as4axM6W8PPdu5wOPKv4Z/8H3RTsNxNwN0TfUrsiEmbuv70qooe
+ IZLvOhvaYevgxoSUH+aRnUKu4+p6JT25Iiq6I1Sybr/sW/dkjiF2eQwJ0G46pNEAlGVI=;
+Message-ID: <a21d4224-0219-4bd3-f276-605401bd62a1@rev.ng>
+Date: Fri, 2 Jun 2023 15:18:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <085e5837-4e5c-4972-a5d8-bbe2d3d27658@yandex-team.ru>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: Help finding Coverity defects for generated Hexagon code
+Content-Language: en-US
+To: Brian Cain <bcain@quicinc.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
+ <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
+ <CAFEAcA9ZctmXrCAwsAk6eBeF4ojB4QBwq16TsdcGZPHTin6LEg@mail.gmail.com>
+ <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
+ <5de92654-52e3-6042-de5e-b2334b737c13@rev.ng>
+ <57f69ad1-2546-535b-75fe-f5e3d858504b@linaro.org>
+ <SN6PR02MB4205B9575465FDD1A6A2F898B8409@SN6PR02MB4205.namprd02.prod.outlook.com>
+Organization: rev.ng
+In-Reply-To: <SN6PR02MB4205B9575465FDD1A6A2F898B8409@SN6PR02MB4205.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,174 +67,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 02, 2023 at 12:13:25PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 15.05.23 22:53, Eric Blake wrote:
-> > Allow a client to request a subset of negotiated meta contexts.  For
-> > example, a client may ask to use a single connection to learn about
-> > both block status and dirty bitmaps, but where the dirty bitmap
-> > queries only need to be performed on a subset of the disk; forcing the
-> > server to compute that information on block status queries in the rest
-> > of the disk is wasted effort (both at the server, and on the amount of
-> > traffic sent over the wire to be parsed and ignored by the client).
-> > 
-...
-> > 
-> > +/*
-> > + * nbd_co_block_status_payload_read
-> > + * Called when a client wants a subset of negotiated contexts via a
-> > + * BLOCK_STATUS payload.  Check the payload for valid length and
-> > + * contents.  On success, return 0 with request updated to effective
-> > + * length.  If request was invalid but payload consumed, return 0 with
-> > + * request->len and request->contexts.count set to 0 (which will
-> > + * trigger an appropriate NBD_EINVAL response later on).
-> 
-> Hmm. So, it leads to
-> 
->     case NBD_CMD_BLOCK_STATUS:
->         if (!request->len) {
->             return nbd_send_generic_reply(client, request, -EINVAL,
->                                           "need non-zero length", errp);
->         }
-> 
-> EINVAL is OK, but "need non-zero length" message is not appropriate.. I think we need separate reply for the case of invalid payload.
 
-Or maybe just reword the error to "unexpected length", which covers a
-broader swath of errors (none of which are likely from compliant
-clients).
+On 5/23/23 19:56, Brian Cain wrote:
+>
+>> -----Original Message-----
+>> From: qemu-devel-bounces+bcain=quicinc.com@nongnu.org <qemu-devel-
+>> bounces+bcain=quicinc.com@nongnu.org> On Behalf Of Richard Henderson
+>> Sent: Tuesday, May 23, 2023 10:32 AM
+>> To: anjo@rev.ng; Paolo Bonzini <pbonzini@redhat.com>; Peter Maydell
+>> <peter.maydell@linaro.org>
+>> Cc: qemu-devel@nongnu.org
+>> Subject: Re: Help finding Coverity defects for generated Hexagon code
+>>
+>> WARNING: This email originated from outside of Qualcomm. Please be wary of
+>> any links or attachments, and do not enable macros.
+>>
+>> On 5/23/23 06:29, Anton Johansson via wrote:
+>>> On 5/23/23 12:29, Paolo Bonzini wrote:
+>>>> On Tue, May 23, 2023 at 11:18 AM Peter Maydell
+>> <peter.maydell@linaro.org> wrote:
+>>>>> On Mon, 22 May 2023 at 21:24, Anton Johansson <anjo@rev.ng> wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> coverity recently reported some defects in code generated by idef-parser
+>>>>>> (email attached). These defects are expected and we plan to emit a
+>>>>>> /* coverity[event_tag] */ comment to disable the specific event triggered.
+>>>>> We don't mark coverity false positives with comments in the
+>>>>> source. For the free online scanner, we just mark them as
+>>>>> false positives in the GUI (with an explanation of why they're
+>>>>> false positives).
+>>>> They aren't visible in the GUI because the whole "hexagon generated
+>>>> files" component is marked as not-analyzed; which apparently means it
+>>>> _is_ analyzed and visible in the emails but not in the GUI.
+>>> Ah right...
+>>>
+>>>> The event tag for this error should be "dead_error_condition". In
+>>>> theory, the hexagon generated files could be a good exception to the
+>>>> rules that we don't mark false positives in the source, but finding
+>>>> the right line to add the tag can be messy.
+>>> If we decide to mark these in source, my plan was to simply emit
+>>>
+>>>       if (qemu_tmp_2 >= 64) {
+>>>           /* coverity[dead_error_condition] */
+>>>           tcg_gen_movi_i64(tmp_5, 0);
+>>>       } else {
+>>>           tcg_gen_shli_i64(tmp_5, tmp_4, qemu_tmp_2);
+>>>       }
+>>>
+>>> for all of these safety checks around shifts/extracts where the defect could
+>>> trigger. Maybe this is overreaching as we would also mark similar branches in
+>>> other instructions that are alive, but if we knew they were dead at translation
+>>> time we could simply not emit them to begin with.
+>> It would be simpler to do better constant propagation and folding in the
+>> generator than to
+>> do the markup.  All of the cases for which it warns are really quite trivial.
+> But the host compiler can already do this for us.  Is the markup really more work than almost anything else?
+To add to this:
 
-> 
-> > On I/O
-> > + * error, return -EIO.
-> > + */
-> > +static int
-> > +nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-> > +                                 Error **errp)
-> > +{
-> > +    int payload_len = request->len;
-> > +    g_autofree char *buf = NULL;
-> > +    g_autofree bool *bitmaps = NULL;
-> > +    size_t count, i;
-> > +    uint32_t id;
-> > +
-> > +    assert(request->len <= NBD_MAX_BUFFER_SIZE);
-> > +    if (payload_len % sizeof(uint32_t) ||
-> > +        payload_len < sizeof(NBDBlockStatusPayload) ||
-> > +        payload_len > (sizeof(NBDBlockStatusPayload) +
-> > +                       sizeof(id) * client->contexts.count)) {
-> > +        goto skip;
-> > +    }
-> > +
-> > +    buf = g_malloc(payload_len);
-> > +    if (nbd_read(client->ioc, buf, payload_len,
-> > +                 "CMD_BLOCK_STATUS data", errp) < 0) {
-> > +        return -EIO;
-> > +    }
-> > +    trace_nbd_co_receive_request_payload_received(request->handle,
-> > +                                                  payload_len);
-> > +    memset(&request->contexts, 0, sizeof(request->contexts));
-> > +    request->contexts.nr_bitmaps = client->context_exp->nr_export_bitmaps;
-> > +    bitmaps = g_new0(bool, request->contexts.nr_bitmaps);
-> > +    count = (payload_len - sizeof(NBDBlockStatusPayload)) / sizeof(id);
-> 
-> In doc we have MUST: "The payload form MUST occupy 8 + n*4 bytes", do we really want to forgive and ignore unaligned tail? May be better to "goto skip" in this case, to avoid ambiguity.
+We did look into dealing with these coverity warnings through constant
+propagating a few weeks back, and yes it's not that bad.  You really
+only have to deal with sign-/zeroextensions and then perform the check
+at translation time instead of emitting it.
 
-That's what happened above, when checking that payload_len %
-sizeof(uint32_t) was 0.  Or am I misunderstanding your question about
-another condition where goto skip would be appropriate?
+However, constant propagating only to deal with coverity warnings feels
+like the wrong way to go about it.  If we want to go in this direction
+we should really propagate/fold as much as possible, which requires
+relaxing some assumptions on immediates (always positve and
+representable in uint64_t).  Even if this is not hard to do, it
+increases the complexity of the parser for something the compiler
+already does for us.
 
-> 
-> > +    payload_len = 0;
-> > +
-> > +    for (i = 0; i < count; i++) {
-> > +
-> > +        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
-> > +        if (id == NBD_META_ID_BASE_ALLOCATION) {
-> > +            if (request->contexts.base_allocation) {
-> > +                goto skip;
-> > +            }
-> > +            request->contexts.base_allocation = true;
-> > +        } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
-> > +            if (request->contexts.allocation_depth) {
-> > +                goto skip;
-> > +            }
-> > +            request->contexts.allocation_depth = true;
-> > +        } else {
-> > +            if (id - NBD_META_ID_DIRTY_BITMAP >
-> > +                request->contexts.nr_bitmaps ||
-> > +                bitmaps[id - NBD_META_ID_DIRTY_BITMAP]) {
-> > +                goto skip;
-> > +            }
-> > +            bitmaps[id - NBD_META_ID_DIRTY_BITMAP] = true;
-> > +        }
-> > +    }
-> > +
-> > +    request->len = ldq_be_p(buf);
-> > +    request->contexts.count = count;
-> > +    request->contexts.bitmaps = bitmaps;
-> > +    bitmaps = NULL;
-> 
-> better I think:
-> 
-> request->context.bitmaps = g_steal_pointer(bitmaps);
-> 
->  - as a pair to g_autofree.
-
-Yes, that is shorter.
-
-> 
-> > +    return 0;
-> > +
-> > + skip:
-> > +    trace_nbd_co_receive_block_status_payload_compliance(request->from,
-> > +                                                         request->len);
-> > +    request->len = request->contexts.count = 0;
-> > +    return nbd_drop(client->ioc, payload_len, errp);
-> > +}
-> > +
-> >   /* nbd_co_receive_request
-> >    * Collect a client request. Return 0 if request looks valid, -EIO to drop
-> >    * connection right away, -EAGAIN to indicate we were interrupted and the
-> > @@ -2461,7 +2547,14 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-> > 
-> >           if (request->type == NBD_CMD_WRITE || extended_with_payload) {
-> >               payload_len = request->len;
-> > -            if (request->type != NBD_CMD_WRITE) {
-> > +            if (request->type == NBD_CMD_BLOCK_STATUS) {
-> > +                payload_len = nbd_co_block_status_payload_read(client,
-> > +                                                               request,
-> > +                                                               errp);
-> > +                if (payload_len < 0) {
-> > +                    return -EIO;
-> > +                }
-> 
-> Seems we can handle all payload in one "switch" block, instead of handling BLOCK_STATUS here and postponing WRITE payload (and dropping) up to the end of the block with help of payload_len variable.
-
-I can experiment with other ways of respresenting the logic; there's
-enough complexity that I'm trying to balance between repeating
-conditionals vs. avoiding added nesting.
-
-> 
-> > +            } else if (request->type != NBD_CMD_WRITE) {
-> >                   /*
-> >                    * For now, we don't support payloads on other
-> >                    * commands; but we can keep the connection alive.
-> > @@ -2540,6 +2633,9 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-> >           valid_flags |= NBD_CMD_FLAG_NO_HOLE | NBD_CMD_FLAG_FAST_ZERO;
-> >       } else if (request->type == NBD_CMD_BLOCK_STATUS) {
-> >           valid_flags |= NBD_CMD_FLAG_REQ_ONE;
-> > +        if (client->extended_headers && client->contexts.count) {
-> > +            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
-> > +        }
-> >       }
-> >       if (request->flags & ~valid_flags) {
-> >           error_setg(errp, "unsupported flags for command %s (got 0x%x)",
+For the time being, I'll submit a patch emitting a comment, and if we
+decide it's worthwhile to constant fold we'll drop the comments then.
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.           +1-919-301-3266
-Virtualization:  qemu.org | libvirt.org
+Anton Johansson,
+rev.ng Labs Srl.
 
 
