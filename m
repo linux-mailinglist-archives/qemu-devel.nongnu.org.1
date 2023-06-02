@@ -2,92 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E0071FE38
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1B371FE3E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:50:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51O3-0005zh-FA; Fri, 02 Jun 2023 05:47:59 -0400
+	id 1q51QD-0006iL-DX; Fri, 02 Jun 2023 05:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q51O2-0005zY-1e
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:47:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pmenzel@molgen.mpg.de>)
+ id 1q51Q6-0006i7-2t
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:50:06 -0400
+Received: from mx3.molgen.mpg.de ([141.14.17.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q51O0-0003OU-9F
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:47:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685699274;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=z5OxEqpOH95YsyA3Hzu2eARQJ3e8qjdUHAyedj8VipM=;
- b=eytpxbUh3tgetJ1+OfsG3Q2Xp11KrZxjYAmk7poXqU/kw2OR1UXJwscM7aGA0mlhA+jOIm
- w1TAvLNjyZMGOpBBs1kM/b0OTe0M0O++5ZJX/NH1ubyhMTZhAhIT6KGTEz4qqOc/c5rWFI
- N5b5C7LE+/Dt9W/agZbX8XlJLfYSRA4=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-601-G_lIIsRhMVOyc3jOsuezbQ-1; Fri, 02 Jun 2023 05:47:53 -0400
-X-MC-Unique: G_lIIsRhMVOyc3jOsuezbQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4edc7406cb5so1376493e87.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:47:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685699272; x=1688291272;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z5OxEqpOH95YsyA3Hzu2eARQJ3e8qjdUHAyedj8VipM=;
- b=VjBW0Dbb0Q1Y4eUZyo/jG3LY6LHq3fKZJKZC25T6IaydfyBmQUbQM1Jb9VZI6kF79D
- KtpFksu5O9im3EZpVpl9MO+BOwucPlwcT7tQhPeVnYLcsGiUBCd369s0Fj+FGbJNuz0V
- y38kIf+LewT1H4llO99nrtkFiZFejY8c7S3AdhwL+gzUI1PgGHguyEnylnfyPqQ5rqb2
- VRxixEze1S1u16pfHbkMh1DUGDVgQnsUo+0IwB/CLL0Vu64TaE1ENbd+CuQA4v5PSFW3
- 58edP24d1BbcKBDBMsCrVZNco8hzrfWA2ED6B577MUuefOxDTh0tCwqqRUsYyOUba3j4
- 5Jdw==
-X-Gm-Message-State: AC+VfDx3wZ8MKMXp4rpx+GQOwOs06VI9bwW+ATUDTTFM7bDhvyMURttD
- vmpF4DvU6sHUHOn468KbiPrSJgwNCTEkDzdt48hpGXtU4srvViVQ2dKdxahrTlGVlUqJl8NJs7f
- Z8+1NRK6VKc0+Bi0=
-X-Received: by 2002:ac2:4831:0:b0:4f4:e3fa:73d8 with SMTP id
- 17-20020ac24831000000b004f4e3fa73d8mr1562264lft.62.1685699272031; 
- Fri, 02 Jun 2023 02:47:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6QUbB80HMWgMJur/VLiOItR6Sb/wfoA21W21Y2qQOe4MVNtbrp+UHdzevqVGzXb9682+Ya8w==
-X-Received: by 2002:ac2:4831:0:b0:4f4:e3fa:73d8 with SMTP id
- 17-20020ac24831000000b004f4e3fa73d8mr1562256lft.62.1685699271726; 
- Fri, 02 Jun 2023 02:47:51 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-14.web.vodafone.de.
- [109.43.176.14]) by smtp.gmail.com with ESMTPSA id
- p17-20020a05600c205100b003f604ca479esm4974369wmg.3.2023.06.02.02.47.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 02:47:51 -0700 (PDT)
-Message-ID: <ea218aad-6ba8-0f82-2570-a16354abff58@redhat.com>
-Date: Fri, 2 Jun 2023 11:47:50 +0200
+ (Exim 4.90_1) (envelope-from <pmenzel@molgen.mpg.de>)
+ id 1q51Q1-0003fU-6U
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:50:03 -0400
+Received: from [192.168.0.2] (ip5f5aebf4.dynamic.kabel-deutschland.de
+ [95.90.235.244])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 1B42461EA1BFF;
+ Fri,  2 Jun 2023 11:49:41 +0200 (CEST)
+Message-ID: <922a692d-8968-06f7-ac2b-85eb52668c89@molgen.mpg.de>
+Date: Fri, 2 Jun 2023 11:49:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Big TCG slowdown when using zstd with aarch64
+ Thunderbird/102.11.0
+Subject: Re: [Intel-wired-lan] [PATCH] e1000e: Add ICR clearing by
+ corresponding IMS bit
 Content-Language: en-US
-To: quintela@redhat.com
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, peter.maydell@linaro.org,
- Richard Henderson <rth@twiddle.net>, Peter Xu <peterx@redhat.com>
-References: <87y1l2rixp.fsf@secure.mitica> <ZHmyA40nIiUBceX0@redhat.com>
- <ae4540a2-f4d1-aece-d1e5-d631d9814233@redhat.com>
- <87leh2p5qb.fsf@secure.mitica>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <87leh2p5qb.fsf@secure.mitica>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ intel-wired-lan@lists.osuosl.org
+References: <20230602072516.42502-1-akihiko.odaki@daynix.com>
+ <84950b01-b88e-fec5-fe5f-eb4eeddee3d1@molgen.mpg.de>
+In-Reply-To: <84950b01-b88e-fec5-fe5f-eb4eeddee3d1@molgen.mpg.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=141.14.17.11; envelope-from=pmenzel@molgen.mpg.de;
+ helo=mx3.molgen.mpg.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,24 +67,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/06/2023 11.34, Juan Quintela wrote:
-...
-> The compression on precopy is a complete different beast:
-> - It is *VERY* buggy (no races fixed there)
-> - It is *VERY* inneficient
->    copy page to thread
->    thread compress page in a different buffer
->    go back to main thread
->    copy page to migration stream
+[Removed bpoirier@suse.com from Cc: again.]
+
+Am 02.06.23 um 11:41 schrieb Paul Menzel:
+> Dear Akihiko,
 > 
->    And we have to reset the compression dictionaries over each page, so
->    we don't get the benefits of compression.
 > 
-> So I can't wait the day that we can remove it.
-
-So could you maybe write a patch to add it to the docs/about/deprecated.rst 
-file?
-
-  Thomas
-
+> Thank you for your patch.
+> 
+> After looking at the diff, it looks like this is a QEMU patch, and not 
+> one for the Linux kernel. I leave my inline comments anyway.
+> 
+> 
+> Am 02.06.23 um 09:25 schrieb Akihiko Odaki:
+> 
+> It’d be nice if you started by summarizing the bug.
+> 
+>> The datasheet does not say what happens when interrupt was asserted
+>> (ICR.INT_ASSERT=1) and auto mask is *not* active.
+> 
+> Personal nit: For better legibility, I’d separate paragraphs by an empty 
+> line, or – in this case – I wouldn’t wrap the line, just because a 
+> sentence ends.
+> 
+>> However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+>> Software Developer’s Manual, which were written for older devices,
+>> namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+>> 82573E/82573V/82573L, does say:
+>>> If IMS = 0b, then the ICR register is always clear-on-read. If IMS is
+>>> not 0b, but some ICR bit is set where the corresponding IMS bit is not
+>>> set, then a read does not clear the ICR register. For example, if
+>>> IMS = 10101010b and ICR = 01010101b, then a read to the ICR register
+>>> does not clear it. If IMS = 10101010b and ICR = 0101011b, then a read
+>>> to the ICR register clears it entirely (ICR.INT_ASSERTED = 1b).
+>>
+>> Linux does no longer activate auto mask since commit
+>> 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware clears
+>> ICR even in such a case so we also should do so.
+> 
+> … since commit 0a8047ac68e5 (e1000e: Fix msi-x interrupt automask) …
+> 
+>> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1707441
+>> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>> Supersedes: <20201203133236.222207-1-andrew@daynix.com>
+>> ("[PATCH v2] e1000e: Added ICR clearing by corresponding IMS bit.")
+>>
+>>   hw/net/e1000e_core.c | 38 ++++++++++++++++++++++++++++++++------
+>>   hw/net/trace-events  |  1 +
+>>   2 files changed, 33 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+>> index 9785ef279c..338bbbf4f4 100644
+>> --- a/hw/net/e1000e_core.c
+>> +++ b/hw/net/e1000e_core.c
+>> @@ -2607,12 +2607,38 @@ e1000e_mac_icr_read(E1000ECore *core, int index)
+>>           e1000e_lower_interrupts(core, ICR, 0xffffffff);
+>>       }
+>> -    if ((core->mac[ICR] & E1000_ICR_ASSERTED) &&
+>> -        (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME)) {
+>> -        trace_e1000e_irq_icr_clear_iame();
+>> -        e1000e_lower_interrupts(core, ICR, 0xffffffff);
+>> -        trace_e1000e_irq_icr_process_iame();
+>> -        e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
+>> +    if (core->mac[ICR] & E1000_ICR_ASSERTED) {
+>> +        if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME) {
+>> +            trace_e1000e_irq_icr_clear_iame();
+>> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
+>> +            trace_e1000e_irq_icr_process_iame();
+>> +            e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
+>> +        }
+>> +
+>> +        /*
+>> +         * The datasheet does not say what happens when interrupt was asserted
+> 
+> I believe the network subsystem has a different commenting style than 
+> the rest of the Linux source code.
+> 
+>> +         * (ICR.INT_ASSERT=1) and auto mask is *not* active.
+>> +         * However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+>> +         * Software Developer’s Manual, which were written for older devices,
+>> +         * namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+>> +         * 82573E/82573V/82573L, does say:
+> 
+> I’d add a blank line below.
+> 
+>> +         * > If IMS = 0b, then the ICR register is always clear-on-read. If IMS
+>> +         * > is not 0b, but some ICR bit is set where the corresponding IMS bit
+>> +         * > is not set, then a read does not clear the ICR register. For
+>> +         * > example, if IMS = 10101010b and ICR = 01010101b, then a read to the
+>> +         * > ICR register does not clear it. If IMS = 10101010b and
+>> +         * > ICR = 0101011b, then a read to the ICR register clears it entirely
+>> +         * > (ICR.INT_ASSERTED = 1b).
+>> +         *
+>> +         * Linux does no longer activate auto mask since commit
+>> +         * 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware
+>> +         * clears ICR even in such a case so we also should do so.
+>> +         */
+>> +        if (core->mac[ICR] & core->mac[IMS]) {
+>> +            trace_e1000e_irq_icr_clear_icr_bit_ims(core->mac[ICR],
+>> +                                                   core->mac[IMS]);
+>> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
+>> +        }
+>>       }
+>>       return ret;
+>> diff --git a/hw/net/trace-events b/hw/net/trace-events
+>> index e97e9dc17b..9103488e17 100644
+>> --- a/hw/net/trace-events
+>> +++ b/hw/net/trace-events
+>> @@ -217,6 +217,7 @@ e1000e_irq_read_ims(uint32_t ims) "Current IMS: 0x%x"
+>>   e1000e_irq_icr_clear_nonmsix_icr_read(void) "Clearing ICR on read 
+>> due to non MSI-X int"
+>>   e1000e_irq_icr_clear_zero_ims(void) "Clearing ICR on read due to zero IMS"
+>>   e1000e_irq_icr_clear_iame(void) "Clearing ICR on read due to IAME"
+>> +e1000e_irq_icr_clear_icr_bit_ims(uint32_t icr, uint32_t ims) "Clearing ICR on read due corresponding IMS bit: 0x%x & 0x%x"
+>>   e1000e_irq_iam_clear_eiame(uint32_t iam, uint32_t cause) "Clearing IMS due to EIAME, IAM: 0x%X, cause: 0x%X"
+>>   e1000e_irq_icr_clear_eiac(uint32_t icr, uint32_t eiac) "Clearing ICR bits due to EIAC, ICR: 0x%X, EIAC: 0x%X"
+>>   e1000e_irq_ims_clear_set_imc(uint32_t val) "Clearing IMS bits due to IMC write 0x%x"
+> 
+> 
+> Kind regards,
+> 
+> Paul
 
