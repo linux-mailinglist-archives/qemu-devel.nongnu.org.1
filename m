@@ -2,46 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2672971FFAF
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0670071FFBD
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:51:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q52LU-00078W-Vx; Fri, 02 Jun 2023 06:49:25 -0400
+	id 1q52M7-0007sr-LP; Fri, 02 Jun 2023 06:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q52LQ-00077p-Od
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:49:20 -0400
+ id 1q52M2-0007nL-Ih
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:50:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q52LN-0002Is-W4
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:49:20 -0400
+ id 1q52M0-0002OF-Pm
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:49:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685702995;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MvHMPsKWlgLpwvpcSXGtDPhOKfHRtBdpv1KNqO6R6Kw=;
+ b=WcO8elXAe8Dr3oDknmoPwqyKk3BmRRZ0jRbDKWLvUGZffT4r036hzFePb2haMsGT5ms5yz
+ U4NKLzGEczSuHgib0DFZ/e/XvZzV7VqMa3TunvJ9HMJ09StnHHImvz3qHb5prYgtjR+oAZ
+ M8X8xADWe++VRlEVLT5Y39+wQtR5nSI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-455-Iod5FuFtONeCt8DDAfzz4A-1; Fri, 02 Jun 2023 06:49:16 -0400
-X-MC-Unique: Iod5FuFtONeCt8DDAfzz4A-1
+ us-mta-77-f6x7j2hVPLGvD6IHs3931g-1; Fri, 02 Jun 2023 06:49:29 -0400
+X-MC-Unique: f6x7j2hVPLGvD6IHs3931g-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2B7E85A5BA
- for <qemu-devel@nongnu.org>; Fri,  2 Jun 2023 10:49:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DB31800888
+ for <qemu-devel@nongnu.org>; Fri,  2 Jun 2023 10:49:17 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.210])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7979840CFD00;
- Fri,  2 Jun 2023 10:49:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 328A040CFD00;
+ Fri,  2 Jun 2023 10:49:16 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 02/10] tests/qtest: add support for callback to receive QMP
- events
-Date: Fri,  2 Jun 2023 12:49:02 +0200
-Message-Id: <20230602104910.35157-3-quintela@redhat.com>
+Subject: [PULL 03/10] tests/qtest: get rid of 'qmp_command' helper in
+ migration test
+Date: Fri,  2 Jun 2023 12:49:03 +0200
+Message-Id: <20230602104910.35157-4-quintela@redhat.com>
 In-Reply-To: <20230602104910.35157-1-quintela@redhat.com>
 References: <20230602104910.35157-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -50,11 +60,12 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,136 +84,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-Currently code must call one of the qtest_qmp_event* functions to
-fetch events. These are only usable if the immediate caller knows
-the particular event they want to capture, and are only interested
-in one specific event type. Adding ability to register an event
-callback lets the caller capture a range of events over any period
-of time.
+This function duplicates logic of qtest_qmp_assert_success_ref.
+The qtest_qmp_assert_success_ref method has better diagnostics
+on failure because it prints the entire QMP response, instead
+of just asserting on existance of the 'error' key.
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230601161347.1803440-3-berrange@redhat.com>
+Message-Id: <20230601161347.1803440-4-berrange@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- tests/qtest/libqtest.h | 43 ++++++++++++++++++++++++++++++++++++++++--
- tests/qtest/libqtest.c | 18 ++++++++++++++++--
- 2 files changed, 57 insertions(+), 4 deletions(-)
+ tests/qtest/migration-helpers.h |  3 ---
+ tests/qtest/migration-helpers.c | 22 ----------------------
+ tests/qtest/migration-test.c    | 29 +++++++++++++++--------------
+ 3 files changed, 15 insertions(+), 39 deletions(-)
 
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index d310eba7fb..a12acf7fa9 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -238,17 +238,52 @@ QDict *qtest_qmp_receive_dict(QTestState *s);
-  * @s: #QTestState instance to operate on.
-  *
-  * Reads a QMP message from QEMU and returns the response.
-- * Buffers all the events received meanwhile, until a
-- * call to qtest_qmp_eventwait
-+ *
-+ * If a callback is registered with qtest_qmp_set_event_callback,
-+ * it will be invoked for every event seen, otherwise events
-+ * will be buffered until a call to one of the qtest_qmp_eventwait
-+ * family of functions.
-  */
- QDict *qtest_qmp_receive(QTestState *s);
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index a188b62787..2e51a6e195 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -25,9 +25,6 @@ QDict *wait_command_fd(QTestState *who, int fd, const char *command, ...);
+ G_GNUC_PRINTF(2, 3)
+ QDict *wait_command(QTestState *who, const char *command, ...);
  
-+/*
-+ * QTestQMPEventCallback:
-+ * @s: #QTestState instance event was received on
-+ * @name: name of the event type
-+ * @event: #QDict for the event details
-+ * @opaque: opaque data from time of callback registration
-+ *
-+ * This callback will be invoked whenever an event is received.
-+ * If the callback returns true the event will be consumed,
-+ * otherwise it will be put on the list of pending events.
-+ * Pending events can be later handled by calling either
-+ * qtest_qmp_eventwait or qtest_qmp_eventwait_ref.
-+ *
-+ * Return: true to consume the event, false to let it be queued
-+ */
-+typedef bool (*QTestQMPEventCallback)(QTestState *s, const char *name,
-+                                      QDict *event, void *opaque);
-+
-+/**
-+ * qtest_qmp_set_event_callback:
-+ * @s: #QTestSTate instance to operate on
-+ * @cb: callback to invoke for events
-+ * @opaque: data to pass to @cb
-+ *
-+ * Register a callback to be invoked whenever an event arrives
-+ */
-+void qtest_qmp_set_event_callback(QTestState *s,
-+                                  QTestQMPEventCallback cb, void *opaque);
-+
- /**
-  * qtest_qmp_eventwait:
-  * @s: #QTestState instance to operate on.
-  * @event: event to wait for.
-  *
-  * Continuously polls for QMP responses until it receives the desired event.
-+ *
-+ * Any callback registered with qtest_qmp_set_event_callback will
-+ * be invoked for every event seen.
-  */
- void qtest_qmp_eventwait(QTestState *s, const char *event);
+-G_GNUC_PRINTF(2, 3)
+-QDict *qmp_command(QTestState *who, const char *command, ...);
+-
+ G_GNUC_PRINTF(3, 4)
+ void migrate_qmp(QTestState *who, const char *uri, const char *fmt, ...);
  
-@@ -258,6 +293,10 @@ void qtest_qmp_eventwait(QTestState *s, const char *event);
-  * @event: event to wait for.
-  *
-  * Continuously polls for QMP responses until it receives the desired event.
-+ *
-+ * Any callback registered with qtest_qmp_set_event_callback will
-+ * be invoked for every event seen.
-+ *
-  * Returns a copy of the event for further investigation.
-  */
- QDict *qtest_qmp_eventwait_ref(QTestState *s, const char *event);
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 7ae28fb6ac..77de16227f 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -82,6 +82,8 @@ struct QTestState
-     GString *rx;
-     QTestTransportOps ops;
-     GList *pending_events;
-+    QTestQMPEventCallback eventCB;
-+    void *eventData;
- };
- 
- static GHookList abrt_hooks;
-@@ -703,8 +705,13 @@ QDict *qtest_qmp_receive(QTestState *s)
-         if (!qdict_get_try_str(response, "event")) {
-             return response;
-         }
--        /* Stash the event for a later consumption */
--        s->pending_events = g_list_append(s->pending_events, response);
-+
-+        if (!s->eventCB ||
-+            !s->eventCB(s, qdict_get_str(response, "event"),
-+                        response, s->eventData)) {
-+            /* Stash the event for a later consumption */
-+            s->pending_events = g_list_append(s->pending_events, response);
-+        }
-     }
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index f6f3c6680f..bddf3f8d4d 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -85,28 +85,6 @@ QDict *wait_command(QTestState *who, const char *command, ...)
+     return ret;
  }
  
-@@ -808,6 +815,13 @@ void qtest_qmp_send_raw(QTestState *s, const char *fmt, ...)
-     va_end(ap);
- }
+-/*
+- * Execute the qmp command only
+- */
+-QDict *qmp_command(QTestState *who, const char *command, ...)
+-{
+-    va_list ap;
+-    QDict *resp, *ret;
+-
+-    va_start(ap, command);
+-    resp = qtest_vqmp(who, command, ap);
+-    va_end(ap);
+-
+-    g_assert(!qdict_haskey(resp, "error"));
+-    g_assert(qdict_haskey(resp, "return"));
+-
+-    ret = qdict_get_qdict(resp, "return");
+-    qobject_ref(ret);
+-    qobject_unref(resp);
+-
+-    return ret;
+-}
+-
+ /*
+  * Send QMP command "migrate".
+  * Arguments are built from @fmt... (formatted like
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b99b49a314..9ce27f89ec 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2322,32 +2322,33 @@ static void test_multifd_tcp_cancel(void)
  
-+void qtest_qmp_set_event_callback(QTestState *s,
-+                                  QTestQMPEventCallback cb, void *opaque)
-+{
-+    s->eventCB = cb;
-+    s->eventData = opaque;
-+}
-+
- QDict *qtest_qmp_event_ref(QTestState *s, const char *event)
+ static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
  {
-     while (s->pending_events) {
+-    qobject_unref(qmp_command(who,
+-                  "{ 'execute': 'calc-dirty-rate',"
+-                  "'arguments': { "
+-                  "'calc-time': %" PRIu64 ","
+-                  "'mode': 'dirty-ring' }}",
+-                  calc_time));
++    qtest_qmp_assert_success(who,
++                             "{ 'execute': 'calc-dirty-rate',"
++                             "'arguments': { "
++                             "'calc-time': %" PRIu64 ","
++                             "'mode': 'dirty-ring' }}",
++                             calc_time);
+ }
+ 
+ static QDict *query_dirty_rate(QTestState *who)
+ {
+-    return qmp_command(who, "{ 'execute': 'query-dirty-rate' }");
++    return qtest_qmp_assert_success_ref(who,
++                                        "{ 'execute': 'query-dirty-rate' }");
+ }
+ 
+ static void dirtylimit_set_all(QTestState *who, uint64_t dirtyrate)
+ {
+-    qobject_unref(qmp_command(who,
+-                  "{ 'execute': 'set-vcpu-dirty-limit',"
+-                  "'arguments': { "
+-                  "'dirty-rate': %" PRIu64 " } }",
+-                  dirtyrate));
++    qtest_qmp_assert_success(who,
++                             "{ 'execute': 'set-vcpu-dirty-limit',"
++                             "'arguments': { "
++                             "'dirty-rate': %" PRIu64 " } }",
++                             dirtyrate);
+ }
+ 
+ static void cancel_vcpu_dirty_limit(QTestState *who)
+ {
+-    qobject_unref(qmp_command(who,
+-                  "{ 'execute': 'cancel-vcpu-dirty-limit' }"));
++    qtest_qmp_assert_success(who,
++                             "{ 'execute': 'cancel-vcpu-dirty-limit' }");
+ }
+ 
+ static QDict *query_vcpu_dirty_limit(QTestState *who)
 -- 
 2.40.1
 
