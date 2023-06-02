@@ -2,82 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02045720564
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 17:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5534672056C
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 17:08:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q56Mv-0002bU-Ka; Fri, 02 Jun 2023 11:07:09 -0400
+	id 1q56Nx-0003Om-Np; Fri, 02 Jun 2023 11:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q56Ms-0002b8-Gi
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:07:07 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q56Mq-0000Kc-W8
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:07:06 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6094cb2d2so22061205e9.2
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 08:07:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685718423; x=1688310423;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=IMaMp++maEh23UbeojTuH8euDRvLdifTf4btalguTvo=;
- b=WW+GqF4bHg2hnHsQoU58rP9jpweXNOIIfgys1bXZa6QnMQ3aV3jjC1rCHcbZWIMMQg
- GEx0f1/7w4wtXSyPdKLjlCy1zoxnOKfhBYJJRilc4M78XxZ+6crFRCVYtrK3s8a0jXC0
- H7iMRizE1fBsOJWgaXbPpqYy9iUCgpSgiqwYfnSw5rbcdwgRg3bbcZSt9mz1P/q1Yism
- idrLq46MmVFb8anQi3P4w9V5DuTp9D8lxq9wy+R8hj90F47u/2R6sM3SbI9jyeDRU12+
- XJQ1ojDfzjSxrhReyU+TN+DvI88AahG++BBEykcjwDu1WTXV8YxBuV+qUSuRhj0wIT17
- dBQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685718423; x=1688310423;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IMaMp++maEh23UbeojTuH8euDRvLdifTf4btalguTvo=;
- b=iSDi2m6GZQzh31+Ak6jFldRg+a1PAsqgJzATW4vw3LtK0tL+bNsatwqp7t7qzblTPM
- u896NsTUIDXXzQhtZVsD+1GkouH5B+xMEgX0E/RsiwYKBd1vjBaeBArPfnJvSbp0FbpT
- 2Bv41rZEkFFGL+vUPBwEXzPdmLbz2aY70VIirhVopGnpKCUEoUbywpNYu0MWPKPovSbh
- vgr1TncMYDT9iopO3fzNZfCiRtHseI3fwLF3ZE1cc3FBHB2G8JdZygct+phzCFQBDSv5
- SVhbqpE0QfSaat/G4gmlGG/GdLpgnnn3MOmmt+cboE6+BJFKYqK1LL4GsTgOqbf86RJ4
- sJyg==
-X-Gm-Message-State: AC+VfDzgmjIhbkb8cWL5NctczGVgP0K0+sqIVswP6GfBStuHYNTKPV/d
- 6UK7RnbsHpqSbU8EdqKCsbdYsg==
-X-Google-Smtp-Source: ACHHUZ5U/Cp+3Phi6Cx/4GMaobFvZB0D+uYbEgJC47z3wcYjg2HZb3LRMgxdUwXRU1EyKlzZSnw5IA==
-X-Received: by 2002:a7b:c847:0:b0:3f4:21ff:b91f with SMTP id
- c7-20020a7bc847000000b003f421ffb91fmr1962302wml.28.1685718422638; 
- Fri, 02 Jun 2023 08:07:02 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- x13-20020a1c7c0d000000b003f4247fbb5fsm5801487wmc.10.2023.06.02.08.07.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 08:07:02 -0700 (PDT)
-Date: Fri, 2 Jun 2023 17:07:01 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Robbin Ehn <rehn@rivosinc.com>
-Cc: qemu-devel@nongnu.org, laurent@vivier.eu, qemu-riscv@nongnu.org, 
- richard.henderson@linaro.org
-Subject: Re: [RFC v2] linux-user/riscv: Add syscall riscv_hwprobe
-Message-ID: <20230602-6e13ca96e3e8064c96abf9bf@orel>
-References: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
- <20230602-86a3d8d9fad1fb3464d28702@orel>
- <024ee92f725f4ffd2952f472861ba9b415f4cde3.camel@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q56Nr-0003ON-M8
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:08:07 -0400
+Received: from smtp-42ac.mail.infomaniak.ch ([2001:1600:4:17::42ac])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q56No-0000SG-DD
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:08:07 -0400
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+ by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QXmb25PBRzMpvbm;
+ Fri,  2 Jun 2023 17:07:58 +0200 (CEST)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA
+ id 4QXmZy6vrvzMqFLN; Fri,  2 Jun 2023 17:07:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+ s=20191114; t=1685718478;
+ bh=yJE/Ib8CPqqu+pE7BkHIlxbJFGVwWpFIuzDHb02zjjk=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=Y/lyrxGPo8c180stzPdCnGebpqaZr7guTmVJQXq4bERYM4B+j1lT37uiVerrU0Av9
+ 75l0ubCibpTA3YwVLV/e32ZD5+ANNsE4cCxtQCdQgc16z+jTjh0iaoD9qUHXUYS4hO
+ bUNLdL5rf9ajSxeyAltPRwLo20RiTIQoinN2+7Mw=
+Message-ID: <97aabfe5-7f1a-8865-ab05-bf4af254e1b7@digikod.net>
+Date: Fri, 2 Jun 2023 17:07:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <024ee92f725f4ffd2952f472861ba9b415f4cde3.camel@rivosinc.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x331.google.com
+User-Agent: 
+Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "keescook@chromium.org"
+ <keescook@chromium.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "wanpengli@tencent.com" <wanpengli@tencent.com>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "liran.alon@oracle.com" <liran.alon@oracle.com>,
+ "marian.c.rotariu@gmail.com" <marian.c.rotariu@gmail.com>,
+ Alexander Graf <graf@amazon.com>, John S Andersen
+ <john.s.andersen@intel.com>,
+ "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
+ "ssicleru@bitdefender.com" <ssicleru@bitdefender.com>,
+ "yuanyu@google.com" <yuanyu@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "tgopinath@microsoft.com" <tgopinath@microsoft.com>,
+ "jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "will@kernel.org" <will@kernel.org>,
+ "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
+ "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "virtualization@lists.linux-foundation.org"
+ <virtualization@lists.linux-foundation.org>,
+ "nicu.citu@icloud.com" <nicu.citu@icloud.com>,
+ "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
+ "x86@kernel.org" <x86@kernel.org>, James Gowans <jgowans@amazon.com>
+References: <20230505152046.6575-1-mic@digikod.net>
+ <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
+ <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
+ <58a803f6-c3de-3362-673f-767767a43f9c@digikod.net>
+ <fd1dd8bcc172093ad20243ac1e7bb8fce45b38ef.camel@intel.com>
+ <ZHes4a73Zg+6JuFB@google.com>
+From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <ZHes4a73Zg+6JuFB@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
+Received-SPF: pass client-ip=2001:1600:4:17::42ac;
+ envelope-from=mic@digikod.net; helo=smtp-42ac.mail.infomaniak.ch
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,24 +103,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 02, 2023 at 04:39:20PM +0200, Robbin Ehn wrote:
-> On Fri, 2023-06-02 at 16:02 +0200, Andrew Jones wrote:
-> > On Fri, Jun 02, 2023 at 11:41:11AM +0200, Robbin Ehn wrote:
-...
-> > > +#if defined(TARGET_RISCV)
-> > > +    case TARGET_NR_riscv_hwprobe:
-> > > +        {
-> > 
-> > The { goes under the c of case, which will shift all the below four spaces
-> > left as well.
+
+On 31/05/2023 22:24, Sean Christopherson wrote:
+> On Tue, May 30, 2023, Rick P Edgecombe wrote:
+>> On Fri, 2023-05-26 at 17:22 +0200, Mickaï¿½l Salaï¿½n wrote:
+>>>>> Can the guest kernel ask the host VMM's emulated devices to DMA into
+>>>>> the protected data? It should go through the host userspace mappings I
+>>>>> think, which don't care about EPT permissions. Or did I miss where you
+>>>>> are protecting that another way? There are a lot of easy ways to ask
+>>>>> the host to write to guest memory that don't involve the EPT. You
+>>>>> probably need to protect the host userspace mappings, and also the
+>>>>> places in KVM that kmap a GPA provided by the guest.
+>>>>
+>>>> Good point, I'll check this confused deputy attack. Extended KVM
+>>>> protections should indeed handle all ways to map guests' memory.  I'm
+>>>> wondering if current VMMs would gracefully handle such new restrictions
+>>>> though.
+>>>
+>>> I guess the host could map arbitrary data to the guest, so that need to be
+>>> handled, but how could the VMM (not the host kernel) bypass/update EPT
+>>> initially used for the guest (and potentially later mapped to the host)?
+>>
+>> Well traditionally both QEMU and KVM accessed guest memory via host
+>> mappings instead of the EPT.ï¿½So I'm wondering what is stopping the
+>> guest from passing a protected gfn when setting up the DMA, and QEMU
+>> being enticed to write to it? The emulator as well would use these host
+>> userspace mappings and not consult the EPT IIRC.
+>>
+>> I think Sean was suggesting host userspace should be more involved in
+>> this process, so perhaps it could protect its own alias of the
+>> protected memory, for example mprotect() it as read-only.
 > 
-> This was an attempt to blend in, i.e. same style as the preceding case.
-> I'll change, thanks.
+> Ya, though "suggesting" is really "demanding, unless someone provides super strong
+> justification for handling this directly in KVM".  It's basically the same argument
+> that led to Linux Security Modules: I'm all for KVM providing the framework and
+> plumbing, but I don't want KVM to get involved in defining policy, thread models, etc.
 
-Hmm, I see. This function does have many cases with the indented format,
-but not all of them, and the rest of the code base doesn't indent. I won't
-insist on changing this, as long as checkpatch isn't complaining.
+I agree that KVM should not provide its own policy but only the building 
+blocks to enforce one. There is two complementary points:
+- policy definition by the guest, provided to KVM and the host;
+- policy enforcement by KVM and the host.
 
-Thanks,
-drew
+A potential extension of this framework could be to enable the host to 
+define it's own policy for guests, but this would be a different threat 
+model.
+
+To avoid too much latency because of the host being involved in policy 
+enforcement, I'd like to explore an asynchronous approach that would 
+especially fit well for dynamic restrictions.
 
