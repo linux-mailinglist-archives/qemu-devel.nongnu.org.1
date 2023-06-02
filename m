@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7043972085F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7083720865
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q58aA-0007xr-1r; Fri, 02 Jun 2023 13:28:58 -0400
+	id 1q58c1-0000Sh-04; Fri, 02 Jun 2023 13:30:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q58a8-0007xb-5v
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:28:56 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1q58bz-0000SM-DY
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:30:51 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q58a6-0000mA-Eq
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:28:55 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51494659d49so3355599a12.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 10:28:53 -0700 (PDT)
+ id 1q58bw-0001B3-Fb
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:30:51 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5149e65c218so3397135a12.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 10:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685726932; x=1688318932;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NG5dRzgytxeUAadTFR283hss7DOdpaupnF8nRz+IwsQ=;
- b=SXyN1HmTtj4PCekfSafAyzbbUuzPlTNT3/lAMZJ3SeY52bIeA1Lr2ZD9Wu0yyfaMFF
- 8WKN7f/fQI50FPGftgrXHxUikiUw3fUZG8+oXKjz+3i7WicUqNsn9l1sKOc8J5J5pmMG
- ceINcCy6h+P1hvUc8F4VqAoGPVWAOY59H1RFrWPoFh6ZMHAt1fhSwoURlv5zQUN7zvdg
- HR4EAnR7j5iWYn9CCYRaQRYbemJk4w/1koHvKRCLPI/YJpoO3CKcix+zTJ/CQjk3BX9I
- O0G8mZ+Z7tsbm55nA83Tm3V/N8PFyAEwpu04TY+ZtrGLoZjsy7hvSDFTBSFz7RV5FbZY
- kCkQ==
+ d=linaro.org; s=google; t=1685727046; x=1688319046;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TKs6mbm6PlCOoo73/sckpDOq9f6yHhZmygSlDlv+ln4=;
+ b=h5Zzs3bP3EwPQAw8bsTYi9kAAwn+NWD+2UWq3YUkYF+wuECP83rdljZwU2GN4NYTzD
+ jv/ltCqGkiEgbZu/P0jECKsJiWj9Uh/dVPHhpxYsrmmRsY+3fkOy2BNh9+3UwbBvwIB4
+ t2e1AS6F86BV902r4BvD+c9G+lKJp/sbVawaNJcQVv0CFP3pAc/072FbXwwMLWJQQio0
+ tQh6A06EMQDByyLseUDXoIaA9oartT3PZV7VvRixmrCI9mrK3N78acS7WXPxG13f7d8r
+ MIT7QAtDkcb3hPGatkzYu4ZPJQxCIVOSqIK2L4HnULIA6BSq8uscjuOpLmYMD1u8/CKX
+ KFVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685726932; x=1688318932;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NG5dRzgytxeUAadTFR283hss7DOdpaupnF8nRz+IwsQ=;
- b=EJSED8TEAdG7HNM3qFkEliB/YVBnca1y++yy7tV8/WYjuIPeOPmq066ZWg9xpl+dvz
- aZCyJIGSmGPwdQIrHgX5+lsrBA8VpwiLPdskSYr16qend5PUj1Z4RH8be1NiuIJ6hpUm
- gj6ivKTcxT4rE9aFsE6o/65mFHVzkTGo4FPwQjb6aeieTKe/FoG+kEFd9WsrsbaL7Igp
- 4PM8BaV+SsUPjIz/672xF/qLxUoxaOSh0BiTnlxKGGm5FK9HYw6XhTBTkxi/TMGlQC3t
- 0lxvIPwJXcZw1hfhrDzWCD4vJo70OLqbsdsISOWEVjmJlN1UiLs+ijgATISl6eLrPBxl
- Gd5Q==
-X-Gm-Message-State: AC+VfDxfIt5053OZni6t0h9UCyWhZFpkCukkzG1ea9GJMTUM8bEwposW
- Nk7IXi52bcNEwLJBJh+o7ggnACaoUMV0/IinapsKHg==
-X-Google-Smtp-Source: ACHHUZ5xcjA7fU08fzS2b8FFZg1QfTZwTNxdJorOUi9ff0lLjOScgHcuMbq4+CEeXNW1qqNax6DMs2eI8cmtw5gXUuQ=
-X-Received: by 2002:a05:6402:b38:b0:514:9d2f:10be with SMTP id
- bo24-20020a0564020b3800b005149d2f10bemr2349405edb.18.1685726932466; Fri, 02
- Jun 2023 10:28:52 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685727046; x=1688319046;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TKs6mbm6PlCOoo73/sckpDOq9f6yHhZmygSlDlv+ln4=;
+ b=LXKIK72HyFmL9S29lrraz5/HbM/xAHW/IGRmTHfvlPkkMd0NFtreYmlVebzkTytfc5
+ hytusqSyElGOknicvc8966f05XJPre6Hqu6pNWMgBpboat72emNNB6SXyBi4AsmxA5CA
+ NAdlLyRH1AiSnHJcQDcTydx/YCK27ygOhpUBs8mTU6pmzK0GCvsrE9h+lAAz0pbTs5CL
+ R2uZuQNKIFTljBoWp61cb6xRTkQK4wfPPRHaMu+H2kZ5ChnoC8G5/TxMa+5ROJqv/+mq
+ T+MK09mXTQ62WGLPfyU6R84irxASomEisD4ARRR271xZt7xkYIXXy2IYOWyahi2hVz0D
+ 1suQ==
+X-Gm-Message-State: AC+VfDzuraUkoVLbMBo9cMZ1rL6fWaiqYcIsmAwNgv5RvzWQkwQmhd+x
+ u3R6eHw/JoPKEppVmfUdHkJWiQKtymihB6zvpCPHLw==
+X-Google-Smtp-Source: ACHHUZ5noom2WNYrBRS3WYd/6UHd91qG0w/hXAaRz1yVZZfQvCsS4IzFTNdAns3MiA3SUfvkFOub4mRW//wiRR4aRlA=
+X-Received: by 2002:a05:6402:343:b0:514:abb9:7ab1 with SMTP id
+ r3-20020a056402034300b00514abb97ab1mr2493469edw.8.1685727046691; Fri, 02 Jun
+ 2023 10:30:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
- <20230521102307.87081-2-jiaxun.yang@flygoat.com>
-In-Reply-To: <20230521102307.87081-2-jiaxun.yang@flygoat.com>
+References: <20230515160506.1776883-1-stefanha@redhat.com>
+ <20230515160506.1776883-11-stefanha@redhat.com>
+ <CAFEAcA9bDh12FSk8CjEkBZjQOEBVd6-=fVwnM9bx8aoXvQdMuw@mail.gmail.com>
+ <CAAAx-8L4Z3tBzV5DMEy0WnG=3y67bp_1g-+2kUhrY+rp2knNKA@mail.gmail.com>
+In-Reply-To: <CAAAx-8L4Z3tBzV5DMEy0WnG=3y67bp_1g-+2kUhrY+rp2knNKA@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 Jun 2023 18:28:41 +0100
-Message-ID: <CAFEAcA9F4OOwg9LQn-y7ScixG9mZ58bsvcE6qGqxw1WXENYaZw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: qemu-devel@nongnu.org, yangxiaojuan@loongson.cn, gaosong@loongson.cn, 
- philmd@linaro.org, chenhuacai@kernel.org, crosa@redhat.com, 
- wainersm@redhat.com, bleal@redhat.com
+Date: Fri, 2 Jun 2023 18:30:35 +0100
+Message-ID: <CAFEAcA-WMkcreH7csiNyMBXCsS5XhcPK0vdRKiL70M_r18oYYg@mail.gmail.com>
+Subject: Re: [PULL v2 10/16] block: introduce zone append write for zoned
+ devices
+To: Sam Li <faithilikerun@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, Dmitry Fomichev <dmitry.fomichev@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,74 +91,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 21 May 2023 at 11:24, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
+On Fri, 2 Jun 2023 at 18:23, Sam Li <faithilikerun@gmail.com> wrote:
 >
-> As per "Loongson 3A5000/3B5000 Processor Reference Manual",
-> Loongson 3A5000's IPI implementation have 4 mailboxes per
-> core.
+> Peter Maydell <peter.maydell@linaro.org> =E4=BA=8E2023=E5=B9=B46=E6=9C=88=
+3=E6=97=A5=E5=91=A8=E5=85=AD 00:52=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > On Mon, 15 May 2023 at 17:06, Stefan Hajnoczi <stefanha@redhat.com> wro=
+te:
+> > >
+> > > From: Sam Li <faithilikerun@gmail.com>
+> > >
+> > > A zone append command is a write operation that specifies the first
+> > > logical block of a zone as the write position. When writing to a zone=
+d
+> > > block device using zone append, the byte offset of the call may point=
+ at
+> > > any position within the zone to which the data is being appended. Upo=
+n
+> > > completion the device will respond with the position where the data h=
+as
+> > > been written in the zone.
+> > >
+> > > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> > > Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
+> > > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > Message-id: 20230508051510.177850-3-faithilikerun@gmail.com
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> >
+> > Hi; Coverity flagged up a possible bug here (CID 1512459):
+> >
+> > > @@ -2453,8 +2454,12 @@ static int coroutine_fn raw_co_prw(BlockDriver=
+State *bs, uint64_t offset,
+> > >      if (fd_open(bs) < 0)
+> > >          return -EIO;
+> > >  #if defined(CONFIG_BLKZONED)
+> > > -    if (type & QEMU_AIO_WRITE && bs->wps) {
+> > > +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && bs->wps)=
+ {
+> >
+> > Here we check for bs->wps being NULL, which implies that it might be NU=
+LL...
+> >
+> > >          qemu_co_mutex_lock(&bs->wps->colock);
+> > > +        if (type & QEMU_AIO_ZONE_APPEND && bs->bl.zone_size) {
+> > > +            int index =3D offset / bs->bl.zone_size;
+> > > +            offset =3D bs->wps->wp[index];
+> > > +        }
+> > >      }
+> > >  #endif
+> > >
+> > > @@ -2502,9 +2507,13 @@ out:
+> > >  {
+> > >      BlockZoneWps *wps =3D bs->wps;
+> > >      if (ret =3D=3D 0) {
+> > > -        if (type & QEMU_AIO_WRITE && wps && bs->bl.zone_size) {
+> > > +        if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))
+> > > +            && wps && bs->bl.zone_size) {
+> > >              uint64_t *wp =3D &wps->wp[offset / bs->bl.zone_size];
+> > >              if (!BDRV_ZT_IS_CONV(*wp)) {
+> > > +                if (type & QEMU_AIO_ZONE_APPEND) {
+> > > +                    *s->offset =3D *wp;
+> > > +                }
+> > >                  /* Advance the wp if needed */
+> > >                  if (offset + bytes > *wp) {
+> > >                      *wp =3D offset + bytes;
+> > > @@ -2512,12 +2521,12 @@ out:
+> > >              }
+> > >          }
+> > >      } else {
+> > > -        if (type & QEMU_AIO_WRITE) {
+> > > +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
+> >
+> > ...but here we do not, even though update_zones_wp() can
+> > dereference bs->wps in some code paths.
+> >
+> > Should we be checking for NULL here before calling, or
+> > should update_zones_wp() handle a NULL bs->wps, or something else?
 >
-> However, in 78464f023b54 ("hw/loongarch/virt: Modify ipi as
-> percpu device"), the number of IPI mailboxes was reduced to
-> one, which mismatches actual hardware.
+> Hi Peter,
 >
-> It won't affect LoongArch based system as LoongArch boot code
-> only uses the first mailbox, however MIPS based Loongson boot
-> code uses all 4 mailboxes.
+> Thanks for spotting this. You are right that bs->wps is not checked in
+> this code path. I think the get_zones_wp() should handle a NULL
+> bs->wps which is the function calling wps directly.
 >
-> Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu device")
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->  hw/intc/loongarch_ipi.c         | 6 +++---
->  include/hw/intc/loongarch_ipi.h | 4 +++-
->  2 files changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-> index d6ab91721ea1..3e453816524e 100644
-> --- a/hw/intc/loongarch_ipi.c
-> +++ b/hw/intc/loongarch_ipi.c
-> @@ -238,14 +238,14 @@ static void loongarch_ipi_init(Object *obj)
->
->  static const VMStateDescription vmstate_ipi_core = {
->      .name = "ipi-single",
-> -    .version_id = 1,
-> -    .minimum_version_id = 1,
-> +    .version_id = 2,
-> +    .minimum_version_id = 2,
->      .fields = (VMStateField[]) {
->          VMSTATE_UINT32(status, IPICore),
->          VMSTATE_UINT32(en, IPICore),
->          VMSTATE_UINT32(set, IPICore),
->          VMSTATE_UINT32(clear, IPICore),
-> -        VMSTATE_UINT32_ARRAY(buf, IPICore, 2),
-> +        VMSTATE_UINT32_ARRAY(buf, IPICore, IPI_MBX_NUM * 2),
->          VMSTATE_END_OF_LIST()
->      }
->  };
-> diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
-> index 664e050b926e..6c6194786e80 100644
-> --- a/include/hw/intc/loongarch_ipi.h
-> +++ b/include/hw/intc/loongarch_ipi.h
-> @@ -28,6 +28,8 @@
->  #define MAIL_SEND_OFFSET      0
->  #define ANY_SEND_OFFSET       (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
->
-> +#define IPI_MBX_NUM           4
-> +
->  #define TYPE_LOONGARCH_IPI "loongarch_ipi"
->  OBJECT_DECLARE_SIMPLE_TYPE(LoongArchIPI, LOONGARCH_IPI)
->
-> @@ -37,7 +39,7 @@ typedef struct IPICore {
->      uint32_t set;
->      uint32_t clear;
->      /* 64bit buf divide into 2 32bit buf */
-> -    uint32_t buf[2];
-> +    uint32_t buf[IPI_MBX_NUM * 2];
->      qemu_irq irq;
->  } IPICore;
+> Would you like to submit a patch for this? Or I can do it if you are
+> not available.
 
-In particular, this fixes Coverity issues CID 1512452 and 1512453,
-where Coverity notices that the code in loongarch_ipi_writel() and
-loongarch_ipi_readl() reads off the end of the too-short buf[].
+I don't know anything about this code, so I'm not really in
+a position to write a patch. I'm just passing on the information
+from the Coverity scanner -- it scales a lot better that way
+than trying to write fixes for everything myself :-)
 
 thanks
 -- PMM
