@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F75E720853
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EA472085B
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:28:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q58V4-00052u-FA; Fri, 02 Jun 2023 13:23:42 -0400
+	id 1q58Z5-0007B8-PY; Fri, 02 Jun 2023 13:27:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q58V2-00052P-A7; Fri, 02 Jun 2023 13:23:40 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q58V0-0007k0-L6; Fri, 02 Jun 2023 13:23:40 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2af7081c9ebso33608951fa.1; 
- Fri, 02 Jun 2023 10:23:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685726616; x=1688318616;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/PUooaiw2ZIPI7gYsUUnC0DsYq4uCelc7iYtK5+GZiQ=;
- b=l+v4G/lPceM/uqygQf0IOaZtx0t0TGr4nlSdT/o9TjbZ9xkfdHcwPn8MY1PVFk5QbZ
- X6f6XZWsYFuzqfcOEQw7lj5+wlfB33zk/74JN9j3GenhzOd2XR++bC4uoe20WmW9WmOM
- myIYBFjpPB+mR2w9F7qSONLbqAXECc5Y+YAl0Wh+PNmHAyDt7/Pp6amh9y/5lYmFuu9t
- bWBfo5BxzNk19o6HHLKyHYBaV+U1mMFI77CKJDpwq0nDHzFykIMvxDsD75Q7OVaWGgvK
- LJ8u3tKqwl9XdRmhzgIgn+BWMW30A+hh52ttWTbuYvqDUQFMP+BmkCyKJa0Dzq1R6pug
- WFHQ==
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1q58Z2-0007Ao-4M
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:27:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1q58Z0-0000IT-5l
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:27:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685726865;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PZTtGCticPm+ZTg6KnPDRYI9Ghg1D32643S+GL972ns=;
+ b=GzEgdTSJEg19hkmeBw1Z5NyHvypyNzmRH4wKamngQ5F5CFDcsKPk/c1P3sbv6jdbjb2uZK
+ M7se14b6MijX5QnKgW7NvdL1SZmkzWHyntpJjcbRVXEtDgVP7x/T9YtfBR5Qk8wDfCXuTV
+ ZJrnavTgaYkKRngrlCc6l7Dgs85aYXg=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-571-lYxL-8cAOaOo2hZwkqY8qQ-1; Fri, 02 Jun 2023 13:27:43 -0400
+X-MC-Unique: lYxL-8cAOaOo2hZwkqY8qQ-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4ec790b902bso1819424e87.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 10:27:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685726616; x=1688318616;
+ d=1e100.net; s=20221208; t=1685726862; x=1688318862;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/PUooaiw2ZIPI7gYsUUnC0DsYq4uCelc7iYtK5+GZiQ=;
- b=PCbkgnHHxuXJ3qSzDDq6k2DndpgNQ12SBTD8Zv0YeJ5wtL5toRyr5PZMldRcQXQ5mv
- 3BGshx+yiZjPnxGpI4ROdgw8wK4Q6bu4x9CjShxWWfPViSF5Wk5nw2vpeLj2Ik4L0h+N
- k2IdK8En+FCAf4gjEbpn2H9OlSIbD1MzP+issKi25ryqrgRDU6ByGFTkR5EaZlAJkR/Q
- o5jdLC3Sw+/dkhw9bogltw6dhmEjFWzCw7/6BTgBIB0q0HjDp/CNrafSNIzrO8V+FbIr
- SlAxDZGe/uf/+G8ZQAVHSZi4+CayvyLO08IuZbU/QyZnozEKgRUhHTKRNJZ4PDPke1on
- XVbA==
-X-Gm-Message-State: AC+VfDz0FvIAhWfridzU9ENpfriQW1CSQJ9+ymuDfMOWk/GfVPnXZiCB
- FiYpsqsJRZX+KTKJIRP8zb3GTHa6673+FBdv8d4=
-X-Google-Smtp-Source: ACHHUZ70CmwJr95EePxKAh11s0Fnwjl1APVvzyX3TvrWdK+86xHap5dDQoWGWR44RpZhzCkbffByO2H71ivVNvUiv40=
-X-Received: by 2002:a2e:3506:0:b0:2af:32a7:4eef with SMTP id
- z6-20020a2e3506000000b002af32a74eefmr391032ljz.35.1685726615577; Fri, 02 Jun
- 2023 10:23:35 -0700 (PDT)
+ bh=PZTtGCticPm+ZTg6KnPDRYI9Ghg1D32643S+GL972ns=;
+ b=Md9NTWWFGdSBd3bFfNH7ij3YtTsTbwhMKQZ8uB9t+MWLp6+F3YLAayJVABE5ZxBJCm
+ /0nvhMZQjq6yH6sxmcNetRCoL6Fs/Zte5F7zkFxMO2mWhMtnREQpIdxtBXWiJnWjyswf
+ 1l8ML06L9tGIApU3+z1ECjY53xnPkGQHeYmAJfWZal9gOQoP4aycJKd25rnZLcgofGYU
+ UNlgDcnIBeS8chz/N0+l6vo/7ei6IRP8DOOiHsUMqcao6Pxdpu8T7M4og4OFAY1P6joS
+ AcilC9QTVihIhSVFs9j5PtSy+UvVNshL2nJ7MeINih+J8zu2Spsb+W2izzJtZmAEqG6/
+ wXtw==
+X-Gm-Message-State: AC+VfDyQhZnuniZjSJWbT91Gdk5O3k3qeeTNqwNm9p1/Z2OrKI0ijN5M
+ hkyVUBakA1qTH6nvnAeDhv79Ay+ReO3Kq5cKdO8PCpq880GmJD50IEG0wf2r1KbeaKwfgEGE2NT
+ pXtcSoEfwR4XdNp+/OCIsnh1D0uIRg1s=
+X-Received: by 2002:ac2:4193:0:b0:4e8:5e39:6234 with SMTP id
+ z19-20020ac24193000000b004e85e396234mr1980815lfh.16.1685726862446; 
+ Fri, 02 Jun 2023 10:27:42 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6IOPIqg26JAPBJ/oSs5CKBJuFRrJjNw5AXK6l2xFt3FKaNAxMtcFfpMPR3V48ZcImJsL1iCSEFE9tGcUDcB0E=
+X-Received: by 2002:ac2:4193:0:b0:4e8:5e39:6234 with SMTP id
+ z19-20020ac24193000000b004e85e396234mr1980804lfh.16.1685726862146; Fri, 02
+ Jun 2023 10:27:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230515160506.1776883-1-stefanha@redhat.com>
- <20230515160506.1776883-11-stefanha@redhat.com>
- <CAFEAcA9bDh12FSk8CjEkBZjQOEBVd6-=fVwnM9bx8aoXvQdMuw@mail.gmail.com>
-In-Reply-To: <CAFEAcA9bDh12FSk8CjEkBZjQOEBVd6-=fVwnM9bx8aoXvQdMuw@mail.gmail.com>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Sat, 3 Jun 2023 01:23:09 +0800
-Message-ID: <CAAAx-8L4Z3tBzV5DMEy0WnG=3y67bp_1g-+2kUhrY+rp2knNKA@mail.gmail.com>
-Subject: Re: [PULL v2 10/16] block: introduce zone append write for zoned
- devices
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, Dmitry Fomichev <dmitry.fomichev@wdc.com>
+References: <20230602143854.1879091-1-eperezma@redhat.com>
+ <20230602143854.1879091-2-eperezma@redhat.com>
+In-Reply-To: <20230602143854.1879091-2-eperezma@redhat.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Sat, 3 Jun 2023 01:27:05 +0800
+Message-ID: <CAPpAL=wCTA+4TjONY88a4QNhJhRoezVuMwiwS+r0_6BpLfRxJg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] vdpa: do not block migration if device has cvq and
+ x-svq=on
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=faithilikerun@gmail.com; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,100 +96,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> =E4=BA=8E2023=E5=B9=B46=E6=9C=883=
-=E6=97=A5=E5=91=A8=E5=85=AD 00:52=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, 15 May 2023 at 17:06, Stefan Hajnoczi <stefanha@redhat.com> wrote=
-:
-> >
-> > From: Sam Li <faithilikerun@gmail.com>
-> >
-> > A zone append command is a write operation that specifies the first
-> > logical block of a zone as the write position. When writing to a zoned
-> > block device using zone append, the byte offset of the call may point a=
-t
-> > any position within the zone to which the data is being appended. Upon
-> > completion the device will respond with the position where the data has
-> > been written in the zone.
-> >
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> > Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
-> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > Message-id: 20230508051510.177850-3-faithilikerun@gmail.com
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->
-> Hi; Coverity flagged up a possible bug here (CID 1512459):
->
-> > @@ -2453,8 +2454,12 @@ static int coroutine_fn raw_co_prw(BlockDriverSt=
-ate *bs, uint64_t offset,
-> >      if (fd_open(bs) < 0)
-> >          return -EIO;
-> >  #if defined(CONFIG_BLKZONED)
-> > -    if (type & QEMU_AIO_WRITE && bs->wps) {
-> > +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && bs->wps) {
->
-> Here we check for bs->wps being NULL, which implies that it might be NULL=
-...
->
-> >          qemu_co_mutex_lock(&bs->wps->colock);
-> > +        if (type & QEMU_AIO_ZONE_APPEND && bs->bl.zone_size) {
-> > +            int index =3D offset / bs->bl.zone_size;
-> > +            offset =3D bs->wps->wp[index];
-> > +        }
-> >      }
-> >  #endif
-> >
-> > @@ -2502,9 +2507,13 @@ out:
-> >  {
-> >      BlockZoneWps *wps =3D bs->wps;
-> >      if (ret =3D=3D 0) {
-> > -        if (type & QEMU_AIO_WRITE && wps && bs->bl.zone_size) {
-> > +        if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))
-> > +            && wps && bs->bl.zone_size) {
-> >              uint64_t *wp =3D &wps->wp[offset / bs->bl.zone_size];
-> >              if (!BDRV_ZT_IS_CONV(*wp)) {
-> > +                if (type & QEMU_AIO_ZONE_APPEND) {
-> > +                    *s->offset =3D *wp;
-> > +                }
-> >                  /* Advance the wp if needed */
-> >                  if (offset + bytes > *wp) {
-> >                      *wp =3D offset + bytes;
-> > @@ -2512,12 +2521,12 @@ out:
-> >              }
-> >          }
-> >      } else {
-> > -        if (type & QEMU_AIO_WRITE) {
-> > +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
->
-> ...but here we do not, even though update_zones_wp() can
-> dereference bs->wps in some code paths.
->
-> Should we be checking for NULL here before calling, or
-> should update_zones_wp() handle a NULL bs->wps, or something else?
+QE tested this series with vhost_vdpa and x-svq=3Don, guest can migrate
+and everything works well.
 
-Hi Peter,
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-Thanks for spotting this. You are right that bs->wps is not checked in
-this code path. I think the get_zones_wp() should handle a NULL
-bs->wps which is the function calling wps directly.
-
-Would you like to submit a patch for this? Or I can do it if you are
-not available.
-
-Thanks,
-Sam
-
+On Fri, Jun 2, 2023 at 10:39=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
 >
-> >              update_zones_wp(bs, s->fd, 0, 1);
-> >          }
-> >      }
-> >
-> > -    if (type & QEMU_AIO_WRITE && wps) {
-> > +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && wps) {
-> >          qemu_co_mutex_unlock(&wps->colock);
-> >      }
-> >  }
+> It was a mistake to forbid in all cases, as SVQ is already able to send
+> all the CVQ messages before start forwarding data vqs.  It actually
+> caused a regression, making impossible to migrate device previously
+> migratable.
 >
-> thanks
-> -- PMM
+> Fixes: 36e4647247f2 ("vdpa: add vhost_vdpa_net_valid_svq_features")
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> ---
+>  net/vhost-vdpa.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 37cdc84562..c63456ff7c 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -837,13 +837,16 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
+>
+>          /*
+> -         * TODO: We cannot migrate devices with CVQ as there is no way t=
+o set
+> -         * the device state (MAC, MQ, etc) before starting the datapath.
+> +         * TODO: We cannot migrate devices with CVQ and no x-svq enabled=
+ as
+> +         * there is no way to set the device state (MAC, MQ, etc) before
+> +         * starting the datapath.
+>           *
+>           * Migration blocker ownership now belongs to s->vhost_vdpa.
+>           */
+> -        error_setg(&s->vhost_vdpa.migration_blocker,
+> -                   "net vdpa cannot migrate with CVQ feature");
+> +        if (!svq) {
+> +            error_setg(&s->vhost_vdpa.migration_blocker,
+> +                       "net vdpa cannot migrate with CVQ feature");
+> +        }
+>      }
+>      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index,=
+ nvqs);
+>      if (ret) {
+> --
+> 2.31.1
+>
+
 
