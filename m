@@ -2,90 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B4972006D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 13:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7626A720075
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 13:34:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q52zP-0003YF-Td; Fri, 02 Jun 2023 07:30:39 -0400
+	id 1q532U-0004hH-LC; Fri, 02 Jun 2023 07:33:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q52zN-0003Y6-PM
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:30:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q532S-0004h8-QP
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:33:48 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q52zM-00054t-4Y
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:30:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685705435;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zKFSZHw/lZX9fNOdZEtXLHPFoPiaq+rDpI+cEcJS3Lo=;
- b=b1w2b3CICyZVX8AWypJ//EpZpE8+RYUA7tFiMdfbYPLTcIt3Jtm/6DYPxX1S8kg4vIpkw5
- G1ifUpBcKlB9v8vY1DflwircJUwzPNW9CFaELncg7X6NusAmlf8i2bsJinhNbb2pQ6dDhV
- egZciUu2BY7/pTCfmo9vN6WSUcpYj6k=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-1OmIR0v7PE-hHkSRjR22WA-1; Fri, 02 Jun 2023 07:30:33 -0400
-X-MC-Unique: 1OmIR0v7PE-hHkSRjR22WA-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5128dcbdfc1so1368196a12.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 04:30:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685705432; x=1688297432;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zKFSZHw/lZX9fNOdZEtXLHPFoPiaq+rDpI+cEcJS3Lo=;
- b=b+hzBsw0iomOqJJ5Kmj+wN/4tvWRPGpU6FQSMsVcctx+ERM3nq+H1De45pIQDPZD6K
- 3chzMDsQH2vkBl2bUceoBs4/Eu85kpJUbZkbdxZCVPfhAGD5FOkJDTI9bBsMFJr4nfra
- XVyKy1PtT3gVXOfDLxP4L4hbrWmgVFIT+l/vgZwAa0jxQIEjp7ZuKi2+4hOAQSa/Ojox
- MTjSoseyOhUxEca3kcYpZoFd6wQKdFb7xKhwzq/DNLzFxfALT9AKZPg4zfeKvfMt4twX
- N5QOs4kY5pbPcc2I9ge8b4uMxMkKTicmHCV98X7Z12DEHfycI/F652+cWZDWic7RzEQ5
- /xlA==
-X-Gm-Message-State: AC+VfDw7Gjk2zK7yCvpW5gPbnU3kccJV7CJyPIrQIJJ1SsayvTtDnSPp
- WIDq/faHKANogcdsq7OezaOLo24Q4U2KcWywH9Lc43+jY3Irof8NjtFCMqPaY5TvHyniyTs3nTZ
- 5jfkF793LVj5cGle7R+hTZAA0Imz5w5zTYLoTMRoac9Ds
-X-Received: by 2002:aa7:d0c4:0:b0:50c:358:1eba with SMTP id
- u4-20020aa7d0c4000000b0050c03581ebamr1673258edo.35.1685705432039; 
- Fri, 02 Jun 2023 04:30:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5xcqPrWeqPSgEqlh9QJtPizB+eW5n9MoEHEH8D+dB/f51x9ZVbBFIJwg3EiD+A4FwmCKdCT+4pVjs/H/2xbv4=
-X-Received: by 2002:aa7:d0c4:0:b0:50c:358:1eba with SMTP id
- u4-20020aa7d0c4000000b0050c03581ebamr1673244edo.35.1685705431749; Fri, 02 Jun
- 2023 04:30:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q532Q-0006r4-Rr
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:33:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:Reply-To:
+ References:To:Subject:MIME-Version:Date:Message-ID:Sender:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=l+hEgOKkrnno4+yZyruFB4BbpR7XYTho2lzaxFo+hBw=; b=vABCb6XXOOC4XitVd+ONd2+jqr
+ 6NB413ig7C9fpJ9vUsHAsQclfhgwSmwcW6o6C6qjttLhMhrsjtYQ4mrr93LpUgMtDfjA6c18aC2tC
+ UvBqQahh1I3950XQ0y2sRozDhGgDG2tpLZFuFsl1FM+12NGWt6U5T/DizGF0GJS+SY3E=;
+Message-ID: <8fc7cac9-9ece-7702-3c10-cec5d31931e2@rev.ng>
+Date: Fri, 2 Jun 2023 13:33:22 +0200
 MIME-Version: 1.0
-References: <20230526153143.470745-1-eperezma@redhat.com>
-In-Reply-To: <20230526153143.470745-1-eperezma@redhat.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Fri, 2 Jun 2023 19:29:55 +0800
-Message-ID: <CAPpAL=ypo551yeF2rah7++qPrKQvvAA09-UM-OLGwcm-PuwqpA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Move ASID test to vhost-vdpa net initialization
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, longpeng2@huawei.com, 
- Shannon Nelson <snelson@pensando.io>, Laurent Vivier <lvivier@redhat.com>,
- si-wei.liu@oracle.com, 
- Cindy Lu <lulu@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, Stefano Garzarella <sgarzare@redhat.com>,
- Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>, 
- Liuxiangdong <liuxiangdong5@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- alvaro.karsz@solid-run.com, Zhu Lingshan <lingshan.zhu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v3 06/48] tcg: Widen CPUTLBEntry comparators to 64-bits
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230531040330.8950-1-richard.henderson@linaro.org>
+ <20230531040330.8950-7-richard.henderson@linaro.org>
+Content-Language: en-US
+Organization: rev.ng
+In-Reply-To: <20230531040330.8950-7-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ SCC_BODY_URI_ONLY=0.666, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,69 +59,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QE did a sanity test on v4 of this series using the vdpa_sim
-device,everything is working fine.
 
-Tested-by: Lei Yang <leiyang@redhat.com>
-
-On Fri, May 26, 2023 at 11:31=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redha=
-t.com> wrote:
+On 5/31/23 06:02, Richard Henderson wrote:
+> This makes CPUTLBEntry agnostic to the address size of the guest.
+> When 32-bit addresses are in effect, we can simply read the low
+> 32 bits of the 64-bit field.  Similarly when we need to update
+> the field for setting TLB_NOTDIRTY.
 >
-> QEMU v8.0 is able to switch dynamically between vhost-vdpa passthrough
-> and SVQ mode as long as the net device does not have CVQ.  The net device
-> state followed (and migrated) by CVQ requires special care.
+> For TCG backends that could in theory be big-endian, but in
+> practice are not (arm, loongarch, riscv), use QEMU_BUILD_BUG_ON
+> to document and ensure this is not accidentally missed.
 >
-> A pre-requisite to add CVQ to that framework is to determine if devices w=
-ith
-> CVQ are migratable or not at initialization time.  The solution to it is =
-to
-> always shadow only CVQ, and vq groups and ASID are used for that.
+> For s390x, which is always big-endian, use HOST_BIG_ENDIAN anyway,
+> to document the reason for the adjustment.
 >
-> However, current qemu version only checks ASID at device start (as "drive=
-r set
-> DRIVER_OK status bit"), not at device initialization.  A check at
-> initialization time is required.  Otherwise, the guest would be able to s=
-et
-> and remove migration blockers at will [1].
+> For sparc64 and ppc64, always perform a 64-bit load, and rely on
+> the following 32-bit comparison to ignore the high bits.
 >
-> This series is a requisite for migration of vhost-vdpa net devices with C=
-VQ.
-> However it already makes sense by its own, as it reduces the number of io=
-ctls
-> at migration time, decreasing the error paths there.
+> Rearrange mips and ppc if ladders for clarity.
 >
-> [1] https://lore.kernel.org/qemu-devel/2616f0cd-f9e8-d183-ea78-db1be4825d=
-9c@redhat.com/
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> v4:
-> * Only probe one of MQ or !MQ.
-> * Merge vhost_vdpa_cvq_is_isolated in vhost_vdpa_probe_cvq_isolation
-> * Call ioctl directly instead of adding functions.
->
-> v3:
-> * Only record cvq_isolated, true if the device have cvq isolated in both =
-!MQ
-> * and MQ configurations.
-> * Drop the cache of cvq group, it can be done on top
->
-> v2:
-> * Take out the reset of the device from vhost_vdpa_cvq_is_isolated
->   (reported by Lei Yang).
-> * Expand patch messages by Stefano G. questions.
->
-> Eugenio P=C3=A9rez (2):
->   vdpa: return errno in vhost_vdpa_get_vring_group error
->   vdpa: move CVQ isolation check to net_init_vhost_vdpa
->
->  net/vhost-vdpa.c | 147 ++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 112 insertions(+), 35 deletions(-)
->
-> --
-> 2.31.1
->
->
-
+>   include/exec/cpu-defs.h          | 37 +++++++++++---------------------
+>   include/exec/cpu_ldst.h          | 19 ++++++++++------
+>   accel/tcg/cputlb.c               |  8 +++++--
+>   tcg/aarch64/tcg-target.c.inc     |  1 +
+>   tcg/arm/tcg-target.c.inc         |  1 +
+>   tcg/loongarch64/tcg-target.c.inc |  1 +
+>   tcg/mips/tcg-target.c.inc        | 13 ++++++-----
+>   tcg/ppc/tcg-target.c.inc         | 28 +++++++++++++-----------
+>   tcg/riscv/tcg-target.c.inc       |  1 +
+>   tcg/s390x/tcg-target.c.inc       |  1 +
+>   tcg/sparc64/tcg-target.c.inc     |  8 +++++--
+>   11 files changed, 67 insertions(+), 51 deletions(-)
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
