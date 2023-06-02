@@ -2,92 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5534672056C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 17:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B98720579
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 17:09:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q56Nx-0003Om-Np; Fri, 02 Jun 2023 11:08:13 -0400
+	id 1q56Og-00040t-Us; Fri, 02 Jun 2023 11:08:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q56Nr-0003ON-M8
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:08:07 -0400
-Received: from smtp-42ac.mail.infomaniak.ch ([2001:1600:4:17::42ac])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q56No-0000SG-DD
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:08:07 -0400
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
- by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QXmb25PBRzMpvbm;
- Fri,  2 Jun 2023 17:07:58 +0200 (CEST)
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA
- id 4QXmZy6vrvzMqFLN; Fri,  2 Jun 2023 17:07:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
- s=20191114; t=1685718478;
- bh=yJE/Ib8CPqqu+pE7BkHIlxbJFGVwWpFIuzDHb02zjjk=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=Y/lyrxGPo8c180stzPdCnGebpqaZr7guTmVJQXq4bERYM4B+j1lT37uiVerrU0Av9
- 75l0ubCibpTA3YwVLV/e32ZD5+ANNsE4cCxtQCdQgc16z+jTjh0iaoD9qUHXUYS4hO
- bUNLdL5rf9ajSxeyAltPRwLo20RiTIQoinN2+7Mw=
-Message-ID: <97aabfe5-7f1a-8865-ab05-bf4af254e1b7@digikod.net>
-Date: Fri, 2 Jun 2023 17:07:54 +0200
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q56Ob-00040f-IP; Fri, 02 Jun 2023 11:08:53 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q56OX-0000Zk-LF; Fri, 02 Jun 2023 11:08:53 -0400
+Received: from [192.168.114.181] (unknown [61.242.135.4])
+ by APP-01 (Coremail) with SMTP id qwCowABXXAz0BXpkQawkCg--.39817S2;
+ Fri, 02 Jun 2023 23:08:37 +0800 (CST)
+Message-ID: <b703e507-b00b-cdf7-067a-96954b80ce85@iscas.ac.cn>
+Date: Fri, 2 Jun 2023 23:08:36 +0800
 MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/2] target/riscv: Add Zacas ISA extension support
 Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "keescook@chromium.org"
- <keescook@chromium.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "wanpengli@tencent.com" <wanpengli@tencent.com>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "liran.alon@oracle.com" <liran.alon@oracle.com>,
- "marian.c.rotariu@gmail.com" <marian.c.rotariu@gmail.com>,
- Alexander Graf <graf@amazon.com>, John S Andersen
- <john.s.andersen@intel.com>,
- "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
- "ssicleru@bitdefender.com" <ssicleru@bitdefender.com>,
- "yuanyu@google.com" <yuanyu@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "tgopinath@microsoft.com" <tgopinath@microsoft.com>,
- "jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "will@kernel.org" <will@kernel.org>,
- "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
- "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "virtualization@lists.linux-foundation.org"
- <virtualization@lists.linux-foundation.org>,
- "nicu.citu@icloud.com" <nicu.citu@icloud.com>,
- "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
- "x86@kernel.org" <x86@kernel.org>, James Gowans <jgowans@amazon.com>
-References: <20230505152046.6575-1-mic@digikod.net>
- <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
- <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
- <58a803f6-c3de-3362-673f-767767a43f9c@digikod.net>
- <fd1dd8bcc172093ad20243ac1e7bb8fce45b38ef.camel@intel.com>
- <ZHes4a73Zg+6JuFB@google.com>
-From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <ZHes4a73Zg+6JuFB@google.com>
+To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20230602121638.36342-1-rbradford@rivosinc.com>
+ <20230602121638.36342-2-rbradford@rivosinc.com>
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230602121638.36342-2-rbradford@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-Received-SPF: pass client-ip=2001:1600:4:17::42ac;
- envelope-from=mic@digikod.net; helo=smtp-42ac.mail.infomaniak.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: qwCowABXXAz0BXpkQawkCg--.39817S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxKr47CFyUXF17ZF1rXFW7XFb_yoW3CFW5pF
+ W8GFy7WFWUJryFyasaqF45Cr1UAr4SkrW2g3sagwn2vFZ8GFW7Gr1qk3yakrW8Ja95XrWF
+ 9a15CFyUArZ5ta7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvq14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
+ Y487MxkIecxEwVAFwVW5WwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+ C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+ wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+ v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+ jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
+ ZFpf9x0JUgmRUUUUUU=
+X-Originating-IP: [61.242.135.4]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,51 +81,239 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 31/05/2023 22:24, Sean Christopherson wrote:
-> On Tue, May 30, 2023, Rick P Edgecombe wrote:
->> On Fri, 2023-05-26 at 17:22 +0200, Mickaï¿½l Salaï¿½n wrote:
->>>>> Can the guest kernel ask the host VMM's emulated devices to DMA into
->>>>> the protected data? It should go through the host userspace mappings I
->>>>> think, which don't care about EPT permissions. Or did I miss where you
->>>>> are protecting that another way? There are a lot of easy ways to ask
->>>>> the host to write to guest memory that don't involve the EPT. You
->>>>> probably need to protect the host userspace mappings, and also the
->>>>> places in KVM that kmap a GPA provided by the guest.
->>>>
->>>> Good point, I'll check this confused deputy attack. Extended KVM
->>>> protections should indeed handle all ways to map guests' memory.  I'm
->>>> wondering if current VMMs would gracefully handle such new restrictions
->>>> though.
->>>
->>> I guess the host could map arbitrary data to the guest, so that need to be
->>> handled, but how could the VMM (not the host kernel) bypass/update EPT
->>> initially used for the guest (and potentially later mapped to the host)?
->>
->> Well traditionally both QEMU and KVM accessed guest memory via host
->> mappings instead of the EPT.ï¿½So I'm wondering what is stopping the
->> guest from passing a protected gfn when setting up the DMA, and QEMU
->> being enticed to write to it? The emulator as well would use these host
->> userspace mappings and not consult the EPT IIRC.
->>
->> I think Sean was suggesting host userspace should be more involved in
->> this process, so perhaps it could protect its own alias of the
->> protected memory, for example mprotect() it as read-only.
-> 
-> Ya, though "suggesting" is really "demanding, unless someone provides super strong
-> justification for handling this directly in KVM".  It's basically the same argument
-> that led to Linux Security Modules: I'm all for KVM providing the framework and
-> plumbing, but I don't want KVM to get involved in defining policy, thread models, etc.
+On 2023/6/2 20:16, Rob Bradford wrote:
+> This commit adds support for the the amocas.{w,d,q} instructions behind
+> a new property to enable that instruction.
+>
+> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> ---
+>   target/riscv/cpu.c                          |   4 +
+>   target/riscv/cpu.h                          |   1 +
+>   target/riscv/insn32.decode                  |   5 +
+>   target/riscv/insn_trans/trans_rvzacas.c.inc | 146 ++++++++++++++++++++
+>   target/riscv/translate.c                    |   1 +
+>   5 files changed, 157 insertions(+)
+>   create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index db0875fb43..e99833eb4a 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -82,6 +82,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+>       ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+>       ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+>       ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+> +    ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
+>       ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>       ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+>       ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_1_11_0, ext_zfhmin),
+> @@ -1604,6 +1605,9 @@ static Property riscv_cpu_extensions[] = {
+>       DEFINE_PROP_BOOL("x-zvfh", RISCVCPU, cfg.ext_zvfh, false),
+>       DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, cfg.ext_zvfhmin, false),
+>   
+> +    /* Atomic CAS (Zacas) */
+> +    DEFINE_PROP_BOOL("x-zacas", RISCVCPU, cfg.ext_zacas, false),
+> +
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index de7e43126a..ac4d9e8e9c 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -436,6 +436,7 @@ struct RISCVCPUConfig {
+>       bool ext_smaia;
+>       bool ext_ssaia;
+>       bool ext_sscofpmf;
+> +    bool ext_zacas;
+>       bool rvv_ta_all_1s;
+>       bool rvv_ma_all_1s;
+>   
+> diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+> index 73d5d1b045..97d17ee520 100644
+> --- a/target/riscv/insn32.decode
+> +++ b/target/riscv/insn32.decode
+> @@ -255,6 +255,11 @@ amomax_d   10100 . . ..... ..... 011 ..... 0101111 @atom_st
+>   amominu_d  11000 . . ..... ..... 011 ..... 0101111 @atom_st
+>   amomaxu_d  11100 . . ..... ..... 011 ..... 0101111 @atom_st
+>   
+> +# *** Zacas Extension
+> +amocas_w   00101 . . ..... ..... 010 ..... 0101111 @atom_st
+> +amocas_d   00101 . . ..... ..... 011 ..... 0101111 @atom_st
+> +amocas_q   00101 . . ..... ..... 100 ..... 0101111 @atom_st
+> +
+>   # *** RV32F Standard Extension ***
+>   flw        ............   ..... 010 ..... 0000111 @i
+>   fsw        .......  ..... ..... 010 ..... 0100111 @s
+> diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc b/target/riscv/insn_trans/trans_rvzacas.c.inc
+> new file mode 100644
+> index 0000000000..3f1b58ee8a
+> --- /dev/null
+> +++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
+> @@ -0,0 +1,146 @@
+> +/*
+> + * RISC-V translation routines for Zacas extension
+> + *
+> + * Copyright (c) 2023 Rivos Inc
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2 or later, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along with
+> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#define REQUIRE_ZACAS(ctx) do {                 \
+> +    if (!ctx->cfg_ptr->ext_zacas) {             \
+> +        return false;                           \
+> +    }                                           \
+> +} while (0)
+> +
+> +static bool amocas_tl(DisasContext *ctx, arg_atomic *a, MemOp mop)
+> +{
+> +    TCGv retv = dest_gpr(ctx, a->rd);
+> +    TCGv addr = get_address(ctx, a->rs1, 0);
+> +    TCGv newv = get_gpr(ctx, a->rs2, EXT_ZERO);
+> +    TCGv cmpv = get_gpr(ctx, a->rd, EXT_ZERO);
+> +
+> +    decode_save_opc(ctx);
+> +    tcg_gen_atomic_cmpxchg_tl(retv, addr, cmpv, newv, ctx->mem_idx, mop);
+> +    gen_set_gpr(ctx, a->rd, retv);
+> +
+> +    return true;
+> +}
+> +
+> +#if TARGET_LONG_BITS == 32
+> +static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
+> +{
+> +    REQUIRE_ZACAS(ctx);
+> +    return amocas_tl(ctx, a, MO_TESL | MO_ALIGN);
+> +}
+> +#else
+> +static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
+> +{
+> +    REQUIRE_64BIT(ctx);
+> +    REQUIRE_ZACAS(ctx);
+> +    ctx->ol = MXL_RV32;
+> +    return amocas_tl(ctx, a, MO_TESL | MO_ALIGN);
+> +}
+> +#endif
+> +
+> +#if TARGET_LONG_BITS == 32
+> +static bool trans_amocas_d(DisasContext *ctx, arg_amocas_w *a)
+> +{
+> +    TCGv_i64 retv, newv, cmpv;
+> +    TCGv_i32 cmpv_l, cmpv_h, newv_l, newv_h;
+> +    TCGv addr;
+> +
+> +    REQUIRE_ZACAS(ctx);
+> +
+> +    if (a->rd % 2 == 1 || a->rs2 % 2 == 1) {
+> +        return false;
+> +    }
+> +
+> +    addr = get_address(ctx, a->rs1, 0);
+> +    cmpv_l = get_gpr(ctx, a->rd, 0);
+> +    cmpv_h = a->rd == 0 ? get_gpr(ctx, 0, 0) : get_gpr(ctx, a->rd + 1, 0);
+> +    cmpv = tcg_temp_new_i64();
+> +    tcg_gen_concat_i32_i64(cmpv, cmpv_l, cmpv_h);
+> +    newv_l = get_gpr(ctx, a->rs2, 0);
+> +    newv_h = a->rs2 == 0 ? get_gpr(ctx, 0, 0) : get_gpr(ctx, a->rs2 + 1, 0);
+> +    newv = tcg_temp_new_i64();
+> +    tcg_gen_concat_i32_i64(newv, newv_l, newv_h);
+> +    retv = tcg_temp_new_i64();
+> +
+> +    decode_save_opc(ctx);
+> +    tcg_gen_atomic_cmpxchg_i64(retv, addr, cmpv, newv, ctx->mem_idx,
+> +                               MO_TESQ | MO_ALIGN);
+> +
+> +    if (a->rd != 0) {
+> +        TCGv_i32 retv_l = tcg_temp_new_i32();
+> +        TCGv_i32 retv_h = tcg_temp_new_i32();
+> +        tcg_gen_extr_i64_i32(retv_l, retv_h, retv);
+> +        gen_set_gpr(ctx, a->rd, retv_l);
+> +        gen_set_gpr(ctx, a->rd + 1, retv_h);
+> +    }
+> +
+> +    return true;
+> +}
+> +#else
+> +static bool trans_amocas_d(DisasContext *ctx, arg_amocas_w *a)
+> +{
+> +    REQUIRE_64BIT(ctx);
+> +    REQUIRE_ZACAS(ctx);
+> +    return amocas_tl(ctx, a, MO_TESQ | MO_ALIGN);
+> +}
+> +#endif
+> +
+> +#if TARGET_LONG_BITS == 32
+> +static bool trans_amocas_q(DisasContext *ctx, arg_amocas_w *a)
+> +{
+> +    return false;
+> +}
+> +#else
+> +static bool trans_amocas_q(DisasContext *ctx, arg_amocas_w *a)
+> +{
+> +    TCGv_i128 retv, newv, cmpv;
+> +    TCGv_i64 cmpv_l, cmpv_h, newv_l, newv_h;
+> +    TCGv addr;
+> +
+> +    REQUIRE_64BIT(ctx);
+> +    REQUIRE_ZACAS(ctx);
+> +
+> +    if (a->rd % 2 == 1 || a->rs2 % 2 == 1) {
+> +        return false;
+> +    }
+> +
+> +    addr = get_address(ctx, a->rs1, 0);
+> +    cmpv_l = get_gpr(ctx, a->rd, 0);
+> +    cmpv_h = a->rd == 0 ? get_gpr(ctx, 0, 0) : get_gpr(ctx, a->rd + 1, 0);
+> +    cmpv = tcg_temp_new_i128();
+> +    tcg_gen_concat_i64_i128(cmpv, cmpv_l, cmpv_h);
+> +    newv_l = get_gpr(ctx, a->rs2, 0);
+> +    newv_h = a->rs2 == 0 ? get_gpr(ctx, 0, 0) : get_gpr(ctx, a->rs2 + 1, 0);
+> +    newv = tcg_temp_new_i128();
+> +    tcg_gen_concat_i64_i128(newv, newv_l, newv_h);
+> +    retv = tcg_temp_new_i128();
+> +
+> +    decode_save_opc(ctx);
+> +    tcg_gen_atomic_cmpxchg_i128(retv, addr, cmpv, newv, ctx->mem_idx,
+> +                                MO_TEUO | MO_ALIGN);
+> +
+> +    if (a->rd != 0) {
+> +        TCGv_i64 retv_l = tcg_temp_new_i64();
+> +        TCGv_i64 retv_h = tcg_temp_new_i64();
+> +        tcg_gen_extr_i128_i64(retv_l, retv_h, retv);
+> +        gen_set_gpr(ctx, a->rd, retv_l);
+> +        gen_set_gpr(ctx, a->rd + 1, retv_h);
+> +    }
+> +
+> +    return true;
+> +}
+> +#endif
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index 928da0d3f0..55438f5ebf 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -1074,6 +1074,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+>   #include "insn_trans/trans_rvv.c.inc"
+>   #include "insn_trans/trans_rvb.c.inc"
+>   #include "insn_trans/trans_rvzicond.c.inc"
+> +#include "insn_trans/trans_rvzacas.c.inc"
+>   #include "insn_trans/trans_rvzawrs.c.inc"
+>   #include "insn_trans/trans_rvzicbo.c.inc"
+>   #include "insn_trans/trans_rvzfh.c.inc"
 
-I agree that KVM should not provide its own policy but only the building 
-blocks to enforce one. There is two complementary points:
-- policy definition by the guest, provided to KVM and the host;
-- policy enforcement by KVM and the host.
+It seems lack check on "Zacas requires A"
 
-A potential extension of this framework could be to enable the host to 
-define it's own policy for guests, but this would be a different threat 
-model.
+Regards,
 
-To avoid too much latency because of the host being involved in policy 
-enforcement, I'd like to explore an asynchronous approach that would 
-especially fit well for dynamic restrictions.
+Weiwei Li
+
 
