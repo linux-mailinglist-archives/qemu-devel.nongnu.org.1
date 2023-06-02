@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9385A7206AD
+	by mail.lfdr.de (Postfix) with ESMTPS id C24177206AE
 	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 17:56:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q574t-0003A9-Qr; Fri, 02 Jun 2023 11:52:35 -0400
+	id 1q574t-0003AP-Tk; Fri, 02 Jun 2023 11:52:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q574r-00038Y-Du
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:52:33 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1q574s-00038y-1L
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:52:34 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q574o-0003Ri-2A
+ id 1q574o-0003S2-Mx
  for qemu-devel@nongnu.org; Fri, 02 Jun 2023 11:52:33 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f60b3f32b4so20669235e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 08:52:29 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f68fc6b479so21648565e9.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 08:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685721148; x=1688313148;
+ d=linaro.org; s=google; t=1685721149; x=1688313149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1lZFx3mv+TDguBUy5+nAam7QazsVWb+5FMKek+p8BwM=;
- b=HKksRs2+K5XhTjkizZ7CxpVHC9T5D/ma3U3Z9u+3VN7GTlSrU+3oO2iGHqboaQB3Q9
- RM/18tgSDen88Y914VA4ZPxS/GQV/5AJcZHbBV6PWe6AUy7UFeRjBPkL4/CTeaxN2WoO
- 4X79yAWj2g/cVaatrGxvIc+Oo1b9Eg1mU8xmoZWjC1ooV041mLDl4Fdtj2NfHGsNid1G
- eCZov2jhfRuasjFvQQlefmO4ubFM79NQXvzKe0K9FeC65dG1P6HOQG9p2GHXpxwvP9Ho
- yS6gyXN8tE4o3Iqelft1B7zlAWI/xBDPnjc0pd1no0dMHpdc9SdbIFUo5jm9A4GzoetV
- RN9A==
+ :reply-to; bh=2eo472r8J3U7OZYtDc9uvjFKt5zEODMaDr+F6ZoZiNU=;
+ b=RrXxNu9X7PUp+GDmBbhv2yDMm08UbEZtD9LktHFoMRFIUF+N9f2Q44dq2pIT+Mji3k
+ aFCXfaeB6sOM01Tc961y7DJsvLHWWAtV3tpDAnm5Wj5wqiBYF0J0pEz4+B96v0tZCPBE
+ UdyvlHIqPmI6FJsM3fQ2y/Y5zwl4m1E74N65lRKUizfxhcC4JAn+KstgJ4OLA/0bQa/F
+ z8n3zL8ZbyGowvyuPHKEPHnkN0EnDUCWlaHlsX7SneGSUwgZNDNrfYTNUwT3p1EKbt8v
+ CeTYtdr17YqY2JRErjl88wyLxOuVIBSI55gDQgDWMbcMbEf63QREz4+CX6+L4ABu7dDM
+ At0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685721148; x=1688313148;
+ d=1e100.net; s=20221208; t=1685721149; x=1688313149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1lZFx3mv+TDguBUy5+nAam7QazsVWb+5FMKek+p8BwM=;
- b=ZBihFnRiEZBj64NoJ5ygvQ0jXN+MIxdVhAdcpfsAS/MSmVqA67QVSDqzpDxVNwSYCq
- fF86gpk8ZV2JfK7CviruTXimYQzEjfcothY7NFdNeuzzbcmHcI/2AKL5nGfjRsV32JPL
- dK+lL7cndrNHXbn/jTjXe9tlAfgQT0fINawLcDGT1oGDA8MgxrpH/HKYLdEzd7UkxzHj
- eimcD1k/WTItlwZR+r03PI0dTW+QY53mfaqOkpskRhDLrz2LZo8Hf8BeCFMkYeRwex8c
- dYfIF1aFssOVIGObvnzbYjbbuGUThDyVFz4gvGuMObctAiXNTYSZXyhPCEUGY6y1qLAK
- AHwA==
-X-Gm-Message-State: AC+VfDzC3feDN673O2YXsRA77m8Xrimp5mGfuV2Z8cd1nCt8Z4cbrnuw
- GqNSWU9Gja6OGSlyhbMnNkSfmmmCUHm/e/P/ruk=
-X-Google-Smtp-Source: ACHHUZ54zzWjTFTqIk4BhyAqi9/VHaR1y0lHDU2rFXdhOkA4/ut5axa3OSMS4HEGoAbQPirB9Bl79A==
-X-Received: by 2002:a05:600c:2303:b0:3f6:f152:1183 with SMTP id
- 3-20020a05600c230300b003f6f1521183mr2336763wmo.37.1685721148597; 
- Fri, 02 Jun 2023 08:52:28 -0700 (PDT)
+ bh=2eo472r8J3U7OZYtDc9uvjFKt5zEODMaDr+F6ZoZiNU=;
+ b=iBT6Kdt+SLXcbGFoUPFq24pXg1D+PILhxES3YYQ1cJvq1R2Lc1tGF+wKjqKhVRb+Lf
+ AeHBUwVnzFAZ3z9ZBw+sJ26LaTd4ag3cRuvp6Vt2f+NCaQsLZW9nlLiXa8o+hQE1FTTP
+ R18DIQlnjZ6/06SLKyX4pSSCueVZQZmUS1SKQxZ9NkvkxZswQfOQjUIxsMBR574mxyfx
+ IO1rargzrtzbwJosVQmmS6pkaqaVfcUgKRQV9A7VIUj+mtYbsAFLjfV7pm88V5idg/9L
+ R2BhBM1KsTRBL1XtHxCjG6ZHJdqnsu1/bPlRKzP1JfEhdSoKxOEh+VsbJSJNqD9OcJ28
+ ZgtQ==
+X-Gm-Message-State: AC+VfDz289zf1SzXSvf3nJRK+Hv/cGnFbv8djWGNnhpn0Kd3kHxJ1wgP
+ az4OLdaFn93MA/9EWoAQsyLgag==
+X-Google-Smtp-Source: ACHHUZ6iz4GzI2FviRJM78uHqHxd4Vr+k/3/DCiXA4yHM3bT5HYmjr0j30dSy6Am8nByqO5uzfR1bA==
+X-Received: by 2002:a7b:cb88:0:b0:3f6:f56:5e82 with SMTP id
+ m8-20020a7bcb88000000b003f60f565e82mr2469414wmi.3.1685721149101; 
+ Fri, 02 Jun 2023 08:52:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v7-20020a05600c214700b003f72a15301csm594952wml.2.2023.06.02.08.52.28
@@ -58,23 +58,24 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 05/20] target/arm: Convert MSR (immediate) to decodetree
-Date: Fri,  2 Jun 2023 16:52:08 +0100
-Message-Id: <20230602155223.2040685-6-peter.maydell@linaro.org>
+Subject: [PATCH 06/20] target/arm: Convert MSR (reg), MRS, SYS,
+ SYSL to decodetree
+Date: Fri,  2 Jun 2023 16:52:09 +0100
+Message-Id: <20230602155223.2040685-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230602155223.2040685-1-peter.maydell@linaro.org>
 References: <20230602155223.2040685-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,308 +91,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the MSR (immediate) insn to decodetree. Our implementation
-has basically no commonality between the different destinations,
-so we decode the destination register in a64.decode.
+Convert MSR (reg), MRS, SYS, SYSL to decodetree.  For QEMU these are
+all essentially the same instruction (system register access).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/a64.decode      |  13 ++
- target/arm/tcg/translate-a64.c | 251 ++++++++++++++++-----------------
- 2 files changed, 136 insertions(+), 128 deletions(-)
+ target/arm/tcg/a64.decode      |  8 ++++++++
+ target/arm/tcg/translate-a64.c | 32 +++++---------------------------
+ 2 files changed, 13 insertions(+), 27 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 26a0b44cea9..a645dac8d26 100644
+index a645dac8d26..e1a120ea4c0 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -194,3 +194,16 @@ SB              1101 0101 0000 0011 0011 0000 111 11111
- CFINV           1101 0101 0000 0 000 0100 0000 000 11111
- XAFLAG          1101 0101 0000 0 000 0100 0000 001 11111
- AXFLAG          1101 0101 0000 0 000 0100 0000 010 11111
+@@ -207,3 +207,11 @@ MSR_i_TCO       1101 0101 0000 0 011 0100 .... 100 11111 @msr_i
+ MSR_i_DAIFSET   1101 0101 0000 0 011 0100 .... 110 11111 @msr_i
+ MSR_i_DAIFCLEAR 1101 0101 0000 0 011 0100 .... 111 11111 @msr_i
+ MSR_i_SVCR      1101 0101 0000 0 011 0100 0 mask:2 imm:1 011 11111
 +
-+# These are architecturally all "MSR (immediate)"; we decode the destination
-+# register too because there is no commonality in our implementation.
-+@msr_i          .... .... .... . ... .... imm:4 ... .....
-+MSR_i_UAO       1101 0101 0000 0 000 0100 .... 011 11111 @msr_i
-+MSR_i_PAN       1101 0101 0000 0 000 0100 .... 100 11111 @msr_i
-+MSR_i_SPSEL     1101 0101 0000 0 000 0100 .... 101 11111 @msr_i
-+MSR_i_SBSS      1101 0101 0000 0 011 0100 .... 001 11111 @msr_i
-+MSR_i_DIT       1101 0101 0000 0 011 0100 .... 010 11111 @msr_i
-+MSR_i_TCO       1101 0101 0000 0 011 0100 .... 100 11111 @msr_i
-+MSR_i_DAIFSET   1101 0101 0000 0 011 0100 .... 110 11111 @msr_i
-+MSR_i_DAIFCLEAR 1101 0101 0000 0 011 0100 .... 111 11111 @msr_i
-+MSR_i_SVCR      1101 0101 0000 0 011 0100 0 mask:2 imm:1 011 11111
++# MRS, MSR (register), SYS, SYSL. These are all essentially the
++# same instruction as far as QEMU is concerned.
++# NB: op0 is bits [20:19], but op0=0b00 is other insns, so we have
++# to hand-decode it.
++SYS             1101 0101 00 l:1 01 op1:3 crn:4 crm:4 op2:3 rt:5 op0=1
++SYS             1101 0101 00 l:1 10 op1:3 crn:4 crm:4 op2:3 rt:5 op0=2
++SYS             1101 0101 00 l:1 11 op1:3 crn:4 crm:4 op2:3 rt:5 op0=3
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 33bebe594d1..bdc1ee18cdc 100644
+index bdc1ee18cdc..8e4d3676992 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -1875,124 +1875,130 @@ static bool trans_AXFLAG(DisasContext *s, arg_AXFLAG *a)
-     return true;
+@@ -2070,7 +2070,7 @@ static void gen_sysreg_undef(DisasContext *s, bool isread,
+  * These are all essentially the same insn in 'read' and 'write'
+  * versions, with varying op0 fields.
+  */
+-static void handle_sys(DisasContext *s, uint32_t insn, bool isread,
++static void handle_sys(DisasContext *s, bool isread,
+                        unsigned int op0, unsigned int op1, unsigned int op2,
+                        unsigned int crn, unsigned int crm, unsigned int rt)
+ {
+@@ -2254,28 +2254,10 @@ static void handle_sys(DisasContext *s, uint32_t insn, bool isread,
+     }
  }
  
--/* MSR (immediate) - move immediate to processor state field */
--static void handle_msr_i(DisasContext *s, uint32_t insn,
--                         unsigned int op1, unsigned int op2, unsigned int crm)
-+static bool trans_MSR_i_UAO(DisasContext *s, arg_i *a)
+-/* System
+- *  31                 22 21  20 19 18 16 15   12 11    8 7   5 4    0
+- * +---------------------+---+-----+-----+-------+-------+-----+------+
+- * | 1 1 0 1 0 1 0 1 0 0 | L | op0 | op1 |  CRn  |  CRm  | op2 |  Rt  |
+- * +---------------------+---+-----+-----+-------+-------+-----+------+
+- */
+-static void disas_system(DisasContext *s, uint32_t insn)
++static bool trans_SYS(DisasContext *s, arg_SYS *a)
  {
--    int op = op1 << 3 | op2;
+-    unsigned int l, op0, op1, crn, crm, op2, rt;
+-    l = extract32(insn, 21, 1);
+-    op0 = extract32(insn, 19, 2);
+-    op1 = extract32(insn, 16, 3);
+-    crn = extract32(insn, 12, 4);
+-    crm = extract32(insn, 8, 4);
+-    op2 = extract32(insn, 5, 3);
+-    rt = extract32(insn, 0, 5);
 -
--    /* End the TB by default, chaining is ok.  */
--    s->base.is_jmp = DISAS_TOO_MANY;
--
--    switch (op) {
--    case 0x03: /* UAO */
--        if (!dc_isar_feature(aa64_uao, s) || s->current_el == 0) {
--            goto do_unallocated;
--        }
--        if (crm & 1) {
--            set_pstate_bits(PSTATE_UAO);
--        } else {
--            clear_pstate_bits(PSTATE_UAO);
--        }
--        gen_rebuild_hflags(s);
--        break;
--
--    case 0x04: /* PAN */
--        if (!dc_isar_feature(aa64_pan, s) || s->current_el == 0) {
--            goto do_unallocated;
--        }
--        if (crm & 1) {
--            set_pstate_bits(PSTATE_PAN);
--        } else {
--            clear_pstate_bits(PSTATE_PAN);
--        }
--        gen_rebuild_hflags(s);
--        break;
--
--    case 0x05: /* SPSel */
--        if (s->current_el == 0) {
--            goto do_unallocated;
--        }
--        gen_helper_msr_i_spsel(cpu_env, tcg_constant_i32(crm & PSTATE_SP));
--        break;
--
--    case 0x19: /* SSBS */
--        if (!dc_isar_feature(aa64_ssbs, s)) {
--            goto do_unallocated;
--        }
--        if (crm & 1) {
--            set_pstate_bits(PSTATE_SSBS);
--        } else {
--            clear_pstate_bits(PSTATE_SSBS);
--        }
--        /* Don't need to rebuild hflags since SSBS is a nop */
--        break;
--
--    case 0x1a: /* DIT */
--        if (!dc_isar_feature(aa64_dit, s)) {
--            goto do_unallocated;
--        }
--        if (crm & 1) {
--            set_pstate_bits(PSTATE_DIT);
--        } else {
--            clear_pstate_bits(PSTATE_DIT);
--        }
--        /* There's no need to rebuild hflags because DIT is a nop */
--        break;
--
--    case 0x1e: /* DAIFSet */
--        gen_helper_msr_i_daifset(cpu_env, tcg_constant_i32(crm));
--        break;
--
--    case 0x1f: /* DAIFClear */
--        gen_helper_msr_i_daifclear(cpu_env, tcg_constant_i32(crm));
--        /* For DAIFClear, exit the cpu loop to re-evaluate pending IRQs.  */
--        s->base.is_jmp = DISAS_UPDATE_EXIT;
--        break;
--
--    case 0x1c: /* TCO */
--        if (dc_isar_feature(aa64_mte, s)) {
--            /* Full MTE is enabled -- set the TCO bit as directed. */
--            if (crm & 1) {
--                set_pstate_bits(PSTATE_TCO);
--            } else {
--                clear_pstate_bits(PSTATE_TCO);
--            }
--            gen_rebuild_hflags(s);
--            /* Many factors, including TCO, go into MTE_ACTIVE. */
--            s->base.is_jmp = DISAS_UPDATE_NOCHAIN;
--        } else if (dc_isar_feature(aa64_mte_insn_reg, s)) {
--            /* Only "instructions accessible at EL0" -- PSTATE.TCO is WI.  */
--            s->base.is_jmp = DISAS_NEXT;
--        } else {
--            goto do_unallocated;
--        }
--        break;
--
--    case 0x1b: /* SVCR* */
--        if (!dc_isar_feature(aa64_sme, s) || crm < 2 || crm > 7) {
--            goto do_unallocated;
--        }
--        if (sme_access_check(s)) {
--            int old = s->pstate_sm | (s->pstate_za << 1);
--            int new = (crm & 1) * 3;
--            int msk = (crm >> 1) & 3;
--
--            if ((old ^ new) & msk) {
--                /* At least one bit changes. */
--                gen_helper_set_svcr(cpu_env, tcg_constant_i32(new),
--                                    tcg_constant_i32(msk));
--            } else {
--                s->base.is_jmp = DISAS_NEXT;
--            }
--        }
--        break;
--
--    default:
--    do_unallocated:
+-    if (op0 == 0) {
 -        unallocated_encoding(s);
 -        return;
-+    if (!dc_isar_feature(aa64_uao, s) || s->current_el == 0) {
-+        return false;
-     }
-+    if (a->imm & 1) {
-+        set_pstate_bits(PSTATE_UAO);
-+    } else {
-+        clear_pstate_bits(PSTATE_UAO);
-+    }
-+    gen_rebuild_hflags(s);
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_PAN(DisasContext *s, arg_i *a)
-+{
-+    if (!dc_isar_feature(aa64_pan, s) || s->current_el == 0) {
-+        return false;
-+    }
-+    if (a->imm & 1) {
-+        set_pstate_bits(PSTATE_PAN);
-+    } else {
-+        clear_pstate_bits(PSTATE_PAN);
-+    }
-+    gen_rebuild_hflags(s);
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_SPSEL(DisasContext *s, arg_i *a)
-+{
-+    if (s->current_el == 0) {
-+        return false;
-+    }
-+    gen_helper_msr_i_spsel(cpu_env, tcg_constant_i32(a->imm & PSTATE_SP));
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_SBSS(DisasContext *s, arg_i *a)
-+{
-+    if (!dc_isar_feature(aa64_ssbs, s)) {
-+        return false;
-+    }
-+    if (a->imm & 1) {
-+        set_pstate_bits(PSTATE_SSBS);
-+    } else {
-+        clear_pstate_bits(PSTATE_SSBS);
-+    }
-+    /* Don't need to rebuild hflags since SSBS is a nop */
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_DIT(DisasContext *s, arg_i *a)
-+{
-+    if (!dc_isar_feature(aa64_dit, s)) {
-+        return false;
-+    }
-+    if (a->imm & 1) {
-+        set_pstate_bits(PSTATE_DIT);
-+    } else {
-+        clear_pstate_bits(PSTATE_DIT);
-+    }
-+    /* There's no need to rebuild hflags because DIT is a nop */
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_TCO(DisasContext *s, arg_i *a)
-+{
-+    if (dc_isar_feature(aa64_mte, s)) {
-+        /* Full MTE is enabled -- set the TCO bit as directed. */
-+        if (a->imm & 1) {
-+            set_pstate_bits(PSTATE_TCO);
-+        } else {
-+            clear_pstate_bits(PSTATE_TCO);
-+        }
-+        gen_rebuild_hflags(s);
-+        /* Many factors, including TCO, go into MTE_ACTIVE. */
-+        s->base.is_jmp = DISAS_UPDATE_NOCHAIN;
-+        return true;
-+    } else if (dc_isar_feature(aa64_mte_insn_reg, s)) {
-+        /* Only "instructions accessible at EL0" -- PSTATE.TCO is WI.  */
-+        return true;
-+    } else {
-+        /* Insn not present */
-+        return false;
-+    }
-+}
-+
-+static bool trans_MSR_i_DAIFSET(DisasContext *s, arg_i *a)
-+{
-+    gen_helper_msr_i_daifset(cpu_env, tcg_constant_i32(a->imm));
-+    s->base.is_jmp = DISAS_TOO_MANY;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_DAIFCLEAR(DisasContext *s, arg_i *a)
-+{
-+    gen_helper_msr_i_daifclear(cpu_env, tcg_constant_i32(a->imm));
-+    /* Exit the cpu loop to re-evaluate pending IRQs. */
-+    s->base.is_jmp = DISAS_UPDATE_EXIT;
-+    return true;
-+}
-+
-+static bool trans_MSR_i_SVCR(DisasContext *s, arg_MSR_i_SVCR *a)
-+{
-+    if (!dc_isar_feature(aa64_sme, s) || a->mask == 0) {
-+        return false;
-+    }
-+    if (sme_access_check(s)) {
-+        int old = s->pstate_sm | (s->pstate_za << 1);
-+        int new = a->imm * 3;
-+
-+        if ((old ^ new) & a->mask) {
-+            /* At least one bit changes. */
-+            gen_helper_set_svcr(cpu_env, tcg_constant_i32(new),
-+                                tcg_constant_i32(a->mask));
-+            s->base.is_jmp = DISAS_TOO_MANY;
-+        }
-+    }
+-    }
+-    handle_sys(s, insn, l, op0, op1, op2, crn, crm, rt);
++    handle_sys(s, a->l, a->op0, a->op1, a->op2, a->crn, a->crm, a->rt);
 +    return true;
  }
  
- static void gen_get_nzcv(TCGv_i64 tcg_rt)
-@@ -2266,18 +2272,7 @@ static void disas_system(DisasContext *s, uint32_t insn)
-     rt = extract32(insn, 0, 5);
- 
-     if (op0 == 0) {
--        if (l || rt != 31) {
--            unallocated_encoding(s);
--            return;
--        }
--        switch (crn) {
--        case 4: /* MSR (immediate) */
--            handle_msr_i(s, insn, op1, op2, crm);
--            break;
--        default:
--            unallocated_encoding(s);
--            break;
--        }
-+        unallocated_encoding(s);
-         return;
-     }
-     handle_sys(s, insn, l, op0, op1, op2, crn, crm, rt);
+ /* Exception generation
+@@ -2382,11 +2364,7 @@ static void disas_b_exc_sys(DisasContext *s, uint32_t insn)
+     switch (extract32(insn, 25, 7)) {
+     case 0x6a: /* Exception generation / System */
+         if (insn & (1 << 24)) {
+-            if (extract32(insn, 22, 2) == 0) {
+-                disas_system(s, insn);
+-            } else {
+-                unallocated_encoding(s);
+-            }
++            unallocated_encoding(s);
+         } else {
+             disas_exc(s, insn);
+         }
 -- 
 2.34.1
 
