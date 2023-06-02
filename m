@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7682372084B
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F75E720853
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:24:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q58TP-0004NQ-Kb; Fri, 02 Jun 2023 13:21:59 -0400
+	id 1q58V4-00052u-FA; Fri, 02 Jun 2023 13:23:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q58TM-0004Mz-4r
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:21:56 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q58V2-00052P-A7; Fri, 02 Jun 2023 13:23:40 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q58TK-0007UE-EU
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:21:55 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4f505aace48so3192237e87.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 10:21:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q58V0-0007k0-L6; Fri, 02 Jun 2023 13:23:40 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2af7081c9ebso33608951fa.1; 
+ Fri, 02 Jun 2023 10:23:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685726512; x=1688318512;
+ d=gmail.com; s=20221208; t=1685726616; x=1688318616;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hXiNFhSr+9b/VXHo2x610ar5DpNTBJ5nCbRuUYJSapg=;
- b=p0GPVaQt3ccyws69ivY2xlqFiHjctfT39+W5ryBx1qQ3xiJv57E7dpm86uWAkWhBvF
- t9tmnqILv4Dul1R6hLKd0WFHlgk/yS1TEULiUur/pdGzt2MYEfpm2NOfD/kjFiONxF4o
- G6hv2+KV07bMKlu0q+/HvXCdGvaOyWke4WkcDpOriNtEhAEDE4YoPzgVG4/z+pDH/PDz
- 0zzDhlYypNNa+NB99VTS3cDav5Su8P9/o+WuH4B/JmtGrBGGHOKe5JskUK2NRzm7knEi
- qMGIquHlXyOi2vSUf35zKzv3TQj9tYAKz61EZ01LfdRv8fb6lGI8tUlPvJFMe/jcTKo6
- XjDg==
+ bh=/PUooaiw2ZIPI7gYsUUnC0DsYq4uCelc7iYtK5+GZiQ=;
+ b=l+v4G/lPceM/uqygQf0IOaZtx0t0TGr4nlSdT/o9TjbZ9xkfdHcwPn8MY1PVFk5QbZ
+ X6f6XZWsYFuzqfcOEQw7lj5+wlfB33zk/74JN9j3GenhzOd2XR++bC4uoe20WmW9WmOM
+ myIYBFjpPB+mR2w9F7qSONLbqAXECc5Y+YAl0Wh+PNmHAyDt7/Pp6amh9y/5lYmFuu9t
+ bWBfo5BxzNk19o6HHLKyHYBaV+U1mMFI77CKJDpwq0nDHzFykIMvxDsD75Q7OVaWGgvK
+ LJ8u3tKqwl9XdRmhzgIgn+BWMW30A+hh52ttWTbuYvqDUQFMP+BmkCyKJa0Dzq1R6pug
+ WFHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685726512; x=1688318512;
+ d=1e100.net; s=20221208; t=1685726616; x=1688318616;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hXiNFhSr+9b/VXHo2x610ar5DpNTBJ5nCbRuUYJSapg=;
- b=QLOvYhZzQ/gwbjhuyzy49N3f4aWjWYudDLQwgO6pPBS8V9/+3qSc+3ofSa50Yc8Mk4
- 5KLKjQ8ExTkj87nvcoBqtachwO/r028Jtm38OsqZPhc7gtDm5o8iEjx/hiC4MPfsbRHm
- DScpwObmBQ9dzssckyBmHjki0lBHL8KTvTYem9eAlJgGRaSesrL1nD8MxGhZ2SxUzZqB
- 6ZKPDMB1707xNrSJBtdTBAAFmxY2M0R3sSIuNtZ2yhUJQmRGdzxoM5qzMY0fp+r/qPnF
- m+1K7yftvNHl7zZ75zN9kxq5ZjguUPzQ9IANevJeHEzMoKwnVSm31ij5VIvgljWvEYEV
- 45EQ==
-X-Gm-Message-State: AC+VfDxegnCGVaFFwFK4BFbM3NWUlr3yQlkbBicwBvs262I8CiM83PuO
- ZxAX/nDYSndcWOXIoZU8iZL2VdIbZjowlDcY2xGiLw==
-X-Google-Smtp-Source: ACHHUZ70EGntm1iZ+9Uh8iB3BBhO6POeU3+tf73y4UPn3utnPsOM0X8pgka0slmTM41C+srdfR9F98vIYMwukORQ8FY=
-X-Received: by 2002:ac2:5dc3:0:b0:4f6:d9e:7c3b with SMTP id
- x3-20020ac25dc3000000b004f60d9e7c3bmr1895913lfq.44.1685726512459; Fri, 02 Jun
- 2023 10:21:52 -0700 (PDT)
+ bh=/PUooaiw2ZIPI7gYsUUnC0DsYq4uCelc7iYtK5+GZiQ=;
+ b=PCbkgnHHxuXJ3qSzDDq6k2DndpgNQ12SBTD8Zv0YeJ5wtL5toRyr5PZMldRcQXQ5mv
+ 3BGshx+yiZjPnxGpI4ROdgw8wK4Q6bu4x9CjShxWWfPViSF5Wk5nw2vpeLj2Ik4L0h+N
+ k2IdK8En+FCAf4gjEbpn2H9OlSIbD1MzP+issKi25ryqrgRDU6ByGFTkR5EaZlAJkR/Q
+ o5jdLC3Sw+/dkhw9bogltw6dhmEjFWzCw7/6BTgBIB0q0HjDp/CNrafSNIzrO8V+FbIr
+ SlAxDZGe/uf/+G8ZQAVHSZi4+CayvyLO08IuZbU/QyZnozEKgRUhHTKRNJZ4PDPke1on
+ XVbA==
+X-Gm-Message-State: AC+VfDz0FvIAhWfridzU9ENpfriQW1CSQJ9+ymuDfMOWk/GfVPnXZiCB
+ FiYpsqsJRZX+KTKJIRP8zb3GTHa6673+FBdv8d4=
+X-Google-Smtp-Source: ACHHUZ70CmwJr95EePxKAh11s0Fnwjl1APVvzyX3TvrWdK+86xHap5dDQoWGWR44RpZhzCkbffByO2H71ivVNvUiv40=
+X-Received: by 2002:a2e:3506:0:b0:2af:32a7:4eef with SMTP id
+ z6-20020a2e3506000000b002af32a74eefmr391032ljz.35.1685726615577; Fri, 02 Jun
+ 2023 10:23:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230116223637.3512814-1-richard.henderson@linaro.org>
- <20230116223637.3512814-4-richard.henderson@linaro.org>
-In-Reply-To: <20230116223637.3512814-4-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 Jun 2023 18:21:41 +0100
-Message-ID: <CAFEAcA-pb53hugPBFxkhzAz-zDAt13xhA+yXL6D7iYZbk96NtA@mail.gmail.com>
-Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>, 
- "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+References: <20230515160506.1776883-1-stefanha@redhat.com>
+ <20230515160506.1776883-11-stefanha@redhat.com>
+ <CAFEAcA9bDh12FSk8CjEkBZjQOEBVd6-=fVwnM9bx8aoXvQdMuw@mail.gmail.com>
+In-Reply-To: <CAFEAcA9bDh12FSk8CjEkBZjQOEBVd6-=fVwnM9bx8aoXvQdMuw@mail.gmail.com>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Sat, 3 Jun 2023 01:23:09 +0800
+Message-ID: <CAAAx-8L4Z3tBzV5DMEy0WnG=3y67bp_1g-+2kUhrY+rp2knNKA@mail.gmail.com>
+Subject: Re: [PULL v2 10/16] block: introduce zone append write for zoned
+ devices
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, Dmitry Fomichev <dmitry.fomichev@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=faithilikerun@gmail.com; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,94 +88,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Jan 2023 at 22:36, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+Peter Maydell <peter.maydell@linaro.org> =E4=BA=8E2023=E5=B9=B46=E6=9C=883=
+=E6=97=A5=E5=91=A8=E5=85=AD 00:52=E5=86=99=E9=81=93=EF=BC=9A
 >
-> From: Ilya Leoshkevich <iii@linux.ibm.com>
+> On Mon, 15 May 2023 at 17:06, Stefan Hajnoczi <stefanha@redhat.com> wrote=
+:
+> >
+> > From: Sam Li <faithilikerun@gmail.com>
+> >
+> > A zone append command is a write operation that specifies the first
+> > logical block of a zone as the write position. When writing to a zoned
+> > block device using zone append, the byte offset of the call may point a=
+t
+> > any position within the zone to which the data is being appended. Upon
+> > completion the device will respond with the position where the data has
+> > been written in the zone.
+> >
+> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> > Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
+> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Message-id: 20230508051510.177850-3-faithilikerun@gmail.com
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 >
-> Add ability to dump /tmp/perf-<pid>.map and jit-<pid>.dump.
-> The first one allows the perf tool to map samples to each individual
-> translation block. The second one adds the ability to resolve symbol
-> names, line numbers and inspect JITed code.
+> Hi; Coverity flagged up a possible bug here (CID 1512459):
 >
-> Example of use:
+> > @@ -2453,8 +2454,12 @@ static int coroutine_fn raw_co_prw(BlockDriverSt=
+ate *bs, uint64_t offset,
+> >      if (fd_open(bs) < 0)
+> >          return -EIO;
+> >  #if defined(CONFIG_BLKZONED)
+> > -    if (type & QEMU_AIO_WRITE && bs->wps) {
+> > +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && bs->wps) {
 >
->     perf record qemu-x86_64 -perfmap ./a.out
->     perf report
+> Here we check for bs->wps being NULL, which implies that it might be NULL=
+...
 >
-> or
+> >          qemu_co_mutex_lock(&bs->wps->colock);
+> > +        if (type & QEMU_AIO_ZONE_APPEND && bs->bl.zone_size) {
+> > +            int index =3D offset / bs->bl.zone_size;
+> > +            offset =3D bs->wps->wp[index];
+> > +        }
+> >      }
+> >  #endif
+> >
+> > @@ -2502,9 +2507,13 @@ out:
+> >  {
+> >      BlockZoneWps *wps =3D bs->wps;
+> >      if (ret =3D=3D 0) {
+> > -        if (type & QEMU_AIO_WRITE && wps && bs->bl.zone_size) {
+> > +        if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))
+> > +            && wps && bs->bl.zone_size) {
+> >              uint64_t *wp =3D &wps->wp[offset / bs->bl.zone_size];
+> >              if (!BDRV_ZT_IS_CONV(*wp)) {
+> > +                if (type & QEMU_AIO_ZONE_APPEND) {
+> > +                    *s->offset =3D *wp;
+> > +                }
+> >                  /* Advance the wp if needed */
+> >                  if (offset + bytes > *wp) {
+> >                      *wp =3D offset + bytes;
+> > @@ -2512,12 +2521,12 @@ out:
+> >              }
+> >          }
+> >      } else {
+> > -        if (type & QEMU_AIO_WRITE) {
+> > +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
 >
->     perf record -k 1 qemu-x86_64 -jitdump ./a.out
->     DEBUGINFOD_URLS=3D perf inject -j -i perf.data -o perf.data.jitted
->     perf report -i perf.data.jitted
+> ...but here we do not, even though update_zones_wp() can
+> dereference bs->wps in some code paths.
 >
-> Co-developed-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-> Co-developed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> Message-Id: <20230112152013.125680-4-iii@linux.ibm.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Should we be checking for NULL here before calling, or
+> should update_zones_wp() handle a NULL bs->wps, or something else?
 
-Hi; Coverity thinks (CID 1507521) that there's a memory leak
-in this code:
+Hi Peter,
 
-> +void perf_enable_jitdump(void)
-> +{
-> +    struct jitheader header;
-> +    char jitdump_file[32];
-> +    void *perf_marker;
-> +
-> +    if (!use_rt_clock) {
-> +        warn_report("CLOCK_MONOTONIC is not available, proceeding withou=
-t jitdump");
-> +        return;
-> +    }
-> +
-> +    snprintf(jitdump_file, sizeof(jitdump_file), "jit-%d.dump", getpid()=
-);
-> +    jitdump =3D safe_fopen_w(jitdump_file);
-> +    if (jitdump =3D=3D NULL) {
-> +        warn_report("Could not open %s: %s, proceeding without jitdump",
-> +                    jitdump_file, strerror(errno));
-> +        return;
-> +    }
-> +
-> +    /*
-> +     * `perf inject` will see that the mapped file name in the correspon=
-ding
-> +     * PERF_RECORD_MMAP or PERF_RECORD_MMAP2 event is of the form jit-%d=
-.dump
-> +     * and will process it as a jitdump file.
-> +     */
-> +    perf_marker =3D mmap(NULL, qemu_real_host_page_size(), PROT_READ | P=
-ROT_EXEC,
-> +                       MAP_PRIVATE, fileno(jitdump), 0);
+Thanks for spotting this. You are right that bs->wps is not checked in
+this code path. I think the get_zones_wp() should handle a NULL
+bs->wps which is the function calling wps directly.
 
-Here we mmap() something...
+Would you like to submit a patch for this? Or I can do it if you are
+not available.
 
-> +    if (perf_marker =3D=3D MAP_FAILED) {
-> +        warn_report("Could not map %s: %s, proceeding without jitdump",
-> +                    jitdump_file, strerror(errno));
-> +        fclose(jitdump);
-> +        jitdump =3D NULL;
-> +        return;
-> +    }
-> +
-> +    header.magic =3D JITHEADER_MAGIC;
-> +    header.version =3D JITHEADER_VERSION;
-> +    header.total_size =3D sizeof(header);
-> +    header.elf_mach =3D get_e_machine();
-> +    header.pad1 =3D 0;
-> +    header.pid =3D getpid();
-> +    header.timestamp =3D get_clock();
-> +    header.flags =3D 0;
-> +    fwrite(&header, sizeof(header), 1, jitdump);
+Thanks,
+Sam
 
-...but we never do anything with that pointer, so the memory
-we just mmap()ed is never going to be freed.
-
-Is this doing something particularly magical, or should that
-pointer be kept track of somewhere ?
-
-thanks
--- PMM
+>
+> >              update_zones_wp(bs, s->fd, 0, 1);
+> >          }
+> >      }
+> >
+> > -    if (type & QEMU_AIO_WRITE && wps) {
+> > +    if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) && wps) {
+> >          qemu_co_mutex_unlock(&wps->colock);
+> >      }
+> >  }
+>
+> thanks
+> -- PMM
 
