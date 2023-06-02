@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA43B7203A0
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 15:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A167203F2
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:04:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q552I-0001Xp-R6; Fri, 02 Jun 2023 09:41:46 -0400
+	id 1q55MA-000770-Rs; Fri, 02 Jun 2023 10:02:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1q552H-0001XT-HY
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 09:41:45 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q55M8-00076Y-Or
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:02:16 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1q552F-0000sW-MH
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 09:41:45 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-30c4c1fd511so1364039f8f.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 06:41:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q55M5-0001Kr-2l
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:02:16 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3094910b150so2145419f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:02:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685713301; x=1688305301;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=CYGbY9Cd8ghZDlLaDrXXqCRZM4eJM2SrVXLG7dB1t5E=;
- b=kr3Xa1RbXFB6BA2KsmMEQ4a3SthmO64RdcahNYMwtBiBd7edzEwN/XdK/zreTc27XT
- WaFAq9GKw4JUfaa4xN/G6Sr9nS3YIALoR+mvKv1+SKqiixPCbLnbJkDF+/11XzDjr2zq
- ZSvFNQLiO03cj1IcmYruzaRxVGip/T0gk6nNCAmr7w4kP9ka5NOOZIhnrE59U/0cYAZM
- oYk9z1eq30k1CAAnOZhSJuOvTaoi+8XwOfVL3Q1dM1PurxBZxHV3aDRu0kbp9muO4j2z
- TAyuKNNLSCjZ8cjt/Sv1rNNbIjq2j4Xm9NLu98eml6kIqs/LdXC/RVlydvaE/hVZz4ou
- 6dCw==
+ d=ventanamicro.com; s=google; t=1685714530; x=1688306530;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=t9Igt+M9ibuWMcRM/202KOv0++0kR0yXiTr3TdCXnS8=;
+ b=ObSDzbMM3TWrskYKZtwyigndqNXTzkkpTLJYqpn63D3GjPtWnkutQnhZRPe1KPp+Re
+ xfIkHmmx3/gzvQa+KaH+E1WjhAgBAOg6rrPuC5cYg7HjXNGM21cxU1HCXG6d62xUjRRs
+ zctx3RBfNmLn2Oa4jH/rk8ulERdqoAHmpyGEnJKnKlN4YSqxCJwPIB+J5NJS7U0ce4xz
+ Ndr60BQdeJeDwc30S/ykKpTN8Sk5Luu8N8fSZiby22ijk3g/oUTtzyVt7IPz6/iY4f2r
+ E6uNuQhiwAUUS3XpiDAR8YKZsZdXO5qTfF1nHeaN31j5UzWPjWqfP02RehQLtfJspuyI
+ a/kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685713301; x=1688305301;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CYGbY9Cd8ghZDlLaDrXXqCRZM4eJM2SrVXLG7dB1t5E=;
- b=bkPDVAwHLwz/Q9d1RmU/Yu9vyYa7JSPtfj1kUp9oDVquN8d27I469kQWh8ogYXGVP6
- jbQTKSoTO3tdgWMRJMVWTBNtECJyJOPl/8neM+tesUICuyXPuvBGuhSWGXPDtLnnO7P3
- D+7acYjZoCYkUMjMnkvw6domSEDOVch5xGtZUKnsRh7F6ET1Oa4rXP5pIeGukNgPR72G
- RH11mV2dBl50ulm1SDoIIJ4iujK7OblO7dF8EbOrVKRl9xPUfW6L14+Ax8g0Fp4dRrGk
- VYNH+amjLVfHEYzbR3Tgm9UI0YItWv9v/JKQ+lRCNsDTS33qAFQg4AMLPEUT7YFaqwPD
- UPSw==
-X-Gm-Message-State: AC+VfDxyf0VLi34U1aO3FUR59rx1+1sWQpTJdr7jAq2V03Dcqb4sqCLT
- /lrwKgiWn+PePpBcTEQ0CWJG1Q==
-X-Google-Smtp-Source: ACHHUZ7SOsTM+jc+E6fyfo1FhNngw7oPAzinLel9OiRGGeI0XFMQ/nG9hRVbiWk4XLJhE3i6SmI/2A==
-X-Received: by 2002:a5d:690a:0:b0:30a:f22b:a61f with SMTP id
- t10-20020a5d690a000000b0030af22ba61fmr21970wru.38.1685713300803; 
- Fri, 02 Jun 2023 06:41:40 -0700 (PDT)
-Received: from meli.delivery (adsl-127.37.6.162.tellas.gr. [37.6.162.127])
+ d=1e100.net; s=20221208; t=1685714530; x=1688306530;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t9Igt+M9ibuWMcRM/202KOv0++0kR0yXiTr3TdCXnS8=;
+ b=AmpLq6m2pTNG9JfbzX7ODyQgUbrjfu+nimOIAG955RsUfj6bkqLXSoA11obNUwER1L
+ Bbx3g199RXe3NRfotBDDSx90VCeO+7vx1Z2WIZaXsZ72l56aOT2AsI7qpEvK7g1Vpbb3
+ zPZlPDFIXawvOdXc7uqq0xOiDf2ixg8LmBDVtmqL20sziWdiAURLE8et7ZWHD1zQZQhN
+ CsAHDXiDC6/U70PLuxumEmCYq9LRBXwS7t+2X763TM/E+lPnUOPUC3FXcaG4TkWOp8lS
+ E2sImlobN8FimCCdWH0WB+KMyzKPvvCL7QfQOdj/TAwCDKMuLMQnelugKegZP8MIA2CZ
+ pQpw==
+X-Gm-Message-State: AC+VfDwG2mV3IvYcjMuR55/syiLywOUf4eOwRorr9+2ROmGHZVRCbv1V
+ LL4l3o+LtZFud5Lraol1P25r+g==
+X-Google-Smtp-Source: ACHHUZ4JPe6FA7sQfzMIc9S07gXXBpbWXS0xgzCwDSKF2/49RiWu0fLk5DsdwqdHzOBQhD4WBhiARw==
+X-Received: by 2002:a5d:4b92:0:b0:2f6:25a6:9788 with SMTP id
+ b18-20020a5d4b92000000b002f625a69788mr49124wrt.35.1685714529678; 
+ Fri, 02 Jun 2023 07:02:09 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a7bc343000000b003f423508c6bsm1995849wmj.44.2023.06.02.06.41.40
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 02 Jun 2023 06:41:40 -0700 (PDT)
-Date: Fri, 02 Jun 2023 16:36:55 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] Add virtio-sound and virtio-sound-pci devices
-User-Agent: meli 0.7.2
-References: <20230526204845.673031-1-manos.pitsidianakis@linaro.org>
- <87a5xkde0c.fsf@linaro.org>
-In-Reply-To: <87a5xkde0c.fsf@linaro.org>
-Message-ID: <vmope.urd1m26bujz@linaro.org>
+ d6-20020a5d5386000000b00307c46f4f08sm1777566wrv.79.2023.06.02.07.02.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 Jun 2023 07:02:09 -0700 (PDT)
+Date: Fri, 2 Jun 2023 16:02:07 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Robbin Ehn <rehn@rivosinc.com>
+Cc: qemu-devel@nongnu.org, laurent@vivier.eu, qemu-riscv@nongnu.org, 
+ richard.henderson@linaro.org
+Subject: Re: [RFC v2] linux-user/riscv: Add syscall riscv_hwprobe
+Message-ID: <20230602-86a3d8d9fad1fb3464d28702@orel>
+References: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x435.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,47 +91,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 12:36, Alex Bennée <alex.bennee@linaro.org> wrote:
->If it's based of shouldn't we keep the author attribution and their
->original s-o-b?
+On Fri, Jun 02, 2023 at 11:41:11AM +0200, Robbin Ehn wrote:
+> This patch adds the new syscall for the
+> "RISC-V Hardware Probing Interface"
+> (https://docs.kernel.org/riscv/hwprobe.html).
+> 
+> Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
+> ---
+> v1->v2: Moved to syscall.c
+> ---
+>  linux-user/riscv/syscall32_nr.h |   1 +
+>  linux-user/riscv/syscall64_nr.h |   1 +
+>  linux-user/syscall.c            | 109 ++++++++++++++++++++++++++++++++
+>  3 files changed, 111 insertions(+)
+> 
+> diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall32_nr.h
+> index 1327d7dffa..412e58e5b2 100644
+> --- a/linux-user/riscv/syscall32_nr.h
+> +++ b/linux-user/riscv/syscall32_nr.h
+
+This file should not be modified, it should be generated, but this is an
+RFC, so hacking it is OK, but the hack should be in a separate patch.
+
+> @@ -228,6 +228,7 @@
+>  #define TARGET_NR_accept4 242
+>  #define TARGET_NR_arch_specific_syscall 244
+>  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15)
+> +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
+>  #define TARGET_NR_prlimit64 261
+>  #define TARGET_NR_fanotify_init 262
+>  #define TARGET_NR_fanotify_mark 263
+> diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall64_nr.h
+> index 6659751933..29e1eb2075 100644
+> --- a/linux-user/riscv/syscall64_nr.h
+> +++ b/linux-user/riscv/syscall64_nr.h
+
+Same
+
+> @@ -251,6 +251,7 @@
+>  #define TARGET_NR_recvmmsg 243
+>  #define TARGET_NR_arch_specific_syscall 244
+>  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15)
+> +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
+>  #define TARGET_NR_wait4 260
+>  #define TARGET_NR_prlimit64 261
+>  #define TARGET_NR_fanotify_init 262
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 89b58b386b..cd394bbe26 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8772,6 +8772,74 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+>  }
+>  #endif /* TARGET_NR_getdents64 */
+>  
+> +#if defined(TARGET_RISCV)
+> +
+> +#define RISCV_HWPROBE_KEY_MVENDORID     0
+> +#define RISCV_HWPROBE_KEY_MARCHID       1
+> +#define RISCV_HWPROBE_KEY_MIMPID        2
+> +
+> +#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
+> +#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
+> +
+> +#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
+> +#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
+> +#define     RISCV_HWPROBE_IMA_C        (1 << 1)
+> +
+> +#define RISCV_HWPROBE_KEY_CPUPERF_0     5
+> +#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> +#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
+> +#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
+> +#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
+> +#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
+> +#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
+> +
+> +struct riscv_hwprobe {
+> +    int64_t  key;
+> +    uint64_t value;
+> +};
+
+The above is all uapi so Linux's arch/riscv/include/uapi/asm/hwprobe.h
+should be picked up on Linux header update. You'll need to modify the
+script, scripts/update-linux-headers.sh, to do that by adding a new
+riscv-specific block. Hacking this by importing the header file manually
+is fine for an RFC, but that should be a separate patch or part of the
+syscall define hack patch. And hack patches should be clearly tagged as
+"NOT FOR MERGE".
+
+> +
+> +static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+> +                                    struct riscv_hwprobe *pair,
+> +                                    size_t pair_count)
+> +{
+> +    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+> +
+> +    for (; pair_count > 0; pair_count--, pair++) {
+> +        pair->value = 0;
+> +        switch (pair->key) {
+> +        case RISCV_HWPROBE_KEY_MVENDORID:
+> +            pair->value = cfg->mvendorid;
+> +            break;
+> +        case RISCV_HWPROBE_KEY_MARCHID:
+> +            pair->value = cfg->marchid;
+> +            break;
+> +        case RISCV_HWPROBE_KEY_MIMPID:
+> +            pair->value = cfg->mimpid;
+> +            break;
+> +        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
+> +            pair->value = riscv_has_ext(env, RVI) &&
+> +                          riscv_has_ext(env, RVM) &&
+> +                          riscv_has_ext(env, RVA) ?
+> +                          RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
+> +            break;
+> +        case RISCV_HWPROBE_KEY_IMA_EXT_0:
+> +            pair->value = riscv_has_ext(env, RVF) &&
+> +                          riscv_has_ext(env, RVD) ?
+> +                          RISCV_HWPROBE_IMA_FD : 0;
+> +            pair->value |= riscv_has_ext(env, RVC) ?
+> +                           RISCV_HWPROBE_IMA_C : pair->value;
+> +            break;
+> +        case RISCV_HWPROBE_KEY_CPUPERF_0:
+> +            pair->value = RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+> +            break;
+> +        default:
+> +            pair->key = -1;
+> +        break;
+> +        }
+> +    }
+> +}
+> +#endif
+> +
+>  #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
+>  _syscall2(int, pivot_root, const char *, new_root, const char *, put_old)
+>  #endif
+> @@ -13469,6 +13537,47 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+>          return ret;
+>  #endif
+>  
+> +#if defined(TARGET_RISCV)
+> +    case TARGET_NR_riscv_hwprobe:
+> +        {
+
+The { goes under the c of case, which will shift all the below four spaces
+left as well.
+
+> +            struct riscv_hwprobe *host_pairs;
+> +
+> +            /* flags must be 0 */
+> +            if (arg5 != 0) {
+> +                return -TARGET_EINVAL;
+> +            }
+> +
+> +            /* check cpu_set */
+> +            if (arg3 != 0) {
+> +                int ccpu;
+> +                size_t cpu_setsize = CPU_ALLOC_SIZE(arg3);
+> +                cpu_set_t *host_cpus = lock_user(VERIFY_READ, arg4,
+> +                                                 cpu_setsize, 0);
+> +                if (!host_cpus) {
+> +                    return -TARGET_EFAULT;
+> +                }
+> +                ccpu = CPU_COUNT_S(cpu_setsize, host_cpus);
+> +                unlock_user(host_cpus, arg4, cpu_setsize);
+> +                /* no selected cpu */
+> +                if (ccpu == 0) {
+> +                    return -TARGET_EINVAL;
+> +                }
+> +            } else if (arg4 != 0) {
+> +                return -TARGET_EINVAL;
+> +            }
+
+I think we want
+
+ if (arg2 == 0)
+    return 0;
+
+here.
+
+> +
+> +            host_pairs = lock_user(VERIFY_WRITE, arg1,
+> +                                   sizeof(*host_pairs) * (size_t)arg2, 0);
+> +            if (host_pairs == NULL) {
+> +                return -TARGET_EFAULT;
+> +            }
+> +            risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
+> +            unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_t)arg2);
+> +            ret = 0;
+> +        }
+> +        return ret;
+> +#endif
+> +
+>      default:
+>          qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
+>          return -TARGET_ENOSYS;
+> -- 
+> 2.39.2
+> 
 >
 
-I kept the Copyright in the headers but not the Signed-off-by lines, 
-I'll add them in v2.
+Otherwise this looks good to me.
 
-
->What about:
->
->  https://patchew.org/QEMU/20220211221319.193404-1-chouhan.shreyansh2702@gmail.com/
->
->(which is also much more nicely split up).
-
-Comments in that thread were:
-
-> IMHO, all your patches can be merged in only one
-
-and
-
-> Possibly also patches adding
-> significant functionality in the future (i.e. one patch with all
-> basics and playback support, one patch adding recording
-> functionality, ...).
-
-which is why capture was left unimplemented for a future patch:
-
->> +
->> +    } else {
->> +        /*
->> +         * Unimplemented.
->> +         * stream->voice.in = AUD_open_in(&s->card,
->> +         *                                stream->voice.in,
->> +         *                                "virtio_snd_card",
->> +         *                                stream,
->> +         *                                virtio_snd_input_cb,
->> +         *                                &as);
->> +         */
->
->  qemu_log(LOG_UNIMP, ) - although why not implement it?
->
->> +    }
+Thanks,
+drew
 
