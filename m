@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD877200EA
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 13:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D311B720109
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 13:59:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q53Kl-0008LU-Pg; Fri, 02 Jun 2023 07:52:43 -0400
+	id 1q53Q3-0008IP-Dm; Fri, 02 Jun 2023 07:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q53Kk-0008L9-EC
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:52:42 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q53Ki-0007HE-TL
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 07:52:42 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-652328c18d5so814504b3a.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 04:52:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685706759; x=1688298759;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iSlNPZFePKdQEbEASdUB2CHWXuLAoQ8iKDnQOm/+zKI=;
- b=V/aLzWX9C3sGodHjt03sHEQDYuEqp9b9/rALEjN9AldjvsKQsj3/fPtQxqdqPppk3r
- N6D2Hje2wGx9BtuPItvJvXlTsKYTYNOM7ZmiIeNImz/IH3QAezUNOTor7AN9s7vETZXk
- yhnqRH+13sjKiZIP6pXKNO0vRqveanN/ZuQTVBgZmk2wFK1GS8qj9mG5+KOqE1JVAvhe
- PnTzdfMrc48dUtX9j9dBeUMKUC50L1fTU+PxOXnLQTxAz9iNhie9SqTbjEm7tY42XqGN
- IHp6xnCWoWES6cNEKb5dNKNS1ubDfhuuFN5HRksphTAUVFFERrUZ2CmFj+/AoiHmYzv3
- p2XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685706759; x=1688298759;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iSlNPZFePKdQEbEASdUB2CHWXuLAoQ8iKDnQOm/+zKI=;
- b=aLEzF0klcfeHwvu4oZEv5toAn4hWOscqzN04+nMk35a+uxcGe0nJConaQInvxxYtMi
- jyxr0cqnEMObsbxBUjhx17XlW9jjIs35IDU64Xus3veLtbwQ3fvnimPK6PBlj9Y3rCBS
- E4jQR/R+hVYibdlviyhKce6xGmqXoqPr6sGll+M9Vb83MXb33NSTZIAg/eMgio34hqgh
- iHoX2Xzv46p5dJFX8EWlpt+kZUxA8bLOKlTML3e8y7PwzG6TwyBScEuSvpCIJ1teMk3m
- A+aMYI1pKH8wUHVKx0YGi469WgI91/kvdEZh30FdhY5JcEBcFu6gyYEFpe2EsQ4YuIPn
- nvrg==
-X-Gm-Message-State: AC+VfDzkKt4YskIj+U+6UpZa2QxT/slXvl6NxjfecivhnYQu3L6BbBs3
- MtxJEbvPajUpTGgYAJBidq4=
-X-Google-Smtp-Source: ACHHUZ5SZQB3siTx5GSYGp3q6o7bdm5wiPddcQvhZIyvUXPQXi64GNNtLcc22zkCTdasUCvN8A0yCQ==
-X-Received: by 2002:a05:6a20:9389:b0:10f:1d52:93c2 with SMTP id
- x9-20020a056a20938900b0010f1d5293c2mr9384958pzh.28.1685706759415; 
- Fri, 02 Jun 2023 04:52:39 -0700 (PDT)
-Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- l17-20020a170902f69100b001a96d295f15sm1155751plg.284.2023.06.02.04.52.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 04:52:39 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH v4 6/6] vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
-Date: Fri,  2 Jun 2023 19:52:18 +0800
-Message-Id: <778d642ecae6deed8a218b0e6232e4d7bb96b439.1685704856.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1685704856.git.yin31149@gmail.com>
-References: <cover.1685704856.git.yin31149@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ (Exim 4.90_1) (envelope-from <quic_mburton@quicinc.com>)
+ id 1q53Q0-0008IA-W0; Fri, 02 Jun 2023 07:58:09 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_mburton@quicinc.com>)
+ id 1q53Pv-0001Fd-7K; Fri, 02 Jun 2023 07:58:08 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 352ARdqN015457; Fri, 2 Jun 2023 11:57:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=qcppdkim1;
+ bh=FOD6uKTUiUp5yCUXwedUApR+mPZPXLMZlA/byDP8TSk=;
+ b=KFpW27jEb1aRf2thnQrLlPDgTFo11fj6qFb8euelJr0oHpbr21tBK1m2NP38rPFEQjpt
+ WINO/REyFZ1ExGu99dqJYQEdGhdcs7M5eUr8MacJjP9b8jMlqn0AeQltil8VmfqxJDKE
+ oDlDj5cR6WEXJl7gxOFYX4ybyNrVGhNykEv4knTYeJGZKB2rnERBBj2+kV/17aJKvt4n
+ +AqNVzphOV1cnk8/3zrvpJBMLqfErihymvtmESA5ggo3Dm4VmweAPszrJTcolJnmFqG5
+ IeFYvItO8U+Wt1ogAbg41IIDC/ucrOcY0apWAmFMoFn+b+0Dw8Qvpx9a1LKKtDtjPLcd 8A== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qybnbrhdr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 11:57:53 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
+ [10.47.209.197])
+ by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 352BvqwI008616
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 2 Jun 2023 11:57:52 GMT
+Received: from smtpclient.apple (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Fri, 2 Jun 2023
+ 04:57:50 -0700
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH] hvf: Handle EC_INSNABORT
+From: Mark Burton <quic_mburton@quicinc.com>
+In-Reply-To: <CAFEAcA-CSzE=bzCR-zx6hPqmiV9pv8CqwXqv9ui3sZXbWkZZjw@mail.gmail.com>
+Date: Fri, 2 Jun 2023 13:57:47 +0200
+CC: Antonio Caggiano <quic_acaggian@quicinc.com>, "qemu-devel@nongnu.org
+ Developers" <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alexander Graf
+ <agraf@csgraf.de>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <047EF681-240B-449D-BDBC-B43F8DD29745@quicinc.com>
+References: <20230601143312.69691-1-quic_acaggian@quicinc.com>
+ <CAFEAcA-92-zExcOFMwaNYvP5pXLTUETsYi3mpuvTp2txfVEp9Q@mail.gmail.com>
+ <11f8fb60-abe7-d99d-c3bb-aaa405425668@quicinc.com>
+ <B0A9BD1B-B98C-4710-987D-03ADDBB993B7@quicinc.com>
+ <CAFEAcA8tCZ0shxEiA4hOVsHhOBvGmQ6HLJq1dPKDuSqBXKdtJw@mail.gmail.com>
+ <033C707D-C8DF-4DA7-BE50-F19DE2A17FB4@quicinc.com>
+ <CAFEAcA-CSzE=bzCR-zx6hPqmiV9pv8CqwXqv9ui3sZXbWkZZjw@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: p9a7MSbx0P1bZ6xhApw7j0oczK5jQODk
+X-Proofpoint-ORIG-GUID: p9a7MSbx0P1bZ6xhApw7j0oczK5jQODk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-02_08,2023-06-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=781 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ clxscore=1015 mlxscore=0 spamscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2304280000 definitions=main-2306020089
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_mburton@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,28 +107,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable SVQ with VIRTIO_NET_F_CTRL_GUEST_OFFLOADS feature.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
----
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 1a295af51d..5a72204899 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -85,6 +85,7 @@ const int vdpa_feature_bits[] = {
- static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_CSUM) |
-     BIT_ULL(VIRTIO_NET_F_GUEST_CSUM) |
-+    BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS) |
-     BIT_ULL(VIRTIO_NET_F_MTU) |
-     BIT_ULL(VIRTIO_NET_F_MAC) |
-     BIT_ULL(VIRTIO_NET_F_GUEST_TSO4) |
--- 
-2.25.1
+> On 2 Jun 2023, at 11:07, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+>=20
+> WARNING: This email originated from outside of Qualcomm. Please be =
+wary of any links or attachments, and do not enable macros.
+>=20
+> On Thu, 1 Jun 2023 at 20:21, Mark Burton <quic_mburton@quicinc.com> =
+wrote:
+>>=20
+>>=20
+>>=20
+>>> On 1 Jun 2023, at 18:45, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+>>>=20
+>>> WARNING: This email originated from outside of Qualcomm. Please be =
+wary of any links or attachments, and do not enable macros.
+>>>=20
+>>> On Thu, 1 Jun 2023 at 17:00, Mark Burton <quic_mburton@quicinc.com> =
+wrote:
+>>>> This patch came from a discussion on the KVM call the other day.
+>>>> It may well be the case there is a better/different implementation
+>>>> - so the patch is more by way of asking the question.
+>>>>=20
+>>>> Re-phrasing your question - I think it boils down to =E2=80=9Cshould =
+HVF
+>>>> (and KVM) support executing instructions from IO space?=E2=80=9D.
+>>>=20
+>>> I think this falls into "might theoretically be nice but is
+>>> probably too painful to actually implement". In practice
+>>> well-behaved guests don't try to execute out of MMIO devices.
+>>>=20
+>>=20
+>>>> In that case, this is a =E2=80=98partial=E2=80=99 answer to =
+providing such
+>>>> support for HVF - partial in that it relies upon a memory
+>>>> region being created =E2=80=9Cdynamically=E2=80=9D for the IO space =
+that
+>>>> has been accessed as a side-effect of a normal access.
+>>>=20
+>>> But nothing in (upstream) QEMU magically creates MemoryRegions
+>>> just because the guest tries to access them. Either there's
+>>> nothing there in the AddressSpace at all (definitely can't
+>>> execute from it) or there's already RAM (happy case) or there's
+>>> already a device there. If there's already a device there
+>>> then something would need to do a "put a bit of RAM in
+>>> temporarily, fill in the single instruction by doing an
+>>> address_space_read() to find the data value and writing it
+>>> to the scratch RAM, tell KVM/HVF to do a single-step, undo
+>>> everything again".
+>=20
+>> Indeed, that=E2=80=99s basically what we=E2=80=99re implementing. In =
+TCG mode you =E2=80=99see=E2=80=99 the access, we=E2=80=99re just making =
+it so that in HVF you equally =E2=80=98see=E2=80=99 such accesses to the =
+=E2=80=98device=E2=80=99 (so you can put the bit of RAM in, out, shake =
+it all about). A cleaner implementation may be some sort of =
+=E2=80=9Cpre-i-side-access-op I=E2=80=99m about to access this =
+device/address please register a =E2=80=98memory region=E2=80=99 I can =
+use (temporarily)=E2=80=9D. I=E2=80=99d have thought that could be =
+useful any time you execute from e.g. a temporary ram of any sort =
+(whatever the accelerator).
+>=20
+> This patch doesn't do any of the "set up the RAM, single
+> step, tear it down again" work, though, which is the complicated
+
+(That would need to be done in the device I believe).
+
+> bit. It just retries an access that ought to have worked directly
+> when HVF did it; which isn't really what you would want to
+> do if you were trying to handle HVF or KVM exec-from-device.
+> In that scenario the "read from the underlying device" would
+> be in the middle of a large amount of other complicated code.
+
+(Maybe not _so_ complicated given a suitable API, but this patch =
+doesn=E2=80=99t provide any such API).
+
+> And without all that other complicated code (which I tend
+> to feel is not worthwhile as a feature) this change is
+> completely unmotivated by anything we have upstream...
+>=20
+
+I can=E2=80=99t help but agree on that :-)
+
+Cheers
+Mark.
+
+
+> -- PMM
 
 
