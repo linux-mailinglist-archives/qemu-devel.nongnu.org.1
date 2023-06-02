@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41496720A21
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 22:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B16720A22
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 22:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5B00-00069b-9y; Fri, 02 Jun 2023 16:03:48 -0400
+	id 1q5B13-00071n-QK; Fri, 02 Jun 2023 16:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Azx-000692-4S
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:03:45 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5B10-00071c-TF
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:04:51 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Azt-0001th-Hf
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:03:44 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30ae141785bso2440227f8f.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 13:03:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5B0w-00022f-V2
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:04:49 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f6ef9a928fso23264305e9.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 13:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685736220; x=1688328220;
+ d=linaro.org; s=google; t=1685736285; x=1688328285;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gYrdCoiyy4c3T36hdBCvufBH+VFWjZejrce+DXZy1BQ=;
- b=Y1prcXKzk51qnRQZJG8CyDFnGhOWkkqnR7N+/fPT1DzbD9x9WCYEIGtV7vo5yFD4q9
- Oi05tm0JJhN5SPWBUmpnWB7k/mWsDWxnMhoo4lyg/vO0p0u3eeopeEJr6Pfj26pIa05G
- lUI8klQ6rcpdEINt4X2inbiJCHQUlPBu1aACJ4QTUI6mx2eohs4sDyHEUL/1cPS0dkwp
- GLK0ay7pHC2ERFDtvcM6t6nLNqo95LrGTp4lisxuWS7StkPw8rXL4xWu/Vsdx9MnepbO
- cG+38KaWS+S4I3mjTSqN7RVlD4M5DfeFzRXl4x53lRnWRS4/lFn+5aGU9TUWOhPhvJS7
- BrAw==
+ bh=WpFMACP0RIdoZPUBC1MBjKf1NU1INCbQ/iB58Gf0QME=;
+ b=S6QpCZx5L1eTA3yLUBmKd5ygM+PnyanU5Q7peI5nTwHdR77GywYyrrJ4HlFfeICNo0
+ QHDkm7D+YXKQNSH4KqAzdr7FFQBMuPMwwvCaaGDE2V1zXzzn/+Yp7VtBlgXkJmdUXazk
+ wFI4Dz/M8zFGis39cKfj1ktyfiEA7B+1hr9xJKcoZP77ixqPkPqGTjaiji0B6EAcSdXU
+ OMO/8yVRh0bBsgsWSI2S7Q7cxoSJ3py7A1iTSiEExUgURhtcNveuS0y1mGBB+9pkQDpS
+ nrBuqPkA4y/uIReJX1wwxbj+v3xdilqvvN4h6nhepKPWh6BT8x0nwIzreEcdqvqTz2JY
+ xb+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685736220; x=1688328220;
+ d=1e100.net; s=20221208; t=1685736285; x=1688328285;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gYrdCoiyy4c3T36hdBCvufBH+VFWjZejrce+DXZy1BQ=;
- b=bkt9zf4nax3VXAuN/UL3bBvXQpTB52uiGMxAh4HR8uA9gS0RJ2zXkD+Jzir52YcRKw
- flMH/OgJYc/1Vy7falBuOKBBWdHl3S64PG1NY09Pf5kw8s8LCF4oNPbMc8WCm7QG/uW7
- B/Pa+RJpTjeB+/Fwsx4sUYq0uiBu8NaoToLvdt/uINBPfnJS4dWq1DLnGcsdfcLoSr2K
- iPr6u3EEvKqiRkXFTMzwy5OHWuQloxagVsrQ60UseE96OnI6PwXpULz3BfRJ55SVanL8
- FaM5+jUOeDY0vGZh8bMuLQH0+km4K1ts1QDZQBmAsA/Idaw/tO+imdIFp+Hwe/3ydyfm
- GDLQ==
-X-Gm-Message-State: AC+VfDx4k5w+F/4J8IvbIyVj+kX3FEkeFiaufW1prAiOsYvLs/Zoc5NN
- py9qAr+R5A6Ge775fcTW+ZRjgQ==
-X-Google-Smtp-Source: ACHHUZ4nosV/SgWc6tRjIZmQXdJoc/hn8xt2MNOi9uW66e9eJRd+bIEH0mPT0Hx25f6TVJZvVhKq4w==
-X-Received: by 2002:a5d:4d90:0:b0:30a:e65a:1b14 with SMTP id
- b16-20020a5d4d90000000b0030ae65a1b14mr752877wru.28.1685736220086; 
- Fri, 02 Jun 2023 13:03:40 -0700 (PDT)
+ bh=WpFMACP0RIdoZPUBC1MBjKf1NU1INCbQ/iB58Gf0QME=;
+ b=YhUwgpdkCrjJBGx9K3vP3hq5qinf8P6ByLTZTArMv9XHrlfby3+LKU2N5O8t19Dc2+
+ 0poJHQBQ2rBBxaLV9Ujxd/mdiV031lcxrn5UOLrdpgaQwqvewp3F/y2JehN4cstxEC3b
+ WggiD9MEMeFT2l6bk6L6HNiONLB2YsbPspefV+dYCwDIRTMUU/Y6fKMZr7qgOIiUvfik
+ WIwHzEMRQr7UpUMskjORANGyXfdmSLAk4idjvchmBnJj66zjmoPNKfccTGe8zsZ7HN5D
+ USmuenGYJGNvSrrsoAtIo+yi1+3/yKVqZ/5sOdafT+RO0tlTdv9R2pjMgKmGIToxDjC0
+ dg0w==
+X-Gm-Message-State: AC+VfDxa/aDyNx34Bxi9xcu3N5/xNDnY1b7QlTFfvNbcjkv4cP5bLK/K
+ bH5j0nhP1y0XxG5iArsDq1FyMw==
+X-Google-Smtp-Source: ACHHUZ7m/Cyd7ixWhdPTrVOb/oVua7IJBCYjTufDrkOObTkgCslyOPycXe0aHvvs2OzMaQ2Swt8OrQ==
+X-Received: by 2002:a7b:c3d0:0:b0:3f6:1a3:4cee with SMTP id
+ t16-20020a7bc3d0000000b003f601a34ceemr2578753wmj.14.1685736285523; 
+ Fri, 02 Jun 2023 13:04:45 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- n2-20020a5d4c42000000b00306415ac69asm2503281wrt.15.2023.06.02.13.03.37
+ n11-20020a7bcbcb000000b003f60d0eef36sm6438207wmi.48.2023.06.02.13.04.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 13:03:39 -0700 (PDT)
-Message-ID: <57a5cb12-c905-43ab-5190-4bb16022a312@linaro.org>
-Date: Fri, 2 Jun 2023 22:03:35 +0200
+ Fri, 02 Jun 2023 13:04:45 -0700 (PDT)
+Message-ID: <50dd74e9-94db-a516-c455-58f8f8a64405@linaro.org>
+Date: Fri, 2 Jun 2023 22:04:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 3/3] meson.build: Group the audio backend entries in a
- separate summary section
+Subject: Re: [PATCH] linux-user: Return EINVAL for getgroups() with negative
+ gidsetsize
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-References: <20230602171832.533739-1-thuth@redhat.com>
- <20230602171832.533739-4-thuth@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20230602174806.2060683-1-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230602171832.533739-4-thuth@redhat.com>
+In-Reply-To: <20230602174806.2060683-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,14 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/6/23 19:18, Thomas Huth wrote:
-> Let's make it easier for the users to spot audio-related entries
-> in the summary of the meson output.
+On 2/6/23 19:48, Peter Maydell wrote:
+> Coverity doesn't like the way we might end up calling getgroups()
+> with a NULL grouplist pointer. This is fine for the special case
+> of gidsetsize == 0, but we will also do it if the guest passes
+> us a negative gidsetsize. (CID 1512465)
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Explicitly fail the negative gidsetsize with EINVAL, as the kernel
+> does. This means we definitely only call the libc getgroups()
+> with valid parameters.
+> 
+> Possibly Coverity may still complain about getgroups(0, NULL), but
+> that would be a false positive.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   meson.build | 32 ++++++++++++++++++--------------
->   1 file changed, 18 insertions(+), 14 deletions(-)
+>   linux-user/syscall.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
