@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA16720C23
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FA0720C24
 	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 00:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5Diu-0002ot-05; Fri, 02 Jun 2023 18:58:20 -0400
+	id 1q5Diz-0002pp-Pg; Fri, 02 Jun 2023 18:58:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Dis-0002oj-I5
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:58:18 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Dix-0002pR-PR
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:58:23 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Diq-000091-9K
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:58:18 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3094910b150so2690132f8f.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 15:58:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Div-00009l-F0
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:58:23 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f6da07feb2so25890545e9.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 15:58:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685746694; x=1688338694;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dN/C2Z/IypqiJDPUDKDk5iRGQANDZyURN+5+o6WKaGY=;
- b=ocEPQTqRkGzLJI8GKh9TMVrDFuZT9PRYvL/7WSXyZ9VbsIy6LdYBVJwPiGtLGvNv/m
- mO1NZBRP7VhJmDjRMHqlOLn5kV6Z3slnKSDxtpTPx9NMcDxU/eezLBJiNyQ6LikcSqpg
- xW/K8tmiA2UGhvPuAVxREzXlzNIrZPFbpDjxyUWTUVrTivNvbJmMlnzivXx3mgqAg7FA
- KqJ+qdOYulDaeVZC3hxPabR1DL2pgyyyZp1UPrytoN7C6fDeol5sJbwF0QcPQ31A1wcA
- dMjZ4YQ+fxeQbd53yZ57LLp03nHx5W1AhHqMcFLEt/SIMHTvPl68mnOSYUEh9NnpQuJT
- oVBg==
+ d=linaro.org; s=google; t=1685746700; x=1688338700;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cKBN9AwMdwMiOqgeVlfxVELcyFeZ63ZFm1bX/J3jfrw=;
+ b=wBqN6XC0ba77MX3hOMDZZ9yB+ScNiZZX0g3F9GvvxK+GHBIhIxIT93SKHxMx6FEJwq
+ m+w+Zzr3tR4PsS98g57zSgaHWmyGtgMt2lVOt+z93tbuY/qi8GeYRMRSryKF0srHAPza
+ /R1LJfNXP1LEZgqVvnLW8snwim7NT94qeP0OLFMXWn6y1P1dFyIl+mEllILf0rnC1ZFi
+ wkXb3JVOktPImYNj+PCgcQA9GWtzaTRsl3zBG1lTbzfuo1Hd3vDmIIirWgb1NKcSHYI1
+ MD3LsyjUA+1f3bq0dlCyeyxp8v/OuNjWWcT5tppF/2Ol26N1SJRz1+DZaq5DfAv6UTAY
+ zgeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685746694; x=1688338694;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dN/C2Z/IypqiJDPUDKDk5iRGQANDZyURN+5+o6WKaGY=;
- b=MMWgf8m7EoaeRDjFOdBWjERDfZ2kGJNOwRRWIn1BgqaLeol7gq2Af3ZaFnyL8W3nJ7
- 3Z/YjkAV9KtXPqUlnVaX5qZd1V7vK/yvODKjwosjxYTogePAxiub4641fE/tUupAV4PS
- UDZz4i2BZzSH7kMVPm7FsKHlDLwKLbagAWakk9umL9PLr2cpX5lTGgj6mdwlJOTPp0Co
- OWCZc6wuNZeKxtMJVQbqE89cLUQJ0/jpkA49bRUiYir/6WfgtN4C/gQOW+BFkGJpgjkN
- c41e1HEF6kVKLw5RTZLvfZPuM9ZLGnwLgCd+Rh5j9tf1ZNCvWvTpDB2qtecksK8QxmXe
- 5ywQ==
-X-Gm-Message-State: AC+VfDwa2RusqmeUIp8oxnDlc8bdqpNgtYVyS/Prx9naLIcI4MMttuLF
- 2H8BUTz6/159kQlTCspFUVPaL+OEJ3wdEWoYpDo=
-X-Google-Smtp-Source: ACHHUZ4yGvatha808jnnM2IlMkvODVWVtH2I6RqcYVaLBkJy45+DIUdbaNXWlC/Ak5TXa1EQmotbzQ==
-X-Received: by 2002:adf:dfd1:0:b0:30a:f3ca:17ad with SMTP id
- q17-20020adfdfd1000000b0030af3ca17admr980144wrn.66.1685746694311; 
- Fri, 02 Jun 2023 15:58:14 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685746700; x=1688338700;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cKBN9AwMdwMiOqgeVlfxVELcyFeZ63ZFm1bX/J3jfrw=;
+ b=OpToxy1tX8AOX90gWGQm20oiJhTbfHpDlALoWYEyR3Qsv+/NRe7FoL5f9z2drIAhfV
+ B9hQz6ovvv4TKqlQ2cjnC1in71cIfq3gRZrjrOYt8EFEQ7TlAWTacJP8JvMyPj/pyflG
+ ZBwR+dwjnV3x1LyYY3xN96KJedXwNjrFBwb0rh2+bxXQ96G79z15pNderQzeAZvzotaf
+ 1pCeRQV0KizYXBZzYEs0nJ+abKxh1WcF/R6ntGGExXF+MoDsUqQZEGMhbbrU9dm8SjfA
+ vrvssnTg85Cb+b8S3znSNi6bBlXrZyUTkBreXDYCMDCFtllJ3gHa9xjUqvmEJ7Xyx3t+
+ Yxgw==
+X-Gm-Message-State: AC+VfDzBBn4E1NWyZYi3+F4vjmsY6sHCicTGBNRkKFRkD4ldZIoZzwPA
+ 5N4XOAg/H/QuaYCvl9za2uyQjZpm5LRTDl8s7Tc=
+X-Google-Smtp-Source: ACHHUZ7Gtq8pBSWEUNu/aEh0FIdRvB1HXYMbx1AfN4U1/L+Sl0aLduYMPcQGSfuv4Q7D7NIXeosJug==
+X-Received: by 2002:a05:600c:2b8d:b0:3f6:1508:950d with SMTP id
+ j13-20020a05600c2b8d00b003f61508950dmr2926390wmc.8.1685746699709; 
+ Fri, 02 Jun 2023 15:58:19 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a5d4b0a000000b0030789698eebsm2797758wrq.89.2023.06.02.15.58.13
+ f15-20020a7bcd0f000000b003f611b2aedesm3163443wmj.38.2023.06.02.15.58.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 Jun 2023 15:58:13 -0700 (PDT)
+ Fri, 02 Jun 2023 15:58:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 0/2] bulk: Replace !CONFIG_SOFTMMU and !CONFIG_USER_ONLY
-Date: Sat,  3 Jun 2023 00:58:09 +0200
-Message-Id: <20230602225811.60152-1-philmd@linaro.org>
+Subject: [RFC PATCH 1/2] bulk: Replace !CONFIG_SOFTMMU -> CONFIG_USER_ONLY
+Date: Sat,  3 Jun 2023 00:58:10 +0200
+Message-Id: <20230602225811.60152-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230602225811.60152-1-philmd@linaro.org>
+References: <20230602225811.60152-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,238 +92,297 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since CONFIG_SOFTMMU is poisoned, we are using its opposite
-form via "!CONFIG_USER_ONLY" (because CONFIG_USER_ONLY is
-not poisoned).
-Since patch [2] unpoison CONFIG_SOFTMMU, we can remove the
-kludge, resulting is a more logical code to review.
+CONFIG_USER_ONLY is the opposite of CONFIG_SOFTMMU.
+Replace !CONFIG_SOFTMMU negation by the positive form
+which is clearer when reviewing code.
 
-Personally I like the resulting code, but I can understand
-others simply see code churn here, so I'm simply posting as
-bulk patches. I don't have problem to split if nobody object
-to this change.
+Change mostly done mechanically using:
 
-Based-on: 20230531040330.8950-1-richard.henderson@linaro.org
-          "tcg: Build once for system, once for user" (v3)
-[1] https://lore.kernel.org/qemu-devel/20230531040330.8950-1-richard.henderson@linaro.org/
-[2] https://lore.kernel.org/qemu-devel/20230531040330.8950-48-richard.henderson@linaro.org/
+  $ sed -i -e 's/!defined(CONFIG_SOFTMMU)/defined(CONFIG_USER_ONLY)/' \
+           -e 's/ifndef CONFIG_SOFTMMU/ifdef CONFIG_USER_ONLY/' \
+               $(git grep -l CONFIG_SOFTMMU)
 
-*** BLURB HERE ***
+and adapting comments manually.
 
-Philippe Mathieu-Daudé (2):
-  bulk: Replace !CONFIG_SOFTMMU -> CONFIG_USER_ONLY
-  bulk: Replace !CONFIG_USER_ONLY -> CONFIG_SOFTMMU
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ accel/tcg/cpu-exec.c             | 4 ++--
+ target/i386/helper.c             | 6 +++---
+ tcg/aarch64/tcg-target.c.inc     | 4 ++--
+ tcg/arm/tcg-target.c.inc         | 4 ++--
+ tcg/i386/tcg-target.c.inc        | 8 ++++----
+ tcg/loongarch64/tcg-target.c.inc | 4 ++--
+ tcg/mips/tcg-target.c.inc        | 6 +++---
+ tcg/ppc/tcg-target.c.inc         | 4 ++--
+ tcg/riscv/tcg-target.c.inc       | 2 +-
+ tcg/s390x/tcg-target.c.inc       | 4 ++--
+ tcg/sparc64/tcg-target.c.inc     | 4 ++--
+ 11 files changed, 25 insertions(+), 25 deletions(-)
 
- scripts/coccinelle/round.cocci                |   6 +
- include/exec/address-spaces.h                 |   2 +-
- include/exec/confidential-guest-support.h     |   4 +-
- include/exec/cpu-all.h                        |   4 +-
- include/exec/cpu-common.h                     |   4 +-
- include/exec/cpu-defs.h                       |  14 +-
- include/exec/cputlb.h                         |   2 +-
- include/exec/exec-all.h                       |   6 +-
- include/exec/ioport.h                         |   2 +-
- include/exec/memory-internal.h                |   2 +-
- include/exec/memory.h                         |   2 +-
- include/exec/ram_addr.h                       |   2 +-
- include/exec/ramblock.h                       |   2 +-
- include/hw/core/cpu.h                         |  12 +-
- include/hw/core/tcg-cpu-ops.h                 |   8 +-
- include/hw/intc/armv7m_nvic.h                 |   4 +-
- include/hw/s390x/css.h                        |   2 +-
- include/qemu/accel.h                          |   6 +-
- include/semihosting/semihost.h                |   4 +-
- include/sysemu/cpus.h                         |   2 +-
- include/sysemu/xen.h                          |   4 +-
- target/alpha/cpu.h                            |   6 +-
- target/arm/common-semi-target.h               |   2 +-
- target/arm/cpu.h                              |  14 +-
- target/arm/internals.h                        |   6 +-
- target/arm/tcg/arm_ldst.h                     |   2 +-
- target/arm/tcg/translate.h                    |   2 +-
- target/cris/cpu.h                             |   2 +-
- target/hppa/cpu.h                             |   2 +-
- target/hppa/helper.h                          |   2 +-
- target/i386/cpu-internal.h                    |   4 +-
- target/i386/cpu.h                             |  12 +-
- target/i386/helper.h                          |  12 +-
- target/i386/sev.h                             |   2 +-
- target/i386/tcg/helper-tcg.h                  |   4 +-
- target/loongarch/cpu.h                        |   4 +-
- target/loongarch/helper.h                     |   2 +-
- target/loongarch/internals.h                  |   4 +-
- target/m68k/cpu.h                             |   6 +-
- target/microblaze/cpu.h                       |  12 +-
- target/microblaze/helper.h                    |   2 +-
- target/mips/cpu.h                             |   6 +-
- target/mips/helper.h                          |   8 +-
- target/mips/internal.h                        |   4 +-
- target/mips/tcg/tcg-internal.h                |   4 +-
- target/nios2/cpu.h                            |  10 +-
- target/nios2/helper.h                         |   2 +-
- target/openrisc/cpu.h                         |   8 +-
- target/ppc/cpu-qom.h                          |   4 +-
- target/ppc/cpu.h                              |  32 ++---
- target/ppc/helper.h                           |   8 +-
- target/ppc/internal.h                         |   6 +-
- target/ppc/kvm_ppc.h                          |   8 +-
- target/ppc/mmu-book3s-v3.h                    |   2 +-
- target/ppc/mmu-hash32.h                       |   2 +-
- target/ppc/mmu-hash64.h                       |   2 +-
- target/ppc/mmu-radix64.h                      |   2 +-
- target/ppc/power8-pmu.h                       |   2 +-
- target/ppc/spr_common.h                       |   2 +-
- target/riscv/cpu.h                            |  10 +-
- target/riscv/helper.h                         |   4 +-
- target/riscv/internals.h                      |   2 +-
- target/rx/cpu.h                               |   4 +-
- target/s390x/cpu.h                            |   8 +-
- target/s390x/helper.h                         |   2 +-
- target/s390x/s390x-internal.h                 |   8 +-
- target/sh4/cpu.h                              |   2 +-
- target/sparc/cpu.h                            |  10 +-
- target/sparc/helper.h                         |   2 +-
- target/xtensa/cpu.h                           |   6 +-
- target/xtensa/helper.h                        |   4 +-
- target/s390x/tcg/insn-data.h.inc              |   2 +-
- accel/accel-common.c                          |   8 +-
- accel/tcg/cpu-exec.c                          |  24 ++--
- accel/tcg/tcg-all.c                           |   4 +-
- accel/tcg/translate-all.c                     |   2 +-
- cpu.c                                         |   8 +-
- gdbstub/gdbstub.c                             |   8 +-
- plugins/api.c                                 |   4 +-
- plugins/loader.c                              |   4 +-
- semihosting/arm-compat-semi.c                 |  10 +-
- semihosting/guestfd.c                         |   2 +-
- semihosting/syscalls.c                        |   6 +-
- softmmu/memory.c                              |   2 +-
- target/alpha/cpu.c                            |  10 +-
- target/alpha/helper.c                         |   4 +-
- target/alpha/sys_helper.c                     |   4 +-
- target/alpha/translate.c                      |  22 ++--
- target/arm/cpu.c                              |  44 +++----
- target/arm/debug_helper.c                     |   4 +-
- target/arm/gdbstub.c                          |   6 +-
- target/arm/helper.c                           |  48 +++----
- target/arm/tcg/cpu32.c                        |  18 +--
- target/arm/tcg/helper-a64.c                   |   2 +-
- target/arm/tcg/m_helper.c                     |   6 +-
- target/arm/tcg/op_helper.c                    |   2 +-
- target/arm/tcg/sve_helper.c                   |   2 +-
- target/arm/tcg/tlb_helper.c                   |   4 +-
- target/arm/tcg/translate-a64.c                |   2 +-
- target/arm/tcg/translate.c                    |   6 +-
- target/cris/cpu.c                             |  18 +--
- target/cris/op_helper.c                       |   8 +-
- target/cris/translate.c                       |   2 +-
- target/hexagon/genptr.c                       |   2 +-
- target/hppa/cpu.c                             |  14 +-
- target/hppa/helper.c                          |   4 +-
- target/hppa/translate.c                       |  36 ++---
- target/i386/cpu-dump.c                        |   6 +-
- target/i386/cpu.c                             |  42 +++---
- target/i386/gdbstub.c                         |  14 +-
- target/i386/helper.c                          |  14 +-
- target/i386/tcg/bpt_helper.c                  |   2 +-
- target/i386/tcg/excp_helper.c                 |   2 +-
- target/i386/tcg/fpu_helper.c                  |   4 +-
- target/i386/tcg/seg_helper.c                  |   8 +-
- target/i386/tcg/tcg-cpu.c                     |   6 +-
- target/i386/tcg/translate.c                   |   4 +-
- target/loongarch/cpu.c                        |  14 +-
- target/loongarch/op_helper.c                  |   2 +-
- target/m68k/cpu.c                             |   6 +-
- target/m68k/helper.c                          |   4 +-
- target/m68k/op_helper.c                       |   4 +-
- target/microblaze/cpu.c                       |  12 +-
- target/microblaze/helper.c                    |   4 +-
- target/microblaze/op_helper.c                 |   2 +-
- target/microblaze/translate.c                 |  12 +-
- target/mips/cpu.c                             |  18 +--
- target/mips/gdbstub.c                         |   4 +-
- target/mips/tcg/ldst_helper.c                 |   4 +-
- target/mips/tcg/msa_helper.c                  |   2 +-
- target/mips/tcg/op_helper.c                   |   4 +-
- target/mips/tcg/translate.c                   |  26 ++--
- target/nios2/cpu.c                            |  18 +--
- target/nios2/op_helper.c                      |   4 +-
- target/nios2/translate.c                      |  10 +-
- target/openrisc/cpu.c                         |  14 +-
- target/openrisc/interrupt.c                   |   2 +-
- target/openrisc/sys_helper.c                  |  10 +-
- target/ppc/compat.c                           |   2 +-
- target/ppc/cpu.c                              |   2 +-
- target/ppc/cpu_init.c                         | 124 +++++++++---------
- target/ppc/excp_helper.c                      |  17 +--
- target/ppc/gdbstub.c                          |   8 +-
- target/ppc/helper_regs.c                      |  20 +--
- target/ppc/mem_helper.c                       |   2 +-
- target/ppc/misc_helper.c                      |   2 +-
- target/ppc/power8-pmu.c                       |   4 +-
- target/ppc/ppc-qmp-cmds.c                     |   2 +-
- target/ppc/timebase_helper.c                  |   4 +-
- target/ppc/translate.c                        |  62 ++++-----
- target/riscv/cpu.c                            |  66 +++++-----
- target/riscv/cpu_helper.c                     |  20 +--
- target/riscv/csr.c                            |  42 +++---
- target/riscv/gdbstub.c                        |   6 +-
- target/riscv/op_helper.c                      |   8 +-
- target/riscv/translate.c                      |  12 +-
- target/riscv/zce_helper.c                     |   2 +-
- target/rx/cpu.c                               |  10 +-
- target/rx/helper.c                            |   4 +-
- target/s390x/cpu-dump.c                       |   2 +-
- target/s390x/cpu.c                            |  26 ++--
- target/s390x/cpu_features.c                   |   4 +-
- target/s390x/cpu_models.c                     |   8 +-
- target/s390x/gdbstub.c                        |   4 +-
- target/s390x/interrupt.c                      |   6 +-
- target/s390x/tcg/cc_helper.c                  |   2 +-
- target/s390x/tcg/excp_helper.c                |  10 +-
- target/s390x/tcg/mem_helper.c                 |   8 +-
- target/s390x/tcg/misc_helper.c                |  12 +-
- target/s390x/tcg/translate.c                  |  48 +++----
- target/sh4/cpu.c                              |  12 +-
- target/sh4/helper.c                           |   6 +-
- target/sh4/op_helper.c                        |   2 +-
- target/sparc/cpu.c                            |  16 +--
- target/sparc/helper.c                         |   6 +-
- target/sparc/int32_helper.c                   |   4 +-
- target/sparc/int64_helper.c                   |   4 +-
- target/sparc/ldst_helper.c                    |  16 +--
- target/sparc/translate.c                      |  50 +++----
- target/sparc/win_helper.c                     |  10 +-
- target/xtensa/cpu.c                           |  22 ++--
- target/xtensa/exc_helper.c                    |   4 +-
- target/xtensa/helper.c                        |   4 +-
- target/xtensa/op_helper.c                     |   6 +-
- target/xtensa/translate.c                     |  62 ++++-----
- tcg/tcg.c                                     |   4 +-
- .../loongarch/insn_trans/trans_farith.c.inc   |   2 +-
- target/loongarch/insn_trans/trans_lsx.c.inc   |   2 +-
- target/mips/cpu-defs.c.inc                    |   2 +-
- target/mips/tcg/micromips_translate.c.inc     |   4 +-
- target/mips/tcg/nanomips_translate.c.inc      |   6 +-
- target/ppc/power8-pmu-regs.c.inc              |   4 +-
- target/ppc/translate/branch-impl.c.inc        |   2 +-
- .../ppc/translate/processor-ctrl-impl.c.inc   |   8 +-
- target/ppc/translate/storage-ctrl-impl.c.inc  |  16 +--
- .../riscv/insn_trans/trans_privileged.c.inc   |   8 +-
- target/riscv/insn_trans/trans_rvh.c.inc       |   4 +-
- target/riscv/insn_trans/trans_svinval.c.inc   |   6 +-
- target/riscv/insn_trans/trans_xthead.c.inc    |   8 +-
- tcg/aarch64/tcg-target.c.inc                  |   4 +-
- tcg/arm/tcg-target.c.inc                      |   4 +-
- tcg/i386/tcg-target.c.inc                     |   8 +-
- tcg/loongarch64/tcg-target.c.inc              |   4 +-
- tcg/mips/tcg-target.c.inc                     |   6 +-
- tcg/ppc/tcg-target.c.inc                      |   4 +-
- tcg/riscv/tcg-target.c.inc                    |   2 +-
- tcg/s390x/tcg-target.c.inc                    |   4 +-
- tcg/sparc64/tcg-target.c.inc                  |   8 +-
- 208 files changed, 948 insertions(+), 945 deletions(-)
-
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index f1eae7b8e5..d5695a7083 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -568,7 +568,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+         cpu_tb_exec(cpu, tb, &tb_exit);
+         cpu_exec_exit(cpu);
+     } else {
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+         clear_helper_retaddr();
+         if (have_mmap_lock()) {
+             mmap_unlock();
+@@ -1025,7 +1025,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
+         /* Non-buggy compilers preserve this; assert the correct value. */
+         g_assert(cpu == current_cpu);
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+         clear_helper_retaddr();
+         if (have_mmap_lock()) {
+             mmap_unlock();
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 89aa696c6d..c9755b3aba 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -582,7 +582,7 @@ int cpu_x86_get_descr_debug(CPUX86State *env, unsigned int selector,
+ 
+ void do_cpu_init(X86CPU *cpu)
+ {
+-#if !defined(CONFIG_USER_ONLY)
++#if defined(CONFIG_SOFTMMU)
+     CPUState *cs = CPU(cpu);
+     CPUX86State *env = &cpu->env;
+     CPUX86State *save = g_new(CPUX86State, 1);
+@@ -601,10 +601,10 @@ void do_cpu_init(X86CPU *cpu)
+         kvm_arch_do_init_vcpu(cpu);
+     }
+     apic_init_reset(cpu->apic_state);
+-#endif /* CONFIG_USER_ONLY */
++#endif /* CONFIG_SOFTMMU */
+ }
+ 
+-#ifndef CONFIG_USER_ONLY
++#ifdef CONFIG_SOFTMMU
+ 
+ void do_cpu_sipi(X86CPU *cpu)
+ {
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 35ca80cd56..d82654ac64 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -77,7 +77,7 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
+ #define TCG_REG_TMP2 TCG_REG_X30
+ #define TCG_VEC_TMP0 TCG_REG_V31
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ #define TCG_REG_GUEST_BASE TCG_REG_X28
+ #endif
+ 
+@@ -3083,7 +3083,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     tcg_set_frame(s, TCG_REG_SP, TCG_STATIC_CALL_ARGS_SIZE,
+                   CPU_TEMP_BUF_NLONGS * sizeof(long));
+ 
+-#if !defined(CONFIG_SOFTMMU)
++#if defined(CONFIG_USER_ONLY)
+     /*
+      * Note that XZR cannot be encoded in the address base register slot,
+      * as that actaully encodes SP.  Depending on the guest, we may need
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 83e286088f..9248c1eb2a 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -89,7 +89,7 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
+ 
+ #define TCG_REG_TMP  TCG_REG_R12
+ #define TCG_VEC_TMP  TCG_REG_Q15
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ #define TCG_REG_GUEST_BASE  TCG_REG_R11
+ #endif
+ 
+@@ -2920,7 +2920,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+ 
+     tcg_out_mov(s, TCG_TYPE_PTR, TCG_AREG0, tcg_target_call_iarg_regs[0]);
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+     if (guest_base) {
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_GUEST_BASE, guest_base);
+         tcg_regset_set_reg(s->reserved_regs, TCG_REG_GUEST_BASE);
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index ab997b5fb3..fa3ef70417 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -1866,7 +1866,7 @@ static bool tcg_out_qemu_st_slow_path(TCGContext *s, TCGLabelQemuLdst *l)
+     return true;
+ }
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ static HostAddress x86_guest_base = {
+     .index = -1
+ };
+@@ -1898,7 +1898,7 @@ static inline int setup_guest_base_seg(void)
+     return 0;
+ }
+ #endif /* setup_guest_base_seg */
+-#endif /* !SOFTMMU */
++#endif /* CONFIG_USER_ONLY */
+ 
+ #define MIN_TLB_MASK_TABLE_OFS  INT_MIN
+ 
+@@ -4069,7 +4069,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+                          (ARRAY_SIZE(tcg_target_callee_save_regs) + 2) * 4
+                          + stack_addend);
+ #else
+-# if !defined(CONFIG_SOFTMMU)
++# if defined(CONFIG_USER_ONLY)
+     if (guest_base) {
+         int seg = setup_guest_base_seg();
+         if (seg != 0) {
+@@ -4083,7 +4083,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+             tcg_regset_set_reg(s->reserved_regs, x86_guest_base.index);
+         }
+     }
+-# endif
++# endif /* CONFIG_USER_ONLY */
+     tcg_out_mov(s, TCG_TYPE_PTR, TCG_AREG0, tcg_target_call_iarg_regs[0]);
+     tcg_out_addi(s, TCG_REG_ESP, -stack_addend);
+     /* jmp *tb.  */
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index baf5fc3819..e145975aaf 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -122,7 +122,7 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
+     return TCG_REG_A0 + slot;
+ }
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ #define USE_GUEST_BASE     (guest_base != 0)
+ #define TCG_GUEST_BASE_REG TCG_REG_S1
+ #endif
+@@ -1672,7 +1672,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+                    TCG_REG_SP, SAVE_OFS + i * REG_SIZE);
+     }
+ 
+-#if !defined(CONFIG_SOFTMMU)
++#if defined(CONFIG_USER_ONLY)
+     if (USE_GUEST_BASE) {
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG, guest_base);
+         tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
+diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
+index 9faa8bdf0b..1380b905dd 100644
+--- a/tcg/mips/tcg-target.c.inc
++++ b/tcg/mips/tcg-target.c.inc
+@@ -78,7 +78,7 @@ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+ #define TCG_TMP2  TCG_REG_T8
+ #define TCG_TMP3  TCG_REG_T7
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ #define TCG_GUEST_BASE_REG TCG_REG_S7
+ #endif
+ #if TCG_TARGET_REG_BITS == 64
+@@ -2465,7 +2465,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+                    TCG_REG_SP, SAVE_OFS + i * REG_SIZE);
+     }
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+     if (guest_base != (int16_t)guest_base) {
+         /*
+          * The function call abi for n32 and n64 will have loaded $25 (t9)
+@@ -2479,7 +2479,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+                          TCG_TARGET_REG_BITS == 64 ? TCG_REG_T9 : 0);
+         tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
+     }
+-#endif
++#endif /* CONFIG_USER_ONLY */
+ 
+     if (TCG_TARGET_REG_BITS == 64) {
+         tcg_out_mov(s, TCG_TYPE_PTR, TCG_REG_TB, tcg_target_call_iarg_regs[1]);
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 507fe6cda8..41420f7e6f 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -97,7 +97,7 @@ static bool have_isel;
+ bool have_altivec;
+ bool have_vsx;
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ #define TCG_GUEST_BASE_REG 30
+ #endif
+ 
+@@ -2449,7 +2449,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     }
+     tcg_out_st(s, TCG_TYPE_PTR, TCG_REG_R0, TCG_REG_R1, FRAME_SIZE+LR_OFFSET);
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+     if (guest_base) {
+         tcg_out_movi_int(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG, guest_base, true);
+         tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index eeaeb6b6e3..60642f3e9a 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -2030,7 +2030,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+                    TCG_REG_SP, SAVE_OFS + i * REG_SIZE);
+     }
+ 
+-#if !defined(CONFIG_SOFTMMU)
++#if defined(CONFIG_USER_ONLY)
+     tcg_out_movi(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG, guest_base);
+     tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
+ #endif
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index a878acd8ca..2a948e5317 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -46,7 +46,7 @@
+ /* A scratch register that may be be used throughout the backend.  */
+ #define TCG_TMP0        TCG_REG_R1
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ #define TCG_GUEST_BASE_REG TCG_REG_R13
+ #endif
+ 
+@@ -3427,7 +3427,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+                   TCG_STATIC_CALL_ARGS_SIZE + TCG_TARGET_CALL_STACK_OFFSET,
+                   CPU_TEMP_BUF_NLONGS * sizeof(long));
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+     if (guest_base >= 0x80000) {
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG, guest_base);
+         tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
+diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
+index ffcb879211..29e67758ef 100644
+--- a/tcg/sparc64/tcg-target.c.inc
++++ b/tcg/sparc64/tcg-target.c.inc
+@@ -78,7 +78,7 @@ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+ #define TCG_REG_T2  TCG_REG_G2
+ #define TCG_REG_T3  TCG_REG_O7
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ # define TCG_GUEST_BASE_REG TCG_REG_I5
+ #endif
+ 
+@@ -932,7 +932,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     tcg_out32(s, SAVE | INSN_RD(TCG_REG_O6) | INSN_RS1(TCG_REG_O6) |
+               INSN_IMM13(-frame_size));
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+     if (guest_base != 0) {
+         tcg_out_movi_int(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG,
+                          guest_base, true, TCG_REG_T1);
 -- 
 2.38.1
 
