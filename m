@@ -2,61 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598357208CA
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 20:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B427208FE
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 20:20:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q599E-0006Iw-Su; Fri, 02 Jun 2023 14:05:12 -0400
+	id 1q59Ma-0002h0-V1; Fri, 02 Jun 2023 14:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q599C-0006Ih-2T
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 14:05:10 -0400
-Received: from mout.kundenserver.de ([212.227.126.133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5999-0005iD-Rn
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 14:05:09 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue012 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MfbwW-1qXtJw15VA-00g2Kp; Fri, 02 Jun 2023 20:05:04 +0200
-Message-ID: <ffe8a6c2-4ca7-954a-1461-1aa81b17bff8@vivier.eu>
-Date: Fri, 2 Jun 2023 20:05:03 +0200
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q59MZ-0002ga-9x; Fri, 02 Jun 2023 14:18:59 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q59MX-0002QU-AY; Fri, 02 Jun 2023 14:18:59 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b1b86146afso392861fa.3; 
+ Fri, 02 Jun 2023 11:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685729935; x=1688321935;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cFLBip0rXYVzmkQxhrZxBqTTTRzpwp6Ec+4ePpr28UE=;
+ b=L1tGtijkILSagPNle+rdISWwsz3O38nl1v2cDhWnnMdXclTZRlRHFmQG0fm8uctfgW
+ Q87845GyNa0TJgBV1ADgo8quuHxLzwE5fK3czUONxXuMtw8ANAm4UTU/zdjzKZwYAEJ1
+ P9yRSpO7vVoNRfKjZ9Zhz+dldExb5p4rAtVt3qucI3YaqgIdSD+x00W7sfgIEmIYwcKb
+ akwG9GxVsyNjeOhVLhj1rAskGSkv4DDMnkU1DFR84Y7TTb5OLI/hlRpD/4oIthkX/oYW
+ Nz0jy/jJ6q+IjwdsH/KLnJ5HBp6PeZ2jG7ekSZQ5K9nrlLDONEi7igjOEQb7kN6X8WVo
+ 9U3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685729935; x=1688321935;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cFLBip0rXYVzmkQxhrZxBqTTTRzpwp6Ec+4ePpr28UE=;
+ b=ejYn/ix59E2aus4ZpABkrd+EtJhvyliA+1va8Mgl6d+oXbK1FbjdMwRjvY5gnU2xGW
+ Hb5fFTKjPobDoZeLnaAj16Jx8+ACvtst3QIyUJ+qwB7f9ZNO9wSCLkpMRZBdj4qeHyRI
+ zyWmOG0a+rjy9Qs43VeX/cn/FD69bkJhnE9L20EkY4OeNLQIgaMAUWG155vuPLY8ZAme
+ atPJ7wy7oeMpd9k5XcC1UCbthoLAEJ6NE7Hp65DsRSRxjyhGzQ1aU7CCgfK4yo2/QFm5
+ QGI9j5aEXRtFpwE/OPaB92wND+H4t80xC0AS8ROTBWX9W0jkkFYqkfI/uIWyWE4sz6LS
+ /brg==
+X-Gm-Message-State: AC+VfDxkS5R7ZCwZQJst2g+WuG2YGBkuBHh4BFRPy4OKTLQn0iVhOwHb
+ 6ic/ElP7oQfhgQ7hihysM6Z/R+ZyRklWnz4p5S4=
+X-Google-Smtp-Source: ACHHUZ4D+NVU5tIhflX4LDmEO7sPEy1kMkng+glJgOwWwm8sS7OpohPaCgKW+1z6j5C/RFo/eKJF4vsuppl7x7wH+ZI=
+X-Received: by 2002:a2e:8783:0:b0:2ae:db65:2d01 with SMTP id
+ n3-20020a2e8783000000b002aedb652d01mr504681lji.23.1685729934212; Fri, 02 Jun
+ 2023 11:18:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] linux-user: Return EINVAL for getgroups() with negative
- gidsetsize
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230602174806.2060683-1-peter.maydell@linaro.org>
-Content-Language: fr
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230602174806.2060683-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:79pp+iY829zO8tqv99CkfPOvmZFoz5VEB5TvH/a8wfqj6rkIGlJ
- 0N65vaIYwom+w5/ior5ronMLaYWuXj3v0JxLwsoomXAAoWjOGBIqed2Jjs6/QHGPes227yI
- Y5OK+OhR9Qx5sna1dzjzTwlhuTVcrB9kUD1fh59uSC03Av8rE9xS+ACB4tpLI1FUTm8e5qd
- GKul7LhdNm/ZOJBHqbD0w==
-UI-OutboundReport: notjunk:1;M01:P0:GVcUwJ7AlSE=;r/7CizzTR/DNIpreHvI22nY0K7l
- 1vZ5ktN8gcepE3qU/BjjGkJgJyYKXo0hwCKU6SB0Yw57SNXT1AJGd7/0cv7P1p8HmuiGzVq5/
- NYcNJ/pRTLCzbtHhf5eF2nh/Gh/vcT/kEmvd/mKgOGtnj+yu8Hzo5mYYIQVOzoryg/xsHeRhW
- VIpsjlphWz/uA1zFH80sAf98xgDp7KqPcSxI5i9vDQCumozuLScaU/nlGrZp5zIL95kcXX5Wf
- OLKk8fAJHcoCnDkYZNH8g2ENJnwJpKPlJ/ZTFBFAM3W3xS65LHLzjHjphX6sxwzljo9n4qciJ
- dY/N9JTOhnr27ebNac7t1OL/j3+aDKIipX01rPwh02t16Nm9j8WOlJRFLd+hLRXhShRDrAYFH
- PvSqMlf4TQs0NzEBU9F4BwAb+IGj98TT3lyMwVyVoyyFPfkOR+toe7ibVNB9ZkaHOKlzcD7O0
- Xdkxa+2AORJVBvaFL1ucXfaQVIutDiC+D4XMzmwYgoWFKhM5GToJfRXH5AspJFT75F21zbsBH
- NzQHSgdoCWK/gty+gF/MbCR0RgiP2IBDdw7jfH/CQs84GMDgMHiVvn4+e+oGDlEoal9LGA0fF
- e/KYiq7fGMQN4OjQBzusvN3RNvGBYRzFaAeEF26WbKJK3oxf5Q4kiT93wM5MNGaquubYqKHCr
- 2+000+iDovhl9y+oxKyEpMJUmQwZeitKJnQ7lsjLdQ==
-Received-SPF: none client-ip=212.227.126.133; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230515160506.1776883-1-stefanha@redhat.com>
+ <20230515160506.1776883-3-stefanha@redhat.com>
+ <8b0ced3c-2fb5-2479-fe78-f4956ac037a6@linux.ibm.com>
+In-Reply-To: <8b0ced3c-2fb5-2479-fe78-f4956ac037a6@linux.ibm.com>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Sat, 3 Jun 2023 02:18:27 +0800
+Message-ID: <CAAAx-8Km7J8dfz_63y1W5wE8MH7hJXo04ajY1A-ctv--x9CpGA@mail.gmail.com>
+Subject: Re: [PULL v2 02/16] block/file-posix: introduce helper functions for
+ sysfs attributes
+To: Matthew Rosato <mjrosato@linux.ibm.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Julia Suvorova <jusual@redhat.com>, Aarushi Mehta <mehta.aaru20@gmail.com>, 
+ Kevin Wolf <kwolf@redhat.com>, kvm@vger.kernel.org, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+ Raphael Norwitz <raphael.norwitz@nutanix.com>, qemu-block@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hannes Reinecke <hare@suse.de>, 
+ Damien Le Moal <damien.lemoal@opensource.wdc.com>, 
+ Dmitry Fomichev <dmitry.fomichev@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=faithilikerun@gmail.com; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,37 +102,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 02/06/2023 à 19:48, Peter Maydell a écrit :
-> Coverity doesn't like the way we might end up calling getgroups()
-> with a NULL grouplist pointer. This is fine for the special case
-> of gidsetsize == 0, but we will also do it if the guest passes
-> us a negative gidsetsize. (CID 1512465)
-> 
-> Explicitly fail the negative gidsetsize with EINVAL, as the kernel
-> does. This means we definitely only call the libc getgroups()
-> with valid parameters.
-> 
-> Possibly Coverity may still complain about getgroups(0, NULL), but
-> that would be a false positive.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   linux-user/syscall.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 89b58b386b1..29fdfdf18e4 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -11574,7 +11574,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->               g_autofree gid_t *grouplist = NULL;
->               int i;
->   
-> -            if (gidsetsize > NGROUPS_MAX) {
-> +            if (gidsetsize > NGROUPS_MAX || gidsetsize < 0) {
->                   return -TARGET_EINVAL;
->               }
->               if (gidsetsize > 0) {
+Matthew Rosato <mjrosato@linux.ibm.com> =E4=BA=8E2023=E5=B9=B46=E6=9C=881=
+=E6=97=A5=E5=91=A8=E5=9B=9B 02:21=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On 5/15/23 12:04 PM, Stefan Hajnoczi wrote:
+> > From: Sam Li <faithilikerun@gmail.com>
+> >
+> > Use get_sysfs_str_val() to get the string value of device
+> > zoned model. Then get_sysfs_zoned_model() can convert it to
+> > BlockZoneModel type of QEMU.
+> >
+> > Use get_sysfs_long_val() to get the long value of zoned device
+> > information.
+>
+> Hi Stefan, Sam,
+>
+> I am having an issue on s390x using virtio-blk-{pci,ccw} backed by an NVM=
+e partition, and I've bisected the root cause to this commit.
+>
+> I noticed that tests which use the partition e.g. /dev/nvme0n1p1 as a bac=
+king device would fail, but those that use the namespace e.g. /dev/nvme0n1 =
+would still succeed.  The root issue appears to be that the block device as=
+sociated with the partition does not have a "max_segments" attribute, and p=
+rior to this patch hdev_get_max_segment() would return -ENOENT in this case=
+.  After this patch, however, QEMU is instead crashing.  It looks like g_fi=
+le_get_contents is returning 0 with a len =3D=3D 0 if the specified sysfs p=
+ath does not exist.  The following diff on top seems to resolve the issue f=
+or me:
+>
+>
+> diff --git a/block/file-posix.c b/block/file-posix.c
+> index 0ab158efba2..eeb0247c74e 100644
+> --- a/block/file-posix.c
+> +++ b/block/file-posix.c
+> @@ -1243,7 +1243,7 @@ static int get_sysfs_str_val(struct stat *st, const=
+ char *attribute,
+>                                  major(st->st_rdev), minor(st->st_rdev),
+>                                  attribute);
+>      ret =3D g_file_get_contents(sysfspath, val, &len, NULL);
+> -    if (ret =3D=3D -1) {
+> +    if (ret =3D=3D -1 || len =3D=3D 0) {
+>          return -ENOENT;
+>      }
+>
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Hi Matthew,
+
+Thanks for the information. After some checking, I think the bug here
+is that g_file_get_contens returns g_boolean value and the error case
+will return 0 instead of -1 in my previous code. Can the following
+line fix your issue on the s390x device?
+
++ if (ret =3D=3D FALSE) {
+
+https://docs.gtk.org/glib/func.file_get_contents.html
+
+Thanks,
+Sam
+
+
+
+
+>
+>
+>
+> >
+> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> > Reviewed-by: Hannes Reinecke <hare@suse.de>
+> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+> > Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
+> > Acked-by: Kevin Wolf <kwolf@redhat.com>
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Message-id: 20230508045533.175575-3-faithilikerun@gmail.com
+> > Message-id: 20230324090605.28361-3-faithilikerun@gmail.com
+> > [Adjust commit message prefix as suggested by Philippe Mathieu-Daud=C3=
+=A9
+> > <philmd@linaro.org>.
+> > --Stefan]
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> >  include/block/block_int-common.h |   3 +
+> >  block/file-posix.c               | 135 ++++++++++++++++++++++---------
+> >  2 files changed, 100 insertions(+), 38 deletions(-)
+> >
+> > diff --git a/include/block/block_int-common.h b/include/block/block_int=
+-common.h
+> > index 4909876756..c7ca5a83e9 100644
+> > --- a/include/block/block_int-common.h
+> > +++ b/include/block/block_int-common.h
+> > @@ -862,6 +862,9 @@ typedef struct BlockLimits {
+> >       * an explicit monitor command to load the disk inside the guest).
+> >       */
+> >      bool has_variable_length;
+> > +
+> > +    /* device zone model */
+> > +    BlockZoneModel zoned;
+> >  } BlockLimits;
+> >
+> >  typedef struct BdrvOpBlocker BdrvOpBlocker;
+> > diff --git a/block/file-posix.c b/block/file-posix.c
+> > index c7b723368e..97c597a2a0 100644
+> > --- a/block/file-posix.c
+> > +++ b/block/file-posix.c
+> > @@ -1202,15 +1202,89 @@ static int hdev_get_max_hw_transfer(int fd, str=
+uct stat *st)
+> >  #endif
+> >  }
+> >
+> > -static int hdev_get_max_segments(int fd, struct stat *st)
+> > +/*
+> > + * Get a sysfs attribute value as character string.
+> > + */
+> > +#ifdef CONFIG_LINUX
+> > +static int get_sysfs_str_val(struct stat *st, const char *attribute,
+> > +                             char **val) {
+> > +    g_autofree char *sysfspath =3D NULL;
+> > +    int ret;
+> > +    size_t len;
+> > +
+> > +    if (!S_ISBLK(st->st_mode)) {
+> > +        return -ENOTSUP;
+> > +    }
+> > +
+> > +    sysfspath =3D g_strdup_printf("/sys/dev/block/%u:%u/queue/%s",
+> > +                                major(st->st_rdev), minor(st->st_rdev)=
+,
+> > +                                attribute);
+> > +    ret =3D g_file_get_contents(sysfspath, val, &len, NULL);
+> > +    if (ret =3D=3D -1) {
+> > +        return -ENOENT;
+> > +    }
+> > +
+> > +    /* The file is ended with '\n' */
+> > +    char *p;
+> > +    p =3D *val;
+> > +    if (*(p + len - 1) =3D=3D '\n') {
+> > +        *(p + len - 1) =3D '\0';
+> > +    }
+> > +    return ret;
+> > +}
+> > +#endif
+> > +
+> > +static int get_sysfs_zoned_model(struct stat *st, BlockZoneModel *zone=
+d)
+> >  {
+> > +    g_autofree char *val =3D NULL;
+> > +    int ret;
+> > +
+> > +    ret =3D get_sysfs_str_val(st, "zoned", &val);
+> > +    if (ret < 0) {
+> > +        return ret;
+> > +    }
+> > +
+> > +    if (strcmp(val, "host-managed") =3D=3D 0) {
+> > +        *zoned =3D BLK_Z_HM;
+> > +    } else if (strcmp(val, "host-aware") =3D=3D 0) {
+> > +        *zoned =3D BLK_Z_HA;
+> > +    } else if (strcmp(val, "none") =3D=3D 0) {
+> > +        *zoned =3D BLK_Z_NONE;
+> > +    } else {
+> > +        return -ENOTSUP;
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +/*
+> > + * Get a sysfs attribute value as a long integer.
+> > + */
+> >  #ifdef CONFIG_LINUX
+> > -    char buf[32];
+> > +static long get_sysfs_long_val(struct stat *st, const char *attribute)
+> > +{
+> > +    g_autofree char *str =3D NULL;
+> >      const char *end;
+> > -    char *sysfspath =3D NULL;
+> > +    long val;
+> > +    int ret;
+> > +
+> > +    ret =3D get_sysfs_str_val(st, attribute, &str);
+> > +    if (ret < 0) {
+> > +        return ret;
+> > +    }
+> > +
+> > +    /* The file is ended with '\n', pass 'end' to accept that. */
+> > +    ret =3D qemu_strtol(str, &end, 10, &val);
+> > +    if (ret =3D=3D 0 && end && *end =3D=3D '\0') {
+> > +        ret =3D val;
+> > +    }
+> > +    return ret;
+> > +}
+> > +#endif
+> > +
+> > +static int hdev_get_max_segments(int fd, struct stat *st)
+> > +{
+> > +#ifdef CONFIG_LINUX
+> >      int ret;
+> > -    int sysfd =3D -1;
+> > -    long max_segments;
+> >
+> >      if (S_ISCHR(st->st_mode)) {
+> >          if (ioctl(fd, SG_GET_SG_TABLESIZE, &ret) =3D=3D 0) {
+> > @@ -1218,44 +1292,27 @@ static int hdev_get_max_segments(int fd, struct=
+ stat *st)
+> >          }
+> >          return -ENOTSUP;
+> >      }
+> > -
+> > -    if (!S_ISBLK(st->st_mode)) {
+> > -        return -ENOTSUP;
+> > -    }
+> > -
+> > -    sysfspath =3D g_strdup_printf("/sys/dev/block/%u:%u/queue/max_segm=
+ents",
+> > -                                major(st->st_rdev), minor(st->st_rdev)=
+);
+> > -    sysfd =3D open(sysfspath, O_RDONLY);
+> > -    if (sysfd =3D=3D -1) {
+> > -        ret =3D -errno;
+> > -        goto out;
+> > -    }
+> > -    ret =3D RETRY_ON_EINTR(read(sysfd, buf, sizeof(buf) - 1));
+> > -    if (ret < 0) {
+> > -        ret =3D -errno;
+> > -        goto out;
+> > -    } else if (ret =3D=3D 0) {
+> > -        ret =3D -EIO;
+> > -        goto out;
+> > -    }
+> > -    buf[ret] =3D 0;
+> > -    /* The file is ended with '\n', pass 'end' to accept that. */
+> > -    ret =3D qemu_strtol(buf, &end, 10, &max_segments);
+> > -    if (ret =3D=3D 0 && end && *end =3D=3D '\n') {
+> > -        ret =3D max_segments;
+> > -    }
+> > -
+> > -out:
+> > -    if (sysfd !=3D -1) {
+> > -        close(sysfd);
+> > -    }
+> > -    g_free(sysfspath);
+> > -    return ret;
+> > +    return get_sysfs_long_val(st, "max_segments");
+> >  #else
+> >      return -ENOTSUP;
+> >  #endif
+> >  }
+> >
+> > +static void raw_refresh_zoned_limits(BlockDriverState *bs, struct stat=
+ *st,
+> > +                                     Error **errp)
+> > +{
+> > +    BlockZoneModel zoned;
+> > +    int ret;
+> > +
+> > +    bs->bl.zoned =3D BLK_Z_NONE;
+> > +
+> > +    ret =3D get_sysfs_zoned_model(st, &zoned);
+> > +    if (ret < 0 || zoned =3D=3D BLK_Z_NONE) {
+> > +        return;
+> > +    }
+> > +    bs->bl.zoned =3D zoned;
+> > +}
+> > +
+> >  static void raw_refresh_limits(BlockDriverState *bs, Error **errp)
+> >  {
+> >      BDRVRawState *s =3D bs->opaque;
+> > @@ -1297,6 +1354,8 @@ static void raw_refresh_limits(BlockDriverState *=
+bs, Error **errp)
+> >              bs->bl.max_hw_iov =3D ret;
+> >          }
+> >      }
+> > +
+> > +    raw_refresh_zoned_limits(bs, &st, errp);
+> >  }
+> >
+> >  static int check_for_dasd(int fd)
+>
 
