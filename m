@@ -2,68 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DDA771FEBC
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8FB71FEDE
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:21:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51ns-0006nt-TJ; Fri, 02 Jun 2023 06:14:40 -0400
+	id 1q51ty-0007xW-0Y; Fri, 02 Jun 2023 06:20:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q51nr-0006nk-7K
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:14:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q51np-0005fr-1i
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:14:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685700875;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=KboCMttqzmq9fnad+u2dDJNypnXIV/u5wGG3Pt0f5Pg=;
- b=Vthd5TebjSGXGJkRtOrlmsMl5CfegWYy0WROVv+TTE8ZWrhWFI6LFK4n1IxKaRWMlJcYq3
- whPvcZ+dRTZu7yNha5YNb/BKgl4+wn4l8yMvkUN1q+LEvZQ0PvHKxZFrozKZrDnbXTW0wJ
- KEzuYNF4nYz+E4wO5/RXkcxNgY6pVvg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-36-xOyY-sq5NhWOlmgCLT1h3g-1; Fri, 02 Jun 2023 06:14:31 -0400
-X-MC-Unique: xOyY-sq5NhWOlmgCLT1h3g-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD6CC185A78B;
- Fri,  2 Jun 2023 10:14:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.158])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0848D492B00;
- Fri,  2 Jun 2023 10:14:29 +0000 (UTC)
-Date: Fri, 2 Jun 2023 11:14:26 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org,
- Richard Henderson <rth@twiddle.net>
-Subject: Re: Big TCG slowdown when using zstd with aarch64
-Message-ID: <ZHnBAjY/B/rEQzTB@redhat.com>
-References: <87y1l2rixp.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51tv-0007vi-G2
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:20:55 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51tt-0001JA-I0
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:20:55 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f61530506aso18928055e9.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 03:20:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685701252; x=1688293252;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8UC1dM6wPXiZWlcVnQURZq0K/mVvLzt6OuQbnqZttg0=;
+ b=XSJkyd5hxWvfUc0i4j5WqmeJZ6dmYSKcRr+MWUMpBxIqxVzXGE8Vj4BeM2vpZ4y/Xb
+ rov66m13C5jonzn8fYm53VBO49/AhlX7NalOXNnyznc18EjSZ6fepBkl/2IKIFvFNbkg
+ V7VKBHtlUSgmixEs3MwK8ve9NceaV/7k4muHp7O2g1yV44Mw+ow7x0vLwpPP5yIiEIW1
+ qpPoe4SjNsSYMSJv5e/3+hX/hek4FnFxkoMsEoq+icwtHLWKG8gR5GaHnIE423TAu3rt
+ vAZ9f6H7agoYVzabTjSkSZX6tQA7smcjY7eegf9/Am9WkD567urHhSV70f//GV0BRZ6+
+ qdsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685701252; x=1688293252;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8UC1dM6wPXiZWlcVnQURZq0K/mVvLzt6OuQbnqZttg0=;
+ b=Jvd7Xi2DBN1RPwODXisyy41e6SenhGFXgWBx5nusXfgkOm1YNAsByUKeFBG8CzEPAk
+ o/0GaE3C6ZJweKlv9qsu/gTvQ67mpn35TwljvNRKSk6GSAMdEtk0tBhD7c3k9VkmmF1S
+ LdmvFC3SEj1j6IsLCdU9XQuEm/tjZ6xkIa5eOO4aKy0AC3bPmMsS3vYanvScFsQ/cJf8
+ 5XCojw3XxF05kpEl/aui6C58gplrNdiqaMOFPmN7ul/aQLoPoqZFE8aXeBcHpvehY7V4
+ BxPgVpFqfpplrw2vlF+sY22eWPC+N1UrEFOpOAS3Kkb9lhkjiwLsni5RCV9r57XlBgsU
+ D0dQ==
+X-Gm-Message-State: AC+VfDzTgiOGEqWLE+C/kGwGf/6fA2JJVR8NizHY5OQw6d1RFwaXM6xq
+ df7GMO/aKLF3QXvzaK+WMRME9Q==
+X-Google-Smtp-Source: ACHHUZ5DDOIhbngNIUXCv7QEJi7aztmom6D6ur47B1U1nDsw428jMVjvBgBOn6ZR0nHBUO93LNOfYA==
+X-Received: by 2002:a05:600c:b43:b0:3f5:ffe2:91c0 with SMTP id
+ k3-20020a05600c0b4300b003f5ffe291c0mr1702558wmr.0.1685701251789; 
+ Fri, 02 Jun 2023 03:20:51 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.218.254])
+ by smtp.gmail.com with ESMTPSA id
+ l24-20020a1ced18000000b003f31cb7a203sm1520476wmh.14.2023.06.02.03.20.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jun 2023 03:20:51 -0700 (PDT)
+Message-ID: <6ed09058-8f9f-0b20-f22d-3b7cde7b97f4@linaro.org>
+Date: Fri, 2 Jun 2023 12:20:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87y1l2rixp.fsf@secure.mitica>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v3 2/2] target/riscv: Add RVV registers to log
+Content-Language: en-US
+To: Alistair Francis <alistair23@gmail.com>,
+ Ivan Klokov <ivan.klokov@syntacore.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ richard.henderson@linaro.org, pbonzini@redhat.com, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+References: <20230410124451.15929-1-ivan.klokov@syntacore.com>
+ <20230410124451.15929-3-ivan.klokov@syntacore.com>
+ <CAKmqyKMGxJoyjseobh5J81uUUXbatv9GLYOd5zZG9PwWe=CTjw@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAKmqyKMGxJoyjseobh5J81uUUXbatv9GLYOd5zZG9PwWe=CTjw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,50 +96,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 11:06:42PM +0200, Juan Quintela wrote:
+On 2/6/23 05:43, Alistair Francis wrote:
+> On Mon, Apr 10, 2023 at 10:47 PM Ivan Klokov <ivan.klokov@syntacore.com> wrote:
+>>
+>> Print RvV extesion register to log if VPU option is enabled.
+>>
+>> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 > 
-> Hi
+> I applied the first patch, unfortunately this one doesn't apply
+> anymore. Do you mind rebasing this on
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next
 > 
-> Before I continue investigating this further, do you have any clue what
-> is going on here.  I am running qemu-system-aarch64 on x86_64.
+> Alistair
+> 
+>> ---
+>>   target/riscv/cpu.c | 56 +++++++++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 55 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 5bc0005cc7..cfd063a5dc 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -172,6 +172,14 @@ const char * const riscv_fpr_regnames[] = {
+>>     "f30/ft10", "f31/ft11"
+>>   };
+>>
+>> +const char * const riscv_rvv_regnames[] = {
+>> +  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
+>> +  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
+>> +  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
+>> +  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
+>> +  "v28", "v29", "v30", "v31"
+>> +};
+>> +
+>>   static const char * const riscv_excp_names[] = {
+>>       "misaligned_fetch",
+>>       "fault_fetch",
+>> @@ -422,7 +430,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+>>   {
+>>       RISCVCPU *cpu = RISCV_CPU(cs);
+>>       CPURISCVState *env = &cpu->env;
+>> -    int i;
+>> +    int i, j;
+>> +    uint8_t *p;
+>>
+>>   #if !defined(CONFIG_USER_ONLY)
+>>       if (riscv_has_ext(env, RVH)) {
+>> @@ -506,6 +515,51 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+>>               }
+>>           }
+>>       }
+>> +    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
+>> +        static const int dump_rvv_csrs[] = {
+>> +                    CSR_VSTART,
+>> +                    CSR_VXSAT,
+>> +                    CSR_VXRM,
+>> +                    CSR_VCSR,
+>> +                    CSR_VL,
+>> +                    CSR_VTYPE,
+>> +                    CSR_VLENB,
+>> +                };
+>> +        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
+>> +            int csrno = dump_rvv_csrs[i];
+>> +            target_ulong val = 0;
+>> +            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
+>> +
+>> +            /*
+>> +             * Rely on the smode, hmode, etc, predicates within csr.c
+>> +             * to do the filtering of the registers that are present.
+>> +             */
+>> +            if (res == RISCV_EXCP_NONE) {
+>> +                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
+>> +                             csr_ops[csrno].name, val);
+>> +            }
+>> +        }
+>> +        uint16_t vlenb = env_archcpu(env)->cfg.vlen >> 3;
+>> +
+>> +/*
+>> + * From vector_helper.c
+>> + * Note that vector data is stored in host-endian 64-bit chunks,
+>> + * so addressing bytes needs a host-endian fixup.
 
-FYI, the trigger for this behaviour appears to be your recent change
-to stats accounting in:
+Hmm we should have a ld/st API helper for that. Maybe something like:
 
-commit cbec7eb76879d419e7dbf531ee2506ec0722e825 (HEAD)
-Author: Juan Quintela <quintela@redhat.com>
-Date:   Mon May 15 21:57:09 2023 +0200
+   uint64_t val = ldq_he_p(env->vreg[i * vlenb]);
 
-    migration/multifd: Compute transferred bytes correctly
-    
-    In the past, we had to put the in the main thread all the operations
-    related with sizes due to qemu_file not beeing thread safe.  As now
-    all counters are atomic, we can update the counters just after the
-    do the write.  As an aditional bonus, we are able to use the right
-    value for the compression methods.  Right now we were assuming that
-    there were no compression at all.
-    
-    Signed-off-by: Juan Quintela <quintela@redhat.com>
-    Reviewed-by: Peter Xu <peterx@redhat.com>
-    Message-Id: <20230515195709.63843-17-quintela@redhat.com>
-
-
-
-Before that commit the /aarch64/migration/multifd/tcp/plain/{none,zlib,zstd}
-tests all took 21 seconds eachs.
-
-After that commit the 'none' test takes about 3 seconds, and the zlib/zstd
-test take about 1 second, except when zstd is suddenly very slow.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>> + */
+>> +#if HOST_BIG_ENDIAN
+>> +#define BYTE(x)   ((x) ^ 7)
+>> +#else
+>> +#define BYTE(x)   (x)
+>> +#endif
+>> +        for (i = 0; i < 32; i++) {
+>> +            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
+>> +            p = (uint8_t *)env->vreg;
+>> +            for (j = vlenb - 1 ; j >= 0; j--) {
+>> +                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
+>> +            }
+>> +            qemu_fprintf(f, "\n");
+>> +        }
+>> +    }
+>>   }
+>>
+>>   static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
+>> --
+>> 2.34.1
+>>
+>>
 
 
