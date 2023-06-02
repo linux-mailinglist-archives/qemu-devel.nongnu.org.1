@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB13771FA65
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 08:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A939D71FA6C
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4yiK-0008O6-Fz; Fri, 02 Jun 2023 02:56:44 -0400
+	id 1q4ykp-0002LL-Om; Fri, 02 Jun 2023 02:59:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4yiI-0008Ma-8F; Fri, 02 Jun 2023 02:56:42 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1q4ykn-0002Km-IH; Fri, 02 Jun 2023 02:59:17 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4yiG-00042P-J5; Fri, 02 Jun 2023 02:56:42 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-39a523e8209so1164945b6e.0; 
- Thu, 01 Jun 2023 23:56:39 -0700 (PDT)
+ id 1q4ykl-0005RM-Tg; Fri, 02 Jun 2023 02:59:17 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-64d18d772bdso2011679b3a.3; 
+ Thu, 01 Jun 2023 23:59:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685688999; x=1688280999;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=gmail.com; s=20221208; t=1685689154; x=1688281154;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BssOITr/RZ0nrm7d0WqGL+8ATaMqZUE2V2wM8kNVZvg=;
- b=O+kdxt6JxWAOO6DaUXL2CujDtiumwKNcr8/j9IN2fkNdqy+aSsAsfHiePROh6jZqA1
- 8FYfwyHswKUyYP6PexAGhJbfRhcfnul2n/dsWBEyKJC75p5nZMdmEtV4OLY/CxZaE+0y
- Rmno9Ph3sDsM2D9tYClOF/dzQuPT2AWrLpWuMuZGfOktIKj+qsyqk7W/vtx6sTHwQCMI
- w7NIuLvvpf3yS3ZUu47RQS5+fR7qi9fMyYSP3+8rKmeiltc7DmZbXKonIejTUxEx7Ksg
- vMXO0mArka56jwyZTUXU/OcX9lBpo1pVaZ/B/u08TF/aYRj9BwqAxkDPKnlNSml39lkS
- wbkw==
+ bh=MqlwG3P5LdQIZlz6m894YPiIP/VY4aaNRPlJ1+2s4J0=;
+ b=LYeXryVFTq82QbQtv2loDx+BOcDU/fTwEWBROp/47vSAc5CwPwXqGQrL4AF7GWq/si
+ TdjDijLbv8df9+kg5bgAM7nzeQsSHZtFSPCwkS7x7KRF5e4DlQ5FdwGC1KGMci4OTavy
+ gKEBc0Gy11kkc7RhLcT20MS+XWUuzPvj6gEFMtPXRtCF3ot/lh6h9jYI2OI+854VsJql
+ yAoYY5PV9dyIahaqd1aVig/QcrMRTC68anl3Pdnj6wwKCp0ySFOS7N/zFq0/R4aQQOMw
+ pnhzk5SQXOhpsyJuMrZg2Pi42oco1T9o+b7Rh7XMr0ZWWHKXrE4hj3Z2ps34OC5Zvy2Z
+ NuDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685688999; x=1688280999;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=1e100.net; s=20221208; t=1685689154; x=1688281154;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=BssOITr/RZ0nrm7d0WqGL+8ATaMqZUE2V2wM8kNVZvg=;
- b=CxJpvJbU7pOY7krtHQcY6mCw22v79BOpBKLo3KnfNGFF4AcYIRrvE3X2zPc4oMXxey
- y55qVOHdrQfYnImjBlwfKAh0cxo7on8glsP7pvCdkWJA9j4a25rCtFk352FfOfpBaZN3
- ojpO7AG/EJOMpC7K2cSPVNhIgeTa9QK2qhKRBOHG/kordSiNp1KD+P5Lq/IRj7cD2hmx
- RntWnsyXCqTI+Gz/s4v014P1VBrH5yENqwSWeLZ1YGlgzfngPp/ELs6TIE5M459WvmZT
- hJ6TZp+u62ksed8FM/t7zUMKCZvxaEEVh15B8gO73VfiIIZJedQn4Tny3j9nzPk0qWsq
- ohtg==
-X-Gm-Message-State: AC+VfDw0E/JEPFjt+IYZHBBP0brsTeBssglbKa9g/OOHWh0oBW9eQSI9
- SgqSqBNBh00XWQ/Jp/5vSYM=
-X-Google-Smtp-Source: ACHHUZ6yAyhJojngDmelAgMoWfUG2/5zYnuw+KRe2KjAQp/1UqR1Vj1UcfAy+Qfvd3q4kkEcZTfHiQ==
-X-Received: by 2002:aca:1b18:0:b0:395:dd8c:f852 with SMTP id
- b24-20020aca1b18000000b00395dd8cf852mr1177906oib.42.1685688999029; 
- Thu, 01 Jun 2023 23:56:39 -0700 (PDT)
+ bh=MqlwG3P5LdQIZlz6m894YPiIP/VY4aaNRPlJ1+2s4J0=;
+ b=d56eKzGWBn3qrZpXuC9kR26/qXsKxVL2Pu7koTR7Z86hTUpv0DMvcIQEbzDRkdziMI
+ jLb6mTMtLpb8raUmWUVXkFqTmhXzcxu9rW1thx5o0+CbvEsDQKPiQdcsMs7EL5cv0mTf
+ FlbgKgdW/U65by5Zbm/EdDgxKTwCIuyx4/c5b3BOKBuiEzyjHZvpG5Zu2EigVDahNGR4
+ vHnKpkx79HyE9uFRyH6O3f9mLrxbav1OSJY+Xfg80ph0ozlnwd7wg7F6UzYJ5mL//Fcq
+ KU6PsMIV37/EyBriTQjsbX0isXOTT8H5zoBRnSMzkbi8cYfN1GALZBtkrqZnUlU0l8uG
+ s23A==
+X-Gm-Message-State: AC+VfDye4rAoBCNIDMFH0SekRBVmSvHj9jk0p9Phbwc/bZ3Cj5LJwIdh
+ WR5mQsp9czMgU4n12GapQHI=
+X-Google-Smtp-Source: ACHHUZ50nZPnObMDpj0ZKj5Lv+gSB49IZgpUAqzRjBjTWHwXVVPhhlqUJFPw3NldekuGtZzjAHKRrQ==
+X-Received: by 2002:a05:6a21:9995:b0:10b:91c5:45a8 with SMTP id
+ ve21-20020a056a21999500b0010b91c545a8mr13828414pzb.15.1685689153848; 
+ Thu, 01 Jun 2023 23:59:13 -0700 (PDT)
 Received: from localhost ([1.146.22.171]) by smtp.gmail.com with ESMTPSA id
- u4-20020aa78484000000b0064381853bfcsm361687pfn.89.2023.06.01.23.56.35
+ h13-20020a63e14d000000b0053fed3131e6sm526734pgk.65.2023.06.01.23.59.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Jun 2023 23:56:38 -0700 (PDT)
+ Thu, 01 Jun 2023 23:59:13 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 02 Jun 2023 16:56:31 +1000
-Message-Id: <CT1YVK35L3UT.2CY7LU5L7GDG4@wheely>
-Subject: Re: [RFC PATCH 4/5] target/ppc: Add msgsnd/p and DPDES SMT support
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Date: Fri, 02 Jun 2023 16:59:06 +1000
+Message-Id: <CT1YXJ6J1W97.3RLRVO5ZNY61F@wheely>
 Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
  <dbarboza@ventanamicro.com>
+Subject: Re: [RFC PATCH 5/5] spapr: Allow up to 8 threads SMT configuration
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.14.0
 References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-5-npiggin@gmail.com>
- <60f0d393-f0b5-cc06-feff-a8f00e5a32b3@kaod.org>
-In-Reply-To: <60f0d393-f0b5-cc06-feff-a8f00e5a32b3@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x230.google.com
+ <20230531012313.19891-6-npiggin@gmail.com>
+ <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
+In-Reply-To: <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,87 +92,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Jun 1, 2023 at 5:13 PM AEST, C=C3=A9dric Le Goater wrote:
+On Thu Jun 1, 2023 at 5:20 PM AEST, C=C3=A9dric Le Goater wrote:
 > On 5/31/23 03:23, Nicholas Piggin wrote:
-> > Doorbells in SMT need to coordinate msgsnd/msgclr and DPDES access from
-> > multiple threads that affect the same state.
+> > TCG now supports multi-threaded configuration at least enough for
+> > pseries to be functional enough to boot Linux.
+> >=20
+> > This requires PIR and TIR be set, because that's how sibling thread
+> > matching is done.
 > >=20
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
-> >   hw/ppc/ppc.c                                  |  6 ++
-> >   include/hw/ppc/ppc.h                          |  1 +
-> >   target/ppc/cpu.h                              |  7 +-
-> >   target/ppc/excp_helper.c                      | 86 +++++++++++++-----=
--
-> >   target/ppc/gdbstub.c                          |  2 +-
-> >   target/ppc/helper.h                           |  2 +-
-> >   target/ppc/misc_helper.c                      | 60 +++++++++++--
-> >   target/ppc/translate.c                        |  8 ++
-> >   .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
-> >   9 files changed, 140 insertions(+), 34 deletions(-)
+> >   hw/ppc/spapr.c          | 4 ++--
+> >   hw/ppc/spapr_cpu_core.c | 7 +++++--
+> >   2 files changed, 7 insertions(+), 4 deletions(-)
 > >=20
-> > diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> > index 80b4706db2..e30853413b 100644
-> > --- a/hw/ppc/ppc.c
-> > +++ b/hw/ppc/ppc.c
-> > @@ -1434,6 +1434,12 @@ int ppc_cpu_pir(PowerPCCPU *cpu)
-> >       return env->spr_cb[SPR_PIR].default_value;
+> > diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> > index dcb7f1c70a..11074cefea 100644
+> > --- a/hw/ppc/spapr.c
+> > +++ b/hw/ppc/spapr.c
+> > @@ -2524,8 +2524,8 @@ static void spapr_set_vsmt_mode(SpaprMachineState=
+ *spapr, Error **errp)
+> >       int ret;
+> >       unsigned int smp_threads =3D ms->smp.threads;
+> >  =20
+> > -    if (!kvm_enabled() && (smp_threads > 1)) {
+> > -        error_setg(errp, "TCG cannot support more than 1 thread/core "
+> > +    if (!kvm_enabled() && (smp_threads > 8)) {
+> > +        error_setg(errp, "TCG cannot support more than 8 threads/core =
+"
+> >                      "on a pseries machine");
+>
+> I think we should add test on the CPU also.
+
+On the CPU type, POWER7 can have 1/2/4, POWER8 can have 1/2/4/8?
+POWER9 could also switch PVR between big and small core depending
+on whether you select SMT8 I suppose.
+
+> >           return;
+> >       }
+> > diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+> > index 9b88dd549a..f35ee600f1 100644
+> > --- a/hw/ppc/spapr_cpu_core.c
+> > +++ b/hw/ppc/spapr_cpu_core.c
+> > @@ -255,7 +255,7 @@ static void spapr_cpu_core_unrealize(DeviceState *d=
+ev)
 > >   }
 > >  =20
-> > +int ppc_cpu_tir(PowerPCCPU *cpu)
-> > +{
-> > +    CPUPPCState *env =3D &cpu->env;
-> > +    return env->spr_cb[SPR_PIR].default_value;
+> >   static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *sp=
+apr,
+> > -                               SpaprCpuCore *sc, Error **errp)
+> > +                               SpaprCpuCore *sc, int thread_nr, Error =
+**errp)
 >
-> PIR or TIR ?
+> thread_index may be ?
 
-Good catch, I think I "tidied" that up before sending it :\
+Sure.
 
-> > @@ -3154,22 +3172,42 @@ void helper_book3s_msgclrp(CPUPPCState *env, ta=
-rget_ulong rb)
-> >   }
-> >  =20
-> >   /*
-> > - * sends a message to other threads that are on the same
-> > + * sends a message to another thread  on the same
-> >    * multi-threaded processor
-> >    */
-> >   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
 > >   {
-> > -    int pir =3D env->spr_cb[SPR_PIR].default_value;
-> > +    CPUState *cs =3D env_cpu(env);
-> > +    PowerPCCPU *cpu =3D POWERPC_CPU(cs);
-> > +    CPUState *ccs;
-> > +    uint32_t nr_threads =3D cs->nr_threads;
-> > +    int ttir =3D rb & PPC_BITMASK(57, 63);
-> >  =20
-> >       helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_=
-MSGP);
-> >  =20
-> > -    if (!dbell_type_server(rb)) {
-> > +    if (!dbell_type_server(rb) || ttir >=3D nr_threads) {
+> >       CPUPPCState *env =3D &cpu->env;
+> >       CPUState *cs =3D CPU(cpu);
+> > @@ -267,6 +267,9 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, Spa=
+prMachineState *spapr,
+> >       cpu_ppc_set_vhyp(cpu, PPC_VIRTUAL_HYPERVISOR(spapr));
+> >       kvmppc_set_papr(cpu);
 >
-> may be log bad ttir values ? even if the insn is a no-op in that case,
-> telling the user would be good since it should be a guest os issue
-
-Yeah. We don't seem to do that on a systematic basis in PPC but we
-probably should. It's certainly helped me before when I've got
-something wrong. Good idea.
-
-> > @@ -192,14 +192,38 @@ void helper_store_pcr(CPUPPCState *env, target_ul=
-ong value)
-> >    */
-> >   target_ulong helper_load_dpdes(CPUPPCState *env)
-> >   {
-> > +    CPUState *cs =3D env_cpu(env);
-> > +    CPUState *ccs;
-> > +    uint32_t nr_threads =3D cs->nr_threads;
-> > +    uint32_t core_id =3D env->spr[SPR_PIR] & ~(nr_threads - 1);
+> so, spapr_create_vcpu() set cs->cpu_index :
+>      cs->cpu_index =3D cc->core_id + i;
 >
-> you could add an helper for the above.
+> and spapr_realize_vcpu :
+>    =20
+> > +    env->spr_cb[SPR_PIR].default_value =3D cs->cpu_index;
+> > +    env->spr_cb[SPR_TIR].default_value =3D thread_nr;
+> > +
+> it would be cleaner to do the SPR assignment in one place.
 
-Yes.
+I'll try that, it sounds good.
 
 Thanks,
 Nick
+
 
