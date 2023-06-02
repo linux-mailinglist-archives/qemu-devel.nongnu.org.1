@@ -2,82 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E3E720AB8
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 23:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80F3720ABB
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 23:02:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5Btp-0005jD-MT; Fri, 02 Jun 2023 17:01:29 -0400
+	id 1q5BuA-0006Ex-S8; Fri, 02 Jun 2023 17:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Btm-0005fE-S9
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:01:27 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q5Bu8-00069P-64
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:01:48 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Btj-0004hs-By
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:01:24 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-30ae69ef78aso2944897f8f.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 14:01:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q5Bu6-0004k8-Jx
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 17:01:47 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-651ffcc1d3dso1471037b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 14:01:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685739682; x=1688331682;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1685739705; x=1688331705;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=SLn4RXy1/lZKosOsDl28kI6qVRXwZyaVn61rKGywO0g=;
- b=IhJcilP2ib1r/4i20vvwft9eslo6VfXYwNOHHF/y+YGf6S9hvUraaWOKOB+elj0ry7
- aYdKZLeAap+p1LLFqsmo+1in+Xxw5vkf0JKOvDiXN0cGgBzJpgFOHOPUuf4MwBctV6Mw
- EFa4VKqh0qREeC/nsT5hgLOROeHSFeWTk8bszfml4QykKMm2bFM5is/LzIFfeOyrUCJY
- qv+rrnbiKQ2831UVIWI0eG+TpIuSrPdb/l09ZdHnTkXTv/K5U14AXWinvax9vh3G5TYp
- Xsmd7lefoerKKyi15fYBdjEPTDNywy8h+wDBx8savbUOOpkCMz25qL3U3BnHDPvmJnrt
- 9hBA==
+ bh=rfpw67tqnazZcvniRDP+9SPQmzu+ny679sOtzV+qA3k=;
+ b=C+OFtPD39VOUCoQkGdGr0iS6J8A3nMlPQjCLf3dnAc8F6LLi2jrnz6IlyLfSTKE+Q4
+ N9NMxt3UsuopvmqGpOFe5wO5ILrOzUGi4d3bHvVHrP4MWkMVqLZRjQw/M94fIWnIR9Ef
+ TA8RaBgXaADX9oMthF3ANvJxKDiSEpJKSPfB8SWmSM2hcoLofM52sjH4foFDCxV6tGcp
+ 7dIb6KU59XcO8LjkekHkp5ZopEUUMPLHB75B/k36z61ebByFTHNDay9x2mhQnbchcYOc
+ DhEXL5nHldB0Vm//dcJNQhRkJtizVtk2CmvihrDDGouLI4PCKpIXQw5PMoXz5EeOWGp8
+ +gRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685739682; x=1688331682;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1685739705; x=1688331705;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SLn4RXy1/lZKosOsDl28kI6qVRXwZyaVn61rKGywO0g=;
- b=Wi1uhmFJwMRndxTC+UIbdv9PAerP3hfKyFtAits4qNNk8kRdw2KGeE9dXyJVX66ndG
- 31IHVK4nj9tstBlCpU/wXpxSxlmO/iPG/RmNbSYwSSkMv4b1JHWV3XS02soOLMg53YMf
- ndh2PlelcJdVS3puSm6xkHwJloAxXRqO25I8cJl7MFSjTygIhWZEdhzyKLrR9Jd+cehs
- 8UK6wCSugD1aeVSIEns5h+RFrHqOPVjSKKXbll3XuZUuHhgc1mXnPrY3WbaVNGvGVmmh
- 2qIXG1iTNr68syhZssV2Yftymd7Od+ThEvwAo7P2eCuhFAtg/EXsVtdyJr96AxXQ0oa+
- JO2Q==
-X-Gm-Message-State: AC+VfDy2sLTtnZe2QxuYzCOHsWW13UF9qkQimqznUB1wzDfA5yeZWEw+
- 9Ka+yJFU5x+D2YjKI1MzHx2kaKQfRMzH2ZbO8FE=
-X-Google-Smtp-Source: ACHHUZ7/CjbALLsKgOhydUMuC0zNw5MEZCb9OdXboJsund/SMBtnpj67FlyfQaUXznGcnVIxv1iGlw==
-X-Received: by 2002:adf:ee51:0:b0:309:4ece:a412 with SMTP id
- w17-20020adfee51000000b003094ecea412mr724169wro.14.1685739681924; 
- Fri, 02 Jun 2023 14:01:21 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.218.254])
+ bh=rfpw67tqnazZcvniRDP+9SPQmzu+ny679sOtzV+qA3k=;
+ b=XCxtaS3kBCS5Sn/WEbocWWivrB1/uW7fgCxdX8jTbiT6hBjyNMqzH6fX6jfKX7Q3n/
+ J0yCzesfEby8OHcnozwV0E1Ultt9zNQ8TW1wwQ5ZEEaLiK/A5m2pmZKZSdBItraOCEkk
+ 1deUNUmF+1/riWO+7ti51+ymbK3g0LhZv9F43NifyFsshK+DUORNnCRln0luZ02Q9tUz
+ eld/OzTeaMHAsxc5y9ryBvnY5us0zTS4LM/wvYwY+scezixm9IPadYAkgb0/FYfam8Bl
+ DgS1kleC8AcXtzKYIPLi38Y2jCD0XH2ji0CiYT04FDlORT7r1k+f2TK4kTeoDqjM+VQH
+ V6tw==
+X-Gm-Message-State: AC+VfDxF9CHO9sX32BcQPdLrOYA5JZJcpJ2mhdFZeDyts+OSDI4jMzS7
+ Y5ZYHCufkE0AWh6UzBI5uTsKcg==
+X-Google-Smtp-Source: ACHHUZ4w55pnjxwuWV3MVvQ4playDYiVoYxMFgVUufi8uDKywwWpNkQ9x4z5MA/tR4Y0knENnZrufA==
+X-Received: by 2002:a05:6a00:c8e:b0:653:cfa8:dc51 with SMTP id
+ a14-20020a056a000c8e00b00653cfa8dc51mr1536758pfv.22.1685739705062; 
+ Fri, 02 Jun 2023 14:01:45 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:66a6:82c2:d794:68f6?
+ ([2602:ae:1598:4c01:66a6:82c2:d794:68f6])
  by smtp.gmail.com with ESMTPSA id
- k9-20020adfe8c9000000b0030644bdefd8sm2574903wrn.52.2023.06.02.14.01.21
+ a10-20020a62bd0a000000b0063b86aff031sm1369037pff.108.2023.06.02.14.01.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 14:01:21 -0700 (PDT)
-Message-ID: <447e0b29-a5f7-1598-5179-50ca76083b76@linaro.org>
-Date: Fri, 2 Jun 2023 23:01:19 +0200
+ Fri, 02 Jun 2023 14:01:44 -0700 (PDT)
+Message-ID: <01547b15-1a1a-f1e4-627d-3bf2477a69b9@linaro.org>
+Date: Fri, 2 Jun 2023 14:01:42 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 46/48] plugins: Drop unused headers from
- exec/plugin-gen.h
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/4] target/riscv: Remove check on mode for MPRV
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-47-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-47-richard.henderson@linaro.org>
+To: Weiwei Li <liweiwei@iscas.ac.cn>, Alistair Francis <alistair23@gmail.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-3-liweiwei@iscas.ac.cn>
+ <CAKmqyKPmXXoVdSndTF+aF7A-3PqVrnw-NFG26sQQicxybwWpQA@mail.gmail.com>
+ <18e4da39-cbd4-aa60-7628-7105a788b6e8@iscas.ac.cn>
+ <CAKmqyKMP0aX=_3ffQXSNQ0pWCjeXEF+h=QgPbL80=0J8v_gOrA@mail.gmail.com>
+ <be90143f-1c8b-eb31-3c75-ae9846f00a22@iscas.ac.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <be90143f-1c8b-eb31-3c75-ae9846f00a22@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,15 +102,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 06:03, Richard Henderson wrote:
-> Two headers are not required for the rest of the
-> contents of plugin-gen.h.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/exec/plugin-gen.h | 2 --
->   1 file changed, 2 deletions(-)
+On 6/1/23 18:31, Weiwei Li wrote:
+> Even though MPRV normally can be set to 1 in M mode, it seems possible to set it to 1 in 
+> other mode by gdbstub.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+That would seem to be a gdbstub bug, since it is cleared on exit from M-mode, and cannot 
+be set again until we re-enter M-mode.
 
+
+r~
 
