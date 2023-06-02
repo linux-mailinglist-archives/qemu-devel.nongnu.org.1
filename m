@@ -2,79 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A7C71FE85
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DDA771FEBC
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51fe-0005Y0-5z; Fri, 02 Jun 2023 06:06:10 -0400
+	id 1q51ns-0006nt-TJ; Fri, 02 Jun 2023 06:14:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51fc-0005Xr-3m
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:06:08 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51fa-0001sa-Kd
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:06:07 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-30ae69ef78aso2445749f8f.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 03:06:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685700365; x=1688292365;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4izEsdGWELL+jgIMhjR2JpAMZ3UUgtuTTpldsVZzu9U=;
- b=vODgwklL7vcPadABog8If9BMi/IHKXDlBja9RVNTmqJ3UwyIvkZ8rPtmtH5kf6f/gD
- +vOGwkGB/lldK+3qLQ5WJgNWgcySPtRX9TVtJjbXknOoFA8PQUzftS6eQkHup8tQtrmw
- xQ8CJMYHrbTBhu4TW3QSfJWDqrj2JAUsG6YihUyZyW/7CVI1V8RjDf94aS7W8e55EQxm
- 4fIjBie9WXqU0wRUBQkDlQpyVi4zF5C8n+aPsafuje7kif+ScvtGtany237t2y1/IWpv
- xTiVybtlibqGdNoYAPXPoUO+QTcHsKkqWYBz4Wk5huFTyCEkO1m1G26UTo3lpV8zxNT6
- wIJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685700365; x=1688292365;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4izEsdGWELL+jgIMhjR2JpAMZ3UUgtuTTpldsVZzu9U=;
- b=dzHGRvIIdo8WIT3bL0SB1CVm6an3YeGFf0vP2A17H9oaRr6ljVbpr8FV1EriTB2vN3
- FX6rCN6kdGEIf06exB4DQrm5mJmtTfodj8CsU5KYcAIpPKbhjzKJRKbBb6HzAQSBTiLP
- t19lFuCHN7zjwzkyllT0yEC8xL05S4yvdA0tm2VNOzeqDPv+xAGhhywKljd5m2Ve988p
- ieSYaKSqehu4/JKW9tHjhJcqlXXOicwyHNIpa6fsaaFgDpvI5vj/xYeJEujMEbc80Phf
- EzBjPVtEq3gFbw+UJUB5RtPd3Slx61Mm4m+jHTbBBaokcpuWjcraHKui7D+FLrTes4EA
- WNkQ==
-X-Gm-Message-State: AC+VfDzobSwB+aRl7u4DuevfxiKhepx90R57NW+hyZ4Lh4qxcNZtQwEZ
- f+jjv6XZAAi1QhD3iX8zLIunSLSOCmQC7E6650E=
-X-Google-Smtp-Source: ACHHUZ5Q0oQASsmSmT0p7RtDl9PQDXuJlqNgUOlwNTeaaTT7InNOM9unTl1T+VUJdHsDAJzZ8Spv8g==
-X-Received: by 2002:adf:f749:0:b0:307:869c:99ce with SMTP id
- z9-20020adff749000000b00307869c99cemr4280065wrp.21.1685700364908; 
- Fri, 02 Jun 2023 03:06:04 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.218.254])
- by smtp.gmail.com with ESMTPSA id
- b9-20020a05600010c900b0030ae87bd3e3sm1226935wrx.18.2023.06.02.03.06.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 03:06:04 -0700 (PDT)
-Message-ID: <9005d8f7-f5fa-bdf3-4031-6b54bae1996c@linaro.org>
-Date: Fri, 2 Jun 2023 12:06:03 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q51nr-0006nk-7K
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:14:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q51np-0005fr-1i
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:14:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685700875;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=KboCMttqzmq9fnad+u2dDJNypnXIV/u5wGG3Pt0f5Pg=;
+ b=Vthd5TebjSGXGJkRtOrlmsMl5CfegWYy0WROVv+TTE8ZWrhWFI6LFK4n1IxKaRWMlJcYq3
+ whPvcZ+dRTZu7yNha5YNb/BKgl4+wn4l8yMvkUN1q+LEvZQ0PvHKxZFrozKZrDnbXTW0wJ
+ KEzuYNF4nYz+E4wO5/RXkcxNgY6pVvg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-36-xOyY-sq5NhWOlmgCLT1h3g-1; Fri, 02 Jun 2023 06:14:31 -0400
+X-MC-Unique: xOyY-sq5NhWOlmgCLT1h3g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD6CC185A78B;
+ Fri,  2 Jun 2023 10:14:30 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.158])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0848D492B00;
+ Fri,  2 Jun 2023 10:14:29 +0000 (UTC)
+Date: Fri, 2 Jun 2023 11:14:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org,
+ Richard Henderson <rth@twiddle.net>
+Subject: Re: Big TCG slowdown when using zstd with aarch64
+Message-ID: <ZHnBAjY/B/rEQzTB@redhat.com>
+References: <87y1l2rixp.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 36/48] accel/tcg: Move translator_fake_ldb out of line
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-37-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-37-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87y1l2rixp.fsf@secure.mitica>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.166,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,20 +76,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/23 06:03, Richard Henderson wrote:
-> This is used by exactly one host in extraordinary circumstances.
-> This means that translator.h need not include plugin-gen.h;
-> translator.c already includes plugin-gen.h.
+On Thu, Jun 01, 2023 at 11:06:42PM +0200, Juan Quintela wrote:
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/exec/translator.h | 8 +-------
->   accel/tcg/translator.c    | 5 +++++
->   2 files changed, 6 insertions(+), 7 deletions(-)
+> Hi
+> 
+> Before I continue investigating this further, do you have any clue what
+> is going on here.  I am running qemu-system-aarch64 on x86_64.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+FYI, the trigger for this behaviour appears to be your recent change
+to stats accounting in:
+
+commit cbec7eb76879d419e7dbf531ee2506ec0722e825 (HEAD)
+Author: Juan Quintela <quintela@redhat.com>
+Date:   Mon May 15 21:57:09 2023 +0200
+
+    migration/multifd: Compute transferred bytes correctly
+    
+    In the past, we had to put the in the main thread all the operations
+    related with sizes due to qemu_file not beeing thread safe.  As now
+    all counters are atomic, we can update the counters just after the
+    do the write.  As an aditional bonus, we are able to use the right
+    value for the compression methods.  Right now we were assuming that
+    there were no compression at all.
+    
+    Signed-off-by: Juan Quintela <quintela@redhat.com>
+    Reviewed-by: Peter Xu <peterx@redhat.com>
+    Message-Id: <20230515195709.63843-17-quintela@redhat.com>
+
+
+
+Before that commit the /aarch64/migration/multifd/tcp/plain/{none,zlib,zstd}
+tests all took 21 seconds eachs.
+
+After that commit the 'none' test takes about 3 seconds, and the zlib/zstd
+test take about 1 second, except when zstd is suddenly very slow.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
