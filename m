@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F5C720C0B
+	by mail.lfdr.de (Postfix) with ESMTPS id 94930720C0A
 	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 00:47:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5DXc-0005mt-6B; Fri, 02 Jun 2023 18:46:40 -0400
+	id 1q5DXe-0005zC-Lb; Fri, 02 Jun 2023 18:46:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5DXX-0005hJ-Oz
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:46:35 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5DXc-0005rg-LZ
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:46:40 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5DXV-00067K-3Q
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:46:35 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30af86a96b4so2450810f8f.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 15:46:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5DXa-00067s-Pr
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 18:46:40 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3f6077660c6so24407605e9.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 15:46:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685745991; x=1688337991;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=RB0W/rFI1+KpHKK9ZJ6n4RrXr2vvSt5YP/IKazFl/Mo=;
- b=jx73JvdSoQJX+qvf309ti4ZyJC4NSWPJVSMV821hHNO0EbChVCbJL1FezPNt2avNV+
- SLlPJ2LHty1HBIyqgBtHzH1ZN/nbT2KTICmuU+WdzVGK5C79WGMaPHd8fmPH3FR6uA9g
- FywjEuVp/uQixRkqcXpJzZG4eiVaRM2XsSeg4M6P+8yjs1awu4rryT/0wD0LsA+heFRt
- 10XeNADX5sN57L4rPrmyKX/PLqQplt0SP0QjPcgf7+cCL4KoVKlz/rwXzKuoWm8/OOe3
- UZF3opArbn976G8qt2owi4WwKBlfWLBStfihQPTBga8Ak9mPIebgnfe+yc+4V2RebaaT
- ltGw==
+ d=linaro.org; s=google; t=1685745996; x=1688337996;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bVMIqqWV5g+QPtoI6znu8aw+zNebYRSC5VAPbRhIAk4=;
+ b=RAAKIvFOKZ4BOsaT5LTgvcBeqp6hGvTEFbek+gSjeDi2d5N5OWU+Kp89JLZfEhLR4j
+ /4n54KJJihRRNi2+ggEzR3+TsUk1DiFYFXdFupO7Xgxjlh1Oajm4QZ9Mt3bycxmPUHW4
+ hBLiNpbvZA96Ll7wy3aqO6U5T8JWAx4l2I5Qx7TOxjsVIhzDrIAuAsvjHhRXdCtqOE39
+ bFS0zz6M9cvorr05rUYjGnUIT6Om3NaNY0Ykon4lQYS6illBsVC0W+KTdsPwzwqavjNk
+ NsAsDyJFp5n5lG16yA88FFrf4BzgQyo59BVqrkAhj71YNHRctfpBz0HJaxTPTDwpRjrr
+ h9gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685745991; x=1688337991;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RB0W/rFI1+KpHKK9ZJ6n4RrXr2vvSt5YP/IKazFl/Mo=;
- b=AHuIUz7hQpjHEEDtWlAusevx344OFSrK5ThnACxcpVfA68BqG21EsrDpnH0tYT17QX
- cU6rIsi4Uj3Lf6XELUUFRoxWhrqCcY4RhfxCgS4BXbWDJkdZcWK0oy320gvykVgzH+Iv
- +F169U7SFowaGuUe37FE7Tgz5/HI0MaWeyDKbp7hrZG9UZp/0B1KqA70c+NrB+NtWtPO
- ls5tPBwDVkEIyrFPQ/HhRvBIw+xKAL1RPyie4R1zv3b/kAWXVXdk32FGXAb8E41I9Gqy
- np4HJ/P4AxEeGXUdAjrAyxxMfmqxb6LooiXG8esJFkmjPKDiiqH0T3a4MLIeP1HQ+Cme
- J60w==
-X-Gm-Message-State: AC+VfDx7x4LtLWZeuYj9cl1R8wPcytRTjFC84uPpIZ9w6Ky7r8sTX+ey
- 4MMeS49mYUfys/SfOyY+R46Wf0vkZj1MllFABSk=
-X-Google-Smtp-Source: ACHHUZ5v20++wOtYypbz7X0YCBasMgwXlOTzMo3VhWH8gsT6lhAUZLS+Gw/q8tuhYByvLt3MSJrVgg==
-X-Received: by 2002:a5d:4c8f:0:b0:306:297b:927f with SMTP id
- z15-20020a5d4c8f000000b00306297b927fmr825902wrs.25.1685745990940; 
- Fri, 02 Jun 2023 15:46:30 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685745996; x=1688337996;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bVMIqqWV5g+QPtoI6znu8aw+zNebYRSC5VAPbRhIAk4=;
+ b=Ueo7Uc+0FHNanB6U8otkLnU5Ju9xTeayi2dm9krQ44zofAxrLEFbwX+4UQzTpq4nWl
+ LWhHI6dne9KROJ6MmmaFIbYeKQSIyuF1ToBmGOjMBYZwl04yP1ZVMyMC2tndUWi+gAp7
+ 59XfhSZzUrKrJbmyE/qgysfZxSL2/wTTKFBOVBrf8gkivomRvUQeYkDyXYWgsA6lo7ND
+ b424TCIlQkDvoiVfD8VdBaK90K1+zTssVQXGHvYaQGjpMl3KT8jOlygCeFev9ItH+oUt
+ VVnxF5vehORYjYJyAqmnKLHZfWAlVaKAXZ158VRuLTA8FeG6r1/pqBpHBRLPuaqfQudy
+ wrDw==
+X-Gm-Message-State: AC+VfDz63EfTspbBJetpkzrNlGWT4U6yHenkEY9hbvGbNUmG0UXIjVV3
+ nvwf2o2Ywnp5hAdquo/dXT6lWZ5Dz9X38ZP6H1c=
+X-Google-Smtp-Source: ACHHUZ4Q4twJSoY3XMmJbWYrefvVtL1UE8CLH+J6U6uDUsz8RGnRJU7yTdvWv3IcOjzvgQ38OAB2sg==
+X-Received: by 2002:adf:cc91:0:b0:30a:e70d:9e73 with SMTP id
+ p17-20020adfcc91000000b0030ae70d9e73mr1013224wrj.33.1685745996549; 
+ Fri, 02 Jun 2023 15:46:36 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- q16-20020a05600000d000b0030ada01ca78sm2786094wrx.10.2023.06.02.15.46.30
+ z16-20020a7bc7d0000000b003f605814850sm6780530wmk.37.2023.06.02.15.46.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 Jun 2023 15:46:30 -0700 (PDT)
+ Fri, 02 Jun 2023 15:46:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] target/i386/helper: Minor #ifdef'ry simplifications
-Date: Sat,  3 Jun 2023 00:46:26 +0200
-Message-Id: <20230602224628.59546-1-philmd@linaro.org>
+Subject: [PATCH 1/2] target/i386/helper: Remove do_cpu_sipi() stub for
+ user-mode emulation
+Date: Sat,  3 Jun 2023 00:46:27 +0200
+Message-Id: <20230602224628.59546-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230602224628.59546-1-philmd@linaro.org>
+References: <20230602224628.59546-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,22 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not very interesting code shuffle, but this was in
-the way of another big cleanup. So sending apart.
+Since commit  604664726f ("target/i386: Restrict cpu_exec_interrupt()
+handler to sysemu"), do_cpu_sipi() isn't called anymore on user
+emulation. Remove the now pointless stub.
 
-BTW this file isn't covered in MAINTAINERS:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/i386/cpu.h    | 3 ++-
+ target/i386/helper.c | 3 ---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-  $ ./scripts/get_maintainer.pl -f target/i386/helper.c
-  get_maintainer.pl: No maintainers found
-
-Philippe Mathieu-Daudé (2):
-  target/i386/helper: Remove do_cpu_sipi() stub for user-mode emulation
-  target/i386/helper: Shuffle do_cpu_init()
-
- target/i386/cpu.h    |  3 ++-
- target/i386/helper.c | 15 ++++-----------
- 2 files changed, 6 insertions(+), 12 deletions(-)
-
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 7201a71de8..cd047e0410 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2285,7 +2285,6 @@ static inline void cpu_get_tb_cpu_state(CPUX86State *env, target_ulong *pc,
+ }
+ 
+ void do_cpu_init(X86CPU *cpu);
+-void do_cpu_sipi(X86CPU *cpu);
+ 
+ #define MCE_INJECT_BROADCAST    1
+ #define MCE_INJECT_UNCOND_AO    2
+@@ -2419,6 +2418,8 @@ void x86_cpu_set_default_version(X86CPUVersion version);
+ 
+ #ifndef CONFIG_USER_ONLY
+ 
++void do_cpu_sipi(X86CPU *cpu);
++
+ #define APIC_DEFAULT_ADDRESS 0xfee00000
+ #define APIC_SPACE_SIZE      0x100000
+ 
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 36bf2107e7..792c8eb45e 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -611,9 +611,6 @@ void do_cpu_sipi(X86CPU *cpu)
+ void do_cpu_init(X86CPU *cpu)
+ {
+ }
+-void do_cpu_sipi(X86CPU *cpu)
+-{
+-}
+ #endif
+ 
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.38.1
 
