@@ -2,79 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E8271FA81
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E29E71FA99
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:05:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ymf-0003CU-Gq; Fri, 02 Jun 2023 03:01:13 -0400
+	id 1q4ypj-0004Ws-He; Fri, 02 Jun 2023 03:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4ymd-0003BY-Gh; Fri, 02 Jun 2023 03:01:11 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q4ymb-0005o3-T6; Fri, 02 Jun 2023 03:01:11 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6af873d1d8bso1405130a34.3; 
- Fri, 02 Jun 2023 00:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685689268; x=1688281268;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pAXL1s/3a9BraSRSJRdD0e3CEMGB7Z17L6dMEyvSrzc=;
- b=gZZEGZYRX3wvgGktdFobkRjcqVtPyFw3xPtNeXDSPoak2IU7lnuOEXK1JJSdGBDlxh
- ZMeC6NnWDHD7Vt46RMEKwZ09e+71rS7e7wKtNtFVW6mKRhG0YygmuEzQ6dq0zGJeGYbM
- C7fC4HRAC0pMosnm3EjTYwx/TuKrQiIkKDsEi1UrJiig4L2esSLPLvt1DBGqrhqyiTtO
- 0A49sRnVeFWjCAxGwHMDSSsJG8Tt+JlYDVOb5vUjor2Oxljc8Lq7uysIu8x9+pctPPb4
- HWdPWfFraLw7rSP//VylXM0xM5UpCUiGesorpJVVNdzbjS3CKkoGHCpTSPos+6Z46yxZ
- HZGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685689268; x=1688281268;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=pAXL1s/3a9BraSRSJRdD0e3CEMGB7Z17L6dMEyvSrzc=;
- b=jxF7afXCa7lnRT5EdO0M2NhLswZzfgg5fiSO3jLNCBzChAqCmqpBw8NsOu5gYtu2He
- TFtIwnZO/L5A6xc1Ffquu3f3CBTXlHFLT6TUuhgMqtEIuyLB8IMJVJWvC28MCB6zctJR
- gyuR/PNlFfxPwe7Vvs2gzfv05Y7eE+1G/s4fpY9xp6UpWU1uA58+xl7r1RfnXgPxJgBb
- xY+D6pYEfhD/4hHjTEYz6z0Vu+Bpy5BQvgMS1tI4CNP9XGxjBT4NzCi6oCjjA33rzcN6
- +mQnseDPH1XpqJITjnnJKXWTlkGA3eA6VzRxWgOjlGGWZr63/qi4rJHxnLm1TQQhkBB2
- Oy4A==
-X-Gm-Message-State: AC+VfDxjxLLixXy2zIoKWryKMS4CyOlT4aqaEV2iY/nyHSPMXXls5qpz
- a6RGjAL1/DHLD9vAHn3PMj8=
-X-Google-Smtp-Source: ACHHUZ7LyN/B5VbdByaH0JqEoLNoFhRjJj6qXkaYX4beO4vKuT4gn3owR0gp2UFIpBcf+jqmqrgSfw==
-X-Received: by 2002:a05:6830:1356:b0:6af:7491:d6e5 with SMTP id
- r22-20020a056830135600b006af7491d6e5mr1444082otq.17.1685689268302; 
- Fri, 02 Jun 2023 00:01:08 -0700 (PDT)
-Received: from localhost ([1.146.22.171]) by smtp.gmail.com with ESMTPSA id
- c13-20020a62e80d000000b0063d3fbf4783sm372397pfi.80.2023.06.02.00.01.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 00:01:07 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 02 Jun 2023 17:01:01 +1000
-Message-Id: <CT1YZ02RYMRT.1LL84FLYLC3DO@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>
-Subject: Re: [RFC PATCH 0/5] target/ppc: initial SMT support in TCG
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.14.0
+ (Exim 4.90_1) (envelope-from <SRS0=WIde=BW=kaod.org=clg@ozlabs.org>)
+ id 1q4yph-0004W4-13; Fri, 02 Jun 2023 03:04:21 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=WIde=BW=kaod.org=clg@ozlabs.org>)
+ id 1q4ype-00072S-Lb; Fri, 02 Jun 2023 03:04:20 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QXYrn3Q7zz4x4C;
+ Fri,  2 Jun 2023 17:04:09 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QXYrl5MxFz4x1f;
+ Fri,  2 Jun 2023 17:04:07 +1000 (AEST)
+Message-ID: <d414e7a2-67d6-884d-2d01-0e4dc1d0589d@kaod.org>
+Date: Fri, 2 Jun 2023 09:04:03 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 5/5] spapr: Allow up to 8 threads SMT configuration
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 References: <20230531012313.19891-1-npiggin@gmail.com>
- <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
-In-Reply-To: <bad4b347-e129-ff7d-3b9b-23d964c68350@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=npiggin@gmail.com; helo=mail-ot1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <20230531012313.19891-6-npiggin@gmail.com>
+ <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
+ <CT1YXJ6J1W97.3RLRVO5ZNY61F@wheely>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CT1YXJ6J1W97.3RLRVO5ZNY61F@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=WIde=BW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,44 +67,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Jun 1, 2023 at 5:56 PM AEST, C=C3=A9dric Le Goater wrote:
-> Hello Nick,
->
-> On 5/31/23 03:23, Nicholas Piggin wrote:
-> > Hi,
-> >=20
-> > I'm posting this now just to get some first thoughts. I wouldn't say
-> > it's ready but it does actually work with some basic tests including
-> > pseries booting a Linux distro. I have powernv booting too, it just
-> > requires some more SPRs converted, nothing fundamentally different so
-> > for the purpose of this RFC I leave it out.
-> >=20
-> > A couple of things, I don't know the object model well enough to do
-> > something nice with topology. Iterating siblings I would have thought
-> > should be going to parent core then iterating its children CPUs. Should
-> > that be done with the object model, or is it better to add direct
-> > pointers in CPUs to core and core to CPUs? It is (semi) important for> =
-performance so maybe that is better than object iterators. If we go that
-> > way, the PnvCore and SpaprCore have pointers to the SMT threads already=
-,
-> > should those be abstracted go in the CPUCore?
->
-> You should be able to move the thread array into the CPUCore. If you do
-> that, please check that migration compat is not impacted by the state
-> change. However, I am not sure you can use the CPUCore model under the
-> insn modeling. Something to check.
+On 6/2/23 08:59, Nicholas Piggin wrote:
+> On Thu Jun 1, 2023 at 5:20 PM AEST, Cédric Le Goater wrote:
+>> On 5/31/23 03:23, Nicholas Piggin wrote:
+>>> TCG now supports multi-threaded configuration at least enough for
+>>> pseries to be functional enough to boot Linux.
+>>>
+>>> This requires PIR and TIR be set, because that's how sibling thread
+>>> matching is done.
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>    hw/ppc/spapr.c          | 4 ++--
+>>>    hw/ppc/spapr_cpu_core.c | 7 +++++--
+>>>    2 files changed, 7 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>>> index dcb7f1c70a..11074cefea 100644
+>>> --- a/hw/ppc/spapr.c
+>>> +++ b/hw/ppc/spapr.c
+>>> @@ -2524,8 +2524,8 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+>>>        int ret;
+>>>        unsigned int smp_threads = ms->smp.threads;
+>>>    
+>>> -    if (!kvm_enabled() && (smp_threads > 1)) {
+>>> -        error_setg(errp, "TCG cannot support more than 1 thread/core "
+>>> +    if (!kvm_enabled() && (smp_threads > 8)) {
+>>> +        error_setg(errp, "TCG cannot support more than 8 threads/core "
+>>>                       "on a pseries machine");
+>>
+>> I think we should add test on the CPU also.
+> 
+> On the CPU type, POWER7 can have 1/2/4, POWER8 can have 1/2/4/8?
+> POWER9 could also switch PVR between big and small core depending
+> on whether you select SMT8 I suppose.
 
-Okay.
-
-> Anyhow, the way you implemented the loop on the siblings is sufficiently
-> fast for a small numbers of CPU and safe, w.r.t to CPU hotplug. So
-> I would leave that part for now, if it runs decently with 4*4 vCPUs in
-> TCG it should be fine.
-
-Yeah you're right I'm overly paranoid about it but we don't do hundreds
-of CPUs in TCG so it should be fine. Maybe I will defer it for now
-then and just do the CPU iteration.
+What I meant is to limit the support to the CPUs which will be most likely
+used : POWER8-10. I don't think we care much about the others P7, P5+, 970.
 
 Thanks,
-Nick
+
+C.
+
 
