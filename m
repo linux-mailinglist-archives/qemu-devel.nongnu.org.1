@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9C771FE32
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C9F71FE33
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:46:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51LG-0004VE-R4; Fri, 02 Jun 2023 05:45:07 -0400
+	id 1q51MM-0005BS-NI; Fri, 02 Jun 2023 05:46:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q51LC-0004Uz-GA
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:45:02 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51MC-0005As-N2
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:46:05 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q51LA-00029Y-Li
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:45:02 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6e68cc738so17847555e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:45:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51M9-0002ma-DB
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:46:04 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2af2c35fb85so25421281fa.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:45:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685699099; x=1688291099;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=v9Fmeskjd8My9ulf4PrEVJeJh8p34sKN80rfH53l5u8=;
- b=tuyj8MPfPHGh0c0eLy9GZ5X0THgWuKdJbyVMTxxaQgpYgmmGxtUwIJnHWN7buo09xe
- uo/l7EvF4YQJ4wPmMqEOG07+CGF3kOPprs+994VEmz5QDRiWSvUeEtE8lqmHOp/oONJR
- Zcy0RUsyfMbFsIxZYNRxC5jOna7w5nwBM5PW8oCrs8aurhHdasPZj/i1pcQQ4Ex4V4T5
- k9AgxPX5YiR65DbWfrCuat9+WYZdHh/9HMruJ4TIoMEzB1wbsuYtlnmTBd72Mx0/o2CA
- hMdenUS4fM4H9Ngc53/CGB1hLEC3H/lrf7KAAj4jwEzwC15MHlvakJIRQGQeam0DmccT
- qYBA==
+ d=linaro.org; s=google; t=1685699157; x=1688291157;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eB+YoVqD6xgyohhfQOVelNqHefRmhxEg8yamGNpNP2E=;
+ b=qiHVuCM1wLiGEkuRqPXK4udcSvH29jcRNXuUjAdoqY5qRyHedHL2eYhfddY7hSIrTc
+ DeJnFUR1ljGXSctn021gsTQ6KAo5N75dlJpQCxBjPE92ewB/uVU41Rlac8KA6Tg9lmko
+ 7G385fUlH1fHEPOx43B08VUa+EsmEE33DEUQYK3KX+Y7qgVwZ+1cgu/2uspX6libfpvN
+ VXMuQBfUtFQ144Oy3sUyV8of4L6p7pBLd4OI8yVsFGUv8sNaO/DxDbKYEe6laY+GMhC7
+ irPyrDd+bDt5krx6T1DLIQLZ8yFz+BXdodjH6CEiX3mWf52VYA87s1jS4irzZ+EMVK5G
+ vCGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685699099; x=1688291099;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=v9Fmeskjd8My9ulf4PrEVJeJh8p34sKN80rfH53l5u8=;
- b=Z1lEkMoPKJ3+SQ9c1h6jYH135wlg0aR+gleeTNj4+vrjYMkDDkL+qM84iuFkcOZAFB
- uwSLq4eSx0+Lbrm9PHnsd+0ddqmPR4+PsIOzVFb0Gou93w6++KlJYp/bYiK/zLI3n6LG
- BvsEmlPFzUpgyLAlaxhIfwbrZ5mW0BdJHQXFptDHcOZO15e0+CMkxrlOId9riKYrne3S
- Bs71nebQEujRDi0E86iCm51CWSpZVeMY5kg0zyzmyDS/XtjpGexO0ePi+NJfPcaeW2aS
- zTyISqWPvPJQaNHYRwUTJEDtyJLOetAn36zAeCu6wGYFgceo/+FihxcPwIRI2XdrlsWe
- vU0w==
-X-Gm-Message-State: AC+VfDw+t01dxVspPtKicuSGTNCPOraHafJ5D+3egQLCl7pCH+Px+NHs
- jfXQ8jnLfy4wCpK98/b2ixuDsw==
-X-Google-Smtp-Source: ACHHUZ5e69hBrZlQM9Ekgsqo7q5a8VsHwhv5LH7jGi9pRo9cs0QQVjIx+J+Rjoxw0KPzktVf9CnNVA==
-X-Received: by 2002:a05:600c:289:b0:3f6:3bb:5135 with SMTP id
- 9-20020a05600c028900b003f603bb5135mr1490900wmk.14.1685699098987; 
- Fri, 02 Jun 2023 02:44:58 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1685699157; x=1688291157;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eB+YoVqD6xgyohhfQOVelNqHefRmhxEg8yamGNpNP2E=;
+ b=Vvv1+OwekeKQoPdKzv74y2nI1RJvMZ3owU9vnSXoiUt/ny/jeQk+Kc9Xj4kBSh5KdJ
+ fNBXrxiZhmB7GHV7CvhQpqXozzbxBm1z+INkJo+kEO5nUQDrQM4Ydhs2mD6BRRd8u5FX
+ pJzvIGBs7rJOHsZImgRFMYT0Tp+Hdbgkyc0LIoQBmWPIFHaWC5oG0IYh0EbSobh1QcH9
+ kT5iIoqYj0Zus9dxyJLHE6dqtgoib6u70Nk/SQmvcup8NiONn2S78FQQxQBqghfd+i0N
+ 75VbWPWd/mSeAoZeOpDLOOInn5gPdAypVD80slPUSQkPuUfKV9zGTQNYPnQD4DxGZYub
+ 6uBw==
+X-Gm-Message-State: AC+VfDxnUzMc2Kq/DO93V8acn47+EUZ5rBKo5ar6AbOqI9JQFhIDnnmC
+ 0le/r3UqA0ztDMH5XAyiJVZZgeeCAc57GiBsNk8=
+X-Google-Smtp-Source: ACHHUZ7ulDVBGFXG7Bp+A7fUTOnNQtAKFyKsGaWewJ/g5AaC4x4TivPTnEVXSOyir2sJl3gXD9xAaw==
+X-Received: by 2002:a2e:87c7:0:b0:2ac:7ab1:a441 with SMTP id
+ v7-20020a2e87c7000000b002ac7ab1a441mr1272962ljj.30.1685699157039; 
+ Fri, 02 Jun 2023 02:45:57 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- j9-20020a5d5649000000b0030b5d203e7esm1121477wrw.97.2023.06.02.02.44.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 02:44:58 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0D4821FFBB;
- Fri,  2 Jun 2023 10:44:58 +0100 (BST)
-References: <87y1l2rixp.fsf@secure.mitica> <ZHmyA40nIiUBceX0@redhat.com>
- <CAFEAcA_1FF6tBt7C=zfLcSiFPNzSecZkRMtppYbUBjwZPVfbmg@mail.gmail.com>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Richard Henderson <rth@twiddle.net>,
- qemu-devel@nongnu.org
-Subject: Re: Big TCG slowdown when using zstd with aarch64
-Date: Fri, 02 Jun 2023 10:42:26 +0100
-In-reply-to: <CAFEAcA_1FF6tBt7C=zfLcSiFPNzSecZkRMtppYbUBjwZPVfbmg@mail.gmail.com>
-Message-ID: <877csmb3l2.fsf@linaro.org>
+ p5-20020a1c7405000000b003f6f6a6e769sm1400196wmc.17.2023.06.02.02.45.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jun 2023 02:45:56 -0700 (PDT)
+Message-ID: <62bb0342-66f8-f01a-18c0-75dfe67aa240@linaro.org>
+Date: Fri, 2 Jun 2023 11:45:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v3 35/48] accel/tcg: Introduce translator_io_start
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230531040330.8950-1-richard.henderson@linaro.org>
+ <20230531040330.8950-36-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230531040330.8950-36-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,117 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 31/5/23 06:03, Richard Henderson wrote:
+> New wrapper around gen_io_start which takes care of the USE_ICOUNT
+> check, as well as marking the DisasContext to end the TB.
+> Remove exec/gen-icount.h.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   MAINTAINERS                                   |  1 -
+>   include/exec/gen-icount.h                     |  6 --
+>   include/exec/translator.h                     | 10 +++
+>   target/arm/cpregs.h                           |  4 +-
+>   accel/tcg/translator.c                        | 27 ++++++-
+>   target/alpha/translate.c                      | 15 +---
+>   target/arm/tcg/translate-a64.c                | 23 +++---
+>   target/arm/tcg/translate-mve.c                |  1 -
+>   target/arm/tcg/translate-neon.c               |  1 -
+>   target/arm/tcg/translate-vfp.c                |  4 +-
+>   target/arm/tcg/translate.c                    | 20 ++---
+>   target/avr/translate.c                        |  1 -
+>   target/cris/translate.c                       |  2 -
+>   target/hppa/translate.c                       |  5 +-
+>   target/i386/tcg/translate.c                   | 52 +++----------
+>   target/loongarch/translate.c                  |  2 -
+>   target/m68k/translate.c                       |  2 -
+>   target/microblaze/translate.c                 |  2 -
+>   target/mips/tcg/translate.c                   | 29 +++----
+>   target/nios2/translate.c                      |  1 -
+>   target/openrisc/translate.c                   |  9 +--
+>   target/ppc/translate.c                        | 13 +---
+>   target/riscv/translate.c                      |  2 -
+>   target/rx/translate.c                         |  2 -
+>   target/s390x/tcg/translate.c                  |  6 +-
+>   target/sh4/translate.c                        |  2 -
+>   target/sparc/translate.c                      | 75 +++++--------------
+>   target/tricore/translate.c                    |  2 -
+>   target/xtensa/translate.c                     | 27 ++-----
+>   target/loongarch/insn_trans/trans_extra.c.inc |  4 +-
+>   .../insn_trans/trans_privileged.c.inc         |  4 +-
+>   .../riscv/insn_trans/trans_privileged.c.inc   |  8 +-
+>   target/riscv/insn_trans/trans_rvi.c.inc       | 24 ++----
+>   33 files changed, 117 insertions(+), 269 deletions(-)
+>   delete mode 100644 include/exec/gen-icount.h
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Nice!
 
-> On Fri, 2 Jun 2023 at 10:10, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
->> I suspect that the zstd logic takes a little bit longer in setup,
->> which allows often allows the guest dirty workload to get ahead of
->> it, resulting in a huge amount of data to transfer. Every now and
->> then the compression code gets ahead of the workload and thus most
->> data is zeros and skipped.
->>
->> IMHO this feels like just another example of compression being largely
->> useless. The CPU overhead of compression can't keep up with the guest
->> dirty workload, making the supposedly network bandwidth saving irrelevan=
-t.
->
-> It seems a bit surprising if compression can't keep up with
-> a TCG guest workload, though...
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Actual running code doesn't see much of a look in on the perf data:
-
-   4.17%  CPU 0/TCG        qemu-system-aarch64      [.] tlb_set_dirty
-   3.55%  CPU 0/TCG        qemu-system-aarch64      [.] helper_ldub_mmu
-   1.58%  live_migration   qemu-system-aarch64      [.] buffer_zero_avx2
-   1.35%  CPU 0/TCG        qemu-system-aarch64      [.] tlb_set_page_full
-   1.11%  multifdsend_2    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.07%  multifdsend_13   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.07%  multifdsend_6    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.07%  multifdsend_8    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.06%  multifdsend_10   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.06%  multifdsend_3    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.05%  multifdsend_7    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.04%  multifdsend_11   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.04%  multifdsend_15   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.04%  multifdsend_9    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.03%  multifdsend_1    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.03%  multifdsend_0    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.02%  multifdsend_4    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.02%  multifdsend_14   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.02%  multifdsend_12   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   1.01%  multifdsend_5    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.96%  multifdrecv_3    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.94%  multifdrecv_13   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.94%  multifdrecv_2    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.93%  multifdrecv_15   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.93%  multifdrecv_10   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.93%  multifdrecv_12   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.92%  multifdrecv_0    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.92%  multifdrecv_1    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.92%  multifdrecv_8    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.91%  multifdrecv_6    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.91%  multifdrecv_7    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.91%  multifdrecv_4    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.91%  multifdrecv_11   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.90%  multifdrecv_14   libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.90%  multifdrecv_5    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.89%  multifdrecv_9    libc.so.6                [.] __memmove_avx_unali=
-gned_erms
-   0.77%  CPU 0/TCG        qemu-system-aarch64      [.] cpu_physical_memory=
-_get_dirty.constprop.0
-   0.59%  migration-test   [kernel.vmlinux]         [k] syscall_exit_to_use=
-r_mode
-   0.55%  multifdrecv_12   libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.54%  multifdrecv_4    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.51%  multifdrecv_5    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.51%  multifdrecv_14   libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.49%  multifdrecv_2    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.45%  multifdrecv_1    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.45%  multifdrecv_9    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.42%  multifdrecv_10   libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.40%  multifdrecv_6    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.40%  multifdrecv_3    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.40%  multifdrecv_8    libzstd.so.1.5.4         [.] 0x000000000008ec20
-   0.39%  multifdrecv_7    libzstd.so.1.5.4         [.] 0x000000000008ec20
-
->
-> -- PMM
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
