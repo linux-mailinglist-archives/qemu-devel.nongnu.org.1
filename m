@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3279E71FE60
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3C571FE82
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 12:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q51Ug-0000xQ-1M; Fri, 02 Jun 2023 05:54:50 -0400
+	id 1q51cn-0004h3-HT; Fri, 02 Jun 2023 06:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51Ud-0000wE-Rs
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:54:47 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51cg-0004gj-Iq
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:03:06 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51Ub-0006VI-LJ
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:54:47 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3f6094cb2d2so18923805e9.2
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:54:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q51ce-0008Rj-7V
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 06:03:06 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-30a1fdde3d6so1839109f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 03:03:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685699683; x=1688291683;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0R8n9l1An4oHkYxacOYdoliX3xQxde1GXBo5VdICKE0=;
- b=xm5N2zhsAHo9ha4Ztn841vhyal1i/oi4rB/I4MFoyJc17YuzPFP+cz69ejwI4Qhhsd
- tzc6ayE1oAqwvVHf+zKzbBrSZXjFLoi1+0Qli/dopc21vDnextqoTXKekaecORaQxAlC
- 5hMHxr5aKECwEKTivLx0zhFa3vGtmKuAu6jzMb8jlx/5onRhoj73ilSqXzrkHnG1cIBe
- jpbl51cdqJ81KUgBEY3e7/R/7qB95Z4seKxsE4JxKZUWsV+rw6xGWSSEPLBOpZkVzNhZ
- JmIkVOyOv6Zq6+vS3RBjSIk4QMt6w7WqcjnanfozySv77EITL2G63Wx41pPBvvUHxEED
- xynQ==
+ d=linaro.org; s=google; t=1685700182; x=1688292182;
+ h=content-transfer-encoding:in-reply-to:cc:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lgDMVkJdQsB/Lqw/BOaMVIiTBPLCQEKa7auwTuRpDiQ=;
+ b=M+7IEynzVkR/CUTn0pv867mosbnitCvpWSblTa6e3dMj8hx8UbDAbruH9qHC1OqIdT
+ omUZ6wh/nyNwuvLhnlsVI7KzdFH7fltPjn44lm4M4WvR81uUZsIVAGRpp2dlOKNV3wZj
+ wKzPbOVFM2RoLAJLRKg4QgxyPoy4kOeB//f2dy/9jCKWp+LL6vgtuPu6tMujAXen/OIt
+ PVAX/pJfIiRebYckF4e7uwirGGnMnWOchQGtyzfiOc0gOXYtdjDRQnfhHywSV+86YViC
+ P0RuDi5KzbCxaAbDmh2z/foNBv6oUVitr8yz91+bcFNJLHm8+Gi5790tlwi/nqFnE5GC
+ n+vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685699683; x=1688291683;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0R8n9l1An4oHkYxacOYdoliX3xQxde1GXBo5VdICKE0=;
- b=DaWTId5AV/48XKMNa7vlEsqljJpjIDd40U6pr4a06QGc8ENoHqt++jEmz5WTcdBbLy
- AWxyjzMLsRalqExqBolobi6aJ/nPde9iICsuXH5c+47HTQrTKa2lCca3lmaSOBsgQ+IU
- w9QlJTRnr1410SsvPCSVfYjYS0nwId2SEMxb2KZOtfLGBFp34UXjpgRSQIw8Vdwefkqb
- A6fGyCaHaNBy121qsHbfEo1MraNgc9ozl5tMpRyRB10SqzPcuE1vG/i423Lvb+lWn6lY
- wVbVWIY2qTTWCSCUGQjVcJF1h+cQ8WMPefzKSik5x/RYPR839PE/cITd/GnPDd5HRLPI
- SxEQ==
-X-Gm-Message-State: AC+VfDw6cl5ObG+ctv3wl9vfrfGhzITSwE/eBha7XrXkxI4mm3Yc6i9D
- Jst8vN1jBw5plPvFlfAU3bFC0bUVEA4XLg5EJR8=
-X-Google-Smtp-Source: ACHHUZ42YZR157J7QqAiyTL2xLBFJUxWwXNVHSDY2mx8KhmMYT7tPxPWU/MMJ+rXeJ5YQzKEHdh/Dw==
-X-Received: by 2002:a1c:f719:0:b0:3f6:766:f76f with SMTP id
- v25-20020a1cf719000000b003f60766f76fmr1468299wmh.36.1685699682811; 
- Fri, 02 Jun 2023 02:54:42 -0700 (PDT)
-Received: from localhost.localdomain ([176.187.218.254])
+ d=1e100.net; s=20221208; t=1685700182; x=1688292182;
+ h=content-transfer-encoding:in-reply-to:cc:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lgDMVkJdQsB/Lqw/BOaMVIiTBPLCQEKa7auwTuRpDiQ=;
+ b=HHykljOkBckFvwUNcRV5kg4bNnXjB7bnK6H05rzXslOx22kapmIMWMUcxiHPcYtJ8j
+ NL9WMdYhaeXSMIjJ3K/0JNwpAezt00ZvZpOA0p6bCOO22ysLsnqjg5Q5UwxEPKLi5C2X
+ UswykyX2p8tJn3vCBbgCcqZcSzIf3at3rG7TT6wSzXF5NNPNiJ7XCyjqY3HWPn1XmOSN
+ Wc9BSZ61b3L+/TEbQCjPvGzJwaP3OV6KGuEJmsuUyVfEJwkTXvB75yqUDWigu7ekBywH
+ u4uct8vjJYFdSCNQ2lVnJh0rekVzCKOanB6CPXlaRVs/eegw2dnqBdRh1kPY0AaJbHCO
+ iTQg==
+X-Gm-Message-State: AC+VfDzJJfAXmBTGrDWzy7ERmyCirlC1pHKclPAF+Nl4WjHrrQ3MTayq
+ PI+PCNkCa6pCcghMS0yQi5rDJQ==
+X-Google-Smtp-Source: ACHHUZ5KqmJicZlxhA+WOJJRJn/YYJDCNnBvAntxNbd4+oNQOlOvadWFKoUo3wpHkus5dBCd6anIyg==
+X-Received: by 2002:adf:ea89:0:b0:30a:e3d6:fcac with SMTP id
+ s9-20020adfea89000000b0030ae3d6fcacmr3886423wrm.19.1685700182079; 
+ Fri, 02 Jun 2023 03:03:02 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- o10-20020a1c750a000000b003f60482024fsm1408320wmc.30.2023.06.02.02.54.41
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 Jun 2023 02:54:42 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Greg Kurz <groug@kaod.org>, David Gibson <david@gibson.dropbear.id.au>,
- qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 35.5] target/pcc: Inline gen_icount_io_start()
-Date: Fri,  2 Jun 2023 11:54:39 +0200
-Message-Id: <20230602095439.48102-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230531040330.8950-36-richard.henderson@linaro.org>
-References: <20230531040330.8950-36-richard.henderson@linaro.org>
+ q10-20020a5d574a000000b003047d5b8817sm1215116wrw.80.2023.06.02.03.03.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jun 2023 03:03:01 -0700 (PDT)
+Message-ID: <01ba1219-49f4-4eef-ad1b-226a7f647ffe@linaro.org>
+Date: Fri, 2 Jun 2023 12:02:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v3 30/48] exec-all: Widen tb_page_addr_t for user-only
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>
+References: <20230531040330.8950-1-richard.henderson@linaro.org>
+ <20230531040330.8950-31-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+In-Reply-To: <20230531040330.8950-31-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,319 +93,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that gen_icount_io_start() is a simple wrapper to
-translator_io_start(), inline it.
+On 31/5/23 06:03, Richard Henderson wrote:
+> This is a step toward making TranslationBlock agnostic
+> to the address size of the guest.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/ppc/translate.c                 | 63 ++++++++++++--------------
- target/ppc/power8-pmu-regs.c.inc       | 10 ++--
- target/ppc/translate/branch-impl.c.inc |  2 +-
- 3 files changed, 35 insertions(+), 40 deletions(-)
+My understanding is tb_page_addr_t is QEMU internal, not exposed
+to the guest, thus abi_ulong isn't required. It was a tiny memory
+optimization we could do when abi_ulong is 32-bit. Therefore we
+can widen the type, unifying/simplifying TB management on the host.
+Is that correct? The patch is fine/safe but I'd like to correctly
+understand :) Meanwhile:
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 519f66bb05..37fd431870 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -296,15 +296,10 @@ static void gen_exception_nip(DisasContext *ctx, uint32_t excp,
-     ctx->base.is_jmp = DISAS_NORETURN;
- }
- 
--static void gen_icount_io_start(DisasContext *ctx)
--{
--    translator_io_start(&ctx->base);
--}
--
- #if !defined(CONFIG_USER_ONLY)
- static void gen_ppc_maybe_interrupt(DisasContext *ctx)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_ppc_maybe_interrupt(cpu_env);
- }
- #endif
-@@ -541,13 +536,13 @@ void spr_write_ureg(DisasContext *ctx, int sprn, int gprn)
- #if !defined(CONFIG_USER_ONLY)
- void spr_read_decr(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_decr(cpu_gpr[gprn], cpu_env);
- }
- 
- void spr_write_decr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_decr(cpu_env, cpu_gpr[gprn]);
- }
- #endif
-@@ -556,13 +551,13 @@ void spr_write_decr(DisasContext *ctx, int sprn, int gprn)
- /* Time base */
- void spr_read_tbl(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_tbl(cpu_gpr[gprn], cpu_env);
- }
- 
- void spr_read_tbu(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_tbu(cpu_gpr[gprn], cpu_env);
- }
- 
-@@ -579,13 +574,13 @@ void spr_read_atbu(DisasContext *ctx, int gprn, int sprn)
- #if !defined(CONFIG_USER_ONLY)
- void spr_write_tbl(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_tbl(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_tbu(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_tbu(cpu_env, cpu_gpr[gprn]);
- }
- 
-@@ -602,44 +597,44 @@ void spr_write_atbu(DisasContext *ctx, int sprn, int gprn)
- #if defined(TARGET_PPC64)
- void spr_read_purr(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_purr(cpu_gpr[gprn], cpu_env);
- }
- 
- void spr_write_purr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_purr(cpu_env, cpu_gpr[gprn]);
- }
- 
- /* HDECR */
- void spr_read_hdecr(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_hdecr(cpu_gpr[gprn], cpu_env);
- }
- 
- void spr_write_hdecr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_hdecr(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_read_vtb(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_vtb(cpu_gpr[gprn], cpu_env);
- }
- 
- void spr_write_vtb(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_vtb(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_tbu40(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_tbu40(cpu_env, cpu_gpr[gprn]);
- }
- 
-@@ -784,19 +779,19 @@ void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
- #if !defined(CONFIG_USER_ONLY)
- void spr_read_40x_pit(DisasContext *ctx, int gprn, int sprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_load_40x_pit(cpu_gpr[gprn], cpu_env);
- }
- 
- void spr_write_40x_pit(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_40x_pit(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_40x_dbcr0(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_store_spr(sprn, cpu_gpr[gprn]);
-     gen_helper_store_40x_dbcr0(cpu_env, cpu_gpr[gprn]);
-     /* We must stop translation as we may have rebooted */
-@@ -805,19 +800,19 @@ void spr_write_40x_dbcr0(DisasContext *ctx, int sprn, int gprn)
- 
- void spr_write_40x_sler(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_40x_sler(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_40x_tcr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_40x_tcr(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_40x_tsr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_40x_tsr(cpu_env, cpu_gpr[gprn]);
- }
- 
-@@ -830,13 +825,13 @@ void spr_write_40x_pid(DisasContext *ctx, int sprn, int gprn)
- 
- void spr_write_booke_tcr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_booke_tcr(cpu_env, cpu_gpr[gprn]);
- }
- 
- void spr_write_booke_tsr(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_booke_tsr(cpu_env, cpu_gpr[gprn]);
- }
- #endif
-@@ -2462,7 +2457,7 @@ static void gen_darn(DisasContext *ctx)
-     if (l > 2) {
-         tcg_gen_movi_i64(cpu_gpr[rD(ctx->opcode)], -1);
-     } else {
--        gen_icount_io_start(ctx);
-+        translator_io_start(&ctx->base);
-         if (l == 0) {
-             gen_helper_darn32(cpu_gpr[rD(ctx->opcode)]);
-         } else {
-@@ -4056,7 +4051,7 @@ static void pmu_count_insns(DisasContext *ctx)
-      * running with icount and we do not handle it beforehand,
-      * the helper can trigger a 'bad icount read'.
-      */
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
- 
-     /* Avoid helper calls when only PMC5-6 are enabled. */
-     if (!ctx->pmc_other) {
-@@ -4369,7 +4364,7 @@ static void gen_rfi(DisasContext *ctx)
-     }
-     /* Restore CPU state */
-     CHK_SV(ctx);
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_update_cfar(ctx, ctx->cia);
-     gen_helper_rfi(cpu_env);
-     ctx->base.is_jmp = DISAS_EXIT;
-@@ -4384,7 +4379,7 @@ static void gen_rfid(DisasContext *ctx)
- #else
-     /* Restore CPU state */
-     CHK_SV(ctx);
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_update_cfar(ctx, ctx->cia);
-     gen_helper_rfid(cpu_env);
-     ctx->base.is_jmp = DISAS_EXIT;
-@@ -4399,7 +4394,7 @@ static void gen_rfscv(DisasContext *ctx)
- #else
-     /* Restore CPU state */
-     CHK_SV(ctx);
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_update_cfar(ctx, ctx->cia);
-     gen_helper_rfscv(cpu_env);
-     ctx->base.is_jmp = DISAS_EXIT;
-@@ -4724,7 +4719,7 @@ static void gen_mtmsrd(DisasContext *ctx)
-     t0 = tcg_temp_new();
-     t1 = tcg_temp_new();
- 
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
- 
-     if (ctx->opcode & 0x00010000) {
-         /* L=1 form only updates EE and RI */
-@@ -4764,7 +4759,7 @@ static void gen_mtmsr(DisasContext *ctx)
-     t0 = tcg_temp_new();
-     t1 = tcg_temp_new();
- 
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     if (ctx->opcode & 0x00010000) {
-         /* L=1 form only updates EE and RI */
-         mask &= (1ULL << MSR_RI) | (1ULL << MSR_EE);
-diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
-index d900e13cad..c82feedaff 100644
---- a/target/ppc/power8-pmu-regs.c.inc
-+++ b/target/ppc/power8-pmu-regs.c.inc
-@@ -103,9 +103,9 @@ static void write_MMCR0_common(DisasContext *ctx, TCGv val)
-     /*
-      * helper_store_mmcr0 will make clock based operations that
-      * will cause 'bad icount read' errors if we do not execute
--     * gen_icount_io_start() beforehand.
-+     * translator_io_start() beforehand.
-      */
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_mmcr0(cpu_env, val);
- 
-     /*
-@@ -179,7 +179,7 @@ void spr_read_PMC(DisasContext *ctx, int gprn, int sprn)
- {
-     TCGv_i32 t_sprn = tcg_constant_i32(sprn);
- 
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_read_pmc(cpu_gpr[gprn], cpu_env, t_sprn);
- }
- 
-@@ -212,7 +212,7 @@ void spr_write_PMC(DisasContext *ctx, int sprn, int gprn)
- {
-     TCGv_i32 t_sprn = tcg_constant_i32(sprn);
- 
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_pmc(cpu_env, t_sprn, cpu_gpr[gprn]);
- }
- 
-@@ -248,7 +248,7 @@ void spr_write_MMCR0(DisasContext *ctx, int sprn, int gprn)
- 
- void spr_write_MMCR1(DisasContext *ctx, int sprn, int gprn)
- {
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_store_mmcr1(cpu_env, cpu_gpr[gprn]);
- }
- #else
-diff --git a/target/ppc/translate/branch-impl.c.inc b/target/ppc/translate/branch-impl.c.inc
-index 29cfa11854..f9931b9d73 100644
---- a/target/ppc/translate/branch-impl.c.inc
-+++ b/target/ppc/translate/branch-impl.c.inc
-@@ -16,7 +16,7 @@ static bool trans_RFEBB(DisasContext *ctx, arg_XL_s *arg)
- {
-     REQUIRE_INSNS_FLAGS2(ctx, ISA207S);
- 
--    gen_icount_io_start(ctx);
-+    translator_io_start(&ctx->base);
-     gen_update_cfar(ctx, ctx->cia);
-     gen_helper_rfebb(cpu_env, cpu_gpr[arg->s]);
- 
--- 
-2.38.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/exec/exec-all.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+> index 4d2b151986..0d00541aca 100644
+> --- a/include/exec/exec-all.h
+> +++ b/include/exec/exec-all.h
+> @@ -31,8 +31,8 @@
+>      addresses in userspace mode.  Define tb_page_addr_t to be an appropriate
+>      type.  */
+>   #if defined(CONFIG_USER_ONLY)
+> -typedef abi_ulong tb_page_addr_t;
+> -#define TB_PAGE_ADDR_FMT TARGET_ABI_FMT_lx
+> +typedef vaddr tb_page_addr_t;
+> +#define TB_PAGE_ADDR_FMT "%" VADDR_PRIx
+>   #else
+>   typedef ram_addr_t tb_page_addr_t;
+>   #define TB_PAGE_ADDR_FMT RAM_ADDR_FMT
 
 
