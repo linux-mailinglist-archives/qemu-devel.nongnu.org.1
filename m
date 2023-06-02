@@ -2,94 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76A97203FE
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FBD720411
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:12:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q55SR-0002bd-6r; Fri, 02 Jun 2023 10:08:47 -0400
+	id 1q55VT-0003zx-BH; Fri, 02 Jun 2023 10:11:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q55SP-0002b3-7X
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:08:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1q55VQ-0003zC-Kx; Fri, 02 Jun 2023 10:11:52 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q55SN-0005y2-II
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:08:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685714922;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VldGy/qKU9Dqm6mr44wg5YAiQnTcmyUwVJrhnkXiYGU=;
- b=AtmBQE+V3CWM8G6cwO2eTb2LJvgjfdinlXvaOED4P9VI32PGrp2vxDdTEdG+gNup2EQQ4s
- TYtjXbkf6umkHKzstB9wuY0fQpNTG3WnZIyD4lekKi7Q8nuUIDrzkPwwMTO9+x2jbTq8OS
- kqWqz0M6vrvJ6fbY7qHeRd5vUS7eI3E=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-QB_qPAIKNAqzFUGkV0La6Q-1; Fri, 02 Jun 2023 10:08:41 -0400
-X-MC-Unique: QB_qPAIKNAqzFUGkV0La6Q-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-97542592eb9so25137966b.2
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:08:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685714920; x=1688306920;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VldGy/qKU9Dqm6mr44wg5YAiQnTcmyUwVJrhnkXiYGU=;
- b=E/B34feSRthwC1ay6lFdxMTYo48wcrrWmNNqKV1HcecV+bcGE04ROb75OQpcPNKSlr
- meq6/p82u+CzBIETLe2ZhKBOLXtgFkgFLDMkxxmtBq6ptDfEJ2uycf2FgvdOycArUfpM
- LAaC5zeqvmGogihxIJhXax2yydPI0w5MbeMNmRHDhAgsEHpDzxnLmXH2t7wcsqkRXQQ+
- yxs9Omnoz5QsC5v1/7eaBtN52/GFybjKaXgx2h6U50FkO/7A20yOWgA89V06xcGwjwyu
- x7StikPGiULPKIQNbf4UHJoS0DKHpTfSAk7N2ahIuyJE7dQFGnu0XwiVF8ZMZiQoBzHG
- 9RKw==
-X-Gm-Message-State: AC+VfDwjghcBt22kpMkeYhw8Sg6SVT5DUJTul7zS5vTFDBbPFzHaNLSt
- HF+0/HT6iEz9oT3oRM0uBfpPw/FIEzX4WBhKBODaJNTd4gL9PHQfzQzc63lzpyZjMRGnZJIKGp6
- j8+4RdmvkzeS6zu4=
-X-Received: by 2002:a17:907:928d:b0:96f:bc31:5e1c with SMTP id
- bw13-20020a170907928d00b0096fbc315e1cmr11340261ejc.47.1685714919313; 
- Fri, 02 Jun 2023 07:08:39 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Rox1gU/zfGFqvRp3xm0rRLJ3M9g2jYt+7gFX5/RRAsdN8LLBBVvu6sHVfueQnsyb4X0o/5w==
-X-Received: by 2002:a17:907:928d:b0:96f:bc31:5e1c with SMTP id
- bw13-20020a170907928d00b0096fbc315e1cmr11340240ejc.47.1685714918923; 
- Fri, 02 Jun 2023 07:08:38 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d72e:f7e0:e1ec:6307:c799:c188?
- (p200300cfd72ef7e0e1ec6307c799c188.dip0.t-ipconnect.de.
- [2003:cf:d72e:f7e0:e1ec:6307:c799:c188])
- by smtp.gmail.com with ESMTPSA id
- s2-20020a170906960200b00965b2d3968csm802910ejx.84.2023.06.02.07.08.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 07:08:38 -0700 (PDT)
-Message-ID: <db062a52-3ee2-2f9b-7ef6-8c7e28e4e217@redhat.com>
-Date: Fri, 2 Jun 2023 16:08:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v5 2/5] parallels: Split image leak handling to separate
- check and fix helpers
-Content-Language: en-US
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
- vsementsov@yandex-team.ru, kwolf@redhat.com
-References: <20230529151503.34006-1-alexander.ivanov@virtuozzo.com>
- <20230529151503.34006-3-alexander.ivanov@virtuozzo.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230529151503.34006-3-alexander.ivanov@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1q55VB-0006V1-3E; Fri, 02 Jun 2023 10:11:52 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 352EAXLM027870; Fri, 2 Jun 2023 14:11:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=TsujauogsLgmMU/SXFwIe2yRDuyNUEOO7jB2MMGbyXA=;
+ b=SIU0oP4EcntWzjuKRyJtyfjlLc2gZD+EjfYRg3nx0qz8K1nYy0GbAdicVkRKsSKHrmOv
+ CsZ+gFCMP38HUZSs3UuHPP5QdCSi/6XgSZffUZGLXZdMR1JUVZr9jy+ICvXBx7x1seTT
+ 9Ct36xQKSYiDcTXnJhD1yF5YR0//ENKn8NyUYuv3SDXogR1Cs6dhptlOKqZ3v/WkkplF
+ DF3i8YdGeQCWUV+Lj5FHmKjHDnPqp2dZrverWosAzLXMRSPBbx/Ri3zE6v5ljOvaiTeI
+ IQl/BqqIJY35rnIfLQHfNQj6IyG/L9qd2vKfnogwSKNFBlCuIxnEPr6YIvX/UxO3dzSF QA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qygq5j9a2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 14:11:33 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 352EBEmH030164;
+ Fri, 2 Jun 2023 14:11:33 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qygq5j99t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 14:11:33 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 352Blq8b019382;
+ Fri, 2 Jun 2023 14:11:32 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
+ by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3qu9g78f5x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 14:11:32 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 352EBVN41114854
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 2 Jun 2023 14:11:31 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41E9258065;
+ Fri,  2 Jun 2023 14:11:31 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5E1C058052;
+ Fri,  2 Jun 2023 14:11:30 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown
+ [9.61.88.233]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  2 Jun 2023 14:11:30 +0000 (GMT)
+From: Tony Krowiak <akrowiak@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, mjrosato@linux.ibm.com, jjherne@linux.ibm.com,
+ pasic@linux.ibm.com, fiuczy@linux.ibm.com, thuth@redhat.com,
+ farman@linux.ibm.com, borntraeger@linux.ibm.com, clg@redhat.com,
+ cohuck@redhat.com, Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: [PATCH v2 0/2] s390x/ap: fix hang when mdev attached to guest is
+ removed
+Date: Fri,  2 Jun 2023 10:11:23 -0400
+Message-Id: <20230602141125.448833-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _jbYaQ9_mq0I8PYqTM0x0O-o_YXNPjNT
+X-Proofpoint-ORIG-GUID: 4oBTGQAYVsHOL8YxKa376OBGpo-mlXF0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-02_10,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 clxscore=1015 bulkscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 impostorscore=0
+ mlxlogscore=835 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306020106
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,137 +111,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29.05.23 17:15, Alexander Ivanov wrote:
-> We need to fix leak after deduplication in the next patch. Move leak
-> fixing to a separate helper parallels_fix_leak() and add
-> parallels_get_leak_size() helper wich used in parallels_fix_leak() and
-> parallels_check_leak().
->
-> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> ---
->   block/parallels.c | 86 +++++++++++++++++++++++++++++++++--------------
->   1 file changed, 61 insertions(+), 25 deletions(-)
->
-> diff --git a/block/parallels.c b/block/parallels.c
-> index 1ec98c722b..64850b9655 100644
-> --- a/block/parallels.c
-> +++ b/block/parallels.c
-> @@ -482,43 +482,79 @@ parallels_check_outside_image(BlockDriverState *bs, BdrvCheckResult *res,
->       return 0;
->   }
->   
-> +static int64_t parallels_get_leak_size(BlockDriverState *bs,
-> +                                       BdrvCheckResult *res)
-> +{
-> +    int64_t size;
-> +
-> +    size = bdrv_getlength(bs->file->bs);
-> +    if (size < 0) {
-> +        return size;
-> +    }
-> +
-> +    /*
-> +     * Before any usage of this function, image_end_offset has to be set to the
-> +     * the highest offset in the BAT, excluding out-of-image offsets.
-> +     */
-> +    assert(size >= res->image_end_offset);
+When a user attempts to remove a vfio-ap mediated device attached to a
+guest, the operation hangs until the mdev's fd is closed by the guest
+(i.e., the guest is shut down). This patch series provides userspace 
+(i.e., qemu) code to handle device unplug requests for AP. When notified
+that the mdev is being removed, the handler will unplug the device, thus
+avoiding the hang condition.
 
-If `high_off == 0` in parallels_check_outside_image(), it will use 
-s->data_end to determine image_end_offset, which is originally read from 
-the image header.  I don’t see any place where we ensure that 
-`s->data_end <= bdrv_getlength(bs->file->bs)`, so can we be certain the 
-assertion holds even in that case?
+Link: https://lore.kernel.org/r/20230530223538.279198-4-akrowiak@linux.ibm.com
 
-> +
-> +    return size - res->image_end_offset;
-> +}
-> +
-> +static int parallels_fix_leak(BlockDriverState *bs,
-> +                              BdrvCheckResult *res)
-> +{
-> +    Error *local_err = NULL;
-> +    int64_t size;
-> +    int ret;
-> +
-> +    size = parallels_get_leak_size(bs, res);
-> +    if (size <= 0) {
-> +        return size;
-> +    }
-> +
-> +    /*
-> +     * In order to really repair the image, we must shrink it.
-> +     * That means we have to pass exact=true.
-> +     */
-> +    ret = bdrv_co_truncate(bs->file, res->image_end_offset, true,
-> +                           PREALLOC_MODE_OFF, 0, &local_err);
-> +    if (ret < 0) {
-> +        error_report_err(local_err);
-> +        return ret;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   static int coroutine_fn GRAPH_RDLOCK
->   parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
->                        BdrvCheckMode fix)
->   {
->       BDRVParallelsState *s = bs->opaque;
-> -    int64_t size;
-> +    int64_t count, leak_size;
->       int ret;
->   
-> -    size = bdrv_getlength(bs->file->bs);
-> -    if (size < 0) {
-> +    leak_size = parallels_get_leak_size(bs, res);
-> +    if (leak_size < 0) {
->           res->check_errors++;
-> -        return size;
-> +        return leak_size;
-> +    }
-> +    if (leak_size == 0) {
-> +        return 0;
->       }
->   
-> -    if (size > res->image_end_offset) {
-> -        int64_t count;
-> -        count = DIV_ROUND_UP(size - res->image_end_offset, s->cluster_size);
-> -        fprintf(stderr, "%s space leaked at the end of the image %" PRId64 "\n",
-> -                fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR",
-> -                size - res->image_end_offset);
-> -        res->leaks += count;
-> -        if (fix & BDRV_FIX_LEAKS) {
-> -            Error *local_err = NULL;
-> +    count = DIV_ROUND_UP(leak_size, s->cluster_size);
-> +    res->leaks += count;
-> +    fprintf(stderr, "%s space leaked at the end of the image %" PRId64 "\n",
-> +            fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR", leak_size);
->   
-> -            /*
-> -             * In order to really repair the image, we must shrink it.
-> -             * That means we have to pass exact=true.
-> -             */
-> -            ret = bdrv_co_truncate(bs->file, res->image_end_offset, true,
-> -                                   PREALLOC_MODE_OFF, 0, &local_err);
-> -            if (ret < 0) {
-> -                error_report_err(local_err);
-> -                res->check_errors++;
-> -                return ret;
-> -            }
-> -            res->leaks_fixed += count;
-> +    if (fix & BDRV_FIX_LEAKS) {
-> +        ret = parallels_fix_leak(bs, res);
-> +        if (ret < 0) {
-> +            return ret;
+Tony Krowiak (2):
+  linux-headers: Update with vfio_ap IRQ index mapping
+  s390x/ap: Wire up the device request notifier interface
 
-We used to increment res->check_errors here – should we still do that?
+ hw/vfio/ap.c                                  | 113 ++++++++++++++++++
+ include/standard-headers/linux/const.h        |   2 +-
+ include/standard-headers/linux/virtio_blk.h   |  18 +--
+ .../standard-headers/linux/virtio_config.h    |   6 +
+ include/standard-headers/linux/virtio_net.h   |   1 +
+ linux-headers/asm-arm64/kvm.h                 |  33 +++++
+ linux-headers/asm-riscv/kvm.h                 |  53 +++++++-
+ linux-headers/asm-riscv/unistd.h              |   9 ++
+ linux-headers/asm-s390/unistd_32.h            |   1 +
+ linux-headers/asm-s390/unistd_64.h            |   1 +
+ linux-headers/asm-x86/kvm.h                   |   3 +
+ linux-headers/linux/const.h                   |   2 +-
+ linux-headers/linux/kvm.h                     |  12 +-
+ linux-headers/linux/psp-sev.h                 |   7 ++
+ linux-headers/linux/userfaultfd.h             |  17 ++-
+ linux-headers/linux/vfio.h                    |   9 ++
+ 16 files changed, 271 insertions(+), 16 deletions(-)
 
-Hanna
-
->           }
-> +        res->leaks_fixed += count;
->       }
->   
->       return 0;
+-- 
+2.31.1
 
 
