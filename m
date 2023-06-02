@@ -2,81 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374887201E0
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1237201E3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:20:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q53jD-0004iM-RG; Fri, 02 Jun 2023 08:17:59 -0400
+	id 1q53kw-0006fH-At; Fri, 02 Jun 2023 08:19:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1q53j2-0004cu-2h
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:17:51 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1q53iw-00012o-QI
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:17:47 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f122ff663eso2580002e87.2
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 05:17:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1685708261; x=1688300261; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zt/AkkUF0Oa0v1YU386sd7CtbRuL8ksGvcfUCwl70SM=;
- b=ZJ1u0KJkwldoK02cgyiGzD4kdb4SgwxzZRgknA8Rp20jIPkfpr1VjkEXG5ErsAmiGo
- 7CfA9G1+4xEqZqYBlEkt/bkTK3qCOzb1R2UwAmMwf7eEf8VNJmUWJeGHuXiPfoH+PHUh
- 0+5QBUzO3MXEn39wRtEZ00rsJdMrGn+xXAUeNj0Xki05kQAr44kKz4M3S2cHV72g2lg+
- sHlTar3LQuj2RAM3IXRph+KJ+bNgaoGJowSSO419ii01xowFLGRTixOu+jrVXQB5j6Me
- o5CMVkLdcc6/s6Z5Ct4dyWW9MpBgFUCKwxKzvZLdTNxNjsT81aqA8ijknxhrBKjm/EcC
- Vwnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685708261; x=1688300261;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zt/AkkUF0Oa0v1YU386sd7CtbRuL8ksGvcfUCwl70SM=;
- b=Z5v9qXuSDT821U5097MfXnOgsfykxKyLkmclpu97g8ctXpZ0sUo85G066L/pARVXse
- A1oX8sN8m0cNiGJ9st1bqtMIRsqmqfe6D/BVJuVsQ3YmZmJhNjY6DqWrLiJuNsZrICuy
- EpiRbXLrNV0AZ/zUp+7A8+9odnq+ENpBgybtxAj7cgApb6C4H0cRqBz1ctVVAfUNcThC
- vc5qGNX5VWeMfclz7ZO5g9MdbyddK81SiMWRn9PbY07KnjDfbHk97tWJ3w9mhYEaBfex
- XpZuAkJX0HeCOrYCeUMZHUnUuhKnwhkZq7RHi9/nqOzmXoYjRPxTstMjcv39IkPL8Z2p
- nV2w==
-X-Gm-Message-State: AC+VfDyT42egFcAfcVS9oLclTsYLWZTWqivFlAiBLwGeu4hj6TiXbR69
- LVAEXLSr+zdoAbeeWIdYB5WNejUKlAGKTQxVXCBzJA==
-X-Google-Smtp-Source: ACHHUZ7dCaaSWvNmZPSOf+acPtbh73F9fvVanfzr1EUPCVgUTABDelAklkjBcTkFjGb2WLpyk9kx3g==
-X-Received: by 2002:ac2:5dcb:0:b0:4d8:6540:a731 with SMTP id
- x11-20020ac25dcb000000b004d86540a731mr1716610lfq.47.1685708261001; 
- Fri, 02 Jun 2023 05:17:41 -0700 (PDT)
-Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
- [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- z16-20020a7bc7d0000000b003f605814850sm5391847wmk.37.2023.06.02.05.17.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 05:17:40 -0700 (PDT)
-From: Rob Bradford <rbradford@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q53kc-0006em-TV
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:19:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q53ka-0001KS-UC
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:19:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685708362;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ThbOUsTAsNZ4pyUDNXkUbz3MNNn8R3IdsxJGkjRCjTQ=;
+ b=CmgJTsBwgOiFZNt4BiK6OWWvWnef5DGe0SCdDGRGpaVBpO1mpkP/7K0oHhA6FPNGRm6aFn
+ OXmCmGjFFs+JV9lGp/XNDhdsJ8lBJH0LUqjr0xjGf72D3zhU8zNhspjPP59ugpXXh3BerP
+ nVXqqRIEBom31cGpaY6DNXBYf3/X1po=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-323-5Sb3e87DOaa8ZPDDVSffcg-1; Fri, 02 Jun 2023 08:19:21 -0400
+X-MC-Unique: 5Sb3e87DOaa8ZPDDVSffcg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06D2A3C0ED4C;
+ Fri,  2 Jun 2023 12:19:21 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.193.168])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4DAA9492B0A;
+ Fri,  2 Jun 2023 12:19:19 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, Rob Bradford <rbradford@rivosinc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <Alistair.Francis@wdc.com>
-Subject: [PATCH 2/2] disas/riscv: Add support for amocas.{w,d,q} instructions
-Date: Fri,  2 Jun 2023 13:16:41 +0100
-Message-Id: <20230602121638.36342-3-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230602121638.36342-1-rbradford@rivosinc.com>
-References: <20230602121638.36342-1-rbradford@rivosinc.com>
+Cc: Jason Wang <jasowang@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Hawkins Jiawei <yin31149@gmail.com>, Shannon Nelson <snelson@pensando.io>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>,
+ Gautam Dawar <gdawar@xilinx.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ mst@redhat.com
+Subject: [PATCH] vdpa: do not block migration if device has cvq and x-svq=on
+Date: Fri,  2 Jun 2023 14:19:17 +0200
+Message-Id: <20230602121917.1854805-1-eperezma@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=rbradford@rivosinc.com; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,46 +79,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
----
- disas/riscv.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+It was a mistake to forbid in all cases, as SVQ is already able to send
+all the CVQ messages before start forwarding data vqs.  It actually
+caused a regression, making impossible to migrate device previously
+migratable.
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index d597161d46..dbed2010f8 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -964,6 +964,9 @@ typedef enum {
-     rv_op_cm_jalt = 788,
-     rv_op_czero_eqz = 789,
-     rv_op_czero_nez = 790,
-+    rv_op_amocas_w = 791,
-+    rv_op_amocas_d = 792,
-+    rv_op_amocas_q = 793,
- } rv_op;
+Fixes: 36e4647247f2 ("vdpa: add vhost_vdpa_net_valid_svq_features")
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
+ net/vhost-vdpa.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 37cdc84562..c63456ff7c 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -837,13 +837,16 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+         s->vhost_vdpa.shadow_vq_ops_opaque = s;
  
- /* structures */
-@@ -2123,6 +2126,9 @@ const rv_opcode_data opcode_data[] = {
-     { "cm.jalt", rv_codec_zcmt_jt, rv_fmt_zcmt_index, NULL, 0 },
-     { "czero.eqz", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-     { "czero.nez", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-+    { "amoswap.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "amoswap.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "amoswap.q", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -2865,6 +2871,9 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             case 34: op = rv_op_amoxor_w; break;
-             case 35: op = rv_op_amoxor_d; break;
-             case 36: op = rv_op_amoxor_q; break;
-+            case 42: op = rv_op_amocas_w; break;
-+            case 43: op = rv_op_amocas_d; break;
-+            case 44: op = rv_op_amocas_q; break;
-             case 66: op = rv_op_amoor_w; break;
-             case 67: op = rv_op_amoor_d; break;
-             case 68: op = rv_op_amoor_q; break;
+         /*
+-         * TODO: We cannot migrate devices with CVQ as there is no way to set
+-         * the device state (MAC, MQ, etc) before starting the datapath.
++         * TODO: We cannot migrate devices with CVQ and no x-svq enabled as
++         * there is no way to set the device state (MAC, MQ, etc) before
++         * starting the datapath.
+          *
+          * Migration blocker ownership now belongs to s->vhost_vdpa.
+          */
+-        error_setg(&s->vhost_vdpa.migration_blocker,
+-                   "net vdpa cannot migrate with CVQ feature");
++        if (!svq) {
++            error_setg(&s->vhost_vdpa.migration_blocker,
++                       "net vdpa cannot migrate with CVQ feature");
++        }
+     }
+     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
+     if (ret) {
 -- 
-2.40.1
+2.31.1
 
 
