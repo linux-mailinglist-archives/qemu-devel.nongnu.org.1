@@ -2,96 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0074972022D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7872720233
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q53zn-0007zg-EX; Fri, 02 Jun 2023 08:35:07 -0400
+	id 1q541l-0000xh-QZ; Fri, 02 Jun 2023 08:37:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q53zl-0007xs-RY
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:35:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1q541i-0000wl-T9; Fri, 02 Jun 2023 08:37:06 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q53zk-0008OO-0L
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:35:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685709302;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KGd7sru5dY0ItROVP4IOk9yVus0xA/Z+YN3v5nBi3UA=;
- b=M90BqFm1Iu7cPmnetwcIUquGfob16dROfAYRw8yEld93IwQR701jd9MFIbPZj0zHp5Qx4t
- GTEaPjTKOZ3vE7VllnSLuoqup54bQt1Ca3j71p6TaPfHMjHHldNczc+/U46TGcz0RgYLCp
- I3gIVB4PvL1RWAJrDzo8TjwakH9fwV4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-SxC2ScONMXaRD0Qbs7nvug-1; Fri, 02 Jun 2023 08:35:00 -0400
-X-MC-Unique: SxC2ScONMXaRD0Qbs7nvug-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30479b764f9so1043967f8f.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 05:35:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685709299; x=1688301299;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KGd7sru5dY0ItROVP4IOk9yVus0xA/Z+YN3v5nBi3UA=;
- b=MN3aj/UbWuWxc7BU/yiCkgv8nZvRe4TQ5n9iWu/oNGmM4VgcPnSQNrrRSKAbaUiSHl
- 8b2S1WTnz3qBFzmDCJGLuj4pVd5PrCUf5tFh/YF5HSz7m4IqjRAm7UZkk4+K4jphstgo
- JLXLH+37BIeqEA7KhvglS0bpXZZRqyUlbBP3Jv2kUIAsQzz8fWrkQWAJRDBvm4iMnlet
- 9G7Eq1iHNi1AUQCERpTPtjVWyvWtzGwSyjJ025+vC7m30pVKykgGZ1+DCBYoflHBKf5+
- S95y1eLsTciL+gQSRBJ5OUPO55Qm8V4Xp9vAyPyNkoOcLOuLlEiqj/r8F7ebbKJNEMyT
- Ekyw==
-X-Gm-Message-State: AC+VfDwHbQQMq/3vx4Onb5BHm6e/qBKVe4RWog5xENZvy02AJI/R4c5M
- SG+ug6T/gFRBwlPZjjWAO4wMQmM7JkhUnf6/6rU9ClschlvNIVBfeJVswrGp6A5T+zF9qBoWa9S
- 0IRgSHleVrKDvSV8=
-X-Received: by 2002:a5d:69c7:0:b0:30a:e141:d1e2 with SMTP id
- s7-20020a5d69c7000000b0030ae141d1e2mr3972027wrw.7.1685709299669; 
- Fri, 02 Jun 2023 05:34:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4SgSh3eSMbOZE2TzuDmNxmdC4OZiOpLUjBQUYqyByjQm77xcFbvHdojD4ac0GzaPhGxgnhnA==
-X-Received: by 2002:a5d:69c7:0:b0:30a:e141:d1e2 with SMTP id
- s7-20020a5d69c7000000b0030ae141d1e2mr3972013wrw.7.1685709299279; 
- Fri, 02 Jun 2023 05:34:59 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f2e:ae00:f2e3:50e0:73f7:451?
- (p200300d82f2eae00f2e350e073f70451.dip0.t-ipconnect.de.
- [2003:d8:2f2e:ae00:f2e3:50e0:73f7:451])
- by smtp.gmail.com with ESMTPSA id
- b12-20020a05600010cc00b003077a19cf75sm1571957wrx.60.2023.06.02.05.34.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 05:34:58 -0700 (PDT)
-Message-ID: <4f524884-034a-785d-a1e8-0ebc10f2232f@redhat.com>
-Date: Fri, 2 Jun 2023 14:34:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1q541g-0000Sf-4e; Fri, 02 Jun 2023 08:37:06 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 352CaP2k019666; Fri, 2 Jun 2023 12:37:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=vo/kGav1tdrySmVoKgWWzNHtBnVqz0/wy1/6ZmQY86U=;
+ b=F+B6tvM/re5194MlaUip1sUhH5BQo6FxBGiSf7W/jmC8ScrK4ST0GD3femRmAgU1nCuu
+ E8nRJKVCXZO+5BKFY5arPWXlieA0rWwMf2hP86Fz4ffU3UkiSaWiRFNmiESKptjKiSbC
+ IGAECNMXQlBH7Z09yVFrcayAPAFd6pVSey8yXWntDqKIZN/3ufTwBnG4xjjIzhRjm5jg
+ rpmn+G4T+wzKaj+PnK6SlKcfBJOshfcLvy3fQv0ULLKIpJjg4RCDnz8Jbs5wVKZwkQdB
+ pNxZA4GfY+eYC+ZwkTX/LHst2OZjmY1kiUwDjRtN0ZOzMZOWiiqFs80b4Gvb2fJuy5Mr vA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qygk1r0yv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 12:37:01 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 352Cb1XR022990;
+ Fri, 2 Jun 2023 12:37:01 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qygk1r0x3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 12:37:01 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3526dPvf006319;
+ Fri, 2 Jun 2023 12:36:59 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qu9g52hgw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Jun 2023 12:36:59 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 352Caub812649136
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 2 Jun 2023 12:36:56 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C1E1E2004D;
+ Fri,  2 Jun 2023 12:36:56 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 90A602004B;
+ Fri,  2 Jun 2023 12:36:56 +0000 (GMT)
+Received: from [9.155.209.184] (unknown [9.155.209.184])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  2 Jun 2023 12:36:56 +0000 (GMT)
+Message-ID: <49e98edb606e290008e13ab08ed293b476847d8a.camel@linux.ibm.com>
 Subject: Re: [PATCH 4/4] linux-user: Emulate /proc/cpuinfo on s390x
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
- Tulio Magno Quites Machado Filho <tuliom@redhat.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Thomas Huth <thuth@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Tulio Magno Quites Machado
+ Filho <tuliom@redhat.com>
+Date: Fri, 02 Jun 2023 14:36:56 +0200
+In-Reply-To: <4f524884-034a-785d-a1e8-0ebc10f2232f@redhat.com>
 References: <20230601162541.689621-1-iii@linux.ibm.com>
  <20230601162541.689621-5-iii@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230601162541.689621-5-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+ <4f524884-034a-785d-a1e8-0ebc10f2232f@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tlBj7z3z_FD_ulLz0OY20zTS098JuewR
+X-Proofpoint-ORIG-GUID: Rq6qRvyrKHAWg9bkNlOB0a9QtSVQ3jKC
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-02_08,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 phishscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 mlxscore=0 clxscore=1015 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306020094
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,80 +117,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01.06.23 18:25, Ilya Leoshkevich wrote:
-> Some s390x userspace programs are confused when seeing a foreign
-> /proc/cpuinfo [1]. Add the emulation for s390x; follow the respective
-> kernel code structure where possible.
-> 
-> [1] https://bugzilla.redhat.com/show_bug.cgi?id=2211472
-> 
+On Fri, 2023-06-02 at 14:34 +0200, David Hildenbrand wrote:
+> On 01.06.23 18:25, Ilya Leoshkevich wrote:
+> > Some s390x userspace programs are confused when seeing a foreign
+> > /proc/cpuinfo [1]. Add the emulation for s390x; follow the
+> > respective
+> > kernel code structure where possible.
+> >=20
+> > [1] https://bugzilla.redhat.com/show_bug.cgi?id=3D2211472
+> >=20
+>=20
+> Would be nice to have an example output here.
+>=20
+> > Reported-by: Tulio Magno Quites Machado Filho <tuliom@redhat.com>
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0 linux-user/syscall.c | 106
+> > ++++++++++++++++++++++++++++++++++++++++++-
+> > =C2=A0 1 file changed, 105 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> > index 3e6ed51ce62..d142e09dc70 100644
+> > --- a/linux-user/syscall.c
+> > +++ b/linux-user/syscall.c
+> > @@ -8339,6 +8339,109 @@ static int open_cpuinfo(CPUArchState
+> > *cpu_env, int fd)
+> > =C2=A0 }
+> > =C2=A0 #endif
+> > =C2=A0=20
+>=20
+> [...]
+>=20
+> > +
+> > +static void show_cpuinfo(CPUArchState *cpu_env, int fd, unsigned
+> > long n)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 if (n =3D=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 show_cpu_summary(cpu_env, f=
+d);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0 dprintf(fd, "\ncpu number=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 : %ld\n", n);
+> > +=C2=A0=C2=A0=C2=A0 show_cpu_ids(cpu_env, fd, n);
+> > +}
+>=20
+> Considering the n=3D=3D0 special case, it might be cleaner to just place=
+=20
+> that code directly into open_cpuinfo and get rid of show_cpuinfo().
 
-Would be nice to have an example output here.
+Will do.
 
-> Reported-by: Tulio Magno Quites Machado Filho <tuliom@redhat.com>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   linux-user/syscall.c | 106 ++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 105 insertions(+), 1 deletion(-)
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 3e6ed51ce62..d142e09dc70 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8339,6 +8339,109 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
->   }
->   #endif
->   
+This was copied from the kernel, where a similar check actually made
+sense, but in the QEMU context we don't really need it.
 
-[...]
-
-> +
-> +static void show_cpuinfo(CPUArchState *cpu_env, int fd, unsigned long n)
-> +{
-> +    if (n == 0) {
-> +        show_cpu_summary(cpu_env, fd);
-> +    }
-> +    dprintf(fd, "\ncpu number      : %ld\n", n);
-> +    show_cpu_ids(cpu_env, fd, n);
-> +}
-
-Considering the n==0 special case, it might be cleaner to just place 
-that code directly into open_cpuinfo and get rid of show_cpuinfo().
-
-> +
-> +static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-> +{
-> +    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-> +    int i;
-> +
-> +    for (i = 0; i < num_cpus; i++) {
-> +        show_cpuinfo(cpu_env, fd, i);
-> +    }
-> +    return 0;
-> +}
-> +#endif
-> +
->   #if defined(TARGET_M68K)
->   static int open_hardware(CPUArchState *cpu_env, int fd)
->   {
-> @@ -8364,7 +8467,8 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
->   #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
->           { "/proc/net/route", open_net_route, is_proc },
->   #endif
-> -#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || defined(TARGET_RISCV)
-> +#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
-> +    defined(TARGET_RISCV) || defined(TARGET_S390X)
->           { "/proc/cpuinfo", open_cpuinfo, is_proc },
->   #endif
->   #if defined(TARGET_M68K)
-
-In general, looks very good to me, thanks! With the fixup:
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
--- 
-Thanks,
-
-David / dhildenb
+> > +
+> > +static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 int num_cpus =3D sysconf(_SC_NPROCESSORS_ONLN);
+> > +=C2=A0=C2=A0=C2=A0 int i;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < num_cpus; i++) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 show_cpuinfo(cpu_env, fd, i=
+);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0 return 0;
+> > +}
+> > +#endif
+> > +
+> > =C2=A0 #if defined(TARGET_M68K)
+> > =C2=A0 static int open_hardware(CPUArchState *cpu_env, int fd)
+> > =C2=A0 {
+> > @@ -8364,7 +8467,8 @@ int do_guest_openat(CPUArchState *cpu_env,
+> > int dirfd, const char *pathname,
+> > =C2=A0 #if HOST_BIG_ENDIAN !=3D TARGET_BIG_ENDIAN
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { "/proc/net/rou=
+te", open_net_route, is_proc },
+> > =C2=A0 #endif
+> > -#if defined(TARGET_SPARC) || defined(TARGET_HPPA) ||
+> > defined(TARGET_RISCV)
+> > +#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
+> > +=C2=A0=C2=A0=C2=A0 defined(TARGET_RISCV) || defined(TARGET_S390X)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { "/proc/cpuinfo=
+", open_cpuinfo, is_proc },
+> > =C2=A0 #endif
+> > =C2=A0 #if defined(TARGET_M68K)
+>=20
+> In general, looks very good to me, thanks! With the fixup:
+>=20
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+>=20
 
 
