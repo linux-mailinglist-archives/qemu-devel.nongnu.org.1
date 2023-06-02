@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FCB720A91
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 22:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE33720A9F
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 22:57:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5Bk9-0000AP-5O; Fri, 02 Jun 2023 16:51:29 -0400
+	id 1q5BpM-0002QK-A1; Fri, 02 Jun 2023 16:56:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Bjv-0000A5-PA
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:51:15 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5BpL-0002Q5-5u
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:56:51 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Bju-0002Cm-48
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:51:15 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f6e1394060so23839575e9.3
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 13:51:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5BpJ-0003QA-Mk
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:56:50 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-30ae69ef78aso2942245f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 13:56:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685739072; x=1688331072;
+ d=linaro.org; s=google; t=1685739408; x=1688331408;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ILq7X2J+pi2vixuHRXBUFJqfwVeG4b710Mj2RhfZZdE=;
- b=p2j+zd57N0s4IghknKrdePv+zoO9HhaxMUUwNTiKkB+juV3L1of11ItZoigeL8MG4P
- yD03PipQbFAahksmmjPzjcXuLwAwWmGrJc9UJrczsUXEOnLiSTrCfbJ01BSxJ6Ou3sD+
- jMQySSeQWrbkuCay52kzWfgordRz3V2zauhEusYUX4AntMtzwc3J3Og7ulrdPIbYPIpf
- X3hM3auTWGmdDUQGj4VRnt7k3eaZ3yJUS3Bys2PhwcNRxjejQ5EVC3TllvdJwuIQbyjY
- sWs5UF1fFj1p5lTtVs1YeUUH/bEne+thFQuxwUAxScrgy4XYt7ctSEZGWL6pdi8ikLhY
- 6xvw==
+ bh=tbQLZbE/WDczJJDfEsqfW53QUkwag2K+3Av6p4ZLfsM=;
+ b=EqSWSg60MQmbrpzI29mlR3DvSeLVCRMkEnTBmnW05tDaoeR3peGYYxg5CwZCT/SXJT
+ ejNvmP8e9tEvTgHjeuhhnpzs1UTQPZenDDE5MiuoA0bo3H5QStgkigzO/e/IfNXAD+pt
+ ckiqDNHWyBTj7jvNW8kwpkgciw2NZOzM68Zmgg2q0RWMgeGi+vebtBxo5Oz+nzO2E+nV
+ TuZxI7x8A/mOW+8NkN1ExUNu44D38MRM6HXpTcXftCvJ14KCxnOrR802QfgINnLas3e6
+ dBf9xubWBXfQhPZEhZ8gIBrykWiQTn/JCZL/sL0nhoK+wq/5eSgann7xh3urCrekfd3P
+ X85A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685739072; x=1688331072;
+ d=1e100.net; s=20221208; t=1685739408; x=1688331408;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ILq7X2J+pi2vixuHRXBUFJqfwVeG4b710Mj2RhfZZdE=;
- b=bOR7k6+J66jauzF3fmh7mlbWALzdwI+mZk4nIAEA9MGtbmY2fUAZBUfMf1kvHqjavz
- 39UIBQZvbajxJDZe6KngzenafrWtA3Ly4w8bbubcv+BZ3JBFiuxGg+mlSfYZMNhjKS0n
- +gTBp+PJWyz24von8ltEpnSOQYmFV27NayKnOhzulExSsMty8N3iVTqvE2qMwaeTepFZ
- jxvXI6taoXY8IQ3WgF+DEhP3T+DSxd0c2W2WuoXBVTTNIdKFWY+A2tkCazTJKekALejN
- 4NON3p4Aqoog1jWjoK0dJdg80XvWb2PWxq5/48PykSqyRIQN4rKc6BPy+e4GPIivLiJt
- qz1Q==
-X-Gm-Message-State: AC+VfDxXu8oXcevAc6uZtJ+tswamkFsv6ishlVuc/Hv/1I87fAqeL0Zp
- eFdKV/rYizTQWK3k//xKKshwdQ==
-X-Google-Smtp-Source: ACHHUZ6GIJNqhjGby1gtkRniR6Go0ylrhTfTVItoUcOYce4dyJcvkUCPYxbMMhWEMH1I1i2heUjttg==
-X-Received: by 2002:a7b:cd8f:0:b0:3f4:f0c2:125 with SMTP id
- y15-20020a7bcd8f000000b003f4f0c20125mr2354066wmj.23.1685739072196; 
- Fri, 02 Jun 2023 13:51:12 -0700 (PDT)
+ bh=tbQLZbE/WDczJJDfEsqfW53QUkwag2K+3Av6p4ZLfsM=;
+ b=aiTdlji8afR+b3qguuwOglgr5JLIJegRge9+T/jyLJ+sE2io0hoBE6Q0h2kwBFJZEz
+ LQhQMFJcIJ3k00Dh0HEHIpYxwk9yCIwucTrDkYKoLKu2hxp+Pd130e3H6bO69w1Tt8ZO
+ q08gECUpTamQMESGgxmowx6e/etwwjsENVCaIfQaDxKAoeqe5+wFga0Zrc5e3ukOrZI1
+ FUWeLlrJC783PViVPB+6Iabblad0o7hrccXubk3ZzT5UEopm9sqdXgXkFXyt3T7Wap8V
+ F6RwQzAi0bdOVrbncZlTQu//+D8VIPKhin/rGWPMdWo21CnmQt9G7Mq8sv4C3cJo3Tc0
+ 2n8w==
+X-Gm-Message-State: AC+VfDxkHOvjDh2sXMCjwHKhUGNYkpGklxuCPqpDiAkbTcvinWuXcDwJ
+ t4PksFuzeWS2pGvsLCq0t4krhA==
+X-Google-Smtp-Source: ACHHUZ5EZ+gnK6yQLf1DhWeT8CekgBVtleURqQ+jB2FGraLlArgzKQURSrGAc/ZJEpH9qUbwJSvbGA==
+X-Received: by 2002:adf:ebc9:0:b0:303:daff:f1a3 with SMTP id
+ v9-20020adfebc9000000b00303dafff1a3mr938709wrn.1.1685739408014; 
+ Fri, 02 Jun 2023 13:56:48 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- x17-20020a05600c21d100b003f4272c2d0csm2963338wmj.36.2023.06.02.13.51.10
+ i10-20020a05600c290a00b003f0aefcc457sm6523275wmd.45.2023.06.02.13.56.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 13:51:11 -0700 (PDT)
-Message-ID: <13e60074-adc0-f3f2-e5fe-f48e6778cf04@linaro.org>
-Date: Fri, 2 Jun 2023 22:51:08 +0200
+ Fri, 02 Jun 2023 13:56:47 -0700 (PDT)
+Message-ID: <c79771a1-9b93-98d3-b4ba-dd5eb415ef7d@linaro.org>
+Date: Fri, 2 Jun 2023 22:56:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 13/20] target/arm: Convert LDR/STR with 12-bit immediate
- to decodetree
+Subject: Re: [PATCH 16/20] target/arm: Convert load (pointer auth) insns to
+ decodetree
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230602155223.2040685-1-peter.maydell@linaro.org>
- <20230602155223.2040685-14-peter.maydell@linaro.org>
+ <20230602155223.2040685-17-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230602155223.2040685-14-peter.maydell@linaro.org>
+In-Reply-To: <20230602155223.2040685-17-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,42 +94,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
-
 On 2/6/23 17:52, Peter Maydell wrote:
-> Convert the LDR and STR instructions which use a 12-bit immediate
-> offset to decodetree. We can reuse the existing LDR and STR
-> trans functions for these.
+> Convert the instructions in the load/store register (pointer
+> authentication) group ot decodetree: LDRAA, LDRAB.
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   target/arm/tcg/a64.decode      |  25 ++++++++
->   target/arm/tcg/translate-a64.c | 103 +++++----------------------------
->   2 files changed, 41 insertions(+), 87 deletions(-)
+>   target/arm/tcg/a64.decode      |  7 +++
+>   target/arm/tcg/translate-a64.c | 83 +++++++---------------------------
+>   2 files changed, 23 insertions(+), 67 deletions(-)
 > 
 > diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-> index 4dfb7bbdc2e..c3a6d0b740a 100644
+> index 69635586718..2ea85312bba 100644
 > --- a/target/arm/tcg/a64.decode
 > +++ b/target/arm/tcg/a64.decode
-
-
-> +# Load/store with an unsigned 12 bit immediate, which is scaled by the
-> +# element size. The function gets the sz:imm and returns the scaled immediate.
-> +%uimm_scaled   10:12 sz:3 !function=uimm_scaled
+> @@ -457,3 +457,10 @@ LDUMIN          .. 111 0 00 . . 1 ..... 0111 00 ..... ..... @atomic
+>   SWP             .. 111 0 00 . . 1 ..... 1000 00 ..... ..... @atomic
+>   
+>   LDAPR           sz:2 111 0 00 1 0 1 11111 1100 00 rn:5 rt:5
 > +
-> +@ldst_uimm      .. ... . .. .. ............ rn:5 rt:5 &ldst_imm unpriv=0 p=0 w=0 imm=%uimm_scaled
+> +# Load/store register (pointer authentication)
 > +
-> +STR_i           sz:2 111 0 01 00 ............ ..... ..... @ldst_uimm sign=0 ext=0
-> +LDR_i           00 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=0
-> +LDR_i           01 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=1
-> +LDR_i           10 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=2
-> +LDR_i           11 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=3
-> +LDR_i           00 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=0
-> +LDR_i           01 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=1
-> +LDR_i           10 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=2
-> +LDR_i           00 111 0 01 11 ............ ..... ..... @ldst_uimm sign=1 ext=1 sz=0
-> +LDR_i           01 111 0 01 11 ............ ..... ..... @ldst_uimm sign=1 ext=1 sz=1
+> +# LDRA immediate is 10 bits signed and scaled, but the bits aren't all contiguous
+> +%ldra_imm       22:s1 12:9 !function=times_2
+> +
+> +LDRA            11 111 0 00 m:1 . 1 ......... w:1 1 rn:5 rt:5 imm=%ldra_imm
 
-Why not use "sz:2 111 0 01 sign:1 ext:1", returning false for the
-cases not covered?
+Only sz=3 && v=0, OK (previous code was calling unallocated_encoding).
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
