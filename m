@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A167203F2
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1537203F3
 	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:04:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q55MA-000770-Rs; Fri, 02 Jun 2023 10:02:18 -0400
+	id 1q55MK-00078T-CV; Fri, 02 Jun 2023 10:02:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q55M8-00076Y-Or
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:02:16 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q55MI-00077p-Bt
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:02:26 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q55M5-0001Kr-2l
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:02:16 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3094910b150so2145419f8f.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:02:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q55MG-0001OS-MT
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:02:26 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f6e13940daso21135315e9.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:02:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685714530; x=1688306530;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=t9Igt+M9ibuWMcRM/202KOv0++0kR0yXiTr3TdCXnS8=;
- b=ObSDzbMM3TWrskYKZtwyigndqNXTzkkpTLJYqpn63D3GjPtWnkutQnhZRPe1KPp+Re
- xfIkHmmx3/gzvQa+KaH+E1WjhAgBAOg6rrPuC5cYg7HjXNGM21cxU1HCXG6d62xUjRRs
- zctx3RBfNmLn2Oa4jH/rk8ulERdqoAHmpyGEnJKnKlN4YSqxCJwPIB+J5NJS7U0ce4xz
- Ndr60BQdeJeDwc30S/ykKpTN8Sk5Luu8N8fSZiby22ijk3g/oUTtzyVt7IPz6/iY4f2r
- E6uNuQhiwAUUS3XpiDAR8YKZsZdXO5qTfF1nHeaN31j5UzWPjWqfP02RehQLtfJspuyI
- a/kQ==
+ d=linaro.org; s=google; t=1685714543; x=1688306543;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Q3+2nxWKhEybZJVxTpVZkSmqT+Hw2pMNAqpuveaFq5Y=;
+ b=tN2se5egujkm+U1Xayu2Hq+MOla9rTRvSkU99Nt9FwLp9m8QSMmZc8NgFICM/L4Lgi
+ bqsAXcWxdjCzMhkH4mX2OtX8bkqvEFCiEfYx48Lx1+Kra4AV2KXxjr57jrUgAPH5IzO+
+ MuFh/8tGYajTQ7TNHCrJCrnGrXusvE1rMTmAOvOAgR/W8ZvS4WF7rwCLnd7/6LxG4SI0
+ iYXKE1lNrrV1aUXOyurP6JB5iyBsW3CRZ4qDbp3qyxZ1/T1a/WMdTQ8U00a1kBiJ5XGK
+ VaPVf2vjRwqtTFKxGmE8gH9w8lSdmoPLBzPPu4L0XW1+ST+FDRBwz9kxtZogzPLGMSFk
+ DZug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685714530; x=1688306530;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t9Igt+M9ibuWMcRM/202KOv0++0kR0yXiTr3TdCXnS8=;
- b=AmpLq6m2pTNG9JfbzX7ODyQgUbrjfu+nimOIAG955RsUfj6bkqLXSoA11obNUwER1L
- Bbx3g199RXe3NRfotBDDSx90VCeO+7vx1Z2WIZaXsZ72l56aOT2AsI7qpEvK7g1Vpbb3
- zPZlPDFIXawvOdXc7uqq0xOiDf2ixg8LmBDVtmqL20sziWdiAURLE8et7ZWHD1zQZQhN
- CsAHDXiDC6/U70PLuxumEmCYq9LRBXwS7t+2X763TM/E+lPnUOPUC3FXcaG4TkWOp8lS
- E2sImlobN8FimCCdWH0WB+KMyzKPvvCL7QfQOdj/TAwCDKMuLMQnelugKegZP8MIA2CZ
- pQpw==
-X-Gm-Message-State: AC+VfDwG2mV3IvYcjMuR55/syiLywOUf4eOwRorr9+2ROmGHZVRCbv1V
- LL4l3o+LtZFud5Lraol1P25r+g==
-X-Google-Smtp-Source: ACHHUZ4JPe6FA7sQfzMIc9S07gXXBpbWXS0xgzCwDSKF2/49RiWu0fLk5DsdwqdHzOBQhD4WBhiARw==
-X-Received: by 2002:a5d:4b92:0:b0:2f6:25a6:9788 with SMTP id
- b18-20020a5d4b92000000b002f625a69788mr49124wrt.35.1685714529678; 
- Fri, 02 Jun 2023 07:02:09 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ d=1e100.net; s=20221208; t=1685714543; x=1688306543;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q3+2nxWKhEybZJVxTpVZkSmqT+Hw2pMNAqpuveaFq5Y=;
+ b=f9/dT+tCRZ8KsTUbi/gg4xw3xkLuDYx1/NxdobDKNE9I/FX3H4DHeVDVnU8Ednr3lM
+ ULQIVfsZ1fYWN8FLkbjLuPWX3Fzbx+7hRuOGIFW5c+Bt/hGg7JhThUxRBh/w6x633mRo
+ JeMcXiyfY/0nOYx86y6ePxgmdGFOpV6nNSh32SSHwYuCJwj7AVSlwNK8lhmyzosQP8J2
+ DCb7rulTzuPBmEx5vi8yOmg8tarhJsqLM5GiGTUv5lu1TIrtj8EfROitGp5GkTYBg2Bs
+ CXQgA1nTsCMz4HSXtK6PXAUrAY64bibQjq7zlb4sSILZUMihYeKTJSExdoN7TwwMNMA8
+ GvOg==
+X-Gm-Message-State: AC+VfDwfxJOuOLK/72ya6fjEZJQjYNYdnHeGcade7jHYU1PV0cFLBOdj
+ UZMOhaK/pn1HeVKrhwmfYmvJQg==
+X-Google-Smtp-Source: ACHHUZ69MtFeTrQWYZJ2hQRTVixcEs54D1oF2y5Zoa609cjcxDh92fElG+aLaH0h+PHRCeUIRAVybw==
+X-Received: by 2002:a5d:4eca:0:b0:306:3f97:4847 with SMTP id
+ s10-20020a5d4eca000000b003063f974847mr27168wrv.65.1685714543104; 
+ Fri, 02 Jun 2023 07:02:23 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- d6-20020a5d5386000000b00307c46f4f08sm1777566wrv.79.2023.06.02.07.02.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 07:02:09 -0700 (PDT)
-Date: Fri, 2 Jun 2023 16:02:07 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Robbin Ehn <rehn@rivosinc.com>
-Cc: qemu-devel@nongnu.org, laurent@vivier.eu, qemu-riscv@nongnu.org, 
- richard.henderson@linaro.org
-Subject: Re: [RFC v2] linux-user/riscv: Add syscall riscv_hwprobe
-Message-ID: <20230602-86a3d8d9fad1fb3464d28702@orel>
-References: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
+ w16-20020adfd4d0000000b0030aefa3a957sm1801142wrk.28.2023.06.02.07.02.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jun 2023 07:02:22 -0700 (PDT)
+Message-ID: <6b9b825a-53c9-52d9-c74b-443089d7eb85@linaro.org>
+Date: Fri, 2 Jun 2023 16:02:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [RFC PATCH v2 0/4] vfio/pci: Atomic Ops completer support
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: mst@redhat.com, Robin Voetter <robin@streamhpc.com>,
+ Alex Williamson <alex.williamson@redhat.com>, marcel.apfelbaum@gmail.com,
+ qemu-devel@nongnu.org, clg@redhat.com
+References: <20230526231558.1660396-1-alex.williamson@redhat.com>
+ <4301d6f4-a394-02e3-4773-823976b2e593@streamhpc.com>
+ <20230531162446.2bc9a26c.alex.williamson@redhat.com>
+ <806908a3-11a8-7d17-e13f-8f516bf43744@linaro.org>
+In-Reply-To: <806908a3-11a8-7d17-e13f-8f516bf43744@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,206 +98,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 02, 2023 at 11:41:11AM +0200, Robbin Ehn wrote:
-> This patch adds the new syscall for the
-> "RISC-V Hardware Probing Interface"
-> (https://docs.kernel.org/riscv/hwprobe.html).
-> 
-> Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
-> ---
-> v1->v2: Moved to syscall.c
-> ---
->  linux-user/riscv/syscall32_nr.h |   1 +
->  linux-user/riscv/syscall64_nr.h |   1 +
->  linux-user/syscall.c            | 109 ++++++++++++++++++++++++++++++++
->  3 files changed, 111 insertions(+)
-> 
-> diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall32_nr.h
-> index 1327d7dffa..412e58e5b2 100644
-> --- a/linux-user/riscv/syscall32_nr.h
-> +++ b/linux-user/riscv/syscall32_nr.h
+Hi Markus, Marc-André,
 
-This file should not be modified, it should be generated, but this is an
-RFC, so hacking it is OK, but the hack should be in a separate patch.
+> On 1/6/23 00:24, Alex Williamson wrote:
+>> Policy decisions like that are generally left to management tools, so
+>> there would always be a means to enable or disable the feature.  In
+>> fact, that's specifically why I test that the Atomic Op completer bits
+>> are unset in the root port before changing them so that this automatic
+>> enablement could live alongside a command line option to statically
+>> enable some bits.
+>>
+>> That does however remind me that it is often good with these sorts of
+>> "clever" automatic features to have an opt-out, so I'll likely add an
+>> x-no-rp-atomics device option in the next version to provide that.
 
-> @@ -228,6 +228,7 @@
->  #define TARGET_NR_accept4 242
->  #define TARGET_NR_arch_specific_syscall 244
->  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15)
-> +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
->  #define TARGET_NR_prlimit64 261
->  #define TARGET_NR_fanotify_init 262
->  #define TARGET_NR_fanotify_mark 263
-> diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall64_nr.h
-> index 6659751933..29e1eb2075 100644
-> --- a/linux-user/riscv/syscall64_nr.h
-> +++ b/linux-user/riscv/syscall64_nr.h
+Still thinking about this series I remembered since commit a3c45b3e62
+("qapi: New special feature flag "unstable"") the "x-" prefix is
+obsolete (superseded) in QAPI generated code.
 
-Same
+I wonder about device properties:
 
-> @@ -251,6 +251,7 @@
->  #define TARGET_NR_recvmmsg 243
->  #define TARGET_NR_arch_specific_syscall 244
->  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15)
-> +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
->  #define TARGET_NR_wait4 260
->  #define TARGET_NR_prlimit64 261
->  #define TARGET_NR_fanotify_init 262
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 89b58b386b..cd394bbe26 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8772,6 +8772,74 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
->  }
->  #endif /* TARGET_NR_getdents64 */
->  
-> +#if defined(TARGET_RISCV)
-> +
-> +#define RISCV_HWPROBE_KEY_MVENDORID     0
-> +#define RISCV_HWPROBE_KEY_MARCHID       1
-> +#define RISCV_HWPROBE_KEY_MIMPID        2
-> +
-> +#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
-> +#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
-> +
-> +#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
-> +#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
-> +#define     RISCV_HWPROBE_IMA_C        (1 << 1)
-> +
-> +#define RISCV_HWPROBE_KEY_CPUPERF_0     5
-> +#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
-> +
-> +struct riscv_hwprobe {
-> +    int64_t  key;
-> +    uint64_t value;
-> +};
+$ git grep -F '"x-' hw | wc -l
+      130
 
-The above is all uapi so Linux's arch/riscv/include/uapi/asm/hwprobe.h
-should be picked up on Linux header update. You'll need to modify the
-script, scripts/update-linux-headers.sh, to do that by adding a new
-riscv-specific block. Hacking this by importing the header file manually
-is fine for an RFC, but that should be a separate patch or part of the
-syscall define hack patch. And hack patches should be clearly tagged as
-"NOT FOR MERGE".
+$ git grep -F '"x-' hw/vfio/pci.c
+hw/vfio/pci.c:2987:        error_setg(errp, "x-balloon-allowed only 
+potentially compatible "
+hw/vfio/pci.c:3335: 
+DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
+hw/vfio/pci.c:3342:    DEFINE_PROP_UINT32("x-intx-mmap-timeout-ms", 
+VFIOPCIDevice,
+hw/vfio/pci.c:3344:    DEFINE_PROP_BIT("x-vga", VFIOPCIDevice, features,
+hw/vfio/pci.c:3346:    DEFINE_PROP_BIT("x-req", VFIOPCIDevice, features,
+hw/vfio/pci.c:3348:    DEFINE_PROP_BIT("x-igd-opregion", VFIOPCIDevice, 
+features,
+hw/vfio/pci.c:3350:    DEFINE_PROP_BOOL("x-enable-migration", VFIOPCIDevice,
+hw/vfio/pci.c:3352:    DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, 
+vbasedev.no_mmap, false),
+hw/vfio/pci.c:3353:    DEFINE_PROP_BOOL("x-balloon-allowed", VFIOPCIDevice,
+hw/vfio/pci.c:3355:    DEFINE_PROP_BOOL("x-no-kvm-intx", VFIOPCIDevice, 
+no_kvm_intx, false),
+hw/vfio/pci.c:3356:    DEFINE_PROP_BOOL("x-no-kvm-msi", VFIOPCIDevice, 
+no_kvm_msi, false),
+hw/vfio/pci.c:3357:    DEFINE_PROP_BOOL("x-no-kvm-msix", VFIOPCIDevice, 
+no_kvm_msix, false),
+hw/vfio/pci.c:3358:    DEFINE_PROP_BOOL("x-no-geforce-quirks", 
+VFIOPCIDevice,
+hw/vfio/pci.c:3360:    DEFINE_PROP_BOOL("x-no-kvm-ioeventfd", 
+VFIOPCIDevice, no_kvm_ioeventfd,
+hw/vfio/pci.c:3362:    DEFINE_PROP_BOOL("x-no-vfio-ioeventfd", 
+VFIOPCIDevice, no_vfio_ioeventfd,
+hw/vfio/pci.c:3364:    DEFINE_PROP_UINT32("x-pci-vendor-id", 
+VFIOPCIDevice, vendor_id, PCI_ANY_ID),
+hw/vfio/pci.c:3365:    DEFINE_PROP_UINT32("x-pci-device-id", 
+VFIOPCIDevice, device_id, PCI_ANY_ID),
+hw/vfio/pci.c:3366:    DEFINE_PROP_UINT32("x-pci-sub-vendor-id", 
+VFIOPCIDevice,
+hw/vfio/pci.c:3368:    DEFINE_PROP_UINT32("x-pci-sub-device-id", 
+VFIOPCIDevice,
+hw/vfio/pci.c:3370:    DEFINE_PROP_UINT32("x-igd-gms", VFIOPCIDevice, 
+igd_gms, 0),
+hw/vfio/pci.c:3371: 
+DEFINE_PROP_UNSIGNED_NODEFAULT("x-nv-gpudirect-clique", VFIOPCIDevice,
+hw/vfio/pci.c:3374:    DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", 
+VFIOPCIDevice, msix_relo,
 
-> +
-> +static void risc_hwprobe_fill_pairs(CPURISCVState *env,
-> +                                    struct riscv_hwprobe *pair,
-> +                                    size_t pair_count)
-> +{
-> +    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-> +
-> +    for (; pair_count > 0; pair_count--, pair++) {
-> +        pair->value = 0;
-> +        switch (pair->key) {
-> +        case RISCV_HWPROBE_KEY_MVENDORID:
-> +            pair->value = cfg->mvendorid;
-> +            break;
-> +        case RISCV_HWPROBE_KEY_MARCHID:
-> +            pair->value = cfg->marchid;
-> +            break;
-> +        case RISCV_HWPROBE_KEY_MIMPID:
-> +            pair->value = cfg->mimpid;
-> +            break;
-> +        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
-> +            pair->value = riscv_has_ext(env, RVI) &&
-> +                          riscv_has_ext(env, RVM) &&
-> +                          riscv_has_ext(env, RVA) ?
-> +                          RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
-> +            break;
-> +        case RISCV_HWPROBE_KEY_IMA_EXT_0:
-> +            pair->value = riscv_has_ext(env, RVF) &&
-> +                          riscv_has_ext(env, RVD) ?
-> +                          RISCV_HWPROBE_IMA_FD : 0;
-> +            pair->value |= riscv_has_ext(env, RVC) ?
-> +                           RISCV_HWPROBE_IMA_C : pair->value;
-> +            break;
-> +        case RISCV_HWPROBE_KEY_CPUPERF_0:
-> +            pair->value = RISCV_HWPROBE_MISALIGNED_UNKNOWN;
-> +            break;
-> +        default:
-> +            pair->key = -1;
-> +        break;
-> +        }
-> +    }
-> +}
-> +#endif
-> +
->  #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
->  _syscall2(int, pivot_root, const char *, new_root, const char *, put_old)
->  #endif
-> @@ -13469,6 +13537,47 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->          return ret;
->  #endif
->  
-> +#if defined(TARGET_RISCV)
-> +    case TARGET_NR_riscv_hwprobe:
-> +        {
-
-The { goes under the c of case, which will shift all the below four spaces
-left as well.
-
-> +            struct riscv_hwprobe *host_pairs;
-> +
-> +            /* flags must be 0 */
-> +            if (arg5 != 0) {
-> +                return -TARGET_EINVAL;
-> +            }
-> +
-> +            /* check cpu_set */
-> +            if (arg3 != 0) {
-> +                int ccpu;
-> +                size_t cpu_setsize = CPU_ALLOC_SIZE(arg3);
-> +                cpu_set_t *host_cpus = lock_user(VERIFY_READ, arg4,
-> +                                                 cpu_setsize, 0);
-> +                if (!host_cpus) {
-> +                    return -TARGET_EFAULT;
-> +                }
-> +                ccpu = CPU_COUNT_S(cpu_setsize, host_cpus);
-> +                unlock_user(host_cpus, arg4, cpu_setsize);
-> +                /* no selected cpu */
-> +                if (ccpu == 0) {
-> +                    return -TARGET_EINVAL;
-> +                }
-> +            } else if (arg4 != 0) {
-> +                return -TARGET_EINVAL;
-> +            }
-
-I think we want
-
- if (arg2 == 0)
-    return 0;
-
-here.
-
-> +
-> +            host_pairs = lock_user(VERIFY_WRITE, arg1,
-> +                                   sizeof(*host_pairs) * (size_t)arg2, 0);
-> +            if (host_pairs == NULL) {
-> +                return -TARGET_EFAULT;
-> +            }
-> +            risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
-> +            unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_t)arg2);
-> +            ret = 0;
-> +        }
-> +        return ret;
-> +#endif
-> +
->      default:
->          qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
->          return -TARGET_ENOSYS;
-> -- 
-> 2.39.2
-> 
->
-
-Otherwise this looks good to me.
+Is there a plan to use something similar for QOM properties?
+Is it OK to keep using the "x-" prefix there?
 
 Thanks,
-drew
+
+Phil.
 
