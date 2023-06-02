@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A407204C2
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3547204C9
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:45:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5609-0007kP-Cf; Fri, 02 Jun 2023 10:43:37 -0400
+	id 1q561i-0000H0-Vo; Fri, 02 Jun 2023 10:45:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q5606-0007jH-V1
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:43:34 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q561U-0000Fm-G6
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:45:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q5604-0005PO-JO
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:43:34 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q561S-0006LO-Lq
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:44:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685717011;
+ s=mimecast20190719; t=1685717096;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3YmDo/PdZCiCxi1AxnPiAzvUiVYawu2Ntk9RXgzo8Mo=;
- b=FmfK6xQ3QyJdytHsdDTaa4M3+PDi9bT1/xQXwmopwEbbFGEInuGOoqUjA1yLFMnZMpkkyL
- jQkZ8n52WoIpqpyWvdKglNalrAq58nCHLe00N7NeJ9AARx4YyTO60XRvdtssMYPSpQkKPT
- mAro+U0eFbMde6fJksBrlxM+rlTXzQc=
+ bh=txu6fbxAS6bdIDDK2G4PaodJ7P1+Uj0agMpzdDIwkiE=;
+ b=Sf3JyrGSWJTm0oUYDIzkw5qHNC6pY1jysSTbi0KPvwhkTgBvwXL1+K/D+RNJf1yDc+MPoQ
+ nFUZypozqUNv/VWftw02lay3ov+vWsOMXwEC8fDznqKL/Bc3jMfzbpp9HdhETdaPPF9rEe
+ YyRMub+X9WDLYZW8rY/PDq0kdyH8j+Q=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-qoLlQ3BfOxaAUY-cMwzUXg-1; Fri, 02 Jun 2023 10:43:30 -0400
-X-MC-Unique: qoLlQ3BfOxaAUY-cMwzUXg-1
+ us-mta-48-mZ9P2DEdNaahGlD_pAUMKw-1; Fri, 02 Jun 2023 10:44:55 -0400
+X-MC-Unique: mZ9P2DEdNaahGlD_pAUMKw-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-974612253c6so70321466b.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:43:30 -0700 (PDT)
+ a640c23a62f3a-975508d8187so26341266b.2
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:44:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685717009; x=1688309009;
+ d=1e100.net; s=20221208; t=1685717094; x=1688309094;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3YmDo/PdZCiCxi1AxnPiAzvUiVYawu2Ntk9RXgzo8Mo=;
- b=bZu1hEy/gAbsvHTPhjZCAo/TrewRCTq0XAMJWlznHejQp8YyX4HsWDbuV6LoUAM+Mf
- SOIyQhDhhXrUnpTg9WF+g58+zge2DWkdOc0jKx1+TbIXAY3u4ZuKsnRhEBMKwS6/ltrh
- KOKE9ZF9nQvk+W3MTsysGxP+QVh5m3D2Vl8JLGWPE54murMH5pkquORBvS4yetJihd95
- +NCukE/Sts+x3P4Wpq/BvgWcuXKR4mf+B75peMlnCUHSv5t05u5GBJZ1NogCQ0/pGONG
- Ke18CNLTAdf3iKa8J+cSy4Z2XR6uGUWSPd+6pOfVUOPzvPHYuICTVYSCeldv6IbstVCP
- trkA==
-X-Gm-Message-State: AC+VfDwcRDy4LKbYfL0WGHz2iyhBxt7tGI1RmHe2JRRCmuDX399++2fm
- O4p0DpYGS3VYSVT/9KX05PGlPj+/s19eSVlWfrdKJgf5LslabiV34n5t5+tLnpJWalsbI2v6W34
- q2xOX11ahJ7OjfaA=
-X-Received: by 2002:a17:907:961c:b0:96a:1ee9:4a5 with SMTP id
- gb28-20020a170907961c00b0096a1ee904a5mr13763462ejc.8.1685717009238; 
- Fri, 02 Jun 2023 07:43:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4awbGjnfsPAGz9ao3cn1DFBDQ3YNKv65RklAhV8tM05EBRy3fNNpJhRZxzroCBLL3cXzohfA==
-X-Received: by 2002:a17:907:961c:b0:96a:1ee9:4a5 with SMTP id
- gb28-20020a170907961c00b0096a1ee904a5mr13763444ejc.8.1685717008885; 
- Fri, 02 Jun 2023 07:43:28 -0700 (PDT)
+ bh=txu6fbxAS6bdIDDK2G4PaodJ7P1+Uj0agMpzdDIwkiE=;
+ b=YEY+eIoUMN3Rls0+xm3PWgAmuaY7+EnIngs7stJ47ESoAMt7XToiRmlAzdWp2CznlN
+ IMEWDaqlPjZLWsOdXQ9dG0eg8XzaHQ1k0Fwmubb9rXCJZo2yrJtZEvOPFy7veQaeGkIy
+ +YaAxr0O14jCHv9QAGbA96cOXnPAXLQ17u6nOpzqlAJWYu9x+vQssqmSHhsb4PFuvIcr
+ dQZz/sFaO73DiEz6ppg3gz9W8qJcjnHib5osnx+48z0POh0Jf4LY+YHEVm938Jxb8GT9
+ V/IibXZqfKCHK6amQ8+siq9aopjULuRbw6Mr1neNld8Wwu4dUNuZp1vWpKvZrnyrC4Sj
+ wCQw==
+X-Gm-Message-State: AC+VfDzpc97dtVNnQyly23VwPMF8ToT/biRfNWReYbxvdMp4uRDCRO2K
+ pFlAj3FFPhIiNcI4a7M5jxMz1K0Xi5PwiU34sMtUKg2flptsNITLRE3499jkoNAMpkcQHXVv8I/
+ alHooDGWtEJS72IA=
+X-Received: by 2002:a17:907:318b:b0:96a:bf50:3ad9 with SMTP id
+ xe11-20020a170907318b00b0096abf503ad9mr11213258ejb.43.1685717094263; 
+ Fri, 02 Jun 2023 07:44:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ50howus3wkZx9f0vHcBgEPwMJbTXXEUPpkcuCetlTGbaxewQ8arbwR3w2oI1jREhcjnex19Q==
+X-Received: by 2002:a17:907:318b:b0:96a:bf50:3ad9 with SMTP id
+ xe11-20020a170907318b00b0096abf503ad9mr11213242ejb.43.1685717093993; 
+ Fri, 02 Jun 2023 07:44:53 -0700 (PDT)
 Received: from ?IPV6:2003:cf:d72e:f7e0:e1ec:6307:c799:c188?
  (p200300cfd72ef7e0e1ec6307c799c188.dip0.t-ipconnect.de.
  [2003:cf:d72e:f7e0:e1ec:6307:c799:c188])
  by smtp.gmail.com with ESMTPSA id
- s2-20020a170906960200b00965b2d3968csm835293ejx.84.2023.06.02.07.43.28
+ bq4-20020a170906d0c400b0096f7105b3a6sm824859ejb.189.2023.06.02.07.44.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 07:43:28 -0700 (PDT)
-Message-ID: <5cbe5958-e47b-8151-9d5e-a9ae0d572d3d@redhat.com>
-Date: Fri, 2 Jun 2023 16:43:27 +0200
+ Fri, 02 Jun 2023 07:44:53 -0700 (PDT)
+Message-ID: <58f622ae-e120-90df-481c-b1cdaaa9ed19@redhat.com>
+Date: Fri, 2 Jun 2023 16:44:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v5 3/5] parallels: Add checking and repairing duplicate
- offsets in BAT
+Subject: Re: [PATCH v5 1/5] parallels: Incorrect data end calculation in
+ parallels_open()
 Content-Language: en-US
 To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, kwolf@redhat.com
 References: <20230529151503.34006-1-alexander.ivanov@virtuozzo.com>
- <20230529151503.34006-4-alexander.ivanov@virtuozzo.com>
+ <20230529151503.34006-2-alexander.ivanov@virtuozzo.com>
 From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230529151503.34006-4-alexander.ivanov@virtuozzo.com>
+In-Reply-To: <20230529151503.34006-2-alexander.ivanov@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -104,166 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29.05.23 17:15, Alexander Ivanov wrote:
-> Cluster offsets must be unique among all the BAT entries. Find duplicate
-> offsets in the BAT and fix it by copying the content of the relevant
-> cluster to a newly allocated cluster and set the new cluster offset to the
-> duplicated entry.
+On 29.05.23 17:14, Alexander Ivanov wrote:
+> The BDRVParallelsState structure contains data_end field that is measured
+> in sectors. In parallels_open() initially this field is set by data_off
+> field from parallels image header.
 >
-> Add host_cluster_index() helper to deduplicate the code.
+> According to the parallels format documentation, data_off field contains
+> an offset, in sectors, from the start of the file to the start of the
+> data area. For "WithoutFreeSpace" images: if data_off is zero, the offset
+> is calculated as the end of the BAT table plus some padding to ensure
+> sector size alignment.
 >
-> Move parallels_fix_leak() call to parallels_co_check() to fix both types
-> of leak: real corruption and a leak produced by allocate_clusters()
-> during deduplication.
-
-I’m not really a fan of splitting parallels_fix_leak() in this way. One 
-problem is that parallels_check_leak() still increments leaks_fixed, 
-even though it cannot know whether that will succeed. Would it be a 
-problem to move parallels_check_leak() after parallels_check_duplicate()?
-
+> The parallels_open() function has code for handling zero value in
+> data_off, but in the result data_end contains the offset in bytes.
+>
+> Replace the alignment to sector size by division by sector size and fix
+> the comparision with s->header_size.
+>
 > Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+> Reviewed-by: Denis V. Lunev <den@openvz.org>
 > ---
->   block/parallels.c | 138 ++++++++++++++++++++++++++++++++++++++++++++--
->   1 file changed, 133 insertions(+), 5 deletions(-)
->
-> diff --git a/block/parallels.c b/block/parallels.c
-> index 64850b9655..9fa1f93973 100644
-> --- a/block/parallels.c
-> +++ b/block/parallels.c
-> @@ -136,6 +136,12 @@ static int cluster_remainder(BDRVParallelsState *s, int64_t sector_num,
->       return MIN(nb_sectors, ret);
->   }
->   
-> +static uint32_t host_cluster_index(BDRVParallelsState *s, int64_t off)
-> +{
-> +    off -= le32_to_cpu(s->header->data_off) << BDRV_SECTOR_BITS;
-> +    return off / s->cluster_size;
-> +}
-> +
->   static int64_t block_status(BDRVParallelsState *s, int64_t sector_num,
->                               int nb_sectors, int *pnum)
->   {
-> @@ -533,7 +539,6 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
->   {
->       BDRVParallelsState *s = bs->opaque;
->       int64_t count, leak_size;
-> -    int ret;
->   
->       leak_size = parallels_get_leak_size(bs, res);
->       if (leak_size < 0) {
-> @@ -550,16 +555,127 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
->               fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR", leak_size);
->   
->       if (fix & BDRV_FIX_LEAKS) {
-> -        ret = parallels_fix_leak(bs, res);
-> -        if (ret < 0) {
-> -            return ret;
-> -        }
->           res->leaks_fixed += count;
->       }
->   
->       return 0;
->   }
->   
-> +static int parallels_check_duplicate(BlockDriverState *bs,
-> +                                     BdrvCheckResult *res,
-> +                                     BdrvCheckMode *fix)
-> +{
-> +    BDRVParallelsState *s = bs->opaque;
-> +    QEMUIOVector qiov;
-> +    int64_t off, sector;
-> +    unsigned long *bitmap;
-> +    uint32_t i, bitmap_size, cluster_index;
-> +    int n, ret = 0;
-> +    uint64_t *buf = NULL;
-> +
-> +    /*
-> +     * Create a bitmap of used clusters.
-> +     * If a bit is set, there is a BAT entry pointing to this cluster.
-> +     * Loop through the BAT entries, check bits relevant to an entry offset.
-> +     * If bit is set, this entry is duplicated. Otherwise set the bit.
-> +     *
-> +     * We shouldn't worry about newly allocated clusters outside the image
-> +     * because they are created higher then any existing cluster pointed by
-> +     * a BAT entry.
-> +     */
-> +    bitmap_size = host_cluster_index(s, res->image_end_offset);
-> +    if (bitmap_size == 0) {
-> +        return 0;
-> +    }
-> +
-> +    bitmap = bitmap_new(bitmap_size);
-> +
-> +    buf = qemu_memalign(4096, s->cluster_size);
+>   block/parallels.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-There is qemu_blockalign(), which actually uses the BDS’s memory 
-alignment, so should be a better fit.
-
-> +    qemu_iovec_init(&qiov, 0);
-> +    qemu_iovec_add(&qiov, buf, s->cluster_size);
-
-I don’t think this is necessary, there is bdrv_co_pwrite() that takes a 
-buffer.  OTOH, if you want to keep this, you could replace the 
-bdrv_co_pread() call by bdrv_co_preadv().
-
-> +
-> +    for (i = 0; i < s->bat_size; i++) {
-> +        off = bat2sect(s, i) << BDRV_SECTOR_BITS;
-> +        if (off == 0) {
-> +            continue;
-> +        }
-> +
-> +        cluster_index = host_cluster_index(s, off);
-> +        if (test_bit(cluster_index, bitmap)) {
-
-I understand we’ve already ensured that image_end_offset (which 
-determines the bitmap size) is large enough, and so this can’t overflow, 
-but I could sleep better if there was an `assert(cluster_index < 
-bitmap_size);` before this `test_bit()`.
-
-> +            /* this cluster duplicates another one */
-> +            fprintf(stderr,
-> +                    "%s duplicate offset in BAT entry %u\n",
-> +                    *fix & BDRV_FIX_ERRORS ? "Repairing" : "ERROR", i);
-> +
-> +            res->corruptions++;
-> +
-> +            if (*fix & BDRV_FIX_ERRORS) {
-> +                /*
-> +                 * Reset the entry and allocate a new cluster
-> +                 * for the relevant guest offset. In this way we let
-> +                 * the lower layer to place the new cluster properly.
-> +                 * Copy the original cluster to the allocated one.
-> +                 */
-> +                parallels_set_bat_entry(s, i, 0);
-
-As far as I understand, this will modify the image content when read.  
-Can we perhaps revert this change if there’s an error in bdrv_co_pread() 
-or allocate_clusters()?  I understand that a double allocation is a bad 
-corruption, but if we can’t fix it because of some unexpected error, I 
-feel like it’s better to still keep the image in the same state as 
-before rather than having effectively destroyed the data in the 
-respective cluster, so users can at least try to fix it by copying it.
-
-> +
-> +                ret = bdrv_co_pread(bs->file, off, s->cluster_size, buf, 0);
-> +                if (ret < 0) {
-> +                    res->check_errors++;
-> +                    goto out;
-> +                }
-> +
-> +                sector = (i * (int64_t)s->cluster_size) >> BDRV_SECTOR_BITS;
-
-Both for my own understanding and to maybe suggest a simplification: 
-This is the same as `sector = i * (int64_t)s->tracks`, right?
-
-Hanna
-
-> +                sector = allocate_clusters(bs, sector, s->tracks, &n);
-> +                if (sector < 0) {
-> +                    res->check_errors++;
-> +                    ret = sector;
-> +                    goto out;
-> +                }
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 
