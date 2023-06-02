@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27674720A1C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 22:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41496720A21
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 22:04:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5AzR-0005Ww-DV; Fri, 02 Jun 2023 16:03:13 -0400
+	id 1q5B00-00069b-9y; Fri, 02 Jun 2023 16:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5AzP-0005Wl-LF
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:03:11 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Azx-000692-4S
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:03:45 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5AzO-0001rF-1g
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:03:11 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3f6d38a140bso19086415e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 13:03:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5Azt-0001th-Hf
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 16:03:44 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-30ae141785bso2440227f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 13:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685736188; x=1688328188;
+ d=linaro.org; s=google; t=1685736220; x=1688328220;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KUrXZ3aEp9W5527YntEK244U69CfUa0h4/w6C4jEne8=;
- b=e3QVY4myjVKyzlxyM3MVsnrQALcOBasMAaYscCzcyrItdLGOh3s2XozrejqFEwnnk1
- 0qP0rjvycapXvcAnDYg46QflZf3DbI8huO9i4ZKC4Cq1gR41fiIgr09XkLimUP6HYtUj
- AxZuvGqepS0oTRYOjW3Hole5Qou8eOd3KLR2Qckdw9YrAcV+3E+OiiYs30wQF+UHbrQl
- VaK0eovp49+6vv3HKJ2BLat1vodd3x+G2miU97FsHG7PvlcUKipD7u3nyOMour+jDvPa
- fwE/68fHRQ67qBsb/52Ppsxx0EIdjZqb1W0gJ/VAb6k0vLj7CumiOFBiFPL9L7Cgk712
- Xe2w==
+ bh=gYrdCoiyy4c3T36hdBCvufBH+VFWjZejrce+DXZy1BQ=;
+ b=Y1prcXKzk51qnRQZJG8CyDFnGhOWkkqnR7N+/fPT1DzbD9x9WCYEIGtV7vo5yFD4q9
+ Oi05tm0JJhN5SPWBUmpnWB7k/mWsDWxnMhoo4lyg/vO0p0u3eeopeEJr6Pfj26pIa05G
+ lUI8klQ6rcpdEINt4X2inbiJCHQUlPBu1aACJ4QTUI6mx2eohs4sDyHEUL/1cPS0dkwp
+ GLK0ay7pHC2ERFDtvcM6t6nLNqo95LrGTp4lisxuWS7StkPw8rXL4xWu/Vsdx9MnepbO
+ cG+38KaWS+S4I3mjTSqN7RVlD4M5DfeFzRXl4x53lRnWRS4/lFn+5aGU9TUWOhPhvJS7
+ BrAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685736188; x=1688328188;
+ d=1e100.net; s=20221208; t=1685736220; x=1688328220;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KUrXZ3aEp9W5527YntEK244U69CfUa0h4/w6C4jEne8=;
- b=Zl7uDH4cqoE9u5CBo3PxtkVJw2R9kH/PyNv5NPeRCtV8nXA7TBKNKrLXd5ys/cajUY
- 4ah35dsb35S2XX+ZjAg98QPi0EFqbMkRvqm8Q9Irtnrovs3NFq0/V19c+cfYZSWvz6Nb
- lt+o3nt75HdkgArnKkPD9sJ21fm7sdFlk5ORouiprLtgVZxN+q63s2BlpUCnbze6stKq
- OqqAhyU4+F5QovslexyqLTzrd8T77TTSX7OYhMHL8tmL7wVKcN5Rwb6QjAvsDG7sU43M
- 4BQmdAx+5gPoNc/QR7ujj7AbDRPUl1Z1SXwvRKkgCFTMg8AOGsdoRU/+mc4u5HnxhlF0
- i4qw==
-X-Gm-Message-State: AC+VfDwVYJqsNLC4s57+2x9dtWryG9Fto3o0XP0a1yF4PxMutQePM7Ub
- kIqipXqssMPu+A4E78fRNY4m3A==
-X-Google-Smtp-Source: ACHHUZ6ZGjnMZdTqYN7DPPK13zrkmyyugQutKd/HwxEWnOZy5iFI53GKEwgFSQRzKyiS1FLRYrUmOA==
-X-Received: by 2002:a05:600c:210:b0:3f4:2158:28a0 with SMTP id
- 16-20020a05600c021000b003f4215828a0mr2887158wmi.12.1685736188312; 
- Fri, 02 Jun 2023 13:03:08 -0700 (PDT)
+ bh=gYrdCoiyy4c3T36hdBCvufBH+VFWjZejrce+DXZy1BQ=;
+ b=bkt9zf4nax3VXAuN/UL3bBvXQpTB52uiGMxAh4HR8uA9gS0RJ2zXkD+Jzir52YcRKw
+ flMH/OgJYc/1Vy7falBuOKBBWdHl3S64PG1NY09Pf5kw8s8LCF4oNPbMc8WCm7QG/uW7
+ B/Pa+RJpTjeB+/Fwsx4sUYq0uiBu8NaoToLvdt/uINBPfnJS4dWq1DLnGcsdfcLoSr2K
+ iPr6u3EEvKqiRkXFTMzwy5OHWuQloxagVsrQ60UseE96OnI6PwXpULz3BfRJ55SVanL8
+ FaM5+jUOeDY0vGZh8bMuLQH0+km4K1ts1QDZQBmAsA/Idaw/tO+imdIFp+Hwe/3ydyfm
+ GDLQ==
+X-Gm-Message-State: AC+VfDx4k5w+F/4J8IvbIyVj+kX3FEkeFiaufW1prAiOsYvLs/Zoc5NN
+ py9qAr+R5A6Ge775fcTW+ZRjgQ==
+X-Google-Smtp-Source: ACHHUZ4nosV/SgWc6tRjIZmQXdJoc/hn8xt2MNOi9uW66e9eJRd+bIEH0mPT0Hx25f6TVJZvVhKq4w==
+X-Received: by 2002:a5d:4d90:0:b0:30a:e65a:1b14 with SMTP id
+ b16-20020a5d4d90000000b0030ae65a1b14mr752877wru.28.1685736220086; 
+ Fri, 02 Jun 2023 13:03:40 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.218.254])
  by smtp.gmail.com with ESMTPSA id
- k23-20020a05600c0b5700b003f72a7918e7sm696355wmr.45.2023.06.02.13.03.06
+ n2-20020a5d4c42000000b00306415ac69asm2503281wrt.15.2023.06.02.13.03.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 13:03:07 -0700 (PDT)
-Message-ID: <d92bc6de-17db-96a9-096d-68b396e11128@linaro.org>
-Date: Fri, 2 Jun 2023 22:03:05 +0200
+ Fri, 02 Jun 2023 13:03:39 -0700 (PDT)
+Message-ID: <57a5cb12-c905-43ab-5190-4bb16022a312@linaro.org>
+Date: Fri, 2 Jun 2023 22:03:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 2/3] meson.build: Group the network backend entries in a
+Subject: Re: [PATCH 3/3] meson.build: Group the audio backend entries in a
  separate summary section
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
@@ -67,13 +67,13 @@ Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 References: <20230602171832.533739-1-thuth@redhat.com>
- <20230602171832.533739-3-thuth@redhat.com>
+ <20230602171832.533739-4-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230602171832.533739-3-thuth@redhat.com>
+In-Reply-To: <20230602171832.533739-4-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,54 +97,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/6/23 19:18, Thomas Huth wrote:
-> Let's make it easier for the users to spot network-related entries
+> Let's make it easier for the users to spot audio-related entries
 > in the summary of the meson output.
 > 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   meson.build | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 4a20a2e712..c64ad3c365 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -4267,13 +4267,19 @@ summary_info += {'curses support':    curses}
->   summary_info += {'brlapi support':    brlapi}
->   summary(summary_info, bool_yn: true, section: 'User interface')
->   
-> -# Libraries
-> +# Network backends
->   summary_info = {}
->   if targetos == 'darwin'
->     summary_info += {'vmnet.framework support': vmnet}
->   endif
-> -summary_info = {}
-
-Ah, this should be squashed in the previous patch.
+>   meson.build | 32 ++++++++++++++++++--------------
+>   1 file changed, 18 insertions(+), 14 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->   summary_info += {'slirp support':     slirp}
-> +summary_info += {'vde support':       vde}
-> +summary_info += {'netmap support':    have_netmap}
-> +summary_info += {'l2tpv3 support':    have_l2tpv3}
-> +summary(summary_info, bool_yn: true, section: 'Network backends')
-> +
-> +# Libraries
-> +summary_info = {}
->   summary_info += {'libtasn1':          tasn1}
->   summary_info += {'PAM':               pam}
->   summary_info += {'iconv support':     iconv}
-> @@ -4295,9 +4301,6 @@ if targetos == 'linux'
->   endif
->   summary_info += {'Pipewire support':   pipewire}
->   summary_info += {'JACK support':      jack}
-> -summary_info += {'vde support':       vde}
-> -summary_info += {'netmap support':    have_netmap}
-> -summary_info += {'l2tpv3 support':    have_l2tpv3}
->   summary_info += {'Linux AIO support': libaio}
->   summary_info += {'Linux io_uring support': linux_io_uring}
->   summary_info += {'ATTR/XATTR support': libattr}
 
 
