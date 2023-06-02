@@ -2,66 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D757720210
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8C8720212
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:29:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q53sS-0001RI-2m; Fri, 02 Jun 2023 08:27:32 -0400
+	id 1q53tr-0003pF-Lp; Fri, 02 Jun 2023 08:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q53sP-0001RA-E2
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:27:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q53tp-0003om-QC
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:28:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q53sN-0003D1-Ip
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:27:28 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q53to-0003lX-CD
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:28:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685708844;
+ s=mimecast20190719; t=1685708872;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8+jcMQvzUC+ortD1ZtD/mMM5g6yTczNO8OGO65NQnxc=;
- b=dJfII4dno7ko4P1GrBJ95APBbUeo2UT7iDv27ItrRFAymalJRJrxFHabqOaSeOsrapLQEe
- FzuxPujEJAf+P9DE/ywy/Zu51+eOypzpAk+kQPdn21aYIpWoBIn5f90S5EsPoWVHkQsJ6b
- yP26/pOlEqpXY+SjieklSp5ZANTEC+w=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-163-Kmc_pWB2MUambnX4Zw1PVw-1; Fri, 02 Jun 2023 08:27:21 -0400
-X-MC-Unique: Kmc_pWB2MUambnX4Zw1PVw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D962E2A2AD51;
- Fri,  2 Jun 2023 12:27:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.76])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 97AA6C154D7;
- Fri,  2 Jun 2023 12:27:20 +0000 (UTC)
-Date: Fri, 2 Jun 2023 07:27:18 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/21] NBD and miscellaneous patches for 2023-06-01
-Message-ID: <gufeky5wg3blkae2nwhxnwzihftdxfp5dbdybqro6tb7vq2xdg@jejg7adlc3ri>
-References: <20230601220305.2130121-1-eblake@redhat.com>
- <1e9840bd-65bc-550b-e031-9fe824aac7e8@linaro.org>
+ bh=QoRVPfTiNv08ULufoGAqjAsoSKqERDWrDeIOzqqJ9I0=;
+ b=gBiBqhSWiaDom/TI1Nd6+9zNzI2mzlbwdRxhLgRKZRklMcmOKc3NCXftKRNxq5OHDWHtej
+ 0pvaNDd+gZiUezYowU+kQOAlOweM6Hyr7T9MLl2aXCl1uDSYFDLs6498Bidhg9vBV4GUdg
+ jYbKSBLL4VnN5CFGsrOVp/bZjqq7xAs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-EV09joEuPm62JBgxCdoZrw-1; Fri, 02 Jun 2023 08:27:50 -0400
+X-MC-Unique: EV09joEuPm62JBgxCdoZrw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f608ea691fso11485085e9.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 05:27:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685708869; x=1688300869;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QoRVPfTiNv08ULufoGAqjAsoSKqERDWrDeIOzqqJ9I0=;
+ b=NmDPtbb8sFV5IFSW430msploTrPnScu/p1oR57D/A/+yhH5aIuvkf2lJxWbH08bo2b
+ PGV95X7gXlNp+pDqQsSq3TTy/XUSPEd8IgMzCTb9NnP6uNSPi2hsV1BLQ3V6CUGSzXq8
+ FtVvB7XNCCcaHre3qYezh2doxnnyHQ7KMuWSwB2LbLprrWwsRiP2cKFySAOjN/WQGNjM
+ TBFswfVYQBw4f9Oj/YMILIhp+rSzEI2DumDSGawpu3U/zwcR1ShrFWdaG08ogfJb8X7J
+ SSaEfXOlNBkSbpDgKqSLKfGmvKkCWgRAryaLYHOVPqwUSYc1LqQ0ZTZsyw9xBcsM1idN
+ Ktvg==
+X-Gm-Message-State: AC+VfDzys/MnUZU9Qa+3WC9Jzf/fFRyTsBp4WBliAGSnuz+dF0UAQZ6K
+ tLfAEj6W0ry5eVcS4eBddxBh5dlvdrBFmUERaTyPnyglyk5oFSqsRtP3/JeIqDNEVKbz1Kn0LYE
+ 1g0/Sf7qDuwKtQcM=
+X-Received: by 2002:a05:600c:3793:b0:3f6:455:de09 with SMTP id
+ o19-20020a05600c379300b003f60455de09mr1638974wmr.39.1685708869574; 
+ Fri, 02 Jun 2023 05:27:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5n+Y0k/q+/KEXa94P06mwu9qhKHwz/YyrmTN9BclH0HN00aDGN7M435BYlb86GrswOXetbhA==
+X-Received: by 2002:a05:600c:3793:b0:3f6:455:de09 with SMTP id
+ o19-20020a05600c379300b003f60455de09mr1638962wmr.39.1685708869218; 
+ Fri, 02 Jun 2023 05:27:49 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f2e:ae00:f2e3:50e0:73f7:451?
+ (p200300d82f2eae00f2e350e073f70451.dip0.t-ipconnect.de.
+ [2003:d8:2f2e:ae00:f2e3:50e0:73f7:451])
+ by smtp.gmail.com with ESMTPSA id
+ z6-20020a1c4c06000000b003f42ceb3bf4sm1818812wmf.32.2023.06.02.05.27.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 02 Jun 2023 05:27:48 -0700 (PDT)
+Message-ID: <b7c69701-9043-536b-21ed-69636fbce02d@redhat.com>
+Date: Fri, 2 Jun 2023 14:27:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1e9840bd-65bc-550b-e031-9fe824aac7e8@linaro.org>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 2/4] linux-user/elfload: Expose get_elf_hwcap() on s390x
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+References: <20230601162541.689621-1-iii@linux.ibm.com>
+ <20230601162541.689621-3-iii@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230601162541.689621-3-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,50 +107,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 08:58:46PM -0700, Richard Henderson wrote:
-> On 6/1/23 15:02, Eric Blake wrote:
-> > Eric Blake (21):
-> >        iotests: Fix test 104 under NBD
-> >        qcow2: Explicit mention of padding bytes
-> >        test-cutils: Avoid g_assert in unit tests
-> >        test-cutils: Use g_assert_cmpuint where appropriate
-> >        test-cutils: Test integral qemu_strto* value on failures
-> >        test-cutils: Test more integer corner cases
-> >        cutils: Fix wraparound parsing in qemu_strtoui
-> >        cutils: Document differences between parse_uint and qemu_strtou64
-> >        cutils: Adjust signature of parse_uint[_full]
-> >        cutils: Allow NULL endptr in parse_uint()
-> >        test-cutils: Add coverage of qemu_strtod
-> >        test-cutils: Prepare for upcoming semantic change in qemu_strtosz
-> >        test-cutils: Refactor qemu_strtosz tests for less boilerplate
-> >        cutils: Allow NULL str in qemu_strtosz
-> >        numa: Check for qemu_strtosz_MiB error
-> >        test-cutils: Add more coverage to qemu_strtosz
-> >        cutils: Set value in all qemu_strtosz* error paths
-> >        cutils: Set value in all integral qemu_strto* error paths
-> >        cutils: Use parse_uint in qemu_strtosz for negative rejection
-> >        cutils: Improve qemu_strtod* error paths
-> >        cutils: Improve qemu_strtosz handling of fractions
+On 01.06.23 18:25, Ilya Leoshkevich wrote:
+> It is required for implementing /proc/cpuinfo emulation.
 > 
-> This is failing on Windows (32 and 64-bit):
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> ---
+>   linux-user/elfload.c | 2 +-
+>   linux-user/loader.h  | 4 ++++
+>   2 files changed, 5 insertions(+), 1 deletion(-)
 > 
-> https://gitlab.com/qemu-project/qemu/-/jobs/4399466166#L3524
-> https://gitlab.com/qemu-project/qemu/-/jobs/4399466165#L3332
-> 
-> |  21/135 /cutils/qemu_strtol/overflow -
-> ERROR:../tests/unit/test-cutils.c:1387:test_qemu_strtol_overflow: assertion
-> failed (res == LONG_MIN): (2147483647 == -2147483648) FAIL
-> 
-> It seems to have returned LONG_MAX instead of LONG_MIN.
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index 418ad92598c..49ec9ccc944 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -1583,7 +1583,7 @@ static inline void init_thread(struct target_pt_regs *regs,
+>   #define GET_FEATURE(_feat, _hwcap) \
+>       do { if (s390_has_feat(_feat)) { hwcap |= _hwcap; } } while (0)
+>   
+> -static uint32_t get_elf_hwcap(void)
+> +uint32_t get_elf_hwcap(void)
+>   {
+>       /*
+>        * Let's assume we always have esan3 and zarch.
+> diff --git a/linux-user/loader.h b/linux-user/loader.h
+> index f375ee0679b..ad6ca9dbe35 100644
+> --- a/linux-user/loader.h
+> +++ b/linux-user/loader.h
+> @@ -56,4 +56,8 @@ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+>   
+>   extern unsigned long guest_stack_size;
+>   
+> +#ifdef TARGET_S390X
+> +uint32_t get_elf_hwcap(void);
+> +#endif
+> +
+>   #endif /* LINUX_USER_LOADER_H */
 
-Gah.  I see the problem; it is a copy/paste typo in part of
-test-cutils.c guarded by 'if (LONG_MAX == INT_MAX)' and therefore
-doesn't fire on platforms with 64-bit long.  Will respin the pull
-request to fix it.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.           +1-919-301-3266
-Virtualization:  qemu.org | libvirt.org
+Thanks,
+
+David / dhildenb
 
 
