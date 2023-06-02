@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B29F71FB61
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 09:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C66F271FB7E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 10:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4zaF-00024M-J5; Fri, 02 Jun 2023 03:52:27 -0400
+	id 1q4zjD-0007Uj-1e; Fri, 02 Jun 2023 04:01:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4za0-0001oz-3K
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:52:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q4zj9-0007U1-1R
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 04:01:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q4zZy-0003h7-LQ
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 03:52:11 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q4zj5-0008G5-KQ
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 04:01:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685692330;
+ s=mimecast20190719; t=1685692868;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Vd+sU2J4fZvWweIVk5f6JlMjcWzOoTVfIIklTqVlWjc=;
- b=ZnSXnCU6mCEoNezusqOJqDLPNorbUMjlu5mWanQKqVutq1rvMEcwGb/AIlV9rrApXapHeK
- eEXVVgSIjAKreE/mDDGgkC+BArv88R7c0xvnjhuGZpa0Moat6Vt/FsgmZGoSMKOpu0gBmq
- oWzsjhgKKNU2wFeRMBCNYeVyEaR990U=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YMmorHrVSe+6n+KIgdNMoQw4A94q6ZcE36qSDBDIbhg=;
+ b=h7rVXXPfo0C8nX6tvRgbV3XkU37+w1CkYlotEHn4AKGm4TH4mV4lG4jGtg3G8W7ME6LTlB
+ d19J054IqOkF2AOGYUrnTC1jI2vkq75GZStsRxfcDWg3102HNT8bVIstEo5rShoA4vCp5M
+ J/L7I8VnYGc3Dz5Uaqq5SihF0kAG0C0=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-PACpRGIBOZWU9gXR5KLnJg-1; Fri, 02 Jun 2023 03:52:08 -0400
-X-MC-Unique: PACpRGIBOZWU9gXR5KLnJg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30af81cf4dbso894636f8f.2
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 00:52:08 -0700 (PDT)
+ us-mta-644-D2vIgjM3Ox2AL1BC-LoN-Q-1; Fri, 02 Jun 2023 04:01:05 -0400
+X-MC-Unique: D2vIgjM3Ox2AL1BC-LoN-Q-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51496307313so1271601a12.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 01:01:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685692327; x=1688284327;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1685692863; x=1688284863;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Vd+sU2J4fZvWweIVk5f6JlMjcWzOoTVfIIklTqVlWjc=;
- b=XL9woK4727/4FT6ULDKQZJJJcAbzizbERuwNIZ7rrLrZ0cNaFQUqiZSqXxGKxsdXft
- 4dzrw3GCsxNFsPIv4eb2Dgiyihcona8HbzUkTlPmK0p7oF+4YmzSDxjWzxU0YGDz6EkK
- 8maHKy+ouZ1UqVaUuDMYJoqMos3aGflSGi6uKDopyo+I7hH3na1KOHIqmZsguH6v9SOz
- B8JBNPjIhUtemiYc9JwjWE2ODL8FG+k4PfeoftEBetCy0WiwpznDmWUyosk657XRPHVo
- kIj0/8YaeLBro45zjamw28U+28ogpDVHof7mkNrsQ1cCdwttfVJtoFTI7zo2t9NB8xGe
- tMww==
-X-Gm-Message-State: AC+VfDyLeuTjX2qLr1DgV9QZMVinGrkcffaE76SQvfnWoIcPztOQWek8
- ioX1eotJdUhYragzpJMf23YbmXt+eWwdd3TwBhBgzru3g2XZ6zuUxcrsNq0Z1SDhZokanR/uTtt
- Sn7SPfRYRPYhC8ps=
-X-Received: by 2002:a05:6000:136d:b0:2ff:6906:7169 with SMTP id
- q13-20020a056000136d00b002ff69067169mr3825127wrz.68.1685692327599; 
- Fri, 02 Jun 2023 00:52:07 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4zJZQAghpv0B51aqS6w06eQVmnZyvP5DN1FHaw2sTjDwfOn/KazHGnzwPtz7DaOUj+QD8fCg==
-X-Received: by 2002:a05:6000:136d:b0:2ff:6906:7169 with SMTP id
- q13-20020a056000136d00b002ff69067169mr3825118wrz.68.1685692327366; 
- Fri, 02 Jun 2023 00:52:07 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-14.web.vodafone.de.
- [109.43.176.14]) by smtp.gmail.com with ESMTPSA id
- s15-20020a5d69cf000000b0030af31c8c63sm877514wrw.47.2023.06.02.00.52.06
+ bh=YMmorHrVSe+6n+KIgdNMoQw4A94q6ZcE36qSDBDIbhg=;
+ b=W+WO8zOI3IdFnnuRMdibFx1VvgmDqCFGy7u4Pmd1H3kUsSS3aP+ySyGu51P/DLSOte
+ Ceym3XFSs1F/nA3yL9LMqjI2Ph98AzijoTEO532OthYAFRrgNo8LraNTGzSrA0drYeZj
+ G9KwiEMcriCyhPNIMG3a3d2OA72lxbgvNJWNeaCKxCDDIqZmKwtupliCECKDsVbxyeR5
+ T5QnfgvNPKrDwjFq7oeLVJqOUcM5G9CJfaGkDoBhTX12fwhQ2fJhjauMCYEOvVRmacCD
+ ooeRqhcViIxxFHhYV5qSU+c2aQiT+DeQwMFRDZk7GMVT8phfpf7x26DZDG0vDnR+HfvQ
+ eGNA==
+X-Gm-Message-State: AC+VfDxeN4ubc1w0DVysvUQhgrwelIz6BGpLomh3p3N5MQAMSko1spfo
+ 7uZQD7SLz0f4p8p20zTHmDY7knbLJxlKN7A5w01BPgGZVZLbBAiFoSOXQvGHrtC7rhCSG2JK1Tx
+ EHBHsvRaoXWKYz0x8q9iyQd0=
+X-Received: by 2002:aa7:cd51:0:b0:50b:d755:8acc with SMTP id
+ v17-20020aa7cd51000000b0050bd7558accmr1538134edw.34.1685692863276; 
+ Fri, 02 Jun 2023 01:01:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ55ylDRsTiGyfPkXJRLtWRWPT08RalTxZ9kvDfTVLCO2o3PgngIliRaEjY1d0INdT3P8u5JLw==
+X-Received: by 2002:aa7:cd51:0:b0:50b:d755:8acc with SMTP id
+ v17-20020aa7cd51000000b0050bd7558accmr1538111edw.34.1685692862859; 
+ Fri, 02 Jun 2023 01:01:02 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d72e:f7e0:e1ec:6307:c799:c188?
+ (p200300cfd72ef7e0e1ec6307c799c188.dip0.t-ipconnect.de.
+ [2003:cf:d72e:f7e0:e1ec:6307:c799:c188])
+ by smtp.gmail.com with ESMTPSA id
+ b11-20020a05640202cb00b005147f604965sm392778edx.24.2023.06.02.01.01.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 00:52:06 -0700 (PDT)
-Message-ID: <38d8b6a0-abb4-3e00-8f6f-d8caaaca26fc@redhat.com>
-Date: Fri, 2 Jun 2023 09:52:05 +0200
+ Fri, 02 Jun 2023 01:01:01 -0700 (PDT)
+Message-ID: <624b6d8c-492c-02cc-7a13-f86af572dcf5@redhat.com>
+Date: Fri, 2 Jun 2023 10:01:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v4 03/10] tests/qtest: get rid of 'qmp_command' helper in
- migration test
+Subject: Re: [PATCH] qcow2: add discard-no-unref option
+To: Jean-Louis Dupond <jean-louis@dupond.be>, qemu-devel@nongnu.org,
+ kwolf@redhat.com
+References: <20230515073644.166677-1-jean-louis@dupond.be>
+ <5cc0ec56-8a13-c651-0b4e-da644c9f6900@redhat.com>
+ <08a88b12-ec0a-110a-ad64-2116712065e8@dupond.be>
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-References: <20230601161347.1803440-1-berrange@redhat.com>
- <20230601161347.1803440-4-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230601161347.1803440-4-berrange@redhat.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <08a88b12-ec0a-110a-ad64-2116712065e8@dupond.be>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -104,20 +103,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/06/2023 18.13, Daniel P. Berrangé wrote:
-> This function duplicates logic of qtest_qmp_assert_success_ref.
-> The qtest_qmp_assert_success_ref method has better diagnostics
-> on failure because it prints the entire QMP response, instead
-> of just asserting on existance of the 'error' key.
-> 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/qtest/migration-helpers.c | 22 ----------------------
->   tests/qtest/migration-helpers.h |  3 ---
->   tests/qtest/migration-test.c    | 29 +++++++++++++++--------------
->   3 files changed, 15 insertions(+), 39 deletions(-)
+On 01.06.23 14:56, Jean-Louis Dupond wrote:
+> On 31/05/2023 17:05, Hanna Czenczek wrote:
+>> On 15.05.23 09:36, Jean-Louis Dupond wrote:
+>>> When we for example have a sparse qcow2 image and discard: unmap is 
+>>> enabled,
+>>> there can be a lot of fragmentation in the image after some time. 
+>>> Surely on VM's
+>>
+>> s/. Surely/, especially/
+>>
+>>> that do a lot of writes/deletes.
+>>> This causes the qcow2 image to grow even over 110% of its virtual size,
+>>> because the free gaps in the image get to small to allocate new
+>>
+>> s/to small/too small/
+>>
+>>> continuous clusters. So it allocates new space as the end of the image.
+>>
+>> s/as/at/
+>>
+>>> Disabling discard is not an option, as discard is needed to keep the
+>>> incremental backup size as low as possible. Without discard, the
+>>> incremental backups would become large, as qemu thinks it's just dirty
+>>> blocks but it doesn't know the blocks are empty/useless.
+>>> So we need to avoid fragmentation but also 'empty' the useless 
+>>> blocks in
+>>
+>> s/useless/unneeded/ in both lines?
+>>
+>>> the image to have a small incremental backup.
+>>>
+>>> Next to that we also want to send the discards futher down the 
+>>> stack, so
+>>
+>> s/Next to that/In addition/, s/futher/further/
+>>
+>>> the underlying blocks are still discarded.
+>>>
+>>> Therefor we introduce a new qcow2 option "discard-no-unref". When
+>>> setting this option to true (defaults to false), the discard requests
+>>> will still be executed, but it will keep the offset of the cluster. And
+>>> it will also pass the discard request further down the stack (if
+>>> discard:unmap is enabled).
+>>
+>> I think this could be more explicit, e.g. “When setting this option 
+>> to true, discards will no longer have the qcow2 driver relinquish 
+>> cluster allocations. Other than that, the request is handled as 
+>> normal: All clusters in range are marked as zero, and, if 
+>> pass-discard-request is true, it is passed further down the stack. 
+>> The only difference is that the now-zero clusters are preallocated 
+>> instead of being unallocated.”
+>>
+>>> This will avoid fragmentation and for example on a fully preallocated
+>>> qcow2 image, this will make sure the image is perfectly continuous.
+>>
+>> Well, on the qcow2 layer, yes.
+> All above -> Fixed :)
+>>
+>>> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
+>>> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+>>> ---
+>>>   block/qcow2-cluster.c  |  16 ++++-
+>>>   block/qcow2-refcount.c | 136 
+>>> ++++++++++++++++++++++++-----------------
+>>>   block/qcow2.c          |  12 ++++
+>>>   block/qcow2.h          |   3 +
+>>>   qapi/block-core.json   |   4 ++
+>>>   qemu-options.hx        |   6 ++
+>>>   6 files changed, 120 insertions(+), 57 deletions(-)
+>>>
+>>> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
+>>> index 39cda7f907..88da70db5e 100644
+>>> --- a/block/qcow2-cluster.c
+>>> +++ b/block/qcow2-cluster.c
+>>> @@ -1943,10 +1943,22 @@ static int 
+>>> discard_in_l2_slice(BlockDriverState *bs, uint64_t offset,
+>>>               new_l2_entry = new_l2_bitmap = 0;
+>>>           } else if (bs->backing || 
+>>> qcow2_cluster_is_allocated(cluster_type)) {
+>>>               if (has_subclusters(s)) {
+>>> -                new_l2_entry = 0;
+>>> +                if (s->discard_no_unref && (type & 
+>>> QCOW2_DISCARD_REQUEST)) {
+>>
+>> As far as I understand the discard type is just a plain enum, not a 
+>> bit field.  So I think this should be `type == 
+>> QCOW2_DISCARD_REQUEST`, not an `&`.  (Same below.)
+>>
+> Ack
+>>> +                    new_l2_entry = old_l2_entry;
+>>> +                } else {
+>>> +                    new_l2_entry = 0;
+>>> +                }
+>>>                   new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
+>>>               } else {
+>>> -                new_l2_entry = s->qcow_version >= 3 ? 
+>>> QCOW_OFLAG_ZERO : 0;
+>>> +                if (s->qcow_version >= 3) {
+>>> +                    if (s->discard_no_unref && (type & 
+>>> QCOW2_DISCARD_REQUEST)) {
+>>> +                        new_l2_entry |= QCOW_OFLAG_ZERO;
+>>> +                    } else {
+>>> +                        new_l2_entry = QCOW_OFLAG_ZERO;
+>>> +                    }
+>>> +                } else {
+>>> +                    new_l2_entry = 0;
+>>> +                }
+>>>               }
+>>>           }
+>>
+>> Context below:
+>>
+>>         if (old_l2_entry == new_l2_entry && old_l2_bitmap == 
+>> new_l2_bitmap) {
+>>             continue;
+>>         }
+>>
+>>         /* First remove L2 entries */
+>>         qcow2_cache_entry_mark_dirty(s->l2_table_cache, l2_slice);
+>>         set_l2_entry(s, l2_slice, l2_index + i, new_l2_entry);
+>>         if (has_subclusters(s)) {
+>>             set_l2_bitmap(s, l2_slice, l2_index + i, new_l2_bitmap);
+>>         }
+>>         /* Then decrease the refcount */
+>>         qcow2_free_any_cluster(bs, old_l2_entry, type);
+>>
+>> If we keep the allocation, I don’t see why we would call 
+>> qcow2_free_any_cluster().  If we simply skip the call (if 
+>> `qcow2_is_allocated(qcow2_get_cluster_type(bs, new_l2_entry))`), I 
+>> think you could drop the modification to update_refcount().
+>>
+> If we don't call qcow2_free_any_cluster, the discard will not get 
+> passed to the lower layer.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+That’s a pickle.
+
+> We also call it in zero_in_l2_slice for example to discard lower layer.
+
+We only call it there if the allocation is dropped.  (`new_l2_entry = 
+unmap ? 0 : old_l2_entry`)
+
+I’d either lift the discard to discard_in_l2_slice() (if dropping the 
+reference, call qcow2_free_any_cluster(); otherwise, if the old cluster 
+was a normal or zero allocated cluster, discard it); or add a bool 
+parameter to `qcow2_free_any_cluster()` that tells it to only discard, 
+not free, the cluster, which makes it take the existing `if 
+(has_data_file(bs))` path there.
+
+The latter is simpler, but I find it problematic still to call 
+qcow2_free_any_cluster() when there’s no intention of actually freeing a 
+cluster (i.e. releasing the reference to it).
+
+Hanna
 
 
