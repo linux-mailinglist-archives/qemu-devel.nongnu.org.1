@@ -2,104 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA17720203
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D757720210
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 14:27:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q53ok-0008PB-Jp; Fri, 02 Jun 2023 08:23:42 -0400
+	id 1q53sS-0001RI-2m; Fri, 02 Jun 2023 08:27:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q53oi-0008Ln-8t; Fri, 02 Jun 2023 08:23:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q53sP-0001RA-E2
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:27:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q53od-0002Ov-6w; Fri, 02 Jun 2023 08:23:39 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 352CARds025190; Fri, 2 Jun 2023 12:23:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=3TfLBNiCS/ZS1Korken/QnXU+htDLeeBMsr9CFZ92r4=;
- b=tEXj8ceuEi6kNfeAfzqimB9wcLe+xhNiSKzQJEC1/ShYliU2ZLTflVMiDg5Aqn7w6Hxb
- 2YMoHf8ScgB3FQhsh0xxB09XfqNvw+E1Vgc1LEpUcNNJ3hpJieRV1EdotFY0AS91pwHV
- XgaffEIKbasx2Cs+OZPpuDp3uvo5yo9usAiaRF9yQrvEuM4GJ5fCGSRxPv8Eq67pGzqs
- APKq20EQTcyuXOg33cpSZDygjIO/bxA3888R3tj7HsQfGKYhDS7vw3ZVjHuqv58YD6vR
- XGryVTu/gY5tm13CZAjwa7wyPMYNO0HD3msIeXB/2sH2sZsU6F20MlLJ08EHSKAMQt7G Pg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qyfdc1una-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Jun 2023 12:23:25 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 352CEYIP009982;
- Fri, 2 Jun 2023 12:23:24 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qyfdc1umn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Jun 2023 12:23:24 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 352CFl7Z019725;
- Fri, 2 Jun 2023 12:23:23 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qu9g5323f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Jun 2023 12:23:22 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 352CNKBa7799424
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Jun 2023 12:23:20 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 968882004B;
- Fri,  2 Jun 2023 12:23:20 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 629DD20043;
- Fri,  2 Jun 2023 12:23:20 +0000 (GMT)
-Received: from [9.155.209.184] (unknown [9.155.209.184])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  2 Jun 2023 12:23:20 +0000 (GMT)
-Message-ID: <752a33dd22b223656b4827eaf28419e3e8f629e9.camel@linux.ibm.com>
-Subject: Re: [PATCH 4/4] linux-user: Emulate /proc/cpuinfo on s390x
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Tulio Magno Quites Machado
- Filho <tuliom@redhat.com>
-Date: Fri, 02 Jun 2023 14:23:20 +0200
-In-Reply-To: <20230601162541.689621-5-iii@linux.ibm.com>
-References: <20230601162541.689621-1-iii@linux.ibm.com>
- <20230601162541.689621-5-iii@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kS45ZQHPl0tfHz_dwbFFHPhOocWNC1tl
-X-Proofpoint-ORIG-GUID: hIWfjql-nJZf9S4c9d80r_j9DHJDBaH4
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q53sN-0003D1-Ip
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 08:27:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685708844;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8+jcMQvzUC+ortD1ZtD/mMM5g6yTczNO8OGO65NQnxc=;
+ b=dJfII4dno7ko4P1GrBJ95APBbUeo2UT7iDv27ItrRFAymalJRJrxFHabqOaSeOsrapLQEe
+ FzuxPujEJAf+P9DE/ywy/Zu51+eOypzpAk+kQPdn21aYIpWoBIn5f90S5EsPoWVHkQsJ6b
+ yP26/pOlEqpXY+SjieklSp5ZANTEC+w=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-163-Kmc_pWB2MUambnX4Zw1PVw-1; Fri, 02 Jun 2023 08:27:21 -0400
+X-MC-Unique: Kmc_pWB2MUambnX4Zw1PVw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D962E2A2AD51;
+ Fri,  2 Jun 2023 12:27:20 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.76])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 97AA6C154D7;
+ Fri,  2 Jun 2023 12:27:20 +0000 (UTC)
+Date: Fri, 2 Jun 2023 07:27:18 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 00/21] NBD and miscellaneous patches for 2023-06-01
+Message-ID: <gufeky5wg3blkae2nwhxnwzihftdxfp5dbdybqro6tb7vq2xdg@jejg7adlc3ri>
+References: <20230601220305.2130121-1-eblake@redhat.com>
+ <1e9840bd-65bc-550b-e031-9fe824aac7e8@linaro.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-02_08,2023-06-02_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 malwarescore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 bulkscore=0 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306020090
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1e9840bd-65bc-550b-e031-9fe824aac7e8@linaro.org>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,35 +77,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-06-01 at 18:25 +0200, Ilya Leoshkevich wrote:
-> Some s390x userspace programs are confused when seeing a foreign
-> /proc/cpuinfo [1]. Add the emulation for s390x; follow the respective
-> kernel code structure where possible.
->=20
-> [1] https://bugzilla.redhat.com/show_bug.cgi?id=3D2211472
->=20
-> Reported-by: Tulio Magno Quites Machado Filho <tuliom@redhat.com>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
-> =C2=A0linux-user/syscall.c | 106
-> ++++++++++++++++++++++++++++++++++++++++++-
-> =C2=A01 file changed, 105 insertions(+), 1 deletion(-)
+On Thu, Jun 01, 2023 at 08:58:46PM -0700, Richard Henderson wrote:
+> On 6/1/23 15:02, Eric Blake wrote:
+> > Eric Blake (21):
+> >        iotests: Fix test 104 under NBD
+> >        qcow2: Explicit mention of padding bytes
+> >        test-cutils: Avoid g_assert in unit tests
+> >        test-cutils: Use g_assert_cmpuint where appropriate
+> >        test-cutils: Test integral qemu_strto* value on failures
+> >        test-cutils: Test more integer corner cases
+> >        cutils: Fix wraparound parsing in qemu_strtoui
+> >        cutils: Document differences between parse_uint and qemu_strtou64
+> >        cutils: Adjust signature of parse_uint[_full]
+> >        cutils: Allow NULL endptr in parse_uint()
+> >        test-cutils: Add coverage of qemu_strtod
+> >        test-cutils: Prepare for upcoming semantic change in qemu_strtosz
+> >        test-cutils: Refactor qemu_strtosz tests for less boilerplate
+> >        cutils: Allow NULL str in qemu_strtosz
+> >        numa: Check for qemu_strtosz_MiB error
+> >        test-cutils: Add more coverage to qemu_strtosz
+> >        cutils: Set value in all qemu_strtosz* error paths
+> >        cutils: Set value in all integral qemu_strto* error paths
+> >        cutils: Use parse_uint in qemu_strtosz for negative rejection
+> >        cutils: Improve qemu_strtod* error paths
+> >        cutils: Improve qemu_strtosz handling of fractions
+> 
+> This is failing on Windows (32 and 64-bit):
+> 
+> https://gitlab.com/qemu-project/qemu/-/jobs/4399466166#L3524
+> https://gitlab.com/qemu-project/qemu/-/jobs/4399466165#L3332
+> 
+> |  21/135 /cutils/qemu_strtol/overflow -
+> ERROR:../tests/unit/test-cutils.c:1387:test_qemu_strtol_overflow: assertion
+> failed (res == LONG_MIN): (2147483647 == -2147483648) FAIL
+> 
+> It seems to have returned LONG_MAX instead of LONG_MIN.
 
-> @@ -8364,7 +8467,8 @@ int do_guest_openat(CPUArchState *cpu_env, int
-> dirfd, const char *pathname,
-> =C2=A0#if HOST_BIG_ENDIAN !=3D TARGET_BIG_ENDIAN
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { "/proc/net/route", ope=
-n_net_route, is_proc },
-> =C2=A0#endif
-> -#if defined(TARGET_SPARC) || defined(TARGET_HPPA) ||
-> defined(TARGET_RISCV)
-> +#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
-> +=C2=A0=C2=A0=C2=A0 defined(TARGET_RISCV) || defined(TARGET_S390X)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 { "/proc/cpuinfo", open_=
-cpuinfo, is_proc },
-> =C2=A0#endif
-> =C2=A0#if defined(TARGET_M68K)
+Gah.  I see the problem; it is a copy/paste typo in part of
+test-cutils.c guarded by 'if (LONG_MAX == INT_MAX)' and therefore
+doesn't fire on platforms with 64-bit long.  Will respin the pull
+request to fix it.
 
-I'll need to add #if defined(TARGET_S390X) for is_proc, otherwise
-the build will fail on s390x hosts. I will include this in v2.
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
+
 
