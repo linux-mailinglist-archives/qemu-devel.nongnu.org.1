@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466C67204A9
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF077204A7
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:40:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q55vl-0003uo-Lp; Fri, 02 Jun 2023 10:39:05 -0400
+	id 1q55vm-0003ur-6C; Fri, 02 Jun 2023 10:39:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q55vj-0003uB-Sx
+ id 1q55vj-0003uC-U1
  for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:39:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q55vi-0001dc-9l
+ id 1q55vi-0001dT-C8
  for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:39:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685716741;
+ s=mimecast20190719; t=1685716740;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=dL0qA1pZEJS7XzaoVzVJ9M798uJl4XMKqV6v0OK34Ek=;
- b=Jsq+c023FaU1+X8oHypZ+PbGCQL46yq9z5MY7+oW/uwPz2jl0IFeOGJNpfUmkJRBU9SNOe
- LxzvGR/nx2HGF+v0YHqEYhGvsR629o8cN4o0jlmEhAUbDAAwA9M7Tabrke8Cn9TWXor+02
- 4IZfTxM+gkeZIoZj8gCHKXW8zJAH17s=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ThbOUsTAsNZ4pyUDNXkUbz3MNNn8R3IdsxJGkjRCjTQ=;
+ b=T8/peFfw8TrJm1xR4YPaVFoFVkuJsiZcbzX1sEmLMJERzllOOkngME/AiytmFCOXbP0alL
+ DAKpAuhzUi/AuafZaYGz+/espV/pMAAKMZAspOkb/P6Bhbw8KIR7zDyLXhiCiU6V3Qg0lp
+ VR1xLwzspMCvoaS/Hmw8+KKuv6ungD0=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-651-KQCqYyIZPGeHugZSNez3Tw-1; Fri, 02 Jun 2023 10:38:58 -0400
-X-MC-Unique: KQCqYyIZPGeHugZSNez3Tw-1
+ us-mta-318-Q7VozZ70OIyb7Me2TB5yoA-1; Fri, 02 Jun 2023 10:38:58 -0400
+X-MC-Unique: Q7VozZ70OIyb7Me2TB5yoA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 194443802277
- for <qemu-devel@nongnu.org>; Fri,  2 Jun 2023 14:38:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 668DF3802143
+ for <qemu-devel@nongnu.org>; Fri,  2 Jun 2023 14:38:58 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.168])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F33C9145B966;
- Fri,  2 Jun 2023 14:38:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7360814171BB;
+ Fri,  2 Jun 2023 14:38:57 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Lei Yang <leiyang@redhat.com>
-Subject: [PATCH v2 0/3] vdpa: map shadow vrings with MAP_SHARED
-Date: Fri,  2 Jun 2023 16:38:51 +0200
-Message-Id: <20230602143854.1879091-1-eperezma@redhat.com>
+Subject: [PATCH v2 1/3] vdpa: do not block migration if device has cvq and
+ x-svq=on
+Date: Fri,  2 Jun 2023 16:38:52 +0200
+Message-Id: <20230602143854.1879091-2-eperezma@redhat.com>
+In-Reply-To: <20230602143854.1879091-1-eperezma@redhat.com>
+References: <20230602143854.1879091-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -77,29 +81,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vdpa devices that use va addresses neeeds these maps shared.  Otherwise=
-,=0D
-vhost_vdpa checks will refuse to accept the maps.=0D
-=0D
-Discovered this issue while testing SVQ with vdpa sim, now defaulting to=0D
-use_va=3Don.=0D
-=0D
-v2:=0D
-* Use PROT_READ|PROT_WRITE instead of O_RDWR. The latter does not work for=
-=0D
-  mmap.=0D
-=0D
-Eugenio P=C3=A9rez (3):=0D
-  vdpa: do not block migration if device has cvq and x-svq=3Don=0D
-  vdpa: reorder vhost_vdpa_net_cvq_cmd_page_len function=0D
-  vdpa: map shadow vrings with MAP_SHARED=0D
-=0D
- hw/virtio/vhost-shadow-virtqueue.c | 18 ++++-----=0D
- net/vhost-vdpa.c                   | 59 ++++++++++++++++--------------=0D
- 2 files changed, 40 insertions(+), 37 deletions(-)=0D
-=0D
--- =0D
-2.31.1=0D
-=0D
+It was a mistake to forbid in all cases, as SVQ is already able to send
+all the CVQ messages before start forwarding data vqs.  It actually
+caused a regression, making impossible to migrate device previously
+migratable.
+
+Fixes: 36e4647247f2 ("vdpa: add vhost_vdpa_net_valid_svq_features")
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
+ net/vhost-vdpa.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 37cdc84562..c63456ff7c 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -837,13 +837,16 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+         s->vhost_vdpa.shadow_vq_ops_opaque = s;
+ 
+         /*
+-         * TODO: We cannot migrate devices with CVQ as there is no way to set
+-         * the device state (MAC, MQ, etc) before starting the datapath.
++         * TODO: We cannot migrate devices with CVQ and no x-svq enabled as
++         * there is no way to set the device state (MAC, MQ, etc) before
++         * starting the datapath.
+          *
+          * Migration blocker ownership now belongs to s->vhost_vdpa.
+          */
+-        error_setg(&s->vhost_vdpa.migration_blocker,
+-                   "net vdpa cannot migrate with CVQ feature");
++        if (!svq) {
++            error_setg(&s->vhost_vdpa.migration_blocker,
++                       "net vdpa cannot migrate with CVQ feature");
++        }
+     }
+     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
+     if (ret) {
+-- 
+2.31.1
 
 
