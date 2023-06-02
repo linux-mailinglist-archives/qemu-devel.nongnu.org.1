@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C4C71F902
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 05:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3208071F910
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 06:00:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4vi1-0005hr-6d; Thu, 01 Jun 2023 23:44:13 -0400
+	id 1q4vwD-0002Se-Ng; Thu, 01 Jun 2023 23:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q4vhy-0005hH-Sp; Thu, 01 Jun 2023 23:44:10 -0400
-Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4vwC-0002SG-2i
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 23:58:52 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q4vhw-0008BX-18; Thu, 01 Jun 2023 23:44:09 -0400
-Received: by mail-vk1-xa32.google.com with SMTP id
- 71dfb90a1353d-456fc318dd4so494422e0c.0; 
- Thu, 01 Jun 2023 20:44:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4vwA-0004tZ-9T
+ for qemu-devel@nongnu.org; Thu, 01 Jun 2023 23:58:51 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-19a13476ffeso1821023fac.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Jun 2023 20:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685677446; x=1688269446;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ia8nkpREpJWNziK2PXql2i6MzTjS+ARMRVy95rP1cck=;
- b=QJTU1gjo23NmBOMlf5B8juM90Qu84g9vgUuHamStwUVjD6h4nF3LmFgatK/DKVPs4A
- G4m0luTMRopbGj7XjD+r2E+cuMXy+aCgkUd8KlZsZzug8+9nCr/mRSaB6x0Wb9rdU+x1
- iUAb3wmeA4SXaUeYgV1036JSpNvATxaTe5f52tQWT7tnh9TQJQDI0YSZSgF6xoxlro9o
- M9KuK3tg1HuHUICsJOwep1QZ6MWIPvPBMtj0AI/xdgpckaZSbjFL8XGgP9zG0vT+2Awx
- Qf9MAYJTiufhkxWXZavF4aw82TiLbFk7zNwVQbRfKbSbuEaz7P9FyLeZkhZeer6ZfhjI
- +6nA==
+ d=linaro.org; s=google; t=1685678328; x=1688270328;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eemzpZaPRtpMEyrZ5pe4+VKaYaE71azmDbnxxQoXb1s=;
+ b=O8vFHMB/+g0bUJ3oLc0XZy1VLtG9YWFOz1PK7xClGa8+zIPzmkht6ylnKCGEAp+NkK
+ Flm5z27CaHKT2Q2jtY1ef2csOH4oJfx66tv+oG4ozkD8BzQcxxVC7LUOQknlOp0ldu7o
+ /FURuTwSJKBGK3C84r4YUQUjLKo8MfUWRaWsnqshBTDdPX3qjaHB4Lf4ArpEVPyz5TWk
+ lH+WBwfyQSGzdDccHCpCi+fpJzAnacwsp+kNgKoVJgTy5khctZftDkmt+wjD91DHMcpd
+ UDZqjRqm511lSwzCMOJlhGCchZKJdf57addDqWTmvGzwEmO2KlYQCCCCj4vYy5uQhtd5
+ z6tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685677446; x=1688269446;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ia8nkpREpJWNziK2PXql2i6MzTjS+ARMRVy95rP1cck=;
- b=HdhIS9YYYty5d/rk6p4/o+SVC3jfSsNxE/zQLPb2dKKK/tyx21Sa5u8RWtgNxnk7X6
- jA0Jz1a9XaGfKL2laJvTFFmnQSPHOu1FPQTqdK70yJReN9RdIkrF4EG3d0FqvTuagDHy
- AfjHOhm8KpEpcMKsbPBWWqr4kpaMkg7sR1R8rXdlWJb+k0LfJs0oEjXK6TYpob9Z/HLk
- 5nCh70VVz/0nyDWj/6uOwYhL/0B0SGCoYnmWOZoO4+5WefRUkS73QXkCYZF3ukwtj1my
- PNAQtbk3ZID2dCSpz1Aa5NJC4GWfR4yzI5iUFH6SzvSNO3EOF+e12jqsKXEiP0HQdsWo
- erKg==
-X-Gm-Message-State: AC+VfDwnKgdQMwSewXOt0BS2zCppI+wQIYtVUGYzOJ43rFzokNl9jowT
- QTaEeLxq852irnYm1dlCiVVg3ozTGaVZ7EhKZwc=
-X-Google-Smtp-Source: ACHHUZ4IvdFJ01NTVUf20gEFvaEjOoM16JEHbapZQknRgNGywBWx5BJtBP7RFngkSXmhNuS5FjeBQ/z40MZIsq4iB9o=
-X-Received: by 2002:a1f:3f42:0:b0:45c:8ef0:e351 with SMTP id
- m63-20020a1f3f42000000b0045c8ef0e351mr1730542vka.4.1685677446234; Thu, 01 Jun
- 2023 20:44:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685678328; x=1688270328;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eemzpZaPRtpMEyrZ5pe4+VKaYaE71azmDbnxxQoXb1s=;
+ b=EcEQzye0l1/IMf9xWQ4Xz9g9N7weBrodI7GY3RiWdDno8hBXPb+Ukliuxl+6ExxPhj
+ Xseh1pNE3rVFJNepaWXesNsjToJqgyJoaI76dTbds5sFMLMbhV9HTcvDw1BqYD3wyAkt
+ hglj+e+IPDQpYYlaADnx1rjHfR+XpOzP6DUJMWjQ/wO/WG/iW4801gmWdYkKP+pWIXHi
+ 7bdg25EEt8iN57T8VfNSWE7P5F/Y1SmRvgc/ly4wxcLs6YRDQZTSPfJrXUFUoVJPuGeE
+ IuVJ+lG5crfOc4W7tu4Ri3KPZr1daB6c7MrtbeMUw+meKTB0ICkHwdvkLF/zGedZFYwL
+ CD4w==
+X-Gm-Message-State: AC+VfDwkqrh5IfyC+v3qcoUDQQNV2aLtew8hv+7F10xiYHevcSQvLsbR
+ qYji/NDARe3hmTeIoFVDDPsj6g==
+X-Google-Smtp-Source: ACHHUZ5DSH+mhhMWAjXsTj5OJXDiZO8aZPZ2bes1rYBOGbRBj2qVMRlM1mcqmUtbbEAT5vSQBTuOAA==
+X-Received: by 2002:a05:6808:3a5:b0:397:f82f:90a4 with SMTP id
+ n5-20020a05680803a500b00397f82f90a4mr1507705oie.3.1685678328135; 
+ Thu, 01 Jun 2023 20:58:48 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:a70d:ae79:598f:409b?
+ ([2602:ae:1598:4c01:a70d:ae79:598f:409b])
+ by smtp.gmail.com with ESMTPSA id
+ m23-20020aa79017000000b0064fa2fdfa9esm60021pfo.81.2023.06.01.20.58.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 Jun 2023 20:58:47 -0700 (PDT)
+Message-ID: <1e9840bd-65bc-550b-e031-9fe824aac7e8@linaro.org>
+Date: Thu, 1 Jun 2023 20:58:46 -0700
 MIME-Version: 1.0
-References: <20230410124451.15929-1-ivan.klokov@syntacore.com>
- <20230410124451.15929-3-ivan.klokov@syntacore.com>
-In-Reply-To: <20230410124451.15929-3-ivan.klokov@syntacore.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 2 Jun 2023 13:43:40 +1000
-Message-ID: <CAKmqyKMGxJoyjseobh5J81uUUXbatv9GLYOd5zZG9PwWe=CTjw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] target/riscv: Add RVV registers to log
-To: Ivan Klokov <ivan.klokov@syntacore.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, richard.henderson@linaro.org,
- pbonzini@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com, 
- philmd@linaro.org, wangyanan55@huawei.com, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/21] NBD and miscellaneous patches for 2023-06-01
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+References: <20230601220305.2130121-1-eblake@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230601220305.2130121-1-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,109 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 10, 2023 at 10:47=E2=80=AFPM Ivan Klokov <ivan.klokov@syntacore=
-.com> wrote:
->
-> Print RvV extesion register to log if VPU option is enabled.
->
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
+On 6/1/23 15:02, Eric Blake wrote:
+> Eric Blake (21):
+>        iotests: Fix test 104 under NBD
+>        qcow2: Explicit mention of padding bytes
+>        test-cutils: Avoid g_assert in unit tests
+>        test-cutils: Use g_assert_cmpuint where appropriate
+>        test-cutils: Test integral qemu_strto* value on failures
+>        test-cutils: Test more integer corner cases
+>        cutils: Fix wraparound parsing in qemu_strtoui
+>        cutils: Document differences between parse_uint and qemu_strtou64
+>        cutils: Adjust signature of parse_uint[_full]
+>        cutils: Allow NULL endptr in parse_uint()
+>        test-cutils: Add coverage of qemu_strtod
+>        test-cutils: Prepare for upcoming semantic change in qemu_strtosz
+>        test-cutils: Refactor qemu_strtosz tests for less boilerplate
+>        cutils: Allow NULL str in qemu_strtosz
+>        numa: Check for qemu_strtosz_MiB error
+>        test-cutils: Add more coverage to qemu_strtosz
+>        cutils: Set value in all qemu_strtosz* error paths
+>        cutils: Set value in all integral qemu_strto* error paths
+>        cutils: Use parse_uint in qemu_strtosz for negative rejection
+>        cutils: Improve qemu_strtod* error paths
+>        cutils: Improve qemu_strtosz handling of fractions
 
-I applied the first patch, unfortunately this one doesn't apply
-anymore. Do you mind rebasing this on
-https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+This is failing on Windows (32 and 64-bit):
 
-Alistair
+https://gitlab.com/qemu-project/qemu/-/jobs/4399466166#L3524
+https://gitlab.com/qemu-project/qemu/-/jobs/4399466165#L3332
 
-> ---
->  target/riscv/cpu.c | 56 +++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 55 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 5bc0005cc7..cfd063a5dc 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -172,6 +172,14 @@ const char * const riscv_fpr_regnames[] =3D {
->    "f30/ft10", "f31/ft11"
->  };
->
-> +const char * const riscv_rvv_regnames[] =3D {
-> +  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
-> +  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
-> +  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
-> +  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
-> +  "v28", "v29", "v30", "v31"
-> +};
-> +
->  static const char * const riscv_excp_names[] =3D {
->      "misaligned_fetch",
->      "fault_fetch",
-> @@ -422,7 +430,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *=
-f, int flags)
->  {
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
->      CPURISCVState *env =3D &cpu->env;
-> -    int i;
-> +    int i, j;
-> +    uint8_t *p;
->
->  #if !defined(CONFIG_USER_ONLY)
->      if (riscv_has_ext(env, RVH)) {
-> @@ -506,6 +515,51 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE =
-*f, int flags)
->              }
->          }
->      }
-> +    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
-> +        static const int dump_rvv_csrs[] =3D {
-> +                    CSR_VSTART,
-> +                    CSR_VXSAT,
-> +                    CSR_VXRM,
-> +                    CSR_VCSR,
-> +                    CSR_VL,
-> +                    CSR_VTYPE,
-> +                    CSR_VLENB,
-> +                };
-> +        for (int i =3D 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
-> +            int csrno =3D dump_rvv_csrs[i];
-> +            target_ulong val =3D 0;
-> +            RISCVException res =3D riscv_csrrw_debug(env, csrno, &val, 0=
-, 0);
-> +
-> +            /*
-> +             * Rely on the smode, hmode, etc, predicates within csr.c
-> +             * to do the filtering of the registers that are present.
-> +             */
-> +            if (res =3D=3D RISCV_EXCP_NONE) {
-> +                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-> +                             csr_ops[csrno].name, val);
-> +            }
-> +        }
-> +        uint16_t vlenb =3D env_archcpu(env)->cfg.vlen >> 3;
-> +
-> +/*
-> + * From vector_helper.c
-> + * Note that vector data is stored in host-endian 64-bit chunks,
-> + * so addressing bytes needs a host-endian fixup.
-> + */
-> +#if HOST_BIG_ENDIAN
-> +#define BYTE(x)   ((x) ^ 7)
-> +#else
-> +#define BYTE(x)   (x)
-> +#endif
-> +        for (i =3D 0; i < 32; i++) {
-> +            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
-> +            p =3D (uint8_t *)env->vreg;
-> +            for (j =3D vlenb - 1 ; j >=3D 0; j--) {
-> +                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
-> +            }
-> +            qemu_fprintf(f, "\n");
-> +        }
-> +    }
->  }
->
->  static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
-> --
-> 2.34.1
->
->
+|  21/135 /cutils/qemu_strtol/overflow - 
+ERROR:../tests/unit/test-cutils.c:1387:test_qemu_strtol_overflow: assertion failed (res == 
+LONG_MIN): (2147483647 == -2147483648) FAIL
+
+It seems to have returned LONG_MAX instead of LONG_MIN.
+
+
+r~
 
