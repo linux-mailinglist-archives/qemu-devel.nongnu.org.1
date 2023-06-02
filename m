@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8657204A8
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CDB7204AA
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 16:40:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q55vs-0003wR-VH; Fri, 02 Jun 2023 10:39:12 -0400
+	id 1q55wI-0003zv-Lp; Fri, 02 Jun 2023 10:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q55vr-0003w5-05
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:39:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q55vp-0001fE-BL
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:39:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685716748;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZK64TC4k9RrrCOQGaCvohSAlBmWbrpFW1jCRxFbbfKQ=;
- b=AZHIk35s0qMAfKQktL9gcXVKT/u4YN1XrT9j2Lwy+3p/FSYRNmamkeJ3x++0x00DGssaaX
- 6S7SCYGcSqaBWS0uw4cTJoqlGgA79/t+D0/dPXga/qr9yNl4KUSZ3VEfrtDak4vaIsoqLq
- yM56ml5u3nQmKy0KWKoyBrABIsQSLkk=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-599-KHTiaSRgMqWjmi_ztPNMUA-1; Fri, 02 Jun 2023 10:39:01 -0400
-X-MC-Unique: KHTiaSRgMqWjmi_ztPNMUA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F96D3C11C7F
- for <qemu-devel@nongnu.org>; Fri,  2 Jun 2023 14:39:01 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.193.168])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1AC8C14171BD;
- Fri,  2 Jun 2023 14:38:59 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Lei Yang <leiyang@redhat.com>
-Subject: [PATCH v2 3/3] vdpa: map shadow vrings with MAP_SHARED
-Date: Fri,  2 Jun 2023 16:38:54 +0200
-Message-Id: <20230602143854.1879091-4-eperezma@redhat.com>
-In-Reply-To: <20230602143854.1879091-1-eperezma@redhat.com>
-References: <20230602143854.1879091-1-eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q55w9-0003zA-6x
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:39:31 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q55w4-0001jQ-0f
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 10:39:27 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b1a3fa2cd2so25471921fa.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 07:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1685716762; x=1688308762; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=qTHMFeVMyDwJhV8YR2oys+dnHM1q1wfPh+lHpai0NM0=;
+ b=mnnWiDAQ0so5yO+EFspmrU70LBNWjgyFudjlYbf7PwBXCS7fa/99ZJ12w3yIIwk4Gn
+ vxNYurYdpSyJqXl57oiFWKHOiQ55aFKgSWuPdiEdo2DyPGvbP8ZXb0aoI8IzivGKVj6M
+ ScUTWrNtVGj6Ao3z5kCtTU37/kZCCfPO7Bm8dkc4HWAmGuNi+rjV3gDd1jOJVkh83fLM
+ 0R92VVcNt4PHfchJn5swvpd4m2ObocOcofRaflZqqlOqjg4v8ce+jeYjD8SyH7G8zgld
+ lP8vv3hEuWPB5KTlm0hrJzDdE6+AF/u7OYl23CDh7oj86wEWGDVZiFrkeZyw4Lmf/7w1
+ +EIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685716762; x=1688308762;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qTHMFeVMyDwJhV8YR2oys+dnHM1q1wfPh+lHpai0NM0=;
+ b=K+zNUlvgqHNoWvkWVsbn0xS/XUnde6n+kPYvVWDeigno4cPL4WdSltz/h1VqsMK9oP
+ TFrMopwIgQyHOld4ZNFcYSSMvc793rcT2rS8/Vh8ayY4m8Fecv7ARonGBLZo0h2lUGzi
+ j+Hc7qIbUvSfjjP9mHU5qz6MiuEhP3EQ/aAkBe3KZlP7Kg5ELDekPgbIOeJc/ljimi3Q
+ CAh8qtJ2S7YAHgviSnh8HYseqF/A5RVTowWU3JUi/Oh9j9LzW5FfLGKg33gwBbWxMMnq
+ XSYVc0WK8nZvlA2yAhQfJc4bQVBS7L76fsEiJycDSrKxS9Cgc1sbq1RWX4o+aXJ5q5K0
+ Z2SQ==
+X-Gm-Message-State: AC+VfDz6QKCkF8abaRDbCBV8+CDinW3xbz9i2DNg5BYIH5ceBA35B8Mw
+ jdu0bnqWVZwPvcIRrm2x/FO5ag==
+X-Google-Smtp-Source: ACHHUZ7oBKwwngW1vMoc9nMQbu9grnPgMAKxAEC+t8F/UNN1W0ij3zbADuKEn4WkRQlz/fmJ17qf4A==
+X-Received: by 2002:a05:651c:145:b0:2a8:bd1f:a377 with SMTP id
+ c5-20020a05651c014500b002a8bd1fa377mr146403ljd.20.1685716761769; 
+ Fri, 02 Jun 2023 07:39:21 -0700 (PDT)
+Received: from [192.168.50.45] (h-155-4-92-80.A980.priv.bahnhof.se.
+ [155.4.92.80]) by smtp.gmail.com with ESMTPSA id
+ n5-20020a2e86c5000000b002ac7a715585sm246974ljj.30.2023.06.02.07.39.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 Jun 2023 07:39:21 -0700 (PDT)
+Message-ID: <024ee92f725f4ffd2952f472861ba9b415f4cde3.camel@rivosinc.com>
+Subject: Re: [RFC v2] linux-user/riscv: Add syscall riscv_hwprobe
+From: Robbin Ehn <rehn@rivosinc.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, laurent@vivier.eu, qemu-riscv@nongnu.org, 
+ richard.henderson@linaro.org
+Date: Fri, 02 Jun 2023 16:39:20 +0200
+In-Reply-To: <20230602-86a3d8d9fad1fb3464d28702@orel>
+References: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
+ <20230602-86a3d8d9fad1fb3464d28702@orel>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=rehn@rivosinc.com; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,103 +91,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vdpa devices that use va addresses neeeds these maps shared.
-Otherwise, vhost_vdpa checks will refuse to accept the maps.
+On Fri, 2023-06-02 at 16:02 +0200, Andrew Jones wrote:
+> On Fri, Jun 02, 2023 at 11:41:11AM +0200, Robbin Ehn wrote:
+> > This patch adds the new syscall for the
+> > "RISC-V Hardware Probing Interface"
+> > (https://docs.kernel.org/riscv/hwprobe.html).
+> >=20
+> > Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
+> > ---
+> > v1->v2: Moved to syscall.c
+> > ---
+> >  linux-user/riscv/syscall32_nr.h |   1 +
+> >  linux-user/riscv/syscall64_nr.h |   1 +
+> >  linux-user/syscall.c            | 109 ++++++++++++++++++++++++++++++++
+> >  3 files changed, 111 insertions(+)
+> >=20
+> > diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall=
+32_nr.h
+> > index 1327d7dffa..412e58e5b2 100644
+> > --- a/linux-user/riscv/syscall32_nr.h
+> > +++ b/linux-user/riscv/syscall32_nr.h
+>=20
+> This file should not be modified, it should be generated, but this is an
+> RFC, so hacking it is OK, but the hack should be in a separate patch.
 
-The mmap call will always return a page aligned address, so removing the
-qemu_memalign call.  Keeping the ROUND_UP for the size as we still need
-to DMA-map them in full.
+Ok, thanks.
 
-Not applying fixes tag as it never worked with va devices.
+>=20
+> > @@ -228,6 +228,7 @@
+> >  #define TARGET_NR_accept4 242
+> >  #define TARGET_NR_arch_specific_syscall 244
+> >  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall =
++ 15)
+> > +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
+> >  #define TARGET_NR_prlimit64 261
+> >  #define TARGET_NR_fanotify_init 262
+> >  #define TARGET_NR_fanotify_mark 263
+> > diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall=
+64_nr.h
+> > index 6659751933..29e1eb2075 100644
+> > --- a/linux-user/riscv/syscall64_nr.h
+> > +++ b/linux-user/riscv/syscall64_nr.h
+>=20
+> Same
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
-v2: Use PROT_READ|PROT_WRITE instead of wrong O_RDWR.
----
- hw/virtio/vhost-shadow-virtqueue.c | 18 +++++++++---------
- net/vhost-vdpa.c                   | 16 ++++++++--------
- 2 files changed, 17 insertions(+), 17 deletions(-)
+Ok, thanks.
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index bd7c12b6d3..1b1d85306c 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -649,7 +649,7 @@ void vhost_svq_set_svq_kick_fd(VhostShadowVirtqueue *svq, int svq_kick_fd)
- void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
-                      VirtQueue *vq, VhostIOVATree *iova_tree)
- {
--    size_t desc_size, driver_size, device_size;
-+    size_t desc_size;
- 
-     event_notifier_set_handler(&svq->hdev_call, vhost_svq_handle_call);
-     svq->next_guest_avail_elem = NULL;
-@@ -662,14 +662,14 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
- 
-     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
-     svq->num_free = svq->vring.num;
--    driver_size = vhost_svq_driver_area_size(svq);
--    device_size = vhost_svq_device_area_size(svq);
--    svq->vring.desc = qemu_memalign(qemu_real_host_page_size(), driver_size);
-+    svq->vring.desc = mmap(NULL, vhost_svq_driver_area_size(svq),
-+                           PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
-+                           -1, 0);
-     desc_size = sizeof(vring_desc_t) * svq->vring.num;
-     svq->vring.avail = (void *)((char *)svq->vring.desc + desc_size);
--    memset(svq->vring.desc, 0, driver_size);
--    svq->vring.used = qemu_memalign(qemu_real_host_page_size(), device_size);
--    memset(svq->vring.used, 0, device_size);
-+    svq->vring.used = mmap(NULL, vhost_svq_device_area_size(svq),
-+                           PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
-+                           -1, 0);
-     svq->desc_state = g_new0(SVQDescState, svq->vring.num);
-     svq->desc_next = g_new0(uint16_t, svq->vring.num);
-     for (unsigned i = 0; i < svq->vring.num - 1; i++) {
-@@ -712,8 +712,8 @@ void vhost_svq_stop(VhostShadowVirtqueue *svq)
-     svq->vq = NULL;
-     g_free(svq->desc_next);
-     g_free(svq->desc_state);
--    qemu_vfree(svq->vring.desc);
--    qemu_vfree(svq->vring.used);
-+    munmap(svq->vring.desc, vhost_svq_driver_area_size(svq));
-+    munmap(svq->vring.used, vhost_svq_device_area_size(svq));
-     event_notifier_set_handler(&svq->hdev_call, NULL);
- }
- 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 91451a254a..f365cff0bd 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -201,8 +201,8 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
- 
--    qemu_vfree(s->cvq_cmd_out_buffer);
--    qemu_vfree(s->status);
-+    munmap(s->cvq_cmd_out_buffer, vhost_vdpa_net_cvq_cmd_page_len());
-+    munmap(s->status, vhost_vdpa_net_cvq_cmd_page_len());
-     if (s->vhost_net) {
-         vhost_net_cleanup(s->vhost_net);
-         g_free(s->vhost_net);
-@@ -826,12 +826,12 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         vhost_vdpa_net_valid_svq_features(features,
-                                           &s->vhost_vdpa.migration_blocker);
-     } else if (!is_datapath) {
--        s->cvq_cmd_out_buffer = qemu_memalign(qemu_real_host_page_size(),
--                                            vhost_vdpa_net_cvq_cmd_page_len());
--        memset(s->cvq_cmd_out_buffer, 0, vhost_vdpa_net_cvq_cmd_page_len());
--        s->status = qemu_memalign(qemu_real_host_page_size(),
--                                  vhost_vdpa_net_cvq_cmd_page_len());
--        memset(s->status, 0, vhost_vdpa_net_cvq_cmd_page_len());
-+        s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
-+                                     PROT_READ | PROT_WRITE,
-+                                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+        s->status = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
-+                         PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS,
-+                         -1, 0);
- 
-         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
--- 
-2.31.1
+>=20
+> > @@ -251,6 +251,7 @@
+> >  #define TARGET_NR_recvmmsg 243
+> >  #define TARGET_NR_arch_specific_syscall 244
+> >  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall =
++ 15)
+> > +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
+> >  #define TARGET_NR_wait4 260
+> >  #define TARGET_NR_prlimit64 261
+> >  #define TARGET_NR_fanotify_init 262
+> > diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> > index 89b58b386b..cd394bbe26 100644
+> > --- a/linux-user/syscall.c
+> > +++ b/linux-user/syscall.c
+> > @@ -8772,6 +8772,74 @@ static int do_getdents64(abi_long dirfd, abi_lon=
+g arg2, abi_long count)
+> >  }
+> >  #endif /* TARGET_NR_getdents64 */
+> > =20
+> > +#if defined(TARGET_RISCV)
+> > +
+> > +#define RISCV_HWPROBE_KEY_MVENDORID     0
+> > +#define RISCV_HWPROBE_KEY_MARCHID       1
+> > +#define RISCV_HWPROBE_KEY_MIMPID        2
+> > +
+> > +#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
+> > +#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
+> > +
+> > +#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
+> > +#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
+> > +#define     RISCV_HWPROBE_IMA_C        (1 << 1)
+> > +
+> > +#define RISCV_HWPROBE_KEY_CPUPERF_0     5
+> > +#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
+> > +
+> > +struct riscv_hwprobe {
+> > +    int64_t  key;
+> > +    uint64_t value;
+> > +};
+>=20
+> The above is all uapi so Linux's arch/riscv/include/uapi/asm/hwprobe.h
+> should be picked up on Linux header update. You'll need to modify the
+> script, scripts/update-linux-headers.sh, to do that by adding a new
+> riscv-specific block. Hacking this by importing the header file manually
+> is fine for an RFC, but that should be a separate patch or part of the
+> syscall define hack patch. And hack patches should be clearly tagged as
+> "NOT FOR MERGE".
+
+Ok, thanks.
+
+>=20
+> > +
+> > +static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+> > +                                    struct riscv_hwprobe *pair,
+> > +                                    size_t pair_count)
+> > +{
+> > +    const RISCVCPUConfig *cfg =3D riscv_cpu_cfg(env);
+> > +
+> > +    for (; pair_count > 0; pair_count--, pair++) {
+> > +        pair->value =3D 0;
+> > +        switch (pair->key) {
+> > +        case RISCV_HWPROBE_KEY_MVENDORID:
+> > +            pair->value =3D cfg->mvendorid;
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_MARCHID:
+> > +            pair->value =3D cfg->marchid;
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_MIMPID:
+> > +            pair->value =3D cfg->mimpid;
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
+> > +            pair->value =3D riscv_has_ext(env, RVI) &&
+> > +                          riscv_has_ext(env, RVM) &&
+> > +                          riscv_has_ext(env, RVA) ?
+> > +                          RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_IMA_EXT_0:
+> > +            pair->value =3D riscv_has_ext(env, RVF) &&
+> > +                          riscv_has_ext(env, RVD) ?
+> > +                          RISCV_HWPROBE_IMA_FD : 0;
+> > +            pair->value |=3D riscv_has_ext(env, RVC) ?
+> > +                           RISCV_HWPROBE_IMA_C : pair->value;
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_CPUPERF_0:
+> > +            pair->value =3D RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+> > +            break;
+> > +        default:
+> > +            pair->key =3D -1;
+> > +        break;
+> > +        }
+> > +    }
+> > +}
+> > +#endif
+> > +
+> >  #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
+> >  _syscall2(int, pivot_root, const char *, new_root, const char *, put_o=
+ld)
+> >  #endif
+> > @@ -13469,6 +13537,47 @@ static abi_long do_syscall1(CPUArchState *cpu_=
+env, int num, abi_long arg1,
+> >          return ret;
+> >  #endif
+> > =20
+> > +#if defined(TARGET_RISCV)
+> > +    case TARGET_NR_riscv_hwprobe:
+> > +        {
+>=20
+> The { goes under the c of case, which will shift all the below four space=
+s
+> left as well.
+
+This was an attempt to blend in, i.e. same style as the preceding case.
+I'll change, thanks.
+
+>=20
+> > +            struct riscv_hwprobe *host_pairs;
+> > +
+> > +            /* flags must be 0 */
+> > +            if (arg5 !=3D 0) {
+> > +                return -TARGET_EINVAL;
+> > +            }
+> > +
+> > +            /* check cpu_set */
+> > +            if (arg3 !=3D 0) {
+> > +                int ccpu;
+> > +                size_t cpu_setsize =3D CPU_ALLOC_SIZE(arg3);
+> > +                cpu_set_t *host_cpus =3D lock_user(VERIFY_READ, arg4,
+> > +                                                 cpu_setsize, 0);
+> > +                if (!host_cpus) {
+> > +                    return -TARGET_EFAULT;
+> > +                }
+> > +                ccpu =3D CPU_COUNT_S(cpu_setsize, host_cpus);
+> > +                unlock_user(host_cpus, arg4, cpu_setsize);
+> > +                /* no selected cpu */
+> > +                if (ccpu =3D=3D 0) {
+> > +                    return -TARGET_EINVAL;
+> > +                }
+> > +            } else if (arg4 !=3D 0) {
+> > +                return -TARGET_EINVAL;
+> > +            }
+>=20
+> I think we want
+>=20
+>  if (arg2 =3D=3D 0)
+>     return 0;
+>=20
+> here.
+
+Ok, thanks.
+
+>=20
+> > +
+> > +            host_pairs =3D lock_user(VERIFY_WRITE, arg1,
+> > +                                   sizeof(*host_pairs) * (size_t)arg2,=
+ 0);
+> > +            if (host_pairs =3D=3D NULL) {
+> > +                return -TARGET_EFAULT;
+> > +            }
+> > +            risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
+> > +            unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_=
+t)arg2);
+> > +            ret =3D 0;
+> > +        }
+> > +        return ret;
+> > +#endif
+> > +
+> >      default:
+> >          qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
+> >          return -TARGET_ENOSYS;
+> > --=20
+> > 2.39.2
+> >=20
+> >=20
+>=20
+> Otherwise this looks good to me.
+
+Thank you!
+
+/Robbin
+
+>=20
+> Thanks,
+> drew
 
 
