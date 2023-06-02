@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EA472085B
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7043972085F
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 19:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q58Z5-0007B8-PY; Fri, 02 Jun 2023 13:27:51 -0400
+	id 1q58aA-0007xr-1r; Fri, 02 Jun 2023 13:28:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q58Z2-0007Ao-4M
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:27:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1q58Z0-0000IT-5l
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:27:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685726865;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PZTtGCticPm+ZTg6KnPDRYI9Ghg1D32643S+GL972ns=;
- b=GzEgdTSJEg19hkmeBw1Z5NyHvypyNzmRH4wKamngQ5F5CFDcsKPk/c1P3sbv6jdbjb2uZK
- M7se14b6MijX5QnKgW7NvdL1SZmkzWHyntpJjcbRVXEtDgVP7x/T9YtfBR5Qk8wDfCXuTV
- ZJrnavTgaYkKRngrlCc6l7Dgs85aYXg=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-571-lYxL-8cAOaOo2hZwkqY8qQ-1; Fri, 02 Jun 2023 13:27:43 -0400
-X-MC-Unique: lYxL-8cAOaOo2hZwkqY8qQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4ec790b902bso1819424e87.1
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 10:27:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q58a8-0007xb-5v
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:28:56 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q58a6-0000mA-Eq
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 13:28:55 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-51494659d49so3355599a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 10:28:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685726932; x=1688318932;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=NG5dRzgytxeUAadTFR283hss7DOdpaupnF8nRz+IwsQ=;
+ b=SXyN1HmTtj4PCekfSafAyzbbUuzPlTNT3/lAMZJ3SeY52bIeA1Lr2ZD9Wu0yyfaMFF
+ 8WKN7f/fQI50FPGftgrXHxUikiUw3fUZG8+oXKjz+3i7WicUqNsn9l1sKOc8J5J5pmMG
+ ceINcCy6h+P1hvUc8F4VqAoGPVWAOY59H1RFrWPoFh6ZMHAt1fhSwoURlv5zQUN7zvdg
+ HR4EAnR7j5iWYn9CCYRaQRYbemJk4w/1koHvKRCLPI/YJpoO3CKcix+zTJ/CQjk3BX9I
+ O0G8mZ+Z7tsbm55nA83Tm3V/N8PFyAEwpu04TY+ZtrGLoZjsy7hvSDFTBSFz7RV5FbZY
+ kCkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685726862; x=1688318862;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PZTtGCticPm+ZTg6KnPDRYI9Ghg1D32643S+GL972ns=;
- b=Md9NTWWFGdSBd3bFfNH7ij3YtTsTbwhMKQZ8uB9t+MWLp6+F3YLAayJVABE5ZxBJCm
- /0nvhMZQjq6yH6sxmcNetRCoL6Fs/Zte5F7zkFxMO2mWhMtnREQpIdxtBXWiJnWjyswf
- 1l8ML06L9tGIApU3+z1ECjY53xnPkGQHeYmAJfWZal9gOQoP4aycJKd25rnZLcgofGYU
- UNlgDcnIBeS8chz/N0+l6vo/7ei6IRP8DOOiHsUMqcao6Pxdpu8T7M4og4OFAY1P6joS
- AcilC9QTVihIhSVFs9j5PtSy+UvVNshL2nJ7MeINih+J8zu2Spsb+W2izzJtZmAEqG6/
- wXtw==
-X-Gm-Message-State: AC+VfDyQhZnuniZjSJWbT91Gdk5O3k3qeeTNqwNm9p1/Z2OrKI0ijN5M
- hkyVUBakA1qTH6nvnAeDhv79Ay+ReO3Kq5cKdO8PCpq880GmJD50IEG0wf2r1KbeaKwfgEGE2NT
- pXtcSoEfwR4XdNp+/OCIsnh1D0uIRg1s=
-X-Received: by 2002:ac2:4193:0:b0:4e8:5e39:6234 with SMTP id
- z19-20020ac24193000000b004e85e396234mr1980815lfh.16.1685726862446; 
- Fri, 02 Jun 2023 10:27:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6IOPIqg26JAPBJ/oSs5CKBJuFRrJjNw5AXK6l2xFt3FKaNAxMtcFfpMPR3V48ZcImJsL1iCSEFE9tGcUDcB0E=
-X-Received: by 2002:ac2:4193:0:b0:4e8:5e39:6234 with SMTP id
- z19-20020ac24193000000b004e85e396234mr1980804lfh.16.1685726862146; Fri, 02
- Jun 2023 10:27:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685726932; x=1688318932;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NG5dRzgytxeUAadTFR283hss7DOdpaupnF8nRz+IwsQ=;
+ b=EJSED8TEAdG7HNM3qFkEliB/YVBnca1y++yy7tV8/WYjuIPeOPmq066ZWg9xpl+dvz
+ aZCyJIGSmGPwdQIrHgX5+lsrBA8VpwiLPdskSYr16qend5PUj1Z4RH8be1NiuIJ6hpUm
+ gj6ivKTcxT4rE9aFsE6o/65mFHVzkTGo4FPwQjb6aeieTKe/FoG+kEFd9WsrsbaL7Igp
+ 4PM8BaV+SsUPjIz/672xF/qLxUoxaOSh0BiTnlxKGGm5FK9HYw6XhTBTkxi/TMGlQC3t
+ 0lxvIPwJXcZw1hfhrDzWCD4vJo70OLqbsdsISOWEVjmJlN1UiLs+ijgATISl6eLrPBxl
+ Gd5Q==
+X-Gm-Message-State: AC+VfDxfIt5053OZni6t0h9UCyWhZFpkCukkzG1ea9GJMTUM8bEwposW
+ Nk7IXi52bcNEwLJBJh+o7ggnACaoUMV0/IinapsKHg==
+X-Google-Smtp-Source: ACHHUZ5xcjA7fU08fzS2b8FFZg1QfTZwTNxdJorOUi9ff0lLjOScgHcuMbq4+CEeXNW1qqNax6DMs2eI8cmtw5gXUuQ=
+X-Received: by 2002:a05:6402:b38:b0:514:9d2f:10be with SMTP id
+ bo24-20020a0564020b3800b005149d2f10bemr2349405edb.18.1685726932466; Fri, 02
+ Jun 2023 10:28:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230602143854.1879091-1-eperezma@redhat.com>
- <20230602143854.1879091-2-eperezma@redhat.com>
-In-Reply-To: <20230602143854.1879091-2-eperezma@redhat.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Sat, 3 Jun 2023 01:27:05 +0800
-Message-ID: <CAPpAL=wCTA+4TjONY88a4QNhJhRoezVuMwiwS+r0_6BpLfRxJg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] vdpa: do not block migration if device has cvq and
- x-svq=on
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
+ <20230521102307.87081-2-jiaxun.yang@flygoat.com>
+In-Reply-To: <20230521102307.87081-2-jiaxun.yang@flygoat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 2 Jun 2023 18:28:41 +0100
+Message-ID: <CAFEAcA9F4OOwg9LQn-y7ScixG9mZ58bsvcE6qGqxw1WXENYaZw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: qemu-devel@nongnu.org, yangxiaojuan@loongson.cn, gaosong@loongson.cn, 
+ philmd@linaro.org, chenhuacai@kernel.org, crosa@redhat.com, 
+ wainersm@redhat.com, bleal@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.171,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,56 +87,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QE tested this series with vhost_vdpa and x-svq=3Don, guest can migrate
-and everything works well.
-
-Tested-by: Lei Yang <leiyang@redhat.com>
-
-On Fri, Jun 2, 2023 at 10:39=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redhat=
-.com> wrote:
+On Sun, 21 May 2023 at 11:24, Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
 >
-> It was a mistake to forbid in all cases, as SVQ is already able to send
-> all the CVQ messages before start forwarding data vqs.  It actually
-> caused a regression, making impossible to migrate device previously
-> migratable.
+> As per "Loongson 3A5000/3B5000 Processor Reference Manual",
+> Loongson 3A5000's IPI implementation have 4 mailboxes per
+> core.
 >
-> Fixes: 36e4647247f2 ("vdpa: add vhost_vdpa_net_valid_svq_features")
-> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> However, in 78464f023b54 ("hw/loongarch/virt: Modify ipi as
+> percpu device"), the number of IPI mailboxes was reduced to
+> one, which mismatches actual hardware.
+>
+> It won't affect LoongArch based system as LoongArch boot code
+> only uses the first mailbox, however MIPS based Loongson boot
+> code uses all 4 mailboxes.
+>
+> Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu device")
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > ---
->  net/vhost-vdpa.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>  hw/intc/loongarch_ipi.c         | 6 +++---
+>  include/hw/intc/loongarch_ipi.h | 4 +++-
+>  2 files changed, 6 insertions(+), 4 deletions(-)
 >
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 37cdc84562..c63456ff7c 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -837,13 +837,16 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
-tState *peer,
->          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
+> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+> index d6ab91721ea1..3e453816524e 100644
+> --- a/hw/intc/loongarch_ipi.c
+> +++ b/hw/intc/loongarch_ipi.c
+> @@ -238,14 +238,14 @@ static void loongarch_ipi_init(Object *obj)
 >
->          /*
-> -         * TODO: We cannot migrate devices with CVQ as there is no way t=
-o set
-> -         * the device state (MAC, MQ, etc) before starting the datapath.
-> +         * TODO: We cannot migrate devices with CVQ and no x-svq enabled=
- as
-> +         * there is no way to set the device state (MAC, MQ, etc) before
-> +         * starting the datapath.
->           *
->           * Migration blocker ownership now belongs to s->vhost_vdpa.
->           */
-> -        error_setg(&s->vhost_vdpa.migration_blocker,
-> -                   "net vdpa cannot migrate with CVQ feature");
-> +        if (!svq) {
-> +            error_setg(&s->vhost_vdpa.migration_blocker,
-> +                       "net vdpa cannot migrate with CVQ feature");
-> +        }
+>  static const VMStateDescription vmstate_ipi_core = {
+>      .name = "ipi-single",
+> -    .version_id = 1,
+> -    .minimum_version_id = 1,
+> +    .version_id = 2,
+> +    .minimum_version_id = 2,
+>      .fields = (VMStateField[]) {
+>          VMSTATE_UINT32(status, IPICore),
+>          VMSTATE_UINT32(en, IPICore),
+>          VMSTATE_UINT32(set, IPICore),
+>          VMSTATE_UINT32(clear, IPICore),
+> -        VMSTATE_UINT32_ARRAY(buf, IPICore, 2),
+> +        VMSTATE_UINT32_ARRAY(buf, IPICore, IPI_MBX_NUM * 2),
+>          VMSTATE_END_OF_LIST()
 >      }
->      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index,=
- nvqs);
->      if (ret) {
-> --
-> 2.31.1
+>  };
+> diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
+> index 664e050b926e..6c6194786e80 100644
+> --- a/include/hw/intc/loongarch_ipi.h
+> +++ b/include/hw/intc/loongarch_ipi.h
+> @@ -28,6 +28,8 @@
+>  #define MAIL_SEND_OFFSET      0
+>  #define ANY_SEND_OFFSET       (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
 >
+> +#define IPI_MBX_NUM           4
+> +
+>  #define TYPE_LOONGARCH_IPI "loongarch_ipi"
+>  OBJECT_DECLARE_SIMPLE_TYPE(LoongArchIPI, LOONGARCH_IPI)
+>
+> @@ -37,7 +39,7 @@ typedef struct IPICore {
+>      uint32_t set;
+>      uint32_t clear;
+>      /* 64bit buf divide into 2 32bit buf */
+> -    uint32_t buf[2];
+> +    uint32_t buf[IPI_MBX_NUM * 2];
+>      qemu_irq irq;
+>  } IPICore;
 
+In particular, this fixes Coverity issues CID 1512452 and 1512453,
+where Coverity notices that the code in loongarch_ipi_writel() and
+loongarch_ipi_readl() reads off the end of the too-short buf[].
+
+thanks
+-- PMM
 
