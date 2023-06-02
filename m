@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C208971FD74
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F1471FDAE
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Jun 2023 11:23:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q50uq-0002Aq-FW; Fri, 02 Jun 2023 05:17:48 -0400
+	id 1q50zg-0004K0-Rf; Fri, 02 Jun 2023 05:22:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q50uh-0002AW-Ez
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:17:39 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q50ze-0004Jg-6c
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:22:46 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q50uf-0007K3-Kh
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:17:39 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-53f158ecfe1so1065849a12.0
- for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:17:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q50zc-00028M-9h
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 05:22:45 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-514859f3ffbso2666033a12.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 02:22:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685697454; x=1688289454;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0l3qt2a6ZeVivg6JkO+UBjMLBDcdJgfWktJuFttkE/w=;
- b=pp3lQzzopS9mW2PiCk8HodtA4vJnvuyK8ursae3ek5Zg4liIjohnbhk3SKIv1hPiWK
- zN25uAa9HL/TtO+soq4a7fhCseHnrMugPQEPeXe2xL+sEOmDNJvs95tsxH7Mrk9qHEpq
- DYdCU7AUPoeYyZphwux44p3krUPfQiTasRx/0vL0V/jcUka3wrIW+0x/gZ2uCej6pEL3
- D30kibDtvYZ5r8Iv3WSoPQio/u5KX12EQn5NcnfI1KwqehAjkczYch5PAkLoaet2kekB
- I98FxfJ6peDTdPoh2mjCcgm/RUjWnO9h+WALZBOInqdWTzBQrrQwfi/nv1mw5sVgxKLC
- UkwQ==
+ d=linaro.org; s=google; t=1685697759; x=1688289759;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Q6wokpUFI3AgXD4Qn5C9gRNCiQYNa0dpDpjwuSa95I4=;
+ b=xi/FlkKb+M7LlR0pDXTZxCVCSRTsvNhM17VgfSJVZcNTdYgtWjQ5XDrrz5F6Zeg6Ur
+ CwgH8BXjz6LuHRzhRW34nf9E5jVDb4y2TNBU1UN7IqyrnJa6YsBf6vqKSBhTr2GMcYLJ
+ pTEBVD7J9Hqi2j55Wf7i0zlV4Dfla0rhbGi+xUKWRQKG+7EivBqO1I2rVAAryk/Deqps
+ DivLrAMUDXAftPKyGUSLK9JEYOUDz5DojcCCVZ2gQAc93IgcWxoVVjhZ3XefY37mIDf2
+ o0QDFDxKZoVUCMxSnK8W3RAS15hRbgu1gw80HjezEz0EJ1l+Uh33giTbfB/MKnGZtbYe
+ uraQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685697454; x=1688289454;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0l3qt2a6ZeVivg6JkO+UBjMLBDcdJgfWktJuFttkE/w=;
- b=d53eHAyvUPqBusbDxMJ3aroCo37Kq64gwNoz60S9WlX8siP/YXhOY8Kfnn9HQpLnwS
- U2PGc7mBeEzS09rCyCGr2u5Puv6jZo9FlbXm/1p46eGW8ogIyWz9FF9HfEyI9uaEVdnd
- lZ2AKZPgFNNduIL/4oM91QFosHaLHM4BBv3iSUpCtr8jL99m6DDjscnZQnzVSB7AD2cN
- Y4vGlKXco4widkvNbgbk/sT37wpkABAbr2kO6rPH85AeP3aSbc4r64c6xGR6uTPtDafq
- 0o/yxBf+MPTFaIZGBKEoCJxe6s+eXTJ/XBeVf4SWyNbMLM1qx8cLdeavG2d2qTwVUboL
- 81HA==
-X-Gm-Message-State: AC+VfDwNIgkCihwN8cWAa+vkCLnPAY74lPm2xB8OiOtwgjtxiGPKbOmx
- dbcoPw29zvt3We8mflrAEpk8ag==
-X-Google-Smtp-Source: ACHHUZ5cm1d74gl4MUTZRdbFcdO+B2KijB/yKoyeNyAjwF05zIw5hyQimfc4DP3maAbkO47WJAZLCQ==
-X-Received: by 2002:a17:902:ab86:b0:1af:d9d2:a234 with SMTP id
- f6-20020a170902ab8600b001afd9d2a234mr1089419plr.3.1685697454466; 
- Fri, 02 Jun 2023 02:17:34 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:a70d:ae79:598f:409b?
- ([2602:ae:1598:4c01:a70d:ae79:598f:409b])
- by smtp.gmail.com with ESMTPSA id
- t5-20020a1709027fc500b001a183ade911sm878958plb.56.2023.06.02.02.17.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Jun 2023 02:17:33 -0700 (PDT)
-Message-ID: <78b46f14-f07e-a127-7da7-322c71e74ef5@linaro.org>
-Date: Fri, 2 Jun 2023 02:17:32 -0700
+ d=1e100.net; s=20221208; t=1685697759; x=1688289759;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Q6wokpUFI3AgXD4Qn5C9gRNCiQYNa0dpDpjwuSa95I4=;
+ b=ZCdNMgyxiafTvIZ0xtokzaX+jB3qVBzgmdlsR+FBslNs578F3jy6PLpBZPbQlBj8x0
+ QhSWF7En7n25bVNmEyzSrogCNEqmKyT8fj1NInKY+ewqTM1XiOB1BnZWlulnD8NpI/Yq
+ ydYdLms9denY8Mm1LcleJA/2ooqOazt4NJjdBGgRT/8Iy70oUlIerE0kQ3ejQqavVmqj
+ jueC69bAdsQCxk/k476TQ/z2WDMiv8AfbdpidEZpJjQOc8u/X0e9u9MDQRpNA4xlBgLn
+ hAE/oYuNsLYbVIK6CfPwx0fUqOQyxTCi41s2Bn3mx0SYFiTc9reZgBjh6MbeVV2iwOgk
+ BF+A==
+X-Gm-Message-State: AC+VfDyOYyLYkgDKvfSPB9WgpoJCYZSVM0HoQZY9B+4jcKq/utbM/K0u
+ uzfqAtg5v94lzsNktVYFhilB5AXYr2x0WyLYLIKtKg==
+X-Google-Smtp-Source: ACHHUZ7fR7tCRd0/tyEqAub7wYzB8pVRX7Nu2RrFWK4RVlIseyMXLzCv298SEnrkSIZXo9Ovh0QjbeO3zIPqBWN856g=
+X-Received: by 2002:aa7:df81:0:b0:514:a5f0:93c4 with SMTP id
+ b1-20020aa7df81000000b00514a5f093c4mr1409220edy.14.1685697759192; Fri, 02 Jun
+ 2023 02:22:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 0/6] Migration 20230601 patches
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230601234426.29984-1-quintela@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230601234426.29984-1-quintela@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <87y1l2rixp.fsf@secure.mitica> <ZHmyA40nIiUBceX0@redhat.com>
+In-Reply-To: <ZHmyA40nIiUBceX0@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 2 Jun 2023 10:22:28 +0100
+Message-ID: <CAFEAcA_1FF6tBt7C=zfLcSiFPNzSecZkRMtppYbUBjwZPVfbmg@mail.gmail.com>
+Subject: Re: Big TCG slowdown when using zstd with aarch64
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org, 
+ Richard Henderson <rth@twiddle.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,36 +87,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/1/23 16:44, Juan Quintela wrote:
-> The following changes since commit 9eb400cdd7b0940bd696aa01462dd53004ae04e9:
-> 
->    Merge tag 'block-pull-request' ofhttps://gitlab.com/stefanha/qemu  into staging (2023-06-01 11:47:58 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/juan.quintela/qemu.git  tags/migration-20230601-pull-request
-> 
-> for you to fetch changes up to 3a8b81f2e6393828589699bb0b8ef557b9ae5937:
-> 
->    migration: stop tracking ram writes when cancelling background migration (2023-06-02 01:03:19 +0200)
-> 
-> ----------------------------------------------------------------
-> Migration Pull request (20230601)
-> 
-> Hi
-> 
-> In this series:
-> - improve background migration (fiona)
-> - improve vmstate failure states (vladimir)
-> - dropped all the RDMA cleanups
-> 
-> Please, apply.
-> 
-> ----------------------------------------------------------------
+On Fri, 2 Jun 2023 at 10:10, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
+> I suspect that the zstd logic takes a little bit longer in setup,
+> which allows often allows the guest dirty workload to get ahead of
+> it, resulting in a huge amount of data to transfer. Every now and
+> then the compression code gets ahead of the workload and thus most
+> data is zeros and skipped.
+>
+> IMHO this feels like just another example of compression being largely
+> useless. The CPU overhead of compression can't keep up with the guest
+> dirty workload, making the supposedly network bandwidth saving irrelevant=
+.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+It seems a bit surprising if compression can't keep up with
+a TCG guest workload, though...
 
-
-r~
-
+-- PMM
 
