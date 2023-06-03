@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A0F7212B3
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 22:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBA07212B9
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 22:43:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5XzL-0005jM-RH; Sat, 03 Jun 2023 16:36:39 -0400
+	id 1q5Y4v-0006rk-8N; Sat, 03 Jun 2023 16:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5XzJ-0005hb-IV
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:36:37 -0400
+ id 1q5Y4t-0006rU-FB
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:42:23 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5XzH-0004KG-WE
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:36:37 -0400
+ id 1q5Y4r-0005jh-Tg
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:42:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=AEEbOEfADNuoS1Q6hyLijkaDojbDhD91aigWucF/lkE=; b=G83F3zhg1Ot3CzwtxCVciwsXkq
- ftVY4zCoe4v40f+P9dXVdnW26jLAopTIdbvFF7k66Eqzh7AWyEpd+UjOvSDOYE0ZX8vShlHeDzVsZ
- kWIYRsTjtt5AKagrMlabemRlxom24RpqQ5512RwZGrsIR1usUw08JMhct+gpH4rBrFhmOZnQXpl7G
- Kk30BGMEkFXQALYdhFIqGITbXERmQaAufhgkKLhYfordJsj8fa1/hb3Ez97jKHcqyM1zf3swrmKpw
- qhwWeQ2mtWXTsk58+X5DUAXtx1T7TAoLchv3exv60lspenaagIWHMCXGi38IzMIfALL6mQ0H6455O
- +E+jwxF8XKycXh74HKfr9a291pK0I7+C5tb6nWZBkR8gmZwrDtRmfAKwLsRNG33LJD5199h7PykP8
- E0DY2fKbPLg/gQ6srxZQHG4QOp73ZZULYZLY+NC5J9XVoIcGLwzaIbWD1NyXHiy05OvMplWN1xUzS
- FnuEsKA/0keHjxANTMPlbptHyvEYqTnlQ6ZtIh7bu1zjwZmRa10C2CLYbULDmvTxU91/U3h/wvhJb
- Dz7wT/Q92BfLQaJ7Vz/L3xwvrbUXZmPoullXUtAzZLpOhibuLzL8Dz76WAjtRBzKh7HoYFfdamQBi
- ik1YYwpMG7B4Fmj7Xd9YmpGnAj18HbsWOxLMNvync=;
+ bh=f1E6Cr3VtUvW1xlz0NRAG80cJKxSBYUreqjIm3DIOlw=; b=Sxx6hMt/zw+xaUR5DIQYqoqbxh
+ ebNCfJLLOkQxR45ZPsTsqVPWsJgYENFNcBm+jSgbB3oInB6ozjd4RhvcQ0VTwx9pFHIq+NWmGacMf
+ sSAUv7WwMITJ5YKR8wiau/6brtR4Q92OhjnRc5aMvX22ZaIXOMj1UQugr2mT+tM+T9VoEYZKrJawz
+ OrgPAoeejKSTuA9Ve+KBWv8C+Zc10HU4xHONLsU2GdrTy1Yi3WCaaAdZbYulUKmGUcKZef+5VmxXO
+ CquSVFBM6mJbAJipKQY0W6hU9Oikh6VeEdQa9YdzXza89I1MnPgfzEX795l3k2K8DwFjVtQ5t3fde
+ cVas43Kkqx+79UerJAvkvKu4yg8LOdrFk8gUbQk2HmHIsKpE/4dlgWXolYB4B9wFFhIi7PQwTTOQh
+ +8OTUk/0hYiZ+QSeCLPv9CP4ildegXTl/VaoQbT9UIcW2aYs/fjZ+mYK9wH3UaYWIXR1xmcoui/QV
+ 9vMPW9tvzEbvbhfVrK/DyKUOWtH9jwan37yr+2jNhQieFPB/3gO1qRCF9EbjjcgwyQVMnJa6WH63T
+ wkTd3jkr0w8bSzkXsN/TlGab61ZEh8wfjkFua3/C4SViUpIFSawJrDqAvCz1XDEKssh7RZ/O3pehu
+ OuQCKK5iUmHCPcmz27tpnCw5e9aNo/f019GMhyAR0=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5Xz6-000137-01; Sat, 03 Jun 2023 21:36:28 +0100
-Message-ID: <96a6e0f0-b493-86c2-9b34-0e96dc423c56@ilande.co.uk>
-Date: Sat, 3 Jun 2023 21:36:28 +0100
+ id 1q5Y4f-000158-F4; Sat, 03 Jun 2023 21:42:13 +0100
+Message-ID: <c5137e13-5055-15d8-2f05-c132232e415c@ilande.co.uk>
+Date: Sat, 3 Jun 2023 21:42:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  laurent@vivier.eu, qemu-devel@nongnu.org
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
  <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
- <edd9f126-526e-ee57-767b-a1d307008a4d@linaro.org>
+ <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
+ <87jzwoczq6.fsf@pond.sub.org>
+ <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk>
+ <87y1l38sm0.fsf@pond.sub.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <edd9f126-526e-ee57-767b-a1d307008a4d@linaro.org>
+In-Reply-To: <87y1l38sm0.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
@@ -82,38 +86,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/05/2023 18:43, Philippe Mathieu-Daudé wrote:
+On 01/06/2023 10:00, Markus Armbruster wrote:
 
-> On 31/5/23 14:53, Mark Cave-Ayland wrote:
->> Also change the instantiation of the CPU to use object_initialize_child()
->> followed by a separate realisation.
+> Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
+> 
+>> On 31/05/2023 16:00, Markus Armbruster wrote:
 >>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/m68k/q800.c         | 13 ++++++++-----
->>   include/hw/m68k/q800.h |  2 ++
->>   2 files changed, 10 insertions(+), 5 deletions(-)
+>>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+>>>
+>>>> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>>>>> Also change the instantiation of the CPU to use object_initialize_child()
+>>>>> followed by a separate realisation.
+>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>> ---
+>>>>>     hw/m68k/q800.c         | 13 ++++++++-----
+>>>>>     include/hw/m68k/q800.h |  2 ++
+>>>>>     2 files changed, 10 insertions(+), 5 deletions(-)
+>>>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>>>>> index 3730b30dd1..c34b2548ca 100644
+>>>>> --- a/hw/m68k/q800.c
+>>>>> +++ b/hw/m68k/q800.c
+>>>>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+>>>>>       static void q800_machine_init(MachineState *machine)
+>>>>>     {
+>>>>> -    M68kCPU *cpu = NULL;
+>>>>> +    Q800MachineState *m = Q800_MACHINE(machine);
+>>>>>         int linux_boot;
+>>>>>         int32_t kernel_size;
+>>>>>         uint64_t elf_entry;
+>>>>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+>>>>>         }
+>>>>>           /* init CPUs */
+>>>>> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+>>>>> -    qemu_register_reset(main_cpu_reset, cpu);
+>>>>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>>>>> +                            M68K_CPU_TYPE_NAME("m68040"));
+>>>>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
+>>>>
+>>>> CPUs are QDev-based, shouldn't we use qdev_realize()?
+>>>
+>>> Yes, we should.
+>>> [...]
+>>
+>> Interesting. I remember thinking that CPUs were different, so I'm fairly sure I borrowed this from some similar code in hw/arm :)
+>>
+>> Shouldn't the above be directly equivalent to qdev_realize(dev, NULL, &error_fatal) given that the CPU doesn't connect to a bus?
 > 
+> It's been a while since I worked on this...
 > 
->> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
->>       }
->>       /* init CPUs */
->> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
->> -    qemu_register_reset(main_cpu_reset, cpu);
->> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
->> +                            M68K_CPU_TYPE_NAME("m68040"));
-> 
-> Shouldn't we keep using machine->cpu_type?
-> 
-> If the m68040 is the single CPU usable, we should set
-> MachineClass::valid_cpu_types[] in q800_machine_class_init().
-> 
->> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
->> +    qemu_register_reset(main_cpu_reset, &m->cpu);
+> Commit ce189ab230b (qdev: Convert bus-less devices to qdev_realize()
+> with Coccinelle) looks like you're right.
 
-Yes I can do that: I don't think it makes any difference to the q800 machine here 
-because the MacOS toolbox ROM doesn't appear to boot with anything other than a 68040 
-CPU, but it could be useful to make this explicit.
+Thanks for the confirmation! Given that this matches existing code that doesn't use 
+cpu_create(), I'm inclined to keep this as-is to avoid creating another pattern for 
+instantiating CPUs.
 
 
 ATB,
