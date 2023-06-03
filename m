@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD66B7213C8
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 01:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B097213CB
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 01:37:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5ank-0005bR-9G; Sat, 03 Jun 2023 19:36:52 -0400
+	id 1q5ank-0005bq-EZ; Sat, 03 Jun 2023 19:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q5anT-0005MY-M9; Sat, 03 Jun 2023 19:36:37 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1q5anW-0005QI-W0; Sat, 03 Jun 2023 19:36:39 -0400
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q5anR-0003SK-Vj; Sat, 03 Jun 2023 19:36:35 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-39aa4919a57so463953b6e.0; 
- Sat, 03 Jun 2023 16:36:32 -0700 (PDT)
+ id 1q5anV-0003Sx-Al; Sat, 03 Jun 2023 19:36:38 -0400
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-b9a7e639656so4262511276.0; 
+ Sat, 03 Jun 2023 16:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685835391; x=1688427391;
+ d=gmail.com; s=20221208; t=1685835395; x=1688427395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8TeLkXHbQFXqTkthMIJ2eNjzh0ZfEhGFxO1aTt1j4J4=;
- b=RzUeyUhxzqJV/2u3y4GDCiA4Alxu0pDPgRjH8pOkvtTZmUuu8juqB+lPCs2dXKjITZ
- fbEZiw+ExX8c3KPf3+scHVhcA0CVXLi/xENtA51kzQP4D1/f/KaudvCEC9f9oTLcCcpD
- /V5rPI7JUTXUHnvOknG7nbdlrB5s7j5O9OeNcm1RHKKmiggLgScHcnrL0SDIEOFCTeM4
- ganUSnaQ2yybUF6KERaL3OXepr2b+VtW/GCo1cUup3HZ/T6TLKSiaQtiJx9K3hjeuGoF
- 3mwAaBHQ/k48vLlNJpLMdBeA9ztQ9EdoXAz+PeNzvfwKuS7vYBMaQc1c0X4FNPDjYAfI
- IZxw==
+ bh=86G+Ht7nWtcDvX0zUR5cgMSTQKyfzn9nUKwqtGm1JMM=;
+ b=i4MwabcfJQGPvYBdCT90d6txlulfFT/WwHFu8mV7nwIqWKiVhjROdlupY/F3Xqs/LM
+ B37/HQP303hx4MZQ32Xa/ikn9NrB7Yb6ZfhP/fb2s3rbdsezK4yg4902gZ8F2UvDV9JN
+ RJCwkVc/CPs6o8SDPMrx0jteOlKSTO2+lnApPCTZZ6IS4CVZgX2/2J28OUSlU3IcMjMX
+ UDWEnvTFMWrWH+qsdZ1zKWsiMClAYYoMwWkl2oLyw6XojK6liWRb2O1lKukO2yQVXZEF
+ gpUEFOhf2J92l2RHwzCvyLZLf8YvDZCmYct/95yZWdEKFHh2AXmAhrk+BS+Ek5tlfTRI
+ 88+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685835391; x=1688427391;
+ d=1e100.net; s=20221208; t=1685835395; x=1688427395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8TeLkXHbQFXqTkthMIJ2eNjzh0ZfEhGFxO1aTt1j4J4=;
- b=EwMNh7OTgcoGT3O5eFBLD0pA6HeQMHkTr8M6+lG5VxhHvnaDwxkOep2l4p0PRaur5n
- sfJZ+yaBnIJ9MaJptChNgsfTs+Y9pzgTWSprS2mw2c92SfQhqYT1xtGDxArITScDCYEN
- V17S0aKvNGwUYOmg55/iO8M/2cA+audKCmk66a5F4M44SufWGsL4sr8K/hgOW8mFyUb1
- AJCRwpUK2w+PDG3WRIkw2oQlJlmxq5J6lMz4cY2AjBRfJfoMcsyqQSTmGpaH+3vPSz1b
- IzwcKSdR/m9B5GcHJXrVXv8dvp4qt+IndO047R8+32lyZ5JvGjxP791+5/S821BjLq3Z
- JBGg==
-X-Gm-Message-State: AC+VfDzC2Efron+8zAfIoohVcJPLCdTAb112EHC63atfe5EcjnYk1pXE
- NozSKWYsjzdNJGKVLpzT9foTjeaK6AU=
-X-Google-Smtp-Source: ACHHUZ6lVSCjFkpI6Bw2flR+XarNaqhf5KEVBS0S8SeNaDNet0y8D3ZOKsr6cH/8tn+7LF0LNOqnrA==
-X-Received: by 2002:a05:6808:1c3:b0:397:f93e:e160 with SMTP id
- x3-20020a05680801c300b00397f93ee160mr3988624oic.39.1685835391276; 
- Sat, 03 Jun 2023 16:36:31 -0700 (PDT)
+ bh=86G+Ht7nWtcDvX0zUR5cgMSTQKyfzn9nUKwqtGm1JMM=;
+ b=lfDP+nH3y6SjC7NC4U1WxUjN7SgrYzCeMh8MDSxebwBLn80UguevQCJ8ISUXbeX44g
+ MldbSB10vr7y/pYI6AA3cVNI0ykTnhb58qSuqk+GmhAYDlPD6UACljnKo5brVFLvapqn
+ mRLwr/kUP25HUGCqwT7XXupDWI9BIYPyYmzp8OyOLhBUnIPUG0a0bL70dCtaAbve2fqP
+ ogDOvdZ29UKpO+KGnLuDh0LzOGH7+g7cgY7Bqk0rF8khVg22aqfYt5m6/hMTMJ5XjDd0
+ yZBGpees0ijwWNNWkAQh+6DWzAP0090jwhADldwaIDEde0SKnFwyikjXrPPQ11crSuwj
+ JsgA==
+X-Gm-Message-State: AC+VfDxqHBvGXRTKl1gzHNmrV/YLVhU4MH3A6UuSuSS97TXpsY3TNDXb
+ nI4Hygo+6oW1brdtgz/F3bsVXuMYVCE=
+X-Google-Smtp-Source: ACHHUZ72MCeYaBdo/ypfy0SRatetjs5fVef9WlQXddF4p4aU5hvxAE75gmD/NVbw5+ran4/Qoz4CSg==
+X-Received: by 2002:a25:4155:0:b0:bac:7294:4faf with SMTP id
+ o82-20020a254155000000b00bac72944fafmr2932346yba.27.1685835394888; 
+ Sat, 03 Jun 2023 16:36:34 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- io23-20020a17090312d700b001aface7bdd8sm3743533plb.31.2023.06.03.16.36.28
+ io23-20020a17090312d700b001aface7bdd8sm3743533plb.31.2023.06.03.16.36.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 Jun 2023 16:36:30 -0700 (PDT)
+ Sat, 03 Jun 2023 16:36:34 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 2/4] target/ppc: Tidy POWER book4 SPR registration
-Date: Sun,  4 Jun 2023 09:36:10 +1000
-Message-Id: <20230603233612.125879-3-npiggin@gmail.com>
+Subject: [PATCH 3/4] target/ppc: add TFMR SPR implementation with read and
+ write helpers
+Date: Sun,  4 Jun 2023 09:36:11 +1000
+Message-Id: <20230603233612.125879-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230603233612.125879-1-npiggin@gmail.com>
 References: <20230603233612.125879-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=npiggin@gmail.com; helo=mail-yb1-xb2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,172 +92,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER book4 (implementation-specific) SPRs are sometimes in their own
-functions, but in other cases are mixed with architected SPRs. Do some
-spring cleaning on these.
+TFMR is the Time Facility Management Register which is specific to POWER
+CPUs, and used for the purpose of timebase management (generally by
+firmware, not the OS).
+
+This adds an initial simple TFMR register, which will form part of the
+core timebase facility model in the next patch.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu_init.c | 92 ++++++++++++++++++++++++++++---------------
- 1 file changed, 60 insertions(+), 32 deletions(-)
+ target/ppc/cpu_init.c        |  2 +-
+ target/ppc/helper.h          |  2 ++
+ target/ppc/spr_common.h      |  2 ++
+ target/ppc/timebase_helper.c | 13 +++++++++++++
+ target/ppc/translate.c       | 10 ++++++++++
+ 5 files changed, 28 insertions(+), 1 deletion(-)
 
 diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index e9717b8169..da0f7a7159 100644
+index da0f7a7159..37088021d2 100644
 --- a/target/ppc/cpu_init.c
 +++ b/target/ppc/cpu_init.c
-@@ -5374,31 +5374,6 @@ static void register_book3s_ids_sprs(CPUPPCState *env)
-                  &spr_read_generic, SPR_NOACCESS,
-                  &spr_read_generic, NULL,
+@@ -5662,7 +5662,7 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
+     spr_register_hv(env, SPR_TFMR, "TFMR",
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
++                 &spr_read_tfmr, &spr_write_tfmr,
                   0x00000000);
--    spr_register_hv(env, SPR_HID0, "HID0",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_core_write_generic,
--                 0x00000000);
--    spr_register_hv(env, SPR_TSCR, "TSCR",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic32,
--                 0x00000000);
--    spr_register_hv(env, SPR_HMER, "HMER",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_hmer,
--                 0x00000000);
--    spr_register_hv(env, SPR_HMEER, "HMEER",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
--                 0x00000000);
--    spr_register_hv(env, SPR_TFMR, "TFMR",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
--                 0x00000000);
-     spr_register_hv(env, SPR_LPIDR, "LPIDR",
+     spr_register_hv(env, SPR_LDBAR, "LDBAR",
                   SPR_NOACCESS, SPR_NOACCESS,
-                  SPR_NOACCESS, SPR_NOACCESS,
-@@ -5454,11 +5429,6 @@ static void register_book3s_ids_sprs(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--    spr_register_hv(env, SPR_LDBAR, "LDBAR",
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
--                 0x00000000);
- }
- 
- static void register_rmor_sprs(CPUPPCState *env)
-@@ -5665,14 +5635,65 @@ static void register_power8_ic_sprs(CPUPPCState *env)
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 16bb485c1a..166cacb3f9 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -746,6 +746,8 @@ DEF_HELPER_2(store_40x_dbcr0, void, env, tl)
+ DEF_HELPER_2(store_40x_sler, void, env, tl)
+ DEF_HELPER_FLAGS_2(store_booke_tcr, TCG_CALL_NO_RWG, void, env, tl)
+ DEF_HELPER_FLAGS_2(store_booke_tsr, TCG_CALL_NO_RWG, void, env, tl)
++DEF_HELPER_1(load_tfmr, tl, env)
++DEF_HELPER_2(store_tfmr, void, env, tl)
+ DEF_HELPER_3(store_ibatl, void, env, i32, tl)
+ DEF_HELPER_3(store_ibatu, void, env, i32, tl)
+ DEF_HELPER_3(store_dbatl, void, env, i32, tl)
+diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
+index d6c679cd99..8ab17123a4 100644
+--- a/target/ppc/spr_common.h
++++ b/target/ppc/spr_common.h
+@@ -196,6 +196,8 @@ void spr_write_ebb(DisasContext *ctx, int sprn, int gprn);
+ void spr_read_ebb_upper32(DisasContext *ctx, int gprn, int sprn);
+ void spr_write_ebb_upper32(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn);
++void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn);
++void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
+ void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
  #endif
+diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
+index de1ee85e0b..34b1d5ad05 100644
+--- a/target/ppc/timebase_helper.c
++++ b/target/ppc/timebase_helper.c
+@@ -270,6 +270,19 @@ void helper_store_booke_tsr(CPUPPCState *env, target_ulong val)
+     store_booke_tsr(env, val);
  }
  
-+/* SPRs specific to IBM POWER CPUs */
-+static void register_power_common_book4_sprs(CPUPPCState *env)
++#if defined(TARGET_PPC64)
++/* POWER processor Timebase Facility */
++target_ulong helper_load_tfmr(CPUPPCState *env)
 +{
-+#if !defined(CONFIG_USER_ONLY)
-+    spr_register_hv(env, SPR_HID0, "HID0",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_core_write_generic,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_TSCR, "TSCR",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_generic32,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_HMER, "HMER",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_hmer,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_HMEER, "HMEER",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_generic,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_TFMR, "TFMR",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_generic,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_LDBAR, "LDBAR",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_generic,
-+                 0x00000000);
-+#endif
++    return env->spr[SPR_TFMR];
 +}
 +
-+static void register_power9_book4_sprs(CPUPPCState *env)
++void helper_store_tfmr(CPUPPCState *env, target_ulong val)
 +{
-+    /* Add a number of P9 book4 registers */
-+    register_power_common_book4_sprs(env);
-+#if !defined(CONFIG_USER_ONLY)
-+    spr_register_kvm(env, SPR_WORT, "WORT",
-+                     SPR_NOACCESS, SPR_NOACCESS,
-+                     &spr_read_generic, &spr_write_generic,
-+                     KVM_REG_PPC_WORT, 0);
-+#endif
++    env->spr[SPR_TFMR] = val;
 +}
++#endif
 +
- static void register_power8_book4_sprs(CPUPPCState *env)
- {
-     /* Add a number of P8 book4 registers */
-+    register_power_common_book4_sprs(env);
- #if !defined(CONFIG_USER_ONLY)
-     spr_register_kvm(env, SPR_ACOP, "ACOP",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_ACOP, 0);
-+    /* PID is only in BookE in ISA v2.07 */
-     spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_pidr,
-@@ -5688,10 +5709,12 @@ static void register_power7_book4_sprs(CPUPPCState *env)
- {
-     /* Add a number of P7 book4 registers */
- #if !defined(CONFIG_USER_ONLY)
-+    register_power_common_book4_sprs(env);
-     spr_register_kvm(env, SPR_ACOP, "ACOP",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_ACOP, 0);
-+    /* PID is only in BookE in ISA v2.06 */
-     spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic32,
-@@ -5725,6 +5748,11 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
-                     SPR_NOACCESS, SPR_NOACCESS,
-                     &spr_read_generic, &spr_write_generic,
-                     0x0000000000000000);
-+    /* PID is part of the BookS ISA from v3.0 */
-+    spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-+                     SPR_NOACCESS, SPR_NOACCESS,
-+                     &spr_read_generic, &spr_write_pidr,
-+                     KVM_REG_PPC_PID, 0);
- #endif
+ /*****************************************************************************/
+ /* Embedded PowerPC specific helpers */
+ 
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 8b312b46e0..9dcd66eac8 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -1255,6 +1255,16 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
+     spr_store_dump_spr(sprn);
  }
  
-@@ -6278,7 +6306,7 @@ static void init_proc_POWER9(CPUPPCState *env)
-     register_power8_dpdes_sprs(env);
-     register_vtb_sprs(env);
-     register_power8_ic_sprs(env);
--    register_power8_book4_sprs(env);
-+    register_power9_book4_sprs(env);
-     register_power8_rpr_sprs(env);
-     register_power9_mmu_sprs(env);
- 
-@@ -6471,7 +6499,7 @@ static void init_proc_POWER10(CPUPPCState *env)
-     register_power8_dpdes_sprs(env);
-     register_vtb_sprs(env);
-     register_power8_ic_sprs(env);
--    register_power8_book4_sprs(env);
-+    register_power9_book4_sprs(env);
-     register_power8_rpr_sprs(env);
-     register_power9_mmu_sprs(env);
-     register_power10_hash_sprs(env);
++void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn)
++{
++    gen_helper_load_tfmr(cpu_gpr[gprn], cpu_env);
++}
++
++void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn)
++{
++    gen_helper_store_tfmr(cpu_env, cpu_gpr[gprn]);
++}
++
+ void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
+ {
+     gen_helper_store_lpcr(cpu_env, cpu_gpr[gprn]);
 -- 
 2.40.1
 
