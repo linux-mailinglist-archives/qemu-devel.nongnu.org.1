@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DEF7213C6
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 01:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111E57213C7
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 01:37:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5amD-0004hV-AW; Sat, 03 Jun 2023 19:35:17 -0400
+	id 1q5anS-0005Lb-Rm; Sat, 03 Jun 2023 19:36:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5amB-0004hC-8o
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 19:35:15 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q5anM-0005LD-2H; Sat, 03 Jun 2023 19:36:28 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5am9-0003Fa-Mf
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 19:35:15 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b025d26f4fso30342185ad.1
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 16:35:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q5anK-0003RF-At; Sat, 03 Jun 2023 19:36:27 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1b04706c85fso32992085ad.0; 
+ Sat, 03 Jun 2023 16:36:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685835312; x=1688427312;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=G5YYAThVQnWNgL/97RYmH7/U3pDBhvSHlATExlmn2to=;
- b=R19mS4AcAtZHAQUrslY+sp1ZgecBD2Oqm7mNQLyxJL3sTGNYTnUKLYMOc5QYai5Frs
- 0sOsKVj526pCyko+AoIYjKZIb4OrX9F2XiBbtridtpv/Twou2Eloh3fNKLENEa0JsnFY
- o6dC+gbx5jrDWnQBBt5OXgpPmtRkcer0Hpg/rdpj1s1k7ytoR+FwM2Qv6nPktAC5KLG2
- ZWXhfom1b+Bd3xvQqowPoXRZOQ7X57hmHvQ19CMuyTmlwWCR27TdifPNmWhNAnwFS4KF
- O4eEdmO4yzm8zG8J1XbI5mxTuhKUav1AIxX0G0jL0zgjYeDm6SidkdifX3mWQ8u0SaEp
- ju1w==
+ d=gmail.com; s=20221208; t=1685835384; x=1688427384;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ncrfeY3IOUhN2LYU7rU9Q8rvXcl8LA4fNR6g5cp39Sw=;
+ b=KHWFIebJXNm8JNSkg4ABdW/tNASF8t4U/T6ipEBt4is44dGPBzt5uWNOz+n/8/Unyd
+ 8VdgTz/m7JnQDiQH9vIct1KrI0hXXHCGEzgM0BkTAeZultN8YvS1iXLzkmbA1flimJAO
+ dNmnbQazeQgs8yRME3mXMVSkDxPZN9/vm7WQphqEfCJcLEBfc/qKdNUiLm1GAZ5ZPlgS
+ Xhk/dyQGekvjYSQSvGSA/FrbCv5QPvM77UGp/BWQkqs8ux34dM6EsSlHRt+MGmTjc3bJ
+ +fAPJ8QlRHpuaykJhMjTCcRWFJAgqxT9NBY1UNc51MGTdo/XVS+AbNqkdzdD7SMkqC1i
+ +UHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685835312; x=1688427312;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G5YYAThVQnWNgL/97RYmH7/U3pDBhvSHlATExlmn2to=;
- b=ARl/T5eQIn+zDknNK2XFoSH7SzRm3o9y3Gqqk6Ys1z3y3RQTE+ExcQbxcvVJ5r0cyp
- hmSd5AmteaCraLH/2eZQUhNYCMWsNasKDE7U6V/vN22aI2ACXRgNC3AnUNZRs4YHRYmK
- iDgNo1UD+jurq05RSJm4Fgw82VnPs6W5iGrBne4mePcZvrWm7lHwTd7ujKCxyCA/VCFl
- /OQBcSreg1/xgcUfFqvCUxarKpuZYPz0bbhPuQslEmHInlnXyHDkvtpF/iJtHhaM+esa
- C5XwHPFIT8ESuEH1p1nG26nE1Ai+PF4OLcoiDtXpn8d0rUEj0dQVb2J2dZ1s3yW8fZef
- FebQ==
-X-Gm-Message-State: AC+VfDynmL169WRVJyq2IArNL1FnHRXXDocXqqvq0daSJm0TrgivloZO
- ynA2Rr2YsDteRagS9Yl8ZIG0jTVsUrdEiyVlbik=
-X-Google-Smtp-Source: ACHHUZ6iHw7FRotCtptuI+bk2xYgsL8hpOzABBX9t9EPrZijCpMOaKsAGr+EWoV7DpEPO8TLYxiZbw==
-X-Received: by 2002:a17:902:cec9:b0:1ac:84dd:6d1f with SMTP id
- d9-20020a170902cec900b001ac84dd6d1fmr4906579plg.1.1685835312157; 
- Sat, 03 Jun 2023 16:35:12 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:9a37:84b6:b3f0:f301?
- ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
+ d=1e100.net; s=20221208; t=1685835384; x=1688427384;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ncrfeY3IOUhN2LYU7rU9Q8rvXcl8LA4fNR6g5cp39Sw=;
+ b=fxxZ8eyukdM3uSZPuXXG++YPHkhgLFUXGX7LkGlpb23lXjK3DZd6LSdA+yUcya/6Gr
+ 8B4FjfjGcidzfYd1QjBMry3lHpk3i2AhSAW4K2EF+nOWGhVzUZwLXnp0XToGM5dEfY9H
+ 4f7j7bFLxo4/AEO2R5WUtsi5LEB7ogsJEQcOSMPbD+G18slsWJc6fZenHe9jNdE101R2
+ kIbKd9XpO42+rYFzXEYBcdz+wzXMtiYixp/enh1Rbm8/4Yyd7y3LQ+zpTU6+c1yHLWV1
+ 7otb78HJFufV0S0s7q9hVIdHI5Xr5XQsQnf67ZVJWcc5S1l+zFs+PWi/vakawqiTcYx0
+ l8vQ==
+X-Gm-Message-State: AC+VfDyt99D6gKGMLSBhwsX1A1UcvSF3CgrAY7/R0wv2gW8Lar8QlT43
+ i6VUKkOymO/V/dw8ZetLwxXE+ac0P6g=
+X-Google-Smtp-Source: ACHHUZ5hSRMyiDAYuFDH0viC5J79scqWUSfbwotNns/Pn7pU4XetVaL5ipPDnrgE8pCm0gaV3VId8Q==
+X-Received: by 2002:a17:902:f7c5:b0:1af:d812:d16 with SMTP id
+ h5-20020a170902f7c500b001afd8120d16mr3408894plw.21.1685835383761; 
+ Sat, 03 Jun 2023 16:36:23 -0700 (PDT)
+Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- s10-20020a170903200a00b001acad024c8asm3722599pla.40.2023.06.03.16.35.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 16:35:11 -0700 (PDT)
-Message-ID: <8a2f965e-435a-bfac-5599-b0efab83bc36@linaro.org>
-Date: Sat, 3 Jun 2023 16:35:09 -0700
+ io23-20020a17090312d700b001aface7bdd8sm3743533plb.31.2023.06.03.16.36.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 03 Jun 2023 16:36:22 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH 0/4] ppc/pnv: Add chiptod and core timebase state machine
+ models
+Date: Sun,  4 Jun 2023 09:36:08 +1000
+Message-Id: <20230603233612.125879-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 15/20] target/arm: Convert atomic memory ops to decodetree
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230602155223.2040685-1-peter.maydell@linaro.org>
- <20230602155223.2040685-16-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230602155223.2040685-16-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,17 +89,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/2/23 08:52, Peter Maydell wrote:
-> Convert the insns in the atomic memory operations group to
-> decodetree.
-> 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   target/arm/tcg/a64.decode      |  15 ++++
->   target/arm/tcg/translate-a64.c | 148 ++++++++++++---------------------
->   2 files changed, 67 insertions(+), 96 deletions(-)
+This adds support for chiptod and core timebase state machine models in
+the powernv POWER9 and POWER10 models.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This does not actually change the time or the value in TB registers
+(because they are alrady synced in QEMU), but it does go through the
+motions. It is enough to be able to run skiboot's chiptod initialisation
+code that synchronises core timebases (after a patch to prevent skiboot
+skipping chiptod for QEMU, posted to skiboot mailing list).
 
-r~
+Sorry there was some delay since the last posting. There is a bit more
+interest in this recently but feedback and comments from RFC was not
+forgotten and is much appreciated.
+
+https://lists.gnu.org/archive/html/qemu-ppc/2022-08/msg00324.html
+
+I think I accounted for everything except moving register defines to the
+.h file. I'm on the fence about that but if they are only used in the .c
+file I think it's okay to keep them there for now. I cut out a lot of
+unused ones so it's not so cluttered now.
+
+Lots of other changes and fixes since that RFC. Notably:
+- Register names changed to match the workbook names instead of skiboot.
+- TFMR moved to timebase_helper.c from misc_helper.c
+- More comprehensive model and error checking, particularly of TFMR.
+- POWER10 with multi-chip support.
+- chiptod and core timebase linked via specific state instead of TFMR.
+
+There is still a vast amount that is not modeled, but most of it related
+to error handling, injection, failover, etc that is very complicated and
+not required for normal operation.
+
+Thanks,
+Nick
+
+Nicholas Piggin (4):
+  pnv/chiptod: Add POWER9/10 chiptod model
+  target/ppc: Tidy POWER book4 SPR registration
+  target/ppc: add TFMR SPR implementation with read and write helpers
+  target/ppc: Implement core timebase state machine and TFMR
+
+ hw/ppc/meson.build           |   1 +
+ hw/ppc/pnv.c                 |  38 +++
+ hw/ppc/pnv_chiptod.c         | 488 +++++++++++++++++++++++++++++++++++
+ hw/ppc/pnv_xscom.c           |   2 +
+ hw/ppc/trace-events          |   4 +
+ include/hw/ppc/pnv_chip.h    |   3 +
+ include/hw/ppc/pnv_chiptod.h |  64 +++++
+ include/hw/ppc/pnv_core.h    |   3 +
+ include/hw/ppc/pnv_xscom.h   |   9 +
+ target/ppc/cpu.h             |  40 +++
+ target/ppc/cpu_init.c        |  92 ++++---
+ target/ppc/helper.h          |   2 +
+ target/ppc/spr_common.h      |   2 +
+ target/ppc/timebase_helper.c | 156 +++++++++++
+ target/ppc/translate.c       |  10 +
+ 15 files changed, 882 insertions(+), 32 deletions(-)
+ create mode 100644 hw/ppc/pnv_chiptod.c
+ create mode 100644 include/hw/ppc/pnv_chiptod.h
+
+-- 
+2.40.1
+
 
