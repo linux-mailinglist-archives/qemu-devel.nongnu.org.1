@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23051720D62
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 04:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14898720D5E
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 04:37:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5H6V-0000VZ-4D; Fri, 02 Jun 2023 22:34:55 -0400
+	id 1q5H6f-0000ZC-6r; Fri, 02 Jun 2023 22:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5H6F-0000K7-Db
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 22:34:41 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1q5H6I-0000My-C6
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 22:34:43 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5H69-0004iW-Ez
- for qemu-devel@nongnu.org; Fri, 02 Jun 2023 22:34:38 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-25669acf1b0so2383049a91.0
+ id 1q5H6A-0004j7-Ai
+ for qemu-devel@nongnu.org; Fri, 02 Jun 2023 22:34:41 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6af6de9fb74so2490784a34.2
  for <qemu-devel@nongnu.org>; Fri, 02 Jun 2023 19:34:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685759672; x=1688351672;
+ d=linaro.org; s=google; t=1685759673; x=1688351673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bzPaKBoi+AazRfwP5mOI7xFIN7w0g/MQbp2bpj2kQAc=;
- b=c8VUY7fqmPG9KJzwKTDju8ivBFkRd5H/Zurp/BuEHnmVfYeVhlS1lBBQIc5e0ozit4
- F5nMpmYPIOV1IrHa7IsWo1jiXpLczDqm3DjeTkF/0A1/BD9WfKaLNGNLeJJJpG3m/7zc
- 2W2aS9RzlsZ4NC78L1Wv6oxD3DPXzZRkBpOZhr7xGOLnWjhDSZq8bERk3UFMqduKo8s3
- mX7rurpOTGQd2JVU1LFY4wrzSzBMHYEZdpTJFrXw6ItMpqERJ1lsNsjsmgZ17gPt12QD
- aYzPhE7d+SsQS2xs1sAaMwmV68ZaZgWK283lVJjdVqz+1l64UlFbzIy871i3KqgR2ggQ
- eyPw==
+ bh=oe26BuCyJMyrdOPsjHo9JPVC3OcUjCngbFzXRSOAiwY=;
+ b=l7xGIS2KHsPo4GDujafSMdei50jKLFDvYFnqDWrQUHBGNFadUvTaey/ZO/oaROcdou
+ r3eGT9isMHt/9KXeEEGft3FQrjprKE9iC89Qi+Lqf+VIKQ0mMzOrNW7HJYxhD5dL5UWE
+ KNioY4D+EmIOLgiJwwnxxqZTqn2Yv5ca6J6ZAehrosf7h0qONhXi7vWZW/lJNRaO+PWm
+ vqIaDQF+8OYNfwsUtP5YNUQejlvjKJIRCCaVzCUx3U9hRacaqBUkGYGWPi1veuJ/Uk6f
+ 2YmNo2iG3R2KwdJjJFKaEru9zGY1Y3srwQMeGQsMZ3L2H3wpIdrG2EOSb1vRlv8jEdGg
+ Brpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685759672; x=1688351672;
+ d=1e100.net; s=20221208; t=1685759673; x=1688351673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bzPaKBoi+AazRfwP5mOI7xFIN7w0g/MQbp2bpj2kQAc=;
- b=ALpWF5J6D5F6GklvxWEwG6viaRkuXJfiZ653AZ7VtyXUNJ2xbTvUQuZxEux51rAenw
- 2AA0TMcCJ8syKsdxB9PT1SFO5z6CIcP5DQjq1YQFuLLW3e1qNIEcM0KDMGTU6GNFpmpn
- b2wgAx3t1SxsIBjK731pDnsbJwwRwY5EkAPvOTLgezpQHJnx0YDLz/Q1f8ghl0SY/5TK
- uEh2YIwCFM4Dn0VzFTai0ipgx5sUcqBTibdAGJa2v9tE3hbCtfDuuHhM4SRw+SvhZHQ8
- XkKXTKUR0fXg/Xq/lYEBFeYTk0pU7sR+cIKDsdUydUEYfXfHcOyux8l63xnSTnlp9yMs
- Lp7A==
-X-Gm-Message-State: AC+VfDzVpJ9MJJXYaeA13ZScNA0XPc4hSZuDwbqVXH/KlpWY6XTIZjF8
- LeF7yB4Wm8AsWmSIH08dsCdHpSgINZ3PHWc7d5Q=
-X-Google-Smtp-Source: ACHHUZ74GG32sCsz02zvQBpeFpfE4e5SJu7pFh04QWQ4rOB9dPSZrVB11Qn/aAPV5WyNvFraWzTDkw==
-X-Received: by 2002:a17:90b:4a4f:b0:250:9e7b:2798 with SMTP id
- lb15-20020a17090b4a4f00b002509e7b2798mr1509757pjb.18.1685759672216; 
- Fri, 02 Jun 2023 19:34:32 -0700 (PDT)
+ bh=oe26BuCyJMyrdOPsjHo9JPVC3OcUjCngbFzXRSOAiwY=;
+ b=KT6aXmuu6zLuAR7WFnBXIEgGhGQCwD6+FGdmgGOhHd9sCTmMaQETnqm4Pm9X1XSVRN
+ KTj7OIKer7I5bQPPQYcHIPQ3iFu6oHSECCbVXeP18d1nZ0MmGab0Ei9NsQQC/3u56ICF
+ 1Wa8hdyY0JsQA4UbcVNl/Vf3Ud/Dx8DOr/AFrpGhL8W3yYqViYiSM6kZRSmwc2JZSOFi
+ QVHBz9oqEHJ1XU+lz9/ayEn5b1iU/YKf9zOFaZdBxXLHQtvWMBc5ZsTjeQfw/4/bx7i3
+ t+GYx7J5pQZRJkxp1gSzQIXWmbxhxW9YGgrDJ+86SXxmbgcF6zhd7+qovkVt046/TVU8
+ 0IfQ==
+X-Gm-Message-State: AC+VfDzfi62hzTOR2AzQ/vDoSvClGg1CR33HmZqwgCOqO14GyBoaG0WN
+ UwkQYh2osYksIDU88VtQknVK4dSbP1WeGbWlXeo=
+X-Google-Smtp-Source: ACHHUZ6evDR0QRS8MuUgroSYKWS04S8PCcMRAIwczmsJGQFUr/cFD4DD9342n95zYd3NrLpqcpwk2Q==
+X-Received: by 2002:a05:6358:ce1a:b0:127:d8c1:b829 with SMTP id
+ gt26-20020a056358ce1a00b00127d8c1b829mr7254454rwb.27.1685759673153; 
+ Fri, 02 Jun 2023 19:34:33 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:66a6:82c2:d794:68f6])
  by smtp.gmail.com with ESMTPSA id
- e91-20020a17090a6fe400b002508d73f4e8sm3914289pjk.57.2023.06.02.19.34.31
+ e91-20020a17090a6fe400b002508d73f4e8sm3914289pjk.57.2023.06.02.19.34.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Jun 2023 19:34:31 -0700 (PDT)
+ Fri, 02 Jun 2023 19:34:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ardb@kernel.org, berrange@redhat.com, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-Subject: [PATCH 05/35] target/i386: Use aesenc_SB_SR
-Date: Fri,  2 Jun 2023 19:33:56 -0700
-Message-Id: <20230603023426.1064431-6-richard.henderson@linaro.org>
+Subject: [PATCH 06/35] target/arm: Demultiplex AESE and AESMC
+Date: Fri,  2 Jun 2023 19:33:57 -0700
+Message-Id: <20230603023426.1064431-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230603023426.1064431-1-richard.henderson@linaro.org>
 References: <20230603023426.1064431-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,45 +92,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the AESENCLAST instruction.
+Split these helpers so that we are not passing 'decrypt'
+within the simd descriptor.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/ops_sse.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ target/arm/helper.h             |  2 ++
+ target/arm/tcg/sve.decode       |  4 ++--
+ target/arm/tcg/crypto_helper.c  | 37 +++++++++++++++++++++++----------
+ target/arm/tcg/translate-a64.c  | 13 ++++--------
+ target/arm/tcg/translate-neon.c |  4 ++--
+ target/arm/tcg/translate-sve.c  |  8 ++++---
+ 6 files changed, 41 insertions(+), 27 deletions(-)
 
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index fb63af7afa..31e1f6edc7 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -19,6 +19,7 @@
-  */
+diff --git a/target/arm/helper.h b/target/arm/helper.h
+index 3335c2b10b..95e32a697a 100644
+--- a/target/arm/helper.h
++++ b/target/arm/helper.h
+@@ -552,7 +552,9 @@ DEF_HELPER_FLAGS_2(neon_qzip16, TCG_CALL_NO_RWG, void, ptr, ptr)
+ DEF_HELPER_FLAGS_2(neon_qzip32, TCG_CALL_NO_RWG, void, ptr, ptr)
  
- #include "crypto/aes.h"
-+#include "crypto/aes-round.h"
+ DEF_HELPER_FLAGS_4(crypto_aese, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_aesd, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_3(crypto_aesmc, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(crypto_aesimc, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
  
- #if SHIFT == 0
- #define Reg MMXReg
-@@ -2202,12 +2203,14 @@ void glue(helper_aesenc, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+ DEF_HELPER_FLAGS_4(crypto_sha1su0, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(crypto_sha1c, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
+index 14b3a69c36..04b6fcc0cf 100644
+--- a/target/arm/tcg/sve.decode
++++ b/target/arm/tcg/sve.decode
+@@ -1629,8 +1629,8 @@ STNT1_zprz      1110010 .. 10 ..... 001 ... ..... ..... \
+ ### SVE2 Crypto Extensions
  
- void glue(helper_aesenclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+ # SVE2 crypto unary operations
+-# AESMC and AESIMC
+-AESMC           01000101 00 10000011100 decrypt:1 00000 rd:5
++AESMC           01000101 00 10000011100 0 00000 rd:5
++AESIMC          01000101 00 10000011100 1 00000 rd:5
+ 
+ # SVE2 crypto destructive binary operations
+ AESE            01000101 00 10001 0 11100 0 ..... .....  @rdn_rm_e0
+diff --git a/target/arm/tcg/crypto_helper.c b/target/arm/tcg/crypto_helper.c
+index 06254939d2..75882d9ea3 100644
+--- a/target/arm/tcg/crypto_helper.c
++++ b/target/arm/tcg/crypto_helper.c
+@@ -45,11 +45,9 @@ static void clear_tail_16(void *vd, uint32_t desc)
+     clear_tail(vd, opr_sz, max_sz);
+ }
+ 
+-static void do_crypto_aese(uint64_t *rd, uint64_t *rn,
+-                           uint64_t *rm, bool decrypt)
++static void do_crypto_aese(uint64_t *rd, uint64_t *rn, uint64_t *rm,
++                           const uint8_t *sbox, const uint8_t *shift)
  {
--    int i;
--    Reg st = *v;
--    Reg rk = *s;
-+    for (int i = 0; i < SHIFT; i++) {
-+        AESState *ad = (AESState *)&d->ZMM_X(i);
-+        AESState *st = (AESState *)&v->ZMM_X(i);
-+        AESState *rk = (AESState *)&s->ZMM_X(i);
-+        AESState t;
+-    static uint8_t const * const sbox[2] = { AES_sbox, AES_isbox };
+-    static uint8_t const * const shift[2] = { AES_shifts, AES_ishifts };
+     union CRYPTO_STATE rk = { .l = { rm[0], rm[1] } };
+     union CRYPTO_STATE st = { .l = { rn[0], rn[1] } };
+     int i;
+@@ -60,7 +58,7 @@ static void do_crypto_aese(uint64_t *rd, uint64_t *rn,
  
--    for (i = 0; i < 8 << SHIFT; i++) {
--        d->B(i) = rk.B(i) ^ (AES_sbox[st.B(AES_shifts[i & 15] + (i & ~15))]);
-+        aesenc_SB_SR(&t, st, false);
-+        ad->v = t.v ^ rk->v;
+     /* combine ShiftRows operation and sbox substitution */
+     for (i = 0; i < 16; i++) {
+-        CR_ST_BYTE(st, i) = sbox[decrypt][CR_ST_BYTE(rk, shift[decrypt][i])];
++        CR_ST_BYTE(st, i) = sbox[CR_ST_BYTE(rk, shift[i])];
+     }
+ 
+     rd[0] = st.l[0];
+@@ -70,18 +68,26 @@ static void do_crypto_aese(uint64_t *rd, uint64_t *rn,
+ void HELPER(crypto_aese)(void *vd, void *vn, void *vm, uint32_t desc)
+ {
+     intptr_t i, opr_sz = simd_oprsz(desc);
+-    bool decrypt = simd_data(desc);
+ 
+     for (i = 0; i < opr_sz; i += 16) {
+-        do_crypto_aese(vd + i, vn + i, vm + i, decrypt);
++        do_crypto_aese(vd + i, vn + i, vm + i, AES_sbox, AES_shifts);
+     }
+     clear_tail(vd, opr_sz, simd_maxsz(desc));
+ }
+ 
+-static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, bool decrypt)
++void HELPER(crypto_aesd)(void *vd, void *vn, void *vm, uint32_t desc)
++{
++    intptr_t i, opr_sz = simd_oprsz(desc);
++
++    for (i = 0; i < opr_sz; i += 16) {
++        do_crypto_aese(vd + i, vn + i, vm + i, AES_isbox, AES_ishifts);
++    }
++    clear_tail(vd, opr_sz, simd_maxsz(desc));
++}
++
++static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, const uint32_t *mc)
+ {
+     union CRYPTO_STATE st = { .l = { rm[0], rm[1] } };
+-    const uint32_t *mc = decrypt ? AES_imc_rot : AES_mc_rot;
+     int i;
+ 
+     for (i = 0; i < 16; i += 4) {
+@@ -99,10 +105,19 @@ static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, bool decrypt)
+ void HELPER(crypto_aesmc)(void *vd, void *vm, uint32_t desc)
+ {
+     intptr_t i, opr_sz = simd_oprsz(desc);
+-    bool decrypt = simd_data(desc);
+ 
+     for (i = 0; i < opr_sz; i += 16) {
+-        do_crypto_aesmc(vd + i, vm + i, decrypt);
++        do_crypto_aesmc(vd + i, vm + i, AES_mc_rot);
++    }
++    clear_tail(vd, opr_sz, simd_maxsz(desc));
++}
++
++void HELPER(crypto_aesimc)(void *vd, void *vm, uint32_t desc)
++{
++    intptr_t i, opr_sz = simd_oprsz(desc);
++
++    for (i = 0; i < opr_sz; i += 16) {
++        do_crypto_aesmc(vd + i, vm + i, AES_imc_rot);
+     }
+     clear_tail(vd, opr_sz, simd_maxsz(desc));
+ }
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 741a608739..3a97216d9b 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -13416,7 +13416,6 @@ static void disas_crypto_aes(DisasContext *s, uint32_t insn)
+     int opcode = extract32(insn, 12, 5);
+     int rn = extract32(insn, 5, 5);
+     int rd = extract32(insn, 0, 5);
+-    int decrypt;
+     gen_helper_gvec_2 *genfn2 = NULL;
+     gen_helper_gvec_3 *genfn3 = NULL;
+ 
+@@ -13427,20 +13426,16 @@ static void disas_crypto_aes(DisasContext *s, uint32_t insn)
+ 
+     switch (opcode) {
+     case 0x4: /* AESE */
+-        decrypt = 0;
+         genfn3 = gen_helper_crypto_aese;
+         break;
+     case 0x6: /* AESMC */
+-        decrypt = 0;
+         genfn2 = gen_helper_crypto_aesmc;
+         break;
+     case 0x5: /* AESD */
+-        decrypt = 1;
+-        genfn3 = gen_helper_crypto_aese;
++        genfn3 = gen_helper_crypto_aesd;
+         break;
+     case 0x7: /* AESIMC */
+-        decrypt = 1;
+-        genfn2 = gen_helper_crypto_aesmc;
++        genfn2 = gen_helper_crypto_aesimc;
+         break;
+     default:
+         unallocated_encoding(s);
+@@ -13451,9 +13446,9 @@ static void disas_crypto_aes(DisasContext *s, uint32_t insn)
+         return;
+     }
+     if (genfn2) {
+-        gen_gvec_op2_ool(s, true, rd, rn, decrypt, genfn2);
++        gen_gvec_op2_ool(s, true, rd, rn, 0, genfn2);
+     } else {
+-        gen_gvec_op3_ool(s, true, rd, rd, rn, decrypt, genfn3);
++        gen_gvec_op3_ool(s, true, rd, rd, rn, 0, genfn3);
      }
  }
  
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index af8685a4ac..bb92ee411d 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -3455,9 +3455,9 @@ static bool trans_VMVN(DisasContext *s, arg_2misc *a)
+     }
+ 
+ WRAP_2M_3_OOL_FN(gen_AESE, gen_helper_crypto_aese, 0)
+-WRAP_2M_3_OOL_FN(gen_AESD, gen_helper_crypto_aese, 1)
++WRAP_2M_3_OOL_FN(gen_AESD, gen_helper_crypto_aesd, 0)
+ WRAP_2M_2_OOL_FN(gen_AESMC, gen_helper_crypto_aesmc, 0)
+-WRAP_2M_2_OOL_FN(gen_AESIMC, gen_helper_crypto_aesmc, 1)
++WRAP_2M_2_OOL_FN(gen_AESIMC, gen_helper_crypto_aesimc, 0)
+ WRAP_2M_2_OOL_FN(gen_SHA1H, gen_helper_crypto_sha1h, 0)
+ WRAP_2M_2_OOL_FN(gen_SHA1SU1, gen_helper_crypto_sha1su1, 0)
+ WRAP_2M_2_OOL_FN(gen_SHA256SU0, gen_helper_crypto_sha256su0, 0)
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 92ab290106..553c79cfe3 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -7116,12 +7116,14 @@ TRANS_FEAT(USDOT_zzzz, aa64_sve_i8mm, gen_gvec_ool_arg_zzzz,
+            a->esz == 2 ? gen_helper_gvec_usdot_b : NULL, a, 0)
+ 
+ TRANS_FEAT_NONSTREAMING(AESMC, aa64_sve2_aes, gen_gvec_ool_zz,
+-                        gen_helper_crypto_aesmc, a->rd, a->rd, a->decrypt)
++                        gen_helper_crypto_aesmc, a->rd, a->rd, 0)
++TRANS_FEAT_NONSTREAMING(AESIMC, aa64_sve2_aes, gen_gvec_ool_zz,
++                        gen_helper_crypto_aesimc, a->rd, a->rd, 0)
+ 
+ TRANS_FEAT_NONSTREAMING(AESE, aa64_sve2_aes, gen_gvec_ool_arg_zzz,
+-                        gen_helper_crypto_aese, a, false)
++                        gen_helper_crypto_aese, a, 0)
+ TRANS_FEAT_NONSTREAMING(AESD, aa64_sve2_aes, gen_gvec_ool_arg_zzz,
+-                        gen_helper_crypto_aese, a, true)
++                        gen_helper_crypto_aesd, a, 0)
+ 
+ TRANS_FEAT_NONSTREAMING(SM4E, aa64_sve2_sm4, gen_gvec_ool_arg_zzz,
+                         gen_helper_crypto_sm4e, a, 0)
 -- 
 2.34.1
 
