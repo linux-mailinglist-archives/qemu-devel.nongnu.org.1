@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0515721168
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 19:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF6E721173
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 19:59:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5VKh-0003Ac-TW; Sat, 03 Jun 2023 13:46:32 -0400
+	id 1q5VWP-0005ws-18; Sat, 03 Jun 2023 13:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q5VKd-0003AR-Qd
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 13:46:27 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q5VWL-0005wa-Qr
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 13:58:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q5VKb-0007mz-L4
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 13:46:27 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q5VWJ-0002FQ-Gk
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 13:58:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
  by isrv.corpit.ru (Postfix) with ESMTP id AC05AA7E3;
  Sat,  3 Jun 2023 20:46:06 +0300 (MSK)
@@ -47,7 +47,7 @@ X-Spam_score: -7.0
 X-Spam_bar: -------
 X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
