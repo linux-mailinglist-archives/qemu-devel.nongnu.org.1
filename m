@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8E472139A
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 00:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DC27213A0
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 00:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5ZMs-0003GZ-Dh; Sat, 03 Jun 2023 18:05:02 -0400
+	id 1q5ZfF-0006yq-UX; Sat, 03 Jun 2023 18:24:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ZMq-0003G3-At
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:05:00 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1q5ZfE-0006yb-E0
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:00 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ZMo-0007Ri-7M
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:05:00 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d18d772bdso3924810b3a.3
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 15:04:57 -0700 (PDT)
+ id 1q5ZfC-0004vD-S1
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:00 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6b0d38ce700so2750946a34.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 15:23:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685829896; x=1688421896;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CN5TISTCW47lOoQ9v4MV01TT1tb560PxPMLhbzSVknQ=;
- b=WJJUeN8/XLXNT8s8DGvYRyY4kQRmLj9P+HFGUxCw6Ly/s7xTCtYl7TzX1aPRcgdK0u
- ztrbgAlTh5thGkRaaAstqsKVwSQZokYSIA2Pehc+zg3Lq8putRH9ZxUzkgY/KieFllUc
- bn55ZmWaKNxM6DJSPUEYoDSeXDg8xqR+iIVjli5Ex6LXnwXWa1j1tZgpChGWrgdvwduk
- bfZOZoBrh/exQyjpSHvBNCbgHzFVJdK9Ahh5Kn3PtqZ59dPit7rV1lYiBwzbJHjEO+JC
- q9FphD+BFHDfDJes54ISziHVu7xqiy9A07Cat/NB8tCtl7DjtqDO5HarIS93qTwbCst7
- XYiQ==
+ d=linaro.org; s=google; t=1685831037; x=1688423037;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=f0BEzhaijs0e3X7S/YviHgfPMt0b+BruuN+7t8clb5U=;
+ b=BYHrLo4nnuy5W+8zghDgBOZESM3VZYO2mB3UmNh9CpwIr33VpdlR2kHl8z2fIGPuai
+ sWK7eVQ9KMA4ESsZQQJ83Csfs0DSVUTOi2916QAccAA6xmB5wOZrlqk4G1tFKp8c6fdl
+ I0PhguRw4kfWe+zLfH6Pwhcs06xzqOZUeLmi3uopFx8h1SmLJN8N5JHtA6EfxRATMI33
+ cisp4hd0yxp2yq17UlyK5ScT/PhwFCthxT1AQ1/DzTRw9BnQNp/AuVB/YTsGboG1xNyz
+ hMWOLm4yrH50jEiO/3sPXaCTd590y0aZ2BgJJTeWEPTIpzyDIJxPhm/3Vzu/YijdOxvC
+ Hwpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685829896; x=1688421896;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CN5TISTCW47lOoQ9v4MV01TT1tb560PxPMLhbzSVknQ=;
- b=XH1Q53/wUw3IckDfU1mss7wph7GlyR17+80rPsZxza/N7m0tBaNRwlZPvlT61XKVfC
- 9Xp213MTBwDg7MORK0LonPVrlCt7cEllskqQgJm8j53+3p+Zl6bJXQqi5OByjCi9HWOJ
- ni/DVgHM9TLYQw3aKGfj283KVNuo0/PJhosJYFY7JWykzg0Bc1Ipr0/qAiXmAWaAykSZ
- p1AwjLOehCsT68+NMW7dbgVN+j7CEL6I7qVqdAEVriFz7i7DbyMKNNBd900xFyghtfTJ
- kXZ7km3oezxKisJWPzHf+qid0KGCphJde64lZVE0nm9EXQV2gzawijPvcaXVOagA4sKK
- rJ8g==
-X-Gm-Message-State: AC+VfDxhNf7kBQyMCqp14oG9EQAaD8sckDJx6pHIBUzGFv5d+3nqrSyB
- n6VHw6EcK9eSLOic4rideV3G3w==
-X-Google-Smtp-Source: ACHHUZ6Li4TyY1O4o0YmSpl3f9HJG6RmxLW5KBh0MEEAGcOqsX0JRztp0pPO0nOG3f0iXX13ZjVSrA==
-X-Received: by 2002:a05:6a00:2185:b0:654:ab4:305 with SMTP id
- h5-20020a056a00218500b006540ab40305mr3535687pfi.2.1685829896126; 
- Sat, 03 Jun 2023 15:04:56 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:9a37:84b6:b3f0:f301?
- ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
+ d=1e100.net; s=20221208; t=1685831037; x=1688423037;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=f0BEzhaijs0e3X7S/YviHgfPMt0b+BruuN+7t8clb5U=;
+ b=GVcJxTOG9Vpq38F1DrAB35J+MmalcrAfccSFWaRmPHGbS+5uBHIKmpyq08QHmjC1l6
+ TP7iEw78MWZgR5rhh54zJ7u4jkiXHzBXOVHOcWG4zjZq7zbuad/Tef4FZPIu3D7mVP2U
+ TZQUUuVmdW6lJKXVDpYwengHyFWcPwPObE8Ag++JbVn6uf6sQU5TnYT7xn9QXr8lXtWg
+ ENm5LTIFfezKd/vgBj8Rw0sfeUPBgB6bUA3n7O7UTKBC2qXJP2HJ8ebl2tJ/Wdh1eAB8
+ Vp7KhFk8F/LtHbvOyTUzI5PDn2Bl2oapc+MvtwM0vmdXU3InFKE+DTfeetpCeO6wgk3x
+ aLhA==
+X-Gm-Message-State: AC+VfDyVENYBETzmQ8P2P+e7aXR9sX9VGrSwS4ihF1A8P6gCvAa9iega
+ nF60H7KCRt75JHKPjf7n9OWarFK2GN8PX8aja48=
+X-Google-Smtp-Source: ACHHUZ7URtq17+MjsCrgMOhdTZzFD9J7vL9AI+1Csj3YKvmTYQsM3mkRsnMrJ7vWKnyLCy6rewNCQw==
+X-Received: by 2002:a05:6830:1311:b0:6ad:e9d2:a999 with SMTP id
+ p17-20020a056830131100b006ade9d2a999mr6011655otq.20.1685831036921; 
+ Sat, 03 Jun 2023 15:23:56 -0700 (PDT)
+Received: from stoup.. ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
  by smtp.gmail.com with ESMTPSA id
- h26-20020aa786da000000b006589cf6d88bsm18629pfo.145.2023.06.03.15.04.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 15:04:55 -0700 (PDT)
-Message-ID: <c6e43527-6590-9210-c51a-88ec01cf28d6@linaro.org>
-Date: Sat, 3 Jun 2023 15:04:53 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] scripts: remove dead file
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230603214342.471752-1-pbonzini@redhat.com>
+ m14-20020aa78a0e000000b0063d2dae6247sm187208pfa.77.2023.06.03.15.23.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 03 Jun 2023 15:23:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230603214342.471752-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu
+Subject: [PATCH 00/15] linux-user: Fix syscalls_def.h for target abi
+Date: Sat,  3 Jun 2023 15:23:40 -0700
+Message-Id: <20230603222355.1379711-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,18 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/23 14:43, Paolo Bonzini wrote:
-> scripts/test-driver.py was used when "make check" was already using meson
-> introspection data, but it did not execute "meson test".  It is dead since
-> commit 3d2f73ef75e ("build: use "meson test" as the test harness", 2021-12-23).
-> 
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   scripts/test-driver.py | 35 -----------------------------------
->   1 file changed, 35 deletions(-)
->   delete mode 100644 scripts/test-driver.py
+Testing clang -fsanitize=undefined -fno-sanitize-recover=undefined yields
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+../src/linux-user/syscall.c:1241:5: runtime error: member access within \
+   misaligned address 0x00004081007c for type \
+   'struct target__kernel_timespec', which requires 8 byte alignment
+
+etc, for sh4, microblaze, and nios2.
+
+Fix all the non-abi_type usage within syscalls_def.h,
+and also ABI_LLONG_ALIGNMENT for microblaze and nios2.
+
 
 r~
+
+
+Richard Henderson (15):
+  linux-user: Reformat syscall_defs.h
+  linux-user: Remove #if 0 block in syscall_defs.h
+  linux-user: Use abi_uint not uint32_t in syscall_defs.h
+  linux-user: Use abi_int not int32_t in syscall_defs.h
+  linux-user: Use abi_ullong not uint64_t in syscall_defs.h
+  linux-user: Use abi_llong not int64_t in syscall_defs.h
+  linux-user: Use abi_uint not unsigned int in syscall_defs.h
+  linux-user: Use abi_ullong not unsigned long long in syscall_defs.h
+  linux-user: Use abi_llong not long long in syscall_defs.h
+  linux-user: Use abi_int not int in syscall_defs.h
+  linux-user: Use abi_ushort not unsigned short in syscall_defs.h
+  linux-user: Use abi_short not short in syscall_defs.h
+  linux-user: Use abi_uint not unsigned in syscall_defs.h
+  include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for microblaze
+  include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
+
+ include/exec/user/abitypes.h |    5 +-
+ linux-user/syscall_defs.h    | 2284 +++++++++++++++++-----------------
+ 2 files changed, 1134 insertions(+), 1155 deletions(-)
+
+-- 
+2.34.1
+
 
