@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E53F7213A2
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 00:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887CE72139F
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 00:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5ZfH-0006zS-7W; Sat, 03 Jun 2023 18:24:03 -0400
+	id 1q5ZfJ-0006zu-6h; Sat, 03 Jun 2023 18:24:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ZfF-0006ym-Bo
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:01 -0400
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ id 1q5ZfH-0006zT-0d
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:03 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ZfD-0004vK-SA
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:01 -0400
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-6af7d6f6f41so2759411a34.1
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 15:23:59 -0700 (PDT)
+ id 1q5ZfF-0004vg-3j
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:02 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-64d24136685so2523049b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 15:24:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685831038; x=1688423038;
+ d=linaro.org; s=google; t=1685831039; x=1688423039;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jrRYdivMM96HHIbU1TiSv5S5HwpNhqcS+USfH17ZDVY=;
- b=ZXuuw79Q0AXcArghSOpNGM7ZhhfqJqq+G12XrJbknFGuot9DBoWnDFR3N8Yy3rS+cf
- 1TRlezftf4zPawOUGiN7sTBWIOJetOF85mQTkt26vTFda376qx8YguamEQiofnfy4U88
- qnxViD7lVL3bj7b+YML+ljh8QCAtT1SGTLz8NlsauCI1efv65mclBMqWEE3zs6YQWmVh
- WFOBbHF9WJSp03IRiAZc5fxa4MyncHy00HJYaIe0fZu3L1O8T6cksE+USRNmDYIbfH9t
- TLTb6b5/es9Bq6WqJvOZwV4DQTHt8hh90HlXtJVfNuOrGZvzrJ+8F0/xaMZLRQEbs9Q2
- lwYw==
+ bh=Gprdh5JFhJiNf9jBtciBrHxd9pk0SgL59a9DOZblX40=;
+ b=djo/3lBqn2lOQ/pYooE79VCI2WObsnXs1JvCG6dgFirWEpb5F7ElI3tDCosFznavuj
+ 7VacfPWVvbckD4C5HcUifpgkzWvmAylgzljjffTiLkXJXAkw3zRT+wDYT8xsuNnPOKy9
+ LwquWVbxFjSxN6v7iW+MX98A8PNMiDjSr2H+C6aeSOyqqK01k0MCbS7undz68No401wi
+ 6zW69/DG2DdWN0ShA6pjNuXWb84AkCOfNOCZacDcLAagcxaVqewCF7ksbHil5FC/4aqX
+ S524kVeQ9lXjpEgObDDm0H52hlYNKJpr4of0ePgwH41c9IUw7s8B2k3TC1PgZ/4ofZwk
+ CZVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685831038; x=1688423038;
+ d=1e100.net; s=20221208; t=1685831039; x=1688423039;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jrRYdivMM96HHIbU1TiSv5S5HwpNhqcS+USfH17ZDVY=;
- b=TwUEK27Fhyq85M8SfdHKDTAXvsDEho7LbANduI1qtW4u+AxBtW8EbO9Cnq0EDapflp
- 9UDDlv8qEgH5zd5PlYGJGBquiW9tPMXLjJH/jwfFywgDu8foMiLS5fV8YSTrm7+8wX52
- Fe0aclWdEbKL2qWwLOsldvBO946tIFpRxkO9EreRwQri3FlqmXhOM7XJFS1AgcsDpHGU
- xVyOwl8QWBy7zqdqBaUx45LCuq6kIcrWHRJXv8Au3G/82qLhG1ccZw1YPiQWxGwhsu9G
- t03JRC4SukX1li/fa2doitO3Xuh7odlcy0uTVqkQp3pVXf+hsdy33LVFiOAmYf23Wr8f
- 6/qQ==
-X-Gm-Message-State: AC+VfDymluq7EPqFu9ywF2vKWGwYgJSaXMH5BCUVUcO3IfKiqn/++OM5
- jraNem1R01XmGUS1C6zumV959loa8hHyaoyMnwo=
-X-Google-Smtp-Source: ACHHUZ7YynUg+qZWf/o8OXjcVw/zSefbaj8PzMKXAKAC4uB44VdUOx1kJefNXLeOZUbWYJmizlHidw==
-X-Received: by 2002:a05:6830:39d9:b0:6b0:c632:ff59 with SMTP id
- bt25-20020a05683039d900b006b0c632ff59mr6357282otb.19.1685831038698; 
- Sat, 03 Jun 2023 15:23:58 -0700 (PDT)
+ bh=Gprdh5JFhJiNf9jBtciBrHxd9pk0SgL59a9DOZblX40=;
+ b=LLAu/tDbLPxEaY1bRSFNVTEjXCcHx+aQ5N88txQpE9LaIbndi8p3X0Mygm0CW+IV07
+ tiNZYLv064ilQQRdAqvC/kayyUlfnLk0fEK1qniAB/hTDnQsLVyK+N8S89n1FV5nvb/F
+ ilpygLqXpdDoVZhwHecsC8gv4wImBfCrpItz81CpeGR7eUhpIeV+3p8MBcHblQCiQ4jW
+ 2BCA7Z7Jl6wWwpIL/h2rFRCpPQOtYRF/GK1g+DLLfdoIV3e/LuLeaVUrAxfMDCulODzP
+ u1VfqSvblArfDM3g+Ns88A7w3OT8tyevz8BfE17Z0jaovGfH12fZv/MNVIXygdFG62va
+ d2sw==
+X-Gm-Message-State: AC+VfDxxv6lPyGnXcrmtHqTTMAxuza4Ezodca972rdOiYmOhNYaBZ5cu
+ TBgqFkIG2t1Mp9z6xEb4LWzHThO65h/Tw6fVS7E=
+X-Google-Smtp-Source: ACHHUZ4abEesecSAPA+0376dbervptnfHWILSvbTx1GdJLPIzWiB/QaxtDNutK3VLpSdLAb186bncg==
+X-Received: by 2002:a05:6a00:a96:b0:63b:54e4:871b with SMTP id
+ b22-20020a056a000a9600b0063b54e4871bmr10113726pfl.8.1685831039556; 
+ Sat, 03 Jun 2023 15:23:59 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
  by smtp.gmail.com with ESMTPSA id
  m14-20020aa78a0e000000b0063d2dae6247sm187208pfa.77.2023.06.03.15.23.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 Jun 2023 15:23:58 -0700 (PDT)
+ Sat, 03 Jun 2023 15:23:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu
-Subject: [PATCH 02/15] linux-user: Remove #if 0 block in syscall_defs.h
-Date: Sat,  3 Jun 2023 15:23:42 -0700
-Message-Id: <20230603222355.1379711-3-richard.henderson@linaro.org>
+Subject: [PATCH 03/15] linux-user: Use abi_uint not uint32_t in syscall_defs.h
+Date: Sat,  3 Jun 2023 15:23:43 -0700
+Message-Id: <20230603222355.1379711-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230603222355.1379711-1-richard.henderson@linaro.org>
 References: <20230603222355.1379711-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,48 +91,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These definitions are in sparc/signal.c.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ linux-user/syscall_defs.h | 108 +++++++++++++++++++-------------------
+ 1 file changed, 54 insertions(+), 54 deletions(-)
 
 diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index e80d54780b..a4e4df8d3e 100644
+index a4e4df8d3e..414d88a9ec 100644
 --- a/linux-user/syscall_defs.h
 +++ b/linux-user/syscall_defs.h
-@@ -547,30 +547,6 @@ typedef union target_sigval {
-     int sival_int;
-     abi_ulong sival_ptr;
- } target_sigval_t;
--#if 0
--#if defined (TARGET_SPARC)
--typedef struct {
--    struct {
--        abi_ulong psr;
--        abi_ulong pc;
--        abi_ulong npc;
--        abi_ulong y;
--        abi_ulong u_regs[16]; /* globals and ins */
--    }               si_regs;
--    int             si_mask;
--} __siginfo_t;
--
--typedef struct {
--    unsigned   long si_float_regs [32];
--    unsigned   long si_fsr;
--    unsigned   long si_fpqdepth;
--    struct {
--        unsigned long *insn_addr;
--        unsigned long insn;
--    } si_fpqueue [16];
--} __siginfo_fpu_t;
--#endif
--#endif
+@@ -67,7 +67,7 @@
+ #define USE_UID16
+ #define target_id uint16_t
+ #else
+-#define target_id uint32_t
++#define target_id abi_uint
+ #endif
  
- #define TARGET_SI_MAX_SIZE      128
+ #if defined(TARGET_I386) || defined(TARGET_ARM) || defined(TARGET_SH4)  \
+@@ -215,9 +215,9 @@ struct target_ip_mreqn {
  
+ struct target_ip_mreq_source {
+     /* big endian */
+-    uint32_t imr_multiaddr;
+-    uint32_t imr_interface;
+-    uint32_t imr_sourceaddr;
++    abi_uint imr_multiaddr;
++    abi_uint imr_interface;
++    abi_uint imr_sourceaddr;
+ };
+ 
+ struct target_linger {
+@@ -508,9 +508,9 @@ typedef abi_ulong target_old_sa_flags;
+ 
+ #if defined(TARGET_MIPS)
+ struct target_sigaction {
+-    uint32_t        sa_flags;
++    abi_uint        sa_flags;
+ #if defined(TARGET_ABI_MIPSN32)
+-    uint32_t        _sa_handler;
++    abi_uint        _sa_handler;
+ #else
+     abi_ulong       _sa_handler;
+ #endif
+@@ -1620,19 +1620,19 @@ struct target_stat {
+ struct QEMU_PACKED target_stat64 {
+     uint64_t st_dev;
+ #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
+-    uint32_t pad0;
+-    uint32_t __st_ino;
++    abi_uint pad0;
++    abi_uint __st_ino;
+ 
+-    uint32_t st_mode;
+-    uint32_t st_nlink;
+-    uint32_t st_uid;
+-    uint32_t st_gid;
++    abi_uint st_mode;
++    abi_uint st_nlink;
++    abi_uint st_uid;
++    abi_uint st_gid;
+     uint64_t st_rdev;
+     uint64_t __pad1;
+ 
+     int64_t  st_size;
+     int32_t  st_blksize;
+-    uint32_t __pad2;
++    abi_uint __pad2;
+     int64_t st_blocks;      /* Number 512-byte blocks allocated. */
+ 
+     int            target_st_atime;
+@@ -2227,19 +2227,19 @@ struct target_statfs {
+ #endif
+ 
+ struct target_statfs64 {
+-    uint32_t        f_type;
+-    uint32_t        f_bsize;
+-    uint32_t        f_frsize;       /* Fragment size - unsupported */
+-    uint32_t        __pad;
++    abi_uint        f_type;
++    abi_uint        f_bsize;
++    abi_uint        f_frsize;       /* Fragment size - unsupported */
++    abi_uint        __pad;
+     uint64_t        f_blocks;
+     uint64_t        f_bfree;
+     uint64_t        f_files;
+     uint64_t        f_ffree;
+     uint64_t        f_bavail;
+     target_fsid_t   f_fsid;
+-    uint32_t        f_namelen;
+-    uint32_t        f_flags;
+-    uint32_t        f_spare[5];
++    abi_uint        f_namelen;
++    abi_uint        f_flags;
++    abi_uint        f_spare[5];
+ };
+ #elif (defined(TARGET_PPC64) || defined(TARGET_X86_64) ||       \
+        defined(TARGET_SPARC64) || defined(TARGET_AARCH64) ||    \
+@@ -2307,33 +2307,33 @@ struct target_statfs64 {
+ };
+ #else
+ struct target_statfs {
+-    uint32_t f_type;
+-    uint32_t f_bsize;
+-    uint32_t f_blocks;
+-    uint32_t f_bfree;
+-    uint32_t f_bavail;
+-    uint32_t f_files;
+-    uint32_t f_ffree;
++    abi_uint f_type;
++    abi_uint f_bsize;
++    abi_uint f_blocks;
++    abi_uint f_bfree;
++    abi_uint f_bavail;
++    abi_uint f_files;
++    abi_uint f_ffree;
+     target_fsid_t f_fsid;
+-    uint32_t f_namelen;
+-    uint32_t f_frsize;
+-    uint32_t f_flags;
+-    uint32_t f_spare[4];
++    abi_uint f_namelen;
++    abi_uint f_frsize;
++    abi_uint f_flags;
++    abi_uint f_spare[4];
+ };
+ 
+ struct target_statfs64 {
+-    uint32_t f_type;
+-    uint32_t f_bsize;
++    abi_uint f_type;
++    abi_uint f_bsize;
+     uint64_t f_blocks;
+     uint64_t f_bfree;
+     uint64_t f_bavail;
+     uint64_t f_files;
+     uint64_t f_ffree;
+     target_fsid_t f_fsid;
+-    uint32_t f_namelen;
+-    uint32_t f_frsize;
+-    uint32_t f_flags;
+-    uint32_t f_spare[4];
++    abi_uint f_namelen;
++    abi_uint f_frsize;
++    abi_uint f_flags;
++    abi_uint f_spare[4];
+ };
+ #endif
+ 
+@@ -2713,9 +2713,9 @@ struct target_epoll_event {
+ #endif
+ 
+ struct target_ucred {
+-    uint32_t pid;
+-    uint32_t uid;
+-    uint32_t gid;
++    abi_uint pid;
++    abi_uint uid;
++    abi_uint gid;
+ };
+ 
+ typedef int32_t target_timer_t;
+@@ -2754,14 +2754,14 @@ struct target_sigevent {
+ };
+ 
+ struct target_user_cap_header {
+-    uint32_t version;
++    abi_uint version;
+     int pid;
+ };
+ 
+ struct target_user_cap_data {
+-    uint32_t effective;
+-    uint32_t permitted;
+-    uint32_t inheritable;
++    abi_uint effective;
++    abi_uint permitted;
++    abi_uint inheritable;
+ };
+ 
+ /* from kernel's include/linux/syslog.h */
+@@ -2791,19 +2791,19 @@ struct target_user_cap_data {
+ 
+ struct target_statx_timestamp {
+     int64_t tv_sec;
+-    uint32_t tv_nsec;
++    abi_uint tv_nsec;
+     int32_t __reserved;
+ };
+ 
+ struct target_statx {
+     /* 0x00 */
+-    uint32_t stx_mask;       /* What results were written [uncond] */
+-    uint32_t stx_blksize;    /* Preferred general I/O size [uncond] */
++    abi_uint stx_mask;       /* What results were written [uncond] */
++    abi_uint stx_blksize;    /* Preferred general I/O size [uncond] */
+     uint64_t stx_attributes; /* Flags conveying information about the file */
+     /* 0x10 */
+-    uint32_t stx_nlink;      /* Number of hard links */
+-    uint32_t stx_uid;        /* User ID of owner */
+-    uint32_t stx_gid;        /* Group ID of owner */
++    abi_uint stx_nlink;      /* Number of hard links */
++    abi_uint stx_uid;        /* User ID of owner */
++    abi_uint stx_gid;        /* Group ID of owner */
+     uint16_t stx_mode;       /* File mode */
+     uint16_t __spare0[1];
+     /* 0x20 */
+@@ -2817,10 +2817,10 @@ struct target_statx {
+     struct target_statx_timestamp  stx_ctime;  /* Last attribute change time */
+     struct target_statx_timestamp  stx_mtime;  /* Last data modification time */
+     /* 0x80 */
+-    uint32_t stx_rdev_major;   /* Device ID of special file [if bdev/cdev] */
+-    uint32_t stx_rdev_minor;
+-    uint32_t stx_dev_major; /* ID of device containing file [uncond] */
+-    uint32_t stx_dev_minor;
++    abi_uint stx_rdev_major;   /* Device ID of special file [if bdev/cdev] */
++    abi_uint stx_rdev_minor;
++    abi_uint stx_dev_major; /* ID of device containing file [uncond] */
++    abi_uint stx_dev_minor;
+     /* 0x90 */
+     uint64_t __spare2[14];  /* Spare space for future expansion */
+     /* 0x100 */
 -- 
 2.34.1
 
