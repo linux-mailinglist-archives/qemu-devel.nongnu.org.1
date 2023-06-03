@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0167C7213AB
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 00:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D747E7213A6
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 00:26:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5ZfI-0006zm-Rz; Sat, 03 Jun 2023 18:24:04 -0400
+	id 1q5ZfO-00072s-H1; Sat, 03 Jun 2023 18:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ZfH-0006ze-HT
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:03 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ id 1q5ZfI-0006zr-JS
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:04 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ZfF-0004vv-RP
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:03 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-1a26f26ebb8so2518369fac.2
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 15:24:01 -0700 (PDT)
+ id 1q5ZfG-0004w7-Kl
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 18:24:04 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-652a6cf1918so1419864b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 15:24:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685831040; x=1688423040;
+ d=linaro.org; s=google; t=1685831041; x=1688423041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vgo+Ng3v7arrdUy09g80WefJ7XRN/HnbdioLfJzQH3E=;
- b=e4vBPIOzJg0s3v8oFrGBQE7lSWtwVCQm2FyF+uRKw9Oxf7oY/CF/H92GiclftIz3qs
- +XWXaKv2cO1p0pOkeIxC8Ic6GMmDaE85uSXuPwrASkxsn9nokEwWRTcc4A0gTOn39Tqj
- bLeqVSzIioFn90qQQO7gccJ3YTixBfacpbVEIv9KEn7RCaQ8NGw1MrOQxQZoUI5ZACEy
- OIVZ8j7mscTNY5c8ebqaKgS8AFZGtG0XD6Uk3oDeEwutGWK4c8ZVHrs4V1V4tPlKhV32
- lsg5mXlvDyIRtwX1ZA5a4teBQH8adY/gnnMTaGUp/W+N6a0ISg8jPvncujNn1VzfOYLR
- H7Cg==
+ bh=P+vuo8ZiaWyUViHCKEbOretSt8XPKEBBkYyEFRB90aE=;
+ b=nJXo3nm044N32HBTbTa6PuYml5bAwE7sjPqxyVxTE5LBlEaNtaNw0+yJJpsKJiOmGe
+ EHU/H8XhPFNhkl5Wko3BtMujNe3bMeiBWTRzQcOmBqqtRHxGSdXHc7ljYxNb8emO3wpf
+ 4QBvV7F0fjAwBpf2bp3PKs1tDbMCjfdC5YeuRW6XsYhugVTa/aX+Bnwr3Z33HDEVIlRy
+ k7jdBvxaapB/5e2bNstlfW36pi0UQWHri+q6EaGH6GmRaSH8dtiJQzJE3sAMKBae0u1H
+ sY411k0m+nn76nA5m0NA6UX3zCoc3SlAoeU8paX1BQWrHWhKVrM6r3/9tD8QNMvhTXMS
+ wrBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685831040; x=1688423040;
+ d=1e100.net; s=20221208; t=1685831041; x=1688423041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vgo+Ng3v7arrdUy09g80WefJ7XRN/HnbdioLfJzQH3E=;
- b=Gt2AJRapFK6MDcrJNuwmc/fOYWfW6iX5qcfa1kkPh53O2j0ofh3sFgRhNiarM16Qqr
- pTcUrBlelysBH2eV74qYkSUXinEe2r+wjHdsfMasxQ+2UokUQZ73RxPDxuShaSxRusmf
- mf7LVFwC1L6tlznf3vXPy3hyJ6Qv5i+RcBlzBB+gVCRM7l4uqp3AfXDisAcxdeIcMpvb
- weQOFxYvOecwiEC45IFVwTpv5V4haFTC689wqtT2JE+VO+qnEpSQDC+EYm5oGRuu/VZV
- ZM3hnr5BYaiHGQpByPCoKFjR4h3GEy0r9JbeeoY6v/7pHFclqS8cM5Fn1fKdOQwUGfnk
- Yuaw==
-X-Gm-Message-State: AC+VfDxzSfJLjNxzpmsaw3EVBAXh1fHA7T16z7zE0/yYNLcR4aGsVSca
- S6AnupgfgY1iaa/RKoNKB3BuWWapbvGPU6cKFnA=
-X-Google-Smtp-Source: ACHHUZ5zxKTE7Lx9FXQoQYtZ8pI7l04qO12uQVxQS9K8mtjedf1IZBMPg3/qQWEn4BFo3l5AcutLZw==
-X-Received: by 2002:a05:6358:52d3:b0:127:b79b:c08c with SMTP id
- z19-20020a05635852d300b00127b79bc08cmr10963579rwz.8.1685831040279; 
- Sat, 03 Jun 2023 15:24:00 -0700 (PDT)
+ bh=P+vuo8ZiaWyUViHCKEbOretSt8XPKEBBkYyEFRB90aE=;
+ b=Nz657Vs8wKcY273lif9JfYFokbOMK8HBYf4GtTezJqxjxIsI8G3qYWB9Km41chYHwG
+ o8X9csSHAFhQpgAczUuQ+J0tqLP4z39miIpRybS4dNjxAQtKeuuCJ62VggTizPaUFMDF
+ iHhZ3bbQ/zT1AhAP/SNmigDuZ7+rXdvClJF8BdT7vgBHkiHLYvCRfaWN+o99bt3Lqzx2
+ bM7Da2rtfxUW73dAFICsOS1P1Lb+ypNn3DA8mRNtuEUypkO/mLJRr1KM3+HIbaa2ZFxD
+ myhcAF5tBf6xb2kXSOzoFK7YpFKUw5roMfI/uCGgmQDLifwTjhWhMjERJCeVkvO71vE2
+ yyFw==
+X-Gm-Message-State: AC+VfDxlWPoxpSTe3K8FAL9irLeWwug5sxXHn/WqDyliyeTiUydlNnSP
+ pwD/XhET9M/JgL1Tvy39qkVd2TH/EUwwtJhiOFE=
+X-Google-Smtp-Source: ACHHUZ7RFIleaUBwkRoC2aPQCE6MRIEZfw6lLSYvYDvte8rjysawCTySX9oBIkcTUyyrSsVfnSQ4Iw==
+X-Received: by 2002:a05:6a00:a8e:b0:64c:c841:4e8a with SMTP id
+ b14-20020a056a000a8e00b0064cc8414e8amr12689022pfl.22.1685831041098; 
+ Sat, 03 Jun 2023 15:24:01 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
  by smtp.gmail.com with ESMTPSA id
- m14-20020aa78a0e000000b0063d2dae6247sm187208pfa.77.2023.06.03.15.23.59
+ m14-20020aa78a0e000000b0063d2dae6247sm187208pfa.77.2023.06.03.15.24.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 Jun 2023 15:23:59 -0700 (PDT)
+ Sat, 03 Jun 2023 15:24:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu
-Subject: [PATCH 04/15] linux-user: Use abi_int not int32_t in syscall_defs.h
-Date: Sat,  3 Jun 2023 15:23:44 -0700
-Message-Id: <20230603222355.1379711-5-richard.henderson@linaro.org>
+Subject: [PATCH 05/15] linux-user: Use abi_ullong not uint64_t in
+ syscall_defs.h
+Date: Sat,  3 Jun 2023 15:23:45 -0700
+Message-Id: <20230603222355.1379711-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230603222355.1379711-1-richard.henderson@linaro.org>
 References: <20230603222355.1379711-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2c.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,147 +92,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Be careful not to change linux_dirent64, which is a host structure.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 60 +++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ linux-user/syscall_defs.h | 72 +++++++++++++++++++--------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
 diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 414d88a9ec..caaa895bec 100644
+index caaa895bec..0af7249330 100644
 --- a/linux-user/syscall_defs.h
 +++ b/linux-user/syscall_defs.h
-@@ -501,7 +501,7 @@ int do_sigaction(int sig, const struct target_sigaction *act,
- #endif
+@@ -1444,8 +1444,8 @@ struct target_stat64 {
+     unsigned char   __pad0[6];
+     unsigned short  st_dev;
  
- #if defined(TARGET_ALPHA)
--typedef int32_t target_old_sa_flags;
-+typedef abi_int target_old_sa_flags;
- #else
- typedef abi_ulong target_old_sa_flags;
- #endif
-@@ -1631,7 +1631,7 @@ struct QEMU_PACKED target_stat64 {
-     uint64_t __pad1;
+-    uint64_t        st_ino;
+-    uint64_t        st_nlink;
++    abi_ullong      st_ino;
++    abi_ullong      st_nlink;
+ 
+     unsigned int    st_mode;
+ 
+@@ -1501,7 +1501,7 @@ struct target_stat64 {
+     unsigned char   __pad0[6];
+     unsigned short  st_dev;
+ 
+-    uint64_t st_ino;
++    abi_ullong      st_ino;
+ 
+     unsigned int    st_mode;
+     unsigned int    st_nlink;
+@@ -1618,7 +1618,7 @@ struct target_stat {
+ /* FIXME: Microblaze no-mmu user-space has a difference stat64 layout...  */
+ #define TARGET_HAS_STRUCT_STAT64
+ struct QEMU_PACKED target_stat64 {
+-    uint64_t st_dev;
++    abi_ullong st_dev;
+ #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
+     abi_uint pad0;
+     abi_uint __st_ino;
+@@ -1627,8 +1627,8 @@ struct QEMU_PACKED target_stat64 {
+     abi_uint st_nlink;
+     abi_uint st_uid;
+     abi_uint st_gid;
+-    uint64_t st_rdev;
+-    uint64_t __pad1;
++    abi_ullong st_rdev;
++    abi_ullong __pad1;
  
      int64_t  st_size;
--    int32_t  st_blksize;
-+    abi_int  st_blksize;
-     abi_uint __pad2;
-     int64_t st_blocks;      /* Number 512-byte blocks allocated. */
- 
-@@ -2192,20 +2192,20 @@ typedef struct {
- #ifdef TARGET_MIPS
- #ifdef TARGET_ABI_MIPSN32
- struct target_statfs {
--    int32_t                 f_type;
--    int32_t                 f_bsize;
--    int32_t                 f_frsize;       /* Fragment size - unsupported */
--    int32_t                 f_blocks;
--    int32_t                 f_bfree;
--    int32_t                 f_files;
--    int32_t                 f_ffree;
--    int32_t                 f_bavail;
-+    abi_int                 f_type;
-+    abi_int                 f_bsize;
-+    abi_int                 f_frsize;       /* Fragment size - unsupported */
-+    abi_int                 f_blocks;
-+    abi_int                 f_bfree;
-+    abi_int                 f_files;
-+    abi_int                 f_ffree;
-+    abi_int                 f_bavail;
- 
-     /* Linux specials */
-     target_fsid_t           f_fsid;
--    int32_t                 f_namelen;
--    int32_t                 f_flags;
--    int32_t                 f_spare[5];
-+    abi_int                 f_namelen;
-+    abi_int                 f_flags;
-+    abi_int                 f_spare[5];
- };
- #else
- struct target_statfs {
-@@ -2276,34 +2276,34 @@ struct target_statfs64 {
- };
- #elif defined(TARGET_S390X)
- struct target_statfs {
--    int32_t  f_type;
--    int32_t  f_bsize;
-+    abi_int  f_type;
-+    abi_int  f_bsize;
-     abi_long f_blocks;
-     abi_long f_bfree;
-     abi_long f_bavail;
-     abi_long f_files;
-     abi_long f_ffree;
-     kernel_fsid_t f_fsid;
--    int32_t  f_namelen;
--    int32_t  f_frsize;
--    int32_t  f_flags;
--    int32_t  f_spare[4];
-+    abi_int  f_namelen;
-+    abi_int  f_frsize;
-+    abi_int  f_flags;
-+    abi_int  f_spare[4];
- 
+     abi_int  st_blksize;
+@@ -1641,7 +1641,7 @@ struct QEMU_PACKED target_stat64 {
+     unsigned int   target_st_mtime_nsec;
+     int            target_st_ctime;
+     unsigned int   target_st_ctime_nsec;
+-    uint64_t st_ino;
++    abi_ullong st_ino;
  };
  
+ #elif defined(TARGET_M68K)
+@@ -1753,7 +1753,7 @@ struct target_stat {
+ struct target_stat {
+     abi_ulong    st_dev;
+     abi_ulong    st_pad0[3]; /* Reserved for st_dev expansion */
+-    uint64_t     st_ino;
++    abi_ullong   st_ino;
+     unsigned int st_mode;
+     unsigned int st_nlink;
+     int          st_uid;
+@@ -1813,7 +1813,7 @@ struct target_stat64 {
+     abi_ulong       st_dev;
+     abi_ulong       st_pad0[3];     /* Reserved for st_dev expansion  */
+ 
+-    uint64_t        st_ino;
++    abi_ullong      st_ino;
+ 
+     unsigned int    st_mode;
+     unsigned int    st_nlink;
+@@ -2044,17 +2044,17 @@ struct target_stat {
+ 
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64  {
+-    uint64_t st_dev;            /* Device */
+-    uint64_t st_ino;            /* File serial number */
++    abi_ullong st_dev;          /* Device */
++    abi_ullong st_ino;          /* File serial number */
+     unsigned int  st_mode;      /* File mode. */
+     unsigned int  st_nlink;     /* Link count. */
+     unsigned int  st_uid;       /* User ID of the file's owner. */
+     unsigned int  st_gid;       /* Group ID of the file's group. */
+-    uint64_t st_rdev;           /* Device number, if device. */
++    abi_ullong st_rdev;         /* Device number, if device. */
+     int64_t st_size;            /* Size of file, in bytes. */
+     abi_ulong st_blksize;       /* Optimal block size for I/O. */
+     abi_ulong __unused2;
+-    uint64_t st_blocks;         /* Number 512-byte blocks allocated. */
++    abi_ullong st_blocks;       /* Number 512-byte blocks allocated. */
+     abi_ulong target_st_atime;  /* Time of last access. */
+     abi_ulong target_st_atime_nsec;
+     abi_ulong target_st_mtime;  /* Time of last modification. */
+@@ -2097,14 +2097,14 @@ struct target_stat {
+ #if !defined(TARGET_RISCV64)
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64 {
+-    uint64_t st_dev;
+-    uint64_t st_ino;
++    abi_ullong st_dev;
++    abi_ullong st_ino;
+     unsigned int st_mode;
+     unsigned int st_nlink;
+     unsigned int st_uid;
+     unsigned int st_gid;
+-    uint64_t st_rdev;
+-    uint64_t __pad1;
++    abi_ullong st_rdev;
++    abi_ullong __pad1;
+     int64_t st_size;
+     int st_blksize;
+     int __pad2;
+@@ -2156,14 +2156,14 @@ struct target_stat {
+ 
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64 {
+-    uint64_t   st_dev;
++    abi_ullong st_dev;
+     abi_uint   _pad1;
+     abi_uint   _res1;
+     abi_uint   st_mode;
+     abi_uint   st_nlink;
+     abi_uint   st_uid;
+     abi_uint   st_gid;
+-    uint64_t   st_rdev;
++    abi_ullong st_rdev;
+     abi_uint   _pad2;
+     int64_t    st_size;
+     abi_int    st_blksize;
+@@ -2174,7 +2174,7 @@ struct target_stat64 {
+     abi_uint   target_st_mtime_nsec;
+     abi_int    target_st_ctime;
+     abi_uint   target_st_ctime_nsec;
+-    uint64_t   st_ino;
++    abi_ullong st_ino;
+ };
+ 
+ #elif defined(TARGET_LOONGARCH64)
+@@ -2231,11 +2231,11 @@ struct target_statfs64 {
+     abi_uint        f_bsize;
+     abi_uint        f_frsize;       /* Fragment size - unsupported */
+     abi_uint        __pad;
+-    uint64_t        f_blocks;
+-    uint64_t        f_bfree;
+-    uint64_t        f_files;
+-    uint64_t        f_ffree;
+-    uint64_t        f_bavail;
++    abi_ullong      f_blocks;
++    abi_ullong      f_bfree;
++    abi_ullong      f_files;
++    abi_ullong      f_ffree;
++    abi_ullong      f_bavail;
+     target_fsid_t   f_fsid;
+     abi_uint        f_namelen;
+     abi_uint        f_flags;
+@@ -2324,11 +2324,11 @@ struct target_statfs {
  struct target_statfs64 {
--    int32_t  f_type;
--    int32_t  f_bsize;
-+    abi_int  f_type;
-+    abi_int  f_bsize;
-     abi_long f_blocks;
-     abi_long f_bfree;
-     abi_long f_bavail;
-     abi_long f_files;
-     abi_long f_ffree;
-     kernel_fsid_t f_fsid;
--    int32_t  f_namelen;
--    int32_t  f_frsize;
--    int32_t  f_flags;
--    int32_t  f_spare[4];
-+    abi_int  f_namelen;
-+    abi_int  f_frsize;
-+    abi_int  f_flags;
-+    abi_int  f_spare[4];
- };
- #else
- struct target_statfs {
-@@ -2718,21 +2718,21 @@ struct target_ucred {
-     abi_uint gid;
- };
- 
--typedef int32_t target_timer_t;
-+typedef abi_int target_timer_t;
- 
- #define TARGET_SIGEV_MAX_SIZE 64
- 
- /* This is architecture-specific but most architectures use the default */
- #ifdef TARGET_MIPS
--#define TARGET_SIGEV_PREAMBLE_SIZE (sizeof(int32_t) * 2 + sizeof(abi_long))
-+#define TARGET_SIGEV_PREAMBLE_SIZE (sizeof(abi_int) * 2 + sizeof(abi_long))
- #else
--#define TARGET_SIGEV_PREAMBLE_SIZE (sizeof(int32_t) * 2         \
-+#define TARGET_SIGEV_PREAMBLE_SIZE (sizeof(abi_int) * 2         \
-                                     + sizeof(target_sigval_t))
- #endif
- 
- #define TARGET_SIGEV_PAD_SIZE ((TARGET_SIGEV_MAX_SIZE           \
-                                 - TARGET_SIGEV_PREAMBLE_SIZE)   \
--                               / sizeof(int32_t))
-+                               / sizeof(abi_int))
- 
- struct target_sigevent {
-     target_sigval_t sigev_value;
-@@ -2792,7 +2792,7 @@ struct target_user_cap_data {
- struct target_statx_timestamp {
-     int64_t tv_sec;
-     abi_uint tv_nsec;
--    int32_t __reserved;
-+    abi_int __reserved;
+     abi_uint f_type;
+     abi_uint f_bsize;
+-    uint64_t f_blocks;
+-    uint64_t f_bfree;
+-    uint64_t f_bavail;
+-    uint64_t f_files;
+-    uint64_t f_ffree;
++    abi_ullong f_blocks;
++    abi_ullong f_bfree;
++    abi_ullong f_bavail;
++    abi_ullong f_files;
++    abi_ullong f_ffree;
+     target_fsid_t f_fsid;
+     abi_uint f_namelen;
+     abi_uint f_frsize;
+@@ -2799,7 +2799,7 @@ struct target_statx {
+     /* 0x00 */
+     abi_uint stx_mask;       /* What results were written [uncond] */
+     abi_uint stx_blksize;    /* Preferred general I/O size [uncond] */
+-    uint64_t stx_attributes; /* Flags conveying information about the file */
++    abi_ullong stx_attributes; /* Flags conveying information about the file */
+     /* 0x10 */
+     abi_uint stx_nlink;      /* Number of hard links */
+     abi_uint stx_uid;        /* User ID of owner */
+@@ -2807,10 +2807,10 @@ struct target_statx {
+     uint16_t stx_mode;       /* File mode */
+     uint16_t __spare0[1];
+     /* 0x20 */
+-    uint64_t stx_ino;        /* Inode number */
+-    uint64_t stx_size;       /* File size */
+-    uint64_t stx_blocks;     /* Number of 512-byte blocks allocated */
+-    uint64_t stx_attributes_mask; /* Mask to show what is supported */
++    abi_ullong stx_ino;      /* Inode number */
++    abi_ullong stx_size;     /* File size */
++    abi_ullong stx_blocks;   /* Number of 512-byte blocks allocated */
++    abi_ullong stx_attributes_mask; /* Mask to show what is supported */
+     /* 0x40 */
+     struct target_statx_timestamp  stx_atime;  /* Last access time */
+     struct target_statx_timestamp  stx_btime;  /* File creation time */
+@@ -2822,7 +2822,7 @@ struct target_statx {
+     abi_uint stx_dev_major; /* ID of device containing file [uncond] */
+     abi_uint stx_dev_minor;
+     /* 0x90 */
+-    uint64_t __spare2[14];  /* Spare space for future expansion */
++    abi_ullong __spare2[14]; /* Spare space for future expansion */
+     /* 0x100 */
  };
  
- struct target_statx {
 -- 
 2.34.1
 
