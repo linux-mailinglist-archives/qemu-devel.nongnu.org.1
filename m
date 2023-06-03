@@ -2,81 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37260721034
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 15:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD12721038
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 15:44:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5RSh-0001tR-N6; Sat, 03 Jun 2023 09:38:31 -0400
+	id 1q5RX0-0002zF-9a; Sat, 03 Jun 2023 09:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5RSf-0001tI-Mp
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 09:38:29 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5RSd-0004Sq-Vf
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 09:38:29 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-30af86a966eso2699980f8f.2
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 06:38:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685799506; x=1688391506;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=U8yaiJw+q8tWJLtU4WABcqyRNULyx37ZadHJ4wOZs+k=;
- b=m3ZKOKVNU8FLg3iTvf5P1cr84wcuHM42b+1TlImTMhUgdMdIRwjEe/REWQ7J5Yx8Ss
- 5w3pO8RLzC0rzc8qpuqhxVR8Tt/nlZ1Ch2sUzK9S1Rya5x9KSSv/+YZCMOzrTJeBXN0J
- rLg6PWSmZH9OoM2sdJxwUvHQGanHjFJMB1bbe7a6HsO9mfEWAr/qw6Do6nEf9uwPq/Iq
- CSlMY1tT6weMuC3E81pwCcLY/MkKkHXb6/6fTkbqlOtgzJ4l5By621+jg6+/p9MtyTVF
- AgcB6tFE7NX/H90R4xJxnUu40NNExwK9pNcrRN2N5Eie4+2IOWxRXwwQewGNVoLT7RDU
- oWEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685799506; x=1688391506;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U8yaiJw+q8tWJLtU4WABcqyRNULyx37ZadHJ4wOZs+k=;
- b=j0LLYeYUdDSv5MzHBMo8Eql4SLlxriyuvpXVD4i6A/kUf0BLsSHktwTq5501kOYqYR
- hyth1s7uDUg07aYuI2VmfXhEmLlYSt5sQxOFluEzMFVKEcTjKpUf3hGCfJExpEjP8UMO
- goWQClwl78b2a0USjEFLWZGJrbFOBX+3yQzremAVZ4hF3LQAQIh4FKI7GV6KFBUvL4RK
- YAST1lWCNkBj9bb4M6J+bcHysOhm3BtFAhw91nGfl+gprdaNm01Qnwv2HFB8LWIBNrP1
- ydxLaGA72jzNVSlXmYaKCVnucAOhS5Jy96whsZTup24kKLd34ZqT4Qmh4cdHX/DYZLqu
- 5o5g==
-X-Gm-Message-State: AC+VfDwcQUH8DBhA357w3D/RKo1FYkXEFfDrjkBFVrDLLT6CPEKsPJvQ
- N4ju2wAGUDe4OoxmsqLb23hrbA==
-X-Google-Smtp-Source: ACHHUZ7yOwT8aVsgdpN0p5vDTrybLA90T/TYUOHXeSDRApWjJnelp2JiQwNvzPYV3grpk7RWlcDuXA==
-X-Received: by 2002:a5d:574e:0:b0:309:4988:7f83 with SMTP id
- q14-20020a5d574e000000b0030949887f83mr2082426wrw.20.1685799506340; 
- Sat, 03 Jun 2023 06:38:26 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.157.140])
- by smtp.gmail.com with ESMTPSA id
- g7-20020a5d5407000000b0030903371ef9sm4559941wrv.22.2023.06.03.06.38.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 06:38:25 -0700 (PDT)
-Message-ID: <df5d1199-6487-7487-3a95-34453cd04654@linaro.org>
-Date: Sat, 3 Jun 2023 15:38:24 +0200
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q5RWx-0002xO-0s; Sat, 03 Jun 2023 09:42:55 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q5RWt-0006FZ-VI; Sat, 03 Jun 2023 09:42:54 -0400
+Received: from localhost.localdomain (unknown [61.242.129.66])
+ by APP-05 (Coremail) with SMTP id zQCowAC3vIxNQ3tkCZuGCg--.52348S2;
+ Sat, 03 Jun 2023 21:42:40 +0800 (CST)
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
+ Weiwei Li <liweiwei@iscas.ac.cn>
+Subject: [PATCH v2 0/3] target/riscv: Fix mstatus related problems
+Date: Sat,  3 Jun 2023 21:42:33 +0800
+Message-Id: <20230603134236.15719-1-liweiwei@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 00/48] tcg: Build once for system, once for user
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <afdebaa1-6c7c-af7b-2e53-297576f10964@linaro.org>
- <8a6feaa6-1c0b-0d22-129c-de1e01a67524@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <8a6feaa6-1c0b-0d22-129c-de1e01a67524@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CM-TRANSID: zQCowAC3vIxNQ3tkCZuGCg--.52348S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrCFy7Aw18WFy8KFy7AF13urg_yoWxArb_Ka
+ y0gFy0g39ruwn5AFW3uw1rKr1xKr1rXry7ta15tr4UKry3WryUWa1v9rWxZr17ZFyrZ3Z3
+ ArnrXFy3Gr1aqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUbVkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+ Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+ 0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+ 6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+ 0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+ 8cxan2IY04v7MxkIecxEwVAFwVW5GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+ WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+ 67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+ IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+ 0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
+ nxnUUI43ZEXa7VUjHGQDUUUUU==
+X-Originating-IP: [61.242.129.66]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,31 +74,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/23 06:34, Richard Henderson wrote:
-> On 6/2/23 14:25, Philippe Mathieu-Daudé wrote:
->> On 31/5/23 06:02, Richard Henderson wrote:
->>
->>>   133 files changed, 3022 insertions(+), 2728 deletions(-)
->>
->>>   create mode 100644 include/exec/helper-gen-common.h
->>>   create mode 100644 include/exec/helper-proto-common.h
->>
->>>   create mode 100644 include/exec/helper-gen.h.inc
->>>   create mode 100644 include/exec/helper-proto.h.inc
->>>   create mode 100644 include/exec/helper-info.c.inc
->>
->> These new files miss a license.
-> 
-> The old file from which they were split didn't have one either.
-> But I think there's no reason not to add
-> 
->     SPDX-License-Identifier: GPL-2.0-or-later
-> 
-> to the top of each.
+This patchset tries to fix some problems in the fields of mstatus, such as make MPV only work when MPP != PRM.
 
-That would match with commit 6b620ca3b0 ("prepare for future GPLv2+
-relicensing"):
+The port is available here:
+https://github.com/plctlab/plct-qemu/tree/plct-mpv-upstream-v2
 
-  "Contributions after 2012-01-13 are licensed under the terms of the
-   GNU GPL, version 2 or (at your option) any later version."
+v2:
+* Drop patch 3 (remove check on mode M for MPRV)
+* rebase on apply-to-riscv.next
+
+Weiwei Li (3):
+  target/riscv: Make MPV only work when MPP != PRV_M
+  target/riscv: Support MSTATUS.MPV/GVA only when RVH is enabled
+  target/riscv: Remove redundant assignment to SXL
+
+ target/riscv/cpu_helper.c |  3 ++-
+ target/riscv/csr.c        | 14 ++++----------
+ target/riscv/op_helper.c  |  3 ++-
+ 3 files changed, 8 insertions(+), 12 deletions(-)
+
+-- 
+2.25.1
+
 
