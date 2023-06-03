@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBA07212B9
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 22:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936EC72133B
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 23:45:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5Y4v-0006rk-8N; Sat, 03 Jun 2023 16:42:25 -0400
+	id 1q5Z2W-0007u4-S2; Sat, 03 Jun 2023 17:44:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5Y4t-0006rU-FB
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:42:23 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q5Z2N-0007tH-Bx
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 17:43:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5Y4r-0005jh-Tg
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:42:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=f1E6Cr3VtUvW1xlz0NRAG80cJKxSBYUreqjIm3DIOlw=; b=Sxx6hMt/zw+xaUR5DIQYqoqbxh
- ebNCfJLLOkQxR45ZPsTsqVPWsJgYENFNcBm+jSgbB3oInB6ozjd4RhvcQ0VTwx9pFHIq+NWmGacMf
- sSAUv7WwMITJ5YKR8wiau/6brtR4Q92OhjnRc5aMvX22ZaIXOMj1UQugr2mT+tM+T9VoEYZKrJawz
- OrgPAoeejKSTuA9Ve+KBWv8C+Zc10HU4xHONLsU2GdrTy1Yi3WCaaAdZbYulUKmGUcKZef+5VmxXO
- CquSVFBM6mJbAJipKQY0W6hU9Oikh6VeEdQa9YdzXza89I1MnPgfzEX795l3k2K8DwFjVtQ5t3fde
- cVas43Kkqx+79UerJAvkvKu4yg8LOdrFk8gUbQk2HmHIsKpE/4dlgWXolYB4B9wFFhIi7PQwTTOQh
- +8OTUk/0hYiZ+QSeCLPv9CP4ildegXTl/VaoQbT9UIcW2aYs/fjZ+mYK9wH3UaYWIXR1xmcoui/QV
- 9vMPW9tvzEbvbhfVrK/DyKUOWtH9jwan37yr+2jNhQieFPB/3gO1qRCF9EbjjcgwyQVMnJa6WH63T
- wkTd3jkr0w8bSzkXsN/TlGab61ZEh8wfjkFua3/C4SViUpIFSawJrDqAvCz1XDEKssh7RZ/O3pehu
- OuQCKK5iUmHCPcmz27tpnCw5e9aNo/f019GMhyAR0=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5Y4f-000158-F4; Sat, 03 Jun 2023 21:42:13 +0100
-Message-ID: <c5137e13-5055-15d8-2f05-c132232e415c@ilande.co.uk>
-Date: Sat, 3 Jun 2023 21:42:14 +0100
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q5Z2K-0003M3-Vy
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 17:43:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685828627;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=bJmPl67EZdGS0u4wblM0LBTqwsJ039UKge02/qw8oPk=;
+ b=R3mtPLWJO2cysDOqhvMYTjuKVBRmWBJevlqADGbMRwOF5JBDQ87H3/2gEVU6u4gOUqgYVv
+ RIWdpmil9wWVelDMvYcqbEBY49PGXOEDNAjVX47ErJInc8IZtKHoUslQdqrZcVCUUD85Tn
+ fJ/GSo07c6mUhF4ubHcqHRH/zIOWQKQ=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-_D2uYL9DOiy71gVHM54NQA-1; Sat, 03 Jun 2023 17:43:46 -0400
+X-MC-Unique: _D2uYL9DOiy71gVHM54NQA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-97463348446so147751866b.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 14:43:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685828624; x=1688420624;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bJmPl67EZdGS0u4wblM0LBTqwsJ039UKge02/qw8oPk=;
+ b=cZoEZVMlQXawTtAWVe1NwOzS4OvshhqqFpmWUVB/sJk2coV3KzaWWudPw0w0mT81t/
+ ba4RIuWkwjh7hgEI9LQ0A2yGCLp+quFzdEqe0ZP5RhXa4UJ8TtgCMK/on1khqKQUiVr0
+ isAAeMZeK1bUBar4GzfSdTRwZdNxVNiFsnOhEA1+S0kpRftJaxEfcbTazfbA/9Mj+k1z
+ GNMsOpAYNC8/PZWqXKVU1TPpttoxXfcajzFTZKVZr4ySsDwW5jwLibu6hbwElvVzwBxa
+ w4BrVC5MUTBcd3LIrDex6mleTdzxOzsjStyvqp6TbDoQk6ubgKE96CM0x5+JCy7lUjVY
+ bcrw==
+X-Gm-Message-State: AC+VfDxJTyFwRfAyRgajFCz9ScHja4ERN8Lmz7Jlx+XP83/iDV4I3TZC
+ xx2S6i4BFVJ9HPOli1JLNYlNFqje5mfKIVIKmSopwMAiziw1VfCdHrD+6sl7Y9Z5HzUwoRYewZZ
+ NP7ZqjlWJc73c73yz4925lOMdyRVcugEPtAAg9YfRvlPScc2COGk3gI2nIfOP6cX7/4x/8A7Goi
+ o=
+X-Received: by 2002:a17:907:6095:b0:95e:d74b:d171 with SMTP id
+ ht21-20020a170907609500b0095ed74bd171mr2825089ejc.28.1685828624727; 
+ Sat, 03 Jun 2023 14:43:44 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4nj2wF1pRbNmggTBVbAdapNBWul6H40PhoJC+CCAQBWM3+K1Mzba4qB++RyOh5W0yvGo8VbQ==
+X-Received: by 2002:a17:907:6095:b0:95e:d74b:d171 with SMTP id
+ ht21-20020a170907609500b0095ed74bd171mr2825070ejc.28.1685828624304; 
+ Sat, 03 Jun 2023 14:43:44 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+ by smtp.gmail.com with ESMTPSA id
+ h21-20020a170906261500b00977cad140a8sm561250ejc.218.2023.06.03.14.43.43
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 03 Jun 2023 14:43:43 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] scripts: remove dead file
+Date: Sat,  3 Jun 2023 23:43:42 +0200
+Message-Id: <20230603214342.471752-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
- <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
- <87jzwoczq6.fsf@pond.sub.org>
- <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk>
- <87y1l38sm0.fsf@pond.sub.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <87y1l38sm0.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.157,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,64 +96,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/06/2023 10:00, Markus Armbruster wrote:
+scripts/test-driver.py was used when "make check" was already using meson
+introspection data, but it did not execute "meson test".  It is dead since
+commit 3d2f73ef75e ("build: use "meson test" as the test harness", 2021-12-23).
 
-> Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
-> 
->> On 31/05/2023 16:00, Markus Armbruster wrote:
->>
->>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
->>>
->>>> On 31/5/23 14:53, Mark Cave-Ayland wrote:
->>>>> Also change the instantiation of the CPU to use object_initialize_child()
->>>>> followed by a separate realisation.
->>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> ---
->>>>>     hw/m68k/q800.c         | 13 ++++++++-----
->>>>>     include/hw/m68k/q800.h |  2 ++
->>>>>     2 files changed, 10 insertions(+), 5 deletions(-)
->>>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
->>>>> index 3730b30dd1..c34b2548ca 100644
->>>>> --- a/hw/m68k/q800.c
->>>>> +++ b/hw/m68k/q800.c
->>>>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
->>>>>       static void q800_machine_init(MachineState *machine)
->>>>>     {
->>>>> -    M68kCPU *cpu = NULL;
->>>>> +    Q800MachineState *m = Q800_MACHINE(machine);
->>>>>         int linux_boot;
->>>>>         int32_t kernel_size;
->>>>>         uint64_t elf_entry;
->>>>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
->>>>>         }
->>>>>           /* init CPUs */
->>>>> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
->>>>> -    qemu_register_reset(main_cpu_reset, cpu);
->>>>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
->>>>> +                            M68K_CPU_TYPE_NAME("m68040"));
->>>>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
->>>>
->>>> CPUs are QDev-based, shouldn't we use qdev_realize()?
->>>
->>> Yes, we should.
->>> [...]
->>
->> Interesting. I remember thinking that CPUs were different, so I'm fairly sure I borrowed this from some similar code in hw/arm :)
->>
->> Shouldn't the above be directly equivalent to qdev_realize(dev, NULL, &error_fatal) given that the CPU doesn't connect to a bus?
-> 
-> It's been a while since I worked on this...
-> 
-> Commit ce189ab230b (qdev: Convert bus-less devices to qdev_realize()
-> with Coccinelle) looks like you're right.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ scripts/test-driver.py | 35 -----------------------------------
+ 1 file changed, 35 deletions(-)
+ delete mode 100644 scripts/test-driver.py
 
-Thanks for the confirmation! Given that this matches existing code that doesn't use 
-cpu_create(), I'm inclined to keep this as-is to avoid creating another pattern for 
-instantiating CPUs.
-
-
-ATB,
-
-Mark.
+diff --git a/scripts/test-driver.py b/scripts/test-driver.py
+deleted file mode 100644
+index eef74b29a8f..00000000000
+--- a/scripts/test-driver.py
++++ /dev/null
+@@ -1,35 +0,0 @@
+-#! /usr/bin/env python3
+-
+-# Wrapper for tests that hides the output if they succeed.
+-# Used by "make check"
+-#
+-# Copyright (C) 2020 Red Hat, Inc.
+-#
+-# Author: Paolo Bonzini <pbonzini@redhat.com>
+-
+-import subprocess
+-import sys
+-import os
+-import argparse
+-
+-parser = argparse.ArgumentParser(description='Test driver for QEMU')
+-parser.add_argument('-C', metavar='DIR', dest='dir', default='.',
+-                    help='change to DIR before doing anything else')
+-parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
+-                    help='be more verbose')
+-parser.add_argument('test_args', nargs=argparse.REMAINDER)
+-
+-args = parser.parse_args()
+-os.chdir(args.dir)
+-
+-test_args = args.test_args
+-if test_args[0] == '--':
+-    test_args = test_args[1:]
+-
+-if args.verbose:
+-    result = subprocess.run(test_args, stdout=None, stderr=None)
+-else:
+-    result = subprocess.run(test_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+-    if result.returncode:
+-        sys.stdout.buffer.write(result.stdout)
+-sys.exit(result.returncode)
+-- 
+2.40.1
 
 
