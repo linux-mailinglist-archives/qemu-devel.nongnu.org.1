@@ -2,103 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE147212B2
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 22:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A0F7212B3
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 22:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5XyC-0004td-W2; Sat, 03 Jun 2023 16:35:29 -0400
+	id 1q5XzL-0005jM-RH; Sat, 03 Jun 2023 16:36:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1q5Xy7-0004t2-OA
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:35:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q5XzJ-0005hb-IV
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:36:37 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1q5Xy5-00049m-9w
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:35:23 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 353KFnOU024151; Sat, 3 Jun 2023 20:35:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=qOWkDq0oRHZHBm3XodN9yBIKn3oUNrdf7WZx7Of5uIg=;
- b=SE3ilSU8Nwho/NrhIQ0EfHUvpong34Rtid43CUX3PnIYzZN5Fr2Z7QJfv7822d1InVmY
- vdTk/5U4JKlpJ6XLnX/eYzN/sczVccC6pAq5rMKTsDXft/Nt6LD1LTaf/4wShfvVrZ43
- jQiTchUx6pRrClWFRWwjNW3W9cBskfEFqOgRqArX7+Fn/4H41qUxM1R48Z8VUSMGUVWK
- iyl2+10lca0EqBiqqLZbPs698SAe8ckV62Kyubpkf9G+6bJFpcb4DNgE4PrTf2+5JBIs
- 56nqp4F4LPqLUM8RcxlzpDKAssskGPly5STWlC7q2k+n4OmahuajMnJxS2IYQ3jnrYMW Kg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r0cdc89gg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 03 Jun 2023 20:35:16 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 353KWPkI000950;
- Sat, 3 Jun 2023 20:35:16 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r0cdc89ft-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 03 Jun 2023 20:35:16 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 353Hm5Jp026392;
- Sat, 3 Jun 2023 20:35:14 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qyxg2gage-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 03 Jun 2023 20:35:13 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 353KZBDL44892450
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 3 Jun 2023 20:35:11 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A7D2520043;
- Sat,  3 Jun 2023 20:35:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41E9E20040;
- Sat,  3 Jun 2023 20:35:11 +0000 (GMT)
-Received: from [9.171.7.84] (unknown [9.171.7.84])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sat,  3 Jun 2023 20:35:11 +0000 (GMT)
-Message-ID: <bac70c1d1e4c55c2603e5c33637703e19b1189e4.camel@linux.ibm.com>
-Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Peter Maydell <peter.maydell@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Date: Sat, 03 Jun 2023 22:35:10 +0200
-In-Reply-To: <CAFEAcA-pb53hugPBFxkhzAz-zDAt13xhA+yXL6D7iYZbk96NtA@mail.gmail.com>
-References: <20230116223637.3512814-1-richard.henderson@linaro.org>
- <20230116223637.3512814-4-richard.henderson@linaro.org>
- <CAFEAcA-pb53hugPBFxkhzAz-zDAt13xhA+yXL6D7iYZbk96NtA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q5XzH-0004KG-WE
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 16:36:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=AEEbOEfADNuoS1Q6hyLijkaDojbDhD91aigWucF/lkE=; b=G83F3zhg1Ot3CzwtxCVciwsXkq
+ ftVY4zCoe4v40f+P9dXVdnW26jLAopTIdbvFF7k66Eqzh7AWyEpd+UjOvSDOYE0ZX8vShlHeDzVsZ
+ kWIYRsTjtt5AKagrMlabemRlxom24RpqQ5512RwZGrsIR1usUw08JMhct+gpH4rBrFhmOZnQXpl7G
+ Kk30BGMEkFXQALYdhFIqGITbXERmQaAufhgkKLhYfordJsj8fa1/hb3Ez97jKHcqyM1zf3swrmKpw
+ qhwWeQ2mtWXTsk58+X5DUAXtx1T7TAoLchv3exv60lspenaagIWHMCXGi38IzMIfALL6mQ0H6455O
+ +E+jwxF8XKycXh74HKfr9a291pK0I7+C5tb6nWZBkR8gmZwrDtRmfAKwLsRNG33LJD5199h7PykP8
+ E0DY2fKbPLg/gQ6srxZQHG4QOp73ZZULYZLY+NC5J9XVoIcGLwzaIbWD1NyXHiy05OvMplWN1xUzS
+ FnuEsKA/0keHjxANTMPlbptHyvEYqTnlQ6ZtIh7bu1zjwZmRa10C2CLYbULDmvTxU91/U3h/wvhJb
+ Dz7wT/Q92BfLQaJ7Vz/L3xwvrbUXZmPoullXUtAzZLpOhibuLzL8Dz76WAjtRBzKh7HoYFfdamQBi
+ ik1YYwpMG7B4Fmj7Xd9YmpGnAj18HbsWOxLMNvync=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q5Xz6-000137-01; Sat, 03 Jun 2023 21:36:28 +0100
+Message-ID: <96a6e0f0-b493-86c2-9b34-0e96dc423c56@ilande.co.uk>
+Date: Sat, 3 Jun 2023 21:36:28 +0100
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: NrdW-pt5HDtAyiR_67RsNJUQsgp0uBCh
-X-Proofpoint-GUID: Vzw89syUsdpJFxPPbE1v93xxc8SCRl57
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- mlxscore=0 impostorscore=0 clxscore=1011 bulkscore=0 phishscore=0
- adultscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306030189
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+ <edd9f126-526e-ee57-767b-a1d307008a4d@linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <edd9f126-526e-ee57-767b-a1d307008a4d@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,116 +82,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-06-02 at 18:21 +0100, Peter Maydell wrote:
-> On Mon, 16 Jan 2023 at 22:36, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >=20
-> > From: Ilya Leoshkevich <iii@linux.ibm.com>
-> >=20
-> > Add ability to dump /tmp/perf-<pid>.map and jit-<pid>.dump.
-> > The first one allows the perf tool to map samples to each
-> > individual
-> > translation block. The second one adds the ability to resolve
-> > symbol
-> > names, line numbers and inspect JITed code.
-> >=20
-> > Example of use:
-> >=20
-> > =C2=A0=C2=A0=C2=A0 perf record qemu-x86_64 -perfmap ./a.out
-> > =C2=A0=C2=A0=C2=A0 perf report
-> >=20
-> > or
-> >=20
-> > =C2=A0=C2=A0=C2=A0 perf record -k 1 qemu-x86_64 -jitdump ./a.out
-> > =C2=A0=C2=A0=C2=A0 DEBUGINFOD_URLS=3D perf inject -j -i perf.data -o
-> > perf.data.jitted
-> > =C2=A0=C2=A0=C2=A0 perf report -i perf.data.jitted
-> >=20
-> > Co-developed-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-> > Co-developed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > Message-Id: <20230112152013.125680-4-iii@linux.ibm.com>
-> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->=20
-> Hi; Coverity thinks (CID 1507521) that there's a memory leak
-> in this code:
->=20
-> > +void perf_enable_jitdump(void)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 struct jitheader header;
-> > +=C2=A0=C2=A0=C2=A0 char jitdump_file[32];
-> > +=C2=A0=C2=A0=C2=A0 void *perf_marker;
-> > +
-> > +=C2=A0=C2=A0=C2=A0 if (!use_rt_clock) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 warn_report("CLOCK_MONOTONI=
-C is not available, proceeding
-> > without jitdump");
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 snprintf(jitdump_file, sizeof(jitdump_file), "jit-%=
-d.dump",
-> > getpid());
-> > +=C2=A0=C2=A0=C2=A0 jitdump =3D safe_fopen_w(jitdump_file);
-> > +=C2=A0=C2=A0=C2=A0 if (jitdump =3D=3D NULL) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 warn_report("Could not open=
- %s: %s, proceeding without
-> > jitdump",
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 jitdump_file, strerror(errno)=
-);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /*
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * `perf inject` will see that the mapped file=
- name in the
-> > corresponding
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * PERF_RECORD_MMAP or PERF_RECORD_MMAP2 event=
- is of the form
-> > jit-%d.dump
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * and will process it as a jitdump file.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > +=C2=A0=C2=A0=C2=A0 perf_marker =3D mmap(NULL, qemu_real_host_page_size=
-(), PROT_READ
-> > | PROT_EXEC,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MAP_PRIVATE=
-, fileno(jitdump), 0);
->=20
-> Here we mmap() something...
->=20
-> > +=C2=A0=C2=A0=C2=A0 if (perf_marker =3D=3D MAP_FAILED) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 warn_report("Could not map =
-%s: %s, proceeding without
-> > jitdump",
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 jitdump_file, strerror(errno)=
-);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fclose(jitdump);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 jitdump =3D NULL;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 header.magic =3D JITHEADER_MAGIC;
-> > +=C2=A0=C2=A0=C2=A0 header.version =3D JITHEADER_VERSION;
-> > +=C2=A0=C2=A0=C2=A0 header.total_size =3D sizeof(header);
-> > +=C2=A0=C2=A0=C2=A0 header.elf_mach =3D get_e_machine();
-> > +=C2=A0=C2=A0=C2=A0 header.pad1 =3D 0;
-> > +=C2=A0=C2=A0=C2=A0 header.pid =3D getpid();
-> > +=C2=A0=C2=A0=C2=A0 header.timestamp =3D get_clock();
-> > +=C2=A0=C2=A0=C2=A0 header.flags =3D 0;
-> > +=C2=A0=C2=A0=C2=A0 fwrite(&header, sizeof(header), 1, jitdump);
->=20
-> ...but we never do anything with that pointer, so the memory
-> we just mmap()ed is never going to be freed.
->=20
-> Is this doing something particularly magical, or should that
-> pointer be kept track of somewhere ?
->=20
-> thanks
-> -- PMM
+On 31/05/2023 18:43, Philippe Mathieu-Daudé wrote:
 
-It's magic that points perf to the location of the jitdump file,
-but it won't hurt munmap()ping it in perf_exit(). I'll send a patch.
+> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>> Also change the instantiation of the CPU to use object_initialize_child()
+>> followed by a separate realisation.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>>   hw/m68k/q800.c         | 13 ++++++++-----
+>>   include/hw/m68k/q800.h |  2 ++
+>>   2 files changed, 10 insertions(+), 5 deletions(-)
+> 
+> 
+>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+>>       }
+>>       /* init CPUs */
+>> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+>> -    qemu_register_reset(main_cpu_reset, cpu);
+>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>> +                            M68K_CPU_TYPE_NAME("m68040"));
+> 
+> Shouldn't we keep using machine->cpu_type?
+> 
+> If the m68040 is the single CPU usable, we should set
+> MachineClass::valid_cpu_types[] in q800_machine_class_init().
+> 
+>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
+>> +    qemu_register_reset(main_cpu_reset, &m->cpu);
+
+Yes I can do that: I don't think it makes any difference to the q800 machine here 
+because the MacOS toolbox ROM doesn't appear to boot with anything other than a 68040 
+CPU, but it could be useful to make this explicit.
+
+
+ATB,
+
+Mark.
+
 
