@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08296721116
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 18:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE21E721133
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 18:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5ThK-0001AE-08; Sat, 03 Jun 2023 12:01:46 -0400
+	id 1q5TyL-0005m2-Nb; Sat, 03 Jun 2023 12:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ThH-00016I-M0
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 12:01:43 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q5TyJ-0005lM-PS
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 12:19:19 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ThF-0003Vj-6x
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 12:01:42 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1b065154b79so33656335ad.1
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 09:01:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q5TyI-0001I4-2c
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 12:19:19 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-51496f57e59so4317684a12.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 09:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685808100; x=1688400100;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oN1W3QZzguABfsk/9SDL/zGs9EOs0rrgU2900uxVlYE=;
- b=Rk8+9COpLeoRBW7kUH/ooOcjv76VGRl9BausOlE9Js7U9WA19IigLwVBtQJlt7uI4N
- 36MnERZKK5hBhqK4Bkvkpst18zPOC/a2l5xyROmAaUrUbIbIGXoZ/U2DVDy2R1peS3Dd
- uoGh5atO/3o+0DKcmRfu8VGlLq8g71tZ1lRRQ2+SwB2xselp+x+NKagHuCZiWmHwIXKQ
- eDsu1h/9lGEHhPxlXYb3eZSppFdzKB/D7b26+MZiZfeZ9fXN/V+Bl/vYAC+voK89nSw1
- 5WGorFqFhqHHR+xe0IuSQj4uJw66lmaxmINzRIHAQjZe2z3EL5KGbeSf0QNa73p6XYuL
- rl1g==
+ d=linaro.org; s=google; t=1685809155; x=1688401155;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VA+YzqgIpFcYLlBlrPTBzjLSYTAFBcz3KlXovQg/1Ck=;
+ b=F/Gobysvdn/5F7VVB2LchhvihO0800bWOUMaNddbA/biLN2bu0miR3pdo/7/T3tz9F
+ ffjv8Shuk5ByEG/dmpm77hNt3HId88n9XyCB4y4u4tWVgkqwf/1MOqv0iS2lewn82hNO
+ lc7J6CsAmSPxR//1CuybniB8TIdsg9IlAJei/7ruji5nnyZm+d7a1dpYkD3l8f07C/5d
+ 2rpieyVH06YH9ZRomGaGunjBQYCz5yuZI3/GtxIwslJzbXqtQIbOOzvPUhXsplqdsn7A
+ q5bTgHXfU18pUfnfw1dp1hyqYnqNn6Gg8uxXvWX5GhlhhUQyTBh6lQ+b6inI2dq8qKZU
+ pssw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685808100; x=1688400100;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oN1W3QZzguABfsk/9SDL/zGs9EOs0rrgU2900uxVlYE=;
- b=f3Ch87gZAzTCX1jHrGbooYWOhQwb/zP8/fJC/DcqHo1B5yHHzpuS2yUKN15AJKQHGy
- hmxMv0cKkudLP6/bphEd9lMj55Pq6gxBKLcDPne/EeXfBxI7Os3VMEjpZZMV+V/PjjLb
- JICufBnjCO8ANPXOZ9c5cEMrGdiev5GUDrEnu42YsHnboUZIMVIPiCjv5wnyeq5bboFN
- jQyqjHi5btMSdY6dEl0e+w0lvsiCd3RdsFj8pCHFlyscc/BjA8svOWayfvsufI6lvD27
- /v0X7sW3E7sXT3a+rqx18593j3pORJ0w/60NBm8zwRKPE4DCKeyFZ9+c92wrOs+u00HJ
- 6ndg==
-X-Gm-Message-State: AC+VfDysRgJibMk12K0Q+4g6HGon+a1IAtqYXhL9uoTUZy4/Vl81FuBF
- n7LTxKwZKNM+p+uEN6uDEtfTDQ==
-X-Google-Smtp-Source: ACHHUZ4FwrTU3z/TteXgciOt8hMb+hULOoCivNiLXN0yH70c6y89mGLXWvUEGykQasvCp2HpXTniZA==
-X-Received: by 2002:a17:903:452:b0:1ae:89a:a4 with SMTP id
- iw18-20020a170903045200b001ae089a00a4mr2671718plb.8.1685808099647; 
- Sat, 03 Jun 2023 09:01:39 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:9a37:84b6:b3f0:f301?
- ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
- by smtp.gmail.com with ESMTPSA id
- x10-20020a170902ec8a00b001ac8e0ea157sm3369387plg.144.2023.06.03.09.01.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 09:01:39 -0700 (PDT)
-Message-ID: <c9e2980e-54bd-1b25-60b9-3351417aaecd@linaro.org>
-Date: Sat, 3 Jun 2023 09:01:37 -0700
+ d=1e100.net; s=20221208; t=1685809155; x=1688401155;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VA+YzqgIpFcYLlBlrPTBzjLSYTAFBcz3KlXovQg/1Ck=;
+ b=SnKQjxKMVdyYXNNdGEdOQBXdQ+r1Q20riWA2nc55v3FNSG+Zyp93/4lkePmMmoN3EO
+ M5kEkWhr3tBdQvkLdb0SqgJ4dAADjEle34KE/+v8JoZEMizff7nracu+R4JLtIpjxDRa
+ q2vHaYpwHPEPiwDEWTL8VzrUJzuspKEtYQuuvTEdnThi1K3uyh+hIGh6Og/EZeCxdMEl
+ fVXWlRxnWpAP5XykBmJK7w45EC5+UsHvfMF4imIC9Nb60j1PmwMt8ceQVZHLo4t+4e+I
+ YTYV3Bm3cOYJCu05qnqvX0mJQ4xZyTeptWO7h3UMyiH2a3mE19A74xohjSmzt3KekoK+
+ Eglw==
+X-Gm-Message-State: AC+VfDy1ZYVpnXIkvSUULwOp5BFg9QVDbqfySxNb25heiAAFvWeIIdMz
+ CRVL5YWqwMCmnku954Yb/O1X62+/GFdxbnfbi9Yq/Q==
+X-Google-Smtp-Source: ACHHUZ5VpE6zQ1Kb43nDYtF7MZThjnGEp55o/tySc93CqZ+fY2mnC8BiObsAkmBe6oAsHucC3bzJC869Ru8LBcPZVxI=
+X-Received: by 2002:aa7:df81:0:b0:514:af52:e49a with SMTP id
+ b1-20020aa7df81000000b00514af52e49amr4004988edy.25.1685809155571; Sat, 03 Jun
+ 2023 09:19:15 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 31/35] host/include/aarch64: Implement aes-round.h
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-References: <20230603023426.1064431-1-richard.henderson@linaro.org>
- <20230603023426.1064431-32-richard.henderson@linaro.org>
- <CAMj1kXE5SKJS9YRuV6H3z84JvSMHDBkFWVuue8yMyYVK7TVkSw@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAMj1kXE5SKJS9YRuV6H3z84JvSMHDBkFWVuue8yMyYVK7TVkSw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230602155223.2040685-1-peter.maydell@linaro.org>
+ <20230602155223.2040685-14-peter.maydell@linaro.org>
+ <13e60074-adc0-f3f2-e5fe-f48e6778cf04@linaro.org>
+In-Reply-To: <13e60074-adc0-f3f2-e5fe-f48e6778cf04@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 3 Jun 2023 17:18:43 +0100
+Message-ID: <CAFEAcA9mi0KxN5Ncvm-h5h0Ydjh1X6q2Xbq-9PtxSC2LdTtGDg@mail.gmail.com>
+Subject: Re: [PATCH 13/20] target/arm: Convert LDR/STR with 12-bit immediate
+ to decodetree
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,86 +89,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/23 05:50, Ard Biesheuvel wrote:
-> On Sat, 3 Jun 2023 at 04:34, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> Detect AES in cpuinfo; implement the accel hooks.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   host/include/aarch64/host/aes-round.h | 204 ++++++++++++++++++++++++++
->>   host/include/aarch64/host/cpuinfo.h   |   1 +
->>   util/cpuinfo-aarch64.c                |   2 +
->>   3 files changed, 207 insertions(+)
->>   create mode 100644 host/include/aarch64/host/aes-round.h
->>
->> diff --git a/host/include/aarch64/host/aes-round.h b/host/include/aarch64/host/aes-round.h
->> new file mode 100644
->> index 0000000000..27ca823db6
->> --- /dev/null
->> +++ b/host/include/aarch64/host/aes-round.h
->> @@ -0,0 +1,204 @@
->> +/*
->> + * AArch64 specific aes acceleration.
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +
->> +#ifndef HOST_AES_ROUND_H
->> +#define HOST_AES_ROUND_H
->> +
->> +#include "host/cpuinfo.h"
->> +#include <arm_neon.h>
->> +
->> +#ifdef __ARM_FEATURE_AES
->> +# define HAVE_AES_ACCEL  true
->> +# define ATTR_AES_ACCEL
->> +#else
->> +# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_AES)
->> +# define ATTR_AES_ACCEL  __attribute__((target("+crypto")))
->> +#endif
->> +
->> +static inline uint8x16_t aes_accel_bswap(uint8x16_t x)
->> +{
->> +    /* No arm_neon.h primitive, and the compilers don't share builtins. */
-> 
-> vqtbl1q_u8() perhaps?
+On Fri, 2 Jun 2023 at 21:51, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Hi Peter,
+>
+> On 2/6/23 17:52, Peter Maydell wrote:
+> > Convert the LDR and STR instructions which use a 12-bit immediate
+> > offset to decodetree. We can reuse the existing LDR and STR
+> > trans functions for these.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> >   target/arm/tcg/a64.decode      |  25 ++++++++
+> >   target/arm/tcg/translate-a64.c | 103 +++++---------------------------=
+-
+> >   2 files changed, 41 insertions(+), 87 deletions(-)
+> >
+> > diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+> > index 4dfb7bbdc2e..c3a6d0b740a 100644
+> > --- a/target/arm/tcg/a64.decode
+> > +++ b/target/arm/tcg/a64.decode
+>
+>
+> > +# Load/store with an unsigned 12 bit immediate, which is scaled by the
+> > +# element size. The function gets the sz:imm and returns the scaled im=
+mediate.
+> > +%uimm_scaled   10:12 sz:3 !function=3Duimm_scaled
+> > +
+> > +@ldst_uimm      .. ... . .. .. ............ rn:5 rt:5 &ldst_imm unpriv=
+=3D0 p=3D0 w=3D0 imm=3D%uimm_scaled
+> > +
+> > +STR_i           sz:2 111 0 01 00 ............ ..... ..... @ldst_uimm s=
+ign=3D0 ext=3D0
+> > +LDR_i           00 111 0 01 01 ............ ..... ..... @ldst_uimm sig=
+n=3D0 ext=3D1 sz=3D0
+> > +LDR_i           01 111 0 01 01 ............ ..... ..... @ldst_uimm sig=
+n=3D0 ext=3D1 sz=3D1
+> > +LDR_i           10 111 0 01 01 ............ ..... ..... @ldst_uimm sig=
+n=3D0 ext=3D1 sz=3D2
+> > +LDR_i           11 111 0 01 01 ............ ..... ..... @ldst_uimm sig=
+n=3D0 ext=3D0 sz=3D3
+> > +LDR_i           00 111 0 01 10 ............ ..... ..... @ldst_uimm sig=
+n=3D1 ext=3D0 sz=3D0
+> > +LDR_i           01 111 0 01 10 ............ ..... ..... @ldst_uimm sig=
+n=3D1 ext=3D0 sz=3D1
+> > +LDR_i           10 111 0 01 10 ............ ..... ..... @ldst_uimm sig=
+n=3D1 ext=3D0 sz=3D2
+> > +LDR_i           00 111 0 01 11 ............ ..... ..... @ldst_uimm sig=
+n=3D1 ext=3D1 sz=3D0
+> > +LDR_i           01 111 0 01 11 ............ ..... ..... @ldst_uimm sig=
+n=3D1 ext=3D1 sz=3D1
+>
+> Why not use "sz:2 111 0 01 sign:1 ext:1", returning false for the
+> cases not covered?
 
-Ah, yes, thanks.
+That would also catch the PRFM case (which is size=3D0b11 sign=3D1 ext=3D0
+in your pattern); and it gives the wrong ext value for 11 111 0 01 01.
 
+You could do more of the decode in the trans_ functions and less
+here; but my impression is that we tend to prefer decoding in the
+.decode file where we can.
 
->> +static inline uint8x16_t aes_accel_aesmc(uint8x16_t d)
->> +{
->> +    asm(".arch_extension aes\n\t"
->> +        "aesmc %0.16b, %1.16b" : "=w"(d) : "w"(d));
-> 
-> 
-> Most ARM cores fuse aese/aesmc into a single uop (with the associated
-> performance boost) if the pattern is
-> 
-> aese x, y
-> aesmc x,x
-> 
-> aesd x, y
-> aesimc x,x
-> 
-> So it might make sense to use +w here at least, and use only a single
-> register (which the compiler will likely do in any case, but still)
-> 
-> I would assume that the compiler cannot issue these separately based
-> on the sequences below, but if it might, it may be worth it to emit
-> the aese/aesmc together in a single asm() block
-
-There could be shuffling.  It's low probability, but possible.
-
-I really should move the builtin test to meson, as clang-16 fixes the builtin visibility 
-issue.  I can see that gcc knows fusion of these pairs; I assume clang does as well, but I 
-don't know the code base well enough to check.
-
-I suppose it's going to be years until clang-16 can be assumed, as Debian bookworm is to 
-be released this month with clang-14.  So it's probably worth spending a few more minutes 
-on this now.
-
-
-r~
+thanks
+-- PMM
 
