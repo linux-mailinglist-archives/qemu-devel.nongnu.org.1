@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8336721032
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 15:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37260721034
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 15:39:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5ROh-0000EM-SH; Sat, 03 Jun 2023 09:34:23 -0400
+	id 1q5RSh-0001tR-N6; Sat, 03 Jun 2023 09:38:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5ROg-0000E7-4t
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 09:34:22 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5RSf-0001tI-Mp
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 09:38:29 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5ROe-0003PW-ET
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 09:34:21 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f6e4554453so28792235e9.3
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 06:34:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q5RSd-0004Sq-Vf
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 09:38:29 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-30af86a966eso2699980f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 06:38:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685799259; x=1688391259;
+ d=linaro.org; s=google; t=1685799506; x=1688391506;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fqzrg7UhpedlmRsSPgjUclk6i3m2IqMRayJsxpNop3I=;
- b=YQwVVQuf+9pDJGaaQFm22L4OZVXPblJ9jPDd3uy9/T5iVWptYhUGGRqcWG+1g0/cLs
- wJeaOlYRgpszsfpnqErcHVQoCTS83uw4g+3VXmjwGf0zL23Em5ZTNVU9soCEsRlwMlNa
- +pOUFN9n0JcuXDUOm8mCT0SefFS/OxPeQXyGuJq2FsyoEoBJyF0ccQtzDpV+BS3k7KWk
- /5KWJSRSo+MmMUi5O6m418EY9rBHEjNiD7ZbHQLUJHMnmeX+m83JWhHITK8JWoVo4FFn
- +oa0Ec5YfEOqzMd9sI0e/XI1ZG2W7YeUF1Rl3Zy+S+CIe7X7fq/T3YtOb73u93NNRK8U
- 82oA==
+ bh=U8yaiJw+q8tWJLtU4WABcqyRNULyx37ZadHJ4wOZs+k=;
+ b=m3ZKOKVNU8FLg3iTvf5P1cr84wcuHM42b+1TlImTMhUgdMdIRwjEe/REWQ7J5Yx8Ss
+ 5w3pO8RLzC0rzc8qpuqhxVR8Tt/nlZ1Ch2sUzK9S1Rya5x9KSSv/+YZCMOzrTJeBXN0J
+ rLg6PWSmZH9OoM2sdJxwUvHQGanHjFJMB1bbe7a6HsO9mfEWAr/qw6Do6nEf9uwPq/Iq
+ CSlMY1tT6weMuC3E81pwCcLY/MkKkHXb6/6fTkbqlOtgzJ4l5By621+jg6+/p9MtyTVF
+ AgcB6tFE7NX/H90R4xJxnUu40NNExwK9pNcrRN2N5Eie4+2IOWxRXwwQewGNVoLT7RDU
+ oWEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685799259; x=1688391259;
+ d=1e100.net; s=20221208; t=1685799506; x=1688391506;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fqzrg7UhpedlmRsSPgjUclk6i3m2IqMRayJsxpNop3I=;
- b=J6oHxZLDmXGUN3TyjFqfhwaBWNoxX1MqXP6TBqmx76FxVUJIaivYUEh2xcvsBNq01P
- H4Uej4rwzXAGPTNeu3k1anc8qcQVvgw63xen9+BAx0i8jN4fqtYY9kKR0P7sKUxowkDz
- fUazalNm8QAr3g6HmEZN5uP1WO10yQFPnq5Ms0ndz5l7ykQkvi+TZ8D1yEwITYhSKYGp
- ZRrOKlxR+sq7j7wxVOwF9Xw0D123B/b7tkjJUJNWXc0As8uoVcIqzTJQlwQFj0v138m3
- IuBQ8oXlVpYvd1P6X3A+R6c9m4hOr0gWDDVLJE1TlbbX4oL3i3O5QJy624PNVrWGCmX7
- WMuQ==
-X-Gm-Message-State: AC+VfDyhEIKYMJ1dwM0Aui4HzLemyH9TxlW0OOioQYAA5UEt0W3lcLyW
- 6A482+yUEgQvIqSxm0gbFbw/KcOC864GUmLlZRM=
-X-Google-Smtp-Source: ACHHUZ41iekCTY3uTdzPZQBqNQJaP7cAeBWemkSgWw0kPtDTLR9bkswp07NHoFSGtaoNIDqGqUZAWw==
-X-Received: by 2002:a05:600c:2219:b0:3f6:8f5:f9ee with SMTP id
- z25-20020a05600c221900b003f608f5f9eemr3492630wml.26.1685799258931; 
- Sat, 03 Jun 2023 06:34:18 -0700 (PDT)
+ bh=U8yaiJw+q8tWJLtU4WABcqyRNULyx37ZadHJ4wOZs+k=;
+ b=j0LLYeYUdDSv5MzHBMo8Eql4SLlxriyuvpXVD4i6A/kUf0BLsSHktwTq5501kOYqYR
+ hyth1s7uDUg07aYuI2VmfXhEmLlYSt5sQxOFluEzMFVKEcTjKpUf3hGCfJExpEjP8UMO
+ goWQClwl78b2a0USjEFLWZGJrbFOBX+3yQzremAVZ4hF3LQAQIh4FKI7GV6KFBUvL4RK
+ YAST1lWCNkBj9bb4M6J+bcHysOhm3BtFAhw91nGfl+gprdaNm01Qnwv2HFB8LWIBNrP1
+ ydxLaGA72jzNVSlXmYaKCVnucAOhS5Jy96whsZTup24kKLd34ZqT4Qmh4cdHX/DYZLqu
+ 5o5g==
+X-Gm-Message-State: AC+VfDwcQUH8DBhA357w3D/RKo1FYkXEFfDrjkBFVrDLLT6CPEKsPJvQ
+ N4ju2wAGUDe4OoxmsqLb23hrbA==
+X-Google-Smtp-Source: ACHHUZ7yOwT8aVsgdpN0p5vDTrybLA90T/TYUOHXeSDRApWjJnelp2JiQwNvzPYV3grpk7RWlcDuXA==
+X-Received: by 2002:a5d:574e:0:b0:309:4988:7f83 with SMTP id
+ q14-20020a5d574e000000b0030949887f83mr2082426wrw.20.1685799506340; 
+ Sat, 03 Jun 2023 06:38:26 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.157.140])
  by smtp.gmail.com with ESMTPSA id
- z17-20020a5d4c91000000b0030647449730sm4558649wrs.74.2023.06.03.06.34.17
+ g7-20020a5d5407000000b0030903371ef9sm4559941wrv.22.2023.06.03.06.38.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 06:34:18 -0700 (PDT)
-Message-ID: <5b2b575f-5566-0dda-5e31-3f00e94ca764@linaro.org>
-Date: Sat, 3 Jun 2023 15:34:17 +0200
+ Sat, 03 Jun 2023 06:38:25 -0700 (PDT)
+Message-ID: <df5d1199-6487-7487-3a95-34453cd04654@linaro.org>
+Date: Sat, 3 Jun 2023 15:38:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 23/48] tcg: Split helper-gen.h
+Subject: Re: [PATCH v3 00/48] tcg: Build once for system, once for user
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-24-richard.henderson@linaro.org>
- <ab5b8c14-b85c-5f97-981a-f1ad85d30318@linaro.org>
- <556eef64-dc5f-7039-8b1b-35fef2c06959@linaro.org>
+ <afdebaa1-6c7c-af7b-2e53-297576f10964@linaro.org>
+ <8a6feaa6-1c0b-0d22-129c-de1e01a67524@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <556eef64-dc5f-7039-8b1b-35fef2c06959@linaro.org>
+In-Reply-To: <8a6feaa6-1c0b-0d22-129c-de1e01a67524@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,61 +93,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/23 06:09, Richard Henderson wrote:
-> On 6/2/23 14:17, Philippe Mathieu-Daudé wrote:
->> On 31/5/23 06:03, Richard Henderson wrote:
->>> Create helper-gen-common.h without the target specific portion.
->>> Use that in tcg-op-common.h.  Reorg headers in target/arm to
->>> ensure that helper-gen.h is included before helper-info.c.inc.
->>> All other targets are already correct in this regard.
->>>
->>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>> ---
->>>   include/exec/helper-gen-common.h |  17 ++++++
->>>   include/exec/helper-gen.h        | 101 ++-----------------------------
->>>   include/tcg/tcg-op-common.h      |   2 +-
->>>   include/exec/helper-gen.h.inc    | 101 +++++++++++++++++++++++++++++++
->>>   target/arm/tcg/translate.c       |   8 +--
->>>   5 files changed, 126 insertions(+), 103 deletions(-)
+On 3/6/23 06:34, Richard Henderson wrote:
+> On 6/2/23 14:25, Philippe Mathieu-Daudé wrote:
+>> On 31/5/23 06:02, Richard Henderson wrote:
+>>
+>>>   133 files changed, 3022 insertions(+), 2728 deletions(-)
+>>
 >>>   create mode 100644 include/exec/helper-gen-common.h
+>>>   create mode 100644 include/exec/helper-proto-common.h
+>>
 >>>   create mode 100644 include/exec/helper-gen.h.inc
+>>>   create mode 100644 include/exec/helper-proto.h.inc
+>>>   create mode 100644 include/exec/helper-info.c.inc
 >>
->>
->>> diff --git a/include/exec/helper-gen.h.inc 
->>> b/include/exec/helper-gen.h.inc
->>> new file mode 100644
->>> index 0000000000..83bfa5b23f
->>> --- /dev/null
->>> +++ b/include/exec/helper-gen.h.inc
->>> @@ -0,0 +1,101 @@
->>> +/*
->>> + * Helper file for declaring TCG helper functions.
->>> + * This one expands generation functions for tcg opcodes.
->>> + * Define HELPER_H for the header file to be expanded,
->>> + * and static inline to change from global file scope.
->>> + */
->>> +
->>> +#include "tcg/tcg.h"
->>> +#include "tcg/helper-info.h"
->>> +#include "exec/helper-head.h"
->>> +
->>> +#define DEF_HELPER_FLAGS_0(name, flags, 
->>> ret)                            \
->>> +extern TCGHelperInfo glue(helper_info_, 
->>> name);                          \
->>> +static inline void glue(gen_helper_, 
->>> name)(dh_retvar_decl0(ret))        \
->>> +{                                                                       \
->>> +    tcg_gen_call0(&glue(helper_info_, name), 
->>> dh_retvar(ret));           \
->>> +}
->> [...]
->>
->> File not guarded for multiple inclusions, otherwise:
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> These new files miss a license.
 > 
-> That is why it is named ".h.inc", because it *is* included multiple times.
+> The old file from which they were split didn't have one either.
+> But I think there's no reason not to add
+> 
+>     SPDX-License-Identifier: GPL-2.0-or-later
+> 
+> to the top of each.
 
-Oh right, thanks.
+That would match with commit 6b620ca3b0 ("prepare for future GPLv2+
+relicensing"):
 
+  "Contributions after 2012-01-13 are licensed under the terms of the
+   GNU GPL, version 2 or (at your option) any later version."
 
