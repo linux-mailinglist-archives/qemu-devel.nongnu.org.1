@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A937213CC
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 01:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960747213D6
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 01:57:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5aru-0000q4-Cy; Sat, 03 Jun 2023 19:41:10 -0400
+	id 1q5b6G-0002iI-Jc; Sat, 03 Jun 2023 19:56:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5ars-0000pn-3I
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 19:41:08 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1q5b6E-0002hf-4E
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 19:55:58 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5arq-0004Wl-7y
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 19:41:07 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-19f3550bcceso3319825fac.0
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 16:41:05 -0700 (PDT)
+ id 1q5b6C-0006zg-LE
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 19:55:57 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-5341737d7aeso3048254a12.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 16:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685835665; x=1688427665;
+ d=linaro.org; s=google; t=1685836554; x=1688428554;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=SC8k5lv4XD4k7XBhArUpXyWpyFek39MyN2Ma/lMirD0=;
- b=qOr+FwtQ/QwBUHpnuqUiuTIIiB67HefSzq6SN4loKLmHt5eYi2eBY61DidYlM6WB2Z
- F0UGxrbLvn32wLPLrQro6N7klLVcMuOW0o25ov2+MjmbnScajQS7gB7hpTGK4n6eCdE5
- i6AgPitIusJh3rS6TWtaD9Z2wTugKjr7pweIBgL81R2a8XL4phMXVpGuhk0bvechcogH
- s+c2vmHmUCrXBki5P3ODfzXfLsmzsc2wfXnOufiKBpOPIaQ1H/g77CPlEvj5plni/oXB
- PZ5oVzJFI4oSEqIWdlC43W+/lp5xLQor44UQhBANahWC+z+ulcEt++5QTs83kprPoNwY
- WGhw==
+ bh=VO3nn+Efhy/PPxtEp6iGNKsRUpm13QkKsc++JMgiLE4=;
+ b=kpYCdV54z6ZAiLHKx/g01q3ZVgB7l0pR1gnCcBUPg0O/lSn5irLP0KJ+xDM2DDzftN
+ kTTtxi4VSBc8D34GR7Lm4qpCt2dlFYOVHMvTyYYJtZ29Zl4oqVPRtURpBqBSH7cA5xdk
+ f11MiV2797sQJ6LRz9dxKaQhoYdqgsch9ddX+RQ0CiDnYANX8P3VCEj/X2akBvKuajF2
+ g4tw21mGahbvVwAeqUyu5yCFWGBZtIea9dU1C5Jy8el2qoAF7cVxGBzbKl4dKaSVXBIO
+ ZmqNcWCNNF4oMDmcp1agjAQtFDkQdBXSe3oasZcoMejioDPYgtV95W39zcDM3q36RX6z
+ oQGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685835665; x=1688427665;
+ d=1e100.net; s=20221208; t=1685836554; x=1688428554;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SC8k5lv4XD4k7XBhArUpXyWpyFek39MyN2Ma/lMirD0=;
- b=gjsPEQTCqqARJKtnoIMBcnIkIEdjLP/9mfPq/VQKEN0UOWV4aRNiN/CvHRPnAtrjzx
- a6lHV7+saGLiQFWRLQGQxu4klJcVM8XY9/2Kanh5UP6/G10bYVjjHZv8za6St/EWBKKL
- x1H31LlbSL7OhjONIQ5D99sEh1qBK7v7TiNmhN9Fkcrl0Ra/0OvHVdN20rFc4ubgBrLC
- ILYZytE17EbrBpjW2b8cEpmmrcCCAfOOlfBFbYzp/H3+1gCtqE8L/eiwWCqsxANqGly0
- t5lub2lirIFm9df7m4V5x4CaeUoJW7fPQLyvi78MLYsAMcG6pwlzNGUd9YiZ1CBWvSZp
- e2MQ==
-X-Gm-Message-State: AC+VfDzecwkAu5KzuXQ5MQ/7HGsGbpWaqjyvrxwiz9rDVM0D7UnShzRQ
- +Ri/Lxm1cEz+25CxgkC0LY6SuA==
-X-Google-Smtp-Source: ACHHUZ4P3Y2thiRqk+qgsUMS0O4Y2oj1VV6GcdZx4tj2uaokpv5COcQN0yLlkglUXTngweeZsK65ag==
-X-Received: by 2002:a05:6870:7729:b0:1a0:85d3:3d70 with SMTP id
- dw41-20020a056870772900b001a085d33d70mr5379418oab.28.1685835664945; 
- Sat, 03 Jun 2023 16:41:04 -0700 (PDT)
+ bh=VO3nn+Efhy/PPxtEp6iGNKsRUpm13QkKsc++JMgiLE4=;
+ b=NizLZVDHrX+vCWNqjFUBQczbzqyJfOm5T90tzZsC6fcH8tI+9/dh7jsuoFXnLqBfah
+ LxCcGtdwx/nzLpGeiS0JN5T7MORHlGYPNbhIAN9YmhASOGuETY3xGsubVBaeCp9h1kQ8
+ 0xiPq+i1KC8NWApOx86aI+nbTBLR7ONzra23TYwYz5+RCt9aMH2yr6sP0frQqFrf1SlS
+ dvNjWE3qcGCub/Nr8XaiK4wzPDhQeHHgZ/+tPc228eVSOyzsUP1y9hZDwlyYRaqLPwq4
+ xdr6AXWg7eVChuKduU6auT6tzrDDTFBImcAo6ARABIiNWGmTlCe2cSVl4aDkzHcrbuak
+ u1mQ==
+X-Gm-Message-State: AC+VfDy79yBS8w9INwGy+Kp676gx61TXITQwURnMyyLuW7gpzSgDYMZn
+ /5lkLvjZiD3YIuGUVDgGGfpdTw==
+X-Google-Smtp-Source: ACHHUZ7ozIFywbO8gkcV98BFLSGkjjADk9pyj56SFRHHFc0xlJht1vnU2MiZ4VzZjrB4uQfbbDhtdg==
+X-Received: by 2002:a17:903:22c9:b0:1ac:4a41:d38d with SMTP id
+ y9-20020a17090322c900b001ac4a41d38dmr4206358plg.51.1685836553703; 
+ Sat, 03 Jun 2023 16:55:53 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:9a37:84b6:b3f0:f301?
  ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
  by smtp.gmail.com with ESMTPSA id
- jw19-20020a170903279300b00194d14d8e54sm3740412plb.96.2023.06.03.16.41.04
+ be4-20020a170902aa0400b001a65fa33e62sm3708851plb.154.2023.06.03.16.55.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 16:41:04 -0700 (PDT)
-Message-ID: <1bbe6a16-e7ec-f85d-76a5-fc08616e04ce@linaro.org>
-Date: Sat, 3 Jun 2023 16:41:02 -0700
+ Sat, 03 Jun 2023 16:55:53 -0700 (PDT)
+Message-ID: <ec22784c-6a0d-f879-a3ad-be34b5d780d0@linaro.org>
+Date: Sat, 3 Jun 2023 16:55:51 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 16/20] target/arm: Convert load (pointer auth) insns to
- decodetree
+Subject: Re: [PATCH 17/20] target/arm: Convert LDAPR/STLR (imm) to decodetree
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230602155223.2040685-1-peter.maydell@linaro.org>
- <20230602155223.2040685-17-peter.maydell@linaro.org>
+ <20230602155223.2040685-18-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230602155223.2040685-17-peter.maydell@linaro.org>
+In-Reply-To: <20230602155223.2040685-18-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x29.google.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,16 +97,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/2/23 08:52, Peter Maydell wrote:
-> Convert the instructions in the load/store register (pointer
-> authentication) group ot decodetree: LDRAA, LDRAB.
+> Convert the instructions in the LDAPR/STLR (unscaled immediate)
+> group to decodetree.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/tcg/a64.decode      |  7 +++
->   target/arm/tcg/translate-a64.c | 83 +++++++---------------------------
->   2 files changed, 23 insertions(+), 67 deletions(-)
+>   target/arm/tcg/a64.decode      |  10 +++
+>   target/arm/tcg/translate-a64.c | 129 +++++++++++----------------------
+>   2 files changed, 54 insertions(+), 85 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
