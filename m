@@ -2,65 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB85721037
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 15:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BCC72103B
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Jun 2023 15:47:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5RWz-0002yn-W9; Sat, 03 Jun 2023 09:42:58 -0400
+	id 1q5Rae-00071j-Ce; Sat, 03 Jun 2023 09:46:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q5RWy-0002y5-C7; Sat, 03 Jun 2023 09:42:56 -0400
+ id 1q5Rab-00071U-KS; Sat, 03 Jun 2023 09:46:41 -0400
 Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q5RWu-0006L7-G4; Sat, 03 Jun 2023 09:42:56 -0400
-Received: from localhost.localdomain (unknown [61.242.129.66])
- by APP-05 (Coremail) with SMTP id zQCowAC3vIxNQ3tkCZuGCg--.52348S5;
- Sat, 03 Jun 2023 21:42:46 +0800 (CST)
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
- Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v2 3/3] target/riscv: Remove redundant assignment to SXL
-Date: Sat,  3 Jun 2023 21:42:36 +0800
-Message-Id: <20230603134236.15719-4-liweiwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230603134236.15719-1-liweiwei@iscas.ac.cn>
-References: <20230603134236.15719-1-liweiwei@iscas.ac.cn>
+ id 1q5RaZ-0007qY-8q; Sat, 03 Jun 2023 09:46:41 -0400
+Received: from [192.168.202.181] (unknown [61.242.129.66])
+ by APP-05 (Coremail) with SMTP id zQCowADHz1s5RHtkzN+GCg--.51870S2;
+ Sat, 03 Jun 2023 21:46:34 +0800 (CST)
+Message-ID: <6fb425f0-8097-9527-9abe-a7279005c766@iscas.ac.cn>
+Date: Sat, 3 Jun 2023 21:46:33 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowAC3vIxNQ3tkCZuGCg--.52348S5
-X-Coremail-Antispam: 1UD129KBjvdXoWrtr15Jw1kXw4xWFWfJFyfCrg_yoWfXwc_KF
- WFgFy8WryUWanayrZ5Jr1FkryrCFy8ZF1a9a1xAw1rWryj9ry3C34DKF4rX3ya9FsxArn3
- C3s3Xay3Cr12kjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbykFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
- 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUWwA2048vs2IY02
- 0Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
- wVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
- x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
- e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
- 8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
- jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
- kIwI1lc2xSY4AK67AK6ry8MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
- MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67
- AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0
- cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
- 80aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI
- 43ZEXa7VUjmsjUUUUUU==
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/4] target/riscv: Remove check on mode for MPRV
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Alistair Francis <alistair23@gmail.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-3-liweiwei@iscas.ac.cn>
+ <CAKmqyKPmXXoVdSndTF+aF7A-3PqVrnw-NFG26sQQicxybwWpQA@mail.gmail.com>
+ <18e4da39-cbd4-aa60-7628-7105a788b6e8@iscas.ac.cn>
+ <CAKmqyKMP0aX=_3ffQXSNQ0pWCjeXEF+h=QgPbL80=0J8v_gOrA@mail.gmail.com>
+ <be90143f-1c8b-eb31-3c75-ae9846f00a22@iscas.ac.cn>
+ <01547b15-1a1a-f1e4-627d-3bf2477a69b9@linaro.org>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <01547b15-1a1a-f1e4-627d-3bf2477a69b9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: zQCowADHz1s5RHtkzN+GCg--.51870S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+ VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYX7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+ 6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+ kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8I
+ cVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z2
+ 80aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+ 64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+ Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7
+ M4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IEe2xFo4CEbIxvr21lc2xSY4AK67AK6r
+ y8MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
+ Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x
+ 0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWx
+ JVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
+ IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUkHUDUUUUU
+ =
 X-Originating-IP: [61.242.129.66]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
 Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
  helo=cstnet.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,33 +83,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SXL is initialized as env->misa_mxl which is also the mxl value.
-So we can just remain it unchanged to keep it read-only.
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/csr.c | 4 ----
- 1 file changed, 4 deletions(-)
+On 2023/6/3 05:01, Richard Henderson wrote:
+> On 6/1/23 18:31, Weiwei Li wrote:
+>> Even though MPRV normally can be set to 1 in M mode, it seems 
+>> possible to set it to 1 in other mode by gdbstub.
+>
+> That would seem to be a gdbstub bug, since it is cleared on exit from 
+> M-mode, and cannot be set again until we re-enter M-mode.
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 6ac11d1f11..25345f3153 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1321,10 +1321,6 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
- 
-     mstatus = (mstatus & ~mask) | (val & mask);
- 
--    if (xl > MXL_RV32) {
--        /* SXL field is for now read only */
--        mstatus = set_field(mstatus, MSTATUS64_SXL, xl);
--    }
-     env->mstatus = mstatus;
- 
-     /*
--- 
-2.25.1
+Yeah, MPRV normally can be set only in M mode. However, gdbstub can 
+bypass the check on privilege mode for CSRs access inriscv_csrrw_check.
+
+Regards,
+
+Weiwei Li
+
+>
+>
+> r~
 
 
