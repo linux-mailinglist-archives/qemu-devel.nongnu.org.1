@@ -2,68 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306ED721637
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 12:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8C3721657
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 13:21:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5lHy-00073b-UK; Sun, 04 Jun 2023 06:48:46 -0400
+	id 1q5lm2-0004cU-Mz; Sun, 04 Jun 2023 07:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q5lHn-000738-Ff; Sun, 04 Jun 2023 06:48:35 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q5llx-0004bv-5Y
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 07:19:45 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q5lHk-0001AF-7A; Sun, 04 Jun 2023 06:48:35 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3C05360FE7;
- Sun,  4 Jun 2023 10:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB0DC433EF;
- Sun,  4 Jun 2023 10:48:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1685875701;
- bh=a1e6BEUxyE1uoEC9a5NX1ZcyZMNXNjVMojKljRrdW6o=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=BX/2+5JmUycGVLsyJEf4SFILNMwrZqP2vqlayyf4byPj8wUU9/DlTyJz9BX4OU/0E
- zLUrkJ8lxWqh+/ThK22HVepJN/mlsFQj7YRhNLzTdqZkSERdR12JrhdNW1IZQBgsHb
- XSh0dlvmoMS0kLt7OnTOMfMy/HxOuzLxg8ZcJOSeVhOApiCiARaD3WRNMG2w8Tz+Si
- OPYRus4q1hIc+f00ZodqjPIaUk3nyzbOI4YNez0/nT1dHVdH1KbOupV3WFNeuuzDar
- NZzkB9zKen8j6+MKeWeijo0X3RjF/IeLyu1V2I/GeNoIZh38LtZVs0KYXS5LMLlYHr
- SMazVMFEdklEQ==
-Received: by mail-lf1-f42.google.com with SMTP id
- 2adb3069b0e04-4f4b2bc1565so4706971e87.2; 
- Sun, 04 Jun 2023 03:48:21 -0700 (PDT)
-X-Gm-Message-State: AC+VfDyKcWvAl8nBFI6ASdoDnxuIINxsaUb3NcD1YOXVBpYXZPpvu5rO
- RvdW6q/EMOF5FNAIPGjmZ/VthM0GIvLgQAvDxnE=
-X-Google-Smtp-Source: ACHHUZ4m5b+yxYNWPqTr9a57tKNf4IH9oZrglX/Y1X3y1QHGEh3QlBMAcnc+mosPhftE7/u7YsOhRbIaLvCq4T0gKtg=
-X-Received: by 2002:a2e:9b0a:0:b0:2af:160d:888a with SMTP id
- u10-20020a2e9b0a000000b002af160d888amr2893423lji.1.1685875699639; Sun, 04 Jun
- 2023 03:48:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q5llu-0008Ci-4v
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 07:19:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:Reply-To:
+ References:To:Subject:MIME-Version:Date:Message-ID:Sender:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=05WhHvkABMxJVfTB8hAeOHJs5UW59SL7qJyEJ6+8gio=; b=VRFyeH7bpqNZJ1BmczYViGxYz3
+ Pa7WSBBO//XC3+PQSt8AAWkJBfb8ULc44TZZaIHc0onlxFyQ5rmZBvMGgMXEZLMjwS61QvoOO9GDm
+ eV2chvLeBkpgMteecJAtwHVADw5M7JrRQm44TC+Qf+AmD9k6d9+lB5HpAO45iLAT7IuI=;
+Message-ID: <494da21f-4376-2c3c-c7de-19544a0d0f9b@rev.ng>
+Date: Sun, 4 Jun 2023 13:19:33 +0200
 MIME-Version: 1.0
-References: <20230603023426.1064431-1-richard.henderson@linaro.org>
- <CAMj1kXHp7QHftNw6t3ww8wgL9rAUHEauS0S04d=Rfey7EO3bcg@mail.gmail.com>
-In-Reply-To: <CAMj1kXHp7QHftNw6t3ww8wgL9rAUHEauS0S04d=Rfey7EO3bcg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 4 Jun 2023 12:47:26 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEP97e57XBEuLZFQ4Ra31AQYcKWU+cfve0FeVPPX+zg=Q@mail.gmail.com>
-Message-ID: <CAMj1kXEP97e57XBEuLZFQ4Ra31AQYcKWU+cfve0FeVPPX+zg=Q@mail.gmail.com>
-Subject: Re: [PATCH 00/35] crypto: Provide aes-round.h and host accel
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, qemu-arm@nongnu.org, 
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v3 20/48] tcg: Pass TCGHelperInfo to tcg_gen_callN
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230531040330.8950-1-richard.henderson@linaro.org>
+ <20230531040330.8950-21-richard.henderson@linaro.org>
+Organization: rev.ng
+In-Reply-To: <20230531040330.8950-21-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ SCC_BODY_URI_ONLY=1.439, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,113 +59,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 3 Jun 2023 at 15:23, Ard Biesheuvel <ardb@kernel.org> wrote:
+
+On 5/31/23 06:03, Richard Henderson wrote:
+> In preparation for compiling tcg/ only once, eliminate
+> the all_helpers array.  Instantiate the info structs for
+> the generic helpers in accel/tcg/, and the structs for
+> the target-specific helpers in each translate.c.
 >
-> On Sat, 3 Jun 2023 at 04:34, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > Inspired by Ard Biesheuvel's RFC patches for accelerating AES
-> > under emulation, provide a set of primitives that maps between
-> > the guest and host fragments.
-> >
-> > There is a small guest correctness test case.
-> >
-> > I think the end result is quite a bit cleaner, since the logic
-> > is now centralized, rather than spread across 4 different guests.
-> >
-> > Further work could clean up crypto/aes.c itself to use these
-> > instead of the tables directly.  I'm sure that's just an ultimate
-> > fallback when an appropriate system library is not available, and
-> > so not terribly important, but it could still significantly reduce
-> > the amount of code we carry.
-> >
-> > I would imagine structuring a polynomial multiplication header
-> > in a similar way.  There are 4 or 5 versions of those spread across
-> > the different guests.
-> >
-> > Anyway, please review.
-> >
-> >
-> > r~
-> >
-> >
-> > Richard Henderson (35):
-> >   tests/multiarch: Add test-aes
-> >   target/arm: Move aesmc and aesimc tables to crypto/aes.c
-> >   crypto/aes: Add constants for ShiftRows, InvShiftRows
-> >   crypto: Add aesenc_SB_SR
-> >   target/i386: Use aesenc_SB_SR
-> >   target/arm: Demultiplex AESE and AESMC
-> >   target/arm: Use aesenc_SB_SR
-> >   target/ppc: Use aesenc_SB_SR
-> >   target/riscv: Use aesenc_SB_SR
-> >   crypto: Add aesdec_ISB_ISR
-> >   target/i386: Use aesdec_ISB_ISR
-> >   target/arm: Use aesdec_ISB_ISR
-> >   target/ppc: Use aesdec_ISB_ISR
-> >   target/riscv: Use aesdec_ISB_ISR
-> >   crypto: Add aesenc_MC
-> >   target/arm: Use aesenc_MC
-> >   crypto: Add aesdec_IMC
-> >   target/i386: Use aesdec_IMC
-> >   target/arm: Use aesdec_IMC
-> >   target/riscv: Use aesdec_IMC
-> >   crypto: Add aesenc_SB_SR_MC_AK
-> >   target/i386: Use aesenc_SB_SR_MC_AK
-> >   target/ppc: Use aesenc_SB_SR_MC_AK
-> >   target/riscv: Use aesenc_SB_SR_MC_AK
-> >   crypto: Add aesdec_ISB_ISR_IMC_AK
-> >   target/i386: Use aesdec_ISB_ISR_IMC_AK
-> >   target/riscv: Use aesdec_ISB_ISR_IMC_AK
-> >   crypto: Add aesdec_ISB_ISR_AK_IMC
-> >   target/ppc: Use aesdec_ISB_ISR_AK_IMC
-> >   host/include/i386: Implement aes-round.h
-> >   host/include/aarch64: Implement aes-round.h
-> >   crypto: Remove AES_shifts, AES_ishifts
-> >   crypto: Implement aesdec_IMC with AES_imc_rot
-> >   crypto: Remove AES_imc
-> >   crypto: Unexport AES_*_rot, AES_TeN, AES_TdN
-> >
+> Since we don't see all of the info structs at startup,
+> initialize at first use, using g_once_init_* to make
+> sure we don't race while doing so.
 >
-> This is looking very good - it is clearly a much better abstraction
-> than what I proposed, and I'd expect the performance boost to be the
-> same.
-
-Benchmark results for OpenSSL running in emulation on TX2:
-
-Without acceleration:
-
-$ ../qemu/build/qemu-x86_64 apps/openssl speed -evp aes-128-ctr
-version: 3.2.0-dev
-built on: Thu Jun  1 17:06:09 2023 UTC
-options: bn(64,64)
-compiler: x86_64-linux-gnu-gcc -pthread -m64 -Wa,--noexecstack -Wall
--O3 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_BUILDING_OPENSSL
--DNDEBUG
-CPUINFO: OPENSSL_ia32cap=0xfed8320b0fcbfffd:0x8001020c01d843a9
-The 'numbers' are in 1000s of bytes per second processed.
-type             16 bytes     64 bytes    256 bytes   1024 bytes
-8192 bytes  16384 bytes
-AES-128-CTR      25146.07k    50482.19k    69373.44k    76236.80k
-78391.98k    78381.06k
-
-
-With acceleration:
-
-$ ../qemu/build/qemu-x86_64 apps/openssl speed -evp aes-128-ctr
-version: 3.2.0-dev
-built on: Thu Jun  1 17:06:09 2023 UTC
-options: bn(64,64)
-compiler: x86_64-linux-gnu-gcc -pthread -m64 -Wa,--noexecstack -Wall
--O3 -DOPENSSL_USE_NODELETE -DL_ENDIAN -DOPENSSL_BUILDING_OPENSSL
--DNDEBUG
-CPUINFO: OPENSSL_ia32cap=0xfed8320b0fcbfffd:0x8001020c01d843a9
-The 'numbers' are in 1000s of bytes per second processed.
-type             16 bytes     64 bytes    256 bytes   1024 bytes
-8192 bytes  16384 bytes
-AES-128-CTR      28774.46k    81173.59k   162346.24k   206301.53k
-224214.22k   225600.56k
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/exec/helper-gen.h      |  65 ++++++++++++--------
+>   include/exec/helper-tcg.h      |  75 -----------------------
+>   include/qemu/typedefs.h        |   1 +
+>   include/tcg/helper-info.h      |   9 ++-
+>   include/tcg/tcg.h              |   2 +-
+>   accel/tcg/plugin-gen.c         |   5 ++
+>   accel/tcg/tcg-runtime.c        |   4 ++
+>   target/alpha/translate.c       |   3 +
+>   target/arm/tcg/translate.c     |   3 +
+>   target/avr/translate.c         |   5 ++
+>   target/cris/translate.c        |   6 +-
+>   target/hexagon/translate.c     |   4 ++
+>   target/hppa/translate.c        |   5 ++
+>   target/i386/tcg/translate.c    |   5 ++
+>   target/loongarch/translate.c   |   4 ++
+>   target/m68k/translate.c        |   3 +
+>   target/microblaze/translate.c  |   4 ++
+>   target/mips/tcg/translate.c    |   5 ++
+>   target/nios2/translate.c       |   5 ++
+>   target/openrisc/translate.c    |   5 ++
+>   target/ppc/translate.c         |   4 ++
+>   target/riscv/translate.c       |   4 ++
+>   target/rx/translate.c          |   5 ++
+>   target/s390x/tcg/translate.c   |   4 ++
+>   target/sh4/translate.c         |   4 ++
+>   target/sparc/translate.c       |   3 +
+>   target/tricore/translate.c     |   5 ++
+>   target/xtensa/translate.c      |   4 ++
+>   tcg/tcg.c                      | 108 ++++++++++++---------------------
+>   include/exec/helper-info.c.inc |  95 +++++++++++++++++++++++++++++
+>   30 files changed, 279 insertions(+), 175 deletions(-)
+>   delete mode 100644 include/exec/helper-tcg.h
+>   create mode 100644 include/exec/helper-info.c.inc
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
