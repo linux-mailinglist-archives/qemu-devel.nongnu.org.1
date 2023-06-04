@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D95721519
+	by mail.lfdr.de (Postfix) with ESMTPS id A63A772151A
 	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 08:19:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5h3L-0000y7-D2; Sun, 04 Jun 2023 02:17:23 -0400
+	id 1q5h3N-00011m-8a; Sun, 04 Jun 2023 02:17:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q5h3E-0000w6-8Q; Sun, 04 Jun 2023 02:17:16 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1q5h3G-0000yg-IX; Sun, 04 Jun 2023 02:17:22 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q5h3C-0000ZH-31; Sun, 04 Jun 2023 02:17:15 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b065154b79so36270035ad.1; 
- Sat, 03 Jun 2023 23:17:12 -0700 (PDT)
+ id 1q5h3F-0000Zb-0b; Sun, 04 Jun 2023 02:17:18 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-53202149ae2so2068609a12.3; 
+ Sat, 03 Jun 2023 23:17:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685859431; x=1688451431;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2v9+kHff9p72eWkN86zfAmMpPqm9MHRJ4QV1vQJlqoU=;
- b=VrD1R6N5c2EwwhlrWs4HYgiaVzsGw2xlrXd0DrZ6Ft5DL6nfUdWxSf7HcjeMzAiCg5
- K1SHt+NIDkWWyL2ahtpimgTlNSWJChYxV7RFNOM1+MEosN7FkBEn7t59hikQNYsQfjIv
- or2jlZzwFPLHiLdhS9QwchzGGjOjPfKh5V3EzCmNQYeirqEJdktJshQDstVrULTJ/gUx
- dLheCMGn8uKNOdN2bVIvhM1mcjOXkKA3sNAdBi1f0zMb/JvzA4MdXbHKUuqgq30p/Yt3
- o4QO26Ik25rd2fJLnpMIdCNzO4j9/O66dTuiJ3gIBSgJzC+LnMD042Tv5/GktEfzwjVj
- M94A==
+ d=gmail.com; s=20221208; t=1685859435; x=1688451435;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=q6Oc9HbsGS9aOcw7kOs94Xz6lCtw6ph/LAxib+oVB8g=;
+ b=orSWiN2UsYQgjRrFvkAeAkTooYaZi5w2tZrJVfBaALDY2ww0DoZI6ug9tV3Bz5/+lB
+ CPhY/iaxDV9Lz9cABrDcPI9JHW6t5bLrUIFQdP1PI6dvXGBpdtBw6IvL1BgKPEkTj5oy
+ hsvOCA1zTcGnwyREvgz9WUZl06NlP1thHBBEojLs4H4+tY/+ZIbLRSo8dv9Gvvry+3Qf
+ vNzO9wvmjWR1rsxD4IW6ErRyfDuFTMonvudk5drdZHV2kjPFSGzVcbWyQ87FMss9iP6W
+ 4AIry5Q0ppYSqbKy/+g8ikExAx9AkqfS47pL+rmFsBa+d8cjjZaEUvkSLoMB2q2Atwbw
+ TOGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685859431; x=1688451431;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2v9+kHff9p72eWkN86zfAmMpPqm9MHRJ4QV1vQJlqoU=;
- b=Gao9cQFEdBYTosLSiMbG8p+vkRx0jF+1oVTobDxS6fM59iwUWmcTDTl+SJVf4Gv/0M
- jIAB2ajL3CAc55FGrxUTygjw5+lj12Ojv/6CSNz5QT+lU53Zxa6zxfiehrKjnrUrLHhz
- /B/I0a761hNIZ1o/RmR9wE+lP3w4DcQRN1zRixqMGnp1cDu61pUu5nMsiHT8Hjx+Kd7m
- Wk0KIukijEbX2eHQzzcrHOHmBKBgtiKGoOAnmjMMCtBJhoHmBbcaCH7dV5HRRdhnD4n6
- imzxHtXyWLz33B9c1dmbOf9FEn0Xb8+NeKXWVIvBeChzj+2C6MbVIpk8zINcFZhohup8
- mQOA==
-X-Gm-Message-State: AC+VfDw8cMFPSy9X4WNrtCRFWpJM2UzTKgY+G3gdfh3GAipOaohgl2Vw
- r+/6C8j5SVsIYllhGO+LPJjtH3B9qMNtfAtn
-X-Google-Smtp-Source: ACHHUZ6sHT+xUCHKshWPJ5mA9tXdvJO5fXwMaydJXU9zEI99N7yzfYIZrgtpQrflPhNErAnugczVJw==
-X-Received: by 2002:a17:902:e881:b0:1b1:9069:db5f with SMTP id
- w1-20020a170902e88100b001b19069db5fmr5396044plg.18.1685859431083; 
- Sat, 03 Jun 2023 23:17:11 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685859435; x=1688451435;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=q6Oc9HbsGS9aOcw7kOs94Xz6lCtw6ph/LAxib+oVB8g=;
+ b=G+mtCOXiuG0gKGC2oy/MpXXe1EswCKSEL0sDoSn3QUBhIyJx2QPVpn4ioVh7nkqSr3
+ 9UIIDacttlvaziTSjv6JStuRF+XlYfzbzAhqwA5IzHxHudHp10mi8iA3TDhpKjqA7yoa
+ khOvNVyRh/uHcw9HY8BFEoIWigrjOHMe9XRlcAQhRRMioXFpS6Sj9xsnFNXNP1Kpi5u0
+ 1bbZ84hdGbZ1N5XwH2btK/60z0XPT6v6nwoqcVpUn97fwEimHZVyaRhVGBPFcy2+jvFd
+ PgQYh/IyOSUwt1lRX4RgdvBc8xicMFEyXg2YQfCGFuf5cTS/92LwH2kOc1WRs/nPicj0
+ 2Bpg==
+X-Gm-Message-State: AC+VfDz8kVM+orMA4CuNZAqPK6DQ46QCih9nXb9n+LBPc1Mn+4NxL6gm
+ u6L+hhayyJmw49GPhEbucvxrYoIfjUEWl7VI3n4=
+X-Google-Smtp-Source: ACHHUZ66pLGYjhVsHd6CJ8VUpW4+D6do4YoQl8VaDxgYGj2QyfgPuMmXLFKfDLdKrBSpxbz1DETwfQ==
+X-Received: by 2002:a05:6a21:108e:b0:10b:71c:20c5 with SMTP id
+ nl14-20020a056a21108e00b0010b071c20c5mr1461576pzb.51.1685859434417; 
+ Sat, 03 Jun 2023 23:17:14 -0700 (PDT)
 Received: from fedlinux.. ([106.84.132.254]) by smtp.gmail.com with ESMTPSA id
- iw22-20020a170903045600b001afbc038492sm4075982plb.299.2023.06.03.23.17.07
+ iw22-20020a170903045600b001afbc038492sm4075982plb.299.2023.06.03.23.17.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 Jun 2023 23:17:10 -0700 (PDT)
+ Sat, 03 Jun 2023 23:17:14 -0700 (PDT)
 From: Sam Li <faithilikerun@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: dlemoal@kernel.org, dmitry.fomichev@wdc.com, stefanha@redhat.com,
  hare@suse.de, qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Sam Li <faithilikerun@gmail.com>
-Subject: [PATCH 1/2] block/file-posix: fix g_file_get_contents return path
-Date: Sun,  4 Jun 2023 14:16:57 +0800
-Message-Id: <20230604061658.49004-1-faithilikerun@gmail.com>
+Subject: [PATCH 2/2] block/file-posix: fix wps checking in raw_co_prw
+Date: Sun,  4 Jun 2023 14:16:58 +0800
+Message-Id: <20230604061658.49004-2-faithilikerun@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230604061658.49004-1-faithilikerun@gmail.com>
+References: <20230604061658.49004-1-faithilikerun@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=faithilikerun@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=faithilikerun@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,49 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The g_file_get_contents() function returns a g_boolean. If it fails, the
-returned value will be 0 instead of -1. Solve the issue by skipping
-assigning ret value.
+If the write operation fails and the wps is NULL, then accessing it will
+lead to data corruption.
 
-This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
-by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
+Solving the issue by adding a nullptr checking in get_zones_wp() where
+the wps is used.
+
+This issue is found by Peter Maydell using the Coverity Tool (CID
+1512459).
 
 Signed-off-by: Sam Li <faithilikerun@gmail.com>
 ---
- block/file-posix.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ block/file-posix.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/block/file-posix.c b/block/file-posix.c
-index ac1ed54811..0d9d179a35 100644
+index 0d9d179a35..620942bf40 100644
 --- a/block/file-posix.c
 +++ b/block/file-posix.c
-@@ -1232,7 +1232,6 @@ static int hdev_get_max_hw_transfer(int fd, struct stat *st)
- static int get_sysfs_str_val(struct stat *st, const char *attribute,
-                              char **val) {
-     g_autofree char *sysfspath = NULL;
--    int ret;
-     size_t len;
+@@ -1340,6 +1340,10 @@ static int get_zones_wp(BlockDriverState *bs, int fd, int64_t offset,
+     rep_size = sizeof(struct blk_zone_report) + nrz * sizeof(struct blk_zone);
+     g_autofree struct blk_zone_report *rep = NULL;
  
-     if (!S_ISBLK(st->st_mode)) {
-@@ -1242,8 +1241,7 @@ static int get_sysfs_str_val(struct stat *st, const char *attribute,
-     sysfspath = g_strdup_printf("/sys/dev/block/%u:%u/queue/%s",
-                                 major(st->st_rdev), minor(st->st_rdev),
-                                 attribute);
--    ret = g_file_get_contents(sysfspath, val, &len, NULL);
--    if (ret == -1) {
-+    if (!g_file_get_contents(sysfspath, val, &len, NULL)) {
-         return -ENOENT;
-     }
- 
-@@ -1253,7 +1251,7 @@ static int get_sysfs_str_val(struct stat *st, const char *attribute,
-     if (*(p + len - 1) == '\n') {
-         *(p + len - 1) = '\0';
-     }
--    return ret;
-+    return 0;
- }
- #endif
- 
++    if (!wps) {
++        return -1;
++    }
++
+     rep = g_malloc(rep_size);
+     blkz = (struct blk_zone *)(rep + 1);
+     while (n < nrz) {
 -- 
 2.40.1
 
