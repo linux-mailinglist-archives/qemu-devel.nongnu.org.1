@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A170B7213F2
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 03:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 411247213F9
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 03:37:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5cXC-0006L9-Lb; Sat, 03 Jun 2023 21:27:54 -0400
+	id 1q5cfy-0007rP-5g; Sat, 03 Jun 2023 21:36:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5cXA-0006KF-HZ
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 21:27:52 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1q5cfw-0007qu-1w
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 21:36:56 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5cX8-0000Ns-Gj
- for qemu-devel@nongnu.org; Sat, 03 Jun 2023 21:27:52 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6b15f091949so329981a34.1
- for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 18:27:49 -0700 (PDT)
+ id 1q5cfu-0001zf-Ii
+ for qemu-devel@nongnu.org; Sat, 03 Jun 2023 21:36:55 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-543a6cc5f15so8657a12.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Jun 2023 18:36:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685842069; x=1688434069;
+ d=linaro.org; s=google; t=1685842613; x=1688434613;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=l8/PVqrzt+xSg8MZGMP0A6uTQ13mbx7w79tDibjgQls=;
- b=h6KCOAo41JH1LkgvEgKP9syVSqorASUD/OqB7Ge9PpTh9YGfc58RG5vtmSLCTc4/eU
- UuDWfde6y1h1v9RzmzGsQfH97tT2faFabofoSVxGHIKPraZmn9HEhpjDTeKpnFAVBR1G
- il/hq/CCXv6eLqng2oLTQ6NqNZi/hW5nHaSclUPTA6sbLB4iF22MFHgg0Y3gptB7s9PQ
- v+O2D6b3Tn+GiDdNeDoW7qk4shAnxpg0DfsD97cBffTYzFOhDdsjqzbuazIFJdxa2ms2
- xeL6M+dZTdigPDNOQIvYgkWr+3bV8vPkOcVAG47BvHwCzQlDWua7l6RyxKdokIUwOQAL
- l3Hw==
+ bh=DQyhYJE5iFDJ/EkCg9l8WzQ21731dpMSG1R6NtCPeM4=;
+ b=p4gZ4iEBN8yqMlMjZayYOFINHp3G4ABTIdt5j0O3RfN14cIGKdjOotsJh4juIx8hm+
+ Ys6LU69S0mzyGLFCXMEvZ6bn00EO/FMa895aiP+Oz+clJxWiK07wzgBlouYle4CDchhY
+ tcRL+h1hNDi0VjLoV8MmfzmEPWBzFWjN2CAUjUktiHhF0TaatO0gMprDa6hHSS6KWOHw
+ mQ5LYTK6RuF+q58Y/7dthirmv40JQZ9J+o57t6/XS0Y4lvJa68baC9YO2a4G2xNR90w8
+ JE4iSbARCa6CQ7v5Een2OlkXPlOIZH1EUkA72Zu5itaarTV38iiYIcAjUbRyN2os3uC2
+ +Wbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685842069; x=1688434069;
+ d=1e100.net; s=20221208; t=1685842613; x=1688434613;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l8/PVqrzt+xSg8MZGMP0A6uTQ13mbx7w79tDibjgQls=;
- b=GDNXjn904n1s3k/ecq1GAWsgGArkZd4kqHibvEexwJ369B8pCln3vSFgyCsFfL9EmH
- BmOhcgzpb4Ye9wmifiFDz+J4CFLQJg/PvDNMNMCpNQiq2+3SyZJd6RYxp4Yj8dvfgsdO
- MMjcG+21z9g9qQLVGr35DS29U9KIySvvcI/tJwMXw8Y8gaKVrLhNAtqStwbxqWs3oP1W
- 3bpONlGR8iiVNQI1yCUlXrNIe9Mm3khCJaBpQx7C3tcqDmKdb5X4jsSrbhMbvceFtrvW
- vt8JsBjtQAhMiIcA+F/X0oVXLIzh3imUZsJ8cVk383XVutVt4MXbtK11yK/SXLLUKrIq
- xfRA==
-X-Gm-Message-State: AC+VfDyPfGGq2b13aKBIKfH2X+15aOLGbddoEhzxlgcAJ4ib2eFW+o0t
- t6tnDEbwjk51sBtZqaAb+LiXNg==
-X-Google-Smtp-Source: ACHHUZ4/lYA58tou+H3s9O1CZUC8bYp+1ggRmxH6gnypOfn3csth5XVQhKz/xdPpOzdqaQ0+Fdr56Q==
-X-Received: by 2002:a9d:7497:0:b0:6af:a39d:b5ea with SMTP id
- t23-20020a9d7497000000b006afa39db5eamr6703870otk.32.1685842068800; 
- Sat, 03 Jun 2023 18:27:48 -0700 (PDT)
+ bh=DQyhYJE5iFDJ/EkCg9l8WzQ21731dpMSG1R6NtCPeM4=;
+ b=C3URzkMvYLfSSpLbGS9sfiJduMK7P3PNpEB5xDyJw0vKcosU8d4MRt59piUb/woIzr
+ +Ncfav4tFrPWwFCM9AXdSnnWlttz7SL+7gSDQofTJq+aOsIRmCQXWYMLVq6K65JW8tQi
+ KFGCByegljskPdzCAJRlxPsVLp8vNShLi4N8fV4o9zlS+rs0AQHyrjJm4Gp30gjQqYne
+ hDvzOMH5BkpguL2w7y/fYAPEdu+Sfe2ADwJAABb5chHbY8+gmgxykK93mG18i9mLJO2b
+ I7zAlm5+M/8A2EE34hn9z6udINJbf0Gd7buxXZlmE+oxtx9LmDM6ipw+FL+IGKQcs/BU
+ 75Ew==
+X-Gm-Message-State: AC+VfDwxUP3BrzU7eFyxrIO/aLokBGVPymMvxSX/lyUQp29YiHCyoLGb
+ 5O6ldog0QOHMBJvzseoh2iCTtA==
+X-Google-Smtp-Source: ACHHUZ4plutk7HkbaYbbVr2G8VM/I/7RO/OQFcAlg/+lujb671uSFu+KMklIJdgHPosvdskkOmTxVQ==
+X-Received: by 2002:a17:902:c410:b0:1ac:a6b0:1c87 with SMTP id
+ k16-20020a170902c41000b001aca6b01c87mr6143350plk.48.1685842612964; 
+ Sat, 03 Jun 2023 18:36:52 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:9a37:84b6:b3f0:f301?
  ([2602:ae:1598:4c01:9a37:84b6:b3f0:f301])
  by smtp.gmail.com with ESMTPSA id
- v19-20020aa78093000000b0064928cb5f03sm2960798pff.69.2023.06.03.18.27.47
+ b15-20020a170902d50f00b001ab25a19cfbsm3798619plg.139.2023.06.03.18.36.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 Jun 2023 18:27:48 -0700 (PDT)
-Message-ID: <4bb70c74-e002-a3d7-b2b0-edd57e9238b2@linaro.org>
-Date: Sat, 3 Jun 2023 18:27:46 -0700
+ Sat, 03 Jun 2023 18:36:52 -0700 (PDT)
+Message-ID: <c29e0708-b137-e23f-f510-676411dc3514@linaro.org>
+Date: Sat, 3 Jun 2023 18:36:50 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 19/20] target/arm: Convert load/store single structure to
+Subject: Re: [PATCH 20/20] target/arm: Convert load/store tags insns to
  decodetree
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230602155223.2040685-1-peter.maydell@linaro.org>
- <20230602155223.2040685-20-peter.maydell@linaro.org>
+ <20230602155223.2040685-21-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230602155223.2040685-20-peter.maydell@linaro.org>
+In-Reply-To: <20230602155223.2040685-21-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,70 +98,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/2/23 08:52, Peter Maydell wrote:
-> +# Load/store single structure
-> +
-> +%ldst_single_selem 13:1 21:1 !function=plus_1
-> +# The index is made up from bits Q, S and the size; we may then need to scale
-> +# it down by the size.
-> +%ldst_single_index q:1 s:1 sz:2
-> +%ldst_single_index_scaled q:1 s:1 sz:2 scale:3 !function=uimm_scaled_down
-> +%ldst_single_repl_scale 10:2
-> +
-> +# We don't care about S in the trans functions (the decode folds it into
-> +# the calculation of index), but we have to list it here so that we can
-> +# handle the S-must-be-0 pattern lines. Similarly we don't care about sz
-> +# once it has been used to calculate index.
-> +&ldst_single    rm rn rt sz p q s selem index scale repl
-> +
-> +@ldst_single        . q:1 ...... p:1 . . rm:5 ... . .. rn:5 rt:5 \
-> +                    &ldst_single index=%ldst_single_index_scaled \
-> +                    selem=%ldst_single_selem repl=0
-> +@ldst_single_repl   . q:1 ...... p:1 . . rm:5 ... . sz:2 rn:5 rt:5 \
-> +                    &ldst_single index=%ldst_single_index \
-> +                    scale=%ldst_single_repl_scale selem=%ldst_single_selem repl=1
-> +
-> +
-> +ST_single       0 . 001101 . 0 . ..... 00 . s:1 sz:2 ..... ..... @ldst_single scale=0
-> +ST_single       0 . 001101 . 0 . ..... 01 . s:1 00 ..... ..... @ldst_single scale=1 sz=0
-> +ST_single       0 . 001101 . 0 . ..... 01 . s:1 10 ..... ..... @ldst_single scale=1 sz=2
-> +ST_single       0 . 001101 . 0 . ..... 10 . s:1 00 ..... ..... @ldst_single scale=2 sz=0
-> +ST_single       0 . 001101 . 0 . ..... 10 . 0 01 ..... ..... @ldst_single scale=3 sz=1 s=0
+> Convert the instructions in the load/store memory tags instruction
+> group to decodetree.
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/tcg/a64.decode      |  25 +++
+>   target/arm/tcg/translate-a64.c | 352 ++++++++++++++++-----------------
+>   2 files changed, 195 insertions(+), 182 deletions(-)
 
-Wow, that's hard to follow.  How about
-
-%ldst_single_selem    13:1 21:1 !function=plus_1
-%ldst_single_index_b  30:1 10:3
-%ldst_single_index_h  30:1 11:2
-%ldst_single_index_s  30:1 12:1
-
-@ldst_single_b     .. ...... p:1 . . rm:5 ...... rn:5 rt:5 \
-                    &ldst_single scale=0 selem=%ldst_single_selem \
-                    index=%ldst_single_index_b
-@ldst_single_h     .. ...... p:1 . . rm:5 ...... rn:5 rt:5 \
-                    &ldst_single scale=1 selem=%ldst_single_selem \
-                    index=%ldst_single_index_h
-@ldst_single_s     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
-                    &ldst_single scale=2 selem=%ldst_single_selem \
-                    index=%ldst_single_index_s
-@ldst_single_d     . index:1 ...... p:1 .. rm:5 ...... rn:5 rt:5 \
-                    &ldst_single scale=3 selem=%ldst_single_selem
-
-ST_single          0 . 001101 . 0 . ..... 00 . ... ..... .....  @ldst_single_b
-ST_single          0 . 001101 . 0 . ..... 01 . ..0 ..... .....  @ldst_single_h
-ST_single          0 . 001101 . 0 . ..... 10 . .00 ..... .....  @ldst_single_s
-ST_single          0 . 001101 . 0 . ..... 10 . 001 ..... .....  @ldst_single_d
-
-LD_single          0 . 001101 . 1 . ..... 00 . ... ..... .....  @ldst_single_b
-LD_single          0 . 001101 . 1 . ..... 01 . ..0 ..... .....  @ldst_single_h
-LD_single          0 . 001101 . 1 . ..... 10 . .00 ..... .....  @ldst_single_s
-LD_single          0 . 001101 . 1 . ..... 10 . 001 ..... .....  @ldst_single_d
-
-# Different unnamed argument set -- there is no index for repl.
-LD_single_repl     0 . 001101 p:1 1 . rm:5 11 00 scale:2 rn:5 rt:5 \
-                    selem=%ldst_single_selem
-
-This is similar to how I handle similar situations in SVE, e.g. PSEL.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
