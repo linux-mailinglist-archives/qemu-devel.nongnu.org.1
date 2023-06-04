@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C22C721747
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 15:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14050721752
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 15:18:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5naM-00051P-1W; Sun, 04 Jun 2023 09:15:54 -0400
+	id 1q5nar-0005Fa-5W; Sun, 04 Jun 2023 09:16:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5na3-0004zu-9c
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:35 -0400
+ id 1q5na7-00051M-6y
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:39 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5na0-0003FS-CX
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:34 -0400
+ id 1q5na4-0003Fk-Bq
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=eEFw788dh569iCUFSIkapMHiytAnsouf6PVjvltvkNs=; b=XeBY1kx/J8N365nvNqVu55X15t
- RSLf6Gk9gvKQh/I5KuXDXovRZQLbI8vlU6l6SJ+fGyJWmbQcV/+sijBops2oEvizbElbSfQheeKKz
- 7btV7CJi3o04jkMpBBrfP98VzaPRsRSk4sEhTqsJYCu5LaebI5zyIBz+a/YI0r20wpQlfF7eCAcsY
- 0kZTq3gBQzQTMVcBVKdaEFMVWhSQjumgyb+Vn0uyR4v10tri2A2i25T6eK3gLsrvZUHD2ijo9ongn
- 94QDT6j95gG9AirhZBdeurrvvo5HCNceJZac/REORSYWGpenbQCxdGRAFsxM+pd2AC6D7WmJM9qkM
- D+VSyR1KpJURYEhadrCqc/9nj+Hl1umy1oHQgNs069w1RQb7ociOvwoE9GeMhtLaYP5F4vwjKqzWV
- nySSDVpx8IE3Wzo93q3vpWO3CL65qOLmlXb3IB40jO3DS+OSftFuZT88qTYm1KkFDMgqtG860dOYz
- gj4W7z8dUJ/MOfUe82YO/JwP2Lg8dg7XmbJ6ZdCHrcVO16Yja587wKTwSmZQ0PC10E+Sf3ov6EQLQ
- DrSqQ+rK5/86LSYz9zE0EDg6Xuipv9eYM5aJgEo22LJavvyYSqRgw4mV+1m2u6/q6/HajVRxr91ea
- WY2PtR9sXcp2sBJ3fItrOtXH26FbvLqucjoocbcqs=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=GoSrfdMa7FtxTsiUvQLcTnsKtHWPh+7AwYagX7qlsbA=; b=OI9xezd1+SF2dWNJsP3jARQ9sX
+ OfwpVo0w75/KMBeo+tEAEPUBVeh/o5sytrL96f9G/AUMEmYbC2kjBTk42Qu/a9X10GVPeigjjcKNW
+ hMPCBJqay4f2dhhY8ufxyAI/msLajFUhxcWxxJgx7DGvcnspPbJSM8Q/FnmfAHALBhkhbW4zXdeHY
+ 652KDF1J41jjbhJ9y7QH+Dl6nxO6fY//61l543DAsmpRIB290l0Xa0/MqcblOU/bISAw2glY+cK96
+ md7+UbkcX6A2MrcK16ViiRZqHvSI1YeKIUu6GNrC60oZI1HO/sUSl46/J/j3JjczSGb4MmiO+2top
+ dgezZSoleRJLhgVxk7hXvsCU7IX9tFI3u9RTzYBOmgRiyuLKNcuycZOqb+c6E0Rxjw1BafVpHHIN6
+ Pri0vJlTcWIO9ZgDQ7X74uCoARXutVygEWYwp4r/Mg7GUdGabGHkBJY0SY6G/q1/1pXSRpvejaoiY
+ 7iQ63ltABMwCoI825Py1u+yazdCJudoop6GA+BXTXTlN78xFEPKbc2Y9IdVytnoY9GUkiPvNLFJ55
+ DFj0cm1FgZ444wFcmK42rCgs3Q5/opxc7jpyYY0Bl8nuXFO84gN4SYvHBkPwuQ+7pk5HQhxaxvA0z
+ 4s3aKkvGsLER/FUFkujPhHgXr0u8LIh5Hi87VZ27s=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5nZp-0005pb-ML; Sun, 04 Jun 2023 14:15:25 +0100
+ id 1q5nZt-0005pb-Cn; Sun, 04 Jun 2023 14:15:28 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sun,  4 Jun 2023 14:14:37 +0100
-Message-Id: <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
+Date: Sun,  4 Jun 2023 14:14:38 +0100
+Message-Id: <20230604131450.428797-12-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
 References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 10/23] q800: reimplement mac-io region aliasing using IO
- memory region
+Subject: [PATCH v3 11/23] q800: move VIA1 device to Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,213 +77,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current use of aliased memory regions causes us 2 problems: firstly the
-output of "info qom-tree" is absolutely huge and difficult to read, and
-secondly we have already reached the internal limit for memory regions as
-adding any new memory region into the mac-io region causes QEMU to assert
-with "phys_section_add: Assertion `map->sections_nb < TARGET_PAGE_SIZE'
-failed".
-
-Implement the mac-io region aliasing using a single IO memory region that
-applies IO_SLICE_MASK representing the maximum size of the aliased region and
-then forwarding the access to the existing mac-io memory region using the
-address space API.
+Also change the instantiation of the VIA1 device to use object_initialize_child().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/m68k/q800.c         | 100 +++++++++++++++++++++++++++++++++--------
- include/hw/m68k/q800.h |   1 +
- 2 files changed, 82 insertions(+), 19 deletions(-)
+ hw/m68k/q800.c         | 16 +++++++++-------
+ include/hw/m68k/q800.h |  2 ++
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 6682c81ac8..cb4fcdcfb8 100644
+index cb4fcdcfb8..a0bc8bec9c 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -59,6 +59,7 @@
+@@ -212,7 +212,7 @@ static void q800_machine_init(MachineState *machine)
+     hwaddr parameters_base;
+     CPUState *cs;
+     DeviceState *dev;
+-    DeviceState *via1_dev, *via2_dev;
++    DeviceState *via2_dev;
+     DeviceState *escc_orgate;
+     SysBusESPState *sysbus_esp;
+     ESPState *esp;
+@@ -260,23 +260,25 @@ static void q800_machine_init(MachineState *machine)
+     sysbus_realize(SYS_BUS_DEVICE(&m->glue), &error_fatal);
  
- #define IO_BASE               0x50000000
- #define IO_SLICE              0x00040000
-+#define IO_SLICE_MASK         (IO_SLICE - 1)
- #define IO_SIZE               0x04000000
- 
- #define VIA_BASE              (IO_BASE + 0x00000)
-@@ -127,6 +128,68 @@ static uint8_t fake_mac_rom[] = {
-     0x60, 0xFE                          /* bras [self] */
- };
- 
-+static MemTxResult macio_alias_read(void *opaque, hwaddr addr, uint64_t *data,
-+                                    unsigned size, MemTxAttrs attrs)
-+{
-+    MemTxResult r;
-+    uint32_t val;
-+
-+    addr &= IO_SLICE_MASK;
-+    addr |= IO_BASE;
-+
-+    switch (size) {
-+    case 4:
-+        val = address_space_ldl_be(&address_space_memory, addr, attrs, &r);
-+        break;
-+    case 2:
-+        val = address_space_lduw_be(&address_space_memory, addr, attrs, &r);
-+        break;
-+    case 1:
-+        val = address_space_ldub(&address_space_memory, addr, attrs, &r);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    *data = val;
-+    return r;
-+}
-+
-+static MemTxResult macio_alias_write(void *opaque, hwaddr addr, uint64_t value,
-+                                     unsigned size, MemTxAttrs attrs)
-+{
-+    MemTxResult r;
-+
-+    addr &= IO_SLICE_MASK;
-+    addr |= IO_BASE;
-+
-+    switch (size) {
-+    case 4:
-+        address_space_stl_be(&address_space_memory, addr, value, attrs, &r);
-+        break;
-+    case 2:
-+        address_space_stw_be(&address_space_memory, addr, value, attrs, &r);
-+        break;
-+    case 1:
-+        address_space_stb(&address_space_memory, addr, value, attrs, &r);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    return r;
-+}
-+
-+static const MemoryRegionOps macio_alias_ops = {
-+    .read_with_attrs = macio_alias_read,
-+    .write_with_attrs = macio_alias_write,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+    .valid = {
-+        .min_access_size = 1,
-+        .max_access_size = 4,
-+    },
-+};
-+
- static void q800_machine_init(MachineState *machine)
- {
-     Q800MachineState *m = Q800_MACHINE(machine);
-@@ -137,10 +200,8 @@ static void q800_machine_init(MachineState *machine)
-     int bios_size;
-     ram_addr_t initrd_base;
-     int32_t initrd_size;
--    MemoryRegion *io;
-     MemoryRegion *dp8393x_prom = g_new(MemoryRegion, 1);
-     uint8_t *prom;
--    const int io_slice_nb = (IO_SIZE / IO_SLICE) - 1;
-     int i, checksum;
-     MacFbMode *macfb_mode;
-     ram_addr_t ram_size = machine->ram_size;
-@@ -187,16 +248,10 @@ static void q800_machine_init(MachineState *machine)
-      * Memory from IO_BASE to IO_BASE + IO_SLICE is repeated
-      * from IO_BASE + IO_SLICE to IO_BASE + IO_SIZE
-      */
--    io = g_new(MemoryRegion, io_slice_nb);
--    for (i = 0; i < io_slice_nb; i++) {
--        char *name = g_strdup_printf("mac_m68k.io[%d]", i + 1);
--
--        memory_region_init_alias(&io[i], NULL, name, get_system_memory(),
--                                 IO_BASE, IO_SLICE);
--        memory_region_add_subregion(get_system_memory(),
--                                    IO_BASE + (i + 1) * IO_SLICE, &io[i]);
--        g_free(name);
--    }
-+    memory_region_init_io(&m->macio_alias, OBJECT(machine), &macio_alias_ops,
-+                          &m->macio, "mac-io.alias", IO_SIZE - IO_SLICE);
-+    memory_region_add_subregion(get_system_memory(), IO_BASE + IO_SLICE,
-+                                &m->macio_alias);
- 
-     /* IRQ Glue */
-     object_initialize_child(OBJECT(machine), "glue", &m->glue, TYPE_GLUE);
-@@ -212,7 +267,8 @@ static void q800_machine_init(MachineState *machine)
+     /* VIA 1 */
+-    via1_dev = qdev_new(TYPE_MOS6522_Q800_VIA1);
++    object_initialize_child(OBJECT(machine), "via1", &m->via1,
++                            TYPE_MOS6522_Q800_VIA1);
+     dinfo = drive_get(IF_MTD, 0, 0);
+     if (dinfo) {
+-        qdev_prop_set_drive(via1_dev, "drive", blk_by_legacy_dinfo(dinfo));
++        qdev_prop_set_drive(DEVICE(&m->via1), "drive",
++                            blk_by_legacy_dinfo(dinfo));
      }
-     sysbus = SYS_BUS_DEVICE(via1_dev);
-     sysbus_realize_and_unref(sysbus, &error_fatal);
--    sysbus_mmio_map(sysbus, 1, VIA_BASE);
-+    memory_region_add_subregion(&m->macio, VIA_BASE - IO_BASE,
-+                                sysbus_mmio_get_region(sysbus, 1));
+-    sysbus = SYS_BUS_DEVICE(via1_dev);
+-    sysbus_realize_and_unref(sysbus, &error_fatal);
++    sysbus = SYS_BUS_DEVICE(&m->via1);
++    sysbus_realize(sysbus, &error_fatal);
+     memory_region_add_subregion(&m->macio, VIA_BASE - IO_BASE,
+                                 sysbus_mmio_get_region(sysbus, 1));
      sysbus_connect_irq(sysbus, 0,
                         qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_VIA1));
      /* A/UX mode */
-@@ -230,7 +286,8 @@ static void q800_machine_init(MachineState *machine)
-     via2_dev = qdev_new(TYPE_MOS6522_Q800_VIA2);
-     sysbus = SYS_BUS_DEVICE(via2_dev);
-     sysbus_realize_and_unref(sysbus, &error_fatal);
--    sysbus_mmio_map(sysbus, 1, VIA_BASE + VIA_SIZE);
-+    memory_region_add_subregion(&m->macio, VIA_BASE - IO_BASE + VIA_SIZE,
-+                                sysbus_mmio_get_region(sysbus, 1));
-     sysbus_connect_irq(sysbus, 0,
-                        qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_VIA2));
+-    qdev_connect_gpio_out(via1_dev, 0,
++    qdev_connect_gpio_out(DEVICE(&m->via1), 0,
+                           qdev_get_gpio_in_named(DEVICE(&m->glue),
+                                                  "auxmode", 0));
  
-@@ -264,7 +321,8 @@ static void q800_machine_init(MachineState *machine)
-                              OBJECT(get_system_memory()), &error_abort);
-     sysbus = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(sysbus, &error_fatal);
--    sysbus_mmio_map(sysbus, 0, SONIC_BASE);
-+    memory_region_add_subregion(&m->macio, SONIC_BASE - IO_BASE,
-+                                sysbus_mmio_get_region(sysbus, 0));
-     sysbus_connect_irq(sysbus, 0,
-                        qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_SONIC));
- 
-@@ -305,7 +363,8 @@ static void q800_machine_init(MachineState *machine)
-     qdev_connect_gpio_out(DEVICE(escc_orgate), 0,
-                           qdev_get_gpio_in(DEVICE(&m->glue),
-                                            GLUE_IRQ_IN_ESCC));
--    sysbus_mmio_map(sysbus, 0, SCC_BASE);
-+    memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE,
-+                                sysbus_mmio_get_region(sysbus, 0));
- 
-     /* SCSI */
- 
-@@ -325,8 +384,10 @@ static void q800_machine_init(MachineState *machine)
-                                                   VIA2_IRQ_SCSI_BIT)));
-     sysbus_connect_irq(sysbus, 1, qemu_irq_invert(qdev_get_gpio_in(via2_dev,
-                                                   VIA2_IRQ_SCSI_DATA_BIT)));
--    sysbus_mmio_map(sysbus, 0, ESP_BASE);
--    sysbus_mmio_map(sysbus, 1, ESP_PDMA);
-+    memory_region_add_subregion(&m->macio, ESP_BASE - IO_BASE,
-+                                sysbus_mmio_get_region(sysbus, 0));
-+    memory_region_add_subregion(&m->macio, ESP_PDMA - IO_BASE,
-+                                sysbus_mmio_get_region(sysbus, 1));
- 
-     scsi_bus_legacy_handle_cmdline(&esp->bus);
- 
-@@ -334,7 +395,8 @@ static void q800_machine_init(MachineState *machine)
- 
-     dev = qdev_new(TYPE_SWIM);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, SWIM_BASE);
-+    memory_region_add_subregion(&m->macio, SWIM_BASE - IO_BASE,
-+                                sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
- 
-     /* NuBus */
- 
+-    adb_bus = qdev_get_child_bus(via1_dev, "adb.0");
++    adb_bus = qdev_get_child_bus(DEVICE(&m->via1), "adb.0");
+     dev = qdev_new(TYPE_ADB_KEYBOARD);
+     qdev_realize_and_unref(dev, adb_bus, &error_fatal);
+     dev = qdev_new(TYPE_ADB_MOUSE);
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 17067dfad7..1ed38bf0b1 100644
+index 1ed38bf0b1..5cf66d08a0 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -40,6 +40,7 @@ struct Q800MachineState {
+@@ -28,6 +28,7 @@
+ #include "target/m68k/cpu-qom.h"
+ #include "exec/memory.h"
+ #include "hw/m68k/q800-glue.h"
++#include "hw/misc/mac_via.h"
+ 
+ /*
+  * The main Q800 machine
+@@ -39,6 +40,7 @@ struct Q800MachineState {
+     M68kCPU cpu;
      MemoryRegion rom;
      GLUEState glue;
++    MOS6522Q800VIA1State via1;
      MemoryRegion macio;
-+    MemoryRegion macio_alias;
+     MemoryRegion macio_alias;
  };
- 
- #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 -- 
 2.30.2
 
