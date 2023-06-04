@@ -2,61 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B657218AB
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EEE7218BA
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:59:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5qbf-0000tm-Cz; Sun, 04 Jun 2023 12:29:27 -0400
+	id 1q5r3i-0005xU-0o; Sun, 04 Jun 2023 12:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qbc-0000tG-Mv
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:29:24 -0400
-Received: from mout.kundenserver.de ([212.227.126.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qbY-0007rR-7E
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:29:22 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MOzCW-1pgb0i3Xau-00PMQV; Sun, 04 Jun 2023 18:29:16 +0200
-Message-ID: <4c50ac7d-aad9-8611-05a2-cf63279e7eca@vivier.eu>
-Date: Sun, 4 Jun 2023 18:29:16 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q5r3d-0005wy-EK
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:58:21 -0400
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q5r3b-0006sJ-TC
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:58:21 -0400
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-39810ce3e13so3535007b6e.2
+ for <qemu-devel@nongnu.org>; Sun, 04 Jun 2023 09:58:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685897898; x=1688489898;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rrjS2Y1sK0Pc65lNFe2D8urFAhV3VwVM3DH1L5gFJL8=;
+ b=bE+oPkU7Z6sZt8Or4UPvqL3QKXzpmMtCbSQ0HDU27F2vg66xxXWP8y8OoCEwUlySVU
+ IAIKhqnRoWofnWHPgaZ2vUdFsJ7NAvJtgbF2g36YAyQSBB/FQCB0KYPHaE9cKAv0o1OZ
+ HNF672frvTzGRVji8IOoYrTSzdXoOpE4HnDZyDQakkS4SCsOuJ7lwJrmtxjWivthh4Dg
+ DUvpNZroiywF/mBt8kvhYpbAg8mKyg0YwDyStZ2ienq1JMehXyt27yy7deomZmE1FMKa
+ wcmBC3dAlCStE30yvJzZiwXeN/1IZS3aKKH+YHf44H3HI2MP/S+j3Z+JYdJoUOVL+Ejt
+ uBuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685897898; x=1688489898;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rrjS2Y1sK0Pc65lNFe2D8urFAhV3VwVM3DH1L5gFJL8=;
+ b=SHtQV5ZV7+ZNbfyHeDmpVFemDBfPZAOQa7+GVrgXhpsOu3TMJUZYWMLvHFDSk6fMBy
+ ygqzcTLz0gqstNm4uBTkq9P+0M7uKGDh0XQK5oW0D29OL88R8ycnEAegn9sbpEfgqFNp
+ TjuKniRNe0VBzsUt7JUeJpSkpLVQ9P7ilnCBAcQF1puP/xdK8wtACFnPZr6JVkR/ewAp
+ P6TSh0rbhqLxjeo+XUOObNA2NxethNVgHI0qjtluckkDj9QeyXBzckcLZlkZG3iIpIvV
+ LgCFGuYeNNu6k7Qo1R54mAAzgjomNxlYfIBujXtLDt3Ptd+zDp57Ynp25/jsD3fWg01q
+ cCvQ==
+X-Gm-Message-State: AC+VfDwTplefO3pm4AUBG8HID4DJbLe4fYXC8wb726X9bmPG3ll4rIy+
+ Hvr9IhiEFUAQZeIpwudgUsr2PA==
+X-Google-Smtp-Source: ACHHUZ40kCgq9oV7R19AFdFPah9HsM2wP3/6S4YYo5U9KriQwnReX1tZLahhGOxiqVyQYYUKi3rHTw==
+X-Received: by 2002:a05:6808:b3c:b0:39a:acfe:4659 with SMTP id
+ t28-20020a0568080b3c00b0039aacfe4659mr1399842oij.17.1685897898180; 
+ Sun, 04 Jun 2023 09:58:18 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:7d0c:4d62:710d:ff28?
+ ([2602:ae:1598:4c01:7d0c:4d62:710d:ff28])
+ by smtp.gmail.com with ESMTPSA id
+ jk19-20020a170903331300b001b0aec3ed59sm4867465plb.256.2023.06.04.09.58.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 04 Jun 2023 09:58:17 -0700 (PDT)
+Message-ID: <8f706ba2-7993-bf96-9be2-a37ecb4ca8d7@linaro.org>
+Date: Sun, 4 Jun 2023 09:58:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 19/23] q800: move mac-nubus-bridge device to
- Q800MachineState
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-20-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230604131450.428797-20-mark.cave-ayland@ilande.co.uk>
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/4] target/ppc: Ensure stcx size matches larx
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20230604102858.148584-1-npiggin@gmail.com>
+ <20230604102858.148584-2-npiggin@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230604102858.148584-2-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:ehxjBZsVvSK5S2nw4zFZ5uU+ETOFDx5qocceXhisSGscJRIBrpG
- 5jZdbQ0lC9vQia+nTw26AzVRNIS/N9PWW1nXRn1dWEVuEWHy0pnTQ2yU7eoP8t4jZpp1/j+
- A24laMrPdQbwIZn22qp1l8uaA5qvNuAbG/IJS7V71tXehJ0bFwf0FZldRcSqT0WOmXbkRCf
- q5n68d+bMlSKtPv/nSPQw==
-UI-OutboundReport: notjunk:1;M01:P0:G/1h3mVeAJ4=;gDl8DZGagu07vJXUyIPFTDfzJYY
- cLhURLVzTtSgyQF9MeyaCs7bQUIguaQwyXh68AIGAvfBRrfXdapqZhES2GLhQexWCFffXl0Yy
- hFNHt0oMM7Rv8/g76OGK4PvaZD+qdyfuOKWYE5DtOkM0ewsuz1qLOmONGyB+lo2S1Uh5Ikc1y
- hL4GHHaMuSGFDi9CjxiZURwVlbjCAftbYae9ulQBYI+Sd7HmHUVJeZM4qCwpScKpR/qiikVOT
- 7AgDgEp/6aUIyRPhSorWqCsLxOkZEVMx/t4Z+uv+rtl+7miAvj9TU9FFR9AVG4zl8W99LzGhp
- yfcwH0LGy7UKxzbrDdyjlS81NvEGokCebPCr7m3yO71yDAZrjHpLlbpkc3Nbkui1HnV/TKpuL
- RouUBl/7sXyOuL6LgvgxUrhCJIeuUtNLaLuLAv5GDyMUlFxEkbk01SMijNMgoWimIB892KmqF
- u5SOdWGvS0b9N+MqmV5pfAxcNjYKqEfm7OgyzjlFQZn8kLsKsWMDucEjk1jVQowN0X8Bx9hV7
- 9jdqV13KVtyCH6jwFx6OPie2RDqoCrkZIXbRZ7TBkc74Siv9g9Ded7bvGpSgBXNKaXjTe/0U0
- l5LRnPi7AZ0/JKvXuIVM0mS/EurjniwMUbuL9TgXOq/RBUZQe4NtlVt8vQCf0Xes7hWGm/jP6
- oh/Vat9srh2sCjUmzGAF/agecTDXPQSgWiROkILe2g==
-Received-SPF: none client-ip=212.227.126.131; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,49 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 04/06/2023 à 15:14, Mark Cave-Ayland a écrit :
-> Also change the instantiation of the mac-nubus-bridge device to use
-> object_initialize_child() and map the Nubus address space using
-> memory_region_add_subregion() instead of sysbus_mmio_map().
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/m68k/q800.c         | 21 ++++++++++++++-------
->   include/hw/m68k/q800.h |  2 ++
->   2 files changed, 16 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index d6e19ff18c..14879310ca 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -415,14 +415,21 @@ static void q800_machine_init(MachineState *machine)
->   
->       /* NuBus */
->   
-> -    dev = qdev_new(TYPE_MAC_NUBUS_BRIDGE);
-> -    qdev_prop_set_uint32(dev, "slot-available-mask",
-> +    object_initialize_child(OBJECT(machine), "mac-nubus-bridge",
-> +                            &m->mac_nubus_bridge,
-> +                            TYPE_MAC_NUBUS_BRIDGE);
-> +    sysbus = SYS_BUS_DEVICE(&m->mac_nubus_bridge);
-> +    dev = DEVICE(&m->mac_nubus_bridge);
-> +    qdev_prop_set_uint32(DEVICE(&m->mac_nubus_bridge), "slot-available-mask",
->                            Q800_NUBUS_SLOTS_AVAILABLE);
-> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-> -    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0,
-> -                    MAC_NUBUS_FIRST_SLOT * NUBUS_SUPER_SLOT_SIZE);
-> -    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, NUBUS_SLOT_BASE +
-> -                    MAC_NUBUS_FIRST_SLOT * NUBUS_SLOT_SIZE);
-> +    sysbus_realize(sysbus, &error_fatal);
-> +    memory_region_add_subregion(get_system_memory(),
-> +                                MAC_NUBUS_FIRST_SLOT * NUBUS_SUPER_SLOT_SIZE,
-> +                                sysbus_mmio_get_region(sysbus, 0));
-> +    memory_region_add_subregion(get_system_memory(),
-> +                                NUBUS_SLOT_BASE +
-> +                                MAC_NUBUS_FIRST_SLOT * NUBUS_SLOT_SIZE,
-> +                                sysbus_mmio_get_region(sysbus, 1));
+> @@ -3584,6 +3588,7 @@ static void gen_load_locked(DisasContext *ctx, MemOp memop)
+>       gen_set_access_type(ctx, ACCESS_RES);
+>       gen_addr_reg_index(ctx, t0);
+>       tcg_gen_mov_tl(cpu_reserve, t0);
+> +    tcg_gen_movi_tl(cpu_reserve_size, memop_size(memop));
 
-Why it's not done in PATCH 10?
+Not that it really matters, this produces a byte value...
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+> @@ -3873,6 +3879,7 @@ static void gen_lqarx(DisasContext *ctx)
+>       EA = tcg_temp_new();
+>       gen_addr_reg_index(ctx, EA);
+>       tcg_gen_mov_tl(cpu_reserve, EA);
+> +    tcg_gen_movi_tl(cpu_reserve_size, 128);
+
+... so perhaps ideally this would be 16.
+
+Perhaps name it reserve_length to exactly match the manual.
+Otherwise,
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
