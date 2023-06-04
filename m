@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A2E721744
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA5C721742
 	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 15:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5nZc-0004v7-2K; Sun, 04 Jun 2023 09:15:08 -0400
+	id 1q5nZn-0004wT-Em; Sun, 04 Jun 2023 09:15:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5nZZ-0004uj-87
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:05 -0400
+ id 1q5nZf-0004vY-OR
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:11 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5nZU-0002wY-CW
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:04 -0400
+ id 1q5nZX-0002xq-0q
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:15:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Y58GAldj+RaHednBTFGXyp/H2cuNKDMwCrnlNAU9KmA=; b=n59MAPmR450unVCH/5zW7Hl81s
- kLIhWHF11BfAgTbgbDZ8dtEaxG4lUrh9TulhqRMeKxgNDeIf/jNly/moN5RilkkYj97vFVF1Lklnz
- dh8bbuPD0I/wE480uI05t4jL+fgZHQWzmA/2kDkC5hRNQ7s/dx6YZ2vJdnB9VrGUS5rWhawtncaqS
- 5RrCWQXcYteAbNTSg6VIsw77uukEZYb7GVgqswbX8VavaMgFq4IPUskadxU3JJLlcSF/tUESyjl7D
- 2hXv59Exefd7chjo6dNfYFaBvJps6XLhjEPyzVeIO3j/j9cvyozVZjw34SSNyLWxFFUAqKcOPNeU9
- NfgGu/cLRvlMZAI/conSZT/0/zN9rP1w1E4JL6bPHUJ44OdV4Bn92BbVCgDLmwgYap8PFrVL3md36
- eEugED1qS/Yox3m9Yz+q4q8ezPr/1SI3iK20Cfx0IW5NRQ3JEbnJHG8YmLNT5aj2u0MzRcX/BkbKP
- tJuCpIr2SOPWiQYowAHc0PtPU3Zxy1I6frloy/4AUAUDAt2REcw61qm0gixysRPDWza52K7ubbyl8
- 3UveRHBe/EO591XHp0LW/tH9WZn+FSDvHZ8T/H+yTBXDSROZfIRC1AEivSpr73l1dc9mLDcHwhL4y
- c0nerRoUmqC2wwqw13g4+bhlwdtt+XwcgtQJ0H0nw=;
+ bh=YH3u+lBKxTGmU9U2PS6xpkAsnUA2aD2sNi6w+PFhK3U=; b=BMf9mi+Rmh/ZpQPTfLfogANcDC
+ +Fi2OMgKtXGX4MA8jU+0dmLKNuhao2YHReurYOHjYMeX8tImad8um7le8dFD2UFhl14HCAZg/ZhuD
+ FnchpWzb1ZrKs9f7UlGcHZpKSCmV+aQy5yPFnU5GvdNcM4N20Z9WMAjBoCkAktb9qJNj/fMXerg1c
+ wM9a1FxppmRsd8SjZdIUhL4OdHdCIXWlwGXWzf9b4fPbra7V3GKy5hXJjdKklsp3xPh2QV5CWgAs6
+ iezyndsiGSVgDn7NaD0J4a4twePadRf+Mk3/giE1BZbeT7d8pprBW/RaeONgwNNcrejcQ8RPeUnua
+ +BRUMLBUP5la9gkW0DxpJTO5jtLLprNC6Hpbh/fCwhnhp2H24oAYS44/TrQCXUUW9dxxt/QaMPX9B
+ j8evgItmernKzGW69sfQmtiEZt2MZtJ4qFQtzYWsPq7GE1Iy2nzQ/32s9GTbkzAnKp9+/wfS+9/Yi
+ z5gq5/C35YvhNMtbcTszWN6pmR6ZZ+hI2qCZ/kqrVxL6YnzJ00itwWRh0yRIg76NJWeb2WXu8eHzC
+ i6iMZQtaOf1OrRUdq5bB5AoJhFjun6qER+WsMPKW3emaCJRVr7IzFgbgDN6Onskndkojv6NmsfFdG
+ oDF363gDSDeqwuLwWwU/D5YG737aaAfPKHTrEzDGw=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5nZH-0005pb-Oi; Sun, 04 Jun 2023 14:14:51 +0100
+ id 1q5nZL-0005pb-VG; Sun, 04 Jun 2023 14:14:56 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sun,  4 Jun 2023 14:14:27 +0100
-Message-Id: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
+Date: Sun,  4 Jun 2023 14:14:28 +0100
+Message-Id: <20230604131450.428797-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
+References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 00/23] q800: add support for booting MacOS Classic - part 1
+Subject: [PATCH v3 01/23] q800: fix up minor spacing issues in hw_compat_q800
+ GlobalProperty array
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -75,117 +78,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[MCA: the original series has now been split into 2 separate parts based upon
-Phil's comments re: QOM parenting for objects in Q800MachineState. Part 1
-consists of the Q800MachineState patches along with QOM parenting fixes and
-the 2 mac_via RTC patches.]
-
-This series contains the remaining patches needed to allow QEMU's q800
-machine to boot MacOS Classic when used in conjunction with a real
-Quadra 800 ROM image. In fact with this series applied it is possible
-to boot all of the following OSs:
-
-  - MacOS 7.1 - 8.1, with or without virtual memory enabled
-  - A/UX 3.0.1
-  - NetBSD 9.3
-  - Linux (via EMILE)
-
-If you are ready to experience some 90s nostalgia then all you need is
-to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
-suitable install ISO as follows:
-
-  # Prepare a PRAM image
-  $ qemu-img create -f raw pram.img 256b
-
-  # Launch QEMU with blank disk and install CDROM
-  $ ./qemu-system-m68k \
-      -M q800 \
-      -m 128 \
-      -bios Quadra800.rom \
-      -drive file=pram.img,format=raw,if=mtd \
-      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
-      -device scsi-hd,scsi-id=0,drive=hd \
-      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
-      -device scsi-cd,scsi-id=3,drive=cd
-
-And off you go! For more in-depth information about the installation process
-I highly recommend the installation guide over at emaculation.com [1].
-Compatibility is generally very good, and I'm pleased to report it is possible
-to run one of the most popular productivity apps from the 90s [2].
-
-I'd like to add a big thank you to all the people who have helped me work on
-this series, including testing on real hardware, answering questions about
-MacOS Classic internals and helping to diagnose and fix bugs in the 68k
-emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
-Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
-Elliot Nunn, and SolraBizna.
+Ensure there is a space before the final closing brace for all global
+properties.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/m68k/q800.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-[1] https://www.emaculation.com/doku.php/qemu
-[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
-
-
-Patches missing review tags: 5, 19
-
-v3:
-- Add R-B tags from Phil and Laurent
-- Add missing headers in patches indicated by Phil
-- Change patch 5 to use valid_cpu_types Machine class property and the cpu_type
-  Machine property to initialise the CPU
-- Remove osdep.h header from dp8393x.h in patch 13 noticed by Phil
-- Change sysbus_realize_and_unref() to sysbus_realize() in patch 19
-- Use memory_region_add_subregion() instead of sysbus_mmio_map() in patch 19
-
-v2:
-- Split series into 2 parts (this is part 1)
-- Update QOM parenting for objects in Q800MachineState (Phil)
-- Split GLUE device into separate glue.c and glue.h files
-- Split TYPE_DP8393X and dp8393xState into dp8393x.h
-- Add R-B tags from Laurent (where I still believe they are valid)
-
-
-Mark Cave-Ayland (23):
-  q800: fix up minor spacing issues in hw_compat_q800 GlobalProperty
-    array
-  q800: add missing space after parent object in GLUEState
-  q800: introduce Q800MachineState
-  q800: rename q800_init() to q800_machine_init()
-  q800: move CPU object into Q800MachineState
-  q800: move ROM memory region to Q800MachineState
-  q800: move GLUE device into separate q800-glue.c file
-  q800: move GLUE device to Q800MachineState
-  q800: introduce mac-io container memory region
-  q800: reimplement mac-io region aliasing using IO memory region
-  q800: move VIA1 device to Q800MachineState
-  q800: move VIA2 device to Q800MachineState
-  hw/net/dp8393x.c: move TYPE_DP8393X and dp8393xState into dp8393x.h
-  q800: move dp8393x device to Q800MachineState
-  q800: move ESCC device to Q800MachineState
-  q800: move escc_orgate device to Q800MachineState
-  q800: move ESP device to Q800MachineState
-  q800: move SWIM device to Q800MachineState
-  q800: move mac-nubus-bridge device to Q800MachineState
-  q800: don't access Nubus bus directly from the mac-nubus-bridge device
-  q800: move macfb device to Q800MachineState
-  mac_via: fix rtc command decoding from PRAM addresses 0x0 to 0xf
-  mac_via: fix rtc command decoding for the PRAM seconds registers
-
- MAINTAINERS                 |   3 +
- hw/m68k/meson.build         |   2 +-
- hw/m68k/q800-glue.c         | 252 +++++++++++++++++
- hw/m68k/q800.c              | 526 ++++++++++++++----------------------
- hw/misc/mac_via.c           |  13 +-
- hw/net/dp8393x.c            |  32 +--
- include/hw/m68k/q800-glue.h |  50 ++++
- include/hw/m68k/q800.h      |  66 +++++
- include/hw/net/dp8393x.h    |  60 ++++
- 9 files changed, 638 insertions(+), 366 deletions(-)
- create mode 100644 hw/m68k/q800-glue.c
- create mode 100644 include/hw/m68k/q800-glue.h
- create mode 100644 include/hw/m68k/q800.h
- create mode 100644 include/hw/net/dp8393x.h
-
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index b35ecafbc7..1aead224e2 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -719,14 +719,14 @@ static void q800_init(MachineState *machine)
+ }
+ 
+ static GlobalProperty hw_compat_q800[] = {
+-    { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on"},
++    { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on" },
+     { "scsi-hd", "vendor", " SEAGATE" },
+     { "scsi-hd", "product", "          ST225N" },
+     { "scsi-hd", "ver", "1.0 " },
+-    { "scsi-cd", "quirk_mode_page_apple_vendor", "on"},
+-    { "scsi-cd", "quirk_mode_sense_rom_use_dbd", "on"},
+-    { "scsi-cd", "quirk_mode_page_vendor_specific_apple", "on"},
+-    { "scsi-cd", "quirk_mode_page_truncated", "on"},
++    { "scsi-cd", "quirk_mode_page_apple_vendor", "on" },
++    { "scsi-cd", "quirk_mode_sense_rom_use_dbd", "on" },
++    { "scsi-cd", "quirk_mode_page_vendor_specific_apple", "on" },
++    { "scsi-cd", "quirk_mode_page_truncated", "on" },
+     { "scsi-cd", "vendor", "MATSHITA" },
+     { "scsi-cd", "product", "CD-ROM CR-8005" },
+     { "scsi-cd", "ver", "1.0k" },
 -- 
 2.30.2
 
