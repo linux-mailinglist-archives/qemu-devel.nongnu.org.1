@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D734E721615
+	by mail.lfdr.de (Postfix) with ESMTPS id 62328721614
 	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 12:30:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5kzD-00016F-6Q; Sun, 04 Jun 2023 06:29:23 -0400
+	id 1q5kzE-00017O-So; Sun, 04 Jun 2023 06:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q5kz9-00013y-QZ; Sun, 04 Jun 2023 06:29:19 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1q5kzB-00016S-SN; Sun, 04 Jun 2023 06:29:22 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q5kz7-0005pG-AP; Sun, 04 Jun 2023 06:29:19 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-651ffcc1d3dso1957941b3a.3; 
- Sun, 04 Jun 2023 03:29:15 -0700 (PDT)
+ id 1q5kzA-0005pm-1k; Sun, 04 Jun 2023 06:29:21 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-652d1d3e040so1455541b3a.1; 
+ Sun, 04 Jun 2023 03:29:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685874554; x=1688466554;
+ d=gmail.com; s=20221208; t=1685874558; x=1688466558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1201Fg2bb2LqSzd+MCvO7/S5DodFeX+KF00mHODbWQ0=;
- b=JqDmAc02HWaODPegK5xEYcHNquqraRyOxiI/bWn0mvbJTaY+V8+OIsbRwKC2jlY93Z
- cXBJ8tR7YhI0scO77+qDHhz3V9uFmhS7wyEu9+BwPmdwRU0/fh/DTdx3wpIF7lTOWewg
- 9+EM3JVDjc3OEro3xodfm3duRJNgMZUhmQisKAu0aKyCaqoGXw8J7+mzybwmxR1wvIdY
- wBAa7pNFoolKqXIpIv86paDT2qoG12DBq2SyFBtiNm1MfnNFCpdj5JYddHVAz75PWKuP
- LEqGvxHc5xeVZJ2kKieTuji7NkaWVii5yx03yv/vlujxNfxavK77XAk+0pgStXNnaJzQ
- L1EA==
+ bh=dqSUGBzCwFM3BYWfaK+JzwNF/GE/uwEKUodIuU1CLhs=;
+ b=P8L20qM/FEP+WnZXi06jOqw/gGd4DhnoLeLRUrDyt2nV1e3WG1U5aueNwQLZWJdCKW
+ 4jvDYGMoWMBnmDXsAFyXmh5UcKnVOZscRDjLUAJkgAs0QA/yXmeggAqzjasRUa1X6zeX
+ ZXXp64crp7GPUyTFJs/RIzIpxJFNnx8rKGtCG2oYmHrvhR7xs8fGZc3xkM1Cu7XyCy9d
+ BE4pHHFi0+ZrnKQTOTrK06nIBh27luCSDY/JKJgjS6kKvPPNyS+Dkc+TI73pJ995djyL
+ IkTG/L+qoqygODXU3hNidYp3DUywxWdvMwPanjXH2OT8lw7M9W5mBSFUEciFbn1/MwrZ
+ GQ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685874554; x=1688466554;
+ d=1e100.net; s=20221208; t=1685874558; x=1688466558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1201Fg2bb2LqSzd+MCvO7/S5DodFeX+KF00mHODbWQ0=;
- b=W2fT6ADzHbrCHPYW/OjqA3L97esAyVBXfArD5Yzyb9IxDswzF7Brsnx2vLDzguHTzt
- aoCplSwspPxhaviXYy8Vo0n5aQ+NliIwRvk/mb1wxGw35GzbohF93NDlneaOz1V3CxT5
- H2bq5Ezssv80wVqVPOVHHn5uu2TQrSpoU4xuu3zu2cW6kmF38eYB3MxFG1fyD+Ur5mx6
- UtJRb9rsvvLDk1C0AJrLcHgkwogWlRC6nzYhe0/HPxvb1VX6IF6KZA4zmNcL2eKVbqDs
- w78MLJXsCTo8D+9cj7nJaHY/MEKOX5ZfvCRXmjqLncsPl8zzVlsO4GuvI5o/CllT1Xdn
- VHwg==
-X-Gm-Message-State: AC+VfDwos0F3687HEtbBuddLVBarPjpCR98vMRkhC8ca5JosyU0/Fv1Z
- 91ff6z2kp4fRpsK1Dx6dPM4=
-X-Google-Smtp-Source: ACHHUZ7ZsTFfhCRQhfZRt3KPQ7bfCTYuqrA3Ac0TPJN1YmpM2ScW3pHqI4/K0QSjMogwbREhNCbtUQ==
-X-Received: by 2002:a17:903:11d0:b0:1ac:988e:2624 with SMTP id
- q16-20020a17090311d000b001ac988e2624mr3219396plh.37.1685874553823; 
- Sun, 04 Jun 2023 03:29:13 -0700 (PDT)
+ bh=dqSUGBzCwFM3BYWfaK+JzwNF/GE/uwEKUodIuU1CLhs=;
+ b=OoVetBFncN1KeYkDetQRfSFW3LNwzaxhpBf9ggsv619LmkFDxktNVwqyLJ5qz2K40B
+ f9zopbLeeMueZzgKIgmjjmlcxljA/+QZQRikl2M6fnixChqsP6qKf/A5dvOXXWB500Lx
+ HiUT+uflseRhqEr73ocSgsNs1T2cgbvW3dv68wqeykGITUKk7hIy6/t7Ea9tKyNWZUdi
+ kJjiXCmCWhKPkJfQkDcDYp2Wm37AnUGeIPa/vQL1Kz4pSbQWc8M+YotryfNuATc9IUx8
+ +iUhn9MRMjdYfF+yi8B6hpQ5e96GwP8Mz/UqimcbeTqPK/o2HJM3Q9zqtKQrxtwCtKli
+ wsZg==
+X-Gm-Message-State: AC+VfDwiRTLo/YxVeHgBk93PAzu7s7hbjuMbf7dmade1uN8k2bu8GPSK
+ ntd4VxcEz08JWaakXGbQHXLCMeBO5gk=
+X-Google-Smtp-Source: ACHHUZ5V04CT2Cpe72AopXmncBfudugGLKLU76cigNoBKqLwCIlPvz35yXIShQav+P52rbR3HdmiDA==
+X-Received: by 2002:a17:903:284:b0:1a9:581d:3efb with SMTP id
+ j4-20020a170903028400b001a9581d3efbmr3090494plr.6.1685874557676; 
+ Sun, 04 Jun 2023 03:29:17 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- ik8-20020a170902ab0800b001ae0152d280sm4489241plb.193.2023.06.04.03.29.10
+ ik8-20020a170902ab0800b001ae0152d280sm4489241plb.193.2023.06.04.03.29.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Jun 2023 03:29:13 -0700 (PDT)
+ Sun, 04 Jun 2023 03:29:17 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: [PATCH 3/4] target/ppc: Remove larx/stcx. memory barrier semantics
-Date: Sun,  4 Jun 2023 20:28:56 +1000
-Message-Id: <20230604102858.148584-3-npiggin@gmail.com>
+Subject: [PATCH 4/4] target/ppc: Rework store conditional to avoid branch
+Date: Sun,  4 Jun 2023 20:28:57 +1000
+Message-Id: <20230604102858.148584-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230604102858.148584-1-npiggin@gmail.com>
 References: <20230604102858.148584-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,50 +91,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-larx and stcx. are not defined to order any memory operations.
-Remove the barriers.
+Rework store conditional to avoid a branch in the success case.
+Change some of the variable names and layout while here so
+gen_conditional_store more closely matches gen_stqcx_.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ target/ppc/translate.c | 65 ++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 34 deletions(-)
 
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 5195047146..77e1c5abb6 100644
+index 77e1c5abb6..cf99e961f7 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -3591,7 +3591,6 @@ static void gen_load_locked(DisasContext *ctx, MemOp memop)
-     tcg_gen_movi_tl(cpu_reserve_size, memop_size(memop));
-     tcg_gen_qemu_ld_tl(gpr, t0, ctx->mem_idx, memop | MO_ALIGN);
-     tcg_gen_mov_tl(cpu_reserve_val, gpr);
--    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+@@ -3812,31 +3812,32 @@ static void gen_stdat(DisasContext *ctx)
+ 
+ static void gen_conditional_store(DisasContext *ctx, MemOp memop)
+ {
+-    TCGLabel *l1 = gen_new_label();
+-    TCGLabel *l2 = gen_new_label();
+-    TCGv t0 = tcg_temp_new();
+-    int reg = rS(ctx->opcode);
++    TCGLabel *lfail;
++    TCGv EA;
++    TCGv cr0;
++    TCGv t0;
++    int rs = rS(ctx->opcode);
+ 
++    lfail = gen_new_label();
++    EA = tcg_temp_new();
++    cr0 = tcg_temp_new();
++    t0 = tcg_temp_new();
++
++    tcg_gen_mov_tl(cr0, cpu_so);
+     gen_set_access_type(ctx, ACCESS_RES);
+-    gen_addr_reg_index(ctx, t0);
+-    tcg_gen_brcond_tl(TCG_COND_NE, t0, cpu_reserve, l1);
+-    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_size, memop_size(memop), l1);
++    gen_addr_reg_index(ctx, EA);
++    tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lfail);
++    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_size, memop_size(memop), lfail);
+ 
+-    t0 = tcg_temp_new();
+     tcg_gen_atomic_cmpxchg_tl(t0, cpu_reserve, cpu_reserve_val,
+-                              cpu_gpr[reg], ctx->mem_idx,
+-                              DEF_MEMOP(memop) | MO_ALIGN);
++                              cpu_gpr[rs], ctx->mem_idx,
++                              memop | MO_ALIGN);
+     tcg_gen_setcond_tl(TCG_COND_EQ, t0, t0, cpu_reserve_val);
+     tcg_gen_shli_tl(t0, t0, CRF_EQ_BIT);
+-    tcg_gen_or_tl(t0, t0, cpu_so);
+-    tcg_gen_trunc_tl_i32(cpu_crf[0], t0);
+-    tcg_gen_br(l2);
++    tcg_gen_or_tl(cr0, cr0, t0);
+ 
+-    gen_set_label(l1);
+-
+-    tcg_gen_trunc_tl_i32(cpu_crf[0], cpu_so);
+-
+-    gen_set_label(l2);
++    gen_set_label(lfail);
++    tcg_gen_trunc_tl_i32(cpu_crf[0], cr0);
+     tcg_gen_movi_tl(cpu_reserve, -1);
  }
  
- #define LARX(name, memop)                  \
-@@ -3835,11 +3834,6 @@ static void gen_conditional_store(DisasContext *ctx, MemOp memop)
+@@ -3890,25 +3891,26 @@ static void gen_lqarx(DisasContext *ctx)
+ /* stqcx. */
+ static void gen_stqcx_(DisasContext *ctx)
+ {
+-    TCGLabel *lab_fail, *lab_over;
+-    int rs = rS(ctx->opcode);
++    TCGLabel *lfail;
+     TCGv EA, t0, t1;
++    TCGv cr0;
+     TCGv_i128 cmp, val;
++    int rs = rS(ctx->opcode);
  
-     gen_set_label(l1);
+     if (unlikely(rs & 1)) {
+         gen_inval_exception(ctx, POWERPC_EXCP_INVAL_INVAL);
+         return;
+     }
  
--    /*
--     * Address mismatch implies failure.  But we still need to provide
--     * the memory barrier semantics of the instruction.
--     */
--    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
-     tcg_gen_trunc_tl_i32(cpu_crf[0], cpu_so);
+-    lab_fail = gen_new_label();
+-    lab_over = gen_new_label();
++    lfail = gen_new_label();
++    EA = tcg_temp_new();
++    cr0 = tcg_temp_new();
  
-     gen_set_label(l2);
-@@ -3943,11 +3937,6 @@ static void gen_stqcx_(DisasContext *ctx)
-     tcg_gen_br(lab_over);
-     gen_set_label(lab_fail);
++    tcg_gen_mov_tl(cr0, cpu_so);
+     gen_set_access_type(ctx, ACCESS_RES);
+-    EA = tcg_temp_new();
+     gen_addr_reg_index(ctx, EA);
+-
+-    tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lab_fail);
+-    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_size, 128, lab_fail);
++    tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lfail);
++    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_size, 128, lfail);
  
--    /*
--     * Address mismatch implies failure.  But we still need to provide
--     * the memory barrier semantics of the instruction.
--     */
--    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
-     tcg_gen_trunc_tl_i32(cpu_crf[0], cpu_so);
+     cmp = tcg_temp_new_i128();
+     val = tcg_temp_new_i128();
+@@ -3931,15 +3933,10 @@ static void gen_stqcx_(DisasContext *ctx)
  
-     gen_set_label(lab_over);
+     tcg_gen_setcondi_tl(TCG_COND_EQ, t0, t0, 0);
+     tcg_gen_shli_tl(t0, t0, CRF_EQ_BIT);
+-    tcg_gen_or_tl(t0, t0, cpu_so);
+-    tcg_gen_trunc_tl_i32(cpu_crf[0], t0);
+-
+-    tcg_gen_br(lab_over);
+-    gen_set_label(lab_fail);
+-
+-    tcg_gen_trunc_tl_i32(cpu_crf[0], cpu_so);
++    tcg_gen_or_tl(cr0, cr0, t0);
+ 
+-    gen_set_label(lab_over);
++    gen_set_label(lfail);
++    tcg_gen_trunc_tl_i32(cpu_crf[0], cr0);
+     tcg_gen_movi_tl(cpu_reserve, -1);
+ }
+ #endif /* defined(TARGET_PPC64) */
 -- 
 2.40.1
 
