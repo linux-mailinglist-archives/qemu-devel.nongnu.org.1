@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489FB721884
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBF2721885
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:18:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5qPB-0005hv-CH; Sun, 04 Jun 2023 12:16:33 -0400
+	id 1q5qQY-0006ip-6e; Sun, 04 Jun 2023 12:17:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qP7-0005hc-DB
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:16:29 -0400
-Received: from mout.kundenserver.de ([212.227.126.187])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qQW-0006ie-60
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:17:56 -0400
+Received: from mout.kundenserver.de ([212.227.126.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qP5-0004Wu-G3
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:16:29 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qQS-0004rC-OD
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:17:54 -0400
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MIdS1-1prm2y1Afd-00Eb6T; Sun, 04 Jun 2023 18:16:21 +0200
-Message-ID: <6e6e421b-2de4-f0b7-08a8-f3d022bc475b@vivier.eu>
-Date: Sun, 4 Jun 2023 18:16:20 +0200
+ (mreue012 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1N9cDF-1q9IqW32Or-015YxN; Sun, 04 Jun 2023 18:17:49 +0200
+Message-ID: <ada65226-f41c-7bc2-eec9-d880efef9455@vivier.eu>
+Date: Sun, 4 Jun 2023 18:17:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v3 05/23] q800: move CPU object into Q800MachineState
+Subject: Re: [PATCH v3 13/23] hw/net/dp8393x.c: move TYPE_DP8393X and
+ dp8393xState into dp8393x.h
 Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+To: Jason Wang <jasowang@redhat.com>
 References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-6-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-14-mark.cave-ayland@ilande.co.uk>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
 From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230604131450.428797-6-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230604131450.428797-14-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:oaLpuljKSZ3ntPSYZ19FArRdD497wf0ehAwR+w6xzzYqXZRUMBb
- mELu8CBoGviOk0FfFQtmqXAVOl69/u22Qm4JuE4tURvE3hZ28Grnu7yf8W+rjvAGi/HN8U3
- 4FPSKa4SedjVyR75+AinEDM8xJ0mjMZRBO59nZIxXLhSrZ79uCvDGoDWXjoURM/DnV4Phn0
- /3f2tTpyC6rA5wVnVP84A==
-UI-OutboundReport: notjunk:1;M01:P0:gma7eljF3ts=;ILolciCAPkpg+WiMQpF40Y7qzb8
- ABsoEzuNj9PB6Mp2cQC9V/ctsp54ej/I44OxLY4Zj2HAEtC56k2VEC+IHWx7t8kZ0h8yHWSAu
- 3JyxKp1h05sE0xi+fIfn3qtTnNgnRF+2KbCYs2uF/AE9dJWAjFLg4u4zcwjiXSmNimwSu6uhG
- PNSCeX/nrYw7n/DW3jO8e+jPxm1RXz9prYg50QWgA66lIL5FCOsu6VBeZhoa1A9v26pFQQhYX
- wCT/rXeOV53+a1ctL0L2KfJoXupOWKpd0YUaRwL1QyL3X4SA3FdwQDZ5lGxQeN96Fe+h+/+aC
- n7FwJ0SLzMRxtbr9Z2vUmoVLaopEp7RSyBZxT7xYOSa40lUQSTUYUtprZeXoxWW6e+AGG1F3k
- kozXYWsMMpQ/F3S9Tu3WfAlAKQDcptQxoRtdZDrfYl6AmabO18cBYogQo7ocxr41Yt0XVJxbp
- C5khu84KpCOyqeNcSeBDK4OKjHWdimTo0Pv/C21dtZtcU7O61ICS26GVYbVxfai/uneKCYTa5
- F/EL2hN2H5neINevx8hdR7mvaWxDaZsd2aBhHR+NHgiPf7lBMwpct9J9UtX3gfEbnyqmfarGR
- sHMYOHWDMl2f8wcYd759TGQwgta8nY9cP+deGtuk8mNCousFEQZtdMpP80urwQvvMnVXIZssG
- n8jpfzPy9brYSiwg7pTD1oXoSMghp15cDPotueFa6w==
-Received-SPF: none client-ip=212.227.126.187; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:sxhNXZLh851fhtKg+dTVYyzOXeldEK20iDeX4ph86T1Rh2oaGaM
+ MoMYwl5yh34hr7s3lfTEz7Yg7QAHIrYRJViFHLtJkXv/zcPgGQENftYyuPTwYeqYchtsTX8
+ FO6kbnyl1a9rfB5F1efcwTwrkS1/mwgyaSEi67KAWCpKID7sPvuWZ6cOVfRxac+mD/iLuAN
+ BNulQq21dzWnYlesw78dQ==
+UI-OutboundReport: notjunk:1;M01:P0:MOdC2NFKClI=;4sbn2Qm0AFpzHLGtLmpSuEJ78fI
+ iXKvX2S4JuYfz+XjaYkvh6Hl1LyB3lwhYAZdLWf1d9HH3TsXsrh08WDaZW3sR59HfggoT6IiL
+ jq9re89FfR3nIu7uM+SnruFClJy+bcLGPhMAFc5gTbs31BVA9gyvXSiU9GYM8hqPlokO2oZU2
+ VEwkNj6ugd34cWPVh6wu/laVEuYMt6viIU7+7TZF+bO/Q4EoPAL4xvDqmtAdrV9bM6gmkzTtJ
+ jfQIAjPTZMA9qj8AHFNLeA+hFejPeNBiksGPHNOrVsHTQxBTtcJN7rfY9hxyGarUpBAEvfgGx
+ X0uCCy9jqq8Dh1UvEN3fF+sXbwkY3fgl0qCrrE0UL5NDEV4c5xbS7GCoP5HascIMvDP+jqMEE
+ VzVkDNTR+IpQa8uvw7xTLc9THXFNXT2RppsrO8Zsvm2JB71TAidIRFeDhEqYHEr+4shd9vn2l
+ RCeYKRGhQ7IzfdEHIx4OkUOFbRjQp+KpmSWMWerjaWfZYx01NuLkm5ISDJS8j1GUSyp+8jNB3
+ MC/1LmPSWgelc4UjyCfqbuXzww4e2aL6kZzlKg1P0CXHuzdlOVO6G6S3csXyBwZyaOLKly7+A
+ QYND7jacOOZaUooO/wngTq+lFlTGzFd9xkD9j0PCB5ywkYRl82H7Ti5L4QBhWeVatoVF42wCm
+ r9Zls1N/NZAkwiwUsDdnpjIBbnBtsQVXxZJdfhCsnw==
+Received-SPF: none client-ip=212.227.126.131; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,102 +74,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Jason,
+
+if you agree with the changes I will merge them via the m68k branch.
+
+Thanks,
+Laurent
+
 Le 04/06/2023 à 15:14, Mark Cave-Ayland a écrit :
-> Also change the instantiation of the CPU to use object_initialize_child()
-> followed by a separate realisation.
+> This is to enable them to be used outside of dp8393x.c.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> CC: Jason Wang <jasowang@redhat.com>
+> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 > ---
->   hw/m68k/q800.c         | 18 +++++++++++++-----
->   include/hw/m68k/q800.h |  3 +++
->   2 files changed, 16 insertions(+), 5 deletions(-)
+>   hw/net/dp8393x.c         | 32 +--------------------
+>   include/hw/net/dp8393x.h | 60 ++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 61 insertions(+), 31 deletions(-)
+>   create mode 100644 include/hw/net/dp8393x.h
 > 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index 3730b30dd1..d0ceb64b70 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+> diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
+> index 45b954e46c..a596f7fbc6 100644
+> --- a/hw/net/dp8393x.c
+> +++ b/hw/net/dp8393x.c
+> @@ -20,6 +20,7 @@
+>   #include "qemu/osdep.h"
+>   #include "hw/irq.h"
+>   #include "hw/qdev-properties.h"
+> +#include "hw/net/dp8393x.h"
+>   #include "hw/sysbus.h"
+>   #include "migration/vmstate.h"
+>   #include "net/net.h"
+> @@ -85,7 +86,6 @@ static const char *reg_names[] = {
+>   #define SONIC_MPT    0x2e
+>   #define SONIC_MDT    0x2f
+>   #define SONIC_DCR2   0x3f
+> -#define SONIC_REG_COUNT  0x40
 >   
->   static void q800_machine_init(MachineState *machine)
->   {
-> -    M68kCPU *cpu = NULL;
-> +    Q800MachineState *m = Q800_MACHINE(machine);
->       int linux_boot;
->       int32_t kernel_size;
->       uint64_t elf_entry;
-> @@ -407,8 +407,9 @@ static void q800_machine_init(MachineState *machine)
->       }
+>   #define SONIC_CR_HTX     0x0001
+>   #define SONIC_CR_TXP     0x0002
+> @@ -139,36 +139,6 @@ static const char *reg_names[] = {
+>   #define SONIC_DESC_EOL   0x0001
+>   #define SONIC_DESC_ADDR  0xFFFE
 >   
->       /* init CPUs */
-> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
-> -    qemu_register_reset(main_cpu_reset, cpu);
-> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu, machine->cpu_type);
-> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
-> +    qemu_register_reset(main_cpu_reset, &m->cpu);
->   
->       /* RAM */
->       memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-> @@ -430,7 +431,8 @@ static void q800_machine_init(MachineState *machine)
->   
->       /* IRQ Glue */
->       glue = qdev_new(TYPE_GLUE);
-> -    object_property_set_link(OBJECT(glue), "cpu", OBJECT(cpu), &error_abort);
-> +    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
-> +                             &error_abort);
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
->   
->       /* VIA 1 */
-> @@ -605,7 +607,7 @@ static void q800_machine_init(MachineState *machine)
->   
->       macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
->   
-> -    cs = CPU(cpu);
-> +    cs = CPU(&m->cpu);
->       if (linux_boot) {
->           uint64_t high;
->           void *param_blob, *param_ptr, *param_rng_seed;
-> @@ -735,6 +737,11 @@ static GlobalProperty hw_compat_q800[] = {
->   };
->   static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
->   
-> +static const char *q800_machine_valid_cpu_types[] = {
-> +    M68K_CPU_TYPE_NAME("m68040"),
-> +    NULL
-> +};
-> +
->   static void q800_machine_class_init(ObjectClass *oc, void *data)
->   {
->       MachineClass *mc = MACHINE_CLASS(oc);
-> @@ -742,6 +749,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
->       mc->desc = "Macintosh Quadra 800";
->       mc->init = q800_machine_init;
->       mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
-> +    mc->valid_cpu_types = q800_machine_valid_cpu_types;
->       mc->max_cpus = 1;
->       mc->block_default_type = IF_SCSI;
->       mc->default_ram_id = "m68k_mac.ram";
-> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-> index f3bc17aa1b..4cb1a51dfe 100644
-> --- a/include/hw/m68k/q800.h
-> +++ b/include/hw/m68k/q800.h
-> @@ -25,6 +25,7 @@
->   
->   #include "hw/boards.h"
->   #include "qom/object.h"
-> +#include "target/m68k/cpu-qom.h"
+> -#define TYPE_DP8393X "dp8393x"
+> -OBJECT_DECLARE_SIMPLE_TYPE(dp8393xState, DP8393X)
+> -
+> -struct dp8393xState {
+> -    SysBusDevice parent_obj;
+> -
+> -    /* Hardware */
+> -    uint8_t it_shift;
+> -    bool big_endian;
+> -    bool last_rba_is_full;
+> -    qemu_irq irq;
+> -    int irq_level;
+> -    QEMUTimer *watchdog;
+> -    int64_t wt_last_update;
+> -    NICConf conf;
+> -    NICState *nic;
+> -    MemoryRegion mmio;
+> -
+> -    /* Registers */
+> -    uint16_t cam[16][3];
+> -    uint16_t regs[SONIC_REG_COUNT];
+> -
+> -    /* Temporaries */
+> -    uint8_t tx_buffer[0x10000];
+> -    int loopback_packet;
+> -
+> -    /* Memory access */
+> -    MemoryRegion *dma_mr;
+> -    AddressSpace as;
+> -};
 >   
 >   /*
->    * The main Q800 machine
-> @@ -32,6 +33,8 @@
->   
->   struct Q800MachineState {
->       MachineState parent_obj;
+>    * Accessor functions for values which are formed by
+> diff --git a/include/hw/net/dp8393x.h b/include/hw/net/dp8393x.h
+> new file mode 100644
+> index 0000000000..4a3f7478be
+> --- /dev/null
+> +++ b/include/hw/net/dp8393x.h
+> @@ -0,0 +1,60 @@
+> +/*
+> + * QEMU NS SONIC DP8393x netcard
+> + *
+> + * Copyright (c) 2008-2009 Herve Poussineau
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along
+> + * with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
 > +
-> +    M68kCPU cpu;
->   };
->   
->   #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
-
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+> +#ifndef HW_NET_DP8393X_H
+> +#define HW_NET_DP8393X_H
+> +
+> +#include "hw/sysbus.h"
+> +#include "net/net.h"
+> +#include "exec/memory.h"
+> +
+> +#define SONIC_REG_COUNT  0x40
+> +
+> +#define TYPE_DP8393X "dp8393x"
+> +OBJECT_DECLARE_SIMPLE_TYPE(dp8393xState, DP8393X)
+> +
+> +struct dp8393xState {
+> +    SysBusDevice parent_obj;
+> +
+> +    /* Hardware */
+> +    uint8_t it_shift;
+> +    bool big_endian;
+> +    bool last_rba_is_full;
+> +    qemu_irq irq;
+> +    int irq_level;
+> +    QEMUTimer *watchdog;
+> +    int64_t wt_last_update;
+> +    NICConf conf;
+> +    NICState *nic;
+> +    MemoryRegion mmio;
+> +
+> +    /* Registers */
+> +    uint16_t cam[16][3];
+> +    uint16_t regs[SONIC_REG_COUNT];
+> +
+> +    /* Temporaries */
+> +    uint8_t tx_buffer[0x10000];
+> +    int loopback_packet;
+> +
+> +    /* Memory access */
+> +    MemoryRegion *dma_mr;
+> +    AddressSpace as;
+> +};
+> +
+> +#endif
 
 
