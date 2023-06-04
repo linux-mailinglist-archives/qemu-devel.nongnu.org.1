@@ -2,86 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD33721876
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 489FB721884
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:17:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5qL5-0004Ol-PX; Sun, 04 Jun 2023 12:12:19 -0400
+	id 1q5qPB-0005hv-CH; Sun, 04 Jun 2023 12:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5qL4-0004O0-1w
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:12:18 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q5qL1-0003DQ-Hf
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:12:17 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2553663f71eso1553474a91.3
- for <qemu-devel@nongnu.org>; Sun, 04 Jun 2023 09:12:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685895134; x=1688487134;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hroHzR7x1g6W9cjw4hhQK3FpNEcnbNs33lrQ6iRHrhY=;
- b=WEycpUiimGHD1zxnJAqF1IxxFt2v+neZKdsAf+6MkP8hFfsxWo453WR2PYMLZmnZJB
- 9mxpVGnDVJuVHuBHVA5WG4wSBLpu8NwhR1xAt1lOeO+oqezzvn6EvBXrwqeXY4jyl1LT
- 7vTS+BfyXK20Sho7bNZpdyMXVAvOxtS8N9B8SZ5BDPVy5fEq1Db969ZDPhNFM7dRWAo3
- i3sRmamYj+weoyCjmXwWjwlRUtqyt22FBb1z3LOnxqddMgH3svJZkQS0X38dtASx4P4m
- A0DTcjOaj5wvkCsDlrnEY+GnVBlwjXX8fGb0hJ4rvba9FUZncmKwb6OPKJXYWq/wSCeu
- eJcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685895134; x=1688487134;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hroHzR7x1g6W9cjw4hhQK3FpNEcnbNs33lrQ6iRHrhY=;
- b=gFPAH5BLYpverF9Fmor+kIS5/CfdPg3rAjfaRzBFAKLL8iq455nTBh0rNb1vmopxhc
- CFnMx0JCM1Qlgm72JTxUftfRuYd1xRJoUyVSE5p19JZwpC1uMD/S/YcsYP40MbGQKX3M
- eLZ2hGdmMiJ1bChPgJEOvBE4h9epVfpofWfJB52as+DLpVyd4uYvnJ+hoDaqA7NLUVId
- 1HgL6Ihk28kQIR01o4jcRXnzBfxi+1lM6YrkZrG0DI0B8ilckeX4HlqBPOqFAOtAeB7A
- jWIYV63KWLkPg59H6q0zfaOYb6HHtjUYAtf7YSFngAU9v7JhpL+NBUQ77yhbSIVrKun+
- 47yw==
-X-Gm-Message-State: AC+VfDwUjzPuEHCW9/VMCMl/VIpvurpZp7ZPVk7/rGEi/RSNhWfmMvKI
- WIgmMNY9xyBOv420zmfb8gxhCg==
-X-Google-Smtp-Source: ACHHUZ52krgEvHthTRP3I3HHE+pVWZVs1VJgWTWkNKggcyOlcfZ1Xe5xkC1Z64Wy/xhlmAKzLejmbQ==
-X-Received: by 2002:a17:90b:3596:b0:253:2c7f:e9ad with SMTP id
- mm22-20020a17090b359600b002532c7fe9admr2183380pjb.27.1685895133873; 
- Sun, 04 Jun 2023 09:12:13 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:7d0c:4d62:710d:ff28?
- ([2602:ae:1598:4c01:7d0c:4d62:710d:ff28])
- by smtp.gmail.com with ESMTPSA id
- a14-20020a17090a688e00b0025930e46596sm1232113pjd.55.2023.06.04.09.12.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jun 2023 09:12:13 -0700 (PDT)
-Message-ID: <d39d024b-9db8-50e9-4a35-04eaef1cc704@linaro.org>
-Date: Sun, 4 Jun 2023 09:12:10 -0700
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qP7-0005hc-DB
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:16:29 -0400
+Received: from mout.kundenserver.de ([212.227.126.187])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q5qP5-0004Wu-G3
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:16:29 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MIdS1-1prm2y1Afd-00Eb6T; Sun, 04 Jun 2023 18:16:21 +0200
+Message-ID: <6e6e421b-2de4-f0b7-08a8-f3d022bc475b@vivier.eu>
+Date: Sun, 4 Jun 2023 18:16:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 3/4] target/ppc: Remove larx/stcx. memory barrier semantics
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20230604102858.148584-1-npiggin@gmail.com>
- <20230604102858.148584-3-npiggin@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230604102858.148584-3-npiggin@gmail.com>
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 05/23] q800: move CPU object into Q800MachineState
+Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-6-mark.cave-ayland@ilande.co.uk>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <20230604131450.428797-6-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:oaLpuljKSZ3ntPSYZ19FArRdD497wf0ehAwR+w6xzzYqXZRUMBb
+ mELu8CBoGviOk0FfFQtmqXAVOl69/u22Qm4JuE4tURvE3hZ28Grnu7yf8W+rjvAGi/HN8U3
+ 4FPSKa4SedjVyR75+AinEDM8xJ0mjMZRBO59nZIxXLhSrZ79uCvDGoDWXjoURM/DnV4Phn0
+ /3f2tTpyC6rA5wVnVP84A==
+UI-OutboundReport: notjunk:1;M01:P0:gma7eljF3ts=;ILolciCAPkpg+WiMQpF40Y7qzb8
+ ABsoEzuNj9PB6Mp2cQC9V/ctsp54ej/I44OxLY4Zj2HAEtC56k2VEC+IHWx7t8kZ0h8yHWSAu
+ 3JyxKp1h05sE0xi+fIfn3qtTnNgnRF+2KbCYs2uF/AE9dJWAjFLg4u4zcwjiXSmNimwSu6uhG
+ PNSCeX/nrYw7n/DW3jO8e+jPxm1RXz9prYg50QWgA66lIL5FCOsu6VBeZhoa1A9v26pFQQhYX
+ wCT/rXeOV53+a1ctL0L2KfJoXupOWKpd0YUaRwL1QyL3X4SA3FdwQDZ5lGxQeN96Fe+h+/+aC
+ n7FwJ0SLzMRxtbr9Z2vUmoVLaopEp7RSyBZxT7xYOSa40lUQSTUYUtprZeXoxWW6e+AGG1F3k
+ kozXYWsMMpQ/F3S9Tu3WfAlAKQDcptQxoRtdZDrfYl6AmabO18cBYogQo7ocxr41Yt0XVJxbp
+ C5khu84KpCOyqeNcSeBDK4OKjHWdimTo0Pv/C21dtZtcU7O61ICS26GVYbVxfai/uneKCYTa5
+ F/EL2hN2H5neINevx8hdR7mvaWxDaZsd2aBhHR+NHgiPf7lBMwpct9J9UtX3gfEbnyqmfarGR
+ sHMYOHWDMl2f8wcYd759TGQwgta8nY9cP+deGtuk8mNCousFEQZtdMpP80urwQvvMnVXIZssG
+ n8jpfzPy9brYSiwg7pTD1oXoSMghp15cDPotueFa6w==
+Received-SPF: none client-ip=212.227.126.187; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,16 +71,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/23 03:28, Nicholas Piggin wrote:
-> larx and stcx. are not defined to order any memory operations.
-> Remove the barriers.
+Le 04/06/2023 à 15:14, Mark Cave-Ayland a écrit :
+> Also change the instantiation of the CPU to use object_initialize_child()
+> followed by a separate realisation.
 > 
-> Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   target/ppc/translate.c | 11 -----------
->   1 file changed, 11 deletions(-)
+>   hw/m68k/q800.c         | 18 +++++++++++++-----
+>   include/hw/m68k/q800.h |  3 +++
+>   2 files changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index 3730b30dd1..d0ceb64b70 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+>   
+>   static void q800_machine_init(MachineState *machine)
+>   {
+> -    M68kCPU *cpu = NULL;
+> +    Q800MachineState *m = Q800_MACHINE(machine);
+>       int linux_boot;
+>       int32_t kernel_size;
+>       uint64_t elf_entry;
+> @@ -407,8 +407,9 @@ static void q800_machine_init(MachineState *machine)
+>       }
+>   
+>       /* init CPUs */
+> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+> -    qemu_register_reset(main_cpu_reset, cpu);
+> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu, machine->cpu_type);
+> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
+> +    qemu_register_reset(main_cpu_reset, &m->cpu);
+>   
+>       /* RAM */
+>       memory_region_add_subregion(get_system_memory(), 0, machine->ram);
+> @@ -430,7 +431,8 @@ static void q800_machine_init(MachineState *machine)
+>   
+>       /* IRQ Glue */
+>       glue = qdev_new(TYPE_GLUE);
+> -    object_property_set_link(OBJECT(glue), "cpu", OBJECT(cpu), &error_abort);
+> +    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
+> +                             &error_abort);
+>       sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
+>   
+>       /* VIA 1 */
+> @@ -605,7 +607,7 @@ static void q800_machine_init(MachineState *machine)
+>   
+>       macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
+>   
+> -    cs = CPU(cpu);
+> +    cs = CPU(&m->cpu);
+>       if (linux_boot) {
+>           uint64_t high;
+>           void *param_blob, *param_ptr, *param_rng_seed;
+> @@ -735,6 +737,11 @@ static GlobalProperty hw_compat_q800[] = {
+>   };
+>   static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
+>   
+> +static const char *q800_machine_valid_cpu_types[] = {
+> +    M68K_CPU_TYPE_NAME("m68040"),
+> +    NULL
+> +};
+> +
+>   static void q800_machine_class_init(ObjectClass *oc, void *data)
+>   {
+>       MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -742,6 +749,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
+>       mc->desc = "Macintosh Quadra 800";
+>       mc->init = q800_machine_init;
+>       mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
+> +    mc->valid_cpu_types = q800_machine_valid_cpu_types;
+>       mc->max_cpus = 1;
+>       mc->block_default_type = IF_SCSI;
+>       mc->default_ram_id = "m68k_mac.ram";
+> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+> index f3bc17aa1b..4cb1a51dfe 100644
+> --- a/include/hw/m68k/q800.h
+> +++ b/include/hw/m68k/q800.h
+> @@ -25,6 +25,7 @@
+>   
+>   #include "hw/boards.h"
+>   #include "qom/object.h"
+> +#include "target/m68k/cpu-qom.h"
+>   
+>   /*
+>    * The main Q800 machine
+> @@ -32,6 +33,8 @@
+>   
+>   struct Q800MachineState {
+>       MachineState parent_obj;
+> +
+> +    M68kCPU cpu;
+>   };
+>   
+>   #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
-r~
 
