@@ -2,66 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D7F721749
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 15:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D523472186E
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Jun 2023 18:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q5nb6-0006u5-6C; Sun, 04 Jun 2023 09:16:40 -0400
+	id 1q5qEU-0002fN-N7; Sun, 04 Jun 2023 12:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5nb2-0006U2-7K
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:16:36 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5nb0-0003T2-H6
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 09:16:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=RZPPecDlHV4Qw2k5yjU6Ai2tqsGrdK9RgBx7NxHeIkY=; b=yX/L/FJb6hYc5phF/Mt5+XnBJg
- UYsX62S4DyzbZH0cC0oUtWesPDWAjVYp8oGasce5jMNO/4amohir5I/ZK/JRHcognE7Wthrg2VwRV
- yS6TnrPFcwkV8HQp/fuHdQqip7a8hykyprAW/3c1MyRb/P9UHT80B4sI6jiZF8eB202PF6zjIpQi6
- 6ZytWubfo21bsMxBUCgODyXRCuhjI/sfGT30ejMiJ+qpCdPXd8EouArnyQ29P4FDYoiCaEIkUtJbx
- wPVa4ysrmucQWnMv3X3GD1lsxjXYhPqKQmMEMLpYk7YLR6epYabxWqH8G0ANYRMzJEVs5Ed6BUgd0
- amqMd100WeMyRyyPx1/N0ipyNcZxyqR/TZkFBNi7N/WVuPidFfgih9qth6UYgUmSQfk7ygEwGQnps
- O+8hDOoY1hcBPzdDYaTYPvNQH+DTKojYFnqs7YALScdR3Lze0qb0xwAWXcsKC6YF2tRxYv511bCnv
- ASaDb1omHoO1ICZVtdsLwgqoEtQbchiW18D8fK0bXVLkf6wCRkzz/yD5rWpPNmxUHM2AVgQJT/5XX
- Vqm67u7C955FARSwI8+9AopzP0uX6nvOXjxtkE03YGCfchr2XO9L6CFWQFv61vTTZMS6RBzlpk8n8
- QFnSjLdqvTvsjD/7joXN/OGEVHAztdyK0W+UbxDHM=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q5naf-0005pb-DV; Sun, 04 Jun 2023 14:16:17 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: laurent@vivier.eu,
-	qemu-devel@nongnu.org
-Date: Sun,  4 Jun 2023 14:14:50 +0100
-Message-Id: <20230604131450.428797-24-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
-References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q5qEQ-0002eH-H4
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:05:26 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q5qEO-0001WJ-Pb
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 12:05:26 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-5552cbcda35so2715611eaf.1
+ for <qemu-devel@nongnu.org>; Sun, 04 Jun 2023 09:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685894722; x=1688486722;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=L6cneyvOvNrAv6rJfZCBCpJ/iG065yClEwCDc+5zbIA=;
+ b=pWfZJnvRLFmaxbxxrbl41qgtaoe+NgUgb4vy2QL5ZFIvcVgVk1msvxg1f458WNURai
+ MBod6fuV2Eb7JlNdHCwKnEyJRvE42NBcBmoNIQxQ9U94sxB/juYFWvBitp9gnXvjVpqA
+ 0q3uzpeO7cpGAH84R4K9k2kp2NI+Ubjz7vZLVnvjihDsNKZ7lh5+igI9b21FggIW/8mV
+ zJ6ABcgNcV6s5QvAsHy82jdOXpQrz+s7e3JZzLG2Ozr63bC1/SXb7LfjAq4YvAh2zuoD
+ q8qJWaKu7uya4Ryu0EecEVNe2vpB4XaML5BLZCIFUo7kdANh4t4Ndo9+qLhcSVKVMypV
+ Om+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685894722; x=1688486722;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=L6cneyvOvNrAv6rJfZCBCpJ/iG065yClEwCDc+5zbIA=;
+ b=Bp2K/Vh/z2MSYXXWXUrPj6Iy8wcx3uWDAHozqBsNK1d4GCc9EIKYgU/AP3ApGESCJJ
+ hgY0K2T+MN2zsVpXbNmn6PBEPMvBFt8fBp+U6KsKBC8EI2Yz+wPjkYO70ormyyBhM1pr
+ BaNGqQMArfeaGlB3P0y19/fmZZzq12X0IaX+Lue5rnGweQzY9fQr5pl9PIGScrg17ab1
+ gbYwWaO03gFMIzYvWS6/7XbPBD3fxbhiQI87JKsp5ZGsj2+Gm1M48osP5z7zbdj/d1J9
+ u5nJ9+qllBYjZsEglLzvZi2jcuKLVjzUaRYHNiBeH3yOK17txPVbCag1LjoqLNQS9x4a
+ UDzg==
+X-Gm-Message-State: AC+VfDxy1LWCj2lnixE3bqkpHSA0nHVv/1KT1byWhZJqJKNPw8KpBNhg
+ ARlEY3pcJ5FQqTTP2QCtjlwuQQ==
+X-Google-Smtp-Source: ACHHUZ6znmK8aQQAW9m1eSYYQFXhXTaZgPeRp4jDgXKKKbbyIvwhiGvIGruXuk4Xl9RYy4wGTtx8lQ==
+X-Received: by 2002:a05:6358:c601:b0:128:2e1e:5dbc with SMTP id
+ fd1-20020a056358c60100b001282e1e5dbcmr4806906rwb.25.1685894721768; 
+ Sun, 04 Jun 2023 09:05:21 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:7d0c:4d62:710d:ff28?
+ ([2602:ae:1598:4c01:7d0c:4d62:710d:ff28])
+ by smtp.gmail.com with ESMTPSA id
+ gx13-20020a17090b124d00b002560ab7a15fsm4258998pjb.36.2023.06.04.09.05.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 04 Jun 2023 09:05:21 -0700 (PDT)
+Message-ID: <a9cfd044-6c20-e84a-b6ef-0f16c43765e3@linaro.org>
+Date: Sun, 4 Jun 2023 09:05:18 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 23/23] mac_via: fix rtc command decoding for the PRAM
- seconds registers
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/4] target/ppc: Fix lqarx to set cpu_reserve
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20230604102858.148584-1-npiggin@gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230604102858.148584-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,59 +96,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Analysis of the MacOS toolbox ROM code shows that on startup it attempts 2
-separate reads of the seconds registers with commands 0x9d...0x91 followed by
-0x8d..0x81 without resetting the command to its initial value. The PRAM seconds
-value is only accepted when the values of the 2 separate reads match.
+On 6/4/23 03:28, Nicholas Piggin wrote:
+> lqarx does not set cpu_reserve, which causes stqcx. to never succeed.
+> Fix this and slightly rearrange gen_load_locked so the two functions
+> match more closely.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 94bf2658676 ("target/ppc: Use atomic load for LQ and LQARX")
+> Fixes: 57b38ffd0c6 ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> cpu_reserve got lost in the parallel part with the first patch, then
+> from serial part when it was merged with the parallel by the second
+> patch.
 
-From this we conclude that bit 4 of the rtc command is not decoded or we don't
-care about its value when reading the PRAM seconds registers. Implement this
-decoding change so that both reads return successfully which allows the MacOS
-toolbox ROM to correctly set the date/time.
+Oops, sorry about that.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
----
- hw/misc/mac_via.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/translate.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 3650d2985d..e129cdcb8f 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -3583,8 +3583,8 @@ static void gen_load_locked(DisasContext *ctx, MemOp memop)
+>   
+>       gen_set_access_type(ctx, ACCESS_RES);
+>       gen_addr_reg_index(ctx, t0);
+> -    tcg_gen_qemu_ld_tl(gpr, t0, ctx->mem_idx, memop | MO_ALIGN);
+>       tcg_gen_mov_tl(cpu_reserve, t0);
+> +    tcg_gen_qemu_ld_tl(gpr, t0, ctx->mem_idx, memop | MO_ALIGN);
+>       tcg_gen_mov_tl(cpu_reserve_val, gpr);
 
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 85c2e65856..0787a0268d 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -362,10 +362,10 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
-  *
-  * Command byte    Register addressed by the command
-  *
-- * z0000001        Seconds register 0 (lowest-order byte)
-- * z0000101        Seconds register 1
-- * z0001001        Seconds register 2
-- * z0001101        Seconds register 3 (highest-order byte)
-+ * z00x0001        Seconds register 0 (lowest-order byte)
-+ * z00x0101        Seconds register 1
-+ * z00x1001        Seconds register 2
-+ * z00x1101        Seconds register 3 (highest-order byte)
-  * 00110001        Test register (write-only)
-  * 00110101        Write-Protect Register (write-only)
-  * z010aa01        RAM address 100aa ($10-$13) (first 20 bytes only)
-@@ -373,6 +373,7 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
-  * z0111aaa        Extended memory designator and sector number
-  *
-  * For a read request, z=1, for a write z=0
-+ * The letter x indicates don't care
-  * The letter a indicates bits whose value depend on what parameter
-  * RAM byte you want to address
-  */
-@@ -389,7 +390,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
-     }
-     if ((value & 0x03) == 0x01) {
-         value >>= 2;
--        if ((value & 0x1c) == 0) {
-+        if ((value & 0x18) == 0) {
-             /* seconds registers */
-             return read | (REG_0 + (value & 0x03));
-         } else if ((value == 0x0c) && !read) {
--- 
-2.30.2
+This change is wrong.  Reserve should not be set if the load faults.
 
+>       tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+>   }
+> @@ -3872,6 +3872,7 @@ static void gen_lqarx(DisasContext *ctx)
+>       gen_set_access_type(ctx, ACCESS_RES);
+>       EA = tcg_temp_new();
+>       gen_addr_reg_index(ctx, EA);
+> +    tcg_gen_mov_tl(cpu_reserve, EA);
+>   
+>       /* Note that the low part is always in RD+1, even in LE mode.  */
+>       lo = cpu_gpr[rd + 1];
+
+This needs to go lower with the sets of reserve_val*.
+
+
+r~
 
