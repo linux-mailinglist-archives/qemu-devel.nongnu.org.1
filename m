@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4885F72315C
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 494C572314C
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Gd0-0001z5-Ig; Mon, 05 Jun 2023 16:16:34 -0400
+	id 1q6Gcv-0001xj-2o; Mon, 05 Jun 2023 16:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Gck-0001vD-65
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:18 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1q6Gck-0001vb-Lz
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:19 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Gcg-00041B-HC
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:17 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d44b198baso3830868b3a.0
+ id 1q6Gch-0003nm-1D
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:18 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-650c8cb68aeso3084570b3a.3
  for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:16:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685996173; x=1688588173;
+ d=linaro.org; s=google; t=1685996174; x=1688588174;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H+UrwJ0Uc9kZfK3DxO9f4YdqZ7tw2V2PPN3Y5ahvr5k=;
- b=k6CDihM83jniika2t/cbIrG5vq9fFnpj1kt1/RSTm37U8gkYEGwfu1W6cBWUe54Ku/
- az2ksGqImtF0RlA0NsYLQBZ9o8ceFrkTREsVKxHMauvRmE/6JpCakDyidw32vsVuaqHI
- /tCWcDK+BWnE0YAHxTw7kuAYunC3poJwcrS3wGvY7wUxiGQY5l0N6bYhyj5NbIrViLxC
- BIqb33tzmJ9kY0OXFfynjjvNGFOvrDn4dkM9nkKo6GikIdZA1A7l3eJSSLELKb1pevZ+
- QsDje79JYa0uI9OhMuQe0oaHuca5cdVEoTfRpnDUpVSLiSIpq26t1D94YcvYazjgJKx6
- v//g==
+ bh=N6gCotNJADYlI+Iq7qcqhdrgKIsALIeK+sX1hBJ35+c=;
+ b=N5kI5gQWcK663zgbSDcfV6GeOzc1zbabB60uxt99Lytt9SoXflhCHFtk6j9ANt4574
+ l4K3n+U55FPdV22h8igAwWMrs0pL/P9A1cXzpaliQ8K4YCFK9bLBt51Z6tVcf0AhliCG
+ LPjPkIApLqT9qI5/TG6a1wykwUcbmkAIMG79ucv1Q/LkpcT9rLhKyVuSIX2S8S+G2Fqt
+ ZAyjEKK9OKsKQT6lETYE1BRv6AtL1vWmQbettph7FVB+ECzrLNjFBO+ZoDOgrZ9QBoKR
+ An8BLu8Z40EXeR0W//5zX7UkOW3KI0xfE44bOStTLAcAmpwYGpl1mK8hpwE+6uytqXse
+ A1Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685996173; x=1688588173;
+ d=1e100.net; s=20221208; t=1685996174; x=1688588174;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H+UrwJ0Uc9kZfK3DxO9f4YdqZ7tw2V2PPN3Y5ahvr5k=;
- b=OMlTbK85egvJpEg6EsRuWJ7FkjEZKXEZ0/G8HUxAH+De4PrGoXgAcGil0yW6riD5c+
- kcpCY27GEXw3mWo5kUNfuxciuCVbOBH60mKyDwd8ZhbV8YA9FWbK1sY15e3tY9pgyOi+
- qpAPYiGrMgesdmDSY3b/f4TxvSQvy5vjF9apkpky12WFX/44kT5U3j5t+3gbpvsdsSMD
- Ch+u5nVZA3fj/fDJ6suQ250/1g2q1mUJ0rNQ3ie9jwQ4FXrj5CHj2HuQoosASNTI1xJU
- 3Aq/VyPOSK7yJdIOgaHu0xp0/uFvWslSdpc0eY7NLc+hmJM5jHvX6DstZqIMNzaGToKd
- qotA==
-X-Gm-Message-State: AC+VfDzCZNjQN0fB93uTH4Ds9AHGKuqaE6ApDyNS3t32V1vhi66j+nhk
- /ugQk3Qp6D+JvhIQk7K4zFRdak3pE8ElJGby2uM=
-X-Google-Smtp-Source: ACHHUZ5IaSAvPoY1ivN6k1zHWHU5enzF/0q/rBBHbauo+MrwAd5GK5S9Rj/JyODvKb+B2UBM7BJZdQ==
-X-Received: by 2002:a05:6a00:139c:b0:63b:54e4:871b with SMTP id
- t28-20020a056a00139c00b0063b54e4871bmr107140pfg.8.1685996173315; 
- Mon, 05 Jun 2023 13:16:13 -0700 (PDT)
+ bh=N6gCotNJADYlI+Iq7qcqhdrgKIsALIeK+sX1hBJ35+c=;
+ b=KB9qh/GiCOu/V3RSzCGV6tcr2aOOtuLWsQxQPVu4Tv1foN6aNQ4bRwSOyNn3gr5MDT
+ My0VjL1EYXbxTNmgWxRUjsHZujYhBZAMdiQ59OvHZTyi1g2Kujc3V8xM7SUqIvG+iISR
+ 8fFn6TFvq9ZfroWMDLK0j+78xtabVYMxsyaxGCxBOEG+yiYSVSvxQqVPKAaR9GbTWnnk
+ xlgLNqRv0I2CUu0lPft12KGC7eko/6kSw8a5ubJdSjmLemmtOATfhUpIRstECA4yGKTT
+ gPrZNP4HA8cARHu38BiKuE1WqQnUfW7B1gzPGmRv1bmjt+PkrA4TGvFQhGqJNJ6z9Sz5
+ lwHQ==
+X-Gm-Message-State: AC+VfDyJeQD+rbIxVyIWt5jVNgZAQcrBikn4xzw3GXIF93GsmgKsADuY
+ SJLDHx3poZjY+jtpQbFIhc6aQgY0VLfekKO1sds=
+X-Google-Smtp-Source: ACHHUZ47m9loV5djPdwyEwLogUY0WXlHyWQT3Bz+mmHflvg2eEh8bHokhHHTb7iWTkNxeCwWi7Dudw==
+X-Received: by 2002:a05:6a00:198c:b0:64d:6a78:1575 with SMTP id
+ d12-20020a056a00198c00b0064d6a781575mr592131pfl.30.1685996174243; 
+ Mon, 05 Jun 2023 13:16:14 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.16.12
+ f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.16.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 13:16:12 -0700 (PDT)
+ Mon, 05 Jun 2023 13:16:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/52] tcg: Add guest_mo to TCGContext
-Date: Mon,  5 Jun 2023 13:15:23 -0700
-Message-Id: <20230605201548.1596865-28-richard.henderson@linaro.org>
+Cc: Anton Johansson <anjo@rev.ng>
+Subject: [PULL 28/52] tcg: Move TLB_FLAGS_MASK check out of get_alignment_bits
+Date: Mon,  5 Jun 2023 13:15:24 -0700
+Message-Id: <20230605201548.1596865-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230605201548.1596865-1-richard.henderson@linaro.org>
 References: <20230605201548.1596865-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,59 +91,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replaces of TCG_GUEST_DEFAULT_MO in tcg-op-ldst.c.
+The replacement isn't ideal, as the raw count of bits
+is not easily synced with exec/cpu-all.h, but it does
+remove from tcg.h the target dependency on TARGET_PAGE_BITS_MIN
+which is built into TLB_FLAGS_MASK.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h         | 1 +
- accel/tcg/translate-all.c | 5 +++++
- tcg/tcg-op-ldst.c         | 4 +---
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ include/exec/cpu-all.h |  3 +++
+ include/tcg/tcg.h      |  4 ----
+ tcg/tcg-op-ldst.c      | 18 ++++++++++++++++--
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 78d258af44..09bf4c0cc6 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -314,6 +314,9 @@ CPUArchState *cpu_copy(CPUArchState *env);
+  *
+  * Use TARGET_PAGE_BITS_MIN so that these bits are constant
+  * when TARGET_PAGE_BITS_VARY is in effect.
++ *
++ * The count, if not the placement of these bits is known
++ * to tcg/tcg-op-ldst.c, check_max_alignment().
+  */
+ /* Zero if TLB entry is valid.  */
+ #define TLB_INVALID_MASK    (1 << (TARGET_PAGE_BITS_MIN - 1))
 diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 813c733910..9f607e2664 100644
+index 9f607e2664..635fa53fdb 100644
 --- a/include/tcg/tcg.h
 +++ b/include/tcg/tcg.h
-@@ -521,6 +521,7 @@ struct TCGContext {
-     uint8_t tlb_dyn_max_bits;
- #endif
-     uint8_t insn_start_words;
-+    TCGBar guest_mo;
- 
-     TCGRegSet reserved_regs;
-     intptr_t current_frame_offset;
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 67b838e16b..200de2793c 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -364,6 +364,11 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-         (int)offsetof(ArchCPU, neg.tlb.f) - (int)offsetof(ArchCPU, env);
- #endif
-     tcg_ctx->insn_start_words = TARGET_INSN_START_WORDS;
-+#ifdef TCG_GUEST_DEFAULT_MO
-+    tcg_ctx->guest_mo = TCG_GUEST_DEFAULT_MO;
-+#else
-+    tcg_ctx->guest_mo = TCG_MO_ALL;
-+#endif
- 
-  tb_overflow:
+@@ -305,10 +305,6 @@ static inline unsigned get_alignment_bits(MemOp memop)
+         /* A specific alignment requirement.  */
+         a = a >> MO_ASHIFT;
+     }
+-#if defined(CONFIG_SOFTMMU)
+-    /* The requested alignment cannot overlap the TLB flags.  */
+-    tcg_debug_assert((TLB_FLAGS_MASK & ((1 << a) - 1)) == 0);
+-#endif
+     return a;
+ }
  
 diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 3c00bf0c95..9bcf63b041 100644
+index 9bcf63b041..46a5977b35 100644
 --- a/tcg/tcg-op-ldst.c
 +++ b/tcg/tcg-op-ldst.c
-@@ -104,9 +104,7 @@ static void gen_ldst_i64(TCGOpcode opc, TCGv_i64 v, TCGTemp *addr, MemOpIdx oi)
+@@ -32,11 +32,23 @@
+ #include "tcg-internal.h"
  
- static void tcg_gen_req_mo(TCGBar type)
+ 
+-static inline MemOp tcg_canonicalize_memop(MemOp op, bool is64, bool st)
++static void check_max_alignment(unsigned a_bits)
++{
++#if defined(CONFIG_SOFTMMU)
++    /*
++     * The requested alignment cannot overlap the TLB flags.
++     * FIXME: Must keep the count up-to-date with "exec/cpu-all.h".
++     */
++    tcg_debug_assert(a_bits + 6 <= tcg_ctx->page_bits);
++#endif
++}
++
++static MemOp tcg_canonicalize_memop(MemOp op, bool is64, bool st)
  {
--#ifdef TCG_GUEST_DEFAULT_MO
--    type &= TCG_GUEST_DEFAULT_MO;
--#endif
-+    type &= tcg_ctx->guest_mo;
-     type &= ~TCG_TARGET_DEFAULT_MO;
-     if (type) {
-         tcg_gen_mb(type | TCG_BAR_SC);
+-    /* Trigger the asserts within as early as possible.  */
+     unsigned a_bits = get_alignment_bits(op);
+ 
++    check_max_alignment(a_bits);
++
+     /* Prefer MO_ALIGN+MO_XX over MO_ALIGN_XX+MO_XX */
+     if (a_bits == (op & MO_SIZE)) {
+         op = (op & ~MO_AMASK) | MO_ALIGN;
+@@ -491,6 +503,7 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
+     TCGv_i64 ext_addr = NULL;
+     TCGOpcode opc;
+ 
++    check_max_alignment(get_alignment_bits(memop));
+     tcg_gen_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
+ 
+     /* TODO: For now, force 32-bit hosts to use the helper. */
+@@ -599,6 +612,7 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+     TCGv_i64 ext_addr = NULL;
+     TCGOpcode opc;
+ 
++    check_max_alignment(get_alignment_bits(memop));
+     tcg_gen_req_mo(TCG_MO_ST_LD | TCG_MO_ST_ST);
+ 
+     /* TODO: For now, force 32-bit hosts to use the helper. */
 -- 
 2.34.1
 
