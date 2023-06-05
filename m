@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06820722788
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 15:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDF7722798
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 15:36:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6AKa-00071y-8K; Mon, 05 Jun 2023 09:33:08 -0400
+	id 1q6AMv-0001JJ-7N; Mon, 05 Jun 2023 09:35:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q6AKY-00071U-AX
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 09:33:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q6AKW-00076P-Q4
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 09:33:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685971982;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tr5HrglYb8nBSgQjwzSfuZnnfiQQRaEPi7ECSMJFQ/E=;
- b=QAFl3QuaaVD/D5HVKlbsLaCFrdO249mfvtrzkYNaTKRPRZiHs5YHlDc18RMonbiFCR3mE2
- x8vyC0VPnREOHr+DtmMpED15yHmHVoVMMshBEM9qj0uOdj7CmwMctgrt2criIYqMJQME7O
- 1tRg0xv/PJWozNmw+NWDiWumHY2J/yU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-483-t5jLAEScMfaG3W3zAuXhhQ-1; Mon, 05 Jun 2023 09:32:58 -0400
-X-MC-Unique: t5jLAEScMfaG3W3zAuXhhQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F057385A5B5;
- Mon,  5 Jun 2023 13:32:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.45])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8BC0040CFD46;
- Mon,  5 Jun 2023 13:32:56 +0000 (UTC)
-Date: Mon, 5 Jun 2023 08:32:55 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
- Hanna Czenczek <hreitz@redhat.com>
-Subject: Re: [PULL 07/21] cutils: Fix wraparound parsing in qemu_strtoui
-Message-ID: <j322ihz6lx6zpjy7mun4mzfwnpih7seqjnpffm5dhebyur45ur@p2aqn2znt6wq>
-References: <20230601220305.2130121-1-eblake@redhat.com>
- <20230601220305.2130121-8-eblake@redhat.com>
- <62d84222-7da7-d036-7ef1-37b88de69572@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1q6AMs-0001JA-Qb
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 09:35:30 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1q6AMq-0007iT-Gi
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 09:35:30 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-256d1b5f7c0so3556508a91.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 06:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685972126; x=1688564126;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id:sender
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gDyT3HEoIS5RmHuNt7thsvI1nlwjDuPlVXhZ+cXZM/0=;
+ b=VkYsbkZfaEWFbVH4aInCeS4dvjCoiuh+ZFl+CQqWRNW4VgZE89u9LRqmeaOHHSd0yU
+ 5DENqIOwKHisX2Jfa62/h+If7XYQzrkNMi9oUz233IwVW9sk6FojVtQoBKbyTlMfL3SF
+ U8UJ4EzJhlFtEEAGh2uBoU10oFe5D+BP84HWkPLnXUXNmtXvVS24I/MDzpojtJEVC6rS
+ VEoJyLsTN+1ySrusWSU9gD42Rp8BMzRU+WHFnAzgYy4XVMnZEmvqUDoT4XNCR9t3/0mP
+ 8D2/Fxe4v/xI95OErgIusRRm9kxgzuEFUlQSK7B08OdksecXS8UjVJA9ONVOBFiA/Eja
+ 7oOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685972126; x=1688564126;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id:sender
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gDyT3HEoIS5RmHuNt7thsvI1nlwjDuPlVXhZ+cXZM/0=;
+ b=DO2P8FoRlyPSjtPlqMyFDIPHdWG5fCvSHJdHS787JcshEs2dSj2dAR70hO2vCYNsyh
+ U7k7V33uZu/JlT94MuVOIP08+RShLvr5UBJuzcnbayQsR+YpHfrSp7GBhi7ZqExlnwBb
+ sd7AoZwbzhIJg8ywputt/nHDbpCFqH1caR6ftrk6oSmXwNXWqUyce6w3CN01sCA9YVeu
+ 9RF15BAdC8621UXZiNeqvTQHcFwJA1Bk2aCSVDxqyNFk6PHQwt1X9Xhu8VQ8ZcPyCuCc
+ DlAgtVLnznjGUts+BerQMwxja01n7EM6xMJ+fUhCE0UCEWYO+WnYDb/2COvV7vPRmK2O
+ iLMg==
+X-Gm-Message-State: AC+VfDyMc7LomypAcoHGtudFv+4Va/A4ujCuaFO59J7Sgc39edmemRFl
+ p+023w2OxR3kgP7jU/lrdjI=
+X-Google-Smtp-Source: ACHHUZ46GgsBFfioGrBKa2PUngAfyIX2mRI9W32V31FerP+hXxIicXY0r55vMvtdnoMXT15n0AOOHQ==
+X-Received: by 2002:a17:90a:6b4e:b0:244:d441:8f68 with SMTP id
+ x14-20020a17090a6b4e00b00244d4418f68mr8904970pjl.16.1685972125739; 
+ Mon, 05 Jun 2023 06:35:25 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
+ ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ t9-20020a17090a448900b0023a9564763bsm7669374pjg.29.2023.06.05.06.35.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 06:35:25 -0700 (PDT)
+Message-ID: <0196226c-39a9-8bab-1543-34d5412f926e@roeck-us.net>
+Date: Mon, 5 Jun 2023 06:35:22 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+References: <20230502121459.2422303-1-peter.maydell@linaro.org>
+ <20230502121459.2422303-32-peter.maydell@linaro.org>
+ <edc17818-6db5-4f95-a966-3a810804ea04@roeck-us.net>
+ <a77c864f-f571-b0a8-3c7f-dadbbf8c8185@tls.msk.ru>
+ <4377a8d5-54d1-e0b3-e87a-0c04ec3b1360@roeck-us.net>
+ <CAFEAcA_L8XCdRLGU_xeMC3JGzK_4h0LDWXz0VFLMgdkWigc1VQ@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PULL 31/35] hw/intc/allwinner-a10-pic: Don't use
+ set_bit()/clear_bit()
+In-Reply-To: <CAFEAcA_L8XCdRLGU_xeMC3JGzK_4h0LDWXz0VFLMgdkWigc1VQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <62d84222-7da7-d036-7ef1-37b88de69572@tls.msk.ru>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=groeck7@gmail.com; helo=mail-pj1-x102a.google.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,62 +101,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jun 03, 2023 at 11:17:27AM +0300, Michael Tokarev wrote:
-> 02.06.2023 01:02, Eric Blake пишет:
-> > While we were matching 32-bit strtol in qemu_strtoi, our use of a
-> > 64-bit parse was leaking through for some inaccurate answers in
-> > qemu_strtoui in comparison to a 32-bit strtoul (see the unit test for
-> > examples).  The comment for that function even described what we have
-> > to do for a correct parse, but didn't implement it correctly: since
-> > strtoull checks for overflow against the wrong values and then
-> > negates, we have to temporarily undo negation before checking for
-> > overflow against our desired value.
-> > 
-> > Our int wrappers would be a lot easier to write if libc had a
-> > guaranteed 32-bit parser even on platforms with 64-bit long.
-> > 
-> > Whether we parse C2x binary strings like "0b1000" is currently up to
-> > what libc does; our unit tests intentionally don't cover that at the
-> > moment, though.
-> > 
-> > Fixes: 473a2a331e ("cutils: add qemu_strtoi & qemu_strtoui parsers for int/unsigned int types", v2.12.0)
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > CC: qemu-stable@nongnu.org
+On 6/5/23 02:40, Peter Maydell wrote:
+> On Sat, 3 Jun 2023 at 19:06, Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> On 6/3/23 10:46, Michael Tokarev wrote:
+>>> 03.06.2023 18:03, Guenter Roeck wrote:
+>>>> Hi,
+>>>>
+>>>> On Tue, May 02, 2023 at 01:14:55PM +0100, Peter Maydell wrote:
+>>>>> The Allwinner PIC model uses set_bit() and clear_bit() to update the
+>>>>> values in its irq_pending[] array when an interrupt arrives.  However
+>>>>> it is using these functions wrongly: they work on an array of type
+>>>>> 'long', and it is passing an array of type 'uint32_t'.  Because the
+>>>>> code manually figures out the right array element, this works on
+>>>>> little-endian hosts and on 32-bit big-endian hosts, where bits 0..31
+>>>>> in a 'long' are in the same place as they are in a 'uint32_t'.
+>>>>> However it breaks on 64-bit big-endian hosts.
+>>>>>
+>>>>> Remove the use of set_bit() and clear_bit() in favour of using
+>>>>> deposit32() on the array element.  This fixes a bug where on
+>>>>> big-endian 64-bit hosts the guest kernel would hang early on in
+>>>>> bootup.
+>>>>>
+>>>>> Cc: qemu-stable@nongnu.org
+>>>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>>>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>>>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>> Message-id: 20230424152833.1334136-1-peter.maydell@linaro.org
+>>>>
+>>>> In v8.0.2, the cubieboard emulation running Linux crashes during reboot
+>>>> with a hung task error. Tested with mainline Linux (v6.4-rc4-78-g929ed21dfdb6)
+>>>> and with v5.15.114. Host is AMD Ryzen 5900X.
+>>>>
+>>>> Requesting system reboot
+>>>> [   61.927460] INFO: task kworker/0:1:13 blocked for more than 30 seconds.
+>>>> [   61.927896]       Not tainted 5.15.115-rc2-00038-g31e35d9f1b8d #1
+>>>> [   61.928144] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>>>> [   61.928419] task:kworker/0:1     state:D stack:    0 pid:   13 ppid:     2 flags:0x00000000
+>>>> [   61.928972] Workqueue: events_freezable mmc_rescan
+>>>> [   61.929739] [<c13734f0>] (__schedule) from [<c1373c98>] (schedule+0x80/0x15c)
+>>>> [   61.930041] [<c1373c98>] (schedule) from [<c137ad64>] (schedule_timeout+0xd4/0x12c)
+>>>> [   61.930270] [<c137ad64>] (schedule_timeout) from [<c137477c>] (do_wait_for_common+0xa0/0x154)
+>>>> [   61.930523] [<c137477c>] (do_wait_for_common) from [<c1374870>] (wait_for_completion+0x40/0x4c)
+>>>> [   61.930764] [<c1374870>] (wait_for_completion) from [<c1044cd0>] (mmc_wait_for_req_done+0x6c/0x90)
+>>>> [   61.931012] [<c1044cd0>] (mmc_wait_for_req_done) from [<c1044e34>] (mmc_wait_for_cmd+0x70/0xa8)
+>>>> [   61.931252] [<c1044e34>] (mmc_wait_for_cmd) from [<c10512a0>] (sdio_reset+0x58/0x124)
+>>>> [   61.931478] [<c10512a0>] (sdio_reset) from [<c1046328>] (mmc_rescan+0x294/0x30c)
+>>>> [   61.931692] [<c1046328>] (mmc_rescan) from [<c036be10>] (process_one_work+0x28c/0x720)
+>>>> [   61.931924] [<c036be10>] (process_one_work) from [<c036c308>] (worker_thread+0x64/0x53c)
+>>>> [   61.932153] [<c036c308>] (worker_thread) from [<c03753e0>] (kthread+0x15c/0x180)
+>>>> [   61.932365] [<c03753e0>] (kthread) from [<c030015c>] (ret_from_fork+0x14/0x38)
+>>>> [   61.932628] Exception stack(0xc31ddfb0 to 0xc31ddff8)
+>>>>
+>>>> This was not seen with v8.0.0. Bisect points to this patch. Reverting it
+>>>> fixes the problem.
+>>>
+>>> Does this happen on master too, or just on stable-8.0 ?
+>>>
+>>
+>> It does. Tested with v8.0.0-1542-g848a6caa88.
+>>
+>> Here is my command line in case you want to give it a try:
+>>
+>> qemu-system-arm -M cubieboard -kernel arch/arm/boot/zImage -no-reboot \
+>>       -initrd rootfs-armv5.cpio -m 512 \
+>>       --append "panic=-1 rdinit=/sbin/init earlycon=uart8250,mmio32,0x1c28000,115200n8 console=ttyS0" \
+>>       -dtb arch/arm/boot/dts/sun4i-a10-cubieboard.dtb -nographic \
+>>       -monitor null -serial stdio
+>>
+>> initrd is https://github.com/groeck/linux-build-test/blob/master/rootfs/arm-v7/rootfs-armv5.cpio.gz
+>>
+>> This is with multi_v7_defconfig with some debug options added. If necessary
+>> I'll be happy to provide the exact configuration.
 > 
-> Trying to pick this one up for -stable. The implementation changes are good.
-> But the testsuite changes are.. difficult.  The thing is that testsuite changes
-> (here and in the other -stable patch) applies on top of previous changes in
-> there (in the same series), which, in turn, requires other previous code changes
-> in the implementation to succeed.
+> If you can provide a link to the zImage and the dtb to reproduce
+> as well, that would be helpful.
+> 
 
-Yeah, I did wonder if it is worth even trying to get this for stable.
-The series is inter-tangled enough that it feels like an
-all-or-nothing approach may be easiest - but all means 19 patches and
-hundreds of lines of testsuite additions.  My other argument when
-first posting this to qemu-stable was to just declare that these have
-been broken long enough that it is not a recent regression, and users
-are unlikely to be supplying command-line or QMP strings to tickle
-these bugs, so not backporting may be okay.
+Please see http://server.roeck-us.net/qemu/arm-v7/.
 
-> 
-> For example, this patch changes test_qemu_strtoui_overflow() which was introduced
-> in previous patch "Test more integer corner cases" from this series and further
-> modified in "Test integral qemu_strto* value on failures" one.  Picking them result
-> in testsuite failing due to missing previous code changes.
-> 
-> I tried to drop just the testsuite changes, but the result is that the testsuite
-> fails with fixed code :)
-> 
-> It's quite fun situation actually, like it fails no matter what you do, one way
-> or another.
-> 
-> I'll try to find the most stright-forward way from here.  Good stuff.
+There are also compiled versions of qemu v8.0.0 and v8.0.2 as well as scripts
+to run the test. Note that the initrd will auto-reboot. The cubieboard emulation
+does not support board reset, so the test will normally end with
 
-Let me know how I can help in deciding what, if any, is worth backporting.
+Requesting system reboot
+[   22.020700] reboot: Restarting system
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.           +1-919-301-3266
-Virtualization:  qemu.org | libvirt.org
+In the failure case, the second line is not seen, and there will be a hung task
+crash about 30 seconds after the reboot request.
+
+Requesting system reboot
+[   61.960821] INFO: task kworker/0:2:67 blocked for more than 30 seconds.
+[   61.961406]       Tainted: G                 N 6.4.0-rc5 #1
+
+Hope this helps,
+Guenter
 
 
