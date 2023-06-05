@@ -2,36 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B6E72328C
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 23:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB26723293
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 23:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6I7H-00071o-J6; Mon, 05 Jun 2023 17:51:55 -0400
+	id 1q6IBv-0008HB-8s; Mon, 05 Jun 2023 17:56:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6I7F-00071a-Ks; Mon, 05 Jun 2023 17:51:53 -0400
+ id 1q6IBr-0008Gv-1c
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:56:39 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6I7B-0005gG-0O; Mon, 05 Jun 2023 17:51:50 -0400
+ id 1q6IBp-0007wX-ER
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:56:38 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 592BC746361;
- Mon,  5 Jun 2023 23:51:45 +0200 (CEST)
+ by localhost (Postfix) with SMTP id BB6EF746335;
+ Mon,  5 Jun 2023 23:56:35 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 29458746335; Mon,  5 Jun 2023 23:51:45 +0200 (CEST)
+ id 4626E74632B; Mon,  5 Jun 2023 23:56:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 446E3745720;
+ Mon,  5 Jun 2023 23:56:35 +0200 (CEST)
+Date: Mon, 5 Jun 2023 23:56:35 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH] mv64361: Add dummy gigabit ethernet PHY access registers
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH] util/cacheflush: Avoid flushing dcache twice when not
+ necessary
+In-Reply-To: <20230605195911.96033-1-philmd@linaro.org>
+Message-ID: <4aee6249-c5b2-5d21-c6e5-e995734ae518@eik.bme.hu>
+References: <20230605195911.96033-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-Id: <20230605215145.29458746335@zero.eik.bme.hu>
-Date: Mon,  5 Jun 2023 23:51:45 +0200 (CEST)
-X-Spam-Probability: 8%
+Content-Type: multipart/mixed;
+ boundary="3866299591-1712765879-1686002195=:78702"
+X-Spam-Probability: 9%
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -54,51 +63,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't emulate the gigabit ethernet part of the chip but the MorphOS
-driver accesses these and expects to get some valid looking result
-otherwise it hangs. Add some minimal dummy implementation to avoid rhis.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
-This is only used by MorphOS on pegasos2 so most likely could go via
-the ppc queue.
+--3866299591-1712765879-1686002195=:78702
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
- hw/pci-host/mv64361.c | 6 ++++++
- hw/pci-host/mv643xx.h | 3 +++
- 2 files changed, 9 insertions(+)
+On Mon, 5 Jun 2023, Philippe Mathieu-Daudé wrote:
+> <libkern/OSCacheControl.h> describes sys_icache_invalidate() as
+> "equivalent to sys_cache_control(kCacheFunctionPrepareForExecution)",
+> having kCacheFunctionPrepareForExecution defined as:
+>
+>  /* Prepare memory for execution.  This should be called
+>   * after writing machine instructions to memory, before
+>   * executing them.  It syncs the dcache and icache. [...]
+>   */
+>
+> Since the dcache is also sync'd, we can avoid the sys_dcache_flush()
+> call when both rx/rw pointers are equal.
+>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> Based-on: <20230605175647.88395-2-philmd@linaro.org>
+> ---
+> util/cacheflush.c | 9 ++++++++-
+> 1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/util/cacheflush.c b/util/cacheflush.c
+> index de35616718..a08906155a 100644
+> --- a/util/cacheflush.c
+> +++ b/util/cacheflush.c
+> @@ -241,7 +241,14 @@ static void __attribute__((constructor)) init_cache_info(void)
+>
+> void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
+> {
+> -    sys_dcache_flush((void *)rw, len);
+> +    if (rx == rw) {
 
-diff --git a/hw/pci-host/mv64361.c b/hw/pci-host/mv64361.c
-index 19e8031a3f..01bd8c887f 100644
---- a/hw/pci-host/mv64361.c
-+++ b/hw/pci-host/mv64361.c
-@@ -541,6 +541,12 @@ static uint64_t mv64361_read(void *opaque, hwaddr addr, unsigned int size)
-             }
-         }
-         break;
-+    case MV64340_ETH_PHY_ADDR:
-+        ret = 0x98;
-+        break;
-+    case MV64340_ETH_SMI:
-+        ret = BIT(27);
-+        break;
-     case MV64340_CUNIT_ARBITER_CONTROL_REG:
-         ret = 0x11ff0000 | (s->gpp_int_level << 10);
-         break;
-diff --git a/hw/pci-host/mv643xx.h b/hw/pci-host/mv643xx.h
-index cd26a43f18..f2e1baea88 100644
---- a/hw/pci-host/mv643xx.h
-+++ b/hw/pci-host/mv643xx.h
-@@ -656,6 +656,9 @@
- /*        Ethernet Unit Registers       */
- /****************************************/
- 
-+#define MV64340_ETH_PHY_ADDR                                        0x2000
-+#define MV64340_ETH_SMI                                             0x2004
-+
- /*******************************************/
- /*          CUNIT  Registers               */
- /*******************************************/
--- 
-2.30.9
+Isn't it more straight forward to use rx != rw and drop the else branch 
+than having an empty if branch? You can still keep the comment above the 
+if to explain it if needed.
 
+Regards,
+BALATON Zoltan
+
+> +        /*
+> +         * sys_icache_invalidate() syncs the dcache and icache,
+> +         * so no need to call sys_dcache_flush().
+> +         */
+> +    } else {
+> +        sys_dcache_flush((void *)rw, len);
+> +    }
+>     sys_icache_invalidate((void *)rx, len);
+> }
+> #else
+>
+--3866299591-1712765879-1686002195=:78702--
 
