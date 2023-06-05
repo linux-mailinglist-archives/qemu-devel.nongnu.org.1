@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6062272262D
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B7F722632
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:45:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q69Yt-0007NR-0Y; Mon, 05 Jun 2023 08:43:51 -0400
+	id 1q69a2-0007q0-Bw; Mon, 05 Jun 2023 08:45:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Yo-0007Me-Gp
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:43:46 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Zm-0007j4-Of
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:44:46 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Ym-0004r9-Vi
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:43:46 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3078cc99232so4356338f8f.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:43:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Zk-0004vR-Ko
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:44:46 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f6d7abe934so41274375e9.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685969023; x=1688561023;
+ d=linaro.org; s=google; t=1685969078; x=1688561078;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PzHa1gF+Prcdo2xmf99XlMPJk9QGTUjzjCHTcTiDoKo=;
- b=qXJd1cN7lpydT2GOw98P+6G3+CcOcx9SprgS7WrDxCIpu6HJ8cHoSQV1tybbkkM9A5
- on32Qria7fF0HvlhE4R+2dzmayRAxWSQq8uz6hCaT7gG+mNSftkNqZI7DKguSMcVrPUN
- q1NeqqO7BZKa2tPWgrYYXdguw2OZCvpXmTcHCxkF/eN8J/Ty4lS8taNmaZ3bT2WPsaX5
- WepSON6Lz1Y3Of1UaaZjpVFD7P9iCAk5mOxW39A9MyWreqhMNBJ1L9VKyYdRFihDJr7h
- mZk2MRwrmCWes1cDwvMCfKUQB/VUqawcygzXobrKg4OR4EN7dWFvSxhL0MFhDoJdMZfe
- NAFQ==
+ bh=8RdyoIz+4bZblgb99LiA+p9rogtj6d/k4kRwoydNRLo=;
+ b=CUxI7M8Vj48qmA7zA0Llsuw4dit1IWLrkoYlQ7iYIfOHX7sdMFhGz0MV9bA/AcslEQ
+ E+R6eYk4AGx2omb3cFJ0+wuPVXlSGN55ZFKukBXoPCHy1ZxTEzFcfJKXhzAQU3tQGgjb
+ DprnzSl/w9kN+QH4lIne1sIn5yww2dS5ZR3BHK+2SjhEda/7zMpqfy1m/FgIgllBjcbP
+ VloYdgekm8ma/qdYj1/+7nfDHzoG0aDclk7eOXQKTNHQMvrBAeiFxEiqV9W4yDQBZJ6+
+ DdLjDlygaML/roPAp/oAOK/Kz6cTqhoXnfU6Eov1ljqvjmYXUD51d4v9XHeSj+UgRc+t
+ wvkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685969023; x=1688561023;
+ d=1e100.net; s=20221208; t=1685969078; x=1688561078;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PzHa1gF+Prcdo2xmf99XlMPJk9QGTUjzjCHTcTiDoKo=;
- b=H58m8P5UYeVjA1OZMtCA+xP0+yT+JVEWmODM58JACX8m7uolP7tEnjMxlLoRM6K9tQ
- FbQVM576eVu1sdwCVn1/XZbTwxJ33954y3aMmZLrf2k7oolUw8MbuQ1pPeN07FiQ3A5d
- SN+q23kdZ/c/xJ+S4NXJCeyPVJVnBw7SETiNADNyU5bpL6fS+AwIn/bpDlPHGNg5RuVn
- Yy668GTM9Nam38Xzx13peCi+dsQa0sJ8Zhy2VrVQBzPL4AiKFCLpecP9tyPDF/csgFUl
- Q/zrgFSOT+Hm3fbOkirJy7ZzfQPNHivY/quKANQjYKAhU1MFLTXSk7nmB3USJXmh3iX5
- qm8g==
-X-Gm-Message-State: AC+VfDyJWHbNG+JYUAPrwI/31KdDlT9SgUJYIQXJdtZWDOveegDYcBH7
- aQzVMHIRf7x3L4nwuNO1j0Ca3A==
-X-Google-Smtp-Source: ACHHUZ5LAcd69oBH36S99roIuh4rIfRDRFZKiQNkLXmm+WrQxTuLlINyXYWijkna8c2RV/pX/es+9A==
-X-Received: by 2002:a5d:49d2:0:b0:306:2d45:a8e0 with SMTP id
- t18-20020a5d49d2000000b003062d45a8e0mr5793542wrs.15.1685969023571; 
- Mon, 05 Jun 2023 05:43:43 -0700 (PDT)
+ bh=8RdyoIz+4bZblgb99LiA+p9rogtj6d/k4kRwoydNRLo=;
+ b=YvpGlS4rN2bUPSGpYOn8YTsqFiJg29FCAmR8uwm89w8Ia5ynUcKw90aJOpUb5om1q3
+ DRhf8cbAmql9jkQ7GY2E6VqczPvv3rRmoOebMb7gJODypDx+M0E3a8vdDrL6VuJ28IN/
+ QObEVFkqJIAvp3hqiii9+s7F5e4ikp8NZES0WIqakm0uX71Of4OBD96LAXoe9tA40CtV
+ 1YRQHrQjd30v6e9AN7Z9AlQUNPUHNmmjLzLom5zjKd283oPkq1e94xK+LvzPS7RyUafG
+ vLkZEKWg6eAPLFWI0XfBknffSlV8iZAZ0DdIU0NZP2VrbXUPaEseFbhmOQCas1dI813Q
+ n2JA==
+X-Gm-Message-State: AC+VfDz3HQF/4Y9NQ8IJ1fiqPkNuKxX/rqxuztyDQnTCVOZzj7r7IuiE
+ KvzeavZfxrW6yODSo2o3mGG2Sg==
+X-Google-Smtp-Source: ACHHUZ4yPADxjjVGNL82Eeuf0lo608nLZwSxLZq9YKDXAqmqbmnbszlD9JaZEtEuEyj5/fOZku9XqA==
+X-Received: by 2002:a7b:c44d:0:b0:3f7:81e9:2f02 with SMTP id
+ l13-20020a7bc44d000000b003f781e92f02mr2182708wmi.4.1685969078209; 
+ Mon, 05 Jun 2023 05:44:38 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- d6-20020adff2c6000000b00307b5376b2csm9680582wrp.90.2023.06.05.05.43.42
+ v10-20020a5d4b0a000000b0030789698eebsm9698565wrq.89.2023.06.05.05.44.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 05:43:43 -0700 (PDT)
-Message-ID: <7d321bc5-c54e-3584-efd2-0c9401da8655@linaro.org>
-Date: Mon, 5 Jun 2023 14:43:41 +0200
+ Mon, 05 Jun 2023 05:44:37 -0700 (PDT)
+Message-ID: <64f51912-d449-b3c9-ea6b-c6c5c32441ca@linaro.org>
+Date: Mon, 5 Jun 2023 14:44:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3 10/23] q800: reimplement mac-io region aliasing using
- IO memory region
+Subject: Re: [PATCH v3 13/23] hw/net/dp8393x.c: move TYPE_DP8393X and
+ dp8393xState into dp8393x.h
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
  qemu-devel@nongnu.org
 References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-14-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230604131450.428797-14-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,24 +95,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/6/23 15:14, Mark Cave-Ayland wrote:
-> The current use of aliased memory regions causes us 2 problems: firstly the
-> output of "info qom-tree" is absolutely huge and difficult to read, and
-> secondly we have already reached the internal limit for memory regions as
-> adding any new memory region into the mac-io region causes QEMU to assert
-> with "phys_section_add: Assertion `map->sections_nb < TARGET_PAGE_SIZE'
-> failed".
-> 
-> Implement the mac-io region aliasing using a single IO memory region that
-> applies IO_SLICE_MASK representing the maximum size of the aliased region and
-> then forwarding the access to the existing mac-io memory region using the
-> address space API.
+> This is to enable them to be used outside of dp8393x.c.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> CC: Jason Wang <jasowang@redhat.com>
 > Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 > ---
->   hw/m68k/q800.c         | 100 +++++++++++++++++++++++++++++++++--------
->   include/hw/m68k/q800.h |   1 +
->   2 files changed, 82 insertions(+), 19 deletions(-)
+>   hw/net/dp8393x.c         | 32 +--------------------
+>   include/hw/net/dp8393x.h | 60 ++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 61 insertions(+), 31 deletions(-)
+>   create mode 100644 include/hw/net/dp8393x.h
 
-Out of curiosity, is mac-io an I/O bus, rather than a MMIO device?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
