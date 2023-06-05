@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FFF7223B7
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C34187223C1
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:46:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q67ea-00022T-R0; Mon, 05 Jun 2023 06:41:36 -0400
+	id 1q67ie-00069W-N8; Mon, 05 Jun 2023 06:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q67eY-00021h-Ve; Mon, 05 Jun 2023 06:41:35 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67iK-000689-11
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:45:29 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q67eX-0006oj-3a; Mon, 05 Jun 2023 06:41:34 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1b01dac1a82so22443465ad.2; 
- Mon, 05 Jun 2023 03:41:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67iD-0007Qm-BA
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:45:27 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-30af86a96b4so3809949f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685961691; x=1688553691;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UOv8zkJcKH4/kd6DqV4AbYXN/AcmdfjqqCG+nmVbJg4=;
- b=sTbmHbp/g2AzrMfrBw9aH6zQcN8YNo4bcEv9yrS7ettrcrB35SF44SkVhf7UuT7EoW
- z8XN6+xoVhI+JVpkdynbSq9ux4l0rZ0tB8VCSO0OFL+lZa3jAhC9ArfhiNjOl83j6M8k
- OtpUpjXPbr8/1oOSxA6Qfx7IL3bjqtKtducSjkC8x171FQVxKGtpLYDnNYZTxY0KAGxM
- 9vZwIAC1BZe11KD4ivsxcbvE+v3HcBU0AtJoBM7bTMKoRSq/SRimh71SxgON56i2ma4+
- ul3l2k09J+skDS5tZyWm7+jpTOXuEAGlXsCk2oreNc+8YWUJeIHYlnAiV7DIjl53IGC4
- 0whw==
+ d=linaro.org; s=google; t=1685961919; x=1688553919;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BER6FqqlFlZwhQ7mFkNQkzoTv/vcZa2WEIOpCzfl/JQ=;
+ b=V3rs/o6yTzmLRK2uwI34TyVWX5Fjx2ZGiA4Um7ms/5i+MbEAnOoptm611exvFfnOnl
+ +8GatZtt0xp5GWlbNEB+af+T8x1AOtnLY6nJUbdpzSgyD35ejcyqw2QjLskCU/PV2rhm
+ 8yY0k2Nv9M1NS6vj7AunhQRs4RXxLbSKCGi/O+Yjsdxl5UvnQ2Ds8SpAAC76o7TmC9zG
+ QudGEUTnzImqYJKDyKiKNP4r8pBtz91TGYWDF66HkR1poAJxGy9nOQ62ZbTvmJ+2xqMS
+ BaO2lBIonfDbjtN0mTzIC3MdS7sbNyk6zh51jrU5WuxXriUDf4AdX8kBxPBkYVNBrk4I
+ exjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685961691; x=1688553691;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UOv8zkJcKH4/kd6DqV4AbYXN/AcmdfjqqCG+nmVbJg4=;
- b=ZTc0ncyN2Mpr8pumv3jUOar086SGWUqjhFbzsHGNUdHFRhYFT3geFeIZgU9aT+r782
- 0TG9CUTZfq6fRAIejWW6UjtRqt5jxIOsZcdciNx/uQi2jyQ8R/XIacykfvEW5Wt2KkQo
- v3ngGgbhIxaff9HsU/yqHTfg9SrNLCdxf4NwiP8slx2QmHp6xQOHOJBb4XB0U0YVmCT8
- 31asc+wTLCWZfURWY7cZ8JzpBu8+JoBPzMg5GvKdEhrd9YwS152bWYS5+dPHh3RSyTYj
- lvWqu8msesCKpHV1hlgtInQF/KtgpxMDxiPqgUusemDSgLifQ8XM483LjjN2IMlSoPqa
- 3vHQ==
-X-Gm-Message-State: AC+VfDyq579q3QOMquThLl6Ui9HkkEBHLk5DVvZ9aDBs2BoFK5s2KuYv
- 7MUjKJ3HNEfYeUVOHxJobwJe4WDg82WprJyT
-X-Google-Smtp-Source: ACHHUZ6T9tTsvLdpfxOAVj/y+9yK+t1F9p4QaOJEpns9Q/65dL8f96oUeC7BJ96x3NVr7R5eVxDkzA==
-X-Received: by 2002:a17:902:ed53:b0:1ab:160c:526d with SMTP id
- y19-20020a170902ed5300b001ab160c526dmr2774438plb.22.1685961690650; 
- Mon, 05 Jun 2023 03:41:30 -0700 (PDT)
-Received: from fedlinux.. ([106.84.132.130]) by smtp.gmail.com with ESMTPSA id
- x4-20020a170902a38400b001b0457705e8sm6340141pla.140.2023.06.05.03.41.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 03:41:30 -0700 (PDT)
-From: Sam Li <faithilikerun@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: dlemoal@kernel.org, dmitry.fomichev@wdc.com, hare@suse.de,
- stefanha@redhat.com, Markus Armbruster <armbru@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Eric Blake <eblake@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Sam Li <faithilikerun@gmail.com>
-Subject: [RFC 4/4] iotests: test the zoned format feature for qcow2 file
-Date: Mon,  5 Jun 2023 18:41:08 +0800
-Message-Id: <20230605104108.125270-5-faithilikerun@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230605104108.125270-1-faithilikerun@gmail.com>
-References: <20230605104108.125270-1-faithilikerun@gmail.com>
+ d=1e100.net; s=20221208; t=1685961919; x=1688553919;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BER6FqqlFlZwhQ7mFkNQkzoTv/vcZa2WEIOpCzfl/JQ=;
+ b=DhWmClq6t4cVC7oZZJSmMgtvT10Ero8CEhj8m3fthNBe0UEndwH0b+N1GrCANY559p
+ +MLxRNe5VFksTVKkGa6cd1Y2xNFQLicWI5yK/X9fpa3z/bKU5UxGsbGbwQPFzfsfmI/U
+ aFTcpqxlkW4EEb8Nl6mJws6rO9hH4BLihSXZTWECienJMXwuxrwe44yJUkCp8ZnGUfot
+ cEv4HQ4DPqprdcVxsL5EKW02jU0vtM2M+BJJNGdVWQ5h/JLBQ/QNbZM4T8tnxPGdnRiE
+ yAW7n9+vsvadEQ5HToAfuwviyTlEcVc7Y3tVzajYalVroP6oXfhDbarwig71Y0NQWXW6
+ nfsQ==
+X-Gm-Message-State: AC+VfDxFPEfDs6CM1H0H6Z46yGhbsWOLVIZCBlj/KtQKcXFwWAnJsmIP
+ hexmuE2I07jDWfczpyRjzc0UZw==
+X-Google-Smtp-Source: ACHHUZ55zG0xJgZiV+1At/NT6D0gcUMWVZDoALVJcUWyLm48SBBILP0VKXONa5gqiHZNRZXBOhW8ZA==
+X-Received: by 2002:a5d:52ca:0:b0:309:398d:3396 with SMTP id
+ r10-20020a5d52ca000000b00309398d3396mr4430944wrv.33.1685961919363; 
+ Mon, 05 Jun 2023 03:45:19 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.217.157])
+ by smtp.gmail.com with ESMTPSA id
+ w3-20020a5d6083000000b0030abe7c36b1sm9314720wrt.93.2023.06.05.03.45.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 03:45:18 -0700 (PDT)
+Message-ID: <bc89ede2-747f-c56e-5cca-e09289fb72f2@linaro.org>
+Date: Mon, 5 Jun 2023 12:45:16 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 02/35] target/arm: Move aesmc and aesimc tables to
+ crypto/aes.c
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: ardb@kernel.org, berrange@redhat.com, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
+References: <20230603023426.1064431-1-richard.henderson@linaro.org>
+ <20230603023426.1064431-3-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230603023426.1064431-3-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=faithilikerun@gmail.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,227 +95,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The zoned format feature can be tested by:
-$ tests/qemu-iotests/check zoned-qcow2
+On 3/6/23 04:33, Richard Henderson wrote:
+> We do not currently have a table in crypto/ for
+> just MixColumns.  Move both tables for consistency.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/crypto/aes.h           |   6 ++
+>   crypto/aes.c                   | 142 ++++++++++++++++++++++++++++++++
+>   target/arm/tcg/crypto_helper.c | 143 ++-------------------------------
+>   3 files changed, 153 insertions(+), 138 deletions(-)
 
-Signed-off-by: Sam Li <faithilikerun@gmail.com>
----
- tests/qemu-iotests/tests/zoned-qcow2     | 110 +++++++++++++++++++++++
- tests/qemu-iotests/tests/zoned-qcow2.out |  87 ++++++++++++++++++
- 2 files changed, 197 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
- create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
 
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2 b/tests/qemu-iotests/tests/zoned-qcow2
-new file mode 100755
-index 0000000000..6aa5ab3a03
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2
-@@ -0,0 +1,110 @@
-+#!/usr/bin/env bash
-+#
-+# Test zone management operations for qcow2 file.
-+#
-+
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+status=1 # failure is the default!
-+
-+file_name="zbc.qcow2"
-+_cleanup()
-+{
-+  _cleanup_test_img
-+  _rm_test_img "$file_name"
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ../common.rc
-+. ../common.filter
-+. ../common.qemu
-+
-+# This test only runs on Linux hosts with qcow2 image files.
-+_supported_proto file
-+_supported_os Linux
-+
-+echo
-+echo "=== Initial image setup ==="
-+echo
-+
-+$QEMU_IMG create -f qcow2 $file_name -o size=768M -o zone_size=64M \
-+-o zone_capacity=64M -o zone_nr_conv=0 -o max_append_sectors=512 \
-+-o max_open_zones=0 -o max_active_zones=0 -o zoned_profile=zbc
-+
-+IMG="--image-opts -n driver=qcow2,file.driver=file,file.filename=$file_name"
-+QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT
-+
-+echo
-+echo "=== Testing a qcow2 img with zoned format ==="
-+echo
-+echo "case 1: if the operations work"
-+
-+echo "(1) report the first zone:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "report the first 10 zones"
-+$QEMU_IO $IMG -c "zrp 0 10"
-+echo
-+echo "report the last zone:"
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2" # 0x2C000000 / 512 = 0x160000
-+echo
-+echo
-+echo "(2) opening the first zone"
-+$QEMU_IO $IMG -c "zo 0 0x4000000" # 0x4000000 / 512 = 0x20000
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "opening the second zone"
-+$QEMU_IO $IMG -c "zo 0x4000000 0x4000000"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "opening the last zone"
-+$QEMU_IO $IMG -c "zo 0x2C000000 0x4000000"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2"
-+echo
-+echo
-+echo "(3) closing the first zone"
-+$QEMU_IO $IMG -c "zc 0 0x4000000"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "closing the last zone"
-+$QEMU_IO $IMG -c "zc 0x3e70000000 0x4000000"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0x3e70000000 2"
-+echo
-+echo
-+echo "(4) finishing the second zone"
-+$QEMU_IO $IMG -c "zf 0x4000000 0x4000000"
-+echo "After finishing a zone:"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo
-+echo "(5) resetting the second zone"
-+$QEMU_IO $IMG -c "zrs 0x4000000 0x4000000"
-+echo "After resetting a zone:"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo
-+echo "(6) append write" # the physical block size of the device is 4096
-+$QEMU_IO $IMG -c "zrp 0 1"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-+echo "After appending the first zone firstly:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-+echo "After appending the first zone secondly:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-+echo "After appending the second zone firstly:"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-+echo "After appending the second zone secondly:"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2.out b/tests/qemu-iotests/tests/zoned-qcow2.out
-new file mode 100644
-index 0000000000..288bceffc4
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2.out
-@@ -0,0 +1,87 @@
-+QA output created by zoned-qcow2
-+
-+=== Initial image setup ===
-+
-+Formatting 'zbc.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib zoned_profile=zbc zone_size=67108864 zone_capacity=67108864 zone_nr_conv=0 max_append_sectors=512 max_active_zones=0 max_open_zones=0 size=805306368 lazy_refcounts=off refcount_bits=16
-+
-+=== Testing a qcow2 img with zoned format ===
-+
-+case 1: if the operations work
-+(1) report the first zone:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+
-+report the first 10 zones
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+
-+report the last zone:
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+(2) opening the first zone
-+wps[0]: 0x0
-+report after:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:3, [type: 2]
-+
-+opening the second zone
-+wps[1]: 0x20000
-+report after:
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:3, [type: 2]
-+
-+opening the last zone
-+wps[11]: 0x160000
-+report after:
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type: 2]
-+
-+
-+(3) closing the first zone
-+wps[0]: 0x0
-+report after:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-+
-+closing the last zone
-+zone close failed: Input/output error
-+report after:
-+start: 0x1f380000, len 0x20000, cap 0x20000, wptr 0x0, zcond:0, [type: 2]
-+start: 0x1f3a0000, len 0x20000, cap 0x20000, wptr 0x0, zcond:0, [type: 2]
-+
-+
-+(4) finishing the second zone
-+wps[1]: 0x40000
-+After finishing a zone:
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:14, [type: 2]
-+
-+
-+(5) resetting the second zone
-+wps[1]: 0x20000
-+After resetting a zone:
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+
-+
-+(6) append write
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-+wps[0]: 0x18
-+After zap done, the append sector is 0x0
-+After appending the first zone firstly:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x18, zcond:2, [type: 2]
-+wps[0]: 0x30
-+After zap done, the append sector is 0x18
-+After appending the first zone secondly:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x30, zcond:2, [type: 2]
-+wps[1]: 0x20018
-+After zap done, the append sector is 0x20000
-+After appending the second zone firstly:
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20018, zcond:2, [type: 2]
-+wps[1]: 0x20030
-+After zap done, the append sector is 0x20018
-+After appending the second zone secondly:
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20030, zcond:2, [type: 2]
-+*** done
--- 
-2.40.1
+>       union CRYPTO_STATE st = { .l = { rm[0], rm[1] } };
+> +    const uint32_t *mc = decrypt ? AES_imc_rot : AES_mc_rot;
+>       int i;
+>   
+>       for (i = 0; i < 16; i += 4) {
+>           CR_ST_WORD(st, i >> 2) =
+> -            mc[decrypt][CR_ST_BYTE(st, i)] ^
+> -            rol32(mc[decrypt][CR_ST_BYTE(st, i + 1)], 8) ^
+> -            rol32(mc[decrypt][CR_ST_BYTE(st, i + 2)], 16) ^
+> -            rol32(mc[decrypt][CR_ST_BYTE(st, i + 3)], 24);
+> +            mc[CR_ST_BYTE(st, i)] ^
+> +            rol32(mc[CR_ST_BYTE(st, i + 1)], 8) ^
+> +            rol32(mc[CR_ST_BYTE(st, i + 2)], 16) ^
+> +            rol32(mc[CR_ST_BYTE(st, i + 3)], 24);
+
+Matter of style, (since you are changing these lines), I find starting
+the lines with the ^ operator clearer to review:
+
+             mc[CR_ST_BYTE(st, i)]
+             ^ rol32(mc[CR_ST_BYTE(st, i + 1)], 8)
+             ^ rol32(mc[CR_ST_BYTE(st, i + 2)], 16)
+             ^ rol32(mc[CR_ST_BYTE(st, i + 3)], 24);
+
+Anyhow,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>       }
+>   
+>       rd[0] = st.l[0];
 
 
