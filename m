@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCF5722A23
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 17:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E329A722A89
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 17:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6BiA-0003tH-5q; Mon, 05 Jun 2023 11:01:34 -0400
+	id 1q6BrJ-00078r-HM; Mon, 05 Jun 2023 11:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Bi8-0003t7-8E
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:01:32 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <hare@suse.de>)
+ id 1q6BrF-00078a-4Q; Mon, 05 Jun 2023 11:10:57 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Bi6-00007V-KH
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:01:32 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30d5931d17aso1886548f8f.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 08:01:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685977285; x=1688569285;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1T9b9X3PYBbdQsfKpGC6QcSzt31CJ4CGNIO3EruJ1Ck=;
- b=Po6qWHik7eqGrHADgeGNEGjrV1qZnklk4J4iohprfNgCPbKsc5rHylb3DpkxPTNsUa
- l+OOKroWm2VAEXdEOrwazVEi5iBt94NM1ReMEVPq/W4CaBmIwB8bRM8hoKOfwx5wPUEx
- vUXV/H3520oE1szFo86QgxW6r9mOOR0b3BMO9Ta7NA2YbZ6mwwKD9G0UWcytYK7pnX5F
- plziC7uvY190cGS/uhFftkX10+owIfMb46BhRHESNFGed6z0h671d13Gw043ocyMtsSH
- h6gex/i9tLmLXnwj1BbKEodQkpVPZV/jsvjgeZtawHFJpGA2c1LXIZ9uqzLv3dw2MY3y
- jWtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685977285; x=1688569285;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1T9b9X3PYBbdQsfKpGC6QcSzt31CJ4CGNIO3EruJ1Ck=;
- b=iXESP3303No6a6KIOGRrNmSGjGLj/APCxXb2jICDjuVqiZyDuuzUXETvoQ7XhLt68c
- hczr12teX3qhTtKPkUq0S/NLuuGxoqnsZ6PQccdl48I1aFYvrMCQCs39vDdBJh9F94pi
- dUiIy59dffdxETIhHMrggQ8MS9idkivemszbskaNJTawb2tr5ViP8Rgim9SrPPP3zimu
- 9YJ0vbnPGDkplzokBmDsZHfR8AzfWTF/IiqNOqGhF6mxE+zSS660onAR+J6AmIoQVHE/
- 2dv9qmOlXZSvEnhVCZ2SOz4sYJDz6kB7c9zaCrgN0nBD6tQfwU/iwk+9lg9nneHVjNOf
- TyYA==
-X-Gm-Message-State: AC+VfDyxM42oxBPSvCNngzXpBTTjykvbsR3Hd/0eXZKGyHqqFpRD0Xjf
- x7izZ66m0S/YlCZX9rQ0cD4g81XX1q/YAeVbYss=
-X-Google-Smtp-Source: ACHHUZ54+17lFSJI3paf5oZlbQsx8C4TRTH1EfPf+vBetynW1qKnf1GSUFXYj+eIPS1mNVePTwCRiA==
-X-Received: by 2002:a5d:55c6:0:b0:30a:93ad:ab9f with SMTP id
- i6-20020a5d55c6000000b0030a93adab9fmr5307696wrw.11.1685977285594; 
- Mon, 05 Jun 2023 08:01:25 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.217.157])
- by smtp.gmail.com with ESMTPSA id
- m14-20020a7bcb8e000000b003f7ba52eeccsm3472085wmi.7.2023.06.05.08.01.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 08:01:25 -0700 (PDT)
-Message-ID: <6068e086-6596-a236-ce76-77b49d2caea5@linaro.org>
-Date: Mon, 5 Jun 2023 17:01:23 +0200
+ (Exim 4.90_1) (envelope-from <hare@suse.de>)
+ id 1q6BrD-0001o4-7S; Mon, 05 Jun 2023 11:10:56 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 093941FD6E;
+ Mon,  5 Jun 2023 15:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1685977851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=foC6zo/MudKNjp+2ZHYEFwf4xW0BKttOxQywxgADcEU=;
+ b=X1AgbqSR5v1OQtDXQeMeh8wN75twRdSQGTdCcnVCMiJiTMNse4HCzg3NCKhrX3smN2rnFo
+ fZ+LVsyyY2e2vqshAXVl1O7A+yoh86M5t34Bb10plzmhYodQmnBYSaPzPR/thPzsuexRvw
+ tm2u2Qwn2vmGSEHyAFHjftAr5/PjWf4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1685977851;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=foC6zo/MudKNjp+2ZHYEFwf4xW0BKttOxQywxgADcEU=;
+ b=Xsg/uxeqWbM4Vep5iCyUPRz3+CFs7kj05xc3dY10zNM+XUWvoaxKS8/BhTmNe4+p1JXmLG
+ DEzqGfOsvhMuMBDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D4A1B139C8;
+ Mon,  5 Jun 2023 15:10:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id jnyXMvr6fWQKbAAAMHmgww
+ (envelope-from <hare@suse.de>); Mon, 05 Jun 2023 15:10:50 +0000
+Message-ID: <9f896902-a9a5-97f4-2963-a46e8cefcd08@suse.de>
+Date: Mon, 5 Jun 2023 17:10:50 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] target/sh4: Emit insn_start for each insn in gUSA region
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] hw/scsi/megasas: Silent GCC duplicated-cond warning
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: ysato@users.sourceforge.jp
-References: <20230603165530.1189588-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230603165530.1189588-1-richard.henderson@linaro.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
+ Hannes Reinecke <hare@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+References: <20230328210126.16282-1-philmd@linaro.org>
+ <39574948-bbc1-165e-5f49-20f8a560e732@linaro.org>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <39574948-bbc1-165e-5f49-20f8a560e732@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=hare@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,24 +91,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/23 18:55, Richard Henderson wrote:
-> Fixes an assert in tcg_gen_code that we don't accidentally
-> eliminate an insn_start during optimization.
+On 6/5/23 15:44, Philippe Mathieu-Daudé wrote:
+> ping?
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+> On 28/3/23 23:01, Philippe Mathieu-Daudé wrote:
+>> From: Philippe Mathieu-Daudé <philmd@redhat.com>
+>>
+>> GCC9 is confused when building with CFLAG -O3:
+>>
+>>    hw/scsi/megasas.c: In function ‘megasas_scsi_realize’:
+>>    hw/scsi/megasas.c:2387:26: error: duplicated ‘if’ condition 
+>> [-Werror=duplicated-cond]
+>>     2387 |     } else if (s->fw_sge >= 128 - MFI_PASS_FRAME_SIZE) {
+>>    hw/scsi/megasas.c:2385:19: note: previously used here
+>>     2385 |     if (s->fw_sge >= MEGASAS_MAX_SGE - MFI_PASS_FRAME_SIZE) {
+>>    cc1: all warnings being treated as errors
+>>
+>> When this device was introduced in commit e8f943c3bcc, the author
+>> cared about modularity, using a definition for the firmware limit.
+>>
+>> However if the firmware limit isn't changed (MEGASAS_MAX_SGE = 128),
+>> the code ends doing the same check twice.
+>>
+>> Per the maintainer [*]:
+>>
+>>> The original code assumed that one could change MFI_PASS_FRAME_SIZE,
+>>> but it turned out not to be possible as it's being hardcoded in the
+>>> drivers themselves (even though the interface provides mechanisms to
+>>> query it). So we can remove the duplicate lines.
+>>
+>> Add the 'MEGASAS_MIN_SGE' definition for the '64' magic value,
+>> slightly rewrite the condition check to simplify a bit the logic
+>> and remove the unnecessary / duplicated check.
+>>
+>> [*] 
+>> https://lore.kernel.org/qemu-devel/e0029fc5-882f-1d63-15e3-1c3dbe9b6a2c@suse.de/
+>>
+>> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@redhat.com>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> v1: 
+>> https://lore.kernel.org/qemu-devel/20191217173425.5082-6-philmd@redhat.com/
+>> ---
+>>   hw/scsi/megasas.c | 16 ++++++++++------
+>>   1 file changed, 10 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
+>> index 9cbbb16121..32c70c9e99 100644
+>> --- a/hw/scsi/megasas.c
+>> +++ b/hw/scsi/megasas.c
+>> @@ -42,6 +42,7 @@
+>>   #define MEGASAS_MAX_FRAMES 2048         /* Firmware limit at 65535 */
+>>   #define MEGASAS_DEFAULT_FRAMES 1000     /* Windows requires this */
+>>   #define MEGASAS_GEN2_DEFAULT_FRAMES 1008     /* Windows requires 
+>> this */
+>> +#define MEGASAS_MIN_SGE 64
+>>   #define MEGASAS_MAX_SGE 128             /* Firmware limit */
+>>   #define MEGASAS_DEFAULT_SGE 80
+>>   #define MEGASAS_MAX_SECTORS 0xFFFF      /* No real limit */
+>> @@ -2356,6 +2357,7 @@ static void megasas_scsi_realize(PCIDevice *dev, 
+>> Error **errp)
+>>       MegasasState *s = MEGASAS(dev);
+>>       MegasasBaseClass *b = MEGASAS_GET_CLASS(s);
+>>       uint8_t *pci_conf;
+>> +    uint32_t sge;
+>>       int i, bar_type;
+>>       Error *err = NULL;
+>>       int ret;
+>> @@ -2424,13 +2426,15 @@ static void megasas_scsi_realize(PCIDevice 
+>> *dev, Error **errp)
+>>       if (!s->hba_serial) {
+>>           s->hba_serial = g_strdup(MEGASAS_HBA_SERIAL);
+>>       }
+>> -    if (s->fw_sge >= MEGASAS_MAX_SGE - MFI_PASS_FRAME_SIZE) {
+>> -        s->fw_sge = MEGASAS_MAX_SGE - MFI_PASS_FRAME_SIZE;
+>> -    } else if (s->fw_sge >= 128 - MFI_PASS_FRAME_SIZE) {
+>> -        s->fw_sge = 128 - MFI_PASS_FRAME_SIZE;
+>> -    } else {
+>> -        s->fw_sge = 64 - MFI_PASS_FRAME_SIZE;
+>> +
+>> +    sge = s->fw_sge + MFI_PASS_FRAME_SIZE;
+>> +    if (sge < MEGASAS_MIN_SGE) {
+>> +        sge = MEGASAS_MIN_SGE;
+>> +    } else if (sge >= MEGASAS_MAX_SGE) {
+>> +        sge = MEGASAS_MAX_SGE;
+>>       }
+>> +    s->fw_sge = sge - MFI_PASS_FRAME_SIZE;
+>> +
+>>       if (s->fw_cmds > MEGASAS_MAX_FRAMES) {
+>>           s->fw_cmds = MEGASAS_MAX_FRAMES;
+>>       }
 > 
-> Test case is tests/tcg/multiarch/testthread.c; the assert for
-> equality is new with
-> 
-> https://lore.kernel.org/qemu-devel/20230531040330.8950-26-richard.henderson@linaro.org/
-> 
-> 
-> r~
-> ---
->   target/sh4/translate.c | 15 ++++++++++++---
->   1 file changed, 12 insertions(+), 3 deletions(-)
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                Kernel Storage Architect
+hare@suse.de                              +49 911 74053 688
+SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
+Myers, Andrew McDonald, Martje Boudien Moerman
 
 
