@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F07722628
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6062272262D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:44:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q69Wy-0006NU-Bf; Mon, 05 Jun 2023 08:41:52 -0400
+	id 1q69Yt-0007NR-0Y; Mon, 05 Jun 2023 08:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Wq-0006N8-De
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:41:45 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Yo-0007Me-Gp
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:43:46 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Wo-0004c6-P1
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:41:44 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f736e0c9a8so11754025e9.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:41:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69Ym-0004r9-Vi
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:43:46 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3078cc99232so4356338f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:43:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685968900; x=1688560900;
+ d=linaro.org; s=google; t=1685969023; x=1688561023;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LW1OfWw/JkDDky2R4F8hHWKQDYV4J4ZRUpeI9Rfj7cQ=;
- b=stWDehPZBVmccnUCoeM3/mxoxIgPKFCj9kOgrxy2rcWTuVF5BPpMtf8G1ys3VuDgks
- 8UcGhobhj4Uj3DCOLbX1MVh2JABYnkOOXN5dtExFLDTsT/gpmBLYH5+Jwl7CpaWuGnTI
- zAhPQz2G4iuenlkXoBoYwdWuNti9X9SMt/eyT7pOhiB91jwKJne7vmW10ZFQxzuOfSan
- xGV0C2kehxlG0mhSIyG9GdGNUATr1xjgbCMH5F/w93A2TY+eLDsnD9INkuGc7J5QzXa3
- hhnX9tFJKbRP5HGbArxGUGi1ymztSkSP5Q9/0L4RYAcO6N2uoEZqVQdEIcZNthTorqNG
- 8OLg==
+ bh=PzHa1gF+Prcdo2xmf99XlMPJk9QGTUjzjCHTcTiDoKo=;
+ b=qXJd1cN7lpydT2GOw98P+6G3+CcOcx9SprgS7WrDxCIpu6HJ8cHoSQV1tybbkkM9A5
+ on32Qria7fF0HvlhE4R+2dzmayRAxWSQq8uz6hCaT7gG+mNSftkNqZI7DKguSMcVrPUN
+ q1NeqqO7BZKa2tPWgrYYXdguw2OZCvpXmTcHCxkF/eN8J/Ty4lS8taNmaZ3bT2WPsaX5
+ WepSON6Lz1Y3Of1UaaZjpVFD7P9iCAk5mOxW39A9MyWreqhMNBJ1L9VKyYdRFihDJr7h
+ mZk2MRwrmCWes1cDwvMCfKUQB/VUqawcygzXobrKg4OR4EN7dWFvSxhL0MFhDoJdMZfe
+ NAFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685968900; x=1688560900;
+ d=1e100.net; s=20221208; t=1685969023; x=1688561023;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LW1OfWw/JkDDky2R4F8hHWKQDYV4J4ZRUpeI9Rfj7cQ=;
- b=iJBAYsqTi8Fr/5ZT6PZ7sOd0nVJjHnGzyxbzfIwKWFw2pBIwT9IiEjLz2dc4c8OXDu
- HYfB6U2HiSeut1jogV7WSaURZFpF7w5/HGmAg0J8vf5kAZ2CNqNmf5eVBYm8y1dYlXnT
- OPh8vIBgsLTuIiCxF6vKo3T85e0Q1nsVK/vRWQk03Nteu6cTTmIaHcge1GWkz3LpucNU
- TJoCGfEpfCfY8ZWKR4jd6a4Vbrzt30bw95VIZvWoCW/CdRDzHlHg0ULACOlmcHZfX1Pd
- ExJ5VbHpSNAEMxhgNzuPKSvbgW4uOCXA8JoQJ7ftR6zfoJGrGO/6AIIhcn9YlTwZfGcb
- c3GQ==
-X-Gm-Message-State: AC+VfDy3yyodTZOObw+/S/HvXEiNpREUNi+ssyHp5x3iFAcpCHuM7QdB
- Ikv4odCphrG1uDdYg6Z+4YieJsfUxj+t44fkFe4=
-X-Google-Smtp-Source: ACHHUZ61C5cwGLxPZHdprd4lS05IwZspBpf4XyIQ0jeqvR7nMI5+Ke7134Gr4f6mTFz4TkUH94XbPA==
-X-Received: by 2002:a5d:6790:0:b0:309:3a1e:fc54 with SMTP id
- v16-20020a5d6790000000b003093a1efc54mr4961565wru.7.1685968900185; 
- Mon, 05 Jun 2023 05:41:40 -0700 (PDT)
+ bh=PzHa1gF+Prcdo2xmf99XlMPJk9QGTUjzjCHTcTiDoKo=;
+ b=H58m8P5UYeVjA1OZMtCA+xP0+yT+JVEWmODM58JACX8m7uolP7tEnjMxlLoRM6K9tQ
+ FbQVM576eVu1sdwCVn1/XZbTwxJ33954y3aMmZLrf2k7oolUw8MbuQ1pPeN07FiQ3A5d
+ SN+q23kdZ/c/xJ+S4NXJCeyPVJVnBw7SETiNADNyU5bpL6fS+AwIn/bpDlPHGNg5RuVn
+ Yy668GTM9Nam38Xzx13peCi+dsQa0sJ8Zhy2VrVQBzPL4AiKFCLpecP9tyPDF/csgFUl
+ Q/zrgFSOT+Hm3fbOkirJy7ZzfQPNHivY/quKANQjYKAhU1MFLTXSk7nmB3USJXmh3iX5
+ qm8g==
+X-Gm-Message-State: AC+VfDyJWHbNG+JYUAPrwI/31KdDlT9SgUJYIQXJdtZWDOveegDYcBH7
+ aQzVMHIRf7x3L4nwuNO1j0Ca3A==
+X-Google-Smtp-Source: ACHHUZ5LAcd69oBH36S99roIuh4rIfRDRFZKiQNkLXmm+WrQxTuLlINyXYWijkna8c2RV/pX/es+9A==
+X-Received: by 2002:a5d:49d2:0:b0:306:2d45:a8e0 with SMTP id
+ t18-20020a5d49d2000000b003062d45a8e0mr5793542wrs.15.1685969023571; 
+ Mon, 05 Jun 2023 05:43:43 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- x15-20020a5d650f000000b002fb60c7995esm9735400wru.8.2023.06.05.05.41.39
+ d6-20020adff2c6000000b00307b5376b2csm9680582wrp.90.2023.06.05.05.43.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 05:41:39 -0700 (PDT)
-Message-ID: <d6b7f5ff-d51d-f821-5c2a-20ae7c2d0cc4@linaro.org>
-Date: Mon, 5 Jun 2023 14:41:38 +0200
+ Mon, 05 Jun 2023 05:43:43 -0700 (PDT)
+Message-ID: <7d321bc5-c54e-3584-efd2-0c9401da8655@linaro.org>
+Date: Mon, 5 Jun 2023 14:43:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3 07/23] q800: move GLUE device into separate q800-glue.c
- file
+Subject: Re: [PATCH v3 10/23] q800: reimplement mac-io region aliasing using
+ IO memory region
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
  qemu-devel@nongnu.org
 References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-8-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230604131450.428797-8-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,99 +95,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/6/23 15:14, Mark Cave-Ayland wrote:
-> This will allow the q800-glue.h header to be included separately so that the
-> GLUE device can be referenced externally.
+> The current use of aliased memory regions causes us 2 problems: firstly the
+> output of "info qom-tree" is absolutely huge and difficult to read, and
+> secondly we have already reached the internal limit for memory regions as
+> adding any new memory region into the mac-io region causes QEMU to assert
+> with "phys_section_add: Assertion `map->sections_nb < TARGET_PAGE_SIZE'
+> failed".
+> 
+> Implement the mac-io region aliasing using a single IO memory region that
+> applies IO_SLICE_MASK representing the maximum size of the aliased region and
+> then forwarding the access to the existing mac-io memory region using the
+> address space API.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 > ---
->   MAINTAINERS                 |   2 +
->   hw/m68k/meson.build         |   2 +-
->   hw/m68k/q800-glue.c         | 252 ++++++++++++++++++++++++++++++++++++
->   hw/m68k/q800.c              | 238 +---------------------------------
->   include/hw/m68k/q800-glue.h |  50 +++++++
->   5 files changed, 306 insertions(+), 238 deletions(-)
->   create mode 100644 hw/m68k/q800-glue.c
->   create mode 100644 include/hw/m68k/q800-glue.h
+>   hw/m68k/q800.c         | 100 +++++++++++++++++++++++++++++++++--------
+>   include/hw/m68k/q800.h |   1 +
+>   2 files changed, 82 insertions(+), 19 deletions(-)
 
-
-> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
-> new file mode 100644
-> index 0000000000..793bdb110c
-> --- /dev/null
-> +++ b/hw/m68k/q800-glue.c
-> @@ -0,0 +1,252 @@
-> +/*
-> + * QEMU q800 logic glue
-
-Although mentioned later, could we describe as "GLUE (General
-Logic Unit)" here?
-
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-
-Or simpler:
-
-   * SPDX-License-Identifier: MIT
-
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "cpu.h"
-> +#include "hw/m68k/q800-glue.h"
-> +#include "hw/boards.h"
-> +#include "hw/irq.h"
-> +#include "hw/nmi.h"
-> +#include "hw/qdev-properties.h"
-> +#include "migration/vmstate.h"
-> +
-> +/*
-> + * The GLUE (General Logic Unit) is an Apple custom integrated circuit chip
-> + * that performs a variety of functions (RAM management, clock generation, ...).
-> + * The GLUE chip receives interrupt requests from various devices,
-> + * assign priority to each, and asserts one or more interrupt line to the
-> + * CPU.
-> + */
-
-
-> +static const TypeInfo glue_info = {
-> +    .name = TYPE_GLUE,
-> +    .parent = TYPE_SYS_BUS_DEVICE,
-> +    .instance_size = sizeof(GLUEState),
-> +    .instance_init = glue_init,
-> +    .instance_finalize = glue_finalize,
-> +    .class_init = glue_class_init,
-> +    .interfaces = (InterfaceInfo[]) {
-> +         { TYPE_NMI },
-> +         { }
-> +    },
-> +};
-> +
-> +static void glue_register_types(void)
-> +{
-> +    type_register_static(&glue_info);
-> +}
- > +
- > +type_init(glue_register_types)
-
-Soon DEFINE_TYPES() will be recommended over type_init().
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Out of curiosity, is mac-io an I/O bus, rather than a MMIO device?
 
