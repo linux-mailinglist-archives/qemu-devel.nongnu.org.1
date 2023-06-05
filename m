@@ -2,112 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CC272327A
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 23:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA45723264
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 23:40:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6I0M-0004nC-Hy; Mon, 05 Jun 2023 17:44:46 -0400
+	id 1q6Huz-0000d2-SU; Mon, 05 Jun 2023 17:39:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q6I0K-0004mv-6r
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:44:44 -0400
-Received: from mail-bn8nam12on2069.outbound.protection.outlook.com
- ([40.107.237.69] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q6I0I-0002YH-8O
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:44:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=km7DGLnWoh85n7PcPt4Y5agDhhPFlLSHR5CwIvyQnGrCcHWhPN1TKkZeLUIYBUBW4YPZFTE97rbvDqSIxO2a0N+Io4rKW40EdN6hikzpwa7YcrQBYXN1JXa+FasJucym9qdV8g5HmmUGtT4u2D6sNgwUtfPVkCC4kCaOddFwI1gdzvGArEPVp9IapCiLU3hz209dJdN5gvHal3HssrVOpocsG4z01rMEoJdiHipFLUST3qhe2Zb3j502DaEK93jBg4loU5XZVkD0EZ4oEanzR4PXpngz6gi4ppAx0yX/2a/jxHB6kAS/BaEkMdsZxP25DPuFIugo0T2cpzsF6FMHTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W21FU6o30/0vmogKp2NwxNaXk8UwQvN84r1XN0RNGsI=;
- b=fcdJYnJhrACIMFxl5c90mJ84gTZSAotOA1n3UAAY08+TpAe3rBgUe9Uabef4OwL2VWe/yd5UpeQL4UyXtFuX+DbO5lNtC1ZLHQlAHZiae0TB5qHmrcMYl631Ucmduw/3at0R1ikfp1FbggB+CEeJm0OR+lEEP8/Z2zWT++xPrqMNHk34mRhCyuW46bKY4nKiKk8n6JJXItznrjttrdQRWQ6DNs3C63qmfpUzR1xC/EXSwF7vOEekmMg98QJ9SfWAmgHcOU8TLxH6OBCs4wNWJvJe4Gwd7xrn8vvjBmMfN4MyIIsF4uz6yPWxm3nHjjwPZ7uh6aTPFDsRgwGgUJln7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W21FU6o30/0vmogKp2NwxNaXk8UwQvN84r1XN0RNGsI=;
- b=Io3mjySyNoresXUzNlR20TjQUDnYM4WzIouCUuypbmG2DF52jhgAW44nuEJc+JhzWk+7FYVzZu604Xbq3xONrQGpMnkqXCjdTQDeI//qnNGwehGCScRXkLrX8RzTW9LdqFgjT40c+wcSrnKT9q4b7dQlfmfDbl+85/Efjvmixko=
-Received: from DS0PR17CA0016.namprd17.prod.outlook.com (2603:10b6:8:191::7) by
- DM6PR12MB4911.namprd12.prod.outlook.com (2603:10b6:5:20e::22) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.32; Mon, 5 Jun 2023 21:39:36 +0000
-Received: from CY4PEPF0000E9D3.namprd03.prod.outlook.com
- (2603:10b6:8:191:cafe::53) by DS0PR17CA0016.outlook.office365.com
- (2603:10b6:8:191::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33 via Frontend
- Transport; Mon, 5 Jun 2023 21:39:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9D3.mail.protection.outlook.com (10.167.241.146) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6477.13 via Frontend Transport; Mon, 5 Jun 2023 21:39:36 +0000
-Received: from ruby-95f9host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 5 Jun
- 2023 16:39:34 -0500
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
- <eduardo@habkost.net>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
- <imammedo@redhat.com>, <berrange@redhat.com>, <jusual@redhat.com>,
- <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
- <santosh.Shukla@amd.com>, Suravee Suthikulpanit
- <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v4 0/3] hw/i386/pc: Update max_cpus and default to SMBIOS
-Date: Mon, 5 Jun 2023 16:39:03 -0500
-Message-ID: <20230605213906.644883-1-suravee.suthikulpanit@amd.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Huw-0000bF-60
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:39:11 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Huu-0008Pf-JR
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:39:09 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-25676b4fb78so2671201a91.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 14:39:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686001146; x=1688593146;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YXRPLnfZje4Fq40Cva/CR9GQz+i7bOoGkbyLcjnlsgE=;
+ b=wOXUqB/MJB2lFtwJXPxWMsopg0Lh8Gu8eIrf12r1msBJs7rPTB4dUn/O3MTi3jqwFX
+ OqfCqW5gXGOnD1VQDdA9erPKNh2hTaTxc9VLPlWQKni2CyHrq6X4YYw+5lmBrEwPnWrE
+ ENDeeiKogzaUvsk/sO4ACMchcoskAU1+WiGNKYrDxan3PLhPYhpJlDd7d7HCDQtwS0qb
+ k8g8BFWgO6i9jnzIUUOm9FzmFot1l+YwhVNinkQ5XZiExY2IxqtXzHhPuJw/NILU/vgh
+ U8BMIFX74WAH/QUwADieXJ1zp5/4AfQPhQXlcvi4WghdkGxS+FfDaNQocyoNr2/xkcmy
+ Mb4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686001146; x=1688593146;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YXRPLnfZje4Fq40Cva/CR9GQz+i7bOoGkbyLcjnlsgE=;
+ b=Dcu13YbzfDte0nRdkBEIKzEgEUKch/pU8sra+nPPVsKJbBpCHX5R3It8gnuDea4kAJ
+ vhg+zSGGw1x/GSYqeav5d+ZMID8XDCAlJmgRXm/2VM3s1VKChSnVjCNd9euXkyC3EAlJ
+ x/77TSsLG4Ge8GAD1n+7JJdZZxyPCxMmoKhOa6GBaPEeYYEp9MPP4Q/1xeN16xw1mt9j
+ QBbK6jkLwNC/fM8vNnhmA8r9YSzMeBu5kstdKtTjxpRo9JUw8fuJ94TCrBlAjM3PjgKf
+ MjHN60xU1pO66ug56AjYur2kfcBLwJO/JzJgvp6Udct7E9wz6b0DIU7IbRKaW7J8rat7
+ /2bg==
+X-Gm-Message-State: AC+VfDy7ZmXNDC4ZnPId3+dK7uWTV/dD9dMsuvmh+CTyS8HyZhlV2E+B
+ hudDQR9HTNnHL+qMCefpu9J+cg==
+X-Google-Smtp-Source: ACHHUZ579mE6DN/7PtXfBn+WYxUmqfK9VO90d4cIzN4LHBhTsaTwkm547aHF0AGkzHzhahnYOdU4UA==
+X-Received: by 2002:a17:90b:1e0d:b0:259:c10:ea34 with SMTP id
+ pg13-20020a17090b1e0d00b002590c10ea34mr11421pjb.2.1686001146082; 
+ Mon, 05 Jun 2023 14:39:06 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
+ ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
+ by smtp.gmail.com with ESMTPSA id
+ b16-20020a17090a551000b0024e026444b6sm126726pji.2.2023.06.05.14.39.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 14:39:05 -0700 (PDT)
+Message-ID: <fc6f7fb4-8e01-e56b-9fae-a09934933d3e@linaro.org>
+Date: Mon, 5 Jun 2023 14:39:03 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [RFC PATCH 1/2] bulk: Replace !CONFIG_SOFTMMU -> CONFIG_USER_ONLY
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230602225811.60152-1-philmd@linaro.org>
+ <20230602225811.60152-2-philmd@linaro.org>
+ <7913570a-8bf6-2ac9-6869-fab87273742c@linaro.org>
+ <97194b58-3f9c-e351-a439-87b2bfed5674@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <97194b58-3f9c-e351-a439-87b2bfed5674@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D3:EE_|DM6PR12MB4911:EE_
-X-MS-Office365-Filtering-Correlation-Id: 618e9eab-1078-4a22-bfdc-08db660d5bb5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0bcUxlBR9NFVGY0XMWObJ8Rh7ZaqpdeZ0LWBv42KxxkZipoVvE5G1+6dnuxxDYFFzZibTMlTa9ogiFSR6tCtOI1alMPiNOYl/L6arVp5IurGOxUzY808ivKjiPVYkXhWvD1wqBfcdE8yml+nAB2t4sJ7/X5xmTeY/mDKBA/Zt3p/C/22W6tmYcapBFYoHz9hV/+jOoN24d64VH6BDWhdKchbwkVQhT5Pg0erEVN3pGzafbcjRe0s3yfxRGt9crwHBZMcbFvdtVNijG24m/YsCyXWxaglbQc8TbAfnaq3IgX0ayQ4w5VyZHdzwNj6tJtq305oRS2C3jZWb7WYcuq62ZbS3OsYxMQYlAySCihqwCZGefNiXcXKu9nGThg4YWlTp2Equm81mR8DYO1E1eBEAS9aVhb4883Luu1wJrKg8bdjf84OOGcQjM/7TxZd13EyRJYgWuz1EFen1N9m7l5klQ69RmA1glDgJ6UClejhLzbL4uJCokBOvoieRUgg1aJfHlvAsnBIqccQerFWSR+wNCTH24JiJxo5lISNPO3ngx+A9PD4MmhK5jPLdXVJbWcH5G32IFxDoBjNUlhGi5Cuwed2fJo2A1/kMHY9ihHQdb4YiZ7noiPEMl6xfIRLtFZjT/jcEkA6IkpF3uDn1ROy/znUv78lFwv4kPGZTKlY69vvTdgPPtHIamgneOtFuChGj1Rw3PoXNHUSIsSV9CDZWRJda9g9cECq4xxJSWlXkq1iNAyWSr3+IxE3BByLERPP
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(346002)(39860400002)(396003)(376002)(136003)(451199021)(40470700004)(46966006)(36840700001)(40480700001)(40460700003)(54906003)(356005)(81166007)(478600001)(82740400003)(8936002)(8676002)(4326008)(70586007)(6916009)(2616005)(41300700001)(316002)(70206006)(186003)(16526019)(336012)(36860700001)(6666004)(426003)(83380400001)(7696005)(26005)(1076003)(47076005)(82310400005)(86362001)(44832011)(5660300002)(2906002)(36756003)(7416002)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2023 21:39:36.1365 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 618e9eab-1078-4a22-bfdc-08db660d5bb5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D3.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4911
-Received-SPF: softfail client-ip=40.107.237.69;
- envelope-from=Suravee.Suthikulpanit@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,39 +99,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to support large number of vcpus, a newer 64-bit SMBIOS
-entry point type is needed. Therefore, upgrade the default SMBIOS version
-for PC machines to SMBIOS 3.0 for newer systems. Then increase the maximum
-number of vCPUs for Q35 models to 1024, which is the limit for KVM.
+On 6/5/23 13:29, Philippe Mathieu-Daudé wrote:
+> On 3/6/23 05:49, Richard Henderson wrote:
+>> On 6/2/23 15:58, Philippe Mathieu-Daudé wrote:
+>>> CONFIG_USER_ONLY is the opposite of CONFIG_SOFTMMU.
+>>> Replace !CONFIG_SOFTMMU negation by the positive form
+>>> which is clearer when reviewing code.
+>>
+>> CONFIG_SOFTMMU should be reserved for the actual softmmu tlb, which we *should* be able 
+>> to enable for user-only.  It is the only way to handle some of our host/guest page size 
+>> problems.  Further, CONFIG_SOFTMMU should go away as a #define and become a runtime test 
+>> (forced to true for system mode).  Pie in the sky stuff.
+> 
+> This would be:
+> 
+>    bool has_softmmu(void)
+>    {
+>    #ifdef CONFIG_USER_ONLY
+>        /* TODO: implement */
+>        return false;
+>    #else
+>        return true;
+>    #endif
+>    }
+> 
+> ?
 
-Changes from V3:
-(https://lore.kernel.org/qemu-devel/20230603032255.517970-1-suravee.suthikulpanit@amd.com/T/#t )
- * Patch 1: Refactor the code to setup SMBIOS defaults to pc_machine_done().
- * Patch 2: Minor typo fixes in comment.
+Yes, something like that.
 
-Changes from V2:
-(https://lore.kernel.org/qemu-devel/20230531225127.331998-1-suravee.suthikulpanit@amd.com/)
- * Add patch 1.
 
-Changes from V1:
-(https://lore.kernel.org/all/YnkDGsIi1vFvXmiP@redhat.com/T/)
- * Bump from 512 to KVM_MAX_VCPUS (per Igor's suggestion)
-
-Thank you,
-Suravee
-
-Suravee Suthikulpanit (3):
-  hw/i386/pc: Refactor logic to set SMBIOS set defaults
-  hw/i386/pc: Default to use SMBIOS 3.0 for newer machine models
-  pc: q35: Bump max_cpus to 1024
-
- hw/i386/pc.c         | 26 +++++++++++++++++++++++++-
- hw/i386/pc_piix.c    | 14 +++++---------
- hw/i386/pc_q35.c     | 15 ++++++---------
- include/hw/i386/pc.h |  2 ++
- 4 files changed, 38 insertions(+), 19 deletions(-)
-
--- 
-2.34.1
-
+r~
 
