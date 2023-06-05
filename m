@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DD8722028
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 09:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4488972205E
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:00:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q650m-0002c6-3L; Mon, 05 Jun 2023 03:52:20 -0400
+	id 1q6575-0004rC-8M; Mon, 05 Jun 2023 03:58:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1q650Y-0002b8-TL
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:52:09 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1q650R-0007V9-Ql
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:52:02 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-657c4bcad0bso319711b3a.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685951516; x=1688543516;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=qVDTZNdm9TYOhpUiRc7Gqz7STus9Q3p9Jgo6THKuDig=;
- b=U+v0ocTwgOLITQX/bRSBSxpEPQwXAq3ZqrcLRZfeopyS7OfJeehxYcnxbz/KldeXUS
- GCxzoQmRl2yyoqMsFa/bzkYrwYtt3y27OYFhNNqo9xCkxFxcs/0+mBsHEc1d/c8wGJD2
- 4s8MdTILIH7Uv1Hmw4m6TRtbuqwLbu/oZz8d+ShYa3p1qyQr//H1Q0MUtMQTCPdZ+phY
- KbxPhnFyxYftxfveYUo5UzMPLwLAkazKqk9rIJRHexKqVQBW2QDSA/vJVxoYrNyaAI69
- Ohq3pKZjunTrCf6YXFlGLEmtwzsMQnbrUv/7P6xvU2/61GZPwvUOf5+rxWd4yE7wNsln
- k3IQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q656o-0004qD-Hw
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:58:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q656l-0001Ii-Kp
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:58:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685951910;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0apUBCmFVSq7/6F1F1ThPwDSq/35D1mhL93rEhe6Vto=;
+ b=h6CUid3sKkaaR1kODtNuA4ifPcOkYKXa/vVbmzBx1nZuedtgx2d6w/URhTvE4UEOXEzoUW
+ BZbFONopm+/sei2Pt5KJH5MDrXSwFQOPZKqkc8zjW8kdfZatce1N5epK14Ax/FDHge6To7
+ mI2DN9qLxCXtS4OUHmO+SQuS4NF2RkI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-19-AoMb4Od1N6uIVr9X6b4Ypg-1; Mon, 05 Jun 2023 03:58:29 -0400
+X-MC-Unique: AoMb4Od1N6uIVr9X6b4Ypg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-94a35b0d4ceso320176066b.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:58:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685951516; x=1688543516;
+ d=1e100.net; s=20221208; t=1685951907; x=1688543907;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qVDTZNdm9TYOhpUiRc7Gqz7STus9Q3p9Jgo6THKuDig=;
- b=J1wC8jnZIIAYzrdIE6GdteihOae01ciGVCOxTgf2TOwuIFfA38O57QAcfdBRPFqyd5
- jQukjNdlx5FDNwpTWv6Np196vj8v9UvVJszx7BBQo5W9dxN38NWfruJU65ZNYiuEBA5w
- dgDMv6+et1NjcekUps5RbfiJBKbZ5kKR0tRUF2ONiM5j8DBwIL/oRoh7p6xS6Q7psy/n
- 2wC16p6oikjdmtUAUlhMKIAhMknCDEoyVbAjflOQCM8adRGSokcFbfHhYYhFPHLMiCps
- qDMVBrK6++Kw/vDMs6FPu0lBQMUZtMVkYInhoIRzHG19ydFF0+TSyInF2creHktHKDUA
- pcrQ==
-X-Gm-Message-State: AC+VfDzZnQls5Z5Lg6ux4CzmQNRZfTCp2Gw0NCpT4tG8xvQ53sibYr+a
- RLE2nzggYl+hOL4VTijB1gO6RA==
-X-Google-Smtp-Source: ACHHUZ6hdoRY0HcYU3GqRU8yxLEi3ZGzJGXihoSIN2Nx3Kx9LLLmceyKpobgwBkcNxs1BFzByvqBCA==
-X-Received: by 2002:a05:6a20:440d:b0:105:66d3:854d with SMTP id
- ce13-20020a056a20440d00b0010566d3854dmr21115476pzb.6.1685951516425; 
- Mon, 05 Jun 2023 00:51:56 -0700 (PDT)
-Received: from saptrishi.. ([2405:201:d019:c279:7394:6066:fed1:a1d])
+ bh=0apUBCmFVSq7/6F1F1ThPwDSq/35D1mhL93rEhe6Vto=;
+ b=cq17KBTwQkAsEDFsoRYnwZAfEkdd6S9D6DWXS164qr9OHyJmYuspZKo/W4SYoCUqV+
+ pO29zp0DDVVVPCdz5NhBaumQ17raN7Plw0mllhlv2iY82l7caLLICeO2ahH5hGllrTB6
+ pfxzhDExI3imBX0mQNq+cl7ZKxc6L+Re19FW85nnIuqV94IkcuTDYSEzfHatXY+MkvZ8
+ gEw+8dczjQezwPRmB2VCAFo5LHCugpq7Mt5sc5HZvvy5SJQfdhwW/pKbVymPd+SZdWS4
+ 6xJWyP9Zphi79EmpJOSgghpB1/4Wg8FNnSEZWdTh10nKX1g2tRvn+dqIss++wuLn1E1D
+ yaWg==
+X-Gm-Message-State: AC+VfDydgbc81sdXeXoy4Olgk6YuTA+9V4pHPeroGHyKFl/d5+GW3xL1
+ SaP8n7yHrI4E0bL+Z2i9EMhHw2Dy4nyymH7F3pOWxP6QPXTauOMrms4wTJh/PpB5DPt+bsFYG5l
+ d4uCfuVMCgNOIUzqmm2HeeyDtl110hnydCeQjOlqO8UpmVgr2ekGmmryuVgR1noWMX6ONxlD9ZV
+ M=
+X-Received: by 2002:a17:907:c1f:b0:975:942e:81f1 with SMTP id
+ ga31-20020a1709070c1f00b00975942e81f1mr4962146ejc.4.1685951907531; 
+ Mon, 05 Jun 2023 00:58:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ55BQm49vXeUXZxcr+f/eIA8zkmjsIbtr7znm57eRpqDRoWGzTX+adqnVBflCmSQqO6sdf5lQ==
+X-Received: by 2002:a17:907:c1f:b0:975:942e:81f1 with SMTP id
+ ga31-20020a1709070c1f00b00975942e81f1mr4962135ejc.4.1685951907146; 
+ Mon, 05 Jun 2023 00:58:27 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- b10-20020a63cf4a000000b0050a0227a4bcsm5239366pgj.57.2023.06.05.00.51.54
+ d12-20020a1709063ecc00b0096f03770be2sm3941417ejj.52.2023.06.05.00.58.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 00:51:56 -0700 (PDT)
-From: Himanshu Chauhan <hchauhan@ventanamicro.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Himanshu Chauhan <hchauhan@ventanamicro.com>
-Subject: [PATCH] target/riscv: Smepmp: Return error when access permission not
- allowed in PMP
-Date: Mon,  5 Jun 2023 13:21:50 +0530
-Message-Id: <20230605075150.367555-1-hchauhan@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
+ Mon, 05 Jun 2023 00:58:25 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ jsnow@redhat.com, kconsul@linux.vnet.ibm.com
+Subject: [PATCH 0/2] Fix venv issues with Avocado by reverting to an older
+ version
+Date: Mon,  5 Jun 2023 09:58:21 +0200
+Message-Id: <20230605075823.48871-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,39 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On an address match, skip checking for default permissions and return error
-based on access defined in PMP configuration.
+Bumping avocado to version 101 has two issues.  First, there are problems
+where Avocado is not logging of command lines or terminal output, and not
+collecting Python logs outside the avocado namespace.
 
-Fixes: 90b1fafce06 ("target/riscv: Smepmp: Skip applying default rules when address matches")
-Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
----
- target/riscv/pmp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Second, the recent changes to Python handling mean that there is a single
+virtual environment for all the build, instead of a separate one for testing.
+Requiring a too-new version of avocado causes conflicts with any avocado
+plugins installed on the host:
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 418738afd8..6238528282 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -435,8 +435,8 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-              * defined with PMP must be used. We shouldn't fallback on
-              * finding default privileges.
-              */
--            ret = true;
--            break;
-+            ret = ((privs & *allowed_privs) == privs ? true : false);
-+            goto _address_matched;
-         }
-     }
- 
-@@ -445,6 +445,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-         ret = pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
-     }
- 
-+ _address_matched:
-     return ret;
- }
- 
+   $ make check-venv
+   make[1]: Entering directory '/home/berrange/src/virt/qemu/build'
+     GIT     ui/keycodemapdb tests/fp/berkeley-testfloat-3 tests/fp/berkeley-softfloat-3 dtc
+     VENVPIP install -e /home/berrange/src/virt/qemu/python/
+     VENVPIP install -r /home/berrange/src/virt/qemu/tests/requirements.txt
+   ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+   avocado-framework-plugin-varianter-yaml-to-mux 98.0 requires avocado-framework==98.0, but you have avocado-framework 101.0 which is incompatible.
+   avocado-framework-plugin-result-html 98.0 requires avocado-framework==98.0, but you have avocado-framework 101.0 which is incompatible.
+   make[1]: Leaving directory '/home/berrange/src/virt/qemu/build'
+
+To avoid this issue, tests/requirements.txt should use a ">=" constraint
+and the version of Avocado should be limited to what distros provide
+in the system packages.  Only Fedora has Avocado, and more specifically
+version 92.0.  For now, this series reverts to the older requirement
+(version >=88.1) while leaving further version bumps to future changes.
+
+Paolo
+
+Paolo Bonzini (2):
+  Revert "tests/requirements.txt: bump up avocado-framework version to
+    101.0"
+  tests: update avocado installation to use mkvenv
+
+ python/tests/minreqs.txt |  3 ++-
+ tests/Makefile.include   | 26 +++++++++++++-------------
+ tests/requirements.txt   |  9 ---------
+ 3 files changed, 15 insertions(+), 23 deletions(-)
+ delete mode 100644 tests/requirements.txt
+
 -- 
-2.34.1
+2.40.1
 
 
