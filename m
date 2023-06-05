@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CD7722060
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A5872205D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:00:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6577-0004sD-T6; Mon, 05 Jun 2023 03:58:53 -0400
+	id 1q6576-0004rl-IR; Mon, 05 Jun 2023 03:58:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q656q-0004qP-0y
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:58:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q656s-0004qg-2J
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:58:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q656n-0001K9-RD
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:58:35 -0400
+ id 1q656q-0001LL-6N
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:58:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685951913;
+ s=mimecast20190719; t=1685951915;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wufvntv52Bzssb0ok2muONHrebyhsMD/4yTVZxAaVxU=;
- b=K81XfX5nJJHhtfJjSJJQ3DcGYCcnTkgj1ehO9E9OfQ0GnGU6KuV2ybiZ6DSeo/ATP4H1Qv
- NLwrTVUAN05kg32IBdNv5Y8GxTDhgoPOtpBnCLTBDaLNHYgLREtQh6C3rxcqXFwsfRjoYi
- mI1rHGnRe6oBRHyP/VrXMuJYZzb7KIc=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NLt3yt4KkncC5BZ28dsIIKYc4ne835xJoFgKxj2QqLQ=;
+ b=g0GqTqQDBk/Q0Bo0GHx2e0PPkL1oumEqkBWLB8sf8EwIRbpWJfSZ3F5pBf5caQp36W7rkT
+ y87KSCvt6Osr60ptx7gfBiuR4WbDSJE7iY030V78f9ll+olV+N6QGGEzADmccWj0CWougM
+ R6TPCOpBuZ9LqfrCNukG1toLfqQGAbY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-MRTTLABzPuuaguFord1gfA-1; Mon, 05 Jun 2023 03:58:32 -0400
-X-MC-Unique: MRTTLABzPuuaguFord1gfA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4f61f59c230so896544e87.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:58:31 -0700 (PDT)
+ us-mta-203-Yf9NH4QMM5qT6lOUPAwgyQ-1; Mon, 05 Jun 2023 03:58:34 -0400
+X-MC-Unique: Yf9NH4QMM5qT6lOUPAwgyQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-977eabfc3ccso28177766b.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:58:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685951910; x=1688543910;
+ d=1e100.net; s=20221208; t=1685951912; x=1688543912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wufvntv52Bzssb0ok2muONHrebyhsMD/4yTVZxAaVxU=;
- b=HsR/JglBAihDAOniFWAFlykYpymLiGbCKkAQXrkIYFjjp6DGm/VaETojljBbdJUNbQ
- Au/tr/Z5mr3BCm4/sMDE0E0Ra9QUrJ2D7FsS3Ao8qn0nQwm9YFcE646MVaVXQ5EuWIsx
- TzWPyoys8ovc2dB+5ecI6Oe+xrNU1GnwJTj0l5k+nWYsqfPIgYeyGoKiHw0is4wh7Gdc
- /57V/4FNTBY4fOvZnMXcpYRJNnN6/b6Wd6LoE/dej9PhLF7QEfH3p+EQQ7VhdFLBFkJW
- wmxpFD0JqVGSe5Ut7M0irs1dfTQDhJCxRoQXM01uQjdoklhLgv09cR27KiI/EXMY9nVQ
- y1uA==
-X-Gm-Message-State: AC+VfDxSR6j+eH4EYqm/Zv2/o/u3L0WjjkiT5B3BoHrF5WuE0EAizifq
- XtldOSbOc7RyvxgNrs8pQMB13fE3x5DlMUjq92pqWccffl0iVKvE7zvsjPeMx1li1/skZ4UoIpH
- 8umfctulF3fRDy2khoH5RHcbPbpbWO49Cl81AR4cOXVEUlH0NJD45+5y6bUSYmkT+7bJ0U0Htc2
- Y=
-X-Received: by 2002:ac2:5297:0:b0:4f3:a436:ef44 with SMTP id
- q23-20020ac25297000000b004f3a436ef44mr4536565lfm.31.1685951909883; 
- Mon, 05 Jun 2023 00:58:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ40q8IuHKahg15KUFgB/eOEoGnWwPcrQHpQKF5pApqfprrYKC5xelisdBtVJLR031U+I06ZFQ==
-X-Received: by 2002:ac2:5297:0:b0:4f3:a436:ef44 with SMTP id
- q23-20020ac25297000000b004f3a436ef44mr4536541lfm.31.1685951909457; 
- Mon, 05 Jun 2023 00:58:29 -0700 (PDT)
+ bh=NLt3yt4KkncC5BZ28dsIIKYc4ne835xJoFgKxj2QqLQ=;
+ b=YLT748wlFo7KWqa+VBiGWKZ0du6cdqcztovHpv8nah7i5v4Cvd5YLIA797w+wY5lWS
+ 0XmVEP+Z2O8NXiGKQjWiXge5NAafXwvuzsjKflX+oKifxMjdZ4sE7QZTy4x1+GhNmFXW
+ D07vVOr+pVMU4YTByBeB6VwDUiXAiKKFITyqCE9v2Ci1ufpoalrAk9YhbPFMlxZUEd5R
+ cWQqMc8LLAnHiAoUIT9utjbe2Twqj/EnLXd7MnhHbZGOeUgNC2Zgo9KNYXHVzamrhT+2
+ 2Uruin+rikHkdEN4RvzVXg99GlC8zGGcCvZLUmrXUSkhmKrYwWabxbjnS2YFnUrec94I
+ I7xQ==
+X-Gm-Message-State: AC+VfDy5z2nOKjpTD69xLvSgeN6Z2UW508eGjIUi5BGrildO5f8sXwN8
+ sgVx6WDIVtShAWj/imKX98RN+Mc0mHrPqQ9O6Gw4wjTKgtn8NgH6ix2vQH2OLGlzcujBsnmDoaq
+ ANz/2oZ6ODfEKRfFmhOuBL427Yrz7mwdhkU93xgsIFg1xHtTMenl+bLLiqFp5qo5wSjQ4L6Agrh
+ Q=
+X-Received: by 2002:a17:907:d2a:b0:977:e95d:efdf with SMTP id
+ gn42-20020a1709070d2a00b00977e95defdfmr460422ejc.29.1685951912311; 
+ Mon, 05 Jun 2023 00:58:32 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4CXj3NQfO5x10mInRk3eBKubsCZhBkxNKfzpIc8eBbGvpadcmiZIEFbkjS0KYNexUMPPpcfQ==
+X-Received: by 2002:a17:907:d2a:b0:977:e95d:efdf with SMTP id
+ gn42-20020a1709070d2a00b00977e95defdfmr460408ejc.29.1685951911928; 
+ Mon, 05 Jun 2023 00:58:31 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- m15-20020aa7c2cf000000b00514a97b6b80sm3609602edp.78.2023.06.05.00.58.27
+ u1-20020a170906c40100b0096fc35ca733sm3971419ejz.41.2023.06.05.00.58.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 00:58:28 -0700 (PDT)
+ Mon, 05 Jun 2023 00:58:31 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, peter.maydell@linaro.org, alex.bennee@linaro.org,
  jsnow@redhat.com, kconsul@linux.vnet.ibm.com
-Subject: [PATCH 1/2] Revert "tests/requirements.txt: bump up avocado-framework
- version to 101.0"
-Date: Mon,  5 Jun 2023 09:58:22 +0200
-Message-Id: <20230605075823.48871-2-pbonzini@redhat.com>
+Subject: [PATCH 2/2] tests: update avocado installation to use mkvenv
+Date: Mon,  5 Jun 2023 09:58:23 +0200
+Message-Id: <20230605075823.48871-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230605075823.48871-1-pbonzini@redhat.com>
 References: <20230605075823.48871-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,16 +102,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit ec5ffa0056389c3c10ea2de1e78366f66f4e5abc.
-
-Bumping avocado to version 101 has two issues.  First, there are problems
-where Avocado is not logging of command lines or terminal output, and not
-collecting Python logs outside the avocado namespace.
-
-Second, the recent changes to Python handling mean that there is a single
+The recent changes to Python handling mean that there is a single
 virtual environment for all the build, instead of a separate one for testing.
-Requiring a too-new version of avocado causes conflicts with any avocado
-plugins installed on the host:
+Because this virtual environment will often have system site packages
+available, it makes sense to use mkvenv.py to install avocado, which will
+avoid using PyPI if a new-enough version is available in the system.
+
+However, requiring a specific version of avocado will cause conflicts with
+any avocado plugins installed on the host:
 
    $ make check-venv
    make[1]: Entering directory '/home/berrange/src/virt/qemu/build'
@@ -123,59 +121,93 @@ plugins installed on the host:
    avocado-framework-plugin-result-html 98.0 requires avocado-framework==98.0, but you have avocado-framework 101.0 which is incompatible.
    make[1]: Leaving directory '/home/berrange/src/virt/qemu/build'
 
-To avoid this issue, tests/requirements.txt should use a ">=" constraint
-and the version of Avocado should be limited to what distros provide
+so the requirements should use a ">=" constraint and the versions of
+Avocado and pycdlib should be limited to what distros provide
 in the system packages.  Only Fedora has Avocado, and more specifically
-version 92.0 (though 98.0 is also available as a module).  As a first
-step, this patch reverts the introduction of a too-new Avocado.
+version 92.0, while the following distros have pycdlib:
 
+   CentOS Stream 8             1.11.0
+   CentOS Stream 9             1.11.0
+   Fedora 37                   1.13.0
+   Fedora 38                   1.14.0
+   Ubuntu 22.04                1.11.0
+   Debian bookworm             1.12.0
+
+So the current minimal versions specified by tests/requirements.txt are
+okay.  Move them to the check-venv target and add the corresponding
+constraints to python/tests/minreqs.txt as well.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1663
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/Makefile.include | 18 +++++++-----------
- tests/requirements.txt |  2 +-
- 2 files changed, 8 insertions(+), 12 deletions(-)
+ python/tests/minreqs.txt | 3 ++-
+ tests/Makefile.include   | 8 ++++++--
+ tests/requirements.txt   | 9 ---------
+ 3 files changed, 8 insertions(+), 12 deletions(-)
+ delete mode 100644 tests/requirements.txt
 
+diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+index 1ce72cef6d8..6c9336ad119 100644
+--- a/python/tests/minreqs.txt
++++ b/python/tests/minreqs.txt
+@@ -23,7 +23,8 @@ distlib==0.3.6
+ fusepy==2.0.4
+ 
+ # Test-runners, utilities, etc.
+-avocado-framework==90.0
++avocado-framework==88.1
++pycdlib==1.11.0
+ 
+ # Linters
+ flake8==5.0.4
 diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 0184ef22373..8294a44816c 100644
+index 8294a44816c..82240d631fe 100644
 --- a/tests/Makefile.include
 +++ b/tests/Makefile.include
-@@ -136,18 +136,14 @@ get-vm-image-fedora-31-%: check-venv
- # download all vm images, according to defined targets
- get-vm-images: check-venv $(patsubst %,get-vm-image-fedora-31-%, $(FEDORA_31_DOWNLOAD))
+@@ -1,5 +1,8 @@
+ # -*- Mode: makefile -*-
  
--JOBS_OPTION=$(lastword -j1 $(filter-out -j, $(filter -j%,$(MAKEFLAGS))))
--
- check-avocado: check-venv $(TESTS_RESULTS_DIR) get-vm-images
--	$(call quiet-command, 							\
--            $(PYTHON) -m avocado 						\
--            --show=$(AVOCADO_SHOW) run --job-results-dir=$(TESTS_RESULTS_DIR) 	\
--            $(if $(AVOCADO_TAGS),, 						\
--			--filter-by-tags-include-empty 				\
--			--filter-by-tags-include-empty-key) 			\
--		--max-parallel-tasks $(JOBS_OPTION:-j%=%) 			\
--            $(AVOCADO_CMDLINE_TAGS) 						\
--            $(if $(GITLAB_CI),,--failfast) $(AVOCADO_TESTS), 			\
-+	$(call quiet-command, \
-+            $(PYTHON) -m avocado \
-+            --show=$(AVOCADO_SHOW) run --job-results-dir=$(TESTS_RESULTS_DIR) \
-+            $(if $(AVOCADO_TAGS),, --filter-by-tags-include-empty \
-+			--filter-by-tags-include-empty-key) \
-+            $(AVOCADO_CMDLINE_TAGS) \
-+            $(if $(GITLAB_CI),,--failfast) $(AVOCADO_TESTS), \
-             "AVOCADO", "tests/avocado")
++AVOCADO_MIN_VERSION=88.1
++PYCDLIB_MIN_VERSION=1.11.0
++
+ .PHONY: check-help
+ check-help:
+ 	@echo "Regression testing targets:"
+@@ -90,7 +93,7 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
+ TARGETS=$(patsubst libqemu-%.fa, %, $(filter libqemu-%.fa, $(ninja-targets)))
  
- check-acceptance-deprecated-warning:
+ TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
+-TESTS_VENV_REQ=$(SRC_PATH)/tests/requirements.txt
++TESTS_VENV_REQ=$(SRC_PATH)/python/tests/minreqs.txt
+ TESTS_RESULTS_DIR=$(BUILD_DIR)/tests/results
+ ifndef AVOCADO_TESTS
+ 	AVOCADO_TESTS=tests/avocado
+@@ -112,7 +115,8 @@ quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
+ 
+ $(TESTS_VENV_TOKEN): $(TESTS_VENV_REQ)
+ 	$(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
+-	$(call quiet-venv-pip,install -r $(TESTS_VENV_REQ))
++	$(quiet-@)$(PYTHON) $(SRC_PATH)/python/scripts/mkvenv.py ensure --diagnose avocado --online \
++	      'avocado-framework>=$(AVOCADO_MIN_VERSION)' 'pycdlib>=$(PYCDLIB_MIN_VERSION)'
+ 	$(call quiet-command, touch $@)
+ 
+ $(TESTS_RESULTS_DIR):
 diff --git a/tests/requirements.txt b/tests/requirements.txt
-index 0e008b9aec3..07e713ef5ac 100644
+deleted file mode 100644
+index 07e713ef5ac..00000000000
 --- a/tests/requirements.txt
-+++ b/tests/requirements.txt
-@@ -5,5 +5,5 @@
- # Note that qemu.git/python/ is implicitly installed to this venv when
- # 'make check-venv' is run, and will persist until configure is run
- # again.
--avocado-framework==101.0
-+avocado-framework==88.1
- pycdlib==1.11.0
++++ /dev/null
+@@ -1,9 +0,0 @@
+-# Add Python module requirements, one per line, to be installed
+-# in the qemu build_dir/pyvenv Python virtual environment. For more info,
+-# refer to: https://pip.pypa.io/en/stable/user_guide/#id1
+-#
+-# Note that qemu.git/python/ is implicitly installed to this venv when
+-# 'make check-venv' is run, and will persist until configure is run
+-# again.
+-avocado-framework==88.1
+-pycdlib==1.11.0
 -- 
 2.40.1
 
