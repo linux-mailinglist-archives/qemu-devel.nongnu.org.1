@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E758F721C48
+	by mail.lfdr.de (Postfix) with ESMTPS id EB886721C49
 	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 04:56:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q60Mz-0008Gm-VH; Sun, 04 Jun 2023 22:54:57 -0400
+	id 1q60N5-0008IF-Oh; Sun, 04 Jun 2023 22:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q60Mx-0008GK-Ue; Sun, 04 Jun 2023 22:54:55 -0400
-Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
+ id 1q60N2-0008Ha-Qr; Sun, 04 Jun 2023 22:55:00 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q60Mw-0002Zi-IB; Sun, 04 Jun 2023 22:54:55 -0400
-Received: by mail-qt1-x835.google.com with SMTP id
- d75a77b69052e-3f6bb5e8ed2so40148561cf.0; 
- Sun, 04 Jun 2023 19:54:53 -0700 (PDT)
+ id 1q60N0-0002a6-J2; Sun, 04 Jun 2023 22:55:00 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-19f8af9aa34so4583821fac.1; 
+ Sun, 04 Jun 2023 19:54:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685933692; x=1688525692;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=AeZXOyQylFlG6KYz/839KfYIGXXWTOf2hQB/qcExI2Q=;
- b=SqNZslX7s/5PkuwUXsssvxxKbmxiwkIJykhBIpTf8Fyh66En3gN+wRUUWqYrplH2yQ
- o+is9gpx3aZaowKZ6p7QSG1OcB1KEh7I7hyw+lD0Nkk5BpbqbMd4phUGy3nnFEidkCbB
- r/IHGOu+vM4VMeb0n81o3XsuQlkz/rNtTc5EatH52PiXwcCKLxj1oMWcEisISJv+3jSY
- 4WWjYFOHQC4qhFWSokq0UDdzMM/QEy3sdnFS2syJOWd/MzG+E7vdm9yDjkeJ+bDXPb76
- xoOez9yHGV/FkdzK6tXtKRFkRL+wU/8COjXj0qsdj+v4TWwsxFMkYwbT8mFpgkbuj9RS
- 97zA==
+ d=gmail.com; s=20221208; t=1685933696; x=1688525696;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bJMgFP/4t6X0V2JqvUZgT0S5xdsXeZCo1ZEWw5QS3rE=;
+ b=ZnUnNvlcFD5o4qSAFQ5wls4gj2fT+og7dV+8JVw+ATBVgyjql0oO61Kk+Ekgut7MT5
+ hprMXCLnUg5+7vdWVZoGqGXLP/HYQVuhPjJ1K+XL2thYrJ5JNIUHV8F5o8180CTOdlQl
+ 2uM9hOhJDdTZ7bW/AnM3kG4+5/kjtzsvUA84KxKwOg4/bUcS0pvdJGTlTdquoBtqm8Dt
+ IXiBER6Fp1lS1ZWcOEdAPxytll8JFZ4M/qQLkSSW8pDw6qZzK5YL5KE6qFv0lJGCxDm4
+ 4HYDaJt/BJLzuexlOpix20dKS+VCDk1rphrmzIfgbOs7wDH8Ygc2wGj9MoNALeZejVVo
+ xqGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685933692; x=1688525692;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AeZXOyQylFlG6KYz/839KfYIGXXWTOf2hQB/qcExI2Q=;
- b=k5BxSLk5l5m/8L5EwyjI4GkD1eDeVX0ZeM8YJtDbgYZDffHHhHifNr0BMXJFRj5YHX
- 8gPERpNwOATU04egQLoNWcQMmt0iY+GzVCjef3kd0azgGwUnaQdphUl1xdljOC90ARd1
- /oWAy9hcTNJycBVaeFBaW8FseYHupMrYAPrg5y9UCeSlgBooi4OIBwl3zYabyImGWJ+B
- YHv6qYkDBVflvO+bAq4b14LOqJuIBJfpTtnkifPg1Air3zIHyn0jO8gi3+/zNWk5sjPV
- oUgI8U3dpdTZqvBbM3R5h1XI0NfCyskVyJshc9BMRGu5z5UuUoIA2B5qOUIIvKtSBGJu
- Spow==
-X-Gm-Message-State: AC+VfDyIGdMIdjVfY5MZwLa6OQ3hA6mYLXiY3BFI2dp0phfF87YnfE+D
- NqpY6NRVO10PtrFQ1Fk3kNA=
-X-Google-Smtp-Source: ACHHUZ4Veg1sZlI/8RPBJQ6+pMYGQUxbtw/OtzKelPXA9xuuxys/d7XtLBjAea9QpFUOCRetQqg9uA==
-X-Received: by 2002:ad4:5dee:0:b0:626:f3d:9e46 with SMTP id
- jn14-20020ad45dee000000b006260f3d9e46mr7090010qvb.18.1685933692562; 
- Sun, 04 Jun 2023 19:54:52 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685933696; x=1688525696;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bJMgFP/4t6X0V2JqvUZgT0S5xdsXeZCo1ZEWw5QS3rE=;
+ b=jwxlKSa6TtWHp+ZwfYhcchgW2OmCIvvXPLT8es9xwgh0a4eLLHsezhMyXybyT+NuzO
+ qIu5SPWsmwmSr8z4zglKVdhOXxWyKQKD1lZ9UBD54bClBDorY3y6S2hD5Naka5nQRmJZ
+ mifxe7pVrq+U2xlFT15HwkEBYAQMAoDMfzPOA3J2aVwRC6NMAFOIbgRyT6jhiHGNAmAw
+ XR4TPe8m+ssxwCZW1YohJNIVWPwkTLaiUYfIWqf1ZpLML6/DzjUShiuCh1WMdarEUgMF
+ aGxIGHk/UBSY/Bn2SAY9p6qn3flEaPDER54VgF+zhg13c2qLPn6tPSmCR7obwxPtc4Go
+ scFw==
+X-Gm-Message-State: AC+VfDyTXUnRi0tz6TsNphnLYzzvFa2a+pDjtIo6ENWRvRfjyA1/UHfW
+ so58QpbFS54BndYmDdFhme9hvqvNxKg=
+X-Google-Smtp-Source: ACHHUZ7thRfUEbO5v14YHBvx6OgotYxc9dpSo3EvR6HF8UWkdLTjoLxeyLiEkMypB5k1wmb6UhT8zA==
+X-Received: by 2002:a05:6870:4ec:b0:18e:2b7e:a844 with SMTP id
+ u44-20020a05687004ec00b0018e2b7ea844mr8005680oam.21.1685933696611; 
+ Sun, 04 Jun 2023 19:54:56 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- q5-20020a170902c74500b001ae59169f05sm5316778plq.182.2023.06.04.19.54.49
+ q5-20020a170902c74500b001ae59169f05sm5316778plq.182.2023.06.04.19.54.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Jun 2023 19:54:51 -0700 (PDT)
+ Sun, 04 Jun 2023 19:54:56 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: [PATCH v2 1/4] target/ppc: Fix lqarx to set cpu_reserve
-Date: Mon,  5 Jun 2023 12:54:42 +1000
-Message-Id: <20230605025445.161932-1-npiggin@gmail.com>
+Subject: [PATCH v2 2/4] target/ppc: Ensure stcx size matches larx
+Date: Mon,  5 Jun 2023 12:54:43 +1000
+Message-Id: <20230605025445.161932-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230605025445.161932-1-npiggin@gmail.com>
+References: <20230605025445.161932-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
- envelope-from=npiggin@gmail.com; helo=mail-qt1-x835.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=npiggin@gmail.com; helo=mail-oa1-x2d.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,31 +91,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-lqarx does not set cpu_reserve, which causes stqcx. to never succeed.
+Differently-sized larx/stcx. pairs can succeed if the starting address
+matches. Add a check to require the size of stcx. exactly match the larx
+that established the reservation. Use the term "reserve_length" for this
+state, which matches the terminology used in the ISA.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 94bf2658676 ("target/ppc: Use atomic load for LQ and LQARX")
-Fixes: 57b38ffd0c6 ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
 v2:
-- Fix bugs vs memory access fault [Richard]
+- Changed lqarx/stqcx. reservation size to 16 [Richard]
+- Changed name to reserve_length [Richard]
 
- target/ppc/translate.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/ppc/cpu.h       | 5 +++--
+ target/ppc/cpu_init.c  | 4 ++--
+ target/ppc/translate.c | 9 +++++++++
+ 3 files changed, 14 insertions(+), 4 deletions(-)
 
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 7959bfed0a..45d84ce06a 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1123,8 +1123,9 @@ struct CPUArchState {
+     target_ulong ov32;
+     target_ulong ca32;
+ 
+-    target_ulong reserve_addr; /* Reservation address */
+-    target_ulong reserve_val;  /* Reservation value */
++    target_ulong reserve_addr;   /* Reservation address */
++    target_ulong reserve_length; /* Reservation larx op size (bytes) */
++    target_ulong reserve_val;    /* Reservation value */
+     target_ulong reserve_val2;
+ 
+     /* These are used in supervisor mode only */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 944a74befe..c3dd7052a3 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7421,8 +7421,8 @@ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+         }
+         qemu_fprintf(f, " %c%c", a, env->crf[i] & 0x01 ? 'O' : ' ');
+     }
+-    qemu_fprintf(f, " ]             RES " TARGET_FMT_lx "\n",
+-                 env->reserve_addr);
++    qemu_fprintf(f, " ]     RES %03x@" TARGET_FMT_lx "\n",
++                 (int)env->reserve_length, env->reserve_addr);
+ 
+     if (flags & CPU_DUMP_FPU) {
+         for (i = 0; i < 32; i++) {
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 3650d2985d..7a5bf1d820 100644
+index 7a5bf1d820..538f757dec 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -3881,6 +3881,7 @@ static void gen_lqarx(DisasContext *ctx)
-     tcg_gen_qemu_ld_i128(t16, EA, ctx->mem_idx, DEF_MEMOP(MO_128 | MO_ALIGN));
+@@ -71,6 +71,7 @@ static TCGv cpu_cfar;
+ #endif
+ static TCGv cpu_xer, cpu_so, cpu_ov, cpu_ca, cpu_ov32, cpu_ca32;
+ static TCGv cpu_reserve;
++static TCGv cpu_reserve_length;
+ static TCGv cpu_reserve_val;
+ static TCGv cpu_reserve_val2;
+ static TCGv cpu_fpscr;
+@@ -141,6 +142,10 @@ void ppc_translate_init(void)
+     cpu_reserve = tcg_global_mem_new(cpu_env,
+                                      offsetof(CPUPPCState, reserve_addr),
+                                      "reserve_addr");
++    cpu_reserve_length = tcg_global_mem_new(cpu_env,
++                                            offsetof(CPUPPCState,
++                                                     reserve_length),
++                                            "reserve_length");
+     cpu_reserve_val = tcg_global_mem_new(cpu_env,
+                                          offsetof(CPUPPCState, reserve_val),
+                                          "reserve_val");
+@@ -3585,6 +3590,7 @@ static void gen_load_locked(DisasContext *ctx, MemOp memop)
+     gen_addr_reg_index(ctx, t0);
+     tcg_gen_qemu_ld_tl(gpr, t0, ctx->mem_idx, memop | MO_ALIGN);
+     tcg_gen_mov_tl(cpu_reserve, t0);
++    tcg_gen_movi_tl(cpu_reserve_length, memop_size(memop));
+     tcg_gen_mov_tl(cpu_reserve_val, gpr);
+     tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+ }
+@@ -3816,6 +3822,7 @@ static void gen_conditional_store(DisasContext *ctx, MemOp memop)
+     gen_set_access_type(ctx, ACCESS_RES);
+     gen_addr_reg_index(ctx, t0);
+     tcg_gen_brcond_tl(TCG_COND_NE, t0, cpu_reserve, l1);
++    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_length, memop_size(memop), l1);
+ 
+     t0 = tcg_temp_new();
+     tcg_gen_atomic_cmpxchg_tl(t0, cpu_reserve, cpu_reserve_val,
+@@ -3882,6 +3889,7 @@ static void gen_lqarx(DisasContext *ctx)
      tcg_gen_extr_i128_i64(lo, hi, t16);
  
-+    tcg_gen_mov_tl(cpu_reserve, EA);
+     tcg_gen_mov_tl(cpu_reserve, EA);
++    tcg_gen_movi_tl(cpu_reserve_length, 16);
      tcg_gen_st_tl(hi, cpu_env, offsetof(CPUPPCState, reserve_val));
      tcg_gen_st_tl(lo, cpu_env, offsetof(CPUPPCState, reserve_val2));
  }
+@@ -3907,6 +3915,7 @@ static void gen_stqcx_(DisasContext *ctx)
+     gen_addr_reg_index(ctx, EA);
+ 
+     tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lab_fail);
++    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_length, 16, lab_fail);
+ 
+     cmp = tcg_temp_new_i128();
+     val = tcg_temp_new_i128();
 -- 
 2.40.1
 
