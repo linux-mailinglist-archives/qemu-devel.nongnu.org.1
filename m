@@ -2,94 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C2E722B41
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 17:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3D1722BD9
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 17:48:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6CFj-0005lC-D4; Mon, 05 Jun 2023 11:36:15 -0400
+	id 1q6CP1-0007ik-TY; Mon, 05 Jun 2023 11:45:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6CFh-0005kb-Jp
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:36:13 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q6COz-0007iC-6T
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:45:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6CFe-00083u-KS
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:36:13 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q6COx-0001HK-H9
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:45:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685979369;
+ s=mimecast20190719; t=1685979945;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yzEoVejdJUdhwRJYT/4kD88Cr8NignP+V8kGgM/tmFo=;
- b=Zxey2tdNaf/wwjlqhkwdkf/8slnoI/DVkle9lybev12GHUb0ES6KhPLgRoIzyFHkuxS7uk
- 8jm8Ik5+uFkzgDHyd8Ro11eqnIwDpLGstAndeOZ84Uwu9nbQ/b04SqK0e/FC99HhA3OWNW
- u+XYKEktkovUKhA5An1QJSmPLdYeTHs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-EGByI3BNO66DC0XalRRN4A-1; Mon, 05 Jun 2023 11:36:06 -0400
-X-MC-Unique: EGByI3BNO66DC0XalRRN4A-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f7e7a6981cso2672425e9.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 08:36:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685979365; x=1688571365;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yzEoVejdJUdhwRJYT/4kD88Cr8NignP+V8kGgM/tmFo=;
- b=ltbhhL83X9OGwFkvC8Y0gS8qFdvc9t1bFizS6w9MbwlUvR186MDSICVjK+oc3ULn9S
- MFT9G3ztFq5Sxs42WaBshpVCiXVc2UNnK8VWpIQu8XHSa4BYKi4VR+kCkWfqTwJl2MPa
- n+252WuJieJ2LU9fA6IbJgqp3LqnZkAWJ58+pom5tOTWRBgiArHpjbgV1zQijwd+zLP6
- yvg2wCt8mz6rmxlHxUPDEo+VcQUv0zcc/RF/UzWJrJv9zFTc9zXzHPMeYe9+nlFZj2NI
- 5L3+pdXJbKDeIBTQiqmyG+Mk6fx7a1NHkISUJR9QHRfMy6Bw4q+sTYG7mF3UDA5F72aV
- 4q0Q==
-X-Gm-Message-State: AC+VfDxFr/CbOo1n0kWHdeuSbm9/ISk3jjB5KUj++Qm93rRZYiiz5zEn
- enArGa315qAd2K7fxjqBBV21mc7mNsH2gU2gGdyatmvRG+aoLThodx9aLdhJ7wEarFlpMhoEgqv
- 4GBlr8BPhGM/jT0g=
-X-Received: by 2002:a05:6000:18ca:b0:306:26d7:3805 with SMTP id
- w10-20020a05600018ca00b0030626d73805mr4968049wrq.63.1685979365368; 
- Mon, 05 Jun 2023 08:36:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5lfFbOvQf0lA1/xdc2+vdMxMh9DuJc1QbMP9lRmUtjb06kU++zfxm7j3qb6UIbw/HARIcdQA==
-X-Received: by 2002:a05:6000:18ca:b0:306:26d7:3805 with SMTP id
- w10-20020a05600018ca00b0030626d73805mr4968036wrq.63.1685979365062; 
- Mon, 05 Jun 2023 08:36:05 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-42-115-143.web.vodafone.de.
- [109.42.115.143]) by smtp.gmail.com with ESMTPSA id
- k9-20020a056000004900b002c71b4d476asm10099849wrx.106.2023.06.05.08.36.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 08:36:04 -0700 (PDT)
-Message-ID: <0f4090d2-02cb-ff7e-bdd8-5814607e1711@redhat.com>
-Date: Mon, 5 Jun 2023 17:36:02 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LSIE00uJ2eJCMSh2vZboXPZY4W5SF+27BlxOXvhoE8c=;
+ b=XCwFwMDYEmGjkWukVxwfhR8wXq8xYo7Q2Ky5X6QskJhRTzRiskA+ofhKAVslViu7fxw3es
+ FZtCb4SnSiDKraxlm/Z1c+Buo2NN6J61KnXMScuSsNyPY75oshM/1xMD6IDkiT57fjrCjb
+ EpyU4W9Rg5XFG2qoecXHviQrKmm989s=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-1-AU1x1F8JNJa1nk7BtpfJZA-1; Mon, 05 Jun 2023 11:45:44 -0400
+X-MC-Unique: AU1x1F8JNJa1nk7BtpfJZA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 886A53801ED3;
+ Mon,  5 Jun 2023 15:45:43 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.13])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 39C3640CFD47;
+ Mon,  5 Jun 2023 15:45:43 +0000 (UTC)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 00/17] Block patches
+Date: Mon,  5 Jun 2023 17:45:24 +0200
+Message-Id: <20230605154541.1043261-1-hreitz@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Cleber Rosa <crosa@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-References: <20230601163123.1805282-1-berrange@redhat.com>
- <a0bb4c2a-92ad-4290-3eb8-4168b8828d76@redhat.com>
- <ZH3tyx//NRnvKY0m@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 0/6] tests: enable meson test timeouts to improve
- debuggability
-In-Reply-To: <ZH3tyx//NRnvKY0m@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,101 +75,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/06/2023 16.14, Daniel P. Berrangé wrote:
-> On Mon, Jun 05, 2023 at 04:07:46PM +0200, Thomas Huth wrote:
->> On 01/06/2023 18.31, Daniel P. Berrangé wrote:
->>> Perhaps the most painful of all the GitLab CI failures we see are
->>> the enforced job timeouts:
->>>
->>>      "ERROR: Job failed: execution took longer than 1h15m0s seconds"
->>>
->>>      https://gitlab.com/qemu-project/qemu/-/jobs/4387047648
->>>
->>> when that hits the CI log shows what has *already* run, but figuring
->>> out what was currently running (or rather stuck) is an horrendously
->>> difficult.
->>>
->>> The initial meson port disabled the meson test timeouts, in order to
->>> limit the scope for introducing side effects from the port that would
->>> complicate adoption.
->>>
->>> Now that the meson port is basically finished we can take advantage of
->>> more of its improved features. It has the ability to set timeouts for
->>> test programs, defaulting to 30 seconds, but overridable per test. This
->>> is further helped by fact that we changed the iotests integration so
->>> that each iotests was a distinct meson test, instead of having one
->>> single giant (slow) test.
->>>
->>> We already set overrides for a bunch of tests, but they've not been
->>> kept up2date since we had timeouts disabled. So this series first
->>> updates the timeout overrides such that all tests pass when run in
->>> my test gitlab CI pipeline. Then it enables use of meson timeouts.
->>>
->>> We might still hit timeouts due to non-deterministic performance of
->>> gitlab CI runners. So we'll probably have to increase a few more
->>> timeouts in the short term. Fortunately this is going to be massively
->>> easier to diagnose. For example this job during my testing:
->>>
->>>      https://gitlab.com/berrange/qemu/-/jobs/4392029495
->>>
->>> we can immediately see  the problem tests
->>>
->>> Summary of Failures:
->>>     6/252 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                TIMEOUT        120.02s   killed by signal 15 SIGTERM
->>>     7/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test          TIMEOUT        120.03s   killed by signal 15 SIGTERM
->>>    64/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test                  TIMEOUT        300.03s   killed by signal 15 SIGTERM
->>>
->>> The full meson testlog.txt will show each individual TAP log output,
->>> so we can then see exactly which test case we got stuck on.
->>>
->>> NB, the artifacts are missing on the job links above, until this
->>> patch merges:
->>>
->>>      https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04668.html
->>>
->>> NB, this series sets the migration-test timeout to 5 minutes, which
->>> is only valid if this series is merged to make the migration test
->>> not suck:
->>>
->>>     https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg00286.html
->>>
->>> without that series, we'll need to set the migration-test timeout to
->>> 30 minutes instead.
->>>
->>> Daniel P. Berrangé (6):
->>>     qtest: bump min meson timeout to 60 seconds
->>>     qtest: bump migration-test timeout to 5 minutes
->>>     qtest: bump qom-test timeout to 7 minutes
->>>     qtest: bump aspeed_smc-test timeout to 2 minutes
->>>     qtest: bump bios-table-test timeout to 6 minutes
->>>     mtest2make: stop disabling meson test timeouts
->>>
->>>    scripts/mtest2make.py   |  3 ++-
->>>    tests/qtest/meson.build | 16 ++++++----------
->>>    2 files changed, 8 insertions(+), 11 deletions(-)
->>
->> FWIW, I now ran this on my rather old laptop with an --enable-debug
->> build with "make -j$(nproc) check-qtest" and got these additional
->> failures (beside the expected migration-test that still needs its
->> final speedup):
->>
->>   qtest-aarch64/test-hmp        TIMEOUT   120.07s   killed by signal 15 SIGTERM
->>   qtest-aarch64/qom-test        TIMEOUT   420.09s   killed by signal 15 SIGTERM
->>   qtest-arm/qom-test            TIMEOUT   420.10s   killed by signal 15 SIGTERM
->>   qtest-arm/npcm7xx_pwm-test    TIMEOUT   150.04s   killed by signal 15 SIGTERM
->>   qtest-ppc64/pxe-test          TIMEOUT    60.01s   killed by signal 15 SIGTERM
->>   qtest-sparc/prom-env-test     TIMEOUT    60.01s   killed by signal 15 SIGTERM
->>   qtest-sparc/boot-serial-test  TIMEOUT    60.01s   killed by signal 15 SIGTERM
-> 
-> Did you see any others in the 45-60 second time window, as those would
-> be candidates for increases too - don't want to have things right below
-> the 60 second cutoff ?
+The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
 
-The qos-test on arm likely needs some adjustment, too:
+  Merge tag 'migration-20230602-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-06-02 17:33:29 -0700)
 
-  qtest-arm/qos-test                    OK     40.72s   115 subtests passed
-  qtest-aarch64/qos-test                OK     54.00s   108 subtests passed
+are available in the Git repository at:
 
-  Thomas
+  https://gitlab.com/hreitz/qemu.git tags/pull-block-2023-06-05
+
+for you to fetch changes up to 42a2890a76f4783cd1c212f27856edcf2b5e8a75:
+
+  qcow2: add discard-no-unref option (2023-06-05 13:15:42 +0200)
+
+----------------------------------------------------------------
+Block patches
+
+- Fix padding of unaligned vectored requests to match the host alignment
+  for vectors with 1023 or 1024 buffers
+- Refactor and fix bugs in parallels's image check functionality
+- Add an option to the qcow2 driver to retain (qcow2-level) allocations
+  on discard requests from the guest (while still forwarding the discard
+  to the lower level and marking the range as zero)
+
+----------------------------------------------------------------
+Alexander Ivanov (12):
+  parallels: Out of image offset in BAT leads to image inflation
+  parallels: Fix high_off calculation in parallels_co_check()
+  parallels: Fix image_end_offset and data_end after out-of-image check
+  parallels: create parallels_set_bat_entry_helper() to assign BAT value
+  parallels: Use generic infrastructure for BAT writing in
+    parallels_co_check()
+  parallels: Move check of unclean image to a separate function
+  parallels: Move check of cluster outside image to a separate function
+  parallels: Fix statistics calculation
+  parallels: Move check of leaks to a separate function
+  parallels: Move statistic collection to a separate function
+  parallels: Replace qemu_co_mutex_lock by WITH_QEMU_LOCK_GUARD
+  parallels: Incorrect condition in out-of-image check
+
+Hanna Czenczek (4):
+  util/iov: Make qiov_slice() public
+  block: Collapse padded I/O vecs exceeding IOV_MAX
+  util/iov: Remove qemu_iovec_init_extended()
+  iotests/iov-padding: New test
+
+Jean-Louis Dupond (1):
+  qcow2: add discard-no-unref option
+
+ qapi/block-core.json                     |  12 ++
+ block/qcow2.h                            |   3 +
+ include/qemu/iov.h                       |   8 +-
+ block/io.c                               | 166 ++++++++++++++++++--
+ block/parallels.c                        | 190 ++++++++++++++++-------
+ block/qcow2-cluster.c                    |  32 +++-
+ block/qcow2.c                            |  18 +++
+ util/iov.c                               |  89 ++---------
+ qemu-options.hx                          |  12 ++
+ tests/qemu-iotests/tests/iov-padding     |  85 ++++++++++
+ tests/qemu-iotests/tests/iov-padding.out |  59 +++++++
+ 11 files changed, 523 insertions(+), 151 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/iov-padding
+ create mode 100644 tests/qemu-iotests/tests/iov-padding.out
+
+-- 
+2.40.1
 
 
