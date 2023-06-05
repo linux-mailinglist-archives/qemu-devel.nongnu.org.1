@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75771723327
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F296772331E
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6IdF-0008TY-Ls; Mon, 05 Jun 2023 18:24:57 -0400
+	id 1q6IdJ-000055-FS; Mon, 05 Jun 2023 18:25:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6IdD-0008Rk-BU
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:55 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6IdH-0008VN-LG
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:59 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6IdA-00069F-0l
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:55 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f3b4ed6fdeso6800833e87.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:24:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6IdF-0006Cv-1o
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:59 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3f70fc4682aso47462395e9.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:24:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686003890; x=1688595890;
+ d=linaro.org; s=google; t=1686003895; x=1688595895;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YJBqBbChR/+wuwcjMNAnFqc7wtXYEDeITPWhBBf8hLU=;
- b=MGRvKQL1GTbt8xk3yQvUqFybiP4dmWsLbCaQFam5l1KqDQswGCOYceIQ8AFwchwpwr
- aaZPrghoYYvTXeRRm5eFYpZQ2Z2Wo8sogRnmfkDSQYh6PgVsDG5dZKpPCkSZ2ylrbziw
- 9WSfPWLLvKe3OEruR8KDQQtSo2QcA6FfbgJYAsOjjjo63lmV2LA7ujgaf0pZfVE51fm0
- qWqAi/vAtzSzX381nZrwE1IjbIrVrZpusfIR6QzRsz35pUMHiiRMU8JuGFKCovcwUaCY
- TFDPABQl7eFnieyuTSWpOXJP3lPsiaMaknAiqTET+dRqR1F6Z5m41kNdtOVy8SkP1SLR
- 8S5A==
+ bh=+n5+QMgZVR0DsKuYLRLa0zum6v0eHEZ5kn5puaUvVbM=;
+ b=a+DRdN2hB/8iZzCgCSuKEuDPAn7W5ZMTV547E5ruJ4Oz6GkNLA/MdRGygZfv/pNn4t
+ m9eU9tAlSFkbLQIhFSgMOVaA43tXYlamDICUEp6RtN3vgWWDRwMzbIdMcgI6d1/qEECM
+ xBMj7dzICGqbZQEWobcTHT3Qb2PnkXxcOhvPeRBpCBOljbkMILYBgue3nNj0gHFKzeBZ
+ ytdck/ViRTUgfikQKpfsep8WGRP02onQ6kwsVem4oTvzlCX9H3K4mRUcpwsF77BhiNk8
+ 4YTRUrtSHxZTQeBxazkhYCs1U/eO8cLBs4Az1WknvHMPFZJFP1Bd4Ud3gnM7kpyRvsy4
+ va0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686003890; x=1688595890;
+ d=1e100.net; s=20221208; t=1686003895; x=1688595895;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YJBqBbChR/+wuwcjMNAnFqc7wtXYEDeITPWhBBf8hLU=;
- b=XdtzKY+5HU0Qeu9ffrL47pInAk6GyAH+wz3gtHAQKRpoazvL0EPA1enH0r8Vwrwvx7
- 2Auca7xKjN4zB3Q2pjwy43L7Z6vHydIDsVy+EPZ2vHEuhHSqjBx0TgVffbsOZJ2ujjRu
- dCBuUB+vmOyKyxP8HwNDTmWYsJhcGT5rvrAB2puvSD2Eh2As94+VDTMD0BqlsSVESTaX
- vFEyVMoshM43KkSVT20Fl2ntvwUFaRlSIt0Pp8XjR3HKaN5rh3nXLpeRYEdyVgzJpfZm
- 1Dlz9k/Au/cCBBqwGmVg69RLRBL2jwIuZoegc+UPkr26HsiHQyJYHe4SulUGIecOGt3x
- B51w==
-X-Gm-Message-State: AC+VfDxb9y/iDNTzvuaYh1YrWWA8DPDJei5Nlox6wlcE2NFpYX5CwUzH
- Jxl/uUkjxMQi/mfephED3H0f/51hclnPnI9qw5c=
-X-Google-Smtp-Source: ACHHUZ6KwmXfhSTqJdcO8nN1K9TJHWyKY3Vz9X9Wo7c12+vDkUPjtfnbHJwkJHtEDBTRDQkyvC5WTw==
-X-Received: by 2002:a05:651c:22d:b0:2b1:d4fc:75f2 with SMTP id
- z13-20020a05651c022d00b002b1d4fc75f2mr346883ljn.7.1686003889974; 
- Mon, 05 Jun 2023 15:24:49 -0700 (PDT)
+ bh=+n5+QMgZVR0DsKuYLRLa0zum6v0eHEZ5kn5puaUvVbM=;
+ b=S8QpfdWSoktMDp+1sxOQDgvmEBttkywNNbz/fmvwh9OmrF+PfQHebXyMNrrfCaqDEa
+ NXHMhgn9jOMZyecvfNDiqtAYlFnDnTBDuCum39ewO/E7gSNtn/JjNg9KmvFNcUBM+3nE
+ ANp38OiKGz8Aie4Xlyj18ELxo3a0tCX9Zq0BBs16YqzXT7UrgY9DiLLou8FDHFPniLwc
+ QRNL/4ORESVzz9ggISmVl6LRK4MoC6IR2Mg+d/F/qeHKSMGNEP6e8y3o833Kx0qusrYC
+ lNX5G/r6AabcqOUEttgA8y4Jr20CTSPTOHEpByXj8J8P6pjZLieoVwgoRVxcdoFnxY8M
+ 83Gw==
+X-Gm-Message-State: AC+VfDyINFuoZNz+T7mJ2OtesIu6Ue4InH9YH2i3298TjPVVS9cuOEXn
+ QODhRRrfT0em24l7sNrVOaoWeBEI2XOO6qZ63r0=
+X-Google-Smtp-Source: ACHHUZ4sk7nMUvGGqQOFpFVABTiuVLEk26aSHokk9GIarrwtfWrV+PnJFf2fzX/Rbn0Fp9jKqQSYdA==
+X-Received: by 2002:a1c:770d:0:b0:3f4:2452:9669 with SMTP id
+ t13-20020a1c770d000000b003f424529669mr393924wmi.0.1686003895518; 
+ Mon, 05 Jun 2023 15:24:55 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- w8-20020a1cf608000000b003f42d8dd7d1sm15483144wmc.7.2023.06.05.15.24.48
+ cx14-20020a056000092e00b003078681a1e8sm10846530wrb.54.2023.06.05.15.24.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 05 Jun 2023 15:24:49 -0700 (PDT)
+ Mon, 05 Jun 2023 15:24:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -61,18 +61,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 5/9] hw/core/cpu: Check for USER_ONLY definition
- instead of SOFTMMU one
-Date: Tue,  6 Jun 2023 00:24:16 +0200
-Message-Id: <20230605222420.14776-6-philmd@linaro.org>
+Subject: [RFC PATCH v2 6/9] accel/tcg: Check for USER_ONLY definition instead
+ of SOFTMMU one
+Date: Tue,  6 Jun 2023 00:24:17 +0200
+Message-Id: <20230605222420.14776-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230605222420.14776-1-philmd@linaro.org>
 References: <20230605222420.14776-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,156 +98,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Since we *might* have user emulation with softmmu,
 replace the system emulation check by !user emulation one.
 
-Invert the #ifdef'ry in TCGCPUOps structure for clarity.
+Invert some if() ladders for clarity.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/cpu.h         |   4 +-
- include/hw/core/tcg-cpu-ops.h | 102 +++++++++++++++++-----------------
- 2 files changed, 53 insertions(+), 53 deletions(-)
+ accel/tcg/internal.h | 6 +++---
+ accel/tcg/cpu-exec.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 383456d1b3..f41b0c56f7 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1014,7 +1014,7 @@ void page_size_init(void);
- 
- #ifdef NEED_CPU_H
- 
+diff --git a/accel/tcg/internal.h b/accel/tcg/internal.h
+index 24f225cac7..65380ccb42 100644
+--- a/accel/tcg/internal.h
++++ b/accel/tcg/internal.h
+@@ -17,10 +17,10 @@
+  * memory related structures are protected with mmap_lock.
+  * In !user-mode we use per-page locks.
+  */
 -#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- 
- extern const VMStateDescription vmstate_cpu_common;
- 
-@@ -1025,7 +1025,7 @@ extern const VMStateDescription vmstate_cpu_common;
-     .flags = VMS_STRUCT,                                                    \
-     .offset = 0,                                                            \
- }
--#endif /* CONFIG_SOFTMMU */
-+#endif /* !CONFIG_USER_ONLY */
- 
- #endif /* NEED_CPU_H */
- 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index 0ae08df47e..3e8b1b737a 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -64,7 +64,56 @@ struct TCGCPUOps {
-      */
-     void (*do_interrupt)(CPUState *cpu);
- #endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
--#ifdef CONFIG_SOFTMMU
-+#ifdef CONFIG_USER_ONLY
-+    /**
-+     * record_sigsegv:
-+     * @cpu: cpu context
-+     * @addr: faulting guest address
-+     * @access_type: access was read/write/execute
-+     * @maperr: true for invalid page, false for permission fault
-+     * @ra: host pc for unwinding
-+     *
-+     * We are about to raise SIGSEGV with si_code set for @maperr,
-+     * and si_addr set for @addr.  Record anything further needed
-+     * for the signal ucontext_t.
-+     *
-+     * If the emulated kernel does not provide anything to the signal
-+     * handler with anything besides the user context registers, and
-+     * the siginfo_t, then this hook need do nothing and may be omitted.
-+     * Otherwise, record the data and return; the caller will raise
-+     * the signal, unwind the cpu state, and return to the main loop.
-+     *
-+     * If it is simpler to re-use the sysemu tlb_fill code, @ra is provided
-+     * so that a "normal" cpu exception can be raised.  In this case,
-+     * the signal must be raised by the architecture cpu_loop.
-+     */
-+    void (*record_sigsegv)(CPUState *cpu, vaddr addr,
-+                           MMUAccessType access_type,
-+                           bool maperr, uintptr_t ra);
-+    /**
-+     * record_sigbus:
-+     * @cpu: cpu context
-+     * @addr: misaligned guest address
-+     * @access_type: access was read/write/execute
-+     * @ra: host pc for unwinding
-+     *
-+     * We are about to raise SIGBUS with si_code BUS_ADRALN,
-+     * and si_addr set for @addr.  Record anything further needed
-+     * for the signal ucontext_t.
-+     *
-+     * If the emulated kernel does not provide the signal handler with
-+     * anything besides the user context registers, and the siginfo_t,
-+     * then this hook need do nothing and may be omitted.
-+     * Otherwise, record the data and return; the caller will raise
-+     * the signal, unwind the cpu state, and return to the main loop.
-+     *
-+     * If it is simpler to re-use the sysemu do_unaligned_access code,
-+     * @ra is provided so that a "normal" cpu exception can be raised.
-+     * In this case, the signal must be raised by the architecture cpu_loop.
-+     */
-+    void (*record_sigbus)(CPUState *cpu, vaddr addr,
-+                          MMUAccessType access_type, uintptr_t ra);
-+#else
-     /** @cpu_exec_interrupt: Callback for processing interrupts in cpu_exec */
-     bool (*cpu_exec_interrupt)(CPUState *cpu, int interrupt_request);
-     /**
-@@ -121,56 +170,7 @@ struct TCGCPUOps {
-      */
-     bool (*io_recompile_replay_branch)(CPUState *cpu,
-                                        const TranslationBlock *tb);
+-#define assert_memory_lock()
 -#else
--    /**
--     * record_sigsegv:
--     * @cpu: cpu context
--     * @addr: faulting guest address
--     * @access_type: access was read/write/execute
--     * @maperr: true for invalid page, false for permission fault
--     * @ra: host pc for unwinding
--     *
--     * We are about to raise SIGSEGV with si_code set for @maperr,
--     * and si_addr set for @addr.  Record anything further needed
--     * for the signal ucontext_t.
--     *
--     * If the emulated kernel does not provide anything to the signal
--     * handler with anything besides the user context registers, and
--     * the siginfo_t, then this hook need do nothing and may be omitted.
--     * Otherwise, record the data and return; the caller will raise
--     * the signal, unwind the cpu state, and return to the main loop.
--     *
--     * If it is simpler to re-use the sysemu tlb_fill code, @ra is provided
--     * so that a "normal" cpu exception can be raised.  In this case,
--     * the signal must be raised by the architecture cpu_loop.
--     */
--    void (*record_sigsegv)(CPUState *cpu, vaddr addr,
--                           MMUAccessType access_type,
--                           bool maperr, uintptr_t ra);
--    /**
--     * record_sigbus:
--     * @cpu: cpu context
--     * @addr: misaligned guest address
--     * @access_type: access was read/write/execute
--     * @ra: host pc for unwinding
--     *
--     * We are about to raise SIGBUS with si_code BUS_ADRALN,
--     * and si_addr set for @addr.  Record anything further needed
--     * for the signal ucontext_t.
--     *
--     * If the emulated kernel does not provide the signal handler with
--     * anything besides the user context registers, and the siginfo_t,
--     * then this hook need do nothing and may be omitted.
--     * Otherwise, record the data and return; the caller will raise
--     * the signal, unwind the cpu state, and return to the main loop.
--     *
--     * If it is simpler to re-use the sysemu do_unaligned_access code,
--     * @ra is provided so that a "normal" cpu exception can be raised.
--     * In this case, the signal must be raised by the architecture cpu_loop.
--     */
--    void (*record_sigbus)(CPUState *cpu, vaddr addr,
--                          MMUAccessType access_type, uintptr_t ra);
--#endif /* CONFIG_SOFTMMU */
-+#endif /* !CONFIG_USER_ONLY */
- #endif /* NEED_CPU_H */
++#ifdef CONFIG_USER_ONLY
+ #define assert_memory_lock() tcg_debug_assert(have_mmap_lock())
++#else
++#define assert_memory_lock()
+ #endif
  
- };
+ #if defined(CONFIG_SOFTMMU) && defined(CONFIG_DEBUG_TCG)
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 1cf4f1fa22..cf07e6740f 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -563,7 +563,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+         cpu_tb_exec(cpu, tb, &tb_exit);
+         cpu_exec_exit(cpu);
+     } else {
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+         clear_helper_retaddr();
+         if (have_mmap_lock()) {
+             mmap_unlock();
+@@ -1020,7 +1020,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
+         /* Non-buggy compilers preserve this; assert the correct value. */
+         g_assert(cpu == current_cpu);
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+         clear_helper_retaddr();
+         if (have_mmap_lock()) {
+             mmap_unlock();
 -- 
 2.38.1
 
