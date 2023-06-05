@@ -2,94 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9887221B8
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6257221E6
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:18:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q66Aw-00076I-Tx; Mon, 05 Jun 2023 05:06:56 -0400
+	id 1q66L6-0001wg-Nk; Mon, 05 Jun 2023 05:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q66Al-00070s-El
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:06:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q66AZ-0006vU-RR
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:06:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685955990;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bDFt+FcAQOj/227ISjZJosTCfnGxpDdpQgOXq6qVH7I=;
- b=JeCwzmpS/1mZsRs5/NdKKVUaP8h+mRIt91pwNvwL2rCTZAhnNUC07EWUcw0dTmdt4hsN9W
- fbcWwmhbbKrSGwJEwbdkiW45zelwBjc3JSwDL5Xy6i4sVrEbfoCY/VWzKd8gNdIxPA97of
- /7yml7E1c8kaizQeW+3rVoWm3UkY5R8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-102-QGQlGgRlPoeX4fVE6v7_IA-1; Mon, 05 Jun 2023 05:06:26 -0400
-X-MC-Unique: QGQlGgRlPoeX4fVE6v7_IA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-976c92459cbso200150666b.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 02:06:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685955985; x=1688547985;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bDFt+FcAQOj/227ISjZJosTCfnGxpDdpQgOXq6qVH7I=;
- b=QMo00fz7tioxbf/SulASbxFUXl4lfp9wfAs6td0Mn9Cwey/GQGbeJi1Zv2eE00lOzh
- 9e+qT3+tTTqGLsmpVd7B4PNXDI4pQ7/bn83XQGZGK3Bg6xcJLGs7ERZAIC0ZN3K84jlC
- ze9IfHtFPHIN0+jNh3ME40p3PMcLXGJEWodepXj3dwG+iAVNqHzTdN0LO8RtQFq8nUWw
- 08sD2qUaeQnjpvyfEWLQw97/QedX1eeMvlQwUEwLlu47B8Y2/lERGO6S1WU3iZJo6V0v
- 5flOO0TvhG4803KhyRSbnyHxi1VWzSKhWj+pEvdPK2vihEeDVxjJw4+AYnCb0zDU94ij
- RQpQ==
-X-Gm-Message-State: AC+VfDype425FzQCL8v/ix+6TTNou9TXOaKq8ZGLBE2XsvCN7c5gfDSx
- 6B8tJkhZBxpnOp1BL5W1apCFz92KXR1w5X5loIJCdjA87/TNqvthSpRVR6w62uw0wy/KqywSAyk
- YpbOEnGir2zS/uPjy3aftQxU=
-X-Received: by 2002:a17:907:1688:b0:96f:7b4a:2909 with SMTP id
- hc8-20020a170907168800b0096f7b4a2909mr7337929ejc.26.1685955985311; 
- Mon, 05 Jun 2023 02:06:25 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6+fnRA8/x9AbjK50V7k61O9qRjINc4d74/5NLoPY3lUF61EU6ZWKVfsdDBBVjrbvzMwv/xEg==
-X-Received: by 2002:a17:907:1688:b0:96f:7b4a:2909 with SMTP id
- hc8-20020a170907168800b0096f7b4a2909mr7337919ejc.26.1685955985065; 
- Mon, 05 Jun 2023 02:06:25 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c?
- ([2001:b07:6468:f312:1c09:f536:3de6:228c])
- by smtp.googlemail.com with ESMTPSA id
- oy8-20020a170907104800b0096b4ec45e10sm4021178ejb.139.2023.06.05.02.06.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 02:06:24 -0700 (PDT)
-Message-ID: <fbcb21e3-9544-eea2-ab5b-9bb84ac7c90b@redhat.com>
-Date: Mon, 5 Jun 2023 11:06:23 +0200
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q66KP-0001u2-In; Mon, 05 Jun 2023 05:16:41 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q66KM-0000Og-H7; Mon, 05 Jun 2023 05:16:41 -0400
+Received: from [192.168.100.156] (unknown [117.61.117.136])
+ by APP-01 (Coremail) with SMTP id qwCowAD3_fHnp31k3wWyCw--.18998S2;
+ Mon, 05 Jun 2023 17:16:24 +0800 (CST)
+Message-ID: <74719362-f97b-a32e-45bc-ef9eddfd721b@iscas.ac.cn>
+Date: Mon, 5 Jun 2023 17:16:23 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 11/11] Revert "graph-lock: Disable locking for now"
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: stefanha@redhat.com, hreitz@redhat.com, eblake@redhat.com,
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] target/riscv: Smepmp: Return error when access permission
+ not allowed in PMP
+To: Himanshu Chauhan <hchauhan@ventanamicro.com>, qemu-riscv@nongnu.org,
  qemu-devel@nongnu.org
-References: <20230605085711.21261-1-kwolf@redhat.com>
- <20230605085711.21261-12-kwolf@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230605085711.21261-12-kwolf@redhat.com>
+References: <20230605075150.367555-1-hchauhan@ventanamicro.com>
+Content-Language: en-US
+Cc: liweiwei@iscas.ac.cn
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230605075150.367555-1-hchauhan@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-CM-TRANSID: qwCowAD3_fHnp31k3wWyCw--.18998S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFyktF4xCw4kKw17AryfCrg_yoW8Jw4fpr
+ 4rCryIkrZrtrZrXwn3tw1UWF13Ars3GFW7Wan7tryjka13ArWvkr1DKw429F1UJa4a9wn0
+ 9F4akF45AFWjqFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUkm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
+ Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+ 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+ 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+ IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5WlkUUUUU
+X-Originating-IP: [117.61.117.136]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,22 +76,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 10:57, Kevin Wolf wrote:
->   void bdrv_graph_rdlock_main_loop(void)
-> @@ -296,18 +276,13 @@ void assert_bdrv_graph_readable(void)
->   {
->       /* reader_count() is slow due to aio_context_list_lock lock contention */
->       /* TODO Reenable when wrlock is reenabled */
 
-There's still a TODO here.
+On 2023/6/5 15:51, Himanshu Chauhan wrote:
+> On an address match, skip checking for default permissions and return error
+> based on access defined in PMP configuration.
+>
+> Fixes: 90b1fafce06 ("target/riscv: Smepmp: Skip applying default rules when address matches")
+> Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+> ---
+>   target/riscv/pmp.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 418738afd8..6238528282 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -435,8 +435,8 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>                * defined with PMP must be used. We shouldn't fallback on
+>                * finding default privileges.
+>                */
+> -            ret = true;
+> -            break;
+> +            ret = ((privs & *allowed_privs) == privs ? true : false);
+> +            goto _address_matched;
 
-Paolo
+goto seems unnecessary. We can directly return (privs & *allowed_privs) 
+== privs here.
 
-> -#if 0
->   #ifdef CONFIG_DEBUG_GRAPH_LOCK
->       assert(qemu_in_main_thread() || reader_count());
->   #endif
-> -#endif
+And then we can directly return pmp_hart_has_privs_default(env, privs, 
+allowed_privs, mode) after this loop.
+
+Regards,
+
+Weiwei Li
+
+>           }
+>       }
+>   
+> @@ -445,6 +445,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>           ret = pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
+
+>       }
+>   
+> + _address_matched:
+>       return ret;
 >   }
+>   
 
 
