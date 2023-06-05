@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75195723139
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7F3723145
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:26:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6GcX-0001pF-E0; Mon, 05 Jun 2023 16:16:05 -0400
+	id 1q6GcZ-0001py-9T; Mon, 05 Jun 2023 16:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6GcU-0001o5-LN
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:02 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1q6GcV-0001oU-Dr
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:03 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6GcS-0003nm-0A
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:02 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-650c8cb68aeso3084081b3a.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:15:59 -0700 (PDT)
+ id 1q6GcT-0003oF-Nj
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:03 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-65540715b4bso1364647b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685996158; x=1688588158;
+ d=linaro.org; s=google; t=1685996159; x=1688588159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BNL16VFJ/JVKBYmioxTJxOZayJwkRUPqGfQWbKcHjhI=;
- b=MlJpHsfYfgxjVmgCYc8l1kVmR3TWflq7344LHL/KBgLsFrpNUijwPwSwehWfjr5BvR
- drbkr/MlchiPjiKZND+JTwB1t4Un6WkjjDJIE0K0oujFZdgdv/rhPZ7K9GLtD5qiPH7H
- 1J80Ge1iQJYOpqrAq11M+bYtTjv845z4ADrGoYHhJ1PZPj9/znGv8jT16bg4LS+SwhHA
- V0SnXYf34k3HMaELZdaY1il526cMDxuj+Vw3CapTLFTll1SemmYJrFAYnszP+iJ4WlXV
- bJMPBeEJMJcJYUlthIthlH7VnIquZI8NOQOLvCzVSplflPEKmQOJdqava266YisKGdTX
- pl3A==
+ bh=u/ikHj+R8q+414Kg3TRPRaaz9VV3CP4E0627qsrQV5k=;
+ b=Gh2kk1x84/s4C334U/p2pidxHfGy9/FfIt1A0vOWQIWOXar0RGgaMe8uQ9dr/j+FzF
+ okDmgEtbYmtvJdu9vt7d0U+IkWgDW4fht8hkCjeGGVK12k6jYt4r7XhWKyc7pLlCAqXP
+ VpxOIpFQspe9RVEGDLf6wC2ylZ6reBsoB+E5c/hcN7ePIsFFqPE3pSStJuAdXTy/8HrS
+ qgvNNQQ8jrdVFKXxU2zdlSyLVpzEeiGRz5VbJ7G5XZzt6Nf9EqVRfbe7rFbqPAiBHg2o
+ 50GbnUyGinB3bJcGXN7BWqzwgm03vMVtZH/tY42L50EfXQj9KMZSN8+654NP9iBgZkOL
+ gH0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685996158; x=1688588158;
+ d=1e100.net; s=20221208; t=1685996159; x=1688588159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BNL16VFJ/JVKBYmioxTJxOZayJwkRUPqGfQWbKcHjhI=;
- b=GGhXDAc+QxDL4ha+eiGsa7zo+T0v4l4WmieQLk5X4pq5f17qCOpokeynAY5LWzQKph
- D+MGpM/WxBJEJ8qD+78vuBDzrs7wIa1pvcTGGX42Q0yLbS0lcswlth8zYz39FCTKRbGe
- ryGQSihLDur/QYL29Vlo8RobnQIzTOB2vmFqjQ8hg5Vi39i/mAmFMwUzEIrF8Sr8Kbbo
- 4okcvTunSbaKyk7O4haMIs878fMJ5QWfxb/QUeVlLW/XoMu2fhkMZk3xVHwhtnInuftA
- b08VRlHkxhuIHHMwP1K3QS47hWWe1pqLf2hj9tRq33ok6gJ34M2/n/2YAKF+BW1CExIc
- dscA==
-X-Gm-Message-State: AC+VfDxI8MrCkf+sWTdNmroIYOQ+FghTj/XLPgrFAhihk+jTqy/Wttlj
- a+QX7YrxyHH/HtqtblB4M4J3mxqZst+Kjfaq5u4=
-X-Google-Smtp-Source: ACHHUZ5LJclL0QiPpDmBbz43J7iN1nRZAa1pecYTJLiZwiWsflrMOyFdPalrjPbRA552io1ArqdYWw==
-X-Received: by 2002:a05:6a00:198c:b0:64d:6a78:1575 with SMTP id
- d12-20020a056a00198c00b0064d6a781575mr591535pfl.30.1685996158481; 
- Mon, 05 Jun 2023 13:15:58 -0700 (PDT)
+ bh=u/ikHj+R8q+414Kg3TRPRaaz9VV3CP4E0627qsrQV5k=;
+ b=S5A1+PPTOrap1nwaFPV7r2wA0MxEkkOBkZOCW8eQ/ufQim6Ee8YRWymba4WhAt1ZTx
+ PZdbs4RPYFOIpQgf++KHBJisSO6V5FxHxBVGgSIqGsijhnuygl6hucBHfXBI2OB9s+7r
+ j4QLboj8zQeNaUzhHp4wsW+WxGkmVZRnvKFEMlIcg7ZJtuNb9THrAxz9K3Shr3KmfgUs
+ yJsJ4fhoazZw0hYvOm6uvWVknbt+EGFCxKbvZOzoyVkGoavYaMsg5dmHvvct6+lvLdCz
+ FTeMzjPRc61/CoIm3wpedXc1ysc0Tubwij9AzIBpmOXHLSYVMLfFoBoyj3hlf6QEGOLs
+ L7tA==
+X-Gm-Message-State: AC+VfDy1/D4A6EKqXyk5ZoYcdYgZaNiJMbrohj7D3TpMqUqq5R2i5dNb
+ TAzslM9Zw3tJxKIteqLXKDYMy0H2bm9qODe0fR8=
+X-Google-Smtp-Source: ACHHUZ4AfUd4zh5OXHJCFJELuK5bYP6Du1U/YBbILrwv/rWlg/gurHx3El5IRxIY81Y6JzL7IFpWAA==
+X-Received: by 2002:a05:6a00:194f:b0:658:e95b:256a with SMTP id
+ s15-20020a056a00194f00b00658e95b256amr1020877pfk.1.1685996159410; 
+ Mon, 05 Jun 2023 13:15:59 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.15.57
+ f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.15.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 13:15:58 -0700 (PDT)
+ Mon, 05 Jun 2023 13:15:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/52] target/*: Add missing includes of tcg/debug-assert.h
-Date: Mon,  5 Jun 2023 13:15:05 -0700
-Message-Id: <20230605201548.1596865-10-richard.henderson@linaro.org>
+Subject: [PULL 10/52] *: Add missing includes of tcg/tcg.h
+Date: Mon,  5 Jun 2023 13:15:06 -0700
+Message-Id: <20230605201548.1596865-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230605201548.1596865-1-richard.henderson@linaro.org>
 References: <20230605201548.1596865-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,66 +92,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This had been pulled in from tcg/tcg.h, via exec/cpu_ldst.h,
-via exec/exec-all.h, but the include of tcg.h will be removed.
+This had been pulled in from exec/cpu_ldst.h, via exec/exec-all.h,
+but the include of tcg.h will be removed.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/cpu.c      | 1 +
- target/rx/cpu.c       | 1 +
- target/rx/op_helper.c | 1 +
- target/tricore/cpu.c  | 1 +
- 4 files changed, 4 insertions(+)
+ accel/tcg/monitor.c             | 1 +
+ accel/tcg/tcg-accel-ops-mttcg.c | 2 +-
+ accel/tcg/tcg-accel-ops-rr.c    | 2 +-
+ target/i386/helper.c            | 3 +++
+ target/openrisc/sys_helper.c    | 1 +
+ 5 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index a24c23c247..8f741f258c 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -24,6 +24,7 @@
+diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
+index 92fce580f1..f171bc6f5e 100644
+--- a/accel/tcg/monitor.c
++++ b/accel/tcg/monitor.c
+@@ -15,6 +15,7 @@
+ #include "sysemu/cpus.h"
+ #include "sysemu/cpu-timers.h"
+ #include "sysemu/tcg.h"
++#include "tcg/tcg.h"
+ #include "internal.h"
+ 
+ 
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index d50239e0e2..5d72c9b1bd 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -32,7 +32,7 @@
+ #include "qemu/guest-random.h"
  #include "exec/exec-all.h"
- #include "cpu.h"
- #include "disas/dis-asm.h"
-+#include "tcg/debug-assert.h"
+ #include "hw/boards.h"
+-
++#include "tcg/tcg.h"
+ #include "tcg-accel-ops.h"
+ #include "tcg-accel-ops-mttcg.h"
  
- static void avr_cpu_set_pc(CPUState *cs, vaddr value)
- {
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 67452e310c..157e57da0f 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -24,6 +24,7 @@
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index b6d10fa9a2..70b9b89073 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -32,7 +32,7 @@
+ #include "qemu/notify.h"
+ #include "qemu/guest-random.h"
  #include "exec/exec-all.h"
- #include "hw/loader.h"
- #include "fpu/softfloat.h"
-+#include "tcg/debug-assert.h"
+-
++#include "tcg/tcg.h"
+ #include "tcg-accel-ops.h"
+ #include "tcg-accel-ops-rr.h"
+ #include "tcg-accel-ops-icount.h"
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 8857444819..682d10d98a 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -28,6 +28,9 @@
+ #include "monitor/monitor.h"
+ #endif
+ #include "qemu/log.h"
++#ifdef CONFIG_TCG
++#include "tcg/tcg.h"
++#endif
  
- static void rx_cpu_set_pc(CPUState *cs, vaddr value)
+ void cpu_sync_avx_hflag(CPUX86State *env)
  {
-diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
-index acce650185..dc0092ca99 100644
---- a/target/rx/op_helper.c
-+++ b/target/rx/op_helper.c
-@@ -23,6 +23,7 @@
- #include "exec/helper-proto.h"
- #include "exec/cpu_ldst.h"
- #include "fpu/softfloat.h"
-+#include "tcg/debug-assert.h"
+diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
+index ccdee3b8be..110f157601 100644
+--- a/target/openrisc/sys_helper.c
++++ b/target/openrisc/sys_helper.c
+@@ -26,6 +26,7 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/boards.h"
+ #endif
++#include "tcg/tcg.h"
  
- static inline G_NORETURN
- void raise_exception(CPURXState *env, int index,
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index d0a9272961..7fa113fed2 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -22,6 +22,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "qemu/error-report.h"
-+#include "tcg/debug-assert.h"
+ #define TO_SPR(group, number) (((group) << 11) + (number))
  
- static inline void set_feature(CPUTriCoreState *env, int feature)
- {
 -- 
 2.34.1
 
