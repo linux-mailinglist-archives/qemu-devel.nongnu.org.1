@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA5072247B
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A7A72247D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q68JS-00077i-I7; Mon, 05 Jun 2023 07:23:50 -0400
+	id 1q68JU-00078B-DS; Mon, 05 Jun 2023 07:23:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q68JO-00076I-4e; Mon, 05 Jun 2023 07:23:46 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1q68JR-00077O-2f; Mon, 05 Jun 2023 07:23:49 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q68JL-00066C-DE; Mon, 05 Jun 2023 07:23:44 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-256e1d87998so3973032a91.3; 
- Mon, 05 Jun 2023 04:23:42 -0700 (PDT)
+ id 1q68JP-00066U-EG; Mon, 05 Jun 2023 07:23:48 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-52cb8e5e9f5so3175451a12.0; 
+ Mon, 05 Jun 2023 04:23:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685964221; x=1688556221;
+ d=gmail.com; s=20221208; t=1685964225; x=1688556225;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+zDOlRWUdwkqrj6xE/PQNHSscfk1SuhL8JkNfMoqHPQ=;
- b=dDS90VQbe5z1sDPlE3P1VypZVuMaIXbJ71oKxd15e10+BiTHkAF4es4bDyfH0pncT/
- M/xF6VcfWqhBV6BmT0KYxQrDJj+XGnL7SnnDpayWhWy5wwXQNHBRnD8y/X6NnYdYBHAe
- tF1rMxlBKA5yPqLvNKsXHMkoF6Pwcg8MuI1/3fL/3ZCqVusHX/AfocF1xWZxvHZinCUm
- /tGcxTch2aXNDfq15G9kmMwFfCw5WBSf27gOJIzKkGA7EXwDjukyHy7twgub/N8R46Qx
- EKw6UUuubvMLGtduu+qnrda4cIvFqDtCcoLmbvxOr8EKNujftfgoEwfOkUr0aDQL2Txs
- PEYA==
+ bh=vjkZbg9Jxz2kaGuv+trv2y8Cheu0swrBg+6WArpM8KE=;
+ b=JLfMDTnj46qff70DtLM7g5RMpU3Q7ZNGGRsXpsNx/79l3+hkw0gPHofHYzjHwPXJlF
+ Smtq0bGATTTHNHHRJME+ysHDRBRrIP9hXrTLVB+KQys9ucfTkJl6UgqG0Vzfe7QGbdRE
+ g8447mNZsqLN+27K+r63BG9UFgyFKV7IfjJHT0idCX0a63ozMo7xyzelarDnVFkURp7Y
+ ouLxjloib0OCyIinvAe4VACJ2ICq2dh6yORvkCONIIudpMqMaW1CvM1mdFMvd0o8Vf7v
+ h6umUXr1NRnvR797NdYSapFxTMHLoNPx3KLVmAcT0Pp4dQwNcncDq1CYSbSvnzvKDN0V
+ OgDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685964221; x=1688556221;
+ d=1e100.net; s=20221208; t=1685964225; x=1688556225;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+zDOlRWUdwkqrj6xE/PQNHSscfk1SuhL8JkNfMoqHPQ=;
- b=RLXpcQ5UDvR8x7S236NiTvmfW186NFFczm3PcrNAos+8Qcl4VrfaHDIRn4Vkv8xp9r
- /DrupX3JQOiGGNN/4YqD+byvNLJm/+YcmmKhP0dRl2LLLUIu8QjKUjhGenhTZlXd8Mbu
- u/i6eoI5QRnMgJ3yxjPHUvHnfexRWioKn8c3d/3jdG8JFPuTGclT4LI4j7EWce4Hs0pp
- g/vLLHMwSi9PY542JrQlroc9eBmkDKgv2i52VIpkMrosZUYEylAHhGAI8aJcAUggC+eS
- XDGZ8DfMsSrnLa/Ikie4wNBmUOIAtxQpN2OuEtlzjlopN20AcVjttZTPqfjZBNShUZGe
- JE3A==
-X-Gm-Message-State: AC+VfDwx4WK+QsGcL4OZCxcci9daeESeotGxasmVkmEKa0pFqN/pQHsE
- ArrvgtMp50ZWuhKw+LPRyDNBhKSoric=
-X-Google-Smtp-Source: ACHHUZ6nyUllZqAE/zWlV9LbDxp4/kLr5mvQy6hTzqxC8hsXQ+W4ON6Vxlb1P7MkZC5fdSFNPchhhg==
-X-Received: by 2002:a17:90a:11:b0:255:d878:704a with SMTP id
- 17-20020a17090a001100b00255d878704amr7315091pja.4.1685964221397; 
- Mon, 05 Jun 2023 04:23:41 -0700 (PDT)
+ bh=vjkZbg9Jxz2kaGuv+trv2y8Cheu0swrBg+6WArpM8KE=;
+ b=eaupug0zwJluOOK9ImnB65Wvg39QehxVjh9J01kL9oYl8Vv+9Io4zMB8xWkyCKP3cA
+ Fkc4ks93DUxOlNg3QacKksStb3O4HxqwS7kHT8nAk5maaRtSpejPwXj4hCmdltcHWa0f
+ +Lu9f+BJWMUuakPNbD7XQCTO5/lg3vzHtR4bw7g7BQwC9Ojya9eIdPEgr26ehI4mhZxf
+ tvremdxlThb4sm7gtkAohef2RPk3V4Klt715k8lngsuTcOjKTIxv8txKzCowRZizbowv
+ VlM09XdixgpWAzre8AW2b7TG1CIX2RaiSxg4uRHYzgBP3u8YVl6PAWagQ3yfzGtl9S3M
+ JddA==
+X-Gm-Message-State: AC+VfDz/QMCMwXJCmKFpViOjphYJ1r3a4ECRtA3HxRdQhngQHrRJzDw+
+ 53dxGoWSmqgQLdEIac+dx2mFjjoTW4c=
+X-Google-Smtp-Source: ACHHUZ4LylF0d2YJTn3mx5y43eyrlq1tMEHAApQhoJQq36yRachsNc1cAZikggigwevZw6dNIxzBqg==
+X-Received: by 2002:a17:90a:1197:b0:259:71f6:f82d with SMTP id
+ e23-20020a17090a119700b0025971f6f82dmr1450731pja.10.1685964225149; 
+ Mon, 05 Jun 2023 04:23:45 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- f32-20020a17090a702300b0024e026444b6sm15953385pjk.2.2023.06.05.04.23.37
+ f32-20020a17090a702300b0024e026444b6sm15953385pjk.2.2023.06.05.04.23.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 04:23:40 -0700 (PDT)
+ Mon, 05 Jun 2023 04:23:44 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 1/4] target/ppc: Add initial flags and helpers for SMT support
-Date: Mon,  5 Jun 2023 21:23:20 +1000
-Message-Id: <20230605112323.179259-2-npiggin@gmail.com>
+Subject: [PATCH 2/4] target/ppc: Add support for SMT CTRL register
+Date: Mon,  5 Jun 2023 21:23:21 +1000
+Message-Id: <20230605112323.179259-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230605112323.179259-1-npiggin@gmail.com>
 References: <20230605112323.179259-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,97 +91,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SMT TCG emulation needs to be able to iterate over siblings in a core,
-and needs to serialise core access to shared SPRs and state.
+A relatively simple case to begin with, CTRL is a SMT shared register
+where reads and writes need to synchronise against state changes by
+other threads in the core.
+
+Atomic serialisation operations are used to achieve this.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h       |  9 +++++++++
- target/ppc/cpu_init.c  |  5 +++++
- target/ppc/translate.c | 20 ++++++++++++++++++++
- 3 files changed, 34 insertions(+)
+ target/ppc/helper.h      |  2 ++
+ target/ppc/misc_helper.c | 25 +++++++++++++++++++++++++
+ target/ppc/translate.c   | 18 +++++++++++++++++-
+ 3 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 1f23b81e90..b594408a8d 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -672,6 +672,8 @@ enum {
-     POWERPC_FLAG_TM       = 0x00100000,
-     /* Has SCV (ISA 3.00)                                                    */
-     POWERPC_FLAG_SCV      = 0x00200000,
-+    /* Has >1 thread per core                                                */
-+    POWERPC_FLAG_SMT      = 0x00400000,
- };
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 38efbc351c..fda40b8a60 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -704,6 +704,8 @@ DEF_HELPER_3(store_dcr, void, env, tl, tl)
  
- /*
-@@ -1266,6 +1268,13 @@ struct CPUArchState {
-     uint64_t pmu_base_time;
- };
- 
-+#define _CORE_ID(cs)                                            \
-+    (POWERPC_CPU(cs)->env.spr_cb[SPR_PIR].default_value & ~(cs->nr_threads - 1))
+ DEF_HELPER_2(load_dump_spr, void, env, i32)
+ DEF_HELPER_2(store_dump_spr, void, env, i32)
++DEF_HELPER_3(spr_write_CTRL, void, env, i32, tl)
 +
-+#define THREAD_SIBLING_FOREACH(cs, cs_sibling)			\
-+    CPU_FOREACH(cs_sibling)                                     \
-+        if (_CORE_ID(cs) == _CORE_ID(cs_sibling))
+ DEF_HELPER_4(fscr_facility_check, void, env, i32, i32, i32)
+ DEF_HELPER_4(msr_facility_check, void, env, i32, i32, i32)
+ DEF_HELPER_FLAGS_1(load_tbl, TCG_CALL_NO_RWG, tl, env)
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index 40ddc5c08c..a058eb24cd 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -43,6 +43,31 @@ void helper_store_dump_spr(CPUPPCState *env, uint32_t sprn)
+              env->spr[sprn]);
+ }
+ 
++void helper_spr_write_CTRL(CPUPPCState *env, uint32_t sprn,
++                           target_ulong val)
++{
++    CPUState *cs = env_cpu(env);
++    CPUState *ccs;
++    uint32_t run = val & 1;
++    uint32_t ts, ts_mask;
 +
- #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
- do {                                            \
-     env->fit_period[0] = (a_);                  \
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index aa364f36f6..5035f6dada 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6754,6 +6754,7 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
- {
-     CPUState *cs = CPU(dev);
-     PowerPCCPU *cpu = POWERPC_CPU(dev);
-+    CPUPPCState *env = &cpu->env;
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-     Error *local_err = NULL;
- 
-@@ -6785,6 +6786,10 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
- 
-     pcc->parent_realize(dev, errp);
- 
-+    if (env_cpu(env)->nr_threads > 1) {
-+        env->flags |= POWERPC_FLAG_SMT;
++    assert(sprn == SPR_CTRL);
++
++    env->spr[sprn] &= ~1U;
++    env->spr[sprn] |= run;
++
++    ts_mask = ~(1U << (8 + env->spr[SPR_TIR]));
++    ts = run << (8 + env->spr[SPR_TIR]);
++
++    THREAD_SIBLING_FOREACH(cs, ccs) {
++        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
++
++        cenv->spr[sprn] &= ts_mask;
++        cenv->spr[sprn] |= ts;
 +    }
++}
 +
-     return;
- 
- unrealize:
++
+ #ifdef TARGET_PPC64
+ static void raise_hv_fu_exception(CPUPPCState *env, uint32_t bit,
+                                   const char *caller, uint32_t cause,
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index b6bab4c234..72270c2163 100644
+index 72270c2163..31821f92f5 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -227,6 +227,26 @@ struct opc_handler_t {
-     void (*handler)(DisasContext *ctx);
- };
+@@ -443,7 +443,7 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
+ #endif
+ }
  
-+static inline bool gen_serialize(DisasContext *ctx)
-+{
-+    if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
-+        /* Restart with exclusive lock.  */
-+        gen_helper_exit_atomic(cpu_env);
-+        ctx->base.is_jmp = DISAS_NORETURN;
-+        return false;
-+    }
-+    return true;
-+}
-+
-+static inline bool gen_serialize_core(DisasContext *ctx)
-+{
-+    if (ctx->flags & POWERPC_FLAG_SMT) {
-+        return gen_serialize(ctx);
-+    }
-+
-+    return true;
-+}
-+
- /* SPR load/store helpers */
- static inline void gen_load_spr(TCGv t, int reg)
+-void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
++static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
  {
+     /* This does not implement >1 thread */
+     TCGv t0 = tcg_temp_new();
+@@ -452,6 +452,22 @@ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
+     tcg_gen_shli_tl(t1, t0, 8); /* Duplicate the bit in TS */
+     tcg_gen_or_tl(t1, t1, t0);
+     gen_store_spr(sprn, t1);
++}
++
++void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
++{
++    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
++        spr_write_CTRL_ST(ctx, sprn, gprn);
++        goto out;
++    }
++
++    if (!gen_serialize(ctx)) {
++        return;
++    }
++
++    gen_helper_spr_write_CTRL(cpu_env, tcg_constant_i32(sprn),
++                              cpu_gpr[gprn]);
++out:
+     spr_store_dump_spr(sprn);
+ 
+     /*
 -- 
 2.40.1
 
