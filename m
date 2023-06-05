@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488567224D0
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA1C7224D1
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:41:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q68aG-0000Jx-Gg; Mon, 05 Jun 2023 07:41:12 -0400
+	id 1q68aS-0000WZ-VA; Mon, 05 Jun 2023 07:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q68ZD-0008NK-P5; Mon, 05 Jun 2023 07:40:07 -0400
+ id 1q68ZG-0008OC-5F; Mon, 05 Jun 2023 07:40:10 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q68ZB-0001Xx-Kz; Mon, 05 Jun 2023 07:40:07 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ id 1q68ZD-0001bZ-QQ; Mon, 05 Jun 2023 07:40:09 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 355BHWuM006983; Mon, 5 Jun 2023 11:40:03 GMT
+ 355BUZbo006635; Mon, 5 Jun 2023 11:40:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=FMmC+NDiH4E0OblmqlQKqPFxSKGizYNiaFpTDwa77rQ=;
- b=UjwIEqjbfxDK06/z52MCXcYV5Sl2pMp8q4id47bCFe5nZ2t2it4h1WVReosml4M+sv1s
- UxA6m64Ko0elvwJj1wGsYRGWBnuHT/JJJGbV6mUJoOR/wQGGqp6nvF7zjG9dB9eHezAe
- hE7PBMwNEY9dJA6j2ASzpS+sZ2+a3PyoZYpymjwLymkucTyzJFurcm1KTanNEpYh8jPS
- TU9OHMcVmOyUDWkHKLFmfqQNkP9JepSKVY6sllioi1twLksdMbQGsJL7s+f+B9rA7zki
- y+aROjXRkyVXVGsgu7sna+z/9DiIEb8dWDp9plid0jBIdlEexnVuuPA0a1Bw8D6ncLRe Gg== 
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=AAuuJnKEslDmxDQKLZ3cyieSto90/UiEsNBezbigGx8=;
+ b=rUXjd24hBlSOH8q1T41/FesfpKZacLnbHhB0pEoGm8+eymXUJxelG8MNM4ivdfn74CrZ
+ RAMV3UPupTfq8EEaAdhKwosE7JlqlJOwHBecJpAe0fBXjQs++eS//aBKGjKoX27jrAdV
+ 97s2Sx7bGNlMjN/K/6sXbMqgru320dYRnHJceI6EUasK3DkW5fJLCh/TpFq2heM/k8HD
+ yCdny9famoMxELCfrbVjI4yJauWvJ6G9X184zOYDqRRaVKlc0BX4g1IVpv764FLhGiuw
+ A3bvQ6Ihop2maFxOAm47q1p/oKGT2A/91+YzNIsAeZ5vL2HdATk4o1kSWHTHkMx9grR0 TA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1epugfxt-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1evxr87g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jun 2023 11:40:02 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 355BPU82002158;
- Mon, 5 Jun 2023 11:40:02 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1epugfw8-1
+ Mon, 05 Jun 2023 11:40:04 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 355BVBKW007139;
+ Mon, 5 Jun 2023 11:40:04 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1evxr84v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jun 2023 11:40:02 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3559LIga027166;
- Mon, 5 Jun 2023 11:39:59 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3qyx5q91k3-1
+ Mon, 05 Jun 2023 11:40:04 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3554ReQ9019802;
+ Mon, 5 Jun 2023 11:40:00 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3qyxahh1p7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jun 2023 11:39:59 +0000
+ Mon, 05 Jun 2023 11:40:00 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 355BdvCN20972190
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 355BdwfX44630448
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 5 Jun 2023 11:39:57 GMT
+ Mon, 5 Jun 2023 11:39:58 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E4C820043;
- Mon,  5 Jun 2023 11:39:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 26C5020043;
+ Mon,  5 Jun 2023 11:39:58 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 156EE20040;
+ by IMSVA (Postfix) with ESMTP id DD0C820040;
  Mon,  5 Jun 2023 11:39:57 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.209.184])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -68,26 +67,28 @@ To: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 3/4] linux-user/elfload: Introduce elf_hwcap_str() on s390x
-Date: Mon,  5 Jun 2023 13:39:49 +0200
-Message-Id: <20230605113950.1169228-4-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Tulio Magno Quites Machado Filho <tuliom@redhat.com>
+Subject: [PATCH v2 4/4] linux-user: Emulate /proc/cpuinfo on s390x
+Date: Mon,  5 Jun 2023 13:39:50 +0200
+Message-Id: <20230605113950.1169228-5-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230605113950.1169228-1-iii@linux.ibm.com>
 References: <20230605113950.1169228-1-iii@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vTvf-h6uAIruIRfj2N0F6OK5mTM7tJKu
-X-Proofpoint-GUID: A8KkOynIOxZ5L08mliVF7A3HCOK1Xaah
+X-Proofpoint-ORIG-GUID: 6-jaX_WEmRGHYD6ibZsvog5ONWJ7zOUA
+X-Proofpoint-GUID: 5mtk1-YDN3o4_ugwplUWO02hpysGc-W5
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=0 adultscore=0 clxscore=1015 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ adultscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 mlxscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2304280000 definitions=main-2306050103
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
@@ -113,65 +114,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is required for implementing /proc/cpuinfo emulation.
+Some s390x userspace programs are confused when seeing a foreign
+/proc/cpuinfo [1]. Add the emulation for s390x; follow the respective
+kernel code structure where possible.
 
+Output example:
+
+	vendor_id       : IBM/S390
+	# processors    : 12
+	bogomips per cpu: 13370.00
+	max thread id   : 0
+	features	: esan3 zarch stfle msa
+	facilities      : 0 1 2 3 4 7 9 16 17 18 19 21 22 24 25 27 30 31 32 33 34 35 37 40 41 45 49 51 52 53 57 58 61 69 71 72 75 76 77 129 130 131 135 138 146 148
+	processor 0: version = 00,  identification = 000000,  machine = 8561
+	processor 1: version = 00,  identification = 100000,  machine = 8561
+	[...]
+
+	cpu number      : 0
+	version         : 00
+	identification  : 000000
+	machine         : 8561
+
+	cpu number      : 1
+	version         : 00
+	identification  : 100000
+	machine         : 8561
+	[...]
+
+[1] https://bugzilla.redhat.com/show_bug.cgi?id=2211472
+
+Reported-by: Tulio Magno Quites Machado Filho <tuliom@redhat.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- linux-user/elfload.c | 27 +++++++++++++++++++++++++++
- linux-user/loader.h  |  1 +
- 2 files changed, 28 insertions(+)
+ linux-user/syscall.c | 106 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 104 insertions(+), 2 deletions(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 49ec9ccc944..d80d68484b6 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -1605,6 +1605,33 @@ uint32_t get_elf_hwcap(void)
-     return hwcap;
- }
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 3e6ed51ce62..2d3070cfd62 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8232,7 +8232,7 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code)
  
-+const char *elf_hwcap_str(uint32_t bit)
-+{
-+    static const char *hwcap_str[] = {
-+        [HWCAP_S390_ESAN3]     = "esan3",
-+        [HWCAP_S390_ZARCH]     = "zarch",
-+        [HWCAP_S390_STFLE]     = "stfle",
-+        [HWCAP_S390_MSA]       = "msa",
-+        [HWCAP_S390_LDISP]     = "ldisp",
-+        [HWCAP_S390_EIMM]      = "eimm",
-+        [HWCAP_S390_DFP]       = "dfp",
-+        [HWCAP_S390_HPAGE]     = "edat",
-+        [HWCAP_S390_ETF3EH]    = "etf3eh",
-+        [HWCAP_S390_HIGH_GPRS] = "highgprs",
-+        [HWCAP_S390_TE]        = "te",
-+        [HWCAP_S390_VXRS]      = "vx",
-+        [HWCAP_S390_VXRS_BCD]  = "vxd",
-+        [HWCAP_S390_VXRS_EXT]  = "vxe",
-+        [HWCAP_S390_GS]        = "gs",
-+        [HWCAP_S390_VXRS_EXT2] = "vxe2",
-+        [HWCAP_S390_VXRS_PDE]  = "vxp",
-+        [HWCAP_S390_SORT]      = "sort",
-+        [HWCAP_S390_DFLT]      = "dflt",
-+    };
-+
-+    return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
-+}
-+
- static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
+ #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN || \
+     defined(TARGET_SPARC) || defined(TARGET_M68K) || defined(TARGET_HPPA) || \
+-    defined(TARGET_RISCV)
++    defined(TARGET_RISCV) || defined(TARGET_S390X)
+ static int is_proc(const char *filename, const char *entry)
  {
-     regs->psw.addr = infop->entry;
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index ad6ca9dbe35..59cbeacf24f 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -58,6 +58,7 @@ extern unsigned long guest_stack_size;
- 
- #ifdef TARGET_S390X
- uint32_t get_elf_hwcap(void);
-+const char *elf_hwcap_str(uint32_t bit);
+     return strcmp(filename, entry) == 0;
+@@ -8339,6 +8339,107 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+ }
  #endif
  
- #endif /* LINUX_USER_LOADER_H */
++#if defined(TARGET_S390X)
++/*
++ * Emulate what a Linux kernel running in qemu-system-s390x -M accel=tcg would
++ * show in /proc/cpuinfo.
++ *
++ * Skip the following in order to match the missing support in op_ecag():
++ * - show_cacheinfo().
++ * - show_cpu_topology().
++ * - show_cpu_mhz().
++ *
++ * Use fixed values for certain fields:
++ * - bogomips per cpu - from a qemu-system-s390x run.
++ * - max thread id = 0, since SMT / SIGP_SET_MULTI_THREADING is not supported.
++ *
++ * Keep the code structure close to arch/s390/kernel/processor.c.
++ */
++
++static void show_facilities(int fd)
++{
++    size_t sizeof_stfl_bytes = 2048;
++    g_autofree uint8_t *stfl_bytes = g_new0(uint8_t, sizeof_stfl_bytes);
++    unsigned int bit;
++
++    dprintf(fd, "facilities      :");
++    s390_get_feat_block(S390_FEAT_TYPE_STFL, stfl_bytes);
++    for (bit = 0; bit < sizeof_stfl_bytes * 8; bit++) {
++        if (test_be_bit(bit, stfl_bytes)) {
++            dprintf(fd, " %d", bit);
++        }
++    }
++    dprintf(fd, "\n");
++}
++
++static int cpu_ident(unsigned long n)
++{
++    return deposit32(0, CPU_ID_BITS - CPU_PHYS_ADDR_BITS, CPU_PHYS_ADDR_BITS,
++                     n);
++}
++
++static void show_cpu_summary(CPUArchState *cpu_env, int fd)
++{
++    S390CPUModel *model = env_archcpu(cpu_env)->model;
++    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
++    uint32_t elf_hwcap = get_elf_hwcap();
++    const char *hwcap_str;
++    int i;
++
++    dprintf(fd, "vendor_id       : IBM/S390\n"
++                "# processors    : %i\n"
++                "bogomips per cpu: 13370.00\n",
++            num_cpus);
++    dprintf(fd, "max thread id   : 0\n");
++    dprintf(fd, "features\t: ");
++    for (i = 0; i < sizeof(elf_hwcap) * 8; i++) {
++        if (!(elf_hwcap & (1 << i))) {
++            continue;
++        }
++        hwcap_str = elf_hwcap_str(i);
++        if (hwcap_str) {
++            dprintf(fd, "%s ", hwcap_str);
++        }
++    }
++    dprintf(fd, "\n");
++    show_facilities(fd);
++    for (i = 0; i < num_cpus; i++) {
++        dprintf(fd, "processor %d: "
++               "version = %02X,  "
++               "identification = %06X,  "
++               "machine = %04X\n",
++               i, model->cpu_ver, cpu_ident(i), model->def->type);
++    }
++}
++
++static void show_cpu_ids(CPUArchState *cpu_env, int fd, unsigned long n)
++{
++    S390CPUModel *model = env_archcpu(cpu_env)->model;
++
++    dprintf(fd, "version         : %02X\n", model->cpu_ver);
++    dprintf(fd, "identification  : %06X\n", cpu_ident(n));
++    dprintf(fd, "machine         : %04X\n", model->def->type);
++}
++
++static void show_cpuinfo(CPUArchState *cpu_env, int fd, unsigned long n)
++{
++    dprintf(fd, "\ncpu number      : %ld\n", n);
++    show_cpu_ids(cpu_env, fd, n);
++}
++
++static int open_cpuinfo(CPUArchState *cpu_env, int fd)
++{
++    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
++    int i;
++
++    show_cpu_summary(cpu_env, fd);
++    for (i = 0; i < num_cpus; i++) {
++        show_cpuinfo(cpu_env, fd, i);
++    }
++    return 0;
++}
++#endif
++
+ #if defined(TARGET_M68K)
+ static int open_hardware(CPUArchState *cpu_env, int fd)
+ {
+@@ -8364,7 +8465,8 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+ #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
+         { "/proc/net/route", open_net_route, is_proc },
+ #endif
+-#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || defined(TARGET_RISCV)
++#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
++    defined(TARGET_RISCV) || defined(TARGET_S390X)
+         { "/proc/cpuinfo", open_cpuinfo, is_proc },
+ #endif
+ #if defined(TARGET_M68K)
 -- 
 2.40.1
 
