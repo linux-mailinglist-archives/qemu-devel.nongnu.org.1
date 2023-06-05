@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2C5722FD6
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 21:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8D3722FDA
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 21:34:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Fup-0007dB-J4; Mon, 05 Jun 2023 15:30:55 -0400
+	id 1q6Fxu-0000Ge-MC; Mon, 05 Jun 2023 15:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Fum-0007ck-NT
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:30:52 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Fxs-0000GN-Jq
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:34:04 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Fuk-0004uF-FV
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:30:52 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-655fce0f354so1276043b3a.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 12:30:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Fxr-0007Mq-06
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:34:04 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-30ad458f085so4777953f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 12:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685993449; x=1688585449;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1685993641; x=1688585641;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9MnhiBF7aAanVV6mGfK9uoXanxnyXOYa9JVTYilCb+A=;
- b=YOiAWICYRXJZKujPYR+lOqKoCaJhBKVjdbV8Uez579bCIEtyC5Wv6OxJyckDTyZZml
- ZR/BBpE23M6RcIZnf7myw1i4tKYLnAOq4taMK+iGZc/mYZy9W4LBA15AkIoez4cKUn2u
- i+OU5cuNfWQ8UzpxV3LHe16ErZoG9Sa0KOoDmtm980UHqYXxzavkoq517I58YV/SPTRE
- ru9tajgY30Y/dVwdr46eSb5wpNP0i/2Q1VtsE5nedACe1Tygshr76EPTn734X55MGXYX
- zd9pX+kql8ejW2yy5z+UYwKyHSsXfBIO+E4fp/1drUbMG78U1k9tJUh0aIeBr1XJsy1H
- sTMQ==
+ bh=MAp/W7r1i1jS8xCOuODH7RvfMVVtxCcTVI76JCBaZJY=;
+ b=mvP7klhRaSxDoTrPUPBYhexQ5HSfmjRtn+hS4Xh8J3sBytO3Bfjg4VE9nYwh0NkqBg
+ YmpPU7MH3u9XnV91iwvqB1/64bimCDY5iJrUTThK2j0qVAhKhX6JBtfWzbnJJk1yrL0k
+ fgOaTl4lwktPkeUgS7k7QgJ4f0PBrLlxeGJxMDhBZPpEYr1kNSI9QTi0Mj1DJ0FVc6t6
+ LjZQD4CE9i3TogUyh3cPZVu7QL3oDZPzEWc4WRuOD9OOtyByMPYCq9GCkCweDPVRLRH3
+ 22ScN30H3QW/O35ZoftDm4pkvvLYGcsaC+wd9Eq4fB4rWEX+J2erDpE3kIVSWwX/+5Od
+ hFBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685993449; x=1688585449;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1685993641; x=1688585641;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9MnhiBF7aAanVV6mGfK9uoXanxnyXOYa9JVTYilCb+A=;
- b=Xmx4BhMxLnVYP1pEr9FiT6B9Vp0HfZxaAjN0DZCrhvVydriZXXpXphl5wGQoee7IMT
- cFqdF6MzW/yVAMXfZEzUao02f7r61MQW5GTSi2Wz/vA2L4V7uReyGZXr0EgnzOSBKzJq
- Ho68eG7ddfGQEKcl9S2WJq9BmA7LwFhtbzZBeUp1N4CQ1CMerILmme/zNtprAC9Nr/WK
- Zg/hKifwsy//ZDaJSIsh+F/HBiKlRVc4SdI8+Hj/rHMR8D2gAMpElJfSSli0lWhe+SeY
- +Gf5DGJrQvFiUPpJtEtNJb013C+iWBPVTw1/fhWxJFAcdjU+aBo6xidJxpkm9hxzbSM1
- 9bAg==
-X-Gm-Message-State: AC+VfDynqWZP1twtOY8bXPCEYNWpGK2Jc/ozxezs1Srra1MU6JldM0S5
- RzM8y9EU02oxZ2CLsDEEOqxfQA==
-X-Google-Smtp-Source: ACHHUZ5pmx82MUTqQc6V6mW0VDRFiHBdK60dfTE4MmCXCTC5G7Wa8iC1gDUeFt6hFzKl9y82hAr/gg==
-X-Received: by 2002:a05:6a21:78a4:b0:10f:3fa0:fd8e with SMTP id
- bf36-20020a056a2178a400b0010f3fa0fd8emr26013pzc.27.1685993448703; 
- Mon, 05 Jun 2023 12:30:48 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
- ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
+ bh=MAp/W7r1i1jS8xCOuODH7RvfMVVtxCcTVI76JCBaZJY=;
+ b=Gdt84LWG8FNWjYShcn6ztQ9pEdpqAYwJ4ZHJn72cNREvfnMVpwnR2dy0mK+AkZWXUU
+ c/qIQMxF1LKvlEeUNH7GvgXWLEl8Kzq0RFvxmpIofnIr3ZXMUUyhkPQHNx1a/ywvEAeV
+ Fxre1HRhMJ3OpkLeaARzRBgAl20QLx7bQm/2VtTOdqf8umXQuO/9kN3mxFZgLxd8kbM/
+ pLYzUopNED/xwKyv0uKkHxdP0jl199pjyiUAKVgGMak5pHHM98E2XfktOJcAEshA+y7M
+ SuxS//bnkf6LXFU4Rce45RSL1a3TfKtnh3P2La6uPV3L0frXqsWNlboRSGDE72mViX8i
+ TXYA==
+X-Gm-Message-State: AC+VfDzb2SWf89g114rR3Zrnuo/xYC5z2E4cxDX7D40gg071M4FU4Y75
+ fM1w8e54Xepp6iCwYZhOXwDzDA==
+X-Google-Smtp-Source: ACHHUZ5McOrFn8hUAJeRKiPLNPWKDao1/HhjNw++Uy0P3SLlRBzUtIptqTbNDgGFA6UxWvqxKreXnA==
+X-Received: by 2002:a5d:6b82:0:b0:30e:47e2:7eca with SMTP id
+ n2-20020a5d6b82000000b0030e47e27ecamr1863950wrx.3.1685993641503; 
+ Mon, 05 Jun 2023 12:34:01 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- o17-20020a170902d4d100b001b077301b15sm6951529plg.156.2023.06.05.12.30.47
+ v10-20020a5d4b0a000000b0030789698eebsm10554375wrq.89.2023.06.05.12.34.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 12:30:48 -0700 (PDT)
-Message-ID: <7b03c13b-5a6a-f415-4628-b9254c8cfb74@linaro.org>
-Date: Mon, 5 Jun 2023 12:30:46 -0700
+ Mon, 05 Jun 2023 12:34:00 -0700 (PDT)
+Message-ID: <65c71dff-e4fa-4c75-e0cb-c0033c835f44@linaro.org>
+Date: Mon, 5 Jun 2023 21:33:59 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 5/5] bulk: Replace __attribute__((noreturn)) ->
- G_NORETURN
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PULL 0/3] qemu-sparc queue 20230605
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Juan Quintela <quintela@redhat.com>
-References: <20230605175647.88395-1-philmd@linaro.org>
- <20230605175647.88395-6-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230605175647.88395-6-philmd@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230605113253.455937-1-mark.cave-ayland@ilande.co.uk>
+ <f3070fb9-e175-eadc-e4bd-c0395b593195@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <f3070fb9-e175-eadc-e4bd-c0395b593195@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,19 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 10:56, Philippe Mathieu-Daudé wrote:
-> -static __attribute__((noreturn)) void exit_failure(void)
-> +static G_NORETURN void exit_failure(void)
+On 5/6/23 19:26, Richard Henderson wrote:
+> On 6/5/23 04:32, Mark Cave-Ayland wrote:
+>> The following changes since commit 
+>> 848a6caa88b9f082c89c9b41afa975761262981d:
+>>
+>>    Merge tag 'migration-20230602-pull-request' 
+>> ofhttps://gitlab.com/juan.quintela/qemu  into staging (2023-06-02 
+>> 17:33:29 -0700)
+>>
+>> are available in the Git repository at:
+>>
+>>    https://github.com/mcayland/qemu.git  tags/qemu-sparc-20230605
+>>
+>> for you to fetch changes up to 36c9189890bfb936b1b086da639e37fd92b50215:
+>>
+>>    hw/isa/i82378: Remove unused "io" attribute (2023-06-05 07:43:23 
+>> +0100)
+>>
+>> ----------------------------------------------------------------
+>> qemu-sparc queue
+>>
+>> Hi Richard,
+>>
+>> This is one of Bernhard's cleanup series where all patches have been
+>> reviewed/acked. Please apply.
+> 
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-I think attr-spec-seq ('[[noreturn]]') has to come before specifiers-and-qualifiers (i.e. 
-'static').
+Also merged as commit afa351fe36 :P
 
-To me this means that G_NORETURN being redefined from __attribute__((noreturn)) to 
-[[noreturn]] was a glib bug, since it has a different syntax.
-
-Therefore we should simply avoid G_NORETURN entirely.  At some point we should be able to 
-update -to --std=c23, at which point we use [[noreturn]] directly and not G_NORETURN anyway.
-
-
-r~
 
