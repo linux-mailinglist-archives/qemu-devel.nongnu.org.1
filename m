@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2577721E18
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 08:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C52E721EA3
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 09:00:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q63h0-00039e-FQ; Mon, 05 Jun 2023 02:27:50 -0400
+	id 1q64BF-0006sj-6O; Mon, 05 Jun 2023 02:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q63gx-000390-E0; Mon, 05 Jun 2023 02:27:47 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q64BD-0006s4-8U; Mon, 05 Jun 2023 02:59:03 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q63gv-0001dZ-Ml; Mon, 05 Jun 2023 02:27:47 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-52cb8e5e9f5so2999524a12.0; 
- Sun, 04 Jun 2023 23:27:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q64BA-0006RA-LL; Mon, 05 Jun 2023 02:59:02 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-977d4a1cf0eso138936666b.1; 
+ Sun, 04 Jun 2023 23:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685946463; x=1688538463;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1685948338; x=1688540338;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7seHjW125IaIXoR+X6oyctUEk+wkrO9C3/PaEcsGVFA=;
- b=JyYjOimJiN9HoJlQHbsKZBFhDDqSNWlDuoIJCv0FhfP4Dk8ClvFFcagVavbUl27Jqj
- UPU0eEOzwFp/mlrAJ1NupmeKteOHJ3KtEh19o+iA7MKSwmHAXlcX8qCttIPwP74kQMjV
- +NcLljj4RtItxMVQGX2uhfLRcotnd8FCqmUy1cZsncGXZpplx70AX8NbfbXICNTzo1jt
- LV/dkUgo311OjfuF6AF0I+GX8FXBfNBsPhITS8fqE5pzzlDxmso0A2YTJo/zvw4n621U
- h3KNNMnKHEGEXq90wvi1mGTv9O+mI3/rJmooyrTBUoDe9V60ziC81gv2bHngLlGiD00G
- 8ADQ==
+ bh=cWL8JhpuC2NXntSVDQeoU6AycbQ8o25DAL0aUorczPA=;
+ b=jFgl9bCUAMXIG17REV74pBeY6eO95h9S6G+HGaeAvVsYf0lIyj+aJax43+lklaYy5s
+ S6Vg29Yjr4RJCsF903aIjOlDbNrCMoBelBY3kuNTt5sL4tau1mzdWq/sd7+cd0rO0l4i
+ 1LB27mg+aBuftvZq6VNNhN9NnXjL+izb9phiH3TrT96VR0Z9FgZ+yh10f8U7eXQFE31J
+ v5cb+vcZSxiyW+Li161GcqWOajl7MxtWKZXNKnM8fSB3l0w6L453mI0+POgIZSGTgfTX
+ DAuchCk5H5gGbcrM1kXqjucS8i/rgjlQ/AtPCB634YUKByLMs5xn9sL6VLd2uDDF7Ffc
+ MGlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685946463; x=1688538463;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=7seHjW125IaIXoR+X6oyctUEk+wkrO9C3/PaEcsGVFA=;
- b=hPNWt9KdBZDvvMr+BFjGvuNQeUidGKBWd5rzFzC/aHbEhj3so78VwBeXaAKCwRe3wX
- Q5ECxPtpkPPdPrD144zp9iKwOqbnEXZ74t2kh8znfQwGthKxD+4ZWIZIs0zb2FZVlDOF
- C414Q/UwODhad2M1Hf0tYhbccnMZhU72NMo6GHB8wBwps7DXbNi3NZGFPQOta1RfRFY4
- EX/4BVWlvsmEAUCLCJX0YHpnSfGMLNa38HRDq3b6FzfHk4LI8ZFSUu8/FB0urEkZcp4u
- vDD0UIIgNfg/q1agagDA+be9LtDhrXdArR0KJVmQ6EjViiBV3AMb//eS/jhGTlIJ47vA
- 5iOA==
-X-Gm-Message-State: AC+VfDyDxYXVeVMcE+HPtE5gcoSUeaItPIXT00pUSnncXHDtxCeJofB+
- 56nv2tFPbcse9PXlalhU2kw=
-X-Google-Smtp-Source: ACHHUZ7CsfCIo5to75o/lGhcJEGkj1+9gqwJskZmood25T6s3swvF3GKFLRZQPnB23TfQGGoNwPp7g==
-X-Received: by 2002:a17:90b:e8b:b0:253:6b3a:ab1e with SMTP id
- fv11-20020a17090b0e8b00b002536b3aab1emr7769122pjb.6.1685946463441; 
- Sun, 04 Jun 2023 23:27:43 -0700 (PDT)
-Received: from localhost ([203.221.142.9]) by smtp.gmail.com with ESMTPSA id
- p13-20020a17090a348d00b0025929bacd98sm2364933pjb.50.2023.06.04.23.27.40
+ d=1e100.net; s=20221208; t=1685948338; x=1688540338;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cWL8JhpuC2NXntSVDQeoU6AycbQ8o25DAL0aUorczPA=;
+ b=LQAX0H8KWR9+LDIFflTWbUyLBnPmiVNpRio9XicpGE13OKbLsGfxhxl6gTLKwGACC9
+ 9DXonR1mcRAAB1Cjb+URvojGSLHxkxO7/zp8ct4mBCtGWZH2BUhcj7oZylKVDLzSOLKd
+ oTH7PDc07zLSeyn8cTDFd7R29wBF194ATG8bjX8rsI/OVRLQ+WHLSVNlx12Xq8yHgpax
+ xtD5tCG1xpZq2MDwzAxwrcFadcnHOcnFr+flQfAydUNhOdFT7vX8iPYLNCbjbsVzW0Li
+ 2SoZyzKxUvF3qEgzy4O4cBwE40u9wbP+ZqWr71eoacEoDuO2qgJz8NgbBugs0lLeUHoB
+ tXYg==
+X-Gm-Message-State: AC+VfDw9Z93Pe2wXh1MpBrigS6oKk0cP/4i//XlYMuJpAKi95hY1dLY6
+ UmantLnaLuwUrEGPA4T/0J8=
+X-Google-Smtp-Source: ACHHUZ5K4hrVkIF5NFdTS8Fu4aSLo1PV9Y/tpCv3nkfKOrSWdswubizHZhf7Tp2umtMJ6KSb3ZxPDQ==
+X-Received: by 2002:a17:907:6d29:b0:977:d96c:4394 with SMTP id
+ sa41-20020a1709076d2900b00977d96c4394mr1937129ejc.73.1685948337813; 
+ Sun, 04 Jun 2023 23:58:57 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-089-014-188-226.89.14.pool.telefonica.de.
+ [89.14.188.226]) by smtp.gmail.com with ESMTPSA id
+ ks2-20020a170906f84200b009534211cc97sm3889832ejb.159.2023.06.04.23.58.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jun 2023 23:27:42 -0700 (PDT)
-Mime-Version: 1.0
+ Sun, 04 Jun 2023 23:58:57 -0700 (PDT)
+Date: Mon, 05 Jun 2023 06:58:55 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+CC: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-arm@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 0/3] Trivial cleanups
+In-Reply-To: <5982629b-0ff1-2525-e16a-309257710a20@ilande.co.uk>
+References: <20230523195608.125820-1-shentey@gmail.com>
+ <c138717c-5085-3b4b-5a46-0fa93179f6a8@ilande.co.uk>
+ <20230601080655-mutt-send-email-mst@kernel.org>
+ <5982629b-0ff1-2525-e16a-309257710a20@ilande.co.uk>
+Message-ID: <8187BA4B-5031-4AC6-A94C-27AB714C850C@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 05 Jun 2023 16:27:37 +1000
-Message-Id: <CT4I52C30RXG.AESIFCY16U6T@wheely>
-Cc: "Richard Henderson" <richard.henderson@linaro.org>,
- <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, <qemu-stable@nongnu.org>
-Subject: Re: [PATCH 2/4] target/ppc: Ensure stcx size matches larx
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>
-X-Mailer: aerc 0.14.0
-References: <20230604102858.148584-1-npiggin@gmail.com>
- <20230604102858.148584-2-npiggin@gmail.com>
-In-Reply-To: <20230604102858.148584-2-npiggin@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,26 +102,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun Jun 4, 2023 at 8:28 PM AEST, Nicholas Piggin wrote:
-> Differently-sized larx/stcx. pairs can succeed if the starting address
-> matches. Add a size check to require stcx. exactly match the larx that
-> established the reservation.
 
-Hmm, question: reserve_addr is a VMSTATE field, but reserve_val is not
-(nor reserve_size after this patch).
 
-Blue Swirl added that with commit a456d59c20f ("VM load/save support for
-PPC CPU"), and when reserve_val was added in commit 18b21a2f83a
-("target-ppc: retain l{w,d}arx loaded value") it did not get migrated.
+Am 1=2E Juni 2023 12:45:47 UTC schrieb Mark Cave-Ayland <mark=2Ecave-aylan=
+d@ilande=2Eco=2Euk>:
+>On 01/06/2023 13:07, Michael S=2E Tsirkin wrote:
+>
+>> On Thu, May 25, 2023 at 05:03:15PM +0100, Mark Cave-Ayland wrote:
+>>> On 23/05/2023 20:56, Bernhard Beschow wrote:
+>>>=20
+>>>> This series:
+>>>> * Removes dead code from omap_uart and i82378
+>>>> * Resolves redundant code in the i8254 timer devices
+>>>>=20
+>>>> v3:
+>>>> * Drop TYPE_ISA_PARALLEL since they became obsolete by
+>>>>     https://lore=2Ekernel=2Eorg/qemu-devel/20230522115014=2E1110840-9=
+-thuth@redhat=2Ecom/
+>>>=20
+>>> Oh I didn't see that this had already been merged :/
+>>>=20
+>>> It's not a reason to block this series, but I'd still like to see your
+>>> changes to ParallelState and ISAParallelState merged separately since =
+they
+>>> are a better match for our QOM coding standards=2E
+>>>=20
+>>>> v2:
+>>>> * Export ParallelState and ISAParallelState (Mark)
+>>>>=20
+>>>> Testing done:
+>>>> * `make check`
+>>>>=20
+>>>> Bernhard Beschow (3):
+>>>>     hw/timer/i8254_common: Share "iobase" property via base class
+>>>>     hw/arm/omap: Remove unused omap_uart_attach()
+>>>>     hw/isa/i82378: Remove unused "io" attribute
+>>>>=20
+>>>>    include/hw/arm/omap=2Eh   | 1 -
+>>>>    hw/char/omap_uart=2Ec     | 9 ---------
+>>>>    hw/i386/kvm/i8254=2Ec     | 1 -
+>>>>    hw/isa/i82378=2Ec         | 1 -
+>>>>    hw/timer/i8254=2Ec        | 6 ------
+>>>>    hw/timer/i8254_common=2Ec | 6 ++++++
+>>>>    6 files changed, 6 insertions(+), 18 deletions(-)
+>>>=20
+>>> Do we know who is going to pick up these series? I can send a PR if no=
+-one minds?
+>>>=20
+>>=20
+>>=20
+>> Go ahead:
+>>=20
+>> Acked-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
+>
+>Thanks Michael! Is there any objection to also including https://patchew=
+=2Eorg/QEMU/20230531211043=2E41724-1-shentey@gmail=2Ecom/ at the same time?
+>
+>Bernhard: if you are able to submit a rebased version of the ISA_PARALLEL=
+ cleanups at https://patchew=2Eorg/QEMU/20230521123049=2E312349-1-shentey@g=
+mail=2Ecom/ I think it is worth considering those for inclusion in the PR a=
+s well (note the comments re: an updated commit message and register defini=
+tions, but I can't really do this myself because of the missing SoB)=2E
 
-Could we end up with reserve_addr !=3D -1, but with a bogus reserve_val,
-which could then permit a stcx. incorrectly? Not entirely outlandish if
-reserve_val starts out initialised to zero.
+What could I put into the commit message?
 
-Could we just clear the reserve in cpu_post_load? It is permitted to be
-lost for an implementation-specific reason. Doesn't seem necessary to
-try keep it alive over a migration.
+I'm also wondering: Why export the structure but not the register definiti=
+ons? Are the register definitions not part of the interface? I think these =
+could be used in unittests -- if we had any -- to avoid magic numbers=2E
 
-Thanks,
-Nick
+Best regards,
+Bernhard
+
+>
+>
+>ATB,
+>
+>Mark=2E
+>
 
