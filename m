@@ -2,47 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB26723293
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 23:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992927232E0
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:02:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6IBv-0008HB-8s; Mon, 05 Jun 2023 17:56:43 -0400
+	id 1q6IGb-0001hP-TW; Mon, 05 Jun 2023 18:01:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6IBr-0008Gv-1c
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:56:39 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1q6IGX-0001hC-Hk
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:01:29 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6IBp-0007wX-ER
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:56:38 -0400
+ id 1q6IGV-00025w-W4
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:01:29 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id BB6EF746335;
- Mon,  5 Jun 2023 23:56:35 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 0F19A74632B;
+ Tue,  6 Jun 2023 00:01:25 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4626E74632B; Mon,  5 Jun 2023 23:56:35 +0200 (CEST)
+ id 8744A746361; Tue,  6 Jun 2023 00:01:24 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 446E3745720;
- Mon,  5 Jun 2023 23:56:35 +0200 (CEST)
-Date: Mon, 5 Jun 2023 23:56:35 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 85E7B746335;
+ Tue,  6 Jun 2023 00:01:24 +0200 (CEST)
+Date: Tue, 6 Jun 2023 00:01:24 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH] util/cacheflush: Avoid flushing dcache twice when not
- necessary
-In-Reply-To: <20230605195911.96033-1-philmd@linaro.org>
-Message-ID: <4aee6249-c5b2-5d21-c6e5-e995734ae518@eik.bme.hu>
-References: <20230605195911.96033-1-philmd@linaro.org>
+To: qemu-devel@nongnu.org
+cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH] hw/acpi: Fix PM control register access
+In-Reply-To: <20230528135750.4145574633D@zero.eik.bme.hu>
+Message-ID: <4a956f88-108d-8b3e-09af-3269bcbb3d13@eik.bme.hu>
+References: <20230528135750.4145574633D@zero.eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1712765879-1686002195=:78702"
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -63,62 +60,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-1712765879-1686002195=:78702
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 5 Jun 2023, Philippe Mathieu-Daudé wrote:
-> <libkern/OSCacheControl.h> describes sys_icache_invalidate() as
-> "equivalent to sys_cache_control(kCacheFunctionPrepareForExecution)",
-> having kCacheFunctionPrepareForExecution defined as:
+n Sun, 28 May 2023, BALATON Zoltan wrote:
+> On pegasos2 which has ACPI as part of VT8231 south bridge the board
+> firmware writes PM control register by accessing the second byte so
+> addr will be 1. This wasn't handled correctly and the write went to
+> addr 0 instead. This fixes ACPI shutdown with pegasos2 firmware.
 >
->  /* Prepare memory for execution.  This should be called
->   * after writing machine instructions to memory, before
->   * executing them.  It syncs the dcache and icache. [...]
->   */
->
-> Since the dcache is also sync'd, we can avoid the sys_dcache_flush()
-> call when both rx/rw pointers are equal.
->
-> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
-> Based-on: <20230605175647.88395-2-philmd@linaro.org>
-> ---
-> util/cacheflush.c | 9 ++++++++-
-> 1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/util/cacheflush.c b/util/cacheflush.c
-> index de35616718..a08906155a 100644
-> --- a/util/cacheflush.c
-> +++ b/util/cacheflush.c
-> @@ -241,7 +241,14 @@ static void __attribute__((constructor)) init_cache_info(void)
->
-> void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
-> {
-> -    sys_dcache_flush((void *)rw, len);
-> +    if (rx == rw) {
+> This is replacing the previous attempt which changed enduanness to
+> NATIVE_ENDIAN that was found to be wrong. I'm still not sure what's
+> happening as these functions are called with addr = 1 and size = 2 but
+> maybe the guest really does word access to addr 1 when wanting to
+> write 1 byte. This fixes the problem and should not break anything
+> else but please review.
 
-Isn't it more straight forward to use rx != rw and drop the else branch 
-than having an empty if branch? You can still keep the comment above the 
-if to explain it if needed.
+Ping?
 
 Regards,
 BALATON Zoltan
 
-> +        /*
-> +         * sys_icache_invalidate() syncs the dcache and icache,
-> +         * so no need to call sys_dcache_flush().
-> +         */
-> +    } else {
-> +        sys_dcache_flush((void *)rw, len);
-> +    }
->     sys_icache_invalidate((void *)rx, len);
-> }
-> #else
+> hw/acpi/core.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
 >
---3866299591-1712765879-1686002195=:78702--
+> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+> index 6da275c599..bbc599a252 100644
+> --- a/hw/acpi/core.c
+> +++ b/hw/acpi/core.c
+> @@ -593,13 +593,13 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
+> static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
+> {
+>     ACPIREGS *ar = opaque;
+> -    return ar->pm1.cnt.cnt;
+> +    return ar->pm1.cnt.cnt >> addr * 8;
+> }
+>
+> static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
+>                               unsigned width)
+> {
+> -    acpi_pm1_cnt_write(opaque, val);
+> +    acpi_pm1_cnt_write(opaque, val << addr * 8);
+> }
+>
+> static const MemoryRegionOps acpi_pm_cnt_ops = {
+>
 
