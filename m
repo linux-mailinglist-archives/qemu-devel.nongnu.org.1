@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D7B722F27
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 21:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 470D9722F34
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 21:06:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6FUV-0007XT-AV; Mon, 05 Jun 2023 15:03:43 -0400
+	id 1q6FWi-0008JE-CH; Mon, 05 Jun 2023 15:06:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6FUT-0007XC-Vu
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:03:42 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1q6FWb-0008Ip-5o
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:05:53 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6FUR-0000q3-UC
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:03:41 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1b1806264e9so28086655ad.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 12:03:39 -0700 (PDT)
+ id 1q6FWZ-0001rt-Ha
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:05:52 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-53f7bef98b7so4595904a12.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 12:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685991818; x=1688583818;
+ d=linaro.org; s=google; t=1685991950; x=1688583950;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Ui0yurgFBNlcmFUNuM4AL6tTAnEb4ZXivtteCWmlWPA=;
- b=kil81xYF6FxJah+o7fq/3p4rd0KNS+S7jkFTRBVtBF+Cdv8TMtCVrKJhz+dvEyqDVb
- xfPd+nvtgusM+jlNmoISDnK3TWQph41d+B6/N6REFs/f5+WeBhMt69+Lu3AfrKu16o7H
- p7bvCxVWNNUH8Ml76xqC56PkfkBBPniip3+WkSZRT0jAeXO367y6Hz78ZPlIX0mMnh0/
- Vs9O0nvq1iJLP+Wxm9siNBo7xnPL9RQ4k6LZTXiXfn2yDCVE4776GkFCH/emyKAogzFT
- ItkllG6YhJ8UZ49pdiY1PvOLCjkSFfhShP20pfAe6KfpFSyo/PbNwIa6R3nkFLwRHfvU
- 5s9g==
+ bh=qr9gdu60sgawXVa2lHv59tLBopPqLJMgpEnT0jxcE+E=;
+ b=ozbNo+SOh+5+5kfaOIzD795xm9QaKzVtSEq+2WIe1Q6cn59ggxYOrlz5WkBwg7tksD
+ sCqyuhwcaV233LJXzSS/roR1SjYzz+2HfA2us726181iC3kPIfiG78qwXi6VQ1nKxUaO
+ niz1oGv+Yn7piz1KSsMR7NBAPngVX8CX/RLH0LPtqAQwIagc/P9zT02N4Tq1wdFnfnED
+ DbDqlNw/gTkInPXplXr+YD000+etpoOaLzNxj9vJ5WGQlRt1AoMIVrSpXaH4poJqAs30
+ GMtt4ObtzeE+fPSUx/aRDA+3vSR4mzosAp8fPZ/jseka6XxmYpt2rs2KouKbhPpiobMi
+ 5ydA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685991818; x=1688583818;
+ d=1e100.net; s=20221208; t=1685991950; x=1688583950;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ui0yurgFBNlcmFUNuM4AL6tTAnEb4ZXivtteCWmlWPA=;
- b=iFmCnD5ZvLklDl+DbB3LtFyjq5L9hrGsv64nwhUUJNmuCelevCm1Xqr9jNmOznXfs1
- eVuPtcFYqEUEp72apGeT9/d/9uMYJYntzvEoKQ4fXmjvF6krwVtpH2KcVbB3nacnzRP2
- yhKPE85Y2lhDCzpKcYKt4vcAzItH06HLYHsoc4QFVozZB5cLxYG2WrMcdqZRPYm9caqd
- AP8sZl29YS+UBPzSwqr1/4FEtqZNe4EgDkkDRvA076ovOfItP7LrIhQNeCBpEyjzW3GY
- 5Pi90xzyY6T79HB5pqBqwOMk3hdu/tIIK9oaBgILBMgmOYDigFGBpBNhB9icIzf46nFU
- ct0A==
-X-Gm-Message-State: AC+VfDyUsn44/uER6VJqPxTDNMmcTa7R2st6XZ4K/eL/5jaaVg/KsRRz
- GZS/KM8GCnWuJmGkVyCHSEOyOQ==
-X-Google-Smtp-Source: ACHHUZ4J+DrZZW9CgulsZvvCvtcMH7Snh9wt4CkvRyGh+mndnK1w8X1KfPdq5al5s8aYWTnBd4C6FA==
-X-Received: by 2002:a17:902:f54b:b0:1b1:80ba:39dd with SMTP id
- h11-20020a170902f54b00b001b180ba39ddmr5718606plf.30.1685991818065; 
- Mon, 05 Jun 2023 12:03:38 -0700 (PDT)
+ bh=qr9gdu60sgawXVa2lHv59tLBopPqLJMgpEnT0jxcE+E=;
+ b=Uf54xcbmgYAEe2wzny52MB7VnQmU9gc1f+a8lSkZt0q+1KUm0WTl8fAKaPcSoer7oZ
+ Ps9sK8b9+Oag8XVPPGXDgyA0cb79IpZoWDF0HenZBawQsEdQ/MtuxYQI9XB4AJsszMT7
+ SS/CBVEA3a4SZMWAr61amY7WPxTXf4s4Tv20RDxmjt72L6ebX4ydJaRyX7hBExmHzcc/
+ v6/8HE3SPWEMfeeL73kl8Ow0z4vPveFdc2Jp5P+XUdXKu52SXnww9p38b3cUzxY1ieKQ
+ yqIlrhU1w0sKJjtW9wVR3jnSxP3vo/3UV5n9nV+cP5UPFiWjFGhbzT4aJLM7bYq6WvLx
+ 8U1Q==
+X-Gm-Message-State: AC+VfDztt68iX1JNkwOkA8pHYrvITXNhiaeBBmev/99RAtREBt/RQGfx
+ +g6PxmdF3tcjPkg4N2hAdi1ImUYhjmOYbKFTLpI=
+X-Google-Smtp-Source: ACHHUZ4Qx8n/3tE1XsEnUyg1qwEoszkjpelenVWnFK4GIBeOx3HFDAW+PmOYVSZ7PPqHLHrIOzq5fQ==
+X-Received: by 2002:a05:6a20:3d22:b0:10c:524e:a442 with SMTP id
+ y34-20020a056a203d2200b0010c524ea442mr8340385pzi.25.1685991949820; 
+ Mon, 05 Jun 2023 12:05:49 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
  ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- 13-20020a170902c14d00b001aaec7a2a62sm6896845plj.188.2023.06.05.12.03.37
+ h19-20020aa786d3000000b0063b675f01a5sm5713933pfo.11.2023.06.05.12.05.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 12:03:37 -0700 (PDT)
-Message-ID: <08db760d-d8d2-2758-be39-12039e2c1570@linaro.org>
-Date: Mon, 5 Jun 2023 12:03:35 -0700
+ Mon, 05 Jun 2023 12:05:49 -0700 (PDT)
+Message-ID: <4619033e-1178-327d-9a62-f85c62aa8cb4@linaro.org>
+Date: Mon, 5 Jun 2023 12:05:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 00/17] Block patches
+Subject: Re: [PATCH] target/sh4: Emit insn_start for each insn in gUSA region
 Content-Language: en-US
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>
-References: <20230605154541.1043261-1-hreitz@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: ysato@users.sourceforge.jp
+References: <20230603165530.1189588-1-richard.henderson@linaro.org>
+ <6068e086-6596-a236-ce76-77b49d2caea5@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230605154541.1043261-1-hreitz@redhat.com>
+In-Reply-To: <6068e086-6596-a236-ce76-77b49d2caea5@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,32 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 08:45, Hanna Czenczek wrote:
-> The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
+On 6/5/23 08:01, Philippe Mathieu-Daudé wrote:
+> On 3/6/23 18:55, Richard Henderson wrote:
+>> Fixes an assert in tcg_gen_code that we don't accidentally
+>> eliminate an insn_start during optimization.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>
+>> Test case is tests/tcg/multiarch/testthread.c; the assert for
+>> equality is new with
+>>
+>> https://lore.kernel.org/qemu-devel/20230531040330.8950-26-richard.henderson@linaro.org/
+>>
+>>
+>> r~
+>> ---
+>>   target/sh4/translate.c | 15 ++++++++++++---
+>>   1 file changed, 12 insertions(+), 3 deletions(-)
 > 
->    Merge tag 'migration-20230602-pull-request' ofhttps://gitlab.com/juan.quintela/qemu  into staging (2023-06-02 17:33:29 -0700)
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/hreitz/qemu.git  tags/pull-block-2023-06-05
-> 
-> for you to fetch changes up to 42a2890a76f4783cd1c212f27856edcf2b5e8a75:
-> 
->    qcow2: add discard-no-unref option (2023-06-05 13:15:42 +0200)
-> 
-> ----------------------------------------------------------------
-> Block patches
-> 
-> - Fix padding of unaligned vectored requests to match the host alignment
->    for vectors with 1023 or 1024 buffers
-> - Refactor and fix bugs in parallels's image check functionality
-> - Add an option to the qcow2 driver to retain (qcow2-level) allocations
->    on discard requests from the guest (while still forwarding the discard
->    to the lower level and marking the range as zero)
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
-
+queued to tcg-next.
 
 r~
-
 
