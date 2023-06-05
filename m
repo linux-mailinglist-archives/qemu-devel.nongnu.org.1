@@ -2,83 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB7D722087
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AC172208E
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q65Dj-0007yb-Ix; Mon, 05 Jun 2023 04:05:43 -0400
+	id 1q65FB-00016U-7q; Mon, 05 Jun 2023 04:07:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1q65DW-0007ws-IW
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:05:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1q65F6-00012u-JS
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:07:10 -0400
+Received: from esa10.hc2706-39.iphmx.com ([216.71.140.198])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1q65DU-0002YO-Jm
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:05:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685952326;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=voOnAIPLC+/+8OB9CvUAfqHSuxlN6SrzX8R4ldio3Hc=;
- b=YJDiqp0FXzQ9rJMm9Kmneih87u9q8H7yHiPx5qgKJOilMIQ5d3hE8m/303pL4ZLus/izGg
- B/A0Iim+/nPWdYwxTb2lbcY7gF3bU86F4lNAna5xrKzzzw3wIj1vW6i2FD+UkZBfmZTd0h
- knh9fMu3rMa+OF4om+vG1GC/vuVItS0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-s0wSB6rWMtataXXP0124FQ-1; Mon, 05 Jun 2023 04:05:24 -0400
-X-MC-Unique: s0wSB6rWMtataXXP0124FQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30ae4ed92eeso1954706f8f.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 01:05:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1q65F4-0002pk-IT
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:07:08 -0400
+X-IronPort-RemoteIP: 209.85.219.198
+X-IronPort-MID: 285175985
+X-IronPort-Reputation: None
+X-IronPort-Listener: OutgoingMail
+X-IronPort-SenderGroup: RELAY_GSUITE
+X-IronPort-MailFlowPolicy: $RELAYED
+IronPort-Data: A9a23:fZMyYqAoJM35CRVW/5fhw5YqxClBgxIJ4kV8jS/XYbTApDp0hT0Cy
+ TYfWz/VM/iLZzOkLohzaoXkpkpU757UzIJlTANkpHpgcSl2pJueD7x1DKtR0wB+jCHnZBg6h
+ ynLQoCYdKjYdleF+lH2dOCn9SImvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYctitWia++3k
+ YqaT/b3Zhn9g1aYDkpOs/jY8E034Kyr0N8llgdWic5j7Qe2e0Y9Ucp3yZGZdxPQXoRSF+imc
+ OfPpJnRErTxpkpF5nuNy94XQ2VTKlLgFVHmZkl+AsBOtiN/Shkaic7XAha9hXB/0F1ll/gpo
+ DlEWAfZpQ0BZ8Ugk8xEO/VU/r0X0QSrN9YrLFDm2fF/wXEqfFPP6O9rC0ELLbY4xcRlBUFht
+ tdCMj8kO0Xra+KemNpXS8Fpj8UnadjhZcYR4yAwiz7eCvkiTNbIRKCiCd1whm9hwJATW6yHN
+ oxAOGoHgBfoOnWjPn8eDII4kP2AjGS5fjFFwL6QjfBnvjGMkV0hjdABNvLyYfCDee9QoHy6+
+ FP9+jv2DAoIGNuQnG/tHnWEw7WncTnAcJsfEaD9+vN0jVm7wGsVBxsLE1yhrpGEZlWWXtteL
+ wkF8HNro/FjpAqkSd7yWxD+q3mB1vIBZ+dt/yQBwFnl4sLpD8yxXADokhYphAQaifIL
+IronPort-HdrOrdr: A9a23:+5C1e6D9hOvMTLLlHel655DYdb4zR+YMi2TDGXoBLiC9Vvbo6v
+ xG/c5rryMc7Qx6ZJhOo6HjBEDtewK4yXcx2/hsAV7AZnichILLFvAa0WKK+VSJcFycygce79
+ YZT0EXMr3N5DNB/KDHCWeDYrId6ejC2oyTwcnl81dRYTdDV5xAhj0JdTpz0XcbeOCFP/cE/V
+ aniPavbgDOGEgqUg==
+X-Talos-CUID: 9a23:MplR0W068etk8AyEuG9G47xfOes/d3rd8WfrA3CaG2JJZ/6+E0Wf0fYx
+X-Talos-MUID: 9a23:DDAh2gUoTVbamLzq/Bj3qDheHsJW2YbwOXsIzpoIoNuoMiMlbg==
+Received: from mail-yb1-f198.google.com ([209.85.219.198])
+ by ob1.hc2706-39.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
+ 05 Jun 2023 04:07:04 -0400
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-bb2202e0108so5467924276.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 01:07:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bu.edu; s=s1gsbu; t=1685952423; x=1688544423;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=nBsE6ZSAQNXrqj2aXIdHreYcEOPnXGm8mY8CFnppvpI=;
+ b=IvQ9vEr6WpZq4NElD8pacuNJ7DlM9WTZT+XePmlRut+X7NZDHnEkW8zmZ98jm4anRo
+ A0YsWcLVMn8FcmYC0jbqLdFFml3r06c2pNNTwMo56vBWoE8DBllLI6COeH0IH7SapRfR
+ 3XhX4K3uB/tUClvhvJcuQAwUmNnGvtIqxOlm6zoo2tby2FkFMuITRHkjfkio8+oGlFbn
+ iMv63ln7BUlFnpjOPoWjChPGvQDgHRs8hs3bUVW2HiiYyB6W60xY7q1FrkIvM5OwbWor
+ d0m7MnYiAdE7iGA6rAgrzVQfVGUgvlMhBhvDAL+8A7uRg8j47vZ0oQLQev6WxTZsjQx6
+ 3u7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685952323; x=1688544323;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=voOnAIPLC+/+8OB9CvUAfqHSuxlN6SrzX8R4ldio3Hc=;
- b=Q32UG8+7RkaxrgfsKMVUUAJcVtBFCQvTPjRyh8TMTBQJ214+Shx0MV+aDU+PNtnNTJ
- v9Al9arNpD+hp46o0kPnD4Tf6zUirrMYsznnuDHGnvvd+zOmbrDXI8mQOD+T9u0xks4u
- XMQuJldNPIPRQqFgenT0kFib1COGOYGmEkYCcJpH4QEYpOROoXfSeYQiRQHoggnXPfRC
- 3uARmnGbihsRihozQOPhU8g308Rg+tODLnznXraeljBYnYNIulwR0T4lPJHGhXXTCErc
- kdPalyMxkYNd4TqcpthqDpWAQTaJvyEJnkgCFA8aHozGZm1rdPUniaPAozfRu2BiCZOx
- motA==
-X-Gm-Message-State: AC+VfDx3eG1TC95BILXwGHcib2DkY8rTVdHkzBunuvNib0TJyj7ojiaj
- UX72dF4k/PopeGciGy1COaxCE5LCi9ArIRLLAo2UU1tZ+bN19eITuq2KiRQReO69F9VR4GOx0vD
- C07LzKF8ia+JrzujLOSMOBfn+d4xAg+Q=
-X-Received: by 2002:a5d:52c8:0:b0:309:419b:925d with SMTP id
- r8-20020a5d52c8000000b00309419b925dmr3730476wrv.70.1685952323604; 
- Mon, 05 Jun 2023 01:05:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ52+sERCviuhdUEh3/WLTf/VYWfl2eb5jbayhee0X7w2K7iKGV2EkdjLvcs3E/VpDM6wwuwZ0uKn4eT/CabB8Y=
-X-Received: by 2002:a5d:52c8:0:b0:309:419b:925d with SMTP id
- r8-20020a5d52c8000000b00309419b925dmr3730460wrv.70.1685952323294; Mon, 05 Jun
- 2023 01:05:23 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685952423; x=1688544423;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nBsE6ZSAQNXrqj2aXIdHreYcEOPnXGm8mY8CFnppvpI=;
+ b=cm7zav6rtI2cYclEt+h8jsBNYY0+6wNB96Dg4gj4e4udYQ9G0C1QHEF6hUqnknMQdU
+ nkGWmnQgIVa5Qs652KOx0DuNCci1xqWZ0W5lEGFQBXn1ZTM5TS8mIsrSmlcTuQcqk1/d
+ UAtWEDhXrdmqJAdlF69G7qRncmKdFLdiROUTrtl/HN6X8uUjns2XYacu6syAJrn+Bt2Q
+ z+DsDD2DDv8Z2lpanuI+aucjOSGQWviWNrepechnl+zibZK5S5GsfDooOANdmPV69acW
+ Ggq6nYaEkvvNcQ49OgTRiGH1LYBmfahtjMNZHLyPP4gpncb2BcmT0LcqHOW6Ea10v21E
+ s9ag==
+X-Gm-Message-State: AC+VfDxchIxVD2CA/qKQ76Kw/xGqWTlSJ3Mh+Zy+tRNY6j5xRrWBzOQd
+ fj/xmQWXUPFYQH05fPAL/14DmZZvo0g8CG7ldNUC+nj1jOfvqlXP4jfwSS6C4nlAk65Bbz2rgKS
+ hgB2SeQ9Tsw+y5yB161Zxfy69Pb54vA==
+X-Received: by 2002:a05:620a:608a:b0:75b:23a0:deba with SMTP id
+ dx10-20020a05620a608a00b0075b23a0debamr28828623qkb.56.1685952403364; 
+ Mon, 05 Jun 2023 01:06:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ54WffJVAgziK1v5fGXGcEP6ZhKkhUM5WL01CapRdgLlA4i3sV9HcqJ6zPjS6RJdIDOenz0Jw==
+X-Received: by 2002:a05:620a:608a:b0:75b:23a0:deba with SMTP id
+ dx10-20020a05620a608a00b0075b23a0debamr28828575qkb.56.1685952403068; 
+ Mon, 05 Jun 2023 01:06:43 -0700 (PDT)
+Received: from mozz.bu.edu (mozz.bu.edu. [128.197.127.33])
+ by smtp.gmail.com with ESMTPSA id
+ s15-20020a05620a16af00b00746b2ca65edsm3985583qkj.75.2023.06.05.01.06.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jun 2023 01:06:42 -0700 (PDT)
+Date: Mon, 5 Jun 2023 04:06:38 -0400
+From: Alexander Bulekov <alxndr@bu.edu>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mauro Matteo Cascella <mcascell@redhat.com>, P J P <pj.pandit@yahoo.co.in>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Thomas Huth <huth@tuxfamily.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sven Schnelle <svens@stackframe.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Paul Durrant <paul@xen.org>, Rob Herring <robh@kernel.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 1/2] net: Provide MemReentrancyGuard * to qemu_new_nic()
+Message-ID: <20230605080616.ooanu5pk2pvs57yi@mozz.bu.edu>
+References: <20230601031859.7115-1-akihiko.odaki@daynix.com>
+ <20230601031859.7115-2-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-References: <20230503091337.2130631-1-lulu@redhat.com>
- <CACGkMEvssDLX0OAuVE2ZwK_SAdhjUr7fnbH6kbMAOzzJKbsJig@mail.gmail.com>
- <CACLfguXZiErCtA6UN4z8V3x6MSaGga7W86jjg6EYhKb3j8QqiA@mail.gmail.com>
- <20230605014034-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230605014034-mutt-send-email-mst@kernel.org>
-From: Cindy Lu <lulu@redhat.com>
-Date: Mon, 5 Jun 2023 16:04:46 +0800
-Message-ID: <CACLfguWySBD8TU1L4rgCD1EvfdAaxwTawy4hOp3EEQZLCO_wEw@mail.gmail.com>
-Subject: Re: [RFC 0/7] vhost-vdpa: add support for iommufd
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lulu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601031859.7115-2-akihiko.odaki@daynix.com>
+X-CES-GSUITE_AUTH: bf3aNvsZpxl8
+Received-SPF: pass client-ip=216.71.140.198; envelope-from=alxndr@bu.edu;
+ helo=esa10.hc2706-39.iphmx.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,66 +148,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 5, 2023 at 1:41=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Fri, May 05, 2023 at 02:29:23PM +0800, Cindy Lu wrote:
-> > On Fri, May 5, 2023 at 11:29=E2=80=AFAM Jason Wang <jasowang@redhat.com=
-> wrote:
-> > >
-> > > Hi Cindy
-> > >
-> > > On Wed, May 3, 2023 at 5:13=E2=80=AFPM Cindy Lu <lulu@redhat.com> wro=
-te:
-> > > >
-> > > > Hi All
-> > > > There is the RFC to support the IOMMUFD in vdpa device
-> > > > any comments are welcome
-> > > > Thanks
-> > > > Cindy
-> > >
-> > > Please post the kernel patch as well as a reference.
-> > >
-> > > Thanks
-> > >
-> > sure=EF=BC=8Cwill do
-> > Thanks
-> > cindy
->
-> Is this effort going anywhere? It will soon be too late for
-> the next merge window.
->
-Hi Michael
-I'm now working on some vduse issue, I will go back to work in IOMMUFD soon
+On 230601 1218, Akihiko Odaki wrote:
+> Recently MemReentrancyGuard was added to DeviceState to record that the
+> device is engaging in I/O. The network device backend needs to update it
+> when delivering a packet to a device.
+> 
+> In preparation for such a change, add MemReentrancyGuard * as a
+> parameter of qemu_new_nic().
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Thanks
-Cindy
-> > > >
-> > > > Cindy Lu (7):
-> > > >   vhost: introduce new UAPI to support IOMMUFD
-> > > >   qapi: support iommufd in vdpa
-> > > >   virtio : add a ptr for vdpa_iommufd in VirtIODevice
-> > > >   net/vhost-vdpa: Add the check for iommufd
-> > > >   vhost-vdpa: Add the iommufd support in the map/unmap function
-> > > >   vhost-vdpa: init iommufd function in vhost_vdpa start
-> > > >   vhost-vdpa-iommufd: Add iommufd support for vdpa
-> > > >
-> > > >  hw/virtio/meson.build          |   2 +-
-> > > >  hw/virtio/vhost-vdpa-iommufd.c | 240 +++++++++++++++++++++++++++++=
-++++
-> > > >  hw/virtio/vhost-vdpa.c         |  74 +++++++++-
-> > > >  include/hw/virtio/vhost-vdpa.h |  47 +++++++
-> > > >  include/hw/virtio/virtio.h     |   5 +
-> > > >  linux-headers/linux/vhost.h    |  72 ++++++++++
-> > > >  net/vhost-vdpa.c               |  31 +++--
-> > > >  qapi/net.json                  |   1 +
-> > > >  8 files changed, 451 insertions(+), 21 deletions(-)
-> > > >  create mode 100644 hw/virtio/vhost-vdpa-iommufd.c
-> > > >
-> > > > --
-> > > > 2.34.3
-> > > >
-> > >
->
 
+Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
+
+One minor comment below.
+
+> ---
+>  include/net/net.h             | 1 +
+>  hw/net/allwinner-sun8i-emac.c | 3 ++-
+>  hw/net/allwinner_emac.c       | 3 ++-
+>  hw/net/cadence_gem.c          | 3 ++-
+>  hw/net/dp8393x.c              | 3 ++-
+>  hw/net/e1000.c                | 3 ++-
+>  hw/net/e1000e.c               | 2 +-
+>  hw/net/eepro100.c             | 4 +++-
+>  hw/net/etraxfs_eth.c          | 3 ++-
+>  hw/net/fsl_etsec/etsec.c      | 3 ++-
+>  hw/net/ftgmac100.c            | 3 ++-
+>  hw/net/i82596.c               | 2 +-
+>  hw/net/igb.c                  | 2 +-
+>  hw/net/imx_fec.c              | 2 +-
+>  hw/net/lan9118.c              | 3 ++-
+>  hw/net/mcf_fec.c              | 3 ++-
+>  hw/net/mipsnet.c              | 3 ++-
+>  hw/net/msf2-emac.c            | 3 ++-
+>  hw/net/mv88w8618_eth.c        | 3 ++-
+>  hw/net/ne2000-isa.c           | 3 ++-
+>  hw/net/ne2000-pci.c           | 3 ++-
+>  hw/net/npcm7xx_emc.c          | 3 ++-
+>  hw/net/opencores_eth.c        | 3 ++-
+>  hw/net/pcnet.c                | 3 ++-
+>  hw/net/rocker/rocker_fp.c     | 4 ++--
+>  hw/net/rtl8139.c              | 3 ++-
+>  hw/net/smc91c111.c            | 3 ++-
+>  hw/net/spapr_llan.c           | 3 ++-
+>  hw/net/stellaris_enet.c       | 3 ++-
+>  hw/net/sungem.c               | 2 +-
+>  hw/net/sunhme.c               | 3 ++-
+>  hw/net/tulip.c                | 3 ++-
+>  hw/net/virtio-net.c           | 6 ++++--
+>  hw/net/vmxnet3.c              | 2 +-
+>  hw/net/xen_nic.c              | 4 ++--
+>  hw/net/xgmac.c                | 3 ++-
+>  hw/net/xilinx_axienet.c       | 3 ++-
+>  hw/net/xilinx_ethlite.c       | 3 ++-
+>  hw/usb/dev-network.c          | 3 ++-
+>  net/net.c                     | 1 +
+>  40 files changed, 75 insertions(+), 41 deletions(-)
+> 
+> diff --git a/include/net/net.h b/include/net/net.h
+> index 1448d00afb..a7d8deaccb 100644
+> --- a/include/net/net.h
+> +++ b/include/net/net.h
+> @@ -157,6 +157,7 @@ NICState *qemu_new_nic(NetClientInfo *info,
+>                         NICConf *conf,
+>                         const char *model,
+>                         const char *name,
+> +                       MemReentrancyGuard *reentrancy_guard,
+>                         void *opaque);
+
+Does it make sense to roll *reentrancy_guard into NICConf here?
 
