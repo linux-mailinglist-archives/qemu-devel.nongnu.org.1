@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813317222C8
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEA87222DB
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q66zj-00033e-Ct; Mon, 05 Jun 2023 05:59:23 -0400
+	id 1q6740-0004aB-Vg; Mon, 05 Jun 2023 06:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q66zh-00033S-RM
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:59:21 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q66zg-00087u-8o
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:59:21 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-4f6170b1486so3154180e87.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 02:59:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685959158; x=1688551158;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=bjMRNC2yotteCj6C50qyqJLR6Xov9v2hEUZoCrJ8ANo=;
- b=wcdyl2RrpO8r6jHKKS0zIZRE7gSWYLoyID8aTWTabpcAUCOMHrdA2dHUwtaQhvhzJr
- eBSiWSb2ZCGJzANUJzLEe45J97TH1fJ/RqCsqDkT1CA5K5HeHi88HuJRK2gO3GKe/HLa
- AnEO1nfq+ZHiqjNeYtMYaYcmuV2/bdIfvCsAkWV9WZwZpIvdEuoFXYBnEGn7T8x8TMqF
- +PXy5R0MybQMlfFCa+LDjt3uE56qtqYP3ANK/AgGE5juwJUYadnxITYjKQixQ/Q1S0nG
- Z/02U7Ppw41VdR2YuuilVsO8OSbMdhurA6ysXADiTcyZ4AOyvZTs6XsnDkFZyCcwYWOL
- ddOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685959158; x=1688551158;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bjMRNC2yotteCj6C50qyqJLR6Xov9v2hEUZoCrJ8ANo=;
- b=k64aHZTm441LXDeEQaQDGYp7CYiO93A9Ailh693RAuyHPck+jJ4DSPaXOEtxwaW20H
- UWBf1t2bVZSiwZnCms+HC3nS3/B2OhGsCKbqMFg6mWd30/75sH9ZqFknFn3S0fg8UFsc
- DqaACFfYmGGs++y4/wN9277Jm80EMEIDdSqQSkzkxguFpikdZqjkvSvcxYB5vZUUyIOq
- 70pAicSlHRa8Ufv4dxHQ0vVPFSipqfsFTqIuWHd6TdrKgENm/BUtjtZ7z4HlWJsGTqEX
- hUZB2jpQxNIaG+N838wPj/SlGqlPjlX1ddWyjCJJVtyA5/GEPa0+HLllI/oh9pP0eNuf
- jF/g==
-X-Gm-Message-State: AC+VfDy2qYebwsJoCjkIVIw9B3QG0AfYUINaJ3OmJLBEeLOUJO6VZeJ0
- ZuUcbkH6f/whHly6QkKzj3hyYw==
-X-Google-Smtp-Source: ACHHUZ5mygVgzBnB5L9ihLjYQWZTi0ua4lvYSd8E/ej/bpo6Jc3Cy3eumEIv+a83TsIHXEBG7Dh+rg==
-X-Received: by 2002:ac2:4ace:0:b0:4f3:78dd:8e0b with SMTP id
- m14-20020ac24ace000000b004f378dd8e0bmr3041088lfp.32.1685959157746; 
- Mon, 05 Jun 2023 02:59:17 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.93.182.ipv4.supernova.orange.pl.
- [83.21.93.182]) by smtp.gmail.com with ESMTPSA id
- m8-20020a056512014800b004f3b319ed4bsm1077689lfo.120.2023.06.05.02.59.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 02:59:17 -0700 (PDT)
-Message-ID: <101d301d-d413-288e-9318-d0a226ea8715@linaro.org>
-Date: Mon, 5 Jun 2023 11:59:16 +0200
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q673y-0004X8-H0
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:03:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q673x-0000Tp-0F
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:03:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685959423;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+tZFA7O9Hezpf4v8slBwetC9ufodCKLDkzRj52ho6QY=;
+ b=Z0pSWkoqvZcOe+ixcjpsdNR1vYbSKdDkL6dyNYz8X5DOmWFZeeyYzaI1j6zZ+kny6rYzol
+ uz4YDpc1BuIoBkCkMdnjnX/DymXfVPsowd1bv3bl3a47W5pv57Ng5jjuUlSQLuAQyfTciF
+ qHt+MKK4Kri+ZVdVgjhfmo/aFlr1Ni4=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-662-qemsh4oJP4WnT4jJ3oyyfw-1; Mon, 05 Jun 2023 06:03:41 -0400
+X-MC-Unique: qemsh4oJP4WnT4jJ3oyyfw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6043A1C02D34;
+ Mon,  5 Jun 2023 10:03:41 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6B909C0448E;
+ Mon,  5 Jun 2023 10:03:40 +0000 (UTC)
+Date: Mon, 5 Jun 2023 12:03:39 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, hreitz@redhat.com,
+ eblake@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 11/11] Revert "graph-lock: Disable locking for now"
+Message-ID: <ZH2y+zAgThSJ67oZ@redhat.com>
+References: <20230605085711.21261-1-kwolf@redhat.com>
+ <20230605085711.21261-12-kwolf@redhat.com>
+ <fbcb21e3-9544-eea2-ab5b-9bb84ac7c90b@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-Content-Language: pl-PL, en-GB, en-HK
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
- peter.maydell@linaro.org
-Cc: quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org
-References: <20230605095536.117384-1-wangyuquan1236@phytium.com.cn>
- <20230605095536.117384-2-wangyuquan1236@phytium.com.cn>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20230605095536.117384-2-wangyuquan1236@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbcb21e3-9544-eea2-ab5b-9bb84ac7c90b@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,15 +78,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 5.06.2023 o 11:55, Yuquan Wang pisze:
-> The current sbsa-ref cannot use EHCI controller which is only
-> able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
-> Hence, this uses XHCI to provide a usb controller with 64-bit
-> DMA capablity instead of EHCI.
+Am 05.06.2023 um 11:06 hat Paolo Bonzini geschrieben:
+> On 6/5/23 10:57, Kevin Wolf wrote:
+> >   void bdrv_graph_rdlock_main_loop(void)
+> > @@ -296,18 +276,13 @@ void assert_bdrv_graph_readable(void)
+> >   {
+> >       /* reader_count() is slow due to aio_context_list_lock lock contention */
+> >       /* TODO Reenable when wrlock is reenabled */
 > 
-> Signed-off-by: Yuquan Wang<wangyuquan1236@phytium.com.cn>
+> There's still a TODO here.
 
-Can you share firmware side so it can be tested?
+Thanks for catching that. If I don't have to respin for something else,
+I'll fix it up before applying.
 
-The more I deal with EDK2 the more I understand why people go U-Boot.
+Keviun
+
 
