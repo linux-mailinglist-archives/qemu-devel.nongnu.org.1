@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8B6722372
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA80472236F
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:29:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q67SG-0007IF-Vm; Mon, 05 Jun 2023 06:28:53 -0400
+	id 1q67Rx-0006va-MH; Mon, 05 Jun 2023 06:28:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q67SB-0007Bi-Si
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:28:48 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q67Rw-0006vR-2M
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:28:32 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q67SA-0004xc-22
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:28:47 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5148e4a2f17so7155989a12.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:28:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q67Ru-0004oH-Gx
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:28:31 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-4f3bb395e69so5835822e87.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685960924; x=1688552924;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1685960908; x=1688552908;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YXHrsYssW93rRIURMtpOIJ8nIm1VFFWJWuyqxP/l/1c=;
- b=BZpwG0w4tUNncxn2YmPjFAeMAFOiKoKV79cpWApTO8zBiuuKnvMUbnKeOVNMDZ70Gs
- LbAbo9oWdMFFyeUyJEf5OhkgMTWQObUFJaPPZjaBfd3grVUZf/tLe73bgtbVuhaH/DAF
- ghfoJXXv2/9kQyjISwdNKwW9BdZSrRda5r4dhxCT1HL0uA84sEJs3iL+jfQeue4QujhL
- reOk2kw5pXedV9RW24DtBklmMPUtzYgN7HbJs7HHRVaMmWpYjAWj2KZlVnqd1a9YcfWW
- u+VHeJcBWjUUXLwyFeB3SRlyvgwsI/nm6iZVgMRECCaweJJokaLhBwe64lz3h+BH4FL0
- ehWQ==
+ bh=YL7zOR9I/f05zMsOCyd77n4fVdcAyI4CfL8JXfCHqpk=;
+ b=SCH8QN745PkEqft0pluwP2OlTioLqkvyrI5KJgF1rJ0GyihuywZOVicBaFxmJoJXHn
+ IxaLlwLLoUO2I+szT15r60DprbIW449lld88clQ5V7YPOf0I8tRyv/ExYKpLrH83OBnw
+ WKUbNXRSmLPQc9f003WJ5+0cHer05G2bkMVArYGNd8fy9JK+vT/EtmGeFCyDtE7yA6Nu
+ kVrpgWpVVKf9nR6mvvr+eZLF2eYT2pprPUCvO0PqY4JWLPHPgTqx0crFyDVfVhC3Gv2y
+ GDoHd0T+X1aC92sHMFzvKdsVjhg+aRsRSvhLR+LpVLAIKhQD6LCqqwuPmxQmQQB7SVWH
+ zrew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685960924; x=1688552924;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YXHrsYssW93rRIURMtpOIJ8nIm1VFFWJWuyqxP/l/1c=;
- b=fyGLcfRriy8TlORDBnyyC9b/A1weMFEMQ2FzV04Xx/ht8kNohsgpiIDO2X742iNEsh
- NJFm27qdj8t2gFbJiW/DdxfKxe8bAe7pewtcKDA5rETS8xb+bgW2t7QhOxdqameg0kRl
- f6Z84Lnr9tK/JenhTBj8NLC9CbjznFKlmRRX1ZXkgTNKcFXrATV/+qrTqyW1ro83MWKw
- acJiMoggp0fPeSvJbUvi3Dgizx9mCTZwHFAOGKgcvQL7KbFoJqim8L7Yanp2yy4iJXGk
- 6gmC1kTEu/a6Kxg5nUbLLmjFgwBs0O8TO+EcUJRHvpNr36rwyPTz7EKA/A2a2IsYCIq5
- 80mg==
-X-Gm-Message-State: AC+VfDzl6/z6HQxQikSUmD6vHo6yhKvYn4LL7pVJ/qvJlUZBgeA57X1m
- aObY3iPj11N9XAePYuFy7Y3g35XaIDZ6D2KNtp+CoA==
-X-Google-Smtp-Source: ACHHUZ4xOWEtfj+H3dElmxkarcS632DwwNirY470d4S5wcnCmysaXTnI2UBMRzdoGSUKasXLZflB99zIklvpDVr00gM=
-X-Received: by 2002:aa7:c997:0:b0:50b:c630:a956 with SMTP id
- c23-20020aa7c997000000b0050bc630a956mr7113515edt.17.1685960924494; Mon, 05
- Jun 2023 03:28:44 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685960908; x=1688552908;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=YL7zOR9I/f05zMsOCyd77n4fVdcAyI4CfL8JXfCHqpk=;
+ b=Rzw0+sKsn9icu+Oy0ftoqO8b76LiBh6xXSQku3hlwyEAw5RYVG9vBp90bCQ5D0T3zo
+ ORB//rpMUMJIcgRDHyWAKia+udErEPAllfATQrQsTYwnEt6lF0lFyPu36F5GtBjPfcTg
+ fLZSF/4FcHuM0jTMWel88mStEpTz2yNo6X+v3S2LLpCXTxIsmSOjPfQ/pipOcubGY99L
+ bIVYOo1eQUyocq6YrUFiCRDB4y0SV8bL+6qDXv0f5ffsE4ukWrJ+3yTWNPT+0lAeV+Ba
+ bMIl4SnTcng5s/iVMN6UF1/gTukluW4Yl63mTDcnItCOe2vI6yICONK2Mpkm4dcR6/J5
+ mm3Q==
+X-Gm-Message-State: AC+VfDxwJFAtlLSVv4wrBihAf1MZSPPfT5IqSfEutjENoeYbOv7/1gIh
+ UOCfQpoE9UKH9CWx3pVZ3+WAp85duiDThnT0JVw=
+X-Google-Smtp-Source: ACHHUZ6QwbVBMVnDRKoOQjQ8Tc2FcckxXwxkDA/r2A8h58v4GiGE/WXtVHSB2BUMMZeGdy5oqdq+Gg==
+X-Received: by 2002:a05:6512:4c6:b0:4f3:ba7f:80c9 with SMTP id
+ w6-20020a05651204c600b004f3ba7f80c9mr5217049lfq.59.1685960907778; 
+ Mon, 05 Jun 2023 03:28:27 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ d24-20020a1c7318000000b003f18b942338sm10375157wmb.3.2023.06.05.03.28.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jun 2023 03:28:27 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 364781FFBB;
+ Mon,  5 Jun 2023 11:28:27 +0100 (BST)
+References: <20230605095223.107653-1-pbonzini@redhat.com>
+ <20230605095223.107653-3-pbonzini@redhat.com>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: thuth@redhat.com, berrange@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH 02/10] configure: rename --enable-pypi to
+ --enable-download, control subprojects too
+Date: Mon, 05 Jun 2023 11:28:22 +0100
+In-reply-to: <20230605095223.107653-3-pbonzini@redhat.com>
+Message-ID: <874jnm19v8.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230531203559.29140-1-philmd@linaro.org>
- <20230531203559.29140-16-philmd@linaro.org>
- <43f014f5-6dd7-7c46-eea4-ed9cffe8ec48@ilande.co.uk>
- <33d6d99f-5a75-9891-b43f-c9caf40a62de@linaro.org>
-In-Reply-To: <33d6d99f-5a75-9891-b43f-c9caf40a62de@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 5 Jun 2023 11:28:11 +0100
-Message-ID: <CAFEAcA_xQ3LseLrSTNQCj5VUNh1jiPdbpPWMLT=yp=VBKL2gAg@mail.gmail.com>
-Subject: Re: [PATCH 15/15] hw/timer/arm_timer: QOM'ify ARM_TIMER
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org, 
- Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, 
- Sergey Kambalin <serg.oker@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,68 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 at 11:20, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> On 3/6/23 20:07, Mark Cave-Ayland wrote:
-> > On 31/05/2023 21:35, Philippe Mathieu-Daud=C3=A9 wrote:
-> >
-> >> Introduce the ARM_TIMER sysbus device.
-> >>
-> >> arm_timer_new() is converted as QOM instance init()/finalize()
-> >> handlers. Note in arm_timer_finalize() we release a ptimer handle
-> >> which was previously leaked.
-> >>
-> >> ArmTimerState is directly embedded into SP804State/IcpPitState,
-> >> and is initialized as a QOM child.
-> >>
-> >> Since the timer frequency belongs to ARM_TIMER, have it hold the
-> >> QOM property. SP804State/IcpPitState directly access it.
-> >>
-> >> Similarly the SP804State/IcpPitState input IRQ becomes the
-> >> ARM_TIMER sysbus output IRQ.
-> >>
-> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> >> ---
-> >>   hw/timer/arm_timer.c | 109 +++++++++++++++++++++++++++--------------=
---
-> >>   1 file changed, 70 insertions(+), 39 deletions(-)
->
->
-> >> -static void arm_timer_reset(ArmTimerState *s)
-> >> +static void arm_timer_reset(DeviceState *dev)
-> >>   {
-> >> +    ArmTimerState *s =3D ARM_TIMER(dev);
-> >> +
-> >>       s->control =3D TIMER_CTRL_IE;
-> >>   }
-> >
-> > If you're currently set up to test the ARM timers with these changes, i=
-s
-> > it worth considering converting this to use the Resettable interface at
-> > the same time?
->
-> Good point. Then ARM_TIMER doesn't need to inherit from SysBus: if the
-> parent device resets it explicitly, it can be a plan QDev.
->
-> Peter, what do you think?
 
-I'm not a super-fan of either plain qdevs or devices explicitly
-resetting other devices. What we have today isn't great
-(reset along the sysbus tree) but I feel like ad-hoc deviations
-from it don't help and arguably hinder in any future attempts
-to attack the problem more systematically.
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-> Even generically, I wonder if a QDev could resets all its QOM children,
-> propagating each ResetType.
+> The behavior of --{enable,disable}-pypi is similar to that of
+> -Dwrapmode=3D{default,nodownload} respectively.  In particular,
+> in both cases a feature needs to be explicitly enabled for the
+> dependency to be downloaded.
+>
+> So, use a single option to control both cases.  Now, --enable-slirp
+> will trigger cloning and building of libslirp if the .pc file
+> is not found on the machine.
+>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Propagating reset along the QOM tree is something I've thought
-about, yes. The other option is to have a 'reset tree' (distinct
-from both the QOM tree and the 'bus tree', but perhaps defaulting
-to the QOM tree if not explicitly set otherwise). As usual, the
-difficulty is the transition from the current setup to any
-proposed new reset handling model. I haven't really had time
-to think about this recently.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
