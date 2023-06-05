@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5679C721DB4
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 07:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EDE721DDD
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 08:10:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q63Db-0003Tr-LZ; Mon, 05 Jun 2023 01:57:27 -0400
+	id 1q63O0-0005MV-Me; Mon, 05 Jun 2023 02:08:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q63DW-0003Sn-Rb; Mon, 05 Jun 2023 01:57:22 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q63DV-0004pD-2g; Mon, 05 Jun 2023 01:57:22 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-977e7d6945aso37794566b.2; 
- Sun, 04 Jun 2023 22:57:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685944637; x=1688536637;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=e3rpjzSXMT2dvQGQ2RUuLgAFBHNREISMKWgEghLmAcg=;
- b=Df6l/Qy1YSSIhtC45vli562eV9oN1XTWUeTYxt3XKys0amvxMWil3M6YTUKVobHpHM
- slpCNNBRzshCHsMMKFE7fWIWZbE8SXcZocaXAaEJzMJV3y/rfxy3kgRripVA4b0RAh8k
- sVFSPmattswElufUqq8woB5PRPcQ2SkFsYWbOmVeUKe4cfz1iSQutQDtNyC+znspAYO0
- /6CFPuljAFMuSICRaWaj8qfItmA5ffc83mG0fjUyh+bdgLxpggI0hPKQA3mEq2pUYny8
- 520U3Dc+u5XU7SkCMewyClrZG/XKAJmnk8T44KIrlh+80sjpSJ11MUJe7p2F4C1yh6K2
- aA9A==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q63Nw-0005MA-Mu
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 02:08:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q63Nu-0006z8-Tl
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 02:08:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685945286;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xiSpvJwFG87wAdz2y11ghwnC81Na8+4kSF9GDGQmoc8=;
+ b=S7rPMhUU6/Ntdph8EWagMhtYdpHo6XQd0zsgzdCgSduwe+e2ioLaODGuFC+ghUZS0D6h5E
+ m2Gq5Lzh/ut/46ozVSOIcQxWVWCiUSxEq17qjXviNylC6+axhhgBnMwvSR5GsOfrp7MqiO
+ vsDkvbaRjIjYN/rubx+n59Xrk8Xxthw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-459-uinY5auSPkq-XbF3WqoVhA-1; Mon, 05 Jun 2023 02:08:04 -0400
+X-MC-Unique: uinY5auSPkq-XbF3WqoVhA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f725f64b46so56089565e9.1
+ for <qemu-devel@nongnu.org>; Sun, 04 Jun 2023 23:08:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685944637; x=1688536637;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=e3rpjzSXMT2dvQGQ2RUuLgAFBHNREISMKWgEghLmAcg=;
- b=PLozgDcCz5Jv+VkS8Hf63OJSwUrsAKmCNKQm2IR7qYreZEaQDjAjyKcgkFoAJlIaVn
- UHOeMSnUlxhpzuahVd0NC488OrbgImXi4CYN/p9qW0dGjJdFWEijIortOl2JWNwazupP
- daNKIb12tD6vT8RdUH9DhCe2GTxGCdwbDlKBXqVRRebbQxenLk+U6VOil1v154BiG9W1
- 3x0BnaBXDX3n0BQCCD7g8q8FdyXTIflPf0YcIAAHf2K9fQOjL7Ko3oJhOfjRa+3xEBPA
- iV5gKqixVhph3kTLlXH5Dnet0saprxMFnPF39QongR7HJw3VkvHk+P4gAU6lMNU9RQ81
- Ehrw==
-X-Gm-Message-State: AC+VfDyPcXyXLdB+vKMgj9MUnc7Itsuf/wMJpkVQTsp/EhPdScSE/H5s
- Vl81jmDDFMd1UnccaaKbrSg=
-X-Google-Smtp-Source: ACHHUZ4NViZRgvk+YSQjz4pTmzpLh/g4+N/1YMMa/0FcKTPykVxKQPCqv2XOi6ls8reTK2dgszFDeQ==
-X-Received: by 2002:a17:907:9621:b0:973:8c47:2a02 with SMTP id
- gb33-20020a170907962100b009738c472a02mr6845593ejc.38.1685944636781; 
- Sun, 04 Jun 2023 22:57:16 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-089-014-188-226.89.14.pool.telefonica.de.
- [89.14.188.226]) by smtp.gmail.com with ESMTPSA id
- ay12-20020a170906d28c00b00977cc5d6ca3sm1879242ejb.163.2023.06.04.22.57.16
+ d=1e100.net; s=20221208; t=1685945283; x=1688537283;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xiSpvJwFG87wAdz2y11ghwnC81Na8+4kSF9GDGQmoc8=;
+ b=HIvgtx2nurj8jCeg6DpKWHwWl7KubUd3pfhgerKf87SauPqweYR1N8QSVK1YgMJOWP
+ S65jvo7HVZhVu1wkoWk/Xfjt1QXbcBd2TxyMpybrY5SwhR+QM0LnhsPtiCQsCKnnaI6V
+ HgfLsNqvOs7imgcLSGsZvNwlBkh2zvQ4JHDrRmZBEHDoseFCV8JrHhqjNgONDX7YOde0
+ MBog4g6Vqt/ZVSoFp2nG7d6F9iMqLBJ0TQ1yrVENKB9fH/aGSj8hpH3L+dP5b+lner8/
+ phMS1L18On+Tz21piwb5p73EGhcjl7cug64XsH0qxqN1qZz6KCbNqn11aldbzeO43lWu
+ T0PA==
+X-Gm-Message-State: AC+VfDxqxyKX+RxkW8fLXPRmx4ALjrBRqddR5knEj5ShtgY8duROtulK
+ Rj+5cls3CPSuNzLVzA9dUoXH29JfO5kWQs3tOo+g86Hz6iSCqJ3/0AjGhxf/a4td2jamMs1u3zv
+ BZveZ9g8EWQwwLHI=
+X-Received: by 2002:a05:600c:2044:b0:3f7:e4fe:1dd7 with SMTP id
+ p4-20020a05600c204400b003f7e4fe1dd7mr722816wmg.13.1685945283065; 
+ Sun, 04 Jun 2023 23:08:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ41ByAeXCtUbk0Lq2apyD/kTRXegwqX1d7Uookd2RPkcz1UbuFf3uHBypyathfu/GOkHPk3bA==
+X-Received: by 2002:a05:600c:2044:b0:3f7:e4fe:1dd7 with SMTP id
+ p4-20020a05600c204400b003f7e4fe1dd7mr722799wmg.13.1685945282768; 
+ Sun, 04 Jun 2023 23:08:02 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-42-115-143.web.vodafone.de.
+ [109.42.115.143]) by smtp.gmail.com with ESMTPSA id
+ z22-20020a05600c221600b003f7a562ff31sm2249061wml.6.2023.06.04.23.08.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jun 2023 22:57:16 -0700 (PDT)
-Date: Mon, 05 Jun 2023 05:57:13 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org
-CC: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- Alistair Francis <alistair@alistair23.me>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, Markus Armbruster <armbru@redhat.com>, 
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 05/12] hw/ssi: Introduce a ssi_get_cs() helper
-In-Reply-To: <36c9bda8-3af2-ebf5-f8b9-599cafea0735@linaro.org>
-References: <20230508075859.3326566-1-clg@kaod.org>
- <20230508075859.3326566-6-clg@kaod.org>
- <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
- <0d11b78e-56f7-553a-3e85-0edef9b649ac@linaro.org>
- <523179dd-7842-7f03-14d6-678ed680a017@kaod.org>
- <6bfba08e-ce3e-539b-952d-697c8791fab2@linaro.org>
- <54d781f8-35d0-9e68-c2ec-743dd8f6a88e@kaod.org>
- <36c9bda8-3af2-ebf5-f8b9-599cafea0735@linaro.org>
-Message-ID: <467372F8-7DB7-41FB-8BA0-6CF12EC3AC50@gmail.com>
+ Sun, 04 Jun 2023 23:08:02 -0700 (PDT)
+Message-ID: <d091861d-59a9-b33f-5601-5b0dcbf1e1b5@redhat.com>
+Date: Mon, 5 Jun 2023 08:08:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 2/3] meson.build: Group the network backend entries in a
+ separate summary section
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20230602171832.533739-1-thuth@redhat.com>
+ <20230602171832.533739-3-thuth@redhat.com>
+ <d92bc6de-17db-96a9-096d-68b396e11128@linaro.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <d92bc6de-17db-96a9-096d-68b396e11128@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,83 +105,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 02/06/2023 22.03, Philippe Mathieu-Daudé wrote:
+> On 2/6/23 19:18, Thomas Huth wrote:
+>> Let's make it easier for the users to spot network-related entries
+>> in the summary of the meson output.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   meson.build | 13 ++++++++-----
+>>   1 file changed, 8 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/meson.build b/meson.build
+>> index 4a20a2e712..c64ad3c365 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -4267,13 +4267,19 @@ summary_info += {'curses support':    curses}
+>>   summary_info += {'brlapi support':    brlapi}
+>>   summary(summary_info, bool_yn: true, section: 'User interface')
+>> -# Libraries
+>> +# Network backends
+>>   summary_info = {}
+>>   if targetos == 'darwin'
+>>     summary_info += {'vmnet.framework support': vmnet}
+>>   endif
+>> -summary_info = {}
+> 
+> Ah, this should be squashed in the previous patch.
 
+Drat, thanks for catching it!
 
-Am 31=2E Mai 2023 07:39:32 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phil=
-md@linaro=2Eorg>:
->On 31/5/23 08:36, C=C3=A9dric Le Goater wrote:
->> On 5/31/23 08:17, Philippe Mathieu-Daud=C3=A9 wrote:
->>> +QOM tinkerers
->>>=20
->>> On 31/5/23 07:59, C=C3=A9dric Le Goater wrote:
->>>> On 5/30/23 23:15, Philippe Mathieu-Daud=C3=A9 wrote:
->>>>> On 30/5/23 22:34, Philippe Mathieu-Daud=C3=A9 wrote:
->>>>>> On 8/5/23 09:58, C=C3=A9dric Le Goater wrote:
->>>>>>> Simple routine to retrieve a DeviceState object on a SPI bus using=
- its
->>>>>>> address/cs=2E It will be useful for the board to wire the CS lines=
-=2E
->>>>>>>=20
->>>>>>> Cc: Alistair Francis <alistair@alistair23=2Eme>
->>>>>>> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod=2Eorg>
->>>>>>> ---
->>>>>>> =C2=A0 include/hw/ssi/ssi=2Eh |=C2=A0 2 ++
->>>>>>> =C2=A0 hw/ssi/ssi=2Ec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 15 +++++++++++++++
->>>>>>> =C2=A0 2 files changed, 17 insertions(+)
->>>>>>>=20
->>>>>>> diff --git a/include/hw/ssi/ssi=2Eh b/include/hw/ssi/ssi=2Eh
->>>>>>> index ffd3a34ba4=2E=2Ec7beabdb09 100644
->>>>>>> --- a/include/hw/ssi/ssi=2Eh
->>>>>>> +++ b/include/hw/ssi/ssi=2Eh
->>>>>>> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, co=
-nst char *name);
->>>>>>> =C2=A0 uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
->>>>>>> +DeviceState *ssi_get_cs(SSIBus *bus, int addr);
->>>>>=20
->>>>> Also, this helper should (preferably) return a SSIPeripheral type=2E
->>>>=20
->>>> Well, having a DeviceState is handy for the callers (today) and
->>>> ssi_create_peripheral() returns a DeviceState=2E Let's keep it that
->>>> way=2E
->>>=20
->>> Yes I know it is handy :) I'm not against your patch; besides other
->>> APIs do that=2E I'm wondering about QOM design here=2E Having Foo devi=
-ce,
->>> should FOO API return the common qdev abstract type (DeviceState) or
->>> a Foo type? Either ways we keep QOM-casting around, but I still tend
->>> to consider FOO API returning Foo pointer provides some type check
->>> safety, and also provides the API user hints about what is used=2E
->>> Need more coffee=2E
->>=20
->> It is used in two code paths today:
->>=20
->>  =C2=A0=C2=A0=C2=A0=C2=A0=2E=2E=2E
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DeviceState *dev =3D ssi_ge=
-t_cs(bmc->soc=2Efmc=2Espi, 0);
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BlockBackend *fmc0 =3D dev =
-? m25p80_get_blk(dev) : NULL;
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Looks like m25p80_get_blk() should take a more specific argument as well, =
-like Phil suggested already=2E Wouldn't that avoid the QOM cast here?
+Thanks!
 
-Best regards,
-Bernhard
+  Thomas
 
->>  =C2=A0=C2=A0=C2=A0=C2=A0=2E=2E=2E
->> and
->>  =C2=A0=C2=A0=C2=A0=C2=A0=2E=2E=2E
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DeviceState *dev =3D ssi_ge=
-t_cs(s->spi, i);
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (dev) {
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qem=
-u_irq cs_line =3D qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
->>  =C2=A0=C2=A0=C2=A0=C2=A0=2E=2E=2E
->>=20
->>=20
->> Changing the interface is not a radical change, it will add two QOM-cas=
-ts=2E
->> I can give it a try in v2=2E
->
->Hold on, lets see what others think first=2E
+>>   summary_info += {'slirp support':     slirp}
+>> +summary_info += {'vde support':       vde}
+>> +summary_info += {'netmap support':    have_netmap}
+>> +summary_info += {'l2tpv3 support':    have_l2tpv3}
+>> +summary(summary_info, bool_yn: true, section: 'Network backends')
+>> +
+>> +# Libraries
+>> +summary_info = {}
+>>   summary_info += {'libtasn1':          tasn1}
+>>   summary_info += {'PAM':               pam}
+>>   summary_info += {'iconv support':     iconv}
+>> @@ -4295,9 +4301,6 @@ if targetos == 'linux'
+>>   endif
+>>   summary_info += {'Pipewire support':   pipewire}
+>>   summary_info += {'JACK support':      jack}
+>> -summary_info += {'vde support':       vde}
+>> -summary_info += {'netmap support':    have_netmap}
+>> -summary_info += {'l2tpv3 support':    have_l2tpv3}
+>>   summary_info += {'Linux AIO support': libaio}
+>>   summary_info += {'Linux io_uring support': linux_io_uring}
+>>   summary_info += {'ATTR/XATTR support': libattr}
+> 
+
 
