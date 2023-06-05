@@ -2,59 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267657228B8
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 16:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E117228C1
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 16:24:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6B5r-0005ag-C7; Mon, 05 Jun 2023 10:21:59 -0400
+	id 1q6B7t-0006LB-4H; Mon, 05 Jun 2023 10:24:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1q6B5e-0005aJ-5Y
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:21:47 -0400
-Received: from mout.kundenserver.de ([212.227.126.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1q6B5a-0000oG-4H
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:21:44 -0400
-Received: from lenovo-t14s.redhat.com ([82.142.8.70]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MPowd-1pkOoP3IsF-00Msi4; Mon, 05 Jun 2023 16:21:26 +0200
-From: Laurent Vivier <lvivier@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH] virtio-net: correctly report maximum tx_queue_size value
-Date: Mon,  5 Jun 2023 16:21:25 +0200
-Message-Id: <20230605142125.3881859-1-lvivier@redhat.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q6B7a-0006Hl-87
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:23:47 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q6B7T-00011J-Rs
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:23:44 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f3b5881734so6166221e87.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 07:23:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1685975017; x=1688567017; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=zw3iz6Edi9TAPeU2tlXpO5biCnMLhrpMI7RUjAIFv5M=;
+ b=TzXMiMUddRTLlZmCY4vvpi6wwuxGNwfcDiH2qJSC4fpQP/azJTNp9USUo3ml6L0V1V
+ IhQKOeyv5EGUg1dwVxj3ZH6N8za+XNl0oVGJkd/KEIZJ76VYH923GHsM9s2u+JPYvJJa
+ QsWlfjX6ZPQixAaw0W0EX1juK8DgkAwJ6EJv6s7CzzTy6IcVIyCFnNKmDZLHV3vexnlL
+ TeQDViivewhZc2idi775tMPeXQhwE2vS4LS9E/9kpmXZ4FL+TKDKZdoTZQXC1kX3SeNj
+ ZJ2cr+HenE2V718StPKDVFCxKVXfYnJmv3Ds9NMshvrkI+P8mDITCdy2U6aMlrJqqGEA
+ 4IGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685975017; x=1688567017;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zw3iz6Edi9TAPeU2tlXpO5biCnMLhrpMI7RUjAIFv5M=;
+ b=YFJNsUw24y8UULu9MED+1HjhfjkMQJYXtA+TXMJsiKCn+m7sfrhWJRQ0n816O+ipOy
+ K8iRDBNYTsThwv9i/CH1NcACYGlGd66SCyI2ElDt0iuM8i5ofljLVtvi0tU0drcRwmig
+ UDFkW6oiDOrxFjCV9TZPc8pFREq4tKJ7TezU0XH5CDMta+xoF78GRXwQBDfDMtx3hu8Y
+ 7VYFnMgZUXf5Oaatrq/Esb0y87VGBffroHTgvnso1WAEPzzeCLhrufbYHL0Tp7A0Pmmk
+ F/fjqj1aduospJ71x8ua57PblXIM7qxR9/YbsnKL3YV44uxwm50iYie/VloAbLzK4VqY
+ NzPA==
+X-Gm-Message-State: AC+VfDzt9AUrMoJGTeXc5cCOj3WClHqKQw+AeYpmrM9kyGkmmKrrcUg4
+ 1TsCQ6vD4Hi2dMaI+fKaXUz6wQ==
+X-Google-Smtp-Source: ACHHUZ6y3jW/CXLM+o54hvIrulJzc6iQhmU1DHCGU8GyLXK5AyBUXp8Xgt7W0AoEq8MlHxnOhjFSVw==
+X-Received: by 2002:a19:ac0b:0:b0:4f3:a49b:121f with SMTP id
+ g11-20020a19ac0b000000b004f3a49b121fmr5623207lfc.40.1685975016779; 
+ Mon, 05 Jun 2023 07:23:36 -0700 (PDT)
+Received: from [192.168.50.45] (h-155-4-92-80.A980.priv.bahnhof.se.
+ [155.4.92.80]) by smtp.gmail.com with ESMTPSA id
+ u11-20020ac248ab000000b004e90dee5469sm1145068lfg.157.2023.06.05.07.23.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jun 2023 07:23:36 -0700 (PDT)
+Message-ID: <b983c9568a8b2ab3834d6f25f9b920889a1a5662.camel@rivosinc.com>
+Subject: Re: [RFC v2] linux-user/riscv: Add syscall riscv_hwprobe
+From: Robbin Ehn <rehn@rivosinc.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, qemu-riscv@nongnu.org
+Date: Mon, 05 Jun 2023 16:23:34 +0200
+In-Reply-To: <85f76944-5657-4680-4e24-fd69c37c3b67@linaro.org>
+References: <f59f948fc42fdf0b250afd6dcd6f232013480d9c.camel@rivosinc.com>
+ <85f76944-5657-4680-4e24-fd69c37c3b67@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:NnTtjVkjksUbl0W3PlWN6qT9SOx5HzOuhGwuV5pSX1MDym3T2Yd
- E/UZEZk+Uer8wFVWwCd/82ZxtOqctryTtn7wFV3kCTAATnb7cOYAW9r2bYx7Wd1AwV+lKRg
- GaMZB95AHwajz6HN+y4MYSDBv+h5ElWbas9KME61/lV7wsA3A+DtKLB7RsL7y1FozBR/xkG
- 6ZFFrhWfc9nOmppH/Q/yw==
-UI-OutboundReport: notjunk:1;M01:P0:fo8al8goUwk=;6odRmO+7GMYiP5Gpne14Q+KqQyY
- aM52nzzpPPcqYkZ/kENb+msayLErv6DR4P0BTAhgySFAc2nIunYPQvojuHzLnfnqKfhAC7q8z
- UB4pPLNiiTbUEREsJRTtNFSUWM4iVghZAc9Urojbv/OwY/EnlBQUFxi70w4T28h9hSvu1DG1k
- 4Qnaaz6/Hgl89RB5OKj5aqyrMZ4GxALPUI2pMjUfQqj8wywRzvvdcQ7Wj8epZKxHK/6OUlTIn
- YMb/4cIvED9rvYDHnWjRKwKS6yqjNqI0CB8vWkc5PisdyqBLntAHSttfOZVhgYL0uDKTDDO85
- yvurHZgd944C0bcmYE+f6q5ZYnuXX6YxRLT+9SeTKFF+m8oVoNzfAya5MtLCamteND7v9D1k3
- TQ2fmga74lE09OMe/qPIkqbrgTsKLtrjFUiEKhKfl5zzDPhrOjn/SpXRpaUGMgIws6S/PX+oy
- zUv8urqzjClGfugQkWt9OyLQZAaTMbKGVZaD34+vG8q1bxa0266bIM3mbHUBzv+Z9BrAasvI4
- s4tiLhXIWJJZLZW2hwOqz6k4nM4WFbpqk5M/OwP/wSNoQbVmrsvgpaoWeuMAcExr6E+/pWxjb
- kXFHJf0PLVuJ/8Vjhy+LLm11oSbnEGsI++bJM9A6fVmnsVDbU9AsgWJI4/X9AiuJH9g4k8kiR
- 70M48cqjbop/nuDIBzhUW/YMvrl1WV/Dvnwwui0SuQ==
-Received-SPF: permerror client-ip=212.227.126.131;
- envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=rehn@rivosinc.com; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
- SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,76 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Maximum value for tx_queue_size depends on the backend type.
-1024 for vDPA/vhost-user, 256 for all the others.
+On Fri, 2023-06-02 at 19:57 -0700, Richard Henderson wrote:
 
-The value is returned by virtio_net_max_tx_queue_size() to set the
-parameter:
+>=20
+> > +        case RISCV_HWPROBE_KEY_CPUPERF_0:
+> > +            pair->value =3D RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+>=20
+> Is that really what you want to expose here?  FAST is always going to be =
+true, in that=20
+> handling the unaligned access in the host is going to be faster than in t=
+he emulated guest.
 
-    n->net_conf.tx_queue_size = MIN(virtio_net_max_tx_queue_size(n),
-                                    n->net_conf.tx_queue_size);
+The plan was to add this in the cpu cfg in a later patch.
+This setting e.g. changes jitted code and therefore it's helpful if such ge=
+nerated code
+is the same in the emulated guest as it would be on that actual cpu.
 
-But the parameter checking uses VIRTQUEUE_MAX_SIZE (1024).
+I'll change to FAST as the hardcoded value until then.
 
-So the parameter is silently ignored and ethtool reports a different
-value than the one provided by the user.
+>=20
+>=20
+> Where does CPU_ALLOC_SIZE and CPU_COUNT_S come from?
+>=20
+> > +                unlock_user(host_cpus, arg4, cpu_setsize);
+> > +                /* no selected cpu */
+> > +                if (ccpu =3D=3D 0) {
+> > +                    return -TARGET_EINVAL;
+> > +                }
+>=20
+> I suppose you're just looking to see that the set is not empty?
 
-   ... -netdev tap,... -device virtio-net,tx_queue_size=1024
+Yes, exactly.
 
-    # ethtool -g enp0s2
-    Ring parameters for enp0s2:
-    Pre-set maximums:
-    RX:		256
-    RX Mini:	n/a
-    RX Jumbo:	n/a
-    TX:		256
-    Current hardware settings:
-    RX:		256
-    RX Mini:	n/a
-    RX Jumbo:	n/a
-    TX:		256
+Thanks again! I'll send out an update.
 
-   ... -netdev vhost-user,... -device virtio-net,tx_queue_size=2048
+/Robbin
 
-    Invalid tx_queue_size (= 2048), must be a power of 2 between 256 and 1024
 
-With this patch the correct maximum value is checked and displayed.
-
-For vDPA/vhost-user:
-
-    Invalid tx_queue_size (= 2048), must be a power of 2 between 256 and 1024
-
-For all the others:
-
-    Invalid tx_queue_size (= 512), must be a power of 2 between 256 and 256
-
-Fixes: 2eef278b9e63 ("virtio-net: fix tx queue size for !vhost-user")
-Cc: mst@redhat.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
- hw/net/virtio-net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 6df6b7329d25..e9905aac83ad 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3630,12 +3630,12 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     }
- 
-     if (n->net_conf.tx_queue_size < VIRTIO_NET_TX_QUEUE_MIN_SIZE ||
--        n->net_conf.tx_queue_size > VIRTQUEUE_MAX_SIZE ||
-+        n->net_conf.tx_queue_size > virtio_net_max_tx_queue_size(n) ||
-         !is_power_of_2(n->net_conf.tx_queue_size)) {
-         error_setg(errp, "Invalid tx_queue_size (= %" PRIu16 "), "
-                    "must be a power of 2 between %d and %d",
-                    n->net_conf.tx_queue_size, VIRTIO_NET_TX_QUEUE_MIN_SIZE,
--                   VIRTQUEUE_MAX_SIZE);
-+                   virtio_net_max_tx_queue_size(n));
-         virtio_cleanup(vdev);
-         return;
-     }
--- 
-2.39.2
+>=20
+>=20
+> r~
 
 
