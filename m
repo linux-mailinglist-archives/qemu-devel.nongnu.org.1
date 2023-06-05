@@ -2,52 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985A37232E9
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D207D723324
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6ILM-00033V-6J; Mon, 05 Jun 2023 18:06:28 -0400
+	id 1q6Icn-0008GM-U0; Mon, 05 Jun 2023 18:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6ILK-000337-Lh; Mon, 05 Jun 2023 18:06:26 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6ILI-0004ok-ET; Mon, 05 Jun 2023 18:06:26 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 99FD2746369;
- Tue,  6 Jun 2023 00:06:22 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 36771746361; Tue,  6 Jun 2023 00:06:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3481074632B;
- Tue,  6 Jun 2023 00:06:22 +0200 (CEST)
-Date: Tue, 6 Jun 2023 00:06:22 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
-cc: Richard Henderson <richard.henderson@linaro.org>, qemu-trivial@nongnu.org, 
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
-In-Reply-To: <87o7mb5xp9.fsf@linaro.org>
-Message-ID: <36428685-722e-ce1f-7061-61227cb36222@eik.bme.hu>
-References: <20230520205444.887287457E7@zero.eik.bme.hu>
- <874jo47cnd.fsf@linaro.org> <aaa22b3f-d548-5a69-489a-5777a7e98cef@eik.bme.hu>
- <87v8gk5m7p.fsf@linaro.org> <49c4781a-1e91-85ef-d9cb-6996e9bbb10c@eik.bme.hu>
- <ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
- <87o7mb5xp9.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Icm-0008Fc-AF
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:28 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Ici-0005tR-UX
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:28 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-30ae901a9ffso4875114f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686003863; x=1688595863;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mqZmZIlPEGAgCzEJ/QPGUj5Qrx06/TdJYR7ockJ5GRY=;
+ b=PFIarrJx09Y+DuQcbfhH5vCcGW9I/QaI31BgzaBVf4QHKdX9VIjB41EYoqKn0w4Mae
+ F9S4z7PCOfFJPoJe+xlQQ8EPhFya0WWUN/iDkstDDfIdx4dLo2CZJR1r5QdHEl0vs+m+
+ lGcIo137qrgLGAGGCujIPQ7J/O6NxkwmKXkMD9E/Z6LVUKafzyO/567A78PC1uEzpmE5
+ vjtp0QuGxiOOHmV3O0elK6YtV6yjIfg8XD8UbdTQ2S1WHd5+ieQpDPoH7M2DmSaD+BIq
+ em6y+O1REFUGZsnfrv2NNaQNVJc2CcxCwqQ5WYh3nRFmRx/ZVnOYGIe83U1D9jtAJVip
+ DFZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686003863; x=1688595863;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mqZmZIlPEGAgCzEJ/QPGUj5Qrx06/TdJYR7ockJ5GRY=;
+ b=czeeyh+o8vjYmx8X9WqZd7ueduTbj91GWgKnjNo5HNxP7IzhBwXRBmJTua8+BU0l05
+ LpzbdS2AxeqMCefZMWWBxYziRQgpAQn7OkMT/4xBISLPpdksgk0PdVJTYHY75V65nJWs
+ KBE2ixw/PRGnTdYOh7+Gr1wDjds085c9N8fBHdg/KbdnSqT4EzFcxeN1uyHP6IVbgT3l
+ ijtaW62HZNGfNfhheA7aqaAElluuylydZlXQu2nSe2y4PhW1YrIpCRss/vhIqeEF5fSV
+ jyyUEpddNYv/tt1kNMJ9Vt3AusS7afGRPBNqwmhV4nss0myZXXrzTvmZcHptXQtjkQI3
+ CFPA==
+X-Gm-Message-State: AC+VfDySMWhQaqHRpluhP993bZup6V7rErWBzJig5vpTSrcHmS1mt8S4
+ eNKuNQK6qpgTAy539UY4aV7JaWSfz/d0pcPvsE0=
+X-Google-Smtp-Source: ACHHUZ5L/nMJVZSFoW9h3xFVgX7mij28uWcSaOU15MuqJHqT1gS82kH4AYOORQDLFtkJx8cGCA1o8Q==
+X-Received: by 2002:a5d:56d2:0:b0:30a:ec6c:913 with SMTP id
+ m18-20020a5d56d2000000b0030aec6c0913mr284360wrw.10.1686003862808; 
+ Mon, 05 Jun 2023 15:24:22 -0700 (PDT)
+Received: from localhost.localdomain ([176.187.217.157])
+ by smtp.gmail.com with ESMTPSA id
+ y4-20020adfe6c4000000b00307bc4e39e5sm10756755wrm.117.2023.06.05.15.24.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 05 Jun 2023 15:24:22 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-riscv@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH v2 0/9] bulk: Replace CONFIG_SOFTMMU by
+ !CONFIG_USER_ONLY/CONFIG_SYSTEM_ONLY
+Date: Tue,  6 Jun 2023 00:24:11 +0200
+Message-Id: <20230605222420.14776-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1434262903-1686002782=:78702"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,187 +92,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Richard clarified my confusion with CONFIG_SOFTMMU from v1:
+https://lore.kernel.org/qemu-devel/7913570a-8bf6-2ac9-6869-fab87273742c@linaro.org/
 
---3866299591-1434262903-1686002782=:78702
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+This series tries to make it a bit more explicit by removing
+mentions of CONFIG_SOFTMMU in non-TCG code.
 
-On Tue, 23 May 2023, Alex Bennée wrote:
-> Richard Henderson <richard.henderson@linaro.org> writes:
->> On 5/22/23 15:26, BALATON Zoltan wrote:
->>> On Mon, 22 May 2023, Alex Bennée wrote:
->>>> (ajb: add Richard for his compiler-fu)
->>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
->>>>> On Mon, 22 May 2023, Alex Bennée wrote:
->>>>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
->>>>>>
->>>>>>> The low level extract and deposit funtions provided by bitops.h are
->>>>>>> used in performance critical places. It crept into target/ppc via
->>>>>>> FIELD_EX64 and also used by softfloat so PPC code using a lot of FPU
->>>>>>> where hardfloat is also disabled is doubly affected.
->>>>>>
->>>>>> Most of these asserts compile out to nothing if the compiler is able to
->>>>>> verify the constants are in the range. For example examining
->>>>>> the start of float64_add:
->>>>>>
->>>> <snip>
->>>>>>
->>>>>> I don't see any check and abort steps because all the shift and mask
->>>>>> values are known at compile time. The softfloat compilation certainly
->>>>>> does have some assert points though:
->>>>>>
->>>>>> readelf -s ./libqemu-ppc64-softmmu.fa.p/fpu_softfloat.c.o  |grep assert
->>>>>>   136: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND g_assertion_mess[...]
->>>>>>   138: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND __assert_fail
->>>>>>
->>>>>> but the references are for the ISRA segments so its tricky to know if
->>>>>> they get used or are just there for LTO purposes.
->>>>>>
->>>>>> If there are hot-paths that show up the extract/deposit functions I
->>>>>> suspect a better approach would be to implement _nocheck variants (or
->>>>>> maybe _noassert?) and use them where required rather than turning off
->>>>>> the assert checking for these utility functions.
->>>>>
->>>>> Just to clarify again, the asserts are still there when compiled with
->>>>> --enable-debug. The patch only turns them off for optimised release
->>>>> builds which I think makes sense if these asserts are to catch
->>>>> programming errors.
->>>>
->>>> Well as Peter said the general policy is to keep asserts in but I
->>>> appreciate this is a hotpath case.
->>>>
->>>>> I think I've also suggested adding noassert
->>>>> versions of these but that wasn't a popular idea and it may also not
->>>>> be easy to convert all places to use that like for example the
->>>>> register fields related usage in target/ppc as that would also affect
->>>>> other places.
->>>>
->>>> Is code generation or device emulation really on the hot-path. Generally
->>>> a well predicted assert is in the noise for those operations.
->>> They aren't in code generation but in helpers as you can also see in
->>> the profile below and so they can be on hot path. Also I've noticed
->>> that extract8 and extract16 just call extract32 after adding another
->>> assert on their own in addition to the one in extract32 which is
->>> double overhead for really no reason. I'd delete all these asserts
->>> as the likelhood of bugs these could catch is very low anyway (how
->>> often do you expect somebody to call these with out of bound values
->>> that would not be obvious from the results otherwise?) but leaving
->>> them in non-debug builds is totally useless in my opinion.
->>>
->>>>> So this seems to be the simplest and most effective
->>>>> approach.
->>>>>
->>>>> The softfloat related usage in these tests I've done seem to mostly
->>>>> come from unpacking and repacking floats in softfloat which is done
->>>>> for every operation, e.g. muladd which mp3 encoding mostly uses does 3
->>>>> unpacks and 1 pack for each call and each unpack is 3 extracts so even
->>>>> small overheads add app quickly. Just 1 muladd will result in 9
->>>>> extracts and 2 deposits at least plus updating PPC flags for each FPU
->>>>> op adds a bunch more. I did some profiling with perf to find these.
->>>>
->>>> After some messing about trying to get lame to cross compile to a static
->>>> binary I was able to replicate what you've seen:
->>>>
->>>>  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
->>>>  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
->>>>   8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
->>>>   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
->>>>   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
->>>>   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
->>>>   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
->>>>   3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
->>>>   3.32%  qemu-ppc64  qemu-ppc64               [.] helper_todouble
->>>>   2.68%  qemu-ppc64  qemu-ppc64               [.] float64_add
->>>>   2.51%  qemu-ppc64  qemu-ppc64               [.] float64_hs_compare
->>>>   2.30%  qemu-ppc64  qemu-ppc64               [.] float64r32_muladd
->>>>   1.80%  qemu-ppc64  qemu-ppc64               [.] float64r32_mul
->>>>   1.40%  qemu-ppc64  qemu-ppc64               [.] float64r32_add
->>>>   1.34%  qemu-ppc64  qemu-ppc64               [.] parts64_mul
->>>>   1.16%  qemu-ppc64  qemu-ppc64               [.] parts64_addsub
->>>>   1.14%  qemu-ppc64  qemu-ppc64               [.] helper_reset_fpstatus
->>>>   1.06%  qemu-ppc64  qemu-ppc64               [.] helper_float_check_status
->>>>   1.04%  qemu-ppc64  qemu-ppc64               [.] float64_muladd
->>> I've run 32 bit PPC version in qemu-system-ppc so the profile is a
->>> bit different (has more system related overhead that I plan to look
->>> at separately) but this part is similar to the above. I also wonder
->>> what makes helper_compute_fprf_float64 a bottleneck as that does not
->>> seem to have much extract/deposit, only a call to clz but it's hard
->>> to tell what it really does due to nested calls and macros. I've
->>> also seen this function among the top contenders in my profiling.
->>>
->>>> what I find confusing is the fact the parts extraction and packing
->>>> should all be known constants which should cause the asserts to
->>>> disappear. However it looks like the compiler decided to bring in a copy
->>>> of the whole inline function (ISRA = >interprocedural scalar replacement
->>>> of aggregates) which obviously can't fold the constants and eliminate
->>>> the assert.
->>> Could it be related to that while the parts size and start are
->>> marked const but pulled out of a struct field so the compiler may
->>> not know their actual value until run time?
->>>
->>>> Richard,
->>>>
->>>> Any idea of why the compiler might decide to do something like this?
->>
->> Try this.
->
-> That seems to have done the trick, translated code is now dominating the
-> profile:
->
-> +   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619420
-> +   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000616850
-> +   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
-> +   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 0x000000400061bf70
-> +    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
-> +    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
-> +    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize.constprop.0
-> +    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000620130
-> +    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619400
-> +    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
-> +    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 0x00000040006167e0
-> +    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000b693fcffffd3
-> +    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
-> +    4.79%     0.00%  qemu-ppc64  [unknown]                [.] 0xfaff203940fe8240
-> +    4.29%     3.82%  qemu-ppc64  qemu-ppc64               [.] float64r32_muladd
-> +    4.20%     3.87%  qemu-ppc64  qemu-ppc64               [.] helper_todouble
-> +    3.51%     2.98%  qemu-ppc64  qemu-ppc64               [.] float64r32_mul
-> +    3.12%     2.97%  qemu-ppc64  qemu-ppc64               [.] float64_hs_compare
-> +    3.06%     2.95%  qemu-ppc64  qemu-ppc64               [.] float64_add
-> +    2.88%     2.35%  qemu-ppc64  qemu-ppc64               [.] float64r32_add
-> +    2.65%     0.00%  qemu-ppc64  [unknown]                [.] 0x6c555e9100004039
-> +    2.55%     1.30%  qemu-ppc64  qemu-ppc64               [.] helper_float_check_status
->
-> eyeballing the float functions and I can't see any asserts expressed.
->
-> Before:
->
-> Executed in  721.65 secs    fish           external
->   usr time  721.38 secs  561.00 micros  721.38 secs
->   sys time    0.20 secs  261.00 micros    0.20 secs
->
-> After:
->
-> Executed in  650.38 secs    fish           external
->   usr time  650.11 secs    0.00 micros  650.11 secs
->   sys time    0.20 secs  989.00 micros    0.20 secs
->>
->>
->> r~
->>
->> [2. text/x-patch; z.patch]...
+We replace CONFIG_SOFTMMU by !CONFIG_USER_ONLY in C code and
+by CONFIG_SYSTEM_ONLY in meson config files.
 
-Will this be submitted as a proper patch and merged? This improves 
-softfloat important for target/ppc where hardfloat is disabled. I guess 
-you can also add
+Philippe Mathieu-Daudé (9):
+  target/tricore: Remove pointless CONFIG_SOFTMMU guard
+  target/i386: Check for USER_ONLY definition instead of SOFTMMU one
+  target/m68k: Check for USER_ONLY definition instead of SOFTMMU one
+  target/ppc: Check for USER_ONLY definition instead of SOFTMMU one
+  hw/core/cpu: Check for USER_ONLY definition instead of SOFTMMU one
+  accel/tcg: Check for USER_ONLY definition instead of SOFTMMU one
+  meson: Alias CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
+  meson: Replace CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
+  meson: Replace softmmu_ss -> system_ss
 
-Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+ docs/devel/build-system.rst        |  14 +--
+ meson.build                        |  15 +--
+ accel/tcg/internal.h               |   6 +-
+ include/hw/core/cpu.h              |   4 +-
+ include/hw/core/tcg-cpu-ops.h      | 102 ++++++++++-----------
+ target/m68k/helper.h               |   2 +-
+ accel/tcg/cpu-exec.c               |   4 +-
+ target/i386/tcg/translate.c        |   2 +-
+ target/m68k/cpu.c                  |  14 ++-
+ target/m68k/helper.c               |   4 +-
+ target/m68k/translate.c            |  28 +++---
+ target/ppc/cpu_init.c              |  20 ++--
+ target/ppc/helper_regs.c           |   6 +-
+ target/tricore/helper.c            |   2 -
+ accel/meson.build                  |   4 +-
+ accel/qtest/meson.build            |   2 +-
+ accel/stubs/meson.build            |   2 +-
+ accel/tcg/meson.build              |   6 +-
+ audio/meson.build                  |   8 +-
+ backends/meson.build               |  20 ++--
+ backends/tpm/meson.build           |   8 +-
+ block/meson.build                  |   6 +-
+ block/monitor/meson.build          |   2 +-
+ chardev/meson.build                |   2 +-
+ disas/meson.build                  |   2 +-
+ dump/meson.build                   |   4 +-
+ ebpf/meson.build                   |   2 +-
+ fsdev/meson.build                  |   4 +-
+ gdbstub/meson.build                |  10 +-
+ hw/9pfs/meson.build                |   2 +-
+ hw/acpi/meson.build                |  10 +-
+ hw/adc/meson.build                 |  10 +-
+ hw/arm/meson.build                 |   8 +-
+ hw/audio/meson.build               |  28 +++---
+ hw/block/meson.build               |  28 +++---
+ hw/char/meson.build                |  70 +++++++-------
+ hw/core/meson.build                |  22 ++---
+ hw/cpu/meson.build                 |   6 +-
+ hw/cxl/meson.build                 |   4 +-
+ hw/display/meson.build             |  76 +++++++--------
+ hw/dma/meson.build                 |  32 +++----
+ hw/gpio/meson.build                |  26 +++---
+ hw/i2c/meson.build                 |   2 +-
+ hw/i386/kvm/meson.build            |   2 +-
+ hw/ide/meson.build                 |  28 +++---
+ hw/input/meson.build               |  32 +++----
+ hw/intc/meson.build                |  44 ++++-----
+ hw/ipack/meson.build               |   2 +-
+ hw/ipmi/meson.build                |   2 +-
+ hw/isa/meson.build                 |  18 ++--
+ hw/mem/meson.build                 |   8 +-
+ hw/misc/macio/meson.build          |   2 +-
+ hw/misc/meson.build                | 142 ++++++++++++++---------------
+ hw/net/can/meson.build             |  14 +--
+ hw/net/meson.build                 |  96 +++++++++----------
+ hw/nubus/meson.build               |   2 +-
+ hw/nvme/meson.build                |   2 +-
+ hw/nvram/meson.build               |  26 +++---
+ hw/pci-bridge/meson.build          |   4 +-
+ hw/pci-host/meson.build            |   2 +-
+ hw/pci/meson.build                 |   8 +-
+ hw/pcmcia/meson.build              |   4 +-
+ hw/rdma/meson.build                |   2 +-
+ hw/remote/meson.build              |   2 +-
+ hw/rtc/meson.build                 |  28 +++---
+ hw/scsi/meson.build                |   2 +-
+ hw/sd/meson.build                  |  24 ++---
+ hw/sensor/meson.build              |  18 ++--
+ hw/smbios/meson.build              |   6 +-
+ hw/ssi/meson.build                 |  26 +++---
+ hw/timer/meson.build               |  74 +++++++--------
+ hw/tpm/meson.build                 |  14 +--
+ hw/usb/meson.build                 |  74 +++++++--------
+ hw/virtio/meson.build              |  12 +--
+ hw/watchdog/meson.build            |  18 ++--
+ hw/xen/meson.build                 |   4 +-
+ migration/meson.build              |  12 +--
+ monitor/meson.build                |   6 +-
+ net/can/meson.build                |   2 +-
+ net/meson.build                    |  38 ++++----
+ qapi/meson.build                   |   2 +-
+ qom/meson.build                    |   2 +-
+ replay/meson.build                 |   2 +-
+ semihosting/meson.build            |   2 +-
+ softmmu/meson.build                |  12 +--
+ stats/meson.build                  |   2 +-
+ target/alpha/meson.build           |   6 +-
+ target/arm/hvf/meson.build         |   2 +-
+ target/arm/meson.build             |   6 +-
+ target/arm/tcg/meson.build         |   2 +-
+ target/avr/meson.build             |   6 +-
+ target/cris/meson.build            |   6 +-
+ target/hppa/meson.build            |   6 +-
+ target/i386/hax/meson.build        |   6 +-
+ target/i386/hvf/meson.build        |   2 +-
+ target/i386/kvm/meson.build        |   4 +-
+ target/i386/meson.build            |   8 +-
+ target/i386/nvmm/meson.build       |   4 +-
+ target/i386/tcg/sysemu/meson.build |   2 +-
+ target/i386/whpx/meson.build       |   2 +-
+ target/loongarch/meson.build       |   6 +-
+ target/m68k/meson.build            |   6 +-
+ target/microblaze/meson.build      |   6 +-
+ target/mips/meson.build            |   4 +-
+ target/mips/sysemu/meson.build     |   2 +-
+ target/mips/tcg/sysemu/meson.build |   2 +-
+ target/nios2/meson.build           |   6 +-
+ target/openrisc/meson.build        |   6 +-
+ target/ppc/meson.build             |  10 +-
+ target/riscv/meson.build           |   6 +-
+ target/s390x/kvm/meson.build       |   2 +-
+ target/s390x/meson.build           |   6 +-
+ target/sh4/meson.build             |   6 +-
+ target/sparc/meson.build           |   6 +-
+ target/tricore/meson.build         |   4 +-
+ target/xtensa/meson.build          |   6 +-
+ tcg/meson.build                    |   2 +-
+ trace/meson.build                  |   2 +-
+ ui/meson.build                     |  30 +++---
+ 119 files changed, 813 insertions(+), 818 deletions(-)
 
-and Alex also did testing above. This is just pinging it so it's not 
-forgotten. Thank you.
+-- 
+2.38.1
 
-Regards,
-BALATON Zoltan
---3866299591-1434262903-1686002782=:78702--
 
