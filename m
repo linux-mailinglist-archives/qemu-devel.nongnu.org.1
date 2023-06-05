@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C740C722559
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83973722568
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:18:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q696L-0007DQ-L0; Mon, 05 Jun 2023 08:14:21 -0400
+	id 1q69AH-0000GN-NW; Mon, 05 Jun 2023 08:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1q696A-0007BI-Kw; Mon, 05 Jun 2023 08:14:11 -0400
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1q6966-00081s-Vk; Mon, 05 Jun 2023 08:14:10 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAH75ki0X1k2VJPAg--.4006S2;
- Mon, 05 Jun 2023 20:12:18 +0800 (CST)
-Received: from wangyuquan1236$phytium.com.cn ( [218.76.62.144] ) by
- ajax-webmail-mail (Coremail) ; Mon, 5 Jun 2023 20:13:46 +0800 (GMT+08:00)
-X-Originating-IP: [218.76.62.144]
-Date: Mon, 5 Jun 2023 20:13:46 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Yuquan Wang" <wangyuquan1236@phytium.com.cn>
-To: "Marcin Juszkiewicz" <marcin.juszkiewicz@linaro.org>
-Cc: rad@semihalf.com, peter.maydell@linaro.org, quic_llindhol@quicinc.com,
- chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.1-cmXT6 build
- 20230428(d6537451) Copyright (c) 2002-2023 www.mailtech.cn
- mispb-76b96e3b-3ecc-44d5-9200-de81e6d4c242-
-In-Reply-To: <101d301d-d413-288e-9318-d0a226ea8715@linaro.org>
-References: <20230605095536.117384-1-wangyuquan1236@phytium.com.cn>
- <20230605095536.117384-2-wangyuquan1236@phytium.com.cn>
- <101d301d-d413-288e-9318-d0a226ea8715@linaro.org>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: qtBckWZvb3Rlcl90eHQ9NzMxOjM4Mw==
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q699t-0000Dc-Gr; Mon, 05 Jun 2023 08:18:09 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q699q-0000KH-RA; Mon, 05 Jun 2023 08:18:01 -0400
+Received: from [192.168.100.156] (unknown [117.61.108.62])
+ by APP-05 (Coremail) with SMTP id zQCowABHTopr0n1kGBm5Cw--.10453S2;
+ Mon, 05 Jun 2023 20:17:48 +0800 (CST)
+Message-ID: <f5ca60ac-cff4-ee9b-f845-af8188b9d041@iscas.ac.cn>
+Date: Mon, 5 Jun 2023 20:17:47 +0800
 MIME-Version: 1.0
-Message-ID: <40c4980d.387.1888b7a478a.Coremail.wangyuquan1236@phytium.com.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwBXhCR70X1kC6MAAA--.596W
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQABAWR84icFX
-	QAAsE
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvdXoW7GrW3CrW5Gw4xAryDZF13Arb_yoW3Wrg_Zr
- ykCrn8Cw4qk3y09Fn3K3W3JrySkwsY9r4Igas5JFyxZa4av3Z8ZF4kK34Svr13Jr4vqFnx
- ArnIvrySk34a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrnU
- Uv73VFW2AGmfu7jjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUU
- UUUU=
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] target/riscv: Smepmp: Return error when access
+ permission not allowed in PMP
+Content-Language: en-US
+To: Himanshu Chauhan <hchauhan@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230605075150.367555-1-hchauhan@ventanamicro.com>
+ <20230605114934.2649023-1-hchauhan@ventanamicro.com>
+Cc: liweiwei@iscas.ac.cn
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230605114934.2649023-1-hchauhan@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: zQCowABHTopr0n1kGBm5Cw--.10453S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw47XF1rAw47uF45tw4DCFg_yoW8Ar1fpr
+ 1rAryxCFZ7trZ7X3WfCr1UGFWUArnxGa1Uua97Ja4qka13ArZY9r1qgw4a9F1DJayfuwn0
+ 9F4jkF47Zr4jqFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUkm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+ 6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
+ Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+ 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+ 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+ IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5WlkUUUUU
+X-Originating-IP: [117.61.108.62]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,28 +77,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGksIE1hcmNpbgoKT24gTW9uLCA1IEp1biAyMDIzIDExOjU5OjE2ICswMjAwLCBNYXJjaW4gSnVz
-emtpZXdpY3ogd3JvdGU6Cgo+IAo+IFcgZG5pdSA1LjA2LjIwMjMgb8KgMTE6NTUsIFl1cXVhbiBX
-YW5nIHBpc3plOgo+ID4gVGhlIGN1cnJlbnQgc2JzYS1yZWYgY2Fubm90IHVzZSBFSENJIGNvbnRy
-b2xsZXIgd2hpY2ggaXMgb25seQo+ID4gYWJsZSB0byBkbyAzMi1iaXQgRE1BLCBzaW5jZSBzYnNh
-LXJlZiBkb2Vzbid0IGhhdmUgUkFNIGJlbG93IDRHQi4KPiA+IEhlbmNlLCB0aGlzIHVzZXMgWEhD
-SSB0byBwcm92aWRlIGEgdXNiIGNvbnRyb2xsZXIgd2l0aCA2NC1iaXQKPiA+IERNQSBjYXBhYmxp
-dHkgaW5zdGVhZCBvZiBFSENJLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBZdXF1YW4gV2FuZzx3
-YW5neXVxdWFuMTIzNkBwaHl0aXVtLmNvbS5jbj4KPiAKPiBDYW4geW91IHNoYXJlIGZpcm13YXJl
-IHNpZGUgc28gaXQgY2FuIGJlIHRlc3RlZD8KPiAKPiBUaGUgbW9yZSBJIGRlYWwgd2l0aCBFREsy
-IHRoZSBtb3JlIEkgdW5kZXJzdGFuZCB3aHkgcGVvcGxlIGdvIFUtQm9vdC4KCkkgZmlndXJlZCBv
-dXQgdGhlIHN0dWNrIHByb2JsZW0gb2YgdGhlIHJlbGV2YW50IGZpcm13YXJlIHBhdGNoIGluIGVk
-azIgCm1haWwgbGlzdC4gCgpCZWxvdyBpcyB0aGUgcGF0Y2hzZXQgbGluazoKaHR0cHM6Ly9lZGsy
-Lmdyb3Vwcy5pby9nL2RldmVsL21lc3NhZ2UvMTA1NzEzCgpUaGFua3MKWXVxdWFuDQoNCuS/oeaB
-r+WuieWFqOWjsOaYju+8muacrOmCruS7tuWMheWQq+S/oeaBr+W9kuWPkeS7tuS6uuaJgOWcqOe7
-hOe7h+aJgOaciSzlj5Hku7bkurrmiYDlnKjnu4Tnu4flr7nor6Xpgq7ku7bmi6XmnInmiYDmnInm
-nYPliKnjgILor7fmjqXmlLbogIXms6jmhI/kv53lr4Ys5pyq57uP5Y+R5Lu25Lq65Lmm6Z2i6K64
-5Y+vLOS4jeW+l+WQkeS7u+S9leesrOS4ieaWuee7hOe7h+WSjOS4quS6uumAj+mcsuacrOmCruS7
-tuaJgOWQq+S/oeaBr+OAgg0KSW5mb3JtYXRpb24gU2VjdXJpdHkgTm90aWNlOiBUaGUgaW5mb3Jt
-YXRpb24gY29udGFpbmVkIGluIHRoaXMgbWFpbCBpcyBzb2xlbHkgcHJvcGVydHkgb2YgdGhlIHNl
-bmRlcidzIG9yZ2FuaXphdGlvbi5UaGlzIG1haWwgY29tbXVuaWNhdGlvbiBpcyBjb25maWRlbnRp
-YWwuUmVjaXBpZW50cyBuYW1lZCBhYm92ZSBhcmUgb2JsaWdhdGVkIHRvIG1haW50YWluIHNlY3Jl
-Y3kgYW5kIGFyZSBub3QgcGVybWl0dGVkIHRvIGRpc2Nsb3NlIHRoZSBjb250ZW50cyBvZiB0aGlz
-IGNvbW11bmljYXRpb24gdG8gb3RoZXJzLg==
+
+On 2023/6/5 19:49, Himanshu Chauhan wrote:
+> On an address match, skip checking for default permissions and return error
+> based on access defined in PMP configuration.
+>
+> v2 Changes:
+> o Removed goto to return in place when address matches
+> o Call pmp_hart_has_privs_default at the end of the loop
+>
+> Fixes: 90b1fafce06 ("target/riscv: Smepmp: Skip applying default rules when address matches")
+> Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+> ---
+>   target/riscv/pmp.c | 10 ++--------
+>   1 file changed, 2 insertions(+), 8 deletions(-)
+>
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 418738afd8..976b199156 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -291,7 +291,6 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>                           pmp_priv_t *allowed_privs, target_ulong mode)
+>   {
+>       int i = 0;
+> -    bool ret = false;
+>       int pmp_size = 0;
+>       target_ulong s = 0;
+>       target_ulong e = 0;
+> @@ -435,17 +434,12 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>                * defined with PMP must be used. We shouldn't fallback on
+>                * finding default privileges.
+>                */
+> -            ret = true;
+> -            break;
+> +            return (privs & *allowed_privs) == privs ? true : false;
+
+This conditional assignment is unnecessary.
+
++                                  return  (privs & *allowed_privs) == 
+privs;
+
+Otherwise, Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+
+Weiwei Li
+
+>           }
+>       }
+>   
+>       /* No rule matched */
+> -    if (!ret) {
+> -        ret = pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
+> -    }
+> -
+> -    return ret;
+> +    return pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
+>   }
+>   
+>   /*
 
 
