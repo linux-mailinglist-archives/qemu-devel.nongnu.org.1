@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD6072316C
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C3372325F
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 23:38:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6GpI-0001V5-M5; Mon, 05 Jun 2023 16:29:16 -0400
+	id 1q6HtO-0007xo-3a; Mon, 05 Jun 2023 17:37:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6GpG-0001Ty-Ow
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:29:14 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6HtM-0007xf-43
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:37:32 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6GpF-0002Oq-6A
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:29:14 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f736e0c9b1so21791485e9.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:29:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6HtK-0007jr-Dg
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 17:37:31 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6513e7e5d44so3324442b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 14:37:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685996951; x=1688588951;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1686001048; x=1688593048;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=bEqFddXWAEXoZehEXARKfpx30Lgtov16XGmnOy5+2S8=;
- b=BPWdpqR30tM1Mr/ljk6VKY8oN4AG1LHDXKWm27hUKQ/FJaCqMrF7idimgnXdTj/lnl
- 6bpOY/bshyS7QAYYFmGwGBVt/Frt1Vld35dgJqETDUR7qckj1NdROYwOY+WtDhhtAWnp
- bxVgipSn1Go6R0UGGpzLMv4nDs+qDcTkVuAlER9yb7iPe7NOppXML3XrBO7Zm27eF71U
- QpMSCNESgdvWNbNBJKEplh6J2lJ7TWhMzsxhGpnolbEhvS+6ejmvigyNZFsnfeDZllcK
- K4HkHVVEy1/YYec5v54e8xPB9aAiaSjlmP80xHZM37zbGWuDXtLJgsc1H3/kLgyEuY85
- J5lw==
+ bh=F1ES6yRuypQH6sktpQx2bzvGmtVedlRIWkgsbG60OEs=;
+ b=xQBq8x9ybl6swteU0tNzOqxRoIcd57fMLIkpxWAnVFcsclqZG70EtiOE3sflcaWQ6M
+ mUpSZ95Vl0DCIolelXmz4MV3NznLJ5lep7Srfdtc3YbnxMGR5j2KUVyRp65jNKIRRG3K
+ 4lzDbDA4+X+9USLzg9MqhNPsDGYoj26Jxy+VTXWH0G/MJoCCt6oxQBQtBnmZDPPnr+2A
+ V0ge4UgD5er6mBJfyu6UrVdfWDkSEoJwZecX06emW0lyAeM93zEVe15K2JjCfy8PDvE6
+ 8tMKHlbUnyiPm9ObUst+plej1gNPOM4HEMN3HJMmYWM1qcm9AzhbmO0z2G7HI04P8ECz
+ Vxfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685996951; x=1688588951;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1686001048; x=1688593048;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bEqFddXWAEXoZehEXARKfpx30Lgtov16XGmnOy5+2S8=;
- b=Fj91HLalKxpbREuVevfKc2L9rU4iCdNgeIJP5rkOmebaKb1HrzbsEnUJmN7y85Zzmq
- obo7pXGG+Zr75wsZ0/IAv/TVWFG7RbmJ+Hn99bHw2Thl7NRERoBCcQLDSGj7mmqk/K0/
- 0SzipAixTiQadd9fnSBjBgq/WdNVa9RvBC5a5aD+9m939rbMJbWLubR06BSJc2M/2IjK
- R8V0DwSIoi/Rf0AgTB7+6vXblOjczPd5zbfHxxlSQJV7X0F42FAbX3unyjK8e4nRRFfQ
- zRVBHqbp7AcucCTwvyp5B3pXUgW2ygEAxzuO3u2LpHopkRoria5NQu+vtCeEyn2EUs+L
- IdaQ==
-X-Gm-Message-State: AC+VfDxmcui+UkzEGqY4t4MNhSYgbdxk/l0H9oY7RQhLIiodzp9GSjVD
- jfr6pa4Prw0X9PuwqdQIfqn0cA==
-X-Google-Smtp-Source: ACHHUZ658vvI5uwmPvW4gMwUoEL8LxHm/KxLLvD0B1MKQIusKaNJy0mFBBts5Z7UQ+39TYrRc/7mSA==
-X-Received: by 2002:a05:600c:284:b0:3f6:3bd:77dc with SMTP id
- 4-20020a05600c028400b003f603bd77dcmr203280wmk.23.1685996950915; 
- Mon, 05 Jun 2023 13:29:10 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.217.157])
+ bh=F1ES6yRuypQH6sktpQx2bzvGmtVedlRIWkgsbG60OEs=;
+ b=b1z3Vw3mplRveTpiCmoAg97Uu0/faUpWxrp2M5PSsv+vAMRvvJndbT9l7ZIlunLLFH
+ Vx4LZ16PBjSh84QDfqCfCg6Qs/u4yAlBG7bJDbSkocH+vsoGZZaLHBWWI8WgcS40vA7p
+ QF22dn1wwLbpOt2O6FuUMyjrxxXBtUnLsf6oUyLSbbZKvOiNaELdJhVJH8VMRWyowbDE
+ anMIZwxy17FPuc6VFnv9mfECpeIK4yV5eljUn72lg7E1nx1gqVV4llutWJkDDtIVqnPz
+ gNCOL4yfVmw5yCTVe39DtEnB7DvsZ9JnfrF/5VAJpEG3FjNiEmOBzt01lLFplHtkV81Q
+ avsw==
+X-Gm-Message-State: AC+VfDyLzOfUlV6bF46B2Fjbv4ljP2cfqLRepuIx5Q3eSxUe8PAXxJqq
+ HkbmXauj5LKAIEbuUBdvhjxKP3gsGeyLBJ3G6jg=
+X-Google-Smtp-Source: ACHHUZ5ESrI2YIY0hkl2gj5Otg8oS/yI0AK1LCEI2T/psuUYX88L9EMMeLKSwg3CtEcVb+3aa0KQOA==
+X-Received: by 2002:a05:6a20:1612:b0:110:390f:6806 with SMTP id
+ l18-20020a056a20161200b00110390f6806mr243885pzj.57.1686001048345; 
+ Mon, 05 Jun 2023 14:37:28 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
+ ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- j5-20020a5d6185000000b0030af05fce4dsm10689420wru.77.2023.06.05.13.29.09
+ e11-20020a17090301cb00b001b027221393sm7015501plh.43.2023.06.05.14.37.27
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 13:29:10 -0700 (PDT)
-Message-ID: <97194b58-3f9c-e351-a439-87b2bfed5674@linaro.org>
-Date: Mon, 5 Jun 2023 22:29:08 +0200
+ Mon, 05 Jun 2023 14:37:27 -0700 (PDT)
+Message-ID: <d10aee6f-729b-8df8-eecc-c9163680773a@linaro.org>
+Date: Mon, 5 Jun 2023 14:37:25 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [RFC PATCH 1/2] bulk: Replace !CONFIG_SOFTMMU -> CONFIG_USER_ONLY
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/52] tcg patch queue
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230602225811.60152-1-philmd@linaro.org>
- <20230602225811.60152-2-philmd@linaro.org>
- <7913570a-8bf6-2ac9-6869-fab87273742c@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <7913570a-8bf6-2ac9-6869-fab87273742c@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20230605201548.1596865-1-richard.henderson@linaro.org>
+In-Reply-To: <20230605201548.1596865-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,39 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/23 05:49, Richard Henderson wrote:
-> On 6/2/23 15:58, Philippe Mathieu-Daudé wrote:
->> CONFIG_USER_ONLY is the opposite of CONFIG_SOFTMMU.
->> Replace !CONFIG_SOFTMMU negation by the positive form
->> which is clearer when reviewing code.
+On 6/5/23 13:14, Richard Henderson wrote:
+> The following changes since commit b52daaf2c868f2bab102eb5acbf55b2917f46aea:
 > 
-> CONFIG_SOFTMMU should be reserved for the actual softmmu tlb, which we 
-> *should* be able to enable for user-only.  It is the only way to handle 
-> some of our host/guest page size problems.  Further, CONFIG_SOFTMMU 
-> should go away as a #define and become a runtime test (forced to true 
-> for system mode).  Pie in the sky stuff.
+>    Merge tag 'pull-block-2023-06-05' ofhttps://gitlab.com/hreitz/qemu  into staging (2023-06-05 10:27:31 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20230605
+> 
+> for you to fetch changes up to a7f6911c127b1dd1b8764e03b0ebcf0a227a15e4:
+> 
+>    tcg/tcg-op-vec: Remove left over _link_error() definitions (2023-06-05 12:20:16 -0700)
+> 
+> ----------------------------------------------------------------
+> Build tcg/ once for system and once for user.
+> Unmap perf_marker.
+> Remove left over _link_error() definitions.
 
-This would be:
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-   bool has_softmmu(void)
-   {
-   #ifdef CONFIG_USER_ONLY
-       /* TODO: implement */
-       return false;
-   #else
-       return true;
-   #endif
-   }
 
-?
+r~
 
-> It is quite likely that all uses of CONFIG_SOFTMMU outside of tcg/, 
-> accel/tcg/, and random bits of include/ should only be using 
-> CONFIG_USER_ONLY.
-
-I see.
-
-Thanks,
-
-Phil.
 
