@@ -2,83 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDD27228A5
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 16:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267657228B8
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 16:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6B30-0004hu-2Q; Mon, 05 Jun 2023 10:19:02 -0400
+	id 1q6B5r-0005ag-C7; Mon, 05 Jun 2023 10:21:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6B2y-0004hY-7G
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:19:00 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6B2w-0000PA-HZ
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:18:59 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-543a09ee32eso958705a12.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 07:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685974737; x=1688566737;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=1o/4nNRUiMzvtSssqrdIdkQhMn4my9sOI+BIHxag9mc=;
- b=XWv9cV8wkO823uzVDVd6VUPuSRU746d7fLCK9f9oslbf54lHyG7fkkeddxrZHg512B
- V8Ydx7+YjUlmesHi5rTBqi3/6rwxK8e9xbUvqMeu4Iji2PbfB1zaW2Po1WFClh8eG857
- 7Ya9p++WxryHc1RPK8lMvT+posUl2/Rnp4rDFDUNJx8lRUt8+T05xodE5tf09kskjUAa
- lLzt/kgZF9+XkZrc5dLZ4CaBDEt526+jgb3h5HL5rY5RxTbq7kWlNxE3thlYBbApMPnV
- VMGZ3fdn8yTzX3tesmje3V3a98iajSDhxPtwvVWeHKG7XiV14g3PjoIEGnmtZprkFS1Y
- BxSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685974737; x=1688566737;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1o/4nNRUiMzvtSssqrdIdkQhMn4my9sOI+BIHxag9mc=;
- b=JRZUXfPgbj17+J6iEjAopVNxApX+daoiI07EgWwWI8x5JXc78+I2qJ/Z2VO2w4xGDj
- zDtUXdwJ3HMG5vrsou5XR4/9GtoZO8T0hrXTMvZPqksR/AwmxoSdz4kqepT+gn07g8VC
- e0cxxV3HR4uh2+RDVRLNrqBYvimdSVjvjmLnVq+pzkIldSVYLK715Vy2OKUfWut/kfSG
- a0CKK4hRH3T151hWpB6S7eRtPN3l8g5z2CVdeHuLG0B6QsfzXy8JgVXFIPJskvZrXJ0p
- yfNJV5Iw0HLUxg85laE+F+rCfDa/BcubKXPzcEuJLI+ZKdytSGtFaNlMzCqgihdT+fxM
- sKwQ==
-X-Gm-Message-State: AC+VfDwytJywJ6TI/r8tY1vH6YEb2cO/ljdYUF5MI3K/X2Qy7id3Pz9h
- +VCRCyqkskFMg580y07IejrRpw==
-X-Google-Smtp-Source: ACHHUZ7d33b9gPIlYxYo+vVLw0gIU0hN/sL234qE2ux+faEZ1TGZKYAnq/1DuWmcCQFGLKWUInuaJA==
-X-Received: by 2002:a17:902:da81:b0:1ae:35b8:d5ae with SMTP id
- j1-20020a170902da8100b001ae35b8d5aemr9295365plx.19.1685974736877; 
- Mon, 05 Jun 2023 07:18:56 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
- ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
- by smtp.gmail.com with ESMTPSA id
- ju11-20020a170903428b00b001a9b29b6759sm6661218plb.183.2023.06.05.07.18.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 07:18:56 -0700 (PDT)
-Message-ID: <73830e25-76a6-55b0-0f5f-2baba32b978c@linaro.org>
-Date: Mon, 5 Jun 2023 07:18:54 -0700
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1q6B5e-0005aJ-5Y
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:21:47 -0400
+Received: from mout.kundenserver.de ([212.227.126.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1q6B5a-0000oG-4H
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 10:21:44 -0400
+Received: from lenovo-t14s.redhat.com ([82.142.8.70]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis)
+ id 1MPowd-1pkOoP3IsF-00Msi4; Mon, 05 Jun 2023 16:21:26 +0200
+From: Laurent Vivier <lvivier@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH] virtio-net: correctly report maximum tx_queue_size value
+Date: Mon,  5 Jun 2023 16:21:25 +0200
+Message-Id: <20230605142125.3881859-1-lvivier@redhat.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 0/1] loongarch-to-apply queue
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230605031848.1428047-1-gaosong@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230605031848.1428047-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:NnTtjVkjksUbl0W3PlWN6qT9SOx5HzOuhGwuV5pSX1MDym3T2Yd
+ E/UZEZk+Uer8wFVWwCd/82ZxtOqctryTtn7wFV3kCTAATnb7cOYAW9r2bYx7Wd1AwV+lKRg
+ GaMZB95AHwajz6HN+y4MYSDBv+h5ElWbas9KME61/lV7wsA3A+DtKLB7RsL7y1FozBR/xkG
+ 6ZFFrhWfc9nOmppH/Q/yw==
+UI-OutboundReport: notjunk:1;M01:P0:fo8al8goUwk=;6odRmO+7GMYiP5Gpne14Q+KqQyY
+ aM52nzzpPPcqYkZ/kENb+msayLErv6DR4P0BTAhgySFAc2nIunYPQvojuHzLnfnqKfhAC7q8z
+ UB4pPLNiiTbUEREsJRTtNFSUWM4iVghZAc9Urojbv/OwY/EnlBQUFxi70w4T28h9hSvu1DG1k
+ 4Qnaaz6/Hgl89RB5OKj5aqyrMZ4GxALPUI2pMjUfQqj8wywRzvvdcQ7Wj8epZKxHK/6OUlTIn
+ YMb/4cIvED9rvYDHnWjRKwKS6yqjNqI0CB8vWkc5PisdyqBLntAHSttfOZVhgYL0uDKTDDO85
+ yvurHZgd944C0bcmYE+f6q5ZYnuXX6YxRLT+9SeTKFF+m8oVoNzfAya5MtLCamteND7v9D1k3
+ TQ2fmga74lE09OMe/qPIkqbrgTsKLtrjFUiEKhKfl5zzDPhrOjn/SpXRpaUGMgIws6S/PX+oy
+ zUv8urqzjClGfugQkWt9OyLQZAaTMbKGVZaD34+vG8q1bxa0266bIM3mbHUBzv+Z9BrAasvI4
+ s4tiLhXIWJJZLZW2hwOqz6k4nM4WFbpqk5M/OwP/wSNoQbVmrsvgpaoWeuMAcExr6E+/pWxjb
+ kXFHJf0PLVuJ/8Vjhy+LLm11oSbnEGsI++bJM9A6fVmnsVDbU9AsgWJI4/X9AiuJH9g4k8kiR
+ 70M48cqjbop/nuDIBzhUW/YMvrl1WV/Dvnwwui0SuQ==
+Received-SPF: permerror client-ip=212.227.126.131;
+ envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,26 +70,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/23 20:18, Song Gao wrote:
-> The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
-> 
->    Merge tag 'migration-20230602-pull-request' ofhttps://gitlab.com/juan.quintela/qemu  into staging (2023-06-02 17:33:29 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/gaosong/qemu.git  tags/pull-loongarch-20230605
-> 
-> for you to fetch changes up to 8555ddc671203969b0e6eb651e538d02a9a79b3a:
-> 
->    hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes (2023-06-05 11:08:55 +0800)
-> 
-> ----------------------------------------------------------------
-> Fixes Coverity CID: 1512452, 1512453
-> Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu device")
+Maximum value for tx_queue_size depends on the backend type.
+1024 for vDPA/vhost-user, 256 for all the others.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+The value is returned by virtio_net_max_tx_queue_size() to set the
+parameter:
 
+    n->net_conf.tx_queue_size = MIN(virtio_net_max_tx_queue_size(n),
+                                    n->net_conf.tx_queue_size);
 
-r~
+But the parameter checking uses VIRTQUEUE_MAX_SIZE (1024).
+
+So the parameter is silently ignored and ethtool reports a different
+value than the one provided by the user.
+
+   ... -netdev tap,... -device virtio-net,tx_queue_size=1024
+
+    # ethtool -g enp0s2
+    Ring parameters for enp0s2:
+    Pre-set maximums:
+    RX:		256
+    RX Mini:	n/a
+    RX Jumbo:	n/a
+    TX:		256
+    Current hardware settings:
+    RX:		256
+    RX Mini:	n/a
+    RX Jumbo:	n/a
+    TX:		256
+
+   ... -netdev vhost-user,... -device virtio-net,tx_queue_size=2048
+
+    Invalid tx_queue_size (= 2048), must be a power of 2 between 256 and 1024
+
+With this patch the correct maximum value is checked and displayed.
+
+For vDPA/vhost-user:
+
+    Invalid tx_queue_size (= 2048), must be a power of 2 between 256 and 1024
+
+For all the others:
+
+    Invalid tx_queue_size (= 512), must be a power of 2 between 256 and 256
+
+Fixes: 2eef278b9e63 ("virtio-net: fix tx queue size for !vhost-user")
+Cc: mst@redhat.com
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+---
+ hw/net/virtio-net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 6df6b7329d25..e9905aac83ad 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3630,12 +3630,12 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     if (n->net_conf.tx_queue_size < VIRTIO_NET_TX_QUEUE_MIN_SIZE ||
+-        n->net_conf.tx_queue_size > VIRTQUEUE_MAX_SIZE ||
++        n->net_conf.tx_queue_size > virtio_net_max_tx_queue_size(n) ||
+         !is_power_of_2(n->net_conf.tx_queue_size)) {
+         error_setg(errp, "Invalid tx_queue_size (= %" PRIu16 "), "
+                    "must be a power of 2 between %d and %d",
+                    n->net_conf.tx_queue_size, VIRTIO_NET_TX_QUEUE_MIN_SIZE,
+-                   VIRTQUEUE_MAX_SIZE);
++                   virtio_net_max_tx_queue_size(n));
+         virtio_cleanup(vdev);
+         return;
+     }
+-- 
+2.39.2
 
 
