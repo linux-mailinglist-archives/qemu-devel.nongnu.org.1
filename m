@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C16872336D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 01:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FAC723378
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 01:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6J9t-0001ac-Vx; Mon, 05 Jun 2023 18:58:42 -0400
+	id 1q6JDf-0002g3-2k; Mon, 05 Jun 2023 19:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q6J9r-0001aS-Q4
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:58:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q6J9q-00081F-5B
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:58:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686005917;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LvE6XqiC85g1R+FRt+SV0RAqVTJyzrLFgVphSehr/Dc=;
- b=NOZOPMrYOu8LWPFvxh8DFqlw3j1f+Wg1UXFt+zqck4tpXxDXaOrcaUxvDPLSA8rTMuyTlt
- WAG6wd2wnVzBlcditHlJaia4/6/SHeZbOiNzxKZqezgPjsdL8bsYEufDtFXSSBkbB6awHy
- BJA0pdvda1TSH1eXx0dbINm0iBYiA9M=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-i-fYJOUiOV6w7_yXJ0m19Q-1; Mon, 05 Jun 2023 18:58:35 -0400
-X-MC-Unique: i-fYJOUiOV6w7_yXJ0m19Q-1
-Received: by mail-io1-f71.google.com with SMTP id
- ca18e2360f4ac-7775a282e25so365758839f.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:58:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6JDT-0002fQ-PS
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 19:02:23 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6JDR-0001PE-VK
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 19:02:23 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3f7a8089709so17596605e9.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 16:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686006139; x=1688598139;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3kB8pDwVkdb1VK5LW/w3G/8jYQ8BU6TjNbumjepsNRk=;
+ b=WBpliMQ62X2WXLVJstOEZLbIOdNFtKOCcDyFfZdclflI9+HWY93SEHjwYMlsjBPA36
+ W+lLA29J+7dT/30n7I6NLknsQssIjlg2bbVv58cJZcibkRqlx9ZiaGNmb+1OpWLDJ8aT
+ hACk28+aRDNGx6p0C3tkS9rnbx+k5hwENLW1lq1R4XB+6LA2QW3PRguAj/dINBOfJFma
+ a8QFJ/P/j0zb9frO7RAefKLcZ+douuj9g02CSrlByQKKFWW7QDYkkuMgY4/EMDwSmBuW
+ Q8dytktX/iwwZKpJRb5NDmUuDI6rMurlE7SqlhZzRRtaofxrqMXI7SvLZpQ52UNKE7rR
+ BdSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686005915; x=1688597915;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LvE6XqiC85g1R+FRt+SV0RAqVTJyzrLFgVphSehr/Dc=;
- b=RPAmq9Ijh7trBY66GD48hc34EryrN6mHxNoiCjdu05EToiVeBFxg8GlaLMfpJKw4Nn
- MFsFbmWJQ69yxEIH+N9rgMLHRZMo/cEsnb9yhIe46aaPvvN1JLNA+VfC/fAfCHCknBGa
- XeRJmZ1kYHkMtPfHxBvxERcT/X+dt71uwmppbmwqipe/Ck3qi1AE4kyF6ycbAJwiqvjP
- ntAMFTWnMD7xKQDVysA95ERBN4fls//7ILws/+dLErJuIHVl/nwohXcV3cMHuVciUuNz
- 8T7LYv6EXFYvaguMzZIq5OhjWLHpCh3mCJBnLQJsixL30K2PlWQE26khSTQVcqBg0jmu
- 9iZQ==
-X-Gm-Message-State: AC+VfDzVzEw/hhtxiV7PJp01xZF9rXl1C0sRrBGJv5UHyVKQhAZ0Phnz
- QjL575A8OKDcGdRHW214WzEhE3X6/GoJcZ66KE39XvzgGX5w/3KTLlszN5AVwnqrpT0U5tEOJXY
- t9+kXCzzz0QjCo8I=
-X-Received: by 2002:a05:6602:2759:b0:774:7eca:d9c5 with SMTP id
- b25-20020a056602275900b007747ecad9c5mr603773ioe.2.1686005915245; 
- Mon, 05 Jun 2023 15:58:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7V3+UlzzZ8PKNhSezYV7OGQZ7xULTVKpskuA5snKeV6beQ8tsR8OxSwTgiCnWJ/Bvz38ADkg==
-X-Received: by 2002:a05:6602:2759:b0:774:7eca:d9c5 with SMTP id
- b25-20020a056602275900b007747ecad9c5mr603755ioe.2.1686005915000; 
- Mon, 05 Jun 2023 15:58:35 -0700 (PDT)
-Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
- l16-20020a6b7010000000b007748f491918sm2785768ioc.40.2023.06.05.15.58.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 15:58:34 -0700 (PDT)
-Date: Mon, 5 Jun 2023 16:58:33 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: qemu-devel@nongnu.org, Cedric Le Goater <clg@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
- <david@redhat.com>, Philippe Mathieu-Daude <philmd@linaro.org>, Avihai
- Horon <avihaih@nvidia.com>
-Subject: Re: [PATCH v4 2/2] hw/vfio: Add number of dirty pages to
- vfio_get_dirty_bitmap tracepoint
-Message-ID: <20230605165833.402cfe81.alex.williamson@redhat.com>
-In-Reply-To: <20230530180556.24441-3-joao.m.martins@oracle.com>
-References: <20230530180556.24441-1-joao.m.martins@oracle.com>
- <20230530180556.24441-3-joao.m.martins@oracle.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20221208; t=1686006139; x=1688598139;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3kB8pDwVkdb1VK5LW/w3G/8jYQ8BU6TjNbumjepsNRk=;
+ b=Tu4qtP+pVJ7zJ8VaxwtYhdWSKicRKwuoJlGfHh4MNo9G1xGRrV+4bCtBRiH3u+YsVH
+ 9xPnwgq2NoNq2vr+ZdPEwcjo7I6+mNp4LKHrUCoXOED6S1vZKTRsEl2KPRnIUe1HIzVb
+ OLo8nxnbuChPEi1lUS4hQgC9dsEzqpsOsSWw/pmbPFpiJNSYy2rmanORLIDi8IL0/DWg
+ HcGVtmHMpnKS/hoISZF3u04x2NXfKW8vWpOhZ99jax/JYqZoOb7kg4PwG1i+RxKEmOPG
+ LoqlAUzJwTQ80a42SOXUCvzycVYCl1ZhNjNS8wkzbhZx8wvxK/3vMCD/605dZuIXanQr
+ QvEQ==
+X-Gm-Message-State: AC+VfDxOmkR50Aejm4Z35iNmK42C0kZtLjrglt+TGxIiAq9GNTEa4ZJt
+ D/MtxMC37jwmJeEX1rLRwrhuCdKLEni+nYoMOvM=
+X-Google-Smtp-Source: ACHHUZ7k99jbr0LYpS5uXYg/PHmVk8VmUQM1YtcTkcuTVYaSUFhToR6UQTiwlU8gGVGsHCh27IDP4A==
+X-Received: by 2002:a7b:c455:0:b0:3f7:30c3:efa1 with SMTP id
+ l21-20020a7bc455000000b003f730c3efa1mr389806wmi.30.1686006139389; 
+ Mon, 05 Jun 2023 16:02:19 -0700 (PDT)
+Received: from localhost.localdomain ([176.187.217.157])
+ by smtp.gmail.com with ESMTPSA id
+ v13-20020a05600c214d00b003f78fd2cf5esm4992067wml.40.2023.06.05.16.02.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 05 Jun 2023 16:02:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH] exec/cpu-defs: Check for SOFTMMU instead of !USER_ONLY
+Date: Tue,  6 Jun 2023 01:02:16 +0200
+Message-Id: <20230605230216.17202-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,78 +89,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 30 May 2023 19:05:56 +0100
-Joao Martins <joao.m.martins@oracle.com> wrote:
+We want to check the softmmu tlb availability, not
+if we are targetting system emulation. Besides, this
+code could be used by user emulation in the future.
 
-> Include the number of dirty pages on the vfio_get_dirty_bitmap tracepoint.
-> These are fetched from the newly added return value in
-> cpu_physical_memory_set_dirty_lebitmap().
->=20
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/vfio/common.c     | 7 ++++---
->  hw/vfio/trace-events | 2 +-
->  2 files changed, 5 insertions(+), 4 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Based-on: <20230605222420.14776-1-philmd@linaro.org>
 
+See also
+https://lore.kernel.org/qemu-devel/7913570a-8bf6-2ac9-6869-fab87273742c@linaro.org/
+---
+ include/exec/cpu-defs.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Acked-by: Alex Williamson <alex.williamson@redhat.com>
-
-
-
-
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 78358ede2764..fa8fd949b1cf 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -1747,6 +1747,7 @@ static int vfio_get_dirty_bitmap(VFIOContainer *con=
-tainer, uint64_t iova,
->  {
->      bool all_device_dirty_tracking =3D
->          vfio_devices_all_device_dirty_tracking(container);
-> +    uint64_t dirty_pages;
->      VFIOBitmap vbmap;
->      int ret;
-> =20
-> @@ -1772,11 +1773,11 @@ static int vfio_get_dirty_bitmap(VFIOContainer *c=
-ontainer, uint64_t iova,
->          goto out;
->      }
-> =20
-> -    cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-> -                                           vbmap.pages);
-> +    dirty_pages =3D cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap,=
- ram_addr,
-> +                                                         vbmap.pages);
-> =20
->      trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
-> -                                ram_addr);
-> +                                ram_addr, dirty_pages);
->  out:
->      g_free(vbmap.bitmap);
-> =20
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index 646e42fd27f9..cfb60c354de3 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -120,7 +120,7 @@ vfio_region_sparse_mmap_header(const char *name, int =
-index, int nr_areas) "Devic
->  vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long =
-end) "sparse entry %d [0x%lx - 0x%lx]"
->  vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t=
- subtype) "%s index %d, %08x/%08x"
->  vfio_dma_unmap_overflow_workaround(void) ""
-> -vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bit=
-map_size, uint64_t start) "container fd=3D%d, iova=3D0x%"PRIx64" size=3D 0x=
-%"PRIx64" bitmap_size=3D0x%"PRIx64" start=3D0x%"PRIx64
-> +vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bit=
-map_size, uint64_t start, uint64_t dirty_pages) "container fd=3D%d, iova=3D=
-0x%"PRIx64" size=3D 0x%"PRIx64" bitmap_size=3D0x%"PRIx64" start=3D0x%"PRIx6=
-4" dirty_pages=3D%"PRIu64
->  vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iom=
-mu dirty @ 0x%"PRIx64" - 0x%"PRIx64
-> =20
->  # platform.c
+diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+index 0d418a0384..4cb77c8dec 100644
+--- a/include/exec/cpu-defs.h
++++ b/include/exec/cpu-defs.h
+@@ -60,7 +60,7 @@
+  */
+ #define NB_MMU_MODES 16
+ 
+-#if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
++#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
+ #include "exec/tlb-common.h"
+ 
+ /* use a fully associative victim tlb of 8 entries */
+@@ -89,9 +89,9 @@
+ #  endif
+ # endif
+ 
+-#endif  /* !CONFIG_USER_ONLY && CONFIG_TCG */
++#endif /* CONFIG_SOFTMMU && CONFIG_TCG */
+ 
+-#if !defined(CONFIG_USER_ONLY)
++#if defined(CONFIG_SOFTMMU)
+ /*
+  * The full TLB entry, which is not accessed by generated TCG code,
+  * so the layout is not as critical as that of CPUTLBEntry. This is
+@@ -133,9 +133,9 @@ typedef struct CPUTLBEntryFull {
+     TARGET_PAGE_ENTRY_EXTRA
+ #endif
+ } CPUTLBEntryFull;
+-#endif  /* !CONFIG_USER_ONLY */
++#endif /* CONFIG_SOFTMMU */
+ 
+-#if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
++#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
+ /*
+  * Data elements that are per MMU mode, minus the bits accessed by
+  * the TCG fast path.
+@@ -201,7 +201,7 @@ typedef struct CPUTLB {
+ 
+ typedef struct CPUTLB { } CPUTLB;
+ 
+-#endif  /* !CONFIG_USER_ONLY && CONFIG_TCG */
++#endif /* CONFIG_SOFTMMU && CONFIG_TCG */
+ 
+ /*
+  * This structure must be placed in ArchCPU immediately
+-- 
+2.38.1
 
 
