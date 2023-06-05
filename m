@@ -2,65 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEA87222DB
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA7D7222DF
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:05:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6740-0004aB-Vg; Mon, 05 Jun 2023 06:03:49 -0400
+	id 1q6754-0005Sp-Vk; Mon, 05 Jun 2023 06:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q673y-0004X8-H0
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:03:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q673x-0000Tp-0F
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:03:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685959423;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+tZFA7O9Hezpf4v8slBwetC9ufodCKLDkzRj52ho6QY=;
- b=Z0pSWkoqvZcOe+ixcjpsdNR1vYbSKdDkL6dyNYz8X5DOmWFZeeyYzaI1j6zZ+kny6rYzol
- uz4YDpc1BuIoBkCkMdnjnX/DymXfVPsowd1bv3bl3a47W5pv57Ng5jjuUlSQLuAQyfTciF
- qHt+MKK4Kri+ZVdVgjhfmo/aFlr1Ni4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-662-qemsh4oJP4WnT4jJ3oyyfw-1; Mon, 05 Jun 2023 06:03:41 -0400
-X-MC-Unique: qemsh4oJP4WnT4jJ3oyyfw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6043A1C02D34;
- Mon,  5 Jun 2023 10:03:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6B909C0448E;
- Mon,  5 Jun 2023 10:03:40 +0000 (UTC)
-Date: Mon, 5 Jun 2023 12:03:39 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, hreitz@redhat.com,
- eblake@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 11/11] Revert "graph-lock: Disable locking for now"
-Message-ID: <ZH2y+zAgThSJ67oZ@redhat.com>
-References: <20230605085711.21261-1-kwolf@redhat.com>
- <20230605085711.21261-12-kwolf@redhat.com>
- <fbcb21e3-9544-eea2-ab5b-9bb84ac7c90b@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6752-0005SB-4E
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:04:52 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6750-0000hq-Ff
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:04:51 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3f7378a75c0so9949355e9.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:04:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685959487; x=1688551487;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=WbInYu1zOKkkpmxrrMxIxyvmmduPJ3FvKHru4KNxDUY=;
+ b=yP5jgSDOe64aLwBgNDKYj70YMl5tEwyI9jv800CATNy1AmXaXEgO2uaHqBD89RdsfB
+ qozwNsW50LQr7O1M7kvQCOOHxVit2eJJn5DWPkmkM7xAu88+CvZe9nxfCfNBd3Mv5n4f
+ gQ/yFj+GgKBa5qlgF1QrfU/wKI7NKdP5MmHH7cZG+r/L4ErsYmNNqVqzvrtbzyn9K2+5
+ daTBNeB1gmQ9yJVDuoA8MZ/w/eiNMgc+SKoJnyvbWFZwGhxlzmJRy2qqX+j8qAI0hl2O
+ i022Z6Db7HAjk/p2X13W/t959mekCaJY+iG6qySs5ATRuQF4S4Kit4hn9nLTnHaOY+br
+ ooGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685959487; x=1688551487;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WbInYu1zOKkkpmxrrMxIxyvmmduPJ3FvKHru4KNxDUY=;
+ b=SCNXamXZDLuJT5re9DBF7flNWjMMGzpfb2/HRZDEgvdQQJNZemSku1gdwqaYCza0FH
+ aRSCRWWmrFruV9hNkFYWljv7Dl7YHIhV2tQu9XzxKB4JcJV82jYKe+JjlOUhureJaFLj
+ 3M289FfjJe6XSUuEh55LvYLRYrUyHvG2NLP0tX4ZSWS6CYtHNUPZ7fGDrxuBxCeJhtuM
+ Xg/WhxY6Zbe4K09g2b+Mo+8shqXviyl8392SoqZEUS0gnlAZmr6TDZnVv8pKpX6uCxDb
+ aGxCFdmaU+66EAvowwbBEOSt7koj1Zn5XO3dHaL3TGqvtfXBMSJ5ivwVKTFiPpHj5S5b
+ HrKA==
+X-Gm-Message-State: AC+VfDwRs0lEvKS5CquNLHp6INPJ2RAQXsqcrWn+WtORmBQ5iqp0B+Un
+ BaClp7hxVpzWfUYVpX4Zmr21pg==
+X-Google-Smtp-Source: ACHHUZ4XbMZfKdOjSFqMR0t7Ttyv44gfnP+lipOtWAUicVtg4BhNRmSRbho9LQH4UMGicCNFMU9czA==
+X-Received: by 2002:a05:600c:2054:b0:3f7:aad8:4e05 with SMTP id
+ p20-20020a05600c205400b003f7aad84e05mr1604941wmg.11.1685959487493; 
+ Mon, 05 Jun 2023 03:04:47 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.217.157])
+ by smtp.gmail.com with ESMTPSA id
+ l18-20020a05600c1d1200b003f61177faffsm23898341wms.0.2023.06.05.03.04.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 03:04:47 -0700 (PDT)
+Message-ID: <ecd2e684-dd9c-58b1-ce13-62c0db64d9c5@linaro.org>
+Date: Mon, 5 Jun 2023 12:04:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fbcb21e3-9544-eea2-ab5b-9bb84ac7c90b@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH] scripts: remove dead file
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230603214342.471752-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230603214342.471752-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -78,19 +91,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 05.06.2023 um 11:06 hat Paolo Bonzini geschrieben:
-> On 6/5/23 10:57, Kevin Wolf wrote:
-> >   void bdrv_graph_rdlock_main_loop(void)
-> > @@ -296,18 +276,13 @@ void assert_bdrv_graph_readable(void)
-> >   {
-> >       /* reader_count() is slow due to aio_context_list_lock lock contention */
-> >       /* TODO Reenable when wrlock is reenabled */
+On 3/6/23 23:43, Paolo Bonzini wrote:
+> scripts/test-driver.py was used when "make check" was already using meson
+> introspection data, but it did not execute "meson test".  It is dead since
+> commit 3d2f73ef75e ("build: use "meson test" as the test harness", 2021-12-23).
 > 
-> There's still a TODO here.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   scripts/test-driver.py | 35 -----------------------------------
+>   1 file changed, 35 deletions(-)
+>   delete mode 100644 scripts/test-driver.py
 
-Thanks for catching that. If I don't have to respin for something else,
-I'll fix it up before applying.
-
-Keviun
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
