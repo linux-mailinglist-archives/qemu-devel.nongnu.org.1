@@ -2,93 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C436722001
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 09:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DD8722028
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 09:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q64va-0000no-Us; Mon, 05 Jun 2023 03:46:59 -0400
+	id 1q650m-0002c6-3L; Mon, 05 Jun 2023 03:52:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q64vS-0000nV-73
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:46:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q64vQ-0006kd-Ha
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:46:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685951206;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=edJgCGLV3+aoZ4arLr3WhsZ7qMxPWdZcVxo1nvT3QH8=;
- b=Tk0scT5qaPuxzpHhiuXGr3wajxK34/Lx2+lEzwe/vnR1GrhdcEdx9pVYlaWeoZtPM5D/Hq
- 6KELzIiJGs1k2DgyqssAl6Zwi5P+0S1Kr3G3E1e5+lDE+79g6EcvnUXGTXGzLPzfudJ3Wl
- iv9M5y1GLrbBvDgCFzATAGfmgapRp+A=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-YXXvmsIEPRaVhWPDukohsQ-1; Mon, 05 Jun 2023 03:46:45 -0400
-X-MC-Unique: YXXvmsIEPRaVhWPDukohsQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f60fb7b31fso18700275e9.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:46:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1q650Y-0002b8-TL
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:52:09 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1q650R-0007V9-Ql
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:52:02 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-657c4bcad0bso319711b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:51:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1685951516; x=1688543516;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qVDTZNdm9TYOhpUiRc7Gqz7STus9Q3p9Jgo6THKuDig=;
+ b=U+v0ocTwgOLITQX/bRSBSxpEPQwXAq3ZqrcLRZfeopyS7OfJeehxYcnxbz/KldeXUS
+ GCxzoQmRl2yyoqMsFa/bzkYrwYtt3y27OYFhNNqo9xCkxFxcs/0+mBsHEc1d/c8wGJD2
+ 4s8MdTILIH7Uv1Hmw4m6TRtbuqwLbu/oZz8d+ShYa3p1qyQr//H1Q0MUtMQTCPdZ+phY
+ KbxPhnFyxYftxfveYUo5UzMPLwLAkazKqk9rIJRHexKqVQBW2QDSA/vJVxoYrNyaAI69
+ Ohq3pKZjunTrCf6YXFlGLEmtwzsMQnbrUv/7P6xvU2/61GZPwvUOf5+rxWd4yE7wNsln
+ k3IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685951204; x=1688543204;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=edJgCGLV3+aoZ4arLr3WhsZ7qMxPWdZcVxo1nvT3QH8=;
- b=CjmxleLu1byd8OEK/9xD1n0VXZ8WQ2OYq1tAguU7sqg3Wuq/EIjrFKbs0DvOquVaci
- dKCgYrZSq1DF9V8rkr527KEngWE/pwv29DPUiXhfYIHAixXjfjsZDFlP7ogaMfmPUsag
- kaHTu5Zdaeh1hqbhBUxZMoef8eeO4qpUSV3pReJtXNAqcxUxlVdoCO/C8eoki6lfaVQ/
- LqouewDiYBsq2NMJ9+/TD3HmYvFnU805OOQoSWFP+mnb5Qhfh61+tDgI/0uQdook2MJ8
- epFjm0QGZP7V+QWSpFnRaHupIn91jcq5J+KTAnvZidT4Gw9k3Ac5jRwrki+kkIgWZoWT
- 6RnA==
-X-Gm-Message-State: AC+VfDz77gl0iLj/7lduL2MqLrYqPepvcL2QbIzjlfvLsU/t5O5EmjDx
- id+T0VThDR0LoYNz2Xrj9R6owPsAz/6FpD8QknwcB5DKpW9OXGzpL38OKZ3/lGt84kmTgIj9oa3
- +k9rK0rxgtp4Zw2k=
-X-Received: by 2002:a1c:f310:0:b0:3f6:174:8c32 with SMTP id
- q16-20020a1cf310000000b003f601748c32mr6464814wmq.6.1685951204352; 
- Mon, 05 Jun 2023 00:46:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5N2VT5V6lGhGPDb371mH6soWVYBr6UKWcr9W5hbDomd65jW5V0wBchm18OZ4e/Qtx+WHMcjQ==
-X-Received: by 2002:a1c:f310:0:b0:3f6:174:8c32 with SMTP id
- q16-20020a1cf310000000b003f601748c32mr6464803wmq.6.1685951204057; 
- Mon, 05 Jun 2023 00:46:44 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-42-115-143.web.vodafone.de.
- [109.42.115.143]) by smtp.gmail.com with ESMTPSA id
- h8-20020adfe988000000b0030ae5a0516csm8909753wrm.17.2023.06.05.00.46.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 00:46:43 -0700 (PDT)
-Message-ID: <624698fd-d353-20a4-6a35-c6195af62318@redhat.com>
-Date: Mon, 5 Jun 2023 09:46:41 +0200
+ d=1e100.net; s=20221208; t=1685951516; x=1688543516;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qVDTZNdm9TYOhpUiRc7Gqz7STus9Q3p9Jgo6THKuDig=;
+ b=J1wC8jnZIIAYzrdIE6GdteihOae01ciGVCOxTgf2TOwuIFfA38O57QAcfdBRPFqyd5
+ jQukjNdlx5FDNwpTWv6Np196vj8v9UvVJszx7BBQo5W9dxN38NWfruJU65ZNYiuEBA5w
+ dgDMv6+et1NjcekUps5RbfiJBKbZ5kKR0tRUF2ONiM5j8DBwIL/oRoh7p6xS6Q7psy/n
+ 2wC16p6oikjdmtUAUlhMKIAhMknCDEoyVbAjflOQCM8adRGSokcFbfHhYYhFPHLMiCps
+ qDMVBrK6++Kw/vDMs6FPu0lBQMUZtMVkYInhoIRzHG19ydFF0+TSyInF2creHktHKDUA
+ pcrQ==
+X-Gm-Message-State: AC+VfDzZnQls5Z5Lg6ux4CzmQNRZfTCp2Gw0NCpT4tG8xvQ53sibYr+a
+ RLE2nzggYl+hOL4VTijB1gO6RA==
+X-Google-Smtp-Source: ACHHUZ6hdoRY0HcYU3GqRU8yxLEi3ZGzJGXihoSIN2Nx3Kx9LLLmceyKpobgwBkcNxs1BFzByvqBCA==
+X-Received: by 2002:a05:6a20:440d:b0:105:66d3:854d with SMTP id
+ ce13-20020a056a20440d00b0010566d3854dmr21115476pzb.6.1685951516425; 
+ Mon, 05 Jun 2023 00:51:56 -0700 (PDT)
+Received: from saptrishi.. ([2405:201:d019:c279:7394:6066:fed1:a1d])
+ by smtp.gmail.com with ESMTPSA id
+ b10-20020a63cf4a000000b0050a0227a4bcsm5239366pgj.57.2023.06.05.00.51.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jun 2023 00:51:56 -0700 (PDT)
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Subject: [PATCH] target/riscv: Smepmp: Return error when access permission not
+ allowed in PMP
+Date: Mon,  5 Jun 2023 13:21:50 +0530
+Message-Id: <20230605075150.367555-1-hchauhan@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] meson.build: Use -Wno-undef only for SDL2 versions
- that need it
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org
-References: <20230602163452.521305-1-thuth@redhat.com>
-In-Reply-To: <20230602163452.521305-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,55 +90,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/06/2023 18.34, Thomas Huth wrote:
-> There is no need to disable this useful compiler warning for
-> all versions of the SDL. Unfortunately, various versions are
-> buggy (beside SDL 2.0.8, the version 2.26.0 and 2.26.1 are
-> broken, too, see https://github.com/libsdl-org/SDL/issues/6619 ),
-> but we can use a simple compiler check to see whether we need
-> the -Wno-undef or not.
-> 
-> This also enables the printing of the version number with
-> good versions of the SDL in the summary of the meson output
-> again.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   v2: Compile test code instead of hard-coding the version number
-> 
->   meson.build | 14 ++++++++++----
->   1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index a61d3e9b06..a4c69616c3 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1273,10 +1273,16 @@ if not get_option('sdl').auto() or have_system
->     sdl_image = not_found
->   endif
->   if sdl.found()
-> -  # work around 2.0.8 bug
-> -  sdl = declare_dependency(compile_args: '-Wno-undef',
-> -                           dependencies: sdl,
-> -                           version: sdl.version())
-> +  # Some versions of SDL have problems with -Wundef
-> +  if not cc.compiles('''
-> +                     #include <SDL.h>
-> +                     #include <SDL_syswm.h>
-> +                     int main(int argc, char *argv[]) { return 0; }
-> +                     ''', dependencies: sdl, args: '-Wundef')
-> +    sdl = declare_dependency(compile_args: '-Wno-undef',
-> +                             dependencies: sdl,
-> +                             version: sdl.version())
-> +  endif
->     sdl_image = dependency('SDL2_image', required: get_option('sdl_image'),
->                            method: 'pkg-config')
->   else
+On an address match, skip checking for default permissions and return error
+based on access defined in PMP configuration.
 
-Hmm, there must still be something wrong with this patch, I'm still getting 
-build failures with this in the CI ... no clue why yet, but please disregard 
-this patch.
+Fixes: 90b1fafce06 ("target/riscv: Smepmp: Skip applying default rules when address matches")
+Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+---
+ target/riscv/pmp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-  Thomas
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 418738afd8..6238528282 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -435,8 +435,8 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+              * defined with PMP must be used. We shouldn't fallback on
+              * finding default privileges.
+              */
+-            ret = true;
+-            break;
++            ret = ((privs & *allowed_privs) == privs ? true : false);
++            goto _address_matched;
+         }
+     }
+ 
+@@ -445,6 +445,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+         ret = pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
+     }
+ 
++ _address_matched:
+     return ret;
+ }
+ 
+-- 
+2.34.1
 
 
