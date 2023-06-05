@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34187223C1
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E9F7223CC
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:47:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q67ie-00069W-N8; Mon, 05 Jun 2023 06:45:48 -0400
+	id 1q67k9-0007Rw-2b; Mon, 05 Jun 2023 06:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67iK-000689-11
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:45:29 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67jy-0007RF-H0
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:47:10 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67iD-0007Qm-BA
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:45:27 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-30af86a96b4so3809949f8f.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:45:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67jo-0007jx-GK
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:47:10 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-30ae901a9ffso4249159f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:46:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685961919; x=1688553919;
+ d=linaro.org; s=google; t=1685962018; x=1688554018;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BER6FqqlFlZwhQ7mFkNQkzoTv/vcZa2WEIOpCzfl/JQ=;
- b=V3rs/o6yTzmLRK2uwI34TyVWX5Fjx2ZGiA4Um7ms/5i+MbEAnOoptm611exvFfnOnl
- +8GatZtt0xp5GWlbNEB+af+T8x1AOtnLY6nJUbdpzSgyD35ejcyqw2QjLskCU/PV2rhm
- 8yY0k2Nv9M1NS6vj7AunhQRs4RXxLbSKCGi/O+Yjsdxl5UvnQ2Ds8SpAAC76o7TmC9zG
- QudGEUTnzImqYJKDyKiKNP4r8pBtz91TGYWDF66HkR1poAJxGy9nOQ62ZbTvmJ+2xqMS
- BaO2lBIonfDbjtN0mTzIC3MdS7sbNyk6zh51jrU5WuxXriUDf4AdX8kBxPBkYVNBrk4I
- exjQ==
+ bh=OdmBl+opk/gIH1Do7GTdKurFLH1++4JOKG0OT9lZTwk=;
+ b=C9CNvkYdJkJo4fggXNBImhrpAfpr5LqayDyywWx0JT0l/WR/I0Axwsl+aSFC8Ag3Y+
+ wZyDJz5EQUd521uYr5WZW1nvYb0SPfdI+DrTULiCLnFcJkBQAn42IgFj1KuU8uu2VoGR
+ R5wkRv7ctU8qqWqeMh5sVKE8zsPFCe8QBTlHtcGE6qQ7Nph3s9qm+dpNRyuhgnaOM8Ir
+ 7/2NR88Y8RW3bquvb/HjF3kTDvNXHzu2mZW8+1Tq6OjHGjt7HdgFaiBfZm/w0uxALfXZ
+ mGcPlzlw/qNxIaKcuseJpzRaFzy91jgNxHaL4U8Y/rCObPE8LmCtUlGwZYhY7mkPAr/S
+ PElw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685961919; x=1688553919;
+ d=1e100.net; s=20221208; t=1685962018; x=1688554018;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BER6FqqlFlZwhQ7mFkNQkzoTv/vcZa2WEIOpCzfl/JQ=;
- b=DhWmClq6t4cVC7oZZJSmMgtvT10Ero8CEhj8m3fthNBe0UEndwH0b+N1GrCANY559p
- +MLxRNe5VFksTVKkGa6cd1Y2xNFQLicWI5yK/X9fpa3z/bKU5UxGsbGbwQPFzfsfmI/U
- aFTcpqxlkW4EEb8Nl6mJws6rO9hH4BLihSXZTWECienJMXwuxrwe44yJUkCp8ZnGUfot
- cEv4HQ4DPqprdcVxsL5EKW02jU0vtM2M+BJJNGdVWQ5h/JLBQ/QNbZM4T8tnxPGdnRiE
- yAW7n9+vsvadEQ5HToAfuwviyTlEcVc7Y3tVzajYalVroP6oXfhDbarwig71Y0NQWXW6
- nfsQ==
-X-Gm-Message-State: AC+VfDxFPEfDs6CM1H0H6Z46yGhbsWOLVIZCBlj/KtQKcXFwWAnJsmIP
- hexmuE2I07jDWfczpyRjzc0UZw==
-X-Google-Smtp-Source: ACHHUZ55zG0xJgZiV+1At/NT6D0gcUMWVZDoALVJcUWyLm48SBBILP0VKXONa5gqiHZNRZXBOhW8ZA==
-X-Received: by 2002:a5d:52ca:0:b0:309:398d:3396 with SMTP id
- r10-20020a5d52ca000000b00309398d3396mr4430944wrv.33.1685961919363; 
- Mon, 05 Jun 2023 03:45:19 -0700 (PDT)
+ bh=OdmBl+opk/gIH1Do7GTdKurFLH1++4JOKG0OT9lZTwk=;
+ b=fNhROF28rLzImpZibJvzFr8lowAJwtuPuQgNC9HYr8amk1VJpVmD1rcdkK7tvMbPd7
+ ZnA8cmd56dABkN95YRgTlMGyxxJNCUKGqncRULbdG9AVN28qNHNhfwBoZdW07n630fEa
+ Q1o9XiaiaL5agjE33aL4lNSg1ZLb0gQBrgJcag/5oYzTfzOEaoo4y0OIAI8aeEDdtioa
+ 60pGOlb1xNXblKlSMogI4vUQoSirrqAfFBmKQ3tQNHm+UQuj+Qefhti25VprwNjyQdGo
+ XAbQGNdk1Obs50apJuJmbmdUYVKMFmieSVnpHs4ccrdgb2D5oS5wHrGSn78tGRPAO2hm
+ d1rg==
+X-Gm-Message-State: AC+VfDwI4oJQNukH/ESW7w/lDoU2ZgYFOWS4jE8FC6pk0Wr1gMRffAr0
+ oZGN3rBYLxdyjEiaTS9rGRLnSg==
+X-Google-Smtp-Source: ACHHUZ6jQ/uw2FYWmnAxt5ebldDiqBRVYy1QjTTO+92u5lUm7M2/AWEGpkLx2YvBmjDYtfl3J5HJJA==
+X-Received: by 2002:adf:da4a:0:b0:2f9:a798:602f with SMTP id
+ r10-20020adfda4a000000b002f9a798602fmr6048623wrl.48.1685962018298; 
+ Mon, 05 Jun 2023 03:46:58 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- w3-20020a5d6083000000b0030abe7c36b1sm9314720wrt.93.2023.06.05.03.45.17
+ k9-20020adfe8c9000000b0030644bdefd8sm9263783wrn.52.2023.06.05.03.46.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 03:45:18 -0700 (PDT)
-Message-ID: <bc89ede2-747f-c56e-5cca-e09289fb72f2@linaro.org>
-Date: Mon, 5 Jun 2023 12:45:16 +0200
+ Mon, 05 Jun 2023 03:46:57 -0700 (PDT)
+Message-ID: <3df44d64-4799-d883-067d-2353fb2415f0@linaro.org>
+Date: Mon, 5 Jun 2023 12:46:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 02/35] target/arm: Move aesmc and aesimc tables to
- crypto/aes.c
+Subject: Re: [PATCH 03/35] crypto/aes: Add constants for ShiftRows,
+ InvShiftRows
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: ardb@kernel.org, berrange@redhat.com, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
 References: <20230603023426.1064431-1-richard.henderson@linaro.org>
- <20230603023426.1064431-3-richard.henderson@linaro.org>
+ <20230603023426.1064431-4-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230603023426.1064431-3-richard.henderson@linaro.org>
+In-Reply-To: <20230603023426.1064431-4-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,45 +96,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/6/23 04:33, Richard Henderson wrote:
-> We do not currently have a table in crypto/ for
-> just MixColumns.  Move both tables for consistency.
+> These symbols will avoid the indirection through memory
+> when fully unrolling some new primitives.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/crypto/aes.h           |   6 ++
->   crypto/aes.c                   | 142 ++++++++++++++++++++++++++++++++
->   target/arm/tcg/crypto_helper.c | 143 ++-------------------------------
->   3 files changed, 153 insertions(+), 138 deletions(-)
+>   crypto/aes.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 48 insertions(+), 2 deletions(-)
 
-
->       union CRYPTO_STATE st = { .l = { rm[0], rm[1] } };
-> +    const uint32_t *mc = decrypt ? AES_imc_rot : AES_mc_rot;
->       int i;
->   
->       for (i = 0; i < 16; i += 4) {
->           CR_ST_WORD(st, i >> 2) =
-> -            mc[decrypt][CR_ST_BYTE(st, i)] ^
-> -            rol32(mc[decrypt][CR_ST_BYTE(st, i + 1)], 8) ^
-> -            rol32(mc[decrypt][CR_ST_BYTE(st, i + 2)], 16) ^
-> -            rol32(mc[decrypt][CR_ST_BYTE(st, i + 3)], 24);
-> +            mc[CR_ST_BYTE(st, i)] ^
-> +            rol32(mc[CR_ST_BYTE(st, i + 1)], 8) ^
-> +            rol32(mc[CR_ST_BYTE(st, i + 2)], 16) ^
-> +            rol32(mc[CR_ST_BYTE(st, i + 3)], 24);
-
-Matter of style, (since you are changing these lines), I find starting
-the lines with the ^ operator clearer to review:
-
-             mc[CR_ST_BYTE(st, i)]
-             ^ rol32(mc[CR_ST_BYTE(st, i + 1)], 8)
-             ^ rol32(mc[CR_ST_BYTE(st, i + 2)], 16)
-             ^ rol32(mc[CR_ST_BYTE(st, i + 3)], 24);
-
-Anyhow,
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->       }
->   
->       rd[0] = st.l[0];
 
 
