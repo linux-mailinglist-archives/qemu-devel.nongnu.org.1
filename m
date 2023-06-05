@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB7A7224CB
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 488567224D0
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:41:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q68a6-0008Qx-2H; Mon, 05 Jun 2023 07:41:04 -0400
+	id 1q68aG-0000Jx-Gg; Mon, 05 Jun 2023 07:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q68ZD-0008NJ-Oq; Mon, 05 Jun 2023 07:40:07 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1q68ZD-0008NK-P5; Mon, 05 Jun 2023 07:40:07 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q68ZB-0001MJ-5N; Mon, 05 Jun 2023 07:40:06 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ id 1q68ZB-0001Xx-Kz; Mon, 05 Jun 2023 07:40:07 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 355BNXIM004782; Mon, 5 Jun 2023 11:40:01 GMT
+ 355BHWuM006983; Mon, 5 Jun 2023 11:40:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=ihcPcXiIidfCiPyRtX/zY5CTCGkeOzuKFNykdBgc8Pg=;
- b=SbRX+4fgpFUddc0AvYg1Pa7lx/dOPMFrh422LPDnIZlvx2HlFY8boGnAtw0rr0cOHYxi
- DA4f4tNrbjkMAKvAAEruQ0Bgd8j9eRewpX4AFQBm+lCIqAhcX0Bvp3hmlL9z9hSCPtbs
- FW+4DnZNHIX0FaWwKBbQ4HbwHSWM5DechvTbY/izaZplVrTEE9IStBIR3mCb1uemFaRU
- AFF2rupedYI+CjM7XF0aH3UtgbF+ENAYod9evI+pDn7INJQIZ5xvlYYJR8iY5BAYnOta
- 4L1B1+WPXmi6XkAL+Bb2H5IsptJICTsAuO/EvcKDPxLyqqt5t7pMS00MNG3U6CHAuVkc 6A== 
+ bh=FMmC+NDiH4E0OblmqlQKqPFxSKGizYNiaFpTDwa77rQ=;
+ b=UjwIEqjbfxDK06/z52MCXcYV5Sl2pMp8q4id47bCFe5nZ2t2it4h1WVReosml4M+sv1s
+ UxA6m64Ko0elvwJj1wGsYRGWBnuHT/JJJGbV6mUJoOR/wQGGqp6nvF7zjG9dB9eHezAe
+ hE7PBMwNEY9dJA6j2ASzpS+sZ2+a3PyoZYpymjwLymkucTyzJFurcm1KTanNEpYh8jPS
+ TU9OHMcVmOyUDWkHKLFmfqQNkP9JepSKVY6sllioi1twLksdMbQGsJL7s+f+B9rA7zki
+ y+aROjXRkyVXVGsgu7sna+z/9DiIEb8dWDp9plid0jBIdlEexnVuuPA0a1Bw8D6ncLRe Gg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1esv8c6s-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1epugfxt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jun 2023 11:40:01 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 355BOZom009666;
- Mon, 5 Jun 2023 11:40:00 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1esv8c65-1
+ Mon, 05 Jun 2023 11:40:02 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 355BPU82002158;
+ Mon, 5 Jun 2023 11:40:02 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1epugfw8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jun 2023 11:40:00 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3552gJ42032350;
- Mon, 5 Jun 2023 11:39:58 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qyxdf91ht-1
+ Mon, 05 Jun 2023 11:40:02 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3559LIga027166;
+ Mon, 5 Jun 2023 11:39:59 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3qyx5q91k3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Jun 2023 11:39:58 +0000
+ Mon, 05 Jun 2023 11:39:59 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 355BduMX18809380
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 355BdvCN20972190
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 5 Jun 2023 11:39:56 GMT
+ Mon, 5 Jun 2023 11:39:57 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4161820043;
- Mon,  5 Jun 2023 11:39:56 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4E4C820043;
+ Mon,  5 Jun 2023 11:39:57 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3B4A20040;
- Mon,  5 Jun 2023 11:39:55 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 156EE20040;
+ Mon,  5 Jun 2023 11:39:57 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.209.184])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  5 Jun 2023 11:39:55 +0000 (GMT)
+ Mon,  5 Jun 2023 11:39:57 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>, 
  Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 2/4] linux-user/elfload: Expose get_elf_hwcap() on s390x
-Date: Mon,  5 Jun 2023 13:39:48 +0200
-Message-Id: <20230605113950.1169228-3-iii@linux.ibm.com>
+Subject: [PATCH v2 3/4] linux-user/elfload: Introduce elf_hwcap_str() on s390x
+Date: Mon,  5 Jun 2023 13:39:49 +0200
+Message-Id: <20230605113950.1169228-4-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230605113950.1169228-1-iii@linux.ibm.com>
 References: <20230605113950.1169228-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EAZCudBK4vGkbJ4GoldAzOsV_ML_xMwb
-X-Proofpoint-ORIG-GUID: cza00Rf5lrUiErCFRS23zCXV8VR3cI0-
+X-Proofpoint-ORIG-GUID: vTvf-h6uAIruIRfj2N0F6OK5mTM7tJKu
+X-Proofpoint-GUID: A8KkOynIOxZ5L08mliVF7A3HCOK1Xaah
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 spamscore=0 priorityscore=1501 phishscore=0
- adultscore=0 mlxlogscore=999 clxscore=1015 lowpriorityscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2306050103
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 adultscore=0 clxscore=1015 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306050103
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -118,35 +118,59 @@ It is required for implementing /proc/cpuinfo emulation.
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- linux-user/elfload.c | 2 +-
- linux-user/loader.h  | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ linux-user/elfload.c | 27 +++++++++++++++++++++++++++
+ linux-user/loader.h  |  1 +
+ 2 files changed, 28 insertions(+)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 418ad92598c..49ec9ccc944 100644
+index 49ec9ccc944..d80d68484b6 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -1583,7 +1583,7 @@ static inline void init_thread(struct target_pt_regs *regs,
- #define GET_FEATURE(_feat, _hwcap) \
-     do { if (s390_has_feat(_feat)) { hwcap |= _hwcap; } } while (0)
+@@ -1605,6 +1605,33 @@ uint32_t get_elf_hwcap(void)
+     return hwcap;
+ }
  
--static uint32_t get_elf_hwcap(void)
-+uint32_t get_elf_hwcap(void)
++const char *elf_hwcap_str(uint32_t bit)
++{
++    static const char *hwcap_str[] = {
++        [HWCAP_S390_ESAN3]     = "esan3",
++        [HWCAP_S390_ZARCH]     = "zarch",
++        [HWCAP_S390_STFLE]     = "stfle",
++        [HWCAP_S390_MSA]       = "msa",
++        [HWCAP_S390_LDISP]     = "ldisp",
++        [HWCAP_S390_EIMM]      = "eimm",
++        [HWCAP_S390_DFP]       = "dfp",
++        [HWCAP_S390_HPAGE]     = "edat",
++        [HWCAP_S390_ETF3EH]    = "etf3eh",
++        [HWCAP_S390_HIGH_GPRS] = "highgprs",
++        [HWCAP_S390_TE]        = "te",
++        [HWCAP_S390_VXRS]      = "vx",
++        [HWCAP_S390_VXRS_BCD]  = "vxd",
++        [HWCAP_S390_VXRS_EXT]  = "vxe",
++        [HWCAP_S390_GS]        = "gs",
++        [HWCAP_S390_VXRS_EXT2] = "vxe2",
++        [HWCAP_S390_VXRS_PDE]  = "vxp",
++        [HWCAP_S390_SORT]      = "sort",
++        [HWCAP_S390_DFLT]      = "dflt",
++    };
++
++    return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
++}
++
+ static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
  {
-     /*
-      * Let's assume we always have esan3 and zarch.
+     regs->psw.addr = infop->entry;
 diff --git a/linux-user/loader.h b/linux-user/loader.h
-index f375ee0679b..ad6ca9dbe35 100644
+index ad6ca9dbe35..59cbeacf24f 100644
 --- a/linux-user/loader.h
 +++ b/linux-user/loader.h
-@@ -56,4 +56,8 @@ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+@@ -58,6 +58,7 @@ extern unsigned long guest_stack_size;
  
- extern unsigned long guest_stack_size;
+ #ifdef TARGET_S390X
+ uint32_t get_elf_hwcap(void);
++const char *elf_hwcap_str(uint32_t bit);
+ #endif
  
-+#ifdef TARGET_S390X
-+uint32_t get_elf_hwcap(void);
-+#endif
-+
  #endif /* LINUX_USER_LOADER_H */
 -- 
 2.40.1
