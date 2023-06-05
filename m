@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C52E721EA3
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 09:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D60721EBB
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 09:02:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q64BF-0006sj-6O; Mon, 05 Jun 2023 02:59:05 -0400
+	id 1q64Dx-000843-80; Mon, 05 Jun 2023 03:01:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q64BD-0006s4-8U; Mon, 05 Jun 2023 02:59:03 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q64Dv-00082M-En
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:01:51 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q64BA-0006RA-LL; Mon, 05 Jun 2023 02:59:02 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-977d4a1cf0eso138936666b.1; 
- Sun, 04 Jun 2023 23:58:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q64Dt-0006qg-9c
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 03:01:50 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5151934a4e3so6584789a12.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 00:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685948338; x=1688540338;
+ d=gmail.com; s=20221208; t=1685948506; x=1688540506;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cWL8JhpuC2NXntSVDQeoU6AycbQ8o25DAL0aUorczPA=;
- b=jFgl9bCUAMXIG17REV74pBeY6eO95h9S6G+HGaeAvVsYf0lIyj+aJax43+lklaYy5s
- S6Vg29Yjr4RJCsF903aIjOlDbNrCMoBelBY3kuNTt5sL4tau1mzdWq/sd7+cd0rO0l4i
- 1LB27mg+aBuftvZq6VNNhN9NnXjL+izb9phiH3TrT96VR0Z9FgZ+yh10f8U7eXQFE31J
- v5cb+vcZSxiyW+Li161GcqWOajl7MxtWKZXNKnM8fSB3l0w6L453mI0+POgIZSGTgfTX
- DAuchCk5H5gGbcrM1kXqjucS8i/rgjlQ/AtPCB634YUKByLMs5xn9sL6VLd2uDDF7Ffc
- MGlw==
+ bh=7UQKx1Vra6b36tz31tTD8RN/rkvjtkXk/RzFAKZXu0E=;
+ b=pBcehvCYH6qSx65EDcfNNfpH93AFHMaomk71RdZH3u3UdRaj8ppj/N5On8IYZ2ZhFH
+ GgoDBnNgEG+48D4D4hVSEGQS+K6uweOCx/O2Vv718xVYF1oCAFFPoeDTOyE8SYMuUuTZ
+ 9YBSsUigw8F7+zz2sUvxzlK59ZIG37EAVeiK9n6ZA+ZnauEG1JPXi0RV3mkRdNkWsGHF
+ Hofa/wabnAuRb3HngJYMd3u33Zy0TNYaXGsrglRQOh+2NfzW+7XAdTiU3mymKIpUpPTm
+ gtHhrDzjfVJJn8jQ2sDPFaATy8Wa8ABX3Lx+upxQ5mspQM2nnXtXyKaaEK2WypjtAz3q
+ i3pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685948338; x=1688540338;
+ d=1e100.net; s=20221208; t=1685948506; x=1688540506;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cWL8JhpuC2NXntSVDQeoU6AycbQ8o25DAL0aUorczPA=;
- b=LQAX0H8KWR9+LDIFflTWbUyLBnPmiVNpRio9XicpGE13OKbLsGfxhxl6gTLKwGACC9
- 9DXonR1mcRAAB1Cjb+URvojGSLHxkxO7/zp8ct4mBCtGWZH2BUhcj7oZylKVDLzSOLKd
- oTH7PDc07zLSeyn8cTDFd7R29wBF194ATG8bjX8rsI/OVRLQ+WHLSVNlx12Xq8yHgpax
- xtD5tCG1xpZq2MDwzAxwrcFadcnHOcnFr+flQfAydUNhOdFT7vX8iPYLNCbjbsVzW0Li
- 2SoZyzKxUvF3qEgzy4O4cBwE40u9wbP+ZqWr71eoacEoDuO2qgJz8NgbBugs0lLeUHoB
- tXYg==
-X-Gm-Message-State: AC+VfDw9Z93Pe2wXh1MpBrigS6oKk0cP/4i//XlYMuJpAKi95hY1dLY6
- UmantLnaLuwUrEGPA4T/0J8=
-X-Google-Smtp-Source: ACHHUZ5K4hrVkIF5NFdTS8Fu4aSLo1PV9Y/tpCv3nkfKOrSWdswubizHZhf7Tp2umtMJ6KSb3ZxPDQ==
-X-Received: by 2002:a17:907:6d29:b0:977:d96c:4394 with SMTP id
- sa41-20020a1709076d2900b00977d96c4394mr1937129ejc.73.1685948337813; 
- Sun, 04 Jun 2023 23:58:57 -0700 (PDT)
+ bh=7UQKx1Vra6b36tz31tTD8RN/rkvjtkXk/RzFAKZXu0E=;
+ b=LjZqmV6xQo7CA8j1PFLxcqt2I/1NpOogq1Q1P65YWPrvxB7g1I8KwpKErcCquE9Nbk
+ vMeXiQEj+NdSosQswu5GwszL9RZmxYiy7Q6RADdd5EokUzwSbVntg6IpCx2awzOrG8sB
+ G9l6U4X4txRo5/NO9Mh4u4oqACBkX4LYmt+lv3sK+/j1h8rp6cGkrD6T/egLzKZSsbPW
+ W6eHpsKyFOzWpYPdTziBuyWwepV0YENV76hSRtUKoBXtl8xt/HYlWTJsD+SmtAfzsTmc
+ 4hyTet2PzJGbWhQo8MlAmDSxsPw4LkoByZTDtBz4Yt4+//v4Y9j0P2f0YADFwt83rWMl
+ 7Smg==
+X-Gm-Message-State: AC+VfDwsUfDcmDESynVP9CaKH3LOgvSLm3zvH3fUz10ppUV1a4m0hPE3
+ sJN/eJT0HhXlHsIBqaplO2s=
+X-Google-Smtp-Source: ACHHUZ7WpGHFe3EMd73SsBT4DywvlubfrU2Oc5O+jKTVzYcA2EVb6dEnTmMIiL6fz/MRavCGIEJ3wg==
+X-Received: by 2002:a05:6402:708:b0:505:745:a271 with SMTP id
+ w8-20020a056402070800b005050745a271mr7369088edx.23.1685948505716; 
+ Mon, 05 Jun 2023 00:01:45 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-089-014-188-226.89.14.pool.telefonica.de.
  [89.14.188.226]) by smtp.gmail.com with ESMTPSA id
- ks2-20020a170906f84200b009534211cc97sm3889832ejb.159.2023.06.04.23.58.57
+ q22-20020aa7d456000000b0051631518aabsm3531431edr.93.2023.06.05.00.01.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jun 2023 23:58:57 -0700 (PDT)
-Date: Mon, 05 Jun 2023 06:58:55 +0000
+ Mon, 05 Jun 2023 00:01:45 -0700 (PDT)
+Date: Mon, 05 Jun 2023 07:01:42 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>
-CC: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+To: Stefano Stabellini <sstabellini@kernel.org>, mst@redhat.com
+CC: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Michael Tokarev <mjt@tls.msk.ru>,
- qemu-arm@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 0/3] Trivial cleanups
-In-Reply-To: <5982629b-0ff1-2525-e16a-309257710a20@ilande.co.uk>
-References: <20230523195608.125820-1-shentey@gmail.com>
- <c138717c-5085-3b4b-5a46-0fa93179f6a8@ilande.co.uk>
- <20230601080655-mutt-send-email-mst@kernel.org>
- <5982629b-0ff1-2525-e16a-309257710a20@ilande.co.uk>
-Message-ID: <8187BA4B-5031-4AC6-A94C-27AB714C850C@gmail.com>
+ David Woodhouse <dwmw@amazon.co.uk>, Eduardo Habkost <eduardo@habkost.net>,
+ Chuck Zmudzinski <brchuckz@aol.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 0/7] Resolve TYPE_PIIX3_XEN_DEVICE
+In-Reply-To: <EB3E61EB-B543-4B15-94A9-C16A66437601@gmail.com>
+References: <20230403074124.3925-1-shentey@gmail.com>
+ <20230421033757-mutt-send-email-mst@kernel.org>
+ <9EB9A984-61E5-4226-8352-B5DDC6E2C62E@gmail.com>
+ <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
+ <EB3E61EB-B543-4B15-94A9-C16A66437601@gmail.com>
+Message-ID: <ADD39905-0305-477A-8801-C1F561E0DFD4@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,79 +103,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 1=2E Juni 2023 12:45:47 UTC schrieb Mark Cave-Ayland <mark=2Ecave-aylan=
-d@ilande=2Eco=2Euk>:
->On 01/06/2023 13:07, Michael S=2E Tsirkin wrote:
+Am 22=2E Mai 2023 15:42:03 UTC schrieb Bernhard Beschow <shentey@gmail=2Ec=
+om>:
 >
->> On Thu, May 25, 2023 at 05:03:15PM +0100, Mark Cave-Ayland wrote:
->>> On 23/05/2023 20:56, Bernhard Beschow wrote:
->>>=20
->>>> This series:
->>>> * Removes dead code from omap_uart and i82378
->>>> * Resolves redundant code in the i8254 timer devices
->>>>=20
->>>> v3:
->>>> * Drop TYPE_ISA_PARALLEL since they became obsolete by
->>>>     https://lore=2Ekernel=2Eorg/qemu-devel/20230522115014=2E1110840-9=
--thuth@redhat=2Ecom/
->>>=20
->>> Oh I didn't see that this had already been merged :/
->>>=20
->>> It's not a reason to block this series, but I'd still like to see your
->>> changes to ParallelState and ISAParallelState merged separately since =
-they
->>> are a better match for our QOM coding standards=2E
->>>=20
->>>> v2:
->>>> * Export ParallelState and ISAParallelState (Mark)
->>>>=20
->>>> Testing done:
->>>> * `make check`
->>>>=20
->>>> Bernhard Beschow (3):
->>>>     hw/timer/i8254_common: Share "iobase" property via base class
->>>>     hw/arm/omap: Remove unused omap_uart_attach()
->>>>     hw/isa/i82378: Remove unused "io" attribute
->>>>=20
->>>>    include/hw/arm/omap=2Eh   | 1 -
->>>>    hw/char/omap_uart=2Ec     | 9 ---------
->>>>    hw/i386/kvm/i8254=2Ec     | 1 -
->>>>    hw/isa/i82378=2Ec         | 1 -
->>>>    hw/timer/i8254=2Ec        | 6 ------
->>>>    hw/timer/i8254_common=2Ec | 6 ++++++
->>>>    6 files changed, 6 insertions(+), 18 deletions(-)
->>>=20
->>> Do we know who is going to pick up these series? I can send a PR if no=
--one minds?
->>>=20
->>=20
->>=20
->> Go ahead:
->>=20
->> Acked-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
 >
->Thanks Michael! Is there any objection to also including https://patchew=
-=2Eorg/QEMU/20230531211043=2E41724-1-shentey@gmail=2Ecom/ at the same time?
+>Am 15=2E Mai 2023 20:52:40 UTC schrieb Stefano Stabellini <sstabellini@ke=
+rnel=2Eorg>:
+>>On Sat, 13 May 2023, Bernhard Beschow wrote:
+>>> Am 21=2E April 2023 07:38:10 UTC schrieb "Michael S=2E Tsirkin" <mst@r=
+edhat=2Ecom>:
+>>> >On Mon, Apr 03, 2023 at 09:41:17AM +0200, Bernhard Beschow wrote:
+>>> >> There is currently a dedicated PIIX3 device model for use under Xen=
+=2E By reusing
+>>> >> existing PCI API during initialization this device model can be eli=
+minated and
+>>> >> the plain PIIX3 device model can be used instead=2E
+>>> >>=20
+>>> >> Resolving TYPE_PIIX3_XEN_DEVICE results in less code while also mak=
+ing Xen
+>>> >> agnostic towards the precise south bridge being used in the PC mach=
+ine=2E The
+>>> >> latter might become particularily interesting once PIIX4 becomes us=
+able in the
+>>> >> PC machine, avoiding the "Frankenstein" use of PIIX4_ACPI in PIIX3=
+=2E
+>>> >
+>>> >xen stuff so I assume that tree?
+>>>=20
+>>> Ping
+>>
+>>I am OK either way=2E Michael, what do you prefer?
+>>
+>>Normally I would suggest for you to pick up the patches=2E But as it
+>>happens I'll have to likely send another pull request in a week or two
+>>and I can add these patches to it=2E
+>>
+>>Let me know your preference and I am happy to follow it=2E
 >
->Bernhard: if you are able to submit a rebased version of the ISA_PARALLEL=
- cleanups at https://patchew=2Eorg/QEMU/20230521123049=2E312349-1-shentey@g=
-mail=2Ecom/ I think it is worth considering those for inclusion in the PR a=
-s well (note the comments re: an updated commit message and register defini=
-tions, but I can't really do this myself because of the missing SoB)=2E
+>Hi Stefano,
+>
+>Michael's PR was merged last week=2E How about including this series into=
+ your PR then?
 
-What could I put into the commit message?
-
-I'm also wondering: Why export the structure but not the register definiti=
-ons? Are the register definitions not part of the interface? I think these =
-could be used in unittests -- if we had any -- to avoid magic numbers=2E
-
-Best regards,
-Bernhard
+Ping
 
 >
+>Best regards,
+>Bernhard
 >
->ATB,
->
->Mark=2E
->
+>>
+>>
+>>> >
+>>> >> Testing done:
+>>> >> - `make check`
+>>> >> - Run `xl create` with the following config:
+>>> >>     name =3D "Manjaro"
+>>> >>     type =3D 'hvm'
+>>> >>     memory =3D 1536
+>>> >>     apic =3D 1
+>>> >>     usb =3D 1
+>>> >>     disk =3D [ "file:manjaro-kde-21=2E2=2E6-220416-linux515=2Eiso,h=
+dc:cdrom,r" ]
+>>> >>     device_model_override =3D "/usr/bin/qemu-system-x86_64"
+>>> >>     vga =3D "stdvga"
+>>> >>     sdl =3D 1
+>>> >> - `qemu-system-x86_64 -M pc -m 2G -cpu host -accel kvm \
+>>> >>     -cdrom manjaro-kde-21=2E2=2E6-220416-linux515=2Eiso`
+>>> >>=20
+>>> >> v4:
+>>> >> - Add patch fixing latent memory leak in pci_bus_irqs() (Anthony)
+>>> >>=20
+>>> >> v3:
+>>> >> - Rebase onto master
+>>> >>=20
+>>> >> v2:
+>>> >> - xen_piix3_set_irq() is already generic=2E Just rename it=2E (Chuc=
+k)
+>>> >>=20
+>>> >> Tested-by: Chuck Zmudzinski <brchuckz@aol=2Ecom>
+>>> >>=20
+>>> >> Bernhard Beschow (7):
+>>> >>   include/hw/xen/xen: Rename xen_piix3_set_irq() to xen_intx_set_ir=
+q()
+>>> >>   hw/pci/pci=2Ec: Don't leak PCIBus::irq_count[] in pci_bus_irqs()
+>>> >>   hw/isa/piix3: Reuse piix3_realize() in piix3_xen_realize()
+>>> >>   hw/isa/piix3: Wire up Xen PCI IRQ handling outside of PIIX3
+>>> >>   hw/isa/piix3: Avoid Xen-specific variant of piix3_write_config()
+>>> >>   hw/isa/piix3: Resolve redundant k->config_write assignments
+>>> >>   hw/isa/piix3: Resolve redundant TYPE_PIIX3_XEN_DEVICE
+>>> >>=20
+>>> >>  include/hw/southbridge/piix=2Eh |  1 -
+>>> >>  include/hw/xen/xen=2Eh          |  2 +-
+>>> >>  hw/i386/pc_piix=2Ec             | 36 +++++++++++++++++++--
+>>> >>  hw/i386/xen/xen-hvm=2Ec         |  2 +-
+>>> >>  hw/isa/piix3=2Ec                | 60 +----------------------------=
+------
+>>> >>  hw/pci/pci=2Ec                  |  2 ++
+>>> >>  stubs/xen-hw-stub=2Ec           |  2 +-
+>>> >>  7 files changed, 39 insertions(+), 66 deletions(-)
+>>> >>=20
+>>> >> --=20
+>>> >> 2=2E40=2E0
+>>> >>=20
+>>> >
+>>>=20
 
