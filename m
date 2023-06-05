@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C982E722D20
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 18:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CE9722DA5
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 19:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6DWf-0008P6-1O; Mon, 05 Jun 2023 12:57:49 -0400
+	id 1q6Dyr-0004RB-Pm; Mon, 05 Jun 2023 13:26:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6DWb-0008Oj-Mz
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 12:57:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6DWa-0001RA-9M
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 12:57:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685984263;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YYlWyb35oaGV2RAW1P1z3foclDFSFWpLwoV/QCixS5Q=;
- b=GWAgdjFjG51ML0Mcj+HrFG0fuSyxYdkzi8mtfbr0CKSGLFKSp08t3hPC15SCPM+5WSOBU3
- ofobnPkaHB3Aus1k4in4ww1wjOK9jfvO5RQWFYczmQw+XbJAMmN0OJIqAbHQtxRKAGPb8e
- P2N0GTFKeNZI/QKqzRaZS1Exvf+kyTU=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-bZFAPZkdMIWiG3YdQ5J88g-1; Mon, 05 Jun 2023 12:57:42 -0400
-X-MC-Unique: bZFAPZkdMIWiG3YdQ5J88g-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-75eb82ada06so28294685a.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 09:57:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Dyn-0004QH-K7
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 13:26:54 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Dym-000260-1E
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 13:26:53 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6563ccf5151so2334872b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 10:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685986008; x=1688578008;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uJWjucmDPTXfbMwe1SRcLRIuk2JWHcCbplyVpJ51KmY=;
+ b=kna1XIYeRYxN5BAw9r2H+nGsRWPYaNfbo8YlUgDKKW5ckqEd/YZlhQnJt4EwBNv54j
+ CChEsSJtOcL2viwmYooGcCPW3brpnUyiiwMItnPgrzkdg8mohllhI7UvxzAVicAr2Kvv
+ ZGsPOMzgCjT42000YNxYXFMpkD1kIPmqzs0CWcP92YyWqldXpVlelEgDHz84o+HMFmB0
+ ede25s4VKMHMwfC+wRc/nZg/q6qGyDbxs2gUhziw3whJxpiI19L22azzaacfPaNs9UHr
+ zBqYfVYmlCAhmB779g2u41W0WncExRs//P8jf7T2xkVzhsCoiLtkz5A7JEqZuRZqLGhI
+ xRkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685984261; x=1688576261;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YYlWyb35oaGV2RAW1P1z3foclDFSFWpLwoV/QCixS5Q=;
- b=fBxgh9FbShDeAQpkLEjihh+ucriHou4ttS+9D6F+UCGfDLal7YLCrI+N4ryyRTdh0q
- KHTrK+/CzNVhv0uOh97yxkrdbOjjvL0ZW3nZe3sFrHCkYiGr9y4OgZCV5Ur9tLOov0aG
- cYOjRH41Duvt9pBfE/K6xB2tKYdV4YXsCuoxiwCeOeZDx18nVq1uHMmiYYJGBZaXPZMF
- tvqvhcviVN0PKJ2ouaA72UnvcQX7Vryq5YPs+mvA1seillz92tPWtRQZ7Eauq2XcMN3H
- bPSG19Z9tMNTRqrgz0GQrcwainfdnEn+Oi0gSe95yZQoH6ODrf9iAnVuoJwl8fgkOreI
- LBFw==
-X-Gm-Message-State: AC+VfDygoD+6fqHqB5/ekA7Sfs8zAilZRdqTtKetSnYZL7SiFWl2Qnh2
- vIBQjFI3Uf6i8/ZYXOQgOSzR19hv2vIzKPd8wsJjC5i8Yk6P1X8kiCLqy1KVXkpgbVsNovL2ER5
- b6n6z3i8urKRkO0I=
-X-Received: by 2002:a37:a84c:0:b0:75b:23a1:69e7 with SMTP id
- r73-20020a37a84c000000b0075b23a169e7mr17977813qke.7.1685984261607; 
- Mon, 05 Jun 2023 09:57:41 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6zQ0nP0PNx6YuufZjHpf9R/wWfeuTJyNaEtmpwr2BlA6HjoxW33jPHLylARNUm9GdXq6YoeA==
-X-Received: by 2002:a37:a84c:0:b0:75b:23a1:69e7 with SMTP id
- r73-20020a37a84c000000b0075b23a169e7mr17977796qke.7.1685984261297; 
- Mon, 05 Jun 2023 09:57:41 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- u22-20020a05620a121600b0075783f6c2b4sm4308899qkj.128.2023.06.05.09.57.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 09:57:40 -0700 (PDT)
-Date: Mon, 5 Jun 2023 12:57:38 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v3 03/15] hw/pci: Add a pci_device_iommu_memory_region()
- helper
-Message-ID: <ZH4UAtl1v8JDWsl1@x1n>
-References: <20230530175937.24202-1-joao.m.martins@oracle.com>
- <20230530175937.24202-4-joao.m.martins@oracle.com>
+ d=1e100.net; s=20221208; t=1685986008; x=1688578008;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uJWjucmDPTXfbMwe1SRcLRIuk2JWHcCbplyVpJ51KmY=;
+ b=ZWajqwgvnSU34m1w7aq8/KZRE+kZs9K34S5MHXo/1/nAUZ2UNPwRjk8pAtuPWX1sCw
+ 35K0hoaGuVN12e3fGFuX5Oq+n5QuMU9n+Yo2vvnEbh4DRYaeTDNtALf+3CmOa4ne+1Xp
+ o2W1DkNyQHzF0H3EWsXF6ph6VZZSELBYkgsU8TmYm8CNVXKhg/zh+3FloGy32Zc/4CFp
+ W9xXUylZN3Rm9PpuZ+ZsCpOpzpGAtt5HjOLwArLT7g5REIWVae01ntDIc2Qk7/JXzqKA
+ PeI2oXIiNJMaNWuDw2fJ6DMEfe+H6xnWgT1ADkn8o7QzYzPN9esXmAeh7dm7nntWZpl3
+ 9bAA==
+X-Gm-Message-State: AC+VfDwzojYRx1EwKLGm28yPvKeRfzWouR4rq4fTt2h6MW/ipLoVs3VY
+ xmkd38fCVLx14QlU7mT6fJBnqA==
+X-Google-Smtp-Source: ACHHUZ4Q/JSG5ZCobxYFUIMK8aognRgThDT6XJKa1od56/fVj35sYmGCu0CAG68EvO+ELk2oKFcgHQ==
+X-Received: by 2002:a05:6a20:9388:b0:10d:d18b:95ce with SMTP id
+ x8-20020a056a20938800b0010dd18b95cemr9854181pzh.22.1685986008563; 
+ Mon, 05 Jun 2023 10:26:48 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
+ ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
+ by smtp.gmail.com with ESMTPSA id
+ x41-20020a056a000be900b006468222af91sm5482292pfu.48.2023.06.05.10.26.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 10:26:48 -0700 (PDT)
+Message-ID: <f3070fb9-e175-eadc-e4bd-c0395b593195@linaro.org>
+Date: Mon, 5 Jun 2023 10:26:46 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230530175937.24202-4-joao.m.martins@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 0/3] qemu-sparc queue 20230605
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230605113253.455937-1-mark.cave-ayland@ilande.co.uk>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230605113253.455937-1-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,19 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 06:59:25PM +0100, Joao Martins wrote:
-> Much like pci_device_iommu_address_space() fetches the IOMMU AS, add a
-> pci_device_iommu_memory_region() which lets it return an the IOMMU MR
-> associated with it. The IOMMU MR is returned correctly for vIOMMUs using
-> pci_setup_iommu_info(). Note that today most vIOMMUs create the address
-> space and IOMMU MR at the same time, it's just mainly that there's API
-> to make the latter available.
+On 6/5/23 04:32, Mark Cave-Ayland wrote:
+> The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
+> 
+>    Merge tag 'migration-20230602-pull-request' ofhttps://gitlab.com/juan.quintela/qemu  into staging (2023-06-02 17:33:29 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/mcayland/qemu.git  tags/qemu-sparc-20230605
+> 
+> for you to fetch changes up to 36c9189890bfb936b1b086da639e37fd92b50215:
+> 
+>    hw/isa/i82378: Remove unused "io" attribute (2023-06-05 07:43:23 +0100)
+> 
+> ----------------------------------------------------------------
+> qemu-sparc queue
+> 
+> Hi Richard,
+> 
+> This is one of Bernhard's cleanup series where all patches have been
+> reviewed/acked. Please apply.
 
-Have you looked into other archs outside x86?  IIRC on some other arch one
-address space can have >1 IOMMU memory regions.. at least with such AS and
-MR layering it seems always possible?  Thanks,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
--- 
-Peter Xu
-
+r~
 
