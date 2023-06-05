@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728B4722635
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF9D72264C
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q69bM-0000hi-1W; Mon, 05 Jun 2023 08:46:24 -0400
+	id 1q69cm-0002AT-AP; Mon, 05 Jun 2023 08:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69bH-0000fi-Gu
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:46:19 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q69ck-0002AG-I2
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:47:50 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69bF-0005RN-Up
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:46:19 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-30ae967ef74so3758075f8f.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:46:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q69ch-0005e7-HL
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:47:50 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4f5021faa16so5980191e87.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685969175; x=1688561175;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=W6iqa7J5MfH/ldlETnZpjE1piS6ASQbcHx/ap6VcnNk=;
- b=AcyxN07zHqMOIjNZH9McfdMde0HTIonyd5IwqWphGJ7mfplWsZOkF3D3v/DCiRSYUp
- 1WSlBuLxQrGx5sA8gcgkquSNmk0l8QSWzESDWi7GBC+rj7GDJsrEMIzHt4ewawHoE4T7
- r0T66Q+O1Dros1r+NAIPd1o9QS8lrcuSoOHZKq38LUxRQJ7CqSccoDYOawQU+RjSaX6X
- cxCF8nvvOLAHAyhbrAMz5rz7ndx/MP9yYYG6NVExtmY+N6ENm1gNGBeUyXYP+IFbR2Ey
- BWUXqm67vqoHE6oCkN/9xxmfIJJTu9z71JBfrFVtX19elNFSbf+oO1Y4OAcFUGbtMhwF
- f4tA==
+ d=linaro.org; s=google; t=1685969266; x=1688561266;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=98A0xLPdd3gqKbvW+GkrPw0wu0IVK5fSAGh+KgYuRdA=;
+ b=cNzJ3qtUMjGPYhFR+cS6VycnIkArzRArd7VppeiiSJEpYKN49QNqIdaOd3PxB22t6A
+ eKwDzpG7trSlcHrRkDs8B5IGcO0Mrfb50Q2kIj1Mxe+Zrr6HWjsfWBYj9L/A0trLpRGZ
+ sfPqHxqAITTw2YDiVXpfBwJsWIjN8MxQebeLdoWslgNWTeZjUeBkMoh0At4l+QQuW5g5
+ m8GxCVPnNWRb5KzpK63WS8G5EBGncOPaNmqZHBQyIyKXO7eKh8/yK/UtxSFSSx+6wWqI
+ FdknuTC9Erhqj7ik9BzM6sDwH2i30w94e2BY3dfGVh1rjB2BfbM7SpNDS8e3xX86o/k2
+ ch4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685969175; x=1688561175;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W6iqa7J5MfH/ldlETnZpjE1piS6ASQbcHx/ap6VcnNk=;
- b=Ely2N8XdcdPesCx9sINCCfTIG7sQQRdY6MwSqtGnk/5oODxha7tBSYjmtr9ZjZGBP6
- ZwFWORsxOevA6rQJOHxF2Chhe6w1fybLIUP6ljwG+Z7LHiHXeGi9Fzm/u0F70YUukeEr
- g2CmSxG558rdlWDDel+XHwW25xqY2bL0j74tnZOHDdp1tCO/78OvKo9H4gzxNNH67dDr
- 9av9fyMHYqZ7f1L7bGSj53jQmuzVypBpwkRi7HZBLEa8WA9q4arQp8WbmIIi6yJ0oiof
- GM+uIZcCFaHnwXv0SAfJvrRMDOL+g1KDGVRdvoOyYxmOGVXixS1IvEG7yKH1dQNCJZYl
- 4X+g==
-X-Gm-Message-State: AC+VfDwKaebb51c+dN6tw7ZtWVR+04bV9vopzXE7EB8zjWwQO3CNdR7m
- Z3jbaVMYIz+zMUn61srtctu/yw==
-X-Google-Smtp-Source: ACHHUZ7Odvxn0Mlozt+ycRjmjFKT4zP1wfv20HkpbmhFRVrkHgfFBeJj4zfRj0vVpuAq1AY285ayMw==
-X-Received: by 2002:a5d:480b:0:b0:30e:46c3:a179 with SMTP id
- l11-20020a5d480b000000b0030e46c3a179mr1107321wrq.30.1685969175021; 
- Mon, 05 Jun 2023 05:46:15 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.217.157])
- by smtp.gmail.com with ESMTPSA id
- c18-20020adfed92000000b0030ae499da59sm9698978wro.111.2023.06.05.05.46.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 05:46:14 -0700 (PDT)
-Message-ID: <266ca9ed-2c0e-290c-efaf-5086875030a2@linaro.org>
-Date: Mon, 5 Jun 2023 14:46:12 +0200
+ d=1e100.net; s=20221208; t=1685969266; x=1688561266;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=98A0xLPdd3gqKbvW+GkrPw0wu0IVK5fSAGh+KgYuRdA=;
+ b=EG1se8uc87aSjp+LEfroz7CN3wxdzfp213WPcCzvaf5TvW+WzDvY2y1792+tEqqnh+
+ JryHcFw4H6t7i1dwDUY+dbHHZff44rUn2jM5Re6jO52PuvwN+aU/HjXXgzmN9tP3Z/LF
+ isljIOej3sG1RvyxaNJ3EMX3PhGqYcFlPY+8MNdINZM3J2d4FxfLkUciQnwRriV3WfW2
+ c9+Gy0S9HW7ienhPa9yIcxhTT7CzSx+wxbuaCnPpvMCLq2t96Y0reZDrcFSXcDfI+iO8
+ gslmMzFXPyuN3RrakxZrExgLy49GKi4B86yQFDTPijJWW3o2Tn3XOFtp54KIc83C430F
+ BX6g==
+X-Gm-Message-State: AC+VfDx+m4JZ5gnMaGqdZ1XyGXinTIixka0yfWPyPXUNisZko8r/0vpJ
+ ee0Gq+I+rGfEprhB68hZZarwJuyvfnew38+IHPZMAw==
+X-Google-Smtp-Source: ACHHUZ4P7t0CaVP1jC1NXfYeRBkCEYlYckdwWjhkvO6zeI+uBQK/s3vxVkwG+psjAvHKC/hfbvCENWrlAMLHi4IlkII=
+X-Received: by 2002:a19:7014:0:b0:4f3:982a:8be1 with SMTP id
+ h20-20020a197014000000b004f3982a8be1mr5566012lfc.69.1685969265713; Mon, 05
+ Jun 2023 05:47:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3 20/23] q800: don't access Nubus bus directly from the
- mac-nubus-bridge device
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-21-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230604131450.428797-21-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <CAFEAcA8oS7fOr9Ro6Z9G5UW6FbgwTo3BTcGL4ELdVc_G7O5Obg@mail.gmail.com>
+ <ZH3HGs8DNQg/Pnlt@redhat.com>
+In-Reply-To: <ZH3HGs8DNQg/Pnlt@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 5 Jun 2023 13:47:12 +0100
+Message-ID: <CAFEAcA8EVqdHNiqVPjc-1dA9L4uMpkuZiozE_ScUkAF_PStHCA@mail.gmail.com>
+Subject: Re: vmovqdu/vmovqda inline asm doesn't compile on macos catalina
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,16 +88,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/6/23 15:14, Mark Cave-Ayland wrote:
-> Instead use the qdev_get_child_bus() function which is intended for this exact
-> purpose.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-> ---
->   hw/m68k/q800.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, 5 Jun 2023 at 12:29, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
+>
+> On Mon, Jun 05, 2023 at 11:55:43AM +0100, Peter Maydell wrote:
+> > I just noticed that the recent atomicity changes introduce a build
+> > failure on x86 macos (Catalina). Now if we wanted to, we can say "this
+> > is too old and outside our support policy", of course...
+>
+> Catalina is version 10.
+>
+> Current Ventura is version 13.
+>
+> So it fails our 'two latest releases" requirement.
+>
+> More importantly, IIUC, Apple have discontinued support for Catalina
+> with its EOL date being Sep 2022.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yeah; as I say I'm going to have to decommission the machine
+pretty soonish anyhow.
 
+> Having said all that, what matters more for macOS is the toolchain
+> version rather than the OS version. We have very little that is
+> directly dependent on the OS version. Most of our library deps come
+> from HomeBrew, so it is mostly compiler compatibility that we are
+> targetting for macOS.
+>
+> What clang version are you seeing this failure with ?
+
+This is "Apple clang version 12.0.0 (clang-1200.0.32.29)".
+
+> > (I don't know if newer x86 macos is OK -- this machine can't
+> > upgrade to anything newer than Catalina. So it's due to be
+> > decommissioned pretty soon anyway.)
+>
+> x86 macOS is also now a testing void for our CI too, since
+> Cirrus CI switched exclusively to aarch64 :-(
+>
+> So we're entirely reliant on someone having macOS x86 hardware
+> and being personally willing& able to send us testing reports
+> of any compile bugs.
+
+Right. That used to be me, on this machine, to some extent.
+It won't be that any more by the end of summer...
+
+-- PMM
 
