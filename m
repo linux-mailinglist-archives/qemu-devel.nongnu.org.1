@@ -2,99 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DFD7232E8
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 985A37232E9
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:06:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6IL4-00032M-If; Mon, 05 Jun 2023 18:06:10 -0400
+	id 1q6ILM-00033V-6J; Mon, 05 Jun 2023 18:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q6IL2-00030J-7O
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:06:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q6ILK-000337-Lh; Mon, 05 Jun 2023 18:06:26 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q6IL0-0004gw-0j
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:06:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686002765;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EOTo8ObmW8+t8tUERnfnep33sRdUjYgqRsSpUH3L9EY=;
- b=SeC5/SM4OUuF/hV0RYNgstyol+lXvSL5K3gnbhi79ULJZRrQ/8VJwz2znAXcpwUrf+guMr
- 1/KKljou33tTvT/csNp8dQh9KBCT0hqp4tiCdRev/csyZndE84kgXaHMTPU/NTINgv2I5R
- /OsyN595/pwPtUbhOS+EC2hKgnz8QIs=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-482-kectFCnPOQmxSFmq_GFDWg-1; Mon, 05 Jun 2023 18:06:03 -0400
-X-MC-Unique: kectFCnPOQmxSFmq_GFDWg-1
-Received: by mail-io1-f71.google.com with SMTP id
- ca18e2360f4ac-777b6a2582dso114469039f.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:06:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686002763; x=1688594763;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EOTo8ObmW8+t8tUERnfnep33sRdUjYgqRsSpUH3L9EY=;
- b=APGi7i+P4+Eqj6zWnAFfEHYjs7khYRoTfVqNXvV3u9Upr1Z2Ki6nqKA1kPgDMCYgC1
- Bd40JTN7mhA8n/0u1dBs7em3F5WW2WQh+nyB1WW3BGiQVvA9t4yBmVyuU0wwHv2FacIW
- PMnYAfImX1nccN91tGi5lNQMrUa5bNgniTM1G9zsdcGnqXqe73aqJS5/o1Z4MxN7Fv+3
- i4wuxhxDxOQos75NOR7Pi3GoFhbuNSi73cai7lImnyxsyICFHXk/D/lbOmzPigH9qNmB
- vFv0lrlcN8u9Rv+vqBmmVcmTsxqgwhyNH/soTTznkLEH20GYZP9Nt36LJya+caVsEErN
- yRkw==
-X-Gm-Message-State: AC+VfDzgrKStKr9R7bJmPYei9ZAvVryhcCGxg3ipupu2V/m9w+Wx9dWK
- anIim2LtPXcdCC/vtGXv9hdMABM57ofNo2gNdacQzhIIu434W87PiXWQD2qBQPwApAgvw+oivgf
- 4D/Laef7rt+lCC+M=
-X-Received: by 2002:a5e:8307:0:b0:777:b531:eb57 with SMTP id
- x7-20020a5e8307000000b00777b531eb57mr422527iom.1.1686002762754; 
- Mon, 05 Jun 2023 15:06:02 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5MeHPRIPQISVqXPBFbTADoXxA1GuMsp7bvBO5MwgfxuHPLvhKsxtLHdddUTArTAO6y3AlNJw==
-X-Received: by 2002:a5e:8307:0:b0:777:b531:eb57 with SMTP id
- x7-20020a5e8307000000b00777b531eb57mr422501iom.1.1686002762430; 
- Mon, 05 Jun 2023 15:06:02 -0700 (PDT)
-Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
- t2-20020a5d8842000000b0076373f90e46sm2892116ios.33.2023.06.05.15.06.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 15:06:01 -0700 (PDT)
-Date: Mon, 5 Jun 2023 16:06:00 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: <qemu-devel@nongnu.org>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>, Juan Quintela
- <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Yishai Hadas
- <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb
- <maorg@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta
- <targupta@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: Re: [PATCH v5 2/9] migration: Implement switchover ack logic
-Message-ID: <20230605160600.7df0993e.alex.williamson@redhat.com>
-In-Reply-To: <20230530144821.1557-3-avihaih@nvidia.com>
-References: <20230530144821.1557-1-avihaih@nvidia.com>
- <20230530144821.1557-3-avihaih@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q6ILI-0004ok-ET; Mon, 05 Jun 2023 18:06:26 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 99FD2746369;
+ Tue,  6 Jun 2023 00:06:22 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 36771746361; Tue,  6 Jun 2023 00:06:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3481074632B;
+ Tue,  6 Jun 2023 00:06:22 +0200 (CEST)
+Date: Tue, 6 Jun 2023 00:06:22 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+cc: Richard Henderson <richard.henderson@linaro.org>, qemu-trivial@nongnu.org, 
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
+In-Reply-To: <87o7mb5xp9.fsf@linaro.org>
+Message-ID: <36428685-722e-ce1f-7061-61227cb36222@eik.bme.hu>
+References: <20230520205444.887287457E7@zero.eik.bme.hu>
+ <874jo47cnd.fsf@linaro.org> <aaa22b3f-d548-5a69-489a-5777a7e98cef@eik.bme.hu>
+ <87v8gk5m7p.fsf@linaro.org> <49c4781a-1e91-85ef-d9cb-6996e9bbb10c@eik.bme.hu>
+ <ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
+ <87o7mb5xp9.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1434262903-1686002782=:78702"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,328 +63,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 30 May 2023 17:48:14 +0300
-Avihai Horon <avihaih@nvidia.com> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> Implement switchover ack logic. This prevents the source from stopping
-> the VM and completing the migration until an ACK is received from the
-> destination that it's OK to do so.
-> 
-> To achieve this, a new SaveVMHandlers handler switchover_ack_needed()
-> and a new return path message MIG_RP_MSG_SWITCHOVER_ACK are added.
-> 
-> The switchover_ack_needed() handler is called during migration setup in
-> the destination to check if switchover ack is used by the migrated
-> device.
-> 
-> When switchover is approved by all migrated devices in the destination
-> that support this capability, the MIG_RP_MSG_SWITCHOVER_ACK return path
-> message is sent to the source to notify it that it's OK to do
-> switchover.
-> 
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> ---
->  include/migration/register.h |  2 ++
->  migration/migration.h        | 14 ++++++++++
->  migration/savevm.h           |  1 +
->  migration/migration.c        | 32 +++++++++++++++++++--
->  migration/savevm.c           | 54 ++++++++++++++++++++++++++++++++++++
->  migration/trace-events       |  3 ++
->  6 files changed, 104 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/migration/register.h b/include/migration/register.h
-> index a8dfd8fefd..90914f32f5 100644
-> --- a/include/migration/register.h
-> +++ b/include/migration/register.h
-> @@ -71,6 +71,8 @@ typedef struct SaveVMHandlers {
->      int (*load_cleanup)(void *opaque);
->      /* Called when postcopy migration wants to resume from failure */
->      int (*resume_prepare)(MigrationState *s, void *opaque);
-> +    /* Checks if switchover ack should be used. Called only in dest */
-> +    bool (*switchover_ack_needed)(void *opaque);
->  } SaveVMHandlers;
->  
->  int register_savevm_live(const char *idstr,
-> diff --git a/migration/migration.h b/migration/migration.h
-> index 48a46123a0..1e92ba7b1d 100644
-> --- a/migration/migration.h
-> +++ b/migration/migration.h
-> @@ -209,6 +209,13 @@ struct MigrationIncomingState {
->       * contains valid information.
->       */
->      QemuMutex page_request_mutex;
-> +
-> +    /*
-> +     * Number of devices that have yet to approve switchover. When this reaches
-> +     * zero an ACK that it's OK to do switchover is sent to the source. No lock
-> +     * is needed as this field is updated serially.
-> +     */
-> +    unsigned int switchover_ack_pending_num;
->  };
->  
->  MigrationIncomingState *migration_incoming_get_current(void);
-> @@ -437,6 +444,12 @@ struct MigrationState {
->  
->      /* QEMU_VM_VMDESCRIPTION content filled for all non-iterable devices. */
->      JSONWriter *vmdesc;
-> +
-> +    /*
-> +     * Indicates whether an ACK from the destination that it's OK to do
-> +     * switchover has been received.
-> +     */
-> +    bool switchover_acked;
->  };
->  
->  void migrate_set_state(int *state, int old_state, int new_state);
-> @@ -477,6 +490,7 @@ int migrate_send_rp_message_req_pages(MigrationIncomingState *mis,
->  void migrate_send_rp_recv_bitmap(MigrationIncomingState *mis,
->                                   char *block_name);
->  void migrate_send_rp_resume_ack(MigrationIncomingState *mis, uint32_t value);
-> +int migrate_send_rp_switchover_ack(MigrationIncomingState *mis);
->  
->  void dirty_bitmap_mig_before_vm_start(void);
->  void dirty_bitmap_mig_cancel_outgoing(void);
-> diff --git a/migration/savevm.h b/migration/savevm.h
-> index fb636735f0..e894bbc143 100644
-> --- a/migration/savevm.h
-> +++ b/migration/savevm.h
-> @@ -65,6 +65,7 @@ int qemu_loadvm_state(QEMUFile *f);
->  void qemu_loadvm_state_cleanup(void);
->  int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis);
->  int qemu_load_device_state(QEMUFile *f);
-> +int qemu_loadvm_approve_switchover(void);
->  int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
->          bool in_postcopy, bool inactivate_disks);
->  
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 5de7f734b9..c73261118c 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -78,6 +78,7 @@ enum mig_rp_message_type {
->      MIG_RP_MSG_REQ_PAGES,    /* data (start: be64, len: be32) */
->      MIG_RP_MSG_RECV_BITMAP,  /* send recved_bitmap back to source */
->      MIG_RP_MSG_RESUME_ACK,   /* tell source that we are ready to resume */
-> +    MIG_RP_MSG_SWITCHOVER_ACK, /* Tell source it's OK to do switchover */
->  
->      MIG_RP_MSG_MAX
->  };
-> @@ -760,6 +761,11 @@ bool migration_has_all_channels(void)
->      return true;
->  }
->  
-> +int migrate_send_rp_switchover_ack(MigrationIncomingState *mis)
-> +{
-> +    return migrate_send_rp_message(mis, MIG_RP_MSG_SWITCHOVER_ACK, 0, NULL);
-> +}
-> +
->  /*
->   * Send a 'SHUT' message on the return channel with the given value
->   * to indicate that we've finished with the RP.  Non-0 value indicates
-> @@ -1405,6 +1411,7 @@ void migrate_init(MigrationState *s)
->      s->vm_was_running = false;
->      s->iteration_initial_bytes = 0;
->      s->threshold_size = 0;
-> +    s->switchover_acked = false;
->  }
->  
->  int migrate_add_blocker_internal(Error *reason, Error **errp)
-> @@ -1721,6 +1728,7 @@ static struct rp_cmd_args {
->      [MIG_RP_MSG_REQ_PAGES_ID]   = { .len = -1, .name = "REQ_PAGES_ID" },
->      [MIG_RP_MSG_RECV_BITMAP]    = { .len = -1, .name = "RECV_BITMAP" },
->      [MIG_RP_MSG_RESUME_ACK]     = { .len =  4, .name = "RESUME_ACK" },
-> +    [MIG_RP_MSG_SWITCHOVER_ACK] = { .len =  0, .name = "SWITCHOVER_ACK" },
->      [MIG_RP_MSG_MAX]            = { .len = -1, .name = "MAX" },
->  };
->  
-> @@ -1959,6 +1967,11 @@ retry:
->              }
->              break;
->  
-> +        case MIG_RP_MSG_SWITCHOVER_ACK:
-> +            ms->switchover_acked = true;
-> +            trace_source_return_path_thread_switchover_acked();
-> +            break;
-> +
->          default:
->              break;
->          }
-> @@ -2700,6 +2713,20 @@ static void migration_update_counters(MigrationState *s,
->                                bandwidth, s->threshold_size);
->  }
->  
-> +static bool migration_can_switchover(MigrationState *s)
-> +{
-> +    if (!migrate_switchover_ack()) {
-> +        return true;
-> +    }
-> +
-> +    /* No reason to wait for switchover ACK if VM is stopped */
-> +    if (!runstate_is_running()) {
-> +        return true;
-> +    }
+--3866299591-1434262903-1686002782=:78702
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Is it possible for QEMU to force the migration to continue regardless
-of receiving an ack from the target and is this the check that would
-allow that?
+On Tue, 23 May 2023, Alex Bennée wrote:
+> Richard Henderson <richard.henderson@linaro.org> writes:
+>> On 5/22/23 15:26, BALATON Zoltan wrote:
+>>> On Mon, 22 May 2023, Alex Bennée wrote:
+>>>> (ajb: add Richard for his compiler-fu)
+>>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>>>> On Mon, 22 May 2023, Alex Bennée wrote:
+>>>>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>>>>>
+>>>>>>> The low level extract and deposit funtions provided by bitops.h are
+>>>>>>> used in performance critical places. It crept into target/ppc via
+>>>>>>> FIELD_EX64 and also used by softfloat so PPC code using a lot of FPU
+>>>>>>> where hardfloat is also disabled is doubly affected.
+>>>>>>
+>>>>>> Most of these asserts compile out to nothing if the compiler is able to
+>>>>>> verify the constants are in the range. For example examining
+>>>>>> the start of float64_add:
+>>>>>>
+>>>> <snip>
+>>>>>>
+>>>>>> I don't see any check and abort steps because all the shift and mask
+>>>>>> values are known at compile time. The softfloat compilation certainly
+>>>>>> does have some assert points though:
+>>>>>>
+>>>>>> readelf -s ./libqemu-ppc64-softmmu.fa.p/fpu_softfloat.c.o  |grep assert
+>>>>>>   136: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND g_assertion_mess[...]
+>>>>>>   138: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND __assert_fail
+>>>>>>
+>>>>>> but the references are for the ISRA segments so its tricky to know if
+>>>>>> they get used or are just there for LTO purposes.
+>>>>>>
+>>>>>> If there are hot-paths that show up the extract/deposit functions I
+>>>>>> suspect a better approach would be to implement _nocheck variants (or
+>>>>>> maybe _noassert?) and use them where required rather than turning off
+>>>>>> the assert checking for these utility functions.
+>>>>>
+>>>>> Just to clarify again, the asserts are still there when compiled with
+>>>>> --enable-debug. The patch only turns them off for optimised release
+>>>>> builds which I think makes sense if these asserts are to catch
+>>>>> programming errors.
+>>>>
+>>>> Well as Peter said the general policy is to keep asserts in but I
+>>>> appreciate this is a hotpath case.
+>>>>
+>>>>> I think I've also suggested adding noassert
+>>>>> versions of these but that wasn't a popular idea and it may also not
+>>>>> be easy to convert all places to use that like for example the
+>>>>> register fields related usage in target/ppc as that would also affect
+>>>>> other places.
+>>>>
+>>>> Is code generation or device emulation really on the hot-path. Generally
+>>>> a well predicted assert is in the noise for those operations.
+>>> They aren't in code generation but in helpers as you can also see in
+>>> the profile below and so they can be on hot path. Also I've noticed
+>>> that extract8 and extract16 just call extract32 after adding another
+>>> assert on their own in addition to the one in extract32 which is
+>>> double overhead for really no reason. I'd delete all these asserts
+>>> as the likelhood of bugs these could catch is very low anyway (how
+>>> often do you expect somebody to call these with out of bound values
+>>> that would not be obvious from the results otherwise?) but leaving
+>>> them in non-debug builds is totally useless in my opinion.
+>>>
+>>>>> So this seems to be the simplest and most effective
+>>>>> approach.
+>>>>>
+>>>>> The softfloat related usage in these tests I've done seem to mostly
+>>>>> come from unpacking and repacking floats in softfloat which is done
+>>>>> for every operation, e.g. muladd which mp3 encoding mostly uses does 3
+>>>>> unpacks and 1 pack for each call and each unpack is 3 extracts so even
+>>>>> small overheads add app quickly. Just 1 muladd will result in 9
+>>>>> extracts and 2 deposits at least plus updating PPC flags for each FPU
+>>>>> op adds a bunch more. I did some profiling with perf to find these.
+>>>>
+>>>> After some messing about trying to get lame to cross compile to a static
+>>>> binary I was able to replicate what you've seen:
+>>>>
+>>>>  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+>>>>  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+>>>>   8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+>>>>   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+>>>>   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+>>>>   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+>>>>   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+>>>>   3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+>>>>   3.32%  qemu-ppc64  qemu-ppc64               [.] helper_todouble
+>>>>   2.68%  qemu-ppc64  qemu-ppc64               [.] float64_add
+>>>>   2.51%  qemu-ppc64  qemu-ppc64               [.] float64_hs_compare
+>>>>   2.30%  qemu-ppc64  qemu-ppc64               [.] float64r32_muladd
+>>>>   1.80%  qemu-ppc64  qemu-ppc64               [.] float64r32_mul
+>>>>   1.40%  qemu-ppc64  qemu-ppc64               [.] float64r32_add
+>>>>   1.34%  qemu-ppc64  qemu-ppc64               [.] parts64_mul
+>>>>   1.16%  qemu-ppc64  qemu-ppc64               [.] parts64_addsub
+>>>>   1.14%  qemu-ppc64  qemu-ppc64               [.] helper_reset_fpstatus
+>>>>   1.06%  qemu-ppc64  qemu-ppc64               [.] helper_float_check_status
+>>>>   1.04%  qemu-ppc64  qemu-ppc64               [.] float64_muladd
+>>> I've run 32 bit PPC version in qemu-system-ppc so the profile is a
+>>> bit different (has more system related overhead that I plan to look
+>>> at separately) but this part is similar to the above. I also wonder
+>>> what makes helper_compute_fprf_float64 a bottleneck as that does not
+>>> seem to have much extract/deposit, only a call to clz but it's hard
+>>> to tell what it really does due to nested calls and macros. I've
+>>> also seen this function among the top contenders in my profiling.
+>>>
+>>>> what I find confusing is the fact the parts extraction and packing
+>>>> should all be known constants which should cause the asserts to
+>>>> disappear. However it looks like the compiler decided to bring in a copy
+>>>> of the whole inline function (ISRA = >interprocedural scalar replacement
+>>>> of aggregates) which obviously can't fold the constants and eliminate
+>>>> the assert.
+>>> Could it be related to that while the parts size and start are
+>>> marked const but pulled out of a struct field so the compiler may
+>>> not know their actual value until run time?
+>>>
+>>>> Richard,
+>>>>
+>>>> Any idea of why the compiler might decide to do something like this?
+>>
+>> Try this.
+>
+> That seems to have done the trick, translated code is now dominating the
+> profile:
+>
+> +   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619420
+> +   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000616850
+> +   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+> +   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 0x000000400061bf70
+> +    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+> +    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+> +    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize.constprop.0
+> +    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000620130
+> +    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619400
+> +    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+> +    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 0x00000040006167e0
+> +    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000b693fcffffd3
+> +    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+> +    4.79%     0.00%  qemu-ppc64  [unknown]                [.] 0xfaff203940fe8240
+> +    4.29%     3.82%  qemu-ppc64  qemu-ppc64               [.] float64r32_muladd
+> +    4.20%     3.87%  qemu-ppc64  qemu-ppc64               [.] helper_todouble
+> +    3.51%     2.98%  qemu-ppc64  qemu-ppc64               [.] float64r32_mul
+> +    3.12%     2.97%  qemu-ppc64  qemu-ppc64               [.] float64_hs_compare
+> +    3.06%     2.95%  qemu-ppc64  qemu-ppc64               [.] float64_add
+> +    2.88%     2.35%  qemu-ppc64  qemu-ppc64               [.] float64r32_add
+> +    2.65%     0.00%  qemu-ppc64  [unknown]                [.] 0x6c555e9100004039
+> +    2.55%     1.30%  qemu-ppc64  qemu-ppc64               [.] helper_float_check_status
+>
+> eyeballing the float functions and I can't see any asserts expressed.
+>
+> Before:
+>
+> Executed in  721.65 secs    fish           external
+>   usr time  721.38 secs  561.00 micros  721.38 secs
+>   sys time    0.20 secs  261.00 micros    0.20 secs
+>
+> After:
+>
+> Executed in  650.38 secs    fish           external
+>   usr time  650.11 secs    0.00 micros  650.11 secs
+>   sys time    0.20 secs  989.00 micros    0.20 secs
+>>
+>>
+>> r~
+>>
+>> [2. text/x-patch; z.patch]...
 
-It seems that we don't know the downtime allowed for the VM in any of
-this, nor do we know how much time the target device will require to
-generate an ack, but we could certainly have conditions where the
-priority is moving the VM from the source host regardless of the
-resulting downtime.
+Will this be submitted as a proper patch and merged? This improves 
+softfloat important for target/ppc where hardfloat is disabled. I guess 
+you can also add
 
-Also does the return path requirement preclude offline migration or
-does the above again take care of that if we pause the VM for an
-offline migration (ex. save to and restore from file)?  Thanks,
+Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
 
-Alex
+and Alex also did testing above. This is just pinging it so it's not 
+forgotten. Thank you.
 
-> +
-> +    return s->switchover_acked;
-> +}
-> +
->  /* Migration thread iteration status */
->  typedef enum {
->      MIG_ITERATE_RESUME,         /* Resume current iteration */
-> @@ -2715,6 +2742,7 @@ static MigIterateState migration_iteration_run(MigrationState *s)
->  {
->      uint64_t must_precopy, can_postcopy;
->      bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
-> +    bool can_switchover = migration_can_switchover(s);
->  
->      qemu_savevm_state_pending_estimate(&must_precopy, &can_postcopy);
->      uint64_t pending_size = must_precopy + can_postcopy;
-> @@ -2727,14 +2755,14 @@ static MigIterateState migration_iteration_run(MigrationState *s)
->          trace_migrate_pending_exact(pending_size, must_precopy, can_postcopy);
->      }
->  
-> -    if (!pending_size || pending_size < s->threshold_size) {
-> +    if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
->          trace_migration_thread_low_pending(pending_size);
->          migration_completion(s);
->          return MIG_ITERATE_BREAK;
->      }
->  
->      /* Still a significant amount to transfer */
-> -    if (!in_postcopy && must_precopy <= s->threshold_size &&
-> +    if (!in_postcopy && must_precopy <= s->threshold_size && can_switchover &&
->          qatomic_read(&s->start_postcopy)) {
->          if (postcopy_start(s)) {
->              error_report("%s: postcopy failed to start", __func__);
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index 03795ce8dc..285b814726 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -2360,6 +2360,21 @@ static int loadvm_process_command(QEMUFile *f)
->              error_report("CMD_OPEN_RETURN_PATH failed");
->              return -1;
->          }
-> +
-> +        /*
-> +         * Switchover ack is enabled but no device uses it, so send an ACK to
-> +         * source that it's OK to switchover. Do it here, after return path has
-> +         * been created.
-> +         */
-> +        if (migrate_switchover_ack() && !mis->switchover_ack_pending_num) {
-> +            int ret = migrate_send_rp_switchover_ack(mis);
-> +            if (ret) {
-> +                error_report(
-> +                    "Could not send switchover ack RP MSG, err %d (%s)", ret,
-> +                    strerror(-ret));
-> +                return ret;
-> +            }
-> +        }
->          break;
->  
->      case MIG_CMD_PING:
-> @@ -2586,6 +2601,23 @@ static int qemu_loadvm_state_header(QEMUFile *f)
->      return 0;
->  }
->  
-> +static void qemu_loadvm_state_switchover_ack_needed(MigrationIncomingState *mis)
-> +{
-> +    SaveStateEntry *se;
-> +
-> +    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-> +        if (!se->ops || !se->ops->switchover_ack_needed) {
-> +            continue;
-> +        }
-> +
-> +        if (se->ops->switchover_ack_needed(se->opaque)) {
-> +            mis->switchover_ack_pending_num++;
-> +        }
-> +    }
-> +
-> +    trace_loadvm_state_switchover_ack_needed(mis->switchover_ack_pending_num);
-> +}
-> +
->  static int qemu_loadvm_state_setup(QEMUFile *f)
->  {
->      SaveStateEntry *se;
-> @@ -2789,6 +2821,10 @@ int qemu_loadvm_state(QEMUFile *f)
->          return -EINVAL;
->      }
->  
-> +    if (migrate_switchover_ack()) {
-> +        qemu_loadvm_state_switchover_ack_needed(mis);
-> +    }
-> +
->      cpu_synchronize_all_pre_loadvm();
->  
->      ret = qemu_loadvm_state_main(f, mis);
-> @@ -2862,6 +2898,24 @@ int qemu_load_device_state(QEMUFile *f)
->      return 0;
->  }
->  
-> +int qemu_loadvm_approve_switchover(void)
-> +{
-> +    MigrationIncomingState *mis = migration_incoming_get_current();
-> +
-> +    if (!mis->switchover_ack_pending_num) {
-> +        return -EINVAL;
-> +    }
-> +
-> +    mis->switchover_ack_pending_num--;
-> +    trace_loadvm_approve_switchover(mis->switchover_ack_pending_num);
-> +
-> +    if (mis->switchover_ack_pending_num) {
-> +        return 0;
-> +    }
-> +
-> +    return migrate_send_rp_switchover_ack(mis);
-> +}
-> +
->  bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
->                    bool has_devices, strList *devices, Error **errp)
->  {
-> diff --git a/migration/trace-events b/migration/trace-events
-> index cdaef7a1ea..5259c1044b 100644
-> --- a/migration/trace-events
-> +++ b/migration/trace-events
-> @@ -7,6 +7,7 @@ qemu_loadvm_state_section_partend(uint32_t section_id) "%u"
->  qemu_loadvm_state_post_main(int ret) "%d"
->  qemu_loadvm_state_section_startfull(uint32_t section_id, const char *idstr, uint32_t instance_id, uint32_t version_id) "%u(%s) %u %u"
->  qemu_savevm_send_packaged(void) ""
-> +loadvm_state_switchover_ack_needed(unsigned int switchover_ack_pending_num) "Switchover ack pending num=%u"
->  loadvm_state_setup(void) ""
->  loadvm_state_cleanup(void) ""
->  loadvm_handle_cmd_packaged(unsigned int length) "%u"
-> @@ -23,6 +24,7 @@ loadvm_postcopy_ram_handle_discard_end(void) ""
->  loadvm_postcopy_ram_handle_discard_header(const char *ramid, uint16_t len) "%s: %ud"
->  loadvm_process_command(const char *s, uint16_t len) "com=%s len=%d"
->  loadvm_process_command_ping(uint32_t val) "0x%x"
-> +loadvm_approve_switchover(unsigned int switchover_ack_pending_num) "Switchover ack pending num=%u"
->  postcopy_ram_listen_thread_exit(void) ""
->  postcopy_ram_listen_thread_start(void) ""
->  qemu_savevm_send_postcopy_advise(void) ""
-> @@ -180,6 +182,7 @@ source_return_path_thread_loop_top(void) ""
->  source_return_path_thread_pong(uint32_t val) "0x%x"
->  source_return_path_thread_shut(uint32_t val) "0x%x"
->  source_return_path_thread_resume_ack(uint32_t v) "%"PRIu32
-> +source_return_path_thread_switchover_acked(void) ""
->  migration_thread_low_pending(uint64_t pending) "%" PRIu64
->  migrate_transferred(uint64_t tranferred, uint64_t time_spent, uint64_t bandwidth, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " max_size %" PRId64
->  process_incoming_migration_co_end(int ret, int ps) "ret=%d postcopy-state=%d"
-
+Regards,
+BALATON Zoltan
+--3866299591-1434262903-1686002782=:78702--
 
