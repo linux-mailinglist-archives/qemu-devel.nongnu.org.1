@@ -2,66 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C269722482
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA5072247B
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:25:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q68JP-00076p-Hg; Mon, 05 Jun 2023 07:23:47 -0400
+	id 1q68JS-00077i-I7; Mon, 05 Jun 2023 07:23:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q68JJ-00075w-I1; Mon, 05 Jun 2023 07:23:41 -0400
+ id 1q68JO-00076I-4e; Mon, 05 Jun 2023 07:23:46 -0400
 Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q68JH-00065l-Q4; Mon, 05 Jun 2023 07:23:41 -0400
+ id 1q68JL-00066C-DE; Mon, 05 Jun 2023 07:23:44 -0400
 Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-256422ad25dso1895861a91.0; 
- Mon, 05 Jun 2023 04:23:38 -0700 (PDT)
+ 98e67ed59e1d1-256e1d87998so3973032a91.3; 
+ Mon, 05 Jun 2023 04:23:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685964217; x=1688556217;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dg7ZPL0roivSyiEPf2iIkZLzzksa+gj3tc/Gt9FD0Zs=;
- b=B7VB/7u4+fPocNIn83ZLJt8P5Jxw+eRdn3AD1BbrJ/1ObJk0k1tL0M1z4RMfyl5EAT
- 3dndRuvXW5fbArJ17RVZTzmvhFQ4Logu7ljOEqWQ3zs4rqVKWDbOdyNXonpO1F7yloLh
- d1VOeo/2J5K8YhZZjzDxeSWWV12ZAzkolGkhHLsGlL/b2DDZhEIbnk/GWWO2aefqLL0w
- TnWdOK9w7hqgCMV2XOg395ptqimXTf/kbkYfTa2kI7L90gFBf85y6r39LE/iS9YYbVVe
- STAbdATHwnWBXKQm302M8+WO0jTpDZu2+XGDJUEdzHh0euN6vRaPlDGdx+A//u2rc5LR
- 5Wgw==
+ d=gmail.com; s=20221208; t=1685964221; x=1688556221;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+zDOlRWUdwkqrj6xE/PQNHSscfk1SuhL8JkNfMoqHPQ=;
+ b=dDS90VQbe5z1sDPlE3P1VypZVuMaIXbJ71oKxd15e10+BiTHkAF4es4bDyfH0pncT/
+ M/xF6VcfWqhBV6BmT0KYxQrDJj+XGnL7SnnDpayWhWy5wwXQNHBRnD8y/X6NnYdYBHAe
+ tF1rMxlBKA5yPqLvNKsXHMkoF6Pwcg8MuI1/3fL/3ZCqVusHX/AfocF1xWZxvHZinCUm
+ /tGcxTch2aXNDfq15G9kmMwFfCw5WBSf27gOJIzKkGA7EXwDjukyHy7twgub/N8R46Qx
+ EKw6UUuubvMLGtduu+qnrda4cIvFqDtCcoLmbvxOr8EKNujftfgoEwfOkUr0aDQL2Txs
+ PEYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685964217; x=1688556217;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dg7ZPL0roivSyiEPf2iIkZLzzksa+gj3tc/Gt9FD0Zs=;
- b=HsTSgGF9Lsf3kUTz+EEKWPqkHVNX9hmJcYEmM2iM9WD+m2qrrW1ia5mZPkMTxmMB2Q
- j20Tlr9HIaf32GNceXtO6Wj931+No1kejD1nUDzlmOzpG5kMk+HjpA0Ur4oQXwirBPMQ
- 8KUVnSj+A5F0GOFBLrTLz5RVmiCaQTfPw0U3DgMjo7OQblB8Xb2OxtVEnbH0rScQGayk
- WeeK5zLXfEhEbULQzMPHogPY/lXiiJG9eC7L9j4NyV+Ahra+CeOHgGnnckNREu/6jw3V
- Hy1INZSEOIWi19qUl5ysCGzhDIQZ1A/iA/NL09hzf+Dxw/M02EuIPfZ/1Tabl7jwaioc
- 1N6g==
-X-Gm-Message-State: AC+VfDx8UWcVxnP0bQX1Gf3hM/anHfI+gWXJqZBr+iAqXOVEZei3qv9Y
- Ns6ctFwxPBcdoS/WO792ZCSsJZWcC5E=
-X-Google-Smtp-Source: ACHHUZ7GBihPOYtwMQaCvE5YrpRqzEORz0nWX7D/pCr2T4a1FlOp8dAdjKTLTdfAtS81A1iBEufrDQ==
-X-Received: by 2002:a17:90a:cb95:b0:256:4207:5041 with SMTP id
- a21-20020a17090acb9500b0025642075041mr2937160pju.28.1685964217509; 
- Mon, 05 Jun 2023 04:23:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685964221; x=1688556221;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+zDOlRWUdwkqrj6xE/PQNHSscfk1SuhL8JkNfMoqHPQ=;
+ b=RLXpcQ5UDvR8x7S236NiTvmfW186NFFczm3PcrNAos+8Qcl4VrfaHDIRn4Vkv8xp9r
+ /DrupX3JQOiGGNN/4YqD+byvNLJm/+YcmmKhP0dRl2LLLUIu8QjKUjhGenhTZlXd8Mbu
+ u/i6eoI5QRnMgJ3yxjPHUvHnfexRWioKn8c3d/3jdG8JFPuTGclT4LI4j7EWce4Hs0pp
+ g/vLLHMwSi9PY542JrQlroc9eBmkDKgv2i52VIpkMrosZUYEylAHhGAI8aJcAUggC+eS
+ XDGZ8DfMsSrnLa/Ikie4wNBmUOIAtxQpN2OuEtlzjlopN20AcVjttZTPqfjZBNShUZGe
+ JE3A==
+X-Gm-Message-State: AC+VfDwx4WK+QsGcL4OZCxcci9daeESeotGxasmVkmEKa0pFqN/pQHsE
+ ArrvgtMp50ZWuhKw+LPRyDNBhKSoric=
+X-Google-Smtp-Source: ACHHUZ6nyUllZqAE/zWlV9LbDxp4/kLr5mvQy6hTzqxC8hsXQ+W4ON6Vxlb1P7MkZC5fdSFNPchhhg==
+X-Received: by 2002:a17:90a:11:b0:255:d878:704a with SMTP id
+ 17-20020a17090a001100b00255d878704amr7315091pja.4.1685964221397; 
+ Mon, 05 Jun 2023 04:23:41 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- f32-20020a17090a702300b0024e026444b6sm15953385pjk.2.2023.06.05.04.23.33
+ f32-20020a17090a702300b0024e026444b6sm15953385pjk.2.2023.06.05.04.23.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 04:23:36 -0700 (PDT)
+ Mon, 05 Jun 2023 04:23:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 0/4] target/ppc: TCG SMT support for spapr
-Date: Mon,  5 Jun 2023 21:23:19 +1000
-Message-Id: <20230605112323.179259-1-npiggin@gmail.com>
+Subject: [PATCH 1/4] target/ppc: Add initial flags and helpers for SMT support
+Date: Mon,  5 Jun 2023 21:23:20 +1000
+Message-Id: <20230605112323.179259-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230605112323.179259-1-npiggin@gmail.com>
+References: <20230605112323.179259-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
@@ -88,54 +91,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous RFC here
+SMT TCG emulation needs to be able to iterate over siblings in a core,
+and needs to serialise core access to shared SPRs and state.
 
-https://lists.gnu.org/archive/html/qemu-ppc/2023-05/msg00453.html
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ target/ppc/cpu.h       |  9 +++++++++
+ target/ppc/cpu_init.c  |  5 +++++
+ target/ppc/translate.c | 20 ++++++++++++++++++++
+ 3 files changed, 34 insertions(+)
 
-This series drops patch 1 from the previous, which is more of
-a standalone bugfix.
-
-Also accounted for Cedric's comments, except a nicer way to
-set cpu_index vs PIR/TIR SPRs, which is not quite trivial.
-
-This limits support for SMT to POWER8 and newer. It is also
-incompatible with nested-HV so that is checked for too.
-
-Iterating CPUs to find siblings for now I kept because similar
-loops exist in a few places, and it is not conceptually
-difficult for SMT, just fiddly code to improve. For now it
-should not be much performane concern.
-
-I removed hypervisor msgsnd support from patch 3, which is not
-required for spapr and added significantly to the patch.
-
-For now nobody has objected to the way shared SPR access is
-handled (serialised with TCG atomics support) so we'll keep
-going with it.
-
-Thanks,
-Nick
-
-Nicholas Piggin (4):
-  target/ppc: Add initial flags and helpers for SMT support
-  target/ppc: Add support for SMT CTRL register
-  target/ppc: Add msgsndp and DPDES SMT support
-  spapr: Allow up to 8 threads SMT on POWER8 and newer
-
- hw/ppc/ppc.c             |  6 ++++
- hw/ppc/spapr.c           | 16 +++++++---
- hw/ppc/spapr_caps.c      | 14 ++++++++
- hw/ppc/spapr_cpu_core.c  |  7 ++--
- include/hw/ppc/ppc.h     |  1 +
- target/ppc/cpu.h         |  9 ++++++
- target/ppc/cpu_init.c    |  5 +++
- target/ppc/excp_helper.c | 30 ++++++++++++++---
- target/ppc/gdbstub.c     |  2 +-
- target/ppc/helper.h      |  2 ++
- target/ppc/misc_helper.c | 69 ++++++++++++++++++++++++++++++++++++----
- target/ppc/translate.c   | 46 ++++++++++++++++++++++++++-
- 12 files changed, 188 insertions(+), 19 deletions(-)
-
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 1f23b81e90..b594408a8d 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -672,6 +672,8 @@ enum {
+     POWERPC_FLAG_TM       = 0x00100000,
+     /* Has SCV (ISA 3.00)                                                    */
+     POWERPC_FLAG_SCV      = 0x00200000,
++    /* Has >1 thread per core                                                */
++    POWERPC_FLAG_SMT      = 0x00400000,
+ };
+ 
+ /*
+@@ -1266,6 +1268,13 @@ struct CPUArchState {
+     uint64_t pmu_base_time;
+ };
+ 
++#define _CORE_ID(cs)                                            \
++    (POWERPC_CPU(cs)->env.spr_cb[SPR_PIR].default_value & ~(cs->nr_threads - 1))
++
++#define THREAD_SIBLING_FOREACH(cs, cs_sibling)			\
++    CPU_FOREACH(cs_sibling)                                     \
++        if (_CORE_ID(cs) == _CORE_ID(cs_sibling))
++
+ #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
+ do {                                            \
+     env->fit_period[0] = (a_);                  \
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index aa364f36f6..5035f6dada 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6754,6 +6754,7 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
+ {
+     CPUState *cs = CPU(dev);
+     PowerPCCPU *cpu = POWERPC_CPU(dev);
++    CPUPPCState *env = &cpu->env;
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+     Error *local_err = NULL;
+ 
+@@ -6785,6 +6786,10 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
+ 
+     pcc->parent_realize(dev, errp);
+ 
++    if (env_cpu(env)->nr_threads > 1) {
++        env->flags |= POWERPC_FLAG_SMT;
++    }
++
+     return;
+ 
+ unrealize:
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index b6bab4c234..72270c2163 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -227,6 +227,26 @@ struct opc_handler_t {
+     void (*handler)(DisasContext *ctx);
+ };
+ 
++static inline bool gen_serialize(DisasContext *ctx)
++{
++    if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
++        /* Restart with exclusive lock.  */
++        gen_helper_exit_atomic(cpu_env);
++        ctx->base.is_jmp = DISAS_NORETURN;
++        return false;
++    }
++    return true;
++}
++
++static inline bool gen_serialize_core(DisasContext *ctx)
++{
++    if (ctx->flags & POWERPC_FLAG_SMT) {
++        return gen_serialize(ctx);
++    }
++
++    return true;
++}
++
+ /* SPR load/store helpers */
+ static inline void gen_load_spr(TCGv t, int reg)
+ {
 -- 
 2.40.1
 
