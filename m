@@ -2,92 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845847224C3
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12D67224CC
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 13:41:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q68X5-0007bJ-Az; Mon, 05 Jun 2023 07:37:55 -0400
+	id 1q68ZX-0008Nj-Mv; Mon, 05 Jun 2023 07:40:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q68Wz-0007ax-NW
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 07:37:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1q68ZB-0008Mx-Kk; Mon, 05 Jun 2023 07:40:05 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q68Wy-0000vd-3t
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 07:37:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685965064;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PLSgkrNW5fSoY4/rWWdHyqZpskCNvxilzrmfrHEFpgY=;
- b=JFDuwByIDKCNUQulKjM1WTXRYoAoE2lZ4dKWxcDV3xEGytkMnCdYMJ/fECFza3rs1abtOE
- nn0OzgtnUWarR928DrYnkbOpogxRMmD7spu5iVEcldhnchGy7HLbkzEqxya1NiVudG3DH8
- L/u0O7hm1IHsFr9WhLmfI4cvlV8pDr4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-N-rikQCMMcalBpzmn2eOtQ-1; Mon, 05 Jun 2023 07:37:43 -0400
-X-MC-Unique: N-rikQCMMcalBpzmn2eOtQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f739a73ba4so4831745e9.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 04:37:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685965062; x=1688557062;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PLSgkrNW5fSoY4/rWWdHyqZpskCNvxilzrmfrHEFpgY=;
- b=kp8HUofNiFMizUatizy1QgSRG2nIzm7TX+VvfraIt2tEXUbkJ8zFnsml+EmnTpBBSI
- QLBgZUltnO3GO0oDIp3yvME5ORAR/GW49Uz59/Q1w3gHtMofLaAo3x3BwtLVxcJTj4AU
- Wps3Xl2eHLx5qQ32OJmrTpg355Cgx4mbOjJtoGmiWhDfSAszRzqD/GjAyQCfS+I62Ira
- Rl25YD5dKmMflFHDcViz+S+NfZ7s9ACuAMP96NI9fUxocycEb+7CLZkxttScqLb7f9+J
- FFuOAYXDlMKAK83zRzNGQoADGUQcUi9cI0FKEt4Fo1ChHeiUfUN3hO1vT9MYV1QhKZ9w
- Sj/w==
-X-Gm-Message-State: AC+VfDxLcY6vMB5Sy4YLfmcUNWhRps+N/i/UyYqhAAXkF4iYHAiJ9CKA
- bLQjZTFNdZq49OoqT9HTCDxHzWHvXuAevTKqvWMBDo3qnXhab7RPP6k1dDjIkMRax1R0pml/MiW
- auNRA2M2UJ9+qk+w=
-X-Received: by 2002:a05:600c:289:b0:3f6:3bb:5135 with SMTP id
- 9-20020a05600c028900b003f603bb5135mr7057141wmk.14.1685965062491; 
- Mon, 05 Jun 2023 04:37:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ63ZAMA5URZ9PJJu5EX7smrUbXX/hAy14E9PKAdxgALJNbo0U/rQWCsCAZCYY9WIhGSRKo5uw==
-X-Received: by 2002:a05:600c:289:b0:3f6:3bb:5135 with SMTP id
- 9-20020a05600c028900b003f603bb5135mr7057133wmk.14.1685965062256; 
- Mon, 05 Jun 2023 04:37:42 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-42-115-143.web.vodafone.de.
- [109.42.115.143]) by smtp.gmail.com with ESMTPSA id
- u1-20020a05600c210100b003f73a101f88sm4314745wml.16.2023.06.05.04.37.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 04:37:41 -0700 (PDT)
-Message-ID: <2e7081ee-0ee7-0e39-59eb-32bcaf59dda8@redhat.com>
-Date: Mon, 5 Jun 2023 13:37:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 5/6] qtest: bump bios-table-test timeout to 6 minutes
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-References: <20230601163123.1805282-1-berrange@redhat.com>
- <20230601163123.1805282-6-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230601163123.1805282-6-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1q68Z9-0001LQ-C8; Mon, 05 Jun 2023 07:40:05 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 355BHWk8007020; Mon, 5 Jun 2023 11:39:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=oYb3CeonA7tG1tk6tseyMgK5cHULC0DpYs7B6pMKxfc=;
+ b=PVrD4D2c/5vZnf/7LPwWweo5BGbeXQfX2UL3rGI+bmdZ6oCDMnQMlmlBcVxvfyCr7Xew
+ 6jFM9ZHu37FERnxo7EHLpZQNgZgsVGUSbhSvSblZvOYjSp1R7RaZil2A23YY/feIzfLX
+ 1qlFC5d0pdBzEGcFJv+Z0IS00WxyGY+ndtNXOY5PeasChXRnNW5wwvYnUKYul9dxkIlr
+ H/jh5LNayx+E0Cndyh6w80n8Csd5G5GsJl5GQ0zqIQzQ17vSwAK9J0pPbzncPBYPplE6
+ 9kIHJQZLde2oVivzYIiz1O8Oy/clttGig1p26WZbubrLQ/1VilbL5QD8tukjBJihxUoR Tw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1epugfv0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jun 2023 11:39:58 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 355BVh7q027400;
+ Mon, 5 Jun 2023 11:39:57 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1epugfu1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jun 2023 11:39:57 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3553rdVA027199;
+ Mon, 5 Jun 2023 11:39:55 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qyxdf91hs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jun 2023 11:39:55 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 355BdqZm15663774
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 5 Jun 2023 11:39:52 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C189F20043;
+ Mon,  5 Jun 2023 11:39:52 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 886CD20040;
+ Mon,  5 Jun 2023 11:39:52 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.209.184])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  5 Jun 2023 11:39:52 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 0/4] linux-user: Emulate /proc/cpuinfo on s390x
+Date: Mon,  5 Jun 2023 13:39:46 +0200
+Message-Id: <20230605113950.1169228-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: hnzf6bJ5HCSphB5u1oPeYntVcQMM1iIF
+X-Proofpoint-GUID: uS0UBeVnvNotBsL6lX1n59knSxKirKAd
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 adultscore=0 clxscore=1015 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306050103
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,38 +111,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/06/2023 18.31, Daniel P. Berrangé wrote:
-> This is reliably hitting the current 2 minute timeout in GitLab CI
-> for the TCI job, and even hits a 4 minute timeout. At 6 minutes it
-> looks sufficiently reliable.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/qtest/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index d9fa30edbc..4f45369421 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -1,6 +1,6 @@
->   slow_qtests = {
->     'aspeed_smc-test': 120,
-> -  'bios-tables-test' : 120,
-> +  'bios-tables-test' : 360,
->     'migration-test' : 300,
->     'npcm7xx_pwm-test': 150,
->     'qom-test' : 420,
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg00299.html
+v1 -> v2: Add output examples (David).
+          Simplify the CPU 0 special case (David).
+          Fix building on s390x hosts.
 
-Seems not to be enough for the CI (in the TCI job which is very slow in 
-running the tests):
+Hi,
 
-  https://gitlab.com/thuth/qemu/-/jobs/4412460439
+This series introduces /proc/cpuinfo linux-user emulation for s390x.
+/proc/cpuinfo emulation already exists for sparc, hppa and riscv; this
+series follows the pattern established for these platforms.
 
-An earlier run needed 403 seconds here already:
+Patch 1 is a fix for an issue that I noticed while looking for ways to
+get to the "identification" field.
 
-  https://gitlab.com/thuth/qemu/-/jobs/4411373383
+Patches 2 and 3 introduce the necessary helpers.
 
-  Thomas
+Patch 4 is the actual implementation.
+
+The trigger for this work is a bug report filed by Tulio [1], which has
+to do with the llvm-project testcases failing under qemu-user.
+
+[1] https://bugzilla.redhat.com/show_bug.cgi?id=2211472
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (4):
+  s390x/tcg: Fix CPU address returned by STIDP
+  linux-user/elfload: Expose get_elf_hwcap() on s390x
+  linux-user/elfload: Introduce elf_hwcap_str() on s390x
+  linux-user: Emulate /proc/cpuinfo on s390x
+
+ linux-user/elfload.c      |  29 ++++++++++-
+ linux-user/loader.h       |   5 ++
+ linux-user/syscall.c      | 106 +++++++++++++++++++++++++++++++++++++-
+ target/s390x/cpu_models.c |   4 +-
+ target/s390x/cpu_models.h |  10 +++-
+ 5 files changed, 148 insertions(+), 6 deletions(-)
+
+-- 
+2.40.1
 
 
