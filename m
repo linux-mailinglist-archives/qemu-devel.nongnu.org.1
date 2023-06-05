@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01055723166
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4396572313D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:25:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6GcR-0001lO-Qx; Mon, 05 Jun 2023 16:15:59 -0400
+	id 1q6GcT-0001lh-IV; Mon, 05 Jun 2023 16:16:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6GcP-0001kj-8i
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:15:57 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1q6GcQ-0001kw-4P
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:15:58 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6GcN-0003ju-Nb
+ id 1q6GcO-0003kp-DP
  for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:15:57 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6537d2a8c20so2336828b3a.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:15:55 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-655d1fc8ad8so1363102b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:15:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685996154; x=1688588154;
+ d=linaro.org; s=google; t=1685996155; x=1688588155;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HIYhvEBe+5na9q7sHii4+3BzV/97aBHrhxLYvL4RaKA=;
- b=x1m7aCsS/nkatNWFv0ZemDFOeRejzgwuKIgZCpTSmAvJ62iHyt5wyQ0I6Kt10AlinX
- 9IAhctQCgDVboP183ZT5mRDi8roef29FD4BAPMeFOBiELFoaiiOCNjpkJkg05EwP4bRK
- x9+kDVH0fteulBwDVOPEo3rvzQyf+eMkgmrtmypNHPngVkhM7myay2ghQZZOJPlBlV3/
- Nw8swO/2zABK1jJItOct+uj7Ld1vB9ivsVTAM8MJaCC4v17g2jAFGKT/74lWm4ttI2H+
- mjAZXQe1GGN4+sPTf6GNLElvhX+kx3SeOlO1HaRzr8mvN2MyDEZU6WmMHLPzBtxSofK8
- GWRw==
+ bh=AXcfOIJ9N4qoMjKYaO213RdnJ56sDPXoAOZMWVB9Z+s=;
+ b=pUk7ZZIQXVqrsl2oi3JFyTBEpIcZIGbkP8uyiUrHbxe62lk9gDQ6SYHVR3W3/uWOkS
+ CCyDIhFTtK6l8RVUbdOh+3szyNqhXT0ki3b63VSYiQ4s8//XGGzTUVL6Uhjqb089A4CZ
+ 5NIeidKpZLCyttMJzRPg4YQ+v+wL9RGAZbY32p/vFMR0/hPsF67wJ/h4cKq2iOnRG2I7
+ M95yNbkMyCCAsJhBGzCiVD2wv5Un7NYvhF/oaS5QHsi4d/TbVaS999Hfitssgwo7AXZY
+ hsjHTtfHKDAClOUq7aA/UgWmZEupWp/9he8238pflISHGRKzWnzRSZxoyU+x5rWqPDAV
+ Iz5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685996154; x=1688588154;
+ d=1e100.net; s=20221208; t=1685996155; x=1688588155;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HIYhvEBe+5na9q7sHii4+3BzV/97aBHrhxLYvL4RaKA=;
- b=HIMfdN9lQZ+BZg+JzkzXjOJgiWsWBbz2G0dLZerLNCzGQ2XeVB2Gs3htr7hAySS8Kx
- jvITByKKErS+e1VMZ/5ZI+wicJcDfEldaAvCLeu9YHJaGanAhPSgWOhj0lfx7NXjwpOM
- W6uvJ/r/IWaahl5+3QD0j3TrWGJXIg3HCnR46JvpoY6Q0iB+TMgyaRh0DWlr5e4DpZ/J
- CFOd45IaTb/dB3aI0H+h7le/Rf2aAia93ksn/np9fBZhdeXnVg1A1058FWD8b4BER3gP
- 6Eit8ILwANNITo0YaPohbv22G5QWyRtxfd36iKxy41hFitLrl+jUAhYIbujlimrFAfYN
- ILvg==
-X-Gm-Message-State: AC+VfDwmil4a7v/bTRqkjraDzrDZ/qeZ2HhdMcXEoxxMAIWPKT97XLs+
- 6z8jbJ75V1wYxH62HAEDOM/npKPj3uhV4mMWwus=
-X-Google-Smtp-Source: ACHHUZ52zXmZl+dZk0Es4sNxhgx3vVmceQs28BQcOtuYYai9QjWDqtnu0xJWwgx0ja+ZnsByHc4xrQ==
-X-Received: by 2002:a05:6a00:1a12:b0:64f:aea5:7b49 with SMTP id
- g18-20020a056a001a1200b0064faea57b49mr776628pfv.17.1685996154261; 
- Mon, 05 Jun 2023 13:15:54 -0700 (PDT)
+ bh=AXcfOIJ9N4qoMjKYaO213RdnJ56sDPXoAOZMWVB9Z+s=;
+ b=kvyqxpe6cq/XR4JnxJvKt4qdcAMfvlW9C4Z/nR0xV449iglSZf+BUIviUbqFxAJLb8
+ AdSgjh7HfAyCXT9QWRN/9jXy7rKIJr2yECGqn3gDtJqNqC6qHa1LUEKhIzb7NPgmXMOG
+ 9iv79WkuH4ND98ZF2OLSvPXOF62FlcT5VXZNmMyBKQYtlyz3E9U7ifpFZq0MzhAN9/JT
+ dJZpqMY7xR0xv5sjaJl6N5cggncJ+5ruLgJq890FIrMZMgFe9MoQksqrlJj092JPu+Wc
+ sRPuk/YfqDZDuQO108qgtocUZwWsHww2lLU8c28bohT4CMBUEiqB4ryDrV+T9mx8xCPU
+ Nuag==
+X-Gm-Message-State: AC+VfDy8l/HyrADIRu2W1U/LH2JfYsm8MhxTS2z47Le3WWIkB7Ak6HI8
+ r0mk3mUfh35Hfjrfm9pKh6OlExhQMSJNaLb+zUA=
+X-Google-Smtp-Source: ACHHUZ5HhZDtjHkuDQl+F8SV07ovloVK26MAmfhpBSlUKLScz0XWWEG97CW+O1SesMNe7EFcHtm/3Q==
+X-Received: by 2002:a05:6a00:248b:b0:64d:1215:a0f5 with SMTP id
+ c11-20020a056a00248b00b0064d1215a0f5mr731061pfv.34.1685996155086; 
+ Mon, 05 Jun 2023 13:15:55 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.15.53
+ f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.15.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 13:15:53 -0700 (PDT)
+ Mon, 05 Jun 2023 13:15:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/52] tcg/sparc64: Remove TARGET_LONG_BITS, TCG_TYPE_TL
-Date: Mon,  5 Jun 2023 13:15:00 -0700
-Message-Id: <20230605201548.1596865-5-richard.henderson@linaro.org>
+Subject: [PULL 05/52] tcg: Move TCG_TYPE_TL from tcg.h to tcg-op.h
+Date: Mon,  5 Jun 2023 13:15:01 -0700
+Message-Id: <20230605201548.1596865-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230605201548.1596865-1-richard.henderson@linaro.org>
 References: <20230605201548.1596865-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,53 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All uses replaced with TCGContext.addr_type.
+Removes the only use of TARGET_LONG_BITS from tcg.h, which is to be
+target independent.  Move the symbol to a define in tcg-op.h, which
+will continue to be target dependent.  Rather than complicate matters
+for the use in tb_gen_code(), expand the definition there.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/sparc64/tcg-target.c.inc | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/tcg/tcg-op.h      | 8 ++++++++
+ include/tcg/tcg.h         | 7 -------
+ accel/tcg/translate-all.c | 2 +-
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index d2d0f604c2..48efd83817 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -1027,6 +1027,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-                                            TCGReg addr_reg, MemOpIdx oi,
-                                            bool is_ld)
- {
-+    TCGType addr_type = s->addr_type;
-     TCGLabelQemuLdst *ldst = NULL;
-     MemOp opc = get_memop(oi);
-     MemOp s_bits = opc & MO_SIZE;
-@@ -1063,7 +1064,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     tcg_out_arith(s, TCG_REG_T1, TCG_REG_T1, TCG_REG_T3, ARITH_ADD);
- 
-     /* Load the tlb comparator and the addend. */
--    tcg_out_ld(s, TCG_TYPE_TL, TCG_REG_T2, TCG_REG_T1, cmp_off);
-+    tcg_out_ld(s, addr_type, TCG_REG_T2, TCG_REG_T1, cmp_off);
-     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_T1, TCG_REG_T1, add_off);
-     h->base = TCG_REG_T1;
- 
-@@ -1084,7 +1085,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     ldst->label_ptr[0] = s->code_ptr;
- 
-     /* bne,pn %[xi]cc, label0 */
--    cc = TARGET_LONG_BITS == 64 ? BPCC_XCC : BPCC_ICC;
-+    cc = addr_type == TCG_TYPE_I32 ? BPCC_ICC : BPCC_XCC;
-     tcg_out_bpcc0(s, COND_NE, BPCC_PN | cc, 0);
- #else
-     /*
-@@ -1110,7 +1111,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
+index 35c5700183..844c666374 100644
+--- a/include/tcg/tcg-op.h
++++ b/include/tcg/tcg-op.h
+@@ -722,6 +722,14 @@ static inline void tcg_gen_concat32_i64(TCGv_i64 ret, TCGv_i64 lo, TCGv_i64 hi)
+ #error must include QEMU headers
  #endif
  
-     /* If the guest address must be zero-extended, do in the delay slot.  */
--    if (TARGET_LONG_BITS == 32) {
-+    if (addr_type == TCG_TYPE_I32) {
-         tcg_out_ext32u(s, TCG_REG_T2, addr_reg);
-         h->index = TCG_REG_T2;
-     } else {
++#if TARGET_LONG_BITS == 32
++# define TCG_TYPE_TL  TCG_TYPE_I32
++#elif TARGET_LONG_BITS == 64
++# define TCG_TYPE_TL  TCG_TYPE_I64
++#else
++# error
++#endif
++
+ #if TARGET_INSN_START_WORDS == 1
+ static inline void tcg_gen_insn_start(target_ulong pc)
+ {
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 072c35f7f5..0da17f1b4f 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -292,13 +292,6 @@ typedef enum TCGType {
+ #else
+     TCG_TYPE_PTR = TCG_TYPE_I64,
+ #endif
+-
+-    /* An alias for the size of the target "long", aka register.  */
+-#if TARGET_LONG_BITS == 64
+-    TCG_TYPE_TL = TCG_TYPE_I64,
+-#else
+-    TCG_TYPE_TL = TCG_TYPE_I32,
+-#endif
+ } TCGType;
+ 
+ /**
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index bf814b9e81..d7c93e3b57 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -350,7 +350,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+     tb_set_page_addr0(tb, phys_pc);
+     tb_set_page_addr1(tb, -1);
+     tcg_ctx->gen_tb = tb;
+-    tcg_ctx->addr_type = TCG_TYPE_TL;
++    tcg_ctx->addr_type = TARGET_LONG_BITS == 32 ? TCG_TYPE_I32 : TCG_TYPE_I64;
+ #ifdef CONFIG_SOFTMMU
+     tcg_ctx->page_bits = TARGET_PAGE_BITS;
+     tcg_ctx->page_mask = TARGET_PAGE_MASK;
 -- 
 2.34.1
 
