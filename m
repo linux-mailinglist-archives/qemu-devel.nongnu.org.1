@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9EA722654
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC5F722668
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:53:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q69e6-0003Kp-Ve; Mon, 05 Jun 2023 08:49:15 -0400
+	id 1q69hx-0005VY-33; Mon, 05 Jun 2023 08:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69e0-0002wc-Sg
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:49:11 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69hi-0005Ur-F2
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:52:58 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69dw-0005qR-4S
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:49:08 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f732d37d7cso20727385e9.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:49:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69hg-0006aB-Ul
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:52:58 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-30aef0b8837so3927932f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:52:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685969342; x=1688561342;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1685969575; x=1688561575;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dNZuqPAEgbramDA0l1U7Y+ZkUDJE80aMGxKGtEr5I2w=;
- b=YVgcPCPkuxgt3SgkaOWTTwnTs7mjCI/5QI1itoTtEipmJ7DDSnrsBj5vRMLN4ZxXzA
- 0XFQqepLrWwSJwZ7buzNFuRiIfw0MEmLxA6YIHTLhsoKAYSXQKv8rmadTDqQ5RhNZgyp
- KtXQjF4pUvmhzyxhOGK2HCiW2JryHyoCALLUPUX8P1mQo8GZv6tXIVUi0H2ITicelCXf
- ydiMMOdUl7o5JaSPz5eyVjgxX9ezQUJgqjrxRwr6X5nhtoknSCY4iOgxbc7QfTZlQ/fh
- IYtrig/9jHoBYbh/ST9bPBuT9dVcd+N3HIfHLMtYHRdSXgF397EduAieAK9HWpW1rrYd
- AQTw==
+ bh=jJsq1TiWeCK/NStU0mA9D3CKfJanvws6bizphcfAaDo=;
+ b=thQbjlUUrqXUgFTLXeoOlEvdMKYaUVbJWXZsGi7VKdUX+dr9DZHh+ESxEMaVfj2oS8
+ D3EnYQGRUicS4GTR3AfY/8i3wl4zM58KBSGHFJgtgJz0zl00ANwLCdES2gamaxiDF7Tw
+ BCyASWAIrWQ3BkRpifyh/++HKgUKW7JYjVZu6ObkWGGEnk1c/7Bu6qptdyUH/r+Du2cZ
+ ap2+00CHb9bEeznvPPi2J6OLUAmYa2Vg5SDpb5FswPUM74xg9RwnpNZn2kQ9Ol7ffTgf
+ 9Im2yOzuHPuWBsn51gXI7OQ6NO7CHcSmsbBxQ7JCNzr0CcYZGU7J1FXV8EI38vJuVyka
+ 5G2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685969342; x=1688561342;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1685969575; x=1688561575;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dNZuqPAEgbramDA0l1U7Y+ZkUDJE80aMGxKGtEr5I2w=;
- b=d52l0RuYkBYcSUXgz7IiXHmipOGUXzZRYBawUa1LkqwoIxyyLtLw6gnJdwTTJFroKI
- YUB2AttFEDeW6+YqAKaCpm1a5fhL3ljuTlTCUJdstYtIvbQrm3OelmuCZ12BjZJOX6KM
- oCfTBSpoO8302fhzFXLvaxA2uqIdmvjcfHTDNsu9oJL1UdrEDWPyJspYuyS2Vqh1vYmf
- IJMe52WGyuWu14ch8ca/KQzf+tLEC1se9BEFINUBqAJYc/C64NB+f/PLffrCBrBkOyNE
- b3fKM8Ox8SNt/YKNvONeuHdVbMt9fDL4TRN7598ReRusM2rzwXoNGwonHhbnrhzjoWEZ
- /FUA==
-X-Gm-Message-State: AC+VfDzwS+YxDEkbcc3g8TRvUljppNdz0dmxI/R4giccUljlzW6Ff4Iv
- 7mlF6OZiUxABr1qx0kk6FfYVOA==
-X-Google-Smtp-Source: ACHHUZ5FRbCprA/61iFR243w9HzDp4TA+SPLa9Ofo8PE2lV09J6Eh/aqkLHE97RqQjaMkbqRjQ70Hw==
-X-Received: by 2002:a1c:7212:0:b0:3f6:128:36a5 with SMTP id
- n18-20020a1c7212000000b003f6012836a5mr7146491wmc.10.1685969342606; 
- Mon, 05 Jun 2023 05:49:02 -0700 (PDT)
+ bh=jJsq1TiWeCK/NStU0mA9D3CKfJanvws6bizphcfAaDo=;
+ b=eyiJC3u/CmYza5uob/sVpvBPMZDqs1ar21/N9XRM/g9KGn3mxxVo7Dqb8Ycm1gPi76
+ vQjSD7a8/SC6o31owhXnuGROqsyWSsDk0NWzS8FkcL9rFXOV3tjQnEt08G9l5V3g/on+
+ Qj/TuNhG8IV/LE/UxCzOBjMUPjYu9vKMoIAo8vZVmNIvSF1XN46qODAlELx03PnNX9Hk
+ 1TaUgclj3H9hZkQy4rBr/FFlsa+UeW3CvkHYO/BOwOwI5W8NsQsziG+LO28/hjleXwOl
+ wQkbEDvRB25uOooFZUUbi6wvnmJgZOLIA5NRvooVLq/f68GuCWgG46i8f18UwZA6LxIE
+ Tjhw==
+X-Gm-Message-State: AC+VfDzLr8FMfWA8iTF9muVKzvJxETDtbdraeTZR4O2RA86nQCcXGilN
+ mD65Jrwm1KlU43Kc3u1HsmYCMufYFi2QDBvUMZk=
+X-Google-Smtp-Source: ACHHUZ6zVmCItNQDr5KvlO0xYc0U6N4qJ8TRgaAVdfFVxmRDK+kmhkmyWX1IdqrSJytVNLy9B08vaQ==
+X-Received: by 2002:adf:dd10:0:b0:30a:b030:9cdd with SMTP id
+ a16-20020adfdd10000000b0030ab0309cddmr4393740wrm.25.1685969575266; 
+ Mon, 05 Jun 2023 05:52:55 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- n16-20020a1c7210000000b003f736e28cd6sm5354060wmc.4.2023.06.05.05.49.01
+ y12-20020adff14c000000b0030ae7bd1737sm9749531wro.45.2023.06.05.05.52.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 05:49:02 -0700 (PDT)
-Message-ID: <4b4b5bb8-9e76-6aad-3181-097e0080a255@linaro.org>
-Date: Mon, 5 Jun 2023 14:49:00 +0200
+ Mon, 05 Jun 2023 05:52:54 -0700 (PDT)
+Message-ID: <66190771-3f34-bf45-142f-ef7f1a2d2870@linaro.org>
+Date: Mon, 5 Jun 2023 14:52:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3 09/23] q800: introduce mac-io container memory region
+Subject: Re: [PATCH 04/15] linux-user: Use abi_int not int32_t in
+ syscall_defs.h
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-10-mark.cave-ayland@ilande.co.uk>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu
+References: <20230603222355.1379711-1-richard.henderson@linaro.org>
+ <20230603222355.1379711-5-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230604131450.428797-10-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230603222355.1379711-5-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,16 +94,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/6/23 15:14, Mark Cave-Ayland wrote:
-> Move all devices from the IO region to within the container in preparation
-> for updating the IO aliasing mechanism.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+On 4/6/23 00:23, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/m68k/q800.c         | 6 ++++++
->   include/hw/m68k/q800.h | 1 +
->   2 files changed, 7 insertions(+)
+>   linux-user/syscall_defs.h | 60 +++++++++++++++++++--------------------
+>   1 file changed, 30 insertions(+), 30 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
