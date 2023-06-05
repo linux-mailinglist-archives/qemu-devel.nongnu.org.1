@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C92F7222A9
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625437222AC
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:53:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q66tG-0002mQ-1K; Mon, 05 Jun 2023 05:52:42 -0400
+	id 1q66tI-0002ne-2b; Mon, 05 Jun 2023 05:52:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q66t5-0002hJ-3X
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:52:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q66t6-0002hk-St
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:52:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q66t3-0006jp-37
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:52:30 -0400
+ id 1q66t4-0006jw-MO
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:52:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685958748;
+ s=mimecast20190719; t=1685958749;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=7kaZ2dCU40IWUDRJNnCAoCap+HYAp3YuNwUcCEkjEVI=;
- b=ZBaMnKdOb0KAikmg+KqX2usx953LZIksc1HDyfKVuukHVy2gFL2NQl6bLM4uKQEj1LbZvo
- aRY2G5Ui8MReyYuVDjhlWHbm38wdIzTg8nyy6XYFwyKv1/TJ0haWuso2nC5VCxVfWGJKoY
- 72sIjh0grq1Capizz91eQl/fHLGJEcI=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pkJQaqVs7/v6zs3Q5Js7WY3TSr6oXP0gDufyu6jM/Mw=;
+ b=VGbK0tmehmuB1+RJCUrkgdCUS/P6XbUClXPl4DNpAgN46HFRNLnE1YaWnDH3Mh8mcdwj/7
+ 1IApN1/ptZ69clPY+t1RJqArJwdzPE0j3hQ6mTeWFlHRDV34FJ4NZ5HSmz+1JL04zyH24n
+ AOlHhfnFCZBx88KEaW4IdN+D/YTgkZQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-Ff-vTUlYNqOcpd-YOu0F_A-1; Mon, 05 Jun 2023 05:52:26 -0400
-X-MC-Unique: Ff-vTUlYNqOcpd-YOu0F_A-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-94a34d3e5ebso311456066b.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 02:52:26 -0700 (PDT)
+ us-mta-504-i4QD0BBZMJKqNblGGdbF-g-1; Mon, 05 Jun 2023 05:52:28 -0400
+X-MC-Unique: i4QD0BBZMJKqNblGGdbF-g-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94a34a0b75eso312518866b.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 02:52:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685958745; x=1688550745;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7kaZ2dCU40IWUDRJNnCAoCap+HYAp3YuNwUcCEkjEVI=;
- b=gOyYhTeFhkNWm/RcGWl7DKJlaBzlgbYZZ59smrE1M5yD/tEIxntUBWb7CK1yxY5zgc
- 7QYHxO+YIdkIDy2UtcebQh5uJlwNRT7aSOBOz36rq6lUMCb/KZ59XYR3DfwOSJdh9Wgk
- +2eBcLTycelb33vLUEBTTKc/DRpx5GoRObpvGkNgv9z1lwPXiTPZyslh7m//y/X6fPHk
- EwSmswod+iSCT6HVzbrMXvX9rDhYw2b1xwAvyPgr+zW0QLHe1FEKxIMfrtPUcg2yB1yA
- 59KhOCThb9S18WKncpKh+JfoU/geeuu8t7VSVi2PgTVb2MzJjnxk7K4ugh9oCyeW2s7u
- 0chw==
-X-Gm-Message-State: AC+VfDzC9BuktzTmRFCSMJnknwwL4cO5wKA3ORobVETAx8/g6gGbZlYB
- ZwCbD9cOXuTtVQ8mhqeQO7VVe4PdLajs17YtNZwEQ7aECu6EGlGM7r/P/aKGscF/HQp+A4mvsNi
- 0/l5uPhjeJRe9OZZhh2izZLzCVWdaJG4UdLaBYVwgZZtqVAWCrqQTsXI/2S41xPQo70biq1xXTg
- g=
-X-Received: by 2002:a17:907:1609:b0:973:e349:43c8 with SMTP id
- hb9-20020a170907160900b00973e34943c8mr5434336ejc.69.1685958745487; 
- Mon, 05 Jun 2023 02:52:25 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4fDfpDSik1/zjiQQmwB/u6ZLDopLqSpE1HqVI9wFjviVBFLYWGPd8kMGNnLsxaRz+/gq8Qrw==
-X-Received: by 2002:a17:907:1609:b0:973:e349:43c8 with SMTP id
- hb9-20020a170907160900b00973e34943c8mr5434320ejc.69.1685958744987; 
- Mon, 05 Jun 2023 02:52:24 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685958747; x=1688550747;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pkJQaqVs7/v6zs3Q5Js7WY3TSr6oXP0gDufyu6jM/Mw=;
+ b=DfDV1j/Qauw3jw/Cq8cXDAXOLLVvLlKyYD+455GN2nSxK0xyElOHg25ZPoCL4TLslh
+ jOq2qSowp08SOGiF01wCdllPyj8XUhp5o4qWnPToBuFW3wKFVGwQ0NuqkEuOjLfhcD7s
+ dc0t2EP4HGbYqJKWRMuwGNkd/iFnkaR10FmrfapRpwH3uTfm0LTaKWJXPuehZ7Chaktf
+ 3UtMp63ynL22kozCV+JKFVWoOlIAc6/d7ON3eOihhfkR7/MF/YkzgX9BMCM4YQwa/fY9
+ QyKORmCmHTCE7SLeTotd0mSclQD1xqXORj965YJTVj2HBSAIVT20pTQhWJYQd7NuB2d1
+ wCIg==
+X-Gm-Message-State: AC+VfDx7ZYmEWXmgTluUG7tk3rqzT0gOTyxdNHabIlYduCI9LHYbnPWW
+ 26kqaRpBAmai2AVJdVbKsSNgfHKy2XPK3zwVzf/sjAiibeZPX0n1UW6aWewlFECSG0+vFlxY4AA
+ +en5/E+lZEo+ucf2Z7j7+ItUhexjFglhzoZAZhwg/d4Ho2xJn1Dq2gPWaJMDe/Y43oV4zi0kxSD
+ I=
+X-Received: by 2002:a17:907:3681:b0:96f:d6bd:390c with SMTP id
+ bi1-20020a170907368100b0096fd6bd390cmr5747240ejc.67.1685958747152; 
+ Mon, 05 Jun 2023 02:52:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4Z1wzGqlX9BJNBv5qj2hlxRGtli8hNKrF6GmnfuuBJG+JGkIxMCu463QX1ChTTdMEX3uxk/g==
+X-Received: by 2002:a17:907:3681:b0:96f:d6bd:390c with SMTP id
+ bi1-20020a170907368100b0096fd6bd390cmr5747228ejc.67.1685958746895; 
+ Mon, 05 Jun 2023 02:52:26 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- p5-20020a170906140500b00974612a9837sm4087548ejc.20.2023.06.05.02.52.24
+ o9-20020a1709064f8900b0094e6a9c1d24sm4203158eju.12.2023.06.05.02.52.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 02:52:24 -0700 (PDT)
+ Mon, 05 Jun 2023 02:52:26 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: thuth@redhat.com,
 	berrange@redhat.com
-Subject: [PATCH v2 00/10] meson: replace submodules with wrap files
-Date: Mon,  5 Jun 2023 11:52:13 +0200
-Message-Id: <20230605095223.107653-1-pbonzini@redhat.com>
+Subject: [PATCH 01/10] configure: remove --with-git= option
+Date: Mon,  5 Jun 2023 11:52:14 +0200
+Message-Id: <20230605095223.107653-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230605095223.107653-1-pbonzini@redhat.com>
+References: <20230605095223.107653-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,134 +101,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series replaces git submodules for bundled libraries with .wrap
-files that can be used directly by meson for subprojects.  These have
-several advantages, either immediate or potential:
+The scenario for which --with-git= was introduced was to use a SOCKS proxy
+such as tsocks.  However, this was back in 2017 when QEMU's submodules
+used the git:// protocol, and it is not as important when using the
+"smart HTTP" backend; for example, neither "meson subprojects download"
+nor scripts/checkpatch.pl do not obey the GIT environment variable.
 
-* option parsing and downloading is delegated to meson
+So remove the knob, but test for the presence of git in the configure and
+git-submodule.sh scripts, and suggest using --with-git-submodules=validate
++ a manual invocation of git-submodule.sh when git does not work.  Hopefully
+in the future the GIT environment variable will be supported by Meson.
 
-* the commit is stored in a text file instead of a magic entry in the
-  git tree object, and can be a branch name or a version number as well
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ Makefile                                      |  2 +-
+ configure                                     |  8 ++------
+ meson.build                                   |  1 -
+ .../ci/org.centos/stream/8/x86_64/configure   |  2 --
+ scripts/git-submodule.sh                      | 19 ++++++++++---------
+ 5 files changed, 13 insertions(+), 19 deletions(-)
 
-* now that QEMU's configure script knows how to install missing Python
-  dependencies, we could stop shipping external dependencies that are
-  only used as a fallback, and download them on demand if the build
-  platform lacks them.  For example dtc could be downloaded at build
-  time, controlled by --enable-download, even when building from
-  a tarball.  This is _not_ done in this patch series, but Marc-André
-  has tried it before[1].
-
-* we could also add .wrap files for other dependencies that are missing
-  on the GCC compile farm machines, or for people who build on Windows
-  and might enjoy getting the mandatory dependencies (pixman, zlib,
-  glib, possibly SDL?) via wraps.  In theory meson already supports
-  "meson wrap update-db" to automatically use wraps for anything required
-  but missing, but one would need to test that it actually works; see
-  for example https://github.com/mesonbuild/meson/issues/11821.
-
-dtc and keycodemapdb both support meson, and previously reviewed
-patches already run their build system via subproject(), so the
-wraps are automatically taken into account.  Two other submodules,
-berkeley-softfloat-3 and berkeley-testfloat-3, are used to test QEMU and
-can be changed to use wraps; however this requires a few more changes
-to extract the corresponding parts of tests/fp/meson.build.  It's mostly
-code movement rather than new code.
-
-The remaining submodules consist of tests/lcitool/libvirt-ci and the
-firmware in roms/.  The former is only used in very specific cases,
-while the latter is mostly used only as a pointer used to create the QEMU
-tarball.  Unfortunately, git-submodule.sh is still needed for roms/SLOF,
-parts of which are used in the QEMU build process for pc-bios/s390-ccw.
-For now, the git-submodule.sh rules are moved from the main Makefile to
-pc-bios/s390-ccw/ and, to limit the number of configure options,
---with-git-submodules is merged with --enable-download.
-
-
-Patch 1 removes the --with-git= option for consistency, since git cannot
-be overridden for "meson subprojects download".  There is still a GIT
-environment variable, which I could look at supporting in meson as well.
-
-Patch 2 renames the recently introduced --enable-pypi command line
-option to --enable-download, and makes it control meson's -Dwrapmode
-option as well.
-
-Patches 3-4 are small improvements to git-submodule.sh, which make
-sense when the submodule updates are split across multiple Makefiles.
-At the end of the series actually the updates move entirely to
-pc-bios/s390-ccw/Makefile, but these improvements are useful anyway in
-my opinion.
-
-Patch 5 replaces submodule update with meson's subproject download for
-existing subprojects (including libfdt and keycodemapdb).
-
-Patches 6-7 move roms/SLOF handling to pc-bios/s390-ccw.  While in
-the future it is possible that SLOF's networking code will be copied
-to the s390 ROMs, for now I am going for a smaller change.
-
-Patch 8 converts berkeley-{soft,test}float-3 to subprojects too,
-contextually moving their build rules out of tests/fp/meson.build.
-
-Patches 9-10 are residual cleanups.
-
-Paolo
-
-[1] https://patchew.org/QEMU/20230302131848.1527460-1-marcandre.lureau@redhat.com/20230302131848.1527460-5-marcandre.lureau@redhat.com/
-
-
-
-Paolo Bonzini (10):
-  configure: remove --with-git= option
-  configure: rename --enable-pypi to --enable-download, control
-    subprojects too
-  git-submodule: allow partial update of .git-submodule-status
-  build: log submodule update from git-submodule.sh
-  meson: subprojects: replace submodules with wrap files
-  configure: move SLOF submodule handling to pc-bios/s390-ccw
-  pc-bios/s390-ccw: always build network bootloader
-  meson: subprojects: replace berkeley-{soft,test}float-3 with wraps
-  build: remove git submodule handling from main makefile
-  configure: remove --with-git-submodules=
-
- .gitignore                                    |   2 -
- .gitlab-ci.d/buildtest-template.yml           |   4 +-
- .gitmodules                                   |  15 -
- Makefile                                      |  12 -
- configure                                     | 169 ++----
- meson.build                                   |  17 +-
- pc-bios/s390-ccw/Makefile                     |  16 +-
- scripts/archive-source.sh                     |  27 +-
- .../ci/org.centos/stream/8/x86_64/configure   |   3 -
- scripts/git-submodule.sh                      |  69 ++-
- scripts/make-release                          |   5 +
- subprojects/.gitignore                        |   8 +
- subprojects/berkeley-softfloat-3.wrap         |   5 +
- subprojects/berkeley-testfloat-3.wrap         |   5 +
- subprojects/dtc                               |   1 -
- subprojects/dtc.wrap                          |   4 +
- subprojects/keycodemapdb                      |   1 -
- subprojects/keycodemapdb.wrap                 |   4 +
- subprojects/libvfio-user                      |   1 -
- subprojects/libvfio-user.wrap                 |   4 +
- .../berkeley-softfloat-3/meson.build          | 339 +++++++++++
- .../berkeley-softfloat-3/meson_options.txt    |   1 +
- .../berkeley-testfloat-3/meson.build          | 220 +++++++
- .../berkeley-testfloat-3/meson_options.txt    |   1 +
- tests/fp/meson.build                          | 541 +-----------------
- 25 files changed, 716 insertions(+), 758 deletions(-)
- create mode 100644 subprojects/.gitignore
- create mode 100644 subprojects/berkeley-softfloat-3.wrap
- create mode 100644 subprojects/berkeley-testfloat-3.wrap
- delete mode 160000 subprojects/dtc
- create mode 100644 subprojects/dtc.wrap
- delete mode 160000 subprojects/keycodemapdb
- create mode 100644 subprojects/keycodemapdb.wrap
- delete mode 160000 subprojects/libvfio-user
- create mode 100644 subprojects/libvfio-user.wrap
- create mode 100644 subprojects/packagefiles/berkeley-softfloat-3/meson.build
- create mode 100644 subprojects/packagefiles/berkeley-softfloat-3/meson_options.txt
- create mode 100644 subprojects/packagefiles/berkeley-testfloat-3/meson.build
- create mode 100644 subprojects/packagefiles/berkeley-testfloat-3/meson_options.txt
-
+diff --git a/Makefile b/Makefile
+index 08fb6a3b058..8005f1cc53e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -53,7 +53,7 @@ Makefile: .git-submodule-status
+ git-submodule-update:
+ ifneq ($(GIT_SUBMODULES_ACTION),ignore)
+ 	$(call quiet-command, \
+-		(GIT="$(GIT)" "$(SRC_PATH)/scripts/git-submodule.sh" $(GIT_SUBMODULES_ACTION) $(GIT_SUBMODULES)), \
++		(GIT=git "$(SRC_PATH)/scripts/git-submodule.sh" $(GIT_SUBMODULES_ACTION) $(GIT_SUBMODULES)), \
+ 		"GIT","$(GIT_SUBMODULES)")
+ endif
+ 
+diff --git a/configure b/configure
+index d674a966731..92bacc756c0 100755
+--- a/configure
++++ b/configure
+@@ -751,8 +751,6 @@ for opt do
+   ;;
+   --enable-fdt=*) fdt="$optarg"
+   ;;
+-  --with-git=*) git="$optarg"
+-  ;;
+   --with-git-submodules=*)
+       git_submodules_action="$optarg"
+   ;;
+@@ -791,7 +789,7 @@ fi
+ 
+ case $git_submodules_action in
+     update|validate)
+-        if test ! -e "$source_path/.git"; then
++        if test ! -e "$source_path/.git" || ! has git; then
+             echo "ERROR: cannot $git_submodules_action git submodules without .git"
+             exit 1
+         fi
+@@ -892,7 +890,6 @@ Advanced options (experts only):
+   --python=PYTHON          use specified python [$python]
+   --ninja=NINJA            use specified ninja [$ninja]
+   --smbd=SMBD              use specified smbd [$smbd]
+-  --with-git=GIT           use specified git [$git]
+   --with-git-submodules=update   update git submodules (default if .git dir exists)
+   --with-git-submodules=validate fail if git submodules are not up to date
+   --with-git-submodules=ignore   do not update or check git submodules (default if no .git dir)
+@@ -1699,7 +1696,7 @@ fi
+ #######################################
+ # generate config-host.mak
+ 
+-if ! (GIT="$git" "$source_path/scripts/git-submodule.sh" "$git_submodules_action" "$git_submodules"); then
++if ! (GIT=git "$source_path/scripts/git-submodule.sh" "$git_submodules_action" "$git_submodules"); then
+     exit 1
+ fi
+ 
+@@ -1709,7 +1706,6 @@ echo "# Automatically generated by configure - do not modify" > $config_host_mak
+ echo >> $config_host_mak
+ 
+ echo all: >> $config_host_mak
+-echo "GIT=$git" >> $config_host_mak
+ echo "GIT_SUBMODULES=$git_submodules" >> $config_host_mak
+ echo "GIT_SUBMODULES_ACTION=$git_submodules_action" >> $config_host_mak
+ 
+diff --git a/meson.build b/meson.build
+index cabf36ec5e9..eb09af6ec82 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4026,7 +4026,6 @@ summary(summary_info, bool_yn: true, section: 'Directories')
+ 
+ # Host binaries
+ summary_info = {}
+-summary_info += {'git':               config_host['GIT']}
+ summary_info += {'python':            '@0@ (version: @1@)'.format(python.full_path(), python.language_version())}
+ summary_info += {'sphinx-build':      sphinx_build}
+ if config_host.has_key('HAVE_GDB_BIN')
+diff --git a/scripts/ci/org.centos/stream/8/x86_64/configure b/scripts/ci/org.centos/stream/8/x86_64/configure
+index 6e8983f39cd..de76510978f 100755
+--- a/scripts/ci/org.centos/stream/8/x86_64/configure
++++ b/scripts/ci/org.centos/stream/8/x86_64/configure
+@@ -29,14 +29,12 @@
+ --extra-cflags="-O2 -g -pipe -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection" \
+ --with-suffix="qemu-kvm" \
+ --firmwarepath=/usr/share/qemu-firmware \
+---with-git=meson \
+ --with-git-submodules=update \
+ --target-list="x86_64-softmmu" \
+ --block-drv-rw-whitelist="qcow2,raw,file,host_device,nbd,iscsi,rbd,blkdebug,luks,null-co,nvme,copy-on-read,throttle,gluster" \
+ --audio-drv-list="" \
+ --block-drv-ro-whitelist="vmdk,vhdx,vpc,https,ssh" \
+ --with-coroutine=ucontext \
+---with-git=git \
+ --tls-priority=@QEMU,SYSTEM \
+ --disable-attr \
+ --disable-auth-pam \
+diff --git a/scripts/git-submodule.sh b/scripts/git-submodule.sh
+index 7be41f59483..0ce1efc44e5 100755
+--- a/scripts/git-submodule.sh
++++ b/scripts/git-submodule.sh
+@@ -12,7 +12,7 @@ maybe_modules="$@"
+ # if --with-git-submodules=ignore, do nothing
+ test "$command" = "ignore" && exit 0
+ 
+-test -z "$GIT" && GIT=git
++test -z "$GIT" && GIT=$(command -v git)
+ 
+ cd "$(dirname "$0")/.."
+ 
+@@ -21,19 +21,14 @@ update_error() {
+     echo
+     echo "Unable to automatically checkout GIT submodules '$modules'."
+     echo "If you require use of an alternative GIT binary (for example to"
+-    echo "enable use of a transparent proxy), then please specify it by"
+-    echo "running configure by with the '--with-git' argument. e.g."
+-    echo
+-    echo " $ ./configure --with-git='tsocks git'"
+-    echo
+-    echo "Alternatively you may disable automatic GIT submodule checkout"
+-    echo "with:"
++    echo "enable use of a transparent proxy), please disable automatic"
++    echo "GIT submodule checkout with:"
+     echo
+     echo " $ ./configure --with-git-submodules=validate"
+     echo
+     echo "and then manually update submodules prior to running make, with:"
+     echo
+-    echo " $ scripts/git-submodule.sh update $modules"
++    echo " $ GIT='tsocks git' scripts/git-submodule.sh update $modules"
+     echo
+     exit 1
+ }
+@@ -57,6 +52,12 @@ then
+     exit 1
+ fi
+ 
++if test -n "$maybe_modules" && test -z "$GIT"
++then
++    echo "$0: unexpectedly called with submodules but git binary not found"
++    exit 1
++fi
++
+ modules=""
+ for m in $maybe_modules
+ do
 -- 
 2.40.1
 
