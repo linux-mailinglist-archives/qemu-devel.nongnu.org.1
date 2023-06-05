@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A274572333F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C16872336D
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 01:00:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6IlQ-0005H2-Ej; Mon, 05 Jun 2023 18:33:24 -0400
+	id 1q6J9t-0001ac-Vx; Mon, 05 Jun 2023 18:58:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6IlN-0005Gl-Pt
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:33:21 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6IlM-0002jA-49
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:33:21 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f7378a74faso18085415e9.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686004398; x=1688596398;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=R+EIpdgPErQ0mr256+aQnj0ayvbPI2VmyDy2BwXGhEM=;
- b=QtAsGLOIW/rmgBdFOZ/jxIk0/9qNSa7Y0KW2RK0MKRwi1OyRI9hubYVHoUJnoW16Tg
- 8yzGEphnwLtbmjWV5uVQrOeo4xqqOxiObabClGcjpHlE78T5aJKDwqUDm0/51nJb8+5N
- 5vS8A3OIRQcCc6DKjy1JZeFflxErjn8AEmPCMCN9SWOfHeI5qG+Xq76g9+yyGxS8mu1J
- YAQP8+uY6wPMQYM4Jz2IJW9LeIqP8Bz7gIfKh0YZP4Rs5msTg6s/mTsqfi5EOi9uR/fT
- 6JDAAzrJgPhxbYmJxAtoHlP1mducrDqlkfhw6uRmkv7Gteasl9t9sG0vSZE6EKuu0HvB
- cTDQ==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q6J9r-0001aS-Q4
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:58:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q6J9q-00081F-5B
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:58:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686005917;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LvE6XqiC85g1R+FRt+SV0RAqVTJyzrLFgVphSehr/Dc=;
+ b=NOZOPMrYOu8LWPFvxh8DFqlw3j1f+Wg1UXFt+zqck4tpXxDXaOrcaUxvDPLSA8rTMuyTlt
+ WAG6wd2wnVzBlcditHlJaia4/6/SHeZbOiNzxKZqezgPjsdL8bsYEufDtFXSSBkbB6awHy
+ BJA0pdvda1TSH1eXx0dbINm0iBYiA9M=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-i-fYJOUiOV6w7_yXJ0m19Q-1; Mon, 05 Jun 2023 18:58:35 -0400
+X-MC-Unique: i-fYJOUiOV6w7_yXJ0m19Q-1
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-7775a282e25so365758839f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:58:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686004398; x=1688596398;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R+EIpdgPErQ0mr256+aQnj0ayvbPI2VmyDy2BwXGhEM=;
- b=NNDQeaBGEF0ik3FxPDQ5qJZAZ6S+iNzRS0c75762w/3McDMXmwRQCRMrv/Ioc+k7nQ
- U5fLOC7ED+qv+7WyGEHaIKO5jUv4QiKl7597PuEGps8mCVu5kFPqyyIxgwSGQIn5YxjQ
- VvrP/duOiNW0RkV8vb/ITOeioriBzOGIb8S30sq8EjudVagTFOjmVL5PYwT7lKbIPRt4
- oH7z+/3kLtYIGHD4UkDJKzwZaH260o/KXTp1X5oc+jmdOU4AE0+2ZY1Cf7YOdMik0CqF
- VFbApW2p2cMZSzeWGCDq63XHmqzfMZpb6IHRmRkGL4weiNSzZgxyYzjHmViSdH7p7mYr
- VRbw==
-X-Gm-Message-State: AC+VfDyLo6deROuZJV7kXF7By4I8uiUfuhyyWjgKWApskKzVj+6aXUrx
- A2Sxd0F5/t4n6zV/cCA6R86jk2iuW9Xt1l0l2JM=
-X-Google-Smtp-Source: ACHHUZ4P7QaroXu3xTP3hfdQTvR9M7l9GaVxby1WfxAxBO69Ll5mTcVLu+SmHbMxzMwav9XRXh29Gw==
-X-Received: by 2002:adf:ff8c:0:b0:30d:d85c:4472 with SMTP id
- j12-20020adfff8c000000b0030dd85c4472mr165477wrr.62.1686004397713; 
- Mon, 05 Jun 2023 15:33:17 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.217.157])
- by smtp.gmail.com with ESMTPSA id
- l7-20020a5d4807000000b003062c0ef959sm10845558wrq.69.2023.06.05.15.33.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 15:33:17 -0700 (PDT)
-Message-ID: <b59bde61-4c32-47fc-441d-8196654b7f7c@linaro.org>
-Date: Tue, 6 Jun 2023 00:33:15 +0200
+ d=1e100.net; s=20221208; t=1686005915; x=1688597915;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LvE6XqiC85g1R+FRt+SV0RAqVTJyzrLFgVphSehr/Dc=;
+ b=RPAmq9Ijh7trBY66GD48hc34EryrN6mHxNoiCjdu05EToiVeBFxg8GlaLMfpJKw4Nn
+ MFsFbmWJQ69yxEIH+N9rgMLHRZMo/cEsnb9yhIe46aaPvvN1JLNA+VfC/fAfCHCknBGa
+ XeRJmZ1kYHkMtPfHxBvxERcT/X+dt71uwmppbmwqipe/Ck3qi1AE4kyF6ycbAJwiqvjP
+ ntAMFTWnMD7xKQDVysA95ERBN4fls//7ILws/+dLErJuIHVl/nwohXcV3cMHuVciUuNz
+ 8T7LYv6EXFYvaguMzZIq5OhjWLHpCh3mCJBnLQJsixL30K2PlWQE26khSTQVcqBg0jmu
+ 9iZQ==
+X-Gm-Message-State: AC+VfDzVzEw/hhtxiV7PJp01xZF9rXl1C0sRrBGJv5UHyVKQhAZ0Phnz
+ QjL575A8OKDcGdRHW214WzEhE3X6/GoJcZ66KE39XvzgGX5w/3KTLlszN5AVwnqrpT0U5tEOJXY
+ t9+kXCzzz0QjCo8I=
+X-Received: by 2002:a05:6602:2759:b0:774:7eca:d9c5 with SMTP id
+ b25-20020a056602275900b007747ecad9c5mr603773ioe.2.1686005915245; 
+ Mon, 05 Jun 2023 15:58:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7V3+UlzzZ8PKNhSezYV7OGQZ7xULTVKpskuA5snKeV6beQ8tsR8OxSwTgiCnWJ/Bvz38ADkg==
+X-Received: by 2002:a05:6602:2759:b0:774:7eca:d9c5 with SMTP id
+ b25-20020a056602275900b007747ecad9c5mr603755ioe.2.1686005915000; 
+ Mon, 05 Jun 2023 15:58:35 -0700 (PDT)
+Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
+ l16-20020a6b7010000000b007748f491918sm2785768ioc.40.2023.06.05.15.58.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jun 2023 15:58:34 -0700 (PDT)
+Date: Mon, 5 Jun 2023 16:58:33 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: qemu-devel@nongnu.org, Cedric Le Goater <clg@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Philippe Mathieu-Daude <philmd@linaro.org>, Avihai
+ Horon <avihaih@nvidia.com>
+Subject: Re: [PATCH v4 2/2] hw/vfio: Add number of dirty pages to
+ vfio_get_dirty_bitmap tracepoint
+Message-ID: <20230605165833.402cfe81.alex.williamson@redhat.com>
+In-Reply-To: <20230530180556.24441-3-joao.m.martins@oracle.com>
+References: <20230530180556.24441-1-joao.m.martins@oracle.com>
+ <20230530180556.24441-3-joao.m.martins@oracle.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] util/cacheflush: Avoid flushing dcache twice when not
- necessary
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20230605195911.96033-1-philmd@linaro.org>
- <4aee6249-c5b2-5d21-c6e5-e995734ae518@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <4aee6249-c5b2-5d21-c6e5-e995734ae518@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,44 +104,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/6/23 23:56, BALATON Zoltan wrote:
-> On Mon, 5 Jun 2023, Philippe Mathieu-Daudé wrote:
->> <libkern/OSCacheControl.h> describes sys_icache_invalidate() as
->> "equivalent to sys_cache_control(kCacheFunctionPrepareForExecution)",
->> having kCacheFunctionPrepareForExecution defined as:
->>
->>  /* Prepare memory for execution.  This should be called
->>   * after writing machine instructions to memory, before
->>   * executing them.  It syncs the dcache and icache. [...]
->>   */
->>
->> Since the dcache is also sync'd, we can avoid the sys_dcache_flush()
->> call when both rx/rw pointers are equal.
->>
->> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> Based-on: <20230605175647.88395-2-philmd@linaro.org>
->> ---
->> util/cacheflush.c | 9 ++++++++-
->> 1 file changed, 8 insertions(+), 1 deletion(-)
->>
->> diff --git a/util/cacheflush.c b/util/cacheflush.c
->> index de35616718..a08906155a 100644
->> --- a/util/cacheflush.c
->> +++ b/util/cacheflush.c
->> @@ -241,7 +241,14 @@ static void __attribute__((constructor)) 
->> init_cache_info(void)
->>
->> void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
->> {
->> -    sys_dcache_flush((void *)rw, len);
->> +    if (rx == rw) {
-> 
-> Isn't it more straight forward to use rx != rw and drop the else branch 
-> than having an empty if branch? You can still keep the comment above the 
-> if to explain it if needed.
+On Tue, 30 May 2023 19:05:56 +0100
+Joao Martins <joao.m.martins@oracle.com> wrote:
 
-I tried that first but found it was not obvious, so chose this
-form because it seemed clearer to me.
+> Include the number of dirty pages on the vfio_get_dirty_bitmap tracepoint.
+> These are fetched from the newly added return value in
+> cpu_physical_memory_set_dirty_lebitmap().
+>=20
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/vfio/common.c     | 7 ++++---
+>  hw/vfio/trace-events | 2 +-
+>  2 files changed, 5 insertions(+), 4 deletions(-)
+
+
+Acked-by: Alex Williamson <alex.williamson@redhat.com>
+
+
+
+
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 78358ede2764..fa8fd949b1cf 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1747,6 +1747,7 @@ static int vfio_get_dirty_bitmap(VFIOContainer *con=
+tainer, uint64_t iova,
+>  {
+>      bool all_device_dirty_tracking =3D
+>          vfio_devices_all_device_dirty_tracking(container);
+> +    uint64_t dirty_pages;
+>      VFIOBitmap vbmap;
+>      int ret;
+> =20
+> @@ -1772,11 +1773,11 @@ static int vfio_get_dirty_bitmap(VFIOContainer *c=
+ontainer, uint64_t iova,
+>          goto out;
+>      }
+> =20
+> -    cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
+> -                                           vbmap.pages);
+> +    dirty_pages =3D cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap,=
+ ram_addr,
+> +                                                         vbmap.pages);
+> =20
+>      trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
+> -                                ram_addr);
+> +                                ram_addr, dirty_pages);
+>  out:
+>      g_free(vbmap.bitmap);
+> =20
+> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+> index 646e42fd27f9..cfb60c354de3 100644
+> --- a/hw/vfio/trace-events
+> +++ b/hw/vfio/trace-events
+> @@ -120,7 +120,7 @@ vfio_region_sparse_mmap_header(const char *name, int =
+index, int nr_areas) "Devic
+>  vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long =
+end) "sparse entry %d [0x%lx - 0x%lx]"
+>  vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t=
+ subtype) "%s index %d, %08x/%08x"
+>  vfio_dma_unmap_overflow_workaround(void) ""
+> -vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bit=
+map_size, uint64_t start) "container fd=3D%d, iova=3D0x%"PRIx64" size=3D 0x=
+%"PRIx64" bitmap_size=3D0x%"PRIx64" start=3D0x%"PRIx64
+> +vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bit=
+map_size, uint64_t start, uint64_t dirty_pages) "container fd=3D%d, iova=3D=
+0x%"PRIx64" size=3D 0x%"PRIx64" bitmap_size=3D0x%"PRIx64" start=3D0x%"PRIx6=
+4" dirty_pages=3D%"PRIu64
+>  vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iom=
+mu dirty @ 0x%"PRIx64" - 0x%"PRIx64
+> =20
+>  # platform.c
+
 
