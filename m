@@ -2,73 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9A7722267
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B1C722292
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 11:49:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q66iO-0007N4-8D; Mon, 05 Jun 2023 05:41:28 -0400
+	id 1q66ox-0000OB-Bw; Mon, 05 Jun 2023 05:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q66i7-0007MW-BQ
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:41:11 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1q66oT-0000FS-88
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:47:47 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q66i4-0004yp-NG
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:41:11 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5149c51fd5bso6897952a12.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 02:41:07 -0700 (PDT)
+ id 1q66oG-0005yf-MP
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 05:47:43 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51456392cbbso11982192a12.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 02:47:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685958066; x=1688550066;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LK1ZlwxyuLS97hgaddxvElcQgxjpsxQyAHtcGl6HGhM=;
- b=ztauLSubrQJViE94fQ1dIa4O/bQiWKK2tpxfodxOOH6CuSXXWLu4wRRLhIEikIVOAy
- zeqezXIYdj4VdHdW7vx0ErM35zIBXxo1LnOy9fglHPc+K5ux5UvURRbRHVTq+qyufO+Z
- 6EJtdAmVI9+/IX06y6F2x8LFx5t3Q8HSZS4YkbIkmqvNpi/rD9ZZntVfqVyMmXm4kU19
- l2uxdZpc1dY8cRqUwV3mvtnYGzDYqaVqGNB9Adlb5wNzab9KGakBf9k+309jcPpaETlb
- GjpClo16hImJ9sI4LbZafsROC//C0TIwib/gGW0TWzNlS/zMbJPZN4uIz5oAH5xKAl3S
- FYXQ==
+ d=linaro.org; s=google; t=1685958451; x=1688550451;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ztVesaHbljPqzJ4I07QjLsGcRO8DfGFDx7Uq8E0uKM4=;
+ b=aAIBfIx3hjioTZOev22cIYTLT73TEhHmEi9FxuVAkaS486FR68WXTBCLTShCrh6Ee6
+ O0GE4bRHfTqbavxuudv5/gwb9HTP+BsWYTZE3hoJQf8BjpKEzKX6G9chHUCwYfONfibl
+ 77OJjHzvex/n3eehIlV3767HdOZmGt8mwTzU7C9du8J088U4ut60cGVWddr1O1jSKemY
+ epbYcXS/ULeMCgNVqIF2WgSp5UaYT7gAGIi5uZgKsHkZ/zqsgxpxwNlm0eHQzIUzIKpe
+ 4gok+sN6LSr5dh+ZayqOF2pU3nvcpDj3gF4loQpsAo7FjcNoVVPJZXgGjmqhVgxZSrKK
+ xFuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685958066; x=1688550066;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LK1ZlwxyuLS97hgaddxvElcQgxjpsxQyAHtcGl6HGhM=;
- b=KFuytj8qwLI5gg5bzjg/1DazihSRJ6QSkDVH7XEgAUk9n/CBer6gEtt0gyju8Bs947
- DQjOHKYCFzYt9C1GKUYb2X6foth7WCIOXfDbjnNv9eX301nNhd8m2/PWG4HlKFqFcMyA
- wr+M8aDONpaWxSg0mjvaXlbKyT2xSRRCmKYN5c0wEwSkKEVCAICMWz0ShR5QGkJ28U1k
- fO/DgJPNDdbG/kwJLk3qqnKeAcqcp7/nS7oEbwfgF6uMwdZdbD+ikFo5xi+ZQZbCr4On
- HgOPNhWYmD+1lYfl0o3Yzto+vJoNn4vzMnZ0rZVIlzeREJG8kIV5GYpjHqgWb3R2YYH8
- nGsA==
-X-Gm-Message-State: AC+VfDyzfdfrP49A8F8fgIvl7JBdMbFH4sn9XSLuB//q/EadJJduRfUt
- UJiUfsjuDRyFjP6r6P17ypZomHOxJ1gQuG2NPOjipg==
-X-Google-Smtp-Source: ACHHUZ5V0koBXbDDU4upJg1KnquGNUo4h2oG6LcksqtpUu7G/Ie6aHTnt5x+RWychAWSkRGjvP0BPO6y0UdSIj5lJdo=
-X-Received: by 2002:a05:6402:887:b0:50d:975f:3729 with SMTP id
- e7-20020a056402088700b0050d975f3729mr8489435edy.11.1685958066547; Mon, 05 Jun
- 2023 02:41:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685958451; x=1688550451;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ztVesaHbljPqzJ4I07QjLsGcRO8DfGFDx7Uq8E0uKM4=;
+ b=MNaT7yPAPBBEtdjsRKaqVo3SOMWKxKiYYP8uRvKdWUeJ8edV+2oJByTX7oPC0fULfJ
+ ECZ2LLOVKZJbiYSr72/kwLzTL6C1AU9E2WmMvnF+kRafZakgW3mZR1IZAismZ4oTeuJy
+ ZGo8SUhr0Z4gXXYYMJbwN6I0WrNhKw1M+7R+XZw6XJRHFZwal3wgVHXW2uHnBkF7gz68
+ w0/BRRxC0aixX0XWSCR/4uGik8Hjsf6zxMW/X9+/s1ginG1dKrXtBg6gW8mzn/Z5qjp5
+ 13ZroTHJG/tzIJoyeea7FUKqXhf0wRXIGU18Pm79VHq7DPwlXV+kFpmocxVHy/h8/y6s
+ gCcA==
+X-Gm-Message-State: AC+VfDyrUQfhh4tDhXHWCIZWPHdhFk6AoJVXjEnTLPeoStqT75NPL/CO
+ xfLL7wIiQVwV+J7Fl21DeTRSWE0iFWPWK90y5ixSxg==
+X-Google-Smtp-Source: ACHHUZ5RE6aKkOA9tGGYaEXIizxaBQaBMxvO34QXyM/HXi8/oKdRN1K71XC5HYwSLN1U/2h5Vzw6Hm6IL/gJBsuzBMA=
+X-Received: by 2002:a05:6402:1d50:b0:506:bbf8:5152 with SMTP id
+ dz16-20020a0564021d5000b00506bbf85152mr10262927edb.9.1685958450814; Mon, 05
+ Jun 2023 02:47:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230502121459.2422303-1-peter.maydell@linaro.org>
- <20230502121459.2422303-32-peter.maydell@linaro.org>
- <edc17818-6db5-4f95-a966-3a810804ea04@roeck-us.net>
- <a77c864f-f571-b0a8-3c7f-dadbbf8c8185@tls.msk.ru>
- <4377a8d5-54d1-e0b3-e87a-0c04ec3b1360@roeck-us.net>
-In-Reply-To: <4377a8d5-54d1-e0b3-e87a-0c04ec3b1360@roeck-us.net>
+References: <20230605075823.48871-1-pbonzini@redhat.com>
+In-Reply-To: <20230605075823.48871-1-pbonzini@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 5 Jun 2023 10:40:33 +0100
-Message-ID: <CAFEAcA_L8XCdRLGU_xeMC3JGzK_4h0LDWXz0VFLMgdkWigc1VQ@mail.gmail.com>
-Subject: Re: [PULL 31/35] hw/intc/allwinner-a10-pic: Don't use
- set_bit()/clear_bit()
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Date: Mon, 5 Jun 2023 10:46:57 +0100
+Message-ID: <CAFEAcA8fRWdFMrcy6G6yT-8320UZUf6QA9XO70f7P1ssraedRQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Fix venv issues with Avocado by reverting to an older
+ version
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, alex.bennee@linaro.org, 
+ jsnow@redhat.com, kconsul@linux.vnet.ibm.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,101 +86,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 3 Jun 2023 at 19:06, Guenter Roeck <linux@roeck-us.net> wrote:
+On Mon, 5 Jun 2023 at 08:58, Paolo Bonzini <pbonzini@redhat.com> wrote:
 >
-> On 6/3/23 10:46, Michael Tokarev wrote:
-> > 03.06.2023 18:03, Guenter Roeck wrote:
-> >> Hi,
-> >>
-> >> On Tue, May 02, 2023 at 01:14:55PM +0100, Peter Maydell wrote:
-> >>> The Allwinner PIC model uses set_bit() and clear_bit() to update the
-> >>> values in its irq_pending[] array when an interrupt arrives.  However
-> >>> it is using these functions wrongly: they work on an array of type
-> >>> 'long', and it is passing an array of type 'uint32_t'.  Because the
-> >>> code manually figures out the right array element, this works on
-> >>> little-endian hosts and on 32-bit big-endian hosts, where bits 0..31
-> >>> in a 'long' are in the same place as they are in a 'uint32_t'.
-> >>> However it breaks on 64-bit big-endian hosts.
-> >>>
-> >>> Remove the use of set_bit() and clear_bit() in favour of using
-> >>> deposit32() on the array element.  This fixes a bug where on
-> >>> big-endian 64-bit hosts the guest kernel would hang early on in
-> >>> bootup.
-> >>>
-> >>> Cc: qemu-stable@nongnu.org
-> >>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> >>> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> >>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> >>> Message-id: 20230424152833.1334136-1-peter.maydell@linaro.org
-> >>
-> >> In v8.0.2, the cubieboard emulation running Linux crashes during reboo=
-t
-> >> with a hung task error. Tested with mainline Linux (v6.4-rc4-78-g929ed=
-21dfdb6)
-> >> and with v5.15.114. Host is AMD Ryzen 5900X.
-> >>
-> >> Requesting system reboot
-> >> [   61.927460] INFO: task kworker/0:1:13 blocked for more than 30 seco=
-nds.
-> >> [   61.927896]       Not tainted 5.15.115-rc2-00038-g31e35d9f1b8d #1
-> >> [   61.928144] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disa=
-bles this message.
-> >> [   61.928419] task:kworker/0:1     state:D stack:    0 pid:   13 ppid=
-:     2 flags:0x00000000
-> >> [   61.928972] Workqueue: events_freezable mmc_rescan
-> >> [   61.929739] [<c13734f0>] (__schedule) from [<c1373c98>] (schedule+0=
-x80/0x15c)
-> >> [   61.930041] [<c1373c98>] (schedule) from [<c137ad64>] (schedule_tim=
-eout+0xd4/0x12c)
-> >> [   61.930270] [<c137ad64>] (schedule_timeout) from [<c137477c>] (do_w=
-ait_for_common+0xa0/0x154)
-> >> [   61.930523] [<c137477c>] (do_wait_for_common) from [<c1374870>] (wa=
-it_for_completion+0x40/0x4c)
-> >> [   61.930764] [<c1374870>] (wait_for_completion) from [<c1044cd0>] (m=
-mc_wait_for_req_done+0x6c/0x90)
-> >> [   61.931012] [<c1044cd0>] (mmc_wait_for_req_done) from [<c1044e34>] =
-(mmc_wait_for_cmd+0x70/0xa8)
-> >> [   61.931252] [<c1044e34>] (mmc_wait_for_cmd) from [<c10512a0>] (sdio=
-_reset+0x58/0x124)
-> >> [   61.931478] [<c10512a0>] (sdio_reset) from [<c1046328>] (mmc_rescan=
-+0x294/0x30c)
-> >> [   61.931692] [<c1046328>] (mmc_rescan) from [<c036be10>] (process_on=
-e_work+0x28c/0x720)
-> >> [   61.931924] [<c036be10>] (process_one_work) from [<c036c308>] (work=
-er_thread+0x64/0x53c)
-> >> [   61.932153] [<c036c308>] (worker_thread) from [<c03753e0>] (kthread=
-+0x15c/0x180)
-> >> [   61.932365] [<c03753e0>] (kthread) from [<c030015c>] (ret_from_fork=
-+0x14/0x38)
-> >> [   61.932628] Exception stack(0xc31ddfb0 to 0xc31ddff8)
-> >>
-> >> This was not seen with v8.0.0. Bisect points to this patch. Reverting =
-it
-> >> fixes the problem.
-> >
-> > Does this happen on master too, or just on stable-8.0 ?
-> >
+> Bumping avocado to version 101 has two issues.  First, there are problems
+> where Avocado is not logging of command lines or terminal output, and not
+> collecting Python logs outside the avocado namespace.
 >
-> It does. Tested with v8.0.0-1542-g848a6caa88.
+> Second, the recent changes to Python handling mean that there is a single
+> virtual environment for all the build, instead of a separate one for testing.
+> Requiring a too-new version of avocado causes conflicts with any avocado
+> plugins installed on the host:
 >
-> Here is my command line in case you want to give it a try:
+>    $ make check-venv
+>    make[1]: Entering directory '/home/berrange/src/virt/qemu/build'
+>      GIT     ui/keycodemapdb tests/fp/berkeley-testfloat-3 tests/fp/berkeley-softfloat-3 dtc
+>      VENVPIP install -e /home/berrange/src/virt/qemu/python/
+>      VENVPIP install -r /home/berrange/src/virt/qemu/tests/requirements.txt
+>    ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+>    avocado-framework-plugin-varianter-yaml-to-mux 98.0 requires avocado-framework==98.0, but you have avocado-framework 101.0 which is incompatible.
+>    avocado-framework-plugin-result-html 98.0 requires avocado-framework==98.0, but you have avocado-framework 101.0 which is incompatible.
+>    make[1]: Leaving directory '/home/berrange/src/virt/qemu/build'
 >
-> qemu-system-arm -M cubieboard -kernel arch/arm/boot/zImage -no-reboot \
->      -initrd rootfs-armv5.cpio -m 512 \
->      --append "panic=3D-1 rdinit=3D/sbin/init earlycon=3Duart8250,mmio32,=
-0x1c28000,115200n8 console=3DttyS0" \
->      -dtb arch/arm/boot/dts/sun4i-a10-cubieboard.dtb -nographic \
->      -monitor null -serial stdio
->
-> initrd is https://github.com/groeck/linux-build-test/blob/master/rootfs/a=
-rm-v7/rootfs-armv5.cpio.gz
->
-> This is with multi_v7_defconfig with some debug options added. If necessa=
-ry
-> I'll be happy to provide the exact configuration.
+> To avoid this issue, tests/requirements.txt should use a ">=" constraint
+> and the version of Avocado should be limited to what distros provide
+> in the system packages.  Only Fedora has Avocado, and more specifically
+> version 92.0.  For now, this series reverts to the older requirement
+> (version >=88.1) while leaving further version bumps to future changes.
 
-If you can provide a link to the zImage and the dtb to reproduce
-as well, that would be helpful.
+If the new Avocado version is broken, don't we also need a < constraint
+so we don't get it by mistake ?
+
+In particular, for a local build tree that currently has 101 installed,
+if the tree is updated to include these two patches together, will that
+correctly downgrade it to 88.1?
 
 thanks
 -- PMM
