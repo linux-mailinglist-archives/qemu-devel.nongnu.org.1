@@ -2,50 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4857221A1
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F4772219E
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 10:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q661n-0005ZO-El; Mon, 05 Jun 2023 04:57:27 -0400
+	id 1q661m-0005Yb-QL; Mon, 05 Jun 2023 04:57:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q661k-0005YA-6h
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:57:24 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q661h-0005Xp-6W
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:57:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q661g-0004q8-4i
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:57:21 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q661f-0004q1-Bh
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 04:57:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685955439;
+ s=mimecast20190719; t=1685955438;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=IHKbsbl6Us8b0ACsQ2D5oS8tkWxtif3fqPUf5D9w2dA=;
- b=OgZPzfltB4IwFYreNO60chFITIYgjJuCQlMduZVBV61S+Fv9zBgVLgl98ySjXwaiF558nz
- OgIBRk7oH/lQLef2mTxTmOoURmqRBWZGZ0ojUiZF7J0CM4XeImHHEZfIvwR3RnvES2d7jl
- pHKEE/LjivG1mhYoHUhX88gzjb769lY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tHveehT08bzxo9rEqWtjRYG+1BMyzRv3ibUTtU6UWxM=;
+ b=ROxOInQjDlwNf+OpSG3NktzRgo2KlgBVPsdBMLbTx5TlE8/zBlX/z2b4uhBnf1pGD6KElK
+ 31GSYK0pdaDONIdKlX9WR1lltwapPx1S9lbpwOr4/LaSwLjfinVtq3rsfMXBO49ZkNnDFj
+ yfs83t81V08mEK0OvFBKKxSM3KuG9W8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-438-DY23Zpa0N768ElTmxVEqXg-1; Mon, 05 Jun 2023 04:57:16 -0400
-X-MC-Unique: DY23Zpa0N768ElTmxVEqXg-1
+ us-mta-360-iXQfflfmMsWhepKTu7-V5g-1; Mon, 05 Jun 2023 04:57:17 -0400
+X-MC-Unique: iXQfflfmMsWhepKTu7-V5g-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DFAF801224;
- Mon,  5 Jun 2023 08:57:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D96C3C025C3;
+ Mon,  5 Jun 2023 08:57:17 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.25])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 34D5D40C6EC4;
- Mon,  5 Jun 2023 08:57:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6582040C6EC4;
+ Mon,  5 Jun 2023 08:57:16 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, hreitz@redhat.com,
  eblake@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v2 00/11] block: Re-enable the graph lock
-Date: Mon,  5 Jun 2023 10:57:00 +0200
-Message-Id: <20230605085711.21261-1-kwolf@redhat.com>
+Subject: [PATCH v2 01/11] iotests: Test active commit with iothread and
+ background I/O
+Date: Mon,  5 Jun 2023 10:57:01 +0200
+Message-Id: <20230605085711.21261-2-kwolf@redhat.com>
+In-Reply-To: <20230605085711.21261-1-kwolf@redhat.com>
+References: <20230605085711.21261-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
@@ -57,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,52 +77,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series fixes the deadlock that was observed before commit ad128dff
-('graph-lock: Disable locking for now'), which just disabled the graph
-lock completely as a workaround to get 8.0.1 stable.
+This is a better regression test for the bugs hidden by commit 80fc5d26
+('graph-lock: Disable locking for now'). With that commit reverted, it
+hangs instantaneously and reliably for me.
 
-In theory the problem is simple: We can't poll while still holding the
-lock of a different AioContext. So bdrv_graph_wrlock() just needs to
-drop that lock before it polls. However, there are a number of callers
-that don't even hold the AioContext lock they are supposed to hold, so
-temporarily unlocking tries to unlock a mutex that isn't locked,
-resulting in assertion failures.
+It is important to have a reliable test like this, because the following
+commits will set out to fix the actual root cause of the deadlocks and
+then finally revert commit 80fc5d26, which was only a stopgap solution.
 
-Therefore, much of this series is just for fixing AioContext locking
-correctness. It is only the last two patches that actually fix the
-deadlock and reenable the graph locking.
-
-v2:
-- Fixed patch 2 to actually lock the correct AioContext even if the
-  device doesn't support iothreads
-- Improved the commit message for patch 7 [Eric]
-- Fixed mismerge in patch 11 (v1 incorrectly left an #if 0 around)
-
-Kevin Wolf (11):
-  iotests: Test active commit with iothread and background I/O
-  qdev-properties-system: Lock AioContext for blk_insert_bs()
-  test-block-iothread: Lock AioContext for blk_insert_bs()
-  block: Fix AioContext locking in bdrv_open_child()
-  block: Fix AioContext locking in bdrv_attach_child_common()
-  block: Fix AioContext locking in bdrv_reopen_parse_file_or_backing()
-  block: Fix AioContext locking in bdrv_open_inherit()
-  block: Fix AioContext locking in bdrv_open_backing_file()
-  blockjob: Fix AioContext locking in block_job_add_bdrv()
-  graph-lock: Unlock the AioContext while polling
-  Revert "graph-lock: Disable locking for now"
-
- include/block/graph-lock.h                    |   6 +-
- block.c                                       | 103 ++++++++++++++++--
- block/graph-lock.c                            |  42 ++++---
- blockjob.c                                    |  17 ++-
- hw/core/qdev-properties-system.c              |   8 +-
- tests/unit/test-block-iothread.c              |   7 +-
- .../tests/iothreads-commit-active             |  85 +++++++++++++++
- .../tests/iothreads-commit-active.out         |  23 ++++
- 8 files changed, 250 insertions(+), 41 deletions(-)
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ .../tests/iothreads-commit-active             | 85 +++++++++++++++++++
+ .../tests/iothreads-commit-active.out         | 23 +++++
+ 2 files changed, 108 insertions(+)
  create mode 100755 tests/qemu-iotests/tests/iothreads-commit-active
  create mode 100644 tests/qemu-iotests/tests/iothreads-commit-active.out
 
+diff --git a/tests/qemu-iotests/tests/iothreads-commit-active b/tests/qemu-iotests/tests/iothreads-commit-active
+new file mode 100755
+index 0000000000..4010a4871f
+--- /dev/null
++++ b/tests/qemu-iotests/tests/iothreads-commit-active
+@@ -0,0 +1,85 @@
++#!/usr/bin/env python3
++# group: rw quick auto
++#
++# Copyright (C) 2023 Red Hat, Inc.
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++#
++# Creator/Owner: Kevin Wolf <kwolf@redhat.com>
++
++import asyncio
++import iotests
++
++iotests.script_initialize(supported_fmts=['qcow2'],
++                          supported_platforms=['linux'])
++iotests.verify_virtio_scsi_pci_or_ccw()
++
++with iotests.FilePath('disk0.img') as img_path, \
++     iotests.FilePath('disk0-snap.img') as snap_path, \
++     iotests.FilePath('mirror-src.img') as src_path, \
++     iotests.FilePath('mirror-dst.img') as dst_path, \
++     iotests.VM() as vm:
++
++    img_size = '10M'
++    iotests.qemu_img_create('-f', iotests.imgfmt, img_path, img_size)
++    iotests.qemu_img_create('-f', iotests.imgfmt, '-b', img_path,
++                            '-F', iotests.imgfmt, snap_path)
++    iotests.qemu_img_create('-f', iotests.imgfmt, src_path, img_size)
++    iotests.qemu_img_create('-f', iotests.imgfmt, dst_path, img_size)
++
++    iotests.qemu_io_log('-c', 'write 0 64k', img_path)
++    iotests.qemu_io_log('-c', 'write 1M 64k', snap_path)
++    iotests.qemu_io_log('-c', 'write 3M 64k', snap_path)
++
++    iotests.qemu_io_log('-c', f'write 0 {img_size}', src_path)
++
++    iotests.log('Launching VM...')
++    vm.add_object('iothread,id=iothread0')
++    vm.add_object('throttle-group,x-bps-write=1048576,id=tg0')
++    vm.add_blockdev(f'file,node-name=disk0-file,filename={img_path}')
++    vm.add_blockdev('qcow2,node-name=disk0-fmt,file=disk0-file')
++    vm.add_drive(snap_path, 'backing=disk0-fmt,node-name=disk0',
++                 interface='none')
++    vm.add_device('virtio-scsi,iothread=iothread0')
++    vm.add_device('scsi-hd,drive=drive0')
++
++    vm.add_blockdev(f'file,filename={src_path},node-name=mirror-src-file')
++    vm.add_blockdev('qcow2,file=mirror-src-file,node-name=mirror-src')
++    vm.add_blockdev(f'file,filename={dst_path},node-name=mirror-dst-file')
++    vm.add_blockdev('qcow2,file=mirror-dst-file,node-name=mirror-dst-fmt')
++    vm.add_blockdev('throttle,throttle-group=tg0,file=mirror-dst-fmt,'
++                    'node-name=mirror-dst')
++    vm.add_device('scsi-hd,drive=mirror-src')
++
++    vm.launch()
++
++    # The background I/O is created on unrelated nodes (so that they won't be
++    # drained together with the other ones), but on the same iothread
++    iotests.log('Creating some background I/O...')
++    iotests.log(vm.qmp('blockdev-mirror', job_id='job0', sync='full',
++                       device='mirror-src', target='mirror-dst',
++                       auto_dismiss=False))
++
++    iotests.log('Starting active commit...')
++    iotests.log(vm.qmp('block-commit', device='disk0', job_id='job1',
++                       auto_dismiss=False))
++
++    # Should succeed and not time out
++    try:
++        vm.run_job('job1', wait=5.0)
++        vm.shutdown()
++    except asyncio.TimeoutError:
++        # VM may be stuck, kill it
++        vm.kill()
++        raise
+diff --git a/tests/qemu-iotests/tests/iothreads-commit-active.out b/tests/qemu-iotests/tests/iothreads-commit-active.out
+new file mode 100644
+index 0000000000..4afd50b8d3
+--- /dev/null
++++ b/tests/qemu-iotests/tests/iothreads-commit-active.out
+@@ -0,0 +1,23 @@
++wrote 65536/65536 bytes at offset 0
++64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++wrote 65536/65536 bytes at offset 1048576
++64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++wrote 65536/65536 bytes at offset 3145728
++64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++wrote 10485760/10485760 bytes at offset 0
++10 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++Launching VM...
++Creating some background I/O...
++{"return": {}}
++Starting active commit...
++{"return": {}}
++{"execute": "job-complete", "arguments": {"id": "job1"}}
++{"return": {}}
++{"data": {"device": "job1", "len": 131072, "offset": 131072, "speed": 0, "type": "commit"}, "event": "BLOCK_JOB_READY", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
++{"data": {"device": "job1", "len": 131072, "offset": 131072, "speed": 0, "type": "commit"}, "event": "BLOCK_JOB_COMPLETED", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
++{"execute": "job-dismiss", "arguments": {"id": "job1"}}
++{"return": {}}
 -- 
 2.40.1
 
