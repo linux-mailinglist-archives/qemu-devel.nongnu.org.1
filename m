@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FEE722E0A
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 19:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79CE722E0E
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 19:58:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6ERv-000615-5V; Mon, 05 Jun 2023 13:56:59 -0400
+	id 1q6ERx-00062i-BD; Mon, 05 Jun 2023 13:57:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6ERt-0005z5-Eb
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 13:56:57 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6ERv-00061H-8m
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 13:56:59 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6ERo-0001Td-DO
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 13:56:57 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6a6b9c079so43495915e9.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 10:56:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6ERt-0001UC-OH
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 13:56:59 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f61530506aso52256205e9.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 10:56:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685987810; x=1688579810;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=z4iRS52vMXLw0AkceVZ45AaR9KR5nynhoiwOY8S0/1k=;
- b=JvUMPxDTwBcxrKGK001Evohn4qO6qpLypYWZz8Aywkci621pdV3QGzrqVo8S/Qo1mY
- aL1fla10Uzt7HvSJyXlZ+Nk1OtpRughxGdiyfDMWBQc+TdninHFhPVcl9egPUh9cIgh6
- ZobXJk6pgBCy5pvyz+MeqX/CmoYd+7pIRW6Xz4tpIhhPT8+65rbMshyt2T+k7QbjEpmQ
- DVQQDRAh4avshR+HkT3AN6CQfHVJ6+gVhshV0HuknkZSYgzRYnlRmxhh6RdDWM+RS//l
- MbUi23/eUmLGgm4cWsRJINeB0U8oV7ahEkLIAgNDdx4JbboMb/bVoVqLtOhKp078Rf4L
- QMgA==
+ d=linaro.org; s=google; t=1685987816; x=1688579816;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=p+Iw/1QCn4gWIQqU6bYdv/xs2QcFa6+Ox3iNu9xY0wY=;
+ b=EYcvUE2qaOy/LJ5rv8Urz0q81DiVWO+ZCG4mfAsG95HaBAnrbWenxPtDjy421pFkRo
+ 27f7ipDxYr8e2f6rNqtbF5YSmF66Fm2lVlebDOw06K2j+cOWnDoE5hdg4WzjRRrXhI47
+ S8SBXi/uWg9wWLzjWm4n6Eo/JH92d4sO0uDEXQUSQW7EDCE63uNo7q13gApCwVLSTSZG
+ qNCv/GkBmXISWj3QUYegi1FGe42B8lUQbj0NEzMfbeeCxp5ZwkRy8Mhyp34mMoqeL4bY
+ rOpEuHmt2CpwAu1BYYl1DUh9a1fdsFJ8GMZzAKpYmax8NzbUa/rkGPms94ZbV8ni7Hrr
+ WfSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685987810; x=1688579810;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=z4iRS52vMXLw0AkceVZ45AaR9KR5nynhoiwOY8S0/1k=;
- b=YqCEcvhzwNX/JxpNtY9qY1xhXmXCAKpF5yewRL+mvF72eycZJYDGzGB+sV4UJHL9hU
- yKOP4PbApzVMeXDw+SMYJ1Pxz4TmtHSYI5TaxqDaksHnmSMHf0pKWLjSGHEhXrV7T8xA
- 2fdclZ+sbFEMmQdGrKpwFa9jLxXXzsvmPPRqtZDDyzW+AYQ30ZFtMixPGF/3tVBTGPe6
- FIlyWIM6m/eofxrbTR7eQ2en9rOtFgy278VcE9VRKK0bySS46iVsCIsTtR8lnLEYw7fA
- EXEn/cTun5R7LHmF65Js/o3utajsqLwElgnyDHWLjXwlq38vvl3XlJ8gnYbxuYejIyqy
- UN1g==
-X-Gm-Message-State: AC+VfDzlCGssEeQY2RJmdI6MVVxaETd3lCRxowPFXeiWSwNZL4OLSpzk
- Carear6nSDzuTQ9sl4dn75C4258mMrhbK1LaESY=
-X-Google-Smtp-Source: ACHHUZ5VFX7lY9jGLRKmZlcsfgRlUwpXx1+zoR5ELeSrX5L0ZnqUsnFpuuyQhw+zE+QQP34d9zVhgw==
-X-Received: by 2002:a05:600c:2206:b0:3f7:e800:abc8 with SMTP id
- z6-20020a05600c220600b003f7e800abc8mr771020wml.15.1685987810688; 
- Mon, 05 Jun 2023 10:56:50 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685987816; x=1688579816;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=p+Iw/1QCn4gWIQqU6bYdv/xs2QcFa6+Ox3iNu9xY0wY=;
+ b=DySXHrd16UZo7hWNtytZWfZm0xyhQ/XhNhhMzycgVOGnEzZG+LNE473qDKoIkyrekh
+ HN/LXqyDI6vDEkXwyvmGQqOX2I1aovq58UF7W2vmEni2S2RmCjRYMVljqzJFrdv8WDhe
+ neY0SKne0WjovugBG5qEwkq6DE1niQeAkksC8Eu5lwZ2y1XQnHA5ypPtesbWCgCOu2/N
+ HFtKDs9LVUzEsl9m6o09svVVDHG+TD6MbMPLq3vHF/yyTOeko9dIxjmXRUHIVVF5WRw6
+ BY1UexqMDKOvdebFCNlIaPHPI2eT86Gg3vM6gmHMPWXdiYcBJ9qnhPZyEQpw6v78LoO6
+ OlpA==
+X-Gm-Message-State: AC+VfDxqs9RFdnr3mSoqQkvGBXAxu8qEgOla8U6Gu47tlQo5Aihs+1/Q
+ A49GaoO9fDL4y9pP7otxDTsbNoMD+YkFSwRlnpI=
+X-Google-Smtp-Source: ACHHUZ4DQLDh99srxt42yIT7bcewLluBuX9/HJDZXHSntRFLVuwAmKvO+KD4DdKv4iRXooC6rL+RdA==
+X-Received: by 2002:a1c:f711:0:b0:3f6:53a:6665 with SMTP id
+ v17-20020a1cf711000000b003f6053a6665mr8873070wmh.19.1685987816071; 
+ Mon, 05 Jun 2023 10:56:56 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- j5-20020a5d6185000000b0030af05fce4dsm10424645wru.77.2023.06.05.10.56.49
+ q25-20020a7bce99000000b003f182a10106sm11524598wmj.8.2023.06.05.10.56.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 05 Jun 2023 10:56:50 -0700 (PDT)
+ Mon, 05 Jun 2023 10:56:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/5] bulk: Do not declare function prototypes using
- 'extern' keyword
-Date: Mon,  5 Jun 2023 19:56:42 +0200
-Message-Id: <20230605175647.88395-1-philmd@linaro.org>
+Subject: [PATCH v2 1/5] util/cacheflush: Use declarations from
+ <OSCacheControl.h> on Darwin
+Date: Mon,  5 Jun 2023 19:56:43 +0200
+Message-Id: <20230605175647.88395-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230605175647.88395-1-philmd@linaro.org>
+References: <20230605175647.88395-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,51 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v2:
-- Do not change variable declarations in "block/dmg.h" (danpb)
-- Rebased
-- Added R-b from v1
+Per the cache(3) man page, sys_icache_invalidate() and
+sys_dcache_flush() are declared in <libkern/OSCacheControl.h>.
 
-v1:
-- Remove the 'extern' keyword on function prototypes declared
-  in header.
-- Replace __attribute__((noreturn)) -> G_NORETURN
-- Trivial cleanups to keep the previous commits generic.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ util/cacheflush.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Based-on: <20230605174146.87440-1-philmd@linaro.org>
-
-Philippe Mathieu-Daudé (5):
-  util/cacheflush: Use declarations from <OSCacheControl.h> on Darwin
-  tcg/tcg-op-vec: Remove left over _link_error() definitions
-  qemu/uri: Use QueryParams type definition
-  bulk: Do not declare function prototypes using 'extern' keyword
-  bulk: Replace __attribute__((noreturn)) -> G_NORETURN
-
- bsd-user/bsd-file.h            |  6 ++---
- crypto/hmacpriv.h              | 13 +++++------
- hw/xen/xen_pt.h                |  8 +++----
- include/crypto/secret_common.h | 14 +++++-------
- include/exec/page-vary.h       |  4 ++--
- include/hw/misc/aspeed_scu.h   |  2 +-
- include/hw/nvram/npcm7xx_otp.h |  4 ++--
- include/hw/qdev-core.h         |  4 ++--
- include/qemu/crc-ccitt.h       |  4 ++--
- include/qemu/osdep.h           |  4 ++--
- include/qemu/rcu.h             | 14 ++++++------
- include/qemu/sys_membarrier.h  |  4 ++--
- include/qemu/uri.h             |  6 ++---
- include/sysemu/accel-blocker.h | 14 ++++++------
- include/sysemu/os-win32.h      |  4 ++--
- include/user/safe-syscall.h    |  4 ++--
- target/i386/sev.h              |  6 ++---
- target/mips/cpu.h              |  4 ++--
- tcg/tcg-internal.h             |  4 ++--
- include/exec/memory_ldst.h.inc | 42 +++++++++++++++++-----------------
- tcg/tcg-op-vec.c               | 11 ---------
- tests/migration/stress.c       |  2 +-
- util/cacheflush.c              |  4 ++--
- 23 files changed, 82 insertions(+), 100 deletions(-)
-
+diff --git a/util/cacheflush.c b/util/cacheflush.c
+index 06c2333a60..de35616718 100644
+--- a/util/cacheflush.c
++++ b/util/cacheflush.c
+@@ -237,8 +237,8 @@ static void __attribute__((constructor)) init_cache_info(void)
+ 
+ #ifdef CONFIG_DARWIN
+ /* Apple does not expose CTR_EL0, so we must use system interfaces. */
+-extern void sys_icache_invalidate(void *start, size_t len);
+-extern void sys_dcache_flush(void *start, size_t len);
++#include <libkern/OSCacheControl.h>
++
+ void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
+ {
+     sys_dcache_flush((void *)rw, len);
 -- 
 2.38.1
 
