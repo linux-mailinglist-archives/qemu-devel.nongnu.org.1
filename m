@@ -2,52 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A74722A14
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 16:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCF5722A23
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 17:02:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6BfL-0002R9-3l; Mon, 05 Jun 2023 10:58:39 -0400
+	id 1q6BiA-0003tH-5q; Mon, 05 Jun 2023 11:01:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=6mOa=BZ=kaod.org=clg@ozlabs.org>)
- id 1q6BfH-0002Jb-35; Mon, 05 Jun 2023 10:58:35 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=6mOa=BZ=kaod.org=clg@ozlabs.org>)
- id 1q6BfE-0007K1-9H; Mon, 05 Jun 2023 10:58:34 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QZcDj5Bmsz4x1f;
- Tue,  6 Jun 2023 00:58:29 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QZcDg1qVzz4x4B;
- Tue,  6 Jun 2023 00:58:26 +1000 (AEST)
-Message-ID: <6e5da157-8969-b5e3-5a07-465a4828f40d@kaod.org>
-Date: Mon, 5 Jun 2023 16:58:24 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Bi8-0003t7-8E
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:01:32 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Bi6-00007V-KH
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 11:01:32 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-30d5931d17aso1886548f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 08:01:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685977285; x=1688569285;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1T9b9X3PYBbdQsfKpGC6QcSzt31CJ4CGNIO3EruJ1Ck=;
+ b=Po6qWHik7eqGrHADgeGNEGjrV1qZnklk4J4iohprfNgCPbKsc5rHylb3DpkxPTNsUa
+ l+OOKroWm2VAEXdEOrwazVEi5iBt94NM1ReMEVPq/W4CaBmIwB8bRM8hoKOfwx5wPUEx
+ vUXV/H3520oE1szFo86QgxW6r9mOOR0b3BMO9Ta7NA2YbZ6mwwKD9G0UWcytYK7pnX5F
+ plziC7uvY190cGS/uhFftkX10+owIfMb46BhRHESNFGed6z0h671d13Gw043ocyMtsSH
+ h6gex/i9tLmLXnwj1BbKEodQkpVPZV/jsvjgeZtawHFJpGA2c1LXIZ9uqzLv3dw2MY3y
+ jWtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685977285; x=1688569285;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1T9b9X3PYBbdQsfKpGC6QcSzt31CJ4CGNIO3EruJ1Ck=;
+ b=iXESP3303No6a6KIOGRrNmSGjGLj/APCxXb2jICDjuVqiZyDuuzUXETvoQ7XhLt68c
+ hczr12teX3qhTtKPkUq0S/NLuuGxoqnsZ6PQccdl48I1aFYvrMCQCs39vDdBJh9F94pi
+ dUiIy59dffdxETIhHMrggQ8MS9idkivemszbskaNJTawb2tr5ViP8Rgim9SrPPP3zimu
+ 9YJ0vbnPGDkplzokBmDsZHfR8AzfWTF/IiqNOqGhF6mxE+zSS660onAR+J6AmIoQVHE/
+ 2dv9qmOlXZSvEnhVCZ2SOz4sYJDz6kB7c9zaCrgN0nBD6tQfwU/iwk+9lg9nneHVjNOf
+ TyYA==
+X-Gm-Message-State: AC+VfDyxM42oxBPSvCNngzXpBTTjykvbsR3Hd/0eXZKGyHqqFpRD0Xjf
+ x7izZ66m0S/YlCZX9rQ0cD4g81XX1q/YAeVbYss=
+X-Google-Smtp-Source: ACHHUZ54+17lFSJI3paf5oZlbQsx8C4TRTH1EfPf+vBetynW1qKnf1GSUFXYj+eIPS1mNVePTwCRiA==
+X-Received: by 2002:a5d:55c6:0:b0:30a:93ad:ab9f with SMTP id
+ i6-20020a5d55c6000000b0030a93adab9fmr5307696wrw.11.1685977285594; 
+ Mon, 05 Jun 2023 08:01:25 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.217.157])
+ by smtp.gmail.com with ESMTPSA id
+ m14-20020a7bcb8e000000b003f7ba52eeccsm3472085wmi.7.2023.06.05.08.01.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 08:01:25 -0700 (PDT)
+Message-ID: <6068e086-6596-a236-ce76-77b49d2caea5@linaro.org>
+Date: Mon, 5 Jun 2023 17:01:23 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/4] target/ppc: Tidy POWER book4 SPR registration
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH] target/sh4: Emit insn_start for each insn in gUSA region
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230603233612.125879-1-npiggin@gmail.com>
- <20230603233612.125879-3-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230603233612.125879-3-npiggin@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: ysato@users.sourceforge.jp
+References: <20230603165530.1189588-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230603165530.1189588-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=6mOa=BZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,180 +92,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/23 01:36, Nicholas Piggin wrote:
-> POWER book4 (implementation-specific) SPRs are sometimes in their own
-> functions, but in other cases are mixed with architected SPRs. Do some
-> spring cleaning on these.
+On 3/6/23 18:55, Richard Henderson wrote:
+> Fixes an assert in tcg_gen_code that we don't accidentally
+> eliminate an insn_start during optimization.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/ppc/cpu_init.c | 92 ++++++++++++++++++++++++++++---------------
->   1 file changed, 60 insertions(+), 32 deletions(-)
 > 
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index e9717b8169..da0f7a7159 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -5374,31 +5374,6 @@ static void register_book3s_ids_sprs(CPUPPCState *env)
->                    &spr_read_generic, SPR_NOACCESS,
->                    &spr_read_generic, NULL,
->                    0x00000000);
-> -    spr_register_hv(env, SPR_HID0, "HID0",
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 &spr_read_generic, &spr_core_write_generic,
-> -                 0x00000000);
-> -    spr_register_hv(env, SPR_TSCR, "TSCR",
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 &spr_read_generic, &spr_write_generic32,
-> -                 0x00000000);
-> -    spr_register_hv(env, SPR_HMER, "HMER",
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 &spr_read_generic, &spr_write_hmer,
-> -                 0x00000000);
-> -    spr_register_hv(env, SPR_HMEER, "HMEER",
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 &spr_read_generic, &spr_write_generic,
-> -                 0x00000000);
-> -    spr_register_hv(env, SPR_TFMR, "TFMR",
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 &spr_read_generic, &spr_write_generic,
-> -                 0x00000000);
->       spr_register_hv(env, SPR_LPIDR, "LPIDR",
->                    SPR_NOACCESS, SPR_NOACCESS,
->                    SPR_NOACCESS, SPR_NOACCESS,
-> @@ -5454,11 +5429,6 @@ static void register_book3s_ids_sprs(CPUPPCState *env)
->                    SPR_NOACCESS, SPR_NOACCESS,
->                    &spr_read_generic, &spr_write_generic,
->                    0x00000000);
-> -    spr_register_hv(env, SPR_LDBAR, "LDBAR",
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, SPR_NOACCESS,
-> -                 &spr_read_generic, &spr_write_generic,
-> -                 0x00000000);
->   }
->   
->   static void register_rmor_sprs(CPUPPCState *env)
-> @@ -5665,14 +5635,65 @@ static void register_power8_ic_sprs(CPUPPCState *env)
->   #endif
->   }
->   
-> +/* SPRs specific to IBM POWER CPUs */
-> +static void register_power_common_book4_sprs(CPUPPCState *env)
-> +{
-> +#if !defined(CONFIG_USER_ONLY)
-> +    spr_register_hv(env, SPR_HID0, "HID0",
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 &spr_read_generic, &spr_core_write_generic,
-> +                 0x00000000);
-> +    spr_register_hv(env, SPR_TSCR, "TSCR",
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 &spr_read_generic, &spr_write_generic32,
-> +                 0x00000000);
-> +    spr_register_hv(env, SPR_HMER, "HMER",
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 &spr_read_generic, &spr_write_hmer,
-> +                 0x00000000);
-> +    spr_register_hv(env, SPR_HMEER, "HMEER",
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 &spr_read_generic, &spr_write_generic,
-> +                 0x00000000);
-> +    spr_register_hv(env, SPR_TFMR, "TFMR",
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 &spr_read_generic, &spr_write_generic,
-> +                 0x00000000);
-> +    spr_register_hv(env, SPR_LDBAR, "LDBAR",
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 SPR_NOACCESS, SPR_NOACCESS,
-> +                 &spr_read_generic, &spr_write_generic,
-> +                 0x00000000);
-> +#endif
-> +}
-> +
-> +static void register_power9_book4_sprs(CPUPPCState *env)
-> +{
-> +    /* Add a number of P9 book4 registers */
-> +    register_power_common_book4_sprs(env);
-> +#if !defined(CONFIG_USER_ONLY)
-> +    spr_register_kvm(env, SPR_WORT, "WORT",
-> +                     SPR_NOACCESS, SPR_NOACCESS,
-> +                     &spr_read_generic, &spr_write_generic,
-> +                     KVM_REG_PPC_WORT, 0);
-> +#endif
-> +}
-> +
->   static void register_power8_book4_sprs(CPUPPCState *env)
->   {
->       /* Add a number of P8 book4 registers */
-> +    register_power_common_book4_sprs(env);
->   #if !defined(CONFIG_USER_ONLY)
->       spr_register_kvm(env, SPR_ACOP, "ACOP",
->                        SPR_NOACCESS, SPR_NOACCESS,
->                        &spr_read_generic, &spr_write_generic,
->                        KVM_REG_PPC_ACOP, 0);
-> +    /* PID is only in BookE in ISA v2.07 */
->       spr_register_kvm(env, SPR_BOOKS_PID, "PID",
->                        SPR_NOACCESS, SPR_NOACCESS,
->                        &spr_read_generic, &spr_write_pidr,
-> @@ -5688,10 +5709,12 @@ static void register_power7_book4_sprs(CPUPPCState *env)
->   {
->       /* Add a number of P7 book4 registers */
->   #if !defined(CONFIG_USER_ONLY)
-> +    register_power_common_book4_sprs(env);
->       spr_register_kvm(env, SPR_ACOP, "ACOP",
->                        SPR_NOACCESS, SPR_NOACCESS,
->                        &spr_read_generic, &spr_write_generic,
->                        KVM_REG_PPC_ACOP, 0);
-> +    /* PID is only in BookE in ISA v2.06 */
->       spr_register_kvm(env, SPR_BOOKS_PID, "PID",
->                        SPR_NOACCESS, SPR_NOACCESS,
->                        &spr_read_generic, &spr_write_generic32,
-> @@ -5725,6 +5748,11 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
->                       SPR_NOACCESS, SPR_NOACCESS,
->                       &spr_read_generic, &spr_write_generic,
->                       0x0000000000000000);
-> +    /* PID is part of the BookS ISA from v3.0 */
-> +    spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-> +                     SPR_NOACCESS, SPR_NOACCESS,
-> +                     &spr_read_generic, &spr_write_pidr,
-> +                     KVM_REG_PPC_PID, 0);
->   #endif
->   }
->   
-> @@ -6278,7 +6306,7 @@ static void init_proc_POWER9(CPUPPCState *env)
->       register_power8_dpdes_sprs(env);
->       register_vtb_sprs(env);
->       register_power8_ic_sprs(env);
-> -    register_power8_book4_sprs(env);
-> +    register_power9_book4_sprs(env);
->       register_power8_rpr_sprs(env);
->       register_power9_mmu_sprs(env);
->   
-> @@ -6471,7 +6499,7 @@ static void init_proc_POWER10(CPUPPCState *env)
->       register_power8_dpdes_sprs(env);
->       register_vtb_sprs(env);
->       register_power8_ic_sprs(env);
-> -    register_power8_book4_sprs(env);
-> +    register_power9_book4_sprs(env);
->       register_power8_rpr_sprs(env);
->       register_power9_mmu_sprs(env);
->       register_power10_hash_sprs(env);
+> Test case is tests/tcg/multiarch/testthread.c; the assert for
+> equality is new with
+> 
+> https://lore.kernel.org/qemu-devel/20230531040330.8950-26-richard.henderson@linaro.org/
+> 
+> 
+> r~
+> ---
+>   target/sh4/translate.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
