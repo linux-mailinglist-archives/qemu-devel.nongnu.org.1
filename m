@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCB5723149
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2077230F5
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:17:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Gcd-0001t4-Et; Mon, 05 Jun 2023 16:16:11 -0400
+	id 1q6Gch-0001u6-28; Mon, 05 Jun 2023 16:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Gca-0001rE-OL
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:08 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1q6Gcc-0001s3-3T
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:10 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6GcY-0003hV-TR
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:08 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-655fce0f354so1323314b3a.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:16:06 -0700 (PDT)
+ id 1q6Gca-0003wa-6B
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:16:09 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-651e298be3fso5056734b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:16:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685996166; x=1688588166;
+ d=linaro.org; s=google; t=1685996167; x=1688588167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d7/adIaPH4ntgaFSk3M/76lh+noxDuixny/KD9oUAVM=;
- b=iTt2xUxIGQITA9UY4i9tFBj6E1zuuEtNXuPY0WpZk/HyLb0+7xBJ07KRrzoUoYCPrA
- 8CjhBWYjZx0wXBgUuB71KDatFCotEhypIxl4HFCLnT7oMofHoikt/gWDiPW9eyg1RI0d
- Xv3KWYvoibi4ccA1iraDlH5/uSNSo5NRx1lmgJeNTB2GVOq739LRRiyKZfvqnie5uLmv
- H6i5vFf+e4vccwWH1yMqpYdW/i5nYlQS4W+TDC4SinQl2f41vGmMXSPhkq0UL+ffQe+P
- qEPAFTtbaYQHTWIeZ3dzgG4+Q+WE8GCzEZGVuTurN7iGSs0srPtZZ4jVAsEzJRaxBGHZ
- BYpw==
+ bh=mywdJxLuV7PbxTU1NspN1+FQdPIaeeESk+yMp9Ce2bA=;
+ b=Ne2EJgQJc91woigRXHaEw6Hn1TEkPlABz93ZqqsimW7irJ1rFWXslUXDpxQf0EY/du
+ /4T7rDbI6HhNjuA9ADtrzrj2P7ArgRpdZfOB8jfCeBQSaZbWB+cZ/L15a/xNAtAhNPgx
+ bgaLqMbRxrf+CK6G6CvoW6yjOzrfx1jRQ49z8FIuJumPQUM2Yh8VubToD+6YQFvEy85t
+ Lg5VW/Ul1M76LUW+1iPTZHRsmo+xPOxABMjf7GmB5R1o9hrO9VIWIXe8nigfqvPWuAUS
+ 8/I3C8CXwqhy5vMbDYxyZm2mWeskf7PT5r+P3c57CiCIWhxLD/RmeGl7Yr12yQCtpDJ9
+ 0LoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685996166; x=1688588166;
+ d=1e100.net; s=20221208; t=1685996167; x=1688588167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d7/adIaPH4ntgaFSk3M/76lh+noxDuixny/KD9oUAVM=;
- b=dRhWa79zV0vgXRSgzg8hcF+eGAWZUhi2rgoTc0C65D53Mk7iDlWyZzlQ/8UIdR/4pr
- BZzBqOz369w068vO98ODTbkalB8E8XbyzCK8xDT/TA3CCjGFj2CE8MV7AheN98/FPMGP
- XQVs6qvGqMEz2eJ0h0OA8La1JIYySLYmsylN71mmescErJVdz1Glsj0zGhd5XMkzqkA1
- jHL7NGUE5NC0wt4EBRPJEdgmLIvG+0fKLbTyI+2CSUgtYJum7xGfevanRAnSz/YDdeXk
- erdk943zqf7hkYbjAfs94Lb9XwMuQOcLVZesXXefAFztfx03ojSy+VtlQvLWeu5BCl0Y
- e7qA==
-X-Gm-Message-State: AC+VfDw+aczkGQ0tNth67w7kKYZZBvlwmF+jOVm9WURvowMMgPrZXcFS
- e+ilJS+gp/uPbq9lsr7JC+sktLr5vJE+KEKImYo=
-X-Google-Smtp-Source: ACHHUZ47OyoS46ndH/3AnP9rhQK55xMvRyW/pY+lz0OGzqrfBqtGT9uRw2kXAHXy0v93Ggjfjwsi3A==
-X-Received: by 2002:a05:6a21:150b:b0:117:a86:6c7a with SMTP id
- nq11-20020a056a21150b00b001170a866c7amr138134pzb.12.1685996166141; 
+ bh=mywdJxLuV7PbxTU1NspN1+FQdPIaeeESk+yMp9Ce2bA=;
+ b=UNBLoEMeCrfq0hlpteCWEN4knoa9NHL9coIjCqcg61iJlIlrgOdVOWe8CO5fuOAoeg
+ eheRA9ISZWeTYUMDELmctTWaJBUPjL2yZrT71vYFxBspvKZ4fTBGAL4MTSpQkavhCuyx
+ hmXoAjGERS3KNqleKTac79XObymlFdmKORxCUuzE2wmVokv6MkR7OTWr9XrjuCXZGolt
+ hCnj1R2CJfARm1gaDjEHt9162smcGTPUY+QZDcvCwhMLHsEN3o/onxFZONBWXIocTJ94
+ 5qzkVMur7WtW/ZoIvUr/NubXWoqNiUEaRq6zsnioDx9bJkvYWgBgqh6rhyX1/ZwcgV6/
+ J7wA==
+X-Gm-Message-State: AC+VfDx3Dl9vk39eskrVMYem0dykUKSAZgFJtjulIP7QznvYNlOcwZq7
+ gzQ3cL9+s+RWjpGJ4PyZROK5B9aqr5xAucZj0sM=
+X-Google-Smtp-Source: ACHHUZ6ypq2nlf/Pwf3o5+3wKXjXzQD1BCcFuT2sG9jdj5R3unLXBEuOg7ecPQ7JMqIr4Tnx3n6Edw==
+X-Received: by 2002:a05:6a00:24c9:b0:64d:277c:77c3 with SMTP id
+ d9-20020a056a0024c900b0064d277c77c3mr855607pfv.23.1685996166902; 
  Mon, 05 Jun 2023 13:16:06 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.16.05
+ f18-20020aa78b12000000b0064d32771fa8sm5552924pfd.134.2023.06.05.13.16.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 13:16:05 -0700 (PDT)
+ Mon, 05 Jun 2023 13:16:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/52] tcg: Remove outdated comments in helper-head.h
-Date: Mon,  5 Jun 2023 13:15:14 -0700
-Message-Id: <20230605201548.1596865-19-richard.henderson@linaro.org>
+Subject: [PULL 19/52] tcg: Move TCGHelperInfo and dependencies to
+ tcg/helper-info.h
+Date: Mon,  5 Jun 2023 13:15:15 -0700
+Message-Id: <20230605201548.1596865-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230605201548.1596865-1-richard.henderson@linaro.org>
 References: <20230605201548.1596865-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,38 +93,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This will be required outside of tcg-internal.h soon.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/helper-head.h | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
+ include/tcg/helper-info.h | 59 +++++++++++++++++++++++++++++++++++++++
+ tcg/tcg-internal.h        | 47 +------------------------------
+ 2 files changed, 60 insertions(+), 46 deletions(-)
+ create mode 100644 include/tcg/helper-info.h
 
-diff --git a/include/exec/helper-head.h b/include/exec/helper-head.h
-index f863a6ef5d..a355ef8ebe 100644
---- a/include/exec/helper-head.h
-+++ b/include/exec/helper-head.h
-@@ -1,18 +1,6 @@
--/* Helper file for declaring TCG helper functions.
--   Used by other helper files.
--
--   Targets should use DEF_HELPER_N and DEF_HELPER_FLAGS_N to declare helper
--   functions.  Names should be specified without the helper_ prefix, and
--   the return and argument types specified.  3 basic types are understood
--   (i32, i64 and ptr).  Additional aliases are provided for convenience and
--   to match the types used by the C helper implementation.
--
--   The target helper.h should be included in all files that use/define
--   helper functions.  THis will ensure that function prototypes are
--   consistent.  In addition it should be included an extra two times for
--   helper.c, defining:
--    GEN_HELPER 1 to produce op generation functions (gen_helper_*)
--    GEN_HELPER 2 to do runtime registration helper functions.
+diff --git a/include/tcg/helper-info.h b/include/tcg/helper-info.h
+new file mode 100644
+index 0000000000..f65f81c2e7
+--- /dev/null
++++ b/include/tcg/helper-info.h
+@@ -0,0 +1,59 @@
 +/*
-+ * Helper file for declaring TCG helper functions.
-+ * Used by other helper files.
-  */
++ * TCG Helper Infomation Structure
++ *
++ * Copyright (c) 2023 Linaro Ltd
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef TCG_HELPER_INFO_H
++#define TCG_HELPER_INFO_H
++
++#ifdef CONFIG_TCG_INTERPRETER
++#include <ffi.h>
++#endif
++
++/*
++ * Describe the calling convention of a given argument type.
++ */
++typedef enum {
++    TCG_CALL_RET_NORMAL,         /* by registers */
++    TCG_CALL_RET_BY_REF,         /* for i128, by reference */
++    TCG_CALL_RET_BY_VEC,         /* for i128, by vector register */
++} TCGCallReturnKind;
++
++typedef enum {
++    TCG_CALL_ARG_NORMAL,         /* by registers (continuing onto stack) */
++    TCG_CALL_ARG_EVEN,           /* like normal, but skipping odd slots */
++    TCG_CALL_ARG_EXTEND,         /* for i32, as a sign/zero-extended i64 */
++    TCG_CALL_ARG_EXTEND_U,       /*      ... as a zero-extended i64 */
++    TCG_CALL_ARG_EXTEND_S,       /*      ... as a sign-extended i64 */
++    TCG_CALL_ARG_BY_REF,         /* for i128, by reference, first */
++    TCG_CALL_ARG_BY_REF_N,       /*       ... by reference, subsequent */
++} TCGCallArgumentKind;
++
++typedef struct TCGCallArgumentLoc {
++    TCGCallArgumentKind kind    : 8;
++    unsigned arg_slot           : 8;
++    unsigned ref_slot           : 8;
++    unsigned arg_idx            : 4;
++    unsigned tmp_subindex       : 2;
++} TCGCallArgumentLoc;
++
++typedef struct TCGHelperInfo {
++    void *func;
++    const char *name;
++#ifdef CONFIG_TCG_INTERPRETER
++    ffi_cif *cif;
++#endif
++    unsigned typemask           : 32;
++    unsigned flags              : 8;
++    unsigned nr_in              : 8;
++    unsigned nr_out             : 8;
++    TCGCallReturnKind out_kind  : 8;
++
++    /* Maximum physical arguments are constrained by TCG_TYPE_I128. */
++    TCGCallArgumentLoc in[MAX_CALL_IARGS * (128 / TCG_TARGET_REG_BITS)];
++} TCGHelperInfo;
++
++#endif /* TCG_HELPER_INFO_H */
+diff --git a/tcg/tcg-internal.h b/tcg/tcg-internal.h
+index 67b698bd5c..fbe62b31b8 100644
+--- a/tcg/tcg-internal.h
++++ b/tcg/tcg-internal.h
+@@ -25,55 +25,10 @@
+ #ifndef TCG_INTERNAL_H
+ #define TCG_INTERNAL_H
  
- #ifndef EXEC_HELPER_HEAD_H
+-#ifdef CONFIG_TCG_INTERPRETER
+-#include <ffi.h>
+-#endif
++#include "tcg/helper-info.h"
+ 
+ #define TCG_HIGHWATER 1024
+ 
+-/*
+- * Describe the calling convention of a given argument type.
+- */
+-typedef enum {
+-    TCG_CALL_RET_NORMAL,         /* by registers */
+-    TCG_CALL_RET_BY_REF,         /* for i128, by reference */
+-    TCG_CALL_RET_BY_VEC,         /* for i128, by vector register */
+-} TCGCallReturnKind;
+-
+-typedef enum {
+-    TCG_CALL_ARG_NORMAL,         /* by registers (continuing onto stack) */
+-    TCG_CALL_ARG_EVEN,           /* like normal, but skipping odd slots */
+-    TCG_CALL_ARG_EXTEND,         /* for i32, as a sign/zero-extended i64 */
+-    TCG_CALL_ARG_EXTEND_U,       /*      ... as a zero-extended i64 */
+-    TCG_CALL_ARG_EXTEND_S,       /*      ... as a sign-extended i64 */
+-    TCG_CALL_ARG_BY_REF,         /* for i128, by reference, first */
+-    TCG_CALL_ARG_BY_REF_N,       /*       ... by reference, subsequent */
+-} TCGCallArgumentKind;
+-
+-typedef struct TCGCallArgumentLoc {
+-    TCGCallArgumentKind kind    : 8;
+-    unsigned arg_slot           : 8;
+-    unsigned ref_slot           : 8;
+-    unsigned arg_idx            : 4;
+-    unsigned tmp_subindex       : 2;
+-} TCGCallArgumentLoc;
+-
+-typedef struct TCGHelperInfo {
+-    void *func;
+-    const char *name;
+-#ifdef CONFIG_TCG_INTERPRETER
+-    ffi_cif *cif;
+-#endif
+-    unsigned typemask           : 32;
+-    unsigned flags              : 8;
+-    unsigned nr_in              : 8;
+-    unsigned nr_out             : 8;
+-    TCGCallReturnKind out_kind  : 8;
+-
+-    /* Maximum physical arguments are constrained by TCG_TYPE_I128. */
+-    TCGCallArgumentLoc in[MAX_CALL_IARGS * (128 / TCG_TARGET_REG_BITS)];
+-} TCGHelperInfo;
+-
+ extern TCGContext tcg_init_ctx;
+ extern TCGContext **tcg_ctxs;
+ extern unsigned int tcg_cur_ctxs;
 -- 
 2.34.1
 
