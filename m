@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72DC72300F
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 21:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10562723094
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:00:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6G9f-0003KG-GP; Mon, 05 Jun 2023 15:46:15 -0400
+	id 1q6GMJ-0006px-Fo; Mon, 05 Jun 2023 15:59:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6G9Z-0003Jx-Fp
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:46:10 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6GMH-0006pl-Qm
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:59:17 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6G9T-0005ru-U4
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:46:09 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-5559cd68b67so3589778eaf.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 12:46:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6GMG-0002tL-8Y
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 15:59:17 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so5286328f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 12:59:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685994362; x=1688586362;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=INGAZcQDxlPGPyWEV8MmTxezMHH8cgV+qw7bXIm2LzU=;
- b=XkbZCyKmy1CEUSOWKNH3kFQ3O3nTt/1LuBrdBG5YKphHlYZt6MQKykIcq+04ef4sS6
- tyaoeoQW5i0I3ozY0V1T4MwQY3d2bfBUPB8AKGRTeVZVF1/ykdkwpCzDfTp2Q2xZiX4F
- V5gsX7LV7a/93HPWO/T4rZDgSknUFRGQi/sY8KnKvWYfORancvVrq18NhFDKkhy1t2ne
- R9GyJdo3VNXlRtmwd/Q8FfsWmHc4ti7c+oqTaFkXZJ3IX4DP7mI4isETGV+h8Wk0FRog
- xpEuf7XU4h3u5UTx0Ln4wegXfQcnQLMKl8qE81KGLLKb1qUSNmVEfmld+9rkbsc3JnDs
- 82Bw==
+ d=linaro.org; s=google; t=1685995154; x=1688587154;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HzdINXCsYw0zym0hC+hQh9rtw8qpwjppdu7/nsvwA5s=;
+ b=P9ALl6VDl6wa6kzj/rBJZrZFX8ud8gPURpHrNhCQC15hWFdeCELL095pcIttnS59O5
+ 0IC/Blk/tFdtHm842hLWiWvU3q8LRKtL4ex5Lxyby9vc+WQUGaO5BVBOSVI6VI2930Z8
+ lSSBevfAatXyVmA76Prcf59Y8iocLRga5enPNjkbfZ6fOsNcAh+gYy61/CNQ81eXwaXR
+ Zbj/+/vDAZ1wulY0y3SfyLT0w8J4dDDoci2KS3+WK9qe7MPpCQ3EbsUObxrwbPN19O6M
+ XY/BLxe/2nCpPEOnGRe6GuVRRo8erwGXHbs7/6faf57ydAsHE/JUmq9msATpziIt+2I5
+ PiBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685994362; x=1688586362;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=INGAZcQDxlPGPyWEV8MmTxezMHH8cgV+qw7bXIm2LzU=;
- b=f1ltV990HyHTjFQqV8GUOPrdcVKVsaWXN+YJVqY5r02oEt2l3W1X8xCXscQjI9R/bW
- ZJMOMIl1I6rkiziIJc0TyDWW+yirweqF5uOxbwUeOWKGt3nmCeakCHyc+wh8Vf81Uyme
- qbrPnvVNRcmtNqvB8CZHBJ4U/liNwj3sJFOxwDvxf8BbAgf6BIKKQwCyM4ppmHYevi0U
- /ZkupBZn1Hx6dJyVs9BuJYkHkt4XxSKgMR8zoVLVnjrlXQwwbf3aIC+H9NofS0QtT0R0
- SmWT1P6lP7GbdA9L0eUmBC84XDM4w8mHGeGJ8aU8wgQsIBUNvPGm/r/Cu+36sMcXkWY3
- pVIQ==
-X-Gm-Message-State: AC+VfDw7vbESbKWI1yh0vj76OsbLZyMKSyupT9ar3+xiN6Id0nRuQ9SD
- q3QkT6yHdpAWn4K5HJh/NOD70Q==
-X-Google-Smtp-Source: ACHHUZ73AhGjudJpIx0GdJDgZYsIt7oDjx2gLh2isPWwQAMa2zR5eqez4IF9JWW9ayCd0EdwLmP+Ag==
-X-Received: by 2002:a05:6358:4e92:b0:129:b810:926b with SMTP id
- ce18-20020a0563584e9200b00129b810926bmr216313rwb.4.1685994362217; 
- Mon, 05 Jun 2023 12:46:02 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:3f85:a600:6a3e:e465?
- ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
+ d=1e100.net; s=20221208; t=1685995154; x=1688587154;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HzdINXCsYw0zym0hC+hQh9rtw8qpwjppdu7/nsvwA5s=;
+ b=UacJNYwtz64PtFCQIw4/DlbUWhz7aEkZ/cQTrhmakpLTtyXYj1637kynHVMvLP5Gn2
+ XWQD3L5erstoLGsVBAVH8t7Q1MIj7jXfPT+2uqVBi2p2f3VeUsUVTJ/bH2neMB3mRZ+j
+ ya/hMvPh73wmhikFMzhScCKEE+CZv9CE2dBqJKGOR6tg81OTYHeUDbM+FAfhOVQCjARF
+ Y584Lgu8RdNFWYiRPUMAYHlwrHvs1E4ljOIcnrYmDpujM0Z9UgsH2h1fbWtN0JktUhey
+ ScspQEsW3aFCVkqbHI7BgAP3yetds26DqXGC1PZx8wPdK3n+V2FnKywlhH75X2f5Fn+n
+ R+9w==
+X-Gm-Message-State: AC+VfDw+MApG1ZMYghkWBpBtLunYRAA1Ww+qjTsjjbH1zC6XkAX5iGvB
+ kqd8FBpTq0eOsVwyirCj8Rq3SgXuD2s9t5jP80M=
+X-Google-Smtp-Source: ACHHUZ5pZ1sx0iAFbpUqizQyho1LPkd3NIEJtPVq52jDatNtv1vJk7wkdMlhEXyGkHEWvh1o3x5iXw==
+X-Received: by 2002:a5d:4492:0:b0:2f4:170:3807 with SMTP id
+ j18-20020a5d4492000000b002f401703807mr7915714wrq.44.1685995154262; 
+ Mon, 05 Jun 2023 12:59:14 -0700 (PDT)
+Received: from localhost.localdomain ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- s1-20020a17090a13c100b00258f9597e9fsm4987901pjf.45.2023.06.05.12.46.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 12:46:01 -0700 (PDT)
-Message-ID: <a4ca1e4b-5a91-178d-ca44-aeb195b19915@linaro.org>
-Date: Mon, 5 Jun 2023 12:45:59 -0700
+ z10-20020a056000110a00b003063a92bbf5sm10629676wrw.70.2023.06.05.12.59.13
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 05 Jun 2023 12:59:13 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] util/cacheflush: Avoid flushing dcache twice when not
+ necessary
+Date: Mon,  5 Jun 2023 21:59:11 +0200
+Message-Id: <20230605195911.96033-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 0/3] qemu-sparc queue 20230605
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230605113253.455937-1-mark.cave-ayland@ilande.co.uk>
- <f3070fb9-e175-eadc-e4bd-c0395b593195@linaro.org>
- <65c71dff-e4fa-4c75-e0cb-c0033c835f44@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <65c71dff-e4fa-4c75-e0cb-c0033c835f44@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,39 +91,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 12:33, Philippe Mathieu-Daudé wrote:
-> On 5/6/23 19:26, Richard Henderson wrote:
->> On 6/5/23 04:32, Mark Cave-Ayland wrote:
->>> The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
->>>
->>>    Merge tag 'migration-20230602-pull-request' ofhttps://gitlab.com/juan.quintela/qemu  
->>> into staging (2023-06-02 17:33:29 -0700)
->>>
->>> are available in the Git repository at:
->>>
->>>    https://github.com/mcayland/qemu.git  tags/qemu-sparc-20230605
->>>
->>> for you to fetch changes up to 36c9189890bfb936b1b086da639e37fd92b50215:
->>>
->>>    hw/isa/i82378: Remove unused "io" attribute (2023-06-05 07:43:23 +0100)
->>>
->>> ----------------------------------------------------------------
->>> qemu-sparc queue
->>>
->>> Hi Richard,
->>>
->>> This is one of Bernhard's cleanup series where all patches have been
->>> reviewed/acked. Please apply.
->>
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> Also merged as commit afa351fe36 :P
-> 
-Bah, yes, wrong reply hotkey.
+<libkern/OSCacheControl.h> describes sys_icache_invalidate() as
+"equivalent to sys_cache_control(kCacheFunctionPrepareForExecution)",
+having kCacheFunctionPrepareForExecution defined as:
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+  /* Prepare memory for execution.  This should be called
+   * after writing machine instructions to memory, before
+   * executing them.  It syncs the dcache and icache. [...]
+   */
 
+Since the dcache is also sync'd, we can avoid the sys_dcache_flush()
+call when both rx/rw pointers are equal.
 
-r~
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Based-on: <20230605175647.88395-2-philmd@linaro.org>
+---
+ util/cacheflush.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/util/cacheflush.c b/util/cacheflush.c
+index de35616718..a08906155a 100644
+--- a/util/cacheflush.c
++++ b/util/cacheflush.c
+@@ -241,7 +241,14 @@ static void __attribute__((constructor)) init_cache_info(void)
+ 
+ void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
+ {
+-    sys_dcache_flush((void *)rw, len);
++    if (rx == rw) {
++        /*
++         * sys_icache_invalidate() syncs the dcache and icache,
++         * so no need to call sys_dcache_flush().
++         */
++    } else {
++        sys_dcache_flush((void *)rw, len);
++    }
+     sys_icache_invalidate((void *)rx, len);
+ }
+ #else
+-- 
+2.38.1
 
 
