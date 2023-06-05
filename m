@@ -2,61 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F5A7222DE
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 271B372233C
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:18:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q675R-0005bF-9H; Mon, 05 Jun 2023 06:05:17 -0400
+	id 1q67GX-0002QR-MV; Mon, 05 Jun 2023 06:16:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1q675M-0005ae-9j; Mon, 05 Jun 2023 06:05:12 -0400
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1q675K-0000x2-55; Mon, 05 Jun 2023 06:05:12 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwD32pXssn1kPfFLAg--.18628S2;
- Mon, 05 Jun 2023 18:03:24 +0800 (CST)
-Received: from 192.168.0.1 (unknown [10.12.1.82])
- by mail (Coremail) with SMTP id AQAAfwA3YiJEs31kbo4AAA--.746S3;
- Mon, 05 Jun 2023 18:04:53 +0800 (CST)
-From: wangyuquan1236 <wangyuquan1236@phytium.com.cn>
-Subject: Re: [PATCH v3 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-Message-ID: <01278DC7-2787-4715-B0DF-BDC51525637B@phytium.com.cn>
-Date: Mon, 5 Jun 2023 18:04:51 +0800
-References: <20230605095536.117384-1-wangyuquan1236@phytium.com.cn>
- <20230605095536.117384-2-wangyuquan1236@phytium.com.cn>
-In-Reply-To: <101d301d-d413-288e-9318-d0a226ea8715@linaro.org>
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: "rad@semihalf.com" <rad@semihalf.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "quic_llindhol@quicinc.com"
- <quic_llindhol@quicinc.com>, "chenbaozi@phytium.com.cn"
- <chenbaozi@phytium.com.cn>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-X-Mailer: MailMasterIOS/7.14.6.1944 (16.1.1)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67GT-0002Px-N2
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:16:42 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67GR-0002jk-U9
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:16:41 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f6d3f83d0cso47068445e9.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:16:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685960198; x=1688552198;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7go8rNNqx+hVATnyYQ8Zd/VCap0oO2FBclO+5M2vqJc=;
+ b=o6raho6FyLt4DmvWDnkZiWijw1AS9VC1ruWh0rZEo+EAIip3lP8yrstzaiOcpj5RIs
+ VcrrMXeUwlbnGn0DViC9cBx3Z8JtfXnuqgQHFvp4RPx4VDZKLKVib/JTJNhWWHg5jNc6
+ sJiYHzgSerur92zO/BTZG0xhce4URCzWXG/AvQK03segCUlNycrEbDagJmcfyIBYbSzg
+ HhJHP8WLgebuhIRb1EqUIEBWEEQ0jEHCwSmwp+JV+XPN/H9+VDzdY5O8BRcVXnK0yb2H
+ Id2Sd1RMgO/QXUNWa/+pAT8LYRN5ylHoRfxFO7DPv3svBH4NIh+KndPbB/eza5yOOnEu
+ mKgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685960198; x=1688552198;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7go8rNNqx+hVATnyYQ8Zd/VCap0oO2FBclO+5M2vqJc=;
+ b=JqbOs2ez60ZXjX6rA8Qx4JFeJyLk1sHAL0GHrqN6B5MXhy0k2YIMPv7WsPU1wnvtKv
+ aZFYhWYp0tZe0gytNWzi9YZ/mvT9eN63PR7zphCauR82gLs3uH95Dfv8zYWF5n1cQk/Y
+ b7PbUyl0JD8LgpxRCR6Nhh5uuVijklz/aZOYviYGcs6rWyWTdWkRLNEw7S5pZRzRvoKb
+ U05Fp1pxEyxfa3aKNoNffYQZh28r8vov3G2JdYGKmIsB1Urt1y767YqMXn8q0AfwJ1ph
+ LEUeY2ZRYXBc38bVUHtrIuA0gY6F673gLAbJH6Trg0TpRisZEVDd2iQv2DKWgVhvesot
+ GCng==
+X-Gm-Message-State: AC+VfDyZav2Aph19taOPig58f/bk0tz/YtGyX+ctwYEV6kC5suw6L3dV
+ sv4Z3JAvaLJ0an9gFMC4MNK3Jkd2V5gzWGD9wKs=
+X-Google-Smtp-Source: ACHHUZ6PB14bDgeJ1okMYbNnxO8lNxqJReGGwg7CxLJLmy5EO+chYx8BoICRU+X7o4Ysojma4MNssA==
+X-Received: by 2002:a05:600c:b43:b0:3f5:ffe2:91c0 with SMTP id
+ k3-20020a05600c0b4300b003f5ffe291c0mr8051926wmr.0.1685960198141; 
+ Mon, 05 Jun 2023 03:16:38 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.217.157])
+ by smtp.gmail.com with ESMTPSA id
+ 12-20020a05600c020c00b003f080b2f9f4sm13833767wmi.27.2023.06.05.03.16.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 03:16:37 -0700 (PDT)
+Message-ID: <596a040e-8d92-571f-5c18-618c707b6340@linaro.org>
+Date: Mon, 5 Jun 2023 12:16:35 +0200
 MIME-Version: 1.0
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID: AQAAfwA3YiJEs31kbo4AAA--.746S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQABAWR84icEdgACss
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvdXoWrKryxur4DGry3Ar1kXr43Jrb_yoWkZFc_uF
- 1kCr98Ww4qyw4xK39FgFsxA3yftr1jkr4UWF1kAa48Za4jqF95GrykKry8uw15Cr1vvFsF
- vF1SqrWFqryaqjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrnU
- Uv73VFW2AGmfu7jjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUU
- UUUU=
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 15/15] hw/timer/arm_timer: QOM'ify ARM_TIMER
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
+ Sergey Kambalin <serg.oker@gmail.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+References: <20230531203559.29140-1-philmd@linaro.org>
+ <20230531203559.29140-16-philmd@linaro.org>
+ <43f014f5-6dd7-7c46-eea4-ed9cffe8ec48@ilande.co.uk>
+ <eae9ddaa-a914-b4f2-7fea-0f1731ab0706@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <eae9ddaa-a914-b4f2-7fea-0f1731ab0706@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,74 +98,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sure=EF=BC=8Cbut I am handling the email problem with devel=40edk2.groups=
-.io that it refused my patch email.&nbsp;<div><br></div><div>I will deal =
-with it as soon as possible.</div><div id=3D=22imail=5Fsignature=22 class=
-=3D=22ntes-signature=22></div><div class=3D=22ntes-mailmaster-quote=22 st=
-yle=3D=22padding-top: 1px; padding-bottom: 1px=22><div style=3D=22margin-=
-top: 2em;margin-bottom: 1em;font-size: 14px;line-height: 1.25;color: =237=
-8787a;=22>---- Replied Message ----</div><div style=3D=22margin-bottom: 1=
-em;font-size: 12px;line-height: 1.25;color: =23232324;padding: 0.5em 0.25=
-em;border-radius: 0.67em;background-color: =23f0f0f0;=22><table width=3D=22=
-100%=22 cellpadding=3D=220=22 cellspacing=3D=229=22 border=3D=220=22><tbo=
-dy><tr><td valign=3D=22top=22 style=3D=22width: 4.25em;font-size: 12px;li=
-ne-height: 1.25;color: =2378787a;=22><span style=3D=22color:=238b8d94=22>=
-=46rom</span></td><td valign=3D=22top=22 style=3D=22font-size: 12px;line-=
-height: 1.25;color: =23232324;word-break: break-all;=22><a class=3D=22mai=
-l-from=22 style=3D=22color: =230886e8; text-decoration: none=22 href=3D=22=
-mailto:marcin.juszkiewicz=40linaro.org=22>Marcin Juszkiewicz&lt;marcin.ju=
-szkiewicz=40linaro.org&gt;</a></td></tr><tr><td valign=3D=22top=22 style=3D=
-=22width: 4.25em;font-size: 12px;line-height: 1.25;color: =2378787a;=22><=
-span style=3D=22color:=238b8d94=22>Date</span></td><td class=3D=22mail-da=
-te=22 valign=3D=22top=22 style=3D=22font-size: 12px;line-height: 1.25;col=
-or: =23232324;word-break: break-all;=22><span class=3D=22mail-date=22 sty=
-le=3D=22color:black=22>06/05/2023 17:59</span></td></tr><tr><td valign=3D=
-=22top=22 style=3D=22width: 4.25em;font-size: 12px;line-height: 1.25;colo=
-r: =2378787a;=22> <span style=3D=22color:=238b8d94=22>To</span></td><td v=
-align=3D=22top=22 style=3D=22font-size: 12px;line-height: 1.25;color: =23=
-232324;word-break: break-all;=22><a class=3D=22mail-to=22 style=3D=22colo=
-r: =230886e8; text-decoration: none=22 href=3D=22mailto:wangyuquan1236=40=
-phytium.com.cn=22>Yuquan Wang&lt;wangyuquan1236=40phytium.com.cn&gt;</a>,=
-<br><a class=3D=22mail-to=22 style=3D=22color: =230886e8; text-decoration=
-: none=22 href=3D=22mailto:rad=40semihalf.com=22>rad=40semihalf.com&lt;ra=
-d=40semihalf.com&gt;</a>,<br><a class=3D=22mail-to=22 style=3D=22color: =23=
-0886e8; text-decoration: none=22 href=3D=22mailto:peter.maydell=40linaro.=
-org=22>peter.maydell=40linaro.org&lt;peter.maydell=40linaro.org&gt;</a></=
-td></tr><tr><td valign=3D=22top=22 style=3D=22width: 4.25em;font-size: 12=
-px;line-height: 1.25;color: =2378787a;=22> <span style=3D=22color:=238b8d=
-94=22>Cc</span></td><td valign=3D=22top=22 style=3D=22font-size: 12px;lin=
-e-height: 1.25;color: =23232324;word-break: break-all;=22><a class=3D=22m=
-ail-cc=22 style=3D=22color: =230886e8; text-decoration: none=22 href=3D=22=
-mailto:quic=5Fllindhol=40quicinc.com=22>quic=5Fllindhol=40quicinc.com&lt;=
-quic=5Fllindhol=40quicinc.com&gt;</a>,<br><a class=3D=22mail-cc=22 style=3D=
-=22color: =230886e8; text-decoration: none=22 href=3D=22mailto:chenbaozi=40=
-phytium.com.cn=22>chenbaozi=40phytium.com.cn&lt;chenbaozi=40phytium.com.c=
-n&gt;</a>,<br><a class=3D=22mail-cc=22 style=3D=22color: =230886e8; text-=
-decoration: none=22 href=3D=22mailto:qemu-arm=40nongnu.org=22>qemu-arm=40=
-nongnu.org&lt;qemu-arm=40nongnu.org&gt;</a>,<br><a class=3D=22mail-cc=22 =
-style=3D=22color: =230886e8; text-decoration: none=22 href=3D=22mailto:qe=
-mu-devel=40nongnu.org=22>qemu-devel=40nongnu.org&lt;qemu-devel=40nongnu.o=
-rg&gt;</a></td></tr><tr><td valign=3D=22top=22 style=3D=22width: 4.25em;f=
-ont-size: 12px;line-height: 1.25;color: =2378787a;=22><span style=3D=22co=
-lor:=238b8d94=22>Subject</span></td><td class=3D=22mail-subject=22 valign=
-=3D=22top=22 style=3D=22font-size: 12px;line-height: 1.25;color: =2323232=
-4;word-break: break-all;=22><span class=3D=22mail-subject=22 style=3D=22c=
-olor:black=22>Re: =5BPATCH v3 1/1=5D hw/arm/sbsa-ref: use XHCI to replace=
- EHCI</span></td></tr></tbody></table></div><div>W dniu 5.06.2023 o&nbsp;=
-11:55, Yuquan Wang pisze:
-<br>&gt; The current sbsa-ref cannot use EHCI controller which is only
-<br>&gt; able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB=
-.
-<br>&gt; Hence, this uses XHCI to provide a usb controller with 64-bit
-<br>&gt; DMA capablity instead of EHCI.
-<br>&gt; =20
-<br>&gt; Signed-off-by: Yuquan Wang&lt;wangyuquan1236=40phytium.com.cn&gt=
-;
-<br>
-<br>Can you share firmware side so it can be tested=3F
-<br>
-<br>The more I deal with EDK2 the more I understand why people go U-Boot.=
+On 3/6/23 20:12, Mark Cave-Ayland wrote:
+> On 03/06/2023 19:07, Mark Cave-Ayland wrote:
+> 
+>> On 31/05/2023 21:35, Philippe Mathieu-Daudé wrote:
+>>
+>>> Introduce the ARM_TIMER sysbus device.
+>>>
+>>> arm_timer_new() is converted as QOM instance init()/finalize()
+>>> handlers. Note in arm_timer_finalize() we release a ptimer handle
+>>> which was previously leaked.
+>>>
+>>> ArmTimerState is directly embedded into SP804State/IcpPitState,
+>>> and is initialized as a QOM child.
+>>>
+>>> Since the timer frequency belongs to ARM_TIMER, have it hold the
+>>> QOM property. SP804State/IcpPitState directly access it.
+>>>
+>>> Similarly the SP804State/IcpPitState input IRQ becomes the
+>>> ARM_TIMER sysbus output IRQ.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   hw/timer/arm_timer.c | 109 +++++++++++++++++++++++++++----------------
+>>>   1 file changed, 70 insertions(+), 39 deletions(-)
+>>>
+>>> diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
+>>> index 82123b40c0..a929fbba62 100644
+>>> --- a/hw/timer/arm_timer.c
+>>> +++ b/hw/timer/arm_timer.c
+>>> @@ -17,6 +17,7 @@
+>>>   #include "qemu/module.h"
+>>>   #include "qemu/log.h"
+>>>   #include "qom/object.h"
+>>> +#include "qapi/error.h"
+>>>   /* Common timer implementation.  */
+>>> @@ -29,14 +30,18 @@
+>>>   #define TIMER_CTRL_PERIODIC     (1 << 6)
+>>>   #define TIMER_CTRL_ENABLE       (1 << 7)
+>>> -typedef struct {
+>>> +#define TYPE_ARM_TIMER "arm-timer"
+>>> +OBJECT_DECLARE_SIMPLE_TYPE(ArmTimerState, ARM_TIMER)
+>>
+>> As per our QOM guidelines ArmTimerState and the OBJECT_* macro should 
+>> live in a separate header file.
+> 
+> Ah wait: does "ArmTimerState is directly embedded into 
+> SP804State/IcpPitState, and is initialized as a QOM child." mean that 
+> ARM_TIMER is never instantiated externally?
 
-<br></div></div>
+Correct, while the type is exposed as any QOM type, it is internal to
+the two devices, thus local to this unit.
+
+I don't mind exposing the state to have a consistent QOM style.
+
+What was discussed with Alex is:
+- We don't need to convert all non-QOM devices, but
+- Heterogeneous machines must contain only QOM devices;
+
+- If a non-QOM device forces incorrect API use or abuses,
+   better convert it.
+
+>>> +struct ArmTimerState {
+>>> +    SysBusDevice parent_obj;
+>>
+>> And don't forget to add a blank line here too.
+
+OK.
+
+>>>       ptimer_state *timer;
+>>>       uint32_t control;
+>>>       uint32_t limit;
+>>>       uint32_t freq;
+>>>       int int_level;
+>>>       qemu_irq irq;
+>>> -} ArmTimerState;
+>>> +};
 
 
