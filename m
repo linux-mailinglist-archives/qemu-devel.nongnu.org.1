@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40126722655
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9EA722654
 	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 14:49:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q69e6-0003C1-4v; Mon, 05 Jun 2023 08:49:14 -0400
+	id 1q69e6-0003Kp-Ve; Mon, 05 Jun 2023 08:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69dn-0002su-VB
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:49:02 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69e0-0002wc-Sg
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:49:11 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69dl-0005ph-51
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:48:55 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3f739ec88b2so10778935e9.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:48:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q69dw-0005qR-4S
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 08:49:08 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f732d37d7cso20727385e9.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 05:49:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685969331; x=1688561331;
+ d=linaro.org; s=google; t=1685969342; x=1688561342;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7xCzWi+Gj+JdNiZSqe5gpwxMCEPTAIg0nGB1NGGvbR0=;
- b=wTMyg2L2h2HXcwmFk0+/FTtRB4Xw/MAeunNBBS90N73EsITyVkSsrBx1+PQvgtn2Qq
- D1XAhVTsuaXA15PNt3O+nMTAlBuXFg1CnxwMX4KBumegUC/ioSabV7haA13sVAZIdxAY
- IZ4QgPqCc3cTSvgHDhpw+FnyF0egQhRmDTiW+1RyKohVKRr7dmKTyXEjvuFMR6R8yGIP
- rROMqGm3QlVTA37L9Zb1ScogSao2gagRH0WOTR2XLqLtDky36r2SD8sQEZn6JNX7nWMb
- jjs1/6zZsNrIgYER3nz1AVYJwW5dFBV2zIDasG2G1p78ErPF4ZORbzvjfLrDcf8ChtJR
- T5Zw==
+ bh=dNZuqPAEgbramDA0l1U7Y+ZkUDJE80aMGxKGtEr5I2w=;
+ b=YVgcPCPkuxgt3SgkaOWTTwnTs7mjCI/5QI1itoTtEipmJ7DDSnrsBj5vRMLN4ZxXzA
+ 0XFQqepLrWwSJwZ7buzNFuRiIfw0MEmLxA6YIHTLhsoKAYSXQKv8rmadTDqQ5RhNZgyp
+ KtXQjF4pUvmhzyxhOGK2HCiW2JryHyoCALLUPUX8P1mQo8GZv6tXIVUi0H2ITicelCXf
+ ydiMMOdUl7o5JaSPz5eyVjgxX9ezQUJgqjrxRwr6X5nhtoknSCY4iOgxbc7QfTZlQ/fh
+ IYtrig/9jHoBYbh/ST9bPBuT9dVcd+N3HIfHLMtYHRdSXgF397EduAieAK9HWpW1rrYd
+ AQTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685969331; x=1688561331;
+ d=1e100.net; s=20221208; t=1685969342; x=1688561342;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7xCzWi+Gj+JdNiZSqe5gpwxMCEPTAIg0nGB1NGGvbR0=;
- b=aoqY4dHMMXhvarEGceJc1lHWM/zvVSnLjFKSskrxaD8VVjojtH+S+4kSFJaNTTbECD
- ab9aBteXhFupCVdT/S5LaopCFM/bGKf8AO0Ugmi5b36k1BaDZkkjvmy7POrAmL2Rm1vP
- RjaspfCnKEhJigtjS8WSrxPTJuU9iME3gDPSdMfcK9iMsMXh2HdzTnZ/Mp4pnaqR0uCi
- vHdTGsoPbSWPTnWnlcpLBY41NKmmpUspV+MwUJnKew4cBllvyNzrscyYV+UFad5SI/nQ
- 8eB1CH3VHNNZWpA96So9Qg14IWmFRt5Mt9AdhHNi9gFAFDRz7YXg+AT6OsEgNhNgy3dD
- Ym4A==
-X-Gm-Message-State: AC+VfDzJefNU/MYJ1kKijFHI1/NEg73XEMP6uh0Jas23y/mUf7wVDi02
- GIgR9MFEQEUegEAge99lcvRjwA==
-X-Google-Smtp-Source: ACHHUZ4+x81WJ6dTx78FEMdxUM+SDPtV2mQahdzPkdQQh3c4RPVrs4UBJoJ6dUuGRilBVKrdqtKXZQ==
-X-Received: by 2002:a05:600c:b43:b0:3f4:2365:e5ac with SMTP id
- k3-20020a05600c0b4300b003f42365e5acmr6841170wmr.13.1685969331492; 
- Mon, 05 Jun 2023 05:48:51 -0700 (PDT)
+ bh=dNZuqPAEgbramDA0l1U7Y+ZkUDJE80aMGxKGtEr5I2w=;
+ b=d52l0RuYkBYcSUXgz7IiXHmipOGUXzZRYBawUa1LkqwoIxyyLtLw6gnJdwTTJFroKI
+ YUB2AttFEDeW6+YqAKaCpm1a5fhL3ljuTlTCUJdstYtIvbQrm3OelmuCZ12BjZJOX6KM
+ oCfTBSpoO8302fhzFXLvaxA2uqIdmvjcfHTDNsu9oJL1UdrEDWPyJspYuyS2Vqh1vYmf
+ IJMe52WGyuWu14ch8ca/KQzf+tLEC1se9BEFINUBqAJYc/C64NB+f/PLffrCBrBkOyNE
+ b3fKM8Ox8SNt/YKNvONeuHdVbMt9fDL4TRN7598ReRusM2rzwXoNGwonHhbnrhzjoWEZ
+ /FUA==
+X-Gm-Message-State: AC+VfDzwS+YxDEkbcc3g8TRvUljppNdz0dmxI/R4giccUljlzW6Ff4Iv
+ 7mlF6OZiUxABr1qx0kk6FfYVOA==
+X-Google-Smtp-Source: ACHHUZ5FRbCprA/61iFR243w9HzDp4TA+SPLa9Ofo8PE2lV09J6Eh/aqkLHE97RqQjaMkbqRjQ70Hw==
+X-Received: by 2002:a1c:7212:0:b0:3f6:128:36a5 with SMTP id
+ n18-20020a1c7212000000b003f6012836a5mr7146491wmc.10.1685969342606; 
+ Mon, 05 Jun 2023 05:49:02 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- e12-20020a5d594c000000b0030ae16132besm9676455wri.12.2023.06.05.05.48.50
+ n16-20020a1c7210000000b003f736e28cd6sm5354060wmc.4.2023.06.05.05.49.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 05:48:51 -0700 (PDT)
-Message-ID: <23bdb920-a3ca-db00-3356-1c8959e86a67@linaro.org>
-Date: Mon, 5 Jun 2023 14:48:49 +0200
+ Mon, 05 Jun 2023 05:49:02 -0700 (PDT)
+Message-ID: <4b4b5bb8-9e76-6aad-3181-097e0080a255@linaro.org>
+Date: Mon, 5 Jun 2023 14:49:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3 10/23] q800: reimplement mac-io region aliasing using
- IO memory region
+Subject: Re: [PATCH v3 09/23] q800: introduce mac-io container memory region
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
  qemu-devel@nongnu.org
 References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-10-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230604131450.428797-10-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,24 +94,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/6/23 15:14, Mark Cave-Ayland wrote:
-> The current use of aliased memory regions causes us 2 problems: firstly the
-> output of "info qom-tree" is absolutely huge and difficult to read, and
-> secondly we have already reached the internal limit for memory regions as
-> adding any new memory region into the mac-io region causes QEMU to assert
-> with "phys_section_add: Assertion `map->sections_nb < TARGET_PAGE_SIZE'
-> failed".
-> 
-> Implement the mac-io region aliasing using a single IO memory region that
-> applies IO_SLICE_MASK representing the maximum size of the aliased region and
-> then forwarding the access to the existing mac-io memory region using the
-> address space API.
+> Move all devices from the IO region to within the container in preparation
+> for updating the IO aliasing mechanism.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 > ---
->   hw/m68k/q800.c         | 100 +++++++++++++++++++++++++++++++++--------
->   include/hw/m68k/q800.h |   1 +
->   2 files changed, 82 insertions(+), 19 deletions(-)
+>   hw/m68k/q800.c         | 6 ++++++
+>   include/hw/m68k/q800.h | 1 +
+>   2 files changed, 7 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
