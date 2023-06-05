@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B39722EDA
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 20:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BCB722EDF
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 20:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6F9k-00027W-C2; Mon, 05 Jun 2023 14:42:16 -0400
+	id 1q6FD8-0003BL-FG; Mon, 05 Jun 2023 14:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6F9h-00027E-2x
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:42:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6F9c-00035v-Q5
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:42:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685990526;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=TsMJwptDmWRrW0lI8U9KHPbPNZvxqsS7XeMpEypXolg=;
- b=jTAt5HTCA1uAwIsu1aj7yB1cpUfRNJUFMfJFF57KkkHWBSYneD4b5Ky3dHlXm/YNVPsd1t
- LfmGfQd5Q7c18HIzpJFg6LVkDtS5NoTj1OA2dklaloRyXU51Yx6J0tNAmju8FdQFAAxOWc
- q7i2qMk07/QCWDi/SzogSaogWiZseUY=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-X1UKVDglOmqB7Y5VXOETfQ-1; Mon, 05 Jun 2023 14:42:05 -0400
-X-MC-Unique: X1UKVDglOmqB7Y5VXOETfQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-75b147a2548so101908385a.1
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 11:42:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6FCu-0003AH-NT
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:45:42 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6FCo-0003wa-SL
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:45:30 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-19f68a583a7so4458133fac.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 11:45:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1685990724; x=1688582724;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FJWEnXVShKOFm1jgS6FEApH9ZxHdRdduodB+jxkLj8Q=;
+ b=YEmhDPsmKbfz0xYXlDCmPgRe+jn7TFK5Tr98eKCZH8aOQeNzqwzfoyDczds+sBZj+b
+ dUwuTArQR2WaZi6iNn84dYrquTgGBMLpTyO8rEHLW8C9LCyU+uDUwLDtG9zYZ17I8Oh5
+ Ot290NdsNCt8hn8t9FattRpJYeI9/Audsnf8KaJEcQnzdWQCSilr1x+Kri85RpEJXXNJ
+ dCEp8kTyR3eFOUdl54BuisEGCmKt4Ze84WddcpATd89S6kUrI3WWuu0kQoI4TYaCqqys
+ mr984Rc23Vca8cx9yFVygCaA1wL++fUfq4UUBW6oVsAUDWQXJI/Z87uCRps8feyjJwef
+ MRiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685990525; x=1688582525;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TsMJwptDmWRrW0lI8U9KHPbPNZvxqsS7XeMpEypXolg=;
- b=VO9KIRsm6mfXjOjiD44XdGti1PKkMMPeKTDHXCCd3/hP1UPLfgkn+r8SOHhXfxWNYG
- 5J3/s+2LrrZYpIM59zp/lXDUipTCSkbYeU/kpafb0t72xSZvQGNsPLkFCyU4MgHnfP8i
- jy8Q73ESbWAtILuSPytu/aGxqBrLLY9kVXGFTX6dM3MLhiDSNrKP9IE/kfIRaYfjfVwz
- 7LhZ8sKVkEvUCNJRVkrIQBMdO38pgfoHY0kQq4V2yOCHV2zCs4ML3/EYl2QJF7zTPqtp
- 0BENQrhKPY+c6gXz4QSW0PdkDxtIGcuM9PqMYAB9SCX27i6k58kuaf6JYiPIPrN7wgme
- hKsA==
-X-Gm-Message-State: AC+VfDwb4bL+/XNoqswED0NoQnk4K8wHyTXPdf0Pjcrbs6ggnGRpPeDg
- lohY29O+ELsUJlqhQVWfgguNvH8BHywA1sRd+tHeplc+mvggsdALm2Zo5ARhWDiwUOejLRDrs+j
- rXH/aS4CZeRd712I=
-X-Received: by 2002:a05:620a:6608:b0:75b:23a1:69ea with SMTP id
- qf8-20020a05620a660800b0075b23a169eamr17541103qkn.1.1685990525119; 
- Mon, 05 Jun 2023 11:42:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ58mjEmwVCvjHdzG5NTabWxadCU4B4LfMhr/wcSmQJctasKfsMaiwKO6UIkdhfwmTdinRUnsQ==
-X-Received: by 2002:a05:620a:6608:b0:75b:23a1:69ea with SMTP id
- qf8-20020a05620a660800b0075b23a169eamr17541080qkn.1.1685990524913; 
- Mon, 05 Jun 2023 11:42:04 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- c28-20020a05620a135c00b0075cb8a7c83fsm3811808qkl.76.2023.06.05.11.42.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 11:42:04 -0700 (PDT)
-Date: Mon, 5 Jun 2023 14:42:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com,
- pbonzini@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- alex.williamson@redhat.com, clg@redhat.com, david@redhat.com,
- philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
- yi.l.liu@intel.com, chao.p.peng@intel.com
-Subject: Re: [PATCH v2 3/4] memory: Document update on replay()
-Message-ID: <ZH4seudPfm2Dhhsg@x1n>
-References: <20230601063320.139308-1-zhenzhong.duan@intel.com>
- <20230601063320.139308-4-zhenzhong.duan@intel.com>
+ d=1e100.net; s=20221208; t=1685990724; x=1688582724;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FJWEnXVShKOFm1jgS6FEApH9ZxHdRdduodB+jxkLj8Q=;
+ b=Ux96uhLp2CAHp6g0UporneJb2Kx5QMSpb6sSbXYswk4GhYzFsorJpW55D3TBvqfF/z
+ IpvKLHwQN2XUmzq4G7I639OvAaBoX7kELWdd62Im6CtsOCeZclhDzjHxRxCj8GFzBGW7
+ eqtqBj5w/xvwwwqExSHtlB9L7YKf7179ef4WfvG9iUzbh5O+cezvnfsck1P1tOxDY3uH
+ zh8nz8ck091utQB4ab3teCOEZC7ZhzzqYGQEf+yR/TvMLHkluNxB4xpG0mtpUyiLBD3p
+ gJEEZgs/zB0wuVecXBYLyyKVRULoIjwl2lyi5yZ1DgJ8Cmhs4q9Sf2+WB6B96OTkyaju
+ 8XUQ==
+X-Gm-Message-State: AC+VfDznHrtzkodS2wA4vAx6qOjrAWZNVermBY2MZjuIYkpT6v0aF117
+ yA+8HSghWOFsBqu8wQG6lW5pvg==
+X-Google-Smtp-Source: ACHHUZ5aWVVJJdgPsyreUmfxWq2/0HpvQArBqEA/8I0h0zAwLiaWypZxpNCeKGpI1NAvqTpt56LPdw==
+X-Received: by 2002:a05:6870:5b12:b0:19a:29a7:f605 with SMTP id
+ ds18-20020a0568705b1200b0019a29a7f605mr353753oab.1.1685990724213; 
+ Mon, 05 Jun 2023 11:45:24 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
+ by smtp.gmail.com with ESMTPSA id
+ c7-20020a05687091c700b0019edd086f33sm3852035oaf.41.2023.06.05.11.45.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jun 2023 11:45:23 -0700 (PDT)
+Message-ID: <ed0a1ceb-de35-4085-9e5f-e2bf73374ebc@ventanamicro.com>
+Date: Mon, 5 Jun 2023 15:45:17 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230601063320.139308-4-zhenzhong.duan@intel.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 2/6] target/riscv: support the AIA device emulation
+ with KVM enabled
+Content-Language: en-US
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, rkanwal@rivosinc.com, anup@brainfault.org,
+ atishp@atishpatra.org, vincent.chen@sifive.com, greentime.hu@sifive.com,
+ frank.chang@sifive.com, jim.shu@sifive.com
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20230526062509.31682-1-yongxuan.wang@sifive.com>
+ <20230526062509.31682-3-yongxuan.wang@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230526062509.31682-3-yongxuan.wang@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2a.google.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,26 +102,271 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 01, 2023 at 02:33:19PM +0800, Zhenzhong Duan wrote:
-> diff --git a/include/exec/memory.h b/include/exec/memory.h
-> index eecc3eec6702..9a523ef62a94 100644
-> --- a/include/exec/memory.h
-> +++ b/include/exec/memory.h
-> @@ -441,9 +441,9 @@ struct IOMMUMemoryRegionClass {
->       * call the IOMMU translate method for every page in the address space
->       * with flag == IOMMU_NONE and then call the notifier if translate
->       * returns a valid mapping. If this method is implemented then it
-> -     * overrides the default behaviour, and must provide the full semantics
-> -     * of memory_region_iommu_replay(), by calling @notifier for every
-> -     * translation present in the IOMMU.
-> +     * overrides the default behavior, and must provide corresponding
-> +     * semantics depending on notifier's type, e.g. IOMMU_NOTIFIER_MAP,
-> +     * notify changed entries; IOMMU_NOTIFIER_FULL_MAP, notify full entries.
 
-IIUC it was always trying to notify all existing entries only, rather than
-changed entries.  VT-d used to unmap all so it was also true.
 
--- 
-Peter Xu
+On 5/26/23 03:25, Yong-Xuan Wang wrote:
+> Remove M mode AIA devices when using KVM acceleration
+> 
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> Reviewed-by: Jim Shu <jim.shu@sifive.com>
+> ---
+>   hw/riscv/virt.c | 199 +++++++++++++++++++++++++-----------------------
+>   1 file changed, 105 insertions(+), 94 deletions(-)
+> 
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index 4e3efbee16..18b94888ab 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -531,52 +531,54 @@ static void create_fdt_imsic(RISCVVirtState *s, const MemMapEntry *memmap,
+>       imsic_cells = g_new0(uint32_t, ms->smp.cpus * 2);
+>       imsic_regs = g_new0(uint32_t, socket_count * 4);
+>   
+> -    /* M-level IMSIC node */
+> -    for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+> -        imsic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
+> -        imsic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_M_EXT);
+> -    }
+> -    imsic_max_hart_per_socket = 0;
+> -    for (socket = 0; socket < socket_count; socket++) {
+> -        imsic_addr = memmap[VIRT_IMSIC_M].base +
+> -                     socket * VIRT_IMSIC_GROUP_MAX_SIZE;
+> -        imsic_size = IMSIC_HART_SIZE(0) * s->soc[socket].num_harts;
+> -        imsic_regs[socket * 4 + 0] = 0;
+> -        imsic_regs[socket * 4 + 1] = cpu_to_be32(imsic_addr);
+> -        imsic_regs[socket * 4 + 2] = 0;
+> -        imsic_regs[socket * 4 + 3] = cpu_to_be32(imsic_size);
+> -        if (imsic_max_hart_per_socket < s->soc[socket].num_harts) {
+> -            imsic_max_hart_per_socket = s->soc[socket].num_harts;
+> +    if (!kvm_enabled()) {
+> +        /* M-level IMSIC node */
+> +        for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+> +            imsic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
+> +            imsic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_M_EXT);
+>           }
+> -    }
+> -    imsic_name = g_strdup_printf("/soc/imsics@%lx",
+> -        (unsigned long)memmap[VIRT_IMSIC_M].base);
+> -    qemu_fdt_add_subnode(ms->fdt, imsic_name);
+> -    qemu_fdt_setprop_string(ms->fdt, imsic_name, "compatible",
+> -        "riscv,imsics");
+> -    qemu_fdt_setprop_cell(ms->fdt, imsic_name, "#interrupt-cells",
+> -        FDT_IMSIC_INT_CELLS);
+> -    qemu_fdt_setprop(ms->fdt, imsic_name, "interrupt-controller",
+> -        NULL, 0);
+> -    qemu_fdt_setprop(ms->fdt, imsic_name, "msi-controller",
+> -        NULL, 0);
+> -    qemu_fdt_setprop(ms->fdt, imsic_name, "interrupts-extended",
+> -        imsic_cells, ms->smp.cpus * sizeof(uint32_t) * 2);
+> -    qemu_fdt_setprop(ms->fdt, imsic_name, "reg", imsic_regs,
+> -        socket_count * sizeof(uint32_t) * 4);
+> -    qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,num-ids",
+> -        VIRT_IRQCHIP_NUM_MSIS);
+> -    if (socket_count > 1) {
+> -        qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,hart-index-bits",
+> -            imsic_num_bits(imsic_max_hart_per_socket));
+> -        qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,group-index-bits",
+> -            imsic_num_bits(socket_count));
+> -        qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,group-index-shift",
+> -            IMSIC_MMIO_GROUP_MIN_SHIFT);
+> -    }
+> -    qemu_fdt_setprop_cell(ms->fdt, imsic_name, "phandle", *msi_m_phandle);
+> +        imsic_max_hart_per_socket = 0;
+> +        for (socket = 0; socket < socket_count; socket++) {
+> +            imsic_addr = memmap[VIRT_IMSIC_M].base +
+> +                         socket * VIRT_IMSIC_GROUP_MAX_SIZE;
+> +            imsic_size = IMSIC_HART_SIZE(0) * s->soc[socket].num_harts;
+> +            imsic_regs[socket * 4 + 0] = 0;
+> +            imsic_regs[socket * 4 + 1] = cpu_to_be32(imsic_addr);
+> +            imsic_regs[socket * 4 + 2] = 0;
+> +            imsic_regs[socket * 4 + 3] = cpu_to_be32(imsic_size);
+> +            if (imsic_max_hart_per_socket < s->soc[socket].num_harts) {
+> +                imsic_max_hart_per_socket = s->soc[socket].num_harts;
+> +            }
+> +        }
+> +        imsic_name = g_strdup_printf("/soc/imsics@%lx",
+> +            (unsigned long)memmap[VIRT_IMSIC_M].base);
+> +        qemu_fdt_add_subnode(ms->fdt, imsic_name);
+> +        qemu_fdt_setprop_string(ms->fdt, imsic_name, "compatible",
+> +            "riscv,imsics");
+> +        qemu_fdt_setprop_cell(ms->fdt, imsic_name, "#interrupt-cells",
+> +            FDT_IMSIC_INT_CELLS);
+> +        qemu_fdt_setprop(ms->fdt, imsic_name, "interrupt-controller",
+> +            NULL, 0);
+> +        qemu_fdt_setprop(ms->fdt, imsic_name, "msi-controller",
+> +            NULL, 0);
+> +        qemu_fdt_setprop(ms->fdt, imsic_name, "interrupts-extended",
+> +            imsic_cells, ms->smp.cpus * sizeof(uint32_t) * 2);
+> +        qemu_fdt_setprop(ms->fdt, imsic_name, "reg", imsic_regs,
+> +            socket_count * sizeof(uint32_t) * 4);
+> +        qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,num-ids",
+> +            VIRT_IRQCHIP_NUM_MSIS);
+> +        if (socket_count > 1) {
+> +            qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,hart-index-bits",
+> +                imsic_num_bits(imsic_max_hart_per_socket));
+> +            qemu_fdt_setprop_cell(ms->fdt, imsic_name, "riscv,group-index-bits",
+> +                imsic_num_bits(socket_count));
+> +            qemu_fdt_setprop_cell(ms->fdt, imsic_name,
+> +                "riscv,group-index-shift", IMSIC_MMIO_GROUP_MIN_SHIFT);
+> +        }
+> +        qemu_fdt_setprop_cell(ms->fdt, imsic_name, "phandle", *msi_m_phandle);
+>   
+> -    g_free(imsic_name);
+> +        g_free(imsic_name);
+> +    }
+>   
+>       /* S-level IMSIC node */
+>       for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+> @@ -653,37 +655,40 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
+>       aplic_s_phandle = (*phandle)++;
+>       aplic_cells = g_new0(uint32_t, s->soc[socket].num_harts * 2);
+>   
+> -    /* M-level APLIC node */
+> -    for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
+> -        aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
+> -        aplic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_M_EXT);
+> -    }
+> -    aplic_addr = memmap[VIRT_APLIC_M].base +
+> -                 (memmap[VIRT_APLIC_M].size * socket);
+> -    aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
+> -    qemu_fdt_add_subnode(ms->fdt, aplic_name);
+> -    qemu_fdt_setprop_string(ms->fdt, aplic_name, "compatible", "riscv,aplic");
+> -    qemu_fdt_setprop_cell(ms->fdt, aplic_name,
+> -        "#interrupt-cells", FDT_APLIC_INT_CELLS);
+> -    qemu_fdt_setprop(ms->fdt, aplic_name, "interrupt-controller", NULL, 0);
+> -    if (s->aia_type == VIRT_AIA_TYPE_APLIC) {
+> -        qemu_fdt_setprop(ms->fdt, aplic_name, "interrupts-extended",
+> -            aplic_cells, s->soc[socket].num_harts * sizeof(uint32_t) * 2);
+> -    } else {
+> -        qemu_fdt_setprop_cell(ms->fdt, aplic_name, "msi-parent",
+> -            msi_m_phandle);
+> +    if (!kvm_enabled()) {
+> +        /* M-level APLIC node */
+> +        for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
+> +            aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
+> +            aplic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_M_EXT);
+> +        }
+> +        aplic_addr = memmap[VIRT_APLIC_M].base +
+> +                     (memmap[VIRT_APLIC_M].size * socket);
+> +        aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
+> +        qemu_fdt_add_subnode(ms->fdt, aplic_name);
+> +        qemu_fdt_setprop_string(ms->fdt, aplic_name,
+> +            "compatible", "riscv,aplic");
+> +        qemu_fdt_setprop_cell(ms->fdt, aplic_name,
+> +            "#interrupt-cells", FDT_APLIC_INT_CELLS);
+> +        qemu_fdt_setprop(ms->fdt, aplic_name, "interrupt-controller", NULL, 0);
+> +        if (s->aia_type == VIRT_AIA_TYPE_APLIC) {
+> +            qemu_fdt_setprop(ms->fdt, aplic_name, "interrupts-extended",
+> +                aplic_cells, s->soc[socket].num_harts * sizeof(uint32_t) * 2);
+> +        } else {
+> +            qemu_fdt_setprop_cell(ms->fdt, aplic_name, "msi-parent",
+> +                msi_m_phandle);
+> +        }
+> +        qemu_fdt_setprop_cells(ms->fdt, aplic_name, "reg",
+> +            0x0, aplic_addr, 0x0, memmap[VIRT_APLIC_M].size);
+> +        qemu_fdt_setprop_cell(ms->fdt, aplic_name, "riscv,num-sources",
+> +            VIRT_IRQCHIP_NUM_SOURCES);
+> +        qemu_fdt_setprop_cell(ms->fdt, aplic_name, "riscv,children",
+> +            aplic_s_phandle);
+> +        qemu_fdt_setprop_cells(ms->fdt, aplic_name, "riscv,delegate",
+> +            aplic_s_phandle, 0x1, VIRT_IRQCHIP_NUM_SOURCES);
+> +        riscv_socket_fdt_write_id(ms, aplic_name, socket);
+> +        qemu_fdt_setprop_cell(ms->fdt, aplic_name, "phandle", aplic_m_phandle);
+> +        g_free(aplic_name);
+>       }
+> -    qemu_fdt_setprop_cells(ms->fdt, aplic_name, "reg",
+> -        0x0, aplic_addr, 0x0, memmap[VIRT_APLIC_M].size);
+> -    qemu_fdt_setprop_cell(ms->fdt, aplic_name, "riscv,num-sources",
+> -        VIRT_IRQCHIP_NUM_SOURCES);
+> -    qemu_fdt_setprop_cell(ms->fdt, aplic_name, "riscv,children",
+> -        aplic_s_phandle);
+> -    qemu_fdt_setprop_cells(ms->fdt, aplic_name, "riscv,delegate",
+> -        aplic_s_phandle, 0x1, VIRT_IRQCHIP_NUM_SOURCES);
+> -    riscv_socket_fdt_write_id(ms, aplic_name, socket);
+> -    qemu_fdt_setprop_cell(ms->fdt, aplic_name, "phandle", aplic_m_phandle);
+> -    g_free(aplic_name);
+>   
+>       /* S-level APLIC node */
+>       for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
+> @@ -1162,16 +1167,20 @@ static DeviceState *virt_create_aia(RISCVVirtAIAType aia_type, int aia_guests,
+>       int i;
+>       hwaddr addr;
+>       uint32_t guest_bits;
+> -    DeviceState *aplic_m;
+> +    DeviceState *aplic_s = NULL;
+> +    DeviceState *aplic_m = NULL;
+>       bool msimode = (aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) ? true : false;
+>   
+>       if (msimode) {
+> -        /* Per-socket M-level IMSICs */
+> -        addr = memmap[VIRT_IMSIC_M].base + socket * VIRT_IMSIC_GROUP_MAX_SIZE;
+> -        for (i = 0; i < hart_count; i++) {
+> -            riscv_imsic_create(addr + i * IMSIC_HART_SIZE(0),
+> -                               base_hartid + i, true, 1,
+> -                               VIRT_IRQCHIP_NUM_MSIS);
+> +        if (!kvm_enabled()) {
+> +            /* Per-socket M-level IMSICs */
+> +            addr = memmap[VIRT_IMSIC_M].base +
+> +                   socket * VIRT_IMSIC_GROUP_MAX_SIZE;
+> +            for (i = 0; i < hart_count; i++) {
+> +                riscv_imsic_create(addr + i * IMSIC_HART_SIZE(0),
+> +                        base_hartid + i, true, 1,
+> +                        VIRT_IRQCHIP_NUM_MSIS);
+> +            }
+>           }
+>   
+>           /* Per-socket S-level IMSICs */
+> @@ -1184,19 +1193,21 @@ static DeviceState *virt_create_aia(RISCVVirtAIAType aia_type, int aia_guests,
+>           }
+>       }
+>   
+> -    /* Per-socket M-level APLIC */
+> -    aplic_m = riscv_aplic_create(
+> -        memmap[VIRT_APLIC_M].base + socket * memmap[VIRT_APLIC_M].size,
+> -        memmap[VIRT_APLIC_M].size,
+> -        (msimode) ? 0 : base_hartid,
+> -        (msimode) ? 0 : hart_count,
+> -        VIRT_IRQCHIP_NUM_SOURCES,
+> -        VIRT_IRQCHIP_NUM_PRIO_BITS,
+> -        msimode, true, NULL);
+> -
+> -    if (aplic_m) {
+> +    if (!kvm_enabled()) {
+> +        /* Per-socket M-level APLIC */
+> +        aplic_m = riscv_aplic_create(
+> +                memmap[VIRT_APLIC_M].base + socket * memmap[VIRT_APLIC_M].size,
+> +                memmap[VIRT_APLIC_M].size,
+> +                (msimode) ? 0 : base_hartid,
+> +                (msimode) ? 0 : hart_count,
+> +                VIRT_IRQCHIP_NUM_SOURCES,
+> +                VIRT_IRQCHIP_NUM_PRIO_BITS,
+> +                msimode, true, NULL);
+> +    }
+> +
+> +    if (aplic_m || kvm_enabled()) {
 
+I am struggling to understand why we're checking for "aplic_m" here given that
+riscv_aplic_create() will either returning something not NULL or error out via
+&error_fatal.
+
+This behavior predates this patch though.
+
+
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>           /* Per-socket S-level APLIC */
+> -        riscv_aplic_create(
+> +        aplic_s = riscv_aplic_create(
+>               memmap[VIRT_APLIC_S].base + socket * memmap[VIRT_APLIC_S].size,
+>               memmap[VIRT_APLIC_S].size,
+>               (msimode) ? 0 : base_hartid,
+> @@ -1206,7 +1217,7 @@ static DeviceState *virt_create_aia(RISCVVirtAIAType aia_type, int aia_guests,
+>               msimode, false, aplic_m);
+>       }
+>   
+> -    return aplic_m;
+> +    return kvm_enabled() ? aplic_s : aplic_m;
+>   }
+>   
+>   static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
 
