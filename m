@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55597722374
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 927697223B8
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q67T3-0000Ev-5Z; Mon, 05 Jun 2023 06:29:41 -0400
+	id 1q67eL-0001xV-Tr; Mon, 05 Jun 2023 06:41:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q67Sp-0000Av-3u; Mon, 05 Jun 2023 06:29:27 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q67eK-0001xI-7g; Mon, 05 Jun 2023 06:41:20 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q67Sn-00050l-CB; Mon, 05 Jun 2023 06:29:26 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1b038064d97so43021025ad.0; 
- Mon, 05 Jun 2023 03:29:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q67eI-0006nh-M4; Mon, 05 Jun 2023 06:41:19 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1b025d26f4fso40157845ad.1; 
+ Mon, 05 Jun 2023 03:41:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685960963; x=1688552963;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fznKQ6DvinOnKzhIaVnN2mewHYIIvPlSLlKY6/cYSrc=;
- b=mYZE7eGplHQET3HeME3g+fq1AXR/2XcjyRqoVf512oIoznlJjWOr1eRv7n+bjqeCZT
- 9xO8eOxGYrDbQW99D8oR9qzXfT7w2yRiC9fUZgeyDE5gnMJeUGlyxgSpBgNqanwoSy3U
- AVGVRUTr75jrdhXMEmKTcEquWWbUPoYIPXvQ+Yz3QfjGvzm8Pwb/1v0lpI0OJi8yyPUv
- 478DCtfXFcHks1M7h7u3IOv9rra/FRZtHhMjfQ9RSB4+b1pdQlm8TNuVVTpy2Q0GKKUU
- Lk1Cz/5/LMjAit+A285FLIdU6+gP+hk0lLqXMnGdghX3H5iG+AM8HCi+6Hdk9lmxz7H1
- riyQ==
+ d=gmail.com; s=20221208; t=1685961676; x=1688553676;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=g634lPiI3cRk/85suseMq/Sa3k3jFHOQzq5XuuooB4w=;
+ b=ZAiZeoBX/AAzXs8W/DRPqnScbLBkPKAjnUTvDErgkRnu1bhJFTWasspKTHHTbfgJZQ
+ 8w+25lXCKmGPIDgwgBFzzdQg7UZtd8Iiqj9vJ/rXOlX2tXriLf7ifojWpWpeWLb1TNiD
+ NSi3nGFVO1Vhp4PltJY2H8n0jurVEmUeAKSeP62Y4WFKiiiyB6UO0bB6erBvritGTWTo
+ zvSYhXRu51wywn86Jr4vWiivt8hxPcBAQd5tJIt7NUg+VTXe/K+r7We588pARTb1UEL6
+ DKTTdMN5PT0STPLr15v7zjpTkqKWOP5gZ/5Y4McGVwviVccWWIHzuKqU6olL4NjdUwAp
+ sfKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685960963; x=1688552963;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=fznKQ6DvinOnKzhIaVnN2mewHYIIvPlSLlKY6/cYSrc=;
- b=XG22EP/6B9JlVF25ReXXjmOrmC6MIdIDa7F4A4XvTYb7GmSOxl/bI3RSgI6JgBDa4g
- 04nbbTtEAdvEABNq3YJIwBGH1AzOzQbVxmDJxNY11KFKUJ/pxZFCgEVMhbowGS/Ex7c4
- T0XincbRDxTCE4Y7klJlUXvk7MooiF6HOjwQ2Y/a0zVkRIq2+Cl31+NpXJoHSfx2OpTp
- vdDmU1Z/L4c2exwFYCFnzSQUVQ277pv9E6d/g9uIOyQbkO745c1uw2DGF00pSZVMQNWJ
- WTZi5ahw9LYoH1odFN3dltptrANpVlw3EN5EoyHDs8cxOPDhcMlMmJLLCm9s7V3znNm6
- 3HYQ==
-X-Gm-Message-State: AC+VfDxcuOY6v2Exlnxqzt1OQWK9RNf2EcSW+qJdIrs+3ApOeXWnam/y
- o0OO9zT2vwFEtEJx76W1KkU=
-X-Google-Smtp-Source: ACHHUZ48KNisX1Gr5OgQp7s8hlJu3G3TyOxyws2+ByMtYrQlbSvDTneCdG2Dqq4mOH79M1u1VAV7hw==
-X-Received: by 2002:a17:902:e748:b0:1a9:6a10:70e9 with SMTP id
- p8-20020a170902e74800b001a96a1070e9mr7466782plf.33.1685960963492; 
- Mon, 05 Jun 2023 03:29:23 -0700 (PDT)
-Received: from localhost ([203.221.142.9]) by smtp.gmail.com with ESMTPSA id
- x4-20020a170902ea8400b001a2104d706fsm6220077plb.225.2023.06.05.03.29.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 03:29:22 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 05 Jun 2023 20:29:18 +1000
-Message-Id: <CT4NA3UVZF4D.1R1A17JVLDKQZ@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>
-Subject: Re: [RFC PATCH 5/5] spapr: Allow up to 8 threads SMT configuration
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.14.0
-References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-6-npiggin@gmail.com>
- <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
-In-Reply-To: <ce866fc5-0287-a7ea-a1c3-79d23f5b6447@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+ d=1e100.net; s=20221208; t=1685961676; x=1688553676;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g634lPiI3cRk/85suseMq/Sa3k3jFHOQzq5XuuooB4w=;
+ b=d9RnZpN/v0ebk9YyXqN9zPU1F/h0d7i/4KWDhOx+kTQy3Uc2BGi/P2zoLFWA3iHqmT
+ 0VAl3/HPRM59P/WE7RGCSpFbTJkMzgFuthcXAHnTiMLGUWXPPBFWpLWu29xVN3Ek+EOC
+ xS2N7lJWPnp9sda9XDnENSXQh5oGI+RZgaV0/AtP8N9i+qmLcRExPlz7EOHi0pu39NS+
+ AjUptPXSbZp/xD5webMALfDLRyNtquom5B+pgMn2t6Hzl/yvgGGg7/73oHkRtl5jl3X9
+ +RDw5b9Y9TpUQiO6TPicf8IamnXoq9A47GJCTER3VZJ9RddsiW1pexa4rVK3Xhx65YkT
+ SesA==
+X-Gm-Message-State: AC+VfDw578Xem2feCJ627kMpCSVBH6GyhfXPIeUGG1T62cEvyyFnAM7K
+ bdczlt76kQlHjpLLGYo3Z8dhV/h1ZGKrIGWD
+X-Google-Smtp-Source: ACHHUZ6eXt4dPG2MAheX8fGj0/mYxCULOj7rv/hpCacqyHA3r0rGHnsnzkK5x/3yanXDvdGPo/nq4g==
+X-Received: by 2002:a17:902:d2c6:b0:1b0:5304:5b48 with SMTP id
+ n6-20020a170902d2c600b001b053045b48mr8337989plc.0.1685961675436; 
+ Mon, 05 Jun 2023 03:41:15 -0700 (PDT)
+Received: from fedlinux.. ([106.84.132.130]) by smtp.gmail.com with ESMTPSA id
+ x4-20020a170902a38400b001b0457705e8sm6340141pla.140.2023.06.05.03.41.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jun 2023 03:41:14 -0700 (PDT)
+From: Sam Li <faithilikerun@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: dlemoal@kernel.org, dmitry.fomichev@wdc.com, hare@suse.de,
+ stefanha@redhat.com, Markus Armbruster <armbru@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Eric Blake <eblake@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Sam Li <faithilikerun@gmail.com>
+Subject: [RFC 0/4] Add full zoned storage emulation to qcow2 driver
+Date: Mon,  5 Jun 2023 18:41:04 +0800
+Message-Id: <20230605104108.125270-1-faithilikerun@gmail.com>
+X-Mailer: git-send-email 2.40.1
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=faithilikerun@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,33 +90,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Jun 1, 2023 at 5:20 PM AEST, C=C3=A9dric Le Goater wrote:
-> On 5/31/23 03:23, Nicholas Piggin wrote:
-> > @@ -267,6 +267,9 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, Spa=
-prMachineState *spapr,
-> >       cpu_ppc_set_vhyp(cpu, PPC_VIRTUAL_HYPERVISOR(spapr));
-> >       kvmppc_set_papr(cpu);
->
-> so, spapr_create_vcpu() set cs->cpu_index :
->      cs->cpu_index =3D cc->core_id + i;
->
-> and spapr_realize_vcpu :
->    =20
-> > +    env->spr_cb[SPR_PIR].default_value =3D cs->cpu_index;
-> > +    env->spr_cb[SPR_TIR].default_value =3D thread_nr;
-> > +
-> it would be cleaner to do the SPR assignment in one place.
+This patch series add a new extension - zoned format - to the
+qcow2 driver thereby allowing full zoned storage emulation on
+the qcow2 img file. Users can attach such a qcow2 file to the
+guest as a zoned device.
 
-Problem is we can't do it in create because the SPRs have not been
-registered yet, and can't move cpu_index to realize because it's needed
-earlier.
+To create a qcow2 file with zoned format, use command like this:
+    $ qemu-img create -f qcow2 test.qcow2 -o size=768M -o
+    zone_size=64M -o zone_capacity=64M -o zone_nr_conv=0 -o
+    max_append_sectors=512 -o max_open_zones=0 -o max_active_zones=0
+     -o zoned_profile=zbc
 
-A nice way to do this might be to have a cpu_index and a thread_index
-(or require that it is cpu_index % nr_threads), and use those values as
-the default when registering PIR and TIR SPRs. But I haven't quite
-looked into it far enough yet. pnv sets PIR in the realize function
-already so maybe it's okay this way for now and it can be tidied up.
+Then add it to the QEMU command line:
+    -blockdev node-name=drive1,driver=qcow2,file.driver=file,file.filename=../qemu/test.qcow2 \
+    -device virtio-blk-pci,drive=drive1 \
 
-Thanks,
-Nick
+Sam Li (4):
+  docs/qcow2: add the zoned format feature
+  qcow2: add configurations for zoned format extension
+  qcow2: add zoned emulation capability
+  iotests: test the zoned format feature for qcow2 file
+
+ block/qcow2.c                            | 746 ++++++++++++++++++++++-
+ block/qcow2.h                            |  23 +
+ docs/system/qemu-block-drivers.rst.inc   |  31 +
+ include/block/block-common.h             |   5 +
+ include/block/block_int-common.h         |   8 +
+ qapi/block-core.json                     |  46 +-
+ tests/qemu-iotests/tests/zoned-qcow2     | 110 ++++
+ tests/qemu-iotests/tests/zoned-qcow2.out |  87 +++
+ 8 files changed, 1041 insertions(+), 15 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
+ create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
+
+-- 
+2.40.1
+
 
