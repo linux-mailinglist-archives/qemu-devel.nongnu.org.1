@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11838722401
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE89272240C
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 12:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q67tf-0002Z9-E6; Mon, 05 Jun 2023 06:57:11 -0400
+	id 1q67vK-0004gR-75; Mon, 05 Jun 2023 06:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67tO-0002Oa-2E
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:56:58 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q67vG-0004gF-TG
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:58:51 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q67tH-0000mN-Ba
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:56:48 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3f7378a75c0so10397795e9.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:56:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q67vF-00016m-63
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 06:58:50 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51480d3e161so6850092a12.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 03:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685962606; x=1688554606;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sfSRa+WNT/kJAeeJJ5oEfzQAWbL/IrLu0RyAJXDy1sI=;
- b=CGosapgDXIzh9JfIlEkr/1ZtRhnVTCGEqkQmZVyxEnA7CZdxKGQQ/o63Xzu58Tqc1R
- TLz+8ycV6yjB/gUXYRS7S+YF9bryzhnM4DrOTRFOKkmIrM6elqE8qn+BI4qp1FjZfUf0
- B9KE0TIjKkgX11dnUJK7Yn4l42TCJHOpmftYTEF/r3+Tcf3zgFg+XscZezMtVQZl62pM
- lKbh5KEB/wYgZ9rujt+LcGLJC/jWOdW1MNgK/VvE/bEegrW0l7WryhYICuBRYRpMUHUr
- AJHsN0lqDHXMCL3yA+oP13NaUJnormMJ2zYFkMasFrGtyxPEE62ADSqOMOEKQ4ecO4+u
- lPAw==
+ d=linaro.org; s=google; t=1685962726; x=1688554726;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=M/FPxmomzFqd0RaRR0TWnXtHOsf7vpQzypQ/RcdiFKM=;
+ b=Dn8hwRmkQD4nzeEgzI9Y9ZTIuiucNPMlDB3QhDvs1O/8BZf1YPV+p1brAwroxfgeTR
+ m4e9Ry2wbehiEzdAn4iGPsbDw2ExIbIbF/7/TNLUaCrV2kC0wJCV6rpDt7gKUMAR8Ixs
+ MezyV6nPXNerj/JNN96RLmZHWXNtnD7w0XXIAnyrXw+2wKqMOrvKKskTbP9jmIX8hVuW
+ GBw/1xKrxbYfrX+czMenw3QouHxDKycmuZrngp1MiSNDU+mLoX6HCjTL3eDOggnj0RWI
+ AizURqHxFWd9RM+fYQBfnsi66hZR7BGJOTNv9ZXPQk4vN8OGm6i9zazmPG5D4X/PuWN0
+ hcGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685962606; x=1688554606;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sfSRa+WNT/kJAeeJJ5oEfzQAWbL/IrLu0RyAJXDy1sI=;
- b=gr03zcgY6lZuz7gXN7Dvu942cpZqC27ve1yIvg/X1/hp+iWDJoTJUFzJ5LNbZU89nP
- Kp+HMnDuEhYQ9vrUxGYNWBuqEZ63qua5h1x9UnZ1MYt78YyumOMJUfc6QDoQonQWg1sg
- XbEQBvBbyxOxw0zVVQtOBBGUP9iwwRNk+uFB5Y4Cwgb2dx3suGqHZtbRiQXPVOUJMxKT
- fdIV0Oovngx92xyAMrzagyIEK0RtPP2Xp/y3XrZfckb8PV/P68H6EAHzIUUsqEeh+RHx
- 0ZOqBT2noLVn/ddGImB+z0um2vYltgjJO+X8KnF4XZxDohgDF6EGBzxS+btXrEGRFfLS
- zJgA==
-X-Gm-Message-State: AC+VfDxU7ML+vWlVlQMg/UGOQ+mA83CKmcw9jFrEXe4pWSk6uIgTDLaK
- WmleNCLWCuvlBfCrWWITROMsC6k0CZ7ql50iOvA=
-X-Google-Smtp-Source: ACHHUZ5irskyLPOXKNKtLsnT1bTigctYgqZ97Mpsg4opANij5CiR1Bw4UxpGSyTeoEZqMnuj5fc/RQ==
-X-Received: by 2002:a05:600c:ad5:b0:3f4:23d4:e48 with SMTP id
- c21-20020a05600c0ad500b003f423d40e48mr5748978wmr.23.1685962605789; 
- Mon, 05 Jun 2023 03:56:45 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.217.157])
- by smtp.gmail.com with ESMTPSA id
- y20-20020a05600c365400b003f60fb2addbsm14008141wmq.44.2023.06.05.03.56.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 03:56:45 -0700 (PDT)
-Message-ID: <1f1f8b26-c0c9-f33d-507c-4399e3be13a8@linaro.org>
-Date: Mon, 5 Jun 2023 12:56:43 +0200
+ d=1e100.net; s=20221208; t=1685962726; x=1688554726;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=M/FPxmomzFqd0RaRR0TWnXtHOsf7vpQzypQ/RcdiFKM=;
+ b=P/7x3rMeJpcKc7fpr6l2DGENWYSGBcP+HNI3IqQlIWPQD8F3zWB3tkjotIrW1Wfxlm
+ gwOk0WxddP8gRjGqUMUL6aA1kCut6ju4DS9NBWJlu6EPTQfIJ+AJD6wlaHayAohLWs39
+ odTL0/bcKSUroJOCvigovhonj6xEaJoHjmQxNnqg2AzG5r1PVn79dELethDrpHpu65gw
+ nV5X86Lq0pxaljCnz/7tEIcWuTqz1nereZQ+AV7hMXRZrbbMWh5zrc+bQRadQGLGegV4
+ FOjvM5DLH+kk+p75gjq98C9BZwdw6EVch1A8lNbs8UOX/8kuRrQ8TgT1l5mjPbeXRtCa
+ GGQA==
+X-Gm-Message-State: AC+VfDyOzAiM0mixFQ8HZnD210Dy5htfT/GhJKjwDt21snCWG+V9ce34
+ ysU5dyCS2AanPtJLTJG/lf9081CXUeWR7ztDKs0XgQ==
+X-Google-Smtp-Source: ACHHUZ6wa0HO76J3EqAJZse13xltqE37odtH0ug66yCEKaAvxyvY2GnQQhi1m+4qlc/k3tUIcZUxjbxXEx5qUQcVHoc=
+X-Received: by 2002:a05:6402:1289:b0:50b:d75d:3155 with SMTP id
+ w9-20020a056402128900b0050bd75d3155mr7696618edv.37.1685962726162; Mon, 05 Jun
+ 2023 03:58:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 06/35] target/arm: Demultiplex AESE and AESMC
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: ardb@kernel.org, berrange@redhat.com, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-References: <20230603023426.1064431-1-richard.henderson@linaro.org>
- <20230603023426.1064431-7-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230603023426.1064431-7-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230605075823.48871-1-pbonzini@redhat.com>
+ <CAFEAcA8fRWdFMrcy6G6yT-8320UZUf6QA9XO70f7P1ssraedRQ@mail.gmail.com>
+ <814834c9-b257-8cdb-7372-35e689bc37ac@redhat.com>
+In-Reply-To: <814834c9-b257-8cdb-7372-35e689bc37ac@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 5 Jun 2023 11:58:12 +0100
+Message-ID: <CAFEAcA-8rz_RXwfnxGE9spFrqdZNU5tp52Hnik-phUH0oUEwMA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Fix venv issues with Avocado by reverting to an older
+ version
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, alex.bennee@linaro.org, 
+ jsnow@redhat.com, kconsul@linux.vnet.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,20 +88,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/6/23 04:33, Richard Henderson wrote:
-> Split these helpers so that we are not passing 'decrypt'
-> within the simd descriptor.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/helper.h             |  2 ++
->   target/arm/tcg/sve.decode       |  4 ++--
->   target/arm/tcg/crypto_helper.c  | 37 +++++++++++++++++++++++----------
->   target/arm/tcg/translate-a64.c  | 13 ++++--------
->   target/arm/tcg/translate-neon.c |  4 ++--
->   target/arm/tcg/translate-sve.c  |  8 ++++---
->   6 files changed, 41 insertions(+), 27 deletions(-)
+On Mon, 5 Jun 2023 at 11:51, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> On 6/5/23 11:46, Peter Maydell wrote:
+> >> To avoid this issue, tests/requirements.txt should use a ">=" constraint
+> >> and the version of Avocado should be limited to what distros provide
+> >> in the system packages.  Only Fedora has Avocado, and more specifically
+> >> version 92.0.  For now, this series reverts to the older requirement
+> >> (version >=88.1) while leaving further version bumps to future changes.
+> > If the new Avocado version is broken, don't we also need a < constraint
+> > so we don't get it by mistake ?
+>
+> I expected those to be bugs that get fixed in 102 or 101.1, so not a
+> reason to impose a strict constraint.  But you're right, the version
+> that would be installed from PyPI is the latest; I didn't notice because
+> I do have avocado installed outside pyvenv/.
+>
+> Is the logging issue limited to the one fixed by
+> https://www.mail-archive.com/qemu-devel@nongnu.org/msg962758.html?  Or
+> is there something more?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I don't know, as I haven't tested with that patch.
 
+> > In particular, for a local build tree that currently has 101 installed,
+> > if the tree is updated to include these two patches together, will that
+> > correctly downgrade it to 88.1?
+>
+> No, it won't.  What you can do is "pyvenv/bin/pip uninstall
+> avocado-framework".
+
+I think if we're going to revert back from Avocado 101 we should
+actively do that, not merely allow older versions.
+
+-- PMM
 
