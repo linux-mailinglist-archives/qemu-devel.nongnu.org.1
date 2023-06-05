@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D39E722E82
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 20:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D17722EA2
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 20:23:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Emp-0005Hd-Jl; Mon, 05 Jun 2023 14:18:35 -0400
+	id 1q6Er2-0006pn-9h; Mon, 05 Jun 2023 14:22:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6Emn-0005HB-Ej
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:18:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6Er0-0006pa-83
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:22:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6Eml-0006Ao-Ui
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:18:33 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6Eqy-0007AZ-OQ
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 14:22:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685989111;
+ s=mimecast20190719; t=1685989370;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=yvV7H8tTB8o30Qi3mp/nI+YOqFHI8q0pDZQv7Ddb/7Y=;
- b=THpX81PeV7vC4ImVKFz0hhBtBjvUs9MsZKjGR/EBJtCfKlyVvdEOEJGG9hYoIJ3MT6homM
- 9bKWOrdi7mR4hH7o3pXoWytC3Ykfs6ByNUYVoZBIgodBISMTRTzEtwwNOdS0JzmlkuN8qx
- SKZCQnTKDQ5KKCcf0NVgRANh66rcXEk=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TgWcl9bwuyNhqF6kn48uVWfcQzd8pk38Eepntxfuu9c=;
+ b=AeYaK8G9iBYCF6TLzEgN3a0+UQSttQDTN37/dLEPqq5S9GgGa24PDlzgX722tExMQdetSZ
+ xWH72j/lFd4UzcTk9uAnmws0ZwNm/wz0Onr7Ctjk46LihcCq3oNSGXXs/zBE7Ix6w92KkC
+ NDCNhwEJwrl1P/Ofips8Zk6KpOlNqgY=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-tiXv_HqDNL6UH3zGaaYDeQ-1; Mon, 05 Jun 2023 14:18:29 -0400
-X-MC-Unique: tiXv_HqDNL6UH3zGaaYDeQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-74faf5008bbso96434985a.0
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 11:18:29 -0700 (PDT)
+ us-mta-492-nnwnLt7sPpm5uQuln87TqA-1; Mon, 05 Jun 2023 14:22:49 -0400
+X-MC-Unique: nnwnLt7sPpm5uQuln87TqA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-626380298d3so9255376d6.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 11:22:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685989109; x=1688581109;
+ d=1e100.net; s=20221208; t=1685989369; x=1688581369;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yvV7H8tTB8o30Qi3mp/nI+YOqFHI8q0pDZQv7Ddb/7Y=;
- b=Vx54Klsko7EogHTJZQRNq/LDDNCvyijeDM5YQDH4z18Htei/pw6SB0Ugd/UAGfcMXN
- GSEdAl0oR7vaKPMOkhwZahHyTp060GG7H3Ap+5XAMSq79BrvsBZiDpxMLHi3YEAzgbkz
- imj+IRhpyOw0rBx17ajBejSi4MtOaQdSfeD5Nw1dVhL1iRzC6t1qrU6Fza2zeN7sfkAF
- 2/+ZlY2dH4DKqLBNdht3fsCnWvrzjx2IrMDqR/06RWfLDVQOFXzpV2yCtkzEf+oDmyg3
- xSzmstXe05AMe7GDWcuhRu+mE2Xm1bkXkY+MVCFi/KZClJiCabaHJG46TSNRcJ+zExEs
- vLyw==
-X-Gm-Message-State: AC+VfDzb4DzBeB8mlOhu6uu2rBYWA4Lte3+ot2SMu6GyUeim5g3cs+/y
- bCvIeHYK9G56Im+Doif+xnBGGLckq8Q6r/pXMF7WrBbwc7Vdc29AnSrhGpDV77PlqcvaV+HU/9l
- eC4qF+lSjMZxFwxw=
-X-Received: by 2002:a05:620a:6085:b0:75e:bd15:d95a with SMTP id
- dx5-20020a05620a608500b0075ebd15d95amr2803021qkb.6.1685989109255; 
- Mon, 05 Jun 2023 11:18:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5Jyx9oPwc0kL3ufEV8FzmKMGx72d84obfHsAEhUyjZV4Nc54+/HNXu5R4oW6EUAAaoDoag/g==
-X-Received: by 2002:a05:620a:6085:b0:75e:bd15:d95a with SMTP id
- dx5-20020a05620a608500b0075ebd15d95amr2802992qkb.6.1685989108884; 
- Mon, 05 Jun 2023 11:18:28 -0700 (PDT)
+ bh=TgWcl9bwuyNhqF6kn48uVWfcQzd8pk38Eepntxfuu9c=;
+ b=FxkKFYJRGw13l5s56KHbgNKTpBL8BdRwVLJFrxPYD5VTOQnatiVzTKNpn9dW5XaE4i
+ pnM9Ejo0UVco07GSFwsy9ppJqB/VBubr/ptHpzyCGkMQQtO3k6j3cVbM3oktKFT73P9N
+ ggZpStxzd5o4K9urPEplh9nHRTHRPgMNFAY/J05aEbONjJH5f9/LEkdTu1smnJKrlQ3e
+ ++/TWDNw6PHyvZDAmniesgNK9Y93Fa4iwkBBMb5p05JQQyD6VzpuWNl0tl7ehL5EBrau
+ lGeRSJz7wvo8YXKBOkWUqcoXmzAGlfJWY7fexWBQk9HEugTvNL8wVQWPbbpL6PJYWIhI
+ GDEA==
+X-Gm-Message-State: AC+VfDwbHQpzVp86bNE6W9XY8967LdVE8i3IGH9pLA2EXun3ETzurFPT
+ 37EflIQ4mZna4Oq5UiLOpoSEy3Yx7c9LB/82drPRWTnUa+HiNMuXdhr00+zWzalAmMxMYcFfTqF
+ Kfp3ObdGXM78gkT0=
+X-Received: by 2002:ad4:5966:0:b0:61b:76dd:b643 with SMTP id
+ eq6-20020ad45966000000b0061b76ddb643mr19633339qvb.4.1685989368904; 
+ Mon, 05 Jun 2023 11:22:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4qxaZhbnRnSLOrzKOo6IwcMxeAGvIwcBniro3qIMoyi++9T+2h+OdkK7OIEF/rVlY335YSBQ==
+X-Received: by 2002:ad4:5966:0:b0:61b:76dd:b643 with SMTP id
+ eq6-20020ad45966000000b0061b76ddb643mr19633305qvb.4.1685989368597; 
+ Mon, 05 Jun 2023 11:22:48 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- h5-20020a37de05000000b0075e70bf3cffsm1480012qkj.74.2023.06.05.11.18.27
+ d5-20020a0cea85000000b006286334f999sm4744827qvp.78.2023.06.05.11.22.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Jun 2023 11:18:28 -0700 (PDT)
-Date: Mon, 5 Jun 2023 14:18:26 -0400
+ Mon, 05 Jun 2023 11:22:48 -0700 (PDT)
+Date: Mon, 5 Jun 2023 14:22:46 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>,
@@ -68,16 +68,15 @@ Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>,
  Fiona Ebner <f.ebner@proxmox.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v2 04/20] qemu-file: We only call qemu_file_transferred_*
- on the sending side
-Message-ID: <ZH4m8nUAEfZglPLD@x1n>
+Subject: Re: [PATCH v2 05/20] qemu_file: Use a stat64 for qemu_file_transferred
+Message-ID: <ZH4n9jeN6PcoZ3A1@x1n>
 References: <20230530183941.7223-1-quintela@redhat.com>
- <20230530183941.7223-5-quintela@redhat.com>
+ <20230530183941.7223-6-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230530183941.7223-5-quintela@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230530183941.7223-6-quintela@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,37 +100,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 08:39:25PM +0200, Juan Quintela wrote:
-> Remove the increase in qemu_file_fill_buffer() and add asserts to
-> qemu_file_transferred* functions.
+On Tue, May 30, 2023 at 08:39:26PM +0200, Juan Quintela wrote:
+> This way we can read it from any thread.
+> I checked that it gives the same value than the current one.  We never
+> use to qemu_files at the same time.
 > 
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 
-The read side accounting does look a bit weird and never caught my notice..
+The follow up patch may be better to be squashed or it's very confusing..
 
-Maybe worth also touching the document of QEMUFile::total_transferred to
-clarify what it accounts?
+Why do we need to convert mostly everything into atomics?  Is it modified
+outside migration thread?
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+AFAIR atomic ops are still expensive, and will get more expensive on larger
+hosts, IOW it'll be good for us to keep non-atomic when possible (and
+that's why when I changed some counters in postcopy work I only changed the
+limited set because then the rest are still accessed in 1 single thread and
+keep running fast).
 
-Though when I'm looking at the counters (didn't follow every single recent
-patch on this..), I found that now reading transferred value is actually
-more expensive - qemu_file_transferred() needs flushing, even if for the
-fast version, qemu_file_transferred_fast() loops over all possible iovs,
-which can be as large as MAX_IOV_SIZE==64.
-
-To be explicit, I _think_ for each guest page we now need to flush...
-
-  ram_save_iterate
-    migration_rate_exceeded
-      migration_transferred_bytes
-        qemu_file_transferred
-
-I hope I'm wrong..
-
-Does it mean that perhaps we simply need "sent and put into send buffer"
-more than "what really got transferred"?  So I start to wonder what's the
-origianl purpose of this change, and which one is better..
+> ---
+>  migration/migration-stats.h | 4 ++++
+>  migration/qemu-file.c       | 5 +++--
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+> index 2358caad63..b7795e7914 100644
+> --- a/migration/migration-stats.h
+> +++ b/migration/migration-stats.h
+> @@ -81,6 +81,10 @@ typedef struct {
+>       * Number of bytes sent during precopy stage.
+>       */
+>      Stat64 precopy_bytes;
+> +    /*
+> +     * Number of bytes transferred with QEMUFile.
+> +     */
+> +    Stat64 qemu_file_transferred;
+>      /*
+>       * Amount of transferred data at the start of current cycle.
+>       */
+> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+> index be3dab85cb..eb0497e532 100644
+> --- a/migration/qemu-file.c
+> +++ b/migration/qemu-file.c
+> @@ -288,6 +288,7 @@ void qemu_fflush(QEMUFile *f)
+>          } else {
+>              uint64_t size = iov_size(f->iov, f->iovcnt);
+>              f->total_transferred += size;
+> +            stat64_add(&mig_stats.qemu_file_transferred, size);
+>          }
+>  
+>          qemu_iovec_release_ram(f);
+> @@ -628,7 +629,7 @@ int coroutine_mixed_fn qemu_get_byte(QEMUFile *f)
+>  
+>  uint64_t qemu_file_transferred_noflush(QEMUFile *f)
+>  {
+> -    uint64_t ret = f->total_transferred;
+> +    uint64_t ret = stat64_get(&mig_stats.qemu_file_transferred);
+>      int i;
+>  
+>      g_assert(qemu_file_is_writable(f));
+> @@ -644,7 +645,7 @@ uint64_t qemu_file_transferred(QEMUFile *f)
+>  {
+>      g_assert(qemu_file_is_writable(f));
+>      qemu_fflush(f);
+> -    return f->total_transferred;
+> +    return stat64_get(&mig_stats.qemu_file_transferred);
+>  }
+>  
+>  void qemu_put_be16(QEMUFile *f, unsigned int v)
+> -- 
+> 2.40.1
+> 
 
 -- 
 Peter Xu
