@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447FB72312E
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6DB723123
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 22:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6GgJ-0007GD-UR; Mon, 05 Jun 2023 16:20:00 -0400
+	id 1q6GgF-00070y-I6; Mon, 05 Jun 2023 16:19:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Gfr-0006tG-Hl
+ id 1q6Gfr-0006ta-P3
  for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:19:32 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Gfo-0005k6-Jj
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:19:30 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-653f9c7b3e4so1955562b3a.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:19:28 -0700 (PDT)
+ id 1q6Gfp-0005kc-Oy
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 16:19:31 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5343c3daff0so2824843a12.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 13:19:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685996367; x=1688588367;
+ d=linaro.org; s=google; t=1685996368; x=1688588368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nAImCar6oyDgjZqzKCPoy2LdZjs1Hux2vEDU7Qe1ybQ=;
- b=l/nPa24fQUIv0eQA2WuXBq4Cctm5bbcT8k06GzuFhVZH2dwjQ8pglwBwlAlFfR6tK+
- +jAUrnguNt3bgXJ658gR46qm5iPpD7bqtwE+Xskn+3rF5bI16zvVM5VaqkN46K8f/fjk
- TDHSazgOBdXqLnt4wdEE9/qGF0uQ9wtkj6SujlXN3PffIXK4TGMl4cdVYaVhf29FiRCz
- hAdieSxXCJesq8de7B0aweMGNdvmkLCxZPwIzaMDxWXFlPIjHexEBQrHsoTWqZUpWLZb
- ziHM4vURqkEpp02AVMugfKLzHQncKmruKniTFnbLVN4gZl+RmwE38Ercl8mJWz8TrJxS
- Y+Ow==
+ bh=1+2aTZUDJhHk+1ynfemTk95bp++Vx2nuawcefQHRCuc=;
+ b=Ko6AfTqUBr/Ap/UafM3WeBuRiB9s7Vq9k2/oHgRM4qYjPYgBL88n+VzPqbiwoGfkn3
+ Ne3Se0Dj4k0ux2uh0Ji6BitHrniIsjk1ImsBzB9yi5hVGGMCDUWXEuZ2pZFvC+OuQID/
+ 944NLG4tarMgUz9Y+Nphsj9H6E4zjC1ZjIKqZIsAnhqw0mvIQ4vmO343PnWjKQQNOvMs
+ CMu3+B1mc9AQZMld85elxAkknv7UPguSZ3ekIQ/1SfSfSZxoZ6rUoRrDeqZBrZX8+UwD
+ UdmyfkNyoY8O5RmPHbT4PNN6Kv4F79e53qiG9SAfG7oPjFnEKJjjMp12CZ+xHjBdeEOM
+ QZgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685996367; x=1688588367;
+ d=1e100.net; s=20221208; t=1685996368; x=1688588368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nAImCar6oyDgjZqzKCPoy2LdZjs1Hux2vEDU7Qe1ybQ=;
- b=N+czNV5MadTKEj2+gA4smn7n5toniFif1ukCW7iIK+l9e7BAjAbGDNcfb4a44G7kYW
- ldVX14EKeBgavNPIaQRdzp5yjwW6zVnXJtIvtzkrucY/Omrw+HMa/3/Ofl9jlYhJY5T9
- HMvtxbFnBwaL9W/mQbJsfRRWDAInsVWmT9JVsR+vP33QrMDtH0bXJyFzJQXY9FC1lUzL
- CrAPNbJFnu+I74FLni8KwN3TYQSC45hfQhhZABwQEcgRVvWMgGrBPrdYeTct/InLGfaM
- kLTxzoBXhswYFtEFFFegEhkYvThjkpJTZuUiSk06b+BLC58/ub4vxLvAlDK5q8zs1E3K
- F5Ag==
-X-Gm-Message-State: AC+VfDxrgLCc2JrhhwDoS1S3U+GX58WL2ulE1I82UxwQ50sDPAuL9kb1
- RTjxghZ55yyjnfV/cN+JYkKbk6Sksm+gkX2Cgq4=
-X-Google-Smtp-Source: ACHHUZ6WqieJ9gZgAMFPYU6pVg/R5SxgkPXA9F9oOdHl41PW+1rqol0uImXXps2+YsYgyqajbduTeQ==
-X-Received: by 2002:a17:902:7c0c:b0:1b2:1b20:c45b with SMTP id
- x12-20020a1709027c0c00b001b21b20c45bmr1420740pll.54.1685996367323; 
- Mon, 05 Jun 2023 13:19:27 -0700 (PDT)
+ bh=1+2aTZUDJhHk+1ynfemTk95bp++Vx2nuawcefQHRCuc=;
+ b=GeXLWZ1JFyAJ37hLVvQDNLVT0R0nBuM5CJP9cpVu+czNDVYWpbXxblapsYQCQ1NDCn
+ VjDObBgNsYzPvqDo4zgxl0fvAqjiYUFfPO8aU7YTqWbgavrHG/W8hpuxlWs1enFLs6fd
+ NE1wrqQNq8klZRb1aYU/eP5AL4sHt/iDMMbO7pZ83iQx7ac7AeRKD3gmiXcpTbh82Xtn
+ 7sfCFSI/d6jToWUk63XxwMhOehiclrOY31aeB6WjJaZExZe7LfbhW3/49hyHixzB+8nO
+ /vseg2HdFvzYA4Pl+gIIjBRWLjIfQw1Ux5eirVo3kZ9mFyl+aUaLBCgZ0WEZSDcQe/Qq
+ CPKg==
+X-Gm-Message-State: AC+VfDzMk9FRnRaScmet05f6zTKgFGgW7Tj6N2+Ta8+cQGErlDf4n0BV
+ 2YNiauwQWC9UajzoOP+PcE+Jjg8CX8eaLAKN1lI=
+X-Google-Smtp-Source: ACHHUZ5/xUSVSWH9I4p/RocbwgFnDMByZcocBodELMCf5/+rsD/L1Z0mP3gTke0F4+tlm9Jj+XQsTw==
+X-Received: by 2002:a05:6a20:3d02:b0:10b:6b1f:acf1 with SMTP id
+ y2-20020a056a203d0200b0010b6b1facf1mr136117pzi.29.1685996368079; 
+ Mon, 05 Jun 2023 13:19:28 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:3f85:a600:6a3e:e465])
  by smtp.gmail.com with ESMTPSA id
- w20-20020a170902c79400b001a980a23802sm7018184pla.111.2023.06.05.13.19.26
+ w20-20020a170902c79400b001a980a23802sm7018184pla.111.2023.06.05.13.19.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 05 Jun 2023 13:19:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 43/52] accel/tcg: Tidy includes for translator.[ch]
-Date: Mon,  5 Jun 2023 13:15:39 -0700
-Message-Id: <20230605201548.1596865-44-richard.henderson@linaro.org>
+Subject: [PULL 44/52] tcg: Fix PAGE/PROT confusion
+Date: Mon,  5 Jun 2023 13:15:40 -0700
+Message-Id: <20230605201548.1596865-45-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230605201548.1596865-1-richard.henderson@linaro.org>
 References: <20230605201548.1596865-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,59 +92,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reduce the header to only bswap.h and cpu_ldst.h.
-Move exec/translate-all.h to translator.c.
-Reduce tcg.h and tcg-op.h to tcg-op-common.h.
-Remove otherwise unused headers.
+The bug was hidden because they happen to have the same values.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h | 6 +-----
- accel/tcg/translator.c    | 8 +++-----
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ tcg/region.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 228002a623..224ae14aa7 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -18,12 +18,8 @@
-  * member in your target-specific DisasContext.
-  */
- 
--
- #include "qemu/bswap.h"
--#include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
--#include "exec/translate-all.h"
--#include "tcg/tcg.h"
-+#include "exec/cpu_ldst.h"	/* for abi_ptr */
- 
- /**
-  * gen_intermediate_code
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 60a613c99d..fda4e7f637 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -8,15 +8,13 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/log.h"
- #include "qemu/error-report.h"
--#include "tcg/tcg.h"
--#include "tcg/tcg-op.h"
- #include "exec/exec-all.h"
--#include "exec/log.h"
- #include "exec/translator.h"
-+#include "exec/translate-all.h"
- #include "exec/plugin-gen.h"
--#include "exec/replay-core.h"
--
-+#include "tcg/tcg-op-common.h"
- 
- static void gen_io_start(void)
+diff --git a/tcg/region.c b/tcg/region.c
+index bef4c4756f..f8410ba5db 100644
+--- a/tcg/region.c
++++ b/tcg/region.c
+@@ -505,6 +505,14 @@ static int alloc_code_gen_buffer(size_t tb_size, int splitwx, Error **errp)
+     return PROT_READ | PROT_WRITE;
+ }
+ #elif defined(_WIN32)
++/*
++ * Local source-level compatibility with Unix.
++ * Used by tcg_region_init below.
++ */
++#define PROT_READ   1
++#define PROT_WRITE  2
++#define PROT_EXEC   4
++
+ static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
  {
+     void *buf;
+@@ -525,7 +533,7 @@ static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
+     region.start_aligned = buf;
+     region.total_size = size;
+ 
+-    return PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++    return PROT_READ | PROT_WRITE | PROT_EXEC;
+ }
+ #else
+ static int alloc_code_gen_buffer_anon(size_t size, int prot,
+@@ -794,10 +802,10 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
+      * buffer -- let that one use hugepages throughout.
+      * Work with the page protections set up with the initial mapping.
+      */
+-    need_prot = PAGE_READ | PAGE_WRITE;
++    need_prot = PROT_READ | PROT_WRITE;
+ #ifndef CONFIG_TCG_INTERPRETER
+     if (tcg_splitwx_diff == 0) {
+-        need_prot |= PAGE_EXEC;
++        need_prot |= PROT_EXEC;
+     }
+ #endif
+     for (size_t i = 0, n = region.n; i < n; i++) {
+@@ -807,9 +815,9 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
+         if (have_prot != need_prot) {
+             int rc;
+ 
+-            if (need_prot == (PAGE_READ | PAGE_WRITE | PAGE_EXEC)) {
++            if (need_prot == (PROT_READ | PROT_WRITE | PROT_EXEC)) {
+                 rc = qemu_mprotect_rwx(start, end - start);
+-            } else if (need_prot == (PAGE_READ | PAGE_WRITE)) {
++            } else if (need_prot == (PROT_READ | PROT_WRITE)) {
+                 rc = qemu_mprotect_rw(start, end - start);
+             } else {
+                 g_assert_not_reached();
 -- 
 2.34.1
 
