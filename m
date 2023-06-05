@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFCA723320
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BFB72331F
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 00:25:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Ict-0008It-3G; Mon, 05 Jun 2023 18:24:35 -0400
+	id 1q6Icy-0008LJ-3A; Mon, 05 Jun 2023 18:24:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Icq-0008HS-QZ
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:32 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Icv-0008KI-PP
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:37 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Ico-0005we-72
- for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:32 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f6d7abe9a4so47982345e9.2
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:24:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Ict-000602-Go
+ for qemu-devel@nongnu.org; Mon, 05 Jun 2023 18:24:37 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-30ae967ef74so4311945f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 15:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686003868; x=1688595868;
+ d=linaro.org; s=google; t=1686003873; x=1688595873;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SxRmr/I1VpSZkmrvvvEhVA2TInHdyZDnBscGrBEdNSQ=;
- b=aQssGCvLFKYPpOVBm8UOh8EL55qTwGNg1Jk0vgpc4ROrSkCfUdlTCr0hkP2tA89adF
- m1mrTvpC4Y+47EPDB3tqY72+gabE0peNZpeo1sPpFui88GrxX7/fpW8ULvbnPrbNgM5j
- mX6QTZ/+qQPLIkXwOpKbgRNka5rl4I8LTY+M/crF632TxCd8nv8HucddOuOwbHoe/fkE
- xyKnZbnZ8kenvwSpkKqmxVvQehW5uRSee8jRA5BD6sbEPKgw1zaJCkpu/0PhgPtLD6x4
- RQ2UWqWoyxNpXdw1PiICXFhlcTn7POPuS28aa+X6COfiwW43JhAyXSKP+mg2QHZURZBF
- pXtA==
+ bh=Y7qE+XF1sdC5qKTLQBPA7J0xIVj1iHbCF/ZSK/gcraw=;
+ b=TkiOyJWvy3drsZuKtR3vKHprfSuGo0NZQHJKgB/5PIEzC3gKiRx+RCaJuBjBkv2Wz2
+ jUaSJz9HpBTLxHrlCEy+JJAsYQd+voXJdLD4vYSSX28BeI2SzhBMU9b5oH6hYkYAooPl
+ Gq7a6idcPbtQHnSpqocTfSdiIZyu0FLiYKqyojX0oX4fDNOC8eFoW8zxXJ0tPEnsVKQV
+ 3KjERfYQhEXhbaWIncID/h1n3Ntn0sctR71FuOyvMTAWxZorMyc4JnCkrRPJR6uAUXdz
+ yrhrLyzUW1OarRKrAW7mDzb/MnZ1uB6e/H/OtkM8GS1FmTtwU/Wd/htlXYRhDTYb1bWw
+ A5oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686003868; x=1688595868;
+ d=1e100.net; s=20221208; t=1686003873; x=1688595873;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SxRmr/I1VpSZkmrvvvEhVA2TInHdyZDnBscGrBEdNSQ=;
- b=CseI1YIQ8BBlRO/rHtHbvb918ukTpCDWNze7UMV4XUQlt9dXPFEGjOppsvOkWAErIs
- svuRKo1NjYuy9hyDmeQmdqoej0/57Odt0qHu7xvaOONh0Cjmw2XHhccswyAdnSRnzQmE
- OoKxVxpB/z4nfGen9cVAnyQ0vC20aT9b+33lr089tSHveZOfFEMJGcF4SVtCkRS55QvA
- F8mjSU9fOs9oq8EDzuzZGqR4l6MPY1csUzFEVduBCT3jyy7dYXlD/SQMt6JxaNXkmZs1
- wyqJHEYb6WHnHtdRA9l3hpKVcPL/j8ZbvEHx49BReu01uylWbsNSxMPnV5+Wkbx3TZu3
- ic6Q==
-X-Gm-Message-State: AC+VfDwMH21w82eGwoJrbQVeID/ppsKrXa8HBZTelRkxTr3f8ivciv1y
- TuSGRZI2y5ZQ36u5lGAxKqNSy2tahWx5OlHrsVY=
-X-Google-Smtp-Source: ACHHUZ5oOF/Rrf7E8mz0276W4pv0k4nSmy8nhFjdsu6ifquP02rya07hYbszd9mLqgejxj1JUxtF/w==
-X-Received: by 2002:a05:600c:220e:b0:3f7:3673:5429 with SMTP id
- z14-20020a05600c220e00b003f736735429mr355827wml.2.1686003868416; 
- Mon, 05 Jun 2023 15:24:28 -0700 (PDT)
+ bh=Y7qE+XF1sdC5qKTLQBPA7J0xIVj1iHbCF/ZSK/gcraw=;
+ b=LuMNS4kPy9r4d1byrIzIYlH8wVecvKKiZQOIY+R2xPajfO1lnasX5fz3G69YVr9k3O
+ eRXZvdGq/h4iq9IhFEcpmvZ/DCDCQGbmu5fha6fuo7UkutXWwikAvfzaBJFYz4tgT4d9
+ 65aLMeMf0vYpT7prIMafstJ0j0thJWzz6e7y6x6T8b/LEnLeSaNHUfHCZaPxVQ7NVnkm
+ b/dyZmtE75ZEMaENwoo9o3mCO422BfGZFlWB0PMlQqBKa58/r4VMx2/mb9wMr/tJS/xh
+ sxJ0Orx2swQIvd+LBpKk1qm234BmmDiy6Rp45E7mii1r43dFmJ1eIdJrbaL9ZFRvloTu
+ jPjA==
+X-Gm-Message-State: AC+VfDyel6Y/wR7FL3YhvapM48XCDYCn4MH4jO7fAupRouGl/ykQsC1C
+ 777jXi3IlAejekgVYCIExcq6xgzZ2cCv90G6x48=
+X-Google-Smtp-Source: ACHHUZ4FVKtshHeXy8xSUhySjci2Rf84Ng8DD/izGVrrfqSLuPui+NcZwVpgCIOLxjdirlntrzCApg==
+X-Received: by 2002:adf:fccb:0:b0:30c:2bbf:bf75 with SMTP id
+ f11-20020adffccb000000b0030c2bbfbf75mr159034wrs.26.1686003873750; 
+ Mon, 05 Jun 2023 15:24:33 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.217.157])
  by smtp.gmail.com with ESMTPSA id
- x11-20020a1c7c0b000000b003f60faa4612sm11989320wmc.22.2023.06.05.15.24.27
+ c1-20020a5d4cc1000000b002fda1b12a0bsm10850321wrt.2.2023.06.05.15.24.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 05 Jun 2023 15:24:28 -0700 (PDT)
+ Mon, 05 Jun 2023 15:24:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -61,18 +61,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 1/9] target/tricore: Remove pointless CONFIG_SOFTMMU
- guard
-Date: Tue,  6 Jun 2023 00:24:12 +0200
-Message-Id: <20230605222420.14776-2-philmd@linaro.org>
+Subject: [RFC PATCH v2 2/9] target/i386: Check for USER_ONLY definition
+ instead of SOFTMMU one
+Date: Tue,  6 Jun 2023 00:24:13 +0200
+Message-Id: <20230605222420.14776-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230605222420.14776-1-philmd@linaro.org>
 References: <20230605222420.14776-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't build any user emulation target for Tricore,
-only the system emulation. No need to check for it as
-it is always defined.
+Since we *might* have user emulation with softmmu,
+replace the system emulation check by !user emulation one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/tricore/helper.c | 2 --
- 1 file changed, 2 deletions(-)
+ target/i386/tcg/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/tricore/helper.c b/target/tricore/helper.c
-index 114685cce4..cd34b34133 100644
---- a/target/tricore/helper.c
-+++ b/target/tricore/helper.c
-@@ -30,7 +30,6 @@ enum {
-     TLBRET_MATCH = 0
- };
- 
--#if defined(CONFIG_SOFTMMU)
- static int get_physical_address(CPUTriCoreState *env, hwaddr *physical,
-                                 int *prot, target_ulong address,
-                                 MMUAccessType access_type, int mmu_idx)
-@@ -56,7 +55,6 @@ hwaddr tricore_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-     }
-     return phys_addr;
- }
--#endif
- 
- /* TODO: Add exeption support*/
- static void raise_mmu_exception(CPUTriCoreState *env, target_ulong address,
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 5cf14311a6..750253e679 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -6915,7 +6915,7 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
+     dc->popl_esp_hack = 0;
+     /* select memory access functions */
+     dc->mem_index = 0;
+-#ifdef CONFIG_SOFTMMU
++#ifndef CONFIG_USER_ONLY
+     dc->mem_index = cpu_mmu_index(env, false);
+ #endif
+     dc->cpuid_features = env->features[FEAT_1_EDX];
 -- 
 2.38.1
 
