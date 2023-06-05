@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118377227A2
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 15:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9776C7227AA
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 15:42:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6AQJ-0004Mw-IV; Mon, 05 Jun 2023 09:39:06 -0400
+	id 1q6ATK-00069H-U7; Mon, 05 Jun 2023 09:42:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q6AQ9-0004H3-8n; Mon, 05 Jun 2023 09:38:53 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ id 1q6ATH-00068Y-SL; Mon, 05 Jun 2023 09:42:07 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q6AQ6-0000BD-0M; Mon, 05 Jun 2023 09:38:51 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-558a79941c6so1173479eaf.3; 
- Mon, 05 Jun 2023 06:38:49 -0700 (PDT)
+ id 1q6ATG-00014k-9w; Mon, 05 Jun 2023 09:42:07 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6af86627460so4613981a34.1; 
+ Mon, 05 Jun 2023 06:42:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685972328; x=1688564328;
+ d=gmail.com; s=20221208; t=1685972524; x=1688564524;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zUR2yEZSVTNI77eBJe0mhhFej07BeHpbDdGo5Xbp2oY=;
- b=ZRdVBzQpOE8Ep0aUt9kk6VqRCWFeH5Ihc1vZG3kv5NT0/QIhWV8g7jjUw4HHY1KdhQ
- 7CNcgxoM0Z9t6I07PnDP2NHg4fNM50dlOgjneAaLBovJ3iSni4XqMvBnJ2829w9pzzLO
- EorOGWC0e68xse51IOWKSMAAUa9KuVKCGtqXFUoUUbV9bAAO8qFfLxebM3rtxga+1f45
- 6ORBZppjHmFd6kNAS9Y59q8mmO5SmJseZXZEJlnC+ocYQABZJank0jLCdSdJ/4NrjR4S
- R3DknfPsaVIxBylAb5hHtFT8jGdvHmreu0bKsCZDVp506WTTDGsmp/SE0Jfee1sMJMl2
- ogsA==
+ bh=jZQ2Oj0Hu2PCwk6YHKCLSrVZdw2+IdPkM8sZTaJE3b4=;
+ b=I7swHhx0PmMxPDBDMbvIIqt0ePB9mFOuFkHqZORLBasFl+pcrDPMrfZnO4e9fRmfoz
+ UjK/6hi3xYLdzP9OZ8dNnc0Uq2X5Uu9fU2bkXcYn/p9U3tG5b6UPtRFEUfzF3Caz04KN
+ bdPbOB3HAML7P5rrcAyO8qeHKJL08ohuJo9DVpSSOfpZTNQfCbkaDtVy/wQa1lNyM4zK
+ fUVS9NEFMBud9j8OPMSfQK77+8cfeA4UTDYAdZUaKYMcbPJa97p1TvqGq2yCC/mOdnld
+ T99N+SuNCPMoIIix/9u0HthuTZgHTVaHVZm15AhDe8vW26SupB8ykGDCCusdLO39JmHJ
+ BDBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685972328; x=1688564328;
+ d=1e100.net; s=20221208; t=1685972524; x=1688564524;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zUR2yEZSVTNI77eBJe0mhhFej07BeHpbDdGo5Xbp2oY=;
- b=hXoP5Uwpz3nGVwu1gipe9N4sStTR/e+4r5EWGMXEfLqy0tmHyQoQHqJdL6N7ImhVVU
- toULzlkvI26rcMrkOrZK9N90HgrnhjDQ1SphnQH170iwRr7XxdPm3YayZoOAvcOtQgz8
- eAaYWPj1ViHETRezBTebYgUBldXNVnuuVLViJZdnCdDJDJZ6Ctk+zIF2eADJmNtvRHwg
- 2MVCSa365mnAe4IlvEpJsOxukQlwOC/QRwx2osEKrGRCcyTaJHn+e0ytSBryWMb4aY2a
- Q/34+zZyhfQiHKeJJJmGldaJwC4k/ir8uNNf817qskWSjKHgTVmobveRZHQIXC0s1kTb
- EsKg==
-X-Gm-Message-State: AC+VfDxowxfqqtStVGgzeGBm6CZ878HUBnjeZawi9LUq131tXRyIbh6O
- CAuHiF1FoZ8HANl7m79kkvg=
-X-Google-Smtp-Source: ACHHUZ7qXURAxpv7mA0aKElGFy6B8DiSquJ4QXs5BW1WF975eu3svRF6ubYPej+Om9O4VL3ONJ5AwA==
-X-Received: by 2002:a4a:e04a:0:b0:558:b224:ce9f with SMTP id
- v10-20020a4ae04a000000b00558b224ce9fmr3902786oos.7.1685972328335; 
- Mon, 05 Jun 2023 06:38:48 -0700 (PDT)
+ bh=jZQ2Oj0Hu2PCwk6YHKCLSrVZdw2+IdPkM8sZTaJE3b4=;
+ b=ZRgKrOvMhl0GudvXncW7EKxBVB0se+WdkpdKQOeOrVf1kArCg65HTH2wPDtvWdH0sN
+ 71WumbWmln9ybEgmgwDfEVT37E5vGHy+I0JnH6lU2OQLscbTuhkJrufpVfaksNeVlEnL
+ OTQK6jcREulxG2NJB5EfWSajOQyVnrtAPD7aM9+QjvewV5VTHZHfeVEzvKK+OSOLEuVU
+ t4YtcsGgVS4AKNWc76FILzv/Pf61CxB/JRP4D8b8ZBBztVTN1hT44ciQUCXa9Kvcz2sC
+ XXH1MjHSmz6yJ2t7A9iAiK0Rx2KNu2cr6VLklu6eZw194p/mdOwHFD4PN5VfqY7QRuYq
+ ZnIg==
+X-Gm-Message-State: AC+VfDxKIj/WZHJHKCTbtfalfyg4V2zSlBu5CmwED5TJHjB2OXCOuD54
+ DzQQxcuPH/HNK5G8EYxmQjI=
+X-Google-Smtp-Source: ACHHUZ6Lrdf1LYOM1xA+j758NeeOLqA4tC7KPcIUMRnXTPYSzb5QaHZ+2kT8vv6cukC7tu68VoW11A==
+X-Received: by 2002:a9d:7dd3:0:b0:6b1:6583:dfd9 with SMTP id
+ k19-20020a9d7dd3000000b006b16583dfd9mr4155175otn.29.1685972524188; 
+ Mon, 05 Jun 2023 06:42:04 -0700 (PDT)
 Received: from [192.168.68.107] ([177.170.117.52])
  by smtp.gmail.com with ESMTPSA id
- cg24-20020a056820099800b00545442d89b3sm3132553oob.23.2023.06.05.06.38.46
+ x10-20020a9d628a000000b006a42e87aee4sm2012784otk.32.2023.06.05.06.42.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 06:38:48 -0700 (PDT)
-Message-ID: <3cfc94af-8abe-2fef-7cdd-c2c046901d56@gmail.com>
-Date: Mon, 5 Jun 2023 10:38:45 -0300
+ Mon, 05 Jun 2023 06:42:03 -0700 (PDT)
+Message-ID: <7626561a-c479-e229-7608-d6696626c41a@gmail.com>
+Date: Mon, 5 Jun 2023 10:42:01 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v1 2/2] target/ppc: Decrementer fix BookE semantics
+Subject: Re: [PATCH v2 1/4] target/ppc: Fix lqarx to set cpu_reserve
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, sdicaro@DDCI.com
-References: <20230530131214.373524-1-npiggin@gmail.com>
- <20230530131214.373524-2-npiggin@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20230605025445.161932-1-npiggin@gmail.com>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230530131214.373524-2-npiggin@gmail.com>
+In-Reply-To: <20230605025445.161932-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,66 +96,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 5/30/23 10:12, Nicholas Piggin wrote:
-> The decrementer store function has logic that short-cuts the timer if a
-> very small value is stored (0, 1, or 2) and raises an interrupt
-> directly. There are two problem with this on BookE.
+On 6/4/23 23:54, Nicholas Piggin wrote:
+> lqarx does not set cpu_reserve, which causes stqcx. to never succeed.
 > 
-> First is that BookE says a decrementer interrupt should not be raised
-> on a store of 0, only of a decrement from 1. Second is that raising
-> the irq directly will bypass the auto-reload logic in the booke decr
-> timer function, breaking autoreload when 1 or 2 is stored.
-> 
-> Fix this by removing that small-value special case. It makes this
-> tricky logic even more difficult to reason about, and it hardly matters
-> for performance.
-> 
-> Cc: sdicaro@DDCI.com
+> Cc: qemu-stable@nongnu.org
+> Fixes: 94bf2658676 ("target/ppc: Use atomic load for LQ and LQARX")
+> Fixes: 57b38ffd0c6 ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
 
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
-And queued.
+Queued. Thanks,
 
 
 Daniel
 
-
-> These were some booke decrementer corner case issues I saw, probably
-> a little less important than the first patch so could go later.
+> v2:
+> - Fix bugs vs memory access fault [Richard]
 > 
-> Thanks,
-> Nick
+>   target/ppc/translate.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
->   hw/ppc/ppc.c | 9 ++-------
->   1 file changed, 2 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index d80b0adc6c..1b1220c423 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -811,11 +811,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
->       }
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 3650d2985d..7a5bf1d820 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -3881,6 +3881,7 @@ static void gen_lqarx(DisasContext *ctx)
+>       tcg_gen_qemu_ld_i128(t16, EA, ctx->mem_idx, DEF_MEMOP(MO_128 | MO_ALIGN));
+>       tcg_gen_extr_i128_i64(lo, hi, t16);
 >   
->       /*
-> -     * Going from 2 -> 1, 1 -> 0 or 0 -> -1 is the event to generate a DEC
-> -     * interrupt.
-> -     *
-> -     * If we get a really small DEC value, we can assume that by the time we
-> -     * handled it we should inject an interrupt already.
-> +     * Going from 1 -> 0 or 0 -> -1 is the event to generate a DEC interrupt.
->        *
->        * On MSB level based DEC implementations the MSB always means the interrupt
->        * is pending, so raise it on those.
-> @@ -823,8 +819,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
->        * On MSB edge based DEC implementations the MSB going from 0 -> 1 triggers
->        * an edge interrupt, so raise it here too.
->        */
-> -    if ((value < 3) ||
-> -        ((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
-> +    if (((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
->           ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < 0
->             && signed_decr >= 0)) {
->           (*raise_excp)(cpu);
+> +    tcg_gen_mov_tl(cpu_reserve, EA);
+>       tcg_gen_st_tl(hi, cpu_env, offsetof(CPUPPCState, reserve_val));
+>       tcg_gen_st_tl(lo, cpu_env, offsetof(CPUPPCState, reserve_val2));
+>   }
 
