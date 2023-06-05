@@ -2,85 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50ED8721C6B
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 05:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8274721C79
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Jun 2023 05:20:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q60bH-0004YI-NG; Sun, 04 Jun 2023 23:09:43 -0400
+	id 1q60kl-0006I8-64; Sun, 04 Jun 2023 23:19:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q60bB-0004Xs-Mk
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 23:09:37 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q60b7-0004p2-FE
- for qemu-devel@nongnu.org; Sun, 04 Jun 2023 23:09:35 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-65299178ac5so3748031b3a.1
- for <qemu-devel@nongnu.org>; Sun, 04 Jun 2023 20:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685934571; x=1688526571;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xAw/jcXHtcCZZ2DD1pDRcLincqQD57ddnXt4D5GXybw=;
- b=D1g+kBbuNQSVQo/BLW0MdgnUqykTBNR0ngxn522ftqBQDyadkbI9AcQdvfvC2BPBfJ
- fCrRKbBfU3KGA+qZu4b9BYox7kDjltjgst/VZfVkKdxPPvxzjw4dh6E2afEs8T7wf5pM
- Y20392vZLgvGE9xInB+cZEOX8FWBd+Ya/HX/WTWws5p4QG8Vofm+JBSLQudgoDXsu7d7
- KgEnZSOh7Y/tHXAZ+Xgfk/uLKBUUyZkaVTPKugJnYFOLJBM92wFtQgZZaNOTmNGxNq07
- JpEuHVhnPlVjZFiPn1UVaD9w1rKU9Dg+nEMQETP7/qruqkzsayWAqQ1i1lwxCfly+uTH
- OECA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685934571; x=1688526571;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xAw/jcXHtcCZZ2DD1pDRcLincqQD57ddnXt4D5GXybw=;
- b=XvJo6iWs5DFuhmKCKxMKbA9eBZ53ZF7nv1sCQOwZ0fPMyDR6t7HBznlHdegbyK7epz
- SpzOQNAy1oyklJuiWmvLR74W+Bimlcxei0LyeDO7gNbbetO0OESt9Uu4Og1F3zB/d6CV
- U/lxqtrv5t+3TvwMorNkxlKFpD9g2NhkmUazrD4hrECtH7yQ5H4VKq7NUh8qdF5VIWB0
- FSbnQCU4rbK46pz6MEIhMPiRQFEJK5b7MfC1qfymPrVw1CIU7mxhMcV03hoH+Ls6P7HH
- LCskxsiVCHdHP7y6LnlnRWx5qsPPH++unjuNWahIVQNuLIF15/lyUWVBHFcbZLaJ1G3L
- 8C9Q==
-X-Gm-Message-State: AC+VfDx7poZQ4Hdnwb2ZmwbhVCFT9Z/KqFabOtuvL9pJei6TnSpnw2W2
- X4oNNUGAn4oNHM0Fg8YQ/gmI+A==
-X-Google-Smtp-Source: ACHHUZ63Bgazpu4vUsXxUfPhRy9wN5LilQ1JcaRCMXWtW5E9L4fuBKH7B7CijRTywMeT2WyCiumThg==
-X-Received: by 2002:a05:6a00:1a51:b0:64f:4812:8c7e with SMTP id
- h17-20020a056a001a5100b0064f48128c7emr21454772pfv.19.1685934570973; 
- Sun, 04 Jun 2023 20:09:30 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:8c21:6140:6827:99be?
- ([2602:ae:1598:4c01:8c21:6140:6827:99be])
- by smtp.gmail.com with ESMTPSA id
- j9-20020a62e909000000b0065992d334f4sm1218510pfh.177.2023.06.04.20.09.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 Jun 2023 20:09:30 -0700 (PDT)
-Message-ID: <ccccffff-e5e1-f2dd-53c7-3d0d2fa0ff3d@linaro.org>
-Date: Sun, 4 Jun 2023 20:09:28 -0700
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1q60kj-0006Ht-Az
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 23:19:29 -0400
+Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1q60kh-0006Lo-BR
+ for qemu-devel@nongnu.org; Sun, 04 Jun 2023 23:19:29 -0400
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cx5OEZVH1k+xwAAA--.559S2; 
+ Mon, 05 Jun 2023 11:18:49 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PULL 0/1] loongarch-to-apply queue
+Date: Mon,  5 Jun 2023 11:18:47 +0800
+Message-Id: <20230605031848.1428047-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 1/4] target/ppc: Fix lqarx to set cpu_reserve
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20230605025445.161932-1-npiggin@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230605025445.161932-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Cx5OEZVH1k+xwAAA--.559S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKF4kJr4rZF4xAw4kJw1kKrg_yoWDGFb_GF
+ yxtFy8JrW7JF1UZw4UGr18Aw17Jw1fXF15AryDXrs7Gry7Jw1UXr4kJrW5Zr1jqF1UJr98
+ Gr48Ar15Ar1UJjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUUUUUUU
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +58,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/23 19:54, Nicholas Piggin wrote:
-> lqarx does not set cpu_reserve, which causes stqcx. to never succeed.
-> 
-> Cc:qemu-stable@nongnu.org
-> Fixes: 94bf2658676 ("target/ppc: Use atomic load for LQ and LQARX")
-> Fixes: 57b38ffd0c6 ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
-> Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
-> ---
-> v2:
-> - Fix bugs vs memory access fault [Richard]
-> 
->   target/ppc/translate.c | 1 +
->   1 file changed, 1 insertion(+)
+The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+  Merge tag 'migration-20230602-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-06-02 17:33:29 -0700)
 
-r~
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20230605
+
+for you to fetch changes up to 8555ddc671203969b0e6eb651e538d02a9a79b3a:
+
+  hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes (2023-06-05 11:08:55 +0800)
+
+----------------------------------------------------------------
+Fixes Coverity CID: 1512452, 1512453
+Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu device")
+
+----------------------------------------------------------------
+Jiaxun Yang (1):
+      hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
+
+ hw/intc/loongarch_ipi.c         | 6 +++---
+ include/hw/intc/loongarch_ipi.h | 4 +++-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
 
