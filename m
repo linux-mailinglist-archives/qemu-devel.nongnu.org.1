@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B1772456E
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2527724578
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:15:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XRB-000460-Ss; Tue, 06 Jun 2023 10:13:29 -0400
+	id 1q6XSY-0007XX-6i; Tue, 06 Jun 2023 10:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XRA-00044Y-IW
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:13:28 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1q6XST-0007Hh-Pn; Tue, 06 Jun 2023 10:14:50 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XR8-0005UU-MX
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:13:28 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f61530506aso62656065e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:13:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1q6XSR-0005sp-I0; Tue, 06 Jun 2023 10:14:49 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-652a6cf1918so2949274b3a.1; 
+ Tue, 06 Jun 2023 07:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686060805; x=1688652805;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vM4MJj/z0alc8hubdwq0cm43Ebd3YBftyjtiu8qEFRQ=;
- b=oeqtuk+y44lQZZaihF7z7kKap+ioNkZFFKeoXer0NT0osQJHcb9C5FTWyVRhkyIpzi
- i5MhC/c4/iDLBeqK3JTkGJg7nLIKvCahJx0ty99ETQOP6PW54E3o3/8+iiZf3MANu3vJ
- NgCQ1sIMfYbPGk7rAfA3HBJkTBqlBJ03DlXyRVPyX3O5nApuZSCtdopbIGn7KeYF6AuR
- h2/xsm4Krh4rwMHVCr/8rnC2ltwyBBci0Sl5wwYNkPnhpaZXnL75Z193zHFOPasB6yq2
- 4w4bccbTWyCFBsVs/Lu083lcOFdo/uKdhywo8c+43fq3NyT2fH25/Ndo4f5lyn66hHy1
- p6uw==
+ d=gmail.com; s=20221208; t=1686060885; x=1688652885;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+ :reply-to; bh=AF0DE35EXWoB5BCT6rqWQlzUTLp4ju7AwY7YckLvqzE=;
+ b=psQUmJZvMBUaV8ZOmPkgXHdS2jXpbzx42apISFtHj/m17fFu9kJ2jS7hdeGUiqtXI+
+ KJnMSMjILK/baXSdiylfy83rnzRDOqJz0AKWIDNTkbpp9cF+rROO7XCb0xXbcghpceey
+ FxOYs97K8yHVdVTp0TnfzN/3b5KQlLw/DAbZ+RlKLt61RD5pw0lWCZXDiYlPQ9CrhXpX
+ zMxAims9gohIKGHKjfxIMddGjPjqDp07xryIpHA4AKzbAgZOSghBTh4I4b109Jnc+9cg
+ qwo7ctWPIl76XkNOIPQT64JXCyJPcGhJHXhWaDMQ1h3KwSwioEXRBgOWcYplC7uKrGiF
+ zroA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686060805; x=1688652805;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1686060885; x=1688652885;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vM4MJj/z0alc8hubdwq0cm43Ebd3YBftyjtiu8qEFRQ=;
- b=KzLPzgJp7daGhgINjLhsNdi2yQALRYOz74bzS6V1xWfL/mrZaBRGM/eWKiN9Y1SE9Q
- RFFyXwuMy6JtQ7mT+dPN3zBjafd1t8HOZir+YT1BWnPN/SeOdLjRWDtN6FesTafvjfH2
- S1qc5yntF0mg3NkMhn23nSUic2CHgYTzCTOrAkCYvGoVfwDXRZcrLFMop55zyU2lJigx
- QPOqBvhYaOcZDTpPDcYMFV+M0OLReqhURJgyMZ4TVLoaJBNbrrTf3K3gkUzBLWTt2k+e
- PfG92WzXySHB/u0odExp1VQJ5F1XjpXcuGri7DeICD3zfGi8fNg9VB+K4OSxX5JWJkcl
- zyWQ==
-X-Gm-Message-State: AC+VfDwmrvpVkY4qfW5EV1mE56iDyz1rzU2geWXPAZvnXk4UX7krus5U
- O1+3j8KQs0AeTVrFWOC8UwcpKT55mjmVdcp46OQ=
-X-Google-Smtp-Source: ACHHUZ78y++AtMtrSaXumSdfU3h5fIob83va8+q2yza7sdaAZCNItugm3mZ8M0t+m0a42X3bgLG2Nw==
-X-Received: by 2002:a05:600c:202:b0:3f6:1474:905 with SMTP id
- 2-20020a05600c020200b003f614740905mr2701053wmi.29.1686060805454; 
- Tue, 06 Jun 2023 07:13:25 -0700 (PDT)
-Received: from localhost.localdomain
- (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr. [176.184.50.104])
+ bh=AF0DE35EXWoB5BCT6rqWQlzUTLp4ju7AwY7YckLvqzE=;
+ b=KQzYE47dfWNvh8nTwZJ/0VU5LCO83uA8DzQlCtfO5nAPW+EX8VpxSplnRjdmz0z1W1
+ DSlHrOFimUvFPgDcxm2mO2wNg7IMji77SjYgjlslr86T6/asSTTdFJpF/ZxLpsSTbljU
+ fN6U4YsNFK4YS/VXfHe6C+HMtczxlpgeFIQZMtMXZKLR1JXPOCN1/44GJYDGdlPkirH+
+ +mGIHOfWMv69Y3mCJEoQQ+EHe3S6XWJkhSLymd0xb0KsaBSuqWhOYajD+IBUstuBlfcj
+ A6A/4/2Wxx0ocfJZD0IoR4AyHWR5AG5bMpw+9PIqlJpXWxxO7yu5rxqKXV36z6gEmuZZ
+ Wpug==
+X-Gm-Message-State: AC+VfDxmwQS6wgj4g4hy/nWlRhvGgOGGBLdJNOtXI94OKqDfKMLmomgl
+ LnhoIMSad+prTAH+IH7ruCw=
+X-Google-Smtp-Source: ACHHUZ4WVkcZKfwbkhCCaR8eFBmLHqtLLH85ct59G7ruqh3a2xsqC5jsREBTbdfgx15RfdjV9L3OwQ==
+X-Received: by 2002:a05:6a21:338b:b0:10e:43e:e223 with SMTP id
+ yy11-20020a056a21338b00b0010e043ee223mr1880770pzb.1.1686060884812; 
+ Tue, 06 Jun 2023 07:14:44 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- l17-20020a1ced11000000b003f4266965fbsm17802853wmh.5.2023.06.06.07.13.24
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jun 2023 07:13:25 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] tests/tcg/aarch64: Rename bti-crt.inc.c -> bti-crt.c.inc
-Date: Tue,  6 Jun 2023 16:12:52 +0200
-Message-Id: <20230606141252.95032-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230606141252.95032-1-philmd@linaro.org>
-References: <20230606141252.95032-1-philmd@linaro.org>
+ 29-20020a63175d000000b00476d1385265sm7449556pgx.25.2023.06.06.07.14.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 07:14:44 -0700 (PDT)
+Date: Tue, 6 Jun 2023 07:14:42 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [PATCH 1/2] hw/intc/allwinner-a10-pic: Handle IRQ levels other
+ than 0 or 1
+Message-ID: <7234e328-6ff4-4922-8a4c-b55cf3c6c619@roeck-us.net>
+References: <20230606104609.3692557-1-peter.maydell@linaro.org>
+ <20230606104609.3692557-2-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, SUSPICIOUS_RECIPS=2.51,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230606104609.3692557-2-peter.maydell@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=groeck7@gmail.com; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,58 +95,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 139c1837db ("meson: rename included C source files
-to .c.inc"), QEMU standard procedure for included C files is to
-use *.c.inc.
+On Tue, Jun 06, 2023 at 11:46:08AM +0100, Peter Maydell wrote:
+> In commit 2c5fa0778c3b430 we fixed an endianness bug in the Allwinner
+> A10 PIC model; however in the process we introduced a regression.
+> This is because the old code was robust against the incoming 'level'
+> argument being something other than 0 or 1, whereas the new code was
+> not.
+> 
+> In particular, the allwinner-sdhost code treats its IRQ line
+> as 0-vs-non-0 rather than 0-vs-1, so when the SD controller
+> set its IRQ line for any reason other than transmit the
+> interrupt controller would ignore it. The observed effect
+> was a guest timeout when rebooting the guest kernel.
+> 
+> Handle level values other than 0 or 1, to restore the old
+> behaviour.
+> 
+> Fixes: 2c5fa0778c3b430 ("hw/intc/allwinner-a10-pic: Don't use set_bit()/clear_bit()")
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Besides, since commit 6a0057aa22 ("docs/devel: make a statement
-about includes") this is documented as the Coding Style:
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-  If you do use template header files they should be named with
-  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
-  being included for expansion.
+Tested on top of 8.0.2, both this patch alone as well as this
+patch plus the second patch in the series.
 
-Therefore rename 'bti-crt.inc.c' as 'bti-crt.c.inc'.
+Guenter
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/tcg/aarch64/bti-1.c                          | 2 +-
- tests/tcg/aarch64/bti-3.c                          | 2 +-
- tests/tcg/aarch64/{bti-crt.inc.c => bti-crt.c.inc} | 0
- 3 files changed, 2 insertions(+), 2 deletions(-)
- rename tests/tcg/aarch64/{bti-crt.inc.c => bti-crt.c.inc} (100%)
-
-diff --git a/tests/tcg/aarch64/bti-1.c b/tests/tcg/aarch64/bti-1.c
-index 61924f0d7a..99a879af23 100644
---- a/tests/tcg/aarch64/bti-1.c
-+++ b/tests/tcg/aarch64/bti-1.c
-@@ -2,7 +2,7 @@
-  * Branch target identification, basic notskip cases.
-  */
- 
--#include "bti-crt.inc.c"
-+#include "bti-crt.c.inc"
- 
- static void skip2_sigill(int sig, siginfo_t *info, ucontext_t *uc)
- {
-diff --git a/tests/tcg/aarch64/bti-3.c b/tests/tcg/aarch64/bti-3.c
-index a852856d9a..8c534c09d7 100644
---- a/tests/tcg/aarch64/bti-3.c
-+++ b/tests/tcg/aarch64/bti-3.c
-@@ -2,7 +2,7 @@
-  * BTI vs PACIASP
-  */
- 
--#include "bti-crt.inc.c"
-+#include "bti-crt.c.inc"
- 
- static void skip2_sigill(int sig, siginfo_t *info, ucontext_t *uc)
- {
-diff --git a/tests/tcg/aarch64/bti-crt.inc.c b/tests/tcg/aarch64/bti-crt.c.inc
-similarity index 100%
-rename from tests/tcg/aarch64/bti-crt.inc.c
-rename to tests/tcg/aarch64/bti-crt.c.inc
--- 
-2.38.1
-
+> ---
+>  hw/intc/allwinner-a10-pic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/intc/allwinner-a10-pic.c b/hw/intc/allwinner-a10-pic.c
+> index 4875e68ba6a..d0bf8d545ba 100644
+> --- a/hw/intc/allwinner-a10-pic.c
+> +++ b/hw/intc/allwinner-a10-pic.c
+> @@ -51,7 +51,7 @@ static void aw_a10_pic_set_irq(void *opaque, int irq, int level)
+>      AwA10PICState *s = opaque;
+>      uint32_t *pending_reg = &s->irq_pending[irq / 32];
+>  
+> -    *pending_reg = deposit32(*pending_reg, irq % 32, 1, level);
+> +    *pending_reg = deposit32(*pending_reg, irq % 32, 1, !!level);
+>      aw_a10_pic_update(s);
+>  }
+>  
+> -- 
+> 2.34.1
+> 
 
