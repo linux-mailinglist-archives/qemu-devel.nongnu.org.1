@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BFE72416A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 13:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EBD7241A0
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:04:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6VJL-00006E-3V; Tue, 06 Jun 2023 07:57:15 -0400
+	id 1q6VJM-00006c-OQ; Tue, 06 Jun 2023 07:57:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VJJ-00005o-0N
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:13 -0400
+ id 1q6VJL-00006O-Be
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VJE-0005fO-9A
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:12 -0400
+ id 1q6VJI-0005fo-GI
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686052627;
+ s=mimecast20190719; t=1686052631;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fREygsgNwI2Tm+JkeLXrtqpNbNlMTEYFpIoh3ScT0qE=;
- b=Crbc0LozS+tPoA4d9JBupHvJbK6tm+6sUvEeZlb42L823JQQAgKnol5fj4/5v/Poc32lnM
- UhP5n8I3WULy3LFP3IJwREHIbRN500R8yJfF+fN9ByJ3WUCZrqT7+/4aQc2mKof4ROhmyl
- H6NQz3P2QXuU9OUl/V44mdSyJ7RzB00=
+ bh=m0bCb//3S1YWVtZD/CuiOvQZEwkrfi94l77q2yPHDB0=;
+ b=cVlK4r+6AwR0uoREmdkJz0kreqZ8iptw7wbLlN06ZPzn348wcL5zapsx4vjZVNy8HRmAV3
+ 4Rs1k6B2AjHA1aYcjbVHmB1aO0uOj1MCEE4sgfVlO1JbDOC6yNIQ+QlFnE/2zpYa2Co6wb
+ He6eQWquFOYsL/pVefaRDadm8Oy9yns=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-393-iZYogJEDPASNozZSG3dFkQ-1; Tue, 06 Jun 2023 07:57:06 -0400
-X-MC-Unique: iZYogJEDPASNozZSG3dFkQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-657-70nkkhxYOQSa6d1CusygRg-1; Tue, 06 Jun 2023 07:57:10 -0400
+X-MC-Unique: 70nkkhxYOQSa6d1CusygRg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EB3C23C0CEEF
- for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:57:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EFA8F282CCA7
+ for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:57:09 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2D56A40CFD46;
- Tue,  6 Jun 2023 11:57:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 34F942166B25;
+ Tue,  6 Jun 2023 11:57:08 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 01/21] ui/egl: export qemu_egl_get_error_string()
-Date: Tue,  6 Jun 2023 15:56:38 +0400
-Message-Id: <20230606115658.677673-2-marcandre.lureau@redhat.com>
+Subject: [PATCH 02/21] ui/egl: fix make_context_current() callback return value
+Date: Tue,  6 Jun 2023 15:56:39 +0400
+Message-Id: <20230606115658.677673-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20230606115658.677673-1-marcandre.lureau@redhat.com>
 References: <20230606115658.677673-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -82,80 +82,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-It will be used from other units.
+eglMakeCurrent() returns 1/EGL_TRUE on success. This is not what the
+callback expects, where 0 indicates success.
+
+While at it, print the EGL error to ease debugging.
+
+As with virgl_renderer_callbacks, the return value is now checked since
+version >= 4:
+https://gitlab.freedesktop.org/virgl/virglrenderer/-/commit/7f09e6bf0c6ceea6727bd0049781256a28cab0e5
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/ui/egl-helpers.h |  2 ++
- ui/egl-helpers.c         | 12 +++++-------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ ui/egl-context.c | 10 ++++++++--
+ ui/gtk-egl.c     |  9 +++++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
-index 53d953ddf4..2cf6633ad2 100644
---- a/include/ui/egl-helpers.h
-+++ b/include/ui/egl-helpers.h
-@@ -67,4 +67,6 @@ bool qemu_egl_has_dmabuf(void);
+diff --git a/ui/egl-context.c b/ui/egl-context.c
+index eb5f520fc4..9e0df466f3 100644
+--- a/ui/egl-context.c
++++ b/ui/egl-context.c
+@@ -1,4 +1,5 @@
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "ui/egl-context.h"
  
- bool egl_init(const char *rendernode, DisplayGLMode mode, Error **errp);
- 
-+const char *qemu_egl_get_error_string(void);
+ QEMUGLContext qemu_egl_create_context(DisplayGLCtx *dgc,
+@@ -32,6 +33,11 @@ void qemu_egl_destroy_context(DisplayGLCtx *dgc, QEMUGLContext ctx)
+ int qemu_egl_make_context_current(DisplayGLCtx *dgc,
+                                   QEMUGLContext ctx)
+ {
+-   return eglMakeCurrent(qemu_egl_display,
+-                         EGL_NO_SURFACE, EGL_NO_SURFACE, ctx);
++   if (!eglMakeCurrent(qemu_egl_display,
++                       EGL_NO_SURFACE, EGL_NO_SURFACE, ctx)) {
++        error_report("egl: eglMakeCurrent failed: %s", qemu_egl_get_error_string());
++        return -1;
++   }
 +
- #endif /* EGL_HELPERS_H */
-diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 4203163ace..3c94b3f216 100644
---- a/ui/egl-helpers.c
-+++ b/ui/egl-helpers.c
-@@ -28,8 +28,7 @@ DisplayGLMode qemu_egl_mode;
- 
- /* ------------------------------------------------------------------ */
- 
--#if defined(CONFIG_X11) || defined(CONFIG_GBM)
--static const char *egl_get_error_string(void)
-+const char *qemu_egl_get_error_string(void)
- {
-     EGLint error = eglGetError();
- 
-@@ -68,7 +67,6 @@ static const char *egl_get_error_string(void)
-         return "Unknown EGL error";
-     }
++   return 0;
  }
--#endif
- 
- static void egl_fb_delete_texture(egl_fb *fb)
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 19130041bc..f8b5901ce9 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -368,6 +368,11 @@ int gd_egl_make_current(DisplayGLCtx *dgc,
  {
-@@ -482,20 +480,20 @@ static int qemu_egl_init_dpy(EGLNativeDisplayType dpy,
+     VirtualConsole *vc = container_of(dgc, VirtualConsole, gfx.dgc);
  
-     qemu_egl_display = qemu_egl_get_display(dpy, platform);
-     if (qemu_egl_display == EGL_NO_DISPLAY) {
--        error_report("egl: eglGetDisplay failed: %s", egl_get_error_string());
-+        error_report("egl: eglGetDisplay failed: %s", qemu_egl_get_error_string());
-         return -1;
-     }
- 
-     b = eglInitialize(qemu_egl_display, &major, &minor);
-     if (b == EGL_FALSE) {
--        error_report("egl: eglInitialize failed: %s", egl_get_error_string());
-+        error_report("egl: eglInitialize failed: %s", qemu_egl_get_error_string());
-         return -1;
-     }
- 
-     b = eglBindAPI(gles ?  EGL_OPENGL_ES_API : EGL_OPENGL_API);
-     if (b == EGL_FALSE) {
-         error_report("egl: eglBindAPI failed (%s mode): %s",
--                     gles ? "gles" : "core", egl_get_error_string());
-+                     gles ? "gles" : "core", qemu_egl_get_error_string());
-         return -1;
-     }
- 
-@@ -504,7 +502,7 @@ static int qemu_egl_init_dpy(EGLNativeDisplayType dpy,
-                         &qemu_egl_config, 1, &n);
-     if (b == EGL_FALSE || n != 1) {
-         error_report("egl: eglChooseConfig failed (%s mode): %s",
--                     gles ? "gles" : "core", egl_get_error_string());
-+                     gles ? "gles" : "core", qemu_egl_get_error_string());
-         return -1;
-     }
- 
+-    return eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+-                          vc->gfx.esurface, ctx);
++    if (!eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
++                        vc->gfx.esurface, ctx)) {
++        error_report("egl: eglMakeCurrent failed: %s", qemu_egl_get_error_string());
++        return -1;
++    }
++
++    return 0;
+ }
 -- 
 2.40.1
 
