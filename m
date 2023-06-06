@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23797723F33
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819A3723F37
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:20:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Tme-0000BA-BM; Tue, 06 Jun 2023 06:19:24 -0400
+	id 1q6TnF-0001Ju-9a; Tue, 06 Jun 2023 06:20:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1q6Tmb-00005y-VC
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:21 -0400
-Received: from mga05.intel.com ([192.55.52.43])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1q6TmZ-0007O2-8K
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686046759; x=1717582759;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=dC+lgwxg/JJaD9IXWM498G29WG/e8Pk7dHwJAztMx18=;
- b=neS6vFKa5xYOAJzxKSC1K0x/6K4NQhJ57x9eXrudIDXTMvblmKdDN+fQ
- AYDAjDMG/wc+qkiQEMLS0kv+xEYgYmC2pM0B0WnL1jMMv5DyFQ8G7w/Pn
- kYtBBoEaa4gaGrgxyb0hAA9RWm0fXffWaN0BK2wA2djrSschuNf749Nyz
- cN6hrSop9Mu29Wb5cSfLA9i/qI7vgv8IFFSj+tDYzSsdybq4J7U3I8V01
- hjD55lYBmmGmam0ycBYyb99jvf8RHFy5YkkurJPkcjY/bldBqPqDZ4C1z
- aOV4ZXI1nx7x8ingzNcz4FRzQq6SATYRX938HthdXU26rDErfFMUhdH+b Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="443004181"
-X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; d="scan'208";a="443004181"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2023 03:19:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="709032931"
-X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; d="scan'208";a="709032931"
-Received: from tdx-lm.sh.intel.com ([10.239.53.27])
- by orsmga002.jf.intel.com with ESMTP; 06 Jun 2023 03:19:16 -0700
-From: Wei Wang <wei.w.wang@intel.com>
-To: quintela@redhat.com,
-	peterx@redhat.com,
-	lei4.wang@intel.com
-Cc: qemu-devel@nongnu.org,
-	Wei Wang <wei.w.wang@intel.com>
-Subject: [PATCH v2 2/2] qtest/migration-tests.c: use "-incoming defer" for
- postcopy tests
-Date: Tue,  6 Jun 2023 18:19:10 +0800
-Message-Id: <20230606101910.20456-3-wei.w.wang@intel.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20230606101910.20456-1-wei.w.wang@intel.com>
-References: <20230606101910.20456-1-wei.w.wang@intel.com>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1q6Tn6-0001BC-VS
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:54 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1q6Tn5-0007WK-1b
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:52 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4f4b384c09fso7297038e87.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 03:19:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686046784; x=1688638784;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZDj0tonTL4+3tYRmEMsaTv/xWQn5lUJWkT6rfRidSOs=;
+ b=n8vF5zqhxp5dmaKT43ThHU8hJPbr/Nw8SQQrFNNZGuKfG/UoN9jBp2xMd8fbSh3+JN
+ wRCj5c75+aFDt5A836i6TBGX3ZzB8cia6qRlUTQeUJqStUe4Kz7ajQCu8daNYYW8UND+
+ SwILAtypKQgRrkHNzwFNSzq0pYVGC6+T7yBfNbH294up9LNN/l6FZGyxCxRXb9lSU/Ob
+ vvzc13cuAR0JUPuumAXk+gpXReccpbmTsUoLCSy7MGvTw1j0veNqG0AMKYv5/XBn/v0m
+ xJIqCd4xkmscxASG7AzumM0Ff4Qc8SiPFguCUSNyBQYUhBg3uLV7w1qxBt6wFwJNluuR
+ NDIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686046784; x=1688638784;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZDj0tonTL4+3tYRmEMsaTv/xWQn5lUJWkT6rfRidSOs=;
+ b=FzHbJeStxFWJNS1SuU0PlZbGAgRG+kxuGCNK5FFJw0M/Lj3HNA3FiIH6+sGc4SAZr/
+ 56FAEGbCvzp8YA1fEYOwePQvKhdO3r8A489cO7Vf0M2Qyd9WJeQpDQRUv/m3eBWU3rcG
+ HcdYVTGnRFjL02xrmRiOzUfwWmNh0EA6ukLKSfQ0qWgHl/Zq3+3utcUHc3mNqyUjyNSX
+ OslEwhrTOEvjx0gHhX5rguNbx9LDjQ+hT+sGPQ92LvghemPxXkAPluzsghDojLkGec3H
+ +G82Y+7ZL+K6VzMm1ZQSWdH5zlpDeGKItbQLim54iIiungN+/8i5JakmKdg8ef58JNLO
+ MIWw==
+X-Gm-Message-State: AC+VfDzCHzTLnXnzv+SMvgNaY6CWcmQWFmDbDAUWXhaxWraOGTlnkeno
+ F5NFODYVPAL0xqMvbr9DXrlv1g==
+X-Google-Smtp-Source: ACHHUZ6GTOle8xTe/lHHTuTigy4vT3JPbecnzU6K/sQ/CPdrsOpWvepOsDETYMYIkhGsJji9sou+tw==
+X-Received: by 2002:ac2:47e6:0:b0:4f3:8196:80cb with SMTP id
+ b6-20020ac247e6000000b004f3819680cbmr671711lfp.41.1686046784234; 
+ Tue, 06 Jun 2023 03:19:44 -0700 (PDT)
+Received: from [192.168.200.206] (83.21.93.182.ipv4.supernova.orange.pl.
+ [83.21.93.182]) by smtp.gmail.com with ESMTPSA id
+ u11-20020ac248ab000000b004e90dee5469sm1413437lfg.157.2023.06.06.03.19.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 03:19:43 -0700 (PDT)
+Message-ID: <e150d65a-b529-a905-708e-c0bfb4ae68a8@linaro.org>
+Date: Tue, 6 Jun 2023 12:19:42 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
+Content-Language: pl-PL, en-GB, en-HK
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
+ quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230605095536.117384-1-wangyuquan1236@phytium.com.cn>
+ <20230605095536.117384-2-wangyuquan1236@phytium.com.cn>
+ <1fc502fa-8363-5a5b-0697-f3001c7ab773@linaro.org>
+ <CAFEAcA_sGtV3HFZHX1JapnE04UpOxxxWvwgApVVm7dMX7+A-uw@mail.gmail.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <CAFEAcA_sGtV3HFZHX1JapnE04UpOxxxWvwgApVVm7dMX7+A-uw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.43; envelope-from=wei.w.wang@intel.com;
- helo=mga05.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x135.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,62 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Postcopy preempt capability is expected to be set before incoming
-starts, so change the postcopy tests to start with deferred incoming and
-call migrate-incoming after the cap has been set.
+W dniu 6.06.2023 o 12:04, Peter Maydell pisze:
+> On Tue, 6 Jun 2023 at 10:47, Marcin Juszkiewicz
+> <marcin.juszkiewicz@linaro.org> wrote:
+>>
+>> W dniu 5.06.2023 o 11:55, Yuquan Wang pisze:
+>>> The current sbsa-ref cannot use EHCI controller which is only
+>>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
+>>> Hence, this uses XHCI to provide a usb controller with 64-bit
+>>> DMA capablity instead of EHCI.
+>>>
+>>> Signed-off-by: Yuquan Wang<wangyuquan1236@phytium.com.cn>
+>>
+>> Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+>>
+>> Without EDK2 changes Linux behaves same way (no USB found), with EDK2
+>> changes (EHCI->XHCI) Linux gets USB devices.
+> 
+> So it doesn't break (cause to crash) old EDK2 images? That's a
+> pleasant surprise.
 
-Why the existing tests (without this patch) didn't fail?
-There could be two reasons:
-1) "backlog" specifies the number of pending connections. As long as the
-   server accepts the connections faster than the clients side connecting,
-   connection will succeed. For the preempt test, it uses only 2 channels,
-   so very likely to not have pending connections.
-2) per my tests (on kernel 6.2), the number of pending connections allowed
-   is actually "backlog + 1", which is 2 in this case.
-That said, the implementation of socket_start_incoming_migration_internal
-expects "migrate defer" to be used, and for safety, change the test to
-work with the expected usage.
+In both cases with not modified EDK2 Linux behaves the same:
 
-Signed-off-by: Wei Wang <wei.w.wang@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
----
- tests/qtest/migration-test.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ehci-platform LNRO0D20:00: Error: DMA mask configuration failed
+ehci-platform: probe of LNRO0D20:00 failed with error -5
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b0c355bbd9..cbdbc932de 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -1143,10 +1143,11 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-                                     QTestState **to_ptr,
-                                     MigrateCommon *args)
- {
--    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-+    g_autofree char *uri = NULL;
-     QTestState *from, *to;
-+    QDict *rsp;
- 
--    if (test_migrate_start(&from, &to, uri, &args->start)) {
-+    if (test_migrate_start(&from, &to, "defer", &args->start)) {
-         return -1;
-     }
- 
-@@ -1165,9 +1166,14 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
- 
-     migrate_ensure_non_converge(from);
- 
-+    rsp = wait_command(to, "{ 'execute': 'migrate-incoming',"
-+                           "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
-+    qobject_unref(rsp);
-+
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
- 
-+    uri = migrate_get_socket_address(to, "socket-address");
-     migrate_qmp(from, uri, "{}");
- 
-     wait_for_migration_pass(from);
--- 
-2.27.0
 
 
