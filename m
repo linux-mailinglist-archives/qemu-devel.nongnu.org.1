@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B797B724733
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278BF72473C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:06:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6YDU-0004OP-5p; Tue, 06 Jun 2023 11:03:24 -0400
+	id 1q6YFM-0005b4-Ic; Tue, 06 Jun 2023 11:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6YDR-0004Nt-B2
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:03:22 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6YFJ-0005Ye-Hh
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:05:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6YDP-0007rb-5g
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:03:21 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6YFG-00004s-Pg
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:05:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686063797;
+ s=mimecast20190719; t=1686063913;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7pVKKPpdpfRnLzpFkbTN0VrxzJJg2IJrH8m3xg3TGxc=;
- b=V7m1E0wOuN2/QV8zN8jVeRj6hMO6k9zQy92SgcJOmV/hkEAxebj9UL65clXCDZD1NJwONB
- JPow9cTbweT3cZqZwm+rpdNg+VKol+vTyksnbYrmdZ4AI1RxXYpAFu1IitBDk9wmN15cnC
- 2FK2V7c6c8lFm62JWuy7udu5rE3GpIM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uchxo4L8N2b+bTWvzt3RWsZcs6DUSWNpMmEb4Z//v0o=;
+ b=hhxSKD48FPXwwm6EkyfDx5nuAPB0JvZIHABGFg5By2FScD39AQO2d+e6Uo80y7mc6ErxY/
+ oF0/k7zEx6PFPJ46kuoc40s8MdbOWJhjvLynOOT3+3tIpM6cdlTCU6ao2gWNQ8NyKTKzOH
+ kLUzlJLo5+ZsyK3AEhZKnakZRyvUgC0=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-463-9olNpG1EO8KLlAnLqwBp6A-1; Tue, 06 Jun 2023 11:03:15 -0400
-X-MC-Unique: 9olNpG1EO8KLlAnLqwBp6A-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-62b6792293dso718816d6.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:03:15 -0700 (PDT)
+ us-mta-191-q7jVyC_uM-6j_n9SUCKigw-1; Tue, 06 Jun 2023 11:05:10 -0400
+X-MC-Unique: q7jVyC_uM-6j_n9SUCKigw-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-75ec91f26c8so24474485a.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:05:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686063795; x=1688655795;
+ d=1e100.net; s=20221208; t=1686063909; x=1688655909;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7pVKKPpdpfRnLzpFkbTN0VrxzJJg2IJrH8m3xg3TGxc=;
- b=BW3QPajKi+skAzEnAEmiC3cbt3vj7ZKyv5Js6ZP1+CjBjND/h5wVHJVSffvXA0YaoZ
- LxAH8KVFZYayXTbkfmZqqjGRTa9AfEf0qzaCKGTjBRQrp7wvdIyiuXFg9dQ/buhzvWKv
- 8zW71e58Gud5WFuytmTpKsQK/Vc2CXe7YXjzbkX77DR4O1gdKEAy3+ZQTpjAS7qQMgh7
- aExhQdaIv6MnQUy/DmP4yFvV6FWjTXWn08dLj+g+h5cOx4Fg1lzeeXIKEYuMtpX94EVA
- d2oMR7f2S+5ScIniuP1xBReowSyc0Bb9l62E+3wC6sTDbWQ3zycu2j0Slxp+Gwy4sfsE
- CWiw==
-X-Gm-Message-State: AC+VfDyh6rnumV6DvHhfy6QbgJQ72WXLiVOyhvuSF9AIfQkuNwYfVIQ+
- RWinXHeK644R6wFT8uyj9+RJJ8inoa/nOycVEwZckq1FSkG2ZpqVr7oDGnYhL7kvhHw5t2tl9wU
- NSFRwyVyNAtWzkyI=
-X-Received: by 2002:ad4:5dea:0:b0:624:dcc5:819f with SMTP id
- jn10-20020ad45dea000000b00624dcc5819fmr2522815qvb.1.1686063794390; 
- Tue, 06 Jun 2023 08:03:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4pTfx1eR0xVxg96JwvZhclIcsBYotr9QKC6G/Cwy8xxli0OVI3QjsMfXM8i2jXaNUvaTe9oA==
-X-Received: by 2002:ad4:5dea:0:b0:624:dcc5:819f with SMTP id
- jn10-20020ad45dea000000b00624dcc5819fmr2522784qvb.1.1686063794081; 
- Tue, 06 Jun 2023 08:03:14 -0700 (PDT)
+ bh=uchxo4L8N2b+bTWvzt3RWsZcs6DUSWNpMmEb4Z//v0o=;
+ b=G9jiS07ab2vSNv3eTcE+3Yg14xdWyOj5j9qKJ0cuZxF1SMW3Yi0ZXQ7Ht1QiX112WM
+ jliYakpIKbiDfJGtbNV4uBGSIBrd/g6LVHKLfckf1IXkjT54I5CRX3YO+z1ErohFnoF+
+ 149Ar10l6JQ5x4/X1nun9w776IBbM8OjhQUqodMmWytaH/u+/Ydly3eo2LsbP+a2of5N
+ 4+WzA5db9eSnNAbq722PsmHdA8OB9cWx0GY0wgimQkyVRySShc4BzWTXEbXIcHxkpMus
+ Fja6heZiKCuqT7YDqiO4n8soU6xhAiHB9QFEINAEnAQvyc/Cli5AYwfeMkg5/HWQCr/l
+ oG1A==
+X-Gm-Message-State: AC+VfDyl1qxuBAwUeiDz2dCATEeL+g3jp04j9lZINK8iA1eHb2/b8cVO
+ vbFX+6X8Mv3+GJcIeXrowdd40B5j5QJfjCO8qG2sy5eobZ+0NVNVXx669uZMx83E/r6YmTxILpc
+ 3rKoseNWnNtuA9AxMXBap/iw=
+X-Received: by 2002:a05:620a:268b:b0:75d:4db2:6824 with SMTP id
+ c11-20020a05620a268b00b0075d4db26824mr3026316qkp.2.1686063908976; 
+ Tue, 06 Jun 2023 08:05:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ50b+gg/f+CFu2cRw8l2hoCd2rba/yBpMl+STczwVydFi4+JDAUCm3P89866qxyzgcWIEGqZw==
+X-Received: by 2002:a05:620a:268b:b0:75d:4db2:6824 with SMTP id
+ c11-20020a05620a268b00b0075d4db26824mr3026278qkp.2.1686063908550; 
+ Tue, 06 Jun 2023 08:05:08 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- ph12-20020a0562144a4c00b0061c83f00767sm5451839qvb.3.2023.06.06.08.03.12
+ d2-20020a05620a166200b0075cecc90e95sm4922660qko.90.2023.06.06.08.05.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 08:03:13 -0700 (PDT)
-Date: Tue, 6 Jun 2023 11:03:11 -0400
+ Tue, 06 Jun 2023 08:05:07 -0700 (PDT)
+Date: Tue, 6 Jun 2023 11:05:06 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Joao Martins <joao.m.martins@oracle.com>
 Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
@@ -72,18 +72,20 @@ Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
  Jason Wang <jasowang@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
- Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
+ Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Yi Liu <yi.l.liu@intel.com>, David Gibson <david@gibson.dropbear.id.au>
 Subject: Re: [PATCH v3 03/15] hw/pci: Add a pci_device_iommu_memory_region()
  helper
-Message-ID: <ZH9Kr6mrKNqUgcYs@x1n>
+Message-ID: <ZH9LIqTK2KBafcXO@x1n>
 References: <20230530175937.24202-1-joao.m.martins@oracle.com>
  <20230530175937.24202-4-joao.m.martins@oracle.com>
  <ZH4UAtl1v8JDWsl1@x1n>
  <8db546c9-395a-432e-ef07-ed6d6447a097@oracle.com>
+ <ZH9Kr6mrKNqUgcYs@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8db546c9-395a-432e-ef07-ed6d6447a097@oracle.com>
+In-Reply-To: <ZH9Kr6mrKNqUgcYs@x1n>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -108,58 +110,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 06, 2023 at 12:22:16PM +0100, Joao Martins wrote:
-> On 05/06/2023 17:57, Peter Xu wrote:
-> > On Tue, May 30, 2023 at 06:59:25PM +0100, Joao Martins wrote:
-> >> Much like pci_device_iommu_address_space() fetches the IOMMU AS, add a
-> >> pci_device_iommu_memory_region() which lets it return an the IOMMU MR
-> >> associated with it. The IOMMU MR is returned correctly for vIOMMUs using
-> >> pci_setup_iommu_info(). Note that today most vIOMMUs create the address
-> >> space and IOMMU MR at the same time, it's just mainly that there's API
-> >> to make the latter available.
+[ I forgot to really copy anyone, as usual.. trying again ]
+
+On Tue, Jun 06, 2023 at 11:03:11AM -0400, Peter Xu wrote:
+> On Tue, Jun 06, 2023 at 12:22:16PM +0100, Joao Martins wrote:
+> > On 05/06/2023 17:57, Peter Xu wrote:
+> > > On Tue, May 30, 2023 at 06:59:25PM +0100, Joao Martins wrote:
+> > >> Much like pci_device_iommu_address_space() fetches the IOMMU AS, add a
+> > >> pci_device_iommu_memory_region() which lets it return an the IOMMU MR
+> > >> associated with it. The IOMMU MR is returned correctly for vIOMMUs using
+> > >> pci_setup_iommu_info(). Note that today most vIOMMUs create the address
+> > >> space and IOMMU MR at the same time, it's just mainly that there's API
+> > >> to make the latter available.
+> > > 
+> > > Have you looked into other archs outside x86?  IIRC on some other arch one
+> > > address space can have >1 IOMMU memory regions.. at least with such AS and
+> > > MR layering it seems always possible?  Thanks,
+> > > 
 > > 
-> > Have you looked into other archs outside x86?  IIRC on some other arch one
-> > address space can have >1 IOMMU memory regions.. at least with such AS and
-> > MR layering it seems always possible?  Thanks,
+> > I looked at all callers of pci_setup_iommu() restricting to those that actually
+> > track an IOMMUMemoryRegion when they create a address space... as this is where
+> > pci_device_iommu_memory_region() is applicable. From looking at those[*], I see
+> > always a 1:1 association between the AS and the IOMMU-MR in their initialization
+> > when iommu_fn is called. Unless I missed something... Is there an arch you were
+> > thinking specifically?
+> 
+> If only observing the ones that "track an IOMMUMemoryRegion when they
+> create a address space", probably we're fine.  I was thinking ppc but I
+> don't really know the details, and I assume that's not in the scope.
+> Copying David Gibson just in case he got some comments here.
+> 
 > > 
+> > [I am not sure we can track today an 1:N AS->IOMMU association today in Qemu]
 > 
-> I looked at all callers of pci_setup_iommu() restricting to those that actually
-> track an IOMMUMemoryRegion when they create a address space... as this is where
-> pci_device_iommu_memory_region() is applicable. From looking at those[*], I see
-> always a 1:1 association between the AS and the IOMMU-MR in their initialization
-> when iommu_fn is called. Unless I missed something... Is there an arch you were
-> thinking specifically?
-
-If only observing the ones that "track an IOMMUMemoryRegion when they
-create a address space", probably we're fine.  I was thinking ppc but I
-don't really know the details, and I assume that's not in the scope.
-Copying David Gibson just in case he got some comments here.
-
+> IIUC we can?  The address space only have a root MR, and with that after
+> translate() upon the root mr (per address_space_translate_iommu(), it can
+> even be a few rounds of nested translations) it can go into whatever MR
+> under it IIUC.  Different ranges can map to a different IOMMU MR logically.
 > 
-> [I am not sure we can track today an 1:N AS->IOMMU association today in Qemu]
-
-IIUC we can?  The address space only have a root MR, and with that after
-translate() upon the root mr (per address_space_translate_iommu(), it can
-even be a few rounds of nested translations) it can go into whatever MR
-under it IIUC.  Different ranges can map to a different IOMMU MR logically.
-
+> > 
+> > [*] alpha, arm smmu, ppc, s390, virtio, and some pci bridges (pnv_phb3 and pnv_phb4)
 > 
-> [*] alpha, arm smmu, ppc, s390, virtio, and some pci bridges (pnv_phb3 and pnv_phb4)
-
-I just worried what we need here is not a MR object but a higher level
-object like the vIOMMU object.  We used to have a requirement with Scalable
-IOV (SVA) on Intel.  I tried to dig a bit in my inbox, not sure whether
-it's the latest status, just to show what I meant:
-
-https://lore.kernel.org/r/20210302203827.437645-6-yi.l.liu@intel.com
-
-Copy Yi too for that too.  From that aspect it makes more sense to me to
-fetching things from either an IOMMUops or "an iommu object", rather than
-relying on a specific MR (it'll also make it even harder when we can have
->1 vIOMMUs so different MR can point to different IOMMUs in the future).
-
-I assume the two goals have similar requirement, iiuc.  If that's the case,
-we'd better make sure we'll have one way to work for both.
+> I just worried what we need here is not a MR object but a higher level
+> object like the vIOMMU object.  We used to have a requirement with Scalable
+> IOV (SVA) on Intel.  I tried to dig a bit in my inbox, not sure whether
+> it's the latest status, just to show what I meant:
+> 
+> https://lore.kernel.org/r/20210302203827.437645-6-yi.l.liu@intel.com
+> 
+> Copy Yi too for that too.  From that aspect it makes more sense to me to
+> fetching things from either an IOMMUops or "an iommu object", rather than
+> relying on a specific MR (it'll also make it even harder when we can have
+> >1 vIOMMUs so different MR can point to different IOMMUs in the future).
+> 
+> I assume the two goals have similar requirement, iiuc.  If that's the case,
+> we'd better make sure we'll have one way to work for both.
+> 
+> -- 
+> Peter Xu
 
 -- 
 Peter Xu
