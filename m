@@ -2,90 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21B87249AD
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DC27249AE
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 19:00:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6a1f-0007Jf-8Z; Tue, 06 Jun 2023 12:59:19 -0400
+	id 1q6a2I-0007mb-4G; Tue, 06 Jun 2023 12:59:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q6a1d-0007JQ-CN
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:59:17 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q6a1b-0003Er-Ng
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:59:16 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-30ae141785bso6286031f8f.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 09:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686070753; x=1688662753;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=szgzR0drBx9FawphjD+kvY+P45U/Wy69spT4nCzqiCg=;
- b=iYjiUNbEfjbX/eDGb7GfTxCQY0ZkK3MZ5B3ZLLBuQ07iB22sB8THAbhpbD3Tnj5k3S
- yDrJl4ZWYa4NR6LzVDw2aewFZ095lm02ApiMwIwpgwkhKlK7gbfWEkTCilbFzFFFGkH+
- 3BzDb8YvBpN0d6eB3jrAZ3BP+vN4ON9S2kELPUPhuGarTeIWLsIB9zsMQDNtzbaD9cPv
- ivjPG8yFChqVh/aS4hAZPLP1+fveHkjWYWnWMbIRjgjPpWWWEc3rxHQzydLbWiOdrDad
- a3F243nV3aovwkZvBflkufUMLaS8qa0HBML424ht+EPZgKiecqYpz729obfyEH0lTIHl
- +vZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686070753; x=1688662753;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=szgzR0drBx9FawphjD+kvY+P45U/Wy69spT4nCzqiCg=;
- b=dPv1V1hB9GLcMf3tUuVV44zvasKf9juMQLd1xCZFn84hmAHRbD2p9WHJq5cmWpuaGA
- mu+auhQzhRQ2Out9ldC3E0BPtzYM9b7DYUo0iSO1obBNbyU6CsyfXDeuALc7hRYAH5qd
- Vdx5joRXEcX2UBr6pQdguNkIJA14QvQH8yJ9qv1MLTP6bdkJh+pK3hufSWAUvB8/tLeT
- TruFs5sg7E61RNiANOLIFiSVrqma831x1EYWVzrKSQYIXUHrdr1AVh7ErgM4Eks7Cc6z
- 78xCmnPQx4uXzZBuQc5vAHaMtIYtRf/xwwZjNfQWB1QzRMIzYFD41lzDeY34gGTnKu+S
- QuxA==
-X-Gm-Message-State: AC+VfDwufQVPVbUXAWOCEu6pRf7t5akVJNuTRiFtSrfNLHrSphmB1CJ0
- vZhWs6Hj8DitEdOvCz8KrAAvbVduo8bXZPvJEAA=
-X-Google-Smtp-Source: ACHHUZ72H8jTX9jsrVCnSiQA+rCylOeVk95VEMRA57DCx7e0Wg0Idezar4IfR+6hXEIOYdI4KpUQcQ==
-X-Received: by 2002:adf:e5c9:0:b0:306:2cc8:a337 with SMTP id
- a9-20020adfe5c9000000b003062cc8a337mr2279655wrn.45.1686070753218; 
- Tue, 06 Jun 2023 09:59:13 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- c8-20020a7bc848000000b003f72468833esm14519313wml.26.2023.06.06.09.59.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 09:59:12 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 718851FFBB;
- Tue,  6 Jun 2023 17:59:12 +0100 (BST)
-References: <CAP5Nno6wrz4qEMK70KFwxoZWeo89+SAyXDXFW8A30mJ-WeFi4A@mail.gmail.com>
- <87ttwts5ur.fsf@linaro.org>
- <CAP5Nno4C6C-sfj73NM92Gstnw8mm7A7RwEYT=oUZm1Fh0QqFYQ@mail.gmail.com>
- <CAFEAcA-wT3OUZzkVA8riMRDWE4M_f3yZD2HLHSTksLUVM+kH3Q@mail.gmail.com>
- <87wn15lrab.fsf@linaro.org>
- <CAP5Nno7q2hh-aJit08BqMww5S1sKq9vmP5_2gtunhxR=CYLovg@mail.gmail.com>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Jun Sun <jsun@junsun.net>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH risu] use time() as random seed and introduce --randseed
- option
-Date: Tue, 06 Jun 2023 17:58:54 +0100
-In-reply-to: <CAP5Nno7q2hh-aJit08BqMww5S1sKq9vmP5_2gtunhxR=CYLovg@mail.gmail.com>
-Message-ID: <87wn0gh6hr.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q6a2G-0007m7-JA
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:59:56 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q6a2E-0003KJ-7K
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:59:56 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 7266C746377;
+ Tue,  6 Jun 2023 18:59:48 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 3D292746369; Tue,  6 Jun 2023 18:59:48 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3BD9674635C;
+ Tue,  6 Jun 2023 18:59:48 +0200 (CEST)
+Date: Tue, 6 Jun 2023 18:59:48 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Igor Mammedov <imammedo@redhat.com>
+cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH] hw/acpi: Fix PM control register access
+In-Reply-To: <20230606145046.159b6bba@imammedo.users.ipa.redhat.com>
+Message-ID: <1639953d-6f1c-cd9c-bba5-bc3b0b9134f1@eik.bme.hu>
+References: <20230528135750.4145574633D@zero.eik.bme.hu>
+ <20230606145046.159b6bba@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,18 +61,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Jun Sun <jsun@junsun.net> writes:
-
-> It seems to me that we are OK with random as default behavior but we shou=
-ld print out the seed (and abstract it into
-> a shared function across arches).
+On Tue, 6 Jun 2023, Igor Mammedov wrote:
+> On Sun, 28 May 2023 15:57:50 +0200 (CEST)
+> BALATON Zoltan <balaton@eik.bme.hu> wrote:
 >
-> Happy to re-work the patch if my understanding is correct.
+>> On pegasos2 which has ACPI as part of VT8231 south bridge the board
+>> firmware writes PM control register by accessing the second byte so
+>> addr will be 1. This wasn't handled correctly and the write went to
+>> addr 0 instead. This fixes ACPI shutdown with pegasos2 firmware.
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>> This is replacing the previous attempt which changed enduanness to
+>> NATIVE_ENDIAN that was found to be wrong. I'm still not sure what's
+>> happening as these functions are called with addr = 1 and size = 2 but
+>> maybe the guest really does word access to addr 1 when wanting to
+>> write 1 byte. This fixes the problem and should not break anything
+>> else but please review.
+>>
+>>  hw/acpi/core.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+>> index 6da275c599..bbc599a252 100644
+>> --- a/hw/acpi/core.c
+>> +++ b/hw/acpi/core.c
+>> @@ -593,13 +593,13 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
+>>  static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
+>>  {
+>>      ACPIREGS *ar = opaque;
+>> -    return ar->pm1.cnt.cnt;
+>> +    return ar->pm1.cnt.cnt >> addr * 8;
+>>  }
+> that looks fine
+>
+>>
+>>  static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
+>>                                unsigned width)
+>>  {
+>> -    acpi_pm1_cnt_write(opaque, val);
+>> +    acpi_pm1_cnt_write(opaque, val << addr * 8);
+>>  }
+> however, if this is 1 byte write at offset 1,
+> wouldn't this wipe out lower byte
+> (aka:
+> #define ACPI_BITMASK_SCI_ENABLE                 0x0001
+> #define ACPI_BITMASK_BUS_MASTER_RLD             0x0002
+> #define ACPI_BITMASK_GLOBAL_LOCK_RELEASE        0x0004
+> )?
 
-Works for me. Please respin.
+Since this will either reset or power off the machine it probably does not 
+really matter. But to fix that more we'd need to rewrite 
+acpi_pm1_cnt_write() to replace acpi_pm_cnt_write() and handle that 
+internally. Or is there another way to handle this? Does that worth the 
+effort when the only known usage is in pegasos2 firmware when it calls 
+power off?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Regards,
+BALATON Zoltan
 
