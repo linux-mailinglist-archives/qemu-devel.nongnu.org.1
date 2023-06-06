@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EA6724DA9
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 22:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB716724DAA
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 22:07:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6cu5-0007l9-Qc; Tue, 06 Jun 2023 16:03:41 -0400
+	id 1q6cx5-0000CS-5L; Tue, 06 Jun 2023 16:06:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6cu3-0007kj-Rx
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 16:03:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6cu2-00058H-9X
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 16:03:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686081817;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QRNMdfOUGR50gcRjyWaarCIzNXVaKlE/CGuzcOGE4jI=;
- b=O6C5LuYEgIl0IiOtjimZMMeKB9WpQwJJ+QwsR+g53KZGcSi3bhVYJHX/D6g/G8k7yWhLro
- XpeXVQypmC2yimv1xORmoczxFUknOzzehe5VTIeEUus2woOKm0iUvzMQJxz1Cz8Q9LB3fF
- j2W1278dU8Dy9v694WNB/8o+LenCSmw=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-a44pV9BUOwGDveaAah_TMg-1; Tue, 06 Jun 2023 16:03:33 -0400
-X-MC-Unique: a44pV9BUOwGDveaAah_TMg-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6b29bb6a75cso31588a34.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 13:03:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6cx2-0000C6-2M
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 16:06:44 -0400
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6cwx-0006Ah-9L
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 16:06:43 -0400
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-1a28de15c8aso5853902fac.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 13:06:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1686081997; x=1688673997;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fQc9I3jtWoHWpi8EP93ZodPhGWthtBVaxnpKyY3MK+8=;
+ b=ddIq2oa6j5nvvA6JMlBRDzBtiE3QoWoeE0ZUFROOCNnKNC02mAUhb+rg+EU5ynYXIc
+ iCX6TKLERXYfsqWLKc9ifDT/sMZW0zim0HGyNnAcXhgKyNgRfU7IiNeONPylXvxIatQZ
+ NzmFw51B+FYlN4O0ZZKN5op+/Gm3emMPAKgDiYogXDqK5CqSXFnRiPTfizcdEhnUL+lg
+ MCWiarcYUngR4Q6eh+Pglr9OBZgRwxPuWu6b+ALQs07Y8e5zbPcCWV03vB7Cgv3nk0KB
+ s1AfAn45iQJYkdMopamFi1rZhww1NSY4Ahg3GsoHTbhwK3P1H//GFIY/Q1T04wZg0ONe
+ djtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686081812; x=1688673812;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QRNMdfOUGR50gcRjyWaarCIzNXVaKlE/CGuzcOGE4jI=;
- b=PD6fZPqwm7j1KYVa2If9sReE9okALJDyb0W6e7tEqe6NXWIZqeRXE6uwPBW8oQ8MX6
- rVStPHroXMk5vyXJV0pLllOE6oGq0lxVV4CMb5p9sCb2u/zGmm6LjdO9r3W+JemvrsP8
- KQ1rufkkNOGbEbjU1N/Ye5pPMpCw2oltYq9GTKovk2iqY70b1+hBqqCkr3zKHogvjHlQ
- W/ad66Os9OaBFfVcy6qtvpfk/XZ2U+k+MCjRj+mY8zKyR8JbN1uelDGM2DW6QUwvuMU2
- dHxrTTjypSG9t+Wvl5GyNrFdqZHSEgQDLrAei2kSX0nRCRhiQph9+NqSlP10n1r8I8gB
- hNdQ==
-X-Gm-Message-State: AC+VfDytwZuWEVcR7pBNAvjNQ/LwSI3YI/ZQ0d1Dg90CMAGCLLyNR4w9
- yO/OgfKRnslDmrRQL13v6mTSowyxTljmwqPLPqO4zflO0eOt96+97fWCaYrlEdIPIQblxB9tBot
- 5gi6S2VSVLyG1iok=
-X-Received: by 2002:aca:3bd4:0:b0:394:6388:22bb with SMTP id
- i203-20020aca3bd4000000b00394638822bbmr1266446oia.5.1686081812651; 
- Tue, 06 Jun 2023 13:03:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6wSlkFVwv3nKd8DW9RgkUOTWdcwatju8ksYbXop+2bPDugL7rpfLNuHnZSLNHxejRXvvCbQw==
-X-Received: by 2002:aca:3bd4:0:b0:394:6388:22bb with SMTP id
- i203-20020aca3bd4000000b00394638822bbmr1266440oia.5.1686081812426; 
- Tue, 06 Jun 2023 13:03:32 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- j16-20020a0cc350000000b0062383edece8sm5611980qvi.91.2023.06.06.13.03.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 13:03:31 -0700 (PDT)
-Date: Tue, 6 Jun 2023 16:03:30 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Juan Quintela <quintela@redhat.com>,
- Jiang Jiacheng <jiangjiacheng@huawei.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 1/3] migration/multifd: Rename threadinfo.c functions
-Message-ID: <ZH+RErNrOl1odmwE@x1n>
-References: <20230606144551.24367-1-farosas@suse.de>
- <20230606144551.24367-2-farosas@suse.de> <ZH99EuY3c/RqIELY@x1n>
- <87wn0gwfjs.fsf@suse.de>
+ d=1e100.net; s=20221208; t=1686081997; x=1688673997;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fQc9I3jtWoHWpi8EP93ZodPhGWthtBVaxnpKyY3MK+8=;
+ b=Bo7tRGJxEFh5FCIdjPoMjPPXtAMtrA/+NwpDNMgNqrN1l7wYuqrr/Ad99B49vkN4YI
+ 6O/nSh8gVm447xPHKE62YfBiNmljI5/HmZ+9VuPiDw4KXsFUzcicQXSAkVnfXcjGlbO5
+ dFwee87BG6bH6KuDn7GhiTAQ121scX9a0H0o9kH4Zp/7rrFSK6ZLQ11AHYuY0Kr+8sxi
+ sx6IPjOs2U0NmkQzrhNSZcbwWwQK609mcnfQTkEpWtG2iv0ePwyzs3WD/KozeoBQX2ZA
+ ySKstdWAb+u3pt/1yLgxD1cuiPmxtjZgDIXg4WtM4DqEmELoHnLAOHRRg8sCRJqoyloC
+ W1Yw==
+X-Gm-Message-State: AC+VfDxxlhIQnmphNdpIQLzzejvp/b53r9SGRmbfJSbDdAuNRr14utQ3
+ X7Rre94/FNYMsYMMc3q7zLQtFA==
+X-Google-Smtp-Source: ACHHUZ4iEsRZmliTMT/fnq3MLM9kqeFhtQrqm+8QlNHUuGYeZMNiG/BIAJTIgR7OVRIeN9MJQpJdJA==
+X-Received: by 2002:a05:6870:988b:b0:196:46f6:4f00 with SMTP id
+ eg11-20020a056870988b00b0019646f64f00mr2862029oab.52.1686081997590; 
+ Tue, 06 Jun 2023 13:06:37 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
+ by smtp.gmail.com with ESMTPSA id
+ q1-20020a056870e60100b0019f7184d7e0sm5188813oag.21.2023.06.06.13.06.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 13:06:37 -0700 (PDT)
+Message-ID: <51387715-7294-dc89-41db-db6b72d643af@ventanamicro.com>
+Date: Tue, 6 Jun 2023 17:06:33 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87wn0gwfjs.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 03/16] target/riscv/cpu.c: restrict 'mvendorid' value
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-4-dbarboza@ventanamicro.com>
+ <20230606-aadc97a378f5d52fd233dcaa@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230606-aadc97a378f5d52fd233dcaa@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2f.google.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,44 +98,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 06, 2023 at 04:34:31PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Tue, Jun 06, 2023 at 11:45:49AM -0300, Fabiano Rosas wrote:
-> >> The code in threadinfo.c is only used for the QMP command
-> >> query-migrationthreads. Make it explicit that this is something
-> >> related to QMP.
-> >> 
-> >> The current names are also too generic for a piece of code that
-> >> doesn't affect the migration directly in any way.
-> >> 
-> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >
-> > Looks good here, but shall we reserve the qmp_* prefix to mostly qmp stuff
-> > only?  Dropping "qmp_" in the new names would look better to me..
-> >
-> 
-> Well, we're just putting the thread name and id on a list so that QMP
-> can use them later. It is nothing "important" enough to have a generic
-> name like migration_thread.
-> 
-> Perhaps:
-> 
-> thread_info_add
-> thread_info_remove
-> thread_info_init
-> thread_info_cleanup
-> 
-> Anyway, as long as we drop that camel case I'm ok with just removing the
-> qmp =)
 
-Thanks.  To me OTOH it's good as long as "qmp_" dropped. :)
 
-I don't worry on using "migration_thread_" as prefix, that's exactly what
-the api does to me.  Or, migration_thread_info_*(), migration_thr_mgr_*(),
-etc.
+On 6/6/23 10:19, Andrew Jones wrote:
+> On Tue, May 30, 2023 at 04:46:10PM -0300, Daniel Henrique Barboza wrote:
+>> We're going to change the handling of mvendorid/marchid/mimpid by the
+>> KVM driver. Since these are always present in all CPUs let's put the
+>> same validation for everyone.
+>>
+>> It doesn't make sense to allow 'mvendorid' to be different than it
+>> is already set in named (vendor) CPUs. Generic (dynamic) CPUs can have
+>> any 'mvendorid' they want.
+>>
+>> Change 'mvendorid' to be a class property created via
+>> 'object_class_property_add', instead of using the DEFINE_PROP_UINT32()
+>> macro. This allow us to define a custom setter for it that will verify,
+>> for named CPUs, if mvendorid is different than it is already set by the
+>> CPU. This is the error thrown for the 'veyron-v1' CPU if 'mvendorid' is
+>> set to an invalid value:
+>>
+>> $ qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mvendorid=2
+>> qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mvendorid=2:
+>>      Unable to change veyron-v1-riscv-cpu mvendorid (0x61f)
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c | 31 ++++++++++++++++++++++++++++++-
+>>   1 file changed, 30 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 72f5433776..bcd69bb032 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1723,7 +1723,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>>   static Property riscv_cpu_properties[] = {
+>>       DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+>>   
+>> -    DEFINE_PROP_UINT32("mvendorid", RISCVCPU, cfg.mvendorid, 0),
+>>       DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_MARCHID),
+>>       DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIMPID),
+>>   
+>> @@ -1810,6 +1809,32 @@ static const struct TCGCPUOps riscv_tcg_ops = {
+>>   #endif /* !CONFIG_USER_ONLY */
+>>   };
+>>   
+>> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+>> +{
+>> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+>> +}
+>> +
+>> +static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+>> +                              void *opaque, Error **errp)
+>> +{
+>> +    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
+>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>> +    uint32_t prev_val = cpu->cfg.mvendorid;
+>> +    uint32_t value;
+>> +
+>> +    if (!visit_type_uint32(v, name, &value, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!dynamic_cpu && prev_val != value) {
+>> +        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
+>> +                   object_get_typename(obj), prev_val);
+>> +        return;
+>> +    }
+>> +
+>> +    cpu->cfg.mvendorid = value;
+>> +}
+>> +
+>>   static void riscv_cpu_class_init(ObjectClass *c, void *data)
+>>   {
+>>       RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
+>> @@ -1841,6 +1866,10 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+>>       cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+>>       cc->tcg_ops = &riscv_tcg_ops;
+>>   
+>> +    object_class_property_add(c, "mvendorid", "uint32", NULL,
+>> +                              cpu_set_mvendorid,
+>> +                              NULL, NULL);
+>> +
+> 
+> Shouldn't we provide a get function as well?
 
--- 
-Peter Xu
+We can. I refrain from adding a get() interface because I didn't add new code that
+access mvendorid via object_property_get_uint(OBJECT(cpu), "mvendorid", errp). The
+code that access this value uses cpu->cfg.mvendorid directly.
 
+It would be interesting to add a get() interface if cpu->cfg.mvendorid was a value
+that was read in a different manner that it's stored. It's not the case ATM, so
+I only added the set() interface.
+
+
+Thanks,
+
+
+Daniel
+
+
+
+> 
+>>       device_class_set_props(dc, riscv_cpu_properties);
+>>   }
+>>   
+>> -- 
+>> 2.40.1
+>>
+>>
+> 
+> Otherwise,
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
