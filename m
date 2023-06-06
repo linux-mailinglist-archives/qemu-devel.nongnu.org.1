@@ -2,79 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901A6724CFB
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF8E724D00
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:28:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6cIb-0002uU-6x; Tue, 06 Jun 2023 15:24:57 -0400
+	id 1q6cLu-00049K-Qs; Tue, 06 Jun 2023 15:28:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6cIZ-0002uI-Aa
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:24:55 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6cIX-0000qv-4K
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:24:55 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6dfc4dffaso55835185e9.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:24:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686079491; x=1688671491;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=t3YjWVS1zegY7NmC5DkjF/dBPD8cdb5JE9tCMy1I5iA=;
- b=z5uJp4LNKZN0OhrKsQAfJcLPyu/tj2la9Jne3jyFv81rsAwvnZBaXz+r5CJVmoJxon
- GdRp/xZ3WJU7d0CgCdz1lXWrlDY21SEUSqfuPdkvgoJKvG2uS+yIuZ673E7gTVISAI+b
- lr+3FGpSjt0wfd3+rHVAjk10NMWdhHZjTjm5Cict6/F4rbYW/jI/HHBUt5jAPk5pn9hR
- Z0apbdtFTyFJbaOGcVMERCQugEqJj+pm415b4ozVqYZDRWVw7JEB0MlDeazqTLHgvZro
- 6ZUa1+sozpv9BUPpPQsxARE8wES+vVhGLQVDQmPrrpb5zWIHJdlw27lmcEYReVhQoXZu
- ovVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686079491; x=1688671491;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t3YjWVS1zegY7NmC5DkjF/dBPD8cdb5JE9tCMy1I5iA=;
- b=FHAlAcffh4+nVIz5N1SZL67vkZIPHr76qgYyO81FJUeFNnOhSYyCUKfSazWZEdwXYB
- sx9CU6do8UO6+9fXI2kZglShX6UQGZJcjtplkLI2hu0TyGGbUy5T9Cp4pj6sp+VvPye2
- 6g56jmkJZ3KNcKFH4exOoYJTXZYMAKlQpbH55CDaCyuWAqkqYJoCw5b1XVAsI/0fz+/A
- rTASOtRjk2iXblTqCBbFp+PYEK8Y/LwBK4KURzWGHz+1eovP9l8Pf9AwA7cxs1S5P+T9
- i4gxPzz2xsdiczTtTSXpZyPjixPE6IkZn4St3SYUPRSHEmaY5Z5laJkEe76Xjn+48oOG
- OHBw==
-X-Gm-Message-State: AC+VfDyGegPrWyQg5a6meKs32kXDx6XZGd36xJOXz2J5NzeiYJ2Vu8m8
- 8taNXwMrGVmSQtk1HP/7xWlukA==
-X-Google-Smtp-Source: ACHHUZ7I05tH5Ug6J+P5J00fzmOPgFiiKGAl2fX9i3irCv3vpDCOaObLHYd2zZkL81LzVxaYqqkA+A==
-X-Received: by 2002:a1c:4c0d:0:b0:3f5:6e6:9d83 with SMTP id
- z13-20020a1c4c0d000000b003f506e69d83mr2589519wmf.23.1686079491539; 
- Tue, 06 Jun 2023 12:24:51 -0700 (PDT)
-Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
- [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
- j9-20020a5d5649000000b0030b5d203e7esm13150645wrw.97.2023.06.06.12.24.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 12:24:51 -0700 (PDT)
-Message-ID: <95b2ae8b-e2d3-7554-d810-85aafc1a9c35@linaro.org>
-Date: Tue, 6 Jun 2023 21:24:48 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6cLs-00048z-Pn
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:28:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6cLr-0002EA-8M
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:28:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686079698;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4GtLrdlSC8abAaypu8ENTzheZpGq2te6DFVsxbOeJtc=;
+ b=JsBuDq3sQbjAG6su/YYqBjWAXCtqdmUoBUdQqnW872UW7fPYg8ggYFiTsGCV406LWxYtEJ
+ awvGsUO+b/R6neG+Yll5I+r+iGf/ZzlcE80+UtOcZzOfEcGk/S94LuXiSnug4C2R9daJzs
+ DhOZPsFhjCWBIQaM7FSqCRCWDlSt9MI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-269-TefxeigJMpat95mzsEf8Fg-1; Tue, 06 Jun 2023 15:28:07 -0400
+X-MC-Unique: TefxeigJMpat95mzsEf8Fg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E6A73101A531;
+ Tue,  6 Jun 2023 19:28:06 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.29])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EC3C3140E954;
+ Tue,  6 Jun 2023 19:28:04 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-ppc@nongnu.org,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Kautuk Consul <kconsul@linux.vnet.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH] tests/avocado/tuxrun_baselines: Fix ppc64 tests for binaries
+ without slirp
+Date: Tue,  6 Jun 2023 21:28:02 +0200
+Message-Id: <20230606192802.666000-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] gitlab: Disable io-raw-194 for build-tcg-disabled
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, berrange@redhat.com, jsnow@redhat.com
-References: <20230606162556.58110-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230606162556.58110-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,44 +78,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 18:25, Richard Henderson wrote:
-> This test consistently fails on Azure cloud build hosts in
-> a way that suggests a timing problem in the test itself:
-> 
-> --- .../194.out
-> +++ .../194.out.bad
-> @@ -14,7 +14,6 @@
->   {"return": {}}
->   {"data": {"status": "setup"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
->   {"data": {"status": "active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
-> -{"data": {"status": "postcopy-active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
+The ppc64 tuxrun tests are currently failing if "slirp" has been
+disabled in the binary since they are using "-netdev user" now.
+We have to skip the test if this network backend is missing.
 
-Is it useful to modify 194.out.bad ...
+Fixes: 6ee3624236 ("improve code coverage for ppc64")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/avocado/tuxrun_baselines.py | 1 +
+ 1 file changed, 1 insertion(+)
 
->   {"data": {"status": "completed"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
->   Gracefully ending the `drive-mirror` job on source...
->   {"return": {}}
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   .gitlab-ci.d/buildtest.yml | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index 0f1be14cb6..000062483f 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -236,7 +236,7 @@ build-tcg-disabled:
->       - cd tests/qemu-iotests/
->       - ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
->               052 063 077 086 101 104 106 113 148 150 151 152 157 159 160 163
-> -            170 171 183 184 192 194 208 221 226 227 236 253 277 image-fleecing
-> +            170 171 183 184 192 208 221 226 227 236 253 277 image-fleecing
-
-... if we don't run test #194 anymore?
-
->       - ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
->               124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
->               208 209 216 218 227 234 246 247 248 250 254 255 257 258
+diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
+index 3a46e7a745..e12250eabb 100644
+--- a/tests/avocado/tuxrun_baselines.py
++++ b/tests/avocado/tuxrun_baselines.py
+@@ -184,6 +184,7 @@ def common_tuxrun(self,
+ 
+     def ppc64_common_tuxrun(self, sums, prefix):
+         # add device args to command line.
++        self.require_netdev('user')
+         self.vm.add_args('-netdev', 'user,id=vnet,hostfwd=:127.0.0.1:0-:22',
+                          '-device', 'virtio-net,netdev=vnet')
+         self.vm.add_args('-netdev', '{"type":"user","id":"hostnet0"}',
+-- 
+2.31.1
 
 
