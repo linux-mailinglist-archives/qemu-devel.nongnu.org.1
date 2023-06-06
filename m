@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8129272484C
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC074724858
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:56:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Z0x-0000xG-Lw; Tue, 06 Jun 2023 11:54:31 -0400
+	id 1q6Z2Q-0001w5-QQ; Tue, 06 Jun 2023 11:56:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q6Z0u-0000wX-B5
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:54:28 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q6Z2O-0001v5-H3
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:56:00 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q6Z0s-0003u0-Ql
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:54:28 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3f6d7abe9a4so54831265e9.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:54:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q6Z2J-0004Gh-8H
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:56:00 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5147a478c38so8949304a12.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:55:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686066865; x=1688658865;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=QD0B8F/hFYpCl/CMQBukCAYpFaWSfJME8PtsC3EXHKc=;
- b=M2DmzW8eqladMkHJTWA30eKtkcCxhShcTzAm/1VTW2alL38QpH+tOLBKGtu7I9Qd5h
- 4XPkbWSSPRVxWJFjZrMdcYXd6OjeOIXP84bMyDEyQVEqgrIRS6C7aaoUM6oi5FfRAJOG
- zJOdmXMsBONMACbO8qLkaFrZ/jrAmUyEMLH0qEvchfF6jIL905DEK8UTft4lVoyGCrIy
- Sjd3GaBmdFh3qFjEZPxB0ShVBtVMgvb0rFrDeHdrttMUo6GZQ0aKfYc4y+cf0adbN+BH
- gMcC8GRtq5NZmBiYK5NxZguk7+43uNiMOFjH4Ve5dbHiaKCuyrzTzpvGEOZQgc5rb46+
- XXvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686066865; x=1688658865;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1686066953; x=1688658953;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QD0B8F/hFYpCl/CMQBukCAYpFaWSfJME8PtsC3EXHKc=;
- b=MXPUZ8rdzFVCggbXtxrVN8Wck1CfGxF3KevKQ9uLju2r2AKNzFrlfyE6uNCd8/Buel
- xUpYKLz5+eOkxj+4K505ZDBqLjyPJyOKnS+1Xh2wmLDiImSWiXpkj+BM5//6XVnYyYKE
- 4E3vq48xsbbZN02XXLPvZtECl2t+w3LPd1FcVR8Hzi4BDrSpYULbnhAckUJ1i1eCeIk7
- 8NktDL1AI0FZz7iFRVEoPUu5JEyu9cCBJou6ofzR+dccMYW4+kxLz1eiUKG5oz0fCs5x
- U4ZIvJAtTkpHOZ+K9cbKB8z2KR9JBHcj5yArmipMi2dS4zZMAY5d2hHCZLusHDlGL7GX
- E7Sg==
-X-Gm-Message-State: AC+VfDx3y3X41dRr+cdSj/0TResUPNCe/1CyBKsFybwiYci0fjJ6Lu5F
- ZueKtOzVg7eSbvUZKsLyGBdOag==
-X-Google-Smtp-Source: ACHHUZ6o8J/K5YJvHijru+TJTG8zEwYLKrNNKZQjabJYQ1SGNkMKAO1V4CTRrFvNWvMDbhAenBeIrg==
-X-Received: by 2002:a05:600c:220e:b0:3f7:3673:5429 with SMTP id
- z14-20020a05600c220e00b003f736735429mr2310097wml.2.1686066865320; 
- Tue, 06 Jun 2023 08:54:25 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- q25-20020a7bce99000000b003f182a10106sm14453188wmj.8.2023.06.06.08.54.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 08:54:24 -0700 (PDT)
-Date: Tue, 6 Jun 2023 17:54:24 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH 10/16] target/riscv/kvm.c: init 'misa_ext_mask' with
- scratch CPU
-Message-ID: <20230606-6b0d5ce5cacc7e9190eeb39a@orel>
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-11-dbarboza@ventanamicro.com>
+ bh=wnVLBSJrJkvKjIoaRlPQx57i/kQrByoAelFL0S3N/cY=;
+ b=k30HaP4JXPvU/eRC1ECNiaPxM1Bm+1LcHRVwTB/IFrUhkJdo17OaN/81hid26PuGd0
+ JczfFnWeXsqdIpgh+jULOs6ZsHoL0CXciGM82L3f+9FfNCAQw6a/5UYzvup72VSGW7ER
+ s9rDwNCcZK7LEO1MznYiK3V9IzvuGreX6pXRuhWbZ7AEQiew3Tf6mWfshVFBP88eGmUY
+ XzNBVrwHK155n7e5OQgbMAo8x4MPxtWdvFE+ZUZMFfBxOTNmVZcyrOntXJvNKTRnRejU
+ CzoCJtRSOfTMWPXasgT8K585rtIFaeqzqCxWTRLS82JwS7W4qdizUDHBkrZRrvp1nYVV
+ IEvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686066953; x=1688658953;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wnVLBSJrJkvKjIoaRlPQx57i/kQrByoAelFL0S3N/cY=;
+ b=BKm7MeBecobCPW5mqxC0jWGYwHqmAMiX6rvu0PFRfUG2+JqImkp5UO/5MyGdZGUw+N
+ dYEZQjaSkL7O9Wk5cQSRAWMyg079QLd/KhNO23bS+3K5kSf4CgBVzUnWyW0y0iaR7qcb
+ NydjU/Ph/YDuxT8HcY/YmvFTqgim1fcKSUS5yohLlq6H0qxJni2z2kkvIunNf0HtWXlY
+ uvmjxyB6xQ1o6882E5Jf0i/AEHMXAftQg08Nit+vcynbpT7D29/uSsvaU4wP3qJM05CZ
+ GfsfozGRqgKSsW4oN+SVLUfsdpKC3HMoUFhOBLUmyvBtPvLoJLFCCxWNdpxBzoINv7p0
+ RoVw==
+X-Gm-Message-State: AC+VfDzI4Y0NgD1mhd809FUXTAKVtgzVogmtt8EhvzFurM5pF8YzNiWG
+ n0Rke5dJE8/+vOP70otYDo9MxSngDxy5JMcoCggZ6wapARkhj9AEn/M=
+X-Google-Smtp-Source: ACHHUZ4R3cC9mrbWs7pTCm1g1yhZ0xmDKHWDO7ayRZ9UpBeqixj75gbrIEtOK+fSUdxb+QpFlVA83ULTN3SF+ikxeXM=
+X-Received: by 2002:aa7:dcd7:0:b0:50d:b16d:d21 with SMTP id
+ w23-20020aa7dcd7000000b0050db16d0d21mr2089415edu.3.1686066953660; Tue, 06 Jun
+ 2023 08:55:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230530194623.272652-11-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32e.google.com
+References: <20230606141252.95032-1-philmd@linaro.org>
+ <20230606141252.95032-3-philmd@linaro.org>
+ <9ff0f082-1b04-8bf2-6a97-1e9220aa4509@linaro.org>
+ <f991008b-015b-dcce-fe00-838a6ddefde5@linaro.org>
+In-Reply-To: <f991008b-015b-dcce-fe00-838a6ddefde5@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 6 Jun 2023 16:55:42 +0100
+Message-ID: <CAFEAcA-Cy=fG0PZs2_O0cUrFHw65Tw3EzDEWPAKFg3ffs0a_FQ@mail.gmail.com>
+Subject: Re: [PATCH 2/5] target/arm: Rename helper template headers as '.h.inc'
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,25 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 04:46:17PM -0300, Daniel Henrique Barboza wrote:
-> At this moment we're retrieving env->misa_ext during
-> kvm_arch_init_cpu(), leaving env->misa_ext_mask behind.
-> 
-> We want to set env->misa_ext_mask, and we want to set it as early as
-> possible. The reason is that we're going to use it in the validation
-> process of the KVM MISA properties we're going to add next. Setting it
-> during arch_init_cpu() is too late for user validation.
-> 
-> Move the code to a new helper that is going to be called during init()
-> time, via kvm_riscv_init_user_properties(), like we're already doing for
-> the machine ID properties. Set both misa_ext and misa_ext_mask to the
-> same value retrieved by the 'isa' config reg.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/kvm.c | 34 +++++++++++++++++++++++-----------
->  1 file changed, 23 insertions(+), 11 deletions(-)
+On Tue, 6 Jun 2023 at 16:50, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
 >
+> On 6/6/23 16:37, Richard Henderson wrote:
+> > On 6/6/23 07:12, Philippe Mathieu-Daud=C3=A9 wrote:
+> >> Since commit 139c1837db ("meson: rename included C source files
+> >> to .c.inc"), QEMU standard procedure for included C files is to
+> >> use *.c.inc.
+> >>
+> >> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+> >> about includes") this is documented as the Coding Style:
+> >>
+> >>    If you do use template header files they should be named with
+> >>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+> >>    being included for expansion.
+> >>
+> >> Therefore rename the included templates as '.h.inc'.
+> >>
+> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> >
+> > FYI, after yesterday's tcg pr, we can do more than this.  These
+> > fragments no longer have to be all included into one common helper.h.
+> > Each translate-foo.c can include only the helper-foo.h.inc bits that
+> > they need, and the bits need not be visible to the rest of the front en=
+d.
+>
+> Don't we need foo fully converted to decodetree first? Otherwise
+> generic translate code can call foo helpers, so needs their prototype
+> declaration.
+>
+> For example in translate-a64.c handle_msr_i(SVCR) calls
+> gen_helper_set_svcr() which is declared in helper-sme.h.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+That's unrelated to decodetree -- the decodetree conversion for
+that instruction still has code in translate-a64.c which
+calls gen_helper_set_svcr(), it's just in a different function.
+
+https://patchew.org/QEMU/20230602155223.2040685-1-peter.maydell@linaro.org/=
+20230602155223.2040685-6-peter.maydell@linaro.org/
+
+thanks
+-- PMM
 
