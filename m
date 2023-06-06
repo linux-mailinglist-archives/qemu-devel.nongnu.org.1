@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52746723E6A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76099723E57
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TIt-0007n4-Ss; Tue, 06 Jun 2023 05:48:39 -0400
+	id 1q6TIu-0007nQ-AD; Tue, 06 Jun 2023 05:48:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIr-0007lK-3z
+ id 1q6TIq-0007kr-NG
  for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:37 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIn-0004pU-45
+ id 1q6TIm-0004nL-Qt
  for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:36 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-30c55d2b9f3so4257386f8f.2
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-30adc51b65cso5323815f8f.0
  for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686044911; x=1688636911;
+ d=linaro.org; s=google; t=1686044912; x=1688636912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CgXGqqHmHxh9IvjW0W6EJGkiJZ/xxqMV4YgEDbgJoDw=;
- b=sO8kphV6vu8vNl0yLf8uUGfovEbiGKqwvYcIzSA15jRmUeVBY6QmU58rtbYB3fX77n
- SE7/4JwHNNP+fPur5SWJ9t5wBJmheutMzuKliOQsx3uAylh1gD5G9fP9Gt7KzgMWzmyl
- Ece2ThEDe/Hg/RsShhrnqFFUffuADQIgm6rdWZwmLFGxy3hooOKPzisnL8jI3ofUnwA1
- 3iR1OUUvuGtexg1J0Fij7dr0CjDfP7BhHqgGEOOO7JxKXpr6lofwZFBT7GdR9jE6WpyV
- nBRiXH8ssdeiV8JyPEUssy/NfnyVLYI/WRHz4KfiLFabwURtzDNZi+y40YDqgD+MdYUy
- 9jlA==
+ :reply-to; bh=y4vWb9Y1xxl2/v0t4z9da7Xxeb1mu3H8daoLBgX6KF8=;
+ b=s1dWbefJdxCUMwRcJpSy9HLGQFcpFGDEfGqebTEAFub/C8tey1ar6HObxNwrzVrbSz
+ uWv97seDztsc8oeBCyUvBHrSjNXSinHptQMnpHNVTistjEI4FcR45Y2nLi9dKK0xXfbg
+ 6CAij20dQocEvqgvAD6vY62t0jFGLYHV2EzH7v13/IjU2hO/aT8yrmEFyfxuH1VzuUlE
+ cwP1D891gr7LugKmEJ/vWIiWefBPp9Y+xE7zI2MvJuXWYjk4m6u4hRxWPIVzuNYSDfll
+ aERcsgVQKO7mTevOy9F0cYJz0SVGsTgq2btYlS1gCl1QBvdX/1Q2DfqHC8kpDSt0mMX7
+ /cyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686044911; x=1688636911;
+ d=1e100.net; s=20221208; t=1686044912; x=1688636912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CgXGqqHmHxh9IvjW0W6EJGkiJZ/xxqMV4YgEDbgJoDw=;
- b=C7qJVYm2x3qHaUg3x17yUB9ODXSfrCjQAmgf3F1Nplh76jAwWTBjGxRR3oeoim3i69
- tG2VY5n1Lgfu1KgSDenW5vtNaifQeUBLKDTXC7rSl4PV7vBK3yMxhR8Ei7/4nAvy/1SQ
- hM6gdrz2hRTyyZxP8VLavyroqHuyuwB/CLc9QlBwubXnNUBbXfF35VF/jxmgbY5cmBpb
- glaOAlu9WQE6rbeBkf0RZFHG4cKY0hRY0We6YAeVozXIGvI2M6SeOGH1TBfFgG0dRBUS
- lfZMeWGERN8PKReg7c4NCa0I98V/Nh/cplGyb4an0pIKyadb5+lwe5yJLJYSu8IVzy+z
- KB8w==
-X-Gm-Message-State: AC+VfDynEuDkPq2pBJ8VGU3gat3wxkNqesa9EAt418iboy9LnT2NAjSP
- xmoICZzdI3CzfsXJk2+XVLtOoUlbMyPjRRx2Umg=
-X-Google-Smtp-Source: ACHHUZ41zl/ZW5+TW+8ZeYXbNuVzqLzdhOj3iVklBbUqgs88AV1Xokp5wVjVbbihVkjh+hvq02pqRA==
-X-Received: by 2002:a5d:448d:0:b0:306:2c16:8359 with SMTP id
- j13-20020a5d448d000000b003062c168359mr1340093wrq.39.1686044911678; 
- Tue, 06 Jun 2023 02:48:31 -0700 (PDT)
+ bh=y4vWb9Y1xxl2/v0t4z9da7Xxeb1mu3H8daoLBgX6KF8=;
+ b=abf3hxhAWIMxXLlPtmpG0BwKmjuibi6cchy5xETmLk/M3xCAr+Nqe2VU1g5kGNWvjf
+ cmapSC8BfNosU/GD1SZXWShSjkrwejFKQkjFuSEUw+UUMxx98hP3vFQ8Pn45a/3KwOQT
+ 81anvVJqpGS+nvv+fAL03m/C1vTKQp1ffFL8MXgVMlDcM6ktMOlXVOETbFFBlhP68wb/
+ kZzaunxByd39NS2SYJJ0Eph5ozyYB3GZAvCveQTH9iW2sIdX7dMrW4etUFfyPmTuCQk1
+ H+sS8hppe0oJ+83/uClMNGd6zLv8YZHOXEK5+YqG4/yYhodkIhEC20BXNg8MrwvThP9L
+ M2Cw==
+X-Gm-Message-State: AC+VfDzF4a9BjeEIjSiu0yDTXX1GrCRrbV8ZZ7b2Wfpcts+gcRQSSKiv
+ 9hUqD7ndhrtCHiEcoKXNA+XT0W+sWazmOeiDi24=
+X-Google-Smtp-Source: ACHHUZ691apnomMIZVjFHcICuRRD9L2K9wFNbQP6pXOXzlU8Lqn4pcq/yhjvTANFPciXI02vQu8rMw==
+X-Received: by 2002:adf:f649:0:b0:306:2d32:8ec with SMTP id
+ x9-20020adff649000000b003062d3208ecmr1542130wrp.6.1686044912084; 
+ Tue, 06 Jun 2023 02:48:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.31
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 06 Jun 2023 02:48:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/42] target/arm: Pass single_memop to gen_mte_checkN
-Date: Tue,  6 Jun 2023 10:48:04 +0100
-Message-Id: <20230606094814.3581397-33-peter.maydell@linaro.org>
+Subject: [PULL 33/42] target/arm: Check alignment in helper_mte_check
+Date: Tue,  6 Jun 2023 10:48:05 +0100
+Message-Id: <20230606094814.3581397-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230606094814.3581397-1-peter.maydell@linaro.org>
 References: <20230606094814.3581397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,157 +92,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Pass the individual memop to gen_mte_checkN.
-For the moment, do nothing with it.
+Fixes a bug in that with SCTLR.A set, we should raise any
+alignment fault before raising any MTE check fault.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230530191438.411344-14-richard.henderson@linaro.org
+Message-id: 20230530191438.411344-15-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.h |  2 +-
- target/arm/tcg/translate-a64.c | 31 +++++++++++++++++++------------
- target/arm/tcg/translate-sve.c |  4 ++--
- 3 files changed, 22 insertions(+), 15 deletions(-)
+ target/arm/internals.h         |  3 ++-
+ target/arm/tcg/mte_helper.c    | 18 ++++++++++++++++++
+ target/arm/tcg/translate-a64.c |  2 ++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate-a64.h b/target/arm/tcg/translate-a64.h
-index cecf2bab8f6..b55dc435fc5 100644
---- a/target/arm/tcg/translate-a64.h
-+++ b/target/arm/tcg/translate-a64.h
-@@ -51,7 +51,7 @@ TCGv_i64 clean_data_tbi(DisasContext *s, TCGv_i64 addr);
- TCGv_i64 gen_mte_check1(DisasContext *s, TCGv_i64 addr, bool is_write,
-                         bool tag_checked, MemOp memop);
- TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
--                        bool tag_checked, int size);
-+                        bool tag_checked, int total_size, MemOp memop);
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index ce26299f7f0..e3029bdc37a 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1242,7 +1242,8 @@ FIELD(MTEDESC, MIDX,  0, 4)
+ FIELD(MTEDESC, TBI,   4, 2)
+ FIELD(MTEDESC, TCMA,  6, 2)
+ FIELD(MTEDESC, WRITE, 8, 1)
+-FIELD(MTEDESC, SIZEM1, 9, SIMD_DATA_BITS - 9)  /* size - 1 */
++FIELD(MTEDESC, ALIGN, 9, 3)
++FIELD(MTEDESC, SIZEM1, 12, SIMD_DATA_BITS - 12)  /* size - 1 */
  
- /* We should have at some point before trying to access an FP register
-  * done the necessary access check, so assert that
+ bool mte_probe(CPUARMState *env, uint32_t desc, uint64_t ptr);
+ uint64_t mte_check(CPUARMState *env, uint32_t desc, uint64_t ptr, uintptr_t ra);
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index a4f3f92bc02..9c64def0816 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -785,6 +785,24 @@ uint64_t mte_check(CPUARMState *env, uint32_t desc, uint64_t ptr, uintptr_t ra)
+ 
+ uint64_t HELPER(mte_check)(CPUARMState *env, uint32_t desc, uint64_t ptr)
+ {
++    /*
++     * R_XCHFJ: Alignment check not caused by memory type is priority 1,
++     * higher than any translation fault.  When MTE is disabled, tcg
++     * performs the alignment check during the code generated for the
++     * memory access.  With MTE enabled, we must check this here before
++     * raising any translation fault in allocation_tag_mem.
++     */
++    unsigned align = FIELD_EX32(desc, MTEDESC, ALIGN);
++    if (unlikely(align)) {
++        align = (1u << align) - 1;
++        if (unlikely(ptr & align)) {
++            int idx = FIELD_EX32(desc, MTEDESC, MIDX);
++            bool w = FIELD_EX32(desc, MTEDESC, WRITE);
++            MMUAccessType type = w ? MMU_DATA_STORE : MMU_DATA_LOAD;
++            arm_cpu_do_unaligned_access(env_cpu(env), ptr, type, idx, GETPC());
++        }
++    }
++
+     return mte_check(env, desc, ptr, GETPC());
+ }
+ 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 85d896e9752..0b600695965 100644
+index 0b600695965..77073a9c1d8 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -285,7 +285,7 @@ TCGv_i64 gen_mte_check1(DisasContext *s, TCGv_i64 addr, bool is_write,
-  * For MTE, check multiple logical sequential accesses.
-  */
- TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
--                        bool tag_checked, int size)
-+                        bool tag_checked, int total_size, MemOp single_mop)
- {
-     if (tag_checked && s->mte_active[0]) {
-         TCGv_i64 ret;
-@@ -295,7 +295,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
+@@ -264,6 +264,7 @@ static TCGv_i64 gen_mte_check1_mmuidx(DisasContext *s, TCGv_i64 addr,
          desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
          desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
          desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
--        desc = FIELD_DP32(desc, MTEDESC, SIZEM1, size - 1);
-+        desc = FIELD_DP32(desc, MTEDESC, SIZEM1, total_size - 1);
++        desc = FIELD_DP32(desc, MTEDESC, ALIGN, get_alignment_bits(memop));
+         desc = FIELD_DP32(desc, MTEDESC, SIZEM1, memop_size(memop) - 1);
  
          ret = tcg_temp_new_i64();
-         gen_helper_mte_check(ret, cpu_env, tcg_constant_i32(desc), addr);
-@@ -2841,14 +2841,12 @@ static void disas_ldst_pair(DisasContext *s, uint32_t insn)
-     bool is_vector = extract32(insn, 26, 1);
-     bool is_load = extract32(insn, 22, 1);
-     int opc = extract32(insn, 30, 2);
--
-     bool is_signed = false;
-     bool postindex = false;
-     bool wback = false;
-     bool set_tag = false;
--
-     TCGv_i64 clean_addr, dirty_addr;
--
-+    MemOp mop;
-     int size;
+@@ -295,6 +296,7 @@ TCGv_i64 gen_mte_checkN(DisasContext *s, TCGv_i64 addr, bool is_write,
+         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
+         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
+         desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
++        desc = FIELD_DP32(desc, MTEDESC, ALIGN, get_alignment_bits(single_mop));
+         desc = FIELD_DP32(desc, MTEDESC, SIZEM1, total_size - 1);
  
-     if (opc == 3) {
-@@ -2931,12 +2929,17 @@ static void disas_ldst_pair(DisasContext *s, uint32_t insn)
-         }
-     }
- 
-+    if (is_vector) {
-+        mop = finalize_memop_asimd(s, size);
-+    } else {
-+        mop = finalize_memop(s, size);
-+    }
-     clean_addr = gen_mte_checkN(s, dirty_addr, !is_load,
--                                (wback || rn != 31) && !set_tag, 2 << size);
-+                                (wback || rn != 31) && !set_tag,
-+                                2 << size, mop);
- 
-     if (is_vector) {
--        MemOp mop = finalize_memop_asimd(s, size);
--
-+        /* LSE2 does not merge FP pairs; leave these as separate operations. */
-         if (is_load) {
-             do_fp_ld(s, rt, clean_addr, mop);
-         } else {
-@@ -2951,9 +2954,11 @@ static void disas_ldst_pair(DisasContext *s, uint32_t insn)
-     } else {
-         TCGv_i64 tcg_rt = cpu_reg(s, rt);
-         TCGv_i64 tcg_rt2 = cpu_reg(s, rt2);
--        MemOp mop = size + 1;
- 
-         /*
-+         * We built mop above for the single logical access -- rebuild it
-+         * now for the paired operation.
-+         *
-          * With LSE2, non-sign-extending pairs are treated atomically if
-          * aligned, and if unaligned one of the pair will be completely
-          * within a 16-byte block and that element will be atomic.
-@@ -2963,6 +2968,7 @@ static void disas_ldst_pair(DisasContext *s, uint32_t insn)
-          * This treats sign-extending loads like zero-extending loads,
-          * since that reuses the most code below.
-          */
-+        mop = size + 1;
-         if (s->align_mem) {
-             mop |= (size == 2 ? MO_ALIGN_4 : MO_ALIGN_8);
-         }
-@@ -3741,7 +3747,7 @@ static void disas_ldst_multiple_struct(DisasContext *s, uint32_t insn)
-      * promote consecutive little-endian elements below.
-      */
-     clean_addr = gen_mte_checkN(s, tcg_rn, is_store, is_postidx || rn != 31,
--                                total);
-+                                total, finalize_memop(s, size));
- 
-     /*
-      * Consecutive little-endian elements from a single register
-@@ -3899,10 +3905,11 @@ static void disas_ldst_single_struct(DisasContext *s, uint32_t insn)
-     total = selem << scale;
-     tcg_rn = cpu_reg_sp(s, rn);
- 
--    clean_addr = gen_mte_checkN(s, tcg_rn, !is_load, is_postidx || rn != 31,
--                                total);
-     mop = finalize_memop(s, scale);
- 
-+    clean_addr = gen_mte_checkN(s, tcg_rn, !is_load, is_postidx || rn != 31,
-+                                total, mop);
-+
-     tcg_ebytes = tcg_constant_i64(1 << scale);
-     for (xs = 0; xs < selem; xs++) {
-         if (replicate) {
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 671d2efa85d..ff050626e66 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -4176,7 +4176,7 @@ void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
- 
-     dirty_addr = tcg_temp_new_i64();
-     tcg_gen_addi_i64(dirty_addr, cpu_reg_sp(s, rn), imm);
--    clean_addr = gen_mte_checkN(s, dirty_addr, false, rn != 31, len);
-+    clean_addr = gen_mte_checkN(s, dirty_addr, false, rn != 31, len, MO_8);
- 
-     /*
-      * Note that unpredicated load/store of vector/predicate registers
-@@ -4278,7 +4278,7 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
- 
-     dirty_addr = tcg_temp_new_i64();
-     tcg_gen_addi_i64(dirty_addr, cpu_reg_sp(s, rn), imm);
--    clean_addr = gen_mte_checkN(s, dirty_addr, false, rn != 31, len);
-+    clean_addr = gen_mte_checkN(s, dirty_addr, false, rn != 31, len, MO_8);
- 
-     /* Note that unpredicated load/store of vector/predicate registers
-      * are defined as a stream of bytes, which equates to little-endian
+         ret = tcg_temp_new_i64();
 -- 
 2.34.1
 
