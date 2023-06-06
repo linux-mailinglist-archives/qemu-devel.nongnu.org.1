@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4A0723F35
+	by mail.lfdr.de (Postfix) with ESMTPS id 23797723F33
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Tme-0000Br-M4; Tue, 06 Jun 2023 06:19:24 -0400
+	id 1q6Tme-0000BA-BM; Tue, 06 Jun 2023 06:19:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1q6Tmc-00006C-7a
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:22 -0400
+ id 1q6Tmb-00005y-VC
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:21 -0400
 Received: from mga05.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1q6TmZ-0007Nm-Jb
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:21 -0400
+ id 1q6TmZ-0007O2-8K
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:19:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1686046759; x=1717582759;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gfQ2g23Frf4Yd2X75DnzGcuHLOvhA17x9xeJUzT/+Xo=;
- b=NUEax+O+zOYozR33kKRjlnTaNw+YxAFekF05yb2n3eegonsSCS3LPPMw
- /IBcdYQZiVOi3Tb2U4T4UeTAH4UyRdryaRGbfrof0DksanmErH2mAlTKY
- DStOv9rXBarP73moYKvAULYfANP8ZvYx7PZKAvgk4xo/dxeyYXgrjPmO5
- LtknnHwHSF45oBN9qtFHMYfKXkXYS8ovSBZKjrcX2v6senekYpTcltt50
- xErDyjOYu5nUbBNDcdGlCTdlX74fk3+FGlGKEN+rSZ3suBXNNE168J0SX
- RP2FmdketVXxrmonyT1UdfuBMxlWZk8b7hVHqcbfYooXL5aP0WN16sA6j g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="443004175"
-X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; d="scan'208";a="443004175"
+ bh=dC+lgwxg/JJaD9IXWM498G29WG/e8Pk7dHwJAztMx18=;
+ b=neS6vFKa5xYOAJzxKSC1K0x/6K4NQhJ57x9eXrudIDXTMvblmKdDN+fQ
+ AYDAjDMG/wc+qkiQEMLS0kv+xEYgYmC2pM0B0WnL1jMMv5DyFQ8G7w/Pn
+ kYtBBoEaa4gaGrgxyb0hAA9RWm0fXffWaN0BK2wA2djrSschuNf749Nyz
+ cN6hrSop9Mu29Wb5cSfLA9i/qI7vgv8IFFSj+tDYzSsdybq4J7U3I8V01
+ hjD55lYBmmGmam0ycBYyb99jvf8RHFy5YkkurJPkcjY/bldBqPqDZ4C1z
+ aOV4ZXI1nx7x8ingzNcz4FRzQq6SATYRX938HthdXU26rDErfFMUhdH+b Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="443004181"
+X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; d="scan'208";a="443004181"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2023 03:19:16 -0700
+ 06 Jun 2023 03:19:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="709032924"
-X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; d="scan'208";a="709032924"
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="709032931"
+X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; d="scan'208";a="709032931"
 Received: from tdx-lm.sh.intel.com ([10.239.53.27])
- by orsmga002.jf.intel.com with ESMTP; 06 Jun 2023 03:19:14 -0700
+ by orsmga002.jf.intel.com with ESMTP; 06 Jun 2023 03:19:16 -0700
 From: Wei Wang <wei.w.wang@intel.com>
 To: quintela@redhat.com,
 	peterx@redhat.com,
 	lei4.wang@intel.com
 Cc: qemu-devel@nongnu.org,
 	Wei Wang <wei.w.wang@intel.com>
-Subject: [PATCH v2 1/2] migration: enfocre multifd and postcopy preempt to be
- set before incoming
-Date: Tue,  6 Jun 2023 18:19:09 +0800
-Message-Id: <20230606101910.20456-2-wei.w.wang@intel.com>
+Subject: [PATCH v2 2/2] qtest/migration-tests.c: use "-incoming defer" for
+ postcopy tests
+Date: Tue,  6 Jun 2023 18:19:10 +0800
+Message-Id: <20230606101910.20456-3-wei.w.wang@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230606101910.20456-1-wei.w.wang@intel.com>
 References: <20230606101910.20456-1-wei.w.wang@intel.com>
@@ -79,91 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_start_incoming_migration needs to check the number of multifd
-channels or postcopy ram channels to configure the backlog parameter (i.e.
-the maximum length to which the queue of pending connections for sockfd
-may grow) of listen(). So enforce the usage of postcopy-preempt and
-multifd as below:
-- need to use "-incoming defer" on the destination; and
-- set_capability and set_parameter need to be done before migrate_incoming
+The Postcopy preempt capability is expected to be set before incoming
+starts, so change the postcopy tests to start with deferred incoming and
+call migrate-incoming after the cap has been set.
 
-Otherwise, disable the use of the features and report error messages to
-remind users to adjust the commands.
+Why the existing tests (without this patch) didn't fail?
+There could be two reasons:
+1) "backlog" specifies the number of pending connections. As long as the
+   server accepts the connections faster than the clients side connecting,
+   connection will succeed. For the preempt test, it uses only 2 channels,
+   so very likely to not have pending connections.
+2) per my tests (on kernel 6.2), the number of pending connections allowed
+   is actually "backlog + 1", which is 2 in this case.
+That said, the implementation of socket_start_incoming_migration_internal
+expects "migrate defer" to be used, and for safety, change the test to
+work with the expected usage.
 
 Signed-off-by: Wei Wang <wei.w.wang@intel.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c | 36 +++++++++++++++++++++++++++++++-----
- 1 file changed, 31 insertions(+), 5 deletions(-)
+ tests/qtest/migration-test.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index b62ab30cd5..01403e5eaa 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -415,6 +415,11 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_background_snapshot,
-     MIGRATION_CAPABILITY_VALIDATE_UUID,
-     MIGRATION_CAPABILITY_ZERO_COPY_SEND);
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b0c355bbd9..cbdbc932de 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -1143,10 +1143,11 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
+                                     QTestState **to_ptr,
+                                     MigrateCommon *args)
+ {
+-    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
++    g_autofree char *uri = NULL;
+     QTestState *from, *to;
++    QDict *rsp;
  
-+static bool migrate_incoming_started(void)
-+{
-+    return !!migration_incoming_get_current()->transport_data;
-+}
-+
- /**
-  * @migration_caps_check - check capability compatibility
-  *
-@@ -538,6 +543,12 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-             error_setg(errp, "Postcopy preempt not compatible with compress");
-             return false;
-         }
-+
-+        if (migrate_incoming_started()) {
-+            error_setg(errp,
-+                       "Postcopy preempt must be set before incoming starts");
-+            return false;
-+        }
+-    if (test_migrate_start(&from, &to, uri, &args->start)) {
++    if (test_migrate_start(&from, &to, "defer", &args->start)) {
+         return -1;
      }
  
-     if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
-@@ -545,6 +556,10 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-             error_setg(errp, "Multifd is not compatible with compress");
-             return false;
-         }
-+        if (migrate_incoming_started()) {
-+            error_setg(errp, "Multifd must be set before incoming starts");
-+            return false;
-+        }
-     }
+@@ -1165,9 +1166,14 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
  
-     return true;
-@@ -998,11 +1013,22 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+     migrate_ensure_non_converge(from);
  
-     /* x_checkpoint_delay is now always positive */
- 
--    if (params->has_multifd_channels && (params->multifd_channels < 1)) {
--        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
--                   "multifd_channels",
--                   "a value between 1 and 255");
--        return false;
-+    if (params->has_multifd_channels) {
-+        if (params->multifd_channels < 1) {
-+            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-+                       "multifd_channels",
-+                       "a value between 1 and 255");
-+            return false;
-+        }
-+        if (migrate_incoming_started()) {
-+            MigrationState *ms = migrate_get_current();
++    rsp = wait_command(to, "{ 'execute': 'migrate-incoming',"
++                           "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
++    qobject_unref(rsp);
 +
-+            ms->capabilities[MIGRATION_CAPABILITY_MULTIFD] = false;
-+            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-+                       "multifd_channels",
-+                       "must be set before incoming starts");
-+            return false;
-+        }
-     }
+     /* Wait for the first serial output from the source */
+     wait_for_serial("src_serial");
  
-     if (params->has_multifd_zlib_level &&
++    uri = migrate_get_socket_address(to, "socket-address");
+     migrate_qmp(from, uri, "{}");
+ 
+     wait_for_migration_pass(from);
 -- 
 2.27.0
 
