@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B50C724638
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC59724635
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:34:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Xid-00053h-S6; Tue, 06 Jun 2023 10:31:31 -0400
+	id 1q6Xif-00054H-E5; Tue, 06 Jun 2023 10:31:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xib-00052j-HI
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q6Xid-00053W-3K
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6XiZ-0001EM-Vx
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:29 -0400
+ id 1q6Xib-0001Eh-Jb
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686061886;
+ s=mimecast20190719; t=1686061888;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lj5av3UWNj/kMdqtmsrtAvKOk0fFWaXs4jRvcp/aN6I=;
- b=bqU2KzhbNps9Atrqa6ZDjScK+7uwtOvFF6U4A6IoU0+2M91BR7oR/utdsw0eGBBtpWAUN3
- QwHFzaDxeXNmQUHbO2xa0F8MwXdY/G4cBf+Ml0MwF+hl3nGpcadkUa4fP+MG/WCTlTsJ3C
- jtIpwThBCznSDt5PkTYGin6Vs1rfzOo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vmO1dxEW5DiludHAYzbG2AOT8q3ojt10yczPYkAfhME=;
+ b=WM4Eyc29VjRUEulhofZuwaBpRzS2o80RtlXLfIOkPWUcCjxTe6OtUxi34Q9yb2WfPXE8zf
+ sGGxrbs1N/WbKwGlkP3vsBK/9WqBLbA3DX+mihE0VcaM10cHYhqalOcghiQlXCSYhGA9h+
+ s5AQA/6wZSbxcg2gGjbHD1xSwtZqnt8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-t-7BObwnMhuVCPaoZ8ifCQ-1; Tue, 06 Jun 2023 10:31:25 -0400
-X-MC-Unique: t-7BObwnMhuVCPaoZ8ifCQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-94a356c74e0so453568566b.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:25 -0700 (PDT)
+ us-mta-371-luaByrUhOKqsS3QwWo5v8A-1; Tue, 06 Jun 2023 10:31:27 -0400
+X-MC-Unique: luaByrUhOKqsS3QwWo5v8A-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5128dcbdfc1so3937464a12.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061884; x=1688653884;
+ d=1e100.net; s=20221208; t=1686061886; x=1688653886;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lj5av3UWNj/kMdqtmsrtAvKOk0fFWaXs4jRvcp/aN6I=;
- b=OWkzwqKVJ0+tZX+IO7bQtchc6kfSG16tL1AsS29f5aEcajqAp43Rw3P3+QkM81emM+
- QiZHEhiGZKqPWojXNJ+doqOpUBzQnGNhIMxGmjMoAQkrWGr55qsErZF6fpG25/n5MmJe
- cU9FUvVyrYPNylPs3bSPwkIBZHbWtF8GhAeg0jKQQCB+UG+fZQ9yjZ4FcfDZTSpu7Pg8
- KumLzMl/awiNCGEO55dCpiI7VxLPUf7hWZNLT+6K9RPm9sosdcCp+sTfe2qylowC1ACt
- 2KcWa5QUb2CxidaO94IC3cWLnj78mjljDi4xUb0V4YCvy2KVOv0qlzYjEVj9n3PBZjIS
- FHzw==
-X-Gm-Message-State: AC+VfDyrzbV0OaKGt9Xj/BhDYEPSMZYxVvfmQUKyEKJ1smOe/mNjpv2c
- o9G8XAq5I6gZRq/I+/D7ou1OFZ0UoFuOeUD+GzJFfUeK4Jbah/6/yPrCgpD9k+q4KN/MczAJimm
- Km7QWUDalnjwbaTbHyOV9I8ezMG4fSg99nq371l7DfW/P+h/CSx7f1ATdijm1c7EW3I5I2/IDn6
- k=
-X-Received: by 2002:a17:907:724c:b0:977:d048:ff9c with SMTP id
- ds12-20020a170907724c00b00977d048ff9cmr2279893ejc.31.1686061884197; 
- Tue, 06 Jun 2023 07:31:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4DVI5uV1xnPukl5n1C+KIV86y9YzmAF2oYd8dyTOV5Az3ldiOux1n1Q/XReJLAJSMDzsxNRg==
-X-Received: by 2002:a17:907:724c:b0:977:d048:ff9c with SMTP id
- ds12-20020a170907724c00b00977d048ff9cmr2279876ejc.31.1686061883926; 
- Tue, 06 Jun 2023 07:31:23 -0700 (PDT)
+ bh=vmO1dxEW5DiludHAYzbG2AOT8q3ojt10yczPYkAfhME=;
+ b=ddpdH+KlKhdAiAblmTRJ55CpFJXyjRUEnaLLw0kIGAvKaDgzz4Xj6G68YYzzSiIcXy
+ +CRlmJENX2DJN8QREw/dIIHligKorrBNjj+b8cWZyuL0HBarYAw4ynz/b1s1ggnVUsd8
+ vCwtOmuDCv9ux/kxUqha9PE6T09qA9FErQ3ZvP7PSwHbQGo3AbRK+aH/uTwKHwUNRAU/
+ Ez25q8V7ENfzRrEzm1jRaYH+MIYftMpYJm91rPHsxQ3IO9ItYtLFaqDrjn3jnGxFsaJp
+ FP2tbHS/n2U7oA3nGVNk3i0gFDIaniIA3UpR5+mRMg+G/EIEW7R7FoQBWKytDL9ZWqaX
+ tgMQ==
+X-Gm-Message-State: AC+VfDzoQYZre0F2BCurnMsK1Q8wiQIkZxANivAf/Yj322A8Xa429Kpm
+ uxClIGC3/DnF/2XWZfOIfGPk4EDXGwNcFoxz4AxbWAOXSqhbaOZ0wlPw/rob9U7JLsbFgz0yd/g
+ nX0tDUpR3CLWkhP4s6M3wd+Sh7zfTb9I03zLCl9nKwCyAbP7n+PpTvieYSsY4sqAFVlwFtEOHGZ
+ A=
+X-Received: by 2002:aa7:da0c:0:b0:514:7f39:aa81 with SMTP id
+ r12-20020aa7da0c000000b005147f39aa81mr1696317eds.20.1686061885772; 
+ Tue, 06 Jun 2023 07:31:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4/pXQlGFQMfO8JrnvowagJN1u3Y0gWxCkEuWjwNC+2DNXc0DuGSxLREX9IQT83YEb5QFoWow==
+X-Received: by 2002:aa7:da0c:0:b0:514:7f39:aa81 with SMTP id
+ r12-20020aa7da0c000000b005147f39aa81mr1696303eds.20.1686061885489; 
+ Tue, 06 Jun 2023 07:31:25 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- lu26-20020a170906fada00b009663115c8f8sm5632414ejb.152.2023.06.06.07.31.22
+ o20-20020aa7dd54000000b00514b044ec41sm5193692edw.35.2023.06.06.07.31.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 07:31:23 -0700 (PDT)
+ Tue, 06 Jun 2023 07:31:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 04/21] meson.build: Group the UI entries in a separate summary
- section
-Date: Tue,  6 Jun 2023 16:30:59 +0200
-Message-Id: <20230606143116.685644-5-pbonzini@redhat.com>
+Subject: [PULL 05/21] meson.build: Group the network backend entries in a
+ separate summary section
+Date: Tue,  6 Jun 2023 16:31:00 +0200
+Message-Id: <20230606143116.685644-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606143116.685644-1-pbonzini@redhat.com>
 References: <20230606143116.685644-1-pbonzini@redhat.com>
@@ -80,7 +80,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,96 +106,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Let's make it easier for the users to spot UI-related entries in
-the summary of the meson output.
+Let's make it easier for the users to spot network-related entries
+in the summary of the meson output.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230602171832.533739-2-thuth@redhat.com>
+Message-Id: <20230602171832.533739-3-thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 38 ++++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 16 deletions(-)
+ meson.build | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 969a84f2a44..cfacd662edb 100644
+index cfacd662edb..b0adf5b4617 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -4227,32 +4227,43 @@ summary_info += {'rng-none':          get_option('rng_none')}
- summary_info += {'Linux keyring':     have_keyring}
- summary(summary_info, bool_yn: true, section: 'Crypto')
+@@ -4251,12 +4251,19 @@ summary_info += {'curses support':    curses}
+ summary_info += {'brlapi support':    brlapi}
+ summary(summary_info, bool_yn: true, section: 'User interface')
  
 -# Libraries
-+# UI
++# Network backends
  summary_info = {}
  if targetos == 'darwin'
-   summary_info += {'Cocoa support':           cocoa}
--  summary_info += {'vmnet.framework support': vmnet}
+   summary_info += {'vmnet.framework support': vmnet}
  endif
- summary_info += {'SDL support':       sdl}
- summary_info += {'SDL image support': sdl_image}
- summary_info += {'GTK support':       gtk}
- summary_info += {'pixman':            pixman}
- summary_info += {'VTE support':       vte}
--summary_info += {'slirp support':     slirp}
--summary_info += {'libtasn1':          tasn1}
--summary_info += {'PAM':               pam}
--summary_info += {'iconv support':     iconv}
--summary_info += {'curses support':    curses}
--summary_info += {'virgl support':     virgl}
--summary_info += {'blkio support':     blkio}
--summary_info += {'curl support':      curl}
--summary_info += {'Multipath support': mpathpersist}
- summary_info += {'PNG support':       png}
- summary_info += {'VNC support':       vnc}
- if vnc.found()
-   summary_info += {'VNC SASL support':  sasl}
-   summary_info += {'VNC JPEG support':  jpeg}
- endif
-+summary_info += {'spice protocol support': spice_protocol}
-+if spice_protocol.found()
-+  summary_info += {'  spice server support': spice}
-+endif
-+summary_info += {'curses support':    curses}
-+summary_info += {'brlapi support':    brlapi}
-+summary(summary_info, bool_yn: true, section: 'User interface')
+ summary_info += {'slirp support':     slirp}
++summary_info += {'vde support':       vde}
++summary_info += {'netmap support':    have_netmap}
++summary_info += {'l2tpv3 support':    have_l2tpv3}
++summary(summary_info, bool_yn: true, section: 'Network backends')
 +
 +# Libraries
 +summary_info = {}
-+if targetos == 'darwin'
-+  summary_info += {'vmnet.framework support': vmnet}
-+endif
-+summary_info += {'slirp support':     slirp}
-+summary_info += {'libtasn1':          tasn1}
-+summary_info += {'PAM':               pam}
-+summary_info += {'iconv support':     iconv}
-+summary_info += {'virgl support':     virgl}
-+summary_info += {'blkio support':     blkio}
-+summary_info += {'curl support':      curl}
-+summary_info += {'Multipath support': mpathpersist}
- if targetos not in ['darwin', 'haiku', 'windows']
-   summary_info += {'OSS support':     oss}
-   summary_info += {'sndio support':   sndio}
-@@ -4267,7 +4278,6 @@ if targetos == 'linux'
+ summary_info += {'libtasn1':          tasn1}
+ summary_info += {'PAM':               pam}
+ summary_info += {'iconv support':     iconv}
+@@ -4278,9 +4285,6 @@ if targetos == 'linux'
  endif
  summary_info += {'Pipewire support':   pipewire}
  summary_info += {'JACK support':      jack}
--summary_info += {'brlapi support':    brlapi}
- summary_info += {'vde support':       vde}
- summary_info += {'netmap support':    have_netmap}
- summary_info += {'l2tpv3 support':    have_l2tpv3}
-@@ -4279,10 +4289,6 @@ summary_info += {'PVRDMA support':    have_pvrdma}
- summary_info += {'fdt support':       fdt_opt == 'disabled' ? false : fdt_opt}
- summary_info += {'libcap-ng support': libcap_ng}
- summary_info += {'bpf support':       libbpf}
--summary_info += {'spice protocol support': spice_protocol}
--if spice_protocol.found()
--  summary_info += {'  spice server support': spice}
--endif
- summary_info += {'rbd support':       rbd}
- summary_info += {'smartcard support': cacard}
- summary_info += {'U2F support':       u2f}
+-summary_info += {'vde support':       vde}
+-summary_info += {'netmap support':    have_netmap}
+-summary_info += {'l2tpv3 support':    have_l2tpv3}
+ summary_info += {'Linux AIO support': libaio}
+ summary_info += {'Linux io_uring support': linux_io_uring}
+ summary_info += {'ATTR/XATTR support': libattr}
 -- 
 2.40.1
 
