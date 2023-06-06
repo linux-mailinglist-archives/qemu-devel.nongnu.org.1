@@ -2,50 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84BF7245F7
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24262724520
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:00:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XfI-00028l-V0; Tue, 06 Jun 2023 10:28:04 -0400
+	id 1q6XDY-0007Se-B6; Tue, 06 Jun 2023 09:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <6a312ec39d5a4407abda6ba323c083c29f7ca3e8@lizzy.crudebyte.com>)
- id 1q6XfG-00028X-60
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:28:02 -0400
-Received: from lizzy.crudebyte.com ([91.194.90.13])
+ (Exim 4.90_1) (envelope-from <SRS0=R+T2=B2=kaod.org=clg@ozlabs.org>)
+ id 1q6XDW-0007SO-Ai; Tue, 06 Jun 2023 09:59:22 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <6a312ec39d5a4407abda6ba323c083c29f7ca3e8@lizzy.crudebyte.com>)
- id 1q6XfA-0000Fd-MW
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:28:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=lizzy; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=4pPWI5mLFEOsumViSFP5le4IvFIYZ5sxaCA6T4FZhmc=; b=B2KH8
- SyEWr7BZrhPxpVuUmhEDiQ553JP8VQf7ptdOpC7JoW+1hf19/GTry6clbAj5ldyklTXwuY3VQfmUs
- BYbRpdgbM68cquMYfI38y6g5rZIEsHe/FnIdTpxsBlTsXsSgHSK8TgI6r4ARRBzCaQYxawW+P/zot
- +fU7Tx/gCwBR9hfAeXWPDcmsl/6et9D66lGywzo3QYcZo50N+SQuJbIJ5rlOdlQCipzg7RdODIIXD
- lgqTPxUO0xKx3NTB1FwzyTEo1RRsxcUVSRZBSJjE3Jk3tJ8G5bJazsiKw7GaqRkK1wdOn+/2jEvBV
- lub+p4U4UoO2bGI0M4I65yPczGALA==;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Tue, 06 Jun 2023 15:57:50 +0200
-Subject: [PATCH v2] 9pfs: prevent opening special files (CVE-2023-2861)
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Mauro Matteo Cascella <mcascell@redhat.com>,
- yw s <ywsplz@gmail.com>, shawtao1125@gmail.com, jkli@xidian.edu.cn,
- shenwenbo@zju.edu.cn
-Message-Id: <E1q6XIJ-0005RX-AW@lizzy.crudebyte.com>
-Received-SPF: none client-ip=91.194.90.13;
- envelope-from=6a312ec39d5a4407abda6ba323c083c29f7ca3e8@lizzy.crudebyte.com;
- helo=lizzy.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <SRS0=R+T2=B2=kaod.org=clg@ozlabs.org>)
+ id 1q6XDT-0002n1-EV; Tue, 06 Jun 2023 09:59:22 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbBsn05GRz4x3k;
+ Tue,  6 Jun 2023 23:59:09 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbBsk6qMWz4wgv;
+ Tue,  6 Jun 2023 23:59:06 +1000 (AEST)
+Message-ID: <e3f591df-6569-b396-0cf7-0ea62aee9f0c@kaod.org>
+Date: Tue, 6 Jun 2023 15:59:03 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 0/4] ppc/pnv: Add chiptod and core timebase state machine
+ models
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Frederic Barrat <frederic.barrat@fr.ibm.com>,
+ Michael Neuling <mikey@neuling.org>
+References: <20230603233612.125879-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230603233612.125879-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=R+T2=B2=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,185 +67,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 9p protocol does not specifically define how server shall behave when
-client tries to open a special file, however from security POV it does
-make sense for 9p server to prohibit opening any special file on host side
-in general. A sane Linux 9p client for instance would never attempt to
-open a special file on host side, it would always handle those exclusively
-on its guest side. A malicious client however could potentially escape
-from the exported 9p tree by creating and opening a device file on host
-side.
+On 6/4/23 01:36, Nicholas Piggin wrote:
+> This adds support for chiptod and core timebase state machine models in
+> the powernv POWER9 and POWER10 models.
+> 
+> This does not actually change the time or the value in TB registers
+> (because they are alrady synced in QEMU), but it does go through the
+> motions. It is enough to be able to run skiboot's chiptod initialisation
+> code that synchronises core timebases (after a patch to prevent skiboot
+> skipping chiptod for QEMU, posted to skiboot mailing list).
+> 
+> Sorry there was some delay since the last posting. There is a bit more
+> interest in this recently but feedback and comments from RFC was not
+> forgotten and is much appreciated.
+> 
+> https://lists.gnu.org/archive/html/qemu-ppc/2022-08/msg00324.html
+> 
+> I think I accounted for everything except moving register defines to the
+> .h file. I'm on the fence about that but if they are only used in the .c
+> file I think it's okay to keep them there for now. I cut out a lot of
+> unused ones so it's not so cluttered now.
+> 
+> Lots of other changes and fixes since that RFC. Notably:
+> - Register names changed to match the workbook names instead of skiboot.
+> - TFMR moved to timebase_helper.c from misc_helper.c
+> - More comprehensive model and error checking, particularly of TFMR.
+> - POWER10 with multi-chip support.
+> - chiptod and core timebase linked via specific state instead of TFMR.
 
-With QEMU this could only be exploited in the following unsafe setups:
 
-  - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
-    security model.
+The chiptod units are not exposed to the OS, it is all handled at FW
+level AFAIK. Could the OPAL people provide some feedback on the low level
+models ?
 
-or
+Thanks,
 
-  - Using 9p 'proxy' fs driver (which is running its helper daemon as
-    root).
+C.
 
-These setups were already discouraged for safety reasons before,
-however for obvious reasons we are now tightening behaviour on this.
-
-Fixes: CVE-2023-2861
-Reported-by: Yanwu Shen <ywsPlz@gmail.com>
-Reported-by: Jietao Xiao <shawtao1125@gmail.com>
-Reported-by: Jinku Li <jkli@xidian.edu.cn>
-Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- v1 -> v2:
- - Add equivalent fix for 'proxy' fs driver.
- - Minor adjustments on commit log.
-
- fsdev/virtfs-proxy-helper.c | 48 +++++++++++++++++++++++++++++++++++--
- hw/9pfs/9p-util.h           | 29 ++++++++++++++++++++++
- 2 files changed, 75 insertions(+), 2 deletions(-)
-
-diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
-index 5cafcd7703..f311519fa3 100644
---- a/fsdev/virtfs-proxy-helper.c
-+++ b/fsdev/virtfs-proxy-helper.c
-@@ -26,6 +26,7 @@
- #include "qemu/xattr.h"
- #include "9p-iov-marshal.h"
- #include "hw/9pfs/9p-proxy.h"
-+#include "hw/9pfs/9p-util.h"
- #include "fsdev/9p-iov-marshal.h"
- 
- #define PROGNAME "virtfs-proxy-helper"
-@@ -338,6 +339,49 @@ static void resetugid(int suid, int sgid)
-     }
- }
- 
-+/*
-+ * Open regular file or directory. Attempts to open any special file are
-+ * rejected.
-+ *
-+ * returns file descriptor or -1 on error
-+ */
-+static int open_regular(const char *pathname, int flags, mode_t mode) {
-+    int fd;
-+    struct stat stbuf;
-+
-+    fd = open(pathname, flags, mode);
-+    if (fd < 0) {
-+        return fd;
-+    }
-+
-+    /* CVE-2023-2861: Prohibit opening any special file directly on host
-+     * (especially device files), as a compromised client could potentially
-+     * gain access outside exported tree under certain, unsafe setups. We
-+     * expect client to handle I/O on special files exclusively on guest side.
-+     */
-+    if (qemu_fstat(fd, &stbuf) < 0) {
-+        close_preserve_errno(fd);
-+        return -1;
-+    }
-+    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
-+        /* Tcreate and Tlcreate 9p messages mandate to immediately open the
-+         * created file for I/O. So this is not (necessarily) due to a broken
-+         * client, and hence no error message is to be reported in this case.
-+         */
-+        if (!(flags & O_CREAT)) {
-+            error_report_once(
-+                "9p: broken or compromised client detected; attempt to open "
-+                "special file (i.e. neither regular file, nor directory)"
-+            );
-+        }
-+        close(fd);
-+        errno = ENXIO;
-+        return -1;
-+    }
-+
-+    return fd;
-+}
-+
- /*
-  * send response in two parts
-  * 1) ProxyHeader
-@@ -682,7 +726,7 @@ static int do_create(struct iovec *iovec)
-     if (ret < 0) {
-         goto unmarshal_err_out;
-     }
--    ret = open(path.data, flags, mode);
-+    ret = open_regular(path.data, flags, mode);
-     if (ret < 0) {
-         ret = -errno;
-     }
-@@ -707,7 +751,7 @@ static int do_open(struct iovec *iovec)
-     if (ret < 0) {
-         goto err_out;
-     }
--    ret = open(path.data, flags);
-+    ret = open_regular(path.data, flags, 0);
-     if (ret < 0) {
-         ret = -errno;
-     }
-diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-index c314cf381d..9da1a0538d 100644
---- a/hw/9pfs/9p-util.h
-+++ b/hw/9pfs/9p-util.h
-@@ -13,6 +13,8 @@
- #ifndef QEMU_9P_UTIL_H
- #define QEMU_9P_UTIL_H
- 
-+#include "qemu/error-report.h"
-+
- #ifdef O_PATH
- #define O_PATH_9P_UTIL O_PATH
- #else
-@@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
- #endif
- 
- #define qemu_openat     openat
-+#define qemu_fstat      fstat
- #define qemu_fstatat    fstatat
- #define qemu_mkdirat    mkdirat
- #define qemu_renameat   renameat
-@@ -118,6 +121,7 @@ static inline int openat_file(int dirfd, const char *name, int flags,
-                               mode_t mode)
- {
-     int fd, serrno, ret;
-+    struct stat stbuf;
- 
- #ifndef CONFIG_DARWIN
- again:
-@@ -142,6 +146,31 @@ again:
-         return -1;
-     }
- 
-+    /* CVE-2023-2861: Prohibit opening any special file directly on host
-+     * (especially device files), as a compromised client could potentially
-+     * gain access outside exported tree under certain, unsafe setups. We
-+     * expect client to handle I/O on special files exclusively on guest side.
-+     */
-+    if (qemu_fstat(fd, &stbuf) < 0) {
-+        close_preserve_errno(fd);
-+        return -1;
-+    }
-+    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
-+        /* Tcreate and Tlcreate 9p messages mandate to immediately open the
-+         * created file for I/O. So this is not (necessarily) due to a broken
-+         * client, and hence no error message is to be reported in this case.
-+         */
-+        if (!(flags & O_CREAT)) {
-+            error_report_once(
-+                "9p: broken or compromised client detected; attempt to open "
-+                "special file (i.e. neither regular file, nor directory)"
-+            );
-+        }
-+        close(fd);
-+        errno = ENXIO;
-+        return -1;
-+    }
-+
-     serrno = errno;
-     /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
-      * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
--- 
-2.30.2
+> There is still a vast amount that is not modeled, but most of it related
+> to error handling, injection, failover, etc that is very complicated and
+> not required for normal operation.
+> 
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (4):
+>    pnv/chiptod: Add POWER9/10 chiptod model
+>    target/ppc: Tidy POWER book4 SPR registration
+>    target/ppc: add TFMR SPR implementation with read and write helpers
+>    target/ppc: Implement core timebase state machine and TFMR
+> 
+>   hw/ppc/meson.build           |   1 +
+>   hw/ppc/pnv.c                 |  38 +++
+>   hw/ppc/pnv_chiptod.c         | 488 +++++++++++++++++++++++++++++++++++
+>   hw/ppc/pnv_xscom.c           |   2 +
+>   hw/ppc/trace-events          |   4 +
+>   include/hw/ppc/pnv_chip.h    |   3 +
+>   include/hw/ppc/pnv_chiptod.h |  64 +++++
+>   include/hw/ppc/pnv_core.h    |   3 +
+>   include/hw/ppc/pnv_xscom.h   |   9 +
+>   target/ppc/cpu.h             |  40 +++
+>   target/ppc/cpu_init.c        |  92 ++++---
+>   target/ppc/helper.h          |   2 +
+>   target/ppc/spr_common.h      |   2 +
+>   target/ppc/timebase_helper.c | 156 +++++++++++
+>   target/ppc/translate.c       |  10 +
+>   15 files changed, 882 insertions(+), 32 deletions(-)
+>   create mode 100644 hw/ppc/pnv_chiptod.c
+>   create mode 100644 include/hw/ppc/pnv_chiptod.h
+> 
 
 
