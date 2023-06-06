@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FD1723E67
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E832A723E6F
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TIx-0007oi-SO; Tue, 06 Jun 2023 05:48:43 -0400
+	id 1q6TIr-0007kF-Ak; Tue, 06 Jun 2023 05:48:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIp-0007jK-47
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:35 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1q6TIl-0007gX-N4
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:31 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIj-0004m0-Nc
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:34 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-30ae967ef74so4631007f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:25 -0700 (PDT)
+ id 1q6TIi-0004m9-S9
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:31 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3094910b150so6000330f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1686044905; x=1688636905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Ckp/wBSfFnkv4vrWWhbnnMtnjKyVqQNIxbNpABnud0Q=;
- b=SGb77HOWaHyA3TK/g1iXVzALXf9Xsd9mbPOcV6QvPDatcEaBgdWvB6vLOluwt3taS/
- qThbKBds4sJZvlHTdsYoitHrE6cFE7TjA/3/L2w/XK16rwOmcMbVo2ikLMdJZRvQcyvl
- b3WLdUZ6gcbt7b8PdWtjUBiJa+3EEOlGrMFXKKDlY8efc9pULOws/HP9NVaaiwU9+Vxx
- 84MdLMfyKfd6Hynqm/NPxm5r7foU588YIQxgkbD7UhuopjaHgHutUGOPv5yOSR14kGlt
- 1QMlM0VOHW3SMiaoi9g6a5u6+PUUGQ/+QZmnYyHvXtEVj5y8vHcjTS+icmKtKcm1rWH9
- A/SA==
+ :reply-to; bh=Et2qUptw81NHilUmOkdAFt1UlRfDK+zLpfIlo91MuxU=;
+ b=apK7H3p15vHLDXNXKc/5dhAj2DME6JsRscYgLkYyTzZ49GgSgvfayX0ByYD4M14Zx0
+ MBB0/xMl+RHAT84uNRNT/wOXxS3T9N0rB/UUGfkUF207Y33QcnRGcP5ancu3+KP6KoLr
+ pjMqyPYSrGqAe/a8qZyZabBhP0cha4Zl8QYkriKQl8MfY7fTAFZJABNNyNbfEfsqDxZm
+ 96brzg315o9pHDLmF3YuWp7YMny1/9th9aISntnUnT+MJyTq3k8RQdC4q6aphZfGJzCx
+ CKB6fZnS4Eni0bj3cOOIS0KwejF1ti8ExhOvsnNuB051lvDcBtIrGcOfDAs+vCjP8JWH
+ krtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1686044905; x=1688636905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ckp/wBSfFnkv4vrWWhbnnMtnjKyVqQNIxbNpABnud0Q=;
- b=GBwqa1K+fFy0hQlNIJ6JclYLIacLrcQrlg/JsXU2jMw0PqUkmOyKptds8n16bkPULk
- GbVG1MHfjXnuy1m5clPzy2njmwViUL5Wwvc6XuJ2Fh8sqUFV8fRJCfg+ZMqnREQymEhN
- R6MchfGMzCNqWLo+rzMeMsH/fzkJIkrrtt13GG/AS5V7fsIcjro/CrOQm77YkqWL1FPQ
- 7MWJkjftbNwGziIUjHdRUGEHOs0DmhhMwiJGntd7JZi3UYhRT7H6DHQWPa7hXbz0PTai
- n+XIu/lMflhfhpT9SiCGdPw7ngfPgoU1H80wOapGi2rKY/94GdUUWAUqR6mUMCKA+mtg
- rpSA==
-X-Gm-Message-State: AC+VfDxnDSZvHbtmPCoOa+W47h2WWmhDDohbxzEfUND2FPW/ht0lNVCg
- h8MLGMkPAv99H/obb3Ck2vT1kyGzM/gJ5Fje8ig=
-X-Google-Smtp-Source: ACHHUZ69aAl1MI9eEzeQVbqQgTjPBO+zzyEroSI6rCxbKwGsHODjm3/z9gQ7AvggvnFhvdlOE5l2iA==
-X-Received: by 2002:a5d:4589:0:b0:30a:d246:32c2 with SMTP id
- p9-20020a5d4589000000b0030ad24632c2mr1455132wrq.23.1686044905026; 
+ bh=Et2qUptw81NHilUmOkdAFt1UlRfDK+zLpfIlo91MuxU=;
+ b=Fu3wiLlgWJJg61pkji5Biyp2aDsxmv51zNBoRR7NE80S4m4I8fZaavI4/98YjOpzsL
+ /OOJB+eNhv7ou1IvKg7uDnG/P23p/XUOjmuPX5RLcbW/jkL/pS6ZSxBmuOahTMdc44sx
+ CdwoxdbJX4bObFaIsqXhAuumZRnLRXk/Jc3C2+A9NE9IWpumu+GkYAc9o6zA/jxxF1Qr
+ TE0H1BpFqwamqE6RIha5kCzxyz0AiKe1ieFVid+ow5JBNTLY7bSw1WhqMuhwNuMO+rj/
+ gPP0agA0xL54Sr/sdKfUA8C1tN3foSHb87180DJrovYSAqykYV3W7eoMihRO7ePowDqP
+ Ebow==
+X-Gm-Message-State: AC+VfDwJUmS5UayKPrC5FUoNbGLXKo2mq79igJfpR+6EcfEyPwPOwUJ7
+ oTfBYh9+d0Gq7GhiNRkCYpQhI2e9d+qtnuNuewc=
+X-Google-Smtp-Source: ACHHUZ7N3uNlwZCyeG32LAAEVEABttV1ZsYQFDjEc9ygn65btXGmMXitsUwAMT7nBsjOIqTzBaL1fw==
+X-Received: by 2002:a5d:49ce:0:b0:30e:2ff3:8c88 with SMTP id
+ t14-20020a5d49ce000000b0030e2ff38c88mr1318790wrs.35.1686044905453; 
  Tue, 06 Jun 2023 02:48:25 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.24
+ v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 02:48:24 -0700 (PDT)
+ Tue, 06 Jun 2023 02:48:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/42] tests: avocado: boot_linux_console: Add test case for
- bpim2u
-Date: Tue,  6 Jun 2023 10:47:50 +0100
-Message-Id: <20230606094814.3581397-19-peter.maydell@linaro.org>
+Subject: [PULL 19/42] docs: system: arm: Introduce bananapi_m2u
+Date: Tue,  6 Jun 2023 10:47:51 +0100
+Message-Id: <20230606094814.3581397-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230606094814.3581397-1-peter.maydell@linaro.org>
 References: <20230606094814.3581397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,203 +93,175 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: qianfan Zhao <qianfanguijin@163.com>
 
-Add test case for booting from initrd and sd card.
+Add documents for Banana Pi M2U
 
 Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
 Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
-Tested-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+[PMM: Minor format fixes to correct sphinx errors]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/avocado/boot_linux_console.py | 176 ++++++++++++++++++++++++++++
- 1 file changed, 176 insertions(+)
+ docs/system/arm/bananapi_m2u.rst | 139 +++++++++++++++++++++++++++++++
+ docs/system/target-arm.rst       |   1 +
+ 2 files changed, 140 insertions(+)
+ create mode 100644 docs/system/arm/bananapi_m2u.rst
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index c0675809e64..6ed660611fe 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -769,6 +769,182 @@ def test_arm_quanta_gsj_initrd(self):
-         self.wait_for_console_pattern(
-                 'Give root password for system maintenance')
- 
-+    def test_arm_bpim2u(self):
-+        """
-+        :avocado: tags=arch:arm
-+        :avocado: tags=machine:bpim2u
-+        :avocado: tags=accel:tcg
-+        """
-+        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
-+                   'linux-image-current-sunxi_21.02.2_armhf.deb')
-+        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-+        kernel_path = self.extract_from_deb(deb_path,
-+                                            '/boot/vmlinuz-5.10.16-sunxi')
-+        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
-+                    'sun8i-r40-bananapi-m2-ultra.dtb')
-+        dtb_path = self.extract_from_deb(deb_path, dtb_path)
+diff --git a/docs/system/arm/bananapi_m2u.rst b/docs/system/arm/bananapi_m2u.rst
+new file mode 100644
+index 00000000000..b09ba5c5486
+--- /dev/null
++++ b/docs/system/arm/bananapi_m2u.rst
+@@ -0,0 +1,139 @@
++Banana Pi BPI-M2U (``bpim2u``)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0,115200n8 '
-+                               'earlycon=uart,mmio32,0x1c28000')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-append', kernel_command_line)
-+        self.vm.launch()
-+        console_pattern = 'Kernel command line: %s' % kernel_command_line
-+        self.wait_for_console_pattern(console_pattern)
++Banana Pi BPI-M2 Ultra is a quad-core mini single board computer built with
++Allwinner A40i/R40/V40 SoC. It features 2GB of RAM and 8GB eMMC. It also
++has onboard WiFi and BT. On the ports side, the BPI-M2 Ultra has 2 USB A
++2.0 ports, 1 USB OTG port, 1 HDMI port, 1 audio jack, a DC power port,
++and last but not least, a SATA port.
 +
-+    def test_arm_bpim2u_initrd(self):
-+        """
-+        :avocado: tags=arch:arm
-+        :avocado: tags=accel:tcg
-+        :avocado: tags=machine:bpim2u
-+        """
-+        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
-+                   'linux-image-current-sunxi_21.02.2_armhf.deb')
-+        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-+        kernel_path = self.extract_from_deb(deb_path,
-+                                            '/boot/vmlinuz-5.10.16-sunxi')
-+        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
-+                    'sun8i-r40-bananapi-m2-ultra.dtb')
-+        dtb_path = self.extract_from_deb(deb_path, dtb_path)
-+        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
-+                      '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
-+                      'arm/rootfs-armv7a.cpio.gz')
-+        initrd_hash = '604b2e45cdf35045846b8bbfbf2129b1891bdc9c'
-+        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
-+        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
-+        archive.gzip_uncompress(initrd_path_gz, initrd_path)
++Supported devices
++"""""""""""""""""
 +
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0,115200 '
-+                               'panic=-1 noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Boot successful.')
++The Banana Pi M2U machine supports the following devices:
 +
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'Allwinner sun8i Family')
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
-+                                                'system-control@1c00000')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
++ * SMP (Quad Core Cortex-A7)
++ * Generic Interrupt Controller configuration
++ * SRAM mappings
++ * SDRAM controller
++ * Timer device (re-used from Allwinner A10)
++ * UART
++ * SD/MMC storage controller
++ * EMAC ethernet
++ * GMAC ethernet
++ * Clock Control Unit
++ * TWI (I2C)
 +
-+    def test_arm_bpim2u_gmac(self):
-+        """
-+        :avocado: tags=arch:arm
-+        :avocado: tags=accel:tcg
-+        :avocado: tags=machine:bpim2u
-+        :avocado: tags=device:sd
-+        """
-+        self.require_netdev('user')
++Limitations
++"""""""""""
 +
-+        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
-+                   'linux-image-current-sunxi_21.02.2_armhf.deb')
-+        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-+        kernel_path = self.extract_from_deb(deb_path,
-+                                            '/boot/vmlinuz-5.10.16-sunxi')
-+        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
-+                    'sun8i-r40-bananapi-m2-ultra.dtb')
-+        dtb_path = self.extract_from_deb(deb_path, dtb_path)
-+        rootfs_url = ('http://storage.kernelci.org/images/rootfs/buildroot/'
-+                      'buildroot-baseline/20221116.0/armel/rootfs.ext2.xz')
-+        rootfs_hash = 'fae32f337c7b87547b10f42599acf109da8b6d9a'
-+        rootfs_path_xz = self.fetch_asset(rootfs_url, asset_hash=rootfs_hash)
-+        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
-+        archive.lzma_uncompress(rootfs_path_xz, rootfs_path)
-+        image_pow2ceil_expand(rootfs_path)
++Currently, Banana Pi M2U does *not* support the following features:
 +
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'console=ttyS0,115200 '
-+                               'root=/dev/mmcblk0 rootwait rw '
-+                               'panic=-1 noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-drive', 'file=' + rootfs_path + ',if=sd,format=raw',
-+                         '-net', 'nic,model=gmac,netdev=host_gmac',
-+                         '-netdev', 'user,id=host_gmac',
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        shell_ready = "/bin/sh: can't access tty; job control turned off"
-+        self.wait_for_console_pattern(shell_ready)
++- Graphical output via HDMI, GPU and/or the Display Engine
++- Audio output
++- Hardware Watchdog
++- Real Time Clock
++- USB 2.0 interfaces
 +
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'Allwinner sun8i Family')
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/partitions',
-+                                                'mmcblk0')
-+        exec_command_and_wait_for_pattern(self, 'ifconfig eth0 up',
-+                                                 'eth0: Link is Up')
-+        exec_command_and_wait_for_pattern(self, 'udhcpc eth0',
-+            'udhcpc: lease of 10.0.2.15 obtained')
-+        exec_command_and_wait_for_pattern(self, 'ping -c 3 10.0.2.2',
-+            '3 packets transmitted, 3 packets received, 0% packet loss')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
++Also see the 'unimplemented' array in the Allwinner R40 SoC module
++for a complete list of unimplemented I/O devices: ``./hw/arm/allwinner-r40.c``
 +
-+    @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
-+    def test_arm_bpim2u_openwrt_22_03_3(self):
-+        """
-+        :avocado: tags=arch:arm
-+        :avocado: tags=machine:bpim2u
-+        :avocado: tags=device:sd
-+        """
++Boot options
++""""""""""""
 +
-+        # This test download a 8.9 MiB compressed image and expand it
-+        # to 127 MiB.
-+        image_url = ('https://downloads.openwrt.org/releases/22.03.3/targets/'
-+                     'sunxi/cortexa7/openwrt-22.03.3-sunxi-cortexa7-'
-+                     'sinovoip_bananapi-m2-ultra-ext4-sdcard.img.gz')
-+        image_hash = ('5b41b4e11423e562c6011640f9a7cd3b'
-+                      'dd0a3d42b83430f7caa70a432e6cd82c')
-+        image_path_gz = self.fetch_asset(image_url, asset_hash=image_hash,
-+                                         algorithm='sha256')
-+        image_path = archive.extract(image_path_gz, self.workdir)
-+        image_pow2ceil_expand(image_path)
++The Banana Pi M2U machine can start using the standard -kernel functionality
++for loading a Linux kernel or ELF executable. Additionally, the Banana Pi M2U
++machine can also emulate the BootROM which is present on an actual Allwinner R40
++based SoC, which loads the bootloader from a SD card, specified via the -sd
++argument to qemu-system-arm.
 +
-+        self.vm.set_console()
-+        self.vm.add_args('-drive', 'file=' + image_path + ',if=sd,format=raw',
-+                         '-nic', 'user',
-+                         '-no-reboot')
-+        self.vm.launch()
++Running mainline Linux
++""""""""""""""""""""""
 +
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'usbcore.nousb '
-+                               'noreboot')
++To build a Linux mainline kernel that can be booted by the Banana Pi M2U machine,
++simply configure the kernel using the sunxi_defconfig configuration:
 +
-+        self.wait_for_console_pattern('U-Boot SPL')
++.. code-block:: bash
 +
-+        interrupt_interactive_console_until_pattern(
-+                self, 'Hit any key to stop autoboot:', '=>')
-+        exec_command_and_wait_for_pattern(self, "setenv extraargs '" +
-+                                                kernel_command_line + "'", '=>')
-+        exec_command_and_wait_for_pattern(self, 'boot', 'Starting kernel ...');
++  $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make mrproper
++  $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make sunxi_defconfig
 +
-+        self.wait_for_console_pattern(
-+            'Please press Enter to activate this console.')
++To boot the newly build linux kernel in QEMU with the Banana Pi M2U machine, use:
 +
-+        exec_command_and_wait_for_pattern(self, ' ', 'root@')
++.. code-block:: bash
 +
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'Allwinner sun8i Family')
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
-+                                                'system-control@1c00000')
++  $ qemu-system-arm -M bpim2u -nographic \
++      -kernel /path/to/linux/arch/arm/boot/zImage \
++      -append 'console=ttyS0,115200' \
++      -dtb /path/to/linux/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb
 +
-     def test_arm_orangepi(self):
-         """
-         :avocado: tags=arch:arm
++Banana Pi M2U images
++""""""""""""""""""""
++
++Note that the mainline kernel does not have a root filesystem. You can choose
++to build you own image with buildroot using the bananapi_m2_ultra_defconfig.
++Also see https://buildroot.org for more information.
++
++Another possibility is to run an OpenWrt image for Banana Pi M2U which
++can be downloaded from:
++
++   https://downloads.openwrt.org/releases/22.03.3/targets/sunxi/cortexa7/
++
++When using an image as an SD card, it must be resized to a power of two. This can be
++done with the ``qemu-img`` command. It is recommended to only increase the image size
++instead of shrinking it to a power of two, to avoid loss of data. For example,
++to prepare a downloaded Armbian image, first extract it and then increase
++its size to one gigabyte as follows:
++
++.. code-block:: bash
++
++  $ qemu-img resize \
++    openwrt-22.03.3-sunxi-cortexa7-sinovoip_bananapi-m2-ultra-ext4-sdcard.img \
++    1G
++
++Instead of providing a custom Linux kernel via the -kernel command you may also
++choose to let the Banana Pi M2U machine load the bootloader from SD card, just like
++a real board would do using the BootROM. Simply pass the selected image via the -sd
++argument and remove the -kernel, -append, -dbt and -initrd arguments:
++
++.. code-block:: bash
++
++  $ qemu-system-arm -M bpim2u -nic user -nographic \
++    -sd openwrt-22.03.3-sunxi-cortexa7-sinovoip_bananapi-m2-ultra-ext4-sdcard.img
++
++Running U-Boot
++""""""""""""""
++
++U-Boot mainline can be build and configured using the Bananapi_M2_Ultra_defconfig
++using similar commands as describe above for Linux. Note that it is recommended
++for development/testing to select the following configuration setting in U-Boot:
++
++  Device Tree Control > Provider for DTB for DT Control > Embedded DTB
++
++The BootROM of allwinner R40 loading u-boot from the 8KiB offset of sdcard.
++Let's create an bootable disk image:
++
++.. code-block:: bash
++
++  $ dd if=/dev/zero of=sd.img bs=32M count=1
++  $ dd if=u-boot-sunxi-with-spl.bin of=sd.img bs=1k seek=8 conv=notrunc
++
++And then boot it.
++
++.. code-block:: bash
++
++  $ qemu-system-arm -M bpim2u -nographic -sd sd.img
++
++Banana Pi M2U integration tests
++"""""""""""""""""""""""""""""""
++
++The Banana Pi M2U machine has several integration tests included.
++To run the whole set of tests, build QEMU from source and simply
++provide the following command:
++
++.. code-block:: bash
++
++  $ cd qemu-build-dir
++  $ AVOCADO_ALLOW_LARGE_STORAGE=yes tests/venv/bin/avocado \
++    --verbose --show=app,console run -t machine:bpim2u \
++    ../tests/avocado/boot_linux_console.py
+diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
+index 91ebc26c6db..a12b6bca051 100644
+--- a/docs/system/target-arm.rst
++++ b/docs/system/target-arm.rst
+@@ -83,6 +83,7 @@ undocumented; you can get a complete list by running
+    arm/versatile
+    arm/vexpress
+    arm/aspeed
++   arm/bananapi_m2u.rst
+    arm/sabrelite
+    arm/digic
+    arm/cubieboard
 -- 
 2.34.1
 
