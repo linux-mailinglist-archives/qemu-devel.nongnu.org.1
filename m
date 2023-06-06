@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABC2725018
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 00:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267ED725029
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 00:50:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6fRX-0005Eq-HN; Tue, 06 Jun 2023 18:46:23 -0400
+	id 1q6fVI-00082z-II; Tue, 06 Jun 2023 18:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6fRV-0005DP-FY
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 18:46:21 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1q6fVG-00082X-DC
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 18:50:14 -0400
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6fRR-0001GC-0w
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 18:46:21 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-53fbf2c42bfso6057154a12.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 15:46:14 -0700 (PDT)
+ id 1q6fVE-0002id-GX
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 18:50:14 -0400
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-33b1da9a8acso1317305ab.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 15:50:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686091573; x=1688683573;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DkTYcH4LNlY/B3s1+2jz5JvJQylcIE4mksKLEpxuLsc=;
- b=PndiyLv+BMaZ34O7m0V3FKkn4UxjU+qWLG9c3F2GaCbvOSj5soChsPABNRbQjGvi6j
- vwLbZaVQaAnLQ5ZXX4uFGsO5/I7SGA3dr+wBwYrsoMDOu4rf9mnSkhCTBFMNd9YXilFt
- FgbyxF+mjVXJeXnCxIM6+b+4+uOIc0HYZ8NGid8q89x9uAfcYzdYEbYzOt0iUWnsbPZy
- CuWDa6gNwzQOoCnN8ImwdsDFi1ae3BS0YCgcGnKflXlKWr69q8BCMaVzaZti2Bsb4DIK
- yOkpx4hCs7FwMiTbUEj3IYv/Sy0Agb9LVUTaTWCZHtZTadYcP4Gwm+jShuOQcmXdJ/kl
- AHOA==
+ d=linaro.org; s=google; t=1686091811; x=1688683811;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nM6O12g6TizGQOEtVMbmIHoScoGK2YgQ959ZR0ukAKI=;
+ b=rNunSLH1Wt8Ez1HCDKnh+1RDcJNClMANrcPpalmS6uR2Xf6jNFGgwoOqVuXBrhjMV+
+ sN1BqTl6CW8qOHJ6goNCOAZ5KQKE+q8BqEG7YymFxVzTMEEP74VDrq8Lu01YzKRW36D8
+ Sf9qJ1rb2bhuBpe61ZUIjau36wAv0SKS1fIQdv+XKIE9n48fA7/0169IOnFaf7nAacEb
+ XRUqML8qQJkqvfBJv2dp7/7KyhgFNrXEaEOzVL3UbtVB7pc11ofVA3+2fPRNackYetI3
+ hTlvh327nyCc9SZjy/W6wbYkbsGg+WRliqNf2aWby4PT0pJETZYkfPIAgSVpc+pKBNpm
+ L7TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686091573; x=1688683573;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DkTYcH4LNlY/B3s1+2jz5JvJQylcIE4mksKLEpxuLsc=;
- b=PP3P+AtsxHG0LGkKl/I4CQsPra+RkGkC9sjekQiBGsd6tcq2fow0EV5sfNPPN7+aaB
- qsdgvXgUoOAzooRH01VJadGZvlguRMVhV86WyoupN7NRB42w4yfNssXXS2XBlxkG2SwJ
- IVMYkkQEtXpzFwgPnGc5v/OXjpPIexcwoD9KJe07Y1KzmWGtXwdKZzwCYmjYPiF7D+vc
- X5p33kjqpLAdFE8RAbRsGJ6dsk70eSReRnyZHQgtWa4Iqp1NrjKxTIIW3i9YqaobrdhL
- mg4+e6T7l9wQfTO1vMvK0Nj3Eo/e8V0NZ7jFbw/HGHYWNN9jyfuvjOmr10SOGw6nwM/K
- 48lA==
-X-Gm-Message-State: AC+VfDzc15drIx/1uwxyCsl/OXIiAb03dm51hNT9TiG/GukaUWA+0SjY
- kMlIwaF/DT0YPEg+ppkm6co75wnKvH6iZm0q7OI=
-X-Google-Smtp-Source: ACHHUZ4EKEHvWf07z0wKDpHEhVU3e3QWZOgDsV1LeHDDf9kRtGmnSI+O/Vo8TQDto7VTETyOvfHFng==
-X-Received: by 2002:a05:6a20:734f:b0:10e:440:6d36 with SMTP id
- v15-20020a056a20734f00b0010e04406d36mr1314939pzc.1.1686091572870; 
- Tue, 06 Jun 2023 15:46:12 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ d=1e100.net; s=20221208; t=1686091811; x=1688683811;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nM6O12g6TizGQOEtVMbmIHoScoGK2YgQ959ZR0ukAKI=;
+ b=icRp50gL9kYZVrXUMQnfk+Tx1NvL+N3JYGvlQIMn4vkDZ+TFhhOcCcqrgWMZppiz4Q
+ A9mkkAqB065wgIci/qfbgozpB1nNQNOaPD7cjKvYMEeVpqaWzha1DngWrzf8SnbmKPXf
+ FROq3aM8GKxCAnhGY/twm6Hio1dDGr0BFzS82JmgroOuNnkFJWeksKPdVtDoMOHZ6TVd
+ gXbcxHNr3MHJDXN4e386mV02ASA8LppGwMG6LWbzxrTgZV/hmk3CWVWRPihWk8EWaV0E
+ iCMd+voGqSEvn0fgsx7QoEiWyFP50eN0D+IxCQ9qQiW0W9fcJkiTolotuQDKNtjgFfvN
+ K9uQ==
+X-Gm-Message-State: AC+VfDx1svLwwsY1Zhi/8ojUTVX1McaP/NUwiYX4OIoIuu3M3LDACUhA
+ Xb9EuRDvf+UWnqpQ4SMfYDoZ7w==
+X-Google-Smtp-Source: ACHHUZ5LKWy8Ndotva50+xhjCUqFNenhCUi1y9isrQ27U4JOirze+mxJkWnT3ueHRyJvKqEMPIBDMw==
+X-Received: by 2002:a92:c505:0:b0:338:f770:ccc3 with SMTP id
+ r5-20020a92c505000000b00338f770ccc3mr4650985ilg.21.1686091810859; 
+ Tue, 06 Jun 2023 15:50:10 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
+ ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
  by smtp.gmail.com with ESMTPSA id
- t8-20020aa79388000000b0065cfd5cbef3sm3346969pfe.15.2023.06.06.15.46.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 15:46:12 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	alex.bennee@linaro.org,
-	thuth@redhat.com
-Subject: [PATCH 2/2] gitlab: Add cross-arm64-kvm-only
-Date: Tue,  6 Jun 2023 15:46:09 -0700
-Message-Id: <20230606224609.208550-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230606224609.208550-1-richard.henderson@linaro.org>
-References: <20230606224609.208550-1-richard.henderson@linaro.org>
+ x23-20020a62fb17000000b0064fe06fe712sm7256548pfm.129.2023.06.06.15.50.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 15:50:10 -0700 (PDT)
+Message-ID: <7465b3c6-ecf9-bf17-2504-2338bbef27b7@linaro.org>
+Date: Tue, 6 Jun 2023 15:50:08 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL v3 0/10] xenpvh3-tag
+Content-Language: en-US
+To: "Garhwal, Vikram" <vikram.garhwal@amd.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <alpine.DEB.2.22.394.2305021708010.974517@ubuntu-linux-20-04-desktop>
+ <a01d5ddf-b6b3-7fc7-daef-44debf48ca77@linaro.org>
+ <1f6b3666-fc7e-083a-50fb-b2e91ac2c012@amd.com>
+ <dd7325e0-7db1-3b1f-7ce1-319aa58ebd1f@linaro.org>
+ <MN2PR12MB440877291659B9B55ADC0CF79F52A@MN2PR12MB4408.namprd12.prod.outlook.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <MN2PR12MB440877291659B9B55ADC0CF79F52A@MN2PR12MB4408.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x129.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,39 +101,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are not currently running a --disable-tcg test for arm64,
-like we are for mips, ppc and s390x.  We have a job for the
-native aarch64 runner, but it is not run by default and it
-is not helpful for normal developer testing without access
-to qemu's private runner.
+On 6/6/23 11:51, Garhwal, Vikram wrote:
+> Hi Richard,
+> 
+> I fixed the tsan-build issue but now seeing another issue with “—disable-tcg” option for 
+> cross builds xen. Here is the build failure message:
+> "include/tcg/oversized-guest.h:10:10: fatal error: tcg-target-reg-bits.h: No such file or 
+> directory
+> 
+> 10 | #include "tcg-target-reg-bits.h”
+> 
+> 
+> 
+> Full log for build fail: https://gitlab.com/Vikram.garhwal/qemu-ioreq/-/jobs/4416773231 
+> <https://gitlab.com/Vikram.garhwal/qemu-ioreq/-/jobs/4416773231>.
+> 
+> This is my last patch which enables xen build for ARM: 
+> https://gitlab.com/Vikram.garhwal/qemu-ioreq/-/commit/6f6667217bfc14ff5504ee5fdee23a948d60fb7f <https://gitlab.com/Vikram.garhwal/qemu-ioreq/-/commit/6f6667217bfc14ff5504ee5fdee23a948d60fb7f>.
+> 
+> This seems something missing in disable-tcg config for ARM builds. Any hints on what might 
+> be causing this TCG issue?
+> 
+> Thanks in advance for your help!
 
-Use --without-default-features to eliminate most tests.
+I meant to cc you, but fix here:
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- .gitlab-ci.d/crossbuilds.yml | 8 ++++++++
- 1 file changed, 8 insertions(+)
+https://patchew.org/QEMU/20230606224609.208550-1-richard.henderson@linaro.org/
 
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index 61b8ac86ee..1e0e6c7f2c 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -29,6 +29,14 @@ cross-arm64-user:
-   variables:
-     IMAGE: debian-arm64-cross
- 
-+cross-arm64-kvm-only:
-+  extends: .cross_accel_build_job
-+  needs:
-+    job: arm64-debian-cross-container
-+  variables:
-+    IMAGE: debian-arm64-cross
-+    EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
-+
- cross-i386-user:
-   extends:
-     - .cross_user_build_job
--- 
-2.34.1
 
+r~
 
