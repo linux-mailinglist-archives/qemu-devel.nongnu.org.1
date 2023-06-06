@@ -2,95 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7957F724C5B
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B5B724C8F
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:09:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6bzL-0001YH-Vy; Tue, 06 Jun 2023 15:05:04 -0400
+	id 1q6c2w-0005tQ-OY; Tue, 06 Jun 2023 15:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3UIN_ZAsKCn8dfnhuoh1wqjjrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--ackerleytng.bounces.google.com>)
- id 1q6bzA-0001Tn-S7
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:04:52 -0400
-Received: from mail-pf1-x44a.google.com ([2607:f8b0:4864:20::44a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6c2v-0005s6-9u
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:08:45 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3UIN_ZAsKCn8dfnhuoh1wqjjrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--ackerleytng.bounces.google.com>)
- id 1q6bz8-0002Db-5n
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:04:52 -0400
-Received: by mail-pf1-x44a.google.com with SMTP id
- d2e1a72fcca58-653843401d5so4464848b3a.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:04:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6c2s-0003b6-Cc
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:08:45 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3f6dfc4dffaso55747415e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:08:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1686078288; x=1688670288;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=CCEiTTKrsebxDoXfSRZP/CN+WTuYdz3sOeWxyKUUyPY=;
- b=KFM+d/JKzgYvN5OR6kU44o+ZYxe7Q/H7MNTOnP/z0cxW3//uRTJeZxZ8dFp8Jit4Gf
- YquLlWVy9xCdFnBGp+gPFhLtGo2w3F50cPqXWf8JFYlZ/OGxawmSMJJ/jIE184rG6FHp
- ixTL8P/2ovgE/QdCx/NLmyiW9xL5hbY3itkmDOuPi4r2D/Bp6z5cypKETkTA5IN3CsDs
- 1vhuCHFDhZuON8z8NNnBNoq7He9ZNsDe7Xmjzq9wK+9M2GgIoXw9C4JhNu7KegBFAMS3
- MULic01j2ol2uU6vWbv87Xaf10SomC0FL9lq9TfMGxJn5DnDmpEo+KEOdrVPsgYMpseZ
- BMRw==
+ d=linaro.org; s=google; t=1686078520; x=1688670520;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wOrDBTzQ9E+uGKXbx+R7xonXW0NREdkS+vLXdo+bW9o=;
+ b=BzB0ksE3egzjUpV99CzhAupYsGfFQq9u4lLJ+ftWmhf5MA48UNXHxM/5ov1WurYdNt
+ r5hVqXDc0nIFDkVvmYFFI7+9iP8cyNwqu4q61yiXsDfGwe1dorG6t462Sq8RFBcWH3rh
+ T4/58c4lN4ccTnamcdBg9cSOikpR22f1SHqRObygxccjEIb5YfsWWsjPs4QwPgFoepm9
+ FcZ04Uyi36OG/zLUns72JgpWBRlUjNmJgd7sxn2oxk6+9gUYcUNQjPQ7fJJIpR0wKFvT
+ mK4RcPXIWMuVgyLkgXVlyDwTh7+/x3mJ8INKms88/JiJFym4OttAERXz5ziGXpZbsnpD
+ rnwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686078288; x=1688670288;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CCEiTTKrsebxDoXfSRZP/CN+WTuYdz3sOeWxyKUUyPY=;
- b=HAv617qtRx60Ff+QVKHrcFAZoUAYHARndLzZraj9tMuAtxhPaNgtevex71JRsftJDx
- doTU5nug+l4Un4tDx2vSL6Y6jXWYS/2yUo80O2UQFLnFaPSWpTnV0lGxWzLWFnQHMmut
- XdaZ0Mj44bbakoHNR3q1YRoGqb1bftm619Mu1ItIInVlNrRtviHJArYaez2OiI4FIxal
- bimQGQ3RUT0RvnTNQ0Q1OtJUSPBkERabb3gMfUnFODWb1qA918My33VVcg3cdjmAcdJu
- JneqlbOD7LitQ+2y1ctOVGwJrtqAAVKHstBY+O8K03kYOZXHL5Pxl1agsJwa1BantzdX
- Z/jw==
-X-Gm-Message-State: AC+VfDwC/i1ydGftcFYmUXZRneMK3cDMM3Iyx6el48cgJuWsTS3MJ706
- VWA70HEAoleowPrb0S376c9EOPcBw7JY0zvSnw==
-X-Google-Smtp-Source: ACHHUZ5UZgVYlUWSYfljNriuMM/SFMypamtYGG6ajWbl9pU1XKFK+BBOu36l6aAPASb6U7Gvlg5sOoRl6fqEbUEr5Q==
-X-Received: from ackerleytng-ctop.c.googlers.com
- ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
- (user=ackerleytng job=sendgmr) by 2002:a05:6a00:13a6:b0:657:f26e:b025 with
- SMTP id t38-20020a056a0013a600b00657f26eb025mr1318192pfg.6.1686078288430;
- Tue, 06 Jun 2023 12:04:48 -0700 (PDT)
-Date: Tue,  6 Jun 2023 19:04:04 +0000
-In-Reply-To: <cover.1686077275.git.ackerleytng@google.com>
-Mime-Version: 1.0
-References: <cover.1686077275.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <3ae2d02c45c5fb91b490b1674165c733efb871d6.1686077275.git.ackerleytng@google.com>
-Subject: [RFC PATCH 19/19] KVM: selftests: Update test for various private
- memory backing source types
-From: Ackerley Tng <ackerleytng@google.com>
-To: akpm@linux-foundation.org, mike.kravetz@oracle.com, muchun.song@linux.dev, 
- pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org,
- willy@infradead.org
-Cc: brauner@kernel.org, chao.p.peng@linux.intel.com, coltonlewis@google.com, 
- david@redhat.com, dhildenb@redhat.com, dmatlack@google.com, 
- erdemaktas@google.com, hughd@google.com, isaku.yamahata@gmail.com, 
- jarkko@kernel.org, jmattson@google.com, joro@8bytes.org, 
- jthoughton@google.com, jun.nakajima@intel.com, 
- kirill.shutemov@linux.intel.com, liam.merwick@oracle.com, 
- mail@maciej.szmigiero.name, mhocko@suse.com, michael.roth@amd.com, 
- qperret@google.com, rientjes@google.com, rppt@kernel.org, 
- steven.price@arm.com, tabba@google.com, vannapurve@google.com, vbabka@suse.cz, 
- vipinsh@google.com, vkuznets@redhat.com, wei.w.wang@intel.com, 
- yu.c.zhang@linux.intel.com, kvm@vger.kernel.org, linux-api@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, qemu-devel@nongnu.org, 
- x86@kernel.org, Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::44a;
- envelope-from=3UIN_ZAsKCn8dfnhuoh1wqjjrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--ackerleytng.bounces.google.com;
- helo=mail-pf1-x44a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ d=1e100.net; s=20221208; t=1686078520; x=1688670520;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wOrDBTzQ9E+uGKXbx+R7xonXW0NREdkS+vLXdo+bW9o=;
+ b=TMkqTVs9b1z2E+m/sEY0nZaJNiBMjfJyDbydJ6vvh0VBQJJA24b+yvm8SZvArHilbR
+ KONOla7DvAolLtCWvTt2IU7QcCkp1rs9PFpK3RLM8jCAjDt1eADebX/s7Vhv104/qHgV
+ uW/hjR5PRjeuZXWog1O3703e9pv+gqxC9js9ckjL5WuiT9BZodPQBI92QO5K86gxqpA2
+ WazJYKj2ZdfOxxaTyYskLUY8hsmO9t5C6qe12muEfFKulDe9BKEZnLknUyUvBZOUIQef
+ XmLrxo/8obwOS5sxEN2+b1AFIZ6M2HN3SGfb6HJW/EJw85JHzgqwiro4CWEWBDY4iWOz
+ H1dg==
+X-Gm-Message-State: AC+VfDxW/OHPo3wW0C02rD3SCYRKY3b+PiwvxsI8nROP9UGDR+0cDGKH
+ TSoRONV8Xi46FV8Tk10yFM8A0ne6L11dm8U/Dyw=
+X-Google-Smtp-Source: ACHHUZ4vhE0cDgkzrImYBfPHVmbOjacXhBrx86PfJGBedq9d0o/cT1OXxNh2KTuD6xfV26PKmcmhxQ==
+X-Received: by 2002:a7b:cb46:0:b0:3f5:39:240c with SMTP id
+ v6-20020a7bcb46000000b003f50039240cmr2879826wmj.27.1686078520428; 
+ Tue, 06 Jun 2023 12:08:40 -0700 (PDT)
+Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
+ [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
+ h4-20020adff4c4000000b0030647d1f34bsm13446489wrp.1.2023.06.06.12.08.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 12:08:39 -0700 (PDT)
+Message-ID: <a5318869-9a20-2f4c-7ce5-fa0d13503007@linaro.org>
+Date: Tue, 6 Jun 2023 21:08:37 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 1/5] bsd-user: Rename elfcore.c -> elfcore.c.inc
+Content-Language: en-US
+To: Warner Losh <imp@bsdimp.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-arm@nongnu.org
+References: <20230606141252.95032-1-philmd@linaro.org>
+ <20230606141252.95032-2-philmd@linaro.org>
+ <c28e9cf1-5fa2-c63d-bb59-fbb4555e0150@linaro.org>
+ <CANCZdfqjr8om2juzBN_BqTuoyGBq7zEuM1+J5-J3OP55qg5h9Q@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CANCZdfqjr8om2juzBN_BqTuoyGBq7zEuM1+J5-J3OP55qg5h9Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,122 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update private_mem_conversions_test for various private memory backing
-source types
+On 6/6/23 20:08, Warner Losh wrote:
+> On Tue, Jun 6, 2023 at 8:29 AM Richard Henderson 
+> <richard.henderson@linaro.org <mailto:richard.henderson@linaro.org>> wrote:
+> 
+>     On 6/6/23 07:12, Philippe Mathieu-Daudé wrote:
+>      > Since commit 139c1837db ("meson: rename included C source files
+>      > to .c.inc"), QEMU standard procedure for included C files is to
+>      > use *.c.inc.
+>      >
+>      > Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+>      > about includes") this is documented as the Coding Style:
+>      >
+>      >    If you do use template header files they should be named with
+>      >    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+>      >    being included for expansion.
+>      >
+>      > Therefore rename the included 'elfcore.c' as 'elfcore.c.inc'.
+>      >
+>      > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org
+>     <mailto:philmd@linaro.org>>
+>      > ---
+>      >   bsd-user/elfload.c                    | 2 +-
+>      >   bsd-user/{elfcore.c => elfcore.c.inc} | 0
+>      >   2 files changed, 1 insertion(+), 1 deletion(-)
+>      >   rename bsd-user/{elfcore.c => elfcore.c.inc} (100%)
+> 
+>     Assuming Warner doesn't simply want to merge this small file, or
+>     compile it separately. It
+>     isn't actually included more than once.
+> 
+> 
+> I'd much rather inline it in elfload.c I did the include trick as a 
+> short-term
+> hack so I didn't have to upstream ALL of the core dump support to get
+> progress on other things in elfload.c.
+> 
+> So rather than rename it (which will cause some grief to me when I merge
+> things, but not a huge amount), it would be better to just inline what's
+> upstream now and I'll reconcile that when I upstream core dump support.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../kvm/x86_64/private_mem_conversions_test.c | 38 ++++++++++++++-----
- 1 file changed, 28 insertions(+), 10 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c
-index 6a353cf64f52..27a7e5099b7b 100644
---- a/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c
-@@ -240,14 +240,15 @@ static void *__test_mem_conversions(void *__vcpu)
- 	}
- }
- 
--static void test_mem_conversions(enum vm_mem_backing_src_type src_type, uint32_t nr_vcpus,
--				 uint32_t nr_memslots)
-+static void test_mem_conversions(enum vm_mem_backing_src_type src_type,
-+				 enum vm_pmem_backing_src_type pmem_src_type,
-+				 uint32_t nr_vcpus, uint32_t nr_memslots)
- {
--	const size_t memfd_size = PER_CPU_DATA_SIZE * nr_vcpus;
- 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
- 	pthread_t threads[KVM_MAX_VCPUS];
- 	struct kvm_vm *vm;
- 	int memfd, i, r;
-+	size_t pmem_aligned_size, memfd_size;
- 	size_t test_unit_size;
- 
- 	const struct vm_shape shape = {
-@@ -270,21 +271,32 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, uint32_t
- 		 * Allocate enough memory so that each vCPU's chunk of memory can be
- 		 * naturally aligned with respect to the size of the backing store.
- 		 */
--		test_unit_size = align_up(PER_CPU_DATA_SIZE, get_backing_src_pagesz(src_type));
-+		test_unit_size = align_up(PER_CPU_DATA_SIZE,
-+					  max(get_backing_src_pagesz(src_type),
-+					      get_pmem_backing_src_pagesz(pmem_src_type)));
- 	}
- 
--	memfd = vm_create_guest_memfd(vm, memfd_size, 0);
-+	pmem_aligned_size = PER_CPU_DATA_SIZE;
-+	if (nr_memslots > 1) {
-+		pmem_aligned_size = align_up(PER_CPU_DATA_SIZE,
-+					     get_pmem_backing_src_pagesz(pmem_src_type));
-+	}
-+
-+	memfd_size = pmem_aligned_size * nr_vcpus;
-+	memfd = vm_create_guest_memfd(vm, memfd_size,
-+				      vm_pmem_backing_src_alias(pmem_src_type)->flag);
- 	for (i = 0; i < nr_memslots; i++) {
- 		uint64_t gpa =  BASE_DATA_GPA + i * test_unit_size;
--		uint64_t npages = PER_CPU_DATA_SIZE / vm->page_size;
-+		uint64_t npages = pmem_aligned_size / vm->page_size;
- 
- 		/* Make sure the memslot is large enough for all the test units */
- 		if (nr_memslots == 1)
- 			npages *= nr_vcpus;
- 
-+		/* Offsets must be aligned to private mem's page size */
- 		vm_mem_add(vm, src_type, gpa,
- 			   BASE_DATA_SLOT + i, npages,
--			   KVM_MEM_PRIVATE, memfd, PER_CPU_DATA_SIZE * i);
-+			   KVM_MEM_PRIVATE, memfd, pmem_aligned_size * i);
- 	}
- 
- 	for (i = 0; i < nr_vcpus; i++) {
-@@ -324,10 +336,12 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, uint32_t
- static void usage(const char *cmd)
- {
- 	puts("");
--	printf("usage: %s [-h] [-m] [-s mem_type] [-n nr_vcpus]\n", cmd);
-+	printf("usage: %s [-h] [-m] [-s mem_type] [-p pmem_type] [-n nr_vcpus]\n", cmd);
- 	puts("");
- 	backing_src_help("-s");
- 	puts("");
-+	pmem_backing_src_help("-p");
-+	puts("");
- 	puts(" -n: specify the number of vcpus (default: 1)");
- 	puts("");
- 	puts(" -m: use multiple memslots (default: 1)");
-@@ -337,6 +351,7 @@ static void usage(const char *cmd)
- int main(int argc, char *argv[])
- {
- 	enum vm_mem_backing_src_type src_type = DEFAULT_VM_MEM_SRC;
-+	enum vm_pmem_backing_src_type pmem_src_type = DEFAULT_VM_PMEM_SRC;
- 	bool use_multiple_memslots = false;
- 	uint32_t nr_vcpus = 1;
- 	uint32_t nr_memslots;
-@@ -345,11 +360,14 @@ int main(int argc, char *argv[])
- 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_EXIT_HYPERCALL));
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_PROTECTED_VM));
- 
--	while ((opt = getopt(argc, argv, "hms:n:")) != -1) {
-+	while ((opt = getopt(argc, argv, "hms:p:n:")) != -1) {
- 		switch (opt) {
- 		case 's':
- 			src_type = parse_backing_src_type(optarg);
- 			break;
-+		case 'p':
-+			pmem_src_type = parse_pmem_backing_src_type(optarg);
-+			break;
- 		case 'n':
- 			nr_vcpus = atoi_positive("nr_vcpus", optarg);
- 			break;
-@@ -365,7 +383,7 @@ int main(int argc, char *argv[])
- 
- 	nr_memslots = use_multiple_memslots ? nr_vcpus : 1;
- 
--	test_mem_conversions(src_type, nr_vcpus, nr_memslots);
-+	test_mem_conversions(src_type, pmem_src_type, nr_vcpus, nr_memslots);
- 
- 	return 0;
- }
--- 
-2.41.0.rc0.172.g3f132b7071-goog
+I'll just drop it in favor of yours.
 
 
