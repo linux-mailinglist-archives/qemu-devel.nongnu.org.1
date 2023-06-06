@@ -2,92 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42167723ABC
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 09:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84691723ADE
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 10:01:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6RX8-0004xa-8B; Tue, 06 Jun 2023 03:55:14 -0400
+	id 1q6RcZ-000607-JP; Tue, 06 Jun 2023 04:00:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6RX4-0004xI-MF
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:55:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q6RcA-0005wU-Oc; Tue, 06 Jun 2023 04:00:30 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6RX2-0001UN-1Z
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:55:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686038106;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zEzizKgPTRAWh6/RItw76d1qGS9bx+9tpOtcuwviWKA=;
- b=iZkAYfeUvw2MOfYTozzPeaLeSTBfkQRvxS79VfHKF83VYY4SS0Tduh25FwiUcGDy3gpCJw
- +/sRSyrFn7l/y+YOO1L/vJoFM621DP4p9LeJOPjuIIWo9a7UzN0MbYcd85VCmD+UKVYnnw
- 1sF9rbWjqk1XrR1aS2GllOYVyO5Ny0U=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-F_1nBvClMkO72Te07d6Dag-1; Tue, 06 Jun 2023 03:55:04 -0400
-X-MC-Unique: F_1nBvClMkO72Te07d6Dag-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-970e0152da7so476740966b.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 00:55:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686038103; x=1688630103;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zEzizKgPTRAWh6/RItw76d1qGS9bx+9tpOtcuwviWKA=;
- b=Uwtbk/jR2WhAboe9ymyoPnHTjh0sGlZlEoxFekLaKtTbcZg9QVInPhXmJh2yaCtaxb
- /Pris46uPOE4d90/RVDL3D+Yd8/tN2uAHrYYS/S4Iy6bS8glRqxFzspN0j/6LCyI9sSZ
- bklYvP2CjmPezp4oJhq8pqKRzsBxJn+Gp4r+UsHhL9GztP2XkueZktuVkgp2CLvWydAb
- GxKq7Qjw72fwy66TkHVx8a0OF9B9mi2fc6co5zw/XO/sfPp0SGbP5AglnLlS44wd/6IB
- 8J4giqzvX6J2wr2j8tLwYRcXh/ioZwO+ASRyjf3eTFpUMHJdBBi6jlgzrKp4ErXY6r/o
- qqug==
-X-Gm-Message-State: AC+VfDySAeg49G6/9YJtnSbboy1rR6rnc9MXtTF3MN+jO2q+FHvZ73aF
- uqlohwOqKIK6talz8Tt0eS67EyKnBw6bKQGiHiOoxrNLYO6yHyLSSuCKwhLdsf4yMWXlqM1jr2c
- rnIlWd1/nc/BRAs8=
-X-Received: by 2002:a17:907:9444:b0:978:70e1:f02b with SMTP id
- dl4-20020a170907944400b0097870e1f02bmr853792ejc.75.1686038103653; 
- Tue, 06 Jun 2023 00:55:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5DiXeiAT4SL8k55ZwmUJ60tG9cYqWEXUMqnbVN5poa6gFU1CkMccPNQUUwdJEJIXOZ7c4gvA==
-X-Received: by 2002:a17:907:9444:b0:978:70e1:f02b with SMTP id
- dl4-20020a170907944400b0097870e1f02bmr853770ejc.75.1686038103398; 
- Tue, 06 Jun 2023 00:55:03 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- qc16-20020a170906d8b000b00965d294e633sm5231095ejb.58.2023.06.06.00.55.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 00:55:02 -0700 (PDT)
-Date: Tue, 6 Jun 2023 09:55:02 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
- <richard.henderson@linaro.org>, <eduardo@habkost.net>, <mst@redhat.com>,
- <marcel.apfelbaum@gmail.com>, <berrange@redhat.com>, <jusual@redhat.com>,
- <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
- <santosh.Shukla@amd.com>
-Subject: Re: [PATCH v4 3/3] pc: q35: Bump max_cpus to 1024
-Message-ID: <20230606095502.49e9e697@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230605213906.644883-4-suravee.suthikulpanit@amd.com>
-References: <20230605213906.644883-1-suravee.suthikulpanit@amd.com>
- <20230605213906.644883-4-suravee.suthikulpanit@amd.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q6Rc8-00037r-TZ; Tue, 06 Jun 2023 04:00:26 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 29A86AECA;
+ Tue,  6 Jun 2023 11:00:10 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id A192A9CC2;
+ Tue,  6 Jun 2023 11:00:09 +0300 (MSK)
+Message-ID: <4604b88b-5499-9e60-2d25-63b93f0517f4@tls.msk.ru>
+Date: Tue, 6 Jun 2023 11:00:09 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 02/17] block: Collapse padded I/O vecs exceeding IOV_MAX
+Content-Language: en-US
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230605154541.1043261-1-hreitz@redhat.com>
+ <20230605154541.1043261-3-hreitz@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230605154541.1043261-3-hreitz@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,43 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 16:39:06 -0500
-Suravee Suthikulpanit <suravee.suthikulpanit@amd.com> wrote:
+05.06.2023 18:45, Hanna Czenczek wrote:
+> When processing vectored guest requests that are not aligned to the
+> storage request alignment, we pad them by adding head and/or tail
+> buffers for a read-modify-write cycle.
+> 
+> The guest can submit I/O vectors up to IOV_MAX (1024) in length, but
+> with this padding, the vector can exceed that limit.  As of
+> 4c002cef0e9abe7135d7916c51abce47f7fc1ee2 ("util/iov: make
+> qemu_iovec_init_extended() honest"), we refuse to pad vectors beyond the
+> limit, instead returning an error to the guest.
+> 
+> To the guest, this appears as a random I/O error.  We should not return
+> an I/O error to the guest when it issued a perfectly valid request.
+> 
+> Before 4c002cef0e9abe7135d7916c51abce47f7fc1ee2, we just made the vector
+> longer than IOV_MAX, which generally seems to work (because the guest
+> assumes a smaller alignment than we really have, file-posix's
+> raw_co_prw() will generally see bdrv_qiov_is_aligned() return false, and
+> so emulate the request, so that the IOV_MAX does not matter).  However,
+> that does not seem exactly great.
 
-> Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
-> arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
->=20
-> In case KVM could not support the specified number of vcpus, QEMU would
-> return the following error message:
->=20
->   qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid a=
-rgument
->=20
-> Cc: Igor Mammedov <imammedo@redhat.com>
-> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Julia Suvorova <jusual@redhat.com>
-> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> ---
->  hw/i386/pc_q35.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index 371cca7484..bd862add94 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -365,7 +365,7 @@ static void pc_q35_machine_options(MachineClass *m)
->      machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
->      machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
->      machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-> -    m->max_cpus =3D 288;
-> +    m->max_cpus =3D 1024;
+Why it is not "exactly great"?  To me, it seems to be the best solution.
+I'd say we should be able to tolerate "slight" increase over IOV_MAX for
+"internal purposes", so to say.  We can limit guest-supplied vector to
+IOV_MAX, but internally guard against integer overflow only.
 
-did you forgot to preserve value for older machine types?
-use commit 00d0f9fd6602a2 as reference=20
+> I see two ways to fix this problem:
+> 1. We split such long requests into two requests.
+> 2. We join some elements of the vector into new buffers to make it
+>     shorter.
 
->  }
->
->  static void pc_q35_8_1_machine_options(MachineClass *m)
+This seems to be over-complicated, both of them, no?
 
+/mjt
 
