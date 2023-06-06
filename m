@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17267244B9
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 530AF7244BE
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:46:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Wz0-0005xl-Ka; Tue, 06 Jun 2023 09:44:22 -0400
+	id 1q6X0i-0007Om-B1; Tue, 06 Jun 2023 09:46:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Wyu-0005vP-18
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:44:16 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6X0c-0007OM-CN
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:46:02 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Wyq-0007mH-Ji
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:44:14 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3063433fa66so5361488f8f.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:44:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6X0a-0008SI-5r
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:46:02 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-390723f815fso3330745b6e.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:45:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686059051; x=1688651051;
+ d=ventanamicro.com; s=google; t=1686059159; x=1688651159;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=SQdFu6b/jDjxN2nQZX5SuNrLlA9gaiWhPjSxV1m/+HA=;
- b=IO8MoLe/0UvDbXayvbGVlgeFbrvfUN7YbaQqMzIMM+SU6Lmqc7XJAuieGVezh1XSdk
- qaJ+3nFlFReKBURrS2yJrLWw2EkjVr1RLRPb4NYah6hN84P7wb0etvtq46Xb1mDU9Yi1
- Dq3GF7K28UJYuRrEF7aNZClYPbthe/yNxVTjDoMQGSjFP7d3i4H/NE5eKWsV2R/mcVfm
- OvK3WiaQI4wKPi4h2fJdOy20DaVs/xASIP5f0VhWmkOkY4PD2rUuTGOkC9CiGJ5Pzfz0
- C2ZTsWsOQOrAqQ4OxOgawLfh0pRpoK8B6YWHavpMh1h/Tufmj7VEk7tXiyBc5AW0L1xS
- XNtg==
+ bh=itnC8pZM051W8Bgsl1usZo+NiqwRO3BOc/xPpYs/5bw=;
+ b=EftOc5G3Pi6Ek+s0bjnh4Ve8UO2OhD/mPsb2xHvkVDtxBBsLfSi2xnOpKGbAPgGOrv
+ S6QeNWflsdFv64bNNDVg8lqStN5/4bWe1YHr1NWcM4BRs5ieHF0jhi1AEXeLTA9gCcSG
+ qlmR85+x4T2g6hFDzXNrfuvYTEkkSsVDCt+W9x59xRKi5e7OpJOQhANIfCSgWN95J+D3
+ eyE8/CM0S2L1ByXwEjznVZJqxfMnfeUW0DI51PV9UqZeRf55H/l/wGAORxQuUravQ42v
+ Lm2/ggBaELfkSALqirU85n4qBmPjkZSNaAbAkIEaVI4KKmVtJpQYCkvay3SRY4pyTE8d
+ EOWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686059051; x=1688651051;
+ d=1e100.net; s=20221208; t=1686059159; x=1688651159;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SQdFu6b/jDjxN2nQZX5SuNrLlA9gaiWhPjSxV1m/+HA=;
- b=CpUVgxrxkJpp/lmVRGcj85894UBUiCfIS0np0NW6hDTA2iBvJB5qEHTby3RNs5XCbs
- CE3gDJpy5Liuc47r6ThsjC1CZW8CsP4uqP02G/XgHOo9YJdANpuihNENecSqMXugKwB2
- EuDtx11gpgbSvSx/N6rithha3kZMzVHiKxqXAxhAejT+VzSogrvWLPMnc4qOvrgAkFM5
- TjdeumNqqwrFT32OchdjZNJ1RJxRWS5aurepPsXSX7WXpjH1fWMxwwbhYJ11CvPV1HyH
- U7LrecFTLY2Kas3GZp/8ggLMhJLhTpXf0SgRvaon9XmZIB6yelzTJxfxYrAsYZmL2wHt
- lJYA==
-X-Gm-Message-State: AC+VfDwXfpray651zaM2bKNdSgLnH12VgnZo13JO0wduJi5ST2zBeCQ4
- Zn0vVCQFmMwNzdP0UBeIugh9mA==
-X-Google-Smtp-Source: ACHHUZ4qAsVLyfseV5ayDNQnEpTumF7HiKXBqps/ojJ7uTlHXeJZH0Wi2PkDvs5pa0VH73OscP5Iiw==
-X-Received: by 2002:a5d:4a92:0:b0:30a:9c8c:161b with SMTP id
- o18-20020a5d4a92000000b0030a9c8c161bmr1837835wrq.65.1686059050948; 
- Tue, 06 Jun 2023 06:44:10 -0700 (PDT)
-Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
- [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
- c3-20020a056000104300b003062ad45243sm12679591wrx.14.2023.06.06.06.44.09
+ bh=itnC8pZM051W8Bgsl1usZo+NiqwRO3BOc/xPpYs/5bw=;
+ b=DIyjitkoYgu/VFKaznQKeZMYkSdxV2jjZG2D7+ZbVqlbTDaAKVuftZtPVqlw7w54qB
+ bAkYH6giQQukpNxx/ky84zAZyfBLEGFdNpi3FzbN8OX0Z7s3yP9IalWNE62PQRrZ9jAG
+ xSjf0ok3AhqRiHlIOAghcZvsiaSoC/yVpEkdr2Bnkd5ugvBAj+oP91hZRj1l8NmSEr4R
+ cftqCNLZuQkxR+wJbipDM+2BQmv53EVJZveSLooy5uSbntGpRb/ZpgcsLDpiH/S+9yEj
+ KL8K2eoTGOZex1lF14KSzi/CuZGVqQiTqmr1fOBmT7/nQUrCdrP+lKBXQgxphWpKo+8i
+ GzEw==
+X-Gm-Message-State: AC+VfDyoInb6cFo+Qw1ToZeYnwVc160rrdFO9hCfxeB6waLJLLvPs02U
+ AbFCrjQNey3+yn3+QspH/4kIAA==
+X-Google-Smtp-Source: ACHHUZ7BiSKxVxnyhl5fKgvFGlkIlTbVdAE3sGePptPLlhsY1EjYMTnAGdlAAR6r/OXqA3hqz/euEQ==
+X-Received: by 2002:a54:4715:0:b0:398:4336:4342 with SMTP id
+ k21-20020a544715000000b0039843364342mr1499735oik.33.1686059158697; 
+ Tue, 06 Jun 2023 06:45:58 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
+ by smtp.gmail.com with ESMTPSA id
+ y126-20020aca3284000000b0038cff7034c0sm4521181oiy.27.2023.06.06.06.45.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 06:44:10 -0700 (PDT)
-Message-ID: <0f7dd8c6-afa1-db05-f98c-7c5d35fd590a@linaro.org>
-Date: Tue, 6 Jun 2023 15:44:08 +0200
+ Tue, 06 Jun 2023 06:45:58 -0700 (PDT)
+Message-ID: <a715b6d1-d28a-1e04-34c5-5d6c1fb2696e@ventanamicro.com>
+Date: Tue, 6 Jun 2023 10:45:53 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] xen-block: fix segv on unrealize
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 4/6] target/riscv: Create an KVM AIA irqchip
 Content-Language: en-US
-To: Anthony PERARD <anthony.perard@citrix.com>, qemu-devel@nongnu.org,
- qemu-block <qemu-block@nongnu.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org, Kevin Wolf <kwolf@redhat.com>
-References: <20230606131605.55596-1-anthony.perard@citrix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230606131605.55596-1-anthony.perard@citrix.com>
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, rkanwal@rivosinc.com, anup@brainfault.org,
+ atishp@atishpatra.org, vincent.chen@sifive.com, greentime.hu@sifive.com,
+ frank.chang@sifive.com, jim.shu@sifive.com
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+References: <20230526062509.31682-1-yongxuan.wang@sifive.com>
+ <20230526062509.31682-5-yongxuan.wang@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230526062509.31682-5-yongxuan.wang@sifive.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,47 +102,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 15:16, Anthony PERARD via wrote:
-> From: Anthony PERARD <anthony.perard@citrix.com>
+
+
+On 5/26/23 03:25, Yong-Xuan Wang wrote:
+> implement a function to create an KVM AIA chip
 > 
-> Backtrace:
->    qemu_lockcnt_lock (lockcnt=0xb4) at ../util/lockcnt.c:238
->    aio_set_fd_handler (ctx=0x0, fd=51, is_external=true, io_read=0x0, io_write=0x0, io_poll=0x0, io_poll_ready=0x0, opaque=0x0) at ../util/aio-posix.c:119
->    xen_device_unbind_event_channel (xendev=0x55c6da5b5000, channel=0x55c6da6c4c80, errp=0x7fff641ac608) at ../hw/xen/xen-bus.c:926
->    xen_block_dataplane_stop (dataplane=0x55c6da6ddbe0) at ../hw/block/dataplane/xen-block.c:719
->    xen_block_disconnect (xendev=0x55c6da5b5000, errp=0x0) at ../hw/block/xen-block.c:48
->    xen_block_unrealize (xendev=0x55c6da5b5000) at ../hw/block/xen-block.c:154
->    xen_device_unrealize (dev=0x55c6da5b5000) at ../hw/xen/xen-bus.c:956
->    xen_device_exit (n=0x55c6da5b50d0, data=0x0) at ../hw/xen/xen-bus.c:985
->    notifier_list_notify (list=0x55c6d91f9820 <exit_notifiers>, data=0x0) at ../util/notify.c:39
->    qemu_run_exit_notifiers () at ../softmmu/runstate.c:760
-> 
-> Fixes: f6eac904f682 ("xen-block: implement BlockDevOps->drained_begin()")
-> Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-> --
-> CC: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> Reviewed-by: Jim Shu <jim.shu@sifive.com>
 > ---
->   hw/xen/xen-bus.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+>   target/riscv/kvm.c       | 83 ++++++++++++++++++++++++++++++++++++++++
+>   target/riscv/kvm_riscv.h |  3 ++
+>   2 files changed, 86 insertions(+)
 > 
-> diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-> index 1e08cf027a..ece8ec40cd 100644
-> --- a/hw/xen/xen-bus.c
-> +++ b/hw/xen/xen-bus.c
-> @@ -923,8 +923,10 @@ void xen_device_unbind_event_channel(XenDevice *xendev,
->   
->       QLIST_REMOVE(channel, list);
->   
-> -    aio_set_fd_handler(channel->ctx, qemu_xen_evtchn_fd(channel->xeh),
-> -                       NULL, NULL, NULL, NULL, NULL);
-> +    if (channel->ctx) {
-> +        aio_set_fd_handler(channel->ctx, qemu_xen_evtchn_fd(channel->xeh),
-> +                           NULL, NULL, NULL, NULL, NULL);
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index eb469e8ca5..ead121154f 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -34,6 +34,7 @@
+>   #include "exec/address-spaces.h"
+>   #include "hw/boards.h"
+>   #include "hw/irq.h"
+> +#include "hw/intc/riscv_imsic.h"
+>   #include "qemu/log.h"
+>   #include "hw/loader.h"
+>   #include "kvm_riscv.h"
+> @@ -548,3 +549,85 @@ bool kvm_arch_cpu_check_are_resettable(void)
+>   void kvm_arch_accel_class_init(ObjectClass *oc)
+>   {
+>   }
+> +
+> +void kvm_riscv_aia_create(DeviceState *aplic_s, bool msimode, int socket,
+> +                          uint64_t aia_irq_num, uint64_t hart_count,
+> +                          uint64_t aplic_base, uint64_t imsic_base)
+> +{
+> +    int ret;
+> +    int aia_fd = -1;
+> +    uint64_t aia_mode;
+> +    uint64_t aia_nr_ids;
+> +    uint64_t aia_hart_bits = find_last_bit(&hart_count, BITS_PER_LONG) + 1;
+> +
+> +    if (!msimode) {
+> +        error_report("Currently KVM AIA only supports aplic_imsic mode");
+> +        exit(1);
 > +    }
+> +
+> +    aia_fd = kvm_create_device(kvm_state, KVM_DEV_TYPE_RISCV_AIA, false);
+> +
+> +    if (aia_fd < 0) {
+> +        error_report("Unable to create in-kernel irqchip");
+> +        exit(1);
+> +    }
+> +
+> +    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+> +                            KVM_DEV_RISCV_AIA_CONFIG_MODE,
+> +                            &aia_mode, false, NULL);
+> +
+> +    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+> +                            KVM_DEV_RISCV_AIA_CONFIG_IDS,
+> +                            &aia_nr_ids, false, NULL);
+> +
+> +    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+> +                            KVM_DEV_RISCV_AIA_CONFIG_SRCS,
+> +                            &aia_irq_num, true, NULL);
+> +    if (ret < 0) {
+> +        error_report("KVM AIA: fail to set number input irq lines");
+> +        exit(1);
+> +    }
+
+I see that you didn't check 'ret' for the first 2 calls of kvm_device_access().
+Is it intentional?
+
+Since you're setting customized error messages for every step I think it's worth
+also handling the case where we fail to set aia_mode and aia_nr_ids.
+
+
+Thanks,
+
+
+Daniel
+
+
+> +
+> +    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+> +                            KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
+> +                            &aia_hart_bits, true, NULL);
+> +    if (ret < 0) {
+> +        error_report("KVM AIA: fail to set number of harts");
+> +        exit(1);
+> +    }
+> +
+> +    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_ADDR,
+> +                            KVM_DEV_RISCV_AIA_ADDR_APLIC,
+> +                            &aplic_base, true, NULL);
+> +    if (ret < 0) {
+> +        error_report("KVM AIA: fail to set the base address of APLIC");
+> +        exit(1);
+> +    }
+> +
+> +    for (int i = 0; i < hart_count; i++) {
+> +        uint64_t imsic_addr = imsic_base + i * IMSIC_HART_SIZE(0);
+> +        ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_ADDR,
+> +                                KVM_DEV_RISCV_AIA_ADDR_IMSIC(i),
+> +                                &imsic_addr, true, NULL);
+> +        if (ret < 0) {
+> +            error_report("KVM AIA: fail to set the base address of IMSICs");
+> +            exit(1);
+> +        }
+> +    }
+> +
+> +    if (kvm_has_gsi_routing()) {
+> +        for (uint64_t idx = 0; idx < aia_irq_num + 1; ++idx) {
+> +            kvm_irqchip_add_irq_route(kvm_state, idx, socket, idx);
+> +        }
+> +        kvm_gsi_routing_allowed = true;
+> +        kvm_irqchip_commit_routes(kvm_state);
+> +    }
+> +
+> +    ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CTRL,
+> +                            KVM_DEV_RISCV_AIA_CTRL_INIT,
+> +                            NULL, true, NULL);
+> +    if (ret < 0) {
+> +        error_report("KVM AIA: initialized fail");
+> +        exit(1);
+> +    }
+> +}
+> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+> index 606968a4b7..6067adff51 100644
+> --- a/target/riscv/kvm_riscv.h
+> +++ b/target/riscv/kvm_riscv.h
+> @@ -21,6 +21,9 @@
 >   
->       if (qemu_xen_evtchn_unbind(channel->xeh, channel->local_port) < 0) {
->           error_setg_errno(errp, errno, "xenevtchn_unbind failed");
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+>   void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+>   void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+> +void kvm_riscv_aia_create(DeviceState *aplic_s, bool msimode, int socket,
+> +                          uint64_t aia_irq_num, uint64_t hart_count,
+> +                          uint64_t aplic_base, uint64_t imsic_base);
+>   
+>   #define KVM_DEV_RISCV_AIA_GRP_CONFIG            0
+>   #define KVM_DEV_RISCV_AIA_CONFIG_MODE           0
 
