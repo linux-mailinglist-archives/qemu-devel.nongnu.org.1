@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECBF7241A5
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF3B724195
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:01:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6VJT-00007s-7F; Tue, 06 Jun 2023 07:57:23 -0400
+	id 1q6VJV-00008b-Pp; Tue, 06 Jun 2023 07:57:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VJQ-00007F-Cr
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:20 -0400
+ id 1q6VJT-00007v-Fx
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VJO-0005gy-1D
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:20 -0400
+ id 1q6VJQ-0005j5-V1
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:57:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686052637;
+ s=mimecast20190719; t=1686052640;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QDwg2cFQzvvccTpQ1pyTSM2hPkpUNWjnPtpP00nmGz8=;
- b=VeslC3sNrzz7ThHVztZhAyF0STkZ35Kex3eOYrEi1HTkrdTd3+UhP0grOwfTZll6JiCixH
- C74SkElpC992jlN7vFCzHqy4vyBLA0/rTEuuJZYWsx/KPU/DZ9REK4JnGtos8p8O4qeIaJ
- M5pE/1yYA9V0mV88jbZtTwoaMSYQe20=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Xs7NCRO1NxyKtJ4YtgpLzRcmg5STsaVsT+hkKMwIY5w=;
+ b=KJjaB33novGL2AlnYMF4iaFLAgkNs50Z0F5dGcCyZEEwMsxEVpnZ8Ur5u1iPFMg4Bl/UpG
+ ZPo4pRj1YAvcPPIpq/cV1IxlUar6kueaMvPbxVT2Xv7kXnMLDFJgXH+uE16y5Qxt4qvbFI
+ xMx2lLdXmhUOjnsGIJVWpmN3xNFMcf8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-224-J3H5oavsMEmP9-ZKfMTRGg-1; Tue, 06 Jun 2023 07:57:14 -0400
-X-MC-Unique: J3H5oavsMEmP9-ZKfMTRGg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-84-QvoJ_1oiNo-3NU1Ih0ikCA-1; Tue, 06 Jun 2023 07:57:18 -0400
+X-MC-Unique: QvoJ_1oiNo-3NU1Ih0ikCA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E9FA1C068E7
- for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:57:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADA0C185A78B
+ for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:57:18 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DE8E27AE4;
- Tue,  6 Jun 2023 11:57:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3096140CFD47;
+ Tue,  6 Jun 2023 11:57:16 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 03/21] ui/dbus: compile without gio/gunixfdlist.h
-Date: Tue,  6 Jun 2023 15:56:40 +0400
-Message-Id: <20230606115658.677673-4-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Subject: [PATCH 04/21] scripts: add a XML preprocessor script
+Date: Tue,  6 Jun 2023 15:56:41 +0400
+Message-Id: <20230606115658.677673-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20230606115658.677673-1-marcandre.lureau@redhat.com>
 References: <20230606115658.677673-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -82,176 +83,492 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-D-Bus on windows doesn't support fd-passing. Let's isolate the
-fdlist-related code as a first step, before adding Windows support,
-using another mechanism.
+gdbus-codegen doesn't support conditions or pre-processing.
+
+Rather than duplicating D-Bus interfaces for win32 adaptation, let's
+have a preprocess step, so we can have platform-specific interfaces.
+
+The python script is based on
+https://github.com/peitaosu/XML-Preprocessor, with bug fixes, some
+testing and replacing lxml dependency with the built-in xml module.
+
+This preprocessing syntax style is not very common, but is similar to
+the one provided by WiX (https://wixtoolset.org/docs/v3/overview/preprocessor/)
+or wixl, that we adopted in QEMU for packaging the guest agent.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- audio/dbusaudio.c  | 7 +++++++
- ui/dbus-chardev.c  | 6 ++++++
- ui/dbus-console.c  | 8 ++++++++
- ui/dbus-listener.c | 2 ++
- 4 files changed, 23 insertions(+)
+ MAINTAINERS                    |   1 +
+ scripts/meson.build            |   2 +
+ scripts/xml-preprocess-test.py | 136 +++++++++++++++
+ scripts/xml-preprocess.py      | 293 +++++++++++++++++++++++++++++++++
+ 4 files changed, 432 insertions(+)
+ create mode 100644 scripts/xml-preprocess-test.py
+ create mode 100755 scripts/xml-preprocess.py
 
-diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
-index fece74f78c..de59467d9e 100644
---- a/audio/dbusaudio.c
-+++ b/audio/dbusaudio.c
-@@ -29,7 +29,10 @@
- #include "qemu/timer.h"
- #include "qemu/dbus.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 55668d6336..0119488583 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3194,6 +3194,7 @@ F: docs/interop/dbus*
+ F: docs/sphinx/dbus*
+ F: docs/sphinx/fakedbusdoc.py
+ F: tests/qtest/dbus*
++F: scripts/xml-preprocess*
  
-+#ifdef G_OS_UNIX
- #include <gio/gunixfdlist.h>
-+#endif
+ Seccomp
+ M: Daniel P. Berrange <berrange@redhat.com>
+diff --git a/scripts/meson.build b/scripts/meson.build
+index 1c89e10a76..532277f5a2 100644
+--- a/scripts/meson.build
++++ b/scripts/meson.build
+@@ -1,3 +1,5 @@
+ if stap.found()
+   install_data('qemu-trace-stap', install_dir: get_option('bindir'))
+ endif
 +
- #include "ui/dbus-display1.h"
- 
- #define AUDIO_CAP "dbus"
-@@ -419,6 +422,7 @@ dbus_audio_fini(void *opaque)
-     g_free(da);
- }
- 
-+#ifdef G_OS_UNIX
- static void
- listener_out_vanished_cb(GDBusConnection *connection,
-                          gboolean remote_peer_vanished,
-@@ -591,6 +595,7 @@ dbus_audio_register_in_listener(AudioState *s,
-     return dbus_audio_register_listener(s, invocation,
-                                         fd_list, arg_listener, false);
- }
-+#endif
- 
- static void
- dbus_audio_set_server(AudioState *s, GDBusObjectManagerServer *server, bool p2p)
-@@ -605,12 +610,14 @@ dbus_audio_set_server(AudioState *s, GDBusObjectManagerServer *server, bool p2p)
- 
-     da->audio = g_dbus_object_skeleton_new(DBUS_DISPLAY1_AUDIO_PATH);
-     da->iface = qemu_dbus_display1_audio_skeleton_new();
-+#ifdef G_OS_UNIX
-     g_object_connect(da->iface,
-                      "swapped-signal::handle-register-in-listener",
-                      dbus_audio_register_in_listener, s,
-                      "swapped-signal::handle-register-out-listener",
-                      dbus_audio_register_out_listener, s,
-                      NULL);
-+#endif
- 
-     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(da->audio),
-                                          G_DBUS_INTERFACE_SKELETON(da->iface));
-diff --git a/ui/dbus-chardev.c b/ui/dbus-chardev.c
-index 940ef937cd..7154d81a9a 100644
---- a/ui/dbus-chardev.c
-+++ b/ui/dbus-chardev.c
-@@ -27,7 +27,9 @@
- #include "qemu/config-file.h"
- #include "qemu/option.h"
- 
-+#ifdef G_OS_UNIX
- #include <gio/gunixfdlist.h>
-+#endif
- 
- #include "dbus.h"
- 
-@@ -108,6 +110,7 @@ dbus_chardev_init(DBusDisplay *dpy)
-                          dbus_display_chardev_foreach, dpy);
- }
- 
-+#ifdef G_OS_UNIX
- static gboolean
- dbus_chr_register(
-     DBusChardev *dc,
-@@ -145,6 +148,7 @@ dbus_chr_register(
-     qemu_dbus_display1_chardev_complete_register(object, invocation, NULL);
-     return DBUS_METHOD_INVOCATION_HANDLED;
- }
-+#endif
- 
- static gboolean
- dbus_chr_send_break(
-@@ -175,8 +179,10 @@ dbus_chr_open(Chardev *chr, ChardevBackend *backend,
-     dc->iface = qemu_dbus_display1_chardev_skeleton_new();
-     g_object_set(dc->iface, "name", backend->u.dbus.data->name, NULL);
-     g_object_connect(dc->iface,
-+#ifdef G_OS_UNIX
-                      "swapped-signal::handle-register",
-                      dbus_chr_register, dc,
-+#endif
-                      "swapped-signal::handle-send-break",
-                      dbus_chr_send_break, dc,
-                      NULL);
-diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-index f77bc49d2e..fd50fd3200 100644
---- a/ui/dbus-console.c
-+++ b/ui/dbus-console.c
-@@ -28,7 +28,9 @@
- #include "ui/kbd-state.h"
- #include "trace.h"
- 
-+#ifdef G_OS_UNIX
- #include <gio/gunixfdlist.h>
-+#endif
- 
- #include "dbus.h"
- 
-@@ -160,6 +162,7 @@ dbus_display_console_class_init(DBusDisplayConsoleClass *klass)
-     gobject_class->dispose = dbus_display_console_dispose;
- }
- 
-+#ifdef G_OS_UNIX
- static void
- listener_vanished_cb(DBusDisplayListener *listener)
- {
-@@ -171,6 +174,7 @@ listener_vanished_cb(DBusDisplayListener *listener)
-     g_hash_table_remove(ddc->listeners, name);
-     qkbd_state_lift_all_keys(ddc->kbd);
- }
-+#endif
- 
- static gboolean
- dbus_console_set_ui_info(DBusDisplayConsole *ddc,
-@@ -204,6 +208,7 @@ dbus_console_set_ui_info(DBusDisplayConsole *ddc,
-     return DBUS_METHOD_INVOCATION_HANDLED;
- }
- 
-+#ifdef G_OS_UNIX
- static gboolean
- dbus_console_register_listener(DBusDisplayConsole *ddc,
-                                GDBusMethodInvocation *invocation,
-@@ -279,6 +284,7 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
-     trace_dbus_registered_listener(sender);
-     return DBUS_METHOD_INVOCATION_HANDLED;
- }
-+#endif
- 
- static gboolean
- dbus_kbd_press(DBusDisplayConsole *ddc,
-@@ -467,8 +473,10 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-         "device-address", device_addr,
-         NULL);
-     g_object_connect(ddc->iface,
-+#ifdef G_OS_UNIX
-         "swapped-signal::handle-register-listener",
-         dbus_console_register_listener, ddc,
-+#endif
-         "swapped-signal::handle-set-uiinfo",
-         dbus_console_set_ui_info, ddc,
-         NULL);
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 23034eebf9..41597a0078 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -25,7 +25,9 @@
- #include "qemu/error-report.h"
- #include "sysemu/sysemu.h"
- #include "dbus.h"
-+#ifdef G_OS_UNIX
- #include <gio/gunixfdlist.h>
-+#endif
- 
- #ifdef CONFIG_OPENGL
- #include "ui/shader.h"
++test('xml-preprocess', files('xml-preprocess-test.py'), suite: ['unit'])
+diff --git a/scripts/xml-preprocess-test.py b/scripts/xml-preprocess-test.py
+new file mode 100644
+index 0000000000..dd92579969
+--- /dev/null
++++ b/scripts/xml-preprocess-test.py
+@@ -0,0 +1,136 @@
++#!/usr/bin/env python3
++#
++# Copyright (c) 2023 Red Hat, Inc.
++#
++# SPDX-License-Identifier: MIT
++"""Unit tests for xml-preprocess"""
++
++import contextlib
++import importlib
++import os
++import platform
++import subprocess
++import tempfile
++import unittest
++from io import StringIO
++
++xmlpp = importlib.import_module("xml-preprocess")
++
++
++class TestXmlPreprocess(unittest.TestCase):
++    """Tests for xml-preprocess.Preprocessor"""
++
++    def test_preprocess_xml(self):
++        with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
++            temp_file.write("<root></root>")
++            temp_file_name = temp_file.name
++        result = xmlpp.preprocess_xml(temp_file_name)
++        self.assertEqual(result, "<root></root>")
++        os.remove(temp_file_name)
++
++    def test_save_xml(self):
++        with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
++            temp_file_name = temp_file.name
++            xmlpp.save_xml("<root></root>", temp_file_name)
++        self.assertTrue(os.path.isfile(temp_file_name))
++        os.remove(temp_file_name)
++
++    def test_include(self):
++        with tempfile.NamedTemporaryFile(mode="w", delete=False) as inc_file:
++            inc_file.write("<included>Content from included file</included>")
++            inc_file_name = inc_file.name
++        xml_str = f"<?include {inc_file_name} ?>"
++        expected = "<included>Content from included file</included>"
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess(xml_str)
++        self.assertEqual(result, expected)
++        os.remove(inc_file_name)
++        self.assertRaises(FileNotFoundError, xpp.preprocess, xml_str)
++
++    def test_envvar(self):
++        os.environ["TEST_ENV_VAR"] = "TestValue"
++        xml_str = "<root>$(env.TEST_ENV_VAR)</root>"
++        expected = "<root>TestValue</root>"
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess(xml_str)
++        self.assertEqual(result, expected)
++        self.assertRaises(KeyError, xpp.preprocess, "$(env.UNKNOWN)")
++
++    def test_sys_var(self):
++        xml_str = "<root>$(sys.ARCH)</root>"
++        expected = f"<root>{platform.architecture()[0]}</root>"
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess(xml_str)
++        self.assertEqual(result, expected)
++        self.assertRaises(KeyError, xpp.preprocess, "$(sys.UNKNOWN)")
++
++    def test_cus_var(self):
++        xml_str = "<root>$(var.USER)</root>"
++        expected = "<root></root>"
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess(xml_str)
++        self.assertEqual(result, expected)
++        xml_str = "<?define USER=FOO?><root>$(var.USER)</root>"
++        expected = "<root>FOO</root>"
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess(xml_str)
++        self.assertEqual(result, expected)
++
++    def test_error_warning(self):
++        xml_str = "<root><?warning \"test warn\"?></root>"
++        expected = "<root></root>"
++        xpp = xmlpp.Preprocessor()
++        out = StringIO()
++        with contextlib.redirect_stdout(out):
++            result = xpp.preprocess(xml_str)
++        self.assertEqual(result, expected)
++        self.assertEqual(out.getvalue(), "[Warning]: test warn\n")
++        self.assertRaises(RuntimeError, xpp.preprocess, "<?error \"test\"?>")
++
++    def test_cmd(self):
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess('<root><?cmd "echo hello world"?></root>')
++        self.assertEqual(result, "<root>hello world</root>")
++        self.assertRaises(
++            subprocess.CalledProcessError,
++            xpp.preprocess, '<?cmd "test-unknown-cmd"?>'
++        )
++
++    def test_foreach(self):
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess(
++            '<root><?foreach x in a;b;c?>$(var.x)<?endforeach?></root>'
++        )
++        self.assertEqual(result, "<root>abc</root>")
++
++    def test_if_elseif(self):
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess('<root><?if True?>ok<?endif?></root>')
++        self.assertEqual(result, "<root>ok</root>")
++        result = xpp.preprocess('<root><?if False?>ok<?endif?></root>')
++        self.assertEqual(result, "<root></root>")
++        result = xpp.preprocess('<root><?if True?>ok<?else?>ko<?endif?></root>')
++        self.assertEqual(result, "<root>ok</root>")
++        result = xpp.preprocess('<root><?if False?>ok<?else?>ko<?endif?></root>')
++        self.assertEqual(result, "<root>ko</root>")
++        result = xpp.preprocess(
++            '<root><?if False?>ok<?elseif True?>ok2<?else?>ko<?endif?></root>'
++        )
++        self.assertEqual(result, "<root>ok2</root>")
++        result = xpp.preprocess(
++            '<root><?if False?>ok<?elseif False?>ok<?else?>ko<?endif?></root>'
++        )
++        self.assertEqual(result, "<root>ko</root>")
++
++    def test_ifdef(self):
++        xpp = xmlpp.Preprocessor()
++        result = xpp.preprocess('<root><?ifdef USER?>ok<?else?>ko<?endif?></root>')
++        self.assertEqual(result, "<root>ko</root>")
++        result = xpp.preprocess(
++            '<?define USER=FOO?><root><?ifdef USER?>ok<?else?>ko<?endif?></root>'
++        )
++        self.assertEqual(result, "<root>ok</root>")
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/scripts/xml-preprocess.py b/scripts/xml-preprocess.py
+new file mode 100755
+index 0000000000..57f1d28912
+--- /dev/null
++++ b/scripts/xml-preprocess.py
+@@ -0,0 +1,293 @@
++#!/usr/bin/env python3
++#
++# Copyright (c) 2017-2019 Tony Su
++# Copyright (c) 2023 Red Hat, Inc.
++#
++# SPDX-License-Identifier: MIT
++#
++# Adapted from https://github.com/peitaosu/XML-Preprocessor
++#
++"""This is a XML Preprocessor which can be used to process your XML file before
++you use it, to process conditional statements, variables, iteration
++statements, error/warning, execute command, etc.
++
++## XML Schema
++
++### Include Files
++```
++<?include path/to/file ?>
++```
++
++### Variables
++```
++$(env.EnvironmentVariable)
++
++$(sys.SystemVariable)
++
++$(var.CustomVariable)
++```
++
++### Conditional Statements
++```
++<?if ?>
++
++<?ifdef ?>
++
++<?ifndef ?>
++
++<?else?>
++
++<?elseif ?>
++
++<?endif?>
++```
++
++### Iteration Statements
++```
++<?foreach VARNAME in 1;2;3?>
++    $(var.VARNAME)
++<?endforeach?>
++```
++
++### Errors and Warnings
++```
++<?error "This is error message!" ?>
++
++<?warning "This is warning message!" ?>
++```
++
++### Commands
++```
++<? cmd "echo hello world" ?>
++```
++"""
++
++import os
++import platform
++import re
++import subprocess
++import sys
++from typing import Optional
++from xml.dom import minidom
++
++
++class Preprocessor():
++    """This class holds the XML preprocessing state"""
++
++    def __init__(self):
++        self.sys_vars = {
++            "ARCH": platform.architecture()[0],
++            "SOURCE": os.path.abspath(__file__),
++            "CURRENT": os.getcwd(),
++        }
++        self.cus_vars = {}
++
++    def _pp_include(self, xml_str: str) -> str:
++        include_regex = r"(<\?include([\w\s\\/.:_-]+)\s*\?>)"
++        matches = re.findall(include_regex, xml_str)
++        for group_inc, group_xml in matches:
++            inc_file_path = group_xml.strip()
++            with open(inc_file_path, "r", encoding="utf-8") as inc_file:
++                inc_file_content = inc_file.read()
++                xml_str = xml_str.replace(group_inc, inc_file_content)
++        return xml_str
++
++    def _pp_env_var(self, xml_str: str) -> str:
++        envvar_regex = r"(\$\(env\.(\w+)\))"
++        matches = re.findall(envvar_regex, xml_str)
++        for group_env, group_var in matches:
++            xml_str = xml_str.replace(group_env, os.environ[group_var])
++        return xml_str
++
++    def _pp_sys_var(self, xml_str: str) -> str:
++        sysvar_regex = r"(\$\(sys\.(\w+)\))"
++        matches = re.findall(sysvar_regex, xml_str)
++        for group_sys, group_var in matches:
++            xml_str = xml_str.replace(group_sys, self.sys_vars[group_var])
++        return xml_str
++
++    def _pp_cus_var(self, xml_str: str) -> str:
++        define_regex = r"(<\?define\s*(\w+)\s*=\s*([\w\s\"]+)\s*\?>)"
++        matches = re.findall(define_regex, xml_str)
++        for group_def, group_name, group_var in matches:
++            group_name = group_name.strip()
++            group_var = group_var.strip().strip("\"")
++            self.cus_vars[group_name] = group_var
++            xml_str = xml_str.replace(group_def, "")
++        cusvar_regex = r"(\$\(var\.(\w+)\))"
++        matches = re.findall(cusvar_regex, xml_str)
++        for group_cus, group_var in matches:
++            xml_str = xml_str.replace(
++                group_cus,
++                self.cus_vars.get(group_var, "")
++            )
++        return xml_str
++
++    def _pp_foreach(self, xml_str: str) -> str:
++        foreach_regex = r"(<\?foreach\s+(\w+)\s+in\s+([\w;]+)\s*\?>(.*)<\?endforeach\?>)"
++        matches = re.findall(foreach_regex, xml_str)
++        for group_for, group_name, group_vars, group_text in matches:
++            group_texts = ""
++            for var in group_vars.split(";"):
++                self.cus_vars[group_name] = var
++                group_texts += self._pp_cus_var(group_text)
++            xml_str = xml_str.replace(group_for, group_texts)
++        return xml_str
++
++    def _pp_error_warning(self, xml_str: str) -> str:
++        error_regex = r"<\?error\s*\"([^\"]+)\"\s*\?>"
++        matches = re.findall(error_regex, xml_str)
++        for group_var in matches:
++            raise RuntimeError("[Error]: " + group_var)
++        warning_regex = r"(<\?warning\s*\"([^\"]+)\"\s*\?>)"
++        matches = re.findall(warning_regex, xml_str)
++        for group_wrn, group_var in matches:
++            print("[Warning]: " + group_var)
++            xml_str = xml_str.replace(group_wrn, "")
++        return xml_str
++
++    def _pp_if_eval(self, xml_str: str) -> str:
++        ifelif_regex = (
++            r"(<\?(if|elseif)\s*([^\"\s=<>!]+)\s*([!=<>]+)\s*\"*([^\"=<>!]+)\"*\s*\?>)"
++        )
++        matches = re.findall(ifelif_regex, xml_str)
++        for ifelif, tag, left, operator, right in matches:
++            if "<" in operator or ">" in operator:
++                result = eval(f"{left} {operator} {right}")
++            else:
++                result = eval(f'"{left}" {operator} "{right}"')
++            xml_str = xml_str.replace(ifelif, f"<?{tag} {result}?>")
++        return xml_str
++
++    def _pp_ifdef_ifndef(self, xml_str: str) -> str:
++        ifndef_regex = r"(<\?(ifdef|ifndef)\s*([\w]+)\s*\?>)"
++        matches = re.findall(ifndef_regex, xml_str)
++        for group_ifndef, group_tag, group_var in matches:
++            if group_tag == "ifdef":
++                result = group_var in self.cus_vars
++            else:
++                result = group_var not in self.cus_vars
++            xml_str = xml_str.replace(group_ifndef, f"<?if {result}?>")
++        return xml_str
++
++    def _pp_if_elseif(self, xml_str: str) -> str:
++        if_elif_else_regex = (
++            r"(<\?if\s(True|False)\?>"
++            r"(.*?)"
++            r"<\?elseif\s(True|False)\?>"
++            r"(.*?)"
++            r"<\?else\?>"
++            r"(.*?)"
++            r"<\?endif\?>)"
++        )
++        if_else_regex = (
++            r"(<\?if\s(True|False)\?>"
++            r"(.*?)"
++            r"<\?else\?>"
++            r"(.*?)"
++            r"<\?endif\?>)"
++        )
++        if_regex = r"(<\?if\s(True|False)\?>(.*?)<\?endif\?>)"
++        matches = re.findall(if_elif_else_regex, xml_str, re.DOTALL)
++        for (group_full, group_if, group_if_elif, group_elif,
++             group_elif_else, group_else) in matches:
++            result = ""
++            if group_if == "True":
++                result = group_if_elif
++            elif group_elif == "True":
++                result = group_elif_else
++            else:
++                result = group_else
++            xml_str = xml_str.replace(group_full, result)
++        matches = re.findall(if_else_regex, xml_str, re.DOTALL)
++        for group_full, group_if, group_if_else, group_else in matches:
++            result = ""
++            if group_if == "True":
++                result = group_if_else
++            else:
++                result = group_else
++            xml_str = xml_str.replace(group_full, result)
++        matches = re.findall(if_regex, xml_str, re.DOTALL)
++        for group_full, group_if, group_text in matches:
++            result = ""
++            if group_if == "True":
++                result = group_text
++            xml_str = xml_str.replace(group_full, result)
++        return xml_str
++
++    def _pp_command(self, xml_str: str) -> str:
++        cmd_regex = r"(<\?cmd\s*\"([^\"]+)\"\s*\?>)"
++        matches = re.findall(cmd_regex, xml_str)
++        for group_cmd, group_exec in matches:
++            output = subprocess.check_output(
++                group_exec, shell=True,
++                text=True, stderr=subprocess.STDOUT
++            )
++            xml_str = xml_str.replace(group_cmd, output)
++        return xml_str
++
++    def _pp_blanks(self, xml_str: str) -> str:
++        right_blank_regex = r">[\n\s\t\r]*"
++        left_blank_regex = r"[\n\s\t\r]*<"
++        xml_str = re.sub(right_blank_regex, ">", xml_str)
++        xml_str = re.sub(left_blank_regex, "<", xml_str)
++        return xml_str
++
++    def preprocess(self, xml_str: str) -> str:
++        fns = [
++            self._pp_blanks,
++            self._pp_include,
++            self._pp_foreach,
++            self._pp_env_var,
++            self._pp_sys_var,
++            self._pp_cus_var,
++            self._pp_if_eval,
++            self._pp_ifdef_ifndef,
++            self._pp_if_elseif,
++            self._pp_command,
++            self._pp_error_warning,
++        ]
++
++        while True:
++            changed = False
++            for func in fns:
++                out_xml = func(xml_str)
++                if not changed and out_xml != xml_str:
++                    changed = True
++                xml_str = out_xml
++            if not changed:
++                break
++
++        return xml_str
++
++
++def preprocess_xml(path: str) -> str:
++    with open(path, "r", encoding="utf-8") as original_file:
++        input_xml = original_file.read()
++
++        proc = Preprocessor()
++        return proc.preprocess(input_xml)
++
++
++def save_xml(xml_str: str, path: Optional[str]):
++    xml = minidom.parseString(xml_str)
++    with open(path, "w", encoding="utf-8") if path else sys.stdout as output_file:
++        output_file.write(xml.toprettyxml())
++
++
++def main():
++    if len(sys.argv) < 2:
++        print("Usage: xml-preprocessor input.xml [output.xml]")
++        sys.exit(1)
++
++    output_file = None
++    if len(sys.argv) == 3:
++        output_file = sys.argv[2]
++
++    input_file = sys.argv[1]
++    output_xml = preprocess_xml(input_file)
++    save_xml(output_xml, output_file)
++
++
++if __name__ == "__main__":
++    main()
 -- 
 2.40.1
 
