@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603D3724D89
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EA6724DA9
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 22:05:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6cjb-0005Vw-Q6; Tue, 06 Jun 2023 15:52:51 -0400
+	id 1q6cu5-0007l9-Qc; Tue, 06 Jun 2023 16:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q6cjZ-0005VU-W0
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:52:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6cu3-0007kj-Rx
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 16:03:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q6cjW-0001pd-Aq
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:52:47 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6cu2-00058H-9X
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 16:03:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686081165;
+ s=mimecast20190719; t=1686081817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b6brvAc+N1Tu9cyISWk0ZAB7VVWY4trX2sZyBSqFfjU=;
- b=hhlHPM9gUq9cbnF4dz4hbyQQshB6PHaWYKbjSX6hDJUD9Qkd/eR2LDiBmkscAgJbWW1IsJ
- 3hvVqNYWq8OI0p8FmwnIV2LTBfDF7Liu3Ek/EG/5Y3qpBG8+DyLKN5teofdkxYiU/HIos+
- zIKI8s2c9eYcVGBR6yroINdlo/ZBcdw=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QRNMdfOUGR50gcRjyWaarCIzNXVaKlE/CGuzcOGE4jI=;
+ b=O6C5LuYEgIl0IiOtjimZMMeKB9WpQwJJ+QwsR+g53KZGcSi3bhVYJHX/D6g/G8k7yWhLro
+ XpeXVQypmC2yimv1xORmoczxFUknOzzehe5VTIeEUus2woOKm0iUvzMQJxz1Cz8Q9LB3fF
+ j2W1278dU8Dy9v694WNB/8o+LenCSmw=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-skaLi4raOQqZYSiDicG5cQ-1; Tue, 06 Jun 2023 15:52:43 -0400
-X-MC-Unique: skaLi4raOQqZYSiDicG5cQ-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-6570c5525a7so1482483b3a.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:52:43 -0700 (PDT)
+ us-mta-557-a44pV9BUOwGDveaAah_TMg-1; Tue, 06 Jun 2023 16:03:33 -0400
+X-MC-Unique: a44pV9BUOwGDveaAah_TMg-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6b29bb6a75cso31588a34.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 13:03:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686081163; x=1688673163;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=b6brvAc+N1Tu9cyISWk0ZAB7VVWY4trX2sZyBSqFfjU=;
- b=M16XvpZJ9+vHqQhdJPVhdshqW0IApWnjmzwQNFZbA5yiqZN68RzC3cFS7RW0FuRx5V
- MNeWFiH1yMWBIs7hwBU1tNd+qgSFEj/OaX6z9bBKyvQvkJM+jRI18icMLPqTJOasMh0Q
- b9He1+rzCuag4eNesZAoYh6AncjmHpAnVGy/5g4dk1S6gCIbgALjImVBScc6WYvC/MfZ
- j+7J2/ZTSdY82nbEoUcjWqF5ZcSFViAw9bdbmvho/XFmx4wqBRre16/qB+HoM6ZNCEVW
- eNhfFWzx94fqO0WYhGg0b1dz5+1Qp1th+GgJp/kM7XD7VOrQT45dQypkz2oU2VSsTTXt
- XkIQ==
-X-Gm-Message-State: AC+VfDxJ3osDy4706aCCHUwTjBUA81vkzr1CPOKD3MkkQRwgFwXDbw45
- rv90sl1pUvDeGKnGH6+ooShH73d3VkdQa82c+qkx14f8LOEZ+85MpIzPRmqjsb4LlweiW45O2NK
- bPkBjJih3zcfXYhgs7HWFkLyGsTuSB2E=
-X-Received: by 2002:a05:6a20:7d96:b0:104:ad71:f080 with SMTP id
- v22-20020a056a207d9600b00104ad71f080mr645758pzj.34.1686081162799; 
- Tue, 06 Jun 2023 12:52:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6lLQSQbMN+OYNfz8ZYMJOuw4qhCAhktVykWsDn2Nb9nJlTLjhlOCIeFV9mteb0YB/si/96GqHa+BN2lITv9sQ=
-X-Received: by 2002:a05:6a20:7d96:b0:104:ad71:f080 with SMTP id
- v22-20020a056a207d9600b00104ad71f080mr645750pzj.34.1686081162502; Tue, 06 Jun
- 2023 12:52:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686081812; x=1688673812;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QRNMdfOUGR50gcRjyWaarCIzNXVaKlE/CGuzcOGE4jI=;
+ b=PD6fZPqwm7j1KYVa2If9sReE9okALJDyb0W6e7tEqe6NXWIZqeRXE6uwPBW8oQ8MX6
+ rVStPHroXMk5vyXJV0pLllOE6oGq0lxVV4CMb5p9sCb2u/zGmm6LjdO9r3W+JemvrsP8
+ KQ1rufkkNOGbEbjU1N/Ye5pPMpCw2oltYq9GTKovk2iqY70b1+hBqqCkr3zKHogvjHlQ
+ W/ad66Os9OaBFfVcy6qtvpfk/XZ2U+k+MCjRj+mY8zKyR8JbN1uelDGM2DW6QUwvuMU2
+ dHxrTTjypSG9t+Wvl5GyNrFdqZHSEgQDLrAei2kSX0nRCRhiQph9+NqSlP10n1r8I8gB
+ hNdQ==
+X-Gm-Message-State: AC+VfDytwZuWEVcR7pBNAvjNQ/LwSI3YI/ZQ0d1Dg90CMAGCLLyNR4w9
+ yO/OgfKRnslDmrRQL13v6mTSowyxTljmwqPLPqO4zflO0eOt96+97fWCaYrlEdIPIQblxB9tBot
+ 5gi6S2VSVLyG1iok=
+X-Received: by 2002:aca:3bd4:0:b0:394:6388:22bb with SMTP id
+ i203-20020aca3bd4000000b00394638822bbmr1266446oia.5.1686081812651; 
+ Tue, 06 Jun 2023 13:03:32 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6wSlkFVwv3nKd8DW9RgkUOTWdcwatju8ksYbXop+2bPDugL7rpfLNuHnZSLNHxejRXvvCbQw==
+X-Received: by 2002:aca:3bd4:0:b0:394:6388:22bb with SMTP id
+ i203-20020aca3bd4000000b00394638822bbmr1266440oia.5.1686081812426; 
+ Tue, 06 Jun 2023 13:03:32 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ j16-20020a0cc350000000b0062383edece8sm5611980qvi.91.2023.06.06.13.03.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 13:03:31 -0700 (PDT)
+Date: Tue, 6 Jun 2023 16:03:30 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ Jiang Jiacheng <jiangjiacheng@huawei.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 1/3] migration/multifd: Rename threadinfo.c functions
+Message-ID: <ZH+RErNrOl1odmwE@x1n>
+References: <20230606144551.24367-1-farosas@suse.de>
+ <20230606144551.24367-2-farosas@suse.de> <ZH99EuY3c/RqIELY@x1n>
+ <87wn0gwfjs.fsf@suse.de>
 MIME-Version: 1.0
-References: <20230606082330.445790-1-pbonzini@redhat.com>
-In-Reply-To: <20230606082330.445790-1-pbonzini@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 6 Jun 2023 15:52:31 -0400
-Message-ID: <CAFn=p-a8mMgnDk6jJVYAoiFb=oPrG_X7+z=brzF6GnCb0L2TwA@mail.gmail.com>
-Subject: Re: [PATCH] mkvenv: always pass locally-installed packages to pip
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wn0gwfjs.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,137 +100,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 6, 2023 at 4:23=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> Let pip decide whether a new version should be installed or the current
-> one is okay.  This ensures that the virtual environment is updated
-> (either upgraded or downgraded) whenever a new version of a package is
-> requested.
->
-> The hardest part here is figuring out if a package is installed in
-> the venv (which also has to be done twice to account for the presence
-> of either setuptools in Python <3.8, or importlib in Python >=3D3.8).
->
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> Cc: John Snow <jsnow@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  python/scripts/mkvenv.py | 76 ++++++++++++++++++++++++++++++++++++++--
+On Tue, Jun 06, 2023 at 04:34:31PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Tue, Jun 06, 2023 at 11:45:49AM -0300, Fabiano Rosas wrote:
+> >> The code in threadinfo.c is only used for the QMP command
+> >> query-migrationthreads. Make it explicit that this is something
+> >> related to QMP.
+> >> 
+> >> The current names are also too generic for a piece of code that
+> >> doesn't affect the migration directly in any way.
+> >> 
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> >
+> > Looks good here, but shall we reserve the qmp_* prefix to mostly qmp stuff
+> > only?  Dropping "qmp_" in the new names would look better to me..
+> >
+> 
+> Well, we're just putting the thread name and id on a list so that QMP
+> can use them later. It is nothing "important" enough to have a generic
+> name like migration_thread.
+> 
+> Perhaps:
+> 
+> thread_info_add
+> thread_info_remove
+> thread_info_init
+> thread_info_cleanup
+> 
+> Anyway, as long as we drop that camel case I'm ok with just removing the
+> qmp =)
 
-:(
+Thanks.  To me OTOH it's good as long as "qmp_" dropped. :)
 
-The best laid plans of mice and men,
+I don't worry on using "migration_thread_" as prefix, that's exactly what
+the api does to me.  Or, migration_thread_info_*(), migration_thr_mgr_*(),
+etc.
 
---js
-
->  1 file changed, 74 insertions(+), 2 deletions(-)
->
-> diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-> index 3a9aef46a51..3957e7d6e08 100644
-> --- a/python/scripts/mkvenv.py
-> +++ b/python/scripts/mkvenv.py
-> @@ -553,6 +553,74 @@ def pkgname_from_depspec(dep_spec: str) -> str:
->      return match.group(0)
->
->
-> +def _get_path_importlib(package: str) -> Optional[str]:
-> +    # pylint: disable=3Dimport-outside-toplevel
-> +    # pylint: disable=3Dno-name-in-module
-> +    # pylint: disable=3Dimport-error
-> +    try:
-> +        # First preference: Python 3.8+ stdlib
-> +        from importlib.metadata import (  # type: ignore
-> +            PackageNotFoundError,
-> +            distribution,
-> +        )
-> +    except ImportError as exc:
-> +        logger.debug("%s", str(exc))
-> +        # Second preference: Commonly available PyPI backport
-> +        from importlib_metadata import (  # type: ignore
-> +            PackageNotFoundError,
-> +            distribution,
-> +        )
-> +
-> +    try:
-> +        return str(distribution(package).locate_file("."))
-> +    except PackageNotFoundError:
-> +        return None
-> +
-> +
-> +def _get_path_pkg_resources(package: str) -> Optional[str]:
-> +    # pylint: disable=3Dimport-outside-toplevel
-> +    # Bundled with setuptools; has a good chance of being available.
-> +    import pkg_resources
-> +
-> +    try:
-> +        return str(pkg_resources.get_distribution(package).location)
-> +    except pkg_resources.DistributionNotFound:
-> +        return None
-> +
-> +
-> +def _get_path(package: str) -> Optional[str]:
-> +    try:
-> +        return _get_path_importlib(package)
-> +    except ImportError as exc:
-> +        logger.debug("%s", str(exc))
-> +
-> +    try:
-> +        return _get_path_pkg_resources(package)
-> +    except ImportError as exc:
-> +        logger.debug("%s", str(exc))
-> +        raise Ouch(
-> +            "Neither importlib.metadata nor pkg_resources found. "
-> +            "Use Python 3.8+, or install importlib-metadata or setuptool=
-s."
-> +        ) from exc
-> +
-> +
-> +def _path_is_prefix(prefix: Union[str, Path], path: Union[str, Path]) ->=
- bool:
-> +    prefix =3D str(prefix)
-> +    path =3D str(path)
-> +    try:
-> +        return os.path.commonpath([prefix, path]) =3D=3D prefix
-> +    except ValueError:
-> +        return False
-> +
-> +
-> +def _is_system_package(package: str) -> bool:
-> +    path =3D _get_path(package)
-> +    return path is not None and not (
-> +        _path_is_prefix(sysconfig.get_path("purelib"), path)
-> +        or _path_is_prefix(sysconfig.get_path("platlib"), path)
-> +    )
-> +
-> +
->  def _get_version_importlib(package: str) -> Optional[str]:
->      # pylint: disable=3Dimport-outside-toplevel
->      # pylint: disable=3Dno-name-in-module
-> @@ -741,8 +809,12 @@ def _do_ensure(
->      for spec in dep_specs:
->          matcher =3D distlib.version.LegacyMatcher(spec)
->          ver =3D _get_version(matcher.name)
-> -        if ver is None or not matcher.match(
-> -            distlib.version.LegacyVersion(ver)
-> +        if (
-> +            ver is None
-> +            # Always pass installed package to pip, so that they can be
-> +            # updated if the requested version changes
-> +            or not _is_system_package(matcher.name)
-> +            or not matcher.match(distlib.version.LegacyVersion(ver))
-
-Wait, so what exactly does this change? In what cases will we
-downgrade and in what cases will we be fine with what we already have?
-
-I'm a little fuzzy on what precisely this fixes, though I gather it's
-to do with Avocado-Framework.
-
->          ):
->              absent.append(spec)
->          else:
-> --
-> 2.40.1
->
+-- 
+Peter Xu
 
 
