@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A828724664
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD7E724669
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:39:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Xom-00022n-Oc; Tue, 06 Jun 2023 10:37:52 -0400
+	id 1q6Xpf-0002hG-FL; Tue, 06 Jun 2023 10:38:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Xol-00022d-Nf
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:37:51 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1q6Xpa-0002cZ-0j
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:38:43 -0400
+Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Xok-0002Qt-5n
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:37:51 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-256422ad25dso2752770a91.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:37:49 -0700 (PDT)
+ id 1q6XpV-0002hr-TM
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:38:40 -0400
+Received: by mail-io1-xd30.google.com with SMTP id
+ ca18e2360f4ac-77a1cad6532so20154939f.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686062269; x=1688654269;
+ d=linaro.org; s=google; t=1686062316; x=1688654316;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=n8R5f+wVeYyyOX5s3SzQiZsALWUytR5XYy8E0V2grN4=;
- b=CsWGqro9y9lTrrbe306ID4ST9FD2F020//U8+ba/dHouLkA/uWHkul4OQqQ2wF87k9
- 5Z6/5XEyLq30pq7wy2XXitoZExPplNiHMao2eZauKFrBcVRzBjgeEQv5eYOLr2A3Pdvx
- ltPNiUubbohL1cS436rOr2u5oFfdUpDWSyWrGBCL62H0y2odiQqRNEkYx6uJ4/lFLS+p
- m1DD7Mm9haPkKsKck01nh15KgM44wY7XYTqdCZHYvuni097/9uWoXNyqM9YpXZVfaGTy
- 7Wjmmm51QxFpkEV7gTtRXaCnlwwHrJEzSjXcU3FGY3Ju22uuwrLUwFbevhOo/2OVWNMq
- 7YaA==
+ bh=YcVeRheuB7gq+ezkQ3FqST0s5x7EHoi8tTahXk0iVkc=;
+ b=epebHp+O4sx2km81wwjHOwBNUErXSEntL0wGHl20sIFjOoS5QTt+t4HFfm5wg6+sF2
+ J8gyVp61rshxZtmVkkxWka37Tk7V01qolg0Ua4QdeNz4pbwhuy97NBBdznlq/EXl+Y4P
+ 1v5TAzmF0gFfA0sMLR+bB4brF0POi5X9mI/4DRRaEvrAYp609i0IIK6vO0voebyFWubP
+ +XQYXqi7JcP8+GyjEBbIPb5sJM9cEf4TBJsiME0qAkUUO6SN+mx0OJ84k1FtRFmvm7Zj
+ mYgTkpZnp+CAA5AsWqjo9bOCt7/Up3ZM4GAijORQAOXALbgDhRQiclLAwV8+plBT2+1Y
+ bSaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686062269; x=1688654269;
+ d=1e100.net; s=20221208; t=1686062316; x=1688654316;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n8R5f+wVeYyyOX5s3SzQiZsALWUytR5XYy8E0V2grN4=;
- b=He6Svgmtm6x92tjUr0niBzwdDuQFvhYsgBcLnAxLafWKAUe63IDYiM6ZnALKZsi0Ob
- yPeSh1Cjmic2ut+j+e3tpjdUfGexbA3x4vgfQYYKGhbgVdwMn1xu4AJ/8wbrPQAGg9xy
- 6A0lvqHuQqXE2WjBW8Ae5sVlmQsrTNmA6lRYyoDj3ojh05gzVCnCqgfeaMJSdWxQKXcU
- ZUxh68Vh/aF9ezM/WA2erCjJA/64ng6ayH3GU4/t6XpuHzdMsmMhzGcxK4v/mfKRDnez
- ngPwEBc+zPWCxDuNoNwYT2pQ+1SDGeKVTXx7xnmmNsLIDy8AqCZhffef6TAxZGpsSfb+
- LtfQ==
-X-Gm-Message-State: AC+VfDz29d/X7labaJR4oC6XYiFXUbEs4aSXJeluzJR3dVQDTx5X3m6b
- 81JPZzjH/rF0Ih1RVjx+FWb9DA==
-X-Google-Smtp-Source: ACHHUZ5/y/+jnHKCYboD4dSy5/IRfLkgptwr6AR4ghOJGC1rSDmCtIYcbXoqGUeI+ZT++4n7sv0L+g==
-X-Received: by 2002:a17:90a:51:b0:259:3e26:b5d9 with SMTP id
- 17-20020a17090a005100b002593e26b5d9mr756955pjb.2.1686062268718; 
- Tue, 06 Jun 2023 07:37:48 -0700 (PDT)
+ bh=YcVeRheuB7gq+ezkQ3FqST0s5x7EHoi8tTahXk0iVkc=;
+ b=C+OMnYR5bHUFrcI6vf/lC58If7Cwywxt1PIc24HscSk9Siv9rcM6CwcPa3AojcvtK5
+ PWtccgwwnXDxdMNWujjFPs16t+gfaBfHSWeWyH7MQ2b3+delpXXBW1bmBbzKD9MMunTR
+ 4ecKAJmkyty0A4lISVTdmr2f/F3E8H0wARji+zI2Q3plyjJnkpMcRS1rDanpREAKI8qq
+ ElKJU1OgOqc1TFXdvvE6wDxtScjFwzZWQC+M4nL+TTz+fR5ByubCFtfkJd0pNmJm3FUf
+ QSVfzCeHTpFUW4iI+AuXsgGG/t7BD0TOX1Du1f04q431GErH3LP+fVjh11DfqvkPLUOu
+ MNfg==
+X-Gm-Message-State: AC+VfDwV95wPtTMRiMPiBajfz1gHBuRn0JHfPUGesJxlapCqlCh82oIQ
+ +7sm23aVRd+pAw40b0CXf1Issw==
+X-Google-Smtp-Source: ACHHUZ4EhMFsgZaW+K6ZoEtr9srq8hfMt91Kag4BRJnLgCjVmhO9h8JhPZ8ol9/vM9A6q1wRFNOuOQ==
+X-Received: by 2002:a5e:dd09:0:b0:774:9c66:cbd6 with SMTP id
+ t9-20020a5edd09000000b007749c66cbd6mr3922978iop.17.1686062316667; 
+ Tue, 06 Jun 2023 07:38:36 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
  ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
  by smtp.gmail.com with ESMTPSA id
- ch7-20020a17090af40700b00259b2a50a41sm238105pjb.36.2023.06.06.07.37.47
+ h1-20020a656381000000b004ff6b744248sm6940210pgv.48.2023.06.06.07.38.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 07:37:48 -0700 (PDT)
-Message-ID: <9ff0f082-1b04-8bf2-6a97-1e9220aa4509@linaro.org>
-Date: Tue, 6 Jun 2023 07:37:46 -0700
+ Tue, 06 Jun 2023 07:38:36 -0700 (PDT)
+Message-ID: <86378349-e78c-3bbf-8960-a9f2399f0bdc@linaro.org>
+Date: Tue, 6 Jun 2023 07:38:34 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 2/5] target/arm: Rename helper template headers as '.h.inc'
+Subject: Re: [PATCH 3/5] target/i386: Rename helper template headers as
+ '.h.inc'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org
 References: <20230606141252.95032-1-philmd@linaro.org>
- <20230606141252.95032-3-philmd@linaro.org>
+ <20230606141252.95032-4-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230606141252.95032-3-philmd@linaro.org>
+In-Reply-To: <20230606141252.95032-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd30.google.com
 X-Spam_score_int: 3
 X-Spam_score: 0.3
 X-Spam_bar: /
@@ -113,19 +114,23 @@ On 6/6/23 07:12, Philippe Mathieu-Daudé wrote:
 > 
 > Therefore rename the included templates as '.h.inc'.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   target/i386/helper.h                                      | 6 +++---
+>   target/i386/{ops_sse_header.h => ops_sse_header.h.inc}    | 0
+>   ...hift_helper_template.h => shift_helper_template.h.inc} | 0
+>   .../{cc_helper_template.h => cc_helper_template.h.inc}    | 0
+>   target/i386/tcg/cc_helper.c                               | 8 ++++----
+>   target/i386/tcg/int_helper.c                              | 8 ++++----
+>   6 files changed, 11 insertions(+), 11 deletions(-)
+>   rename target/i386/{ops_sse_header.h => ops_sse_header.h.inc} (100%)
+>   rename target/i386/{shift_helper_template.h => shift_helper_template.h.inc} (100%)
+>   rename target/i386/tcg/{cc_helper_template.h => cc_helper_template.h.inc} (100%)
 
+Move to tcg/ at the same time?
+
+Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-FYI, after yesterday's tcg pr, we can do more than this.  These fragments no longer have 
-to be all included into one common helper.h. Each translate-foo.c can include only the 
-helper-foo.h.inc bits that they need, and the bits need not be visible to the rest of the 
-front end.
-
-It was something that I had in mind when splitting include/exec/helper-gen.h, but the 
-patch set was already large enough.
-
-The renaming to .h.inc would have been the first step, anyway.
 
 
 r~
