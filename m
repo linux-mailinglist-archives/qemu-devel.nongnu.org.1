@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FAF072482D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB393724838
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:50:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6YuS-0005VX-6X; Tue, 06 Jun 2023 11:47:49 -0400
+	id 1q6Ywf-0006ya-2f; Tue, 06 Jun 2023 11:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q6YuI-0005LB-Az
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:47:42 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Ywc-0006xk-U2
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:50:02 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q6YuB-0002SL-Pl
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:47:37 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-977c8423dccso679247366b.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:47:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6YwO-00035R-Pe
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:50:02 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f6042d605dso52703835e9.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:49:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686066450; x=1688658450;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=52SJSOIhXRtWR+atuqChnDE9wIvyPkmBrD1xHodIqcc=;
- b=IPitqhOUhn9CjHaQk3J/Lwr2lJiWSBPB3hVUqW2kOScb8uSk4n0Ynt/AOom1Ik+IQl
- tnh5xrS7m4jihRVZcbEeextXgj0pBaJItGPwStgceizCakQO/Agm6P5FK81JOSgn1Wno
- HuXgg+lQM+NKbcKDDVztrAjuXBWIfdxI/6LYIfbRRFfcLtcMJ4PgCoj69GAUyX56s/eo
- tFwRaRkhdRGRtddneECRn+FvUbL9aBVbnyqY2pa6PsOIQfOAckUK+biVP7MZQ7WT8qiQ
- VGmsAPgUQXDN4UyAoS58h0Fwxun43gDvE9OZQv3mDneRSKdP5rX3mrtuxfABnvWCIhBl
- a0Yw==
+ d=linaro.org; s=google; t=1686066585; x=1688658585;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=flAQExrazbF5PEZnAPgAMS+V9HHW2JDhhuwpMF4zquM=;
+ b=IW9UK1JIIv+hZFOMjiNXRiLcBJn6OxgyWUbBEekzbc2/cps6LZdh+uhlz4mx720WHR
+ BTkyVR3FqGE2SQ1gZy1qlpenhf0Jb+eTx4sHzT9sBXDFldeXBRNk3nkiJM405oAgLkn0
+ F6RlXeGuQtfOeBq81iLfEba7Bwr/kgQlrqz08PU0ZdJqi2maN6ZtrQGoM0lEhqrAe7GE
+ kSfuora4EejtgTJvz7sSmzG//bxRhb/SKnU/nqnWXM4waKDTcraPziEGOlUq33CCeyvo
+ YIDCipBpknQA0wHfQM4BuW3WmRaJ2/aATwPSzWAb8jReM7SQxvAiOsur2E7BP6tcyMNp
+ ZPDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686066450; x=1688658450;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=52SJSOIhXRtWR+atuqChnDE9wIvyPkmBrD1xHodIqcc=;
- b=HO4o+jwqRP167bkL/ivlIhgrHm6GpuLgmtyVNQo+nJPZeQqFnPhwuvpvgz/RNUH4bX
- Basl54kpBDbTp+Z94QJ1laJwXcnfvpxKQRX6QjH1RIW9cEQ4O13PcS1pNDunHFHFatLW
- MTTnbhttGepgJaGFWurIC6iZRxxSZM9aUHOiqv7Ud+Kzzul7hLWM6AskH1vAxtXvIUzc
- fd1vKEyuj0Ycg+7cqat7j+/xj+9bn2BWK2XUafaI5WCyqMjz7lGJFtup/KuvQcpsNRih
- BbgR5rj/WzCCFi9auaQeF4oe2FF6oO3KcKRS3fg93RQItwSnLESktQR/pAr7qOoBkECD
- gwFQ==
-X-Gm-Message-State: AC+VfDwfxP7qZ3s1yPB0R//Yi3PCA+SP7UDcqVEZUT/CRilU8EGKMZlF
- WpB/zWDQPTHg1RAs/ro5JiMJrg==
-X-Google-Smtp-Source: ACHHUZ6jwmU0GK2AUq0kVfRZLi6iG2VsJpyItV5hbAEbkW9C46a45q0B2G6OXyrBdAEYTB2vZgx3Pg==
-X-Received: by 2002:a17:907:70a:b0:94e:bf3e:638 with SMTP id
- xb10-20020a170907070a00b0094ebf3e0638mr2684631ejb.11.1686066450215; 
- Tue, 06 Jun 2023 08:47:30 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- i15-20020a170906a28f00b00968242f8c37sm5664736ejz.50.2023.06.06.08.47.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 08:47:29 -0700 (PDT)
-Date: Tue, 6 Jun 2023 17:47:29 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH 07/16] target/riscv: read marchid/mimpid in
- kvm_riscv_init_machine_ids()
-Message-ID: <20230606-a61eb46771466f46ca54e62d@orel>
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-8-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20221208; t=1686066585; x=1688658585;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=flAQExrazbF5PEZnAPgAMS+V9HHW2JDhhuwpMF4zquM=;
+ b=aPAVABk6d7xQhQOa2EwxKtnMPZpMiNJa9SYdxSEkeAkNocjTPBNZrBCNGDefn+ubf2
+ KA21Z06UXok6VH8RyFz/NibhAqVxeoxANFfUKVy32y7QFByHWEZhIgiMVz/TFGKKeAl/
+ YZNnng9ynB0QurmOJPJHNjFQzVX0im20dsvbtC33xcosTLd4o80BEfIgW2cKMSa1jsow
+ zgoIyvZW3z0aTz9PE/jfuRveJSXxbomAs0RVLoJFO3G/3NazMuwcnVKN81dYWS/8vAOE
+ bLZ2kPTXsjH2xAfEhEK5uxX1OHolh/5aXEZRVM60Tt96eNWmOVnOdLcLVyh3JC8rGACv
+ jDew==
+X-Gm-Message-State: AC+VfDyIFaqThgUZij1D8T2F654yBTVQBnwR5eYxGRCaRpBOK+AXZKdH
+ RpjHnBG01K9N4dbAUbh490jgTQ==
+X-Google-Smtp-Source: ACHHUZ7uc/3f6d21X1Kqf3spsC7tomJwHL/I3S4sGllEb1F374ab+1qltLYZ/HoWpTJWnn3Ioj95+A==
+X-Received: by 2002:a05:600c:22d9:b0:3f4:23b9:eed2 with SMTP id
+ 25-20020a05600c22d900b003f423b9eed2mr2335574wmg.38.1686066585456; 
+ Tue, 06 Jun 2023 08:49:45 -0700 (PDT)
+Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
+ [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
+ y20-20020a05600c365400b003f60a446fe5sm14532041wmq.29.2023.06.06.08.49.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 08:49:44 -0700 (PDT)
+Message-ID: <f991008b-015b-dcce-fe00-838a6ddefde5@linaro.org>
+Date: Tue, 6 Jun 2023 17:49:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230530194623.272652-8-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 2/5] target/arm: Rename helper template headers as '.h.inc'
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org
+References: <20230606141252.95032-1-philmd@linaro.org>
+ <20230606141252.95032-3-philmd@linaro.org>
+ <9ff0f082-1b04-8bf2-6a97-1e9220aa4509@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <9ff0f082-1b04-8bf2-6a97-1e9220aa4509@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: 3
+X-Spam_score: 0.3
+X-Spam_bar: /
+X-Spam_report: (0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SUSPICIOUS_RECIPS=2.51,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,51 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 04:46:14PM -0300, Daniel Henrique Barboza wrote:
-> Allow 'marchid' and 'mimpid' to also be initialized in
-> kvm_riscv_init_machine_ids().
+On 6/6/23 16:37, Richard Henderson wrote:
+> On 6/6/23 07:12, Philippe Mathieu-Daudé wrote:
+>> Since commit 139c1837db ("meson: rename included C source files
+>> to .c.inc"), QEMU standard procedure for included C files is to
+>> use *.c.inc.
+>>
+>> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+>> about includes") this is documented as the Coding Style:
+>>
+>>    If you do use template header files they should be named with
+>>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+>>    being included for expansion.
+>>
+>> Therefore rename the included templates as '.h.inc'.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
-> After this change, the handling of mvendorid/marchid/mimpid for the
-> 'host' CPU type will be equal to what we already have for TCG named
-> CPUs, i.e. the user is not able to set these values to a different val
-> than the one that is already preset.
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/kvm.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> index 37f0f70794..cd2974c663 100644
-> --- a/target/riscv/kvm.c
-> +++ b/target/riscv/kvm.c
-> @@ -378,6 +378,22 @@ static void kvm_riscv_init_machine_ids(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
->      if (ret != 0) {
->          error_report("Unable to retrieve mvendorid from host, error %d", ret);
->      }
-> +
-> +    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-> +                              KVM_REG_RISCV_CONFIG_REG(marchid));
-> +    reg.addr = (uint64_t)&cpu->cfg.marchid;
-> +    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-> +    if (ret != 0) {
-> +        error_report("Unable to retrieve marchid from host, error %d", ret);
-> +    }
-> +
-> +    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-> +                              KVM_REG_RISCV_CONFIG_REG(mimpid));
-> +    reg.addr = (uint64_t)&cpu->cfg.mimpid;
-> +    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-> +    if (ret != 0) {
-> +        error_report("Unable to retrieve mimpid from host, error %d", ret);
-> +    }
->  }
->  
->  void kvm_riscv_init_user_properties(Object *cpu_obj)
-> -- 
-> 2.40.1
-> 
->
+> FYI, after yesterday's tcg pr, we can do more than this.  These 
+> fragments no longer have to be all included into one common helper.h. 
+> Each translate-foo.c can include only the helper-foo.h.inc bits that 
+> they need, and the bits need not be visible to the rest of the front end.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Don't we need foo fully converted to decodetree first? Otherwise
+generic translate code can call foo helpers, so needs their prototype
+declaration.
+
+For example in translate-a64.c handle_msr_i(SVCR) calls
+gen_helper_set_svcr() which is declared in helper-sme.h.
+
+> It was something that I had in mind when splitting 
+> include/exec/helper-gen.h, but the patch set was already large enough.
+> 
+> The renaming to .h.inc would have been the first step, anyway.
+> 
+> 
+> r~
+
 
