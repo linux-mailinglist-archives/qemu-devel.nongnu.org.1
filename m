@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08871723A5D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 09:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42167723ABC
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 09:56:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6RNj-0002Rk-N6; Tue, 06 Jun 2023 03:45:31 -0400
+	id 1q6RX8-0004xa-8B; Tue, 06 Jun 2023 03:55:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6RNf-0002RK-0b
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:45:27 -0400
+ id 1q6RX4-0004xI-MF
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:55:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6RNd-0006is-9L
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:45:26 -0400
+ id 1q6RX2-0001UN-1Z
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:55:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686037523;
+ s=mimecast20190719; t=1686038106;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cMxxcO7T8fnxCsTd4l2TIx+nL8Eqp8LyGCZBb3ennjE=;
- b=E/Mi7k+2F+jRzuIBXBYd8RSmnZ778uYAX3Aqiu3X9Kq2Cs/0a0D0bwLHIe3t42mzACDRTs
- 3GMe+tenjq4KabGpumcR7NjFNGOEbvfoQDRyZcp5gO4rjMcEZpdnOmgmUAqQoi/jnECqQn
- Z9aEpTkTaUG1JEA1kopq5oWoUQNuIk0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zEzizKgPTRAWh6/RItw76d1qGS9bx+9tpOtcuwviWKA=;
+ b=iZkAYfeUvw2MOfYTozzPeaLeSTBfkQRvxS79VfHKF83VYY4SS0Tduh25FwiUcGDy3gpCJw
+ +/sRSyrFn7l/y+YOO1L/vJoFM621DP4p9LeJOPjuIIWo9a7UzN0MbYcd85VCmD+UKVYnnw
+ 1sF9rbWjqk1XrR1aS2GllOYVyO5Ny0U=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-UnWhLC3KP0mn80HExsnjYg-1; Tue, 06 Jun 2023 03:45:21 -0400
-X-MC-Unique: UnWhLC3KP0mn80HExsnjYg-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5147d242f01so6555505a12.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 00:45:21 -0700 (PDT)
+ us-mta-528-F_1nBvClMkO72Te07d6Dag-1; Tue, 06 Jun 2023 03:55:04 -0400
+X-MC-Unique: F_1nBvClMkO72Te07d6Dag-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-970e0152da7so476740966b.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 00:55:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686037520; x=1688629520;
+ d=1e100.net; s=20221208; t=1686038103; x=1688630103;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cMxxcO7T8fnxCsTd4l2TIx+nL8Eqp8LyGCZBb3ennjE=;
- b=cnUP4gndsUnUhA2AHlLVtws4IPurBTsgNtQPmeTvAdkzc0nRHDJTQkUc5+0ui4TLfL
- 8ZaULb8g3dYRjmKa7C9fVmCwLBjvoh9LQ3zJeB9Ld7UtRszSBahBA5mwQpfeQt5Nlsqk
- ++lmS/RnW2qTkzw0taifqo0QeTKsCaagtmVTwXctub4QVAOq3olV9BSHb6K/YpVQfab0
- 6JjRsKpCuH3DY84fkzzERqC/AJ91iMNG01y2KzEGYfRZ/w/a+P4QXIM3y9jQTnZ/cjt5
- OKAYLpKKlySKmt0VPWgw8onRuy3cpRmq7Hh3ZfBZy8iUz/pCKLgQ2k/ydooJkZy77Ik6
- G1jg==
-X-Gm-Message-State: AC+VfDx2ncyjbSJS+8Gt3yITBSxg4ctq+W0yOKnCQcb1ST2Wxup0UbWM
- vi+VW+9s8PRAFjDJm+aL1BTmmM73jYZAaJFn5Rxf9LkFG06wNwQ4Wr+5rIoyDL3zx4uKhZrzVme
- dnGtP64g62i9SQS0=
-X-Received: by 2002:a05:6402:2787:b0:4ea:a9b0:a518 with SMTP id
- b7-20020a056402278700b004eaa9b0a518mr11205797ede.17.1686037520828; 
- Tue, 06 Jun 2023 00:45:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4ZGVWAzYwxIZFlbhvmP6NpSdTX2Q/bp0G5B2Mv0m3YWk+63kJ+G3vX94byQSeJeUqJWej14w==
-X-Received: by 2002:a05:6402:2787:b0:4ea:a9b0:a518 with SMTP id
- b7-20020a056402278700b004eaa9b0a518mr11205778ede.17.1686037520588; 
- Tue, 06 Jun 2023 00:45:20 -0700 (PDT)
+ bh=zEzizKgPTRAWh6/RItw76d1qGS9bx+9tpOtcuwviWKA=;
+ b=Uwtbk/jR2WhAboe9ymyoPnHTjh0sGlZlEoxFekLaKtTbcZg9QVInPhXmJh2yaCtaxb
+ /Pris46uPOE4d90/RVDL3D+Yd8/tN2uAHrYYS/S4Iy6bS8glRqxFzspN0j/6LCyI9sSZ
+ bklYvP2CjmPezp4oJhq8pqKRzsBxJn+Gp4r+UsHhL9GztP2XkueZktuVkgp2CLvWydAb
+ GxKq7Qjw72fwy66TkHVx8a0OF9B9mi2fc6co5zw/XO/sfPp0SGbP5AglnLlS44wd/6IB
+ 8J4giqzvX6J2wr2j8tLwYRcXh/ioZwO+ASRyjf3eTFpUMHJdBBi6jlgzrKp4ErXY6r/o
+ qqug==
+X-Gm-Message-State: AC+VfDySAeg49G6/9YJtnSbboy1rR6rnc9MXtTF3MN+jO2q+FHvZ73aF
+ uqlohwOqKIK6talz8Tt0eS67EyKnBw6bKQGiHiOoxrNLYO6yHyLSSuCKwhLdsf4yMWXlqM1jr2c
+ rnIlWd1/nc/BRAs8=
+X-Received: by 2002:a17:907:9444:b0:978:70e1:f02b with SMTP id
+ dl4-20020a170907944400b0097870e1f02bmr853792ejc.75.1686038103653; 
+ Tue, 06 Jun 2023 00:55:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5DiXeiAT4SL8k55ZwmUJ60tG9cYqWEXUMqnbVN5poa6gFU1CkMccPNQUUwdJEJIXOZ7c4gvA==
+X-Received: by 2002:a17:907:9444:b0:978:70e1:f02b with SMTP id
+ dl4-20020a170907944400b0097870e1f02bmr853770ejc.75.1686038103398; 
+ Tue, 06 Jun 2023 00:55:03 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- n23-20020aa7c797000000b005027d31615dsm4671114eds.62.2023.06.06.00.45.19
+ qc16-20020a170906d8b000b00965d294e633sm5231095ejb.58.2023.06.06.00.55.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 00:45:19 -0700 (PDT)
-Date: Tue, 6 Jun 2023 09:45:19 +0200
+ Tue, 06 Jun 2023 00:55:02 -0700 (PDT)
+Date: Tue, 6 Jun 2023 09:55:02 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
@@ -71,16 +71,15 @@ Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
  <marcel.apfelbaum@gmail.com>, <berrange@redhat.com>, <jusual@redhat.com>,
  <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
  <santosh.Shukla@amd.com>
-Subject: Re: [PATCH v4 1/3] hw/i386/pc: Refactor logic to set SMBIOS set
- defaults
-Message-ID: <20230606094519.75a38aa5@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230605213906.644883-2-suravee.suthikulpanit@amd.com>
+Subject: Re: [PATCH v4 3/3] pc: q35: Bump max_cpus to 1024
+Message-ID: <20230606095502.49e9e697@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230605213906.644883-4-suravee.suthikulpanit@amd.com>
 References: <20230605213906.644883-1-suravee.suthikulpanit@amd.com>
- <20230605213906.644883-2-suravee.suthikulpanit@amd.com>
+ <20230605213906.644883-4-suravee.suthikulpanit@amd.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -105,85 +104,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 16:39:04 -0500
+On Mon, 5 Jun 2023 16:39:06 -0500
 Suravee Suthikulpanit <suravee.suthikulpanit@amd.com> wrote:
 
-> In preparation for subsequent code to upgrade default SMBIOS
-> entry point type. There is no functional change.
-> 
+> Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
+> arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
+>=20
+> In case KVM could not support the specified number of vcpus, QEMU would
+> return the following error message:
+>=20
+>   qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid a=
+rgument
+>=20
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Julia Suvorova <jusual@redhat.com>
 > Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 > ---
->  hw/i386/pc.c      | 12 ++++++++++++
->  hw/i386/pc_piix.c |  9 ---------
->  hw/i386/pc_q35.c  |  8 --------
->  3 files changed, 12 insertions(+), 17 deletions(-)
-> 
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index bb62c994fa..8fc34f5454 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -781,6 +781,18 @@ void pc_machine_done(Notifier *notifier, void *data)
->  
->      acpi_setup();
->      if (x86ms->fw_cfg) {
-> +        PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-> +
-> +        if (pcmc->smbios_defaults) {
-> +            MachineClass *mc = MACHINE_GET_CLASS(pcms);
-> +
-> +            /* These values are guest ABI, do not change */
-> +            smbios_set_defaults("QEMU", mc->desc,
-> +                                mc->name, pcmc->smbios_legacy_mode,
-> +                                pcmc->smbios_uuid_encoded,
-> +                                pcms->smbios_entry_point_type);
-> +        }
-> 
-
-well, pc_machine_done() is the hack for the last minute changes to
-board that can't done earlier otherwise (during machine_initfn time).
-So I'd prefer not adding anything there unless we have to.
-
->          fw_cfg_build_smbios(MACHINE(pcms), x86ms->fw_cfg);
->          fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
->          /* update FW_CFG_NB_CPUS to account for -device added CPUs */
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index d5b0dcd1fe..da6ba4eeb4 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -198,15 +198,6 @@ static void pc_init1(MachineState *machine,
->  
->      pc_guest_info_init(pcms);
->  
-> -    if (pcmc->smbios_defaults) {
-> -        MachineClass *mc = MACHINE_GET_CLASS(machine);
-> -        /* These values are guest ABI, do not change */
-> -        smbios_set_defaults("QEMU", mc->desc,
-> -                            mc->name, pcmc->smbios_legacy_mode,
-> -                            pcmc->smbios_uuid_encoded,
-> -                            pcms->smbios_entry_point_type);
-> -    }
-> -
->      /* allocate ram and load rom/bios */
->      if (!xen_enabled()) {
->          pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
+>  hw/i386/pc_q35.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
 > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index 6155427e48..a58cd1d3ea 100644
+> index 371cca7484..bd862add94 100644
 > --- a/hw/i386/pc_q35.c
 > +++ b/hw/i386/pc_q35.c
-> @@ -198,14 +198,6 @@ static void pc_q35_init(MachineState *machine)
->  
->      pc_guest_info_init(pcms);
->  
-> -    if (pcmc->smbios_defaults) {
-> -        /* These values are guest ABI, do not change */
-> -        smbios_set_defaults("QEMU", mc->desc,
-> -                            mc->name, pcmc->smbios_legacy_mode,
-> -                            pcmc->smbios_uuid_encoded,
-> -                            pcms->smbios_entry_point_type);
-> -    }
-> -
->      /* create pci host bus */
->      q35_host = Q35_HOST_DEVICE(qdev_new(TYPE_Q35_HOST_DEVICE));
->  
+> @@ -365,7 +365,7 @@ static void pc_q35_machine_options(MachineClass *m)
+>      machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
+>      machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
+>      machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+> -    m->max_cpus =3D 288;
+> +    m->max_cpus =3D 1024;
+
+did you forgot to preserve value for older machine types?
+use commit 00d0f9fd6602a2 as reference=20
+
+>  }
+>
+>  static void pc_q35_8_1_machine_options(MachineClass *m)
 
 
