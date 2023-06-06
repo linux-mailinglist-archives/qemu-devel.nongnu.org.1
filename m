@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D800724589
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAAD7245A4
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:19:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XU9-0003Jv-RR; Tue, 06 Jun 2023 10:16:33 -0400
+	id 1q6XWk-0004uA-Ao; Tue, 06 Jun 2023 10:19:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6XTt-0003Gu-24
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:16:17 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XWf-0004sC-Kx
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:19:11 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6XTr-0006Ta-6W
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:16:16 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-19a427d7b57so3377167fac.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:16:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XWd-0006xj-9S
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:19:08 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f6d38a140bso44831695e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:19:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686060974; x=1688652974;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1686061145; x=1688653145;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vLtExC+Ko+jKEwW3AfIDuf2P237VUvIOZLryabTIJuc=;
- b=PmUCdShmpAlCGcqig3AwkaD8aDwqVSjhbf27TLRluzD43nnhIZMSw6heIoZU1XzOCN
- RPYb1FAtWmJYUsQ9S0UeJs51QNjZdMAc65xQdI2k2Uw38YuWElWV1uDcyH5f/8VhbSCP
- Z4cMQZejI93xB694EsCzvq621l9Ns8tIKFaqMo58vBIynZt7jMtQv8jzxk4KFGxaD1/S
- 0856Q/NXoWbhEROfs6lLVSkdZfqmpC4AMP/NfRJkvi/M0iV47S2PDDd4CC5Mro3arSxM
- IMjlPLMS+wZk7Jtxxb1Nn+6Bp8ME4CBE4oBupDK3J1DtefB/XxZZm58tfoQN8B9tE0Ne
- Efmw==
+ bh=2oIAS4dy9HaYrGAQfLKgDWTuC8ulr1q1ZAVQhDmy+hk=;
+ b=VAsjeLWCzjqXzE/JpLw9QNjs7lTFnjwE0GGPjo4j71zQNeWe147BqQ6X5eqb1huB33
+ ZFWSvcorD8p3ixs5+vJTro/TMSHelAX6znPNISGk4XQ1npEp6R5hHDuukGuE9t8D4+O7
+ lzRWaUN7dgqhhMtbl0O6ekBh1hS4vrIiI8BXAKvZLRjxgo5aAL9gvCkk1OizLlymkAEj
+ FycBXv+ZPegg4RkGCqfkCcKkynkJlWWgYfK5i8YHr1ISLZ2yRjiVpR5WwHwAWR7LkuKF
+ f439rlR4YAAmeC7CD38piH+kxm8ogzQcKtCniolbZ/pdlDFQiih/r4Z36Zoq2RgLjAkK
+ aSNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686060974; x=1688652974;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1686061145; x=1688653145;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vLtExC+Ko+jKEwW3AfIDuf2P237VUvIOZLryabTIJuc=;
- b=CF5fPDj+A1ctfAXIlkl7rJypFDCUQoqqWkQm/tCOwF6yK7jG3ObREuYI+uhkdoNNiL
- I6mvdYmk8Pe+dZ4pJMaKTozuPG+12cBB4mVLSV0CVv2bGotJrdDmDprU5PNK3okKLabi
- 1XcOrFeByTHiakyLuoyHfo8PH8OdZjwgMhesf+UjLvOjE/8LCFDMiYu2LlUtOGvNBi5+
- ug8slWYJh9OjwRr+Gru5/y1x3RQpHHJVqLuN9Mb/jgMaYXMqZv48/08Dj5cyYuKBfzPV
- 4q2dXqxd0bcvkfCeXWYSZs2ApLrAjr9l3gkwjQavYZMjmkGHMxpOpMirlQrbsF18858j
- V77Q==
-X-Gm-Message-State: AC+VfDzcHksmhYBm9i2O28N177W0QCZU4C8HCb1ThzUhd4TxpDF1/o4s
- ua00kbtKQPJvsIl5yQK/KpI78A==
-X-Google-Smtp-Source: ACHHUZ7IqDxVkcFf1kLVc0JxY8RJFXd9qJybyGB+O3RV1TpTehk+ZmM4ETpnZSeWjFn9iFrgeS6zCw==
-X-Received: by 2002:a05:6870:4ec:b0:18e:a4b9:8388 with SMTP id
- u44-20020a05687004ec00b0018ea4b98388mr1167636oam.48.1686060973779; 
- Tue, 06 Jun 2023 07:16:13 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
- by smtp.gmail.com with ESMTPSA id
- t1-20020a056871054100b0019e4fe93d72sm4775525oal.42.2023.06.06.07.16.12
+ bh=2oIAS4dy9HaYrGAQfLKgDWTuC8ulr1q1ZAVQhDmy+hk=;
+ b=BRVAdUF9RUPuTJLGc5RIvfjuzi9/IVPnY70lLbxYJfy91U0cYSXETplWDpqTk8pJJr
+ MnP6fgB/ve7fxrr8aT8jZAdga0bwPFdK8wIGaHJNaYkp2d72edlXgA0+dAKg+KsmmlVs
+ pg3EB1NOXXeYI/KDM59FkSuWr9fJ70iwFyH6No0qzILTwC0VmjvynkRL0PBCw0q0Pew9
+ Lme+rKp+kc5UgJDU6Plu8JiYNO77X1hXWWuwHalfjfuUJF4/AbqGp2QxlOVyBWmXqYL6
+ iSyViNcvN4ZhCcBj2gSqhTI4e7YRrjAXB0m+qIOubr+15iCiDMc7LuPbne3tXOOEmy6T
+ 4/2A==
+X-Gm-Message-State: AC+VfDyKXOv04lHflyJCdkE8+1f2HGLui+Rl1YwD57zMM95lUr9Owwne
+ pw/JSqL5IgQGdq0+Y22m6RljvQ==
+X-Google-Smtp-Source: ACHHUZ7vJy/TXs/MHVHpt10ddW7wCPOPizTPfm9+1GTg5QTtz6w+JFeMadB9n68zi4BgppIT/Ai/MQ==
+X-Received: by 2002:a05:600c:3797:b0:3f7:9b05:928e with SMTP id
+ o23-20020a05600c379700b003f79b05928emr1917428wmr.0.1686061145478; 
+ Tue, 06 Jun 2023 07:19:05 -0700 (PDT)
+Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
+ [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
+ 6-20020a05600c024600b003f7ed9dae70sm93214wmj.0.2023.06.06.07.19.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 07:16:13 -0700 (PDT)
-Message-ID: <b3013d96-f27d-5019-6e3f-98ce55ab9adf@ventanamicro.com>
-Date: Tue, 6 Jun 2023 11:16:10 -0300
+ Tue, 06 Jun 2023 07:19:05 -0700 (PDT)
+Message-ID: <b0a05492-21ca-a6c6-37aa-2a990c8fc5d7@linaro.org>
+Date: Tue, 6 Jun 2023 16:19:03 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] Add epmp to extensions list and rename it to smepmp
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [RFC v1 4/4] qemu: adjust queried bar size to power-of-2
 Content-Language: en-US
-To: Himanshu Chauhan <hchauhan@ventanamicro.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230606113812.519723-1-hchauhan@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230606113812.519723-1-hchauhan@ventanamicro.com>
+To: Alex Williamson <alex.williamson@redhat.com>, ankita@nvidia.com
+Cc: jgg@nvidia.com, qemu-devel@nongnu.org
+References: <20230605235005.20649-1-ankita@nvidia.com>
+ <20230605235005.20649-5-ankita@nvidia.com>
+ <20230606065441.170333b5.alex.williamson@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230606065441.170333b5.alex.williamson@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x30.google.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,164 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/6/23 08:38, Himanshu Chauhan wrote:
-> Smepmp is a ratified extension which qemu refers to as epmp.
-> Rename epmp to smepmp and add it to extension list so that
-> it is added to the isa string.
+On 6/6/23 14:54, Alex Williamson wrote:
+> On Mon, 5 Jun 2023 16:50:05 -0700
+> <ankita@nvidia.com> wrote:
 > 
-> Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/cpu.c     |  9 +++++----
->   target/riscv/cpu_cfg.h |  2 +-
->   target/riscv/csr.c     |  6 +++---
->   target/riscv/pmp.c     | 12 ++++++------
->   4 files changed, 15 insertions(+), 14 deletions(-)
+>> From: Ankit Agrawal <ankita@nvidia.com>
+>>
+>> The GPU device memory is reported to the VM as a BAR. The device memory
+>> may not be aligned to the power-of-2, but the QEMU expects the PCI BAR to
+>> be. Align the reported device memory size to the next power-of-2 before
+>> QEMU does an mmap.
+>>
+>> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+>> ---
+>>   hw/vfio/common.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 4d01ea3515..bb49200458 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -2061,7 +2061,7 @@ int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
+>>   
+>>       region->vbasedev = vbasedev;
+>>       region->flags = info->flags;
+>> -    region->size = info->size;
+>> +    region->size = info->size ? pow2ceil(info->size) : info->size;
+>>       region->fd_offset = info->offset;
+>>       region->nr = index;
+>>   
 > 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 881bddf393..cf3d1c3207 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -127,6 +127,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
->       ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
->       ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
->       ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
-> +    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
->       ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
->       ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
->       ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
-> @@ -547,7 +548,7 @@ static void rv32_ibex_cpu_init(Object *obj)
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
->   #endif
-> -    cpu->cfg.epmp = true;
-> +    cpu->cfg.ext_smepmp = true;
->   
->       /* inherited from parent obj via riscv_cpu_init() */
->       cpu->cfg.ext_ifencei = true;
-> @@ -1336,12 +1337,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
->           return;
->       }
->   
-> -    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
-> +    if (cpu->cfg.ext_smepmp && !cpu->cfg.pmp) {
->           /*
->            * Enhanced PMP should only be available
->            * on harts with PMP support
->            */
-> -        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
-> +        error_setg(errp, "Invalid configuration: SMEPMP requires PMP support");
->           return;
->       }
->   
-> @@ -1676,7 +1677,7 @@ static Property riscv_cpu_extensions[] = {
->       DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
->   
->       /* ePMP 0.9.3 */
-> -    DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
-> +    DEFINE_PROP_BOOL("smepmp", RISCVCPU, cfg.ext_smepmp, false),
->       DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
->       DEFINE_PROP_BOOL("x-ssaia", RISCVCPU, cfg.ext_ssaia, false),
->   
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index c4a627d335..d79b022e35 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -87,6 +87,7 @@ struct RISCVCPUConfig {
->       bool ext_zvfh;
->       bool ext_zvfhmin;
->       bool ext_smaia;
-> +    bool ext_smepmp;
->       bool ext_ssaia;
->       bool ext_sscofpmf;
->       bool rvv_ta_all_1s;
-> @@ -121,7 +122,6 @@ struct RISCVCPUConfig {
->       uint16_t cboz_blocksize;
->       bool mmu;
->       bool pmp;
-> -    bool epmp;
->       bool debug;
->       bool misa_w;
->   
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 58499b5afc..d9bc591348 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -523,9 +523,9 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
->       return RISCV_EXCP_ILLEGAL_INST;
->   }
->   
-> -static RISCVException epmp(CPURISCVState *env, int csrno)
-> +static RISCVException smepmp(CPURISCVState *env, int csrno)
->   {
-> -    if (riscv_cpu_cfg(env)->epmp) {
-> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
->           return RISCV_EXCP_NONE;
->       }
->   
-> @@ -4356,7 +4356,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
->       [CSR_VSIPH]       = { "vsiph",       aia_hmode32, NULL, NULL, rmw_vsiph },
->   
->       /* Physical Memory Protection */
-> -    [CSR_MSECCFG]    = { "mseccfg",  epmp, read_mseccfg, write_mseccfg,
-> +    [CSR_MSECCFG]    = { "mseccfg", smepmp, read_mseccfg, write_mseccfg,
->                            .min_priv_ver = PRIV_VERSION_1_11_0           },
->       [CSR_PMPCFG0]    = { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg  },
->       [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 418738afd8..18246e1737 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -87,7 +87,7 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
->       if (pmp_index < MAX_RISCV_PMPS) {
->           bool locked = true;
->   
-> -        if (riscv_cpu_cfg(env)->epmp) {
-> +        if (riscv_cpu_cfg(env)->ext_smepmp) {
->               /* mseccfg.RLB is set */
->               if (MSECCFG_RLB_ISSET(env)) {
->                   locked = false;
-> @@ -337,9 +337,9 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
->   
->           /*
->            * Convert the PMP permissions to match the truth table in the
-> -         * ePMP spec.
-> +         * SMEPMP spec.
->            */
-> -        const uint8_t epmp_operation =
-> +        const uint8_t smepmp_operation =
->               ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
->               ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
->               (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
-> @@ -364,7 +364,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
->                    * If mseccfg.MML Bit set, do the enhanced pmp priv check
->                    */
->                   if (mode == PRV_M) {
-> -                    switch (epmp_operation) {
-> +                    switch (smepmp_operation) {
->                       case 0:
->                       case 1:
->                       case 4:
-> @@ -395,7 +395,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
->                           g_assert_not_reached();
->                       }
->                   } else {
-> -                    switch (epmp_operation) {
-> +                    switch (smepmp_operation) {
->                       case 0:
->                       case 8:
->                       case 9:
-> @@ -576,7 +576,7 @@ void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
->           }
->       }
->   
-> -    if (riscv_cpu_cfg(env)->epmp) {
-> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
->           /* Sticky bits */
->           val |= (env->mseccfg & (MSECCFG_MMWP | MSECCFG_MML));
->           if ((val ^ env->mseccfg) & (MSECCFG_MMWP | MSECCFG_MML)) {
+> Nak, this means our kernel emulation of the BAR is broken, a BAR that
+> is not naturally aligned is not a PCI BAR.
+
+Right. So the common code could check this value is correct, like:
+
+   assert(is_power_of_2(->size));
+
+Or less violet using error_report :)
 
