@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51597249C4
+	by mail.lfdr.de (Postfix) with ESMTPS id A679A7249C5
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 19:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6a7A-00018O-Fa; Tue, 06 Jun 2023 13:05:00 -0400
+	id 1q6a7h-0001Ko-JU; Tue, 06 Jun 2023 13:05:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q6a78-00016r-2W
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 13:04:58 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1q6a7g-0001Jq-85
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 13:05:32 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q6a76-0004Pl-0F
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 13:04:57 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f6ef9a928fso53361435e9.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 10:04:54 -0700 (PDT)
+ id 1q6a7d-0004m8-Dc
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 13:05:31 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f7378a75c0so24878565e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 10:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686071093; x=1688663093;
+ d=linaro.org; s=google; t=1686071125; x=1688663125;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F1PQu8yBWC4SxYhaTE+RaFa9hC0oDcg7zPVjOJIm8LU=;
- b=NtJsIpZBltWYAF6OWUWF+zLKHeeji5D389PJNNE2XkHFvOZjogZlt1SiOPfZh8Aq1c
- g2i4SQQnePFLrhL0OONnUwd3WmS0svA4ET2oJ77Qzgu7qH4kRLKdeGdNMMze80OyuJ/g
- GZS7z+5l/VGqS3J1sPNihdHGDsBuzEneZ9mzaevG3x7PJo043RXj0DTQpTtsPcLlMo88
- CriR+HN1h4BymEOtirTITbcsnmEa0aqbAHjSZEhT77CjthQgBIcSj1f254HVdxWx/xUS
- IKIfhTMR7yBieRzUx3aAD/PeV5ajKOYEzg7Z/YBQuUg+dfcwly/gY7FKK9XWjv+yfhbR
- kLgA==
+ bh=SXd4QXP6zZ0NzdfGFX6Xw3gRWR3VK7zHN+NrMYIo/xs=;
+ b=eXGWBD4H4SAgmmcV/dPYqAOdexAivPzWfWjTkymaFLGMKSG03l6KnfDlbsBcn7D8Ml
+ KcZsKNQJFOmP0Mg/ewT6ioc85uieO2CRaema1K56UPYuoO4JA2R1HnPvvOqDPAyC8G9b
+ 98mC5Do9bPp30WMXcYIiZS6HnqOTj/bpG8ntnkCXK/cx/YgtwU5SzyiPbZaAu96KQjc8
+ Ng4DRmDzGLO6V4DpppDKuerOBseXitF3d0OvlG/ncPqcWHDjY6OZSgHmAThH5tNNF6l8
+ BMK+XG3bBfzFLw5lcf+B4EFDvPbwQB17OU+dvZj8XxtwR1eJBP7BI/Kj4ZeJ7hR96gLQ
+ p+Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686071093; x=1688663093;
+ d=1e100.net; s=20221208; t=1686071125; x=1688663125;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=F1PQu8yBWC4SxYhaTE+RaFa9hC0oDcg7zPVjOJIm8LU=;
- b=ApvAAKmjlkrcjYsV7zhKCEYtSHtqZpP3+ZN3sqF/CFMFUIaye0bbjKKZNelt14r4h+
- TKec4/BOItMLqebkPiOPZnVomfDcxbsbIt4P9nDPbyIdM5n29f6cVRVLguI2dHpXd2tG
- FrCjtgfeNjkER2ncN4D5yoJThzS1Xk20FPur38P/o5xjoGXqGN7i278bH8oSpIQD4y6i
- Omp3CG8o20ki5pHZY1dAdLL9umQcfqJ1OIzMJ7vnWFCBTcsxuk15LIRgEHx2cFOO4FOX
- rZr1+000KwD2ddLOyJHHskuZIxY4Y8pcLwhZQJzDrmV8CI6dPDYsFW2Of8ua6aCWdUsE
- NDzw==
-X-Gm-Message-State: AC+VfDzaukkbRXbGMamB6HcQloRjUxFF0jHcrsJ9czG77gyj+PlSp/JT
- jMWUzvfDwOFizuc6hjwUbMfr2g==
-X-Google-Smtp-Source: ACHHUZ4u43HSfH7UzZ+ruD7T5CX8I4KnyMrjqLYuD6K/tigGk8LQMC1dtz+hFa55zynvnhSPhCGuNQ==
-X-Received: by 2002:a05:600c:2181:b0:3f7:2a13:9621 with SMTP id
- e1-20020a05600c218100b003f72a139621mr2273768wme.40.1686071092954; 
- Tue, 06 Jun 2023 10:04:52 -0700 (PDT)
+ bh=SXd4QXP6zZ0NzdfGFX6Xw3gRWR3VK7zHN+NrMYIo/xs=;
+ b=l1kLHwh55zzkk2zPUzQqSXf620PmP0H4RBerEbYOhK8mOCSqKGDLyYQTGEQeR6vQ4g
+ ozlE2OfZlPeoUyaa0l5EFq4FlLrym8t6iZytX16evf1rDKci+k02ybNJMFH7Nh3QdwCt
+ rh4uD8xxNyZAeP7G3YDdu3gOS/K4v3HO6D1XMM0gwn7XkJMjHcKcT27PVj9tZVIXTjse
+ 0o72MKI8Y+ZNcAnAS0P2KYnBrBTN7TRdfj6H77Ssbt95DsxccFa8Wo4NYcPZU+aoapce
+ 1AVwebcIEEegPXaP9EaKGPBqsyA8atEsRtybqRYckqtnSP5b/ey5qYKrowARY1oitMFI
+ 0doQ==
+X-Gm-Message-State: AC+VfDzz9C0fs0SHcQyLv/xdgqA2GmiLZslDogtvx/2E+66sEt4iSaZb
+ eC+3fZ7LthvN+N0Kf5CKjNJDjw==
+X-Google-Smtp-Source: ACHHUZ6TcURDh1YXZLGRLk+YUKaw65Xc/91ud5CTQiTW13FMRSrGCp58bdOfaP2YMQVR86LnawW9Jw==
+X-Received: by 2002:a05:600c:287:b0:3f4:2452:966a with SMTP id
+ 7-20020a05600c028700b003f42452966amr2707189wmk.27.1686071125595; 
+ Tue, 06 Jun 2023 10:05:25 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- y5-20020adfd085000000b003095bd71159sm13284995wrh.7.2023.06.06.10.04.52
+ t3-20020adfe103000000b0030ae6432504sm13071305wrz.38.2023.06.06.10.05.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 10:04:52 -0700 (PDT)
+ Tue, 06 Jun 2023 10:05:25 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 24E3D1FFBB;
- Tue,  6 Jun 2023 18:04:52 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 9F9961FFBB;
+ Tue,  6 Jun 2023 18:05:24 +0100 (BST)
 References: <20230606141252.95032-1-philmd@linaro.org>
+ <20230606141252.95032-6-philmd@linaro.org>
 User-agent: mu4e 1.11.6; emacs 29.0.91
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-riscv@nongnu.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH 0/5] misc: Enforce .[ch].inc extension for re-included
- .c/.h files
-Date: Tue, 06 Jun 2023 18:02:14 +0100
-In-reply-to: <20230606141252.95032-1-philmd@linaro.org>
-Message-ID: <87sfb4h68b.fsf@linaro.org>
+Subject: Re: [PATCH 5/5] tests/tcg/aarch64: Rename bti-crt.inc.c ->
+ bti-crt.c.inc
+Date: Tue, 06 Jun 2023 18:05:20 +0100
+In-reply-to: <20230606141252.95032-6-philmd@linaro.org>
+Message-ID: <87o7lsh67f.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -100,32 +101,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Follow the convention to use the .inc extension for .c/.h files
-> re-included, as docummented in Coding Style since commit 6a0057aa22:
+> Since commit 139c1837db ("meson: rename included C source files
+> to .c.inc"), QEMU standard procedure for included C files is to
+> use *.c.inc.
 >
->     If you do use template header files they should be named with
->     the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
->     being included for expansion.
+> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+> about includes") this is documented as the Coding Style:
 >
-> Most of the codebase already uses this extension:
+>   If you do use template header files they should be named with
+>   the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+>   being included for expansion.
 >
->   $ git ls-files | fgrep .inc | wc -l
->        155
+> Therefore rename 'bti-crt.inc.c' as 'bti-crt.c.inc'.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Ahh prescient as I've just added this hack to the loc tool I'm using:
-
-  modified   src/lib.rs
-  @@ -338,7 +338,7 @@ pub fn lang_from_ext(filepath: &str) -> Lang {
-           "at" =3D> AmbientTalk,
-           "awk" =3D> Awk,
-           "bat" | "btm" | "cmd" =3D> Batch,
-  -        "c" | "ec" | "pgc" =3D> C,
-  +        "c" | "ec" | "pgc" | "inc" =3D> C,
-           "cc" | "cpp" | "cxx" | "c++" | "pcc" =3D> Cpp,
-           "cfc" =3D> ColdFusionScript,
-           "cmake" =3D> CMake,
-
-while gathering loc stats for the project.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
 --=20
 Alex Benn=C3=A9e
