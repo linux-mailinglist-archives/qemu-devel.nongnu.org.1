@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E55723E61
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FD1723E67
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TIx-0007o4-4n; Tue, 06 Jun 2023 05:48:43 -0400
+	id 1q6TIx-0007oi-SO; Tue, 06 Jun 2023 05:48:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIk-0007fG-Pj
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:30 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1q6TIp-0007jK-47
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:35 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIg-0004lo-6c
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:30 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30ae5f2ac94so5882551f8f.1
+ id 1q6TIj-0004m0-Nc
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:34 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-30ae967ef74so4631007f8f.0
  for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686044904; x=1688636904;
+ d=linaro.org; s=google; t=1686044905; x=1688636905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=husryfr8aoyZTxHtkzHPAjPwAMvj0JcrBa+W6jOb1To=;
- b=dYebCER2slljbpt+ORDvIwhMJ4O99r6LHP5vIPox9+Wfhs4pQFF/tvj8iqDl1PGejN
- tzIRZ4bxGHY4vq1m17UtLQ4lBjD/ZY0b5e9qW78zrCSZ7b8w5XkUpmQbenRBOcHF6vev
- cUnDNRo6R2rQQmV3Sb0sO0FwPfLaGc4sTCKFCX8RREpyjV4+d7/f1VyqyzJwXRrWqmcM
- MEQGr7yWkUxdjm8eCDmViGqK/2tq4wHjTbClIm7di/v0TVSE3XxnG6xjku2Ol6WR65ez
- t1lxzEnx6bG5Lp5RZsSmZ9z7c2oSMaDmUlVXvqsL/PaBu66nz6xMiowgiix3sYx7zggx
- OAmw==
+ :reply-to; bh=Ckp/wBSfFnkv4vrWWhbnnMtnjKyVqQNIxbNpABnud0Q=;
+ b=SGb77HOWaHyA3TK/g1iXVzALXf9Xsd9mbPOcV6QvPDatcEaBgdWvB6vLOluwt3taS/
+ qThbKBds4sJZvlHTdsYoitHrE6cFE7TjA/3/L2w/XK16rwOmcMbVo2ikLMdJZRvQcyvl
+ b3WLdUZ6gcbt7b8PdWtjUBiJa+3EEOlGrMFXKKDlY8efc9pULOws/HP9NVaaiwU9+Vxx
+ 84MdLMfyKfd6Hynqm/NPxm5r7foU588YIQxgkbD7UhuopjaHgHutUGOPv5yOSR14kGlt
+ 1QMlM0VOHW3SMiaoi9g6a5u6+PUUGQ/+QZmnYyHvXtEVj5y8vHcjTS+icmKtKcm1rWH9
+ A/SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686044904; x=1688636904;
+ d=1e100.net; s=20221208; t=1686044905; x=1688636905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=husryfr8aoyZTxHtkzHPAjPwAMvj0JcrBa+W6jOb1To=;
- b=gQWyncmlTXa365H+G/LKkvoZJ4uhcFXHqCJHjl/8js6QMEFnUIevve/EBHLetWRLdA
- wugGjoJTz+nR1y3CdoLtQ4lSWB+rgIURtZ6F84YkGlK6cRRWSaU8ReL22olkws1qEIDw
- jScd8wRtSYNb1Gf1ldz71erElnG4DF29z5cghSW+pyPwQkHHEDpgzHFDL/Te/ItJLMDP
- zVl37K1nOC1rPGVr+95ue5P22lz0pF2uTDWVFe1Sp7F9FqeegXUDm0rN4KsYdKuCzC8J
- IjrJ7fKiqhlvZvuFeZoVjfK5P744CxNwieHB0a0uKyBeqn2ZYQmsoZkzl1W8cFyj6iLl
- Z8MA==
-X-Gm-Message-State: AC+VfDwZtzBr6LygyqFa9UX5QS771mn80wkX8YpgDSxcXl6XUwzUfJF3
- I8FGwQzP1fC1vGLFUv1sXkFFHY+SSS046GuQ+vM=
-X-Google-Smtp-Source: ACHHUZ5gAYhogi0x4MkikA0M0F2kcJ/k/nY4ZINa97xhhz/YFRK0lTazwqdIO+P7ccPtlvp/qpoz3w==
-X-Received: by 2002:adf:e652:0:b0:309:3a60:d791 with SMTP id
- b18-20020adfe652000000b003093a60d791mr1599736wrn.54.1686044904632; 
- Tue, 06 Jun 2023 02:48:24 -0700 (PDT)
+ bh=Ckp/wBSfFnkv4vrWWhbnnMtnjKyVqQNIxbNpABnud0Q=;
+ b=GBwqa1K+fFy0hQlNIJ6JclYLIacLrcQrlg/JsXU2jMw0PqUkmOyKptds8n16bkPULk
+ GbVG1MHfjXnuy1m5clPzy2njmwViUL5Wwvc6XuJ2Fh8sqUFV8fRJCfg+ZMqnREQymEhN
+ R6MchfGMzCNqWLo+rzMeMsH/fzkJIkrrtt13GG/AS5V7fsIcjro/CrOQm77YkqWL1FPQ
+ 7MWJkjftbNwGziIUjHdRUGEHOs0DmhhMwiJGntd7JZi3UYhRT7H6DHQWPa7hXbz0PTai
+ n+XIu/lMflhfhpT9SiCGdPw7ngfPgoU1H80wOapGi2rKY/94GdUUWAUqR6mUMCKA+mtg
+ rpSA==
+X-Gm-Message-State: AC+VfDxnDSZvHbtmPCoOa+W47h2WWmhDDohbxzEfUND2FPW/ht0lNVCg
+ h8MLGMkPAv99H/obb3Ck2vT1kyGzM/gJ5Fje8ig=
+X-Google-Smtp-Source: ACHHUZ69aAl1MI9eEzeQVbqQgTjPBO+zzyEroSI6rCxbKwGsHODjm3/z9gQ7AvggvnFhvdlOE5l2iA==
+X-Received: by 2002:a5d:4589:0:b0:30a:d246:32c2 with SMTP id
+ p9-20020a5d4589000000b0030ad24632c2mr1455132wrq.23.1686044905026; 
+ Tue, 06 Jun 2023 02:48:25 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.24
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 06 Jun 2023 02:48:24 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/42] hw: arm: allwinner-sramc: Add SRAM Controller support
- for R40
-Date: Tue,  6 Jun 2023 10:47:49 +0100
-Message-Id: <20230606094814.3581397-18-peter.maydell@linaro.org>
+Subject: [PULL 18/42] tests: avocado: boot_linux_console: Add test case for
+ bpim2u
+Date: Tue,  6 Jun 2023 10:47:50 +0100
+Message-Id: <20230606094814.3581397-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230606094814.3581397-1-peter.maydell@linaro.org>
 References: <20230606094814.3581397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,410 +93,203 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: qianfan Zhao <qianfanguijin@163.com>
 
-Only a few important registers are added, especially the SRAM_VER
-register.
+Add test case for booting from initrd and sd card.
 
 Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
 Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+Tested-by: Niek Linnenbank <nieklinnenbank@gmail.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/allwinner-r40.h    |   3 +
- include/hw/misc/allwinner-sramc.h |  69 +++++++++++
- hw/arm/allwinner-r40.c            |   7 +-
- hw/misc/allwinner-sramc.c         | 184 ++++++++++++++++++++++++++++++
- hw/arm/Kconfig                    |   1 +
- hw/misc/Kconfig                   |   3 +
- hw/misc/meson.build               |   1 +
- hw/misc/trace-events              |   4 +
- 8 files changed, 271 insertions(+), 1 deletion(-)
- create mode 100644 include/hw/misc/allwinner-sramc.h
- create mode 100644 hw/misc/allwinner-sramc.c
+ tests/avocado/boot_linux_console.py | 176 ++++++++++++++++++++++++++++
+ 1 file changed, 176 insertions(+)
 
-diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.h
-index 5f2d08489eb..72710d3edce 100644
---- a/include/hw/arm/allwinner-r40.h
-+++ b/include/hw/arm/allwinner-r40.h
-@@ -27,6 +27,7 @@
- #include "hw/sd/allwinner-sdhost.h"
- #include "hw/misc/allwinner-r40-ccu.h"
- #include "hw/misc/allwinner-r40-dramc.h"
-+#include "hw/misc/allwinner-sramc.h"
- #include "hw/i2c/allwinner-i2c.h"
- #include "hw/net/allwinner_emac.h"
- #include "hw/net/allwinner-sun8i-emac.h"
-@@ -38,6 +39,7 @@ enum {
-     AW_R40_DEV_SRAM_A2,
-     AW_R40_DEV_SRAM_A3,
-     AW_R40_DEV_SRAM_A4,
-+    AW_R40_DEV_SRAMC,
-     AW_R40_DEV_EMAC,
-     AW_R40_DEV_MMC0,
-     AW_R40_DEV_MMC1,
-@@ -102,6 +104,7 @@ struct AwR40State {
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index c0675809e64..6ed660611fe 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -769,6 +769,182 @@ def test_arm_quanta_gsj_initrd(self):
+         self.wait_for_console_pattern(
+                 'Give root password for system maintenance')
  
-     ARMCPU cpus[AW_R40_NUM_CPUS];
-     const hwaddr *memmap;
-+    AwSRAMCState sramc;
-     AwA10PITState timer;
-     AwSdHostState mmc[AW_R40_NUM_MMCS];
-     AwR40ClockCtlState ccu;
-diff --git a/include/hw/misc/allwinner-sramc.h b/include/hw/misc/allwinner-sramc.h
-new file mode 100644
-index 00000000000..66b01b8d044
---- /dev/null
-+++ b/include/hw/misc/allwinner-sramc.h
-@@ -0,0 +1,69 @@
-+/*
-+ * Allwinner SRAM controller emulation
-+ *
-+ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
-+ *
-+ * This program is free software: you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation, either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
++    def test_arm_bpim2u(self):
++        """
++        :avocado: tags=arch:arm
++        :avocado: tags=machine:bpim2u
++        :avocado: tags=accel:tcg
++        """
++        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
++                   'linux-image-current-sunxi_21.02.2_armhf.deb')
++        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
++        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
++        kernel_path = self.extract_from_deb(deb_path,
++                                            '/boot/vmlinuz-5.10.16-sunxi')
++        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
++                    'sun8i-r40-bananapi-m2-ultra.dtb')
++        dtb_path = self.extract_from_deb(deb_path, dtb_path)
 +
-+#ifndef HW_MISC_ALLWINNER_SRAMC_H
-+#define HW_MISC_ALLWINNER_SRAMC_H
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=ttyS0,115200n8 '
++                               'earlycon=uart,mmio32,0x1c28000')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-append', kernel_command_line)
++        self.vm.launch()
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        self.wait_for_console_pattern(console_pattern)
 +
-+#include "qom/object.h"
-+#include "hw/sysbus.h"
-+#include "qemu/uuid.h"
++    def test_arm_bpim2u_initrd(self):
++        """
++        :avocado: tags=arch:arm
++        :avocado: tags=accel:tcg
++        :avocado: tags=machine:bpim2u
++        """
++        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
++                   'linux-image-current-sunxi_21.02.2_armhf.deb')
++        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
++        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
++        kernel_path = self.extract_from_deb(deb_path,
++                                            '/boot/vmlinuz-5.10.16-sunxi')
++        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
++                    'sun8i-r40-bananapi-m2-ultra.dtb')
++        dtb_path = self.extract_from_deb(deb_path, dtb_path)
++        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
++                      '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
++                      'arm/rootfs-armv7a.cpio.gz')
++        initrd_hash = '604b2e45cdf35045846b8bbfbf2129b1891bdc9c'
++        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
++        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
++        archive.gzip_uncompress(initrd_path_gz, initrd_path)
 +
-+/**
-+ * Object model
-+ * @{
-+ */
-+#define TYPE_AW_SRAMC               "allwinner-sramc"
-+#define TYPE_AW_SRAMC_SUN8I_R40     TYPE_AW_SRAMC "-sun8i-r40"
-+OBJECT_DECLARE_TYPE(AwSRAMCState, AwSRAMCClass, AW_SRAMC)
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=ttyS0,115200 '
++                               'panic=-1 noreboot')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-initrd', initrd_path,
++                         '-append', kernel_command_line,
++                         '-no-reboot')
++        self.vm.launch()
++        self.wait_for_console_pattern('Boot successful.')
 +
-+/** @} */
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
++                                                'Allwinner sun8i Family')
++        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
++                                                'system-control@1c00000')
++        exec_command_and_wait_for_pattern(self, 'reboot',
++                                                'reboot: Restarting system')
++        # Wait for VM to shut down gracefully
++        self.vm.wait()
 +
-+/**
-+ * Allwinner SRAMC object instance state
-+ */
-+struct AwSRAMCState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+    /*< public >*/
++    def test_arm_bpim2u_gmac(self):
++        """
++        :avocado: tags=arch:arm
++        :avocado: tags=accel:tcg
++        :avocado: tags=machine:bpim2u
++        :avocado: tags=device:sd
++        """
++        self.require_netdev('user')
 +
-+    /** Maps I/O registers in physical memory */
-+    MemoryRegion iomem;
++        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
++                   'linux-image-current-sunxi_21.02.2_armhf.deb')
++        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
++        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
++        kernel_path = self.extract_from_deb(deb_path,
++                                            '/boot/vmlinuz-5.10.16-sunxi')
++        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
++                    'sun8i-r40-bananapi-m2-ultra.dtb')
++        dtb_path = self.extract_from_deb(deb_path, dtb_path)
++        rootfs_url = ('http://storage.kernelci.org/images/rootfs/buildroot/'
++                      'buildroot-baseline/20221116.0/armel/rootfs.ext2.xz')
++        rootfs_hash = 'fae32f337c7b87547b10f42599acf109da8b6d9a'
++        rootfs_path_xz = self.fetch_asset(rootfs_url, asset_hash=rootfs_hash)
++        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
++        archive.lzma_uncompress(rootfs_path_xz, rootfs_path)
++        image_pow2ceil_expand(rootfs_path)
 +
-+    /* registers */
-+    uint32_t sram_ctl1;
-+    uint32_t sram_ver;
-+    uint32_t sram_soft_entry_reg0;
-+};
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=ttyS0,115200 '
++                               'root=/dev/mmcblk0 rootwait rw '
++                               'panic=-1 noreboot')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-drive', 'file=' + rootfs_path + ',if=sd,format=raw',
++                         '-net', 'nic,model=gmac,netdev=host_gmac',
++                         '-netdev', 'user,id=host_gmac',
++                         '-append', kernel_command_line,
++                         '-no-reboot')
++        self.vm.launch()
++        shell_ready = "/bin/sh: can't access tty; job control turned off"
++        self.wait_for_console_pattern(shell_ready)
 +
-+/**
-+ * Allwinner SRAM Controller class-level struct.
-+ *
-+ * This struct is filled by each sunxi device specific code
-+ * such that the generic code can use this struct to support
-+ * all devices.
-+ */
-+struct AwSRAMCClass {
-+    /*< private >*/
-+    SysBusDeviceClass parent_class;
-+    /*< public >*/
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
++                                                'Allwinner sun8i Family')
++        exec_command_and_wait_for_pattern(self, 'cat /proc/partitions',
++                                                'mmcblk0')
++        exec_command_and_wait_for_pattern(self, 'ifconfig eth0 up',
++                                                 'eth0: Link is Up')
++        exec_command_and_wait_for_pattern(self, 'udhcpc eth0',
++            'udhcpc: lease of 10.0.2.15 obtained')
++        exec_command_and_wait_for_pattern(self, 'ping -c 3 10.0.2.2',
++            '3 packets transmitted, 3 packets received, 0% packet loss')
++        exec_command_and_wait_for_pattern(self, 'reboot',
++                                                'reboot: Restarting system')
++        # Wait for VM to shut down gracefully
++        self.vm.wait()
 +
-+    uint32_t sram_version_code;
-+};
++    @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
++    def test_arm_bpim2u_openwrt_22_03_3(self):
++        """
++        :avocado: tags=arch:arm
++        :avocado: tags=machine:bpim2u
++        :avocado: tags=device:sd
++        """
 +
-+#endif /* HW_MISC_ALLWINNER_SRAMC_H */
-diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
-index c018ad231ad..7d29eb224f6 100644
---- a/hw/arm/allwinner-r40.c
-+++ b/hw/arm/allwinner-r40.c
-@@ -39,6 +39,7 @@ const hwaddr allwinner_r40_memmap[] = {
-     [AW_R40_DEV_SRAM_A2]    = 0x00004000,
-     [AW_R40_DEV_SRAM_A3]    = 0x00008000,
-     [AW_R40_DEV_SRAM_A4]    = 0x0000b400,
-+    [AW_R40_DEV_SRAMC]      = 0x01c00000,
-     [AW_R40_DEV_EMAC]       = 0x01c0b000,
-     [AW_R40_DEV_MMC0]       = 0x01c0f000,
-     [AW_R40_DEV_MMC1]       = 0x01c10000,
-@@ -76,7 +77,6 @@ struct AwR40Unimplemented {
- static struct AwR40Unimplemented r40_unimplemented[] = {
-     { "d-engine",   0x01000000, 4 * MiB },
-     { "d-inter",    0x01400000, 128 * KiB },
--    { "sram-c",     0x01c00000, 4 * KiB },
-     { "dma",        0x01c02000, 4 * KiB },
-     { "nfdc",       0x01c03000, 4 * KiB },
-     { "ts",         0x01c04000, 4 * KiB },
-@@ -288,6 +288,8 @@ static void allwinner_r40_init(Object *obj)
-                              "ram-addr");
-     object_property_add_alias(obj, "ram-size", OBJECT(&s->dramc),
-                               "ram-size");
++        # This test download a 8.9 MiB compressed image and expand it
++        # to 127 MiB.
++        image_url = ('https://downloads.openwrt.org/releases/22.03.3/targets/'
++                     'sunxi/cortexa7/openwrt-22.03.3-sunxi-cortexa7-'
++                     'sinovoip_bananapi-m2-ultra-ext4-sdcard.img.gz')
++        image_hash = ('5b41b4e11423e562c6011640f9a7cd3b'
++                      'dd0a3d42b83430f7caa70a432e6cd82c')
++        image_path_gz = self.fetch_asset(image_url, asset_hash=image_hash,
++                                         algorithm='sha256')
++        image_path = archive.extract(image_path_gz, self.workdir)
++        image_pow2ceil_expand(image_path)
 +
-+    object_initialize_child(obj, "sramc", &s->sramc, TYPE_AW_SRAMC_SUN8I_R40);
- }
- 
- static void allwinner_r40_realize(DeviceState *dev, Error **errp)
-@@ -382,6 +384,9 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
-                        AW_R40_GIC_SPI_TIMER1));
- 
-     /* SRAM */
-+    sysbus_realize(SYS_BUS_DEVICE(&s->sramc), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->sramc), 0, s->memmap[AW_R40_DEV_SRAMC]);
++        self.vm.set_console()
++        self.vm.add_args('-drive', 'file=' + image_path + ',if=sd,format=raw',
++                         '-nic', 'user',
++                         '-no-reboot')
++        self.vm.launch()
 +
-     memory_region_init_ram(&s->sram_a1, OBJECT(dev), "sram A1",
-                             16 * KiB, &error_abort);
-     memory_region_init_ram(&s->sram_a2, OBJECT(dev), "sram A2",
-diff --git a/hw/misc/allwinner-sramc.c b/hw/misc/allwinner-sramc.c
-new file mode 100644
-index 00000000000..a8b731f8f28
---- /dev/null
-+++ b/hw/misc/allwinner-sramc.c
-@@ -0,0 +1,184 @@
-+/*
-+ * Allwinner R40 SRAM controller emulation
-+ *
-+ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
-+ *
-+ * This program is free software: you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation, either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'usbcore.nousb '
++                               'noreboot')
 +
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "hw/sysbus.h"
-+#include "migration/vmstate.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "qapi/error.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-properties-system.h"
-+#include "hw/misc/allwinner-sramc.h"
-+#include "trace.h"
++        self.wait_for_console_pattern('U-Boot SPL')
 +
-+/*
-+ * register offsets
-+ * https://linux-sunxi.org/SRAM_Controller_Register_Guide
-+ */
-+enum {
-+    REG_SRAM_CTL1_CFG               = 0x04, /* SRAM Control register 1 */
-+    REG_SRAM_VER                    = 0x24, /* SRAM Version register */
-+    REG_SRAM_R40_SOFT_ENTRY_REG0    = 0xbc,
-+};
++        interrupt_interactive_console_until_pattern(
++                self, 'Hit any key to stop autoboot:', '=>')
++        exec_command_and_wait_for_pattern(self, "setenv extraargs '" +
++                                                kernel_command_line + "'", '=>')
++        exec_command_and_wait_for_pattern(self, 'boot', 'Starting kernel ...');
 +
-+/* REG_SRAMC_VERSION bit defines */
-+#define SRAM_VER_READ_ENABLE            (1 << 15)
-+#define SRAM_VER_VERSION_SHIFT          16
-+#define SRAM_VERSION_SUN8I_R40          0x1701
++        self.wait_for_console_pattern(
++            'Please press Enter to activate this console.')
 +
-+static uint64_t allwinner_sramc_read(void *opaque, hwaddr offset,
-+                                     unsigned size)
-+{
-+    AwSRAMCState *s = AW_SRAMC(opaque);
-+    AwSRAMCClass *sc = AW_SRAMC_GET_CLASS(s);
-+    uint64_t val = 0;
++        exec_command_and_wait_for_pattern(self, ' ', 'root@')
 +
-+    switch (offset) {
-+    case REG_SRAM_CTL1_CFG:
-+        val = s->sram_ctl1;
-+        break;
-+    case REG_SRAM_VER:
-+        /* bit15: lock bit, set this bit before reading this register */
-+        if (s->sram_ver & SRAM_VER_READ_ENABLE) {
-+            val = SRAM_VER_READ_ENABLE |
-+                    (sc->sram_version_code << SRAM_VER_VERSION_SHIFT);
-+        }
-+        break;
-+    case REG_SRAM_R40_SOFT_ENTRY_REG0:
-+        val = s->sram_soft_entry_reg0;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset 0x%04x\n",
-+                      __func__, (uint32_t)offset);
-+        return 0;
-+    }
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
++                                                'Allwinner sun8i Family')
++        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
++                                                'system-control@1c00000')
 +
-+    trace_allwinner_sramc_read(offset, val);
-+
-+    return val;
-+}
-+
-+static void allwinner_sramc_write(void *opaque, hwaddr offset,
-+                                  uint64_t val, unsigned size)
-+{
-+    AwSRAMCState *s = AW_SRAMC(opaque);
-+
-+    trace_allwinner_sramc_write(offset, val);
-+
-+    switch (offset) {
-+    case REG_SRAM_CTL1_CFG:
-+        s->sram_ctl1 = val;
-+        break;
-+    case REG_SRAM_VER:
-+        /* Only the READ_ENABLE bit is writeable */
-+        s->sram_ver = val & SRAM_VER_READ_ENABLE;
-+        break;
-+    case REG_SRAM_R40_SOFT_ENTRY_REG0:
-+        s->sram_soft_entry_reg0 = val;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset 0x%04x\n",
-+                      __func__, (uint32_t)offset);
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps allwinner_sramc_ops = {
-+    .read = allwinner_sramc_read,
-+    .write = allwinner_sramc_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+    .impl.min_access_size = 4,
-+};
-+
-+static const VMStateDescription allwinner_sramc_vmstate = {
-+    .name = "allwinner-sramc",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32(sram_ver, AwSRAMCState),
-+        VMSTATE_UINT32(sram_soft_entry_reg0, AwSRAMCState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void allwinner_sramc_reset(DeviceState *dev)
-+{
-+    AwSRAMCState *s = AW_SRAMC(dev);
-+    AwSRAMCClass *sc = AW_SRAMC_GET_CLASS(s);
-+
-+    switch (sc->sram_version_code) {
-+    case SRAM_VERSION_SUN8I_R40:
-+        s->sram_ctl1 = 0x1300;
-+        break;
-+    }
-+}
-+
-+static void allwinner_sramc_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->reset = allwinner_sramc_reset;
-+    dc->vmsd = &allwinner_sramc_vmstate;
-+}
-+
-+static void allwinner_sramc_init(Object *obj)
-+{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+    AwSRAMCState *s = AW_SRAMC(obj);
-+
-+    /* Memory mapping */
-+    memory_region_init_io(&s->iomem, OBJECT(s), &allwinner_sramc_ops, s,
-+                           TYPE_AW_SRAMC, 1 * KiB);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static const TypeInfo allwinner_sramc_info = {
-+    .name          = TYPE_AW_SRAMC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_init = allwinner_sramc_init,
-+    .instance_size = sizeof(AwSRAMCState),
-+    .class_init    = allwinner_sramc_class_init,
-+};
-+
-+static void allwinner_r40_sramc_class_init(ObjectClass *klass, void *data)
-+{
-+    AwSRAMCClass *sc = AW_SRAMC_CLASS(klass);
-+
-+    sc->sram_version_code = SRAM_VERSION_SUN8I_R40;
-+}
-+
-+static const TypeInfo allwinner_r40_sramc_info = {
-+    .name          = TYPE_AW_SRAMC_SUN8I_R40,
-+    .parent        = TYPE_AW_SRAMC,
-+    .class_init    = allwinner_r40_sramc_class_init,
-+};
-+
-+static void allwinner_sramc_register(void)
-+{
-+    type_register_static(&allwinner_sramc_info);
-+    type_register_static(&allwinner_r40_sramc_info);
-+}
-+
-+type_init(allwinner_sramc_register)
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 007a81e6ede..2159de3ce65 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -406,6 +406,7 @@ config ALLWINNER_H3
- config ALLWINNER_R40
-     bool
-     default y if TCG && ARM
-+    select ALLWINNER_SRAMC
-     select ALLWINNER_A10_PIT
-     select AXP2XX_PMU
-     select SERIAL
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index efeb430a6ce..e4c21491759 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -170,6 +170,9 @@ config VIRT_CTRL
- config LASI
-     bool
- 
-+config ALLWINNER_SRAMC
-+    bool
-+
- config ALLWINNER_A10_CCM
-     bool
- 
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index b04d43e05a3..78ca857c9d9 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -37,6 +37,7 @@ subdir('macio')
- 
- softmmu_ss.add(when: 'CONFIG_IVSHMEM_DEVICE', if_true: files('ivshmem.c'))
- 
-+softmmu_ss.add(when: 'CONFIG_ALLWINNER_SRAMC', if_true: files('allwinner-sramc.c'))
- softmmu_ss.add(when: 'CONFIG_ALLWINNER_A10_CCM', if_true: files('allwinner-a10-ccm.c'))
- softmmu_ss.add(when: 'CONFIG_ALLWINNER_A10_DRAMC', if_true: files('allwinner-a10-dramc.c'))
- softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3-ccu.c'))
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 8b68f077657..4d1a0e17af5 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -33,6 +33,10 @@ allwinner_r40_dramphy_write(uint64_t offset, uint64_t data, unsigned size) "writ
- allwinner_sid_read(uint64_t offset, uint64_t data, unsigned size) "offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
- allwinner_sid_write(uint64_t offset, uint64_t data, unsigned size) "offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
- 
-+# allwinner-sramc.c
-+allwinner_sramc_read(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
-+allwinner_sramc_write(uint64_t offset, uint64_t data) "offset 0x%" PRIx64 " data 0x%" PRIx64
-+
- # avr_power.c
- avr_power_read(uint8_t value) "power_reduc read value:%u"
- avr_power_write(uint8_t value) "power_reduc write value:%u"
+     def test_arm_orangepi(self):
+         """
+         :avocado: tags=arch:arm
 -- 
 2.34.1
 
