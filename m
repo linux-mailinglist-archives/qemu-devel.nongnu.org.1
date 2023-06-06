@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC38E724633
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B50C724638
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:34:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Xid-00053K-5b; Tue, 06 Jun 2023 10:31:31 -0400
+	id 1q6Xid-00053h-S6; Tue, 06 Jun 2023 10:31:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6XiZ-00051l-Jf
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q6Xib-00052j-HI
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6XiY-0001Do-5P
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:27 -0400
+ id 1q6XiZ-0001EM-Vx
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686061885;
+ s=mimecast20190719; t=1686061886;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bJmPl67EZdGS0u4wblM0LBTqwsJ039UKge02/qw8oPk=;
- b=Avws7ktqAZ9nLPLO6kqoN2Zeqa8dFtR6cAA7hM4rCgTGzhONmWQeZWbHH++WCQLVAT/qxi
- QrrgNHNN5i7rA/+f6m8wxxyvSpYIt4ht1QWLZ9ZX1VJwCFkq2NnfkdCo9C0jAd9NfrisOh
- RuQIxYZgDivpH5LPP4LAe5O6QZ7eKPs=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lj5av3UWNj/kMdqtmsrtAvKOk0fFWaXs4jRvcp/aN6I=;
+ b=bqU2KzhbNps9Atrqa6ZDjScK+7uwtOvFF6U4A6IoU0+2M91BR7oR/utdsw0eGBBtpWAUN3
+ QwHFzaDxeXNmQUHbO2xa0F8MwXdY/G4cBf+Ml0MwF+hl3nGpcadkUa4fP+MG/WCTlTsJ3C
+ jtIpwThBCznSDt5PkTYGin6Vs1rfzOo=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-511-ZyDPOfB3OtCVvf_6ZX2msQ-1; Tue, 06 Jun 2023 10:31:24 -0400
-X-MC-Unique: ZyDPOfB3OtCVvf_6ZX2msQ-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-513f5318ff2so3935482a12.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:24 -0700 (PDT)
+ us-mta-92-t-7BObwnMhuVCPaoZ8ifCQ-1; Tue, 06 Jun 2023 10:31:25 -0400
+X-MC-Unique: t-7BObwnMhuVCPaoZ8ifCQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-94a356c74e0so453568566b.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061883; x=1688653883;
+ d=1e100.net; s=20221208; t=1686061884; x=1688653884;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bJmPl67EZdGS0u4wblM0LBTqwsJ039UKge02/qw8oPk=;
- b=L+Y/DCvOoPU05LsovYsq3ThSt5rVhHU+1Bjus6+CsSkZ28RVCoTL7JbvyXRuHG+8jE
- Xs/KSTPxZJOcWEn4bdf527UpEbqGzcgc5MKd74+MuJqJ81kXW467WVuHgl6nIPbM7C12
- C+YJbVXwo9emrcAorU2H31BPcYFkdPZpC/Oz1qZQeY7mIBKoyAvDVNsq86pDo4+T9rhl
- mMRmCvra6KF8IMjHeAkr1vOyOFWDJmf6eg+7AwX2vZxR2POr7xILMK4KsLQV1A/SInN2
- HvmN9b6nDZGnNLvZnurb+L9he327Pbaihbc3k7eV922VtpQWmpBZhXZNmPhy3fwZAqXB
- bYJw==
-X-Gm-Message-State: AC+VfDwl1UFcc/ltdxmTsPkz6JWxyWdIe2wsJO4Mj5nazeG2okaPMM/l
- DT66jM7SlAL3wn4zW3p+zHWi2gMxwM5yxBA/9awgKVtjDtMSN931GrIJUjyTOCNFTu8MdNdROQM
- rc0Hj9AxgqpTEAcQzCxR18An+5LCHNAHB3weEv5agGAUiWZVMUwYYNDOI5iY+semlqPK5WpF4Si
- w=
-X-Received: by 2002:a17:907:7e84:b0:958:4c75:705e with SMTP id
- qb4-20020a1709077e8400b009584c75705emr2400938ejc.17.1686061882692; 
- Tue, 06 Jun 2023 07:31:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6KkVBhgBRmp/sPHKTqpUKRw3bdLgcQ73OWon2ve3xC4CIMXg1gMA5ek5tAZpjQ+VV1yPmOog==
-X-Received: by 2002:a17:907:7e84:b0:958:4c75:705e with SMTP id
- qb4-20020a1709077e8400b009584c75705emr2400918ejc.17.1686061882320; 
- Tue, 06 Jun 2023 07:31:22 -0700 (PDT)
+ bh=lj5av3UWNj/kMdqtmsrtAvKOk0fFWaXs4jRvcp/aN6I=;
+ b=OWkzwqKVJ0+tZX+IO7bQtchc6kfSG16tL1AsS29f5aEcajqAp43Rw3P3+QkM81emM+
+ QiZHEhiGZKqPWojXNJ+doqOpUBzQnGNhIMxGmjMoAQkrWGr55qsErZF6fpG25/n5MmJe
+ cU9FUvVyrYPNylPs3bSPwkIBZHbWtF8GhAeg0jKQQCB+UG+fZQ9yjZ4FcfDZTSpu7Pg8
+ KumLzMl/awiNCGEO55dCpiI7VxLPUf7hWZNLT+6K9RPm9sosdcCp+sTfe2qylowC1ACt
+ 2KcWa5QUb2CxidaO94IC3cWLnj78mjljDi4xUb0V4YCvy2KVOv0qlzYjEVj9n3PBZjIS
+ FHzw==
+X-Gm-Message-State: AC+VfDyrzbV0OaKGt9Xj/BhDYEPSMZYxVvfmQUKyEKJ1smOe/mNjpv2c
+ o9G8XAq5I6gZRq/I+/D7ou1OFZ0UoFuOeUD+GzJFfUeK4Jbah/6/yPrCgpD9k+q4KN/MczAJimm
+ Km7QWUDalnjwbaTbHyOV9I8ezMG4fSg99nq371l7DfW/P+h/CSx7f1ATdijm1c7EW3I5I2/IDn6
+ k=
+X-Received: by 2002:a17:907:724c:b0:977:d048:ff9c with SMTP id
+ ds12-20020a170907724c00b00977d048ff9cmr2279893ejc.31.1686061884197; 
+ Tue, 06 Jun 2023 07:31:24 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4DVI5uV1xnPukl5n1C+KIV86y9YzmAF2oYd8dyTOV5Az3ldiOux1n1Q/XReJLAJSMDzsxNRg==
+X-Received: by 2002:a17:907:724c:b0:977:d048:ff9c with SMTP id
+ ds12-20020a170907724c00b00977d048ff9cmr2279876ejc.31.1686061883926; 
+ Tue, 06 Jun 2023 07:31:23 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- lx5-20020a170906af0500b00965c6c63ea3sm5694972ejb.35.2023.06.06.07.31.21
- for <qemu-devel@nongnu.org>
+ lu26-20020a170906fada00b009663115c8f8sm5632414ejb.152.2023.06.06.07.31.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 07:31:21 -0700 (PDT)
+ Tue, 06 Jun 2023 07:31:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/21] scripts: remove dead file
-Date: Tue,  6 Jun 2023 16:30:58 +0200
-Message-Id: <20230606143116.685644-4-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 04/21] meson.build: Group the UI entries in a separate summary
+ section
+Date: Tue,  6 Jun 2023 16:30:59 +0200
+Message-Id: <20230606143116.685644-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606143116.685644-1-pbonzini@redhat.com>
 References: <20230606143116.685644-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,57 +104,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-scripts/test-driver.py was used when "make check" was already using meson
-introspection data, but it did not execute "meson test".  It is dead since
-commit 3d2f73ef75e ("build: use "meson test" as the test harness", 2021-12-23).
+From: Thomas Huth <thuth@redhat.com>
 
+Let's make it easier for the users to spot UI-related entries in
+the summary of the meson output.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230602171832.533739-2-thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/test-driver.py | 35 -----------------------------------
- 1 file changed, 35 deletions(-)
- delete mode 100644 scripts/test-driver.py
+ meson.build | 38 ++++++++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/test-driver.py b/scripts/test-driver.py
-deleted file mode 100644
-index eef74b29a8f..00000000000
---- a/scripts/test-driver.py
-+++ /dev/null
-@@ -1,35 +0,0 @@
--#! /usr/bin/env python3
--
--# Wrapper for tests that hides the output if they succeed.
--# Used by "make check"
--#
--# Copyright (C) 2020 Red Hat, Inc.
--#
--# Author: Paolo Bonzini <pbonzini@redhat.com>
--
--import subprocess
--import sys
--import os
--import argparse
--
--parser = argparse.ArgumentParser(description='Test driver for QEMU')
--parser.add_argument('-C', metavar='DIR', dest='dir', default='.',
--                    help='change to DIR before doing anything else')
--parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
--                    help='be more verbose')
--parser.add_argument('test_args', nargs=argparse.REMAINDER)
--
--args = parser.parse_args()
--os.chdir(args.dir)
--
--test_args = args.test_args
--if test_args[0] == '--':
--    test_args = test_args[1:]
--
--if args.verbose:
--    result = subprocess.run(test_args, stdout=None, stderr=None)
--else:
--    result = subprocess.run(test_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
--    if result.returncode:
--        sys.stdout.buffer.write(result.stdout)
--sys.exit(result.returncode)
+diff --git a/meson.build b/meson.build
+index 969a84f2a44..cfacd662edb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4227,32 +4227,43 @@ summary_info += {'rng-none':          get_option('rng_none')}
+ summary_info += {'Linux keyring':     have_keyring}
+ summary(summary_info, bool_yn: true, section: 'Crypto')
+ 
+-# Libraries
++# UI
+ summary_info = {}
+ if targetos == 'darwin'
+   summary_info += {'Cocoa support':           cocoa}
+-  summary_info += {'vmnet.framework support': vmnet}
+ endif
+ summary_info += {'SDL support':       sdl}
+ summary_info += {'SDL image support': sdl_image}
+ summary_info += {'GTK support':       gtk}
+ summary_info += {'pixman':            pixman}
+ summary_info += {'VTE support':       vte}
+-summary_info += {'slirp support':     slirp}
+-summary_info += {'libtasn1':          tasn1}
+-summary_info += {'PAM':               pam}
+-summary_info += {'iconv support':     iconv}
+-summary_info += {'curses support':    curses}
+-summary_info += {'virgl support':     virgl}
+-summary_info += {'blkio support':     blkio}
+-summary_info += {'curl support':      curl}
+-summary_info += {'Multipath support': mpathpersist}
+ summary_info += {'PNG support':       png}
+ summary_info += {'VNC support':       vnc}
+ if vnc.found()
+   summary_info += {'VNC SASL support':  sasl}
+   summary_info += {'VNC JPEG support':  jpeg}
+ endif
++summary_info += {'spice protocol support': spice_protocol}
++if spice_protocol.found()
++  summary_info += {'  spice server support': spice}
++endif
++summary_info += {'curses support':    curses}
++summary_info += {'brlapi support':    brlapi}
++summary(summary_info, bool_yn: true, section: 'User interface')
++
++# Libraries
++summary_info = {}
++if targetos == 'darwin'
++  summary_info += {'vmnet.framework support': vmnet}
++endif
++summary_info += {'slirp support':     slirp}
++summary_info += {'libtasn1':          tasn1}
++summary_info += {'PAM':               pam}
++summary_info += {'iconv support':     iconv}
++summary_info += {'virgl support':     virgl}
++summary_info += {'blkio support':     blkio}
++summary_info += {'curl support':      curl}
++summary_info += {'Multipath support': mpathpersist}
+ if targetos not in ['darwin', 'haiku', 'windows']
+   summary_info += {'OSS support':     oss}
+   summary_info += {'sndio support':   sndio}
+@@ -4267,7 +4278,6 @@ if targetos == 'linux'
+ endif
+ summary_info += {'Pipewire support':   pipewire}
+ summary_info += {'JACK support':      jack}
+-summary_info += {'brlapi support':    brlapi}
+ summary_info += {'vde support':       vde}
+ summary_info += {'netmap support':    have_netmap}
+ summary_info += {'l2tpv3 support':    have_l2tpv3}
+@@ -4279,10 +4289,6 @@ summary_info += {'PVRDMA support':    have_pvrdma}
+ summary_info += {'fdt support':       fdt_opt == 'disabled' ? false : fdt_opt}
+ summary_info += {'libcap-ng support': libcap_ng}
+ summary_info += {'bpf support':       libbpf}
+-summary_info += {'spice protocol support': spice_protocol}
+-if spice_protocol.found()
+-  summary_info += {'  spice server support': spice}
+-endif
+ summary_info += {'rbd support':       rbd}
+ summary_info += {'smartcard support': cacard}
+ summary_info += {'U2F support':       u2f}
 -- 
 2.40.1
 
