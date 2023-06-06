@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC54724B55
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 20:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3749724B80
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 20:35:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6bMA-0000gE-Vh; Tue, 06 Jun 2023 14:24:35 -0400
+	id 1q6bVe-0007Fl-Sl; Tue, 06 Jun 2023 14:34:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6bM6-0000fx-1V
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 14:24:30 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q6bVc-0007F6-Bs; Tue, 06 Jun 2023 14:34:20 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6bM4-0004Xr-HH
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 14:24:29 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1b011cffe7fso30553955ad.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 11:24:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q6bVX-0007VG-QJ; Tue, 06 Jun 2023 14:34:19 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-1a2ad8f4075so5052276fac.2; 
+ Tue, 06 Jun 2023 11:34:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686075867; x=1688667867;
+ d=gmail.com; s=20221208; t=1686076453; x=1688668453;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kY7Zrm/Boo75QWDxWVkY4Hezx+pVdKx5ddpDMQwuUD0=;
- b=UUs+6ENy4KPnIYeKTtnkpRLfEU02V84KoW9jLK0FuqEkvwcCVURfBhwJFs12bQG4kL
- uZ2ZY4VT7JPhka2MbE3jOHLpnpBBfY7XdzatenFGsEUMfI6NQW1gBPpKAyuR4JlZjyUh
- 4QAEkAf5tEHeda7aBLTxQ4wql/85swVi58X1Or/6V/jY7j4+5jK1htJ5plN1iJ4jjbkU
- flB20LMeOJvHMysdYYnnWArZSVtuGaWQJNz6LCxyZwebFXW+fbyyFBGkNpiCgFJzRrZj
- Snn79e2U5g5qfu7GtfEruEQR+8+HcL9S6pvCwQck42nUHQyhgMMdBMbOqm1/AO0nZtv0
- 8JcA==
+ bh=KLY6MFFh6tDHhJzCedCBIRvda4hLkfX9kp1LX3UaAVk=;
+ b=RuUfpmsSwKL/SQjkKz0WgaCpP269lvFz5WEkJVKmAC0sB8vblJwu9LdtF2M5MwtZVH
+ JEDHKSEAh9vGMh9LsEg1canIDZJh7uL3S5ytpE36Aumj8VoeiOSRJhVblVugtkoBOnry
+ 3cpS0bvDq8gV+xQlBaj0lFJKPGrVDciiR8KBkh1lyKeXXDR/q2ome4Xef6XPNGXkqwg6
+ 9TWQ2cMZ/6+R2IBA/ORrqIPjLXmCQ4gmALap9MyiuwEozCGkF8lu9HtJM0K4GCGl8IP+
+ clp4NbDBS3CB4tmAc67/hpUAh3cY8zuHhy4lhIBiLYvi0El70n1MY6OlutExz3jVIaIh
+ DDtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686075867; x=1688667867;
+ d=1e100.net; s=20221208; t=1686076453; x=1688668453;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kY7Zrm/Boo75QWDxWVkY4Hezx+pVdKx5ddpDMQwuUD0=;
- b=JJGsHtHq1WRgQEKdH8FAOwj1I0U/5qUt+/49Hqsx/hnnZiPg5s/MYAWuYuTa0Yl0Wi
- koe9CbereIvXmd2VT1XXRBHmYEpr5BVGNP6nJj5/+hsKGPoaPEp7+L/5LA4P5tHAkcYC
- P4BicR32TexSq4I/Sd/F7hcgemAp+6p0qBOiwcZH8X8wtK6Im0M1Dp2oZnQJbQ7Xq2Mf
- ump0sDLeDprLapfM959lG8CskISnwKsQL0SLGmm74A1IQ/wgeB/FJ3893i8wc1bwWHSF
- uwyUfuqpYa13wQxJJIkncRJBsGqBIrQmj3CHSc1WDdsYu8oSMjrngm5UtJVD5Zq5X9Tf
- BKGg==
-X-Gm-Message-State: AC+VfDx+fB7aOXvy7swdwNpsXV5kVFW6V+DE+LBZ2wtC4KEbRcEbw7qr
- 9TmHwCzdIU8NyLB7HJ5hqBwf1A==
-X-Google-Smtp-Source: ACHHUZ6R0LRrxlR/sigHQDZ6YHU46rAuIXQxBHgVdt+pgj7UQamI9XSh/Xa7qtQMIYldS44j2Wco/Q==
-X-Received: by 2002:a17:902:ec88:b0:1b2:450f:9cb with SMTP id
- x8-20020a170902ec8800b001b2450f09cbmr616978plg.51.1686075866867; 
- Tue, 06 Jun 2023 11:24:26 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
- ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ bh=KLY6MFFh6tDHhJzCedCBIRvda4hLkfX9kp1LX3UaAVk=;
+ b=XCCjarJCkfFD9TxXZ4/zOCwa3T7a5pbKAh39rLJmqBjr0bzqyWZVpnu/6/cyfGeIb3
+ EBkZJAMbTEYZOEfAO6Yy6TyRZzGBVHcKpQmTL7wGVRdRMjpZbQLefKuTI/bZ56J+04AY
+ PhAFz2CEDIdrjnSIoKMmxzxBjsJKH+rqGysXQebioD6zQLGXxv65H+ZQsW2AQG4UE4m0
+ SblV1Co/1lIO2k7k3c2KHjrGR/S58o4sqWjqOk24tsKjYkmmR2GyeNFnZedoZ1WNA4S8
+ UEKlmke1DX273QJnuXwLpR+/2v/tWKQn8G4tNiZoiy+P+fIqkV1lvI2Y/CRD968yvxPk
+ 3J/g==
+X-Gm-Message-State: AC+VfDzZX8oFkCMuxH25jMVIgpajz8WCeV45wW6lhRUQ+OSpoxfHyx0y
+ Mb/Nk2xkXULbDjIEUvkMs/M=
+X-Google-Smtp-Source: ACHHUZ4WSmqyUh/kccZpDCawakCRQOCUm9c22u0yWBsbBY0wOwtKDzWILyh+PzstW0RZOWBWNFz8lw==
+X-Received: by 2002:a05:6870:6c0c:b0:19f:3db1:e2cd with SMTP id
+ na12-20020a0568706c0c00b0019f3db1e2cdmr4020861oab.49.1686076452755; 
+ Tue, 06 Jun 2023 11:34:12 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
  by smtp.gmail.com with ESMTPSA id
- m13-20020a170902db0d00b001b042e8ed77sm8802302plx.281.2023.06.06.11.24.26
+ s10-20020a056870628a00b0019f44a07b35sm5058139oan.51.2023.06.06.11.34.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 11:24:26 -0700 (PDT)
-Message-ID: <ad49111a-5dd9-671b-f18f-009a7eae73b0@linaro.org>
-Date: Tue, 6 Jun 2023 11:24:24 -0700
+ Tue, 06 Jun 2023 11:34:12 -0700 (PDT)
+Message-ID: <70fa2599-bd62-6ad5-d592-2e16fa4970ef@gmail.com>
+Date: Tue, 6 Jun 2023 15:34:09 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 2/8] linux-user: Add "safe" parameter to
- do_guest_openat()
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] hw/ppc/openpic: Do not open-code ROUND_UP() macro
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-References: <20230606132743.1386003-1-iii@linux.ibm.com>
- <20230606132743.1386003-3-iii@linux.ibm.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230606132743.1386003-3-iii@linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-trivial@nongnu.org
+References: <20230523061546.49031-1-philmd@linaro.org>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230523061546.49031-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x29.google.com
+X-Spam_score_int: 14
+X-Spam_score: 1.4
+X-Spam_bar: +
+X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,29 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 06:27, Ilya Leoshkevich wrote:
-> @@ -8518,7 +8522,11 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
->           return fd;
->       }
+
+
+On 5/23/23 03:15, Philippe Mathieu-Daudé wrote:
+> While reviewing, the ROUND_UP() macro is easier to figure out.
+> Besides, the comment confirms we want to round up here.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+
+
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+
+
+Daniel
+
+>   include/hw/ppc/openpic.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/ppc/openpic.h b/include/hw/ppc/openpic.h
+> index ebdaf8a493..bae8dafe16 100644
+> --- a/include/hw/ppc/openpic.h
+> +++ b/include/hw/ppc/openpic.h
+> @@ -55,7 +55,7 @@ typedef enum IRQType {
+>    * Round up to the nearest 64 IRQs so that the queue length
+>    * won't change when moving between 32 and 64 bit hosts.
+>    */
+> -#define IRQQUEUE_SIZE_BITS ((OPENPIC_MAX_IRQ + 63) & ~63)
+> +#define IRQQUEUE_SIZE_BITS ROUND_UP(OPENPIC_MAX_IRQ, 64)
 >   
-> -    return safe_openat(dirfd, path(pathname), flags, mode);
-> +    if (safe) {
-> +        return safe_openat(dirfd, path(pathname), flags, mode);
-> +    } else {
-> +        return openat(dirfd, path(pathname), flags, mode);
-> +    }
->   }
-
-I'm not keen on this, as it seems like the wrong abstraction.  But I can't immediately 
-think of how it could be better structured.
-
-The only concrete objection I have is the change of API, which could be fixed with return 
-get_errno(openat(...)).
-
-With that,
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+>   typedef struct IRQQueue {
+>       unsigned long *queue;
 
