@@ -2,50 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DC27249AE
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 19:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A51597249C4
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 19:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6a2I-0007mb-4G; Tue, 06 Jun 2023 12:59:58 -0400
+	id 1q6a7A-00018O-Fa; Tue, 06 Jun 2023 13:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6a2G-0007m7-JA
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:59:56 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q6a2E-0003KJ-7K
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:59:56 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 7266C746377;
- Tue,  6 Jun 2023 18:59:48 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3D292746369; Tue,  6 Jun 2023 18:59:48 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3BD9674635C;
- Tue,  6 Jun 2023 18:59:48 +0200 (CEST)
-Date: Tue, 6 Jun 2023 18:59:48 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Igor Mammedov <imammedo@redhat.com>
-cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH] hw/acpi: Fix PM control register access
-In-Reply-To: <20230606145046.159b6bba@imammedo.users.ipa.redhat.com>
-Message-ID: <1639953d-6f1c-cd9c-bba5-bc3b0b9134f1@eik.bme.hu>
-References: <20230528135750.4145574633D@zero.eik.bme.hu>
- <20230606145046.159b6bba@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q6a78-00016r-2W
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 13:04:58 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q6a76-0004Pl-0F
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 13:04:57 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3f6ef9a928fso53361435e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 10:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686071093; x=1688663093;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F1PQu8yBWC4SxYhaTE+RaFa9hC0oDcg7zPVjOJIm8LU=;
+ b=NtJsIpZBltWYAF6OWUWF+zLKHeeji5D389PJNNE2XkHFvOZjogZlt1SiOPfZh8Aq1c
+ g2i4SQQnePFLrhL0OONnUwd3WmS0svA4ET2oJ77Qzgu7qH4kRLKdeGdNMMze80OyuJ/g
+ GZS7z+5l/VGqS3J1sPNihdHGDsBuzEneZ9mzaevG3x7PJo043RXj0DTQpTtsPcLlMo88
+ CriR+HN1h4BymEOtirTITbcsnmEa0aqbAHjSZEhT77CjthQgBIcSj1f254HVdxWx/xUS
+ IKIfhTMR7yBieRzUx3aAD/PeV5ajKOYEzg7Z/YBQuUg+dfcwly/gY7FKK9XWjv+yfhbR
+ kLgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686071093; x=1688663093;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=F1PQu8yBWC4SxYhaTE+RaFa9hC0oDcg7zPVjOJIm8LU=;
+ b=ApvAAKmjlkrcjYsV7zhKCEYtSHtqZpP3+ZN3sqF/CFMFUIaye0bbjKKZNelt14r4h+
+ TKec4/BOItMLqebkPiOPZnVomfDcxbsbIt4P9nDPbyIdM5n29f6cVRVLguI2dHpXd2tG
+ FrCjtgfeNjkER2ncN4D5yoJThzS1Xk20FPur38P/o5xjoGXqGN7i278bH8oSpIQD4y6i
+ Omp3CG8o20ki5pHZY1dAdLL9umQcfqJ1OIzMJ7vnWFCBTcsxuk15LIRgEHx2cFOO4FOX
+ rZr1+000KwD2ddLOyJHHskuZIxY4Y8pcLwhZQJzDrmV8CI6dPDYsFW2Of8ua6aCWdUsE
+ NDzw==
+X-Gm-Message-State: AC+VfDzaukkbRXbGMamB6HcQloRjUxFF0jHcrsJ9czG77gyj+PlSp/JT
+ jMWUzvfDwOFizuc6hjwUbMfr2g==
+X-Google-Smtp-Source: ACHHUZ4u43HSfH7UzZ+ruD7T5CX8I4KnyMrjqLYuD6K/tigGk8LQMC1dtz+hFa55zynvnhSPhCGuNQ==
+X-Received: by 2002:a05:600c:2181:b0:3f7:2a13:9621 with SMTP id
+ e1-20020a05600c218100b003f72a139621mr2273768wme.40.1686071092954; 
+ Tue, 06 Jun 2023 10:04:52 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ y5-20020adfd085000000b003095bd71159sm13284995wrh.7.2023.06.06.10.04.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 10:04:52 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 24E3D1FFBB;
+ Tue,  6 Jun 2023 18:04:52 +0100 (BST)
+References: <20230606141252.95032-1-philmd@linaro.org>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-arm@nongnu.org
+Subject: Re: [PATCH 0/5] misc: Enforce .[ch].inc extension for re-included
+ .c/.h files
+Date: Tue, 06 Jun 2023 18:02:14 +0100
+In-reply-to: <20230606141252.95032-1-philmd@linaro.org>
+Message-ID: <87sfb4h68b.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, SUSPICIOUS_RECIPS=2.51,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,62 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 6 Jun 2023, Igor Mammedov wrote:
-> On Sun, 28 May 2023 15:57:50 +0200 (CEST)
-> BALATON Zoltan <balaton@eik.bme.hu> wrote:
->
->> On pegasos2 which has ACPI as part of VT8231 south bridge the board
->> firmware writes PM control register by accessing the second byte so
->> addr will be 1. This wasn't handled correctly and the write went to
->> addr 0 instead. This fixes ACPI shutdown with pegasos2 firmware.
->>
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->> This is replacing the previous attempt which changed enduanness to
->> NATIVE_ENDIAN that was found to be wrong. I'm still not sure what's
->> happening as these functions are called with addr = 1 and size = 2 but
->> maybe the guest really does word access to addr 1 when wanting to
->> write 1 byte. This fixes the problem and should not break anything
->> else but please review.
->>
->>  hw/acpi/core.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
->> index 6da275c599..bbc599a252 100644
->> --- a/hw/acpi/core.c
->> +++ b/hw/acpi/core.c
->> @@ -593,13 +593,13 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
->>  static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
->>  {
->>      ACPIREGS *ar = opaque;
->> -    return ar->pm1.cnt.cnt;
->> +    return ar->pm1.cnt.cnt >> addr * 8;
->>  }
-> that looks fine
->
->>
->>  static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
->>                                unsigned width)
->>  {
->> -    acpi_pm1_cnt_write(opaque, val);
->> +    acpi_pm1_cnt_write(opaque, val << addr * 8);
->>  }
-> however, if this is 1 byte write at offset 1,
-> wouldn't this wipe out lower byte
-> (aka:
-> #define ACPI_BITMASK_SCI_ENABLE                 0x0001
-> #define ACPI_BITMASK_BUS_MASTER_RLD             0x0002
-> #define ACPI_BITMASK_GLOBAL_LOCK_RELEASE        0x0004
-> )?
 
-Since this will either reset or power off the machine it probably does not 
-really matter. But to fix that more we'd need to rewrite 
-acpi_pm1_cnt_write() to replace acpi_pm_cnt_write() and handle that 
-internally. Or is there another way to handle this? Does that worth the 
-effort when the only known usage is in pegasos2 firmware when it calls 
-power off?
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Regards,
-BALATON Zoltan
+> Follow the convention to use the .inc extension for .c/.h files
+> re-included, as docummented in Coding Style since commit 6a0057aa22:
+>
+>     If you do use template header files they should be named with
+>     the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+>     being included for expansion.
+>
+> Most of the codebase already uses this extension:
+>
+>   $ git ls-files | fgrep .inc | wc -l
+>        155
+
+Ahh prescient as I've just added this hack to the loc tool I'm using:
+
+  modified   src/lib.rs
+  @@ -338,7 +338,7 @@ pub fn lang_from_ext(filepath: &str) -> Lang {
+           "at" =3D> AmbientTalk,
+           "awk" =3D> Awk,
+           "bat" | "btm" | "cmd" =3D> Batch,
+  -        "c" | "ec" | "pgc" =3D> C,
+  +        "c" | "ec" | "pgc" | "inc" =3D> C,
+           "cc" | "cpp" | "cxx" | "c++" | "pcc" =3D> Cpp,
+           "cfc" =3D> ColdFusionScript,
+           "cmake" =3D> CMake,
+
+while gathering loc stats for the project.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
