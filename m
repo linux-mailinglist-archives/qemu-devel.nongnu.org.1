@@ -2,77 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3B7723EE3
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC67E723EEB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:08:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TYg-0006VU-4g; Tue, 06 Jun 2023 06:04:58 -0400
+	id 1q6Tba-0007e8-Fg; Tue, 06 Jun 2023 06:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TYa-0006V6-Sp
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:04:52 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TYZ-0002PQ-Am
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:04:52 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-976a0a1a92bso648918466b.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 03:04:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686045889; x=1688637889;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=92wGn4QQJVreuFWfrl+WHcmwD8spWYxPz6rnS0StpKE=;
- b=b6+F7z91QPU0xCaO56NM84FKpnTxhxEfnVcTo3L9NXY+O2JAJtiBYtBbudpwZ7z3C1
- NBfC8eZnXCwWNKY8U5Nbgo6wpB75mhLqUQ+Sc6zD+Rmx1BCf4PM8Fvrgi2wG2RtBXO4C
- AhaYyjosQYRnZkpOI/dKSUp3245ZlGwY5pgJ/PGubXHB4qQaYSwqoYLfgGTwKpDiiyR3
- Ep1wRWroBmdvQ9nqz3/iUoX6WSje1Q64I6S1rHrWE3DGT/WENXiPs/mToxx9+TWurAuu
- tKkKlQ311AUcwBHL4i1zsRiUYeg1FJKyILiDXbfphKICXna3QcjrV15b4F+yNnurxkDq
- Wh7Q==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6TbX-0007dx-28
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:07:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6TbV-0003Sz-2Y
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:07:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686046069;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dfQMVc6p26pVHzkRqiVhpQh6RJn3kmzPMcC/O2y7Jlo=;
+ b=Y/u+jd/W8Kwevf0/ee6TnXOn6cRbESBe+bMqjvTOuh7iOEESMB4cE5rrIgq5Oqu4A5lPBy
+ Ciq7N4QV6vcGZJPMTw5gvocvvMYpk6Q0/THogDQsPAdFG68ZzB/HneqFTc7ytzUsO41ger
+ WMwV5QPbOsfzYNUnK1CO9hFVwtZTjCA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-450-KU7su2i-O068eQ7uRI5lHQ-1; Tue, 06 Jun 2023 06:07:48 -0400
+X-MC-Unique: KU7su2i-O068eQ7uRI5lHQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f739a73ba4so11096555e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 03:07:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686045889; x=1688637889;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=92wGn4QQJVreuFWfrl+WHcmwD8spWYxPz6rnS0StpKE=;
- b=hQVrMVWNZOxtqsHXwQNv2ZNVrh7i5K2usUmoV3uCzJ+WsT1uccb/CQVTb87MeyTFIG
- 5gebCCqQJToYhuCQksMeM4sUmoNMxyO9/dZiKrPo+nToZhDBSX6XnILjo2CU4bw/74IK
- HH+iXRYaAwAwUa9ytHuWa3pRKAz0KNilMUDsVk3JdUtCbOwUU318OIyrx9OFTWOiFQzD
- ny30ryFzZZATxP+4xVGej8gXCV5Oqm8DQ6884sm5AFqzDHl823KOayckLXPkviQ8cjlc
- ARTA38GFzzgRRJx7VdbliLIWzVOQYyFUyTXsox657qYhkZB+LQF5bPHy8pvrcnbiTWuW
- f/UQ==
-X-Gm-Message-State: AC+VfDwe8OI7dNMgexhRWL5Fbc5YLiuOSCkhoGUBE278bzp6m3S/5GOp
- M1+puZotc1aboWEYn1tlJ/pu550l3tXdjVUPyYYtDg==
-X-Google-Smtp-Source: ACHHUZ4IUXeFMwtlyv8AJ1bvbZOGBoi7b1ted+wtiiIpqqQfM73/KgbiQIr336zq4NOvBw8P7Y9S4qPGUe7rbOAdxKk=
-X-Received: by 2002:a17:907:9729:b0:978:4027:57eb with SMTP id
- jg41-20020a170907972900b00978402757ebmr1914627ejc.47.1686045889541; Tue, 06
- Jun 2023 03:04:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686046067; x=1688638067;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dfQMVc6p26pVHzkRqiVhpQh6RJn3kmzPMcC/O2y7Jlo=;
+ b=VethMaInmxmAUkZw90tgDyrqcthoh5X0UGaKvK/Z1R17+pkk9IvN0Xl3GMyHlr+bq9
+ pvIDRuli8e01C2jsvmto3TcrIMbkmAdb6s8sQkm1ObQN062EqkaXmhlLAbMA2PF1lp6m
+ KqjD3QqDjn5ZZKhaL7Xz4qk1K+XkZ5oZ1FsTCbQismGWgFKj/pj0gHDxE19WWidPmgZd
+ NQmFuJ3dMUEmZD1EXOvpnsNgIS4A/ebC7Y3Cm39yqlGv0sFaPxUtXY+I5blK7UStadeQ
+ nkzpZDixuFjubzavSsyEKOXmL64RtpFTMPIgLpJxqaDczF0Z1qKSZuMGuPyy9L7Hzjgq
+ SJEg==
+X-Gm-Message-State: AC+VfDw0xRMErGYfubM9guVRp9YuCXF3bAlNu36N2MXXu0eEXDH8XLmq
+ smm+u8AwZcFf2YQ+iCNN8s30z/IPuUSkm7IaVIJOFJwMbans8grg3n4ZOVchSgowGLg9M8+SLse
+ A7O6m9pvBkMxa9XY=
+X-Received: by 2002:a7b:c30c:0:b0:3f7:310a:3ffc with SMTP id
+ k12-20020a7bc30c000000b003f7310a3ffcmr1683948wmj.5.1686046067256; 
+ Tue, 06 Jun 2023 03:07:47 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6GaBT9ANxabqQW4wxuYyP1rX5RR7nEg2gFCL3H+2jkKTX+xQ5aD3ujrn7oxGkF1rCgkoyr6A==
+X-Received: by 2002:a7b:c30c:0:b0:3f7:310a:3ffc with SMTP id
+ k12-20020a7bc30c000000b003f7310a3ffcmr1683930wmj.5.1686046066864; 
+ Tue, 06 Jun 2023 03:07:46 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-42-114-92.web.vodafone.de.
+ [109.42.114.92]) by smtp.gmail.com with ESMTPSA id
+ u12-20020a05600c00cc00b003f7678a07c4sm6781600wmm.29.2023.06.06.03.07.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 03:07:45 -0700 (PDT)
+Message-ID: <7e632e82-06e0-7283-d57c-7a58d8d00c01@redhat.com>
+Date: Tue, 6 Jun 2023 12:07:44 +0200
 MIME-Version: 1.0
-References: <20230605095536.117384-1-wangyuquan1236@phytium.com.cn>
- <20230605095536.117384-2-wangyuquan1236@phytium.com.cn>
- <1fc502fa-8363-5a5b-0697-f3001c7ab773@linaro.org>
-In-Reply-To: <1fc502fa-8363-5a5b-0697-f3001c7ab773@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 6 Jun 2023 11:04:38 +0100
-Message-ID: <CAFEAcA_sGtV3HFZHX1JapnE04UpOxxxWvwgApVVm7dMX7+A-uw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com, 
- quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 06/10] configure: move SLOF submodule handling to
+ pc-bios/s390-ccw
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: berrange@redhat.com
+References: <20230605095223.107653-1-pbonzini@redhat.com>
+ <20230605095223.107653-7-pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230605095223.107653-7-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,24 +101,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 6 Jun 2023 at 10:47, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
->
-> W dniu 5.06.2023 o 11:55, Yuquan Wang pisze:
-> > The current sbsa-ref cannot use EHCI controller which is only
-> > able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
-> > Hence, this uses XHCI to provide a usb controller with 64-bit
-> > DMA capablity instead of EHCI.
-> >
-> > Signed-off-by: Yuquan Wang<wangyuquan1236@phytium.com.cn>
->
-> Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
->
-> Without EDK2 changes Linux behaves same way (no USB found), with EDK2
-> changes (EHCI->XHCI) Linux gets USB devices.
+On 05/06/2023 11.52, Paolo Bonzini wrote:
+> Move the handling of the roms/SLOF submodule out of the main Makefile,
+> since we are going to remove submodules from the build process of QEMU.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   .gitlab-ci.d/buildtest-template.yml |  2 +-
+>   configure                           |  7 +++----
+>   pc-bios/s390-ccw/Makefile           | 11 +++++++++++
+>   3 files changed, 15 insertions(+), 5 deletions(-)
 
-So it doesn't break (cause to crash) old EDK2 images? That's a
-pleasant surprise.
+Acked-by: Thomas Huth <thuth@redhat.com>
 
--- PMM
 
