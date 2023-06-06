@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACEC724910
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 18:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8C472491E
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 18:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6ZVU-0000uo-Lm; Tue, 06 Jun 2023 12:26:04 -0400
+	id 1q6ZYa-0003gs-8e; Tue, 06 Jun 2023 12:29:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6ZVS-0000tp-9u
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:26:02 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1q6ZYW-0003fe-Ii
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:29:12 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6ZVP-00022F-Lc
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:26:02 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-51452556acdso3688130a12.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 09:25:59 -0700 (PDT)
+ id 1q6ZYU-0002UJ-Se
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 12:29:12 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-650352b89f6so3287137b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 09:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686068758; x=1688660758;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=egCSYAdVTdNTDAYsfTmx8TEi8hcbvHOd5ttkDL5a96Q=;
- b=GsU5eyEouosEGykccMnwPgwcRXlupR4jbvbLqOMZ01i+ceApO56B37bpQR36eYMH4z
- RlMYVQYTzSaiE40ax8YGebgj3XM7PkAS5+pxDeUIp/bUDGqO11JsVrngWcLZlE/BJYcO
- 9Ro6Wqx4CDu0DXS9PYBnGAeIfN3wofzzBYyJbgF0sz9XT17bBNrdOprcqQ+9tVHVdd/7
- 8pLTA1yxMtr/4q9H57cgtIKLGgLIpKI06DQZJ3VFaJhEIEYT8HCTGD6VdAnDGk4NteCE
- Z1tp5dDT8oOKSPNQh2nipIZEccU/r44ewUW5qi9EUTwxr3leOBteZ06trA5xSSmcXFa+
- X6RA==
+ d=linaro.org; s=google; t=1686068949; x=1688660949;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=C3Fcsmarfd+RekiO8912tkVzRhQakcC4gX2K0ggl+iA=;
+ b=J5x3yVVMAJciVEZEdOTXKCQyz4eIoX2gI86Bsxj8KIIyUdGllrB7jCkQWQFUbWxjfw
+ PwVuT4o50qSUyUVtZ8qMEWM+cwdQjswvcXjVcu8VgHNE8B7MPklMqZPTZtVGETRaX5/s
+ avss98FZWlSaMV1pPLI0KJwz1colDQ7rA62lCiAeSlgzakc9bn7o1vX425Q9Lg3khQxL
+ lCdUGxYUnZTNefx+WjRKeMCGVjaCNeAOUvRyA9U0wvooZFxFNR5rp+IfKD6HhC5jsTW1
+ Ofi4OxLMvUPsKKzoDHFmcDhvqrLRwRgiboI0q+jNO5pnHGAeihXzKSCMkDj3Y+jeVDCy
+ c3Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686068758; x=1688660758;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=egCSYAdVTdNTDAYsfTmx8TEi8hcbvHOd5ttkDL5a96Q=;
- b=NC4KYnJkd6Lg1lVp/1+F3wJSpeE4qgC/G+4BiYXc/tWEiEgyT6fHa/c5ZMxGZNPDFM
- wgaOK8hd024tKH0/zpALXFzJ1yqVhZXBikLnQzs6qHkliaRB96QGny6ysQEcHe5Ys1aZ
- xvU7Eza1P1ugHqiwYgq+3UKjHULbCvF4ymPsrmBQ5qYQ5N3ICwqlfqVpYb6X4nGCW9L3
- hRrqL0OoKYbUVAIY7wkMvvLJhETEaA1CPq8HMt6GxV9tp/A47QgPk1EDqzdxvhu/uSnL
- EAU/l4+Z36NSVChVKvGZPphXvzA13jhpnvN1zH2mq7LPN8WZ1K58m16m8jiSyq3Ltmhl
- Xvuw==
-X-Gm-Message-State: AC+VfDzeYd9wbSRJiZJ8HRp2n83+z9B0jyFaQxxYYtDyUwWno4zM092s
- Y1n8uUwl0h7tjYKGN5CaJyP8s4+PdJNaLL++qxg=
-X-Google-Smtp-Source: ACHHUZ6dc2uXZ2EsVzJbOjW1EjPF9TMCCPx43mipQvvWt0baVEzhuWTaXbE965LVnA3wDSqSlFkEpA==
-X-Received: by 2002:a05:6a21:3804:b0:105:63b0:5bf8 with SMTP id
- yi4-20020a056a21380400b0010563b05bf8mr217154pzb.18.1686068757963; 
- Tue, 06 Jun 2023 09:25:57 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ d=1e100.net; s=20221208; t=1686068949; x=1688660949;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=C3Fcsmarfd+RekiO8912tkVzRhQakcC4gX2K0ggl+iA=;
+ b=KUcy2p7rmgdXRn5cr6ceJOSMqiqzYtoVBW1mSYvja2884JwT5MpiCdzGaUWFdwmgu2
+ 481ge1b0W7Ug1MwpDLMBjk2/Urd0E4nWcNGOdhf7+AClK5xDf8SdxlE8QZ0c9cFQt4/b
+ sd6H09/TjxNo/F2DuS+gC7jRkob2R6SRBplvnuQzPyMbxW8N+XwXX6gMBkGsLHO8v9Sr
+ hAzSkRcrFS9d7MU7XbIKHmBa/CiYztvUUpdOHTkvB546snOMx4s9d7A2tDRuH+eVFi0Y
+ eByOC6x795qLxkOJQ/UDkfMVvclWnF9gJqKqz7FwX2oq+UnWrtDMsVbnk1WuSIKnAlYp
+ WtuA==
+X-Gm-Message-State: AC+VfDygYyL5JPzfXQOHVieFcptDHTqJqZfp1/ciiRFVhNfQE4lBjhx9
+ glBKohTsnnb6rgzNWCg/4yckOsgXD439Rs00oGA=
+X-Google-Smtp-Source: ACHHUZ72E1chsDLiYa4tMUcD0OsB5z4aBX/J0Tb9cvYZQf27/3uxKxh5oKdARzXklebbQJRaX5/yug==
+X-Received: by 2002:a05:6a20:4295:b0:10f:1d52:93c2 with SMTP id
+ o21-20020a056a20429500b0010f1d5293c2mr185616pzj.28.1686068949286; 
+ Tue, 06 Jun 2023 09:29:09 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
+ ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
  by smtp.gmail.com with ESMTPSA id
- s17-20020aa78291000000b006413e6e7578sm7060840pfm.5.2023.06.06.09.25.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 09:25:57 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
-	berrange@redhat.com,
-	jsnow@redhat.com
-Subject: [PATCH] gitlab: Disable io-raw-194 for build-tcg-disabled
-Date: Tue,  6 Jun 2023 09:25:56 -0700
-Message-Id: <20230606162556.58110-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ n13-20020a170902e54d00b001ae4d4d2676sm8748543plf.269.2023.06.06.09.29.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 09:29:08 -0700 (PDT)
+Message-ID: <99c3f05e-0a4c-da22-36b0-ae84910ef4de@linaro.org>
+Date: Tue, 6 Jun 2023 09:29:07 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [RFC PATCH] exec/cpu-defs: Check for SOFTMMU instead of !USER_ONLY
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20230605230216.17202-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230605230216.17202-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,39 +96,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This test consistently fails on Azure cloud build hosts in
-a way that suggests a timing problem in the test itself:
+On 6/5/23 16:02, Philippe Mathieu-Daudé wrote:
+> We want to check the softmmu tlb availability, not
+> if we are targetting system emulation. Besides, this
+> code could be used by user emulation in the future.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+> Based-on:<20230605222420.14776-1-philmd@linaro.org>
+> 
+> See also
+> https://lore.kernel.org/qemu-devel/7913570a-8bf6-2ac9-6869-fab87273742c@linaro.org/
+> ---
+>   include/exec/cpu-defs.h | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 
---- .../194.out
-+++ .../194.out.bad
-@@ -14,7 +14,6 @@
- {"return": {}}
- {"data": {"status": "setup"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
- {"data": {"status": "active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
--{"data": {"status": "postcopy-active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
- {"data": {"status": "completed"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
- Gracefully ending the `drive-mirror` job on source...
- {"return": {}}
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- .gitlab-ci.d/buildtest.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 0f1be14cb6..000062483f 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -236,7 +236,7 @@ build-tcg-disabled:
-     - cd tests/qemu-iotests/
-     - ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
-             052 063 077 086 101 104 106 113 148 150 151 152 157 159 160 163
--            170 171 183 184 192 194 208 221 226 227 236 253 277 image-fleecing
-+            170 171 183 184 192 208 221 226 227 236 253 277 image-fleecing
-     - ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
-             124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
-             208 209 216 218 227 234 246 247 248 250 254 255 257 258
--- 
-2.34.1
-
+r~
 
