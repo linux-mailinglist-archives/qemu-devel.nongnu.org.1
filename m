@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE96A7244D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C5A7244D4
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:49:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6X3R-0002tW-2w; Tue, 06 Jun 2023 09:48:57 -0400
+	id 1q6X3q-0003CZ-Q4; Tue, 06 Jun 2023 09:49:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6X3J-0002qT-Bk
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:48:51 -0400
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6X3o-0003BD-38
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:20 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6X3H-0000Ry-Qx
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:48:49 -0400
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-39aa1517037so1161068b6e.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:48:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6X3m-0000dh-C3
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:19 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f732d37d7bso26614405e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:49:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686059326; x=1688651326;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/9tYaZoRGJ5NOSOzv48HhCH8mfZEyM/2QpMdJUXS86Y=;
- b=ZsTUmqqW12KMlutqNM5M2BrXZE4H9g/ehGQJC2R8nmj5S4LdDEVUOdfNvfsM44+Wk3
- FreLWSpJ9S4sNo1Pt41Q0LHzV3MfMLIJxgvFgyeJVBK30vWTtx7d+zIklp5JnydddOES
- baLchg1YBf7qqDmvtJZogq7XlVTCmDGGW+0U5nwm68I5whwnQkbKEQkn8lvn4sFdnFvb
- 9fdYVLsFtbyvz4lM2MPz4WOGerJr5k4q+gVacPnzxztMr1Pua10ceZWqi6bNNB5z7hW3
- TujfPo7oQYhZgd3sxDY7B4/4L/2p868mErzRzFD71AIlkNKHoXi6PwB5RxUDWw9Tru8n
- LMVg==
+ d=linaro.org; s=google; t=1686059356; x=1688651356;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QX7oEag8EHw5/rO2IwkanQ9xp1UV8fgADH4pyLkBN/8=;
+ b=UAZudb/ce1jfJT6y/p6oZh1L0HpidMYjKNYv8HehaQ8ONYHk8enXhUpJCo4GaIiR0i
+ gzkgLX2nspwglLewRAkQOgQQV8wc+3ykCdmjQNVJpxqV+zB7/j601xcHg2x5b5upIo5U
+ 5KA//U+4gmvlkvuJ75GNXWmNUxdE38DD4izgPCi0fbzTkC2xkK3SJNH+UjIEK6vdIyNw
+ gKqGnOz666RYPkUpqW/6AXCMUaWTiNXHTq2SJmga5eex0XXSKDqnHqNbZmwW0mTUVUxO
+ ewC16DGKPZzBscdzugy9HDqQENBgfdZoPW+EsvFtrdqDlE/4T7YMwcJpZSiKTkv2AxWW
+ neIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686059326; x=1688651326;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/9tYaZoRGJ5NOSOzv48HhCH8mfZEyM/2QpMdJUXS86Y=;
- b=MQtJUAkHsb05fXmRGJg41Owrt4p1wPQZR21IX/mDoyLQ5msgI+tzIP4oktQ3OeCLRL
- DG8pZ8eNW9D/qXaYIPrDuRrkAPLIZfVgUWcfGxJ6ctvKpIXmKnnFs44FXZZudeWNNZ9C
- XpaJLwczOQupDL704LqwCxHn/oh3XkUmA71ekc4OJ3lYu6cjEDg9g3MJFe4Z7KMl0GTW
- lpweh+gjo1/nubVu6RvN3JCT0XTz+Mw5rtK2wqi8scr6cBgqhEseMJAvbEyVit3YA8MN
- XfD4u48ZSduM036AZYAFkwK+vamqBl5ttTYYFEmxfs8+UoD3CEP8tF08P0D6WH6NDI8w
- rOCw==
-X-Gm-Message-State: AC+VfDwICC5ibmJw3CHq60NPTFhQC+zG5WlPqBowmgKZcVky6QMC9IOi
- Swy63cnOeU44YwWByaXvhXYDdA==
-X-Google-Smtp-Source: ACHHUZ7U0DbfALgkOJfKZPnVi9XzkplneTUFzCjzMMW9S+FY6SrYuUxaRPNjQvhkeU+FzaUs/PVNAA==
-X-Received: by 2002:a54:401a:0:b0:39a:aa6d:b9e0 with SMTP id
- x26-20020a54401a000000b0039aaa6db9e0mr982116oie.45.1686059326331; 
- Tue, 06 Jun 2023 06:48:46 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
+ d=1e100.net; s=20221208; t=1686059356; x=1688651356;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QX7oEag8EHw5/rO2IwkanQ9xp1UV8fgADH4pyLkBN/8=;
+ b=TFX1XGOMpEmAAh6kUlw0xichonsT6SqsfPtOEcdZLSFKZma+8X81dWpxcbkhxYej9x
+ xgtBa7Vtq09HLDHdUWJrNp6DJ0anQwGG5diUUdlL3PTfGlPB2kBwpx4qs2hQwcPMPE9e
+ h4kHoZho9/X/JDXtUIp/LxQDLv3674gxOPAt1pdEKshACL/9DZHCsZCQ04SVAAQFKrWf
+ fBg6NndNbBul/iZbCUgXIKhfHYTFkpOBhiu8/pC+G3eKf0A29ryeQnMsd8IzVtrF2hYH
+ A7CVrq22BLXF8Mq6qt9nrY/oTbKqbLnFQdNComO72w8CFIlmGntdeNnc1njj6Vs8uJ+Q
+ bVEw==
+X-Gm-Message-State: AC+VfDzfD08PKIa+2qsTTwZjfTnm8dj+pbK/JdQ/JfiSvw7mJFA5w9u1
+ zvPPzh8E5I+iPBGzEghWllZiLWnOAzX9yZCrqlQ=
+X-Google-Smtp-Source: ACHHUZ7fnqjT13jGpLe5esp4lXtwn2JrLWeK8SEfG2FwDlLsLfXxMgRqjw65Uhd49dAjUf4hxMfQCw==
+X-Received: by 2002:a7b:c3c7:0:b0:3f7:aad8:4e05 with SMTP id
+ t7-20020a7bc3c7000000b003f7aad84e05mr2230914wmj.11.1686059356247; 
+ Tue, 06 Jun 2023 06:49:16 -0700 (PDT)
+Received: from localhost.localdomain
+ (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr. [176.184.50.104])
  by smtp.gmail.com with ESMTPSA id
- b23-20020a056808011700b00383d9700294sm4288560oie.40.2023.06.06.06.48.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 06:48:45 -0700 (PDT)
-Message-ID: <b19bb5eb-3e9a-e9bd-35cd-f08033c1193c@ventanamicro.com>
-Date: Tue, 6 Jun 2023 10:48:40 -0300
+ h4-20020adff4c4000000b0030647d1f34bsm12798620wrp.1.2023.06.06.06.49.14
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 06 Jun 2023 06:49:15 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John G Johnson <john.g.johnson@oracle.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hw/remote/proxy: Remove dubious 'event_notifier-posix.c'
+ include
+Date: Tue,  6 Jun 2023 15:49:13 +0200
+Message-Id: <20230606134913.93724-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 6/6] target/riscv: select KVM AIA in riscv virt machine
-Content-Language: en-US
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, rkanwal@rivosinc.com, anup@brainfault.org,
- atishp@atishpatra.org, vincent.chen@sifive.com, greentime.hu@sifive.com,
- frank.chang@sifive.com, jim.shu@sifive.com
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230526062509.31682-1-yongxuan.wang@sifive.com>
- <20230526062509.31682-7-yongxuan.wang@sifive.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230526062509.31682-7-yongxuan.wang@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x236.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,46 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+event_notifier-posix.c is registered in meson's util_ss[] source
+set, which is built as libqemuutil.a.p library. Both tools and
+system emulation binaries are linked with qemuutil, so there is
+no point in including this source file.
 
+Introduced in commit bd36adb8df ("multi-process: create IOHUB
+object to handle irq").
 
-On 5/26/23 03:25, Yong-Xuan Wang wrote:
-> Select KVM AIA when the host kernel has in-kernel AIA chip support.
-> 
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> Reviewed-by: Jim Shu <jim.shu@sifive.com>
-> ---
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Note, --enable-multiprocess doesn't seem to be covered in CI.
+---
+ hw/remote/proxy.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+diff --git a/hw/remote/proxy.c b/hw/remote/proxy.c
+index 1c7786b52c..2052d721e5 100644
+--- a/hw/remote/proxy.c
++++ b/hw/remote/proxy.c
+@@ -22,7 +22,6 @@
+ #include "qom/object.h"
+ #include "qemu/event_notifier.h"
+ #include "sysemu/kvm.h"
+-#include "util/event_notifier-posix.c"
+ 
+ static void probe_pci_info(PCIDevice *dev, Error **errp);
+ static void proxy_device_reset(DeviceState *dev);
+-- 
+2.38.1
 
->   hw/riscv/virt.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 18b94888ab..57a07fa6c5 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -35,6 +35,7 @@
->   #include "hw/riscv/virt.h"
->   #include "hw/riscv/boot.h"
->   #include "hw/riscv/numa.h"
-> +#include "kvm_riscv.h"
->   #include "hw/intc/riscv_aclint.h"
->   #include "hw/intc/riscv_aplic.h"
->   #include "hw/intc/riscv_imsic.h"
-> @@ -1217,6 +1218,15 @@ static DeviceState *virt_create_aia(RISCVVirtAIAType aia_type, int aia_guests,
->               msimode, false, aplic_m);
->       }
->   
-> +    if (kvm_irqchip_in_kernel()) {
-> +        kvm_riscv_aia_create(
-> +            aplic_s, msimode, socket,
-> +            VIRT_IRQCHIP_NUM_SOURCES,
-> +            hart_count,
-> +            memmap[VIRT_APLIC_S].base + socket * memmap[VIRT_APLIC_S].size,
-> +            memmap[VIRT_IMSIC_S].base + socket * VIRT_IMSIC_GROUP_MAX_SIZE);
-> +    }
-> +
->       return kvm_enabled() ? aplic_s : aplic_m;
->   }
->   
 
