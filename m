@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C8F72446B
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EED724468
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:29:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6WjN-0008Ji-Oz; Tue, 06 Jun 2023 09:28:14 -0400
+	id 1q6WjR-0008OJ-4v; Tue, 06 Jun 2023 09:28:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q6WjC-00089l-Vs; Tue, 06 Jun 2023 09:28:03 -0400
+ id 1q6WjD-0008Ak-Ud; Tue, 06 Jun 2023 09:28:04 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q6WjA-0003sc-FX; Tue, 06 Jun 2023 09:28:02 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ id 1q6WjC-0003tv-Ae; Tue, 06 Jun 2023 09:28:03 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 356D897H023564; Tue, 6 Jun 2023 13:27:58 GMT
+ 356DNImB013231; Tue, 6 Jun 2023 13:28:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=pp1;
- bh=fkwdn8Ws44aD3rYO1PmOzo+tlEe5wrfn+U1LKWP3rWs=;
- b=dc9b1EojKc0OvvNBqJsq1ZwdWfH5t+fvakJFeswTWZz3FEv/5GSzoqJhyEDjScIrfCdL
- 7Imq9JIKbl/5X7MsvBGDfp8w/KRZWO5t5u0X+QXt+ubR71FCglostNC0fdWWjE6hmWir
- jOyZ/Pl3YUcI7a2xnf/5fdzi6SJ54cCJmnMCTogOrY4QIUMvtk87ioj05FVBakAZCCxI
- 3Q2aN8g6Ow5J1sb9Py92NcFvWJP9nWJlIUXYuD2MagRxINGkVjyG6PEJ7P86/MEWm3E/
- WhgV1zA0acRPbO5ymrxXWrkQpNG7PP4AtNwbkYIBrGWybqlezsG5+XtjSXdO1SMiLblz zA== 
+ bh=ttuqpbzwhJ4Wl/jaHNKltf3RIbjvKG8zKbpGiPou+Cc=;
+ b=Kq8+twtIGJV2qxFD8VYJzRSgrmKHFrxPBSo3FV9rbZl2n1epugkK/K5oqUz5vJ/ov4PS
+ ijsatIjXc1BGOuTqs1QZ6bK5yyOR/FFPnRTvecx5O856JeqR5iAwyvOA+fP5c0bcuX3F
+ AnaLHGti7NmBhPFSLmZP3fju3Ku3ppq3b1qxxrLWCPv0ke3aUlz6ftsR4AIyrX2WgOqk
+ bs1B0CWCeIZib16fX9FeY9N57IT2Emv/Lw0g1OY9ZSoR4vl8hiPyTu8faLlGWVJZ+1p3
+ crEtk3aRmi6fXDznKalFvNWzX3DBDahXEn4m3JY1+Ka5FfyUbUzIyfr2cE6O4FAlPRr1 sw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r258srutm-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r25mt030h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jun 2023 13:27:58 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 356DHvDD025813;
- Tue, 6 Jun 2023 13:27:57 GMT
+ Tue, 06 Jun 2023 13:27:59 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 356DPFJX017691;
+ Tue, 6 Jun 2023 13:27:58 GMT
 Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
  [149.81.74.107])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r258srut1-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r25mt02yp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jun 2023 13:27:57 +0000
+ Tue, 06 Jun 2023 13:27:58 +0000
 Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 356BO9pb001944;
- Tue, 6 Jun 2023 13:27:55 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3qyxdfhj4s-1
+ by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3566ZUlo030680;
+ Tue, 6 Jun 2023 13:27:56 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3qyxdfhj4t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jun 2023 13:27:55 +0000
+ Tue, 06 Jun 2023 13:27:56 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 356DRrQM12255802
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 356DRsYQ27328794
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Jun 2023 13:27:53 GMT
+ Tue, 6 Jun 2023 13:27:54 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C45B2004E;
- Tue,  6 Jun 2023 13:27:53 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 33C2F20043;
+ Tue,  6 Jun 2023 13:27:54 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 28EE120040;
+ by IMSVA (Postfix) with ESMTP id E61B120040;
  Tue,  6 Jun 2023 13:27:53 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.209.184])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -72,10 +72,9 @@ To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 4/8] gdbstub: Expose gdb_get_process() and
- gdb_get_first_cpu_in_process()
-Date: Tue,  6 Jun 2023 15:27:39 +0200
-Message-Id: <20230606132743.1386003-5-iii@linux.ibm.com>
+Subject: [PATCH v3 5/8] gdbstub: Report the actual qemu-user pid
+Date: Tue,  6 Jun 2023 15:27:40 +0200
+Message-Id: <20230606132743.1386003-6-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606132743.1386003-1-iii@linux.ibm.com>
 References: <20230606132743.1386003-1-iii@linux.ibm.com>
@@ -83,17 +82,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 863Eiht3FHFZ_zxMIjaZI1up11YtI5Ez
-X-Proofpoint-ORIG-GUID: mZuZl-yoYspHxOUUORQCzOkrMPTwIY3u
+X-Proofpoint-GUID: K1-7-6BN05uRzY4X3uDJsqVqn4m1Vy0t
+X-Proofpoint-ORIG-GUID: eNu7pW28H4i-pxoPKFQ4U6NwwFv82AjZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-06_08,2023-06-06_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306060110
+ bulkscore=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
+ clxscore=1015 phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2306060110
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -118,105 +117,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These functions will be needed by user-target.c in order to retrieve
-the name of the executable.
+Currently qemu-user reports pid 1 to GDB. Resolve the TODO and report
+the actual PID. Using getpid() relies on the assumption that there is
+only one GDBProcess. Add an assertion to make sure that future changes
+don't break it.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- gdbstub/gdbstub.c   | 16 ++++++++--------
- gdbstub/internals.h |  2 ++
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ gdbstub/gdbstub.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index be18568d0af..9139fec92af 100644
+index 9139fec92af..c7e3ee71f2f 100644
 --- a/gdbstub/gdbstub.c
 +++ b/gdbstub/gdbstub.c
-@@ -211,7 +211,7 @@ static uint32_t gdb_get_cpu_pid(CPUState *cpu)
+@@ -202,13 +202,16 @@ void gdb_memtox(GString *buf, const char *mem, int len)
+ 
+ static uint32_t gdb_get_cpu_pid(CPUState *cpu)
+ {
+-    /* TODO: In user mode, we should use the task state PID */
++#ifdef CONFIG_USER_ONLY
++    return getpid();
++#else
+     if (cpu->cluster_index == UNASSIGNED_CLUSTER_INDEX) {
+         /* Return the default process' PID */
+         int index = gdbserver_state.process_num - 1;
+         return gdbserver_state.processes[index].pid;
+     }
      return cpu->cluster_index + 1;
++#endif
  }
  
--static GDBProcess *gdb_get_process(uint32_t pid)
-+GDBProcess *gdb_get_process(uint32_t pid)
+ GDBProcess *gdb_get_process(uint32_t pid)
+@@ -2146,19 +2149,25 @@ void gdb_read_byte(uint8_t ch)
+ void gdb_create_default_process(GDBState *s)
  {
-     int i;
+     GDBProcess *process;
+-    int max_pid = 0;
++    int pid;
  
-@@ -247,7 +247,7 @@ static CPUState *find_cpu(uint32_t thread_id)
-     return NULL;
++#ifdef CONFIG_USER_ONLY
++    assert(gdbserver_state.process_num == 0);
++    pid = getpid();
++#else
+     if (gdbserver_state.process_num) {
+-        max_pid = s->processes[s->process_num - 1].pid;
++        pid = s->processes[s->process_num - 1].pid;
++    } else {
++        pid = 0;
+     }
++    /* We need an available PID slot for this process */
++    assert(pid < UINT32_MAX);
++    pid++;
++#endif
+ 
+     s->processes = g_renew(GDBProcess, s->processes, ++s->process_num);
+     process = &s->processes[s->process_num - 1];
+-
+-    /* We need an available PID slot for this process */
+-    assert(max_pid < UINT32_MAX);
+-
+-    process->pid = max_pid + 1;
++    process->pid = pid;
+     process->attached = false;
+     process->target_xml[0] = '\0';
  }
- 
--static CPUState *get_first_cpu_in_process(GDBProcess *process)
-+CPUState *gdb_get_first_cpu_in_process(GDBProcess *process)
- {
-     CPUState *cpu;
- 
-@@ -325,7 +325,7 @@ static CPUState *gdb_get_cpu(uint32_t pid, uint32_t tid)
-             return NULL;
-         }
- 
--        return get_first_cpu_in_process(process);
-+        return gdb_get_first_cpu_in_process(process);
-     } else {
-         /* a specific thread */
-         cpu = find_cpu(tid);
-@@ -354,7 +354,7 @@ static const char *get_feature_xml(const char *p, const char **newp,
-     size_t len;
-     int i;
-     const char *name;
--    CPUState *cpu = get_first_cpu_in_process(process);
-+    CPUState *cpu = gdb_get_first_cpu_in_process(process);
-     CPUClass *cc = CPU_GET_CLASS(cpu);
- 
-     len = 0;
-@@ -490,7 +490,7 @@ void gdb_register_coprocessor(CPUState *cpu,
- 
- static void gdb_process_breakpoint_remove_all(GDBProcess *p)
- {
--    CPUState *cpu = get_first_cpu_in_process(p);
-+    CPUState *cpu = gdb_get_first_cpu_in_process(p);
- 
-     while (cpu) {
-         gdb_breakpoint_remove_all(cpu);
-@@ -653,7 +653,7 @@ static int gdb_handle_vcont(const char *p)
-                 goto out;
-             }
- 
--            cpu = get_first_cpu_in_process(process);
-+            cpu = gdb_get_first_cpu_in_process(process);
-             while (cpu) {
-                 if (newstates[cpu->cpu_index] == 1) {
-                     newstates[cpu->cpu_index] = cur_action;
-@@ -1280,7 +1280,7 @@ static void handle_v_attach(GArray *params, void *user_ctx)
-         goto cleanup;
-     }
- 
--    cpu = get_first_cpu_in_process(process);
-+    cpu = gdb_get_first_cpu_in_process(process);
-     if (!cpu) {
-         goto cleanup;
-     }
-@@ -1403,7 +1403,7 @@ static void handle_query_curr_tid(GArray *params, void *user_ctx)
-      * first thread).
-      */
-     process = gdb_get_cpu_process(gdbserver_state.g_cpu);
--    cpu = get_first_cpu_in_process(process);
-+    cpu = gdb_get_first_cpu_in_process(process);
-     g_string_assign(gdbserver_state.str_buf, "QC");
-     gdb_append_thread_id(cpu, gdbserver_state.str_buf);
-     gdb_put_strbuf();
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 33d21d64886..25e4d5eeaa6 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -129,6 +129,8 @@ void gdb_read_byte(uint8_t ch);
-  */
- bool gdb_got_immediate_ack(void);
- /* utility helpers */
-+GDBProcess *gdb_get_process(uint32_t pid);
-+CPUState *gdb_get_first_cpu_in_process(GDBProcess *process);
- CPUState *gdb_first_attached_cpu(void);
- void gdb_append_thread_id(CPUState *cpu, GString *buf);
- int gdb_get_cpu_index(CPUState *cpu);
 -- 
 2.40.1
 
