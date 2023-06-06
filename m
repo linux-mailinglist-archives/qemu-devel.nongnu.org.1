@@ -2,56 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B108724559
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FB272455B
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:11:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XNi-0002AP-Dg; Tue, 06 Jun 2023 10:09:54 -0400
+	id 1q6XOq-00032X-AW; Tue, 06 Jun 2023 10:11:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=R+T2=B2=kaod.org=clg@ozlabs.org>)
- id 1q6XNg-00029V-Dn; Tue, 06 Jun 2023 10:09:52 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=R+T2=B2=kaod.org=clg@ozlabs.org>)
- id 1q6XNe-0004mD-9f; Tue, 06 Jun 2023 10:09:52 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbC604Sjbz4x3k;
- Wed,  7 Jun 2023 00:09:44 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbC5y4bSFz4x42;
- Wed,  7 Jun 2023 00:09:42 +1000 (AEST)
-Message-ID: <43ca9ac8-d383-42fd-ca29-f7cdd18d701d@kaod.org>
-Date: Tue, 6 Jun 2023 16:09:40 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1q6XOk-0002wn-GN
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:10:58 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1q6XOi-0005CO-FB
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:10:57 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-5584f8ec391so2143094eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686060650; x=1688652650;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TViX6xHrhcipZ2N/daIpqjUHG9frSaIxXBNYbl7z694=;
+ b=l61eo7UrDoqW+squDjZ3SmRRl/dT2Kg31PMtoroXDAxOUYq/rje5oJf4G8AAUL5LCj
+ smy90xkJZ6qiTG+fB2K6pk+yrmnEKJGBalDnwFnkywvxYAIxSTTmR4kQ1qhuhKMuSXAH
+ 6EJIVUTLnmbjsQHL7tHgJzIYMu5H6FyW7mHQrGATblln4g3QqU1bG7h49QBgxbmg3PAE
+ cpqoa3yWD3O3SJJpGTYEkGZUhd34Q75IjTxL+I1nzfngMWnZ/wINZsBYZ7tYE+YYC2CW
+ T2+uyWR0odYbfLDXSImeX0A67z+crRz/FRmF2gGN2dp88H2XFvn5FdtfnTcJIqMRSm3x
+ tb+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686060650; x=1688652650;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TViX6xHrhcipZ2N/daIpqjUHG9frSaIxXBNYbl7z694=;
+ b=Vc8Ope4VGg28oEwdldc09qJ3opnm7E1MQumL4N32z4oExI6XQdUZ3l297GAMbjAh+g
+ LwqwBYWAHWxTXgMUYxKF5QR/UFv5W+NEIFPCFKkEb0+o+G2dLEHsiJtx3ZHzfEcYLNLy
+ tE/pwJ9oo/aUFGr8OqorgFa52aVigURWEIxpWr7FYbFH8O2/R1a9ja/t3fDOOX9HIR2d
+ cxCLzOahzI6TQkBFwHSxmZUecRB7rpxRSLZ8xm9R8+8QO13csCzhK8/8Kdzin01hz56o
+ 8qhrmMGfZReLykz4aeNgc4HCFjgtY97ZEtITdEhfk/Fn0rbKWU9rSFN/IHHE6XdsWynU
+ 1m/A==
+X-Gm-Message-State: AC+VfDxuTpACF1xrQmc2qY4BOGxrse5T7v8ikxBs4R3e9hBbu5IJWlMp
+ rdniQ3gGDSOgV/dt82gSawQDXQ7Erp8/cS/8bSVnsojw
+X-Google-Smtp-Source: ACHHUZ47m9LBAa9sLajZqWGXzSxIslOwuf6WvHTE6pCZjKYgsSLzasUOUYd5Le4RuySA9edAZquZH/d+VatjdDXUL60=
+X-Received: by 2002:a05:6808:248:b0:39a:9e83:e712 with SMTP id
+ m8-20020a056808024800b0039a9e83e712mr867232oie.44.1686060650397; Tue, 06 Jun
+ 2023 07:10:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 0/4] target/ppc: TCG SMT support for spapr
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Richard Henderson
- <richard.henderson@linaro.org>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20230605112323.179259-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230605112323.179259-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=R+T2=B2=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+References: <20230606131605.55596-1-anthony.perard@citrix.com>
+In-Reply-To: <20230606131605.55596-1-anthony.perard@citrix.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 6 Jun 2023 10:10:38 -0400
+Message-ID: <CAJSP0QX4XEPK53PM616yPrCfMXRxMRpOab--wo7GO=F5qJ5nYQ@mail.gmail.com>
+Subject: Re: [PATCH] xen-block: fix segv on unrealize
+To: Anthony PERARD <anthony.perard@citrix.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
+ xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,36 +86,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 13:23, Nicholas Piggin wrote:
-> Previous RFC here
-> 
-> https://lists.gnu.org/archive/html/qemu-ppc/2023-05/msg00453.html
-> 
-> This series drops patch 1 from the previous, which is more of
-> a standalone bugfix.
-> 
-> Also accounted for Cedric's comments, except a nicer way to
-> set cpu_index vs PIR/TIR SPRs, which is not quite trivial.
-> 
-> This limits support for SMT to POWER8 and newer. It is also
-> incompatible with nested-HV so that is checked for too.
-> 
-> Iterating CPUs to find siblings for now I kept because similar
-> loops exist in a few places, and it is not conceptually
-> difficult for SMT, just fiddly code to improve. For now it
-> should not be much performane concern.
-> 
-> I removed hypervisor msgsnd support from patch 3, which is not
-> required for spapr and added significantly to the patch.
-> 
-> For now nobody has objected to the way shared SPR access is
-> handled (serialised with TCG atomics support) so we'll keep
-> going with it.
+Sorry!
 
-Cc:ing more people for possible feedback.
-
-Thanks,
-
-C.
-
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
