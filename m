@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55C972462F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C838F724629
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Xj5-0005aq-Gk; Tue, 06 Jun 2023 10:32:06 -0400
+	id 1q6XjU-0005dQ-2B; Tue, 06 Jun 2023 10:32:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xiw-0005ZQ-U4
+ id 1q6Xiv-0005Z0-WB
  for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xiv-0001KI-Cx
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:50 -0400
+ id 1q6Xit-0001K6-Fw
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686061908;
+ s=mimecast20190719; t=1686061906;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DDldL0xhfPvoE8avQxYF9j/S/qjA1eexqMtZkHxm0IM=;
- b=MaNm7fjB1MH88LL7hvonCjVmbZvqBpPAT2VuPmzZ/blfhlb7StAyyknhl1izAjTbyqagLC
- dYM9nWE7kJoLEWUn2Y66z5AgX+BnkxGtIeC397z4TNHj9l/rohuOcoEhvmNGbyKKYN6aCX
- QFyBAaUOOX57uIqyLUo/Xbe5faLxyzg=
+ bh=dlNlZVqUkkegEZ5hR5obdfjUHReNHqMPiz2trjaQCyg=;
+ b=KtSOBRWexs18xYEvUtOJVu6+P2swpP9MigQcmW6M+eaSD2bcyh1kC/NinEB5ugTkuw+HT4
+ 7/3uFNulRn7KnW4dpvbJFenfz5pkSlt9TP36T98yfO1stpzfMh/1XbiqlOAbOBi0oakgYM
+ DVT+12BMF2ElN37lBvPKo3XrCKS+sC0=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-ZzSdp60kOqajJ9Uj-LxbMA-1; Tue, 06 Jun 2023 10:31:47 -0400
-X-MC-Unique: ZzSdp60kOqajJ9Uj-LxbMA-1
+ us-mta-414-GNqXKKw8PS6mbqgfM3pe2g-1; Tue, 06 Jun 2023 10:31:45 -0400
+X-MC-Unique: GNqXKKw8PS6mbqgfM3pe2g-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-94a355c9028so471426566b.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:46 -0700 (PDT)
+ a640c23a62f3a-94a341efd9aso521915466b.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061904; x=1688653904;
+ d=1e100.net; s=20221208; t=1686061903; x=1688653903;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DDldL0xhfPvoE8avQxYF9j/S/qjA1eexqMtZkHxm0IM=;
- b=QBFr4+oyxxhOpDw/dXqX3zi4u8WlRg4GJhpgjql3Sv1Rvd7GzWCIZIKCfjS9non3E2
- 8F6Ihnt8rdONQ1bB2mPNwY9AE2/Kr4BT+GXiPMUJbrisxWSYsDGYqD28Q/muMkaS9sz5
- y2CPCHZHkvhk/m7SHWtAIXdIO+s3UboGR8tiXMm/mMkUaaQfv74uQU5OLchdHiql6wuH
- x/zWSP9NTvhmL+oZddA69+RCPxqyStRYNIVz4hsjmSwsgrO8dLian11/Tsmk8cyRDYw0
- KfxYQ+tpyaAsxyXEKwg6v9WTAxgzQd+k1agPrwG6bVGq4OJqYY4iMZUAKvXB6f35v1bB
- EBtw==
-X-Gm-Message-State: AC+VfDyYlapR0YoUuu6msIIZDL6QfR1fya+3pYj5/rF7Vf6ULLlcpUEH
- uWou60DOymW2xILbyHNemsVrcsBKUAI4SMmLlr1SoyHqA3CTVjf98mYRVxN/oLrpbBtaehsg6/W
- sRj5a8b1P3IHSXVwCmpRtL4NDCNrGkapLeFIba+qDb4TVBI/PuCsFaH0BeEJ1PTGaqhJmqSxrOB
- Q=
-X-Received: by 2002:a17:907:72c9:b0:977:abac:9635 with SMTP id
- du9-20020a17090772c900b00977abac9635mr2572453ejc.20.1686061903160; 
+ bh=dlNlZVqUkkegEZ5hR5obdfjUHReNHqMPiz2trjaQCyg=;
+ b=LGIN8o6n/ckXH3GbS3D39slImUXYHP4KZ3xDAzQRwCksnbXn4u4vBxgcXPGpgKs43S
+ wgflmP8s27/IJk5Js4mahKftKnx3dgvdbP8vlVET2rK0qfxRVagEgcKowvw4BWSTuNcz
+ qVYexOxYERfs2AcXpHb3DW8SF7okuUQaelaDInHs3/LILrCNUw3RMCzsad61O5f02TTj
+ q3xoOPvQ4BHjnsXQ/sg/jwgp+w9wNCQKizGhu0VSZTvLCn66DHzTwMhdOtpNsNEj6RrS
+ A4oNqUm4eCE+hO7DxMnDpYdVKvC3vdpaYq8L+MSeWE6dNZZTCeEa6kPxMZSV1eQspMST
+ ozYQ==
+X-Gm-Message-State: AC+VfDzGQ7QS+y8mi7gDznINkoLrOynVE06LxHJTkDegHGZy29gVyWSk
+ JCbvl10DUIDLBB94zm4aOv1Z03Am2oAXhtpMLvVNR7zbUlHnvA4qFiLxkSHwUzd7Lui/gyJov0y
+ jFqDJGG+VUbdT0HTjXUEuhYAA2fsAPXa9ut7D3lRgLnung17ULYISZVkjToRkWOIqnLFiZOG3Tn
+ 0=
+X-Received: by 2002:a17:907:6eaa:b0:96f:e7cf:5015 with SMTP id
+ sh42-20020a1709076eaa00b0096fe7cf5015mr2537794ejc.17.1686061903267; 
  Tue, 06 Jun 2023 07:31:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7DTLiNKN097Jw0UyEpwPlg2xhDNQL20uM7G2M0j03cRPlaFTAv075C1l+9kIHIQKaTjPksyQ==
-X-Received: by 2002:a17:907:72c9:b0:977:abac:9635 with SMTP id
- du9-20020a17090772c900b00977abac9635mr2572431ejc.20.1686061900998; 
- Tue, 06 Jun 2023 07:31:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5rwQV9Swx+lSX/cHIVj5DC2wqCVj1cVwGgOR/TU6IrR2phsFKdF3g4oD5+6UZFxXPNTJuLkQ==
+X-Received: by 2002:a17:907:6eaa:b0:96f:e7cf:5015 with SMTP id
+ sh42-20020a1709076eaa00b0096fe7cf5015mr2537778ejc.17.1686061902951; 
+ Tue, 06 Jun 2023 07:31:42 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- h21-20020a170906261500b00977cad140a8sm3851899ejc.218.2023.06.06.07.31.39
+ b13-20020a17090636cd00b00977eec5bb2csm1754301ejc.156.2023.06.06.07.31.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 07:31:40 -0700 (PDT)
+ Tue, 06 Jun 2023 07:31:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 15/21] build: log submodule update from git-submodule.sh
-Date: Tue,  6 Jun 2023 16:31:10 +0200
-Message-Id: <20230606143116.685644-16-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 16/21] meson: subprojects: replace submodules with wrap files
+Date: Tue,  6 Jun 2023 16:31:11 +0200
+Message-Id: <20230606143116.685644-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606143116.685644-1-pbonzini@redhat.com>
 References: <20230606143116.685644-1-pbonzini@redhat.com>
@@ -101,72 +101,401 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Print exactly which submodules have been updated, by reusing the logic of
-"git-submodule.sh validate" after executing "git submodule update --init'.
+Compared to submodules, .wrap files have several advantages:
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+* option parsing and downloading is delegated to meson
+
+* the commit is stored in a text file instead of a magic entry in the
+  git tree object
+
+* we could stop shipping external dependencies that are only used as a
+  fallback, but not break compilation on platforms that lack them.
+  For example it may make sense to download dtc at build time, controlled
+  by --enable-download, even when building from a tarball.  Right now,
+  this patch does the opposite: make-release treats dtc like libvfio-user
+  (which is not stable API and therefore hasn't found its way into any
+  distros) and keycodemap (which is a copylib, for better or worse).
+
+dependency() can fall back to a wrap automatically.  However, this
+is only possible for libraries that come with a .pc file, and this
+is not very common for libfdt even though the upstream project in
+principle provides it; it also removes the control that we provide with
+--enable-fdt={system,internal}.  Therefore, the logic to pick system
+vs. internal libfdt is left untouched.
+
+--enable-fdt=git is removed; it was already a synonym for
+--enable-fdt=internal.
+
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Makefile                 |  4 +---
- scripts/git-submodule.sh | 16 +++++++++++-----
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ .gitlab-ci.d/buildtest-template.yml |  1 +
+ .gitmodules                         |  9 ----
+ configure                           | 77 ++++++++++++-----------------
+ meson.build                         | 15 +-----
+ scripts/archive-source.sh           | 11 ++++-
+ scripts/make-release                |  5 ++
+ subprojects/.gitignore              |  3 ++
+ subprojects/dtc                     |  1 -
+ subprojects/dtc.wrap                |  4 ++
+ subprojects/keycodemapdb            |  1 -
+ subprojects/keycodemapdb.wrap       |  4 ++
+ subprojects/libvfio-user            |  1 -
+ subprojects/libvfio-user.wrap       |  4 ++
+ 13 files changed, 63 insertions(+), 73 deletions(-)
+ delete mode 160000 subprojects/dtc
+ create mode 100644 subprojects/dtc.wrap
+ delete mode 160000 subprojects/keycodemapdb
+ create mode 100644 subprojects/keycodemapdb.wrap
+ delete mode 160000 subprojects/libvfio-user
+ create mode 100644 subprojects/libvfio-user.wrap
 
-diff --git a/Makefile b/Makefile
-index 8005f1cc53e..d68196acb9e 100644
---- a/Makefile
-+++ b/Makefile
-@@ -52,9 +52,7 @@ Makefile: .git-submodule-status
- .PHONY: git-submodule-update
- git-submodule-update:
- ifneq ($(GIT_SUBMODULES_ACTION),ignore)
--	$(call quiet-command, \
--		(GIT=git "$(SRC_PATH)/scripts/git-submodule.sh" $(GIT_SUBMODULES_ACTION) $(GIT_SUBMODULES)), \
--		"GIT","$(GIT_SUBMODULES)")
-+	$(quiet-@)GIT=git "$(SRC_PATH)/scripts/git-submodule.sh" $(GIT_SUBMODULES_ACTION) $(GIT_SUBMODULES)
- endif
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index c9f2e737c09..3c997d7265b 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -44,6 +44,7 @@
+   script:
+     - scripts/git-submodule.sh update
+         $(sed -n '/GIT_SUBMODULES=/ s/.*=// p' build/config-host.mak)
++    - meson subprojects download $(cd build/subprojects && echo *)
+     - cd build
+     - find . -type f -exec touch {} +
+     # Avoid recompiling by hiding ninja with NINJA=":"
+diff --git a/.gitmodules b/.gitmodules
+index f8b2ddf3877..a934c85e4e4 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -13,9 +13,6 @@
+ [submodule "roms/qemu-palcode"]
+ 	path = roms/qemu-palcode
+ 	url = https://gitlab.com/qemu-project/qemu-palcode.git
+-[submodule "subprojects/dtc"]
+-	path = subprojects/dtc
+-	url = https://gitlab.com/qemu-project/dtc.git
+ [submodule "roms/u-boot"]
+ 	path = roms/u-boot
+ 	url = https://gitlab.com/qemu-project/u-boot.git
+@@ -25,9 +22,6 @@
+ [submodule "roms/QemuMacDrivers"]
+ 	path = roms/QemuMacDrivers
+ 	url = https://gitlab.com/qemu-project/QemuMacDrivers.git
+-[submodule "subprojects/keycodemapdb"]
+-	path = subprojects/keycodemapdb
+-	url = https://gitlab.com/qemu-project/keycodemapdb.git
+ [submodule "roms/seabios-hppa"]
+ 	path = roms/seabios-hppa
+ 	url = https://gitlab.com/qemu-project/seabios-hppa.git
+@@ -55,6 +49,3 @@
+ [submodule "tests/lcitool/libvirt-ci"]
+ 	path = tests/lcitool/libvirt-ci
+ 	url = https://gitlab.com/libvirt/libvirt-ci.git
+-[submodule "subprojects/libvfio-user"]
+-	path = subprojects/libvfio-user
+-	url = https://gitlab.com/qemu-project/libvfio-user.git
+diff --git a/configure b/configure
+index 52274212310..45d43ddbd97 100755
+--- a/configure
++++ b/configure
+@@ -253,7 +253,7 @@ else
+     git_submodules_action="ignore"
+ fi
  
- # 0. ensure the build tree is okay
-diff --git a/scripts/git-submodule.sh b/scripts/git-submodule.sh
-index b7d8f05352c..38b55c90e11 100755
---- a/scripts/git-submodule.sh
-+++ b/scripts/git-submodule.sh
-@@ -46,6 +46,13 @@ validate_error() {
-     exit 1
+-git_submodules="subprojects/keycodemapdb"
++git_submodules=""
+ git="git"
+ debug_tcg="no"
+ docs="auto"
+@@ -269,7 +269,6 @@ python=
+ download="enabled"
+ bindir="bin"
+ skip_meson=no
+-vfio_user_server="disabled"
+ use_containers="yes"
+ gdb_bin=$(command -v "gdb-multiarch" || command -v "gdb")
+ gdb_arches=""
+@@ -281,16 +280,13 @@ unset target_list_exclude
+ 
+ # The following Meson options are handled manually (still they
+ # are included in the automatically generated help message)
+-
+-# 1. Track which submodules are needed
+-fdt="auto"
+-
+-# 2. Automatically enable/disable other options
++# because they automatically enable/disable other options
+ tcg="auto"
+ cfi="false"
+ 
+-# 3. Need to check for -static-pie before Meson runs.  Also,
+-# Meson has PIE as a boolean rather than enabled/disabled/auto.
++# Meson has PIE as a boolean rather than enabled/disabled/auto,
++# and we also need to check for -static-pie before Meson runs
++# which requires knowing whether --static is enabled.
+ pie=""
+ static="no"
+ 
+@@ -743,14 +739,6 @@ for opt do
+   ;;
+   --disable-cfi) cfi="false"
+   ;;
+-  --disable-fdt) fdt="disabled"
+-  ;;
+-  --enable-fdt) fdt="enabled"
+-  ;;
+-  --enable-fdt=git) fdt="internal"
+-  ;;
+-  --enable-fdt=*) fdt="$optarg"
+-  ;;
+   --with-git-submodules=*)
+       git_submodules_action="$optarg"
+   ;;
+@@ -772,10 +760,6 @@ for opt do
+   ;;
+   --gdb=*) gdb_bin="$optarg"
+   ;;
+-  --enable-vfio-user-server) vfio_user_server="enabled"
+-  ;;
+-  --disable-vfio-user-server) vfio_user_server="disabled"
+-  ;;
+   # everything else has the same name in configure and meson
+   --*) meson_option_parse "$opt" "$optarg"
+   ;;
+@@ -787,6 +771,32 @@ if test "$plugins" = "yes" -a "$tcg" = "disabled"; then
+     error_exit "Can't enable plugins on non-TCG builds"
+ fi
+ 
++if ! test -f "$source_path/subprojects/keycodemapdb/README" \
++    && test -f "$download" = disabled
++then
++    echo
++    echo "ERROR: missing subprojects"
++    echo
++    if test -e "$source_path/.git"; then
++        echo "--disable-download specified but subprojects were not"
++        echo 'checked out.  Please invoke "meson subprojects download"'
++        echo "before configuring QEMU, or remove --disable-download"
++        echo "from the command line."
++    else
++        echo "This is not a GIT checkout but subproject content appears to"
++        echo "be missing. Do not use 'git archive' or GitHub download links"
++        echo "to acquire QEMU source archives. Non-GIT builds are only"
++        echo "supported with source archives linked from:"
++        echo
++        echo "  https://www.qemu.org/download/#source"
++        echo
++        echo "Developers working with GIT can use scripts/archive-source.sh"
++        echo "if they need to create valid source archives."
++    fi
++    echo
++    exit 1
++fi
++
+ case $git_submodules_action in
+     update|validate)
+         if test ! -e "$source_path/.git" || ! has git; then
+@@ -795,7 +805,7 @@ case $git_submodules_action in
+         fi
+     ;;
+     ignore)
+-        if ! test -f "$source_path/subprojects/keycodemapdb/README"
++        if ! test -f "$source_path/tests/fp/berkeley-testfloat-3/README.md"
+         then
+             echo
+             echo "ERROR: missing GIT submodules"
+@@ -1164,16 +1174,6 @@ EOF
+   fi
+ fi
+ 
+-##########################################
+-# fdt probe
+-
+-case "$fdt" in
+-  auto | enabled | internal)
+-    # Simpler to always update submodule, even if not needed.
+-    git_submodules="${git_submodules} subprojects/dtc"
+-    ;;
+-esac
+-
+ ########################################
+ # check if ccache is interfering with
+ # semantic analysis of macros
+@@ -1609,17 +1609,6 @@ write_target_makefile() {
+   fi
  }
  
-+check_updated() {
-+    local CURSTATUS OLDSTATUS
-+    CURSTATUS=$($GIT submodule status $module)
-+    OLDSTATUS=$(grep $module $substat)
-+    test "$CURSTATUS" = "$OLDSTATUS"
-+}
+-##########################################
+-# check for vfio_user_server
+-
+-case "$vfio_user_server" in
+-  enabled )
+-    if test "$git_submodules_action" != "ignore"; then
+-      git_submodules="${git_submodules} subprojects/libvfio-user"
+-    fi
+-    ;;
+-esac
+-
+ #######################################
+ # cross-compiled firmware targets
+ 
+@@ -1951,12 +1940,10 @@ if test "$skip_meson" = no; then
+   # QEMU options
+   test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
+   test "$docs" != auto && meson_option_add "-Ddocs=$docs"
+-  test "$fdt" != auto && meson_option_add "-Dfdt=$fdt"
+   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
+   test "$qemu_suffix" != qemu && meson_option_add "-Dqemu_suffix=$qemu_suffix"
+   test "$smbd" != '' && meson_option_add "-Dsmbd=$smbd"
+   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
+-  test "$vfio_user_server" != auto && meson_option_add "-Dvfio_user_server=$vfio_user_server"
+   run_meson() {
+     NINJA=$ninja $meson setup --prefix "$prefix" "$@" $cross_arg "$PWD" "$source_path"
+   }
+diff --git a/meson.build b/meson.build
+index f8af4b02e44..74fb147fde3 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3031,14 +3031,7 @@ endif
+ 
+ libvfio_user_dep = not_found
+ if have_system and vfio_user_server_allowed
+-  have_internal = fs.exists(meson.current_source_dir() / 'subprojects/libvfio-user/meson.build')
+-
+-  if not have_internal
+-    error('libvfio-user source not found - please pull git submodule')
+-  endif
+-
+-  libvfio_user_proj = subproject('libvfio-user')
+-
++  libvfio_user_proj = subproject('libvfio-user', required: true)
+   libvfio_user_dep = libvfio_user_proj.get_variable('libvfio_user_dep')
+ endif
+ 
+@@ -3066,12 +3059,6 @@ if fdt_required.length() > 0 or fdt_opt == 'enabled'
+   endif
+   if not fdt.found()
+     assert(fdt_opt == 'internal')
+-    have_internal = fs.exists(meson.current_source_dir() / 'subprojects/dtc/meson.build')
+-
+-    if not have_internal
+-      error('libfdt source not found - please pull git submodule')
+-    endif
+-
+     libfdt_proj = subproject('dtc', required: true,
+                              default_options: ['tools=false',  'yaml=disabled',
+                                                'python=disabled', 'default_library=static'])
+diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
+index dba5ae05b67..b99cb66e412 100755
+--- a/scripts/archive-source.sh
++++ b/scripts/archive-source.sh
+@@ -26,8 +26,8 @@ sub_file="${sub_tdir}/submodule.tar"
+ # independent of what the developer currently has initialized
+ # in their checkout, because the build environment is completely
+ # different to the host OS.
+-submodules="subprojects/dtc subprojects/keycodemapdb"
+-submodules="$submodules tests/fp/berkeley-softfloat-3 tests/fp/berkeley-testfloat-3"
++subprojects="dtc keycodemapdb libvfio-user"
++submodules="tests/fp/berkeley-softfloat-3 tests/fp/berkeley-testfloat-3"
+ sub_deinit=""
+ 
+ function cleanup() {
+@@ -70,4 +70,11 @@ for sm in $submodules; do
+     tar --concatenate --file "$tar_file" "$sub_file"
+     test $? -ne 0 && error "failed append submodule $sm to $tar_file"
+ done
 +
- if test -n "$maybe_modules" && ! test -e ".git"
- then
-     echo "$0: unexpectedly called with submodules but no git checkout exists"
-@@ -75,11 +82,7 @@ status|validate)
-     test -f "$substat" || validate_error "$command"
-     test -z "$maybe_modules" && exit 0
-     for module in $modules; do
--        CURSTATUS=$($GIT submodule status $module)
--        OLDSTATUS=$(cat $substat | grep $module)
--        if test "$CURSTATUS" != "$OLDSTATUS"; then
--            validate_error "$command"
--        fi
-+        check_updated $module || validate_error "$command"
-     done
++for sp in $subprojects; do
++    meson subprojects download $sp
++    test $? -ne 0 && error "failed to download subproject $sp"
++    tar --append --file "$tar_file" --exclude=.git subprojects/$sp
++    test $? -ne 0 && error "failed to append subproject $sp to $tar_file"
++done
+ exit 0
+diff --git a/scripts/make-release b/scripts/make-release
+index 44a9d86a04a..0604e61b814 100755
+--- a/scripts/make-release
++++ b/scripts/make-release
+@@ -16,6 +16,9 @@ if [ $# -ne 2 ]; then
      exit 0
-     ;;
-@@ -89,6 +92,9 @@ update)
+ fi
  
-     $GIT submodule update --init $modules 1>/dev/null
-     test $? -ne 0 && update_error "failed to update modules"
-+    for module in $modules; do
-+        check_updated $module || echo Updated "$module"
-+    done
++# Only include wraps that are invoked with subproject()
++SUBPROJECTS="dtc libvfio-user keycodemapdb"
++
+ src="$1"
+ version="$2"
+ destination=qemu-${version}
+@@ -26,6 +29,8 @@ git clone --single-branch -b "v${version}" -c advice.detachedHead=false \
+ pushd ${destination}
  
-     (while read -r; do
-         for module in $modules; do
+ git submodule update --init --single-branch
++meson subprojects download $SUBPROJECTS
++
+ (cd roms/seabios && git describe --tags --long --dirty > .version)
+ (cd roms/skiboot && ./make_version.sh > .version)
+ # Fetch edk2 submodule's submodules, since it won't have access to them via
+diff --git a/subprojects/.gitignore b/subprojects/.gitignore
+index 7560ebb0b1a..935e9a72a8f 100644
+--- a/subprojects/.gitignore
++++ b/subprojects/.gitignore
+@@ -1,3 +1,6 @@
+ /packagecache
+ 
++/dtc
++/keycodemapdb
++/libvfio-user
+ /slirp
+diff --git a/subprojects/dtc b/subprojects/dtc
+deleted file mode 160000
+index b6910bec116..00000000000
+--- a/subprojects/dtc
++++ /dev/null
+@@ -1 +0,0 @@
+-Subproject commit b6910bec11614980a21e46fbccc35934b671bd81
+diff --git a/subprojects/dtc.wrap b/subprojects/dtc.wrap
+new file mode 100644
+index 00000000000..d1bc9174e91
+--- /dev/null
++++ b/subprojects/dtc.wrap
+@@ -0,0 +1,4 @@
++[wrap-git]
++url = https://gitlab.com/qemu-project/dtc.git
++revision = b6910bec11614980a21e46fbccc35934b671bd81
++depth = 1
+diff --git a/subprojects/keycodemapdb b/subprojects/keycodemapdb
+deleted file mode 160000
+index f5772a62ec5..00000000000
+--- a/subprojects/keycodemapdb
++++ /dev/null
+@@ -1 +0,0 @@
+-Subproject commit f5772a62ec52591ff6870b7e8ef32482371f22c6
+diff --git a/subprojects/keycodemapdb.wrap b/subprojects/keycodemapdb.wrap
+new file mode 100644
+index 00000000000..dda7b0e5716
+--- /dev/null
++++ b/subprojects/keycodemapdb.wrap
+@@ -0,0 +1,4 @@
++[wrap-git]
++url = https://gitlab.com/qemu-project/keycodemapdb.git
++revision = f5772a62ec52591ff6870b7e8ef32482371f22c6
++depth = 1
+diff --git a/subprojects/libvfio-user b/subprojects/libvfio-user
+deleted file mode 160000
+index 0b28d205572..00000000000
+--- a/subprojects/libvfio-user
++++ /dev/null
+@@ -1 +0,0 @@
+-Subproject commit 0b28d205572c80b568a1003db2c8f37ca333e4d7
+diff --git a/subprojects/libvfio-user.wrap b/subprojects/libvfio-user.wrap
+new file mode 100644
+index 00000000000..416955ca451
+--- /dev/null
++++ b/subprojects/libvfio-user.wrap
+@@ -0,0 +1,4 @@
++[wrap-git]
++url = https://gitlab.com/qemu-project/libvfio-user.git
++revision = 0b28d205572c80b568a1003db2c8f37ca333e4d7
++depth = 1
 -- 
 2.40.1
 
