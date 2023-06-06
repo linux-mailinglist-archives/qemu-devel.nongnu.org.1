@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1824724D25
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF4D724D26
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6cSx-0006uV-MT; Tue, 06 Jun 2023 15:35:39 -0400
+	id 1q6cT5-0006vo-1J; Tue, 06 Jun 2023 15:35:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6cSu-0006s9-Ec
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:35:36 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6cSs-0004la-J8
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:35:36 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f6d7abe9a4so56427075e9.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686080132; x=1688672132;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l1hAgplsaNg7l6qHOOxn0T/+YQYa532KUjang2oMLeg=;
- b=B5wq7QmtRCO+802Nd18ud94XIIFGgs2fECozQaHjzlsOHeUbuc+QoSvnA032oqyCHt
- jEKoNIR92K/TX+hqI2eK6Jeb6mCU5HmLldu3w3FDnH1eFDb1pMEJXgNQ6vN1TvupVYS2
- qTfIY7kGqRP/L4NiUI6ONseDjydMbDrnxHmuixU6ga8upNro/W3Nn8PyrPC75CskXhkK
- LvSXWsv7ctnqeztFTRglqH4i2+JwK9LtuNVp745TwaBjOK6aIUsJv3Um62AIf5wIztPH
- Nb+d8Beoupa1d4iQQIBYYjj2TS12us6YPab6EhzfYFM4ice3rwb1WGUBYPRH3eMo6eYm
- VdNA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q6cT3-0006ve-JF
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:35:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q6cT2-0004qb-1d
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:35:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686080143;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TKnsC3nv98mABAtCtDFlhNLYtbw3M1YOgKkMaP5qncw=;
+ b=NTUxyCoKFm6rNURnbTa+aoW2P9PN55JDSOoWtrBWjrgiHwQ/XryRshEDQm8VJXI32jezeh
+ sl8wwJvrzUXgzTbSZtYwu56E2YXSfXIoG5bDYmnyt7fQHWeM5+5x0sLhRHGcOxB7ewT5/F
+ rlCPepEoUEz7qEeKla8VWGzZu+FtGfw=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-131-jGGKAS-mOm60EOmbVCQ_xQ-1; Tue, 06 Jun 2023 15:35:41 -0400
+X-MC-Unique: jGGKAS-mOm60EOmbVCQ_xQ-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-25667878a53so2383816a91.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:35:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686080132; x=1688672132;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l1hAgplsaNg7l6qHOOxn0T/+YQYa532KUjang2oMLeg=;
- b=Ogof2T8RBMKwGACuGFA3BS6a9ezEQx9vMSBtqo+pF+uJ3SveyuzqwzTPSqQJe4uabI
- Ieka1+TsT+rWNb8BXi4f995tDL885ixs2donImpq1Ln+uC95UrNypMzEdHEj4tgxdMMm
- j/At34BPimLkWhjJAEz24pDbeKfllqnV3tK4J+bzYYoWr8vF0t09KZNX2JnlY2l6Tx57
- BqMsUo5ZTq4FgASrDC3hVkKqSmyk7vfGDLncLmqzbkTYZp4khw/Ezy23CLEEtqDOBkZ5
- tY72LYoaWS1kD0ywrRATplfHcHkW6XAS7lJizxA+l7lz6Fru6wO/Ur+YSWXKg2S0DG1x
- zdpw==
-X-Gm-Message-State: AC+VfDxOR3KBlC5ln6b5xX7Kb8I9PqVmBiT6IUmSsy5dD6wT3uo0B+Vz
- /5ULkRV14aB1acrmN0PNGQsxfQ==
-X-Google-Smtp-Source: ACHHUZ5h55Vnf5YJZQhYT+6TPJi2HUZyMmdLHr1F7aotSvZpUENwA7wVRH49rk0pGEJBgvlpYnCHJQ==
-X-Received: by 2002:a1c:f703:0:b0:3f7:2e89:f306 with SMTP id
- v3-20020a1cf703000000b003f72e89f306mr2809575wmh.21.1686080132615; 
- Tue, 06 Jun 2023 12:35:32 -0700 (PDT)
-Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
- [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
- o4-20020a05600c378400b003f195d540d9sm18345351wmr.14.2023.06.06.12.35.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 12:35:32 -0700 (PDT)
-Message-ID: <ee20d8af-07c7-875f-c61a-6eb054efad25@linaro.org>
-Date: Tue, 6 Jun 2023 21:35:28 +0200
+ d=1e100.net; s=20221208; t=1686080141; x=1688672141;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TKnsC3nv98mABAtCtDFlhNLYtbw3M1YOgKkMaP5qncw=;
+ b=EHmKzn2j3siaCT42qxkHGg1J2QfG3YWTRIV8cvwR1mBIB4EdVUk2nli8LXaUHV3mdG
+ Py0D8SRSR7laPYQA1c9MpRe/BmnjrtAJJQlhAdeR4fuwmC+aobDTuLlcrqVdsikaqkn/
+ qVHuTqdcHB9cd3zz08xe4Etx/MhCBzmpw73Ak+R81KcsLU1W8xn+UFU7NnHRA+7+OdJz
+ y6HDRvI7qqiC3OP1KbZ5r7qoTbkgbguV2/8vpTdKXPqQHzi29YmTlyGtnd4gccfPNBBm
+ SUufd+S4ICbJXo953Hy5Lq4wcvQdqih4V6U3uQFmlJ827pr1uqFV/W0EjaY7AUolcXRQ
+ DqMw==
+X-Gm-Message-State: AC+VfDwssJMYazur4GI6t2YFHTzmMqkSd33l4K/u6OUaSSRPHwZeLedl
+ t2K68CfMKnUlusz81szd4LZtzz9aTfOul7mF1IgaLq9dUTVmn7RFj2+JwoBufsiezearUFGWWpe
+ xeEWHIsDQch/MD/my0gSIM346X3WM1eQ=
+X-Received: by 2002:a17:90a:d392:b0:24f:13ec:ecac with SMTP id
+ q18-20020a17090ad39200b0024f13ececacmr1952748pju.26.1686080140735; 
+ Tue, 06 Jun 2023 12:35:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7oOTiODgkS/RdD+D+CaLW6d2JHmhPBpSP6YW0L5SUmOEKd3no4Q+rcPAjWqYbjVnhthdFD8eV3zcAz+vovj2I=
+X-Received: by 2002:a17:90a:d392:b0:24f:13ec:ecac with SMTP id
+ q18-20020a17090ad39200b0024f13ececacmr1952739pju.26.1686080140424; Tue, 06
+ Jun 2023 12:35:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] tests/avocado/tuxrun_baselines: Fix ppc64 tests for
- binaries without slirp
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-ppc@nongnu.org,
- Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Kautuk Consul <kconsul@linux.vnet.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230606192802.666000-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230606192802.666000-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230605160012.339685-1-pbonzini@redhat.com>
+In-Reply-To: <20230605160012.339685-1-pbonzini@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 6 Jun 2023 15:35:29 -0400
+Message-ID: <CAFn=p-YfOi1wEZvL_d0L+BNnL1CTy_O2u-CHmVRNifpJibfhBA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Revert recent Avocado changes
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, peter.maydell@linaro.org, 
+ alex.bennee@linaro.org, kconsul@linux.vnet.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,17 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 21:28, Thomas Huth wrote:
-> The ppc64 tuxrun tests are currently failing if "slirp" has been
-> disabled in the binary since they are using "-netdev user" now.
-> We have to skip the test if this network backend is missing.
-> 
-> Fixes: 6ee3624236 ("improve code coverage for ppc64")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   tests/avocado/tuxrun_baselines.py | 1 +
->   1 file changed, 1 insertion(+)
+On Mon, Jun 5, 2023 at 12:00=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> Bumping avocado to version 101 has two issues.  First, there are problems
+> where Avocado is not logging of command lines or terminal output, and not
+> collecting Python logs outside the avocado namespace.
+>
+> Second, the recent changes to Python handling mean that there is a single
+> virtual environment for all the build, instead of a separate one for test=
+ing.
+> Requiring a too-new version of avocado causes conflicts with any avocado
+> plugins installed on the host:
+>
+>    $ make check-venv
+>    make[1]: Entering directory '/home/berrange/src/virt/qemu/build'
+>      GIT     ui/keycodemapdb tests/fp/berkeley-testfloat-3 tests/fp/berke=
+ley-softfloat-3 dtc
+>      VENVPIP install -e /home/berrange/src/virt/qemu/python/
+>      VENVPIP install -r /home/berrange/src/virt/qemu/tests/requirements.t=
+xt
+>    ERROR: pip's dependency resolver does not currently take into account =
+all the packages that are installed. This behaviour is the source of the fo=
+llowing dependency conflicts.
+>    avocado-framework-plugin-varianter-yaml-to-mux 98.0 requires avocado-f=
+ramework=3D=3D98.0, but you have avocado-framework 101.0 which is incompati=
+ble.
+>    avocado-framework-plugin-result-html 98.0 requires avocado-framework=
+=3D=3D98.0, but you have avocado-framework 101.0 which is incompatible.
+>    make[1]: Leaving directory '/home/berrange/src/virt/qemu/build'
+>
+> To avoid this issue, tests/requirements.txt should use a ">=3D" constrain=
+t
+> and the version of Avocado should be limited to what distros provide
+> in the system packages.  However, this requires more work, so for now
+> reintroduce the avocado-specific virtual environment instead of using
+> pyvenv/.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+That still want you want to do as of right now? (I'm catching up.)
+
+OK if so. We don't lose too much.
+
+>
+> Paolo
+>
+> Supersedes: <20230605075823.48871-1-pbonzini@redhat.com>
+>
+> Paolo Bonzini (2):
+>   Revert "tests/requirements.txt: bump up avocado-framework version to
+>     101.0"
+>   tests: Use separate virtual environment for avocado
+>
+>  .gitlab-ci.d/buildtest.yml                    |  6 ++--
+>  docs/devel/acpi-bits.rst                      |  6 ++--
+>  docs/devel/testing.rst                        | 14 ++++----
+>  .../org.centos/stream/8/x86_64/test-avocado   |  4 +--
+>  scripts/device-crash-test                     |  2 +-
+>  tests/Makefile.include                        | 32 +++++++++----------
+>  tests/requirements.txt                        |  9 ++----
+>  tests/vm/Makefile.include                     |  2 +-
+>  8 files changed, 35 insertions(+), 40 deletions(-)
+>
+> --
+> 2.40.1
+>
 
 
