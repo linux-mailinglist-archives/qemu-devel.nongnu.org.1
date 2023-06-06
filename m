@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FAD723E58
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A674723E4A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:51:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TIl-0007fW-S3; Tue, 06 Jun 2023 05:48:32 -0400
+	id 1q6TIv-0007ne-AX; Tue, 06 Jun 2023 05:48:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIe-0007a3-4w
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:24 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1q6TIg-0007b6-H4
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:28 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIZ-0004iV-Nr
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:23 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-30e407daab5so2288616f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:19 -0700 (PDT)
+ id 1q6TIa-0004jC-QE
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:26 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-30ad458f085so5211997f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686044898; x=1688636898;
+ d=linaro.org; s=google; t=1686044899; x=1688636899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OLSFmZC5snF/XdPwTG399QLbog/h6pQA35TnsVfK/Vk=;
- b=en30TBPQ0D4pvGhZqX9ZhZKFFtnBIn9ZbI1Lb8NC5O4Hr8XJt7vDYnSxZXe4IH51Ln
- xSNN23PHktRjhVtj4Le3bu//ZYcCQDHEcCVDgyzPUHwcw873E4mXC/V5ZUGU/hQVjedd
- x+stGlldVwunE5j9pw5t2ryG5U5eUK+E1qUF3qp/sXMl3JqBMdATaJi4pXdgy3GnzqcD
- 9d70bj85EGoTDeLQAPIcmlwI8wRyzefHvJs0ssp2LI99iIPePEFOwy74k9yevKsMy3eB
- zbnX5BBR+69npFmEjhOklgU2UddKYe/moZ2tngd5A29TL60hEeW0GHvDq0+47FkK+rLs
- M9eQ==
+ :reply-to; bh=0BbFOHobdLHeqcZSPvhMD0bKTNfxty7RcZoPKrHNX4A=;
+ b=nUelQMyQFQhBfy7KUDzv2VT08112oaEC7ft63Obs6xUb9eGzIia4CGPsE9Kz2GnUa7
+ G5stV0vlIbWvroxfRWaQZ9ZyFXn16Eo5x4Dmj1Cu9DZ6XUvvOH/3tSSekv6umkeEWASV
+ YGzOXxUzYz/l/YmBC+ulKeHG2BlqwwOof0/LzQq9IOZhK0kE0tXpFTnhCcNeocw+Z6jD
+ 1rZQ45If1VPrCG+7loP0bIafEGYpzaWjt3mSFn+o+2gam5LmAgQmMPYnd94xRpeRvZLx
+ /ij/bMO1LF4IDm3xXVYpR9sXgaTT75ddm8hwEjXa7A+uF07xHJ24YopZ6z03n/CjoURN
+ HxXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686044898; x=1688636898;
+ d=1e100.net; s=20221208; t=1686044899; x=1688636899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OLSFmZC5snF/XdPwTG399QLbog/h6pQA35TnsVfK/Vk=;
- b=dkpUxQWZ/+KQgqN6g5VwZPk+pXOUhzHOYEelPQRpnFryYWqI0iRfn+kY8xGKfo0bJE
- YFyGJE2uCPr+De2vsAcvRoZZzcEcopSLERn6skdneVjgAAzr0LnEumHkToElWxPnci00
- Ai6GVc0b8K1tb07LAJYbqxQ/75CMXqY0TRwfgIwuYTy+1ODjNSHFAE/RTWj+T4sVm+iV
- yF4NGS0B67EdU4c/CzSq8VebpOT7tp+pAK17YQuiYWKOIpKYN2CCNoryqf4zVTCZHD98
- g2W56taZEr6aqY6g0NLF8ZAWKNOWO8YJh9mjwWs8iIhj+zok+N7B2MUVM4aG8KLdijET
- wnmA==
-X-Gm-Message-State: AC+VfDwEsOrToPtOuC3TWh+ztvOmd3N2iBLIn7+5P8CW+x0uT0XR4Pij
- dGL0IdV1oSBLWj/EFNE578eAK4luNx9/ezhy+MM=
-X-Google-Smtp-Source: ACHHUZ7aOyZq2dmiS3r0cuC7IwKDVt1n7CXsDnGloVsHG+U0kk4V3KxgUu0WzkbVQaK1T7fiEH+2Bw==
-X-Received: by 2002:adf:e58a:0:b0:30e:4266:14a4 with SMTP id
- l10-20020adfe58a000000b0030e426614a4mr1644958wrm.37.1686044898231; 
+ bh=0BbFOHobdLHeqcZSPvhMD0bKTNfxty7RcZoPKrHNX4A=;
+ b=C1ATuvpFFuE47FVQYgO0H86ab1o6wj58vwYd34SSkY6SGaVdPyGBnwPA73sSc2bJk9
+ 4b8zYLALLYwz7QPl1w+hUUtOb4EscZryX7lGEbNLBg7YJM1SePBXCB4/N+cauW0j8ycU
+ mb3ZyBDtO8yl5ChiI2kqjRZ52Dlqi05ccS/MYjk4zv/WcDlZwzOvbtQvy/I4UiwI2dWt
+ 2kAdD6ee+folOVnN9TAnvkCTYU+o/F42SoRASQkoazK45b2qBfGw6OJRIakO47WSTnkp
+ IdWsjUC/ur6Scrb4LE4cZe51tBmLgBI0LAVSSOSif9GUFSfdYIoABKaE7Q/GNHovyzSh
+ R8bQ==
+X-Gm-Message-State: AC+VfDwIhZ/LJ2Oo13EJ/o5rEEM8Y5Rl/dCAKJDgsFgo9tsv80V8lLuL
+ 1tbsQj35hUAenou3O/N/piswM1BZo42pvfyNt5M=
+X-Google-Smtp-Source: ACHHUZ67s8jVYW58HDSonWxHYPl4NtjNC0LzNnyRfCcCcPKreMBq6gDqYhaRanhtbrgMaTpUS9C2ZQ==
+X-Received: by 2002:adf:e6d2:0:b0:30a:d944:b765 with SMTP id
+ y18-20020adfe6d2000000b0030ad944b765mr1354892wrm.15.1686044898799; 
  Tue, 06 Jun 2023 02:48:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.17
+ v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 02:48:17 -0700 (PDT)
+ Tue, 06 Jun 2023 02:48:18 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/42] hvf: add guest debugging handlers for Apple Silicon hosts
-Date: Tue,  6 Jun 2023 10:47:36 +0100
-Message-Id: <20230606094814.3581397-5-peter.maydell@linaro.org>
+Subject: [PULL 05/42] hw/net/can: Introduce Xilinx Versal CANFD controller
+Date: Tue,  6 Jun 2023 10:47:37 +0100
+Message-Id: <20230606094814.3581397-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230606094814.3581397-1-peter.maydell@linaro.org>
 References: <20230606094814.3581397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,701 +91,2254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Francesco Cagnin <fcagnin@quarkslab.com>
+From: Vikram Garhwal <vikram.garhwal@amd.com>
 
-Guests can now be debugged through the gdbstub. Support is added for
-single-stepping, software breakpoints, hardware breakpoints and
-watchpoints. The code has been structured like the KVM counterpart.
+The Xilinx Versal CANFD controller is developed based on SocketCAN, QEMU CAN bus
+implementation. Bus connection and socketCAN connection for each CAN module
+can be set through command lines.
 
-While guest debugging is enabled, the guest can still read and write the
-DBG*_EL1 registers but they don't have any effect.
-
-Signed-off-by: Francesco Cagnin <fcagnin@quarkslab.com>
-Message-id: 20230601153107.81955-5-fcagnin@quarkslab.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/sysemu/hvf.h      |  15 ++
- include/sysemu/hvf_int.h  |   1 +
- target/arm/hvf_arm.h      |   7 +
- accel/hvf/hvf-accel-ops.c |  10 +
- accel/hvf/hvf-all.c       |   6 +
- target/arm/hvf/hvf.c      | 474 +++++++++++++++++++++++++++++++++++++-
- target/i386/hvf/hvf.c     |   9 +
- 7 files changed, 520 insertions(+), 2 deletions(-)
+ include/hw/net/xlnx-versal-canfd.h |   87 ++
+ hw/net/can/xlnx-versal-canfd.c     | 2107 ++++++++++++++++++++++++++++
+ hw/net/can/meson.build             |    1 +
+ hw/net/can/trace-events            |    7 +
+ 4 files changed, 2202 insertions(+)
+ create mode 100644 include/hw/net/xlnx-versal-canfd.h
+ create mode 100644 hw/net/can/xlnx-versal-canfd.c
 
-diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
-index 386020a29cc..70549b91588 100644
---- a/include/sysemu/hvf.h
-+++ b/include/sysemu/hvf.h
-@@ -56,6 +56,21 @@ int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len,
- int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len,
-                                   int type);
- void hvf_arch_remove_all_hw_breakpoints(void);
-+
+diff --git a/include/hw/net/xlnx-versal-canfd.h b/include/hw/net/xlnx-versal-canfd.h
+new file mode 100644
+index 00000000000..ad3104dd13f
+--- /dev/null
++++ b/include/hw/net/xlnx-versal-canfd.h
+@@ -0,0 +1,87 @@
 +/*
-+ * hvf_update_guest_debug:
-+ * @cs: CPUState for the CPU to update
++ * QEMU model of the Xilinx Versal CANFD Controller.
 + *
-+ * Update guest to enable or disable debugging. Per-arch specifics will be
-+ * handled by calling down to hvf_arch_update_guest_debug.
++ * Copyright (c) 2023 Advanced Micro Devices, Inc.
++ *
++ * Written-by: Vikram Garhwal<vikram.garhwal@amd.com>
++ * Based on QEMU CANFD Device emulation implemented by Jin Yang, Deniz Eren and
++ * Pavel Pisa.
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
 + */
-+int hvf_update_guest_debug(CPUState *cpu);
-+void hvf_arch_update_guest_debug(CPUState *cpu);
 +
++#ifndef HW_CANFD_XILINX_H
++#define HW_CANFD_XILINX_H
++
++#include "hw/register.h"
++#include "hw/ptimer.h"
++#include "net/can_emu.h"
++#include "hw/qdev-clock.h"
++
++#define TYPE_XILINX_CANFD "xlnx.versal-canfd"
++
++OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCANFDState, XILINX_CANFD)
++
++#define NUM_REGS_PER_MSG_SPACE 18 /* 1 ID + 1 DLC + 16 Data(DW0 - DW15) regs. */
++#define MAX_NUM_RX             64
++#define OFFSET_RX1_DW15        (0x4144 / 4)
++#define CANFD_TIMER_MAX        0xFFFFUL
++#define CANFD_DEFAULT_CLOCK    (25 * 1000 * 1000)
++
++#define XLNX_VERSAL_CANFD_R_MAX (OFFSET_RX1_DW15 + \
++                    ((MAX_NUM_RX - 1) * NUM_REGS_PER_MSG_SPACE) + 1)
++
++typedef struct XlnxVersalCANFDState {
++    SysBusDevice            parent_obj;
++    MemoryRegion            iomem;
++
++    qemu_irq                irq_canfd_int;
++    qemu_irq                irq_addr_err;
++
++    RegisterInfo            reg_info[XLNX_VERSAL_CANFD_R_MAX];
++    RegisterAccessInfo      *tx_regs;
++    RegisterAccessInfo      *rx0_regs;
++    RegisterAccessInfo      *rx1_regs;
++    RegisterAccessInfo      *af_regs;
++    RegisterAccessInfo      *txe_regs;
++    RegisterAccessInfo      *rx_mailbox_regs;
++    RegisterAccessInfo      *af_mask_regs_mailbox;
++
++    uint32_t                regs[XLNX_VERSAL_CANFD_R_MAX];
++
++    ptimer_state            *canfd_timer;
++
++    CanBusClientState       bus_client;
++    CanBusState             *canfdbus;
++
++    struct {
++        uint8_t             rx0_fifo;
++        uint8_t             rx1_fifo;
++        uint8_t             tx_fifo;
++        bool                enable_rx_fifo1;
++        uint32_t            ext_clk_freq;
++   } cfg;
++
++} XlnxVersalCANFDState;
++
++typedef struct tx_ready_reg_info {
++    uint32_t can_id;
++    uint32_t reg_num;
++} tx_ready_reg_info;
++
++#endif
+diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
+new file mode 100644
+index 00000000000..5b8ce0a285e
+--- /dev/null
++++ b/hw/net/can/xlnx-versal-canfd.c
+@@ -0,0 +1,2107 @@
 +/*
-+ * Return whether the guest supports debugging.
-+ */
-+bool hvf_arch_supports_guest_debug(void);
- #endif /* NEED_CPU_H */
- 
- #endif
-diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
-index 3592239fdcb..6ab119e49f7 100644
---- a/include/sysemu/hvf_int.h
-+++ b/include/sysemu/hvf_int.h
-@@ -54,6 +54,7 @@ struct hvf_vcpu_state {
-     void *exit;
-     bool vtimer_masked;
-     sigset_t unblock_ipi_mask;
-+    bool guest_debug_enabled;
- };
- 
- void assert_hvf_ok(hv_return_t ret);
-diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
-index 9a9d1a0bf59..e848c1d27d4 100644
---- a/target/arm/hvf_arm.h
-+++ b/target/arm/hvf_arm.h
-@@ -13,6 +13,13 @@
- 
- #include "cpu.h"
- 
-+/**
-+ * hvf_arm_init_debug() - initialize guest debug capabilities
++ * QEMU model of the Xilinx Versal CANFD device.
 + *
-+ * Should be called only once before using guest debug capabilities.
++ * This implementation is based on the following datasheet:
++ * https://docs.xilinx.com/v/u/2.0-English/pg223-canfd
++ *
++ * Copyright (c) 2023 Advanced Micro Devices, Inc.
++ *
++ * Written-by: Vikram Garhwal <vikram.garhwal@amd.com>
++ *
++ * Based on QEMU CANFD Device emulation implemented by Jin Yang, Deniz Eren and
++ * Pavel Pisa
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
 + */
-+void hvf_arm_init_debug(void);
 +
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
- 
- #endif
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 92601b1369d..9c3da03c948 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -343,12 +343,18 @@ static int hvf_accel_init(MachineState *ms)
-     return hvf_arch_init();
- }
- 
-+static inline int hvf_gdbstub_sstep_flags(void)
++#include "qemu/osdep.h"
++#include "hw/sysbus.h"
++#include "hw/irq.h"
++#include "hw/register.h"
++#include "qapi/error.h"
++#include "qemu/bitops.h"
++#include "qemu/log.h"
++#include "qemu/cutils.h"
++#include "qemu/event_notifier.h"
++#include "hw/qdev-properties.h"
++#include "qom/object_interfaces.h"
++#include "migration/vmstate.h"
++#include "hw/net/xlnx-versal-canfd.h"
++#include "trace.h"
++
++REG32(SOFTWARE_RESET_REGISTER, 0x0)
++    FIELD(SOFTWARE_RESET_REGISTER, CEN, 1, 1)
++    FIELD(SOFTWARE_RESET_REGISTER, SRST, 0, 1)
++REG32(MODE_SELECT_REGISTER, 0x4)
++    FIELD(MODE_SELECT_REGISTER, ITO, 8, 8)
++    FIELD(MODE_SELECT_REGISTER, ABR, 7, 1)
++    FIELD(MODE_SELECT_REGISTER, SBR, 6, 1)
++    FIELD(MODE_SELECT_REGISTER, DPEE, 5, 1)
++    FIELD(MODE_SELECT_REGISTER, DAR, 4, 1)
++    FIELD(MODE_SELECT_REGISTER, BRSD, 3, 1)
++    FIELD(MODE_SELECT_REGISTER, SNOOP, 2, 1)
++    FIELD(MODE_SELECT_REGISTER, LBACK, 1, 1)
++    FIELD(MODE_SELECT_REGISTER, SLEEP, 0, 1)
++REG32(ARBITRATION_PHASE_BAUD_RATE_PRESCALER_REGISTER, 0x8)
++    FIELD(ARBITRATION_PHASE_BAUD_RATE_PRESCALER_REGISTER, BRP, 0, 8)
++REG32(ARBITRATION_PHASE_BIT_TIMING_REGISTER, 0xc)
++    FIELD(ARBITRATION_PHASE_BIT_TIMING_REGISTER, SJW, 16, 7)
++    FIELD(ARBITRATION_PHASE_BIT_TIMING_REGISTER, TS2, 8, 7)
++    FIELD(ARBITRATION_PHASE_BIT_TIMING_REGISTER, TS1, 0, 8)
++REG32(ERROR_COUNTER_REGISTER, 0x10)
++    FIELD(ERROR_COUNTER_REGISTER, REC, 8, 8)
++    FIELD(ERROR_COUNTER_REGISTER, TEC, 0, 8)
++REG32(ERROR_STATUS_REGISTER, 0x14)
++    FIELD(ERROR_STATUS_REGISTER, F_BERR, 11, 1)
++    FIELD(ERROR_STATUS_REGISTER, F_STER, 10, 1)
++    FIELD(ERROR_STATUS_REGISTER, F_FMER, 9, 1)
++    FIELD(ERROR_STATUS_REGISTER, F_CRCER, 8, 1)
++    FIELD(ERROR_STATUS_REGISTER, ACKER, 4, 1)
++    FIELD(ERROR_STATUS_REGISTER, BERR, 3, 1)
++    FIELD(ERROR_STATUS_REGISTER, STER, 2, 1)
++    FIELD(ERROR_STATUS_REGISTER, FMER, 1, 1)
++    FIELD(ERROR_STATUS_REGISTER, CRCER, 0, 1)
++REG32(STATUS_REGISTER, 0x18)
++    FIELD(STATUS_REGISTER, TDCV, 16, 7)
++    FIELD(STATUS_REGISTER, SNOOP, 12, 1)
++    FIELD(STATUS_REGISTER, BSFR_CONFIG, 10, 1)
++    FIELD(STATUS_REGISTER, PEE_CONFIG, 9, 1)
++    FIELD(STATUS_REGISTER, ESTAT, 7, 2)
++    FIELD(STATUS_REGISTER, ERRWRN, 6, 1)
++    FIELD(STATUS_REGISTER, BBSY, 5, 1)
++    FIELD(STATUS_REGISTER, BIDLE, 4, 1)
++    FIELD(STATUS_REGISTER, NORMAL, 3, 1)
++    FIELD(STATUS_REGISTER, SLEEP, 2, 1)
++    FIELD(STATUS_REGISTER, LBACK, 1, 1)
++    FIELD(STATUS_REGISTER, CONFIG, 0, 1)
++REG32(INTERRUPT_STATUS_REGISTER, 0x1c)
++    FIELD(INTERRUPT_STATUS_REGISTER, TXEWMFLL, 31, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, TXEOFLW, 30, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXBOFLW_BI, 24, 6)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXLRM_BI, 18, 6)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXMNF, 17, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXFWMFLL_1, 16, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXFOFLW_1, 15, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, TXCRS, 14, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, TXRRS, 13, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXFWMFLL, 12, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, WKUP, 11, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, SLP, 10, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, BSOFF, 9, 1)
++    /*
++     * In the original HW description below bit is named as ERROR but an ERROR
++     * field name collides with a macro in Windows build. To avoid Windows build
++     * failures, the bit is renamed to ERROR_BIT.
++     */
++    FIELD(INTERRUPT_STATUS_REGISTER, ERROR_BIT, 8, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXFOFLW, 6, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, TSCNT_OFLW, 5, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, RXOK, 4, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, BSFRD, 3, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, PEE, 2, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, TXOK, 1, 1)
++    FIELD(INTERRUPT_STATUS_REGISTER, ARBLST, 0, 1)
++REG32(INTERRUPT_ENABLE_REGISTER, 0x20)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ETXEWMFLL, 31, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ETXEOFLW, 30, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ERXMNF, 17, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ERXFWMFLL_1, 16, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ERXFOFLW_1, 15, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ETXCRS, 14, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ETXRRS, 13, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ERXFWMFLL, 12, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, EWKUP, 11, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ESLP, 10, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, EBSOFF, 9, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, EERROR, 8, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ERFXOFLW, 6, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ETSCNT_OFLW, 5, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ERXOK, 4, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, EBSFRD, 3, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, EPEE, 2, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, ETXOK, 1, 1)
++    FIELD(INTERRUPT_ENABLE_REGISTER, EARBLOST, 0, 1)
++REG32(INTERRUPT_CLEAR_REGISTER, 0x24)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CTXEWMFLL, 31, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CTXEOFLW, 30, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CRXMNF, 17, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CRXFWMFLL_1, 16, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CRXFOFLW_1, 15, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CTXCRS, 14, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CTXRRS, 13, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CRXFWMFLL, 12, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CWKUP, 11, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CSLP, 10, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CBSOFF, 9, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CERROR, 8, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CRFXOFLW, 6, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CTSCNT_OFLW, 5, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CRXOK, 4, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CBSFRD, 3, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CPEE, 2, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CTXOK, 1, 1)
++    FIELD(INTERRUPT_CLEAR_REGISTER, CARBLOST, 0, 1)
++REG32(TIMESTAMP_REGISTER, 0x28)
++    FIELD(TIMESTAMP_REGISTER, TIMESTAMP_CNT, 16, 16)
++    FIELD(TIMESTAMP_REGISTER, CTS, 0, 1)
++REG32(DATA_PHASE_BAUD_RATE_PRESCALER_REGISTER, 0x88)
++    FIELD(DATA_PHASE_BAUD_RATE_PRESCALER_REGISTER, TDC, 16, 1)
++    FIELD(DATA_PHASE_BAUD_RATE_PRESCALER_REGISTER, TDCOFF, 8, 6)
++    FIELD(DATA_PHASE_BAUD_RATE_PRESCALER_REGISTER, DP_BRP, 0, 8)
++REG32(DATA_PHASE_BIT_TIMING_REGISTER, 0x8c)
++    FIELD(DATA_PHASE_BIT_TIMING_REGISTER, DP_SJW, 16, 4)
++    FIELD(DATA_PHASE_BIT_TIMING_REGISTER, DP_TS2, 8, 4)
++    FIELD(DATA_PHASE_BIT_TIMING_REGISTER, DP_TS1, 0, 5)
++REG32(TX_BUFFER_READY_REQUEST_REGISTER, 0x90)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR31, 31, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR30, 30, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR29, 29, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR28, 28, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR27, 27, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR26, 26, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR25, 25, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR24, 24, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR23, 23, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR22, 22, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR21, 21, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR20, 20, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR19, 19, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR18, 18, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR17, 17, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR16, 16, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR15, 15, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR14, 14, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR13, 13, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR12, 12, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR11, 11, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR10, 10, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR9, 9, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR8, 8, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR7, 7, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR6, 6, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR5, 5, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR4, 4, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR3, 3, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR2, 2, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR1, 1, 1)
++    FIELD(TX_BUFFER_READY_REQUEST_REGISTER, RR0, 0, 1)
++REG32(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, 0x94)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS31, 31, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS30, 30, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS29, 29, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS28, 28, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS27, 27, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS26, 26, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS25, 25, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS24, 24, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS23, 23, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS22, 22, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS21, 21, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS20, 20, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS19, 19, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS18, 18, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS17, 17, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS16, 16, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS15, 15, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS14, 14, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS13, 13, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS12, 12, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS11, 11, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS10, 10, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS9, 9, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS8, 8, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS7, 7, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS6, 6, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS5, 5, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS4, 4, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS3, 3, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS2, 2, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS1, 1, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER, ERRS0, 0, 1)
++REG32(TX_BUFFER_CANCEL_REQUEST_REGISTER, 0x98)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR31, 31, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR30, 30, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR29, 29, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR28, 28, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR27, 27, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR26, 26, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR25, 25, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR24, 24, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR23, 23, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR22, 22, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR21, 21, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR20, 20, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR19, 19, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR18, 18, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR17, 17, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR16, 16, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR15, 15, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR14, 14, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR13, 13, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR12, 12, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR11, 11, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR10, 10, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR9, 9, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR8, 8, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR7, 7, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR6, 6, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR5, 5, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR4, 4, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR3, 3, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR2, 2, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR1, 1, 1)
++    FIELD(TX_BUFFER_CANCEL_REQUEST_REGISTER, CR0, 0, 1)
++REG32(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, 0x9c)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS31, 31,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS30, 30,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS29, 29,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS28, 28,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS27, 27,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS26, 26,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS25, 25,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS24, 24,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS23, 23,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS22, 22,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS21, 21,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS20, 20,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS19, 19,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS18, 18,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS17, 17,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS16, 16,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS15, 15,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS14, 14,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS13, 13,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS12, 12,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS11, 11,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS10, 10,
++            1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS9, 9, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS8, 8, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS7, 7, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS6, 6, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS5, 5, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS4, 4, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS3, 3, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS2, 2, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS1, 1, 1)
++    FIELD(INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER, ECRS0, 0, 1)
++REG32(TX_EVENT_FIFO_STATUS_REGISTER, 0xa0)
++    FIELD(TX_EVENT_FIFO_STATUS_REGISTER, TXE_FL, 8, 6)
++    FIELD(TX_EVENT_FIFO_STATUS_REGISTER, TXE_IRI, 7, 1)
++    FIELD(TX_EVENT_FIFO_STATUS_REGISTER, TXE_RI, 0, 5)
++REG32(TX_EVENT_FIFO_WATERMARK_REGISTER, 0xa4)
++    FIELD(TX_EVENT_FIFO_WATERMARK_REGISTER, TXE_FWM, 0, 5)
++REG32(ACCEPTANCE_FILTER_CONTROL_REGISTER, 0xe0)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF31, 31, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF30, 30, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF29, 29, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF28, 28, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF27, 27, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF26, 26, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF25, 25, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF24, 24, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF23, 23, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF22, 22, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF21, 21, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF20, 20, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF19, 19, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF18, 18, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF17, 17, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF16, 16, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF15, 15, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF14, 14, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF13, 13, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF12, 12, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF11, 11, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF10, 10, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF9, 9, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF8, 8, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF7, 7, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF6, 6, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF5, 5, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF4, 4, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF3, 3, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF2, 2, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF1, 1, 1)
++    FIELD(ACCEPTANCE_FILTER_CONTROL_REGISTER, UAF0, 0, 1)
++REG32(RX_FIFO_STATUS_REGISTER, 0xe8)
++    FIELD(RX_FIFO_STATUS_REGISTER, FL_1, 24, 7)
++    FIELD(RX_FIFO_STATUS_REGISTER, IRI_1, 23, 1)
++    FIELD(RX_FIFO_STATUS_REGISTER, RI_1, 16, 6)
++    FIELD(RX_FIFO_STATUS_REGISTER, FL, 8, 7)
++    FIELD(RX_FIFO_STATUS_REGISTER, IRI, 7, 1)
++    FIELD(RX_FIFO_STATUS_REGISTER, RI, 0, 6)
++REG32(RX_FIFO_WATERMARK_REGISTER, 0xec)
++    FIELD(RX_FIFO_WATERMARK_REGISTER, RXFP, 16, 5)
++    FIELD(RX_FIFO_WATERMARK_REGISTER, RXFWM_1, 8, 6)
++    FIELD(RX_FIFO_WATERMARK_REGISTER, RXFWM, 0, 6)
++REG32(TB_ID_REGISTER, 0x100)
++    FIELD(TB_ID_REGISTER, ID, 21, 11)
++    FIELD(TB_ID_REGISTER, SRR_RTR_RRS, 20, 1)
++    FIELD(TB_ID_REGISTER, IDE, 19, 1)
++    FIELD(TB_ID_REGISTER, ID_EXT, 1, 18)
++    FIELD(TB_ID_REGISTER, RTR_RRS, 0, 1)
++REG32(TB0_DLC_REGISTER, 0x104)
++    FIELD(TB0_DLC_REGISTER, DLC, 28, 4)
++    FIELD(TB0_DLC_REGISTER, FDF, 27, 1)
++    FIELD(TB0_DLC_REGISTER, BRS, 26, 1)
++    FIELD(TB0_DLC_REGISTER, RSVD2, 25, 1)
++    FIELD(TB0_DLC_REGISTER, EFC, 24, 1)
++    FIELD(TB0_DLC_REGISTER, MM, 16, 8)
++    FIELD(TB0_DLC_REGISTER, RSVD1, 0, 16)
++REG32(TB_DW0_REGISTER, 0x108)
++    FIELD(TB_DW0_REGISTER, DATA_BYTES0, 24, 8)
++    FIELD(TB_DW0_REGISTER, DATA_BYTES1, 16, 8)
++    FIELD(TB_DW0_REGISTER, DATA_BYTES2, 8, 8)
++    FIELD(TB_DW0_REGISTER, DATA_BYTES3, 0, 8)
++REG32(TB_DW1_REGISTER, 0x10c)
++    FIELD(TB_DW1_REGISTER, DATA_BYTES4, 24, 8)
++    FIELD(TB_DW1_REGISTER, DATA_BYTES5, 16, 8)
++    FIELD(TB_DW1_REGISTER, DATA_BYTES6, 8, 8)
++    FIELD(TB_DW1_REGISTER, DATA_BYTES7, 0, 8)
++REG32(TB_DW2_REGISTER, 0x110)
++    FIELD(TB_DW2_REGISTER, DATA_BYTES8, 24, 8)
++    FIELD(TB_DW2_REGISTER, DATA_BYTES9, 16, 8)
++    FIELD(TB_DW2_REGISTER, DATA_BYTES10, 8, 8)
++    FIELD(TB_DW2_REGISTER, DATA_BYTES11, 0, 8)
++REG32(TB_DW3_REGISTER, 0x114)
++    FIELD(TB_DW3_REGISTER, DATA_BYTES12, 24, 8)
++    FIELD(TB_DW3_REGISTER, DATA_BYTES13, 16, 8)
++    FIELD(TB_DW3_REGISTER, DATA_BYTES14, 8, 8)
++    FIELD(TB_DW3_REGISTER, DATA_BYTES15, 0, 8)
++REG32(TB_DW4_REGISTER, 0x118)
++    FIELD(TB_DW4_REGISTER, DATA_BYTES16, 24, 8)
++    FIELD(TB_DW4_REGISTER, DATA_BYTES17, 16, 8)
++    FIELD(TB_DW4_REGISTER, DATA_BYTES18, 8, 8)
++    FIELD(TB_DW4_REGISTER, DATA_BYTES19, 0, 8)
++REG32(TB_DW5_REGISTER, 0x11c)
++    FIELD(TB_DW5_REGISTER, DATA_BYTES20, 24, 8)
++    FIELD(TB_DW5_REGISTER, DATA_BYTES21, 16, 8)
++    FIELD(TB_DW5_REGISTER, DATA_BYTES22, 8, 8)
++    FIELD(TB_DW5_REGISTER, DATA_BYTES23, 0, 8)
++REG32(TB_DW6_REGISTER, 0x120)
++    FIELD(TB_DW6_REGISTER, DATA_BYTES24, 24, 8)
++    FIELD(TB_DW6_REGISTER, DATA_BYTES25, 16, 8)
++    FIELD(TB_DW6_REGISTER, DATA_BYTES26, 8, 8)
++    FIELD(TB_DW6_REGISTER, DATA_BYTES27, 0, 8)
++REG32(TB_DW7_REGISTER, 0x124)
++    FIELD(TB_DW7_REGISTER, DATA_BYTES28, 24, 8)
++    FIELD(TB_DW7_REGISTER, DATA_BYTES29, 16, 8)
++    FIELD(TB_DW7_REGISTER, DATA_BYTES30, 8, 8)
++    FIELD(TB_DW7_REGISTER, DATA_BYTES31, 0, 8)
++REG32(TB_DW8_REGISTER, 0x128)
++    FIELD(TB_DW8_REGISTER, DATA_BYTES32, 24, 8)
++    FIELD(TB_DW8_REGISTER, DATA_BYTES33, 16, 8)
++    FIELD(TB_DW8_REGISTER, DATA_BYTES34, 8, 8)
++    FIELD(TB_DW8_REGISTER, DATA_BYTES35, 0, 8)
++REG32(TB_DW9_REGISTER, 0x12c)
++    FIELD(TB_DW9_REGISTER, DATA_BYTES36, 24, 8)
++    FIELD(TB_DW9_REGISTER, DATA_BYTES37, 16, 8)
++    FIELD(TB_DW9_REGISTER, DATA_BYTES38, 8, 8)
++    FIELD(TB_DW9_REGISTER, DATA_BYTES39, 0, 8)
++REG32(TB_DW10_REGISTER, 0x130)
++    FIELD(TB_DW10_REGISTER, DATA_BYTES40, 24, 8)
++    FIELD(TB_DW10_REGISTER, DATA_BYTES41, 16, 8)
++    FIELD(TB_DW10_REGISTER, DATA_BYTES42, 8, 8)
++    FIELD(TB_DW10_REGISTER, DATA_BYTES43, 0, 8)
++REG32(TB_DW11_REGISTER, 0x134)
++    FIELD(TB_DW11_REGISTER, DATA_BYTES44, 24, 8)
++    FIELD(TB_DW11_REGISTER, DATA_BYTES45, 16, 8)
++    FIELD(TB_DW11_REGISTER, DATA_BYTES46, 8, 8)
++    FIELD(TB_DW11_REGISTER, DATA_BYTES47, 0, 8)
++REG32(TB_DW12_REGISTER, 0x138)
++    FIELD(TB_DW12_REGISTER, DATA_BYTES48, 24, 8)
++    FIELD(TB_DW12_REGISTER, DATA_BYTES49, 16, 8)
++    FIELD(TB_DW12_REGISTER, DATA_BYTES50, 8, 8)
++    FIELD(TB_DW12_REGISTER, DATA_BYTES51, 0, 8)
++REG32(TB_DW13_REGISTER, 0x13c)
++    FIELD(TB_DW13_REGISTER, DATA_BYTES52, 24, 8)
++    FIELD(TB_DW13_REGISTER, DATA_BYTES53, 16, 8)
++    FIELD(TB_DW13_REGISTER, DATA_BYTES54, 8, 8)
++    FIELD(TB_DW13_REGISTER, DATA_BYTES55, 0, 8)
++REG32(TB_DW14_REGISTER, 0x140)
++    FIELD(TB_DW14_REGISTER, DATA_BYTES56, 24, 8)
++    FIELD(TB_DW14_REGISTER, DATA_BYTES57, 16, 8)
++    FIELD(TB_DW14_REGISTER, DATA_BYTES58, 8, 8)
++    FIELD(TB_DW14_REGISTER, DATA_BYTES59, 0, 8)
++REG32(TB_DW15_REGISTER, 0x144)
++    FIELD(TB_DW15_REGISTER, DATA_BYTES60, 24, 8)
++    FIELD(TB_DW15_REGISTER, DATA_BYTES61, 16, 8)
++    FIELD(TB_DW15_REGISTER, DATA_BYTES62, 8, 8)
++    FIELD(TB_DW15_REGISTER, DATA_BYTES63, 0, 8)
++REG32(AFMR_REGISTER, 0xa00)
++    FIELD(AFMR_REGISTER, AMID, 21, 11)
++    FIELD(AFMR_REGISTER, AMSRR, 20, 1)
++    FIELD(AFMR_REGISTER, AMIDE, 19, 1)
++    FIELD(AFMR_REGISTER, AMID_EXT, 1, 18)
++    FIELD(AFMR_REGISTER, AMRTR, 0, 1)
++REG32(AFIR_REGISTER, 0xa04)
++    FIELD(AFIR_REGISTER, AIID, 21, 11)
++    FIELD(AFIR_REGISTER, AISRR, 20, 1)
++    FIELD(AFIR_REGISTER, AIIDE, 19, 1)
++    FIELD(AFIR_REGISTER, AIID_EXT, 1, 18)
++    FIELD(AFIR_REGISTER, AIRTR, 0, 1)
++REG32(TXE_FIFO_TB_ID_REGISTER, 0x2000)
++    FIELD(TXE_FIFO_TB_ID_REGISTER, ID, 21, 11)
++    FIELD(TXE_FIFO_TB_ID_REGISTER, SRR_RTR_RRS, 20, 1)
++    FIELD(TXE_FIFO_TB_ID_REGISTER, IDE, 19, 1)
++    FIELD(TXE_FIFO_TB_ID_REGISTER, ID_EXT, 1, 18)
++    FIELD(TXE_FIFO_TB_ID_REGISTER, RTR_RRS, 0, 1)
++REG32(TXE_FIFO_TB_DLC_REGISTER, 0x2004)
++    FIELD(TXE_FIFO_TB_DLC_REGISTER, DLC, 28, 4)
++    FIELD(TXE_FIFO_TB_DLC_REGISTER, FDF, 27, 1)
++    FIELD(TXE_FIFO_TB_DLC_REGISTER, BRS, 26, 1)
++    FIELD(TXE_FIFO_TB_DLC_REGISTER, ET, 24, 2)
++    FIELD(TXE_FIFO_TB_DLC_REGISTER, MM, 16, 8)
++    FIELD(TXE_FIFO_TB_DLC_REGISTER, TIMESTAMP, 0, 16)
++REG32(RB_ID_REGISTER, 0x2100)
++    FIELD(RB_ID_REGISTER, ID, 21, 11)
++    FIELD(RB_ID_REGISTER, SRR_RTR_RRS, 20, 1)
++    FIELD(RB_ID_REGISTER, IDE, 19, 1)
++    FIELD(RB_ID_REGISTER, ID_EXT, 1, 18)
++    FIELD(RB_ID_REGISTER, RTR_RRS, 0, 1)
++REG32(RB_DLC_REGISTER, 0x2104)
++    FIELD(RB_DLC_REGISTER, DLC, 28, 4)
++    FIELD(RB_DLC_REGISTER, FDF, 27, 1)
++    FIELD(RB_DLC_REGISTER, BRS, 26, 1)
++    FIELD(RB_DLC_REGISTER, ESI, 25, 1)
++    FIELD(RB_DLC_REGISTER, MATCHED_FILTER_INDEX, 16, 5)
++    FIELD(RB_DLC_REGISTER, TIMESTAMP, 0, 16)
++REG32(RB_DW0_REGISTER, 0x2108)
++    FIELD(RB_DW0_REGISTER, DATA_BYTES0, 24, 8)
++    FIELD(RB_DW0_REGISTER, DATA_BYTES1, 16, 8)
++    FIELD(RB_DW0_REGISTER, DATA_BYTES2, 8, 8)
++    FIELD(RB_DW0_REGISTER, DATA_BYTES3, 0, 8)
++REG32(RB_DW1_REGISTER, 0x210c)
++    FIELD(RB_DW1_REGISTER, DATA_BYTES4, 24, 8)
++    FIELD(RB_DW1_REGISTER, DATA_BYTES5, 16, 8)
++    FIELD(RB_DW1_REGISTER, DATA_BYTES6, 8, 8)
++    FIELD(RB_DW1_REGISTER, DATA_BYTES7, 0, 8)
++REG32(RB_DW2_REGISTER, 0x2110)
++    FIELD(RB_DW2_REGISTER, DATA_BYTES8, 24, 8)
++    FIELD(RB_DW2_REGISTER, DATA_BYTES9, 16, 8)
++    FIELD(RB_DW2_REGISTER, DATA_BYTES10, 8, 8)
++    FIELD(RB_DW2_REGISTER, DATA_BYTES11, 0, 8)
++REG32(RB_DW3_REGISTER, 0x2114)
++    FIELD(RB_DW3_REGISTER, DATA_BYTES12, 24, 8)
++    FIELD(RB_DW3_REGISTER, DATA_BYTES13, 16, 8)
++    FIELD(RB_DW3_REGISTER, DATA_BYTES14, 8, 8)
++    FIELD(RB_DW3_REGISTER, DATA_BYTES15, 0, 8)
++REG32(RB_DW4_REGISTER, 0x2118)
++    FIELD(RB_DW4_REGISTER, DATA_BYTES16, 24, 8)
++    FIELD(RB_DW4_REGISTER, DATA_BYTES17, 16, 8)
++    FIELD(RB_DW4_REGISTER, DATA_BYTES18, 8, 8)
++    FIELD(RB_DW4_REGISTER, DATA_BYTES19, 0, 8)
++REG32(RB_DW5_REGISTER, 0x211c)
++    FIELD(RB_DW5_REGISTER, DATA_BYTES20, 24, 8)
++    FIELD(RB_DW5_REGISTER, DATA_BYTES21, 16, 8)
++    FIELD(RB_DW5_REGISTER, DATA_BYTES22, 8, 8)
++    FIELD(RB_DW5_REGISTER, DATA_BYTES23, 0, 8)
++REG32(RB_DW6_REGISTER, 0x2120)
++    FIELD(RB_DW6_REGISTER, DATA_BYTES24, 24, 8)
++    FIELD(RB_DW6_REGISTER, DATA_BYTES25, 16, 8)
++    FIELD(RB_DW6_REGISTER, DATA_BYTES26, 8, 8)
++    FIELD(RB_DW6_REGISTER, DATA_BYTES27, 0, 8)
++REG32(RB_DW7_REGISTER, 0x2124)
++    FIELD(RB_DW7_REGISTER, DATA_BYTES28, 24, 8)
++    FIELD(RB_DW7_REGISTER, DATA_BYTES29, 16, 8)
++    FIELD(RB_DW7_REGISTER, DATA_BYTES30, 8, 8)
++    FIELD(RB_DW7_REGISTER, DATA_BYTES31, 0, 8)
++REG32(RB_DW8_REGISTER, 0x2128)
++    FIELD(RB_DW8_REGISTER, DATA_BYTES32, 24, 8)
++    FIELD(RB_DW8_REGISTER, DATA_BYTES33, 16, 8)
++    FIELD(RB_DW8_REGISTER, DATA_BYTES34, 8, 8)
++    FIELD(RB_DW8_REGISTER, DATA_BYTES35, 0, 8)
++REG32(RB_DW9_REGISTER, 0x212c)
++    FIELD(RB_DW9_REGISTER, DATA_BYTES36, 24, 8)
++    FIELD(RB_DW9_REGISTER, DATA_BYTES37, 16, 8)
++    FIELD(RB_DW9_REGISTER, DATA_BYTES38, 8, 8)
++    FIELD(RB_DW9_REGISTER, DATA_BYTES39, 0, 8)
++REG32(RB_DW10_REGISTER, 0x2130)
++    FIELD(RB_DW10_REGISTER, DATA_BYTES40, 24, 8)
++    FIELD(RB_DW10_REGISTER, DATA_BYTES41, 16, 8)
++    FIELD(RB_DW10_REGISTER, DATA_BYTES42, 8, 8)
++    FIELD(RB_DW10_REGISTER, DATA_BYTES43, 0, 8)
++REG32(RB_DW11_REGISTER, 0x2134)
++    FIELD(RB_DW11_REGISTER, DATA_BYTES44, 24, 8)
++    FIELD(RB_DW11_REGISTER, DATA_BYTES45, 16, 8)
++    FIELD(RB_DW11_REGISTER, DATA_BYTES46, 8, 8)
++    FIELD(RB_DW11_REGISTER, DATA_BYTES47, 0, 8)
++REG32(RB_DW12_REGISTER, 0x2138)
++    FIELD(RB_DW12_REGISTER, DATA_BYTES48, 24, 8)
++    FIELD(RB_DW12_REGISTER, DATA_BYTES49, 16, 8)
++    FIELD(RB_DW12_REGISTER, DATA_BYTES50, 8, 8)
++    FIELD(RB_DW12_REGISTER, DATA_BYTES51, 0, 8)
++REG32(RB_DW13_REGISTER, 0x213c)
++    FIELD(RB_DW13_REGISTER, DATA_BYTES52, 24, 8)
++    FIELD(RB_DW13_REGISTER, DATA_BYTES53, 16, 8)
++    FIELD(RB_DW13_REGISTER, DATA_BYTES54, 8, 8)
++    FIELD(RB_DW13_REGISTER, DATA_BYTES55, 0, 8)
++REG32(RB_DW14_REGISTER, 0x2140)
++    FIELD(RB_DW14_REGISTER, DATA_BYTES56, 24, 8)
++    FIELD(RB_DW14_REGISTER, DATA_BYTES57, 16, 8)
++    FIELD(RB_DW14_REGISTER, DATA_BYTES58, 8, 8)
++    FIELD(RB_DW14_REGISTER, DATA_BYTES59, 0, 8)
++REG32(RB_DW15_REGISTER, 0x2144)
++    FIELD(RB_DW15_REGISTER, DATA_BYTES60, 24, 8)
++    FIELD(RB_DW15_REGISTER, DATA_BYTES61, 16, 8)
++    FIELD(RB_DW15_REGISTER, DATA_BYTES62, 8, 8)
++    FIELD(RB_DW15_REGISTER, DATA_BYTES63, 0, 8)
++REG32(RB_ID_REGISTER_1, 0x4100)
++    FIELD(RB_ID_REGISTER_1, ID, 21, 11)
++    FIELD(RB_ID_REGISTER_1, SRR_RTR_RRS, 20, 1)
++    FIELD(RB_ID_REGISTER_1, IDE, 19, 1)
++    FIELD(RB_ID_REGISTER_1, ID_EXT, 1, 18)
++    FIELD(RB_ID_REGISTER_1, RTR_RRS, 0, 1)
++REG32(RB_DLC_REGISTER_1, 0x4104)
++    FIELD(RB_DLC_REGISTER_1, DLC, 28, 4)
++    FIELD(RB_DLC_REGISTER_1, FDF, 27, 1)
++    FIELD(RB_DLC_REGISTER_1, BRS, 26, 1)
++    FIELD(RB_DLC_REGISTER_1, ESI, 25, 1)
++    FIELD(RB_DLC_REGISTER_1, MATCHED_FILTER_INDEX, 16, 5)
++    FIELD(RB_DLC_REGISTER_1, TIMESTAMP, 0, 16)
++REG32(RB0_DW0_REGISTER_1, 0x4108)
++    FIELD(RB0_DW0_REGISTER_1, DATA_BYTES0, 24, 8)
++    FIELD(RB0_DW0_REGISTER_1, DATA_BYTES1, 16, 8)
++    FIELD(RB0_DW0_REGISTER_1, DATA_BYTES2, 8, 8)
++    FIELD(RB0_DW0_REGISTER_1, DATA_BYTES3, 0, 8)
++REG32(RB_DW1_REGISTER_1, 0x410c)
++    FIELD(RB_DW1_REGISTER_1, DATA_BYTES4, 24, 8)
++    FIELD(RB_DW1_REGISTER_1, DATA_BYTES5, 16, 8)
++    FIELD(RB_DW1_REGISTER_1, DATA_BYTES6, 8, 8)
++    FIELD(RB_DW1_REGISTER_1, DATA_BYTES7, 0, 8)
++REG32(RB_DW2_REGISTER_1, 0x4110)
++    FIELD(RB_DW2_REGISTER_1, DATA_BYTES8, 24, 8)
++    FIELD(RB_DW2_REGISTER_1, DATA_BYTES9, 16, 8)
++    FIELD(RB_DW2_REGISTER_1, DATA_BYTES10, 8, 8)
++    FIELD(RB_DW2_REGISTER_1, DATA_BYTES11, 0, 8)
++REG32(RB_DW3_REGISTER_1, 0x4114)
++    FIELD(RB_DW3_REGISTER_1, DATA_BYTES12, 24, 8)
++    FIELD(RB_DW3_REGISTER_1, DATA_BYTES13, 16, 8)
++    FIELD(RB_DW3_REGISTER_1, DATA_BYTES14, 8, 8)
++    FIELD(RB_DW3_REGISTER_1, DATA_BYTES15, 0, 8)
++REG32(RB_DW4_REGISTER_1, 0x4118)
++    FIELD(RB_DW4_REGISTER_1, DATA_BYTES16, 24, 8)
++    FIELD(RB_DW4_REGISTER_1, DATA_BYTES17, 16, 8)
++    FIELD(RB_DW4_REGISTER_1, DATA_BYTES18, 8, 8)
++    FIELD(RB_DW4_REGISTER_1, DATA_BYTES19, 0, 8)
++REG32(RB_DW5_REGISTER_1, 0x411c)
++    FIELD(RB_DW5_REGISTER_1, DATA_BYTES20, 24, 8)
++    FIELD(RB_DW5_REGISTER_1, DATA_BYTES21, 16, 8)
++    FIELD(RB_DW5_REGISTER_1, DATA_BYTES22, 8, 8)
++    FIELD(RB_DW5_REGISTER_1, DATA_BYTES23, 0, 8)
++REG32(RB_DW6_REGISTER_1, 0x4120)
++    FIELD(RB_DW6_REGISTER_1, DATA_BYTES24, 24, 8)
++    FIELD(RB_DW6_REGISTER_1, DATA_BYTES25, 16, 8)
++    FIELD(RB_DW6_REGISTER_1, DATA_BYTES26, 8, 8)
++    FIELD(RB_DW6_REGISTER_1, DATA_BYTES27, 0, 8)
++REG32(RB_DW7_REGISTER_1, 0x4124)
++    FIELD(RB_DW7_REGISTER_1, DATA_BYTES28, 24, 8)
++    FIELD(RB_DW7_REGISTER_1, DATA_BYTES29, 16, 8)
++    FIELD(RB_DW7_REGISTER_1, DATA_BYTES30, 8, 8)
++    FIELD(RB_DW7_REGISTER_1, DATA_BYTES31, 0, 8)
++REG32(RB_DW8_REGISTER_1, 0x4128)
++    FIELD(RB_DW8_REGISTER_1, DATA_BYTES32, 24, 8)
++    FIELD(RB_DW8_REGISTER_1, DATA_BYTES33, 16, 8)
++    FIELD(RB_DW8_REGISTER_1, DATA_BYTES34, 8, 8)
++    FIELD(RB_DW8_REGISTER_1, DATA_BYTES35, 0, 8)
++REG32(RB_DW9_REGISTER_1, 0x412c)
++    FIELD(RB_DW9_REGISTER_1, DATA_BYTES36, 24, 8)
++    FIELD(RB_DW9_REGISTER_1, DATA_BYTES37, 16, 8)
++    FIELD(RB_DW9_REGISTER_1, DATA_BYTES38, 8, 8)
++    FIELD(RB_DW9_REGISTER_1, DATA_BYTES39, 0, 8)
++REG32(RB_DW10_REGISTER_1, 0x4130)
++    FIELD(RB_DW10_REGISTER_1, DATA_BYTES40, 24, 8)
++    FIELD(RB_DW10_REGISTER_1, DATA_BYTES41, 16, 8)
++    FIELD(RB_DW10_REGISTER_1, DATA_BYTES42, 8, 8)
++    FIELD(RB_DW10_REGISTER_1, DATA_BYTES43, 0, 8)
++REG32(RB_DW11_REGISTER_1, 0x4134)
++    FIELD(RB_DW11_REGISTER_1, DATA_BYTES44, 24, 8)
++    FIELD(RB_DW11_REGISTER_1, DATA_BYTES45, 16, 8)
++    FIELD(RB_DW11_REGISTER_1, DATA_BYTES46, 8, 8)
++    FIELD(RB_DW11_REGISTER_1, DATA_BYTES47, 0, 8)
++REG32(RB_DW12_REGISTER_1, 0x4138)
++    FIELD(RB_DW12_REGISTER_1, DATA_BYTES48, 24, 8)
++    FIELD(RB_DW12_REGISTER_1, DATA_BYTES49, 16, 8)
++    FIELD(RB_DW12_REGISTER_1, DATA_BYTES50, 8, 8)
++    FIELD(RB_DW12_REGISTER_1, DATA_BYTES51, 0, 8)
++REG32(RB_DW13_REGISTER_1, 0x413c)
++    FIELD(RB_DW13_REGISTER_1, DATA_BYTES52, 24, 8)
++    FIELD(RB_DW13_REGISTER_1, DATA_BYTES53, 16, 8)
++    FIELD(RB_DW13_REGISTER_1, DATA_BYTES54, 8, 8)
++    FIELD(RB_DW13_REGISTER_1, DATA_BYTES55, 0, 8)
++REG32(RB_DW14_REGISTER_1, 0x4140)
++    FIELD(RB_DW14_REGISTER_1, DATA_BYTES56, 24, 8)
++    FIELD(RB_DW14_REGISTER_1, DATA_BYTES57, 16, 8)
++    FIELD(RB_DW14_REGISTER_1, DATA_BYTES58, 8, 8)
++    FIELD(RB_DW14_REGISTER_1, DATA_BYTES59, 0, 8)
++REG32(RB_DW15_REGISTER_1, 0x4144)
++    FIELD(RB_DW15_REGISTER_1, DATA_BYTES60, 24, 8)
++    FIELD(RB_DW15_REGISTER_1, DATA_BYTES61, 16, 8)
++    FIELD(RB_DW15_REGISTER_1, DATA_BYTES62, 8, 8)
++    FIELD(RB_DW15_REGISTER_1, DATA_BYTES63, 0, 8)
++
++static uint8_t canfd_dlc_array[8] = {8, 12, 16, 20, 24, 32, 48, 64};
++
++static void canfd_update_irq(XlnxVersalCANFDState *s)
 +{
-+    return SSTEP_ENABLE | SSTEP_NOIRQ;
++    unsigned int irq = s->regs[R_INTERRUPT_STATUS_REGISTER] &
++                        s->regs[R_INTERRUPT_ENABLE_REGISTER];
++    g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++    /* RX watermark interrupts. */
++    if (ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER, FL) >
++        ARRAY_FIELD_EX32(s->regs, RX_FIFO_WATERMARK_REGISTER, RXFWM)) {
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXFWMFLL, 1);
++    }
++
++    if (ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER, FL_1) >
++        ARRAY_FIELD_EX32(s->regs, RX_FIFO_WATERMARK_REGISTER, RXFWM_1)) {
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXFWMFLL_1, 1);
++    }
++
++    /* TX watermark interrupt. */
++    if (ARRAY_FIELD_EX32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER, TXE_FL) >
++        ARRAY_FIELD_EX32(s->regs, TX_EVENT_FIFO_WATERMARK_REGISTER, TXE_FWM)) {
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TXEWMFLL, 1);
++    }
++
++    trace_xlnx_canfd_update_irq(path, s->regs[R_INTERRUPT_STATUS_REGISTER],
++                                s->regs[R_INTERRUPT_ENABLE_REGISTER], irq);
++
++    qemu_set_irq(s->irq_canfd_int, irq);
 +}
 +
- static void hvf_accel_class_init(ObjectClass *oc, void *data)
- {
-     AccelClass *ac = ACCEL_CLASS(oc);
-     ac->name = "HVF";
-     ac->init_machine = hvf_accel_init;
-     ac->allowed = &hvf_allowed;
-+    ac->gdbstub_supported_sstep_flags = hvf_gdbstub_sstep_flags;
- }
- 
- static const TypeInfo hvf_accel_type = {
-@@ -398,6 +404,8 @@ static int hvf_init_vcpu(CPUState *cpu)
-     cpu->vcpu_dirty = 1;
-     assert_hvf_ok(r);
- 
-+    cpu->hvf->guest_debug_enabled = false;
-+
-     return hvf_arch_init_vcpu(cpu);
- }
- 
-@@ -582,6 +590,8 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, void *data)
-     ops->insert_breakpoint = hvf_insert_breakpoint;
-     ops->remove_breakpoint = hvf_remove_breakpoint;
-     ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
-+    ops->update_guest_debug = hvf_update_guest_debug;
-+    ops->supports_guest_debug = hvf_arch_supports_guest_debug;
- };
- static const TypeInfo hvf_accel_ops_type = {
-     .name = ACCEL_OPS_NAME("hvf"),
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index e983c23ad7f..754707dbfb3 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -61,3 +61,9 @@ int hvf_sw_breakpoints_active(CPUState *cpu)
- {
-     return !QTAILQ_EMPTY(&hvf_state->hvf_sw_breakpoints);
- }
-+
-+int hvf_update_guest_debug(CPUState *cpu)
++static void canfd_ier_post_write(RegisterInfo *reg, uint64_t val64)
 +{
-+    hvf_arch_update_guest_debug(cpu);
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++
++    canfd_update_irq(s);
++}
++
++static uint64_t canfd_icr_pre_write(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++
++    s->regs[R_INTERRUPT_STATUS_REGISTER] &= ~val;
++
++    /*
++     * RXBOFLW_BI field is automatically cleared to default if RXBOFLW bit is
++     * cleared in ISR.
++     */
++    if (ARRAY_FIELD_EX32(s->regs, INTERRUPT_STATUS_REGISTER, RXFWMFLL_1)) {
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXBOFLW_BI, 0);
++    }
++
++    canfd_update_irq(s);
++
 +    return 0;
 +}
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index bb83627727c..2bd0a35cbab 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -33,6 +33,116 @@
- 
- #include "exec/gdbstub.h"
- 
-+#define MDSCR_EL1_SS_SHIFT  0
-+#define MDSCR_EL1_MDE_SHIFT 15
 +
-+static uint16_t dbgbcr_regs[] = {
-+    HV_SYS_REG_DBGBCR0_EL1,
-+    HV_SYS_REG_DBGBCR1_EL1,
-+    HV_SYS_REG_DBGBCR2_EL1,
-+    HV_SYS_REG_DBGBCR3_EL1,
-+    HV_SYS_REG_DBGBCR4_EL1,
-+    HV_SYS_REG_DBGBCR5_EL1,
-+    HV_SYS_REG_DBGBCR6_EL1,
-+    HV_SYS_REG_DBGBCR7_EL1,
-+    HV_SYS_REG_DBGBCR8_EL1,
-+    HV_SYS_REG_DBGBCR9_EL1,
-+    HV_SYS_REG_DBGBCR10_EL1,
-+    HV_SYS_REG_DBGBCR11_EL1,
-+    HV_SYS_REG_DBGBCR12_EL1,
-+    HV_SYS_REG_DBGBCR13_EL1,
-+    HV_SYS_REG_DBGBCR14_EL1,
-+    HV_SYS_REG_DBGBCR15_EL1,
-+};
-+static uint16_t dbgbvr_regs[] = {
-+    HV_SYS_REG_DBGBVR0_EL1,
-+    HV_SYS_REG_DBGBVR1_EL1,
-+    HV_SYS_REG_DBGBVR2_EL1,
-+    HV_SYS_REG_DBGBVR3_EL1,
-+    HV_SYS_REG_DBGBVR4_EL1,
-+    HV_SYS_REG_DBGBVR5_EL1,
-+    HV_SYS_REG_DBGBVR6_EL1,
-+    HV_SYS_REG_DBGBVR7_EL1,
-+    HV_SYS_REG_DBGBVR8_EL1,
-+    HV_SYS_REG_DBGBVR9_EL1,
-+    HV_SYS_REG_DBGBVR10_EL1,
-+    HV_SYS_REG_DBGBVR11_EL1,
-+    HV_SYS_REG_DBGBVR12_EL1,
-+    HV_SYS_REG_DBGBVR13_EL1,
-+    HV_SYS_REG_DBGBVR14_EL1,
-+    HV_SYS_REG_DBGBVR15_EL1,
-+};
-+static uint16_t dbgwcr_regs[] = {
-+    HV_SYS_REG_DBGWCR0_EL1,
-+    HV_SYS_REG_DBGWCR1_EL1,
-+    HV_SYS_REG_DBGWCR2_EL1,
-+    HV_SYS_REG_DBGWCR3_EL1,
-+    HV_SYS_REG_DBGWCR4_EL1,
-+    HV_SYS_REG_DBGWCR5_EL1,
-+    HV_SYS_REG_DBGWCR6_EL1,
-+    HV_SYS_REG_DBGWCR7_EL1,
-+    HV_SYS_REG_DBGWCR8_EL1,
-+    HV_SYS_REG_DBGWCR9_EL1,
-+    HV_SYS_REG_DBGWCR10_EL1,
-+    HV_SYS_REG_DBGWCR11_EL1,
-+    HV_SYS_REG_DBGWCR12_EL1,
-+    HV_SYS_REG_DBGWCR13_EL1,
-+    HV_SYS_REG_DBGWCR14_EL1,
-+    HV_SYS_REG_DBGWCR15_EL1,
-+};
-+static uint16_t dbgwvr_regs[] = {
-+    HV_SYS_REG_DBGWVR0_EL1,
-+    HV_SYS_REG_DBGWVR1_EL1,
-+    HV_SYS_REG_DBGWVR2_EL1,
-+    HV_SYS_REG_DBGWVR3_EL1,
-+    HV_SYS_REG_DBGWVR4_EL1,
-+    HV_SYS_REG_DBGWVR5_EL1,
-+    HV_SYS_REG_DBGWVR6_EL1,
-+    HV_SYS_REG_DBGWVR7_EL1,
-+    HV_SYS_REG_DBGWVR8_EL1,
-+    HV_SYS_REG_DBGWVR9_EL1,
-+    HV_SYS_REG_DBGWVR10_EL1,
-+    HV_SYS_REG_DBGWVR11_EL1,
-+    HV_SYS_REG_DBGWVR12_EL1,
-+    HV_SYS_REG_DBGWVR13_EL1,
-+    HV_SYS_REG_DBGWVR14_EL1,
-+    HV_SYS_REG_DBGWVR15_EL1,
-+};
-+
-+static inline int hvf_arm_num_brps(hv_vcpu_config_t config)
++static void canfd_config_reset(XlnxVersalCANFDState *s)
 +{
-+    uint64_t val;
-+    hv_return_t ret;
-+    ret = hv_vcpu_config_get_feature_reg(config, HV_FEATURE_REG_ID_AA64DFR0_EL1,
-+                                         &val);
-+    assert_hvf_ok(ret);
-+    return FIELD_EX64(val, ID_AA64DFR0, BRPS) + 1;
++
++    unsigned int i;
++
++    /* Reset all the configuration registers. */
++    for (i = 0; i < R_RX_FIFO_WATERMARK_REGISTER; ++i) {
++        register_reset(&s->reg_info[i]);
++    }
++
++    canfd_update_irq(s);
 +}
 +
-+static inline int hvf_arm_num_wrps(hv_vcpu_config_t config)
++static void canfd_config_mode(XlnxVersalCANFDState *s)
 +{
-+    uint64_t val;
-+    hv_return_t ret;
-+    ret = hv_vcpu_config_get_feature_reg(config, HV_FEATURE_REG_ID_AA64DFR0_EL1,
-+                                         &val);
-+    assert_hvf_ok(ret);
-+    return FIELD_EX64(val, ID_AA64DFR0, WRPS) + 1;
++    register_reset(&s->reg_info[R_ERROR_COUNTER_REGISTER]);
++    register_reset(&s->reg_info[R_ERROR_STATUS_REGISTER]);
++    register_reset(&s->reg_info[R_STATUS_REGISTER]);
++
++    /* Put XlnxVersalCANFDState in configuration mode. */
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, CONFIG, 1);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, WKUP, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, SLP, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, BSOFF, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, ERROR_BIT, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXFOFLW, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXFOFLW_1, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXOK, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TXOK, 0);
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, ARBLST, 0);
++
++    /* Clear the time stamp. */
++    ptimer_transaction_begin(s->canfd_timer);
++    ptimer_set_count(s->canfd_timer, 0);
++    ptimer_transaction_commit(s->canfd_timer);
++
++    canfd_update_irq(s);
 +}
 +
-+void hvf_arm_init_debug(void)
++static void update_status_register_mode_bits(XlnxVersalCANFDState *s)
 +{
-+    hv_vcpu_config_t config;
-+    config = hv_vcpu_config_create();
++    bool sleep_status = ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, SLEEP);
++    bool sleep_mode = ARRAY_FIELD_EX32(s->regs, MODE_SELECT_REGISTER, SLEEP);
++    /* Wake up interrupt bit. */
++    bool wakeup_irq_val = !sleep_mode && sleep_status;
++    /* Sleep interrupt bit. */
++    bool sleep_irq_val = sleep_mode && !sleep_status;
 +
-+    max_hw_bps = hvf_arm_num_brps(config);
-+    hw_breakpoints =
-+        g_array_sized_new(true, true, sizeof(HWBreakpoint), max_hw_bps);
++    /* Clear previous core mode status bits. */
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, LBACK, 0);
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, SLEEP, 0);
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, SNOOP, 0);
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, NORMAL, 0);
 +
-+    max_hw_wps = hvf_arm_num_wrps(config);
-+    hw_watchpoints =
-+        g_array_sized_new(true, true, sizeof(HWWatchpoint), max_hw_wps);
++    /* set current mode bit and generate irqs accordingly. */
++    if (ARRAY_FIELD_EX32(s->regs, MODE_SELECT_REGISTER, LBACK)) {
++        ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, LBACK, 1);
++    } else if (ARRAY_FIELD_EX32(s->regs, MODE_SELECT_REGISTER, SLEEP)) {
++        ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, SLEEP, 1);
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, SLP,
++                         sleep_irq_val);
++    } else if (ARRAY_FIELD_EX32(s->regs, MODE_SELECT_REGISTER, SNOOP)) {
++        ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, SNOOP, 1);
++    } else {
++        /* If all bits are zero, XlnxVersalCANFDState is set in normal mode. */
++        ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, NORMAL, 1);
++        /* Set wakeup interrupt bit. */
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, WKUP,
++                         wakeup_irq_val);
++    }
++
++    /* Put the CANFD in error active state. */
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, ESTAT, 1);
++
++    canfd_update_irq(s);
 +}
 +
- #define HVF_SYSREG(crn, crm, op0, op1, op2) \
-         ENCODE_AA64_CP_REG(CP_REG_ARM64_SYSREG_CP, crn, crm, op0, op1, op2)
- #define PL1_WRITE_MASK 0x4
-@@ -465,6 +575,92 @@ int hvf_get_registers(CPUState *cpu)
-             continue;
-         }
- 
-+        if (cpu->hvf->guest_debug_enabled) {
-+            /* Handle debug registers */
-+            switch (hvf_sreg_match[i].reg) {
-+            case HV_SYS_REG_DBGBVR0_EL1:
-+            case HV_SYS_REG_DBGBCR0_EL1:
-+            case HV_SYS_REG_DBGWVR0_EL1:
-+            case HV_SYS_REG_DBGWCR0_EL1:
-+            case HV_SYS_REG_DBGBVR1_EL1:
-+            case HV_SYS_REG_DBGBCR1_EL1:
-+            case HV_SYS_REG_DBGWVR1_EL1:
-+            case HV_SYS_REG_DBGWCR1_EL1:
-+            case HV_SYS_REG_DBGBVR2_EL1:
-+            case HV_SYS_REG_DBGBCR2_EL1:
-+            case HV_SYS_REG_DBGWVR2_EL1:
-+            case HV_SYS_REG_DBGWCR2_EL1:
-+            case HV_SYS_REG_DBGBVR3_EL1:
-+            case HV_SYS_REG_DBGBCR3_EL1:
-+            case HV_SYS_REG_DBGWVR3_EL1:
-+            case HV_SYS_REG_DBGWCR3_EL1:
-+            case HV_SYS_REG_DBGBVR4_EL1:
-+            case HV_SYS_REG_DBGBCR4_EL1:
-+            case HV_SYS_REG_DBGWVR4_EL1:
-+            case HV_SYS_REG_DBGWCR4_EL1:
-+            case HV_SYS_REG_DBGBVR5_EL1:
-+            case HV_SYS_REG_DBGBCR5_EL1:
-+            case HV_SYS_REG_DBGWVR5_EL1:
-+            case HV_SYS_REG_DBGWCR5_EL1:
-+            case HV_SYS_REG_DBGBVR6_EL1:
-+            case HV_SYS_REG_DBGBCR6_EL1:
-+            case HV_SYS_REG_DBGWVR6_EL1:
-+            case HV_SYS_REG_DBGWCR6_EL1:
-+            case HV_SYS_REG_DBGBVR7_EL1:
-+            case HV_SYS_REG_DBGBCR7_EL1:
-+            case HV_SYS_REG_DBGWVR7_EL1:
-+            case HV_SYS_REG_DBGWCR7_EL1:
-+            case HV_SYS_REG_DBGBVR8_EL1:
-+            case HV_SYS_REG_DBGBCR8_EL1:
-+            case HV_SYS_REG_DBGWVR8_EL1:
-+            case HV_SYS_REG_DBGWCR8_EL1:
-+            case HV_SYS_REG_DBGBVR9_EL1:
-+            case HV_SYS_REG_DBGBCR9_EL1:
-+            case HV_SYS_REG_DBGWVR9_EL1:
-+            case HV_SYS_REG_DBGWCR9_EL1:
-+            case HV_SYS_REG_DBGBVR10_EL1:
-+            case HV_SYS_REG_DBGBCR10_EL1:
-+            case HV_SYS_REG_DBGWVR10_EL1:
-+            case HV_SYS_REG_DBGWCR10_EL1:
-+            case HV_SYS_REG_DBGBVR11_EL1:
-+            case HV_SYS_REG_DBGBCR11_EL1:
-+            case HV_SYS_REG_DBGWVR11_EL1:
-+            case HV_SYS_REG_DBGWCR11_EL1:
-+            case HV_SYS_REG_DBGBVR12_EL1:
-+            case HV_SYS_REG_DBGBCR12_EL1:
-+            case HV_SYS_REG_DBGWVR12_EL1:
-+            case HV_SYS_REG_DBGWCR12_EL1:
-+            case HV_SYS_REG_DBGBVR13_EL1:
-+            case HV_SYS_REG_DBGBCR13_EL1:
-+            case HV_SYS_REG_DBGWVR13_EL1:
-+            case HV_SYS_REG_DBGWCR13_EL1:
-+            case HV_SYS_REG_DBGBVR14_EL1:
-+            case HV_SYS_REG_DBGBCR14_EL1:
-+            case HV_SYS_REG_DBGWVR14_EL1:
-+            case HV_SYS_REG_DBGWCR14_EL1:
-+            case HV_SYS_REG_DBGBVR15_EL1:
-+            case HV_SYS_REG_DBGBCR15_EL1:
-+            case HV_SYS_REG_DBGWVR15_EL1:
-+            case HV_SYS_REG_DBGWCR15_EL1: {
-+                /*
-+                 * If the guest is being debugged, the vCPU's debug registers
-+                 * are holding the gdbstub's view of the registers (set in
-+                 * hvf_arch_update_guest_debug()).
-+                 * Since the environment is used to store only the guest's view
-+                 * of the registers, don't update it with the values from the
-+                 * vCPU but simply keep the values from the previous
-+                 * environment.
-+                 */
-+                const ARMCPRegInfo *ri;
-+                ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_sreg_match[i].key);
-+                val = read_raw_cp_reg(env, ri);
-+
-+                arm_cpu->cpreg_values[hvf_sreg_match[i].cp_idx] = val;
-+                continue;
-+            }
-+            }
-+        }
-+
-         ret = hv_vcpu_get_sys_reg(cpu->hvf->fd, hvf_sreg_match[i].reg, &val);
-         assert_hvf_ok(ret);
- 
-@@ -516,6 +712,82 @@ int hvf_put_registers(CPUState *cpu)
-             continue;
-         }
- 
-+        if (cpu->hvf->guest_debug_enabled) {
-+            /* Handle debug registers */
-+            switch (hvf_sreg_match[i].reg) {
-+            case HV_SYS_REG_DBGBVR0_EL1:
-+            case HV_SYS_REG_DBGBCR0_EL1:
-+            case HV_SYS_REG_DBGWVR0_EL1:
-+            case HV_SYS_REG_DBGWCR0_EL1:
-+            case HV_SYS_REG_DBGBVR1_EL1:
-+            case HV_SYS_REG_DBGBCR1_EL1:
-+            case HV_SYS_REG_DBGWVR1_EL1:
-+            case HV_SYS_REG_DBGWCR1_EL1:
-+            case HV_SYS_REG_DBGBVR2_EL1:
-+            case HV_SYS_REG_DBGBCR2_EL1:
-+            case HV_SYS_REG_DBGWVR2_EL1:
-+            case HV_SYS_REG_DBGWCR2_EL1:
-+            case HV_SYS_REG_DBGBVR3_EL1:
-+            case HV_SYS_REG_DBGBCR3_EL1:
-+            case HV_SYS_REG_DBGWVR3_EL1:
-+            case HV_SYS_REG_DBGWCR3_EL1:
-+            case HV_SYS_REG_DBGBVR4_EL1:
-+            case HV_SYS_REG_DBGBCR4_EL1:
-+            case HV_SYS_REG_DBGWVR4_EL1:
-+            case HV_SYS_REG_DBGWCR4_EL1:
-+            case HV_SYS_REG_DBGBVR5_EL1:
-+            case HV_SYS_REG_DBGBCR5_EL1:
-+            case HV_SYS_REG_DBGWVR5_EL1:
-+            case HV_SYS_REG_DBGWCR5_EL1:
-+            case HV_SYS_REG_DBGBVR6_EL1:
-+            case HV_SYS_REG_DBGBCR6_EL1:
-+            case HV_SYS_REG_DBGWVR6_EL1:
-+            case HV_SYS_REG_DBGWCR6_EL1:
-+            case HV_SYS_REG_DBGBVR7_EL1:
-+            case HV_SYS_REG_DBGBCR7_EL1:
-+            case HV_SYS_REG_DBGWVR7_EL1:
-+            case HV_SYS_REG_DBGWCR7_EL1:
-+            case HV_SYS_REG_DBGBVR8_EL1:
-+            case HV_SYS_REG_DBGBCR8_EL1:
-+            case HV_SYS_REG_DBGWVR8_EL1:
-+            case HV_SYS_REG_DBGWCR8_EL1:
-+            case HV_SYS_REG_DBGBVR9_EL1:
-+            case HV_SYS_REG_DBGBCR9_EL1:
-+            case HV_SYS_REG_DBGWVR9_EL1:
-+            case HV_SYS_REG_DBGWCR9_EL1:
-+            case HV_SYS_REG_DBGBVR10_EL1:
-+            case HV_SYS_REG_DBGBCR10_EL1:
-+            case HV_SYS_REG_DBGWVR10_EL1:
-+            case HV_SYS_REG_DBGWCR10_EL1:
-+            case HV_SYS_REG_DBGBVR11_EL1:
-+            case HV_SYS_REG_DBGBCR11_EL1:
-+            case HV_SYS_REG_DBGWVR11_EL1:
-+            case HV_SYS_REG_DBGWCR11_EL1:
-+            case HV_SYS_REG_DBGBVR12_EL1:
-+            case HV_SYS_REG_DBGBCR12_EL1:
-+            case HV_SYS_REG_DBGWVR12_EL1:
-+            case HV_SYS_REG_DBGWCR12_EL1:
-+            case HV_SYS_REG_DBGBVR13_EL1:
-+            case HV_SYS_REG_DBGBCR13_EL1:
-+            case HV_SYS_REG_DBGWVR13_EL1:
-+            case HV_SYS_REG_DBGWCR13_EL1:
-+            case HV_SYS_REG_DBGBVR14_EL1:
-+            case HV_SYS_REG_DBGBCR14_EL1:
-+            case HV_SYS_REG_DBGWVR14_EL1:
-+            case HV_SYS_REG_DBGWCR14_EL1:
-+            case HV_SYS_REG_DBGBVR15_EL1:
-+            case HV_SYS_REG_DBGBCR15_EL1:
-+            case HV_SYS_REG_DBGWVR15_EL1:
-+            case HV_SYS_REG_DBGWCR15_EL1:
-+                /*
-+                 * If the guest is being debugged, the vCPU's debug registers
-+                 * are already holding the gdbstub's view of the registers (set
-+                 * in hvf_arch_update_guest_debug()).
-+                 */
-+                continue;
-+            }
-+        }
-+
-         val = arm_cpu->cpreg_values[hvf_sreg_match[i].cp_idx];
-         ret = hv_vcpu_set_sys_reg(cpu->hvf->fd, hvf_sreg_match[i].reg, val);
-         assert_hvf_ok(ret);
-@@ -1532,11 +1804,13 @@ int hvf_vcpu_exec(CPUState *cpu)
- {
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-     CPUARMState *env = &arm_cpu->env;
-+    int ret;
-     hv_vcpu_exit_t *hvf_exit = cpu->hvf->exit;
-     hv_return_t r;
-     bool advance_pc = false;
- 
--    if (hvf_inject_interrupts(cpu)) {
-+    if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
-+        hvf_inject_interrupts(cpu)) {
-         return EXCP_INTERRUPT;
-     }
- 
-@@ -1554,6 +1828,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-     uint64_t syndrome = hvf_exit->exception.syndrome;
-     uint32_t ec = syn_get_ec(syndrome);
- 
-+    ret = 0;
-     qemu_mutex_lock_iothread();
-     switch (exit_reason) {
-     case HV_EXIT_REASON_EXCEPTION:
-@@ -1573,6 +1848,49 @@ int hvf_vcpu_exec(CPUState *cpu)
-     hvf_sync_vtimer(cpu);
- 
-     switch (ec) {
-+    case EC_SOFTWARESTEP: {
-+        ret = EXCP_DEBUG;
-+
-+        if (!cpu->singlestep_enabled) {
-+            error_report("EC_SOFTWARESTEP but single-stepping not enabled");
-+        }
-+        break;
-+    }
-+    case EC_AA64_BKPT: {
-+        ret = EXCP_DEBUG;
-+
-+        cpu_synchronize_state(cpu);
-+
-+        if (!hvf_find_sw_breakpoint(cpu, env->pc)) {
-+            /* Re-inject into the guest */
-+            ret = 0;
-+            hvf_raise_exception(cpu, EXCP_BKPT, syn_aa64_bkpt(0));
-+        }
-+        break;
-+    }
-+    case EC_BREAKPOINT: {
-+        ret = EXCP_DEBUG;
-+
-+        cpu_synchronize_state(cpu);
-+
-+        if (!find_hw_breakpoint(cpu, env->pc)) {
-+            error_report("EC_BREAKPOINT but unknown hw breakpoint");
-+        }
-+        break;
-+    }
-+    case EC_WATCHPOINT: {
-+        ret = EXCP_DEBUG;
-+
-+        cpu_synchronize_state(cpu);
-+
-+        CPUWatchpoint *wp =
-+            find_hw_watchpoint(cpu, hvf_exit->exception.virtual_address);
-+        if (!wp) {
-+            error_report("EXCP_DEBUG but unknown hw watchpoint");
-+        }
-+        cpu->watchpoint_hit = wp;
-+        break;
-+    }
-     case EC_DATAABORT: {
-         bool isv = syndrome & ARM_EL_ISV;
-         bool iswrite = (syndrome >> 6) & 1;
-@@ -1677,9 +1995,14 @@ int hvf_vcpu_exec(CPUState *cpu)
-         pc += 4;
-         r = hv_vcpu_set_reg(cpu->hvf->fd, HV_REG_PC, pc);
-         assert_hvf_ok(r);
-+
-+        /* Handle single-stepping over instructions which trigger a VM exit */
-+        if (cpu->singlestep_enabled) {
-+            ret = EXCP_DEBUG;
-+        }
-     }
- 
--    return 0;
-+    return ret;
- }
- 
- static const VMStateDescription vmstate_hvf_vtimer = {
-@@ -1711,6 +2034,9 @@ int hvf_arch_init(void)
-     hvf_state->vtimer_offset = mach_absolute_time();
-     vmstate_register(NULL, 0, &vmstate_hvf_vtimer, &vtimer);
-     qemu_add_vm_change_state_handler(hvf_vm_state_change, &vtimer);
-+
-+    hvf_arm_init_debug();
-+
-     return 0;
- }
- 
-@@ -1774,3 +2100,147 @@ void hvf_arch_remove_all_hw_breakpoints(void)
-         g_array_remove_range(hw_breakpoints, 0, cur_hw_bps);
-     }
- }
-+
-+/*
-+ * Update the vCPU with the gdbstub's view of debug registers. This view
-+ * consists of all hardware breakpoints and watchpoints inserted so far while
-+ * debugging the guest.
-+ */
-+static void hvf_put_gdbstub_debug_registers(CPUState *cpu)
++static uint64_t canfd_msr_pre_write(RegisterInfo *reg, uint64_t val64)
 +{
-+    hv_return_t r = HV_SUCCESS;
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++    uint8_t multi_mode = 0;
++
++    /*
++     * Multiple mode set check. This is done to make sure user doesn't set
++     * multiple modes.
++     */
++    multi_mode = FIELD_EX32(val, MODE_SELECT_REGISTER, LBACK) +
++                 FIELD_EX32(val, MODE_SELECT_REGISTER, SLEEP) +
++                 FIELD_EX32(val, MODE_SELECT_REGISTER, SNOOP);
++
++    if (multi_mode > 1) {
++        qemu_log_mask(LOG_GUEST_ERROR, "Attempting to configure several modes"
++                      " simultaneously. One mode will be selected according to"
++                      " their priority: LBACK > SLEEP > SNOOP.\n");
++    }
++
++    if (ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, CEN) == 0) {
++        /* In configuration mode, any mode can be selected. */
++        s->regs[R_MODE_SELECT_REGISTER] = val;
++    } else {
++        bool sleep_mode_bit = FIELD_EX32(val, MODE_SELECT_REGISTER, SLEEP);
++
++        ARRAY_FIELD_DP32(s->regs, MODE_SELECT_REGISTER, SLEEP, sleep_mode_bit);
++
++        if (FIELD_EX32(val, MODE_SELECT_REGISTER, LBACK)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Attempting to set LBACK mode"
++                          " without setting CEN bit as 0\n");
++        } else if (FIELD_EX32(val, MODE_SELECT_REGISTER, SNOOP)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Attempting to set SNOOP mode"
++                          " without setting CEN bit as 0\n");
++        }
++
++        update_status_register_mode_bits(s);
++    }
++
++    return s->regs[R_MODE_SELECT_REGISTER];
++}
++
++static void canfd_exit_sleep_mode(XlnxVersalCANFDState *s)
++{
++    ARRAY_FIELD_DP32(s->regs, MODE_SELECT_REGISTER, SLEEP, 0);
++    update_status_register_mode_bits(s);
++}
++
++static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
++                       uint32_t reg_num)
++{
++    uint32_t i = 0;
++    uint32_t j = 0;
++    uint32_t val = 0;
++    uint32_t dlc_reg_val = 0;
++    uint32_t dlc_value = 0;
++
++    /* Check that reg_num should be within TX register space. */
++    assert(reg_num <= R_TB_ID_REGISTER + (NUM_REGS_PER_MSG_SPACE *
++                                          s->cfg.tx_fifo));
++
++    dlc_reg_val = s->regs[reg_num + 1];
++    dlc_value = FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, DLC);
++
++    frame->can_id = s->regs[reg_num];
++
++    if (FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, FDF)) {
++        /*
++         * CANFD frame.
++         * Converting dlc(0 to 15) 4 Byte data to plain length(i.e. 0 to 64)
++         * 1 Byte data. This is done to make it work with SocketCAN.
++         * On actual CANFD frame, this value can't be more than 0xF.
++         * Conversion table for DLC to plain length:
++         *
++         *  DLC                        Plain Length
++         *  0 - 8                      0 - 8
++         *  9                          9 - 12
++         *  10                         13 - 16
++         *  11                         17 - 20
++         *  12                         21 - 24
++         *  13                         25 - 32
++         *  14                         33 - 48
++         *  15                         49 - 64
++         */
++
++        frame->flags = QEMU_CAN_FRMF_TYPE_FD;
++
++        if (dlc_value < 8) {
++            frame->can_dlc = dlc_value;
++        } else {
++            assert((dlc_value - 8) < ARRAY_SIZE(canfd_dlc_array));
++            frame->can_dlc = canfd_dlc_array[dlc_value - 8];
++        }
++    } else {
++        /*
++         * FD Format bit not set that means it is a CAN Frame.
++         * Conversion table for classic CAN:
++         *
++         *  DLC                        Plain Length
++         *  0 - 7                      0 - 7
++         *  8 - 15                     8
++         */
++
++        if (dlc_value > 8) {
++            frame->can_dlc = 8;
++            qemu_log_mask(LOG_GUEST_ERROR, "Maximum DLC value for Classic CAN"
++                          " frame is 8. Only 8 byte data will be sent.\n");
++        } else {
++            frame->can_dlc = dlc_value;
++        }
++    }
++
++    for (j = 0; j < frame->can_dlc; j++) {
++        val = 8 * i;
++
++        frame->data[j] = extract32(s->regs[reg_num + 2 + (j / 4)], val, 8);
++        i++;
++
++        if (i % 4 == 0) {
++            i = 0;
++        }
++    }
++}
++
++static void process_cancellation_requests(XlnxVersalCANFDState *s)
++{
++    uint32_t clear_mask = s->regs[R_TX_BUFFER_READY_REQUEST_REGISTER] &
++                                 s->regs[R_TX_BUFFER_CANCEL_REQUEST_REGISTER];
++
++    s->regs[R_TX_BUFFER_READY_REQUEST_REGISTER] &= ~clear_mask;
++    s->regs[R_TX_BUFFER_CANCEL_REQUEST_REGISTER] &= ~clear_mask;
++
++    canfd_update_irq(s);
++}
++
++static void store_rx_sequential(XlnxVersalCANFDState *s,
++                                const qemu_can_frame *frame,
++                                uint32_t fill_level, uint32_t read_index,
++                                uint32_t store_location, uint8_t rx_fifo,
++                                bool rx_fifo_id, uint8_t filter_index)
++{
 +    int i;
++    bool is_canfd_frame;
++    uint8_t dlc = frame->can_dlc;
++    uint8_t rx_reg_num = 0;
++    uint32_t dlc_reg_val = 0;
++    uint32_t data_reg_val = 0;
 +
-+    for (i = 0; i < cur_hw_bps; i++) {
-+        HWBreakpoint *bp = get_hw_bp(i);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbcr_regs[i], bp->bcr);
-+        assert_hvf_ok(r);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbvr_regs[i], bp->bvr);
-+        assert_hvf_ok(r);
-+    }
-+    for (i = cur_hw_bps; i < max_hw_bps; i++) {
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbcr_regs[i], 0);
-+        assert_hvf_ok(r);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbvr_regs[i], 0);
-+        assert_hvf_ok(r);
-+    }
++    /* Getting RX0/1 fill level */
++    if ((fill_level) > rx_fifo - 1) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
 +
-+    for (i = 0; i < cur_hw_wps; i++) {
-+        HWWatchpoint *wp = get_hw_wp(i);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwcr_regs[i], wp->wcr);
-+        assert_hvf_ok(r);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwvr_regs[i], wp->wvr);
-+        assert_hvf_ok(r);
-+    }
-+    for (i = cur_hw_wps; i < max_hw_wps; i++) {
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwcr_regs[i], 0);
-+        assert_hvf_ok(r);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwvr_regs[i], 0);
-+        assert_hvf_ok(r);
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: RX%d Buffer is full. Discarding the"
++                      " message\n", path, rx_fifo_id);
++
++        /* Set the corresponding RF buffer overflow interrupt. */
++        if (rx_fifo_id == 0) {
++            ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXFOFLW, 1);
++        } else {
++            ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXFOFLW_1, 1);
++        }
++    } else {
++        uint16_t rx_timestamp = CANFD_TIMER_MAX -
++                                    ptimer_get_count(s->canfd_timer);
++
++        if (rx_timestamp == 0xFFFF) {
++            ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TSCNT_OFLW, 1);
++        } else {
++            ARRAY_FIELD_DP32(s->regs, TIMESTAMP_REGISTER, TIMESTAMP_CNT,
++                             rx_timestamp);
++        }
++
++        if (rx_fifo_id == 0) {
++            ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, FL,
++                             fill_level + 1);
++            assert(store_location <=
++                              R_RB_ID_REGISTER + (s->cfg.rx0_fifo *
++                                                  NUM_REGS_PER_MSG_SPACE));
++        } else {
++            ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, FL_1,
++                             fill_level + 1);
++            assert(store_location <=
++                              R_RB_ID_REGISTER_1 + (s->cfg.rx1_fifo *
++                                                    NUM_REGS_PER_MSG_SPACE));
++        }
++
++        s->regs[store_location] = frame->can_id;
++
++        dlc = frame->can_dlc;
++
++        if (frame->flags == QEMU_CAN_FRMF_TYPE_FD) {
++            is_canfd_frame = true;
++
++            /* Store dlc value in Xilinx specific format. */
++            for (i = 0; i < ARRAY_SIZE(canfd_dlc_array); i++) {
++                if (canfd_dlc_array[i] == frame->can_dlc) {
++                    dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, 8 + i);
++                }
++            }
++        } else {
++            is_canfd_frame = false;
++
++            if (frame->can_dlc > 8) {
++                dlc = 8;
++            }
++
++            dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, dlc);
++        }
++
++        dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, FDF, is_canfd_frame);
++        dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, TIMESTAMP, rx_timestamp);
++        dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, MATCHED_FILTER_INDEX,
++                                  filter_index);
++        s->regs[store_location + 1] = dlc_reg_val;
++
++        for (i = 0; i < dlc; i++) {
++            /* Register size is 4 byte but frame->data each is 1 byte. */
++            switch (i % 4) {
++            case 0:
++                rx_reg_num = i / 4;
++
++                data_reg_val = FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES3,
++                                          frame->data[i]);
++                break;
++            case 1:
++                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES2,
++                                           frame->data[i]);
++                break;
++            case 2:
++                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES1,
++                                           frame->data[i]);
++                break;
++            case 3:
++                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES0,
++                                           frame->data[i]);
++                /*
++                 * Last Bytes data which means we have all 4 bytes ready to
++                 * store in one rx regs.
++                 */
++                s->regs[store_location + rx_reg_num + 2] = data_reg_val;
++                break;
++            }
++        }
++
++        if (i % 4) {
++            /*
++             * In case DLC is not multiplier of 4, data is not saved to RX FIFO
++             * in above switch case. Store the remaining bytes here.
++             */
++            s->regs[store_location + rx_reg_num + 2] = data_reg_val;
++        }
++
++        /* set the interrupt as RXOK. */
++        ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXOK, 1);
 +    }
 +}
 +
-+/*
-+ * Update the vCPU with the guest's view of debug registers. This view is kept
-+ * in the environment at all times.
-+ */
-+static void hvf_put_guest_debug_registers(CPUState *cpu)
++static void update_rx_sequential(XlnxVersalCANFDState *s,
++                                 const qemu_can_frame *frame)
 +{
-+    ARMCPU *arm_cpu = ARM_CPU(cpu);
-+    CPUARMState *env = &arm_cpu->env;
-+    hv_return_t r = HV_SUCCESS;
++    bool filter_pass = false;
++    uint8_t filter_index = 0;
 +    int i;
++    int filter_partition = ARRAY_FIELD_EX32(s->regs,
++                                            RX_FIFO_WATERMARK_REGISTER, RXFP);
++    uint32_t store_location;
++    uint32_t fill_level;
++    uint32_t read_index;
++    uint8_t store_index = 0;
++    g_autofree char *path = NULL;
++    /*
++     * If all UAF bits are set to 0, then received messages are not stored
++     * in the RX buffers.
++     */
++    if (s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER]) {
++        uint32_t acceptance_filter_status =
++                                s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER];
 +
-+    for (i = 0; i < max_hw_bps; i++) {
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbcr_regs[i],
-+                                env->cp15.dbgbcr[i]);
-+        assert_hvf_ok(r);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgbvr_regs[i],
-+                                env->cp15.dbgbvr[i]);
-+        assert_hvf_ok(r);
++        for (i = 0; i < 32; i++) {
++            if (acceptance_filter_status & 0x1) {
++                uint32_t msg_id_masked = s->regs[R_AFMR_REGISTER + 2 * i] &
++                                         frame->can_id;
++                uint32_t afir_id_masked = s->regs[R_AFIR_REGISTER + 2 * i] &
++                                          s->regs[R_AFMR_REGISTER + 2 * i];
++                uint16_t std_msg_id_masked = FIELD_EX32(msg_id_masked,
++                                                        AFIR_REGISTER, AIID);
++                uint16_t std_afir_id_masked = FIELD_EX32(afir_id_masked,
++                                                         AFIR_REGISTER, AIID);
++                uint32_t ext_msg_id_masked = FIELD_EX32(msg_id_masked,
++                                                        AFIR_REGISTER,
++                                                        AIID_EXT);
++                uint32_t ext_afir_id_masked = FIELD_EX32(afir_id_masked,
++                                                         AFIR_REGISTER,
++                                                         AIID_EXT);
++                bool ext_ide = FIELD_EX32(s->regs[R_AFMR_REGISTER + 2 * i],
++                                          AFMR_REGISTER, AMIDE);
++
++                if (std_msg_id_masked == std_afir_id_masked) {
++                    if (ext_ide) {
++                        /* Extended message ID message. */
++                        if (ext_msg_id_masked == ext_afir_id_masked) {
++                            filter_pass = true;
++                            filter_index = i;
++
++                            break;
++                        }
++                    } else {
++                        /* Standard message ID. */
++                        filter_pass = true;
++                        filter_index = i;
++
++                        break;
++                    }
++                }
++            }
++            acceptance_filter_status >>= 1;
++        }
 +    }
 +
-+    for (i = 0; i < max_hw_wps; i++) {
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwcr_regs[i],
-+                                env->cp15.dbgwcr[i]);
-+        assert_hvf_ok(r);
-+        r = hv_vcpu_set_sys_reg(cpu->hvf->fd, dbgwvr_regs[i],
-+                                env->cp15.dbgwvr[i]);
-+        assert_hvf_ok(r);
-+    }
-+}
++    if (!filter_pass) {
++        path = object_get_canonical_path(OBJECT(s));
 +
-+static inline bool hvf_arm_hw_debug_active(CPUState *cpu)
-+{
-+    return ((cur_hw_wps > 0) || (cur_hw_bps > 0));
-+}
-+
-+static void hvf_arch_set_traps(void)
-+{
-+    CPUState *cpu;
-+    bool should_enable_traps = false;
-+    hv_return_t r = HV_SUCCESS;
-+
-+    /* Check whether guest debugging is enabled for at least one vCPU; if it
-+     * is, enable exiting the guest on all vCPUs */
-+    CPU_FOREACH(cpu) {
-+        should_enable_traps |= cpu->hvf->guest_debug_enabled;
-+    }
-+    CPU_FOREACH(cpu) {
-+        /* Set whether debug exceptions exit the guest */
-+        r = hv_vcpu_set_trap_debug_exceptions(cpu->hvf->fd,
-+                                              should_enable_traps);
-+        assert_hvf_ok(r);
-+
-+        /* Set whether accesses to debug registers exit the guest */
-+        r = hv_vcpu_set_trap_debug_reg_accesses(cpu->hvf->fd,
-+                                                should_enable_traps);
-+        assert_hvf_ok(r);
-+    }
-+}
-+
-+void hvf_arch_update_guest_debug(CPUState *cpu)
-+{
-+    ARMCPU *arm_cpu = ARM_CPU(cpu);
-+    CPUARMState *env = &arm_cpu->env;
-+
-+    /* Check whether guest debugging is enabled */
-+    cpu->hvf->guest_debug_enabled = cpu->singlestep_enabled ||
-+                                    hvf_sw_breakpoints_active(cpu) ||
-+                                    hvf_arm_hw_debug_active(cpu);
-+
-+    /* Update debug registers */
-+    if (cpu->hvf->guest_debug_enabled) {
-+        hvf_put_gdbstub_debug_registers(cpu);
++        trace_xlnx_canfd_rx_fifo_filter_reject(path, frame->can_id,
++                                               frame->can_dlc);
 +    } else {
-+        hvf_put_guest_debug_registers(cpu);
++        if (filter_index <= filter_partition) {
++            fill_level = ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER, FL);
++            read_index = ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER, RI);
++            store_index = read_index + fill_level;
++
++            if (read_index == s->cfg.rx0_fifo - 1) {
++                /*
++                 * When ri is s->cfg.rx0_fifo - 1 i.e. max, it goes cyclic that
++                 * means we reset the ri to 0x0.
++                 */
++                read_index = 0;
++                ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, RI,
++                                 read_index);
++            }
++
++            if (store_index > s->cfg.rx0_fifo - 1) {
++                store_index -= s->cfg.rx0_fifo - 1;
++            }
++
++            store_location = R_RB_ID_REGISTER +
++                          (store_index * NUM_REGS_PER_MSG_SPACE);
++
++            store_rx_sequential(s, frame, fill_level, read_index,
++                                store_location, s->cfg.rx0_fifo, 0,
++                                filter_index);
++        } else {
++            /* RX 1 fill level message */
++            fill_level = ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER,
++                                          FL_1);
++            read_index = ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER,
++                                          RI_1);
++            store_index = read_index + fill_level;
++
++            if (read_index == s->cfg.rx1_fifo - 1) {
++                /*
++                 * When ri is s->cfg.rx1_fifo - 1 i.e. max, it goes cyclic that
++                 * means we reset the ri to 0x0.
++                 */
++                read_index = 0;
++                ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, RI_1,
++                                 read_index);
++            }
++
++            if (store_index > s->cfg.rx1_fifo - 1) {
++                store_index -= s->cfg.rx1_fifo - 1;
++            }
++
++            store_location = R_RB_ID_REGISTER_1 +
++                          (store_index * NUM_REGS_PER_MSG_SPACE);
++
++            store_rx_sequential(s, frame, fill_level, read_index,
++                                store_location, s->cfg.rx1_fifo, 1,
++                                filter_index);
++        }
++
++        path = object_get_canonical_path(OBJECT(s));
++
++        trace_xlnx_canfd_rx_data(path, frame->can_id, frame->can_dlc,
++                                 frame->flags);
++        canfd_update_irq(s);
 +    }
-+
-+    cpu_synchronize_state(cpu);
-+
-+    /* Enable/disable single-stepping */
-+    if (cpu->singlestep_enabled) {
-+        env->cp15.mdscr_el1 =
-+            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_SS_SHIFT, 1, 1);
-+        pstate_write(env, pstate_read(env) | PSTATE_SS);
-+    } else {
-+        env->cp15.mdscr_el1 =
-+            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_SS_SHIFT, 1, 0);
-+    }
-+
-+    /* Enable/disable Breakpoint exceptions */
-+    if (hvf_arm_hw_debug_active(cpu)) {
-+        env->cp15.mdscr_el1 =
-+            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_MDE_SHIFT, 1, 1);
-+    } else {
-+        env->cp15.mdscr_el1 =
-+            deposit64(env->cp15.mdscr_el1, MDSCR_EL1_MDE_SHIFT, 1, 0);
-+    }
-+
-+    hvf_arch_set_traps();
 +}
 +
-+inline bool hvf_arch_supports_guest_debug(void)
++static bool tx_ready_check(XlnxVersalCANFDState *s)
 +{
++    if (ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, SRST)) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Attempting to transfer data while"
++                      " XlnxVersalCANFDState is in reset mode\n", path);
++
++        return false;
++    }
++
++    if (ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, CEN) == 0) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Attempting to transfer data while"
++                      " XlnxVersalCANFDState is in configuration mode."
++                      " Reset the core so operations can start fresh\n",
++                      path);
++        return false;
++    }
++
++    if (ARRAY_FIELD_EX32(s->regs, MODE_SELECT_REGISTER, SNOOP)) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Attempting to transfer data while"
++                      " XlnxVersalCANFDState is in SNOOP MODE\n",
++                      path);
++        return false;
++    }
++
 +    return true;
 +}
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 08bc96ecbc1..f6775c942aa 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -703,3 +703,12 @@ int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len, int type)
- void hvf_arch_remove_all_hw_breakpoints(void)
- {
- }
 +
-+void hvf_arch_update_guest_debug(CPUState *cpu)
++static void tx_fifo_stamp(XlnxVersalCANFDState *s, uint32_t tb0_regid)
 +{
++    /*
++     * If EFC bit in DLC message is set, this means we will store the
++     * event of this transmitted message with time stamp.
++     */
++    uint32_t dlc_reg_val = 0;
++
++    if (FIELD_EX32(s->regs[tb0_regid + 1], TB0_DLC_REGISTER, EFC)) {
++        uint8_t dlc_val = FIELD_EX32(s->regs[tb0_regid + 1], TB0_DLC_REGISTER,
++                                     DLC);
++        bool fdf_val = FIELD_EX32(s->regs[tb0_regid + 1], TB0_DLC_REGISTER,
++                                  FDF);
++        bool brs_val = FIELD_EX32(s->regs[tb0_regid + 1], TB0_DLC_REGISTER,
++                                  BRS);
++        uint8_t mm_val = FIELD_EX32(s->regs[tb0_regid + 1], TB0_DLC_REGISTER,
++                                    MM);
++        uint8_t fill_level = ARRAY_FIELD_EX32(s->regs,
++                                              TX_EVENT_FIFO_STATUS_REGISTER,
++                                              TXE_FL);
++        uint8_t read_index = ARRAY_FIELD_EX32(s->regs,
++                                              TX_EVENT_FIFO_STATUS_REGISTER,
++                                              TXE_RI);
++        uint8_t store_index = fill_level + read_index;
++
++        if ((fill_level) > s->cfg.tx_fifo - 1) {
++            qemu_log_mask(LOG_GUEST_ERROR, "TX Event Buffer is full."
++                          " Discarding the message\n");
++            ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TXEOFLW, 1);
++        } else {
++            if (read_index == s->cfg.tx_fifo - 1) {
++                /*
++                 * When ri is s->cfg.tx_fifo - 1 i.e. max, it goes cyclic that
++                 * means we reset the ri to 0x0.
++                 */
++                read_index = 0;
++                ARRAY_FIELD_DP32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER, TXE_RI,
++                                 read_index);
++            }
++
++            if (store_index > s->cfg.tx_fifo - 1) {
++                store_index -= s->cfg.tx_fifo - 1;
++            }
++
++            assert(store_index < s->cfg.tx_fifo);
++
++            uint32_t tx_event_reg0_id = R_TXE_FIFO_TB_ID_REGISTER +
++                                        (store_index * 2);
++
++            /* Store message ID in TX event register. */
++            s->regs[tx_event_reg0_id] = s->regs[tb0_regid];
++
++            uint16_t tx_timestamp = CANFD_TIMER_MAX -
++                                            ptimer_get_count(s->canfd_timer);
++
++            /* Store DLC with time stamp in DLC regs. */
++            dlc_reg_val = FIELD_DP32(0, TXE_FIFO_TB_DLC_REGISTER, DLC, dlc_val);
++            dlc_reg_val |= FIELD_DP32(0, TXE_FIFO_TB_DLC_REGISTER, FDF,
++                                      fdf_val);
++            dlc_reg_val |= FIELD_DP32(0, TXE_FIFO_TB_DLC_REGISTER, BRS,
++                                      brs_val);
++            dlc_reg_val |= FIELD_DP32(0, TXE_FIFO_TB_DLC_REGISTER, ET, 0x3);
++            dlc_reg_val |= FIELD_DP32(0, TXE_FIFO_TB_DLC_REGISTER, MM, mm_val);
++            dlc_reg_val |= FIELD_DP32(0, TXE_FIFO_TB_DLC_REGISTER, TIMESTAMP,
++                                      tx_timestamp);
++            s->regs[tx_event_reg0_id + 1] = dlc_reg_val;
++
++            ARRAY_FIELD_DP32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER, TXE_FL,
++                             fill_level + 1);
++        }
++    }
 +}
 +
-+inline bool hvf_arch_supports_guest_debug(void)
++static gint g_cmp_ids(gconstpointer data1, gconstpointer data2)
 +{
-+    return false;
++    tx_ready_reg_info *tx_reg_1 = (tx_ready_reg_info *) data1;
++    tx_ready_reg_info *tx_reg_2 = (tx_ready_reg_info *) data2;
++
++    return tx_reg_1->can_id - tx_reg_2->can_id;
 +}
++
++static void free_list(GSList *list)
++{
++    GSList *iterator = NULL;
++
++    for (iterator = list; iterator != NULL; iterator = iterator->next) {
++        g_free((tx_ready_reg_info *)iterator->data);
++    }
++
++    g_slist_free(list);
++
++    return;
++}
++
++static GSList *prepare_tx_data(XlnxVersalCANFDState *s)
++{
++    uint8_t i = 0;
++    GSList *list = NULL;
++    uint32_t reg_num = 0;
++    uint32_t reg_ready = s->regs[R_TX_BUFFER_READY_REQUEST_REGISTER];
++
++    /* First find the messages which are ready for transmission. */
++    for (i = 0; i < s->cfg.tx_fifo; i++) {
++        if (reg_ready & 1) {
++            reg_num = R_TB_ID_REGISTER + (NUM_REGS_PER_MSG_SPACE * i);
++            tx_ready_reg_info *temp = g_new(tx_ready_reg_info, 1);
++
++            temp->can_id = s->regs[reg_num];
++            temp->reg_num = reg_num;
++            list = g_slist_prepend(list, temp);
++            list = g_slist_sort(list, g_cmp_ids);
++        }
++
++        reg_ready >>= 1;
++    }
++
++    s->regs[R_TX_BUFFER_READY_REQUEST_REGISTER] = 0;
++    s->regs[R_TX_BUFFER_CANCEL_REQUEST_REGISTER] = 0;
++
++    return list;
++}
++
++static void transfer_data(XlnxVersalCANFDState *s)
++{
++    bool canfd_tx = tx_ready_check(s);
++    GSList *list, *iterator = NULL;
++    qemu_can_frame frame;
++
++    if (!canfd_tx) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Controller not enabled for data"
++                      " transfer\n", path);
++        return;
++    }
++
++    list = prepare_tx_data(s);
++    if (list == NULL) {
++        return;
++    }
++
++    for (iterator = list; iterator != NULL; iterator = iterator->next) {
++        regs2frame(s, &frame,
++                   ((tx_ready_reg_info *)iterator->data)->reg_num);
++
++        if (ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, LBACK)) {
++            update_rx_sequential(s, &frame);
++            tx_fifo_stamp(s, ((tx_ready_reg_info *)iterator->data)->reg_num);
++
++            ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, RXOK, 1);
++        } else {
++            g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++            trace_xlnx_canfd_tx_data(path, frame.can_id, frame.can_dlc,
++                                     frame.flags);
++            can_bus_client_send(&s->bus_client, &frame, 1);
++            tx_fifo_stamp(s,
++                          ((tx_ready_reg_info *)iterator->data)->reg_num);
++
++            ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TXRRS, 1);
++
++            if (ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, SLEEP)) {
++                canfd_exit_sleep_mode(s);
++            }
++        }
++    }
++
++    ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TXOK, 1);
++    free_list(list);
++
++    canfd_update_irq(s);
++}
++
++static uint64_t canfd_srr_pre_write(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++
++    ARRAY_FIELD_DP32(s->regs, SOFTWARE_RESET_REGISTER, CEN,
++                     FIELD_EX32(val, SOFTWARE_RESET_REGISTER, CEN));
++
++    if (FIELD_EX32(val, SOFTWARE_RESET_REGISTER, SRST)) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        trace_xlnx_canfd_reset(path, val64);
++
++        /* First, core will do software reset then will enter in config mode. */
++        canfd_config_reset(s);
++    } else if (ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, CEN) == 0) {
++        canfd_config_mode(s);
++    } else {
++        /*
++         * Leave config mode. Now XlnxVersalCANFD core will enter Normal, Sleep,
++         * snoop or Loopback mode depending upon LBACK, SLEEP, SNOOP register
++         * states.
++         */
++        ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, CONFIG, 0);
++
++        ptimer_transaction_begin(s->canfd_timer);
++        ptimer_set_count(s->canfd_timer, 0);
++        ptimer_transaction_commit(s->canfd_timer);
++        update_status_register_mode_bits(s);
++        transfer_data(s);
++    }
++
++    return s->regs[R_SOFTWARE_RESET_REGISTER];
++}
++
++static uint64_t filter_mask(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t reg_idx = (reg->access->addr) / 4;
++    uint32_t val = val64;
++    uint32_t filter_offset = (reg_idx - R_AFMR_REGISTER) / 2;
++
++    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
++        (1 << filter_offset))) {
++        s->regs[reg_idx] = val;
++    } else {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter %d not enabled\n",
++                      path, filter_offset + 1);
++    }
++
++    return s->regs[reg_idx];
++}
++
++static uint64_t filter_id(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    hwaddr reg_idx = (reg->access->addr) / 4;
++    uint32_t val = val64;
++    uint32_t filter_offset = (reg_idx - R_AFIR_REGISTER) / 2;
++
++    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
++        (1 << filter_offset))) {
++        s->regs[reg_idx] = val;
++    } else {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter %d not enabled\n",
++                      path, filter_offset + 1);
++    }
++
++    return s->regs[reg_idx];
++}
++
++static uint64_t canfd_tx_fifo_status_prew(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++    uint8_t read_ind = 0;
++    uint8_t fill_ind = ARRAY_FIELD_EX32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER,
++                                        TXE_FL);
++
++    if (FIELD_EX32(val, TX_EVENT_FIFO_STATUS_REGISTER, TXE_IRI) && fill_ind) {
++        read_ind = ARRAY_FIELD_EX32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER,
++                                    TXE_RI) + 1;
++
++        if (read_ind > s->cfg.tx_fifo - 1) {
++            read_ind = 0;
++        }
++
++        /*
++         * Increase the read index by 1 and decrease the fill level by 1.
++         */
++        ARRAY_FIELD_DP32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER, TXE_RI,
++                         read_ind);
++        ARRAY_FIELD_DP32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER, TXE_FL,
++                         fill_ind - 1);
++    }
++
++    return s->regs[R_TX_EVENT_FIFO_STATUS_REGISTER];
++}
++
++static uint64_t canfd_rx_fifo_status_prew(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++    uint8_t read_ind = 0;
++    uint8_t fill_ind = 0;
++
++    if (FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, IRI)) {
++        /* FL index is zero, setting IRI bit has no effect. */
++        if (FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, FL) != 0) {
++            read_ind = FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, RI) + 1;
++
++            if (read_ind > s->cfg.rx0_fifo - 1) {
++                read_ind = 0;
++            }
++
++            fill_ind = FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, FL) - 1;
++
++            ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, RI, read_ind);
++            ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, FL, fill_ind);
++        }
++    }
++
++    if (FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, IRI_1)) {
++        /* FL_1 index is zero, setting IRI_1 bit has no effect. */
++        if (FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, FL_1) != 0) {
++            read_ind = FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, RI_1) + 1;
++
++            if (read_ind > s->cfg.rx1_fifo - 1) {
++                read_ind = 0;
++            }
++
++            fill_ind = FIELD_EX32(val, RX_FIFO_STATUS_REGISTER, FL_1) - 1;
++
++            ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, RI_1, read_ind);
++            ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, FL_1, fill_ind);
++        }
++    }
++
++    return s->regs[R_RX_FIFO_STATUS_REGISTER];
++}
++
++static uint64_t canfd_tsr_pre_write(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++
++    if (FIELD_EX32(val, TIMESTAMP_REGISTER, CTS)) {
++        ARRAY_FIELD_DP32(s->regs, TIMESTAMP_REGISTER, TIMESTAMP_CNT, 0);
++        ptimer_transaction_begin(s->canfd_timer);
++        ptimer_set_count(s->canfd_timer, 0);
++        ptimer_transaction_commit(s->canfd_timer);
++    }
++
++    return 0;
++}
++
++static uint64_t canfd_trr_reg_prew(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++
++    if (ARRAY_FIELD_EX32(s->regs, MODE_SELECT_REGISTER, SNOOP)) {
++        g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Controller is in SNOOP mode."
++                      " tx_ready_register will stay in reset mode\n", path);
++        return 0;
++    } else {
++        return val64;
++    }
++}
++
++static void canfd_trr_reg_postw(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++
++    transfer_data(s);
++}
++
++static void canfd_cancel_reg_postw(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++
++    process_cancellation_requests(s);
++}
++
++static uint64_t canfd_write_check_prew(RegisterInfo *reg, uint64_t val64)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
++    uint32_t val = val64;
++
++    if (ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, CEN) == 0) {
++        return val;
++    }
++    return 0;
++}
++
++static const RegisterAccessInfo canfd_tx_regs[] = {
++    {   .name = "TB_ID_REGISTER",  .addr = A_TB_ID_REGISTER,
++    },{ .name = "TB0_DLC_REGISTER",  .addr = A_TB0_DLC_REGISTER,
++    },{ .name = "TB_DW0_REGISTER",  .addr = A_TB_DW0_REGISTER,
++    },{ .name = "TB_DW1_REGISTER",  .addr = A_TB_DW1_REGISTER,
++    },{ .name = "TB_DW2_REGISTER",  .addr = A_TB_DW2_REGISTER,
++    },{ .name = "TB_DW3_REGISTER",  .addr = A_TB_DW3_REGISTER,
++    },{ .name = "TB_DW4_REGISTER",  .addr = A_TB_DW4_REGISTER,
++    },{ .name = "TB_DW5_REGISTER",  .addr = A_TB_DW5_REGISTER,
++    },{ .name = "TB_DW6_REGISTER",  .addr = A_TB_DW6_REGISTER,
++    },{ .name = "TB_DW7_REGISTER",  .addr = A_TB_DW7_REGISTER,
++    },{ .name = "TB_DW8_REGISTER",  .addr = A_TB_DW8_REGISTER,
++    },{ .name = "TB_DW9_REGISTER",  .addr = A_TB_DW9_REGISTER,
++    },{ .name = "TB_DW10_REGISTER",  .addr = A_TB_DW10_REGISTER,
++    },{ .name = "TB_DW11_REGISTER",  .addr = A_TB_DW11_REGISTER,
++    },{ .name = "TB_DW12_REGISTER",  .addr = A_TB_DW12_REGISTER,
++    },{ .name = "TB_DW13_REGISTER",  .addr = A_TB_DW13_REGISTER,
++    },{ .name = "TB_DW14_REGISTER",  .addr = A_TB_DW14_REGISTER,
++    },{ .name = "TB_DW15_REGISTER",  .addr = A_TB_DW15_REGISTER,
++    }
++};
++
++static const RegisterAccessInfo canfd_rx0_regs[] = {
++    {   .name = "RB_ID_REGISTER",  .addr = A_RB_ID_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DLC_REGISTER",  .addr = A_RB_DLC_REGISTER,
++        .ro = 0xfe1fffff,
++    },{ .name = "RB_DW0_REGISTER",  .addr = A_RB_DW0_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW1_REGISTER",  .addr = A_RB_DW1_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW2_REGISTER",  .addr = A_RB_DW2_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW3_REGISTER",  .addr = A_RB_DW3_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW4_REGISTER",  .addr = A_RB_DW4_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW5_REGISTER",  .addr = A_RB_DW5_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW6_REGISTER",  .addr = A_RB_DW6_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW7_REGISTER",  .addr = A_RB_DW7_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW8_REGISTER",  .addr = A_RB_DW8_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW9_REGISTER",  .addr = A_RB_DW9_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW10_REGISTER",  .addr = A_RB_DW10_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW11_REGISTER",  .addr = A_RB_DW11_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW12_REGISTER",  .addr = A_RB_DW12_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW13_REGISTER",  .addr = A_RB_DW13_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW14_REGISTER",  .addr = A_RB_DW14_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW15_REGISTER",  .addr = A_RB_DW15_REGISTER,
++        .ro = 0xffffffff,
++    }
++};
++
++static const RegisterAccessInfo canfd_rx1_regs[] = {
++    {   .name = "RB_ID_REGISTER_1",  .addr = A_RB_ID_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DLC_REGISTER_1",  .addr = A_RB_DLC_REGISTER_1,
++        .ro = 0xfe1fffff,
++    },{ .name = "RB0_DW0_REGISTER_1",  .addr = A_RB0_DW0_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW1_REGISTER_1",  .addr = A_RB_DW1_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW2_REGISTER_1",  .addr = A_RB_DW2_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW3_REGISTER_1",  .addr = A_RB_DW3_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW4_REGISTER_1",  .addr = A_RB_DW4_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW5_REGISTER_1",  .addr = A_RB_DW5_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW6_REGISTER_1",  .addr = A_RB_DW6_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW7_REGISTER_1",  .addr = A_RB_DW7_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW8_REGISTER_1",  .addr = A_RB_DW8_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW9_REGISTER_1",  .addr = A_RB_DW9_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW10_REGISTER_1",  .addr = A_RB_DW10_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW11_REGISTER_1",  .addr = A_RB_DW11_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW12_REGISTER_1",  .addr = A_RB_DW12_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW13_REGISTER_1",  .addr = A_RB_DW13_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW14_REGISTER_1",  .addr = A_RB_DW14_REGISTER_1,
++        .ro = 0xffffffff,
++    },{ .name = "RB_DW15_REGISTER_1",  .addr = A_RB_DW15_REGISTER_1,
++        .ro = 0xffffffff,
++    }
++};
++
++/* Acceptance filter registers. */
++static const RegisterAccessInfo canfd_af_regs[] = {
++    {   .name = "AFMR_REGISTER",  .addr = A_AFMR_REGISTER,
++        .pre_write = filter_mask,
++    },{ .name = "AFIR_REGISTER",  .addr = A_AFIR_REGISTER,
++        .pre_write = filter_id,
++    }
++};
++
++static const RegisterAccessInfo canfd_txe_regs[] = {
++    {   .name = "TXE_FIFO_TB_ID_REGISTER",  .addr = A_TXE_FIFO_TB_ID_REGISTER,
++        .ro = 0xffffffff,
++    },{ .name = "TXE_FIFO_TB_DLC_REGISTER",  .addr = A_TXE_FIFO_TB_DLC_REGISTER,
++        .ro = 0xffffffff,
++    }
++};
++
++static const RegisterAccessInfo canfd_regs_info[] = {
++    {   .name = "SOFTWARE_RESET_REGISTER",  .addr = A_SOFTWARE_RESET_REGISTER,
++        .pre_write = canfd_srr_pre_write,
++    },{ .name = "MODE_SELECT_REGISTER",  .addr = A_MODE_SELECT_REGISTER,
++        .pre_write = canfd_msr_pre_write,
++    },{ .name = "ARBITRATION_PHASE_BAUD_RATE_PRESCALER_REGISTER",
++        .addr = A_ARBITRATION_PHASE_BAUD_RATE_PRESCALER_REGISTER,
++        .pre_write = canfd_write_check_prew,
++    },{ .name = "ARBITRATION_PHASE_BIT_TIMING_REGISTER",
++        .addr = A_ARBITRATION_PHASE_BIT_TIMING_REGISTER,
++        .pre_write = canfd_write_check_prew,
++    },{ .name = "ERROR_COUNTER_REGISTER",  .addr = A_ERROR_COUNTER_REGISTER,
++        .ro = 0xffff,
++    },{ .name = "ERROR_STATUS_REGISTER",  .addr = A_ERROR_STATUS_REGISTER,
++        .w1c = 0xf1f,
++    },{ .name = "STATUS_REGISTER",  .addr = A_STATUS_REGISTER,
++        .reset = 0x1,
++        .ro = 0x7f17ff,
++    },{ .name = "INTERRUPT_STATUS_REGISTER",
++        .addr = A_INTERRUPT_STATUS_REGISTER,
++        .ro = 0xffffff7f,
++    },{ .name = "INTERRUPT_ENABLE_REGISTER",
++        .addr = A_INTERRUPT_ENABLE_REGISTER,
++        .post_write = canfd_ier_post_write,
++    },{ .name = "INTERRUPT_CLEAR_REGISTER",
++        .addr = A_INTERRUPT_CLEAR_REGISTER, .pre_write = canfd_icr_pre_write,
++    },{ .name = "TIMESTAMP_REGISTER",  .addr = A_TIMESTAMP_REGISTER,
++        .ro = 0xffff0000,
++        .pre_write = canfd_tsr_pre_write,
++    },{ .name = "DATA_PHASE_BAUD_RATE_PRESCALER_REGISTER",
++        .addr = A_DATA_PHASE_BAUD_RATE_PRESCALER_REGISTER,
++        .pre_write = canfd_write_check_prew,
++    },{ .name = "DATA_PHASE_BIT_TIMING_REGISTER",
++        .addr = A_DATA_PHASE_BIT_TIMING_REGISTER,
++        .pre_write = canfd_write_check_prew,
++    },{ .name = "TX_BUFFER_READY_REQUEST_REGISTER",
++        .addr = A_TX_BUFFER_READY_REQUEST_REGISTER,
++        .pre_write = canfd_trr_reg_prew,
++        .post_write = canfd_trr_reg_postw,
++    },{ .name = "INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER",
++        .addr = A_INTERRUPT_ENABLE_TX_BUFFER_READY_REQUEST_REGISTER,
++    },{ .name = "TX_BUFFER_CANCEL_REQUEST_REGISTER",
++        .addr = A_TX_BUFFER_CANCEL_REQUEST_REGISTER,
++        .post_write = canfd_cancel_reg_postw,
++    },{ .name = "INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER",
++        .addr = A_INTERRUPT_ENABLE_TX_BUFFER_CANCELLATION_REQUEST_REGISTER,
++    },{ .name = "TX_EVENT_FIFO_STATUS_REGISTER",
++        .addr = A_TX_EVENT_FIFO_STATUS_REGISTER,
++        .ro = 0x3f1f, .pre_write = canfd_tx_fifo_status_prew,
++    },{ .name = "TX_EVENT_FIFO_WATERMARK_REGISTER",
++        .addr = A_TX_EVENT_FIFO_WATERMARK_REGISTER,
++        .reset = 0xf,
++        .pre_write = canfd_write_check_prew,
++    },{ .name = "ACCEPTANCE_FILTER_CONTROL_REGISTER",
++        .addr = A_ACCEPTANCE_FILTER_CONTROL_REGISTER,
++    },{ .name = "RX_FIFO_STATUS_REGISTER",  .addr = A_RX_FIFO_STATUS_REGISTER,
++        .ro = 0x7f3f7f3f, .pre_write = canfd_rx_fifo_status_prew,
++    },{ .name = "RX_FIFO_WATERMARK_REGISTER",
++        .addr = A_RX_FIFO_WATERMARK_REGISTER,
++        .reset = 0x1f0f0f,
++        .pre_write = canfd_write_check_prew,
++    }
++};
++
++static void xlnx_versal_canfd_ptimer_cb(void *opaque)
++{
++    /* No action required on the timer rollover. */
++}
++
++static const MemoryRegionOps canfd_ops = {
++    .read = register_read_memory,
++    .write = register_write_memory,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
++static void canfd_reset(DeviceState *dev)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(dev);
++    unsigned int i;
++
++    for (i = 0; i < ARRAY_SIZE(s->reg_info); ++i) {
++        register_reset(&s->reg_info[i]);
++    }
++
++    ptimer_transaction_begin(s->canfd_timer);
++    ptimer_set_count(s->canfd_timer, 0);
++    ptimer_transaction_commit(s->canfd_timer);
++}
++
++static bool can_xilinx_canfd_receive(CanBusClientState *client)
++{
++    XlnxVersalCANFDState *s = container_of(client, XlnxVersalCANFDState,
++                                           bus_client);
++
++    bool reset_state = ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, SRST);
++    bool can_enabled = ARRAY_FIELD_EX32(s->regs, SOFTWARE_RESET_REGISTER, CEN);
++
++    return !reset_state && can_enabled;
++}
++
++static ssize_t canfd_xilinx_receive(CanBusClientState *client,
++                                    const qemu_can_frame *buf,
++                                    size_t buf_size)
++{
++    XlnxVersalCANFDState *s = container_of(client, XlnxVersalCANFDState,
++                                           bus_client);
++    const qemu_can_frame *frame = buf;
++
++    assert(buf_size > 0);
++
++    if (ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, LBACK)) {
++        /*
++         * XlnxVersalCANFDState will not participate in normal bus communication
++         * and does not receive any messages transmitted by other CAN nodes.
++         */
++        return 1;
++    }
++
++    /* Update the status register that we are receiving message. */
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, BBSY, 1);
++
++    if (ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, SNOOP)) {
++        /* Snoop Mode: Just keep the data. no response back. */
++        update_rx_sequential(s, frame);
++    } else {
++        if ((ARRAY_FIELD_EX32(s->regs, STATUS_REGISTER, SLEEP))) {
++            /*
++             * XlnxVersalCANFDState is in sleep mode. Any data on bus will bring
++             * it to the wake up state.
++             */
++            canfd_exit_sleep_mode(s);
++        }
++
++        update_rx_sequential(s, frame);
++    }
++
++    /* Message processing done. Update the status back to !busy */
++    ARRAY_FIELD_DP32(s->regs, STATUS_REGISTER, BBSY, 0);
++    return 1;
++}
++
++static CanBusClientInfo canfd_xilinx_bus_client_info = {
++    .can_receive = can_xilinx_canfd_receive,
++    .receive = canfd_xilinx_receive,
++};
++
++static int xlnx_canfd_connect_to_bus(XlnxVersalCANFDState *s,
++                                     CanBusState *bus)
++{
++    s->bus_client.info = &canfd_xilinx_bus_client_info;
++
++    return can_bus_insert_client(bus, &s->bus_client);
++}
++
++#define NUM_REG_PER_AF      ARRAY_SIZE(canfd_af_regs)
++#define NUM_AF              32
++#define NUM_REG_PER_TXE     ARRAY_SIZE(canfd_txe_regs)
++#define NUM_TXE             32
++
++static int canfd_populate_regarray(XlnxVersalCANFDState *s,
++                                  RegisterInfoArray *r_array, int pos,
++                                  const RegisterAccessInfo *rae,
++                                  int num_rae)
++{
++    int i;
++
++    for (i = 0; i < num_rae; i++) {
++        int index = rae[i].addr / 4;
++        RegisterInfo *r = &s->reg_info[index];
++
++        object_initialize(r, sizeof(*r), TYPE_REGISTER);
++
++        *r = (RegisterInfo) {
++            .data = &s->regs[index],
++            .data_size = sizeof(uint32_t),
++            .access = &rae[i],
++            .opaque = OBJECT(s),
++        };
++
++        r_array->r[i + pos] = r;
++    }
++    return i + pos;
++}
++
++static void canfd_create_rai(RegisterAccessInfo *rai_array,
++                                const RegisterAccessInfo *canfd_regs,
++                                int template_rai_array_sz,
++                                int num_template_to_copy)
++{
++    int i;
++    int reg_num;
++
++    for (reg_num = 0; reg_num < num_template_to_copy; reg_num++) {
++        int pos = reg_num * template_rai_array_sz;
++
++        memcpy(rai_array + pos, canfd_regs,
++               template_rai_array_sz * sizeof(RegisterAccessInfo));
++
++        for (i = 0; i < template_rai_array_sz; i++) {
++            const char *name = canfd_regs[i].name;
++            uint64_t addr = canfd_regs[i].addr;
++            rai_array[i + pos].name = g_strdup_printf("%s%d", name, reg_num);
++            rai_array[i + pos].addr = addr + pos * 4;
++        }
++    }
++}
++
++static RegisterInfoArray *canfd_create_regarray(XlnxVersalCANFDState *s)
++{
++    const char *device_prefix = object_get_typename(OBJECT(s));
++    uint64_t memory_size = XLNX_VERSAL_CANFD_R_MAX * 4;
++    int num_regs;
++    int pos = 0;
++    RegisterInfoArray *r_array;
++
++    num_regs = ARRAY_SIZE(canfd_regs_info) +
++                s->cfg.tx_fifo * NUM_REGS_PER_MSG_SPACE +
++                s->cfg.rx0_fifo * NUM_REGS_PER_MSG_SPACE +
++                NUM_AF * NUM_REG_PER_AF +
++                NUM_TXE * NUM_REG_PER_TXE;
++
++    s->tx_regs = g_new0(RegisterAccessInfo,
++                        s->cfg.tx_fifo * ARRAY_SIZE(canfd_tx_regs));
++
++    canfd_create_rai(s->tx_regs, canfd_tx_regs,
++                     ARRAY_SIZE(canfd_tx_regs), s->cfg.tx_fifo);
++
++    s->rx0_regs = g_new0(RegisterAccessInfo,
++                         s->cfg.rx0_fifo * ARRAY_SIZE(canfd_rx0_regs));
++
++    canfd_create_rai(s->rx0_regs, canfd_rx0_regs,
++                     ARRAY_SIZE(canfd_rx0_regs), s->cfg.rx0_fifo);
++
++    s->af_regs = g_new0(RegisterAccessInfo,
++                        NUM_AF * ARRAY_SIZE(canfd_af_regs));
++
++    canfd_create_rai(s->af_regs, canfd_af_regs,
++                     ARRAY_SIZE(canfd_af_regs), NUM_AF);
++
++    s->txe_regs = g_new0(RegisterAccessInfo,
++                         NUM_TXE * ARRAY_SIZE(canfd_txe_regs));
++
++    canfd_create_rai(s->txe_regs, canfd_txe_regs,
++                     ARRAY_SIZE(canfd_txe_regs), NUM_TXE);
++
++    if (s->cfg.enable_rx_fifo1) {
++        num_regs += s->cfg.rx1_fifo * NUM_REGS_PER_MSG_SPACE;
++
++        s->rx1_regs = g_new0(RegisterAccessInfo,
++                             s->cfg.rx1_fifo * ARRAY_SIZE(canfd_rx1_regs));
++
++        canfd_create_rai(s->rx1_regs, canfd_rx1_regs,
++                         ARRAY_SIZE(canfd_rx1_regs), s->cfg.rx1_fifo);
++    }
++
++    r_array = g_new0(RegisterInfoArray, 1);
++    r_array->r = g_new0(RegisterInfo * , num_regs);
++    r_array->num_elements = num_regs;
++    r_array->prefix = device_prefix;
++
++    pos = canfd_populate_regarray(s, r_array, pos,
++                                  canfd_regs_info,
++                                  ARRAY_SIZE(canfd_regs_info));
++    pos = canfd_populate_regarray(s, r_array, pos,
++                                  s->tx_regs, s->cfg.tx_fifo *
++                                  NUM_REGS_PER_MSG_SPACE);
++    pos = canfd_populate_regarray(s, r_array, pos,
++                                  s->rx0_regs, s->cfg.rx0_fifo *
++                                  NUM_REGS_PER_MSG_SPACE);
++    if (s->cfg.enable_rx_fifo1) {
++        pos = canfd_populate_regarray(s, r_array, pos,
++                                      s->rx1_regs, s->cfg.rx1_fifo *
++                                      NUM_REGS_PER_MSG_SPACE);
++    }
++    pos = canfd_populate_regarray(s, r_array, pos,
++                                  s->af_regs, NUM_AF * NUM_REG_PER_AF);
++    pos = canfd_populate_regarray(s, r_array, pos,
++                                  s->txe_regs, NUM_TXE * NUM_REG_PER_TXE);
++
++    memory_region_init_io(&r_array->mem, OBJECT(s), &canfd_ops, r_array,
++                          device_prefix, memory_size);
++    return r_array;
++}
++
++static void canfd_realize(DeviceState *dev, Error **errp)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(dev);
++    RegisterInfoArray *reg_array;
++
++    reg_array = canfd_create_regarray(s);
++    memory_region_add_subregion(&s->iomem, 0x00, &reg_array->mem);
++    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
++    sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq_canfd_int);
++
++    if (s->canfdbus) {
++        if (xlnx_canfd_connect_to_bus(s, s->canfdbus) < 0) {
++            g_autofree char *path = object_get_canonical_path(OBJECT(s));
++
++            error_setg(errp, "%s: xlnx_canfd_connect_to_bus failed", path);
++            return;
++        }
++
++    }
++
++    /* Allocate a new timer. */
++    s->canfd_timer = ptimer_init(xlnx_versal_canfd_ptimer_cb, s,
++                                 PTIMER_POLICY_WRAP_AFTER_ONE_PERIOD |
++                                 PTIMER_POLICY_TRIGGER_ONLY_ON_DECREMENT |
++                                 PTIMER_POLICY_NO_IMMEDIATE_RELOAD);
++
++    ptimer_transaction_begin(s->canfd_timer);
++
++    ptimer_set_freq(s->canfd_timer, s->cfg.ext_clk_freq);
++    ptimer_set_limit(s->canfd_timer, CANFD_TIMER_MAX, 1);
++    ptimer_run(s->canfd_timer, 0);
++    ptimer_transaction_commit(s->canfd_timer);
++}
++
++static void canfd_init(Object *obj)
++{
++    XlnxVersalCANFDState *s = XILINX_CANFD(obj);
++
++    memory_region_init(&s->iomem, obj, TYPE_XILINX_CANFD,
++                       XLNX_VERSAL_CANFD_R_MAX * 4);
++}
++
++static const VMStateDescription vmstate_canfd = {
++    .name = TYPE_XILINX_CANFD,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT32_ARRAY(regs, XlnxVersalCANFDState,
++                             XLNX_VERSAL_CANFD_R_MAX),
++        VMSTATE_PTIMER(canfd_timer, XlnxVersalCANFDState),
++        VMSTATE_END_OF_LIST(),
++    }
++};
++
++static Property canfd_core_properties[] = {
++    DEFINE_PROP_UINT8("rx-fifo0", XlnxVersalCANFDState, cfg.rx0_fifo, 0x40),
++    DEFINE_PROP_UINT8("rx-fifo1", XlnxVersalCANFDState, cfg.rx1_fifo, 0x40),
++    DEFINE_PROP_UINT8("tx-fifo", XlnxVersalCANFDState, cfg.tx_fifo, 0x20),
++    DEFINE_PROP_BOOL("enable-rx-fifo1", XlnxVersalCANFDState,
++                     cfg.enable_rx_fifo1, true),
++    DEFINE_PROP_UINT32("ext_clk_freq", XlnxVersalCANFDState, cfg.ext_clk_freq,
++                       CANFD_DEFAULT_CLOCK),
++    DEFINE_PROP_LINK("canfdbus", XlnxVersalCANFDState, canfdbus, TYPE_CAN_BUS,
++                     CanBusState *),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void canfd_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->reset = canfd_reset;
++    dc->realize = canfd_realize;
++    device_class_set_props(dc, canfd_core_properties);
++    dc->vmsd = &vmstate_canfd;
++}
++
++static const TypeInfo canfd_info = {
++    .name          = TYPE_XILINX_CANFD,
++    .parent        = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(XlnxVersalCANFDState),
++    .class_init    = canfd_class_init,
++    .instance_init = canfd_init,
++};
++
++static void canfd_register_types(void)
++{
++    type_register_static(&canfd_info);
++}
++
++type_init(canfd_register_types)
+diff --git a/hw/net/can/meson.build b/hw/net/can/meson.build
+index 8fabbd9ee68..8d85201cb06 100644
+--- a/hw/net/can/meson.build
++++ b/hw/net/can/meson.build
+@@ -5,3 +5,4 @@ softmmu_ss.add(when: 'CONFIG_CAN_PCI', if_true: files('can_mioe3680_pci.c'))
+ softmmu_ss.add(when: 'CONFIG_CAN_CTUCANFD', if_true: files('ctucan_core.c'))
+ softmmu_ss.add(when: 'CONFIG_CAN_CTUCANFD_PCI', if_true: files('ctucan_pci.c'))
+ softmmu_ss.add(when: 'CONFIG_XLNX_ZYNQMP', if_true: files('xlnx-zynqmp-can.c'))
++softmmu_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-canfd.c'))
+diff --git a/hw/net/can/trace-events b/hw/net/can/trace-events
+index 8346a98ab5d..de64ac1b317 100644
+--- a/hw/net/can/trace-events
++++ b/hw/net/can/trace-events
+@@ -7,3 +7,10 @@ xlnx_can_filter_mask_pre_write(uint8_t filter_num, uint32_t value) "Filter%d MAS
+ xlnx_can_tx_data(uint32_t id, uint8_t dlc, uint8_t db0, uint8_t db1, uint8_t db2, uint8_t db3, uint8_t db4, uint8_t db5, uint8_t db6, uint8_t db7) "Frame: ID: 0x%08x DLC: 0x%02x DATA: 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x"
+ xlnx_can_rx_data(uint32_t id, uint32_t dlc, uint8_t db0, uint8_t db1, uint8_t db2, uint8_t db3, uint8_t db4, uint8_t db5, uint8_t db6, uint8_t db7) "Frame: ID: 0x%08x DLC: 0x%02x DATA: 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x"
+ xlnx_can_rx_discard(uint32_t status) "Controller is not enabled for bus communication. Status Register: 0x%08x"
++
++# xlnx-versal-canfd.c
++xlnx_canfd_update_irq(char *path, uint32_t isr, uint32_t ier, uint32_t irq) "%s: ISR: 0x%08x IER: 0x%08x IRQ: 0x%08x"
++xlnx_canfd_rx_fifo_filter_reject(char *path, uint32_t id, uint8_t dlc) "%s: Frame: ID: 0x%08x DLC: 0x%02x"
++xlnx_canfd_rx_data(char *path, uint32_t id, uint8_t dlc, uint8_t flags) "%s: Frame: ID: 0x%08x DLC: 0x%02x CANFD Flag: 0x%02x"
++xlnx_canfd_tx_data(char *path, uint32_t id, uint8_t dlc, uint8_t flgas) "%s: Frame: ID: 0x%08x DLC: 0x%02x CANFD Flag: 0x%02x"
++xlnx_canfd_reset(char *path, uint32_t val) "%s: Resetting controller with value = 0x%08x"
 -- 
 2.34.1
 
