@@ -2,55 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24262724520
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F084B7245B3
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:22:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XDY-0007Se-B6; Tue, 06 Jun 2023 09:59:24 -0400
+	id 1q6XZF-00080t-Ul; Tue, 06 Jun 2023 10:21:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=R+T2=B2=kaod.org=clg@ozlabs.org>)
- id 1q6XDW-0007SO-Ai; Tue, 06 Jun 2023 09:59:22 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q6XZD-00080Q-Oo
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:21:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=R+T2=B2=kaod.org=clg@ozlabs.org>)
- id 1q6XDT-0002n1-EV; Tue, 06 Jun 2023 09:59:22 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbBsn05GRz4x3k;
- Tue,  6 Jun 2023 23:59:09 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbBsk6qMWz4wgv;
- Tue,  6 Jun 2023 23:59:06 +1000 (AEST)
-Message-ID: <e3f591df-6569-b396-0cf7-0ea62aee9f0c@kaod.org>
-Date: Tue, 6 Jun 2023 15:59:03 +0200
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q6XZC-0007eu-9Z
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:21:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686061304;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=M5x8wZEULyIGlbWTol+fiZAQBHG2XjgvAOCKiLQd+L2ocKK7qAH4BsDreatzAIhnHCCQKs
+ SvZR0ghL8XxFQ+lRnm5yVi1Mtr4lxGF0LGsOGMwoxg7Cn5uNqZaVHWlDAIPfSM+INCZDNp
+ OkQTiLhn6eQqkaKKDo3clfIbkYYJJLA=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-3XgGnisxMc-kHIbKuD_x7Q-1; Tue, 06 Jun 2023 10:21:40 -0400
+X-MC-Unique: 3XgGnisxMc-kHIbKuD_x7Q-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4edc7406cbaso4037519e87.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:21:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686061299; x=1688653299;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=U3ydLzi/wwp9aUhtDFStkMF8cDNB/jYUEIYqYytjp81Mtfbcwdhq6nmwEREHFpsKmy
+ nJwsvxPi3KPm1UiiwwGbTUqlzhs23wujYoNpvGcm7yB0L37MWna76hCNkw1lObLfAIAC
+ Rl7Yobmd3pLYynHkMGiBWEJCCEO6+f7nfsrXxpfu7p+nWsb+69TpgyM0A5XIl1QjarnT
+ sd/1iE2vF4sqAA31P3jtzbbHo1Zc/7x8MDYW++/tx1gAIP3tJbIEL+1sE/x6L3b8F/6z
+ tJYuyEfk8albx8V4CelhkCkfSkGDFDuNHZdO/xExtgyy7IP3zaIfda3Wy76ybqmXgKIc
+ Vutg==
+X-Gm-Message-State: AC+VfDxkTRBWj2/GYRrWlRFrYeD0qM24GtnbDAY8nKSCnWLxlZYLm34k
+ NKFEgOFIExrqWcDriXrLuI0ht4TMm21P0oa3h618y4tBqLFKvVW8V7dVxxPN+qEnXQ8ukbiqtOv
+ 5pD8EcZxMJbtWxDo=
+X-Received: by 2002:ac2:5dee:0:b0:4f6:170f:ccbf with SMTP id
+ z14-20020ac25dee000000b004f6170fccbfmr1093141lfq.0.1686061299188; 
+ Tue, 06 Jun 2023 07:21:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7n0OB97Kf8DZrBFNHiR7a7+5rwdnyIJfheRHESbpIyoQ2bBVMS4rntnsZAjZy5nAlVNbSd2g==
+X-Received: by 2002:ac2:5dee:0:b0:4f6:170f:ccbf with SMTP id
+ z14-20020ac25dee000000b004f6170fccbfmr1093134lfq.0.1686061298872; 
+ Tue, 06 Jun 2023 07:21:38 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ r25-20020aa7cb99000000b00506987c5c71sm5075363edt.70.2023.06.06.07.21.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 07:21:38 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John G Johnson <john.g.johnson@oracle.com>
+Subject: Re: [PATCH] hw/remote/proxy: Remove dubious 'event_notifier-posix.c'
+ include
+Date: Tue,  6 Jun 2023 15:59:14 +0200
+Message-Id: <20230606135914.664277-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230606134913.93724-1-philmd@linaro.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 0/4] ppc/pnv: Add chiptod and core timebase state machine
- models
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Frederic Barrat <frederic.barrat@fr.ibm.com>,
- Michael Neuling <mikey@neuling.org>
-References: <20230603233612.125879-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230603233612.125879-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=R+T2=B2=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SPACE_RATIO=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,74 +104,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/23 01:36, Nicholas Piggin wrote:
-> This adds support for chiptod and core timebase state machine models in
-> the powernv POWER9 and POWER10 models.
-> 
-> This does not actually change the time or the value in TB registers
-> (because they are alrady synced in QEMU), but it does go through the
-> motions. It is enough to be able to run skiboot's chiptod initialisation
-> code that synchronises core timebases (after a patch to prevent skiboot
-> skipping chiptod for QEMU, posted to skiboot mailing list).
-> 
-> Sorry there was some delay since the last posting. There is a bit more
-> interest in this recently but feedback and comments from RFC was not
-> forgotten and is much appreciated.
-> 
-> https://lists.gnu.org/archive/html/qemu-ppc/2022-08/msg00324.html
-> 
-> I think I accounted for everything except moving register defines to the
-> .h file. I'm on the fence about that but if they are only used in the .c
-> file I think it's okay to keep them there for now. I cut out a lot of
-> unused ones so it's not so cluttered now.
-> 
-> Lots of other changes and fixes since that RFC. Notably:
-> - Register names changed to match the workbook names instead of skiboot.
-> - TFMR moved to timebase_helper.c from misc_helper.c
-> - More comprehensive model and error checking, particularly of TFMR.
-> - POWER10 with multi-chip support.
-> - chiptod and core timebase linked via specific state instead of TFMR.
+Queued, thanks.
 
-
-The chiptod units are not exposed to the OS, it is all handled at FW
-level AFAIK. Could the OPAL people provide some feedback on the low level
-models ?
-
-Thanks,
-
-C.
-
-> There is still a vast amount that is not modeled, but most of it related
-> to error handling, injection, failover, etc that is very complicated and
-> not required for normal operation.
-> 
-> Thanks,
-> Nick
-> 
-> Nicholas Piggin (4):
->    pnv/chiptod: Add POWER9/10 chiptod model
->    target/ppc: Tidy POWER book4 SPR registration
->    target/ppc: add TFMR SPR implementation with read and write helpers
->    target/ppc: Implement core timebase state machine and TFMR
-> 
->   hw/ppc/meson.build           |   1 +
->   hw/ppc/pnv.c                 |  38 +++
->   hw/ppc/pnv_chiptod.c         | 488 +++++++++++++++++++++++++++++++++++
->   hw/ppc/pnv_xscom.c           |   2 +
->   hw/ppc/trace-events          |   4 +
->   include/hw/ppc/pnv_chip.h    |   3 +
->   include/hw/ppc/pnv_chiptod.h |  64 +++++
->   include/hw/ppc/pnv_core.h    |   3 +
->   include/hw/ppc/pnv_xscom.h   |   9 +
->   target/ppc/cpu.h             |  40 +++
->   target/ppc/cpu_init.c        |  92 ++++---
->   target/ppc/helper.h          |   2 +
->   target/ppc/spr_common.h      |   2 +
->   target/ppc/timebase_helper.c | 156 +++++++++++
->   target/ppc/translate.c       |  10 +
->   15 files changed, 882 insertions(+), 32 deletions(-)
->   create mode 100644 hw/ppc/pnv_chiptod.c
->   create mode 100644 include/hw/ppc/pnv_chiptod.h
-> 
+Paolo
 
 
