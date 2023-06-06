@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDB2724D23
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1824724D25
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6cS0-0006G0-9f; Tue, 06 Jun 2023 15:34:40 -0400
+	id 1q6cSx-0006uV-MT; Tue, 06 Jun 2023 15:35:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6cRy-0006Fb-76
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:34:38 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6cSu-0006s9-Ec
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:35:36 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6cRw-0004DV-KJ
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:34:37 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id C0A021FD8C;
- Tue,  6 Jun 2023 19:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1686080074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=O8gzm4bqt0mEHi4WLCa9RLtHvyf8WKu59gQLASGLlpw=;
- b=hnjR6QXfM3Lam7g6dTIJcwROBeHuPDbWRafnCu2020zlOHg3p02Nj49QDhkE9Kep5l4dwg
- SabZL6GbPJeQntnrob+1gcn3yn1DkwWAWypHus0dl8sVhahBdB6CSa7A9skZuucMaC+3x5
- ssGtI20PleLho8+3sEGBhnqd9L32EG4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1686080074;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=O8gzm4bqt0mEHi4WLCa9RLtHvyf8WKu59gQLASGLlpw=;
- b=VvJbzexSjlcIbZQfLuLoGm55mei4dBvyOaPIiG0bfeecWvkVoH6zBPu2SdSsipT0+TCh5x
- nvnId5t1Da1Dy9AQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 482F113519;
- Tue,  6 Jun 2023 19:34:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id VTM/BEqKf2S0FQAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 06 Jun 2023 19:34:34 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, Juan
- Quintela <quintela@redhat.com>, Jiang Jiacheng <jiangjiacheng@huawei.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 1/3] migration/multifd: Rename threadinfo.c functions
-In-Reply-To: <ZH99EuY3c/RqIELY@x1n>
-References: <20230606144551.24367-1-farosas@suse.de>
- <20230606144551.24367-2-farosas@suse.de> <ZH99EuY3c/RqIELY@x1n>
-Date: Tue, 06 Jun 2023 16:34:31 -0300
-Message-ID: <87wn0gwfjs.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6cSs-0004la-J8
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:35:36 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f6d7abe9a4so56427075e9.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:35:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686080132; x=1688672132;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=l1hAgplsaNg7l6qHOOxn0T/+YQYa532KUjang2oMLeg=;
+ b=B5wq7QmtRCO+802Nd18ud94XIIFGgs2fECozQaHjzlsOHeUbuc+QoSvnA032oqyCHt
+ jEKoNIR92K/TX+hqI2eK6Jeb6mCU5HmLldu3w3FDnH1eFDb1pMEJXgNQ6vN1TvupVYS2
+ qTfIY7kGqRP/L4NiUI6ONseDjydMbDrnxHmuixU6ga8upNro/W3Nn8PyrPC75CskXhkK
+ LvSXWsv7ctnqeztFTRglqH4i2+JwK9LtuNVp745TwaBjOK6aIUsJv3Um62AIf5wIztPH
+ Nb+d8Beoupa1d4iQQIBYYjj2TS12us6YPab6EhzfYFM4ice3rwb1WGUBYPRH3eMo6eYm
+ VdNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686080132; x=1688672132;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=l1hAgplsaNg7l6qHOOxn0T/+YQYa532KUjang2oMLeg=;
+ b=Ogof2T8RBMKwGACuGFA3BS6a9ezEQx9vMSBtqo+pF+uJ3SveyuzqwzTPSqQJe4uabI
+ Ieka1+TsT+rWNb8BXi4f995tDL885ixs2donImpq1Ln+uC95UrNypMzEdHEj4tgxdMMm
+ j/At34BPimLkWhjJAEz24pDbeKfllqnV3tK4J+bzYYoWr8vF0t09KZNX2JnlY2l6Tx57
+ BqMsUo5ZTq4FgASrDC3hVkKqSmyk7vfGDLncLmqzbkTYZp4khw/Ezy23CLEEtqDOBkZ5
+ tY72LYoaWS1kD0ywrRATplfHcHkW6XAS7lJizxA+l7lz6Fru6wO/Ur+YSWXKg2S0DG1x
+ zdpw==
+X-Gm-Message-State: AC+VfDxOR3KBlC5ln6b5xX7Kb8I9PqVmBiT6IUmSsy5dD6wT3uo0B+Vz
+ /5ULkRV14aB1acrmN0PNGQsxfQ==
+X-Google-Smtp-Source: ACHHUZ5h55Vnf5YJZQhYT+6TPJi2HUZyMmdLHr1F7aotSvZpUENwA7wVRH49rk0pGEJBgvlpYnCHJQ==
+X-Received: by 2002:a1c:f703:0:b0:3f7:2e89:f306 with SMTP id
+ v3-20020a1cf703000000b003f72e89f306mr2809575wmh.21.1686080132615; 
+ Tue, 06 Jun 2023 12:35:32 -0700 (PDT)
+Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
+ [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
+ o4-20020a05600c378400b003f195d540d9sm18345351wmr.14.2023.06.06.12.35.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 12:35:32 -0700 (PDT)
+Message-ID: <ee20d8af-07c7-875f-c61a-6eb054efad25@linaro.org>
+Date: Tue, 6 Jun 2023 21:35:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH] tests/avocado/tuxrun_baselines: Fix ppc64 tests for
+ binaries without slirp
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-ppc@nongnu.org,
+ Beraldo Leal <bleal@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Kautuk Consul <kconsul@linux.vnet.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230606192802.666000-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230606192802.666000-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,34 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 6/6/23 21:28, Thomas Huth wrote:
+> The ppc64 tuxrun tests are currently failing if "slirp" has been
+> disabled in the binary since they are using "-netdev user" now.
+> We have to skip the test if this network backend is missing.
+> 
+> Fixes: 6ee3624236 ("improve code coverage for ppc64")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/avocado/tuxrun_baselines.py | 1 +
+>   1 file changed, 1 insertion(+)
 
-> On Tue, Jun 06, 2023 at 11:45:49AM -0300, Fabiano Rosas wrote:
->> The code in threadinfo.c is only used for the QMP command
->> query-migrationthreads. Make it explicit that this is something
->> related to QMP.
->> 
->> The current names are also too generic for a piece of code that
->> doesn't affect the migration directly in any way.
->> 
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->
-> Looks good here, but shall we reserve the qmp_* prefix to mostly qmp stuff
-> only?  Dropping "qmp_" in the new names would look better to me..
->
-
-Well, we're just putting the thread name and id on a list so that QMP
-can use them later. It is nothing "important" enough to have a generic
-name like migration_thread.
-
-Perhaps:
-
-thread_info_add
-thread_info_remove
-thread_info_init
-thread_info_cleanup
-
-Anyway, as long as we drop that camel case I'm ok with just removing the
-qmp =)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
