@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DCE724C3D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0338D724C48
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 21:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6bz9-0001Sx-Fy; Tue, 06 Jun 2023 15:04:52 -0400
+	id 1q6bzF-0001Ty-Cx; Tue, 06 Jun 2023 15:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3TIN_ZAsKCnsZbjdqkdxsmffnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--ackerleytng.bounces.google.com>)
- id 1q6bz6-0001S3-Cm
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:04:48 -0400
+ <3ToN_ZAsKCn0bdlfsmfzuohhpphmf.dpnrfnv-efwfmopohov.psh@flex--ackerleytng.bounces.google.com>)
+ id 1q6bz9-0001TI-Au
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:04:51 -0400
 Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3TIN_ZAsKCnsZbjdqkdxsmffnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--ackerleytng.bounces.google.com>)
- id 1q6bz3-0001vd-Qj
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:04:48 -0400
+ <3ToN_ZAsKCn0bdlfsmfzuohhpphmf.dpnrfnv-efwfmopohov.psh@flex--ackerleytng.bounces.google.com>)
+ id 1q6bz7-0002Cl-Kf
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 15:04:51 -0400
 Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-ba8337ade1cso10279202276.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:04:44 -0700 (PDT)
+ 3f1490d57ef6-bacfa4eefcbso13845349276.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 12:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1686078284; x=1688670284;
+ d=google.com; s=20221208; t=1686078286; x=1688670286;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=xVPr1dIpnxklN0GMh0WV40gxjr+XB/duCXqFm/4Eedk=;
- b=OpWI8RPhFgIw5MoV+RS2cmQpFpGPXsQqq6sU1K61/owOmBB1Ql0+w7FJ3nZldnf8p9
- +qYBb0NtRqwQu8dWDMwOUTG0ATZVJvom27ARS7xgWW5TfboiScGSMfZ8N45qzVKLAY2H
- 4CU726nNQYrYfpWC/qzLp0r9J8us1SCC2lEqZrYJr9OdHyFq/TUwds9iZNdlTcobAHRr
- ZZALUwW7mEujbc7yxykj2/g4xPWE/5QaSH6KTAlpAQ02/2PJYX27kEua6tRoLiCjwPDV
- pyCH4FFtF/i8mbhld01B2RuTsSf6teTynYWziBlTcigs4W2oRa0ZqtYf/T+WFi+IMehY
- DIyA==
+ bh=o3QY+GjjNY/B/LKbvEsBmmion/NMqJeuEYcwlsx1w+c=;
+ b=ga7yY2wFSjsTCtNYT2NMM1yjmokiEXDaCTuXNhL4QFIjeFOGWXP9m4xRNkNarZKOBt
+ me9uyDk1llgo74NsZn/+85xOGgk1JymFHYuOx2vpupSEs8KBznt7C4GK7pW1At3io3MV
+ omuLB1jzJaLc4Zg0yimBb4CzacnWix8fdVSxMBPt8YeYd8UktVq4LjjSoaTbCwhO+eXy
+ EZa5FIg//RusZW7f2NgtTOFoqGNu6khof2qQQ8vk0r6gz2il2XRm/VN/dp/gxWzndj0K
+ LOfFsFQnLTJrS+CT3R61MXxoPNTsaAUuUv0u7TZgtSvuJTPRds1QGGcjrMoDqzJSrIHy
+ 9Thg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686078284; x=1688670284;
+ d=1e100.net; s=20221208; t=1686078286; x=1688670286;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xVPr1dIpnxklN0GMh0WV40gxjr+XB/duCXqFm/4Eedk=;
- b=cGQYkNGPfAvgOezWmSPTT3cosUhp8S5cm6tpMmyvfyL5K0fBgyApJR+vdyTle0FWlh
- HBqod58WntLLAPDltuDjegZFVW16A8lViNTjQK4oqxsagPEzsLdHtCOnCpJUqhAObYlZ
- RO2n+hutiwHXqoaclFRB4AxIzlxHZQ91W6YbmdcYYjrZeFpqdysEiuojs6k+2jwobFUc
- 2Pq1FRBCjrZOb/0Q0IdGhLwlVT0HkmcmxKlPpmfP+TgG2DQkGtbWwjKI/Z4CqQYtxFC8
- 52uEQOjcCjMGCAtBwTUI612bAvxGkgI5QW16pH+QbKE9dQVStWRg2ovvhv8zy+vo0K/n
- X+/A==
-X-Gm-Message-State: AC+VfDwPXYHT0CXUn3AE7JoxkixfPgrC1dX5OZqaEnsHBOgPwESQ6zqA
- b4AXlRy+OM/mw6N9AnNutpypZtv1EK5fsTeP/A==
-X-Google-Smtp-Source: ACHHUZ6iw5MaJvx6Biay/guXDPe54wqyOEjmtoFNQ8eDgpYM8NsdWofxvbuGdqaNO+FVNrUBL1ysZvJNR4qrxfEOBQ==
+ bh=o3QY+GjjNY/B/LKbvEsBmmion/NMqJeuEYcwlsx1w+c=;
+ b=R93d5g6f5iAKyqpF8Klp65t+rm0lmwjnPW0CsnwbcR3tBhwOsOk/0BZGbM0PzV7EYQ
+ OYUZQzDti9eJvT728XdFGoVkTIWYF3Iu+ONN0nGk7CqpipH0qMuukITfnTI358BUY5gf
+ n5sJI85pMj6IGY6pWTy5z/euXlck7cMFSZF5weE5VFHj9/PTGo2OuO6tqV9a5uF306KO
+ iDhTSsgqtLcWIdraHYS2kvJuUTv5AozuXoIHAeCnj2NXZLfiqPMOShBU8wsu4sMrpu/x
+ 35iRzkaB/Ww6N8TAiCwi55+xd4ayb4LcMTtFsEeLMf8E/rey13GaG50hDSnfNjlH7Z8v
+ SpyQ==
+X-Gm-Message-State: AC+VfDzx+f8mfJ6wNviDLTL20W4mvTwFLJ1wd+Nhw63BZQ3JI3R9CPUj
+ e/rtJ0c+3vVjzixx6Bjskvc15/tLBYivafR06g==
+X-Google-Smtp-Source: ACHHUZ7zyWkKPX7nW+eqyXqGuqnjfZMxWtQ7sqNr3g3ix//f4WlCF2yUeIoJ+N8uNLRa6EBYQO+4YPcXyNwMiHRgqA==
 X-Received: from ackerleytng-ctop.c.googlers.com
  ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
- (user=ackerleytng job=sendgmr) by 2002:a05:6902:72d:b0:ba1:d0:7f7c with SMTP
- id l13-20020a056902072d00b00ba100d07f7cmr1128681ybt.2.1686078284464; Tue, 06
- Jun 2023 12:04:44 -0700 (PDT)
-Date: Tue,  6 Jun 2023 19:04:02 +0000
+ (user=ackerleytng job=sendgmr) by 2002:a25:aea3:0:b0:bb3:9b99:f3f5 with SMTP
+ id b35-20020a25aea3000000b00bb39b99f3f5mr1433391ybj.4.1686078286504; Tue, 06
+ Jun 2023 12:04:46 -0700 (PDT)
+Date: Tue,  6 Jun 2023 19:04:03 +0000
 In-Reply-To: <cover.1686077275.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1686077275.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <2b26bcc8b10f8a11e6405d4cea5f1235e82e83c9.1686077275.git.ackerleytng@google.com>
-Subject: [RFC PATCH 17/19] KVM: selftests: Add basic selftests for
- hugetlbfs-backed guest_mem
+Message-ID: <5f0d27ce06c03761974264bd8a890614ea7ecb32.1686077275.git.ackerleytng@google.com>
+Subject: [RFC PATCH 18/19] KVM: selftests: Support various types of backing
+ sources for private memory
 From: Ackerley Tng <ackerleytng@google.com>
 To: akpm@linux-foundation.org, mike.kravetz@oracle.com, muchun.song@linux.dev, 
  pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org,
@@ -81,7 +81,7 @@ Cc: brauner@kernel.org, chao.p.peng@linux.intel.com, coltonlewis@google.com,
  x86@kernel.org, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=3TIN_ZAsKCnsZbjdqkdxsmffnnfkd.bnlpdlt-cdudkmnmfmt.nqf@flex--ackerleytng.bounces.google.com;
+ envelope-from=3ToN_ZAsKCn0bdlfsmfzuohhpphmf.dpnrfnv-efwfmopohov.psh@flex--ackerleytng.bounces.google.com;
  helo=mail-yb1-xb4a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
@@ -106,66 +106,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add tests for 2MB and 1GB page sizes.
+Adds support for various type of backing sources for private
+memory (in the sense of confidential computing), similar to the
+backing sources available for shared memory.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../testing/selftests/kvm/guest_memfd_test.c  | 33 ++++++++++++++-----
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ .../testing/selftests/kvm/include/test_util.h | 14 ++++
+ tools/testing/selftests/kvm/lib/test_util.c   | 74 +++++++++++++++++++
+ 2 files changed, 88 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 059b33cdecec..6e24631119c6 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -90,20 +90,14 @@ static void test_fallocate(int fd, size_t page_size, size_t total_size)
- 	TEST_ASSERT(!ret, "fallocate to restore punched hole should succeed");
- }
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index a6e9f215ce70..899ea15ca8a9 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -122,6 +122,16 @@ struct vm_mem_backing_src_alias {
+ 	uint32_t flag;
+ };
  
--
--int main(int argc, char *argv[])
-+void test_guest_mem(struct kvm_vm *vm, uint32_t flags, size_t page_size)
- {
--	size_t page_size;
--	size_t total_size;
- 	int fd;
--	struct kvm_vm *vm;
-+	size_t total_size;
- 
--	page_size = getpagesize();
- 	total_size = page_size * 4;
- 
--	vm = vm_create_barebones();
--
--	fd = vm_create_guest_memfd(vm, total_size, 0);
-+	fd = vm_create_guest_memfd(vm, total_size, flags);
- 
- 	test_file_read_write(fd);
- 	test_mmap(fd, page_size);
-@@ -112,3 +106,24 @@ int main(int argc, char *argv[])
- 
- 	close(fd);
- }
++enum vm_pmem_backing_src_type {
++	VM_PMEM_SRC_GMEM,
++	VM_PMEM_SRC_HUGETLB,  /* Use kernel default page size for hugetlb pages */
++	VM_PMEM_SRC_HUGETLB_2MB,
++	VM_PMEM_SRC_HUGETLB_1GB,
++	NUM_PMEM_SRC_TYPES,
++};
 +
-+int main(int argc, char *argv[])
++#define DEFAULT_VM_PMEM_SRC VM_PMEM_SRC_GMEM
++
+ #define MIN_RUN_DELAY_NS	200000UL
+ 
+ bool thp_configured(void);
+@@ -132,6 +142,10 @@ size_t get_backing_src_pagesz(uint32_t i);
+ bool is_backing_src_hugetlb(uint32_t i);
+ void backing_src_help(const char *flag);
+ enum vm_mem_backing_src_type parse_backing_src_type(const char *type_name);
++void pmem_backing_src_help(const char *flag);
++enum vm_pmem_backing_src_type parse_pmem_backing_src_type(const char *type_name);
++const struct vm_mem_backing_src_alias *vm_pmem_backing_src_alias(uint32_t i);
++size_t get_pmem_backing_src_pagesz(uint32_t i);
+ long get_run_delay(void);
+ 
+ /*
+diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+index b772193f6c18..62efb7b8ba51 100644
+--- a/tools/testing/selftests/kvm/lib/test_util.c
++++ b/tools/testing/selftests/kvm/lib/test_util.c
+@@ -8,6 +8,7 @@
+ #include <assert.h>
+ #include <ctype.h>
+ #include <limits.h>
++#include <linux/kvm.h>
+ #include <stdlib.h>
+ #include <time.h>
+ #include <sys/stat.h>
+@@ -287,6 +288,34 @@ const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(uint32_t i)
+ 	return &aliases[i];
+ }
+ 
++const struct vm_mem_backing_src_alias *vm_pmem_backing_src_alias(uint32_t i)
 +{
-+	struct kvm_vm *vm = vm_create_barebones();
++	static const struct vm_mem_backing_src_alias aliases[] = {
++		[VM_PMEM_SRC_GMEM] = {
++			.name = "pmem_gmem",
++			.flag = 0,
++		},
++		[VM_PMEM_SRC_HUGETLB] = {
++			.name = "pmem_hugetlb",
++			.flag = KVM_GUEST_MEMFD_HUGETLB,
++		},
++		[VM_PMEM_SRC_HUGETLB_2MB] = {
++			.name = "pmem_hugetlb_2mb",
++			.flag = KVM_GUEST_MEMFD_HUGETLB | KVM_GUEST_MEMFD_HUGE_2MB,
++		},
++		[VM_PMEM_SRC_HUGETLB_1GB] = {
++			.name = "pmem_hugetlb_1gb",
++			.flag = KVM_GUEST_MEMFD_HUGETLB | KVM_GUEST_MEMFD_HUGE_1GB,
++		},
++	};
++	_Static_assert(ARRAY_SIZE(aliases) == NUM_PMEM_SRC_TYPES,
++		       "Missing new backing private mem src types?");
 +
-+	printf("Test guest mem 4K\n");
-+	test_guest_mem(vm, 0, getpagesize());
-+	printf("        PASSED\n");
++	TEST_ASSERT(i < NUM_PMEM_SRC_TYPES, "Private mem backing src type ID %d too big", i);
 +
-+	printf("Test guest mem hugetlb 2M\n");
-+	test_guest_mem(
-+		vm, KVM_GUEST_MEMFD_HUGETLB | KVM_GUEST_MEMFD_HUGE_2MB, 2UL << 20);
-+	printf("        PASSED\n");
-+
-+	printf("Test guest mem hugetlb 1G\n");
-+	test_guest_mem(
-+		vm, KVM_GUEST_MEMFD_HUGETLB | KVM_GUEST_MEMFD_HUGE_1GB, 1UL << 30);
-+	printf("        PASSED\n");
-+
-+	return 0;
++	return &aliases[i];
 +}
++
+ #define MAP_HUGE_PAGE_SIZE(x) (1ULL << ((x >> MAP_HUGE_SHIFT) & MAP_HUGE_MASK))
+ 
+ size_t get_backing_src_pagesz(uint32_t i)
+@@ -307,6 +336,20 @@ size_t get_backing_src_pagesz(uint32_t i)
+ 	}
+ }
+ 
++size_t get_pmem_backing_src_pagesz(uint32_t i)
++{
++	uint32_t flag = vm_pmem_backing_src_alias(i)->flag;
++
++	switch (i) {
++	case VM_PMEM_SRC_GMEM:
++		return getpagesize();
++	case VM_PMEM_SRC_HUGETLB:
++		return get_def_hugetlb_pagesz();
++	default:
++		return MAP_HUGE_PAGE_SIZE(flag);
++	}
++}
++
+ bool is_backing_src_hugetlb(uint32_t i)
+ {
+ 	return !!(vm_mem_backing_src_alias(i)->flag & MAP_HUGETLB);
+@@ -343,6 +386,37 @@ enum vm_mem_backing_src_type parse_backing_src_type(const char *type_name)
+ 	return -1;
+ }
+ 
++static void print_available_pmem_backing_src_types(const char *prefix)
++{
++	int i;
++
++	printf("%sAvailable private mem backing src types:\n", prefix);
++
++	for (i = 0; i < NUM_PMEM_SRC_TYPES; i++)
++		printf("%s    %s\n", prefix, vm_pmem_backing_src_alias(i)->name);
++}
++
++void pmem_backing_src_help(const char *flag)
++{
++	printf(" %s: specify the type of memory that should be used to\n"
++	       "     back guest private memory. (default: %s)\n",
++	       flag, vm_pmem_backing_src_alias(DEFAULT_VM_MEM_SRC)->name);
++	print_available_pmem_backing_src_types("     ");
++}
++
++enum vm_pmem_backing_src_type parse_pmem_backing_src_type(const char *type_name)
++{
++	int i;
++
++	for (i = 0; i < NUM_SRC_TYPES; i++)
++		if (!strcmp(type_name, vm_pmem_backing_src_alias(i)->name))
++			return i;
++
++	print_available_pmem_backing_src_types("");
++	TEST_FAIL("Unknown private mem backing src type: %s", type_name);
++	return -1;
++}
++
+ long get_run_delay(void)
+ {
+ 	char path[64];
 -- 
 2.41.0.rc0.172.g3f132b7071-goog
 
