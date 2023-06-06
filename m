@@ -2,104 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B6372446F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9824724470
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:30:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6WjR-0008PL-HJ; Tue, 06 Jun 2023 09:28:17 -0400
+	id 1q6Wl8-0005HA-7f; Tue, 06 Jun 2023 09:30:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q6WjK-0008F5-27; Tue, 06 Jun 2023 09:28:10 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q6Wl5-0005Du-FE
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:29:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1q6WjH-0003yQ-3u; Tue, 06 Jun 2023 09:28:09 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 356DGx7r021018; Tue, 6 Jun 2023 13:28:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=kxVkWuqJdgcUe81jaYZw/eiz0P5IB2KSrCOA061VjX4=;
- b=g3QR8eUrQgFix6qBVSMMSzgAGRVJQ5YVo/ExBZ8RRAJmm3YfYUzEgaKscGyllRuA9qeF
- GTDTTUCyXUeK3acWCo7auEPFWyXiW9H2XgUTD+m1wT8qTAjFWNVVPKAxUrh4STm10GPq
- fOFJJFMIvj+EuvW5AkDHhOdJJv4YHwNFSZj2qwOLcTuRDrnXWbFyNfKp6WjxEnz3UVov
- CKpG33CtDxs7OUieeF2NhQ8cbrJmxjrbPbVJmhVShgaEW0cGqxocrum+mcvwnL9puy3G
- SGgWDtJ/JZvXfifkEqNOvE+6qHzyLW5nBGVx5/2Eox83v+syWTaNuLsCqlEXRLudYjZ6 cA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r25hyr9rs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jun 2023 13:28:03 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 356DIbNQ025947;
- Tue, 6 Jun 2023 13:28:02 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r25hyr9px-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jun 2023 13:28:02 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 355Mx3Tq023788;
- Tue, 6 Jun 2023 13:27:59 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qyxg2hyjb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jun 2023 13:27:59 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 356DRuR124576664
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Jun 2023 13:27:56 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6493520043;
- Tue,  6 Jun 2023 13:27:56 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 21D1620040;
- Tue,  6 Jun 2023 13:27:56 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.209.184])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  6 Jun 2023 13:27:56 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 8/8] tests/tcg: Add a test for info proc mappings
-Date: Tue,  6 Jun 2023 15:27:43 +0200
-Message-Id: <20230606132743.1386003-9-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230606132743.1386003-1-iii@linux.ibm.com>
-References: <20230606132743.1386003-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q6Wl2-0004Fa-VX
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:29:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686058195;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w5TPZuNu5CrN3WtPbVpIabLG73lAPGlRGkFCLedHFMI=;
+ b=gTlXnY+KzqZYd0IaWsREW2/fGLYDGa7RykbJx5JDSmkAXxMmhO52qFkkml7crv2YN6BVHY
+ hOipFC16acXb2aDH9MKCikukUlb6CpULhUhflUIk2sAlTR0NIRi1nfP2zNM7sX+tTnoGcm
+ Q6r3WoFLm+e2ktnoypVUBIMpcY/FlE8=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-378-_dfwG7zxOtyUmx2fk1G26A-1; Tue, 06 Jun 2023 09:29:54 -0400
+X-MC-Unique: _dfwG7zxOtyUmx2fk1G26A-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-75d461f9457so454071685a.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:29:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686058194; x=1688650194;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w5TPZuNu5CrN3WtPbVpIabLG73lAPGlRGkFCLedHFMI=;
+ b=gSEEM/ku7v1BcYCfV46RTJ5cPL9oRZeT/xBNOconF+MtJ4p7e3oEoeJGFDVSyXLYUP
+ 8KbInL7duyrNVFh++UtPUfOLHrlwnwDy0PusbpTRtRV+TrthelwnE8EO60WGw2CZZO0S
+ aHlnjxv2xYhjY3P20Hn1h/35PPy/BppWtNdT5AnNvLR2Z4ZMKUuKMy2kH+oodw7ZIFu1
+ g+vGEBkeUt/udfIvl0ooSLtAeU7T++K18OEmQpcxMku2UqnTFqHTMpR30CwekGMJQ3C/
+ fAhCgjd0QdpkCsG+7DtfGH5PyI3FBIs9AMr0UB1s6UGVQ7NBjALjUPltOFkaEfh/hPKi
+ 1yBQ==
+X-Gm-Message-State: AC+VfDyRuBTg7iH0FpFvasT65ClgDoi8v7RPaOYV9Z9XTNqN6oy+bZ2P
+ ifNojz0YqQfGaCa3IxONSpmnpY1o6HyYg90MaAMeLfOKQ0ZRm2pEzd+Ix7Ea0TEGQgz48BTZBY0
+ KiGFpYnrrNylDHoI=
+X-Received: by 2002:a05:620a:6790:b0:75e:cc54:7d54 with SMTP id
+ rr16-20020a05620a679000b0075ecc547d54mr1507454qkn.31.1686058194274; 
+ Tue, 06 Jun 2023 06:29:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4O7mAg6me2K4Mk+VbnnmqyoAY03iQL/dMcYJndulq6b1h07H4+I+F0sgcGpo+X71gZbG3VRA==
+X-Received: by 2002:a05:620a:6790:b0:75e:cc54:7d54 with SMTP id
+ rr16-20020a05620a679000b0075ecc547d54mr1507394qkn.31.1686058193183; 
+ Tue, 06 Jun 2023 06:29:53 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-u.redhat.com.
+ [213.175.37.12]) by smtp.gmail.com with ESMTPSA id
+ s17-20020ae9f711000000b007592f2016f4sm4889137qkg.110.2023.06.06.06.29.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 06:29:52 -0700 (PDT)
+Date: Tue, 6 Jun 2023 15:29:49 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Shaoqin Huang <shahuang@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe =?UTF-8?B?TWF0aGlldS1E?=
+ =?UTF-8?B?YXVkw6k=?= <philmd@linaro.org>, Yanan Wang
+ <wangyanan55@huawei.com>
+Subject: Re: [PATCH] hw: Fix format for comments
+Message-ID: <20230606152949.1aad469e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230515072525.886221-1-shahuang@redhat.com>
+References: <20230515072525.886221-1-shahuang@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Susbg_Kr8-PF65k27wg8Aay1i_1MUF3N
-X-Proofpoint-GUID: CBbXBiqnILJbqjvMcPGFKpKP9AZnK9he
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-06_08,2023-06-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- impostorscore=0 mlxscore=0 adultscore=0 suspectscore=0 priorityscore=1501
- phishscore=0 spamscore=0 bulkscore=0 clxscore=1015 mlxlogscore=802
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306060110
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,126 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
-Since there are issues with how GDB interprets QEMU's target.xml,
-enable the test only on aarch64 and s390x for now.
+On Mon, 15 May 2023 03:25:25 -0400
+Shaoqin Huang <shahuang@redhat.com> wrote:
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/aarch64/Makefile.target             |  3 +-
- tests/tcg/multiarch/Makefile.target           |  7 +++
- .../multiarch/gdbstub/test-proc-mappings.py   | 55 +++++++++++++++++++
- tests/tcg/s390x/Makefile.target               |  2 +-
- 4 files changed, 65 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+> Simply fix the #vcpus_count to @vcpus_count in CPUArchId comments.
 
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 03157954871..38402b0ba1f 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -97,7 +97,8 @@ run-gdbstub-sve-ioctls: sve-ioctls
- 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
- 	basic gdbstub SVE ZLEN support)
- 
--EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls
-+EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls \
-+              run-gdbstub-proc-mappings
- endif
- endif
- 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 373db696481..cbc0b75787a 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -81,6 +81,13 @@ run-gdbstub-qxfer-auxv-read: sha1
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-qxfer-auxv-read.py, \
- 	basic gdbstub qXfer:auxv:read support)
- 
-+run-gdbstub-proc-mappings: sha1
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(HAVE_GDB_BIN) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-proc-mappings.py, \
-+	proc mappings support)
-+
- run-gdbstub-thread-breakpoint: testthread
- 	$(call run-test, $@, $(GDB_SCRIPT) \
- 		--gdb $(HAVE_GDB_BIN) \
-diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-new file mode 100644
-index 00000000000..657e36a2fc7
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-@@ -0,0 +1,55 @@
-+"""Test that gdbstub has access to proc mappings.
-+
-+This runs as a sourced script (via -x, via run-test.py)."""
-+from __future__ import print_function
-+import gdb
-+import sys
-+
-+
-+n_failures = 0
-+
-+
-+def report(cond, msg):
-+    """Report success/fail of a test"""
-+    if cond:
-+        print("PASS: {}".format(msg))
-+    else:
-+        print("FAIL: {}".format(msg))
-+        global n_failures
-+        n_failures += 1
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    mappings = gdb.execute("info proc mappings", False, True)
-+    report(isinstance(mappings, str), "Fetched the mappings from the inferior")
-+    report("/sha1" in mappings, "Found the test binary name in the mappings")
-+
-+
-+def main():
-+    """Prepare the environment and run through the tests"""
-+    try:
-+        inferior = gdb.selected_inferior()
-+        print("ATTACHED: {}".format(inferior.architecture().name()))
-+    except (gdb.error, AttributeError):
-+        print("SKIPPING (not connected)")
-+        exit(0)
-+
-+    if gdb.parse_and_eval('$pc') == 0:
-+        print("SKIP: PC not set")
-+        exit(0)
-+
-+    try:
-+        # These are not very useful in scripts
-+        gdb.execute("set pagination off")
-+        gdb.execute("set confirm off")
-+
-+        # Run the actual tests
-+        run_test()
-+    except gdb.error:
-+        report(False, "GDB Exception: {}".format(sys.exc_info()[0]))
-+    print("All tests complete: %d failures" % n_failures)
-+    exit(n_failures)
-+
-+
-+main()
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 4899503e1db..d33960caa0a 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -78,7 +78,7 @@ run-gdbstub-signals-s390x: signals-s390x
- 		--bin $< --test $(S390X_SRC)/gdbstub/test-signals-s390x.py, \
- 	mixing signals and debugging)
- 
--EXTRA_RUNS += run-gdbstub-signals-s390x
-+EXTRA_RUNS += run-gdbstub-signals-s390x run-gdbstub-proc-mappings
- endif
- 
- # MVX versions of sha512
--- 
-2.40.1
+> Since
+> we are at here, resort the parameters in comments to match the sequence
+While at it, reorder ...
+                   
+> of parameters which defined in the CPUArchId.
+> 
+> CC: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
+
+with commit message fixed up
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
+> ---
+>  include/hw/boards.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/boards.h b/include/hw/boards.h
+> index f4117fdb9a..cefa3d5897 100644
+> --- a/include/hw/boards.h
+> +++ b/include/hw/boards.h
+> @@ -101,10 +101,10 @@ MemoryRegion *machine_consume_memdev(MachineState *machine,
+>  /**
+>   * CPUArchId:
+>   * @arch_id - architecture-dependent CPU ID of present or possible CPU
+> + * @vcpus_count - number of threads provided by @cpu object
+> + * @props - CPU object properties, initialized by board
+>   * @cpu - pointer to corresponding CPU object if it's present on NULL otherwise
+>   * @type - QOM class name of possible @cpu object
+> - * @props - CPU object properties, initialized by board
+> - * #vcpus_count - number of threads provided by @cpu object
+>   */
+>  typedef struct CPUArchId {
+>      uint64_t arch_id;
 
 
