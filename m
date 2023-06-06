@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C5A7244D4
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1B87244DB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:50:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6X3q-0003CZ-Q4; Tue, 06 Jun 2023 09:49:22 -0400
+	id 1q6X3t-0003DQ-18; Tue, 06 Jun 2023 09:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6X3o-0003BD-38
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:20 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q6X3q-0003Ce-Fm
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:22 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6X3m-0000dh-C3
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:19 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f732d37d7bso26614405e9.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:49:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q6X3o-0000e1-N1
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:22 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f60e536250so52006395e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:49:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686059356; x=1688651356;
+ d=linaro.org; s=google; t=1686059359; x=1688651359;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QX7oEag8EHw5/rO2IwkanQ9xp1UV8fgADH4pyLkBN/8=;
- b=UAZudb/ce1jfJT6y/p6oZh1L0HpidMYjKNYv8HehaQ8ONYHk8enXhUpJCo4GaIiR0i
- gzkgLX2nspwglLewRAkQOgQQV8wc+3ykCdmjQNVJpxqV+zB7/j601xcHg2x5b5upIo5U
- 5KA//U+4gmvlkvuJ75GNXWmNUxdE38DD4izgPCi0fbzTkC2xkK3SJNH+UjIEK6vdIyNw
- gKqGnOz666RYPkUpqW/6AXCMUaWTiNXHTq2SJmga5eex0XXSKDqnHqNbZmwW0mTUVUxO
- ewC16DGKPZzBscdzugy9HDqQENBgfdZoPW+EsvFtrdqDlE/4T7YMwcJpZSiKTkv2AxWW
- neIg==
+ bh=RdrpsAT8U3vpVlJ0tTA9gmGkITqwGBRiPD1ozdlKQgM=;
+ b=b4yLvTKw2af8ln6D6aweyNmQMfqOEa0/r4v3tn6A6MDsEvtwsYUcV0I2PehJbYLJk9
+ 5ICcXDlNHngg+rpHtcI40Q674ksfneyPFG/yTflLCxozp5rFe6hQAGH8f0/XQ1BNcgLk
+ 9UOQhPgYRILdcZjVLFLQd+eYHXErdJOUSdIfZK+8yt1oAbbALboRqlHajbagjA6lQszb
+ Csa/K3OrzzsbCJuDbNnFaJ0rZoNh1LneytBvQfzJhycSAbi8nr/d+6TXJlhz2X1xyOYo
+ CC9Z8cmU+PwauL594FjDtAXp/1p49D/FzSCiQEEiAk9SUBUPOlSYb23uPzIxsDOJPjO6
+ 5RaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686059356; x=1688651356;
+ d=1e100.net; s=20221208; t=1686059359; x=1688651359;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=QX7oEag8EHw5/rO2IwkanQ9xp1UV8fgADH4pyLkBN/8=;
- b=TFX1XGOMpEmAAh6kUlw0xichonsT6SqsfPtOEcdZLSFKZma+8X81dWpxcbkhxYej9x
- xgtBa7Vtq09HLDHdUWJrNp6DJ0anQwGG5diUUdlL3PTfGlPB2kBwpx4qs2hQwcPMPE9e
- h4kHoZho9/X/JDXtUIp/LxQDLv3674gxOPAt1pdEKshACL/9DZHCsZCQ04SVAAQFKrWf
- fBg6NndNbBul/iZbCUgXIKhfHYTFkpOBhiu8/pC+G3eKf0A29ryeQnMsd8IzVtrF2hYH
- A7CVrq22BLXF8Mq6qt9nrY/oTbKqbLnFQdNComO72w8CFIlmGntdeNnc1njj6Vs8uJ+Q
- bVEw==
-X-Gm-Message-State: AC+VfDzfD08PKIa+2qsTTwZjfTnm8dj+pbK/JdQ/JfiSvw7mJFA5w9u1
- zvPPzh8E5I+iPBGzEghWllZiLWnOAzX9yZCrqlQ=
-X-Google-Smtp-Source: ACHHUZ7fnqjT13jGpLe5esp4lXtwn2JrLWeK8SEfG2FwDlLsLfXxMgRqjw65Uhd49dAjUf4hxMfQCw==
-X-Received: by 2002:a7b:c3c7:0:b0:3f7:aad8:4e05 with SMTP id
- t7-20020a7bc3c7000000b003f7aad84e05mr2230914wmj.11.1686059356247; 
- Tue, 06 Jun 2023 06:49:16 -0700 (PDT)
-Received: from localhost.localdomain
- (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr. [176.184.50.104])
+ bh=RdrpsAT8U3vpVlJ0tTA9gmGkITqwGBRiPD1ozdlKQgM=;
+ b=PojM74E4yGcrIJR9bPM7YP1MD9PaKx8cHrmLbBZzRbRhiPiyL8YagJHP1z/4RwTC8w
+ q1H4JhQVoHloriGuCwch1sL9G0nASEmhad/K4BBxUk++Tbns5e/sBJsukc6R2RZ+DAAU
+ hXAo8QvXGvxhT9vv+Oi3Xjj99rYl2twLRmzTBAFjhv3/HGuBtOSZvMzx9OZ/s5vjM8DE
+ uZnQObvQmSVKHqdpC58hTMB+JPNWykUNJRlAtmtqlovROfpx1ufdBDC/B8OkWH9XDKfE
+ 7tbgb4ztGFp7UYsiCZNJMk9AGKGMrOp7tIabokpjEd/JAbJDWqr73Kwy3KFlGxcMq3Xr
+ noAw==
+X-Gm-Message-State: AC+VfDwO6ooo1022Ck41MNKc6UxPzk0zwQkYKdRRtgluXDExZla4YqjR
+ F/s4WEo5MYHi+BYHSWuH9S82ww==
+X-Google-Smtp-Source: ACHHUZ4HZBW+e/928wwm8Yth3nf9qiQzwjnr83w/eJM5+GihExtQPqr9hIjupxmTs31nP0dqpqwVXw==
+X-Received: by 2002:a5d:4ece:0:b0:306:2713:f7f with SMTP id
+ s14-20020a5d4ece000000b0030627130f7fmr8494214wrv.11.1686059358809; 
+ Tue, 06 Jun 2023 06:49:18 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- h4-20020adff4c4000000b0030647d1f34bsm12798620wrp.1.2023.06.06.06.49.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jun 2023 06:49:15 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- John G Johnson <john.g.johnson@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hw/remote/proxy: Remove dubious 'event_notifier-posix.c'
- include
-Date: Tue,  6 Jun 2023 15:49:13 +0200
-Message-Id: <20230606134913.93724-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
+ g26-20020a7bc4da000000b003f50e88ffc1sm17802603wmk.0.2023.06.06.06.49.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 06:49:18 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Joel Stanley <joel@jms.id.au>
+Subject: [PATCH] hw/timer/nrf51_timer: Don't lose time when timer is queried
+ in tight loop
+Date: Tue,  6 Jun 2023 14:49:17 +0100
+Message-Id: <20230606134917.3782215-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,34 +91,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-event_notifier-posix.c is registered in meson's util_ss[] source
-set, which is built as libqemuutil.a.p library. Both tools and
-system emulation binaries are linked with qemuutil, so there is
-no point in including this source file.
+The nrf51_timer has a free-running counter which we implement using
+the pattern of using two fields (update_counter_ns, counter) to track
+the last point at which we calculated the counter value, and the
+counter value at that time.  Then we can find the current counter
+value by converting the difference in wall-clock time between then
+and now to a tick count that we need to add to the counter value.
 
-Introduced in commit bd36adb8df ("multi-process: create IOHUB
-object to handle irq").
+Unfortunately the nrf51_timer's implementation of this has a bug
+which means it loses time every time update_counter() is called.
+After updating s->counter it always sets s->update_counter_ns to
+'now', even though the actual point when s->counter hit the new value
+will be some point in the past (half a tick, say).  In the worst case
+(guest code in a tight loop reading the counter, icount mode) the
+counter is continually queried less than a tick after it was last
+read, so s->counter never advances but s->update_counter_ns does, and
+the guest never makes forward progress.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The fix for this is to only advance update_counter_ns to the
+timestamp of the last tick, not all the way to 'now'.  (This is the
+pattern used in hw/misc/mps2-fpgaio.c's counter.)
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-Note, --enable-multiprocess doesn't seem to be covered in CI.
----
- hw/remote/proxy.c | 1 -
- 1 file changed, 1 deletion(-)
+The hang in icount mode was discovered by the Zephyr folks as part
+of their investigation into
+https://github.com/zephyrproject-rtos/zephyr/issues/57512
 
-diff --git a/hw/remote/proxy.c b/hw/remote/proxy.c
-index 1c7786b52c..2052d721e5 100644
---- a/hw/remote/proxy.c
-+++ b/hw/remote/proxy.c
-@@ -22,7 +22,6 @@
- #include "qom/object.h"
- #include "qemu/event_notifier.h"
- #include "sysemu/kvm.h"
--#include "util/event_notifier-posix.c"
+ hw/timer/nrf51_timer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/hw/timer/nrf51_timer.c b/hw/timer/nrf51_timer.c
+index 42be79c7363..50c6772383e 100644
+--- a/hw/timer/nrf51_timer.c
++++ b/hw/timer/nrf51_timer.c
+@@ -45,7 +45,12 @@ static uint32_t update_counter(NRF51TimerState *s, int64_t now)
+     uint32_t ticks = ns_to_ticks(s, now - s->update_counter_ns);
  
- static void probe_pci_info(PCIDevice *dev, Error **errp);
- static void proxy_device_reset(DeviceState *dev);
+     s->counter = (s->counter + ticks) % BIT(bitwidths[s->bitmode]);
+-    s->update_counter_ns = now;
++    /*
++     * Only advance the sync time to the timestamp of the last tick,
++     * not all the way to 'now', so we don't lose time if we do
++     * multiple resyncs in a single tick.
++     */
++    s->update_counter_ns += ticks_to_ns(s, ticks);
+     return ticks;
+ }
+ 
 -- 
-2.38.1
+2.34.1
 
 
