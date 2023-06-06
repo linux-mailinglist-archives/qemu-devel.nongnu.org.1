@@ -2,68 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DF07241A2
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C2C72419C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:03:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6VLt-0003BJ-5G; Tue, 06 Jun 2023 07:59:53 -0400
+	id 1q6VLr-00036Q-OY; Tue, 06 Jun 2023 07:59:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VL5-0002Y2-K3
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:59:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1q6VLl-0002rv-Qt
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:59:46 -0400
+Received: from mail-bn8nam12on20611.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5b::611]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VL2-0006A3-IW
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:59:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686052740;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uJudALhDWUg04cA4HnvAPUVqeo2eRJiJEpfV9OZsZIc=;
- b=gxd8cCesZAmIfRX7j7FWvaoI1j8B2XaNW64r6Bv13HkIN+SlcP5GDqxyvit/092pDNVDbP
- ZsODKkJxrgehXGuiHezjnXrs/TvUw3+by3w7xVFNMY2tTXly7JHkfQk5egWlQmjZCvIX2k
- X2rJzPR/3vFij0uR1AOYZiM7wvd7/gw=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-654-KkwWIDkUM8CSDnnhNN3JqQ-1; Tue, 06 Jun 2023 07:58:59 -0400
-X-MC-Unique: KkwWIDkUM8CSDnnhNN3JqQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B16791C01E82
- for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:58:58 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3422E2026D6A;
- Tue,  6 Jun 2023 11:58:56 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 21/21] ui/dbus: use shared D3D11 Texture2D when possible
-Date: Tue,  6 Jun 2023 15:56:58 +0400
-Message-Id: <20230606115658.677673-22-marcandre.lureau@redhat.com>
-In-Reply-To: <20230606115658.677673-1-marcandre.lureau@redhat.com>
-References: <20230606115658.677673-1-marcandre.lureau@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1q6VLg-0006Hy-KG
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:59:43 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g2cOyq5G+bseI4D+tcVzvs50GMwVabw5l59gCTF91658sGqG3HupGDH+eAHzEcY2hNI+ZJinEYarqhxn5ioZNv49phk+TwgRImmFz54mqxU3KvM8LsO3vELNTZDFUXhr2JMmRrBskGSmJzXE4jrcMDWGRCauL1AZVQcEmmUoRFgtegp5Pq+KtNqV0YaAcozm+12vy+oD0A71DZHryyqV6gJWBDBq6pMN/dk5C4qZCBzq4BMGlKW3P27Sl6gizM6s+khr3/ZLLS3f9tdmAHBuyjgJu65SCvmzK5+65qp+1BRTQAUCJI3yOPTdf8Jxg2bXWb/y6S2GZisYOi0z5bCELw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ecVRP6FIiK4arR92IM1nJqs3RDW8CgaOM9ZplvS6G0g=;
+ b=QFcZY1iPk+NscqWIZscxpeTl2tAxa/vE6sI0KasCRATZOB6x7hSeX5c7aVU50GjbZSqJs8ISqcbPaBGjvnEj+Z5sl9ainS9Atu6UvRN0mRGmcQoJO6hYoDcyZIjQoRLqtjNJTGCH720OsYa4aRz/1d8O74tksstb1bvaR+s5ecGxKegndcNCVQmoJ/kNiEtFhY5BBQvLTZdgyWcAU0BnZUXkd1MrN3RL53WVgnOb/AMdvlIz+Gxk4eWGUr2p3TGNunQj19s1wdiy5UZy/FbRF4k3C3Pio7yCK/zqEeXui5ROB/yDI8R+0/znNbZ/LxgqinMJ33NZRn8Z04aYgxmKYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ecVRP6FIiK4arR92IM1nJqs3RDW8CgaOM9ZplvS6G0g=;
+ b=DY4Mw+aeNZzMmZSTX3y+nBPQZx1jEWu0RILv/y80nc9PXLHVuZR78g52atvJDFyM7qGnzxtyzQLDOVEkrWN56zRIb+8BJ6wDboKFhKrlzn8Rm4SyejHt+NpHhRz3bDb2A8ZJyVw0xMq5YgufsRIDK8TQQgwZjgb3n0xstZ0mR5MRx1MzoD9zLSq8YF43ocwTtYUakD967dyfj0/cVYvmnPGyAkwN/3igCjuwH1tWBrpik1brq7SnBwfryNjOrPRAfE4ljiGRBtRIQfCMPFWLuLM5vgOjdHW+SYvqQ9DbJFidGJ5nBeo2LU5supMNYo2azSRSrgdOU5KBM75Wi147xQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by DS0PR12MB6630.namprd12.prod.outlook.com (2603:10b6:8:d2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19; Tue, 6 Jun
+ 2023 11:59:36 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::c887:8186:c2f0:d7e6]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::c887:8186:c2f0:d7e6%5]) with mapi id 15.20.6455.030; Tue, 6 Jun 2023
+ 11:59:36 +0000
+Message-ID: <9bb2d05c-d4e3-1d4a-ec99-2780895ae7c5@nvidia.com>
+Date: Tue, 6 Jun 2023 14:59:30 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v5 8/9] vfio/migration: Add x-allow-pre-copy VFIO device
+ property
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20230530144821.1557-1-avihaih@nvidia.com>
+ <20230530144821.1557-9-avihaih@nvidia.com>
+ <20230601142231.78b15326.alex.williamson@redhat.com>
+ <c3edcf5c-75c7-df60-8782-8cc9a8a31ccf@nvidia.com>
+ <20230605085612.32f4ef95.alex.williamson@redhat.com>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <20230605085612.32f4ef95.alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ClientProxiedBy: FR0P281CA0103.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a9::16) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DS0PR12MB6630:EE_
+X-MS-Office365-Filtering-Correlation-Id: a8e5405f-89e7-4545-d938-08db66857f91
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uzdI3qGE8dea1wIQiYot9mN/rxOQObNAnTKTCbb1zHVUJ9mJCuttC5pahUfRnZH7Jh7InxPt3d0E6b6CkAgCJF/CaBlby4YXax+5DdkYmZv3kNRsZFsKD9hMWz5I1l6mDrUcJBZSfJJciDGMYzg0nErRYcfJjWx4DaJqhys43BsV3UKYTlwNGwREyf7QQIc1qRymktZpcwbNq1AfquRyWojoSaNi+mEG6jsl27qF0N1B7f0WhkxLlaeUPsjb/u4iWiNjfw0iGbd8WjWl04W1rJ0Q3+Jf/+lzkMR2boNxlBS9eDZUzxLMyVE1ECk4k46Q2MIC2RAZyFHhkCAfQkOYNMwljew7ZfXBJr9ktofJmgTjs7TjcPd4CBdsj8Zhv6qFhKuc9VFFD5720dikfkDzCjHbs16UZzoyBPyUwQjicSBENp+Obze2ctQct96MZvTTwlS15sDaPqO1mBOb16K3bUwZ9XDZuC/8oB6gTrNyOZ4OCIAqVuMNSc9MdV7b6tooCv8gPIPYaaeAyeQE38hw8lPL63XNmoDyqciNOQ0ccBLTurt7ek7/M9G70VBKvz0weyZDraZHtUX/6OAUuNoS7Q4lAW6giBuH5Nn1dALzd6vwUQQRc1j0NLv7qAYafXUL/dZGPTG4VT2nbuZRWqGMoQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(346002)(39860400002)(376002)(366004)(396003)(451199021)(6486002)(36756003)(6916009)(66476007)(66556008)(66946007)(54906003)(4326008)(2906002)(5660300002)(7416002)(31696002)(86362001)(38100700002)(41300700001)(316002)(8676002)(8936002)(6666004)(478600001)(31686004)(186003)(83380400001)(2616005)(66574015)(53546011)(6512007)(6506007)(26005)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UExyNTJyakFhbXZWdFpwa2krcGxYUFZtbkpleVA1aWtjNjRZbnJVMnBoNU9L?=
+ =?utf-8?B?UHlxY2NnbEVYWjZqbXpNdmErbllQSlY0WmdJQ0lzOGQvK3pCMlo4cjdYSHdP?=
+ =?utf-8?B?eHdRTkpML1RvemcvTHdwU0x5VU9iQWQvMVFXUmhSMjRKUHd0SFA1VUo3QTVV?=
+ =?utf-8?B?RTZFaWNBcnVSRGM3K25ha0FMTXVVK3lsaisya0N0dlRqalhBaEZLYWtqdjNX?=
+ =?utf-8?B?SzZwYlhhTGlTMWRKVHFCZTIrYzExRGk3OUlJeWRIcFcrcWxQcllJaG0vWHMx?=
+ =?utf-8?B?M24rbmoxSzNlditybDNjMHBpRDMxZWx0UlBlWXpGSmVYWWdMUjFTVWZzUlIw?=
+ =?utf-8?B?WC9oMllqWWV1VlpsU3haOXF3b3pseFdhQnhpVGlLazBHQ2hmVGRCcHNodmJt?=
+ =?utf-8?B?ck9SV0tzQTROdFg1bDNkLzJvRHV6WWoyWVVjRXpJMWdtWWV2VHVUamJVZTh6?=
+ =?utf-8?B?cXdtZVRYWktPR1FONEsxV29wSTVuN0x1VUpGa1VITy81YXFHVGgxNmlLNjdG?=
+ =?utf-8?B?eXJYNXIyMTA5QkpUSjdFUEY1aVpsbVE3TmtDSkpxK3crN0pLVm84c1dMTGFR?=
+ =?utf-8?B?eUw4VUNrVlluVDRROGNHSVVneUhWOFRBNW9mUzdnc0lrdWZSeWNEQVpENTZi?=
+ =?utf-8?B?TUJlM2ZPQzdiOHlWMzZnSUc3VEdhbVR1bnZYeGhXc215YW1SZDdiNG4va2U2?=
+ =?utf-8?B?ZjIxV2dHNExvWGk0ckR6Ky94UjlmNmpSNDlGdDFsSHFkaHN5Mlg0L29sbWFk?=
+ =?utf-8?B?STBacFZzRjN0VVZzUFN1WFZtd2JEVnRnQmxNcnhueDBmckVDR3MvZ3VEekdp?=
+ =?utf-8?B?aERlNlFQd0ZjSUxmMVFTbWVXM3psOU1nNmFIaEcweSsrcTUzd1JST2ZOclRE?=
+ =?utf-8?B?OHdCSHV0bUQ1WXg4Qms5bWFvQ1I0VVlicUMvSWUwc2tqdEFTakNCeHdkTGR1?=
+ =?utf-8?B?VHR2YXJUWUN3NHg5bkpXT3FpQ0V2eFIyVTZQVDQ3VmdheVViNXdvaGt1eXJt?=
+ =?utf-8?B?ajNVUmJ4cjVzdjQ5bUNVQm5mR2p2QlJ6YnptTTJDVm56R1JlazBSR1RMWjNB?=
+ =?utf-8?B?ODZubzkwZTl3Y01COXZVZHlDQ1U0MXFXcUJLMHdGRzhtRW5oS0V6aytaUWtK?=
+ =?utf-8?B?UVFJQjdJY2lGNFJFcThwWjFqUzNBSURLODRLbGpGTW45bGQ1LzFJOG52NDdN?=
+ =?utf-8?B?dDFPeFo0Uno2ZnVwMXZEZXlZQVozclVkUnFUZ2pkc0QzaXZjSDl1VExQQ1hJ?=
+ =?utf-8?B?ZTd4bjMzNDM3Mlc2ZWh1S0NzMXBjYWdOUmx2NUhrRW5nV2REN1czK0pSV1BH?=
+ =?utf-8?B?emV3Z3d6RHY1SnByN3ZiRHJ2cXJteWVTc3NrTDczaDFmR0VTc2NRcHZaNHNP?=
+ =?utf-8?B?MW9ZV1ltZTRib2VTY2JtQXFTai90Qzd3N2ZHVHpkTC9LMDg3aGZsR1puc2xY?=
+ =?utf-8?B?THVyTHQ2eHhEOHhLeFZoVlJVRXRsdEZ4NUM2aWlLSjByenNvcUVtYnhZS1Y2?=
+ =?utf-8?B?OTZxdmJqUkR0QzYxVWhVM3AvWk1jVGwzdWQ1NnRrLzBueTJTVHZDSGRkc3Vt?=
+ =?utf-8?B?QWJYblFUK1BOZDVOYTdmV2lodnk1d1JKbVpFRXZyKytZbytJNElDdDVyOGZ1?=
+ =?utf-8?B?S3g2azQvdGo4RXl0ekNnY3RyU0NBMUlVUmduOStnM1pldzZITSs0empKelN6?=
+ =?utf-8?B?V2hLTFR4MjRHNlY1TXZGcjNRY0tsbXRBalZUdzVlSDdQeFkyNmt0bHRIdUUr?=
+ =?utf-8?B?U1BlL01pR1cvaldPbmx3Z1FsS0xWSmVOa3NSM2xMcDd4eFp2UUNwNExsdy80?=
+ =?utf-8?B?Q2NhOU5zY295NXVSNWdldXZCS3A4WGVFZStTYmpyOER1M1ViTnFTQlBCUW02?=
+ =?utf-8?B?WFZyZnRqNnhINFRva01qMFFDek1LaUNDOGhFY01uVnNCWXYyaU5vYWNpUEVz?=
+ =?utf-8?B?R1ZzM2FXR1hBSEx6WnlVQlVJT0QzZ0YwWWpmdktHeVBaZDlYWkhrZmhUdmhF?=
+ =?utf-8?B?TFhtSkZ6aW9oRys3eGtTb21Xbk8zenVnOVdRcnhJVktGWFJuWHhsQ3U0VGhv?=
+ =?utf-8?B?SG40eWpPeDlFYUp6MFBpQWlEbXBFSlB3eExaYjYxSjhDNWpmejVjejJDMDV5?=
+ =?utf-8?Q?4LdFxtQMsuGhBxLPfkgHMVoDH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8e5405f-89e7-4545-d938-08db66857f91
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2023 11:59:36.2345 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nEBjNSfYpqgabyoo1x1VQzunQX7G3NiORwlpK54NttGGwFCF219TV1StlDBVHboXk/udLUcIkO5xS52aLSmFDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6630
+Received-SPF: softfail client-ip=2a01:111:f400:fe5b::611;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.094, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,554 +162,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When the client implements "org.qemu.Display1.Listener.Win32.D3d11" and
-we are running on ANGLE/win32, share the scanout texture with the peer
-process, and draw with ScanoutTexture2d/UpdateTexture2d methods.
+On 05/06/2023 17:56, Alex Williamson wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> On Sun, 4 Jun 2023 12:33:43 +0300
+> Avihai Horon <avihaih@nvidia.com> wrote:
+>
+>> On 01/06/2023 23:22, Alex Williamson wrote:
+>>> External email: Use caution opening links or attachments
+>>>
+>>>
+>>> On Tue, 30 May 2023 17:48:20 +0300
+>>> Avihai Horon <avihaih@nvidia.com> wrote:
+>>>
+>>>> Add a new VFIO device property x-allow-pre-copy to keep migration
+>>>> compatibility to/from older QEMU versions that don't have VFIO pre-copy
+>>>> support.
+>>> This doesn't make sense to me, vfio migration is not currently
+>>> supported, it can only be enabled via an experimental flag.  AFAIK we
+>>> have no obligation to maintain migration compatibility against
+>>> experimental features.  Is there any other reason we need a flag to
+>>> disable pre-copy?
+>> This could give flexibility to do migration between hosts without
+>> matching VFIO device kernel drivers. E.g., source driver doesn't have
+>> precopy support and dest driver has or vice versa.
+> If these are valid scenarios, the protocol should support negotiation
+> without requiring an experimental flag to do so.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- ui/dbus-listener.c   | 299 ++++++++++++++++++++++++++++++++++++++-----
- ui/dbus-display1.xml |  56 +++++++-
- 2 files changed, 324 insertions(+), 31 deletions(-)
+Thinking again, the two intree drivers we have support precopy and as 
+you said, this is still experimental, so I assume that we can drop this 
+patch in v6.
 
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 80c0fca9df..e10162b279 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -23,11 +23,16 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qapi/error.h"
- #include "sysemu/sysemu.h"
- #include "dbus.h"
- #ifdef G_OS_UNIX
- #include <gio/gunixfdlist.h>
- #endif
-+#ifdef WIN32
-+#include <d3d11.h>
-+#include <dxgi1_2.h>
-+#endif
- 
- #ifdef CONFIG_OPENGL
- #include "ui/shader.h"
-@@ -39,6 +44,12 @@
- static void dbus_gfx_switch(DisplayChangeListener *dcl,
-                             struct DisplaySurface *new_surface);
- 
-+enum share_kind {
-+    SHARE_KIND_NONE,
-+    SHARE_KIND_MAPPED,
-+    SHARE_KIND_D3DTEX,
-+};
-+
- struct _DBusDisplayListener {
-     GObject parent;
- 
-@@ -50,6 +61,8 @@ struct _DBusDisplayListener {
- 
-     DisplayChangeListener dcl;
-     DisplaySurface *ds;
-+    enum share_kind ds_share;
-+
-     int gl_updates;
- 
-     bool ds_mapped;
-@@ -57,7 +70,9 @@ struct _DBusDisplayListener {
- 
- #ifdef WIN32
-     QemuDBusDisplay1ListenerWin32Map *map_proxy;
-+    QemuDBusDisplay1ListenerWin32D3d11 *d3d11_proxy;
-     HANDLE peer_process;
-+    ID3D11Texture2D *d3d_texture;
- #ifdef CONFIG_OPENGL
-     egl_fb fb;
- #endif
-@@ -74,28 +89,120 @@ static void dbus_scanout_disable(DisplayChangeListener *dcl)
- {
-     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
- 
--    ddl->ds = NULL;
-     qemu_dbus_display1_listener_call_disable(
-         ddl->proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
- }
- 
--#ifdef CONFIG_GBM
-+#ifdef WIN32
-+static bool d3d_texture2d_share(ID3D11Texture2D *d3d_texture,
-+                                HANDLE *handle, Error **errp)
-+{
-+    IDXGIResource1 *dxgiResource = NULL;
-+    HRESULT hr;
-+
-+    hr = d3d_texture->lpVtbl->QueryInterface(d3d_texture,
-+                                             &IID_IDXGIResource1,
-+                                             (void **)&dxgiResource);
-+    if (FAILED(hr)) {
-+        goto fail;
-+    }
-+
-+    hr = dxgiResource->lpVtbl->CreateSharedHandle(
-+        dxgiResource,
-+        NULL,
-+        DXGI_SHARED_RESOURCE_READ | DXGI_SHARED_RESOURCE_WRITE,
-+        NULL,
-+        handle
-+        );
-+
-+    dxgiResource->lpVtbl->Release(dxgiResource);
-+
-+    if (SUCCEEDED(hr)) {
-+        return true;
-+    }
-+
-+fail:
-+    error_setg_win32(errp, GetLastError(), "failed to create shared handle");
-+    return false;
-+}
-+
-+static bool d3d_texture2d_acquire0(ID3D11Texture2D *d3d_texture, Error **errp)
-+{
-+    IDXGIKeyedMutex *dxgiMutex = NULL;
-+    HRESULT hr;
-+
-+    hr = d3d_texture->lpVtbl->QueryInterface(d3d_texture,
-+                                             &IID_IDXGIKeyedMutex,
-+                                             (void **)&dxgiMutex);
-+    if (FAILED(hr)) {
-+        goto fail;
-+    }
-+
-+    hr = dxgiMutex->lpVtbl->AcquireSync(dxgiMutex, 0, INFINITE);
-+
-+    dxgiMutex->lpVtbl->Release(dxgiMutex);
-+
-+    if (SUCCEEDED(hr)) {
-+        return true;
-+    }
-+
-+fail:
-+    error_setg_win32(errp, GetLastError(), "failed to acquire texture mutex");
-+    return false;
-+}
-+
-+static bool d3d_texture2d_release0(ID3D11Texture2D *d3d_texture, Error **errp)
-+{
-+    IDXGIKeyedMutex *dxgiMutex = NULL;
-+    HRESULT hr;
-+
-+    hr = d3d_texture->lpVtbl->QueryInterface(d3d_texture,
-+                                             &IID_IDXGIKeyedMutex,
-+                                             (void **)&dxgiMutex);
-+    if (FAILED(hr)) {
-+        goto fail;
-+    }
-+
-+    hr = dxgiMutex->lpVtbl->ReleaseSync(dxgiMutex, 0);
-+
-+    dxgiMutex->lpVtbl->Release(dxgiMutex);
-+
-+    if (SUCCEEDED(hr)) {
-+        return true;
-+    }
-+
-+fail:
-+    error_setg_win32(errp, GetLastError(), "failed to release texture mutex");
-+    return false;
-+}
-+#endif /* WIN32 */
-+
- static void dbus_update_gl_cb(GObject *source_object,
--                           GAsyncResult *res,
--                           gpointer user_data)
-+                              GAsyncResult *res,
-+                              gpointer user_data)
- {
-     g_autoptr(GError) err = NULL;
-     DBusDisplayListener *ddl = user_data;
-+    bool success;
-+
-+#ifdef CONFIG_GBM
-+    success = qemu_dbus_display1_listener_call_update_dmabuf_finish(
-+        ddl->proxy, res, &err);
-+#endif
-+
-+#ifdef WIN32
-+    success = qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d_finish(
-+        ddl->d3d11_proxy, res, &err);
-+    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
-+#endif
- 
--    if (!qemu_dbus_display1_listener_call_update_dmabuf_finish(ddl->proxy,
--                                                               res, &err)) {
-+    if (!success) {
-         error_report("Failed to call update: %s", err->message);
-     }
- 
-     graphic_hw_gl_block(ddl->dcl.con, false);
-     g_object_unref(ddl);
- }
--#endif
- 
- static void dbus_call_update_gl(DisplayChangeListener *dcl,
-                                 int x, int y, int w, int h)
-@@ -116,8 +223,31 @@ static void dbus_call_update_gl(DisplayChangeListener *dcl,
- #endif
- 
- #ifdef WIN32
--    egl_fb_read_rect(ddl->ds, &ddl->fb, x, y, w, h);
--    dbus_gfx_update(dcl, x, y, w, h);
-+    switch (ddl->ds_share) {
-+    case SHARE_KIND_MAPPED:
-+        egl_fb_read_rect(ddl->ds, &ddl->fb, x, y, w, h);
-+        dbus_gfx_update(dcl, x, y, w, h);
-+        break;
-+    case SHARE_KIND_D3DTEX:
-+        Error *err = NULL;
-+        assert(ddl->d3d_texture);
-+
-+        graphic_hw_gl_block(ddl->dcl.con, true);
-+        if (!d3d_texture2d_release0(ddl->d3d_texture, &err)) {
-+            error_report_err(err);
-+            return;
-+        }
-+        qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d(
-+            ddl->d3d11_proxy,
-+            x, y, w, h,
-+            G_DBUS_CALL_FLAGS_NONE,
-+            DBUS_DEFAULT_TIMEOUT, NULL,
-+            dbus_update_gl_cb,
-+            g_object_ref(ddl));
-+        break;
-+    default:
-+        g_warn_if_reached();
-+    }
- #endif
- }
- 
-@@ -160,7 +290,7 @@ static bool dbus_scanout_map(DBusDisplayListener *ddl)
-     BOOL success;
-     HANDLE target_handle;
- 
--    if (ddl->ds_mapped) {
-+    if (ddl->ds_share == SHARE_KIND_MAPPED) {
-         return true;
-     }
- 
-@@ -199,7 +329,69 @@ static bool dbus_scanout_map(DBusDisplayListener *ddl)
-         return false;
-     }
- 
--    ddl->ds_mapped = true;
-+    ddl->ds_share = SHARE_KIND_MAPPED;
-+
-+    return true;
-+}
-+
-+static bool
-+dbus_scanout_share_d3d_texture(
-+    DBusDisplayListener *ddl,
-+    ID3D11Texture2D *tex,
-+    bool backing_y_0_top,
-+    uint32_t backing_width,
-+    uint32_t backing_height,
-+    uint32_t x, uint32_t y,
-+    uint32_t w, uint32_t h)
-+{
-+    Error *err = NULL;
-+    BOOL success;
-+    HANDLE share_handle, target_handle;
-+
-+    if (!d3d_texture2d_release0(tex, &err)) {
-+        error_report_err(err);
-+        return false;
-+    }
-+
-+    if (!d3d_texture2d_share(tex, &share_handle, &err)) {
-+        error_report_err(err);
-+        return false;
-+    }
-+
-+    success = DuplicateHandle(
-+        GetCurrentProcess(),
-+        share_handle,
-+        ddl->peer_process,
-+        &target_handle,
-+        0,
-+        FALSE, DUPLICATE_SAME_ACCESS);
-+    if (!success) {
-+        g_autofree char *msg = g_win32_error_message(GetLastError());
-+        g_debug("Failed to DuplicateHandle: %s", msg);
-+        CloseHandle(share_handle);
-+        return false;
-+    }
-+
-+    qemu_dbus_display1_listener_win32_d3d11_call_scanout_texture2d(
-+        ddl->d3d11_proxy,
-+        GPOINTER_TO_INT(target_handle),
-+        backing_width,
-+        backing_height,
-+        backing_y_0_top,
-+        x, y, w, h,
-+        G_DBUS_CALL_FLAGS_NONE,
-+        -1,
-+        NULL, NULL, NULL);
-+
-+    CloseHandle(share_handle);
-+
-+    if (!d3d_texture2d_acquire0(tex, &err)) {
-+        error_report_err(err);
-+        return false;
-+    }
-+
-+    ddl->d3d_texture = tex;
-+    ddl->ds_share = SHARE_KIND_D3DTEX;
- 
-     return true;
- }
-@@ -248,7 +440,14 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
-     /* there must be a matching gfx_switch before */
-     assert(surface_width(ddl->ds) == w);
-     assert(surface_height(ddl->ds) == h);
--    egl_fb_setup_for_tex(&ddl->fb, backing_width, backing_height, tex_id, false);
-+
-+    if (d3d_tex2d) {
-+        dbus_scanout_share_d3d_texture(ddl, d3d_tex2d, backing_y_0_top,
-+                                       backing_width, backing_height, x, y, w, h);
-+    } else {
-+        dbus_scanout_map(ddl);
-+        egl_fb_setup_for_tex(&ddl->fb, backing_width, backing_height, tex_id, false);
-+    }
- #endif
- }
- 
-@@ -429,6 +628,7 @@ static void dbus_gl_gfx_switch(DisplayChangeListener *dcl,
-     trace_dbus_gl_gfx_switch(new_surface);
- 
-     ddl->ds = new_surface;
-+    ddl->ds_share = SHARE_KIND_NONE;
-     if (ddl->ds) {
-         int width = surface_width(ddl->ds);
-         int height = surface_height(ddl->ds);
-@@ -446,13 +646,7 @@ static void dbus_gfx_switch(DisplayChangeListener *dcl,
-     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
- 
-     ddl->ds = new_surface;
--#ifdef WIN32
--    ddl->ds_mapped = false;
--#endif
--    if (!ddl->ds) {
--        /* why not call disable instead? */
--        return;
--    }
-+    ddl->ds_share = SHARE_KIND_NONE;
- }
- 
- static void dbus_mouse_set(DisplayChangeListener *dcl,
-@@ -534,6 +728,7 @@ dbus_display_listener_dispose(GObject *object)
-     g_clear_object(&ddl->proxy);
- #ifdef WIN32
-     g_clear_object(&ddl->map_proxy);
-+    g_clear_object(&ddl->d3d11_proxy);
-     g_clear_pointer(&ddl->peer_process, CloseHandle);
- #ifdef CONFIG_OPENGL
-     egl_fb_destroy(&ddl->fb);
-@@ -598,12 +793,10 @@ dbus_display_listener_implements(DBusDisplayListener *ddl, const char *iface)
- 
-     return implements;
- }
--#endif
- 
--static void
--dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
-+static bool
-+dbus_display_listener_setup_peer_process(DBusDisplayListener *ddl)
- {
--#ifdef WIN32
-     g_autoptr(GError) err = NULL;
-     GDBusConnection *conn;
-     GIOStream *stream;
-@@ -611,15 +804,15 @@ dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
-     g_autoptr(GCredentials) creds = NULL;
-     DWORD *pid;
- 
--    if (!dbus_display_listener_implements(ddl, "org.qemu.Display1.Listener.Win32.Map")) {
--        return;
-+    if (ddl->peer_process) {
-+        return true;
-     }
- 
-     conn = g_dbus_proxy_get_connection(G_DBUS_PROXY(ddl->proxy));
-     stream = g_dbus_connection_get_stream(conn);
- 
-     if (!G_IS_UNIX_CONNECTION(stream)) {
--        return;
-+        return false;
-     }
- 
-     sock = g_socket_connection_get_socket(G_SOCKET_CONNECTION(stream));
-@@ -627,14 +820,14 @@ dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
- 
-     if (!creds) {
-         g_debug("Failed to get peer credentials: %s", err->message);
--        return;
-+        return false;
-     }
- 
-     pid = g_credentials_get_native(creds, G_CREDENTIALS_TYPE_WIN32_PID);
- 
-     if (pid == NULL) {
-         g_debug("Failed to get peer PID");
--        return;
-+        return false;
-     }
- 
-     ddl->peer_process = OpenProcess(
-@@ -644,11 +837,58 @@ dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
-     if (!ddl->peer_process) {
-         g_autofree char *msg = g_win32_error_message(GetLastError());
-         g_debug("Failed to OpenProcess: %s", msg);
-+        return false;
-+    }
-+
-+    return true;
-+}
-+#endif
-+
-+static void
-+dbus_display_listener_setup_d3d11(DBusDisplayListener *ddl)
-+{
-+#ifdef WIN32
-+    g_autoptr(GError) err = NULL;
-+
-+    if (!dbus_display_listener_implements(ddl,
-+            "org.qemu.Display1.Listener.Win32.D3d11")) {
-+        return;
-+    }
-+
-+    if (!dbus_display_listener_setup_peer_process(ddl)) {
-+        return;
-+    }
-+
-+    ddl->d3d11_proxy =
-+        qemu_dbus_display1_listener_win32_d3d11_proxy_new_sync(ddl->conn,
-+            G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-+            NULL,
-+            "/org/qemu/Display1/Listener",
-+            NULL,
-+            &err);
-+    if (!ddl->d3d11_proxy) {
-+        g_debug("Failed to setup win32 d3d11 proxy: %s", err->message);
-+        return;
-+    }
-+#endif
-+}
-+
-+static void
-+dbus_display_listener_setup_shared_map(DBusDisplayListener *ddl)
-+{
-+#ifdef WIN32
-+    g_autoptr(GError) err = NULL;
-+
-+    if (!dbus_display_listener_implements(ddl, "org.qemu.Display1.Listener.Win32.Map")) {
-+        return;
-+    }
-+
-+    if (!dbus_display_listener_setup_peer_process(ddl)) {
-         return;
-     }
- 
-     ddl->map_proxy =
--        qemu_dbus_display1_listener_win32_map_proxy_new_sync(conn,
-+        qemu_dbus_display1_listener_win32_map_proxy_new_sync(ddl->conn,
-             G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-             NULL,
-             "/org/qemu/Display1/Listener",
-@@ -692,6 +932,7 @@ dbus_display_listener_new(const char *bus_name,
-     ddl->console = console;
- 
-     dbus_display_listener_setup_shared_map(ddl);
-+    dbus_display_listener_setup_d3d11(ddl);
- 
-     con = qemu_console_lookup_by_index(dbus_display_console_get_index(console));
-     assert(con);
-diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
-index 2aba36fee0..4a4803a30a 100644
---- a/ui/dbus-display1.xml
-+++ b/ui/dbus-display1.xml
-@@ -431,8 +431,9 @@
-   <!--
-       org.qemu.Display1.Listener.Win32.Map:
- 
--      This client-side interface can complement org.qemu.Display1.Listener on
--      ``/org/qemu/Display1/Listener`` for Windows specific methods.
-+      This optional client-side interface can complement
-+      org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for Windows
-+      specific shared memory scanouts.
-   -->
-   <interface name="org.qemu.Display1.Listener.Win32.Map">
-     <!--
-@@ -472,6 +473,57 @@
-     </method>
-   </interface>
- 
-+  <!--
-+      org.qemu.Display1.Listener.Win32.D3d11:
-+
-+      This optional client-side interface can complement
-+      org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for Windows
-+      specific Direct3D texture sharing of the scanouts.
-+  -->
-+  <interface name="org.qemu.Display1.Listener.Win32.D3d11">
-+    <!--
-+        ScanoutTexture2d:
-+        @handle: the NT handle for the shared texture (to be opened back with ID3D11Device1::OpenSharedResource1).
-+        @texture_width: texture width, in pixels.
-+        @texture_height: texture height, in pixels.
-+        @y0_top: whether Y position 0 is the top or not.
-+        @x: the X scanout position, in pixels.
-+        @y: the Y scanout position, in pixels.
-+        @width: the scanout width, in pixels.
-+        @height: the scanout height, in pixels.
-+
-+        Resize and update the display content with a Direct3D 11 2D texture.
-+        You must acquire and release the associated KeyedMutex 0 during rendering.
-+    -->
-+    <method name="ScanoutTexture2d">
-+      <arg type="t" name="handle" direction="in"/>
-+      <arg type="u" name="texture_width" direction="in"/>
-+      <arg type="u" name="texture_height" direction="in"/>
-+      <arg type="b" name="y0_top" direction="in"/>
-+      <arg type="u" name="x" direction="in"/>
-+      <arg type="u" name="y" direction="in"/>
-+      <arg type="u" name="width" direction="in"/>
-+      <arg type="u" name="height" direction="in"/>
-+    </method>
-+
-+    <!--
-+        UpdateTexture2d:
-+        @x: the X update position, in pixels.
-+        @y: the Y update position, in pixels.
-+        @width: the update width, in pixels.
-+        @height: the update height, in pixels.
-+
-+        Update the display content with the current Direct3D 2D texture and the given region.
-+        You must acquire and release the associated KeyedMutex 0 during rendering.
-+    -->
-+    <method name="UpdateTexture2d">
-+      <arg type="i" name="x" direction="in"/>
-+      <arg type="i" name="y" direction="in"/>
-+      <arg type="i" name="width" direction="in"/>
-+      <arg type="i" name="height" direction="in"/>
-+    </method>
-+  </interface>
-+
-   <!--
-       org.qemu.Display1.Clipboard:
- 
--- 
-2.40.1
+>
+>>> OTOH, should this series finally remove the experimental migration
+>>> flag?  Do we require Joao's vIOMMU support to finally make it
+>>> supportable?  Is there something else?
+>> I think that after precopy is accepted we can remove the experimental
+>> flag, as we'll have the major parts of VFIO migration upstream.
+>> After that we will still need to add Joao's vIOMMU support and P2P support.
+>> Do you want me to add a patch to this series that makes VFIO migration
+>> non-experimental?
+> I'd keep it as a separate patch with a clearly described dependency on
+> this series so that we can discuss it separately.
 
+Sure, so I will post it separately.
+
+Thanks.
+
+>>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+>>>> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+>>>> ---
+>>>>    include/hw/vfio/vfio-common.h | 1 +
+>>>>    hw/core/machine.c             | 1 +
+>>>>    hw/vfio/migration.c           | 3 ++-
+>>>>    hw/vfio/pci.c                 | 2 ++
+>>>>    4 files changed, 6 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+>>>> index 1db901c194..a53ecbe2e0 100644
+>>>> --- a/include/hw/vfio/vfio-common.h
+>>>> +++ b/include/hw/vfio/vfio-common.h
+>>>> @@ -146,6 +146,7 @@ typedef struct VFIODevice {
+>>>>        VFIOMigration *migration;
+>>>>        Error *migration_blocker;
+>>>>        OnOffAuto pre_copy_dirty_page_tracking;
+>>>> +    bool allow_pre_copy;
+>>>>        bool dirty_pages_supported;
+>>>>        bool dirty_tracking;
+>>>>    } VFIODevice;
+>>>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>>>> index 1000406211..64ac3fe38e 100644
+>>>> --- a/hw/core/machine.c
+>>>> +++ b/hw/core/machine.c
+>>>> @@ -41,6 +41,7 @@
+>>>>
+>>>>    GlobalProperty hw_compat_8_0[] = {
+>>>>        { "migration", "multifd-flush-after-each-section", "on"},
+>>>> +    { "vfio-pci", "x-allow-pre-copy", "false" },
+>>>>    };
+>>>>    const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
+>>>>
+>>>> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+>>>> index d8f6a22ae1..cb6923ed3f 100644
+>>>> --- a/hw/vfio/migration.c
+>>>> +++ b/hw/vfio/migration.c
+>>>> @@ -323,7 +323,8 @@ static bool vfio_precopy_supported(VFIODevice *vbasedev)
+>>>>    {
+>>>>        VFIOMigration *migration = vbasedev->migration;
+>>>>
+>>>> -    return migration->mig_flags & VFIO_MIGRATION_PRE_COPY;
+>>>> +    return vbasedev->allow_pre_copy &&
+>>>> +           migration->mig_flags & VFIO_MIGRATION_PRE_COPY;
+>>>>    }
+>>>>
+>>>>    /* ---------------------------------------------------------------------- */
+>>>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>>>> index 73874a94de..c69813af7f 100644
+>>>> --- a/hw/vfio/pci.c
+>>>> +++ b/hw/vfio/pci.c
+>>>> @@ -3335,6 +3335,8 @@ static Property vfio_pci_dev_properties[] = {
+>>>>        DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
+>>>>                                vbasedev.pre_copy_dirty_page_tracking,
+>>>>                                ON_OFF_AUTO_ON),
+>>>> +    DEFINE_PROP_BOOL("x-allow-pre-copy", VFIOPCIDevice,
+>>>> +                     vbasedev.allow_pre_copy, true),
+>>>>        DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
+>>>>                                display, ON_OFF_AUTO_OFF),
+>>>>        DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
 
