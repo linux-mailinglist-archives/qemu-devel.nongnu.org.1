@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9608723E70
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEFC723E3D
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:49:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TIt-0007mz-HS; Tue, 06 Jun 2023 05:48:39 -0400
+	id 1q6TIq-0007it-7h; Tue, 06 Jun 2023 05:48:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIh-0007b8-Eu
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:28 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1q6TIj-0007dy-VA
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:30 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIb-0004jX-U0
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:25 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f7a8089709so22177885e9.1
+ id 1q6TIc-0004jh-3E
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:26 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-30af159b433so5872775f8f.3
  for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686044900; x=1688636900;
+ d=linaro.org; s=google; t=1686044901; x=1688636901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fCTad6nrqU7gDGvgejjQ5Ir/YutXgh/fRbK5TvcwaGA=;
- b=OnwaGA2lfwCDDQc3fdEwZwE+0Ew7H1M5csljnLA7PJ6ArhX5/83lINCHa80raNURmw
- qrBLAvfz/YE6ILtEexLEvPTQR4KH+Vqq0zPSQPZMRR8IjFDO1n2yq/i0KeIxjcMtblGi
- Nrk9jAAH0UnQuz+E9gdrXKZcOMNI4etwgvRuIG6SZTyYsRw7Hhm7E2V1eb/Wb49SEEHt
- 7OZHkkRh5p0ukOfmxlSJZAFMyOibar5E2O4fnWkmUW4YiXwVIZJSueaGrhjWbCZ1O40u
- 4ullkptXs2FIC00CAW7jPkZYrNI40aAKx+aS2PB0fG8Q2ZigbTBOs1uYkSffSxMN2ovg
- StQg==
+ :reply-to; bh=XBz4ZQJffUrOo6wNjupIUhKEOyLkmvdp3TAHwXPhSW4=;
+ b=DVaK2QnwZOveV5OsM3rRCdu08ubpjBCB7tKb4D5rv9VHDeWL3tcQZTDJ9rZsB7M393
+ Tb/FsdH+BUlF5nt8W/1WTnXC7cP9fGG4xc8xes3jB+0AQUgN8sTSGeKAw0i5KqJXDegf
+ lmfD4AT23rLL7ihat7lhoGt5uW6hpM0Woc9WuthIXMjWxb49mAk4CyeDEiIupZu9ZZLp
+ 1TWWFneDMLoi+iNv0qRrZW+OoAR93BUM7RyObp12hkD6DGEq8f9qaLcfJftCpmXrON29
+ jX9C4T9wFxsMp1VDTiJvDNqTwYZ9EE4iv8iJGDxkPhxe4lpYEZPxm/T+6vJItb/R7/8D
+ Bl3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686044900; x=1688636900;
+ d=1e100.net; s=20221208; t=1686044901; x=1688636901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fCTad6nrqU7gDGvgejjQ5Ir/YutXgh/fRbK5TvcwaGA=;
- b=ALDvPPAtc61494uJ4Qm1rdqDpGUxYxHJpPzyY2DbIzTicum1lLY3MEDshBhoUKDt6u
- mU+RdZngbnT1aIdpq/dvS2keiO4wpEISsvAIbUgUToYhmulBv8iJYYAck1WV+DSViGYu
- W5Wvz5LE+0qm8eIrD4ICd1DT2Lsn40ic3NZyqPyklTt9dTPzSttdgOvm+P/SN/Jk9Xj3
- OnmitIRXjGh979/V9NiLWnldnV9EpiBmZos/a/Ii9UEACMVbWLF+MYDAy1mISSxzKZ30
- utVyRquhnrX24Mv7lUPKXwtoUWLVM95W94a2/81MrRIdbTjRC8D3pGpK/9i+wahi/ZqB
- BylA==
-X-Gm-Message-State: AC+VfDwJQxP3z68SSDYKd7xZu1YD6wzW97TYzSp++5OMU2XnDAo1PTBX
- p5w89GuCAbyi0OetPXGb9EyABZjRFQRfeTRoZXU=
-X-Google-Smtp-Source: ACHHUZ6TTE8Eb7NxFdgFjU52aXYE6Q8ZydhsfuMT9VlR5fr3PPYpZjqt6wRrWZJAtkAeOL2lwbUPKg==
-X-Received: by 2002:a05:600c:210:b0:3f5:f83:4d84 with SMTP id
- 16-20020a05600c021000b003f50f834d84mr1566364wmi.31.1686044900138; 
+ bh=XBz4ZQJffUrOo6wNjupIUhKEOyLkmvdp3TAHwXPhSW4=;
+ b=a2YFquu4+qDlUL41t79c4wn1rzLWGOJ7W+JHbbJ9tz9nbpk7tg3lm7fZOyWYmjATe9
+ UYmYofff1aCaSkbhoRiuZlriwQOaVIyn1WEiOZT2xLZ5BtZlKFL7HoeZ97Z64YLiI5yf
+ ig5hJoBLfmEnBlBP1o+Rm66LS3Da7cQc1uGNxgIIxSWLcmNlHmb8kDtkzBF0skX1Dgft
+ NkzxC/NmeaHqKpdcWAmdy5lItl/vj+j4v0kYH88msiaZ39tATJpOAe8mr80BUUGe9O9N
+ etKWoYp3pScvddUnALuV1VR5wrvRrdh/kHdQuDFHtSLDaIKjFTmuW2PP49UNkjIpztWk
+ trBw==
+X-Gm-Message-State: AC+VfDwvu1SkkaTTOjAfgVw8fopUOfS2/uijdaa5ogs961Nqfth8xNfE
+ FrgIkCQrpY0NbCg970+cXhaYPHd1IoSsrQxgQuo=
+X-Google-Smtp-Source: ACHHUZ5sYGsAZw0A8dePtkOpug33TC1rUkmB5apvQftZOEPaZEILB9ntVKWyuFuCVk9NnwKyRW7ekg==
+X-Received: by 2002:adf:e486:0:b0:30a:b4e1:a8a7 with SMTP id
+ i6-20020adfe486000000b0030ab4e1a8a7mr1536010wrm.64.1686044900659; 
  Tue, 06 Jun 2023 02:48:20 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.19
+ v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 02:48:19 -0700 (PDT)
+ Tue, 06 Jun 2023 02:48:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/42] tests/qtest: Introduce tests for Xilinx VERSAL CANFD
- controller
-Date: Tue,  6 Jun 2023 10:47:40 +0100
-Message-Id: <20230606094814.3581397-9-peter.maydell@linaro.org>
+Subject: [PULL 09/42] hw: arm: Add bananapi M2-Ultra and allwinner-r40 support
+Date: Tue,  6 Jun 2023 10:47:41 +0100
+Message-Id: <20230606094814.3581397-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230606094814.3581397-1-peter.maydell@linaro.org>
 References: <20230606094814.3581397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,465 +90,732 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vikram Garhwal <vikram.garhwal@amd.com>
+From: qianfan Zhao <qianfanguijin@163.com>
 
-The QTests perform three tests on the Xilinx VERSAL CANFD controller:
-    Tests the CANFD controllers in loopback.
-    Tests the CANFD controllers in normal mode with CAN frame.
-    Tests the CANFD controllers in normal mode with CANFD frame.
+Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
+and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
+for In-Car Entertainment usage, A40i and A40pro are variants that
+differ in applicable temperatures range (industrial and military).
 
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/xlnx-canfd-test.c | 423 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build       |   1 +
- 2 files changed, 424 insertions(+)
- create mode 100644 tests/qtest/xlnx-canfd-test.c
+ include/hw/arm/allwinner-r40.h | 110 +++++++++
+ hw/arm/allwinner-r40.c         | 415 +++++++++++++++++++++++++++++++++
+ hw/arm/bananapi_m2u.c          | 129 ++++++++++
+ hw/arm/Kconfig                 |  10 +
+ hw/arm/meson.build             |   1 +
+ 5 files changed, 665 insertions(+)
+ create mode 100644 include/hw/arm/allwinner-r40.h
+ create mode 100644 hw/arm/allwinner-r40.c
+ create mode 100644 hw/arm/bananapi_m2u.c
 
-diff --git a/tests/qtest/xlnx-canfd-test.c b/tests/qtest/xlnx-canfd-test.c
+diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.h
 new file mode 100644
-index 00000000000..76ee106d4f4
+index 00000000000..348bf25d6be
 --- /dev/null
-+++ b/tests/qtest/xlnx-canfd-test.c
-@@ -0,0 +1,423 @@
++++ b/include/hw/arm/allwinner-r40.h
+@@ -0,0 +1,110 @@
 +/*
-+ * SPDX-License-Identifier: MIT
++ * Allwinner R40/A40i/T3 System on Chip emulation
 + *
-+ * QTests for the Xilinx Versal CANFD controller.
++ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
 + *
-+ * Copyright (c) 2022 AMD Inc.
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 2 of the License, or
++ * (at your option) any later version.
 + *
-+ * Written-by: Vikram Garhwal<vikram.garhwal@amd.com>
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef HW_ARM_ALLWINNER_R40_H
++#define HW_ARM_ALLWINNER_R40_H
++
++#include "qom/object.h"
++#include "hw/arm/boot.h"
++#include "hw/timer/allwinner-a10-pit.h"
++#include "hw/intc/arm_gic.h"
++#include "hw/sd/allwinner-sdhost.h"
++#include "target/arm/cpu.h"
++#include "sysemu/block-backend.h"
++
++enum {
++    AW_R40_DEV_SRAM_A1,
++    AW_R40_DEV_SRAM_A2,
++    AW_R40_DEV_SRAM_A3,
++    AW_R40_DEV_SRAM_A4,
++    AW_R40_DEV_MMC0,
++    AW_R40_DEV_MMC1,
++    AW_R40_DEV_MMC2,
++    AW_R40_DEV_MMC3,
++    AW_R40_DEV_CCU,
++    AW_R40_DEV_PIT,
++    AW_R40_DEV_UART0,
++    AW_R40_DEV_GIC_DIST,
++    AW_R40_DEV_GIC_CPU,
++    AW_R40_DEV_GIC_HYP,
++    AW_R40_DEV_GIC_VCPU,
++    AW_R40_DEV_SDRAM
++};
++
++#define AW_R40_NUM_CPUS      (4)
++
++/**
++ * Allwinner R40 object model
++ * @{
++ */
++
++/** Object type for the Allwinner R40 SoC */
++#define TYPE_AW_R40 "allwinner-r40"
++
++/** Convert input object to Allwinner R40 state object */
++OBJECT_DECLARE_SIMPLE_TYPE(AwR40State, AW_R40)
++
++/** @} */
++
++/**
++ * Allwinner R40 object
 + *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
++ * This struct contains the state of all the devices
++ * which are currently emulated by the R40 SoC code.
++ */
++#define AW_R40_NUM_MMCS         4
++
++struct AwR40State {
++    /*< private >*/
++    DeviceState parent_obj;
++    /*< public >*/
++
++    ARMCPU cpus[AW_R40_NUM_CPUS];
++    const hwaddr *memmap;
++    AwA10PITState timer;
++    AwSdHostState mmc[AW_R40_NUM_MMCS];
++    GICState gic;
++    MemoryRegion sram_a1;
++    MemoryRegion sram_a2;
++    MemoryRegion sram_a3;
++    MemoryRegion sram_a4;
++};
++
++/**
++ * Emulate Boot ROM firmware setup functionality.
 + *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
++ * A real Allwinner R40 SoC contains a Boot ROM
++ * which is the first code that runs right after
++ * the SoC is powered on. The Boot ROM is responsible
++ * for loading user code (e.g. a bootloader) from any
++ * of the supported external devices and writing the
++ * downloaded code to internal SRAM. After loading the SoC
++ * begins executing the code written to SRAM.
++ *
++ * This function emulates the Boot ROM by copying 32 KiB
++ * of data from the given block device and writes it to
++ * the start of the first internal SRAM memory.
++ *
++ * @s: Allwinner R40 state object pointer
++ * @blk: Block backend device object pointer
++ * @unit: the mmc control's unit
++ */
++bool allwinner_r40_bootrom_setup(AwR40State *s, BlockBackend *blk, int unit);
++
++#endif /* HW_ARM_ALLWINNER_R40_H */
+diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
+new file mode 100644
+index 00000000000..97f2aa92fdf
+--- /dev/null
++++ b/hw/arm/allwinner-r40.c
+@@ -0,0 +1,415 @@
++/*
++ * Allwinner R40/A40i/T3 System on Chip emulation
++ *
++ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
 +
 +#include "qemu/osdep.h"
-+#include "libqtest.h"
++#include "qapi/error.h"
++#include "qemu/error-report.h"
++#include "qemu/bswap.h"
++#include "qemu/module.h"
++#include "qemu/units.h"
++#include "hw/qdev-core.h"
++#include "hw/sysbus.h"
++#include "hw/char/serial.h"
++#include "hw/misc/unimp.h"
++#include "hw/usb/hcd-ehci.h"
++#include "hw/loader.h"
++#include "sysemu/sysemu.h"
++#include "hw/arm/allwinner-r40.h"
 +
-+/* Base address. */
-+#define CANFD0_BASE_ADDR                0xff060000
-+#define CANFD1_BASE_ADDR                0xff070000
++/* Memory map */
++const hwaddr allwinner_r40_memmap[] = {
++    [AW_R40_DEV_SRAM_A1]    = 0x00000000,
++    [AW_R40_DEV_SRAM_A2]    = 0x00004000,
++    [AW_R40_DEV_SRAM_A3]    = 0x00008000,
++    [AW_R40_DEV_SRAM_A4]    = 0x0000b400,
++    [AW_R40_DEV_MMC0]       = 0x01c0f000,
++    [AW_R40_DEV_MMC1]       = 0x01c10000,
++    [AW_R40_DEV_MMC2]       = 0x01c11000,
++    [AW_R40_DEV_MMC3]       = 0x01c12000,
++    [AW_R40_DEV_PIT]        = 0x01c20c00,
++    [AW_R40_DEV_UART0]      = 0x01c28000,
++    [AW_R40_DEV_GIC_DIST]   = 0x01c81000,
++    [AW_R40_DEV_GIC_CPU]    = 0x01c82000,
++    [AW_R40_DEV_GIC_HYP]    = 0x01c84000,
++    [AW_R40_DEV_GIC_VCPU]   = 0x01c86000,
++    [AW_R40_DEV_SDRAM]      = 0x40000000
++};
 +
-+/* Register addresses. */
-+#define R_SRR_OFFSET                    0x00
-+#define R_MSR_OFFSET                    0x04
-+#define R_FILTER_CONTROL_REGISTER       0xe0
-+#define R_SR_OFFSET                     0x18
-+#define R_ISR_OFFSET                    0x1c
-+#define R_IER_OFFSET                    0x20
-+#define R_ICR_OFFSET                    0x24
-+#define R_TX_READY_REQ_REGISTER         0x90
-+#define RX_FIFO_STATUS_REGISTER         0xe8
-+#define R_TXID_OFFSET                   0x100
-+#define R_TXDLC_OFFSET                  0x104
-+#define R_TXDATA1_OFFSET                0x108
-+#define R_TXDATA2_OFFSET                0x10c
-+#define R_AFMR_REGISTER0                0xa00
-+#define R_AFIR_REGISTER0                0xa04
-+#define R_RX0_ID_OFFSET                 0x2100
-+#define R_RX0_DLC_OFFSET                0x2104
-+#define R_RX0_DATA1_OFFSET              0x2108
-+#define R_RX0_DATA2_OFFSET              0x210c
++/* List of unimplemented devices */
++struct AwR40Unimplemented {
++    const char *device_name;
++    hwaddr base;
++    hwaddr size;
++};
 +
-+/* CANFD modes. */
-+#define SRR_CONFIG_MODE                 0x00
-+#define MSR_NORMAL_MODE                 0x00
-+#define MSR_LOOPBACK_MODE               (1 << 1)
-+#define ENABLE_CANFD                    (1 << 1)
++static struct AwR40Unimplemented r40_unimplemented[] = {
++    { "d-engine",   0x01000000, 4 * MiB },
++    { "d-inter",    0x01400000, 128 * KiB },
++    { "sram-c",     0x01c00000, 4 * KiB },
++    { "dma",        0x01c02000, 4 * KiB },
++    { "nfdc",       0x01c03000, 4 * KiB },
++    { "ts",         0x01c04000, 4 * KiB },
++    { "spi0",       0x01c05000, 4 * KiB },
++    { "spi1",       0x01c06000, 4 * KiB },
++    { "cs0",        0x01c09000, 4 * KiB },
++    { "keymem",     0x01c0a000, 4 * KiB },
++    { "emac",       0x01c0b000, 4 * KiB },
++    { "usb0-otg",   0x01c13000, 4 * KiB },
++    { "usb0-host",  0x01c14000, 4 * KiB },
++    { "crypto",     0x01c15000, 4 * KiB },
++    { "spi2",       0x01c17000, 4 * KiB },
++    { "sata",       0x01c18000, 4 * KiB },
++    { "usb1-host",  0x01c19000, 4 * KiB },
++    { "sid",        0x01c1b000, 4 * KiB },
++    { "usb2-host",  0x01c1c000, 4 * KiB },
++    { "cs1",        0x01c1d000, 4 * KiB },
++    { "spi3",       0x01c1f000, 4 * KiB },
++    { "ccu",        0x01c20000, 1 * KiB },
++    { "rtc",        0x01c20400, 1 * KiB },
++    { "pio",        0x01c20800, 1 * KiB },
++    { "owa",        0x01c21000, 1 * KiB },
++    { "ac97",       0x01c21400, 1 * KiB },
++    { "cir0",       0x01c21800, 1 * KiB },
++    { "cir1",       0x01c21c00, 1 * KiB },
++    { "pcm0",       0x01c22000, 1 * KiB },
++    { "pcm1",       0x01c22400, 1 * KiB },
++    { "pcm2",       0x01c22800, 1 * KiB },
++    { "audio",      0x01c22c00, 1 * KiB },
++    { "keypad",     0x01c23000, 1 * KiB },
++    { "pwm",        0x01c23400, 1 * KiB },
++    { "keyadc",     0x01c24400, 1 * KiB },
++    { "ths",        0x01c24c00, 1 * KiB },
++    { "rtp",        0x01c25000, 1 * KiB },
++    { "pmu",        0x01c25400, 1 * KiB },
++    { "cpu-cfg",    0x01c25c00, 1 * KiB },
++    { "uart0",      0x01c28000, 1 * KiB },
++    { "uart1",      0x01c28400, 1 * KiB },
++    { "uart2",      0x01c28800, 1 * KiB },
++    { "uart3",      0x01c28c00, 1 * KiB },
++    { "uart4",      0x01c29000, 1 * KiB },
++    { "uart5",      0x01c29400, 1 * KiB },
++    { "uart6",      0x01c29800, 1 * KiB },
++    { "uart7",      0x01c29c00, 1 * KiB },
++    { "ps20",       0x01c2a000, 1 * KiB },
++    { "ps21",       0x01c2a400, 1 * KiB },
++    { "twi0",       0x01c2ac00, 1 * KiB },
++    { "twi1",       0x01c2b000, 1 * KiB },
++    { "twi2",       0x01c2b400, 1 * KiB },
++    { "twi3",       0x01c2b800, 1 * KiB },
++    { "twi4",       0x01c2c000, 1 * KiB },
++    { "scr",        0x01c2c400, 1 * KiB },
++    { "tvd-top",    0x01c30000, 4 * KiB },
++    { "tvd0",       0x01c31000, 4 * KiB },
++    { "tvd1",       0x01c32000, 4 * KiB },
++    { "tvd2",       0x01c33000, 4 * KiB },
++    { "tvd3",       0x01c34000, 4 * KiB },
++    { "gpu",        0x01c40000, 64 * KiB },
++    { "gmac",       0x01c50000, 64 * KiB },
++    { "hstmr",      0x01c60000, 4 * KiB },
++    { "dram-com",   0x01c62000, 4 * KiB },
++    { "dram-ctl",   0x01c63000, 4 * KiB },
++    { "tcon-top",   0x01c70000, 4 * KiB },
++    { "lcd0",       0x01c71000, 4 * KiB },
++    { "lcd1",       0x01c72000, 4 * KiB },
++    { "tv0",        0x01c73000, 4 * KiB },
++    { "tv1",        0x01c74000, 4 * KiB },
++    { "tve-top",    0x01c90000, 16 * KiB },
++    { "tve0",       0x01c94000, 16 * KiB },
++    { "tve1",       0x01c98000, 16 * KiB },
++    { "mipi_dsi",   0x01ca0000, 4 * KiB },
++    { "mipi_dphy",  0x01ca1000, 4 * KiB },
++    { "ve",         0x01d00000, 1024 * KiB },
++    { "mp",         0x01e80000, 128 * KiB },
++    { "hdmi",       0x01ee0000, 128 * KiB },
++    { "prcm",       0x01f01400, 1 * KiB },
++    { "debug",      0x3f500000, 64 * KiB },
++    { "cpubist",    0x3f501000, 4 * KiB },
++    { "dcu",        0x3fff0000, 64 * KiB },
++    { "hstmr",      0x01c60000, 4 * KiB },
++    { "brom",       0xffff0000, 36 * KiB }
++};
 +
-+/* CANFD status. */
-+#define STATUS_CONFIG_MODE              (1 << 0)
-+#define STATUS_NORMAL_MODE              (1 << 3)
-+#define STATUS_LOOPBACK_MODE            (1 << 1)
-+#define ISR_TXOK                        (1 << 1)
-+#define ISR_RXOK                        (1 << 4)
++/* Per Processor Interrupts */
++enum {
++    AW_R40_GIC_PPI_MAINT     =  9,
++    AW_R40_GIC_PPI_HYPTIMER  = 10,
++    AW_R40_GIC_PPI_VIRTTIMER = 11,
++    AW_R40_GIC_PPI_SECTIMER  = 13,
++    AW_R40_GIC_PPI_PHYSTIMER = 14
++};
 +
-+#define ENABLE_ALL_FILTERS              0xffffffff
-+#define ENABLE_ALL_INTERRUPTS           0xffffffff
++/* Shared Processor Interrupts */
++enum {
++    AW_R40_GIC_SPI_UART0     =  1,
++    AW_R40_GIC_SPI_TIMER0    = 22,
++    AW_R40_GIC_SPI_TIMER1    = 23,
++    AW_R40_GIC_SPI_MMC0      = 32,
++    AW_R40_GIC_SPI_MMC1      = 33,
++    AW_R40_GIC_SPI_MMC2      = 34,
++    AW_R40_GIC_SPI_MMC3      = 35,
++};
 +
-+/* We are sending one canfd message. */
-+#define TX_READY_REG_VAL                0x1
++/* Allwinner R40 general constants */
++enum {
++    AW_R40_GIC_NUM_SPI       = 128
++};
 +
-+#define FIRST_RX_STORE_INDEX            0x1
-+#define STATUS_REG_MASK                 0xf
-+#define DLC_FD_BIT_SHIFT                0x1b
-+#define DLC_FD_BIT_MASK                 0xf8000000
-+#define FIFO_STATUS_READ_INDEX_MASK     0x3f
-+#define FIFO_STATUS_FILL_LEVEL_MASK     0x7f00
-+#define FILL_LEVEL_SHIFT                0x8
++#define BOOT0_MAGIC             "eGON.BT0"
 +
-+/* CANFD frame size ID, DLC and 16 DATA word. */
-+#define CANFD_FRAME_SIZE        18
-+/* CAN frame size ID, DLC and 2 DATA word. */
-+#define CAN_FRAME_SIZE          4
++/* The low 8-bits of the 'boot_media' field in the SPL header */
++#define SUNXI_BOOTED_FROM_MMC0  0
++#define SUNXI_BOOTED_FROM_NAND  1
++#define SUNXI_BOOTED_FROM_MMC2  2
++#define SUNXI_BOOTED_FROM_SPI   3
 +
-+/* Set the filters for CANFD controller. */
-+static void enable_filters(QTestState *qts)
++struct boot_file_head {
++    uint32_t            b_instruction;
++    uint8_t             magic[8];
++    uint32_t            check_sum;
++    uint32_t            length;
++    uint32_t            pub_head_size;
++    uint32_t            fel_script_address;
++    uint32_t            fel_uEnv_length;
++    uint32_t            dt_name_offset;
++    uint32_t            dram_size;
++    uint32_t            boot_media;
++    uint32_t            string_pool[13];
++};
++
++bool allwinner_r40_bootrom_setup(AwR40State *s, BlockBackend *blk, int unit)
 +{
-+     const uint32_t arr_afmr[32] = { 0xb423deaa, 0xa2a40bdc, 0x1b64f486,
-+                                     0x95c0d4ee, 0xe0c44528, 0x4b407904,
-+                                     0xd2673f46, 0x9fc638d6, 0x8844f3d8,
-+                                     0xa607d1e8, 0x67871bf4, 0xc2557dc,
-+                                     0x9ea5b53e, 0x3643c0cc, 0x5a05ea8e,
-+                                     0x83a46d84, 0x4a25c2b8, 0x93a66008,
-+                                     0x2e467470, 0xedc66118, 0x9086f9f2,
-+                                     0xfa23dd36, 0xb6654b90, 0xb221b8ca,
-+                                     0x3467d1e2, 0xa3a55542, 0x5b26a012,
-+                                     0x2281ea7e, 0xcea0ece8, 0xdc61e588,
-+                                     0x2e5676a,  0x16821320 };
++    const int64_t rom_size = 32 * KiB;
++    g_autofree uint8_t *buffer = g_new0(uint8_t, rom_size);
++    struct boot_file_head *head = (struct boot_file_head *)buffer;
 +
-+    const uint32_t arr_afir[32] = { 0xa833dfa1, 0x255a477e, 0x3a4bb1c5,
-+                                    0x8f560a6c, 0x27f38903, 0x2fecec4d,
-+                                    0xa014c66d, 0xec289b8,  0x7e52dead,
-+                                    0x82e94f3c, 0xcf3e3c5c, 0x66059871,
-+                                    0x3f213df4, 0x25ac3959, 0xa12e9bef,
-+                                    0xa3ad3af,  0xbafd7fe,  0xb3cb40fd,
-+                                    0x5d9caa81, 0x2ed61902, 0x7cd64a0,
-+                                    0x4b1fa538, 0x9b5ced8c, 0x150de059,
-+                                    0xd2794227, 0x635e820a, 0xbb6b02cf,
-+                                    0xbb58176,  0x570025bb, 0xa78d9658,
-+                                    0x49d735df, 0xe5399d2f };
-+
-+    /* Passing the respective array values to all the AFMR and AFIR pairs. */
-+    for (int i = 0; i < 32; i++) {
-+        /* For CANFD0. */
-+       qtest_writel(qts, CANFD0_BASE_ADDR + R_AFMR_REGISTER0 + 8 * i,
-+                    arr_afmr[i]);
-+       qtest_writel(qts, CANFD0_BASE_ADDR + R_AFIR_REGISTER0 + 8 * i,
-+                    arr_afir[i]);
-+
-+        /* For CANFD1. */
-+       qtest_writel(qts, CANFD1_BASE_ADDR + R_AFMR_REGISTER0 + 8 * i,
-+                    arr_afmr[i]);
-+       qtest_writel(qts, CANFD1_BASE_ADDR + R_AFIR_REGISTER0 + 8 * i,
-+                    arr_afir[i]);
++    if (blk_pread(blk, 8 * KiB, rom_size, buffer, 0) < 0) {
++        error_setg(&error_fatal, "%s: failed to read BlockBackend data",
++                   __func__);
++        return false;
 +    }
 +
-+    /* Enable all the pairs from AFR register. */
-+    qtest_writel(qts, CANFD0_BASE_ADDR + R_FILTER_CONTROL_REGISTER,
-+                 ENABLE_ALL_FILTERS);
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_FILTER_CONTROL_REGISTER,
-+                 ENABLE_ALL_FILTERS);
-+}
++    /* we only check the magic string here. */
++    if (memcmp(head->magic, BOOT0_MAGIC, sizeof(head->magic))) {
++        return false;
++    }
 +
-+static void configure_canfd(QTestState *qts, uint8_t mode)
-+{
-+    uint32_t status = 0;
-+
-+    /* Put CANFD0 and CANFD1 in config mode. */
-+    qtest_writel(qts, CANFD0_BASE_ADDR + R_SRR_OFFSET, SRR_CONFIG_MODE);
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_SRR_OFFSET, SRR_CONFIG_MODE);
-+
-+    /* Write mode of operation in Mode select register. */
-+    qtest_writel(qts, CANFD0_BASE_ADDR + R_MSR_OFFSET, mode);
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_MSR_OFFSET, mode);
-+
-+    enable_filters(qts);
-+
-+    /* Check here if CANFD0 and CANFD1 are in config mode. */
-+    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_CONFIG_MODE);
-+
-+    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_CONFIG_MODE);
-+
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_IER_OFFSET, ENABLE_ALL_INTERRUPTS);
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_IER_OFFSET, ENABLE_ALL_INTERRUPTS);
-+
-+    qtest_writel(qts, CANFD0_BASE_ADDR + R_SRR_OFFSET, ENABLE_CANFD);
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_SRR_OFFSET, ENABLE_CANFD);
-+}
-+
-+static void generate_random_data(uint32_t *buf_tx, bool is_canfd_frame)
-+{
-+    /* Generate random TX data for CANFD frame. */
-+    if (is_canfd_frame) {
-+        for (int i = 0; i < CANFD_FRAME_SIZE - 2; i++) {
-+            buf_tx[2 + i] = rand();
-+        }
++    /*
++     * Simulate the behavior of the bootROM, it will change the boot_media
++     * flag to indicate where the chip is booting from. R40 can boot from
++     * mmc0 or mmc2, the default value of boot_media is zero
++     * (SUNXI_BOOTED_FROM_MMC0), let's fix this flag when it is booting from
++     * the others.
++     */
++    if (unit == 2) {
++        head->boot_media = cpu_to_le32(SUNXI_BOOTED_FROM_MMC2);
 +    } else {
-+        /* Generate random TX data for CAN frame. */
-+        for (int i = 0; i < CAN_FRAME_SIZE - 2; i++) {
-+            buf_tx[2 + i] = rand();
-+        }
++        head->boot_media = cpu_to_le32(SUNXI_BOOTED_FROM_MMC0);
++    }
++
++    rom_add_blob("allwinner-r40.bootrom", buffer, rom_size,
++                  rom_size, s->memmap[AW_R40_DEV_SRAM_A1],
++                  NULL, NULL, NULL, NULL, false);
++    return true;
++}
++
++static void allwinner_r40_init(Object *obj)
++{
++    static const char *mmc_names[AW_R40_NUM_MMCS] = {
++        "mmc0", "mmc1", "mmc2", "mmc3"
++    };
++    AwR40State *s = AW_R40(obj);
++
++    s->memmap = allwinner_r40_memmap;
++
++    for (int i = 0; i < AW_R40_NUM_CPUS; i++) {
++        object_initialize_child(obj, "cpu[*]", &s->cpus[i],
++                                ARM_CPU_TYPE_NAME("cortex-a7"));
++    }
++
++    object_initialize_child(obj, "gic", &s->gic, TYPE_ARM_GIC);
++
++    object_initialize_child(obj, "timer", &s->timer, TYPE_AW_A10_PIT);
++    object_property_add_alias(obj, "clk0-freq", OBJECT(&s->timer),
++                              "clk0-freq");
++    object_property_add_alias(obj, "clk1-freq", OBJECT(&s->timer),
++                              "clk1-freq");
++
++    for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
++        object_initialize_child(obj, mmc_names[i], &s->mmc[i],
++                                TYPE_AW_SDHOST_SUN5I);
 +    }
 +}
 +
-+static void read_data(QTestState *qts, uint64_t can_base_addr, uint32_t *buf_rx)
++static void allwinner_r40_realize(DeviceState *dev, Error **errp)
 +{
-+    uint32_t int_status;
-+    uint32_t fifo_status_reg_value;
-+    /* At which RX FIFO the received data is stored. */
-+    uint8_t store_ind = 0;
-+    bool is_canfd_frame = false;
++    AwR40State *s = AW_R40(dev);
++    unsigned i;
 +
-+    /* Read the interrupt on CANFD rx. */
-+    int_status = qtest_readl(qts, can_base_addr + R_ISR_OFFSET) & ISR_RXOK;
++    /* CPUs */
++    for (i = 0; i < AW_R40_NUM_CPUS; i++) {
 +
-+    g_assert_cmpint(int_status, ==, ISR_RXOK);
++        /*
++         * Disable secondary CPUs. Guest EL3 firmware will start
++         * them via CPU reset control registers.
++         */
++        qdev_prop_set_bit(DEVICE(&s->cpus[i]), "start-powered-off",
++                          i > 0);
 +
-+    /* Find the fill level and read index. */
-+    fifo_status_reg_value = qtest_readl(qts, can_base_addr +
-+                                        RX_FIFO_STATUS_REGISTER);
++        /* All exception levels required */
++        qdev_prop_set_bit(DEVICE(&s->cpus[i]), "has_el3", true);
++        qdev_prop_set_bit(DEVICE(&s->cpus[i]), "has_el2", true);
 +
-+    store_ind = (fifo_status_reg_value & FIFO_STATUS_READ_INDEX_MASK) +
-+                ((fifo_status_reg_value & FIFO_STATUS_FILL_LEVEL_MASK) >>
-+                  FILL_LEVEL_SHIFT);
-+
-+    g_assert_cmpint(store_ind, ==, FIRST_RX_STORE_INDEX);
-+
-+    /* Read the RX register data for CANFD. */
-+    buf_rx[0] = qtest_readl(qts, can_base_addr + R_RX0_ID_OFFSET);
-+    buf_rx[1] = qtest_readl(qts, can_base_addr + R_RX0_DLC_OFFSET);
-+
-+    is_canfd_frame = (buf_rx[1] >> DLC_FD_BIT_SHIFT) & 1;
-+
-+    if (is_canfd_frame) {
-+        for (int i = 0; i < CANFD_FRAME_SIZE - 2; i++) {
-+            buf_rx[i + 2] = qtest_readl(qts,
-+                                    can_base_addr + R_RX0_DATA1_OFFSET + 4 * i);
-+        }
-+    } else {
-+        buf_rx[2] = qtest_readl(qts, can_base_addr + R_RX0_DATA1_OFFSET);
-+        buf_rx[3] = qtest_readl(qts, can_base_addr + R_RX0_DATA2_OFFSET);
++        /* Mark realized */
++        qdev_realize(DEVICE(&s->cpus[i]), NULL, &error_fatal);
 +    }
 +
-+    /* Clear the RX interrupt. */
-+    qtest_writel(qts, CANFD1_BASE_ADDR + R_ICR_OFFSET, ISR_RXOK);
-+}
++    /* Generic Interrupt Controller */
++    qdev_prop_set_uint32(DEVICE(&s->gic), "num-irq", AW_R40_GIC_NUM_SPI +
++                                                     GIC_INTERNAL);
++    qdev_prop_set_uint32(DEVICE(&s->gic), "revision", 2);
++    qdev_prop_set_uint32(DEVICE(&s->gic), "num-cpu", AW_R40_NUM_CPUS);
++    qdev_prop_set_bit(DEVICE(&s->gic), "has-security-extensions", false);
++    qdev_prop_set_bit(DEVICE(&s->gic), "has-virtualization-extensions", true);
++    sysbus_realize(SYS_BUS_DEVICE(&s->gic), &error_fatal);
 +
-+static void write_data(QTestState *qts, uint64_t can_base_addr,
-+                       const uint32_t *buf_tx, bool is_canfd_frame)
-+{
-+    /* Write the TX register data for CANFD. */
-+    qtest_writel(qts, can_base_addr + R_TXID_OFFSET, buf_tx[0]);
-+    qtest_writel(qts, can_base_addr + R_TXDLC_OFFSET, buf_tx[1]);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 0, s->memmap[AW_R40_DEV_GIC_DIST]);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 1, s->memmap[AW_R40_DEV_GIC_CPU]);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 2, s->memmap[AW_R40_DEV_GIC_HYP]);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 3, s->memmap[AW_R40_DEV_GIC_VCPU]);
 +
-+    if (is_canfd_frame) {
-+        for (int i = 0; i < CANFD_FRAME_SIZE - 2; i++) {
-+            qtest_writel(qts, can_base_addr + R_TXDATA1_OFFSET + 4 * i,
-+                         buf_tx[2 + i]);
-+        }
-+    } else {
-+        qtest_writel(qts, can_base_addr + R_TXDATA1_OFFSET, buf_tx[2]);
-+        qtest_writel(qts, can_base_addr + R_TXDATA2_OFFSET, buf_tx[3]);
-+    }
-+}
++    /*
++     * Wire the outputs from each CPU's generic timer and the GICv2
++     * maintenance interrupt signal to the appropriate GIC PPI inputs,
++     * and the GIC's IRQ/FIQ/VIRQ/VFIQ interrupt outputs to the CPU's inputs.
++     */
++    for (i = 0; i < AW_R40_NUM_CPUS; i++) {
++        DeviceState *cpudev = DEVICE(&s->cpus[i]);
++        int ppibase = AW_R40_GIC_NUM_SPI + i * GIC_INTERNAL + GIC_NR_SGIS;
++        int irq;
++        /*
++         * Mapping from the output timer irq lines from the CPU to the
++         * GIC PPI inputs used for this board.
++         */
++        const int timer_irq[] = {
++            [GTIMER_PHYS] = AW_R40_GIC_PPI_PHYSTIMER,
++            [GTIMER_VIRT] = AW_R40_GIC_PPI_VIRTTIMER,
++            [GTIMER_HYP]  = AW_R40_GIC_PPI_HYPTIMER,
++            [GTIMER_SEC]  = AW_R40_GIC_PPI_SECTIMER,
++        };
 +
-+static void send_data(QTestState *qts, uint64_t can_base_addr)
-+{
-+    uint32_t int_status;
-+
-+    qtest_writel(qts, can_base_addr + R_TX_READY_REQ_REGISTER,
-+                 TX_READY_REG_VAL);
-+
-+    /* Read the interrupt on CANFD for tx. */
-+    int_status = qtest_readl(qts, can_base_addr + R_ISR_OFFSET) & ISR_TXOK;
-+
-+    g_assert_cmpint(int_status, ==, ISR_TXOK);
-+
-+    /* Clear the interrupt for tx. */
-+    qtest_writel(qts, CANFD0_BASE_ADDR + R_ICR_OFFSET, ISR_TXOK);
-+}
-+
-+static void match_rx_tx_data(const uint32_t *buf_tx, const uint32_t *buf_rx,
-+                             bool is_canfd_frame)
-+{
-+    uint16_t size = 0;
-+    uint8_t len = CAN_FRAME_SIZE;
-+
-+    if (is_canfd_frame) {
-+        len = CANFD_FRAME_SIZE;
-+    }
-+
-+    while (size < len) {
-+        if (R_RX0_ID_OFFSET + 4 * size == R_RX0_DLC_OFFSET)  {
-+            g_assert_cmpint((buf_rx[size] & DLC_FD_BIT_MASK), ==,
-+                            (buf_tx[size] & DLC_FD_BIT_MASK));
-+        } else {
-+            if (!is_canfd_frame && size == 4) {
-+                break;
-+            }
-+
-+            g_assert_cmpint(buf_rx[size], ==, buf_tx[size]);
++        /* Connect CPU timer outputs to GIC PPI inputs */
++        for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
++            qdev_connect_gpio_out(cpudev, irq,
++                                  qdev_get_gpio_in(DEVICE(&s->gic),
++                                                   ppibase + timer_irq[irq]));
 +        }
 +
-+        size++;
++        /* Connect GIC outputs to CPU interrupt inputs */
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), i,
++                           qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), i + AW_R40_NUM_CPUS,
++                           qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), i + (2 * AW_R40_NUM_CPUS),
++                           qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), i + (3 * AW_R40_NUM_CPUS),
++                           qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
++
++        /* GIC maintenance signal */
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), i + (4 * AW_R40_NUM_CPUS),
++                           qdev_get_gpio_in(DEVICE(&s->gic),
++                                            ppibase + AW_R40_GIC_PPI_MAINT));
++    }
++
++    /* Timer */
++    sysbus_realize(SYS_BUS_DEVICE(&s->timer), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->timer), 0, s->memmap[AW_R40_DEV_PIT]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->timer), 0,
++                       qdev_get_gpio_in(DEVICE(&s->gic),
++                       AW_R40_GIC_SPI_TIMER0));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->timer), 1,
++                       qdev_get_gpio_in(DEVICE(&s->gic),
++                       AW_R40_GIC_SPI_TIMER1));
++
++    /* SRAM */
++    memory_region_init_ram(&s->sram_a1, OBJECT(dev), "sram A1",
++                            16 * KiB, &error_abort);
++    memory_region_init_ram(&s->sram_a2, OBJECT(dev), "sram A2",
++                            16 * KiB, &error_abort);
++    memory_region_init_ram(&s->sram_a3, OBJECT(dev), "sram A3",
++                            13 * KiB, &error_abort);
++    memory_region_init_ram(&s->sram_a4, OBJECT(dev), "sram A4",
++                            3 * KiB, &error_abort);
++    memory_region_add_subregion(get_system_memory(),
++                                s->memmap[AW_R40_DEV_SRAM_A1], &s->sram_a1);
++    memory_region_add_subregion(get_system_memory(),
++                                s->memmap[AW_R40_DEV_SRAM_A2], &s->sram_a2);
++    memory_region_add_subregion(get_system_memory(),
++                                s->memmap[AW_R40_DEV_SRAM_A3], &s->sram_a3);
++    memory_region_add_subregion(get_system_memory(),
++                                s->memmap[AW_R40_DEV_SRAM_A4], &s->sram_a4);
++
++    /* SD/MMC */
++    for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
++        qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->gic),
++                                        AW_R40_GIC_SPI_MMC0 + i);
++        const hwaddr addr = s->memmap[AW_R40_DEV_MMC0 + i];
++
++        object_property_set_link(OBJECT(&s->mmc[i]), "dma-memory",
++                                 OBJECT(get_system_memory()), &error_fatal);
++        sysbus_realize(SYS_BUS_DEVICE(&s->mmc[i]), &error_fatal);
++        sysbus_mmio_map(SYS_BUS_DEVICE(&s->mmc[i]), 0, addr);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->mmc[i]), 0, irq);
++    }
++
++    /* UART0. For future clocktree API: All UARTS are connected to APB2_CLK. */
++    serial_mm_init(get_system_memory(), s->memmap[AW_R40_DEV_UART0], 2,
++                   qdev_get_gpio_in(DEVICE(&s->gic), AW_R40_GIC_SPI_UART0),
++                   115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
++
++    /* Unimplemented devices */
++    for (i = 0; i < ARRAY_SIZE(r40_unimplemented); i++) {
++        create_unimplemented_device(r40_unimplemented[i].device_name,
++                                    r40_unimplemented[i].base,
++                                    r40_unimplemented[i].size);
 +    }
 +}
++
++static void allwinner_r40_class_init(ObjectClass *oc, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(oc);
++
++    dc->realize = allwinner_r40_realize;
++    /* Reason: uses serial_hd() in realize function */
++    dc->user_creatable = false;
++}
++
++static const TypeInfo allwinner_r40_type_info = {
++    .name = TYPE_AW_R40,
++    .parent = TYPE_DEVICE,
++    .instance_size = sizeof(AwR40State),
++    .instance_init = allwinner_r40_init,
++    .class_init = allwinner_r40_class_init,
++};
++
++static void allwinner_r40_register_types(void)
++{
++    type_register_static(&allwinner_r40_type_info);
++}
++
++type_init(allwinner_r40_register_types)
+diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c
+new file mode 100644
+index 00000000000..1d49a006b53
+--- /dev/null
++++ b/hw/arm/bananapi_m2u.c
+@@ -0,0 +1,129 @@
 +/*
-+ * Xilinx CANFD supports both CAN and CANFD frames. This test will be
-+ * transferring CAN frame i.e. 8 bytes of data from CANFD0 and CANFD1 through
-+ * canbus. CANFD0 initiate the data transfer to can-bus, CANFD1 receives the
-+ * data. Test compares the can frame data sent from CANFD0 and received on
-+ * CANFD1.
++ * Bananapi M2U emulation
++ *
++ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
-+static void test_can_data_transfer(void)
-+{
-+    uint32_t buf_tx[CAN_FRAME_SIZE] = { 0x5a5bb9a4, 0x80000000,
-+                                        0x12345678, 0x87654321 };
-+    uint32_t buf_rx[CAN_FRAME_SIZE] = { 0x00, 0x00, 0x00, 0x00 };
-+    uint32_t status = 0;
 +
-+    generate_random_data(buf_tx, false);
++#include "qemu/osdep.h"
++#include "qemu/units.h"
++#include "exec/address-spaces.h"
++#include "qapi/error.h"
++#include "qemu/error-report.h"
++#include "hw/boards.h"
++#include "hw/qdev-properties.h"
++#include "hw/arm/allwinner-r40.h"
 +
-+    QTestState *qts = qtest_init("-machine xlnx-versal-virt"
-+                " -object can-bus,id=canbus"
-+                " -machine canbus0=canbus"
-+                " -machine canbus1=canbus"
-+                );
-+
-+    configure_canfd(qts, MSR_NORMAL_MODE);
-+
-+    /* Check if CANFD0 and CANFD1 are in Normal mode. */
-+    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
-+
-+    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
-+
-+    write_data(qts, CANFD0_BASE_ADDR, buf_tx, false);
-+
-+    send_data(qts, CANFD0_BASE_ADDR);
-+    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-+    match_rx_tx_data(buf_tx, buf_rx, false);
-+
-+    qtest_quit(qts);
-+}
++static struct arm_boot_info bpim2u_binfo;
 +
 +/*
-+ * This test will be transferring CANFD frame i.e. 64 bytes of data from CANFD0
-+ * and CANFD1 through canbus. CANFD0 initiate the data transfer to can-bus,
-+ * CANFD1 receives the data. Test compares the CANFD frame data sent from CANFD0
-+ * with received on CANFD1.
++ * R40 can boot from mmc0 and mmc2, and bpim2u has two mmc interface, one is
++ * connected to sdcard and another mount an emmc media.
++ * Attach the mmc driver and try loading bootloader.
 + */
-+static void test_canfd_data_transfer(void)
++static void mmc_attach_drive(AwR40State *s, AwSdHostState *mmc, int unit,
++                             bool load_bootroom, bool *bootroom_loaded)
 +{
-+    uint32_t buf_tx[CANFD_FRAME_SIZE] = { 0x5a5bb9a4, 0xf8000000 };
-+    uint32_t buf_rx[CANFD_FRAME_SIZE] = { 0x00, 0x00, 0x00, 0x00 };
-+    uint32_t status = 0;
++    DriveInfo *di = drive_get(IF_SD, 0, unit);
++    BlockBackend *blk = di ? blk_by_legacy_dinfo(di) : NULL;
++    BusState *bus;
++    DeviceState *carddev;
 +
-+    generate_random_data(buf_tx, true);
++    bus = qdev_get_child_bus(DEVICE(mmc), "sd-bus");
++    if (bus == NULL) {
++        error_report("No SD bus found in SOC object");
++        exit(1);
++    }
 +
-+    QTestState *qts = qtest_init("-machine xlnx-versal-virt"
-+                " -object can-bus,id=canbus"
-+                " -machine canbus0=canbus"
-+                " -machine canbus1=canbus"
-+                );
++    carddev = qdev_new(TYPE_SD_CARD);
++    qdev_prop_set_drive_err(carddev, "drive", blk, &error_fatal);
++    qdev_realize_and_unref(carddev, bus, &error_fatal);
 +
-+    configure_canfd(qts, MSR_NORMAL_MODE);
-+
-+    /* Check if CANFD0 and CANFD1 are in Normal mode. */
-+    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
-+
-+    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
-+
-+    write_data(qts, CANFD0_BASE_ADDR, buf_tx, true);
-+
-+    send_data(qts, CANFD0_BASE_ADDR);
-+    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-+    match_rx_tx_data(buf_tx, buf_rx, true);
-+
-+    qtest_quit(qts);
++    if (load_bootroom && blk && blk_is_available(blk)) {
++        /* Use Boot ROM to copy data from SD card to SRAM */
++        *bootroom_loaded = allwinner_r40_bootrom_setup(s, blk, unit);
++    }
 +}
 +
-+/*
-+ * This test is performing loopback mode on CANFD0 and CANFD1. Data sent from
-+ * TX of each CANFD0 and CANFD1 are compared with RX register data for
-+ * respective CANFD Controller.
-+ */
-+static void test_can_loopback(void)
++static void bpim2u_init(MachineState *machine)
 +{
-+    uint32_t buf_tx[CANFD_FRAME_SIZE] = { 0x5a5bb9a4, 0xf8000000 };
-+    uint32_t buf_rx[CANFD_FRAME_SIZE] = { 0x00, 0x00, 0x00, 0x00 };
-+    uint32_t status = 0;
++    bool bootroom_loaded = false;
++    AwR40State *r40;
 +
-+    generate_random_data(buf_tx, true);
++    /* BIOS is not supported by this board */
++    if (machine->firmware) {
++        error_report("BIOS not supported for this machine");
++        exit(1);
++    }
 +
-+    QTestState *qts = qtest_init("-machine xlnx-versal-virt"
-+                " -object can-bus,id=canbus"
-+                " -machine canbus0=canbus"
-+                " -machine canbus1=canbus"
-+                );
++    /* Only allow Cortex-A7 for this board */
++    if (strcmp(machine->cpu_type, ARM_CPU_TYPE_NAME("cortex-a7")) != 0) {
++        error_report("This board can only be used with cortex-a7 CPU");
++        exit(1);
++    }
 +
-+    configure_canfd(qts, MSR_LOOPBACK_MODE);
++    r40 = AW_R40(object_new(TYPE_AW_R40));
++    object_property_add_child(OBJECT(machine), "soc", OBJECT(r40));
++    object_unref(OBJECT(r40));
 +
-+    /* Check if CANFD0 and CANFD1 are set in correct loopback mode. */
-+    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_LOOPBACK_MODE);
++    /* Setup timer properties */
++    object_property_set_int(OBJECT(r40), "clk0-freq", 32768, &error_abort);
++    object_property_set_int(OBJECT(r40), "clk1-freq", 24 * 1000 * 1000,
++                            &error_abort);
 +
-+    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
-+    status = status & STATUS_REG_MASK;
-+    g_assert_cmpint(status, ==, STATUS_LOOPBACK_MODE);
++    /* Mark R40 object realized */
++    qdev_realize(DEVICE(r40), NULL, &error_abort);
 +
-+    write_data(qts, CANFD0_BASE_ADDR, buf_tx, true);
++    /*
++     * Plug in SD card and try load bootrom, R40 has 4 mmc controllers but can
++     * only booting from mmc0 and mmc2.
++     */
++    for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
++        switch (i) {
++        case 0:
++        case 2:
++            mmc_attach_drive(r40, &r40->mmc[i], i,
++                             !machine->kernel_filename && !bootroom_loaded,
++                             &bootroom_loaded);
++            break;
++        default:
++            mmc_attach_drive(r40, &r40->mmc[i], i, false, NULL);
++            break;
++        }
++    }
 +
-+    send_data(qts, CANFD0_BASE_ADDR);
-+    read_data(qts, CANFD0_BASE_ADDR, buf_rx);
-+    match_rx_tx_data(buf_tx, buf_rx, true);
++    /* SDRAM */
++    memory_region_add_subregion(get_system_memory(),
++                                r40->memmap[AW_R40_DEV_SDRAM], machine->ram);
 +
-+    generate_random_data(buf_tx, true);
-+
-+    write_data(qts, CANFD1_BASE_ADDR, buf_tx, true);
-+
-+    send_data(qts, CANFD1_BASE_ADDR);
-+    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-+    match_rx_tx_data(buf_tx, buf_rx, true);
-+
-+    qtest_quit(qts);
++    bpim2u_binfo.loader_start = r40->memmap[AW_R40_DEV_SDRAM];
++    bpim2u_binfo.ram_size = machine->ram_size;
++    bpim2u_binfo.psci_conduit = QEMU_PSCI_CONDUIT_SMC;
++    arm_load_kernel(ARM_CPU(first_cpu), machine, &bpim2u_binfo);
 +}
 +
-+int main(int argc, char **argv)
++static void bpim2u_machine_init(MachineClass *mc)
 +{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("/net/canfd/can_data_transfer", test_can_data_transfer);
-+    qtest_add_func("/net/canfd/canfd_data_transfer", test_canfd_data_transfer);
-+    qtest_add_func("/net/canfd/can_loopback", test_can_loopback);
-+
-+    return g_test_run();
++    mc->desc = "Bananapi M2U (Cortex-A7)";
++    mc->init = bpim2u_init;
++    mc->min_cpus = AW_R40_NUM_CPUS;
++    mc->max_cpus = AW_R40_NUM_CPUS;
++    mc->default_cpus = AW_R40_NUM_CPUS;
++    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a7");
++    mc->default_ram_size = 1 * GiB;
++    mc->default_ram_id = "bpim2u.ram";
 +}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 087f2dc9d7c..fd434069b78 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -215,6 +215,7 @@ qtests_aarch64 = \
-   (config_all.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_TIS_SYSBUS') ?            \
-     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
-   (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-+  (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
-   (config_all.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
++
++DEFINE_MACHINE("bpim2u", bpim2u_machine_init)
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index acc4371a4ae..02b2d8167dc 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -403,6 +403,16 @@ config ALLWINNER_H3
+     select USB_EHCI_SYSBUS
+     select SD
+ 
++config ALLWINNER_R40
++    bool
++    default y if TCG && ARM
++    select ALLWINNER_A10_PIT
++    select SERIAL
++    select ARM_TIMER
++    select ARM_GIC
++    select UNIMP
++    select SD
++
+ config RASPI
+     bool
+     default y
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index b545ba0e4fa..870ec67376d 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -37,6 +37,7 @@ arm_ss.add(when: 'CONFIG_OMAP', if_true: files('omap1.c', 'omap2.c'))
+ arm_ss.add(when: 'CONFIG_STRONGARM', if_true: files('strongarm.c'))
+ arm_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
+ arm_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
++arm_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
+ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
+ arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
 -- 
 2.34.1
 
