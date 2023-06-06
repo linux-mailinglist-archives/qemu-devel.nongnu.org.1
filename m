@@ -2,66 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FFD72370A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 07:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B47F7237C7
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 08:35:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Pgi-0004u0-P5; Tue, 06 Jun 2023 01:57:00 -0400
+	id 1q6QGS-0008F8-TM; Tue, 06 Jun 2023 02:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6Pgg-0004tV-Fz
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 01:56:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q6QGF-0008CH-Gt
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 02:33:48 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6Pge-0004CW-Jt
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 01:56:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686031016;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5IeASP+feAXEMJEqRk06AP6n/Wy3o7p7DE/u+5rC0+s=;
- b=CKN61bYISxjJ4CwU6F1PZJgn3xNYXzMhpXEcxO6kGiHkJzFmYBxE5xEbJjcX3vKUpqRAQZ
- kHgbVCwRdN/cHe36ImzqJN76cVVjJQJbc7b7RsffOwNJ9+Ow8AzogrtQKmZWCCtyocQv9c
- 3xbKQNJbCXNKhPJf59QCbIBvEpnzA+Q=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-214--5e0aIMUOquseExzcEpREA-1; Tue, 06 Jun 2023 01:56:52 -0400
-X-MC-Unique: -5e0aIMUOquseExzcEpREA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84E6B299E74A;
- Tue,  6 Jun 2023 05:56:52 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.52])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2319A2166B25;
- Tue,  6 Jun 2023 05:56:51 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- Tulio Magno Quites Machado Filho <tuliom@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PULL 18/18] linux-user: Emulate /proc/cpuinfo on s390x
-Date: Tue,  6 Jun 2023 07:56:21 +0200
-Message-Id: <20230606055621.523175-19-thuth@redhat.com>
-In-Reply-To: <20230606055621.523175-1-thuth@redhat.com>
-References: <20230606055621.523175-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q6QGD-0006aF-W2
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 02:33:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=EF47ppOL8jDNmu+X7cwLWimIUKBzUMWbrgIeeyEVGUQ=; b=ebwPgyD7KypXt7OaAnTJ9+TH3O
+ qJFSWOTR2AiO0dRAW0lCIPP/HbSyUS3OaV5G+4i41j5f6WJHw7wdygHb7VasHqqQ6gX3l2ZYMk55z
+ 5YJk09rS4qbTMjoz+EX3hqo4cpeMAy5K9hsoPBvWOu1c1fOuP8RXvt9VpIgz5wH+cv/db5kBgsZMX
+ 5usx44skv/29qpzlfAIap7gck9BYDsrMTz+U+8cSk4a3GffzU5iJrPoA6XF9L0UVDD4i2PWCUR9Lp
+ QDfmzBua14gm5vHkyGvEsd6dAaOzc6uU7wvOd5yCtS0v3SZxSZamZwqZWKeKWRr5bORkNoIB+/wWT
+ 46z4oppZynMIyE5ZH7lGpdEgIiGwCZWTmeKIBMRhE/z1wxl63fe5lxE3fmu5cWkYtnXRXPBv+tu+T
+ D2L8E4utocmESSfArdEl+zjvM3YMyGeRkmBBY5dD9JGWz1Iaw8VMT6iQIAvyyB9PLyTcdXqW1zGyw
+ KJZXWJwtbBPALqbcfxqN2MgdZJIovDAwFGbl9pQDQJqGiHuYRFcoYMlGiIgdrccM0B4p6Hbh2O86f
+ JBqVbPVQkVn9lum5+JrxDGk7TK8Xdn5t2/ENMJU8pNXy4Z6dCB2phGsASQ9Xlxuy+zBtcoPly/cL0
+ zXYPIpNd/WSU9+ljF+zZFPWuKHMZ7dfNaACoxaZDo=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q6QG4-000528-G7; Tue, 06 Jun 2023 07:33:36 +0100
+Message-ID: <24b2dd19-e002-d616-cf07-6a63cc18fcb2@ilande.co.uk>
+Date: Tue, 6 Jun 2023 07:33:30 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-11-mark.cave-ayland@ilande.co.uk>
+ <7d321bc5-c54e-3584-efd2-0c9401da8655@linaro.org>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <7d321bc5-c54e-3584-efd2-0c9401da8655@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v3 10/23] q800: reimplement mac-io region aliasing using
+ IO memory region
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,178 +83,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+On 05/06/2023 13:43, Philippe Mathieu-Daudé wrote:
 
-Some s390x userspace programs are confused when seeing a foreign
-/proc/cpuinfo [1]. Add the emulation for s390x; follow the respective
-kernel code structure where possible.
+> On 4/6/23 15:14, Mark Cave-Ayland wrote:
+>> The current use of aliased memory regions causes us 2 problems: firstly the
+>> output of "info qom-tree" is absolutely huge and difficult to read, and
+>> secondly we have already reached the internal limit for memory regions as
+>> adding any new memory region into the mac-io region causes QEMU to assert
+>> with "phys_section_add: Assertion `map->sections_nb < TARGET_PAGE_SIZE'
+>> failed".
+>>
+>> Implement the mac-io region aliasing using a single IO memory region that
+>> applies IO_SLICE_MASK representing the maximum size of the aliased region and
+>> then forwarding the access to the existing mac-io memory region using the
+>> address space API.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+>> ---
+>>   hw/m68k/q800.c         | 100 +++++++++++++++++++++++++++++++++--------
+>>   include/hw/m68k/q800.h |   1 +
+>>   2 files changed, 82 insertions(+), 19 deletions(-)
+> 
+> Out of curiosity, is mac-io an I/O bus, rather than a MMIO device?
 
-Output example:
+Well for PPC it is currently modelled as a bus, but having worked on the q800 machine 
+which is the forerunner to the integrated PPC CUDA/PMU version my best guess now is 
+that it is an MMIO device with partial address decoding.
 
-	vendor_id       : IBM/S390
-	# processors    : 12
-	bogomips per cpu: 13370.00
-	max thread id   : 0
-	features	: esan3 zarch stfle msa
-	facilities      : 0 1 2 3 4 7 9 16 17 18 19 21 22 24 25 27 30 31 32 33 34 35 37 40 41 45 49 51 52 53 57 58 61 69 71 72 75 76 77 129 130 131 135 138 146 148
-	processor 0: version = 00,  identification = 000000,  machine = 8561
-	processor 1: version = 00,  identification = 100000,  machine = 8561
-	[...]
 
-	cpu number      : 0
-	version         : 00
-	identification  : 000000
-	machine         : 8561
+ATB,
 
-	cpu number      : 1
-	version         : 00
-	identification  : 100000
-	machine         : 8561
-	[...]
-
-[1] https://bugzilla.redhat.com/show_bug.cgi?id=2211472
-
-Reported-by: Tulio Magno Quites Machado Filho <tuliom@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230605113950.1169228-5-iii@linux.ibm.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- linux-user/syscall.c | 106 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 104 insertions(+), 2 deletions(-)
-
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 89b58b386b..83685f0aa5 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8232,7 +8232,7 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code)
- 
- #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN || \
-     defined(TARGET_SPARC) || defined(TARGET_M68K) || defined(TARGET_HPPA) || \
--    defined(TARGET_RISCV)
-+    defined(TARGET_RISCV) || defined(TARGET_S390X)
- static int is_proc(const char *filename, const char *entry)
- {
-     return strcmp(filename, entry) == 0;
-@@ -8339,6 +8339,107 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
- }
- #endif
- 
-+#if defined(TARGET_S390X)
-+/*
-+ * Emulate what a Linux kernel running in qemu-system-s390x -M accel=tcg would
-+ * show in /proc/cpuinfo.
-+ *
-+ * Skip the following in order to match the missing support in op_ecag():
-+ * - show_cacheinfo().
-+ * - show_cpu_topology().
-+ * - show_cpu_mhz().
-+ *
-+ * Use fixed values for certain fields:
-+ * - bogomips per cpu - from a qemu-system-s390x run.
-+ * - max thread id = 0, since SMT / SIGP_SET_MULTI_THREADING is not supported.
-+ *
-+ * Keep the code structure close to arch/s390/kernel/processor.c.
-+ */
-+
-+static void show_facilities(int fd)
-+{
-+    size_t sizeof_stfl_bytes = 2048;
-+    g_autofree uint8_t *stfl_bytes = g_new0(uint8_t, sizeof_stfl_bytes);
-+    unsigned int bit;
-+
-+    dprintf(fd, "facilities      :");
-+    s390_get_feat_block(S390_FEAT_TYPE_STFL, stfl_bytes);
-+    for (bit = 0; bit < sizeof_stfl_bytes * 8; bit++) {
-+        if (test_be_bit(bit, stfl_bytes)) {
-+            dprintf(fd, " %d", bit);
-+        }
-+    }
-+    dprintf(fd, "\n");
-+}
-+
-+static int cpu_ident(unsigned long n)
-+{
-+    return deposit32(0, CPU_ID_BITS - CPU_PHYS_ADDR_BITS, CPU_PHYS_ADDR_BITS,
-+                     n);
-+}
-+
-+static void show_cpu_summary(CPUArchState *cpu_env, int fd)
-+{
-+    S390CPUModel *model = env_archcpu(cpu_env)->model;
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    uint32_t elf_hwcap = get_elf_hwcap();
-+    const char *hwcap_str;
-+    int i;
-+
-+    dprintf(fd, "vendor_id       : IBM/S390\n"
-+                "# processors    : %i\n"
-+                "bogomips per cpu: 13370.00\n",
-+            num_cpus);
-+    dprintf(fd, "max thread id   : 0\n");
-+    dprintf(fd, "features\t: ");
-+    for (i = 0; i < sizeof(elf_hwcap) * 8; i++) {
-+        if (!(elf_hwcap & (1 << i))) {
-+            continue;
-+        }
-+        hwcap_str = elf_hwcap_str(i);
-+        if (hwcap_str) {
-+            dprintf(fd, "%s ", hwcap_str);
-+        }
-+    }
-+    dprintf(fd, "\n");
-+    show_facilities(fd);
-+    for (i = 0; i < num_cpus; i++) {
-+        dprintf(fd, "processor %d: "
-+               "version = %02X,  "
-+               "identification = %06X,  "
-+               "machine = %04X\n",
-+               i, model->cpu_ver, cpu_ident(i), model->def->type);
-+    }
-+}
-+
-+static void show_cpu_ids(CPUArchState *cpu_env, int fd, unsigned long n)
-+{
-+    S390CPUModel *model = env_archcpu(cpu_env)->model;
-+
-+    dprintf(fd, "version         : %02X\n", model->cpu_ver);
-+    dprintf(fd, "identification  : %06X\n", cpu_ident(n));
-+    dprintf(fd, "machine         : %04X\n", model->def->type);
-+}
-+
-+static void show_cpuinfo(CPUArchState *cpu_env, int fd, unsigned long n)
-+{
-+    dprintf(fd, "\ncpu number      : %ld\n", n);
-+    show_cpu_ids(cpu_env, fd, n);
-+}
-+
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    int i;
-+
-+    show_cpu_summary(cpu_env, fd);
-+    for (i = 0; i < num_cpus; i++) {
-+        show_cpuinfo(cpu_env, fd, i);
-+    }
-+    return 0;
-+}
-+#endif
-+
- #if defined(TARGET_M68K)
- static int open_hardware(CPUArchState *cpu_env, int fd)
- {
-@@ -8363,7 +8464,8 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
- #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
-         { "/proc/net/route", open_net_route, is_proc },
- #endif
--#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || defined(TARGET_RISCV)
-+#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
-+    defined(TARGET_RISCV) || defined(TARGET_S390X)
-         { "/proc/cpuinfo", open_cpuinfo, is_proc },
- #endif
- #if defined(TARGET_M68K)
--- 
-2.31.1
+Mark.
 
 
