@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC67E723EEB
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48688723EEC
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 12:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Tba-0007e8-Fg; Tue, 06 Jun 2023 06:07:58 -0400
+	id 1q6TcN-0008Gs-Sv; Tue, 06 Jun 2023 06:08:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6TbX-0007dx-28
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:07:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6TcL-0008GN-OR
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:08:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6TbV-0003Sz-2Y
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:07:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6TcK-0003lF-CQ
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 06:08:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686046069;
+ s=mimecast20190719; t=1686046123;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dfQMVc6p26pVHzkRqiVhpQh6RJn3kmzPMcC/O2y7Jlo=;
- b=Y/u+jd/W8Kwevf0/ee6TnXOn6cRbESBe+bMqjvTOuh7iOEESMB4cE5rrIgq5Oqu4A5lPBy
- Ciq7N4QV6vcGZJPMTw5gvocvvMYpk6Q0/THogDQsPAdFG68ZzB/HneqFTc7ytzUsO41ger
- WMwV5QPbOsfzYNUnK1CO9hFVwtZTjCA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FpXR7e08qIMgX4nE+VGMRJrIFxZ5Gd1HRSSzMDMpg/4=;
+ b=RyHAD13h79dZI9pCsbJGL1pS+foICCgFik06n5mKTcYWOXEdQgr6jCIYBzAfChd2OqFCts
+ Z+VOYTvSFgIdNSoSlDVon/7OpVgJsqWlfP4EbLQ7ockNwP4ptXMfKw7ONiH9rguD1HWYOa
+ 3oDU/3WaJoas08pIuLa/gR0ZN0xdiWg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-KU7su2i-O068eQ7uRI5lHQ-1; Tue, 06 Jun 2023 06:07:48 -0400
-X-MC-Unique: KU7su2i-O068eQ7uRI5lHQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f739a73ba4so11096555e9.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 03:07:48 -0700 (PDT)
+ us-mta-368-vUu3wnYHPAiqREn1DCg26A-1; Tue, 06 Jun 2023 06:08:42 -0400
+X-MC-Unique: vUu3wnYHPAiqREn1DCg26A-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f603fed174so32707165e9.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 03:08:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686046067; x=1688638067;
+ d=1e100.net; s=20221208; t=1686046121; x=1688638121;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dfQMVc6p26pVHzkRqiVhpQh6RJn3kmzPMcC/O2y7Jlo=;
- b=VethMaInmxmAUkZw90tgDyrqcthoh5X0UGaKvK/Z1R17+pkk9IvN0Xl3GMyHlr+bq9
- pvIDRuli8e01C2jsvmto3TcrIMbkmAdb6s8sQkm1ObQN062EqkaXmhlLAbMA2PF1lp6m
- KqjD3QqDjn5ZZKhaL7Xz4qk1K+XkZ5oZ1FsTCbQismGWgFKj/pj0gHDxE19WWidPmgZd
- NQmFuJ3dMUEmZD1EXOvpnsNgIS4A/ebC7Y3Cm39yqlGv0sFaPxUtXY+I5blK7UStadeQ
- nkzpZDixuFjubzavSsyEKOXmL64RtpFTMPIgLpJxqaDczF0Z1qKSZuMGuPyy9L7Hzjgq
- SJEg==
-X-Gm-Message-State: AC+VfDw0xRMErGYfubM9guVRp9YuCXF3bAlNu36N2MXXu0eEXDH8XLmq
- smm+u8AwZcFf2YQ+iCNN8s30z/IPuUSkm7IaVIJOFJwMbans8grg3n4ZOVchSgowGLg9M8+SLse
- A7O6m9pvBkMxa9XY=
-X-Received: by 2002:a7b:c30c:0:b0:3f7:310a:3ffc with SMTP id
- k12-20020a7bc30c000000b003f7310a3ffcmr1683948wmj.5.1686046067256; 
- Tue, 06 Jun 2023 03:07:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6GaBT9ANxabqQW4wxuYyP1rX5RR7nEg2gFCL3H+2jkKTX+xQ5aD3ujrn7oxGkF1rCgkoyr6A==
-X-Received: by 2002:a7b:c30c:0:b0:3f7:310a:3ffc with SMTP id
- k12-20020a7bc30c000000b003f7310a3ffcmr1683930wmj.5.1686046066864; 
- Tue, 06 Jun 2023 03:07:46 -0700 (PDT)
+ bh=FpXR7e08qIMgX4nE+VGMRJrIFxZ5Gd1HRSSzMDMpg/4=;
+ b=EgIWOwmqOwa72yezAhJNG7Ljgl96H4XghyxBQswSKz5ieIO1fAxHRgv5C3Hq8TkZWn
+ BOAR7An+vVGZhnsVEB/BnMtFNRnI0QNnkJLgxWjny+pwgOwkkP3KiUVeMyawMVjDRZrm
+ 3DWLS7tddirnD4XnhZdGepnxZg6DYHjgKpYSfj/z4CrPLwIaeLQ1q008HcCRMar0T30H
+ GIgk6178AC7T4wtIYRzKw1jeIoxjeIrZbzXGV7FuoyZQFY793R7ttsW3+SFKLzuIrf+T
+ qq4Nd9WWCnmXqMu2p4Hb0V5fSug2UAnkWW7rH03PmBAvDaXpgVxBVoMi03Ry66uZMI4f
+ qFHA==
+X-Gm-Message-State: AC+VfDyKXH2lH7oEHAjTBaGTKxBRodkT2E86C+VpUb0lWjQqGQm8MES4
+ StR017CkvzSIiFFYQwg8GlCdtxqxUyulodxOeKuU74zjMHIvncmaVbqvgYxtJsABb09n9gTcqk5
+ ANPULn1QEvdhszOo=
+X-Received: by 2002:a05:600c:218b:b0:3f7:cb42:fa28 with SMTP id
+ e11-20020a05600c218b00b003f7cb42fa28mr1461616wme.28.1686046121338; 
+ Tue, 06 Jun 2023 03:08:41 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4YcfId54x8AJdetY45D8yiODrZQX2LEAwcFKSFUU42MQxxo3rWsxCllV/qt+9BIW5X5oP5+A==
+X-Received: by 2002:a05:600c:218b:b0:3f7:cb42:fa28 with SMTP id
+ e11-20020a05600c218b00b003f7cb42fa28mr1461613wme.28.1686046121191; 
+ Tue, 06 Jun 2023 03:08:41 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-42-114-92.web.vodafone.de.
  [109.42.114.92]) by smtp.gmail.com with ESMTPSA id
- u12-20020a05600c00cc00b003f7678a07c4sm6781600wmm.29.2023.06.06.03.07.45
+ l22-20020a1c7916000000b003f6f6a6e760sm17103004wme.32.2023.06.06.03.08.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 03:07:45 -0700 (PDT)
-Message-ID: <7e632e82-06e0-7283-d57c-7a58d8d00c01@redhat.com>
-Date: Tue, 6 Jun 2023 12:07:44 +0200
+ Tue, 06 Jun 2023 03:08:40 -0700 (PDT)
+Message-ID: <0acc501c-561b-5888-2e04-6aab62971306@redhat.com>
+Date: Tue, 6 Jun 2023 12:08:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 06/10] configure: move SLOF submodule handling to
- pc-bios/s390-ccw
+Subject: Re: [PATCH 07/10] pc-bios/s390-ccw: always build network bootloader
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: berrange@redhat.com
 References: <20230605095223.107653-1-pbonzini@redhat.com>
- <20230605095223.107653-7-pbonzini@redhat.com>
+ <20230605095223.107653-8-pbonzini@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230605095223.107653-7-pbonzini@redhat.com>
+In-Reply-To: <20230605095223.107653-8-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -102,16 +101,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 05/06/2023 11.52, Paolo Bonzini wrote:
-> Move the handling of the roms/SLOF submodule out of the main Makefile,
-> since we are going to remove submodules from the build process of QEMU.
+> In the beginning, the network bootloader was considered experimental and
+> thus optional, but it is well established nowadays and configure always
+> checks for roms/SLOF before compiling pc-bios/s390-ccw.
+> 
+> Therefore, it makes sense to always build it together with the other
+> part of the s390-ccw bios.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   .gitlab-ci.d/buildtest-template.yml |  2 +-
->   configure                           |  7 +++----
->   pc-bios/s390-ccw/Makefile           | 11 +++++++++++
->   3 files changed, 15 insertions(+), 5 deletions(-)
+>   pc-bios/s390-ccw/Makefile | 5 -----
+>   1 file changed, 5 deletions(-)
+> 
+> diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
+> index 9c5276f8ade..2e8cc015aa0 100644
+> --- a/pc-bios/s390-ccw/Makefile
+> +++ b/pc-bios/s390-ccw/Makefile
+> @@ -67,12 +67,7 @@ s390-ccw.img: s390-ccw.elf
+>   
+>   $(OBJECTS): Makefile
+>   
+> -ifneq ($(wildcard $(SRC_PATH)/../../roms/SLOF/lib/libnet),)
+>   include $(SRC_PATH)/netboot.mak
+> -else
+> -s390-netboot.img:
+> -	@echo "s390-netboot.img not built since roms/SLOF/ is not available."
+> -endif
+>   
+>   ALL_OBJS = $(sort $(OBJECTS) $(NETOBJS) $(LIBCOBJS) $(LIBNETOBJS))
+>   -include $(ALL_OBJS:%.o=%.d)
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
