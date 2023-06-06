@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AFA723E80
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52395723E86
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:56:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TQT-0001Wo-WC; Tue, 06 Jun 2023 05:56:30 -0400
+	id 1q6TQg-0002dM-Sm; Tue, 06 Jun 2023 05:56:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q6TQB-0001Qr-Oa
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:56:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q6TQf-0002cU-91
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:56:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q6TQA-0007fk-3O
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:56:11 -0400
+ id 1q6TQd-0007u7-JZ
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:56:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686045369;
+ s=mimecast20190719; t=1686045397;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GElWEH35cjnpEjdCM/PKoQ6hgNO6hZceEhPLHXe9Wd4=;
- b=JBuF+fthReryqn5MBwYM8/xX1Jjug8BA+SFBPbYPoZ2dZPRZ3ESBG6Q4k5Xq71q06REfc/
- DD2g1wW0NoWBaoTU0CIiH2iG+6kg3XlmuRHq9bMHz7w8rQ7LHF/kbSxLKIZuEb1QYWERAV
- 12GfdjlkafQHpEcXzXuToyRKNRYPNx8=
+ bh=VnyyJGqxSTiSbnVa8vc3QPCms+8HXgRU+nldmJmigMY=;
+ b=BfnWhynSEXLCScOpQF2HdG3uNihLm29R2CTZTVYiq2Fl7pUH577CNa6TSgvuU3j2GasQlx
+ X07JfH8BlL5zDzehKUHdAwyUXA3f7AAgp4L5Cqbrvia54lzDVEADlv+NHvJiacw0UJegGR
+ /5VGsUF/NLILmSaio6pP3GfLfxZ5bHw=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-660-k8pFQXaeNUuYBTTKz2Ho0Q-1; Tue, 06 Jun 2023 05:56:04 -0400
-X-MC-Unique: k8pFQXaeNUuYBTTKz2Ho0Q-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-433-DbDd_qOkNvycQ35YlvhypA-1; Tue, 06 Jun 2023 05:56:36 -0400
+X-MC-Unique: DbDd_qOkNvycQ35YlvhypA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7368D3C0CEF5
- for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 09:56:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E19BC3823A09
+ for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 09:56:35 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.224])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A29F8492B00;
- Tue,  6 Jun 2023 09:56:03 +0000 (UTC)
-Date: Tue, 6 Jun 2023 10:56:01 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3536A40D1B69;
+ Tue,  6 Jun 2023 09:56:35 +0000 (UTC)
+Date: Tue, 6 Jun 2023 10:56:32 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, thuth@redhat.com
-Subject: Re: [PATCH 06/10] configure: move SLOF submodule handling to
- pc-bios/s390-ccw
-Message-ID: <ZH8Csb9NAb/uT4Zv@redhat.com>
+Subject: Re: [PATCH 07/10] pc-bios/s390-ccw: always build network bootloader
+Message-ID: <ZH8C0HLYk5B81G9o@redhat.com>
 References: <20230605095223.107653-1-pbonzini@redhat.com>
- <20230605095223.107653-7-pbonzini@redhat.com>
+ <20230605095223.107653-8-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230605095223.107653-7-pbonzini@redhat.com>
+In-Reply-To: <20230605095223.107653-8-pbonzini@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,16 +83,18 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 05, 2023 at 11:52:19AM +0200, Paolo Bonzini wrote:
-> Move the handling of the roms/SLOF submodule out of the main Makefile,
-> since we are going to remove submodules from the build process of QEMU.
+On Mon, Jun 05, 2023 at 11:52:20AM +0200, Paolo Bonzini wrote:
+> In the beginning, the network bootloader was considered experimental and
+> thus optional, but it is well established nowadays and configure always
+> checks for roms/SLOF before compiling pc-bios/s390-ccw.
+> 
+> Therefore, it makes sense to always build it together with the other
+> part of the s390-ccw bios.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  .gitlab-ci.d/buildtest-template.yml |  2 +-
->  configure                           |  7 +++----
->  pc-bios/s390-ccw/Makefile           | 11 +++++++++++
->  3 files changed, 15 insertions(+), 5 deletions(-)
+>  pc-bios/s390-ccw/Makefile | 5 -----
+>  1 file changed, 5 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
