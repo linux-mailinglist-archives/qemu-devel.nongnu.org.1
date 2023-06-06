@@ -2,80 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1B87244DB
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 15:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84BF7245F7
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:29:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6X3t-0003DQ-18; Tue, 06 Jun 2023 09:49:25 -0400
+	id 1q6XfI-00028l-V0; Tue, 06 Jun 2023 10:28:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6X3q-0003Ce-Fm
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:22 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6X3o-0000e1-N1
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 09:49:22 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f60e536250so52006395e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 06:49:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686059359; x=1688651359;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=RdrpsAT8U3vpVlJ0tTA9gmGkITqwGBRiPD1ozdlKQgM=;
- b=b4yLvTKw2af8ln6D6aweyNmQMfqOEa0/r4v3tn6A6MDsEvtwsYUcV0I2PehJbYLJk9
- 5ICcXDlNHngg+rpHtcI40Q674ksfneyPFG/yTflLCxozp5rFe6hQAGH8f0/XQ1BNcgLk
- 9UOQhPgYRILdcZjVLFLQd+eYHXErdJOUSdIfZK+8yt1oAbbALboRqlHajbagjA6lQszb
- Csa/K3OrzzsbCJuDbNnFaJ0rZoNh1LneytBvQfzJhycSAbi8nr/d+6TXJlhz2X1xyOYo
- CC9Z8cmU+PwauL594FjDtAXp/1p49D/FzSCiQEEiAk9SUBUPOlSYb23uPzIxsDOJPjO6
- 5RaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686059359; x=1688651359;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RdrpsAT8U3vpVlJ0tTA9gmGkITqwGBRiPD1ozdlKQgM=;
- b=PojM74E4yGcrIJR9bPM7YP1MD9PaKx8cHrmLbBZzRbRhiPiyL8YagJHP1z/4RwTC8w
- q1H4JhQVoHloriGuCwch1sL9G0nASEmhad/K4BBxUk++Tbns5e/sBJsukc6R2RZ+DAAU
- hXAo8QvXGvxhT9vv+Oi3Xjj99rYl2twLRmzTBAFjhv3/HGuBtOSZvMzx9OZ/s5vjM8DE
- uZnQObvQmSVKHqdpC58hTMB+JPNWykUNJRlAtmtqlovROfpx1ufdBDC/B8OkWH9XDKfE
- 7tbgb4ztGFp7UYsiCZNJMk9AGKGMrOp7tIabokpjEd/JAbJDWqr73Kwy3KFlGxcMq3Xr
- noAw==
-X-Gm-Message-State: AC+VfDwO6ooo1022Ck41MNKc6UxPzk0zwQkYKdRRtgluXDExZla4YqjR
- F/s4WEo5MYHi+BYHSWuH9S82ww==
-X-Google-Smtp-Source: ACHHUZ4HZBW+e/928wwm8Yth3nf9qiQzwjnr83w/eJM5+GihExtQPqr9hIjupxmTs31nP0dqpqwVXw==
-X-Received: by 2002:a5d:4ece:0:b0:306:2713:f7f with SMTP id
- s14-20020a5d4ece000000b0030627130f7fmr8494214wrv.11.1686059358809; 
- Tue, 06 Jun 2023 06:49:18 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- g26-20020a7bc4da000000b003f50e88ffc1sm17802603wmk.0.2023.06.06.06.49.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 06:49:18 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Joel Stanley <joel@jms.id.au>
-Subject: [PATCH] hw/timer/nrf51_timer: Don't lose time when timer is queried
- in tight loop
-Date: Tue,  6 Jun 2023 14:49:17 +0100
-Message-Id: <20230606134917.3782215-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+ (Exim 4.90_1)
+ (envelope-from <6a312ec39d5a4407abda6ba323c083c29f7ca3e8@lizzy.crudebyte.com>)
+ id 1q6XfG-00028X-60
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:28:02 -0400
+Received: from lizzy.crudebyte.com ([91.194.90.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <6a312ec39d5a4407abda6ba323c083c29f7ca3e8@lizzy.crudebyte.com>)
+ id 1q6XfA-0000Fd-MW
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:28:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=lizzy; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=4pPWI5mLFEOsumViSFP5le4IvFIYZ5sxaCA6T4FZhmc=; b=B2KH8
+ SyEWr7BZrhPxpVuUmhEDiQ553JP8VQf7ptdOpC7JoW+1hf19/GTry6clbAj5ldyklTXwuY3VQfmUs
+ BYbRpdgbM68cquMYfI38y6g5rZIEsHe/FnIdTpxsBlTsXsSgHSK8TgI6r4ARRBzCaQYxawW+P/zot
+ +fU7Tx/gCwBR9hfAeXWPDcmsl/6et9D66lGywzo3QYcZo50N+SQuJbIJ5rlOdlQCipzg7RdODIIXD
+ lgqTPxUO0xKx3NTB1FwzyTEo1RRsxcUVSRZBSJjE3Jk3tJ8G5bJazsiKw7GaqRkK1wdOn+/2jEvBV
+ lub+p4U4UoO2bGI0M4I65yPczGALA==;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Tue, 06 Jun 2023 15:57:50 +0200
+Subject: [PATCH v2] 9pfs: prevent opening special files (CVE-2023-2861)
+To: qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>, Mauro Matteo Cascella <mcascell@redhat.com>,
+ yw s <ywsplz@gmail.com>, shawtao1125@gmail.com, jkli@xidian.edu.cn,
+ shenwenbo@zju.edu.cn
+Message-Id: <E1q6XIJ-0005RX-AW@lizzy.crudebyte.com>
+Received-SPF: none client-ip=91.194.90.13;
+ envelope-from=6a312ec39d5a4407abda6ba323c083c29f7ca3e8@lizzy.crudebyte.com;
+ helo=lizzy.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,56 +61,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The nrf51_timer has a free-running counter which we implement using
-the pattern of using two fields (update_counter_ns, counter) to track
-the last point at which we calculated the counter value, and the
-counter value at that time.  Then we can find the current counter
-value by converting the difference in wall-clock time between then
-and now to a tick count that we need to add to the counter value.
+The 9p protocol does not specifically define how server shall behave when
+client tries to open a special file, however from security POV it does
+make sense for 9p server to prohibit opening any special file on host side
+in general. A sane Linux 9p client for instance would never attempt to
+open a special file on host side, it would always handle those exclusively
+on its guest side. A malicious client however could potentially escape
+from the exported 9p tree by creating and opening a device file on host
+side.
 
-Unfortunately the nrf51_timer's implementation of this has a bug
-which means it loses time every time update_counter() is called.
-After updating s->counter it always sets s->update_counter_ns to
-'now', even though the actual point when s->counter hit the new value
-will be some point in the past (half a tick, say).  In the worst case
-(guest code in a tight loop reading the counter, icount mode) the
-counter is continually queried less than a tick after it was last
-read, so s->counter never advances but s->update_counter_ns does, and
-the guest never makes forward progress.
+With QEMU this could only be exploited in the following unsafe setups:
 
-The fix for this is to only advance update_counter_ns to the
-timestamp of the last tick, not all the way to 'now'.  (This is the
-pattern used in hw/misc/mps2-fpgaio.c's counter.)
+  - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
+    security model.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+or
+
+  - Using 9p 'proxy' fs driver (which is running its helper daemon as
+    root).
+
+These setups were already discouraged for safety reasons before,
+however for obvious reasons we are now tightening behaviour on this.
+
+Fixes: CVE-2023-2861
+Reported-by: Yanwu Shen <ywsPlz@gmail.com>
+Reported-by: Jietao Xiao <shawtao1125@gmail.com>
+Reported-by: Jinku Li <jkli@xidian.edu.cn>
+Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
-The hang in icount mode was discovered by the Zephyr folks as part
-of their investigation into
-https://github.com/zephyrproject-rtos/zephyr/issues/57512
+ v1 -> v2:
+ - Add equivalent fix for 'proxy' fs driver.
+ - Minor adjustments on commit log.
 
- hw/timer/nrf51_timer.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fsdev/virtfs-proxy-helper.c | 48 +++++++++++++++++++++++++++++++++++--
+ hw/9pfs/9p-util.h           | 29 ++++++++++++++++++++++
+ 2 files changed, 75 insertions(+), 2 deletions(-)
 
-diff --git a/hw/timer/nrf51_timer.c b/hw/timer/nrf51_timer.c
-index 42be79c7363..50c6772383e 100644
---- a/hw/timer/nrf51_timer.c
-+++ b/hw/timer/nrf51_timer.c
-@@ -45,7 +45,12 @@ static uint32_t update_counter(NRF51TimerState *s, int64_t now)
-     uint32_t ticks = ns_to_ticks(s, now - s->update_counter_ns);
+diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
+index 5cafcd7703..f311519fa3 100644
+--- a/fsdev/virtfs-proxy-helper.c
++++ b/fsdev/virtfs-proxy-helper.c
+@@ -26,6 +26,7 @@
+ #include "qemu/xattr.h"
+ #include "9p-iov-marshal.h"
+ #include "hw/9pfs/9p-proxy.h"
++#include "hw/9pfs/9p-util.h"
+ #include "fsdev/9p-iov-marshal.h"
  
-     s->counter = (s->counter + ticks) % BIT(bitwidths[s->bitmode]);
--    s->update_counter_ns = now;
-+    /*
-+     * Only advance the sync time to the timestamp of the last tick,
-+     * not all the way to 'now', so we don't lose time if we do
-+     * multiple resyncs in a single tick.
-+     */
-+    s->update_counter_ns += ticks_to_ns(s, ticks);
-     return ticks;
+ #define PROGNAME "virtfs-proxy-helper"
+@@ -338,6 +339,49 @@ static void resetugid(int suid, int sgid)
+     }
  }
  
++/*
++ * Open regular file or directory. Attempts to open any special file are
++ * rejected.
++ *
++ * returns file descriptor or -1 on error
++ */
++static int open_regular(const char *pathname, int flags, mode_t mode) {
++    int fd;
++    struct stat stbuf;
++
++    fd = open(pathname, flags, mode);
++    if (fd < 0) {
++        return fd;
++    }
++
++    /* CVE-2023-2861: Prohibit opening any special file directly on host
++     * (especially device files), as a compromised client could potentially
++     * gain access outside exported tree under certain, unsafe setups. We
++     * expect client to handle I/O on special files exclusively on guest side.
++     */
++    if (qemu_fstat(fd, &stbuf) < 0) {
++        close_preserve_errno(fd);
++        return -1;
++    }
++    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
++        /* Tcreate and Tlcreate 9p messages mandate to immediately open the
++         * created file for I/O. So this is not (necessarily) due to a broken
++         * client, and hence no error message is to be reported in this case.
++         */
++        if (!(flags & O_CREAT)) {
++            error_report_once(
++                "9p: broken or compromised client detected; attempt to open "
++                "special file (i.e. neither regular file, nor directory)"
++            );
++        }
++        close(fd);
++        errno = ENXIO;
++        return -1;
++    }
++
++    return fd;
++}
++
+ /*
+  * send response in two parts
+  * 1) ProxyHeader
+@@ -682,7 +726,7 @@ static int do_create(struct iovec *iovec)
+     if (ret < 0) {
+         goto unmarshal_err_out;
+     }
+-    ret = open(path.data, flags, mode);
++    ret = open_regular(path.data, flags, mode);
+     if (ret < 0) {
+         ret = -errno;
+     }
+@@ -707,7 +751,7 @@ static int do_open(struct iovec *iovec)
+     if (ret < 0) {
+         goto err_out;
+     }
+-    ret = open(path.data, flags);
++    ret = open_regular(path.data, flags, 0);
+     if (ret < 0) {
+         ret = -errno;
+     }
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index c314cf381d..9da1a0538d 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -13,6 +13,8 @@
+ #ifndef QEMU_9P_UTIL_H
+ #define QEMU_9P_UTIL_H
+ 
++#include "qemu/error-report.h"
++
+ #ifdef O_PATH
+ #define O_PATH_9P_UTIL O_PATH
+ #else
+@@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
+ #endif
+ 
+ #define qemu_openat     openat
++#define qemu_fstat      fstat
+ #define qemu_fstatat    fstatat
+ #define qemu_mkdirat    mkdirat
+ #define qemu_renameat   renameat
+@@ -118,6 +121,7 @@ static inline int openat_file(int dirfd, const char *name, int flags,
+                               mode_t mode)
+ {
+     int fd, serrno, ret;
++    struct stat stbuf;
+ 
+ #ifndef CONFIG_DARWIN
+ again:
+@@ -142,6 +146,31 @@ again:
+         return -1;
+     }
+ 
++    /* CVE-2023-2861: Prohibit opening any special file directly on host
++     * (especially device files), as a compromised client could potentially
++     * gain access outside exported tree under certain, unsafe setups. We
++     * expect client to handle I/O on special files exclusively on guest side.
++     */
++    if (qemu_fstat(fd, &stbuf) < 0) {
++        close_preserve_errno(fd);
++        return -1;
++    }
++    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
++        /* Tcreate and Tlcreate 9p messages mandate to immediately open the
++         * created file for I/O. So this is not (necessarily) due to a broken
++         * client, and hence no error message is to be reported in this case.
++         */
++        if (!(flags & O_CREAT)) {
++            error_report_once(
++                "9p: broken or compromised client detected; attempt to open "
++                "special file (i.e. neither regular file, nor directory)"
++            );
++        }
++        close(fd);
++        errno = ENXIO;
++        return -1;
++    }
++
+     serrno = errno;
+     /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
+      * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
 -- 
-2.34.1
+2.30.2
 
 
