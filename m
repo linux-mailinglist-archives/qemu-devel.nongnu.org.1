@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6D972457C
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D800724589
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XSl-0000ZP-Ic; Tue, 06 Jun 2023 10:15:07 -0400
+	id 1q6XU9-0003Jv-RR; Tue, 06 Jun 2023 10:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1q6XSf-0000DF-Ca; Tue, 06 Jun 2023 10:15:01 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6XTt-0003Gu-24
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:16:17 -0400
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1q6XSd-0005vF-N5; Tue, 06 Jun 2023 10:15:01 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6563ccf5151so3557028b3a.0; 
- Tue, 06 Jun 2023 07:14:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6XTr-0006Ta-6W
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:16:16 -0400
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-19a427d7b57so3377167fac.2
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:16:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686060897; x=1688652897;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
- :reply-to; bh=jscPpoIyBbb5DyFVUeKz1tc6zWKyB11ZCyH+AzHgLOo=;
- b=S6bRFuoms+Heu/rZfGtRfpn6OGvuxiwtTMOY46BB263w1H5TSTBoh5+cq9N0B5Ob97
- sc8mwz+tVSD33skoIL9Dt1QUk5+MdQuy82s6KJGVXoy9JShrVDm1VcPI0YpTquNL4ktY
- SofIpXaz030iBv9t8DnV3xtB8YzfghPoE6BqkzV2sfDAPYQmpCmjrSUjA9wJffUXwul8
- VsrEgkV8bq+ZGPJt4su8kAH9HxQiSLVmjh1mrM6EXoRcTZMFFc/nhS3tyTQokSSUwCwA
- 6bBZiok5yfY17fvAmI5nqH7dXyjIDy2n+BtHac3GlLxv+PyJ3kF6F1G2NkGICM4gpD57
- JsHQ==
+ d=ventanamicro.com; s=google; t=1686060974; x=1688652974;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vLtExC+Ko+jKEwW3AfIDuf2P237VUvIOZLryabTIJuc=;
+ b=PmUCdShmpAlCGcqig3AwkaD8aDwqVSjhbf27TLRluzD43nnhIZMSw6heIoZU1XzOCN
+ RPYb1FAtWmJYUsQ9S0UeJs51QNjZdMAc65xQdI2k2Uw38YuWElWV1uDcyH5f/8VhbSCP
+ Z4cMQZejI93xB694EsCzvq621l9Ns8tIKFaqMo58vBIynZt7jMtQv8jzxk4KFGxaD1/S
+ 0856Q/NXoWbhEROfs6lLVSkdZfqmpC4AMP/NfRJkvi/M0iV47S2PDDd4CC5Mro3arSxM
+ IMjlPLMS+wZk7Jtxxb1Nn+6Bp8ME4CBE4oBupDK3J1DtefB/XxZZm58tfoQN8B9tE0Ne
+ Efmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686060897; x=1688652897;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jscPpoIyBbb5DyFVUeKz1tc6zWKyB11ZCyH+AzHgLOo=;
- b=GpDziwYPLgPLMG+nZszxT7XI5jglidJNjhYFUyMFz65Pf5cacPUwEv3412s/bxJ1Mo
- nLFubYJbZkaqfRTpt2TdcnEf+5xphIZFrh/NpHy+qEgXOPsw2wpR4L+B+NOzm+dp+CGm
- FHbDrpRaLdbYYMti2nfzhr/EO0yFhE/+7Jth2zd8xwYxsc6NsTnejoPhqj9gal3DXrGM
- LiLQ8G4mZ9NQ/HIaoENljBVB6KDxrhiYn1j3olNYkT56ArbYOPNuHlR/EAIbLXHctJdb
- RFzoaaqw1rt/Qqp3Csep9c68Me6WG9iuenAM0kyoINxCdG937ZhY+wi7I3IUVUOklBzz
- i9jw==
-X-Gm-Message-State: AC+VfDy7KPn5blDAMCLp9fs1EbIk/SpR2/aLJlh6Nn3Y8/d6SNgASp0x
- vGqwRQ5/1M7j3nsaxkjnaew=
-X-Google-Smtp-Source: ACHHUZ71Who9b8drqdmiiX0u6uluk7Glf+kamkV8mPUiELswyzewForYAQ4v6MCKyC6ZAjHXtdprag==
-X-Received: by 2002:a05:6a00:a29:b0:655:89f1:2db8 with SMTP id
- p41-20020a056a000a2900b0065589f12db8mr2831909pfh.16.1686060897444; 
- Tue, 06 Jun 2023 07:14:57 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ d=1e100.net; s=20221208; t=1686060974; x=1688652974;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vLtExC+Ko+jKEwW3AfIDuf2P237VUvIOZLryabTIJuc=;
+ b=CF5fPDj+A1ctfAXIlkl7rJypFDCUQoqqWkQm/tCOwF6yK7jG3ObREuYI+uhkdoNNiL
+ I6mvdYmk8Pe+dZ4pJMaKTozuPG+12cBB4mVLSV0CVv2bGotJrdDmDprU5PNK3okKLabi
+ 1XcOrFeByTHiakyLuoyHfo8PH8OdZjwgMhesf+UjLvOjE/8LCFDMiYu2LlUtOGvNBi5+
+ ug8slWYJh9OjwRr+Gru5/y1x3RQpHHJVqLuN9Mb/jgMaYXMqZv48/08Dj5cyYuKBfzPV
+ 4q2dXqxd0bcvkfCeXWYSZs2ApLrAjr9l3gkwjQavYZMjmkGHMxpOpMirlQrbsF18858j
+ V77Q==
+X-Gm-Message-State: AC+VfDzcHksmhYBm9i2O28N177W0QCZU4C8HCb1ThzUhd4TxpDF1/o4s
+ ua00kbtKQPJvsIl5yQK/KpI78A==
+X-Google-Smtp-Source: ACHHUZ7IqDxVkcFf1kLVc0JxY8RJFXd9qJybyGB+O3RV1TpTehk+ZmM4ETpnZSeWjFn9iFrgeS6zCw==
+X-Received: by 2002:a05:6870:4ec:b0:18e:a4b9:8388 with SMTP id
+ u44-20020a05687004ec00b0018ea4b98388mr1167636oam.48.1686060973779; 
+ Tue, 06 Jun 2023 07:16:13 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
  by smtp.gmail.com with ESMTPSA id
- x9-20020aa793a9000000b0064d32771fafsm7116181pff.97.2023.06.06.07.14.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 07:14:57 -0700 (PDT)
-Date: Tue, 6 Jun 2023 07:14:55 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Beniamino Galvani <b.galvani@gmail.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: [PATCH 2/2] hw/sd/allwinner-sdhost: Don't send non-boolean IRQ
- line levels
-Message-ID: <4a76b9a1-cc54-4832-910a-984d8674dc70@roeck-us.net>
-References: <20230606104609.3692557-1-peter.maydell@linaro.org>
- <20230606104609.3692557-3-peter.maydell@linaro.org>
+ t1-20020a056871054100b0019e4fe93d72sm4775525oal.42.2023.06.06.07.16.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 07:16:13 -0700 (PDT)
+Message-ID: <b3013d96-f27d-5019-6e3f-98ce55ab9adf@ventanamicro.com>
+Date: Tue, 6 Jun 2023 11:16:10 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230606104609.3692557-3-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=groeck7@gmail.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] Add epmp to extensions list and rename it to smepmp
+Content-Language: en-US
+To: Himanshu Chauhan <hchauhan@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230606113812.519723-1-hchauhan@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230606113812.519723-1-hchauhan@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x30.google.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,37 +94,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 06, 2023 at 11:46:09AM +0100, Peter Maydell wrote:
-> QEMU allows qemu_irq lines to transfer arbitrary integers.  However
-> the convention is that for a simple IRQ line the values transferred
-> are always 0 and 1.  The A10 SD controller device instead assumes a
-> 0-vs-non-0 convention, which happens to work with the interrupt
-> controller it is wired up to.
-> 
-> Coerce the value to boolean to follow our usual convention.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
 
+On 6/6/23 08:38, Himanshu Chauhan wrote:
+> Smepmp is a ratified extension which qemu refers to as epmp.
+> Rename epmp to smepmp and add it to extension list so that
+> it is added to the isa string.
+> 
+> Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
 > ---
->  hw/sd/allwinner-sdhost.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   target/riscv/cpu.c     |  9 +++++----
+>   target/riscv/cpu_cfg.h |  2 +-
+>   target/riscv/csr.c     |  6 +++---
+>   target/riscv/pmp.c     | 12 ++++++------
+>   4 files changed, 15 insertions(+), 14 deletions(-)
 > 
-> diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
-> index 92a0f42708d..62df8f3d396 100644
-> --- a/hw/sd/allwinner-sdhost.c
-> +++ b/hw/sd/allwinner-sdhost.c
-> @@ -191,7 +191,7 @@ static void allwinner_sdhost_update_irq(AwSdHostState *s)
->      }
->  
->      trace_allwinner_sdhost_update_irq(irq);
-> -    qemu_set_irq(s->irq, irq);
-> +    qemu_set_irq(s->irq, !!irq);
->  }
->  
->  static void allwinner_sdhost_update_transfer_cnt(AwSdHostState *s,
-> -- 
-> 2.34.1
-> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 881bddf393..cf3d1c3207 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -127,6 +127,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+>       ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+>       ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+>       ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+> +    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+>       ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+>       ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+>       ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+> @@ -547,7 +548,7 @@ static void rv32_ibex_cpu_init(Object *obj)
+>   #ifndef CONFIG_USER_ONLY
+>       set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
+>   #endif
+> -    cpu->cfg.epmp = true;
+> +    cpu->cfg.ext_smepmp = true;
+>   
+>       /* inherited from parent obj via riscv_cpu_init() */
+>       cpu->cfg.ext_ifencei = true;
+> @@ -1336,12 +1337,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+>           return;
+>       }
+>   
+> -    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
+> +    if (cpu->cfg.ext_smepmp && !cpu->cfg.pmp) {
+>           /*
+>            * Enhanced PMP should only be available
+>            * on harts with PMP support
+>            */
+> -        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
+> +        error_setg(errp, "Invalid configuration: SMEPMP requires PMP support");
+>           return;
+>       }
+>   
+> @@ -1676,7 +1677,7 @@ static Property riscv_cpu_extensions[] = {
+>       DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
+>   
+>       /* ePMP 0.9.3 */
+> -    DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
+> +    DEFINE_PROP_BOOL("smepmp", RISCVCPU, cfg.ext_smepmp, false),
+>       DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
+>       DEFINE_PROP_BOOL("x-ssaia", RISCVCPU, cfg.ext_ssaia, false),
+>   
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index c4a627d335..d79b022e35 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -87,6 +87,7 @@ struct RISCVCPUConfig {
+>       bool ext_zvfh;
+>       bool ext_zvfhmin;
+>       bool ext_smaia;
+> +    bool ext_smepmp;
+>       bool ext_ssaia;
+>       bool ext_sscofpmf;
+>       bool rvv_ta_all_1s;
+> @@ -121,7 +122,6 @@ struct RISCVCPUConfig {
+>       uint16_t cboz_blocksize;
+>       bool mmu;
+>       bool pmp;
+> -    bool epmp;
+>       bool debug;
+>       bool misa_w;
+>   
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 58499b5afc..d9bc591348 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -523,9 +523,9 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
+>       return RISCV_EXCP_ILLEGAL_INST;
+>   }
+>   
+> -static RISCVException epmp(CPURISCVState *env, int csrno)
+> +static RISCVException smepmp(CPURISCVState *env, int csrno)
+>   {
+> -    if (riscv_cpu_cfg(env)->epmp) {
+> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
+>           return RISCV_EXCP_NONE;
+>       }
+>   
+> @@ -4356,7 +4356,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+>       [CSR_VSIPH]       = { "vsiph",       aia_hmode32, NULL, NULL, rmw_vsiph },
+>   
+>       /* Physical Memory Protection */
+> -    [CSR_MSECCFG]    = { "mseccfg",  epmp, read_mseccfg, write_mseccfg,
+> +    [CSR_MSECCFG]    = { "mseccfg", smepmp, read_mseccfg, write_mseccfg,
+>                            .min_priv_ver = PRIV_VERSION_1_11_0           },
+>       [CSR_PMPCFG0]    = { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg  },
+>       [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 418738afd8..18246e1737 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -87,7 +87,7 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+>       if (pmp_index < MAX_RISCV_PMPS) {
+>           bool locked = true;
+>   
+> -        if (riscv_cpu_cfg(env)->epmp) {
+> +        if (riscv_cpu_cfg(env)->ext_smepmp) {
+>               /* mseccfg.RLB is set */
+>               if (MSECCFG_RLB_ISSET(env)) {
+>                   locked = false;
+> @@ -337,9 +337,9 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>   
+>           /*
+>            * Convert the PMP permissions to match the truth table in the
+> -         * ePMP spec.
+> +         * SMEPMP spec.
+>            */
+> -        const uint8_t epmp_operation =
+> +        const uint8_t smepmp_operation =
+>               ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
+>               ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
+>               (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
+> @@ -364,7 +364,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>                    * If mseccfg.MML Bit set, do the enhanced pmp priv check
+>                    */
+>                   if (mode == PRV_M) {
+> -                    switch (epmp_operation) {
+> +                    switch (smepmp_operation) {
+>                       case 0:
+>                       case 1:
+>                       case 4:
+> @@ -395,7 +395,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+>                           g_assert_not_reached();
+>                       }
+>                   } else {
+> -                    switch (epmp_operation) {
+> +                    switch (smepmp_operation) {
+>                       case 0:
+>                       case 8:
+>                       case 9:
+> @@ -576,7 +576,7 @@ void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
+>           }
+>       }
+>   
+> -    if (riscv_cpu_cfg(env)->epmp) {
+> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
+>           /* Sticky bits */
+>           val |= (env->mseccfg & (MSECCFG_MMWP | MSECCFG_MML));
+>           if ((val ^ env->mseccfg) & (MSECCFG_MMWP | MSECCFG_MML)) {
 
