@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910B5724639
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CA372461C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Xis-0005MK-6p; Tue, 06 Jun 2023 10:31:46 -0400
+	id 1q6Xit-0005PA-2u; Tue, 06 Jun 2023 10:31:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xip-0005Hv-Jk
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q6Xir-0005MA-Kg
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xin-0001J7-PJ
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:43 -0400
+ id 1q6Xip-0001JY-4E
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686061901;
+ s=mimecast20190719; t=1686061902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LglmaneiM/Lbpcn+O0faPg/sVlbIK7inueVGywwXhgc=;
- b=bW1+hr2EO2FFSxl83mpQd5Q5Wv57HtevieV3t0f74A2IQlaWCsxVDJYzIG9WKTbpDsP9Fb
- hGjLEH9z1v9yZEJH9JumjImfYtGY92AFwtSdDA+bEu1JRU+sWBJ0lt5rviRBS50Q3/60OO
- RJSH2+FmPtEbtd5od0pCohQITodtSr4=
+ bh=Nw8ksEi1LGkbWGe7Q/Qk6dPKsCnk9x+sAV4iBE3crXc=;
+ b=cIWYPYhvpaX43H03FahOqGLkk4aMjYUX+jgCIw2AmGYwUWvvNh6gzyfyrY+Czsj2AcWRFi
+ m5jpK/2fJs6h5bhdrHmXwBFUPZzAyOTf2jGgm6v8YAoG4pYoB5PLYujI91GotNZnQEGOn1
+ 2NF6TzI04JQtRdXp8ZxdtOAHwHUXtxs=
 Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
  [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-dcobVCyHOvm7rVkiVgS3yg-1; Tue, 06 Jun 2023 10:31:39 -0400
-X-MC-Unique: dcobVCyHOvm7rVkiVgS3yg-1
+ us-mta-633-fDKrQqXjN8WhHbNeQ-F7wA-1; Tue, 06 Jun 2023 10:31:41 -0400
+X-MC-Unique: fDKrQqXjN8WhHbNeQ-F7wA-1
 Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5149e1bd242so4120598a12.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:39 -0700 (PDT)
+ 4fb4d7f45d1cf-514abe67064so4244296a12.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061898; x=1688653898;
+ d=1e100.net; s=20221208; t=1686061900; x=1688653900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LglmaneiM/Lbpcn+O0faPg/sVlbIK7inueVGywwXhgc=;
- b=dU22JyX2l/8BjGy+DGjqql7YTmO46JvKfVM9YmoN76RCIdKip4wFqHh/MXiBIkKYWe
- g+QZK9RY9LL5khY+9QTSCdUHSENYFt7nLW2W1W8YGXx8mTRo6/Gfvmawjdtx/FYUvaOB
- s1/QxTyHlV3MHX5QlG90w0x9Fu1QXznNbd738jPH2Le7X11lUchGRIUeun/gzndiqgSZ
- NGE2FjTBgnkA61md+JflYv/DcAE8GCfAZpVBEfpT1UH1fs9vJL6wm5ba8C5RxKPuRx6t
- KNTFm+r+NlOs9aE0sxuZKTpG0Xrx83aoQKBWK8NQ5nuLGt+2EDjwAEA6SFl0B0JJeck5
- 6cLg==
-X-Gm-Message-State: AC+VfDybB0E+hqUk4JIcBCT2ayl3W37hZnY9BOq0qwruUGLlLPBwbE84
- FEh5jC+ctT4eHzsMzjf+ZhpASQNfxCDgIzZ5guGLVEm2z5J+yHTUOIuxHQz4Ez84BK3SK8qUD+5
- HyEwuRgc2y4eVoehmiz5RodXrSxLMbZv3PKXCM/fen8NXS6jF8ipa81+ePjLIce8RSw8qSv5eKR
- E=
-X-Received: by 2002:a17:907:6d0c:b0:977:d932:cde2 with SMTP id
- sa12-20020a1709076d0c00b00977d932cde2mr2915771ejc.62.1686061898157; 
- Tue, 06 Jun 2023 07:31:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5PBBSiXnbPpeYC1peKcjCaeEQxp6LGTtAdR9wXe90aEtAoWcYKuYOlhjPqhzz19QNiNlrI9Q==
-X-Received: by 2002:a17:907:6d0c:b0:977:d932:cde2 with SMTP id
- sa12-20020a1709076d0c00b00977d932cde2mr2915753ejc.62.1686061897870; 
- Tue, 06 Jun 2023 07:31:37 -0700 (PDT)
+ bh=Nw8ksEi1LGkbWGe7Q/Qk6dPKsCnk9x+sAV4iBE3crXc=;
+ b=fzDraTGKIo9Msr+9/wnPzBLrZA+Le/9UIKtR9xYFSz+P0+JNndvtkV8GzYGrg2vElg
+ nYfatshJwFSTrEHSq/0YOr6F+BVFClAE/V7e1mTVLY6NqnHXWdhyf3yI5JvTMisKon4J
+ mefUmPkaZXxVwZGM2RRaaExWidDVUF4DxYn3rJ79rj2RQ0JeU8uw0w/FDhzi1DjhQObM
+ lXfNLhVriFYX7NXPJRggdSPjIMZh4AO148RAxShH9v7qovr84pxIXR65eUiL+yCg58W5
+ UBhPH8S8dK73HNB2qyZatmOmhXdnbRMz2nBL+hIomCEM47PBIp42glAASnvk21IvC0S6
+ ZzyQ==
+X-Gm-Message-State: AC+VfDxgvnzu8L/vGU5BxoQp/Vof6dRssTCeeVCApFKQcBI0y7Hrdmtm
+ lC65Uhoka3SILxQKm1AidQ+rW2gomc61XlhFoDCjMN9iv5pNCLuay1/JcUDFRO3QMdlUs1nvGaD
+ fwQm6b/KCA8YYHTbM7uTMKGxPd2lkbmu43Dj5tXhR9qR+/94n6/pp75TA2i68S5fC2wkIDaeCjr
+ Y=
+X-Received: by 2002:aa7:cacb:0:b0:50b:c3f0:fb9d with SMTP id
+ l11-20020aa7cacb000000b0050bc3f0fb9dmr2081278edt.41.1686061899797; 
+ Tue, 06 Jun 2023 07:31:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6+ecvrBKy7Y4IG9jG08kL3nll0PG4PDSv5ggpHUODq41Xd0UxIe61Rptr4INIcC50HUXL8hw==
+X-Received: by 2002:aa7:cacb:0:b0:50b:c3f0:fb9d with SMTP id
+ l11-20020aa7cacb000000b0050bc3f0fb9dmr2081261edt.41.1686061899421; 
+ Tue, 06 Jun 2023 07:31:39 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- bv13-20020a170906b1cd00b00978743b54bdsm486595ejb.78.2023.06.06.07.31.36
+ a25-20020aa7d919000000b005163008c6b7sm5078344edr.27.2023.06.06.07.31.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 07:31:37 -0700 (PDT)
+ Tue, 06 Jun 2023 07:31:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 13/21] configure: rename --enable-pypi to --enable-download,
- control subprojects too
-Date: Tue,  6 Jun 2023 16:31:08 +0200
-Message-Id: <20230606143116.685644-14-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 14/21] git-submodule: allow partial update of
+ .git-submodule-status
+Date: Tue,  6 Jun 2023 16:31:09 +0200
+Message-Id: <20230606143116.685644-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606143116.685644-1-pbonzini@redhat.com>
 References: <20230606143116.685644-1-pbonzini@redhat.com>
@@ -80,7 +78,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,142 +102,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The behavior of --{enable,disable}-pypi is similar to that of
--Dwrapmode={default,nodownload} respectively.  In particular,
-in both cases a feature needs to be explicitly enabled for the
-dependency to be downloaded.
+Allow a specific subdirectory to run git-submodule.sh with only a
+subset of submodules, without removing the others from the
+.git-submodule-status file.
 
-So, use a single option to control both cases.  Now, --enable-slirp
-will trigger cloning and building of libslirp if the .pc file
-is not found on the machine.
+This also allows scripts/git-submodule.sh to be more lenient:
+validating an empty set of submodules is not a mistake.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitignore             |  2 --
- configure              | 17 +++++++----------
- meson.build            | 12 ++++++++----
- subprojects/.gitignore |  3 +++
- 4 files changed, 18 insertions(+), 16 deletions(-)
- create mode 100644 subprojects/.gitignore
+ scripts/git-submodule.sh | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 1ea59f48192..61fa39967b5 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -20,5 +20,3 @@ GTAGS
- *.swp
- *.patch
- *.gcov
+diff --git a/scripts/git-submodule.sh b/scripts/git-submodule.sh
+index 0ce1efc44e5..b7d8f05352c 100755
+--- a/scripts/git-submodule.sh
++++ b/scripts/git-submodule.sh
+@@ -72,12 +72,8 @@ done
+ 
+ case "$command" in
+ status|validate)
+-    if test -z "$maybe_modules"
+-    then
+-         test -s ${substat} && validate_error "$command" || exit 0
+-    fi
 -
--/subprojects/slirp
-diff --git a/configure b/configure
-index 92bacc756c0..52274212310 100755
---- a/configure
-+++ b/configure
-@@ -266,7 +266,7 @@ bsd_user=""
- plugins="$default_feature"
- ninja=""
- python=
--pypi="enabled"
-+download="enabled"
- bindir="bin"
- skip_meson=no
- vfio_user_server="disabled"
-@@ -754,9 +754,9 @@ for opt do
-   --with-git-submodules=*)
-       git_submodules_action="$optarg"
-   ;;
--  --disable-pypi) pypi="disabled"
-+  --disable-download) download="disabled"
-   ;;
--  --enable-pypi) pypi="enabled"
-+  --enable-download) download="enabled"
-   ;;
-   --enable-plugins) if test "$mingw32" = "yes"; then
-                         error_exit "TCG plugins not currently supported on Windows platforms"
-@@ -960,7 +960,7 @@ python="$(command -v "$python")"
- # - venv is allowed to use system packages;
- # - all setup can be performed offline;
- # - missing packages may be fetched from PyPI,
--#   unless --disable-pypi is passed.
-+#   unless --disable-download is passed.
- # - pip is not installed into the venv when possible,
- #   but ensurepip is called as a fallback when necessary.
+     test -f "$substat" || validate_error "$command"
++    test -z "$maybe_modules" && exit 0
+     for module in $modules; do
+         CURSTATUS=$($GIT submodule status $module)
+         OLDSTATUS=$(cat $substat | grep $module)
+@@ -88,17 +84,23 @@ status|validate)
+     exit 0
+     ;;
+ update)
+-    if test -z "$maybe_modules"
+-    then
+-        test -e $substat || touch $substat
+-        exit 0
+-    fi
++    test -e $substat || touch $substat
++    test -z "$maybe_modules" && exit 0
  
-@@ -977,7 +977,7 @@ python="$python -B"
- mkvenv="$python ${source_path}/python/scripts/mkvenv.py"
+     $GIT submodule update --init $modules 1>/dev/null
+     test $? -ne 0 && update_error "failed to update modules"
  
- mkvenv_flags=""
--if test "$pypi" = "enabled" ; then
-+if test "$download" = "enabled" ; then
-     mkvenv_flags="--online"
- fi
+-    $GIT submodule status $modules > "${substat}"
+-    test $? -ne 0 && update_error "failed to save git submodule status" >&2
++    (while read -r; do
++        for module in $modules; do
++            case $REPLY in
++                *" $module "*) continue 2 ;;
++            esac
++        done
++        printf '%s\n' "$REPLY"
++    done
++    $GIT submodule status $modules
++    test $? -ne 0 && update_error "failed to save git submodule status" >&2) < $substat > $substat.new
++    mv -f $substat.new $substat
+     ;;
+ esac
  
-@@ -1000,7 +1000,7 @@ meson="$(cd pyvenv/bin; pwd)/meson"
- # Conditionally ensure Sphinx is installed.
- 
- mkvenv_flags=""
--if test "$pypi" = "enabled" -a "$docs" = "enabled" ; then
-+if test "$download" = "enabled" -a "$docs" = "enabled" ; then
-     mkvenv_flags="--online"
- fi
- 
-@@ -1940,11 +1940,8 @@ if test "$skip_meson" = no; then
- 
-   rm -rf meson-private meson-info meson-logs
- 
--  # Prevent meson from automatically downloading wrapped subprojects when missing.
--  # You can use 'meson subprojects download' before running configure.
--  meson_option_add "--wrap-mode=nodownload"
--
-   # Built-in options
-+  test "$download" = "disabled" && meson_option_add "--wrap-mode=nodownload"
-   test "$bindir" != "bin" && meson_option_add "-Dbindir=$bindir"
-   test "$default_feature" = no && meson_option_add -Dauto_features=disabled
-   test "$static" = yes && meson_option_add -Dprefer_static=true
-diff --git a/meson.build b/meson.build
-index 4302c019237..f8af4b02e44 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3985,8 +3985,15 @@ endif
- # Configuration summary #
- #########################
- 
--# Directories
-+# Build environment
- summary_info = {}
-+summary_info += {'Build directory':   meson.current_build_dir()}
-+summary_info += {'Source path':       meson.current_source_dir()}
-+summary_info += {'GIT submodules':    config_host['GIT_SUBMODULES']}
-+summary_info += {'Download dependencies': get_option('wrap_mode') != 'nodownload'}
-+summary(summary_info, bool_yn: true, section: 'Build environment')
-+
-+# Directories
- summary_info += {'Install prefix':    get_option('prefix')}
- summary_info += {'BIOS directory':    qemu_datadir}
- pathsep = targetos == 'windows' ? ';' : ':'
-@@ -4004,9 +4011,6 @@ else
-   summary_info += {'local state directory': 'queried at runtime'}
- endif
- summary_info += {'Doc directory':     get_option('prefix') / get_option('docdir')}
--summary_info += {'Build directory':   meson.current_build_dir()}
--summary_info += {'Source path':       meson.current_source_dir()}
--summary_info += {'GIT submodules':    config_host['GIT_SUBMODULES']}
- summary(summary_info, bool_yn: true, section: 'Directories')
- 
- # Host binaries
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-new file mode 100644
-index 00000000000..7560ebb0b1a
---- /dev/null
-+++ b/subprojects/.gitignore
-@@ -0,0 +1,3 @@
-+/packagecache
-+
-+/slirp
 -- 
 2.40.1
 
