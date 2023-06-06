@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BACC7245A8
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78F67245AC
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XXS-0005fg-Pm; Tue, 06 Jun 2023 10:19:58 -0400
+	id 1q6XYh-0007LW-H3; Tue, 06 Jun 2023 10:21:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6XXR-0005cb-3v
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:19:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q6XXP-000766-KV
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:19:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686061194;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GLk2DYumS/fBSJ0k9e3ySyuc3BsI6QIzXl05sEIrU3k=;
- b=ER6kHSqAL7HL0NSqi5Z6dnWrCc4NSt147Iua0Y4dRjc1LBUwREtJB0YZ7O2FWKegygXoHI
- qVl2f1LvnJ/hc5vCLfJV/pc9wiEViQt6N6TMwdSAJ4GwXX8ItUYsAv2jjxMGU6pjJ2Jybb
- PyqKR9YRYHfbpVCFCQKOvmYE+Sr4ftA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663--giEZwZzMiSjMYk1TV2LcA-1; Tue, 06 Jun 2023 10:19:52 -0400
-X-MC-Unique: -giEZwZzMiSjMYk1TV2LcA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30b88392ac6so3354401f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:19:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XYf-0007Kq-Oh
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:21:13 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XYd-0007ZS-Dj
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:21:13 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-30af86a96b4so5044325f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686061269; x=1688653269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/HdEfN8HPF40oE6Tr9BI2ocyWAYz+T/4aq9lx6Ul+C4=;
+ b=DVtqgr8vqRUTZWpdsDt+Yt3XLSooL6RSxTRNdMbhINLDV+Z8GN4QuEA6KEQJHQiKxR
+ eNl1w/R/Fi8q16IarLZzj2oekb9Gl0F+9B8kLPaArXLcEwoe3XlkncAT+itGqnVPXjvH
+ R0Z9Lq1ewylWTVwB+IxzL4xPcZJW9oJ01KeZfYllnja7JqNfhT8big2rUwZeZ5dWqWNl
+ feBfcU+N6ylvy+JS+vwSgKnL7mTO9ZG8wZbXptQ/7hL1DL9UzNQS+8Ov1Nw4aqmbi08c
+ T7/yjGyV+81+CnaTmg4F5dU7pikcc4yklH1HitfL/Rbh1tb4K6ewbLuMChe05YY5YOGj
+ jkOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061191; x=1688653191;
+ d=1e100.net; s=20221208; t=1686061269; x=1688653269;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GLk2DYumS/fBSJ0k9e3ySyuc3BsI6QIzXl05sEIrU3k=;
- b=cSNIih5VkqAwAL0JvIEUlqwf67zH/OqSgCfrrsykNTi2wP07cHe85giUiCs/BM8Euz
- TMo9EWb30cS97jIDSQryEZg35o0Kmxku4XBOVRaul0+dZ7WgL5hhvnSPn/UTUv2iPcGQ
- jB40JldcqWRp6WUm9CR6r3rT9kYOR8JQpIbvx+ljPbme5sX+jf7/sXBgfpeEGXIF+vTJ
- nCQ372NbWIt5zjQR/Nhvfe9/+gVRvlcM5r/XG8x7wc1cqhLPG3DDlt4Hn0I4TSyHdpkj
- bOfSDm725XBVGDH/OS/RjPS5D0isCWNcOekPX7TZlq6VJVFY51sace8deM0hlu3ZY5ev
- fdYQ==
-X-Gm-Message-State: AC+VfDwn2MxSHxBANFmt5WmzZMPIbnCgeMXrRtZ96OV2JoiN2GU7DM9c
- w8csfiNPxlpvu7gG9kryJpL1148S5nI3RYuzNwABC5LLavQPTUx4qssHFSnuGcgzMq8CIxB3nk7
- 4VJa+VGLSJO0I9kw=
-X-Received: by 2002:adf:f74e:0:b0:30a:e92c:25fa with SMTP id
- z14-20020adff74e000000b0030ae92c25famr1965959wrp.60.1686061190907; 
- Tue, 06 Jun 2023 07:19:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7xt2HY226Iy0cb/gBSyOTyICtzgHB5q/+TaPI+PNJv3p2lveI2ozN+1sqg/jUSbnweRkuBwg==
-X-Received: by 2002:adf:f74e:0:b0:30a:e92c:25fa with SMTP id
- z14-20020adff74e000000b0030ae92c25famr1965940wrp.60.1686061190642; 
- Tue, 06 Jun 2023 07:19:50 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-42-114-92.web.vodafone.de.
- [109.42.114.92]) by smtp.gmail.com with ESMTPSA id
- h7-20020adff4c7000000b002f28de9f73bsm12688981wrp.55.2023.06.06.07.19.49
+ bh=/HdEfN8HPF40oE6Tr9BI2ocyWAYz+T/4aq9lx6Ul+C4=;
+ b=Hy1nXxHizwiaUVe65KWx2ewAzD+x2cAEOaDac+wxU9D9hzLcpnYwJsedWZFLErEl6S
+ 859fad5LB57pi9vaMap/HvW39K08J0aiyFZnvj4MdRac0xg/o8/acTB61O67VE9W4JTM
+ MatJervE06o2fqh6jGHktRWXp9msPGBWEv0TpDHy5SyOkBmMx/sqU4d/soCw2as+6T7R
+ 0JJl92ufrHLBlO/nuCRHB3GQpd/Lbfj88B7NZBtIrtaKlkCa+qc8Y+tMlDFLyb+y7LSi
+ WQ1y4qUHXHW/FReeq53hG8USRiymrBlG95Fu4rqemumoI1imG5rQmi1ggcw4+td9TgIB
+ S1/g==
+X-Gm-Message-State: AC+VfDwNt78cT4i+j79/jXQTPcIQslZWJR30BPq2EzEaIW0W25hqbAGz
+ GVVHglOHWbTdWPoeUjLyMTDPuw==
+X-Google-Smtp-Source: ACHHUZ7Ea14Px3mB3KSk1NzGi6IDytly5X96WOlGscarj79pmkVBMLMysXr90uP+oVtRwOm3wSLmnQ==
+X-Received: by 2002:adf:e7c3:0:b0:306:2b64:fd1b with SMTP id
+ e3-20020adfe7c3000000b003062b64fd1bmr1758869wrn.52.1686061269689; 
+ Tue, 06 Jun 2023 07:21:09 -0700 (PDT)
+Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
+ [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
+ h9-20020adfe989000000b00307a86a4bcesm12733684wrm.35.2023.06.06.07.21.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 07:19:50 -0700 (PDT)
-Message-ID: <b08eedaf-120a-8c05-c946-b65abe4741c9@redhat.com>
-Date: Tue, 6 Jun 2023 16:19:48 +0200
+ Tue, 06 Jun 2023 07:21:09 -0700 (PDT)
+Message-ID: <175b1cfd-510b-a2af-3992-0492a0b777d8@linaro.org>
+Date: Tue, 6 Jun 2023 16:21:07 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] hw/remote/proxy: Remove dubious 'event_notifier-posix.c'
- include
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PULL v4 07/27] multi-process: add the concept description to
+ docs/devel/qemu-multiprocess
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Fam Zheng <fam@euphon.net>, thuth@redhat.com,
  Jagannathan Raman <jag.raman@oracle.com>,
+ Eduardo Habkost <ehabkost@redhat.com>, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, "Denis V. Lunev" <den@openvz.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- John G Johnson <john.g.johnson@oracle.com>,
- QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20230606134913.93724-1-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230606134913.93724-1-philmd@linaro.org>
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20210210092628.193785-1-stefanha@redhat.com>
+ <20210210092628.193785-8-stefanha@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20210210092628.193785-8-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,35 +104,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/06/2023 15.49, Philippe Mathieu-Daudé wrote:
-> event_notifier-posix.c is registered in meson's util_ss[] source
-> set, which is built as libqemuutil.a.p library. Both tools and
-> system emulation binaries are linked with qemuutil, so there is
-> no point in including this source file.
-> 
-> Introduced in commit bd36adb8df ("multi-process: create IOHUB
-> object to handle irq").
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> Note, --enable-multiprocess doesn't seem to be covered in CI.
-> ---
->   hw/remote/proxy.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/hw/remote/proxy.c b/hw/remote/proxy.c
-> index 1c7786b52c..2052d721e5 100644
-> --- a/hw/remote/proxy.c
-> +++ b/hw/remote/proxy.c
-> @@ -22,7 +22,6 @@
->   #include "qom/object.h"
->   #include "qemu/event_notifier.h"
->   #include "sysemu/kvm.h"
-> -#include "util/event_notifier-posix.c"
->   
->   static void probe_pci_info(PCIDevice *dev, Error **errp);
->   static void proxy_device_reset(DeviceState *dev);
+Hi Jagannathan and Elena,
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+On 10/2/21 10:26, Stefan Hajnoczi wrote:
+> From: John G Johnson <john.g.johnson@oracle.com>
+> 
+> Signed-off-by: John G Johnson <john.g.johnson@oracle.com>
+> Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+> Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Message-id: 02a68adef99f5df6a380bf8fd7b90948777e411c.1611938319.git.jag.raman@oracle.com
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>   MAINTAINERS                  |   7 +
+>   docs/devel/index.rst         |   1 +
+>   docs/devel/multi-process.rst | 966 +++++++++++++++++++++++++++++++++++
+>   3 files changed, 974 insertions(+)
+>   create mode 100644 docs/devel/multi-process.rst
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 06635ba81a..ddff8d25e8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3200,6 +3200,13 @@ S: Maintained
+>   F: hw/semihosting/
+>   F: include/hw/semihosting/
+>   
+> +Multi-process QEMU
+> +M: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+> +M: Jagannathan Raman <jag.raman@oracle.com>
+> +M: John G Johnson <john.g.johnson@oracle.com>
+
+FWIW John's email is bouncing.
+
+> +S: Maintained
+> +F: docs/devel/multi-process.rst
+
 
 
