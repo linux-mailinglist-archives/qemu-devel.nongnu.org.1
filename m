@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78F67245AC
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109537245FB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:30:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XYh-0007LW-H3; Tue, 06 Jun 2023 10:21:15 -0400
+	id 1q6Xgg-0002nm-OA; Tue, 06 Jun 2023 10:29:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XYf-0007Kq-Oh
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:21:13 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Xgb-0002jB-KY
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:29:25 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XYd-0007ZS-Dj
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:21:13 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-30af86a96b4so5044325f8f.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:21:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6XgY-0000Uf-Qe
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:29:25 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b026657a6fso53625725ad.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:29:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686061269; x=1688653269;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1686061761; x=1688653761;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/HdEfN8HPF40oE6Tr9BI2ocyWAYz+T/4aq9lx6Ul+C4=;
- b=DVtqgr8vqRUTZWpdsDt+Yt3XLSooL6RSxTRNdMbhINLDV+Z8GN4QuEA6KEQJHQiKxR
- eNl1w/R/Fi8q16IarLZzj2oekb9Gl0F+9B8kLPaArXLcEwoe3XlkncAT+itGqnVPXjvH
- R0Z9Lq1ewylWTVwB+IxzL4xPcZJW9oJ01KeZfYllnja7JqNfhT8big2rUwZeZ5dWqWNl
- feBfcU+N6ylvy+JS+vwSgKnL7mTO9ZG8wZbXptQ/7hL1DL9UzNQS+8Ov1Nw4aqmbi08c
- T7/yjGyV+81+CnaTmg4F5dU7pikcc4yklH1HitfL/Rbh1tb4K6ewbLuMChe05YY5YOGj
- jkOw==
+ bh=/vPWGvGYYvst6yBTzH0eOa6O9kW455f/dKimEzwjIyI=;
+ b=k+SpMG79UWbiptQrEPiAlRZfQowd7+u6FFbkbv6DKvTh/QFfp3lFJQkL9ErJedsjXG
+ LOBCKogBdJX6tQepO0gntEvOKQL344BbOSQLBEbcQe7nww4IFb3XxHG8KFU32NiLJH7i
+ hW0FKMFNKAn6L8r1dE6CRgI/p14YKTpNIQWKdEjuuNDtRHxwuDVuZIujXTN5MCbXMm+D
+ yPTjeRldieJsVBizB9OxyfmimUQITrMYeSnFhmUJicxxUIqUfvlFhn+PfoRYwMqBvxqE
+ +22kQXgDaxOdMLnpLgaavz9medRDRIkt7XhVf1e+3TMOvds0H52iv+yfc2ex+BUOG8zU
+ 4eTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061269; x=1688653269;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1686061761; x=1688653761;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/HdEfN8HPF40oE6Tr9BI2ocyWAYz+T/4aq9lx6Ul+C4=;
- b=Hy1nXxHizwiaUVe65KWx2ewAzD+x2cAEOaDac+wxU9D9hzLcpnYwJsedWZFLErEl6S
- 859fad5LB57pi9vaMap/HvW39K08J0aiyFZnvj4MdRac0xg/o8/acTB61O67VE9W4JTM
- MatJervE06o2fqh6jGHktRWXp9msPGBWEv0TpDHy5SyOkBmMx/sqU4d/soCw2as+6T7R
- 0JJl92ufrHLBlO/nuCRHB3GQpd/Lbfj88B7NZBtIrtaKlkCa+qc8Y+tMlDFLyb+y7LSi
- WQ1y4qUHXHW/FReeq53hG8USRiymrBlG95Fu4rqemumoI1imG5rQmi1ggcw4+td9TgIB
- S1/g==
-X-Gm-Message-State: AC+VfDwNt78cT4i+j79/jXQTPcIQslZWJR30BPq2EzEaIW0W25hqbAGz
- GVVHglOHWbTdWPoeUjLyMTDPuw==
-X-Google-Smtp-Source: ACHHUZ7Ea14Px3mB3KSk1NzGi6IDytly5X96WOlGscarj79pmkVBMLMysXr90uP+oVtRwOm3wSLmnQ==
-X-Received: by 2002:adf:e7c3:0:b0:306:2b64:fd1b with SMTP id
- e3-20020adfe7c3000000b003062b64fd1bmr1758869wrn.52.1686061269689; 
- Tue, 06 Jun 2023 07:21:09 -0700 (PDT)
-Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
- [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
- h9-20020adfe989000000b00307a86a4bcesm12733684wrm.35.2023.06.06.07.21.07
+ bh=/vPWGvGYYvst6yBTzH0eOa6O9kW455f/dKimEzwjIyI=;
+ b=UU1n5ggVXx/iB9klS7yc5kxw6pM7HBxXAgODGfzjH2KssXBg1/e6oL33NZ1ZWyAuvd
+ nrE5BrLS7pBC3ZylH31RlaFa0J5YNGXfSi/ts6JM38bK6H1a+YLQqigUm98jn+JmOuwI
+ bgCCWCfy139CvO3cpvrO4pU9aF17Q15gI5/xtTMt4BH3JmP+e0ugPpoEQym9Xx3Y0+AD
+ BLLC4VGNRBITW6ykzlgUSO6e+C/BV/ZHvJ2QBbGmrhvmmFz+Y+bA77QWKDEn6mk1BHfp
+ q4Z6NHa2aiSUd3Dsh6197gy1FlKZvqhZ1sZTA30j5/aR5Y2Eg48VLltzJTmE1hIM2Bs/
+ gUUw==
+X-Gm-Message-State: AC+VfDwP4HqVDi5gjVJhVqRnvf07W5c8OFasN81jCykVWwg+G0+AYODo
+ 5K/VjlDiHm7JC1mHctk4fVaAHQ==
+X-Google-Smtp-Source: ACHHUZ5QKBQO1qg0+x6plQg0Qq30vhQ5CMxwwIbKGtQXIcx9ceL+1xQ1YyZUl43t1dkegqOaNnO+Yw==
+X-Received: by 2002:a17:902:ba83:b0:1b2:1a79:9a67 with SMTP id
+ k3-20020a170902ba8300b001b21a799a67mr2022710pls.50.1686061761267; 
+ Tue, 06 Jun 2023 07:29:21 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
+ ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ by smtp.gmail.com with ESMTPSA id
+ x21-20020a17090300d500b001ae469ca0c0sm8607488plc.245.2023.06.06.07.29.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 07:21:09 -0700 (PDT)
-Message-ID: <175b1cfd-510b-a2af-3992-0492a0b777d8@linaro.org>
-Date: Tue, 6 Jun 2023 16:21:07 +0200
+ Tue, 06 Jun 2023 07:29:20 -0700 (PDT)
+Message-ID: <c28e9cf1-5fa2-c63d-bb59-fbb4555e0150@linaro.org>
+Date: Tue, 6 Jun 2023 07:29:18 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PULL v4 07/27] multi-process: add the concept description to
- docs/devel/qemu-multiprocess
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/5] bsd-user: Rename elfcore.c -> elfcore.c.inc
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Warner Losh <imp@bsdimp.com>
+References: <20230606141252.95032-1-philmd@linaro.org>
+ <20230606141252.95032-2-philmd@linaro.org>
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Fam Zheng <fam@euphon.net>, thuth@redhat.com,
- Jagannathan Raman <jag.raman@oracle.com>,
- Eduardo Habkost <ehabkost@redhat.com>, qemu-block@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, "Denis V. Lunev" <den@openvz.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20210210092628.193785-1-stefanha@redhat.com>
- <20210210092628.193785-8-stefanha@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20210210092628.193785-8-stefanha@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230606141252.95032-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -104,41 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jagannathan and Elena,
-
-On 10/2/21 10:26, Stefan Hajnoczi wrote:
-> From: John G Johnson <john.g.johnson@oracle.com>
+On 6/6/23 07:12, Philippe Mathieu-Daudé wrote:
+> Since commit 139c1837db ("meson: rename included C source files
+> to .c.inc"), QEMU standard procedure for included C files is to
+> use *.c.inc.
 > 
-> Signed-off-by: John G Johnson <john.g.johnson@oracle.com>
-> Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
-> Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Message-id: 02a68adef99f5df6a380bf8fd7b90948777e411c.1611938319.git.jag.raman@oracle.com
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+> about includes") this is documented as the Coding Style:
+> 
+>    If you do use template header files they should be named with
+>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+>    being included for expansion.
+> 
+> Therefore rename the included 'elfcore.c' as 'elfcore.c.inc'.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   MAINTAINERS                  |   7 +
->   docs/devel/index.rst         |   1 +
->   docs/devel/multi-process.rst | 966 +++++++++++++++++++++++++++++++++++
->   3 files changed, 974 insertions(+)
->   create mode 100644 docs/devel/multi-process.rst
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 06635ba81a..ddff8d25e8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3200,6 +3200,13 @@ S: Maintained
->   F: hw/semihosting/
->   F: include/hw/semihosting/
->   
-> +Multi-process QEMU
-> +M: Elena Ufimtseva <elena.ufimtseva@oracle.com>
-> +M: Jagannathan Raman <jag.raman@oracle.com>
-> +M: John G Johnson <john.g.johnson@oracle.com>
+>   bsd-user/elfload.c                    | 2 +-
+>   bsd-user/{elfcore.c => elfcore.c.inc} | 0
+>   2 files changed, 1 insertion(+), 1 deletion(-)
+>   rename bsd-user/{elfcore.c => elfcore.c.inc} (100%)
 
-FWIW John's email is bouncing.
-
-> +S: Maintained
-> +F: docs/devel/multi-process.rst
+Assuming Warner doesn't simply want to merge this small file, or compile it separately. It 
+isn't actually included more than once.
 
 
+r~
 
