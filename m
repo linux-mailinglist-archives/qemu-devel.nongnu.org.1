@@ -2,98 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC2C72481A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1941072482C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 17:47:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6YpP-0000ec-A3; Tue, 06 Jun 2023 11:42:35 -0400
+	id 1q6YtI-0004IM-EN; Tue, 06 Jun 2023 11:46:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6Yof-00072H-ON
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:41:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6Yod-0008Nk-Gg
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:41:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686066106;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=s6L93cZg8Jij3ITRefcpCFuksmrQ7wrTvi+ZS+81q2o=;
- b=bMMhZRlMr6eMnQhCV1fvzDv7CQZ1l3kwJhfoAIAqwNQV2mfKFfovxmXMr4qTEHoM0CJaad
- ahr3DaL983/irhk3x6kwgXR7HoaO6HgCR1cjfx8jvSzzh5emkH/QWA5g1z/paqBUTVeyPE
- kUTnRQWC82QhYglV74SR0WOgBAUOH+E=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-asDdSserOdGHvDg8LZmByA-1; Tue, 06 Jun 2023 11:41:45 -0400
-X-MC-Unique: asDdSserOdGHvDg8LZmByA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-75d54053a76so29611685a.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:41:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6YtD-0004HI-2a
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:46:31 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6YtA-0002F3-AR
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 11:46:30 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-65299178ac5so5930013b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 08:46:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686066387; x=1688658387;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gO3k2yWVPd76GH7s5bSs3qhqCe9rRBKy30yFaIxoClM=;
+ b=ZiSJOlhIYY/QXd6Dh21c/lC6W7Mwe0hvBQLyRlN5aMMGJMd9E7or9Y4wBfU5vdiPnL
+ Xo/IA+ybdrpXZgoJsRUd+1lgk+6Rjz9mK1mMbpSiAVq8LsasgbqPdUyEG0R0FrK4BdsJ
+ p3UtMlykusqlE8lI/hWHPrqg0zORj6e3J5TAOBhDZFEakQ0wb7aY6JviX4NUESi9+l/X
+ fbY9PPY7DJSTcCniO2GNrGtEtz289LCqNArIvmHeZp4PZ2IQnenPNVU+sY7BSSm5Y+HF
+ 3S8uOJZILc+xYac7Rm2D4xvIvbDMU41zG51KE1yqx9Vw39eYeJ08YJIsaBZwl3FV3wo6
+ XcSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686066104; x=1688658104;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s6L93cZg8Jij3ITRefcpCFuksmrQ7wrTvi+ZS+81q2o=;
- b=B48g10vbfu3jOaUR+iLIs5BxjEEKk1YKfUO0SaK/OVHbZRRh/iWpHfO2Kcz7RFa4Ih
- MmAkJvsrow5SJUDKQne/07FEga5qB3juLRa1Y5h3ZOAvSTpTdwQJGR9dE2OJc5qginrS
- x1Kc170bZvRtE7Uhdc8Hr47v1NxZK2X4AJXCQnGEHCXMZFFyI+iBSFr+Mdec6wGdM6gi
- mKUIxky2LScaFvAxL7BQ/EE7VfsHf28317vgqd+ivXGEAwDmXYFLov1ZcqX32K0uM6qC
- kKFqJH1+rNCfInWo4r0yVh1pobfbNKSR//LVjd5rjNH49xjhOqF5osQ6d31RRHSAvNn9
- b8Tg==
-X-Gm-Message-State: AC+VfDwM8dixNXExGvblQpmKIqDBITEC8jwcoUYsd9MKfnCEAImDIZtd
- x7nPMF+Fi/cnWg8Y0sZl+dtuJD816Rin1t/YsBlXO6hGMjf0GebmJSw7gxWeUwgj0gC16aWwMta
- k4hHN3nomfKIp5yE=
-X-Received: by 2002:a05:620a:8c93:b0:75d:5259:1f87 with SMTP id
- ra19-20020a05620a8c9300b0075d52591f87mr2347175qkn.7.1686066104541; 
- Tue, 06 Jun 2023 08:41:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7NOlWbyGzjeKMO9XC5WvCRB2Q7nv6eVx8Gy+IymHiZVTwMidFnGZwQYAOC2uE9qNSN6qM+gw==
-X-Received: by 2002:a05:620a:8c93:b0:75d:5259:1f87 with SMTP id
- ra19-20020a05620a8c9300b0075d52591f87mr2347133qkn.7.1686066104100; 
- Tue, 06 Jun 2023 08:41:44 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- i21-20020ae9ee15000000b0075cc4d03b70sm4993649qkg.22.2023.06.06.08.41.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 08:41:43 -0700 (PDT)
-Date: Tue, 6 Jun 2023 11:41:41 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "mst@redhat.com" <mst@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "eduardo@habkost.net" <eduardo@habkost.net>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "kwankhede@nvidia.com" <kwankhede@nvidia.com>,
- "cjia@nvidia.com" <cjia@nvidia.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: Re: [PATCH v2 2/4] intel_iommu: Fix a potential issue in VFIO dirty
- page sync
-Message-ID: <ZH9TtfQ/iSChuPSj@x1n>
-References: <20230601063320.139308-1-zhenzhong.duan@intel.com>
- <20230601063320.139308-3-zhenzhong.duan@intel.com>
- <ZH4r3FCIU8uOiV8h@x1n>
- <SJ0PR11MB674438D23927056A81F447DC9252A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ d=1e100.net; s=20221208; t=1686066387; x=1688658387;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gO3k2yWVPd76GH7s5bSs3qhqCe9rRBKy30yFaIxoClM=;
+ b=Qyqe0pNdserM1SIw7DrGw2s8SFFLnCKcAbmXC2oiGCOxLZbqzvzd1B7bwiUVYRhRuX
+ KnBn4glqOHnfOAgzBGnWgtnV4Si6hbXNyrVX0cBiL0hbsQTe/VOv5/0Ej7GAwWegErWq
+ ivMDl+n5BDQ2W+Q+edgfWIu/bZdpka86X2LD0cUOU/AxMQUVP2IIZcne/KuKxZ4OAFSx
+ BuSlPsAnT/HcHt6paQG1EeV3vZLg3XbLJm4hEfdIQvGil4rlD3WUDhvV3JoPwY31MIKW
+ or64kmod7KxPIyqd3oeRPkBghaeJCNe5CNkQsH8bZ4p2UNM9Th/4+R7ZcbPCetPlYDU+
+ EB7w==
+X-Gm-Message-State: AC+VfDw+gACS5kF7TdcNWENK6S4e456D45dZPZ52ggjeuQnHPm0w8z5H
+ YA5JmdTQMb2r8nqt3S2RtbJK2w==
+X-Google-Smtp-Source: ACHHUZ7tY58/YwCk212TGumOHSbsMRG/0wdS9RjyrT5yll1tMV3KspcYFEuShcbeujOLtOtYFejkHQ==
+X-Received: by 2002:a05:6a00:1250:b0:659:7d45:a52c with SMTP id
+ u16-20020a056a00125000b006597d45a52cmr2688240pfi.30.1686066386749; 
+ Tue, 06 Jun 2023 08:46:26 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
+ ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ by smtp.gmail.com with ESMTPSA id
+ c10-20020aa781ca000000b0062e0c39977csm7002216pfn.139.2023.06.06.08.46.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 08:46:26 -0700 (PDT)
+Message-ID: <108e21f8-94c1-e52d-8027-00150b6f0207@linaro.org>
+Date: Tue, 6 Jun 2023 08:46:24 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB674438D23927056A81F447DC9252A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/18] s390x and misc patches
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+References: <20230606055621.523175-1-thuth@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230606055621.523175-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -111,201 +94,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 06, 2023 at 02:35:41AM +0000, Duan, Zhenzhong wrote:
-> >-----Original Message-----
-> >From: Peter Xu <peterx@redhat.com>
-> >Sent: Tuesday, June 6, 2023 2:39 AM
-> >To: Duan, Zhenzhong <zhenzhong.duan@intel.com>
-> >Cc: qemu-devel@nongnu.org; mst@redhat.com; jasowang@redhat.com;
-> >pbonzini@redhat.com; richard.henderson@linaro.org; eduardo@habkost.net;
-> >marcel.apfelbaum@gmail.com; alex.williamson@redhat.com;
-> >clg@redhat.com; david@redhat.com; philmd@linaro.org;
-> >kwankhede@nvidia.com; cjia@nvidia.com; Liu, Yi L <yi.l.liu@intel.com>; Peng,
-> >Chao P <chao.p.peng@intel.com>
-> >Subject: Re: [PATCH v2 2/4] intel_iommu: Fix a potential issue in VFIO dirty
-> >page sync
-> >
-> >On Thu, Jun 01, 2023 at 02:33:18PM +0800, Zhenzhong Duan wrote:
-> >> Peter Xu found a potential issue:
-> >>
-> >> "The other thing is when I am looking at the new code I found that we
-> >> actually extended the replay() to be used also in dirty tracking of vfio,
-> >> in vfio_sync_dirty_bitmap().  For that maybe it's already broken if
-> >> unmap_all() because afaiu log_sync() can be called in migration thread
-> >> anytime during DMA so I think it means the device is prone to DMA with the
-> >> IOMMU pgtable quickly erased and rebuilt here, which means the DMA
-> >could
-> >> fail unexpectedly.  Copy Alex, Kirti and Neo."
-> >>
-> >> To eliminate this small window with empty mapping, we should remove the
-> >> call to unmap_all(). Besides that, introduce a new notifier type called
-> >> IOMMU_NOTIFIER_FULL_MAP to get full mappings as intel_iommu only
-> >notifies
-> >> changed mappings while VFIO dirty page sync needs full mappings. Thanks
-> >> to current implementation of iova tree, we could pick mappings from iova
-> >> trees directly instead of walking through guest IOMMU page table.
-> >>
-> >> IOMMU_NOTIFIER_MAP is still used to get changed mappings for
-> >optimization
-> >> purpose. As long as notification for IOMMU_NOTIFIER_MAP could ensure
-> >shadow
-> >> page table in sync, then it's OK.
-> >>
-> >> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> >> ---
-> >>  hw/i386/intel_iommu.c | 49 +++++++++++++++++++++++++++++++++++------
-> >--
-> >>  hw/vfio/common.c      |  2 +-
-> >>  include/exec/memory.h | 13 ++++++++++++
-> >>  softmmu/memory.c      |  4 ++++
-> >>  4 files changed, 58 insertions(+), 10 deletions(-)
-> >>
-> >> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> >> index 94d52f4205d2..061fcded0dfb 100644
-> >> --- a/hw/i386/intel_iommu.c
-> >> +++ b/hw/i386/intel_iommu.c
-> >> @@ -3819,6 +3819,41 @@ static int vtd_replay_hook(IOMMUTLBEvent
-> >*event, void *private)
-> >>      return 0;
-> >>  }
-> >>
-> >> +static gboolean vtd_replay_full_map(DMAMap *map, gpointer *private)
-> >> +{
-> >> +    IOMMUTLBEvent event;
-> >> +
-> >> +    event.type = IOMMU_NOTIFIER_MAP;
-> >> +    event.entry.iova = map->iova;
-> >> +    event.entry.addr_mask = map->size;
-> >> +    event.entry.target_as = &address_space_memory;
-> >> +    event.entry.perm = map->perm;
-> >> +    event.entry.translated_addr = map->translated_addr;
-> >> +
-> >> +    return vtd_replay_hook(&event, private);
-> >> +}
-> >> +
-> >> +/*
-> >> + * This is a fast path to notify the full mappings falling in the scope
-> >> + * of IOMMU notifier. The call site should ensure no iova tree update by
-> >> + * taking necessary locks(e.x. BQL).
-> >
-> >We should be accurate on the locking - I think it's the BQL so far.
+On 6/5/23 22:56, Thomas Huth wrote:
+>   Hi Richard!
 > 
-> Will update comments.
+> The following changes since commit 848a6caa88b9f082c89c9b41afa975761262981d:
 > 
-> >
-> >> + */
-> >> +static int vtd_page_walk_full_map_fast_path(IOVATree *iova_tree,
-> >> +                                            IOMMUNotifier *n)
-> >> +{
-> >> +    DMAMap map;
-> >> +
-> >> +    map.iova = n->start;
-> >> +    map.size = n->end - n->start;
-> >> +    if (!iova_tree_find(iova_tree, &map)) {
-> >> +        return 0;
-> >> +    }
-> >> +
-> >> +    iova_tree_foreach_range_data(iova_tree, &map, vtd_replay_full_map,
-> >> +                                 (gpointer *)n);
-> >> +    return 0;
-> >> +}
-> >> +
-> >>  static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr,
-> >IOMMUNotifier *n)
-> >>  {
-> >>      VTDAddressSpace *vtd_as = container_of(iommu_mr, VTDAddressSpace,
-> >iommu);
-> >> @@ -3826,13 +3861,6 @@ static void
-> >vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
-> >>      uint8_t bus_n = pci_bus_num(vtd_as->bus);
-> >>      VTDContextEntry ce;
-> >>
-> >> -    /*
-> >> -     * The replay can be triggered by either a invalidation or a newly
-> >> -     * created entry. No matter what, we release existing mappings
-> >> -     * (it means flushing caches for UNMAP-only registers).
-> >> -     */
-> >> -    vtd_address_space_unmap(vtd_as, n);
-> >> -
-> >>      if (vtd_dev_to_context_entry(s, bus_n, vtd_as->devfn, &ce) == 0) {
-> >>          trace_vtd_replay_ce_valid(s->root_scalable ? "scalable mode" :
-> >>                                    "legacy mode",
-> >> @@ -3850,8 +3878,11 @@ static void
-> >vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
-> >>                  .as = vtd_as,
-> >>                  .domain_id = vtd_get_domain_id(s, &ce, vtd_as->pasid),
-> >>              };
-> >> -
-> >> -            vtd_page_walk(s, &ce, 0, ~0ULL, &info, vtd_as->pasid);
-> >> +            if (n->notifier_flags & IOMMU_NOTIFIER_FULL_MAP) {
-> >> +                vtd_page_walk_full_map_fast_path(vtd_as->iova_tree, n);
-> >> +            } else {
-> >> +                vtd_page_walk(s, &ce, 0, ~0ULL, &info, vtd_as->pasid);
-> >> +            }
-> >>          }
-> >>      } else {
-> >>          trace_vtd_replay_ce_invalid(bus_n, PCI_SLOT(vtd_as->devfn),
-> >> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> >> index 78358ede2764..5dae4502b908 100644
-> >> --- a/hw/vfio/common.c
-> >> +++ b/hw/vfio/common.c
-> >> @@ -1890,7 +1890,7 @@ static int vfio_sync_dirty_bitmap(VFIOContainer
-> >*container,
-> >>
-> >>                  iommu_notifier_init(&gdn.n,
-> >>                                      vfio_iommu_map_dirty_notify,
-> >> -                                    IOMMU_NOTIFIER_MAP,
-> >> +                                    IOMMU_NOTIFIER_FULL_MAP,
-> >>                                      section->offset_within_region,
-> >>                                      int128_get64(llend),
-> >>                                      idx);
-> >> diff --git a/include/exec/memory.h b/include/exec/memory.h
-> >> index c3661b2276c7..eecc3eec6702 100644
-> >> --- a/include/exec/memory.h
-> >> +++ b/include/exec/memory.h
-> >> @@ -142,6 +142,10 @@ struct IOMMUTLBEntry {
-> >>   *       events (e.g. VFIO). Both notifications must be accurate so that
-> >>   *       the shadow page table is fully in sync with the guest view.
-> >>   *
-> >> + *       Besides MAP, there is a special use case called FULL_MAP which
-> >> + *       requests notification for all the existent mappings (e.g. VFIO
-> >> + *       dirty page sync).
-> >
-> >Why do we need FULL_MAP?  Can we simply reimpl MAP?
+>    Merge tag 'migration-20230602-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-06-02 17:33:29 -0700)
 > 
-> Sorry, I just realized IOMMU_NOTIFIER_FULL_MAP is confusing.
-> Maybe IOMMU_NOTIFIER_MAP_FAST_PATH could be a bit more accurate.
+> are available in the Git repository at:
 > 
-> IIUC, currently replay() is called from two paths, one is VFIO device address
-> space switch which walks over the IOMMU page table to setup initial
-> mapping and cache it in IOVA tree. The other is VFIO dirty sync which
-> walks over the IOMMU page table to notify the mapping, because we
-> already cache the mapping in IOVA tree and VFIO dirty sync is protected
-> by BQL, so I think it's fine to pick mapping from IOVA tree directly instead
-> of walking over IOMMU page table. That's the reason of FULL_MAP
-> (IOMMU_NOTIFIER_MAP_FAST_PATH better).
+>    https://gitlab.com/thuth/qemu.git tags/pull-request-2023-06-06
 > 
-> About "reimpl MAP", do you mean to walk over IOMMU page table to
-> notify all existing MAP events without checking with the IOVA tree for
-> difference? If you prefer, I'll rewrite an implementation this way.
+> for you to fetch changes up to 1fb9bdaf59719c0d0c28043e58c8e3452fd6d7de:
+> 
+>    linux-user: Emulate /proc/cpuinfo on s390x (2023-06-05 20:48:34 +0200)
+> 
+> ----------------------------------------------------------------
+> * Fix emulated LCCB, LOCFHR, MXDB and MXDBR s390x instructions
+> * Fix the malta machine on s390x (big endian) hosts
+> * Emulate /proc/cpuinfo on s390x
+> * Remove pointless QOM casts
+> * Improve the inclusion logic for libkeyutils and ipmi-bt-test in meson.build
 
-We still need to maintain iova tree. IIUC that's the major complexity of
-vt-d emulation, because we have that extra cache layer to sync with the
-real guest iommu pgtables.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-But I think we were just wrong to also notify in the unmap_all() procedure.
 
-IIUC the right thing to do (keeping replay() the interface as-is, per it
-used to be defined) is we should replace the unmap_all() to only evacuate
-the iova tree (keeping all host mappings untouched, IOW, don't notify
-UNMAP), and do a full resync there, which will notify all existing mappings
-as MAP.  Then we don't interrupt with any existing mapping if there is
-(e.g. for the dirty sync case), meanwhile we keep sync too to latest (for
-moving a vfio device into an existing iommu group).
+r~
 
-Do you think that'll work for us?
-
--- 
-Peter Xu
 
 
