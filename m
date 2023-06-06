@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07BA72469A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4C17246A8
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:46:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XwB-00078s-Cq; Tue, 06 Jun 2023 10:45:31 -0400
+	id 1q6Xwg-0007mp-BT; Tue, 06 Jun 2023 10:46:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Xw5-000710-VM
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:45:26 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6Xwe-0007mM-BS
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:46:00 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Xvv-00044y-9y
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:45:25 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-256d1b5f7c0so4630072a91.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:45:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686062714; x=1688654714;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=n1tJ2+L5cHCKhwAu73ijDxV4qbX5hmhJ/fdum4OqMek=;
- b=cXkLIF4OrlCwwa5akW6dvgabsRFZ6lFTOVDKjmpfxXz4lTY3KTJmfW5F7hoesuRxmU
- 2+FO+0Dr4z3uMWdcPwpHCykvYjfhFkLqZgGv0U2P6g+usS+IiZP1q2wy5MsofCpv2ue5
- cRhmEiZGubPuEMjPKvxDm+31ru25I2Q9RC6mts3eg+XqpExoX5+zl4gl6ca6tjjHHY5q
- UJsahjQmlhhmRPtCLZpni+X5JKIYupiLAloVfDJSedCk/+Lrhu2i9U8+HCp8KGfAd000
- B5sNQ+do7XxKsE3lH9POmvlm1T23llc6krvgsbICYE6ZwrY2Y7wopLcSGjzNt+vIA4Zi
- 3Iag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686062714; x=1688654714;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n1tJ2+L5cHCKhwAu73ijDxV4qbX5hmhJ/fdum4OqMek=;
- b=WBE8fco7qAB48wCq0L9omITNniLKeGA8he2pVoO3aY5dbxap/pnbCrM6NzSDjetOAp
- DHatXMKA1G6XldXMOaCOP+Nu4+osNP2p1WJxJvYpAs/ufYhnutYE6AiT2kSqE4rlf5zg
- RUQkXw0e/3AIP3PBXEzZGZoTqH0ncYB5vTN21zx1+67swdbTd7+IgERABE7Tkfwa/hDv
- abjWxv6Ke3ySFXD1aPSteYdG3rQt7zi7KUa0Dx5IORdbLlZKKL2yH/EmX68GPs6hNwZG
- CnVXdtuaxo/rCSgcdQKkYeAYUDrbQXv+fDkUgKKJW4XAdCYUii5XbeTq5Q6Fxy3QGYgm
- +4rw==
-X-Gm-Message-State: AC+VfDwFz+CwZTOj9N2t1QaD2HNeWq1bCT4acviBTTeXcErezQ2V+1f5
- GpKWSAztlVwrgBkjFJGycw3ycA==
-X-Google-Smtp-Source: ACHHUZ63LrsaKH1r0pjj2mSEFvB4/oLo+8z9Hh7fu5FMxItxedlN6MUk1BmxdtjbWyyVAmkRUz7aFg==
-X-Received: by 2002:a17:90b:2397:b0:250:50c5:cabc with SMTP id
- mr23-20020a17090b239700b0025050c5cabcmr12509845pjb.3.1686062713761; 
- Tue, 06 Jun 2023 07:45:13 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
- ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
- by smtp.gmail.com with ESMTPSA id
- d7-20020a17090ad3c700b002529f2e570esm7742448pjw.28.2023.06.06.07.45.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 07:45:13 -0700 (PDT)
-Message-ID: <599d706c-070a-c2d3-990e-f6a1720f3485@linaro.org>
-Date: Tue, 6 Jun 2023 07:45:11 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6Xwc-0004Q5-Go
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:46:00 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E02A11FD6B;
+ Tue,  6 Jun 2023 14:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1686062755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=X2mVnbarOv+7YSdTRnSYvs9Bi7T5CFyd4fgCwLFd+BU=;
+ b=NcJ4CyFjUpd8jInxVOpA8EhLtxZY6Nlw7Dv3/IwSZLm0f1/XPS9T5m6TmSl358sPrqeRgX
+ a6pYQ3HaVE0sIDHXB6gX6GBvfVRkG9QGOsslkjPaeu4OyYWUwoCIaatVOJkP3gB9VhE2Fv
+ tJaBblBiW/w7O/R7bk06kfj03XscrLU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1686062755;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=X2mVnbarOv+7YSdTRnSYvs9Bi7T5CFyd4fgCwLFd+BU=;
+ b=nRAnBjPBSPtMQUWAlMnh37GCyN8ZlDWz2tntncJMWg1U8kGE9amiJKGhs7n2gGa5y9bXXZ
+ oKXNrhfFWTzolkAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 032FE13519;
+ Tue,  6 Jun 2023 14:45:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id byKALqFGf2SRCAAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 06 Jun 2023 14:45:53 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ Jiang Jiacheng <jiangjiacheng@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH 0/3] migration: Fix multifd cancel test
+Date: Tue,  6 Jun 2023 11:45:48 -0300
+Message-Id: <20230606144551.24367-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC PATCH v2 1/9] target/tricore: Remove pointless
- CONFIG_SOFTMMU guard
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-riscv@nongnu.org
-References: <20230605222420.14776-1-philmd@linaro.org>
- <20230605222420.14776-2-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230605222420.14776-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,17 +81,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 15:24, Philippe Mathieu-Daudé wrote:
-> We don't build any user emulation target for Tricore,
-> only the system emulation. No need to check for it as
-> it is always defined.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/tricore/helper.c | 2 --
->   1 file changed, 2 deletions(-)
+When doing cleanup of the multifd send threads we're calling
+QLIST_REMOVE concurrently on the migration_threads list. This seems to
+be the source of the crashes we've seen on the
+multifd/tcp/plain/cancel tests.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I'm running the test in a loop and after a few dozen iterations I see
+the crash in dmesg.
 
-r~
+  QTEST_QEMU_BINARY=./qemu-system-x86_64 \
+  QEMU_TEST_FLAKY_TESTS=1 \
+  ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/cancel
+
+  multifdsend_10[11382]: segfault at 18 ip 0000564b77de1e25 sp
+  00007fdf767fb610 error 6 in qemu-system-x86_64[564b777b4000+e1c000]
+  Code: ec 10 48 89 7d f8 48 83 7d f8 00 74 58 48 8b 45 f8 48 8b 40 10
+  48 85 c0 74 14 48 8b 45 f8 48 8b 40 10 48 8b 55 f8 48 8b 52 18 <48> 89
+  50 18 48 8b 45 f8 48 8b 40 18 48 8b 55 f8 48 8b 52 10 48 89
+
+the offending instruction is a mov dereferencing the
+thread->node.le_next pointer at QLIST_REMOVE in MigrationThreadDel:
+
+  void MigrationThreadDel(MigrationThread *thread)
+  {
+      if (thread) {
+          QLIST_REMOVE(thread, node);
+          g_free(thread);
+      }
+  }
+
+where:
+  #define QLIST_REMOVE(elm, field) do {                   \
+          if ((elm)->field.le_next != NULL)               \
+                  (elm)->field.le_next->field.le_prev =   \ <-- HERE
+                      (elm)->field.le_prev;               \
+          *(elm)->field.le_prev = (elm)->field.le_next;   \
+          (elm)->field.le_next = NULL;                    \
+          (elm)->field.le_prev = NULL;                    \
+  } while (/*CONSTCOND*/0)
+
+The MigrationThreadDel function is called from the multifd threads and
+is not under any lock, so several calls can race when accessing the
+list.
+
+(I actually hit this first on my fixed-ram branch which changes some
+synchronization in multifd and makes the issue more frequent)
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/891000519
+
+Fabiano Rosas (3):
+  migration/multifd: Rename threadinfo.c functions
+  migration/multifd: Protect accesses to migration_threads
+  tests/qtest: Re-enable multifd cancel test
+
+ migration/migration.c        |  7 +++++--
+ migration/multifd.c          |  5 +++--
+ migration/threadinfo.c       | 23 ++++++++++++++++++++---
+ migration/threadinfo.h       |  8 ++++----
+ tests/qtest/migration-test.c | 10 ++--------
+ 5 files changed, 34 insertions(+), 19 deletions(-)
+
+-- 
+2.35.3
+
 
