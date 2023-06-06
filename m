@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740C0724573
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0410724577
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:14:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XQp-0003p9-RA; Tue, 06 Jun 2023 10:13:07 -0400
+	id 1q6XQs-0003rD-0I; Tue, 06 Jun 2023 10:13:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XQn-0003nS-ET
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:13:05 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XQp-0003pO-PY
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:13:07 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XQi-0005UW-4P
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:13:04 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3f6d3f83d0cso62704915e9.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:12:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6XQn-0005Va-6p
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:13:07 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f7378a74faso23863155e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686060775; x=1688652775;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=W04OLH0QJKfn19fH/wO2Mz30bJLZK/wIkX0NhoZFTMw=;
- b=z8pQQtX9UJxTFD2NiC4+90Qfcn2Y4lL6cwQhwWCOn1N0D4WdBv869uhpPbCbsDzZh4
- SsIbB+T/1kBEHpkBdyHgoRGR0SgDVbNmB6TpsyUb4K8pYFMPbMn/QXo+/voJGuSQagtb
- 8D/NQQ1GoU6Q2HS7bRujqQw9PuTIwyagM2DOcq3sbdJG26wzPF/7GHGID5Kf+to+AJ9w
- rJ1Q1fQGzsAXRr0bcqgXDXD0ivzj127pna/Z6Ku4Fw+evsKX6hmX0fqx4yhGDmRtGpHR
- 58qA0uZtvpebOV4u2koPPBxa4XpZcFsntcbPm5OtTb7mdDb0ACPnySR/trB3gRfluqm+
- ZxNg==
+ d=linaro.org; s=google; t=1686060781; x=1688652781;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MdSAUEH/HsOMWhs4VgQvGHZZxYfe28F2myfB/wfOD10=;
+ b=UT6fGinVWQRGYWdTINjYUvoicF4kkRg5Mbyk2hQTmTiKqz84EhF4z/chYgdKc2FJA+
+ PJiaIcB28xqgMogMEgNz0IJYuCnV9bGetVRGXPcg1b/AIHpLrmqfKX7D2F2m9QbIFYcj
+ ed1H3OPF4bT/uQE0jdxGrbGvpooo+6leFCEAlQK1Q955r0lidVVwHLJhGSz2fFN9OH1b
+ wDTdfdiYwZwqYNPgo5uK5lo++9F2HmAGL4cJE4kdDrwifwLlJSh5wUfYgK247VrCHwIY
+ gk5RQkE8Wk5ybxyK292TwjynyarzlWmZI5accoKp3CLWio4qxcR9AUizYCmBa3Unprb2
+ T8Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686060775; x=1688652775;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=W04OLH0QJKfn19fH/wO2Mz30bJLZK/wIkX0NhoZFTMw=;
- b=P7vuAEgwDLgj0szHNmaBmKAQRGytYvcAthgQDYju34Ddq2HhdK9xeT1t9naMTK1lwR
- TIDJAFGOhMWY/F0w7h4KCuuLqM08T7eAn5mzPJ6Pok+2q4PYEaLy61IF8FWvlr8uCb66
- A+ndm6zAuOUP0r+40/h9MECd2YsfxdVUohPjVLn3fecghq+qwMYYOCqw7BPbyGRTtAU7
- os+JChmESDiiLaLVP7f3/GwPSuY4kRp7aX/u30x6KCrzXX5iOlnpvQAXaulSsh9aDkeI
- QXmk1pPty+KYYTXjys8BkHyNRNhEhA4i2ejoor/UjewheWDu6yXsLtYvq4HoU4RSe0uf
- Nc0A==
-X-Gm-Message-State: AC+VfDwOunPdN94cb7dNI7z09Hi1WG5c6pL2zsQ65J0ggxS2I9yK5Scg
- E4JYqXGThjX15EyDX77PySdaq/UdGzF0mWipOP0=
-X-Google-Smtp-Source: ACHHUZ5Rwm11N9NMe7VjSccVa6raoQeNPrWWrfz85bwAcnSTi9r+/Pv0f/+e01WFWcv5oQbG1RIlyg==
-X-Received: by 2002:a5d:428f:0:b0:30e:4b9b:7fcc with SMTP id
- k15-20020a5d428f000000b0030e4b9b7fccmr2104988wrq.32.1686060775487; 
- Tue, 06 Jun 2023 07:12:55 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686060781; x=1688652781;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MdSAUEH/HsOMWhs4VgQvGHZZxYfe28F2myfB/wfOD10=;
+ b=Rc/4OLBb0YkezCJMqey5elXWBExi+7Bs4eAfKmZH4l/lba6REXESWp7mRlO3c4bO+0
+ SWOZc37B5lPM4yFzHhkVG79cPYNA7nD6Wl9ZeGuyC1e4Uzp7xXBFnYG+/TB5Q4EcImYc
+ S47FVbonQbnYmj88v1ROAPd6OLmv8sBOsjauZmxp7tqM6b4Fofk4NyTlPi664jq7C4RG
+ SKnFhTM9LLoTmk82VrRXIbRJtI4+R1BSV7X9KchUAe+7BS1Opfh0Bh0B81if0ohA+Xtn
+ zv/N7aHC2ntmniOkYJNMkHOUSZZUM1bGhILDgK1WohM5fvr5C81Zxwesao0iISWEHWkm
+ yqEg==
+X-Gm-Message-State: AC+VfDwfl/JtI+nZShng+992gb+ZeLIhNJofhGeqBWeyhzQ085eZkJku
+ DOCgTkRtZha+Iijn3ty+Tmci1J073ozfx8XHZ9Y=
+X-Google-Smtp-Source: ACHHUZ5XO5rYYD4C8Hzo6WSqx2s3w/80XoncXcaGeH/PC4itIyXNhuf7JnFBmw6Yb2U4x6hF5i3htg==
+X-Received: by 2002:a05:600c:290c:b0:3f7:35de:856f with SMTP id
+ i12-20020a05600c290c00b003f735de856fmr1984628wmd.24.1686060781410; 
+ Tue, 06 Jun 2023 07:13:01 -0700 (PDT)
 Received: from localhost.localdomain
  (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr. [176.184.50.104])
  by smtp.gmail.com with ESMTPSA id
- b9-20020a05600010c900b0030ae87bd3e3sm12755764wrx.18.2023.06.06.07.12.53
+ l22-20020a1c7916000000b003f6f6a6e760sm17767263wme.32.2023.06.06.07.13.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 Jun 2023 07:12:55 -0700 (PDT)
+ Tue, 06 Jun 2023 07:13:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/5] misc: Enforce .[ch].inc extension for re-included .c/.h
- files
-Date: Tue,  6 Jun 2023 16:12:47 +0200
-Message-Id: <20230606141252.95032-1-philmd@linaro.org>
+Subject: [PATCH 1/5] bsd-user: Rename elfcore.c -> elfcore.c.inc
+Date: Tue,  6 Jun 2023 16:12:48 +0200
+Message-Id: <20230606141252.95032-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230606141252.95032-1-philmd@linaro.org>
+References: <20230606141252.95032-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -91,119 +93,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow the convention to use the .inc extension for .c/.h files
-re-included, as docummented in Coding Style since commit 6a0057aa22:
+Since commit 139c1837db ("meson: rename included C source files
+to .c.inc"), QEMU standard procedure for included C files is to
+use *.c.inc.
 
-    If you do use template header files they should be named with
-    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
-    being included for expansion.
+Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+about includes") this is documented as the Coding Style:
 
-Most of the codebase already uses this extension:
+  If you do use template header files they should be named with
+  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+  being included for expansion.
 
-  $ git ls-files | fgrep .inc | wc -l
-       155
+Therefore rename the included 'elfcore.c' as 'elfcore.c.inc'.
 
-Rename some files left over.
-
-Philippe Mathieu-Daudé (5):
-  bsd-user: Rename elfcore.c -> elfcore.c.inc
-  target/arm: Rename helper template headers as '.h.inc'
-  target/i386: Rename helper template headers as '.h.inc'
-  target: Rename per-target 'helper.h' -> 'helper.h.inc'
-  tests/tcg/aarch64: Rename bti-crt.inc.c -> bti-crt.c.inc
-
- docs/devel/tcg-ops.rst                                    | 2 +-
- include/exec/helper-gen.h                                 | 2 +-
- include/exec/helper-proto.h                               | 2 +-
- target/alpha/{helper.h => helper.h.inc}                   | 0
- target/arm/{helper.h => helper.h.inc}                     | 8 ++++----
- target/arm/tcg/{helper-a64.h => helper-a64.h.inc}         | 0
- target/arm/tcg/{helper-mve.h => helper-mve.h.inc}         | 0
- target/arm/tcg/{helper-sme.h => helper-sme.h.inc}         | 0
- target/arm/tcg/{helper-sve.h => helper-sve.h.inc}         | 0
- target/avr/{helper.h => helper.h.inc}                     | 0
- target/cris/{helper.h => helper.h.inc}                    | 0
- target/hexagon/{helper.h => helper.h.inc}                 | 0
- target/hppa/{helper.h => helper.h.inc}                    | 0
- target/i386/{helper.h => helper.h.inc}                    | 6 +++---
- target/i386/{ops_sse_header.h => ops_sse_header.h.inc}    | 0
- ...hift_helper_template.h => shift_helper_template.h.inc} | 0
- .../{cc_helper_template.h => cc_helper_template.h.inc}    | 0
- target/loongarch/{helper.h => helper.h.inc}               | 0
- target/m68k/{helper.h => helper.h.inc}                    | 0
- target/microblaze/{helper.h => helper.h.inc}              | 0
- target/mips/{helper.h => helper.h.inc}                    | 0
- target/nios2/{helper.h => helper.h.inc}                   | 0
- target/openrisc/{helper.h => helper.h.inc}                | 0
- target/ppc/{helper.h => helper.h.inc}                     | 0
- target/riscv/{helper.h => helper.h.inc}                   | 0
- target/rx/{helper.h => helper.h.inc}                      | 0
- target/s390x/{helper.h => helper.h.inc}                   | 0
- target/sh4/{helper.h => helper.h.inc}                     | 0
- target/sparc/{helper.h => helper.h.inc}                   | 0
- target/tricore/{helper.h => helper.h.inc}                 | 0
- target/xtensa/{helper.h => helper.h.inc}                  | 0
- bsd-user/elfload.c                                        | 2 +-
- target/alpha/translate.c                                  | 2 +-
- target/arm/machine.c                                      | 2 +-
- target/arm/tcg/translate.c                                | 2 +-
- target/avr/translate.c                                    | 2 +-
- target/cris/translate.c                                   | 2 +-
- target/hexagon/translate.c                                | 2 +-
- target/hppa/translate.c                                   | 2 +-
- target/i386/tcg/cc_helper.c                               | 8 ++++----
- target/i386/tcg/int_helper.c                              | 8 ++++----
- target/i386/tcg/translate.c                               | 2 +-
- target/loongarch/translate.c                              | 2 +-
- target/m68k/translate.c                                   | 2 +-
- target/microblaze/translate.c                             | 2 +-
- target/mips/tcg/translate.c                               | 2 +-
- target/nios2/translate.c                                  | 2 +-
- target/openrisc/translate.c                               | 2 +-
- target/ppc/translate.c                                    | 2 +-
- target/riscv/translate.c                                  | 2 +-
- target/rx/translate.c                                     | 2 +-
- target/s390x/tcg/translate.c                              | 2 +-
- target/sh4/translate.c                                    | 2 +-
- target/sparc/translate.c                                  | 2 +-
- target/tricore/translate.c                                | 2 +-
- target/xtensa/translate.c                                 | 2 +-
- tests/tcg/aarch64/bti-1.c                                 | 2 +-
- tests/tcg/aarch64/bti-3.c                                 | 2 +-
- bsd-user/{elfcore.c => elfcore.c.inc}                     | 0
- tests/tcg/aarch64/{bti-crt.inc.c => bti-crt.c.inc}        | 0
- 60 files changed, 43 insertions(+), 43 deletions(-)
- rename target/alpha/{helper.h => helper.h.inc} (100%)
- rename target/arm/{helper.h => helper.h.inc} (99%)
- rename target/arm/tcg/{helper-a64.h => helper-a64.h.inc} (100%)
- rename target/arm/tcg/{helper-mve.h => helper-mve.h.inc} (100%)
- rename target/arm/tcg/{helper-sme.h => helper-sme.h.inc} (100%)
- rename target/arm/tcg/{helper-sve.h => helper-sve.h.inc} (100%)
- rename target/avr/{helper.h => helper.h.inc} (100%)
- rename target/cris/{helper.h => helper.h.inc} (100%)
- rename target/hexagon/{helper.h => helper.h.inc} (100%)
- rename target/hppa/{helper.h => helper.h.inc} (100%)
- rename target/i386/{helper.h => helper.h.inc} (98%)
- rename target/i386/{ops_sse_header.h => ops_sse_header.h.inc} (100%)
- rename target/i386/{shift_helper_template.h => shift_helper_template.h.inc} (100%)
- rename target/i386/tcg/{cc_helper_template.h => cc_helper_template.h.inc} (100%)
- rename target/loongarch/{helper.h => helper.h.inc} (100%)
- rename target/m68k/{helper.h => helper.h.inc} (100%)
- rename target/microblaze/{helper.h => helper.h.inc} (100%)
- rename target/mips/{helper.h => helper.h.inc} (100%)
- rename target/nios2/{helper.h => helper.h.inc} (100%)
- rename target/openrisc/{helper.h => helper.h.inc} (100%)
- rename target/ppc/{helper.h => helper.h.inc} (100%)
- rename target/riscv/{helper.h => helper.h.inc} (100%)
- rename target/rx/{helper.h => helper.h.inc} (100%)
- rename target/s390x/{helper.h => helper.h.inc} (100%)
- rename target/sh4/{helper.h => helper.h.inc} (100%)
- rename target/sparc/{helper.h => helper.h.inc} (100%)
- rename target/tricore/{helper.h => helper.h.inc} (100%)
- rename target/xtensa/{helper.h => helper.h.inc} (100%)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ bsd-user/elfload.c                    | 2 +-
+ bsd-user/{elfcore.c => elfcore.c.inc} | 0
+ 2 files changed, 1 insertion(+), 1 deletion(-)
  rename bsd-user/{elfcore.c => elfcore.c.inc} (100%)
- rename tests/tcg/aarch64/{bti-crt.inc.c => bti-crt.c.inc} (100%)
 
+diff --git a/bsd-user/elfload.c b/bsd-user/elfload.c
+index 1f650bdde8..d2dced3d7e 100644
+--- a/bsd-user/elfload.c
++++ b/bsd-user/elfload.c
+@@ -121,7 +121,7 @@ static void bswap_note(struct elf_note *en) { }
+ 
+ #endif /* ! BSWAP_NEEDED */
+ 
+-#include "elfcore.c"
++#include "elfcore.c.inc"
+ 
+ /*
+  * 'copy_elf_strings()' copies argument/envelope strings from user
+diff --git a/bsd-user/elfcore.c b/bsd-user/elfcore.c.inc
+similarity index 100%
+rename from bsd-user/elfcore.c
+rename to bsd-user/elfcore.c.inc
 -- 
 2.38.1
 
