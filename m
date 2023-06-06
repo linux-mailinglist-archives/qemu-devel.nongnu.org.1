@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680417246D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6D47246E5
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:55:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Y23-0007TC-4E; Tue, 06 Jun 2023 10:51:36 -0400
+	id 1q6Y4v-0000oV-HG; Tue, 06 Jun 2023 10:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Y1y-0007Bv-SP
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:51:30 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6Y1w-0005J6-6Q
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:51:29 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-656923b7c81so1735991b3a.1
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:51:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686063071; x=1688655071;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DGs9MG6POpCj8Mmx5gPvpejl0YSDiO6EkHrcF3a7Pm4=;
- b=e5fpot3Au7om+gyQTmDQfBjAJfwXxqfUWqw0dFqchi/JgyifMNX8qK+ZRiajJ9Taq0
- 0HrwFss3oaeH3gQ9OKhvGijij43kip+bn4BFllv1OHCNZfOnO3yGjd0veIitNTrlyCbR
- kVm99m9Zwt8YkvXmo6vfMdP/+GmLTxsyUHhvjDJtuZe39Adv3ekkpA9r0rrZPd+f0rDq
- jatLYA0pshFqntPxaCe4dgjN3CFtiouHRcih2cgzMFB0z/jSLlbQWD2qD8tpSmgBGSTe
- pUwFNxbJmOYESG4cSJ+Ee7s9LwCLjgu7BMohUqyPyoAxVo0EyKNoIUjj0jhEiIGBD5nx
- 9hnw==
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1q6Y4t-0000oG-UW
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:54:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1q6Y4s-0005mt-4A
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:54:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686063263;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gSeT4qIrWCcoxuhq22rggORr/hr2cJ49wMUyCkVe4Vc=;
+ b=ScmMPWHVTwlJVb8CLUSvDolDJZlMP+uRZwLlpfOUyYuwOx3E/K88hCqBHDbYUTXsKPyker
+ UHd3NpqFOSmrXo9PPEg/+ynBeqVsybExCQ7EyxpKJ8vroEp6nfhiVRC7Pf0kPrufGywEAE
+ UNkxRTY12GiV7QdJlK2jS+5HFda84qY=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-106-DuRq7RuuMOK4USXIDakMyg-1; Tue, 06 Jun 2023 10:54:21 -0400
+X-MC-Unique: DuRq7RuuMOK4USXIDakMyg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-75b2c4b3e02so429892285a.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:54:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686063071; x=1688655071;
+ d=1e100.net; s=20221208; t=1686063259; x=1688655259;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DGs9MG6POpCj8Mmx5gPvpejl0YSDiO6EkHrcF3a7Pm4=;
- b=CgckjqWXc8lw1SZccwDKqJPF1EmrvbN/pfzSRI/5f6+s75Utxhj6E9VkvsC+nBP2Rf
- gEK/ASejcfQO+i3sD5ai2MvHRF8R1akQ+VOSX4tTNSJKXjvxkocOfATOWu6x7Uq/CKAg
- 1L5bTvxqpwpKOQajoJwjlF4O2KRGJpUuY3R2WXLipsPHEleXSTcE7AUzDNBCl6ZWjREH
- CtJDmvL6FfXK+9/ho+lUlMmiZgzywhilWT222R0iVJ7DRAF5D1/3orQNHrymm3bptGKg
- Z4NqkJlwsjpCLIX4uvX/TJe0YDTRiYWhBfmm3a1dzkWzbpkmkVpFEjE2V5uy43JGEpsO
- BaTA==
-X-Gm-Message-State: AC+VfDzr3B4rJdV4FD2LN/4nv3OkoGaPVJCfu/fIP1eixQovLMnqxi9z
- JxTsPm4ZyNJRv8uaSOWgDECnJg==
-X-Google-Smtp-Source: ACHHUZ6uD2/hyYSGAk1ds5oRaTkLHwg4s/7MKmaMv55Jj9yOEAyTVTM4dfTIVPb9dI5GrjkOMkplSA==
-X-Received: by 2002:a05:6a20:8403:b0:111:346c:3445 with SMTP id
- c3-20020a056a20840300b00111346c3445mr1320998pzd.38.1686063071413; 
- Tue, 06 Jun 2023 07:51:11 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
- ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ bh=gSeT4qIrWCcoxuhq22rggORr/hr2cJ49wMUyCkVe4Vc=;
+ b=fqms5Fk+e1ovudXwrJZ5732r1mzZgzhencfATHLywagiQHvsVQABujpY4MYOjDNWer
+ EUKdA0FF7Bee3tMMRX4FXa2KyGAQ2UuSYL9NO5c35sr7WP4L94HpykR2V/0yR38cF4YD
+ 8fk8Hoi8ZVph6zGc3lJrERB7Pbovgm9u6qAJQE8G1tltGxdj8TReJDD12amI0ACmFvzP
+ aeFZWaZtzwU6moVxEwAnTaDeElT9hgTBsIWpXr0UCf02y628xvZ7a1jEGlDcfr5NJapC
+ sXW9wnuMkyl1bcPswhfAgdrvI82IAJOAw+t5/tBEjoujo5hhoOL1nG/QYbcJHKu0FRix
+ qDdw==
+X-Gm-Message-State: AC+VfDwYnnA3uMTzN3NIN0Ws9NcwkzFVNl/67gDMzWMD/NsTcm+Xs5lW
+ 5UYL0BAriQSBwUf+e/1Q7xU9CfYEo3ydMTq4DDY3dy0GOQhqlXbHhQAi8VPcKwsqMSLttpxIG1r
+ mWRiefKGubrw+Xq4=
+X-Received: by 2002:a05:620a:b05:b0:75d:1f4d:2d9a with SMTP id
+ t5-20020a05620a0b0500b0075d1f4d2d9amr3252468qkg.1.1686063259453; 
+ Tue, 06 Jun 2023 07:54:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6OKU3THGjmEsTHmfrSMtKowXLkuDgcx624jVAw/cPVDnAczxptxBZQOucOb+++1qzPYgl6kw==
+X-Received: by 2002:a05:620a:b05:b0:75d:1f4d:2d9a with SMTP id
+ t5-20020a05620a0b0500b0075d1f4d2d9amr3252453qkg.1.1686063259153; 
+ Tue, 06 Jun 2023 07:54:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- l4-20020a170903244400b001a96a6877fdsm8721208pls.3.2023.06.06.07.51.10
+ g14-20020ae9e10e000000b0075bcc5ab975sm4948347qkm.92.2023.06.06.07.54.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 07:51:11 -0700 (PDT)
-Message-ID: <e7af2c5b-cb5d-c6aa-73d8-d8acf3216256@linaro.org>
-Date: Tue, 6 Jun 2023 07:51:09 -0700
+ Tue, 06 Jun 2023 07:54:18 -0700 (PDT)
+Message-ID: <877c8a79-6834-3d8a-a8f1-0c115b850821@redhat.com>
+Date: Tue, 6 Jun 2023 16:54:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC PATCH v2 6/9] accel/tcg: Check for USER_ONLY definition
- instead of SOFTMMU one
+ Thunderbird/102.10.0
+Subject: Re: [RFC v1 0/4] Expose GPU memory as coherently CPU accessible
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-riscv@nongnu.org
-References: <20230605222420.14776-1-philmd@linaro.org>
- <20230605222420.14776-7-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230605222420.14776-7-philmd@linaro.org>
+To: ankita@nvidia.com, jgg@nvidia.com, alex.williamson@redhat.com
+Cc: qemu-devel@nongnu.org
+References: <20230605235005.20649-1-ankita@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20230605235005.20649-1-ankita@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,19 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/23 15:24, Philippe Mathieu-Daudé wrote:
-> Since we*might*  have user emulation with softmmu,
-> replace the system emulation check by !user emulation one.
-> 
-> Invert some if() ladders for clarity.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   accel/tcg/internal.h | 6 +++---
->   accel/tcg/cpu-exec.c | 4 ++--
->   2 files changed, 5 insertions(+), 5 deletions(-)
+Hello Ankit,
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On 6/6/23 01:50, ankita@nvidia.com wrote:
+> From: Ankit Agrawal <ankita@nvidia.com>
+> 
+> NVIDIA is building systems which allows the CPU to coherently access
+> GPU memory. This GPU device memory can be added and managed by the
+> kernel memory manager. The patch holds the required changes in QEMU
+> to expose this memory to the device assigned VMs.
+> 
+> The GPU device memory region is exposed as device BAR1 and QEMU mmaps to
+> it. It then adds new proximity domains to represent the memory in the
+> VM ACPI SRAT. This allows the device memory to be added as separate NUMA
+> nodes inside the VM. The proximity domains (PXM) are passed to the VM
+> using ACPI DSD properties to help VM kernel modules add the memory.
+> 
+> Current Linux cannot create NUMA nodes on the fly, hence creating enough
+> NUMA nodes in ACPI is needed so that they are available at the VM bootup
+> time. The physical platform firwmare provides 8 NUMA nodes, which QEMU
+> is emulating here.
+> 
+> A new vfio-pci variant driver is added to manage the device memory and
+> report as a BAR. Ongoing review of the corresponding kernel side changes
+> along with the new vfio-pci variant driver.
+> Ref: https://lore.kernel.org/lkml/20230405180134.16932-1-ankita@nvidia.com/
+> 
+> Applied over v8.0.2.
+> 
+> Ankit Agrawal (4):
+>    qemu: add GPU memory information as object
+>    qemu: patch guest SRAT for GPU memory
+>    qemu: patch guest DSDT for GPU memory
+>    qemu: adjust queried bar size to power-of-2
 
-r~
+
+Please use "vfio:" subject prefix when modifying the hw/vfio files.
+If you are not sure and want to know what is the current practice,
+simply run :
+    
+   git log --pretty=oneline  <files>
+
+Also, to know who to send the series, please use :
+
+   ./scripts/get_maintainer.pl <patches>
+
+Thanks,
+
+C.
+
+> 
+>   hw/arm/virt-acpi-build.c    | 54 ++++++++++++++++++++++++++++
+>   hw/pci-host/gpex-acpi.c     | 71 ++++++++++++++++++++++++++++++++++++
+>   hw/vfio/common.c            |  2 +-
+>   hw/vfio/pci-quirks.c        | 13 +++++++
+>   hw/vfio/pci.c               | 72 +++++++++++++++++++++++++++++++++++++
+>   hw/vfio/pci.h               |  1 +
+>   include/hw/pci/pci_device.h |  3 ++
+>   7 files changed, 215 insertions(+), 1 deletion(-)
+> 
+
 
