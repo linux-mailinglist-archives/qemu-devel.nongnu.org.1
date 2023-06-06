@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F6F723921
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 09:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08871723A5D
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 09:46:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6REW-0000tq-UU; Tue, 06 Jun 2023 03:36:01 -0400
+	id 1q6RNj-0002Rk-N6; Tue, 06 Jun 2023 03:45:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6REM-0000tO-TY
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:35:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q6RNf-0002RK-0b
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:45:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6REK-0003bM-AD
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:35:50 -0400
+ id 1q6RNd-0006is-9L
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 03:45:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686036945;
+ s=mimecast20190719; t=1686037523;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lBX1PkZXXr2nYSKSlPo3Y5u0CEXGneoY7NdwwEr4sIU=;
- b=WHMUdgLGRCu5CI9lEKL2QeyRrPLFwWTZsoCiy/F3XUIIJ7XOQsKDTXWi5yYNti2Bj+9jfa
- 9NhaKiclpz/USo15srnNdzOkOCYhCw6qudcyaX6ktFtCOmXHJBCPszyz4fxxx1vrCwrq/B
- VNzPup+ogQUZkFnQqBoYuYgCw9dDysw=
+ bh=cMxxcO7T8fnxCsTd4l2TIx+nL8Eqp8LyGCZBb3ennjE=;
+ b=E/Mi7k+2F+jRzuIBXBYd8RSmnZ778uYAX3Aqiu3X9Kq2Cs/0a0D0bwLHIe3t42mzACDRTs
+ 3GMe+tenjq4KabGpumcR7NjFNGOEbvfoQDRyZcp5gO4rjMcEZpdnOmgmUAqQoi/jnECqQn
+ Z9aEpTkTaUG1JEA1kopq5oWoUQNuIk0=
 Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
  [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-9DRsUjoOOXKs1QR-7G2qEw-1; Tue, 06 Jun 2023 03:35:44 -0400
-X-MC-Unique: 9DRsUjoOOXKs1QR-7G2qEw-1
+ us-mta-50-UnWhLC3KP0mn80HExsnjYg-1; Tue, 06 Jun 2023 03:45:21 -0400
+X-MC-Unique: UnWhLC3KP0mn80HExsnjYg-1
 Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-514b05895f7so4293298a12.0
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 00:35:43 -0700 (PDT)
+ 4fb4d7f45d1cf-5147d242f01so6555505a12.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 00:45:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686036943; x=1688628943;
+ d=1e100.net; s=20221208; t=1686037520; x=1688629520;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lBX1PkZXXr2nYSKSlPo3Y5u0CEXGneoY7NdwwEr4sIU=;
- b=I+pngj/V8nuRPxVNyc2XtaYsnrvXuBDB2Xh+DHXa6Rab7nsRnaY00C0cWGeYi0KlNn
- w0dGNfiu+NFEltthBP596Hh350lLhEf9zii/b63Kq7zJvJvfgdIzslWK3+/wq5zYdNDf
- L2Fu5Y6dAgihIjk+ZGyD+4Hw2XX0SiYhG/L/Li0PPFc7MMrfXih/ZW9OKdDTahwlvd1R
- NhKZa6LOog06YqLm0irhaziZD4o+3NTWvrEC83SueGI8NPwau0cBsPUwgwvzTp6q70TJ
- oDpGBrcf0M0xTsNGki5jqbY2n4N7R8AsNpVBxeAPuklJANNjQysbn89H2YFOLtO2sKVe
- CqvA==
-X-Gm-Message-State: AC+VfDyX3dDJ9clEWutyI537Gyp1S0w1qFfZ98Ixt+b1kcQU00lqEkMv
- +kgnmaAbWHQxZdQD2uQmyc47QlV5GfhHwZULMORGR7msaswrJ2qvUvYvfuub0uLsax+KbKfazOg
- g2urtfYpKW4m/d1o=
-X-Received: by 2002:a05:6402:1299:b0:505:4f7:8a50 with SMTP id
- w25-20020a056402129900b0050504f78a50mr1342769edv.5.1686036942870; 
- Tue, 06 Jun 2023 00:35:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4RUgPIz6gvwpNSDqYE5E35r9rMy++BRGwMWiVnhq+lGVX6uR35q9IiPi3fliu73htzwCccKQ==
-X-Received: by 2002:a05:6402:1299:b0:505:4f7:8a50 with SMTP id
- w25-20020a056402129900b0050504f78a50mr1342748edv.5.1686036942547; 
- Tue, 06 Jun 2023 00:35:42 -0700 (PDT)
+ bh=cMxxcO7T8fnxCsTd4l2TIx+nL8Eqp8LyGCZBb3ennjE=;
+ b=cnUP4gndsUnUhA2AHlLVtws4IPurBTsgNtQPmeTvAdkzc0nRHDJTQkUc5+0ui4TLfL
+ 8ZaULb8g3dYRjmKa7C9fVmCwLBjvoh9LQ3zJeB9Ld7UtRszSBahBA5mwQpfeQt5Nlsqk
+ ++lmS/RnW2qTkzw0taifqo0QeTKsCaagtmVTwXctub4QVAOq3olV9BSHb6K/YpVQfab0
+ 6JjRsKpCuH3DY84fkzzERqC/AJ91iMNG01y2KzEGYfRZ/w/a+P4QXIM3y9jQTnZ/cjt5
+ OKAYLpKKlySKmt0VPWgw8onRuy3cpRmq7Hh3ZfBZy8iUz/pCKLgQ2k/ydooJkZy77Ik6
+ G1jg==
+X-Gm-Message-State: AC+VfDx2ncyjbSJS+8Gt3yITBSxg4ctq+W0yOKnCQcb1ST2Wxup0UbWM
+ vi+VW+9s8PRAFjDJm+aL1BTmmM73jYZAaJFn5Rxf9LkFG06wNwQ4Wr+5rIoyDL3zx4uKhZrzVme
+ dnGtP64g62i9SQS0=
+X-Received: by 2002:a05:6402:2787:b0:4ea:a9b0:a518 with SMTP id
+ b7-20020a056402278700b004eaa9b0a518mr11205797ede.17.1686037520828; 
+ Tue, 06 Jun 2023 00:45:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4ZGVWAzYwxIZFlbhvmP6NpSdTX2Q/bp0G5B2Mv0m3YWk+63kJ+G3vX94byQSeJeUqJWej14w==
+X-Received: by 2002:a05:6402:2787:b0:4ea:a9b0:a518 with SMTP id
+ b7-20020a056402278700b004eaa9b0a518mr11205778ede.17.1686037520588; 
+ Tue, 06 Jun 2023 00:45:20 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- i9-20020a05640200c900b0050bce352dc5sm4802718edu.85.2023.06.06.00.35.41
+ n23-20020aa7c797000000b005027d31615dsm4671114eds.62.2023.06.06.00.45.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 00:35:42 -0700 (PDT)
-Date: Tue, 6 Jun 2023 09:35:41 +0200
+ Tue, 06 Jun 2023 00:45:19 -0700 (PDT)
+Date: Tue, 6 Jun 2023 09:45:19 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
@@ -71,17 +71,17 @@ Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
  <marcel.apfelbaum@gmail.com>, <berrange@redhat.com>, <jusual@redhat.com>,
  <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
  <santosh.Shukla@amd.com>
-Subject: Re: [PATCH v4 2/3] hw/i386/pc: Default to use SMBIOS 3.0 for newer
- machine models
-Message-ID: <20230606093541.5a2e6b87@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230605213906.644883-3-suravee.suthikulpanit@amd.com>
+Subject: Re: [PATCH v4 1/3] hw/i386/pc: Refactor logic to set SMBIOS set
+ defaults
+Message-ID: <20230606094519.75a38aa5@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230605213906.644883-2-suravee.suthikulpanit@amd.com>
 References: <20230605213906.644883-1-suravee.suthikulpanit@amd.com>
- <20230605213906.644883-3-suravee.suthikulpanit@amd.com>
+ <20230605213906.644883-2-suravee.suthikulpanit@amd.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,131 +105,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 16:39:05 -0500
+On Mon, 5 Jun 2023 16:39:04 -0500
 Suravee Suthikulpanit <suravee.suthikulpanit@amd.com> wrote:
 
-> Currently, pc-q35 and pc-i44fx machine models are default to use SMBIOS 2.8
-> (32-bit entry point). Since SMBIOS 3.0 (64-bit entry point) is now fully
-> supported since QEMU 7.0, default to use SMBIOS 3.0 for newer machine
-> models. This is necessary to avoid the following message when launching
-> a VM with large number of vcpus.
-> 
->    "SMBIOS 2.1 table length 66822 exceeds 65535"
-> 
-> Note that user can still override the entry point tyme w/ QEMU option
-> "-M ..., smbios-entry-point-type=[32|64].
+> In preparation for subsequent code to upgrade default SMBIOS
+> entry point type. There is no functional change.
 > 
 > Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 > ---
->  hw/i386/pc.c         | 14 +++++++++++++-
->  hw/i386/pc_piix.c    |  5 +++++
->  hw/i386/pc_q35.c     |  5 +++++
->  include/hw/i386/pc.h |  2 ++
->  4 files changed, 25 insertions(+), 1 deletion(-)
+>  hw/i386/pc.c      | 12 ++++++++++++
+>  hw/i386/pc_piix.c |  9 ---------
+>  hw/i386/pc_q35.c  |  8 --------
+>  3 files changed, 12 insertions(+), 17 deletions(-)
 > 
 > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 8fc34f5454..5a87b82185 100644
+> index bb62c994fa..8fc34f5454 100644
 > --- a/hw/i386/pc.c
 > +++ b/hw/i386/pc.c
-> @@ -786,6 +786,14 @@ void pc_machine_done(Notifier *notifier, void *data)
->          if (pcmc->smbios_defaults) {
->              MachineClass *mc = MACHINE_GET_CLASS(pcms);
+> @@ -781,6 +781,18 @@ void pc_machine_done(Notifier *notifier, void *data)
 >  
-> +            /*
-> +             * Check if user has specified a command line option
-> +             * to override the SMBIOS default entry point type.
-> +             */
-> +            if (!pcms->smbios_use_cmdline_ep_type) {
-> +                pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
-> +            }
-
-why pcms->smbios_entry_point_type that we already have is not enough
-we need to add extra pcms->smbios_use_cmdline_ep_type field?
-
+>      acpi_setup();
+>      if (x86ms->fw_cfg) {
+> +        PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
 > +
->              /* These values are guest ABI, do not change */
->              smbios_set_defaults("QEMU", mc->desc,
->                                  mc->name, pcmc->smbios_legacy_mode,
-> @@ -1782,7 +1790,10 @@ static void pc_machine_set_smbios_ep(Object *obj, Visitor *v, const char *name,
->  {
->      PCMachineState *pcms = PC_MACHINE(obj);
->  
-> -    visit_type_SmbiosEntryPointType(v, name, &pcms->smbios_entry_point_type, errp);
-> +    pcms->smbios_use_cmdline_ep_type =
-> +        visit_type_SmbiosEntryPointType(v, name,
-> +                                        &pcms->smbios_entry_point_type,
-> +                                        errp);
->  }
->  
->  static void pc_machine_get_max_ram_below_4g(Object *obj, Visitor *v,
-> @@ -1992,6 +2003,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
->      mc->nvdimm_supported = true;
->      mc->smp_props.dies_supported = true;
->      mc->default_ram_id = "pc.ram";
-> +    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
->  
->      object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
->          pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
+> +        if (pcmc->smbios_defaults) {
+> +            MachineClass *mc = MACHINE_GET_CLASS(pcms);
+> +
+> +            /* These values are guest ABI, do not change */
+> +            smbios_set_defaults("QEMU", mc->desc,
+> +                                mc->name, pcmc->smbios_legacy_mode,
+> +                                pcmc->smbios_uuid_encoded,
+> +                                pcms->smbios_entry_point_type);
+> +        }
+> 
+
+well, pc_machine_done() is the hack for the last minute changes to
+board that can't done earlier otherwise (during machine_initfn time).
+So I'd prefer not adding anything there unless we have to.
+
+>          fw_cfg_build_smbios(MACHINE(pcms), x86ms->fw_cfg);
+>          fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
+>          /* update FW_CFG_NB_CPUS to account for -device added CPUs */
 > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index da6ba4eeb4..1a2bb25c75 100644
+> index d5b0dcd1fe..da6ba4eeb4 100644
 > --- a/hw/i386/pc_piix.c
 > +++ b/hw/i386/pc_piix.c
-> @@ -467,11 +467,16 @@ DEFINE_I440FX_MACHINE(v8_1, "pc-i440fx-8.1", NULL,
+> @@ -198,15 +198,6 @@ static void pc_init1(MachineState *machine,
 >  
->  static void pc_i440fx_8_0_machine_options(MachineClass *m)
->  {
-> +    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-> +
->      pc_i440fx_8_1_machine_options(m);
->      m->alias = NULL;
->      m->is_default = false;
->      compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
->      compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
-> +
-> +    /* For pc-i44fx-8.0 and older, use SMBIOS 2.8 by default */
-> +    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
->  }
+>      pc_guest_info_init(pcms);
 >  
->  DEFINE_I440FX_MACHINE(v8_0, "pc-i440fx-8.0", NULL,
+> -    if (pcmc->smbios_defaults) {
+> -        MachineClass *mc = MACHINE_GET_CLASS(machine);
+> -        /* These values are guest ABI, do not change */
+> -        smbios_set_defaults("QEMU", mc->desc,
+> -                            mc->name, pcmc->smbios_legacy_mode,
+> -                            pcmc->smbios_uuid_encoded,
+> -                            pcms->smbios_entry_point_type);
+> -    }
+> -
+>      /* allocate ram and load rom/bios */
+>      if (!xen_enabled()) {
+>          pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
 > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index a58cd1d3ea..371cca7484 100644
+> index 6155427e48..a58cd1d3ea 100644
 > --- a/hw/i386/pc_q35.c
 > +++ b/hw/i386/pc_q35.c
-> @@ -379,10 +379,15 @@ DEFINE_Q35_MACHINE(v8_1, "pc-q35-8.1", NULL,
+> @@ -198,14 +198,6 @@ static void pc_q35_init(MachineState *machine)
 >  
->  static void pc_q35_8_0_machine_options(MachineClass *m)
->  {
-> +    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-> +
->      pc_q35_8_1_machine_options(m);
->      m->alias = NULL;
->      compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
->      compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
-> +
-> +    /* For pc-q35-8.0 and older, use SMBIOS 2.8 by default */
-> +    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
->  }
+>      pc_guest_info_init(pcms);
 >  
->  DEFINE_Q35_MACHINE(v8_0, "pc-q35-8.0", NULL,
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index c661e9cc80..f754da5a38 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -50,6 +50,7 @@ typedef struct PCMachineState {
->      bool i8042_enabled;
->      bool default_bus_bypass_iommu;
->      uint64_t max_fw_size;
-> +    bool smbios_use_cmdline_ep_type;
+> -    if (pcmc->smbios_defaults) {
+> -        /* These values are guest ABI, do not change */
+> -        smbios_set_defaults("QEMU", mc->desc,
+> -                            mc->name, pcmc->smbios_legacy_mode,
+> -                            pcmc->smbios_uuid_encoded,
+> -                            pcms->smbios_entry_point_type);
+> -    }
+> -
+>      /* create pci host bus */
+>      q35_host = Q35_HOST_DEVICE(qdev_new(TYPE_Q35_HOST_DEVICE));
 >  
->      /* ACPI Memory hotplug IO base address */
->      hwaddr memhp_io_base;
-> @@ -110,6 +111,7 @@ struct PCMachineClass {
->      bool smbios_defaults;
->      bool smbios_legacy_mode;
->      bool smbios_uuid_encoded;
-> +    SmbiosEntryPointType default_smbios_ep_type;
->  
->      /* RAM / address space compat: */
->      bool gigabyte_align;
 
 
