@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CF272461F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A828724664
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 16:38:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6XjW-0006PW-SM; Tue, 06 Jun 2023 10:32:26 -0400
+	id 1q6Xom-00022n-Oc; Tue, 06 Jun 2023 10:37:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xj5-0005iv-EQ
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:32:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q6Xj3-0001Lf-7V
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:31:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686061916;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d41daTl/K9RG0QQvz7UtPuUgVUPwl1xrGxWNTb68ah8=;
- b=DyRUxE04vgN8NV0k0VBwX4nugsxKCBkudjCdrAm/RWsKdFi95ZXYIK04V75Evl+d4F8xWp
- BWkkQ2agPuubpb2ee745LqbfKk08TLplngK0goheA99+UEMi0cOPiJD0P2S8XgLc6MfOOa
- 2uflyF9inHIGEZtuR0B1P8d2cIgwwnY=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653--kOCQ2FwPF-k5KvCPpIOPg-1; Tue, 06 Jun 2023 10:31:54 -0400
-X-MC-Unique: -kOCQ2FwPF-k5KvCPpIOPg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-97542592eb9so317438566b.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:31:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Xol-00022d-Nf
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:37:51 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6Xok-0002Qt-5n
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 10:37:51 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-256422ad25dso2752770a91.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 07:37:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686062269; x=1688654269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=n8R5f+wVeYyyOX5s3SzQiZsALWUytR5XYy8E0V2grN4=;
+ b=CsWGqro9y9lTrrbe306ID4ST9FD2F020//U8+ba/dHouLkA/uWHkul4OQqQ2wF87k9
+ 5Z6/5XEyLq30pq7wy2XXitoZExPplNiHMao2eZauKFrBcVRzBjgeEQv5eYOLr2A3Pdvx
+ ltPNiUubbohL1cS436rOr2u5oFfdUpDWSyWrGBCL62H0y2odiQqRNEkYx6uJ4/lFLS+p
+ m1DD7Mm9haPkKsKck01nh15KgM44wY7XYTqdCZHYvuni097/9uWoXNyqM9YpXZVfaGTy
+ 7Wjmmm51QxFpkEV7gTtRXaCnlwwHrJEzSjXcU3FGY3Ju22uuwrLUwFbevhOo/2OVWNMq
+ 7YaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686061911; x=1688653911;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=d41daTl/K9RG0QQvz7UtPuUgVUPwl1xrGxWNTb68ah8=;
- b=G/TcD/xCoZMZrCP+pAUINhh7MEFb7ev9m1Iw60YnkfGtUtSu1SCBw7VxeoakIVrzCt
- g9f/csI37Xftf9fLNW9CaIyuc1NdmnKBGGE3V6HqUVVaA3eXVv3luizLZYx2fVC1/qHq
- 9mrIgAMvvSzUCKuhcKX77CaAWPfaVSm4USnbtJSr/AzGWHlHnHOPoZbKqDu9vd+QBqic
- zX2vaHyG7nmR5az+aL005FOJ5u3xNtWS0EmIVSLj4teyoxs1oHJSE1KK1YuS/03fuSq6
- JKk3qBjHcGYcJox6DWY6+NFk9buIhn7vJst3Yutnsd0jNzQ3eqizGXZN/UVAs91GaZ2c
- Fcpg==
-X-Gm-Message-State: AC+VfDzlZLnIxt2r2f3DS26UQ8mkEML7J49wx1N3Z9zFGplRc8PUEC7x
- gOy4ABzNd2kILgR/qkI9BnSB6XdEAVf4ARG/tmy7T8fIS5HPx8qh50/Msk/xy88P1//TSU+62Wp
- TRlAmjms9n/njiZg9letmHKrce9w3Os2IeOTuJI7v4J23XsYBxSkDUwUIx8fxsIEm0dzlNL3xuc
- o=
-X-Received: by 2002:a17:907:7da0:b0:974:6176:2223 with SMTP id
- oz32-20020a1709077da000b0097461762223mr3076105ejc.13.1686061911716; 
- Tue, 06 Jun 2023 07:31:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5h5K6+a4e/GFp85D2rgIB8OGsSP6KuN83Zq3Hmufal2bFkbJ/SaCJ9f1+57GeX1MUdKqyBGQ==
-X-Received: by 2002:a17:907:7da0:b0:974:6176:2223 with SMTP id
- oz32-20020a1709077da000b0097461762223mr3076088ejc.13.1686061911379; 
- Tue, 06 Jun 2023 07:31:51 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ d=1e100.net; s=20221208; t=1686062269; x=1688654269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=n8R5f+wVeYyyOX5s3SzQiZsALWUytR5XYy8E0V2grN4=;
+ b=He6Svgmtm6x92tjUr0niBzwdDuQFvhYsgBcLnAxLafWKAUe63IDYiM6ZnALKZsi0Ob
+ yPeSh1Cjmic2ut+j+e3tpjdUfGexbA3x4vgfQYYKGhbgVdwMn1xu4AJ/8wbrPQAGg9xy
+ 6A0lvqHuQqXE2WjBW8Ae5sVlmQsrTNmA6lRYyoDj3ojh05gzVCnCqgfeaMJSdWxQKXcU
+ ZUxh68Vh/aF9ezM/WA2erCjJA/64ng6ayH3GU4/t6XpuHzdMsmMhzGcxK4v/mfKRDnez
+ ngPwEBc+zPWCxDuNoNwYT2pQ+1SDGeKVTXx7xnmmNsLIDy8AqCZhffef6TAxZGpsSfb+
+ LtfQ==
+X-Gm-Message-State: AC+VfDz29d/X7labaJR4oC6XYiFXUbEs4aSXJeluzJR3dVQDTx5X3m6b
+ 81JPZzjH/rF0Ih1RVjx+FWb9DA==
+X-Google-Smtp-Source: ACHHUZ5/y/+jnHKCYboD4dSy5/IRfLkgptwr6AR4ghOJGC1rSDmCtIYcbXoqGUeI+ZT++4n7sv0L+g==
+X-Received: by 2002:a17:90a:51:b0:259:3e26:b5d9 with SMTP id
+ 17-20020a17090a005100b002593e26b5d9mr756955pjb.2.1686062268718; 
+ Tue, 06 Jun 2023 07:37:48 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
+ ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
  by smtp.gmail.com with ESMTPSA id
- l14-20020a170906a40e00b0095807ab4b57sm5725981ejz.178.2023.06.06.07.31.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 07:31:50 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 21/21] configure: remove --with-git-submodules=
-Date: Tue,  6 Jun 2023 16:31:16 +0200
-Message-Id: <20230606143116.685644-22-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230606143116.685644-1-pbonzini@redhat.com>
-References: <20230606143116.685644-1-pbonzini@redhat.com>
+ ch7-20020a17090af40700b00259b2a50a41sm238105pjb.36.2023.06.06.07.37.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jun 2023 07:37:48 -0700 (PDT)
+Message-ID: <9ff0f082-1b04-8bf2-6a97-1e9220aa4509@linaro.org>
+Date: Tue, 6 Jun 2023 07:37:46 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/5] target/arm: Rename helper template headers as '.h.inc'
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org
+References: <20230606141252.95032-1-philmd@linaro.org>
+ <20230606141252.95032-3-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230606141252.95032-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+X-Spam_score_int: 3
+X-Spam_score: 0.3
+X-Spam_bar: /
+X-Spam_report: (0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SUSPICIOUS_RECIPS=2.51,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,151 +99,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reuse --enable/--disable-download to control git submodules as well.
-Adjust the error messages of git-submodule.sh to refer to the new
-option.
+On 6/6/23 07:12, Philippe Mathieu-Daudé wrote:
+> Since commit 139c1837db ("meson: rename included C source files
+> to .c.inc"), QEMU standard procedure for included C files is to
+> use *.c.inc.
+> 
+> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+> about includes") this is documented as the Coding Style:
+> 
+>    If you do use template header files they should be named with
+>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+>    being included for expansion.
+> 
+> Therefore rename the included templates as '.h.inc'.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure                                     | 40 +++++--------------
- .../ci/org.centos/stream/8/x86_64/configure   |  1 -
- scripts/git-submodule.sh                      |  8 ++--
- 3 files changed, 12 insertions(+), 37 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/configure b/configure
-index bc0660f5a32..8765b88e12f 100755
---- a/configure
-+++ b/configure
-@@ -246,13 +246,7 @@ for opt do
- done
- 
- 
--if test -e "$source_path/.git"
--then
--    git_submodules_action="update"
--else
--    git_submodules_action="ignore"
--fi
--
-+git_submodules_action="update"
- git="git"
- debug_tcg="no"
- docs="auto"
-@@ -738,12 +732,9 @@ for opt do
-   ;;
-   --disable-cfi) cfi="false"
-   ;;
--  --with-git-submodules=*)
--      git_submodules_action="$optarg"
-+  --disable-download) download="disabled"; git_submodules_action=validate;
-   ;;
--  --disable-download) download="disabled"
--  ;;
--  --enable-download) download="enabled"
-+  --enable-download) download="enabled"; git_submodules_action=update;
-   ;;
-   --enable-plugins) if test "$mingw32" = "yes"; then
-                         error_exit "TCG plugins not currently supported on Windows platforms"
-@@ -765,6 +756,11 @@ for opt do
-   esac
- done
- 
-+if ! test -e "$source_path/.git"
-+then
-+    git_submodules_action="ignore"
-+fi
-+
- # test for any invalid configuration combinations
- if test "$plugins" = "yes" -a "$tcg" = "disabled"; then
-     error_exit "Can't enable plugins on non-TCG builds"
-@@ -796,21 +792,6 @@ then
-     exit 1
- fi
- 
--case $git_submodules_action in
--    update|validate)
--        if test ! -e "$source_path/.git" || ! has git; then
--            echo "ERROR: cannot $git_submodules_action git submodules without .git"
--            exit 1
--        fi
--    ;;
--    ignore)
--    ;;
--    *)
--        echo "ERROR: invalid --with-git-submodules= value '$git_submodules_action'"
--        exit 1
--    ;;
--esac
--
- default_target_list=""
- mak_wilds=""
- 
-@@ -877,9 +858,6 @@ Advanced options (experts only):
-   --python=PYTHON          use specified python [$python]
-   --ninja=NINJA            use specified ninja [$ninja]
-   --smbd=SMBD              use specified smbd [$smbd]
--  --with-git-submodules=update   update git submodules (default if .git dir exists)
--  --with-git-submodules=validate fail if git submodules are not up to date
--  --with-git-submodules=ignore   do not update or check git submodules (default if no .git dir)
-   --static                 enable static build [$static]
-   --bindir=PATH            install binaries in PATH
-   --with-suffix=SUFFIX     suffix for QEMU data inside datadir/libdir/sysconfdir/docdir [$qemu_suffix]
-@@ -1024,7 +1002,7 @@ fi
- # Consult white-list to determine whether to enable werror
- # by default.  Only enable by default for git builds
- if test -z "$werror" ; then
--    if test "$git_submodules_action" != "ignore" && \
-+    if test -e "$source_path/.git" && \
-         { test "$linux" = "yes" || test "$mingw32" = "yes"; }; then
-         werror="yes"
-     else
-diff --git a/scripts/ci/org.centos/stream/8/x86_64/configure b/scripts/ci/org.centos/stream/8/x86_64/configure
-index de76510978f..d02b09a4b9b 100755
---- a/scripts/ci/org.centos/stream/8/x86_64/configure
-+++ b/scripts/ci/org.centos/stream/8/x86_64/configure
-@@ -29,7 +29,6 @@
- --extra-cflags="-O2 -g -pipe -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection" \
- --with-suffix="qemu-kvm" \
- --firmwarepath=/usr/share/qemu-firmware \
----with-git-submodules=update \
- --target-list="x86_64-softmmu" \
- --block-drv-rw-whitelist="qcow2,raw,file,host_device,nbd,iscsi,rbd,blkdebug,luks,null-co,nvme,copy-on-read,throttle,gluster" \
- --audio-drv-list="" \
-diff --git a/scripts/git-submodule.sh b/scripts/git-submodule.sh
-index 38b55c90e11..11fad2137cd 100755
---- a/scripts/git-submodule.sh
-+++ b/scripts/git-submodule.sh
-@@ -9,7 +9,7 @@ command=$1
- shift
- maybe_modules="$@"
- 
--# if --with-git-submodules=ignore, do nothing
-+# if not running in a git checkout, do nothing
- test "$command" = "ignore" && exit 0
- 
- test -z "$GIT" && GIT=$(command -v git)
-@@ -24,7 +24,7 @@ update_error() {
-     echo "enable use of a transparent proxy), please disable automatic"
-     echo "GIT submodule checkout with:"
-     echo
--    echo " $ ./configure --with-git-submodules=validate"
-+    echo " $ ./configure --disable-download"
-     echo
-     echo "and then manually update submodules prior to running make, with:"
-     echo
-@@ -39,9 +39,7 @@ validate_error() {
-         echo "configured for validate only. Please run"
-         echo "  scripts/git-submodule.sh update $maybe_modules"
-         echo "from the source directory or call configure with"
--        echo "  --with-git-submodules=update"
--        echo "To disable GIT submodules validation, use"
--        echo "  --with-git-submodules=ignore"
-+        echo "  --enable-download"
-     fi
-     exit 1
- }
--- 
-2.40.1
+FYI, after yesterday's tcg pr, we can do more than this.  These fragments no longer have 
+to be all included into one common helper.h. Each translate-foo.c can include only the 
+helper-foo.h.inc bits that they need, and the bits need not be visible to the rest of the 
+front end.
 
+It was something that I had in mind when splitting include/exec/helper-gen.h, but the 
+patch set was already large enough.
+
+The renaming to .h.inc would have been the first step, anyway.
+
+
+r~
 
