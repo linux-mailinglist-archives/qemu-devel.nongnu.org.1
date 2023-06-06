@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D35723E51
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0EF723E6C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:53:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6TIy-0007ol-30; Tue, 06 Jun 2023 05:48:44 -0400
+	id 1q6TIu-0007nV-IA; Tue, 06 Jun 2023 05:48:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TIg-0007b7-L3
+ id 1q6TIh-0007b5-EF
  for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:29 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6TId-0004jx-J9
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:26 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3f60e536250so49893325e9.1
+ id 1q6TId-0004kC-JE
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:48:25 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-30ad8f33f1aso5183652f8f.0
  for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:48:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1686044901; x=1688636901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MWPb7Jy8+7x5gkTFAiffz5QOK3pkVlOOxFo23ysfWJQ=;
- b=ECjYyG9OqgO7B3GzhNRzi8X4+vJVO39e033JSJF6eaFuVzeUhkQtF/0HG8ppD48qHV
- SU8YdEWkwVp9cwyeiXwXFyRX3s7cgiT7wuNZcrdz8MM/CA13WHb3Zj4LeyAvXP1utcJl
- 5B1ro3u5f5XIbTTIqQoh6jeKX9omrxbaJgPw58uopr4jSCUZencuaQmuA+cdf1ixMlzJ
- WmetxfKAtkwLM3JmudanYFA/hwREoE2n6cQjVLsq6BJpf18QBbOVKc9MEe8GlEkis+8f
- HkS+WdOWL5UUTr7t4BHwXgkLAULjCMJ5E6Cy2JZ0KluZ2ISWBwb2Gb8T+tqPs9EjqEd+
- sTTA==
+ :reply-to; bh=h0eW8qzIccTtiuHWKz/SuMzOqYz5huBqwsYf7UEDet8=;
+ b=nvNzzTp8Kw5V+H/luVVqIdh3/f0gUe5cF40sZgmvWXuqowM0Mp69Q0z7KGg8oubqvt
+ enN+08ydGiEtxXzFDpwiYjB0JWyhrvqGALJr30YBVYa4yLJZikw1IX138Gw19zwVXay0
+ Ll7hOic/k0WnhrfU2PeB7Vp8Gi0SpMFnWK2m+0cFsHT6qYtzdIJYtSBS0yLLe/9qkIUH
+ 60gXX4J9ZQ7whhUpGBqUTjrMn5fQtv51WJPaD1VZWL3MNoLF1na6I8jqeavnFaILJEg7
+ J/4C7vUC++KVrNbBlBmWvldgTOSFsD4ndtEkVD9cjiiy3EA2knep3MjPglaT7KZqM4gO
+ ZzXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1686044901; x=1688636901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MWPb7Jy8+7x5gkTFAiffz5QOK3pkVlOOxFo23ysfWJQ=;
- b=DvRRI8aLm530ROldGmUHCwNB6EpIAbi+qi+Kx/h2VmarhkLoojlqsT4W7DOyV73/kY
- WvGZnpZ4+N2MTts7MuAXwtVtHbrwUVKS1ys0h8w08L0eI85PJ1A66KtK/G7c9/kXaemF
- +ex0kVGMSCTFCUaAYu1f42EkBrdQ4kOteidMKsxyW6ZT6dVpnbRLTf8X3dzLOaSFXvUP
- ugx1MmmLtq7adPWVT8EFgP1Qi9z3qSoxlio99z5+urh6QwVJ8QRZA7D3EM4Atd39jK7C
- F3d+XZft0uXvzjGblfCKaRc5fPgAoChuPnpNXzs0LtUgBiVNsP7zJel+mWC006QVT0Jr
- jjnA==
-X-Gm-Message-State: AC+VfDw8mQTZh0UnW/HxwZ5Ec3qIMLvnMcxwMr2V6pVLGzlr7UsmI75O
- jEoIoTdGhCch0PM0p+CWj6f9q2WCE42bYZnO+Ps=
-X-Google-Smtp-Source: ACHHUZ4jjvQ4OQ11fmRkiPciCugDyX4S5GbQNxlSVICJ/6fG1EXY3RXq5Ul5aFGYUTr/sribaL1vtA==
-X-Received: by 2002:a05:600c:46c7:b0:3f7:16dd:1c3b with SMTP id
- q7-20020a05600c46c700b003f716dd1c3bmr10321002wmo.10.1686044901131; 
+ bh=h0eW8qzIccTtiuHWKz/SuMzOqYz5huBqwsYf7UEDet8=;
+ b=RMFi2NheJjliO8YVtjkB7uQ3M5k7w+zT+hC65wCunxDMZKN70gXYh5KfD2tN7tnpR6
+ tS4YJSA7qnNRctY6xaR6iD0S5CwNdq2enH91Ann/ragyJYWSqy5DGwTSM/zAgZWaCdH1
+ +O3IQxcPt56CNquPFtyAKWUX1EfWgXEJ/1I4YXTZDNc7/y+ofSDKaq2NtDrO0kzyQO2T
+ 5IpNSlDmfD/0URRtmG7Y781yOx1os0MEUH5jQW1YMeGdmsC4vT7/g2nZYo+W6wxIH3no
+ 5Qp5gi9THNKqizEX/oafA1y5+VbMZcvHbtPUF63QSjH3PwomcAfDkWAP7ZO26bkGIP7B
+ xljw==
+X-Gm-Message-State: AC+VfDw2d/u1FKDZZPQQ0xDVW9VHfWYV75/uqytOsSWLaczANchKkqsF
+ 2bKrM8kmwpg25t/zM7qM+Hg4GzDBYm7znc+I3XI=
+X-Google-Smtp-Source: ACHHUZ6hXnFRdb+1QDv0JEvNRIyelNHn+wOyhatuW3d1wZBhvsLvS8Fe/ozn3eeXs27s68nn96JT6g==
+X-Received: by 2002:a5d:6382:0:b0:306:44ea:4fba with SMTP id
+ p2-20020a5d6382000000b0030644ea4fbamr1364778wru.31.1686044901612; 
  Tue, 06 Jun 2023 02:48:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.20
+ v10-20020a5d4b0a000000b0030789698eebsm12134017wrq.89.2023.06.06.02.48.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jun 2023 02:48:20 -0700 (PDT)
+ Tue, 06 Jun 2023 02:48:21 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/42] hw/arm/allwinner-r40: add Clock Control Unit
-Date: Tue,  6 Jun 2023 10:47:42 +0100
-Message-Id: <20230606094814.3581397-11-peter.maydell@linaro.org>
+Subject: [PULL 11/42] hw: allwinner-r40: Complete uart devices
+Date: Tue,  6 Jun 2023 10:47:43 +0100
+Message-Id: <20230606094814.3581397-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230606094814.3581397-1-peter.maydell@linaro.org>
 References: <20230606094814.3581397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,384 +92,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: qianfan Zhao <qianfanguijin@163.com>
 
-The CCU provides the registers to program the PLLs and the controls
-most of the clock generation, division, distribution, synchronization
-and gating.
-
-This commit adds support for the Clock Control Unit which emulates
-a simple read/write register interface.
+R40 has eight UARTs, support both 16450 and 16550 compatible modes.
 
 Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
-Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/allwinner-r40.h      |   2 +
- include/hw/misc/allwinner-r40-ccu.h |  65 +++++++++
- hw/arm/allwinner-r40.c              |   8 +-
- hw/misc/allwinner-r40-ccu.c         | 209 ++++++++++++++++++++++++++++
- hw/misc/meson.build                 |   1 +
- 5 files changed, 284 insertions(+), 1 deletion(-)
- create mode 100644 include/hw/misc/allwinner-r40-ccu.h
- create mode 100644 hw/misc/allwinner-r40-ccu.c
+ include/hw/arm/allwinner-r40.h |  8 ++++++++
+ hw/arm/allwinner-r40.c         | 34 +++++++++++++++++++++++++++++++---
+ 2 files changed, 39 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.h
-index 348bf25d6be..3be9dc962be 100644
+index 3be9dc962be..959b5dc4e04 100644
 --- a/include/hw/arm/allwinner-r40.h
 +++ b/include/hw/arm/allwinner-r40.h
-@@ -25,6 +25,7 @@
- #include "hw/timer/allwinner-a10-pit.h"
- #include "hw/intc/arm_gic.h"
- #include "hw/sd/allwinner-sdhost.h"
-+#include "hw/misc/allwinner-r40-ccu.h"
- #include "target/arm/cpu.h"
- #include "sysemu/block-backend.h"
+@@ -41,6 +41,13 @@ enum {
+     AW_R40_DEV_CCU,
+     AW_R40_DEV_PIT,
+     AW_R40_DEV_UART0,
++    AW_R40_DEV_UART1,
++    AW_R40_DEV_UART2,
++    AW_R40_DEV_UART3,
++    AW_R40_DEV_UART4,
++    AW_R40_DEV_UART5,
++    AW_R40_DEV_UART6,
++    AW_R40_DEV_UART7,
+     AW_R40_DEV_GIC_DIST,
+     AW_R40_DEV_GIC_CPU,
+     AW_R40_DEV_GIC_HYP,
+@@ -70,6 +77,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AwR40State, AW_R40)
+  * which are currently emulated by the R40 SoC code.
+  */
+ #define AW_R40_NUM_MMCS         4
++#define AW_R40_NUM_UARTS        8
  
-@@ -79,6 +80,7 @@ struct AwR40State {
-     const hwaddr *memmap;
-     AwA10PITState timer;
-     AwSdHostState mmc[AW_R40_NUM_MMCS];
-+    AwR40ClockCtlState ccu;
-     GICState gic;
-     MemoryRegion sram_a1;
-     MemoryRegion sram_a2;
-diff --git a/include/hw/misc/allwinner-r40-ccu.h b/include/hw/misc/allwinner-r40-ccu.h
-new file mode 100644
-index 00000000000..ceb74eff923
---- /dev/null
-+++ b/include/hw/misc/allwinner-r40-ccu.h
-@@ -0,0 +1,65 @@
-+/*
-+ * Allwinner R40 Clock Control Unit emulation
-+ *
-+ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
-+ *
-+ * This program is free software: you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation, either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef HW_MISC_ALLWINNER_R40_CCU_H
-+#define HW_MISC_ALLWINNER_R40_CCU_H
-+
-+#include "qom/object.h"
-+#include "hw/sysbus.h"
-+
-+/**
-+ * @name Constants
-+ * @{
-+ */
-+
-+/** Size of register I/O address space used by CCU device */
-+#define AW_R40_CCU_IOSIZE        (0x400)
-+
-+/** Total number of known registers */
-+#define AW_R40_CCU_REGS_NUM      (AW_R40_CCU_IOSIZE / sizeof(uint32_t))
-+
-+/** @} */
-+
-+/**
-+ * @name Object model
-+ * @{
-+ */
-+
-+#define TYPE_AW_R40_CCU    "allwinner-r40-ccu"
-+OBJECT_DECLARE_SIMPLE_TYPE(AwR40ClockCtlState, AW_R40_CCU)
-+
-+/** @} */
-+
-+/**
-+ * Allwinner R40 CCU object instance state.
-+ */
-+struct AwR40ClockCtlState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+    /*< public >*/
-+
-+    /** Maps I/O registers in physical memory */
-+    MemoryRegion iomem;
-+
-+    /** Array of hardware registers */
-+    uint32_t regs[AW_R40_CCU_REGS_NUM];
-+
-+};
-+
-+#endif /* HW_MISC_ALLWINNER_R40_CCU_H */
+ struct AwR40State {
+     /*< private >*/
 diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
-index 97f2aa92fdf..72973f69ff0 100644
+index 72973f69ff0..537a90b23d8 100644
 --- a/hw/arm/allwinner-r40.c
 +++ b/hw/arm/allwinner-r40.c
-@@ -42,6 +42,7 @@ const hwaddr allwinner_r40_memmap[] = {
-     [AW_R40_DEV_MMC1]       = 0x01c10000,
-     [AW_R40_DEV_MMC2]       = 0x01c11000,
-     [AW_R40_DEV_MMC3]       = 0x01c12000,
-+    [AW_R40_DEV_CCU]        = 0x01c20000,
+@@ -45,6 +45,13 @@ const hwaddr allwinner_r40_memmap[] = {
+     [AW_R40_DEV_CCU]        = 0x01c20000,
      [AW_R40_DEV_PIT]        = 0x01c20c00,
      [AW_R40_DEV_UART0]      = 0x01c28000,
++    [AW_R40_DEV_UART1]      = 0x01c28400,
++    [AW_R40_DEV_UART2]      = 0x01c28800,
++    [AW_R40_DEV_UART3]      = 0x01c28c00,
++    [AW_R40_DEV_UART4]      = 0x01c29000,
++    [AW_R40_DEV_UART5]      = 0x01c29400,
++    [AW_R40_DEV_UART6]      = 0x01c29800,
++    [AW_R40_DEV_UART7]      = 0x01c29c00,
      [AW_R40_DEV_GIC_DIST]   = 0x01c81000,
-@@ -80,7 +81,6 @@ static struct AwR40Unimplemented r40_unimplemented[] = {
-     { "usb2-host",  0x01c1c000, 4 * KiB },
-     { "cs1",        0x01c1d000, 4 * KiB },
-     { "spi3",       0x01c1f000, 4 * KiB },
--    { "ccu",        0x01c20000, 1 * KiB },
-     { "rtc",        0x01c20400, 1 * KiB },
-     { "pio",        0x01c20800, 1 * KiB },
-     { "owa",        0x01c21000, 1 * KiB },
-@@ -250,6 +250,8 @@ static void allwinner_r40_init(Object *obj)
-     object_property_add_alias(obj, "clk1-freq", OBJECT(&s->timer),
-                               "clk1-freq");
+     [AW_R40_DEV_GIC_CPU]    = 0x01c82000,
+     [AW_R40_DEV_GIC_HYP]    = 0x01c84000,
+@@ -157,6 +164,13 @@ enum {
+ /* Shared Processor Interrupts */
+ enum {
+     AW_R40_GIC_SPI_UART0     =  1,
++    AW_R40_GIC_SPI_UART1     =  2,
++    AW_R40_GIC_SPI_UART2     =  3,
++    AW_R40_GIC_SPI_UART3     =  4,
++    AW_R40_GIC_SPI_UART4     = 17,
++    AW_R40_GIC_SPI_UART5     = 18,
++    AW_R40_GIC_SPI_UART6     = 19,
++    AW_R40_GIC_SPI_UART7     = 20,
+     AW_R40_GIC_SPI_TIMER0    = 22,
+     AW_R40_GIC_SPI_TIMER1    = 23,
+     AW_R40_GIC_SPI_MMC0      = 32,
+@@ -384,9 +398,23 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
+     }
  
-+    object_initialize_child(obj, "ccu", &s->ccu, TYPE_AW_R40_CCU);
+     /* UART0. For future clocktree API: All UARTS are connected to APB2_CLK. */
+-    serial_mm_init(get_system_memory(), s->memmap[AW_R40_DEV_UART0], 2,
+-                   qdev_get_gpio_in(DEVICE(&s->gic), AW_R40_GIC_SPI_UART0),
+-                   115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
++    for (int i = 0; i < AW_R40_NUM_UARTS; i++) {
++        static const int uart_irqs[AW_R40_NUM_UARTS] = {
++            AW_R40_GIC_SPI_UART0,
++            AW_R40_GIC_SPI_UART1,
++            AW_R40_GIC_SPI_UART2,
++            AW_R40_GIC_SPI_UART3,
++            AW_R40_GIC_SPI_UART4,
++            AW_R40_GIC_SPI_UART5,
++            AW_R40_GIC_SPI_UART6,
++            AW_R40_GIC_SPI_UART7,
++        };
++        const hwaddr addr = s->memmap[AW_R40_DEV_UART0 + i];
 +
-     for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
-         object_initialize_child(obj, mmc_names[i], &s->mmc[i],
-                                 TYPE_AW_SDHOST_SUN5I);
-@@ -364,6 +366,10 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(),
-                                 s->memmap[AW_R40_DEV_SRAM_A4], &s->sram_a4);
++        serial_mm_init(get_system_memory(), addr, 2,
++                       qdev_get_gpio_in(DEVICE(&s->gic), uart_irqs[i]),
++                       115200, serial_hd(i), DEVICE_NATIVE_ENDIAN);
++    }
  
-+    /* Clock Control Unit */
-+    sysbus_realize(SYS_BUS_DEVICE(&s->ccu), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->ccu), 0, s->memmap[AW_R40_DEV_CCU]);
-+
-     /* SD/MMC */
-     for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
-         qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->gic),
-diff --git a/hw/misc/allwinner-r40-ccu.c b/hw/misc/allwinner-r40-ccu.c
-new file mode 100644
-index 00000000000..d82fee12db6
---- /dev/null
-+++ b/hw/misc/allwinner-r40-ccu.c
-@@ -0,0 +1,209 @@
-+/*
-+ * Allwinner R40 Clock Control Unit emulation
-+ *
-+ * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
-+ *
-+ * This program is free software: you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation, either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "hw/sysbus.h"
-+#include "migration/vmstate.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "hw/misc/allwinner-r40-ccu.h"
-+
-+/* CCU register offsets */
-+enum {
-+    REG_PLL_CPUX_CTRL           = 0x0000,
-+    REG_PLL_AUDIO_CTRL          = 0x0008,
-+    REG_PLL_VIDEO0_CTRL         = 0x0010,
-+    REG_PLL_VE_CTRL             = 0x0018,
-+    REG_PLL_DDR0_CTRL           = 0x0020,
-+    REG_PLL_PERIPH0_CTRL        = 0x0028,
-+    REG_PLL_PERIPH1_CTRL        = 0x002c,
-+    REG_PLL_VIDEO1_CTRL         = 0x0030,
-+    REG_PLL_SATA_CTRL           = 0x0034,
-+    REG_PLL_GPU_CTRL            = 0x0038,
-+    REG_PLL_MIPI_CTRL           = 0x0040,
-+    REG_PLL_DE_CTRL             = 0x0048,
-+    REG_PLL_DDR1_CTRL           = 0x004c,
-+    REG_AHB1_APB1_CFG           = 0x0054,
-+    REG_APB2_CFG                = 0x0058,
-+    REG_MMC0_CLK                = 0x0088,
-+    REG_MMC1_CLK                = 0x008c,
-+    REG_MMC2_CLK                = 0x0090,
-+    REG_MMC3_CLK                = 0x0094,
-+    REG_USBPHY_CFG              = 0x00cc,
-+    REG_PLL_DDR_AUX             = 0x00f0,
-+    REG_DRAM_CFG                = 0x00f4,
-+    REG_PLL_DDR1_CFG            = 0x00f8,
-+    REG_DRAM_CLK_GATING         = 0x0100,
-+    REG_GMAC_CLK                = 0x0164,
-+    REG_SYS_32K_CLK             = 0x0310,
-+    REG_PLL_LOCK_CTRL           = 0x0320,
-+};
-+
-+#define REG_INDEX(offset)    (offset / sizeof(uint32_t))
-+
-+/* CCU register flags */
-+enum {
-+    REG_PLL_ENABLE           = (1 << 31),
-+    REG_PLL_LOCK             = (1 << 28),
-+};
-+
-+static uint64_t allwinner_r40_ccu_read(void *opaque, hwaddr offset,
-+                                       unsigned size)
-+{
-+    const AwR40ClockCtlState *s = AW_R40_CCU(opaque);
-+    const uint32_t idx = REG_INDEX(offset);
-+
-+    switch (offset) {
-+    case 0x324 ... AW_R40_CCU_IOSIZE:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset 0x%04x\n",
-+                      __func__, (uint32_t)offset);
-+        return 0;
-+    }
-+
-+    return s->regs[idx];
-+}
-+
-+static void allwinner_r40_ccu_write(void *opaque, hwaddr offset,
-+                                    uint64_t val, unsigned size)
-+{
-+    AwR40ClockCtlState *s = AW_R40_CCU(opaque);
-+
-+    switch (offset) {
-+    case REG_DRAM_CFG:    /* DRAM Configuration(for DDR0) */
-+        /* bit16: SDRCLK_UPD (SDRCLK configuration 0 update) */
-+        val &= ~(1 << 16);
-+        break;
-+    case REG_PLL_DDR1_CTRL: /* DDR1 Control register */
-+        /* bit30: SDRPLL_UPD */
-+        val &= ~(1 << 30);
-+        if (val & REG_PLL_ENABLE) {
-+            val |= REG_PLL_LOCK;
-+        }
-+        break;
-+    case REG_PLL_CPUX_CTRL:
-+    case REG_PLL_AUDIO_CTRL:
-+    case REG_PLL_VE_CTRL:
-+    case REG_PLL_VIDEO0_CTRL:
-+    case REG_PLL_DDR0_CTRL:
-+    case REG_PLL_PERIPH0_CTRL:
-+    case REG_PLL_PERIPH1_CTRL:
-+    case REG_PLL_VIDEO1_CTRL:
-+    case REG_PLL_SATA_CTRL:
-+    case REG_PLL_GPU_CTRL:
-+    case REG_PLL_MIPI_CTRL:
-+    case REG_PLL_DE_CTRL:
-+        if (val & REG_PLL_ENABLE) {
-+            val |= REG_PLL_LOCK;
-+        }
-+        break;
-+    case 0x324 ... AW_R40_CCU_IOSIZE:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset 0x%04x\n",
-+                      __func__, (uint32_t)offset);
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: unimplemented write offset 0x%04x\n",
-+                      __func__, (uint32_t)offset);
-+        break;
-+    }
-+
-+    s->regs[REG_INDEX(offset)] = (uint32_t) val;
-+}
-+
-+static const MemoryRegionOps allwinner_r40_ccu_ops = {
-+    .read = allwinner_r40_ccu_read,
-+    .write = allwinner_r40_ccu_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+    .impl.min_access_size = 4,
-+};
-+
-+static void allwinner_r40_ccu_reset(DeviceState *dev)
-+{
-+    AwR40ClockCtlState *s = AW_R40_CCU(dev);
-+
-+    memset(s->regs, 0, sizeof(s->regs));
-+
-+    /* Set default values for registers */
-+    s->regs[REG_INDEX(REG_PLL_CPUX_CTRL)]       = 0x00001000;
-+    s->regs[REG_INDEX(REG_PLL_AUDIO_CTRL)]      = 0x00035514;
-+    s->regs[REG_INDEX(REG_PLL_VIDEO0_CTRL)]     = 0x03006207;
-+    s->regs[REG_INDEX(REG_PLL_VE_CTRL)]         = 0x03006207;
-+    s->regs[REG_INDEX(REG_PLL_DDR0_CTRL)]       = 0x00001000,
-+    s->regs[REG_INDEX(REG_PLL_PERIPH0_CTRL)]    = 0x00041811;
-+    s->regs[REG_INDEX(REG_PLL_PERIPH1_CTRL)]    = 0x00041811;
-+    s->regs[REG_INDEX(REG_PLL_VIDEO1_CTRL)]     = 0x03006207;
-+    s->regs[REG_INDEX(REG_PLL_SATA_CTRL)]       = 0x00001811;
-+    s->regs[REG_INDEX(REG_PLL_GPU_CTRL)]        = 0x03006207;
-+    s->regs[REG_INDEX(REG_PLL_MIPI_CTRL)]       = 0x00000515;
-+    s->regs[REG_INDEX(REG_PLL_DE_CTRL)]         = 0x03006207;
-+    s->regs[REG_INDEX(REG_PLL_DDR1_CTRL)]       = 0x00001800;
-+    s->regs[REG_INDEX(REG_AHB1_APB1_CFG)]       = 0x00001010;
-+    s->regs[REG_INDEX(REG_APB2_CFG)]            = 0x01000000;
-+    s->regs[REG_INDEX(REG_PLL_DDR_AUX)]         = 0x00000001;
-+    s->regs[REG_INDEX(REG_PLL_DDR1_CFG)]        = 0x0ccca000;
-+    s->regs[REG_INDEX(REG_SYS_32K_CLK)]         = 0x0000000f;
-+}
-+
-+static void allwinner_r40_ccu_init(Object *obj)
-+{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+    AwR40ClockCtlState *s = AW_R40_CCU(obj);
-+
-+    /* Memory mapping */
-+    memory_region_init_io(&s->iomem, OBJECT(s), &allwinner_r40_ccu_ops, s,
-+                          TYPE_AW_R40_CCU, AW_R40_CCU_IOSIZE);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static const VMStateDescription allwinner_r40_ccu_vmstate = {
-+    .name = "allwinner-r40-ccu",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, AwR40ClockCtlState, AW_R40_CCU_REGS_NUM),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void allwinner_r40_ccu_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->reset = allwinner_r40_ccu_reset;
-+    dc->vmsd = &allwinner_r40_ccu_vmstate;
-+}
-+
-+static const TypeInfo allwinner_r40_ccu_info = {
-+    .name          = TYPE_AW_R40_CCU,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_init = allwinner_r40_ccu_init,
-+    .instance_size = sizeof(AwR40ClockCtlState),
-+    .class_init    = allwinner_r40_ccu_class_init,
-+};
-+
-+static void allwinner_r40_ccu_register(void)
-+{
-+    type_register_static(&allwinner_r40_ccu_info);
-+}
-+
-+type_init(allwinner_r40_ccu_register)
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index a40245ad44f..96e35f1cdbc 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -44,6 +44,7 @@ specific_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-cpucfg.c'
- softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3-dramc.c'))
- softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3-sysctrl.c'))
- softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-sid.c'))
-+softmmu_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40-ccu.c'))
- softmmu_ss.add(when: 'CONFIG_AXP209_PMU', if_true: files('axp209.c'))
- softmmu_ss.add(when: 'CONFIG_REALVIEW', if_true: files('arm_sysctl.c'))
- softmmu_ss.add(when: 'CONFIG_NSERIES', if_true: files('cbus.c'))
+     /* Unimplemented devices */
+     for (i = 0; i < ARRAY_SIZE(r40_unimplemented); i++) {
 -- 
 2.34.1
 
