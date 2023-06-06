@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FA1723692
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 07:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328EA7236DD
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 07:33:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Oqp-0004sy-48; Tue, 06 Jun 2023 01:03:23 -0400
+	id 1q6PIh-0000b8-9w; Tue, 06 Jun 2023 01:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Oqi-0004sX-39
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 01:03:18 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6PIe-0000Zi-DR
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 01:32:08 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6Oqf-0005Lx-1v
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 01:03:15 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f78a32266bso19476685e9.3
- for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 22:03:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6PIb-0005h7-7e
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 01:32:07 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-30af159b433so5636642f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 05 Jun 2023 22:32:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686027790; x=1688619790;
+ d=linaro.org; s=google; t=1686029523; x=1688621523;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QSNW7So8kRC1aFWnIxUF1ZOeH5/v31jrfrDF4m8sR9M=;
- b=uAPG0pdf03I4/8asYLi0Cbk2FL2gDxPhq5JNidqOGKwvJPIQ0QCcDVYbqLG7qQzi93
- j3FXnohcGRa5uYvUuuM9hkJgMmbUh9t8M7EvCn7x3eFQ0BIN5+NNin9tXyNX3z7CofHC
- +L0HjnTddpaeenvBd7lWK8E5+Ntf4PGgDaRgceeGhTrTYyOdmAAgokSzUYrABhpUWf3Q
- 8miYXXonqmhs1oYN1ti6Mp6ioDGyd9V3Eo60u+6tG/Vg4o2EHA+N+DG1RlDKPAaIrJyN
- iycI2zSyJZxmMhBxgHpkU9NoIKBjNApEVKmdHZ038Qy4Vl8Hlea1Rnzx9DOn2WaAFKLm
- CpFg==
+ bh=4VfOOJinkjSh0l6gqLPyVdZ8e/+vLTEa7wa66JblaO8=;
+ b=wfJmQ+zvrNbpk09oYfwAqwk9SS0iVDZEAWLyBiOOHlfnE/jQo6QrhdGayqYC4EamnA
+ TyBfJJgBV2pBgcKU0fxdDcWtJVV9FjhJnN41c6gCct5d0EHO7X0R/55eN7N4gLKw5MTH
+ Zur32UJArgDQEg4Uv8O7jwVBeB4JAjMlhoq3JM3zI9HpZIcP+1bj5VMPjn5FNJknkaBV
+ 1XsD9hhxvT8QmJrZdpvccHXwUInj/YSPZOMWCL7ELMKezBeYuIDOdl30pfvgEA1ko/zp
+ mWWI1LolhPD8bFt0Md3Aclv6P8zxcH12UWHsqwbm1+rx7mS3UrjpeBOsr1oCborWTfwi
+ J+TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686027790; x=1688619790;
+ d=1e100.net; s=20221208; t=1686029523; x=1688621523;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QSNW7So8kRC1aFWnIxUF1ZOeH5/v31jrfrDF4m8sR9M=;
- b=W7whFIYZ4giVcFlF+HAuGmEYK1FnQvnZIUO5yO7VZRKWKn/+RF+4L+D4nB/nxO9B1f
- c7MASFjTdm5age2wZF/eAYPAjjHqVHy6ZJkrbJr4kQwK/qUujPtJKNs4uonmd9mjPrsD
- hELkO83qhKUTfPQprg4Vhl7RaY+CtWGqYAxwpb8wHjlv8vd4+OeAGsSdmkG+nZyDqc5q
- wSKuYQBypSwH1AJfinEzaIQxVF0b8VdtnR+0acZlxK9+WyJd+Xthu1DDAxqXA4xowWhG
- 2LKEWe1abtuqxcTQeVpjImwh2hVKHmKtGx6eGCWVns6cmt4RnX0Eo95QS6Ox8TMi7HPC
- IH+g==
-X-Gm-Message-State: AC+VfDwsWvY0LqFhDOPL6jVdcU3ANmHjCLEx4YR/Q/O3uHO9ltpMPQi4
- nsCbBBqZNs2Jb2ZG1BkUMRtwkg==
-X-Google-Smtp-Source: ACHHUZ63nQ9TxDd7CTR7D2jtg0irJxQ2dagimLQggTvebGcDyOOVrcu0bpO2kaNccZQsSlFPEkLfJg==
-X-Received: by 2002:a05:600c:2947:b0:3f6:923:9ec with SMTP id
- n7-20020a05600c294700b003f6092309ecmr1341066wmd.25.1686027790553; 
- Mon, 05 Jun 2023 22:03:10 -0700 (PDT)
+ bh=4VfOOJinkjSh0l6gqLPyVdZ8e/+vLTEa7wa66JblaO8=;
+ b=cIF3nThSarlPqgZN3xM8DuLrcSryWerW/LRru/tc/CQRtkKIMDe7zS7kZZIwkA8ii8
+ MW8uJME3jouWj0M8y5nEmi5l6UIfR0+tzaDvTwNWGthE4hqSricYioDXjYrNGrfv0iaB
+ KPjKOWcgg4ZwklweS4OnYFYygtd2bJTT5HtS3CDTUVecXcDByjAWtgYxE6aVlR3ZVbWy
+ AbRlebCq9U4NAkpCpSBxdNbFnwoIDYYdRIh+NyUweC5NFhMMbPw/OHHfdu1/5Fi1TD6z
+ 4/f7lphCDJfvEZHyzfvwmtIxFIUyTOPgWbwaJSdl+GdR/xZyBJF0kzX/5BNKUt+Rckm0
+ erew==
+X-Gm-Message-State: AC+VfDxNFL+FlSeKToryTwgnmyIrFuQhwMrnH92k5jQaI2/zjQ07qMEW
+ yiWHijWj4EzZlISnsGtIo4pyM0PGr+SJnO2qjDw=
+X-Google-Smtp-Source: ACHHUZ7KW5f46Fu2TwW8RcBsG/OabhqdnHsanr6dWn081cYThqa/uEaRyr5Xt8LyYeDjG1Kl+Ie6Dw==
+X-Received: by 2002:adf:e3c8:0:b0:306:2eab:fb8c with SMTP id
+ k8-20020adfe3c8000000b003062eabfb8cmr885316wrm.42.1686029523455; 
+ Mon, 05 Jun 2023 22:32:03 -0700 (PDT)
 Received: from [192.168.69.115] (vbo91-h01-176-184-50-104.dsl.sta.abo.bbox.fr.
  [176.184.50.104]) by smtp.gmail.com with ESMTPSA id
- y4-20020adfe6c4000000b00307bc4e39e5sm11338815wrm.117.2023.06.05.22.03.09
+ q12-20020a05600000cc00b003093a412310sm11412127wrx.92.2023.06.05.22.32.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Jun 2023 22:03:10 -0700 (PDT)
-Message-ID: <19e16466-7ca7-d16d-8d11-72d4adc3359c@linaro.org>
-Date: Tue, 6 Jun 2023 07:03:08 +0200
+ Mon, 05 Jun 2023 22:32:02 -0700 (PDT)
+Message-ID: <98003cfe-742c-d932-5949-499750489663@linaro.org>
+Date: Tue, 6 Jun 2023 07:32:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [RFC v1 4/4] qemu: adjust queried bar size to power-of-2
+Subject: Re: [PATCH 01/10] sysemu/kvm: Remove unused headers
 Content-Language: en-US
-To: ankita@nvidia.com, jgg@nvidia.com, alex.williamson@redhat.com
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-References: <20230605235005.20649-1-ankita@nvidia.com>
- <20230605235005.20649-5-ankita@nvidia.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
+ kvm@vger.kernel.org, qemu-ppc@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+References: <20230405160454.97436-1-philmd@linaro.org>
+ <20230405160454.97436-2-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230605235005.20649-5-ankita@nvidia.com>
+In-Reply-To: <20230405160454.97436-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,34 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 01:50, ankita@nvidia.com wrote:
-> From: Ankit Agrawal <ankita@nvidia.com>
+On 5/4/23 18:04, Philippe Mathieu-Daudé wrote:
+> All types used are forward-declared in "qemu/typedefs.h".
 > 
-> The GPU device memory is reported to the VM as a BAR. The device memory
-> may not be aligned to the power-of-2, but the QEMU expects the PCI BAR to
-> be. Align the reported device memory size to the next power-of-2 before
-> QEMU does an mmap.
-> 
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/vfio/common.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   include/sysemu/kvm.h | 3 ---
+>   1 file changed, 3 deletions(-)
 > 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 4d01ea3515..bb49200458 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -2061,7 +2061,7 @@ int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index cc6c678ed8..7902acdfd9 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -16,9 +16,6 @@
+>   #ifndef QEMU_KVM_H
+>   #define QEMU_KVM_H
 >   
->       region->vbasedev = vbasedev;
->       region->flags = info->flags;
-> -    region->size = info->size;
-> +    region->size = info->size ? pow2ceil(info->size) : info->size;
+> -#include "qemu/queue.h"
+> -#include "hw/core/cpu.h"
+> -#include "exec/memattrs.h"
 
-        region->size = [REAL_]HOST_PAGE_ALIGN(info->size)?
+Oops this is incorrect...
 
->       region->fd_offset = info->offset;
->       region->nr = index;
+   MemTxAttrs kvm_arch_post_run(CPUState *cpu, struct kvm_run *run);
+
+MemTxAttrs is not:
+- forward-declared
+- used as pointer
+
+Since this is now merged as commit 1e05888ab5 I'll send a fix.
+
+>   #include "qemu/accel.h"
+>   #include "qom/object.h"
 >   
 
 
