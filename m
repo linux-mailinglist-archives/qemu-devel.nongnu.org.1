@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771B0723D37
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 045F4723D49
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 11:27:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6Stq-0002X5-MP; Tue, 06 Jun 2023 05:22:46 -0400
+	id 1q6SxW-0003qR-1G; Tue, 06 Jun 2023 05:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6Sto-0002W6-Gm
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:22:44 -0400
+ id 1q6SxM-0003pc-Tu
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:26:24 -0400
 Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q6Stm-0004cW-RK
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:22:44 -0400
+ id 1q6SxK-0005qg-E0
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 05:26:24 -0400
 Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51480d3e161so8485719a12.3
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:22:42 -0700 (PDT)
+ 4fb4d7f45d1cf-5147f4bbfdaso7837660a12.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 02:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686043361; x=1688635361;
+ d=linaro.org; s=google; t=1686043580; x=1688635580;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k8jRvt8BXK9EcAiWOn1sVo0UKxCVBS0yEqG7bcFAPdI=;
- b=l4Q+/RxPSDgtsXYMVsquC2y075QzNWeyhgUBwTBy/CF4CPs1eFPaW5Mp3ojaoGfwiV
- EP6E5IOZRJh7b+SAkukTaDJ2FS57MOHrhy9CuLSxfxgtsteKJVRmlF8Rk1t+afVqNKf/
- 1MJkswWQCHHpak294EvE5exFMDBPpgOTBHofho4AYNL7Id5cKRaBxPnEGZjlzvNgnt8g
- DSThTd9ZuuWjE04azx4Y4CPrxBYktRQRXYjY7TyPFzI0+EwZdFeNHNQVQWdWXHSwp1kH
- Y0StJ+hhWMgEnV1GKAHJjrD+KHe8dXV9X71B/UT1VDweNg5PVkdxqObEoOMproyYybyz
- PVeg==
+ bh=kxB5MWsESAGVXQB5n7JaHZw0k5JNdaLUjhEPZw9gTng=;
+ b=MpOLv9qZ39rY5UHyXsCJoFPkLbSe4Iv5a7wv0q5EX6O5kS3qev/kg1gXiDJRsGN1xF
+ Kl1RjGjQKnWO2Zbf2cfdVClpwWm0R6E5WJocI1esnP49qOApNEbQTn4WpAWsivfbNDYT
+ ThvY0vCY2Km3UvFTPDAHGfNIJKkTb9HpUT/c9u0Wc00UWrdbLPdNOGd/dFqJzg0KbA7I
+ JeVV7kEnNn0PKXhVknhLLuE9c2wFw2GWP5aQwdnBuNzzbRV3tUBdhIcHFl1UflNgQB47
+ edA4tCdkQTP1OxkUi7KHcHYD0O4H5i1kTbRMLmn8v1uKnDdUhD1slXjGeeduOmPisYkY
+ atAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686043361; x=1688635361;
+ d=1e100.net; s=20221208; t=1686043580; x=1688635580;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k8jRvt8BXK9EcAiWOn1sVo0UKxCVBS0yEqG7bcFAPdI=;
- b=MTf0mNqCx9+sWcw73DiWsnR4wABT4kgfLOEXcNRIkDoYhZWcgEyF0tc1GTS503CJzf
- SDYKGyafXUEGP25bniRmKh4o8s5rt5VtwEsi9UOHnG4zazP+IN0BFSeu8EhqtDMiAtz/
- kv8KU1QdG/ZN5BmgA/wKrtG8z/9JdrCaQt1HBvy8SWMsMEyD6ptWFEQnkhfm4NN2E4wb
- 5O4o123dKgU6ggIsKMDcEI+N1fr8HO0N0pLBFTDrba4lnlkRjqGksI2Rm60GEuiZPltK
- i7kiprOIQH1Gx4mr4LzpW799lwb60yJ3oAL6iQkIxajO7mBZt5HiSX77iiBEWq83Xp70
- PVVA==
-X-Gm-Message-State: AC+VfDw47fwbn2q6rxQ1X6w99o9ltUp8XytFKatqvzd/Il0oPVo30Zb8
- SGHuZOf+b3eyVerANIc/M15uW7Wvg429s2cvpYfX6w==
-X-Google-Smtp-Source: ACHHUZ4jpPoGpTvnCRUH3oRVRTc/uZia+ZeEIGQmJ+nuZ8Tgbrls3GCNm5V2oBfKv9FNSg4bArW3X6useNGpHSeqrA0=
-X-Received: by 2002:a17:907:96a3:b0:96f:f451:1874 with SMTP id
- hd35-20020a17090796a300b0096ff4511874mr2306739ejc.59.1686043361098; Tue, 06
- Jun 2023 02:22:41 -0700 (PDT)
+ bh=kxB5MWsESAGVXQB5n7JaHZw0k5JNdaLUjhEPZw9gTng=;
+ b=koCuwoPrCcg2XBKhKh1B/FPOsp/MFzelwiH1aSRNed+OUwKV6mlU5vMWDhrVjyR8DT
+ vJ/og1pxJhXzh0/nt/gY5WrF6ZODO3g/Md3yfcex+Z/idKfwhtBd/Iol7FCosixcl/no
+ mT/pSvyG68mBzPpwy0bc8MfpYlq26Pg0NU/5kpU0eQVpjl5BibhJ3bdk5ACG4lFEL7ry
+ PR/fQcZ+hImLfrb3/IoYL4WMBqgKkhDc+8CvhNKYfO3QEvt5lh30xbhltL29PGuZ5DnQ
+ 07AbVSKSN+PwfkyDBiwzrkEtrROXJDHLyQhmhxXS1wT1hkJ/Lk5nPb+iqgXtK8amfMdz
+ HY3Q==
+X-Gm-Message-State: AC+VfDzL5cXyaaar3HG2zmfoET3kkMhlqOHdaJSdK8izOGfX+ytPJl6/
+ d1PeRMXazN5GxcPGXQt/ucwu9moh5I+13WJJdU1sXg==
+X-Google-Smtp-Source: ACHHUZ4f/4zUiGgLM/i/4RVdMPVLlfyeD5cau1B+K+Q9FrnClidiIGaqk+yQwE5j6s6t3znvXRV5dbZhDOiz144lIjc=
+X-Received: by 2002:aa7:d4d3:0:b0:514:9422:37db with SMTP id
+ t19-20020aa7d4d3000000b00514942237dbmr1314993edr.39.1686043580062; Tue, 06
+ Jun 2023 02:26:20 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230605175647.88395-1-philmd@linaro.org>
- <20230605175647.88395-4-philmd@linaro.org>
-In-Reply-To: <20230605175647.88395-4-philmd@linaro.org>
+ <20230605175647.88395-5-philmd@linaro.org>
+In-Reply-To: <20230605175647.88395-5-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 6 Jun 2023 10:22:07 +0100
-Message-ID: <CAFEAcA81sCDGrk+TKe42rQ+w4PMOORsgwj4DZR1Ky29i5SFm8A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] qemu/uri: Use QueryParams type definition
+Date: Tue, 6 Jun 2023 10:25:46 +0100
+Message-ID: <CAFEAcA8SSjrwF+9K7XSN62GBYL5tktYGB3YLMp_Bvh5HrPeMqQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] bulk: Do not declare function prototypes using
+ 'extern' keyword
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -89,30 +90,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 at 18:57, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+On Mon, 5 Jun 2023 at 18:58, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
 > wrote:
 >
-> Follow QEMU CODING_STYLE, use the type definition.
+> By default, C function prototypes declared in headers are visible,
+> so there is no need to declare them as 'extern' functions.
+> Remove this redundancy in a single bulk commit; do not modify:
+>
+>   - meson.build (used to check function availability at runtime)
+>   - pc-bios/
+>   - libdecnumber/
+>   - tests/
+>   - *.c
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  include/qemu/uri.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/qemu/uri.h b/include/qemu/uri.h
-> index b43f35a6a6..2875c51417 100644
-> --- a/include/qemu/uri.h
-> +++ b/include/qemu/uri.h
-> @@ -96,7 +96,7 @@ typedef struct QueryParams {
->    QueryParam *p;       /* array of parameters */
->  } QueryParams;
->
-> -struct QueryParams *query_params_new (int init_alloc);
-> +QueryParams *query_params_new (int init_alloc);
->  extern QueryParams *query_params_parse (const char *query);
->  extern void query_params_free (QueryParams *ps);
-
-Also makes that prototype match the following two.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
