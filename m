@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A70072419B
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 446FC724190
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Jun 2023 14:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6VKt-0001TH-GU; Tue, 06 Jun 2023 07:58:53 -0400
+	id 1q6VKt-0001W0-DE; Tue, 06 Jun 2023 07:58:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VKP-0000k3-S5
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:58:25 -0400
+ id 1q6VKR-0000mC-34
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:58:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q6VKK-0005vZ-Tp
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:58:18 -0400
+ id 1q6VKO-0005w3-JU
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 07:58:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686052695;
+ s=mimecast20190719; t=1686052698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FxhwVzVRwljnUz15Fjsw4i2JV+aBvDRzU9xpCc326Bw=;
- b=M/SP8tVxAkmXKEnbHjMU4rgOD9BYcyFDegxsJ3j9HlFxdmwtYCYXMyb0O0SpbcB86ogda6
- y0vPMZBogKv+s3ApgOlXLiSW8DMO2rdZkuvIlPGmeBgX5Ag+XhqPdv6p7HNYplmsLwPjOX
- h758nHFCPEM0+zarhS2eqeP2oQmlcuQ=
+ bh=q/sY44RWB9rTaWjpKipGVlF7w0jh7ExDt4ITjGoq9Cc=;
+ b=PQ62kUzcQ6FX9+/hzyK31FO7TkBE1UYWXy34fMVx6FFdcWsmiiVp/M8NcWtVQq6pKyMtRe
+ bUGZbgBGTlfZ+ZrUhFXFnVEkafspNy55x0jFXvYK0eOshqXgMah5C33iCru1JquaqR351B
+ gRctYdtjaPivomcJyzpQtctc26TLyFA=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-80-c6uYuGcvOC6YUUkIXPr5OQ-1; Tue, 06 Jun 2023 07:58:14 -0400
-X-MC-Unique: c6uYuGcvOC6YUUkIXPr5OQ-1
+ us-mta-624-Xm8nlF5uP-KnhdCVtKRoig-1; Tue, 06 Jun 2023 07:58:17 -0400
+X-MC-Unique: Xm8nlF5uP-KnhdCVtKRoig-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D45F1C01E9D
- for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:58:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 330091C01E82
+ for <qemu-devel@nongnu.org>; Tue,  6 Jun 2023 11:58:17 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E02251121314;
- Tue,  6 Jun 2023 11:58:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 77AF11121314;
+ Tue,  6 Jun 2023 11:58:16 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 13/21] ui/egl: default to GLES on windows
-Date: Tue,  6 Jun 2023 15:56:50 +0400
-Message-Id: <20230606115658.677673-14-marcandre.lureau@redhat.com>
+Subject: [PATCH 14/21] ui: add egl_fb_read_rect()
+Date: Tue,  6 Jun 2023 15:56:51 +0400
+Message-Id: <20230606115658.677673-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20230606115658.677673-1-marcandre.lureau@redhat.com>
 References: <20230606115658.677673-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -82,31 +82,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Windows GL drivers are notoriously not very good. Otoh, ANGLE provides
-rock solid GLES implementation on top of direct3d. We should recommend
-it and default to ES when using EGL (users can easily override this if
-necessary)
+Similar to egl_fb_read(), same limitations, but with extra arguments to
+read a subset of the framebuffer. Used in following commits.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/egl-helpers.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/ui/egl-helpers.h |  1 +
+ ui/egl-helpers.c         | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
+diff --git a/include/ui/egl-helpers.h b/include/ui/egl-helpers.h
+index 6c4eb5dd70..6e2f0c49a6 100644
+--- a/include/ui/egl-helpers.h
++++ b/include/ui/egl-helpers.h
+@@ -31,6 +31,7 @@ void egl_fb_setup_for_tex(egl_fb *fb, int width, int height,
+ void egl_fb_setup_new_tex(egl_fb *fb, int width, int height);
+ void egl_fb_blit(egl_fb *dst, egl_fb *src, bool flip);
+ void egl_fb_read(DisplaySurface *dst, egl_fb *src);
++void egl_fb_read_rect(DisplaySurface *dst, egl_fb *src, int x, int y, int w, int h);
+ 
+ void egl_texture_blit(QemuGLShader *gls, egl_fb *dst, egl_fb *src, bool flip);
+ void egl_texture_blend(QemuGLShader *gls, egl_fb *dst, egl_fb *src, bool flip,
 diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 4b29dda7ed..1c718b0b98 100644
+index 1c718b0b98..1169e19adb 100644
 --- a/ui/egl-helpers.c
 +++ b/ui/egl-helpers.c
-@@ -537,6 +537,10 @@ int qemu_egl_init_dpy_mesa(EGLNativeDisplayType dpy, DisplayGLMode mode)
- #ifdef WIN32
- int qemu_egl_init_dpy_win32(EGLNativeDisplayType dpy, DisplayGLMode mode)
- {
-+    /* prefer GL ES, as that's what ANGLE supports */
-+    if (mode == DISPLAYGL_MODE_ON) {
-+        mode = DISPLAYGL_MODE_ES;
-+    }
-     return qemu_egl_init_dpy(dpy, 0, mode);
+@@ -169,6 +169,20 @@ void egl_fb_read(DisplaySurface *dst, egl_fb *src)
+                  GL_BGRA, GL_UNSIGNED_BYTE, surface_data(dst));
  }
- #endif
+ 
++void egl_fb_read_rect(DisplaySurface *dst, egl_fb *src, int x, int y, int w, int h)
++{
++    assert(surface_width(dst) == src->width);
++    assert(surface_height(dst) == src->height);
++    assert(surface_format(dst) == PIXMAN_x8r8g8b8);
++
++    glBindFramebuffer(GL_READ_FRAMEBUFFER, src->framebuffer);
++    glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
++    glPixelStorei(GL_PACK_ROW_LENGTH, surface_stride(dst) / 4);
++    glReadPixels(x, y, w, h,
++                 GL_BGRA, GL_UNSIGNED_BYTE, surface_data(dst) + x * 4);
++    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
++}
++
+ void egl_texture_blit(QemuGLShader *gls, egl_fb *dst, egl_fb *src, bool flip)
+ {
+     glBindFramebuffer(GL_FRAMEBUFFER_EXT, dst->framebuffer);
 -- 
 2.40.1
 
