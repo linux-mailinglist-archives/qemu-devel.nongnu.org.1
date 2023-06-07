@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410C37257A7
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 10:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC207257C8
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 10:34:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6oXK-0000tr-C9; Wed, 07 Jun 2023 04:28:58 -0400
+	id 1q6obf-0002H9-0P; Wed, 07 Jun 2023 04:33:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6oXI-0000tZ-VW
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:28:56 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6oXH-0002Ol-HK
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:28:56 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-30e412a852dso2674925f8f.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 01:28:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686126534; x=1688718534;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8ymjBykz6oPkeD2DnN/+SlsP633S5A1gJPG1IcrUGQU=;
- b=CMNu3B2irewPXFGkFCykjhzSkjfgLf5XHuLQqIM29C/N71De//ASQzev0vxJYlmBrR
- 2oMlIt4YunpjzwX2OOkwOMcEswpcGOx0sTBluTb+13rXsfoxbOnx3NZ4U0Bkrlb51q0o
- MlT15Hgk8mxEKZWt2ilBVd2nZsCvhooi7ky7EEA9tuIMb5m2vzyEFj5eHZrHCeqOLTc/
- 4shAkMjmbEgB0PZDDrQnodmVQL095BtKDfHeFYMlV3u1o8Th43EFkaz2pDsV49Qu6Ros
- zAy0ArKD6ryMYey7lGYVgVPo7krMcpooJOWHmsDelNepkKCC11AZw+OZ/771Is7uQncn
- X3ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686126534; x=1688718534;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8ymjBykz6oPkeD2DnN/+SlsP633S5A1gJPG1IcrUGQU=;
- b=gLWgbxfzeIvSv6L38x2gyoiTNu06WM0/coITzSndvuqO75KmMWsGdoSt8dGjt9aA+u
- 3B6ODt2wOpFfVkHiFBILie4bTyQn4y96PBjXiTnm0+chKvXNH8Bp6hQqw5I5/gqAEwa6
- TwDhUgOHGUzfqCxft47OnsEPA7lse4iRt7XHk4W/gpQvCgTfi3HsP/BvALYko5Ar0ePo
- uJ3aPH3uqrEpAe4UMLAKae2zO+WiMcMtTg6wJ4/cJcAWuFjASajm3I8WFkcdtgwSVq39
- USYpd5wlwpSqtp6H0mPQOOx14rMrvnFRPpqdq4YC4O/kte8j2QYeywdE70ujrmY3EyVo
- hntQ==
-X-Gm-Message-State: AC+VfDwiU05jdzonRg/tZNrQAeZp5O2q401xzo5AIlqPblv4vFK6iD7D
- TlwCGDxdCNFE6OQJH4wOGO78yA==
-X-Google-Smtp-Source: ACHHUZ6CHEcHbUZ+NzsIEW0rIKaUVAc7Mcai2MyGMRCcEXcEVTb8SvhDGAJQj8b4ohn7Nnwzybmgew==
-X-Received: by 2002:adf:dd05:0:b0:30a:e378:76e with SMTP id
- a5-20020adfdd05000000b0030ae378076emr3358951wrm.64.1686126534031; 
- Wed, 07 Jun 2023 01:28:54 -0700 (PDT)
-Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
- [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
- d6-20020a5d5386000000b00307c46f4f08sm14797784wrv.79.2023.06.07.01.28.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 01:28:53 -0700 (PDT)
-Message-ID: <62e69c35-4869-8cc3-5983-9f83ff649da9@linaro.org>
-Date: Wed, 7 Jun 2023 10:28:51 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q6obb-0002Gt-V5
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:33:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q6obT-0003DS-4U
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:33:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686126793;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Uy0770qaMWedsor4n7Mdoy4+YnmmOBTHH5nAqV7e7U4=;
+ b=OG/x96TY20hI9lYIXKgU6MceOw8Q99T/SKCIbtug/rxlKE9vyStewoM1StUlhAikWEX8pX
+ 9hugCk0vyGxDLsogi3jNwGK+Wqa5drirO2aaKzixyoies65YoZISUswUHlypR+vkTmNvE6
+ Hef/k57vLGW5cTAMGTxw6G075JpCmY8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-323-VzUu4XmuPpOUQoK43xfNEQ-1; Wed, 07 Jun 2023 04:33:08 -0400
+X-MC-Unique: VzUu4XmuPpOUQoK43xfNEQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F225101A590;
+ Wed,  7 Jun 2023 08:33:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B859F477F61;
+ Wed,  7 Jun 2023 08:33:04 +0000 (UTC)
+Date: Wed, 7 Jun 2023 09:33:02 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ qemu-devel@nongnu.org, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, imammedo@redhat.com, jusual@redhat.com,
+ dfaggioli@suse.com, joao.m.martins@oracle.com, jon.grimm@amd.com,
+ santosh.Shukla@amd.com
+Subject: Re: [PATCH v5 3/3] pc: q35: Bump max_cpus to 1024
+Message-ID: <ZIBAvooWylaNQ5Lb@redhat.com>
+References: <20230607024939.703991-1-suravee.suthikulpanit@amd.com>
+ <20230607024939.703991-4-suravee.suthikulpanit@amd.com>
+ <81b16f60-87d6-3043-3f1c-d77f1bf8a1c4@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v2 04/12] hw/ssi: Add an "addr" property to SSIPeripheral
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- Alistair Francis <alistair@alistair23.me>
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-5-clg@kaod.org>
- <CACPK8XencE5MMgYdQ5H6iV_rTHaynv-UJYHZy=y-DaCXYBWWXg@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CACPK8XencE5MMgYdQ5H6iV_rTHaynv-UJYHZy=y-DaCXYBWWXg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <81b16f60-87d6-3043-3f1c-d77f1bf8a1c4@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,28 +85,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 10:06, Joel Stanley wrote:
-> On Wed, 7 Jun 2023 at 04:40, Cédric Le Goater <clg@kaod.org> wrote:
->>
->> Boards will use this new property to identify the device CS line and
->> wire the SPI controllers accordingly.
+On Wed, Jun 07, 2023 at 10:26:59AM +0200, Philippe Mathieu-Daudé wrote:
+> On 7/6/23 04:49, Suravee Suthikulpanit wrote:
+> > Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
+> > arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
+> > 
+> > In case KVM could not support the specified number of vcpus, QEMU would
+> > return the following error message:
+> > 
+> >    qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid argument
 > 
-> "addr" and not "cs" or even "chip-select"?
-
-"chip-select" is a good suggestion!
-
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> Odd, we already check the upper limit with KVM_CAP_NR_VCPUS.
+> See in kvm_init():
 > 
->>
->> Cc: Alistair Francis <alistair@alistair23.me>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   include/hw/ssi/ssi.h | 3 +++
->>   hw/ssi/ssi.c         | 7 +++++++
->>   2 files changed, 10 insertions(+)
+>     /* check the vcpu limits */
+>     soft_vcpus_limit = kvm_recommended_vcpus(s);
+>     hard_vcpus_limit = kvm_max_vcpus(s);
+> 
+> When testing your series I get:
+> 
+> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested (1024)
+> exceeds the recommended cpus supported by KVM (710)
+> 
+> $ uname -srvp
+> Linux 5.15.0-71-generic #78-Ubuntu SMP Tue Apr 18 09:00:29 UTC 2023 x86_64
+
+That's a relatively old kernel. With latest kernels, the 'recommended cpus'
+limit reported will match the number of CPUs in your host, so for me it
+always complains for smp > 12.
+
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
