@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817AA725E58
+	by mail.lfdr.de (Postfix) with ESMTPS id 871EB725E59
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6s2t-0006xr-FW; Wed, 07 Jun 2023 08:13:47 -0400
+	id 1q6s2x-0006zR-2S; Wed, 07 Jun 2023 08:13:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q6s2r-0006wH-Cu
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:13:45 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1q6s2u-0006xw-UG
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:13:48 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q6s2p-000360-OV
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:13:45 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-653fcd58880so2745464b3a.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 05:13:42 -0700 (PDT)
+ id 1q6s2t-00037g-Eo
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:13:48 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1b0236ee816so4146965ad.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 05:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686140022; x=1688732022;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=EMiW25v1yGrSSjCGLoRa326ruQCygeOytRF9hBNtrkE=;
- b=TILPBt+pUqlCzsn3JwcJw7/N3+5U92D0pQRouy4qx2ypV3VXM+ERozjkd7YjDV0aHY
- ExLxYJg4CPWMwNXdaRyrx/DgSgO5P8jz3ehSFcbErhOQdRWZnDyklsPJ5avT2o+diiKf
- YelMDQ+tHThQF5TC/bdpdxaW5smTdJN0ujHbXXdBqjCBSrFKGzXrroXzh9qjlpVnoTvs
- JmeW9R1bHYBiEJ6yFHv2qi9ClOK/YHlB3cMBMwe6mzuPuLgeUIY/ZQgqPuBuEO+FoGIW
- FG9bhzkNRPKQ8MKvH1+nyaiu5vJBS2cMvImP5xn9J5JjFbLqflu136tGA2A2PUA9UtPo
- hfLA==
+ d=gmail.com; s=20221208; t=1686140026; x=1688732026;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oQJmHy0KSk8y5Lwl9VPrZd1umjZ0oo+o3EskG53S5WA=;
+ b=kN2TpeyD/kINn2laFiG+cKLjidurTySQS61WIb2d/4P+8EdMEV8YAKRFIIKyc3AJl8
+ 4dPbLwEcPTpQNOBHRZOcNDW3vle3nw47TrwUXoPVeYNrbRu3vhD/XshTrw0DDb4AHYx9
+ KVjl4EQjj2dZqLcaCjWsrJh/+5tIZLQ3RD1HrqXVZCl2PqclnpBW1l5F4iPtlp6c2Rj5
+ iyutgmxhJnjiyY5Zdg4R8qGvL2nYuQnl//uxYs8BGjQNY7a2MRLM4s7dLd/nsHw5h9Ay
+ CNZ+xSr7eGM71yI7SPuF/WYwoiUH8UVqYhwvouEJxWs7HfuWxZaLYRALvYiSrffU2+OA
+ Du7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686140022; x=1688732022;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EMiW25v1yGrSSjCGLoRa326ruQCygeOytRF9hBNtrkE=;
- b=U/npOkaGDe/Z8WsX983YymICqzc6ktWAVpCDiEg7csQBM7wmt42ZUgPbGuHFa+qfY+
- rltQfu0y5U8LQXwyCI7cXDH3bgn00k/AGZd+vcvjfRqGD9S2KxhXnbK73pB6JmdSxzNx
- 0CB9Fkihc/B3EwKB7uXGzmw+dfKA1LyCMNuwgHGqxavlR23ovalP7HJ7Z3mrZWuh8tFq
- XHWnq0O1Ynq/qVLTD9y/tAMwOzTScfpOPbQNNt8ybFEmaOWbmpq64N2CfGOTjDH2oFhi
- fMM/ZXmch4XhH3fnXUQnrQWpt38c3H3pLlF2C1LrnTPc5vFRADn1kRACq7Ax+2bxpHtZ
- 0S7g==
-X-Gm-Message-State: AC+VfDzUdmTxP2IWYlltaCqRGAa+4q+3+vg64qsU9rI7D3ZIPHEZeyoJ
- FltUfxO8M1NGm3Sg3b/+WwQ=
-X-Google-Smtp-Source: ACHHUZ56phjB9DJzM1I1OsvkTxpNdARz0rGMyX2jCzbtBdsLES/hkVleYd2xJVtskXY2ceO8DQpeUg==
-X-Received: by 2002:a05:6a20:2d20:b0:10b:56bd:b00e with SMTP id
- g32-20020a056a202d2000b0010b56bdb00emr1069535pzl.40.1686140021374; 
- Wed, 07 Jun 2023 05:13:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686140026; x=1688732026;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oQJmHy0KSk8y5Lwl9VPrZd1umjZ0oo+o3EskG53S5WA=;
+ b=DawSGuNM6gfa7URTkRM6TJ1QaNJnVtHYoy2+Ws+ZKkJFerCs5UBTBMZHtvoxObNne2
+ HxxKtt0S0+NUaTwLTR/XOK3WD4NWxHCqP0LXbBcVGeIeI6Q/SLAuXYszIqd4vZIyXJfX
+ xaTtARI8hbwIi6ukEjwRy5N1MlR3AxLQGLANJ5BRyUWzYjwVZC7zvQlDu5ONwtDyBZWd
+ clBFRbf/2TGQIZLUSjuqP/zeXbDUmhnocbcACHNG/RmTg7VNgv9nlLE8x+axPMBECN78
+ yY0AFMPSKq2rtmbAD0XMBDjE/Djq4kt7+FMKUZIBrxpiJyHiLFo0XJPwxSwVdIBnLJ9K
+ PKmg==
+X-Gm-Message-State: AC+VfDy7qJUcKO04JydR0XMxGR6HulYH165yz2d0Xqc5Vzfs+4pcw5FM
+ zkpd4dTttkXU3gjqcpsN1pM=
+X-Google-Smtp-Source: ACHHUZ5hDx8MtC0de9H6xpQLalqNZ+0o/qrDC/F+ammJoEcNTlQdTL2g59QDeuqfdWIDhBMnZBjwoQ==
+X-Received: by 2002:a17:903:1209:b0:1ae:8fa:cd4c with SMTP id
+ l9-20020a170903120900b001ae08facd4cmr16610055plh.7.1686140025695; 
+ Wed, 07 Jun 2023 05:13:45 -0700 (PDT)
 Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- m26-20020a056a00165a00b006610b89d53bsm2208972pfc.73.2023.06.07.05.13.40
+ 21-20020a170902c15500b001ae6b4b28adsm10308747plj.130.2023.06.07.05.13.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 05:13:40 -0700 (PDT)
+ Wed, 07 Jun 2023 05:13:45 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -61,14 +62,17 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH RFC 0/2] vdpa: refactor vdpa_feature_bits array
-Date: Wed,  7 Jun 2023 20:12:16 +0800
-Message-Id: <cover.1686137925.git.yin31149@gmail.com>
+Subject: [PATCH RFC 1/2] vdpa: delete duplicated VIRTIO_NET_F_RSS in
+ vdpa_feature_bits
+Date: Wed,  7 Jun 2023 20:12:17 +0800
+Message-Id: <3b43907b66b7f9782eb59598055f9655e875e421.1686137925.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1686137925.git.yin31149@gmail.com>
+References: <cover.1686137925.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=yin31149@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,23 +96,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset removes the duplicated VIRTIO_NET_F_RSS entry
-in vdpa_feature_bits array and reorganizes the vdpa_feature_bits array
-in ascending order based on its value to avoid future duplicates.
+This entry was duplicated on referenced commit. Removing it.
 
-Note that this patchset conflicts with the [1], but conflict can be
-easily resolved by inserting the VIRTIO_NET_F_CTRL_GUEST_OFFLOADS entry
-into vdpa_feature_bits array in order.
+Fixes: 402378407dbd ("vhost-vdpa: multiqueue support")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
+ net/vhost-vdpa.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-[1]. https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg00601.html
-
-Hawkins Jiawei (2):
-  vdpa: delete duplicated VIRTIO_NET_F_RSS in vdpa_feature_bits
-  vdpa: order vdpa_feature_bits array
-
- net/vhost-vdpa.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 37cdc84562..d90c8e2796 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -69,7 +69,6 @@ const int vdpa_feature_bits[] = {
+     VIRTIO_NET_F_CTRL_RX_EXTRA,
+     VIRTIO_NET_F_CTRL_VLAN,
+     VIRTIO_NET_F_CTRL_MAC_ADDR,
+-    VIRTIO_NET_F_RSS,
+     VIRTIO_NET_F_MQ,
+     VIRTIO_NET_F_CTRL_VQ,
+     VIRTIO_F_IOMMU_PLATFORM,
 -- 
 2.25.1
 
