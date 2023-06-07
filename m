@@ -2,48 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524CC725A34
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB399725A54
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6pNv-0002xc-61; Wed, 07 Jun 2023 05:23:19 -0400
+	id 1q6pRb-00047z-UC; Wed, 07 Jun 2023 05:27:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6pNr-0002xP-31
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:23:15 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q6pRY-00047b-7f
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:27:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6pNp-00038a-1K
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:23:14 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 40609B442;
- Wed,  7 Jun 2023 12:23:10 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id AD198A2A6;
- Wed,  7 Jun 2023 12:23:09 +0300 (MSK)
-Message-ID: <5bb1a930-3dbe-6c83-d612-c9b81fe1b8f4@tls.msk.ru>
-Date: Wed, 7 Jun 2023 12:23:09 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q6pRI-0003l3-Sf
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:27:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686130008;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XaRFo6R3K024Gv6B8gdhMrTECP1g7P8XX+H3Ll9MpPM=;
+ b=ExicqDJkE0if02GvGBTr9r+iHOHRXlSkl0On1akGuUBTCbrE9Gffnn4ZUEqng/F0iUyjPQ
+ GDQrT230RR3aWXgsa7ybqt4Jx5cccSpr5h5jWj3AwhZHV/k0cRgT+YOuGSw1peOIQTmRBk
+ jrzMyRruadgsQRrXLf07kyUX9qIhy6E=
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
+ [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-468-B3U5tdKQOEKvYMV28xU3Xg-1; Wed, 07 Jun 2023 05:26:47 -0400
+X-MC-Unique: B3U5tdKQOEKvYMV28xU3Xg-1
+Received: by mail-vk1-f198.google.com with SMTP id
+ 71dfb90a1353d-45e95f53dfbso1066676e0c.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 02:26:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686130006; x=1688722006;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XaRFo6R3K024Gv6B8gdhMrTECP1g7P8XX+H3Ll9MpPM=;
+ b=B/cyp5uPEmzZ7Hb4PmEa4Dmext6nHiucC8qQwZeaKAEWR2j8hMnitS1C40pcWhOFpS
+ xdPeF33c1v59Na7az3kT3ABtgk3zxjwYybpix0xZjQT0o5v+WtRrJ1d0bk+Fjb+qQU03
+ uvJVVeo0Th0bORh4uLMt/zUF82UlfmRwnowBcI7t9gsu8Drb+0/nwlfGuXyZjiY2YuwY
+ 0HJiLfUZUbQHpq0qSlp86XJyutknoalkAMchV2F8/Zntuk44qru4bNgz/WHdFcW1eMGE
+ QteduaafwRGN4HSJd5Lk/9a22O48M1NYH6pkBtCg4hwGg+ck2/p4vMe8cHZ8nrlvnOip
+ RY2A==
+X-Gm-Message-State: AC+VfDwbXsyKpNvW1idFXxDDD5Uh96qgnguegK9sci7BPlGN3/JcB7V8
+ jQwDdaxX1QwvZ65O+eF67cdbNKL/URwdXAL8iLU4CDBXiew5TAWxsTqc7Y+XGsoN6hDhXgdsyGy
+ eV4AzJPVe+UmOMcZhqAYhk9X/SjhnHKE=
+X-Received: by 2002:a05:6102:21b:b0:439:6a84:a396 with SMTP id
+ z27-20020a056102021b00b004396a84a396mr747564vsp.33.1686130006648; 
+ Wed, 07 Jun 2023 02:26:46 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5EgmqMo96n1CNLDYZvyx8G2yzzNk+5wFpmTaOZZtrO066y+xaHBrz17VVLC8RUcgOHtaePcClSwTWkFkKpsAY=
+X-Received: by 2002:a05:6102:21b:b0:439:6a84:a396 with SMTP id
+ z27-20020a056102021b00b004396a84a396mr747562vsp.33.1686130006344; Wed, 07 Jun
+ 2023 02:26:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] virtio-net: correctly report maximum tx_queue_size value
-Content-Language: en-US
-To: Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230605142125.3881859-1-lvivier@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230605142125.3881859-1-lvivier@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230607090336.59424-1-pbonzini@redhat.com>
+ <f1c785b1-beac-55e1-7da9-d9a5f1ab77ff@linaro.org>
+In-Reply-To: <f1c785b1-beac-55e1-7da9-d9a5f1ab77ff@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 7 Jun 2023 11:26:35 +0200
+Message-ID: <CABgObfYJA=K0TXZP4tqaHrTG4N+nsFCOJsvLNM3-mXWsVY84cA@mail.gmail.com>
+Subject: Re: [PATCH] meson: fix "static build" entry in summary
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,61 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-05.06.2023 17:21, Laurent Vivier wrote:
-> Maximum value for tx_queue_size depends on the backend type.
-> 1024 for vDPA/vhost-user, 256 for all the others.
-> 
-> The value is returned by virtio_net_max_tx_queue_size() to set the
-> parameter:
-> 
->      n->net_conf.tx_queue_size = MIN(virtio_net_max_tx_queue_size(n),
->                                      n->net_conf.tx_queue_size);
-> 
-> But the parameter checking uses VIRTQUEUE_MAX_SIZE (1024).
-> 
-> So the parameter is silently ignored and ethtool reports a different
-> value than the one provided by the user.
-> 
->     ... -netdev tap,... -device virtio-net,tx_queue_size=1024
-> 
->      # ethtool -g enp0s2
->      Ring parameters for enp0s2:
->      Pre-set maximums:
->      RX:		256
->      RX Mini:	n/a
->      RX Jumbo:	n/a
->      TX:		256
->      Current hardware settings:
->      RX:		256
->      RX Mini:	n/a
->      RX Jumbo:	n/a
->      TX:		256
-> 
->     ... -netdev vhost-user,... -device virtio-net,tx_queue_size=2048
-> 
->      Invalid tx_queue_size (= 2048), must be a power of 2 between 256 and 1024
-> 
-> With this patch the correct maximum value is checked and displayed.
-> 
-> For vDPA/vhost-user:
-> 
->      Invalid tx_queue_size (= 2048), must be a power of 2 between 256 and 1024
-> 
-> For all the others:
-> 
->      Invalid tx_queue_size (= 512), must be a power of 2 between 256 and 256
-> 
-> Fixes: 2eef278b9e63 ("virtio-net: fix tx queue size for !vhost-user")
-> Cc: mst@redhat.com
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> ---
->   hw/net/virtio-net.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, Jun 7, 2023 at 11:09=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> On 7/6/23 11:03, Paolo Bonzini wrote:
+> > Fixes: a0cbd2e8496 ("meson: use prefer_static option", 2023-05-18)
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >   meson.build | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/meson.build b/meson.build
+> > index 553c8e0b9c5..34d0444ffbb 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -4088,7 +4088,7 @@ summary_info +=3D {'QEMU_LDFLAGS':      ' '.join(=
+qemu_ldflags)}
+> >   summary_info +=3D {'profiler':          get_option('profiler')}
+> >   summary_info +=3D {'link-time optimization (LTO)': get_option('b_lto'=
+)}
+> >   summary_info +=3D {'PIE':               get_option('b_pie')}
+> > -summary_info +=3D {'static build':      config_host.has_key('CONFIG_ST=
+ATIC')}
+> > +summary_info +=3D {'static build':      get_optin('prefer_static')}
+>
+> Typo 'get_option'.
 
-Is it a -stable material, or not worth fixing in -stable?
-To me it looks like it should be fixed.
+Yeah, sent after testing but before committing the obvious fix. :(
 
-Thanks,
+Paolo
 
-/mjt
+> >   summary_info +=3D {'malloc trim support': has_malloc_trim}
+> >   summary_info +=3D {'membarrier':        have_membarrier}
+> >   summary_info +=3D {'debug graph lock':  get_option('debug_graph_lock'=
+)}
+>
+
 
