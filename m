@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D9C7262A1
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E2272629C
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:20:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6u1H-0003Me-7O; Wed, 07 Jun 2023 10:20:15 -0400
+	id 1q6u0t-0002tH-43; Wed, 07 Jun 2023 10:19:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=51561cf95=anthony.perard@citrix.com>)
- id 1q6u1E-0003Dx-Nk
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:20:12 -0400
-Received: from esa3.hc3370-68.iphmx.com ([216.71.145.155])
+ id 1q6u0q-0002sF-MN
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:48 -0400
+Received: from esa4.hc3370-68.iphmx.com ([216.71.155.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=51561cf95=anthony.perard@citrix.com>)
- id 1q6u1B-0003g5-Od
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:20:12 -0400
+ id 1q6u0o-0003SV-IB
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1686147609;
+ d=citrix.com; s=securemail; t=1686147586;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FL0kczg1AEWFFnOGZrrfsv4UULDPFWhofp92N3+6x0s=;
- b=SDVICLXHMY2/pKOTpOWr2/0FPbb48+hnG+iMTHcrSYnpVgGsHbpHCp3g
- c9OGgLVOaQasIvYxQsqef+yWzXu1EJOMxbJ93OHigdQOsgVFbe1GmF5qU
- eQ/kkK7Y37QpvelgGm/BG3Pm9iigKmgY83MTSVdGXWGAIdNG+brzvlxG7 k=;
-Authentication-Results: esa3.hc3370-68.iphmx.com;
+ bh=TqcufpbSnrTVN9hQiM1OlG/594iES3q/eUlxOWH9DnI=;
+ b=FRjugmCU07DajdPSmA4/iFafkiLhfxRZBPevu+8gculxlfjUp8Xw0nTk
+ Auy2kvcKmy5mp5VqbGiA1c5PSh8DZzyUsc7lmlRORG47vpcQMxEsOxA/F
+ LfkIy5MI6vNe5GgN5JXGs7sZAYDpV1kZXr/CsZjSEHoGVgc/b0czRE56+ Y=;
+Authentication-Results: esa4.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 111938275
-X-Ironport-Server: esa3.hc3370-68.iphmx.com
+X-MesageID: 114430941
+X-Ironport-Server: esa4.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23:xv6ixqDF3YpUfhVW/yjjw5YqxClBgxIJ4kV8jS/XYbTApGl3hTUCy
- TMdWW2AMqyKM2DzKIh2Ydm19UIDuJbXnNFkQQY4rX1jcSlH+JHPbTi7wuUcHAvJd5GeExg3h
- yk6QoOdRCzhZiaE/n9BCpC48T8nk/nOHuGmYAL9EngZbRd+Tys8gg5Ulec8g4p56fC0GArIs
- t7pyyHlEAbNNwVcbCRMs8pvlDs15K6p4G1A4QRkDRx2lAS2e0c9Xcp3yZ6ZdxMUcqEMdsamS
- uDKyq2O/2+x13/B3fv8z94X2mVTKlLjFVDmZkh+AsBOsTAbzsAG6Y4pNeJ0VKtio27hc+ada
- jl6ncfYpQ8BZsUgkQmGOvVSO3kW0aZuoNcrLZUj2CA6IoKvn3bEmp1T4E8K0YIwws1FJH5W7
- 9ghNGowaUm/le2skeyJc7w57igjBJGD0II3v3hhyXfSDOo8QICFSKLPjTNa9G5u3IYUR6+YP
- pdHL2M1N3wsYDUWUrsTIJs4gOevgGi5azBCoUiZjaE2/3LS3Ep6172F3N/9I4XTFJ4FxBnFz
- o7A12LLJSkiHYGY8AKA3SiGr+vFlzngZatHQdVU8dY12QbOlwT/EiY+TFa+vLy1h1CzX/pZL
- Eob/DdoqrI9nGSwTtT7QxCpiHGBtx8YHdFXFoUHBBqlk/SOpVzDXy5dE2AHMYZ93CMredA0/
- meirfb2HSZLiaHPdHXEyqWbt2LsCxFAeAfuehQ4ZQcC5tDipqQ6gRTOUstvHcaJszHlJd3j6
- 2vU9XZj3t3/meZOjvzmpg6f31pAs7CTFmYIChPrsnVJB++TTKqsfMSW5FfS9p6sx67JHwDa7
- BDodyVzhd3i7K1hdgTXGI3h/5nzvZ5p1QEwZnYxd6TNDxz3pxaekXl4uVmS3ntBPMceYiPOa
- 0TOow5X75I7FCL0PfEvPNzrV597kfGI+THZuhb8NIImjn9ZLlbvwc2TTRTIgzCFfLYEz8nTx
- qt3ge7zVC1HWMyLPRK9RvsH0K9D+8zN7Tq7eHwP9Dz+ieD2TCfMGd843K6mMrhRAFWs/F+Er
- L6y9qKil31ibQEJSnePrN9Ndw1QdBDWx/ne8qRqSwJKGSI+cElJNhMb6e95E2C5t8y5Ttv1w
- 0w=
-IronPort-HdrOrdr: A9a23:Y6hsCqhzpCTaHPK2PCIl9BkOkHBQXtQji2hC6mlwRA09TyX4ra
- yTdZEgviMc5wx/ZJhNo7690cu7IU80hKQV3WB5B97LNmTbUQCTXeJfBOXZsljdMhy72ulB1b
- pxN4hSYeeAaWSSVPyKgjWFLw==
-X-Talos-CUID: 9a23:Dx0RwmF9wxrF4tQ2qmJf33wxBdg/VkTBlkrXenOqBnw4Fo+sHAo=
-X-Talos-MUID: 9a23:ADENMARPe3b4GfDmRXTqthZaDO415J2WDW9Xu7wCscOeLhFZbmI=
-X-IronPort-AV: E=Sophos;i="6.00,224,1681185600"; d="scan'208";a="111938275"
+IronPort-Data: A9a23:zpduE6LPQkQm6xO5FE+R15UlxSXFcZb7ZxGr2PjKsXjdYENS0WMFx
+ zYaXjzVaK3ZZWWgKd0jaIjg/UsPv5WBmtNmTQBlqX01Q3x08seUXt7xwmUcnc+xBpaaEB84t
+ ZV2hv3odp1coqr0/0/1WlTZhSAgk/rOHvykU7Ss1hlZHWdMUD0mhQ9oh9k3i4tphcnRKw6Ws
+ Jb5rta31GWNglaYCUpKrfrbwP9TlK6q4mhA4ARhPaojUGL2zBH5MrpOfcldEFOgKmVkNrbSb
+ /rOyri/4lTY838FYj9yuu+mGqGiaue60Tmm0hK6aYD76vRxjnVaPpIAHOgdcS9qZwChxLid/
+ jnvWauYEm/FNoWU8AgUvoIx/ytWZcWq85efSZSzXFD6I+QrvBIAzt03ZHzaM7H09c5OBEZeq
+ 78kJAwSYy6hnbux4oOXbuJV05FLwMnDZOvzu1llxDDdS/0nXYrCU+PB4towMDUY354UW6yEP
+ oxANGQpNU6bC/FMEg5/5JYWleG0hn75YntApUicv6Yf6GnP1g1hlrPqNbI5f/TTHJkJxR7J+
+ juuE2LRLz84HsS1yhC81neKntfftzjkaN0LLejtnhJtqALKnTFCYPEMbnOirPykz0KzRd9bA
+ 0oT/CUosO417kPDZsL9UhukrW+ssRsVWt4WGOo/gDxh0YKNvVzfXDJdCGccNpp/7pReqSEWO
+ kGhptbOFWIsjLGpVn+j1K3NqhGDFQweFDpXDcMbdjct797mqYA1qxvASNd/DaK45uHI9SHML
+ yOi93Zn2ehK5SIf/+DipA2c3WrwznTcZlRtjjg7SF5J+e+QiGSNQ4WzoWbW4v9bRGpyZgnQ5
+ SNU8yRyAQ1nMH1sqMBvaL9VdF1Kz6zfWNE5vbKIN8dJythV0yT/Fb28GRknTKuTDu4KeCXyf
+ GjYsh5L6ZlYMROCNPEnPdruVZ52lvm8TLwJs8w4iPIUOvCdkyfdpUlTibO4hTixwCDAb4lhU
+ XtkTSpcJSlDUvk2pNZHb+wczaUq1kgDKZD7HPjGI+Cc+ePGPha9EO5VWGZim8hltMtoVi2Jq
+ YcAXyZLoj0DONDDjt7/r9ZOfA5QcCJibX00wuQOHtO+zsNdMDlJI5fsLXkJIuSJQ4w9ej/0w
+ 0yA
+IronPort-HdrOrdr: A9a23:e71CkqCUlCBuJXLlHeme55DYdb4zR+YMi2TDtnofdfUxSKelfq
+ +V7ZEmPHPP6Qr5IUtQ+uxoW5PvfZqjz+8W3WB5B97LNmSLhILPFvAH0WKI+V3d8kPFh5dg/J
+ YlX69iCMDhSXhW5PyKmDVQyuxQp+VvJprY49vj8w==
+X-Talos-CUID: =?us-ascii?q?9a23=3AXrwokWpTeXjvM9ufRhh4U6jmUfkgVW2Dj0vcH1C?=
+ =?us-ascii?q?1N0RzEbq3eHO085oxxg=3D=3D?=
+X-Talos-MUID: =?us-ascii?q?9a23=3A0A9x0QxqsZQ5Dk6ZvU/RWensTKiaqImAKmoVu5Y?=
+ =?us-ascii?q?sgu2BEzRIKx2GkwToW7Zyfw=3D=3D?=
+X-IronPort-AV: E=Sophos;i="6.00,224,1681185600"; d="scan'208";a="114430941"
 To: <qemu-devel@nongnu.org>
 CC: Bernhard Beschow <shentey@gmail.com>, Anthony PERARD
  <anthony.perard@citrix.com>
-Subject: [PULL 08/12] hw/isa/piix3: Wire up Xen PCI IRQ handling outside of
- PIIX3
-Date: Wed, 7 Jun 2023 15:18:35 +0100
-Message-ID: <20230607141839.48422-9-anthony.perard@citrix.com>
+Subject: [PULL 09/12] hw/isa/piix3: Avoid Xen-specific variant of
+ piix3_write_config()
+Date: Wed, 7 Jun 2023 15:18:36 +0100
+Message-ID: <20230607141839.48422-10-anthony.perard@citrix.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607141839.48422-1-anthony.perard@citrix.com>
 References: <20230607141839.48422-1-anthony.perard@citrix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: pass client-ip=216.71.145.155;
+Received-SPF: pass client-ip=216.71.155.144;
  envelope-from=prvs=51561cf95=anthony.perard@citrix.com;
- helo=esa3.hc3370-68.iphmx.com
+ helo=esa4.hc3370-68.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -100,101 +102,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-xen_intx_set_irq() doesn't depend on PIIX3State. In order to resolve
-TYPE_PIIX3_XEN_DEVICE and in order to make Xen agnostic about the
-precise south bridge being used, set up Xen's PCI IRQ handling of PIIX3
-in the board.
+Subscribe to pci_bus_fire_intx_routing_notifier() instead which allows for
+having a common piix3_write_config() for the PIIX3 device models.
+
+While at it, move the subscription into machine code to facilitate resolving
+TYPE_PIIX3_XEN_DEVICE.
+
+In a possible future followup, pci_bus_fire_intx_routing_notifier() could
+be adjusted in such a way that subscribing to it doesn't require
+knowledge of the device firing it.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
 Tested-by: Chuck Zmudzinski <brchuckz@aol.com>
-Message-Id: <20230312120221.99183-4-shentey@gmail.com>
-Message-Id: <20230403074124.3925-5-shentey@gmail.com>
+Message-Id: <20230312120221.99183-5-shentey@gmail.com>
+Message-Id: <20230403074124.3925-6-shentey@gmail.com>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 ---
- hw/i386/pc_piix.c | 13 +++++++++++++
- hw/isa/piix3.c    | 24 +-----------------------
- 2 files changed, 14 insertions(+), 23 deletions(-)
+ hw/i386/pc_piix.c | 18 ++++++++++++++++++
+ hw/isa/piix3.c    | 22 +---------------------
+ 2 files changed, 19 insertions(+), 21 deletions(-)
 
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index d5b0dcd1fe..11af191513 100644
+index 11af191513..2ed2b3f3c6 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -71,6 +71,7 @@
- #include "kvm/kvm-cpu.h"
+@@ -90,6 +90,21 @@ static int pc_pci_slot_get_pirq(PCIDevice *pci_dev, int pci_intx)
+     return (pci_intx + slot_addend) & 3;
+ }
  
- #define MAX_IDE_BUS 2
-+#define XEN_IOAPIC_NUM_PIRQS 128ULL
- 
- #ifdef CONFIG_IDE_ISA
- static const int ide_iobase[MAX_IDE_BUS] = { 0x1f0, 0x170 };
-@@ -238,6 +239,18 @@ static void pc_init1(MachineState *machine,
-         pcms->bus = pci_bus;
- 
-         pci_dev = pci_create_simple_multifunction(pci_bus, -1, true, type);
++static void piix_intx_routing_notifier_xen(PCIDevice *dev)
++{
++    int i;
 +
-+        if (xen_enabled()) {
-+            /*
-+             * Xen supports additional interrupt routes from the PCI devices to
-+             * the IOAPIC: the four pins of each PCI device on the bus are also
-+             * connected to the IOAPIC directly.
-+             * These additional routes can be discovered through ACPI.
-+             */
-+            pci_bus_irqs(pci_bus, xen_intx_set_irq, pci_dev,
-+                         XEN_IOAPIC_NUM_PIRQS);
++    /* Scan for updates to PCI link routes (0x60-0x63). */
++    for (i = 0; i < PIIX_NUM_PIRQS; i++) {
++        uint8_t v = dev->config_read(dev, PIIX_PIRQCA + i, 1);
++        if (v & 0x80) {
++            v = 0;
 +        }
++        v &= 0xf;
++        xen_set_pci_link_route(i, v);
++    }
++}
 +
-         piix3 = PIIX3_PCI_DEVICE(pci_dev);
-         piix3->pic = x86ms->gsi;
-         piix3_devfn = piix3->dev.devfn;
+ /* PC hardware initialisation */
+ static void pc_init1(MachineState *machine,
+                      const char *host_type, const char *pci_type)
+@@ -241,6 +256,9 @@ static void pc_init1(MachineState *machine,
+         pci_dev = pci_create_simple_multifunction(pci_bus, -1, true, type);
+ 
+         if (xen_enabled()) {
++            pci_device_set_intx_routing_notifier(
++                        pci_dev, piix_intx_routing_notifier_xen);
++
+             /*
+              * Xen supports additional interrupt routes from the PCI devices to
+              * the IOAPIC: the four pins of each PCI device on the bus are also
 diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
-index 800b80f2bb..0b7e9ade0d 100644
+index 0b7e9ade0d..5e8ac98ae0 100644
 --- a/hw/isa/piix3.c
 +++ b/hw/isa/piix3.c
-@@ -35,8 +35,6 @@
- #include "migration/vmstate.h"
- #include "hw/acpi/acpi_aml_interface.h"
+@@ -122,26 +122,6 @@ static void piix3_write_config(PCIDevice *dev,
+     }
+ }
  
--#define XEN_IOAPIC_NUM_PIRQS    128ULL
--
- static void piix3_set_irq_pic(PIIX3State *piix3, int pic_irq)
- {
-     qemu_set_irq(piix3->pic[pic_irq],
-@@ -403,32 +401,12 @@ static const TypeInfo piix3_info = {
-     .class_init    = piix3_class_init,
- };
- 
--static void piix3_xen_realize(PCIDevice *dev, Error **errp)
+-static void piix3_write_config_xen(PCIDevice *dev,
+-                                   uint32_t address, uint32_t val, int len)
 -{
--    ERRP_GUARD();
--    PIIX3State *piix3 = PIIX3_PCI_DEVICE(dev);
--    PCIBus *pci_bus = pci_get_bus(dev);
+-    int i;
 -
--    piix3_realize(dev, errp);
--    if (*errp) {
--        return;
+-    /* Scan for updates to PCI link routes (0x60-0x63). */
+-    for (i = 0; i < len; i++) {
+-        uint8_t v = (val >> (8 * i)) & 0xff;
+-        if (v & 0x80) {
+-            v = 0;
+-        }
+-        v &= 0xf;
+-        if (((address + i) >= PIIX_PIRQCA) && ((address + i) <= PIIX_PIRQCD)) {
+-            xen_set_pci_link_route(address + i - PIIX_PIRQCA, v);
+-        }
 -    }
 -
--    /*
--     * Xen supports additional interrupt routes from the PCI devices to
--     * the IOAPIC: the four pins of each PCI device on the bus are also
--     * connected to the IOAPIC directly.
--     * These additional routes can be discovered through ACPI.
--     */
--    pci_bus_irqs(pci_bus, xen_intx_set_irq, piix3, XEN_IOAPIC_NUM_PIRQS);
+-    piix3_write_config(dev, address, val, len);
 -}
 -
- static void piix3_xen_class_init(ObjectClass *klass, void *data)
+ static void piix3_reset(DeviceState *dev)
+ {
+     PIIX3State *d = PIIX3_PCI_DEVICE(dev);
+@@ -405,7 +385,7 @@ static void piix3_xen_class_init(ObjectClass *klass, void *data)
  {
      PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
  
-     k->config_write = piix3_write_config_xen;
--    k->realize = piix3_xen_realize;
-+    k->realize = piix3_realize;
+-    k->config_write = piix3_write_config_xen;
++    k->config_write = piix3_write_config;
+     k->realize = piix3_realize;
  }
  
- static const TypeInfo piix3_xen_info = {
 -- 
 Anthony PERARD
 
