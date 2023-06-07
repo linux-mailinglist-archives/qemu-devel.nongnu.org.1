@@ -2,87 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5AF7265D5
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E339972669C
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:58:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vxq-00009U-N6; Wed, 07 Jun 2023 12:24:50 -0400
+	id 1q6wTw-00020P-UY; Wed, 07 Jun 2023 12:58:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6vxo-00008J-Cq
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:24:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <cd66eebe393958cf2f111e98de69c4802faa58a9@lizzy.crudebyte.com>)
+ id 1q6wTu-0001we-Pr
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:57:58 -0400
+Received: from lizzy.crudebyte.com ([91.194.90.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6vxm-0006lP-TK
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:24:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686155085;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wstVw8tmycB7bkh1WRfMZZR7YZOJCpNuIcnoKyrIw54=;
- b=hgoSHpiIM4vbRqYo2Rz6FbCGOFzjUz4bMmVXcWqMoHrZLIQ+EpGALt7cvV7cxbVQ6YQM15
- q+G581l08l6tdvcpo5OcrHf+4lB+C1gSfFevZOb3ycVlYiqMj8dyILfahC4DH+y20vEYlc
- NpscxnzoVPl8e/AvZaQcwufANqOfX3E=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-508-P69DU4yxMnik3ETw18uRZQ-1; Wed, 07 Jun 2023 12:24:44 -0400
-X-MC-Unique: P69DU4yxMnik3ETw18uRZQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-62b67ff6943so3595726d6.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:24:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686155083; x=1688747083;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wstVw8tmycB7bkh1WRfMZZR7YZOJCpNuIcnoKyrIw54=;
- b=VmPj3ayYNLApkQswlES73ImcPy25rOCRXg+akUfcsLBlKBBOlO/Zd5tk7+EWjmJl3j
- NeLAFOb6hflXHIn0xb6mzkhGwj/QJbgXUFopsHRy1wUPgMihIwZJvgJg7y67rxXUn4qH
- okRY6zAqs4dvZBHXHTWtgj6l5rGYQFtfa3ZzmY8pEWgIPTm+5HHtu7GG7DNB0CgXATRy
- zhn/KwK/fdB3BTUg7S9YYsJuN8WpdT1LSeyZ2lOhHmw1LKlEjo0l7X2mPXXRUGveWPpW
- RCPnwIdwW7o2yFjdfRT/+cMTQufQqLTgJJmZj4LHR8THkkq9HgYOtOG6rGX/YbBHSYRk
- HPXg==
-X-Gm-Message-State: AC+VfDwwWDoy1N1fqE9cpj26gxxd+Ua+5eGtEqw3yT7cITN0hJeus+Rt
- w1sHqxSWy8IqRpi7ilJRs+OdprmZr78I5ufWiSncxuOYLrySsmveenlzinS3HzSEshESkb+zTxX
- quW3Qc9eU1ePMeMg=
-X-Received: by 2002:a05:6214:c6d:b0:616:870c:96b8 with SMTP id
- t13-20020a0562140c6d00b00616870c96b8mr6579712qvj.3.1686155083707; 
- Wed, 07 Jun 2023 09:24:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4fQ9sVs0UkCSkzBQrKaFuMdM8SYdiBQqpH5w6qlra3F4vMiL6xGtaD89AO8U24asd8Ld0Sjw==
-X-Received: by 2002:a05:6214:c6d:b0:616:870c:96b8 with SMTP id
- t13-20020a0562140c6d00b00616870c96b8mr6579688qvj.3.1686155083431; 
- Wed, 07 Jun 2023 09:24:43 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- x14-20020a0ce0ce000000b00605f796d30esm29008qvk.51.2023.06.07.09.24.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 09:24:42 -0700 (PDT)
-Date: Wed, 7 Jun 2023 12:24:41 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Juan Quintela <quintela@redhat.com>,
- Jiang Jiacheng <jiangjiacheng@huawei.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v2 0/3] migration: Fix multifd cancel test
-Message-ID: <ZICvSTVotKRtHq3P@x1n>
-References: <20230607161306.31425-1-farosas@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230607161306.31425-1-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ (Exim 4.90_1)
+ (envelope-from <cd66eebe393958cf2f111e98de69c4802faa58a9@lizzy.crudebyte.com>)
+ id 1q6wTs-0001lr-Mi
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:57:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=lizzy; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=uhr/QmtZd9O1Z9jieerdnbSge6I2pe0tO4skmJxCtEE=; b=J4zqr
+ et5yGN/f1JrfpfR3MkyQ+084ncEGlN1BzPPHLTNd7/z2dlwAmSEriimR0ZXboAMn+kJCEkvLbBVt2
+ 9ag7FBcylOAdRqQxckUURUSR6BIGBx8WW7dejT+plNaLmIzOoRIgAESHsDu+8mI/wrM6PZeQxspah
+ KklURU7o1sqHfg7kT4W3eRsx9C7pkXKTQCggOlyr+yVDcup0viqh62SeBdesluwEHHgjx2jjfdnhZ
+ 9EPCYWTcwvIRdOrkL46FgsGFN2B+LRsHngqNyJ8SPRJ79BgQWpE9sMMchrBebB8fy7jqBOztwrRVt
+ w7KXsyS5KNiyOcfmEh5tF47s5dgFg==;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Wed, 7 Jun 2023 18:29:33 +0200
+Subject: [PATCH v4] 9pfs: prevent opening special files (CVE-2023-2861)
+To: qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>, Mauro Matteo Cascella <mcascell@redhat.com>,
+ yw s <ywsplz@gmail.com>, shawtao1125@gmail.com, jkli@xidian.edu.cn,
+ shenwenbo@zju.edu.cn, Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <E1q6w7r-0000Q0-NM@lizzy.crudebyte.com>
+Received-SPF: none client-ip=91.194.90.13;
+ envelope-from=cd66eebe393958cf2f111e98de69c4802faa58a9@lizzy.crudebyte.com;
+ helo=lizzy.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,15 +61,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 07, 2023 at 01:13:03PM -0300, Fabiano Rosas wrote:
-> Fabiano Rosas (3):
->   migration/multifd: Rename threadinfo.c functions
->   migration/multifd: Protect accesses to migration_threads
->   tests/qtest: Re-enable multifd cancel test
+The 9p protocol does not specifically define how server shall behave when
+client tries to open a special file, however from security POV it does
+make sense for 9p server to prohibit opening any special file on host side
+in general. A sane Linux 9p client for instance would never attempt to
+open a special file on host side, it would always handle those exclusively
+on its guest side. A malicious client however could potentially escape
+from the exported 9p tree by creating and opening a device file on host
+side.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+With QEMU this could only be exploited in the following unsafe setups:
 
+  - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
+    security model.
+
+or
+
+  - Using 9p 'proxy' fs driver (which is running its helper daemon as
+    root).
+
+These setups were already discouraged for safety reasons before,
+however for obvious reasons we are now tightening behaviour on this.
+
+Fixes: CVE-2023-2861
+Reported-by: Yanwu Shen <ywsPlz@gmail.com>
+Reported-by: Jietao Xiao <shawtao1125@gmail.com>
+Reported-by: Jinku Li <jkli@xidian.edu.cn>
+Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+---
+ v3 -> v4:
+ - Rename function check_is_regular_file_or_dir() ->
+   close_if_special_file() and add detailed API comment.
+ - Minor code style fix on open_regular().
+
+ fsdev/virtfs-proxy-helper.c | 27 +++++++++++++++++++++++--
+ hw/9pfs/9p-util.h           | 39 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 2 deletions(-)
+
+diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
+index 5cafcd7703..d9511f429c 100644
+--- a/fsdev/virtfs-proxy-helper.c
++++ b/fsdev/virtfs-proxy-helper.c
+@@ -26,6 +26,7 @@
+ #include "qemu/xattr.h"
+ #include "9p-iov-marshal.h"
+ #include "hw/9pfs/9p-proxy.h"
++#include "hw/9pfs/9p-util.h"
+ #include "fsdev/9p-iov-marshal.h"
+ 
+ #define PROGNAME "virtfs-proxy-helper"
+@@ -338,6 +339,28 @@ static void resetugid(int suid, int sgid)
+     }
+ }
+ 
++/*
++ * Open regular file or directory. Attempts to open any special file are
++ * rejected.
++ *
++ * returns file descriptor or -1 on error
++ */
++static int open_regular(const char *pathname, int flags, mode_t mode)
++{
++    int fd;
++
++    fd = open(pathname, flags, mode);
++    if (fd < 0) {
++        return fd;
++    }
++
++    if (close_if_special_file(fd) < 0) {
++        return -1;
++    }
++
++    return fd;
++}
++
+ /*
+  * send response in two parts
+  * 1) ProxyHeader
+@@ -682,7 +705,7 @@ static int do_create(struct iovec *iovec)
+     if (ret < 0) {
+         goto unmarshal_err_out;
+     }
+-    ret = open(path.data, flags, mode);
++    ret = open_regular(path.data, flags, mode);
+     if (ret < 0) {
+         ret = -errno;
+     }
+@@ -707,7 +730,7 @@ static int do_open(struct iovec *iovec)
+     if (ret < 0) {
+         goto err_out;
+     }
+-    ret = open(path.data, flags);
++    ret = open_regular(path.data, flags, 0);
+     if (ret < 0) {
+         ret = -errno;
+     }
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index c314cf381d..df1b583a5e 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -13,6 +13,8 @@
+ #ifndef QEMU_9P_UTIL_H
+ #define QEMU_9P_UTIL_H
+ 
++#include "qemu/error-report.h"
++
+ #ifdef O_PATH
+ #define O_PATH_9P_UTIL O_PATH
+ #else
+@@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
+ #endif
+ 
+ #define qemu_openat     openat
++#define qemu_fstat      fstat
+ #define qemu_fstatat    fstatat
+ #define qemu_mkdirat    mkdirat
+ #define qemu_renameat   renameat
+@@ -108,6 +111,38 @@ static inline void close_preserve_errno(int fd)
+     errno = serrno;
+ }
+ 
++/**
++ * close_if_special_file() - Close @fd if neither regular file nor directory.
++ *
++ * @fd: file descriptor of open file
++ * Return: 0 on regular file or directory, -1 otherwise
++ *
++ * CVE-2023-2861: Prohibit opening any special file directly on host
++ * (especially device files), as a compromised client could potentially gain
++ * access outside exported tree under certain, unsafe setups. We expect
++ * client to handle I/O on special files exclusively on guest side.
++ */
++static inline int close_if_special_file(int fd)
++{
++    struct stat stbuf;
++
++    if (qemu_fstat(fd, &stbuf) < 0) {
++        close_preserve_errno(fd);
++        return -1;
++    }
++    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
++        error_report_once(
++            "9p: broken or compromised client detected; attempt to open "
++            "special file (i.e. neither regular file, nor directory)"
++        );
++        close(fd);
++        errno = ENXIO;
++        return -1;
++    }
++
++    return 0;
++}
++
+ static inline int openat_dir(int dirfd, const char *name)
+ {
+     return qemu_openat(dirfd, name,
+@@ -142,6 +177,10 @@ again:
+         return -1;
+     }
+ 
++    if (close_if_special_file(fd) < 0) {
++        return -1;
++    }
++
+     serrno = errno;
+     /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
+      * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
 -- 
-Peter Xu
+2.30.2
 
 
