@@ -2,50 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8770472597B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE23872599E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6p6y-0004MD-NN; Wed, 07 Jun 2023 05:05:48 -0400
+	id 1q6pAA-00061v-O9; Wed, 07 Jun 2023 05:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6p6v-0004IC-Ie
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:05:45 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6p6t-0000QN-IP
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:05:45 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C5810B423;
- Wed,  7 Jun 2023 12:05:41 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2F2DBA276;
- Wed,  7 Jun 2023 12:05:41 +0300 (MSK)
-Message-ID: <ea74b6cf-b247-4ddf-b350-4fca68798818@tls.msk.ru>
-Date: Wed, 7 Jun 2023 12:05:41 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6pA8-00061X-RS
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:09:04 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6pA6-0000tt-S8
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:09:04 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f6ffc2b314so2733815e9.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 02:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686128940; x=1688720940;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EVxmJ0BKqMcVhtDQ/su8wRLKOoCDDlmBuHpFUcx1nnM=;
+ b=AIYFDfUSZ/lSdw+H8TOF9I/7C3lgGVskKhB0mDItvs8AbjbhlwyHcdso4HjGeN23K8
+ TDO8qBTWO1aenjTgY8nwrGha44d4ydAIcnoViIxrmGmW2H1QfB5As0OLVLK1EfOs/skj
+ m6giu2uSuImh+7RKvafXnqQVTY1gxKfKZdr7Xa20q8/rc/oRcEjq8VfhFqZ+2bOnIjSs
+ w//OKRR/o9lZMn4NLprPI1OwH64IqPrUCYjJf1e1Qt4Z2e6wUHnA1uy2cYw83Tky+L9l
+ /JIUTfzsM2kYqHU4ZEoMmAJnMauD2lGrrx8OUpJQw2hTOWt/W5wmmegzagNEvG/UQtPS
+ kh2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686128940; x=1688720940;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EVxmJ0BKqMcVhtDQ/su8wRLKOoCDDlmBuHpFUcx1nnM=;
+ b=SSn5BVa/naFsqB0jouOMpC1rQ7ikRRb++X7WR48PPsjYpffIvlMCO8qU775cP8GU7y
+ 8brTMbqAnHMT2e/BqTnI2CzDZ1SeKTfcVrpbBr5Weu6HyqF8j3BYcLDK65/9EQraCUlZ
+ GKYFePR87muMvltbXCI2DV3JeW0cJSOHaufgYwW3cuhGlrLi+KMCzerb649ORydZASZW
+ A4+V4MgG1mCeClaMb6yh0ijZp/I8PZfLCvAKrAZO4mELZ3FKyunrOykd1tqorYSeHb2I
+ 4OE1Nn/Ofeq0Ao/fL5kph8uQmHJNpKF7zgea0N+/zI02OWDV1QBBlWNfJKJqB7FAcvkC
+ IaBg==
+X-Gm-Message-State: AC+VfDwO62hBd08i+P5hVtyqKLJgRcFlXhdIxRJnMTit3Jv2wHXINyCv
+ NwhyPnwtHNOP++bTyDotWifuwQ==
+X-Google-Smtp-Source: ACHHUZ552ht2q7lQZOaiXPccjqAbaud7jAAC4iUSIf2ekDQzkDaBVdfyB52U+BHSEGifXPTdpvvymg==
+X-Received: by 2002:a1c:4b0b:0:b0:3f6:1b7:11f0 with SMTP id
+ y11-20020a1c4b0b000000b003f601b711f0mr3708577wma.7.1686128940082; 
+ Wed, 07 Jun 2023 02:09:00 -0700 (PDT)
+Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
+ [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
+ 3-20020a05600c028300b003f7eeec829asm1468292wmk.10.2023.06.07.02.08.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 02:08:59 -0700 (PDT)
+Message-ID: <f1c785b1-beac-55e1-7da9-d9a5f1ab77ff@linaro.org>
+Date: Wed, 7 Jun 2023 11:08:58 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 15/18] s390x/tcg: Fix CPU address returned by STIDP
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH] meson: fix "static build" entry in summary
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
-References: <20230606055621.523175-1-thuth@redhat.com>
- <20230606055621.523175-16-thuth@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230606055621.523175-16-thuth@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+References: <20230607090336.59424-1-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230607090336.59424-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,36 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-06.06.2023 08:56, Thomas Huth wrote:
-> From: Ilya Leoshkevich <iii@linux.ibm.com>
-> 
-> In qemu-user-s390x, /proc/cpuinfo contains:
-> 
-> 	processor 0: version = 00,  identification = 000000,  machine = 8561
-> 	processor 1: version = 00,  identification = 400000,  machine = 8561
-> 
-> The highest nibble is supposed to contain the CPU address, but it's off
-> by 2 bits. Fix the shift value and provide a symbolic constant for it.
-> 
-> With the fix we get:
-> 
-> 	processor 0: version = 00,  identification = 000000,  machine = 8561
-> 	processor 1: version = 00,  identification = 100000,  machine = 8561
-> 
-> Fixes: 076d4d39b65f ("s390x/cpumodel: wire up cpu type + id for TCG")
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> Message-Id: <20230605113950.1169228-2-iii@linux.ibm.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On 7/6/23 11:03, Paolo Bonzini wrote:
+> Fixes: a0cbd2e8496 ("meson: use prefer_static option", 2023-05-18)
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/s390x/cpu_models.h | 10 +++++++++-
->   target/s390x/cpu_models.c |  4 ++--
->   2 files changed, 11 insertions(+), 3 deletions(-)
+>   meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index 553c8e0b9c5..34d0444ffbb 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -4088,7 +4088,7 @@ summary_info += {'QEMU_LDFLAGS':      ' '.join(qemu_ldflags)}
+>   summary_info += {'profiler':          get_option('profiler')}
+>   summary_info += {'link-time optimization (LTO)': get_option('b_lto')}
+>   summary_info += {'PIE':               get_option('b_pie')}
+> -summary_info += {'static build':      config_host.has_key('CONFIG_STATIC')}
+> +summary_info += {'static build':      get_optin('prefer_static')}
 
-Is it a -stable material too?
-(applies cleanly to 7.2 and 8.0)
+Typo 'get_option'.
 
-Thanks,
+>   summary_info += {'malloc trim support': has_malloc_trim}
+>   summary_info += {'membarrier':        have_membarrier}
+>   summary_info += {'debug graph lock':  get_option('debug_graph_lock')}
 
-/mjt
 
