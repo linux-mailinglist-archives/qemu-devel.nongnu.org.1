@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A007265D7
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882C57265D9
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vyw-0001Pu-Es; Wed, 07 Jun 2023 12:25:58 -0400
+	id 1q6vyy-0001ZD-9q; Wed, 07 Jun 2023 12:26:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q6vyi-0000ud-IR
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:47 -0400
+ id 1q6vyo-00014L-3T
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:53 -0400
 Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q6vyg-0007Ti-3F
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:43 -0400
+ id 1q6vym-0007W5-Dj
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=q7mG+k3nEGbZxzI9PSOokUQgY3uE84xUwSWJvkfJhJM=; b=o/cTwnUeSaHyRVexNWQuADb3a/
- USLLWu/9gO8EH4WaLpYTxBXSg65Ep+JJ92aE+HI91uovCo2lZFBhYbd6ND7rUX6g4rZFIG0N04wZo
- M2JTpcRoXG7mB/2P/RcrEOfrh6sil1FzuSNkyHmgJDTdupOcOh8CETftmj2ugeO8pcpU=;
+ bh=xevbDkqExpt1jD16rB9KJCYEsQRhHbm1JQY3/fdLplw=; b=s9jwj3NstMD5zzORwuTcUl7UMT
+ A8PPMOYxWd6cXMpINvb2/+nNSnhCxo8xwJLMMGfq4t/pBoVmTC1aJr7ZTJUg51q6GgZ+tJ7QJQIiE
+ VeVDwsmRHQXWz7/q9glF5NszPMvEFl0muSgqHYyrHDDIcz0PyGDqkRq2KzqJRGDsKNSQ=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL 5/6] target/tricore: Fix wrong PSW for call insns
-Date: Wed,  7 Jun 2023 18:24:39 +0200
-Message-Id: <20230607162440.7807-6-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 6/6] tests/tcg/tricore: Add recursion test for CSAs
+Date: Wed,  7 Jun 2023 18:24:40 +0200
+Message-Id: <20230607162440.7807-7-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
 References: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
@@ -42,8 +42,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.7.161517, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=30, da=173764203, mc=10, sc=0,
- hc=10, sp=0, fso=30, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=36, da=173764209, mc=12, sc=0,
+ hc=12, sp=0, fso=36, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -71,30 +71,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we were copying PSW into a local variable, updated PSW.CDE in the local
-and never wrote it back. So when we called save_context_upper() we were
-using the non-local version of PSW which did not contain the updated
-PSW.CDE.
-
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230526061946.54514-6-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230526061946.54514-7-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/op_helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/tcg/tricore/Makefile.softmmu-target     |  3 ++-
+ tests/tcg/tricore/c/test_context_save_areas.c | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/tricore/c/test_context_save_areas.c
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 6fd2cbe20f..54f54811d9 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2447,6 +2447,8 @@ void helper_call(CPUTriCoreState *env, uint32_t next_pc)
-     }
-     /* PSW.CDE = 1;*/
-     psw |= MASK_PSW_CDE;
-+    psw_write(env, psw);
+diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
+index f051444991..aff7c1b580 100644
+--- a/tests/tcg/tricore/Makefile.softmmu-target
++++ b/tests/tcg/tricore/Makefile.softmmu-target
+@@ -4,7 +4,7 @@ C_TESTS_PATH = $(TESTS_PATH)/c
+ 
+ LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
+ ASFLAGS = -mtc162
+-CFLAGS = -mtc162 -c
++CFLAGS = -mtc162 -c -I$(TESTS_PATH)
+ 
+ TESTS += test_abs.asm.tst
+ TESTS += test_bmerge.asm.tst
+@@ -23,6 +23,7 @@ TESTS += test_msub.asm.tst
+ TESTS += test_muls.asm.tst
+ 
+ TESTS += test_boot_to_main.c.tst
++TESTS += test_context_save_areas.c.tst
+ 
+ QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
+ 
+diff --git a/tests/tcg/tricore/c/test_context_save_areas.c b/tests/tcg/tricore/c/test_context_save_areas.c
+new file mode 100644
+index 0000000000..a300ee2f9c
+--- /dev/null
++++ b/tests/tcg/tricore/c/test_context_save_areas.c
+@@ -0,0 +1,15 @@
++#include "testdev_assert.h"
 +
-     /* tmp_FCX = FCX; */
-     tmp_FCX = env->FCX;
-     /* EA = {FCX.FCXS, 6'b0, FCX.FCXO, 6'b0}; */
++static int fib(int n)
++{
++    if (n == 1 || n == 2) {
++        return 1;
++    }
++    return fib(n - 2) + fib(n - 1);
++}
++
++int main(int argc, char **argv)
++{
++    testdev_assert(fib(10) == 55);
++    return 0;
++}
 -- 
 2.40.1
 
