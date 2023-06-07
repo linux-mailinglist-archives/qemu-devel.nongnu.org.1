@@ -2,70 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5421726864
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 20:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4573D727617
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:26:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6xlV-0005ht-Mw; Wed, 07 Jun 2023 14:20:13 -0400
+	id 1q77BI-00067S-CW; Thu, 08 Jun 2023 00:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q6xlQ-0005hZ-Hp
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:20:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z5-0006RZ-LE
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q6xlH-0003js-ME
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:20:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686161998;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+z0bNS7zjXVRbTFmbk2AwD6VB/uU2xivRbGDEhZeC9s=;
- b=UlgFCpSCY4q2TgPKT7lvAKg3Y1PpLPS2eB7hYtz04VDYaLuy/nf7nM/HcOspKcLmdovIDN
- /ifkpcxUSDRQ3UQQALLGV4c6Qb3umQ0qQTu7NyLm3eEejrF70OGJ2RLhKrN0ofV1HWrVmd
- 88LN8uehaCwk7s7ovCcZXhA85oq67wY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-668-gQwtCI1dMyKC4U0fcf7wIg-1; Wed, 07 Jun 2023 14:19:56 -0400
-X-MC-Unique: gQwtCI1dMyKC4U0fcf7wIg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7ACC5380213D;
- Wed,  7 Jun 2023 18:19:55 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F36B1407DEC0;
- Wed,  7 Jun 2023 18:19:54 +0000 (UTC)
-Date: Wed, 7 Jun 2023 12:08:42 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, dlemoal@kernel.org, dmitry.fomichev@wdc.com,
- hare@suse.de, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-Subject: Re: [PATCH 2/2] block/file-posix: fix wps checking in raw_co_prw
-Message-ID: <20230607160842.GE2138915@fedora>
-References: <20230604061658.49004-1-faithilikerun@gmail.com>
- <20230604061658.49004-2-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0000De-Pe
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id CE22B11F133;
+ Thu,  8 Jun 2023 02:02:39 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Thu, 08 Jun 2023 00:12:40 +0800
+Subject: [PATCH QEMU v5 6/8] migration: Implement dirty-limit convergence algo
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="G4CQk9M61XIKDciX"
-Content-Disposition: inline
-In-Reply-To: <20230604061658.49004-2-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Message-ID: <168618975839.6361.17407633874747688653-6@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -3
+X-Spam_score: -0.4
+X-Spam_bar: /
+X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,97 +59,220 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
---G4CQk9M61XIKDciX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Implement dirty-limit convergence algo for live migration,
+which is kind of like auto-converge algo but using dirty-limit
+instead of cpu throttle to make migration convergent.
 
-On Sun, Jun 04, 2023 at 02:16:58PM +0800, Sam Li wrote:
-> If the write operation fails and the wps is NULL, then accessing it will
-> lead to data corruption.
->=20
-> Solving the issue by adding a nullptr checking in get_zones_wp() where
-> the wps is used.
->=20
-> This issue is found by Peter Maydell using the Coverity Tool (CID
-> 1512459).
->=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  block/file-posix.c | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index 0d9d179a35..620942bf40 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -1340,6 +1340,10 @@ static int get_zones_wp(BlockDriverState *bs, int =
-fd, int64_t offset,
->      rep_size =3D sizeof(struct blk_zone_report) + nrz * sizeof(struct bl=
-k_zone);
->      g_autofree struct blk_zone_report *rep =3D NULL;
-> =20
-> +    if (!wps) {
-> +        return -1;
-> +    }
+Enable dirty page limit if dirty_rate_high_cnt greater than 2
+when dirty-limit capability enabled, Disable dirty-limit if
+migration be cancled.
 
-An error will be printed every time this happens on a non-zoned device:
+Note that "set_vcpu_dirty_limit", "cancel_vcpu_dirty_limit"
+commands are not allowed during dirty-limit live migration.
 
-  static void update_zones_wp(BlockDriverState *bs, int fd, int64_t offset,
-                              unsigned int nrz)
-  {
-      if (get_zones_wp(bs, fd, offset, nrz, 0) < 0) {
-          error_report("update zone wp failed");
+Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ migration/migration.c  |  3 ++
+ migration/ram.c        | 63 ++++++++++++++++++++++++++++++++----------
+ migration/trace-events |  1 +
+ softmmu/dirtylimit.c   | 22 +++++++++++++++
+ 4 files changed, 74 insertions(+), 15 deletions(-)
 
-Please change the following code to avoid the call to update_zones_wp():
-
-  #if defined(CONFIG_BLKZONED)
-  {
-      BlockZoneWps *wps =3D bs->wps;
-      if (ret =3D=3D 0) {
-          if ((type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))
-              && wps && bs->bl.zone_size) {
-              uint64_t *wp =3D &wps->wp[offset / bs->bl.zone_size];
-              if (!BDRV_ZT_IS_CONV(*wp)) {
-                  if (type & QEMU_AIO_ZONE_APPEND) {
-                      *s->offset =3D *wp;
-                      trace_zbd_zone_append_complete(bs, *s->offset
-                          >> BDRV_SECTOR_BITS);
-                  }
-                  /* Advance the wp if needed */
-                  if (offset + bytes > *wp) {
-                      *wp =3D offset + bytes;
-                  }
-              }
-          }
-      } else {
--         if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
-+         if (wps && (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))) {
-              update_zones_wp(bs, s->fd, 0, 1);
-          }
-      }
-
-Stefan
-
---G4CQk9M61XIKDciX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSAq4oACgkQnKSrs4Gr
-c8iyWQgAmTWjLPhlVog6SkBPkVZN1SMNmImPPQ+dxvRuGwpPTmIYCZH71SbUPCkP
-Ku9Xre0pfhkMS/qhnWefiCqWzYaknI1wfiVoCnk3lJKhQ6OPzEgNqB4pn0XtMsqj
-2xRnbpDopsDuSyafjB/qOBMyW+sqlLTcCP2NqkB+OcQMb45x+2YXvn4CFw3iAwkE
-DOC9uKB+FwNp7Xy3CibUqrrivcjRIhiP29AJBcY1PDWfsUXWQplAUOw+wPXGku5P
-8yB/8ZOl7ShpKruvpPbAmr1NvwpC4vjTZz7vXZqFPtsUIOgfzb70VZIsD9cr7gjX
-+y8tElwnf3Ksvh6V2BM9csyoEmhcBQ==
-=wHv9
------END PGP SIGNATURE-----
-
---G4CQk9M61XIKDciX--
+diff --git a/migration/migration.c b/migration/migration.c
+index dc05c6f6ea..4278b48af0 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -165,6 +165,9 @@ void migration_cancel(const Error *error)
+     if (error) {
+         migrate_set_error(current_migration, error);
+     }
++    if (migrate_dirty_limit()) {
++        qmp_cancel_vcpu_dirty_limit(false, -1, NULL);
++    }
+     migrate_fd_cancel(current_migration);
+ }
+=20
+diff --git a/migration/ram.c b/migration/ram.c
+index 132f1a81d9..d26c7a8193 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -46,6 +46,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-types-migration.h"
+ #include "qapi/qapi-events-migration.h"
++#include "qapi/qapi-commands-migration.h"
+ #include "qapi/qmp/qerror.h"
+ #include "trace.h"
+ #include "exec/ram_addr.h"
+@@ -59,6 +60,8 @@
+ #include "multifd.h"
+ #include "sysemu/runstate.h"
+ #include "options.h"
++#include "sysemu/dirtylimit.h"
++#include "sysemu/kvm.h"
+=20
+ #include "hw/boards.h" /* for machine_dump_guest_core() */
+=20
+@@ -983,6 +986,30 @@ static void migration_update_rates(RAMState *rs, int64_t=
+ end_time)
+     }
+ }
+=20
++/*
++ * Enable dirty-limit to throttle down the guest
++ */
++static void migration_dirty_limit_guest(void)
++{
++    static int64_t quota_dirtyrate;
++    MigrationState *s =3D migrate_get_current();
++
++    /*
++     * If dirty limit already enabled and migration parameter
++     * vcpu-dirty-limit untouched.
++     */
++    if (dirtylimit_in_service() &&
++        quota_dirtyrate =3D=3D s->parameters.vcpu_dirty_limit) {
++        return;
++    }
++
++    quota_dirtyrate =3D s->parameters.vcpu_dirty_limit;
++
++    /* Set or update quota dirty limit */
++    qmp_set_vcpu_dirty_limit(false, -1, quota_dirtyrate, NULL);
++    trace_migration_dirty_limit_guest(quota_dirtyrate);
++}
++
+ static void migration_trigger_throttle(RAMState *rs)
+ {
+     uint64_t threshold =3D migrate_throttle_trigger_threshold();
+@@ -991,26 +1018,32 @@ static void migration_trigger_throttle(RAMState *rs)
+     uint64_t bytes_dirty_period =3D rs->num_dirty_pages_period * TARGET_PAGE=
+_SIZE;
+     uint64_t bytes_dirty_threshold =3D bytes_xfer_period * threshold / 100;
+=20
+-    /* During block migration the auto-converge logic incorrectly detects
+-     * that ram migration makes no progress. Avoid this by disabling the
+-     * throttling logic during the bulk phase of block migration. */
+-    if (blk_mig_bulk_active()) {
+-        return;
+-    }
++    /*
++     * The following detection logic can be refined later. For now:
++     * Check to see if the ratio between dirtied bytes and the approx.
++     * amount of bytes that just got transferred since the last time
++     * we were in this routine reaches the threshold. If that happens
++     * twice, start or increase throttling.
++     */
+=20
+-    if (migrate_auto_converge()) {
+-        /* The following detection logic can be refined later. For now:
+-           Check to see if the ratio between dirtied bytes and the approx.
+-           amount of bytes that just got transferred since the last time
+-           we were in this routine reaches the threshold. If that happens
+-           twice, start or increase throttling. */
++    if ((bytes_dirty_period > bytes_dirty_threshold) &&
++        (++rs->dirty_rate_high_cnt >=3D 2)) {
++        rs->dirty_rate_high_cnt =3D 0;
++        /*
++         * During block migration the auto-converge logic incorrectly detects
++         * that ram migration makes no progress. Avoid this by disabling the
++         * throttling logic during the bulk phase of block migration
++         */
++        if (blk_mig_bulk_active()) {
++            return;
++        }
+=20
+-        if ((bytes_dirty_period > bytes_dirty_threshold) &&
+-            (++rs->dirty_rate_high_cnt >=3D 2)) {
++        if (migrate_auto_converge()) {
+             trace_migration_throttle();
+-            rs->dirty_rate_high_cnt =3D 0;
+             mig_throttle_guest_down(bytes_dirty_period,
+                                     bytes_dirty_threshold);
++        } else if (migrate_dirty_limit()) {
++            migration_dirty_limit_guest();
+         }
+     }
+ }
+diff --git a/migration/trace-events b/migration/trace-events
+index cdaef7a1ea..c5cb280d95 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -91,6 +91,7 @@ migration_bitmap_sync_start(void) ""
+ migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
+ migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsig=
+ned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
+ migration_throttle(void) ""
++migration_dirty_limit_guest(int64_t dirtyrate) "guest dirty page rate limit =
+%" PRIi64 " MB/s"
+ ram_discard_range(const char *rbname, uint64_t start, size_t len) "%s: start=
+: %" PRIx64 " %zx"
+ ram_load_loop(const char *rbname, uint64_t addr, int flags, void *host) "%s:=
+ addr: 0x%" PRIx64 " flags: 0x%x host: %p"
+ ram_load_postcopy_loop(int channel, uint64_t addr, int flags) "chan=3D%d add=
+r=3D0x%" PRIx64 " flags=3D0x%x"
+diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
+index 3f1103b04b..ee47158986 100644
+--- a/softmmu/dirtylimit.c
++++ b/softmmu/dirtylimit.c
+@@ -440,6 +440,8 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
+                                  int64_t cpu_index,
+                                  Error **errp)
+ {
++    MigrationState *ms =3D migrate_get_current();
++
+     if (!kvm_enabled() || !kvm_dirty_ring_enabled()) {
+         return;
+     }
+@@ -453,6 +455,15 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
+         return;
+     }
+=20
++    if (migration_is_running(ms->state) &&
++        (!qemu_thread_is_self(&ms->thread)) &&
++        migrate_dirty_limit() &&
++        dirtylimit_in_service()) {
++        error_setg(errp, "can't cancel dirty page limit while"
++                   " migration is running");
++        return;
++    }
++
+     dirtylimit_state_lock();
+=20
+     if (has_cpu_index) {
+@@ -488,6 +499,8 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
+                               uint64_t dirty_rate,
+                               Error **errp)
+ {
++    MigrationState *ms =3D migrate_get_current();
++
+     if (!kvm_enabled() || !kvm_dirty_ring_enabled()) {
+         error_setg(errp, "dirty page limit feature requires KVM with"
+                    " accelerator property 'dirty-ring-size' set'");
+@@ -504,6 +517,15 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
+         return;
+     }
+=20
++    if (migration_is_running(ms->state) &&
++        (!qemu_thread_is_self(&ms->thread)) &&
++        migrate_dirty_limit() &&
++        dirtylimit_in_service()) {
++        error_setg(errp, "can't cancel dirty page limit while"
++                   " migration is running");
++        return;
++    }
++
+     dirtylimit_state_lock();
+=20
+     if (!dirtylimit_in_service()) {
+--=20
+2.38.5
 
 
