@@ -2,67 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316B87259C9
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D194725A28
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:23:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6pDr-00084j-HZ; Wed, 07 Jun 2023 05:12:55 -0400
+	id 1q6pML-0002F7-Pd; Wed, 07 Jun 2023 05:21:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiao.w.wang@intel.com>)
- id 1q6pDk-00084E-Oa; Wed, 07 Jun 2023 05:12:48 -0400
-Received: from mga09.intel.com ([134.134.136.24])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1q6pMG-0002EE-0b; Wed, 07 Jun 2023 05:21:36 -0400
+Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiao.w.wang@intel.com>)
- id 1q6pDi-0001Tm-UV; Wed, 07 Jun 2023 05:12:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686129166; x=1717665166;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=AHNI1/RpJ6AS+SCdzUR89xL6O4y2FGQ892g2z6y0DNw=;
- b=TR5YcChzsZVV7LVs0c1N2H2w2rBWYSM5/eouZ9mtVtnbFoDmL7btwCNV
- Gd1mpzZMEFf+i09NHu68sV5J34FrBndc3tFCn7k4qLDoQjXAltGfLtQ0c
- Nt5tYmIkAapWJQr93TlSL4JFZQq+8pSjCfb7kTtrhvgKdXDVp4iqOa2Ss
- tiZrywYh12ozf18XaWMMrxzFE+IaK95BH2K+2FAxI4+9sEvNqezk73PBz
- Q9jTL66RrzTyjK1JWjDmwlZHTtPJ0SqZNCiKRDFDWg+iGjpyiZbT+O1AT
- bY9C6O8tNXQZZVUM3Wtsp4XUV2UjDNoQ24RDfA32llg58ETtYvPPCzVdS g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="359403253"
-X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; d="scan'208";a="359403253"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2023 02:12:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="774439958"
-X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; d="scan'208";a="774439958"
-Received: from xiao-desktop.sh.intel.com ([10.239.46.158])
- by fmsmga008.fm.intel.com with ESMTP; 07 Jun 2023 02:12:33 -0700
-From: Xiao Wang <xiao.w.wang@intel.com>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1q6pMA-0002ys-Mn; Wed, 07 Jun 2023 05:21:35 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 43D6A260AA3;
+ Wed,  7 Jun 2023 11:21:25 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
+Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
+ by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id TBbrlmDbPKqj; Wed,  7 Jun 2023 11:21:23 +0200 (CEST)
+Received: from applejack.lan (83.21.93.182.ipv4.supernova.orange.pl
+ [83.21.93.182])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 184BA260251;
+ Wed,  7 Jun 2023 11:21:22 +0200 (CEST)
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Xiao Wang <xiao.w.wang@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v2] target/riscv/vector_helper.c: Remove the check for extra
- tail elements
-Date: Wed,  7 Jun 2023 17:16:46 +0800
-Message-Id: <20230607091646.4049428-1-xiao.w.wang@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 1/1] hw/arm/Kconfig: sbsa-ref uses Bochs display
+Date: Wed,  7 Jun 2023 11:21:12 +0200
+Message-Id: <20230607092112.655098-1-marcin.juszkiewicz@linaro.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.24;
- envelope-from=xiao.w.wang@intel.com; helo=mga09.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: softfail client-ip=213.251.184.221;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,107 +61,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector
-load / store instructions") added an extra check for LMUL fragmentation,
-intended for setting the "rest tail elements" in the last register for a
-segment load insn.
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Actually, the max_elements derived in vext_ld*() won't be a fraction of
-vector register size, since the lmul encoded in desc is emul, which has
-already been adjusted to 1 for LMUL fragmentation case by vext_get_emul()
-in trans_rvv.c.inc, for ld_stride(), ld_us(), ld_index() and ldff().
-
-Besides, vext_get_emul() has also taken EEW/SEW into consideration, so no
-need to call vext_get_total_elems() which would base on the emul to derive
-another emul, the second emul would be incorrect when esz differs from sew.
-
-Thus this patch removes the check for extra tail elements.
-
-Fixes: 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector load / store instructions")
-
-Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
 ---
-v2:
-* Rebased on top of Alistair's riscv-to-apply.next branch.
----
- target/riscv/vector_helper.c | 22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ hw/arm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 7505f9470a..f261e726c2 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -264,11 +264,10 @@ GEN_VEXT_ST_ELEM(ste_h, int16_t, H2, stw)
- GEN_VEXT_ST_ELEM(ste_w, int32_t, H4, stl)
- GEN_VEXT_ST_ELEM(ste_d, int64_t, H8, stq)
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 0f42c556d7..4484de67e8 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -249,6 +249,7 @@ config SBSA_REF
+     select PL061 # GPIO
+     select USB_EHCI_SYSBUS
+     select WDT_SBSA
++    select BOCHS_DISPLAY
  
--static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
--                                   void *vd, uint32_t desc, uint32_t nf,
-+static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
-+                                   uint32_t desc, uint32_t nf,
-                                    uint32_t esz, uint32_t max_elems)
- {
--    uint32_t total_elems, vlenb, registers_used;
-     uint32_t vta = vext_vta(desc);
-     int k;
- 
-@@ -276,19 +275,10 @@ static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
-         return;
-     }
- 
--    total_elems = vext_get_total_elems(env, desc, esz);
--    vlenb = riscv_cpu_cfg(env)->vlen >> 3;
--
-     for (k = 0; k < nf; ++k) {
-         vext_set_elems_1s(vd, vta, (k * max_elems + vl) * esz,
-                           (k * max_elems + max_elems) * esz);
-     }
--
--    if (nf * max_elems % total_elems != 0) {
--        registers_used = ((nf * max_elems) * esz + (vlenb - 1)) / vlenb;
--        vext_set_elems_1s(vd, vta, (nf * max_elems) * esz,
--                          registers_used * vlenb);
--    }
- }
- 
- /*
-@@ -324,7 +314,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LD_STRIDE(NAME, ETYPE, LOAD_FN)                        \
-@@ -383,7 +373,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, evl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
- }
- 
- /*
-@@ -504,7 +494,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LD_INDEX(NAME, ETYPE, INDEX_FN, LOAD_FN)                  \
-@@ -634,7 +624,7 @@ ProbeSuccess:
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
+ config SABRELITE
+     bool
 -- 
-2.25.1
+2.40.1
 
 
