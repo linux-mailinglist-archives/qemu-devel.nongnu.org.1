@@ -2,74 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612FC725DEC
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76043725DF7
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:07:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6rqE-0002Tg-B8; Wed, 07 Jun 2023 08:00:42 -0400
+	id 1q6rvZ-0004Rr-SD; Wed, 07 Jun 2023 08:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6rpy-0002T2-5L
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:00:31 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q6rvW-0004RE-12
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:06:10 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6rpr-0008It-7O
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:00:24 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 622C3219EC;
- Wed,  7 Jun 2023 12:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1686139217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tkVlYK4NBfx/WjoDoWyhANOUhVG12HzcWgiLfwxdC80=;
- b=yDWLUtEedxY1xpuFGkH2v2YcRsqctAqfg1fuxF1iK5IpUfvA2uFC+IQWX9okFDbbFCPwQQ
- 9V8OUHZDfyrDsJE7sf76BmEIpDc45GctLiFjT7sVdOHo1bI4a/GK3wUU29OiIrYq2Sykwr
- 11wktzxguYNS7hOJGoPntsJ/lpKgUE0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1686139217;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tkVlYK4NBfx/WjoDoWyhANOUhVG12HzcWgiLfwxdC80=;
- b=7AYtRMSSrSpPEnUnRXPSlVTdaBd50ODg70bazzUxolDa+DEXR/1+0MRGo0uHeYyDLgUrpo
- wnryarFoJUewwVDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DD7BE13776;
- Wed,  7 Jun 2023 12:00:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id eMxTKFBxgGQKNgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 07 Jun 2023 12:00:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, Jiang
- Jiacheng <jiangjiacheng@huawei.com>, Peter Xu <peterx@redhat.com>, Leonardo
- Bras <leobras@redhat.com>
-Subject: Re: [PATCH 2/3] migration/multifd: Protect accesses to
- migration_threads
-In-Reply-To: <87y1kvoezi.fsf@secure.mitica>
-References: <20230606144551.24367-1-farosas@suse.de>
- <20230606144551.24367-3-farosas@suse.de> <87y1kvoezi.fsf@secure.mitica>
-Date: Wed, 07 Jun 2023 09:00:14 -0300
-Message-ID: <87o7lrh48h.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q6rvP-0001bP-Q2
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:06:09 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3063433fa66so6134564f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 05:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1686139561; x=1688731561;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=FZ4FML1tFN3OExSPfgzW8aebCXGWtZ6fFJO7EWxdwZE=;
+ b=SghoNl1sq2qa0xOs4wg7wDmXVNjin8yPki5RrxQ/w1vQBJUtKTtI3EQvNSv4nvmQl3
+ DGWVrDFouHMpSrEu0kOURP2NIw5DCsq9NtpSUkZsVdGxPUCFAbR2oXqWwVwWwM+IVlie
+ gthLE05Q6hFL22qT482mXwRsD7WSlOdjqtrQKj549r3O2iaAX5c/IDmCnObetq8lpJii
+ PcRA53hQ55eAm4MqjY1fuFVdmM/Djfh2y3ECLxg4sj1T1CSHOKF+4KZ20HHZNf4pLEDg
+ MUf009ne8Iv1k4hqBOw8gTPvmWlT/sPI+0Av3k/q8DDnmkiBMiam9ro7PQ/W6IijzlKF
+ rkzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686139561; x=1688731561;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FZ4FML1tFN3OExSPfgzW8aebCXGWtZ6fFJO7EWxdwZE=;
+ b=L5eBNO92soDuMJeBt3XQveTY4Xaz15s5VvP6csm+PGJXUMQZxDLy1K5P/oDwzpDO6G
+ 6Efh6Fr8jg3WNT5dJKvDIg5Dj/yEfxYELaPCsOgp6lJ8ZsfjHFTdmzoLk3xlmshMJy60
+ /Rh+YSAa41JqoR/jgZFz/KwcBDMhQJ/TQOS52TZr+hAKDigu2NGNrlk2DwiRnpFfreZ6
+ MbilCEXakO1LQ834wV6Shsgqsr8g2TlMm1C2EqUhQ6Aj2sVZqPXkGxSy3Mr+f5BMbcmt
+ 7fkersl+CnfvqZLj1swnISs9o5D3hr15zWJi89EtOau6eQw/yPdTKey2u3PWrsP1aLvd
+ BOHQ==
+X-Gm-Message-State: AC+VfDz78jcyI7lGFTUPHQBDZCHOlo50WU8BN/9Clh6tunZMqySMtLfL
+ Le9ziFoxtjoBJR2TCODjPCtuqw==
+X-Google-Smtp-Source: ACHHUZ6sMmKfLfS10cxTf3ncn3PWzvua6QhUjCpFLZZdKfIZw+dqh5Qkgy8JuNivasn+RVKfxX5G9Q==
+X-Received: by 2002:a5d:53cd:0:b0:307:86fb:dae2 with SMTP id
+ a13-20020a5d53cd000000b0030786fbdae2mr4014363wrw.67.1686139561389; 
+ Wed, 07 Jun 2023 05:06:01 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ w17-20020a5d5451000000b0030631f199f9sm15278043wrv.34.2023.06.07.05.06.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 05:06:00 -0700 (PDT)
+Date: Wed, 7 Jun 2023 14:05:59 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH 12/16] target/riscv/kvm.c: update KVM MISA bits
+Message-ID: <20230607-c99f4cbc55fb2f02b4a26023@orel>
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-13-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230530194623.272652-13-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,98 +94,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On Tue, May 30, 2023 at 04:46:19PM -0300, Daniel Henrique Barboza wrote:
+> Our design philosophy with KVM properties can be resumed in two main
+> decisions based on KVM interface availability and what the user wants to
+> do:
+> 
+> - if the user disables an extension that the host KVM module doesn't
+> know about (i.e. it doesn't implement the kvm_get_one_reg() interface),
+> keep booting the CPU. This will avoid users having to deal with issues
+> with older KVM versions while disabling features they don't care;
+> 
+> - for any other case we're going to error out immediately. If the user
+> wants to enable a feature that KVM doesn't know about this a problem that
+> is worth aborting - the user must know that the feature wasn't enabled
+> in the hart. Likewise, if KVM knows about the extension, the user wants
+> to enable/disable it, and we fail to do it so, that's also a problem we
+> can't shrug it off.
+> 
+> For MISA bits we're going to be a little more conservative: we won't
+> even try enabling bits that aren't already available in the host. The
+> ioctl() is so likely to fail that's not worth trying. This check is
+> already done in the previous patch, in kvm_cpu_set_misa_ext_cfg(), thus
+> we don't need to worry about it now.
+> 
+> In kvm_riscv_update_cpu_misa_ext() we'll go through every potential user
+> option and do as follows:
+> 
+> - if the user didn't set the property or set to the same value of the
+> host, do nothing;
+> 
+> - Disable the given extension in KVM. If it fails we need to verify the
+> error code. -EINVAL indicates that KVM doesn't know about the reg, so
+> re-enable the extension in env->misa_ext and keep booting. If it fails
 
-> Fabiano Rosas <farosas@suse.de> wrote:
->> This doubly linked list is common for all the multifd and migration
->> threads so we need to avoid concurrent access.
->>
->> Add a mutex to protect the data from concurrent access. This fixes a
->> crash when removing two MigrationThread objects from the list at the
->> same time during cleanup of multifd threads.
->>
->> To avoid destroying the mutex before the last element has been
->> removed, move calls to qmp_migration_thread_remove so they run before
->> multifd_save_cleanup joins the threads.
->>
->> Fixes: 671326201d ("migration: Introduce interface query-migrationthreads")
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->
-> I agree with Peter here.  Why don't you have to protect the walking?
+We shouldn't "re-enable the extension in env->misa_ext..." when the
+extension isn't supported by KVM for any reason. But, assuming EINVAL
+is only returned when KVM doesn't support the extension (I wish it
+returned ENOENT instead), then we'll never get EINVAL here in update
+anyway. env->misa_ext is initialized to what KVM supports, so it
+wouldn't have had this unsupported extension bit set in the first
+place, meaning 'user_set' wouldn't get set at property setting time
+either.
+
+> for any other reason we're going to exit out.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/kvm.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
+> 
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 6afd56cda5..bb1dafe263 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -166,6 +166,42 @@ static void kvm_cpu_set_misa_ext_cfg(Object *obj, Visitor *v,
+>                 "enabled in the host", misa_ext_cfg->name);
+>  }
+>  
+> +static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+> +{
+> +    CPURISCVState *env = &cpu->env;
+> +    uint64_t id, reg;
+> +    int i, ret;
+> +
+> +    for (i = 0; i < ARRAY_SIZE(kvm_misa_ext_cfgs); i++) {
+> +        RISCVCPUMisaExtConfig *misa_cfg = &kvm_misa_ext_cfgs[i];
+> +
+> +        if (!misa_cfg->user_set) {
+> +            continue;
+> +        }
+> +
+> +        /* If we're here we're going to disable the MISA bit */
+> +        reg = 0;
+> +        id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
+> +                              misa_cfg->kvm_reg_id);
+> +        ret = kvm_set_one_reg(cs, id, &reg);
+> +        if (ret != 0) {
+> +            if (ret == -EINVAL) {
+> +                /*
+> +                 * KVM doesn't know how to handle this bit. Since
+> +                 * it's an extension that the user wants to disable,
+> +                 * do not error out.
+> +                 */
+> +                continue;
+
+This case can be replaced with a comment explaining we don't ever
+expect EINVAL here at update time, since user_set will never be
+true for user-disabled extensions which KVM doesn't support.
+
+> +            } else {
+> +                error_report("Unable to set KVM reg %s, error %d",
+> +                             misa_cfg->name, ret);
+> +                exit(EXIT_FAILURE);
+> +            }
+> +        }
+> +        env->misa_ext &= ~misa_cfg->misa_bit;
+> +    }
+> +}
+> +
+>  static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>  {
+>      int i;
+> @@ -632,8 +668,13 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>  
+>      if (!object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
+>          ret = kvm_vcpu_set_machine_ids(cpu, cs);
+> +        if (ret != 0) {
+> +            return ret;
+> +        }
+>      }
+>  
+> +    kvm_riscv_update_cpu_misa_ext(cpu, cs);
+> +
+>      return ret;
+>  }
+>  
+> -- 
+> 2.40.1
+> 
 >
 
-Oversight on my part.
-
->> ---
->>  migration/migration.c  |  5 ++++-
->>  migration/multifd.c    |  3 ++-
->>  migration/threadinfo.c | 19 ++++++++++++++++++-
->>  migration/threadinfo.h |  5 +++--
->>  4 files changed, 27 insertions(+), 5 deletions(-)
->>
->> diff --git a/migration/migration.c b/migration/migration.c
->> index e731fc98a1..b3b8345eb2 100644
->> --- a/migration/migration.c
->> +++ b/migration/migration.c
->> @@ -1146,6 +1146,7 @@ static void migrate_fd_cleanup(MigrationState *s)
->>          qemu_mutex_lock_iothread();
->>  
->>          multifd_save_cleanup();
->> +        qmp_migration_threads_cleanup();
->
-> I think I will spare this one as the mutex is static, so we are not
-> winning any memory back.
->
-
-Ok
-
->>      }
->>  
->>      trace_migration_thread_after_loop();
->> +    qmp_migration_threads_remove(thread);
->>      migration_iteration_finish(s);
->
-> I can understand moving it here, but why before migration_iteration_finish?
->
-
-Because migration_iteration_finish schedules migrate_fd_cleanup and it
-calls qmp_migration_threads_cleanup. So I wanted to be sure that the
-removal happens before destroying the mutex.
-
->>      object_unref(OBJECT(s));
->>      rcu_unregister_thread();
->> -    qmp_migration_threads_remove(thread);
->>      return NULL;
->>  }
->> +    qmp_migration_threads_remove(thread);
->> +
->>      qemu_mutex_lock(&p->mutex);
->>      p->running = false;
->>      qemu_mutex_unlock(&p->mutex);
->>  
->>      rcu_unregister_thread();
->> -    qmp_migration_threads_remove(thread);
->>      trace_multifd_send_thread_end(p->id, p->num_packets, p->total_normal_pages);
->>  
->>      return NULL;
->
-> Here it looks like the right place.
->
-
-Yep, we shouldn't really put any new code after that p->running =
-false. Because multifd_save_cleanup will happily start cleaning up
-everything while this thread is still running if it sees p->running ==
-false.
-
->
->> +#include "qemu/osdep.h"
->> +#include "qemu/queue.h"
->> +#include "qemu/lockable.h"
->>  #include "threadinfo.h"
->
-> Ouch, it missed Markus cleanup.  Thanks.
->
-> For the rest it looks good.
->
-> Later, Juan.
+Thanks,
+drew
 
