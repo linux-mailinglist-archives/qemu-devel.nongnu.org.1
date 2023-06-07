@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552F47263E0
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D337C7263E2
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:14:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6uqs-0002Ft-0N; Wed, 07 Jun 2023 11:13:34 -0400
+	id 1q6urq-00030v-AZ; Wed, 07 Jun 2023 11:14:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6uqp-0002FH-Qm
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:13:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q6urn-0002qE-KA
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:14:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6uqm-0004uj-QN
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:13:31 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q6url-00056D-BP
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:14:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686150743;
+ s=mimecast20190719; t=1686150868;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Sxi0rdN/oiOVPn22IbWPszGA19lCpFh0+pR45m0QThk=;
- b=FkmMeQASQU+2wDOH+qgIuu4Xk9JP3+WVaHS6rOc8GM8nWqaJj/zTNeu+Fv14s5drWVISRr
- Hrj1xaJarkHi5uI2tgfsYgqrbSADdWz9NuvCVrLF8WfZ/Ij3t5ZWvHrwuBAbBjCDVhVTnh
- riZ3UN2B5JCXxqWxDqxAVYAfr2QdOXA=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gw8TWM/xB2dBTkYwDJmVvsBnPO1XV5aSAp2VNfU9Cc4=;
+ b=OTuZA+I8RKeeMGoRZoHyqhaVlsPTEIboO7JfIom1HQmiYNAmGqd1y/lGyx6/Z1xoPJt/CC
+ GxxUKsklDk0PRVudv3LPpYcj5w8/x8r+hXhlF35tKpjIkp2YypsnUuNiCLntzVEe/JlU8j
+ DuD2dVnTHDNKfP+UTqqaC1L8Lhs0A+k=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-39Y7Y_huOhem2Pu1u7yWqA-1; Wed, 07 Jun 2023 11:10:10 -0400
-X-MC-Unique: 39Y7Y_huOhem2Pu1u7yWqA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-62632620f00so10412186d6.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:10:10 -0700 (PDT)
+ us-mta-498-2OrtFNwqPBeDO_DJYnttlg-1; Wed, 07 Jun 2023 11:14:26 -0400
+X-MC-Unique: 2OrtFNwqPBeDO_DJYnttlg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-516302ba604so1093731a12.2
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:14:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686150604; x=1688742604;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Sxi0rdN/oiOVPn22IbWPszGA19lCpFh0+pR45m0QThk=;
- b=drXpwaxfL2vcHqlcWQs41ekgTXAZppF0x43/pd6ky/7sxsvP8wSOwF4wuUYdEhPH+Q
- yK6S4k4IXFhPnc9LPlw5o4O+a9pSXqX8yoZza3YsgOOjQ9AjF7Q++HPwdnVs7TVyqXP+
- ILDAZTzBQzjtRdNRlLSg1qRw7Zes00aJxrC1eTuHkZGSn7ZHMMtcZyooCYLtsoDMHS8B
- rL3siShJx5oVGyVGsgzcjILTDHbHxdXg8knCM3JILfZtFgXg9KP2yZS5qMpcRoJ/gDwI
- yLofknVDNr3FUACYWh7UhONi7xUpuyjuHGJp8GtzxB4FDpWyd0p/Bp6DPH5/Rz5T6Y7b
- l4eQ==
-X-Gm-Message-State: AC+VfDy3rKjXf9VRiX8NyjZ18298JL5bruDjJKYQtn9Wq/nc6xrQJOgt
- 1qbT079dvtyJazbpAsCcZfZt/CDKGGODfortBIxz3vK6iUnWwOx8Vg/t9k2VUrp+QS4OMy2as/H
- G7VPydcFb27srabQ=
-X-Received: by 2002:a05:6214:4014:b0:625:aa48:e50f with SMTP id
- kd20-20020a056214401400b00625aa48e50fmr2510447qvb.6.1686150604613; 
- Wed, 07 Jun 2023 08:10:04 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Sfvy741kwFT3FrB0vtWtbFKxRqNtsQ1Ft7bU3RZG9oMrp9nQuykj3EzDLid7YIR7OEq1K+A==
-X-Received: by 2002:a05:6214:4014:b0:625:aa48:e50f with SMTP id
- kd20-20020a056214401400b00625aa48e50fmr2510426qvb.6.1686150604395; 
- Wed, 07 Jun 2023 08:10:04 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- pr27-20020a056214141b00b006262956aa0fsm6085350qvb.106.2023.06.07.08.10.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 08:10:03 -0700 (PDT)
-Date: Wed, 7 Jun 2023 11:10:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH V3] migration: simplify notifiers
-Message-ID: <ZICdyhgXhvsBM5jM@x1n>
-References: <1686148954-250144-1-git-send-email-steven.sistare@oracle.com>
+ d=1e100.net; s=20221208; t=1686150864; x=1688742864;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gw8TWM/xB2dBTkYwDJmVvsBnPO1XV5aSAp2VNfU9Cc4=;
+ b=iWbmOdG9stS1WGvcC4Cd9/w83gWTvCWr/n9OOs7HUCx4e0lqhQwUgxNHRwcByLBfp5
+ /1VqbyIb72+wzlzI2u2WKmJ4rqDy1WLpOdSeqxT32V1x5glk8rUqoNBCAd2d2QIr2h7g
+ 0FctkgMERMgb1mggR6s4FpyugrDkqGxrHW3NqLJq9nhjEhH4v6mBwgTx5ilvf+Nft4ob
+ oBv4Dk13SWpps2FUzOqCsmWXaIJqvtrRi3/Fe4LQbHMc0hOEkzIp/95TSeSD5y7LlEfl
+ uVzeVCFjNLsf81tvhg9V/CBediEi2WZdyjhfdeX57MSfw5gip/1Q0HY636Ultnbgnhw7
+ ojpg==
+X-Gm-Message-State: AC+VfDxvDoSfX+jJ7mkiG8hqj2a0ZBTfYR9U7F+O3cEIy+rk+MSbjiHp
+ 5qar4m1t+JEvlsTb5UWxRCnwDb443mqfPLa63nJm8O8H/VQP/MiHFq87GboIo6iYwkEsULtqMfM
+ 6iMPZU4qfIH5khZA=
+X-Received: by 2002:a05:6402:618:b0:516:416b:f736 with SMTP id
+ n24-20020a056402061800b00516416bf736mr4267824edv.35.1686150864710; 
+ Wed, 07 Jun 2023 08:14:24 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4pyHqAez4uHFNiH0NGFUfWGQAhvuCMnu7SSlTd/SLID14JkV659TkT4uS8m30uEfYA3uE+/Q==
+X-Received: by 2002:a05:6402:618:b0:516:416b:f736 with SMTP id
+ n24-20020a056402061800b00516416bf736mr4267816edv.35.1686150864456; 
+ Wed, 07 Jun 2023 08:14:24 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d740:9017:191d:265b:b68c:4fa4?
+ (p200300cfd7409017191d265bb68c4fa4.dip0.t-ipconnect.de.
+ [2003:cf:d740:9017:191d:265b:b68c:4fa4])
+ by smtp.gmail.com with ESMTPSA id
+ f3-20020a056402150300b00514b99afa57sm6489986edw.44.2023.06.07.08.14.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 08:14:23 -0700 (PDT)
+Message-ID: <fcd7669d-92ec-fd24-1485-e746c2e358c7@redhat.com>
+Date: Wed, 7 Jun 2023 17:14:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1686148954-250144-1-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL 05/17] parallels: Out of image offset in BAT leads to image
+ inflation
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-block@nongnu.org,
+ Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230605154541.1043261-1-hreitz@redhat.com>
+ <20230605154541.1043261-6-hreitz@redhat.com>
+ <a6dca05c-aebf-fe39-6cfa-cd626475865e@tls.msk.ru>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <a6dca05c-aebf-fe39-6cfa-cd626475865e@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,21 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 07, 2023 at 07:42:34AM -0700, Steve Sistare wrote:
-> Pass the callback function to add_migration_state_change_notifier so
-> that migration can initialize the notifier on add and clear it on
-> delete, which simplifies the call sites.  Shorten the function names
-> so the extra arg can be added more legibly.  Hide the global notifier
-> list in a new function migration_call_notifiers, and make it externally
-> visible so future live update code can call it.
-> 
-> No functional change.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+On 07.06.23 08:51, Michael Tokarev wrote:
+> 05.06.2023 18:45, Hanna Czenczek wrote:
+>> From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+>>
+>> data_end field in BDRVParallelsState is set to the biggest offset 
+>> present
+>> in BAT. If this offset is outside of the image, any further write will
+>> create the cluster at this offset and/or the image will be truncated to
+>> this offset on close. This is definitely not correct.
+>>
+>> Raise an error in parallels_open() if data_end points outside the image
+>> and it is not a check (let the check to repaire the image). Set data_end
+>> to the end of the cluster with the last correct offset.
+>
+> Hi!
+>
+> This, and a few other parallels changes in this series:
+>
+>  parallels: Out of image offset in BAT leads to image inflation
+>  parallels: Fix high_off calculation in parallels_co_check()
+>  parallels: Fix image_end_offset and data_end after out-of-image check
+>  parallels: Fix statistics calculation (?)
+>
+> Should these be applied to -stable too, or is it not important?
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Personally, I don’t think they need to be in stable; but I’ll leave the 
+final judgment to Alexander.
 
--- 
-Peter Xu
+Hanna
 
 
