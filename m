@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772897252F9
+	by mail.lfdr.de (Postfix) with ESMTPS id 513797252F8
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 06:42:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6kyR-0001wS-JP; Wed, 07 Jun 2023 00:40:43 -0400
+	id 1q6kyj-000260-Sh; Wed, 07 Jun 2023 00:41:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6kyN-0001sU-QT; Wed, 07 Jun 2023 00:40:39 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1q6kye-00024j-48; Wed, 07 Jun 2023 00:40:56 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6kyL-0003tM-M7; Wed, 07 Jun 2023 00:40:39 -0400
+ id 1q6kyQ-0003tc-FM; Wed, 07 Jun 2023 00:40:55 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbZQq2JhVz4x4F;
- Wed,  7 Jun 2023 14:40:35 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbZQt3Kldz4x4M;
+ Wed,  7 Jun 2023 14:40:38 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbZQm2rbCz4x3g;
- Wed,  7 Jun 2023 14:40:32 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbZQq6HRtz4x41;
+ Wed,  7 Jun 2023 14:40:35 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Abhishek Singh Dagur <abhishek@drut.io>
-Subject: [PATCH v2 11/12] aspeed: Introduce a "bmc-console" machine option
-Date: Wed,  7 Jun 2023 06:39:42 +0200
-Message-Id: <20230607043943.1837186-12-clg@kaod.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH v2 12/12] target/arm: Allow users to set the number of VFP
+ registers
+Date: Wed,  7 Jun 2023 06:39:43 +0200
+Message-Id: <20230607043943.1837186-13-clg@kaod.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230607043943.1837186-1-clg@kaod.org>
 References: <20230607043943.1837186-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=5JAy=B3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
 X-Spam_score_int: -16
 X-Spam_score: -1.7
@@ -65,133 +66,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of the Aspeed machines use the UART5 device for the boot console,
-and QEMU connects the first serial Chardev to this SoC device for this
-purpose. See routine connect_serial_hds_to_uarts().
+Cortex A7 CPUs with an FPU implementing VFPv4 without NEON support
+have 16 64-bit FPU registers and not 32 registers. Let users set the
+number of VFP registers with a CPU property.
 
-Nevertheless, some machines use another boot console, such as the fuji,
-and commit 5d63d0c76c ("hw/arm/aspeed: Allow machine to set UART
-default") introduced a SoC class attribute 'uart_default' and property
-to be able to change the boot console device. It was later changed by
-commit d2b3eaefb4 ("aspeed: Refactor UART init for multi-SoC machines").
+The primary use case of this property is for the Cortex A7 of the
+Aspeed AST2600 SoC.
 
-The "bmc-console" machine option goes a step further and lets the user define
-the UART device from the QEMU command line without introducing a new
-machine definition. For instance, to use device UART3 (mapped on
-/dev/ttyS2 under Linux) instead of the default UART5, one would use :
-
-  -M ast2500-evb,bmc-console=uart3
-
-Cc: Abhishek Singh Dagur <abhishek@drut.io>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- docs/system/arm/aspeed.rst | 11 +++++++++++
- hw/arm/aspeed.c            | 40 ++++++++++++++++++++++++++++++++++++--
- 2 files changed, 49 insertions(+), 2 deletions(-)
+ target/arm/cpu.h        |  2 ++
+ hw/arm/aspeed_ast2600.c |  2 ++
+ target/arm/cpu.c        | 32 ++++++++++++++++++++++++++++++++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index d4e293e7f986..80538422a1a4 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -122,6 +122,11 @@ Options specific to Aspeed machines are :
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d469a2637b32..79f1a96ddf39 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -916,6 +916,8 @@ struct ArchCPU {
+     bool has_pmu;
+     /* CPU has VFP */
+     bool has_vfp;
++    /* CPU has 32 VFP registers */
++    bool has_vfp_d32;
+     /* CPU has Neon */
+     bool has_neon;
+     /* CPU has M-profile DSP extension */
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index 1bf12461481c..a8b3a8065a11 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -316,6 +316,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+                                 &error_abort);
+         object_property_set_bool(OBJECT(&s->cpu[i]), "neon", false,
+                                 &error_abort);
++        object_property_set_bool(OBJECT(&s->cpu[i]), "vfp-d32", false,
++                                &error_abort);
+         object_property_set_link(OBJECT(&s->cpu[i]), "memory",
+                                  OBJECT(s->memory), &error_abort);
  
-  * ``spi-model`` to change the SPI Flash model.
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 5182ed0c9113..74fe6ae78192 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1275,6 +1275,9 @@ static Property arm_cpu_cfgend_property =
+ static Property arm_cpu_has_vfp_property =
+             DEFINE_PROP_BOOL("vfp", ARMCPU, has_vfp, true);
  
-+ * ``bmc-console`` to change the default console device. Most of the
-+   machines use the ``UART5`` device for a boot console, which is
-+   mapped on ``/dev/ttyS4`` under Linux, but it is not always the
-+   case.
++static Property arm_cpu_has_vfp_d32_property =
++            DEFINE_PROP_BOOL("vfp-d32", ARMCPU, has_vfp_d32, true);
 +
- For instance, to start the ``ast2500-evb`` machine with a different
- FMC chip and a bigger (64M) SPI chip, use :
+ static Property arm_cpu_has_neon_property =
+             DEFINE_PROP_BOOL("neon", ARMCPU, has_neon, true);
  
-@@ -129,6 +134,12 @@ FMC chip and a bigger (64M) SPI chip, use :
- 
-   -M ast2500-evb,fmc-model=mx25l25635e,spi-model=mx66u51235f
- 
-+To change the boot console and use device ``UART3`` (``/dev/ttyS2``
-+under Linux), use :
-+
-+.. code-block:: bash
-+
-+  -M ast2500-evb,bmc-console=uart3
- 
- Aspeed minibmc family boards (``ast1030-evb``)
- ==================================================================
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 8beed0c2a66e..d3e58936e68a 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -43,6 +43,7 @@ struct AspeedMachineState {
-     AspeedSoCState soc;
-     MemoryRegion boot_rom;
-     bool mmio_exec;
-+    uint32_t uart_chosen;
-     char *fmc_model;
-     char *spi_model;
- };
-@@ -331,10 +332,11 @@ static void connect_serial_hds_to_uarts(AspeedMachineState *bmc)
-     AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
-     AspeedSoCState *s = &bmc->soc;
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-+    int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
- 
--    aspeed_soc_uart_set_chr(s, amc->uart_default, serial_hd(0));
-+    aspeed_soc_uart_set_chr(s, uart_chosen, serial_hd(0));
-     for (int i = 1, uart = ASPEED_DEV_UART1; i < sc->uarts_num; i++, uart++) {
--        if (uart == amc->uart_default) {
-+        if (uart == uart_chosen) {
-             continue;
+@@ -1406,6 +1409,22 @@ void arm_cpu_post_init(Object *obj)
          }
-         aspeed_soc_uart_set_chr(s, uart, serial_hd(i));
-@@ -1079,6 +1081,35 @@ static void aspeed_set_spi_model(Object *obj, const char *value, Error **errp)
-     bmc->spi_model = g_strdup(value);
- }
+     }
  
-+static char *aspeed_get_bmc_console(Object *obj, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
-+    int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
++    if (cpu->has_vfp && cpu_isar_feature(aa32_simd_r32, cpu)) {
++        cpu->has_vfp_d32 = true;
++        if (!kvm_enabled()) {
++            /*
++             * The permitted values of the SIMDReg bits [3:0] on
++             * Armv8-A are either 0b0000 and 0b0010. On such CPUs,
++             * make sure that has_vfp_d32 can not be set to false.
++             */
++            if (!(arm_feature(&cpu->env, ARM_FEATURE_V8) &&
++                  !arm_feature(&cpu->env, ARM_FEATURE_M))) {
++                qdev_property_add_static(DEVICE(obj),
++                                         &arm_cpu_has_vfp_d32_property);
++            }
++        }
++    }
 +
-+    return g_strdup_printf("uart%d", uart_chosen - ASPEED_DEV_UART1 + 1);
-+}
-+
-+static void aspeed_set_bmc_console(Object *obj, const char *value, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
-+    AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
-+    int val;
-+
-+    if (sscanf(value, "uart%u", &val) != 1) {
-+        error_setg(errp, "Bad value for \"uart\" property");
+     if (arm_feature(&cpu->env, ARM_FEATURE_NEON)) {
+         cpu->has_neon = true;
+         if (!kvm_enabled()) {
+@@ -1672,6 +1691,19 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
++    if (cpu->has_vfp_d32 != cpu->has_neon) {
++        error_setg(errp, "ARM CPUs must have both VFP-D32 and Neon or neither");
 +        return;
 +    }
 +
-+    /* The number of UART depends on the SoC */
-+    if (val < 1 || val > sc->uarts_num) {
-+        error_setg(errp, "\"uart\" should be in range [1 - %d]", sc->uarts_num);
-+        return;
++   if (!cpu->has_vfp_d32) {
++        uint32_t u;
++
++        u = cpu->isar.mvfr0;
++        u = FIELD_DP32(u, MVFR0, SIMDREG, 1); /* 16 registers */
++        cpu->isar.mvfr0 = u;
 +    }
-+    bmc->uart_chosen = ASPEED_DEV_UART1 + val - 1;
-+}
 +
- static void aspeed_machine_class_props_init(ObjectClass *oc)
- {
-     object_class_property_add_bool(oc, "execute-in-place",
-@@ -1087,6 +1118,11 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
-     object_class_property_set_description(oc, "execute-in-place",
-                            "boot directly from CE0 flash device");
- 
-+    object_class_property_add_str(oc, "bmc-console", aspeed_get_bmc_console,
-+                                  aspeed_set_bmc_console);
-+    object_class_property_set_description(oc, "bmc-console",
-+                           "Change the default UART to \"uartX\"");
-+
-     object_class_property_add_str(oc, "fmc-model", aspeed_get_fmc_model,
-                                    aspeed_set_fmc_model);
-     object_class_property_set_description(oc, "fmc-model",
+     if (!cpu->has_vfp) {
+         uint64_t t;
+         uint32_t u;
 -- 
 2.40.1
 
