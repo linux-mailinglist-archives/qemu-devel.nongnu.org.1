@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F41272669A
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B064372668B
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:56:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6wTQ-0000BX-KF; Wed, 07 Jun 2023 12:57:28 -0400
+	id 1q6wR4-0006w4-UY; Wed, 07 Jun 2023 12:55:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1q6wTH-0008Ox-Ff
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:57:22 -0400
-Received: from mail-qv1-xf36.google.com ([2607:f8b0:4864:20::f36])
+ id 1q6wR3-0006vr-0q
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:55:01 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1q6wTF-0001nO-Vs
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:57:19 -0400
-Received: by mail-qv1-xf36.google.com with SMTP id
- 6a1803df08f44-62b68ce199bso15270196d6.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:57:16 -0700 (PDT)
+ id 1q6wR1-0001OC-4j
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:55:00 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6af8b25fc72so5647852a34.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686157036; x=1688749036;
+ d=gmail.com; s=20221208; t=1686156897; x=1688748897;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jcBYnv0Q5hRVAWcJGt6sLApFKby4ljDsg3FDGA0assE=;
- b=YjXdW8L52xbS5+33vJ8zDOqLQR8rRv8JlCdJhGj5W7mujpB976rx/ERORYbYrCvAiI
- lTtFmw/lG4L/DH0iBS2PPwHZbFFhtHeHWSV/hJx18DGXkcfNnyQcJvIRRwKeoT95WgcK
- T9/w9wSEg9EMMWh4znhsrMVaNASoh1znB5zucWiLosqvLpA5j0QUz3Q/GbRphqRyeE+2
- 2a7QRK3mATM+ScHq4yE7PIVHfgnO1NWE2NXgK+4Q4e8GuQJ72TIUDx+RZ55UrTMImgzW
- ft+PUm+sBoVadftyEH/f3H/2HvwstYgbzJMM8NS2oJ0LbzCRZ9i39UXI8EQ04Cre+81W
- 4Dkw==
+ bh=xE+1wkxPO08MY6y0xennEQUWQ0JmYys5Y9jfkJj6VU8=;
+ b=FaNWxJrO7iiN6V49wyWo6nK7O0LNNDSCYQ6jPs9z6MGp1sHBIWwMyX0q3GggyDi3As
+ hZ16bOrp5YL3iNj/YQ3etBiJGoiYdehbnod659twlVBJjnOmXitjnyjwbim691M2DzVe
+ i0dVnCey2xitfuvO2o2shli+JbacEEFnNBwovpYlxYMGp5imuPzOCYtocTZDlrhrkx4J
+ 2nRtAhi5QupWQMimZkPU+SyMlX34gXZx2UZ//HfM/2G7kFBL5n0oaxKbdaw+No2CPnxc
+ w0YQ3kfuiA5Z1OYYDIcGI8Z8ZWZPL4RN/exRnwtKKgYoUtLHwY3X99D9ksn1U28zrOzv
+ vRBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686157036; x=1688749036;
+ d=1e100.net; s=20221208; t=1686156897; x=1688748897;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jcBYnv0Q5hRVAWcJGt6sLApFKby4ljDsg3FDGA0assE=;
- b=LWWK2q6eZzTYWVuL2+0GQVsti8oW8WkzupWThwrA1uDtiYzfd/cK97z1Jp/8lToh3W
- /tLb/8IIyQYCp8GgUbcZDWZ2Jrj/5qce5z7RPNrwPYIpY0xtmpVTd9PwUEb3Zsb0i3bm
- u1xakIRxoR1V+mf2IpfS1DI1c68rKSD9lFZ2yaMqpj9OyA8zBOHkLC6NYyyZ3OQPbFGf
- cKj0sptEQzRc+npfj4fHA3NzhGMMDlz1XpgPwPCMCf75cG7XH49VipVX9wwPHeBnf1wS
- G0Dc5cYE5PhqlFHJPAIAym8pGmyVN3koWdp7WQGbKvQXv+RFRQpF8Eu4qh1W37pH9/gw
- mMcw==
-X-Gm-Message-State: AC+VfDyskfUosRkveNT9STN1kP3Gx5eIiah7PuBxpMWJX4FQircXMuig
- gxImp85pX2M3SWF1W/rGH2IpxTmWg7/eFWAQoQ8=
-X-Google-Smtp-Source: ACHHUZ6wnxTBDA3U/pbZxhcNpzhDRKmtk5lBOKLhP5JBCZ8xmnNW3293oFu9iOg36OofVLaEdy55nQ==
-X-Received: by 2002:a17:90b:918:b0:259:1a50:5719 with SMTP id
- bo24-20020a17090b091800b002591a505719mr2395504pjb.1.1686156555438; 
- Wed, 07 Jun 2023 09:49:15 -0700 (PDT)
+ bh=xE+1wkxPO08MY6y0xennEQUWQ0JmYys5Y9jfkJj6VU8=;
+ b=HTuxFkmM0WMDlqx9/RvebSsuh4Ajy/FwT63vjj3lJaREI9eJ+3eI5AhOZsqTD182y6
+ JEPRePP1bOOVJecU1BYehHG7cb91Vaoqxoyh8Cx+2dlElgumTYVi2q9T2LXmtn3WHr5h
+ ALq8XWW7Suw5Xnb763ydTs2eYzKaXGv+V/F6ucGWdW1wkSsmi7LfjAjr+0kijYPCkWmQ
+ acSTIbD9/iWEUu9pfDHdjxGJuuyzWqTPZigW4fmndYFkWJdNCAPBxA9tcTqlQnaY3usL
+ YQtWL/asNQJlrsFSUvnn85WD6wXJHEsWqkq3sl95ujujLmxDESzY9dh4fMKYe5mFg1MZ
+ +A7g==
+X-Gm-Message-State: AC+VfDzfhPbyv7WVWqzr4wvKQHkYeQxUaBpOP1/ki4F4OZUsKvzWFwjI
+ 5VlANfhN2SFeeSOp7uwgofa/N1XS7kii0M5L/GM=
+X-Google-Smtp-Source: ACHHUZ4W9OGYH729372BZmTgVN5gV/GKXoqeqJwJzA22NFViqYV2VzybDmyX6hu6Bm53Wo02an34Fg==
+X-Received: by 2002:a92:cf4e:0:b0:331:105c:81f9 with SMTP id
+ c14-20020a92cf4e000000b00331105c81f9mr9586543ilr.29.1686156559850; 
+ Wed, 07 Jun 2023 09:49:19 -0700 (PDT)
 Received: from localhost.localdomain ([223.104.40.226])
  by smtp.gmail.com with ESMTPSA id
- 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.12
+ 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 09:49:15 -0700 (PDT)
+ Wed, 07 Jun 2023 09:49:19 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>, Riku Voipio <riku.voipio@iki.fi>
-Subject: [RFC v2 2/6] Add the libnative library
-Date: Thu,  8 Jun 2023 00:47:46 +0800
-Message-Id: <20230607164750.829586-3-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [RFC v2 3/6] target/i386: Add native library calls
+Date: Thu,  8 Jun 2023 00:47:47 +0800
+Message-Id: <20230607164750.829586-4-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
 References: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f36;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-qv1-xf36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,119 +96,146 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- common-user/native/libnative.c | 65 ++++++++++++++++++++++++++++++++++
- include/native/libnative.h     | 11 ++++++
- include/native/native-func.h   | 11 ++++++
- 3 files changed, 87 insertions(+)
- create mode 100644 common-user/native/libnative.c
- create mode 100644 include/native/libnative.h
- create mode 100644 include/native/native-func.h
+ target/i386/helper.h                 |  6 +++
+ target/i386/tcg/translate.c          | 20 +++++++++
+ target/i386/tcg/user/meson.build     |  1 +
+ target/i386/tcg/user/native_helper.c | 65 ++++++++++++++++++++++++++++
+ 4 files changed, 92 insertions(+)
+ create mode 100644 target/i386/tcg/user/native_helper.c
 
-diff --git a/common-user/native/libnative.c b/common-user/native/libnative.c
-new file mode 100644
-index 0000000000..d40e43c6fe
---- /dev/null
-+++ b/common-user/native/libnative.c
-@@ -0,0 +1,65 @@
-+#include <stdio.h>
-+#include <stdlib.h>
+diff --git a/target/i386/helper.h b/target/i386/helper.h
+index e627a93107..6c91655887 100644
+--- a/target/i386/helper.h
++++ b/target/i386/helper.h
+@@ -221,3 +221,9 @@ DEF_HELPER_3(rcrq, tl, env, tl, tl)
+ #endif
+ 
+ DEF_HELPER_1(rdrand, tl, env)
 +
-+#include "native/libnative.h"
++#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
++DEF_HELPER_1(native_memcpy, void, env)
++DEF_HELPER_1(native_memcmp, void, env)
++DEF_HELPER_1(native_memset, void, env)
++#endif
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 91c9c0c478..eb0c1e9566 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -33,6 +33,7 @@
+ #include "helper-tcg.h"
+ 
+ #include "exec/log.h"
 +#include "native/native-func.h"
-+
-+#define STR_MACRO(str) #str
-+#define STR(num) STR_MACRO(num)
-+
-+#if defined(TARGET_I386) || defined(TARGET_X86_64)
-+
-+/* unused opcode */
-+#define __PREFIX_INSTR \
-+    ".byte 0x0f,0xff;"
-+
-+#define NATIVE_CALL_EXPR(func) \
-+    __PREFIX_INSTR             \
-+    ".word " STR(func) ";" : ::
+ 
+ #define PREFIX_REPZ   0x01
+ #define PREFIX_REPNZ  0x02
+@@ -6806,6 +6807,25 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+     case 0x1d0 ... 0x1fe:
+         disas_insn_new(s, cpu, b);
+         break;
++    /* One unknown opcode for native call */
++#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
++    case 0x1ff:
++        uint16_t sig = x86_lduw_code(env, s);
++        switch (sig) {
++        case NATIVE_MEMCPY:
++            gen_helper_native_memcpy(cpu_env);
++            break;
++        case NATIVE_MEMSET:
++            gen_helper_native_memset(cpu_env);
++            break;
++        case NATIVE_MEMCMP:
++            gen_helper_native_memcmp(cpu_env);
++            break;
++        default:
++            goto unknown_op;
++        }
++        break;
 +#endif
-+
-+#if defined(TARGET_ARM) || defined(TARGET_AARCH64)
-+
-+/* unused syscall number */
-+#define __PREFIX_INSTR \
-+    "svc 0xff;"
-+
-+#define NATIVE_CALL_EXPR(func) \
-+    __PREFIX_INSTR             \
-+    ".word " STR(func) ";" : ::
-+
-+#endif
-+
-+#if defined(TARGET_MIPS) || defined(TARGET_MIPS64)
-+
-+/* unused bytes in syscall instructions */
-+#define NATIVE_CALL_EXPR(func) \
-+    ".long " STR((0x1 << 24) + (func << 8) + 0xC) ";" : ::
-+
-+#endif
-+
-+void *memcpy(void *dest, const void *src, size_t n)
-+{
-+    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_MEMCPY));
-+}
-+
-+int memcmp(const void *s1, const void *s2, size_t n)
-+{
-+    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_MEMCMP));
-+}
-+void *memset(void *s, int c, size_t n)
-+{
-+    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_MEMSET));
-+}
-+char *strcpy(char *dest, const char *src)
-+{
-+    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_STRCPY));
-+}
-+int strcmp(const char *s1, const char *s2)
-+{
-+    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_STRCMP));
-+}
-+char *strcat(char *dest, const char *src)
-+{
-+    __asm__ volatile(NATIVE_CALL_EXPR(NATIVE_STRCAT));
-+}
-diff --git a/include/native/libnative.h b/include/native/libnative.h
+     default:
+         goto unknown_op;
+     }
+diff --git a/target/i386/tcg/user/meson.build b/target/i386/tcg/user/meson.build
+index 1df6bc4343..490808bd65 100644
+--- a/target/i386/tcg/user/meson.build
++++ b/target/i386/tcg/user/meson.build
+@@ -1,4 +1,5 @@
+ i386_user_ss.add(when: ['CONFIG_TCG', 'CONFIG_USER_ONLY'], if_true: files(
+   'excp_helper.c',
+   'seg_helper.c',
++  'native_helper.c',
+ ))
+diff --git a/target/i386/tcg/user/native_helper.c b/target/i386/tcg/user/native_helper.c
 new file mode 100644
-index 0000000000..d3c24f89f4
+index 0000000000..4a9b98eee2
 --- /dev/null
-+++ b/include/native/libnative.h
-@@ -0,0 +1,11 @@
-+#ifndef __LIBNATIVE_H__
-+#define __LIBNATIVE_H__
++++ b/target/i386/tcg/user/native_helper.c
+@@ -0,0 +1,65 @@
++/*
++ *  native function call helpers
++ */
 +
-+void *memcpy(void *dest, const void *src, size_t n);
-+int memcmp(const void *s1, const void *s2, size_t n);
-+void *memset(void *s, int c, size_t n);
-+char *strcpy(char *dest, const char *src);
-+int strcmp(const char *s1, const char *s2);
-+char *strcat(char *dest, const char *src);
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "exec/helper-proto.h"
++#include "exec/exec-all.h"
++#include "exec/cpu_ldst.h"
++#include "tcg/helper-tcg.h"
++#include "tcg/seg_helper.h"
 +
-+#endif /* __LIBNATIVE_H__ */
-diff --git a/include/native/native-func.h b/include/native/native-func.h
-new file mode 100644
-index 0000000000..d48a8e547a
---- /dev/null
-+++ b/include/native/native-func.h
-@@ -0,0 +1,11 @@
-+#ifndef __NATIVE_FUNC_H__
-+#define __NATIVE_FUNC_H__
-+
-+#define NATIVE_MEMCPY 0x1001
-+#define NATIVE_MEMCMP 0x1002
-+#define NATIVE_MEMSET 0x1003
-+#define NATIVE_STRCPY 0x1004
-+#define NATIVE_STRCMP 0x1005
-+#define NATIVE_STRCAT 0x1006
-+
++#ifdef TARGET_X86_64
++#define NATIVE_FN_W_3W()           \
++    target_ulong arg0, arg1, arg2; \
++    arg0 = env->regs[R_EDI];       \
++    arg1 = env->regs[R_ESI];       \
++    arg2 = env->regs[R_EDX];
++#else
++/*
++ *  linux x86 has several calling conventions. The following implementation
++ *  is for the most commonly used cdecl calling convention.
++ */
++#define NATIVE_FN_W_3W()                                   \
++    target_ulong arg0, arg1, arg2;                         \
++    arg0 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 4); \
++    arg1 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 8); \
++    arg2 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 12);
 +#endif
++
++void helper_native_memcpy(CPUX86State *env)
++{
++    CPUState *cs = env_cpu(env);
++    NATIVE_FN_W_3W();
++    void *ret;
++    void *dest = g2h(cs, arg0);
++    void *src = g2h(cs, arg1);
++    size_t n = (size_t)arg2;
++    ret = memcpy(dest, src, n);
++    env->regs[R_EAX] = (target_ulong)h2g(ret);
++}
++
++void helper_native_memcmp(CPUX86State *env)
++{
++    CPUState *cs = env_cpu(env);
++    NATIVE_FN_W_3W();
++    int ret;
++    void *s1 = g2h(cs, arg0);
++    void *s2 = g2h(cs, arg1);
++    size_t n = (size_t)arg2;
++    ret = memcmp(s1, s2, n);
++    env->regs[R_EAX] = ret;
++}
++
++void helper_native_memset(CPUX86State *env)
++{
++    CPUState *cs = env_cpu(env);
++    NATIVE_FN_W_3W();
++    void *ret;
++    void *s = g2h(cs, arg0);
++    int c = (int)arg1;
++    size_t n = (size_t)arg2;
++    ret = memset(s, c, n);
++    env->regs[R_EAX] = (target_ulong)h2g(ret);
++}
 -- 
 2.34.1
 
