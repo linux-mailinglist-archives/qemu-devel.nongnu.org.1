@@ -2,50 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C957262C4
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8587261B3
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 15:53:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6u8p-0004k5-OS; Wed, 07 Jun 2023 10:28:03 -0400
+	id 1q6tZb-0001uW-1Z; Wed, 07 Jun 2023 09:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <7f0a1e40ab8394988903a27c3fd6114261837158@lizzy.crudebyte.com>)
- id 1q6u8m-0004jo-5U
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:28:00 -0400
-Received: from lizzy.crudebyte.com ([91.194.90.13])
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1q6tZY-0001uC-Oh; Wed, 07 Jun 2023 09:51:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <7f0a1e40ab8394988903a27c3fd6114261837158@lizzy.crudebyte.com>)
- id 1q6u8j-0004t8-LE
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:27:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=lizzy; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=uaSLs1Jc+LKBYVbHQ0bzcow1NRFLj9FtmtgVsmcFBlU=; b=d8aZF
- ozZNRpq43pp1mZIKNm4OEHT8A1vzwxQjIqybUkBY3152/wavPGCL5N0n5ls7YwXVrvGVQc3sLeYoR
- /cVZmeZBWMc5YLKj2ldCYYfnW+yzeS4qiNFh9x4pnsJZYqfZHkADoaelDVtGkQhKRQHc9eLDbfjhn
- b0AVChzbSf2j3wsbYl+4b/QaVio0KSL/3vnm8UNERxM1zTm0X0kBEDbstgv51WXFZ7oNch6L8a8BM
- Y0meR9qbkz4hBRJfkILj/v7F+bqdfznaznHVpYgiL5w1Q5rx+vQE06rsc8wZJe4bBg8QyRcdWpLXr
- Mnbzz8mV5AstTMq+Ea93sQmf5iQLg==;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Wed, 7 Jun 2023 15:50:01 +0200
-Subject: [PATCH v3] 9pfs: prevent opening special files (CVE-2023-2861)
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Mauro Matteo Cascella <mcascell@redhat.com>,
- yw s <ywsplz@gmail.com>, shawtao1125@gmail.com, jkli@xidian.edu.cn,
- shenwenbo@zju.edu.cn, Michael Tokarev <mjt@tls.msk.ru>
-Message-Id: <E1q6tfP-0008VX-K3@lizzy.crudebyte.com>
-Received-SPF: none client-ip=91.194.90.13;
- envelope-from=7f0a1e40ab8394988903a27c3fd6114261837158@lizzy.crudebyte.com;
- helo=lizzy.crudebyte.com
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1q6tZU-0006uB-AT; Wed, 07 Jun 2023 09:51:33 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 357Dj9nh016993; Wed, 7 Jun 2023 13:51:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=5mlYdVz3VMTfxFuVyOHu7K4tjNRYRKR6RUzJF6wZj+o=;
+ b=PfmxkGXEdcqDNMZqcE9AFoHWnSMdFeSPsapytOEfQrNk7XfTBsJeCHkZJxRcnPLlmlmT
+ KLhk2xfynYthbxYBlOV0QgxTTK1OdVdgT4nH5HFe5eFFI2nC7djGipTOnVsQl68+6yQB
+ SPNxytRAWqyqja4SLF/Bvk+wSO16LCfbM9LvinwHOhejvkf1NyRS/TSpOVtfW4QTuOoN
+ M7gAlJSvbzMnIKFME0ApcWvaix2bafIOaC1MFf0Tdimx1dPmGPkvj/AHs1yMtWQaNDWt
+ Msy7A1vb5azhftNPtEqifZL4O9Hdn9KsfQPcwegTPPvOsM4sioBUvQEE6SczWuyVdnrF 4A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2u2285rg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jun 2023 13:51:19 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 357DlJ7L023353;
+ Wed, 7 Jun 2023 13:51:19 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2u2285r6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jun 2023 13:51:19 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 357CBitI022008;
+ Wed, 7 Jun 2023 13:51:18 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
+ by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3r2a77uw4c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jun 2023 13:51:18 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 357DpHjd21299908
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Jun 2023 13:51:18 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9E2B05806B;
+ Wed,  7 Jun 2023 13:51:17 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A025558059;
+ Wed,  7 Jun 2023 13:51:16 +0000 (GMT)
+Received: from [9.61.27.227] (unknown [9.61.27.227])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Jun 2023 13:51:16 +0000 (GMT)
+Message-ID: <daeff323-6df9-f7c7-07fe-b4af30a6ab73@linux.ibm.com>
+Date: Wed, 7 Jun 2023 09:51:16 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/2] block/file-posix: fix g_file_get_contents return path
+Content-Language: en-US
+To: Sam Li <faithilikerun@gmail.com>, qemu-devel@nongnu.org
+Cc: dlemoal@kernel.org, dmitry.fomichev@wdc.com, stefanha@redhat.com,
+ hare@suse.de, qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20230604061658.49004-1-faithilikerun@gmail.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20230604061658.49004-1-faithilikerun@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8j17LgjpdT6f5azzHFCzAf9r_bbpSso0
+X-Proofpoint-ORIG-GUID: 6tGBNF0KkJ9RWLlDnarI-mDwpeoPX7Jm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-07_06,2023-06-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 clxscore=1011 malwarescore=0 bulkscore=0 adultscore=0
+ phishscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306070114
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,167 +115,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 9p protocol does not specifically define how server shall behave when
-client tries to open a special file, however from security POV it does
-make sense for 9p server to prohibit opening any special file on host side
-in general. A sane Linux 9p client for instance would never attempt to
-open a special file on host side, it would always handle those exclusively
-on its guest side. A malicious client however could potentially escape
-from the exported 9p tree by creating and opening a device file on host
-side.
+On 6/4/23 2:16 AM, Sam Li wrote:
+> The g_file_get_contents() function returns a g_boolean. If it fails, the
+> returned value will be 0 instead of -1. Solve the issue by skipping
+> assigning ret value.
+> 
+> This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
+> by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
+> 
+> Signed-off-by: Sam Li <faithilikerun@gmail.com>
 
-With QEMU this could only be exploited in the following unsafe setups:
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
-  - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
-    security model.
+Also tested to verify that this fix resolves the reported issue.  Thanks!
 
-or
-
-  - Using 9p 'proxy' fs driver (which is running its helper daemon as
-    root).
-
-These setups were already discouraged for safety reasons before,
-however for obvious reasons we are now tightening behaviour on this.
-
-Fixes: CVE-2023-2861
-Reported-by: Yanwu Shen <ywsPlz@gmail.com>
-Reported-by: Jietao Xiao <shawtao1125@gmail.com>
-Reported-by: Jinku Li <jkli@xidian.edu.cn>
-Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- v2 -> v3:
- - Drop O_CREAT check and its comment.
- - Eliminate code duplication.
-
- fsdev/virtfs-proxy-helper.c | 26 ++++++++++++++++++++++++--
- hw/9pfs/9p-util.h           | 33 +++++++++++++++++++++++++++++++++
- 2 files changed, 57 insertions(+), 2 deletions(-)
-
-diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
-index 5cafcd7703..256d7bfcec 100644
---- a/fsdev/virtfs-proxy-helper.c
-+++ b/fsdev/virtfs-proxy-helper.c
-@@ -26,6 +26,7 @@
- #include "qemu/xattr.h"
- #include "9p-iov-marshal.h"
- #include "hw/9pfs/9p-proxy.h"
-+#include "hw/9pfs/9p-util.h"
- #include "fsdev/9p-iov-marshal.h"
- 
- #define PROGNAME "virtfs-proxy-helper"
-@@ -338,6 +339,27 @@ static void resetugid(int suid, int sgid)
-     }
- }
- 
-+/*
-+ * Open regular file or directory. Attempts to open any special file are
-+ * rejected.
-+ *
-+ * returns file descriptor or -1 on error
-+ */
-+static int open_regular(const char *pathname, int flags, mode_t mode) {
-+    int fd;
-+
-+    fd = open(pathname, flags, mode);
-+    if (fd < 0) {
-+        return fd;
-+    }
-+
-+    if (check_is_regular_file_or_dir(fd) < 0) {
-+        return -1;
-+    }
-+
-+    return fd;
-+}
-+
- /*
-  * send response in two parts
-  * 1) ProxyHeader
-@@ -682,7 +704,7 @@ static int do_create(struct iovec *iovec)
-     if (ret < 0) {
-         goto unmarshal_err_out;
-     }
--    ret = open(path.data, flags, mode);
-+    ret = open_regular(path.data, flags, mode);
-     if (ret < 0) {
-         ret = -errno;
-     }
-@@ -707,7 +729,7 @@ static int do_open(struct iovec *iovec)
-     if (ret < 0) {
-         goto err_out;
-     }
--    ret = open(path.data, flags);
-+    ret = open_regular(path.data, flags, 0);
-     if (ret < 0) {
-         ret = -errno;
-     }
-diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-index c314cf381d..9b0a9e5878 100644
---- a/hw/9pfs/9p-util.h
-+++ b/hw/9pfs/9p-util.h
-@@ -13,6 +13,8 @@
- #ifndef QEMU_9P_UTIL_H
- #define QEMU_9P_UTIL_H
- 
-+#include "qemu/error-report.h"
-+
- #ifdef O_PATH
- #define O_PATH_9P_UTIL O_PATH
- #else
-@@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
- #endif
- 
- #define qemu_openat     openat
-+#define qemu_fstat      fstat
- #define qemu_fstatat    fstatat
- #define qemu_mkdirat    mkdirat
- #define qemu_renameat   renameat
-@@ -108,6 +111,32 @@ static inline void close_preserve_errno(int fd)
-     errno = serrno;
- }
- 
-+/* CVE-2023-2861: Prohibit opening any special file directly on host
-+ * (especially device files), as a compromised client could potentially gain
-+ * access outside exported tree under certain, unsafe setups. We expect
-+ * client to handle I/O on special files exclusively on guest side.
-+ */
-+static inline int check_is_regular_file_or_dir(int fd)
-+{
-+    struct stat stbuf;
-+
-+    if (qemu_fstat(fd, &stbuf) < 0) {
-+        close_preserve_errno(fd);
-+        return -1;
-+    }
-+    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
-+        error_report_once(
-+            "9p: broken or compromised client detected; attempt to open "
-+            "special file (i.e. neither regular file, nor directory)"
-+        );
-+        close(fd);
-+        errno = ENXIO;
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
- static inline int openat_dir(int dirfd, const char *name)
- {
-     return qemu_openat(dirfd, name,
-@@ -142,6 +171,10 @@ again:
-         return -1;
-     }
- 
-+    if (check_is_regular_file_or_dir(fd) < 0) {
-+        return -1;
-+    }
-+
-     serrno = errno;
-     /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
-      * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
--- 
-2.30.2
 
 
