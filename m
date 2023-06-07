@@ -2,66 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF616726590
+	by mail.lfdr.de (Postfix) with ESMTPS id C1552726591
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:14:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vmy-0004kH-N2; Wed, 07 Jun 2023 12:13:36 -0400
+	id 1q6vmp-0004jo-Pm; Wed, 07 Jun 2023 12:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6vmh-0004j2-UG
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:13:20 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6vmk-0004jR-27
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:13:22 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6vmc-0001M4-8m
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:13:16 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6vmh-0001N0-QT
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:13:21 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 57F171FDB2;
- Wed,  7 Jun 2023 16:13:11 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id EEED021A14;
+ Wed,  7 Jun 2023 16:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1686154391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1686154393; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=47PSzAM6ByJ+JnwZix2edGS4IVcu44SF/ttfq9G+3Po=;
- b=tFrh4mQ7Mco+BuoSjJPFeivdFAFu7J/TaoB9qBHsF5OIHPpLUCIu/gM7oKIA+U7ZxqHemS
- 7nfKrJp0jWi4DPVeQ5T5yg4Mc+r0G6wCWC8/Mzt8poIoZSTK3QC6oLrtW+NizRLSAWzYfI
- 8MLRN2ZvHzUFibIbht7E74ucowwJWvw=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=N9keGWTG8eFhXcZdHOs53vV7KYIdqBt94Hn2DGZvrp8=;
+ b=PaiKeZTvUxUUpiZCoyoIvfVf0XsojrdkXb1AshKzQMIRDn+aGmeS9sOiGHPG9+UuY3P9QM
+ nhp+/GrMS9kfu2/r7BqMvagBMEQJW9qbvhRjhexV3MHvzAmCOlmdHA93quwvgS+NoeteOK
+ oBQFGnLcRGiHb7AdqCdm2EHVADBNyUw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1686154391;
+ s=susede2_ed25519; t=1686154393;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=47PSzAM6ByJ+JnwZix2edGS4IVcu44SF/ttfq9G+3Po=;
- b=VzRrArFTwHeFEct8kWcQsaT+zNyQpLoBKbt4G4k70YGz4TOStmuwUFWpbStbTog6OwSJ82
- z8857n30CStDzhBA==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=N9keGWTG8eFhXcZdHOs53vV7KYIdqBt94Hn2DGZvrp8=;
+ b=oY5P7A/Q7+3acyU9jePCKYCeJTOXiYABEvVpQ7I5rfuVH7nwzya4Lsc3vqqkyuMeXpgXNn
+ fH5lfcujSE4YHEAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6FA2213776;
- Wed,  7 Jun 2023 16:13:09 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D169613776;
+ Wed,  7 Jun 2023 16:13:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id VVpGDZWsgGSfRgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 07 Jun 2023 16:13:09 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id OLlIJZesgGSfRgAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 07 Jun 2023 16:13:11 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Juan Quintela <quintela@redhat.com>,
  Jiang Jiacheng <jiangjiacheng@huawei.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v2 0/3] migration: Fix multifd cancel test
-Date: Wed,  7 Jun 2023 13:13:03 -0300
-Message-Id: <20230607161306.31425-1-farosas@suse.de>
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 1/3] migration/multifd: Rename threadinfo.c functions
+Date: Wed,  7 Jun 2023 13:13:04 -0300
+Message-Id: <20230607161306.31425-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20230607161306.31425-1-farosas@suse.de>
+References: <20230607161306.31425-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -84,84 +89,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-- patch 1: dropped the qmp_ prefix;
+We're about to add more functions to this file so make it use the same
+coding style as the rest of the code.
 
-- patch 2: dropped the qemu_mutex_destroy;
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ migration/migration.c  | 4 ++--
+ migration/multifd.c    | 4 ++--
+ migration/threadinfo.c | 4 ++--
+ migration/threadinfo.h | 5 ++---
+ 4 files changed, 8 insertions(+), 9 deletions(-)
 
-	   stopped moving the _remove functions (don't strictly need it
-           anymore since not destroying the mutex explicitly);
-
-	   added the lock to protect the loop in
-	   qmp_query_migrationthreads;
-
-	   added __attribute__((constructor)).
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/892563231
-
-v1:
-https://lore.kernel.org/r/20230606144551.24367-1-farosas@suse.de
-
-When doing cleanup of the multifd send threads we're calling
-QLIST_REMOVE concurrently on the migration_threads list. This seems to
-be the source of the crashes we've seen on the
-multifd/tcp/plain/cancel tests.
-
-I'm running the test in a loop and after a few dozen iterations I see
-the crash in dmesg.
-
-  QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-  QEMU_TEST_FLAKY_TESTS=1 \
-  ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/cancel
-
-  multifdsend_10[11382]: segfault at 18 ip 0000564b77de1e25 sp
-  00007fdf767fb610 error 6 in qemu-system-x86_64[564b777b4000+e1c000]
-  Code: ec 10 48 89 7d f8 48 83 7d f8 00 74 58 48 8b 45 f8 48 8b 40 10
-  48 85 c0 74 14 48 8b 45 f8 48 8b 40 10 48 8b 55 f8 48 8b 52 18 <48> 89
-  50 18 48 8b 45 f8 48 8b 40 18 48 8b 55 f8 48 8b 52 10 48 89
-
-the offending instruction is a mov dereferencing the
-thread->node.le_next pointer at QLIST_REMOVE in MigrationThreadDel:
-
-  void MigrationThreadDel(MigrationThread *thread)
-  {
-      if (thread) {
-          QLIST_REMOVE(thread, node);
-          g_free(thread);
-      }
-  }
-
-where:
-  #define QLIST_REMOVE(elm, field) do {                   \
-          if ((elm)->field.le_next != NULL)               \
-                  (elm)->field.le_next->field.le_prev =   \ <-- HERE
-                      (elm)->field.le_prev;               \
-          *(elm)->field.le_prev = (elm)->field.le_next;   \
-          (elm)->field.le_next = NULL;                    \
-          (elm)->field.le_prev = NULL;                    \
-  } while (/*CONSTCOND*/0)
-
-The MigrationThreadDel function is called from the multifd threads and
-is not under any lock, so several calls can race when accessing the
-list.
-
-(I actually hit this first on my fixed-ram branch which changes some
-synchronization in multifd and makes the issue more frequent)
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/891000519
-
-Fabiano Rosas (3):
-  migration/multifd: Rename threadinfo.c functions
-  migration/multifd: Protect accesses to migration_threads
-  tests/qtest: Re-enable multifd cancel test
-
- migration/migration.c        |  4 ++--
- migration/multifd.c          |  4 ++--
- migration/threadinfo.c       | 19 ++++++++++++++++---
- migration/threadinfo.h       |  7 ++-----
- tests/qtest/migration-test.c | 10 ++--------
- 5 files changed, 24 insertions(+), 20 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index dc05c6f6ea..3a001dd042 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2922,7 +2922,7 @@ static void *migration_thread(void *opaque)
+     MigThrError thr_error;
+     bool urgent = false;
+ 
+-    thread = MigrationThreadAdd("live_migration", qemu_get_thread_id());
++    thread = migration_threads_add("live_migration", qemu_get_thread_id());
+ 
+     rcu_register_thread();
+ 
+@@ -3000,7 +3000,7 @@ static void *migration_thread(void *opaque)
+     migration_iteration_finish(s);
+     object_unref(OBJECT(s));
+     rcu_unregister_thread();
+-    MigrationThreadDel(thread);
++    migration_threads_remove(thread);
+     return NULL;
+ }
+ 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 3387d8277f..4c6cee6547 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -651,7 +651,7 @@ static void *multifd_send_thread(void *opaque)
+     int ret = 0;
+     bool use_zero_copy_send = migrate_zero_copy_send();
+ 
+-    thread = MigrationThreadAdd(p->name, qemu_get_thread_id());
++    thread = migration_threads_add(p->name, qemu_get_thread_id());
+ 
+     trace_multifd_send_thread_start(p->id);
+     rcu_register_thread();
+@@ -767,7 +767,7 @@ out:
+     qemu_mutex_unlock(&p->mutex);
+ 
+     rcu_unregister_thread();
+-    MigrationThreadDel(thread);
++    migration_threads_remove(thread);
+     trace_multifd_send_thread_end(p->id, p->num_packets, p->total_normal_pages);
+ 
+     return NULL;
+diff --git a/migration/threadinfo.c b/migration/threadinfo.c
+index 1de8b31855..3dd9b14ae6 100644
+--- a/migration/threadinfo.c
++++ b/migration/threadinfo.c
+@@ -14,7 +14,7 @@
+ 
+ static QLIST_HEAD(, MigrationThread) migration_threads;
+ 
+-MigrationThread *MigrationThreadAdd(const char *name, int thread_id)
++MigrationThread *migration_threads_add(const char *name, int thread_id)
+ {
+     MigrationThread *thread =  g_new0(MigrationThread, 1);
+     thread->name = name;
+@@ -25,7 +25,7 @@ MigrationThread *MigrationThreadAdd(const char *name, int thread_id)
+     return thread;
+ }
+ 
+-void MigrationThreadDel(MigrationThread *thread)
++void migration_threads_remove(MigrationThread *thread)
+ {
+     if (thread) {
+         QLIST_REMOVE(thread, node);
+diff --git a/migration/threadinfo.h b/migration/threadinfo.h
+index 4d69423c0a..8aa6999d58 100644
+--- a/migration/threadinfo.h
++++ b/migration/threadinfo.h
+@@ -23,6 +23,5 @@ struct MigrationThread {
+     QLIST_ENTRY(MigrationThread) node;
+ };
+ 
+-MigrationThread *MigrationThreadAdd(const char *name, int thread_id);
+-
+-void MigrationThreadDel(MigrationThread *info);
++MigrationThread *migration_threads_add(const char *name, int thread_id);
++void migration_threads_remove(MigrationThread *info);
 -- 
 2.35.3
 
