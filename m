@@ -2,56 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3B07266B2
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 19:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB87D72599F
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6wbT-0006Ah-1u; Wed, 07 Jun 2023 13:05:47 -0400
+	id 1q6pAK-00062q-FH; Wed, 07 Jun 2023 05:09:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6wbL-00068z-IJ; Wed, 07 Jun 2023 13:05:43 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1q6pAI-00062X-52
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:09:14 -0400
+Received: from mga06b.intel.com ([134.134.136.31] helo=mga06.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6wbI-0003YF-6i; Wed, 07 Jun 2023 13:05:39 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbtyK6Kv2z4x4S;
- Thu,  8 Jun 2023 03:05:29 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbtyH1WYtz4x4H;
- Thu,  8 Jun 2023 03:05:26 +1000 (AEST)
-Message-ID: <696fd39c-cdf1-1ea7-a551-7fa013e27665@kaod.org>
-Date: Wed, 7 Jun 2023 19:05:22 +0200
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1q6pA4-0000tR-7o
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:09:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1686128940; x=1717664940;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=EAl+D5GD7UqhA418zYVMgAIsNRjJQy93tpbLPhL4oj4=;
+ b=CHWVYc/qMuvOxWD92t6bS0yU/dGcTc54ZyhCnd80aSQndP+nY0TLB46F
+ LJaO/2bZG8UmYLQKMHbGTyUfC2iUQl51IRh4v31EP7vBgdsttjhoR1Kj1
+ cWlWCvA5GrOBBtG26cDSqc2alYU1SyySLyhKmnyvs1d93KcqRAtAa6A8I
+ 0dJOMvGCHbuyMTnPBcLS1xHrUalHL0jHtrvUTnYchFBCEzbyX/943hIlc
+ ZuJXloBD49qMM07970KXEIsAdjrhxb/4TveeTX918e7bv3O4fZfP1l/tk
+ aIAALk/PuBdjaiagZygGqgX6oS6/ligg72y4iXN76JIPa6IMA3g9tun+b g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="420488834"
+X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; d="scan'208";a="420488834"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2023 02:08:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="883657587"
+X-IronPort-AV: E=Sophos;i="6.00,223,1681196400"; d="scan'208";a="883657587"
+Received: from lingshan-icx.bj.intel.com ([10.240.192.125])
+ by orsmga005.jf.intel.com with ESMTP; 07 Jun 2023 02:08:53 -0700
+From: Zhu Lingshan <lingshan.zhu@intel.com>
+To: jasowang@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	Zhu Lingshan <lingshan.zhu@intel.com>
+Subject: [PATCH] vdpa: dont check vhost_vdpa->suspended when unsupported
+Date: Thu,  8 Jun 2023 01:08:42 +0800
+Message-Id: <20230607170842.488489-1-lingshan.zhu@intel.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 06/12] aspeed/smc: Wire CS lines at reset
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-7-clg@kaod.org>
- <CACPK8XfRyLqNrTtKBp+dh44-6KF14ovorU=Tz0tUuLtEj0y=DQ@mail.gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CACPK8XfRyLqNrTtKBp+dh44-6KF14ovorU=Tz0tUuLtEj0y=DQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=5JAy=B3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=134.134.136.31;
+ envelope-from=lingshan.zhu@intel.com; helo=mga06.intel.com
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_06_12=1.947,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,113 +75,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/23 12:49, Joel Stanley wrote:
-> On Wed, 7 Jun 2023 at 04:40, Cédric Le Goater <clg@kaod.org> wrote:
->>
->> Currently, a set of default flash devices is created at machine init
->> and drives defined on the QEMU command line are associated to the FMC
->> and SPI controllers in sequence :
->>
->>     -drive file<file>,format=raw,if=mtd
->>     -drive file<file1>,format=raw,if=mtd
->>
->> The CS lines are wired in the same creation loop. This makes a strong
->> assumption on the ordering and is not very flexible since only a
->> limited set of flash devices can be defined : 1 FMC + 1 or 2 SPI,
->> which is less than what the SoC really supports.
->>
->> A better alternative would be to define the flash devices on the
->> command line using a blockdev attached to a CS line of a SSI bus :
->>
->>      -blockdev node-name=fmc0,driver=file,filename=./flash.img
->>      -device mx66u51235f,addr=0x0,bus=ssi.0,drive=fmc0
-> 
-> I don't like the idea of making the command line more complicated
-There are benefits to this change and patch 8 :
+When read the state of a virtqueue, vhost_vdpa need
+to check whether the device is suspended.
 
-  - it is possible to define block backends out of order
-  - it is possible to define *all* devices backends. Some machines support
-    up to 8.
-  - it is possible to use different flash models without adding new boards
-  - as a consequence, the machine options "spi-model" and "fmc-model" can
-    be deprecated. These were a clumsy interface.
-  - with -nodefaults, the machine starts running by fetching instructions
-    from the FMC0 device, which is what HW does.
-  - and the machine option "execute-in-place" can be deprecated.
+This commit verifies whether VHOST_BACKEND_F_SUSPEND is
+negotiated when checking vhost_vdpa->suspended.
 
-> That is not a comment on this patch though, but it would be nice if we
-> could head towards decreasing the complexity.
+Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
+---
+ hw/virtio/vhost-vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Describing the devices on various buses comes at a cost.
-
-Using -drive is still possible. It should be considered an optimization
-loading the FMC0 contents as a ROM to speedup boot.
-
-Thanks,
-
-C.
-
-
-> 
->> However, user created flash devices are not correctly wired to their
->> SPI controller and consequently can not be used by the machine. Fix
->> that and wire the CS lines of all available devices when the SSI bus
->> is reset.
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> 
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
-> 
-> 
->> ---
->>   hw/arm/aspeed.c     | 5 +----
->>   hw/ssi/aspeed_smc.c | 8 ++++++++
->>   2 files changed, 9 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
->> index 76a1e7303de1..e5a49bb0b1a7 100644
->> --- a/hw/arm/aspeed.c
->> +++ b/hw/arm/aspeed.c
->> @@ -299,17 +299,14 @@ void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
->>
->>       for (i = 0; i < count; ++i) {
->>           DriveInfo *dinfo = drive_get(IF_MTD, 0, unit0 + i);
->> -        qemu_irq cs_line;
->>           DeviceState *dev;
->>
->>           dev = qdev_new(flashtype);
->>           if (dinfo) {
->>               qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
->>           }
->> +        qdev_prop_set_uint8(dev, "addr", i);
->>           qdev_realize_and_unref(dev, BUS(s->spi), &error_fatal);
->> -
->> -        cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
->> -        qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
->>       }
->>   }
->>
->> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
->> index 72811693224d..2a4001b774a2 100644
->> --- a/hw/ssi/aspeed_smc.c
->> +++ b/hw/ssi/aspeed_smc.c
->> @@ -692,6 +692,14 @@ static void aspeed_smc_reset(DeviceState *d)
->>           memset(s->regs, 0, sizeof s->regs);
->>       }
->>
->> +    for (i = 0; i < asc->cs_num_max; i++) {
->> +        DeviceState *dev = ssi_get_cs(s->spi, i);
->> +        if (dev) {
->> +            qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
->> +            qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
->> +        }
->> +    }
->> +
->>       /* Unselect all peripherals */
->>       for (i = 0; i < asc->cs_num_max; ++i) {
->>           s->regs[s->r_ctrl0 + i] |= CTRL_CE_STOP_ACTIVE;
->> --
->> 2.40.1
->>
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index b3094e8a8b..ae176c06dd 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -1397,7 +1397,7 @@ static int vhost_vdpa_get_vring_base(struct vhost_dev *dev,
+         return 0;
+     }
+ 
+-    if (!v->suspended) {
++    if ((dev->backend_cap & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) && (!v->suspended)) {
+         /*
+          * Cannot trust in value returned by device, let vhost recover used
+          * idx from guest.
+-- 
+2.39.1
 
 
