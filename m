@@ -2,57 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64FF726142
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 15:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09BB726156
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 15:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6tCT-0005Hx-Jd; Wed, 07 Jun 2023 09:27:45 -0400
+	id 1q6tHk-0006m3-Pm; Wed, 07 Jun 2023 09:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1q6tCN-0005HS-TI
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 09:27:39 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1q6tCL-0002Jw-7i
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 09:27:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=3VtcLlgpDHnJwB6v4ixUj1CRGTHQQ2WNMY7KhywcN4A=; b=q32oBiRWnfiUEUtCWtqLB1sO0T
- 0/lU7ohChaleJNeD9RRZEhx+IGR+eQg+kAcfpZ4o7SgN+kf041DTiRudDTlo5b3y8XnW8HB0/nwRh
- Lb3GzWdRL8Etb5y7+QRwrPyGHBX3JSNifhzM4eoRNbdaKpAk4fGohLfoQTWFX8jX9vGGUKNKbjzzi
- eQrxcLQEwlMPfisFI3bO9NCvxq/Hwcx77RNCjsNgo06sw0bu8om0AUcQPz3v+aIvrq35zAO/aKjLI
- JVLkYmyyTnJDuG6e6MY8+TohsRylWXx79tsa4buu27XRYeCQqKFKhkOXji7d16aO3R7JD/4v2cxue
- vDaTZZ4HA1KQDX1KwwvCP3j62+TXnYrNFq1iHYDyva04ymfMax8liSo6HrR4v48MijMg7BFjW3psq
- wbbBloirLybd6gSHHXjeTMjBdYg0WlWfuJV+o5c7kfmNR7v7uzXb2ECuTqwpVFYiXpU5hZFBE0jL+
- Q5F4fMgy0ahUpw9nr46RSgVB1yVXZrUovQYdu9Q2VAydfnGe+tkVNk8XRRmsGK8W/wGTSLMhhOWfx
- C4EcKRg4z9f0y4isJhkcJCDlyvLjjg6Y6Vs4ptKe+9eAt9/aOaYgHRLMT/C24lzoJWxWYhlFK2U2c
- RT2zN0gT64FUdO+cf5rkRgA4S6sDOCloJcEFJmjBI=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: yw s <ywsplz@gmail.com>, shawtao1125@gmail.com, jkli@xidian.edu.cn,
- shenwenbo@zju.edu.cn, Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH v2] 9pfs: prevent opening special files (CVE-2023-2861)
-Date: Wed, 07 Jun 2023 15:27:32 +0200
-Message-ID: <2006416.XqONv0AMUH@silver>
-In-Reply-To: <2567904.5Pe2IrQ8Qc@silver>
-References: <E1q6XIJ-0005RX-AW@lizzy.crudebyte.com>
- <20230606180028.5305af87@bahia> <2567904.5Pe2IrQ8Qc@silver>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6tHf-0006k5-U5
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 09:33:07 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q6tHc-0003L2-Le
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 09:33:07 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-19eab8bca4dso8169630fac.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 06:33:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1686144782; x=1688736782;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fsKPdzX1DJqk5vQ7b+c3MWiFCu10Kts7rO4tKGv1WnE=;
+ b=RIFtH7+f/hVawEAjhboT/tjtqk4FlUbYS1xmoT+V/y035CRlGm4dNq9v8G+uCgmaiV
+ Bw8bf+i+w2hlZ+e68HoomtSNJofoUl3vUHbSmbLvxm3dZlEKiowf69xPEljoGllMgU2u
+ lI/a8ZdHWyPu+1V5Ugn0q9Fbd2h+Au//IqCug1CzHO2IPG+u2xaPQ5VFcwJItc5v1yhh
+ 9JJXbdBQmuFLFHH71d2UuV4qfHomKiuLz+60uiIzDYXKKO4PVGptEVc4iJg/gTdp0ls6
+ GOqhtAx7+1x+V7xvwT+X+HS7qdYhRfpH9ga7nFAWoqxOexXWlHD//psTEM+6huq7P3Ko
+ 3EAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686144782; x=1688736782;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fsKPdzX1DJqk5vQ7b+c3MWiFCu10Kts7rO4tKGv1WnE=;
+ b=ZVjyZY/vberqhV7kdPBVIdVoJSciaYrckcI1C3w36Kp8D3tO14JTyyN07nQJhskrC1
+ r8O8/rhHhS9Vmaem+lWaf6fYehLf4PoQi/jbFUIJ/9kfSKlhYvBg58Ae91Mhdops2GAY
+ 1u3mHZ7VgnbiyVLdJQelqamySllVeeeSXKrg40Ow5hIa0O7utiznrG4q64CikyE20Eqn
+ EZwaD+KSx/Koa3LRSNDWvx+zEU5UEHntoHWMVRO07yE7yUc6qmoo0zMzEw7wd4rBpa9+
+ aKKO/LnJicNf72p7U7nh2pRSrnGz8kFI2PCybBna3RrrV9QSWJ5GZl4w6rblieffZDx8
+ utFQ==
+X-Gm-Message-State: AC+VfDzKimamUE/hoNngT5HbqBImpsr+qr7z0oqZ4F4fyzf1Qf1ehGtv
+ FJBmzg36A59bZyfmcVVO/coj5Q==
+X-Google-Smtp-Source: ACHHUZ703xUFAl1ZA5V7gu2qYfMsh8UAVVsnuJwoEnoyiX34vOOVYsSIz9iasmXCD20NIUcvgmObIA==
+X-Received: by 2002:a05:6871:22ca:b0:19f:62ac:117f with SMTP id
+ se10-20020a05687122ca00b0019f62ac117fmr8538626oab.52.1686144782436; 
+ Wed, 07 Jun 2023 06:33:02 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
+ by smtp.gmail.com with ESMTPSA id
+ s17-20020a4aa551000000b00529cc3986c8sm5178182oom.40.2023.06.07.06.32.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 06:33:02 -0700 (PDT)
+Message-ID: <7cea6808-5c2b-74e9-51cc-95d999606472@ventanamicro.com>
+Date: Wed, 7 Jun 2023 10:32:57 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] target/riscv/vector_helper.c: Remove the check for
+ extra tail elements
+Content-Language: en-US
+To: Xiao Wang <xiao.w.wang@intel.com>, qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+References: <20230607091646.4049428-1-xiao.w.wang@intel.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230607091646.4049428-1-xiao.w.wang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,250 +99,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wednesday, June 7, 2023 1:02:17 PM CEST Christian Schoenebeck wrote:
-> On Tuesday, June 6, 2023 6:00:28 PM CEST Greg Kurz wrote:
-> > Hi Christian,
-> > 
-> > On Tue, 06 Jun 2023 15:57:50 +0200
-> > Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
-> > 
-> > > The 9p protocol does not specifically define how server shall behave when
-> > > client tries to open a special file, however from security POV it does
-> > > make sense for 9p server to prohibit opening any special file on host side
-> > > in general. A sane Linux 9p client for instance would never attempt to
-> > > open a special file on host side, it would always handle those exclusively
-> > > on its guest side. A malicious client however could potentially escape
-> > > from the exported 9p tree by creating and opening a device file on host
-> > > side.
-> > > 
-> > > With QEMU this could only be exploited in the following unsafe setups:
-> > > 
-> > >   - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
-> > >     security model.
-> > > 
-> > > or
-> > > 
-> > >   - Using 9p 'proxy' fs driver (which is running its helper daemon as
-> > >     root).
-> > > 
-> > > These setups were already discouraged for safety reasons before,
-> > > however for obvious reasons we are now tightening behaviour on this.
-> > > 
-> > > Fixes: CVE-2023-2861
-> > > Reported-by: Yanwu Shen <ywsPlz@gmail.com>
-> > > Reported-by: Jietao Xiao <shawtao1125@gmail.com>
-> > > Reported-by: Jinku Li <jkli@xidian.edu.cn>
-> > > Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
-> > > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> > > ---
-> > >  v1 -> v2:
-> > >  - Add equivalent fix for 'proxy' fs driver.
-> > >  - Minor adjustments on commit log.
-> > > 
-> > 
-> > Note that this might be a bit confusing for reviewers since
-> > v1 was never posted to qemu-devel. Technically, this should
-> > have been posted without the v2 tag.
-> 
-> I felt it wouldn't make it any better, as it might otherwise confuse those who
-> already got the previous two patch emails.
-> 
-> > >  fsdev/virtfs-proxy-helper.c | 48 +++++++++++++++++++++++++++++++++++--
-> > >  hw/9pfs/9p-util.h           | 29 ++++++++++++++++++++++
-> > >  2 files changed, 75 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
-> > > index 5cafcd7703..f311519fa3 100644
-> > > --- a/fsdev/virtfs-proxy-helper.c
-> > > +++ b/fsdev/virtfs-proxy-helper.c
-> > > @@ -26,6 +26,7 @@
-> > >  #include "qemu/xattr.h"
-> > >  #include "9p-iov-marshal.h"
-> > >  #include "hw/9pfs/9p-proxy.h"
-> > > +#include "hw/9pfs/9p-util.h"
-> > >  #include "fsdev/9p-iov-marshal.h"
-> > >  
-> > >  #define PROGNAME "virtfs-proxy-helper"
-> > > @@ -338,6 +339,49 @@ static void resetugid(int suid, int sgid)
-> > >      }
-> > >  }
-> > >  
-> > > +/*
-> > > + * Open regular file or directory. Attempts to open any special file are
-> > > + * rejected.
-> > > + *
-> > > + * returns file descriptor or -1 on error
-> > > + */
-> > > +static int open_regular(const char *pathname, int flags, mode_t mode) {
-> > > +    int fd;
-> > > +    struct stat stbuf;
-> > > +
-> > > +    fd = open(pathname, flags, mode);
-> > > +    if (fd < 0) {
-> > > +        return fd;
-> > > +    }
-> > > +
-> > > +    /* CVE-2023-2861: Prohibit opening any special file directly on host
-> > > +     * (especially device files), as a compromised client could potentially
-> > > +     * gain access outside exported tree under certain, unsafe setups. We
-> > > +     * expect client to handle I/O on special files exclusively on guest side.
-> > > +     */
-> > > +    if (qemu_fstat(fd, &stbuf) < 0) {
-> > > +        close_preserve_errno(fd);
-> > > +        return -1;
-> > > +    }
-> > > +    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
-> > > +        /* Tcreate and Tlcreate 9p messages mandate to immediately open the
-> > > +         * created file for I/O. So this is not (necessarily) due to a broken
-> > > +         * client, and hence no error message is to be reported in this case.
-> > > +         */
-> > > +        if (!(flags & O_CREAT)) {
-> > 
-> > Tlcreate is explicitly about creating regular files only (see [1] and
-> > v9fs_lcreate()) and I don't quite see how open() could successfully
-> > create a regular file and the resulting fd is fstat'ed as something
-> > else.
-> > 
-> > Tcreate seems to cover more types but again only regular files (with O_CREAT)
-> > or directories (without O_CREAT) are expected here (see v9fs_create()).
-> > 
-> > Unless I'm missing something, it seems that the comment and the O_CREAT
-> > check should be removed.
-> > 
-> > [1] https://github.com/chaos/diod/blob/master/protocol.md#lcreate----create-regular-file
-> 
-> You are right about Tlcreate, but for Tcreate 9p2000.u specifies, quote:
-> 
-> "In addition to creating directories with DMDIR, 9P2000.u allows the creation
->  of symlinks (DMSYMLINK), devices (DMDEVICE), named pipes (DMNAMEPIPE), and
->  sockets (DMSOCKET)."
-> 
-> http://ericvh.github.io/9p-rfc/rfc9p2000.u.html#anchor17
-> 
-> So I just remove mentioning Tlcreate in the comment?
-
-Scratch that. In case of 9P2000.u file types are distinguished in
-v9fs_create() and mknod() called accordingly instead. So the check and comment
-can safely be removed as suggested by you.
-
-I'll prepare v3 now.
 
 
+On 6/7/23 06:16, Xiao Wang wrote:
+> Commit 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector
+> load / store instructions") added an extra check for LMUL fragmentation,
+> intended for setting the "rest tail elements" in the last register for a
+> segment load insn.
 > 
-> > 
-> > > +            error_report_once(
-> > > +                "9p: broken or compromised client detected; attempt to open "
-> > > +                "special file (i.e. neither regular file, nor directory)"
-> > > +            );
-> > > +        }
-> > > +        close(fd);
-> > > +        errno = ENXIO;
-> > > +        return -1;
-> > > +    }
-> > > +
-> > > +    return fd;
-> > > +}
-> > > +
-> > >  /*
-> > >   * send response in two parts
-> > >   * 1) ProxyHeader
-> > > @@ -682,7 +726,7 @@ static int do_create(struct iovec *iovec)
-> > >      if (ret < 0) {
-> > >          goto unmarshal_err_out;
-> > >      }
-> > > -    ret = open(path.data, flags, mode);
-> > > +    ret = open_regular(path.data, flags, mode);
-> > >      if (ret < 0) {
-> > >          ret = -errno;
-> > >      }
-> > > @@ -707,7 +751,7 @@ static int do_open(struct iovec *iovec)
-> > >      if (ret < 0) {
-> > >          goto err_out;
-> > >      }
-> > > -    ret = open(path.data, flags);
-> > > +    ret = open_regular(path.data, flags, 0);
-> > >      if (ret < 0) {
-> > >          ret = -errno;
-> > >      }
-> > > diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-> > > index c314cf381d..9da1a0538d 100644
-> > > --- a/hw/9pfs/9p-util.h
-> > > +++ b/hw/9pfs/9p-util.h
-> > > @@ -13,6 +13,8 @@
-> > >  #ifndef QEMU_9P_UTIL_H
-> > >  #define QEMU_9P_UTIL_H
-> > >  
-> > > +#include "qemu/error-report.h"
-> > > +
-> > >  #ifdef O_PATH
-> > >  #define O_PATH_9P_UTIL O_PATH
-> > >  #else
-> > > @@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
-> > >  #endif
-> > >  
-> > >  #define qemu_openat     openat
-> > > +#define qemu_fstat      fstat
-> > >  #define qemu_fstatat    fstatat
-> > >  #define qemu_mkdirat    mkdirat
-> > >  #define qemu_renameat   renameat
-> > > @@ -118,6 +121,7 @@ static inline int openat_file(int dirfd, const char *name, int flags,
-> > >                                mode_t mode)
-> > >  {
-> > >      int fd, serrno, ret;
-> > > +    struct stat stbuf;
-> > >  
-> > >  #ifndef CONFIG_DARWIN
-> > >  again:
-> > > @@ -142,6 +146,31 @@ again:
-> > >          return -1;
-> > >      }
-> > >  
-> > > +    /* CVE-2023-2861: Prohibit opening any special file directly on host
-> > > +     * (especially device files), as a compromised client could potentially
-> > > +     * gain access outside exported tree under certain, unsafe setups. We
-> > > +     * expect client to handle I/O on special files exclusively on guest side.
-> > > +     */
-> > > +    if (qemu_fstat(fd, &stbuf) < 0) {
-> > > +        close_preserve_errno(fd);
-> > > +        return -1;
-> > > +    }
-> > > +    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
-> > > +        /* Tcreate and Tlcreate 9p messages mandate to immediately open the
-> > > +         * created file for I/O. So this is not (necessarily) due to a broken
-> > > +         * client, and hence no error message is to be reported in this case.
-> > > +         */
-> > 
-> > Same remark as with the proxy helper.
-> > 
-> > If you agree with my suggestions, feel free to add my R-b right away.
-> > 
-> > Cheers,
+> Actually, the max_elements derived in vext_ld*() won't be a fraction of
+> vector register size, since the lmul encoded in desc is emul, which has
+> already been adjusted to 1 for LMUL fragmentation case by vext_get_emul()
+> in trans_rvv.c.inc, for ld_stride(), ld_us(), ld_index() and ldff().
 > 
-> I'll definitely take the time for another (v3) round in this case. Thanks!
+> Besides, vext_get_emul() has also taken EEW/SEW into consideration, so no
+> need to call vext_get_total_elems() which would base on the emul to derive
+> another emul, the second emul would be incorrect when esz differs from sew.
 > 
-> > --
-> > Greg
-> > 
-> > > +        if (!(flags & O_CREAT)) {
-> > > +            error_report_once(
-> > > +                "9p: broken or compromised client detected; attempt to open "
-> > > +                "special file (i.e. neither regular file, nor directory)"
-> > > +            );
-> > > +        }
-> > > +        close(fd);
-> > > +        errno = ENXIO;
-> > > +        return -1;
-> > > +    }
-> > > +
-> > >      serrno = errno;
-> > >      /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
-> > >       * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
-> > 
-> > 
+> Thus this patch removes the check for extra tail elements.
 > 
+> Fixes: 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector load / store instructions")
 > 
-> 
-> 
+> Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
 
+> v2:
+> * Rebased on top of Alistair's riscv-to-apply.next branch.
+> ---
+>   target/riscv/vector_helper.c | 22 ++++++----------------
+>   1 file changed, 6 insertions(+), 16 deletions(-)
+> 
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 7505f9470a..f261e726c2 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -264,11 +264,10 @@ GEN_VEXT_ST_ELEM(ste_h, int16_t, H2, stw)
+>   GEN_VEXT_ST_ELEM(ste_w, int32_t, H4, stl)
+>   GEN_VEXT_ST_ELEM(ste_d, int64_t, H8, stq)
+>   
+> -static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
+> -                                   void *vd, uint32_t desc, uint32_t nf,
+> +static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
+> +                                   uint32_t desc, uint32_t nf,
+>                                      uint32_t esz, uint32_t max_elems)
+>   {
+> -    uint32_t total_elems, vlenb, registers_used;
+>       uint32_t vta = vext_vta(desc);
+>       int k;
+>   
+> @@ -276,19 +275,10 @@ static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
+>           return;
+>       }
+>   
+> -    total_elems = vext_get_total_elems(env, desc, esz);
+> -    vlenb = riscv_cpu_cfg(env)->vlen >> 3;
+> -
+>       for (k = 0; k < nf; ++k) {
+>           vext_set_elems_1s(vd, vta, (k * max_elems + vl) * esz,
+>                             (k * max_elems + max_elems) * esz);
+>       }
+> -
+> -    if (nf * max_elems % total_elems != 0) {
+> -        registers_used = ((nf * max_elems) * esz + (vlenb - 1)) / vlenb;
+> -        vext_set_elems_1s(vd, vta, (nf * max_elems) * esz,
+> -                          registers_used * vlenb);
+> -    }
+>   }
+>   
+>   /*
+> @@ -324,7 +314,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
+>       }
+>       env->vstart = 0;
+>   
+> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
+> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
+>   }
+>   
+>   #define GEN_VEXT_LD_STRIDE(NAME, ETYPE, LOAD_FN)                        \
+> @@ -383,7 +373,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+>       }
+>       env->vstart = 0;
+>   
+> -    vext_set_tail_elems_1s(env, evl, vd, desc, nf, esz, max_elems);
+> +    vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
+>   }
+>   
+>   /*
+> @@ -504,7 +494,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
+>       }
+>       env->vstart = 0;
+>   
+> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
+> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
+>   }
+>   
+>   #define GEN_VEXT_LD_INDEX(NAME, ETYPE, INDEX_FN, LOAD_FN)                  \
+> @@ -634,7 +624,7 @@ ProbeSuccess:
+>       }
+>       env->vstart = 0;
+>   
+> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
+> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
+>   }
+>   
+>   #define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
 
