@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09BE72690B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 20:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E07272690C
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 20:39:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6y3H-0002tY-Vv; Wed, 07 Jun 2023 14:38:36 -0400
+	id 1q6y45-0003PH-5c; Wed, 07 Jun 2023 14:39:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1q6y2z-0002tA-2r
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:38:18 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1q6y42-0003LW-99
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:39:22 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1q6y2h-0007md-P9
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:38:02 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1q6y3u-00080b-Md
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:39:21 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 357Eq4Ob017987; Wed, 7 Jun 2023 18:37:57 GMT
+ 357EXSdR013828; Wed, 7 Jun 2023 18:39:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id; s=corp-2023-03-30;
  bh=U8iJAY2xVSoc8Va1trP+/r6zV4Jdv5cq9LClGzTFgQ8=;
- b=pxqq3ZpudoytDc4LgqPosC0J2JEeNZj+zKbEeLDYM/f2EaNGs9O9iX++9cysSMAL4Zvq
- uyc9rhBokZxxceptAgQ1e+8F9SVa/wjmYnO/c3O13bLADWh3/cNWwNAorueFGlQKjZFF
- 6C2xy3tViZURNxYFV3wcue/h3rrXnGp1pBx2bjYXaLtnjDktpQ36Xb5mSSxFGzFfR2dX
- cQKgHDGKfeZ5QGHf1LwtesvubelEMmfJWITkHHk+kFMshTaR97OQpqjYFuG0t73oW4NN
- OeiLwUHu7KiLHFPggatvxkyIIUyU6rFSqhtupdQeCfZM6cAsRK7pxcOrLmvENmQKiu7N Tg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r2a6uaemn-1
+ b=pttJNQ+z8bnlIogVF8GKyrf8rEnhgY4qostpKGGBbAAGLRIvI4NMCWCSUGPPRJYzyCwz
+ DexPSCWekzpD1KmJtTvvSDbN1uXv50hyvMuuxJzELbZuwl3izovGjjNHFd/2r2KuTlLp
+ d7pIGNcSQD2ikywwrVthxZyF9ZsNn65aWIadAukJSeq+c24Bb7VBqCX8wH7/49YaZmQi
+ Bd0kXtLocwZBsBMNWe9YFi8C+UHdgQD4zi4Xxm786W/yvN9CK6yw1h3Xrwgsn13aCL0U
+ r6mTu/+ARLtZ2CiLFuU31z9M9N02hFtj1+4gnGqdr396h4YGtHmODeztX09c7MByiq7+ HA== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r2a6utgyt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 Jun 2023 18:37:57 +0000
+ Wed, 07 Jun 2023 18:39:12 +0000
 Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 357Go5eh016010; Wed, 7 Jun 2023 18:37:56 GMT
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 357GtZjO002892; Wed, 7 Jun 2023 18:39:10 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r2a6m4rua-1
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3r2a6kn2y6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 Jun 2023 18:37:56 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 357IbtsL020443;
- Wed, 7 Jun 2023 18:37:56 GMT
+ Wed, 07 Jun 2023 18:39:10 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 357IdAZr009292;
+ Wed, 7 Jun 2023 18:39:10 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3r2a6m4rtf-1; Wed, 07 Jun 2023 18:37:55 +0000
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 3r2a6kn2rb-1; Wed, 07 Jun 2023 18:39:10 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH 04/20] migration: file URI
-Date: Wed,  7 Jun 2023 11:37:55 -0700
-Message-Id: <1686163075-256597-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2] migration: file URI
+Date: Wed,  7 Jun 2023 11:38:59 -0700
+Message-Id: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-07_09,2023-06-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- suspectscore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0 malwarescore=0
+ definitions=2023-06-07_10,2023-06-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999 bulkscore=0
+ suspectscore=0 phishscore=0 adultscore=0 malwarescore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306070160
-X-Proofpoint-GUID: Y1b_g66V9lxbQI04u9SnQjM3tlDGEYJW
-X-Proofpoint-ORIG-GUID: Y1b_g66V9lxbQI04u9SnQjM3tlDGEYJW
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+ definitions=main-2306070161
+X-Proofpoint-GUID: OlYHvI399StnA9GBZVkmB6JEqGKIKu87
+X-Proofpoint-ORIG-GUID: OlYHvI399StnA9GBZVkmB6JEqGKIKu87
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
