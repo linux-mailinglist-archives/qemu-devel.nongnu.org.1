@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B064372668B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A3572669E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:58:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6wR4-0006w4-UY; Wed, 07 Jun 2023 12:55:02 -0400
+	id 1q6wU0-0002Rt-Ur; Wed, 07 Jun 2023 12:58:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1q6wR3-0006vr-0q
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:55:01 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ id 1q6wTy-0002M4-R9
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:58:02 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1q6wR1-0001OC-4j
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:55:00 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6af8b25fc72so5647852a34.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:54:58 -0700 (PDT)
+ id 1q6wTw-0001rl-Tf
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:58:02 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6513e7e5d44so4459764b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:58:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686156897; x=1688748897;
+ d=gmail.com; s=20221208; t=1686157079; x=1688749079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xE+1wkxPO08MY6y0xennEQUWQ0JmYys5Y9jfkJj6VU8=;
- b=FaNWxJrO7iiN6V49wyWo6nK7O0LNNDSCYQ6jPs9z6MGp1sHBIWwMyX0q3GggyDi3As
- hZ16bOrp5YL3iNj/YQ3etBiJGoiYdehbnod659twlVBJjnOmXitjnyjwbim691M2DzVe
- i0dVnCey2xitfuvO2o2shli+JbacEEFnNBwovpYlxYMGp5imuPzOCYtocTZDlrhrkx4J
- 2nRtAhi5QupWQMimZkPU+SyMlX34gXZx2UZ//HfM/2G7kFBL5n0oaxKbdaw+No2CPnxc
- w0YQ3kfuiA5Z1OYYDIcGI8Z8ZWZPL4RN/exRnwtKKgYoUtLHwY3X99D9ksn1U28zrOzv
- vRBQ==
+ bh=fxJOHiP5GDTktQXf+aPVbhfyHKIATMyFdqs477VmHcY=;
+ b=INcgMRvOHhwdyTC03bJcs7+wKs+WgKPCuwxd1JJyl4S4MhUc2v5J8wz1kOM7XwVQ/G
+ gUmz0wjWm3fFBRahXJGCB0BUVcwUVoLAD+nAWazESwKUd6g8NsMVuuLdLtjvRbs9cvZT
+ y1GJFwMcJkOArKcr8lLoJKCKB/oRQ78zBVyeERl141NpkVhDGqVcId14pBkWROO/QU5v
+ q7sL/09zOTjqvg8ai8E7IXKV+u4Ic5V3Kb52asATCtiCHq6T3cMpU0dwGIZLKdWBm+q3
+ t8VdnSWCYxtmNaR50Vh++FCr1U6U9HE8vTktHRPrTl9yOWuukMGOwt6lOE/Yla2modMu
+ 1vvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686156897; x=1688748897;
+ d=1e100.net; s=20221208; t=1686157079; x=1688749079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xE+1wkxPO08MY6y0xennEQUWQ0JmYys5Y9jfkJj6VU8=;
- b=HTuxFkmM0WMDlqx9/RvebSsuh4Ajy/FwT63vjj3lJaREI9eJ+3eI5AhOZsqTD182y6
- JEPRePP1bOOVJecU1BYehHG7cb91Vaoqxoyh8Cx+2dlElgumTYVi2q9T2LXmtn3WHr5h
- ALq8XWW7Suw5Xnb763ydTs2eYzKaXGv+V/F6ucGWdW1wkSsmi7LfjAjr+0kijYPCkWmQ
- acSTIbD9/iWEUu9pfDHdjxGJuuyzWqTPZigW4fmndYFkWJdNCAPBxA9tcTqlQnaY3usL
- YQtWL/asNQJlrsFSUvnn85WD6wXJHEsWqkq3sl95ujujLmxDESzY9dh4fMKYe5mFg1MZ
- +A7g==
-X-Gm-Message-State: AC+VfDzfhPbyv7WVWqzr4wvKQHkYeQxUaBpOP1/ki4F4OZUsKvzWFwjI
- 5VlANfhN2SFeeSOp7uwgofa/N1XS7kii0M5L/GM=
-X-Google-Smtp-Source: ACHHUZ4W9OGYH729372BZmTgVN5gV/GKXoqeqJwJzA22NFViqYV2VzybDmyX6hu6Bm53Wo02an34Fg==
-X-Received: by 2002:a92:cf4e:0:b0:331:105c:81f9 with SMTP id
- c14-20020a92cf4e000000b00331105c81f9mr9586543ilr.29.1686156559850; 
- Wed, 07 Jun 2023 09:49:19 -0700 (PDT)
+ bh=fxJOHiP5GDTktQXf+aPVbhfyHKIATMyFdqs477VmHcY=;
+ b=MgKoGDv9vSqiwh/M/1PQu5UF+79oX4LTG4/PDFfPMOpv889xzSi6XFpExCx/8Sz6Qt
+ O0liPFV0haHRrlJhCAxbfIMG8YT1j3t4C0MQoIrEGXh0owUzVvR3w3/olHGMzbh+8tN1
+ wtTRg5qCWB6bhGXRwWEzutivYQkzX1T4uoEalQJ4iwIZUl0W23r3AkQ/0yzWj8P4E0PM
+ tGdf5WFzJKj8bxfOY4irI+VNdyZzMzr9ITladFhS+HCgt/3Ouw744aPl2qk/dczIDfkb
+ I6gbQuWbp1RuCM2EHrObYBW3kBBLBMtFXuL5/L1hoRcVNba2uyRx98xjJwNgZzXvMd4F
+ sgPA==
+X-Gm-Message-State: AC+VfDxqesC01ripjJpBQKh0VcfCnag3MS+IfKhJN5nzh8ELn93S7GdH
+ HK2zsbaA7x7de8KWbGjw98i5iDClwC8kTXhzmuY=
+X-Google-Smtp-Source: ACHHUZ69ZuXes8fpHBsUFzWQz7XXTns2ApHVqrHlgpuYeeIe/ifr+Dkrqwi8MHUYsmH+SP4YePbRkg==
+X-Received: by 2002:a17:90b:185:b0:259:9667:722d with SMTP id
+ t5-20020a17090b018500b002599667722dmr2511306pjs.31.1686156564938; 
+ Wed, 07 Jun 2023 09:49:24 -0700 (PDT)
 Received: from localhost.localdomain ([223.104.40.226])
  by smtp.gmail.com with ESMTPSA id
- 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.16
+ 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 09:49:19 -0700 (PDT)
+ Wed, 07 Jun 2023 09:49:24 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [RFC v2 3/6] target/i386: Add native library calls
-Date: Thu,  8 Jun 2023 00:47:47 +0800
-Message-Id: <20230607164750.829586-4-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [RFC v2 4/6] target/mips: Add native library calls
+Date: Thu,  8 Jun 2023 00:47:48 +0800
+Message-Id: <20230607164750.829586-5-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
 References: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-ot1-x331.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,81 +99,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- target/i386/helper.h                 |  6 +++
- target/i386/tcg/translate.c          | 20 +++++++++
- target/i386/tcg/user/meson.build     |  1 +
- target/i386/tcg/user/native_helper.c | 65 ++++++++++++++++++++++++++++
- 4 files changed, 92 insertions(+)
- create mode 100644 target/i386/tcg/user/native_helper.c
+ target/mips/helper.h            |  6 ++++
+ target/mips/tcg/meson.build     |  1 +
+ target/mips/tcg/native_helper.c | 55 +++++++++++++++++++++++++++++++++
+ target/mips/tcg/translate.c     | 20 +++++++++++-
+ target/mips/tcg/translate.h     | 12 +++++++
+ 5 files changed, 93 insertions(+), 1 deletion(-)
+ create mode 100644 target/mips/tcg/native_helper.c
 
-diff --git a/target/i386/helper.h b/target/i386/helper.h
-index e627a93107..6c91655887 100644
---- a/target/i386/helper.h
-+++ b/target/i386/helper.h
-@@ -221,3 +221,9 @@ DEF_HELPER_3(rcrq, tl, env, tl, tl)
- #endif
+diff --git a/target/mips/helper.h b/target/mips/helper.h
+index de32d82e98..9fa949d78c 100644
+--- a/target/mips/helper.h
++++ b/target/mips/helper.h
+@@ -589,6 +589,12 @@ DEF_HELPER_FLAGS_3(dmthlip, 0, void, tl, tl, env)
+ DEF_HELPER_FLAGS_3(wrdsp, 0, void, tl, tl, env)
+ DEF_HELPER_FLAGS_2(rddsp, 0, tl, tl, env)
  
- DEF_HELPER_1(rdrand, tl, env)
-+
 +#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
 +DEF_HELPER_1(native_memcpy, void, env)
 +DEF_HELPER_1(native_memcmp, void, env)
 +DEF_HELPER_1(native_memset, void, env)
 +#endif
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 91c9c0c478..eb0c1e9566 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -33,6 +33,7 @@
- #include "helper-tcg.h"
- 
- #include "exec/log.h"
-+#include "native/native-func.h"
- 
- #define PREFIX_REPZ   0x01
- #define PREFIX_REPNZ  0x02
-@@ -6806,6 +6807,25 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x1d0 ... 0x1fe:
-         disas_insn_new(s, cpu, b);
-         break;
-+    /* One unknown opcode for native call */
-+#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
-+    case 0x1ff:
-+        uint16_t sig = x86_lduw_code(env, s);
-+        switch (sig) {
-+        case NATIVE_MEMCPY:
-+            gen_helper_native_memcpy(cpu_env);
-+            break;
-+        case NATIVE_MEMSET:
-+            gen_helper_native_memset(cpu_env);
-+            break;
-+        case NATIVE_MEMCMP:
-+            gen_helper_native_memcmp(cpu_env);
-+            break;
-+        default:
-+            goto unknown_op;
-+        }
-+        break;
-+#endif
-     default:
-         goto unknown_op;
-     }
-diff --git a/target/i386/tcg/user/meson.build b/target/i386/tcg/user/meson.build
-index 1df6bc4343..490808bd65 100644
---- a/target/i386/tcg/user/meson.build
-+++ b/target/i386/tcg/user/meson.build
-@@ -1,4 +1,5 @@
- i386_user_ss.add(when: ['CONFIG_TCG', 'CONFIG_USER_ONLY'], if_true: files(
-   'excp_helper.c',
-   'seg_helper.c',
++
+ #ifndef CONFIG_USER_ONLY
+ #include "tcg/sysemu_helper.h.inc"
+ #endif /* !CONFIG_USER_ONLY */
+diff --git a/target/mips/tcg/meson.build b/target/mips/tcg/meson.build
+index 7ee969ec8f..fb1ea64047 100644
+--- a/target/mips/tcg/meson.build
++++ b/target/mips/tcg/meson.build
+@@ -22,6 +22,7 @@ mips_ss.add(files(
+   'txx9_translate.c',
+   'vr54xx_helper.c',
+   'vr54xx_translate.c',
 +  'native_helper.c',
  ))
-diff --git a/target/i386/tcg/user/native_helper.c b/target/i386/tcg/user/native_helper.c
+ mips_ss.add(when: 'TARGET_MIPS64', if_true: files(
+   'tx79_translate.c',
+diff --git a/target/mips/tcg/native_helper.c b/target/mips/tcg/native_helper.c
 new file mode 100644
-index 0000000000..4a9b98eee2
+index 0000000000..bfd9c92e17
 --- /dev/null
-+++ b/target/i386/tcg/user/native_helper.c
-@@ -0,0 +1,65 @@
++++ b/target/mips/tcg/native_helper.c
+@@ -0,0 +1,55 @@
 +/*
 + *  native function call helpers
 + */
@@ -180,28 +151,16 @@ index 0000000000..4a9b98eee2
 +#include "exec/helper-proto.h"
 +#include "exec/exec-all.h"
 +#include "exec/cpu_ldst.h"
-+#include "tcg/helper-tcg.h"
-+#include "tcg/seg_helper.h"
 +
-+#ifdef TARGET_X86_64
-+#define NATIVE_FN_W_3W()           \
-+    target_ulong arg0, arg1, arg2; \
-+    arg0 = env->regs[R_EDI];       \
-+    arg1 = env->regs[R_ESI];       \
-+    arg2 = env->regs[R_EDX];
-+#else
-+/*
-+ *  linux x86 has several calling conventions. The following implementation
-+ *  is for the most commonly used cdecl calling convention.
-+ */
-+#define NATIVE_FN_W_3W()                                   \
-+    target_ulong arg0, arg1, arg2;                         \
-+    arg0 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 4); \
-+    arg1 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 8); \
-+    arg2 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 12);
-+#endif
++#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
 +
-+void helper_native_memcpy(CPUX86State *env)
++#define NATIVE_FN_W_3W()                   \
++    target_ulong arg0, arg1, arg2;         \
++    arg0 = env->active_tc.gpr[4]; /*"a0"*/ \
++    arg1 = env->active_tc.gpr[5]; /*"a1"*/ \
++    arg2 = env->active_tc.gpr[6]; /*"a2"*/
++
++void helper_native_memcpy(CPUMIPSState *env)
 +{
 +    CPUState *cs = env_cpu(env);
 +    NATIVE_FN_W_3W();
@@ -210,10 +169,10 @@ index 0000000000..4a9b98eee2
 +    void *src = g2h(cs, arg1);
 +    size_t n = (size_t)arg2;
 +    ret = memcpy(dest, src, n);
-+    env->regs[R_EAX] = (target_ulong)h2g(ret);
++    env->active_tc.gpr[2] = (target_ulong)h2g(ret);
 +}
 +
-+void helper_native_memcmp(CPUX86State *env)
++void helper_native_memcmp(CPUMIPSState *env)
 +{
 +    CPUState *cs = env_cpu(env);
 +    NATIVE_FN_W_3W();
@@ -222,10 +181,10 @@ index 0000000000..4a9b98eee2
 +    void *s2 = g2h(cs, arg1);
 +    size_t n = (size_t)arg2;
 +    ret = memcmp(s1, s2, n);
-+    env->regs[R_EAX] = ret;
++    env->active_tc.gpr[2] = ret;
 +}
 +
-+void helper_native_memset(CPUX86State *env)
++void helper_native_memset(CPUMIPSState *env)
 +{
 +    CPUState *cs = env_cpu(env);
 +    NATIVE_FN_W_3W();
@@ -234,7 +193,67 @@ index 0000000000..4a9b98eee2
 +    int c = (int)arg1;
 +    size_t n = (size_t)arg2;
 +    ret = memset(s, c, n);
-+    env->regs[R_EAX] = (target_ulong)h2g(ret);
++    env->active_tc.gpr[2] = (target_ulong)h2g(ret);
++}
++
++#endif
+diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
+index a6ca2e5a3b..d68ce6bc2f 100644
+--- a/target/mips/tcg/translate.c
++++ b/target/mips/tcg/translate.c
+@@ -36,6 +36,7 @@
+ #include "qemu/qemu-print.h"
+ #include "fpu_helper.h"
+ #include "translate.h"
++#include "native/native-func.h"
+ 
+ /*
+  * Many sysemu-only helpers are not reachable for user-only.
+@@ -13591,7 +13592,24 @@ static void decode_opc_special(CPUMIPSState *env, DisasContext *ctx)
+         gen_helper_pmon(cpu_env, tcg_constant_i32(sa));
+ #endif
+         break;
+-    case OPC_SYSCALL:
++    case OPC_SYSCALL:  /* 00 00 00 0C */
++        if (native_bypass() && ((((ctx->opcode) >> 24) & 0xff) == 0x1)) {
++            uint16_t sig =  (ctx->opcode) >> 8 & 0xffff;
++            switch (sig) {
++            case NATIVE_MEMCPY:
++                gen_helper_native_memcpy(cpu_env);
++                break;
++            case NATIVE_MEMSET:
++                gen_helper_native_memset(cpu_env);
++                break;
++            case NATIVE_MEMCMP:
++                gen_helper_native_memcmp(cpu_env);
++                break;
++            default:
++                gen_reserved_instruction(ctx);
++            }
++            break;
++        }
+         generate_exception_end(ctx, EXCP_SYSCALL);
+         break;
+     case OPC_BREAK:
+diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
+index 69f85841d2..f0112d88aa 100644
+--- a/target/mips/tcg/translate.h
++++ b/target/mips/tcg/translate.h
+@@ -237,3 +237,15 @@ static inline bool cpu_is_bigendian(DisasContext *ctx)
+ }
+ 
+ #endif
++
++/*
++ * Check if the native bypass feature is enabled.
++ */
++static inline bool native_bypass(void)
++{
++#if defined(CONFIG_USER_ONLY) && defined(CONFIG_USER_NATIVE_CALL)
++    return true;
++#else
++    return false;
++#endif
 +}
 -- 
 2.34.1
