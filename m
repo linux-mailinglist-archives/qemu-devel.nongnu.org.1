@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F5C726915
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 20:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E6F72692E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 20:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6y7N-0005O7-Pe; Wed, 07 Jun 2023 14:42:49 -0400
+	id 1q6yEF-0007Tt-Af; Wed, 07 Jun 2023 14:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6y7M-0005Nc-17
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:42:48 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1q6yEC-0007Te-Oi
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:49:53 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6y7K-0000Fz-Fe
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:42:47 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-542c54455e7so2567300a12.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 11:42:46 -0700 (PDT)
+ id 1q6yEB-0001Q1-4Q
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:49:52 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-390723f815fso4141348b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 11:49:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686163365; x=1688755365;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1686163789; x=1688755789;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DDzN6l/JaHqFy8u87d7UlnU2HVLpNTzgbII7x9Kg+lk=;
- b=j+TeNdqZVeMtZILsUbIDjmk9jnT3ZkzX+sg7JG+Xj6wdKcd7zCfzlWHQh0lW1/gJwk
- +sxtUgohKXmPmBRIN+hFt2RRW3Y/5BMLJRWQiOK/rywdjnvPusIb/kwkJTnQTGjdQeSZ
- sfaIp7qogyZh1b270VHJmnGHkkcO/NtcQXM02/1OnApJwb/5RBOnslmarVW5SsdcTkhn
- MbGzk47REooXRIdxM/yBnmHXQ+1eWFFxtOcAzJ4kjviEXn1fnZ70Xtn5KC0X5h46T+JM
- Dccmow1n17MqhldTRsIYT6uJ9rHcOM/tfGLvFIwQDtn630vFlnlaAWxh3i27Cz6hg/cN
- tScw==
+ bh=gERdGlB/T+dx6lEcq74VaSdQYLdT3VE7XyUH7qRXhxo=;
+ b=PTOsYxahqFYDOwjtLkatbTMiGLo+1eUfS79rX2zFovpj4o3zjy9qteZGXgecz/yM1c
+ wYzjwayw9m+PNCNQfydTXfX4u4G1/A3yttjN+j8FhBVLBhTr9L48YaA+Sh2Q/+EanIN/
+ 48c+RLkcsKB/QTnn9WruAtAiw7PibFbfDtJ2xZOeSBe+gGf+5uc3v4bOTdWp3c/Ibjo/
+ yUSrilN/TQPN9u1Oz60r0OMLMpa63V/u/RFk1zreI+PBx15umS9dfuCPK2WhtmMHbVXu
+ EQs44Xx35N8vhwgyaq++NduMo1j3H4JOmS6F7wmDqiNQ+F3v01JXMDlIuOPt3ymA2A1f
+ jXFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686163365; x=1688755365;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1686163789; x=1688755789;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DDzN6l/JaHqFy8u87d7UlnU2HVLpNTzgbII7x9Kg+lk=;
- b=IjEEK+1/2J1Z/oUFLVTeBjD7lqlqZQLndfOjkesqUTxRvo0qd6Lgf4uZ1SqthUjKzu
- jFe7Tz9wQoWqm/XB8BDAycY+sgB7E2q5KqiOlI3JfNC5B1bjcYth2cvdQxVsspJvLOkF
- On5G1pU6tCJ/7TARcNzThvakJFOzAznhxn+S2+8LKAk58137bHT0CXoufJD54OYe7Z9y
- Bmla96YMvVZ03Zo5rjWIDSsd0qVkhmu+caogaDHQ4t67fWp8F4lPZqIIM450Ft+3VmXr
- hKg9RZWVDxWy85aBNqDWsq6si5nQuRYsyEMPc6eO2sTs2ph+ZKbMboxBSbWuuoV3fWld
- MFOA==
-X-Gm-Message-State: AC+VfDylX1iUWw2/pibGm9PBqH5o2rgQn+I8K0nDVqBRNYi3vAdWbj8X
- 443ktHL8a+xU+PdVIrG0w1tWmA==
-X-Google-Smtp-Source: ACHHUZ6mndlwQZhXGmHENtN7OBIOwcnc6eY9va6W1UOmHWTlL9JhEK10AuaGLq6nJBVJY2yTuLXGJw==
-X-Received: by 2002:a05:6a20:8e03:b0:117:d4d:15fb with SMTP id
- y3-20020a056a208e0300b001170d4d15fbmr1982331pzj.10.1686163364908; 
- Wed, 07 Jun 2023 11:42:44 -0700 (PDT)
+ bh=gERdGlB/T+dx6lEcq74VaSdQYLdT3VE7XyUH7qRXhxo=;
+ b=iPQe7SSgB9+mpHHd0XjXnlvQ04oepSTCWXWySZ9GFryTe27RwNqSVZ2sFR9NhfbLJu
+ VghMDJ5MY8VKvZF6TOWRW9mV6c/Tp186P06na5BDAvDuwf4+pfTnZGBGfi1Q2HbCopty
+ 7AM2C2BiOS2PxuDeblYh8A2GBy8KHMnb0HPWXF62LKF8qJJ9JwIW/C4B7KjzOD6++o8O
+ 97PSBQHJcGFuqzkx4k72eb1HvoDne15Tgu3X7RV7w021ey5fsABlWhuERV80BjMqrXW7
+ cpN8ceYmobwiRue2xP3BWvLE9OZbyuQRzsLO70DWdv5x1A5WWbr25QjnbUWl4ImoXGE8
+ tjxQ==
+X-Gm-Message-State: AC+VfDyxiYdN+uLih5c+IpZwlqWweNALNV+gbm37Cf79WYcvR2x9gYZ2
+ NIO39VGOJFL+mzTjXKPlp4/NmQ==
+X-Google-Smtp-Source: ACHHUZ7oymxt0Z3i7Db2IxORaDonjBgBVFDjr7aI/lFoEQml8o6mnLmLPQLYeeynB/LUvL43AJZTiw==
+X-Received: by 2002:aca:1904:0:b0:39a:b347:edce with SMTP id
+ l4-20020aca1904000000b0039ab347edcemr4160274oii.49.1686163789465; 
+ Wed, 07 Jun 2023 11:49:49 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:1f09:2b0b:a56e:7a17?
  ([2602:ae:1598:4c01:1f09:2b0b:a56e:7a17])
  by smtp.gmail.com with ESMTPSA id
- e24-20020aa78c58000000b0065ceef92047sm4728160pfd.31.2023.06.07.11.42.44
+ 27-20020a17090a031b00b00256bedb4bedsm1765980pje.52.2023.06.07.11.49.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 11:42:44 -0700 (PDT)
-Message-ID: <76e6ea8d-e651-98f6-0b64-81820fbd6baf@linaro.org>
-Date: Wed, 7 Jun 2023 11:42:41 -0700
+ Wed, 07 Jun 2023 11:49:48 -0700 (PDT)
+Message-ID: <206a3363-6b49-0cda-494f-0d69f7162c6a@linaro.org>
+Date: Wed, 7 Jun 2023 11:49:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 00/12] xen queue
+Subject: Re: [PATCH] iotests: fix 194: filter out racy postcopy-active event
 Content-Language: en-US
-To: Anthony PERARD <anthony.perard@citrix.com>, qemu-devel@nongnu.org
-References: <20230607141839.48422-1-anthony.perard@citrix.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ stefanha@redhat.com, berrange@redhat.com, jsnow@redhat.com,
+ thuth@redhat.com, philmd@linaro.org
+References: <20230607143606.1557395-1-vsementsov@yandex-team.ru>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230607141839.48422-1-anthony.perard@citrix.com>
+In-Reply-To: <20230607143606.1557395-1-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,31 +98,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/23 07:18, Anthony PERARD via wrote:
-> From: Anthony PERARD<anthony.perard@citrix.com>
+On 6/7/23 07:36, Vladimir Sementsov-Ogievskiy wrote:
+> The event is racy: it will not appear in the output if bitmap is
+> migrated during downtime period of migration and postcopy phase is not
+> started.
 > 
-> The following changes since commit f5e6786de4815751b0a3d2235c760361f228ea48:
-> 
->    Merge tag 'pull-target-arm-20230606' ofhttps://git.linaro.org/people/pmaydell/qemu-arm  into staging (2023-06-06 12:11:34 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://xenbits.xen.org/git-http/people/aperard/qemu-dm.git  tags/pull-xen-20230607
-> 
-> for you to fetch changes up to 9000666052f99ed4217e75b73636acae61e6fc2c:
-> 
->    xen-block: fix segv on unrealize (2023-06-07 15:07:10 +0100)
-> 
-> ----------------------------------------------------------------
-> Xen queue
-> 
-> - fix for xen-block segv
-> - Resolve TYPE_PIIX3_XEN_DEVICE
-> - Xen emulation build/Coverity fixes
+> Fixes: ae00aa239847 "iotests: 194: test also migration of dirty bitmap"
+> Reported-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Queued and applied.
 
 
 r~
-
 
