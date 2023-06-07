@@ -2,80 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9F372629E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45D27262AD
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:21:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6u1K-0003UV-Ve; Wed, 07 Jun 2023 10:20:19 -0400
+	id 1q6u0x-0002uE-7I; Wed, 07 Jun 2023 10:19:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=51561cf95=anthony.perard@citrix.com>)
- id 1q6u1H-0003RH-1x
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:20:15 -0400
-Received: from esa3.hc3370-68.iphmx.com ([216.71.145.155])
+ id 1q6u0v-0002tw-Ce
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:53 -0400
+Received: from esa5.hc3370-68.iphmx.com ([216.71.155.168])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=51561cf95=anthony.perard@citrix.com>)
- id 1q6u1F-0003g5-6Q
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:20:14 -0400
+ id 1q6u0t-0003TL-Mi
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1686147612;
+ d=citrix.com; s=securemail; t=1686147591;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=TMH5QUPRgSRXgIgg+Vv+HD7E9mqCFGyN0i1wUw3junY=;
- b=TZKIMtyczIgDCG/wsT08Iu87xgMMSiN47xXU5m+J605mOstfeV9yrW4A
- s1eNCmpTjstg70+Qi3ddgpQt5S/SnFyUxNbGV41L+Y8a4k4Mxe8mNLY/Z
- DqGDDkweAYw9ERtgKbbwMoMHkTHlQsqrhesre3CQKEotk6dpg6uVw8nQ9 E=;
-Authentication-Results: esa3.hc3370-68.iphmx.com;
+ bh=wWUJ7WtaHa9rB7fKP/foYa0k256I9Y1yoW9klntUSLk=;
+ b=e06bdVeDDWVRrdZQpdcOS2OQhUsZYUuceSsVRPEGVYQk6v7gShbp0HlT
+ 1K3khXWRhrshrhQD/La79sLyP0RjMcHkqgam5by6dsJpk8xzDiNyTcoeo
+ GXnlU74H4IF3VzPOB4pZAno35RPmRuggzZlo7Qk/EBqs+jNIpDawHhuPb M=;
+Authentication-Results: esa5.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 111938282
-X-Ironport-Server: esa3.hc3370-68.iphmx.com
+X-MesageID: 110672765
+X-Ironport-Server: esa5.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23:bqOxIqM9wnucMsvvrR2kl8FynXyQoLVcMsEvi/4bfWQNrUon1zEOz
- WUWXm6DO66OZDP1L90gPYWypBhTvJLdxtRmSgto+SlhQUwRpJueD7x1DKtS0wC6dZSfER09v
- 63yTvGacajYm1eF/k/F3oDJ9CU6jufQAOKnUoYoAwgpLSd8UiAtlBl/rOAwh49skLCRDhiE/
- Nj/uKUzAnf8s9JPGjxSs/rrRC9H5qyo42tG5gNmP5ingXeF/5UrJMNHTU2OByOQrrl8RoaSW
- +vFxbelyWLVlz9F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq/0Te5p0TJvsEAXq7vh3S9zxHJ
- HehgrTrIeshFvWkdO3wyHC0GQkmVUFN0OevzXRSLaV/ZqAJGpfh66wGMa04AWEX0vhlWk9fz
- vpAFCEiayiYoPu627OFcfY506zPLOGzVG8eknRpzDWfBvc6W5HTBa7N4Le03h9p2JoIR6yHI
- ZNEN3w2Nk+ojx5nYz/7DLo3mvuogX/uNSVVsluPqYI84nTJzRw327/oWDbQUoXTHJQOzhzI/
- Aoq+Uy+CSkfb92Q0AaB606Il+7WlgjLSacNQejQGvlC3wTImz175ActfUK2pOT8hkOgVtZ3L
- UsS9Swz668o+ySDVdnwWQG1sVaLuxcdX5xbFOhS1e2W4vOKuUDDXDFCF2MfLoV876faWADGy
- HeXjYjHFAdp6IGEZnel7ZCNoSizBxMKeDpqiTA/cSMJ5NzqoYcWhx3JT8p+HKPdsuAZCQ0c0
- BjR8nFg2ux7YdojkvzioAuZ227ESo3hFFZd2+nBYo6yAuqVjqaBbpfg11XU5O0owG2xHgjY5
- yhsdyRzAYkz4XCxeM6lGr1l8FKBvazt3NjgbblHQfEcG8yFoSLLQGypyGgWyL1VGsgFYyT1R
- 0TYpBlc4pReVFPzM/8pO93vUZhxnPS5fTgAahwyRoAWCnSWXFXelByCmGbKhzy9+KTSuf9X1
- WinnTaEUi9BVPUPIMueTOYBy747rh3SNkuKLa0XOy+PiOLEDFbMEOdtDbd7RrxhhE9yiFmPo
- ok32grj40k3bdASlQGJqdNCcwpXdyFT6FKfg5U/S9Nv6zFOQAkJY8I9C5t8J+SJQ4w9ej/0w
- 0yA
-IronPort-HdrOrdr: A9a23:wquQ9aGq2J1yVWz9pLqE2seALOsnbusQ8zAXPiFKJiC9F/byqy
- nApoV/6faZslcssQgb6LO90cq7L080i6QFg7X5VI3KNGOK1FdASrsSibcKqAeBJ8SRzJ8l6Y
- 5QN4R4Fd3sHRxboK/BkXGF+g8bsb66GXaT9IHj80s=
-X-Talos-CUID: =?us-ascii?q?9a23=3AmJT6wmjpd0loLPrOlwS23tdggDJubG+G4mbrJRe?=
- =?us-ascii?q?EGElscKayUFOL+Z1fjJ87?=
-X-Talos-MUID: =?us-ascii?q?9a23=3AdxAnbQ1mE3tbSPcwOjr1yMWv5DUjpK+WDRsMnow?=
- =?us-ascii?q?6v9C4ET1xIjy2vCWSXdpy?=
-X-IronPort-AV: E=Sophos;i="6.00,224,1681185600"; d="scan'208";a="111938282"
+IronPort-Data: A9a23:c1iBcajPy6pABe7Ma6aq0Xi2X161ZhAKZh0ujC45NGQN5FlHY01je
+ htvDTqDPq2JYWf8Ko9zbdy28kIO68DRztBmG1Y/+yo2QX4b9cadCdqndUqhZCn6wu8v7q5Ex
+ 55HNoSfdpBcolv0/ErF3m3J9CEkvU2wbuOgTrWCYmYpHlUMpB4J0XpLg/Q+jpNjne+3CgaMv
+ cKai8DEMRqu1iUc3lg8sspvkzsx+qyq0N8klgZmP6sT4geBzyN94K83fsldEVOpGuG4IcbiL
+ wrz5OnR1n/U+R4rFuSknt7TGqHdauePVeQmoiM+t5mK2nCulARrukoIHKN0hXNsoyeIh7hMJ
+ OBl7vRcf+uL0prkw4zxWzEAe8130DYvFLXveRBTuuTLp6HKnueFL1yDwyjaMKVBktubD12i+
+ tRfFWAhbzKdnNiq7722cPB2pMEqAJPkadZ3VnFIlVk1DN4jSJHHBa7L+cVZzHE7gcUm8fT2P
+ pRDL2A1NVKZPkMJYw1MYH49tL7Aan3XejtEqFWTtOwv7nLa1gBZ27nxKtvFPNeNQK25m27B/
+ zqYoD6mXExy2Nq34BrG40+nlr/2hxzFX5xRJYea7L1DuQjGroAUIEJPDgbqyRWjsWanVtdCb
+ kAZ5Ccqha418kOtU5/6RRLQiGWEsxgAVst4HOgz6QXLwa3Rizt1HUBdEGQHMoZ/8pZrG3pzj
+ AThc87V6SJH94DFZXO/6KyusRy9NBIMN00HbANeQl5QizX8m70bghXKR9dlNae6iNzpBD39q
+ wy3QDgCa6Y71pBSifjilbzTq3f1/8WSEFZpjunCdjj9hj6VcrJJcGBBBbLzyf9bZLiUQVCa1
+ JTvs5jPtbteZX1hecHkfQnsIF1Lz6zdWNE/qQQ1d3XEy9hK0yDLQGyoyGsiTHqFy+5dEdMTX
+ GfduBlK+LhYN2awYKl8buqZUpp6k/C/S465DaGIN7Kih6SdkifdpEmCgmbKhgjQfLUEy/lja
+ f93j+7yZZrlNUiX5GXvHLpMuVPa7is/2XnSVfjGI+ePiNKjiIquYe5dajOmN7lphJ5oVS2Jq
+ 76zwePWkUQAOAA/CwGLmbMuwacicyBmVM6s9pYOHgNBSyI/cFwc5zbq6etJU+RYc259z48kI
+ lnVtpdk9WfC
+IronPort-HdrOrdr: A9a23:kSKmDqsIHHAAvWEAKTjetPXj7skCiIAji2hC6mlwRA09TyXGra
+ 6TdaUguiMc1gx8ZJh5o6H8BEGBKUmskKKdkrNhQYtKPTOW9VdASbsJ0WKM+UyYJ8STzJ8/6U
+ 4kSdkFNDSSNyk3sS+Z2njBLz9I+rDum83I5ds2jU0dNj2CAJsQizuRfzzrdHGeMzM2YqbReq
+ DshPZvln6FQzA6f867Dn4KU6zqoMDKrovvZVorFgMq8w6HiBKv8frfHwKD1hkTfjtTyfN6mF
+ K13TDR1+GGibWW2xXc32jc49B/n8bg8MJKAIihm9UYMTLljyevfcBEV6eZtD44jemz4BIBkc
+ XKoT0nI8NvgkmhMV2dkF/I4U3NwTwu43jtxRuzmn34u/H0Qzo8Fo5omZ9ZWgGx0TthgPhMlI
+ Zwm06JvZteCh3N2A7n4cLTah1snk2o5VI/jO8oiWBFW4d2Us4TkWVfxjIWLH4zJlO/1GkVKp
+ goMCga3ocRTbquVQGdgoCo+q30Yp18JGbffqFIgL3r79EfpgEG86Jf/r1fol4wsKsnTZ9K/u
+ LFNbktuo1vY6YtHPhALdZEeNCwDGPVRxLKLSa1GnTIUI86G1+lke+t3F0SjNvaJKDgCKFCxa
+ jpQRdWs3U/dFnpDtDL1JpX8grVSGH4Rjj1zNpCjqIJ8oHUVf7oKiWNVVEjk8yy5/MCH8bcR/
+ G/UagmdsMLglGea7qh8jeOLaW6E0NuGfE9q5I+QRaDs8jLIorluqjSd+vSPqPkFXIhVnnkCn
+ UOUTDvLIEYh3rbEEPQkVzUQTfga0b/9ZV/HOzT+PUS0pEEMslJvhIOgVq068mXIXlJs7Awfk
+ F5PLT7+5nL7lWe7CLN9SFkKxBdBkFa7PHpVG5LvxYDNwfufbMKq7ykCBdvNbu8V2tCpu/tYX
+ 1iTg5MiNOKxrSrtFAfN+4=
+X-Talos-CUID: 9a23:pCU5YGOD4si+wO5DHxQ32E82BNsfblLSwU3JOW29AEozR+jA
+X-Talos-MUID: 9a23:Dk7y7wYnOYMkP+BTnh+vlQxpJJdR+ZuQD15OoK8koYqtDHkl
+X-IronPort-AV: E=Sophos;i="6.00,224,1681185600"; d="scan'208";a="110672765"
 To: <qemu-devel@nongnu.org>
 CC: Bernhard Beschow <shentey@gmail.com>, Anthony PERARD
  <anthony.perard@citrix.com>
-Subject: [PULL 10/12] hw/isa/piix3: Resolve redundant k->config_write
- assignments
-Date: Wed, 7 Jun 2023 15:18:37 +0100
-Message-ID: <20230607141839.48422-11-anthony.perard@citrix.com>
+Subject: [PULL 11/12] hw/isa/piix3: Resolve redundant TYPE_PIIX3_XEN_DEVICE
+Date: Wed, 7 Jun 2023 15:18:38 +0100
+Message-ID: <20230607141839.48422-12-anthony.perard@citrix.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607141839.48422-1-anthony.perard@citrix.com>
 References: <20230607141839.48422-1-anthony.perard@citrix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: pass client-ip=216.71.145.155;
+Received-SPF: pass client-ip=216.71.155.168;
  envelope-from=prvs=51561cf95=anthony.perard@citrix.com;
- helo=esa3.hc3370-68.iphmx.com
+ helo=esa5.hc3370-68.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -102,49 +110,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The previous patch unified handling of piix3_write_config() accross the
-PIIX3 device models which allows for assigning k->config_write once in the
-base class.
+During the last patches, TYPE_PIIX3_XEN_DEVICE turned into a clone of
+TYPE_PIIX3_DEVICE. Remove this redundancy.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
 Tested-by: Chuck Zmudzinski <brchuckz@aol.com>
-Message-Id: <20230312120221.99183-6-shentey@gmail.com>
-Message-Id: <20230403074124.3925-7-shentey@gmail.com>
+Message-Id: <20230312120221.99183-7-shentey@gmail.com>
+Message-Id: <20230403074124.3925-8-shentey@gmail.com>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 ---
- hw/isa/piix3.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/i386/pc_piix.c             |  5 ++---
+ hw/isa/piix3.c                | 15 ---------------
+ include/hw/southbridge/piix.h |  1 -
+ 3 files changed, 2 insertions(+), 19 deletions(-)
 
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 2ed2b3f3c6..42af03dbb4 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -239,8 +239,6 @@ static void pc_init1(MachineState *machine,
+     if (pcmc->pci_enabled) {
+         PIIX3State *piix3;
+         PCIDevice *pci_dev;
+-        const char *type = xen_enabled() ? TYPE_PIIX3_XEN_DEVICE
+-                                         : TYPE_PIIX3_DEVICE;
+ 
+         pci_bus = i440fx_init(pci_type,
+                               i440fx_host,
+@@ -253,7 +251,8 @@ static void pc_init1(MachineState *machine,
+                                        : pc_pci_slot_get_pirq);
+         pcms->bus = pci_bus;
+ 
+-        pci_dev = pci_create_simple_multifunction(pci_bus, -1, true, type);
++        pci_dev = pci_create_simple_multifunction(pci_bus, -1, true,
++                                                  TYPE_PIIX3_DEVICE);
+ 
+         if (xen_enabled()) {
+             pci_device_set_intx_routing_notifier(
 diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
-index 5e8ac98ae0..0549e043ca 100644
+index 0549e043ca..117024e450 100644
 --- a/hw/isa/piix3.c
 +++ b/hw/isa/piix3.c
-@@ -322,6 +322,7 @@ static void pci_piix3_class_init(ObjectClass *klass, void *data)
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-     AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
+@@ -30,7 +30,6 @@
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/isa/isa.h"
+-#include "hw/xen/xen.h"
+ #include "sysemu/runstate.h"
+ #include "migration/vmstate.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+@@ -381,24 +380,10 @@ static const TypeInfo piix3_info = {
+     .class_init    = piix3_class_init,
+ };
  
-+    k->config_write = piix3_write_config;
-     dc->reset       = piix3_reset;
-     dc->desc        = "ISA bridge";
-     dc->vmsd        = &vmstate_piix3;
-@@ -371,7 +372,6 @@ static void piix3_class_init(ObjectClass *klass, void *data)
+-static void piix3_xen_class_init(ObjectClass *klass, void *data)
+-{
+-    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+-
+-    k->realize = piix3_realize;
+-}
+-
+-static const TypeInfo piix3_xen_info = {
+-    .name          = TYPE_PIIX3_XEN_DEVICE,
+-    .parent        = TYPE_PIIX3_PCI_DEVICE,
+-    .class_init    = piix3_xen_class_init,
+-};
+-
+ static void piix3_register_types(void)
  {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
- 
--    k->config_write = piix3_write_config;
-     k->realize = piix3_realize;
+     type_register_static(&piix3_pci_type_info);
+     type_register_static(&piix3_info);
+-    type_register_static(&piix3_xen_info);
  }
  
-@@ -385,7 +385,6 @@ static void piix3_xen_class_init(ObjectClass *klass, void *data)
- {
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+ type_init(piix3_register_types)
+diff --git a/include/hw/southbridge/piix.h b/include/hw/southbridge/piix.h
+index a840340308..278171752f 100644
+--- a/include/hw/southbridge/piix.h
++++ b/include/hw/southbridge/piix.h
+@@ -67,7 +67,6 @@ DECLARE_INSTANCE_CHECKER(PIIX3State, PIIX3_PCI_DEVICE,
+                          TYPE_PIIX3_PCI_DEVICE)
  
--    k->config_write = piix3_write_config;
-     k->realize = piix3_realize;
- }
+ #define TYPE_PIIX3_DEVICE "PIIX3"
+-#define TYPE_PIIX3_XEN_DEVICE "PIIX3-xen"
+ #define TYPE_PIIX4_PCI_DEVICE "piix4-isa"
  
+ #endif
 -- 
 Anthony PERARD
 
