@@ -2,75 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6944A725CB0
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 13:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C52725D03
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 13:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6qzx-0003dn-AJ; Wed, 07 Jun 2023 07:06:41 -0400
+	id 1q6rH0-0000Px-9g; Wed, 07 Jun 2023 07:24:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q6qzr-0003XM-LV; Wed, 07 Jun 2023 07:06:35 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1q6rGr-0000Oo-LF
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 07:24:09 -0400
+Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q6qzo-0004k4-Rn; Wed, 07 Jun 2023 07:06:35 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-977e7d6945aso505921866b.2; 
- Wed, 07 Jun 2023 04:06:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1q6rGp-00010I-UB
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 07:24:09 -0400
+Received: by mail-il1-x12e.google.com with SMTP id
+ e9e14a558f8ab-33b3cfb9495so3861605ab.2
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 04:24:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1686135987; x=1688727987;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E2cMy1otWPsHOeUK6OYWVKw+FkrFxzqEE8sxNl3CDmE=;
- b=TWaEpM1rAKhTOT1DdftP1VY8x7xeJ3TMDlfXnc41Ot2i1s5SIRkBKWBMa8o/ER7sEM
- 8IixGu9SfbEcatpu//ZiZhcn5ejZ3QoIglO1583GoqOMkLs6o4XNr8kG2rhOAB+NCO+N
- HZ8wPXt90UhTu8+dqTTSM1Gj4RaA10it0DDqw=
+ d=gmail.com; s=20221208; t=1686137043; x=1688729043;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=g0lBxN6hkvz0CiqkbFaYmydtuozSABRNTz3PmlNIXks=;
+ b=ZBpLkmBPvBdfbREjXrxGIxhobUttEQRGmgoHUEilGt2kOKu1gaGYOrjtBAmWcp/5Ak
+ lcn6aze6Mtnmu+V4QjLJgfBSGVke6/OB6ci0OEgWw2PIBYHbkyU1e8pXeQvo5sCyh9Q9
+ QX8E5w/DjvGa40zNc2EX1bR5is7sNuxfDhuIwV6XBQEfrYxaRURf58al80o1NlcJcyzO
+ E83kAFmNqRhlBTljlPRgx1GjnAOCkQUYtv4flVjWZ6HCqY+niQnRtKinN+6Cwb3VsKL2
+ +OsnwX3+Yr1vte8tAZ1XL2Z4AmVMSsPIyXWjBwjVISQX7opwzfflmmvp/94Jy7cvNsdO
+ 005A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686135987; x=1688727987;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E2cMy1otWPsHOeUK6OYWVKw+FkrFxzqEE8sxNl3CDmE=;
- b=IQR1i9oaE6wz0xw4tuZqYrKct76fO3PNr5mlCucQsWpr6ak1eGutptkTi8ec5G57cO
- 1QyBtLBCXuft3ySF2m8cKg1DS5udjGBW4aep79xoCeKsbjLn9bYRHbPg9eGuD0z+H8eg
- 34/6UWjwqSthcQa6MB5qMg1Zl/WA/xFc46OY6ofmFyHXIxh73/OKChoiRT2nYYEWlW5d
- FtWgZu7UxBGCUq80UacuI9SvW8NzdIAr+7lavoC+f4a1JZuDpwhAlc6FZbA53cRUSqZz
- Gpt+MzqcZkYGnEa0y4jVp7bNdcvNI7cIuudJR2+ZyQ6l2JmGciQKx917pihzw+ex/aS/
- AAGA==
-X-Gm-Message-State: AC+VfDyBlcKP+wg0aSKL32q6C07h2WGeS+mKu017Y+yhZ5ofwgqjW76o
- 68vDSaaq7ue5u6CPcSPO3HwYolf48dmuQhKFddE=
-X-Google-Smtp-Source: ACHHUZ4rR1IX055OqnfBI6utDSG+kcO56zQvRDPnFUYTc/Rjl1iKXfyHhX4wZOoe1ee81jClMmKUyhdyQrmxkTt8i+c=
-X-Received: by 2002:a17:907:e9f:b0:966:53b1:b32a with SMTP id
- ho31-20020a1709070e9f00b0096653b1b32amr5804993ejc.53.1686135986718; Wed, 07
- Jun 2023 04:06:26 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686137043; x=1688729043;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g0lBxN6hkvz0CiqkbFaYmydtuozSABRNTz3PmlNIXks=;
+ b=koY/VkR0iqCUN5jQFi65HeLmTK1WQktfNbI9/9Q+WOYgQtUClLevHAcPX8gocc2EnY
+ C783rqptIMA3QSjgXqd9DXMFk2WI4siaC63JifyZjAre5B610lcwbSrCWU9LhmSBFxMo
+ yK/+7sROc9YswI5IlXbmA0yq2MHSBeSNTSDRxyFZciM3UADZ0L/YC+/V/7U+ug4MIk2N
+ pAunXUzdIVvEKUK1e1fiycRwUaQsOtDJ/5BsMB+tYOri1yp2PTarM4EUsgsEE5C302kz
+ QYIqkKLuQ1zrneENJu3hyLDyO+BbeR75UDaUSG5MHogWjd39K3VhrV+PJF9Am7qHgNyw
+ tCnQ==
+X-Gm-Message-State: AC+VfDy9O3KXLw+5orrYbYDwL3bapZQUdORvjbtTgL1nDpKJ6ab+qMlS
+ SemAIb3M1+PAxltIubFkAsY=
+X-Google-Smtp-Source: ACHHUZ4y+NJ2ICLZQptAASNXn9OrEYTnwNYuTUwr7tolzjmE9s/sG6TReYKB6JumP3n/tcqPPG4zSQ==
+X-Received: by 2002:a92:d98b:0:b0:33b:3486:8402 with SMTP id
+ r11-20020a92d98b000000b0033b34868402mr7682785iln.7.1686137043624; 
+ Wed, 07 Jun 2023 04:24:03 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ c19-20020aa78e13000000b0064fde7ae1ffsm8330309pfr.38.2023.06.07.04.24.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 04:24:03 -0700 (PDT)
+Message-ID: <48b15972-ed25-0adc-2d18-910504673bbd@gmail.com>
+Date: Wed, 7 Jun 2023 20:24:00 +0900
 MIME-Version: 1.0
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-13-clg@kaod.org>
-In-Reply-To: <20230607043943.1837186-13-clg@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 7 Jun 2023 11:06:13 +0000
-Message-ID: <CACPK8Xce052zza6XvQYijhPEL7NDqS3cKW0x3r0DGiJENYXDGw@mail.gmail.com>
-Subject: Re: [PATCH v2 12/12] target/arm: Allow users to set the number of VFP
- registers
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] ui/sdl2: Support multiple OpenGL-enabled windows
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+References: <20230607091244.55270-1-quic_acaggian@quicinc.com>
+ <CAMxuvaw88g9RPp_Om2Z9dJSmsrFMZ9ieKx8uJmSNgfsOYyQvSQ@mail.gmail.com>
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
+In-Reply-To: <CAMxuvaw88g9RPp_Om2Z9dJSmsrFMZ9ieKx8uJmSNgfsOYyQvSQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-il1-x12e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,116 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 7 Jun 2023 at 04:40, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> Cortex A7 CPUs with an FPU implementing VFPv4 without NEON support
-> have 16 64-bit FPU registers and not 32 registers. Let users set the
-> number of VFP registers with a CPU property.
->
-> The primary use case of this property is for the Cortex A7 of the
-> Aspeed AST2600 SoC.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+On 2023/06/07 19:29, Marc-André Lureau wrote:
+> Hi Antonio
+> 
+> On Wed, Jun 7, 2023 at 1:13 PM Antonio Caggiano 
+> <quic_acaggian@quicinc.com <mailto:quic_acaggian@quicinc.com>> wrote:
+> 
+>     Multiple graphics devices can be defined with an associated OpenGL
+>     enabled SDL console, hence make sure to not destroy their shaders and
+>     windows.
 
-You saw a crash with a buildroot image without this change, as I recall?
+I guess you meant multiple graphics devices can be associated to an 
+OpenGL-enabled console and a switch event from a device destroys the 
+shared state, but I don't see anything that associates multiple devices 
+to a single console.
 
-The logic is a bit hard to follow but it is good to see a fix.
+> 
+>     Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com
+>     <mailto:quic_acaggian@quicinc.com>>
+>     ---
+>       ui/sdl2-gl.c | 2 +-
+>       1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+>     diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+>     index bbfa70eac3..795fb1afc9 100644
+>     --- a/ui/sdl2-gl.c
+>     +++ b/ui/sdl2-gl.c
+>     @@ -89,7 +89,7 @@ void sdl2_gl_switch(DisplayChangeListener *dcl,
+> 
+>           scon->surface = new_surface;
+> 
+>     -    if (is_placeholder(new_surface) &&
+>     qemu_console_get_index(dcl->con)) {
+>     +    if (is_placeholder(new_surface) && !scon->opengl) {
+>               qemu_gl_fini_shader(scon->gls);
+>               scon->gls = NULL;
+>               sdl2_window_destroy(scon);
+> 
+> 
+> This was introduced in commit c821a58ee7003c2a0567dddaee33c2a5ae71c404 
+> by Akihiko.
+> 
+> Why should the window visibility behaviour be different whether it uses 
+> opengl or not ?
+> 
+> If you are fixing a GL/shader crash, maybe it needs to be done differently.
+> 
+> thanks
+> 
+It does not make sense to check scon->opengl here; it should be always 
+true when this function is called.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+The condition qemu_console_get_index(dcl->con) should not be removed 
+either. This keeps the first console persistent and makes sure the user 
+can always interact with QEMU with the GUI SDL2 provides.
 
-> ---
->  target/arm/cpu.h        |  2 ++
->  hw/arm/aspeed_ast2600.c |  2 ++
->  target/arm/cpu.c        | 32 ++++++++++++++++++++++++++++++++
->  3 files changed, 36 insertions(+)
->
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index d469a2637b32..79f1a96ddf39 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -916,6 +916,8 @@ struct ArchCPU {
->      bool has_pmu;
->      /* CPU has VFP */
->      bool has_vfp;
-> +    /* CPU has 32 VFP registers */
-> +    bool has_vfp_d32;
->      /* CPU has Neon */
->      bool has_neon;
->      /* CPU has M-profile DSP extension */
-> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-> index 1bf12461481c..a8b3a8065a11 100644
-> --- a/hw/arm/aspeed_ast2600.c
-> +++ b/hw/arm/aspeed_ast2600.c
-> @@ -316,6 +316,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *d=
-ev, Error **errp)
->                                  &error_abort);
->          object_property_set_bool(OBJECT(&s->cpu[i]), "neon", false,
->                                  &error_abort);
-> +        object_property_set_bool(OBJECT(&s->cpu[i]), "vfp-d32", false,
-> +                                &error_abort);
->          object_property_set_link(OBJECT(&s->cpu[i]), "memory",
->                                   OBJECT(s->memory), &error_abort);
->
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 5182ed0c9113..74fe6ae78192 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -1275,6 +1275,9 @@ static Property arm_cpu_cfgend_property =3D
->  static Property arm_cpu_has_vfp_property =3D
->              DEFINE_PROP_BOOL("vfp", ARMCPU, has_vfp, true);
->
-> +static Property arm_cpu_has_vfp_d32_property =3D
-> +            DEFINE_PROP_BOOL("vfp-d32", ARMCPU, has_vfp_d32, true);
-> +
->  static Property arm_cpu_has_neon_property =3D
->              DEFINE_PROP_BOOL("neon", ARMCPU, has_neon, true);
->
-> @@ -1406,6 +1409,22 @@ void arm_cpu_post_init(Object *obj)
->          }
->      }
->
-> +    if (cpu->has_vfp && cpu_isar_feature(aa32_simd_r32, cpu)) {
-> +        cpu->has_vfp_d32 =3D true;
-> +        if (!kvm_enabled()) {
-> +            /*
-> +             * The permitted values of the SIMDReg bits [3:0] on
-> +             * Armv8-A are either 0b0000 and 0b0010. On such CPUs,
-> +             * make sure that has_vfp_d32 can not be set to false.
-> +             */
-> +            if (!(arm_feature(&cpu->env, ARM_FEATURE_V8) &&
-> +                  !arm_feature(&cpu->env, ARM_FEATURE_M))) {
-> +                qdev_property_add_static(DEVICE(obj),
-> +                                         &arm_cpu_has_vfp_d32_property);
-> +            }
-> +        }
-> +    }
-> +
->      if (arm_feature(&cpu->env, ARM_FEATURE_NEON)) {
->          cpu->has_neon =3D true;
->          if (!kvm_enabled()) {
-> @@ -1672,6 +1691,19 @@ static void arm_cpu_realizefn(DeviceState *dev, Er=
-ror **errp)
->          return;
->      }
->
-> +    if (cpu->has_vfp_d32 !=3D cpu->has_neon) {
-> +        error_setg(errp, "ARM CPUs must have both VFP-D32 and Neon or ne=
-ither");
-> +        return;
-> +    }
-> +
-> +   if (!cpu->has_vfp_d32) {
-> +        uint32_t u;
-> +
-> +        u =3D cpu->isar.mvfr0;
-> +        u =3D FIELD_DP32(u, MVFR0, SIMDREG, 1); /* 16 registers */
-> +        cpu->isar.mvfr0 =3D u;
-> +    }
-> +
->      if (!cpu->has_vfp) {
->          uint64_t t;
->          uint32_t u;
-> --
-> 2.40.1
->
+Regards,
+Akihiko Odaki
 
