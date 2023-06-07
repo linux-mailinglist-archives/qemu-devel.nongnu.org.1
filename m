@@ -2,68 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F09E7264FE
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFEC726506
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:48:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vNd-0005li-HJ; Wed, 07 Jun 2023 11:47:25 -0400
+	id 1q6vNo-0005q1-IW; Wed, 07 Jun 2023 11:47:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q6vNQ-0005kM-Ur; Wed, 07 Jun 2023 11:47:12 -0400
-Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q6vNN-00036X-D5; Wed, 07 Jun 2023 11:47:12 -0400
-Received: from [192.168.100.156] (unknown [117.61.101.195])
- by APP-05 (Coremail) with SMTP id zQCowADn7IhrpoBkfPP3DA--.51920S2;
- Wed, 07 Jun 2023 23:46:53 +0800 (CST)
-Message-ID: <d5b2fa4d-8595-bc9f-0d33-327fddd560e5@iscas.ac.cn>
-Date: Wed, 7 Jun 2023 23:46:51 +0800
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q6vNm-0005pZ-Jr
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:47:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q6vNk-00039o-UM
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:47:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686152849;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=e7OL2BG2gwpSBuONRByrL5gsLUUpPzlTqboRLrbPwHo=;
+ b=OOcFHiYyqVC3/TSjRMTcRap71QjYYr+o6I17EKUovHW4t7zXhoON4/v1FA1uQgEmwnIp1R
+ Ev0keGo/OjobZsNY2iWuGYpeljrX3DKv83AL7/mUhbPoEJEaoiORJUCKt1pnRRUZHKbmq+
+ gI9vfglnk0oU5z3Vl6eW4O2FVnBqrUo=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-v5bFY--hNzWtzokhzjm-Cw-1; Wed, 07 Jun 2023 11:47:27 -0400
+X-MC-Unique: v5bFY--hNzWtzokhzjm-Cw-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-506b21104faso1081530a12.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:47:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686152846; x=1688744846;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=e7OL2BG2gwpSBuONRByrL5gsLUUpPzlTqboRLrbPwHo=;
+ b=I511whIAqUtB/1d99BMhmP18uX99yxA+CeoyglrHg4ymf3hpVVYRg3V4iZxfAdh6fg
+ sGOZtud85RbAH7QKdB3JuVpgo8znsHmV/wim5eG2/7j9jeXqEn4qwBuqWdIJezV2H8L8
+ 73wAnbRCcSmACN2hz8RXPg39KHvdj7TopPvOj0X+OdRcgdVkdydYuDTF6SFl2VH3Oa1w
+ xW7Pp9B8s7DSjPerE60F+qzUdDlBQHJtllo+65RXwQ012wJO4HwHSKTehhKM05udleUQ
+ wnbF4WKAG7gGw7jVZicXs15Y24dxVt0wiinA+Amafrp/RetKkJCY2Di92vyBmZB8ssVK
+ tyVw==
+X-Gm-Message-State: AC+VfDzhhmfuwMIe47VDrIspYnqsmyg8F+KXnwfzVOEfBpYZnXIV6oqV
+ o46cggXfhNAxUBEuFjyY0K4Ho4iM+0mX/KhcGZ2dLLav+mf/nFqj5fWMuvthhbQNod2FRUDaLPX
+ 7zlKPWXjatmeCshphI0iWXOfgwZiDkLP0Z4WdVIJRaGcTqurqA+apgcdjUd3lVSzwfROKVlA8W7
+ 8=
+X-Received: by 2002:a17:907:1ca1:b0:971:1717:207b with SMTP id
+ nb33-20020a1709071ca100b009711717207bmr6866228ejc.35.1686152846174; 
+ Wed, 07 Jun 2023 08:47:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5JnNAxHDfJao0zNMql6hZzlcrcrMv/dWW04foiy+saVIyc6vgqnwhlU0fsgkDNm5Scz/fWEA==
+X-Received: by 2002:a17:907:1ca1:b0:971:1717:207b with SMTP id
+ nb33-20020a1709071ca100b009711717207bmr6866212ejc.35.1686152845805; 
+ Wed, 07 Jun 2023 08:47:25 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ k15-20020a170906970f00b00965b5540ad7sm7216869ejx.17.2023.06.07.08.47.25
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 08:47:25 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] SNAFU build system fixes for 2023-06-07
+Date: Wed,  7 Jun 2023 17:47:21 +0200
+Message-Id: <20230607154724.253659-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] target/riscv/vector_helper.c: Remove the check for
- extra tail elements
-To: Xiao Wang <xiao.w.wang@intel.com>, qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20230607091646.4049428-1-xiao.w.wang@intel.com>
-Content-Language: en-US
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-In-Reply-To: <20230607091646.4049428-1-xiao.w.wang@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: zQCowADn7IhrpoBkfPP3DA--.51920S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxGr17JF48Aw17GrWxZrWkJFb_yoWrJw1Dpa
- 1xGFZxuFWFq39ruw13GF4jvr48C3WrJrW7Kr1xKr1qv345urZ7KFnFyF47CFyqyF9avr1F
- kF1qyw4furWv9FDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
- 6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
- Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
- Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
- 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
- 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
- IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
-X-Originating-IP: [117.61.101.195]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,110 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit f5e6786de4815751b0a3d2235c760361f228ea48:
 
-On 2023/6/7 17:16, Xiao Wang wrote:
-> Commit 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector
-> load / store instructions") added an extra check for LMUL fragmentation,
-> intended for setting the "rest tail elements" in the last register for a
-> segment load insn.
->
-> Actually, the max_elements derived in vext_ld*() won't be a fraction of
-> vector register size, since the lmul encoded in desc is emul, which has
-> already been adjusted to 1 for LMUL fragmentation case by vext_get_emul()
-> in trans_rvv.c.inc, for ld_stride(), ld_us(), ld_index() and ldff().
->
-> Besides, vext_get_emul() has also taken EEW/SEW into consideration, so no
-> need to call vext_get_total_elems() which would base on the emul to derive
-> another emul, the second emul would be incorrect when esz differs from sew.
->
-> Thus this patch removes the check for extra tail elements.
->
-> Fixes: 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector load / store instructions")
->
-> Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
-> ---
-Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+  Merge tag 'pull-target-arm-20230606' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-06-06 12:11:34 -0700)
 
-Weiwei Li
-> v2:
-> * Rebased on top of Alistair's riscv-to-apply.next branch.
-> ---
->   target/riscv/vector_helper.c | 22 ++++++----------------
->   1 file changed, 6 insertions(+), 16 deletions(-)
->
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 7505f9470a..f261e726c2 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -264,11 +264,10 @@ GEN_VEXT_ST_ELEM(ste_h, int16_t, H2, stw)
->   GEN_VEXT_ST_ELEM(ste_w, int32_t, H4, stl)
->   GEN_VEXT_ST_ELEM(ste_d, int64_t, H8, stq)
->   
-> -static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
-> -                                   void *vd, uint32_t desc, uint32_t nf,
-> +static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
-> +                                   uint32_t desc, uint32_t nf,
->                                      uint32_t esz, uint32_t max_elems)
->   {
-> -    uint32_t total_elems, vlenb, registers_used;
->       uint32_t vta = vext_vta(desc);
->       int k;
->   
-> @@ -276,19 +275,10 @@ static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
->           return;
->       }
->   
-> -    total_elems = vext_get_total_elems(env, desc, esz);
-> -    vlenb = riscv_cpu_cfg(env)->vlen >> 3;
-> -
->       for (k = 0; k < nf; ++k) {
->           vext_set_elems_1s(vd, vta, (k * max_elems + vl) * esz,
->                             (k * max_elems + max_elems) * esz);
->       }
-> -
-> -    if (nf * max_elems % total_elems != 0) {
-> -        registers_used = ((nf * max_elems) * esz + (vlenb - 1)) / vlenb;
-> -        vext_set_elems_1s(vd, vta, (nf * max_elems) * esz,
-> -                          registers_used * vlenb);
-> -    }
->   }
->   
->   /*
-> @@ -324,7 +314,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
->   }
->   
->   #define GEN_VEXT_LD_STRIDE(NAME, ETYPE, LOAD_FN)                        \
-> @@ -383,7 +373,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, evl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
->   }
->   
->   /*
-> @@ -504,7 +494,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
->   }
->   
->   #define GEN_VEXT_LD_INDEX(NAME, ETYPE, INDEX_FN, LOAD_FN)                  \
-> @@ -634,7 +624,7 @@ ProbeSuccess:
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
->   }
->   
->   #define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 45904b56d5321be5f6e2c9e12bd143fb3b871ca8:
+
+  tests: fp: remove unused submodules (2023-06-07 11:05:09 +0200)
+
+----------------------------------------------------------------
+Build system snafus.
+
+----------------------------------------------------------------
+Michal Privoznik (1):
+      configure: check for $download value properly
+
+Paolo Bonzini (2):
+      meson: fix "static build" entry in summary
+      tests: fp: remove unused submodules
+
+ configure                     | 2 +-
+ meson.build                   | 2 +-
+ tests/fp/berkeley-softfloat-3 | 1 -
+ tests/fp/berkeley-testfloat-3 | 1 -
+ 4 files changed, 2 insertions(+), 4 deletions(-)
+ delete mode 160000 tests/fp/berkeley-softfloat-3
+ delete mode 160000 tests/fp/berkeley-testfloat-3
+-- 
+2.40.1
 
 
