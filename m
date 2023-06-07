@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9D972650C
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E657264D5
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:39:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vRP-0001BF-QH; Wed, 07 Jun 2023 11:51:19 -0400
+	id 1q6vFO-0000eV-Ns; Wed, 07 Jun 2023 11:38:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q6vRN-0001B1-Ru
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:51:17 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q6vFN-0000eE-8f
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:38:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q6vRM-0003v2-Ax
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:51:17 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q6vFL-0001UO-I2
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:38:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686153071;
+ s=mimecast20190719; t=1686152330;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q7LAsMwOoRW9vxB/bJFrMJqDsO4El51/KsPZ21eyYmw=;
- b=EUoUM+gHoloqJ83Cur6wkr/34F1myQVpsPTi21OERDq5t69UnfDPeJ8euj8mbgiVDdVbaA
- W0H6kEXx3nIqtvQ38JQl7OGW3Vx4CN0nySE2MQfpo1R31RFM7HOe6xvMaarFj1OnQE8SzV
- NofgClVnjN+uPOi6IIVXfpVaI72nkgQ=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LnEIEAhTUtyD38xTJ/Gt6IncnmWjuJL7UTJjq2sd9Dw=;
+ b=R97fIgRx8/BkADgGlJ1FJWeQHUIaL7s1OucYVbJKr+xXj3dGkm2CpRcjPyoyD/BE/VQjK7
+ mywuFZvcQWfD06lIpAdyQQgDgzepOgoXh3mNfrV+KeMCxH5AnvgIX54RPyEC0yaSmmEXnD
+ p3jBqTgLbKzfCNuTcxuls9rfuefFjGI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-PbKk-Gv0PiaIsDtrgHT3Tg-1; Wed, 07 Jun 2023 09:53:26 -0400
-X-MC-Unique: PbKk-Gv0PiaIsDtrgHT3Tg-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-568a8704f6dso112285997b3.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 06:53:26 -0700 (PDT)
+ us-mta-652--6Dq7A7LONi51EB-Uip6sw-1; Wed, 07 Jun 2023 09:54:37 -0400
+X-MC-Unique: -6Dq7A7LONi51EB-Uip6sw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9744659b7b5so664539866b.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 06:54:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686146006; x=1688738006;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1686146075; x=1688738075;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q7LAsMwOoRW9vxB/bJFrMJqDsO4El51/KsPZ21eyYmw=;
- b=e28zzdwCu3BxYs9Tj+GGblgr9L6j4aoZ1/kKJCyjyRiLKdCptzeFqOtWXzzy924rqO
- No2+DT2TzuTk56qyr+Oc52g5pcSd+73v9Dg88t4dteEzLn4o48sNDeaCjyIF5DT4jPRt
- pBZY8pXTBjJDXq4QYJyaAC3tl8INNiJqNvI3qmDgj1WLlrJrRF6JrQyU6i/ZESy051R0
- Daw3LvNf6/tPm4tTbg3/gOhV4hLYw0WHklcb0dbaBI38UdWK1GSAiAP+HdQ9SF+AOSpx
- eDYDMMLrtLHHodz1Q4N0oCfrivjnziky0shEEZTFK8MJOgWMIa+pPRxZKug+Hc/dloMk
- yMJA==
-X-Gm-Message-State: AC+VfDzzJGp3M+dsBQLnERYyRCdxUg8e72i2n97rrVtMP3/1CV0lJ28G
- iVnlkAUgiCVb/Iuo4820IKH6ev/5CDwTAjff17HjNIxhMJdJ4bbOJ5yOb5292anLUwp2N9kAW7X
- VgWpGAeUZnCJEnJsKqLFD/9bLpOvqw5M=
-X-Received: by 2002:a81:4e44:0:b0:561:d6dd:bc84 with SMTP id
- c65-20020a814e44000000b00561d6ddbc84mr6462841ywb.48.1686146006062; 
- Wed, 07 Jun 2023 06:53:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ51EQwNL5cxvSrsf0xMynsnAx4JJEfLO9swPYVdSk3+2b8LZBGYjyLjPxEeFRK6K5jONtPzeXYWRJ71TS2VACw=
-X-Received: by 2002:a81:4e44:0:b0:561:d6dd:bc84 with SMTP id
- c65-20020a814e44000000b00561d6ddbc84mr6462827ywb.48.1686146005778; Wed, 07
- Jun 2023 06:53:25 -0700 (PDT)
+ bh=LnEIEAhTUtyD38xTJ/Gt6IncnmWjuJL7UTJjq2sd9Dw=;
+ b=WzWEkZ4PW5T66KG9b5HGSP0uJ3J2zYJtgxQENBWyVXroWzUjwvmDK9gFyruDMo1UMt
+ +UGH0EFMDLmyWkQqtg1WHkuKHpNRgSERrbU34EjE5vzDmxd80q9FenOaCjM5fDWyl5Uo
+ lKEGEc/7wHqY7VIOlXZ3Ge5ounPjAWEBeUT0z+3ywa1xl97sdvOIU7/zbU3kLH2ykfDP
+ gS8fi3klRpO4HPTRtsK6xrkauGLcPJmEzAsT3jgEdy94RpX5uyPGcoYwDiepVcQgEf/z
+ yhhHiIQ6e0lbeSAV/U/LI/ZX0iTGd4i62IxllV8vU2DeARTeMgnIiX7dhE2NBF4SO036
+ HHGw==
+X-Gm-Message-State: AC+VfDzdN3UjRf3faUF1NrQ54gWsH2zkaIZwe2O78lo+Nv9XCY2lGc6G
+ gsQdAjRbAQ+PkmVL5jZupmR3DWueXzHsU0y4OqRSvtKrTy0QpaklPQ4xd07bPfKEZPfMKZVuy2F
+ KWF2Xg4uwRml/E8UYeDb0+d8=
+X-Received: by 2002:a17:907:2d91:b0:8b1:7de3:cfaa with SMTP id
+ gt17-20020a1709072d9100b008b17de3cfaamr6820600ejc.3.1686146075576; 
+ Wed, 07 Jun 2023 06:54:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4xHA4d4geWF6yYqq5V+jInnPHdcx2X46NyHV1+7hMR6NLLyakoufYbMBG/2LTfqYZJqSFIoA==
+X-Received: by 2002:a17:907:2d91:b0:8b1:7de3:cfaa with SMTP id
+ gt17-20020a1709072d9100b008b17de3cfaamr6820580ejc.3.1686146075296; 
+ Wed, 07 Jun 2023 06:54:35 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ e2-20020a1709062c0200b0094e7d196aa4sm6894919ejh.160.2023.06.07.06.54.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 06:54:34 -0700 (PDT)
+Date: Wed, 7 Jun 2023 15:54:33 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
+ <richard.henderson@linaro.org>, <eduardo@habkost.net>, <mst@redhat.com>,
+ <marcel.apfelbaum@gmail.com>, <berrange@redhat.com>, <jusual@redhat.com>,
+ <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
+ <santosh.Shukla@amd.com>
+Subject: Re: [PATCH v5 1/3] hw/i386/pc: Refactor logic to set SMBIOS defaults
+Message-ID: <20230607155433.4a03afb5@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230607024939.703991-2-suravee.suthikulpanit@amd.com>
+References: <20230607024939.703991-1-suravee.suthikulpanit@amd.com>
+ <20230607024939.703991-2-suravee.suthikulpanit@amd.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230602173451.1917999-1-eperezma@redhat.com>
- <47527a58-039e-55e7-3541-bcd7ceb3296a@tls.msk.ru>
-In-Reply-To: <47527a58-039e-55e7-3541-bcd7ceb3296a@tls.msk.ru>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 7 Jun 2023 15:52:49 +0200
-Message-ID: <CAJaqyWeAsSJBhDtGkGTuf+uQsaEMOsNYMzhbwkJ6yAJ1-q+9pA@mail.gmail.com>
-Subject: Re: [PATCH] vdpa: fix not using CVQ buffer in case of error
-To: mjt@tls.msk.ru
-Cc: qemu-devel@nongnu.org, Cindy Lu <lulu@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Lei Yang <leiyang@redhat.com>, 
- Jason Wang <jasowang@redhat.com>, Hawkins Jiawei <yin31149@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,28 +104,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 7, 2023 at 12:11=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
->
-> 02.06.2023 20:34, Eugenio P=C3=A9rez wrote:
-> > Bug introducing when refactoring.  Otherway, the guest never received
-> > the used buffer.
-> >
-> > Fixes: be4278b65fc1 ("vdpa: extract vhost_vdpa_net_cvq_add from vhost_v=
-dpa_net_handle_ctrl_avail")
-> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > ---
-> >   net/vhost-vdpa.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> Again, smells like a stable material, is it not?
->
-> Please Cc: qemu-stable@nongnu.org for other changes you think should be
-> applied to stable qemu series.
->
+On Tue, 6 Jun 2023 21:49:37 -0500
+Suravee Suthikulpanit <suravee.suthikulpanit@amd.com> wrote:
 
-Sorry, I totally forgot. This one should go to stable, yes.
+> Into a helper function pc_machine_init_smbios() in preparation for
+> subsequent code to upgrade default SMBIOS entry point type.
+> 
+> Then, call the helper function from the pc_machine_initfn() to eliminate
+> duplicate code in pc_q35.c and pc_pixx.c. However, this changes the
+> ordering of when the smbios_set_defaults() is called to before
+> pc_machine_set_smbios_ep() (i.e. before handling the user specified
+> QEMU option "-M ...,smbios-entry-point-type=[32|64]" to override
+> the default type.)
+> 
+> Therefore, also call the helper function in pc_machine_set_smbios_ep()
+> to update the defaults.
+> 
+> There is no functional change.
 
-Thanks!
+with 2/3 amended as suggested, this patch is not necessary 
+and 2/3 and 3/3 would do the job just fine
+
+> 
+> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> ---
+>  hw/i386/pc.c      | 24 +++++++++++++++++++++++-
+>  hw/i386/pc_piix.c |  9 ---------
+>  hw/i386/pc_q35.c  |  8 --------
+>  3 files changed, 23 insertions(+), 18 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index bb62c994fa..b720dc67b6 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1756,6 +1756,22 @@ static void pc_machine_set_default_bus_bypass_iommu(Object *obj, bool value,
+>      pcms->default_bus_bypass_iommu = value;
+>  }
+>  
+> +static void pc_machine_init_smbios(PCMachineState *pcms)
+> +{
+> +    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+> +    MachineClass *mc = MACHINE_GET_CLASS(pcms);
+> +
+> +    if (!pcmc->smbios_defaults) {
+> +        return;
+> +    }
+> +
+> +    /* These values are guest ABI, do not change */
+> +    smbios_set_defaults("QEMU", mc->desc,
+> +                        mc->name, pcmc->smbios_legacy_mode,
+> +                        pcmc->smbios_uuid_encoded,
+> +                        pcms->smbios_entry_point_type);
+> +}
+> +
+>  static void pc_machine_get_smbios_ep(Object *obj, Visitor *v, const char *name,
+>                                       void *opaque, Error **errp)
+>  {
+> @@ -1768,9 +1784,14 @@ static void pc_machine_get_smbios_ep(Object *obj, Visitor *v, const char *name,
+>  static void pc_machine_set_smbios_ep(Object *obj, Visitor *v, const char *name,
+>                                       void *opaque, Error **errp)
+>  {
+> +    SmbiosEntryPointType ep_type;
+>      PCMachineState *pcms = PC_MACHINE(obj);
+>  
+> -    visit_type_SmbiosEntryPointType(v, name, &pcms->smbios_entry_point_type, errp);
+> +    if (!visit_type_SmbiosEntryPointType(v, name, &ep_type, errp)) {
+> +        return;
+> +    }
+> +    pcms->smbios_entry_point_type = ep_type;
+> +    pc_machine_init_smbios(pcms);
+>  }
+>  
+>  static void pc_machine_get_max_ram_below_4g(Object *obj, Visitor *v,
+> @@ -1878,6 +1899,7 @@ static void pc_machine_initfn(Object *obj)
+>      object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
+>                                OBJECT(pcms->pcspk), "audiodev");
+>      cxl_machine_init(obj, &pcms->cxl_devices_state);
+> +    pc_machine_init_smbios(pcms);
+>  }
+>  
+>  int pc_machine_kvm_type(MachineState *machine, const char *kvm_type)
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index d5b0dcd1fe..da6ba4eeb4 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -198,15 +198,6 @@ static void pc_init1(MachineState *machine,
+>  
+>      pc_guest_info_init(pcms);
+>  
+> -    if (pcmc->smbios_defaults) {
+> -        MachineClass *mc = MACHINE_GET_CLASS(machine);
+> -        /* These values are guest ABI, do not change */
+> -        smbios_set_defaults("QEMU", mc->desc,
+> -                            mc->name, pcmc->smbios_legacy_mode,
+> -                            pcmc->smbios_uuid_encoded,
+> -                            pcms->smbios_entry_point_type);
+> -    }
+> -
+>      /* allocate ram and load rom/bios */
+>      if (!xen_enabled()) {
+>          pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 6155427e48..a58cd1d3ea 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -198,14 +198,6 @@ static void pc_q35_init(MachineState *machine)
+>  
+>      pc_guest_info_init(pcms);
+>  
+> -    if (pcmc->smbios_defaults) {
+> -        /* These values are guest ABI, do not change */
+> -        smbios_set_defaults("QEMU", mc->desc,
+> -                            mc->name, pcmc->smbios_legacy_mode,
+> -                            pcmc->smbios_uuid_encoded,
+> -                            pcms->smbios_entry_point_type);
+> -    }
+> -
+>      /* create pci host bus */
+>      q35_host = Q35_HOST_DEVICE(qdev_new(TYPE_Q35_HOST_DEVICE));
+>  
 
 
