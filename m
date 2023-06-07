@@ -2,84 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6622E726F2D
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA66B726F6D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q70Aq-0005TA-I9; Wed, 07 Jun 2023 16:54:32 -0400
+	id 1q70Dx-0006Xh-Nz; Wed, 07 Jun 2023 16:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q70Ao-0005Sx-EH
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:54:30 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q70Am-00023E-SX
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:54:30 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6da07ff00so78992005e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 13:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686171266; x=1688763266;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tN1JAErKx+aJSR3uuGJsYjhONi3Jg1D/ZwLRtgF8Sq4=;
- b=Bv/jzFg+Pq8rYTIpeqXZ6zdY6VeCcH/+cGfOpPszqto99dJpDlk/t/4UYrpWQlF6Z8
- jN20TFs6gDsysOpkd3zRCYCL9Zooa24I9hQ6cZj0xCckCv5izVqUjNC7S3R4sNlvn6Ql
- Q3MbyidTw0KB7iaqUPcV/gMMZqO5NNAJmbQZQDl6joKC0CCoRqiQTN9GEBGSw6G3Eqjc
- swZYFLljNb7BTJITWrve8JJ+rYf63Yt+dDVySeSpvYf0vDsK4KfQwPhImT871osB1kak
- OTEcHrRsQMzZs/lc57Ac5140uF+qcDqojg6KBFvEN9n2r27BnUwui74bzwpN2n+oCtTX
- asRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686171266; x=1688763266;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tN1JAErKx+aJSR3uuGJsYjhONi3Jg1D/ZwLRtgF8Sq4=;
- b=dgXgiW6IPt8i758LFC9AbOGZMkyZWNaLPgTnQ7ZRkTnl/4Fb/SJGqxyryCNstXesSC
- 9o1cYNESHJUhe9gPH2uqYbMwJbR/cmSHS7nLh6ZMjSdJv+MXTK4ovPk+WQtgc84NE0/F
- qP6OPSSpt1k80kSnXRAawjIu+KL+kmLPgC0FhJ1CtZYvSSHCAFc/oKalDGIueDkZO/tF
- dgVWkAcTPIVtgkxi1aLsFbMDdSRUwXF52dp/8x3ON5G7wCRdzvJEVjF6dl5A5uhIZ5gJ
- Xmh6iLb5VcndxOTbE5nZTCiWijtaZezVZHj29gCrgi0tGY1ctieuBJ2I1zYwL4esusaF
- VcBQ==
-X-Gm-Message-State: AC+VfDyAvl9iaxe2dk+hI2VkrFDDoq0T2ALz7LmQmUNyfDLs3hRb+ucT
- TbLtU8/XXIy4LC9L7B61BUbkPg==
-X-Google-Smtp-Source: ACHHUZ4y/bM9dvsQ5omBMQ2bM6xW4N8zd3l7R1CjlnsA6QNn/NZ2OL/GoitmInbLozmgftNJBU3nzg==
-X-Received: by 2002:a7b:c3d9:0:b0:3f7:36ae:de6d with SMTP id
- t25-20020a7bc3d9000000b003f736aede6dmr6104167wmj.6.1686171266187; 
- Wed, 07 Jun 2023 13:54:26 -0700 (PDT)
-Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
- [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
- p13-20020a7bcc8d000000b003f604ca479esm3225986wma.3.2023.06.07.13.54.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 13:54:25 -0700 (PDT)
-Message-ID: <fa0f4c78-741d-d864-7094-d80af5e12144@linaro.org>
-Date: Wed, 7 Jun 2023 22:54:23 +0200
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1q70Du-0006XF-B7
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:57:42 -0400
+Received: from mail-mw2nam12on20616.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5a::616]
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1q70Dr-0002eP-Eh
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:57:42 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QoS9jlCntA/PPNc+tpW5TjUUV+Xk62l21QduTpz7OndU+3VPMCCJYpxWFNgUW4trgeJAAlKdGen5z4fY8cXQ9Au0gxrwLdKRYLHJtTLCVUiqd2QVdvFVVogShKt7A7AVs9F3y0rmqoJTjt1ecPO/rxF+HS0gIqar36eYryXoTN/dFvKqxYhjOazPtSf22lhmrBBELbtWBW1hrvwidvPo8dujZBdl2ObQf8i3ih7H65PCWoFEMEH7OKDfdrWi3EULnkxnbX+05L/KIG1wA+qIkV2Sv5dQI7anGseGZImaRyZZttaP6vG32NtDK6cPwdt810w6xotRhx6kt099uOUU+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1MkFv8mKrOYCNcwdD8dA413qaJH04HZnTYBWMsSbJ10=;
+ b=Afrnwh2GVRBPsg3w4FZlZnLQaEyOauiv0n0a06PEdGsWwhQHKIKSthIwzYxlYJCGhdfpSl+0XwckToZLhgNf1UntoxV1Eu1StJ+x4Mp80wbOgkBLqpo8MPO62fqlJlXeA7d4PlUsYGTTAPKi9zdXVDVUbh1wOE7ML9jTuENqAVUpoYtWqi4I7T8up3Pml4L368TxegWDHK3IygQU0d9J7dMgNrxKghSKkTbEtCbsU2d14IVOZfrQndZKXyNXGeXj1K4CyCyO5SAvBx9wmJjbOeE+yFxBe0+aP4PXGTfw4KGz2wtZp2k3LPIYIhn1+3iLO7XMeDj42Fht04UL0WRFig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1MkFv8mKrOYCNcwdD8dA413qaJH04HZnTYBWMsSbJ10=;
+ b=txHXtPqdVYe9ID/EJgK99zvsIixnwlTCOA7s4MgV15Nr23+3Orsjj/nj9Lm9bpEnsF1Ii72hBWl9Kp6aGtMdjehzDSUfsgxHzqAeagzRmTk3DclMa99LoHrjZf8rCqYwJhFrM1LuEphY7ixc9ojYnDH4umMijgUvPqBHVsenJKk=
+Received: from BN8PR07CA0022.namprd07.prod.outlook.com (2603:10b6:408:ac::35)
+ by IA1PR12MB6139.namprd12.prod.outlook.com (2603:10b6:208:3e9::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Wed, 7 Jun
+ 2023 20:57:33 +0000
+Received: from BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:ac:cafe::84) by BN8PR07CA0022.outlook.office365.com
+ (2603:10b6:408:ac::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19 via Frontend
+ Transport; Wed, 7 Jun 2023 20:57:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT018.mail.protection.outlook.com (10.13.176.89) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6455.36 via Frontend Transport; Wed, 7 Jun 2023 20:57:33 +0000
+Received: from ruby-95f9host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 7 Jun
+ 2023 15:57:32 -0500
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
+ <eduardo@habkost.net>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
+ <imammedo@redhat.com>, <berrange@redhat.com>, <jusual@redhat.com>,
+ <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
+ <santosh.Shukla@amd.com>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>
+Subject: [PATCH v6 0/2] hw/i386/pc: Update max_cpus and default to SMBIOS
+Date: Wed, 7 Jun 2023 15:57:15 -0500
+Message-ID: <20230607205717.737749-1-suravee.suthikulpanit@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 1/1] maintainers: update maintainers list for vfio-user &
- multi-process QEMU
-Content-Language: en-US
-To: Jagannathan Raman <jag.raman@oracle.com>, qemu-devel@nongnu.org
-Cc: stefanha@gmail.com, elena.ufimtseva@oracle.com,
- kanth.ghatraju@oracle.com, karl.heubaum@oracle.com
-References: <cover.1686153256.git.jag.raman@oracle.com>
- <03122dc6dc27f93a674991ef64874170fe8d1a4b.1686153256.git.jag.raman@oracle.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <03122dc6dc27f93a674991ef64874170fe8d1a4b.1686153256.git.jag.raman@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT018:EE_|IA1PR12MB6139:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9876c2a9-1079-4bee-396a-08db6799d0e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BAU8kwG971o5frVJhFGVXr6lxaJX1Co8AfQD2WtzRUrJlLW3hGvZmrhAS1g8cK7BpjSczho7CiCsHMthamK0XMOBH2IVYRbDazvAkl54xaDZ/MXccTqS0f1BKNCqAN4Isb9KHr+A48Dx07LgQn4/3DCwf1EPPpYbIrHTYIdmnd0PYDz+VcCKFu1RQ/vo1L5LXyfbCDPl9qnv1NCKDFMmtCpPVaeqndpgMYCdnZ+/cVe6lCzuw0AMHQyJPa2/GTjhmZFm/YmN1s6kAQeYc/Qnim9X85rLOHvh84kSzUUYVGem3I4+lkjGcqISRbvX+w05XJa0W5IT72KytHDPV0XhfNboiHJG5EZQrgzNOfrgZrUcYhT7x7whc0+E6kAPp6eGsj+hSaYYkrI3a2X9j6koQ1geQnjHr2ybSl+mnyg2cyWxcFJojW2VEsZ6GpOv2DjmnHtcAda+SRKS8gSf7lMQ8eKltjbT4JLMnQpruMoFvvBGphcNdcqnWPoGbdAPZUh7NXpN7FuS6jvwG22U7nBy5qbaJuGQR9Stf74SgzuqxUMdvvFNTycwRY2NDPN1+kCOKETzLSnFnH4KB3Cl/Y4Z2+4ThWCpPHuVQrRWespvpAtOfPH7tz6VqJffXQ2Qjmh8E4fURrK/Veoq3izqzU4MyuwAhd1TSJKAksmFOLq+XjypeqSZALfv01A5psdnkTqMMDJJ1gc38UGWvF08P3uR9+jJkYNN9qAMp4OseQmAGHYJNcJo46Si2JhzdJD6UdWyxCCFIhxuuXSDmoh/XDodxg==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230028)(4636009)(39860400002)(396003)(376002)(346002)(136003)(451199021)(46966006)(40470700004)(36840700001)(47076005)(2616005)(26005)(1076003)(356005)(81166007)(44832011)(6916009)(316002)(40480700001)(83380400001)(4326008)(70206006)(70586007)(7696005)(6666004)(16526019)(186003)(36860700001)(426003)(336012)(478600001)(82310400005)(36756003)(54906003)(4744005)(2906002)(40460700003)(5660300002)(8676002)(82740400003)(8936002)(86362001)(41300700001)(7416002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 20:57:33.4666 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9876c2a9-1079-4bee-396a-08db6799d0e1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6139
+Received-SPF: softfail client-ip=2a01:111:f400:fe5a::616;
+ envelope-from=Suravee.Suthikulpanit@amd.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +123,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 17:58, Jagannathan Raman wrote:
-> Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
-> ---
->   MAINTAINERS | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 436b3f0afefd..4a80a385118d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3786,7 +3786,6 @@ F: tests/tcg/aarch64/system/semiheap.c
->   Multi-process QEMU
->   M: Elena Ufimtseva <elena.ufimtseva@oracle.com>
->   M: Jagannathan Raman <jag.raman@oracle.com>
-> -M: John G Johnson <john.g.johnson@oracle.com>
->   S: Maintained
->   F: docs/devel/multi-process.rst
->   F: docs/system/multi-process.rst
+In order to support large number of vcpus, a newer 64-bit SMBIOS
+entry point type is needed. Therefore, upgrade the default SMBIOS version
+for PC machines to SMBIOS 3.0 for newer systems. Then increase the maximum
+number of vCPUs for Q35 models to 1024, which is the limit for KVM.
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Changes from V5:
+(https://lore.kernel.org/qemu-devel/20230607024939.703991-1-suravee.suthikulpanit@amd.com/T/#m5a9f0d0e2355aebf81501355a1bf349a9929f4bb)
+ * Patch 1: Get rid of pc_machine_init_smbios() and simplify the logic
+   per Igor's suggestion.
+ * Patch 2: Added reviewed-by tag.
+
+Thank you,
+Suravee
+
+Suravee Suthikulpanit (2):
+  hw/i386/pc: Default to use SMBIOS 3.0 for newer machine models
+  pc: q35: Bump max_cpus to 1024
+
+ hw/i386/pc.c         | 4 +++-
+ hw/i386/pc_piix.c    | 5 +++++
+ hw/i386/pc_q35.c     | 8 +++++++-
+ include/hw/i386/pc.h | 1 +
+ 4 files changed, 16 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
 
 
