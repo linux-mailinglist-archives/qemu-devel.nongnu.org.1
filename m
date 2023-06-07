@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61506725FD2
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9ACD726005
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:49:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6sXL-0007bp-Nt; Wed, 07 Jun 2023 08:45:15 -0400
+	id 1q6saX-0000S8-Of; Wed, 07 Jun 2023 08:48:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q6sXI-0007bB-25; Wed, 07 Jun 2023 08:45:12 -0400
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q6saS-0000QZ-B7; Wed, 07 Jun 2023 08:48:28 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q6sXG-0001n8-E9; Wed, 07 Jun 2023 08:45:11 -0400
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-bad0c4f6f50so824563276.1; 
- Wed, 07 Jun 2023 05:45:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q6saN-0002LE-Cz; Wed, 07 Jun 2023 08:48:27 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6af7593ed5fso3188836a34.0; 
+ Wed, 07 Jun 2023 05:48:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686141908; x=1688733908;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rwfS5m4D93oRqoCLtUxW4/RjLpBJrLXA/xH4ZgcDbrE=;
- b=NVq+M3ZwNZXlfV4LW9Tfrg4ahzsGPM+QAo8COOFFezH4rcDxCpubp9Bvuha7mE0oS8
- f29DiG1XlUkzqve4b/i8gsGXF8G2yCd5TZ9b7hXN7HPrS8a6hPYZu3dbVdCOA7kJ5B24
- 94pixU4f7OotbOKIpIrBP0BwdI0EMHXTzLbJTJ09z9znmhc/JunWMjg5k6rucOaMSiwr
- Je9FrpHVQo3E8I6vCW+Kkd1Zl0tsuj1JsATg1q+WtEZEcf8Meimg7WLBH3UhM/khOlQF
- gh1NF2W41RUocyJgElG03IYF5Vv4S29ogTyxNnOKkaHr3INMXRZzfy40FBwJTaj3qKf8
- mSTg==
+ d=gmail.com; s=20221208; t=1686142102; x=1688734102;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IdhssLmBtBBGU9H2gGPzFGyGxuRa9NMgYG1Bd68Vecc=;
+ b=GUw72iNJr0HLu36sU10CReHgaksfQd/xk+7ygAdH+rdPl3LxRftkNTMM96F4qMiXqO
+ aevJsRZPRif4sexq07b+DFr8/IBeXagkWVrNWoO5dmtA/oohrG3b+SuhcytwTtGAX+Oh
+ cZzd3EC/YUCUPrk/pOrCs7B20f0s7NdSM1vh57e+k9A5Z+yWvv/GoVGGDSAt502KANHN
+ /GJr3SKqrPfRc8ZWa90jl21R5K7+Xhdqyt2jagEd3krPwLh9Yt63FNcVCUxu4/g/V/sx
+ m87yGBI2Rox769Ismd4CHDbyoPWgsF6wg1zuxg5CGp+IsNeGnZsSJ6VBEs/SEZvK6F0O
+ mpIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686141908; x=1688733908;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rwfS5m4D93oRqoCLtUxW4/RjLpBJrLXA/xH4ZgcDbrE=;
- b=BpMgM2jj+V7bCAh87QnGkWsDoEWsmXRBNHGYNNaNBoAO4dOPEKEPdvP+muC/SQxK3o
- 47TqgAarqZ803yONey7XfTvoUnu+s1JtFzek2DvHwn3VPbTS8IW3V1eLI11xZl2yE1F+
- Br6c6uKRF8RzicDRoihN5sob2WKhTpa3ODEpd5IERmJreBypKOknmcSQKrrB+wvjshRS
- hJ63l7TVHdvj1skNHsm3Kp+ynysXCfgxe9j2F4tuKOZKaYf6XEDU4pzheAzf13YA7PIO
- borKpEpWnF7pSTitJkkzrU+bZnerCBuwtNq1c8ddfxXup/lkKc2KS7hz1JgYoB5E3OcO
- 3Ljg==
-X-Gm-Message-State: AC+VfDzRmwFdlCMgXqKfHXGJwLoEM+2zZIddAFZ9bR3UKDi7RDXaAM1y
- cZBzHeqWfDQRl9WxrghxG81qO4o2NM3yNPdVu0Y=
-X-Google-Smtp-Source: ACHHUZ6XefuJhlRTGtFYfSNcWfJn1aE4/i228mjoM3Ma+SejGrSqqFtNDw4vIYbs5Te52rFRdR4Zwaiz2X6ahTOpCTY=
-X-Received: by 2002:a25:abd0:0:b0:bac:f5ef:fab1 with SMTP id
- v74-20020a25abd0000000b00bacf5effab1mr6828105ybi.12.1686141907846; Wed, 07
- Jun 2023 05:45:07 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686142102; x=1688734102;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IdhssLmBtBBGU9H2gGPzFGyGxuRa9NMgYG1Bd68Vecc=;
+ b=dv57btyB2dcvK1MyfKSgRI2Jz1pQ0iijeavogx0OzLs8NYpiiCXNlm+r4YXB4KBLT2
+ O2EpRzbIGZNVjNusD4QfWXTU9haxZrApkLKtPYizICT5QI5K96WHq6zoPWWlJlLb6l1g
+ 0IXtiVGficRaogWC/Xv1vyeqoGHeYWzBOx2kYUyzVS5fwJfQCrbOWiKceRwF0X3x6qpg
+ H0ovph7pE5DZY0VHoalcfSp7xHrZJCq+spOAheCeA/TOeTVdK1a/2+QoolcvXEl74/7B
+ pNV6IwtwsR6iM8KVm16ug0fszdK7NHg3o7Is7NjUWyz0WgQcj8MNrha17hs8QRhez3Dv
+ a86A==
+X-Gm-Message-State: AC+VfDyPhczNTJPjYs98mJggL3Ojp7FqJjMeWSh/gDWb+hDDfPLTCpD9
+ Lkn/roBiWQVxNHYoRdD7SZ7jSHruiYM=
+X-Google-Smtp-Source: ACHHUZ7HQ8ZpOwKo0w5yIuh8dswuzgEAo1915JQuwLImNEm3yae7l4mD9irnZFqHHZaBOErd+uxcIA==
+X-Received: by 2002:a05:6830:4d0:b0:6b0:c74b:3bcf with SMTP id
+ s16-20020a05683004d000b006b0c74b3bcfmr1936226otd.37.1686142101763; 
+ Wed, 07 Jun 2023 05:48:21 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
+ by smtp.gmail.com with ESMTPSA id
+ g1-20020a9d6b01000000b006b28edf195bsm2361106otp.78.2023.06.07.05.48.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 05:48:20 -0700 (PDT)
+Message-ID: <104da931-c436-1b44-791c-68974f40fee0@gmail.com>
+Date: Wed, 7 Jun 2023 09:48:17 -0300
 MIME-Version: 1.0
-References: <20230606162556.58110-1-richard.henderson@linaro.org>
-In-Reply-To: <20230606162556.58110-1-richard.henderson@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 7 Jun 2023 08:44:55 -0400
-Message-ID: <CAJSP0QVwkoAauG37BLgcqsWrjp3rE3-fVdQjeCkB=aboUAKnjw@mail.gmail.com>
-Subject: Re: [PATCH] gitlab: Disable io-raw-194 for build-tcg-disabled
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, stefanha@redhat.com, berrange@redhat.com, 
- jsnow@redhat.com, qemu block <qemu-block@nongnu.org>,
- Kevin Wolf <kwolf@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=stefanha@gmail.com; helo=mail-yb1-xb2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] target/ppc: Implement gathering irq statistics
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>
+References: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,57 +94,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The line of output that has changed was originally added by the
-following commit:
 
-commit ae00aa2398476824f0eca80461da215e7cdc1c3b
-Author: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
-Date:   Fri May 22 01:06:46 2020 +0300
 
-    iotests: 194: test also migration of dirty bitmap
-
-Vladimir: Any idea why the postcopy-active event may not be emitted in
-some cases?
-
-Stefan
-
-On Tue, 6 Jun 2023 at 12:26, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> This test consistently fails on Azure cloud build hosts in
-> a way that suggests a timing problem in the test itself:
->
-> --- .../194.out
-> +++ .../194.out.bad
-> @@ -14,7 +14,6 @@
->  {"return": {}}
->  {"data": {"status": "setup"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
->  {"data": {"status": "active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
-> -{"data": {"status": "postcopy-active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
->  {"data": {"status": "completed"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
->  Gracefully ending the `drive-mirror` job on source...
->  {"return": {}}
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 6/6/23 19:02, BALATON Zoltan wrote:
+> Count exceptions which can be queried with info irq monitor command.
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->  .gitlab-ci.d/buildtest.yml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index 0f1be14cb6..000062483f 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -236,7 +236,7 @@ build-tcg-disabled:
->      - cd tests/qemu-iotests/
->      - ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
->              052 063 077 086 101 104 106 113 148 150 151 152 157 159 160 163
-> -            170 171 183 184 192 194 208 221 226 227 236 253 277 image-fleecing
-> +            170 171 183 184 192 208 221 226 227 236 253 277 image-fleecing
->      - ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
->              124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
->              208 209 216 218 227 234 246 247 248 250 254 255 257 258
-> --
-> 2.34.1
->
->
+
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+
+
+Daniel
+
+>   target/ppc/cpu.h         |  1 +
+>   target/ppc/cpu_init.c    | 18 ++++++++++++++++++
+>   target/ppc/excp_helper.c |  1 +
+>   3 files changed, 20 insertions(+)
+> 
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index c7c2a5534c..d3a9197e02 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -1194,6 +1194,7 @@ struct CPUArchState {
+>       int error_code;
+>       uint32_t pending_interrupts;
+>   #if !defined(CONFIG_USER_ONLY)
+> +    uint64_t excp_stats[POWERPC_EXCP_NB];
+>       /*
+>        * This is the IRQ controller, which is implementation dependent and only
+>        * relevant when emulating a complete machine. Note that this isn't used
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index 05bf73296b..716f2b5d64 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -48,6 +48,7 @@
+>   
+>   #ifndef CONFIG_USER_ONLY
+>   #include "hw/boards.h"
+> +#include "hw/intc/intc.h"
+>   #endif
+>   
+>   /* #define PPC_DEBUG_SPR */
+> @@ -7123,6 +7124,16 @@ static bool ppc_cpu_is_big_endian(CPUState *cs)
+>       return !FIELD_EX64(env->msr, MSR, LE);
+>   }
+>   
+> +static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
+> +                              uint64_t **irq_counts, unsigned int *nb_irqs)
+> +{
+> +    CPUPPCState *env = &POWERPC_CPU(obj)->env;
+> +
+> +    *irq_counts = env->excp_stats;
+> +    *nb_irqs = ARRAY_SIZE(env->excp_stats);
+> +    return true;
+> +}
+> +
+>   #ifdef CONFIG_TCG
+>   static void ppc_cpu_exec_enter(CPUState *cs)
+>   {
+> @@ -7286,6 +7297,7 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
+>       cc->gdb_write_register = ppc_cpu_gdb_write_register;
+>   #ifndef CONFIG_USER_ONLY
+>       cc->sysemu_ops = &ppc_sysemu_ops;
+> +    INTERRUPT_STATS_PROVIDER_CLASS(oc)->get_statistics = ppc_get_irq_stats;
+>   #endif
+>   
+>       cc->gdb_num_core_regs = 71;
+> @@ -7323,6 +7335,12 @@ static const TypeInfo ppc_cpu_type_info = {
+>       .abstract = true,
+>       .class_size = sizeof(PowerPCCPUClass),
+>       .class_init = ppc_cpu_class_init,
+> +#ifndef CONFIG_USER_ONLY
+> +    .interfaces = (InterfaceInfo[]) {
+> +          { TYPE_INTERRUPT_STATS_PROVIDER },
+> +          { }
+> +    },
+> +#endif
+>   };
+>   
+>   #ifndef CONFIG_USER_ONLY
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index fea9221501..5480d9d2c7 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -1652,6 +1652,7 @@ static void powerpc_excp(PowerPCCPU *cpu, int excp)
+>       qemu_log_mask(CPU_LOG_INT, "Raise exception at " TARGET_FMT_lx
+>                     " => %s (%d) error=%02x\n", env->nip, powerpc_excp_name(excp),
+>                     excp, env->error_code);
+> +    env->excp_stats[excp]++;
+>   
+>       switch (env->excp_model) {
+>       case POWERPC_EXCP_40x:
 
