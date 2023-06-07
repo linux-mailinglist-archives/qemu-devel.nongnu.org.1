@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F448725234
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C0B725236
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 04:51:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6jFY-0000zw-EP; Tue, 06 Jun 2023 22:50:16 -0400
+	id 1q6jFc-00011B-UQ; Tue, 06 Jun 2023 22:50:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q6jFW-0000zm-Cv
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 22:50:14 -0400
-Received: from mail-bn8nam04on2062b.outbound.protection.outlook.com
- ([2a01:111:f400:7e8d::62b]
- helo=NAM04-BN8-obe.outbound.protection.outlook.com)
+ id 1q6jFY-00010M-I8
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 22:50:16 -0400
+Received: from mail-bn8nam11on20600.outbound.protection.outlook.com
+ ([2a01:111:f400:7eae::600]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q6jFU-00029l-B4
- for qemu-devel@nongnu.org; Tue, 06 Jun 2023 22:50:14 -0400
+ id 1q6jFV-00029q-2L
+ for qemu-devel@nongnu.org; Tue, 06 Jun 2023 22:50:16 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fAEkGcunfvhSsV0AKrLAy1mY+4ydofgO5RI4JSRlWKtWPzSp4YawV3oTAUq3/EQcygglSGrIHzMCjRs6Xi7LJSqdkkc1UaTA3yg+fq5C/GQPEveKDsgM3r//bJ4yUWbdbLn9jl7helRK9UdBWxGm4mYws/dRHzMQmMtB0vX0bvbDefoclCRevCWFY8SeBOQC0W0Mg19kGiz2rDKSEImOtvD6nT1/p2CshXoj1syrWS/XMl4XDdKV8yITwXvNDoqlP1DT5dN6mF1Xe5KeyU7+81ZxFFhRMofDEHeQfXKGTWlvvK10RMAW/4+a9+1yIlKt0ce/lqSIgWjG6aryjdLnRw==
+ b=Is4QOH/h3vD0XAo4faDYjnPMgLVmch+xVzpm0N4zpSo1gmbVjxn0Z4YnsnbW2lXLblW+q85TcCeNpfBncqRjZqw28BNBTYVMVvKlSLFgblYpdvEKIgrSeZFVG5rmdfC28P8ap/KkALZB0egwmfji6lou+NSw33uB1IGBnlsNkmB1i9TLeS1b5bHh8BL30ajzlwea4rThIn53c/zQ1HRro94xJrAmltjY6oXrSjR4iJ08HPBo3yaTXy3G2p0R+7C4xVSxNDJx37mSGwZMoE2/HkfrP6ZQPS0KxRLmZMFjjTknc/RgNIhc6UNjf6kTWVer0UP7A28+Bje+X/ylTT9x+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DnnkjAIUfAsrQaRCV0CPp+2TM9Ws5yjKKcFt6C1ghxk=;
- b=bFU87hLcIJcTsw0zRtOjUKBohlh9LtqqUqo2bAeDrPUyLAtpn3miYKTIye6tluhw4YYGhS4B6gt6ZkKgjJhCyOY8Ya2rGzoGAd/ad5cCW7JaUxSLHEwTOMEBi8yYgAVM1T9bTlvP9h5TUvfhgOFzqNB1LD0ViHtd3CT1yk0MVQJt3WxqPAa2naHbI+P8rtSOyOc++0o/VYmFRTsk6OyYfITNfodfBgmp5Ne89K2zfmzlPU5xNun+QAUUDsnFBODHM6CtIC53d75ZInQKZV1cVwL18hhRnSbvL/xElj3NL5x8aYLwALpwyCF8hLxStoAuV0HDNlQUqNbUG+xoo0bn9A==
+ bh=BYyvetY9dEO3GOSo4MPE7xao1BakK2r6LElIsmcQK78=;
+ b=bd6t9qmvPpU4dqgWR9vmODR3dtl4Gzdpxu+fNs/RQJowZW3H+JKOkJnKB/N/+TPC8PvjRlGtWfhtcJZcxOD0NkeLchrUdkpVoDbWB66aZfg93YnTmRJ8ei2puNLFj/vMworMJbHBN9bvKHHxDrJZw6jF6fOSX6GDMlXNXlYjKyt2B5Yr0xCAGok0kDVka+rZ9sm0HcHaBhkTqVw39LceBHhAS/VupyOU4x3dKNveryh4xzIczr0knzZSq2jvu63SBNpuq1lz/p2SdctWLBbSBWPleFLKVOn+r6cBNV8Vid6RX89fPJb7kfjNIBuiOQxSuS/+3ThcT3uV/D13llMm5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DnnkjAIUfAsrQaRCV0CPp+2TM9Ws5yjKKcFt6C1ghxk=;
- b=ySFdugH64Xnj1g5fdbHrNhXFnN1tDcsq4+orbm7IQmgq/IqZK4z+iaeOgGHkKEt+f0arzGpGNAXzEkx8ZLKCfIoAjZFd2rK1aI6TlZCWxB8BQ0kqrFVch3+t1ArSGP9GPPHxwxtyZiPVfuaw40zv5GCJTJlwCc9cd+eX0kU4ts0=
-Received: from BN0PR02CA0050.namprd02.prod.outlook.com (2603:10b6:408:e5::25)
- by PH8PR12MB7255.namprd12.prod.outlook.com (2603:10b6:510:224::22)
+ bh=BYyvetY9dEO3GOSo4MPE7xao1BakK2r6LElIsmcQK78=;
+ b=Pb8g/UF7/wRmrtkSFAEd662S316M6/MQ/hjuVdjbqcheRHnm5wslnaHt7SbsIv7zWCoe/2q3+XxATqVXSkB7eFhAfKk9rdA7vpfzDb7z9uJIUQ1MA7sltuYdIm+/jy1HeOn/9uHghoNqOfs7G73lG7vs3Ikt8wxQ9GG4oB7MNBE=
+Received: from BN0PR02CA0045.namprd02.prod.outlook.com (2603:10b6:408:e5::20)
+ by PH8PR12MB6819.namprd12.prod.outlook.com (2603:10b6:510:1ca::5)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Wed, 7 Jun
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Wed, 7 Jun
  2023 02:50:06 +0000
 Received: from BN8NAM11FT106.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:e5:cafe::d7) by BN0PR02CA0050.outlook.office365.com
- (2603:10b6:408:e5::25) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:408:e5:cafe::d5) by BN0PR02CA0045.outlook.office365.com
+ (2603:10b6:408:e5::20) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19 via Frontend
  Transport; Wed, 7 Jun 2023 02:50:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -58,7 +58,7 @@ Received: from SATLEXMB04.amd.com (165.204.84.17) by
 Received: from ruby-95f9host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 6 Jun
- 2023 21:50:03 -0500
+ 2023 21:50:04 -0500
 From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
@@ -67,9 +67,10 @@ CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
  <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
  <santosh.Shukla@amd.com>, Suravee Suthikulpanit
  <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v5 1/3] hw/i386/pc: Refactor logic to set SMBIOS defaults
-Date: Tue, 6 Jun 2023 21:49:37 -0500
-Message-ID: <20230607024939.703991-2-suravee.suthikulpanit@amd.com>
+Subject: [PATCH v5 2/3] hw/i386/pc: Default to use SMBIOS 3.0 for newer
+ machine models
+Date: Tue, 6 Jun 2023 21:49:38 -0500
+Message-ID: <20230607024939.703991-3-suravee.suthikulpanit@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230607024939.703991-1-suravee.suthikulpanit@amd.com>
 References: <20230607024939.703991-1-suravee.suthikulpanit@amd.com>
@@ -81,29 +82,29 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT106:EE_|PH8PR12MB7255:EE_
-X-MS-Office365-Filtering-Correlation-Id: b825fe7c-6037-4baf-3b92-08db6701e689
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT106:EE_|PH8PR12MB6819:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2c55fb9-2afd-42d6-8540-08db6701e6d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: xLh14kLVfFojqXmgRZ6NZka9KDeQiOqpt4aX/5ltydWs3fk0gAzbYHZlu7NFLUEKWOlgS1lWMElilnMCsig9b36QATiVNXla3K/ix4TVEZnHSLMctj6lGPhkozw5sgyssSnMdwQAwb+cZQsdPuWOPOvacKK6zBcMIpnzBz3nHRWjrA5UlZjIotnQ6dTgEpn6oZgZT/lr20bN3Z9SSI/C3mybFlW+iOS8/LUIfz0/M84cOpPNTKN5UoPodhYpDDSnewkjrRWhuf27dRAq1zN7Q5YHRp5x5xQ1lYOgCpVmRFqNp7Mm4kKVRPQ/RbtWBRXtSp4pJIrxYzakex4EwxyiqFgOiyoic3bv5AzXJ5HMxmb44zMuSz0GGGfK3aS4HCPBvulCV79LRRnCLxnaKfrjRQRu7sSvo8/mDy7FF83jUlmVXVpJK44yUTz4ZpsOT9Fb7vkM0tS4jOdGa48rk9/MaHVGD5thWhJWnVdS8pfPfX/w0eYF5RdeGaRfIrIxj63r55swICkWGmo9uwDtKBi1A6IUNtwW0N+ZUJXwKBVEmh6rvGpVSVK6n25qDzIH5dfJBtoLV2xIdTGXyhcVIYE4xb4J2jow/CX9Caxc6/O+BPSA2qvOGwzuzmzki+oNLPeoEUSEzrPtwRZ3+hBMuGCf15Tp5JAEkMkfvAph/44Dp//GJ4Ydd9VTX71AFXSbtlrSb8cXuXxnyj1LULZ9HvWn1PPWNSc6kA6QEGE3uRhZpoy5TDsXVDbMKKHlcjxFloLB3pgaMnKnl4pPixmtIw13HA==
+X-Microsoft-Antispam-Message-Info: Vl8bGWQgdY/qZYbZKUK7hHUF4OAQSqj20kWVMcj+tjyS9BnyHBxeJQrxZjZD0Lu4MoivydzshnKBJYaOUiO04JafYUkSRFvuMJ4YBRLujk9/qwr/27nGQ3zVtj8hmRpDjoFqFQ1yaSGoLNuZ8gcV7pcoJaDnzRAQcXgn4YtIw8naPTIrJ0kvvulHdu57A06ocTS/B6N0CFGNbjf+IkXlcpKRajnsb0dO3CDxXhXEgvj69vGzUsGEZ3/h5vcVKzbmtvVNTGn5WdlyweEyuNdc7pR/yAvKsiBjDcMWifa7cpydXyLElO8g7JRf9KUl2HwJHJunYqtRAkzUEVV6uQDqR7KXBjW92RdOvyFVnynwqwUWLMTlnEVVVS76UgpGlHgqdzRbeAmuxMqBL2LEhr9r2lSt+VMPES0hQkdpww0JyPrCE1Pnbl/L0/XkW1I0euDMcHfV3uFKpS2jXeVwdc3x3B5qJX71qu+GyQF0lIpX/IOY3tImn5ygkv87ffoVyZ+/X34ynh1EvCXHwbqwoCTHy9jwSCI8AmGBc4udy5NOTx+5Ov1Zpe8EKHitHJh/hZxuQlnXRvcBkXs6ljj0cQlhjLKyciRz5oYX9sq5pAmGBqjMUbun91URvDKHoBHM2xFII332RLaWBRH3KNn0zKYPdxUeoDTUSZFBVqfjmDoaHm/J7PzZ1lIpRz6GVFm+WRtn0p4DhYUlJndSIMEzvHsO6vhs3D1pbNmhQo/cmnX2tZrrRF1n6yghyySzNeWKqXZlIDwSlZo+SR5AQ64Pljy/IncYGyhizx+PQzUGJWp4RO4=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(346002)(376002)(39860400002)(136003)(451199021)(46966006)(36840700001)(40470700004)(36756003)(40460700003)(2906002)(54906003)(478600001)(82310400005)(86362001)(7416002)(41300700001)(8936002)(8676002)(5660300002)(82740400003)(316002)(81166007)(356005)(44832011)(6916009)(40480700001)(4326008)(70586007)(70206006)(83380400001)(47076005)(1076003)(2616005)(26005)(16526019)(186003)(336012)(426003)(36860700001)(6666004)(7696005)(36900700001);
+ SFS:(13230028)(4636009)(346002)(396003)(136003)(376002)(39860400002)(451199021)(40470700004)(46966006)(36840700001)(26005)(1076003)(40460700003)(40480700001)(36756003)(36860700001)(47076005)(426003)(336012)(83380400001)(86362001)(82310400005)(16526019)(81166007)(356005)(2616005)(186003)(82740400003)(8936002)(41300700001)(44832011)(54906003)(2906002)(6916009)(478600001)(70206006)(70586007)(8676002)(4326008)(316002)(7416002)(5660300002)(7696005)(6666004)(170073001)(36900700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 02:50:06.2188 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b825fe7c-6037-4baf-3b92-08db6701e689
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 02:50:06.7500 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2c55fb9-2afd-42d6-8540-08db6701e6d5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT106.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7255
-Received-SPF: softfail client-ip=2a01:111:f400:7e8d::62b;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6819
+Received-SPF: softfail client-ip=2a01:111:f400:7eae::600;
  envelope-from=Suravee.Suthikulpanit@amd.com;
- helo=NAM04-BN8-obe.outbound.protection.outlook.com
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,118 +126,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Into a helper function pc_machine_init_smbios() in preparation for
-subsequent code to upgrade default SMBIOS entry point type.
+Currently, pc-q35 and pc-i44fx machine models are default to use SMBIOS 2.8
+(32-bit entry point). Since SMBIOS 3.0 (64-bit entry point) is now fully
+supported since QEMU 7.0, default to use SMBIOS 3.0 for newer machine
+models. This is necessary to avoid the following message when launching
+a VM with large number of vcpus.
 
-Then, call the helper function from the pc_machine_initfn() to eliminate
-duplicate code in pc_q35.c and pc_pixx.c. However, this changes the
-ordering of when the smbios_set_defaults() is called to before
-pc_machine_set_smbios_ep() (i.e. before handling the user specified
-QEMU option "-M ...,smbios-entry-point-type=[32|64]" to override
-the default type.)
-
-Therefore, also call the helper function in pc_machine_set_smbios_ep()
-to update the defaults.
-
-There is no functional change.
+   "SMBIOS 2.1 table length 66822 exceeds 65535"
 
 Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 ---
- hw/i386/pc.c      | 24 +++++++++++++++++++++++-
- hw/i386/pc_piix.c |  9 ---------
- hw/i386/pc_q35.c  |  8 --------
- 3 files changed, 23 insertions(+), 18 deletions(-)
+ hw/i386/pc.c         | 6 +++++-
+ hw/i386/pc_piix.c    | 5 +++++
+ hw/i386/pc_q35.c     | 5 +++++
+ include/hw/i386/pc.h | 1 +
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index bb62c994fa..b720dc67b6 100644
+index b720dc67b6..b5c585579a 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -1756,6 +1756,22 @@ static void pc_machine_set_default_bus_bypass_iommu(Object *obj, bool value,
-     pcms->default_bus_bypass_iommu = value;
- }
+@@ -1765,6 +1765,8 @@ static void pc_machine_init_smbios(PCMachineState *pcms)
+         return;
+     }
  
-+static void pc_machine_init_smbios(PCMachineState *pcms)
-+{
-+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-+    MachineClass *mc = MACHINE_GET_CLASS(pcms);
++    pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
 +
-+    if (!pcmc->smbios_defaults) {
-+        return;
-+    }
-+
-+    /* These values are guest ABI, do not change */
-+    smbios_set_defaults("QEMU", mc->desc,
-+                        mc->name, pcmc->smbios_legacy_mode,
-+                        pcmc->smbios_uuid_encoded,
-+                        pcms->smbios_entry_point_type);
-+}
-+
- static void pc_machine_get_smbios_ep(Object *obj, Visitor *v, const char *name,
-                                      void *opaque, Error **errp)
+     /* These values are guest ABI, do not change */
+     smbios_set_defaults("QEMU", mc->desc,
+                         mc->name, pcmc->smbios_legacy_mode,
+@@ -1786,11 +1788,12 @@ static void pc_machine_set_smbios_ep(Object *obj, Visitor *v, const char *name,
  {
-@@ -1768,9 +1784,14 @@ static void pc_machine_get_smbios_ep(Object *obj, Visitor *v, const char *name,
- static void pc_machine_set_smbios_ep(Object *obj, Visitor *v, const char *name,
-                                      void *opaque, Error **errp)
- {
-+    SmbiosEntryPointType ep_type;
+     SmbiosEntryPointType ep_type;
      PCMachineState *pcms = PC_MACHINE(obj);
++    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
  
--    visit_type_SmbiosEntryPointType(v, name, &pcms->smbios_entry_point_type, errp);
-+    if (!visit_type_SmbiosEntryPointType(v, name, &ep_type, errp)) {
-+        return;
-+    }
-+    pcms->smbios_entry_point_type = ep_type;
-+    pc_machine_init_smbios(pcms);
+     if (!visit_type_SmbiosEntryPointType(v, name, &ep_type, errp)) {
+         return;
+     }
+-    pcms->smbios_entry_point_type = ep_type;
++    pcmc->default_smbios_ep_type = ep_type;
+     pc_machine_init_smbios(pcms);
  }
  
- static void pc_machine_get_max_ram_below_4g(Object *obj, Visitor *v,
-@@ -1878,6 +1899,7 @@ static void pc_machine_initfn(Object *obj)
-     object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
-                               OBJECT(pcms->pcspk), "audiodev");
-     cxl_machine_init(obj, &pcms->cxl_devices_state);
-+    pc_machine_init_smbios(pcms);
- }
+@@ -2002,6 +2005,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     mc->nvdimm_supported = true;
+     mc->smp_props.dies_supported = true;
+     mc->default_ram_id = "pc.ram";
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
  
- int pc_machine_kvm_type(MachineState *machine, const char *kvm_type)
+     object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
+         pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index d5b0dcd1fe..da6ba4eeb4 100644
+index da6ba4eeb4..1a2bb25c75 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -198,15 +198,6 @@ static void pc_init1(MachineState *machine,
+@@ -467,11 +467,16 @@ DEFINE_I440FX_MACHINE(v8_1, "pc-i440fx-8.1", NULL,
  
-     pc_guest_info_init(pcms);
+ static void pc_i440fx_8_0_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_i440fx_8_1_machine_options(m);
+     m->alias = NULL;
+     m->is_default = false;
+     compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
+     compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
++
++    /* For pc-i44fx-8.0 and older, use SMBIOS 2.8 by default */
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
+ }
  
--    if (pcmc->smbios_defaults) {
--        MachineClass *mc = MACHINE_GET_CLASS(machine);
--        /* These values are guest ABI, do not change */
--        smbios_set_defaults("QEMU", mc->desc,
--                            mc->name, pcmc->smbios_legacy_mode,
--                            pcmc->smbios_uuid_encoded,
--                            pcms->smbios_entry_point_type);
--    }
--
-     /* allocate ram and load rom/bios */
-     if (!xen_enabled()) {
-         pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
+ DEFINE_I440FX_MACHINE(v8_0, "pc-i440fx-8.0", NULL,
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 6155427e48..a58cd1d3ea 100644
+index a58cd1d3ea..371cca7484 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -198,14 +198,6 @@ static void pc_q35_init(MachineState *machine)
+@@ -379,10 +379,15 @@ DEFINE_Q35_MACHINE(v8_1, "pc-q35-8.1", NULL,
  
-     pc_guest_info_init(pcms);
+ static void pc_q35_8_0_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_q35_8_1_machine_options(m);
+     m->alias = NULL;
+     compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
+     compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
++
++    /* For pc-q35-8.0 and older, use SMBIOS 2.8 by default */
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
+ }
  
--    if (pcmc->smbios_defaults) {
--        /* These values are guest ABI, do not change */
--        smbios_set_defaults("QEMU", mc->desc,
--                            mc->name, pcmc->smbios_legacy_mode,
--                            pcmc->smbios_uuid_encoded,
--                            pcms->smbios_entry_point_type);
--    }
--
-     /* create pci host bus */
-     q35_host = Q35_HOST_DEVICE(qdev_new(TYPE_Q35_HOST_DEVICE));
+ DEFINE_Q35_MACHINE(v8_0, "pc-q35-8.0", NULL,
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index c661e9cc80..6eec0fc51d 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -110,6 +110,7 @@ struct PCMachineClass {
+     bool smbios_defaults;
+     bool smbios_legacy_mode;
+     bool smbios_uuid_encoded;
++    SmbiosEntryPointType default_smbios_ep_type;
  
+     /* RAM / address space compat: */
+     bool gigabyte_align;
 -- 
 2.34.1
 
