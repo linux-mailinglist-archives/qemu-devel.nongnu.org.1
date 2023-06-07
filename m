@@ -2,76 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A594172663E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6D9727605
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6wH1-000396-J2; Wed, 07 Jun 2023 12:44:39 -0400
+	id 1q77BJ-0006A1-4h; Thu, 08 Jun 2023 00:23:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q6wGv-00032U-Gs
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:44:33 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q6wGu-0000cj-2I
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:44:33 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-5659d85876dso81023667b3.2
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686156271; x=1688748271;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2/NpCBKT977NNTn8Nhd+tZRbixprj/kv3ntatgVGgr8=;
- b=suwCASS0czjuXT/2RqCZ3ctxORWO9t089zgFQdtDMVUfDWb2X9Tl1cNK317v8xEt8x
- +ySZI9xUrcJ+01qRpw8GXxnlvywbsACOlzIWcAwg8/o9jcvynl9oiTJQLLEJm5FWDEr5
- aXv2pEfWsCt7aUMaSLGO3SOQxPBUFZk+sap3jXZ8hRhZuErLzgGuVGsfTVm0huqDh5jv
- s6webi/vTqQCo7jgmsed5bdvFMoJYNHZed2iwt33nfkKUP6OfpbwQq+AIxtn8BrPWvTA
- g5AMNTWD42+EOpw0gwTcf8T/gvRzyhdHySphnhASzSgmyK+eQI9UK+P4x8VFchBQ5Rcz
- 2oKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686156271; x=1688748271;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2/NpCBKT977NNTn8Nhd+tZRbixprj/kv3ntatgVGgr8=;
- b=JWDqPLDZxbFSd90avYF0H5SzS8kJwM9ERiPiaUYHtPZQYtrUU1GhoHlJG4Zns563/U
- c4m7YEc2czkVnAA5n7hQbCM0cyELu2zpjzqInSiexpVrGBaDC2/kD5ZWRbPqnFV2Dt1F
- Bxa1bYF8w7xlLGt0G1jfM5zD6itTZD3thVWnlMxWCa/xirQPUbszg5LAxZ6qypO1XI/u
- fHtxdgAmwy8qfH/2kKDQFOUmnXXV1q7fYxOwLz4nOnSLQsTp9sjIk4yk+tzJDY1bG7Bh
- xtV4UlWa/conrSpQ/jo9TMdFJ6H5+Sup4NgzRvOh6dYPSk1LgGmgj+/pXyOKvNu8Lse9
- BwGQ==
-X-Gm-Message-State: AC+VfDwJLTXaUHjR6mrPR9Pj6KyVEW7SPnY0VJBaktwTOnmPiK05YiNg
- P4RI+LR9AsUE6huQ1tbcb8r3W5rXxGliMKxB3SA=
-X-Google-Smtp-Source: ACHHUZ5fvEkjAsLhphSIzeFOw40ju+xis7+DcOrueZoGhr6NC1L+nqcKv30ygI692hpnJDiatjem7mvSftxZIhxCWNE=
-X-Received: by 2002:a81:6a46:0:b0:568:d63e:dd2c with SMTP id
- f67-20020a816a46000000b00568d63edd2cmr6700862ywc.11.1686156270685; Wed, 07
- Jun 2023 09:44:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z6-0006TY-EH
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:44 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0000Dn-SJ
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:44 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 3486811F140;
+ Thu,  8 Jun 2023 02:02:40 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Thu, 08 Jun 2023 00:46:45 +0800
+Subject: [PATCH QEMU v5 8/8] tests: Add migration dirty-limit capability test
 MIME-Version: 1.0
-References: <cover.1686153256.git.jag.raman@oracle.com>
-In-Reply-To: <cover.1686153256.git.jag.raman@oracle.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 7 Jun 2023 12:44:18 -0400
-Message-ID: <CAJSP0QWBYHY9g1dGSZYgwVJ6cojfJquK=q1ePcFzvZwkYxx7Cg@mail.gmail.com>
-Subject: Re: [PATCH 0/1] update maintainers list for vfio-user & multi-process
- QEMU
-To: Jagannathan Raman <jag.raman@oracle.com>
-Cc: qemu-devel@nongnu.org, elena.ufimtseva@oracle.com, 
- kanth.ghatraju@oracle.com, karl.heubaum@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=stefanha@gmail.com; helo=mail-yw1-x1133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Message-ID: <168618975839.6361.17407633874747688653-8@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -3
+X-Spam_score: -0.4
+X-Spam_bar: /
+X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,26 +59,211 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 7 Jun 2023 at 11:58, Jagannathan Raman <jag.raman@oracle.com> wrote:
->
-> John Johnson doesn't work at Oracle anymore. I tried to contact him to
-> get his updated email address, but I haven't heard anything from him.
->
-> Jagannathan Raman (1):
->   maintainers: update maintainers list for vfio-user & multi-process
->     QEMU
->
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
+From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
-JJ's last email to qemu-devel was in February 2023. Since he no longer
-works at Oracle, his email address is probably no longer functional.
-Therefore, I think it makes sense to remove him from MAINTAINERS for
-the time being. If he resumes work in this area he can be added back
-with a new email address.
+Add migration dirty-limit capability test if kernel support
+dirty ring.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Migration dirty-limit capability introduce dirty limit
+capability, two parameters: x-vcpu-dirty-limit-period and
+vcpu-dirty-limit are introduced to implement the live
+migration with dirty limit.
+
+The test case does the following things:
+1. start src, dst vm and enable dirty-limit capability
+2. start migrate and set cancel it to check if dirty limit
+   stop working.
+3. restart dst vm
+4. start migrate and enable dirty-limit capability
+5. check if migration satisfy the convergence condition
+   during pre-switchover phase.
+
+Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+---
+ tests/qtest/migration-test.c | 154 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 154 insertions(+)
+
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b0c355bbd9..60789a8d9f 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2609,6 +2609,158 @@ static void test_vcpu_dirty_limit(void)
+     dirtylimit_stop_vm(vm);
+ }
+=20
++static void migrate_dirty_limit_wait_showup(QTestState *from,
++                                            const int64_t period,
++                                            const int64_t value)
++{
++    /* Enable dirty limit capability */
++    migrate_set_capability(from, "dirty-limit", true);
++
++    /* Set dirty limit parameters */
++    migrate_set_parameter_int(from, "x-vcpu-dirty-limit-period", period);
++    migrate_set_parameter_int(from, "vcpu-dirty-limit", value);
++
++    /* Make sure migrate can't converge */
++    migrate_ensure_non_converge(from);
++
++    /* To check limit rate after precopy */
++    migrate_set_capability(from, "pause-before-switchover", true);
++
++    /* Wait for the serial output from the source */
++    wait_for_serial("src_serial");
++}
++
++/*
++ * This test does:
++ *  source               target
++ *                       migrate_incoming
++ *     migrate
++ *     migrate_cancel
++ *                       restart target
++ *     migrate
++ *
++ *  And see that if dirty limit works correctly
++ */
++static void test_migrate_dirty_limit(void)
++{
++    g_autofree char *uri =3D g_strdup_printf("unix:%s/migsocket", tmpfs);
++    QTestState *from, *to;
++    int64_t remaining, throttle_us_per_full;
++    /*
++     * We want the test to be stable and as fast as possible.
++     * E.g., with 1Gb/s bandwith migration may pass without dirty limit,
++     * so we need to decrease a bandwidth.
++     */
++    const int64_t dirtylimit_period =3D 1000, dirtylimit_value =3D 50;
++    const int64_t max_bandwidth =3D 400000000; /* ~400Mb/s */
++    const int64_t downtime_limit =3D 250; /* 250ms */
++    /*
++     * We migrate through unix-socket (> 500Mb/s).
++     * Thus, expected migration speed ~=3D bandwidth limit (< 500Mb/s).
++     * So, we can predict expected_threshold
++     */
++    const int64_t expected_threshold =3D max_bandwidth * downtime_limit / 10=
+00;
++    int max_try_count =3D 10;
++    MigrateCommon args =3D {
++        .start =3D {
++            .hide_stderr =3D true,
++            .use_dirty_ring =3D true,
++        },
++        .listen_uri =3D uri,
++        .connect_uri =3D uri,
++    };
++
++    /* Start src, dst vm */
++    if (test_migrate_start(&from, &to, args.listen_uri, &args.start)) {
++        return;
++    }
++
++    /* Prepare for dirty limit migration and wait src vm show up */
++    migrate_dirty_limit_wait_showup(from, dirtylimit_period, dirtylimit_valu=
+e);
++
++    /* Start migrate */
++    migrate_qmp(from, uri, "{}");
++
++    /* Wait for dirty limit throttle begin */
++    throttle_us_per_full =3D 0;
++    while (throttle_us_per_full =3D=3D 0) {
++        throttle_us_per_full =3D
++        read_migrate_property_int(from, "dirty-limit-throttle-time-per-round=
+");
++        usleep(100);
++        g_assert_false(got_src_stop);
++    }
++
++    /* Now cancel migrate and wait for dirty limit throttle switch off */
++    migrate_cancel(from);
++    wait_for_migration_status(from, "cancelled", NULL);
++
++    /* Check if dirty limit throttle switched off, set timeout 1ms */
++    do {
++        throttle_us_per_full =3D
++        read_migrate_property_int(from, "dirty-limit-throttle-time-per-round=
+");
++        usleep(100);
++        g_assert_false(got_src_stop);
++    } while (throttle_us_per_full !=3D 0 && --max_try_count);
++
++    /* Assert dirty limit is not in service */
++    g_assert_cmpint(throttle_us_per_full, =3D=3D, 0);
++
++    args =3D (MigrateCommon) {
++        .start =3D {
++            .only_target =3D true,
++            .use_dirty_ring =3D true,
++        },
++        .listen_uri =3D uri,
++        .connect_uri =3D uri,
++    };
++
++    /* Restart dst vm, src vm already show up so we needn't wait anymore */
++    if (test_migrate_start(&from, &to, args.listen_uri, &args.start)) {
++        return;
++    }
++
++    /* Start migrate */
++    migrate_qmp(from, uri, "{}");
++
++    /* Wait for dirty limit throttle begin */
++    throttle_us_per_full =3D 0;
++    while (throttle_us_per_full =3D=3D 0) {
++        throttle_us_per_full =3D
++        read_migrate_property_int(from, "dirty-limit-throttle-time-per-round=
+");
++        usleep(100);
++        g_assert_false(got_src_stop);
++    }
++
++    /*
++     * The dirty limit rate should equals the return value of
++     * query-vcpu-dirty-limit if dirty limit cap set
++     */
++    g_assert_cmpint(dirtylimit_value, =3D=3D, get_limit_rate(from));
++
++    /* Now, we have tested if dirty limit works, let it converge */
++    migrate_set_parameter_int(from, "downtime-limit", downtime_limit);
++    migrate_set_parameter_int(from, "max-bandwidth", max_bandwidth);
++
++    /*
++     * Wait for pre-switchover status to check if migration
++     * satisfy the convergence condition
++     */
++    wait_for_migration_status(from, "pre-switchover", NULL);
++
++    remaining =3D read_ram_property_int(from, "remaining");
++    g_assert_cmpint(remaining, <,
++                    (expected_threshold + expected_threshold / 100));
++
++    migrate_continue(from, "pre-switchover");
++
++    qtest_qmp_eventwait(to, "RESUME");
++
++    wait_for_serial("dest_serial");
++    wait_for_migration_complete(from);
++
++    test_migrate_end(from, to, true);
++}
++
+ static bool kvm_dirty_ring_supported(void)
+ {
+ #if defined(__linux__) && defined(HOST_X86_64)
+@@ -2816,6 +2968,8 @@ int main(int argc, char **argv)
+                        test_precopy_unix_dirty_ring);
+         qtest_add_func("/migration/vcpu_dirty_limit",
+                        test_vcpu_dirty_limit);
++        qtest_add_func("/migration/dirty_limit",
++                       test_migrate_dirty_limit);
+     }
+=20
+     ret =3D g_test_run();
+--=20
+2.38.5
 
