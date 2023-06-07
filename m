@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530D4726294
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423FE7262A8
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6u0n-0002rA-Jr; Wed, 07 Jun 2023 10:19:45 -0400
+	id 1q6u0t-0002tl-L7; Wed, 07 Jun 2023 10:19:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=51561cf95=anthony.perard@citrix.com>)
- id 1q6u0m-0002qm-0q
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:44 -0400
+ id 1q6u0r-0002sm-8H
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:49 -0400
 Received: from esa6.hc3370-68.iphmx.com ([216.71.155.175])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=51561cf95=anthony.perard@citrix.com>)
- id 1q6u0k-0003Q0-Ec
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:43 -0400
+ id 1q6u0l-0003Qf-1L
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:19:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=citrix.com; s=securemail; t=1686147582;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DevbehoMd5ErdPmYCLaewfSTkvvhbRICcFTF4cmkBNY=;
- b=RZcmB7xZn4O1Z/r3QYVs5q5QU5P37ktk36HNG0UEIcV106F3qs/NPOGm
- P+4yERS/h0szXEbt6S6Cc64j2sCQORfKAeLQg63aMoOSJMaAo19+Ny2kG
- V6DfEGdiEGMZWurUkSjFe4gOQxpLJfN6XvnkJubbU7NWTdom2CWDXIt8g Y=;
+ bh=Yi+pXjYLr7c/PD1ARVNoBjdszGk9MJ2cyLncx8Kx/aE=;
+ b=QwU/wMOoCL3iIMVbZFcugMj3hbBbs2sESxkNDxPopX9BD1qHicpJJNZ1
+ vHg2rDz7fOENdVTk+EJtZHccITGxcP8wjeO8CqHYHG527hp7268iUhBeY
+ ekaCllwAMuLONiP9j6mQugPv+ZPVHjDhk+m7JSC3quuXVo0w1WJ6HglIQ 4=;
 Authentication-Results: esa6.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 111246603
+X-MesageID: 111246604
 X-Ironport-Server: esa6.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23:2qr80qrYchiUX5E8RJfKEJxQ3HdeBmIeZRIvgKrLsJaIsI4StFCzt
- garIBmDb/ncazT0et11PITg9kpVuZXXzNdiQAJupX9hEC5A8puZCYyVIHmrMnLJJKUvbq7FA
- +Y2MYCccZ9uHhcwgj/3b9ANeFEljfngqoLUUbKCYWYpA1c/Ek/NsDo788YhmIlknNOlNA2Ev
- NL2sqX3NUSsnjV5KQr40YrawP9UlKq04GtwUmAWP6gR5weAzyZNVvrzGInqR5fGatgMdgKFb
- 76rIIGRpgvx4xorA9W5pbf3GmVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0MC+7vw6hjdFpo
- OihgLTrIesf0g8gr8xGO/VQO3kW0aSrY9YrK1Dn2SCY5xWun3cBX5yCpaz5VGEV0r8fPI1Ay
- RAXAD4wSC7b3MS6+ZWmd/FXh+YEDuTUDrpK7xmMzRmBZRonaZXKQqGM7t5ExjYgwMtJGJ4yZ
- eJAN2ApNk6ZJUQSZBFOUslWcOSA3xETdxVRrk6VoqwmpXDe1gVr3JDmMcbPe8zMTsJQ9qqdj
- jufpj6lXE9Cb7RzzxLZ132N3MjAwxjJZ4w/EaS9qKA7q3Cqkzl75Bo+CgLg/KjRZlSFc8tSL
- lFR9icwoKwa8kutQd/gGRqirxassgEZRPJZFuQo7wfLwa2S/gXxO4QfZmcfMpp87pZwHGF0k
- AbTxLsFGACDrpWbdFSjruyyoQqVJBUNFm4gQg0pcjk8toyLTJ4IsjrDSdNqEaiQh9LzGC3tz
- z3ikBXSl4n/nuZQifzloAmvbyaE48GQE1Vrvlm/sneNtFsRWWKzW2C/BbE3B95kJZ3RcFSOt
- WNsdyO2vLFXVsHleMBgrYww8FCVCxStamW0bb1HRcNJG9GRF5mLI+htDMlWfhsBDyr9UWaBj
- LXvkQ1Q/oRPG3ChcLV6ZYm8Y+xzk/i+TYu7DKyPP4YXCnSUSONh1Hs2DaJ39zq0+HXAbIllY
- cvLGSpSJShy5VtbIMqeGL5GjO5DKtEWzmLPX5HrpylLIpLHDEN5vYwtaQPUBshgtfPsnekg2
- 4oHXyd840kFAbKWj+i+2dJ7EG3m2lBlXc2n9ZYKLLfrz8gPMDhJNsI9CIgJI+RN95m5XM+Sl
- p1hcie0EGbCuEA=
-IronPort-HdrOrdr: A9a23:lnR0n6jAd+DP1o2sA9e2Qh8LI3BQXugji2hC6mlwRA09TyX4ra
- +TdZEgviMc5wxhPU3I9ergBED4ewK+yXcX2+cs1MmZLWvbUQKTRekJgOffKlvbaknDH4VmtZ
- uIHZIOceHYPBxXitv7/Rn9M/tI+qj+zElwv5a48566d3ANV51d
-X-Talos-CUID: 9a23:TPUUvmB1X9on+Cr6Eyda0nBMQeYpS1rA8W/rIm2fK0tWeoTAHA==
-X-Talos-MUID: 9a23:Pv8zNwUN3+z/uTbq/GPJixA4E8g22JaRBm0IiJBY5ZivGBUlbg==
-X-IronPort-AV: E=Sophos;i="6.00,224,1681185600"; d="scan'208";a="111246603"
+IronPort-Data: A9a23:oF+lKKvH9fnUAy2sdvpfXWaCr+fnVFBeMUV32f8akzHdYApBsoF/q
+ tZmKW+Gbq7bMWOgfdF/Poq+pEgD65SHxtVhQAc6rShkES4Q+JbJXdiXEBz9bniYRiHhoOCLz
+ O1FM4Wdc5pkJpP4jk3wWlQ0hSAkjclkfpKlVKiffHg3HVQ+IMsYoUoLs/YjhYJ1isSODQqIu
+ Nfjy+XSI1bg0DNvWo4uw/vrRChH4rKq4Fv0gnRkPaoQ5AGGyCFPZH4iDfrZw0XQE9E88tGSH
+ 44v/JnhlkvF8hEkDM+Sk7qTWiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JFAatjsB2bnsgZ9
+ Tl4ncfYpTHFnEH7sL91vxFwS0mSNEDdkVPNCSDXXce7lyUqf5ZwqhnH4Y5f0YAwo45K7W9yG
+ fMwJg0rUEjYoe6P56+GUtJtpOMBAfbZBdZK0p1g5Wmx4fcORJnCR+PB5MNC3Sd2jcdLdRrcT
+ 5NHM3w1Nk2GOkARfA5NU/rSn8/x7pX7WzRetFKSo7tx+2XJxRZ9+LPsLMDUapqBQsA9ckOw/
+ zufpTinXElGXDCZ4WWsqV3rmvKUpxvUe58NDKyG6KUth2TGkwT/DzVJDADm8JFVkHWWQt9aN
+ gkY9zQjqYA080qkSMS7WAe3yFafvhMaR9dBO+I/4QCJjKHT5m6k6nMsF2AbLoZ87YlvGGJsj
+ wXS9z/0OdBxmLOob0zFrZGYlBSvBDAuLE0lRwI7fzJQtrEPv7oPph7IS99iFou8gdv0BSz8z
+ li2kcQuu1kApZVVjvvmpDgrlxrp/8GUFVBtum07S0r/tmtEiJiZi5tEALQxxdJJN86nQ1aIp
+ xDocODOvblVXflheMFgKdjh/Y1FBd7faFUwYnY1RfHNEghBHFb9Fb28GBkkeC9U3j8sIFcFm
+ nP7twJL/4N0N3C3d6JxaI/ZI510nfa4Soq/CquFMoMmjn1NmOmvpnkGiam4hTmFraTRuftnZ
+ cfznTiEUx729piLPBLpHrxAgNfHNwg1xH/JRICT8vhU+eP2WZJhcp9caAHmRrlgvMu5TPD9r
+ 4432z2il08OD4UTo0D/reYuELz9BSZjWMGo8ZENL4Zu4GNOQQkcNhMY+pt5E6QNokifvr2gE
+ q2VMqOA9GfCuA==
+IronPort-HdrOrdr: A9a23:uhKy36HRGXrdKIyYpLqE2seALOsnbusQ8zAXPiFKJiC9F/byqy
+ nApoV/6faZslcssQgb6LO90cq7L080i6QFg7X5VI3KNGOK1FdASrsSibcKqAeBJ8SRzJ8l6Y
+ 5QN4R4Fd3sHRxboK/BkXGF+g8bsb66GXaT9IHj80s=
+X-Talos-CUID: 9a23:ZkEqf2O2+nw6Xu5DVhRByhZPPMwcVWDg1EzRAWiaJFlbcejA
+X-Talos-MUID: 9a23:P4M0pwT13xN0gTHNRXSzrWpNc9t1uJ6WJ2MQjo0XhdffcitJbmI=
+X-IronPort-AV: E=Sophos;i="6.00,224,1681185600"; d="scan'208";a="111246604"
 To: <qemu-devel@nongnu.org>
-CC: David Woodhouse <dwmw@amazon.co.uk>, Anthony PERARD
+CC: Bernhard Beschow <shentey@gmail.com>, Anthony PERARD
  <anthony.perard@citrix.com>
-Subject: [PULL 04/12] hw/xen: Fix broken check for invalid state in
- xs_be_open()
-Date: Wed, 7 Jun 2023 15:18:31 +0100
-Message-ID: <20230607141839.48422-5-anthony.perard@citrix.com>
+Subject: [PULL 05/12] include/hw/xen/xen: Rename xen_piix3_set_irq() to
+ xen_intx_set_irq()
+Date: Wed, 7 Jun 2023 15:18:32 +0100
+Message-ID: <20230607141839.48422-6-anthony.perard@citrix.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607141839.48422-1-anthony.perard@citrix.com>
 References: <20230607141839.48422-1-anthony.perard@citrix.com>
@@ -98,34 +98,91 @@ From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Coverity points out that if (!s && !s->impl) isn't really what we intended
-to do here. CID 1508131.
+xen_piix3_set_irq() isn't PIIX specific: PIIX is a single PCI device
+while xen_piix3_set_irq() maps multiple PCI devices to their respective
+IRQs, which is board-specific. Rename xen_piix3_set_irq() to communicate
+this.
 
-Fixes: 032475127225 ("hw/xen: Add emulated implementation of XenStore operations")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230412185102.441523-6-dwmw2@infradead.org>
+Also rename XEN_PIIX_NUM_PIRQS to XEN_IOAPIC_NUM_PIRQS since the Xen's
+IOAPIC rather than PIIX has this many interrupt routes.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
+Tested-by: Chuck Zmudzinski <brchuckz@aol.com>
+Message-Id: <20230312120221.99183-2-shentey@gmail.com>
+Message-Id: <20230403074124.3925-2-shentey@gmail.com>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 ---
- hw/i386/kvm/xen_xenstore.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/xen/xen-hvm.c | 2 +-
+ hw/isa/piix3.c        | 4 ++--
+ include/hw/xen/xen.h  | 2 +-
+ stubs/xen-hw-stub.c   | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index 0b189c6ab8..133d89e953 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -1688,7 +1688,7 @@ static struct qemu_xs_handle *xs_be_open(void)
-     XenXenstoreState *s = xen_xenstore_singleton;
-     struct qemu_xs_handle *h;
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index 56641a550e..ab8f1b61ee 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -143,7 +143,7 @@ int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num)
+     return irq_num + (PCI_SLOT(pci_dev->devfn) << 2);
+ }
  
--    if (!s && !s->impl) {
-+    if (!s || !s->impl) {
-         errno = -ENOSYS;
-         return NULL;
-     }
+-void xen_piix3_set_irq(void *opaque, int irq_num, int level)
++void xen_intx_set_irq(void *opaque, int irq_num, int level)
+ {
+     xen_set_pci_intx_level(xen_domid, 0, 0, irq_num >> 2,
+                            irq_num & 3, level);
+diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
+index f9103ea45a..6651521a46 100644
+--- a/hw/isa/piix3.c
++++ b/hw/isa/piix3.c
+@@ -35,7 +35,7 @@
+ #include "migration/vmstate.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+ 
+-#define XEN_PIIX_NUM_PIRQS      128ULL
++#define XEN_IOAPIC_NUM_PIRQS    128ULL
+ 
+ static void piix3_set_irq_pic(PIIX3State *piix3, int pic_irq)
+ {
+@@ -420,7 +420,7 @@ static void piix3_xen_realize(PCIDevice *dev, Error **errp)
+      * connected to the IOAPIC directly.
+      * These additional routes can be discovered through ACPI.
+      */
+-    pci_bus_irqs(pci_bus, xen_piix3_set_irq, piix3, XEN_PIIX_NUM_PIRQS);
++    pci_bus_irqs(pci_bus, xen_intx_set_irq, piix3, XEN_IOAPIC_NUM_PIRQS);
+ }
+ 
+ static void piix3_xen_class_init(ObjectClass *klass, void *data)
+diff --git a/include/hw/xen/xen.h b/include/hw/xen/xen.h
+index 2bd8ec742d..37ecc91fc3 100644
+--- a/include/hw/xen/xen.h
++++ b/include/hw/xen/xen.h
+@@ -39,7 +39,7 @@ extern bool xen_domid_restrict;
+ 
+ int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num);
+ int xen_set_pci_link_route(uint8_t link, uint8_t irq);
+-void xen_piix3_set_irq(void *opaque, int irq_num, int level);
++void xen_intx_set_irq(void *opaque, int irq_num, int level);
+ void xen_hvm_inject_msi(uint64_t addr, uint32_t data);
+ int xen_is_pirq_msi(uint32_t msi_data);
+ 
+diff --git a/stubs/xen-hw-stub.c b/stubs/xen-hw-stub.c
+index 34a22f2ad7..7d7ffe83a9 100644
+--- a/stubs/xen-hw-stub.c
++++ b/stubs/xen-hw-stub.c
+@@ -15,7 +15,7 @@ int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num)
+     return -1;
+ }
+ 
+-void xen_piix3_set_irq(void *opaque, int irq_num, int level)
++void xen_intx_set_irq(void *opaque, int irq_num, int level)
+ {
+ }
+ 
 -- 
 Anthony PERARD
 
