@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B990B725796
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 10:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410C37257A7
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 10:29:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6oVo-0007dB-Lt; Wed, 07 Jun 2023 04:27:24 -0400
+	id 1q6oXK-0000tr-C9; Wed, 07 Jun 2023 04:28:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q6oVm-0007cz-7f
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:27:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q6oVk-000297-3s
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:27:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686126439;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=hv9RT2LHS6BbtN0vv0NSssE8GDJ5EcGLhkCfq3ra/Jw=;
- b=BUZdlbMxrI6G7TroWRk+YNIjC6PGVGJRwFORHwmnM9wgezmX0pplpWEt/LhnVF+E8m3WSy
- z8BgdBKC6lsRPYbUHAigSHfNs2PCVJNTd5lu/2yNca/IlrB4oNjNpY97tqVEAS3/Ekw6qB
- u44a/zcGo4ntF9JAiW5vhiANc9gilSM=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-NdtPP5D8MNqk6EK0VrIUtw-1; Wed, 07 Jun 2023 04:27:17 -0400
-X-MC-Unique: NdtPP5D8MNqk6EK0VrIUtw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30ad885addcso172677f8f.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 01:27:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6oXI-0000tZ-VW
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:28:56 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6oXH-0002Ol-HK
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:28:56 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-30e412a852dso2674925f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 01:28:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686126534; x=1688718534;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8ymjBykz6oPkeD2DnN/+SlsP633S5A1gJPG1IcrUGQU=;
+ b=CMNu3B2irewPXFGkFCykjhzSkjfgLf5XHuLQqIM29C/N71De//ASQzev0vxJYlmBrR
+ 2oMlIt4YunpjzwX2OOkwOMcEswpcGOx0sTBluTb+13rXsfoxbOnx3NZ4U0Bkrlb51q0o
+ MlT15Hgk8mxEKZWt2ilBVd2nZsCvhooi7ky7EEA9tuIMb5m2vzyEFj5eHZrHCeqOLTc/
+ 4shAkMjmbEgB0PZDDrQnodmVQL095BtKDfHeFYMlV3u1o8Th43EFkaz2pDsV49Qu6Ros
+ zAy0ArKD6ryMYey7lGYVgVPo7krMcpooJOWHmsDelNepkKCC11AZw+OZ/771Is7uQncn
+ X3ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686126436; x=1688718436;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hv9RT2LHS6BbtN0vv0NSssE8GDJ5EcGLhkCfq3ra/Jw=;
- b=B1E0aUhqip2o9sRy7mYzPX0RdGyEWaih1t0C7MuwLb1NaK5CKw9MHT3bf/jh31NjG/
- dh2l5lVu5jr9hs311Z5CJHgKO5BOLw1tC8jzkVRF6vN6GEsIWKhr+FNNjZIW7cA8M7J0
- huyqfYOELvF/jWLmW7m2hJ4mR02f1nasJHTk0Gq691QwqwWHd/8336f/47oezG4KiINL
- tNxoj+8/j2XguUIWC2oM+1XeC9TQAvXfiOCoX+cYtscv+62up0JVvqChPwjtg+9PJi2z
- Hg8rBYpyFx+R6q9pmbI22V4lFpTX76+qcUlY3PamZCAQuhtdzlVsGZEL1Lz8iWfvvj6z
- ELRQ==
-X-Gm-Message-State: AC+VfDzKmNOKuFlNLutlR3XDEV99ZWTJHRK/LFXilR8mgwe1No1BUt/4
- z2uT6ZsNGFfRw5nYeHiQ2QaVLYFuWncC8VIPLpk/jNt0lIgQy2z7aO8ODDPtTYZL/fBuo1K2Tm4
- m7Cnx0X3UXZDL+H4=
-X-Received: by 2002:adf:f38c:0:b0:30a:8fc5:4411 with SMTP id
- m12-20020adff38c000000b0030a8fc54411mr9576811wro.32.1686126436671; 
- Wed, 07 Jun 2023 01:27:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7e9RgROVVyabvzlEs9fkanqyT0TuxS7OSM9pMKeWX0sNGx5LwJ7XKaBHiU46XmFs5OAGtImg==
-X-Received: by 2002:adf:f38c:0:b0:30a:8fc5:4411 with SMTP id
- m12-20020adff38c000000b0030a8fc54411mr9576793wro.32.1686126436330; 
- Wed, 07 Jun 2023 01:27:16 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- z6-20020a7bc7c6000000b003f4fb5532a1sm1274959wmk.43.2023.06.07.01.27.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 01:27:15 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Jiang
- Jiacheng <jiangjiacheng@huawei.com>,  Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,  Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 3/3] tests/qtest: Re-enable multifd cancel test
-In-Reply-To: <20230606144551.24367-4-farosas@suse.de> (Fabiano Rosas's message
- of "Tue, 6 Jun 2023 11:45:51 -0300")
-References: <20230606144551.24367-1-farosas@suse.de>
- <20230606144551.24367-4-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Wed, 07 Jun 2023 10:27:15 +0200
-Message-ID: <87ttvjoexo.fsf@secure.mitica>
+ d=1e100.net; s=20221208; t=1686126534; x=1688718534;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8ymjBykz6oPkeD2DnN/+SlsP633S5A1gJPG1IcrUGQU=;
+ b=gLWgbxfzeIvSv6L38x2gyoiTNu06WM0/coITzSndvuqO75KmMWsGdoSt8dGjt9aA+u
+ 3B6ODt2wOpFfVkHiFBILie4bTyQn4y96PBjXiTnm0+chKvXNH8Bp6hQqw5I5/gqAEwa6
+ TwDhUgOHGUzfqCxft47OnsEPA7lse4iRt7XHk4W/gpQvCgTfi3HsP/BvALYko5Ar0ePo
+ uJ3aPH3uqrEpAe4UMLAKae2zO+WiMcMtTg6wJ4/cJcAWuFjASajm3I8WFkcdtgwSVq39
+ USYpd5wlwpSqtp6H0mPQOOx14rMrvnFRPpqdq4YC4O/kte8j2QYeywdE70ujrmY3EyVo
+ hntQ==
+X-Gm-Message-State: AC+VfDwiU05jdzonRg/tZNrQAeZp5O2q401xzo5AIlqPblv4vFK6iD7D
+ TlwCGDxdCNFE6OQJH4wOGO78yA==
+X-Google-Smtp-Source: ACHHUZ6CHEcHbUZ+NzsIEW0rIKaUVAc7Mcai2MyGMRCcEXcEVTb8SvhDGAJQj8b4ohn7Nnwzybmgew==
+X-Received: by 2002:adf:dd05:0:b0:30a:e378:76e with SMTP id
+ a5-20020adfdd05000000b0030ae378076emr3358951wrm.64.1686126534031; 
+ Wed, 07 Jun 2023 01:28:54 -0700 (PDT)
+Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
+ [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
+ d6-20020a5d5386000000b00307c46f4f08sm14797784wrv.79.2023.06.07.01.28.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 01:28:53 -0700 (PDT)
+Message-ID: <62e69c35-4869-8cc3-5983-9f83ff649da9@linaro.org>
+Date: Wed, 7 Jun 2023 10:28:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH v2 04/12] hw/ssi: Add an "addr" property to SSIPeripheral
+Content-Language: en-US
+To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Alistair Francis <alistair@alistair23.me>
+References: <20230607043943.1837186-1-clg@kaod.org>
+ <20230607043943.1837186-5-clg@kaod.org>
+ <CACPK8XencE5MMgYdQ5H6iV_rTHaynv-UJYHZy=y-DaCXYBWWXg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CACPK8XencE5MMgYdQ5H6iV_rTHaynv-UJYHZy=y-DaCXYBWWXg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,46 +94,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> We've found the source of flakiness in this test, so re-enable it.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  tests/qtest/migration-test.c | 10 ++--------
->  1 file changed, 2 insertions(+), 8 deletions(-)
->
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index b0c355bbd9..800ad23b75 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -2778,14 +2778,8 @@ int main(int argc, char **argv)
->      }
->      qtest_add_func("/migration/multifd/tcp/plain/none",
->                     test_multifd_tcp_none);
-> -    /*
-> -     * This test is flaky and sometimes fails in CI and otherwise:
-> -     * don't run unless user opts in via environment variable.
-> -     */
-> -    if (getenv("QEMU_TEST_FLAKY_TESTS")) {
-> -        qtest_add_func("/migration/multifd/tcp/plain/cancel",
-> -                       test_multifd_tcp_cancel);
-> -    }
-> +    qtest_add_func("/migration/multifd/tcp/plain/cancel",
-> +                   test_multifd_tcp_cancel);
->      qtest_add_func("/migration/multifd/tcp/plain/zlib",
->                     test_multifd_tcp_zlib);
->  #ifdef CONFIG_ZSTD
+On 7/6/23 10:06, Joel Stanley wrote:
+> On Wed, 7 Jun 2023 at 04:40, Cédric Le Goater <clg@kaod.org> wrote:
+>>
+>> Boards will use this new property to identify the device CS line and
+>> wire the SPI controllers accordingly.
+> 
+> "addr" and not "cs" or even "chip-select"?
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+"chip-select" is a good suggestion!
 
-
-There was another failure with migration test that I will post during
-the rest of the day.  It needs both to get it right.
-
-Later, Juan.
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> 
+>>
+>> Cc: Alistair Francis <alistair@alistair23.me>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   include/hw/ssi/ssi.h | 3 +++
+>>   hw/ssi/ssi.c         | 7 +++++++
+>>   2 files changed, 10 insertions(+)
 
 
