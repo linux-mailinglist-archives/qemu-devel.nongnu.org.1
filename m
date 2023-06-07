@@ -2,53 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C546272760E
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F297263A2
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:03:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BG-00066q-ME; Thu, 08 Jun 2023 00:23:26 -0400
+	id 1q6ugF-0007sq-PQ; Wed, 07 Jun 2023 11:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z5-0006RD-2k
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q6ugC-0007rx-Qn
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:02:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z1-0000DK-TA
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:42 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 43B9111F111;
- Thu,  8 Jun 2023 02:02:39 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Wed, 07 Jun 2023 22:58:32 +0800
-Subject: [PATCH QEMU v5 3/8] qapi/migration: Introduce vcpu-dirty-limit
- parameters
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q6ugB-0002kv-4W
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:02:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686150082;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ibCGDwHTPAmn0Z6J6KG+5ecbU18hd2RO1NZWX7nHoSI=;
+ b=LeW6eMGFYXaifB2xuii/WEJwy857v3B0fefIA7sSZutsr8qKfPPoHlXi1PwlnfFzku2yYz
+ jQhdaFDKxTEN41+qaAZyNkxtoMG5Bvii0tA2/FqIPKY0yNZVQ0PlsefAHNSaj6TI8QZ4Y1
+ qvguylFYzi3oiCwuNkQVQyXP1UYBxYU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-387-G6jacI32OeuteaAnyKGTIA-1; Wed, 07 Jun 2023 11:01:20 -0400
+X-MC-Unique: G6jacI32OeuteaAnyKGTIA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-94a348facbbso671893866b.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:01:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686150079; x=1688742079;
+ h=content-transfer-encoding:cc:to:subject:from:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ibCGDwHTPAmn0Z6J6KG+5ecbU18hd2RO1NZWX7nHoSI=;
+ b=JDp4jtA9SLgkCA31jVlGPF3pCj39Buq3C3l4sQzEWHyWna34JygzUt6ECzAPR+rhTq
+ CTkzYdCDiB/Ta4NMZuvNBRicheSi3hyCq2kXdSrNiZ0NYdEv6EATaX70VRrdBjzCQRdN
+ 941S3i6qyU7GX4alHlN19hMcWqWd+x26+tpfZx3fxU0unEtLYUeMIt2D9EC93L19ngw3
+ Bw+LvnLcyhjPO4/a5nZR7ccuBZMslg88fwzfklxEIVPoBGWimRmC9roPbU95PFQa2Lfx
+ Rim8QKv+MDFrf4Do86ya4Vq0JP/wTbmq6tFI93zKF0u3+zQwZgz/gc4Lx8+xcTmkeU5Y
+ bHHg==
+X-Gm-Message-State: AC+VfDxcUyttIGMWQiAdyHzvmMtpOJqIsiRa7IgHlDrIWYgYR/VINPfE
+ 2ygDIqBNz7hYqEy/7aHPLOF9/zZjV7xmMGkI+MeEn/c04Qg/9X/UMp0/NDQNCaS2SxgvKlNJhL6
+ 3TlYOvPT3FCE56es=
+X-Received: by 2002:a17:907:7baa:b0:96a:30b5:cfb0 with SMTP id
+ ne42-20020a1709077baa00b0096a30b5cfb0mr6504162ejc.22.1686150079428; 
+ Wed, 07 Jun 2023 08:01:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5NtV42BHMWb7a4hx7+jyslS4+TxOheUV4yYxts/q8xWC0xHrnhezWKLEIajqgv0aeGBW6rYQ==
+X-Received: by 2002:a17:907:7baa:b0:96a:30b5:cfb0 with SMTP id
+ ne42-20020a1709077baa00b0096a30b5cfb0mr6504144ejc.22.1686150079111; 
+ Wed, 07 Jun 2023 08:01:19 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d740:9017:191d:265b:b68c:4fa4?
+ (p200300cfd7409017191d265bb68c4fa4.dip0.t-ipconnect.de.
+ [2003:cf:d740:9017:191d:265b:b68c:4fa4])
+ by smtp.gmail.com with ESMTPSA id
+ q19-20020a170906b29300b0094f23480619sm7065798ejz.172.2023.06.07.08.01.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 08:01:18 -0700 (PDT)
+Message-ID: <24269db5-2464-0eb6-2f39-ed8a6d1aca58@redhat.com>
+Date: Wed, 7 Jun 2023 17:01:17 +0200
 MIME-Version: 1.0
-Message-ID: <168618975839.6361.17407633874747688653-3@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+Subject: Release of RSD (Rust QSD) 0.1
+To: Qemu-block <qemu-block@nongnu.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,208 +95,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+Hi everyone!
 
-Introduce "vcpu-dirty-limit" migration parameter used
-to limit dirty page rate during live migration.
+I’ve just released the first version (0.1) of RSD, which is a 
+proof-of-concept to rewrite the qemu-storage-daemon (QSD) and thus the 
+qemu block layer in Rust:
 
-"vcpu-dirty-limit" and "x-vcpu-dirty-limit-period" are
-two dirty-limit-related migration parameters, which can
-be set before and during live migration by qmp
-migrate-set-parameters.
+https://gitlab.com/hreitz/rsd
+https://gitlab.com/hreitz/rsd/-/releases/v0.1
 
-This two parameters are used to help implement the dirty
-page rate limit algo of migration.
+We’ve been talking for quite a long time about adding Rust into qemu and 
+the qemu block layer, and usually ended it with “Could be nice, we just 
+need someone to start.”  After we’ve had discussion last year about 
+maybe adding C++ for language-supported coroutines, I thought if the 
+time isn’t now, it’s never.
 
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-Acked-by: Peter Xu <peterx@redhat.com>
----
- migration/migration-hmp-cmds.c |  8 ++++++++
- migration/options.c            | 21 +++++++++++++++++++++
- qapi/migration.json            | 18 +++++++++++++++---
- 3 files changed, 44 insertions(+), 3 deletions(-)
+In the process, I’ve gathered some insights into obstacles and benefits 
+that Rust could bring us, which I’ve summed up in two blog posts:
 
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 352e9ec716..35e8020bbf 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -368,6 +368,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDi=
-ct *qdict)
-         monitor_printf(mon, "%s: %" PRIu64 " ms\n",
-         MigrationParameter_str(MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD=
-),
-         params->x_vcpu_dirty_limit_period);
-+
-+        monitor_printf(mon, "%s: %" PRIu64 " MB/s\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT),
-+            params->vcpu_dirty_limit);
-     }
-=20
-     qapi_free_MigrationParameters(params);
-@@ -628,6 +632,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict=
- *qdict)
-         p->has_x_vcpu_dirty_limit_period =3D true;
-         visit_type_size(v, param, &p->x_vcpu_dirty_limit_period, &err);
-         break;
-+    case MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT:
-+        p->has_vcpu_dirty_limit =3D true;
-+        visit_type_size(v, param, &p->vcpu_dirty_limit, &err);
-+        break;
-     default:
-         assert(0);
-     }
-diff --git a/migration/options.c b/migration/options.c
-index 1cb735e35f..8dc1ab10e1 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -81,6 +81,7 @@
-     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
-=20
- #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* microsecond */
-+#define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
-=20
- Property migration_properties[] =3D {
-     DEFINE_PROP_BOOL("store-global-state", MigrationState,
-@@ -168,6 +169,9 @@ Property migration_properties[] =3D {
-     DEFINE_PROP_UINT64("x-vcpu-dirty-limit-period", MigrationState,
-                        parameters.x_vcpu_dirty_limit_period,
-                        DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD),
-+    DEFINE_PROP_UINT64("vcpu-dirty-limit", MigrationState,
-+                       parameters.vcpu_dirty_limit,
-+                       DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT),
-=20
-     /* Migration capabilities */
-     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
-@@ -898,6 +902,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error *=
-*errp)
-=20
-     params->has_x_vcpu_dirty_limit_period =3D true;
-     params->x_vcpu_dirty_limit_period =3D s->parameters.x_vcpu_dirty_limit_p=
-eriod;
-+    params->has_vcpu_dirty_limit =3D true;
-+    params->vcpu_dirty_limit =3D s->parameters.vcpu_dirty_limit;
-=20
-     return params;
- }
-@@ -932,6 +938,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_announce_rounds =3D true;
-     params->has_announce_step =3D true;
-     params->has_x_vcpu_dirty_limit_period =3D true;
-+    params->has_vcpu_dirty_limit =3D true;
- }
-=20
- /*
-@@ -1101,6 +1108,14 @@ bool migrate_params_check(MigrationParameters *params,=
- Error **errp)
-         return false;
-     }
-=20
-+    if (params->has_vcpu_dirty_limit &&
-+        (params->vcpu_dirty_limit < 1)) {
-+        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-+                   "vcpu_dirty_limit",
-+                   "is invalid, it must greater then 1 MB/s");
-+        return false;
-+    }
-+
-     return true;
- }
-=20
-@@ -1205,6 +1220,9 @@ static void migrate_params_test_apply(MigrateSetParamet=
-ers *params,
-         dest->x_vcpu_dirty_limit_period =3D
-             params->x_vcpu_dirty_limit_period;
-     }
-+    if (params->has_vcpu_dirty_limit) {
-+        dest->vcpu_dirty_limit =3D params->vcpu_dirty_limit;
-+    }
- }
-=20
- static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-@@ -1328,6 +1346,9 @@ static void migrate_params_apply(MigrateSetParameters *=
-params, Error **errp)
-         s->parameters.x_vcpu_dirty_limit_period =3D
-             params->x_vcpu_dirty_limit_period;
-     }
-+    if (params->has_vcpu_dirty_limit) {
-+        s->parameters.vcpu_dirty_limit =3D params->vcpu_dirty_limit;
-+    }
- }
-=20
- void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8d491ee121..b970b68672 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -783,6 +783,9 @@
- #                             live migration. Should be in the range 1 to 10=
-00ms,
- #                             defaults to 1000ms. (Since 8.1)
- #
-+# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-+#                    Defaults to 1. (Since 8.1)
-+#
- # Features:
- #
- # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-@@ -806,7 +809,8 @@
-            'max-cpu-throttle', 'multifd-compression',
-            'multifd-zlib-level', 'multifd-zstd-level',
-            'block-bitmap-mapping',
--           { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] }=
- ] }
-+           { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
-+           'vcpu-dirty-limit'] }
-=20
- ##
- # @MigrateSetParameters:
-@@ -945,6 +949,9 @@
- #                             live migration. Should be in the range 1 to 10=
-00ms,
- #                             defaults to 1000ms. (Since 8.1)
- #
-+# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-+#                    Defaults to 1. (Since 8.1)
-+#
- # Features:
- #
- # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-@@ -985,7 +992,8 @@
-             '*multifd-zstd-level': 'uint8',
-             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
--                                            'features': [ 'unstable' ] } } }
-+                                            'features': [ 'unstable' ] },
-+            '*vcpu-dirty-limit': 'uint64'} }
-=20
- ##
- # @migrate-set-parameters:
-@@ -1144,6 +1152,9 @@
- #                             live migration. Should be in the range 1 to 10=
-00ms,
- #                             defaults to 1000ms. (Since 8.1)
- #
-+# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-+#                    Defaults to 1. (Since 8.1)
-+#
- # Features:
- #
- # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-@@ -1181,7 +1192,8 @@
-             '*multifd-zstd-level': 'uint8',
-             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
--                                            'features': [ 'unstable' ] } } }
-+                                            'features': [ 'unstable' ] },
-+            '*vcpu-dirty-limit': 'uint64'} }
-=20
- ##
- # @query-migrate-parameters:
---=20
-2.38.5
+Part 1 (Overview): https://czenczek.de/blog/rsd-overview.html
+Part 2 (Performance): https://czenczek.de/blog/rsd-performance.html
+
+The bottom line so far is that Rust could bring us valuable benefits, 
+but likely only if we rewrote everything.  A middle ground is possible, 
+by keeping RSD focused on a specific subset of functionality, the one 
+that is most valuable for it.  In any case, this (v0.1) is as far as is 
+reasonable to go with RSD as an experiment – any further work we’d need 
+to do in earnest and define what exactly we actually want.  And that’s 
+an important part of what this announcement is for, to see whether 
+anyone has this interest!
+
+
+Hanna
 
 
