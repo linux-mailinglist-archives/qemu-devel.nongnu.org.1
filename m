@@ -2,87 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554CD7256FB
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 10:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3E5725703
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 10:11:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6oE4-0000vu-Hp; Wed, 07 Jun 2023 04:09:04 -0400
+	id 1q6oFd-0001bi-VD; Wed, 07 Jun 2023 04:10:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q6oE2-0000u6-3k
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:09:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q6oE0-0007Qa-DG
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 04:09:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686125339;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OGp77i01/SIDau9dsGXM+5mDJyfSeAIA69geezh77fM=;
- b=FuIxKlhIcLieh1ocexZuJjJ6vsk/kFScT5U24tAjypet8xqUOvHNI4zfixWO0ek3W6HK0r
- tMAVNvJoaIm0Yxj42swePbMvs6yNwYfiwHdoMnxg5I+dRrmFd9p8aXM7zlWSPQ59SSKVIk
- tgW0/RSpYbghln6ZDBQ2n2qJkgGGOiY=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-zUBelTdHOyeaInrD_5bi7Q-1; Wed, 07 Jun 2023 04:08:57 -0400
-X-MC-Unique: zUBelTdHOyeaInrD_5bi7Q-1
-Received: by mail-yb1-f200.google.com with SMTP id
- 3f1490d57ef6-bb3a35ba742so2824364276.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 01:08:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1q6oFZ-0001bN-N0; Wed, 07 Jun 2023 04:10:38 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1q6oFX-0007uA-GS; Wed, 07 Jun 2023 04:10:36 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51640b9ed95so986256a12.2; 
+ Wed, 07 Jun 2023 01:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1686125433; x=1688717433;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VEROPl4wnYl2usylybGJHLWtfF4dJ8jyRIeiQ19RWiA=;
+ b=V5k6OMT+uMDj2T6f0ZER3iSqWauH0aHkWLQsGWaoyKu2xLR/B0u71PP9nHN4nuha6S
+ fvvq1EScLforiCnxzpxwkgaR3edqLK+/o5vIZC+CYJkqDyK/Difw5NDK/ceDfty14UTe
+ TGzzotErKHi3BWxkei5uR6r1/sMhy4iWgDamw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686125337; x=1688717337;
+ d=1e100.net; s=20221208; t=1686125433; x=1688717433;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OGp77i01/SIDau9dsGXM+5mDJyfSeAIA69geezh77fM=;
- b=iWeakIdQ7hD1Z/+1x68gJvdb78a/12WyAfFjr9zaw71vxmfm7DStefBwSZJntakzq2
- 98Y3rG1/vnY+rHDo42kBFqpuRYu9O8EBsuKlyp/O/fMzV3Do/6REG+mA4sdhQqNNEvKD
- oFjxFKCUSwApeLkq9gYGP05Q4XthLxghI1VWrAnfkkKkx9W2+MqjIfy9dZ11TID0YUS2
- kyytcSHnDQSMFRxd3Zwcq9R89m7619QrVc/i02tmcehKwV3UXFjaUb2sazeRYICqr141
- yoCNEKvwWBjzka7BLY+mWXKwojZGOYliEdWj0tkKX41jYDPsE4x24G++uqDTPM6e/8dP
- 9BVA==
-X-Gm-Message-State: AC+VfDzGXCgzlJzXixqHG7jYyHI7TR/hAmHIF7UF0toKRpvZ+nk9fh6h
- X2bl+Jq2fYgJEHCai+MUYjwkt8xn6Pyj/pX6XCdfLvtckT9vMYFcGSV5FLI7swbIY5DiBiu9yWA
- YtWk1n51APR6f1QGnE/koAPoHsjABaYA=
-X-Received: by 2002:a25:e68a:0:b0:bac:6d5a:f6aa with SMTP id
- d132-20020a25e68a000000b00bac6d5af6aamr5270538ybh.23.1686125337189; 
- Wed, 07 Jun 2023 01:08:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5FeXSlF4YMYCGXW8gTt5EdlOUpJ/R21V0EbTTDCT8wKVSNIA9Y2twW/lzn7acxtTBq+8zAVE3TSuYtGBbFyxM=
-X-Received: by 2002:a25:e68a:0:b0:bac:6d5a:f6aa with SMTP id
- d132-20020a25e68a000000b00bac6d5af6aamr5270522ybh.23.1686125336940; Wed, 07
- Jun 2023 01:08:56 -0700 (PDT)
+ bh=VEROPl4wnYl2usylybGJHLWtfF4dJ8jyRIeiQ19RWiA=;
+ b=ZjNP31RfSJ9mkPSe2QRlBOp+EF36p3OERZK63VKgB91tNNFo7bBhN2zHlN/9oW1GYb
+ 2NK5gy2tUU7QgGbAHh0xbVpmBYpNQdcUO1DOMKe07lIX625pccFGYb5o+jH6BkllNfYB
+ Ic+qQGp10J5knc1E1qmjXroK5uGXi8266JOHMTr5lgMLbHOoFdpdc9YqLlV6CMpRQ7x4
+ K+EsVH4c1BINiJYy6pJhK3mHih8b8oEkaka/RbkyXvezZyqbqxIpK351F8PP6dKCyAcN
+ g0xz4DT0hETXNzKHDidEIcl73ezQOn0IlIBwt1raX+K5oqOjQdX63f0A8QHSRzu8Jpai
+ MVZw==
+X-Gm-Message-State: AC+VfDx0NSG0XeVDlBPjO7wYmlt/U1JS9pbpPlOq0KIL6RDw+dE0WbP1
+ IeSo2cx1oo5uL2P4wxIAUcZXtNsJKuu1XkYAImg=
+X-Google-Smtp-Source: ACHHUZ4n1p6qb4t2RfucFqKY/4m8HdHNALZwzzly79OlHioqMOMnhS1/ZTZUtkSLIEmFqgDSaECLMnaOt9tfV1Pbhk0=
+X-Received: by 2002:a17:907:7f24:b0:974:1d8b:ca5e with SMTP id
+ qf36-20020a1709077f2400b009741d8bca5emr4868338ejc.14.1686125433157; Wed, 07
+ Jun 2023 01:10:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJaqyWdV6pKP0SVZciMiu_HN86aJriZh0HBiwHNkO7+yErXnBA@mail.gmail.com>
- <c59d2d67-d31a-b6e6-54c5-5b81c18d9547@oracle.com>
-In-Reply-To: <c59d2d67-d31a-b6e6-54c5-5b81c18d9547@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 7 Jun 2023 10:08:20 +0200
-Message-ID: <CAJaqyWegsVHEVZt2_mf4wA8MuF7UXmU=UbHJfwyzURDRxfRgmg@mail.gmail.com>
-Subject: Re: Reducing vdpa migration downtime because of memory pin / maps
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: qemu-level <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>, 
- Michael Tsirkin <mst@redhat.com>, Longpeng <longpeng2@huawei.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, Eli Cohen <elic@nvidia.com>, 
- Parav Pandit <parav@nvidia.com>, Juan Quintela <quintela@redhat.com>, 
- David Gilbert <dgilbert@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>
+References: <20230607043943.1837186-1-clg@kaod.org>
+ <20230607043943.1837186-6-clg@kaod.org>
+In-Reply-To: <20230607043943.1837186-6-clg@kaod.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Wed, 7 Jun 2023 08:10:20 +0000
+Message-ID: <CACPK8XfzcSrDjO9cWDuyucfewDop_jKKfx+779ySLwX+LKa2MQ@mail.gmail.com>
+Subject: Re: [PATCH v2 05/12] hw/ssi: Introduce a ssi_get_cs() helper
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Alistair Francis <alistair@alistair23.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=joel.stan@gmail.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,94 +86,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 7, 2023 at 12:43=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> =
-wrote:
+On Wed, 7 Jun 2023 at 04:40, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 >
-> Sorry for reviving this old thread, I lost the best timing to follow up
-> on this while I was on vacation. I have been working on this and found
-> out some discrepancy, please see below.
+> Simple routine to retrieve a DeviceState object on a SPI bus using its
+> address/cs. It will be useful for the board to wire the CS lines.
 >
-> On 4/5/23 04:37, Eugenio Perez Martin wrote:
-> > Hi!
-> >
-> > As mentioned in the last upstream virtio-networking meeting, one of
-> > the factors that adds more downtime to migration is the handling of
-> > the guest memory (pin, map, etc). At this moment this handling is
-> > bound to the virtio life cycle (DRIVER_OK, RESET). In that sense, the
-> > destination device waits until all the guest memory / state is
-> > migrated to start pinning all the memory.
-> >
-> > The proposal is to bind it to the char device life cycle (open vs
-> > close),
->
-> Hmmm, really? If it's the life cycle for char device, the next guest /
-> qemu launch on the same vhost-vdpa device node won't make it work.
->
+> Cc: Alistair Francis <alistair@alistair23.me>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 
-Maybe my sentence was not accurate, but I think we're on the same page here=
-.
+Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-Two qemu instances opening the same char device at the same time are
-not allowed, and vhost_vdpa_release clean all the maps. So the next
-qemu that opens the char device should see a clean device anyway.
-
+> ---
+>  include/hw/ssi/ssi.h |  2 ++
+>  hw/ssi/ssi.c         | 15 +++++++++++++++
+>  2 files changed, 17 insertions(+)
 >
-> >   so all the guest memory can be pinned for all the guest / qemu
-> > lifecycle.
+> diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
+> index 9e0706a5248c..01662521b09a 100644
+> --- a/include/hw/ssi/ssi.h
+> +++ b/include/hw/ssi/ssi.h
+> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, const cha=
+r *name);
 >
-> I think to tie pinning to guest / qemu process life cycle makes more
-> sense. Essentially this pinning part needs to be decoupled from the
-> iotlb mapping abstraction layer, and can / should work as a standalone
-> uAPI. Such that QEMU at the destination may launch and pin all guest's
-> memory as needed without having to start the device, while awaiting any
-> incoming migration request. Though problem is, there's no existing vhost
-> uAPI that could properly serve as the vehicle for that. SET_OWNER /
-> SET_MEM_TABLE / RESET_OWNER seems a remote fit.. Any objection against
-> introducing a new but clean vhost uAPI for pinning guest pages, subject
-> to guest's life cycle?
+>  uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
 >
-
-I think that to pin or not pin memory maps should be a kernel
-decision, not to be driven by qemu. I'm not against it if needed, but
-let me know if the current "clean at close" address your concerns.
-
-> Another concern is the use_va stuff, originally it tags to the device
-> level and is made static at the time of device instantiation, which is
-> fine. But others to come just find a new home at per-group level or
-> per-vq level struct. Hard to tell whether or not pinning is actually
-> needed for the latter use_va friends, as they are essentially tied to
-> the virtio life cycle or feature negotiation. While guest / Qemu starts
-> way earlier than that. Perhaps just ignore those sub-device level use_va
-> usages? Presumably !use_va at the device level is sufficient to infer
-> the need of pinning for device?
+> +DeviceState *ssi_get_cs(SSIBus *bus, uint8_t addr);
+> +
+>  #endif
+> diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
+> index d4409535429c..7c71fce0db90 100644
+> --- a/hw/ssi/ssi.c
+> +++ b/hw/ssi/ssi.c
+> @@ -27,6 +27,21 @@ struct SSIBus {
+>  #define TYPE_SSI_BUS "SSI"
+>  OBJECT_DECLARE_SIMPLE_TYPE(SSIBus, SSI_BUS)
 >
-
-I don't follow this. But I have the feeling that the subject of my
-original mail is way more accurate if I would have said just "memory
-maps".
-
-I still consider the way to fix it is to actually delegate that to the
-kernel vdpa, so it can choose if a particular ASID needs the pin or
-not. But let me know if I missed something.
-
-Thanks!
-
-> Regards,
-> -Siwei
+> +DeviceState *ssi_get_cs(SSIBus *bus, uint8_t addr)
+> +{
+> +    BusState *b =3D BUS(bus);
+> +    BusChild *kid;
+> +
+> +    QTAILQ_FOREACH(kid, &b->children, sibling) {
+> +        SSIPeripheral *kid_ssi =3D SSI_PERIPHERAL(kid->child);
+> +        if (kid_ssi->addr =3D=3D addr) {
+> +            return kid->child;
+> +        }
+> +    }
+> +
+> +    return NULL;
+> +}
+> +
+>  static const TypeInfo ssi_bus_info =3D {
+>      .name =3D TYPE_SSI_BUS,
+>      .parent =3D TYPE_BUS,
+> --
+> 2.40.1
 >
->
-> >
-> > This has two main problems:
-> > * At this moment the reset semantics forces the vdpa device to unmap
-> > all the memory. So this change needs a vhost vdpa feature flag.
-> > * This may increase the initialization time. Maybe we can delay it if
-> > qemu is not the destination of a LM. Anyway I think this should be
-> > done as an optimization on top.
-> >
-> > Any ideas or comments in this regard?
-> >
-> > Thanks!
-> >
->
-
 
