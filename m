@@ -2,29 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB9874A9CC
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 06:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFF874A9C5
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 06:11:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHcoM-000102-NR; Fri, 07 Jul 2023 00:11:14 -0400
+	id 1qHcoL-0000zr-Nt; Fri, 07 Jul 2023 00:11:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qHcoG-0000xA-Eu
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qHcoG-0000x9-EZ
  for qemu-devel@nongnu.org; Fri, 07 Jul 2023 00:11:08 -0400
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qHcoC-0006lp-2U
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qHcoC-0006lo-2G
  for qemu-devel@nongnu.org; Fri, 07 Jul 2023 00:11:06 -0400
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 4478011F105;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 714E311F108;
  Fri,  7 Jul 2023 04:11:00 +0000 (UTC)
 From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 08 Jun 2023 00:12:40 +0800
-Subject: [PATCH QEMU v8 7/9] migration: Implement dirty-limit convergence algo
+Date: Thu, 08 Jun 2023 00:21:58 +0800
+Subject: [PATCH QEMU v8 8/9] migration: Extend query-migrate to provide dirty
+ page limit info
 MIME-Version: 1.0
-Message-ID: <168870305868.29142.5121604177475325995-7@git.sr.ht>
+Message-ID: <168870305868.29142.5121604177475325995-8@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <168870305868.29142.5121604177475325995-0@git.sr.ht>
 To: qemu-devel <qemu-devel@nongnu.org>
@@ -64,181 +65,166 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
-Implement dirty-limit convergence algo for live migration,
-which is kind of like auto-converge algo but using dirty-limit
-instead of cpu throttle to make migration convergent.
-
-Enable dirty page limit if dirty_rate_high_cnt greater than 2
-when dirty-limit capability enabled, Disable dirty-limit if
-migration be canceled.
-
-Note that "set_vcpu_dirty_limit", "cancel_vcpu_dirty_limit"
-commands are not allowed during dirty-limit live migration.
+Extend query-migrate to provide throttle time and estimated
+ring full time with dirty-limit capability enabled, through which
+we can observe if dirty limit take effect during live migration.
 
 Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/migration.c  |  3 +++
- migration/ram.c        | 36 ++++++++++++++++++++++++++++++++++++
- migration/trace-events |  1 +
- softmmu/dirtylimit.c   | 29 +++++++++++++++++++++++++++++
- 4 files changed, 69 insertions(+)
+ include/sysemu/dirtylimit.h    |  2 ++
+ migration/migration-hmp-cmds.c | 10 +++++++++
+ migration/migration.c          | 10 +++++++++
+ qapi/migration.json            | 16 +++++++++++++-
+ softmmu/dirtylimit.c           | 39 ++++++++++++++++++++++++++++++++++
+ 5 files changed, 76 insertions(+), 1 deletion(-)
 
+diff --git a/include/sysemu/dirtylimit.h b/include/sysemu/dirtylimit.h
+index 8d2c1f3a6b..d11ebbbbdb 100644
+--- a/include/sysemu/dirtylimit.h
++++ b/include/sysemu/dirtylimit.h
+@@ -34,4 +34,6 @@ void dirtylimit_set_vcpu(int cpu_index,
+ void dirtylimit_set_all(uint64_t quota,
+                         bool enable);
+ void dirtylimit_vcpu_execute(CPUState *cpu);
++uint64_t dirtylimit_throttle_time_per_round(void);
++uint64_t dirtylimit_ring_full_time(void);
+ #endif
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 35e8020bbf..c115ef2d23 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -190,6 +190,16 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+                        info->cpu_throttle_percentage);
+     }
+=20
++    if (info->has_dirty_limit_throttle_time_per_round) {
++        monitor_printf(mon, "dirty-limit throttle time: %" PRIu64 " us\n",
++                       info->dirty_limit_throttle_time_per_round);
++    }
++
++    if (info->has_dirty_limit_ring_full_time) {
++        monitor_printf(mon, "dirty-limit ring full time: %" PRIu64 " us\n",
++                       info->dirty_limit_ring_full_time);
++    }
++
+     if (info->has_postcopy_blocktime) {
+         monitor_printf(mon, "postcopy blocktime: %u\n",
+                        info->postcopy_blocktime);
 diff --git a/migration/migration.c b/migration/migration.c
-index 096e8191d1..a3791900fd 100644
+index a3791900fd..a4dcaa3c91 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -166,6 +166,9 @@ void migration_cancel(const Error *error)
-     if (error) {
-         migrate_set_error(current_migration, error);
-     }
-+    if (migrate_dirty_limit()) {
-+        qmp_cancel_vcpu_dirty_limit(false, -1, NULL);
-+    }
-     migrate_fd_cancel(current_migration);
- }
-=20
-diff --git a/migration/ram.c b/migration/ram.c
-index b6559f9312..8a86363216 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -46,6 +46,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-types-migration.h"
- #include "qapi/qapi-events-migration.h"
-+#include "qapi/qapi-commands-migration.h"
- #include "qapi/qmp/qerror.h"
- #include "trace.h"
- #include "exec/ram_addr.h"
-@@ -59,6 +60,8 @@
- #include "multifd.h"
- #include "sysemu/runstate.h"
+@@ -64,6 +64,7 @@
+ #include "yank_functions.h"
+ #include "sysemu/qtest.h"
  #include "options.h"
 +#include "sysemu/dirtylimit.h"
-+#include "sysemu/kvm.h"
 =20
- #include "hw/boards.h" /* for machine_dump_guest_core() */
-=20
-@@ -984,6 +987,37 @@ static void migration_update_rates(RAMState *rs, int64_t=
- end_time)
+ static NotifierList migration_state_notifiers =3D
+     NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
+@@ -974,6 +975,15 @@ static void populate_ram_info(MigrationInfo *info, Migra=
+tionState *s)
+         info->ram->dirty_pages_rate =3D
+            stat64_get(&mig_stats.dirty_pages_rate);
      }
- }
-=20
-+/*
-+ * Enable dirty-limit to throttle down the guest
-+ */
-+static void migration_dirty_limit_guest(void)
-+{
-+    /*
-+     * dirty page rate quota for all vCPUs fetched from
-+     * migration parameter 'vcpu_dirty_limit'
-+     */
-+    static int64_t quota_dirtyrate;
-+    MigrationState *s =3D migrate_get_current();
 +
-+    /*
-+     * If dirty limit already enabled and migration parameter
-+     * vcpu-dirty-limit untouched.
-+     */
-+    if (dirtylimit_in_service() &&
-+        quota_dirtyrate =3D=3D s->parameters.vcpu_dirty_limit) {
-+        return;
++    if (migrate_dirty_limit() && dirtylimit_in_service()) {
++        info->has_dirty_limit_throttle_time_per_round =3D true;
++        info->dirty_limit_throttle_time_per_round =3D
++                            dirtylimit_throttle_time_per_round();
++
++        info->has_dirty_limit_ring_full_time =3D true;
++        info->dirty_limit_ring_full_time =3D dirtylimit_ring_full_time();
 +    }
-+
-+    quota_dirtyrate =3D s->parameters.vcpu_dirty_limit;
-+
-+    /*
-+     * Set all vCPU a quota dirtyrate, note that the second
-+     * parameter will be ignored if setting all vCPU for the vm
-+     */
-+    qmp_set_vcpu_dirty_limit(false, -1, quota_dirtyrate, NULL);
-+    trace_migration_dirty_limit_guest(quota_dirtyrate);
-+}
-+
- static void migration_trigger_throttle(RAMState *rs)
- {
-     uint64_t threshold =3D migrate_throttle_trigger_threshold();
-@@ -1013,6 +1047,8 @@ static void migration_trigger_throttle(RAMState *rs)
-             trace_migration_throttle();
-             mig_throttle_guest_down(bytes_dirty_period,
-                                     bytes_dirty_threshold);
-+        } else if (migrate_dirty_limit()) {
-+            migration_dirty_limit_guest();
-         }
-     }
  }
-diff --git a/migration/trace-events b/migration/trace-events
-index 5259c1044b..580895e86e 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -93,6 +93,7 @@ migration_bitmap_sync_start(void) ""
- migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
- migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsig=
-ned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
- migration_throttle(void) ""
-+migration_dirty_limit_guest(int64_t dirtyrate) "guest dirty page rate limit =
-%" PRIi64 " MB/s"
- ram_discard_range(const char *rbname, uint64_t start, size_t len) "%s: start=
-: %" PRIx64 " %zx"
- ram_load_loop(const char *rbname, uint64_t addr, int flags, void *host) "%s:=
- addr: 0x%" PRIx64 " flags: 0x%x host: %p"
- ram_load_postcopy_loop(int channel, uint64_t addr, int flags) "chan=3D%d add=
-r=3D0x%" PRIx64 " flags=3D0x%x"
+=20
+ static void populate_disk_info(MigrationInfo *info)
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 031832cde5..97f7d0fd3c 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -250,6 +250,18 @@
+ #     blocked.  Present and non-empty when migration is blocked.
+ #     (since 6.0)
+ #
++# @dirty-limit-throttle-time-per-round: Maximum throttle time
++#     (in microseconds) of virtual CPUs each dirty ring full round,
++#     which shows how MigrationCapability dirty-limit affects the
++#     guest during live migration. (since 8.1)
++#
++# @dirty-limit-ring-full-time: Estimated average dirty ring full
++#     time (in microseconds) each dirty ring full round. The value
++#     equals dirty ring memory size divided by average dirty page
++#     rate of the virtual CPU, which can be used to observe the
++#     average memory load of the virtual CPU indirectly. Note that
++#     zero means guest doesn't dirty memory (since 8.1)
++#
+ # Since: 0.14
+ ##
+ { 'struct': 'MigrationInfo',
+@@ -267,7 +279,9 @@
+            '*postcopy-blocktime' : 'uint32',
+            '*postcopy-vcpu-blocktime': ['uint32'],
+            '*compression': 'CompressionStats',
+-           '*socket-address': ['SocketAddress'] } }
++           '*socket-address': ['SocketAddress'],
++           '*dirty-limit-throttle-time-per-round': 'uint64',
++           '*dirty-limit-ring-full-time': 'uint64'} }
+=20
+ ##
+ # @query-migrate:
 diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index 953ef934bc..5134296667 100644
+index 5134296667..a0686323e5 100644
 --- a/softmmu/dirtylimit.c
 +++ b/softmmu/dirtylimit.c
-@@ -436,6 +436,23 @@ static void dirtylimit_cleanup(void)
-     dirtylimit_state_finalize();
+@@ -565,6 +565,45 @@ out:
+     hmp_handle_error(mon, err);
  }
 =20
-+/*
-+ * dirty page rate limit is not allowed to set if migration
-+ * is running with dirty-limit capability enabled.
-+ */
-+static bool dirtylimit_is_allowed(void)
++/* Return the max throttle time of each virtual CPU */
++uint64_t dirtylimit_throttle_time_per_round(void)
 +{
-+    MigrationState *ms =3D migrate_get_current();
++    CPUState *cpu;
++    int64_t max =3D 0;
 +
-+    if (migration_is_running(ms->state) &&
-+        (!qemu_thread_is_self(&ms->thread)) &&
-+        migrate_dirty_limit() &&
-+        dirtylimit_in_service()) {
-+        return false;
++    CPU_FOREACH(cpu) {
++        if (cpu->throttle_us_per_full > max) {
++            max =3D cpu->throttle_us_per_full;
++        }
 +    }
-+    return true;
++
++    return max;
 +}
 +
- void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
-                                  int64_t cpu_index,
-                                  Error **errp)
-@@ -449,6 +466,12 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
-         return;
-     }
-=20
-+    if (!dirtylimit_is_allowed()) {
-+        error_setg(errp, "can't cancel dirty page rate limit while"
-+                   " migration is running");
-+        return;
++/*
++ * Estimate average dirty ring full time of each virtaul CPU.
++ * Return 0 if guest doesn't dirty memory.
++ */
++uint64_t dirtylimit_ring_full_time(void)
++{
++    CPUState *cpu;
++    uint64_t curr_rate =3D 0;
++    int nvcpus =3D 0;
++
++    CPU_FOREACH(cpu) {
++        if (cpu->running) {
++            nvcpus++;
++            curr_rate +=3D vcpu_dirty_rate_get(cpu->cpu_index);
++        }
 +    }
 +
-     if (!dirtylimit_in_service()) {
-         return;
-     }
-@@ -499,6 +522,12 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
-         return;
-     }
-=20
-+    if (!dirtylimit_is_allowed()) {
-+        error_setg(errp, "can't set dirty page rate limit while"
-+                   " migration is running");
-+        return;
++    if (!curr_rate || !nvcpus) {
++        return 0;
 +    }
 +
-     if (!dirty_rate) {
-         qmp_cancel_vcpu_dirty_limit(has_cpu_index, cpu_index, errp);
-         return;
++    return dirtylimit_dirty_ring_full_time(curr_rate / nvcpus);
++}
++
+ static struct DirtyLimitInfo *dirtylimit_query_vcpu(int cpu_index)
+ {
+     DirtyLimitInfo *info =3D NULL;
 --=20
 2.38.5
 
