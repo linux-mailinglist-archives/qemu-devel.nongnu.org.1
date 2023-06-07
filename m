@@ -2,69 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774CD726866
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 20:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAEA72656E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:05:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6xlX-0005kR-KF; Wed, 07 Jun 2023 14:20:15 -0400
+	id 1q6veY-0002oY-Sr; Wed, 07 Jun 2023 12:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q6xlT-0005i3-OM
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:20:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6veS-0002oN-Pk
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:04:48 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q6xlG-0003jm-94
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 14:20:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686161997;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Gd7EvDhILv2McBuFzWvrD2Crcmn7PENcyGC++OJufVg=;
- b=U5d0evo9qjVlpoIbXq6DpeUoGH3hlWx6keZxsh8MCRCf2GToSTmGvDoBmbhwfMJpqBGWtQ
- i5gd19wBRBhLDMZDzRe4hRv/Nww7EyjLtlz7gMXQ1e/Ob/vpjcIHslTIblOdLGirSsiRNJ
- udscM77T2pxSIF7DU8UzXS9t0ZZGQKY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-86-zpIc-jXWOR6mSjkC-ZVMjw-1; Wed, 07 Jun 2023 14:19:53 -0400
-X-MC-Unique: zpIc-jXWOR6mSjkC-ZVMjw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76C9A3806704;
- Wed,  7 Jun 2023 18:19:53 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EC9219E8D;
- Wed,  7 Jun 2023 18:19:52 +0000 (UTC)
-Date: Wed, 7 Jun 2023 12:04:12 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, dlemoal@kernel.org, dmitry.fomichev@wdc.com,
- hare@suse.de, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-Subject: Re: [PATCH 1/2] block/file-posix: fix g_file_get_contents return path
-Message-ID: <20230607160412.GD2138915@fedora>
-References: <20230604061658.49004-1-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6veQ-0006dn-0z
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:04:48 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0A151B5E7;
+ Wed,  7 Jun 2023 19:04:44 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D1CB3A554;
+ Wed,  7 Jun 2023 19:04:42 +0300 (MSK)
+Message-ID: <f414ba71-da57-31b9-0d8a-9986ce94c411@tls.msk.ru>
+Date: Wed, 7 Jun 2023 19:04:42 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="ervGsn7Itrktaoyu"
-Content-Disposition: inline
-In-Reply-To: <20230604061658.49004-1-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] vdpa: fix not using CVQ buffer in case of error
+Content-Language: en-US
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Cindy Lu <lulu@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Hawkins Jiawei <yin31149@gmail.com>
+References: <20230602173451.1917999-1-eperezma@redhat.com>
+ <47527a58-039e-55e7-3541-bcd7ceb3296a@tls.msk.ru>
+ <CAJaqyWeAsSJBhDtGkGTuf+uQsaEMOsNYMzhbwkJ6yAJ1-q+9pA@mail.gmail.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <CAJaqyWeAsSJBhDtGkGTuf+uQsaEMOsNYMzhbwkJ6yAJ1-q+9pA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,45 +64,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+07.06.2023 16:52, Eugenio Perez Martin wrote:
+> On Wed, Jun 7, 2023 at 12:11 PM Michael Tokarev <mjt@tls.msk.ru> wrote:
+..
+>> Again, smells like a stable material, is it not?
+>>
+>> Please Cc: qemu-stable@nongnu.org for other changes you think should be
+>> applied to stable qemu series.
+> 
+> Sorry, I totally forgot. This one should go to stable, yes.
 
---ervGsn7Itrktaoyu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That's okay, nothing to be sorry about. You did a good job
+already fixing the issues.
 
-On Sun, Jun 04, 2023 at 02:16:57PM +0800, Sam Li wrote:
-> The g_file_get_contents() function returns a g_boolean. If it fails, the
-> returned value will be 0 instead of -1. Solve the issue by skipping
-> assigning ret value.
->=20
-> This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
-> by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
->=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  block/file-posix.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+Queued up.
 
-The number of bytes returned was never used, so changing the return
-value to 0 or -errno is fine:
+Thank you!
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---ervGsn7Itrktaoyu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSAqnwACgkQnKSrs4Gr
-c8j8owf/V2mRvGurqnFMBH2t3TYerSQf+CzcmZJHN/mMm4mdmC6I8VoR0XxiKk9W
-99xP6e9pN4OYmZBZOLypszOtm4m/xQChM6wVGQkgvTgPQOdLuCW9ypO9NbSJzJa2
-0YnXx3xRZFSz0TmImXFX5op36v0tRkZQii3pVpEk1R8hoBZIcLZ0c/E91Qh31azf
-Umagt6BlVcTspzjtANOfqYgaiWucKsVTTuyQ65iMNNyYAQ/OgJdYgSeonoVTQZCy
-KEcQTpPaxc5d8PcNQckVEGnW6B8Ie1r/hAXeShTcpV/8w9MY1A4QAxNf5sVT4xRc
-yT6FQchA3ICj0EgQAIzwZlSMzz1Lpg==
-=2cnM
------END PGP SIGNATURE-----
-
---ervGsn7Itrktaoyu--
-
+/mjt
 
