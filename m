@@ -2,52 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6D9727605
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C90AA72668C
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:56:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BJ-0006A1-4h; Thu, 08 Jun 2023 00:23:29 -0400
+	id 1q6wRl-0006yw-GE; Wed, 07 Jun 2023 12:55:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z6-0006TY-EH
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:44 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0000Dn-SJ
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:44 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 3486811F140;
- Thu,  8 Jun 2023 02:02:40 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 08 Jun 2023 00:46:45 +0800
-Subject: [PATCH QEMU v5 8/8] tests: Add migration dirty-limit capability test
+ (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
+ id 1q6wRL-0006yb-SR
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:55:24 -0400
+Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
+ id 1q6wRG-0001Zt-W4
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:55:19 -0400
+Received: by mail-qk1-x72d.google.com with SMTP id
+ af79cd13be357-75d518f6f74so377555585a.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:55:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686156912; x=1688748912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=X0P5WffgCUYQGlH/E0Lhd3aJYet1tELH+EQMgsv6cOg=;
+ b=N9zJ4mhw6dRasUUJCCVLohlTPekW1CZT5rA0LT65RVlqsMgHSdjv04HYO3TWq30fYe
+ JSVv7xz7nuvRhqNjXRmdWQKLKr0XGwQVoK9FtavKIKLprXAP5FNSY170s0nHEIx5G+SF
+ MhqtUnl+ETxjNwtNggZ0ny4SK0u6CDN41Nk3KAFKCVCLT7HABw2XwsKERYRhbyhpBkSR
+ dqZSBo1oDlwpsxHpQmoUevNHoDp7Xs6AIUVzKPmk95g7D7pvTQeL93cNyRbQ/db8Ntwy
+ 5t0xsCdJmhcyboi0+WMbdhxco22g91fWYWPGC8JQBc4cQ6ZDr+nLiCcNNblEMb8hs8Te
+ 8YOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686156912; x=1688748912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=X0P5WffgCUYQGlH/E0Lhd3aJYet1tELH+EQMgsv6cOg=;
+ b=kaV4VEKmRqzl+I5j/hMCIXrLk6uQVg22vIOEzLDeOXBBqc4C+joY0vWpiEtGwwt804
+ NWqw+mp/ZPL+STcvP7jmFZ1rTXED2hXPDNbGrCe8rCfZoEIfeLTqONT3c+KuRDAmSbxX
+ O7kherxTwTkULP6Qp5IxneLyUkzq+jE3dBrqvZe/uCr1xOlM/5IbZ3ojv0AX7+VtEWf0
+ IP4Dj0n4CBJ5xYM4N6w2uip74NWIfEl0DfhBt8M/Zbt3UxFxbqMxrYXr4HJ2LYWXjVSO
+ QNFfTQKRC3dFcWETNB7i4CkK/MssZUNt67IZpnWTFoqIly9R80JEAXpSbrpc9I6jd1u7
+ HJKQ==
+X-Gm-Message-State: AC+VfDwgGQ+c+sMTJSSRAxPGR8TI1taRbtdCnO04X+LebZzXGJYvayYk
+ PB2b1TnVbIrcaoKE6l9iALEXFuNKB8CAZpnk
+X-Google-Smtp-Source: ACHHUZ4D3tUrrfeAEM1DZ8KNOXJXw4F3t85Gn3o518VkWFS5mn5m6x/fKVG1LvHoHBrPe8fwBhhVog==
+X-Received: by 2002:a17:90a:6097:b0:259:bdb:6956 with SMTP id
+ z23-20020a17090a609700b002590bdb6956mr2479713pji.7.1686156545868; 
+ Wed, 07 Jun 2023 09:49:05 -0700 (PDT)
+Received: from localhost.localdomain ([223.104.40.226])
+ by smtp.gmail.com with ESMTPSA id
+ 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 09:49:05 -0700 (PDT)
+From: Yeqi Fu <fufuyqqqqqq@gmail.com>
+To: alex.bennee@linaro.org
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
+ Yeqi Fu <fufuyqqqqqq@gmail.com>
+Subject: [RFC v2 0/6] Native Library Calls
+Date: Thu,  8 Jun 2023 00:47:44 +0800
+Message-Id: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Message-ID: <168618975839.6361.17407633874747688653-8@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-qk1-x72d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,211 +87,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+This patch introduces a set of feature instructions for native calls
+and provides helpers to translate these instructions to corresponding
+native functions. A shared library is also implemented, where native
+functions are rewritten as feature instructions. At runtime, user
+programs load the shared library, and feature instructions are
+executed when native functions are called. This patch is applicable
+to user programs with architectures x86, x86_64, arm, aarch64, mips,
+and mips64. To build, compile libnative.c into a shared library for
+the user program's architecture and run the
+'../configure --enable-user-native-call && make' command.
 
-Add migration dirty-limit capability test if kernel support
-dirty ring.
+Yeqi Fu (6):
+  build: Add configure options for native calls
+  Add the libnative library
+  target/i386: Add native library calls
+  target/mips: Add native library calls
+  target/arm: Add native library calls
+  linux-user: Add '-native-bypass' option
 
-Migration dirty-limit capability introduce dirty limit
-capability, two parameters: x-vcpu-dirty-limit-period and
-vcpu-dirty-limit are introduced to implement the live
-migration with dirty limit.
+ Makefile                             |  4 ++
+ common-user/native/Makefile.include  |  9 ++++
+ common-user/native/Makefile.target   | 22 ++++++++++
+ common-user/native/libnative.c       | 65 ++++++++++++++++++++++++++++
+ configure                            | 50 +++++++++++++++++++++
+ docs/devel/build-system.rst          |  4 ++
+ include/native/libnative.h           | 11 +++++
+ include/native/native-func.h         | 11 +++++
+ include/qemu/envlist.h               |  1 +
+ linux-user/main.c                    | 23 ++++++++++
+ meson.build                          |  8 ++++
+ meson_options.txt                    |  2 +
+ scripts/meson-buildoptions.sh        |  4 ++
+ target/arm/helper.c                  | 47 ++++++++++++++++++++
+ target/arm/helper.h                  |  6 +++
+ target/arm/tcg/translate-a64.c       | 22 ++++++++++
+ target/arm/tcg/translate.c           | 25 ++++++++++-
+ target/arm/tcg/translate.h           | 19 ++++++++
+ target/i386/helper.h                 |  6 +++
+ target/i386/tcg/translate.c          | 20 +++++++++
+ target/i386/tcg/user/meson.build     |  1 +
+ target/i386/tcg/user/native_helper.c | 65 ++++++++++++++++++++++++++++
+ target/mips/helper.h                 |  6 +++
+ target/mips/tcg/meson.build          |  1 +
+ target/mips/tcg/native_helper.c      | 55 +++++++++++++++++++++++
+ target/mips/tcg/translate.c          | 20 ++++++++-
+ target/mips/tcg/translate.h          | 12 +++++
+ util/envlist.c                       | 56 ++++++++++++++++++++++++
+ 28 files changed, 573 insertions(+), 2 deletions(-)
+ create mode 100644 common-user/native/Makefile.include
+ create mode 100644 common-user/native/Makefile.target
+ create mode 100644 common-user/native/libnative.c
+ create mode 100644 include/native/libnative.h
+ create mode 100644 include/native/native-func.h
+ create mode 100644 target/i386/tcg/user/native_helper.c
+ create mode 100644 target/mips/tcg/native_helper.c
 
-The test case does the following things:
-1. start src, dst vm and enable dirty-limit capability
-2. start migrate and set cancel it to check if dirty limit
-   stop working.
-3. restart dst vm
-4. start migrate and enable dirty-limit capability
-5. check if migration satisfy the convergence condition
-   during pre-switchover phase.
+-- 
+2.34.1
 
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
----
- tests/qtest/migration-test.c | 154 +++++++++++++++++++++++++++++++++++
- 1 file changed, 154 insertions(+)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b0c355bbd9..60789a8d9f 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2609,6 +2609,158 @@ static void test_vcpu_dirty_limit(void)
-     dirtylimit_stop_vm(vm);
- }
-=20
-+static void migrate_dirty_limit_wait_showup(QTestState *from,
-+                                            const int64_t period,
-+                                            const int64_t value)
-+{
-+    /* Enable dirty limit capability */
-+    migrate_set_capability(from, "dirty-limit", true);
-+
-+    /* Set dirty limit parameters */
-+    migrate_set_parameter_int(from, "x-vcpu-dirty-limit-period", period);
-+    migrate_set_parameter_int(from, "vcpu-dirty-limit", value);
-+
-+    /* Make sure migrate can't converge */
-+    migrate_ensure_non_converge(from);
-+
-+    /* To check limit rate after precopy */
-+    migrate_set_capability(from, "pause-before-switchover", true);
-+
-+    /* Wait for the serial output from the source */
-+    wait_for_serial("src_serial");
-+}
-+
-+/*
-+ * This test does:
-+ *  source               target
-+ *                       migrate_incoming
-+ *     migrate
-+ *     migrate_cancel
-+ *                       restart target
-+ *     migrate
-+ *
-+ *  And see that if dirty limit works correctly
-+ */
-+static void test_migrate_dirty_limit(void)
-+{
-+    g_autofree char *uri =3D g_strdup_printf("unix:%s/migsocket", tmpfs);
-+    QTestState *from, *to;
-+    int64_t remaining, throttle_us_per_full;
-+    /*
-+     * We want the test to be stable and as fast as possible.
-+     * E.g., with 1Gb/s bandwith migration may pass without dirty limit,
-+     * so we need to decrease a bandwidth.
-+     */
-+    const int64_t dirtylimit_period =3D 1000, dirtylimit_value =3D 50;
-+    const int64_t max_bandwidth =3D 400000000; /* ~400Mb/s */
-+    const int64_t downtime_limit =3D 250; /* 250ms */
-+    /*
-+     * We migrate through unix-socket (> 500Mb/s).
-+     * Thus, expected migration speed ~=3D bandwidth limit (< 500Mb/s).
-+     * So, we can predict expected_threshold
-+     */
-+    const int64_t expected_threshold =3D max_bandwidth * downtime_limit / 10=
-00;
-+    int max_try_count =3D 10;
-+    MigrateCommon args =3D {
-+        .start =3D {
-+            .hide_stderr =3D true,
-+            .use_dirty_ring =3D true,
-+        },
-+        .listen_uri =3D uri,
-+        .connect_uri =3D uri,
-+    };
-+
-+    /* Start src, dst vm */
-+    if (test_migrate_start(&from, &to, args.listen_uri, &args.start)) {
-+        return;
-+    }
-+
-+    /* Prepare for dirty limit migration and wait src vm show up */
-+    migrate_dirty_limit_wait_showup(from, dirtylimit_period, dirtylimit_valu=
-e);
-+
-+    /* Start migrate */
-+    migrate_qmp(from, uri, "{}");
-+
-+    /* Wait for dirty limit throttle begin */
-+    throttle_us_per_full =3D 0;
-+    while (throttle_us_per_full =3D=3D 0) {
-+        throttle_us_per_full =3D
-+        read_migrate_property_int(from, "dirty-limit-throttle-time-per-round=
-");
-+        usleep(100);
-+        g_assert_false(got_src_stop);
-+    }
-+
-+    /* Now cancel migrate and wait for dirty limit throttle switch off */
-+    migrate_cancel(from);
-+    wait_for_migration_status(from, "cancelled", NULL);
-+
-+    /* Check if dirty limit throttle switched off, set timeout 1ms */
-+    do {
-+        throttle_us_per_full =3D
-+        read_migrate_property_int(from, "dirty-limit-throttle-time-per-round=
-");
-+        usleep(100);
-+        g_assert_false(got_src_stop);
-+    } while (throttle_us_per_full !=3D 0 && --max_try_count);
-+
-+    /* Assert dirty limit is not in service */
-+    g_assert_cmpint(throttle_us_per_full, =3D=3D, 0);
-+
-+    args =3D (MigrateCommon) {
-+        .start =3D {
-+            .only_target =3D true,
-+            .use_dirty_ring =3D true,
-+        },
-+        .listen_uri =3D uri,
-+        .connect_uri =3D uri,
-+    };
-+
-+    /* Restart dst vm, src vm already show up so we needn't wait anymore */
-+    if (test_migrate_start(&from, &to, args.listen_uri, &args.start)) {
-+        return;
-+    }
-+
-+    /* Start migrate */
-+    migrate_qmp(from, uri, "{}");
-+
-+    /* Wait for dirty limit throttle begin */
-+    throttle_us_per_full =3D 0;
-+    while (throttle_us_per_full =3D=3D 0) {
-+        throttle_us_per_full =3D
-+        read_migrate_property_int(from, "dirty-limit-throttle-time-per-round=
-");
-+        usleep(100);
-+        g_assert_false(got_src_stop);
-+    }
-+
-+    /*
-+     * The dirty limit rate should equals the return value of
-+     * query-vcpu-dirty-limit if dirty limit cap set
-+     */
-+    g_assert_cmpint(dirtylimit_value, =3D=3D, get_limit_rate(from));
-+
-+    /* Now, we have tested if dirty limit works, let it converge */
-+    migrate_set_parameter_int(from, "downtime-limit", downtime_limit);
-+    migrate_set_parameter_int(from, "max-bandwidth", max_bandwidth);
-+
-+    /*
-+     * Wait for pre-switchover status to check if migration
-+     * satisfy the convergence condition
-+     */
-+    wait_for_migration_status(from, "pre-switchover", NULL);
-+
-+    remaining =3D read_ram_property_int(from, "remaining");
-+    g_assert_cmpint(remaining, <,
-+                    (expected_threshold + expected_threshold / 100));
-+
-+    migrate_continue(from, "pre-switchover");
-+
-+    qtest_qmp_eventwait(to, "RESUME");
-+
-+    wait_for_serial("dest_serial");
-+    wait_for_migration_complete(from);
-+
-+    test_migrate_end(from, to, true);
-+}
-+
- static bool kvm_dirty_ring_supported(void)
- {
- #if defined(__linux__) && defined(HOST_X86_64)
-@@ -2816,6 +2968,8 @@ int main(int argc, char **argv)
-                        test_precopy_unix_dirty_ring);
-         qtest_add_func("/migration/vcpu_dirty_limit",
-                        test_vcpu_dirty_limit);
-+        qtest_add_func("/migration/dirty_limit",
-+                       test_migrate_dirty_limit);
-     }
-=20
-     ret =3D g_test_run();
---=20
-2.38.5
 
