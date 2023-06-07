@@ -2,59 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882C57265D9
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5AF7265D5
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vyy-0001ZD-9q; Wed, 07 Jun 2023 12:26:00 -0400
+	id 1q6vxq-00009U-N6; Wed, 07 Jun 2023 12:24:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q6vyo-00014L-3T
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:53 -0400
-Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6vxo-00008J-Cq
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:24:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q6vym-0007W5-Dj
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=xevbDkqExpt1jD16rB9KJCYEsQRhHbm1JQY3/fdLplw=; b=s9jwj3NstMD5zzORwuTcUl7UMT
- A8PPMOYxWd6cXMpINvb2/+nNSnhCxo8xwJLMMGfq4t/pBoVmTC1aJr7ZTJUg51q6GgZ+tJ7QJQIiE
- VeVDwsmRHQXWz7/q9glF5NszPMvEFl0muSgqHYyrHDDIcz0PyGDqkRq2KzqJRGDsKNSQ=;
-X-Envelope-From: <kbastian@mail.uni-paderborn.de>
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL 6/6] tests/tcg/tricore: Add recursion test for CSAs
-Date: Wed,  7 Jun 2023 18:24:40 +0200
-Message-Id: <20230607162440.7807-7-kbastian@mail.uni-paderborn.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
-References: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6vxm-0006lP-TK
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:24:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686155085;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wstVw8tmycB7bkh1WRfMZZR7YZOJCpNuIcnoKyrIw54=;
+ b=hgoSHpiIM4vbRqYo2Rz6FbCGOFzjUz4bMmVXcWqMoHrZLIQ+EpGALt7cvV7cxbVQ6YQM15
+ q+G581l08l6tdvcpo5OcrHf+4lB+C1gSfFevZOb3ycVlYiqMj8dyILfahC4DH+y20vEYlc
+ NpscxnzoVPl8e/AvZaQcwufANqOfX3E=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-508-P69DU4yxMnik3ETw18uRZQ-1; Wed, 07 Jun 2023 12:24:44 -0400
+X-MC-Unique: P69DU4yxMnik3ETw18uRZQ-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-62b67ff6943so3595726d6.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:24:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686155083; x=1688747083;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wstVw8tmycB7bkh1WRfMZZR7YZOJCpNuIcnoKyrIw54=;
+ b=VmPj3ayYNLApkQswlES73ImcPy25rOCRXg+akUfcsLBlKBBOlO/Zd5tk7+EWjmJl3j
+ NeLAFOb6hflXHIn0xb6mzkhGwj/QJbgXUFopsHRy1wUPgMihIwZJvgJg7y67rxXUn4qH
+ okRY6zAqs4dvZBHXHTWtgj6l5rGYQFtfa3ZzmY8pEWgIPTm+5HHtu7GG7DNB0CgXATRy
+ zhn/KwK/fdB3BTUg7S9YYsJuN8WpdT1LSeyZ2lOhHmw1LKlEjo0l7X2mPXXRUGveWPpW
+ RCPnwIdwW7o2yFjdfRT/+cMTQufQqLTgJJmZj4LHR8THkkq9HgYOtOG6rGX/YbBHSYRk
+ HPXg==
+X-Gm-Message-State: AC+VfDwwWDoy1N1fqE9cpj26gxxd+Ua+5eGtEqw3yT7cITN0hJeus+Rt
+ w1sHqxSWy8IqRpi7ilJRs+OdprmZr78I5ufWiSncxuOYLrySsmveenlzinS3HzSEshESkb+zTxX
+ quW3Qc9eU1ePMeMg=
+X-Received: by 2002:a05:6214:c6d:b0:616:870c:96b8 with SMTP id
+ t13-20020a0562140c6d00b00616870c96b8mr6579712qvj.3.1686155083707; 
+ Wed, 07 Jun 2023 09:24:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4fQ9sVs0UkCSkzBQrKaFuMdM8SYdiBQqpH5w6qlra3F4vMiL6xGtaD89AO8U24asd8Ld0Sjw==
+X-Received: by 2002:a05:6214:c6d:b0:616:870c:96b8 with SMTP id
+ t13-20020a0562140c6d00b00616870c96b8mr6579688qvj.3.1686155083431; 
+ Wed, 07 Jun 2023 09:24:43 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ x14-20020a0ce0ce000000b00605f796d30esm29008qvk.51.2023.06.07.09.24.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 09:24:42 -0700 (PDT)
+Date: Wed, 7 Jun 2023 12:24:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ Jiang Jiacheng <jiangjiacheng@huawei.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v2 0/3] migration: Fix multifd cancel test
+Message-ID: <ZICvSTVotKRtHq3P@x1n>
+References: <20230607161306.31425-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.7.161517, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=36, da=173764209, mc=12, sc=0,
- hc=12, sp=0, fso=36, re=0, sd=0, hd=0
-X-IMT-Source: Intern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::14;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230607161306.31425-1-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,57 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230526061946.54514-7-kbastian@mail.uni-paderborn.de>
----
- tests/tcg/tricore/Makefile.softmmu-target     |  3 ++-
- tests/tcg/tricore/c/test_context_save_areas.c | 15 +++++++++++++++
- 2 files changed, 17 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/tricore/c/test_context_save_areas.c
+On Wed, Jun 07, 2023 at 01:13:03PM -0300, Fabiano Rosas wrote:
+> Fabiano Rosas (3):
+>   migration/multifd: Rename threadinfo.c functions
+>   migration/multifd: Protect accesses to migration_threads
+>   tests/qtest: Re-enable multifd cancel test
 
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index f051444991..aff7c1b580 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -4,7 +4,7 @@ C_TESTS_PATH = $(TESTS_PATH)/c
- 
- LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
- ASFLAGS = -mtc162
--CFLAGS = -mtc162 -c
-+CFLAGS = -mtc162 -c -I$(TESTS_PATH)
- 
- TESTS += test_abs.asm.tst
- TESTS += test_bmerge.asm.tst
-@@ -23,6 +23,7 @@ TESTS += test_msub.asm.tst
- TESTS += test_muls.asm.tst
- 
- TESTS += test_boot_to_main.c.tst
-+TESTS += test_context_save_areas.c.tst
- 
- QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
- 
-diff --git a/tests/tcg/tricore/c/test_context_save_areas.c b/tests/tcg/tricore/c/test_context_save_areas.c
-new file mode 100644
-index 0000000000..a300ee2f9c
---- /dev/null
-+++ b/tests/tcg/tricore/c/test_context_save_areas.c
-@@ -0,0 +1,15 @@
-+#include "testdev_assert.h"
-+
-+static int fib(int n)
-+{
-+    if (n == 1 || n == 2) {
-+        return 1;
-+    }
-+    return fib(n - 2) + fib(n - 1);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    testdev_assert(fib(10) == 55);
-+    return 0;
-+}
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
 -- 
-2.40.1
+Peter Xu
 
 
