@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B881B7265D6
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23EB7265D3
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6vyt-0000ua-VW; Wed, 07 Jun 2023 12:25:56 -0400
+	id 1q6vyr-0000q1-OD; Wed, 07 Jun 2023 12:25:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q6vyK-0000bm-31
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:20 -0400
-Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
+ id 1q6vyS-0000fb-2c
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:32 -0400
+Received: from nylar.uni-paderborn.de ([2001:638:502:c003::18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q6vyH-0007CZ-Dm
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:19 -0400
+ id 1q6vyQ-0007Fq-E2
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=xvVXQN0L0sYhcGCr43tiPN5P6Qjn//peFrAhkmPHHkA=; b=IMu1JnlGg0tizdKib3cYkN9oEb
- 82qRYs6CRe5khdMDqQWqkzcgX0sZ/rjKJMJY2G/pDcGOPWuOY5WFcAXGjuHAL0u4N14vrgIWzem5j
- BbDclsjNHrJkzkam1aoUfKVRH/byZCKAC4yT+4IhmS3OdJGpQku8QNPuopM/MQgLfEps=;
+ bh=gufebkRhBQmLsvXMT8vvefYqG2vFn/tQfw3uID5EFoU=; b=qAhMPut3VU6EMyfl40PxhYLqos
+ tkiPwV3XC8dGfrMEnVw3NDxZ7m3w9QRmcBptQRNfQpMC6M0XweztU4NEUM4NCXbmpbrxaqVdi6pQa
+ X9f2bFG0EBq82T7IVi0Pfxj1epZHD93/3Pq22COazcCk//VrsV4eaYMdEFZNffxnilPM=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL 1/6] tests/tcg/tricore: Move asm tests into 'asm' directory
-Date: Wed,  7 Jun 2023 18:24:35 +0200
-Message-Id: <20230607162440.7807-2-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 2/6] tests/tcg/tricore: Uses label for memory addresses
+Date: Wed,  7 Jun 2023 18:24:36 +0200
+Message-Id: <20230607162440.7807-3-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
 References: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
@@ -41,14 +41,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.7.161517, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=6, da=173764179, mc=2, sc=0, hc=2,
- sp=0, fso=6, re=0, sd=0, hd=0
+ AntiVirus-Data: 2023.6.7.600000
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=12, da=173764185, mc=4, sc=0, hc=4,
+ sp=0, fso=12, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::14;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
+Received-SPF: pass client-ip=2001:638:502:c003::18;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=nylar.uni-paderborn.de
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -71,167 +71,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this seperates these tests from the upcoming tests written in C.
-Also rename the compiled test to 'test_<foo>.asm.tst'.
+the linker might rearrange sections, so lets reference memory by label
+name instead of addr + off.
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230526061946.54514-2-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230526061946.54514-3-kbastian@mail.uni-paderborn.de>
 ---
- tests/tcg/tricore/Makefile.softmmu-target | 35 ++++++++++++-----------
- tests/tcg/tricore/{ => asm}/macros.h      |  0
- tests/tcg/tricore/{ => asm}/test_abs.S    |  0
- tests/tcg/tricore/{ => asm}/test_bmerge.S |  0
- tests/tcg/tricore/{ => asm}/test_clz.S    |  0
- tests/tcg/tricore/{ => asm}/test_dextr.S  |  0
- tests/tcg/tricore/{ => asm}/test_dvstep.S |  0
- tests/tcg/tricore/{ => asm}/test_fadd.S   |  0
- tests/tcg/tricore/{ => asm}/test_fmul.S   |  0
- tests/tcg/tricore/{ => asm}/test_ftoi.S   |  0
- tests/tcg/tricore/{ => asm}/test_imask.S  |  0
- tests/tcg/tricore/{ => asm}/test_insert.S |  0
- tests/tcg/tricore/{ => asm}/test_ld_bu.S  |  0
- tests/tcg/tricore/{ => asm}/test_ld_h.S   |  0
- tests/tcg/tricore/{ => asm}/test_madd.S   |  0
- tests/tcg/tricore/{ => asm}/test_msub.S   |  0
- tests/tcg/tricore/{ => asm}/test_muls.S   |  0
- 17 files changed, 18 insertions(+), 17 deletions(-)
- rename tests/tcg/tricore/{ => asm}/macros.h (100%)
- rename tests/tcg/tricore/{ => asm}/test_abs.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_bmerge.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_clz.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_dextr.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_dvstep.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_fadd.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_fmul.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_ftoi.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_imask.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_insert.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_ld_bu.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_ld_h.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_madd.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_msub.S (100%)
- rename tests/tcg/tricore/{ => asm}/test_muls.S (100%)
+ tests/tcg/tricore/asm/macros.h     | 1 -
+ tests/tcg/tricore/asm/test_ld_bu.S | 4 ++--
+ tests/tcg/tricore/asm/test_ld_h.S  | 8 ++++----
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index 49e573bc3b..29c75acfb3 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -1,33 +1,34 @@
- TESTS_PATH = $(SRC_PATH)/tests/tcg/tricore
-+ASM_TESTS_PATH = $(TESTS_PATH)/asm
+diff --git a/tests/tcg/tricore/asm/macros.h b/tests/tcg/tricore/asm/macros.h
+index 3df2e0de82..b5087b5c97 100644
+--- a/tests/tcg/tricore/asm/macros.h
++++ b/tests/tcg/tricore/asm/macros.h
+@@ -25,7 +25,6 @@
  
- LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
- ASFLAGS = -mtc162
+ #define AREG_ADDR %a0
+ #define AREG_CORRECT_RESULT %a3
+-#define MEM_BASE_ADDR 0xd0000000
  
--TESTS += test_abs.tst
--TESTS += test_bmerge.tst
--TESTS += test_clz.tst
--TESTS += test_dextr.tst
--TESTS += test_dvstep.tst
--TESTS += test_fadd.tst
--TESTS += test_fmul.tst
--TESTS += test_ftoi.tst
--TESTS += test_imask.tst
--TESTS += test_insert.tst
--TESTS += test_ld_bu.tst
--TESTS += test_ld_h.tst
--TESTS += test_madd.tst
--TESTS += test_msub.tst
--TESTS += test_muls.tst
-+TESTS += test_abs.asm.tst
-+TESTS += test_bmerge.asm.tst
-+TESTS += test_clz.asm.tst
-+TESTS += test_dextr.asm.tst
-+TESTS += test_dvstep.asm.tst
-+TESTS += test_fadd.asm.tst
-+TESTS += test_fmul.asm.tst
-+TESTS += test_ftoi.asm.tst
-+TESTS += test_imask.asm.tst
-+TESTS += test_insert.asm.tst
-+TESTS += test_ld_bu.asm.tst
-+TESTS += test_ld_h.asm.tst
-+TESTS += test_madd.asm.tst
-+TESTS += test_msub.asm.tst
-+TESTS += test_muls.asm.tst
+ #define DREG_DEV_ADDR %a15
  
- QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
+diff --git a/tests/tcg/tricore/asm/test_ld_bu.S b/tests/tcg/tricore/asm/test_ld_bu.S
+index ff9dac128b..4a1f40c37b 100644
+--- a/tests/tcg/tricore/asm/test_ld_bu.S
++++ b/tests/tcg/tricore/asm/test_ld_bu.S
+@@ -9,7 +9,7 @@ _start:
+ #                            expect. addr reg val after load
+ #           insn  num  expect. load value |          pattern for loading
+ #             |    |     |                |              |
+-    TEST_LD(ld.bu, 1, 0xff, MEM_BASE_ADDR + 4, [+AREG_ADDR]4) # pre_inc
+-    TEST_LD(ld.bu, 2, 0xad, MEM_BASE_ADDR + 4, [AREG_ADDR+]4) # post_inc
++    TEST_LD(ld.bu, 1, 0xff, test_data + 4, [+AREG_ADDR]4) # pre_inc
++    TEST_LD(ld.bu, 2, 0xad, test_data + 4, [AREG_ADDR+]4) # post_inc
  
--%.pS: $(TESTS_PATH)/%.S
-+%.pS: $(ASM_TESTS_PATH)/%.S
- 	$(HOST_CC) -E -o $@ $<
+     TEST_PASSFAIL
+diff --git a/tests/tcg/tricore/asm/test_ld_h.S b/tests/tcg/tricore/asm/test_ld_h.S
+index d3c157a046..f5e4959198 100644
+--- a/tests/tcg/tricore/asm/test_ld_h.S
++++ b/tests/tcg/tricore/asm/test_ld_h.S
+@@ -7,9 +7,9 @@ test_data:
+ .global _start
+ _start:
+ #                               expect. addr reg val after load
+-#              insn  num  expect. load value |          pattern for loading
+-#                |    |     |                |              |
+-    TEST_LD    (ld.h, 1, 0xffffaffe, MEM_BASE_ADDR, [AREG_ADDR]2)
+-    TEST_LD_SRO(ld.h, 2, 0x000022ff, MEM_BASE_ADDR, [AREG_ADDR]4)
++#              insn  num expect. load value |    pattern for loading
++#                |    |     |               |          |
++    TEST_LD    (ld.h, 1, 0xffffaffe, test_data, [AREG_ADDR]2)
++    TEST_LD_SRO(ld.h, 2, 0x000022ff, test_data, [AREG_ADDR]4)
  
- %.o: %.pS
- 	$(AS) $(ASFLAGS) -o $@ $<
- 
--%.tst: %.o
-+%.asm.tst: %.o
- 	$(LD) $(LDFLAGS) $< -o $@
- 
- # We don't currently support the multiarch system tests
-diff --git a/tests/tcg/tricore/macros.h b/tests/tcg/tricore/asm/macros.h
-similarity index 100%
-rename from tests/tcg/tricore/macros.h
-rename to tests/tcg/tricore/asm/macros.h
-diff --git a/tests/tcg/tricore/test_abs.S b/tests/tcg/tricore/asm/test_abs.S
-similarity index 100%
-rename from tests/tcg/tricore/test_abs.S
-rename to tests/tcg/tricore/asm/test_abs.S
-diff --git a/tests/tcg/tricore/test_bmerge.S b/tests/tcg/tricore/asm/test_bmerge.S
-similarity index 100%
-rename from tests/tcg/tricore/test_bmerge.S
-rename to tests/tcg/tricore/asm/test_bmerge.S
-diff --git a/tests/tcg/tricore/test_clz.S b/tests/tcg/tricore/asm/test_clz.S
-similarity index 100%
-rename from tests/tcg/tricore/test_clz.S
-rename to tests/tcg/tricore/asm/test_clz.S
-diff --git a/tests/tcg/tricore/test_dextr.S b/tests/tcg/tricore/asm/test_dextr.S
-similarity index 100%
-rename from tests/tcg/tricore/test_dextr.S
-rename to tests/tcg/tricore/asm/test_dextr.S
-diff --git a/tests/tcg/tricore/test_dvstep.S b/tests/tcg/tricore/asm/test_dvstep.S
-similarity index 100%
-rename from tests/tcg/tricore/test_dvstep.S
-rename to tests/tcg/tricore/asm/test_dvstep.S
-diff --git a/tests/tcg/tricore/test_fadd.S b/tests/tcg/tricore/asm/test_fadd.S
-similarity index 100%
-rename from tests/tcg/tricore/test_fadd.S
-rename to tests/tcg/tricore/asm/test_fadd.S
-diff --git a/tests/tcg/tricore/test_fmul.S b/tests/tcg/tricore/asm/test_fmul.S
-similarity index 100%
-rename from tests/tcg/tricore/test_fmul.S
-rename to tests/tcg/tricore/asm/test_fmul.S
-diff --git a/tests/tcg/tricore/test_ftoi.S b/tests/tcg/tricore/asm/test_ftoi.S
-similarity index 100%
-rename from tests/tcg/tricore/test_ftoi.S
-rename to tests/tcg/tricore/asm/test_ftoi.S
-diff --git a/tests/tcg/tricore/test_imask.S b/tests/tcg/tricore/asm/test_imask.S
-similarity index 100%
-rename from tests/tcg/tricore/test_imask.S
-rename to tests/tcg/tricore/asm/test_imask.S
-diff --git a/tests/tcg/tricore/test_insert.S b/tests/tcg/tricore/asm/test_insert.S
-similarity index 100%
-rename from tests/tcg/tricore/test_insert.S
-rename to tests/tcg/tricore/asm/test_insert.S
-diff --git a/tests/tcg/tricore/test_ld_bu.S b/tests/tcg/tricore/asm/test_ld_bu.S
-similarity index 100%
-rename from tests/tcg/tricore/test_ld_bu.S
-rename to tests/tcg/tricore/asm/test_ld_bu.S
-diff --git a/tests/tcg/tricore/test_ld_h.S b/tests/tcg/tricore/asm/test_ld_h.S
-similarity index 100%
-rename from tests/tcg/tricore/test_ld_h.S
-rename to tests/tcg/tricore/asm/test_ld_h.S
-diff --git a/tests/tcg/tricore/test_madd.S b/tests/tcg/tricore/asm/test_madd.S
-similarity index 100%
-rename from tests/tcg/tricore/test_madd.S
-rename to tests/tcg/tricore/asm/test_madd.S
-diff --git a/tests/tcg/tricore/test_msub.S b/tests/tcg/tricore/asm/test_msub.S
-similarity index 100%
-rename from tests/tcg/tricore/test_msub.S
-rename to tests/tcg/tricore/asm/test_msub.S
-diff --git a/tests/tcg/tricore/test_muls.S b/tests/tcg/tricore/asm/test_muls.S
-similarity index 100%
-rename from tests/tcg/tricore/test_muls.S
-rename to tests/tcg/tricore/asm/test_muls.S
+     TEST_PASSFAIL
 -- 
 2.40.1
 
