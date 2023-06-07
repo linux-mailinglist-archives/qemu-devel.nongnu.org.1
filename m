@@ -2,56 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40727252FD
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 06:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7B57252F6
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 06:42:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6ky1-0001mu-BE; Wed, 07 Jun 2023 00:40:17 -0400
+	id 1q6ky2-0001nF-VB; Wed, 07 Jun 2023 00:40:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6kxx-0001lG-6X; Wed, 07 Jun 2023 00:40:13 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1q6ky0-0001mw-UQ; Wed, 07 Jun 2023 00:40:16 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6kxv-0003Xe-Ay; Wed, 07 Jun 2023 00:40:12 -0400
+ id 1q6kxy-0003Yv-AX; Wed, 07 Jun 2023 00:40:15 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbZQJ4FKBz4x3g;
- Wed,  7 Jun 2023 14:40:08 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbZQM74tdz4x4K;
+ Wed,  7 Jun 2023 14:40:11 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbZQF1z7Mz4x4F;
- Wed,  7 Jun 2023 14:40:04 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbZQK1869z4x42;
+ Wed,  7 Jun 2023 14:40:08 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Delevoryas <peter@pjd.dev>
-Subject: [PATCH v2 03/12] aspeed: Use the boot_rom region of the fby35 machine
-Date: Wed,  7 Jun 2023 06:39:34 +0200
-Message-Id: <20230607043943.1837186-4-clg@kaod.org>
+ Alistair Francis <alistair@alistair23.me>
+Subject: [PATCH v2 04/12] hw/ssi: Add an "addr" property to SSIPeripheral
+Date: Wed,  7 Jun 2023 06:39:35 +0200
+Message-Id: <20230607043943.1837186-5-clg@kaod.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230607043943.1837186-1-clg@kaod.org>
 References: <20230607043943.1837186-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=5JAy=B3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,69 +65,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change completes commits 5aa281d757 ("aspeed: Introduce a
-spi_boot region under the SoC") and 8b744a6a47 ("aspeed: Add a
-boot_rom overlap region in the SoC spi_boot container") which
-introduced a spi_boot container at the SoC level to map the boot rom
-region as an overlap.
+Boards will use this new property to identify the device CS line and
+wire the SPI controllers accordingly.
 
-It also fixes a Coverity report (CID 1508061) for a memory leak
-warning when the QEMU process exits by using an bmc_boot_rom
-MemoryRegion available at the machine level.
-
-Cc: Peter Delevoryas <peter@pjd.dev>
+Cc: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/arm/fby35.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ include/hw/ssi/ssi.h | 3 +++
+ hw/ssi/ssi.c         | 7 +++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/hw/arm/fby35.c b/hw/arm/fby35.c
-index f4600c290b62..f2ff6c1abfd9 100644
---- a/hw/arm/fby35.c
-+++ b/hw/arm/fby35.c
-@@ -70,8 +70,6 @@ static void fby35_bmc_write_boot_rom(DriveInfo *dinfo, MemoryRegion *mr,
+diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
+index 6950f86810d3..9e0706a5248c 100644
+--- a/include/hw/ssi/ssi.h
++++ b/include/hw/ssi/ssi.h
+@@ -64,6 +64,9 @@ struct SSIPeripheral {
  
- static void fby35_bmc_init(Fby35State *s)
- {
--    DriveInfo *drive0 = drive_get(IF_MTD, 0, 0);
--
-     object_initialize_child(OBJECT(s), "bmc", &s->bmc, "ast2600-a3");
+     /* Chip select state */
+     bool cs;
++
++    /* Chip select address/index */
++    uint8_t addr;
+ };
  
-     memory_region_init(&s->bmc_memory, OBJECT(&s->bmc), "bmc-memory",
-@@ -95,18 +93,21 @@ static void fby35_bmc_init(Fby35State *s)
-     aspeed_board_init_flashes(&s->bmc.fmc, "n25q00", 2, 0);
+ extern const VMStateDescription vmstate_ssi_peripheral;
+diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
+index d54a109beeb5..d4409535429c 100644
+--- a/hw/ssi/ssi.c
++++ b/hw/ssi/ssi.c
+@@ -13,6 +13,7 @@
+  */
  
-     /* Install first FMC flash content as a boot rom. */
--    if (drive0) {
--        AspeedSMCFlash *fl = &s->bmc.fmc.flashes[0];
--        MemoryRegion *boot_rom = g_new(MemoryRegion, 1);
--        uint64_t size = memory_region_size(&fl->mmio);
--
--        if (!s->mmio_exec) {
--            memory_region_init_rom(boot_rom, NULL, "aspeed.boot_rom",
--                                   size, &error_abort);
--            memory_region_add_subregion(&s->bmc_memory, FBY35_BMC_FIRMWARE_ADDR,
--                                        boot_rom);
--            fby35_bmc_write_boot_rom(drive0, boot_rom, FBY35_BMC_FIRMWARE_ADDR,
--                                     size, &error_abort);
-+    if (!s->mmio_exec) {
-+        DriveInfo *mtd0 = drive_get(IF_MTD, 0, 0);
-+
-+        if (mtd0) {
-+            AspeedSoCState *bmc = &s->bmc;
-+            uint64_t rom_size = memory_region_size(&bmc->spi_boot);
-+
-+            memory_region_init_rom(&s->bmc_boot_rom, NULL, "aspeed.boot_rom",
-+                                   rom_size, &error_abort);
-+            memory_region_add_subregion_overlap(&bmc->spi_boot_container, 0,
-+                                                &s->bmc_boot_rom, 1);
-+
-+            fby35_bmc_write_boot_rom(mtd0, &s->bmc_boot_rom,
-+                                     FBY35_BMC_FIRMWARE_ADDR,
-+                                     rom_size, &error_abort);
-         }
-     }
+ #include "qemu/osdep.h"
++#include "hw/qdev-properties.h"
+ #include "hw/ssi/ssi.h"
+ #include "migration/vmstate.h"
+ #include "qemu/module.h"
+@@ -71,6 +72,11 @@ static void ssi_peripheral_realize(DeviceState *dev, Error **errp)
+     ssc->realize(s, errp);
  }
+ 
++static Property ssi_peripheral_properties[] = {
++    DEFINE_PROP_UINT8("addr", SSIPeripheral, addr, 0),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void ssi_peripheral_class_init(ObjectClass *klass, void *data)
+ {
+     SSIPeripheralClass *ssc = SSI_PERIPHERAL_CLASS(klass);
+@@ -81,6 +87,7 @@ static void ssi_peripheral_class_init(ObjectClass *klass, void *data)
+     if (!ssc->transfer_raw) {
+         ssc->transfer_raw = ssi_transfer_raw_default;
+     }
++    device_class_set_props(dc, ssi_peripheral_properties);
+ }
+ 
+ static const TypeInfo ssi_peripheral_info = {
 -- 
 2.40.1
 
