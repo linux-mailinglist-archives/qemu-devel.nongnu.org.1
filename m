@@ -2,82 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCEA7253BB
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 07:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAE9725448
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 08:32:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6m77-0006Tu-5H; Wed, 07 Jun 2023 01:53:45 -0400
+	id 1q6mhA-0005PW-Mf; Wed, 07 Jun 2023 02:31:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6m74-0006TT-U6
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 01:53:42 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6m73-0007bK-7p
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 01:53:42 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6af6de9fb74so5939608a34.2
- for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 22:53:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686117219; x=1688709219;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=g4jfUtxNxGnQM7lIfi/o+6H3r63ipqNVXc1MoJY5LsE=;
- b=Y8ldB6fznK1T3wAphYE/aKCBZbQbcn3nOOv4uC59IJBooptC3Gm71/haCswJx4T0NI
- pYMlexi4gCOa4rD4IBGDSK8/3lxGs6NzDSwmkktXjszF9nyC701RmqooYMw+ArLtYCVI
- UQ8uS5ALQkSxDT+gz98qpE0rQ4ziDTPEnbAv1Uoix6tLr1a1TIwhnms0eqi81dUhRJ3T
- kG9+d6MgmGlvpLQ8BUpec5/zspF38/8AtOVMHtwoJtnhiE7lZnaT2wQWTu+jiCBeeyxq
- uo6j6TJIKl5XKZ90VGv2I/BTyJsM+vH6wcOjs2hCErOFsVUTBqgcOsP2Wla5XysVC6nn
- dH2Q==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q6mh7-0005On-Sd
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 02:30:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q6mh3-0005Hw-Cz
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 02:30:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686119450;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=vZKGwfxDAfyv8l9r37a8ZG6wFwkZWbbKNZWpsqT8gIY=;
+ b=TmVAf6ST6c4UQeq2F3A/85sMfjDQZnfnucbuPkfmPjTNRMgBCTnCAilgIlfP5HDCqM39OS
+ Apus70PIjvAFxzAaajyIwhzIJEBtUzNdLSOS/WXr1M43MrrTkeSPNkSw3zwcmCoIZBSqo6
+ OMKmVQxVpXkN+N3lKahNF4TzRgAhgKA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-533--_D4cy2hPc6heYH2AdXv6w-1; Wed, 07 Jun 2023 02:30:49 -0400
+X-MC-Unique: -_D4cy2hPc6heYH2AdXv6w-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f7ecfccf2eso4234605e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 23:30:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686117219; x=1688709219;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g4jfUtxNxGnQM7lIfi/o+6H3r63ipqNVXc1MoJY5LsE=;
- b=Slcvsa82LOw9OFO2i7O42DVffzt+iOG4JEnEpCVIJ7yDG4+iV4usHhcKlScEE7wZcH
- VcZ29rsWBzhGS377cAzX4xXirD3K8nbDXWi9p6spKrCkVV9WK5rdWXL1js8O3lhLBfRv
- Bsx1kBLL7iNiH3toBGIjLdaWpxw4LJFdToyRkMr17IiDfLwn4RbL36vTa8vqo6jRmNKW
- /Y8IbJ3Eqtfrp8VkRr7mwqv8arKAyAH3KiCW5u20XyURK+fmX89eWLqkUGtpDG9i6H12
- Wg0tzT9vrwxOhpwqdX/AYDpWC6lDK5mgdYn4O2VVw9v95x9o2orU9Jk5UWslivT5mmJa
- OEnA==
-X-Gm-Message-State: AC+VfDwh5k5sNeAFOXLvJFdEUSdmhxbYOQUsyQWtQX1DRAGzW5XI68tE
- OYk6W5Ewqc/7tdLHzn0Xt8cD1hLxb667ynZ1n4U=
-X-Google-Smtp-Source: ACHHUZ4XJYoonyynpa3m/o93qC7Hps2h2wD7sKRXtbBpyqoO+HcsyXoGSkfbVV16i767hmlFo+s14w==
-X-Received: by 2002:a05:6358:cc22:b0:129:df95:f9a9 with SMTP id
- gx34-20020a056358cc2200b00129df95f9a9mr2577359rwb.2.1686117219364; 
- Tue, 06 Jun 2023 22:53:39 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:b7fa:ce59:1445:805a?
- ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
- by smtp.gmail.com with ESMTPSA id
- 17-20020a17090a199100b002535a337d45sm565547pji.3.2023.06.06.22.53.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Jun 2023 22:53:38 -0700 (PDT)
-Message-ID: <98d56274-c104-3ca5-1e03-b149c953c1c6@linaro.org>
-Date: Tue, 6 Jun 2023 22:53:37 -0700
+ d=1e100.net; s=20221208; t=1686119448; x=1688711448;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vZKGwfxDAfyv8l9r37a8ZG6wFwkZWbbKNZWpsqT8gIY=;
+ b=YVQ9aYtPW2ZJiCWonY0KAilWLlzWdrE5odQHJltZ/9N4c06KZa5Adgj7cIH31rHOD+
+ tKt+4HW9XQUY7O8fIJyEonOq9rWUnrBGC79NxvNumsMkSIXu97CSH2FSH6bYXs6GY19c
+ n2c696c8WvMvKUFk0SudENhwT0FqA5rWUqHZjnj6GLqDUzDabI5bYePg3AGkGRfDNwbx
+ mjlMCX/p7oS5zwo/Lwa2r3t9VzlH0r+q31+miQ3WFqNCaGavGNtsfp9WbushlrLqwZ7J
+ 5pRYtUs7qIVhU8hgTcm/bZ40dMxPkOtbpdcwGjOaLWEV4plS2o36XMNR2OyogJJ2GE3d
+ YY8A==
+X-Gm-Message-State: AC+VfDyfmRnxZ8sSPK77XLxZhYcZlMOi63+ZFrIETKCOCxlfVSf6Jsgi
+ BEhmWNCg1594+sdmR2VIPu7kzAl5L/aC0jhGywB/7AT5pZocmxS9UwtY2V28YDOh3ZXMhj+0Hdy
+ 6vlrYHaqc4nkawBc=
+X-Received: by 2002:a05:600c:ace:b0:3f7:e6d8:457b with SMTP id
+ c14-20020a05600c0ace00b003f7e6d8457bmr3633500wmr.19.1686119448244; 
+ Tue, 06 Jun 2023 23:30:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6A0Apz6zo1bpWgGALml8ksFmJMU1higwMdg7X09ndcTFQG8uYrM7VHVhOGAgTI/tJl5WacgA==
+X-Received: by 2002:a05:600c:ace:b0:3f7:e6d8:457b with SMTP id
+ c14-20020a05600c0ace00b003f7e6d8457bmr3633485wmr.19.1686119447898; 
+ Tue, 06 Jun 2023 23:30:47 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ x7-20020a1c7c07000000b003f7e66a51dfsm969336wmc.28.2023.06.06.23.30.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 23:30:47 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,  Jiang
+ Jiacheng <jiangjiacheng@huawei.com>,  Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 1/3] migration/multifd: Rename threadinfo.c functions
+In-Reply-To: <20230606144551.24367-2-farosas@suse.de> (Fabiano Rosas's message
+ of "Tue, 6 Jun 2023 11:45:49 -0300")
+References: <20230606144551.24367-1-farosas@suse.de>
+ <20230606144551.24367-2-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Wed, 07 Jun 2023 08:30:46 +0200
+Message-ID: <873533pyw9.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/2] tcg/tci: Two regression fixes
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: sw@weilnetz.de
-References: <20230607054654.622010-1-richard.henderson@linaro.org>
-In-Reply-To: <20230607054654.622010-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,19 +98,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 22:46, Richard Henderson wrote:
-> Two recent regressions, both related to recent tcg changes.
-> 
-> Our CI does not test TCI with --enable-debug-tcg, which given timeout
-> constraints is probably correct, but in this case resulted in an
-> infinite loop on aarch64 multiarch/memory.c with FEAT_LSE2 enabled.
+Fabiano Rosas <farosas@suse.de> wrote:
+> The code in threadinfo.c is only used for the QMP command
+> query-migrationthreads. Make it explicit that this is something
+> related to QMP.
+>
+> The current names are also too generic for a piece of code that
+> doesn't affect the migration directly in any way.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-To expand on that: with --enable-debug-tcg, assertions fire and catch the bug; without the 
-assertions, the generated bytecode is incorrect, which leads to the loop.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
+Don't like the caml case.  And don't really care with/without the qmp_
+preffix.  You got it eitherwise.
 
-r~
 
