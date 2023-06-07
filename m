@@ -2,90 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148CE726347
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 16:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1717263E1
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:14:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6uTn-0000uK-FJ; Wed, 07 Jun 2023 10:49:43 -0400
+	id 1q6urT-0002Pt-V2; Wed, 07 Jun 2023 11:14:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6uTk-0000mL-SB
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:49:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1q6urR-0002O6-Tt
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:14:09 -0400
+Received: from 5.mo552.mail-out.ovh.net ([188.165.45.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q6uTj-0008Uc-99
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 10:49:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686149378;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hgO0zuH52WGqOvR/SaIqBE29zG2YkCXeFK6cIY94RRw=;
- b=UY4fwjKTGVX3RnqIlIDSBS3aUNqNO38j4LP2/U38EBKsNdxGxFpDuEhF7eC2lNFBiLhZPh
- 5HFD4LtTssz6V6td/Sv3XWkNFnV+7JL0iDl2jsR6k5lw6qt38z/uqTY/SRxP8wHgqCbfAs
- /Ghp/MlefcczCbLXT+WSkGPGpFxChLA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-vFPChz-KN1C1jXJw8oQCjQ-1; Wed, 07 Jun 2023 10:49:37 -0400
-X-MC-Unique: vFPChz-KN1C1jXJw8oQCjQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-94a35b0d4ceso573358966b.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 07:49:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686149376; x=1688741376;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hgO0zuH52WGqOvR/SaIqBE29zG2YkCXeFK6cIY94RRw=;
- b=YkkaVL0sKgrqNsj13N263eSIQ7YgVd+zmTl6uKv6kzp43S/vaTLOg/mdBYDQUXRuZH
- pOelESv6D1vDGpLAxZtJ6AVPGGx056a0WYa7/hqSxcM6owKVJQttwNB4i6WuGg4PuJvq
- Y5yvcSfk1vHU2gCJlDTm2gwXSoJ3Ri/ffx+e2ZHDJrOtuV9x1myWQpKcti3alsNEUQb1
- FB/T2/Z0wLI9QMkv/TQXgsa+NmnQbwWF4BgGeQuHgS+EA8A6KcQaSTbWDk7V/WtAFwbQ
- OGvDx7oyrVYe8DqRWEj41El+4QkDYZweTGGhw4taBc4wM/zz6zLP1eFBwLvXpBwftUvH
- xQMw==
-X-Gm-Message-State: AC+VfDzirVDfMyGXyktH0Ge4AVqIojCNIq5FvEh09wqCmk40qWF/Pw+a
- lZhdVvN6FfiB6fLoJG3VvKJi7aoVqGlGcAUMgYObFUtXhGMLwKQJ6QAYVcBhc8T3iAKwLUZQHGU
- qW+dPoF/cGyrpr98=
-X-Received: by 2002:a17:907:d94:b0:973:afe2:a01 with SMTP id
- go20-20020a1709070d9400b00973afe20a01mr5364628ejc.75.1686149375731; 
- Wed, 07 Jun 2023 07:49:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4FTugzowx9rENKFQlF68JF6Lwp/7geVy+iywg8piVT6LOgKrNgtdDUqP0gI1e5C3WO3hx60Q==
-X-Received: by 2002:a17:907:d94:b0:973:afe2:a01 with SMTP id
- go20-20020a1709070d9400b00973afe20a01mr5364599ejc.75.1686149375220; 
- Wed, 07 Jun 2023 07:49:35 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- p5-20020a170906140500b00974612a9837sm7010775ejc.20.2023.06.07.07.49.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 07:49:34 -0700 (PDT)
-Date: Wed, 7 Jun 2023 16:49:34 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu
- <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
-Message-ID: <20230607164934.51805cb0@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
-References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
- <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1q6urP-00053r-VR
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:14:09 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.143.25])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 0DBB82B12C;
+ Wed,  7 Jun 2023 15:14:03 +0000 (UTC)
+Received: from kaod.org (37.59.142.99) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 7 Jun
+ 2023 17:14:02 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-99G003ffcb67e4-fdba-4121-8b03-9f6bb9fa6e9a,
+ 54EBAD7D0EB3B635C0D3A21D42FFDCE0366FD9B4) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Wed, 7 Jun 2023 16:50:59 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+CC: <qemu-devel@nongnu.org>, Mauro Matteo Cascella <mcascell@redhat.com>, yw s
+ <ywsplz@gmail.com>, <shawtao1125@gmail.com>, <jkli@xidian.edu.cn>,
+ <shenwenbo@zju.edu.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [PATCH v3] 9pfs: prevent opening special files (CVE-2023-2861)
+Message-ID: <20230607164950.2f4f6f39@bahia>
+In-Reply-To: <E1q6tfP-0008VX-K3@lizzy.crudebyte.com>
+References: <E1q6tfP-0008VX-K3@lizzy.crudebyte.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Originating-IP: [37.59.142.99]
+X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 91d1f77a-975f-452f-bcc3-b693e86bfa7a
+X-Ovh-Tracer-Id: 11437454207054223724
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtgedgkeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgeekjedtveegkeeileffvdetvddvgedtudduiefghffhgfdvhfegjeetkeehfeeknecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdelledpjeekrdduleejrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehqvghmuhgpohhsshestghruhguvggshihtvgdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpmhgtrghstggvlhhlsehrvgguhhgrthdrtghomhdphiifshhplhiisehgmhgrihhlrdgtohhmpdhshhgrfihtrghoudduvdehsehgmhgrihhlrdgtohhmpdhjkhhlihesgihiughirghnrdgvughurdgtnhdpshhhvghnfigvnhgsohesiihjuhdrvgguuhdrtghnpdhmjhhtsehtlhhsrdhmshhkrdhruhdpoffvtefjohhsthepmhhohe
+ ehvddpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=188.165.45.220; envelope-from=groug@kaod.org;
+ helo=5.mo552.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,75 +73,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu,  1 Jun 2023 17:29:51 +0800
-Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+On Wed, 7 Jun 2023 15:50:01 +0200
+Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 
-> From: Zhao Liu <zhao1.liu@intel.com>
+> The 9p protocol does not specifically define how server shall behave when
+> client tries to open a special file, however from security POV it does
+> make sense for 9p server to prohibit opening any special file on host side
+> in general. A sane Linux 9p client for instance would never attempt to
+> open a special file on host side, it would always handle those exclusively
+> on its guest side. A malicious client however could potentially escape
+> from the exported 9p tree by creating and opening a device file on host
+> side.
 > 
-> From SMBIOS 3.0 specification, thread count field means:
+> With QEMU this could only be exploited in the following unsafe setups:
 > 
-> Thread Count is the total number of threads detected by the BIOS for
-> this processor socket. It is a processor-wide count, not a
-> thread-per-core count. [1]
+>   - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
+>     security model.
 > 
-> So here we should use threads per socket other than threads per core.
+> or
 > 
-> [1] SMBIOS 3.0.0, section 7.5.8, Processor Information - Thread Count
+>   - Using 9p 'proxy' fs driver (which is running its helper daemon as
+>     root).
 > 
-> Fixes: c97294ec1b9e ("SMBIOS: Build aggregate smbios tables and entry point")
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> These setups were already discouraged for safety reasons before,
+> however for obvious reasons we are now tightening behaviour on this.
+> 
+> Fixes: CVE-2023-2861
+> Reported-by: Yanwu Shen <ywsPlz@gmail.com>
+> Reported-by: Jietao Xiao <shawtao1125@gmail.com>
+> Reported-by: Jinku Li <jkli@xidian.edu.cn>
+> Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
+> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 > ---
-> Changes since v1:
->  * Rename cpus_per_socket to threads_per_socket.
->  * Add the comment about smp.max_cpus. Thread count and core count will
->    be calculated in 2 ways and will add a sanity check to ensure we
->    don't miss any topology level.
-> ---
->  hw/smbios/smbios.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  v2 -> v3:
+>  - Drop O_CREAT check and its comment.
+>  - Eliminate code duplication.
 > 
-> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> index d67415d44dd8..faf82d4ae646 100644
-> --- a/hw/smbios/smbios.c
-> +++ b/hw/smbios/smbios.c
-> @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->  {
->      char sock_str[128];
->      size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
-> +    unsigned threads_per_socket;
+>  fsdev/virtfs-proxy-helper.c | 26 ++++++++++++++++++++++++--
+>  hw/9pfs/9p-util.h           | 33 +++++++++++++++++++++++++++++++++
+>  2 files changed, 57 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
+> index 5cafcd7703..256d7bfcec 100644
+> --- a/fsdev/virtfs-proxy-helper.c
+> +++ b/fsdev/virtfs-proxy-helper.c
+> @@ -26,6 +26,7 @@
+>  #include "qemu/xattr.h"
+>  #include "9p-iov-marshal.h"
+>  #include "hw/9pfs/9p-proxy.h"
+> +#include "hw/9pfs/9p-util.h"
+>  #include "fsdev/9p-iov-marshal.h"
 >  
->      if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
->          tbl_len = SMBIOS_TYPE_4_LEN_V30;
-> @@ -747,17 +748,20 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->      SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
->      SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
+>  #define PROGNAME "virtfs-proxy-helper"
+> @@ -338,6 +339,27 @@ static void resetugid(int suid, int sgid)
+>      }
+>  }
 >  
-> +    /* smp.max_cpus is the total number of threads for the system. */
-> +    threads_per_socket = ms->smp.max_cpus / ms->smp.sockets;
-
-what I dislike here is introducing topo calculations with its own assumptions
-in random places.
-
-I'd suggest to add threads_per_socket (even if it's just a helper field) into
-topo structure and calculate it with the rest on topology.
-And then use result here.
-
+> +/*
+> + * Open regular file or directory. Attempts to open any special file are
+> + * rejected.
+> + *
+> + * returns file descriptor or -1 on error
+> + */
+> +static int open_regular(const char *pathname, int flags, mode_t mode) {
+> +    int fd;
 > +
->      t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
->      t->core_enabled = t->core_count;
+> +    fd = open(pathname, flags, mode);
+> +    if (fd < 0) {
+> +        return fd;
+> +    }
+> +
+> +    if (check_is_regular_file_or_dir(fd) < 0) {
+> +        return -1;
+> +    }
+> +
+> +    return fd;
+> +}
+> +
+>  /*
+>   * send response in two parts
+>   * 1) ProxyHeader
+> @@ -682,7 +704,7 @@ static int do_create(struct iovec *iovec)
+>      if (ret < 0) {
+>          goto unmarshal_err_out;
+>      }
+> -    ret = open(path.data, flags, mode);
+> +    ret = open_regular(path.data, flags, mode);
+>      if (ret < 0) {
+>          ret = -errno;
+>      }
+> @@ -707,7 +729,7 @@ static int do_open(struct iovec *iovec)
+>      if (ret < 0) {
+>          goto err_out;
+>      }
+> -    ret = open(path.data, flags);
+> +    ret = open_regular(path.data, flags, 0);
+>      if (ret < 0) {
+>          ret = -errno;
+>      }
+> diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+> index c314cf381d..9b0a9e5878 100644
+> --- a/hw/9pfs/9p-util.h
+> +++ b/hw/9pfs/9p-util.h
+> @@ -13,6 +13,8 @@
+>  #ifndef QEMU_9P_UTIL_H
+>  #define QEMU_9P_UTIL_H
 >  
-> -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
-> +    t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
+> +#include "qemu/error-report.h"
+> +
+>  #ifdef O_PATH
+>  #define O_PATH_9P_UTIL O_PATH
+>  #else
+> @@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
+>  #endif
 >  
->      t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
->      t->processor_family2 = cpu_to_le16(0x01); /* Other */
+>  #define qemu_openat     openat
+> +#define qemu_fstat      fstat
+>  #define qemu_fstatat    fstatat
+>  #define qemu_mkdirat    mkdirat
+>  #define qemu_renameat   renameat
+> @@ -108,6 +111,32 @@ static inline void close_preserve_errno(int fd)
+>      errno = serrno;
+>  }
 >  
->      if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
->          t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
-> -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
-> +        t->thread_count2 = cpu_to_le16(threads_per_socket);
+> +/* CVE-2023-2861: Prohibit opening any special file directly on host
+> + * (especially device files), as a compromised client could potentially gain
+> + * access outside exported tree under certain, unsafe setups. We expect
+> + * client to handle I/O on special files exclusively on guest side.
+> + */
+> +static inline int check_is_regular_file_or_dir(int fd)
+> +{
+> +    struct stat stbuf;
+> +
+> +    if (qemu_fstat(fd, &stbuf) < 0) {
+> +        close_preserve_errno(fd);
+
+Maybe worth to mention somewhere that this function not only
+checks but also closes the fd if it doesn't point to a regular
+file or directory. Or maybe change the name, e.g.
+filter_out_special_files() ?
+
+Anyway the fix is fine enough to address the CVE.
+
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+> +        return -1;
+> +    }
+> +    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
+> +        error_report_once(
+> +            "9p: broken or compromised client detected; attempt to open "
+> +            "special file (i.e. neither regular file, nor directory)"
+> +        );
+> +        close(fd);
+> +        errno = ENXIO;
+> +        return -1;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  static inline int openat_dir(int dirfd, const char *name)
+>  {
+>      return qemu_openat(dirfd, name,
+> @@ -142,6 +171,10 @@ again:
+>          return -1;
 >      }
 >  
->      SMBIOS_BUILD_TABLE_POST;
+> +    if (check_is_regular_file_or_dir(fd) < 0) {
+> +        return -1;
+> +    }
+> +
+>      serrno = errno;
+>      /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
+>       * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
 
+
+
+-- 
+Greg
 
