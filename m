@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4FF72697B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 21:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66174726993
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 21:17:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6yVu-0002rc-QQ; Wed, 07 Jun 2023 15:08:10 -0400
+	id 1q6ydP-0004rj-Gp; Wed, 07 Jun 2023 15:15:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6yVs-0002rR-My
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 15:08:08 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1q6ydL-0004qb-4x
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 15:15:51 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q6yVq-0005UD-DU
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 15:08:08 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-53482b44007so3969711a12.2
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 12:08:05 -0700 (PDT)
+ id 1q6ydJ-0006yH-7K
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 15:15:50 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-653bed78635so721346b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 12:15:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686164885; x=1688756885;
+ d=linaro.org; s=google; t=1686165347; x=1688757347;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JvVKVc2W2hZAAT/bh+nqKvXI0WbWJClD1KA1hZ/ekF0=;
- b=q3V6KRdyqwDwcEY8+N6M5bObAOKTyHxb/NNCNidrKBH22ovxZu7bOjU1Aj+UWUgEN0
- kiBz19cXlYilhTCI1V6srDzT8hebnOfGvjWYctzgNscLt4bxTBgV80oDCIrRoZvpmNav
- GVg2tfh3hZkrsiLxlbKU+S0Q5Z00LIDbzuVObQcvB8958jtVAbTQTCaUrK/oMCIEBYZ/
- Wm6kuWfp8H25bX5B8WUltm5z2dbgUkdIUz/HvFYAXMBJeX8zzf8OUJ6YMK+/h2gatyzO
- yXHgfRV9nIRt5hIN6OvowFI2AkFIUPndTGnnsaJwUVp88jz7r201FdbNJOOAKBqe5YvV
- zXtA==
+ bh=bS5nlC4EcdlXmAJkGrfbY/FSI7ZzjpOcEAyzjrb5rgw=;
+ b=UqolIEEwJcldZCC5ZMecOwOymqIXDCb3cQIQTxiOijrwhXv9MhnbEipy581m2TMMB0
+ OoCcRK3+iBxp19PYe5DQR6ZMIwtNgSJzbKdngZVWMxtds5WSopHa04zxjxjcB/qydZc3
+ PsZDDxmI83gX7G9ST5/j2tr0/QXdiLld+OX3qcRWDJh6pFswXgXMQIOD1+DgxbWpmc6+
+ ON/9nfRZWIW7OgjJwoEB2Is/8saBqJZHU7qu2s9jaYoSKE6rkw7KKSSKY63y6jWPOWmZ
+ MqvcaaXOzuA2SSvm5tXuLdXRZkVpdYoU/Ed8D4Y5PqSmQG/hO/0I8fz+6a30MpU2gReR
+ Wn0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686164885; x=1688756885;
+ d=1e100.net; s=20221208; t=1686165347; x=1688757347;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JvVKVc2W2hZAAT/bh+nqKvXI0WbWJClD1KA1hZ/ekF0=;
- b=CzvkgnDiwqrVHogeTKKIR2nHVrH/ZIeGyH9JwTOdl2jf9vFtD3k8CtDAa3jsnM82zy
- CYqXcCH654WO79qdphcN+g/ahT6U6DpD0ztmKAifwrDzQJS1GxXIlMtDE9vNcXOPC9sw
- sfQJWHiWeCX3WMFHwyA6EINkH4TUO0xM22RFyIxcXg23fUUrY/5sm3Nmzza8uPUCrrt3
- 9OC6s1R48pRd1nHe2SVMtAkEZ75QShEHh6lL4msTvSAdnDZAsidr4edOJXVmWX4nZIul
- y8asHqLdB5qNQW5FHAp3tAHIiJqFKaRk8KZ9jyn1Iry3rQD4N7abgk+xDZS8sNnjXCox
- iJqA==
-X-Gm-Message-State: AC+VfDwY37RrOuezIzQcVV9rfU9ugs/U+zyJFrU53fq1wzLsDncA7Cz9
- exM69vqzwBhRcqzNkePkrVOrgw==
-X-Google-Smtp-Source: ACHHUZ5sr4unDgPBsXG2fC33+NcnNI2JZp0mO3na9Gy9XLHCtxvg+3rg+aa+zP0BLRxg2l2FX2P+lA==
-X-Received: by 2002:a17:90a:6c23:b0:24b:4e7b:c689 with SMTP id
- x32-20020a17090a6c2300b0024b4e7bc689mr2713644pjj.35.1686164884702; 
- Wed, 07 Jun 2023 12:08:04 -0700 (PDT)
+ bh=bS5nlC4EcdlXmAJkGrfbY/FSI7ZzjpOcEAyzjrb5rgw=;
+ b=D2fP39Q1FHpuTVvkGAwG7EgnwzzHXrb4FdmHHiCRIe/d5pqdlf2qDQu6urs9Ntu+UR
+ ZP62W7BOpBdtWZmdbrWQ1ilPhAcLIuRoULeXyNkSxlD5pXUXEd0sYx9yK0FYMtkz4KZD
+ YsmhR4abhaHMj1rcdosasD5vckwsQhL5ozkHnJUxQTdYJ1/bqzs9QIxg376IC5dWJPSe
+ fDoJjZ8JgsARifdFgJXU+fDgjcFpS23MylchSLDbPZN9Z4/cnVhVc6v5VqVvGrEyYq00
+ uw//VWAqTwma/+4RYwnYmXFwVp59pPTmYacIjiZaKBUiuTrxB61N0gaP8Zk0qGwQU9zG
+ e5CQ==
+X-Gm-Message-State: AC+VfDz49bG4BHca++C6V60fo5L635oCoURjR3WwE83D1zv+VCNFxBwi
+ AIzoRHOVUsuvj8fqxB6VtEJnZQ==
+X-Google-Smtp-Source: ACHHUZ6sMlUa261AjJFU5AGOKRoT7t68VwSvIxI+nerAVte9149lH5nmbGy7+jF+IsuiZqa4hIqYZg==
+X-Received: by 2002:a17:902:c614:b0:1a0:76e8:a4d with SMTP id
+ r20-20020a170902c61400b001a076e80a4dmr13126880plr.14.1686165347367; 
+ Wed, 07 Jun 2023 12:15:47 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:1f09:2b0b:a56e:7a17?
  ([2602:ae:1598:4c01:1f09:2b0b:a56e:7a17])
  by smtp.gmail.com with ESMTPSA id
- gk8-20020a17090b118800b002508d73f4e8sm1684330pjb.57.2023.06.07.12.08.03
+ s10-20020a170902a50a00b001a64851087bsm10773521plq.272.2023.06.07.12.15.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 12:08:04 -0700 (PDT)
-Message-ID: <592d1cc2-9e32-4526-f8fe-7595544a7263@linaro.org>
-Date: Wed, 7 Jun 2023 12:08:02 -0700
+ Wed, 07 Jun 2023 12:15:46 -0700 (PDT)
+Message-ID: <a7d4ae32-a779-e50a-d484-fdfc07a305c1@linaro.org>
+Date: Wed, 7 Jun 2023 12:15:45 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [RFC v2 3/6] target/i386: Add native library calls
+Subject: Re: [RFC v2 4/6] target/mips: Add native library calls
 Content-Language: en-US
 To: Yeqi Fu <fufuyqqqqqq@gmail.com>, alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
 References: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
- <20230607164750.829586-4-fufuyqqqqqq@gmail.com>
+ <20230607164750.829586-5-fufuyqqqqqq@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230607164750.829586-4-fufuyqqqqqq@gmail.com>
+In-Reply-To: <20230607164750.829586-5-fufuyqqqqqq@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,20 +100,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/7/23 09:47, Yeqi Fu wrote:
-> +    arg0 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 4); \
-> +    arg1 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 8); \
-> +    arg2 = *(target_ulong *)g2h(cs, env->regs[R_ESP] + 12);
-
-This is not correct, and will fail on big-endian hosts.
-
-You need to use
-
-     uintptr_t ra = GETPC();
-     cpu_ldl_data_ra(env, guest_pointer, ra);
-
-which will (amongst other things) take care of the byte swapping.
-
-> +void helper_native_memcpy(CPUX86State *env)
+> +void helper_native_memcpy(CPUMIPSState *env)
 > +{
 > +    CPUState *cs = env_cpu(env);
 > +    NATIVE_FN_W_3W();
@@ -120,50 +109,25 @@ which will (amongst other things) take care of the byte swapping.
 > +    void *src = g2h(cs, arg1);
 > +    size_t n = (size_t)arg2;
 > +    ret = memcpy(dest, src, n);
-> +    env->regs[R_EAX] = (target_ulong)h2g(ret);
+> +    env->active_tc.gpr[2] = (target_ulong)h2g(ret);
 > +}
 
-You need to do something for the case in which either src or dst is not accessible.
+I would expect everything except for the guest ABI to be handled by common code, so that 
+you do not have N copies of every native emulated function.  This needs to be something like
 
-Routines like cpu_ldl_data_ra handle this for you, but you don't want to use that for memcpy.
+abi_ptr do_native_memcpy(CPUArchState *env, abi_ptr dst, abi_ptr src,
+                          abi_ptr len, uintptr_t ra);
 
-There are several ways of doing this.  None of the existing helpers are ideal.
+void helper_native_memcpy(CPUMIPSState *env)
+{
+     env->active_tc.gpr[2] =
+         do_native_memcpy(env, env->active_tc.gpr[4],
+                          env->active_tc.gpr[5],
+                          env->active_tc.gpr[6], GETPC());
+}
 
-(A) void *dest = probe_write(env, arg0, arg2, MMU_USER_IDX, ra);
-     void *src = probe_read(env, arg1, arg2, MMU_USER_IDX, ra);
-
-which will raise SIGSEGV in case any byte of either region is not correctly mapped, and 
-also perform the guest-to-host address remapping.  However, probe_* are written to expect 
-probing of no more than one page.  Which means you'd need a loop, processing remaining 
-page fractions.
-
-(B) There is page_check_range(), which can check a large region, but doesn't handle 
-address translation.  And you still wind up with a race condition if another thread 
-changes page mappings at the same time.
-
-(C) Perform the address translation etc yourself, and then protect the actual host memory 
-operation in the same way as exec/cpu_ldst.h functions:
-
-     set_helper_retaddr(ra);
-     memcpy(dest, src, n);
-     clear_helper_retaddr();
-
-In this case you must also validate that 'n' is representable.  This is only an issue for 
-32-bit host and 64-bit guest.  A check like (arg2 > SIZE_MAX) is likely to generate a 
-silly warning about always false comparison on 64-bit hosts.  Therefore I suggest
-
-     if (n != arg2) {
-         /*
-          * Overflow of size_t means that sequential pointer access would wrap.
-          * We know that NULL is unmapped, so at least that one byte would fault.
-          * There is nothing in the specification of memcpy that requires bytes
-          * to be accessed in order, so we are allowed to fault early.
-          */
-         cpu_loop_exit_sigsegv(env_cpu(env), 0, MMU_DATA_LOAD, true, ra);
-     }
-
-Finally, you know the return value from the specification of memcpy: arg0.
-There is no need to remap the return value back from host to guest space.
+Even better, provide some guest abstraction akin to va_start/va_arg so that all of the 
+per-native function code becomes shared.
 
 
 r~
