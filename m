@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6746726699
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1440272669D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:58:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6wTO-0008Vq-GD; Wed, 07 Jun 2023 12:57:26 -0400
+	id 1q6wTo-0001KK-Nb; Wed, 07 Jun 2023 12:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1q6wTB-0008Fx-AD; Wed, 07 Jun 2023 12:57:14 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1q6wTj-0001Dr-F5
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:57:49 -0400
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1q6wT9-0001md-GB; Wed, 07 Jun 2023 12:57:13 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-650c8cb68aeso4203664b3a.3; 
- Wed, 07 Jun 2023 09:57:09 -0700 (PDT)
+ id 1q6wTg-0001pJ-Tb
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:57:46 -0400
+Received: by mail-yb1-xb2d.google.com with SMTP id
+ 3f1490d57ef6-ba8cd61ee2dso1195274276.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:57:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686157029; x=1688749029;
+ d=gmail.com; s=20221208; t=1686157063; x=1688749063;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O3WaGEYLWcPiIzw6vB3RZqhbnQGY0LswNykwJliRoIg=;
- b=AJhggkqdcjz/eCrBDEl0P/iBfwNz19k38oWpeDv1C5JhNoPnraRvV0d90JCY4rnvu7
- FgRa3eAKo7mbkoKOuzqloDdB0pJDm3dnlNZrGwGBcAHAmFt0kSRaXo2D7uORCCE3uRao
- i/88T70Oio0ce/UWkRrYNhT4Ylf3Hv7twl/ha07vX5er3TkvUNJ+q7Dxa3AIXOdxCbfu
- KUioTNsYP8AkhoRIrhSO85H7w2PZrgZR1eKrIlNbvdHaXpY70cUUkvREsFTR4X/bpX99
- db+uNQVWWzRtqjm1jnEup7vqZvPElCDfhklts/q/nxip9Cum72jNeQdw8RlCNFaYiP17
- VnXQ==
+ bh=ruOmHOKIvXadvE8jXrAJUnNa6lotn9rQ25E1Fic8ZjU=;
+ b=a1i6bcHBBf1iIA37q/wV0LZZwmsX6IL7V42P+z22zyO+6Pbbk+4lmrooSpSlrLIZCA
+ mwNLsvU7t1d8VzMEz+04Tpm8SyXsCddrOoxcF/8Z09KDNJQFDe9D2QoRRR38GZMzD2T4
+ CRp7FSQwemcJV/QMdh0vQhFHj+XWHj7Y1LBSVyvuhJxGa08CgZ4FZl8M+u5TGuNDt2s1
+ 9khY0mShtYpH1OjwdPlrzWzs3kUXxQARRqTtCTUwhCm9qQXzg7kw0V7FIRduLUQwof6o
+ eM3tGIWl3KUp1fZyEXBjTtTuS1CrZJiczakFGwURAqFgy7cEZLEGWys3C33bhNNs0Qjb
+ iWnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686157029; x=1688749029;
+ d=1e100.net; s=20221208; t=1686157063; x=1688749063;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O3WaGEYLWcPiIzw6vB3RZqhbnQGY0LswNykwJliRoIg=;
- b=KL8pl9BO6KD2fsxHptrlqOeIacbx0Io+cwKQuixWIXIzjttuvSJvxTNHWXC+NCP+Jk
- XtU+TxauPCJX5FEl1jSJC2S1rwIW4QqcvLlc/4+NG1yKBBIq363GWI+G7IjXR51s27c/
- r0foWx7nhSQRmxU+I6WEQ972aJotBN4td/Fo1NJcRp1xjUNlPrXp+DxQQbkwXrTTLGxT
- XBSfIdfxQuWUcmw9iG3qUGxGVGH/IylESLAyfiZXZ6auFdoH/a/LeSpoBEQkFL5Z9KfC
- KEu7A1iCIN6U0jBV0ta/AaVnAX0Y7ORDUE2JC7aAH8S5QuM9ZCOauNLtuHXKOJPmDXcT
- IPeg==
-X-Gm-Message-State: AC+VfDzSk5SOxf3RuH2HHaWoYCWY0hAvAPyzwlJqUmr7Jabf5fOXWdxV
- uLZwpJyk5zLTHsuK9e6VRzE7n67tQI9e/ZOj6Vk=
-X-Google-Smtp-Source: ACHHUZ4hKpxnZf9pvcR+5WsqUFOIufUqlmCx6NIb0JCO3OX+ITK7s9LgZVri/XviOSo/UFP0ldRRFA==
-X-Received: by 2002:a17:90a:ca06:b0:259:ae4d:3377 with SMTP id
- x6-20020a17090aca0600b00259ae4d3377mr1730686pjt.27.1686156569266; 
- Wed, 07 Jun 2023 09:49:29 -0700 (PDT)
+ bh=ruOmHOKIvXadvE8jXrAJUnNa6lotn9rQ25E1Fic8ZjU=;
+ b=YZYQpY31FhHPtk4EtqAJpgKQnVWfRxj0r0hZxaQfCZhg3tMm4cyyk5tpYc7GDzA1vq
+ MEclizM+Fpnn1yPcMc5SCKsI9/LEW9YFj21FJUJbfhrXk8GluDtif3m/yOH9xOZelF0n
+ sR3XKZxOgTfK7Dhqzc6V9meYMSsdxyZHHAjKIn2Ke4IY7pP0mAeMmI//rkYolOuzTt4d
+ 8HTKzhO4cBkNbymgj4opgxeQ5LRIQdTBv++90BEeSyIv1lVY70Cyd1kIkJ5mL6ur4cqb
+ xPCWtMefL04Vi0HLSDxJCGDBzfW8vDPqk2gM8YYzdDFewXLz3SurxX9rinz9SnGweZvB
+ hVlA==
+X-Gm-Message-State: AC+VfDwfvTOlRQrO+xrgSVH23DGvqPhjpJW9xSOAFNhBOSpuWOCZgZkM
+ ePeJYZdXE4eA0pVGs5Y2JaFzsTOx8SmE0ZmJx+g=
+X-Google-Smtp-Source: ACHHUZ7Mh4Si2nhbjlq9k0Z/+l+JZW0lmWKMdldsfKNH9j1sjxjMr0mtgTGrd4mtBUG0OknNmPJhbA==
+X-Received: by 2002:a17:90b:8d7:b0:256:7866:8c06 with SMTP id
+ ds23-20020a17090b08d700b0025678668c06mr17008900pjb.19.1686156573350; 
+ Wed, 07 Jun 2023 09:49:33 -0700 (PDT)
 Received: from localhost.localdomain ([223.104.40.226])
  by smtp.gmail.com with ESMTPSA id
- 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.25
+ 30-20020a17090a001e00b00250bf8495b3sm1671808pja.39.2023.06.07.09.49.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jun 2023 09:49:28 -0700 (PDT)
+ Wed, 07 Jun 2023 09:49:32 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [RFC v2 5/6] target/arm: Add native library calls
-Date: Thu,  8 Jun 2023 00:47:49 +0800
-Message-Id: <20230607164750.829586-6-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>, Laurent Vivier <laurent@vivier.eu>
+Subject: [RFC v2 6/6] linux-user: Add '-native-bypass' option
+Date: Thu,  8 Jun 2023 00:47:50 +0800
+Message-Id: <20230607164750.829586-7-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
 References: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-yb1-xb2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,230 +95,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- target/arm/helper.c            | 47 ++++++++++++++++++++++++++++++++++
- target/arm/helper.h            |  6 +++++
- target/arm/tcg/translate-a64.c | 22 ++++++++++++++++
- target/arm/tcg/translate.c     | 25 +++++++++++++++++-
- target/arm/tcg/translate.h     | 19 ++++++++++++++
- 5 files changed, 118 insertions(+), 1 deletion(-)
+ include/qemu/envlist.h |  1 +
+ linux-user/main.c      | 23 +++++++++++++++++
+ util/envlist.c         | 56 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 80 insertions(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 0b7fd2e7e6..03fbc3724b 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -25,6 +25,7 @@
- #include "sysemu/tcg.h"
- #include "qapi/error.h"
- #include "qemu/guest-random.h"
-+#include "exec/cpu_ldst.h"
- #ifdef CONFIG_TCG
- #include "semihosting/common-semi.h"
- #endif
-@@ -12045,3 +12046,49 @@ void aarch64_sve_change_el(CPUARMState *env, int old_el,
-     }
+diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
+index 6006dfae44..865eb18e17 100644
+--- a/include/qemu/envlist.h
++++ b/include/qemu/envlist.h
+@@ -7,6 +7,7 @@ envlist_t *envlist_create(void);
+ void envlist_free(envlist_t *);
+ int envlist_setenv(envlist_t *, const char *);
+ int envlist_unsetenv(envlist_t *, const char *);
++int envlist_appendenv(envlist_t *, const char *, const char *);
+ int envlist_parse_set(envlist_t *, const char *);
+ int envlist_parse_unset(envlist_t *, const char *);
+ char **envlist_to_environ(const envlist_t *, size_t *);
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 5e6b2e1714..313c116b3b 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -125,6 +125,8 @@ static void usage(int exitcode);
+ static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+ const char *qemu_uname_release;
+ 
++static const char *native_lib;
++
+ #if !defined(TARGET_DEFAULT_STACK_SIZE)
+ /* XXX: on x86 MAP_GROWSDOWN only works if ESP <= address + 32, so
+    we allocate a bigger stack. Need a better solution, for example
+@@ -293,6 +295,13 @@ static void handle_arg_set_env(const char *arg)
+     free(r);
  }
- #endif
-+
-+#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
-+
-+#define NATIVE_FN_W_3W()           \
-+    target_ulong arg0, arg1, arg2; \
-+    arg0 = env->regs[0];           \
-+    arg1 = env->regs[1];           \
-+    arg2 = env->regs[2];
-+
-+void helper_native_memcpy(CPUARMState *env)
-+{
-+    CPUState *cs = env_cpu(env);
-+    NATIVE_FN_W_3W();
-+    void *ret;
-+    void *dest = g2h(cs, arg0);
-+    void *src = g2h(cs, arg1);
-+    size_t n = (size_t)arg2;
-+    ret = memcpy(dest, src, n);
-+    env->regs[0] = (target_ulong)h2g(ret);
-+}
-+
-+void helper_native_memcmp(CPUARMState *env)
-+{
-+    CPUState *cs = env_cpu(env);
-+    NATIVE_FN_W_3W();
-+    int ret;
-+    void *s1 = g2h(cs, arg0);
-+    void *s2 = g2h(cs, arg1);
-+    size_t n = (size_t)arg2;
-+    ret = memcmp(s1, s2, n);
-+    env->regs[0] = ret;
-+}
-+
-+void helper_native_memset(CPUARMState *env)
-+{
-+    CPUState *cs = env_cpu(env);
-+    NATIVE_FN_W_3W();
-+    void *ret;
-+    void *s = g2h(cs, arg0);
-+    int c = (int)arg1;
-+    size_t n = (size_t)arg2;
-+    ret = memset(s, c, n);
-+    env->regs[0] = (target_ulong)h2g(ret);
-+}
-+
-+#endif
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 3335c2b10b..57144bf6fb 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -1038,6 +1038,12 @@ DEF_HELPER_FLAGS_5(gvec_uclamp_s, TCG_CALL_NO_RWG,
- DEF_HELPER_FLAGS_5(gvec_uclamp_d, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, ptr, i32)
  
 +#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
-+DEF_HELPER_1(native_memcpy, void, env)
-+DEF_HELPER_1(native_memcmp, void, env)
-+DEF_HELPER_1(native_memset, void, env)
++static void handle_arg_native_bypass(const char *arg)
++{
++    native_lib = arg;
++}
 +#endif
 +
- #ifdef TARGET_AARCH64
- #include "tcg/helper-a64.h"
- #include "tcg/helper-sve.h"
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 741a608739..04421af6c6 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -35,6 +35,7 @@
- #include "cpregs.h"
- #include "translate-a64.h"
- #include "qemu/atomic128.h"
-+#include "native/native-func.h"
- 
- static TCGv_i64 cpu_X[32];
- static TCGv_i64 cpu_pc;
-@@ -2291,6 +2292,9 @@ static void disas_exc(DisasContext *s, uint32_t insn)
-             if (s->fgt_svc) {
-                 gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
-                 break;
-+            } else if (native_bypass() && imm16 == 0xff) {
-+                s->native_call_status = true;
-+                break;
-             }
-             gen_ss_advance(s);
-             gen_exception_insn(s, 4, EXCP_SWI, syndrome);
-@@ -14203,6 +14207,24 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     s->fp_access_checked = false;
-     s->sve_access_checked = false;
- 
-+    if (native_bypass() && s->native_call_status) {
-+        switch (insn) {
-+        case NATIVE_MEMCPY:
-+            gen_helper_native_memcpy(cpu_env);
-+            break;
-+        case NATIVE_MEMCMP:
-+            gen_helper_native_memcmp(cpu_env);
-+            break;
-+        case NATIVE_MEMSET:
-+            gen_helper_native_memset(cpu_env);
-+            break;
-+        default:
-+            unallocated_encoding(s);
-+        }
-+        s->native_call_status = false;
-+        return;
-+    }
-+
-     if (s->pstate_il) {
-         /*
-          * Illegal execution state. This has priority over BTI
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 7468476724..83ce0f7437 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -34,7 +34,7 @@
- #include "exec/helper-gen.h"
- #include "exec/log.h"
- #include "cpregs.h"
--
-+#include "native/native-func.h"
- 
- #define ENABLE_ARCH_4T    arm_dc_feature(s, ARM_FEATURE_V4T)
- #define ENABLE_ARCH_5     arm_dc_feature(s, ARM_FEATURE_V5)
-@@ -58,6 +58,10 @@ TCGv_i32 cpu_CF, cpu_NF, cpu_VF, cpu_ZF;
- TCGv_i64 cpu_exclusive_addr;
- TCGv_i64 cpu_exclusive_val;
- 
-+#if defined(CONFIG_USER_ONLY) && !defined(TARGET_AARCH64)  \
-+    && defined(CONFIG_USER_NATIVE_CALL)
-+#endif
-+
- #include "exec/gen-icount.h"
- 
- static const char * const regnames[] =
-@@ -8576,6 +8580,8 @@ static bool trans_SVC(DisasContext *s, arg_SVC *a)
-         if (s->fgt_svc) {
-             uint32_t syndrome = syn_aa32_svc(a->imm, s->thumb);
-             gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
-+        } else if (native_bypass() && a->imm == 0xff) {
-+            s->native_call_status = true;
-         } else {
-             gen_update_pc(s, curr_insn_len(s));
-             s->svc_imm = a->imm;
-@@ -9372,6 +9378,23 @@ static void arm_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     insn = arm_ldl_code(env, &dc->base, pc, dc->sctlr_b);
-     dc->insn = insn;
-     dc->base.pc_next = pc + 4;
-+    if (native_bypass() && dc->native_call_status) {
-+        switch (insn) {
-+        case NATIVE_MEMCPY:
-+            gen_helper_native_memcpy(cpu_env);
-+            break;
-+        case NATIVE_MEMCMP:
-+            gen_helper_native_memcmp(cpu_env);
-+            break;
-+        case NATIVE_MEMSET:
-+            gen_helper_native_memset(cpu_env);
-+            break;
-+        default:
-+            unallocated_encoding(dc);
-+        }
-+        dc->native_call_status = false;
-+        return;
-+    }
-     disas_arm_insn(dc, insn);
- 
-     arm_post_translate_insn(dc);
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index a9d1f4adc2..19c4f7af7f 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -149,6 +149,13 @@ typedef struct DisasContext {
-     int c15_cpar;
-     /* TCG op of the current insn_start.  */
-     TCGOp *insn_start;
-+    /*
-+     * Indicate whether the next instruction is a native function call (true)
-+     * or not (false).
-+     */
+ static void handle_arg_unset_env(const char *arg)
+ {
+     char *r, *p, *token;
+@@ -522,6 +531,10 @@ static const struct qemu_argument arg_table[] = {
+      "",           "Generate a /tmp/perf-${pid}.map file for perf"},
+     {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
+      "",           "Generate a jit-${pid}.dump file for perf"},
 +#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
-+    bool native_call_status;
++    {"native-bypass", "QEMU_NATIVE_BYPASS", true, handle_arg_native_bypass,
++     "",           "native bypass for library calls in user mode only."},
 +#endif
- } DisasContext;
+     {NULL, NULL, false, NULL, NULL, NULL}
+ };
  
- typedef struct DisasCompare {
-@@ -657,3 +664,15 @@ static inline void gen_restore_rmode(TCGv_i32 old, TCGv_ptr fpst)
+@@ -826,6 +839,16 @@ int main(int argc, char **argv, char **envp)
+         }
      }
  
- #endif /* TARGET_ARM_TRANSLATE_H */
++    /* Set the library for native bypass  */
++    if (native_lib != NULL) {
++        char *token = malloc(strlen(native_lib) + 12);
++        strcpy(token, "LD_PRELOAD=");
++        strcat(token, native_lib);
++         if (envlist_appendenv(envlist, token, ":") != 0) {
++            usage(EXIT_FAILURE);
++        }
++    }
 +
+     target_environ = envlist_to_environ(envlist, NULL);
+     envlist_free(envlist);
+ 
+diff --git a/util/envlist.c b/util/envlist.c
+index db937c0427..713d52497e 100644
+--- a/util/envlist.c
++++ b/util/envlist.c
+@@ -201,6 +201,62 @@ envlist_unsetenv(envlist_t *envlist, const char *env)
+     return (0);
+ }
+ 
 +/*
-+ * Check if the native bypass feature is enabled.
++ * Appends environment value to envlist. If the environment
++ * variable already exists, the new value is appended to the
++ * existing one.
++ *
++ * Returns 0 in success, errno otherwise.
 + */
-+static inline bool native_bypass(void)
++int
++envlist_appendenv(envlist_t *envlist, const char *env, const char *separator)
 +{
-+#if defined(CONFIG_USER_ONLY) && defined(CONFIG_USER_NATIVE_CALL)
-+    return true;
-+#else
-+    return false;
-+#endif
++    struct envlist_entry *entry = NULL;
++    const char *eq_sign;
++    size_t envname_len;
++
++    if ((envlist == NULL) || (env == NULL)) {
++        return (EINVAL);
++    }
++
++    /* find out first equals sign in given env */
++    eq_sign = strchr(env, '=');
++    if (eq_sign == NULL) {
++        return (EINVAL);
++    }
++    envname_len = eq_sign - env + 1;
++
++    /*
++     * If there already exists variable with given name,
++     * we append the new value to the existing one.
++     */
++    for (entry = envlist->el_entries.lh_first; entry != NULL;
++        entry = entry->ev_link.le_next) {
++        if (strncmp(entry->ev_var, env, envname_len) == 0) {
++            break;
++        }
++    }
++
++    if (entry != NULL) {
++        char *new_env_value = NULL;
++        size_t new_env_len = strlen(entry->ev_var) + strlen(eq_sign)
++            + strlen(separator) + 1;
++        new_env_value = g_malloc(new_env_len);
++        strcpy(new_env_value, entry->ev_var);
++        strcat(new_env_value, separator);
++        strcat(new_env_value, eq_sign + 1);
++        g_free((char *)entry->ev_var);
++        entry->ev_var = new_env_value;
++    } else {
++        envlist->el_count++;
++        entry = g_malloc(sizeof(*entry));
++        entry->ev_var = g_strdup(env);
++        QLIST_INSERT_HEAD(&envlist->el_entries, entry, ev_link);
++    }
++
++    return (0);
 +}
++
+ /*
+  * Returns given envlist as array of strings (in same form that
+  * global variable environ is).  Caller must free returned memory
 -- 
 2.34.1
 
