@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917F07263FB
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A09AD726407
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:18:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6uun-0005UJ-W0; Wed, 07 Jun 2023 11:17:38 -0400
+	id 1q6uvv-0006LT-Nk; Wed, 07 Jun 2023 11:18:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6uua-0005Rk-SB
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:17:28 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6uuX-0005uL-MA
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:17:23 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-30d5931d17aso3744293f8f.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686151040; x=1688743040;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7Y2BdOp4zFOQRlkJfYQouf/KUEf6CShaaPXp4nhhGB8=;
- b=K2qU49+HJMJrmU5H4Sb1XicsBmFDlLUMA8EmS93CPOtL3jnnl4+rO4La8Yv3V6S20i
- qvODLafoaBG8CsCdnQ9QQ/QgGtnkijFEXOwo79lWXHR2MYHs2h5h7t+BsDlln5aZ70WJ
- w8Gulbi03Hr0AQFbuprcZ5D+XGGHiAEpCWyt3BwoAJSf4H6F/ZcRAdkj3nJcrOsU6r1+
- Svae1fNU+pCax3tztTTz1XnDAAifiK1GFqvX1rARL1Bdw5xzbA/tPnA9UXs+SjElCSPs
- WPtd6GrOaPtDiIcVJDioMQsNTxDIqpl9ZmfyF2PSC0QetalzEH/8CdpVFAVrZOVJcvnq
- rL6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686151040; x=1688743040;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7Y2BdOp4zFOQRlkJfYQouf/KUEf6CShaaPXp4nhhGB8=;
- b=hRGiFd2StGY2qoiury6rkx5+yuYyTGzUNDN5i/7WQagjBkF/z9cKXmO+o0ZLeqMj0O
- TSbFcaXGQ3U6RDhfjSM0MNxTi+g42dfGXWmI+QEv1u6h6rWvtzgZ9WBS68U758eZ5n8b
- aZ7+UiVUus/JrpDDzkoZGEx5zNfala+Fe/hXDzPQ4lELE841kcu7Cm6Leccsw03GuHJC
- yZgE0cRn5K2I4Ect/1q2iqpv8kMPiRAzSM2lQz9wcrNTxvmDEIiBMBngCJ8pQSS0cMt7
- 9B3dq/KoZrEUv/auS7giwu8UD7C+m358xeufCwKGdJlDIOovfw4fBPiDOdQCxJ1TDaQb
- q1EA==
-X-Gm-Message-State: AC+VfDzvGhuuMze5CHfT1UbRIxqptjJl+fDlRuGMm3FjEVhGZEjAZT1n
- HCzBtwKpHgHv1ODGUKO5YzUX/g==
-X-Google-Smtp-Source: ACHHUZ5cFnNGna0073tkDHVILRhJH396LtzVkR4U/T8iZuHBG5TwwXWoL2v8nNA61ktk+JkmS6IRiw==
-X-Received: by 2002:a05:6000:d1:b0:30e:46c3:a179 with SMTP id
- q17-20020a05600000d100b0030e46c3a179mr4788635wrx.30.1686151040098; 
- Wed, 07 Jun 2023 08:17:20 -0700 (PDT)
-Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
- [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
- n8-20020a5d4c48000000b00301a351a8d6sm15694492wrt.84.2023.06.07.08.17.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 08:17:19 -0700 (PDT)
-Message-ID: <673a858e-8437-24e0-1ca5-3a2f956bb42c@linaro.org>
-Date: Wed, 7 Jun 2023 17:17:14 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: QEMU developers fortnightly conference call for 2023-06-13
-Content-Language: en-US
-To: juan.quintela@gmail.com, afaerber@suse.de, ale@rev.ng, anjo@rev.ng,
- bazulay@redhat.com, bbauman@redhat.com, chao.p.peng@linux.intel.com,
- cjia@nvidia.com, cw@f00f.org, david.edmondson@oracle.com,
- dustin.kirkland@canonical.com, eblake@redhat.com, edgar.iglesias@gmail.com,
- elena.ufimtseva@oracle.com, eric.auger@redhat.com, f4bug@amsat.org,
- Felipe Franciosi <felipe.franciosi@nutanix.com>,
- "iggy@theiggy.com" <iggy@kws1.com>, Warner Losh <wlosh@bsdimp.com>,
- jan.kiszka@web.de, jgg@nvidia.com, jidong.xiao@gmail.com,
- jjherne@linux.vnet.ibm.com, joao.m.martins@oracle.com,
- konrad.wilk@oracle.com, kvm@vger.kernel.org, mburton@qti.qualcomm.com,
- mdean@redhat.com, mimu@linux.vnet.ibm.com, peter.maydell@linaro.org,
- qemu-devel@nongnu.org, quintela@redhat.com, richard.henderson@linaro.org,
- shameerali.kolothum.thodi@huawei.com, stefanha@gmail.com,
- wei.w.wang@intel.com, z.huo@139.com, zwu.kernel@gmail.com
-References: <calendar-123b3e98-a357-4d85-ac0b-ecce92087a35@google.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <calendar-123b3e98-a357-4d85-ac0b-ecce92087a35@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1q6uvs-0006LA-39
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:18:44 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1q6uvq-00069J-5w
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:18:43 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 357Eb2be019428; Wed, 7 Jun 2023 15:18:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id; s=corp-2023-03-30;
+ bh=GbIkksUVst8UxspLOjvwv+WpIqxFdS01YhCMvOSXJi0=;
+ b=Ag70DhDJKMNKSdRo3Eoc00lNPU4hm64z6N5+wd+ATozOsvBQVI3Gx7h+ctsgwwwNhOHo
+ UNzRxW1QHr0O2BQ9X2IRjrh2ebRP685d81Jl0ANB15Ps9p59iL2/V8+Y3fjMxYrxhGaA
+ 6GaG8pRjMlvwRNwKfuzOSSqWTpLCxw1QVpNo+wvycQ39L+ebcooT/x7lHEblRZZGL6RL
+ XfO8O07X7QhQ+Xg40/uuVOAQFlAwwHlRWZNUJVH0outRMTeHFWAnEnsVVPJ5VvE1XJjt
+ 4X+AVLlCrjxwkPn34HqqAeIvh8rgliXJneoP/GhOgrgJNqVifZKYs9Tdl/XSbQ93Fp3s Rw== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r2a6sj2yf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 Jun 2023 15:18:39 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 357FHMw7037135; Wed, 7 Jun 2023 15:18:38 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3r2a6hck6v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 Jun 2023 15:18:38 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 357FG55e036162;
+ Wed, 7 Jun 2023 15:18:37 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 3r2a6hck5y-1; Wed, 07 Jun 2023 15:18:37 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V3] memory: RAM_NAMED_FILE flag
+Date: Wed,  7 Jun 2023 08:18:36 -0700
+Message-Id: <1686151116-253260-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-07_07,2023-06-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ suspectscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306070130
+X-Proofpoint-GUID: UcFRVgvalRrE9JA0PQ-otssSUFv2hAco
+X-Proofpoint-ORIG-GUID: UcFRVgvalRrE9JA0PQ-otssSUFv2hAco
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,30 +97,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Juan,
+migrate_ignore_shared() is an optimization that avoids copying memory
+that is visible and can be mapped on the target.  However, a
+memory-backend-ram or a memory-backend-memfd block with the RAM_SHARED
+flag set is not migrated when migrate_ignore_shared() is true.  This is
+wrong, because the block has no named backing store, and its contents will
+be lost.  To fix, ignore shared memory iff it is a named file.  Define a
+new flag RAM_NAMED_FILE to distinguish this case.
 
-On 7/6/23 15:55, juan.quintela@gmail.com wrote:
-> QEMU developers fortnightly conference call
-> 
-> Hi
-> Here is the wiki for whover that wants to add topics to the agenda.
-> https://wiki.qemu.org/QEMUCall#Call_for_agenda_for_2023-06-13 
-> <https://wiki.qemu.org/QEMUCall#Call_for_agenda_for_2023-06-13>
-> 
-> We already have a topic that is "Live Update", so please join.
-> 
-> Later, Juan.
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+---
+ backends/hostmem-file.c   | 1 +
+ include/exec/cpu-common.h | 1 +
+ include/exec/memory.h     | 3 +++
+ migration/ram.c           | 3 ++-
+ qapi/migration.json       | 4 ++--
+ softmmu/physmem.c         | 7 ++++++-
+ 6 files changed, 15 insertions(+), 4 deletions(-)
 
-KVM Forum 2023 is on Wed 14 and Thu 15, so we can expect people
-interested to assist being traveling on Tue 13.
-
-There will be Birds of a Feather sessions on Wed 14 from 15:45
-to 17:45 (Europe/Prague), perhaps this is a better replacement
-(assuming someone from each session volunteer to stream for
-remote audience).
-
-Regards,
-
-Phil.
+diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
+index 38ea65b..b4335a8 100644
+--- a/backends/hostmem-file.c
++++ b/backends/hostmem-file.c
+@@ -57,6 +57,7 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+     ram_flags = backend->share ? RAM_SHARED : 0;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+     ram_flags |= fb->is_pmem ? RAM_PMEM : 0;
++    ram_flags |= RAM_NAMED_FILE;
+     memory_region_init_ram_from_file(&backend->mr, OBJECT(backend), name,
+                                      backend->size, fb->align, ram_flags,
+                                      fb->mem_path, fb->offset, fb->readonly,
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index e5a55ed..87dc9a7 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -93,6 +93,7 @@ void qemu_ram_set_uf_zeroable(RAMBlock *rb);
+ bool qemu_ram_is_migratable(RAMBlock *rb);
+ void qemu_ram_set_migratable(RAMBlock *rb);
+ void qemu_ram_unset_migratable(RAMBlock *rb);
++bool qemu_ram_is_named_file(RAMBlock *rb);
+ int qemu_ram_get_fd(RAMBlock *rb);
+ 
+ size_t qemu_ram_pagesize(RAMBlock *block);
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index c3661b2..47c2e02 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -232,6 +232,9 @@ typedef struct IOMMUTLBEvent {
+ /* RAM that isn't accessible through normal means. */
+ #define RAM_PROTECTED (1 << 8)
+ 
++/* RAM is an mmap-ed named file */
++#define RAM_NAMED_FILE (1 << 9)
++
+ static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
+                                        IOMMUNotifierFlag flags,
+                                        hwaddr start, hwaddr end,
+diff --git a/migration/ram.c b/migration/ram.c
+index 88a6c82..cc98da3 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -197,7 +197,8 @@ static bool postcopy_preempt_active(void)
+ bool ramblock_is_ignored(RAMBlock *block)
+ {
+     return !qemu_ram_is_migratable(block) ||
+-           (migrate_ignore_shared() && qemu_ram_is_shared(block));
++           (migrate_ignore_shared() && qemu_ram_is_shared(block) &&
++            qemu_ram_is_named_file(block));
+ }
+ 
+ #undef RAMBLOCK_FOREACH
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 179af0c..5bb5ab8 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -465,8 +465,8 @@
+ #     block devices (and thus take locks) immediately at the end of
+ #     migration.  (since 3.0)
+ #
+-# @x-ignore-shared: If enabled, QEMU will not migrate shared memory
+-#     (since 4.0)
++# @x-ignore-shared: If enabled, QEMU will not migrate shared memory that is
++#     accessible on the destination machine. (since 4.0)
+ #
+ # @validate-uuid: Send the UUID of the source to allow the destination
+ #     to ensure it is the same.  (since 4.2)
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 9d7e172..a8f742a 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -1570,6 +1570,11 @@ void qemu_ram_unset_migratable(RAMBlock *rb)
+     rb->flags &= ~RAM_MIGRATABLE;
+ }
+ 
++bool qemu_ram_is_named_file(RAMBlock *rb)
++{
++    return rb->flags & RAM_NAMED_FILE;
++}
++
+ int qemu_ram_get_fd(RAMBlock *rb)
+ {
+     return rb->fd;
+@@ -1880,7 +1885,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+ 
+     /* Just support these ram flags by now. */
+     assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
+-                          RAM_PROTECTED)) == 0);
++                          RAM_PROTECTED | RAM_NAMED_FILE)) == 0);
+ 
+     if (xen_enabled()) {
+         error_setg(errp, "-mem-path not supported with Xen");
+-- 
+1.8.3.1
 
 
