@@ -2,52 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4573D727617
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF616726590
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:14:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BI-00067S-CW; Thu, 08 Jun 2023 00:23:28 -0400
+	id 1q6vmy-0004kH-N2; Wed, 07 Jun 2023 12:13:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z5-0006RZ-LE
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0000De-Pe
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id CE22B11F133;
- Thu,  8 Jun 2023 02:02:39 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 08 Jun 2023 00:12:40 +0800
-Subject: [PATCH QEMU v5 6/8] migration: Implement dirty-limit convergence algo
-MIME-Version: 1.0
-Message-ID: <168618975839.6361.17407633874747688653-6@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6vmh-0004j2-UG
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:13:20 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q6vmc-0001M4-8m
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:13:16 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 57F171FDB2;
+ Wed,  7 Jun 2023 16:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1686154391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=47PSzAM6ByJ+JnwZix2edGS4IVcu44SF/ttfq9G+3Po=;
+ b=tFrh4mQ7Mco+BuoSjJPFeivdFAFu7J/TaoB9qBHsF5OIHPpLUCIu/gM7oKIA+U7ZxqHemS
+ 7nfKrJp0jWi4DPVeQ5T5yg4Mc+r0G6wCWC8/Mzt8poIoZSTK3QC6oLrtW+NizRLSAWzYfI
+ 8MLRN2ZvHzUFibIbht7E74ucowwJWvw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1686154391;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=47PSzAM6ByJ+JnwZix2edGS4IVcu44SF/ttfq9G+3Po=;
+ b=VzRrArFTwHeFEct8kWcQsaT+zNyQpLoBKbt4G4k70YGz4TOStmuwUFWpbStbTog6OwSJ82
+ z8857n30CStDzhBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6FA2213776;
+ Wed,  7 Jun 2023 16:13:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id VVpGDZWsgGSfRgAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 07 Jun 2023 16:13:09 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ Jiang Jiacheng <jiangjiacheng@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH v2 0/3] migration: Fix multifd cancel test
+Date: Wed,  7 Jun 2023 13:13:03 -0300
+Message-Id: <20230607161306.31425-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,220 +81,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+v2:
+- patch 1: dropped the qmp_ prefix;
 
-Implement dirty-limit convergence algo for live migration,
-which is kind of like auto-converge algo but using dirty-limit
-instead of cpu throttle to make migration convergent.
+- patch 2: dropped the qemu_mutex_destroy;
 
-Enable dirty page limit if dirty_rate_high_cnt greater than 2
-when dirty-limit capability enabled, Disable dirty-limit if
-migration be cancled.
+	   stopped moving the _remove functions (don't strictly need it
+           anymore since not destroying the mutex explicitly);
 
-Note that "set_vcpu_dirty_limit", "cancel_vcpu_dirty_limit"
-commands are not allowed during dirty-limit live migration.
+	   added the lock to protect the loop in
+	   qmp_query_migrationthreads;
 
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- migration/migration.c  |  3 ++
- migration/ram.c        | 63 ++++++++++++++++++++++++++++++++----------
- migration/trace-events |  1 +
- softmmu/dirtylimit.c   | 22 +++++++++++++++
- 4 files changed, 74 insertions(+), 15 deletions(-)
+	   added __attribute__((constructor)).
 
-diff --git a/migration/migration.c b/migration/migration.c
-index dc05c6f6ea..4278b48af0 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -165,6 +165,9 @@ void migration_cancel(const Error *error)
-     if (error) {
-         migrate_set_error(current_migration, error);
-     }
-+    if (migrate_dirty_limit()) {
-+        qmp_cancel_vcpu_dirty_limit(false, -1, NULL);
-+    }
-     migrate_fd_cancel(current_migration);
- }
-=20
-diff --git a/migration/ram.c b/migration/ram.c
-index 132f1a81d9..d26c7a8193 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -46,6 +46,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-types-migration.h"
- #include "qapi/qapi-events-migration.h"
-+#include "qapi/qapi-commands-migration.h"
- #include "qapi/qmp/qerror.h"
- #include "trace.h"
- #include "exec/ram_addr.h"
-@@ -59,6 +60,8 @@
- #include "multifd.h"
- #include "sysemu/runstate.h"
- #include "options.h"
-+#include "sysemu/dirtylimit.h"
-+#include "sysemu/kvm.h"
-=20
- #include "hw/boards.h" /* for machine_dump_guest_core() */
-=20
-@@ -983,6 +986,30 @@ static void migration_update_rates(RAMState *rs, int64_t=
- end_time)
-     }
- }
-=20
-+/*
-+ * Enable dirty-limit to throttle down the guest
-+ */
-+static void migration_dirty_limit_guest(void)
-+{
-+    static int64_t quota_dirtyrate;
-+    MigrationState *s =3D migrate_get_current();
-+
-+    /*
-+     * If dirty limit already enabled and migration parameter
-+     * vcpu-dirty-limit untouched.
-+     */
-+    if (dirtylimit_in_service() &&
-+        quota_dirtyrate =3D=3D s->parameters.vcpu_dirty_limit) {
-+        return;
-+    }
-+
-+    quota_dirtyrate =3D s->parameters.vcpu_dirty_limit;
-+
-+    /* Set or update quota dirty limit */
-+    qmp_set_vcpu_dirty_limit(false, -1, quota_dirtyrate, NULL);
-+    trace_migration_dirty_limit_guest(quota_dirtyrate);
-+}
-+
- static void migration_trigger_throttle(RAMState *rs)
- {
-     uint64_t threshold =3D migrate_throttle_trigger_threshold();
-@@ -991,26 +1018,32 @@ static void migration_trigger_throttle(RAMState *rs)
-     uint64_t bytes_dirty_period =3D rs->num_dirty_pages_period * TARGET_PAGE=
-_SIZE;
-     uint64_t bytes_dirty_threshold =3D bytes_xfer_period * threshold / 100;
-=20
--    /* During block migration the auto-converge logic incorrectly detects
--     * that ram migration makes no progress. Avoid this by disabling the
--     * throttling logic during the bulk phase of block migration. */
--    if (blk_mig_bulk_active()) {
--        return;
--    }
-+    /*
-+     * The following detection logic can be refined later. For now:
-+     * Check to see if the ratio between dirtied bytes and the approx.
-+     * amount of bytes that just got transferred since the last time
-+     * we were in this routine reaches the threshold. If that happens
-+     * twice, start or increase throttling.
-+     */
-=20
--    if (migrate_auto_converge()) {
--        /* The following detection logic can be refined later. For now:
--           Check to see if the ratio between dirtied bytes and the approx.
--           amount of bytes that just got transferred since the last time
--           we were in this routine reaches the threshold. If that happens
--           twice, start or increase throttling. */
-+    if ((bytes_dirty_period > bytes_dirty_threshold) &&
-+        (++rs->dirty_rate_high_cnt >=3D 2)) {
-+        rs->dirty_rate_high_cnt =3D 0;
-+        /*
-+         * During block migration the auto-converge logic incorrectly detects
-+         * that ram migration makes no progress. Avoid this by disabling the
-+         * throttling logic during the bulk phase of block migration
-+         */
-+        if (blk_mig_bulk_active()) {
-+            return;
-+        }
-=20
--        if ((bytes_dirty_period > bytes_dirty_threshold) &&
--            (++rs->dirty_rate_high_cnt >=3D 2)) {
-+        if (migrate_auto_converge()) {
-             trace_migration_throttle();
--            rs->dirty_rate_high_cnt =3D 0;
-             mig_throttle_guest_down(bytes_dirty_period,
-                                     bytes_dirty_threshold);
-+        } else if (migrate_dirty_limit()) {
-+            migration_dirty_limit_guest();
-         }
-     }
- }
-diff --git a/migration/trace-events b/migration/trace-events
-index cdaef7a1ea..c5cb280d95 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -91,6 +91,7 @@ migration_bitmap_sync_start(void) ""
- migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
- migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsig=
-ned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
- migration_throttle(void) ""
-+migration_dirty_limit_guest(int64_t dirtyrate) "guest dirty page rate limit =
-%" PRIi64 " MB/s"
- ram_discard_range(const char *rbname, uint64_t start, size_t len) "%s: start=
-: %" PRIx64 " %zx"
- ram_load_loop(const char *rbname, uint64_t addr, int flags, void *host) "%s:=
- addr: 0x%" PRIx64 " flags: 0x%x host: %p"
- ram_load_postcopy_loop(int channel, uint64_t addr, int flags) "chan=3D%d add=
-r=3D0x%" PRIx64 " flags=3D0x%x"
-diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index 3f1103b04b..ee47158986 100644
---- a/softmmu/dirtylimit.c
-+++ b/softmmu/dirtylimit.c
-@@ -440,6 +440,8 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
-                                  int64_t cpu_index,
-                                  Error **errp)
- {
-+    MigrationState *ms =3D migrate_get_current();
-+
-     if (!kvm_enabled() || !kvm_dirty_ring_enabled()) {
-         return;
-     }
-@@ -453,6 +455,15 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
-         return;
-     }
-=20
-+    if (migration_is_running(ms->state) &&
-+        (!qemu_thread_is_self(&ms->thread)) &&
-+        migrate_dirty_limit() &&
-+        dirtylimit_in_service()) {
-+        error_setg(errp, "can't cancel dirty page limit while"
-+                   " migration is running");
-+        return;
-+    }
-+
-     dirtylimit_state_lock();
-=20
-     if (has_cpu_index) {
-@@ -488,6 +499,8 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
-                               uint64_t dirty_rate,
-                               Error **errp)
- {
-+    MigrationState *ms =3D migrate_get_current();
-+
-     if (!kvm_enabled() || !kvm_dirty_ring_enabled()) {
-         error_setg(errp, "dirty page limit feature requires KVM with"
-                    " accelerator property 'dirty-ring-size' set'");
-@@ -504,6 +517,15 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
-         return;
-     }
-=20
-+    if (migration_is_running(ms->state) &&
-+        (!qemu_thread_is_self(&ms->thread)) &&
-+        migrate_dirty_limit() &&
-+        dirtylimit_in_service()) {
-+        error_setg(errp, "can't cancel dirty page limit while"
-+                   " migration is running");
-+        return;
-+    }
-+
-     dirtylimit_state_lock();
-=20
-     if (!dirtylimit_in_service()) {
---=20
-2.38.5
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/892563231
+
+v1:
+https://lore.kernel.org/r/20230606144551.24367-1-farosas@suse.de
+
+When doing cleanup of the multifd send threads we're calling
+QLIST_REMOVE concurrently on the migration_threads list. This seems to
+be the source of the crashes we've seen on the
+multifd/tcp/plain/cancel tests.
+
+I'm running the test in a loop and after a few dozen iterations I see
+the crash in dmesg.
+
+  QTEST_QEMU_BINARY=./qemu-system-x86_64 \
+  QEMU_TEST_FLAKY_TESTS=1 \
+  ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/cancel
+
+  multifdsend_10[11382]: segfault at 18 ip 0000564b77de1e25 sp
+  00007fdf767fb610 error 6 in qemu-system-x86_64[564b777b4000+e1c000]
+  Code: ec 10 48 89 7d f8 48 83 7d f8 00 74 58 48 8b 45 f8 48 8b 40 10
+  48 85 c0 74 14 48 8b 45 f8 48 8b 40 10 48 8b 55 f8 48 8b 52 18 <48> 89
+  50 18 48 8b 45 f8 48 8b 40 18 48 8b 55 f8 48 8b 52 10 48 89
+
+the offending instruction is a mov dereferencing the
+thread->node.le_next pointer at QLIST_REMOVE in MigrationThreadDel:
+
+  void MigrationThreadDel(MigrationThread *thread)
+  {
+      if (thread) {
+          QLIST_REMOVE(thread, node);
+          g_free(thread);
+      }
+  }
+
+where:
+  #define QLIST_REMOVE(elm, field) do {                   \
+          if ((elm)->field.le_next != NULL)               \
+                  (elm)->field.le_next->field.le_prev =   \ <-- HERE
+                      (elm)->field.le_prev;               \
+          *(elm)->field.le_prev = (elm)->field.le_next;   \
+          (elm)->field.le_next = NULL;                    \
+          (elm)->field.le_prev = NULL;                    \
+  } while (/*CONSTCOND*/0)
+
+The MigrationThreadDel function is called from the multifd threads and
+is not under any lock, so several calls can race when accessing the
+list.
+
+(I actually hit this first on my fixed-ram branch which changes some
+synchronization in multifd and makes the issue more frequent)
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/891000519
+
+Fabiano Rosas (3):
+  migration/multifd: Rename threadinfo.c functions
+  migration/multifd: Protect accesses to migration_threads
+  tests/qtest: Re-enable multifd cancel test
+
+ migration/migration.c        |  4 ++--
+ migration/multifd.c          |  4 ++--
+ migration/threadinfo.c       | 19 ++++++++++++++++---
+ migration/threadinfo.h       |  7 ++-----
+ tests/qtest/migration-test.c | 10 ++--------
+ 5 files changed, 24 insertions(+), 20 deletions(-)
+
+-- 
+2.35.3
 
 
