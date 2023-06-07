@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA397263B3
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552F47263E0
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:14:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6ukq-0000yy-GR; Wed, 07 Jun 2023 11:07:20 -0400
+	id 1q6uqs-0002Ft-0N; Wed, 07 Jun 2023 11:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q6ukm-0000yh-1c
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:07:16 -0400
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1q6ukk-0003r6-F7
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:07:15 -0400
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-bad05c6b389so9475694276.2
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:07:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686150430; x=1688742430;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=x2tZKNg/N18lBhSyZJdVvUxai/+n5xOKK0LlYnVhuyU=;
- b=PRo/fz0LbLVJEl7Crm0ATqx48v7AdAbTjWkqpGyoGJmeup39Kz319W7svFMAIc0NYU
- TcSs8O1tqIG7/89/ZlGlw/Yx8kEkm/Iw76CejGce0YE9dg/sUUj/sZV3YCV4HiIUopz7
- nC0u78lkQVbc4hQnXAf3/slMAur5SNroq06WlW07Wd9DSOXeC+VRaG/ryhmDcyGckshw
- puO0FI5komCzHQGQj1/TK808P1jym27YcLflCqwJ0liv6qVj2eEU69nHYNRI532hGIex
- SP4eSlBBLEOn2lq+jKad5kloQaJ5FhX6YX+3z/i8n0jHX7wpSaEazlLiRXZnDcURH/g+
- 0xWw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6uqp-0002FH-Qm
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:13:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q6uqm-0004uj-QN
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:13:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686150743;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Sxi0rdN/oiOVPn22IbWPszGA19lCpFh0+pR45m0QThk=;
+ b=FkmMeQASQU+2wDOH+qgIuu4Xk9JP3+WVaHS6rOc8GM8nWqaJj/zTNeu+Fv14s5drWVISRr
+ Hrj1xaJarkHi5uI2tgfsYgqrbSADdWz9NuvCVrLF8WfZ/Ij3t5ZWvHrwuBAbBjCDVhVTnh
+ riZ3UN2B5JCXxqWxDqxAVYAfr2QdOXA=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-39Y7Y_huOhem2Pu1u7yWqA-1; Wed, 07 Jun 2023 11:10:10 -0400
+X-MC-Unique: 39Y7Y_huOhem2Pu1u7yWqA-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-62632620f00so10412186d6.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 08:10:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686150430; x=1688742430;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=x2tZKNg/N18lBhSyZJdVvUxai/+n5xOKK0LlYnVhuyU=;
- b=b0DWzYR6eeaL6E3eFLpJyY+9gh4VkVdU7eClaWVfJkIcq9L3uW0xK7cLgzSfbDA2EZ
- 6I4t/AFTtfajACPy4lArVfoNJSv7oLqQbyQZcYx/W3EPYcGRSOp1saDmaS0xfULOqBls
- 7/NUcIIPQLRLG6ditKubG8jJ+34jsRPqEe6Qqo87L5CRcZlJsiaayxqp/O/aRZedGrNG
- utTigFt/tpR61niijSbRueYqGvvTVhCvFcUhUE/3cWAyLUlXUClPibguVAKaStV4Fj0N
- tTPuwFODIOtt+KWFxYvwUm/P22++AJaBj1gN5rnZ5ZoiPtHwJ0l0xnT0bXetrXiLe31s
- PqxQ==
-X-Gm-Message-State: AC+VfDxuWMB4vokc/KnwyBALwN+orIf3QYwvAZkwwfP9Ov4qVuh0VLeB
- DLYxQQInc/0RpIsgHo/n7tL4Qc/GMUky0HUt54E=
-X-Google-Smtp-Source: ACHHUZ7g5qjlo1XRa8rGw+yoSz+dxKIUzkK4awMhDmL2/e6//rz7RuvAdtCGYL7WpnhPtvNGScIS2AjgXC7eBu8+AjA=
-X-Received: by 2002:a25:810b:0:b0:bad:1468:a928 with SMTP id
- o11-20020a25810b000000b00bad1468a928mr6686895ybk.52.1686150430191; Wed, 07
- Jun 2023 08:07:10 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686150604; x=1688742604;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Sxi0rdN/oiOVPn22IbWPszGA19lCpFh0+pR45m0QThk=;
+ b=drXpwaxfL2vcHqlcWQs41ekgTXAZppF0x43/pd6ky/7sxsvP8wSOwF4wuUYdEhPH+Q
+ yK6S4k4IXFhPnc9LPlw5o4O+a9pSXqX8yoZza3YsgOOjQ9AjF7Q++HPwdnVs7TVyqXP+
+ ILDAZTzBQzjtRdNRlLSg1qRw7Zes00aJxrC1eTuHkZGSn7ZHMMtcZyooCYLtsoDMHS8B
+ rL3siShJx5oVGyVGsgzcjILTDHbHxdXg8knCM3JILfZtFgXg9KP2yZS5qMpcRoJ/gDwI
+ yLofknVDNr3FUACYWh7UhONi7xUpuyjuHGJp8GtzxB4FDpWyd0p/Bp6DPH5/Rz5T6Y7b
+ l4eQ==
+X-Gm-Message-State: AC+VfDy3rKjXf9VRiX8NyjZ18298JL5bruDjJKYQtn9Wq/nc6xrQJOgt
+ 1qbT079dvtyJazbpAsCcZfZt/CDKGGODfortBIxz3vK6iUnWwOx8Vg/t9k2VUrp+QS4OMy2as/H
+ G7VPydcFb27srabQ=
+X-Received: by 2002:a05:6214:4014:b0:625:aa48:e50f with SMTP id
+ kd20-20020a056214401400b00625aa48e50fmr2510447qvb.6.1686150604613; 
+ Wed, 07 Jun 2023 08:10:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Sfvy741kwFT3FrB0vtWtbFKxRqNtsQ1Ft7bU3RZG9oMrp9nQuykj3EzDLid7YIR7OEq1K+A==
+X-Received: by 2002:a05:6214:4014:b0:625:aa48:e50f with SMTP id
+ kd20-20020a056214401400b00625aa48e50fmr2510426qvb.6.1686150604395; 
+ Wed, 07 Jun 2023 08:10:04 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ pr27-20020a056214141b00b006262956aa0fsm6085350qvb.106.2023.06.07.08.10.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 08:10:03 -0700 (PDT)
+Date: Wed, 7 Jun 2023 11:10:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH V3] migration: simplify notifiers
+Message-ID: <ZICdyhgXhvsBM5jM@x1n>
+References: <1686148954-250144-1-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-References: <20230606162556.58110-1-richard.henderson@linaro.org>
- <9be02919-305d-9373-e26c-9d3e9c1a8421@yandex-team.ru>
-In-Reply-To: <9be02919-305d-9373-e26c-9d3e9c1a8421@yandex-team.ru>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 7 Jun 2023 11:06:58 -0400
-Message-ID: <CAJSP0QVhr29HWyyHxD86K=wDXwmEzNgwidQXj5CNgR2ZGvCx+A@mail.gmail.com>
-Subject: Re: [PATCH] gitlab: Disable io-raw-194 for build-tcg-disabled
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- stefanha@redhat.com, berrange@redhat.com, jsnow@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=stefanha@gmail.com; helo=mail-yb1-xb34.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1686148954-250144-1-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,50 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 7 Jun 2023 at 10:39, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> On 06.06.23 19:25, Richard Henderson wrote:
-> > This test consistently fails on Azure cloud build hosts in
-> > a way that suggests a timing problem in the test itself:
-> >
-> > --- .../194.out
-> > +++ .../194.out.bad
-> > @@ -14,7 +14,6 @@
-> >   {"return": {}}
-> >   {"data": {"status": "setup"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
-> >   {"data": {"status": "active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
-> > -{"data": {"status": "postcopy-active"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
-> >   {"data": {"status": "completed"}, "event": "MIGRATION", "timestamp": {"microseconds": "USECS", "seconds": "SECS"}}
-> >   Gracefully ending the `drive-mirror` job on source...
-> >   {"return": {}}
-> >
-> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> > ---
-> >   .gitlab-ci.d/buildtest.yml | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> > index 0f1be14cb6..000062483f 100644
-> > --- a/.gitlab-ci.d/buildtest.yml
-> > +++ b/.gitlab-ci.d/buildtest.yml
-> > @@ -236,7 +236,7 @@ build-tcg-disabled:
-> >       - cd tests/qemu-iotests/
-> >       - ./check -raw 001 002 003 004 005 008 009 010 011 012 021 025 032 033 048
-> >               052 063 077 086 101 104 106 113 148 150 151 152 157 159 160 163
-> > -            170 171 183 184 192 194 208 221 226 227 236 253 277 image-fleecing
-> > +            170 171 183 184 192 208 221 226 227 236 253 277 image-fleecing
-> >       - ./check -qcow2 028 051 056 057 058 065 068 082 085 091 095 096 102 122
-> >               124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
-> >               208 209 216 218 227 234 246 247 248 250 254 255 257 258
->
->
-> There is actually a bug in the test, I've sent a patch:
->
-> <20230607143606.1557395-1-vsementsov@yandex-team.ru>
-> [PATCH] iotests: fix 194: filter out racy postcopy-active event
+On Wed, Jun 07, 2023 at 07:42:34AM -0700, Steve Sistare wrote:
+> Pass the callback function to add_migration_state_change_notifier so
+> that migration can initialize the notifier on add and clear it on
+> delete, which simplifies the call sites.  Shorten the function names
+> so the extra arg can be added more legibly.  Hide the global notifier
+> list in a new function migration_call_notifiers, and make it externally
+> visible so future live update code can call it.
+> 
+> No functional change.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-Awesome, thank you!
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Stefan
+-- 
+Peter Xu
+
 
