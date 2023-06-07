@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0B8725B51
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 12:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0793C725B55
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 12:11:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6q5q-0004fo-UC; Wed, 07 Jun 2023 06:08:43 -0400
+	id 1q6q7z-0005O1-TD; Wed, 07 Jun 2023 06:10:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6q5p-0004fg-3D
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 06:08:41 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6q7x-0005Nm-30
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 06:10:53 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6q5n-00021o-6n
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 06:08:40 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6q7v-0002cc-Fb
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 06:10:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D873CB465;
- Wed,  7 Jun 2023 13:08:33 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 629DDB46A;
+ Wed,  7 Jun 2023 13:10:50 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1EB14A2E5;
- Wed,  7 Jun 2023 13:08:33 +0300 (MSK)
-Message-ID: <1b6a29a4-575a-d04e-d60a-144a5ecc263e@tls.msk.ru>
-Date: Wed, 7 Jun 2023 13:08:33 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9C2ABA2ED;
+ Wed,  7 Jun 2023 13:10:49 +0300 (MSK)
+Message-ID: <47527a58-039e-55e7-3541-bcd7ceb3296a@tls.msk.ru>
+Date: Wed, 7 Jun 2023 13:10:49 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH] vdpa: mask _F_CTRL_GUEST_OFFLOADS for vhost vdpa devices
+Subject: Re: [PATCH] vdpa: fix not using CVQ buffer in case of error
 Content-Language: en-US
 To: =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Cindy Lu <lulu@redhat.com>,
- Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Hawkins Jiawei <yin31149@gmail.com>, Lei Yang <leiyang@redhat.com>
-References: <20230602173328.1917385-1-eperezma@redhat.com>
+Cc: Cindy Lu <lulu@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Lei Yang <leiyang@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Hawkins Jiawei <yin31149@gmail.com>
+References: <20230602173451.1917999-1-eperezma@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230602173328.1917385-1-eperezma@redhat.com>
+In-Reply-To: <20230602173451.1917999-1-eperezma@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,18 +61,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.06.2023 20:33, Eugenio Pérez wrote:
-> QEMU does not emulate it so it must be disabled as long as the backend
-> does not support it.
+02.06.2023 20:34, Eugenio Pérez wrote:
+> Bug introducing when refactoring.  Otherway, the guest never received
+> the used buffer.
 > 
+> Fixes: be4278b65fc1 ("vdpa: extract vhost_vdpa_net_cvq_add from vhost_vdpa_net_handle_ctrl_avail")
 > Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 > ---
->   net/vhost-vdpa.c | 1 +
->   1 file changed, 1 insertion(+)
+>   net/vhost-vdpa.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Is it -stable material?
+Again, smells like a stable material, is it not?
+
+Please Cc: qemu-stable@nongnu.org for other changes you think should be
+applied to stable qemu series.
 
 Thanks,
 
 /mjt
+
 
