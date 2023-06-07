@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4647266A0
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B32FA7266AF
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 19:05:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6wUJ-00031H-O6; Wed, 07 Jun 2023 12:58:23 -0400
+	id 1q6wZO-0005SR-Tl; Wed, 07 Jun 2023 13:03:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q6wUH-0002zJ-NF
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:58:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q6wUG-0001sq-3I
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:58:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686157099;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HB4zUzdcc5Cy23yHp483WXgKZOOcJGiEDGreI1UkoU4=;
- b=GqPsTBKBieBOCCZXhvrQaIyYYUvC5dAapPPnmi+cnBZoHJi5fP2ah8Yt1fZErU5Dkycdcu
- XnSf3WR4/XFsyNwHCRvfH/NYYEhpYCE8cXVV4MFPaUUZq3Ae9oitUUx9kn0t01ZqxwQooX
- UM5aBENZKZ1IqSLNy4w/sNykQa84zW8=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-64-slyehykLMVOGs9c04y_acw-1; Wed, 07 Jun 2023 12:58:17 -0400
-X-MC-Unique: slyehykLMVOGs9c04y_acw-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-256419413a3so605060a91.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 09:58:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6wZC-0005SJ-B9
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 13:03:26 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6wZ8-0002v2-6V
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 13:03:23 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1b01bd7093aso39061125ad.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 10:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686157399; x=1688749399;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Mt0XBzjpnw2hpauC2g4RPo2zk+bXG3YSabLGrU7/d/0=;
+ b=nk68ZmPUCQ78cQwFgbMB9WGYHwYdvdhpNBooGKJTXXywFR6cdz5QzsXFD+QU8RNy1M
+ QZGmFGT/7gMdrAK7/0F2/6GRu5Bu6/hEA5SfnevUWd0LMl7/xnjv6PINR4YAALkpbUwa
+ HU2Je9l1Ix/rTyp1hwd3gXOe0jRTteFerIl89NRv1L29+u/sknsbRcSrwM2jkYFza92y
+ PrWhLdAhtrCR0uYv55Pb4Hlyp2/wq9U2ELD94r9pi5PR4JEAGpWohjN32oLRPjOYDbzh
+ K7o6xH+9DfestX/tA8IMEGok2efJrTwnNcHN9ErqW7HBMNRJ2GiQ0U5cLrN7RNwwWt3Z
+ 2+NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686157096; x=1688749096;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HB4zUzdcc5Cy23yHp483WXgKZOOcJGiEDGreI1UkoU4=;
- b=g8/4Ch15wZElR2NTGNCC9rvVlUgaJd91kEiv+7oTBsnz9iDDRZiyycq6bVgj31vCNn
- 4W31JjkwM6hPGnyan4rEVf3DqM3x3zrGwiCyZxkL4Nt3dtsvW26nXu5CeyYsGEocSb4X
- n1WZodU5AZFAxpKv5pZz4cuwFLydzWDq2cZ7U/+7QE9/iIMtassyoWAmczYw8KzOUTTJ
- 9C+uzAaDr+vY/2ZiKqWF1rIiA2ddLY9TtT6LHyuVxq7eNlVYrf4j7GmzYdIK3+XNdrmP
- YjzfuR2yfHDgAZvy7dEUQvoUUYVbPFVH9xIBWx8kfwbk0FaX71SfoWJggHTHDWIbs972
- 8MPQ==
-X-Gm-Message-State: AC+VfDxcoS7PRVqIo386/hbLt2P2R2J/gEdgpeMucNWEpdOj1ityp6Al
- N6cEtuz3JogIB6J0kGWazmDvBEHsJesNaaijnqVDZjCUOkRZ6Kt64AnU0+kdvkw7d7Jap3rDu6v
- 7Ox1vZriTSsTawgXuFSSLoGLYTdJvegcbLeWmY3MvCw==
-X-Received: by 2002:a17:90b:350d:b0:258:c3e9:e9c4 with SMTP id
- ls13-20020a17090b350d00b00258c3e9e9c4mr7151765pjb.15.1686157096484; 
- Wed, 07 Jun 2023 09:58:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5jQAdkmQfK/idbM4yjrVqqKX5RKbYGCLXnnGCeT74Lwca+Y4+ilA/5PggTNyzzX6FVlY7QJ0TH5WzdHE49e/c=
-X-Received: by 2002:a17:90b:350d:b0:258:c3e9:e9c4 with SMTP id
- ls13-20020a17090b350d00b00258c3e9e9c4mr7151745pjb.15.1686157096052; Wed, 07
- Jun 2023 09:58:16 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686157399; x=1688749399;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Mt0XBzjpnw2hpauC2g4RPo2zk+bXG3YSabLGrU7/d/0=;
+ b=coBIZbMofZ/pbJMwZORC1Dkwxd4fQVj6CPrK3BMvXCRfWoW/SfrenxdqwGCKc0Vuaf
+ 3JWLp74NoIETocNfXos3wvW2Ccd4EIAodoOUH+cpaozbJlcbflD/EcM5HkWUJcMXPI6A
+ YIjwmrkhCADoDfHEExB0mbcmUTJEgqqL+frd+wm+NbWxj1bwbuKVyMwu8UpaHW9lYGy8
+ CM3JE6Q6vYF29u+yuiL+wVWRJIjpOQvDg4pnBubRpxOpKnbXYvsKcnSNSCUU/8uWqRma
+ kWiYUVw+YnCNBXl6G0XAE6LkF6WfYCekc/JQUcz4y0+2kt60/40sPegpHt7cFQiK7Y5K
+ UPkQ==
+X-Gm-Message-State: AC+VfDx3nKpFChTcTDbG9/G0VSIaqusCu7YPAt3rJnRq/aQX03DYala8
+ 9pPu2kZvTY5agtfPFl6xrZ4EuWGQslBMPZnt5/4=
+X-Google-Smtp-Source: ACHHUZ4SYTnmuxCSJyRT5PM1vPNE4IfxukedHupRTM6d3TuflaqeiZxwqFZ9s8fgYdwGSycjL2M0gw==
+X-Received: by 2002:a17:902:ea11:b0:1b2:e0c:a408 with SMTP id
+ s17-20020a170902ea1100b001b20e0ca408mr3721745plg.31.1686157398752; 
+ Wed, 07 Jun 2023 10:03:18 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:f25d:ffb3:64e4:8ded?
+ ([2602:ae:1598:4c01:f25d:ffb3:64e4:8ded])
+ by smtp.gmail.com with ESMTPSA id
+ d7-20020a170902cec700b001b05e96d859sm10641516plg.135.2023.06.07.10.03.18
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 10:03:18 -0700 (PDT)
+Message-ID: <49faeaba-3d7e-6d0f-5dae-469462b8319f@linaro.org>
+Date: Wed, 7 Jun 2023 10:03:16 -0700
 MIME-Version: 1.0
-References: <20230606144551.24367-1-farosas@suse.de>
- <20230606144551.24367-3-farosas@suse.de>
- <87y1kvoezi.fsf@secure.mitica> <87o7lrh48h.fsf@suse.de> <ZICFWm+qTOHBgzzN@x1n>
-In-Reply-To: <ZICFWm+qTOHBgzzN@x1n>
-From: Juan Quintela <quintela@redhat.com>
-Date: Wed, 7 Jun 2023 18:58:05 +0200
-Message-ID: <CAGiv1-W=i6hgNHjrHaeuCsjX=_EnkLdQ0Xas7drYUK-ybSdDsA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] migration/multifd: Protect accesses to
- migration_threads
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, 
- "open list:All patches CC here" <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Jiang Jiacheng <jiangjiacheng@huawei.com>, Leonardo Bras <leobras@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000bf00b105fd8d0a51"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 0/5] misc ci fixes
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20230607154054.625513-1-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20230607154054.625513-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,78 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000bf00b105fd8d0a51
-Content-Type: text/plain; charset="UTF-8"
+On 6/7/23 08:40, Richard Henderson wrote:
+> The following changes since commit f5e6786de4815751b0a3d2235c760361f228ea48:
+> 
+>    Merge tag 'pull-target-arm-20230606' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-06-06 12:11:34 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git tags/pull-ci-20230607
+> 
+> for you to fetch changes up to dcc28ab603f30df5cc8be1f759b423e94ae7d10f:
+> 
+>    iotests: fix 194: filter out racy postcopy-active event (2023-06-07 08:36:55 -0700)
+> 
+> ----------------------------------------------------------------
+> Fix TCI regressions vs Int128
+> Fix Arm build vs --disable-tcg
+> Fix iotest 194.
 
-Sounds good.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-On Wed, Jun 7, 2023, 18:28 Peter Xu <peterx@redhat.com> wrote:
 
-> On Wed, Jun 07, 2023 at 09:00:14AM -0300, Fabiano Rosas wrote:
-> > >> diff --git a/migration/migration.c b/migration/migration.c
-> > >> index e731fc98a1..b3b8345eb2 100644
-> > >> --- a/migration/migration.c
-> > >> +++ b/migration/migration.c
-> > >> @@ -1146,6 +1146,7 @@ static void migrate_fd_cleanup(MigrationState
-> *s)
-> > >>          qemu_mutex_lock_iothread();
-> > >>
-> > >>          multifd_save_cleanup();
-> > >> +        qmp_migration_threads_cleanup();
-> > >
-> > > I think I will spare this one as the mutex is static, so we are not
-> > > winning any memory back.
-> > >
-> >
-> > Ok
->
-> We could consider __attribute__((__constructor__)) in this case.
->
-> --
-> Peter Xu
->
->
->
+r~
 
---000000000000bf00b105fd8d0a51
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Sounds good.=C2=A0</div><br><div class=3D"gmail_quote"><d=
-iv dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 7, 2023, 18:28 Peter Xu &lt=
-;<a href=3D"mailto:peterx@redhat.com">peterx@redhat.com</a>&gt; wrote:<br><=
-/div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-le=
-ft:1px #ccc solid;padding-left:1ex">On Wed, Jun 07, 2023 at 09:00:14AM -030=
-0, Fabiano Rosas wrote:<br>
-&gt; &gt;&gt; diff --git a/migration/migration.c b/migration/migration.c<br=
->
-&gt; &gt;&gt; index e731fc98a1..b3b8345eb2 100644<br>
-&gt; &gt;&gt; --- a/migration/migration.c<br>
-&gt; &gt;&gt; +++ b/migration/migration.c<br>
-&gt; &gt;&gt; @@ -1146,6 +1146,7 @@ static void migrate_fd_cleanup(Migratio=
-nState *s)<br>
-&gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_mutex_lock_iothread();=
-<br>
-&gt; &gt;&gt;=C2=A0 <br>
-&gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 multifd_save_cleanup();<br>
-&gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 qmp_migration_threads_cleanup();=
-<br>
-&gt; &gt;<br>
-&gt; &gt; I think I will spare this one as the mutex is static, so we are n=
-ot<br>
-&gt; &gt; winning any memory back.<br>
-&gt; &gt;<br>
-&gt; <br>
-&gt; Ok<br>
-<br>
-We could consider __attribute__((__constructor__)) in this case.<br>
-<br>
--- <br>
-Peter Xu<br>
-<br>
-<br>
-</blockquote></div>
-
---000000000000bf00b105fd8d0a51--
 
 
