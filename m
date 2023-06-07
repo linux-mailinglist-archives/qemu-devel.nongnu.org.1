@@ -2,87 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F0B726D0E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4F3726D85
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:43:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6zuI-0001sE-Il; Wed, 07 Jun 2023 16:37:26 -0400
+	id 1q6zz5-00031z-5i; Wed, 07 Jun 2023 16:42:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6zuG-0001rX-8W
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:37:25 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6zuE-0006mb-Bc
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:37:24 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-558cf3e9963so3027398eaf.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 13:37:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686170239; x=1688762239;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jV1JIUQvQQ1YUjEO0x2SgDRsOmFkbrDHJ18fm8TtVqo=;
- b=D1VN4t+o35uaHYrK0LMl0XehtiVsg0bnl8PJXHLEEvyCdd68i2JiV9qN99l89hCwFX
- uIVS6thlq+F4PahdJSJk3q7wYoruPAOfmTWetr547eZxsMdZIGLseNi+REshK5Krk/+D
- 77AMRApx2RogMKsRdxdRrt3ZdNKoRbLvOjTQe/+g4iCu4wYohDNav5/3IT/XiAhW3BKS
- HyY5hEn70hy8DUig3hLFKW2bY+cmo9BrFhVCpBukm+iyuoa/ivYfm8Arm7NaugrFf9is
- jWr4jzN1UCXwA9tBJDGCxLhij3rrtsdIhJt8PZ8WzQmWh+hHIBTv0L8jUDSNMeqLYE21
- aLqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686170239; x=1688762239;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jV1JIUQvQQ1YUjEO0x2SgDRsOmFkbrDHJ18fm8TtVqo=;
- b=gS7HYVTrfS8I/z1ITKszHy446Cfri4Qb4OD+24L84H09bwWz6ODuZFMkLxZp5PK6XK
- kAAO0TfBy72GQko6ZTbaZHnCpx4y0VPDUBJmiRtWxXJ/jg75XXphu3BtB5E5l0qIaoWB
- KXRThKRJRU62XYBTIizok/EwTk3ek/zk9/IVjbneSU46nYbsMgV6+NHdal4e3OlwApBm
- Mwvkx5+mKNTheDBRTVSfC2HeD8z/f2im0n04/WVPXiGqzmeQe67OU5B1ZUXxC6gcm6UH
- 32G2l/w85aikFunk2vfK4PWX41MWYXfScurRNRrNy2ljEY49RAtuZFtNigtGwnHPBzJ6
- tVUw==
-X-Gm-Message-State: AC+VfDz3IwJyrcsBr9SpBVLDlYQ26hjoM6yV/luH9eFtZ1pBC2IIysl+
- OEDPc/fvHzENCO3JfxtU4wdM/w==
-X-Google-Smtp-Source: ACHHUZ43O3nIGIg1tbAanVjO2gV7hjG00dpHU8FkWXl8hG6VpQMl8hnEaGUnLRYdhSb8TULlEq0+NQ==
-X-Received: by 2002:a4a:ca05:0:b0:558:cb7e:c52e with SMTP id
- w5-20020a4aca05000000b00558cb7ec52emr4955480ooq.8.1686170239571; 
- Wed, 07 Jun 2023 13:37:19 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
- by smtp.gmail.com with ESMTPSA id
- fa21-20020a0568082a5500b003896e31867esm1121620oib.49.2023.06.07.13.37.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 13:37:19 -0700 (PDT)
-Message-ID: <34f72e57-3b3f-7da4-1fc9-8af464ee6c99@ventanamicro.com>
-Date: Wed, 7 Jun 2023 17:37:16 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 16/16] target/riscv/kvm.c: read/write
- (cbom|cboz)_blocksize in KVM
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1q6zz2-00031p-QL
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:42:20 -0400
+Received: from mail-dm6nam10on20617.outbound.protection.outlook.com
+ ([2a01:111:f400:7e88::617]
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
+ id 1q6zyp-0008QA-2n
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:42:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kVDKKuvp+JPU+FHAhpNbcQV88ldfaafgpOyGb9qVYqtqLC6jiagwOwOzM3tYR+6cRq6zpveB4HrBV4wEKwH+dAmSelowSlEzKEIrrVCZtKzNCY3p2zXXBtuDKEyWEofAKe1tme75/6hXxBxsYUx0jEriYdjTxfExvATPNC6RbLgcrebcgCS3i9PhwPvLelTZD4NoxVyC0H537vEewmAtLKI0Qpal/zFxMGDobh5VGEov5QsjxOZB45TeAIHSADTon45rZRjk3GTJ4yNPA0MMHHVakdhkIBN7k+3yozHn+/U7T3oTkEkfWeba99LHaOMBI0flSoR6/iB1hoURUUmKJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b0qUxkd5i8X16G79w7yQCujOnz42fTmNRpijl0Muk/Q=;
+ b=OmSQrIMS1noLkacPiN20hOZ2toIJ9xwSRmXA5rebJcFEcjf+208WeK/7G7YyCV7EHnYkL0GdHbZe/luBJ2d2m6Fcu11tz7D6+A6Bb+DGX6OwNEe0THwUThUfnpERqQv9z9f6xtksaah9Ilh7trmnKHHdD/Msbsz+0bNd24eRNE71se/NVWEw79Gci6DQtDkQVlT4FowKrr7U6BZxy5M1Tde4pKXpn8QI8aaNoq6w/Bzx73uzOqGrAV6uCUwPX8BK0gMG2v56GHM5oq1Yi21UNbfnJ/SLOvLU09N5OusnRWEMewXF4rVJs3ft+yype29lrGOE+Jmv2ABrU1OoBWVwKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b0qUxkd5i8X16G79w7yQCujOnz42fTmNRpijl0Muk/Q=;
+ b=2nletneCqBVOA20/haCwHN3VkYkqFy1y4Xj7UAN9wBWrKb59Bdj+ciRubLoS8uCD0wFrVRLOn0M3rVcIEDzVqiIA4kiw8pOul4eg/JW163JYAa95gOvqbo74xdfR6PCTPNDuiLTWpIzTZeehlcJDnulV80HzObQ7Dl2+SplRZWI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM8PR12MB5445.namprd12.prod.outlook.com (2603:10b6:8:24::7) by
+ SJ2PR12MB8061.namprd12.prod.outlook.com (2603:10b6:a03:4cb::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19; Wed, 7 Jun
+ 2023 20:42:00 +0000
+Received: from DM8PR12MB5445.namprd12.prod.outlook.com
+ ([fe80::1f96:31ad:7de0:2175]) by DM8PR12MB5445.namprd12.prod.outlook.com
+ ([fe80::1f96:31ad:7de0:2175%4]) with mapi id 15.20.6455.030; Wed, 7 Jun 2023
+ 20:42:00 +0000
+Message-ID: <3db80bc1-d64a-a1ad-e404-4d629061fa28@amd.com>
+Date: Wed, 7 Jun 2023 13:41:57 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v5 2/3] hw/i386/pc: Default to use SMBIOS 3.0 for newer
+ machine models
 Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-17-dbarboza@ventanamicro.com>
- <20230607-95d85b924e7d8696ba1eac6e@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230607-95d85b924e7d8696ba1eac6e@orel>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, richard.henderson@linaro.org, 
+ eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ berrange@redhat.com, jusual@redhat.com, dfaggioli@suse.com,
+ joao.m.martins@oracle.com, jon.grimm@amd.com, santosh.Shukla@amd.com
+References: <20230607024939.703991-1-suravee.suthikulpanit@amd.com>
+ <20230607024939.703991-3-suravee.suthikulpanit@amd.com>
+ <20230607154913.2a1cb2f8@imammedo.users.ipa.redhat.com>
+From: "Suthikulpanit, Suravee" <suravee.suthikulpanit@amd.com>
+In-Reply-To: <20230607154913.2a1cb2f8@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2a.google.com
+X-ClientProxiedBy: BY3PR04CA0010.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::15) To DM8PR12MB5445.namprd12.prod.outlook.com
+ (2603:10b6:8:24::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM8PR12MB5445:EE_|SJ2PR12MB8061:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2cc32e5-c9f4-47e2-eae8-08db6797a49a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Z5EfE3USaiq0oYV0Er5uHGbO/u3Ogdi4pFzblmslgU7h5lxpJCWrCcm8VHsSTCUU15kUD7onGlE7R7soDT6X0dAoDG+Acqh1WQyPgGE+yHtoQfYzzbxHRZlpOzD4kYA74hN+P8sGtuDtkuyS0sgqNohuv8ZYV7sT67JXnvaDHv/V+cJ/gYE1zJaeYCsNy1H+QrkW2VNiJ8IXM//C/fEaklLXnkOTVyA8BIEUuWtiTR9zM99WIJQSS9C4vV6eb91htB4CT3n9dXM+1IcBAbZ0PufNryPVkKLwmSojNxlnu8Vxa1SUAOvEFXpXSs5zMxojNqTHPMLnQOFqgIPxBr9PF2F1cD6qMB04wjaBRHQEfwr2D8IeoB9s1jbH5Ycdtbm853PPPwD/JpQDh+sbUyMu0XoWGFy3RgrvQV7zXow08bG6hzQ0K34n+vgwRk2/inCD7oNJ7WM2Y10cQx7QU7U/CDpDgF4tvhedsEpvF8nVPi6myvHOWoGy8VFkD357I5M6Js0JFV09dV+4oQB7xY5w5AVojZrhqu378KATnA8D8daoNlPelaKfgTZN4Ench0iN+WIcZTYXCecOrcaD+nrMUFkFsx63KWGFLH9TfRio9kzi3plg1s3/v4OJ1lj3ChgCIyOdXltBpwpJU3PeeoAzjRAKHxG53roiVydjK0bLP61yVn6vUeERONHpRoGp/5l1
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR12MB5445.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(396003)(376002)(39860400002)(366004)(346002)(451199021)(186003)(53546011)(2616005)(86362001)(316002)(6486002)(38100700002)(36756003)(31686004)(7416002)(26005)(6506007)(6512007)(31696002)(2906002)(5660300002)(41300700001)(6916009)(4326008)(66556008)(66476007)(66946007)(6666004)(478600001)(8676002)(8936002)(170073001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VGQ1Qm82WENmT1NTNWY2bXlaU0ZNSHF4OGtOS1BUWUZsZ3BDUU83UFNINmRz?=
+ =?utf-8?B?NEFuSlhOdksyMG10ZUh2NWJ1OE1lTThueVFSalJQQmlhd2dDcnBSS1JEZEZF?=
+ =?utf-8?B?RmNLaXN6Zi9oZnFnTHBLNG90dG0xT3pKa1hxaHBhWTZJLzVNc3ljak1LZWVl?=
+ =?utf-8?B?S0tLNDBzdnI2NTVQTG5kYTRFaUVaS1JGOGRQaGw2eW11djBEVXZRc0dHZTdI?=
+ =?utf-8?B?M2YwZDFGUGlzakFOQzRQdlZlS3RpTXlLeE1wLzFOMllPaWh3dVZpOGg4L2dQ?=
+ =?utf-8?B?Wkh2MSt4OFlQR0pYMmtFaWZkSnVyVkE0NnNzbmpvTHBaMFpkekZVQmd6ZEFY?=
+ =?utf-8?B?ZWM3QkJSMkt5aDNjSk5ERVlwblpQSU9VbXMrVkhmQTJYOWFpQ0pkNTJKZDgw?=
+ =?utf-8?B?MzQ1TTlOYTFkemg5aHJiekIzQlhPdVlYbWtCZndnNjFKUkxyTmYyaVpPUmJq?=
+ =?utf-8?B?RHBaR21IQkVPRndGWGhhNlR4WndOMTc3MGcxdW05NU1PaHQ0aE1rOFNyc3RU?=
+ =?utf-8?B?eUduSWZHRGQzcVlyenBydzg5NkxTM3E3Tm93TDhsRXRxeXRYNHI3aFMwcnA0?=
+ =?utf-8?B?STRNclJTWng5SGFuaWtxNW9OUTVyMURFWFQ4QWdHSnNhdDI2Z05jRmpsNVI3?=
+ =?utf-8?B?VGU4d013N09BNTZzdXRCc2xRRW1pSlhtVjRBbXdtcTNKVGxOQkc2b2J0Mnhy?=
+ =?utf-8?B?dlYraEEwUlV5a2NhcC9pQ2oxTzRFRXZmRWxPcUQwTE16Qm8wVTllNzNLblJJ?=
+ =?utf-8?B?Rk1OeExCWEhURDZtNVI1V2c0eVhnTDduMDNTdXdNbWRPZVJKS0hlQnE3dlRU?=
+ =?utf-8?B?VFF5d3FQenQyRmJYcjJlRjBJNzdacDczdWZacHFoT3BoVEZWYiszemhtSDBZ?=
+ =?utf-8?B?TDNSYzZEYVQyNks1STRnWTVQamlOMkJGRnBzK1RnWE0rN0NuTHdoenBlWVVt?=
+ =?utf-8?B?S09WMlF2VUdmdXp0aUYycExxQzFpaGtxWlk5Uk9ta01GbUN0ZFZSbTJyN0pD?=
+ =?utf-8?B?R1h3MlBpSUhCajIxemJKakRjdTNIdC8zMkxPVHhoMkZ0UitQamNBRlQrS05j?=
+ =?utf-8?B?ZGkyYVZzQ2Uyb0tuWHY0RTg1a3RvRDhja3NycWZUTEVySk5idDlMS0R1Sldk?=
+ =?utf-8?B?RCtZVlhZY1NIa3BPK0NPUkovU2JaNDhKeFFEU2hMMTFHK0ZnbG9kNm4ySmJO?=
+ =?utf-8?B?RVlJbEJ5QTJhK21JK1czZ1BCell2ZVFPTE4rNXoxbEpRRUNvd2R1Z1B6RCtD?=
+ =?utf-8?B?YkZ6UER4UTdCMWZBR0FoNytZcEJqQVRoaVZhQzFpbHlXNS80UkJNdGlDSzQ3?=
+ =?utf-8?B?dHkrNU5CL3FTMjdnRWxndU1BUFdqWjIrb2xLeVFYL1dRWWR2aEpoYXRqUEY2?=
+ =?utf-8?B?Y3lHQW1qa3RvVkRXeXNMT1hlYWRYMEh3NUE3S09qSXpUeGNncGxLcmoyWjgr?=
+ =?utf-8?B?S2tpMWlxL01DdEZDRnBoN2c2M0xyYUNMVEVQR1l2aWVjQitNZTRrQ1hWS0tr?=
+ =?utf-8?B?THNud0JYRW9ubVhaSE4xUHBrZUk1a08xS2owSUkzc202VjNPeHljR2NnYXhW?=
+ =?utf-8?B?eWlkT3RRRUUwUHgzTDNNNzFkVXRvVWdjV0l4UDZFamt3SEVqYW9sRmcyb2RJ?=
+ =?utf-8?B?UExNQ2xVRDdPL2lyQW9WRXdGRmRuZkZNTTJaWjBVODNnellkbmFuQzd6ZWxi?=
+ =?utf-8?B?c0VKajZ3K0VvVThZWXhNbGczYUJPZ0FzWUpXMnBtVGNodURMRVlVOFByRFA1?=
+ =?utf-8?B?blZMMWM1YVVEdmExQ2kzbElGRVIvNkxpQVdoaVBJVlRPRWNVMUJqdFRUSk9G?=
+ =?utf-8?B?SDZMVDd2Qy9WWG1UZEpsZXRFT2htUE1PZlBkYitQU3lCQkFkYko4emtFMGM3?=
+ =?utf-8?B?bWhoajlaRkk4NFBjN1pwczJNcGJKN2lrOUUrYmhoTTNOYm9YdG1raWtKeGlR?=
+ =?utf-8?B?ejlScXM4OWw5QzlGbXY0YlNFQmNZbUc1dFFWMXNOWnBiMnVtVXJXZTkvUS9w?=
+ =?utf-8?B?SlYzajh6bFIrMTBPa2MvUGc2OEpPVDFyOEZJWXZFSE50d0V1QmxpNkJCRVB4?=
+ =?utf-8?B?elFiekpudURVTWExUThERzRCUFpQM3JMTURaeklKL0pEYjJsSW9qVkhtMXRv?=
+ =?utf-8?Q?0ybZo2iHhd+yr1SwqoZXdBg7H?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2cc32e5-c9f4-47e2-eae8-08db6797a49a
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR12MB5445.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 20:42:00.4340 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OYXU9D+iHGcGf0bU/6gg2fkE0ipht31YH0TMYYlvgjPAAEGOZflmmxspHas5tyQno1xNf5edTPrmGYPFYafysg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8061
+Received-SPF: softfail client-ip=2a01:111:f400:7e88::617;
+ envelope-from=Suravee.Suthikulpanit@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,208 +153,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 6/7/23 10:01, Andrew Jones wrote:
-> On Tue, May 30, 2023 at 04:46:23PM -0300, Daniel Henrique Barboza wrote:
->> If we don't set a proper cbom_blocksize|cboz_blocksize in the FDT the
->> Linux Kernel will fail to detect the availability of the CBOM/CBOZ
->> extensions, regardless of the contents of the 'riscv,isa' DT prop.
->>
->> The FDT is being written using the cpu->cfg.cbom|z_blocksize attributes,
->> so let's use them. We'll also expose them as user flags like it is
->> already done with TCG.
->>
->> However, in contrast with what happens with TCG, the user is not able to
->> set any value that is different from the 'host' value. And KVM can be
->> harsh dealing with it: a ENOTSUPP can be thrown for the mere attempt of
->> executing kvm_set_one_reg() for these 2 regs.
->>
->> We'll read the 'host' value and use it to set these values, regardless of
->> user choice. If the user happened to chose a different value, error out.
->> We'll also error out if we failed to read the block sizes.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/kvm.c | 94 +++++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 92 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
->> index 92b99fe261..7789d835e5 100644
->> --- a/target/riscv/kvm.c
->> +++ b/target/riscv/kvm.c
->> @@ -241,8 +241,16 @@ static void kvm_cpu_cfg_set(RISCVCPU *cpu, RISCVCPUMultiExtConfig *multi_ext,
->>                               uint32_t val)
->>   {
->>       int cpu_cfg_offset = multi_ext->cpu_cfg_offset;
->> -    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->> +    uint16_t *blocksize;
->> +    bool *ext_enabled;
->>   
->> +    if (strstr(multi_ext->name, "blocksize")) {
->> +        blocksize = (void *)&cpu->cfg + cpu_cfg_offset;
->> +        *blocksize = val;
->> +        return;
->> +    }
+On 6/7/2023 8:49 PM, Igor Mammedov wrote:
+> On Tue, 6 Jun 2023 21:49:38 -0500
+> Suravee Suthikulpanit<suravee.suthikulpanit@amd.com>  wrote:
+>
+> ....
+>
+> and use this with the rest of your patch
 > 
-> We should add 'get' accessors to each property and then always use those
-> accessors to get the values. Trying to share a single accessor across
-> properties, using the names to determine their sizes, is basically trying
-> to reinvent 'get' without the function pointer.
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index b3d826a83a..c5bab28e9c 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1859,7 +1859,7 @@ static void pc_machine_initfn(Object *obj)
+>       pcms->vmport = ON_OFF_AUTO_OFF;
+>   #endif /* CONFIG_VMPORT */
+>       pcms->max_ram_below_4g = 0; /* use default */
+> -    pcms->smbios_entry_point_type = SMBIOS_ENTRY_POINT_TYPE_32;
+> +    pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
 
-To be honest we don't need all this machinery for the blocksize attributes.
-We check them only in a few cases and could access them directly via cpu->cfg.
+Ah, I missed this part. Thanks for suggestions. I'll send out v6.
 
-I'll change this up in v2.
+Suravee
 
-
-Daniel
-
+>       /* acpi build is enabled by default if machine supports it */
+>       pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;
+> @@ -1979,6 +1979,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+>       mc->nvdimm_supported = true;
+>       mc->smp_props.dies_supported = true;
+>       mc->default_ram_id = "pc.ram";
+> +    mc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
+>   
+>       object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
+>           pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
 > 
->> +
->> +    ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->>       *ext_enabled = val;
->>   }
->>   
->> @@ -250,8 +258,15 @@ static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
->>                                   RISCVCPUMultiExtConfig *multi_ext)
->>   {
->>       int cpu_cfg_offset = multi_ext->cpu_cfg_offset;
->> -    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->> +    uint16_t *blocksize;
->> +    bool *ext_enabled;
->>   
->> +    if (strstr(multi_ext->name, "blocksize")) {
->> +        blocksize = (void *)&cpu->cfg + cpu_cfg_offset;
->> +        return *blocksize;
->> +    }
->> +
->> +    ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->>       return *ext_enabled;
->>   }
->>   
->> @@ -295,6 +310,33 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
->>       kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
->>   }
->>   
->> +/*
->> + * We'll avoid extra complexity by always assuming this
->> + * array order with cbom first.
->> + */
->> +static RISCVCPUMultiExtConfig kvm_cbomz_blksize_cfgs[] = {
 > 
-> Hmm, yet another cfg struct type, and this one is specific to block sizes.
-> I'd rather we find a way to keep cfg definitions more general and then use
-> the same struct for all.
-> 
->> +    {.name = "cbom_blocksize", .cpu_cfg_offset = CPUCFG(cbom_blocksize),
->> +     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)},
->> +    {.name = "cboz_blocksize", .cpu_cfg_offset = CPUCFG(cboz_blocksize),
->> +     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)},
->> +};
->> +
->> +static void kvm_cpu_set_cbomz_blksize(Object *obj, Visitor *v,
->> +                                      const char *name,
->> +                                      void *opaque, Error **errp)
->> +{
->> +    RISCVCPUMultiExtConfig *cbomz_size_cfg = opaque;
->> +    RISCVCPU *cpu = RISCV_CPU(obj);
->> +    uint16_t value;
->> +
->> +    if (!visit_type_uint16(v, name, &value, errp)) {
->> +        return;
->> +    }
->> +
->> +    cbomz_size_cfg->user_set = true;
->> +    kvm_cpu_cfg_set(cpu, cbomz_size_cfg, value);
->> +}
->> +
->>   static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
->>   {
->>       CPURISCVState *env = &cpu->env;
->> @@ -321,6 +363,45 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
->>       }
->>   }
->>   
->> +static void kvm_riscv_finalize_features(RISCVCPU *cpu, CPUState *cs)
->> +{
->> +    CPURISCVState *env = &cpu->env;
->> +    uint64_t id, reg;
->> +    int i, ret;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_cbomz_blksize_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *cbomz_cfg = &kvm_cbomz_blksize_cfgs[i];
->> +        uint64_t host_val;
->> +
->> +        if ((i == 0 && !cpu->cfg.ext_icbom) ||
->> +            (i == 1 && !cpu->cfg.ext_icboz)) {
-> 
-> Rather than the required array order and this magic index stuff, we can
-> just save the offset of the ext_* boolean in the cfg structure, like we
-> already do for the *_blocksize, and then check it here.
-> 
-> Also, I think we want to warn here if cbomz_cfg->user_set is set. If the
-> user set some block size, but disabled the extension, then they should be
-> told that the block size will be ignored. Letting them know it's ignored
-> is particularly good to do since we're not validating it. I.e. the user
-> shouldn't assume the block size they put there is worth anything at all.
-> 
->> +            continue;
->> +        }
->> +
->> +        id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
->> +                              cbomz_cfg->kvm_reg_id);
->> +
->> +        ret = kvm_get_one_reg(cs, id, &host_val);
->> +        if (ret != 0) {
->> +            error_report("Unable to read KVM reg val %s, error %d",
->> +                         cbomz_cfg->name, ret);
->> +            exit(EXIT_FAILURE);
->> +        }
->> +
->> +        if (cbomz_cfg->user_set) {
->> +            reg = kvm_cpu_cfg_get(cpu, cbomz_cfg);
->> +            if (reg != host_val) {
->> +                error_report("Unable to set %s to a different value than "
->> +                             "the host (%lu)",
->> +                             cbomz_cfg->name, host_val);
->> +                exit(EXIT_FAILURE);
->> +            }
->> +        }
->> +
->> +        kvm_cpu_cfg_set(cpu, cbomz_cfg, host_val);
->> +    }
->> +}
->> +
->>   static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>   {
->>       int i;
->> @@ -344,6 +425,14 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>                               kvm_cpu_set_multi_ext_cfg,
->>                               NULL, multi_cfg);
->>       }
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_cbomz_blksize_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *cbomz_size_cfg = &kvm_cbomz_blksize_cfgs[i];
->> +
->> +        object_property_add(cpu_obj, cbomz_size_cfg->name, "uint16",
->> +                            NULL, kvm_cpu_set_cbomz_blksize,
->> +                            NULL, cbomz_size_cfg);
->> +    }
->>   }
->>   
->>   void kvm_riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
->> @@ -856,6 +945,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
->>   
->>       kvm_riscv_update_cpu_misa_ext(cpu, cs);
->>       kvm_riscv_update_cpu_cfg_isa_ext(cpu, cs);
->> +    kvm_riscv_finalize_features(cpu, cs);
->>   
->>       return ret;
->>   }
->> -- 
->> 2.40.1
->>
->>
-> 
-> Thanks,
-> drew
 
