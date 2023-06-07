@@ -2,70 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E72725D0D
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 13:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B51725D34
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 13:35:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6rJe-0001t7-5J; Wed, 07 Jun 2023 07:27:02 -0400
+	id 1q6rQV-0003tF-FO; Wed, 07 Jun 2023 07:34:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q6rJb-0001si-8p; Wed, 07 Jun 2023 07:26:59 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q6rQT-0003sf-2o
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 07:34:05 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q6rJX-0001nr-MW; Wed, 07 Jun 2023 07:26:57 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9741caaf9d4so1069102966b.0; 
- Wed, 07 Jun 2023 04:26:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q6rQR-0003Kc-17
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 07:34:04 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-30ae141785bso7083115f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 04:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1686137210; x=1688729210;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=hOOS0KVKvVqoKA3p+DeXd8G4BIGaBKXgaPi2v7zbdvE=;
- b=b1lEmrL8ploklK5iSzsMa3KD+2GbJe6x4/SDpa6FH0hauh/zhAji+5Gj4ADklgM74m
- 3PlmqszD3eoVLMIJSkR/pgvNt2+sVZu2hHPb/OFRYUoU92J48qBmee1tTPKN9i59i6js
- i3xrZNjlSGI/zXKxpm3wGMeMbKeKESHebTqRQ=
+ d=ventanamicro.com; s=google; t=1686137641; x=1688729641;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=rPYtQx/Afz+ngVb+kmW/KyabenXb8uUYsjV5S6/5Kp8=;
+ b=dRyEIjaE5wGLo8CNbV8qtjTJAnl+adtQriG5la0zLVqP/AEvEjukQfjpxHCwqK+zeF
+ 3/lPuqcsactvgj5s+TPu7Lkuu6Mq5l6mRh1lm/07QKB4wjhdwb7sHzGMLgQzOs8Q8Cj1
+ BG99lMIzcXngMFU0PTpTr9+ZJtMPX5QFprSX8w9as32RYaqQwJcwfkpidN8u0dI3m3Ar
+ OySbniI5B/g1+Fvm7AjJIyvPPm7bVuSNxtXINvPQioKXvreJPiVZ1lJlYmJKsjVoBLx6
+ o/FvUbMKxsrhCdaCkvWhDGe0WtPEYa8NfgTjT+UlWKmYxPcq06Md612w8ZA6RVX0B8GO
+ 0qvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686137210; x=1688729210;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hOOS0KVKvVqoKA3p+DeXd8G4BIGaBKXgaPi2v7zbdvE=;
- b=jfgMYlZUGRul3SQh2fiQqvPR2drxn4Lvy2uJsPcO10M1yUtBSBqNBGZs2PbA7SA/uh
- kKvLWAKGsjP6kKTyrZvvuceVqeOZFqkM3lgPoPWQk2ybVFhJQDddOJJMyyDB4fRIqzvY
- rhSpcPIfSDrxs67XMitWpc0wdlLnCYS542zJfnFeHO0Fdokge6FNM+SRO0IgM56fldT3
- V4CqpSm28klNFUVkzu7JQrlAF3iH4RUULUzTXyTk+6DV2AqmA6Lbt7R17s3mssvmOTB5
- IUWIrEKOMiyvjABbW8UglJtcEjxTC2ulC6xk5LLqRxuBW1dwk2Mhmhv0ACvc1que6Zj6
- v0pw==
-X-Gm-Message-State: AC+VfDxlw68W7WEDWsaCACrv74pVJrWhHUXV/jnPzgkHaCKMGGAOcuLV
- TmUcbClJ0fV/7ibnyVPmHmkES89JoRGBmJXec7E=
-X-Google-Smtp-Source: ACHHUZ7Mv/svzqze/KqfODlAxrJw0ooZvzrkSDlVHRgZmySeg8Dpz1gDW8BXD93HiqLW6kSQoWZVKXR072qcjnzH57A=
-X-Received: by 2002:a17:906:dac9:b0:957:2d2a:e8a2 with SMTP id
- xi9-20020a170906dac900b009572d2ae8a2mr5504455ejb.27.1686137210285; Wed, 07
- Jun 2023 04:26:50 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686137641; x=1688729641;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rPYtQx/Afz+ngVb+kmW/KyabenXb8uUYsjV5S6/5Kp8=;
+ b=Do7jqlu45UefCs6BIUAAv8BVhS+0eWGkMJTANbjHXJHDxd0sg86cKQtPPfUSzHZmwr
+ GoQbJsnoyoouWTir8iS2PkS63gQqpyDA2SNUymEhL8k7db0cJlTI9MqnQd71WJg1a1cV
+ SHmbf2bVLNUvHoT8Ooy/a5M9XXaNHkuH2yDGlQAjtHuG+E5JL5lahDS03NBWccbR365f
+ Hp0HFJNPfP1qy5FeuMJVfVTY71Jye6kMAc+bEk9LSPILUFuiKDkBphK2HbeN5JYvITGs
+ gcjsfbfEc/9vlsR3NyCr3Im5k8kEFH3YtfzGR8aUDGASq9oQLRYcCykWRg86PzIlc4OG
+ cBXw==
+X-Gm-Message-State: AC+VfDyiVLq7iHNO+RUJs+0b7ipZTgovrzhtq9Prrld8hCLNtv3YhXH8
+ nqWsHvMzuzDEolVjxjUWybKThA==
+X-Google-Smtp-Source: ACHHUZ5tmgZPdzpjZp0eLbyKpVEiGIc9SswFpQrP1KRiXfVTs+Ly55OiO2jG07ejM35t2qbUUhOPnA==
+X-Received: by 2002:adf:ea8a:0:b0:30d:f75c:4a68 with SMTP id
+ s10-20020adfea8a000000b0030df75c4a68mr4109682wrm.34.1686137641089; 
+ Wed, 07 Jun 2023 04:34:01 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ y12-20020adff14c000000b0030ae7bd1737sm15443470wro.45.2023.06.07.04.34.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jun 2023 04:34:00 -0700 (PDT)
+Date: Wed, 7 Jun 2023 13:33:59 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH 11/16] target/riscv: add KVM specific MISA properties
+Message-ID: <20230606-0e7faaa57483deff11d595c2@orel>
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-12-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-References: <20230606134917.3782215-1-peter.maydell@linaro.org>
-In-Reply-To: <20230606134917.3782215-1-peter.maydell@linaro.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 7 Jun 2023 11:26:38 +0000
-Message-ID: <CACPK8Xd3_ets6btF9ULqjFn_eT55M8t8C+_iQXg-_eXGDLDWqw@mail.gmail.com>
-Subject: Re: [PATCH] hw/timer/nrf51_timer: Don't lose time when timer is
- queried in tight loop
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230530194623.272652-12-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,66 +94,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 6 Jun 2023 at 13:49, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> The nrf51_timer has a free-running counter which we implement using
-> the pattern of using two fields (update_counter_ns, counter) to track
-> the last point at which we calculated the counter value, and the
-> counter value at that time.  Then we can find the current counter
-> value by converting the difference in wall-clock time between then
-> and now to a tick count that we need to add to the counter value.
->
-> Unfortunately the nrf51_timer's implementation of this has a bug
-> which means it loses time every time update_counter() is called.
-> After updating s->counter it always sets s->update_counter_ns to
-> 'now', even though the actual point when s->counter hit the new value
-> will be some point in the past (half a tick, say).  In the worst case
-> (guest code in a tight loop reading the counter, icount mode) the
-> counter is continually queried less than a tick after it was last
-> read, so s->counter never advances but s->update_counter_ns does, and
-> the guest never makes forward progress.
->
-> The fix for this is to only advance update_counter_ns to the
-> timestamp of the last tick, not all the way to 'now'.  (This is the
-> pattern used in hw/misc/mps2-fpgaio.c's counter.)
->
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+On Tue, May 30, 2023 at 04:46:18PM -0300, Daniel Henrique Barboza wrote:
+> Using all TCG user properties in KVM is tricky. First because KVM
+> supports only a small subset of what TCG provides, so most of the
+> cpu->cfg flags do nothing for KVM.
+> 
+> Second, and more important, we don't have a way of telling if any given
+> value is an user input or not. For TCG this has a small impact since we
+> just validating everything and error out if needed. But for KVM it would
+> be good to know if a given value was set by the user or if it's a value
+> already provided by KVM. Otherwise we don't know how to handle failed
+> kvm_set_one_regs() when writing the configurations back.
+> 
+> These characteristics make it overly complicated to use the same user
+> facing flags for both KVM and TCG. A simpler approach is to create KVM
+> specific properties that have specialized logic, forking KVM and TCG use
+> cases for those cases only. Fully separating KVM/TCG properties is
+> unneeded at this point - in fact we want the user experience to be as
+> equal as possible, regardless of the acceleration chosen.
+> 
+> We'll start this fork with the MISA properties, adding the MISA bits
+> that the KVM driver currently supports. The KVM version of
+> RISCVCPUMisaExtConfig and kvm_misa_ext_cfgs[] are inspired by the
+> existing RISCVCPUMisaExtConfig and misa_ext_cfgs[] from
+> target/riscv/cpu.c. For KVM  we're adding an extra oomph in
+> RISCVCPUMisaExtConfig with the 'user_set' boolean. This flag will be set
+> when the user set an option that's different than what is already
+> configured in the host, requiring KVM intervention to write the regs
+> back during kvm_arch_init_vcpu().
+> 
+> There is no need to duplicate more code than necessary, so we're going
+> to use the existing kvm_riscv_init_user_properties() to add the KVM
+> specific properties. Any code that is adding a TCG user prop is then
+> changed slightly to verify first if there's a KVM prop with the same
+> name already added.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
-> The hang in icount mode was discovered by the Zephyr folks as part
-> of their investigation into
-> https://github.com/zephyrproject-rtos/zephyr/issues/57512
+>  target/riscv/cpu.c | 10 ++++++
+>  target/riscv/kvm.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 88 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 749d8bf5eb..3c348049a3 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1587,6 +1587,11 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>      for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
+>          const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
+>  
+> +        /* Check if KVM didn't create the property already */
+> +        if (object_property_find(cpu_obj, misa_cfg->name)) {
+> +            continue;
+> +        }
+> +
+>          object_property_add(cpu_obj, misa_cfg->name, "bool",
+>                              cpu_get_misa_ext_cfg,
+>                              cpu_set_misa_ext_cfg,
+> @@ -1710,6 +1715,11 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>      riscv_cpu_add_misa_properties(obj);
+>  
+>      for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+> +        /* Check if KVM didn't create the property already */
+> +        if (object_property_find(obj, prop->name)) {
+> +            continue;
+> +        }
+> +
+>          qdev_property_add_static(dev, prop);
+>      }
+>  
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 4d0808cb9a..6afd56cda5 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -22,8 +22,10 @@
+>  #include <linux/kvm.h>
+>  
+>  #include "qemu/timer.h"
+> +#include "qapi/error.h"
+>  #include "qemu/error-report.h"
+>  #include "qemu/main-loop.h"
+> +#include "qapi/visitor.h"
+>  #include "sysemu/sysemu.h"
+>  #include "sysemu/kvm.h"
+>  #include "sysemu/kvm_int.h"
+> @@ -105,6 +107,81 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+>          } \
+>      } while (0)
+>  
+> +typedef struct RISCVCPUMisaExtConfig {
 
-Did you get an image to test with?
+I'd give this a name with KVM in it.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+> +    const char *name;
+> +    const char *description;
+> +    target_ulong misa_bit;
+> +    int kvm_reg_id;
+> +    bool user_set;
+> +} RISCVCPUMisaExtConfig;
+> +
+> +/* KVM ISA extensions */
+> +static RISCVCPUMisaExtConfig kvm_misa_ext_cfgs[] = {
+> +    {.name = "a", .description = "Atomic instructions",
+> +     .misa_bit = RVA, .kvm_reg_id = KVM_RISCV_ISA_EXT_A},
+> +    {.name = "c", .description = "Compressed instructions",
+> +     .misa_bit = RVC, .kvm_reg_id = KVM_RISCV_ISA_EXT_C},
+> +    {.name = "d", .description = "Double-precision float point",
+> +     .misa_bit = RVD, .kvm_reg_id = KVM_RISCV_ISA_EXT_D},
+> +    {.name = "f", .description = "Single-precision float point",
+> +     .misa_bit = RVF, .kvm_reg_id = KVM_RISCV_ISA_EXT_F},
+> +    {.name = "h", .description = "Hypervisor",
+> +     .misa_bit = RVH, .kvm_reg_id = KVM_RISCV_ISA_EXT_H},
+> +    {.name = "i", .description = "Base integer instruction set",
+> +     .misa_bit = RVI, .kvm_reg_id = KVM_RISCV_ISA_EXT_I},
+> +    {.name = "m", .description = "Integer multiplication and division",
+> +     .misa_bit = RVM, .kvm_reg_id = KVM_RISCV_ISA_EXT_M},
+> +};
 
->
->  hw/timer/nrf51_timer.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/timer/nrf51_timer.c b/hw/timer/nrf51_timer.c
-> index 42be79c7363..50c6772383e 100644
-> --- a/hw/timer/nrf51_timer.c
-> +++ b/hw/timer/nrf51_timer.c
-> @@ -45,7 +45,12 @@ static uint32_t update_counter(NRF51TimerState *s, int64_t now)
->      uint32_t ticks = ns_to_ticks(s, now - s->update_counter_ns);
->
->      s->counter = (s->counter + ticks) % BIT(bitwidths[s->bitmode]);
-> -    s->update_counter_ns = now;
+I'm not a huge fan of duplicating the name and description strings. Maybe
+we should put them in their own array, indexed by misa bit, in order to
+share them.
+
+ struct misa_ext_cfg_name {
+     const char *name;
+     const char *description;
+ };
+
+static const struct misa_ext_cfg_name misa_ext_cfg_names[] = {
+    [RVA] = { "a", "Atomic instructions", },
+    [RVC] = { "c", "Compressed instructions", },
+    ...
+
+#define MISA_CFG(_bit, _enabled) \
+    {.name = misa_ext_cfg_names[_bit].name, \
+     .description = misa_ext_cfg_names[_bit].description, \
+     .misa_bit = _bit, .enabled = _enabled}
+
+static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+    MISA_CFG(RVA, true),
+    MISA_CFG(RVC, true),
+    ...
+
+#define KVM_MISA_CFG(_bit, _reg_id) \
+    {.name = misa_ext_cfg_names[_bit].name,
+     .description = misa_ext_cfg_names[_bit].description, \
+     .misa_bit = _bit, .kvm_reg_id = _reg_id}
+
+static const RISCVCPUKVMMisaExtConfig kvm_misa_ext_cfgs[] = {
+    KVM_MISA_CFG(RVA, KVM_RISCV_ISA_EXT_A),
+    KVM_MISA_CFG(RVC, KVM_RISCV_ISA_EXT_C),
+    ...
+
+> +
+> +static void kvm_cpu_set_misa_ext_cfg(Object *obj, Visitor *v,
+> +                                     const char *name,
+> +                                     void *opaque, Error **errp)
+> +{
+> +    RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+> +    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+> +    RISCVCPU *cpu = RISCV_CPU(obj);
+> +    CPURISCVState *env = &cpu->env;
+> +    bool value, host_bit;
+> +
+> +    if (!visit_type_bool(v, name, &value, errp)) {
+> +        return;
+> +    }
+> +
+> +    host_bit = env->misa_ext_mask & misa_bit;
+> +
+> +    if (value == host_bit) {
+> +        return;
+> +    }
+> +
+> +    if (!value) {
+> +        misa_ext_cfg->user_set = true;
+> +        return;
+> +    }
+> +
 > +    /*
-> +     * Only advance the sync time to the timestamp of the last tick,
-> +     * not all the way to 'now', so we don't lose time if we do
-> +     * multiple resyncs in a single tick.
+> +     * Forbid users to enable extensions that aren't
+> +     * available in the hart.
 > +     */
-> +    s->update_counter_ns += ticks_to_ns(s, ticks);
->      return ticks;
+> +    error_setg(errp, "Enabling MISA bit '%s' is not allowed: it's not "
+> +               "enabled in the host", misa_ext_cfg->name);
+> +}
+> +
+> +static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < ARRAY_SIZE(kvm_misa_ext_cfgs); i++) {
+> +        RISCVCPUMisaExtConfig *misa_cfg = &kvm_misa_ext_cfgs[i];
+> +
+> +        object_property_add(cpu_obj, misa_cfg->name, "bool",
+> +                            NULL,
+> +                            kvm_cpu_set_misa_ext_cfg,
+> +                            NULL, misa_cfg);
+> +        object_property_set_description(cpu_obj, misa_cfg->name,
+> +                                        misa_cfg->description);
+> +    }
+> +}
+> +
+>  static int kvm_riscv_get_regs_core(CPUState *cs)
+>  {
+>      int ret = 0;
+> @@ -427,6 +504,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
+>          return;
+>      }
+>  
+> +    kvm_riscv_add_cpu_user_properties(cpu_obj);
+>      kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+>      kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+>  
+> -- 
+> 2.40.1
+> 
+>
 
-We're still returning the number of ticks up to 'now'. Should we
-instead return the elapsed ticks? If not, we will expire the timer
-early.
+Otherwise, LGTM.
 
-Cheers,
-
-Joel
+Thanks,
+drew
 
