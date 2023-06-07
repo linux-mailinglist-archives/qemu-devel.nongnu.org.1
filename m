@@ -2,81 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE23872599E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC377259BF
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 11:12:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6pAA-00061v-O9; Wed, 07 Jun 2023 05:09:06 -0400
+	id 1q6pD0-0007SB-CU; Wed, 07 Jun 2023 05:12:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6pA8-00061X-RS
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:09:04 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6pA6-0000tt-S8
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:09:04 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f6ffc2b314so2733815e9.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 02:09:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686128940; x=1688720940;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EVxmJ0BKqMcVhtDQ/su8wRLKOoCDDlmBuHpFUcx1nnM=;
- b=AIYFDfUSZ/lSdw+H8TOF9I/7C3lgGVskKhB0mDItvs8AbjbhlwyHcdso4HjGeN23K8
- TDO8qBTWO1aenjTgY8nwrGha44d4ydAIcnoViIxrmGmW2H1QfB5As0OLVLK1EfOs/skj
- m6giu2uSuImh+7RKvafXnqQVTY1gxKfKZdr7Xa20q8/rc/oRcEjq8VfhFqZ+2bOnIjSs
- w//OKRR/o9lZMn4NLprPI1OwH64IqPrUCYjJf1e1Qt4Z2e6wUHnA1uy2cYw83Tky+L9l
- /JIUTfzsM2kYqHU4ZEoMmAJnMauD2lGrrx8OUpJQw2hTOWt/W5wmmegzagNEvG/UQtPS
- kh2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686128940; x=1688720940;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EVxmJ0BKqMcVhtDQ/su8wRLKOoCDDlmBuHpFUcx1nnM=;
- b=SSn5BVa/naFsqB0jouOMpC1rQ7ikRRb++X7WR48PPsjYpffIvlMCO8qU775cP8GU7y
- 8brTMbqAnHMT2e/BqTnI2CzDZ1SeKTfcVrpbBr5Weu6HyqF8j3BYcLDK65/9EQraCUlZ
- GKYFePR87muMvltbXCI2DV3JeW0cJSOHaufgYwW3cuhGlrLi+KMCzerb649ORydZASZW
- A4+V4MgG1mCeClaMb6yh0ijZp/I8PZfLCvAKrAZO4mELZ3FKyunrOykd1tqorYSeHb2I
- 4OE1Nn/Ofeq0Ao/fL5kph8uQmHJNpKF7zgea0N+/zI02OWDV1QBBlWNfJKJqB7FAcvkC
- IaBg==
-X-Gm-Message-State: AC+VfDwO62hBd08i+P5hVtyqKLJgRcFlXhdIxRJnMTit3Jv2wHXINyCv
- NwhyPnwtHNOP++bTyDotWifuwQ==
-X-Google-Smtp-Source: ACHHUZ552ht2q7lQZOaiXPccjqAbaud7jAAC4iUSIf2ekDQzkDaBVdfyB52U+BHSEGifXPTdpvvymg==
-X-Received: by 2002:a1c:4b0b:0:b0:3f6:1b7:11f0 with SMTP id
- y11-20020a1c4b0b000000b003f601b711f0mr3708577wma.7.1686128940082; 
- Wed, 07 Jun 2023 02:09:00 -0700 (PDT)
-Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
- [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
- 3-20020a05600c028300b003f7eeec829asm1468292wmk.10.2023.06.07.02.08.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 02:08:59 -0700 (PDT)
-Message-ID: <f1c785b1-beac-55e1-7da9-d9a5f1ab77ff@linaro.org>
-Date: Wed, 7 Jun 2023 11:08:58 +0200
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1q6pCy-0007Rv-2d
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:12:00 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1q6pCt-0001Q1-Ik
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 05:11:59 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35797ImL026345; Wed, 7 Jun 2023 09:11:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=sc8JV7CF+SZXLvcWEu/HnqpsmgshkI+cI3olaYehTBk=;
+ b=flZ30fHFQnoPR77JEeTEs5SxUEXOoSOZh2pIR1aFPQKTBf1jGjW3Yv6BC5IeJnhi05Lo
+ 4x+AEOrv4TX0LkUPZfHAN1CHlw7jAVamd6pfOBDv2rNoKsdYOM9YbiEg129ikvH9msfR
+ Bm3L0Fumgg2VxrakXaSU+PMwpDrPvq/ZgObhEEmMtNNgXauIpyltBAUWmTHxONdfr9vl
+ LK0wqlWLTTmvPgfTF//9bkJVMKB9Hyc3hAPlvhSDBr2/VLvvlgVmQH10bdyahB+Ee89G
+ a3lMYCX+5YmrZGXCTqKrq9juOgUJ8yZq3meQ0hUDimTyXnepzgdLbzG48ponjkdM0Gx5 ng== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2pbr8yd5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jun 2023 09:11:52 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35797M6G026570;
+ Wed, 7 Jun 2023 09:11:52 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2pbr8ybd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jun 2023 09:11:52 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3578riG8008454;
+ Wed, 7 Jun 2023 09:11:49 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3r2a768ahk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Jun 2023 09:11:49 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3579Blmv53150096
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Jun 2023 09:11:47 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 780D720040;
+ Wed,  7 Jun 2023 09:11:47 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 100312004D;
+ Wed,  7 Jun 2023 09:11:47 +0000 (GMT)
+Received: from [9.171.17.169] (unknown [9.171.17.169])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Jun 2023 09:11:46 +0000 (GMT)
+Message-ID: <9f42964d50a610aa816917a0c1536d860e728ff5.camel@linux.ibm.com>
+Subject: Re: [PULL 15/18] s390x/tcg: Fix CPU address returned by STIDP
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, Thomas Huth <thuth@redhat.com>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Cc: David Hildenbrand <david@redhat.com>
+Date: Wed, 07 Jun 2023 11:11:46 +0200
+In-Reply-To: <ea74b6cf-b247-4ddf-b350-4fca68798818@tls.msk.ru>
+References: <20230606055621.523175-1-thuth@redhat.com>
+ <20230606055621.523175-16-thuth@redhat.com>
+ <ea74b6cf-b247-4ddf-b350-4fca68798818@tls.msk.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] meson: fix "static build" entry in summary
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-References: <20230607090336.59424-1-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230607090336.59424-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hmLkkCY1I_ekwBEha8Tu0xpYwyOQxc-U
+X-Proofpoint-ORIG-GUID: Qg5N_0vEnmeoq71xYBK1y0o0Ypc3Muct
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-07_06,2023-06-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=823 spamscore=0 bulkscore=0 adultscore=0 phishscore=0
+ mlxscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306070074
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,28 +114,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 11:03, Paolo Bonzini wrote:
-> Fixes: a0cbd2e8496 ("meson: use prefer_static option", 2023-05-18)
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 553c8e0b9c5..34d0444ffbb 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -4088,7 +4088,7 @@ summary_info += {'QEMU_LDFLAGS':      ' '.join(qemu_ldflags)}
->   summary_info += {'profiler':          get_option('profiler')}
->   summary_info += {'link-time optimization (LTO)': get_option('b_lto')}
->   summary_info += {'PIE':               get_option('b_pie')}
-> -summary_info += {'static build':      config_host.has_key('CONFIG_STATIC')}
-> +summary_info += {'static build':      get_optin('prefer_static')}
+On Wed, 2023-06-07 at 12:05 +0300, Michael Tokarev wrote:
+> 06.06.2023 08:56, Thomas Huth wrote:
+> > From: Ilya Leoshkevich <iii@linux.ibm.com>
+> >=20
+> > In qemu-user-s390x, /proc/cpuinfo contains:
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0processor 0: version =
+=3D 00,=C2=A0 identification =3D 000000,=C2=A0
+> > machine =3D 8561
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0processor 1: version =
+=3D 00,=C2=A0 identification =3D 400000,=C2=A0
+> > machine =3D 8561
+> >=20
+> > The highest nibble is supposed to contain the CPU address, but it's
+> > off
+> > by 2 bits. Fix the shift value and provide a symbolic constant for
+> > it.
+> >=20
+> > With the fix we get:
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0processor 0: version =
+=3D 00,=C2=A0 identification =3D 000000,=C2=A0
+> > machine =3D 8561
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0processor 1: version =
+=3D 00,=C2=A0 identification =3D 100000,=C2=A0
+> > machine =3D 8561
+> >=20
+> > Fixes: 076d4d39b65f ("s390x/cpumodel: wire up cpu type + id for
+> > TCG")
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > Message-Id: <20230605113950.1169228-2-iii@linux.ibm.com>
+> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > ---
+> > =C2=A0 target/s390x/cpu_models.h | 10 +++++++++-
+> > =C2=A0 target/s390x/cpu_models.c |=C2=A0 4 ++--
+> > =C2=A0 2 files changed, 11 insertions(+), 3 deletions(-)
+>=20
+> Is it a -stable material too?
+> (applies cleanly to 7.2 and 8.0)
+>=20
+> Thanks,
+>=20
+> /mjt
 
-Typo 'get_option'.
-
->   summary_info += {'malloc trim support': has_malloc_trim}
->   summary_info += {'membarrier':        have_membarrier}
->   summary_info += {'debug graph lock':  get_option('debug_graph_lock')}
-
+Yes, from my perspective, it would be good to put this into stable.
+I forgot to tag it, because the rest of the series was a new feature.
+Thanks for noticing!
 
