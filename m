@@ -2,49 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F088725F12
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DF6725F18
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 14:23:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6sAu-000240-1q; Wed, 07 Jun 2023 08:22:04 -0400
+	id 1q6sAt-000222-8M; Wed, 07 Jun 2023 08:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q6sAm-0001wY-PL
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:21:58 -0400
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q6sAp-0001y8-Bk
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:22:00 -0400
 Received: from mga06b.intel.com ([134.134.136.31] helo=mga06.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q6sAk-0004lg-Qy
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:21:56 -0400
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q6sAm-0004k3-PX
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 08:21:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686140514; x=1717676514;
+ t=1686140516; x=1717676516;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wWEbnMjFxLq0Q9nk/AfcqcGD8PPSWas/6sCddvwHO6c=;
- b=daAkQ4RaFSOhXemlwraAJqmjJqvRZr/KPioPzWUyptQRqnoyk8blLE3D
- 5DeiaNZdkcTkhG9Cd2m5G0LWk34a49j9LWRikm4p7XrzMAU80tqyWBv/G
- 3uvbF5THBN5ZX10mfpOj3PZlSA0wUgjQDL/chLBB83Uu71SCZtuZ3/PXv
- dKOjyyoN+7ZdfeDQFGNQs/wp/pPVb7upOs3dMPOqy15nrdOYr1aurfgQF
- m/RvfX3k8YsZEWD/vr5WQCHHNjjbYOwbeXwDw8ACaJeF7p4gcgDzc30/W
- JftCJWpSbbJtTVyQ1r98DJWLgNa0cETmtf4TI02zkv7GS4uDkqaPXAAyY w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="420527939"
-X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; d="scan'208";a="420527939"
+ bh=EvNnE2JlHC6w0AbLKllJVqnnOmmBY03QPzdV1p6pRlE=;
+ b=HYDfwA76hL9VAcBNmVes8LhztXNiHWHVZcftTjX5PoqmqGzIMSJGPUQX
+ PvZaxSR1z9wTS3EOU2Ng4lJxAimEpQtNlA5IOJbw3zbgUXv0QOurRybUw
+ yIv0jmptd6pEh/XFOEb46Soh5bwdyvo2G9dukjLX7SC7Ewbqo4/Cz3NPr
+ 4c69diEYpahWK1zy8Ugds4XrDisY4AmBpvxp85akBB+diFaAHCwDiKixT
+ o9m+omwS/vYk8OfAjtrIvZFOBOCuOwRizIKejw15U7WYjPynjKHAWHCNf
+ 1/jPkMoeKJSkogEt0/4kXem43j1/EI0SE9X6DaN9NF9YInw/ZA/Nu65FW Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="420527951"
+X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; d="scan'208";a="420527951"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2023 05:21:53 -0700
+ 07 Jun 2023 05:21:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="686970045"
-X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; d="scan'208";a="686970045"
+X-IronPort-AV: E=McAfee;i="6600,9927,10733"; a="686970058"
+X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; d="scan'208";a="686970058"
 Received: from wufei-optiplex-7090.sh.intel.com ([10.238.200.247])
- by orsmga006.jf.intel.com with ESMTP; 07 Jun 2023 05:21:51 -0700
+ by orsmga006.jf.intel.com with ESMTP; 07 Jun 2023 05:21:53 -0700
 From: Fei Wu <fei2.wu@intel.com>
 To: richard.henderson@linaro.org, alex.bennee@linaro.org, qemu-devel@nongnu.org
-Cc: Fei Wu <fei2.wu@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v15 06/10] tb-stats: reset the tracked TBs on a tb_flush
-Date: Wed,  7 Jun 2023 20:24:07 +0800
-Message-Id: <20230607122411.3394702-7-fei2.wu@intel.com>
+Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Fei Wu <fei2.wu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH v15 07/10] tb-stats: Adding info [tb-list|tb] commands to HMP
+ (WIP)
+Date: Wed,  7 Jun 2023 20:24:08 +0800
+Message-Id: <20230607122411.3394702-8-fei2.wu@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230607122411.3394702-1-fei2.wu@intel.com>
 References: <20230607122411.3394702-1-fei2.wu@intel.com>
@@ -75,79 +78,476 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>
 
-We keep track of translations but can only do so up until the
-translation cache is flushed. At that point we really have no idea if
-we can re-create a translation because all the active tracking
-information has been reset.
+These commands allow the exploration of TBs generated by the TCG.
+Understand which one hotter, with more guest/host instructions... and
+examine their guest, host and IR code.
 
+The goal of this command is to allow the dynamic exploration of TCG
+behavior and code quality. Therefore, for now, a corresponding QMP
+command is not worthwhile.
+
+[AJB: WIP - we still can't be safely sure a translation will succeed]
+
+Example of output:
+
+TB id:0 | phys:0x34d54 virt:0x0000000000034d54 flags:0x0000f0
+	| exec:4828932/0 guest inst cov:16.38%
+	| trans:1 ints: g:3 op:82 op_opt:34 spills:3
+	| h/g (host bytes / guest insts): 90.666664
+
+TB id:1 | phys:0x34d0d virt:0x0000000000034d0d flags:0x0000f0
+	| exec:4825842/0 guest inst cov:21.82%
+	| trans:1 ints: g:4 op:80 op_opt:38 spills:2
+	| h/g (host bytes / guest insts): 84.000000
+
+----------------
+
+0x00034d0d:  89 de                    movl     %ebx, %esi
+0x00034d0f:  26 8b 0e                 movl     %es:(%esi), %ecx
+0x00034d12:  26 f6 46 08 80           testb    $0x80, %es:8(%esi)
+0x00034d17:  75 3b                    jne      0x34d54
+
+------------------------------
+
+Acked-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+Message-Id: <20190829173437.5926-10-vandersonmr2@gmail.com>
+[AJB: fix authorship, dropped coverset]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Fei Wu <fei2.wu@intel.com>
 ---
- accel/tcg/tb-maint.c    |  1 +
- accel/tcg/tb-stats.c    | 18 ++++++++++++++++++
- include/exec/tb-stats.h |  8 ++++++++
- 3 files changed, 27 insertions(+)
+ accel/tcg/monitor.c     |  69 ++++++++++++++++
+ accel/tcg/tb-stats.c    | 176 ++++++++++++++++++++++++++++++++++++++++
+ disas/disas.c           |   2 +
+ hmp-commands-info.hx    |  16 ++++
+ include/exec/tb-stats.h |  25 ++++++
+ include/monitor/hmp.h   |   2 +
+ 6 files changed, 290 insertions(+)
 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 0980fca358..11ff0ddd90 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -763,6 +763,7 @@ static void do_tb_flush(CPUState *cpu, run_on_cpu_data tb_flush_count)
-     qht_reset_size(&tb_ctx.htable, CODE_GEN_HTABLE_SIZE);
-     tb_remove_all();
+diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
+index 094150e4af..d43c62b248 100644
+--- a/accel/tcg/monitor.c
++++ b/accel/tcg/monitor.c
+@@ -8,17 +8,21 @@
  
-+    tbstats_reset_tbs();
-     tcg_region_reset_all();
-     /* XXX: flush processor icache at this point if cache flush is expensive */
-     qatomic_inc(&tb_ctx.tb_flush_count);
-diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
-index c90dde37d0..7c7f700c89 100644
---- a/accel/tcg/tb-stats.c
-+++ b/accel/tcg/tb-stats.c
-@@ -103,6 +103,24 @@ void clean_tbstats(void)
-     qht_destroy(&tb_ctx.tb_stats);
+ #include "qemu/osdep.h"
+ #include "qemu/accel.h"
++#include "qemu/log.h"
+ #include "qapi/error.h"
+ #include "qapi/type-helpers.h"
+ #include "qapi/qapi-commands-machine.h"
+ #include "qapi/qmp/qdict.h"
+ #include "monitor/monitor.h"
+ #include "monitor/hmp.h"
++#include "monitor/hmp-target.h"
+ #include "sysemu/cpus.h"
+ #include "sysemu/cpu-timers.h"
+ #include "sysemu/tcg.h"
+ #include "exec/tb-stats.h"
+ #include "exec/tb-flush.h"
++#include "disas/disas.h"
++#include "tb-context.h"
+ #include "internal.h"
+ #include "tb-context.h"
+ 
+@@ -186,6 +190,71 @@ void hmp_tbstats(Monitor *mon, const QDict *qdict)
+ 
  }
  
-+/*
-+ * We have to reset the tbs array on a tb_flush as those
-+ * TranslationBlocks no longer exist.
-+ */
-+
-+static void reset_tbs_array(void *p, uint32_t hash, void *userp)
++void hmp_info_tblist(Monitor *mon, const QDict *qdict)
 +{
-+    TBStatistics *tbs = p;
-+    g_ptr_array_set_size(tbs->tbs, 0);
++    int number_int;
++    const char *sortedby_str = NULL;
++    g_autoptr(GString) buf = g_string_new("");
++
++    if (!tcg_enabled()) {
++        monitor_printf(mon, "Only available with accel=tcg\n");
++        return;
++    }
++    if (!tb_ctx.tb_stats.map) {
++        monitor_printf(mon, "no TB information recorded\n");
++        return;
++    }
++
++    number_int = qdict_get_try_int(qdict, "number", 10);
++    sortedby_str = qdict_get_try_str(qdict, "sortedby");
++
++    int sortedby = SORT_BY_HOTNESS;
++    if (sortedby_str == NULL || strcmp(sortedby_str, "hotness") == 0) {
++        sortedby = SORT_BY_HOTNESS;
++    } else if (strcmp(sortedby_str, "hg") == 0) {
++        sortedby = SORT_BY_HG;
++    } else if (strcmp(sortedby_str, "spills") == 0) {
++        sortedby = SORT_BY_SPILLS;
++    } else {
++        monitor_printf(mon, "valid sort options are: hotness hg spills\n");
++        return;
++    }
++
++    dump_tblist_info(buf, number_int, sortedby);
++    monitor_printf(mon, "%s", buf->str);
 +}
 +
-+void tbstats_reset_tbs(void)
++void hmp_info_tb(Monitor *mon, const QDict *qdict)
 +{
-+    if (tb_ctx.tb_stats.map) {
-+        qht_iter(&tb_ctx.tb_stats, reset_tbs_array, NULL);
++    const int id = qdict_get_int(qdict, "id");
++    g_autoptr(GString) buf = g_string_new("");
++
++    if (!tcg_enabled()) {
++        monitor_printf(mon, "Only available with accel=tcg\n");
++        return;
++    }
++
++    TBStatistics *tbs = get_tbstats_by_id(id);
++    if (tbs == NULL) {
++        monitor_printf(mon, "TB %d information is not recorded\n", id);
++        return;
++    }
++
++    monitor_printf(mon, "\n------------------------------\n\n");
++
++    int valid_tb_num = dump_tb_info(buf, tbs, id);
++    monitor_printf(mon, "%s", buf->str);
++
++    if (valid_tb_num > 0) {
++        unsigned num_inst = tbs->code.num_guest_inst / tbs->translations.total;
++
++        monitor_printf(mon, "\n----------------n\n");
++        // FIXME: cannot disas
++        monitor_disas(mon, mon_get_cpu(mon), tbs->phys_pc, num_inst, true);
++        monitor_printf(mon, "\n------------------------------\n\n");
 +    }
 +}
 +
- void init_tb_stats_htable(void)
+ static void hmp_tcg_register(void)
  {
-     if (!tb_ctx.tb_stats.map && tb_stats_collection_enabled()) {
+     monitor_register_hmp_info_hrt("jit", qmp_x_query_jit);
+diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
+index 7c7f700c89..53a4f448dc 100644
+--- a/accel/tcg/tb-stats.c
++++ b/accel/tcg/tb-stats.c
+@@ -11,12 +11,16 @@
+ #include "disas/disas.h"
+ #include "exec/exec-all.h"
+ #include "tcg/tcg.h"
++#include "qapi/error.h"
+ 
+ #include "qemu/qemu-print.h"
++#include "qemu/log.h"
+ 
+ #include "exec/tb-stats.h"
+ #include "tb-context.h"
+ 
++#include "internal.h"
++
+ /* TBStatistic collection controls */
+ enum TBStatsStatus {
+     TB_STATS_STOPPED = 0,
+@@ -26,6 +30,8 @@ enum TBStatsStatus {
+ static enum TBStatsStatus tcg_collect_tb_stats;
+ static uint32_t tbstats_flag;
+ 
++static GPtrArray *last_search;
++
+ struct jit_profile_info {
+     uint64_t translations;
+     uint64_t aborted;
+@@ -42,6 +48,18 @@ struct jit_profile_info {
+ #define stat_per_translation(stat, name) \
+     (stat->translations.total ? stat->name / stat->translations.total : 0)
+ 
++TBStatistics *get_tbstats_by_id(int id)
++{
++    if (!last_search) {
++        return NULL;
++    }
++
++    if (id < 0 || id >= last_search->len) {
++        return NULL;
++    }
++    return g_ptr_array_index(last_search, id);
++}
++
+ /* accumulate the statistics from all TBs */
+ static void collect_jit_profile_info(void *p, uint32_t hash, void *userp)
+ {
+@@ -98,6 +116,10 @@ static void free_tbstats(void *p, uint32_t hash, void *userp)
+ 
+ void clean_tbstats(void)
+ {
++    if (last_search) {
++        g_ptr_array_free(last_search, true);
++    }
++
+     /* remove all tb_stats */
+     qht_iter(&tb_ctx.tb_stats, free_tbstats, NULL);
+     qht_destroy(&tb_ctx.tb_stats);
+@@ -129,6 +151,154 @@ void init_tb_stats_htable(void)
+     }
+ }
+ 
++static void collect_tb_stats(void *p, uint32_t hash, void *userp)
++{
++    int *count = userp;
++
++    g_ptr_array_add(last_search, p);
++    (*count)++;
++}
++
++static void count_invalid_tbs(gpointer data, gpointer user_data)
++{
++    TranslationBlock *tb = (TranslationBlock *) data;
++    unsigned *counter = (unsigned *) user_data;
++    if (tb->cflags & CF_INVALID) {
++        *counter = *counter + 1;
++    }
++}
++
++int dump_tb_info(GString *buf, TBStatistics *tbs, int id)
++{
++    unsigned g = stat_per_translation(tbs, code.num_guest_inst);
++    unsigned ops = stat_per_translation(tbs, code.num_tcg_ops);
++    unsigned ops_opt = stat_per_translation(tbs, code.num_tcg_ops_opt);
++    unsigned spills = stat_per_translation(tbs, code.spills);
++    unsigned h = stat_per_translation(tbs, code.out_len);
++    unsigned act = tbs->tbs->len;
++    unsigned invalid = 0;
++
++    float guest_host_prop = g ? ((float) h / g) : 0;
++
++    g_ptr_array_foreach(tbs->tbs, &count_invalid_tbs, &invalid);
++
++    g_string_append_printf(buf,
++            "TB id:%d | phys:0x"TB_PAGE_ADDR_FMT" virt:0x"TARGET_FMT_lx
++            " flags:0x%08x %d inv/%d\n",
++            id, tbs->phys_pc, tbs->pc, tbs->flags, invalid, act);
++
++    if (tbs_stats_enabled(tbs, TB_EXEC_STATS)) {
++        g_string_append_printf(buf,
++                "\t| exec:%lu/%lu guest inst cov:%.2f%%\n",
++                tbs->executions.normal,
++                tbs->executions.atomic, tbs->executions.coverage / 100.0f);
++    }
++
++    if (tbs_stats_enabled(tbs, TB_JIT_STATS)) {
++        g_string_append_printf(buf,
++                "\t| trans:%lu ints: g:%u op:%u op_opt:%u spills:%d"
++                "\n\t| h/g (host bytes / guest insts): %f\n",
++                tbs->translations.total, g, ops, ops_opt, spills,
++                guest_host_prop);
++    }
++
++    g_string_append_printf(buf, "\n");
++
++    return act - invalid;
++}
++
++static gint
++inverse_sort_tbs_spills(gconstpointer p1, gconstpointer p2)
++{
++    const TBStatistics *tbs1 = *(TBStatistics **) p1;
++    const TBStatistics *tbs2 = *(TBStatistics **) p2;
++    unsigned long c1 = stat_per_translation(tbs1, code.spills);
++    unsigned long c2 = stat_per_translation(tbs2, code.spills);
++    return c1 < c2 ? 1 : c1 == c2 ? 0 : -1;
++}
++
++static gint
++inverse_sort_tbs_hotness(gconstpointer p1, gconstpointer p2)
++{
++    const TBStatistics *tbs1 = *(TBStatistics **) p1;
++    const TBStatistics *tbs2 = *(TBStatistics **) p2;
++    unsigned long c1 = stat_per_translation(tbs1, executions.normal);
++    unsigned long c2 = stat_per_translation(tbs2, executions.normal);
++    return c1 < c2 ? 1 : c1 == c2 ? 0 : -1;
++}
++
++static gint
++inverse_sort_tbs_hg(gconstpointer p1, gconstpointer p2)
++{
++    const TBStatistics *tbs1 = *(TBStatistics **) p1;
++    const TBStatistics *tbs2 = *(TBStatistics **) p2;
++
++    if (tbs1->code.num_guest_inst == 0) {
++        return -1;
++    }
++    if (tbs2->code.num_guest_inst == 0) {
++        return 1;
++    }
++
++    unsigned long c1 = tbs1->code.out_len / tbs1->code.num_guest_inst;
++    unsigned long c2 = tbs2->code.out_len / tbs2->code.num_guest_inst;
++    return c1 < c2 ? 1 : c1 == c2 ? 0 : -1;
++}
++
++static void calculate_last_search_coverages(void)
++{
++    uint64_t total_exec_count = 0;
++
++    /* Compute total execution count for all tbs */
++    for (int i = 0; i < last_search->len; ++i) {
++        TBStatistics *tbs = g_ptr_array_index(last_search, i);
++        total_exec_count +=
++            (tbs->executions.atomic + tbs->executions.normal)
++                * stat_per_translation(tbs, code.num_guest_inst);
++    }
++
++    for (int i = 0; i < last_search->len; ++i) {
++        TBStatistics *tbs = g_ptr_array_index(last_search, i);
++        uint64_t tb_total_execs =
++            (tbs->executions.atomic + tbs->executions.normal)
++                * stat_per_translation(tbs, code.num_guest_inst);
++        tbs->executions.coverage =
++            (10000 * tb_total_execs) / (total_exec_count + 1);
++    }
++}
++
++void dump_tblist_info(GString *buf, int total, int sort_by)
++{
++    int array_size = 0;
++
++    if (last_search) {
++        g_ptr_array_free(last_search, true);
++    }
++    last_search = g_ptr_array_new();
++
++    qht_iter(&tb_ctx.tb_stats, collect_tb_stats, &array_size);
++
++    calculate_last_search_coverages();
++
++    if (sort_by == SORT_BY_HOTNESS) {
++        g_ptr_array_sort(last_search, (GCompareFunc)inverse_sort_tbs_hotness);
++    } else if (sort_by == SORT_BY_SPILLS) {
++        g_ptr_array_sort(last_search, (GCompareFunc)inverse_sort_tbs_spills);
++    } else if (sort_by == SORT_BY_HG) {
++        g_ptr_array_sort(last_search, (GCompareFunc)inverse_sort_tbs_hg);
++    } else {
++        return;
++    }
++
++    array_size = (array_size > total) ? total : array_size;
++    g_ptr_array_set_size(last_search, array_size);
++
++    for (int i = 0; i < last_search->len; ++i) {
++        TBStatistics *tbs = g_ptr_array_index(last_search, i);
++        dump_tb_info(buf, tbs, i);
++    }
++}
++
+ void enable_collect_tb_stats(void)
+ {
+     tcg_collect_tb_stats = TB_STATS_RUNNING;
+@@ -166,3 +336,9 @@ bool tb_stats_enabled(TranslationBlock *tb, uint32_t flag)
+            tb->tb_stats &&
+            (tbstats_flag & flag);
+ }
++
++bool tbs_stats_enabled(struct TBStatistics *tbs, uint32_t flag)
++{
++    return tb_stats_collection_enabled() &&
++           (tbstats_flag & flag);
++}
+diff --git a/disas/disas.c b/disas/disas.c
+index 0d2d06c2ec..3b19b51fca 100644
+--- a/disas/disas.c
++++ b/disas/disas.c
+@@ -8,6 +8,8 @@
+ #include "hw/core/cpu.h"
+ #include "exec/memory.h"
+ 
++#include "qemu/log-for-trace.h"
++
+ /* Filled in by elfload.c.  Simplistic, but will do for now. */
+ struct syminfo *syminfos = NULL;
+ 
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index f5b37eb74a..ace1ecc3c5 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -262,6 +262,22 @@ ERST
+         .params     = "",
+         .help       = "show dynamic compiler info",
+     },
++    {
++        .name       = "tb-list",
++        .args_type  = "number:i?,sortedby:s?",
++        .params     = "[number sortedby]",
++        .help       = "show a [number] translated blocks sorted by [sortedby]"
++                      "sortedby opts: hotness hg spills",
++        .cmd        = hmp_info_tblist,
++    },
++    {
++        .name       = "tb",
++        .args_type  = "id:i,flags:s?",
++        .params     = "id [flag1,flag2,...]",
++        .help       = "show information about one translated block by id."
++                      "dump flags can be used to set dump code level: out_asm in_asm op",
++        .cmd        = hmp_info_tb,
++    },
+ #endif
+ 
+ SRST
 diff --git a/include/exec/tb-stats.h b/include/exec/tb-stats.h
-index e16f947410..77974b4b7f 100644
+index 77974b4b7f..4cdf41af6c 100644
 --- a/include/exec/tb-stats.h
 +++ b/include/exec/tb-stats.h
-@@ -94,4 +94,12 @@ void dump_jit_profile_info(GString *buf);
+@@ -54,6 +54,8 @@ struct TBStatistics {
+     struct {
+         unsigned long normal;
+         unsigned long atomic;
++        /* filled only when dumping x% cover set */
++        uint16_t coverage;
+     } executions;
  
- void clean_tbstats(void);
+     /* JIT Stats - protected by lock */
+@@ -89,6 +91,7 @@ bool tb_stats_cmp(const void *ap, const void *bp);
+ 
+ void init_tb_stats_htable(void);
+ bool tb_stats_enabled(TranslationBlock *tb, uint32_t flag);
++bool tbs_stats_enabled(struct TBStatistics *tbs, uint32_t flag);
+ 
+ void dump_jit_profile_info(GString *buf);
+ 
+@@ -102,4 +105,26 @@ void clean_tbstats(void);
+  */
+ void tbstats_reset_tbs(void);
  
 +/**
-+ * tbstats_reset_tbs: reset the linked array of TBs
++ * dump_tbs_info: report the hottest blocks
 + *
-+ * Reset the list of tbs for a given array. Should be called from
-+ * safe work during tb_flush.
++ * @buf: output buffer
++ * @total: the limit of hotblocks
++ * @sort_by: property in which the dump will be sorted
++ *
++ * Report the hottest blocks to either the log or monitor
 + */
-+void tbstats_reset_tbs(void);
++void dump_tblist_info(GString *buf, int total, int sort_by);
 +
++/**
++ * dump_tb_info: dump information about one TB
++ *
++ * @buf: output buffer
++ * @tbs: the tbs to dump
++ * @id: the display id of the block (from previous search)
++ */
++int dump_tb_info(GString *buf, TBStatistics *tbs, int id);
++
++TBStatistics *get_tbstats_by_id(int id);
++
+ #endif
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index 2e7f141754..acdd6f1561 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -182,5 +182,7 @@ void hmp_boot_set(Monitor *mon, const QDict *qdict);
+ void hmp_info_mtree(Monitor *mon, const QDict *qdict);
+ void hmp_info_cryptodev(Monitor *mon, const QDict *qdict);
+ void hmp_tbstats(Monitor *mon, const QDict *qdict);
++void hmp_info_tblist(Monitor *mon, const QDict *qdict);
++void hmp_info_tb(Monitor *mon, const QDict *qdict);
+ 
  #endif
 -- 
 2.25.1
