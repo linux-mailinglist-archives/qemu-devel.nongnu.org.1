@@ -2,53 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C116E727610
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF527265D4
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 18:26:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BG-00066o-K5; Thu, 08 Jun 2023 00:23:26 -0400
+	id 1q6vyZ-0000dl-FE; Wed, 07 Jun 2023 12:25:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z5-0006Sr-UJ
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1q6vyJ-0000bW-Bb
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:19 -0400
+Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0000Do-RV
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 08D1811F134;
- Thu,  8 Jun 2023 02:02:40 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 08 Jun 2023 00:21:58 +0800
-Subject: [PATCH QEMU v5 7/8] migration: Extend query-migrate to provide dirty
- page limit info
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1q6vyG-0007A2-0j
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 12:25:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
+ :Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=fHVsz8+DEo8K4I/t99qCXXgTGKSHNSBhQ+87ixhd/VE=; b=cwgxXZjQVlckYDzhBWF1sOoeTi
+ KhBsV1JFMOlcBdi6R5E32sVOre2G+DCyEym6TmH1GEra1Ki/OZO6q/3C/2AikgFqXMsO5JgkPu+N2
+ JNmHe/l5r1tRCL5nYxO8aCH/a/h8tGXoXoEzarCXDd993FZdu/BBLz+5okliM5Y74e8A=;
+X-Envelope-From: <kbastian@mail.uni-paderborn.de>
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: qemu-devel@nongnu.org
+Cc: kbastian@mail.uni-paderborn.de
+Subject: [PULL 0/6] tricore queue
+Date: Wed,  7 Jun 2023 18:24:34 +0200
+Message-Id: <20230607162440.7807-1-kbastian@mail.uni-paderborn.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Message-ID: <168618975839.6361.17407633874747688653-7@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+Content-Transfer-Encoding: 8bit
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.7.161517, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.6.600001
+X-IMT-Source: Intern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
+Received-SPF: pass client-ip=2001:638:502:c003::14;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,179 +64,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+The following changes since commit f5e6786de4815751b0a3d2235c760361f228ea48:
 
-Extend query-migrate to provide throttle time and estimated
-ring full time with dirty-limit capability enabled, through which
-we can observe if dirty limit take effect during live migration.
+  Merge tag 'pull-target-arm-20230606' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-06-06 12:11:34 -0700)
 
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- include/sysemu/dirtylimit.h    |  2 ++
- migration/migration-hmp-cmds.c | 10 +++++++++
- migration/migration.c          | 10 +++++++++
- qapi/migration.json            | 15 ++++++++++++-
- softmmu/dirtylimit.c           | 39 ++++++++++++++++++++++++++++++++++
- 5 files changed, 75 insertions(+), 1 deletion(-)
+are available in the Git repository at:
 
-diff --git a/include/sysemu/dirtylimit.h b/include/sysemu/dirtylimit.h
-index 8d2c1f3a6b..410a2bc0b6 100644
---- a/include/sysemu/dirtylimit.h
-+++ b/include/sysemu/dirtylimit.h
-@@ -34,4 +34,6 @@ void dirtylimit_set_vcpu(int cpu_index,
- void dirtylimit_set_all(uint64_t quota,
-                         bool enable);
- void dirtylimit_vcpu_execute(CPUState *cpu);
-+int64_t dirtylimit_throttle_time_per_round(void);
-+int64_t dirtylimit_ring_full_time(void);
- #endif
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 35e8020bbf..893c87493d 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -190,6 +190,16 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
-                        info->cpu_throttle_percentage);
-     }
-=20
-+    if (info->has_dirty_limit_throttle_time_per_round) {
-+        monitor_printf(mon, "dirty-limit throttle time: %" PRIi64 " us\n",
-+                       info->dirty_limit_throttle_time_per_round);
-+    }
-+
-+    if (info->has_dirty_limit_ring_full_time) {
-+        monitor_printf(mon, "dirty-limit ring full time: %" PRIi64 " us\n",
-+                       info->dirty_limit_ring_full_time);
-+    }
-+
-     if (info->has_postcopy_blocktime) {
-         monitor_printf(mon, "postcopy blocktime: %u\n",
-                        info->postcopy_blocktime);
-diff --git a/migration/migration.c b/migration/migration.c
-index 4278b48af0..5e1abc9cee 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -64,6 +64,7 @@
- #include "yank_functions.h"
- #include "sysemu/qtest.h"
- #include "options.h"
-+#include "sysemu/dirtylimit.h"
-=20
- static NotifierList migration_state_notifiers =3D
-     NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
-@@ -968,6 +969,15 @@ static void populate_ram_info(MigrationInfo *info, Migra=
-tionState *s)
-         info->ram->dirty_pages_rate =3D
-            stat64_get(&mig_stats.dirty_pages_rate);
-     }
-+
-+    if (migrate_dirty_limit() && dirtylimit_in_service()) {
-+        info->has_dirty_limit_throttle_time_per_round =3D true;
-+        info->dirty_limit_throttle_time_per_round =3D
-+                            dirtylimit_throttle_time_per_round();
-+
-+        info->has_dirty_limit_ring_full_time =3D true;
-+        info->dirty_limit_ring_full_time =3D dirtylimit_ring_full_time();
-+    }
- }
-=20
- static void populate_disk_info(MigrationInfo *info)
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 0c4827d9c9..b31a8c615c 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -250,6 +250,17 @@
- #     blocked.  Present and non-empty when migration is blocked.
- #     (since 6.0)
- #
-+# @dirty-limit-throttle-time-per-round: Maximum throttle time (in microsecon=
-ds) of virtual
-+#                                       CPUs each dirty ring full round, whi=
-ch shows how
-+#                                       MigrationCapability dirty-limit affe=
-cts the guest
-+#                                       during live migration. (since 8.1)
-+#
-+# @dirty-limit-ring-full-time: Estimated average dirty ring full time (in mi=
-croseconds)
-+#                              each dirty ring full round, note that the val=
-ue equals
-+#                              dirty ring memory size divided by average dir=
-ty page rate
-+#                              of virtual CPU, which can be used to observe =
-the average
-+#                              memory load of virtual CPU indirectly. (since=
- 8.1)
-+#
- # Since: 0.14
- ##
- { 'struct': 'MigrationInfo',
-@@ -267,7 +278,9 @@
-            '*postcopy-blocktime' : 'uint32',
-            '*postcopy-vcpu-blocktime': ['uint32'],
-            '*compression': 'CompressionStats',
--           '*socket-address': ['SocketAddress'] } }
-+           '*socket-address': ['SocketAddress'],
-+           '*dirty-limit-throttle-time-per-round': 'int64',
-+           '*dirty-limit-ring-full-time': 'int64'} }
-=20
- ##
- # @query-migrate:
-diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index ee47158986..0fb9d5b171 100644
---- a/softmmu/dirtylimit.c
-+++ b/softmmu/dirtylimit.c
-@@ -558,6 +558,45 @@ out:
-     hmp_handle_error(mon, err);
- }
-=20
-+/* Return the max throttle time of each virtual CPU */
-+int64_t dirtylimit_throttle_time_per_round(void)
-+{
-+    CPUState *cpu;
-+    int64_t max =3D 0;
-+
-+    CPU_FOREACH(cpu) {
-+        if (cpu->throttle_us_per_full > max) {
-+            max =3D cpu->throttle_us_per_full;
-+        }
-+    }
-+
-+    return max;
-+}
-+
-+/*
-+ * Estimate average dirty ring full time of each virtaul CPU.
-+ * Return -1 if guest doesn't dirty memory.
-+ */
-+int64_t dirtylimit_ring_full_time(void)
-+{
-+    CPUState *cpu;
-+    uint64_t curr_rate =3D 0;
-+    int nvcpus =3D 0;
-+
-+    CPU_FOREACH(cpu) {
-+        if (cpu->running) {
-+            nvcpus++;
-+            curr_rate +=3D vcpu_dirty_rate_get(cpu->cpu_index);
-+        }
-+    }
-+
-+    if (!curr_rate || !nvcpus) {
-+        return -1;
-+    }
-+
-+    return dirtylimit_dirty_ring_full_time(curr_rate / nvcpus);
-+}
-+
- static struct DirtyLimitInfo *dirtylimit_query_vcpu(int cpu_index)
- {
-     DirtyLimitInfo *info =3D NULL;
---=20
-2.38.5
+  https://github.com/bkoppelmann/qemu.git tags/pull-tricore-20230607
 
+for you to fetch changes up to e926c94171ae37397c8c4b54cef60e5c7ebbf243:
+
+  tests/tcg/tricore: Add recursion test for CSAs (2023-06-07 18:20:51 +0200)
+
+----------------------------------------------------------------
+- Refactor PCXI/ICR field handling in newer ISA versions
+- Add simple tests written in C
+
+----------------------------------------------------------------
+Bastian Koppelmann (6):
+      tests/tcg/tricore: Move asm tests into 'asm' directory
+      tests/tcg/tricore: Uses label for memory addresses
+      tests/tcg/tricore: Add first C program
+      target/tricore: Refactor PCXI/ICR register fields
+      target/tricore: Fix wrong PSW for call insns
+      tests/tcg/tricore: Add recursion test for CSAs
+
+ configure                                     |   1 +
+ target/tricore/cpu.h                          |  39 ++-
+ target/tricore/helper.c                       |  45 ++++
+ target/tricore/op_helper.c                    |  87 +++----
+ target/tricore/translate.c                    |  10 +-
+ tests/tcg/tricore/Makefile.softmmu-target     |  49 ++--
+ tests/tcg/tricore/{ => asm}/macros.h          |   1 -
+ tests/tcg/tricore/{ => asm}/test_abs.S        |   0
+ tests/tcg/tricore/{ => asm}/test_bmerge.S     |   0
+ tests/tcg/tricore/{ => asm}/test_clz.S        |   0
+ tests/tcg/tricore/{ => asm}/test_dextr.S      |   0
+ tests/tcg/tricore/{ => asm}/test_dvstep.S     |   0
+ tests/tcg/tricore/{ => asm}/test_fadd.S       |   0
+ tests/tcg/tricore/{ => asm}/test_fmul.S       |   0
+ tests/tcg/tricore/{ => asm}/test_ftoi.S       |   0
+ tests/tcg/tricore/{ => asm}/test_imask.S      |   0
+ tests/tcg/tricore/{ => asm}/test_insert.S     |   0
+ tests/tcg/tricore/{ => asm}/test_ld_bu.S      |   4 +-
+ tests/tcg/tricore/asm/test_ld_h.S             |  15 ++
+ tests/tcg/tricore/{ => asm}/test_madd.S       |   0
+ tests/tcg/tricore/{ => asm}/test_msub.S       |   0
+ tests/tcg/tricore/{ => asm}/test_muls.S       |   0
+ tests/tcg/tricore/c/crt0-tc2x.S               | 335 ++++++++++++++++++++++++++
+ tests/tcg/tricore/c/test_boot_to_main.c       |  13 +
+ tests/tcg/tricore/c/test_context_save_areas.c |  15 ++
+ tests/tcg/tricore/c/testdev_assert.h          |  18 ++
+ tests/tcg/tricore/link.ld                     |  16 ++
+ tests/tcg/tricore/test_ld_h.S                 |  15 --
+ 28 files changed, 572 insertions(+), 91 deletions(-)
+ rename tests/tcg/tricore/{ => asm}/macros.h (99%)
+ rename tests/tcg/tricore/{ => asm}/test_abs.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_bmerge.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_clz.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_dextr.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_dvstep.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_fadd.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_fmul.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_ftoi.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_imask.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_insert.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_ld_bu.S (68%)
+ create mode 100644 tests/tcg/tricore/asm/test_ld_h.S
+ rename tests/tcg/tricore/{ => asm}/test_madd.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_msub.S (100%)
+ rename tests/tcg/tricore/{ => asm}/test_muls.S (100%)
+ create mode 100644 tests/tcg/tricore/c/crt0-tc2x.S
+ create mode 100644 tests/tcg/tricore/c/test_boot_to_main.c
+ create mode 100644 tests/tcg/tricore/c/test_context_save_areas.c
+ create mode 100644 tests/tcg/tricore/c/testdev_assert.h
+ delete mode 100644 tests/tcg/tricore/test_ld_h.S
 
