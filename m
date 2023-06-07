@@ -2,52 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE67072535F
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 07:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 514D97253A9
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 07:48:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6lm7-0000dD-Dy; Wed, 07 Jun 2023 01:32:03 -0400
+	id 1q6m0d-0003pl-Vg; Wed, 07 Jun 2023 01:47:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6lm4-0000cc-9S; Wed, 07 Jun 2023 01:32:01 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5JAy=B3=kaod.org=clg@ozlabs.org>)
- id 1q6lm2-0004Bl-Fw; Wed, 07 Jun 2023 01:32:00 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QbbZ03n8hz4x42;
- Wed,  7 Jun 2023 15:31:52 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QbbYy5zx4z4x3k;
- Wed,  7 Jun 2023 15:31:50 +1000 (AEST)
-Message-ID: <429ff1f9-a25f-6f5e-b18b-810185313168@kaod.org>
-Date: Wed, 7 Jun 2023 07:31:49 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6m0Y-0003p4-T1
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 01:46:59 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q6m0W-0006Pi-QN
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 01:46:58 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-565eb83efe4so90368167b3.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Jun 2023 22:46:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686116815; x=1688708815;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8cK9rNQgc0oxJ8PxsSPf+eFLNBo2sfJgQlOnfioPI4Y=;
+ b=JqPLIQdMrP5X4bDlSZwNYntk4NJvDkEe1LveESHJS1uNjhiHgEvSRdNtTrONkclVku
+ T07lJGqD2piJfG3uZE4Nzq6lsD+6OrQJUu/oztLcEV89eGjL1eDi9PQAqGyjpnwUikGj
+ rczq7io9fSnfzjHGtNzdvrDfo9uPUx4Bf8tJ6Rc8kkN295BTEZJqtoQjMKV8hr6MS+TD
+ 5IaMJPmHFVV5A8nwwytfJuUKaxpZ38ZocL0v1CSPFfZx/g+StLza0MPJKGUpHdxnq72p
+ CX2iGEgmKXHqkqqytEm9k9C3xF1pCz2SWz9S6C9cdSGU5xAMYNfCJW/WeTzDEkjTULc6
+ 6kFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686116815; x=1688708815;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8cK9rNQgc0oxJ8PxsSPf+eFLNBo2sfJgQlOnfioPI4Y=;
+ b=R8cFTFOkPgFPOSIu/yHv6QAOgo/he0HxZ/DFdy8za7U8CbghzAfj+DzfoalAXZHq2O
+ 98q5ZUevwTJa2jjVWhLG0Susv3ARzAvFQ1b4flWYxETB5pIq8urr92ZIesrohdFHNBQi
+ SdYD2pVCfv1gmhk3Gl65XimEmQqB9PxoHqJCZAKymPQ9YWdQZeNcaM9B/Hs5H4XgDlot
+ PfNc6z6AP+dpmoDtTciYJGqlIBxs94PUoREx5pLxDyv7/raPBKVRajSS38wSNRA+AP7I
+ 5SrfVNDUb0QSyweGw7TIktUKL17JIYv4cqdPSppHLdYk/+1esY7oiYXffISCxQwKT/yl
+ YWzw==
+X-Gm-Message-State: AC+VfDxiwNnCOPRcOkDRmq+FtWUFS1CCtxG/5r4ZGccHP0k7YIQMfrAI
+ K1IPWgqkUQ/L5VfYkS/8KVmLn25u6vcPsYXPgYk=
+X-Google-Smtp-Source: ACHHUZ4hAFm+OnfbYhhHNzNjFijuPzKB9pUFMIesM6yxwU5Ho68TCaY9kUvEEyId1yjV5+j25t6oyQ==
+X-Received: by 2002:a0d:d941:0:b0:565:bf0d:e27a with SMTP id
+ b62-20020a0dd941000000b00565bf0de27amr5957138ywe.15.1686116815649; 
+ Tue, 06 Jun 2023 22:46:55 -0700 (PDT)
+Received: from stoup.. ([2602:ae:1598:4c01:b7fa:ce59:1445:805a])
+ by smtp.gmail.com with ESMTPSA id
+ fe16-20020a056a002f1000b0064d48d98260sm7640310pfb.156.2023.06.06.22.46.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jun 2023 22:46:55 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: sw@weilnetz.de
+Subject: [PATCH 0/2] tcg/tci: Two regression fixes
+Date: Tue,  6 Jun 2023 22:46:52 -0700
+Message-Id: <20230607054654.622010-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/4] target/ppc: Add support for SMT CTRL register
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230605112323.179259-1-npiggin@gmail.com>
- <20230605112323.179259-3-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230605112323.179259-3-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=5JAy=B3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.094, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,52 +88,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Nick,
+Two recent regressions, both related to recent tcg changes.
 
+Our CI does not test TCI with --enable-debug-tcg, which given timeout
+constraints is probably correct, but in this case resulted in an
+infinite loop on aarch64 multiarch/memory.c with FEAT_LSE2 enabled.
 
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -443,7 +443,7 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
->   #endif
->   }
->   
-> -void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-> +static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
->   {
->       /* This does not implement >1 thread */
->       TCGv t0 = tcg_temp_new();
-> @@ -452,6 +452,22 @@ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
->       tcg_gen_shli_tl(t1, t0, 8); /* Duplicate the bit in TS */
->       tcg_gen_or_tl(t1, t1, t0);
->       gen_store_spr(sprn, t1);
+r~
 
-The hunk above doesn't apply cleanly. Am I missing some patch you would
-have sent previously ?
+Richard Henderson (2):
+  tcg/tci: Adjust passing of MemOpIdx
+  tcg/tci: Adjust call-clobbered regs for int128_t
 
-Thanks,
+ tcg/tci.c                | 30 +++++++++++++-----------------
+ tcg/tci/tcg-target.c.inc | 30 +++++++++---------------------
+ 2 files changed, 22 insertions(+), 38 deletions(-)
 
-C.
-
-
-
-> +}
-> +
-> +void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-> +{
-> +    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-> +        spr_write_CTRL_ST(ctx, sprn, gprn);
-> +        goto out;
-> +    }
-> +
-> +    if (!gen_serialize(ctx)) {
-> +        return;
-> +    }
-> +
-> +    gen_helper_spr_write_CTRL(cpu_env, tcg_constant_i32(sprn),
-> +                              cpu_gpr[gprn]);
-> +out:
->       spr_store_dump_spr(sprn);
->   
->       /*
+-- 
+2.34.1
 
 
