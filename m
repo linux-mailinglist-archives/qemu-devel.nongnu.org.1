@@ -2,88 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDAD726A4C
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CCC726A54
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:02:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6zJK-000456-Nb; Wed, 07 Jun 2023 15:59:14 -0400
+	id 1q6zLa-0005EN-A3; Wed, 07 Jun 2023 16:01:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6zJI-00043B-Ho
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 15:59:12 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6zJF-0006lv-0t
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 15:59:12 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-39a3f2668d5so5002783b6e.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 12:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686167947; x=1688759947;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mhgmzQt8w0PITpRWMgDJ2rxugHkfaO7sJTwKaiss8GI=;
- b=XvSTqCQm8ReknOxbr/6xYrxXbsTZDD52JXYVouiIml0HG0QJMSN4nm1DHrZ6hwgOFM
- /fQrPcBPri4kiihagB+qeEbyS6ue56WN8QGH0Z3op1t4X0AulXQ/mfDt78iSbT1fn2x6
- W+hUPXuO79c+RiEuoktI3LsVjSKw+RXKz1PfQ329CZ70rcJjp9ZM1NYWSYxcD6K+E3rN
- xcWU0HKJtiw4tpXbEpCATiCvnSDXN4YKJkweZPCHraPiwFXmDNNrtI9QEsZuFSxeuZFL
- xG8kAqVNNMPCQR6MJJ361NZnPhvP3tad7INQpUDelgbeGOIXLdDkvNCRouoH+lAWI6Om
- cNeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686167947; x=1688759947;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mhgmzQt8w0PITpRWMgDJ2rxugHkfaO7sJTwKaiss8GI=;
- b=KZ+66y4tCaHlXWo11ix4fe0lw4T83QrabbTo/GkmubFxzb3cFQMubz8S325Ra/IdDh
- CYSZdCIY6qEOMax7WjagdtIjTNLYx0uwOM8mnoR9ykwxnyor+DmY14pTnMmThyv0zGSF
- fBTjGBvuXNgpuhjIb1/WKUIZ+oW9RD9nWHYbFIMtt27rpq+ksZshEF58mAbSrHPYL9T/
- 6ZrH4Hx/Ol+tEc12Vaubm6gwBSXCh4DzxPWNerl5E5//ShVSzI/231jV3LABIAybBDP4
- YHEpOZVjM5di6u3Df9HexfjD3fbLXttEWv49PvlhZgywo7B+xJ/9gK9dtbWfUIOTe+74
- DvNw==
-X-Gm-Message-State: AC+VfDzPZ3z7nLN+JZQh03nOvMaK6IGfRwe9HxHRNeQhTL7um+swFoLh
- RWistiu0pP43CQtRo4ELRzeLpQ==
-X-Google-Smtp-Source: ACHHUZ4aA5LGk2DB4phbPYPJ/dZRVMhnnmpIz7Cic1fJ6c1ZrCNhgXUg3FKKUJdQ5s5ek61gCpfQfQ==
-X-Received: by 2002:aca:2219:0:b0:397:fa01:cd4 with SMTP id
- b25-20020aca2219000000b00397fa010cd4mr3976460oic.34.1686167947457; 
- Wed, 07 Jun 2023 12:59:07 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
- by smtp.gmail.com with ESMTPSA id
- v205-20020aca61d6000000b0039aa9c89fe8sm4354235oib.43.2023.06.07.12.59.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 12:59:07 -0700 (PDT)
-Message-ID: <fb74c3a0-9762-92c2-4a1c-9544af822c5a@ventanamicro.com>
-Date: Wed, 7 Jun 2023 16:59:02 -0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q6zLX-0005EE-7p
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:01:31 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q6zLU-0007K5-WD
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:01:30 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id DB8FF74638A;
+ Wed,  7 Jun 2023 22:01:25 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A9988746377; Wed,  7 Jun 2023 22:01:25 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v2] hw/acpi: Fix PM control register access
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 13/16] target/riscv/kvm.c: add multi-letter extension KVM
- properties
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-14-dbarboza@ventanamicro.com>
- <20230607-9a499522ac7de9ebcf0c8699@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230607-9a499522ac7de9ebcf0c8699@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x231.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: qemu-devel@nongnu.org
+Cc: Michael S. Tsirkin <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <20230607200125.A9988746377@zero.eik.bme.hu>
+Date: Wed,  7 Jun 2023 22:01:25 +0200 (CEST)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,252 +56,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On pegasos2 which has ACPI as part of VT8231 south bridge the board
+firmware writes PM control register by accessing the second byte so
+addr will be 1. This wasn't handled correctly and the write went to
+addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
+only once and does not take addr into account and handle non-zero
+address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
+pegasos2 firmware.
 
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-On 6/7/23 08:48, Andrew Jones wrote:
-> On Tue, May 30, 2023 at 04:46:20PM -0300, Daniel Henrique Barboza wrote:
->> Let's add KVM user properties for the multi-letter extensions that KVM
->> currently supports: zicbom, zicboz, zihintpause, zbb, ssaia, sstc,
->> svinval and svpbmt.
->>
->> As with the recently added MISA properties we're also going to add a
->> 'user_set' flag in each of them. The flag will be set only if the user
->> chose an option that's different from the host and will require extra
->> handling from the KVM driver.
->>
->> However, multi-letter CPUs have more cases to cover than MISA
->> extensions, so we're adding an extra 'supported' flag as well. This flag
->> will reflect if a given extension is supported by KVM, i.e. KVM knows
->> how to handle it. This is determined during KVM extension discovery in
->> kvm_riscv_init_multiext_cfg(), where we test for EINVAL errors. Any
->> other error different from EINVAL will cause an abort.
-> 
-> I wish that was ENOENT, but I suppose that ship sailed.
-> 
->>
->> The 'supported' flag will then be used later on to give an exception for
->> users that are disabling multi-letter extensions that are unknown to
->> KVM.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/kvm.c | 136 +++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 136 insertions(+)
->>
->> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
->> index bb1dafe263..b4193a10d8 100644
->> --- a/target/riscv/kvm.c
->> +++ b/target/riscv/kvm.c
->> @@ -202,6 +202,99 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
->>       }
->>   }
->>   
->> +typedef struct RISCVCPUMultiExtConfig {
->> +    const char *name;
-> 
-> No description? I'd prefer we use the same cfg struct for single-letter
-> and multi-letter extensions. We can use a union to overlap cpu_cfg_offset
-> and misa_bit.
+diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+index 6da275c599..00b1e79a30 100644
+--- a/hw/acpi/core.c
++++ b/hw/acpi/core.c
+@@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
+ }
+ 
+ /* ACPI PM1aCNT */
+-static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
+-{
+-    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+-
+-    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
+-        /* change suspend type */
+-        uint16_t sus_typ = (val >> 10) & 7;
+-        switch (sus_typ) {
+-        case 0: /* soft power off */
+-            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+-            break;
+-        case 1:
+-            qemu_system_suspend_request();
+-            break;
+-        default:
+-            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
+-                qapi_event_send_suspend_disk();
+-                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+-            }
+-            break;
+-        }
+-    }
+-}
+-
+ void acpi_pm1_cnt_update(ACPIREGS *ar,
+                          bool sci_enable, bool sci_disable)
+ {
+@@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
+ static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
+ {
+     ACPIREGS *ar = opaque;
+-    return ar->pm1.cnt.cnt;
++    return ar->pm1.cnt.cnt >> addr * 8;
+ }
+ 
+ static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
+                               unsigned width)
+ {
+-    acpi_pm1_cnt_write(opaque, val);
++    ACPIREGS *ar = opaque;
++
++    if (addr == 1) {
++        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
++    }
++    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
++
++    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
++        /* change suspend type */
++        uint16_t sus_typ = (val >> 10) & 7;
++        switch (sus_typ) {
++        case 0: /* soft power off */
++            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++            break;
++        case 1:
++            qemu_system_suspend_request();
++            break;
++        default:
++            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
++                qapi_event_send_suspend_disk();
++                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++            }
++            break;
++        }
++    }
+ }
+ 
+ static const MemoryRegionOps acpi_pm_cnt_ops = {
+-- 
+2.30.9
 
-multi-letter extensions don't have a 'description' field in TCG. Nothing
-prevents us from adding for KVM though.
-
-And yes, I'll create a single struct to handle both MISA and multi-letter
-extensions. We just need to have different getters/setters for each
-category.
-
-> 
->> +    int kvm_reg_id;
->> +    int cpu_cfg_offset;
->> +    bool supported;
->> +    bool user_set;
->> +} RISCVCPUMultiExtConfig;
->> +
->> +#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
->> +
->> +/*
->> + * KVM ISA Multi-letter extensions. We care about the order
->> + * since it'll be used to create the ISA string later on.
->> + * We follow the same ordering rules of isa_edata_arr[]
->> + * from target/riscv/cpu.c.
->> + */
->> +static RISCVCPUMultiExtConfig kvm_multi_ext_cfgs[] = {
->> +    {.name = "zicbom", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZICBOM,
->> +     .cpu_cfg_offset = CPUCFG(ext_icbom)},
->> +    {.name = "zicboz", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZICBOZ,
->> +     .cpu_cfg_offset = CPUCFG(ext_icboz)},
->> +    {.name = "zihintpause", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZIHINTPAUSE,
->> +     .cpu_cfg_offset = CPUCFG(ext_zihintpause)},
->> +    {.name = "zbb", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZBB,
->> +     .cpu_cfg_offset = CPUCFG(ext_zbb)},
->> +    {.name = "ssaia", .kvm_reg_id = KVM_RISCV_ISA_EXT_SSAIA,
->> +     .cpu_cfg_offset = CPUCFG(ext_ssaia)},
->> +    {.name = "sstc", .kvm_reg_id = KVM_RISCV_ISA_EXT_SSTC,
->> +     .cpu_cfg_offset = CPUCFG(ext_sstc)},
->> +    {.name = "svinval", .kvm_reg_id = KVM_RISCV_ISA_EXT_SVINVAL,
->> +     .cpu_cfg_offset = CPUCFG(ext_svinval)},
->> +    {.name = "svpbmt", .kvm_reg_id = KVM_RISCV_ISA_EXT_SVPBMT,
->> +     .cpu_cfg_offset = CPUCFG(ext_svpbmt)},
-> 
-> As pointed out in the last patch, it'd be nice to share names (and
-> descriptions) with TCG.
-
-I believe it's ok to do that for the MISA bits since it's a handful of entries.
-
-But I'd rather deal with a little code duplication for multi-letter extensions
-for now. We have 73 multi-letters extensions in TCG. Adding a description for
-each one, change how the properties are being created and so on seems too
-much for this series.
-
-> 
->> +};
->> +
->> +static void kvm_cpu_cfg_set(RISCVCPU *cpu, RISCVCPUMultiExtConfig *multi_ext,
->> +                            uint32_t val)
->> +{
->> +    int cpu_cfg_offset = multi_ext->cpu_cfg_offset;
->> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->> +
->> +    *ext_enabled = val;
->> +}
->> +
->> +static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
->> +                                RISCVCPUMultiExtConfig *multi_ext)
->> +{
->> +    int cpu_cfg_offset = multi_ext->cpu_cfg_offset;
->> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->> +
->> +    return *ext_enabled;
->> +}
->> +
->> +static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
->> +                                      const char *name,
->> +                                      void *opaque, Error **errp)
->> +{
->> +    RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
->> +    RISCVCPU *cpu = RISCV_CPU(obj);
->> +    bool value, host_val;
->> +
->> +    if (!visit_type_bool(v, name, &value, errp)) {
->> +        return;
->> +    }
->> +
->> +    host_val = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
->> +
->> +    /*
->> +     * Ignore if the user is setting the same value
->> +     * as the host.
->> +     */
->> +    if (value == host_val) {
->> +        return;
->> +    }
->> +
->> +    if (!multi_ext_cfg->supported) {
->> +        /*
->> +         * Error out if the user is trying to enable an
->> +         * extension that KVM doesn't support. Ignore
->> +         * option otherwise.
->> +         */
->> +        if (value) {
->> +            error_setg(errp, "KVM does not support disabling extension %s",
->> +                       multi_ext_cfg->name);
->> +        }
->> +
->> +        return;
->> +    }
->> +
->> +    multi_ext_cfg->user_set = true;
->> +    kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
->> +}
->> +
->>   static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>   {
->>       int i;
->> @@ -216,6 +309,15 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>           object_property_set_description(cpu_obj, misa_cfg->name,
->>                                           misa_cfg->description);
->>       }
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *multi_cfg = &kvm_multi_ext_cfgs[i];
->> +
->> +        object_property_add(cpu_obj, multi_cfg->name, "bool",
->> +                            NULL,
-> 
-> You have a getter function, so we might as well set it here, no?
-
-Yep, might as well set the get() callback in the property.
-
-
-Thanks,
-
-
-Daniel
-
-> 
->> +                            kvm_cpu_set_multi_ext_cfg,
->> +                            NULL, multi_cfg);
->> +    }
->>   }
->>   
->>   static int kvm_riscv_get_regs_core(CPUState *cs)
->> @@ -531,6 +633,39 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
->>       env->misa_ext = env->misa_ext_mask;
->>   }
->>   
->> +static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
->> +{
->> +    CPURISCVState *env = &cpu->env;
->> +    uint64_t val;
->> +    int i, ret;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
->> +        struct kvm_one_reg reg;
->> +
->> +        reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
->> +                                  multi_ext_cfg->kvm_reg_id);
->> +        reg.addr = (uint64_t)&val;
->> +        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
->> +        if (ret != 0) {
->> +            if (ret == -EINVAL) {
->> +                /* Silently default to 'false' if KVM does not support it. */
->> +                multi_ext_cfg->supported = false;
->> +                val = false;
->> +            } else {
->> +                error_report("Unable to read ISA_EXT KVM register %s, "
->> +                             "error %d", multi_ext_cfg->name, ret);
->> +                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
-> 
-> I don't think we usually bother cleaning up when exiting, we just let exit
-> do it, but OK.
-> 
->> +                exit(EXIT_FAILURE);
->> +            }
->> +        } else {
->> +            multi_ext_cfg->supported = true;
->> +        }
->> +
->> +        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
->> +    }
->> +}
->> +
->>   void kvm_riscv_init_user_properties(Object *cpu_obj)
->>   {
->>       RISCVCPU *cpu = RISCV_CPU(cpu_obj);
->> @@ -543,6 +678,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
->>       kvm_riscv_add_cpu_user_properties(cpu_obj);
->>       kvm_riscv_init_machine_ids(cpu, &kvmcpu);
->>       kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
->> +    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
->>   
->>       kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
->>   }
->> -- 
->> 2.40.1
->>
->>
-> 
-> Thanks,
-> drew
 
