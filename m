@@ -2,83 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE39725646
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 09:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7369B72564A
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 09:47:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6nsh-0006Oq-2R; Wed, 07 Jun 2023 03:46:59 -0400
+	id 1q6nt4-0007TX-UU; Wed, 07 Jun 2023 03:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6nse-0006OL-4l
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 03:46:56 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6nsb-0003Uv-KL
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 03:46:55 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-30aeee7c8a0so214615f8f.1
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 00:46:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686124012; x=1688716012;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=weXaM3N7og6oPqkLmGRnoChCKjpn1ZdJQX//LF2/7FQ=;
- b=ZTiQEwuXpPZADK8EsiN/cEJQohtpZWO50uiF+pDHWOuZyIvmOO+Rqy4lj4xNVMrTaX
- ukRbXHu1mcZ6/2Yj84bq2AwdF3h+NM0MLzx8TwUs3EO9X3gRpWwVxH+rhl0K2xpo5Gcz
- 5xCjbkRo5jE9l5YbTpOGGjuLlKc0lExqcmYjRvHLZGf/VgyZazPjEvRIfUuaLYPP8Ao3
- spKfSkEAcspt3h8cPHx7AJ6j7SgFuE3DDn4h6zfBMPWpUDvJh5ArwSZi+TaGgB+fH+2H
- UPuaV0i4zuSJ771YaeJ7wBtLLs3p/pOT8+MvaUOI4xeVhP/PAXvpkk5zJ/6rae0Innnw
- Ml+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686124012; x=1688716012;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=weXaM3N7og6oPqkLmGRnoChCKjpn1ZdJQX//LF2/7FQ=;
- b=fMecHD6hTzDht6Xik8VK92UIbNkpwZzQxDCm2FuQG4OS7rBfK/0T8iM/m8CUYEqPPN
- O1r3w2U6Sbr0EXFKOQE6n6kiJTv8NkMFZ6DbvR0QxGusiS5FYqqUX5ua/RTbaYALBhEG
- /46MAh7GplHEWi/5ebBAS600I304IGcgVzlQecDhu7znU/B0PMnwGvdd5ooevt9Eyd/K
- j7pkIb3yPllKiHVJbghwmE0HoM43BSS2FdI9tAqW+gOzJZdsdpar4qwzESHjJhNp86o5
- RD3/rP3hwkMznuSzNHw+jVTxNNmKLoqJbNr/3NmyBc7iGP10lnIWEVQHZTAz8vnfHNu1
- qcsA==
-X-Gm-Message-State: AC+VfDxpBZWuIMJKINWGUMyPb3+Ekp+YDYhC9ullTJQnlQNTehLHlSB8
- RahSs4DW6wQGJ9KxA721oPIeFw==
-X-Google-Smtp-Source: ACHHUZ52AHsuLXzI4b/H34zQbyeyZ2YWv7ZGkz9bbUxd7757glqnCsX87wV3E5fTn3dMx1ma11il8w==
-X-Received: by 2002:a5d:534c:0:b0:30a:a193:3987 with SMTP id
- t12-20020a5d534c000000b0030aa1933987mr9918087wrv.30.1686124011975; 
- Wed, 07 Jun 2023 00:46:51 -0700 (PDT)
-Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
- [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
- x15-20020a5d650f000000b002fb60c7995esm14713947wru.8.2023.06.07.00.46.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 00:46:51 -0700 (PDT)
-Message-ID: <055657fc-92ba-0f91-df86-1ce4cf096ca4@linaro.org>
-Date: Wed, 7 Jun 2023 09:46:50 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q6nt2-0007Mr-4w
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 03:47:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q6nt0-0003WQ-Ky
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 03:47:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686124037;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JHgHVhUaN18vzcVrliWCecQiV4CXkPNeecx+mQE7wwQ=;
+ b=X9pZ0ralnM3UK3/HRRmXTvmocJIw3RW3uP/X6BmNxL2+uUSy9tAMZpoRcEsDasLLl3VdNR
+ ypJPr/xQ9HcXRNex9+qJ6bnUTGGJ6qAHA3ZUQQIUWZU6eCht86SKThSU2IZxFsA2Vh601N
+ DrRnvZkj/r6NE5cPoJem2igjEuL9AAI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-385-cnhiwu-tM-yOs6oituH84w-1; Wed, 07 Jun 2023 03:47:14 -0400
+X-MC-Unique: cnhiwu-tM-yOs6oituH84w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5FE243C0BE43
+ for <qemu-devel@nongnu.org>; Wed,  7 Jun 2023 07:47:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C1134492B00;
+ Wed,  7 Jun 2023 07:47:13 +0000 (UTC)
+Date: Wed, 7 Jun 2023 08:47:11 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Michal =?utf-8?B?UHLDrXZvem7DrWs=?= <mprivozn@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ thuth@redhat.com
+Subject: Re: [PATCH v2 00/10] meson: replace submodules with wrap files
+Message-ID: <ZIA1/5KQC15t47Sp@redhat.com>
+References: <20230605095223.107653-1-pbonzini@redhat.com>
+ <e9efc1a4-b292-10a1-9058-76f7c8ac9867@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 1/2] target/arm: Only include tcg/oversized-guest.h if
- CONFIG_TCG
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com
-References: <20230606224609.208550-1-richard.henderson@linaro.org>
- <20230606224609.208550-2-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230606224609.208550-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <e9efc1a4-b292-10a1-9058-76f7c8ac9867@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,22 +80,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 00:46, Richard Henderson wrote:
-> Fixes the build for --disable-tcg.
+On Wed, Jun 07, 2023 at 09:41:40AM +0200, Michal Prívozník wrote:
+> On 6/5/23 11:52, Paolo Bonzini wrote:
+> > This series replaces git submodules for bundled libraries with .wrap
+> > files that can be used directly by meson for subprojects. 
 > 
-> This header is only needed for cross-hosting.  Without CONFIG_TCG,
-> we know this is an AArch64 host, CONFIG_ATOMIC64 will be set, and
-> the TCG_OVERSIZED_GUEST block will never be compiled.
+> Pardon my lack of knowledge, but even after I clone new repo and run:
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/ptw.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   ./configure --enable-donwload && make && make test
+> 
+> I still see berkeley-softfloat-3 submodule missing:
+> 
+>   git submodule status
+>   ...
+>   0c37a43527f0ee2b9584e7fb2fdc805e902635ac roms/vbootrom
+>   fatal: no submodule mapping found in .gitmodules for path
+> 'tests/fp/berkeley-softfloat-3'
+> 
+> Is this expected?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yet another example of submodules sucking. Once we removed the submodules
+from .gitmodules, git doesn't know what to do with the existing chcked
+out submodules from before this time.
 
+Best thing todo is purge all existing submodules, eg
+
+  git submodule deinit --all --force
+
+and if there are stale directories left over, manually delete those too,
+so you get back to a more pristine checkout state.
+
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
