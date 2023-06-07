@@ -2,89 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09BB726156
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 15:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237C6727616
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:25:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6tHk-0006m3-Pm; Wed, 07 Jun 2023 09:33:12 -0400
+	id 1q77BI-00067m-EZ; Thu, 08 Jun 2023 00:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6tHf-0006k5-U5
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 09:33:07 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q6tHc-0003L2-Le
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 09:33:07 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-19eab8bca4dso8169630fac.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 06:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686144782; x=1688736782;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fsKPdzX1DJqk5vQ7b+c3MWiFCu10Kts7rO4tKGv1WnE=;
- b=RIFtH7+f/hVawEAjhboT/tjtqk4FlUbYS1xmoT+V/y035CRlGm4dNq9v8G+uCgmaiV
- Bw8bf+i+w2hlZ+e68HoomtSNJofoUl3vUHbSmbLvxm3dZlEKiowf69xPEljoGllMgU2u
- lI/a8ZdHWyPu+1V5Ugn0q9Fbd2h+Au//IqCug1CzHO2IPG+u2xaPQ5VFcwJItc5v1yhh
- 9JJXbdBQmuFLFHH71d2UuV4qfHomKiuLz+60uiIzDYXKKO4PVGptEVc4iJg/gTdp0ls6
- GOqhtAx7+1x+V7xvwT+X+HS7qdYhRfpH9ga7nFAWoqxOexXWlHD//psTEM+6huq7P3Ko
- 3EAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686144782; x=1688736782;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fsKPdzX1DJqk5vQ7b+c3MWiFCu10Kts7rO4tKGv1WnE=;
- b=ZVjyZY/vberqhV7kdPBVIdVoJSciaYrckcI1C3w36Kp8D3tO14JTyyN07nQJhskrC1
- r8O8/rhHhS9Vmaem+lWaf6fYehLf4PoQi/jbFUIJ/9kfSKlhYvBg58Ae91Mhdops2GAY
- 1u3mHZ7VgnbiyVLdJQelqamySllVeeeSXKrg40Ow5hIa0O7utiznrG4q64CikyE20Eqn
- EZwaD+KSx/Koa3LRSNDWvx+zEU5UEHntoHWMVRO07yE7yUc6qmoo0zMzEw7wd4rBpa9+
- aKKO/LnJicNf72p7U7nh2pRSrnGz8kFI2PCybBna3RrrV9QSWJ5GZl4w6rblieffZDx8
- utFQ==
-X-Gm-Message-State: AC+VfDzKimamUE/hoNngT5HbqBImpsr+qr7z0oqZ4F4fyzf1Qf1ehGtv
- FJBmzg36A59bZyfmcVVO/coj5Q==
-X-Google-Smtp-Source: ACHHUZ703xUFAl1ZA5V7gu2qYfMsh8UAVVsnuJwoEnoyiX34vOOVYsSIz9iasmXCD20NIUcvgmObIA==
-X-Received: by 2002:a05:6871:22ca:b0:19f:62ac:117f with SMTP id
- se10-20020a05687122ca00b0019f62ac117fmr8538626oab.52.1686144782436; 
- Wed, 07 Jun 2023 06:33:02 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
- by smtp.gmail.com with ESMTPSA id
- s17-20020a4aa551000000b00529cc3986c8sm5178182oom.40.2023.06.07.06.32.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 06:33:02 -0700 (PDT)
-Message-ID: <7cea6808-5c2b-74e9-51cc-95d999606472@ventanamicro.com>
-Date: Wed, 7 Jun 2023 10:32:57 -0300
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0006Ql-J3
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:41 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z1-0000DG-OT
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:41 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 12D1D11F0F6;
+ Thu,  8 Jun 2023 02:02:39 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Wed, 07 Jun 2023 21:32:59 +0800
+Subject: [PATCH QEMU v5 2/8] qapi/migration: Introduce
+ x-vcpu-dirty-limit-period parameter
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] target/riscv/vector_helper.c: Remove the check for
- extra tail elements
-Content-Language: en-US
-To: Xiao Wang <xiao.w.wang@intel.com>, qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20230607091646.4049428-1-xiao.w.wang@intel.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230607091646.4049428-1-xiao.w.wang@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x32.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Message-ID: <168618975839.6361.17407633874747688653-2@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:11 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,114 +60,242 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
+Introduce "x-vcpu-dirty-limit-period" migration experimental
+parameter, which is in the range of 1 to 1000ms and used to
+make dirtyrate calculation period configurable.
 
-On 6/7/23 06:16, Xiao Wang wrote:
-> Commit 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector
-> load / store instructions") added an extra check for LMUL fragmentation,
-> intended for setting the "rest tail elements" in the last register for a
-> segment load insn.
-> 
-> Actually, the max_elements derived in vext_ld*() won't be a fraction of
-> vector register size, since the lmul encoded in desc is emul, which has
-> already been adjusted to 1 for LMUL fragmentation case by vext_get_emul()
-> in trans_rvv.c.inc, for ld_stride(), ld_us(), ld_index() and ldff().
-> 
-> Besides, vext_get_emul() has also taken EEW/SEW into consideration, so no
-> need to call vext_get_total_elems() which would base on the emul to derive
-> another emul, the second emul would be incorrect when esz differs from sew.
-> 
-> Thus this patch removes the check for extra tail elements.
-> 
-> Fixes: 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector load / store instructions")
-> 
-> Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
-> ---
+Currently with the "x-vcpu-dirty-limit-period" varies, the
+total time of live migration changes, test results show the
+optimal value of "x-vcpu-dirty-limit-period" ranges from
+500ms to 1000 ms. "x-vcpu-dirty-limit-period" should be made
+stable once it proves best value can not be determined with
+developer's experiments.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ migration/migration-hmp-cmds.c |  8 ++++++++
+ migration/options.c            | 28 ++++++++++++++++++++++++++++
+ qapi/migration.json            | 34 +++++++++++++++++++++++++++-------
+ 3 files changed, 63 insertions(+), 7 deletions(-)
 
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 9885d7c9f7..352e9ec716 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -364,6 +364,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDi=
+ct *qdict)
+                 }
+             }
+         }
++
++        monitor_printf(mon, "%s: %" PRIu64 " ms\n",
++        MigrationParameter_str(MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD=
+),
++        params->x_vcpu_dirty_limit_period);
+     }
+=20
+     qapi_free_MigrationParameters(params);
+@@ -620,6 +624,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict=
+ *qdict)
+         error_setg(&err, "The block-bitmap-mapping parameter can only be set=
+ "
+                    "through QMP");
+         break;
++    case MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD:
++        p->has_x_vcpu_dirty_limit_period =3D true;
++        visit_type_size(v, param, &p->x_vcpu_dirty_limit_period, &err);
++        break;
+     default:
+         assert(0);
+     }
+diff --git a/migration/options.c b/migration/options.c
+index b62ab30cd5..1cb735e35f 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -80,6 +80,8 @@
+ #define DEFINE_PROP_MIG_CAP(name, x)             \
+     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
+=20
++#define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* microsecond */
++
+ Property migration_properties[] =3D {
+     DEFINE_PROP_BOOL("store-global-state", MigrationState,
+                      store_global_state, true),
+@@ -163,6 +165,9 @@ Property migration_properties[] =3D {
+     DEFINE_PROP_STRING("tls-creds", MigrationState, parameters.tls_creds),
+     DEFINE_PROP_STRING("tls-hostname", MigrationState, parameters.tls_hostna=
+me),
+     DEFINE_PROP_STRING("tls-authz", MigrationState, parameters.tls_authz),
++    DEFINE_PROP_UINT64("x-vcpu-dirty-limit-period", MigrationState,
++                       parameters.x_vcpu_dirty_limit_period,
++                       DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD),
+=20
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+@@ -891,6 +896,9 @@ MigrationParameters *qmp_query_migrate_parameters(Error *=
+*errp)
+                        s->parameters.block_bitmap_mapping);
+     }
+=20
++    params->has_x_vcpu_dirty_limit_period =3D true;
++    params->x_vcpu_dirty_limit_period =3D s->parameters.x_vcpu_dirty_limit_p=
+eriod;
++
+     return params;
+ }
+=20
+@@ -923,6 +931,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_announce_max =3D true;
+     params->has_announce_rounds =3D true;
+     params->has_announce_step =3D true;
++    params->has_x_vcpu_dirty_limit_period =3D true;
+ }
+=20
+ /*
+@@ -1083,6 +1092,15 @@ bool migrate_params_check(MigrationParameters *params,=
+ Error **errp)
+     }
+ #endif
+=20
++    if (params->has_x_vcpu_dirty_limit_period &&
++        (params->x_vcpu_dirty_limit_period < 1 ||
++         params->x_vcpu_dirty_limit_period > 1000)) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
++                   "x-vcpu-dirty-limit-period",
++                   "a value between 1 and 1000");
++        return false;
++    }
++
+     return true;
+ }
+=20
+@@ -1182,6 +1200,11 @@ static void migrate_params_test_apply(MigrateSetParame=
+ters *params,
+         dest->has_block_bitmap_mapping =3D true;
+         dest->block_bitmap_mapping =3D params->block_bitmap_mapping;
+     }
++
++    if (params->has_x_vcpu_dirty_limit_period) {
++        dest->x_vcpu_dirty_limit_period =3D
++            params->x_vcpu_dirty_limit_period;
++    }
+ }
+=20
+ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+@@ -1300,6 +1323,11 @@ static void migrate_params_apply(MigrateSetParameters =
+*params, Error **errp)
+             QAPI_CLONE(BitmapMigrationNodeAliasList,
+                        params->block_bitmap_mapping);
+     }
++
++    if (params->has_x_vcpu_dirty_limit_period) {
++        s->parameters.x_vcpu_dirty_limit_period =3D
++            params->x_vcpu_dirty_limit_period;
++    }
+ }
+=20
+ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 179af0c4d8..8d491ee121 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -779,9 +779,14 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty limit=
+ during
++#                             live migration. Should be in the range 1 to 10=
+00ms,
++#                             defaults to 1000ms. (Since 8.1)
++#
+ # Features:
+ #
+-# @unstable: Member @x-checkpoint-delay is experimental.
++# @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
++#            are experimental.
+ #
+ # Since: 2.4
+ ##
+@@ -799,8 +804,9 @@
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+-           'multifd-zlib-level' ,'multifd-zstd-level',
+-           'block-bitmap-mapping' ] }
++           'multifd-zlib-level', 'multifd-zstd-level',
++           'block-bitmap-mapping',
++           { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] }=
+ ] }
+=20
+ ##
+ # @MigrateSetParameters:
+@@ -935,9 +941,14 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty limit=
+ during
++#                             live migration. Should be in the range 1 to 10=
+00ms,
++#                             defaults to 1000ms. (Since 8.1)
++#
+ # Features:
+ #
+-# @unstable: Member @x-checkpoint-delay is experimental.
++# @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
++#            are experimental.
+ #
+ # TODO: either fuse back into MigrationParameters, or make
+ #     MigrationParameters members mandatory
+@@ -972,7 +983,9 @@
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
++            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
++            '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
++                                            'features': [ 'unstable' ] } } }
+=20
+ ##
+ # @migrate-set-parameters:
+@@ -1127,9 +1140,14 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty limit=
+ during
++#                             live migration. Should be in the range 1 to 10=
+00ms,
++#                             defaults to 1000ms. (Since 8.1)
++#
+ # Features:
+ #
+-# @unstable: Member @x-checkpoint-delay is experimental.
++# @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
++#            are experimental.
+ #
+ # Since: 2.4
+ ##
+@@ -1161,7 +1179,9 @@
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
++            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
++            '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
++                                            'features': [ 'unstable' ] } } }
+=20
+ ##
+ # @query-migrate-parameters:
+--=20
+2.38.5
 
-> v2:
-> * Rebased on top of Alistair's riscv-to-apply.next branch.
-> ---
->   target/riscv/vector_helper.c | 22 ++++++----------------
->   1 file changed, 6 insertions(+), 16 deletions(-)
-> 
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 7505f9470a..f261e726c2 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -264,11 +264,10 @@ GEN_VEXT_ST_ELEM(ste_h, int16_t, H2, stw)
->   GEN_VEXT_ST_ELEM(ste_w, int32_t, H4, stl)
->   GEN_VEXT_ST_ELEM(ste_d, int64_t, H8, stq)
->   
-> -static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
-> -                                   void *vd, uint32_t desc, uint32_t nf,
-> +static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
-> +                                   uint32_t desc, uint32_t nf,
->                                      uint32_t esz, uint32_t max_elems)
->   {
-> -    uint32_t total_elems, vlenb, registers_used;
->       uint32_t vta = vext_vta(desc);
->       int k;
->   
-> @@ -276,19 +275,10 @@ static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
->           return;
->       }
->   
-> -    total_elems = vext_get_total_elems(env, desc, esz);
-> -    vlenb = riscv_cpu_cfg(env)->vlen >> 3;
-> -
->       for (k = 0; k < nf; ++k) {
->           vext_set_elems_1s(vd, vta, (k * max_elems + vl) * esz,
->                             (k * max_elems + max_elems) * esz);
->       }
-> -
-> -    if (nf * max_elems % total_elems != 0) {
-> -        registers_used = ((nf * max_elems) * esz + (vlenb - 1)) / vlenb;
-> -        vext_set_elems_1s(vd, vta, (nf * max_elems) * esz,
-> -                          registers_used * vlenb);
-> -    }
->   }
->   
->   /*
-> @@ -324,7 +314,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
->   }
->   
->   #define GEN_VEXT_LD_STRIDE(NAME, ETYPE, LOAD_FN)                        \
-> @@ -383,7 +373,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, evl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
->   }
->   
->   /*
-> @@ -504,7 +494,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
->   }
->   
->   #define GEN_VEXT_LD_INDEX(NAME, ETYPE, INDEX_FN, LOAD_FN)                  \
-> @@ -634,7 +624,7 @@ ProbeSuccess:
->       }
->       env->vstart = 0;
->   
-> -    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-> +    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
->   }
->   
->   #define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
 
