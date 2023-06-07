@@ -2,114 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374AC726F6F
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 22:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D5C727010
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 23:04:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q70Dv-0006XS-Qu; Wed, 07 Jun 2023 16:57:43 -0400
+	id 1q70Jz-0000Sf-Bu; Wed, 07 Jun 2023 17:03:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q70Ds-0006Wz-Np
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:57:42 -0400
-Received: from mail-dm6nam12on2060b.outbound.protection.outlook.com
- ([2a01:111:f400:fe59::60b]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q70Dr-0002el-2m
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 16:57:40 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OI2YpcPCT620aqSevZRl0ZfPKprXDsJDNPXoVHkQ0xgWRxWiosxK1kc5GXbCN6+tXCOxFOdeFbzF0muQ2Ryr59qCfQv1fGyNrtFzk6rB9180JgNP2psvfmrpoHB/3q5+7NDkjFFusNWcS4AiV0S3KpUATdQtAgfcnualoNM26qAJqtYJDeLkS02L+Fa2lAbudzMfXWKOucdPnDJBNfkOJlbeFYOQmLPDv8eV0NmDpeUeoGSMLJVsf/lpoogWYa2EnqHA6IfELZSZqNtcH8ToRTewE/6s25nc6FV2KFxY+2CmV/UNF4ndMC2ypJ60+9ec+KbkaCfBsLCuKepSnhogaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIuJ6aWWUFFBJVYUov+EaIEbf010KZ4tkGnVLrOburU=;
- b=nUSYkXDU7+oopwYlBcWoohvA5/5bDpH5WCDMc/AlEvo8TTUIYBdPgwIpwZ8Rjqpe17BMrZ9hob6+CMu4ApR8HOFBNJpHqGyxs8VTmwHwliMsBIkiFbo8ArvNhwx6WUSXvgmYwit0CLQi2csuNNRnS108s9DXgCYDGQdmYBsWUsRC0FML+EbtlP14mJP7UjhUn3ZJo9lK/AWC34XlhZQFD6dlTw/M1Oi7BHMxSvXCS8s4uSuAuacqPhZAmA5kaso+FzY/cGaDkpbId5Zf5k1ikbIYnb8qcqZr0jYLplRDdK2KbvgCZxglFTTBmQLHVlz6PFapGf+Mj2tAxHn3CFUPlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIuJ6aWWUFFBJVYUov+EaIEbf010KZ4tkGnVLrOburU=;
- b=2Kst3jyq1rIc5KVEu7lb3K4CNfqArItV9z7/XA9OVx/f2dBxJtqnqrdtHz2gH/y5wPbbypW0LTZMK9Adfo6ZljEfNoMYV2sqHaTKPHFnHwX0AM83xmoH/qDuGTusG5M6DPdHsP1sfI1k6Ha2ybdeFuJzkA4uagA+Ru14+mkboIg=
-Received: from BN9PR03CA0450.namprd03.prod.outlook.com (2603:10b6:408:113::35)
- by BL1PR12MB5996.namprd12.prod.outlook.com (2603:10b6:208:39c::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Wed, 7 Jun
- 2023 20:57:35 +0000
-Received: from BN8NAM11FT069.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:113:cafe::77) by BN9PR03CA0450.outlook.office365.com
- (2603:10b6:408:113::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19 via Frontend
- Transport; Wed, 7 Jun 2023 20:57:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT069.mail.protection.outlook.com (10.13.176.152) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6455.36 via Frontend Transport; Wed, 7 Jun 2023 20:57:35 +0000
-Received: from ruby-95f9host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 7 Jun
- 2023 15:57:33 -0500
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
- <eduardo@habkost.net>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
- <imammedo@redhat.com>, <berrange@redhat.com>, <jusual@redhat.com>,
- <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
- <santosh.Shukla@amd.com>, Suravee Suthikulpanit
- <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v6 2/2] pc: q35: Bump max_cpus to 1024
-Date: Wed, 7 Jun 2023 15:57:17 -0500
-Message-ID: <20230607205717.737749-3-suravee.suthikulpanit@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230607205717.737749-1-suravee.suthikulpanit@amd.com>
-References: <20230607205717.737749-1-suravee.suthikulpanit@amd.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q70Jx-0000SK-2m
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 17:03:57 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q70Jv-0003aF-7p
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 17:03:56 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f7353993cbso8787345e9.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 14:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686171833; x=1688763833;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4VuzHqF/JgnVuuww4s0SJArrcUABjRCgbQR1faNyZFc=;
+ b=XdJsfHXbIvMLQk4pOa0u+KdeR5mBS4kmg/htMpzy2raKTfri55IgLUBJl4OAqs8hbm
+ jIBEGDuW6x/6AgPnjYZRbyrgLD7fhy2Er3WIecLHjqWCMevBriagd2zAJNHYFvx9TbZ5
+ zkM+CM4eWKF0BgKLcnJBmw8O0OZxbJqDYJfurrjVNxFBlExznNFLZRhkVMVw6KfKhJUw
+ nm1KUwZwgmDloR4jV9YBpp7oM532Moi3RYGukY04jH8dfDhBU2lN52N85UbWzY3+B+Dl
+ seZqvTbfcsiWFIutowpJpAh0GfGtdOJ7Y5CxYYh3DtrtxXpRz5dagQ2Uu8lNZq+8rfHK
+ dVhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686171833; x=1688763833;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4VuzHqF/JgnVuuww4s0SJArrcUABjRCgbQR1faNyZFc=;
+ b=L1DN0WgolZdZ9G9NidJL1fLd5Lgi7oOZLQrxaeDvIPyIr7lFoy+grUs3ryq4JSOp3I
+ Vh7t6NVLWLyoNikEFn2RfaLCgEUE5MiUWNs6qCOT7ISsI1WuKiJLxqUvsy6+zTJbhqoV
+ h9yM/OO29W1Zll+X7J7yt8xT86/vDLx3muEk/+tIXyoI93+4niASDDXTANGoWthCp0P8
+ 4cpj3n3BqRK3/VT65A+9wqr0+/Aac9xUp08z2BFJXhRO/Fvc518N7JMcVX888+gPYhRD
+ 8pE4xPZdnGseMFXaoh6r4ZNxPsbBIASt2lpys5pOXLXsPhai4gXrnkNPumucuQ7Q+3K+
+ xYqg==
+X-Gm-Message-State: AC+VfDxEY6qezba0KW3FYAXe3/h91rpED3KtoZOYkLDakhK+CCMRY8xL
+ tDxydkRBT1uNKsW5prJA4mtFB4r0k59+PWKjSd0=
+X-Google-Smtp-Source: ACHHUZ5l32jJkwhuTlTJq1ZMPXAiCCvuf6zs6N6kj0RA7kVN+CC4p0F16H5GDpkfV4c58/4mjJ+54w==
+X-Received: by 2002:a1c:6a15:0:b0:3f7:367a:bd28 with SMTP id
+ f21-20020a1c6a15000000b003f7367abd28mr150124wmc.4.1686171833201; 
+ Wed, 07 Jun 2023 14:03:53 -0700 (PDT)
+Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
+ [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
+ c23-20020a05600c0ad700b003f7f1466203sm3062975wmr.34.2023.06.07.14.03.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 14:03:52 -0700 (PDT)
+Message-ID: <579fb938-dc8a-5f85-143f-644ba1f1db40@linaro.org>
+Date: Wed, 7 Jun 2023 23:03:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 1/1] tests/avocado: update firmware to enable sbsa-ref/max
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>
+References: <20230530152240.79160-1-marcin.juszkiewicz@linaro.org>
+ <ab3d3d19-2604-c519-03b0-af3952fb7718@linaro.org>
+ <50e8f35d-855b-4d0a-abdd-2aa42599bd65@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <50e8f35d-855b-4d0a-abdd-2aa42599bd65@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT069:EE_|BL1PR12MB5996:EE_
-X-MS-Office365-Filtering-Correlation-Id: 552206ae-5c07-4561-873e-08db6799d1ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: W6qJusRF6YHr6W/pLExnizdnb5qtgj4xCTeYWlxHr/4uH4Y3LmnnRbqVEySVx4nk7pv5IiN3XfcnygO3AyjSIz6kMHkNUOFsTv/BZSlAZtwRcN59OjQ5JEONR7syoF1fZqi6BCg4J7H5zuAdgtaB4VVs4yQ5BPOblrt5yL6aOmLHTVFkCYv/EQNajjqhP4BU281AVJWC1f9zGMptye+UE/Grl0stb1wfeWtz46zOnwYhi2S8oQWEek1ADOJ0OAJ8DhZnezrwd0zXBYzCK977mt9CsM3OFZmX2GO0W2JBw0shsP17WsR6veSzieiCtJBMoSuxirOD+PXHMkRJ+KhL6WaIWTiyb7EXw4vt/L5ercgBuSBcqEy2z5InRuAXLLHRIgKlmBUXGt6Uw1eWE+1GmyilWMnprcEoriojR1gMefuCsO+M4sztF4bL2u5f3wgRKai3wtzzEYMfoYlyTXZuqnniNlnkARns8i6RrMrCoKoRs0LfM6w34IBaeEcdtDDlNvs5thSnLxhJnLP/253z49XMWidv6hvrW2j6ghbFrw3KJNsxVy6gSlJ/LObrZy4QMsziTJ4z8JONeAVsj7/nuxWz+OfaPs0Am2SFdUT5iANeRE7fvs7GXNV8q52CxxxkQ3PEvW5ee7u5aIqiNKTgFRnXMVsQ1plQwFC7d2YGbsV2Ta99ifSJNZbhbJXur/1MXvummQSYt3apsPMA3A1FCHcfSFZ8OCw8WKXxfw5ta3XqZsqFXoRjntsNsZMYvQlkHuYSYhztvIYSWj5FANYne3B3C2cCySKD49Mcba7thb8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(376002)(346002)(396003)(136003)(39860400002)(451199021)(40470700004)(36840700001)(46966006)(41300700001)(478600001)(316002)(44832011)(54906003)(7416002)(356005)(81166007)(82740400003)(5660300002)(2906002)(70586007)(6916009)(4326008)(8936002)(70206006)(8676002)(6666004)(82310400005)(7696005)(40460700003)(86362001)(36756003)(2616005)(186003)(16526019)(26005)(426003)(36860700001)(1076003)(336012)(83380400001)(40480700001)(47076005)(21314003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 20:57:35.2381 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 552206ae-5c07-4561-873e-08db6799d1ef
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT069.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5996
-Received-SPF: softfail client-ip=2a01:111:f400:fe59::60b;
- envelope-from=Suravee.Suthikulpanit@amd.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,53 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
-arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
+On 7/6/23 17:29, Marcin Juszkiewicz wrote:
+> W dniu 7.06.2023 o 16:33, Philippe Mathieu-Daudé pisze:
+>> On 30/5/23 17:22, Marcin Juszkiewicz wrote:
+>>> Update prebuilt firmware images to have TF-A with FEAT_FGT support
+>>> enabled. This allowed us to enable test for "max" cpu in sbsa-ref
+>>> machine.
+>>>
+>>> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+>>> ---
+>>>   tests/avocado/machine_aarch64_sbsaref.py | 22 +++++++++++-----------
+>>>   1 file changed, 11 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/tests/avocado/machine_aarch64_sbsaref.py 
+>>> b/tests/avocado/machine_aarch64_sbsaref.py
+>>> index 0a79fa7ab6..35f8042416 100644
+>>> --- a/tests/avocado/machine_aarch64_sbsaref.py
+>>> +++ b/tests/avocado/machine_aarch64_sbsaref.py
+>>> @@ -29,23 +29,23 @@ def fetch_firmware(self):
+>>>           """
+>>>           Flash volumes generated using:
+>>> -        - Fedora GNU Toolchain version 12.2.1 20220819 (Red Hat 
+>>> Cross 12.2.1-2)
+>>> +        - Fedora GNU Toolchain version 13.1.1 20230511 (Red Hat 
+>>> 13.1.1-2)
+>>>           - Trusted Firmware-A
+>>> - https://github.com/ARM-software/arm-trusted-firmware/tree/5fdb2e54
+>>> + https://github.com/ARM-software/arm-trusted-firmware/tree/c0d8ee38
+>>>           - Tianocore EDK II
+>>> -          https://github.com/tianocore/edk2/tree/494127613b
+>>> -          https://github.com/tianocore/edk2-non-osi/tree/41876073
+>>> -          https://github.com/tianocore/edk2-platforms/tree/8efa4f42
+>>> +          https://github.com/tianocore/edk2/tree/0f9283429dd4
+>>> +          https://github.com/tianocore/edk2-non-osi/tree/f0bb00937ad6
+>>> +          https://github.com/tianocore/edk2-platforms/tree/7880b92e2a04
+>>
+>> Thanks for updating this comment!
+> 
+> Having a way to reproduce is crucial for CI.
+> 
+>>> -    @skip("requires TF-A update to handle FEAT_FGT")
+>>> +    @skipUnless(os.getenv("AVOCADO_TIMEOUT_EXPECTED"), "Test might 
+>>> timeout")
+>>
+>> Can it still timeout?
+> 
+> All Linux based tests in this file have that @skipUnless as they take 
+> some time:
+> 
+> test_sbsaref_edk2_firmware: PASS (2.72 s)
+> test_sbsaref_alpine_linux_cortex_a57: PASS (23.71 s)
+> test_sbsaref_alpine_linux_neoverse_n1: PASS (23.53 s)
+> test_sbsaref_alpine_linux_max: PASS (28.16 s)
 
-In case KVM could not support the specified number of vcpus, QEMU would
-return the following error message:
+I suppose this was due to a bug we had with Avocado consuming QEMU's
+console. I don't remember recent complains. Alex, do you know if this
+was fixed?
+We define the class timeout to 180s, so all tests inherit it. In your
+run all tests take <30sec, it should be fine to run them on CI.
+Adding ~1min30s extra on the job running these Avocado tests seem
+reasonable to me, but I have Cc'ed Thomas who took care to reduce
+testing time.
 
-  qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid argument
+Regards,
 
-Also, keep max_cpus at 288 for machine version 8.0 and older.
-
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Julia Suvorova <jusual@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
----
- hw/i386/pc_q35.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 6b9fd4d537..b26fd9bbaf 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -368,12 +368,12 @@ static void pc_q35_machine_options(MachineClass *m)
-     m->default_nic = "e1000e";
-     m->default_kernel_irqchip_split = false;
-     m->no_floppy = 1;
-+    m->max_cpus = 1024;
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
--    m->max_cpus = 288;
- }
- 
- static void pc_q35_8_1_machine_options(MachineClass *m)
-@@ -396,6 +396,7 @@ static void pc_q35_8_0_machine_options(MachineClass *m)
- 
-     /* For pc-q35-8.0 and older, use SMBIOS 2.8 by default */
-     pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
-+    m->max_cpus = 288;
- }
- 
- DEFINE_Q35_MACHINE(v8_0, "pc-q35-8.0", NULL,
--- 
-2.34.1
-
+Phil.
 
