@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5EA725679
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 09:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 428D4725699
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 09:57:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q6nze-0001jQ-6y; Wed, 07 Jun 2023 03:54:10 -0400
+	id 1q6o1s-0002dq-Ni; Wed, 07 Jun 2023 03:56:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q6nza-0001iW-Pn; Wed, 07 Jun 2023 03:54:06 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6o1r-0002dZ-Ci
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 03:56:27 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q6nzY-0004ag-8e; Wed, 07 Jun 2023 03:54:06 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-977c72b116fso646017566b.3; 
- Wed, 07 Jun 2023 00:54:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q6o1p-00056E-Q2
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 03:56:27 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3f73617a292so39078385e9.2
+ for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 00:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1686124442; x=1688716442;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xfuzmuAuP3RR4ZsC7WG9jVcLx4gB5TI2PD98uD8BcDw=;
- b=FIDvUgi1mFm8aS7FEPicb6QopwKMD++7sWM4pY0s1g61xYVNkdCly29J6dTBJwpedp
- nxhTqkAXZBV7o5ncjXRMIfoo3xk1vnUcl1SXRCXUuiGCjy+hY7oX1PCgKfdbTfSgb7vi
- 6aAjAzmdYI1Ms1WEYQSYCRl1UDvcliO0HP0EM=
+ d=linaro.org; s=google; t=1686124584; x=1688716584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AACHmxdl0iM7W3/5W5ceg8UG536JCbQYkoVjsHxxJn4=;
+ b=RZ6HBbOrS3BetkS2vXVwzBrHiVESmo/DKBY8QbHZudgQYbuEZljqSqJWlcEZUsqhoG
+ EvaQxfk+3dXv+SDPindb7u/wh4DZpi1OH5qgDEuJVBfhx3N7f4BeK5HsIWWAtMTcuIB+
+ 0/CDvPzuKf6Hw3XbKHHjucwTF0iBpUWTTtVmiSmVX7BCwAL/18p7Y2FUtLz58hL0NVIc
+ wnXxmGfbry2DsJa+aN42lpEFFm8h+1tSPUtxDng7d4kW/OOkcOpa9bTycVOSU/ouo6tF
+ QCSU91mBFe8wRieFJYYiIpy16E6GSRZbAu8V0e76dg7d84vs9u/s2F3snTpvJTUMltdn
+ iOpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686124442; x=1688716442;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xfuzmuAuP3RR4ZsC7WG9jVcLx4gB5TI2PD98uD8BcDw=;
- b=D4u+8+GEvPo3GpOui1GY3+K4ncpRgdxGV1jbdV/iwSbyfYY/xrGuGH2AnqyIZhj/Tx
- kQBYLUqCDpEz30PXzrSnop580OnGgD0qdTrYbCw0yPPFAVus0FG0HC3u8H3u9tz2YVQg
- 9zVzc5ME1EE0htO/G/Nb0VFmBNEFK9M3HFwR71wuY1ol1Cylf60JrO1nH1xQCQxa0LLe
- 5+T3VytUcQtyyPjbUaJ6ViR+kB0b19laa+znE90D7fKNMkyLwo0pEWF1xiJ71cKEGi8/
- AZdHcSWZOOoBW+gYXJg0+c4dq4Iv+n28QW89yIrzZL8GxLRMd+GT+Pm6GmYG7/8CLZX9
- r57A==
-X-Gm-Message-State: AC+VfDwjV+QhlzLojVrpXber8Tff0zFsQcOecEB8xEkp+leBJPOlvBwQ
- kcJcLNC55jsA+qmUkLEUsvItHHqo48loEJdTzdY=
-X-Google-Smtp-Source: ACHHUZ6nUNVqLVceMfZ/lYyekJkMD6qN0MS5V9qOi02P3LJ5Q9qgTtx6NqyybKhGTl5PWdC0+tFYb5fy3j/wfIfvQkU=
-X-Received: by 2002:a17:907:7f93:b0:96f:bd84:b89c with SMTP id
- qk19-20020a1709077f9300b0096fbd84b89cmr5692744ejc.70.1686124441590; Wed, 07
- Jun 2023 00:54:01 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686124584; x=1688716584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AACHmxdl0iM7W3/5W5ceg8UG536JCbQYkoVjsHxxJn4=;
+ b=GrCMgIhaG1Y0j3vpEd6Eug5gufCm8jvRHdEBAP1KG+SFItFqpUZ+iOLPlh8Lao1Cf8
+ PSEhMB9ykwLKDKj97AsvMB47zvQEwME/b8oilK5K2LQXM9kq2WVuq+yl7/qPazlvmTIR
+ QTvLvheFokSKewpaMJbWueydjPxQyO+0DPaoVOmBaDtWxTo/opoc/+OekmbCXf2ll/Ny
+ B3WTENZxzkqoCjnTHRGk1rukwGncaXZMHXro8ltcAJTIaZbwX4WgBy4xo5moSkXJBF4+
+ NDPd6KCXf/fX7zdkjffQsrqjCDcMCdB+zBP/0lWaWnLtby0nCcAEky1MK3Mc4TQQd41J
+ ksQA==
+X-Gm-Message-State: AC+VfDzczjE4kF6Yx/YVO1aR7M3z1xUPcQvibPKPIBCIK078qQF9KeDx
+ BOmM7sJurq7GHMqVUs2qgWNhmA==
+X-Google-Smtp-Source: ACHHUZ4LI/W9ZHWO294xhZuedt023+/KT2t+jnhy5plOaw1WbwERMndwQUvn8oOsKT9ldAL6b/QRbQ==
+X-Received: by 2002:a05:600c:2903:b0:3f7:948f:ad1c with SMTP id
+ i3-20020a05600c290300b003f7948fad1cmr3838926wmd.6.1686124584209; 
+ Wed, 07 Jun 2023 00:56:24 -0700 (PDT)
+Received: from [192.168.69.115] (bd137-h02-176-184-46-52.dsl.sta.abo.bbox.fr.
+ [176.184.46.52]) by smtp.gmail.com with ESMTPSA id
+ n21-20020a7bc5d5000000b003f733c1129fsm1230560wmk.33.2023.06.07.00.56.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Jun 2023 00:56:23 -0700 (PDT)
+Message-ID: <af1ca2f6-6b4b-4f28-bd42-93f36d50e5d1@linaro.org>
+Date: Wed, 7 Jun 2023 09:56:20 +0200
 MIME-Version: 1.0
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-2-clg@kaod.org>
-In-Reply-To: <20230607043943.1837186-2-clg@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 7 Jun 2023 07:53:49 +0000
-Message-ID: <CACPK8Xe1GcR8d0=_aYQbKtVxGMnA_jeJc9fd7BBD6g+kWwxyKw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/12] aspeed/hace: Initialize g_autofree pointer
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Steven Lee <steven_lee@aspeedtech.com>, qemu-stable@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Francisco Iglesias <frasse.iglesias@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 1/3] migration/multifd: Rename threadinfo.c functions
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ Jiang Jiacheng <jiangjiacheng@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+References: <20230606144551.24367-1-farosas@suse.de>
+ <20230606144551.24367-2-farosas@suse.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230606144551.24367-2-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,50 +96,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 7 Jun 2023 at 04:40, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> As mentioned in docs/devel/style.rst "Automatic memory deallocation":
->
-> * Variables declared with g_auto* MUST always be initialized,
->   otherwise the cleanup function will use uninitialized stack memory
->
-> This avoids QEMU to coredump when running the "hash test" command
-> under Zephyr.
-
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-
-Was never a fan of using this magic :)
-
->
-> Cc: Steven Lee <steven_lee@aspeedtech.com>
-> Cc: Joel Stanley <joel@jms.id.au>
-> Cc: qemu-stable@nongnu.org
-> Fixes: c5475b3f9a ("hw: Model ASPEED's Hash and Crypto Engine")
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-> Message-Id: <20230421131547.2177449-1-clg@kaod.org>
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+On 6/6/23 16:45, Fabiano Rosas wrote:
+> The code in threadinfo.c is only used for the QMP command
+> query-migrationthreads. Make it explicit that this is something
+> related to QMP.
+> 
+> The current names are also too generic for a piece of code that
+> doesn't affect the migration directly in any way.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  hw/misc/aspeed_hace.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-> index 12a761f1f55d..b07506ec04ef 100644
-> --- a/hw/misc/aspeed_hace.c
-> +++ b/hw/misc/aspeed_hace.c
-> @@ -189,7 +189,7 @@ static void do_hash_operation(AspeedHACEState *s, int=
- algo, bool sg_mode,
->                                bool acc_mode)
->  {
->      struct iovec iov[ASPEED_HACE_MAX_SG];
-> -    g_autofree uint8_t *digest_buf;
-> +    g_autofree uint8_t *digest_buf =3D NULL;
->      size_t digest_len =3D 0;
->      int niov =3D 0;
->      int i;
-> --
-> 2.40.1
->
+>   migration/migration.c  | 4 ++--
+>   migration/multifd.c    | 4 ++--
+>   migration/threadinfo.c | 4 ++--
+>   migration/threadinfo.h | 5 ++---
+>   4 files changed, 8 insertions(+), 9 deletions(-)
+
+
+> -MigrationThread *MigrationThreadAdd(const char *name, int thread_id);
+> -
+> -void MigrationThreadDel(MigrationThread *info);
+> +MigrationThread *qmp_migration_threads_add(const char *name, int thread_id);
+> +void qmp_migration_threads_remove(MigrationThread *info);
+
+Dropping 'qmp_' prefix:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
