@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507E872760C
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA86B7264BD
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Jun 2023 17:35:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BH-00066s-Fx; Thu, 08 Jun 2023 00:23:27 -0400
+	id 1q6vAs-0005to-8d; Wed, 07 Jun 2023 11:34:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z5-0006RQ-AC
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6vAq-0005tc-2f
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:34:12 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0000Dg-Qd
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:43 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 9F2AC11F12B;
- Thu,  8 Jun 2023 02:02:39 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Wed, 07 Jun 2023 23:32:51 +0800
-Subject: [PATCH QEMU v5 5/8] migration: Refactor auto-converge capability logic
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q6vAo-0000gE-8w
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 11:34:11 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 01F26B5C3;
+ Wed,  7 Jun 2023 18:34:07 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5245BA546;
+ Wed,  7 Jun 2023 18:34:05 +0300 (MSK)
+Message-ID: <7f47a656-7304-4f89-c1dd-7c9d8969d838@tls.msk.ru>
+Date: Wed, 7 Jun 2023 18:34:05 +0300
 MIME-Version: 1.0
-Message-ID: <168618975839.6361.17407633874747688653-5@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] 9pfs: prevent opening special files (CVE-2023-2861)
+Content-Language: en-US
+To: Greg Kurz <groug@kaod.org>, Christian Schoenebeck <qemu_oss@crudebyte.com>
+Cc: qemu-devel@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
+ yw s <ywsplz@gmail.com>, shawtao1125@gmail.com, jkli@xidian.edu.cn,
+ shenwenbo@zju.edu.cn
+References: <E1q6tfP-0008VX-K3@lizzy.crudebyte.com>
+ <20230607164950.2f4f6f39@bahia>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230607164950.2f4f6f39@bahia>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,43 +59,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+07.06.2023 17:50, Greg Kurz wrote:
+> On Wed, 7 Jun 2023 15:50:01 +0200
+..
+>> +static inline int check_is_regular_file_or_dir(int fd)
+>> +{
+>> +    struct stat stbuf;
+>> +
+>> +    if (qemu_fstat(fd, &stbuf) < 0) {
+>> +        close_preserve_errno(fd);
+> 
+> Maybe worth to mention somewhere that this function not only
+> checks but also closes the fd if it doesn't point to a regular
+> file or directory. Or maybe change the name, e.g.
+> filter_out_special_files() ?
 
-Check if block migration is running before throttling
-guest down in auto-converge way.
+I realized this after sent initial comment, - my suggestion for
+the name was awful. It is either check_is_regular() and close
+after it failed, or it is ensure_regular_or_close().. But I
+didn't sent a correction, hoping it's easy to spot the awful
+suggestion.. :)
 
-Note that this modification is kind of like code clean,
-because block migration does not depend on auto-converge
-capability, so the order of checks can be adjusted.
+I don't like it when such a simple thing, especially when
+reviewed without good care like in my case, generates so
+much ping-pong.. :(
 
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-Acked-by: Peter Xu <peterx@redhat.com>
----
- migration/ram.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+> Anyway the fix is fine enough to address the CVE.
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 88a6c82e63..132f1a81d9 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -994,7 +994,11 @@ static void migration_trigger_throttle(RAMState *rs)
-     /* During block migration the auto-converge logic incorrectly detects
-      * that ram migration makes no progress. Avoid this by disabling the
-      * throttling logic during the bulk phase of block migration. */
--    if (migrate_auto_converge() && !blk_mig_bulk_active()) {
-+    if (blk_mig_bulk_active()) {
-+        return;
-+    }
-+
-+    if (migrate_auto_converge()) {
-         /* The following detection logic can be refined later. For now:
-            Check to see if the ratio between dirtied bytes and the approx.
-            amount of bytes that just got transferred since the last time
---=20
-2.38.5
+Yeah.
+
+/mjt
 
 
