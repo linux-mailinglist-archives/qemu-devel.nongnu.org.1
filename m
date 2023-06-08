@@ -2,78 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785B1728347
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E3D728461
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:58:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7HGO-0005LP-Er; Thu, 08 Jun 2023 11:09:24 -0400
+	id 1q7I1S-00082Q-4v; Thu, 08 Jun 2023 11:58:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7HGL-0005Kr-Us
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:09:22 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7HGK-0006fj-7s
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:09:21 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-30ad99fa586so727984f8f.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 08:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686236957; x=1688828957;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9Ree3ttQRecQGudWFMRQ4DPWFI1qcXD6d0QNOmLXDU4=;
- b=nVeKt3S+nnpnCDHxovCcoNL1p3ERMUSyRY3Bh29JcjoLxg1O7fhOGOCPIRNxGKvT+c
- Eb0JSD9Fn6eLpmfT3Rn0UJIU5g9vc8gbODXDKVqL2Mz3nlnETpTMZfRO+B6xfrraSwHG
- kUCSnnJLKWWMYP1ti4SFLV6xWQ2l5w12D2areVr3uSba7Qnoao8dssjAanE4w7wqSjdr
- CFRJ+dKRUS6xZG4tK7abdqZaR4QazqIdOMMTHXZJVfEeB6YOzp8ozj5rNECc9pEI3EnK
- ZF1db7y1VL0srXmm3IfdjxPszwrlMsjeRPKi3bWvsxJXuTIfoEud2xWgaoZlG5/QaseT
- b2wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686236957; x=1688828957;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9Ree3ttQRecQGudWFMRQ4DPWFI1qcXD6d0QNOmLXDU4=;
- b=Kdc80scMeBqT54S5/7FRT9Sxbnwa1LrqV31g0DOdM2OccOej4HU00RvDGkdZCY0zel
- ULr1barzK6PEMmljl8REmC56FuG/ydpGaWMD9hzP7+U11A+h1EwXfiIJJDvTWXEhkUAn
- 9VMzUcREsiS7aO5gpsZMHawpQs6iRB+nSpADmrFOjqrAKFr/k7q9gqCNXmUc6N1TXLEq
- eGdux6TbTyoYxB0mFj9ASlWcQOHQdL/JmkIhwMcML+9ykxoCpir8J8o/CCVZ/QI8fYzB
- EI/WBG4Kybq/qvY530Od38FBJ4gAzMnz5vTo4KmZvcCbh4BMezBHbCLGa38mtZlNolx2
- i0OQ==
-X-Gm-Message-State: AC+VfDxZNbyHrqx7Gf9FlhrUArpdq4wSyaljne2ICEKrQ6sOfuEUQ6o0
- KOglJ3Isi4u/4UtC0PG/aHHJjSQtx76mH7Mrynpg2g==
-X-Google-Smtp-Source: ACHHUZ6/EXpZNUr0nWpRVSt0VjSJCr7Wn60lBKdcEaXgcMgFjjpPf2w1p4uJQ5uUSOzyz9xmkPcVu99uw9Ho0bNIJXY=
-X-Received: by 2002:adf:f442:0:b0:2f6:ca0d:ec1c with SMTP id
- f2-20020adff442000000b002f6ca0dec1cmr7060689wrp.10.1686236957303; Thu, 08 Jun
- 2023 08:09:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230531203559.29140-1-philmd@linaro.org>
- <20230531203559.29140-14-philmd@linaro.org>
-In-Reply-To: <20230531203559.29140-14-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Jun 2023 16:09:06 +0100
-Message-ID: <CAFEAcA8GTuV0AtHnFHbvii9bgDqYjhAJjsjq0CX3WRHrkkaFvw@mail.gmail.com>
-Subject: Re: [PATCH 13/15] hw/timer/arm_timer: Fix misuse of SysBus IRQ in
- IcpPitState
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
- Sergey Kambalin <serg.oker@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+ (Exim 4.90_1)
+ (envelope-from <f6b0de53fb87ddefed348a39284c8e2f28dc4eda@lizzy.crudebyte.com>)
+ id 1q7I1P-000826-PI
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:57:59 -0400
+Received: from lizzy.crudebyte.com ([91.194.90.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <f6b0de53fb87ddefed348a39284c8e2f28dc4eda@lizzy.crudebyte.com>)
+ id 1q7I1N-0000XX-K1
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:57:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=lizzy; h=Cc:To:Subject:Date:From:References:In-Reply-To:
+ Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
+ Content-Description; bh=4iDn3B02X3hDECjVovQRu6mJw6PQMKDTR92sEqgMru4=; b=KpI28
+ a7TmcbV79GZBh3TVC9b76iVneKcJ7WvdRBhb/A3xFin8gjKn0DqsNkvmylBpNeyjyxNO8L79kIghL
+ dYnTYTKPDcmC/iES/zKTEhkodakgz+ARvl4/twAacSIhhbrqJ5C8+ByQwUDmNqQEAYHwxP2fnpmlP
+ ZKJCqFiEVs2Yqyi2eiD3GnHfZUZobCbhJVbw36WNwUYS1lhWHja2lHU1hrqb6/PDdSjzfwqT/sYjG
+ GAfj4xGBRxxnvA1r4MUn9FoE4XIRKDrkXVFkea+UTxZhArayiuoS5Y+fCDqF47jo9ZTVpJx6rI9Yv
+ s7AQ2XKinrx9nefP9do2A9Hcdl2Bw==;
+Message-Id: <f6b0de53fb87ddefed348a39284c8e2f28dc4eda.1686236977.git.qemu_oss@crudebyte.com>
+In-Reply-To: <cover.1686236977.git.qemu_oss@crudebyte.com>
+References: <cover.1686236977.git.qemu_oss@crudebyte.com>
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Thu, 08 Jun 2023 17:09:37 +0200
+Subject: [PULL 1/1] 9pfs: prevent opening special files (CVE-2023-2861)
+To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Cc: Greg Kurz <groug@kaod.org>, Yanwu Shen <ywsPlz@gmail.com>,
+ Jietao Xiao <shawtao1125@gmail.com>, Jinku Li <jkli@xidian.edu.cn>,
+ Wenbo Shen <shenwenbo@zju.edu.cn>,
+ Mauro Matteo Cascella <mcascell@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Received-SPF: none client-ip=91.194.90.13;
+ envelope-from=f6b0de53fb87ddefed348a39284c8e2f28dc4eda@lizzy.crudebyte.com;
+ helo=lizzy.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,67 +65,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 at 21:37, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> SysBus IRQ are *output* IRQs. As some sort of simplification
-> to avoid to forward it, IcpPitState misuses it as ARM timer
-> input IRQ. Fix that by using a simple IRQ forwarder handler.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/timer/arm_timer.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
-> index 6f444e1789..874f9b63bc 100644
-> --- a/hw/timer/arm_timer.c
-> +++ b/hw/timer/arm_timer.c
-> @@ -352,6 +352,7 @@ struct IntegratorPitState {
->      MemoryRegion iomem;
->      ArmTimerState *timer[3];
->      qemu_irq irq_in[3];
-> +    qemu_irq irq[3];
->  };
->
->  static uint64_t icp_pit_read(void *opaque, hwaddr offset,
-> @@ -391,6 +392,13 @@ static const MemoryRegionOps icp_pit_ops =3D {
->      .endianness =3D DEVICE_NATIVE_ENDIAN,
->  };
->
-> +static void icp_pit_fwd_irq(void *opaque, int n, int level)
-> +{
-> +    IntegratorPitState *s =3D opaque;
-> +
-> +    qemu_set_irq(s->irq[n], level);
-> +}
-> +
->  static void icp_pit_init(Object *obj)
->  {
->      static const uint32_t tmr_freq[] =3D {
-> @@ -402,9 +410,14 @@ static void icp_pit_init(Object *obj)
->      IntegratorPitState *s =3D INTEGRATOR_PIT(obj);
->      SysBusDevice *dev =3D SYS_BUS_DEVICE(obj);
->
-> +    qdev_init_gpio_in_named(DEVICE(obj), icp_pit_fwd_irq,
-> +                            "timer-in", ARRAY_SIZE(s->timer));
-> +
->      for (unsigned i =3D 0; i < ARRAY_SIZE(s->timer); i++) {
->          s->timer[i] =3D arm_timer_new(tmr_freq[i], s->irq_in[i]);
-> -        sysbus_init_irq(dev, &s->irq_in[i]);
-> +        sysbus_init_irq(dev, &s->irq[i]);
-> +        sysbus_connect_irq(dev, i,
-> +                           qdev_get_gpio_in_named(DEVICE(obj), "timer-in=
-", i));
->      }
+The 9p protocol does not specifically define how server shall behave when
+client tries to open a special file, however from security POV it does
+make sense for 9p server to prohibit opening any special file on host side
+in general. A sane Linux 9p client for instance would never attempt to
+open a special file on host side, it would always handle those exclusively
+on its guest side. A malicious client however could potentially escape
+from the exported 9p tree by creating and opening a device file on host
+side.
 
-This feels a bit clunky but I think it's what we have to do,
-since the various _pass_ APIs for forwarding GPIOs and
-IRQs from a container to an inner device only work with
-an entire set of IRQs.
+With QEMU this could only be exploited in the following unsafe setups:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+  - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
+    security model.
 
-thanks
--- PMM
+or
+
+  - Using 9p 'proxy' fs driver (which is running its helper daemon as
+    root).
+
+These setups were already discouraged for safety reasons before,
+however for obvious reasons we are now tightening behaviour on this.
+
+Fixes: CVE-2023-2861
+Reported-by: Yanwu Shen <ywsPlz@gmail.com>
+Reported-by: Jietao Xiao <shawtao1125@gmail.com>
+Reported-by: Jinku Li <jkli@xidian.edu.cn>
+Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <E1q6w7r-0000Q0-NM@lizzy.crudebyte.com>
+---
+ fsdev/virtfs-proxy-helper.c | 27 +++++++++++++++++++++++--
+ hw/9pfs/9p-util.h           | 39 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 2 deletions(-)
+
+diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
+index 5cafcd7703..d9511f429c 100644
+--- a/fsdev/virtfs-proxy-helper.c
++++ b/fsdev/virtfs-proxy-helper.c
+@@ -26,6 +26,7 @@
+ #include "qemu/xattr.h"
+ #include "9p-iov-marshal.h"
+ #include "hw/9pfs/9p-proxy.h"
++#include "hw/9pfs/9p-util.h"
+ #include "fsdev/9p-iov-marshal.h"
+ 
+ #define PROGNAME "virtfs-proxy-helper"
+@@ -338,6 +339,28 @@ static void resetugid(int suid, int sgid)
+     }
+ }
+ 
++/*
++ * Open regular file or directory. Attempts to open any special file are
++ * rejected.
++ *
++ * returns file descriptor or -1 on error
++ */
++static int open_regular(const char *pathname, int flags, mode_t mode)
++{
++    int fd;
++
++    fd = open(pathname, flags, mode);
++    if (fd < 0) {
++        return fd;
++    }
++
++    if (close_if_special_file(fd) < 0) {
++        return -1;
++    }
++
++    return fd;
++}
++
+ /*
+  * send response in two parts
+  * 1) ProxyHeader
+@@ -682,7 +705,7 @@ static int do_create(struct iovec *iovec)
+     if (ret < 0) {
+         goto unmarshal_err_out;
+     }
+-    ret = open(path.data, flags, mode);
++    ret = open_regular(path.data, flags, mode);
+     if (ret < 0) {
+         ret = -errno;
+     }
+@@ -707,7 +730,7 @@ static int do_open(struct iovec *iovec)
+     if (ret < 0) {
+         goto err_out;
+     }
+-    ret = open(path.data, flags);
++    ret = open_regular(path.data, flags, 0);
+     if (ret < 0) {
+         ret = -errno;
+     }
+diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+index c314cf381d..df1b583a5e 100644
+--- a/hw/9pfs/9p-util.h
++++ b/hw/9pfs/9p-util.h
+@@ -13,6 +13,8 @@
+ #ifndef QEMU_9P_UTIL_H
+ #define QEMU_9P_UTIL_H
+ 
++#include "qemu/error-report.h"
++
+ #ifdef O_PATH
+ #define O_PATH_9P_UTIL O_PATH
+ #else
+@@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
+ #endif
+ 
+ #define qemu_openat     openat
++#define qemu_fstat      fstat
+ #define qemu_fstatat    fstatat
+ #define qemu_mkdirat    mkdirat
+ #define qemu_renameat   renameat
+@@ -108,6 +111,38 @@ static inline void close_preserve_errno(int fd)
+     errno = serrno;
+ }
+ 
++/**
++ * close_if_special_file() - Close @fd if neither regular file nor directory.
++ *
++ * @fd: file descriptor of open file
++ * Return: 0 on regular file or directory, -1 otherwise
++ *
++ * CVE-2023-2861: Prohibit opening any special file directly on host
++ * (especially device files), as a compromised client could potentially gain
++ * access outside exported tree under certain, unsafe setups. We expect
++ * client to handle I/O on special files exclusively on guest side.
++ */
++static inline int close_if_special_file(int fd)
++{
++    struct stat stbuf;
++
++    if (qemu_fstat(fd, &stbuf) < 0) {
++        close_preserve_errno(fd);
++        return -1;
++    }
++    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
++        error_report_once(
++            "9p: broken or compromised client detected; attempt to open "
++            "special file (i.e. neither regular file, nor directory)"
++        );
++        close(fd);
++        errno = ENXIO;
++        return -1;
++    }
++
++    return 0;
++}
++
+ static inline int openat_dir(int dirfd, const char *name)
+ {
+     return qemu_openat(dirfd, name,
+@@ -142,6 +177,10 @@ again:
+         return -1;
+     }
+ 
++    if (close_if_special_file(fd) < 0) {
++        return -1;
++    }
++
+     serrno = errno;
+     /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
+      * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
+-- 
+2.30.2
+
 
