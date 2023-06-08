@@ -2,50 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3278A727615
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DC2727520
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 04:45:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BM-0006BR-0c; Thu, 08 Jun 2023 00:23:32 -0400
+	id 1q75dr-00048r-Su; Wed, 07 Jun 2023 22:44:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0006Qj-FC
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:41 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z1-0000D8-Mh
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:41 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id AF84811EFC6;
- Thu,  8 Jun 2023 02:02:38 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 08 Jun 2023 02:02:38 +0000
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q75dp-00048Z-W3; Wed, 07 Jun 2023 22:44:50 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1q75do-0000oB-GE; Wed, 07 Jun 2023 22:44:49 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5169f614977so121094a12.3; 
+ Wed, 07 Jun 2023 19:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686192286; x=1688784286;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k2JP6d6p5N6vI2JDzcNHkZUnMIji/sgD1lXGlTeU1kQ=;
+ b=G1c9zzGv7WEra2xF1ITjXIJxCNS/Wrus2vvNbZnD7u3ZHcqgCQvzlOEa+94wJZiPX7
+ 9m2wVLlyaqnKvarCFWm6Kr/peDVMV/Jrg+IdqOrHgbuO/PQwszWqtV7iiYYQGiEWnGnl
+ esb2vOIoOTgadoamqCJg8OJ5HJ/wRzeC9gTlzBIfaJHHU42YXK9ZiIKnTgZCiAhD/s8u
+ gDC0T8cN/+TT/7x8Ebi17EfBvcJeZXSSIOd0Zeb8w3WQLyaaeog3G4XNrPaywCslZgck
+ UdK16q3HouC0XYpOFmz2FvHW07gX8fVLgzYEfCPYnhCD2zYas2MjE0Q9+xeZdQqdC3xi
+ +mKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686192286; x=1688784286;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=k2JP6d6p5N6vI2JDzcNHkZUnMIji/sgD1lXGlTeU1kQ=;
+ b=RGhw4NVVWLXNB/zku3TAewosZUnTHkUR4jNw1UwIZdYd8cXsGW8fvz/QC2L1JBsdIU
+ zIeWIpnyo+M7D0qFD0w+t45qM7pVBazQXcsL/TDvg7b8SweyJ+5NYP2Bbw3uia6FXq2N
+ lyQImJeCKh55BKQsuIEpvkCWU+DBmHauC7FURn7oEibhmHUoGc2So0xybBtDFtdmmVHy
+ joke/8KI8r5mTh9QtBXYlQY/+aiQYNAd97gb5mSCcK9g2+9V94V319DC4rnL8k0IZ1kq
+ JH3B704qbVo6Stj9d9c4Kzw5np3EX9gayg0mZzyznsGbHgMglaz0zllios2E8ezBqf7T
+ Mlxg==
+X-Gm-Message-State: AC+VfDyRI73myK1H/v+7wVUJP93dArL0XGNUIdbW2ffhmwZQFsEgyPwe
+ Nh6Mf9CakJWPswqMjc5cmDHFuLMkUVgqsoP5wL6bBK2uQ+XlGabVZsY=
+X-Google-Smtp-Source: ACHHUZ4OLbw5MjyfCzu2LV3xui20aCrccj4gO066xNKAcLqgBNNyAasK8KXd1x1dwN3odVw9KEmk+0fbVCcSQMdgYB4=
+X-Received: by 2002:a17:907:8a15:b0:974:1c98:d2d9 with SMTP id
+ sc21-20020a1709078a1500b009741c98d2d9mr8380724ejc.3.1686192286090; Wed, 07
+ Jun 2023 19:44:46 -0700 (PDT)
 MIME-Version: 1.0
-Subject: [PATCH QEMU v5 0/8] migration: introduce dirtylimit capability
-Message-ID: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
+References: <20230607185741.4238-1-faithilikerun@gmail.com>
+ <6c2621d5-5446-7cd5-2b03-2eb9b99ae64b@kernel.org>
+In-Reply-To: <6c2621d5-5446-7cd5-2b03-2eb9b99ae64b@kernel.org>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Thu, 8 Jun 2023 10:44:19 +0800
+Message-ID: <CAAAx-8+f7ETeQrAAUROtYYUbpqceRvevo05PRNP9w-g8jf1Mug@mail.gmail.com>
+Subject: Re: [PATCH v2] block/file-posix: fix wps checking in raw_co_prw
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Hanna Reitz <hreitz@redhat.com>, stefanha@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, dmitry.fomichev@wdc.com, hare@suse.de
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,108 +84,100 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm awfully sorry about having not updated the patchset for a long time.
-I have changed my email address to "yong.huang@smartx.com", and
-this email address will used to post the unfinished commits in the
-further.
+Damien Le Moal <dlemoal@kernel.org> =E4=BA=8E2023=E5=B9=B46=E6=9C=888=E6=97=
+=A5=E5=91=A8=E5=9B=9B 09:29=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On 6/8/23 03:57, Sam Li wrote:
+> > If the write operation fails and the wps is NULL, then accessing it wil=
+l
+> > lead to data corruption.
+> >
+> > Solving the issue by adding a nullptr checking in get_zones_wp() where
+> > the wps is used.
+> >
+> > This issue is found by Peter Maydell using the Coverity Tool (CID
+> > 1512459).
+> >
+> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> > ---
+> >  block/file-posix.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/block/file-posix.c b/block/file-posix.c
+> > index ac1ed54811..4a6c71c7f5 100644
+> > --- a/block/file-posix.c
+> > +++ b/block/file-posix.c
+> > @@ -2523,7 +2523,7 @@ out:
+> >              }
+> >          }
+> >      } else {
+> > -        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
+> > +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND) && wps) {
+> >              update_zones_wp(bs, s->fd, 0, 1);
+>
+> Nit: this could be:
+>
+>         } else if (wps && type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))=
+ {
+>
+> However, both if & else side do something only if the above condition is =
+true
+> and we only need to that for a zoned drive. So the entire code block coul=
+d
+> really be simplified to be a lot more readable. Something like this (tota=
+lly
+> untested, not even compiled):
+>
+> #if defined(CONFIG_BLKZONED)
+>     if (bs->bl.zone_size && (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEN=
+D))) {
+>         BlockZoneWps *wps =3D bs->wps;
+>         uint64_t *wp;
+>
+>         if (!wps) {
+>             return ret;
+>         }
+>
+>         if (ret) {
+>             /* write error: update the wp from the underlying device */
+>             update_zones_wp(bs, s->fd, 0, 1);
+>             goto unlock;
+>         }
+>
+>         wp =3D &wps->wp[offset / bs->bl.zone_size];
+>         if (BDRV_ZT_IS_CONV(*wp)) {
+>             /* Conventional zones do not have a write pointer */
+>             goto unlock;
+>         }
+>
+>         /* Return the written position for zone append */
+>         if (type & QEMU_AIO_ZONE_APPEND) {
+>             *s->offset =3D *wp;
+>             trace_zbd_zone_append_complete(bs,
+>                     *s->offset >> BDRV_SECTOR_BITS);
+>         }
+>
+>         /* Advance the wp if needed */
+>         if (offset + bytes > *wp) {
+>             *wp =3D offset + bytes;
+>         }
+>
+> unlock:
+>         qemu_co_mutex_unlock(&wps->colock);
+>     }
+> #endif
+>
+> And making this entire block a helper function (e.g. advance_zone_wp()) w=
+ould
+> further clean the code. But that should be done in another patch. Care to=
+ send one ?
 
-I have dropped the performance improvement data, please refer to the
-following link to see the details.
-https://lore.kernel.org/qemu-
-devel/13a62aaf-f340-0dc7-7b68-7ecc4bb643a3@chinatelecom.cn/
+Sure. If replacing the current code block by saying advance_zone_wp(),
+I guess this patch won't be necessary. So I will send another patch
+(advance_zone_wp()...) after testing.
 
-Please review if anyone have time. Thanks.
-Yong
-
-v5:
-1. Rebase on master and enrich the comment for "dirty-limit" capability,
-    suggesting by Markus.
-2. Drop commits that have already been merged.
-
-v4:
-1. Polish the docs and update the release version suggested by Markus
-2. Rename the migrate exported info "dirty-limit-throttle-time-per-
-round"
-   to "dirty-limit-throttle-time-per-full".
-
-v3(resend):
-- fix the syntax error of the topic.
-
-v3:
-This version make some modifications inspired by Peter and Markus
-as following:
-1. Do the code clean up in [PATCH v2 02/11] suggested by Markus
-2. Replace the [PATCH v2 03/11] with a much simpler patch posted by
-   Peter to fix the following bug:
-   https://bugzilla.redhat.com/show_bug.cgi?id=3D2124756
-3. Fix the error path of migrate_params_check in [PATCH v2 04/11]
-   pointed out by Markus. Enrich the commit message to explain why
-   x-vcpu-dirty-limit-period an unstable parameter.
-4. Refactor the dirty-limit convergence algo in [PATCH v2 07/11]
-   suggested by Peter:
-   a. apply blk_mig_bulk_active check before enable dirty-limit
-   b. drop the unhelpful check function before enable dirty-limit
-   c. change the migration_cancel logic, just cancel dirty-limit
-      only if dirty-limit capability turned on.
-   d. abstract a code clean commit [PATCH v3 07/10] to adjust
-      the check order before enable auto-converge
-5. Change the name of observing indexes during dirty-limit live
-   migration to make them more easy-understanding. Use the
-   maximum throttle time of vpus as "dirty-limit-throttle-time-per-full"
-6. Fix some grammatical and spelling errors pointed out by Markus
-   and enrich the document about the dirty-limit live migration
-   observing indexes "dirty-limit-ring-full-time"
-   and "dirty-limit-throttle-time-per-full"
-7. Change the default value of x-vcpu-dirty-limit-period to 1000ms,
-   which is optimal value pointed out in cover letter in that
-   testing environment.
-8. Drop the 2 guestperf test commits [PATCH v2 10/11],
-   [PATCH v2 11/11] and post them with a standalone series in the
-   future.
-
-v2:
-This version make a little bit modifications comparing with
-version 1 as following:
-1. fix the overflow issue reported by Peter Maydell
-2. add parameter check for hmp "set_vcpu_dirty_limit" command
-3. fix the racing issue between dirty ring reaper thread and
-   Qemu main thread.
-4. add migrate parameter check for x-vcpu-dirty-limit-period
-   and vcpu-dirty-limit.
-5. add the logic to forbid hmp/qmp commands set_vcpu_dirty_limit,
-   cancel_vcpu_dirty_limit during dirty-limit live migration when
-   implement dirty-limit convergence algo.
-6. add capability check to ensure auto-converge and dirty-limit
-   are mutually exclusive.
-7. pre-check if kvm dirty ring size is configured before setting
-   dirty-limit migrate parameter
-
-Hyman Huang(=E9=BB=84=E5=8B=87) (8):
-  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
-  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
-  qapi/migration: Introduce vcpu-dirty-limit parameters
-  migration: Introduce dirty-limit capability
-  migration: Refactor auto-converge capability logic
-  migration: Implement dirty-limit convergence algo
-  migration: Extend query-migrate to provide dirty page limit info
-  tests: Add migration dirty-limit capability test
-
- include/sysemu/dirtylimit.h    |   2 +
- migration/migration-hmp-cmds.c |  26 ++++++
- migration/migration.c          |  13 +++
- migration/options.c            |  72 +++++++++++++++
- migration/options.h            |   1 +
- migration/ram.c                |  63 +++++++++++---
- migration/trace-events         |   1 +
- qapi/migration.json            |  73 ++++++++++++++--
- softmmu/dirtylimit.c           |  90 +++++++++++++++++--
- tests/qtest/migration-test.c   | 154 +++++++++++++++++++++++++++++++++
- 10 files changed, 464 insertions(+), 31 deletions(-)
-
---=20
-2.38.5
+Sam
 
