@@ -2,84 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93ABA727799
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 08:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94707727831
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:08:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q79Pv-0003gF-8O; Thu, 08 Jun 2023 02:46:43 -0400
+	id 1q79jf-0006Nk-1g; Thu, 08 Jun 2023 03:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q79Ps-0003fA-5T
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 02:46:40 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q79Pm-0000M0-Gd
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 02:46:37 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3f6dfc4dffaso1016605e9.0
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 23:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686206793; x=1688798793;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FnytSjdXEwD0xYUukrBZjKGarXw16mKWSy/mwd6jIVk=;
- b=rfAoNvJZPcN8GLNrKlFfjjv8DxcbxoY/7rhX0JnTKG/9NF2T2IlCLKxPe4VJqFpoxz
- B3YmkdmUvHYKZBm6leDquGuwDhCVceaDrEqN8Z03J7PcUxbLJR9+LDitc3w2If874NSy
- VpF3GKUFJ7f+liOIRGGXE+djs1KO1s/VbTXaW8y3XNdlHKVCJzac/Ge5gL6I2gBVWPvm
- zecBSlcq82Xjf/9C101HcgWJOljQEbotZoBDvrf0aly8Rh5L6et13oc0z8Iddkef+WuD
- h1xYbFXRGAOjOl3HnFxvhuKT4x3CNWjZUb5dv8dVU2I7M1fC0aq8SekJyxi6GiI5QNjV
- tb0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686206793; x=1688798793;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FnytSjdXEwD0xYUukrBZjKGarXw16mKWSy/mwd6jIVk=;
- b=TrK7CKZU1n43bkF5iTl9Q0ZtqdFutgExE3X0QzpSErYZ9bv6j0vJmzQNYuyzQcvwM5
- eOqms19ZvHq+LbllANeBMzE9QL8IzhssaUJK7F4z7etdYiwsa63Met5nAkJwf4OADSiZ
- 6f8nfshD5puz1BQTUP9AsrCF65S1GnziePSsa+RFixeRIsPY2uRZkv3x1Il3ZYQAuDW0
- EusPcW8QBorkQ/00p13PbYOmGY3whrk5ZXneINFdE5QA1Yo8UV1wz5/CF8UW6GUHtiMJ
- 7Qja//U1zr3BLqmn/937CXp2hA4N+XDEyJcG6TPcRmroXSNQySoYocHZjx1e7K8dcEIn
- M32A==
-X-Gm-Message-State: AC+VfDxnKqgwjl1gxbdvTRLopi7gp+xqznNLm/b2PdStOTiEYyTMW5/4
- ex0zYDA/C+WNW8Pd7d/zU/M2oQ==
-X-Google-Smtp-Source: ACHHUZ7mjzUou6SS8vgFXhYqNE7IzesbIXrepvQ1uu6LxAdWD06p3cMvMdKrMCM24hfUQKamPhIcQA==
-X-Received: by 2002:a7b:ca48:0:b0:3f6:2ce:caa8 with SMTP id
- m8-20020a7bca48000000b003f602cecaa8mr475099wml.29.1686206792756; 
- Wed, 07 Jun 2023 23:46:32 -0700 (PDT)
-Received: from [192.168.191.175] (81.171.88.92.rev.sfr.net. [92.88.171.81])
- by smtp.gmail.com with ESMTPSA id
- m9-20020adfe0c9000000b0030af15d7e41sm577371wri.4.2023.06.07.23.46.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 Jun 2023 23:46:32 -0700 (PDT)
-Message-ID: <10d141a3-5745-b458-69e0-a452a9e87b95@linaro.org>
-Date: Thu, 8 Jun 2023 08:46:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 4/5] target: Rename per-target 'helper.h' -> 'helper.h.inc'
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1q79jc-0006NM-Kr
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:07:04 -0400
+Received: from mail-mw2nam10on20616.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::616]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1q79jZ-0003w4-Pj
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:07:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d3gPtMfabsJAAGISuVmhFQJ+3NVB5iNQr3JD8k5W0odouWwwvleLwGUBv7BclnI7z3skEzEfzig12Zkf5bq+3h0NFqPeg6qoOFovxBSMJB83WLttRtRN42eK9Cj1//70zmifGCfwbBA1/hH39qhkueuSAXoIH5NxQX4pmzEDjGW6jgcY2d2p0uXIJ5o4FzXFPzOYllnHjNnFW4D+dzQ1R/UaBzr/qvGBdFd9Bx3QATL7SrrWKwbpcrHvk8fwt426UJ2/5R2hsqcEKYtij9yyzaM5XzPdqPv2mJdN6r4pXPFiE4IUg2cRidkZJ5IretOtQdJ6KcOip3N44tYd8TLjvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l4coUB961KUBDW+TwzRGeXmOkSZMYjTGe4/4ArywONo=;
+ b=jvWTvPBqS5xPtEC2AKVhdQ5ipeSVU/gAKdaSUA5HksSexGsA/ojU3hgy8TTiKhV+gkfNvkG1rrH1B1jBqOz98lhhqqRJCnpp/kNBpyRShjmuYd9PMwMuJqAnYwCa8K/1/3pFwj9CfgxoTjjAfJo5hA64ZHfPYWSlTVuGYZqI/BT/ug8xe0fbhn3ft67XXu+D/cflVZylacNtSvU7hKxwws0krfCQKdIjfXZw8e8WnOaUwzJkixOhodw/pGIHX4aAUsUfGQYRjaX/W00wW7337xgD2STuLquAm+LxSh4JKZLqQ8RsvxTKjXpDVvrp0wR8yzY5s4nUfHsNaMtV8bKqSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l4coUB961KUBDW+TwzRGeXmOkSZMYjTGe4/4ArywONo=;
+ b=u4G2d6Wwjl6q76AVRLjbDa7uVE1jBhzKsHNMnbFKiUa+wNfUGsARNqZDWDJI+7qc26hQS5LgWc15+gaGtwL+Al5jqpEvRYO6V9FO9+kWASkcT1zVHYTGorqb711VPHJPbsxBPzLq5ljunQ1UXz2ZWDnlndYqwYFstfdwYRk4bD0=
+Received: from BL1PR12MB5849.namprd12.prod.outlook.com (2603:10b6:208:384::18)
+ by SJ0PR12MB6928.namprd12.prod.outlook.com (2603:10b6:a03:47a::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.39; Thu, 8 Jun
+ 2023 07:06:55 +0000
+Received: from BL1PR12MB5849.namprd12.prod.outlook.com
+ ([fe80::4ef5:2244:743b:9989]) by BL1PR12MB5849.namprd12.prod.outlook.com
+ ([fe80::4ef5:2244:743b:9989%4]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
+ 07:06:54 +0000
+From: "Chen, Jiqian" <Jiqian.Chen@amd.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, =?iso-8859-1?Q?Roger_Pau_Monn=E9?=
+ <roger.pau@citrix.com>, Jan Beulich <jbeulich@suse.com>, Antonio Caggiano
+ <antonio.caggiano@collabora.com>, "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>, Robert Beckett <bob.beckett@collabora.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
+CC: "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Koenig, Christian"
+ <Christian.Koenig@amd.com>, "Hildebrand, Stewart"
+ <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang, Julia"
+ <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>, "Chen, Jiqian"
+ <Jiqian.Chen@amd.com>
+Subject: Re: [QEMU PATCH 0/1]
+Thread-Topic: [QEMU PATCH 0/1]
+Thread-Index: AQHZmbUg+D/AFshzGkyCkFnupRc4g6+BASWA
+Date: Thu, 8 Jun 2023 07:06:54 +0000
+Message-ID: <BL1PR12MB5849FA0F7DF456E83F099926E750A@BL1PR12MB5849.namprd12.prod.outlook.com>
+References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
+In-Reply-To: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org
-References: <20230606141252.95032-1-philmd@linaro.org>
- <20230606141252.95032-5-philmd@linaro.org>
- <cad000d7-f408-9337-9328-ccb262c5fcc7@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <cad000d7-f408-9337-9328-ccb262c5fcc7@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: 3
-X-Spam_score: 0.3
-X-Spam_bar: /
-X-Spam_report: (0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-imapappendstamp: IA0PR12MB8254.namprd12.prod.outlook.com
+ (15.20.6455.003)
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5849:EE_|SJ0PR12MB6928:EE_
+x-ms-office365-filtering-correlation-id: c2803e9c-c8f6-4760-2126-08db67eef0fe
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: QIT3qmrUQVy9iWnNn/Q54K7TAhLbE4KPnegMwGsHQnVbPrkbGvBLlwe+qbGOljG6QcmZmgPMs4ilMWVLlvdrfdvjTWtIFgwO+Fi6nZx9U0yup2Q9sf+hRlVSZwpO2SO8TQpGAsfIMVqDtRiUr4MSdxB9DPuAOhUa0A12uPtoEgG3OO8ClB8LsDDz3IwjSeiwUbNMSbmTZRUHK8fSWXiOeQBgw9RocCkjDnweET5O6E09hzO/1hWoHMWFmH4D7qp6tLI85FxfKaArhPxQnc50zrAQTbhP0yBzpisOUQn3ezlTxOyLiSxeoeZ0JfWZFZGYLZrVj4HvmaHwL/YbV4e8y61B/At1+pxsXCefo4OEMrbMk1pqqXrY3wqbeyc9VhMHFXXbmUhVetnXa5FDwnLd2a4p6vTosN1aZJKRNjjnafckvzCdU+RvqIEVZ7KMtbIbXxv9oZF2IhHUAkjEwECOljJSqN3cih+1kOqnKDjn3XL61GmNWcD0engq/AFpxuE0bplzSyF4zgvVkT7BhI/RXvU+nE2uwqNpEi62UCcTBTsqfE5+CKkslnc0Jk8gZqnDQE21f4Y9Cm7ACmA92V4zW6mDVsUTPZgXFk7/nfEYdIj1tJY8YlWI2tgk0XECa8i1
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR12MB5849.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(346002)(396003)(366004)(136003)(39860400002)(376002)(451199021)(6506007)(53546011)(9686003)(186003)(966005)(26005)(7696005)(71200400001)(122000001)(76116006)(66946007)(66556008)(66476007)(66446008)(64756008)(921005)(4326008)(478600001)(83380400001)(38070700005)(8936002)(8676002)(33656002)(5660300002)(52536014)(55016003)(38100700002)(110136005)(54906003)(316002)(7416002)(41300700001)(2906002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?eWX2xNZh3ZMuZXr+hX1h8psWEvubwBITOCF2LFVg6Q2uiflOz7Y9k8pLh9?=
+ =?iso-8859-1?Q?vx8hdWs0vvvUPKDAdYS0Q2Zh0r+VUYRP+LisfCXd9U3ZVnuK+Wi6480mKb?=
+ =?iso-8859-1?Q?ex5wH0lgu0Nyj75X+5XHfG3fgWPenD46OYY/T38MEU9aAhBYnZZC1XikNp?=
+ =?iso-8859-1?Q?ikOH7jeNobF/+58Jl5N5mJn+4d1GCqyW7ErZv0W4ZUlTwNM+suRzIWHaJH?=
+ =?iso-8859-1?Q?wniULysOlITxj04ijcgniML79//Lnl2vXnoOk6sHIBZX13qji0GDqGZ6GT?=
+ =?iso-8859-1?Q?IgiVHeweGr+v4Xyv+5kuteecIJhDMsCFMbeNcLh5OtL61eKcLR4gtaAOKk?=
+ =?iso-8859-1?Q?V5lNe2IG+Ftm/y/VW37nZdorEgo5RhjEt2Hb2XQQEHZ5ki+RY6mMdCeT+z?=
+ =?iso-8859-1?Q?XPZ9PQ5xtSgjULa//oCEBoTrQdqfgFZEQbhNXYaYZgdl7WoEMq9/T7Eb5W?=
+ =?iso-8859-1?Q?LyD98eWMi/w24QK6DMid+gvIkCqMUo6tur+2rPS7UG48iaaEm3p0zfTWYp?=
+ =?iso-8859-1?Q?HsXvg9yRefd5AXHeFqdUVgDOUrelQ4V8GgQYU1dQPxACNZz66M0mg5SXhf?=
+ =?iso-8859-1?Q?Shf9C+KTfk9HzlCGCSD73XWlkTMsgTLJgRawpuDx7cveaDN9vMYq3ttluj?=
+ =?iso-8859-1?Q?Ucr9mcoQlFCDLrHq+FxPqQTWu7+mG8iQs8WuuRusWhp9oVBXPpFtj69+10?=
+ =?iso-8859-1?Q?l+/0um4brqIUmBKZZ5+BMft6CqRLzKr74GfmQoZK8Njd7mcZ/ctfKLHigZ?=
+ =?iso-8859-1?Q?hmx8ksMoUIcIaD+pUyvYvLW4vxOlrvbPRWia6DTvg1Lm+/OlPit4P4F27p?=
+ =?iso-8859-1?Q?66m3I/cij4W1s1P7XcLUmcfdPHtIycOXaPOqot6zohE2orDilPsNOCqrlk?=
+ =?iso-8859-1?Q?O9mg1zBw+Wgr8pPhIn+2z7YwpwDbKLqcTweyCCZsNJV4VcqKQQz2jub0zW?=
+ =?iso-8859-1?Q?1Ghr/uiSfu7Oc+P5SO+JLBJ5kSFp4W2qXOklF+xYJ6byIy1EC4J7+vxdRO?=
+ =?iso-8859-1?Q?TMbPQNXbviANovKKqz0WBKARU5QD2pbQJDJ9iYm0ay3f6y2dKOgdEW0HpF?=
+ =?iso-8859-1?Q?zZKFHpwYl01+gpp9fHIhIaGWnHUF3LRCXIZXzBn4/a9n+CB59KZkGmWHz3?=
+ =?iso-8859-1?Q?zrcbuqYtgetv/uuxMEf3AerVdqn5sDLuEJtvrj2QxWbf1R0dU2vcRcTYp3?=
+ =?iso-8859-1?Q?kbViZxjy14tIUhVvW5GkvTOW8QKhb0nb0DcyqQmlJP3YE/NNJCnFeGiWvp?=
+ =?iso-8859-1?Q?0T/qO3Dr4xH66ozdmHNLmjWLXo3m29flKR/R7Xu0iZTR6ps/vZb62TNfk0?=
+ =?iso-8859-1?Q?/DZYUOEe7rj/U6yg51a9WoEQyDAXhIoL4K2YnAvH2UyMJK08saO/Bjjjqf?=
+ =?iso-8859-1?Q?vI1+Y+gz9As/y00QsMDisyWOTdZtagfnojs1qCzaryEuphvvl7dVPX1u88?=
+ =?iso-8859-1?Q?1PHLwpxVl6i8ui7UFVjEDjj/QZqhQKq+D8rlnTooGxuQhVbHofPYBZfLyl?=
+ =?iso-8859-1?Q?SKSKsWR/nnob00VuLo67Kp3+n+3Iu8LBwbNH+RyWNWUgrkpd7dE8CYjXoC?=
+ =?iso-8859-1?Q?Id0J3E7GsBMTuBCwrPxRy2q2iK8/4L6Zlc36orv5P2Nnj+EkFbu2UqSoV5?=
+ =?iso-8859-1?Q?MrZ2FgXQx7Cvc=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <1B7724F9128152459879568A95F8D6D0@amdcloud.onmicrosoft.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5849.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2803e9c-c8f6-4760-2126-08db67eef0fe
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2023 07:06:54.5761 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tnPAO6fvvHx8MmzYRpLGOZuN/pkymc14ogBljB8vU7+IFn1oON2XPao4mb6Qfi3yOV/NzKuRZbwMWvMlR80ZxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6928
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::616;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, SUBJ_ALL_CAPS=0.5,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,44 +153,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/23 16:43, Richard Henderson wrote:
-> On 6/6/23 07:12, Philippe Mathieu-Daudé wrote:
->> Since commit 139c1837db ("meson: rename included C source files
->> to .c.inc"), QEMU standard procedure for included C files is to
->> use *.c.inc.
->>
->> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
->> about includes") this is documented as the Coding Style:
->>
->>    If you do use template header files they should be named with
->>    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
->>    being included for expansion.
->>
->> Therefore rename the included 'helper.h' as 'helper.h.inc' for
->> all targets (updating the documentation).
->>
->> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
->> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
->> ---
-> 
-> A bulk patch like this isn't ideal.
-Unfortunately these headers (declaring HELPER_H path) are used
-by all targets:
+Hi all,
 
-  include/exec/helper-gen.h
-  include/exec/helper-proto.h
+Modifications on kernel end is:
+https://lore.kernel.org/lkml/20230608063857.1677973-2-Jiqian.Chen@amd.com/T=
+/#u
 
-So this has to be bulk.
 
-> Targets that have a tcg/ subdir 
-> should have helper.h.inc moved into there.
+On 2023/6/8 10:56, Jiqian Chen wrote:
+> Hi all,
+>=20
+> I am working to implement virtgpu S3 function on Xen.
+>=20
+> Currently on Xen, if we start a guest who enables virtgpu, and then
+> run "echo mem > /sys/power/state" to suspend guest. And run
+> "sudo xl trigger <guest id> s3resume" to resume guest. We can find that
+> the guest kernel comes back, but the display doesn't. It just shown a
+> black screen.
+>=20
+> Through reading codes, I founded that when guest was during suspending,
+> it called into Qemu to call virtio_gpu_gl_reset. In virtio_gpu_gl_reset,
+> it destroyed all resources and reset renderer. This made the display
+> gone after guest resumed.
+>=20
+> I think we should keep resources or prevent they being destroyed when
+> guest is suspending. So, I add a new status named freezing to virtgpu,
+> and add a new ctrl message VIRTIO_GPU_CMD_STATUS_FREEZING to get
+> notification from guest. If freezing is set to true, and then Qemu will
+> realize that guest is suspending, it will not destroy resources and will
+> not reset renderer. If freezing is set to false, Qemu will do its origin
+> actions, and has no other impaction.
+>=20
+> And now, display can come back and applications can continue their
+> status after guest resumes.
+>=20
+> Jiqian Chen (1):
+>   virtgpu: do not destroy resources when guest suspend
+>=20
+>  hw/display/virtio-gpu-gl.c                  |  9 ++++++-
+>  hw/display/virtio-gpu-virgl.c               |  3 +++
+>  hw/display/virtio-gpu.c                     | 26 +++++++++++++++++++--
+>  include/hw/virtio/virtio-gpu.h              |  3 +++
+>  include/standard-headers/linux/virtio_gpu.h |  9 +++++++
+>  5 files changed, 47 insertions(+), 3 deletions(-)
+>=20
 
-OK.
-
-> At the end, 
-> include/exec/helper-gen.h and include/exec/helper-proto.h become unused 
-> and go away.
-
-Ah, you are suggesting to first inline these helpers in each target,
-then move. Hmm OK I'll try.
+--=20
+Best regards,
+Chen, Jiqian.
 
