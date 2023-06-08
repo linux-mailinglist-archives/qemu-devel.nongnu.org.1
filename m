@@ -2,79 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA39A727CA3
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 12:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2ECE727CE0
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 12:33:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Cjy-0005zd-Qj; Thu, 08 Jun 2023 06:19:38 -0400
+	id 1q7CwG-0008VO-MV; Thu, 08 Jun 2023 06:32:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7Cjw-0005z8-QA
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:19:36 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7Cjv-0001i1-Ba
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:19:36 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-977e83d536fso68356166b.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:19:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686219573; x=1688811573;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8C+/Iu7ifNpTKfQM3pmjomWh5WNEUkzReuGKZAurRj8=;
- b=CQgzKsRD82RlRNRStdCAxTYwtYSRK1+qYtkfzEu1jlXiDaMcmxHKiGo7si3Fwgjngd
- KYVYznDAfpzaaMD/kWimW3N72xRomHmPUWr/XCtppRKf9U4t/9TMZ5uAYoPwr6uxag/h
- q89uoMzC/CnaVFnqV2YVi4jqPj6sWbaWr2D8plaXhhLRCc/QYX6kiIDvuUbvSEzTD2oN
- j9SNTv3qxphvIG6bl8biBy2uTBrZCs4Nf73aXiZKCQnyGUMIlpm5W6WZFmt0OIF2QDjs
- R0gWzcc3E90RMOkLpAhxTOzegFXQgz/TtkpBLieIF0oOTJNbDJgvvXVg0Aq+5B5CqMxa
- ptog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686219573; x=1688811573;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8C+/Iu7ifNpTKfQM3pmjomWh5WNEUkzReuGKZAurRj8=;
- b=WuCYi/DxHtWroMglNO7tOCPKrUj2B33VOrdZZ+nb+j2r52CZn6u/0v4FZnJ/z6znz1
- hD4VfV8xfCD4uGTY1iEj/71vu2+/r0g8SkDpCYN9u5TQyGgOMP82qxsHYji1rm45nVDg
- OrpuwXxZtTufB/wBsT3yRLwF3TjuSpnBGM8Z3CNQaxCNK35OBYMIf9qSG6fN1lxX2I+4
- aUgh5YPVc+ROmF5Kc6hXBsnHUXe3qUNBar13yz9FPDawLVwNNrOj0r6zrKjC3Ps3kFHV
- hsDvEtF+k2RMEaYcb7vByXI5NOK87MCpPio3O5AKKK1v9rpw2dchUDo8dZ9yb2quBW9G
- ZbjA==
-X-Gm-Message-State: AC+VfDyMPBTPaWqrBWy2A6cYEfFP5mfR4atgHHyGTzsd3gcb5Yke4/Fm
- 7bz/K8n55OMwhE49K7QbD8zVblDq2ZGGPnH45H5f9w==
-X-Google-Smtp-Source: ACHHUZ6VmcJItSca7bi8BiZH8QD8gfgAip8PVeXuf7JvXbixIsvktbpYsFGpSImNXOrh5gaUjFMnVw2s4554s5ZxVnY=
-X-Received: by 2002:a17:906:974f:b0:94f:694e:b953 with SMTP id
- o15-20020a170906974f00b0094f694eb953mr9258937ejy.59.1686219573668; Thu, 08
- Jun 2023 03:19:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q7Cw3-0008Ut-UU
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:32:07 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q7Cvy-0004RM-BC
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:32:06 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QcL7321VQz67b1p
+ for <qemu-devel@nongnu.org>; Thu,  8 Jun 2023 18:29:35 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 8 Jun
+ 2023 11:31:54 +0100
+Date: Thu, 8 Jun 2023 11:31:53 +0100
+To: Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "qemu-devel@nongnu.org\"   <qemu-devel@nongnu.org>"@domain.invalid
+Subject: Re: Concept of LD-ID in QEMU
+Message-ID: <20230608113153.000033ef@Huawei.com>
+In-Reply-To: <DM6PR18MB2844C099FB0671E864AA953DAF53A@DM6PR18MB2844.namprd18.prod.outlook.com>
+References: <20230607221651.2454764-1-terry.bowman@amd.com>
+ <20230607221651.2454764-15-terry.bowman@amd.com>
+ <DM6PR18MB2844C099FB0671E864AA953DAF53A@DM6PR18MB2844.namprd18.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-13-clg@kaod.org>
-In-Reply-To: <20230607043943.1837186-13-clg@kaod.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Jun 2023 11:19:22 +0100
-Message-ID: <CAFEAcA8eActaDEvRxHdcX9Egnht7skToepAahDP-Uv4=EV17sw@mail.gmail.com>
-Subject: Re: [PATCH v2 12/12] target/arm: Allow users to set the number of VFP
- registers
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, 
- Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,22 +64,116 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 7 Jun 2023 at 05:40, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> Cortex A7 CPUs with an FPU implementing VFPv4 without NEON support
-> have 16 64-bit FPU registers and not 32 registers. Let users set the
-> number of VFP registers with a CPU property.
->
-> The primary use case of this property is for the Cortex A7 of the
-> Aspeed AST2600 SoC.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+On Wed, 7 Jun 2023 23:01:11 +0000
+Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com> wrote:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Hi,
+> For DCD sideband there needs=A0to=A0be LD-ID. Is the following approach a=
+cceptable?
 
-thanks
--- PMM
+QEMU question so +CC qemu-devel
+
+>=20
+> =A0-device cxl-type3,bus=3Dswport0,volatile-memdev=3Dvmem0,dc-memdev=3Dvm=
+em1,id=3Dcxl-vmem0,num-dc-regions=3D2,ldid=3D0 \
+> =A0-device cxl-type3,bus=3Dswport0,volatile-memdev=3Dvmem1,dc-memdev=3Dvm=
+em2,id=3Dcxl-vmem1,num-dc-regions=3D2,ldid=3D1 \
+
+Those will be PCI functions at this level so you can't do this until we hav=
+e more advanced switch support
+(it has to know about multiple VHs - right now we only support fixed config=
+ switches).  You could connect them
+to different switch ports - effectively that will be what it looks like whe=
+n we do emulate a configurable switch.
+
+> =A0-device i2c_mctp_cxl,bus=3Daspeed.i2c.bus.0,address=3D24,target=3Dcxl-=
+vmem0,cxl-vmem1")
+>=20
+> With this configuration, the same i2c device is handing both LDs and in F=
+MAPI commands we use the LDID specified above.
+
+This effectively becomes a partial implementation of either an MLD or an MH=
+-SLD
+To manage the actual memory access, those will almost certainly need a bunc=
+h of other shared
+infrastructure.  So I'd ultimately expect the i2c_mctp_cxl device to target=
+ whatever
+device represents that shared infrastructure - it might be a separate devic=
+e or a 'lead' type 3 device.
+
+So I'm not sure how this will fit together longer term.  We need same infra=
+structure
+to work for a mailbox CCI on a MH-SLD/MLD as well and in that case there is=
+n't a separate
+device to which we can provide multiple targets as you've done in your prop=
+osal here.
+
+So I think we need to work out how to handle all of (I've probably forgotte=
+n something)
+X marks done or in progress.
+
+X 1) i2c_mctp_cxl to an SLD (no PCI Mailbox definition for this one)
+  2) i2c_mctp_cxl directly to an MLD (your case)
+X 3) i2c_mctp_cxl to a fixed config switch (single fixed VH no MLD capable =
+ports)
+X 4) PCI mailbox via switch CCI device that fixed config switch (no MLD cap=
+able ports)
+	Even with this simple design some fun things you can do.
+  5) i2c_mctp_cxl to a configurable switch (probably a separate as yet to b=
+e defined management interface - that messes with hotplug)
+  6) PCI mailbox via switch CCI to configurable switch (again to defined ma=
+nagement interface).
+  7) i2c_mctp_cxl to an MH-SLD - probably to which ever device also has sup=
+port for
+     tunneling to the FM owned LD via the PCI mailbox.
+X 8) PCI mailbox on MH-SLD tunneling to the FM owned LD.
+  9) i2c_mctp_cxl to an MH-MLD - similar to above - this one isn't that muc=
+h more complex than MH-SLD case.
+X 10) PCI mailbox to MH-MLD - similar to above.
+  11) Tunneling via the switch CCI (then over PCI-VDM - though that detail =
+isn't visible in QEMU) to an SLD
+  12) Tunneling via the switch CCI (then PCI-VDM) to an MH-SLD and on to he=
+ FM owned LD.
+  13) Tunneling via the switch CCI (then over PCI-VDM) to an MLD / MH-MLD
+=20
+Current i2c_mctp_cxl covers 1 and 3
+I'm part way through the tunnelling support for (8 and 100) - need to revis=
+it and wire up the switch CCI PoC
+properly which will give us 4.
+
+2 needs MLD support in general which we could maybe make work with a static=
+ binding in a switch but that
+  would be odd - so we probably need to emulate a configurable switch for t=
+hat
+5,6 need configurable switch
+7 needs same as 2 plus tunneling part similar to 4
+9 again probably configurable switch for the MLD part to make sense
+11 is fairly straight forward - but not done yet.
+12 also not too bad, but needs the MH-SLD part to be fleshed out (some work=
+ on going )
+13 needs pretty much everything defined.
+
+Trying to get the command line interface and device model right until we ha=
+ve PoC code
+for a few more cases is going to be at most a draft of what it might look l=
+ike.
+
+So in short, lots to do.  For now feel free to hack whatever you need in to=
+ be able
+to test the FM-API side of things, we can move that towards a clean command=
+ line definition
+once we have one figured out!
+
+Jonathan
+
+
+>=20
+> Thanks,
+> Shesha.
+
 
