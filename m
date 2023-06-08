@@ -2,166 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3A37283F5
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF9872844E
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Hni-0006XG-M9; Thu, 08 Jun 2023 11:43:50 -0400
+	id 1q7HxF-0002kG-MG; Thu, 08 Jun 2023 11:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1q7Hnd-0006Us-2s
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:43:45 -0400
-Received: from mga11.intel.com ([192.55.52.93])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7HxE-0002k7-Fq
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:53:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1q7HnX-0005uE-9u
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:43:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686239019; x=1717775019;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=A1t1+MknLwWpTxQRmh9U05w4/DizYJcLe1G5PYLNom0=;
- b=Ex5rhDnId6K2J+u2B7rG6I6AqnDbherBoxikb+JRIlMULy8P92bHOJTt
- MJLKlX8vxa+6od40iyAjKk219RJvGixcAGjWd2p5bBBHxdqU5yXgoyMy9
- C6YJP/ue8h/XPY/LxGRvh5yVnaAKLiPWrfoIZkWlcU5MqqB2r3VSEjcR0
- CCc60zB64j1jlflGZDVc/l69tURd2MWXAQOHCfKs4VYQhCDFmbsA58ytC
- j0Uvk5D/pBtitIssVUU9HDyESm2I7qImHvfRuST+6WB4Kn4iRVSmTRttY
- 9TB8ZnDUaA6vYAaP6qERjMIdTHMOkp6Y+cPNPrK8+81YL3m36fK6x/JZJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="354831911"
-X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; d="scan'208";a="354831911"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2023 08:43:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="775107146"
-X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; d="scan'208";a="775107146"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmsmga008.fm.intel.com with ESMTP; 08 Jun 2023 08:43:26 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 8 Jun 2023 08:43:24 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 8 Jun 2023 08:43:23 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Thu, 8 Jun 2023 08:43:23 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.48) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Thu, 8 Jun 2023 08:43:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JsXc0L2qT8NTlGxIwIaMyi+gk3T4l0Ipba/2JDSs8e3CiJKPYVPfs3/ABwsfioqtZQSJc38DKc+JHKIEVPiEzMRoueXiTHzkh/zVlb6t2rUvIJ/VKaLYl2K90xWu48cn4SPNeqHEJ5+ywovM7bfs0fl/l52STH31IZ32nkZ5etcex0PMAWrk9fNQJZ7U5+4OEc82FZZy+a9YtuWUccmliuNotUZ3NvzQBW55+OxvFL2jX5wZm2Sm7rxq9oZnlGhHCmiTsEMhSIVI8dT4L3acpZczMVcDhrl8yNvsbHFjGMdtIMUbmGkCqSyKvvs/ZBQnLyKiDc38p01jOhcBWMqVYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IQtZdN2dkNmFZl8waYwBgpoPjoCIZy5+56yudstrFjI=;
- b=mbj3RkTivfhjKHnvKfVIUNWCPFrbK+ckEg/aQsXMAuEpGaBH2mJT1HRpR1yWbeC71H326lwlbgLd9IPtWJLFHWhJ/QE2ipbNaHw9qCMU3jARWqYm9FeFX4n+nPzcf1BnXCARQucSPBmc0nKpKaMYQoxmlcp1aIiJksDDcW+wVpmoZtvZGwdwdIPe/vjQlVG+1ouamMts+8xedNs/DVrhqUkjQOmVuGHSH8fR59pvUD0LJqhzAOXIgO7GPGnG58Xi9pyNSGC4QE96gcHNRAsk73avA/aEbotPc2m3qoea1L5CQiM+GDqBSMzSssp5oJd1fzW7sdr7pZ/pp2F0FJQzyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by MN2PR11MB4550.namprd11.prod.outlook.com (2603:10b6:208:267::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Thu, 8 Jun
- 2023 15:43:20 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::7237:cab8:f7f:52a5]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::7237:cab8:f7f:52a5%6]) with mapi id 15.20.6455.037; Thu, 8 Jun 2023
- 15:43:20 +0000
-Date: Thu, 8 Jun 2023 08:43:11 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>, Fan Ni
- <fan.ni@samsung.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "gregory.price@memverge.com" <gregory.price@memverge.com>,
- "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
- "cbrowy@avery-design.com" <cbrowy@avery-design.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>, Adam Manzanares
- <a.manzanares@samsung.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
- "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, "nifan@outlook.com"
- <nifan@outlook.com>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [Qemu RFC 0/7] Early enabling of DCD emulation in Qemu
-Message-ID: <6481f70fca5c2_c82be29440@iweiny-mobl.notmuch>
-References: <CGME20230511175641uscas1p2b1877f9179709b69e293acdd7e57104c@uscas1p2.samsung.com>
- <20230511175609.2091136-1-fan.ni@samsung.com>
- <647e1cf4e7e5e_7471a2948f@iweiny-mobl.notmuch>
- <20230605175112.GA2290821@bgt-140510-bm03>
- <DM6PR18MB2844A78EB692A69CE10031E2AF53A@DM6PR18MB2844.namprd18.prod.outlook.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <DM6PR18MB2844A78EB692A69CE10031E2AF53A@DM6PR18MB2844.namprd18.prod.outlook.com>
-X-ClientProxiedBy: BY3PR03CA0002.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::7) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7HxC-0008J0-Sx
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:53:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686239617;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zeOAa9eV7TclDBOkWCBGE5DjHJVqvwqRRFFzfpB6g7I=;
+ b=Z6GpSbrR+Snkj3XCd/AFqBc5twBcNciiEFTgCzjnhOgbveyTfThrD+rtsHsacP8im1vkAj
+ KLkfShZXNoiAcpY/BhOpUdDTdPIc7NdsI6vQXyGYDm3YOyU7Y3fJ3cPEICjk1qo95Z7tC0
+ E9wUxvpkEJvPWXueEUnOmOzYYhemi04=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-473-TbLBABJ5NEqlC_1a0r9H0A-1; Thu, 08 Jun 2023 11:53:35 -0400
+X-MC-Unique: TbLBABJ5NEqlC_1a0r9H0A-1
+Received: by mail-vk1-f200.google.com with SMTP id
+ 71dfb90a1353d-465e93d2bffso31996e0c.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 08:53:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686239615; x=1688831615;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zeOAa9eV7TclDBOkWCBGE5DjHJVqvwqRRFFzfpB6g7I=;
+ b=c1P6fWHNgP4wGxWfmGvKOVcGHPjatGHHMMc/bePtmtANmgAF+UQQIrurH6WSmkp0g8
+ OnCIVBzAuHluMe9/vTYNqzVqybeJCKH05xWqQzWUXfQ13G1AuZZ0eQnMY5QF6DCJ+44S
+ ULd6Gxym1ypC36eLa9eApia5jYKFIqizS6SQbRiyQTV9PSN2+d6ueIObkpVucp7A2DqM
+ J2yBvnqCvX+85siP5hvMkJ3TSUqpIL+3+DedR6v51vbYTzMqUVQR2XJVbfK6wrP9gvOX
+ Tb4+MpQyu+eSsNvse86a+II/Yah6cQWvcYDcIh+qHwU+WOVGsa7/Lzxy9PsPs6wDgbr2
+ ICgQ==
+X-Gm-Message-State: AC+VfDwPoPVqAh0pTyVwP+knCHbvKhGsGEudPOzaP8rYgSawGkhnkcty
+ SDvngUyBa92HMDOw+ay+oRhiNq/Stl9Nuc1RLX4XADRdXZ7FyiGuwGdu0Dqn4DspaixlpL4yNrJ
+ kG5xvM8K+KsTxW14=
+X-Received: by 2002:a05:6102:a48:b0:436:2ef4:5e2 with SMTP id
+ i8-20020a0561020a4800b004362ef405e2mr1661872vss.2.1686239615449; 
+ Thu, 08 Jun 2023 08:53:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7VBU+ogSP8GJ4rXZy2wHf/OHnZG3bpaS35gy83g1kfZMmgzp52OsX8LcVDlGTezTMxDkFtEA==
+X-Received: by 2002:a05:6102:a48:b0:436:2ef4:5e2 with SMTP id
+ i8-20020a0561020a4800b004362ef405e2mr1661855vss.2.1686239615244; 
+ Thu, 08 Jun 2023 08:53:35 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ k4-20020a05620a142400b0075ceca53e84sm420313qkj.15.2023.06.08.08.53.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 08:53:34 -0700 (PDT)
+Date: Thu, 8 Jun 2023 11:53:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ alex.williamson@redhat.com, clg@redhat.com, david@redhat.com,
+ philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
+ yi.l.liu@intel.com, chao.p.peng@intel.com
+Subject: Re: [PATCH v3 0/5] Optimize UNMAP call and bug fix
+Message-ID: <ZIH5fF7OZlud2JPJ@x1n>
+References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|MN2PR11MB4550:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8bda20cc-8738-4c2b-fbc8-08db683715c9
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Q0l+Kr4+AyrOVmVCGlziYyJL9dR/mvYJbidIpWFk8jbtF7nFzf6noqerVh8RDxVL7bABAmNV014Z88haw245DFbwUK/KZLVAFghQ2rZcOutNQD/MlUpKwkmoAZ/QyktJvj2xygK6q1pzH5wN8E8M+kVlpztAHU29MGWJaO/wybxhYOYX93h+X8kfDGA6Pe8uMjBrt0fhnopXQL6epu7LzWg7yR5xIfMJ17wN21Hl0TOEIxjYc5aBltz7BQTPEiDwr/EsCTR4mXKgqGsN8MZOVlpPxu0gTvhOaVpy6zcTcwXwdYxOUAWPDSpVlByqzbgrfRYT4cjvbBGNsTlLlgrw6nQHqQA2w7TL6u2KF3vcrCdU2vUfhjWS5U9TriMkMzk5VnQNStcrOrDAz2n2Rxisvtju82jNYVXEdgHuBsEvOnkyv7xPUV8PUI4wwmR9TT7Zzj1JhSkbg1sg0O1ziy/hBbvjG9pYkRbr388zfaMrowHSJtdwKnKNnVuNc9TQG0aFE6HMLCEQOb+kjV5i4WEQlPEfjlb+p9s0zDL9/lNDW+A=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR11MB6733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(366004)(39860400002)(376002)(346002)(136003)(451199021)(26005)(9686003)(6506007)(6512007)(44832011)(316002)(83380400001)(66556008)(4326008)(66476007)(66946007)(966005)(6486002)(6666004)(107886003)(186003)(478600001)(110136005)(54906003)(4744005)(2906002)(5660300002)(8676002)(8936002)(82960400001)(86362001)(7416002)(41300700001)(38100700002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+1D0SlJMfaW1rlEW6Yof0dSl5gZIFF0eRMG0D98jrMNYT4H6Ukz2yGpcyf9o?=
- =?us-ascii?Q?R1DEbagIUxwYtd0vmw2oyXKF5oUL2oiOlEvFAvQymu8lXbzcEUlcucdbh7lp?=
- =?us-ascii?Q?Z49pKA2bj4KGMXS2T4S7HFl81Hvve5nRt4WHey2AjhNojl0I8YYGicMkapZp?=
- =?us-ascii?Q?0W+P6pU9ynYTRHV0VdoijUWPzE0657I5dSSMmj2a0x5Rllkp9/WhRalgLcei?=
- =?us-ascii?Q?YAwScHHUQGOQv5Ru2T91Pw1X+Q/GaksKE4gMW1Ws2qaHom7hZC0ZcZw0hAfF?=
- =?us-ascii?Q?wUH6CYMsF5ePFyRbBVlhG5cLKzpdcU4dr2byfTvlXS1RmDLkhgMXZviZzkWH?=
- =?us-ascii?Q?bj+e7WpHw0O5YmshCzMToFYCBPeFlZrFMdgnpHetcULo5uzj4+S1tK/eUQFY?=
- =?us-ascii?Q?hJYgzQopw4FyewutvUG26pDSnHwQ9GgLaYMI1F3q/a0EleRS5NqRBiCf8mAQ?=
- =?us-ascii?Q?MzLZgu7UVBnNW8PW217uNGfKGVtPJ5Ajprl1uRTSM9cfOsnX8aFPy70k4QYk?=
- =?us-ascii?Q?EWbTWELnpapZ2qarMFkHSHsnu2qd56gqS+voyR4SB35cBxcfUeVgcItHXFmS?=
- =?us-ascii?Q?GBbO5do9LzUyeYf61XXb7f78HT+bUa2CcnWdW3dbX4epdrudiryv3iYmExIt?=
- =?us-ascii?Q?EFiSN9KOXLjbhp6mPlR2Jlk2Mgh6XeKG4L3H1PBGuRprD/r3uQR7elthzQJ+?=
- =?us-ascii?Q?WWQclqYq0V79OVrZ0m3TDDF+fmjzJ9DSJsqRo5SB6IOB4DNb1944e8g54xDC?=
- =?us-ascii?Q?0oc3tHOXL7Swas0l1ZQ6B34GKub//DnTC+Y1MYhwu0IEGd80Hzf4NV89JYuc?=
- =?us-ascii?Q?mU7nPt9BSIjiqBxnjSIsmAqPQLMVxc+Mdn1wYqyu4orZjGjOgXRCyidbWe1I?=
- =?us-ascii?Q?HXZ/Ug0yHW0C3pI+ZFnSpJnxquveV9Vd/C1iEHj1zyaBdYpnfPNFPbAdNjOk?=
- =?us-ascii?Q?P8+Lg4vWM4l1GUOdtZC8UfEzRCLh1L/zPknQYKPemuMc0twPzWE3gTpT+t0D?=
- =?us-ascii?Q?XmYaE+sJ78MTa4zJf8NWq9Q/bz2wLXtZuMcT0GojgC7c1CCySfH4uQwuMm1a?=
- =?us-ascii?Q?0oxG9UwiyH1s95HnAE16OHXWwPHpFdklxPi3hX/CjcCgvEjvAChvQtnCkW1e?=
- =?us-ascii?Q?SGs6Q3Y4AJOYPUAIeGdQ+zdnuZosKTEXquDRR312f6a1UAefRPpxBPEs3IAH?=
- =?us-ascii?Q?2FxZDkE9o/K39nTPxdpMqdzjw7Efuo6jZL+O7sU5WILoPUVCoZujPMb+x+JZ?=
- =?us-ascii?Q?nyY1TTQSeRJjQPBikSBXBjwvCveus4vsbpBkWWQnvRrd+U2jDrcpDxLzLJWF?=
- =?us-ascii?Q?lTjJ++qpk4NCAznh+FFfGKMR0miAMI+dmi4F7SBcyqkJfnESvwEoA96l+PD3?=
- =?us-ascii?Q?7u9aRkslwE5w8yIZ6YnAwBcyYo5ZFTITcu0ouudaZO/TRl7emaojLDXGQHzi?=
- =?us-ascii?Q?H4urdwK2Ff+i7eTwW2b1gtbK1q8D/3u+ptgDH21E1/LffFdpkUS9alh17G1L?=
- =?us-ascii?Q?2ewdOR1wUUsCozP4ydOvtm5RrBZKys4blocJs/jO6lqX3rronkD0TUiFNoQA?=
- =?us-ascii?Q?rpBwx02R+16OiATBJTJN2jZtmGMs9k0mjFlbMMRK?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bda20cc-8738-4c2b-fbc8-08db683715c9
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 15:43:20.2806 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CZ/58zJj7o2V1sN90Dl4gTR9njfgW/0qH+4zcYLmDNPy1HKjCVHP4yeYSibNoFUTPo7+nJL5htTz3xI4FCsT2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4550
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=ira.weiny@intel.com;
- helo=mga11.intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230608095231.225450-1-zhenzhong.duan@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -178,14 +100,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shesha Bhushan Sreenivasamurthy wrote:
-> Hi Fan,
->    I am implementing DCD FMAPI commands and planning to start pushing changes to the below branch. That requires the contributions you have made. Can your changes be pushed to the below branch ?
+On Thu, Jun 08, 2023 at 05:52:26PM +0800, Zhenzhong Duan wrote:
+> Hi All,
 > 
-> https://gitlab.com/jic23/qemu/-/tree/cxl-2023-05-25
+> This patchset includes some fixes on VFIO dirty sync and vIOMMU.
+> PATCH1 isn't needed now as dependent changes in PATCH2 is removed,
+> but as Peter has given Reviewed-by, leave it to maintainer to
+> decide if pick or not.
 
-This is the branch I'm trying to use as well.
+Let's drop patch 1 until it's really used.  Thanks,
 
-Thanks,
-Ira
+-- 
+Peter Xu
+
 
