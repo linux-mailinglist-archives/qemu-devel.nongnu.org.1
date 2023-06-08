@@ -2,43 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CD672BCE3
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 11:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2950A7286C0
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 19:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8e2p-00089D-EL; Mon, 12 Jun 2023 05:41:03 -0400
+	id 1q7JtK-0008UH-Pd; Thu, 08 Jun 2023 13:57:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q8e2U-00084V-K2
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 05:40:52 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1q7JtJ-0008Tk-7A
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 13:57:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q8e2S-0002tm-DB
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 05:40:42 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 997CA11EECC;
- Mon, 12 Jun 2023 09:40:36 +0000 (UTC)
-From: ~jhogberg <jhogberg@git.sr.ht>
-Date: Thu, 08 Jun 2023 19:49:15 +0200
-Subject: [PATCH qemu v2 1/2] target/arm: Handle IC IVAU to improve
- compatibility with JITs
-MIME-Version: 1.0
-Message-ID: <168656283612.26761.9869630057811681568-1@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168656283612.26761.9869630057811681568-0@git.sr.ht>
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1q7JtH-0000dX-I5
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 13:57:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686247061;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type;
+ bh=4mJL0p+dXYtHUNHX84VZGaRjD5xRWpy6/Fuia8VRXOk=;
+ b=DEdsakNUtQDWn/R5zHarFUgP0kQsrpk47s8Gniiz5Rp/8Mhyt/t0xLsELKgIzw1bE/BpGV
+ mvnJs2JeyUrxVA2W8DTVwz97k7gmslaEBcOhRH96jNFwMVObhOEbgwHu6ezNIInr0uyiqV
+ jK3dJIc66lLKBxu5/I2/d8oa6WtKHp4=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-208-c-m8oDkwM76BAJomyXGwEA-1; Thu, 08 Jun 2023 13:57:39 -0400
+X-MC-Unique: c-m8oDkwM76BAJomyXGwEA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9DCD83C0C89F
+ for <qemu-devel@nongnu.org>; Thu,  8 Jun 2023 17:57:39 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.206])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 62C662026D49
+ for <qemu-devel@nongnu.org>; Thu,  8 Jun 2023 17:57:39 +0000 (UTC)
+Date: Thu, 8 Jun 2023 18:57:38 +0100
+From: "Richard W.M. Jones" <rjones@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Subject: Collecting information from a hung qemu process
+Message-ID: <20230608175738.GA32610@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=rjones@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -51,118 +70,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~jhogberg <john.hogberg@ericsson.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John H=C3=B6gberg <john.hogberg@ericsson.com>
+I filed this bug about recent Linux hanging very rarely when booting
+on recent qemu:
 
-Unlike architectures with precise self-modifying code semantics
-(e.g. x86) ARM processors do not maintain coherency for instruction
-execution and memory, and require the explicit use of cache
-management instructions as well as an instruction barrier to make
-code updates visible (the latter on every core that is going to
-execute said code).
+https://gitlab.com/qemu-project/qemu/-/issues/1696
 
-While this is required to make JITs work on actual hardware, QEMU
-has gotten away with not handling this since it does not emulate
-caches, and unconditionally invalidates code whenever the softmmu
-or the user-mode page protection logic detects that code has been
-modified.
+As I'm able to reproduce this bug at will (albeit I have to wait for
+100s or 1000s of iterations of the test), I am able to observe the
+qemu process after it hangs.  Is there any information which is useful
+to collect from the hung qemu, such as stack traces, etc?
 
-Unfortunately the latter does not work in the face of dual-mapped
-code (a common W^X workaround), where one page is executable and
-the other is writable: user-mode has no way to connect one with the
-other as that is only known to the kernel and the emulated
-application.
+I know how to collect a stack trace, but if there's other information
+please give me a guide about how to collect that.
 
-This commit works around the issue by invalidating code in
-IC IVAU instructions.
+Rich.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1034
-
-Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: John H=C3=B6gberg <john.hogberg@ericsson.com>
----
- target/arm/helper.c | 47 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 3 deletions(-)
-
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index d4bee43bd0..235e3cd0b6 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5228,6 +5228,36 @@ static void mdcr_el2_write(CPUARMState *env, const ARM=
-CPRegInfo *ri,
-     }
- }
-=20
-+#ifdef CONFIG_USER_ONLY
-+/*
-+ * `IC IVAU` is handled to improve compatibility with JITs that dual-map the=
-ir
-+ * code to get around W^X restrictions, where one region is writable and the
-+ * other is executable.
-+ *
-+ * Since the executable region is never written to we cannot detect code
-+ * changes when running in user mode, and rely on the emulated JIT telling us
-+ * that the code has changed by executing this instruction.
-+ */
-+static void ic_ivau_write(CPUARMState *env, const ARMCPRegInfo *ri,
-+                          uint64_t value)
-+{
-+    uint64_t icache_line_mask, start_address, end_address;
-+    const ARMCPU *cpu;
-+
-+    cpu =3D env_archcpu(env);
-+
-+    icache_line_mask =3D (4 << extract32(cpu->ctr, 0, 4)) - 1;
-+    start_address =3D value & ~icache_line_mask;
-+    end_address =3D value | icache_line_mask;
-+
-+    mmap_lock();
-+
-+    tb_invalidate_phys_range(start_address, end_address);
-+
-+    mmap_unlock();
-+}
-+#endif
-+
- static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-     /*
-      * Minimal set of EL0-visible registers. This will need to be expanded
-@@ -5267,7 +5297,10 @@ static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-     { .name =3D "CURRENTEL", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 3, .opc1 =3D 0, .opc2 =3D 2, .crn =3D 4, .crm =3D 2,
-       .access =3D PL1_R, .type =3D ARM_CP_CURRENTEL },
--    /* Cache ops: all NOPs since we don't emulate caches */
-+    /*
-+     * Instruction cache ops. All of these except `IC IVAU` NOP because we
-+     * don't emulate caches.
-+     */
-     { .name =3D "IC_IALLUIS", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 1, .opc1 =3D 0, .crn =3D 7, .crm =3D 1, .opc2 =3D 0,
-       .access =3D PL1_W, .type =3D ARM_CP_NOP,
-@@ -5280,9 +5313,17 @@ static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-       .accessfn =3D access_tocu },
-     { .name =3D "IC_IVAU", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 1, .opc1 =3D 3, .crn =3D 7, .crm =3D 5, .opc2 =3D 1,
--      .access =3D PL0_W, .type =3D ARM_CP_NOP,
-+      .access =3D PL0_W,
-       .fgt =3D FGT_ICIVAU,
--      .accessfn =3D access_tocu },
-+      .accessfn =3D access_tocu,
-+#ifdef CONFIG_USER_ONLY
-+      .type =3D ARM_CP_NO_RAW,
-+      .writefn =3D ic_ivau_write
-+#else
-+      .type =3D ARM_CP_NOP
-+#endif
-+    },
-+    /* Cache ops: all NOPs since we don't emulate caches */
-     { .name =3D "DC_IVAC", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 1, .opc1 =3D 0, .crn =3D 7, .crm =3D 6, .opc2 =3D 1,
-       .access =3D PL1_W, .accessfn =3D aa64_cacheop_poc_access,
---=20
-2.38.5
+-- 
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+Fedora Windows cross-compiler. Compile Windows programs, test, and
+build Windows installers. Over 100 libraries supported.
+http://fedoraproject.org/wiki/MinGW
 
 
