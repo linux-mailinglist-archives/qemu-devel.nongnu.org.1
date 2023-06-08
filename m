@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7B2727BB5
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 11:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B5A727C4C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 12:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7CBJ-0002jR-Bt; Thu, 08 Jun 2023 05:43:49 -0400
+	id 1q7CWO-0008V2-NT; Thu, 08 Jun 2023 06:05:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q7CBG-0002iN-Kz
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:43:46 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1q7CBE-0003QQ-Kt
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:43:46 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-30ae5f2ac94so416562f8f.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 02:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686217422; x=1688809422;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=MijNI4hAhZ4cu4jN5sF6esq4LAL6ym5TlUGtpT8RyC0=;
- b=VQQd+mgbdaWnIl3WHt3JP258Bh88lKlJaS8sakFYNQkmvN1ILsByBOPxS/g/5Xn00V
- 0gqIOZ20lxrwHRII5Ct69NsP+fJ/bxt10uPN7Lgo/ZxUeAvfHQTcVWbRmISPFPywNDD9
- tWlk5u7gwiR6HN+QadOMXg2KGqZ0/cKNtRDkq+BKtCoU1wvpI16yMUyUJssT9PyWijvx
- DrjidbqeR5GyBwg3EOwo54ku4121sHzDgUYYms2HlQdGrdvurua0rX7m73meTtRexP/B
- 6XNeLjIM4513ijymt1ijUWuQVghROhup+Ha1WYN4EC2l9qabp/BcnC1ls9KiiHXxXvjo
- RLMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686217422; x=1688809422;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MijNI4hAhZ4cu4jN5sF6esq4LAL6ym5TlUGtpT8RyC0=;
- b=CJpYqXB5fTbcntbozDWuIgULgzVr1X+xGvNlMQ+Xxo11We+CyPM/iADtbGNzWFws4f
- 7ID+mVMqF9WPCzYzdSzyBW2Z775SXyQcfJYnwj5bCtRc7q2FQ1Poh94jyOSetGXpjueP
- QNPn5aeQuXq3AdQl2zTiR/SC7RHQWkr2URO0vo9djwOTUNOQszIasKSn5UHf5r96bDRI
- K4Q0eoZAAPAAY4tsK92GP5wUVcIXcWTLwj5XBXcE6PzBY/Zao9cvt5Z1E+EqxVJnx71T
- 3AN0NiEFQrz5F00JjA3KAJrLmvf5Smzaq/X2fnjirH52gbk5sdhiUcPbp50d24UMlbZP
- eCiA==
-X-Gm-Message-State: AC+VfDyflXPj2tiJKQZ8aq3ziofBzrwqp5h6rcvxqnHy8LbIUwsZfZCW
- 48u5lfe5W0aX6WrlW/5XJ7lnKA==
-X-Google-Smtp-Source: ACHHUZ55pJlAsWQAgxRsQysryuVBUp+mS9znJneEJVMrPzLoXnH8/Pv974bbzcnxZJtMDdMjfjyZlQ==
-X-Received: by 2002:adf:e58a:0:b0:30e:4266:14a4 with SMTP id
- l10-20020adfe58a000000b0030e426614a4mr6850937wrm.37.1686217421946; 
- Thu, 08 Jun 2023 02:43:41 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- m12-20020adfe0cc000000b003078681a1e8sm1056052wri.54.2023.06.08.02.43.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 02:43:41 -0700 (PDT)
-Date: Thu, 8 Jun 2023 11:43:34 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Tommy Wu <tommy.wu@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, frank.chang@sifive.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
- richard.henderson@linaro.org
-Subject: Re: [PATCH v4 0/4] target/riscv: Add Smrnmi support.
-Message-ID: <20230608-01a21738d16a20808eceb795@orel>
-References: <20230608072314.3561109-1-tommy.wu@sifive.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1q7CWK-0008US-16
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:05:32 -0400
+Received: from mga17.intel.com ([192.55.52.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1q7CWH-0007nc-Lv
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:05:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1686218729; x=1717754729;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9F+Mc9VF74DcZg6hFSGE0eB7mt8jnYFlQG5NmflvmYs=;
+ b=JCOf3NY1rsIx/1A/N/fLwGyYOwbM7XO3RtwGHDJlriHRYwk0/MVHgjEx
+ Efd5vOuoyKwMdHiAIiN4xEGQIJ4euMBay9DGBaPfzAVRL41w/oMRezvYa
+ EgzWQtsg48IC7ftaV1iRXRbprhZ+a+hlRjIwZOnhGgK/xlRGgYWtorjNj
+ nv8OOXuGO3E0sTXsV93y0VF5LWcWjlxGu6l3fhtBbrPN7Xa4HovDuIVbz
+ ppDuOruRr9nF5oq9c2CZIR2Qj+hNNDaQOKtOTXAvvtHY4ZraxpNNtWQTj
+ HcRFW/sTDOehGjhHP8Jar65q+Es1VJmPst+STxa/zKRaaLt/iyhrL022Z g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337624380"
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="337624380"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jun 2023 03:05:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="956652017"
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="956652017"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jun 2023 03:05:18 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, peterx@redhat.com, jasowang@redhat.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, alex.williamson@redhat.com, clg@redhat.com,
+ david@redhat.com, philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
+ yi.l.liu@intel.com, chao.p.peng@intel.com
+Subject: [PATCH v3 0/5] Optimize UNMAP call and bug fix
+Date: Thu,  8 Jun 2023 17:52:26 +0800
+Message-Id: <20230608095231.225450-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230608072314.3561109-1-tommy.wu@sifive.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.151;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga17.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,70 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 12:23:10AM -0700, Tommy Wu wrote:
-> This patchset added support for Smrnmi Extension in RISC-V.
-> 
-> There are four new CSRs and one new instruction added to allow NMI to be
-> resumable in RISC-V, which are:
-> 
-> =============================================================
->   * mnscratch (0x740)
->   * mnepc     (0x741)
->   * mncause   (0x742)
->   * mnstatus  (0x744)
-> =============================================================
->   * mnret: To return from RNMI interrupt/exception handler.
-> =============================================================
-> 
-> RNMI also has higher priority than any other interrupts or exceptions
-> and cannot be disabled by software.
-> 
-> RNMI may be used to route to other devices such as Bus Error Unit or
-> Watchdog Timer in the future.
-> 
-> The interrupt/exception trap handler addresses of RNMI are
-> implementation defined.
+Hi All,
 
-Is there an M-mode software PoC for this with implemented handlers?
+This patchset includes some fixes on VFIO dirty sync and vIOMMU.
+PATCH1 isn't needed now as dependent changes in PATCH2 is removed,
+but as Peter has given Reviewed-by, leave it to maintainer to
+decide if pick or not.
 
-Thanks,
-drew
+Tested net card passthrough, ping/ssh pass
+Tested DSA vdev passthrough, start dmatest then do live migration, pass.
+Checked the LM performance before and after patch, no explicit difference.
+(DSA vdev requires customed kernel and qemu)
 
-> 
-> Changelog:
-> 
-> v4 
-> * Fix some coding style issues.
-> ( Thank Daniel for the suggestions. )
-> 
-> v3
-> * Update to the newest version of Smrnmi extension specification.
-> 
-> v2
->   * split up the series into more commits for convenience of review.
->   * add missing rnmi_irqvec and rnmi_excpvec properties to riscv_harts.
-> 
-> Tommy Wu (4):
->   target/riscv: Add Smrnmi cpu extension.
->   target/riscv: Add Smrnmi CSRs.
->   target/riscv: Handle Smrnmi interrupt and exception.
->   target/riscv: Add Smrnmi mnret instruction.
-> 
->  hw/riscv/riscv_hart.c                         | 21 +++++
->  include/hw/riscv/riscv_hart.h                 |  4 +
->  target/riscv/cpu.c                            | 18 ++++
->  target/riscv/cpu.h                            | 11 +++
->  target/riscv/cpu_bits.h                       | 23 ++++++
->  target/riscv/cpu_helper.c                     | 81 ++++++++++++++++--
->  target/riscv/csr.c                            | 82 +++++++++++++++++++
->  target/riscv/helper.h                         |  1 +
->  target/riscv/insn32.decode                    |  3 +
->  .../riscv/insn_trans/trans_privileged.c.inc   | 12 +++
->  target/riscv/op_helper.c                      | 49 +++++++++++
->  11 files changed, 300 insertions(+), 5 deletions(-)
-> 
-> -- 
-> 2.31.1
-> 
-> 
+v3:
+updated PATCH2 to fix VFIO dirty sync in Peter suggested way.
+split PATCH4 in v2 to PATCH4 and PATCH5 as they target different issue.
+dropped PATCH3 in v2.
+add Suggested-by.
+
+Thanks
+
+Zhenzhong Duan (5):
+  util: Add iova_tree_foreach_range_data
+  intel_iommu: Fix a potential issue in VFIO dirty page sync
+  intel_iommu: Fix flag check in replay
+  intel_iommu: Fix address space unmap
+  intel_iommu: Optimize out some unnecessary UNMAP calls
+
+ hw/i386/intel_iommu.c    | 37 +++++++++++++++++++------------------
+ include/qemu/iova-tree.h | 17 +++++++++++++++--
+ util/iova-tree.c         | 31 +++++++++++++++++++++++++++++++
+ 3 files changed, 65 insertions(+), 20 deletions(-)
+
+-- 
+2.34.1
+
 
