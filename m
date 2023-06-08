@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5DC72811A
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36972728132
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWg-0003Nb-MH; Thu, 08 Jun 2023 09:18:06 -0400
+	id 1q7FWi-0003R7-Gl; Thu, 08 Jun 2023 09:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6F-0002Is-Kg
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6F-0002J1-U8
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:39 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6C-0006Ur-Gk
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:38 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f61735676fso559177e87.2
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6D-0006V6-53
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:39 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4f122ff663eso550659e87.2
  for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220954; x=1688812954;
+ d=gmail.com; s=20221208; t=1686220955; x=1688812955;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AI+7AqSnoQezfqx21rFzO/758w7Rg9rRRO4yk1jYXRY=;
- b=MgVXJDM+UNjtgU3KR2ydqu0X/J5fK9s6FK90Cu7W7jV6gy3yDRmFODRGM4UVE0ezk8
- CNPDsK31y+1okYNp3hYHXA22sH1omlqixpJbUP3gcoGQrfTMhNcO7v3aqqnz1eg0e5e/
- EdIhFdv6aisIAT1QA9IClgXlIqI359Yq25KDCkNlfnx/fBD0YYa69GYSHOcF0qVO0zdC
- jq59NTruP9S4Chwd/MEq9I4tCSvfte1Q2buQ+JQbFv27uKXMs7TPeQLD5s3HmAHeGKR0
- +PGw5JkQ2jnsheolGWix1nHgbIreyAkBdyJFabEay69u/igVpgYKDBgiU503LKWYWXxh
- r/OQ==
+ bh=VOKWKGLAIXv9YiGFIoj/OF3at1WTFXY+plOc1+ku6cg=;
+ b=PMkrJPldKugqj1+qbWKmcs7i7i5Kn0zqE+dtlGOMOX9kS687Dj7SEjzbM7bz8JG352
+ A7ywmAmkr32wsGPhDyfdsrILaxny5B3cr8ixHMCVm8Zmav/Awqtj8zqwtSGzXDJ0ZY4Z
+ fqAlyNoDSYYyiHmESOL1mZ6gkEPvBRGPdhmeR2mZQHSnZXDcjR0LJjOKQaCJ3GYDMELu
+ k0M7pNt1hCnS8VNQFDvrKgnihu72XuD035wXOw4/5aXpwWX2t49jXggx7J2PKXxSUu1e
+ 5tOS+v7qOt3dMCU1b1/Rnb9Nm7GJxM83/uJFsjvIhVQi2JUb6uL5ANXKBo2/4U6Hd5t1
+ owQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220954; x=1688812954;
+ d=1e100.net; s=20221208; t=1686220955; x=1688812955;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AI+7AqSnoQezfqx21rFzO/758w7Rg9rRRO4yk1jYXRY=;
- b=i1cdnwqpdJKZ4PGcGnwK/sY+nOjmKm7Vi0v4yuEzk67ZDTvagFXqpgAzVtc+mm4iT9
- PjwU1GHzMRAHxt6Slrn484Je2DB/JJlQts7LxDFlJcrfs/0k/NoNWxtyS1w0ewkrk6+A
- msJ2BRBSPXnIU8RhIIOKYG0hsDx50KyKsearHK0eYS5zl7yhcOpUQ0qfMBbcPOL1EfnJ
- pgVxvIcSQH9AeJOiuiRoOjklTvgPakH0pcZJvAd13M6jSOwleP2KU4xE5KNabHR4A/U6
- ObG1t8S1gbHdlyBeCH8AUuYkkzwF03Xqy5zeKnbhQxTYPsRuwGlQzdXvRWvWV1WXXCSj
- 832A==
-X-Gm-Message-State: AC+VfDx6SyRou8aG/IwXUl1xkYK/f6NJsxczidG9BIN152Ylx9quhDGH
- iU8xnIWGqkBPXp5piyNkxE+qpxw+P6M=
-X-Google-Smtp-Source: ACHHUZ5EoqxCgbSE+64ssjM/N+BM8UDj+5gXheqxS00pG3gzZmTn47QHgPG1MhzlgSefOSw2C8wkjg==
-X-Received: by 2002:ac2:4825:0:b0:4f3:a99c:fbbe with SMTP id
- 5-20020ac24825000000b004f3a99cfbbemr3180649lft.14.1686220954335; 
- Thu, 08 Jun 2023 03:42:34 -0700 (PDT)
+ bh=VOKWKGLAIXv9YiGFIoj/OF3at1WTFXY+plOc1+ku6cg=;
+ b=QE4XjsNh/ExpsgE7fneX3gqvQUFALrIVjVUw7azY47aMkFTYax97BY3AiLEJ7nfmkU
+ S9/fv2LQqP/LzAQPPfDPUQWVubDeD4agBwMqAWyHJlImtDSkMHr3PUlgqXQzpAmFKYfE
+ gG5fG/zlbimDFBW2/dE8p10/yzwdGlDpflZoeDNMDHwo6GLB+uoYwiBMxfTzZjqY1mKA
+ jKQYDMZzpzKNYLNBYa2KogU3nATOBO96xfqHYXnsumXNlebfW41/5XjUWpqWJz+vTj/5
+ 1d9mZ2IhVyIBMNrLwYSfQkkrPazaI6K4MdivXeSwyp0o2GgMUPGNBe+V93max1woGIPl
+ viGQ==
+X-Gm-Message-State: AC+VfDychpL2BNQ/I3jUtk0ecYwlS+HMJNq11HXre6TcypMZDSSTvKRF
+ kd3PVmKEGXUJvUZ86ZTGI8opSkRDDdE=
+X-Google-Smtp-Source: ACHHUZ59xw8r0w5bd2NKru5o2v90CKh+qLQ6d5Z5qu659dsYoAfofI2ks2jdKcdmw+LsCx/60g514g==
+X-Received: by 2002:a19:ee07:0:b0:4f3:a812:5ae with SMTP id
+ g7-20020a19ee07000000b004f3a81205aemr2979000lfb.37.1686220955382; 
+ Thu, 08 Jun 2023 03:42:35 -0700 (PDT)
 Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
  [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.33
+ w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:42:33 -0700 (PDT)
+ Thu, 08 Jun 2023 03:42:35 -0700 (PDT)
 From: Siarhei Volkau <lis8215@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
@@ -62,17 +62,17 @@ Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Stefan Markovic <smarkovic@wavecomp.com>,
  Aleksandar Markovic <amarkovic@wavecomp.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 09/33] target/mips: Add emulation of MXU S32CPS D16CPS Q8ABD
- Q16SAT insns
-Date: Thu,  8 Jun 2023 13:41:58 +0300
-Message-Id: <20230608104222.1520143-10-lis8215@gmail.com>
+Subject: [PATCH 10/33] target/mips: Add emulation of MXU D16MULF D16MULE
+ instructions
+Date: Thu,  8 Jun 2023 13:41:59 +0300
+Message-Id: <20230608104222.1520143-11-lis8215@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 References: <20230608104222.1520143-1-lis8215@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=lis8215@gmail.com; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,337 +97,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These instructions are part of pool2, see the grand tree above
+These instructions are part of pool3, see the grand tree above
 in the file.
+The instructions are close to D16MUL so common generation function
+provided.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
 ---
- target/mips/tcg/mxu_translate.c | 296 +++++++++++++++++++++++++++++++-
- 1 file changed, 293 insertions(+), 3 deletions(-)
+ target/mips/tcg/mxu_translate.c | 95 +++++++++++++++++++++++++++++++--
+ 1 file changed, 90 insertions(+), 5 deletions(-)
 
 diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index 2eebdfe8ca..b3e3937545 100644
+index b3e3937545..d1f4fc79de 100644
 --- a/target/mips/tcg/mxu_translate.c
 +++ b/target/mips/tcg/mxu_translate.c
-@@ -361,6 +361,7 @@ enum {
-     OPC_MXU_S32MSUB  = 0x04,
-     OPC_MXU_S32MSUBU = 0x05,
+@@ -363,6 +363,7 @@ enum {
      OPC_MXU__POOL01  = 0x06,
-+    OPC_MXU__POOL02  = 0x07,
+     OPC_MXU__POOL02  = 0x07,
      OPC_MXU_D16MUL   = 0x08,
++    OPC_MXU__POOL03  = 0x09,
      OPC_MXU_D16MAC   = 0x0A,
      OPC_MXU__POOL04  = 0x10,
-@@ -407,6 +408,16 @@ enum {
-     OPC_MXU_Q8ADD    = 0x07,
+     OPC_MXU__POOL05  = 0x11,
+@@ -418,6 +419,14 @@ enum {
+     OPC_MXU_Q16SAT   = 0x06,
  };
  
 +/*
-+ * MXU pool 02
++ * MXU pool 03
 + */
 +enum {
-+    OPC_MXU_S32CPS   = 0x00,
-+    OPC_MXU_D16CPS   = 0x02,
-+    OPC_MXU_Q8ABD    = 0x04,
-+    OPC_MXU_Q16SAT   = 0x06,
++    OPC_MXU_D16MULF  = 0x00,
++    OPC_MXU_D16MULE  = 0x01,
 +};
 +
  /*
   * MXU pool 04 05 06 07 08 09 10 11
   */
-@@ -1677,11 +1688,154 @@ static void gen_mxu_q8avg(DisasContext *ctx, bool round45)
- 
- 
- /*
-- *                 MXU instruction category: Arithmetic
-- *                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *      MXU instruction category: Addition and subtraction
-+ *      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  *
-- *                       Q8ADD
-+ *              S32CPS      D16CPS
-+ *                                       Q8ADD
-+ */
-+
-+/*
-+ *  S32CPS
-+ *    Update XRa if XRc < 0 by value of 0 - XRb
-+ *    else XRa = XRb
-+ */
-+static void gen_mxu_S32CPS(DisasContext *ctx)
-+{
-+    uint32_t pad, XRc, XRb, XRa;
-+
-+    pad = extract32(ctx->opcode, 21, 5);
-+    XRc = extract32(ctx->opcode, 14, 4);
-+    XRb = extract32(ctx->opcode, 10, 4);
-+    XRa = extract32(ctx->opcode,  6, 4);
-+
-+    if (unlikely(pad != 0)) {
-+        /* opcode padding incorrect -> do nothing */
-+    } else if (unlikely(XRa == 0)) {
-+        /* destination is zero register -> do nothing */
-+    } else if (unlikely(XRb == 0)) {
-+        /* XRc make no sense 0 - 0 = 0 -> just set destination to zero */
-+        tcg_gen_movi_tl(mxu_gpr[XRa - 1], 0);
-+    } else if (unlikely(XRc == 0)) {
-+        /* condition always false -> just move XRb to XRa */
-+        tcg_gen_mov_tl(mxu_gpr[XRa - 1], mxu_gpr[XRb - 1]);
-+    } else {
-+        /* the most general case */
-+        TCGv t0 = tcg_temp_new();
-+        TCGLabel *l_not_less = gen_new_label();
-+        TCGLabel *l_done = gen_new_label();
-+
-+        tcg_gen_brcondi_tl(TCG_COND_GE, mxu_gpr[XRc - 1], 0, l_not_less);
-+        tcg_gen_neg_tl(t0, mxu_gpr[XRb - 1]);
-+        tcg_gen_br(l_done);
-+        gen_set_label(l_not_less);
-+        gen_load_mxu_gpr(t0, XRb);
-+        gen_set_label(l_done);
-+        gen_store_mxu_gpr(t0, XRa);
-+    }
-+}
-+
-+/*
-+ *  D16CPS
-+ *    Update XRa[0..1] if XRc[0..1] < 0 by value of 0 - XRb[0..1]
-+ *    else XRa[0..1] = XRb[0..1]
-  */
-+static void gen_mxu_D16CPS(DisasContext *ctx)
-+{
-+    uint32_t pad, XRc, XRb, XRa;
-+
-+    pad = extract32(ctx->opcode, 21, 5);
-+    XRc = extract32(ctx->opcode, 14, 4);
-+    XRb = extract32(ctx->opcode, 10, 4);
-+    XRa = extract32(ctx->opcode,  6, 4);
-+
-+    if (unlikely(pad != 0)) {
-+        /* opcode padding incorrect -> do nothing */
-+    } else if (unlikely(XRa == 0)) {
-+        /* destination is zero register -> do nothing */
-+    } else if (unlikely(XRb == 0)) {
-+        /* XRc make no sense 0 - 0 = 0 -> just set destination to zero */
-+        tcg_gen_movi_tl(mxu_gpr[XRa - 1], 0);
-+    } else if (unlikely(XRc == 0)) {
-+        /* condition always false -> just move XRb to XRa */
-+        tcg_gen_mov_tl(mxu_gpr[XRa - 1], mxu_gpr[XRb - 1]);
-+    } else {
-+        /* the most general case */
-+        TCGv t0 = tcg_temp_new();
-+        TCGv t1 = tcg_temp_new();
-+        TCGLabel *l_done_hi = gen_new_label();
-+        TCGLabel *l_not_less_lo = gen_new_label();
-+        TCGLabel *l_done_lo = gen_new_label();
-+
-+        tcg_gen_sextract_tl(t0, mxu_gpr[XRc - 1], 16, 16);
-+        tcg_gen_sextract_tl(t1, mxu_gpr[XRb - 1], 16, 16);
-+        tcg_gen_brcondi_tl(TCG_COND_GE, t0, 0, l_done_hi);
-+        tcg_gen_subfi_tl(t1, 0, t1);
-+
-+        gen_set_label(l_done_hi);
-+        tcg_gen_shli_i32(t1, t1, 16);
-+
-+        tcg_gen_sextract_tl(t0, mxu_gpr[XRc - 1],  0, 16);
-+        tcg_gen_brcondi_tl(TCG_COND_GE, t0, 0, l_not_less_lo);
-+        tcg_gen_sextract_tl(t0, mxu_gpr[XRb - 1],  0, 16);
-+        tcg_gen_subfi_tl(t0, 0, t0);
-+        tcg_gen_br(l_done_lo);
-+
-+        gen_set_label(l_not_less_lo);
-+        tcg_gen_extract_tl(t0, mxu_gpr[XRb - 1],  0, 16);
-+
-+        gen_set_label(l_done_lo);
-+        tcg_gen_deposit_tl(mxu_gpr[XRa - 1], t1, t0, 0, 16);
-+    }
-+}
-+
-+/*
-+ *  Q8ABD XRa, XRb, XRc
-+ *  Gets absolute difference for quadruple of 8-bit
-+ *  packed in XRb to another one in XRc,
-+ *  put the result in XRa.
-+ *  a.k.a. XRa[0..3] = abs(XRb[0..3] - XRc[0..3]);
-+ */
-+static void gen_mxu_Q8ABD(DisasContext *ctx)
-+{
-+    uint32_t pad, XRc, XRb, XRa;
-+
-+    pad = extract32(ctx->opcode, 21, 3);
-+    XRc = extract32(ctx->opcode, 14, 4);
-+    XRb = extract32(ctx->opcode, 10, 4);
-+    XRa = extract32(ctx->opcode,  6, 4);
-+
-+    if (unlikely(pad != 0)) {
-+        /* opcode padding incorrect -> do nothing */
-+    } else if (unlikely(XRa == 0)) {
-+        /* destination is zero register -> do nothing */
-+    } else if (unlikely((XRb == 0) && (XRc == 0))) {
-+        /* both operands zero registers -> just set destination to zero */
-+        tcg_gen_movi_tl(mxu_gpr[XRa - 1], 0);
-+    } else {
-+        /* the most general case */
-+        TCGv t0 = tcg_temp_new();
-+        TCGv t1 = tcg_temp_new();
-+        TCGv t2 = tcg_temp_new();
-+        TCGv t3 = tcg_temp_new();
-+        TCGv t4 = tcg_temp_new();
-+
-+        gen_load_mxu_gpr(t3, XRb);
-+        gen_load_mxu_gpr(t4, XRc);
-+        tcg_gen_movi_tl(t2, 0);
-+
-+        for (int i = 0; i < 4; i++) {
-+            tcg_gen_extract_tl(t0, t3, 8 * i, 8);
-+            tcg_gen_extract_tl(t1, t4, 8 * i, 8);
-+
-+            tcg_gen_sub_tl(t0, t0, t1);
-+            tcg_gen_abs_tl(t0, t0);
-+
-+            tcg_gen_deposit_tl(t2, t2, t0, 8 * i, 8);
-+        }
-+        gen_store_mxu_gpr(t2, XRa);
-+    }
-+}
- 
- /*
-  *  Q8ADD XRa, XRb, XRc, ptn2
-@@ -1748,6 +1902,114 @@ static void gen_mxu_Q8ADD(DisasContext *ctx)
-     }
+@@ -662,9 +671,14 @@ static void gen_mxu_s8ldd(DisasContext *ctx)
  }
  
-+/*
-+ *                 MXU instruction category: Miscellaneous
-+ *                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ *                       Q16SAT
-+ */
-+
-+/*
-+ *  Q16SAT XRa, XRb, XRc
-+ *  Packs four 16-bit signed integers in XRb and XRc to
-+ *  four saturated unsigned 8-bit into XRa.
-+ *
-+ */
-+static void gen_mxu_Q16SAT(DisasContext *ctx)
-+{
-+    uint32_t pad, XRc, XRb, XRa;
-+
-+    pad = extract32(ctx->opcode, 21, 3);
-+    XRc = extract32(ctx->opcode, 14, 4);
-+    XRb = extract32(ctx->opcode, 10, 4);
-+    XRa = extract32(ctx->opcode,  6, 4);
-+
-+    if (unlikely(pad != 0)) {
-+        /* opcode padding incorrect -> do nothing */
-+    } else if (unlikely(XRa == 0)) {
-+        /* destination is zero register -> do nothing */
-+    } else {
-+        /* the most general case */
-+        TCGv t0 = tcg_temp_new();
-+        TCGv t1 = tcg_temp_new();
-+        TCGv t2 = tcg_temp_new();
-+
-+        tcg_gen_movi_tl(t2, 0);
-+        if (XRb != 0) {
-+            TCGLabel *l_less_hi = gen_new_label();
-+            TCGLabel *l_less_lo = gen_new_label();
-+            TCGLabel *l_lo = gen_new_label();
-+            TCGLabel *l_greater_hi = gen_new_label();
-+            TCGLabel *l_greater_lo = gen_new_label();
-+            TCGLabel *l_done = gen_new_label();
-+
-+            tcg_gen_sari_tl(t0, mxu_gpr[XRb - 1], 16);
-+            tcg_gen_brcondi_tl(TCG_COND_LT, t0, 0, l_less_hi);
-+            tcg_gen_brcondi_tl(TCG_COND_GT, t0, 255, l_greater_hi);
-+            tcg_gen_br(l_lo);
-+            gen_set_label(l_less_hi);
-+            tcg_gen_movi_tl(t0, 0);
-+            tcg_gen_br(l_lo);
-+            gen_set_label(l_greater_hi);
-+            tcg_gen_movi_tl(t0, 255);
-+
-+            gen_set_label(l_lo);
-+            tcg_gen_shli_tl(t1, mxu_gpr[XRb - 1], 16);
-+            tcg_gen_sari_tl(t1, t1, 16);
-+            tcg_gen_brcondi_tl(TCG_COND_LT, t1, 0, l_less_lo);
-+            tcg_gen_brcondi_tl(TCG_COND_GT, t1, 255, l_greater_lo);
-+            tcg_gen_br(l_done);
-+            gen_set_label(l_less_lo);
-+            tcg_gen_movi_tl(t1, 0);
-+            tcg_gen_br(l_done);
-+            gen_set_label(l_greater_lo);
-+            tcg_gen_movi_tl(t1, 255);
-+
-+            gen_set_label(l_done);
-+            tcg_gen_shli_tl(t2, t0, 24);
-+            tcg_gen_shli_tl(t1, t1, 16);
-+            tcg_gen_or_tl(t2, t2, t1);
-+        }
-+
-+        if (XRc != 0) {
-+            TCGLabel *l_less_hi = gen_new_label();
-+            TCGLabel *l_less_lo = gen_new_label();
-+            TCGLabel *l_lo = gen_new_label();
-+            TCGLabel *l_greater_hi = gen_new_label();
-+            TCGLabel *l_greater_lo = gen_new_label();
-+            TCGLabel *l_done = gen_new_label();
-+
-+            tcg_gen_sari_tl(t0, mxu_gpr[XRc - 1], 16);
-+            tcg_gen_brcondi_tl(TCG_COND_LT, t0, 0, l_less_hi);
-+            tcg_gen_brcondi_tl(TCG_COND_GT, t0, 255, l_greater_hi);
-+            tcg_gen_br(l_lo);
-+            gen_set_label(l_less_hi);
-+            tcg_gen_movi_tl(t0, 0);
-+            tcg_gen_br(l_lo);
-+            gen_set_label(l_greater_hi);
-+            tcg_gen_movi_tl(t0, 255);
-+
-+            gen_set_label(l_lo);
-+            tcg_gen_shli_tl(t1, mxu_gpr[XRc - 1], 16);
-+            tcg_gen_sari_tl(t1, t1, 16);
-+            tcg_gen_brcondi_tl(TCG_COND_LT, t1, 0, l_less_lo);
-+            tcg_gen_brcondi_tl(TCG_COND_GT, t1, 255, l_greater_lo);
-+            tcg_gen_br(l_done);
-+            gen_set_label(l_less_lo);
-+            tcg_gen_movi_tl(t1, 0);
-+            tcg_gen_br(l_done);
-+            gen_set_label(l_greater_lo);
-+            tcg_gen_movi_tl(t1, 255);
-+
-+            gen_set_label(l_done);
-+            tcg_gen_shli_tl(t0, t0, 8);
-+            tcg_gen_or_tl(t2, t2, t0);
-+            tcg_gen_or_tl(t2, t2, t1);
-+        }
-+        gen_store_mxu_gpr(t2, XRa);
-+    }
-+}
-+
- 
  /*
-  *                 MXU instruction category: align
-@@ -2087,6 +2349,31 @@ static void decode_opc_mxu__pool01(DisasContext *ctx)
+- * D16MUL XRa, XRb, XRc, XRd, optn2 - Signed 16 bit pattern multiplication
++ * D16MUL  XRa, XRb, XRc, XRd, optn2 - Signed 16 bit pattern multiplication
++ * D16MULF XRa, XRb, XRc, optn2 - Signed Q15 fraction pattern multiplication
++ *   with rounding and packing result
++ * D16MULE XRa, XRb, XRc, XRd, optn2 - Signed Q15 fraction pattern
++ *   multiplication with rounding
+  */
+-static void gen_mxu_d16mul(DisasContext *ctx)
++static void gen_mxu_d16mul(DisasContext *ctx, bool fractional,
++                           bool packed_result)
+ {
+     TCGv t0, t1, t2, t3;
+     uint32_t XRa, XRb, XRc, XRd, optn2;
+@@ -680,6 +694,12 @@ static void gen_mxu_d16mul(DisasContext *ctx)
+     XRd = extract32(ctx->opcode, 18, 4);
+     optn2 = extract32(ctx->opcode, 22, 2);
+ 
++    /*
++     * TODO: XRd field isn't used for D16MULF
++     * There's no knowledge how this field affect
++     * instruction decoding/behavior
++     */
++
+     gen_load_mxu_gpr(t1, XRb);
+     tcg_gen_sextract_tl(t0, t1, 0, 16);
+     tcg_gen_sextract_tl(t1, t1, 16, 16);
+@@ -705,8 +725,52 @@ static void gen_mxu_d16mul(DisasContext *ctx)
+         tcg_gen_mul_tl(t2, t1, t2);
          break;
      }
- }
+-    gen_store_mxu_gpr(t3, XRa);
+-    gen_store_mxu_gpr(t2, XRd);
++    if (fractional) {
++        TCGLabel *l_done = gen_new_label();
++        TCGv rounding = tcg_temp_new();
 +
-+static void decode_opc_mxu__pool02(DisasContext *ctx)
++        tcg_gen_shli_tl(t3, t3, 1);
++        tcg_gen_shli_tl(t2, t2, 1);
++        tcg_gen_andi_tl(rounding, mxu_CR, 0x2);
++        tcg_gen_brcondi_tl(TCG_COND_EQ, rounding, 0, l_done);
++        if (packed_result) {
++            TCGLabel *l_apply_bias_l = gen_new_label();
++            TCGLabel *l_apply_bias_r = gen_new_label();
++            TCGLabel *l_half_done = gen_new_label();
++            TCGv bias = tcg_temp_new();
++
++            /*
++             * D16MULF supports unbiased rounding aka "bankers rounding",
++             * "round to even", "convergent rounding"
++             */
++            tcg_gen_andi_tl(bias, mxu_CR, 0x4);
++            tcg_gen_brcondi_tl(TCG_COND_NE, bias, 0, l_apply_bias_l);
++            tcg_gen_andi_tl(t0, t3, 0x1ffff);
++            tcg_gen_brcondi_tl(TCG_COND_EQ, t0, 0x8000, l_half_done);
++            gen_set_label(l_apply_bias_l);
++            tcg_gen_addi_tl(t3, t3, 0x8000);
++            gen_set_label(l_half_done);
++            tcg_gen_brcondi_tl(TCG_COND_NE, bias, 0, l_apply_bias_r);
++            tcg_gen_andi_tl(t0, t2, 0x1ffff);
++            tcg_gen_brcondi_tl(TCG_COND_EQ, t0, 0x8000, l_done);
++            gen_set_label(l_apply_bias_r);
++            tcg_gen_addi_tl(t2, t2, 0x8000);
++        } else {
++            /* D16MULE doesn't support unbiased rounding */
++            tcg_gen_addi_tl(t3, t3, 0x8000);
++            tcg_gen_addi_tl(t2, t2, 0x8000);
++        }
++        gen_set_label(l_done);
++    }
++    if (!packed_result) {
++        gen_store_mxu_gpr(t3, XRa);
++        gen_store_mxu_gpr(t2, XRd);
++    } else {
++        tcg_gen_andi_tl(t3, t3, 0xffff0000);
++        tcg_gen_shri_tl(t2, t2, 16);
++        tcg_gen_or_tl(t3, t3, t2);
++        gen_store_mxu_gpr(t3, XRa);
++    }
+ }
+ 
+ /*
+@@ -2374,6 +2438,24 @@ static void decode_opc_mxu__pool02(DisasContext *ctx)
+     }
+ }
+ 
++static void decode_opc_mxu__pool03(DisasContext *ctx)
 +{
-+    uint32_t opcode = extract32(ctx->opcode, 18, 3);
++    uint32_t opcode = extract32(ctx->opcode, 24, 2);
 +
 +    switch (opcode) {
-+    case OPC_MXU_S32CPS:
-+        gen_mxu_S32CPS(ctx);
++    case OPC_MXU_D16MULF:
++        gen_mxu_d16mul(ctx, true, true);
 +        break;
-+    case OPC_MXU_D16CPS:
-+        gen_mxu_D16CPS(ctx);
-+        break;
-+    case OPC_MXU_Q8ABD:
-+        gen_mxu_Q8ABD(ctx);
-+        break;
-+    case OPC_MXU_Q16SAT:
-+        gen_mxu_Q16SAT(ctx);
++    case OPC_MXU_D16MULE:
++        gen_mxu_d16mul(ctx, true, false);
 +        break;
 +    default:
 +        MIPS_INVAL("decode_opc_mxu");
@@ -439,12 +244,21 @@ index 2eebdfe8ca..b3e3937545 100644
  static void decode_opc_mxu__pool04(DisasContext *ctx)
  {
      uint32_t reversed = extract32(ctx->opcode, 20, 1);
-@@ -2336,6 +2623,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU__POOL01:
-             decode_opc_mxu__pool01(ctx);
+@@ -2615,7 +2697,7 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+             decode_opc_mxu__pool00(ctx);
              break;
-+        case OPC_MXU__POOL02:
-+            decode_opc_mxu__pool02(ctx);
+         case OPC_MXU_D16MUL:
+-            gen_mxu_d16mul(ctx);
++            gen_mxu_d16mul(ctx, false, false);
+             break;
+         case OPC_MXU_D16MAC:
+             gen_mxu_d16mac(ctx);
+@@ -2626,6 +2708,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+         case OPC_MXU__POOL02:
+             decode_opc_mxu__pool02(ctx);
+             break;
++        case OPC_MXU__POOL03:
++            decode_opc_mxu__pool03(ctx);
 +            break;
          case OPC_MXU__POOL04:
              decode_opc_mxu__pool04(ctx);
