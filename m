@@ -2,77 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075D4727947
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAE97279F6
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 10:30:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7AUW-0004SV-6A; Thu, 08 Jun 2023 03:55:32 -0400
+	id 1q7B0b-0001HU-TY; Thu, 08 Jun 2023 04:28:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q7AUT-0004S0-BW
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:55:29 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1q7AUQ-0004Pj-A4
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:55:29 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4f6195d2b3fso414666e87.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 00:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1686210924; x=1688802924; 
- h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
- :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=d2ehaVyvCobDzWI+dKc/BeAw3EsnQUI4lbnvpLGXrHw=;
- b=f5lprg6qDFOe5eybzpEsupyPVR8x0qcnYrUT1AaAGueMxVL3mVWIALziXsCPJo0isu
- DwNFLD3UEejCkE3l1N1/YL1HpuUDXYmpbNlnnZWnUpusFWz5ZUr8BU10+ujdmzGJcjXD
- a+obOULqHdpEoVB8ZGRvDcTSRpUVtqCwY3LrFrZ5jGZeMIptHdAjcZnpY+5choj8ca/8
- kK8/GLrah7Vm2Pn9Y1KTSosiKiU4n7LXRk0Tqzovv/NgYGCYIN7eQmlWIcxT2VpadLtY
- eBdoNYK0epC40wQgVrK97uwGH5BOBU1l/3BwANolE9ipd79H5Sd0XUl53yKGzeizKifY
- /A/A==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q7B0a-0001HM-Ga
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 04:28:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q7B0Y-00033a-Rq
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 04:28:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686212917;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AlcJoef7y3vl/Ujhn3hv9VUwApVHXqV4NhVw2R7Jl7g=;
+ b=BTSMpNi+oJwGd+Q63Louv1VVMLHvZTDeM+tRMnxQFJV8WoBCVcueuoLY+fMEpigmuxWAyM
+ FdSS3SNbFk5AGjwc3DC78jgSDmdL5uwYMUpR8yttN+qFX4J620WVS/4HBESzk9bBCMJLW8
+ yBMXbkFlOVHOM9k0VIXDySyCIPaNcx0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530-8NFlpoh1NwqKUxikcwINmw-1; Thu, 08 Jun 2023 04:28:34 -0400
+X-MC-Unique: 8NFlpoh1NwqKUxikcwINmw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51664cc4bddso344354a12.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 01:28:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686210924; x=1688802924;
- h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
- :subject:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d2ehaVyvCobDzWI+dKc/BeAw3EsnQUI4lbnvpLGXrHw=;
- b=HjgpKi5r2sXo7ILO72jTsqi/SpjjFb+YwOPwDX5u9NuVLhRmb6XhcSFb52dOqIyn1W
- 6fSrn6tAGsI/am6/zxFHw3QzBicjxHHBMr47BkNOQPTjJ2hDQ0f5Ihs2BbP8jbf8rodi
- /lLJS4BQlLmgNiNKiZE5v2oFCMLMF0QKZVNPoh0CxhKMwa4OG9U/i+y3SrJxuJvBeZhU
- D+IwhYmtXlyAyH1xDxgGpEu/Hnj9fJomgjgqqA6ZcAy2UOc70DlqHGxBrsixkGPt6ZHW
- 9LQu5hhhV+wEJUDKUB3YeaxT2+DX5AvvenRPG52AnEFj9R7NFdsYgfIsZTiN8vrkTIRX
- 9KCA==
-X-Gm-Message-State: AC+VfDz8Z/CshDJ35tSDvCkUxR24dtGiXEgpnrrwrlRyBB/TzKJv8gaU
- tW+Ww9Pg5HmXbT8zmpEh/4tso4f6AwARCBv33N5U8A==
-X-Google-Smtp-Source: ACHHUZ4yhoUi0bk49aoVI4hVwTGM7QVID9S/VBkv+3JOk6+Uk79Z++4iylApiSUBp7nOaxx94jUXgA==
-X-Received: by 2002:ac2:5dd6:0:b0:4f3:c774:1923 with SMTP id
- x22-20020ac25dd6000000b004f3c7741923mr3321469lfq.11.1686210923760; 
- Thu, 08 Jun 2023 00:55:23 -0700 (PDT)
-Received: from [192.168.50.45] (h-155-4-92-80.A980.priv.bahnhof.se.
- [155.4.92.80]) by smtp.gmail.com with ESMTPSA id
- j15-20020ac2454f000000b004efedad4604sm99133lfm.18.2023.06.08.00.55.23
+ d=1e100.net; s=20221208; t=1686212913; x=1688804913;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AlcJoef7y3vl/Ujhn3hv9VUwApVHXqV4NhVw2R7Jl7g=;
+ b=LhpaU91blVz9AWANpNMR7LYuFJp99RP8YlwADauRYGa4R1e7zeRWwKSbjGPStWA30w
+ heZabn04Rt2y/Z37gOQsX2hSs/DjMNzRA9wEP7lZH0f4+i+HS2CdyEk1JUpHm2uUV3Mi
+ i4u9aEoUw1/rAc9ka6XQQp2OIddTmATEM+87wF9GS2a3byZCNXu5OBDzbfrbA6RDh4SL
+ 6bg5/hob/6xYyrt6v3CaeKQs9z7XZduL8QBPuqiFhYT1dpKYZlOcdpxYzXKnYoCtmszT
+ KwnpTGZChawdd4itD/ORF0JL8xQ5n4yIqpgq8M1vqWsJA7TZckGWokIQk4d8T3lgbWoP
+ QEVg==
+X-Gm-Message-State: AC+VfDzpP3LkYr8nOylVSwwrz0elRIpJWrF/VQwDn3tPejEyxd+P1Svt
+ V1Fj9ScQUEeMmVT5IVKJ97esQE/I2pthr86hkw42ZYeFTzXyucxaDPYYoixrv3+ob+SALW2qQ42
+ EwwDRVsLyVP3nN9o=
+X-Received: by 2002:aa7:cd1a:0:b0:516:642e:f935 with SMTP id
+ b26-20020aa7cd1a000000b00516642ef935mr6832642edw.22.1686212913162; 
+ Thu, 08 Jun 2023 01:28:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5lAXc0jW1rS0ZWvIsKgUmhjDmo1aJIMQsSxA+5nlxcW4cTEVhMFjC17L9bk1xK8rBfihCSdg==
+X-Received: by 2002:aa7:cd1a:0:b0:516:642e:f935 with SMTP id
+ b26-20020aa7cd1a000000b00516642ef935mr6832627edw.22.1686212912850; 
+ Thu, 08 Jun 2023 01:28:32 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ j25-20020aa7c0d9000000b005148f0e8568sm270542edp.39.2023.06.08.01.28.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 00:55:23 -0700 (PDT)
-Message-ID: <7f8d733df6e9b6151e9efb843d55441348805e70.camel@rivosinc.com>
-Subject: [RFC v3] linux-user/riscv: Add syscall riscv_hwprobe
-From: Robbin Ehn <rehn@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, qemu-riscv@nongnu.org, richard.henderson@linaro.org, 
- ajones@ventanamicro.com
-Date: Thu, 08 Jun 2023 09:55:22 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+ Thu, 08 Jun 2023 01:28:31 -0700 (PDT)
+Date: Thu, 8 Jun 2023 10:28:31 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>
+Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
+Message-ID: <20230608102831.22a9dc37@imammedo.users.ipa.redhat.com>
+In-Reply-To: <ZIFCGWdkTcfwiG37@liuzhao-OptiPlex-7080>
+References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
+ <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
+ <20230607164934.51805cb0@imammedo.users.ipa.redhat.com>
+ <ZIFCGWdkTcfwiG37@liuzhao-OptiPlex-7080>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=rehn@rivosinc.com; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,216 +104,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds the new syscall for the
-"RISC-V Hardware Probing Interface"
-(https://docs.kernel.org/riscv/hwprobe.html).
+On Thu, 8 Jun 2023 10:51:05 +0800
+Zhao Liu <zhao1.liu@intel.com> wrote:
 
-Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
----
-v1->v2: Moved to syscall.c
-v2->v3: Separate function, get/put user
----
- linux-user/riscv/syscall32_nr.h |   1 +
- linux-user/riscv/syscall64_nr.h |   1 +
- linux-user/syscall.c            | 146 ++++++++++++++++++++++++++++++++
- 3 files changed, 148 insertions(+)
+> On Wed, Jun 07, 2023 at 04:49:34PM +0200, Igor Mammedov wrote:
+> > Date: Wed, 7 Jun 2023 16:49:34 +0200
+> > From: Igor Mammedov <imammedo@redhat.com>
+> > Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
+> > X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+> > 
+> > On Thu,  1 Jun 2023 17:29:51 +0800
+> > Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+> >   
+> > > From: Zhao Liu <zhao1.liu@intel.com>
+> > > 
+> > > From SMBIOS 3.0 specification, thread count field means:
+> > > 
+> > > Thread Count is the total number of threads detected by the BIOS for
+> > > this processor socket. It is a processor-wide count, not a
+> > > thread-per-core count. [1]
+> > > 
+> > > So here we should use threads per socket other than threads per core.
+> > > 
+> > > [1] SMBIOS 3.0.0, section 7.5.8, Processor Information - Thread Count
+> > > 
+> > > Fixes: c97294ec1b9e ("SMBIOS: Build aggregate smbios tables and entry point")
+> > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > > ---
+> > > Changes since v1:
+> > >  * Rename cpus_per_socket to threads_per_socket.
+> > >  * Add the comment about smp.max_cpus. Thread count and core count will
+> > >    be calculated in 2 ways and will add a sanity check to ensure we
+> > >    don't miss any topology level.
+> > > ---
+> > >  hw/smbios/smbios.c | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+> > > index d67415d44dd8..faf82d4ae646 100644
+> > > --- a/hw/smbios/smbios.c
+> > > +++ b/hw/smbios/smbios.c
+> > > @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+> > >  {
+> > >      char sock_str[128];
+> > >      size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
+> > > +    unsigned threads_per_socket;
+> > >  
+> > >      if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+> > >          tbl_len = SMBIOS_TYPE_4_LEN_V30;
+> > > @@ -747,17 +748,20 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+> > >      SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
+> > >      SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
+> > >  
+> > > +    /* smp.max_cpus is the total number of threads for the system. */
+> > > +    threads_per_socket = ms->smp.max_cpus / ms->smp.sockets;  
+> > 
+> > what I dislike here is introducing topo calculations with its own assumptions
+> > in random places.
+> > 
+> > I'd suggest to add threads_per_socket (even if it's just a helper field) into
+> > topo structure and calculate it with the rest on topology.
+> > And then use result here.  
+> 
+> Thanks, I will try this way.
 
-diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall32_n=
-r.h
-index 1327d7dffa..412e58e5b2 100644
---- a/linux-user/riscv/syscall32_nr.h
-+++ b/linux-user/riscv/syscall32_nr.h
-@@ -228,6 +228,7 @@
- #define TARGET_NR_accept4 242
- #define TARGET_NR_arch_specific_syscall 244
- #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15=
-)
-+#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
- #define TARGET_NR_prlimit64 261
- #define TARGET_NR_fanotify_init 262
- #define TARGET_NR_fanotify_mark 263
-diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall64_n=
-r.h
-index 6659751933..29e1eb2075 100644
---- a/linux-user/riscv/syscall64_nr.h
-+++ b/linux-user/riscv/syscall64_nr.h
-@@ -251,6 +251,7 @@
- #define TARGET_NR_recvmmsg 243
- #define TARGET_NR_arch_specific_syscall 244
- #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + 15=
-)
-+#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
- #define TARGET_NR_wait4 260
- #define TARGET_NR_prlimit64 261
- #define TARGET_NR_fanotify_init 262
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 83685f0aa5..e8859cd3be 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8874,6 +8874,147 @@ static int do_getdents64(abi_long dirfd, abi_long a=
-rg2, abi_long count)
- }
- #endif /* TARGET_NR_getdents64 */
-=20
-+#if defined(TARGET_NR_riscv_hwprobe)
-+
-+#define RISCV_HWPROBE_KEY_MVENDORID     0
-+#define RISCV_HWPROBE_KEY_MARCHID       1
-+#define RISCV_HWPROBE_KEY_MIMPID        2
-+
-+#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
-+#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
-+
-+#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
-+#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
-+#define     RISCV_HWPROBE_IMA_C        (1 << 1)
-+
-+#define RISCV_HWPROBE_KEY_CPUPERF_0     5
-+#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
-+#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
-+
-+struct riscv_hwprobe {
-+    abi_llong  key;
-+    abi_ullong value;
-+};
-+
-+static void risc_hwprobe_fill_pairs(CPURISCVState *env,
-+                                    struct riscv_hwprobe *pair,
-+                                    size_t pair_count)
-+{
-+    const RISCVCPUConfig *cfg =3D riscv_cpu_cfg(env);
-+
-+    for (; pair_count > 0; pair_count--, pair++) {
-+        abi_llong key;
-+        abi_ullong value;
-+        __put_user(0, &pair->value);
-+        __get_user(key, &pair->key);
-+        switch (key) {
-+        case RISCV_HWPROBE_KEY_MVENDORID:
-+            __put_user(cfg->mvendorid, &pair->value);
-+            break;
-+        case RISCV_HWPROBE_KEY_MARCHID:
-+            __put_user(cfg->marchid, &pair->value);
-+            break;
-+        case RISCV_HWPROBE_KEY_MIMPID:
-+            __put_user(cfg->mimpid, &pair->value);
-+            break;
-+        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
-+            value =3D riscv_has_ext(env, RVI) &&
-+                    riscv_has_ext(env, RVM) &&
-+                    riscv_has_ext(env, RVA) ?
-+                    RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
-+            __put_user(value, &pair->value);
-+            break;
-+        case RISCV_HWPROBE_KEY_IMA_EXT_0:
-+            value =3D riscv_has_ext(env, RVF) &&
-+                    riscv_has_ext(env, RVD) ?
-+                    RISCV_HWPROBE_IMA_FD : 0;
-+            value |=3D riscv_has_ext(env, RVC) ?
-+                     RISCV_HWPROBE_IMA_C : pair->value;
-+            __put_user(value, &pair->value);
-+            break;
-+        case RISCV_HWPROBE_KEY_CPUPERF_0:
-+            __put_user(RISCV_HWPROBE_MISALIGNED_FAST, &pair->value);
-+            break;
-+        default:
-+            __put_user(-1, &pair->key);
-+            break;
-+        }
-+    }
-+}
-+
-+static int cpu_set_valid(abi_long arg3, abi_long arg4)
-+{
-+    int ret, i, tmp;
-+    size_t host_mask_size, target_mask_size;
-+    unsigned long *host_mask;
-+
-+    /*
-+     * cpu_set_t represent CPU masks as bit masks of type unsigned long *.
-+     * arg3 contains the cpu count.
-+     */
-+    tmp =3D (8 * sizeof(abi_ulong));
-+    target_mask_size =3D ((arg3 + tmp - 1) / tmp) * sizeof(abi_ulong);
-+    host_mask_size =3D (target_mask_size + (sizeof(*host_mask) - 1)) &
-+                     ~(sizeof(*host_mask) - 1);
-+
-+    host_mask =3D alloca(host_mask_size);
-+
-+    ret =3D target_to_host_cpu_mask(host_mask, host_mask_size,
-+                                  arg4, target_mask_size);
-+    if (ret !=3D 0) {
-+        return ret;
-+    }
-+
-+    for (i =3D 0 ; i < host_mask_size / sizeof(*host_mask); i++) {
-+        if (host_mask[i] !=3D 0) {
-+            return 0;
-+        }
-+    }
-+    return -TARGET_EINVAL;
-+}
-+
-+static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
-+                                 abi_long arg2, abi_long arg3,
-+                                 abi_long arg4, abi_long arg5)
-+{
-+    int ret;
-+    struct riscv_hwprobe *host_pairs;
-+
-+    /* flags must be 0 */
-+    if (arg5 !=3D 0) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    /* check cpu_set */
-+    if (arg3 !=3D 0) {
-+        ret =3D cpu_set_valid(arg3, arg4);
-+        if (ret !=3D 0) {
-+            return ret;
-+        }
-+    } else if (arg4 !=3D 0) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    /* no pairs */
-+    if (arg2 =3D=3D 0) {
-+        return 0;
-+    }
-+
-+    host_pairs =3D lock_user(VERIFY_WRITE, arg1,
-+                           sizeof(*host_pairs) * (size_t)arg2, 0);
-+    if (host_pairs =3D=3D NULL) {
-+        return -TARGET_EFAULT;
-+    }
-+    risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
-+    unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_t)arg2);
-+    return 0;
-+}
-+#endif /* TARGET_NR_riscv_hwprobe */
-+
- #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
- _syscall2(int, pivot_root, const char *, new_root, const char *, put_old)
- #endif
-@@ -13571,6 +13712,11 @@ static abi_long do_syscall1(CPUArchState *cpu_env,=
- int num, abi_long arg1,
-         return ret;
- #endif
-=20
-+#if defined(TARGET_NR_riscv_hwprobe)
-+    case TARGET_NR_riscv_hwprobe:
-+        return do_riscv_hwprobe(cpu_env, arg1, arg2, arg3, arg4, arg5);
-+#endif
-+
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
-         return -TARGET_ENOSYS;
---=20
-2.39.2
+maybe instead a field, a helper function located close to topo code
+would be better/more acceptable
 
+> 
+> Zhao
+> 
+> >   
+> > > +
+> > >      t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+> > >      t->core_enabled = t->core_count;
+> > >  
+> > > -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
+> > > +    t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
+> > >  
+> > >      t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+> > >      t->processor_family2 = cpu_to_le16(0x01); /* Other */
+> > >  
+> > >      if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+> > >          t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+> > > -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
+> > > +        t->thread_count2 = cpu_to_le16(threads_per_socket);
+> > >      }
+> > >  
+> > >      SMBIOS_BUILD_TABLE_POST;  
+> >   
+> 
 
 
