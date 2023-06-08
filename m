@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC8D72858D
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 685FC7285AA
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:46:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Ii8-00043H-5c; Thu, 08 Jun 2023 12:42:08 -0400
+	id 1q7Ilk-0006Z0-P7; Thu, 08 Jun 2023 12:45:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7Ii4-00041I-HR
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:42:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7Ii3-0002hR-27
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:42:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686242522;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Hk7+cQiecBfVBHArztsH45T0E8h2PWl2viVv3S/hf/E=;
- b=Qwsyk3P49y07qykykGukKBJCHQ4ptQqcMjl7A+FLse66LapheV+0TGJFHbwqxBC2sJD44J
- Bwfq7fmW/Cwace5PlN2Gh+7mFcuIH+bVLRYO9JWtR8xqSfh/zqOLdvvmESjd3GC5V/XXnd
- 7QGL0+QPE4MAXAFR76XEOGYP4GsM3Xc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-168-itcxxLDLOW-Oztsun_UJgg-1; Thu, 08 Jun 2023 12:42:00 -0400
-X-MC-Unique: itcxxLDLOW-Oztsun_UJgg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26915801585;
- Thu,  8 Jun 2023 16:42:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.54])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CCB05492B00;
- Thu,  8 Jun 2023 16:41:58 +0000 (UTC)
-Date: Thu, 8 Jun 2023 17:41:56 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 0/3] docs: update x86 CPU model ABI matrix docs
-Message-ID: <ZIIE1BDlbtYKg+6y@redhat.com>
-References: <20230526102240.936998-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
+ id 1q7Ili-0006YL-3R
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:45:50 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
+ id 1q7Ilg-0004zF-ES
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:45:49 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6b162fa87d8so461808a34.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 09:45:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1686242747; x=1688834747;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dbyg+3rLiafmftEC2QBZoCf8N+IfPj0zZvJkRSWlBzk=;
+ b=QzxKym2bES8nRKZZGOZhG/1+WPXrSSnwzcNm9jORewQSed4Azfys4f2l8CxhFfIYsN
+ 3aM9V9lCQup5/5QpvCWoCMXChM0RLNr02iRge1DdpteGCW2ldetmI+OR5j2hrmrFnyGN
+ SKSDei0onwHIrR2xmT3aWSKe/ddc2T/7FilfYTLDyWIkj2l0Nm4ei/Tbg5zAxbYpexpx
+ 5njpAxYU/700DwqA3OjHI3+oSk3yXSl98DRgtmmmyDvloEygdt/vt0ttkdGVuJNCjLmd
+ w9Hef+e5V0I5v+mHO7cZywm1FBD9Bb0YF7XR9cvtDDfsPVvDW2mF5dbhF5AqWiiT67w5
+ WQ7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686242747; x=1688834747;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dbyg+3rLiafmftEC2QBZoCf8N+IfPj0zZvJkRSWlBzk=;
+ b=SQCBmxXNrNjGJpcy6CnbFIPeud9rZnR8tiquttQ+1UXuDBKQSzBOfJw6u633ACxCuZ
+ lmGWiohZ4MNcVmgu2GRSlxzSCFgMVnFnN86qMP3GA8qv8Gi9RxRtYFcH6dKFrK+Dpewp
+ jMkmX64fOGABCSU7xOcKVJ4aVUH48cZl7UirT2g+NbLPKYNw+PnT+FepoyfjNmRXK/5t
+ 9EScq3tVuTj2AXwAUqr5x/xITnrmtEujE9WK8rhjyCzyY+e2VCjWRjW5tSKSqrO2U2Bm
+ b/vXiapRyDAaXk90ClnyK4c7FYJuxKMVrCPHl8Wwh2afDsrLrKTeku4YjXot1lYiYqYu
+ MJYQ==
+X-Gm-Message-State: AC+VfDyx/UML7IB8Mhxo/0UYE2cSlK62EIGAZ6CTeoPPRESpDaaPF2wd
+ 5j0G+u/bYoT4OVS6m3A2Kw24njcnKMsfI5uOeLViA1kv5hMIBhNpT3iPkTyhVU1PUvqfXxQvE8z
+ T15jcVyEkgSteEXQvtOalZJxX7ni/mTc/D88i/YtJCoK/7UTAKdHFd8vOWsqp8SfJDssnhz7GvP
+ U0
+X-Google-Smtp-Source: ACHHUZ7CcT58ehiIeJQXhEoD/6Avraa51wgketaook68ALorFQuTJmVZ54unAGf2otXvQS0MvOzyCA==
+X-Received: by 2002:a05:6870:d892:b0:1a3:5f63:b4b3 with SMTP id
+ dv18-20020a056870d89200b001a35f63b4b3mr2302677oab.56.1686242746609; 
+ Thu, 08 Jun 2023 09:45:46 -0700 (PDT)
+Received: from sw05.internal.sifive.com ([64.62.193.194])
+ by smtp.gmail.com with ESMTPSA id
+ s12-20020a4adb8c000000b0054574f35b8esm9107oou.41.2023.06.08.09.45.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 09:45:46 -0700 (PDT)
+From: Tommy Wu <tommy.wu@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
+ jim.shu@sifive.com, frank.chang@sifive.com, liweiwei@iscas.ac.cn,
+ philmd@linaro.org, Tommy Wu <tommy.wu@sifive.com>
+Subject: [PATCH v5 0/3] Implement the watchdog timer of HiFive 1 rev b.
+Date: Thu,  8 Jun 2023 09:45:39 -0700
+Message-Id: <20230608164542.3675619-1-tommy.wu@sifive.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230526102240.936998-1-berrange@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=tommy.wu@sifive.com; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,34 +90,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping for any reviews
+The HiFive 1 rev b includes a watchdog module based on a 32-bit
+counter. The watchdog timer is in the always-on domain device of
+HiFive 1 rev b, so this patch added the AON device to the sifive_e
+machine. This patch only implemented the functionality of the
+watchdog timer, not all the functionality of the AON device.
 
-On Fri, May 26, 2023 at 11:22:37AM +0100, Daniel P. Berrangé wrote:
-> 
-> 
-> Daniel P. Berrangé (3):
->   docs: re-generate x86_64 ABI compatibility CSV
->   scripts: drop comment about autogenerated CPU API file
->   docs: fix highlighting of CPU ABI header rows
-> 
->  docs/system/cpu-models-x86-abi.csv | 17 +++++++++++++++--
->  docs/system/cpu-models-x86.rst.inc |  2 +-
->  scripts/cpu-x86-uarch-abi.py       |  1 -
->  3 files changed, 16 insertions(+), 4 deletions(-)
-> 
-> -- 
-> 2.40.1
-> 
+You can test the patchset by the QTest tests/qtest/sifive-e-aon-watchdog-test.c
 
-With regards,
-Daniel
+Changes since v1 ( Thank Alistair for the feedback ):
+- Use the register field macro.
+- Delete the public create function. The board creates the aon device itself.
+- Keep all variable declarations at the top of the code block.
+
+Changes since v2 ( Thank Alistair for the feedback ):
+- Delete the declaration and definition of the create function.
+
+Changes since v3 ( Thank Alistair and Thomas for the feedback ):
+- Use `device_class_set_props()` for the properties in sifive_e_aon device.
+- Add SPDX identifier in QTEST.
+- Use libqtest.h in QTEST.
+- Let the statements on one line as long as they still fit into 80 columns.
+
+Changes since v4 ( Thank Phil for the feedback ):
+- Improve code style consistency.
+- Move the timer create function to the sifive_e_aon_init.
+- Allocate the sifive_e_aon device state in the SoC.
+
+Tommy Wu (3):
+  hw/misc: sifive_e_aon: Support the watchdog timer of HiFive 1 rev b.
+  hw/riscv: sifive_e: Support the watchdog timer of HiFive 1 rev b.
+  tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest of watchdog of
+    sifive_e
+
+ hw/misc/Kconfig                          |   3 +
+ hw/misc/meson.build                      |   1 +
+ hw/misc/sifive_e_aon.c                   | 319 ++++++++++++++++
+ hw/riscv/Kconfig                         |   1 +
+ hw/riscv/sifive_e.c                      |  17 +-
+ include/hw/misc/sifive_e_aon.h           |  60 +++
+ include/hw/riscv/sifive_e.h              |   9 +-
+ tests/qtest/meson.build                  |   3 +
+ tests/qtest/sifive-e-aon-watchdog-test.c | 450 +++++++++++++++++++++++
+ 9 files changed, 858 insertions(+), 5 deletions(-)
+ create mode 100644 hw/misc/sifive_e_aon.c
+ create mode 100644 include/hw/misc/sifive_e_aon.h
+ create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.27.0
 
 
