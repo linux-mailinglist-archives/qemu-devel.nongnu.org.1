@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED42A7278B4
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84677278B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q79zX-0002GX-1T; Thu, 08 Jun 2023 03:23:31 -0400
+	id 1q79zY-0002HO-CE; Thu, 08 Jun 2023 03:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q79zV-0002GN-Al
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:23:29 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1q79zW-0002H7-Ux
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:23:30 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q79zT-0006dj-No
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:23:29 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-19f454bd2c8so299858fac.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 00:23:27 -0700 (PDT)
+ id 1q79zV-0006fI-Bz
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:23:30 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-55b00ad09feso198959eaf.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 00:23:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1686209007; x=1688801007;
+ d=sifive.com; s=google; t=1686209008; x=1688801008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UAX2xowVJiXansk3JI0g3G9zNclRDYMZLzHvwSFZ0uk=;
- b=mWDyjzZiUs+YyzsgxPMQn4hu6y/6c0W2CpFEsRdkaxfe3z+9bppin6ubEx07OeXPrU
- fyE1Ey/fJQp1BOJO/pudVOkRseaUunAna1AR9PjZBnYTl434WvthNoXxvE3pHGAbbZTN
- rrx1cvnp6gpA16wSxbVH8wlTen5e0dv6u3PDo/y1lybpjaKKZWLAZa1d/1nA1wTK0h1j
- zSx9Q54uWK7kpd1PeihsPsTz93MS2jk7JgbomTl3D0QFqYfhTl4OFXF7HS4Fc39KJwsB
- eFMT96s46Th8+xuXMOfN/gai/L4uc7m5T5dZPAAgSxhRodxaM+spBleO5Tq4ahARyoG9
- tE5g==
+ bh=pBp5P34pomIf/TRV0HfYpflM8Flhf0grZdqWN9dKPh0=;
+ b=jcxde9qPNrfNLIOo+NX7t4h8IA4Ei+JWWsmqB+P5OzueESgCLuHDNIMrdbH3YQAK76
+ r3vSdfs1dI94yhLhfLJNIxZKW8RHy7KJnMrMy6yBYBhPfNsdsxKpm35e+N8z0+H8xIXi
+ kPVsNkqXWOHKUML3KlMi2pHFJbujkbc7/26TpsxGEcYihJX5glOmzhIbwTX6wvKtID2D
+ psJNricnNTHs/yELjrsqWVgnj9c+lSeGUbV1+fT+llJlAm1vQ0dHlTLDdH1d2hfZ6AOu
+ EZ9DTidqPZnL4UTdHnXABfIcKasySNPyyN9oJuIH63UwbFYkwci3ECPBTKIDgVXR6pio
+ 9iiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686209007; x=1688801007;
+ d=1e100.net; s=20221208; t=1686209008; x=1688801008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UAX2xowVJiXansk3JI0g3G9zNclRDYMZLzHvwSFZ0uk=;
- b=crXQDvVYdIv/sytXZbtv57WB7tG6tkJrULYtsxEskJM8IMdLHU4mJGlg+0Iqe6K5Er
- 1g0JcwXzC0in4ml61FcgpyAKaextXa4tD5XXj+v1cJtPDIb/hLIhUv/gnJElDm+KOh4g
- 2y+hTKQ5b/Q7KoZEE3P5pnWEXu1xFBZDqR1vtxkGPxhc2t0dxtmrh0/fPxgn5m6UkV++
- UH1H/yafs6Pq4hTFdTWfEbIg9fgBrkLfxmujPIr1fvY1uUow6KzxCBVrsu9QMVxzWJLJ
- AoGYpKqg34BcABFYYdwElgFkc9OVDXL++ipErgtsS3H3swwo/vSEv/msY7/TcTBYsIx6
- U/Vg==
-X-Gm-Message-State: AC+VfDyZjDPoV10xn6OSASNyalRGNHsXYhuGbN9cyQ26lVsIwkfk4VAN
- rN40fackBEjxRkOeGG0I4mF51BBhX92IXByPAX9PdRJtKMiv7LHWFh1TZzxMgm2v4PR5dSbnJGi
- Oy6E3fRIuRPNL2LMWLyfhUbjyOCgTeNko/fEqgcVVGaIlQ1MSEchP9CkexxfzsnwSCxIiPuijET
- Mk
-X-Google-Smtp-Source: ACHHUZ5URLIUSAS31u3yMNkdFfGKiCxV/NPWG9pemkEbpw7rcgvLRQlnZ9zFN0h97ujbm+cqK0efMA==
-X-Received: by 2002:a05:6870:3505:b0:19e:7696:2fc with SMTP id
- k5-20020a056870350500b0019e769602fcmr7222111oah.9.1686209005574; 
- Thu, 08 Jun 2023 00:23:25 -0700 (PDT)
+ bh=pBp5P34pomIf/TRV0HfYpflM8Flhf0grZdqWN9dKPh0=;
+ b=DHLInp4ASSoeBcbHXdep4XrTcq2DxzVHw3SU5NjD+axPszTYB4HsvDisv0zJ5ToWw4
+ RXJ/HnBwqcvkA1ZpjFtHVm4U5ulY+usmjfodMTY8NZHnGbHQ0JKZ+Sug9JIp/QZJrE2q
+ ayGJP5AQCTXFdbUGoPNfBuxZ+gUsXiCyf7DGpQY9JUh2ddyx2LleU3UP6aF28IhrKZbJ
+ vIxF3AHMoarCKrtjnnY65/kAAQvZrpf+NykBdqoYW0loG1ZUa+ckbAiOKdz9vEon8Qtc
+ bkCIN2z6SSjmjJ86ED4L0d5dAOAf+OgaUxCaDPcIJ/cCMWNrKzcEuVHySMRPqS+q6vP+
+ EREQ==
+X-Gm-Message-State: AC+VfDxmP5a5N05UhoY4uvYVqbVKMUZcxe5vl2Z/WCIoX5NySh1LzqOK
+ oPOEXIGcnPJ0FsFctpxoI/eB/IJSBUKgeOr15FfeGUcNQVvX69NZ/2SmclySbCMSNzIHOhszLxp
+ bP/TuAgEVrG4KtINPFOpFiS6Y/L337A+CNYM0tzaZx8DoNLJBR9WINTWUekadf2a62W8MJ98n3v
+ aT
+X-Google-Smtp-Source: ACHHUZ5y77BAl2HVL2EpguyRmXdU8MayXA9SXKTbFUbIRppFIzPi1FqYtZTKWl8N43HZjj1AkxORsQ==
+X-Received: by 2002:a4a:b384:0:b0:558:b224:ce9f with SMTP id
+ p4-20020a4ab384000000b00558b224ce9fmr5878171ooo.7.1686209007656; 
+ Thu, 08 Jun 2023 00:23:27 -0700 (PDT)
 Received: from sw05.internal.sifive.com ([64.62.193.194])
  by smtp.gmail.com with ESMTPSA id
- x144-20020a4a4196000000b0051134f333d3sm274293ooa.16.2023.06.08.00.23.24
+ x144-20020a4a4196000000b0051134f333d3sm274293ooa.16.2023.06.08.00.23.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 00:23:25 -0700 (PDT)
+ Thu, 08 Jun 2023 00:23:27 -0700 (PDT)
 From: Tommy Wu <tommy.wu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -65,16 +65,16 @@ Cc: frank.chang@sifive.com, palmer@dabbelt.com, alistair.francis@wdc.com,
  bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
  Tommy Wu <tommy.wu@sifive.com>
-Subject: [PATCH v4 3/4] target/riscv: Handle Smrnmi interrupt and exception.
-Date: Thu,  8 Jun 2023 00:23:13 -0700
-Message-Id: <20230608072314.3561109-4-tommy.wu@sifive.com>
+Subject: [PATCH v4 4/4] target/riscv: Add Smrnmi mnret instruction.
+Date: Thu,  8 Jun 2023 00:23:14 -0700
+Message-Id: <20230608072314.3561109-5-tommy.wu@sifive.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230608072314.3561109-1-tommy.wu@sifive.com>
 References: <20230608072314.3561109-1-tommy.wu@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=tommy.wu@sifive.com; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=tommy.wu@sifive.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,119 +100,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Frank Chang <frank.chang@sifive.com>
 Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 ---
- target/riscv/cpu_helper.c | 57 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 52 insertions(+), 5 deletions(-)
+ target/riscv/helper.h                         |  1 +
+ target/riscv/insn32.decode                    |  3 ++
+ .../riscv/insn_trans/trans_privileged.c.inc   | 12 +++++
+ target/riscv/op_helper.c                      | 49 +++++++++++++++++++
+ 4 files changed, 65 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index da477b6c99..1a926bb661 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -407,6 +407,18 @@ static int riscv_cpu_local_irq_pending(CPURISCVState *env)
-     int virq;
-     uint64_t irqs, pending, mie, hsie, vsie;
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index 98e97810fd..00f1032086 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -112,6 +112,7 @@ DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
+ #ifndef CONFIG_USER_ONLY
+ DEF_HELPER_1(sret, tl, env)
+ DEF_HELPER_1(mret, tl, env)
++DEF_HELPER_1(mnret, tl, env)
+ DEF_HELPER_1(wfi, void, env)
+ DEF_HELPER_1(tlb_flush, void, env)
+ DEF_HELPER_1(tlb_flush_all, void, env)
+diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+index 73d5d1b045..e0698f9dfb 100644
+--- a/target/riscv/insn32.decode
++++ b/target/riscv/insn32.decode
+@@ -111,6 +111,9 @@ wfi         0001000    00101 00000 000 00000 1110011
+ sfence_vma  0001001    ..... ..... 000 00000 1110011 @sfence_vma
+ sfence_vm   0001000    00100 ..... 000 00000 1110011 @sfence_vm
  
-+    /* Priority: RNMI > Other interrupt. */
-+    if (riscv_cpu_cfg(env)->ext_smrnmi) {
-+        /* If mnstatus.NMIE == 0, all interrupts are disabled. */
-+        if (!get_field(env->mnstatus, MNSTATUS_NMIE)) {
-+            return RISCV_EXCP_NONE;
-+        }
++# *** NMI ***
++mnret       0111000    00010 00000 000 00000 1110011
 +
-+        if (env->rnmip) {
-+            return ctz64(env->rnmip); /* since non-zero */
-+        }
-+    }
-+
-     /* Determine interrupt enable state of all privilege modes */
-     if (env->virt_enabled) {
-         mie = 1;
-@@ -452,7 +464,9 @@ static int riscv_cpu_local_irq_pending(CPURISCVState *env)
+ # *** RV32I Base Instruction Set ***
+ lui      ....................       ..... 0110111 @u
+ auipc    ....................       ..... 0010111 @u
+diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
+index 528baa1652..ef7f102069 100644
+--- a/target/riscv/insn_trans/trans_privileged.c.inc
++++ b/target/riscv/insn_trans/trans_privileged.c.inc
+@@ -104,6 +104,18 @@ static bool trans_mret(DisasContext *ctx, arg_mret *a)
+ #endif
+ }
  
- bool riscv_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
++static bool trans_mnret(DisasContext *ctx, arg_mnret *a)
++{
++#ifndef CONFIG_USER_ONLY
++    gen_helper_mnret(cpu_pc, cpu_env);
++    tcg_gen_exit_tb(NULL, 0); /* no chaining */
++    ctx->base.is_jmp = DISAS_NORETURN;
++    return true;
++#else
++    return false;
++#endif
++}
++
+ static bool trans_wfi(DisasContext *ctx, arg_wfi *a)
  {
--    if (interrupt_request & CPU_INTERRUPT_HARD) {
-+    uint32_t mask = CPU_INTERRUPT_HARD | CPU_INTERRUPT_RNMI;
-+
-+    if (interrupt_request & mask) {
-         RISCVCPU *cpu = RISCV_CPU(cs);
-         CPURISCVState *env = &cpu->env;
-         int interruptno = riscv_cpu_local_irq_pending(env);
-@@ -1614,6 +1628,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     CPURISCVState *env = &cpu->env;
-     bool write_gva = false;
-     uint64_t s;
-+    int mode;
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index f563dc3981..b27beec871 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -359,6 +359,55 @@ target_ulong helper_mret(CPURISCVState *env)
+     return retpc;
+ }
  
-     /*
-      * cs->exception is 32-bits wide unlike mcause which is XLEN-bits wide
-@@ -1626,6 +1641,20 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     target_ulong tinst = 0;
-     target_ulong htval = 0;
-     target_ulong mtval2 = 0;
-+    bool nmi_execp = false;
-+
-+    if (cpu->cfg.ext_smrnmi && env->rnmip && async) {
-+        env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, false);
-+        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPV,
-+                                  env->virt_enabled);
-+        env->mnstatus = set_field(env->mnstatus, MNSTATUS_MNPP,
-+                                  env->priv);
-+        env->mncause = cause | ((target_ulong)1U << (TARGET_LONG_BITS - 1));
-+        env->mnepc = env->pc;
-+        env->pc = env->rnmi_irqvec;
-+        riscv_cpu_set_mode(env, PRV_M);
-+        goto handled;
++target_ulong helper_mnret(CPURISCVState *env)
++{
++    if (!riscv_cpu_cfg(env)->ext_smrnmi) {
++        /* RNMI feature is not presented. */
++        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
 +    }
- 
-     if  (cause == RISCV_EXCP_SEMIHOST) {
-         do_common_semihosting(cs);
-@@ -1712,8 +1741,20 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-                   __func__, env->mhartid, async, cause, env->pc, tval,
-                   riscv_cpu_get_trap_name(cause, async));
- 
--    if (env->priv <= PRV_S &&
--            cause < TARGET_LONG_BITS && ((deleg >> cause) & 1)) {
-+    mode = env->priv <= PRV_S &&
-+        cause < TARGET_LONG_BITS && ((deleg >> cause) & 1) ? PRV_S : PRV_M;
++
++    if (!(env->priv >= PRV_M)) {
++        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
++    }
++
++    /* Get return PC from mnepc CSR. */
++    target_ulong retpc = env->mnepc;
++    if (!riscv_has_ext(env, RVC) && (retpc & 0x3)) {
++        riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, GETPC());
++    }
++
++    /* Get previous privilege level from mnstatus CSR. */
++    target_ulong prev_priv = get_field(env->mnstatus, MNSTATUS_MNPP);
++
++    if (riscv_cpu_cfg(env)->pmp &&
++        !pmp_get_num_rules(env) && (prev_priv != PRV_M)) {
++        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
++    }
++
++    riscv_cpu_set_mode(env, prev_priv);
++    env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, true);
++
++    target_ulong prev_virt = get_field(env->mnstatus, MNSTATUS_MNPV);
 +
 +    /*
-+     * If the hart encounters an exception while executing in M-mode,
-+     * with the mnstatus.NMIE bit clear, the program counter is set to
-+     * the RNMI exception trap handler address.
++     * If MNRET changes the privilege mode to a mode
++     * less privileged than M, it also sets mstatus.MPRV to 0.
 +     */
-+    nmi_execp = cpu->cfg.ext_smrnmi &&
-+                !get_field(env->mnstatus, MNSTATUS_NMIE) &&
-+                !async &&
-+                mode == PRV_M;
++    if (prev_priv < PRV_M) {
++        env->mstatus = set_field(env->mstatus, MSTATUS_MPRV, false);
++    }
 +
-+    if (mode == PRV_S) {
-         /* handle the trap in S-mode */
-         if (riscv_has_ext(env, RVH)) {
-             uint64_t hdeleg = async ? env->hideleg : env->hedeleg;
-@@ -1788,8 +1829,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         env->mtval = tval;
-         env->mtval2 = mtval2;
-         env->mtinst = tinst;
--        env->pc = (env->mtvec >> 2 << 2) +
--                  ((async && (env->mtvec & 3) == 1) ? cause * 4 : 0);
-+        if (cpu->cfg.ext_smrnmi && nmi_execp) {
-+            env->pc = env->rnmi_excpvec;
-+        } else {
-+            env->pc = (env->mtvec >> 2 << 2) +
-+                      ((async && (env->mtvec & 3) == 1) ? cause * 4 : 0);
++    if (riscv_has_ext(env, RVH)) {
++        if (prev_virt) {
++            riscv_cpu_swap_hypervisor_regs(env);
 +        }
-         riscv_cpu_set_mode(env, PRV_M);
-     }
- 
-@@ -1802,6 +1847,8 @@ void riscv_cpu_do_interrupt(CPUState *cs)
- 
-     env->two_stage_lookup = false;
-     env->two_stage_indirect_lookup = false;
 +
-+handled:
- #endif
-     cs->exception_index = RISCV_EXCP_NONE; /* mark handled to qemu */
- }
++        riscv_cpu_set_virt_enabled(env, prev_virt);
++    }
++
++    return retpc;
++}
++
+ void helper_wfi(CPURISCVState *env)
+ {
+     CPUState *cs = env_cpu(env);
 -- 
 2.31.1
 
