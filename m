@@ -2,31 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD94D736237
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDD1736238
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 05:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBSDk-0003BV-7Y; Mon, 19 Jun 2023 23:39:56 -0400
+	id 1qBSDj-0003BT-AD; Mon, 19 Jun 2023 23:39:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBSDh-0003B7-6h
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBSDh-0003BG-Ie
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 23:39:53 -0400
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBSDf-0007il-I6
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 23:39:52 -0400
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBSDf-0007ij-Hz
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 23:39:53 -0400
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id DAB6311EFFC;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id B1C0011EFBC;
  Tue, 20 Jun 2023 03:39:49 +0000 (UTC)
 From: ~foxes <foxes@git.sr.ht>
-Date: Thu, 08 Jun 2023 17:06:37 +0800
-Subject: [PATCH qemu 2/2] gdbstub: Fixed gdb_open() does not work issue while
- an extra 'x' is being added when converting '%s' to a pointer
-Message-ID: <168723238949.9156.9853906656288727865-1@git.sr.ht>
+Date: Thu, 08 Jun 2023 17:07:59 +0800
+Subject: [PATCH qemu 1/2] semihosting: Added to support GDB_O_APPEND flag of
+ host_open()
+Message-ID: <168723238949.9156.9853906656288727865-0@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <168723238949.9156.9853906656288727865-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: Alex =?utf-8?q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 Content-Type: text/plain; charset="utf-8"
@@ -60,25 +59,25 @@ From: Foxes Hung <foxes687@andestech.com>
 
 Signed-off-by: Foxes Hung <foxes687@andestech.com>
 ---
- gdbstub/syscalls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ semihosting/syscalls.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
-index 02e3a8f74c..4c6b5f728b 100644
---- a/gdbstub/syscalls.c
-+++ b/gdbstub/syscalls.c
-@@ -126,7 +126,7 @@ void gdb_do_syscall(gdb_syscall_complete_cb cb, const cha=
-r *fmt, ...)
-             case 's':
-                 i64 =3D va_arg(va, uint64_t);
-                 i32 =3D va_arg(va, uint32_t);
--                p +=3D snprintf(p, p_end - p, "%" PRIx64 "/%x" PRIx32, i64, =
-i32);
-+                p +=3D snprintf(p, p_end - p, "%" PRIx64 "/%" PRIx32, i64, i=
-32);
-                 break;
-             default:
-             bad_format:
+diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
+index 68899ebb1c..1a5d39da01 100644
+--- a/semihosting/syscalls.c
++++ b/semihosting/syscalls.c
+@@ -281,6 +281,9 @@ static void host_open(CPUState *cs, gdb_syscall_complete_=
+cb complete,
+     if (gdb_flags & GDB_O_TRUNC) {
+         host_flags |=3D O_TRUNC;
+     }
++    if (gdb_flags & GDB_O_APPEND) {
++        host_flags |=3D O_APPEND;
++    }
+     if (gdb_flags & GDB_O_EXCL) {
+         host_flags |=3D O_EXCL;
+     }
 --=20
 2.38.5
+
 
