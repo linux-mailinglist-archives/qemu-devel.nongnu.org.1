@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9387D72890D
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 21:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBEE728987
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 22:33:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7LhW-0008Od-23; Thu, 08 Jun 2023 15:53:42 -0400
+	id 1q7MIC-0006AV-Ts; Thu, 08 Jun 2023 16:31:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7LhT-0008Nl-Gt
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:53:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7LhJ-0006ij-SN
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:53:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686254008;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vC7XyA4bJXeMDOJ6g8rgw85sGtEAcMqgWzXafJt3OYo=;
- b=aNFmmSfvQeVrO6mxXaFqaiCZJ63dKFJNQiQ3DT1QGr/NMCvAgNNqo4NCqGwVerRX3IxGM3
- 2+bMjSDCgvKzJ0CbXyVWkwKvmyb+UuSneC66R8Lvj7v6/nVB7a/9CNGAcWXT7vbr90W/3L
- 1lO3Jq7ramfDkoqyy0M/VArmLcoCrOk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-hVtRfzCoP6-WJBeeUGgSFg-1; Thu, 08 Jun 2023 15:53:27 -0400
-X-MC-Unique: hVtRfzCoP6-WJBeeUGgSFg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-626204b0663so2100946d6.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 12:53:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q7MI9-00069v-RS
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 16:31:34 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q7MI8-0005qx-3U
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 16:31:33 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-656923b7c81so848148b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 13:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686256290; x=1688848290;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DMNYQf7HnfSYfg63oYvfBWZRDaJKLZC8ashD6BHNcTs=;
+ b=DGoGAngbOtj/99PsedBH9ATQsrJXMO8MnK+W1428b/rNaLcmgtEREhTChRi3AjoZkO
+ 8NOVXqruREtC4ObS1rkiWCEycK5d4gDKe+mfXeu+n98qeW+jFZtOn91x64cGusv9eH7w
+ cSy0F2X4PIo+QPSnjHSQOLR6sZ7DuftABYYt+eEe1A8eYFZUUAYuyPJX1mHucLqJlsjk
+ +cIwrAS0asXiSXNVpuA8eV5qDJdcwduZ1UaT5X2X4LEKu+3POAUlKZGBIV8TbXQRnpsi
+ bCqzGLrJzkd4vXXTMg/VrhGxpxXZn1djl6/rLxDDlnZ+9f758RID96/2Ufv1dZBmrBD3
+ 8HrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686254006; x=1688846006;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vC7XyA4bJXeMDOJ6g8rgw85sGtEAcMqgWzXafJt3OYo=;
- b=afhASCtibCZGUNG7bvL5bGvrJ7u89FQzfb/FY58+RxEESdeWLxRxWlXCwKzMAclHJg
- MUfuxwVIlcYYqHfVjO8WJFVbZ6nu5x+LA78yupjl/XbnMFBibYWIW1Z9r0Gj6dWDja8D
- EzSkCQKK9grlPXoJvqKNHJLCsUpg/T6I8StekM/EoKSae5EjtKVbvZPCJB6xY5rxAk/F
- 3xcAIdzYMLrnMx5KPqTlkOEXE3yi0QytIUEs0aaQCV8RM1sPwI9Y33Ej7mqZcQKCIW1a
- BMnzqYU3+A/PJw3rmzqQCtaK8z6ZtLw4Ft+ZdXjJOMp7rjgVaTgU9LAo+wICzLRQf1KA
- m5VA==
-X-Gm-Message-State: AC+VfDzuPW2gyQLst778kM2fxnRqoz50KLg2nhk/2FTzoKzFcm+C0P1V
- dr4Q8aiGbf5P87/Kijk6afKmAcsZAHxgpixLIXny2z/O7Re1qRB4TH3qeyirVAFaiy8KcXBaDe5
- i78uqY6fAr8K9wHE=
-X-Received: by 2002:a05:6214:c6d:b0:616:870c:96b8 with SMTP id
- t13-20020a0562140c6d00b00616870c96b8mr10543434qvj.3.1686254006682; 
- Thu, 08 Jun 2023 12:53:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7bQ6shq1FnMSKNeoLNnkxvJ2+wOefepj+jWlSjeoUBAVyZ+1HbEjn1qj/0OTqdgC5Q5q51ZQ==
-X-Received: by 2002:a05:6214:c6d:b0:616:870c:96b8 with SMTP id
- t13-20020a0562140c6d00b00616870c96b8mr10543412qvj.3.1686254006348; 
- Thu, 08 Jun 2023 12:53:26 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- s3-20020a0cb303000000b0062b35b691cdsm631703qve.93.2023.06.08.12.53.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 12:53:25 -0700 (PDT)
-Date: Thu, 8 Jun 2023 15:53:23 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com,
- pbonzini@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- alex.williamson@redhat.com, clg@redhat.com, david@redhat.com,
- philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
- chao.p.peng@intel.com
-Subject: Re: [PATCH v3 5/5] intel_iommu: Optimize out some unnecessary UNMAP
- calls
-Message-ID: <ZIIxs9kXQyULglIJ@x1n>
-References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
- <20230608095231.225450-6-zhenzhong.duan@intel.com>
- <ZIHgFFSaBJWFUNd7@x1n> <ZIHhgyUv7YmWsG3H@nvidia.com>
- <ZIH2h7GAV6qirAgw@x1n> <ZIIBhmoT7H2/q0lb@nvidia.com>
+ d=1e100.net; s=20221208; t=1686256290; x=1688848290;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DMNYQf7HnfSYfg63oYvfBWZRDaJKLZC8ashD6BHNcTs=;
+ b=XGuEyTJ/ZzpJOaMr0fbkJxzdfSAoanrczilnPXka01sasoQu2eSpZ20WR5BCd2kqOg
+ UBGKezJ9uJAysK05Eurlr8HkKmyb4eYxXHJx9oGiTLowZ0qmU5z/R/sFgOfhuAQ2Lo6l
+ 38rl/E7T1Khnk5atfg9yqHeFtNP76BNWUE4G3GNtF0MBcX+AwauKjn3HPLW6MYa6A9wk
+ OR8br0hrOHOL6jCrS91DqXhRYbWjGi9oEbBE4nQhMzYXgB8Z8XGUa9DcTqYVIX+irABA
+ GD+BVxTuGaDKJQL4PW2dUhMQe0NiO1MuTaJymsNIYXybkrvF+5bVJFDth/VZtvhDZOOA
+ wX2g==
+X-Gm-Message-State: AC+VfDznODFvKDD+y1DeiZGrNZWJ6axQKm+vF/yEDk8qDTb69swab2P/
+ eWdgT+03PYC+O0SRPy1KFz8nCQ==
+X-Google-Smtp-Source: ACHHUZ7w7PexzgBZAyRtIrIi4XB+vg/isBZwx5LUYLlwiEYq0zJ112hv3m2By8oRzlMtTaR1xGw27Q==
+X-Received: by 2002:a05:6a20:734f:b0:10c:4ff5:38b7 with SMTP id
+ v15-20020a056a20734f00b0010c4ff538b7mr5082943pzc.6.1686256289829; 
+ Thu, 08 Jun 2023 13:31:29 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:b071:df63:5761:f449?
+ ([2602:ae:1598:4c01:b071:df63:5761:f449])
+ by smtp.gmail.com with ESMTPSA id
+ s8-20020aa78288000000b006328ee1e56csm1481913pfm.2.2023.06.08.13.31.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 Jun 2023 13:31:29 -0700 (PDT)
+Message-ID: <55736db1-9430-25e2-d2a0-b8671210e9e9@linaro.org>
+Date: Thu, 8 Jun 2023 13:31:27 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZIIBhmoT7H2/q0lb@nvidia.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 0/1] 9p security fix 2023-06-08
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>, qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>, Yanwu Shen <ywsPlz@gmail.com>,
+ Jietao Xiao <shawtao1125@gmail.com>, Jinku Li <jkli@xidian.edu.cn>,
+ Wenbo Shen <shenwenbo@zju.edu.cn>,
+ Mauro Matteo Cascella <mcascell@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+References: <cover.1686236977.git.qemu_oss@crudebyte.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <cover.1686236977.git.qemu_oss@crudebyte.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,57 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 01:27:50PM -0300, Jason Gunthorpe wrote:
-> On Thu, Jun 08, 2023 at 11:40:55AM -0400, Peter Xu wrote:
+On 6/8/23 08:09, Christian Schoenebeck wrote:
+> The following changes since commit 45ae97993a75f975f1a01d25564724c7e10a543f:
 > 
-> > > But if there is the proper locks to prevent a map/unmap race, then
-> > > there should also be the proper locks to check that there is no map in
-> > > the first place and avoid the kernel call..
-> > 
-> > The problem is IIRC guest iommu driver can do smart things like batching
-> > invalidations, it means when QEMU gets it from the guest OS it may already
-> > not matching one mapped objects.
+>    Merge tag 'pull-tricore-20230607' ofhttps://github.com/bkoppelmann/qemu  into staging (2023-06-07 11:45:22 -0700)
 > 
-> qemu has to fix it. The kernel API is object based, not paged
-> based. You cannot unmap partions of a prior mapping.
+> are available in the Git repository at:
 > 
-> I assume for this kind of emulation it is doing 4k objects because
-> it has no idea what size of mapping the client will use?
-
-MAP is fine, before notify() to VFIO or anything, qemu scans the pgtable
-and handles it in page size or huge page size, so it can be >4K but always
-guest iommu pgsize aligned.
-
-I think we rely on guest behaving right, so it should also always operate
-on that size minimum when mapped huge.  It shouldn't violate the
-"per-object" protocol of iommufd.
-
-IIUC the same to vfio type1v2 from that aspect.
-
-It's more about UNMAP batching, but I assume iommufd is fine if it's fine
-with holes inside for that case.  The only difference of "not exist" of
--ENOENT seems to be just same as before as long as QEMU treats it as 0 like
-before.
-
-Though that does look slightly special, because the whole empty UNMAP
-region can be seen as a hole too; not sure when that -ENOENT will be useful
-if qemu should always bypass it anyway.  Indeed not a problem to qemu.
-
+>    https://github.com/cschoenebeck/qemu.git  tags/pull-9p-20230608
 > 
-> > We can definitely lookup every single object and explicitly unmap, but it
-> > loses partial of the point of batching that guest OS does.  
+> for you to fetch changes up to f6b0de53fb87ddefed348a39284c8e2f28dc4eda:
 > 
-> You don't need every single object, but it would be faster to check
-> where things are mapped and then call the kernel correctly instead of
-> trying to iterate with the unmapped reults.
+>    9pfs: prevent opening special files (CVE-2023-2861) (2023-06-08 17:04:58 +0200)
+> 
+> ----------------------------------------------------------------
+> * Fix for CVE-2023-2861.
 
-Maybe yes.  If so, It'll be great if Zhenzhong could just attach some proof
-on that, meanwhile drop the "iommufd UNMAP warnings" section in the commit
-message.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-Thanks,
 
--- 
-Peter Xu
+r~
 
 
