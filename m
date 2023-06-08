@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C5672811E
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C29C728134
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:22:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWX-0003Mc-Bj; Thu, 08 Jun 2023 09:17:57 -0400
+	id 1q7FWi-0003Qs-CF; Thu, 08 Jun 2023 09:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6I-0002Jy-Hk
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6I-0002Js-FB
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:42 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6G-0006VZ-Nb
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6G-0006Vk-OB
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:42 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4f642a24555so558751e87.3
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4f649db9b25so588734e87.0
  for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220958; x=1688812958;
+ d=gmail.com; s=20221208; t=1686220959; x=1688812959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k6TCvwqDAGxfcAseFytqW5BhRh4D+q19S8dd4eqVH4o=;
- b=ItBm+p+KznccAmpBeOtqjAXaN+KXKIu1sMwUM9UJ76tzs3PPOysPaegzHT0R0jdv+5
- zAZyoxcrGJZpLBfbn2VF8WjIkhGpcOJkTWYB8owmltfLVlfAHt63wWOhxjOlfYWrXTKP
- 901bD7XSN41barKBWKKObuax+OUSuOVl8n/P3YlSl62rZzfQMPzKAnoql35QidiIInwG
- t89vUMelPrRElxf86dGl0IRCCRl5UrC73dBEPX8HGV4rRj2uEAoYZPyaPQUXUtkGkFtp
- 8CKmBipbxQa1qigbJd1yQgnU/QZeNmhIljZHAqXK6Q/YcbfPSdj4eKRHi1YbQVsh9C2d
- OS0Q==
+ bh=h+S8dhmOgf4fP0vwFSn+XfASHgw2tPEqLZSr7jov0PI=;
+ b=o/Lpe2enwtz8gMzb9YzYhGsc/rshKBAqcAYBWe14kaQG8/OHNEdOdQTzdnD1DXS4DZ
+ S46hSsg7nQPF2gJ2cmAx2ikrRVlHqARl24MF85EweAtsLu3pi7ydSaOZx7EPaRe1KPRq
+ EwL31YLslGOq8bKyRh/J+WrhID23E02sVjHVPcJnF78SGJkThvT9D94MiTTKu03faLIC
+ QDA9KB7i7rjgWDrwOvhc9+lmDreynMQz3O5c/sMjhE5NPRP2ByquRxAQa5bwxDOGjWKW
+ fp4r6SALY4eca2aPgxrBjToI68CkBtTjirXbYscvl5MSeEOSdm3C30NfV4hlpKoKXkuj
+ O0xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220958; x=1688812958;
+ d=1e100.net; s=20221208; t=1686220959; x=1688812959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k6TCvwqDAGxfcAseFytqW5BhRh4D+q19S8dd4eqVH4o=;
- b=mGenhYWEo2ovOWitOFZQVsm8lIBqIVSO2y0Sa42vOTqUIj1SOJWdtZMflzMPa5ApLj
- 86iYDG8qgEGhC7TLZa/eMVm05wHFG8TlsAbVhP+vAYYShQuF3cbBMSRoid6otB09RZi6
- bkkkTI7iFWFapZkSosNmob/hiqwhTnAr1Y5wCfzDHSOgWhBlFgXOVUFMNCzH2zd58lZk
- hWdYEm157SupVeBg3HCLJn2IjVxAQ36fwflYAQpCbwvRY0EP+rq0DMHWeCcbABbwLErU
- jS9XSPQ5GDc1y6APwFUgBrsvYmQM8ONB5Rjm+QhQExFI0O4Itj1wMa9HfXa8ICTL1m3T
- ih7A==
-X-Gm-Message-State: AC+VfDwmg1JjEvfcflRyM9AXv8BIvnQR9qif0XXM94kDnuw8qA8Xx3cQ
- TCFCWLTO9C+3uK4MtjJ8T5YPTx0J7Ak=
-X-Google-Smtp-Source: ACHHUZ6l3BrFkbyMid9KreVpyrEnTnU50j/pzqg4YTk69TJhenb+Y9Asw7O7z4WBogMrC/Y5MQYYIg==
-X-Received: by 2002:ac2:4a76:0:b0:4f4:aea9:2a2f with SMTP id
- q22-20020ac24a76000000b004f4aea92a2fmr2697847lfp.57.1686220957812; 
- Thu, 08 Jun 2023 03:42:37 -0700 (PDT)
+ bh=h+S8dhmOgf4fP0vwFSn+XfASHgw2tPEqLZSr7jov0PI=;
+ b=gbhxGIP2dYGRfFtCkVP4MNrqiTmxL58wfyFUSdLlJT8U5xRUDo+xbofAX99GNug9Jm
+ EPSPMLatmdgov/JjYyndNRWjwHhbh0ZDaaBpYV9p4bpveWMfKSQh70k7V/mQiGkchYqO
+ VhQ1I89x43NKS+xrIvDS1vy8Ys5WNcBsCfSLCOEjmGqhKUj4TPsGm4DJMFmYoONU9rNt
+ pUuj5+uYZZ5X3F/QENt52WGAkWqMhR+GV8MU2FNjqCiLAnCsFPzlfkMnSujoGpOZ6jBs
+ X9Kvkzi8p8EUCN1em5/LFEVVZXFlnuLxxKrd8j/LKmtTIfztNERIX4kFkjG01B78HR74
+ rhlw==
+X-Gm-Message-State: AC+VfDxv9QvIzWwtJugiTIR3XgG5oWln6FxjtwePitMvC5qTcYQubvzX
+ cWb2KcWSTog0xJKclYeBGLdgzs9wABA=
+X-Google-Smtp-Source: ACHHUZ7B+ekk9uTuYieN2VLzXuIgqQxuHlJ2RtW4u5JSIwHKZ1rw8iHRenGTNXGbXWkpVBWxMHvgkw==
+X-Received: by 2002:ac2:53a1:0:b0:4f6:2afd:c17 with SMTP id
+ j1-20020ac253a1000000b004f62afd0c17mr3586845lfh.4.1686220958803; 
+ Thu, 08 Jun 2023 03:42:38 -0700 (PDT)
 Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
  [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.36
+ w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:42:37 -0700 (PDT)
+ Thu, 08 Jun 2023 03:42:38 -0700 (PDT)
 From: Siarhei Volkau <lis8215@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
@@ -62,16 +62,16 @@ Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Stefan Markovic <smarkovic@wavecomp.com>,
  Aleksandar Markovic <amarkovic@wavecomp.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 12/33] target/mips: Add emulation of MXU D16MADL instruction
-Date: Thu,  8 Jun 2023 13:42:01 +0300
-Message-Id: <20230608104222.1520143-13-lis8215@gmail.com>
+Subject: [PATCH 13/33] target/mips: Add emulation of MXU S16MAD instruction
+Date: Thu,  8 Jun 2023 13:42:02 +0300
+Message-Id: <20230608104222.1520143-14-lis8215@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 References: <20230608104222.1520143-1-lis8215@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=lis8215@gmail.com; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,112 +101,95 @@ but works with MXU registers set.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
 ---
- target/mips/tcg/mxu_translate.c | 82 +++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ target/mips/tcg/mxu_translate.c | 65 +++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
 diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index cd93992eed..85f3e47ee3 100644
+index 85f3e47ee3..c1a38d7a0d 100644
 --- a/target/mips/tcg/mxu_translate.c
 +++ b/target/mips/tcg/mxu_translate.c
-@@ -366,6 +366,7 @@ enum {
-     OPC_MXU__POOL03  = 0x09,
+@@ -367,6 +367,7 @@ enum {
      OPC_MXU_D16MAC   = 0x0A,
      OPC_MXU_D16MACF  = 0x0B,
-+    OPC_MXU_D16MADL  = 0x0C,
+     OPC_MXU_D16MADL  = 0x0C,
++    OPC_MXU_S16MAD   = 0x0D,
      OPC_MXU_D16MACE  = 0x0F,
      OPC_MXU__POOL04  = 0x10,
      OPC_MXU__POOL05  = 0x11,
-@@ -901,6 +902,84 @@ static void gen_mxu_d16mac(DisasContext *ctx, bool fractional,
-     }
+@@ -980,6 +981,67 @@ static void gen_mxu_d16madl(DisasContext *ctx)
+     tcg_gen_or_tl(mxu_gpr[XRd - 1], t3, t2);
  }
  
 +/*
-+ * D16MADL XRa, XRb, XRc, XRd, aptn2, optn2 - Double packed
-+ * unsigned 16 bit pattern multiply and add/subtract.
++ * S16MAD XRa, XRb, XRc, XRd, aptn2, optn2 - Single packed
++ * signed 16 bit pattern multiply and 32-bit add/subtract.
 + */
-+static void gen_mxu_d16madl(DisasContext *ctx)
++static void gen_mxu_s16mad(DisasContext *ctx)
 +{
-+    TCGv t0, t1, t2, t3;
-+    uint32_t XRa, XRb, XRc, XRd, optn2, aptn2;
++    TCGv t0, t1;
++    uint32_t XRa, XRb, XRc, XRd, optn2, aptn1, pad;
 +
 +    t0 = tcg_temp_new();
 +    t1 = tcg_temp_new();
-+    t2 = tcg_temp_new();
-+    t3 = tcg_temp_new();
 +
 +    XRa = extract32(ctx->opcode, 6, 4);
 +    XRb = extract32(ctx->opcode, 10, 4);
 +    XRc = extract32(ctx->opcode, 14, 4);
 +    XRd = extract32(ctx->opcode, 18, 4);
 +    optn2 = extract32(ctx->opcode, 22, 2);
-+    aptn2 = extract32(ctx->opcode, 24, 2);
++    aptn1 = extract32(ctx->opcode, 24, 1);
++    pad = extract32(ctx->opcode, 25, 1);
 +
-+    gen_load_mxu_gpr(t1, XRb);
-+    tcg_gen_sextract_tl(t0, t1,  0, 16);
-+    tcg_gen_sextract_tl(t1, t1, 16, 16);
++    if (pad) {
++        /* FIXME check if it influence the result */
++    }
 +
-+    gen_load_mxu_gpr(t3, XRc);
-+    tcg_gen_sextract_tl(t2, t3,  0, 16);
-+    tcg_gen_sextract_tl(t3, t3, 16, 16);
++    gen_load_mxu_gpr(t0, XRb);
++    gen_load_mxu_gpr(t1, XRc);
 +
 +    switch (optn2) {
-+    case MXU_OPTN2_WW: /* XRB.H*XRC.H == lop, XRB.L*XRC.L == rop */
-+        tcg_gen_mul_tl(t3, t1, t3);
-+        tcg_gen_mul_tl(t2, t0, t2);
++    case MXU_OPTN2_WW: /* XRB.H*XRC.H */
++        tcg_gen_sextract_tl(t0, t0, 16, 16);
++        tcg_gen_sextract_tl(t1, t1, 16, 16);
 +        break;
-+    case MXU_OPTN2_LW: /* XRB.L*XRC.H == lop, XRB.L*XRC.L == rop */
-+        tcg_gen_mul_tl(t3, t0, t3);
-+        tcg_gen_mul_tl(t2, t0, t2);
++    case MXU_OPTN2_LW: /* XRB.L*XRC.L */
++        tcg_gen_sextract_tl(t0, t0,  0, 16);
++        tcg_gen_sextract_tl(t1, t1,  0, 16);
 +        break;
-+    case MXU_OPTN2_HW: /* XRB.H*XRC.H == lop, XRB.H*XRC.L == rop */
-+        tcg_gen_mul_tl(t3, t1, t3);
-+        tcg_gen_mul_tl(t2, t1, t2);
++    case MXU_OPTN2_HW: /* XRB.H*XRC.L */
++        tcg_gen_sextract_tl(t0, t0, 16, 16);
++        tcg_gen_sextract_tl(t1, t1,  0, 16);
 +        break;
-+    case MXU_OPTN2_XW: /* XRB.L*XRC.H == lop, XRB.H*XRC.L == rop */
-+        tcg_gen_mul_tl(t3, t0, t3);
-+        tcg_gen_mul_tl(t2, t1, t2);
++    case MXU_OPTN2_XW: /* XRB.L*XRC.H */
++        tcg_gen_sextract_tl(t0, t0,  0, 16);
++        tcg_gen_sextract_tl(t1, t1, 16, 16);
 +        break;
 +    }
-+    tcg_gen_extract_tl(t2, t2, 0, 16);
-+    tcg_gen_extract_tl(t3, t3, 0, 16);
++    tcg_gen_mul_tl(t0, t0, t1);
 +
 +    gen_load_mxu_gpr(t1, XRa);
-+    tcg_gen_extract_tl(t0, t1,  0, 16);
-+    tcg_gen_extract_tl(t1, t1, 16, 16);
 +
-+    switch (aptn2) {
-+    case MXU_APTN2_AA:
-+        tcg_gen_add_tl(t3, t1, t3);
-+        tcg_gen_add_tl(t2, t0, t2);
++    switch (aptn1) {
++    case MXU_APTN1_A:
++        tcg_gen_add_tl(t1, t1, t0);
 +        break;
-+    case MXU_APTN2_AS:
-+        tcg_gen_add_tl(t3, t1, t3);
-+        tcg_gen_sub_tl(t2, t0, t2);
-+        break;
-+    case MXU_APTN2_SA:
-+        tcg_gen_sub_tl(t3, t1, t3);
-+        tcg_gen_add_tl(t2, t0, t2);
-+        break;
-+    case MXU_APTN2_SS:
-+        tcg_gen_sub_tl(t3, t1, t3);
-+        tcg_gen_sub_tl(t2, t0, t2);
++    case MXU_APTN1_S:
++        tcg_gen_sub_tl(t1, t1, t0);
 +        break;
 +    }
 +
-+    tcg_gen_andi_tl(t2, t2, 0xffff);
-+    tcg_gen_shli_tl(t3, t3, 16);
-+    tcg_gen_or_tl(mxu_gpr[XRd - 1], t3, t2);
++    gen_store_mxu_gpr(t1, XRd);
 +}
 +
  /*
   * Q8MUL   XRa, XRb, XRc, XRd - Parallel unsigned 8 bit pattern multiply
   * Q8MULSU XRa, XRb, XRc, XRd - Parallel signed 8 bit pattern multiply
-@@ -2761,6 +2840,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU_D16MACF:
-             gen_mxu_d16mac(ctx, true, true);
+@@ -2843,6 +2905,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+         case OPC_MXU_D16MADL:
+             gen_mxu_d16madl(ctx);
              break;
-+        case OPC_MXU_D16MADL:
-+            gen_mxu_d16madl(ctx);
++        case OPC_MXU_S16MAD:
++            gen_mxu_s16mad(ctx);
 +            break;
          case OPC_MXU_D16MACE:
              gen_mxu_d16mac(ctx, true, false);
