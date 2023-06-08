@@ -2,69 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084C1727C48
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 12:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE0C727BF1
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 11:54:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7CWr-0000B5-H7; Thu, 08 Jun 2023 06:06:05 -0400
+	id 1q7CKB-0005QT-RJ; Thu, 08 Jun 2023 05:52:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q7CWp-0000Aw-EY
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:06:03 -0400
-Received: from mga17.intel.com ([192.55.52.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q7CWn-0007xy-Kr
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:06:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686218761; x=1717754761;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=uB9cWQj7plvWmpBjyLlTfdsBwyWUSZdfHpu6QNZiArs=;
- b=fVZ1VWvwT2UR2R2zcAQQzFX4K1HSfSYmbmyljbgkEexEC3+057dGC0jU
- 6zZCXfa5JdCFYpf/8jejUtczD2k7ZZETi0330LYOc2QthOCXasf+uyVQV
- K7AMzsn1RlzjN3F8wNKaV/3sfyQifY8HXQRjSPE6gAhfJs23kyjjfZwlW
- TKYihUqKBM4lqPch3qNQy8+Oy6Rfr6YBoa99H04HDAdU1gOH5uFdPbGij
- XiBT5mrn4SSk9Y4NzN7oAWOjv5mTf3hEySuyfDN3cNryeUsSv4pKnnhkt
- Xh6lEjkD2Ull8JGlPSCPFSdSfgAMpW9JDwRu0N8hvQr60U7EgKUd7SxtM A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337624469"
-X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="337624469"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2023 03:05:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="956652106"
-X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="956652106"
-Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2023 03:05:38 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, peterx@redhat.com, jasowang@redhat.com,
- pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, alex.williamson@redhat.com, clg@redhat.com,
- david@redhat.com, philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
- yi.l.liu@intel.com, chao.p.peng@intel.com
-Subject: [PATCH v3 5/5] intel_iommu: Optimize out some unnecessary UNMAP calls
-Date: Thu,  8 Jun 2023 17:52:31 +0800
-Message-Id: <20230608095231.225450-6-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230608095231.225450-1-zhenzhong.duan@intel.com>
-References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7CK9-0005Pf-HM
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:52:57 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7CK7-0005Jt-UO
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:52:57 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-51491b87565so697871a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 02:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686217974; x=1688809974;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=KERFQfa37mFnQ04q3D06EDqcTBtD4KjLYMASEpuVMiI=;
+ b=LB5Xss9OwIqaKjNjE9JGuL/KL6RcDixWZbvR7UHOXF/LbkqunVxbDcJ+wi4HGA7Jxt
+ ldS5nydQd8KDcUE+tL1ySlOZJtNx9K75TDU/1FQeSU+SK95IeJjQAwct7uyJkqGYJwz9
+ 1ew4ggflYvkORnY53CCAC4WQAqXS1wRWBgG9EqP4ZyWA3Tv6DnF0tKSeeX75Mcjqo/y7
+ NH8RZ8o0+mXq6u+hhU1He56ZvcwkqOT+H25qnyaaxN/c8WG/719yZUl/Bj/SSP73JaHt
+ n7ppROC7Kx4EvfPGJzN5yGFLcZdzdAju7NZHa8/vsyTAiHX/XxUQdqurmlDDPveBYkOi
+ hr0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686217974; x=1688809974;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KERFQfa37mFnQ04q3D06EDqcTBtD4KjLYMASEpuVMiI=;
+ b=Y3tH4AKIIA36cikFyi8W1IR0B13mbmamM1IkJ687f9uDf8U39k4rytx1OikMfGSvbg
+ sMbN85XvzbNJo9TpzH77x3MyuwyBdv32dzHKVURPyidiRPMPe3IJuMsFZHRgs879wok7
+ Ij1Or3DiYr3lC7PbHlkjBGw6rWutDTkCOUKbQUyGGvX7ckmROBtZT5e46J9LPruzQhbX
+ T+wEUfejmswpzBarEqShi2qAPsrKUK18mfugMq1e7Pz+5lvqdCFebpDZ83Hfwr/gyF4v
+ fHbGSiwrzSEbRFWD5EyDPyCJDWOBoqMi56HTLkg+QEYJ7Sf1UwGlvskCwrmMPHiHzdvk
+ BJsA==
+X-Gm-Message-State: AC+VfDwfAZ55uyVGBER3r4En1pZRf8KLou6qCS+4ns/J16askjtuBytB
+ yzWOmLnUZexRxdpvlunMgTjlwC7FRgwHXGDN2Uz/5w==
+X-Google-Smtp-Source: ACHHUZ4FPY7Z9XgzRaFG2Kdp8R1K+TlArhzQrRWf+foHTsimCMO6CLRDkN4N5QITeBaeHQ/kZFi9a2RSLjFhAviZ8uY=
+X-Received: by 2002:aa7:c60d:0:b0:516:a277:48ce with SMTP id
+ h13-20020aa7c60d000000b00516a27748cemr2100116edq.4.1686217974269; Thu, 08 Jun
+ 2023 02:52:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.151;
- envelope-from=zhenzhong.duan@intel.com; helo=mga17.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230605154541.1043261-1-hreitz@redhat.com>
+ <20230605154541.1043261-3-hreitz@redhat.com>
+In-Reply-To: <20230605154541.1043261-3-hreitz@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 Jun 2023 10:52:43 +0100
+Message-ID: <CAFEAcA_9pFYxttbp57QO-diMzqdmE8GdoyGMtMk_L4_a-TXyKA@mail.gmail.com>
+Subject: Re: [PULL 02/17] block: Collapse padded I/O vecs exceeding IOV_MAX
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,87 +86,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 63b88968f1 ("intel-iommu: rework the page walk logic") adds logic
-to record mapped IOVA ranges so we only need to send MAP or UNMAP when
-necessary. But there is still a corner case of unnecessary UNMAP.
+On Mon, 5 Jun 2023 at 16:48, Hanna Czenczek <hreitz@redhat.com> wrote:
+>
+> When processing vectored guest requests that are not aligned to the
+> storage request alignment, we pad them by adding head and/or tail
+> buffers for a read-modify-write cycle.
 
-During invalidation, either domain or device selective, we only need to
-unmap when there are recorded mapped IOVA ranges, presuming most of OSes
-allocating IOVA range continuously, e.g. on x86, linux sets up mapping
-from 0xffffffff downwards.
+Hi; Coverity complains (CID 1512819) that the assert added
+in this commit is always true:
 
-Strace shows UNMAP ioctl taking 0.000014us and we have 28 such ioctl()
-in one invalidation, as two notifiers in x86 are split into power of 2
-pieces.
+> @@ -1573,26 +1701,34 @@ static void bdrv_padding_destroy(BdrvRequestPadding *pad)
+>  static int bdrv_pad_request(BlockDriverState *bs,
+>                              QEMUIOVector **qiov, size_t *qiov_offset,
+>                              int64_t *offset, int64_t *bytes,
+> +                            bool write,
+>                              BdrvRequestPadding *pad, bool *padded,
+>                              BdrvRequestFlags *flags)
+>  {
+>      int ret;
+> +    struct iovec *sliced_iov;
+> +    int sliced_niov;
+> +    size_t sliced_head, sliced_tail;
+>
+>      bdrv_check_qiov_request(*offset, *bytes, *qiov, *qiov_offset, &error_abort);
+>
+> -    if (!bdrv_init_padding(bs, *offset, *bytes, pad)) {
+> +    if (!bdrv_init_padding(bs, *offset, *bytes, write, pad)) {
+>          if (padded) {
+>              *padded = false;
+>          }
+>          return 0;
+>      }
+>
+> -    ret = qemu_iovec_init_extended(&pad->local_qiov, pad->buf, pad->head,
+> -                                   *qiov, *qiov_offset, *bytes,
+> -                                   pad->buf + pad->buf_len - pad->tail,
+> -                                   pad->tail);
+> +    sliced_iov = qemu_iovec_slice(*qiov, *qiov_offset, *bytes,
+> +                                  &sliced_head, &sliced_tail,
+> +                                  &sliced_niov);
+> +
+> +    /* Guaranteed by bdrv_check_qiov_request() */
+> +    assert(*bytes <= SIZE_MAX);
 
-ioctl(48, VFIO_IOMMU_UNMAP_DMA, 0x7ffffd5c42f0) = 0 <0.000014>
+This one. (The Coverity complaint is because SIZE_MAX for it is
+UINT64_MAX and an int64_t can't possibly be bigger than that.)
 
-The other purpose of this patch is to eliminate noisy error log when we
-work with IOMMUFD. It looks the duplicate UNMAP call will fail with IOMMUFD
-while always succeed with legacy container. This behavior difference leads
-to below error log for IOMMUFD:
+Is this because the assert() is deliberately handling the case
+of a 32-bit host where SIZE_MAX might not be UINT64_MAX ? Or was
+the bound supposed to be SSIZE_MAX or INT64_MAX ?
 
-IOMMU_IOAS_UNMAP failed: No such file or directory
-vfio_container_dma_unmap(0x562012d6b6d0, 0x0, 0x80000000) = -2 (No such file or directory)
-IOMMU_IOAS_UNMAP failed: No such file or directory
-vfio_container_dma_unmap(0x562012d6b6d0, 0x80000000, 0x40000000) = -2 (No such file or directory)
-...
+Looking at bdrv_check_qiov_request(), it seems to check bytes
+against BDRV_MAX_LENGTH, which is defined as something somewhere
+near INT64_MAX. So on a 32-bit host I'm not sure that function
+does guarantee that the bytes count is going to be less than
+SIZE_MAX...
 
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+(CID 1512819)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index dcc334060cd6..9e5ba81c89e2 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3743,6 +3743,7 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-     hwaddr start = n->start;
-     hwaddr end = n->end;
-     IntelIOMMUState *s = as->iommu_state;
-+    IOMMUTLBEvent event;
-     DMAMap map;
- 
-     /*
-@@ -3762,22 +3763,25 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-     assert(start <= end);
-     size = remain = end - start + 1;
- 
-+    event.type = IOMMU_NOTIFIER_UNMAP;
-+    event.entry.target_as = &address_space_memory;
-+    event.entry.perm = IOMMU_NONE;
-+    /* This field is meaningless for unmap */
-+    event.entry.translated_addr = 0;
-+
-     while (remain >= VTD_PAGE_SIZE) {
--        IOMMUTLBEvent event;
-         uint64_t mask = dma_aligned_pow2_mask(start, end, s->aw_bits);
-         uint64_t size = mask + 1;
- 
-         assert(size);
- 
--        event.type = IOMMU_NOTIFIER_UNMAP;
--        event.entry.iova = start;
--        event.entry.addr_mask = mask;
--        event.entry.target_as = &address_space_memory;
--        event.entry.perm = IOMMU_NONE;
--        /* This field is meaningless for unmap */
--        event.entry.translated_addr = 0;
--
--        memory_region_notify_iommu_one(n, &event);
-+        map.iova = start;
-+        map.size = mask;
-+        if (iova_tree_find(as->iova_tree, &map)) {
-+            event.entry.iova = start;
-+            event.entry.addr_mask = mask;
-+            memory_region_notify_iommu_one(n, &event);
-+        }
- 
-         start += size;
-         remain -= size;
--- 
-2.34.1
-
+thanks
+-- PMM
 
