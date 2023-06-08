@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA61728113
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4966727D6B
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 13:01:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWt-0003bH-RK; Thu, 08 Jun 2023 09:18:19 -0400
+	id 1q7DMn-00055j-Po; Thu, 08 Jun 2023 06:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6i-0002VR-4o
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:43:08 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6e-0006gO-7e
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:43:07 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f629ccb8ebso559095e87.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:43:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220980; x=1688812980;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cIjPf2GjJew6g+tPGECmJIjJsK9iEsbIjnw3YFF23EE=;
- b=TSCw1NSzBvd9nZzzFTAiW9lRLDE3rEL9Ao0QINLEhq0Qx11q5ND/ZYWCR/j9OceKhC
- DzR2KNdMmCUi9/0krSv1CWEWqgouFBhs8vk9Zl8t57slDqdZeBsbin+mzZ6R0MXHAUkl
- QSN2D81/WFAiqZpsqRVAqdPYCfMF25DqXwoExQuNle7jaRrZE0XxOyL1pFWfHjpIz+i4
- idPFfSjNBIpq1fDLwFOZsJAWTzdjpKgCvAhgbLAk1uwhbeRuXuaST5WaCOAYkWq26Q09
- 0tgPC+O1FcfkFsPt3OLXMGQ2hoer8U2+j8dXPesdLLl7c1mJr8CjkP7F1j5lBLL/LOl0
- +kGg==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q7DMl-00055K-3j
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:59:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q7DMj-0001ar-Fm
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:59:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686221980;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NOWvzjUiRTuVDExOV+88QaHrEI45YjcBKCpHi+RGS08=;
+ b=bAymnoEIfBk/P0g2rf+lh3V+PntwFo/IHdD7g0e2Jewzw9inCMyF7L/IZIkE7tO+ntQDK3
+ moHAQmLAniXOldRIF2XFLeKrql0UZNQRAg9sYDozKYdusJw0K278nt4klVTV3rG/BsEukU
+ w5wk7XOKFvZNG59hYKohWrCzj2cmNsw=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-414-dxOB2ve4MIa5VudN1wZ-uQ-1; Thu, 08 Jun 2023 06:59:39 -0400
+X-MC-Unique: dxOB2ve4MIa5VudN1wZ-uQ-1
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-565a33c35b1so7347637b3.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:59:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220980; x=1688812980;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1686221978; x=1688813978;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cIjPf2GjJew6g+tPGECmJIjJsK9iEsbIjnw3YFF23EE=;
- b=C9FK0QS67vhb6E+/s6LqU6Oy7LQs7bkEUbhl33A1nv4EMq3cynOC0jeEgbizU0qiye
- f9+eqDFSfy+Ftc6BQef0IQ04+gV8enUwj+xMdIUl/ZMCcP9/hrWcQr6RDBZz1XLsHiC8
- XrZwohMPO+GaYLI7oVLNe/ebdnW25qzvhmOlH7kh6JmmYkUZVWvarIgFUG/SDLqrTqtu
- BnMmme2Z+IQC2hJ1K2l9V5jeEivdM+JsnvCDEE9I9yT+BHZGz2mpuI+geWxYw75ELOFq
- fqHXluq9L2KZuaaE0Dz8GLXltYwj93f1U159c7yiK5VZejx+oeQqnVhNvvV8ingOxijV
- sqBA==
-X-Gm-Message-State: AC+VfDyafTFu5FVgrOHr0YV7zP1d/E9Z1c6E6spRIz297SZnvuuZavjW
- QTJc3n726qcJKcvYQ302Qlx0I/raEi0=
-X-Google-Smtp-Source: ACHHUZ62fgZvbJMumnggT9QCtC5C7gRO9qY3nn7ox1+g2Oakr++A8B/Py6QslwQYBQrdWhtK1J9DEQ==
-X-Received: by 2002:ac2:54ae:0:b0:4f2:40dd:e2cf with SMTP id
- w14-20020ac254ae000000b004f240dde2cfmr3112047lfk.55.1686220980517; 
- Thu, 08 Jun 2023 03:43:00 -0700 (PDT)
-Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
- [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:43:00 -0700 (PDT)
-From: Siarhei Volkau <lis8215@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Stefan Markovic <smarkovic@wavecomp.com>,
- Aleksandar Markovic <amarkovic@wavecomp.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 33/33] target/mips: Add emulation of MXU Q8SAD instruction
-Date: Thu,  8 Jun 2023 13:42:22 +0300
-Message-Id: <20230608104222.1520143-34-lis8215@gmail.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
-References: <20230608104222.1520143-1-lis8215@gmail.com>
+ bh=NOWvzjUiRTuVDExOV+88QaHrEI45YjcBKCpHi+RGS08=;
+ b=PViG70r7UOl2YzFRM/FgZEtd6Njb3XE78Q08OCbbgB8kKjMO9SPvoPfak5H61hdM/v
+ nS5mCvn1I81GH6dltPI8wH32S1L+7YV90tc6tgaj8+vn4Q+j85jZWyCqgskzT1z/G7lA
+ xbyzN2j5xd7J/1bCsPjBMnf7fwaF/+rGB6p1UNwXGqIvSC40kenHmNTI0474yddOwWQ5
+ Kn6kcebn6cwabbiqaDN3oPlM9o02MxtS/cS4lTiEa0/5BDQjHJ8T/5tiCZ5EL1/uHePq
+ bV/ia43TxIemJJaMv9dy57jvP2XFjm9EAoOgF28D+/6lOQ3BwrIDh16TQOTqBOdNUPXN
+ jS8Q==
+X-Gm-Message-State: AC+VfDzGDUQK+ZTmDWTAoFlG9EcUlwcCNUiVPGgkq3bFMfV5PKu21moG
+ 2WsWOvYfs/SNOsr9I+WvnmzGzOSHjNj72YRQ+R7AtvE29jDaMSf++SAMgkiIMq/IhZIpGQ1XIX5
+ ByFs0r9R3KMGocSQvP4ieBDpnEiz2JvSLym845DYIaQ==
+X-Received: by 2002:a81:4996:0:b0:569:75bb:5124 with SMTP id
+ w144-20020a814996000000b0056975bb5124mr10112574ywa.35.1686221978543; 
+ Thu, 08 Jun 2023 03:59:38 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6ynQFFnVBBmo98wjjAbiNxcGLWRCIOIq573VCyO0Jgw4BJeqmZ9bRJVDo8hg2Fv1iB0Y8BgSeP6zaRhUWOgLw=
+X-Received: by 2002:a81:4996:0:b0:569:75bb:5124 with SMTP id
+ w144-20020a814996000000b0056975bb5124mr10112559ywa.35.1686221978164; Thu, 08
+ Jun 2023 03:59:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+References: <20230607170842.488489-1-lingshan.zhu@intel.com>
+ <CAJaqyWdQRDb=cev7LUXKiK9-gBhB2CY7fmcT-M+pdjgb29qDcw@mail.gmail.com>
+ <65fd10d6-2ede-3e91-4356-36623b53db5a@intel.com>
+ <CAJaqyWfgeN1u97z5W0Z6cCrJYrZBRV1p9je3_DoOv2XghY9XTw@mail.gmail.com>
+ <b3b911b8-3064-21cf-7fa5-adfb597d8cf7@intel.com>
+In-Reply-To: <b3b911b8-3064-21cf-7fa5-adfb597d8cf7@intel.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 8 Jun 2023 12:59:01 +0200
+Message-ID: <CAJaqyWetO0gcZ+yjT5PURrzFZceq5RApW9Vf6mypLnXn=fpXmQ@mail.gmail.com>
+Subject: Re: [PATCH] vdpa: dont check vhost_vdpa->suspended when unsupported
+To: "Zhu, Lingshan" <lingshan.zhu@intel.com>
+Cc: jasowang@redhat.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 09:17:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,86 +97,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The instruction implements SAD (sum-absolute-difference) operation which
-is used in motion estimation algorithms. The instruction handles four
-8-bit data in parallel.
+On Thu, Jun 8, 2023 at 11:34=E2=80=AFAM Zhu, Lingshan <lingshan.zhu@intel.c=
+om> wrote:
+>
+>
+>
+> On 6/8/2023 4:49 PM, Eugenio Perez Martin wrote:
+> > On Thu, Jun 8, 2023 at 9:07=E2=80=AFAM Zhu, Lingshan <lingshan.zhu@inte=
+l.com> wrote:
+> >>
+> >>
+> >> On 6/7/2023 9:51 PM, Eugenio Perez Martin wrote:
+> >>> On Wed, Jun 7, 2023 at 11:09=E2=80=AFAM Zhu Lingshan <lingshan.zhu@in=
+tel.com> wrote:
+> >>>> When read the state of a virtqueue, vhost_vdpa need
+> >>>> to check whether the device is suspended.
+> >>>>
+> >>>> This commit verifies whether VHOST_BACKEND_F_SUSPEND is
+> >>>> negotiated when checking vhost_vdpa->suspended.
+> >>>>
+> >>> I'll add: Otherwise, qemu prints XXX error message.
+> >>>
+> >>> On second thought, not returning an error prevents the caller
+> >>> (vhost.c:vhost_virtqueue_stop) from recovering used idx from the
+> >>> guest.
+> >>>
+> >>> I'm not sure about the right fix for this, should we call
+> >>> virtio_queue_restore_last_avail_idx here? Communicate that the backen=
+d
+> >>> cannot suspend so vhost.c can print a better error message?
+> >> I agree it is better not to return an error.
+> >>
+> >> Instead if neither the device does not support _F_SUSPEND nor failed t=
+o
+> >> suspend,
+> >> I think vhost_vdpa should try to read the last_avail_idx from
+> >> the device anyway. We can print an error message here,
+> >> like: failed to suspend, the value may not reliable.
+> >>
+> > We need to drop that value if it is not reliable. If the device keeps
+> > using descriptors, used_idx may increase beyond avail_idx, so the
+> > usual is to just restore whatever used_idx value the guest had at
+> > stop.
+> This interface is used to read the last_avail_idx, the ideal case
+> is to fetch it after device has been suspended.
+>
+> If the device is not suspended, the value may be unreliable
+> because the device may keep consuming descriptors.
+> However at that moment, the guest may be freezed as well,
+> so the guest wouldn't supply more available descriptors to the device.
+>
 
-Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
----
- target/mips/tcg/mxu_translate.c | 45 +++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+Actually, if we cannot suspend the device we reset it, as we cannot
+afford to modify used_idx.
 
-diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index 1e043908db..67a19c7284 100644
---- a/target/mips/tcg/mxu_translate.c
-+++ b/target/mips/tcg/mxu_translate.c
-@@ -410,6 +410,7 @@ enum {
-     OPC_MXU_Q16SCOP  = 0x3B,
-     OPC_MXU_Q8MADL   = 0x3C,
-     OPC_MXU_S32SFL   = 0x3D,
-+    OPC_MXU_Q8SAD    = 0x3E,
- };
- 
- 
-@@ -4041,6 +4042,47 @@ static void gen_mxu_s32sfl(DisasContext *ctx)
-     gen_store_mxu_gpr(t3, XRd);
- }
- 
-+/*
-+ *  Q8SAD XRa, XRd, XRb, XRc
-+ *    Typical SAD opration for motion estimation.
-+ */
-+static void gen_mxu_q8sad(DisasContext *ctx)
-+{
-+    uint32_t XRd, XRc, XRb, XRa;
-+
-+    XRd = extract32(ctx->opcode, 18, 4);
-+    XRc = extract32(ctx->opcode, 14, 4);
-+    XRb = extract32(ctx->opcode, 10, 4);
-+    XRa = extract32(ctx->opcode,  6, 4);
-+
-+    TCGv t0 = tcg_temp_new();
-+    TCGv t1 = tcg_temp_new();
-+    TCGv t2 = tcg_temp_new();
-+    TCGv t3 = tcg_temp_new();
-+    TCGv t4 = tcg_temp_new();
-+    TCGv t5 = tcg_temp_new();
-+
-+    gen_load_mxu_gpr(t2, XRb);
-+    gen_load_mxu_gpr(t3, XRc);
-+    gen_load_mxu_gpr(t5, XRd);
-+    tcg_gen_movi_tl(t4, 0);
-+
-+    for (int i = 0; i < 4; i++) {
-+        tcg_gen_andi_tl(t0, t2, 0xff);
-+        tcg_gen_andi_tl(t1, t3, 0xff);
-+        tcg_gen_sub_tl(t0, t0, t1);
-+        tcg_gen_abs_tl(t0, t0);
-+        tcg_gen_add_tl(t4, t4, t0);
-+        if (i < 3) {
-+            tcg_gen_shri_tl(t2, t2, 8);
-+            tcg_gen_shri_tl(t3, t3, 8);
-+        }
-+    }
-+    tcg_gen_add_tl(t5, t5, t4);
-+    gen_store_mxu_gpr(t4, XRa);
-+    gen_store_mxu_gpr(t5, XRd);
-+}
-+
- /*
-  *                 MXU instruction category: align
-  *                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@@ -5042,6 +5084,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU_S32SFL:
-             gen_mxu_s32sfl(ctx);
-             break;
-+        case OPC_MXU_Q8SAD:
-+            gen_mxu_q8sad(ctx);
-+            break;
-         default:
-             return false;
-         }
--- 
-2.40.0
+I'm thinking now that your original idea was way better to be honest.
+To not call vhost_get_vring_base in case the VM is shutting down and
+we're not migrating seems to fit the situation way better. We save an
+ioctl / potential device call for nothing.
+
+> I think that means the last_avail_idx may not be reliable but still safe,
+> better than read nothing. Because the last_avail_idx always lags behind
+> the in-guest avail_idx.
+>
+
+Assuming we're migrating and we don't either reset or suspend the device
+* guest set avail_idx=3D3
+* device fetch last_avail_idx=3D3
+* guest set avail_idx=3D6
+* VM_SUSPEND
+* we call unreliable get_vring_base, and obtain device state 3.
+* device is not reset, so it reads guest's avail_idx =3D 6. It can
+process the descriptors in avail_idx position 3, 4 and 5, and write
+that used_idx.
+* virtio_load detects that inconsistency, as (uint)last_avail_idx -
+(uint)used_idx > vring size.
+
+So I think we need to keep printing an error and recovery from the
+guest as a fallback.
+
+> I am not sure we can restore last_avail_idx with last_used_idx, there is
+> always
+> a delta between them.
+>
+
+Yes, we assume it is safe to process these descriptors again or that
+they'll be migrated when that is supported.
+
+In any case, if a device does not work with this, we should be more
+restrictive, not less.
+
+Does it make sense to you?
+
+Thanks!
+
+> Thanks
+>
+> > Thanks!
+> >
+> >> Thanks
+> >>> Thanks!
+> >>>
+> >>>> Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
+> >>>> ---
+> >>>>    hw/virtio/vhost-vdpa.c | 2 +-
+> >>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> >>>> index b3094e8a8b..ae176c06dd 100644
+> >>>> --- a/hw/virtio/vhost-vdpa.c
+> >>>> +++ b/hw/virtio/vhost-vdpa.c
+> >>>> @@ -1397,7 +1397,7 @@ static int vhost_vdpa_get_vring_base(struct vh=
+ost_dev *dev,
+> >>>>            return 0;
+> >>>>        }
+> >>>>
+> >>>> -    if (!v->suspended) {
+> >>>> +    if ((dev->backend_cap & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) && (!=
+v->suspended)) {
+> >>>>            /*
+> >>>>             * Cannot trust in value returned by device, let vhost re=
+cover used
+> >>>>             * idx from guest.
+> >>>> --
+> >>>> 2.39.1
+> >>>>
+>
 
 
