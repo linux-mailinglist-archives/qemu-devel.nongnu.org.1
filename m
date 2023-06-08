@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E3D728461
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00F9728482
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7I1S-00082Q-4v; Thu, 08 Jun 2023 11:58:02 -0400
+	id 1q7I4M-00017j-JB; Thu, 08 Jun 2023 12:01:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <f6b0de53fb87ddefed348a39284c8e2f28dc4eda@lizzy.crudebyte.com>)
- id 1q7I1P-000826-PI
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:57:59 -0400
+ id 1q7I3U-0000on-7d
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:00:08 -0400
 Received: from lizzy.crudebyte.com ([91.194.90.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <f6b0de53fb87ddefed348a39284c8e2f28dc4eda@lizzy.crudebyte.com>)
- id 1q7I1N-0000XX-K1
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:57:59 -0400
+ id 1q7I3S-0000qW-Ft
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:00:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=lizzy; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=4iDn3B02X3hDECjVovQRu6mJw6PQMKDTR92sEqgMru4=; b=KpI28
- a7TmcbV79GZBh3TVC9b76iVneKcJ7WvdRBhb/A3xFin8gjKn0DqsNkvmylBpNeyjyxNO8L79kIghL
- dYnTYTKPDcmC/iES/zKTEhkodakgz+ARvl4/twAacSIhhbrqJ5C8+ByQwUDmNqQEAYHwxP2fnpmlP
- ZKJCqFiEVs2Yqyi2eiD3GnHfZUZobCbhJVbw36WNwUYS1lhWHja2lHU1hrqb6/PDdSjzfwqT/sYjG
- GAfj4xGBRxxnvA1r4MUn9FoE4XIRKDrkXVFkea+UTxZhArayiuoS5Y+fCDqF47jo9ZTVpJx6rI9Yv
- s7AQ2XKinrx9nefP9do2A9Hcdl2Bw==;
-Message-Id: <f6b0de53fb87ddefed348a39284c8e2f28dc4eda.1686236977.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1686236977.git.qemu_oss@crudebyte.com>
-References: <cover.1686236977.git.qemu_oss@crudebyte.com>
+ d=crudebyte.com; s=lizzy; h=Cc:To:Subject:Date:From:Message-Id:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=b3VIiTQYJeTOVM9mF20WIkOVRe41JnS9LWO5SoftLRQ=; b=pEUUq
+ 9Xls1EzpXoOzBKfg2Z74tH2PIvd9/NfvszgSCP1dlrKUiPFI4t6l54jS1ypCZU8JpclwIFP9D7iga
+ 4lwnd5tdCLY67OfnEcdCxy+tQxPxQs7Dbxx2Vc3UMcEBlABUNPTTws+xHHFXR8JguiqJ/wacMiwl8
+ Znc2WmAlQRYfBN6L9o0pxZFVdl4vnLkcQm5a2rKLZGs7QpTz56aTnge7sUkYI/G22wOciPBk1jNJo
+ 1dhaB06cYLGHROrez6okSCOMkqEaWAy4y2CIrEzZkJ6m0shBZA48SBGjo2D7mJs2WvTq11vRt8hD6
+ tT7yQtUzfynK2fnf7phNqmFOVN4SA==;
+Message-Id: <cover.1686236977.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Thu, 08 Jun 2023 17:09:37 +0200
-Subject: [PULL 1/1] 9pfs: prevent opening special files (CVE-2023-2861)
+Subject: [PULL 0/1] 9p security fix 2023-06-08
 To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>, Yanwu Shen <ywsPlz@gmail.com>,
  Jietao Xiao <shawtao1125@gmail.com>, Jinku Li <jkli@xidian.edu.cn>,
@@ -65,173 +63,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 9p protocol does not specifically define how server shall behave when
-client tries to open a special file, however from security POV it does
-make sense for 9p server to prohibit opening any special file on host side
-in general. A sane Linux 9p client for instance would never attempt to
-open a special file on host side, it would always handle those exclusively
-on its guest side. A malicious client however could potentially escape
-from the exported 9p tree by creating and opening a device file on host
-side.
+The following changes since commit 45ae97993a75f975f1a01d25564724c7e10a543f:
 
-With QEMU this could only be exploited in the following unsafe setups:
+  Merge tag 'pull-tricore-20230607' of https://github.com/bkoppelmann/qemu into staging (2023-06-07 11:45:22 -0700)
 
-  - Running QEMU binary as root AND 9p 'local' fs driver AND 'passthrough'
-    security model.
+are available in the Git repository at:
 
-or
+  https://github.com/cschoenebeck/qemu.git tags/pull-9p-20230608
 
-  - Using 9p 'proxy' fs driver (which is running its helper daemon as
-    root).
+for you to fetch changes up to f6b0de53fb87ddefed348a39284c8e2f28dc4eda:
 
-These setups were already discouraged for safety reasons before,
-however for obvious reasons we are now tightening behaviour on this.
+  9pfs: prevent opening special files (CVE-2023-2861) (2023-06-08 17:04:58 +0200)
 
-Fixes: CVE-2023-2861
-Reported-by: Yanwu Shen <ywsPlz@gmail.com>
-Reported-by: Jietao Xiao <shawtao1125@gmail.com>
-Reported-by: Jinku Li <jkli@xidian.edu.cn>
-Reported-by: Wenbo Shen <shenwenbo@zju.edu.cn>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-Id: <E1q6w7r-0000Q0-NM@lizzy.crudebyte.com>
----
- fsdev/virtfs-proxy-helper.c | 27 +++++++++++++++++++++++--
- hw/9pfs/9p-util.h           | 39 +++++++++++++++++++++++++++++++++++++
+----------------------------------------------------------------
+* Fix for CVE-2023-2861.
+
+----------------------------------------------------------------
+Christian Schoenebeck (1):
+      9pfs: prevent opening special files (CVE-2023-2861)
+
+ fsdev/virtfs-proxy-helper.c | 27 +++++++++++++++++++++++++--
+ hw/9pfs/9p-util.h           | 39 +++++++++++++++++++++++++++++++++++++++
  2 files changed, 64 insertions(+), 2 deletions(-)
-
-diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
-index 5cafcd7703..d9511f429c 100644
---- a/fsdev/virtfs-proxy-helper.c
-+++ b/fsdev/virtfs-proxy-helper.c
-@@ -26,6 +26,7 @@
- #include "qemu/xattr.h"
- #include "9p-iov-marshal.h"
- #include "hw/9pfs/9p-proxy.h"
-+#include "hw/9pfs/9p-util.h"
- #include "fsdev/9p-iov-marshal.h"
- 
- #define PROGNAME "virtfs-proxy-helper"
-@@ -338,6 +339,28 @@ static void resetugid(int suid, int sgid)
-     }
- }
- 
-+/*
-+ * Open regular file or directory. Attempts to open any special file are
-+ * rejected.
-+ *
-+ * returns file descriptor or -1 on error
-+ */
-+static int open_regular(const char *pathname, int flags, mode_t mode)
-+{
-+    int fd;
-+
-+    fd = open(pathname, flags, mode);
-+    if (fd < 0) {
-+        return fd;
-+    }
-+
-+    if (close_if_special_file(fd) < 0) {
-+        return -1;
-+    }
-+
-+    return fd;
-+}
-+
- /*
-  * send response in two parts
-  * 1) ProxyHeader
-@@ -682,7 +705,7 @@ static int do_create(struct iovec *iovec)
-     if (ret < 0) {
-         goto unmarshal_err_out;
-     }
--    ret = open(path.data, flags, mode);
-+    ret = open_regular(path.data, flags, mode);
-     if (ret < 0) {
-         ret = -errno;
-     }
-@@ -707,7 +730,7 @@ static int do_open(struct iovec *iovec)
-     if (ret < 0) {
-         goto err_out;
-     }
--    ret = open(path.data, flags);
-+    ret = open_regular(path.data, flags, 0);
-     if (ret < 0) {
-         ret = -errno;
-     }
-diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
-index c314cf381d..df1b583a5e 100644
---- a/hw/9pfs/9p-util.h
-+++ b/hw/9pfs/9p-util.h
-@@ -13,6 +13,8 @@
- #ifndef QEMU_9P_UTIL_H
- #define QEMU_9P_UTIL_H
- 
-+#include "qemu/error-report.h"
-+
- #ifdef O_PATH
- #define O_PATH_9P_UTIL O_PATH
- #else
-@@ -95,6 +97,7 @@ static inline int errno_to_dotl(int err) {
- #endif
- 
- #define qemu_openat     openat
-+#define qemu_fstat      fstat
- #define qemu_fstatat    fstatat
- #define qemu_mkdirat    mkdirat
- #define qemu_renameat   renameat
-@@ -108,6 +111,38 @@ static inline void close_preserve_errno(int fd)
-     errno = serrno;
- }
- 
-+/**
-+ * close_if_special_file() - Close @fd if neither regular file nor directory.
-+ *
-+ * @fd: file descriptor of open file
-+ * Return: 0 on regular file or directory, -1 otherwise
-+ *
-+ * CVE-2023-2861: Prohibit opening any special file directly on host
-+ * (especially device files), as a compromised client could potentially gain
-+ * access outside exported tree under certain, unsafe setups. We expect
-+ * client to handle I/O on special files exclusively on guest side.
-+ */
-+static inline int close_if_special_file(int fd)
-+{
-+    struct stat stbuf;
-+
-+    if (qemu_fstat(fd, &stbuf) < 0) {
-+        close_preserve_errno(fd);
-+        return -1;
-+    }
-+    if (!S_ISREG(stbuf.st_mode) && !S_ISDIR(stbuf.st_mode)) {
-+        error_report_once(
-+            "9p: broken or compromised client detected; attempt to open "
-+            "special file (i.e. neither regular file, nor directory)"
-+        );
-+        close(fd);
-+        errno = ENXIO;
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
- static inline int openat_dir(int dirfd, const char *name)
- {
-     return qemu_openat(dirfd, name,
-@@ -142,6 +177,10 @@ again:
-         return -1;
-     }
- 
-+    if (close_if_special_file(fd) < 0) {
-+        return -1;
-+    }
-+
-     serrno = errno;
-     /* O_NONBLOCK was only needed to open the file. Let's drop it. We don't
-      * do that with O_PATH since fcntl(F_SETFL) isn't supported, and openat()
--- 
-2.30.2
-
 
