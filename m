@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D81728210
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 571FB72820E
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:01:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7G8x-0004DH-DS; Thu, 08 Jun 2023 09:57:39 -0400
+	id 1q7G8m-000434-HQ; Thu, 08 Jun 2023 09:57:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8c-0003yO-Nj
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:22 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8V-0003tJ-8S
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8U-0004go-Pj
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:15 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8L-0004e7-2k
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686232628;
+ s=mimecast20190719; t=1686232620;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qAej7fTjYsPwR3P1N23YZ01ampgh/4+BoNoo7EonQIQ=;
- b=gR1hU0V6cr8O0/0XgjJt/lH/+Ll6FfdSUQo/NEipnTOYMX12iaM71h9cbnvRH0vcTg0o4U
- lpqAF4fqEJNHDSgVI7UJjWjKg++FM9WP8QaxzLO9mfFPVXT/zWqMtqrI4QDl1JS1SR2SEd
- CrOEhX44A2h9RuNtURZ8VUqagb7a4zs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Bj4sFgcf1CT0aTygZ2dK8R2P2P3+I8UOLBiEDFaHrc4=;
+ b=ThvrICpbXbfGgL08vmGzZ5UrAZTn4NF2Y6sItFO+C4xGTqzFPAgXxo/mxz2qheLmSqj28B
+ RhMU7+NdkdzDFO3mf3lvCDScVL0A1tEWty79eljMdxsgcJkVNipqPvmebgghUhk6IZsMGj
+ LTYN1Rfg1c+x+fBohhj1JKKFK9oJoMQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-446-kUVXhLK5NFGeTg5cmhyO4g-1; Thu, 08 Jun 2023 09:56:57 -0400
-X-MC-Unique: kUVXhLK5NFGeTg5cmhyO4g-1
+ us-mta-102-NyXT2Xe2P7mYv2V9cHsc3A-1; Thu, 08 Jun 2023 09:56:58 -0400
+X-MC-Unique: NyXT2Xe2P7mYv2V9cHsc3A-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40DD685A5BA;
- Thu,  8 Jun 2023 13:56:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 123F83823A23;
+ Thu,  8 Jun 2023 13:56:58 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9E6A1492B00;
- Thu,  8 Jun 2023 13:56:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7177F48205E;
+ Thu,  8 Jun 2023 13:56:57 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, libguestfs@redhat.com, vsementsov@yandex-team.ru,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH v4 01/24] nbd/client: Use smarter assert
-Date: Thu,  8 Jun 2023 08:56:30 -0500
-Message-Id: <20230608135653.2918540-2-eblake@redhat.com>
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH v4 02/24] nbd: Consistent typedef usage in header
+Date: Thu,  8 Jun 2023 08:56:31 -0500
+Message-Id: <20230608135653.2918540-3-eblake@redhat.com>
 In-Reply-To: <20230608135653.2918540-1-eblake@redhat.com>
 References: <20230608135653.2918540-1-eblake@redhat.com>
 MIME-Version: 1.0
@@ -55,14 +55,13 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,56 +77,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Assigning strlen() to a uint32_t and then asserting that it isn't too
-large doesn't catch the case of an input string 4G in length.
-Thankfully, the incoming strings can never be that large: if the
-export name or query is reflecting a string the client got from the
-server, we already guarantee that we dropped the NBD connection if the
-server sent more than 32M in a single reply to our NBD_OPT_* request;
-if the export name is coming from qemu, nbd_receive_negotiate()
-asserted that strlen(info->name) <= NBD_MAX_STRING_SIZE; and
-similarly, a query string via x->dirty_bitmap coming from the user was
-bounds-checked in either qemu-nbd or by the limitations of QMP.
-Still, it doesn't hurt to be more explicit in how we write our
-assertions to not have to analyze whether inadvertent wraparound is
-possible.
+We had a mix of struct declarataions followed by typedefs, and direct
+struct definitions as part of a typedef.  Pick a single style.  Also
+float a couple of opaque typedefs earlier in the file, as a later
+patch wants to refer NBDExport* in NBDRequest.  No semantic impact.
 
-Fixes: 93676c88 ("nbd: Don't send oversize strings", v4.2.0)
-Reported-by: Dr. David Alan Gilbert <dave@treblig.org>
 Signed-off-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- nbd/client.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/nbd/client.c b/nbd/client.c
-index 30d5383cb19..ff75722e487 100644
---- a/nbd/client.c
-+++ b/nbd/client.c
-@@ -650,19 +650,20 @@ static int nbd_send_meta_query(QIOChannel *ioc, uint32_t opt,
-                                Error **errp)
- {
-     int ret;
--    uint32_t export_len = strlen(export);
-+    uint32_t export_len;
-     uint32_t queries = !!query;
-     uint32_t query_len = 0;
-     uint32_t data_len;
-     char *data;
-     char *p;
+v4: new patch
+---
+ include/block/nbd.h | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-+    assert(strnlen(export, NBD_MAX_STRING_SIZE + 1) <= NBD_MAX_STRING_SIZE);
-+    export_len = strlen(export);
-     data_len = sizeof(export_len) + export_len + sizeof(queries);
--    assert(export_len <= NBD_MAX_STRING_SIZE);
-     if (query) {
-+        assert(strnlen(query, NBD_MAX_STRING_SIZE + 1) <= NBD_MAX_STRING_SIZE);
-         query_len = strlen(query);
-         data_len += sizeof(query_len) + query_len;
--        assert(query_len <= NBD_MAX_STRING_SIZE);
-     } else {
-         assert(opt == NBD_OPT_LIST_META_CONTEXT);
-     }
+diff --git a/include/block/nbd.h b/include/block/nbd.h
+index a4c98169c39..9c3ceae5ba5 100644
+--- a/include/block/nbd.h
++++ b/include/block/nbd.h
+@@ -1,5 +1,5 @@
+ /*
+- *  Copyright (C) 2016-2022 Red Hat, Inc.
++ *  Copyright Red Hat
+  *  Copyright (C) 2005  Anthony Liguori <anthony@codemonkey.ws>
+  *
+  *  Network Block Device
+@@ -26,24 +26,25 @@
+ #include "qapi/error.h"
+ #include "qemu/bswap.h"
+
++typedef struct NBDExport NBDExport;
++typedef struct NBDClient NBDClient;
++
+ extern const BlockExportDriver blk_exp_nbd;
+
+ /* Handshake phase structs - this struct is passed on the wire */
+
+-struct NBDOption {
++typedef struct NBDOption {
+     uint64_t magic; /* NBD_OPTS_MAGIC */
+     uint32_t option; /* NBD_OPT_* */
+     uint32_t length;
+-} QEMU_PACKED;
+-typedef struct NBDOption NBDOption;
++} QEMU_PACKED NBDOption;
+
+-struct NBDOptionReply {
++typedef struct NBDOptionReply {
+     uint64_t magic; /* NBD_REP_MAGIC */
+     uint32_t option; /* NBD_OPT_* */
+     uint32_t type; /* NBD_REP_* */
+     uint32_t length;
+-} QEMU_PACKED;
+-typedef struct NBDOptionReply NBDOptionReply;
++} QEMU_PACKED NBDOptionReply;
+
+ typedef struct NBDOptionReplyMetaContext {
+     NBDOptionReply h; /* h.type = NBD_REP_META_CONTEXT, h.length > 4 */
+@@ -56,14 +57,13 @@ typedef struct NBDOptionReplyMetaContext {
+  * Note: these are _NOT_ the same as the network representation of an NBD
+  * request and reply!
+  */
+-struct NBDRequest {
++typedef struct NBDRequest {
+     uint64_t handle;
+     uint64_t from;
+     uint32_t len;
+     uint16_t flags; /* NBD_CMD_FLAG_* */
+     uint16_t type; /* NBD_CMD_* */
+-};
+-typedef struct NBDRequest NBDRequest;
++} NBDRequest;
+
+ typedef struct NBDSimpleReply {
+     uint32_t magic;  /* NBD_SIMPLE_REPLY_MAGIC */
+@@ -282,7 +282,7 @@ static inline bool nbd_reply_type_is_error(int type)
+ #define NBD_ESHUTDOWN  108
+
+ /* Details collected by NBD_OPT_EXPORT_NAME and NBD_OPT_GO */
+-struct NBDExportInfo {
++typedef struct NBDExportInfo {
+     /* Set by client before nbd_receive_negotiate() */
+     bool request_sizes;
+     char *x_dirty_bitmap;
+@@ -310,8 +310,7 @@ struct NBDExportInfo {
+     char *description;
+     int n_contexts;
+     char **contexts;
+-};
+-typedef struct NBDExportInfo NBDExportInfo;
++} NBDExportInfo;
+
+ int nbd_receive_negotiate(AioContext *aio_context, QIOChannel *ioc,
+                           QCryptoTLSCreds *tlscreds,
+@@ -330,9 +329,6 @@ int nbd_client(int fd);
+ int nbd_disconnect(int fd);
+ int nbd_errno_to_system_errno(int err);
+
+-typedef struct NBDExport NBDExport;
+-typedef struct NBDClient NBDClient;
+-
+ void nbd_export_set_on_eject_blk(BlockExport *exp, BlockBackend *blk);
+
+ AioContext *nbd_export_aio_context(NBDExport *exp);
 -- 
 2.40.1
 
