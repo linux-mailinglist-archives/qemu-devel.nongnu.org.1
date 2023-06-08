@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB51727FE8
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 14:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF8C727FEE
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 14:25:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7EfT-0006tW-JV; Thu, 08 Jun 2023 08:23:07 -0400
+	id 1q7EhL-0008II-Ba; Thu, 08 Jun 2023 08:25:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7EfS-0006tN-7u
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:23:06 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7EfP-00043P-Nl
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:23:05 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5149429c944so979147a12.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 05:23:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686226982; x=1688818982;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=B/ozW6pktfiFBWLRFXlX8GM51gnZnE3nErc54/xAOnQ=;
- b=AFhyZI15qTWfniD2pjMElmwMujtfzc88FnmdH/fU7fLANQwxSd73FutenvtPR3VFDD
- cExjMCJUVBELDeT3fFkRSPeoXVwWx8nJzFuuO2ttn4LfttDRamgnd71LYnuae+bpB477
- rSuVtOXjqR9KSMfWvjrHNoP3pwfg7WNvJ5jDKndAm9hU5HY3AN0R5sE8ELCz8kMDtHY7
- 5SPtDau1sKlBKjFpB8s1v+6vMNlOmYT+jo6QkF2lWN9cotgnMtwC3Lr1/BeGKm+7jTL7
- 4wJEl4H7eyZNDuuxkIbN6sDTDWCAQmmouMwazZ208jxCBMA5o57acgzosVQf1cb4JIFl
- 39Mw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q7EhJ-0008Hp-8D
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:25:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q7EhE-0004Fc-D4
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:25:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686227094;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=euqbOz7Gc/VfG2+ekA4pYJ4dDhLAGvx60T1O0TpvnCyIFAmXbmJcl9034meYnjReYv7M8u
+ C2u/Mb21mXKAZ5Iz5f9WfbUQRHTfP7UZE/AG9zkILWmsOHw7UYCX1+t4C3n/CWZRxoIYls
+ oxA0sMNMiFCn6z6mZtbNv67Q6Gt/vZw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-41-wVZMrcmvPCm0icdFn7Q_bw-1; Thu, 08 Jun 2023 08:24:53 -0400
+X-MC-Unique: wVZMrcmvPCm0icdFn7Q_bw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-977eabfc3ccso75518166b.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 05:24:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686226982; x=1688818982;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=B/ozW6pktfiFBWLRFXlX8GM51gnZnE3nErc54/xAOnQ=;
- b=NVxBsxepjqZBKi7qqiFKqcVR0hCToiVgO7uaGQafNoq/DCqPcqInLgDKdZPFwjjoxd
- IGESi7qM75ql4tgOJoTUBFECZtyUD13DaAN8fhi92o9IcTDxMz7Nu1nQzdrFN1TwaB8J
- CnBJUuvLGx0whmtAtNY50M60Av7B8SH5M8NM25LkPy2goRhre6Ix1C7Kmr7AawTla3x4
- Zg35WU9yebtrZKW6qXbh9lztaQVLeMiM74O/6LbwuGs26g8EgKgyevZgE0AF0Pm4MobN
- Rl09jQQYHT6fQzucRgIPpC9NyUr13ynnQHl9+Nf3f7s980cFfXaeFV5HIeKUqsZCVqyL
- +B/A==
-X-Gm-Message-State: AC+VfDxoDD216Vu91h5p6TOlv+cEhI5tEXYT0JJLC49rqiHj+Yo47DED
- aUJu57u8x2+bxaj1qw6+MWbz8/cV7X+PBjkNmMy9XA==
-X-Google-Smtp-Source: ACHHUZ6XPixCUU2tImYRYZsGkP7+njeL/5ZK6oEztMc/xHNomltDHKGd3phX9YsRbkpCkoatAUELPNGJuOwLvT/X3OY=
-X-Received: by 2002:aa7:cd12:0:b0:514:8e4a:15a9 with SMTP id
- b18-20020aa7cd12000000b005148e4a15a9mr7350889edw.5.1686226981853; Thu, 08 Jun
- 2023 05:23:01 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686227092; x=1688819092;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=G8GuyxGWQGouNDicCTr86NqZ9ssmBK8stVkXtYPRQuzya70XJoWH+biG7C8pjxwZhx
+ ysv+yrxkAv+Okr5BWPEmMsxnQZRNeoUK2kHn58QViYjQOYOl2fUSTdBr502ccC1moEDK
+ 3YQgl5fFjaXJxDreb379bUoCuU4GK1/W4o2VXj8IPbvu7bGrLyXTzgN4ETUKN8HRsR7n
+ i+1PbgZtnLE5O9lS6YrbAaEUN+NchutingKWUA59dYExlDIbBc5F9ab9zYRZtcpzAvae
+ u2pCo3zSufaS4u/CX96NJFbCnlwRsDxp35dA8oF+sTkpFw+jN/jysgNyCEb3xHvNICXG
+ F1GA==
+X-Gm-Message-State: AC+VfDz0+AHSTS6fg+GMd0wMTEcbBvWO+dPpPpZsJWMIBD0ixaSo4rF2
+ Yf0JXMk5OQH5JwSYQ7dD1YXxH1Cq2mZw41o1K/P26zDcbqF2Wd7idmptETng4tc+bsDwr4LWs0A
+ GUSiNgIVwA/cGKHg=
+X-Received: by 2002:a17:907:7f2a:b0:966:1bf2:2af5 with SMTP id
+ qf42-20020a1709077f2a00b009661bf22af5mr2086597ejc.22.1686227092617; 
+ Thu, 08 Jun 2023 05:24:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5cbjEPnJx8LYNpohJp9xPfkKh5nP2U9c3J/hradbFa6vbQvvQtmwK74P5Vl6HmL/w2Ex2Ybw==
+X-Received: by 2002:a17:907:7f2a:b0:966:1bf2:2af5 with SMTP id
+ qf42-20020a1709077f2a00b009661bf22af5mr2086571ejc.22.1686227092220; 
+ Thu, 08 Jun 2023 05:24:52 -0700 (PDT)
+Received: from [192.168.122.1] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ n26-20020a1709065e1a00b00978897577c6sm631890eju.44.2023.06.08.05.24.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 05:24:51 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ pbonzini@redhat.com, imammedo@redhat.com, peter.maydell@linaro.org,
+ rad@semihalf.com, quic_llindhol@quicinc.com, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ thuth@redhat.com, lvivier@redhat.com, ajones@ventanamicro.com,
+ berrange@redhat.com, dbarboza@ventanamicro.com, yihyu@redhat.com,
+ shan.gavin@gmail.com
+Subject: Re: [PATCH v5 0/3] NUMA: Apply cluster-NUMA-node boundary for aarch64
+ and riscv machines
+Date: Thu,  8 Jun 2023 14:24:50 +0200
+Message-Id: <20230608122450.915545-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230509002739.18388-1-gshan@redhat.com>
+References: 
 MIME-Version: 1.0
-References: <20230530083526.2174430-1-fei2.wu@intel.com>
- <20230530083526.2174430-9-fei2.wu@intel.com>
- <387127a0-4030-32b9-ccbb-db2f95bd618b@linaro.org>
- <dddb5c1d-be72-15a7-97c3-eb306acd656f@intel.com>
- <ffe308e6-8d20-3282-a3b8-a9d6474fe7eb@intel.com>
- <CAFEAcA_YGEHouLDdnEHUUeYDiEgjY4W83-XjzPyjDTGzf2+Qdg@mail.gmail.com>
- <ZIHETqkvpL+rxpnD@gallifrey>
-In-Reply-To: <ZIHETqkvpL+rxpnD@gallifrey>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Jun 2023 13:22:50 +0100
-Message-ID: <CAFEAcA89d_Md31JNc6FzGBeiR0SDB-2H2T7g2NtnesQju5R7Wg@mail.gmail.com>
-Subject: Re: [PATCH v14 08/10] Adding info [tb-list|tb] commands to HMP (WIP)
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: "Wu, Fei" <fei2.wu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- alex.bennee@linaro.org, qemu-devel@nongnu.org, 
- "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,44 +106,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 Jun 2023 at 13:06, Dr. David Alan Gilbert <dave@treblig.org> wrote:
->
-> * Peter Maydell (peter.maydell@linaro.org) wrote:
-> > On Thu, 8 Jun 2023 at 08:44, Wu, Fei <fei2.wu@intel.com> wrote:
-> > >
-> > > On 6/7/2023 8:49 PM, Wu, Fei wrote:
-> > > > On 6/1/2023 10:40 AM, Richard Henderson wrote:
-> > > >> Did you really need something different than monitor_disas?  You almost
-> > > >> certainly want to read physical memory and not virtual anyway.
-> > > >>
-> > > > Yes, it's usually okay for kernel address, but cannot re-gen the code
-> > > > for userspace virtual address (guest kernel panic on riscv guest). I
-> > > > tried monitor_disas() but it failed to disas too:
-> > > >     monitor_disas(mon, mon_get_cpu(mon), tbs->phys_pc, num_inst, true);
-> > > >
-> > > > How to use this function correctly?
-> > > >
-> > > 'phys_pc' in tbs is returned by get_page_addr_code_hostp(), which is not
-> > > guest phys address actually, but ram_addr_t instead, so it's always
-> > > wrong for monitor_disas. After some dirty changes, tbs can record the
-> > > guest pa. Now we can disas both kernel and user space code. But still,
-> > > no code is regenerated, disas in 'info tb' is just a convenient way to 'xp'.
-> > >
-> > > Is there any existing function to convert ram_addr_t to guest pa?
-> >
-> > Such a function would not be well-defined, because a block of RAM
-> > as specified by a ram_addr_t could be present at (aliased to) multiple
-> > guest physical addresses, or even currently not mapped to any guest
-> > physical address at all. And it could be present at different physical
-> > addresses for different vCPUs.
->
-> True, but isn't there a similar mechanism for when an MCE happens
-> in the host memory?
+Queued, thanks.
 
-That goes via kvm_physical_memory_addr_from_host(), which looks
-up the host address in the KVMSlot array (and just picks the
-first hit). It won't work for TCG.
+Paolo
 
-thanks
--- PMM
 
