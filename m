@@ -2,76 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58257284CF
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 613E27284F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:28:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7IPE-0004OQ-VT; Thu, 08 Jun 2023 12:22:36 -0400
+	id 1q7IUb-0006Q2-FQ; Thu, 08 Jun 2023 12:28:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7IPD-0004O8-0s
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:22:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1q7IUS-0006PM-Jt
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:28:00 -0400
+Received: from mail-dm6nam10on20630.outbound.protection.outlook.com
+ ([2a01:111:f400:7e88::630]
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7IPA-0005Gb-TZ
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:22:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686241351;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=+Sd4Dqrp0+XgegTCF/3M6gDC/aytTe3a3BhTB6v0lH8=;
- b=NtJZUyiHlYSdOnuDc2wxOaZmYya4y5roblWbLQ2ZYNcZRSOE+Vtmiz7UD1QdKVEb2Hx1Vr
- yjwyYbPS8kzTCpnRE9ieeufjaD/9aOicH6rss9mgvjjsi+6VyARJ57DkUzFkAzqdxwcGsH
- 0GMy1yFzKpOnbmMnCAclwTE0fnoUEWo=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-364-q2ZqESC9M4ql14ZN659Dng-1; Thu, 08 Jun 2023 12:22:29 -0400
-X-MC-Unique: q2ZqESC9M4ql14ZN659Dng-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD85A3C11CDD;
- Thu,  8 Jun 2023 16:22:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.54])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B62BD492B00;
- Thu,  8 Jun 2023 16:22:27 +0000 (UTC)
-Date: Thu, 8 Jun 2023 17:22:23 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Henrik Carlqvist <hc981@poolhem.se>
-Cc: mark.cave-ayland@ilande.co.uk, hc1245@poolhem.se, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6] Emulate dip switch language layout settings on SUN
- keyboard
-Message-ID: <ZIIAPz/HOqPXjKIs@redhat.com>
-References: <167305907804.10652.2746409341903316717-1@git.sr.ht>
- <d2850ef0-d825-bb03-09d4-0d1427cf6577@ilande.co.uk>
- <20230123200937.32eb19eb.hc981@poolhem.se>
- <20230304220754.0c6ae562.hc981@poolhem.se>
- <ZCLzUyiDeKLfQqWT@redhat.com>
- <20230328191958.3e3eb5e4.hc981@poolhem.se>
- <ZCMq/imcAq0ApLQp@redhat.com>
- <20230328221608.328ab80f.hc981@poolhem.se>
- <20230430225533.1a57879a.hc981@poolhem.se>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1q7IUQ-0006L3-75
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:28:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YErxbAHvRQRhF5NwmTjSf6Fpb3X1MgbBRYZ1MzE0x5vux+OUH2JO+wNUy/yHEh/GX+I3qYIjts0XYfupm9lW5mfXVTE4KpNCRb3w1e7JXZnDQXlEKyVp0C7HWdvnearpkcQ6JcoYqipMN7rGpmpHnXrQVPA4A0KIpDTbKJ2zpUwXilktsJNCo+jHkftscz7mv7G4d5m32ZUuL4Q1k3W53lEmPrwvrpJcz0jLstc9FY/6cIBIL2nwfWn6mshRTkJ3PofYXlNXyHe9O33yoLFFInZYgF4swKKyFHs07xYrcclA95jXLisemO0VAGF6YfYZqV0fpYQVQToYHFHD7RLbEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8qUnB9tATP1EeMw6XN3128zEnGLTaQ9SWsSRnQOZnBk=;
+ b=oZLOQKpoA527mO87WwIfkr0+pG8Z27DYK8WE+s/tTgXZBLMQs2f2Fvrvk2SKk1Wg8yVqP0ErsWhVfiA6+YPpHqyJyVAOw9NsWcTjNH7Ap3d9WonGouq/m5VKGL1/KjxfpOrwRq9bPfnA1DoXtXL/AhSBXu7GBVtWmVKLVn5PWSB44mZPO3HB6POC0FEScpETsYGEQAFPX92oB+vFGxMFrnMeNF2L3Ii7ovwmd4y7OoEw5qr16unvZF85hLk0lYalUSIBpi3Rc6pUvSCMCAROI3vFSsN+8c7R4xdpEQG+YIRzKiKO4aEzev6hecl0zAzY/fWXU1u5wPoCu6mYu/DYuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8qUnB9tATP1EeMw6XN3128zEnGLTaQ9SWsSRnQOZnBk=;
+ b=p+TV+F4mJRyzOM/oN326k5bYhJvWPEzTEdu3oOD788y1HUfXALQQ2GkwayZsL2Eoxbyn3HV/wTNYTl0wyP+h0w7Aaey5dbHgEuRymI75mPpMpPtpQpZXVdpCbfqzxLiYqWyjZRVvSYa4a/qqy5g3JibPkA4Vd81OqVjt1exNNr+VrKAxi0eGSD/oa3CLF1XmK4RibfJrVZdkOEoNJAeJ0suNNUDzmtrrH+UupjR4B8D77wFLyMjTd9+wz+gANYFFFzAAmHOAGuLVNLwzynb5CLUrzjPoOVUSMzPc6olZ6mmgPM16PWOLPRN9fDjVRfFuRrQQC60il9H2JgWUwhdaBA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by PH7PR12MB6396.namprd12.prod.outlook.com (2603:10b6:510:1fc::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.24; Thu, 8 Jun
+ 2023 16:27:52 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
+ 16:27:52 +0000
+Date: Thu, 8 Jun 2023 13:27:50 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ alex.williamson@redhat.com, clg@redhat.com, david@redhat.com,
+ philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
+ chao.p.peng@intel.com
+Subject: Re: [PATCH v3 5/5] intel_iommu: Optimize out some unnecessary UNMAP
+ calls
+Message-ID: <ZIIBhmoT7H2/q0lb@nvidia.com>
+References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
+ <20230608095231.225450-6-zhenzhong.duan@intel.com>
+ <ZIHgFFSaBJWFUNd7@x1n> <ZIHhgyUv7YmWsG3H@nvidia.com>
+ <ZIH2h7GAV6qirAgw@x1n>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230430225533.1a57879a.hc981@poolhem.se>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <ZIH2h7GAV6qirAgw@x1n>
+X-ClientProxiedBy: YT3PR01CA0020.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:86::15) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|PH7PR12MB6396:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3c64c99-f9e7-456f-f83f-08db683d4e44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZoVGhaKANMvXy2Kj3AN4PCcmDwLqR/rFnHT7mlI0WMU++/I1ToSusSf2JdPoi1io2Vfol5IPIYXpl/OjHHdU4FrpxUZLC/+sC/8gX7Nnex2jNOfQzwQXlvuhax0DpVh3YdB72wwe4KF3krQPTgOTVn8Efb7+K2YJp6CK9BLWMivx7M8JQdiroQ4K51sKZyFVYbBVwW1nN0liPeFxKo5fVVyBx/L5Cna7P2sLgR8OxYceg6+dGqx7Fd0C+ihG5nRdcT42tXYDHLtUF7xS5647QXS5hxpPsusrxmiNBQrTZskbt6IlZ+LDhb+ft6LfdyzE5v9v9oBwrOSe0/2NJ3AfsFl3cy98RK8BYUbitG19H2RAnQXsnsLMLKv3rIHH0GipQVyKxsSFbEa6suH8qEE4tfZRHQiSblyF1y14p0fj2Ne/jNLHIf6LIUcSQDN+B84X+5TZA9ekLzSMuqGqi2nrOCYB7HTyd+0yJDq3kmQRNNFG5VRZFrIFZsREtExSF3essdDtOp8aeBsNwoJxLeiDJ1jkJv1hkEgMWeC37YlvQc9L27A8EVH7Cz1JeceNuUP9
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(366004)(396003)(346002)(376002)(39860400002)(451199021)(66476007)(8676002)(66946007)(66556008)(2906002)(7416002)(5660300002)(6916009)(4326008)(316002)(41300700001)(8936002)(54906003)(6486002)(478600001)(83380400001)(26005)(36756003)(2616005)(86362001)(186003)(6512007)(38100700002)(6506007);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tS5CB5iHxHBMoUmGynrR10VzlC0qvwpjsjV3wq+h0QGQUZz/LHUYDRDE4bPL?=
+ =?us-ascii?Q?QaAEaNEvQBtijJZQty0FhZSSo6Y9jznbuta15VC21YzFuJZRFkUmcw0vWrAG?=
+ =?us-ascii?Q?M5FQD9Gzp/x4pR00TF4xMe5573V0WHPvKqfnyWtWhzKjG5bjVYzw0yhrsOMK?=
+ =?us-ascii?Q?AOM9bY02fnGqOt2I3n2QsbkE9n0LytU4/i1RKXsrfS4MSJKUoepx0Q2gRwpa?=
+ =?us-ascii?Q?6YDQSI729Ls/Zmqrktx3yA5muA58p1IQR2LVRR6bry3nWcJeqxE8pMiJgABA?=
+ =?us-ascii?Q?MuamhCw87yPpyyPncZ8x9h+9CooQyc4g82xxIp1kgC5ErxG4iCHtj+ndOGbZ?=
+ =?us-ascii?Q?jJYtw0kZpgxxMQ9SaX/FaqpXBw+2hTYowmn37n+e2ASWnfheGvAWn4lW2M6C?=
+ =?us-ascii?Q?fVpMrTweeTdlm6Nvl+nZZvqCLkSriLl4m+o2M8qgCbeazn7DcNd9tLl/YUJm?=
+ =?us-ascii?Q?26fZrevxXk4AFo7TVTyFZwjy9ZG68vvOuJPncnratMZGGqZl1OjBDIGhovOF?=
+ =?us-ascii?Q?M83Cj50KrLo6usoZlHhAqCBw9FmnRFF1bM1/1Ur98D9QrDEPCEeAIMcH0Ea7?=
+ =?us-ascii?Q?teLv+XJDA6v0/V59D995sm/fpS3ARvfCPJVRHe2vqYPQ69QAK6LRenDVzup3?=
+ =?us-ascii?Q?jTQpnko/4SaDMxp97g6Odqtl+pKReDKgXmwFyor4ZraHfdU7bh4HwUJRdZq0?=
+ =?us-ascii?Q?VXFHdnh81RWAewDmeurBv2IcJ3yVo1zpK2IOUirQ9/EU1Gbmx/1Xyn2dPe/c?=
+ =?us-ascii?Q?tFj8nidctqVJvbQONx/3kZSEjru/tiX5tAXuiDMqHKKuytb3HjjcUXlbLTRd?=
+ =?us-ascii?Q?fkagbU59cVpKk3Kw/OpgGOKW4fbZ2zTmgupd6P0ikx4kaFSCbNNny0pHvE/Y?=
+ =?us-ascii?Q?Gb5dOiZBLiVfuLgReyquQuNdEu9iNkStXC+isOhV33seyccQOEoH9C3MpW3o?=
+ =?us-ascii?Q?IPOt1SQqXhrVxXML9hdkeEsbP5YZoX5bdFSnAoHxBufYCwEV4cdUNRECYcxx?=
+ =?us-ascii?Q?1fRM/Bqpb2ANXd76gSVjEC0IyjeXX7uFImyzjgIdBa5udmpCdXmMX5Al82qZ?=
+ =?us-ascii?Q?eAZ9VcMUbvswCh+mtm0zJrT65AQByjTKNjWT/DK/y6ZU/i3HATI5DYQg7qzj?=
+ =?us-ascii?Q?gZ1g50K49/M0CuPbU5PP4MWLp2PhFkIP+Y8qQYqJTZFrzD8f10mry3dZClI/?=
+ =?us-ascii?Q?zCTuKWSoo5V2a+gCpTJex5RgZKjkK1BV3l6Y3V69qub1b+XW3pP3kheL9lr8?=
+ =?us-ascii?Q?67C5PoYLBbue0fsc0Zux/mauNjScAwSwInCJZ3J7nFWhOnWH1SqeEb+jf2rU?=
+ =?us-ascii?Q?Vi5HHGorTiQLiP3zihfSCLxzZ6Bz0F0AHNdanhW9Jni9zSbLOXSgDme39ODp?=
+ =?us-ascii?Q?/0j+V1wNDt57t96ipEZBAENxo8tPy1vRLgdhmpPAB47ySrA6A/vPEU7pnzUp?=
+ =?us-ascii?Q?x4uc+gQbW+Y+JQxkY0uIBW9JCfb/C4SoKjWD4/cnKDQH5KAoilzNXpfVjN+F?=
+ =?us-ascii?Q?d7fun6MCZUEsa9C3wxnWR14eFynbskWVCKbLGehiABY/nwt2ig1EVxoVOY31?=
+ =?us-ascii?Q?JnXBAmyDENV1NrHmURQ=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3c64c99-f9e7-456f-f83f-08db683d4e44
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 16:27:52.0513 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qtqth0VwR6hHXsRMAPQvSPMYzn1VHgSvIN10d1PXH32rCGjbSYB4mrBv4xFqgPON
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6396
+Received-SPF: softfail client-ip=2a01:111:f400:7e88::630;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,172 +139,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Apr 30, 2023 at 10:55:33PM +0200, Henrik Carlqvist wrote:
-> I have now changed the patch to instead of using the -k switch use 
-> 
-> -global escc.sunkbd_layout=
-> 
-> to select keyboard layout. It would be nice to somehow document this. Yes, in 
-> the monitor, you can type "info qtree" and see something like:
-> 
->   dev: escc, id ""
->     gpio-out "sysbus-irq" 2
->     frequency = 4915200 (0x4b0000)
->     it_shift = 1 (0x1)
->     bit_swap = false
->     disabled = 0 (0x0)
->     chnBtype = 2 (0x2)
->     chnAtype = 1 (0x1)
->     chrB = ""
->     chrA = ""
->     sunkbd_layout = "43"
->     mmio 0000000071000000/0000000000000008
->  
-> but that information is not easy to find and it does not say anything about 
-> possible values. What is the best way to document this kind of global 
-> parameters?
+On Thu, Jun 08, 2023 at 11:40:55AM -0400, Peter Xu wrote:
 
-You can put it in docs/system/sparc.rst (or sparc64.rst whichever is best?)
+> > But if there is the proper locks to prevent a map/unmap race, then
+> > there should also be the proper locks to check that there is no map in
+> > the first place and avoid the kernel call..
+> 
+> The problem is IIRC guest iommu driver can do smart things like batching
+> invalidations, it means when QEMU gets it from the guest OS it may already
+> not matching one mapped objects.
 
-Alternatively create a docs/system/devices/escc.rst and link it from
-device-emulation.rst
+qemu has to fix it. The kernel API is object based, not paged
+based. You cannot unmap partions of a prior mapping.
 
-> 
-> Please cc me any reply as I am no longer subscribed to the mailing list.
-> 
-> best regards Henrik
-> 
-> SUN Type 4, 5 and 5c keyboards have dip switches to choose the language layout 
-> of the keyboard. Solaris makes an ioctl to query the value of the dipswitches 
-> and uses that value to select keyboard layout. Also the SUN bios like the one 
-> in the file ss5.bin uses this value to support at least some keyboard layouts. 
-> However, the OpenBIOS provided with qemu is hardcoded to always use an 
-> US keyboard layout.
-> 
-> Before this patch, qemu allways gave dip switch value 0x21 (US keyboard),
-> this patch uses a command line switch like "-global escc.sunkbd_layout=de" to
-> select dip switch value. A table is used to lookup values from arguments like:
-> 
-> -global escc.sunkbd_layout=fr
-> -global escc.sunkbd_layout=es
-> 
-> But the patch also accepts numeric dip switch values directly to the -k
-> switch:
-> 
-> -global escc.sunkbd_layout=0x2b
-> -global escc.sunkbd_layout=43
-> 
-> Both values above are the same and select swedish keyboard as explained in
-> table 3-15 at
-> https://docs.oracle.com/cd/E19683-01/806-6642/new-43/index.html
-> 
-> Unless you want to do a full Solaris installation but happen to have
-> access to a bios file, the easiest way to test that the patch works is to:
-> 
-> qemu-system-sparc -global escc.sunkbd_layout=sv -bios /path/to/ss5.bin
-> 
-> If you already happen to have a Solaris installation in a qemu disk image
-> file you can easily try different keyboard layouts after this patch is
-> applied.
-> 
-> Signed-off-by: Henrik Carlqvist <hc1245@poolhem.se>
-> ---
->  hw/char/escc.c         | 81 +++++++++++++++++++++++++++++++++++++++---
->  include/hw/char/escc.h |  1 +
->  2 files changed, 78 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/char/escc.c b/hw/char/escc.c
-> index 17a908c59b..0aac4f0f92 100644
-> --- a/hw/char/escc.c
-> +++ b/hw/char/escc.c
-> @@ -31,6 +31,8 @@
-> -static void handle_kbd_command(ESCCChannelState *s, int val)
-> +static unsigned char sun_keyboard_layout_dip_switch(const char *keyboard_layout)
-> +{
-> +    /* Return the value of the dip-switches in a SUN Type 5 keyboard */
-> +    static unsigned char ret = 0xff;
-> +
-> +    if ((ret == 0xff) && keyboard_layout) {
-> +        int i;
-> +        struct layout_values {
-> +            const char *lang;
-> +            unsigned char dip;
-> +        } languages[] =
-> +    /* Dip values from table 3-16 Layouts for Type 4, 5, and 5c Keyboards */
-> +            {
-> +                {"en-us", 0x21}, /* U.S.A. (US5.kt) */
-> +                                 /* 0x22 is some other US (US_UNIX5.kt)*/
-> +                {"fr",    0x23}, /* France (France5.kt) */
-> +                {"da",    0x24}, /* Denmark (Denmark5.kt) */
-> +                {"de",    0x25}, /* Germany (Germany5.kt) */
-> +                {"it",    0x26}, /* Italy (Italy5.kt) */
-> +                {"nl",    0x27}, /* The Netherlands (Netherland5.kt) */
-> +                {"no",    0x28}, /* Norway (Norway.kt) */
-> +                {"pt",    0x29}, /* Portugal (Portugal5.kt) */
-> +                {"es",    0x2a}, /* Spain (Spain5.kt) */
-> +                {"sv",    0x2b}, /* Sweden (Sweden5.kt) */
-> +                {"fr-ch", 0x2c}, /* Switzerland/French (Switzer_Fr5.kt) */
-> +                {"de-ch", 0x2d}, /* Switzerland/German (Switzer_Ge5.kt) */
-> +                {"en-gb", 0x2e}, /* Great Britain (UK5.kt) */
-> +                {"ko",    0x2f}, /* Korea (Korea5.kt) */
-> +                {"tw",    0x30}, /* Taiwan (Taiwan5.kt) */
-> +                {"ja",    0x31}, /* Japan (Japan5.kt) */
-> +                {"fr-ca", 0x32}, /* Canada/French (Canada_Fr5.kt) */
-> +                {"hu",    0x33}, /* Hungary (Hungary5.kt) */
-> +                {"pl",    0x34}, /* Poland (Poland5.kt) */
-> +                {"cz",    0x35}, /* Czech (Czech5.kt) */
-> +                {"ru",    0x36}, /* Russia (Russia5.kt) */
-> +                {"lv",    0x37}, /* Latvia (Latvia5.kt) */
-> +                {"tr",    0x38}, /* Turkey-Q5 (TurkeyQ5.kt) */
-> +                {"gr",    0x39}, /* Greece (Greece5.kt) */
-> +                {"ar",    0x3a}, /* Arabic (Arabic5.kt) */
-> +                {"lt",    0x3b}, /* Lithuania (Lithuania5.kt) */
-> +                {"nl-be", 0x3c}, /* Belgium (Belgian5.kt) */
-> +                {"be",    0x3c}, /* Belgium (Belgian5.kt) */
-> +            };
-> +
-> +        for (i = 0;
-> +             i < sizeof(languages) / sizeof(struct layout_values);
+I assume for this kind of emulation it is doing 4k objects because
+it has no idea what size of mapping the client will use?
 
-Simpify to
+> We can definitely lookup every single object and explicitly unmap, but it
+> loses partial of the point of batching that guest OS does.  
 
-      i < ARRAY_SIZE(languages);
+You don't need every single object, but it would be faster to check
+where things are mapped and then call the kernel correctly instead of
+trying to iterate with the unmapped reults.
 
-at which point you can fit the for(;;) on one line.
-
-> +             i++) {
-> +            if (!strcmp(keyboard_layout, languages[i].lang)) {
-> +                ret = languages[i].dip;
-> +                return ret;
-> +            }
-> +        }
-> +        /* Found no known language code */
-> +
-> +        if ((keyboard_layout[0] >= '0') && (keyboard_layout[0] <= '9')) {
-> +            unsigned int tmp;
-> +            /* As a fallback we also accept numeric dip switch value */
-> +            if (!qemu_strtoui(keyboard_layout, NULL, 0, &tmp)) {
-> +                ret = (unsigned char)tmp;
-> +            }
-> +        }
-> +    }
-> +    if (ret == 0xff) {
-> +        /* Final fallback if keyboard_layout was not set or recognized */
-> +        ret = 0x21; /* en-us layout */
-> +    }
-> +    return ret;
-> +}
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Jason
 
