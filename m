@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E1E72819C
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6A27281B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FvA-0004nt-6J; Thu, 08 Jun 2023 09:43:24 -0400
+	id 1q7Fzm-0008KN-2E; Thu, 08 Jun 2023 09:48:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q7Fv8-0004nc-0D
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:43:22 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7Fzj-0008K1-UM
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:48:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q7Fv6-00014S-56
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:43:21 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7Fzi-0002Fj-GK
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:48:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686231799;
+ s=mimecast20190719; t=1686232085;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3z98tDruaNA1zqYdLF3Uzl7bvAIdkYCuuj86iGgcavs=;
- b=Zi50gHBytXPfOIjmaD4+ZOzHO6M9Ka7PFNG9beNjRZaOgMSL0qHITQZgMhj4VWQUbF2tel
- /bIq9eAh9KFacB0CPIfkxwdTqeZ5TwNom9vrQsEJav78HMpnhTEEtHlNW9PWj91eZVVh1M
- zkXAdWAs0AH3RVULB6r8L4fKqiVg/PU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=qJe6s6wudXu9sv06j8efj+S2vR8CVODsEIJQCLyCFkc=;
+ b=d6uwb4E3jgF7r/r0/dFC2lVPjn6WN2dp+nLqtpWHGcXs82z37eEEGcDxwlufOHSxvCEMVG
+ AmGp2ee9sFDwLd1L6z6Wy0V0+Mr+s2LRFaL20NZOzceopsW5EbZTGQmjsUrMCOu20Vz0sx
+ UJxR+xr8mvntzRu2fESO4o0M9nNP1BM=
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
+ [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-igwa3G52PhS0qDJj7F8o6g-1; Thu, 08 Jun 2023 09:43:17 -0400
-X-MC-Unique: igwa3G52PhS0qDJj7F8o6g-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-977d4b0d9e3so62861166b.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 06:43:17 -0700 (PDT)
+ us-mta-620-D1n7vTieOuaK-6vBvxCo0A-1; Thu, 08 Jun 2023 09:48:04 -0400
+X-MC-Unique: D1n7vTieOuaK-6vBvxCo0A-1
+Received: by mail-oa1-f70.google.com with SMTP id
+ 586e51a60fabf-19f96870cbfso119994fac.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 06:48:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686231796; x=1688823796;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3z98tDruaNA1zqYdLF3Uzl7bvAIdkYCuuj86iGgcavs=;
- b=gzU16waL1WrBhIRm1G9XflKRKS29X0sfwxwFPJgEn31KtzXp3w02z/+SV/fR3/iwq8
- noPzNqtW1w/CbiuZKRUskP4miNA/wRJafh2Uct44ik51UMwhr4LStpn+nzJif+8Cisz/
- Aj65hF+pTiRB5SeNuSmndqwNN9Ujm+K/M9IcUUX6WJfE8ssOT5cYX56rQpzhvYEfolc9
- oY91yr7sJdYIuFQZm8quYKtSw8ILHytoAQ0jl/KDYNQP2jhHOhHUo+nK/unVo7/e+wda
- OvqrXzas+07s7lQSPb2qzT8X91sSETimSZbBR+3a6eoiYDro4SMxDcZmSXf4ly6cpqsg
- BdRg==
-X-Gm-Message-State: AC+VfDzoLLFdCtlQEeD8LP3lxCMJXlhCfE21iJ4R64XBKF92kMNaRxFN
- hxvuCCCYVFY6DvyxBynfHx93fSp1K861ucLlO+a0nGLmNmgExt/aavfDAnULAaxo2A5pdAgLEIR
- 6gzExDoFr4QhagMp5uvfc+iezQoTNIVd48kRL/srI+06DXbutMjhdU0N83q71ATiK+NNSQVKj8X
- E=
-X-Received: by 2002:a17:906:6a16:b0:973:9a6c:2a6 with SMTP id
- qw22-20020a1709066a1600b009739a6c02a6mr10726344ejc.49.1686231796349; 
- Thu, 08 Jun 2023 06:43:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5FEsPp21ND7J4FHlxd7y8CrPBi73VTvnJO4z1DgWp9OWcnBIpW07zLX/Qje0LmHRUkGaQmHg==
-X-Received: by 2002:a17:906:6a16:b0:973:9a6c:2a6 with SMTP id
- qw22-20020a1709066a1600b009739a6c02a6mr10726314ejc.49.1686231795894; 
- Thu, 08 Jun 2023 06:43:15 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- a24-20020a1709062b1800b0097812e2b66csm723829ejg.111.2023.06.08.06.43.14
+ d=1e100.net; s=20221208; t=1686232083; x=1688824083;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qJe6s6wudXu9sv06j8efj+S2vR8CVODsEIJQCLyCFkc=;
+ b=JBfOOzEM4qbOhm/GCiRqxwpDjrNic/Lh5vZr36LIKCUyBAjfuU0a5AKiVaLA6YviVr
+ A60nUXi9yXMsl3xburcLNBzcZtB52+6TMghiKxc+OTS497mxa4lg5m0q+Y7f2MhkpDHK
+ 6fe7ktk+EsJWf2v6S1RF0jRHA6ZrpQMMpshk++bQcVfzW0O+9E4xfHWNlBZyonaTSJKh
+ LIr1wCjH2w1CtMcObfq0zYRoGpA9el2SjccfxHR3eDqfUDv0fnNoU9apztQRMRWPhECA
+ svB2ftzv19Z9sVOF10MYrz0k3C3aq1fh+gQtkGyyA/KUGONBgI2iZ5bPkOaL38GsBhma
+ i9FQ==
+X-Gm-Message-State: AC+VfDxOjCdoxoCoPEtWr/uIGy8GTQ32rLKqZA3umLCxWC4oXK4MGJ1S
+ CENcy+BSx6oAFhgCxfSfM80YzDb+0a/g3Dmvkx7BGB8bure2yisWGyVOFo4p6aNHqwC0aDY+HIL
+ xnNRUGb8eVvdBDc0=
+X-Received: by 2002:a05:6870:7388:b0:187:7a49:d227 with SMTP id
+ z8-20020a056870738800b001877a49d227mr4082458oam.5.1686232083394; 
+ Thu, 08 Jun 2023 06:48:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7tAY8U88oejwArrziuKNafXH1rQB7JrnfVgIijKyulsa8bRRhBclu+pXxwQ5gibZ2B8XLWFw==
+X-Received: by 2002:a05:6870:7388:b0:187:7a49:d227 with SMTP id
+ z8-20020a056870738800b001877a49d227mr4082431oam.5.1686232083142; 
+ Thu, 08 Jun 2023 06:48:03 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ ey14-20020a05622a4c0e00b003f98ccee846sm344947qtb.75.2023.06.08.06.48.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 06:43:15 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH] build: further refine build.ninja rules
-Date: Thu,  8 Jun 2023 15:43:14 +0200
-Message-Id: <20230608134314.943615-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.40.1
+ Thu, 08 Jun 2023 06:48:02 -0700 (PDT)
+Date: Thu, 8 Jun 2023 09:48:00 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, jasowang@redhat.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ alex.williamson@redhat.com, clg@redhat.com, david@redhat.com,
+ philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
+ yi.l.liu@intel.com, chao.p.peng@intel.com
+Subject: Re: [PATCH v3 4/5] intel_iommu: Fix address space unmap
+Message-ID: <ZIHcEMO2ZWp636t+@x1n>
+References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
+ <20230608095231.225450-5-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230608095231.225450-5-zhenzhong.duan@intel.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,96 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit b0fcc6fc7fc1 ("build: rebuild build.ninja using
-"meson setup --reconfigure"", 2023-05-19) I changed the build.ninja
-rule in the Makefile to use "meson setup" so that the Makefile would
-pick up a changed path to the meson binary.
+On Thu, Jun 08, 2023 at 05:52:30PM +0800, Zhenzhong Duan wrote:
+> During address space unmap, corresponding IOVA tree entries are
+> also removed. But DMAMap is set beyond notifier's scope by 1, so
+> in theory there is possibility to remove a continuous entry above
+> the notifier's scope but falling in adjacent notifier's scope.
 
-However, there was a reason why build.ninja was rebuilt using $(NINJA)
-itself.  Namely, ninja has its own cache of file modification times,
-and if it does not know about the modification that was done outside
-its control, it will *also* try to regenerate build.ninja.  This can be
-simply by running "make" on a fresh tree immediately after "configure";
-that will trigger an unnecessary meson run.
+This function is only called in "loop over all notifiers" case (or replay()
+that just got removed, but even so there'll be only 1 notifier normally
+iiuc at least for vt-d), hopefully it means no bug exist (no Fixes needed,
+no backport needed either), but still worth fixing it up.
 
-So, apply a refinement to the rule in order to cover both cases:
+> 
+> There is no issue currently as no use cases allocate notifiers
+> continuously, but let's be robust.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-- track the meson binary that was used (and that is embedded in
-  build.ninja's reconfigure rules); to do this, write build.ninja.stamp
-  right after executing meson successfully
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-- if it changed, force usage of "$(MESON) setup --reconfigure" to
-  update the path in the reconfigure rule
-
-- if it didn't change, use "$(NINJA) build.ninja" just like before
-  commit b0fcc6fc7fc1.
-
-Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- Makefile  | 17 +++++++++++++----
- configure |  1 +
- 2 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index b22bf6fba12..804a5681e0a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -83,16 +83,17 @@ config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh
- 	@if test -f meson-private/coredata.dat; then \
- 	  ./config.status --skip-meson; \
- 	else \
--	  ./config.status && touch build.ninja.stamp; \
-+	  ./config.status; \
- 	fi
- 
- # 2. meson.stamp exists if meson has run at least once (so ninja reconfigure
- # works), but otherwise never needs to be updated
-+
- meson-private/coredata.dat: meson.stamp
- meson.stamp: config-host.mak
- 	@touch meson.stamp
- 
--# 3. ensure generated build files are up-to-date
-+# 3. ensure meson-generated build files are up-to-date
- 
- ifneq ($(NINJA),)
- Makefile.ninja: build.ninja
-@@ -106,11 +107,19 @@ Makefile.ninja: build.ninja
- endif
- 
- ifneq ($(MESON),)
--# A separate rule is needed for Makefile dependencies to avoid -n
-+# The path to meson always points to pyvenv/bin/meson, but the absolute
-+# paths could change.  In that case, force a regeneration of build.ninja.
-+# Note that this invocation of $(NINJA), just like when Make rebuilds
-+# Makefiles, does not include -n.
- build.ninja: build.ninja.stamp
- $(build-files):
- build.ninja.stamp: meson.stamp $(build-files)
--	$(MESON) setup --reconfigure $(SRC_PATH) && touch $@
-+	@if test "$$(cat build.ninja.stamp)" = "$(MESON)" && test -n "$(NINJA)"; then \
-+	  $(NINJA) build.ninja; \
-+	else \
-+	  echo "$(MESON) setup --reconfigure $(SRC_PATH)"; \
-+	  $(MESON) setup --reconfigure $(SRC_PATH); \
-+	fi && echo "$(MESON)" > $@
- 
- Makefile.mtest: build.ninja scripts/mtest2make.py
- 	$(MESON) introspect --targets --tests --benchmarks | $(PYTHON) scripts/mtest2make.py > $@
-diff --git a/configure b/configure
-index 8a638dd82ae..cbdb389dc95 100755
---- a/configure
-+++ b/configure
-@@ -1894,6 +1894,7 @@ if test "$skip_meson" = no; then
-   if test "$?" -ne 0 ; then
-       error_exit "meson setup failed"
-   fi
-+  echo "$meson" > build.ninja.stamp
- else
-   if test -f meson-private/cmd_line.txt; then
-     # Adjust old command line options that were removed
 -- 
-2.40.1
+Peter Xu
 
 
