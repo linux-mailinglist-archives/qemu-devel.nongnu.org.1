@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA4F72816E
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1FD72816C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:33:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Fk1-0001hd-U3; Thu, 08 Jun 2023 09:31:53 -0400
+	id 1q7Fl4-0003yL-4F; Thu, 08 Jun 2023 09:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7Fju-0001cI-K3
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:31:48 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7Fl1-0003wV-G7
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:32:55 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7Fjq-0005s1-7w
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:31:46 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-30c2bd52f82so650030f8f.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 06:31:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7Fkv-00068P-97
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:32:55 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f6e1393f13so4109895e9.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 06:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686231100; x=1688823100;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ka4gQMrNU71yCnx4mXC3BxyVl7nhdDcW2Dl9VUPw4qk=;
- b=gxzkP64cYDC9HsGjAS596ukOQFPFPt/vAv2leGpR1jZDzdrTrIYWTbFfujjOtlv4Nk
- ASyvgFdrZeajoltKQuLO94/Bn6PR3euSM3zQzBYZF40/lu6VbUlDUnacnBjfS2pFxl5d
- +OOejzs4JZx1TknB5c+OveRolhgvWP4hvsGJvDyHed/+kjFsLao2KUpiM1kicc6wrEu2
- tZxO0GUciaBat/6Je200K3AgFFFAkOB/zB6D898AlSykQnN3Br7AJABGxMtde5aioFvC
- RQUFBXtw7s/663aP6e+9xe8b+CSJSmWG0ADNpZ5k8R7f4QumW2NVvgbnB7fb8ZzTluCK
- nuEA==
+ d=linaro.org; s=google; t=1686231167; x=1688823167;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ng8czX/rPWnhz7zc/NWQ/lu09zS0NPFurTxHK6zk5Dg=;
+ b=MdmYJutTLKX7pmwg34JehTXAaBuSm9j+gOzCmmCZL+3zSfvibE6ZzESg/spuiUq6AM
+ DjiOUo0btHa7hHYu+MoR/QTBNQirC6MA4THicyCIdnZ8mf8/sT73bLLqXtdiBeuo9vP/
+ 0z6hgBIaVLIrTgn0mfE2YZ9MuED+hVIYdPi1/FvTVTZqOVQRc6UidQu3cylgIVyjHCuo
+ ULhwCFRTERY/W7nMmCwDBq368WP45cjAaD0uWf+mKm0HuFWj0aDLQXOWcZTQIxNbvVI1
+ r+C3zjCWWjIuEXBLL8jvcG5Cpb4roqxS9FcFpJmMF462pEa/TC/sMq3tGDZOVziNOFZW
+ fQ0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686231100; x=1688823100;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ka4gQMrNU71yCnx4mXC3BxyVl7nhdDcW2Dl9VUPw4qk=;
- b=lMWuBnwvaL5AqQD7pF8lWsrniZziB0HPX5sVysYGckz0ArgYWC0sNqqJdjLtibRVTy
- hWfRH+MtDqNVBZbaHxvl7P6QmKyQAuKumVj1lDizYrae6yn/2Ur4lkr/wmyZ5x6zGh8t
- DlneAoYfoJYqGAtuehOcuLCvMxVfPxgDt4rVIwdObJsSev6JXq9+RLU1a+IGiZ4qE/f3
- W0FjacRFlKNqxNgZI9u8MpvwCemphPreQ1QYMzlzfx+p8mWKduQ1vpe48xc0DfP91rCU
- BH1osesG9Fv6MnRtqspYxF3VqSHlrIOAhkRm8rnt6Y89ExjU1LMMN97tREEytKLp5rWu
- PIwQ==
-X-Gm-Message-State: AC+VfDykTWUQIsw6zr1DE5PqGjUnxPzyEfDCJO1YiW112oUYOMP3/Qyz
- D2XOGWWeVU7uLBcX87TiaHswi5kZfBnbEFKSwIk=
-X-Google-Smtp-Source: ACHHUZ5aDBbI3SlmtQsfxX/aKoQ36/DRlOJH8aS6ztus02z8+TdoLgvQkf+NjSZapjYoIT+k1cIxpw==
-X-Received: by 2002:a5d:4538:0:b0:30a:eda0:71c5 with SMTP id
- j24-20020a5d4538000000b0030aeda071c5mr7055600wra.16.1686231100033; 
- Thu, 08 Jun 2023 06:31:40 -0700 (PDT)
-Received: from localhost.localdomain ([176.176.169.168])
+ d=1e100.net; s=20221208; t=1686231167; x=1688823167;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ng8czX/rPWnhz7zc/NWQ/lu09zS0NPFurTxHK6zk5Dg=;
+ b=B1TelIDEdY58Rsg7yFUFzHpQqAtYhqG/zFH61AL0KJNIG/uQRZYQpOEO94yw1YRiAj
+ TjfMHMVvNZZK1qserD1zKjRj73SByq2tj3VXNkQ22Htb3p+096PkFKvshJNJe6S9RYoO
+ tAxjI7g+bVBukVj2oI+lrTzXnmmH75r2MC/U5XC9HDpTJsFsIAchOSjON0yI2mnqfeiq
+ Hzn+1iWKPGJ5aLx5WearkIk4FNkoJHYRAo5xJXQCT1kxhU8mD+zelXxAllCF1+OgElHg
+ gsGRZtLcfVQRQfdOfnRaO2xhk/uy8S3ri6Jlm+OQ4lkdLR/n9yN8l9pYtwsHmVpWCyKD
+ TAVg==
+X-Gm-Message-State: AC+VfDyFo4+Fnv4bkGMANfABvr2dYeVlCnVULVxABI3UCYdxhcbkz2DY
+ ldXvlWLFStojkqP/q8PzkzdlREL+az5vI/wX1FI=
+X-Google-Smtp-Source: ACHHUZ4Bc9yWi+ZscP+LOcDpEsjGX2o90Kw18zFXDbUVvTkFaczlrPI8ZhL4OrU6CNv9L99mVLyPag==
+X-Received: by 2002:a1c:7717:0:b0:3f7:34dc:ed0d with SMTP id
+ t23-20020a1c7717000000b003f734dced0dmr1404330wmi.25.1686231167296; 
+ Thu, 08 Jun 2023 06:32:47 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.169.168])
  by smtp.gmail.com with ESMTPSA id
- p23-20020a1c7417000000b003f60eb72cf5sm5348708wmc.2.2023.06.08.06.31.38
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 08 Jun 2023 06:31:39 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ c3-20020a7bc843000000b003f7f4b7f286sm3595167wml.12.2023.06.08.06.32.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 Jun 2023 06:32:46 -0700 (PDT)
+Message-ID: <22f84ca4-cd6e-88c5-ff0e-02632c416677@linaro.org>
+Date: Thu, 8 Jun 2023 15:32:44 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH v2 1/5] hw/remote/proxy: Remove dubious
+ 'event_notifier-posix.c' include
+Content-Language: en-US
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/5] target: Bulk rename 'helper.h' -> 'helper.h.inc' for
- all targets
-Date: Thu,  8 Jun 2023 15:31:08 +0200
-Message-Id: <20230608133108.72655-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230608133108.72655-1-philmd@linaro.org>
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-riscv@nongnu.org
 References: <20230608133108.72655-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20230608133108.72655-2-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230608133108.72655-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: 3
+X-Spam_score: 0.3
+X-Spam_bar: /
+X-Spam_report: (0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, SUSPICIOUS_RECIPS=2.51,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,490 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 139c1837db ("meson: rename included C source files
-to .c.inc"), QEMU standard procedure for included C files is to
-use *.c.inc.
+On 8/6/23 15:31, Philippe Mathieu-Daudé wrote:
+> event_notifier-posix.c is registered in meson's util_ss[] source
+> set, which is built as libqemuutil.a.p library. Both tools and
+> system emulation binaries are linked with qemuutil, so there is
+> no point in including this source file.
+> 
+> Introduced in commit bd36adb8df ("multi-process: create IOHUB
+> object to handle irq").
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> Note, --enable-multiprocess doesn't seem to be covered in CI.
+> ---
+>   hw/remote/proxy.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/hw/remote/proxy.c b/hw/remote/proxy.c
+> index 1c7786b52c..2052d721e5 100644
+> --- a/hw/remote/proxy.c
+> +++ b/hw/remote/proxy.c
+> @@ -22,7 +22,6 @@
+>   #include "qom/object.h"
+>   #include "qemu/event_notifier.h"
+>   #include "sysemu/kvm.h"
+> -#include "util/event_notifier-posix.c"
 
-Besides, since commit 6a0057aa22 ("docs/devel: make a statement
-about includes") this is documented as the Coding Style:
-
-  If you do use template header files they should be named with
-  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
-  being included for expansion.
-
-Therefore rename the included 'helper.h' as 'helper.h.inc' for
-all targets (updating the documentation).
-
-Unfortunately since the HELPER_H path definition is used by all
-targets, we have to do all changes in a single bulk commit.
-
-Mechanical change doing:
-
-  $ for t_a in target/*; do \
-      if test -f ${t_a}/helper.h; then \
-        mkdir -p ${t_a}/tcg; \
-        git mv ${t_a}/helper.h ${t_a}/tcg/helper.h.inc; \
-      fi; \
-    done
-  $ sed -i \
-    -e 's#define HELPER_H "helper.h"#define HELPER_H "tcg/helper.h.inc"#' \
-       $(git grep -l 'define HELPER_H')
-
-then manually updating files in include/exec/ and docs/.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/exec/helper-gen.h                        | 2 +-
- include/exec/helper-proto.h                      | 2 +-
- target/alpha/{helper.h => tcg/helper.h.inc}      | 0
- target/arm/{helper.h => tcg/helper.h.inc}        | 0
- target/avr/{helper.h => tcg/helper.h.inc}        | 0
- target/cris/{helper.h => tcg/helper.h.inc}       | 0
- target/hexagon/{helper.h => tcg/helper.h.inc}    | 0
- target/hppa/{helper.h => tcg/helper.h.inc}       | 0
- target/i386/{helper.h => tcg/helper.h.inc}       | 0
- target/loongarch/{helper.h => tcg/helper.h.inc}  | 0
- target/m68k/{helper.h => tcg/helper.h.inc}       | 0
- target/microblaze/{helper.h => tcg/helper.h.inc} | 0
- target/mips/{helper.h => tcg/helper.h.inc}       | 0
- target/nios2/{helper.h => tcg/helper.h.inc}      | 0
- target/openrisc/{helper.h => tcg/helper.h.inc}   | 0
- target/ppc/{helper.h => tcg/helper.h.inc}        | 0
- target/riscv/{helper.h => tcg/helper.h.inc}      | 0
- target/rx/{helper.h => tcg/helper.h.inc}         | 0
- target/s390x/{helper.h => tcg/helper.h.inc}      | 0
- target/sh4/{helper.h => tcg/helper.h.inc}        | 0
- target/sparc/{helper.h => tcg/helper.h.inc}      | 0
- target/tricore/{helper.h => tcg/helper.h.inc}    | 0
- target/xtensa/{helper.h => tcg/helper.h.inc}     | 0
- target/alpha/translate.c                         | 2 +-
- target/arm/tcg/translate.c                       | 2 +-
- target/avr/translate.c                           | 2 +-
- target/cris/translate.c                          | 2 +-
- target/hexagon/translate.c                       | 2 +-
- target/hppa/translate.c                          | 2 +-
- target/i386/tcg/translate.c                      | 2 +-
- target/loongarch/translate.c                     | 2 +-
- target/m68k/translate.c                          | 2 +-
- target/microblaze/translate.c                    | 2 +-
- target/mips/tcg/translate.c                      | 2 +-
- target/nios2/translate.c                         | 2 +-
- target/openrisc/translate.c                      | 2 +-
- target/ppc/translate.c                           | 2 +-
- target/riscv/translate.c                         | 2 +-
- target/rx/translate.c                            | 2 +-
- target/s390x/tcg/translate.c                     | 2 +-
- target/sh4/translate.c                           | 2 +-
- target/sparc/translate.c                         | 2 +-
- target/tricore/translate.c                       | 2 +-
- target/xtensa/translate.c                        | 2 +-
- 44 files changed, 23 insertions(+), 23 deletions(-)
- rename target/alpha/{helper.h => tcg/helper.h.inc} (100%)
- rename target/arm/{helper.h => tcg/helper.h.inc} (100%)
- rename target/avr/{helper.h => tcg/helper.h.inc} (100%)
- rename target/cris/{helper.h => tcg/helper.h.inc} (100%)
- rename target/hexagon/{helper.h => tcg/helper.h.inc} (100%)
- rename target/hppa/{helper.h => tcg/helper.h.inc} (100%)
- rename target/i386/{helper.h => tcg/helper.h.inc} (100%)
- rename target/loongarch/{helper.h => tcg/helper.h.inc} (100%)
- rename target/m68k/{helper.h => tcg/helper.h.inc} (100%)
- rename target/microblaze/{helper.h => tcg/helper.h.inc} (100%)
- rename target/mips/{helper.h => tcg/helper.h.inc} (100%)
- rename target/nios2/{helper.h => tcg/helper.h.inc} (100%)
- rename target/openrisc/{helper.h => tcg/helper.h.inc} (100%)
- rename target/ppc/{helper.h => tcg/helper.h.inc} (100%)
- rename target/riscv/{helper.h => tcg/helper.h.inc} (100%)
- rename target/rx/{helper.h => tcg/helper.h.inc} (100%)
- rename target/s390x/{helper.h => tcg/helper.h.inc} (100%)
- rename target/sh4/{helper.h => tcg/helper.h.inc} (100%)
- rename target/sparc/{helper.h => tcg/helper.h.inc} (100%)
- rename target/tricore/{helper.h => tcg/helper.h.inc} (100%)
- rename target/xtensa/{helper.h => tcg/helper.h.inc} (100%)
-
-diff --git a/include/exec/helper-gen.h b/include/exec/helper-gen.h
-index f7ec155699..ca8d82d99a 100644
---- a/include/exec/helper-gen.h
-+++ b/include/exec/helper-gen.h
-@@ -9,7 +9,7 @@
- 
- #include "exec/helper-gen-common.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-gen.h.inc"
- #undef  HELPER_H
- 
-diff --git a/include/exec/helper-proto.h b/include/exec/helper-proto.h
-index 6935cb4f16..4d9014e9aa 100644
---- a/include/exec/helper-proto.h
-+++ b/include/exec/helper-proto.h
-@@ -9,7 +9,7 @@
- 
- #include "exec/helper-proto-common.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-proto.h.inc"
- #undef  HELPER_H
- 
-diff --git a/target/alpha/helper.h b/target/alpha/tcg/helper.h.inc
-similarity index 100%
-rename from target/alpha/helper.h
-rename to target/alpha/tcg/helper.h.inc
-diff --git a/target/arm/helper.h b/target/arm/tcg/helper.h.inc
-similarity index 100%
-rename from target/arm/helper.h
-rename to target/arm/tcg/helper.h.inc
-diff --git a/target/avr/helper.h b/target/avr/tcg/helper.h.inc
-similarity index 100%
-rename from target/avr/helper.h
-rename to target/avr/tcg/helper.h.inc
-diff --git a/target/cris/helper.h b/target/cris/tcg/helper.h.inc
-similarity index 100%
-rename from target/cris/helper.h
-rename to target/cris/tcg/helper.h.inc
-diff --git a/target/hexagon/helper.h b/target/hexagon/tcg/helper.h.inc
-similarity index 100%
-rename from target/hexagon/helper.h
-rename to target/hexagon/tcg/helper.h.inc
-diff --git a/target/hppa/helper.h b/target/hppa/tcg/helper.h.inc
-similarity index 100%
-rename from target/hppa/helper.h
-rename to target/hppa/tcg/helper.h.inc
-diff --git a/target/i386/helper.h b/target/i386/tcg/helper.h.inc
-similarity index 100%
-rename from target/i386/helper.h
-rename to target/i386/tcg/helper.h.inc
-diff --git a/target/loongarch/helper.h b/target/loongarch/tcg/helper.h.inc
-similarity index 100%
-rename from target/loongarch/helper.h
-rename to target/loongarch/tcg/helper.h.inc
-diff --git a/target/m68k/helper.h b/target/m68k/tcg/helper.h.inc
-similarity index 100%
-rename from target/m68k/helper.h
-rename to target/m68k/tcg/helper.h.inc
-diff --git a/target/microblaze/helper.h b/target/microblaze/tcg/helper.h.inc
-similarity index 100%
-rename from target/microblaze/helper.h
-rename to target/microblaze/tcg/helper.h.inc
-diff --git a/target/mips/helper.h b/target/mips/tcg/helper.h.inc
-similarity index 100%
-rename from target/mips/helper.h
-rename to target/mips/tcg/helper.h.inc
-diff --git a/target/nios2/helper.h b/target/nios2/tcg/helper.h.inc
-similarity index 100%
-rename from target/nios2/helper.h
-rename to target/nios2/tcg/helper.h.inc
-diff --git a/target/openrisc/helper.h b/target/openrisc/tcg/helper.h.inc
-similarity index 100%
-rename from target/openrisc/helper.h
-rename to target/openrisc/tcg/helper.h.inc
-diff --git a/target/ppc/helper.h b/target/ppc/tcg/helper.h.inc
-similarity index 100%
-rename from target/ppc/helper.h
-rename to target/ppc/tcg/helper.h.inc
-diff --git a/target/riscv/helper.h b/target/riscv/tcg/helper.h.inc
-similarity index 100%
-rename from target/riscv/helper.h
-rename to target/riscv/tcg/helper.h.inc
-diff --git a/target/rx/helper.h b/target/rx/tcg/helper.h.inc
-similarity index 100%
-rename from target/rx/helper.h
-rename to target/rx/tcg/helper.h.inc
-diff --git a/target/s390x/helper.h b/target/s390x/tcg/helper.h.inc
-similarity index 100%
-rename from target/s390x/helper.h
-rename to target/s390x/tcg/helper.h.inc
-diff --git a/target/sh4/helper.h b/target/sh4/tcg/helper.h.inc
-similarity index 100%
-rename from target/sh4/helper.h
-rename to target/sh4/tcg/helper.h.inc
-diff --git a/target/sparc/helper.h b/target/sparc/tcg/helper.h.inc
-similarity index 100%
-rename from target/sparc/helper.h
-rename to target/sparc/tcg/helper.h.inc
-diff --git a/target/tricore/helper.h b/target/tricore/tcg/helper.h.inc
-similarity index 100%
-rename from target/tricore/helper.h
-rename to target/tricore/tcg/helper.h.inc
-diff --git a/target/xtensa/helper.h b/target/xtensa/tcg/helper.h.inc
-similarity index 100%
-rename from target/xtensa/helper.h
-rename to target/xtensa/tcg/helper.h.inc
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 1f7dd078d8..291e09640d 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -30,7 +30,7 @@
- #include "exec/translator.h"
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 13c88ba1b9..75db6960cd 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -29,7 +29,7 @@
- #include "cpregs.h"
- #include "exec/helper-proto.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index ef2edd7415..0bfa217d95 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -30,7 +30,7 @@
- #include "exec/log.h"
- #include "exec/translator.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index 1445cd8bb5..89e9f3ee36 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -37,7 +37,7 @@
- #include "exec/helper-gen.h"
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 708339198e..cf95de7314 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -33,7 +33,7 @@
- #include "genptr.h"
- #include "printinsn.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index d33813d173..f6b531166c 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -29,7 +29,7 @@
- #include "exec/translator.h"
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 5cf14311a6..695b88e992 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -34,7 +34,7 @@
- 
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index 3146a2d4ac..056d20334f 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -23,7 +23,7 @@
- TCGv cpu_gpr[32], cpu_pc;
- static TCGv cpu_lladdr, cpu_llval;
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 551ef9e52a..559cf46920 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -34,7 +34,7 @@
- #include "exec/log.h"
- #include "fpu/softfloat.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 7e7f837c63..564fcda876 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -31,7 +31,7 @@
- 
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 74af91e4f5..e884faf22f 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -32,7 +32,7 @@
- #include "disas/disas.h"
- #include "fpu_helper.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/nios2/translate.c b/target/nios2/translate.c
-index a365ad8293..c9649fc5c8 100644
---- a/target/nios2/translate.c
-+++ b/target/nios2/translate.c
-@@ -34,7 +34,7 @@
- #include "qemu/qemu-print.h"
- #include "semihosting/semihost.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index 7760329e75..152f93dec5 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -34,7 +34,7 @@
- 
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 37fd431870..b20f3316aa 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -41,7 +41,7 @@
- #include "qemu/qemu-print.h"
- #include "qapi/error.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 933b11c50d..a2d25052b3 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -33,7 +33,7 @@
- #include "instmap.h"
- #include "internals.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index 08cabbde61..fdc091a2f4 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -28,7 +28,7 @@
- #include "exec/translator.h"
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index a6ee2d4423..b6872ec7d8 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -45,7 +45,7 @@
- #include "exec/log.h"
- #include "qemu/atomic128.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 49c87d7a01..93d038fc93 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -29,7 +29,7 @@
- #include "exec/log.h"
- #include "qemu/qemu-print.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index bad2ec90a0..45dc59f9a8 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -33,7 +33,7 @@
- #include "exec/log.h"
- #include "asi.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 8e4f99478c..165a40c333 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -33,7 +33,7 @@
- #include "exec/translator.h"
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index b7386ff0f0..969b51ac07 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -45,7 +45,7 @@
- 
- #include "exec/log.h"
- 
--#define HELPER_H "helper.h"
-+#define HELPER_H "tcg/helper.h.inc"
- #include "exec/helper-info.c.inc"
- #undef  HELPER_H
- 
--- 
-2.38.1
+Err wrong branch base, please discard this patch which is already
+in Paolo's queue.
 
 
