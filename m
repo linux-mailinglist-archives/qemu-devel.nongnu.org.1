@@ -2,71 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185E2728B74
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE01728B79
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:59:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7OTv-0006tb-Pr; Thu, 08 Jun 2023 18:51:51 -0400
+	id 1q7Oay-0004Z8-Bv; Thu, 08 Jun 2023 18:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q7OTe-0006Xh-R5
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:51:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1q7Oaw-0004Yh-2v
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:59:06 -0400
+Received: from mail-co1nam11on2074.outbound.protection.outlook.com
+ ([40.107.220.74] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q7OTa-0005Sr-Cp
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:51:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686264689;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I49yc+YxU5BPDO2hrTM16dVAH3Ex2ds9hLfWn4wzWSU=;
- b=iD8ooKdPZODd9Gn3NHQawU7Uv7VPJWce/QjYM8EHkAHu9CNWpBge4uZGWg6jRhe+WqgMjw
- oHMnDwCWKMmPNpha4khnidSpnE/uPHc9tqcKvmma9YAhPz92cWcZf5qsLdpNfKUi1fNhJc
- 4IfqQ0v70LvBPbxSn1TFknjqxky8GIA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-615-v6sCr4EGPpuZglW8_Q90_g-1; Thu, 08 Jun 2023 18:51:28 -0400
-X-MC-Unique: v6sCr4EGPpuZglW8_Q90_g-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8ECB1C05122;
- Thu,  8 Jun 2023 22:51:27 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 395E848205E;
- Thu,  8 Jun 2023 22:51:19 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Peter Xu <peterx@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Juan Quintela <quintela@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 42/42] migration-test: Split vcpu-dirty-limit-test
-Date: Fri,  9 Jun 2023 00:49:43 +0200
-Message-Id: <20230608224943.3877-43-quintela@redhat.com>
-In-Reply-To: <20230608224943.3877-1-quintela@redhat.com>
-References: <20230608224943.3877-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1q7Oat-0007e6-Mm
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:59:05 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c+pk+whsXXNeovM+JIavJj88iB7+ZbAlSapL+tcCGgII7nOyJyrvay/vybe3fo1BQq1pdCPdlIrxEzT/xEUB/7WcEf3gLaGnuqV4zSeaPHP5LAzGl/bTLOnSuDQ9yc9rL44DJwuHdZu8R9eTcTffADEOfI1xoLp3CRghmCeE9lflRjmxQUHbJnYqW0khV0a/mBCBPVvMmgtqXZXtN7g7jwpS0JoBNjSeJcNVBrmCcWuLRWkgz4eJxGX3Bf5hW3HtxwO/pUrkANueQAygL/iogJiGhQ79DlqJWarUxPPRwmGthbJndjcKxuDVmtVblPD8C2lD143cFLtZvkMA1unN6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kNPVK6fOGf0FU9MCXi9Kh7f4tefhx46WHXJthc2tsV4=;
+ b=Ux+ucy4e558Axe+Muwy9Td3T8OL5B1Mik7FRvhE11DTwsQPdKT16zVJ8SdEK/do7Pgb8ocinQLIFAb47xGEznGMnBMDPP+i936htK7OpDIAPCHMsDdv55G/c0beRo5UCfyNOWOIkST5qEbcgGssg/FcHbzvmBj3q7JU31o7SkJOe7YGJuR2oppiTgWgDKHsaTihB0R/ek0QMgcRxBIvPRki4q3/P8KvobWzPBp1VmtvZc6WQ1yGq26BQfZfKs3UP/2tz6BbehQJBcBWz+KPt3k/GKbK3IaQvEGNwSY1TTb0QQB7KBWRSwY41XPRmriurLdUSOTjV4tA8Fg242WxrHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kNPVK6fOGf0FU9MCXi9Kh7f4tefhx46WHXJthc2tsV4=;
+ b=DYwOQp0FQdvH8Z+pxoDTe2TalR+MgQw500Ypi34IkQCkQc+7/EMPQZsYAFHbOf+caavTt7CyBghZhyiSyVtuYnNPe0zqPBNVPK+7+w0KnEaFSS47w81pTuIEdci+k3l0Semc0HPZwgGDgb/H/Cryp6Ut4UfItsZwu9tAs9DDqlk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
+ by PH0PR12MB7077.namprd12.prod.outlook.com (2603:10b6:510:21d::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Thu, 8 Jun
+ 2023 22:53:54 +0000
+Received: from MW3PR12MB4409.namprd12.prod.outlook.com
+ ([fe80::1182:e204:82d8:a4e]) by MW3PR12MB4409.namprd12.prod.outlook.com
+ ([fe80::1182:e204:82d8:a4e%4]) with mapi id 15.20.6477.016; Thu, 8 Jun 2023
+ 22:53:54 +0000
+Message-ID: <757f627d-fb00-aa46-0aec-97f7d76cace5@amd.com>
+Date: Thu, 8 Jun 2023 15:53:52 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [QEMU][PATCH v6 4/4] tests/qtest: Introduce tests for Xilinx
+ VERSAL CANFD controller
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>
+References: <20230530212259.7111-1-vikram.garhwal@amd.com>
+ <CAFEAcA9nPRghOXb6vc6eQ_4iGFW3J8z2XyZzgv8BNb1RpBO+wg@mail.gmail.com>
+From: Vikram Garhwal <vikram.garhwal@amd.com>
+In-Reply-To: <CAFEAcA9nPRghOXb6vc6eQ_4iGFW3J8z2XyZzgv8BNb1RpBO+wg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR02CA0030.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::43) To MW3PR12MB4409.namprd12.prod.outlook.com
+ (2603:10b6:303:2d::23)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|PH0PR12MB7077:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25844719-29e4-4d09-e5a2-08db68733c19
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 9sZVXpZJ5qTSA7pvv//RdgPxFB35Xn8DWLUvBTvoTNZXMJudHN8x+tGLPrZF1zqa7olbc1/DB1SeqscBdZxIkOuCunSG4ymKJ6nnPVR9R/O3sWH7J6Jiwte93Zuramqfwf33WW3rYiTa4UyHYyDxvL8ims91kZ1VMMicYweMLpEzRYs112H9JHSdnQtCr6WjBz8sSWXHbH/8TFzDfkREri/nvS8CBiVDCb2d4qFs2v9Dc1jb3DdHr0EzR6fksBU8PnXZIGIwLDag+C+vSFX/EAnkeu6dzB2p7cibnPB1fuFZgVcpmek5IlWN2KE6cY3O03R3m00bFrQU6ewmIK8XBGhQPtT9N2mf5nYm5AyVOQt4M39/kcwVOMGFr2g2ibslyauRkXgFtyKAcuD+NHD9SQ/KP1Qf9d0eN3hXpylJVpkuOX9DtNd9cMaBjrmncJiZsFM/7wZ2f5S88dtJ2cAuw8Ly0pP1cxdisj1cLXI/e5ZHBaq6t5t8ayLcu7w+c4qQPseG6u6FrnbAN8SOwHOAzN9MCPcKXMN2IMuTJ/a9yDlfW7y9tYWBcfNj5/Yzrnd54iCEMckiyJorwj53psMZX5C0cajPypB/HOjBStMfGtEL5013KI+EvjIWiEwkMOEJJbZ2thoIC4op5kZ3D80lmw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(346002)(136003)(376002)(39860400002)(396003)(366004)(451199021)(86362001)(54906003)(66476007)(38100700002)(4326008)(66946007)(66556008)(6916009)(6486002)(478600001)(186003)(36756003)(8676002)(5660300002)(8936002)(41300700001)(2616005)(31696002)(2906002)(316002)(44832011)(31686004)(53546011)(6512007)(6506007)(26005)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NG0yWHN4YUFLT0F2OG9HUTNzMmRmYTlaQWdtZm5WdURCdThvVGt2dmlVbnl2?=
+ =?utf-8?B?RVhFVVhYRkVSR1JzckhqNDBFVm1YZEVqZGlBbXZTanJiOEoveDB5ZkVIemFz?=
+ =?utf-8?B?Yks2OVdac045R0dJdTQ3WDFHeGhNeGVTUXlJNWFvTWx1K0ZURWxkWHpOT1Jz?=
+ =?utf-8?B?dHpscWJHQm1ReDl5dWZCa0lNemt1aWM3R05CbFlTYU5TRzU1VVB1MFpneS9Q?=
+ =?utf-8?B?WWhuUG9OZ1pFUFBlTWxMNUtCdWVMY2tpN0NNNW53a2Q4M0YrcEhqWU40MStq?=
+ =?utf-8?B?b0NtU3JZVHVRSy9UT0llajl1S25TdlVOQ1FVcmIzbkFheTh4UUw4R0huVHNk?=
+ =?utf-8?B?Umo0Rlc3TDkzVzE4VUdjbTB1OEJxQkdBVldneHRnY2JYelh3dlo1L3JiUU9R?=
+ =?utf-8?B?VWhtc2kyTC8xd0RNdTF3WWtJR0sxYVRTd1NFelpKVHpCRWY2T0kvTmpmU2xY?=
+ =?utf-8?B?NXVieVFLQnczS1FJRWxTOGxMTlhOc2tjbHd0eng0aVVJTElVOWRJcUVPaDJY?=
+ =?utf-8?B?dkN3N1IveDlVOUgybjVHdUsya1JySmQxak9mOEd6Y2dPOHArOUVWRHhMc1lQ?=
+ =?utf-8?B?U3NJUER3L0dTV0NFRlZ2aVlsWjB0cXdHalJwa1grK09adjdUU2lIN01xTEJ0?=
+ =?utf-8?B?emkyNlBlZ1Q0N29mUzhmQXN6ZjZpTnlCdTRtRUVxb2FxUUZkRk56N3pRVTZM?=
+ =?utf-8?B?c0xCUW55WWNzejgvb2FIc2l1QnQ4WlhEbzRFZHpqcDI0OVBCU1orWHFYREdJ?=
+ =?utf-8?B?c3cvWHVBL1BtVUVmYlA1bUFYRGs1ZWFxYWNqaGFNcE9jZFF0L3h1SGVLaWlR?=
+ =?utf-8?B?elVDQ0JMR25teGRLdXBDbEZpbWQ1czRpWTc4M3A3bktCNm1GTG5rdkY5STlI?=
+ =?utf-8?B?M3JnZ3J1dzBxa1FpSmhzTjcrUk9RcGxxVjlwUEl2YnFiS1ZzMUphQm9iTlBP?=
+ =?utf-8?B?T1FrUXRCWDlZT0tXcURLSDk3T0kvYzRCZ3lMWDJVR3R5elZtU2YzaUl3bUZa?=
+ =?utf-8?B?YWxTSTgzSGVyUm9CWGNaTi9RTmw0Nm11dkt3bWd3cTFRMUpFYlZSKzBXQU9B?=
+ =?utf-8?B?WHdPQUx1OFVaUVFwTWl3V2NWRDFQY2EvUXZqakhlZDYrK2pUbzQ5dHRyR0U0?=
+ =?utf-8?B?UysreWcwWmxtODM2VHNxTlIvUjZ5dHJaQ3BOeE54UUhQSnRQaFJ0dERHQm9n?=
+ =?utf-8?B?M0VaclpYZG9lT2piMHY3M24vT3V4VkZocCt6cDRDMTY5V3pnclYvUVhzK1V0?=
+ =?utf-8?B?cWdVYlRJNlJHNisxeUFocUsrT1pYY0dNMUVRb1RqNjJDYU5renJIOEs5a2tD?=
+ =?utf-8?B?Nzl2ckt4VUhVdVduZWo0WDdFRW9lbVJ1bENuTzFqeWIxdmFudzhBSUVnWDJE?=
+ =?utf-8?B?bmRiZkxyeHNPd0FEWE9vNVRyVXVMNHp2aVFtaUpCQkRoRXhNbkpwcndubEdE?=
+ =?utf-8?B?Qmx5K01qRTlrMXV3RHV4a1FUTjVXYjZrUEdrQUlvUzBiajhEYUN4Y0g5T1F3?=
+ =?utf-8?B?RGwyaDMxNXVxcXpYczB5U3J2c05sZGRVbEJXTjVIU2lza1paTUx0MUM1MFdU?=
+ =?utf-8?B?a2YzOXhLb3RCU0JWSUNGU2E1ZHV0akw0NTh5aVVvU2FIWGJ6RndiSVN6dEhp?=
+ =?utf-8?B?VDBSRkhkemxyQmZOcXBQc0lFT3BUdEJQeFh5M1d6WjcxS0FlTmJ0M3VFL0xj?=
+ =?utf-8?B?VzNkYlFSb3k3Y2NDT3RRMlpZMnhYcTY3R3lDYzB6VE9RdFJ0UFFZb3llZzRV?=
+ =?utf-8?B?cjNKZDArb0NRSjhWTEh1SkhIVG5pRVJGQmJkN2U3clhvMXhFRG5LZktQKzE2?=
+ =?utf-8?B?SGlxTVR0aEI5YUI5NWxOWms3OE95OGszUys1TWd3Q1d1OS9DRkUxUjBLOExw?=
+ =?utf-8?B?ODZrWDdpOGRCdEtyVUU3L1lXZkNEODZpQ0xRbHZhRUJsK25rS0NHUEY2ZWpQ?=
+ =?utf-8?B?cVFYT28xRTdrREhCcnFQUEJPYThVZWZTeHB6UjEwK0tlVHhIWEdodTNQalpW?=
+ =?utf-8?B?ZTlGYWE5bUZRZ2hEZU1DQUVOZTBqR09wT2xITlUyMlg1K1o0MFRkak1lMXlP?=
+ =?utf-8?B?cGJlME0xZDVkMnlnV3l5MnI4NUF6SUtBZVNUbFEwQTZVczVlNkwyb3pyL3NH?=
+ =?utf-8?Q?K6kMluEsN4ictkcavjZGGTsxX?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25844719-29e4-4d09-e5a2-08db68733c19
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 22:53:54.3402 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AwBEOOm1OScPxY6MTyRAQHIXJ9h0cpJEU0OiEm0my6W3NkQEpaCNRdrX+7TARoiYVX7nAQqzgTQdoK/yCymrvA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7077
+Received-SPF: softfail client-ip=40.107.220.74;
+ envelope-from=vikram.garhwal@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,664 +149,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is not really a migration test, it just happens that migration
-infrastructure is useful to it.
+Hi Peter,
+Thanks for sharing the details. I will fix these and send a follow up 
+patch soon.
 
-Once there, put migration-helpers.* as maintained.
-
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- MAINTAINERS                         |   3 +-
- tests/qtest/migration-test.c        | 246 ----------------------
- tests/qtest/vcpu-dirty-limit-test.c | 310 ++++++++++++++++++++++++++++
- tests/qtest/meson.build             |   5 +-
- 4 files changed, 316 insertions(+), 248 deletions(-)
- create mode 100644 tests/qtest/vcpu-dirty-limit-test.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 436b3f0afe..20de5ae8b5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3176,7 +3176,8 @@ F: include/qemu/userfaultfd.h
- F: migration/
- F: scripts/vmstate-static-checker.py
- F: tests/vmstate-static-checker-data/
--F: tests/qtest/migration-test.c
-+F: tests/qtest/migration-*
-+F: tests/qtest/vcpu-dirty-limit-test.c
- F: docs/devel/migration.rst
- F: qapi/migration.json
- F: tests/migration/
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 4d3321b7b3..58bb829dcf 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -14,17 +14,11 @@
- 
- #include "libqtest.h"
- #include "qapi/error.h"
--#include "qapi/qmp/qdict.h"
--#include "qemu/module.h"
- #include "qemu/option.h"
--#include "qemu/range.h"
- #include "qemu/sockets.h"
--#include "chardev/char.h"
- #include "qapi/qapi-visit-sockets.h"
- #include "qapi/qobject-input-visitor.h"
--#include "qapi/qobject-output-visitor.h"
- #include "crypto/tlscredspsk.h"
--#include "qapi/qmp/qlist.h"
- 
- #include "migration-helpers.h"
- #include "tests/migration/migration-test.h"
-@@ -37,12 +31,6 @@
- 
- static bool uffd_feature_thread_id;
- 
--/*
-- * Dirtylimit stop working if dirty page rate error
-- * value less than DIRTYLIMIT_TOLERANCE_RANGE
-- */
--#define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
--
- #if defined(__linux__)
- #include <sys/syscall.h>
- #include <sys/vfs.h>
-@@ -2146,238 +2134,6 @@ static void test_multifd_tcp_cancel(void)
-     guest_destroy(to2);
- }
- 
--static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
--{
--    qtest_qmp_assert_success(who,
--                             "{ 'execute': 'calc-dirty-rate',"
--                             "'arguments': { "
--                             "'calc-time': %" PRIu64 ","
--                             "'mode': 'dirty-ring' }}",
--                             calc_time);
--}
--
--static QDict *query_dirty_rate(QTestState *who)
--{
--    return qtest_qmp_assert_success_ref(who,
--                                        "{ 'execute': 'query-dirty-rate' }");
--}
--
--static void dirtylimit_set_all(QTestState *who, uint64_t dirtyrate)
--{
--    qtest_qmp_assert_success(who,
--                             "{ 'execute': 'set-vcpu-dirty-limit',"
--                             "'arguments': { "
--                             "'dirty-rate': %" PRIu64 " } }",
--                             dirtyrate);
--}
--
--static void cancel_vcpu_dirty_limit(QTestState *who)
--{
--    qtest_qmp_assert_success(who,
--                             "{ 'execute': 'cancel-vcpu-dirty-limit' }");
--}
--
--static QDict *query_vcpu_dirty_limit(QTestState *who)
--{
--    QDict *rsp;
--
--    rsp = qtest_qmp(who, "{ 'execute': 'query-vcpu-dirty-limit' }");
--    g_assert(!qdict_haskey(rsp, "error"));
--    g_assert(qdict_haskey(rsp, "return"));
--
--    return rsp;
--}
--
--static bool calc_dirtyrate_ready(QTestState *who)
--{
--    QDict *rsp_return;
--    gchar *status;
--
--    rsp_return = query_dirty_rate(who);
--    g_assert(rsp_return);
--
--    status = g_strdup(qdict_get_str(rsp_return, "status"));
--    g_assert(status);
--
--    return g_strcmp0(status, "measuring");
--}
--
--static void wait_for_calc_dirtyrate_complete(QTestState *who,
--                                             int64_t time_s)
--{
--    int max_try_count = 10000;
--    usleep(time_s * 1000000);
--
--    while (!calc_dirtyrate_ready(who) && max_try_count--) {
--        usleep(1000);
--    }
--
--    /*
--     * Set the timeout with 10 s(max_try_count * 1000us),
--     * if dirtyrate measurement not complete, fail test.
--     */
--    g_assert_cmpint(max_try_count, !=, 0);
--}
--
--static int64_t get_dirty_rate(QTestState *who)
--{
--    QDict *rsp_return;
--    gchar *status;
--    QList *rates;
--    const QListEntry *entry;
--    QDict *rate;
--    int64_t dirtyrate;
--
--    rsp_return = query_dirty_rate(who);
--    g_assert(rsp_return);
--
--    status = g_strdup(qdict_get_str(rsp_return, "status"));
--    g_assert(status);
--    g_assert_cmpstr(status, ==, "measured");
--
--    rates = qdict_get_qlist(rsp_return, "vcpu-dirty-rate");
--    g_assert(rates && !qlist_empty(rates));
--
--    entry = qlist_first(rates);
--    g_assert(entry);
--
--    rate = qobject_to(QDict, qlist_entry_obj(entry));
--    g_assert(rate);
--
--    dirtyrate = qdict_get_try_int(rate, "dirty-rate", -1);
--
--    qobject_unref(rsp_return);
--    return dirtyrate;
--}
--
--static int64_t get_limit_rate(QTestState *who)
--{
--    QDict *rsp_return;
--    QList *rates;
--    const QListEntry *entry;
--    QDict *rate;
--    int64_t dirtyrate;
--
--    rsp_return = query_vcpu_dirty_limit(who);
--    g_assert(rsp_return);
--
--    rates = qdict_get_qlist(rsp_return, "return");
--    g_assert(rates && !qlist_empty(rates));
--
--    entry = qlist_first(rates);
--    g_assert(entry);
--
--    rate = qobject_to(QDict, qlist_entry_obj(entry));
--    g_assert(rate);
--
--    dirtyrate = qdict_get_try_int(rate, "limit-rate", -1);
--
--    qobject_unref(rsp_return);
--    return dirtyrate;
--}
--
--static GuestState *dirtylimit_start_vm(void)
--{
--    GuestState *vm = guest_create("dirtylimit-test");
--
--    guest_use_dirty_ring(vm);
--    guest_realize(vm);
--
--    return vm;
--}
--
--static void dirtylimit_stop_vm(GuestState *vm)
--{
--    guest_destroy(vm);
--}
--
--static void test_vcpu_dirty_limit(void)
--{
--    int64_t origin_rate;
--    int64_t quota_rate;
--    int64_t rate ;
--    int max_try_count = 20;
--    int hit = 0;
--
--    /* Start vm for vcpu dirtylimit test */
--    GuestState *vm = dirtylimit_start_vm();
--
--    /* Wait for the first serial output from the vm*/
--    wait_for_serial(vm);
--
--    /* Do dirtyrate measurement with calc time equals 1s */
--    calc_dirty_rate(vm->qs, 1);
--
--    /* Sleep calc time and wait for calc dirtyrate complete */
--    wait_for_calc_dirtyrate_complete(vm->qs, 1);
--
--    /* Query original dirty page rate */
--    origin_rate = get_dirty_rate(vm->qs);
--
--    /* VM booted from bootsect should dirty memory steadily */
--    assert(origin_rate != 0);
--
--    /* Setup quota dirty page rate at half of origin */
--    quota_rate = origin_rate / 2;
--
--    /* Set dirtylimit */
--    dirtylimit_set_all(vm->qs, quota_rate);
--
--    /*
--     * Check if set-vcpu-dirty-limit and query-vcpu-dirty-limit
--     * works literally
--     */
--    g_assert_cmpint(quota_rate, ==, get_limit_rate(vm->qs));
--
--    /* Sleep a bit to check if it take effect */
--    usleep(2000000);
--
--    /*
--     * Check if dirtylimit take effect realistically, set the
--     * timeout with 20 s(max_try_count * 1s), if dirtylimit
--     * doesn't take effect, fail test.
--     */
--    while (--max_try_count) {
--        calc_dirty_rate(vm->qs, 1);
--        wait_for_calc_dirtyrate_complete(vm->qs, 1);
--        rate = get_dirty_rate(vm->qs);
--
--        /*
--         * Assume hitting if current rate is less
--         * than quota rate (within accepting error)
--         */
--        if (rate < (quota_rate + DIRTYLIMIT_TOLERANCE_RANGE)) {
--            hit = 1;
--            break;
--        }
--    }
--
--    g_assert_cmpint(hit, ==, 1);
--
--    hit = 0;
--    max_try_count = 20;
--
--    /* Check if dirtylimit cancellation take effect */
--    cancel_vcpu_dirty_limit(vm->qs);
--    while (--max_try_count) {
--        calc_dirty_rate(vm->qs, 1);
--        wait_for_calc_dirtyrate_complete(vm->qs, 1);
--        rate = get_dirty_rate(vm->qs);
--
--        /*
--         * Assume dirtylimit be canceled if current rate is
--         * greater than quota rate (within accepting error)
--         */
--        if (rate > (quota_rate + DIRTYLIMIT_TOLERANCE_RANGE)) {
--            hit = 1;
--            break;
--        }
--    }
--
--    g_assert_cmpint(hit, ==, 1);
--    dirtylimit_stop_vm(vm);
--}
--
- static bool shm_supported(void)
- {
-     if (g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-@@ -2566,8 +2322,6 @@ int main(int argc, char **argv)
-     if (g_str_equal(arch, "x86_64") && has_kvm && kvm_dirty_ring_supported()) {
-         qtest_add_func("/migration/dirty_ring",
-                        test_precopy_unix_dirty_ring);
--        qtest_add_func("/migration/vcpu_dirty_limit",
--                       test_vcpu_dirty_limit);
-     }
- 
-     ret = g_test_run();
-diff --git a/tests/qtest/vcpu-dirty-limit-test.c b/tests/qtest/vcpu-dirty-limit-test.c
-new file mode 100644
-index 0000000000..eebcf04509
---- /dev/null
-+++ b/tests/qtest/vcpu-dirty-limit-test.c
-@@ -0,0 +1,310 @@
-+/*
-+ * QTest testcase for vcpu-dirty-limit
-+ *
-+ * Copyright (c) 2016-2018 Red Hat, Inc. and/or its affiliates
-+ *   based on the vhost-user-test.c that is:
-+ *      Copyright (c) 2014 Virtual Open Systems Sarl.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+
-+#include "qemu/module.h"
-+#include "qapi/qmp/qlist.h"
-+
-+#include "migration-helpers.h"
-+
-+/* For dirty ring test */
-+#if defined(__linux__) && defined(HOST_X86_64)
-+#include "linux/kvm.h"
-+#include <sys/ioctl.h>
-+#endif
-+
-+/*
-+ * Dirtylimit stop working if dirty page rate error
-+ * value less than DIRTYLIMIT_TOLERANCE_RANGE
-+ */
-+#define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
-+
-+static void calc_dirty_rate(QTestState *who, uint64_t calc_time)
-+{
-+    qtest_qmp_assert_success(who,
-+                             "{ 'execute': 'calc-dirty-rate',"
-+                             "'arguments': { "
-+                             "'calc-time': %" PRIu64 ","
-+                             "'mode': 'dirty-ring' }}",
-+                             calc_time);
-+}
-+
-+static QDict *query_dirty_rate(QTestState *who)
-+{
-+    return qtest_qmp_assert_success_ref(who,
-+                                        "{ 'execute': 'query-dirty-rate' }");
-+}
-+
-+static void dirtylimit_set_all(QTestState *who, uint64_t dirtyrate)
-+{
-+    qtest_qmp_assert_success(who,
-+                             "{ 'execute': 'set-vcpu-dirty-limit',"
-+                             "'arguments': { "
-+                             "'dirty-rate': %" PRIu64 " } }",
-+                             dirtyrate);
-+}
-+
-+static void cancel_vcpu_dirty_limit(QTestState *who)
-+{
-+    qtest_qmp_assert_success(who,
-+                             "{ 'execute': 'cancel-vcpu-dirty-limit' }");
-+}
-+
-+static QDict *query_vcpu_dirty_limit(QTestState *who)
-+{
-+    QDict *rsp;
-+
-+    rsp = qtest_qmp(who, "{ 'execute': 'query-vcpu-dirty-limit' }");
-+    g_assert(!qdict_haskey(rsp, "error"));
-+    g_assert(qdict_haskey(rsp, "return"));
-+
-+    return rsp;
-+}
-+
-+static bool calc_dirtyrate_ready(QTestState *who)
-+{
-+    QDict *rsp_return;
-+    gchar *status;
-+
-+    rsp_return = query_dirty_rate(who);
-+    g_assert(rsp_return);
-+
-+    status = g_strdup(qdict_get_str(rsp_return, "status"));
-+    g_assert(status);
-+
-+    return g_strcmp0(status, "measuring");
-+}
-+
-+static void wait_for_calc_dirtyrate_complete(QTestState *who,
-+                                             int64_t time_s)
-+{
-+    int max_try_count = 10000;
-+    usleep(time_s * 1000000);
-+
-+    while (!calc_dirtyrate_ready(who) && max_try_count--) {
-+        usleep(1000);
-+    }
-+
-+    /*
-+     * Set the timeout with 10 s(max_try_count * 1000us),
-+     * if dirtyrate measurement not complete, fail test.
-+     */
-+    g_assert_cmpint(max_try_count, !=, 0);
-+}
-+
-+static int64_t get_dirty_rate(QTestState *who)
-+{
-+    QDict *rsp_return;
-+    gchar *status;
-+    QList *rates;
-+    const QListEntry *entry;
-+    QDict *rate;
-+    int64_t dirtyrate;
-+
-+    rsp_return = query_dirty_rate(who);
-+    g_assert(rsp_return);
-+
-+    status = g_strdup(qdict_get_str(rsp_return, "status"));
-+    g_assert(status);
-+    g_assert_cmpstr(status, ==, "measured");
-+
-+    rates = qdict_get_qlist(rsp_return, "vcpu-dirty-rate");
-+    g_assert(rates && !qlist_empty(rates));
-+
-+    entry = qlist_first(rates);
-+    g_assert(entry);
-+
-+    rate = qobject_to(QDict, qlist_entry_obj(entry));
-+    g_assert(rate);
-+
-+    dirtyrate = qdict_get_try_int(rate, "dirty-rate", -1);
-+
-+    qobject_unref(rsp_return);
-+    return dirtyrate;
-+}
-+
-+static int64_t get_limit_rate(QTestState *who)
-+{
-+    QDict *rsp_return;
-+    QList *rates;
-+    const QListEntry *entry;
-+    QDict *rate;
-+    int64_t dirtyrate;
-+
-+    rsp_return = query_vcpu_dirty_limit(who);
-+    g_assert(rsp_return);
-+
-+    rates = qdict_get_qlist(rsp_return, "return");
-+    g_assert(rates && !qlist_empty(rates));
-+
-+    entry = qlist_first(rates);
-+    g_assert(entry);
-+
-+    rate = qobject_to(QDict, qlist_entry_obj(entry));
-+    g_assert(rate);
-+
-+    dirtyrate = qdict_get_try_int(rate, "limit-rate", -1);
-+
-+    qobject_unref(rsp_return);
-+    return dirtyrate;
-+}
-+
-+static GuestState *dirtylimit_start_vm(void)
-+{
-+    GuestState *vm = guest_create("dirtylimit-test");
-+
-+    guest_use_dirty_ring(vm);
-+    guest_realize(vm);
-+
-+    return vm;
-+}
-+
-+static void dirtylimit_stop_vm(GuestState *vm)
-+{
-+    guest_destroy(vm);
-+}
-+
-+static void test_vcpu_dirty_limit(void)
-+{
-+    int64_t origin_rate;
-+    int64_t quota_rate;
-+    int64_t rate ;
-+    int max_try_count = 20;
-+    int hit = 0;
-+
-+    /* Start vm for vcpu dirtylimit test */
-+    GuestState *vm = dirtylimit_start_vm();
-+
-+    /* Wait for the first serial output from the vm*/
-+    wait_for_serial(vm);
-+
-+    /* Do dirtyrate measurement with calc time equals 1s */
-+    calc_dirty_rate(vm->qs, 1);
-+
-+    /* Sleep calc time and wait for calc dirtyrate complete */
-+    wait_for_calc_dirtyrate_complete(vm->qs, 1);
-+
-+    /* Query original dirty page rate */
-+    origin_rate = get_dirty_rate(vm->qs);
-+
-+    /* VM booted from bootsect should dirty memory steadily */
-+    assert(origin_rate != 0);
-+
-+    /* Setup quota dirty page rate at half of origin */
-+    quota_rate = origin_rate / 2;
-+
-+    /* Set dirtylimit */
-+    dirtylimit_set_all(vm->qs, quota_rate);
-+
-+    /*
-+     * Check if set-vcpu-dirty-limit and query-vcpu-dirty-limit
-+     * works literally
-+     */
-+    g_assert_cmpint(quota_rate, ==, get_limit_rate(vm->qs));
-+
-+    /* Sleep a bit to check if it take effect */
-+    usleep(2000000);
-+
-+    /*
-+     * Check if dirtylimit take effect realistically, set the
-+     * timeout with 20 s(max_try_count * 1s), if dirtylimit
-+     * doesn't take effect, fail test.
-+     */
-+    while (--max_try_count) {
-+        calc_dirty_rate(vm->qs, 1);
-+        wait_for_calc_dirtyrate_complete(vm->qs, 1);
-+        rate = get_dirty_rate(vm->qs);
-+
-+        /*
-+         * Assume hitting if current rate is less
-+         * than quota rate (within accepting error)
-+         */
-+        if (rate < (quota_rate + DIRTYLIMIT_TOLERANCE_RANGE)) {
-+            hit = 1;
-+            break;
-+        }
-+    }
-+
-+    g_assert_cmpint(hit, ==, 1);
-+
-+    hit = 0;
-+    max_try_count = 20;
-+
-+    /* Check if dirtylimit cancellation take effect */
-+    cancel_vcpu_dirty_limit(vm->qs);
-+    while (--max_try_count) {
-+        calc_dirty_rate(vm->qs, 1);
-+        wait_for_calc_dirtyrate_complete(vm->qs, 1);
-+        rate = get_dirty_rate(vm->qs);
-+
-+        /*
-+         * Assume dirtylimit be canceled if current rate is
-+         * greater than quota rate (within accepting error)
-+         */
-+        if (rate > (quota_rate + DIRTYLIMIT_TOLERANCE_RANGE)) {
-+            hit = 1;
-+            break;
-+        }
-+    }
-+
-+    g_assert_cmpint(hit, ==, 1);
-+    dirtylimit_stop_vm(vm);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_autoptr(GError) err = NULL;
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    if (!qtest_has_accel("kvm")) {
-+        g_test_skip("No KVM or TCG accelerator available");
-+        return 0;
-+    }
-+
-+    if (!g_str_equal(qtest_get_arch(), "x86_64")) {
-+        g_test_skip("Only x86_64 support available");
-+        return 0;
-+    }
-+
-+    if (!kvm_dirty_ring_supported()) {
-+        g_test_skip("KVM dirty ring is not supported");
-+        return 0;
-+    }
-+
-+    tmpfs = g_dir_make_tmp("vcpu-dirty-limit-test-XXXXXX", &err);
-+    if (!tmpfs) {
-+        g_test_message("Can't create temporary directory in %s: %s",
-+                       g_get_tmp_dir(), err->message);
-+    }
-+    g_assert(tmpfs);
-+    bootfile_create(tmpfs);
-+
-+    module_call_init(MODULE_INIT_QOM);
-+
-+    qtest_add_func("/vcpu_dirty_limit/basic", test_vcpu_dirty_limit);
-+
-+    int ret = g_test_run();
-+
-+    g_assert_cmpint(ret, ==, 0);
-+
-+    bootfile_delete();
-+    ret = rmdir(tmpfs);
-+    if (ret != 0) {
-+        g_test_message("unable to rmdir: path (%s): %s",
-+                       tmpfs, strerror(errno));
-+    }
-+    g_free(tmpfs);
-+
-+    return ret;
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5fa6833ad7..ed0d03e3d3 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -9,6 +9,7 @@ slow_qtests = {
-   'qos-test' : 60,
-   'qom-test' : 300,
-   'test-hmp' : 120,
-+  'vcpu-dirty-limit' : 150,
- }
- 
- qtests_generic = [
-@@ -101,7 +102,8 @@ qtests_i386 = \
-    'vmgenid-test',
-    'migration-test',
-    'test-x86-cpuid-compat',
--   'numa-test'
-+   'numa-test',
-+   'vcpu-dirty-limit-test',
-   ]
- 
- if dbus_display and targetos != 'windows'
-@@ -315,6 +317,7 @@ qtests = {
-   'tpm-tis-device-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-   'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
-   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
-+  'vcpu-dirty-limit-test': migration_files,
- }
- 
- if vnc.found()
--- 
-2.40.1
+On 6/8/23 2:42 AM, Peter Maydell wrote:
+> On Tue, 30 May 2023 at 22:23, Vikram Garhwal <vikram.garhwal@amd.com> wrote:
+>> The QTests perform three tests on the Xilinx VERSAL CANFD controller:
+>>      Tests the CANFD controllers in loopback.
+>>      Tests the CANFD controllers in normal mode with CAN frame.
+>>      Tests the CANFD controllers in normal mode with CANFD frame.
+>>
+>> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+>> Acked-by: Thomas Huth <thuth@redhat.com>
+>> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+>> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Hi; Coverity has spotted some issues with this test code; could
+> you investigate and send followup patches, please ?
+>
+>
+>> +static void match_rx_tx_data(const uint32_t *buf_tx, const uint32_t *buf_rx,
+>> +                             bool is_canfd_frame)
+>> +{
+>> +    uint16_t size = 0;
+>> +    uint8_t len = CAN_FRAME_SIZE;
+>> +
+>> +    if (is_canfd_frame) {
+>> +        len = CANFD_FRAME_SIZE;
+>> +    }
+> Here len is either 4 (if !is_canfd_frame) or 18 (if is_canfd_frame)...
+>
+>> +
+>> +    while (size < len) {
+> ...and we loop with size always less than len...
+>
+>> +        if (R_RX0_ID_OFFSET + 4 * size == R_RX0_DLC_OFFSET)  {
+>> +            g_assert_cmpint((buf_rx[size] & DLC_FD_BIT_MASK), ==,
+>> +                            (buf_tx[size] & DLC_FD_BIT_MASK));
+>> +        } else {
+>> +            if (!is_canfd_frame && size == 4) {
+> ...so here this condition can never be true: if !is_canfd_frame
+> then we know size is less than 4.
+>
+> What was the intention here ?
+>
+> (CID 1512900)
+>
+>> +                break;
+>> +            }
+>> +
+>> +            g_assert_cmpint(buf_rx[size], ==, buf_tx[size]);
+>> +        }
+>> +
+>> +        size++;
+>> +    }
+>> +}
+>> +/*
+>> + * Xilinx CANFD supports both CAN and CANFD frames. This test will be
+>> + * transferring CAN frame i.e. 8 bytes of data from CANFD0 and CANFD1 through
+>> + * canbus. CANFD0 initiate the data transfer to can-bus, CANFD1 receives the
+>> + * data. Test compares the can frame data sent from CANFD0 and received on
+>> + * CANFD1.
+>> + */
+>> +static void test_can_data_transfer(void)
+>> +{
+>> +    uint32_t buf_tx[CAN_FRAME_SIZE] = { 0x5a5bb9a4, 0x80000000,
+>> +                                        0x12345678, 0x87654321 };
+>> +    uint32_t buf_rx[CAN_FRAME_SIZE] = { 0x00, 0x00, 0x00, 0x00 };
+> The buf_rx[] array here is only 4 bytes long...
+>
+>> +    uint32_t status = 0;
+>> +
+>> +    generate_random_data(buf_tx, false);
+>> +
+>> +    QTestState *qts = qtest_init("-machine xlnx-versal-virt"
+>> +                " -object can-bus,id=canbus"
+>> +                " -machine canbus0=canbus"
+>> +                " -machine canbus1=canbus"
+>> +                );
+>> +
+>> +    configure_canfd(qts, MSR_NORMAL_MODE);
+>> +
+>> +    /* Check if CANFD0 and CANFD1 are in Normal mode. */
+>> +    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
+>> +    status = status & STATUS_REG_MASK;
+>> +    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
+>> +
+>> +    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
+>> +    status = status & STATUS_REG_MASK;
+>> +    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
+>> +
+>> +    write_data(qts, CANFD0_BASE_ADDR, buf_tx, false);
+>> +
+>> +    send_data(qts, CANFD0_BASE_ADDR);
+>> +    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
+> ...but read_data() will write up to 17 bytes of data to the buffer,
+> if the incoming data from the device claims it to be a canfd frame.
+> The device shouldn't really do that, but the point of a test is
+> that the device might not be functioning correctly, so we should
+> size buf_rx[] large enough to fit whatever read_data() writes to it.
+>
+> (CID 1512899)
+>
+>> +    match_rx_tx_data(buf_tx, buf_rx, false);
+>> +
+>> +    qtest_quit(qts);
+>> +}
+> thanks
+> -- PMM
 
 
