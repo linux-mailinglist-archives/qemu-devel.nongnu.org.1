@@ -2,75 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041C572827C
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5AA72827D
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7GRl-0004pF-2C; Thu, 08 Jun 2023 10:17:05 -0400
+	id 1q7GSq-0006Dq-LP; Thu, 08 Jun 2023 10:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7GRj-0004oM-S8
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:17:03 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7GRh-0001wC-1M
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:17:03 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5147f7d045bso1002556a12.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 07:17:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686233819; x=1688825819;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=QJMTqjxEuld/cPGA+RU9MRan9RmH9/ugPN5i3rn0OVY=;
- b=SKBsbiIB6nSwE2amisKsiN8EbgqT2OhQXd1O3ro4ec6kRGKvwNcFDIvciGHi8g+pkk
- awpSZkKW/Kw7RouIpJrhPLwKvzzYyJjcjK27U5DOB/UtKb7V4bcQQuTAAM5ghhio+zTe
- Cg7Jnc/xYn1GtnMbCRC/0fryXL9184VulI6VzI11vxq7C2vdorlpsbHOe33UVhHTZTFg
- hidzMDmJSckY0lJ7rJqFsQBT6S5Ugvzxq4KgZDDFML0As6fQLE8Ywl02vIRsnKFcwjlz
- ul/ryd/Gw5FcPSd51hRrn2gYTiQLmZV7IwW9sOF6QD5zhXA6XdPpgN9gOZXN2xghRqTG
- yUSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686233819; x=1688825819;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QJMTqjxEuld/cPGA+RU9MRan9RmH9/ugPN5i3rn0OVY=;
- b=CeP5oFgJjrEhMpXTk9YtNl1HmqJrSzN6vGJSVPbiBHctfZL/Ym7B8S0B352ZMzx+mP
- itEXpYjdpnGh6DkLROaw67WqAdWmFwc+IfCZM0BPImNVFK1HPdGkGwsgvhtt//Ty8Bho
- g4Ww8omCWgej5W0/70UMFU4FTfcu7BATg/hNnaBqltgo9wV4e5kYp7QdFs/BnIPnkYEC
- iZwI+VLxssHTzlu9P3piP/hTUsKMwq43TQvBRuEHVZjpL9yLm2k9XBVEECfVgWiE4bzR
- zBUil92BJrCYmeokRs7Fl0sMCQncXYKySIYQycEN2rTlVNPI8oidxmzeiRaV5qcALKbw
- md5A==
-X-Gm-Message-State: AC+VfDxFlhJyOukVcBx+POKZKUAT+lU3BWyE+uhifP+OYvD1s3502gBq
- aQeZ2VL6l1JxvQU1aQHe6nkAjIn/jfIuI03YYiWtMGot31GQX83RQhM=
-X-Google-Smtp-Source: ACHHUZ4yezcKa2fd3j/FM+aOC52llwyAP6LiGTNaPAsMXfdL2J2mshSf00W71G6pIPCIKzlmS5Gpg2tZEfdQdwsRtnU=
-X-Received: by 2002:a05:6402:1390:b0:514:a244:2915 with SMTP id
- b16-20020a056402139000b00514a2442915mr8215109edv.1.1686233819250; Thu, 08 Jun
- 2023 07:16:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7GSo-000691-Mo
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:18:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7GSn-00028L-4m
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:18:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686233888;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XGHlzgs+fYkxfQJSWv2RkJ00Hak79mZOAJWc0CDpNCI=;
+ b=YPVGT90Zg3MjuHPiofnqXKnr85er8LV3XrBGTmCWNFilvXb9vEESZU+weoLuOI0MFlcxbC
+ MxIrg8UmcxMxPPzglpXvJ1GPWYSF+9LzqQNDbYWhRak7EWLPaEs1lnV9mtu1tsCOHWb5wW
+ VtkjwBOkOKvlopDxMoIGqywzEcb16h0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-497-9_7CGSUzP7W9FBS9M5AjvQ-1; Thu, 08 Jun 2023 10:18:03 -0400
+X-MC-Unique: 9_7CGSUzP7W9FBS9M5AjvQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8688382C97E;
+ Thu,  8 Jun 2023 14:17:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 224AF2166B25;
+ Thu,  8 Jun 2023 14:17:59 +0000 (UTC)
+Date: Thu, 8 Jun 2023 09:17:57 -0500
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ libguestfs@redhat.com, qemu-block@nongnu.org, vsementsov@yandex-team.ru
+Subject: Re: [Libguestfs] [PATCH v4 02/24] nbd: Consistent typedef usage in
+ header
+Message-ID: <jo2eqbij3xyku4n5hm2ftahzymkimjulpm6kmjh47lbec4t3ov@y4m4ypbhm4ie>
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-3-eblake@redhat.com>
 MIME-Version: 1.0
-References: <20230517081204.30333-1-m.elsayed4420@gmail.com>
- <20230517081204.30333-9-m.elsayed4420@gmail.com>
-In-Reply-To: <20230517081204.30333-9-m.elsayed4420@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Jun 2023 15:16:48 +0100
-Message-ID: <CAFEAcA_Tg3F6Q65eAGWtDONjcu8Lyd0BarhA4b10mF+gHzAJKg@mail.gmail.com>
-Subject: Re: [PATCH 8/8] adding tiva c to the qemu build system and adding my
- info to the maintainers list
-To: Mohamed ElSayed <m.elsayed4420@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230608135653.2918540-3-eblake@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,144 +79,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 May 2023 at 09:14, Mohamed ElSayed <m.elsayed4420@gmail.com> wrote:
->
-> Signed-off-by: Mohamed ElSayed <m.elsayed4420@gmail.com>
-> ---
->  MAINTAINERS                             |  9 +++++++++
->  configs/devices/arm-softmmu/default.mak |  1 +
->  hw/arm/Kconfig                          | 13 +++++++++++++
->  hw/arm/meson.build                      |  3 +++
->  hw/char/Kconfig                         |  3 +++
->  hw/char/meson.build                     |  1 +
->  hw/gpio/Kconfig                         |  3 +++
->  hw/gpio/meson.build                     |  1 +
->  hw/misc/Kconfig                         |  3 +++
->  hw/misc/meson.build                     |  1 +
->  hw/timer/Kconfig                        |  3 +++
->  hw/timer/meson.build                    |  1 +
->  hw/watchdog/Kconfig                     |  3 +++
->  hw/watchdog/meson.build                 |  1 +
->  14 files changed, 46 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b22b85bc3a..dcd902fadf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1008,6 +1008,15 @@ F: include/hw/misc/zynq_slcr.h
->  F: include/hw/adc/zynq-xadc.h
->  X: hw/ssi/xilinx_*
->
-> +Tiva C
-> +M: Mohamed ElSayed <m.elsayed4420@gmail.com>
-> +L: qemu-arm@nongnu.org
-> +S: Maintained
-> +F: hw/*/tm4c123*
-> +F: include/hw/*/tm4c123*
-> +F: hw/arm/tivac.c
-> +F: docs/system/arm/tivac.rst
+On Thu, Jun 08, 2023 at 08:56:31AM -0500, Eric Blake wrote:
+> We had a mix of struct declarataions followed by typedefs, and direct
+
+declarations
+
+> struct definitions as part of a typedef.  Pick a single style.  Also
+> float a couple of opaque typedefs earlier in the file, as a later
+> patch wants to refer NBDExport* in NBDRequest.  No semantic impact.
+
+The curse of writing a commit message and then rebasing to a different
+idea; in patch 22, I had originally intended to make NBDMetaContexts a
+concrete type in nbd.h (which depends on NBDExport*, and would be
+directly used in NBDRequest, which in turn is declared before the
+pre-patch mention of NBDExport), but then changed my mind to instead
+have NBDMetaContexts itself also be an opaque type with NBDRequest
+only using NBDMetaContexts*.  And I missed floating the typedef for
+NBDClientConnection to the same point, because we somewhat separated
+opaque types along the lines of which .c files provide various
+functions and opaque types.
+
+> @@ -26,24 +26,25 @@
+>  #include "qapi/error.h"
+>  #include "qemu/bswap.h"
+> 
+> +typedef struct NBDExport NBDExport;
+> +typedef struct NBDClient NBDClient;
 > +
 
-Subsections inside this file are in alphabetical order,
-so this should go a little further up, between
-"STM32VLDISCOVERY" and "Versatile Express".
+Preferences on how I should tweak that aspect of this patch?  Options:
 
->  Xilinx ZynqMP and Versal
->  M: Alistair Francis <alistair@alistair23.me>
->  M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
-> diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/arm-softmmu/default.mak
-> index 1b49a7830c..d3490f6d11 100644
-> --- a/configs/devices/arm-softmmu/default.mak
-> +++ b/configs/devices/arm-softmmu/default.mak
-> @@ -43,3 +43,4 @@ CONFIG_FSL_IMX6UL=y
->  CONFIG_SEMIHOSTING=y
->  CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
->  CONFIG_ALLWINNER_H3=y
-> +CONFIG_TIVAC=y
+- Don't float NBDExport or NBDClient, and drop that part of the commit
+  message.  However, the later patch that adds the typedef for
+  NBDMetaContexts still has to do it earlier than the definition of
+  NBDRequest, rather than alongside the other opaque types relevant to
+  server.c
 
-This file has changed recently, so now you only need
-a commented out line
-# CONFIG_TIVAC=n
+- Also float NBDClientConnection up here, and reword the commit
+  message along the lines of: Also float forward declarations of
+  opaque types to the top of the file, rather than interspersed with
+  function declarations, which will help a future patch that wants to
+  expose yet another opaque type that will be referenced in
+  NBDRequest.
 
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index b53bd7f0b2..ef8046ab1b 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -581,3 +581,16 @@ config ARMSSE
->      select UNIMP
->      select SSE_COUNTER
->      select SSE_TIMER
-> +
-> +config TM4C123GH6PM_SOC
-> +    bool
-> +    select ARM_V7M
-> +    select TM4C123_USART
-> +    select TM4C123_SYSCTL
-> +    select TM4C123_GPIO
-> +    select TM4C123_WDT
-> +    select TM4C123_GPTM
-> +
-> +config TIVAC
-> +    bool
-> +    select TM4C123GH6PM_SOC
+- something else?
 
-The same recent change that means the handling in default.mak
-is different also means that the config stanza for a board
-(but not for a SoC) also needs two new lines:
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
-       default y
-       depends on TCG && ARM
-
-(These go just below the 'bool' line -- check eg STM32VLDISCOVERY
-for an example).
-
-> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-> index b545ba0e4f..29503388a5 100644
-> --- a/hw/arm/meson.build
-> +++ b/hw/arm/meson.build
-> @@ -62,10 +62,13 @@ arm_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.
->  arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
->  arm_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
->  arm_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
-> +arm_ss.add(when: 'CONFIG_TM4C123GH6PM_SOC', if_true: files('tm4c123gh6pm_soc.c'))
-> +arm_ss.add(when: 'CONFIG_TIVAC', if_true: files('tivac.c'))
->
->  softmmu_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
->  softmmu_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
->  softmmu_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
->  softmmu_ss.add(when: 'CONFIG_TOSA', if_true: files('tosa.c'))
->
-> +
->  hw_arch += {'arm': arm_ss}
-> diff --git a/hw/char/Kconfig b/hw/char/Kconfig
-> index 6b6cf2fc1d..88da979b75 100644
-> --- a/hw/char/Kconfig
-> +++ b/hw/char/Kconfig
-> @@ -71,3 +71,6 @@ config GOLDFISH_TTY
->
->  config SHAKTI_UART
->      bool
-> +
-> +config TM4C123_USART
-> +    bool
-> diff --git a/hw/char/meson.build b/hw/char/meson.build
-> index 0807e00ae4..8461748c8d 100644
-> --- a/hw/char/meson.build
-> +++ b/hw/char/meson.build
-> @@ -33,6 +33,7 @@ softmmu_ss.add(when: 'CONFIG_SH_SCI', if_true: files('sh_serial.c'))
->  softmmu_ss.add(when: 'CONFIG_STM32F2XX_USART', if_true: files('stm32f2xx_usart.c'))
->  softmmu_ss.add(when: 'CONFIG_MCHP_PFSOC_MMUART', if_true: files('mchp_pfsoc_mmuart.c'))
->  softmmu_ss.add(when: 'CONFIG_HTIF', if_true: files('riscv_htif.c'))
-> +softmmu_ss.add(when: 'CONFIG_TM4C123_USART', if_true: files('tm4c123_usart.c'))
->  softmmu_ss.add(when: 'CONFIG_GOLDFISH_TTY', if_true: files('goldfish_tty.c'))
->
->  specific_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('terminal3270.c'))
-
-As I noted earlier, changes to meson.build and Kconfig for each
-device should go in that device's patch. The changes for
-the top level board go in the patch that adds the board
-(which should come last in the patch series).
-
-thanks
--- PMM
 
