@@ -2,68 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE0C727BF1
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0C0727BF2
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 11:54:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7CKB-0005QT-RJ; Thu, 08 Jun 2023 05:52:59 -0400
+	id 1q7CK9-0005PU-5d; Thu, 08 Jun 2023 05:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7CK9-0005Pf-HM
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:52:57 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q7CK6-0005Ne-NJ
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:52:54 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7CK7-0005Jt-UO
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:52:57 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-51491b87565so697871a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 02:52:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q7CK4-0005IA-OE
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:52:54 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f70fc4682aso2308805e9.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 02:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686217974; x=1688809974;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KERFQfa37mFnQ04q3D06EDqcTBtD4KjLYMASEpuVMiI=;
- b=LB5Xss9OwIqaKjNjE9JGuL/KL6RcDixWZbvR7UHOXF/LbkqunVxbDcJ+wi4HGA7Jxt
- ldS5nydQd8KDcUE+tL1ySlOZJtNx9K75TDU/1FQeSU+SK95IeJjQAwct7uyJkqGYJwz9
- 1ew4ggflYvkORnY53CCAC4WQAqXS1wRWBgG9EqP4ZyWA3Tv6DnF0tKSeeX75Mcjqo/y7
- NH8RZ8o0+mXq6u+hhU1He56ZvcwkqOT+H25qnyaaxN/c8WG/719yZUl/Bj/SSP73JaHt
- n7ppROC7Kx4EvfPGJzN5yGFLcZdzdAju7NZHa8/vsyTAiHX/XxUQdqurmlDDPveBYkOi
- hr0g==
+ d=ventanamicro.com; s=google; t=1686217971; x=1688809971;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=dy/cSgZrDqPJDVylTW26ngzTBpvyZdkyXQ36fXmZb1g=;
+ b=h3mLwbbHvqVdwXjrwZOBTz9U7LJ0ibWI4NfN3hU9gMZrU8p5lcJ6i1c3KFdWuKkqyb
+ 2TksLeId7f3YHfRi72RL7VhIRrnG+K/jan03PnmGM/MWcidZPCxytRQ/zOsr7PmeiYcX
+ e1/A8GB3GwA5y7lCXUBljJctvH1lBDYxVPdkfVRh7SkBNzUh5aDxatqycPQBCCRw0H0P
+ zobMDTXS6eCtp/BKl6wfb75fZg+ZSS4dCoErkJ5N1OcXpkNixYBAEh4WOPQOJK/sclKZ
+ FdI9eCcnCJitigZ9pVmAnT5R5YDDTUKWm7GVm37RHLPx8S4q/JkdUcRih2PtCernsmHP
+ ewfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686217974; x=1688809974;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KERFQfa37mFnQ04q3D06EDqcTBtD4KjLYMASEpuVMiI=;
- b=Y3tH4AKIIA36cikFyi8W1IR0B13mbmamM1IkJ687f9uDf8U39k4rytx1OikMfGSvbg
- sMbN85XvzbNJo9TpzH77x3MyuwyBdv32dzHKVURPyidiRPMPe3IJuMsFZHRgs879wok7
- Ij1Or3DiYr3lC7PbHlkjBGw6rWutDTkCOUKbQUyGGvX7ckmROBtZT5e46J9LPruzQhbX
- T+wEUfejmswpzBarEqShi2qAPsrKUK18mfugMq1e7Pz+5lvqdCFebpDZ83Hfwr/gyF4v
- fHbGSiwrzSEbRFWD5EyDPyCJDWOBoqMi56HTLkg+QEYJ7Sf1UwGlvskCwrmMPHiHzdvk
- BJsA==
-X-Gm-Message-State: AC+VfDwfAZ55uyVGBER3r4En1pZRf8KLou6qCS+4ns/J16askjtuBytB
- yzWOmLnUZexRxdpvlunMgTjlwC7FRgwHXGDN2Uz/5w==
-X-Google-Smtp-Source: ACHHUZ4FPY7Z9XgzRaFG2Kdp8R1K+TlArhzQrRWf+foHTsimCMO6CLRDkN4N5QITeBaeHQ/kZFi9a2RSLjFhAviZ8uY=
-X-Received: by 2002:aa7:c60d:0:b0:516:a277:48ce with SMTP id
- h13-20020aa7c60d000000b00516a27748cemr2100116edq.4.1686217974269; Thu, 08 Jun
- 2023 02:52:54 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686217971; x=1688809971;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dy/cSgZrDqPJDVylTW26ngzTBpvyZdkyXQ36fXmZb1g=;
+ b=cxdntFtdHXWND+KxpQezLbtxg9naiEASDmQNezy+ybp27lz78G/1itnBh51HnVduqR
+ rq0MIinLjpziA13sUTL2rgiH+xNTp3PAJ5vj413mTgRWkSL5uWehTJnL+wy2YL6wjZaW
+ AkwjHDanpY+M+RXNjtft1OKng7huB9+UCLmbvD0Hbk21xRuVNJ4BIt9BK5Kn2HjKjr7D
+ XptPq337Kj9WE4JLC9hCjuXTZ5qRlu9Usp13yyyioJE+WWcfZxt0XVAo4CH/DDARtJt2
+ hRkHOGffM12DsnVYXezzbnhWdYbTk9+vNhCX+tpPCee42QrO8lAau1fbObcXqTHpzNq9
+ TINA==
+X-Gm-Message-State: AC+VfDw1Inec3yOBbxp3s46Nk/HYgZ96mHq7x5D/SU7MfjYaW1NZcgVB
+ YPoTHTyTzlHAD6GGO/1eLRECRQ==
+X-Google-Smtp-Source: ACHHUZ5nmqy8v1wHLqPc/tOmO5jtc41FBmrYhpjbNbM5GQEYLzncS/KiJLXW5iRDhDscBizibHOSOw==
+X-Received: by 2002:a05:600c:2056:b0:3f4:298f:4d01 with SMTP id
+ p22-20020a05600c205600b003f4298f4d01mr942536wmg.26.1686217970818; 
+ Thu, 08 Jun 2023 02:52:50 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ f10-20020a7bc8ca000000b003f7f249e7dfsm4257693wml.4.2023.06.08.02.52.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 02:52:50 -0700 (PDT)
+Date: Thu, 8 Jun 2023 11:52:49 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Tommy Wu <tommy.wu@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, frank.chang@sifive.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ richard.henderson@linaro.org
+Subject: Re: [PATCH v4 1/4] target/riscv: Add Smrnmi cpu extension.
+Message-ID: <20230608-7ebd80b284771a7478d3c6a0@orel>
+References: <20230608072314.3561109-1-tommy.wu@sifive.com>
+ <20230608072314.3561109-2-tommy.wu@sifive.com>
 MIME-Version: 1.0
-References: <20230605154541.1043261-1-hreitz@redhat.com>
- <20230605154541.1043261-3-hreitz@redhat.com>
-In-Reply-To: <20230605154541.1043261-3-hreitz@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Jun 2023 10:52:43 +0100
-Message-ID: <CAFEAcA_9pFYxttbp57QO-diMzqdmE8GdoyGMtMk_L4_a-TXyKA@mail.gmail.com>
-Subject: Re: [PULL 02/17] block: Collapse padded I/O vecs exceeding IOV_MAX
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230608072314.3561109-2-tommy.wu@sifive.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,64 +94,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 at 16:48, Hanna Czenczek <hreitz@redhat.com> wrote:
->
-> When processing vectored guest requests that are not aligned to the
-> storage request alignment, we pad them by adding head and/or tail
-> buffers for a read-modify-write cycle.
 
-Hi; Coverity complains (CID 1512819) that the assert added
-in this commit is always true:
+Please add a commit message to all patches of the series.
 
-> @@ -1573,26 +1701,34 @@ static void bdrv_padding_destroy(BdrvRequestPadding *pad)
->  static int bdrv_pad_request(BlockDriverState *bs,
->                              QEMUIOVector **qiov, size_t *qiov_offset,
->                              int64_t *offset, int64_t *bytes,
-> +                            bool write,
->                              BdrvRequestPadding *pad, bool *padded,
->                              BdrvRequestFlags *flags)
+Another comment below.
+
+On Thu, Jun 08, 2023 at 12:23:11AM -0700, Tommy Wu wrote:
+> Signed-off-by: Frank Chang <frank.chang@sifive.com>
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> ---
+>  hw/riscv/riscv_hart.c         | 21 +++++++++++++++++++++
+>  include/hw/riscv/riscv_hart.h |  4 ++++
+>  target/riscv/cpu.c            | 13 +++++++++++++
+>  target/riscv/cpu.h            |  7 +++++++
+>  target/riscv/cpu_bits.h       | 12 ++++++++++++
+>  target/riscv/cpu_helper.c     | 24 ++++++++++++++++++++++++
+>  6 files changed, 81 insertions(+)
+> 
+> diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
+> index 613ea2aaa0..eac18f8c29 100644
+> --- a/hw/riscv/riscv_hart.c
+> +++ b/hw/riscv/riscv_hart.c
+> @@ -33,6 +33,12 @@ static Property riscv_harts_props[] = {
+>      DEFINE_PROP_STRING("cpu-type", RISCVHartArrayState, cpu_type),
+>      DEFINE_PROP_UINT64("resetvec", RISCVHartArrayState, resetvec,
+>                         DEFAULT_RSTVEC),
+> +    DEFINE_PROP_ARRAY("rnmi-interrupt-vector", RISCVHartArrayState,
+> +                      num_rnmi_irqvec, rnmi_irqvec, qdev_prop_uint64,
+> +                      uint64_t),
+> +    DEFINE_PROP_ARRAY("rnmi-exception-vector", RISCVHartArrayState,
+> +                      num_rnmi_excpvec, rnmi_excpvec, qdev_prop_uint64,
+> +                      uint64_t),
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> @@ -47,6 +53,21 @@ static bool riscv_hart_realize(RISCVHartArrayState *s, int idx,
 >  {
->      int ret;
-> +    struct iovec *sliced_iov;
-> +    int sliced_niov;
-> +    size_t sliced_head, sliced_tail;
->
->      bdrv_check_qiov_request(*offset, *bytes, *qiov, *qiov_offset, &error_abort);
->
-> -    if (!bdrv_init_padding(bs, *offset, *bytes, pad)) {
-> +    if (!bdrv_init_padding(bs, *offset, *bytes, write, pad)) {
->          if (padded) {
->              *padded = false;
->          }
->          return 0;
->      }
->
-> -    ret = qemu_iovec_init_extended(&pad->local_qiov, pad->buf, pad->head,
-> -                                   *qiov, *qiov_offset, *bytes,
-> -                                   pad->buf + pad->buf_len - pad->tail,
-> -                                   pad->tail);
-> +    sliced_iov = qemu_iovec_slice(*qiov, *qiov_offset, *bytes,
-> +                                  &sliced_head, &sliced_tail,
-> +                                  &sliced_niov);
+>      object_initialize_child(OBJECT(s), "harts[*]", &s->harts[idx], cpu_type);
+>      qdev_prop_set_uint64(DEVICE(&s->harts[idx]), "resetvec", s->resetvec);
 > +
-> +    /* Guaranteed by bdrv_check_qiov_request() */
-> +    assert(*bytes <= SIZE_MAX);
+> +    if (s->harts[idx].cfg.ext_smrnmi) {
+> +        if (s->rnmi_irqvec) {
+> +            qdev_prop_set_uint64(DEVICE(&s->harts[idx]),
+> +                                 "rnmi-interrupt-vector",
+> +                                 s->rnmi_irqvec[idx]);
+> +        }
+> +
+> +        if (s->rnmi_excpvec) {
+> +            qdev_prop_set_uint64(DEVICE(&s->harts[idx]),
+> +                                 "rnmi-exception-vector",
+> +                                 s->rnmi_excpvec[idx]);
+> +        }
+> +    }
+> +
+>      s->harts[idx].env.mhartid = s->hartid_base + idx;
+>      qemu_register_reset(riscv_harts_cpu_reset, &s->harts[idx]);
+>      return qdev_realize(DEVICE(&s->harts[idx]), NULL, errp);
+> diff --git a/include/hw/riscv/riscv_hart.h b/include/hw/riscv/riscv_hart.h
+> index bbc21cdc9a..99c0ac5009 100644
+> --- a/include/hw/riscv/riscv_hart.h
+> +++ b/include/hw/riscv/riscv_hart.h
+> @@ -38,6 +38,10 @@ struct RISCVHartArrayState {
+>      uint32_t hartid_base;
+>      char *cpu_type;
+>      uint64_t resetvec;
+> +    uint32_t num_rnmi_irqvec;
+> +    uint64_t *rnmi_irqvec;
+> +    uint32_t num_rnmi_excpvec;
+> +    uint64_t *rnmi_excpvec;
+>      RISCVCPU *harts;
+>  };
+>  
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index db0875fb43..c8dc0eaa87 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -119,6 +119,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+>      ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+>      ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+>      ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+> +    ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
+>      ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+>      ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+>      ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+> @@ -1404,6 +1405,11 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+>          g_assert_not_reached();
+>      }
+>  }
+> +
+> +static void riscv_cpu_set_nmi(void *opaque, int irq, int level)
+> +{
+> +    riscv_cpu_set_rnmi(RISCV_CPU(opaque), irq, level);
+> +}
+>  #endif /* CONFIG_USER_ONLY */
+>  
+>  static void riscv_cpu_init(Object *obj)
+> @@ -1420,6 +1426,8 @@ static void riscv_cpu_init(Object *obj)
+>  #ifndef CONFIG_USER_ONLY
+>      qdev_init_gpio_in(DEVICE(cpu), riscv_cpu_set_irq,
+>                        IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
+> +    qdev_init_gpio_in_named(DEVICE(cpu), riscv_cpu_set_nmi,
+> +                            "riscv.cpu.rnmi", RNMI_MAX);
+>  #endif /* CONFIG_USER_ONLY */
+>  }
+>  
+> @@ -1600,6 +1608,7 @@ static Property riscv_cpu_extensions[] = {
+>      DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
+>      DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
+>      DEFINE_PROP_BOOL("x-ssaia", RISCVCPU, cfg.ext_ssaia, false),
+> +    DEFINE_PROP_BOOL("x-smrnmi", RISCVCPU, cfg.ext_smrnmi, false),
+>  
+>      DEFINE_PROP_BOOL("x-zvfh", RISCVCPU, cfg.ext_zvfh, false),
+>      DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, cfg.ext_zvfhmin, false),
+> @@ -1644,6 +1653,10 @@ static Property riscv_cpu_properties[] = {
+>  
+>      DEFINE_PROP_BOOL("rvv_ta_all_1s", RISCVCPU, cfg.rvv_ta_all_1s, false),
+>      DEFINE_PROP_BOOL("rvv_ma_all_1s", RISCVCPU, cfg.rvv_ma_all_1s, false),
+> +    DEFINE_PROP_UINT64("rnmi-interrupt-vector", RISCVCPU, env.rnmi_irqvec,
+> +                       DEFAULT_RNMI_IRQVEC),
+> +    DEFINE_PROP_UINT64("rnmi-exception-vector", RISCVCPU, env.rnmi_excpvec,
+> +                       DEFAULT_RNMI_EXCPVEC),
 
-This one. (The Coverity complaint is because SIZE_MAX for it is
-UINT64_MAX and an int64_t can't possibly be bigger than that.)
+Why are these addresses user configurable? Shouldn't each board set them
+to whatever the real board uses and a generic board, like 'virt', set
+them to whatever works for it, considering the rest of its memory map?
+Also, looking ahead, I don't see where the addresses are described to the
+M-mode software in the DT, which implies board-specific M-mode software
+would hard code it, but generic M-mode software should get the addresses
+from the DT. And, presumably, M-mode software should protect and reserve
+these addresses from S-mode. It'd be nice to see an M-mode software PoC,
+but I didn't see anything on the opensbi mailing list.
 
-Is this because the assert() is deliberately handling the case
-of a 32-bit host where SIZE_MAX might not be UINT64_MAX ? Or was
-the bound supposed to be SSIZE_MAX or INT64_MAX ?
-
-Looking at bdrv_check_qiov_request(), it seems to check bytes
-against BDRV_MAX_LENGTH, which is defined as something somewhere
-near INT64_MAX. So on a 32-bit host I'm not sure that function
-does guarantee that the bytes count is going to be less than
-SIZE_MAX...
-
-(CID 1512819)
-
-thanks
--- PMM
+Thanks,
+drew
 
