@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCF6728B37
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E6E728B41
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:51:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7OM3-0001e7-OF; Thu, 08 Jun 2023 18:43:43 -0400
+	id 1q7OSF-0003SF-Ri; Thu, 08 Jun 2023 18:50:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1q7OM1-0001cK-8k
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:43:41 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q7OSD-0003RJ-Fe
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:50:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1q7OLz-00039K-Bt
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:43:41 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q7OS4-0004cc-P6
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:50:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686264587;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=F1l3Ud+hvDoqO1ct2IA6NNGQgf3LWBONBrZNTg07qhw=;
+ b=BxDDh4wiRGkcT8AdqBaaeAxCr7XL9x4HmGJt9waQVJn6VPsLBqBlSzQJf9rfWfzYhb414G
+ pCUeu/zEvjltIGB4lDx42QnAxhcRPFaLlRDt5HJQbo/s91s0W7cKI1HVBBF2L0vXF0WLv3
+ GvkU9vZpfgG7cwTEKBRlnvelgVAv7oQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-460-z39SlCWaPrmfztIIb6VyYg-1; Thu, 08 Jun 2023 18:49:46 -0400
+X-MC-Unique: z39SlCWaPrmfztIIb6VyYg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 90BAB63F17;
- Thu,  8 Jun 2023 22:43:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041E6C433EF;
- Thu,  8 Jun 2023 22:43:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1686264216;
- bh=s/roKiwIpEWTPQAAmU12DOXtTPMNzR+NigpYF0r52tE=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=N+C//+qPNMJMEZqOZqUeRGk+m1d0p94LawSZ5cnrs2pLaMOpBEszkznP/aKaIA5UK
- S+fsgTpr8vcgY7YfL7L4FyEmX5o7dvdLWT06dSFcvAHuJ14zA2uqGO0TPZ0xhqxxzg
- a48NCaEuJ4EIpgcYmB45+mCXSZm9s0mVRZSnCBJj7Lnr8DxnyHs5z/Xe2lKIqLFUyy
- XBpLrtFYNWfvmIgAgZD/Tbq6UDtPYUkmLpBdABbvXUMpuJCmbZNffGU034Ia6yhvG1
- Ttzav0/quy9Y0NZPk547GRpx5nsLPsTtkUprFNP5TEwyqeWQf6Vq+Hr6Mgp6f/9PBg
- miWJaHkVn2AxQ==
-Date: Thu, 8 Jun 2023 15:43:32 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Bernhard Beschow <shentey@gmail.com>
-cc: Stefano Stabellini <sstabellini@kernel.org>, mst@redhat.com, 
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- David Woodhouse <dwmw@amazon.co.uk>, Eduardo Habkost <eduardo@habkost.net>, 
- Chuck Zmudzinski <brchuckz@aol.com>, Aurelien Jarno <aurelien@aurel32.net>, 
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>, 
- Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 0/7] Resolve TYPE_PIIX3_XEN_DEVICE
-In-Reply-To: <ADD39905-0305-477A-8801-C1F561E0DFD4@gmail.com>
-Message-ID: <alpine.DEB.2.22.394.2306081542170.3803068@ubuntu-linux-20-04-desktop>
-References: <20230403074124.3925-1-shentey@gmail.com>
- <20230421033757-mutt-send-email-mst@kernel.org>
- <9EB9A984-61E5-4226-8352-B5DDC6E2C62E@gmail.com>
- <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
- <EB3E61EB-B543-4B15-94A9-C16A66437601@gmail.com>
- <ADD39905-0305-477A-8801-C1F561E0DFD4@gmail.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9BF63C0C88F;
+ Thu,  8 Jun 2023 22:49:45 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.192.3])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3A684492B00;
+ Thu,  8 Jun 2023 22:49:44 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH 00/42] Migration test refactoring
+Date: Fri,  9 Jun 2023 00:49:01 +0200
+Message-Id: <20230608224943.3877-1-quintela@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-891826009-1686264215=:3803068"
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,59 +80,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi
 
---8323329-891826009-1686264215=:3803068
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+This series do a lot of much neededs cleanups and fixes to migration-test:
 
-On Mon, 5 Jun 2023, Bernhard Beschow wrote:
-> Am 22. Mai 2023 15:42:03 UTC schrieb Bernhard Beschow <shentey@gmail.com>:
-> >
-> >
-> >Am 15. Mai 2023 20:52:40 UTC schrieb Stefano Stabellini <sstabellini@kernel.org>:
-> >>On Sat, 13 May 2023, Bernhard Beschow wrote:
-> >>> Am 21. April 2023 07:38:10 UTC schrieb "Michael S. Tsirkin" <mst@redhat.com>:
-> >>> >On Mon, Apr 03, 2023 at 09:41:17AM +0200, Bernhard Beschow wrote:
-> >>> >> There is currently a dedicated PIIX3 device model for use under Xen. By reusing
-> >>> >> existing PCI API during initialization this device model can be eliminated and
-> >>> >> the plain PIIX3 device model can be used instead.
-> >>> >> 
-> >>> >> Resolving TYPE_PIIX3_XEN_DEVICE results in less code while also making Xen
-> >>> >> agnostic towards the precise south bridge being used in the PC machine. The
-> >>> >> latter might become particularily interesting once PIIX4 becomes usable in the
-> >>> >> PC machine, avoiding the "Frankenstein" use of PIIX4_ACPI in PIIX3.
-> >>> >
-> >>> >xen stuff so I assume that tree?
-> >>> 
-> >>> Ping
-> >>
-> >>I am OK either way. Michael, what do you prefer?
-> >>
-> >>Normally I would suggest for you to pick up the patches. But as it
-> >>happens I'll have to likely send another pull request in a week or two
-> >>and I can add these patches to it.
-> >>
-> >>Let me know your preference and I am happy to follow it.
-> >
-> >Hi Stefano,
-> >
-> >Michael's PR was merged last week. How about including this series into your PR then?
-> 
-> Ping
+- We make source and target machines coherent/constent
+- We make all command line options consistent
+- We split test_migrate_start() and test_migrate_end() into:
 
-Sorry for the late reply, it looks like patch #3 breaks the build:
+  * guest_start() from from and to.  It is the same function, just
+    defines the basic options.  I am open to renaming it to
+    guest_define() or anything else that people can came with.
 
-[1888/4025] Compiling C object libcommon.fa.p/hw_isa_piix3.c.o
-FAILED: libcommon.fa.p/hw_isa_piix3.c.o 
-cc -m64 -mcx16 -Ilibcommon.fa.p -Iui -I../ui -I/usr/include/capstone -I/usr/include/pixman-1 -I/usr/include/libpng16 -I/usr/include/spice-server -I/usr/include/spice-1 -I/usr/include/p11-kit-1 -I/usr/include/libusb-1.0 -I/usr/include/SDL2 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/gio-unix-2.0 -I/usr/include/slirp -I/usr/include/gtk-3.0 -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/fribidi -I/usr/include/uuid -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/atk-1.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/at-spi-2.0 -I/usr/include/vte-2.91 -I/usr/include/virgl -I/usr/include/cacard -I/usr/include/nss -I/usr/include/nspr -I/usr/include/PCSC -fdiagnostics-color=auto -Wall -Winvalid-pch -Werror -std=gnu11 -O2 -g -fstack-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURC
- E=2 -Wundef -Wwrite-strings -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wold-style-declaration -Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels -Wexpansion-to-defined -Wimplicit-fallthrough=2 -Wmissing-format-attribute -Wno-missing-include-dirs -Wno-shift-negative-value -Wno-psabi -isystem /builds/Vikram.garhwal/qemu-ioreq/linux-headers -isystem linux-headers -iquote . -iquote /builds/Vikram.garhwal/qemu-ioreq -iquote /builds/Vikram.garhwal/qemu-ioreq/include -iquote /builds/Vikram.garhwal/qemu-ioreq/host/include/x86_64 -iquote /builds/Vikram.garhwal/qemu-ioreq/host/include/generic -iquote /builds/Vikram.garhwal/qemu-ioreq/tcg/i386 -pthread -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing -fno-common -fwrapv -fPIE -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=600 -DNCURSES_WIDECHAR=1 -D_REENTRANT -Wno-undef -DSTRUCT_IOVEC_DEFINED -MD -MQ libcommon.fa.p/hw
- _isa_piix3.c.o -MF libcommon.fa.p/hw_isa_piix3.c.o.d -o libcommon.fa.p/hw_isa_piix3.c.o -c ../hw/isa/piix3.c
-../hw/isa/piix3.c:265:13: error: ‘pci_piix3_realize’ defined but not used [-Werror=unused-function]
-  265 | static void pci_piix3_realize(PCIDevice *dev, Error **errp)
-      |             ^~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+  * guest_destroy(), you have guessed it, right?
 
---8323329-891826009-1686264215=:3803068--
+  * guest_realize() after guest_start() and adding any options we
+    need, we just create the guest.  We use the same function from
+    source and target, making inconsistencies disapear.
+
+- uri: right now it is a mess, we can have:
+  * uri created with migration_start()
+  * or listen_uri
+  * or connect_uri
+  * or by hand
+  now we just setup to->uri, and we get the migrate uri automatically from there.
+
+- we were creating bootfile for each migration test.  Change the code
+  so we only create it once for the whole migration test.
+
+- Introduce GuestState.  Using QTestState directly means that we can
+  add state by guest, making it abuse local variables.  Now we move
+  all guest state into GuestState.
+
+- Apart from test found by Fabiano, we had another problems with
+  multifd + cancel:
+
+  * We didn't wait for "to" guest to finish before we launch second
+    target guest "to2".  We fixed it by destroying "to" before
+    launching "to2".
+
+  * We reused "dest_serial" filename from "to" and "to2", so in a very
+    loaded host, it could be that we contact with the wrong vm, and we
+    never end.
+
+  * I change the code so the serial filename is dependent on guest
+    name, that made changing the interface:
+    wait_for_serial("dest_serial") to
+    wait_for_relial(to) (or to2 or ...) so we can't fail.
+
+- we move the global event variables to GuestState, so no more
+  got_src_stop or got_dst_resume, we just check
+    who->got_event
+
+- create a function from migrate-incoming, so now we do:
+  migrate_incoming(uri) and it does what we want/expect.
+
+- vcpu_dirty_limit is not related to migration at all, just is easier
+  to write with migration infrastructure.  Move all useful functions
+  to migration-helpers.[ch] and split the test into
+  vcpu-dirty-limit-test.c.  I think that we can declare that test slow.
+
+- Now that guest_create/destry exist, we can "reuse" them in
+  vcpu_dirty_limit test.
+
+- The removal of files, like "migsocket" was flaky at least, i.e. not
+  always removed.  "migsocket-recover" was not even tried to remove.
+  New code just remove them by default.
+
+- MigrationStart is gone, instead of creating that flags, I just call
+  functions that do that function.
+
+- if no uri is given for a target guest, it launches with -incoming
+  defer, that should be the default.
+
+ToDo:
+
+- Tests shouldn't really use QMP, if we need QMP, we should hide it
+  behind a c function.  Almost everything is there now, except things
+  like "reuse".
+
+- I think we should split auto-converge test:
+  * we are not testing migration there, we are testing vcpu slowdown
+  * the test is really slow, see documentation why we can't make it much faster.
+
+- I still need to make test faster with stoping switchover.
+
+Please, review.
+
+Juan Quintela (42):
+  migration-test: Be consistent for ppc
+  migration-test: Make ignore_stderr regular with other options
+  migration-test: simplify shmem_opts handling
+  migration-test: Make machine_opts regular with other options
+  migration-test: Create arch_opts
+  migration-test: machine_opts is really arch specific
+  migration-test: Create kvm_opts
+  migration-test: bootpath is the same for all tests and for all archs
+  migration-test: Add bootfile_create/delete() functions
+  migration-test: dirtylimit checks for x86_64 arch before
+  migration-test: Update test_ignore_shared to use args
+  migration-test: Enable back ignore-shared test
+  migration-test: Check for shared memory like for everything else
+  migration-test: test_migrate_start() always return 0
+  migration-test: migrate_postcopy_prepare() always return 0
+  migration-test: Create do_migrate()
+  migration-test: Introduce GuestState
+  migration-test: Create guest before calling do_test_validate_uuid()
+  migration-test: Create guest before calling test_precopy_common()
+  migration-test: Create guest before calling test_postcopy_common()
+  migration-test: Move common guest code to guest_create()
+  migration-test: Create guest_use_dirty_log()
+  migration-test: Move serial to GuestState
+  migration-test: Re-enable multifd_cancel test
+  migration-test: We were not waiting for "target" to finish
+  migration-test: create guest_use_shmem()
+  migration-test: Create guest_extra_opts()
+  migration-test: Create guest_hide_stderr()
+  migration-test: Create the migration unix socket by guest
+  migration-test: Hooks also need GuestState
+  migration-test: Preffer to->uri to uri parameter for migration
+  migration-test: Create guest_set_uri()
+  migration-test: Remove connect_uri
+  migration-test: Use new schema for all tests that use unix sockets
+  migration-test: Set uri for tcp tests with guest_set_uri()
+  migration-test: Remove unused listen_uri
+  migration-test: Create get_event GuestState variable
+  migration-test: Create guest_realize()
+  migration-test: Unfold test_migrate_end() into three functions
+  migration-test: Create migrate_incoming() function
+  migration-test: Move functions to migration-helpers.c
+  migration-test: Split vcpu-dirty-limit-test
+
+ MAINTAINERS                         |    3 +-
+ tests/qtest/migration-helpers.h     |   39 +
+ tests/qtest/migration-helpers.c     |  242 +++++
+ tests/qtest/migration-test.c        | 1525 +++++++++------------------
+ tests/qtest/vcpu-dirty-limit-test.c |  310 ++++++
+ tests/qtest/meson.build             |    5 +-
+ 6 files changed, 1113 insertions(+), 1011 deletions(-)
+ create mode 100644 tests/qtest/vcpu-dirty-limit-test.c
+
+
+base-commit: 45ae97993a75f975f1a01d25564724c7e10a543f
+prerequisite-patch-id: f95418b6f47019ec82d47aac8ba5247775f503a3
+-- 
+2.40.1
+
 
