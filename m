@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CBA728B4D
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A835728B78
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:58:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7OS3-0003OZ-KJ; Thu, 08 Jun 2023 18:49:55 -0400
+	id 1q7OS6-0003Pb-6r; Thu, 08 Jun 2023 18:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q7OS1-0003OD-QK
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:49:53 -0400
+ id 1q7OS3-0003OV-2O
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:49:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q7OS0-0004e9-7W
+ id 1q7OS0-0004ef-Kb
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:49:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1686264591;
@@ -24,24 +24,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dq81RXNpsqU9ROfSeDC2pruyLMFblvgLeeAHV3g/vVs=;
- b=bAP7eYHWtyURgeJQv0sucBRWjRyr8y0L4UEA3sXUm+ycu/nBuXXYMgwEdJMvgytMinbvHf
- rmKMCd5cOlknbGjTgoTvFNuoOZ251zpN76Dk/LeXe1+7gcyhUpISfVUZPulRg7h/V9/4hN
- uQcKLP6WsRYWc7XQqcNCWk1tu7l5GlU=
+ bh=dss+c/xQKMwCZkS1Ig75K0xJ/Ka/v/C8UE28PysQz4k=;
+ b=PqZG/FFYSv0DJyj+tmXqPmi/9CUpz//hrM1sw4mp9aDYXyyzWsDLRzljFolD5KLSnzd6rj
+ L/n9NA3wDkA/5WE+qCTFIlxgu0AUBelHik4RMFhmAf5QLcWxJXT1T8fbDs//QUBxKiLc7Z
+ 3vf/5RCFrew6E6a/hNh02C2cJlchwyk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-622-_WnHxS7SNPi1ECcArjZmCw-1; Thu, 08 Jun 2023 18:49:48 -0400
-X-MC-Unique: _WnHxS7SNPi1ECcArjZmCw-1
+ us-mta-84-pP5iDa0yMPO0lZ22s0KuNA-1; Thu, 08 Jun 2023 18:49:49 -0400
+X-MC-Unique: pP5iDa0yMPO0lZ22s0KuNA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BDE95101A531;
- Thu,  8 Jun 2023 22:49:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9173D85A5AA;
+ Thu,  8 Jun 2023 22:49:49 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3DC62492B00;
- Thu,  8 Jun 2023 22:49:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 10228492B00;
+ Thu,  8 Jun 2023 22:49:47 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -50,9 +50,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Juan Quintela <quintela@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 01/42] migration-test: Be consistent for ppc
-Date: Fri,  9 Jun 2023 00:49:02 +0200
-Message-Id: <20230608224943.3877-2-quintela@redhat.com>
+Subject: [PATCH 02/42] migration-test: Make ignore_stderr regular with other
+ options
+Date: Fri,  9 Jun 2023 00:49:03 +0200
+Message-Id: <20230608224943.3877-3-quintela@redhat.com>
 In-Reply-To: <20230608224943.3877-1-quintela@redhat.com>
 References: <20230608224943.3877-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -83,26 +84,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It makes no sense that we don't have the same configuration on both sides.
-
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- tests/qtest/migration-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/migration-test.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b0c355bbd9..c5e0c69c6b 100644
+index c5e0c69c6b..73b2f01427 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -646,7 +646,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-                                       "'nvramrc=hex .\" _\" begin %x %x "
-                                       "do i c@ 1 + i c! 1000 +loop .\" B\" 0 "
-                                       "until'", end_address, start_address);
--        arch_target = g_strdup("");
-+        arch_target = g_strdup("-nodefaults");
-     } else if (strcmp(arch, "aarch64") == 0) {
-         init_bootfile(bootpath, aarch64_kernel, sizeof(aarch64_kernel));
-         machine_opts = "virt,gic-version=max";
+@@ -602,7 +602,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+     g_autofree gchar *arch_target = NULL;
+     g_autofree gchar *cmd_source = NULL;
+     g_autofree gchar *cmd_target = NULL;
+-    const gchar *ignore_stderr;
++    const gchar *ignore_stderr = NULL;
+     g_autofree char *bootpath = NULL;
+     g_autofree char *shmem_opts = NULL;
+     g_autofree char *shmem_path = NULL;
+@@ -672,10 +672,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+          * IO redirection does not work, so don't bother adding IO redirection
+          * to the command line.
+          */
+-        ignore_stderr = "";
+ #endif
+-    } else {
+-        ignore_stderr = "";
+     }
+ 
+     if (args->use_shmem) {
+@@ -701,7 +698,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  memory_size, tmpfs,
+                                  arch_source, shmem_opts,
+                                  args->opts_source ? args->opts_source : "",
+-                                 ignore_stderr);
++                                 ignore_stderr ? ignore_stderr : "");
++
+     if (!args->only_target) {
+         *from = qtest_init(cmd_source);
+         qtest_qmp_set_event_callback(*from,
+@@ -722,7 +720,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  memory_size, tmpfs, uri,
+                                  arch_target, shmem_opts,
+                                  args->opts_target ? args->opts_target : "",
+-                                 ignore_stderr);
++                                 ignore_stderr ? ignore_stderr : "");
+     *to = qtest_init(cmd_target);
+     qtest_qmp_set_event_callback(*to,
+                                  migrate_watch_for_resume,
 -- 
 2.40.1
 
