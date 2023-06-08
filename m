@@ -2,69 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973A172882F
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 21:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 474DF7288FA
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 21:49:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7LCE-0007XK-3a; Thu, 08 Jun 2023 15:21:22 -0400
+	id 1q7LcK-0004Kq-1D; Thu, 08 Jun 2023 15:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7LCB-0007X5-UR
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:21:20 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <lucas.chollet@free.fr>)
+ id 1q7LFW-0008Vx-T9
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:24:46 -0400
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7LC9-0000KA-Tb
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:21:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=aaNccF/afK+nDJGb/pDCMzn3v9+EIYGe617yjRt8M4c=; b=gPxiD13C3lU4uTTzKMRvJnu3Vk
- X1ShQE11iqOLRq7/6Gnl1XfJnX2pAN+iiQqkcmcxpp3+YfaMeKgNWPZxDxjfu5nAeQpkv4MV+HgYr
- 38k2j45fwuhl/vAKfDU7P9Oz6k0vXDq32Ma9tVgz4c7fm0lD5VSiHUAspLbU2z/2kHnaFLt37sWRE
- W8TqFQ8ucZZYTEVnq/KauK49Iy7ufsKe0gSua4oCuIxu1cpMLw4iAXRR2dM2auLavj8pZs9znmp4Z
- IMxutPv8v0ze7zYvfxdUEdXxX7/f+FQgMj7OONArX67HqeoZN0QQj8jXCHHygKeRQh4TWOz75OLtz
- RZCUwFRFXOGRo3d+acVVNdvfxb6GvI62Rit64dtQFyXtRowqd8gDFVv+flusUrVuSLls45tYkOj5o
- /o4MaMw+46efoP4r/0z7rIuRu4vYzYv0PF/wEucW47Gbef6V5Ze4tEZyByTp5RO1JqSsDuhADTnpQ
- 5Xb/iyBQ+lAB7/D8w8qbgGsTlrWsIs5QCA1mnWtWkR9nAshCOxmmjRjU8djfXv9F3UivLRXweVPk2
- CrqpbvWvStuYn7k0nfZ56yYpA5sfVXViy40jaRaZ2TQjK4VebV1kOC4n8FWGsysT35T7C5eQYkmM1
- Rp5fSjCMThlMVFHydui5scWCp7/svHuj+uSLqFz0A=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7LC1-0002yZ-HH; Thu, 08 Jun 2023 20:21:13 +0100
-Message-ID: <5f5fb945-1410-ec9e-a888-821935b3e06a@ilande.co.uk>
-Date: Thu, 8 Jun 2023 20:21:05 +0100
+ (Exim 4.90_1) (envelope-from <lucas.chollet@free.fr>)
+ id 1q7LFH-0000jK-Nd
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:24:46 -0400
+Received: from asub.. (unknown [198.16.189.195])
+ (Authenticated sender: lucas.chollet@free.fr)
+ by smtp2-g21.free.fr (Postfix) with ESMTPSA id 6D2352003DD;
+ Thu,  8 Jun 2023 21:24:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+ s=smtp-20201208; t=1686252266;
+ bh=VwcTTzd+GV6VqDurnqh9taJkBvEXA7dVYb4Bq6YLB9w=;
+ h=From:To:Cc:Subject:Date:From;
+ b=VGc7EdSKngD88ljrccaUSthpa8juDFGkB44U45FnQM1GX8LQw1T8Bk3ERs02F9lHK
+ tm+apcDxDM4FkSVAJXwBNdmhow+mAW3b04WtnMpST0QdMRXIVpZ/QSr09zO6lLkfl9
+ zk4ny+IKbTFrQVy2e7BK/yLtAaR32s8ss1M1MUE9XWszKM+4T5L63z8HjSj+gfO5Ot
+ wovzktNeO93aMQK3SfRwbSa188E8R3EAik4pEkncIwqremqfnT1jXD2lUBoQNBTEaF
+ x+mToVedmUu1wt8KC2CPVi6GPZQszQ8+A7mC5e5udBS7HWBh+XT7BV+1RwxtRZT8Mq
+ ibEeRCHR5EumA==
+From: Lucas Chollet <lucas.chollet@free.fr>
+To: qemu-devel@nongnu.org
+Cc: Lucas Chollet <lucas.chollet@free.fr>
+Subject: [PATCH] hw/i386/vmmouse: use the new input api
+Date: Thu,  8 Jun 2023 15:23:45 -0400
+Message-Id: <20230608192345.708062-1-lucas.chollet@free.fr>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230608134314.943615-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230608134314.943615-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH] build: further refine build.ninja rules
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a01:e0c:1:1599::11;
+ envelope-from=lucas.chollet@free.fr; helo=smtp2-g21.free.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 08 Jun 2023 15:48:17 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,108 +66,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/06/2023 14:43, Paolo Bonzini wrote:
+No functional changes intended.
 
-> In commit b0fcc6fc7fc1 ("build: rebuild build.ninja using
-> "meson setup --reconfigure"", 2023-05-19) I changed the build.ninja
-> rule in the Makefile to use "meson setup" so that the Makefile would
-> pick up a changed path to the meson binary.
-> 
-> However, there was a reason why build.ninja was rebuilt using $(NINJA)
-> itself.  Namely, ninja has its own cache of file modification times,
-> and if it does not know about the modification that was done outside
-> its control, it will *also* try to regenerate build.ninja.  This can be
-> simply by running "make" on a fresh tree immediately after "configure";
-> that will trigger an unnecessary meson run.
-> 
-> So, apply a refinement to the rule in order to cover both cases:
-> 
-> - track the meson binary that was used (and that is embedded in
->    build.ninja's reconfigure rules); to do this, write build.ninja.stamp
->    right after executing meson successfully
-> 
-> - if it changed, force usage of "$(MESON) setup --reconfigure" to
->    update the path in the reconfigure rule
-> 
-> - if it didn't change, use "$(NINJA) build.ninja" just like before
->    commit b0fcc6fc7fc1.
-> 
-> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   Makefile  | 17 +++++++++++++----
->   configure |  1 +
->   2 files changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index b22bf6fba12..804a5681e0a 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -83,16 +83,17 @@ config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh
->   	@if test -f meson-private/coredata.dat; then \
->   	  ./config.status --skip-meson; \
->   	else \
-> -	  ./config.status && touch build.ninja.stamp; \
-> +	  ./config.status; \
->   	fi
->   
->   # 2. meson.stamp exists if meson has run at least once (so ninja reconfigure
->   # works), but otherwise never needs to be updated
-> +
->   meson-private/coredata.dat: meson.stamp
->   meson.stamp: config-host.mak
->   	@touch meson.stamp
->   
-> -# 3. ensure generated build files are up-to-date
-> +# 3. ensure meson-generated build files are up-to-date
->   
->   ifneq ($(NINJA),)
->   Makefile.ninja: build.ninja
-> @@ -106,11 +107,19 @@ Makefile.ninja: build.ninja
->   endif
->   
->   ifneq ($(MESON),)
-> -# A separate rule is needed for Makefile dependencies to avoid -n
-> +# The path to meson always points to pyvenv/bin/meson, but the absolute
-> +# paths could change.  In that case, force a regeneration of build.ninja.
-> +# Note that this invocation of $(NINJA), just like when Make rebuilds
-> +# Makefiles, does not include -n.
->   build.ninja: build.ninja.stamp
->   $(build-files):
->   build.ninja.stamp: meson.stamp $(build-files)
-> -	$(MESON) setup --reconfigure $(SRC_PATH) && touch $@
-> +	@if test "$$(cat build.ninja.stamp)" = "$(MESON)" && test -n "$(NINJA)"; then \
-> +	  $(NINJA) build.ninja; \
-> +	else \
-> +	  echo "$(MESON) setup --reconfigure $(SRC_PATH)"; \
-> +	  $(MESON) setup --reconfigure $(SRC_PATH); \
-> +	fi && echo "$(MESON)" > $@
->   
->   Makefile.mtest: build.ninja scripts/mtest2make.py
->   	$(MESON) introspect --targets --tests --benchmarks | $(PYTHON) scripts/mtest2make.py > $@
-> diff --git a/configure b/configure
-> index 8a638dd82ae..cbdb389dc95 100755
-> --- a/configure
-> +++ b/configure
-> @@ -1894,6 +1894,7 @@ if test "$skip_meson" = no; then
->     if test "$?" -ne 0 ; then
->         error_exit "meson setup failed"
->     fi
-> +  echo "$meson" > build.ninja.stamp
->   else
->     if test -f meson-private/cmd_line.txt; then
->       # Adjust old command line options that were removed
+Signed-off-by: Lucas Chollet <lucas.chollet@free.fr>
+---
+ hw/i386/vmmouse.c | 95 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 71 insertions(+), 24 deletions(-)
 
-Thanks Paolo!
-
-I just tried a complete fresh build, make, a few changes followed by another make and 
-everything built without running reconfigure so:
-
-Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-
-ATB,
-
-Mark.
+diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
+index a56c185f15..bdddbb64ac 100644
+--- a/hw/i386/vmmouse.c
++++ b/hw/i386/vmmouse.c
+@@ -24,7 +24,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "ui/console.h"
++#include "ui/input.h"
+ #include "hw/i386/vmport.h"
+ #include "hw/input/i8042.h"
+ #include "hw/qdev-properties.h"
+@@ -61,7 +61,10 @@ struct VMMouseState {
+     uint16_t nb_queue;
+     uint16_t status;
+     uint8_t absolute;
+-    QEMUPutMouseEntry *entry;
++    int32_t last_x;
++    int32_t last_y;
++    int32_t last_buttons;
++    QemuInputHandlerState *entry;
+     ISAKBDState *i8042;
+ };
+ 
+@@ -91,33 +94,72 @@ static uint32_t vmmouse_get_status(VMMouseState *s)
+     return (s->status << 16) | s->nb_queue;
+ }
+ 
+-static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_state)
++static void vmmouse_mouse_event(DeviceState *dev, QemuConsole *src,
++                                InputEvent *evt)
+ {
+-    VMMouseState *s = opaque;
+-    int buttons = 0;
++    static const int bmap[INPUT_BUTTON__MAX] = {
++        [INPUT_BUTTON_LEFT]   = 0x20,
++        [INPUT_BUTTON_MIDDLE] = 0x08,
++        [INPUT_BUTTON_RIGHT]  = 0x10,
++    };
++
++    VMMouseState *s = VMMOUSE(dev);
++    InputMoveEvent *move;
++    InputBtnEvent *btn;
++
++    int32_t dz = 0;
+ 
+     if (s->nb_queue > (VMMOUSE_QUEUE_SIZE - 4))
+         return;
+ 
+-    DPRINTF("vmmouse_mouse_event(%d, %d, %d, %d)\n",
+-            x, y, dz, buttons_state);
++    switch (evt->type) {
++    case INPUT_EVENT_KIND_REL:
++        move = evt->u.rel.data;
++        if (move->axis == INPUT_AXIS_X) {
++            s->last_x += move->value;
++        } else if (move->axis == INPUT_AXIS_Y) {
++            s->last_y -= move->value;
++        }
++        break;
+ 
+-    if ((buttons_state & MOUSE_EVENT_LBUTTON))
+-        buttons |= 0x20;
+-    if ((buttons_state & MOUSE_EVENT_RBUTTON))
+-        buttons |= 0x10;
+-    if ((buttons_state & MOUSE_EVENT_MBUTTON))
+-        buttons |= 0x08;
++    case INPUT_EVENT_KIND_ABS:
++        move = evt->u.rel.data;
++        if (move->axis == INPUT_AXIS_X) {
++            s->last_x = move->value;
++        } else if (move->axis == INPUT_AXIS_Y) {
++            s->last_y = move->value;
++        }
++        break;
+ 
+-    if (s->absolute) {
+-        x <<= 1;
+-        y <<= 1;
++    case INPUT_EVENT_KIND_BTN:
++        btn = evt->u.btn.data;
++        if (btn->down) {
++            s->last_buttons |= bmap[btn->button];
++            if (btn->button == INPUT_BUTTON_WHEEL_UP) {
++                dz--;
++            } else if (btn->button == INPUT_BUTTON_WHEEL_DOWN) {
++                dz++;
++            }
++
++        } else {
++          s->last_buttons &= ~bmap[btn->button];
++        }
++        break;
++
++    default:
++        /* keep gcc happy */
++        break;
+     }
+ 
+-    s->queue[s->nb_queue++] = buttons;
+-    s->queue[s->nb_queue++] = x;
+-    s->queue[s->nb_queue++] = y;
++    s->queue[s->nb_queue++] = s->last_buttons;
++    s->queue[s->nb_queue++] = s->absolute ? s->last_x << 1 : s->last_x;
++    s->queue[s->nb_queue++] = s->absolute ? s->last_y << 1 : s->last_y;
+     s->queue[s->nb_queue++] = dz;
++}
++
++static void vmmouse_mouse_sync(DeviceState *dev)
++{
++    VMMouseState *s = VMMOUSE(dev);
+ 
+     /* need to still generate PS2 events to notify driver to
+        read from queue */
+@@ -127,11 +169,18 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
+ static void vmmouse_remove_handler(VMMouseState *s)
+ {
+     if (s->entry) {
+-        qemu_remove_mouse_event_handler(s->entry);
++        qemu_input_handler_unregister(s->entry);
+         s->entry = NULL;
+     }
+ }
+ 
++static QemuInputHandler vm_mouse_handler = {
++    .name  = "vmmouse",
++    .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
++    .event = vmmouse_mouse_event,
++    .sync  = vmmouse_mouse_sync,
++};
++
+ static void vmmouse_update_handler(VMMouseState *s, int absolute)
+ {
+     if (s->status != 0) {
+@@ -142,10 +191,8 @@ static void vmmouse_update_handler(VMMouseState *s, int absolute)
+         vmmouse_remove_handler(s);
+     }
+     if (s->entry == NULL) {
+-        s->entry = qemu_add_mouse_event_handler(vmmouse_mouse_event,
+-                                                s, s->absolute,
+-                                                "vmmouse");
+-        qemu_activate_mouse_event_handler(s->entry);
++        s->entry = qemu_input_handler_register(DEVICE(s), &vm_mouse_handler);
++        qemu_input_handler_activate(s->entry);
+     }
+ }
+ 
+-- 
+2.39.2
 
 
