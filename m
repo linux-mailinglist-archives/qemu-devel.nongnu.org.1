@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5AA72827D
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 033A67282B6
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:30:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7GSq-0006Dq-LP; Thu, 08 Jun 2023 10:18:12 -0400
+	id 1q7Gcq-0002tD-FU; Thu, 08 Jun 2023 10:28:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7GSo-000691-Mo
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:18:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7GSn-00028L-4m
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:18:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686233888;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XGHlzgs+fYkxfQJSWv2RkJ00Hak79mZOAJWc0CDpNCI=;
- b=YPVGT90Zg3MjuHPiofnqXKnr85er8LV3XrBGTmCWNFilvXb9vEESZU+weoLuOI0MFlcxbC
- MxIrg8UmcxMxPPzglpXvJ1GPWYSF+9LzqQNDbYWhRak7EWLPaEs1lnV9mtu1tsCOHWb5wW
- VtkjwBOkOKvlopDxMoIGqywzEcb16h0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-497-9_7CGSUzP7W9FBS9M5AjvQ-1; Thu, 08 Jun 2023 10:18:03 -0400
-X-MC-Unique: 9_7CGSUzP7W9FBS9M5AjvQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8688382C97E;
- Thu,  8 Jun 2023 14:17:59 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 224AF2166B25;
- Thu,  8 Jun 2023 14:17:59 +0000 (UTC)
-Date: Thu, 8 Jun 2023 09:17:57 -0500
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- libguestfs@redhat.com, qemu-block@nongnu.org, vsementsov@yandex-team.ru
-Subject: Re: [Libguestfs] [PATCH v4 02/24] nbd: Consistent typedef usage in
- header
-Message-ID: <jo2eqbij3xyku4n5hm2ftahzymkimjulpm6kmjh47lbec4t3ov@y4m4ypbhm4ie>
-References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-3-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7Gcl-0002qz-Lk
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:28:27 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7Gck-0004ap-5e
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:28:27 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-51494659d49so1165934a12.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 07:28:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686234504; x=1688826504;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pVmdQf3hZkY6Ied59nd4b0nJHCnXpoRkH2wB3KpIV4A=;
+ b=OFBoxf2dr5EBfu+LsY1VyQ+FRQYfupEWYK5OrUKtgJ+3QYG6FCIKZ7dijHXfHm8rME
+ Ms/wLaI/Y253WWpsVvXAYXrQYa+sHvYou0oJuDJKm3nDcGz8c7/GKVBg+et34iDjNGCw
+ Lym5IE+It4PLqYXdHIP/4P0TsZgoqm09YCfjlbxHqt1+Tlu+ZDQ4c5uLcrCJSOZZeTKu
+ lvIVUyVBCCAw79tltu/eg371BCE2yDOoNG+7cTUzxowGTSKkSTp27Vcgp64SI4ho8K73
+ l0FVInZbDw6Z6Y8WXcLOvPSp6AZ/ZMZcEgeIl5E3biRFXG43uFBi0UcE0YP4tvtKAYCp
+ gcSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686234504; x=1688826504;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pVmdQf3hZkY6Ied59nd4b0nJHCnXpoRkH2wB3KpIV4A=;
+ b=E/2mOgasFUW9lGaW5hwxdmraF3i2LxD3y1uvNQ/i+Kg9HAIp4G0d6vZNYzVlQTTukd
+ IwxX59hdRNf0FG8pXtwvdhXrhwuYFk+JzGaprlCSQ1Foh9PL74rJhmFbqSPzCo606z3A
+ lLTr2F3LDpcf8eiHB6nn/+rWJkVd9YeMm5QQLwIBpSW9JfJsjLDTgHrjYDnLeEfCcXzq
+ GGR+qj8DNvtNkcSYPycGn5Auah8mABTpxkUP37SE02lsTqHkkIy8FPOZ8b1sgQzw1ZyK
+ UJnD2SOrICWOfQu5K44pZsqxCz6WIW/Yj1Dad0B5kjsQWEYvMylOzGNxc4EaBLPdACsW
+ fw8Q==
+X-Gm-Message-State: AC+VfDyNsF9epFnmu7kc9Tk9L97Q74+T9k4k7CTN84ZGSbXvOZUvwgfe
+ 3BaqfVL0hyHyQvKMTEhOW6+bv4QC2sYm6Uu7Kquwlw==
+X-Google-Smtp-Source: ACHHUZ4UDa6Z84yDgSunuQy1G5lsI/IMUQUCzDhdKVYF5WPJsgLf8eCdvpWc7oKKgchlIAu2yCNABjp+SFmwsWOH49Q=
+X-Received: by 2002:a50:ed0f:0:b0:50b:d18c:620a with SMTP id
+ j15-20020a50ed0f000000b0050bd18c620amr7288796eds.25.1686234504350; Thu, 08
+ Jun 2023 07:28:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230608135653.2918540-3-eblake@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230517081204.30333-1-m.elsayed4420@gmail.com>
+ <20230517081204.30333-7-m.elsayed4420@gmail.com>
+In-Reply-To: <20230517081204.30333-7-m.elsayed4420@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 Jun 2023 15:28:13 +0100
+Message-ID: <CAFEAcA9LzbbLwNy810=wVtfF34XvSph4OAaiGtKrECq1E9HzdQ@mail.gmail.com>
+Subject: Re: [PATCH 6/8] tiva c general purpose timers implementation
+To: Mohamed ElSayed <m.elsayed4420@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,54 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 08:56:31AM -0500, Eric Blake wrote:
-> We had a mix of struct declarataions followed by typedefs, and direct
+On Wed, 17 May 2023 at 09:14, Mohamed ElSayed <m.elsayed4420@gmail.com> wrote:
+>
+> Signed-off-by: Mohamed ElSayed <m.elsayed4420@gmail.com>
+> ---
+>  hw/timer/tm4c123_gptm.c         | 495 ++++++++++++++++++++++++++++++++
+>  hw/timer/trace-events           |   5 +
+>  include/hw/timer/tm4c123_gptm.h | 131 +++++++++
+>  3 files changed, 631 insertions(+)
+>  create mode 100644 hw/timer/tm4c123_gptm.c
+>  create mode 100644 include/hw/timer/tm4c123_gptm.h
+>
 
-declarations
+These look like they're either TYPE_STELLARIS_GPTM
+(hw/timer/stellaris-gptm.c) or a minor variation on them.
 
-> struct definitions as part of a typedef.  Pick a single style.  Also
-> float a couple of opaque typedefs earlier in the file, as a later
-> patch wants to refer NBDExport* in NBDRequest.  No semantic impact.
-
-The curse of writing a commit message and then rebasing to a different
-idea; in patch 22, I had originally intended to make NBDMetaContexts a
-concrete type in nbd.h (which depends on NBDExport*, and would be
-directly used in NBDRequest, which in turn is declared before the
-pre-patch mention of NBDExport), but then changed my mind to instead
-have NBDMetaContexts itself also be an opaque type with NBDRequest
-only using NBDMetaContexts*.  And I missed floating the typedef for
-NBDClientConnection to the same point, because we somewhat separated
-opaque types along the lines of which .c files provide various
-functions and opaque types.
-
-> @@ -26,24 +26,25 @@
->  #include "qapi/error.h"
->  #include "qemu/bswap.h"
-> 
-> +typedef struct NBDExport NBDExport;
-> +typedef struct NBDClient NBDClient;
-> +
-
-Preferences on how I should tweak that aspect of this patch?  Options:
-
-- Don't float NBDExport or NBDClient, and drop that part of the commit
-  message.  However, the later patch that adds the typedef for
-  NBDMetaContexts still has to do it earlier than the definition of
-  NBDRequest, rather than alongside the other opaque types relevant to
-  server.c
-
-- Also float NBDClientConnection up here, and reword the commit
-  message along the lines of: Also float forward declarations of
-  opaque types to the top of the file, rather than interspersed with
-  function declarations, which will help a future patch that wants to
-  expose yet another opaque type that will be referenced in
-  NBDRequest.
-
-- something else?
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.           +1-919-301-3266
-Virtualization:  qemu.org | libvirt.org
-
+thanks
+-- PMM
 
