@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D7872810B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44ECE728142
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:22:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWn-0003RM-RM; Thu, 08 Jun 2023 09:18:14 -0400
+	id 1q7FWr-0003YK-Ci; Thu, 08 Jun 2023 09:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6c-0002U7-5I
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:43:02 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6g-0002Un-2L
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:43:06 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6a-0006el-Cx
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:43:01 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f122ff663eso550956e87.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6b-0006fX-Ai
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:43:03 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4f6370ddd27so565986e87.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:43:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220978; x=1688812978;
+ d=gmail.com; s=20221208; t=1686220979; x=1688812979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NaYwJWRlrN+WhGZVGQ5O0ml1E95BvIlUrXb4RAKN81s=;
- b=V2ooxEAjcgrSn7R+Ukk9ZK1GDp4qZlyFwT/M0vG4x4K0gECZuXCftvW1pQVZ53MNLl
- Xb8OFKwitI4jGj82OLpoMio8LfMC70QN8hfDdC03Lwdg0E4QyXAmHxHXuvv2hJAl97PA
- clxHd9DcXKJlPw3Pe4qEIr16G5Y1BzHikM93tjcGaV68xGWEFDSvK33fKII3Xs5G5V/B
- ybY6eywWssM2p0AC6WNqLtIPi81/aHwUhoemyDItAYnh80OyFywNVhnnC8MN9uVw5FVO
- QmkdD/aJfmE3F0TV+93Fay1F7iiisZikx5O4fX9LGGaf60MOhiq8PLgWVKd4niaTuIkh
- IFdw==
+ bh=U3rtuQ8mHqHcvQS6StgNCviZs2g0eGCn8bpnAVuyQks=;
+ b=qmAXHCFHeOHLey1eVsDA2tTEcYlaYdUBicthziP0wisc08A0ckMoUA6PYSPGOMOdHx
+ HCwJTYEpx9qvobHur4845OH3oMWsxwjw9cYXdjFT2/V5ukJWjRmQKFlIo4B8WkNu4Jcj
+ ccShvxMZl8PzHglvDGn4Dd0NTiTcrcPn6q373a6ZTC6zyN/+QOPH3+o7+nFHxnIyD7aJ
+ 8E1IsRgC8DZbMSEN1M4M4kE1u0aV38yQOnQqvEqIH6YH+I8wyadre0Qpxzps098vQpON
+ Z3Dyde4ko5QWoR76/brKan/N0mFQ9HxOPPRCIQFsLrxgPZtAkRj1M+i2Q+e52YYRh0nE
+ F+Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220978; x=1688812978;
+ d=1e100.net; s=20221208; t=1686220979; x=1688812979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NaYwJWRlrN+WhGZVGQ5O0ml1E95BvIlUrXb4RAKN81s=;
- b=CaIAIwNUFnljUeS6TEhw+ZzT/B1PJxKxckz2qocPywKEwHVzuJIoK/wYDJKZxSm8RC
- xaqSAPOygzU8hGiCUMUXBptJMpOmXdwlixg7vRe/6h+P7U0hzpH8wj0/kMYXINLzFX/4
- bb5IAwS195+eUJhpBMWSUBQQk6FFBGJhtHV8DMlJFh09PJIxq9PtKd+gkkZSsaac48DG
- kGf8KixJkjIColhng7s7eZul5DaonA315r7TJwYD+XK0EcPV3LMH4VrpSBuHGXZHO4my
- 98j1F/r5BNTBr2OBRAyGsHo6UUhxgiFBwh9epbqHsLSObOaIqmV0ZOuw5+UmbcK4p6R4
- IvIg==
-X-Gm-Message-State: AC+VfDz8gmy2kbkVJSnwezCTlibTZ4gqrsIU5Nt2KienM+MzUn5nnVuV
- rmb9SXE/lbzsSzO2BEyfP9hbaTS7rqQ=
-X-Google-Smtp-Source: ACHHUZ4AMc0l+T5nku941uHS1q/hRsBy5146+Yr8ANajnL0LCii7CJtggZ+Vurcv2fOnfyqB/sApTw==
-X-Received: by 2002:ac2:42c6:0:b0:4f1:4468:ee65 with SMTP id
- n6-20020ac242c6000000b004f14468ee65mr2820943lfl.30.1686220978425; 
- Thu, 08 Jun 2023 03:42:58 -0700 (PDT)
+ bh=U3rtuQ8mHqHcvQS6StgNCviZs2g0eGCn8bpnAVuyQks=;
+ b=EH0QfGfcmUyE032W3SAHLwhij3dYSNvMKX1trcS6DfSgmj2nlUMUnHacJyEd2Vj2KJ
+ EC3LAX0WEOrLHsf75OfpDumXnCAELibqfY2qQAMZOxXf0e8hHKdJMWibcr862309+2qR
+ SE0+XGNcNc0hSLM6m1pHocYf8TJ7OYmBJPfWUy71mV+KOtdvZfuVc35YRgyrS3FnHqnl
+ 7l48Xgl3N1zGhA6kBpShVFHn8I8mliXa5O3cSW+9QFOexPhVlm/dKw+JDNw7x3Fww5Na
+ Q1WW/6gheYYyNsUZWvnh52EMx9Pp2tYlaDj4vhAF5UInHQQAiEjoI8jdKUms9GwDIhfc
+ D/Ow==
+X-Gm-Message-State: AC+VfDyn18OF/l0gVSfyOPmO7Zgm4rzot4caVJB8I7mo/0Qv/sbN4CYR
+ mgzvJqqrQmFj/SLegLeILHAt/WewxfM=
+X-Google-Smtp-Source: ACHHUZ5V27S21RpG+7lSMYl1Vut+6dO9IPIaR+z618aWAUUZAyKpnm0Kf57sYzfouQ+IeAI9uL/T9Q==
+X-Received: by 2002:ac2:44d7:0:b0:4f3:859c:a01d with SMTP id
+ d23-20020ac244d7000000b004f3859ca01dmr3137938lfm.69.1686220979401; 
+ Thu, 08 Jun 2023 03:42:59 -0700 (PDT)
 Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
  [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.57
+ w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:42:58 -0700 (PDT)
+ Thu, 08 Jun 2023 03:42:59 -0700 (PDT)
 From: Siarhei Volkau <lis8215@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
@@ -62,16 +62,16 @@ Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Stefan Markovic <smarkovic@wavecomp.com>,
  Aleksandar Markovic <amarkovic@wavecomp.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 31/33] target/mips: Add emulation of MXU Q8MADL instruction
-Date: Thu,  8 Jun 2023 13:42:20 +0300
-Message-Id: <20230608104222.1520143-32-lis8215@gmail.com>
+Subject: [PATCH 32/33] target/mips: Add emulation of MXU S32SFL instruction
+Date: Thu,  8 Jun 2023 13:42:21 +0300
+Message-Id: <20230608104222.1520143-33-lis8215@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 References: <20230608104222.1520143-1-lis8215@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=lis8215@gmail.com; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,110 +96,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The instruction is used to parallel multiply and accumulate
-four 8-bit data.
+The instruction shuffles 8 bytes in two registers by
+one of 4 predefined patterns.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
 ---
- target/mips/tcg/mxu_translate.c | 75 +++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ target/mips/tcg/mxu_translate.c | 81 +++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
 diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index 7970b70fe1..ea2768cd57 100644
+index ea2768cd57..1e043908db 100644
 --- a/target/mips/tcg/mxu_translate.c
 +++ b/target/mips/tcg/mxu_translate.c
-@@ -408,6 +408,7 @@ enum {
-     OPC_MXU__POOL20  = 0x39,
+@@ -409,6 +409,7 @@ enum {
      OPC_MXU__POOL21  = 0x3A,
      OPC_MXU_Q16SCOP  = 0x3B,
-+    OPC_MXU_Q8MADL   = 0x3C,
+     OPC_MXU_Q8MADL   = 0x3C,
++    OPC_MXU_S32SFL   = 0x3D,
  };
  
  
-@@ -1425,6 +1426,77 @@ static void gen_mxu_q8mul_mac(DisasContext *ctx, bool su, bool mac)
-     gen_store_mxu_gpr(t1, XRa);
+@@ -3963,6 +3964,83 @@ static void gen_mxu_q16scop(DisasContext *ctx)
+     gen_store_mxu_gpr(t4, XRd);
  }
  
 +/*
-+ * Q8MADL  XRd, XRa, XRb, XRc
-+ *   Parallel quad unsigned 8 bit multiply and accumulate.
-+ *   e.g. XRd[0..3] = XRa[0..3] + XRb[0..3] * XRc[0..3]
++ *  S32SFL XRa, XRd, XRb, XRc
++ *    Shuffle bytes according to one of four patterns.
 + */
-+static void gen_mxu_q8madl(DisasContext *ctx)
++static void gen_mxu_s32sfl(DisasContext *ctx)
 +{
-+    TCGv t0, t1, t2, t3, t4, t5, t6, t7;
-+    uint32_t XRa, XRb, XRc, XRd, aptn2;
++    uint32_t XRd, XRc, XRb, XRa, ptn2;
 +
-+    t0 = tcg_temp_new();
-+    t1 = tcg_temp_new();
-+    t2 = tcg_temp_new();
-+    t3 = tcg_temp_new();
-+    t4 = tcg_temp_new();
-+    t5 = tcg_temp_new();
-+    t6 = tcg_temp_new();
-+    t7 = tcg_temp_new();
++    XRd  = extract32(ctx->opcode, 18, 4);
++    XRc  = extract32(ctx->opcode, 14, 4);
++    XRb  = extract32(ctx->opcode, 10, 4);
++    XRa  = extract32(ctx->opcode,  6, 4);
++    ptn2 = extract32(ctx->opcode, 24, 2);
 +
-+    XRa = extract32(ctx->opcode, 6, 4);
-+    XRb = extract32(ctx->opcode, 10, 4);
-+    XRc = extract32(ctx->opcode, 14, 4);
-+    XRd = extract32(ctx->opcode, 18, 4);
-+    aptn2 = extract32(ctx->opcode, 24, 2);
++    TCGv t0 = tcg_temp_new();
++    TCGv t1 = tcg_temp_new();
++    TCGv t2 = tcg_temp_new();
++    TCGv t3 = tcg_temp_new();
 +
-+    gen_load_mxu_gpr(t3, XRb);
-+    gen_load_mxu_gpr(t7, XRc);
++    gen_load_mxu_gpr(t0, XRb);
++    gen_load_mxu_gpr(t1, XRc);
 +
-+    tcg_gen_extract_tl(t0, t3,  0, 8);
-+    tcg_gen_extract_tl(t1, t3,  8, 8);
-+    tcg_gen_extract_tl(t2, t3, 16, 8);
-+    tcg_gen_extract_tl(t3, t3, 24, 8);
-+
-+    tcg_gen_extract_tl(t4, t7,  0, 8);
-+    tcg_gen_extract_tl(t5, t7,  8, 8);
-+    tcg_gen_extract_tl(t6, t7, 16, 8);
-+    tcg_gen_extract_tl(t7, t7, 24, 8);
-+
-+    tcg_gen_mul_tl(t0, t0, t4);
-+    tcg_gen_mul_tl(t1, t1, t5);
-+    tcg_gen_mul_tl(t2, t2, t6);
-+    tcg_gen_mul_tl(t3, t3, t7);
-+
-+    gen_load_mxu_gpr(t4, XRa);
-+    tcg_gen_extract_tl(t6, t4, 0, 8);
-+    tcg_gen_extract_tl(t7, t4, 8, 8);
-+    if (aptn2 & 1) {
-+        tcg_gen_sub_tl(t0, t6, t0);
-+        tcg_gen_sub_tl(t1, t7, t1);
-+    } else {
-+        tcg_gen_add_tl(t0, t6, t0);
-+        tcg_gen_add_tl(t1, t7, t1);
++    switch (ptn2) {
++    case 0:
++        tcg_gen_andi_tl(t2, t0, 0xff000000);
++        tcg_gen_andi_tl(t3, t1, 0x000000ff);
++        tcg_gen_deposit_tl(t3, t3, t0,  8, 8);
++        tcg_gen_shri_tl(t0, t0,  8);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t3, t3, t0, 24, 8);
++        tcg_gen_deposit_tl(t3, t3, t1, 16, 8);
++        tcg_gen_shri_tl(t0, t0,  8);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t2, t2, t0,  8, 8);
++        tcg_gen_deposit_tl(t2, t2, t1,  0, 8);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t2, t2, t1, 16, 8);
++        break;
++    case 1:
++        tcg_gen_andi_tl(t2, t0, 0xff000000);
++        tcg_gen_andi_tl(t3, t1, 0x000000ff);
++        tcg_gen_deposit_tl(t3, t3, t0, 16, 8);
++        tcg_gen_shri_tl(t0, t0,  8);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t2, t2, t0, 16, 8);
++        tcg_gen_deposit_tl(t2, t2, t1,  0, 8);
++        tcg_gen_shri_tl(t0, t0,  8);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t3, t3, t0, 24, 8);
++        tcg_gen_deposit_tl(t3, t3, t1,  8, 8);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t2, t2, t1,  8, 8);
++        break;
++    case 2:
++        tcg_gen_andi_tl(t2, t0, 0xff00ff00);
++        tcg_gen_andi_tl(t3, t1, 0x00ff00ff);
++        tcg_gen_deposit_tl(t3, t3, t0,  8, 8);
++        tcg_gen_shri_tl(t0, t0, 16);
++        tcg_gen_shri_tl(t1, t1,  8);
++        tcg_gen_deposit_tl(t2, t2, t1,  0, 8);
++        tcg_gen_deposit_tl(t3, t3, t0, 24, 8);
++        tcg_gen_shri_tl(t1, t1, 16);
++        tcg_gen_deposit_tl(t2, t2, t1, 16, 8);
++        break;
++    case 3:
++        tcg_gen_andi_tl(t2, t0, 0xffff0000);
++        tcg_gen_andi_tl(t3, t1, 0x0000ffff);
++        tcg_gen_shri_tl(t1, t1, 16);
++        tcg_gen_deposit_tl(t2, t2, t1,  0, 16);
++        tcg_gen_deposit_tl(t3, t3, t0, 16, 16);
++        break;
 +    }
-+    tcg_gen_extract_tl(t6, t4, 16, 8);
-+    tcg_gen_extract_tl(t7, t4, 24, 8);
-+    if (aptn2 & 2) {
-+        tcg_gen_sub_tl(t2, t6, t2);
-+        tcg_gen_sub_tl(t3, t7, t3);
-+    } else {
-+        tcg_gen_add_tl(t2, t6, t2);
-+        tcg_gen_add_tl(t3, t7, t3);
-+    }
 +
-+    tcg_gen_andi_tl(t5, t0, 0xff);
-+    tcg_gen_deposit_tl(t5, t5, t1,  8, 8);
-+    tcg_gen_deposit_tl(t5, t5, t2, 16, 8);
-+    tcg_gen_deposit_tl(t5, t5, t3, 24, 8);
-+
-+    gen_store_mxu_gpr(t5, XRd);
++    gen_store_mxu_gpr(t2, XRa);
++    gen_store_mxu_gpr(t3, XRd);
 +}
 +
  /*
-  * S32LDD  XRa, Rb, S12 - Load a word from memory to XRF
-  * S32LDDR XRa, Rb, S12 - Load a word from memory to XRF
-@@ -4886,6 +4958,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU_Q16SCOP:
-             gen_mxu_q16scop(ctx);
+  *                 MXU instruction category: align
+  *                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@@ -4961,6 +5039,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+         case OPC_MXU_Q8MADL:
+             gen_mxu_q8madl(ctx);
              break;
-+        case OPC_MXU_Q8MADL:
-+            gen_mxu_q8madl(ctx);
++        case OPC_MXU_S32SFL:
++            gen_mxu_s32sfl(ctx);
 +            break;
          default:
              return false;
