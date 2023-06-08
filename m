@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4966727D6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 13:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC67727ED8
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 13:33:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7DMn-00055j-Po; Thu, 08 Jun 2023 06:59:45 -0400
+	id 1q7DsK-0004H1-H2; Thu, 08 Jun 2023 07:32:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q7DMl-00055K-3j
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:59:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1q7DsI-0004Gs-FM
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 07:32:18 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q7DMj-0001ar-Fm
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:59:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686221980;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NOWvzjUiRTuVDExOV+88QaHrEI45YjcBKCpHi+RGS08=;
- b=bAymnoEIfBk/P0g2rf+lh3V+PntwFo/IHdD7g0e2Jewzw9inCMyF7L/IZIkE7tO+ntQDK3
- moHAQmLAniXOldRIF2XFLeKrql0UZNQRAg9sYDozKYdusJw0K278nt4klVTV3rG/BsEukU
- w5wk7XOKFvZNG59hYKohWrCzj2cmNsw=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-dxOB2ve4MIa5VudN1wZ-uQ-1; Thu, 08 Jun 2023 06:59:39 -0400
-X-MC-Unique: dxOB2ve4MIa5VudN1wZ-uQ-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-565a33c35b1so7347637b3.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:59:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686221978; x=1688813978;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NOWvzjUiRTuVDExOV+88QaHrEI45YjcBKCpHi+RGS08=;
- b=PViG70r7UOl2YzFRM/FgZEtd6Njb3XE78Q08OCbbgB8kKjMO9SPvoPfak5H61hdM/v
- nS5mCvn1I81GH6dltPI8wH32S1L+7YV90tc6tgaj8+vn4Q+j85jZWyCqgskzT1z/G7lA
- xbyzN2j5xd7J/1bCsPjBMnf7fwaF/+rGB6p1UNwXGqIvSC40kenHmNTI0474yddOwWQ5
- Kn6kcebn6cwabbiqaDN3oPlM9o02MxtS/cS4lTiEa0/5BDQjHJ8T/5tiCZ5EL1/uHePq
- bV/ia43TxIemJJaMv9dy57jvP2XFjm9EAoOgF28D+/6lOQ3BwrIDh16TQOTqBOdNUPXN
- jS8Q==
-X-Gm-Message-State: AC+VfDzGDUQK+ZTmDWTAoFlG9EcUlwcCNUiVPGgkq3bFMfV5PKu21moG
- 2WsWOvYfs/SNOsr9I+WvnmzGzOSHjNj72YRQ+R7AtvE29jDaMSf++SAMgkiIMq/IhZIpGQ1XIX5
- ByFs0r9R3KMGocSQvP4ieBDpnEiz2JvSLym845DYIaQ==
-X-Received: by 2002:a81:4996:0:b0:569:75bb:5124 with SMTP id
- w144-20020a814996000000b0056975bb5124mr10112574ywa.35.1686221978543; 
- Thu, 08 Jun 2023 03:59:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6ynQFFnVBBmo98wjjAbiNxcGLWRCIOIq573VCyO0Jgw4BJeqmZ9bRJVDo8hg2Fv1iB0Y8BgSeP6zaRhUWOgLw=
-X-Received: by 2002:a81:4996:0:b0:569:75bb:5124 with SMTP id
- w144-20020a814996000000b0056975bb5124mr10112559ywa.35.1686221978164; Thu, 08
- Jun 2023 03:59:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1q7DsG-0000n4-8A
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 07:32:18 -0400
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 358BQYWL031842; Thu, 8 Jun 2023 11:32:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=cKT+ART2RF2Gz1+y4NZQXZD/QkLZUSckgM0o1hRAFmg=;
+ b=Jac/rPE3IqxWXoVuMDlvzXHfECsdaO8icESFK1ALVbHhR4SX8LrXqTPh/I1/+ck5YOhC
+ uPDbczCSJY9LJOUQiIQUGPdKPlUp9BsgBUptl9uJ2zMBUY4WSnampnYo2ivDcKtG1zO7
+ Tf0alYmsdXpQPjilS9fm90JZEufWno1lmca6MJCXkM0DemV9xwBlKG2fvi6kuKF25I66
+ oq8n/7RN7s39P4NiKorOtqHf3CiMSz3y4H5g/L7v34xYCT89l/IjrIsU3rGZOVT1eJdp
+ DuQdEDOnAQXmiy8j2hoHvr8gSt1SPWEOkRlHHy6HUotkZF0aTZhNlaPn0yAWgDlRrJd0 2w== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r36pdruah-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Jun 2023 11:32:13 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 358BWCsk028641
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 8 Jun 2023 11:32:12 GMT
+Received: from [10.251.41.210] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 8 Jun 2023
+ 04:32:10 -0700
+Message-ID: <f64e93e3-20d2-06a8-3784-999087ea6996@quicinc.com>
+Date: Thu, 8 Jun 2023 13:32:08 +0200
 MIME-Version: 1.0
-References: <20230607170842.488489-1-lingshan.zhu@intel.com>
- <CAJaqyWdQRDb=cev7LUXKiK9-gBhB2CY7fmcT-M+pdjgb29qDcw@mail.gmail.com>
- <65fd10d6-2ede-3e91-4356-36623b53db5a@intel.com>
- <CAJaqyWfgeN1u97z5W0Z6cCrJYrZBRV1p9je3_DoOv2XghY9XTw@mail.gmail.com>
- <b3b911b8-3064-21cf-7fa5-adfb597d8cf7@intel.com>
-In-Reply-To: <b3b911b8-3064-21cf-7fa5-adfb597d8cf7@intel.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 8 Jun 2023 12:59:01 +0200
-Message-ID: <CAJaqyWetO0gcZ+yjT5PURrzFZceq5RApW9Vf6mypLnXn=fpXmQ@mail.gmail.com>
-Subject: Re: [PATCH] vdpa: dont check vhost_vdpa->suspended when unsupported
-To: "Zhu, Lingshan" <lingshan.zhu@intel.com>
-Cc: jasowang@redhat.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH] ui/sdl2: Allow high-dpi
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+CC: <qemu-devel@nongnu.org>, Gerd Hoffmann <kraxel@redhat.com>
+References: <20230607090434.53682-1-quic_acaggian@quicinc.com>
+ <CAMxuvaxGSdtO-i+ktzE3YpndfuhWCDoR6JqEoautt10adGXndg@mail.gmail.com>
+From: Antonio Caggiano <quic_acaggian@quicinc.com>
+In-Reply-To: <CAMxuvaxGSdtO-i+ktzE3YpndfuhWCDoR6JqEoautt10adGXndg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: B4eYcyGTsdXQjC6wbAiKkWqrgF12o4S_
+X-Proofpoint-ORIG-GUID: B4eYcyGTsdXQjC6wbAiKkWqrgF12o4S_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-08_08,2023-06-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ suspectscore=0 malwarescore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ mlxscore=0 clxscore=1015 bulkscore=0 phishscore=0 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306080099
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_acaggian@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,131 +101,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 8, 2023 at 11:34=E2=80=AFAM Zhu, Lingshan <lingshan.zhu@intel.c=
-om> wrote:
->
->
->
-> On 6/8/2023 4:49 PM, Eugenio Perez Martin wrote:
-> > On Thu, Jun 8, 2023 at 9:07=E2=80=AFAM Zhu, Lingshan <lingshan.zhu@inte=
-l.com> wrote:
-> >>
-> >>
-> >> On 6/7/2023 9:51 PM, Eugenio Perez Martin wrote:
-> >>> On Wed, Jun 7, 2023 at 11:09=E2=80=AFAM Zhu Lingshan <lingshan.zhu@in=
-tel.com> wrote:
-> >>>> When read the state of a virtqueue, vhost_vdpa need
-> >>>> to check whether the device is suspended.
-> >>>>
-> >>>> This commit verifies whether VHOST_BACKEND_F_SUSPEND is
-> >>>> negotiated when checking vhost_vdpa->suspended.
-> >>>>
-> >>> I'll add: Otherwise, qemu prints XXX error message.
-> >>>
-> >>> On second thought, not returning an error prevents the caller
-> >>> (vhost.c:vhost_virtqueue_stop) from recovering used idx from the
-> >>> guest.
-> >>>
-> >>> I'm not sure about the right fix for this, should we call
-> >>> virtio_queue_restore_last_avail_idx here? Communicate that the backen=
-d
-> >>> cannot suspend so vhost.c can print a better error message?
-> >> I agree it is better not to return an error.
-> >>
-> >> Instead if neither the device does not support _F_SUSPEND nor failed t=
-o
-> >> suspend,
-> >> I think vhost_vdpa should try to read the last_avail_idx from
-> >> the device anyway. We can print an error message here,
-> >> like: failed to suspend, the value may not reliable.
-> >>
-> > We need to drop that value if it is not reliable. If the device keeps
-> > using descriptors, used_idx may increase beyond avail_idx, so the
-> > usual is to just restore whatever used_idx value the guest had at
-> > stop.
-> This interface is used to read the last_avail_idx, the ideal case
-> is to fetch it after device has been suspended.
->
-> If the device is not suspended, the value may be unreliable
-> because the device may keep consuming descriptors.
-> However at that moment, the guest may be freezed as well,
-> so the guest wouldn't supply more available descriptors to the device.
->
+Hi Marc-André,
 
-Actually, if we cannot suspend the device we reset it, as we cannot
-afford to modify used_idx.
+On 07/06/2023 12:21, Marc-André Lureau wrote:
+> Hi Antonio
+> 
+> On Wed, Jun 7, 2023 at 1:05 PM Antonio Caggiano <quic_acaggian@quicinc.com>
+> wrote:
+> 
+>> Add the SDL_WINDOW_ALLOW_HIGHDPI flag when creating a window and get the
+>> drawable size instead of the window size when setting up the framebuffer
+>> and the viewport.
+>>
+>>
+> What does this actually change?
 
-I'm thinking now that your original idea was way better to be honest.
-To not call vhost_get_vring_base in case the VM is shutting down and
-we're not migrating seems to fit the situation way better. We save an
-ioctl / potential device call for nothing.
+The sdl2-gl backend does not work properly on high-DPI windows. [0]
+My understanding is that by allowing high-DPI, SDL creates a framebuffer 
+with the right size in pixels which might be different than the size of 
+the window. [1]
+I believe we just need to use the framebuffer size for GL viewport and 
+texture, by retrieving it with SDL_GL_GetDrawableSize.
 
-> I think that means the last_avail_idx may not be reliable but still safe,
-> better than read nothing. Because the last_avail_idx always lags behind
-> the in-guest avail_idx.
->
+> What about non-gl display, Mouse motion, and display resize?
 
-Assuming we're migrating and we don't either reset or suspend the device
-* guest set avail_idx=3D3
-* device fetch last_avail_idx=3D3
-* guest set avail_idx=3D6
-* VM_SUSPEND
-* we call unreliable get_vring_base, and obtain device state 3.
-* device is not reset, so it reads guest's avail_idx =3D 6. It can
-process the descriptors in avail_idx position 3, 4 and 5, and write
-that used_idx.
-* virtio_load detects that inconsistency, as (uint)last_avail_idx -
-(uint)used_idx > vring size.
+ From what I can see by testing the SDL2 renderer, it seems to handle 
+all of this transparently, so there is nothing we need to do in sdl2-2d.
 
-So I think we need to keep printing an error and recovery from the
-guest as a fallback.
+Same for mouse motion, which I believe is using window "screen coordinates".
 
-> I am not sure we can restore last_avail_idx with last_used_idx, there is
-> always
-> a delta between them.
->
+Display resize is a bit weird for a bunch of frames, but then it fixes 
+itself.
 
-Yes, we assume it is safe to process these descriptors again or that
-they'll be migrated when that is supported.
+[0] 
+https://user-images.githubusercontent.com/6058008/244368628-329241dc-267d-452f-b8ce-816ae1623131.png
+[1] https://wiki.libsdl.org/SDL2/SDL_GetWindowSize#remarks
 
-In any case, if a device does not work with this, we should be more
-restrictive, not less.
+> 
+> thanks
+> 
+> Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+>> ---
+>>   ui/sdl2-gl.c | 4 ++--
+>>   ui/sdl2.c    | 2 +-
+>>   2 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+>> index bbfa70eac3..251b7d56d6 100644
+>> --- a/ui/sdl2-gl.c
+>> +++ b/ui/sdl2-gl.c
+>> @@ -53,7 +53,7 @@ static void sdl2_gl_render_surface(struct sdl2_console
+>> *scon)
+>>       SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
+>>       sdl2_set_scanout_mode(scon, false);
+>>
+>> -    SDL_GetWindowSize(scon->real_window, &ww, &wh);
+>> +    SDL_GL_GetDrawableSize(scon->real_window, &ww, &wh);
+>>       surface_gl_setup_viewport(scon->gls, scon->surface, ww, wh);
+>>
+>>       surface_gl_render_texture(scon->gls, scon->surface);
+>> @@ -239,7 +239,7 @@ void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
+>>
+>>       SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
+>>
+>> -    SDL_GetWindowSize(scon->real_window, &ww, &wh);
+>> +    SDL_GL_GetDrawableSize(scon->real_window, &ww, &wh);
+>>       egl_fb_setup_default(&scon->win_fb, ww, wh);
+>>       egl_fb_blit(&scon->win_fb, &scon->guest_fb, !scon->y0_top);
+>>
+>> diff --git a/ui/sdl2.c b/ui/sdl2.c
+>> index 9d703200bf..c9c83815ca 100644
+>> --- a/ui/sdl2.c
+>> +++ b/ui/sdl2.c
+>> @@ -95,7 +95,7 @@ void sdl2_window_create(struct sdl2_console *scon)
+>>       }
+>>   #ifdef CONFIG_OPENGL
+>>       if (scon->opengl) {
+>> -        flags |= SDL_WINDOW_OPENGL;
+>> +        flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+>>       }
+>>   #endif
+>>
+>> --
+>> 2.40.0
+>>
+>>
+> 
 
-Does it make sense to you?
-
-Thanks!
-
-> Thanks
->
-> > Thanks!
-> >
-> >> Thanks
-> >>> Thanks!
-> >>>
-> >>>> Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
-> >>>> ---
-> >>>>    hw/virtio/vhost-vdpa.c | 2 +-
-> >>>>    1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> >>>> index b3094e8a8b..ae176c06dd 100644
-> >>>> --- a/hw/virtio/vhost-vdpa.c
-> >>>> +++ b/hw/virtio/vhost-vdpa.c
-> >>>> @@ -1397,7 +1397,7 @@ static int vhost_vdpa_get_vring_base(struct vh=
-ost_dev *dev,
-> >>>>            return 0;
-> >>>>        }
-> >>>>
-> >>>> -    if (!v->suspended) {
-> >>>> +    if ((dev->backend_cap & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) && (!=
-v->suspended)) {
-> >>>>            /*
-> >>>>             * Cannot trust in value returned by device, let vhost re=
-cover used
-> >>>>             * idx from guest.
-> >>>> --
-> >>>> 2.39.1
-> >>>>
->
-
+Cheers,
+Antonio
 
