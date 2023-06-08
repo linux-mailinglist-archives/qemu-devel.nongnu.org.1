@@ -2,138 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE01728B79
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D9E728BEA
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 01:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Oay-0004Z8-Bv; Thu, 08 Jun 2023 18:59:08 -0400
+	id 1q7PDW-00051N-7o; Thu, 08 Jun 2023 19:38:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1q7Oaw-0004Yh-2v
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:59:06 -0400
-Received: from mail-co1nam11on2074.outbound.protection.outlook.com
- ([40.107.220.74] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <sheshas@marvell.com>)
+ id 1q7PDR-000512-Vk
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 19:38:54 -0400
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1q7Oat-0007e6-Mm
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:59:05 -0400
+ (Exim 4.90_1) (envelope-from <sheshas@marvell.com>)
+ id 1q7PDO-0002Ii-M4
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 19:38:52 -0400
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+ by mx0b-0016f401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 358NXfmL015422; Thu, 8 Jun 2023 16:38:37 -0700
+Received: from nam11-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11lp2172.outbound.protection.outlook.com [104.47.57.172])
+ by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3r30eu4p0h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Jun 2023 16:38:37 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c+pk+whsXXNeovM+JIavJj88iB7+ZbAlSapL+tcCGgII7nOyJyrvay/vybe3fo1BQq1pdCPdlIrxEzT/xEUB/7WcEf3gLaGnuqV4zSeaPHP5LAzGl/bTLOnSuDQ9yc9rL44DJwuHdZu8R9eTcTffADEOfI1xoLp3CRghmCeE9lflRjmxQUHbJnYqW0khV0a/mBCBPVvMmgtqXZXtN7g7jwpS0JoBNjSeJcNVBrmCcWuLRWkgz4eJxGX3Bf5hW3HtxwO/pUrkANueQAygL/iogJiGhQ79DlqJWarUxPPRwmGthbJndjcKxuDVmtVblPD8C2lD143cFLtZvkMA1unN6w==
+ b=gDhjj5Rn0aixYeo8gburb9TeoJxEGDrVhDS02WHxIfWcS0b5M2PcAbLGdCqMg70JtH2n14+cvexUtkg6vHl8BhGMoszUEJje2dLXVLzlaYDtIuE4AT25l73s+1yJEOpgszFel3Uq/EMFONsVX5hmnNXdowMK0hXRfVTn5vc8upiSrGD1liUZzalrMypxPhbH9Ai9jORz5lAEmODi5bPLbfK9WtUCfxIiAVY6NqEJYvpSqrNqphx7S2KEYwlOBD58Z7qmUmMuNyaFGn903DacyZsiU8DrZkfGsPQsC4PzRfWuNuhlEdAXokJyg+PYj6aofAMUrp5ePkRyabHeTs4XnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kNPVK6fOGf0FU9MCXi9Kh7f4tefhx46WHXJthc2tsV4=;
- b=Ux+ucy4e558Axe+Muwy9Td3T8OL5B1Mik7FRvhE11DTwsQPdKT16zVJ8SdEK/do7Pgb8ocinQLIFAb47xGEznGMnBMDPP+i936htK7OpDIAPCHMsDdv55G/c0beRo5UCfyNOWOIkST5qEbcgGssg/FcHbzvmBj3q7JU31o7SkJOe7YGJuR2oppiTgWgDKHsaTihB0R/ek0QMgcRxBIvPRki4q3/P8KvobWzPBp1VmtvZc6WQ1yGq26BQfZfKs3UP/2tz6BbehQJBcBWz+KPt3k/GKbK3IaQvEGNwSY1TTb0QQB7KBWRSwY41XPRmriurLdUSOTjV4tA8Fg242WxrHA==
+ bh=NqudU0ZTntfT3B66GtBjQBfppds/44Z7krhtZDpOyKM=;
+ b=OGaqL5JDT2VxFL84d2nD01DdwnW3+qcUnOf3KwguRDgK1IjNiIn0kfPTErtRfjTIVO6sknJVOp7tFfYctPW80IS0p+uXnE/B6WWmGoeSl+G+I+YNUgA8BFzbNPlgvsYbjCqaFbOuhD5yt+B9aSyzJYVqzl8SS4+SiqEPMsAtLx79/ByOfpQMrdoyqgKsYP9VbpyOA7ci9Tb5zI3OuT5fHf0+uOtGaCqYT8qX6YGaqXa5TUGsmCocOeZ5YiA0+yCtAy0/rEUNC3YN2fHN+MRBMZbe0gXMXHRacCfeV34APoEffD2ZICCIHG417rIMtkWGk/n8V1Ict3SOIpjSiY9IcA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
+ dkim=pass header.d=marvell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=marvell.onmicrosoft.com; s=selector1-marvell-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kNPVK6fOGf0FU9MCXi9Kh7f4tefhx46WHXJthc2tsV4=;
- b=DYwOQp0FQdvH8Z+pxoDTe2TalR+MgQw500Ypi34IkQCkQc+7/EMPQZsYAFHbOf+caavTt7CyBghZhyiSyVtuYnNPe0zqPBNVPK+7+w0KnEaFSS47w81pTuIEdci+k3l0Semc0HPZwgGDgb/H/Cryp6Ut4UfItsZwu9tAs9DDqlk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
- by PH0PR12MB7077.namprd12.prod.outlook.com (2603:10b6:510:21d::7)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=NqudU0ZTntfT3B66GtBjQBfppds/44Z7krhtZDpOyKM=;
+ b=Qfv5Pl1Q8+lNbIEdrQ/szQHyHDnUIMDFiB850mX91qN0pzy67PhHcHA/f25NG4gKAL9M77xLB9flLUPc1u3WI+wMpYHaU1k/0zrHXGl9zlyEK/KuMMT+NRpsXWDDc6m6CE5XPwKUbTuffdqh0z40vO5nfBLJTk6/p6c9QoX9N+k=
+Received: from DM6PR18MB2844.namprd18.prod.outlook.com (2603:10b6:5:16f::29)
+ by CH0PR18MB4243.namprd18.prod.outlook.com (2603:10b6:610:ba::18) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Thu, 8 Jun
- 2023 22:53:54 +0000
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::1182:e204:82d8:a4e]) by MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::1182:e204:82d8:a4e%4]) with mapi id 15.20.6477.016; Thu, 8 Jun 2023
- 22:53:54 +0000
-Message-ID: <757f627d-fb00-aa46-0aec-97f7d76cace5@amd.com>
-Date: Thu, 8 Jun 2023 15:53:52 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [QEMU][PATCH v6 4/4] tests/qtest: Introduce tests for Xilinx
- VERSAL CANFD controller
+ 2023 23:38:35 +0000
+Received: from DM6PR18MB2844.namprd18.prod.outlook.com
+ ([fe80::cd6c:c34b:dc45:b864]) by DM6PR18MB2844.namprd18.prod.outlook.com
+ ([fe80::cd6c:c34b:dc45:b864%6]) with mapi id 15.20.6477.016; Thu, 8 Jun 2023
+ 23:38:34 +0000
+From: Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "<\"qemu-devel@nongnu.org\"" <qemu-devel@nongnu.org>
+Subject: Re: [EXT] Re: Concept of LD-ID in QEMU
+Thread-Topic: [EXT] Re: Concept of LD-ID in QEMU
+Thread-Index: AQHZmZPzuyNYjWTGNkuynwSsq4z6h6+AtbmAgAABTICAANWcXA==
+Date: Thu, 8 Jun 2023 23:38:34 +0000
+Message-ID: <DM6PR18MB2844E5BFADF8599A9393358AAF50A@DM6PR18MB2844.namprd18.prod.outlook.com>
+References: <20230607221651.2454764-1-terry.bowman@amd.com>
+ <20230607221651.2454764-15-terry.bowman@amd.com>
+ <DM6PR18MB2844C099FB0671E864AA953DAF53A@DM6PR18MB2844.namprd18.prod.outlook.com>
+ <20230608113153.000033ef@Huawei.com> <20230608113631.00007a53@Huawei.com>
+In-Reply-To: <20230608113631.00007a53@Huawei.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>
-References: <20230530212259.7111-1-vikram.garhwal@amd.com>
- <CAFEAcA9nPRghOXb6vc6eQ_4iGFW3J8z2XyZzgv8BNb1RpBO+wg@mail.gmail.com>
-From: Vikram Garhwal <vikram.garhwal@amd.com>
-In-Reply-To: <CAFEAcA9nPRghOXb6vc6eQ_4iGFW3J8z2XyZzgv8BNb1RpBO+wg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR02CA0030.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::43) To MW3PR12MB4409.namprd12.prod.outlook.com
- (2603:10b6:303:2d::23)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|PH0PR12MB7077:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25844719-29e4-4d09-e5a2-08db68733c19
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9sZVXpZJ5qTSA7pvv//RdgPxFB35Xn8DWLUvBTvoTNZXMJudHN8x+tGLPrZF1zqa7olbc1/DB1SeqscBdZxIkOuCunSG4ymKJ6nnPVR9R/O3sWH7J6Jiwte93Zuramqfwf33WW3rYiTa4UyHYyDxvL8ims91kZ1VMMicYweMLpEzRYs112H9JHSdnQtCr6WjBz8sSWXHbH/8TFzDfkREri/nvS8CBiVDCb2d4qFs2v9Dc1jb3DdHr0EzR6fksBU8PnXZIGIwLDag+C+vSFX/EAnkeu6dzB2p7cibnPB1fuFZgVcpmek5IlWN2KE6cY3O03R3m00bFrQU6ewmIK8XBGhQPtT9N2mf5nYm5AyVOQt4M39/kcwVOMGFr2g2ibslyauRkXgFtyKAcuD+NHD9SQ/KP1Qf9d0eN3hXpylJVpkuOX9DtNd9cMaBjrmncJiZsFM/7wZ2f5S88dtJ2cAuw8Ly0pP1cxdisj1cLXI/e5ZHBaq6t5t8ayLcu7w+c4qQPseG6u6FrnbAN8SOwHOAzN9MCPcKXMN2IMuTJ/a9yDlfW7y9tYWBcfNj5/Yzrnd54iCEMckiyJorwj53psMZX5C0cajPypB/HOjBStMfGtEL5013KI+EvjIWiEwkMOEJJbZ2thoIC4op5kZ3D80lmw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(346002)(136003)(376002)(39860400002)(396003)(366004)(451199021)(86362001)(54906003)(66476007)(38100700002)(4326008)(66946007)(66556008)(6916009)(6486002)(478600001)(186003)(36756003)(8676002)(5660300002)(8936002)(41300700001)(2616005)(31696002)(2906002)(316002)(44832011)(31686004)(53546011)(6512007)(6506007)(26005)(43740500002)(45980500001);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR18MB2844:EE_|CH0PR18MB4243:EE_
+x-ms-office365-filtering-correlation-id: ca8bde74-2c6f-4d0a-e770-08db687979cc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: K13NI713BEDpCQr+WRNHA5lR4sN4y/hQ5Cb+ZB39q9WIn4TarsZITM7OAMx/4gImRgnYteEy43m5EaZor+Br3rDLU/sLpJ9Z37vm1Ya+NUPFkoKYBSisyNjLG7h144FJXVqq3tbXjvKK/YItOHbVlmPAMKiVEVhS50xy8Qzj9kzK10RXmWNxhyNNg5YxUdqDEuJiC1Q4mNeOLqJn0adfTbxjkRXkmUh84svyRE3/MSeH0g0PnP+H2ffaF9eCRPzaAMqMDFhAQGKZz4df6U4LUSppON7ccGxIs0LmK34WtR2LgMNFBexD3s7HWdbAkRiqTx2wdZWzk5WvKTgPSPqGJjx2OFdp4hzynm4mTYvP9PRv17dOhs+nE6RnAWT20IXvYD3JW4Eb8M/QIdi89lANmiLpBwsugGmCAY+e10+kJ5GgDgiHNKwz8MznqwiKvwcVxVQOwXYs7ovuundxYI+AGnTLwuGVdBYnQBHY5NS/OV7kS+7IlxwVvXGil6cMuH94Un+quOYo1YRhKrRdzWU0QaYGUd0VgZcoFD/rRdFQbHh+ljSe2dCwVM+MtV3IGAQ0MgSNoDhD3SjEEHSCVhByRhw7R/YIz6i3YJgRxXCISUg=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR18MB2844.namprd18.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(366004)(376002)(346002)(39860400002)(396003)(136003)(451199021)(55016003)(316002)(122000001)(91956017)(478600001)(8676002)(8936002)(4326008)(66946007)(6916009)(66556008)(41300700001)(76116006)(66476007)(66446008)(64756008)(38100700002)(186003)(83380400001)(966005)(71200400001)(7696005)(6506007)(26005)(53546011)(9686003)(5660300002)(33656002)(86362001)(52536014)(38070700005)(2906002);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NG0yWHN4YUFLT0F2OG9HUTNzMmRmYTlaQWdtZm5WdURCdThvVGt2dmlVbnl2?=
- =?utf-8?B?RVhFVVhYRkVSR1JzckhqNDBFVm1YZEVqZGlBbXZTanJiOEoveDB5ZkVIemFz?=
- =?utf-8?B?Yks2OVdac045R0dJdTQ3WDFHeGhNeGVTUXlJNWFvTWx1K0ZURWxkWHpOT1Jz?=
- =?utf-8?B?dHpscWJHQm1ReDl5dWZCa0lNemt1aWM3R05CbFlTYU5TRzU1VVB1MFpneS9Q?=
- =?utf-8?B?WWhuUG9OZ1pFUFBlTWxMNUtCdWVMY2tpN0NNNW53a2Q4M0YrcEhqWU40MStq?=
- =?utf-8?B?b0NtU3JZVHVRSy9UT0llajl1S25TdlVOQ1FVcmIzbkFheTh4UUw4R0huVHNk?=
- =?utf-8?B?Umo0Rlc3TDkzVzE4VUdjbTB1OEJxQkdBVldneHRnY2JYelh3dlo1L3JiUU9R?=
- =?utf-8?B?VWhtc2kyTC8xd0RNdTF3WWtJR0sxYVRTd1NFelpKVHpCRWY2T0kvTmpmU2xY?=
- =?utf-8?B?NXVieVFLQnczS1FJRWxTOGxMTlhOc2tjbHd0eng0aVVJTElVOWRJcUVPaDJY?=
- =?utf-8?B?dkN3N1IveDlVOUgybjVHdUsya1JySmQxak9mOEd6Y2dPOHArOUVWRHhMc1lQ?=
- =?utf-8?B?U3NJUER3L0dTV0NFRlZ2aVlsWjB0cXdHalJwa1grK09adjdUU2lIN01xTEJ0?=
- =?utf-8?B?emkyNlBlZ1Q0N29mUzhmQXN6ZjZpTnlCdTRtRUVxb2FxUUZkRk56N3pRVTZM?=
- =?utf-8?B?c0xCUW55WWNzejgvb2FIc2l1QnQ4WlhEbzRFZHpqcDI0OVBCU1orWHFYREdJ?=
- =?utf-8?B?c3cvWHVBL1BtVUVmYlA1bUFYRGs1ZWFxYWNqaGFNcE9jZFF0L3h1SGVLaWlR?=
- =?utf-8?B?elVDQ0JMR25teGRLdXBDbEZpbWQ1czRpWTc4M3A3bktCNm1GTG5rdkY5STlI?=
- =?utf-8?B?M3JnZ3J1dzBxa1FpSmhzTjcrUk9RcGxxVjlwUEl2YnFiS1ZzMUphQm9iTlBP?=
- =?utf-8?B?T1FrUXRCWDlZT0tXcURLSDk3T0kvYzRCZ3lMWDJVR3R5elZtU2YzaUl3bUZa?=
- =?utf-8?B?YWxTSTgzSGVyUm9CWGNaTi9RTmw0Nm11dkt3bWd3cTFRMUpFYlZSKzBXQU9B?=
- =?utf-8?B?WHdPQUx1OFVaUVFwTWl3V2NWRDFQY2EvUXZqakhlZDYrK2pUbzQ5dHRyR0U0?=
- =?utf-8?B?UysreWcwWmxtODM2VHNxTlIvUjZ5dHJaQ3BOeE54UUhQSnRQaFJ0dERHQm9n?=
- =?utf-8?B?M0VaclpYZG9lT2piMHY3M24vT3V4VkZocCt6cDRDMTY5V3pnclYvUVhzK1V0?=
- =?utf-8?B?cWdVYlRJNlJHNisxeUFocUsrT1pYY0dNMUVRb1RqNjJDYU5renJIOEs5a2tD?=
- =?utf-8?B?Nzl2ckt4VUhVdVduZWo0WDdFRW9lbVJ1bENuTzFqeWIxdmFudzhBSUVnWDJE?=
- =?utf-8?B?bmRiZkxyeHNPd0FEWE9vNVRyVXVMNHp2aVFtaUpCQkRoRXhNbkpwcndubEdE?=
- =?utf-8?B?Qmx5K01qRTlrMXV3RHV4a1FUTjVXYjZrUEdrQUlvUzBiajhEYUN4Y0g5T1F3?=
- =?utf-8?B?RGwyaDMxNXVxcXpYczB5U3J2c05sZGRVbEJXTjVIU2lza1paTUx0MUM1MFdU?=
- =?utf-8?B?a2YzOXhLb3RCU0JWSUNGU2E1ZHV0akw0NTh5aVVvU2FIWGJ6RndiSVN6dEhp?=
- =?utf-8?B?VDBSRkhkemxyQmZOcXBQc0lFT3BUdEJQeFh5M1d6WjcxS0FlTmJ0M3VFL0xj?=
- =?utf-8?B?VzNkYlFSb3k3Y2NDT3RRMlpZMnhYcTY3R3lDYzB6VE9RdFJ0UFFZb3llZzRV?=
- =?utf-8?B?cjNKZDArb0NRSjhWTEh1SkhIVG5pRVJGQmJkN2U3clhvMXhFRG5LZktQKzE2?=
- =?utf-8?B?SGlxTVR0aEI5YUI5NWxOWms3OE95OGszUys1TWd3Q1d1OS9DRkUxUjBLOExw?=
- =?utf-8?B?ODZrWDdpOGRCdEtyVUU3L1lXZkNEODZpQ0xRbHZhRUJsK25rS0NHUEY2ZWpQ?=
- =?utf-8?B?cVFYT28xRTdrREhCcnFQUEJPYThVZWZTeHB6UjEwK0tlVHhIWEdodTNQalpW?=
- =?utf-8?B?ZTlGYWE5bUZRZ2hEZU1DQUVOZTBqR09wT2xITlUyMlg1K1o0MFRkak1lMXlP?=
- =?utf-8?B?cGJlME0xZDVkMnlnV3l5MnI4NUF6SUtBZVNUbFEwQTZVczVlNkwyb3pyL3NH?=
- =?utf-8?Q?K6kMluEsN4ictkcavjZGGTsxX?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25844719-29e4-4d09-e5a2-08db68733c19
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fy2HFXfXU+4Xg981lDQcSAgwqJ0uUWu7foGoGAHpkEE1S5Rg+zyGzjSRWd?=
+ =?iso-8859-1?Q?44EQ4TopBXXqd8XDsp7PlOTcBzxHbQolKODX7Didb3AdIMe/aCNLqz+17D?=
+ =?iso-8859-1?Q?v4dl0mmjqSm3/CmafBSMCpxA/e1ScFzB5uDqSOdGZbgUoYWDLghOf3IROI?=
+ =?iso-8859-1?Q?bIKoTJkJHaOaZ1GjjO4jBg6Vb6ajy9RgCVvvECJ30XhStuFHNm4PPiJ22Q?=
+ =?iso-8859-1?Q?PFgGiatVWjm15qPIy/4iOKeVLtc05LKgn63dT68UcKr1XeUoQMDzK4VcQV?=
+ =?iso-8859-1?Q?eP64hXdlayGareugLF0c27iu37yuSoFd5xr2r9XKQfy2/A1c6oT9M/M1iZ?=
+ =?iso-8859-1?Q?FRYAdWhdzZvBRcplc7OHRKQKDRYEE9DebJde7l2VgOxZyXmOLtKjGQaUca?=
+ =?iso-8859-1?Q?Kugzz87GGI/LYFw851YJuQuD7x7cS9O715ECv58tJJE4+5N84n51R6gy3Q?=
+ =?iso-8859-1?Q?W53Yo9m7z5ixT2EYirreh25gZhGlzhQtWESFO24Lmg9pmHRxhQehC2d/F+?=
+ =?iso-8859-1?Q?Z6lE05JiR3/MbOJGYaTy8uxdead5h5PRnQ0VIfxCBM5gflF3ripa8fruLt?=
+ =?iso-8859-1?Q?kKWk4uuEJzUpw01d3oNgjSc3tCf4g3m6Y/zwZWhiG+s4nMGE+DmWSVpAbL?=
+ =?iso-8859-1?Q?TFVa3eWa37/4tJWIYUqUgHx9HpVtnPcr/Tmhmh19WqUsWX0aj+hQW9b9W6?=
+ =?iso-8859-1?Q?WOANpxy3VMV180hkkec0ojB32f0o79AJiWmfCihCJTXSc8DkoDH/6DE+ER?=
+ =?iso-8859-1?Q?NHtx9Mp4wsRcQB8Um6R6W+vSauW/LOn3UDn2nLlwBQvbfTugFLsTw19Z1D?=
+ =?iso-8859-1?Q?M6nb4GK2I4gOvP2VDy8m2AqI2R2BDsp734IqC2v3FqmgEq8dvvACb2nEdk?=
+ =?iso-8859-1?Q?QwKmDll25YMT07H9XMsu0ACb/YZiABVKJAJ0r6LHTNOhlUrkXUqf+h6WB6?=
+ =?iso-8859-1?Q?3RYQoblt9jDzebSOHFZtHKRJ5K/SOLHi8EYkprRRxpsi8Fz1ThtZtfkKz/?=
+ =?iso-8859-1?Q?ZPLbCzvmHIFw8kLHzdLxDv4p/mPEAoBI/GL6/Pzp8/jVR8U1wygY1IVm/g?=
+ =?iso-8859-1?Q?AGs5xyDn7eM0otSXblVFbEAjN/NuK0u45Fnav09RjMKTeAC32i9DkjOC/C?=
+ =?iso-8859-1?Q?W/uCZaCWgDGTNZ0u8OH0/JvzTY4dLaYsBzzfMgRlx67ZN0K3cfXZeuc1vY?=
+ =?iso-8859-1?Q?Z5Rra6FqFXh2R3x79Kn46aRM6/A+SNIxg90HakuDochIuPhKdAiM2FWNpb?=
+ =?iso-8859-1?Q?bF3mfr00yfUrvXV/TkuAiP2DR621vK1m7MCeXDcWOBI15MDsqBIfNhxAJa?=
+ =?iso-8859-1?Q?BZXB9nPjBx6gFWs03HyH9KXdMHHhNLvOwuG/B3Ov8XszlCOflXwkzGPUZ8?=
+ =?iso-8859-1?Q?RcuevyxncgEQtHZJ7dCoSbXlMqxzMdnKIJRIlN265qweE/VsCHeGPxBh7u?=
+ =?iso-8859-1?Q?s6uqpGECVMxs7CfA9VknRMxwEeUd1TYRrDIrnKLwRFDDsxArxx2FcSs6/n?=
+ =?iso-8859-1?Q?KzWIcdjpG4S1bvjHbgI1ljejkYrf5Ej5MxnfnFbG1vDmvg5/TvyKCwBda3?=
+ =?iso-8859-1?Q?RSLkN/S11GQU+tqKqfRjBUG1QxBSR2rHDcwC4dIdqmJjQHkYpI1UskQw5u?=
+ =?iso-8859-1?Q?mGdaoQFI9970U=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: marvell.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 22:53:54.3402 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AwBEOOm1OScPxY6MTyRAQHIXJ9h0cpJEU0OiEm0my6W3NkQEpaCNRdrX+7TARoiYVX7nAQqzgTQdoK/yCymrvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7077
-Received-SPF: softfail client-ip=40.107.220.74;
- envelope-from=vikram.garhwal@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR18MB2844.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca8bde74-2c6f-4d0a-e770-08db687979cc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2023 23:38:34.6452 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lbXSmWBWJpIznka+cYtohUMw3XkRYJON3mpr0OQVYHb38bajzQTzKUTGXxsNuELJ4Txk7BPyE7cmY/xQwxqTgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR18MB4243
+X-Proofpoint-ORIG-GUID: nGvU9dSSjkDgBDAGsG2NGKnGjylnDcog
+X-Proofpoint-GUID: nGvU9dSSjkDgBDAGsG2NGKnGjylnDcog
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-08_17,2023-06-08_01,2023-05-22_02
+Received-SPF: pass client-ip=67.231.156.173; envelope-from=sheshas@marvell.com;
+ helo=mx0b-0016f401.pphosted.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,113 +150,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
-Thanks for sharing the details. I will fix these and send a follow up 
-patch soon.
-
-On 6/8/23 2:42 AM, Peter Maydell wrote:
-> On Tue, 30 May 2023 at 22:23, Vikram Garhwal <vikram.garhwal@amd.com> wrote:
->> The QTests perform three tests on the Xilinx VERSAL CANFD controller:
->>      Tests the CANFD controllers in loopback.
->>      Tests the CANFD controllers in normal mode with CAN frame.
->>      Tests the CANFD controllers in normal mode with CANFD frame.
->>
->> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
->> Acked-by: Thomas Huth <thuth@redhat.com>
->> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
->> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Hi; Coverity has spotted some issues with this test code; could
-> you investigate and send followup patches, please ?
->
->
->> +static void match_rx_tx_data(const uint32_t *buf_tx, const uint32_t *buf_rx,
->> +                             bool is_canfd_frame)
->> +{
->> +    uint16_t size = 0;
->> +    uint8_t len = CAN_FRAME_SIZE;
->> +
->> +    if (is_canfd_frame) {
->> +        len = CANFD_FRAME_SIZE;
->> +    }
-> Here len is either 4 (if !is_canfd_frame) or 18 (if is_canfd_frame)...
->
->> +
->> +    while (size < len) {
-> ...and we loop with size always less than len...
->
->> +        if (R_RX0_ID_OFFSET + 4 * size == R_RX0_DLC_OFFSET)  {
->> +            g_assert_cmpint((buf_rx[size] & DLC_FD_BIT_MASK), ==,
->> +                            (buf_tx[size] & DLC_FD_BIT_MASK));
->> +        } else {
->> +            if (!is_canfd_frame && size == 4) {
-> ...so here this condition can never be true: if !is_canfd_frame
-> then we know size is less than 4.
->
-> What was the intention here ?
->
-> (CID 1512900)
->
->> +                break;
->> +            }
->> +
->> +            g_assert_cmpint(buf_rx[size], ==, buf_tx[size]);
->> +        }
->> +
->> +        size++;
->> +    }
->> +}
->> +/*
->> + * Xilinx CANFD supports both CAN and CANFD frames. This test will be
->> + * transferring CAN frame i.e. 8 bytes of data from CANFD0 and CANFD1 through
->> + * canbus. CANFD0 initiate the data transfer to can-bus, CANFD1 receives the
->> + * data. Test compares the can frame data sent from CANFD0 and received on
->> + * CANFD1.
->> + */
->> +static void test_can_data_transfer(void)
->> +{
->> +    uint32_t buf_tx[CAN_FRAME_SIZE] = { 0x5a5bb9a4, 0x80000000,
->> +                                        0x12345678, 0x87654321 };
->> +    uint32_t buf_rx[CAN_FRAME_SIZE] = { 0x00, 0x00, 0x00, 0x00 };
-> The buf_rx[] array here is only 4 bytes long...
->
->> +    uint32_t status = 0;
->> +
->> +    generate_random_data(buf_tx, false);
->> +
->> +    QTestState *qts = qtest_init("-machine xlnx-versal-virt"
->> +                " -object can-bus,id=canbus"
->> +                " -machine canbus0=canbus"
->> +                " -machine canbus1=canbus"
->> +                );
->> +
->> +    configure_canfd(qts, MSR_NORMAL_MODE);
->> +
->> +    /* Check if CANFD0 and CANFD1 are in Normal mode. */
->> +    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
->> +    status = status & STATUS_REG_MASK;
->> +    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
->> +
->> +    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
->> +    status = status & STATUS_REG_MASK;
->> +    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
->> +
->> +    write_data(qts, CANFD0_BASE_ADDR, buf_tx, false);
->> +
->> +    send_data(qts, CANFD0_BASE_ADDR);
->> +    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-> ...but read_data() will write up to 17 bytes of data to the buffer,
-> if the incoming data from the device claims it to be a canfd frame.
-> The device shouldn't really do that, but the point of a test is
-> that the device might not be functioning correctly, so we should
-> size buf_rx[] large enough to fit whatever read_data() writes to it.
->
-> (CID 1512899)
->
->> +    match_rx_tx_data(buf_tx, buf_rx, false);
->> +
->> +    qtest_quit(qts);
->> +}
-> thanks
-> -- PMM
-
+Hi,=0A=
+=0A=
+Thinking a bit more, LD in CXL are PCIe endpoint functions. Therefore 1-1 m=
+apping of cxl-i2c device per PCIe device is sufficient, and we use function=
+ number in BDF as the LD-ID. Does it makes sense ?=0A=
+=0A=
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>=0A=
+Sent: Thursday, June 8, 2023 3:36 AM=0A=
+To: Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>=0A=
+Cc: linux-cxl@vger.kernel.org <linux-cxl@vger.kernel.org>; <"qemu-devel@non=
+gnu.org" <qemu-devel@nongnu.org>=0A=
+Subject: [EXT] Re: Concept of LD-ID in QEMU =0A=
+=A0=0A=
+External Email=0A=
+=0A=
+----------------------------------------------------------------------=0A=
+=0A=
+Shesha,=0A=
+=0A=
+You've sent an email with the 'In-reply-to' set to one of Terry's patches.=
+=0A=
+Please check why that happened and make sure you don't do that in future as=
+=0A=
+it hides your unrelated thread in email clients and the archives!=0A=
+=0A=
+See=0A=
+https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lore.kernel.org_linu=
+x-2Dcxl_20230607221651.2454764-2D1-2Dterry.bowman-40amd.com_T_-23t&d=3DDwIF=
+Aw&c=3DnKjWec2b6R0mOyPaz7xtfQ&r=3DZta64bwn4nurTRpD4LY2OGr8KklkMRPn7Z_Qy0o4u=
+nU&m=3DZMaAF9tkNCKfk8gYXMiPERZeIhavaQ7MdKtqCbShRF6w5ISrgHqAl6XDOONYbprZ&s=
+=3DERVX40JlAgnvRvPLm8sYZalsYDbpUU7YAqI0Ol0faPI&e=3D=A0 =0A=
+for example=0A=
+=0A=
+ss - Apologies. Will be careful.=0A=
+=0A=
+Jonathan=0A=
+=0A=
+On Thu, 8 Jun 2023 11:31:53 +0100=0A=
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:=0A=
+=0A=
+> On Wed, 7 Jun 2023 23:01:11 +0000=0A=
+> Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com> wrote:=0A=
+> =0A=
+> > Hi,=0A=
+> > For DCD sideband there needs=A0to=A0be LD-ID. Is the following approach=
+ acceptable?=A0 =0A=
+> =0A=
+> QEMU question so +CC qemu-devel=0A=
+> =0A=
+> > =0A=
+> > =A0-device cxl-type3,bus=3Dswport0,volatile-memdev=3Dvmem0,dc-memdev=3D=
+vmem1,id=3Dcxl-vmem0,num-dc-regions=3D2,ldid=3D0 \=0A=
+> > =A0-device cxl-type3,bus=3Dswport0,volatile-memdev=3Dvmem1,dc-memdev=3D=
+vmem2,id=3Dcxl-vmem1,num-dc-regions=3D2,ldid=3D1 \=A0 =0A=
+> =0A=
+> Those will be PCI functions at this level so you can't do this until we h=
+ave more advanced switch support=0A=
+> (it has to know about multiple VHs - right now we only support fixed conf=
+ig switches).=A0 You could connect them=0A=
+> to different switch ports - effectively that will be what it looks like w=
+hen we do emulate a configurable switch.=0A=
+> =0A=
+> > =A0-device i2c_mctp_cxl,bus=3Daspeed.i2c.bus.0,address=3D24,target=3Dcx=
+l-vmem0,cxl-vmem1")=0A=
+> > =0A=
+> > With this configuration, the same i2c device is handing both LDs and in=
+ FMAPI commands we use the LDID specified above.=A0 =0A=
+> =0A=
+> This effectively becomes a partial implementation of either an MLD or an =
+MH-SLD=0A=
+> To manage the actual memory access, those will almost certainly need a bu=
+nch of other shared=0A=
+> infrastructure.=A0 So I'd ultimately expect the i2c_mctp_cxl device to ta=
+rget whatever=0A=
+> device represents that shared infrastructure - it might be a separate dev=
+ice or a 'lead' type 3 device.=0A=
+> =0A=
+> So I'm not sure how this will fit together longer term.=A0 We need same i=
+nfrastructure=0A=
+> to work for a mailbox CCI on a MH-SLD/MLD as well and in that case there =
+isn't a separate=0A=
+> device to which we can provide multiple targets as you've done in your pr=
+oposal here.=0A=
+> =0A=
+> So I think we need to work out how to handle all of (I've probably forgot=
+ten something)=0A=
+> X marks done or in progress.=0A=
+> =0A=
+> X 1) i2c_mctp_cxl to an SLD (no PCI Mailbox definition for this one)=0A=
+>=A0=A0 2) i2c_mctp_cxl directly to an MLD (your case)=0A=
+> X 3) i2c_mctp_cxl to a fixed config switch (single fixed VH no MLD capabl=
+e ports)=0A=
+> X 4) PCI mailbox via switch CCI device that fixed config switch (no MLD c=
+apable ports)=0A=
+>=A0=A0=A0=A0=A0=A0=A0 Even with this simple design some fun things you can=
+ do.=0A=
+>=A0=A0 5) i2c_mctp_cxl to a configurable switch (probably a separate as ye=
+t to be defined management interface - that messes with hotplug)=0A=
+>=A0=A0 6) PCI mailbox via switch CCI to configurable switch (again to defi=
+ned management interface).=0A=
+>=A0=A0 7) i2c_mctp_cxl to an MH-SLD - probably to which ever device also h=
+as support for=0A=
+>=A0=A0=A0=A0=A0 tunneling to the FM owned LD via the PCI mailbox.=0A=
+> X 8) PCI mailbox on MH-SLD tunneling to the FM owned LD.=0A=
+>=A0=A0 9) i2c_mctp_cxl to an MH-MLD - similar to above - this one isn't th=
+at much more complex than MH-SLD case.=0A=
+> X 10) PCI mailbox to MH-MLD - similar to above.=0A=
+>=A0=A0 11) Tunneling via the switch CCI (then over PCI-VDM - though that d=
+etail isn't visible in QEMU) to an SLD=0A=
+>=A0=A0 12) Tunneling via the switch CCI (then PCI-VDM) to an MH-SLD and on=
+ to he FM owned LD.=0A=
+>=A0=A0 13) Tunneling via the switch CCI (then over PCI-VDM) to an MLD / MH=
+-MLD=0A=
+>=A0 =0A=
+> Current i2c_mctp_cxl covers 1 and 3=0A=
+> I'm part way through the tunnelling support for (8 and 100) - need to rev=
+isit and wire up the switch CCI PoC=0A=
+> properly which will give us 4.=0A=
+> =0A=
+> 2 needs MLD support in general which we could maybe make work with a stat=
+ic binding in a switch but that=0A=
+>=A0=A0 would be odd - so we probably need to emulate a configurable switch=
+ for that=0A=
+> 5,6 need configurable switch=0A=
+> 7 needs same as 2 plus tunneling part similar to 4=0A=
+> 9 again probably configurable switch for the MLD part to make sense=0A=
+> 11 is fairly straight forward - but not done yet.=0A=
+> 12 also not too bad, but needs the MH-SLD part to be fleshed out (some wo=
+rk on going )=0A=
+> 13 needs pretty much everything defined.=0A=
+> =0A=
+> Trying to get the command line interface and device model right until we =
+have PoC code=0A=
+> for a few more cases is going to be at most a draft of what it might look=
+ like.=0A=
+> =0A=
+> So in short, lots to do.=A0 For now feel free to hack whatever you need i=
+n to be able=0A=
+> to test the FM-API side of things, we can move that towards a clean comma=
+nd line definition=0A=
+> once we have one figured out!=0A=
+> =0A=
+> Jonathan=0A=
+> =0A=
+> =0A=
+> > =0A=
+> > Thanks,=0A=
+> > Shesha.=A0 =0A=
+> =0A=
+> =0A=
 
