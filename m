@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363877281F9
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB99728201
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7G8u-00049J-7k; Thu, 08 Jun 2023 09:57:36 -0400
+	id 1q7G9z-0006Kv-0v; Thu, 08 Jun 2023 09:58:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8m-00044Z-48
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8h-0004lN-DA
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686232636;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lEAKWZEszZA4tXMfJjzDLgqJd+7FdPyDGj/0I7CSkxc=;
- b=Rx1sokpf8RFeOyffJXNKNTBnwF+yoNT32nriTgqNNrhx5DyJjrvPLfbXr1PvE5vyC7c8qA
- bScD6i/ABomGHiRY1OOmf5kbrKnhObJNAwX4ksfESYg3cCehgB4uTa8RvchbvEFM65FbHr
- YczJNjUHLCFbGsDHPcbGRwD/tZQT5JU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-592-2WygfT-cPBKnlJswXeFsdg-1; Thu, 08 Jun 2023 09:57:15 -0400
-X-MC-Unique: 2WygfT-cPBKnlJswXeFsdg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C6383825BC4;
- Thu,  8 Jun 2023 13:57:15 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A6576515540;
- Thu,  8 Jun 2023 13:57:14 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, libguestfs@redhat.com, vsementsov@yandex-team.ru,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v4 24/24] nbd/server: Add FLAG_PAYLOAD support to
- CMD_BLOCK_STATUS
-Date: Thu,  8 Jun 2023 08:56:53 -0500
-Message-Id: <20230608135653.2918540-25-eblake@redhat.com>
-In-Reply-To: <20230608135653.2918540-1-eblake@redhat.com>
-References: <20230608135653.2918540-1-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7G9s-0005tJ-Hw
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:58:36 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7G9p-0005BI-72
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:58:36 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5148e4a2f17so1140446a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 06:58:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686232711; x=1688824711;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9bfRkPTdVki0MaTXaET7dkyrmyM+zjhNDGF1bvQBBN8=;
+ b=UTUH4ArIGF4M/+DGkqU0/XKIun13EQnVsGeaSPZs3HMHfyACer3Utk8gRrmkeHIRdM
+ 7dFBY9npgWsmEzO7SNtVq/Qv/wDk0ybNJxL6X8gYczmN0H9z2nJq6I4GqIXnHq5HyU+A
+ ph3li9VSIqDWstAHxVDsMjsZWwEPWeJVR+uGFu3EkyKnmqHEkISjVeS2EUO8aDDH6CJa
+ pVfKXkEiLq1hnJeXEzqPPbjy+e1bhxGKf00j0s038KAaiSUJOc+fdeenvNILuj+UEIqg
+ VVH616roCEUnDRaPAlioY31FMNkUZgBpfhZ1ZshxQXa7jNAD+PMhsAl9jZp3r8plN5Ut
+ 1AVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686232711; x=1688824711;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9bfRkPTdVki0MaTXaET7dkyrmyM+zjhNDGF1bvQBBN8=;
+ b=IwlBMTNfalHuTtCzZ4623Y/5f7OVljxA/MuN+ejZnt8HEMX6mI8Ro027USn49P1zy5
+ 1saJssenG/+cGuulMM99RmFk8DrlEJVm/mRJfMiDaNg0JSGOAq84D9ozqk7qExuUb3Zl
+ Xa0q4p12s5Q4FPbukNSKjsKsQI7TthjStEXctxjbqtcMUYo+N1yw/pMvlgbLxiWPSlWS
+ L6eGdgIFvdJeTbyD1xF8sWBvkHCikjNcM2WkkTE9hxo6L5cKmE9CILLFHMf1IJfy8uZR
+ KM2bjNYyXrEYlTAp8QcqgpYK2F+Wa7dLHMsGWr8+PekuwEKeQjpPCPJhMO+shruf9uDC
+ 1UAA==
+X-Gm-Message-State: AC+VfDyqgAoQj/oxZ3maIwI97KRQXA+l065N1AreVZTWAl0LBhKOGKYC
+ V8DYcRhntk6djvQNQSR/zJaRLg0MINWFtawxuiguC0plfiavHmBiVvQ=
+X-Google-Smtp-Source: ACHHUZ4+AGOY0tUCI6eoAab/r0oqZGb5gGBgqr87TDU7yyIgiGrpyuOTFgRsHYsEq1gjDqQ4elxj2ptyAxeb991Ww/E=
+X-Received: by 2002:a05:6402:6c6:b0:506:9805:7b56 with SMTP id
+ n6-20020a05640206c600b0050698057b56mr6962122edy.32.1686232711465; Thu, 08 Jun
+ 2023 06:58:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230517081204.30333-1-m.elsayed4420@gmail.com>
+ <20230517081204.30333-5-m.elsayed4420@gmail.com>
+In-Reply-To: <20230517081204.30333-5-m.elsayed4420@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 Jun 2023 14:58:20 +0100
+Message-ID: <CAFEAcA_83cpxPY2TGcwObbGe2MEgJfS2GVeR6UfiB6PUMFCw8A@mail.gmail.com>
+Subject: Re: [PATCH 4/8] tiva c sysctl implementation
+To: Mohamed ElSayed <m.elsayed4420@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,347 +85,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow a client to request a subset of negotiated meta contexts.  For
-example, a client may ask to use a single connection to learn about
-both block status and dirty bitmaps, but where the dirty bitmap
-queries only need to be performed on a subset of the disk; forcing the
-server to compute that information on block status queries in the rest
-of the disk is wasted effort (both at the server, and on the amount of
-traffic sent over the wire to be parsed and ignored by the client).
+On Wed, 17 May 2023 at 09:13, Mohamed ElSayed <m.elsayed4420@gmail.com> wrote:
+>
+> Signed-off-by: Mohamed ElSayed <m.elsayed4420@gmail.com>
+> ---
+>  hw/misc/tm4c123_sysctl.c         | 989 +++++++++++++++++++++++++++++++
+>  hw/misc/trace-events             |   5 +
+>  include/hw/misc/tm4c123_sysctl.h | 307 ++++++++++
+>  3 files changed, 1301 insertions(+)
+>  create mode 100644 hw/misc/tm4c123_sysctl.c
+>  create mode 100644 include/hw/misc/tm4c123_sysctl.h
+>
+> diff --git a/hw/misc/tm4c123_sysctl.c b/hw/misc/tm4c123_sysctl.c
+> new file mode 100644
+> index 0000000000..c996609fc7
+> --- /dev/null
+> +++ b/hw/misc/tm4c123_sysctl.c
+> @@ -0,0 +1,989 @@
+> +/*
+> + * TM4C123 SYSCTL
+> + *
+> + * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a copy
+> + * of this software and associated documentation files (the "Software"), to deal
+> + * in the Software without restriction, including without limitation the rights
+> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> + * copies of the Software, and to permit persons to whom the Software is
+> + * furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+> + * THE SOFTWARE.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/misc/tm4c123_sysctl.h"
+> +#include "qemu/log.h"
+> +#include "qemu/module.h"
+> +#include "trace.h"
+> +
+> +#define LOG(mask, fmt, args...) qemu_log_mask(mask, "%s: " fmt, __func__, ## args)
+> +#define READONLY LOG(LOG_GUEST_ERROR, "0x%"HWADDR_PRIx" is a readonly field\n.", addr)
 
-Qemu as an NBD client never requests to use more than one meta
-context, so it has no need to use block status payloads.  Testing this
-instead requires support from libnbd, which CAN access multiple meta
-contexts in parallel from a single NBD connection; an interop test
-submitted to the libnbd project at the same time as this patch
-demonstrates the feature working, as well as testing some corner cases
-(for example, when the payload length is longer than the export
-length), although other corner cases (like passing the same id
-duplicated) requires a protocol fuzzer because libnbd is not wired up
-to break the protocol that badly.
+See the remarks in an earlier patch about these macros.
 
-This also includes tweaks to 'qemu-nbd --list' to show when a server
-is advertising the capability, and to the testsuite to reflect the
-addition to that output.
+> +
+> +static void tm4c123_sysctl_update_system_clock(void *opaque)
+> +{
+> +    TM4C123SysCtlState *s = opaque;
+> +
+> +    uint32_t RCC_Val = s->sysctl_rcc;
+> +    uint32_t RCC2_Val = s->sysctl_rcc2;
+> +
+> +    uint32_t __CORE_CLK_PRE;
+> +    uint32_t __CORE_CLK;
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- docs/interop/nbd.txt                          |  2 +-
- nbd/server.c                                  | 99 ++++++++++++++++++-
- qemu-nbd.c                                    |  1 +
- nbd/trace-events                              |  1 +
- tests/qemu-iotests/223.out                    | 12 +--
- tests/qemu-iotests/307.out                    | 10 +-
- .../tests/nbd-qemu-allocation.out             |  2 +-
- 7 files changed, 111 insertions(+), 16 deletions(-)
+Please don't use double-underscore prefixes or all-caps for
+variables.
 
-diff --git a/docs/interop/nbd.txt b/docs/interop/nbd.txt
-index abaf4c28a96..83d85ce8d13 100644
---- a/docs/interop/nbd.txt
-+++ b/docs/interop/nbd.txt
-@@ -69,4 +69,4 @@ NBD_CMD_BLOCK_STATUS for "qemu:dirty-bitmap:", NBD_CMD_CACHE
- NBD_CMD_FLAG_FAST_ZERO
- * 5.2: NBD_CMD_BLOCK_STATUS for "qemu:allocation-depth"
- * 7.1: NBD_FLAG_CAN_MULTI_CONN for shareable writable exports
--* 8.1: NBD_OPT_EXTENDED_HEADERS
-+* 8.1: NBD_OPT_EXTENDED_HEADERS, NBD_FLAG_BLOCK_STATUS_PAYLOAD
-diff --git a/nbd/server.c b/nbd/server.c
-index 308846fe46b..696afcf5c46 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -512,6 +512,9 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-     if (client->mode >= NBD_MODE_STRUCTURED) {
-         myflags |= NBD_FLAG_SEND_DF;
-     }
-+    if (client->mode >= NBD_MODE_EXTENDED && client->contexts.count) {
-+        myflags |= NBD_FLAG_BLOCK_STAT_PAYLOAD;
-+    }
-     trace_nbd_negotiate_new_style_size_flags(client->exp->size, myflags);
-     stq_be_p(buf, client->exp->size);
-     stw_be_p(buf + 8, myflags);
-@@ -699,6 +702,10 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-     if (client->mode >= NBD_MODE_STRUCTURED) {
-         myflags |= NBD_FLAG_SEND_DF;
-     }
-+    if (client->mode >= NBD_MODE_EXTENDED &&
-+        (client->contexts.count || client->opt == NBD_OPT_INFO)) {
-+        myflags |= NBD_FLAG_BLOCK_STAT_PAYLOAD;
-+    }
-     trace_nbd_negotiate_new_style_size_flags(exp->size, myflags);
-     stq_be_p(buf, exp->size);
-     stw_be_p(buf + 8, myflags);
-@@ -2424,6 +2431,81 @@ static int coroutine_fn nbd_co_send_bitmap(NBDClient *client,
-     return nbd_co_send_extents(client, request, ea, last, context_id, errp);
- }
+> +
+> +    if (RCC2_Val & (1UL << 31)) {  /* is rcc2 used? */
+> +        if (RCC2_Val & (1UL << 11)) {  /* check BYPASS */
+> +            if (((RCC2_Val >> 4) & 0x07) == 0x0) {
+> +                if (((RCC_Val >> 6) & 0x1F) == 0x0) {
+> +                    __CORE_CLK_PRE = 1000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x1) {
+> +                    __CORE_CLK_PRE = 1843200UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x2) {
+> +                    __CORE_CLK_PRE = 2000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x3) {
+> +                    __CORE_CLK_PRE = 2457600UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x4) {
+> +                    __CORE_CLK_PRE = 3579545UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x5) {
+> +                    __CORE_CLK_PRE = 3686400UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x6) {
+> +                    __CORE_CLK_PRE = 4000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x7) {
+> +                    __CORE_CLK_PRE = 4096000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x8) {
+> +                    __CORE_CLK_PRE = 4915200UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x9) {
+> +                    __CORE_CLK_PRE = 5000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0xA) {
+> +                    __CORE_CLK_PRE = 5120000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0xB) {
+> +                    __CORE_CLK_PRE = 6000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0xC) {
+> +                    __CORE_CLK_PRE = 6144000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0xD) {
+> +                    __CORE_CLK_PRE = 7372800UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0xE) {
+> +                    __CORE_CLK_PRE = 8000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0xF) {
+> +                    __CORE_CLK_PRE = 8192000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x10) {
+> +                    __CORE_CLK_PRE = 10000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x11) {
+> +                    __CORE_CLK_PRE = 12000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x12) {
+> +                    __CORE_CLK_PRE = 12288000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x13) {
+> +                    __CORE_CLK_PRE = 13560000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x14) {
+> +                    __CORE_CLK_PRE = 14318180UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x15) {
+> +                    __CORE_CLK_PRE = 16000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x16) {
+> +                    __CORE_CLK_PRE = 16384000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x17) {
+> +                    __CORE_CLK_PRE = 18000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x18) {
+> +                    __CORE_CLK_PRE = 20000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x19) {
+> +                    __CORE_CLK_PRE = 24000000UL;
+> +                } else if (((RCC_Val >> 6) & 0x1F) == 0x1A) {
+> +                    __CORE_CLK_PRE = 25000000UL;
+> +                } else {
+> +                    __CORE_CLK_PRE = 0UL;
+> +                }
+> +                __CORE_CLK = __CORE_CLK_PRE / 2UL;  /* divide by 2 since BYPASS is set */
+> +            } else {  /* PLL is used */
+> +                uint32_t __PLL_MULT = ((RCC2_Val >> 4) & 0x1F) + 2;
+> +                uint32_t __PLL_DIV = ((RCC2_Val >> 0) & 0x3F) + 1;
+> +                uint32_t __PLL_SOURCE = ((RCC2_Val >> 13) & 0x01);
+> +                if (__PLL_SOURCE == 0) {  /* source is XTAL */
+> +                    __CORE_CLK_PRE = (XTALI * __PLL_MULT) / __PLL_DIV;
+> +                } else {  /* source is internal oscillator */
+> +                    __CORE_CLK_PRE = (16000000UL * __PLL_MULT) / __PLL_DIV;  /* internal oscillator frequency is 16MHz */
+> +                }
+> +                __CORE_CLK = __CORE_CLK_PRE / 2UL;  /* divide by 2 since BYPASS is set */
+> +            }
+> +        } else {  /* BYPASS is not set */
+> +            uint32_t __SYS_DIV = ((RCC2_Val >> 22) & 0x7F) + 1;
+> +            uint32_t __PLL_MULT = ((RCC2_Val >> 4) & 0x1F) + 2;
+> +            uint32_t __PLL_DIV = ((RCC2_Val >> 0) & 0x3F) + 1;
+> +            uint32_t __PLL_SOURCE = ((RCC2_Val >> 13) & 0x01);
+> +            if (__PLL_SOURCE == 0) {  /* source is XTAL */
+> +                __CORE_CLK_PRE = (XTALI * __PLL_MULT) / __PLL_DIV;
+> +            } else {  /* source is internal oscillator */
+> +                __CORE_CLK_PRE = (16000000UL * __PLL_MULT) / __PLL_DIV;  /* internal oscillator frequency is 16MHz */
+> +            }
+> +            __CORE_CLK = __CORE_CLK_PRE / __SYS_DIV;
+> +        }
+> +    } else {  /* rcc2 is not used */
+> +        if (((RCC_Val >> 16) & 0x01) == 0x01) {  /* check USESYSCLK */
+> +            if (((RCC_Val >> 23) & 0x01) == 0x01) {  /* check BYPASS */
+> +                __CORE_CLK_PRE = XTALI;
+> +            } else {  /* PLL is used */
+> +                uint32_t __PLL_MULT = ((RCC_Val >> 18) & 0x1F) + 2;
+> +                uint32_t __PLL_DIV = ((RCC_Val >> 12) & 0x3F) + 1;
+> +                uint32_t __PLL_SOURCE = ((RCC_Val >> 16) & 0x01);
+> +                if (__PLL_SOURCE == 0) {  /* source is XTAL */
+> +                    __CORE_CLK_PRE = (XTALI * __PLL_MULT) / __PLL_DIV;
+> +                } else {  /* source is internal oscillator */
+> +                    __CORE_CLK_PRE = (16000000UL * __PLL_MULT) / __PLL_DIV;  /* internal oscillator frequency is 16MHz */
+> +                }
+> +            }
+> +        } else {  /* USESYSCLK bit is not set */
+> +            __CORE_CLK_PRE = 16000000UL;  /* default to internal oscillator frequency */
+> +        }
+> +        __CORE_CLK = __CORE_CLK_PRE / 1UL;  /* no division needed since BYPASS is not set */
+> +    }
+> +    trace_tm4c123_sysctl_update_system_clock(__CORE_CLK);
+> +    clock_update_hz(s->mainclk, __CORE_CLK);
+> +}
 
-+/*
-+ * nbd_co_block_status_payload_read
-+ * Called when a client wants a subset of negotiated contexts via a
-+ * BLOCK_STATUS payload.  Check the payload for valid length and
-+ * contents.  On success, return 0 with request updated to effective
-+ * length.  If request was invalid but payload consumed, return 0 with
-+ * request->len and request->contexts->count set to 0 (which will
-+ * trigger an appropriate NBD_EINVAL response later on).  On I/O
-+ * error, return -EIO.
-+ */
-+static int
-+nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-+                                 Error **errp)
-+{
-+    int payload_len = request->len;
-+    g_autofree char *buf = NULL;
-+    size_t count, i, nr_bitmaps;
-+    uint32_t id;
-+
-+    assert(request->len <= NBD_MAX_BUFFER_SIZE);
-+    assert(client->contexts.exp == client->exp);
-+    nr_bitmaps = client->exp->nr_export_bitmaps;
-+    request->contexts = g_new0(NBDMetaContexts, 1);
-+    request->contexts->exp = client->exp;
-+
-+    if (payload_len % sizeof(uint32_t) ||
-+        payload_len < sizeof(NBDBlockStatusPayload) ||
-+        payload_len > (sizeof(NBDBlockStatusPayload) +
-+                       sizeof(id) * client->contexts.count)) {
-+        goto skip;
-+    }
-+
-+    buf = g_malloc(payload_len);
-+    if (nbd_read(client->ioc, buf, payload_len,
-+                 "CMD_BLOCK_STATUS data", errp) < 0) {
-+        return -EIO;
-+    }
-+    trace_nbd_co_receive_request_payload_received(request->cookie,
-+                                                  payload_len);
-+    request->contexts->bitmaps = g_new0(bool, nr_bitmaps);
-+    count = (payload_len - sizeof(NBDBlockStatusPayload)) / sizeof(id);
-+    payload_len = 0;
-+
-+    for (i = 0; i < count; i++) {
-+        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
-+        if (id == NBD_META_ID_BASE_ALLOCATION) {
-+            if (request->contexts->base_allocation) {
-+                goto skip;
-+            }
-+            request->contexts->base_allocation = true;
-+        } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
-+            if (request->contexts->allocation_depth) {
-+                goto skip;
-+            }
-+            request->contexts->allocation_depth = true;
-+        } else {
-+            if (id - NBD_META_ID_DIRTY_BITMAP > nr_bitmaps ||
-+                request->contexts->bitmaps[id - NBD_META_ID_DIRTY_BITMAP]) {
-+                goto skip;
-+            }
-+            request->contexts->bitmaps[id - NBD_META_ID_DIRTY_BITMAP] = true;
-+        }
-+    }
-+
-+    request->len = ldq_be_p(buf);
-+    request->contexts->count = count;
-+    return 0;
-+
-+ skip:
-+    trace_nbd_co_receive_block_status_payload_compliance(request->from,
-+                                                         request->len);
-+    request->len = request->contexts->count = 0;
-+    return nbd_drop(client->ioc, payload_len, errp);
-+}
-+
- /* nbd_co_receive_request
-  * Collect a client request. Return 0 if request looks valid, -EIO to drop
-  * connection right away, -EAGAIN to indicate we were interrupted and the
-@@ -2470,7 +2552,13 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+> +static void tm4c123_sysctl_write(void *opaque, hwaddr addr, uint64_t val64, unsigned int size)
+> +{
+> +    TM4C123SysCtlState *s = opaque;
+> +    uint32_t val32 = val64;
+> +
+> +    trace_tm4c123_sysctl_write(addr, val32);
+> +
+> +    switch (addr) {
+> +        case SYSCTL_DID0:
+> +            READONLY;
+> +            break;
+> +        case SYSCTL_DID1:
+> +            READONLY;
+> +            break;
+> +        case SYSCTL_PBORCTL:
+> +            s->sysctl_pborctl = val32;
+> +            break;
+> +        case SYSCTL_RIS:
+> +            READONLY;
+> +            break;
+> +        case SYSCTL_IMC:
+> +            s->sysctl_imc = val32;
+> +            /*
+> +             * setting the MISC
+> +             */
+> +            s->sysctl_misc = val32;
+> +            break;
 
-     if (request->type == NBD_CMD_WRITE || extended_with_payload) {
-         payload_len = request->len;
--        if (request->type != NBD_CMD_WRITE) {
-+        if (request->type == NBD_CMD_BLOCK_STATUS) {
-+            ret = nbd_co_block_status_payload_read(client, request, errp);
-+            if (ret < 0) {
-+                return ret;
-+            }
-+            payload_len = 0;
-+        } else if (request->type != NBD_CMD_WRITE) {
-             /*
-              * For now, we don't support payloads on other
-              * commands; but we can keep the connection alive.
-@@ -2491,7 +2579,8 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-             error_setg(errp, "No memory");
-             return -ENOMEM;
-         }
--    } else if (request->type == NBD_CMD_BLOCK_STATUS) {
-+    } else if (request->type == NBD_CMD_BLOCK_STATUS &&
-+               !extended_with_payload) {
-         request->contexts = &client->contexts;
-     }
+What's this for? The spec does not say anything about the MISC
+register being written by the IMC. In fact the MISC is just
+the masked status of the current interrupts, so it shouldn't
+have a status field at all. Reading the MISC register ought
+to return s->sysctl_ris & s->sysctl_imc.
 
-@@ -2547,6 +2636,9 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-         valid_flags |= NBD_CMD_FLAG_NO_HOLE | NBD_CMD_FLAG_FAST_ZERO;
-     } else if (request->type == NBD_CMD_BLOCK_STATUS) {
-         valid_flags |= NBD_CMD_FLAG_REQ_ONE;
-+        if (client->mode >= NBD_MODE_EXTENDED && client->contexts.count) {
-+            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
-+        }
-     }
-     if (request->flags & ~valid_flags) {
-         error_setg(errp, "unsupported flags for command %s (got 0x%x)",
-@@ -2712,7 +2804,8 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
-                                       "discard failed", errp);
+> +        case SYSCTL_MISC:
+> +            s->sysctl_misc = val32;
 
-     case NBD_CMD_BLOCK_STATUS:
--        if (!request->len) {
-+        assert(request->contexts);
-+        if (!request->len && !(request->flags & NBD_CMD_FLAG_PAYLOAD_LEN)) {
-             return nbd_send_generic_reply(client, request, -EINVAL,
-                                           "need non-zero length", errp);
-         }
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 1d155fc2c66..cbca0eeee62 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -222,6 +222,7 @@ static int qemu_nbd_client_list(SocketAddress *saddr, QCryptoTLSCreds *tls,
-                 [NBD_FLAG_SEND_RESIZE_BIT]          = "resize",
-                 [NBD_FLAG_SEND_CACHE_BIT]           = "cache",
-                 [NBD_FLAG_SEND_FAST_ZERO_BIT]       = "fast-zero",
-+                [NBD_FLAG_BLOCK_STAT_PAYLOAD_BIT]   = "block-status-payload",
-             };
+Writing to MISC should change bits in RIS on a write-on-to-clear
+basis, so this isn't right. It should be
+   s->sysctl_ris &= ~val32; /* W1C */
 
-             printf("  size:  %" PRIu64 "\n", list[i].size);
-diff --git a/nbd/trace-events b/nbd/trace-events
-index 51bfb129c95..a1af6d003b4 100644
---- a/nbd/trace-events
-+++ b/nbd/trace-events
-@@ -70,6 +70,7 @@ nbd_co_send_chunk_read(uint64_t cookie, uint64_t offset, void *data, size_t size
- nbd_co_send_chunk_read_hole(uint64_t cookie, uint64_t offset, size_t size) "Send structured read hole reply: cookie = %" PRIu64 ", offset = %" PRIu64 ", len = %zu"
- nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t length, int last) "Send block status reply: cookie = %" PRIu64 ", extents = %u, context = %d (extents cover %" PRIu64 " bytes, last chunk = %d)"
- nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
-+nbd_co_receive_block_status_payload_compliance(uint64_t from, int len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%x"
- nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
- nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
- nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
-diff --git a/tests/qemu-iotests/223.out b/tests/qemu-iotests/223.out
-index b98582c38ea..b38f0b7963b 100644
---- a/tests/qemu-iotests/223.out
-+++ b/tests/qemu-iotests/223.out
-@@ -83,7 +83,7 @@ exports available: 0
- exports available: 3
-  export: 'n'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -94,7 +94,7 @@ exports available: 3
-  export: 'n2'
-   description: some text
-   size:  4194304
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -104,7 +104,7 @@ exports available: 3
-    qemu:dirty-bitmap:b2
-  export: 'n3'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -205,7 +205,7 @@ exports available: 0
- exports available: 3
-  export: 'n'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -216,7 +216,7 @@ exports available: 3
-  export: 'n2'
-   description: some text
-   size:  4194304
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -226,7 +226,7 @@ exports available: 3
-    qemu:dirty-bitmap:b2
-  export: 'n3'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-diff --git a/tests/qemu-iotests/307.out b/tests/qemu-iotests/307.out
-index 2b9a6a67a1a..f645f3315f8 100644
---- a/tests/qemu-iotests/307.out
-+++ b/tests/qemu-iotests/307.out
-@@ -15,7 +15,7 @@ wrote 4096/4096 bytes at offset 0
- exports available: 1
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -44,7 +44,7 @@ exports available: 1
- exports available: 1
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -76,7 +76,7 @@ exports available: 1
- exports available: 2
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -86,7 +86,7 @@ exports available: 2
-  export: 'export1'
-   description: This is the writable second export
-   size:  67108864
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -113,7 +113,7 @@ exports available: 1
-  export: 'export1'
-   description: This is the writable second export
-   size:  67108864
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-diff --git a/tests/qemu-iotests/tests/nbd-qemu-allocation.out b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-index 659276032b0..794d1bfce62 100644
---- a/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-+++ b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-@@ -17,7 +17,7 @@ wrote 2097152/2097152 bytes at offset 1048576
- exports available: 1
-  export: ''
-   size:  4194304
--  flags: 0x48f ( readonly flush fua df cache )
-+  flags: 0x148f ( readonly flush fua df cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
--- 
-2.40.1
+> +            break;
 
+> +        case SYSCTL_RESC:
+> +            s->sysctl_resc = val32;
+> +            break;
+> +        case SYSCTL_RCC:
+> +            s->sysctl_rcc = val32;
+> +            /*
+> +             * Setting the SYSCTL_RIS manually for now.
+> +             */
+> +            if (s->sysctl_rcc & SYSCTL_RCC_PWRDN && !(s->sysctl_rcc2 & SYSCTL_RCC2_USERCC2)) {
+> +                s->sysctl_ris |= SYSCTL_RIS_PLLRIS;
+> +            }
+
+I don't entirely understand the comment here. My guess is that we're
+opting for "report the PLL as locked immediately rather than
+emulating the real hardware's timed delay before reporting it"
+(which is fine, though I think the comment could be clearer
+about what it's doing).
+
+However should we really be testing PWRDN == 1 here ? That means
+"PLL powered down", not "powered up"; it doesn't match the logic
+you have below for the similar RCC2 bits either.
+
+> +            tm4c123_sysctl_update_system_clock(s);
+> +            break;
+> +        case SYSCTL_GPIOHBCTL:
+> +            s->sysctl_gpiohbctl = val32;
+> +            break;
+> +        case SYSCTL_RCC2:
+> +            s->sysctl_rcc2 = val32;
+> +            /*
+> +             * Setting the SYSCTL_RIS manually for now.
+> +             */
+> +            if (s->sysctl_rcc2 & SYSCTL_RCC2_USERCC2 && !(s->sysctl_rcc2 & SYSCTL_RCC2_PWRDN2)) {
+> +                s->sysctl_ris |= SYSCTL_RIS_PLLRIS;
+> +            }
+> +            tm4c123_sysctl_update_system_clock(s);
+
+Because the logic for "do we set the PLLRIS bit?" depends
+on both the rcc and rcc2 values, you need to check everything
+in both places. Otherwise if the guest writes RCC.PWRDN to
+0 first and RCC2.USERCC2 to 0 second then you won't notice.
+So I think you should move this logic to the
+tm4c123_sysctl_update_system_clock() function.
+
+> +            break;
+
+> +
+> +static void tm4c123_sysctl_class_init(ObjectClass *kclass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(kclass);
+> +    dc->reset = tm4c123_sysctl_reset;
+> +    dc->realize = tm4c123_sysctl_realize;
+
+You also need to set dc->vmsd. (Every device with internal
+state needs to set up a VMStateDescription, which describes
+that internal state for the purposes of migration and
+for VM state save/restore.)
+
+thanks
+-- PMM
 
