@@ -2,64 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53027727454
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 03:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3278A727615
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:25:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q74Su-00023A-DE; Wed, 07 Jun 2023 21:29:28 -0400
+	id 1q77BM-0006BR-0c; Thu, 08 Jun 2023 00:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dlemoal@kernel.org>)
- id 1q74So-00021R-Aq; Wed, 07 Jun 2023 21:29:25 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z3-0006Qj-FC
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:41 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dlemoal@kernel.org>)
- id 1q74Sm-0002se-Hl; Wed, 07 Jun 2023 21:29:22 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id DFCD061ED6;
- Thu,  8 Jun 2023 01:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246E8C433D2;
- Thu,  8 Jun 2023 01:29:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1686187751;
- bh=p2/TdeOqd3QAqhGmMf/YlpBJ4B6SjjAiT4LZsMFFe8w=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=f0ZPCpzTvRn5DgkbYpiOVsL0weSBRaPCCDpMDSwlE3lIVve+H1unbjq0C/+WFSwsZ
- wRB9BBgZCtHK1ryBhQeI0FEgqadragnd0xGWqDo8izhiXw7sJiaYstlvfPeA0UoGJh
- F6TEWkTvMzLggk18ELhGPwaAY+ruWsrC7Wd5ARna7n47Eb4yz0uADFUIYlk536amY8
- 3WeBn80AcBH90LrLdkd6ySwr6uU6IKExvbeELlKA0hauUjKpmHW4zmwT9LjILDETnE
- TtQhPi6tPTx4HDCKY5Xoo3YJP2EEBgNRMq7B95BuNwHtZ/0fvFO0y+pNJxno+sbdFC
- gQMTilVGdGNQw==
-Message-ID: <6c2621d5-5446-7cd5-2b03-2eb9b99ae64b@kernel.org>
-Date: Thu, 8 Jun 2023 10:29:08 +0900
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z1-0000D8-Mh
+ for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:41 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id AF84811EFC6;
+ Thu,  8 Jun 2023 02:02:38 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Thu, 08 Jun 2023 02:02:38 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] block/file-posix: fix wps checking in raw_co_prw
-To: Sam Li <faithilikerun@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- stefanha@redhat.com, Kevin Wolf <kwolf@redhat.com>, dmitry.fomichev@wdc.com,
- hare@suse.de
-References: <20230607185741.4238-1-faithilikerun@gmail.com>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20230607185741.4238-1-faithilikerun@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=dlemoal@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Subject: [PATCH QEMU v5 0/8] migration: introduce dirtylimit capability
+Message-ID: <168618975839.6361.17407633874747688653-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,88 +57,108 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/23 03:57, Sam Li wrote:
-> If the write operation fails and the wps is NULL, then accessing it will
-> lead to data corruption.
-> 
-> Solving the issue by adding a nullptr checking in get_zones_wp() where
-> the wps is used.
-> 
-> This issue is found by Peter Maydell using the Coverity Tool (CID
-> 1512459).
-> 
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  block/file-posix.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index ac1ed54811..4a6c71c7f5 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -2523,7 +2523,7 @@ out:
->              }
->          }
->      } else {
-> -        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
-> +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND) && wps) {
->              update_zones_wp(bs, s->fd, 0, 1);
+I'm awfully sorry about having not updated the patchset for a long time.
+I have changed my email address to "yong.huang@smartx.com", and
+this email address will used to post the unfinished commits in the
+further.
 
-Nit: this could be:
+I have dropped the performance improvement data, please refer to the
+following link to see the details.
+https://lore.kernel.org/qemu-
+devel/13a62aaf-f340-0dc7-7b68-7ecc4bb643a3@chinatelecom.cn/
 
-	} else if (wps && type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
+Please review if anyone have time. Thanks.
+Yong
 
-However, both if & else side do something only if the above condition is true
-and we only need to that for a zoned drive. So the entire code block could
-really be simplified to be a lot more readable. Something like this (totally
-untested, not even compiled):
+v5:
+1. Rebase on master and enrich the comment for "dirty-limit" capability,
+    suggesting by Markus.
+2. Drop commits that have already been merged.
 
-#if defined(CONFIG_BLKZONED)
-    if (bs->bl.zone_size && (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))) {
-        BlockZoneWps *wps = bs->wps;
-        uint64_t *wp;
+v4:
+1. Polish the docs and update the release version suggested by Markus
+2. Rename the migrate exported info "dirty-limit-throttle-time-per-
+round"
+   to "dirty-limit-throttle-time-per-full".
 
-        if (!wps) {
-            return ret;
-        }
+v3(resend):
+- fix the syntax error of the topic.
 
-        if (ret) {
-            /* write error: update the wp from the underlying device */
-            update_zones_wp(bs, s->fd, 0, 1);
-            goto unlock;
-        }
+v3:
+This version make some modifications inspired by Peter and Markus
+as following:
+1. Do the code clean up in [PATCH v2 02/11] suggested by Markus
+2. Replace the [PATCH v2 03/11] with a much simpler patch posted by
+   Peter to fix the following bug:
+   https://bugzilla.redhat.com/show_bug.cgi?id=3D2124756
+3. Fix the error path of migrate_params_check in [PATCH v2 04/11]
+   pointed out by Markus. Enrich the commit message to explain why
+   x-vcpu-dirty-limit-period an unstable parameter.
+4. Refactor the dirty-limit convergence algo in [PATCH v2 07/11]
+   suggested by Peter:
+   a. apply blk_mig_bulk_active check before enable dirty-limit
+   b. drop the unhelpful check function before enable dirty-limit
+   c. change the migration_cancel logic, just cancel dirty-limit
+      only if dirty-limit capability turned on.
+   d. abstract a code clean commit [PATCH v3 07/10] to adjust
+      the check order before enable auto-converge
+5. Change the name of observing indexes during dirty-limit live
+   migration to make them more easy-understanding. Use the
+   maximum throttle time of vpus as "dirty-limit-throttle-time-per-full"
+6. Fix some grammatical and spelling errors pointed out by Markus
+   and enrich the document about the dirty-limit live migration
+   observing indexes "dirty-limit-ring-full-time"
+   and "dirty-limit-throttle-time-per-full"
+7. Change the default value of x-vcpu-dirty-limit-period to 1000ms,
+   which is optimal value pointed out in cover letter in that
+   testing environment.
+8. Drop the 2 guestperf test commits [PATCH v2 10/11],
+   [PATCH v2 11/11] and post them with a standalone series in the
+   future.
 
-        wp = &wps->wp[offset / bs->bl.zone_size];
-        if (BDRV_ZT_IS_CONV(*wp)) {
-            /* Conventional zones do not have a write pointer */
-            goto unlock;
-        }
+v2:
+This version make a little bit modifications comparing with
+version 1 as following:
+1. fix the overflow issue reported by Peter Maydell
+2. add parameter check for hmp "set_vcpu_dirty_limit" command
+3. fix the racing issue between dirty ring reaper thread and
+   Qemu main thread.
+4. add migrate parameter check for x-vcpu-dirty-limit-period
+   and vcpu-dirty-limit.
+5. add the logic to forbid hmp/qmp commands set_vcpu_dirty_limit,
+   cancel_vcpu_dirty_limit during dirty-limit live migration when
+   implement dirty-limit convergence algo.
+6. add capability check to ensure auto-converge and dirty-limit
+   are mutually exclusive.
+7. pre-check if kvm dirty ring size is configured before setting
+   dirty-limit migrate parameter
 
-        /* Return the written position for zone append */
-        if (type & QEMU_AIO_ZONE_APPEND) {
-            *s->offset = *wp;
-            trace_zbd_zone_append_complete(bs,
-                    *s->offset >> BDRV_SECTOR_BITS);
-        }
+Hyman Huang(=E9=BB=84=E5=8B=87) (8):
+  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
+  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
+  qapi/migration: Introduce vcpu-dirty-limit parameters
+  migration: Introduce dirty-limit capability
+  migration: Refactor auto-converge capability logic
+  migration: Implement dirty-limit convergence algo
+  migration: Extend query-migrate to provide dirty page limit info
+  tests: Add migration dirty-limit capability test
 
-        /* Advance the wp if needed */
-        if (offset + bytes > *wp) {
-            *wp = offset + bytes;
-        }
+ include/sysemu/dirtylimit.h    |   2 +
+ migration/migration-hmp-cmds.c |  26 ++++++
+ migration/migration.c          |  13 +++
+ migration/options.c            |  72 +++++++++++++++
+ migration/options.h            |   1 +
+ migration/ram.c                |  63 +++++++++++---
+ migration/trace-events         |   1 +
+ qapi/migration.json            |  73 ++++++++++++++--
+ softmmu/dirtylimit.c           |  90 +++++++++++++++++--
+ tests/qtest/migration-test.c   | 154 +++++++++++++++++++++++++++++++++
+ 10 files changed, 464 insertions(+), 31 deletions(-)
 
-unlock:
-        qemu_co_mutex_unlock(&wps->colock);
-    }
-#endif
-
-And making this entire block a helper function (e.g. advance_zone_wp()) would
-further clean the code. But that should be done in another patch. Care to send one ?
-
--- 
-Damien Le Moal
-Western Digital Research
-
+--=20
+2.38.5
 
