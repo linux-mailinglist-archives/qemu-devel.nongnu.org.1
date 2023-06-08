@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47485728119
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB47728143
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:22:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWu-0003gR-Kh; Thu, 08 Jun 2023 09:18:20 -0400
+	id 1q7FWV-0003MX-6J; Thu, 08 Jun 2023 09:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D67-0002H6-MI
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:31 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D68-0002HF-AX
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:32 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D65-0006T0-7K
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:31 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4f642a24555so558524e87.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D65-0006T8-MN
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:32 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f4b384c09fso550675e87.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220947; x=1688812947;
+ d=gmail.com; s=20221208; t=1686220948; x=1688812948;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8VYSwYNBoGdVkr6LwKT2BwpwsiRD5YPfDCGwo+rcgl4=;
- b=KpDu6h+RjA5nQNJGG0hndawR10gfBa58ppdg0OgTKRGE4LvRL0ja1NxMpkiW9BwvEB
- zivpbxIp8DJu5RaxUrTq//pSIdpvj/cyrv8ZEJBInLEoeTzO6ypk2AP0JXNlCWs+d3Hv
- awcVj3T4VXn9EGSg7JOD4Q0fTPqe/Fy28NlPA8YFqZPtKBJIDinreC4TatMvsjIrSB2l
- Z6G6U4CWMPl923lPO57u8QsaIIv7HZwZSPkjPWpgbWX44xzVBnozd2kw9+2seiTSIcj3
- Qkf2GOMQpamEW7NmnjoYptA+1zF/tJPcRNSLamKTOuYrFHXccIwNiyp1bSVzXNNkTWuf
- gcEA==
+ bh=8suom5c4Zq4IF9eAO/a9IEhcFRdmjk/0kY8XvnG0/LY=;
+ b=kVpQ1LHFCdWohz4c7M836qBkX11sW4ym72CNENgc86kBWNMpMjfnDt1eGFsimFxO7l
+ RPEsrHgFNh/k32c4Ma6WYB4ioO02yyd5TaWMheCuRtIAiXFGLftKndmTs/cdHuY7dUY4
+ J39Prk5GaAFoU5EJv4Hl0IdC0UyCpiTiqgYleD2/9R/Y5KXKRaELJHWN8sSRXxEr4Y0R
+ lSp738D1M17zoT0lNOrg98/brtSrNuAatF3HfNjqu7D4Jw/Mfwisiex8ZnRROunAAXnR
+ 2Y/uqFaqO8IVr9Xpp/yCMQBfmjYXuJpSQgOEbjA52QKrhQalz0OsoDzWwZG1RsuoYXEW
+ QVZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220947; x=1688812947;
+ d=1e100.net; s=20221208; t=1686220948; x=1688812948;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8VYSwYNBoGdVkr6LwKT2BwpwsiRD5YPfDCGwo+rcgl4=;
- b=fT6wx2suCAANGYfxDuDbxFm7NgMPFqAkDTaeVKBLB4egqMM/KdkH16GcOFBgwqrYNQ
- CA+MgYGA3SdpqOJnA02wKk/WZb+6uJL1HgAzjNMkCAg0N/hN+gZkIdVUVQmxYTyz7cMk
- L242WqHvPYCxy+tuVG6FG63l0nX+xvrRKUd6QwinFtnRnUtfzg9RTuzXKKIsd+ETuuDD
- y6Y3xdiMiT6Huez/xvxetuIe9wEEQ5PVs0J0H4VQWTrUwbY5JmjA2017xmEpUTIEWOi7
- TJiukdL4vux27PGHxSiyK3Yrb9oGd9I2b1CAVCJ6p6oegEHuoIyV3dKiXbsFchWzjnPl
- /gLA==
-X-Gm-Message-State: AC+VfDy4e1SuQdMovQtz1sa50gqzva8Lxujbt0ufhT1beBannJKd0iEJ
- 9dM0aiYsZQ2s1/GjAur+BkkAZL8d8+s=
-X-Google-Smtp-Source: ACHHUZ4PZV5cjdHXJv5MLVCRP4DB1R7KTqC1IdcZHLZSjwALHH+3GTMZo59SxQvVtSC0DWjFMWuIfQ==
-X-Received: by 2002:ac2:4474:0:b0:4e0:a426:6ddc with SMTP id
- y20-20020ac24474000000b004e0a4266ddcmr2769583lfl.0.1686220946755; 
- Thu, 08 Jun 2023 03:42:26 -0700 (PDT)
+ bh=8suom5c4Zq4IF9eAO/a9IEhcFRdmjk/0kY8XvnG0/LY=;
+ b=B9TXD/MPNyrSW+qTXE3qWvkeEUw6aGLDHna1dqrrmdjWVz4YGBwtivJJMo0SmXYLmV
+ +Jv1BWpUEpLBWohWJrZagBPtyXzo28GFdpaAO713KqFIarrXSCOXK2wglJORIJLHSKvk
+ JQfY70UgA6gEc7VUnuNiThk+Nb3njteHJ3UwgKVvtbBg6GdEy8NEx7RJmeEaBF8GrwJf
+ e8Enb8+clMcLvfSf8V6X5/zKLW4fbexd1YpIdm8gMmUrROhOH1ZWA0cSVLZeLSsKisGT
+ hZxgUEETXz+EePwsI/6PtrbExCAgazEl52VXxcfB2LZoZiDan2YFv3FKht17/gWKZD+X
+ h/PA==
+X-Gm-Message-State: AC+VfDz9vdmBm4gPCtYmNGAT+txai2FeMR/bt9hX2pZO0i+L/Z49z8wB
+ ZeRhzrdReDN3p/b3VZT2tHSk1/HDV6U=
+X-Google-Smtp-Source: ACHHUZ54fejStoKInzLzngAFgxURq5CrhB/tASbsUznujnd1DjicJpEJfy4Aho2HfzvF1g0OF/6+uw==
+X-Received: by 2002:ac2:5581:0:b0:4f6:2a63:d3fc with SMTP id
+ v1-20020ac25581000000b004f62a63d3fcmr3036342lfg.32.1686220947811; 
+ Thu, 08 Jun 2023 03:42:27 -0700 (PDT)
 Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
  [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.25
+ w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:42:26 -0700 (PDT)
+ Thu, 08 Jun 2023 03:42:27 -0700 (PDT)
 From: Siarhei Volkau <lis8215@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
@@ -62,16 +62,18 @@ Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Stefan Markovic <smarkovic@wavecomp.com>,
  Aleksandar Markovic <amarkovic@wavecomp.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 02/33] Add support of two XBurst CPUs
-Date: Thu,  8 Jun 2023 13:41:51 +0300
-Message-Id: <20230608104222.1520143-3-lis8215@gmail.com>
+Subject: [PATCH 03/33] target/mips: Add emulation of LXW LXB LXH LXBU LXHU
+ instructions
+Date: Thu,  8 Jun 2023 13:41:52 +0300
+Message-Id: <20230608104222.1520143-4-lis8215@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 References: <20230608104222.1520143-1-lis8215@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=lis8215@gmail.com; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,80 +98,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-XBurstR1 - is the MIPS32R1 CPU which aims to cover all Ingenic SoCs
-older than JZ4770 and some newer.
-XBurstR2 - is the MIPS32R2 CPU which aims to cover all Ingenic SoCs
-starting from to JZ4770.
+These instructions used to load from memory to GPR via indexed address
+divided by base and index parts in GPR registers.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
 ---
- target/mips/cpu-defs.c.inc | 46 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ target/mips/tcg/mxu_translate.c | 83 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 82 insertions(+), 1 deletion(-)
 
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
-index d45f245a67..b67ccf171d 100644
---- a/target/mips/cpu-defs.c.inc
-+++ b/target/mips/cpu-defs.c.inc
-@@ -117,6 +117,26 @@ const mips_def_t mips_defs[] =
-         .insn_flags = CPU_MIPS32R1,
-         .mmu_type = MMU_TYPE_R4000,
-     },
-+    {
-+        .name = "XBurstR1",
-+        .CP0_PRid = 0x1ed0024f,
-+        .CP0_Config0 = MIPS_CONFIG0 | (MMU_TYPE_R4000 << CP0C0_MT),
-+        .CP0_Config1 = MIPS_CONFIG1 | (15 << CP0C1_MMU) |
-+                       (0 << CP0C1_IS) | (3 << CP0C1_IL) | (1 << CP0C1_IA) |
-+                       (0 << CP0C1_DS) | (3 << CP0C1_DL) | (1 << CP0C1_DA) |
-+                       (0 << CP0C1_CA),
-+        .CP0_Config2 = MIPS_CONFIG2,
-+        .CP0_Config3 = MIPS_CONFIG3,
-+        .CP0_LLAddr_rw_bitmask = 0,
-+        .CP0_LLAddr_shift = 4,
-+        .SYNCI_Step = 32,
-+        .CCRes = 2,
-+        .CP0_Status_rw_bitmask = 0x1278FF17,
-+        .SEGBITS = 32,
-+        .PABITS = 32,
-+        .insn_flags = CPU_MIPS32R1 | ASE_MXU,
-+        .mmu_type = MMU_TYPE_R4000,
-+    },
-     {
-         .name = "4KEmR1",
-         .CP0_PRid = 0x00018500,
-@@ -323,6 +343,32 @@ const mips_def_t mips_defs[] =
-         .insn_flags = CPU_MIPS32R2 | ASE_MIPS16 | ASE_DSP | ASE_DSP_R2,
-         .mmu_type = MMU_TYPE_R4000,
-     },
-+    {
-+        .name = "XBurstR2",
-+        .CP0_PRid = 0x2ed1024f,
-+        .CP0_Config0 = MIPS_CONFIG0 | (0x1 << CP0C0_AR) |
-+                    (MMU_TYPE_R4000 << CP0C0_MT),
-+        .CP0_Config1 = MIPS_CONFIG1 | (1 << CP0C1_FP) | (15 << CP0C1_MMU) |
-+                       (0 << CP0C1_IS) | (3 << CP0C1_IL) | (1 << CP0C1_IA) |
-+                       (0 << CP0C1_DS) | (3 << CP0C1_DL) | (1 << CP0C1_DA) |
-+                       (1 << CP0C1_CA),
-+        .CP0_Config2 = MIPS_CONFIG2,
-+        .CP0_Config3 = MIPS_CONFIG3 | (1 << CP0C3_DSP2P) | (1 << CP0C3_DSPP) |
-+                       (1 << CP0C3_VInt),
-+        .CP0_LLAddr_rw_bitmask = 0,
-+        .CP0_LLAddr_shift = 4,
-+        .SYNCI_Step = 32,
-+        .CCRes = 2,
-+        .CP0_Status_rw_bitmask = 0x3778FF1F,
-+        .CP1_fcr0 = (1 << FCR0_F64) | (1 << FCR0_L) | (1 << FCR0_W) |
-+                    (1 << FCR0_D) | (1 << FCR0_S) | (0x93 << FCR0_PRID),
-+        .CP1_fcr31 = 0,
-+        .CP1_fcr31_rw_bitmask = 0xFF83FFFF,
-+        .SEGBITS = 32,
-+        .PABITS = 32,
-+        .insn_flags = CPU_MIPS32R2 | ASE_MXU,
-+        .mmu_type = MMU_TYPE_R4000,
-+    },
-     {
-         .name = "M14K",
-         .CP0_PRid = 0x00019b00,
+diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
+index f7485a10cc..423c248d5a 100644
+--- a/target/mips/tcg/mxu_translate.c
++++ b/target/mips/tcg/mxu_translate.c
+@@ -306,7 +306,7 @@
+  *          │                            ├─ 110 ─ OPC_MXU_S32OR
+  *          │                            └─ 111 ─ OPC_MXU_S32XOR
+  *          │
+- *          │                               7..5
++ *          │                               8..6
+  *          ├─ 101000 ─ OPC_MXU__POOL17 ─┬─ 000 ─ OPC_MXU_LXB
+  *          │                            ├─ 001 ─ OPC_MXU_LXH
+  *          ├─ 101001 ─ <not assigned>   ├─ 011 ─ OPC_MXU_LXW
+@@ -368,6 +368,7 @@ enum {
+     OPC_MXU__POOL11  = 0x17,
+     OPC_MXU_S8LDD    = 0x22,
+     OPC_MXU__POOL16  = 0x27,
++    OPC_MXU__POOL17  = 0x28,
+     OPC_MXU_S32M2I   = 0x2E,
+     OPC_MXU_S32I2M   = 0x2F,
+     OPC_MXU__POOL19  = 0x38,
+@@ -405,6 +406,17 @@ enum {
+     OPC_MXU_S32XOR   = 0x07,
+ };
+ 
++/*
++ * MXU pool 17
++ */
++enum {
++    OPC_MXU_LXB      = 0x00,
++    OPC_MXU_LXH      = 0x01,
++    OPC_MXU_LXW      = 0x03,
++    OPC_MXU_LXBU     = 0x04,
++    OPC_MXU_LXHU     = 0x05,
++};
++
+ /*
+  * MXU pool 19
+  */
+@@ -920,6 +932,38 @@ static void gen_mxu_s32ldxvx(DisasContext *ctx, bool reversed,
+     }
+ }
+ 
++/*
++ * LXW  Ra, Rb, Rc, STRD2 - Load a word from memory to GPR
++ * LXB  Ra, Rb, Rc, STRD2 - Load a byte from memory to GPR,
++ *   sign extending to GPR size.
++ * LXH  Ra, Rb, Rc, STRD2 - Load a byte from memory to GPR,
++ *   sign extending to GPR size.
++ * LXBU Ra, Rb, Rc, STRD2 - Load a halfword from memory to GPR,
++ *   zero extending to GPR size.
++ * LXHU Ra, Rb, Rc, STRD2 - Load a halfword from memory to GPR,
++ *   zero extending to GPR size.
++ */
++static void gen_mxu_lxx(DisasContext *ctx, uint32_t strd2, MemOp mop)
++{
++    TCGv t0, t1;
++    uint32_t Ra, Rb, Rc;
++
++    t0 = tcg_temp_new();
++    t1 = tcg_temp_new();
++
++    Ra = extract32(ctx->opcode, 11, 5);
++    Rc = extract32(ctx->opcode, 16, 5);
++    Rb = extract32(ctx->opcode, 21, 5);
++
++    gen_load_gpr(t0, Rb);
++    gen_load_gpr(t1, Rc);
++    tcg_gen_shli_tl(t1, t1, strd2);
++    tcg_gen_add_tl(t0, t0, t1);
++
++    tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mop | ctx->default_tcg_memop_mask);
++    gen_store_gpr(t1, Ra);
++}
++
+ /*
+  * S32STDV  XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
+  * S32STDVR XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
+@@ -1718,6 +1762,40 @@ static void decode_opc_mxu__pool16(DisasContext *ctx)
+     }
+ }
+ 
++static void decode_opc_mxu__pool17(DisasContext *ctx)
++{
++    uint32_t opcode = extract32(ctx->opcode, 6, 3);
++    uint32_t strd2  = extract32(ctx->opcode, 9, 2);
++
++    if (strd2 > 2) {
++        MIPS_INVAL("decode_opc_mxu");
++        gen_reserved_instruction(ctx);
++        return;
++    }
++
++    switch (opcode) {
++    case OPC_MXU_LXW:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_UL);
++          break;
++    case OPC_MXU_LXB:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_SB);
++          break;
++    case OPC_MXU_LXH:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_SW);
++          break;
++    case OPC_MXU_LXBU:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_UB);
++          break;
++    case OPC_MXU_LXHU:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_UW);
++          break;
++    default:
++        MIPS_INVAL("decode_opc_mxu");
++        gen_reserved_instruction(ctx);
++        break;
++    }
++}
++
+ static void decode_opc_mxu__pool19(DisasContext *ctx)
+ {
+     uint32_t opcode = extract32(ctx->opcode, 22, 2);
+@@ -1796,6 +1874,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+         case OPC_MXU__POOL16:
+             decode_opc_mxu__pool16(ctx);
+             break;
++        case OPC_MXU__POOL17:
++            decode_opc_mxu__pool17(ctx);
++            break;
+         case OPC_MXU__POOL19:
+             decode_opc_mxu__pool19(ctx);
+             break;
 -- 
 2.40.0
 
