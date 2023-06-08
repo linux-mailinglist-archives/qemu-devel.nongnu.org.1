@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716DB728203
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0194672820D
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:00:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7G8y-0004EW-7N; Thu, 08 Jun 2023 09:57:40 -0400
+	id 1q7G8v-0004AB-7Y; Thu, 08 Jun 2023 09:57:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8m-000450-V5
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8j-00042h-NX
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8h-0004lx-Ef
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:28 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q7G8g-0004ko-Lw
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 09:57:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686232638;
+ s=mimecast20190719; t=1686232635;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hTYoHZ5/+Lhof/7wgPVRDTj3CfWlRezlcs8iQl1RZz0=;
- b=jNjCUb16H0h0SHsqjOwy/rcrofPjF4PNuQQ9pqW14lp7Dv+judtlktt3oRN+C4nvoaDcB7
- BFdSQ9Z19YCwjfuXs9hvSGrWvKR+qWeXx3A75gCufnEzFnKO7vCODwZOLks2NmmWsemy+p
- 5E/GaujTyBSl5aTUdV8BB3nLiZ/iaP4=
+ bh=/QnKxV2pN16lLcAjxkXlbh+ajdIrWM1LhBM7kNJsoY4=;
+ b=N5cJvZ3iUN2LdWnFOnBoZYQi7pQbDfDu5+VTzLvdOx/PweKrf6cDYl0vEQ6uWDSSzZsBu+
+ qhO/cNymz5NN+GmbhQvkf5XgTDamF4fZC7LpHuvLIkZ1A6p099Fu8MGV98Lh6171XhPdu7
+ e13gr09P1+Dk2ppPmWPQq4qSBtDfHQ4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-440-NTVU4jFfPs2vhm-W33U15Q-1; Thu, 08 Jun 2023 09:57:15 -0400
-X-MC-Unique: NTVU4jFfPs2vhm-W33U15Q-1
+ us-mta-331-5wP7wlCEPHyhTaitPIesUQ-1; Thu, 08 Jun 2023 09:57:14 -0400
+X-MC-Unique: 5wP7wlCEPHyhTaitPIesUQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B03B285A5BD;
- Thu,  8 Jun 2023 13:57:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DD8C185A78B;
+ Thu,  8 Jun 2023 13:57:14 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2650A492B00;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DACB3492B00;
  Thu,  8 Jun 2023 13:57:13 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, libguestfs@redhat.com, vsementsov@yandex-team.ru,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v4 22/24] nbd/server: Refactor list of negotiated meta contexts
-Date: Thu,  8 Jun 2023 08:56:51 -0500
-Message-Id: <20230608135653.2918540-23-eblake@redhat.com>
+Subject: [PATCH v4 23/24] nbd/server: Prepare for per-request filtering of
+ BLOCK_STATUS
+Date: Thu,  8 Jun 2023 08:56:52 -0500
+Message-Id: <20230608135653.2918540-24-eblake@redhat.com>
 In-Reply-To: <20230608135653.2918540-1-eblake@redhat.com>
 References: <20230608135653.2918540-1-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,232 +78,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peform several minor refactorings of how the list of negotiated meta
-contexts is managed, to make upcoming patches easier: Promote the
-internal type NBDExportMetaContexts to the public opaque type
-NBDMetaContexts, and mark exp const.  Use a shorter member name in
-NBDClient.  Hoist calls to nbd_check_meta_context() earlier in their
-callers, as the number of negotiated contexts may impact the flags
-exposed in regards to an export, which in turn requires a new
-parameter.  Drop a redundant parameter to nbd_negotiate_meta_queries.
-No semantic change intended.
+The next commit will add support for the optional extension
+NBD_CMD_FLAG_PAYLOAD during NBD_CMD_BLOCK_STATUS, where the client can
+request that the server only return a subset of negotiated contexts,
+rather than all contexts.  To make that task easier, this patch
+populates the list of contexts to return on a per-command basis (for
+now, identical to the full set of negotiated contexts).
 
 Signed-off-by: Eric Blake <eblake@redhat.com>
 ---
 
-v4: new patch split out from v3 13/14, with smaller impact (quit
-trying to separate exp outside of NBDMeataContexts)
+v4: split out NBDMetaContexts refactoring to its own patch, track
+NBDRequests.contexts as a pointer rather than inline
 ---
  include/block/nbd.h |  1 +
- nbd/server.c        | 55 ++++++++++++++++++++++++---------------------
- 2 files changed, 31 insertions(+), 25 deletions(-)
+ nbd/server.c        | 22 +++++++++++++++++-----
+ 2 files changed, 18 insertions(+), 5 deletions(-)
 
 diff --git a/include/block/nbd.h b/include/block/nbd.h
-index af80087e2cd..f240707f646 100644
+index f240707f646..47850be5a66 100644
 --- a/include/block/nbd.h
 +++ b/include/block/nbd.h
-@@ -28,6 +28,7 @@
+@@ -76,6 +76,7 @@ typedef struct NBDRequest {
+     uint16_t flags; /* NBD_CMD_FLAG_* */
+     uint16_t type;  /* NBD_CMD_* */
+     NBDMode mode;   /* Determines which network representation to use */
++    NBDMetaContexts *contexts; /* Used by NBD_CMD_BLOCK_STATUS */
+ } NBDRequest;
 
- typedef struct NBDExport NBDExport;
- typedef struct NBDClient NBDClient;
-+typedef struct NBDMetaContexts NBDMetaContexts;
-
- extern const BlockExportDriver blk_exp_nbd;
-
+ typedef struct NBDSimpleReply {
 diff --git a/nbd/server.c b/nbd/server.c
-index ae293663ca2..42a4300c95e 100644
+index 42a4300c95e..308846fe46b 100644
 --- a/nbd/server.c
 +++ b/nbd/server.c
-@@ -105,11 +105,13 @@ struct NBDExport {
-
- static QTAILQ_HEAD(, NBDExport) exports = QTAILQ_HEAD_INITIALIZER(exports);
-
--/* NBDExportMetaContexts represents a list of contexts to be exported,
-+/*
-+ * NBDMetaContexts represents a list of meta contexts in use,
-  * as selected by NBD_OPT_SET_META_CONTEXT. Also used for
-- * NBD_OPT_LIST_META_CONTEXT. */
--typedef struct NBDExportMetaContexts {
--    NBDExport *exp;
-+ * NBD_OPT_LIST_META_CONTEXT.
-+ */
-+struct NBDMetaContexts {
-+    const NBDExport *exp; /* associated export */
-     size_t count; /* number of negotiated contexts */
-     bool base_allocation; /* export base:allocation context (block status) */
-     bool allocation_depth; /* export qemu:allocation-depth */
-@@ -117,7 +119,7 @@ typedef struct NBDExportMetaContexts {
-                     * export qemu:dirty-bitmap:<export bitmap name>,
-                     * sized by exp->nr_export_bitmaps
-                     */
--} NBDExportMetaContexts;
-+};
-
- struct NBDClient {
-     int refcount;
-@@ -144,7 +146,7 @@ struct NBDClient {
-     uint32_t check_align; /* If non-zero, check for aligned client requests */
-
-     NBDMode mode;
--    NBDExportMetaContexts export_meta;
-+    NBDMetaContexts contexts; /* Negotiated meta contexts */
-
-     uint32_t opt; /* Current option being negotiated */
-     uint32_t optlen; /* remaining length of data in ioc for the option being
-@@ -455,10 +457,10 @@ static int nbd_negotiate_handle_list(NBDClient *client, Error **errp)
-     return nbd_negotiate_send_rep(client, NBD_REP_ACK, errp);
- }
-
--static void nbd_check_meta_export(NBDClient *client)
-+static void nbd_check_meta_export(NBDClient *client, NBDExport *exp)
- {
--    if (client->exp != client->export_meta.exp) {
--        client->export_meta.count = 0;
-+    if (exp != client->contexts.exp) {
-+        client->contexts.count = 0;
-     }
- }
-
-@@ -504,6 +506,7 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-         error_setg(errp, "export not found");
-         return -EINVAL;
-     }
-+    nbd_check_meta_export(client, client->exp);
-
-     myflags = client->exp->nbdflags;
-     if (client->mode >= NBD_MODE_STRUCTURED) {
-@@ -521,7 +524,6 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-
-     QTAILQ_INSERT_TAIL(&client->exp->clients, client, next);
-     blk_exp_ref(&client->exp->common);
--    nbd_check_meta_export(client);
-
-     return 0;
- }
-@@ -641,6 +643,9 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-                                           errp, "export '%s' not present",
-                                           sane_name);
-     }
-+    if (client->opt == NBD_OPT_GO) {
-+        nbd_check_meta_export(client, exp);
-+    }
-
-     /* Don't bother sending NBD_INFO_NAME unless client requested it */
-     if (sendname) {
-@@ -729,7 +734,6 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-         client->check_align = check_align;
-         QTAILQ_INSERT_TAIL(&client->exp->clients, client, next);
-         blk_exp_ref(&client->exp->common);
--        nbd_check_meta_export(client);
-         rc = 1;
-     }
-     return rc;
-@@ -852,7 +856,7 @@ static bool nbd_strshift(const char **str, const char *prefix)
-  * Handle queries to 'base' namespace. For now, only the base:allocation
-  * context is available.  Return true if @query has been handled.
-  */
--static bool nbd_meta_base_query(NBDClient *client, NBDExportMetaContexts *meta,
-+static bool nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
-                                 const char *query)
- {
-     if (!nbd_strshift(&query, "base:")) {
-@@ -872,7 +876,7 @@ static bool nbd_meta_base_query(NBDClient *client, NBDExportMetaContexts *meta,
-  * and qemu:allocation-depth contexts are available.  Return true if @query
-  * has been handled.
-  */
--static bool nbd_meta_qemu_query(NBDClient *client, NBDExportMetaContexts *meta,
-+static bool nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
-                                 const char *query)
- {
-     size_t i;
-@@ -938,7 +942,7 @@ static bool nbd_meta_qemu_query(NBDClient *client, NBDExportMetaContexts *meta,
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
- static int nbd_negotiate_meta_query(NBDClient *client,
--                                    NBDExportMetaContexts *meta, Error **errp)
-+                                    NBDMetaContexts *meta, Error **errp)
- {
-     int ret;
-     g_autofree char *query = NULL;
-@@ -977,14 +981,14 @@ static int nbd_negotiate_meta_query(NBDClient *client,
-  * Handle NBD_OPT_LIST_META_CONTEXT and NBD_OPT_SET_META_CONTEXT
-  *
-  * Return -errno on I/O error, or 0 if option was completely handled. */
--static int nbd_negotiate_meta_queries(NBDClient *client,
--                                      NBDExportMetaContexts *meta, Error **errp)
-+static int nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
- {
-     int ret;
-     g_autofree char *export_name = NULL;
-     /* Mark unused to work around https://bugs.llvm.org/show_bug.cgi?id=3888 */
-     g_autofree G_GNUC_UNUSED bool *bitmaps = NULL;
--    NBDExportMetaContexts local_meta = {0};
-+    NBDMetaContexts local_meta = {0};
-+    NBDMetaContexts *meta;
-     uint32_t nb_queries;
-     size_t i;
-     size_t count = 0;
-@@ -1000,6 +1004,8 @@ static int nbd_negotiate_meta_queries(NBDClient *client,
-     if (client->opt == NBD_OPT_LIST_META_CONTEXT) {
-         /* Only change the caller's meta on SET. */
-         meta = &local_meta;
-+    } else {
-+        meta = &client->contexts;
-     }
-
-     g_free(meta->bitmaps);
-@@ -1282,8 +1288,7 @@ static int nbd_negotiate_options(NBDClient *client, Error **errp)
-
-             case NBD_OPT_LIST_META_CONTEXT:
-             case NBD_OPT_SET_META_CONTEXT:
--                ret = nbd_negotiate_meta_queries(client, &client->export_meta,
--                                                 errp);
-+                ret = nbd_negotiate_meta_queries(client, errp);
-                 break;
-
-             case NBD_OPT_EXTENDED_HEADERS:
-@@ -1515,7 +1520,7 @@ void nbd_client_put(NBDClient *client)
-             QTAILQ_REMOVE(&client->exp->clients, client, next);
-             blk_exp_unref(&client->exp->common);
+@@ -2491,6 +2491,8 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+             error_setg(errp, "No memory");
+             return -ENOMEM;
          }
--        g_free(client->export_meta.bitmaps);
-+        g_free(client->contexts.bitmaps);
-         g_free(client);
++    } else if (request->type == NBD_CMD_BLOCK_STATUS) {
++        request->contexts = &client->contexts;
      }
- }
-@@ -2711,11 +2716,11 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+
+     if (payload_len) {
+@@ -2716,11 +2718,11 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
          }
          assert(client->mode >= NBD_MODE_EXTENDED ||
                 request->len <= UINT32_MAX);
--        if (client->export_meta.count) {
-+        if (client->contexts.count) {
+-        if (client->contexts.count) {
++        if (request->contexts->count) {
              bool dont_fragment = request->flags & NBD_CMD_FLAG_REQ_ONE;
--            int contexts_remaining = client->export_meta.count;
-+            int contexts_remaining = client->contexts.count;
+-            int contexts_remaining = client->contexts.count;
++            int contexts_remaining = request->contexts->count;
 
--            if (client->export_meta.base_allocation) {
-+            if (client->contexts.base_allocation) {
+-            if (client->contexts.base_allocation) {
++            if (request->contexts->base_allocation) {
                  ret = nbd_co_send_block_status(client, request,
                                                 exp->common.blk,
                                                 request->from,
-@@ -2728,7 +2733,7 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+@@ -2733,7 +2735,7 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
                  }
              }
 
--            if (client->export_meta.allocation_depth) {
-+            if (client->contexts.allocation_depth) {
+-            if (client->contexts.allocation_depth) {
++            if (request->contexts->allocation_depth) {
                  ret = nbd_co_send_block_status(client, request,
                                                 exp->common.blk,
                                                 request->from, request->len,
-@@ -2742,7 +2747,7 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+@@ -2746,8 +2748,9 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+                 }
              }
 
++            assert(request->contexts->exp == client->exp);
              for (i = 0; i < client->exp->nr_export_bitmaps; i++) {
--                if (!client->export_meta.bitmaps[i]) {
-+                if (!client->contexts.bitmaps[i]) {
+-                if (!client->contexts.bitmaps[i]) {
++                if (!request->contexts->bitmaps[i]) {
                      continue;
                  }
                  ret = nbd_co_send_bitmap(client, request,
+@@ -2763,6 +2766,10 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+             assert(!contexts_remaining);
+
+             return 0;
++        } else if (client->contexts.count) {
++            return nbd_send_generic_reply(client, request, -EINVAL,
++                                          "CMD_BLOCK_STATUS payload not valid",
++                                          errp);
+         } else {
+             return nbd_send_generic_reply(client, request, -EINVAL,
+                                           "CMD_BLOCK_STATUS not negotiated",
+@@ -2841,6 +2848,11 @@ static coroutine_fn void nbd_trip(void *opaque)
+     } else {
+         ret = nbd_handle_request(client, &request, req->data, &local_err);
+     }
++    if (request.type == NBD_CMD_BLOCK_STATUS &&
++        request.contexts != &client->contexts) {
++        g_free(request.contexts->bitmaps);
++        g_free(request.contexts);
++    }
+     if (ret < 0) {
+         error_prepend(&local_err, "Failed to send reply: ");
+         goto disconnect;
 -- 
 2.40.1
 
