@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A02E7285B0
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 241FC7285AC
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 18:46:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Ilo-0006bM-Lt; Thu, 08 Jun 2023 12:45:56 -0400
+	id 1q7Ilo-0006b6-Ia; Thu, 08 Jun 2023 12:45:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q7Ill-0006Zv-JW
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:45:53 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1q7Iln-0006ad-0O
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:45:55 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q7Ili-00051m-P1
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:45:53 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-19f56608dc2so620699fac.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 09:45:50 -0700 (PDT)
+ id 1q7Ilk-00052v-Is
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 12:45:54 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-55554c33bf3so534186eaf.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 09:45:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1686242749; x=1688834749;
+ d=sifive.com; s=google; t=1686242751; x=1688834751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5GOFCpLUk+3yvoZIeJCwEYfGyX+4VLO7YhtgdT0Fcx8=;
- b=PGDVTeWE0iHWlV+LVIk6Z56fYqmsyVPOJRvspNAvlsQwEwhW+DQ0jBW22vKTByfK+u
- 7/HUPZgXv/RPN7A996yncNexfbmFHyoKdw2HhxUoONRLGCqNJwtJmbpCJaxSQhQ2bXWT
- jKP/VbP84+yKuhy8XnicvseeiIbPLZAdOByQQAwJlA7rYgcrck18Iwo/1wbWz6wHceBm
- n2ql1NgVaTszFqXRSt6UIXiqbNX574gYqk0xAvIdC4q3jYkEaZOkZVDcNpDrvKmL5sew
- Ui83GOPrwHJ/nlwwjBTjwZY0JHulDTaIWel1TwmKffEhEpexVx2e21SbS5f78IyMRYNI
- 6mqQ==
+ bh=TeoXDRO1znt1A0cV5lQC+UQ9fkpA1X44Z4UfvYwfiBE=;
+ b=ROnIvjdXE7+ZrWOGIToTPC1cnPRTDLibcwZH20D7ajD6QNTBDS+nMs5Gy52kwHrGSo
+ OSdJclhWOXy7glRwNqzKIbsl15s3i7WyqJBCdYTzU0FB7NxARvElltn8o2slze4b8Xfh
+ 1HndG3G9PVYf+cMHyAslHsbSBwOmTc4hnLZv9e0zznkf3phGsu1hjQ0UlVvpcvZE+6FW
+ x11FhQ963m7B1MEX3gaQcKRdQZw0EqQZdlDgOUBNA44rF96HOZamiypQ4FlOzZ7ByWFG
+ Vn8vNK96mjNcrwCjegKKTuWuy09NmpgxwUdupjYvVwbe616aaltL4WvudF7GegXVQtAA
+ 5WgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686242749; x=1688834749;
+ d=1e100.net; s=20221208; t=1686242751; x=1688834751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5GOFCpLUk+3yvoZIeJCwEYfGyX+4VLO7YhtgdT0Fcx8=;
- b=NunZUsydMuIa7ipm//kAHWdD4XCCoGbqtGoLgTdwj5xJ5T+MRYr1gk+s5PkUF6ucGU
- rUx+eygPYB79IMnQQLF0D2IBEmgxbtTqZIgNUrjT3IbKUUK9OH7mrjta8Ezuz1jh4L48
- Y8J/0dZSt2+vPWLiwEydgC9K1rlP6hh6+5mnO7nxARFmqftGa6j7ZPstQvebfaa4kYNL
- HEG8EN/jdg739NwNN8LmUSjSehNDPTXztCFz4ZyP6+AxAt9X02KRAHYEhKn/znerOPLs
- 2XEdRptX63/6MNQPdXnNR9t4UKpEuCDme2oZUe6q+Ms3OhCPE67jBr/Jt7bMy1oFBDUe
- wlZw==
-X-Gm-Message-State: AC+VfDz4cF1QvlJ+pUc9szC7HAXqu+2Ngh+BF5wY+Rzw1QaCLTXiR0Ft
- fLwg+6xHqMfOzpVpEFX1blc0DeiBheb2Li/bqGeCtuCoSs+D7NcNloxwYjKf06EzM2lWJ2TT16l
- /8h3mmJK3fRtYKuELrg7Spgn3ZQ2zq+BgicXvlPnTWWyp9ueKQpubMnbi2o1lpcXADgWsEj9HIn
- F+
-X-Google-Smtp-Source: ACHHUZ6Upug+nHJXEwJbDWOKbm7ajV/XXQTTFQ0ek9AiXM9skUQGesitFXHFS37Oo8ClQ8GaN3O+qA==
-X-Received: by 2002:a05:6870:956c:b0:19f:6e17:342e with SMTP id
- v44-20020a056870956c00b0019f6e17342emr5577013oal.22.1686242749056; 
- Thu, 08 Jun 2023 09:45:49 -0700 (PDT)
+ bh=TeoXDRO1znt1A0cV5lQC+UQ9fkpA1X44Z4UfvYwfiBE=;
+ b=UreRONYde4zI/vGSAHr3LKAxS17BiS7ZdM+THX676u9g9dhsEteTmrkavcoIHrneTl
+ 96V73a/CT5NINsfqLuEq3gBa8rixvnlKa/Wj7Dmf85M2Enls2yMjD0YQA67BthmNMU0F
+ JmHGsvIphc1wnGVmWpcEP/3ZxAsSpB4wyv4nCzcHJvMLbnYbAQ8cELFw0jrtII5M0++c
+ oGLLGioUx27xaB3Uexfixu8oshhYOJuWK9yHBFNaMxNu5sqE10owUPsMfBWKjoOoZw5s
+ 7Pho8sLqdgswIihf+Q0b6rOVfm5qf9KN6iQRh2qlJkHbDyUCM2xa456OHT6HtrRj4Qr5
+ Wh2g==
+X-Gm-Message-State: AC+VfDyieGcOX5FpAYG2u5lZ+TzZpcRYXtBNYFRdoBZi5DGxbbOEuj4R
+ a9t1QezLafgIuCMwxEPpDWY4JGsVWPWkd9RBmGmUda++O92Ir7pd8RH8oMOYM3qfDl/rKavtjhZ
+ du0Uaot5mrJqGvFxxZi+wYbILhZA3WTcuBkGwsLvMSxK0P+7USAMUXio4GfIiPQxsYXEVQZpYYh
+ Zu
+X-Google-Smtp-Source: ACHHUZ6Vkfte1BbVLphHW79LaErGxGTWEZPRax3s0Ptnkxh0UpEMK01RkBULBDzpJ4HQSlGnyHLUOg==
+X-Received: by 2002:a05:6870:e353:b0:177:9b62:6b87 with SMTP id
+ a19-20020a056870e35300b001779b626b87mr7531286oae.20.1686242750968; 
+ Thu, 08 Jun 2023 09:45:50 -0700 (PDT)
 Received: from sw05.internal.sifive.com ([64.62.193.194])
  by smtp.gmail.com with ESMTPSA id
- s12-20020a4adb8c000000b0054574f35b8esm9107oou.41.2023.06.08.09.45.48
+ s12-20020a4adb8c000000b0054574f35b8esm9107oou.41.2023.06.08.09.45.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 09:45:48 -0700 (PDT)
+ Thu, 08 Jun 2023 09:45:50 -0700 (PDT)
 From: Tommy Wu <tommy.wu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
 Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
  jim.shu@sifive.com, frank.chang@sifive.com, liweiwei@iscas.ac.cn,
  philmd@linaro.org, Tommy Wu <tommy.wu@sifive.com>
-Subject: [PATCH v5 1/3] hw/misc: sifive_e_aon: Support the watchdog timer of
+Subject: [PATCH v5 2/3] hw/riscv: sifive_e: Support the watchdog timer of
  HiFive 1 rev b.
-Date: Thu,  8 Jun 2023 09:45:40 -0700
-Message-Id: <20230608164542.3675619-2-tommy.wu@sifive.com>
+Date: Thu,  8 Jun 2023 09:45:41 -0700
+Message-Id: <20230608164542.3675619-3-tommy.wu@sifive.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230608164542.3675619-1-tommy.wu@sifive.com>
 References: <20230608164542.3675619-1-tommy.wu@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=tommy.wu@sifive.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=tommy.wu@sifive.com; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,438 +97,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The watchdog timer is in the always-on domain device of HiFive 1 rev b,
-so this patch added the AON device to the sifive_e machine. This patch
-only implemented the functionality of the watchdog timer.
+Create the AON device when we realize the sifive_e machine.
+This patch only implemented the functionality of the watchdog timer,
+not all the functionality of the AON device.
 
 Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 Reviewed-by: Frank Chang <frank.chang@sifive.com>
 ---
- hw/misc/Kconfig                |   3 +
- hw/misc/meson.build            |   1 +
- hw/misc/sifive_e_aon.c         | 319 +++++++++++++++++++++++++++++++++
- include/hw/misc/sifive_e_aon.h |  60 +++++++
- 4 files changed, 383 insertions(+)
- create mode 100644 hw/misc/sifive_e_aon.c
- create mode 100644 include/hw/misc/sifive_e_aon.h
+ hw/riscv/Kconfig            |  1 +
+ hw/riscv/sifive_e.c         | 17 +++++++++++++++--
+ include/hw/riscv/sifive_e.h |  9 ++++++---
+ 3 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index e4c2149175..6996d265e4 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -158,6 +158,9 @@ config SIFIVE_TEST
- config SIFIVE_E_PRCI
-     bool
+diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+index 6528ebfa3a..b6a5eb4452 100644
+--- a/hw/riscv/Kconfig
++++ b/hw/riscv/Kconfig
+@@ -60,6 +60,7 @@ config SIFIVE_E
+     select SIFIVE_PLIC
+     select SIFIVE_UART
+     select SIFIVE_E_PRCI
++    select SIFIVE_E_AON
+     select UNIMP
  
-+config SIFIVE_E_AON
-+    bool
-+
- config SIFIVE_U_OTP
-     bool
- 
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 78ca857c9d..6ac62e6751 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -30,6 +30,7 @@ softmmu_ss.add(when: 'CONFIG_MCHP_PFSOC_IOSCB', if_true: files('mchp_pfsoc_ioscb
- softmmu_ss.add(when: 'CONFIG_MCHP_PFSOC_SYSREG', if_true: files('mchp_pfsoc_sysreg.c'))
- softmmu_ss.add(when: 'CONFIG_SIFIVE_TEST', if_true: files('sifive_test.c'))
- softmmu_ss.add(when: 'CONFIG_SIFIVE_E_PRCI', if_true: files('sifive_e_prci.c'))
-+softmmu_ss.add(when: 'CONFIG_SIFIVE_E_AON', if_true: files('sifive_e_aon.c'))
- softmmu_ss.add(when: 'CONFIG_SIFIVE_U_OTP', if_true: files('sifive_u_otp.c'))
- softmmu_ss.add(when: 'CONFIG_SIFIVE_U_PRCI', if_true: files('sifive_u_prci.c'))
- 
-diff --git a/hw/misc/sifive_e_aon.c b/hw/misc/sifive_e_aon.c
-new file mode 100644
-index 0000000000..4656457d0b
---- /dev/null
-+++ b/hw/misc/sifive_e_aon.c
-@@ -0,0 +1,319 @@
-+/*
-+ * SiFive HiFive1 AON (Always On Domain) for QEMU.
-+ *
-+ * Copyright (c) 2022 SiFive, Inc. All rights reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/timer.h"
-+#include "qemu/log.h"
-+#include "hw/irq.h"
-+#include "hw/registerfields.h"
+ config SIFIVE_U
+diff --git a/hw/riscv/sifive_e.c b/hw/riscv/sifive_e.c
+index 04939b60c3..0d37adc542 100644
+--- a/hw/riscv/sifive_e.c
++++ b/hw/riscv/sifive_e.c
+@@ -45,6 +45,7 @@
+ #include "hw/intc/riscv_aclint.h"
+ #include "hw/intc/sifive_plic.h"
+ #include "hw/misc/sifive_e_prci.h"
 +#include "hw/misc/sifive_e_aon.h"
-+#include "qapi/visitor.h"
-+#include "qapi/error.h"
-+#include "sysemu/watchdog.h"
-+#include "hw/qdev-properties.h"
+ #include "chardev/char.h"
+ #include "sysemu/sysemu.h"
+ 
+@@ -185,6 +186,8 @@ static void sifive_e_soc_init(Object *obj)
+     object_property_set_int(OBJECT(&s->cpus), "resetvec", 0x1004, &error_abort);
+     object_initialize_child(obj, "riscv.sifive.e.gpio0", &s->gpio,
+                             TYPE_SIFIVE_GPIO);
++    object_initialize_child(obj, "riscv.sifive.e.aon", &s->aon,
++                            TYPE_SIFIVE_E_AON);
+ }
+ 
+ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
+@@ -223,10 +226,17 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
+         RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
+         RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
+         RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, false);
+-    create_unimplemented_device("riscv.sifive.e.aon",
+-        memmap[SIFIVE_E_DEV_AON].base, memmap[SIFIVE_E_DEV_AON].size);
+     sifive_e_prci_create(memmap[SIFIVE_E_DEV_PRCI].base);
+ 
++    /* AON */
 +
-+REG32(AON_WDT_WDOGCFG, 0x0)
-+    FIELD(AON_WDT_WDOGCFG, SCALE, 0, 4)
-+    FIELD(AON_WDT_WDOGCFG, RSVD0, 4, 4)
-+    FIELD(AON_WDT_WDOGCFG, RSTEN, 8, 1)
-+    FIELD(AON_WDT_WDOGCFG, ZEROCMP, 9, 1)
-+    FIELD(AON_WDT_WDOGCFG, RSVD1, 10, 2)
-+    FIELD(AON_WDT_WDOGCFG, EN_ALWAYS, 12, 1)
-+    FIELD(AON_WDT_WDOGCFG, EN_CORE_AWAKE, 13, 1)
-+    FIELD(AON_WDT_WDOGCFG, RSVD2, 14, 14)
-+    FIELD(AON_WDT_WDOGCFG, IP0, 28, 1)
-+    FIELD(AON_WDT_WDOGCFG, RSVD3, 29, 3)
-+REG32(AON_WDT_WDOGCOUNT, 0x8)
-+    FIELD(AON_WDT_WDOGCOUNT, VALUE, 0, 31)
-+REG32(AON_WDT_WDOGS, 0x10)
-+REG32(AON_WDT_WDOGFEED, 0x18)
-+REG32(AON_WDT_WDOGKEY, 0x1c)
-+REG32(AON_WDT_WDOGCMP0, 0x20)
-+
-+static void sifive_e_aon_wdt_update_wdogcount(SiFiveEAONState *r)
-+{
-+    int64_t now;
-+    if (FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_ALWAYS) == 0 &&
-+        FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE) == 0) {
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->aon), errp)) {
 +        return;
 +    }
 +
-+    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    r->wdogcount += muldiv64(now - r->wdog_restart_time,
-+                             r->wdogclk_freq, NANOSECONDS_PER_SECOND);
++    /* Map AON registers */
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->aon), 0, memmap[SIFIVE_E_DEV_AON].base);
 +
-+    /* Clean the most significant bit. */
-+    r->wdogcount &= R_AON_WDT_WDOGCOUNT_VALUE_MASK;
-+    r->wdog_restart_time = now;
-+}
-+
-+static void sifive_e_aon_wdt_update_state(SiFiveEAONState *r)
-+{
-+    uint16_t wdogs;
-+    bool cmp_signal = false;
-+    sifive_e_aon_wdt_update_wdogcount(r);
-+    wdogs = (uint16_t)(r->wdogcount >>
-+                           FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, SCALE));
-+
-+    if (wdogs >= r->wdogcmp0) {
-+        cmp_signal = true;
-+        if (FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, ZEROCMP) == 1) {
-+            r->wdogcount = 0;
-+            wdogs = 0;
-+        }
-+    }
-+
-+    if (cmp_signal) {
-+        if (FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, RSTEN) == 1) {
-+            watchdog_perform_action();
-+        }
-+        r->wdogcfg = FIELD_DP32(r->wdogcfg, AON_WDT_WDOGCFG, IP0, 1);
-+    }
-+
-+    qemu_set_irq(r->wdog_irq, FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, IP0));
-+
-+    if (wdogs < r->wdogcmp0 &&
-+        (FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_ALWAYS) == 1 ||
-+         FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE) == 1)) {
-+        int64_t next = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+        next += muldiv64((r->wdogcmp0 - wdogs) <<
-+                         FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, SCALE),
-+                         NANOSECONDS_PER_SECOND, r->wdogclk_freq);
-+        timer_mod(r->wdog_timer, next);
-+    } else {
-+        timer_mod(r->wdog_timer, INT64_MAX);
-+    }
-+}
-+
-+/*
-+ * Callback used when the timer set using timer_mod expires.
-+ */
-+static void sifive_e_aon_wdt_expired_cb(void *opaque)
-+{
-+    SiFiveEAONState *r = SIFIVE_E_AON(opaque);
-+    sifive_e_aon_wdt_update_state(r);
-+}
-+
-+static uint64_t
-+sifive_e_aon_wdt_read(void *opaque, hwaddr addr, unsigned int size)
-+{
-+    SiFiveEAONState *r = SIFIVE_E_AON(opaque);
-+
-+    switch (addr) {
-+    case A_AON_WDT_WDOGCFG:
-+        return r->wdogcfg;
-+    case A_AON_WDT_WDOGCOUNT:
-+        sifive_e_aon_wdt_update_wdogcount(r);
-+        return r->wdogcount;
-+    case A_AON_WDT_WDOGS:
-+        sifive_e_aon_wdt_update_wdogcount(r);
-+        return r->wdogcount >>
-+               FIELD_EX32(r->wdogcfg,
-+                          AON_WDT_WDOGCFG,
-+                          SCALE);
-+    case A_AON_WDT_WDOGFEED:
-+        return 0;
-+    case A_AON_WDT_WDOGKEY:
-+        return r->wdogunlock;
-+    case A_AON_WDT_WDOGCMP0:
-+        return r->wdogcmp0;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: bad read: addr=0x%x\n",
-+                      __func__, (int)addr);
-+    }
-+
-+    return 0;
-+}
-+
-+static void
-+sifive_e_aon_wdt_write(void *opaque, hwaddr addr,
-+                       uint64_t val64, unsigned int size)
-+{
-+    SiFiveEAONState *r = SIFIVE_E_AON(opaque);
-+    uint32_t value = val64;
-+
-+    switch (addr) {
-+    case A_AON_WDT_WDOGCFG: {
-+        uint8_t new_en_always;
-+        uint8_t new_en_core_awake;
-+        uint8_t old_en_always;
-+        uint8_t old_en_core_awake;
-+        if (r->wdogunlock == 0) {
-+            return;
-+        }
-+
-+        new_en_always = FIELD_EX32(value, AON_WDT_WDOGCFG, EN_ALWAYS);
-+        new_en_core_awake = FIELD_EX32(value, AON_WDT_WDOGCFG, EN_CORE_AWAKE);
-+        old_en_always = FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_ALWAYS);
-+        old_en_core_awake = FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG,
-+                                       EN_CORE_AWAKE);
-+
-+        if ((old_en_always ||
-+             old_en_core_awake) == 1 &&
-+            (new_en_always ||
-+             new_en_core_awake) == 0) {
-+            sifive_e_aon_wdt_update_wdogcount(r);
-+        } else if ((old_en_always ||
-+                    old_en_core_awake) == 0 &&
-+                   (new_en_always ||
-+                    new_en_core_awake) == 1) {
-+            r->wdog_restart_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+        }
-+        r->wdogcfg = value;
-+        r->wdogunlock = 0;
-+        break;
-+    }
-+    case A_AON_WDT_WDOGCOUNT:
-+        if (r->wdogunlock == 0) {
-+            return;
-+        }
-+        r->wdogcount = value & R_AON_WDT_WDOGCOUNT_VALUE_MASK;
-+        r->wdog_restart_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+        r->wdogunlock = 0;
-+        break;
-+    case A_AON_WDT_WDOGS:
-+        return;
-+    case A_AON_WDT_WDOGFEED:
-+        if (r->wdogunlock == 0) {
-+            return;
-+        }
-+        if (value == SIFIVE_E_AON_WDOGFEED) {
-+            r->wdogcount = 0;
-+            r->wdog_restart_time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+        }
-+        r->wdogunlock = 0;
-+        break;
-+    case A_AON_WDT_WDOGKEY:
-+        if (value == SIFIVE_E_AON_WDOGKEY) {
-+            r->wdogunlock = 1;
-+        }
-+        break;
-+    case A_AON_WDT_WDOGCMP0:
-+        if (r->wdogunlock == 0) {
-+            return;
-+        }
-+        r->wdogcmp0 = (uint16_t) value;
-+        r->wdogunlock = 0;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: bad write: addr=0x%x v=0x%x\n",
-+                      __func__, (int)addr, (int)value);
-+    }
-+    sifive_e_aon_wdt_update_state(r);
-+}
-+
-+static uint64_t
-+sifive_e_aon_read(void *opaque, hwaddr addr, unsigned int size)
-+{
-+    if (addr < SIFIVE_E_AON_RTC) {
-+        return sifive_e_aon_wdt_read(opaque, addr, size);
-+    } else if (addr < SIFIVE_E_AON_MAX) {
-+        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented read: addr=0x%x\n",
-+                      __func__, (int)addr);
-+    } else {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: bad read: addr=0x%x\n",
-+                      __func__, (int)addr);
-+    }
-+    return 0;
-+}
-+
-+static void
-+sifive_e_aon_write(void *opaque, hwaddr addr,
-+                   uint64_t val64, unsigned int size)
-+{
-+    if (addr < SIFIVE_E_AON_RTC) {
-+        sifive_e_aon_wdt_write(opaque, addr, val64, size);
-+    } else if (addr < SIFIVE_E_AON_MAX) {
-+        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented write: addr=0x%x\n",
-+                      __func__, (int)addr);
-+    } else {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: bad write: addr=0x%x\n",
-+                      __func__, (int)addr);
-+    }
-+}
-+
-+static const MemoryRegionOps sifive_e_aon_ops = {
-+    .read = sifive_e_aon_read,
-+    .write = sifive_e_aon_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .impl = {
-+        .min_access_size = 4,
-+        .max_access_size = 4
-+    },
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4
-+    }
-+};
-+
-+static void sifive_e_aon_reset(DeviceState *dev)
-+{
-+    SiFiveEAONState *r = SIFIVE_E_AON(dev);
-+
-+    r->wdogcfg = FIELD_DP32(r->wdogcfg, AON_WDT_WDOGCFG, RSTEN, 0);
-+    r->wdogcfg = FIELD_DP32(r->wdogcfg, AON_WDT_WDOGCFG, EN_ALWAYS, 0);
-+    r->wdogcfg = FIELD_DP32(r->wdogcfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE, 0);
-+    r->wdogcmp0 = 0xbeef;
-+
-+    sifive_e_aon_wdt_update_state(r);
-+}
-+
-+static void sifive_e_aon_init(Object *obj)
-+{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+    SiFiveEAONState *r = SIFIVE_E_AON(obj);
-+
-+    memory_region_init_io(&r->mmio, OBJECT(r), &sifive_e_aon_ops, r,
-+                          TYPE_SIFIVE_E_AON, SIFIVE_E_AON_MAX);
-+    sysbus_init_mmio(sbd, &r->mmio);
-+
-+    /* watchdog timer */
-+    r->wdog_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                 sifive_e_aon_wdt_expired_cb, r);
-+    r->wdogclk_freq = SIFIVE_E_LFCLK_DEFAULT_FREQ;
-+    sysbus_init_irq(sbd, &r->wdog_irq);
-+}
-+
-+static Property sifive_e_aon_properties[] = {
-+    DEFINE_PROP_UINT64("wdogclk-frequency", SiFiveEAONState, wdogclk_freq,
-+                       SIFIVE_E_LFCLK_DEFAULT_FREQ),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void sifive_e_aon_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+
-+    dc->reset = sifive_e_aon_reset;
-+    device_class_set_props(dc, sifive_e_aon_properties);
-+}
-+
-+static const TypeInfo sifive_e_aon_info = {
-+    .name          = TYPE_SIFIVE_E_AON,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(SiFiveEAONState),
-+    .instance_init = sifive_e_aon_init,
-+    .class_init    = sifive_e_aon_class_init,
-+};
-+
-+static void sifive_e_aon_register_types(void)
-+{
-+    type_register_static(&sifive_e_aon_info);
-+}
-+
-+type_init(sifive_e_aon_register_types)
-diff --git a/include/hw/misc/sifive_e_aon.h b/include/hw/misc/sifive_e_aon.h
-new file mode 100644
-index 0000000000..2ae1c4139c
---- /dev/null
-+++ b/include/hw/misc/sifive_e_aon.h
-@@ -0,0 +1,60 @@
-+/*
-+ * SiFive HiFive1 AON (Always On Domain) interface.
-+ *
-+ * Copyright (c) 2022 SiFive, Inc. All rights reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef HW_SIFIVE_AON_H
-+#define HW_SIFIVE_AON_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_SIFIVE_E_AON "riscv.sifive.e.aon"
-+OBJECT_DECLARE_SIMPLE_TYPE(SiFiveEAONState, SIFIVE_E_AON)
-+
-+#define SIFIVE_E_AON_WDOGKEY (0x51F15E)
-+#define SIFIVE_E_AON_WDOGFEED (0xD09F00D)
-+#define SIFIVE_E_LFCLK_DEFAULT_FREQ (32768)
-+
-+enum {
-+    SIFIVE_E_AON_WDT    = 0x0,
-+    SIFIVE_E_AON_RTC    = 0x40,
-+    SIFIVE_E_AON_LFROSC = 0x70,
-+    SIFIVE_E_AON_BACKUP = 0x80,
-+    SIFIVE_E_AON_PMU    = 0x100,
-+    SIFIVE_E_AON_MAX    = 0x150
-+};
-+
-+struct SiFiveEAONState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+
-+    /*< public >*/
-+    MemoryRegion mmio;
-+
-+    /*< watchdog timer >*/
-+    QEMUTimer *wdog_timer;
-+    qemu_irq wdog_irq;
-+    uint64_t wdog_restart_time;
-+    uint64_t wdogclk_freq;
-+
-+    uint32_t wdogcfg;
-+    uint16_t wdogcmp0;
-+    uint32_t wdogcount;
-+    uint8_t wdogunlock;
-+};
-+
-+#endif
+     /* GPIO */
+ 
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio), errp)) {
+@@ -245,6 +255,9 @@ static void sifive_e_soc_realize(DeviceState *dev, Error **errp)
+                            qdev_get_gpio_in(DEVICE(s->plic),
+                                             SIFIVE_E_GPIO0_IRQ0 + i));
+     }
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->aon), 0,
++                       qdev_get_gpio_in(DEVICE(s->plic),
++                                        SIFIVE_E_AON_WDT_IRQ));
+ 
+     sifive_uart_create(sys_mem, memmap[SIFIVE_E_DEV_UART0].base,
+         serial_hd(0), qdev_get_gpio_in(DEVICE(s->plic), SIFIVE_E_UART0_IRQ));
+diff --git a/include/hw/riscv/sifive_e.h b/include/hw/riscv/sifive_e.h
+index b824a79e2d..31180a680e 100644
+--- a/include/hw/riscv/sifive_e.h
++++ b/include/hw/riscv/sifive_e.h
+@@ -22,6 +22,7 @@
+ #include "hw/riscv/riscv_hart.h"
+ #include "hw/riscv/sifive_cpu.h"
+ #include "hw/gpio/sifive_gpio.h"
++#include "hw/misc/sifive_e_aon.h"
+ #include "hw/boards.h"
+ 
+ #define TYPE_RISCV_E_SOC "riscv.sifive.e.soc"
+@@ -35,6 +36,7 @@ typedef struct SiFiveESoCState {
+     /*< public >*/
+     RISCVHartArrayState cpus;
+     DeviceState *plic;
++    SiFiveEAONState aon;
+     SIFIVEGPIOState gpio;
+     MemoryRegion xip_mem;
+     MemoryRegion mask_rom;
+@@ -76,9 +78,10 @@ enum {
+ };
+ 
+ enum {
+-    SIFIVE_E_UART0_IRQ  = 3,
+-    SIFIVE_E_UART1_IRQ  = 4,
+-    SIFIVE_E_GPIO0_IRQ0 = 8
++    SIFIVE_E_AON_WDT_IRQ  = 1,
++    SIFIVE_E_UART0_IRQ    = 3,
++    SIFIVE_E_UART1_IRQ    = 4,
++    SIFIVE_E_GPIO0_IRQ0   = 8
+ };
+ 
+ #define SIFIVE_E_PLIC_HART_CONFIG "M"
 -- 
 2.27.0
 
