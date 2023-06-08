@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B159D728048
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FA4728044
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 14:43:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7EyD-0002zE-QG; Thu, 08 Jun 2023 08:42:31 -0400
+	id 1q7EyL-00030A-B6; Thu, 08 Jun 2023 08:42:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Ey9-0002yL-VP
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:42:25 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7EyD-0002zd-PR
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:42:30 -0400
 Received: from pv50p00im-zteg10011501.me.com ([17.58.6.42])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Ey6-0000Eg-NW
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:42:25 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Ey9-0000FP-Nv
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:42:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1686228141; bh=WJybbYg8Al1st0uItsQ36eA7qhiUWArDe/Aix+sMO1c=;
+ t=1686228143; bh=IU4eVSgFHWDP+jifjfGdkBe+orZ14DeYHyLKEqxQd3o=;
  h=From:To:Subject:Date:Message-Id:MIME-Version;
- b=Urf/gmIigCIY4rWomqT1D2NtakhhzKQnTKBOglGj99iUBqZUWRYId7PYfb+uzfZ77
- dNr3dtwgNJM7+AwHKIRdU7JhQ53r+ME5sfiio8JWB/CBlaqavN+Nzey6vs2BzsPhpN
- sEOoGJbIy8Dlu2h7lBDa0uWvCa0RMyknFcE0jQix7TfWy863G0ybzc6SDAtcE//bOn
- Xt9S1hWm/k22uiUYbaV4TGNO82QktGQlx6BUms8qg/kQeQGolH/WXjD6M0asx33XIb
- 8N6STPHj1lRRxdDZzYsmC0pBtOQbl/2gOgfVALXWtHFif8HzFPcuA29MzUuJsdOTXA
- cNm2twhlpkpiQ==
+ b=fDUTgc29WkRH9Qr/GwfRT4XHiqYBQ6pablQICaFht8faX2ohv1dHQwBHWqq50fGHy
+ kT7dJvUZwxw5xKPob1yjnz6HCxFXD2jseQ46JkmsGTQY9u+w1ADg9HyH6zvEbisKEY
+ DTQ+m+aHN/x1p0/FUsLNL5g9Gd1D1V7sypzyb8ixIyQuOskQJsa9tGz5IZf+Nx3W3g
+ Lv8zuU42NR6xFc+a5F1QIQjc77LwBEtt1S0ojWLw4sgYv3hJv0LdCZINGfC262baDG
+ 2gN0a5D2jCEy3LZ7rgmOG2iOqDBy5lrJVQPgKTMKgVMwkcXZabTUVB5/eBdtGOOsdf
+ bjx0CHjo8SsLg==
 Received: from localhost.localdomain (pv50p00im-dlb-asmtp-mailmevip.me.com
  [17.56.9.10])
- by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id 667B14A0397;
- Thu,  8 Jun 2023 12:42:19 +0000 (UTC)
+ by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id F05594A0391;
+ Thu,  8 Jun 2023 12:42:21 +0000 (UTC)
 From: Mads Ynddal <mads@ynddal.dk>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>, Cleber Rosa <crosa@redhat.com>,
  Mads Ynddal <m.ynddal@samsung.com>
-Subject: [PATCH v3 10/14] simpletrace: move logic of process into internal
- function
-Date: Thu,  8 Jun 2023 14:41:43 +0200
-Message-Id: <20230608124147.51125-11-mads@ynddal.dk>
+Subject: [PATCH v3 11/14] simpletrace: move event processing to Analyzer class
+Date: Thu,  8 Jun 2023 14:41:44 +0200
+Message-Id: <20230608124147.51125-12-mads@ynddal.dk>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230608124147.51125-1-mads@ynddal.dk>
 References: <20230608124147.51125-1-mads@ynddal.dk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: YZAkaEgX6rWIedgWZTxcjLWta15SQpU9
-X-Proofpoint-ORIG-GUID: YZAkaEgX6rWIedgWZTxcjLWta15SQpU9
+X-Proofpoint-GUID: dZX8MaBbliyKLsTn82E-nQzkxvsHuB83
+X-Proofpoint-ORIG-GUID: dZX8MaBbliyKLsTn82E-nQzkxvsHuB83
 X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
  =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.572,17.0.605.474.0000000_definitions?=
  =?UTF-8?Q?=3D2022-06-21=5F01:2022-06-21=5F01,2020-02-14=5F11,2020-01-23?=
  =?UTF-8?Q?=5F02_signatures=3D0?=
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  suspectscore=0
- mlxlogscore=793 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
  clxscore=1030 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2306080110
 Received-SPF: pass client-ip=17.58.6.42; envelope-from=mads@ynddal.dk;
@@ -81,66 +80,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mads Ynddal <m.ynddal@samsung.com>
 
-To avoid duplicate code depending on input types and to better handle
-open/close of log with a context-manager, we move the logic of process into
-_process.
+Moved event processing to the Analyzer class to separate specific analyzer
+logic (like caching and function signatures) from the _process function.
+This allows for new types of Analyzer-based subclasses without changing
+the core code.
+
+Note, that the fn_cache is important for performance in cases where the
+analyzer is branching away from the catch-all a lot. The cache has no
+measurable performance penalty.
 
 Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
 ---
- scripts/simpletrace.py | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ scripts/simpletrace.py | 60 +++++++++++++++++++++++++-----------------
+ 1 file changed, 36 insertions(+), 24 deletions(-)
 
 diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
-index 0826aef283..6969fdd59a 100755
+index 6969fdd59a..4136d00600 100755
 --- a/scripts/simpletrace.py
 +++ b/scripts/simpletrace.py
-@@ -201,13 +201,26 @@ def process(events, log, analyzer, read_header=True):
-         # Treat as an already opened file-object
-         events_list = read_events(events, events.name)
+@@ -169,6 +169,35 @@ def catchall(self, event, rec):
+         """Called if no specific method for processing a trace event has been found."""
+         pass
  
--    close_log = False
-     if isinstance(log, str):
--        log = open(log, 'rb')
--        close_log = True
-+        with open(log, 'rb') as log_fobj:
-+            _process(events_list, log_fobj, analyzer, read_header)
-+    else:
-+        # Treat `log` as an already opened file-object. We will not close it,
-+        # as we do not own it.
-+        _process(events_list, log, analyzer, read_header)
++    def _build_fn(self, event):
++        fn = getattr(self, event.name, None)
++        if fn is None:
++            # Return early to avoid costly call to inspect.getfullargspec
++            return self.catchall
 +
-+def _process(events, log_fobj, analyzer, read_header=True):
-+    """Internal function for processing
++        event_argcount = len(event.args)
++        fn_argcount = len(inspect.getfullargspec(fn)[0]) - 1
++        if fn_argcount == event_argcount + 1:
++            # Include timestamp as first argument
++            return lambda _, rec: fn(*(rec[1:2] + rec[3:3 + event_argcount]))
++        elif fn_argcount == event_argcount + 2:
++            # Include timestamp and pid
++            return lambda _, rec: fn(*rec[1:3 + event_argcount])
++        else:
++            # Just arguments, no timestamp or pid
++            return lambda _, rec: fn(*rec[3:3 + event_argcount])
 +
-+    Args:
-+        events (list): list of events already produced by tracetool.read_events
-+        log_fobj (file): file-object to read log data from
-+        analyzer (Analyzer): the Analyzer to interpret the event data
-+        read_header (bool, optional): Whether to read header data from the log data. Defaults to True.
-+    """
- 
++    def _process_event(self, rec_args, *, event, event_id, timestamp_ns, pid, **kwargs):
++        if not hasattr(self, '_fn_cache'):
++            # NOTE: Cannot depend on downstream subclasses to have
++            # super().__init__() because of legacy.
++            self._fn_cache = {}
++
++        rec = (event_id, timestamp_ns, pid, *rec_args)
++        if event_id not in self._fn_cache:
++            self._fn_cache[event_id] = self._build_fn(event)
++        self._fn_cache[event_id](event, rec)
++
+     def end(self):
+         """Called at the end of the trace."""
+         pass
+@@ -222,32 +251,15 @@ def _process(events, log_fobj, analyzer, read_header=True):
      if read_header:
--        read_trace_header(log)
-+        read_trace_header(log_fobj)
+         read_trace_header(log_fobj)
  
-     def build_fn(analyzer, event):
-         if isinstance(event, str):
-@@ -231,14 +244,11 @@ def build_fn(analyzer, event):
- 
-     with analyzer:
-         fn_cache = {}
--        for event, event_id, timestamp_ns, record_pid, *rec_args in read_trace_records(events, log, read_header):
-+        for event, event_id, timestamp_ns, record_pid, *rec_args in read_trace_records(events, log_fobj, read_header):
-             if event_id not in fn_cache:
-                 fn_cache[event_id] = build_fn(analyzer, event)
-             fn_cache[event_id](event, (event_id, timestamp_ns, record_pid, *rec_args))
- 
--    if close_log:
--        log.close()
+-    def build_fn(analyzer, event):
+-        if isinstance(event, str):
+-            return analyzer.catchall
 -
+-        fn = getattr(analyzer, event.name, None)
+-        if fn is None:
+-            return analyzer.catchall
+-
+-        event_argcount = len(event.args)
+-        fn_argcount = len(inspect.getfullargspec(fn)[0]) - 1
+-        if fn_argcount == event_argcount + 1:
+-            # Include timestamp as first argument
+-            return lambda _, rec: fn(*(rec[1:2] + rec[3:3 + event_argcount]))
+-        elif fn_argcount == event_argcount + 2:
+-            # Include timestamp and pid
+-            return lambda _, rec: fn(*rec[1:3 + event_argcount])
+-        else:
+-            # Just arguments, no timestamp or pid
+-            return lambda _, rec: fn(*rec[3:3 + event_argcount])
+-
+     with analyzer:
+-        fn_cache = {}
+         for event, event_id, timestamp_ns, record_pid, *rec_args in read_trace_records(events, log_fobj, read_header):
+-            if event_id not in fn_cache:
+-                fn_cache[event_id] = build_fn(analyzer, event)
+-            fn_cache[event_id](event, (event_id, timestamp_ns, record_pid, *rec_args))
++            analyzer._process_event(
++                rec_args,
++                event=event,
++                event_id=event_id,
++                timestamp_ns=timestamp_ns,
++                pid=record_pid,
++            )
+ 
  def run(analyzer):
      """Execute an analyzer on a trace file given on the command-line.
- 
 -- 
 2.38.1
 
