@@ -2,81 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32674727391
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 02:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53027727454
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 03:31:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7399-0001lF-IA; Wed, 07 Jun 2023 20:04:59 -0400
+	id 1q74Su-00023A-DE; Wed, 07 Jun 2023 21:29:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q7394-0001ky-Bb
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 20:04:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dlemoal@kernel.org>)
+ id 1q74So-00021R-Aq; Wed, 07 Jun 2023 21:29:25 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q738z-00037H-Bl
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 20:04:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686182687;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e7Om+Wz2K629CU8ehyWK5VMhb+CNr8vcvdj5Dkz2TSk=;
- b=RgiKNHf3zkpw0tu+TOePBWixWKNJymgog/YsNkPR9/MTx5dsJAsbj8BVdXuYTIIk3a/yYV
- 3xZc/Aoyp7TXSCIzUhq2ibgFmoi0V/FBpRhqLKuk7dx24l0oi737RPP1oO0C0HpaqimDJ9
- AJaw+HzchYRBlbySRn6J6fbidZYYFjc=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-FBddKP29PpG_aUlYNnW2Hg-1; Wed, 07 Jun 2023 20:04:45 -0400
-X-MC-Unique: FBddKP29PpG_aUlYNnW2Hg-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-397f97f7966so61738b6e.3
- for <qemu-devel@nongnu.org>; Wed, 07 Jun 2023 17:04:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686182684; x=1688774684;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=e7Om+Wz2K629CU8ehyWK5VMhb+CNr8vcvdj5Dkz2TSk=;
- b=S0w9BjHS3XnY7aBFvLejNdx91IUFeBEttBZ46TPvl0EEIbaP0xy8+WK30gupwIcPoY
- hwEOnaHEBy36QLoiAdXj5ddi+hRlKZlXxnSNKVqZo0db+3eA6cFDT0GWuvjdjo+5U1WT
- T3rsGbQYGZvALZ5HO/+EPnTHvvlQ6OADm9SI5xKHjqQPYIRTmFuifKgIy8Hvsz/sENLm
- J9uncQIgy34LBSyQ7EvolMAZklpkI5B0jnKYfip3J8s4vGvlowgEEL8rnJbDMX1JFhXp
- ww0EQvsDcsQTJCBW/Idov3/AL+fpBXrgJikGhA13IPVi9JX3aaN20EgPRRfKNb5Vw9J0
- Hh1A==
-X-Gm-Message-State: AC+VfDwWf+X6uuZKos5yW1W3y4VKl333o9tz/sq/t2FVb+WfZ7CVqT1o
- Z0jNoqgF7LawgR8xCrhBjB3KuirzdTDJRd5NkKdPfXG24hOz/ia8Q18F0jJGmjcBoo40WOA43Nm
- wPtI2/Dvtriugzp70bT4YmTgVkMz0s+0=
-X-Received: by 2002:a54:480e:0:b0:398:111d:c438 with SMTP id
- j14-20020a54480e000000b00398111dc438mr4470329oij.32.1686182684684; 
- Wed, 07 Jun 2023 17:04:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ72VF1CQtDr0hwIoI6KxzkZMFXS3IqO9S/6I+NFX9Kwu+kH7lJiNVxhr5RQrdhbuQEyRiMNJrCsgezYsPWOBPo=
-X-Received: by 2002:a54:480e:0:b0:398:111d:c438 with SMTP id
- j14-20020a54480e000000b00398111dc438mr4470318oij.32.1686182684387; Wed, 07
- Jun 2023 17:04:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dlemoal@kernel.org>)
+ id 1q74Sm-0002se-Hl; Wed, 07 Jun 2023 21:29:22 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id DFCD061ED6;
+ Thu,  8 Jun 2023 01:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246E8C433D2;
+ Thu,  8 Jun 2023 01:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1686187751;
+ bh=p2/TdeOqd3QAqhGmMf/YlpBJ4B6SjjAiT4LZsMFFe8w=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=f0ZPCpzTvRn5DgkbYpiOVsL0weSBRaPCCDpMDSwlE3lIVve+H1unbjq0C/+WFSwsZ
+ wRB9BBgZCtHK1ryBhQeI0FEgqadragnd0xGWqDo8izhiXw7sJiaYstlvfPeA0UoGJh
+ F6TEWkTvMzLggk18ELhGPwaAY+ruWsrC7Wd5ARna7n47Eb4yz0uADFUIYlk536amY8
+ 3WeBn80AcBH90LrLdkd6ySwr6uU6IKExvbeELlKA0hauUjKpmHW4zmwT9LjILDETnE
+ TtQhPi6tPTx4HDCKY5Xoo3YJP2EEBgNRMq7B95BuNwHtZ/0fvFO0y+pNJxno+sbdFC
+ gQMTilVGdGNQw==
+Message-ID: <6c2621d5-5446-7cd5-2b03-2eb9b99ae64b@kernel.org>
+Date: Thu, 8 Jun 2023 10:29:08 +0900
 MIME-Version: 1.0
-References: <b869ab5c-7b2f-93fc-678f-53ee39118f97@redhat.com>
- <c21f16ae-f653-4150-1372-b33f99342bf2@redhat.com>
-In-Reply-To: <c21f16ae-f653-4150-1372-b33f99342bf2@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Wed, 7 Jun 2023 20:04:33 -0400
-Message-ID: <CAFn=p-bwcsGJ3zE_2YvZ4mB_K5vu7gCwoL5bhm+4Lr6VESsw1A@mail.gmail.com>
-Subject: Re: Building of docs does not work anymore
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] block/file-posix: fix wps checking in raw_co_prw
+To: Sam Li <faithilikerun@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ stefanha@redhat.com, Kevin Wolf <kwolf@redhat.com>, dmitry.fomichev@wdc.com,
+ hare@suse.de
+References: <20230607185741.4238-1-faithilikerun@gmail.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20230607185741.4238-1-faithilikerun@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=dlemoal@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,97 +74,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 7, 2023 at 5:46=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrote=
-:
->
-> On 07/06/2023 11.42, Thomas Huth wrote:
-> >
-> >   Hi Paolo, hi John,
-> >
-> > since the recent reworks with the Python venv, building of the docs doe=
-s not
-> > work for me on my RHEL 8 installation anymore.
-> >
-> > If I just run "configure" without any additional arguments, I get:
-> >
-> > ------------------------- 8< -----------------------------
-> > $ ./configure
-> > Using './build' as the directory for build output
-> > python determined to be '/usr/bin/python3.8'
-> > python version: Python 3.8.13
-> > mkvenv: Creating non-isolated virtual environment at 'pyvenv'
-> > mkvenv: checking for meson>=3D0.63.0
-> > mkvenv: installing meson>=3D0.63.0
-> > mkvenv: checking for sphinx>=3D1.6.0, sphinx-rtd-theme>=3D0.5.0
-> >
-> > *** Ouch! ***
-> >
-> > Could not provide build dependency 'sphinx>=3D1.6.0':
-> >   =E2=80=A2 Python package 'sphinx' was not found nor installed.
-> >   =E2=80=A2 mkvenv was configured to operate offline and did not check =
-PyPI.
-> >   =E2=80=A2 'sphinx-build' was detected on your system at '/usr/bin/sph=
-inx-build',
-> > but the Python package 'sphinx' was not found by this Python interprete=
-r
-> > ('/usr/bin/python3.8'). Typically this means that 'sphinx-build' has be=
-en
-> > installed against a different Python interpreter on your system.
-> >
-> > Sphinx not found/usable, disabling docs.
-> > ------------------------- 8< -----------------------------
+On 6/8/23 03:57, Sam Li wrote:
+> If the write operation fails and the wps is NULL, then accessing it will
+> lead to data corruption.
+> 
+> Solving the issue by adding a nullptr checking in get_zones_wp() where
+> the wps is used.
+> 
+> This issue is found by Peter Maydell using the Coverity Tool (CID
+> 1512459).
+> 
+> Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> ---
+>  block/file-posix.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/block/file-posix.c b/block/file-posix.c
+> index ac1ed54811..4a6c71c7f5 100644
+> --- a/block/file-posix.c
+> +++ b/block/file-posix.c
+> @@ -2523,7 +2523,7 @@ out:
+>              }
+>          }
+>      } else {
+> -        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
+> +        if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND) && wps) {
+>              update_zones_wp(bs, s->fd, 0, 1);
 
-Looks right as far as I can see. Should this behave differently, do you thi=
-nk?
+Nit: this could be:
 
-> >
-> > If I enable downloads and enforce --enable-docs , I get:
-> >
-> > ------------------------- 8< -----------------------------
-> > ./configure --enable-docs --enable-download
-> > Using './build' as the directory for build output
-> > python determined to be '/usr/bin/python3.8'
-> > python version: Python 3.8.13
-> > mkvenv: Creating non-isolated virtual environment at 'pyvenv'
-> > mkvenv: checking for meson>=3D0.63.0
-> > mkvenv: installing meson>=3D0.63.0
-> > mkvenv: checking for sphinx>=3D1.6.0, sphinx-rtd-theme>=3D0.5.0
-> > mkvenv: installing sphinx>=3D1.6.0, sphinx-rtd-theme>=3D0.5.0
-> > ERROR: sphinx-rtd-theme 1.2.1 has requirement docutils<0.19, but you'll=
- have
-> > docutils 0.20.1 which is incompatible.
-> > ERROR: sphinx-rtd-theme 1.2.1 has requirement sphinx<7,>=3D1.6, but you=
-'ll
-> > have sphinx 7.0.1 which is incompatible.
-> > ------------------------- 8< -----------------------------
->
-> Actually, it seems like it builds the docs in the latter case ... but the
-> two error messages still look quite menacing (printed with red letters).
->
->   Thomas
+	} else if (wps && type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
 
-Hm, in this case it appears that the latest versions of these packages
-for Python 3.8 actually conflict with each other, which is ... funny.
-I would think that in this case:
+However, both if & else side do something only if the above condition is true
+and we only need to that for a zoned drive. So the entire code block could
+really be simplified to be a lot more readable. Something like this (totally
+untested, not even compiled):
 
-1. You don't have existing Python3.8 packages if it isn't your
-system's native Python interpreter
-2. Pip should have not chosen packages that conflict with each other ...
+#if defined(CONFIG_BLKZONED)
+    if (bs->bl.zone_size && (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND))) {
+        BlockZoneWps *wps = bs->wps;
+        uint64_t *wp;
 
-Can you do me a favor and try:
+        if (!wps) {
+            return ret;
+        }
 
-> python3.8 -m pip list
+        if (ret) {
+            /* write error: update the wp from the underlying device */
+            update_zones_wp(bs, s->fd, 0, 1);
+            goto unlock;
+        }
 
-and tell me what packages it says you have there?
+        wp = &wps->wp[offset / bs->bl.zone_size];
+        if (BDRV_ZT_IS_CONV(*wp)) {
+            /* Conventional zones do not have a write pointer */
+            goto unlock;
+        }
 
-When I run "pip install sphinx>=3D1.6.0 sphinx-rtd-theme>=3D0.5.0" in a
-fresh Python3.8 virtual environment, it chooses these versions:
-- Sphinx 6.2.1
-- sphinx-rtd-theme 1.2.2
+        /* Return the written position for zone append */
+        if (type & QEMU_AIO_ZONE_APPEND) {
+            *s->offset = *wp;
+            trace_zbd_zone_append_complete(bs,
+                    *s->offset >> BDRV_SECTOR_BITS);
+        }
 
-Seems like Sphinx 7.0.1 is quite a bit too new for this, I wonder why
-it chose it?
+        /* Advance the wp if needed */
+        if (offset + bytes > *wp) {
+            *wp = offset + bytes;
+        }
 
---js
+unlock:
+        qemu_co_mutex_unlock(&wps->colock);
+    }
+#endif
+
+And making this entire block a helper function (e.g. advance_zone_wp()) would
+further clean the code. But that should be done in another patch. Care to send one ?
+
+-- 
+Damien Le Moal
+Western Digital Research
 
 
