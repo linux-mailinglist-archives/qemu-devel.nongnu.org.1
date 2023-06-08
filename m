@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA8372835E
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E8972836F
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:16:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7HL2-00076J-9u; Thu, 08 Jun 2023 11:14:12 -0400
+	id 1q7HMm-0008Ey-8U; Thu, 08 Jun 2023 11:16:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q7HL0-000750-Pv
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:14:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q7HKx-00080s-Le
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:14:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686237245;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tHt4SuKFySu7m7c/dfUOeHzbeRgWiOEFKPaCihDYKJc=;
- b=WKtt86+EHv78ENVXH+s5kzIaYPJboEWG8G0D9mjO4w0mRcu3nTIYp1/eKoMFSmReP3wGbt
- b0LEqhfqKKh5qfHAmtz1se5cNBwilUC4j8dMgID1+ZisrKgY/2a+G9US23zCI078s58EK2
- UNeDqfkXsmZWsv/ggSSXR92FS4xdRFM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-Ic1hDesxPji2YKWEOGMRFg-1; Thu, 08 Jun 2023 11:14:04 -0400
-X-MC-Unique: Ic1hDesxPji2YKWEOGMRFg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f6089a9689so4717555e9.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 08:14:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
+ id 1q7HMj-0008DY-Cr; Thu, 08 Jun 2023 11:15:57 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
+ id 1q7HMg-0000Hn-Ob; Thu, 08 Jun 2023 11:15:57 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-4f62b512fe2so917695e87.1; 
+ Thu, 08 Jun 2023 08:15:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686237243; x=1688829243;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tHt4SuKFySu7m7c/dfUOeHzbeRgWiOEFKPaCihDYKJc=;
- b=iXYA7jLtvFK974OYhm4gtPkjyEt0EXAy2WgC1gQZrEYi9vWVkEtEO+jjYPMXYZkqLk
- gx5EHUI80OlVDHrY7my2GUVhdBFAUdO1+J/+R+8HKWVCxJEKl5pdwhjAC/Ze2CQIQewL
- SsYcOd0DB48qXyrqucr8EEL98IjDzFxCQcymoufuRapJ0Blj9182iV6eFVxkekBEBwK5
- 6gw9fzzZOMaDqrRvQX03enRxiFbpQKhNeQveipvm1AlEyXhsidjO6IndUZQgyQSUM4po
- 4cNK53JgQ6d0zcrRr6jxrovsDmY7eI8EfdneJdc8rWE557gCTlMQcsN156HF73Bx4sZq
- 7dNQ==
-X-Gm-Message-State: AC+VfDxF1TLzzlcFrINgOjfn7AAIMU1yoUxpLdrjuYSLuw8pkUEY5PG5
- ZZO8yZPn4yuqE+D8qyXE3/b4ryHFDLFgi7Y50RPA7uCH9YQa2XMdZrdu2PcxW6J6P6G1vCEMY5y
- 0kj52sIGE0bGsXRY=
-X-Received: by 2002:a7b:c00b:0:b0:3f7:b1de:f95e with SMTP id
- c11-20020a7bc00b000000b003f7b1def95emr1736827wmb.0.1686237243112; 
- Thu, 08 Jun 2023 08:14:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7StAxF9o69WJ7FV5ei6kcD5nrkTmO0cbJZmOXjb2oX4CLwhx6mICjf2b84ZgUdsUB2kxs4GA==
-X-Received: by 2002:a7b:c00b:0:b0:3f7:b1de:f95e with SMTP id
- c11-20020a7bc00b000000b003f7b1def95emr1736805wmb.0.1686237242748; 
- Thu, 08 Jun 2023 08:14:02 -0700 (PDT)
-Received: from redhat.com ([2.55.4.169]) by smtp.gmail.com with ESMTPSA id
- hn32-20020a05600ca3a000b003f60e143d38sm2299031wmb.11.2023.06.08.08.14.01
+ d=1e100.net; s=20221208; t=1686237351; x=1688829351;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kOIcJ3vo2q75ZsESYQ1YJEhod78FJt57Uvel9+z03ZE=;
+ b=bLK9LsZGGPjoy6qTtt1R/yphFN0jm3kdDCDxTguxTIwdf1NblE5dGh2+v9K235rBB7
+ g18hx8j62a7W+NhXw0EwMljKDK+w+F1ckqmHmRFjrYX7Ypd6qgpiSNHOPpzzJKnAOZWg
+ yL8y3pNVlNG5CZFsU526FjJHl9uSfAGGqrCdZldojp7LICLRRXFPXJNGqMAdgL9H4Wbe
+ gRNrauxGBDRr9fi4OyCxS2dcuKOAeLdghM2qBRCTtaDURXrU7fkDIZML/SLrczGcIQFs
+ xUMLAJOYN5Y5xi7VSX86Ds05+1zbK3zYV/ih/hAXQ30QRGpqx2KAeFR9Y3gz8bmOKWTH
+ CHhg==
+X-Gm-Message-State: AC+VfDxiL5KF6UA/WNZxQjlCgv/6TXBz4HF6PoutpoavWNySUxN0pUkj
+ IPt7snzAOhzBED9dqIKbFK4As2tUI+XMtY2BVXY=
+X-Google-Smtp-Source: ACHHUZ4Mfe5ZTc/0iAY4udWCEUwyWi4IkW5Myzqs8bdffiUUre9Ydf8TcXGPpdPMzUay1WTH69KXUQ==
+X-Received: by 2002:a2e:320e:0:b0:2ac:8262:322a with SMTP id
+ y14-20020a2e320e000000b002ac8262322amr3599372ljy.13.1686237350758; 
+ Thu, 08 Jun 2023 08:15:50 -0700 (PDT)
+Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
+ [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
+ d14-20020a2e330e000000b002b20d8f270asm285610ljc.74.2023.06.08.08.15.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 08:14:02 -0700 (PDT)
-Date: Thu, 8 Jun 2023 11:13:58 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] hw/acpi: Fix PM control register access
-Message-ID: <20230608111241-mutt-send-email-mst@kernel.org>
-References: <20230607200125.A9988746377@zero.eik.bme.hu>
- <c080f8f6-b1d4-4ffb-7fcb-f29c7ddaf980@ilande.co.uk>
+ Thu, 08 Jun 2023 08:15:50 -0700 (PDT)
+Received: by flawful.org (Postfix, from userid 112)
+ id 29AE11403; Thu,  8 Jun 2023 17:15:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+ t=1686237349; bh=a8ryPgbZQcKROxSi5LQx/APH34/c/ZIXKbkJAqk/t1I=;
+ h=From:To:Cc:Subject:Date:From;
+ b=vEKK64LEAcb9NMZK0Wv79i2Ik3IU2PrZ8D+mF1y/rF13ub/EKHw5ccVkknWm1lXIK
+ fldLJ4vO8hFeKk9oKeWg3miQzke/w7GhzJF0c8wxf7wEZaQfR2B6qtxIcBCOWHljQ+
+ PrEaCc/JKV7nhgTRT9uvMSieXoUJfnM8vRCbcRs4=
+Received: from x1-carbon.wireless.wdc (unknown [129.253.182.60])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by flawful.org (Postfix) with ESMTPSA id 6EF3112F3;
+ Thu,  8 Jun 2023 17:15:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+ t=1686237341; bh=a8ryPgbZQcKROxSi5LQx/APH34/c/ZIXKbkJAqk/t1I=;
+ h=From:To:Cc:Subject:Date:From;
+ b=XlRa2cpliGeugG5vIWLkA8r75t2Wg/GAjGGSKgogDjTdbhQ2VnqBUiQo/rPx97D/H
+ yqHirB8mDzM643CrSLDGS3Rum5kGmCZ6MVLMW70HGtuZ21DHnZPD2j/4Akaoty4O9q
+ SSupFP1PM1poqxRnSOGFlflFypIRVswlD6DTj6o8=
+From: Niklas Cassel <nks@flawful.org>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
+Subject: [PATCH 0/5] improve ahci test suite
+Date: Thu,  8 Jun 2023 17:15:23 +0200
+Message-Id: <20230608151528.143950-1-nks@flawful.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c080f8f6-b1d4-4ffb-7fcb-f29c7ddaf980@ilande.co.uk>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,117 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 12:37:08PM +0100, Mark Cave-Ayland wrote:
-> On 07/06/2023 21:01, BALATON Zoltan wrote:
-> 
-> > On pegasos2 which has ACPI as part of VT8231 south bridge the board
-> > firmware writes PM control register by accessing the second byte so
-> > addr will be 1. This wasn't handled correctly and the write went to
-> > addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
-> > only once and does not take addr into account and handle non-zero
-> > address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
-> > pegasos2 firmware.
-> > 
-> > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> > ---
-> >   hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
-> >   1 file changed, 26 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/hw/acpi/core.c b/hw/acpi/core.c
-> > index 6da275c599..00b1e79a30 100644
-> > --- a/hw/acpi/core.c
-> > +++ b/hw/acpi/core.c
-> > @@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
-> >   }
-> >   /* ACPI PM1aCNT */
-> > -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
-> > -{
-> > -    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
-> > -
-> > -    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> > -        /* change suspend type */
-> > -        uint16_t sus_typ = (val >> 10) & 7;
-> > -        switch (sus_typ) {
-> > -        case 0: /* soft power off */
-> > -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > -            break;
-> > -        case 1:
-> > -            qemu_system_suspend_request();
-> > -            break;
-> > -        default:
-> > -            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
-> > -                qapi_event_send_suspend_disk();
-> > -                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > -            }
-> > -            break;
-> > -        }
-> > -    }
-> > -}
-> > -
-> >   void acpi_pm1_cnt_update(ACPIREGS *ar,
-> >                            bool sci_enable, bool sci_disable)
-> >   {
-> > @@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
-> >   static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
-> >   {
-> >       ACPIREGS *ar = opaque;
-> > -    return ar->pm1.cnt.cnt;
-> > +    return ar->pm1.cnt.cnt >> addr * 8;
-> 
-> This shift here...
-> 
-> >   }
-> >   static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
-> >                                 unsigned width)
-> >   {
-> > -    acpi_pm1_cnt_write(opaque, val);
-> > +    ACPIREGS *ar = opaque;
-> > +
-> > +    if (addr == 1) {
-> > +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
-> > +    }
-> 
-> and this shift here look similar to my workaround in https://patchew.org/QEMU/20230524211104.686087-1-mark.cave-ayland@ilande.co.uk/20230524211104.686087-31-mark.cave-ayland@ilande.co.uk/
-> which is a symptom of https://gitlab.com/qemu-project/qemu/-/issues/360.
-> 
-> Whilst there is no imminent fix for the above issue, it may be worth a few
-> mins to determine if this is the same issue and if so document it with
-> comments accordingly as I did so that the workaround can be removed at a
-> later date.
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-So I will add
-this triggers a but in memory core,
-(see
-https://gitlab.com/qemu-project/qemu/-/issues/360 for more detail)
+Hello John,
 
-?
+This series should be applied on top of the series called:
+"[PATCH v2 0/8] misc AHCI cleanups"
+which can be found here:
+https://lists.nongnu.org/archive/html/qemu-block/2023-06/msg00038.html
 
-> > +    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
-> > +
-> > +    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> > +        /* change suspend type */
-> > +        uint16_t sus_typ = (val >> 10) & 7;
-> > +        switch (sus_typ) {
-> > +        case 0: /* soft power off */
-> > +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > +            break;
-> > +        case 1:
-> > +            qemu_system_suspend_request();
-> > +            break;
-> > +        default:
-> > +            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
-> > +                qapi_event_send_suspend_disk();
-> > +                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > +            }
-> > +            break;
-> > +        }
-> > +    }
-> >   }
-> >   static const MemoryRegionOps acpi_pm_cnt_ops = {
-> 
-> 
-> ATB,
-> 
-> Mark.
+This series improves the ahci test suite to be in line with
+the AHCI specification when it comes to taskfile errors.
+
+Theoretically these commits could be squashed with the corresponding
+patch for the QEMU model, however, that would lose the commit log for
+the test patches, so I prefer to keep them separate.
+
+Please review.
+
+
+Kind regards,
+Niklas
+
+Niklas Cassel (5):
+  libqos/ahci: fix ahci_command_wait()
+  libqos/ahci: fix ahci_port_check_nonbusy()
+  libqos/ahci: simplify ahci_port_check_error()
+  libqos/ahci: improve ahci_port_check_error()
+  libqos/ahci: perform mandatory error recovery on error
+
+ tests/qtest/libqos/ahci.c | 106 ++++++++++++++++++++++++++++----------
+ tests/qtest/libqos/ahci.h |   8 ++-
+ 2 files changed, 83 insertions(+), 31 deletions(-)
+
+-- 
+2.40.1
 
 
