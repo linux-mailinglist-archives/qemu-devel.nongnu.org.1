@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C2A728050
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 14:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 098C2728049
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 14:43:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Exm-0002mt-0b; Thu, 08 Jun 2023 08:42:02 -0400
+	id 1q7Exl-0002ms-U8; Thu, 08 Jun 2023 08:42:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Exj-0002mL-R3
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Exj-0002mK-R0
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:41:59 -0400
 Received: from pv50p00im-zteg10011501.me.com ([17.58.6.42])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Exh-00008J-Tl
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7Exi-00008f-AU
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 08:41:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1686228114; bh=XKB8IurCgmZTWrkBZPHNDmN950cjNx0jZYJLi4QfE/Y=;
- h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
- b=SQFIdcp21NR/OaME25bnFt4PUGqolASm/rznj2BeY1ogDAfEVfkxwVo7npofaNRNn
- Id1xQ55ZHp6pxlIlfYe4OK+51heFRMPvM1b0LzrPspS0J8PtTRsxC98Mc7xY5XyQV7
- 1JdcrNayH3dkwNdrjdEY851MzZWUxOivIcPjGWN88WqZpdgFH6T0kySSpT+k0e63Zh
- 5EXFFysN+qnAQO90cfKDRyKFHX4a9K8AAGXrX29Sbf1oFcoHkIFRvLnnz+tlFgQ7NZ
- 1Ect9EX38wMgv9RrGkzZiYktgLEJofNl9U5RCUxbytr3S93gVjooadgwTP0M/XLmhX
- ps0RnK1H2jimw==
+ t=1686228117; bh=0fJy1sjStRMrctTrd8eWHr4fZQUPa8Euy65mZZsWwKQ=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version;
+ b=DZG+vGn3IJ76Q2L7wPyDl7uJB70UNr8tdD8m52plahm1Ds0ulpR0w8lCHGKKSFCYZ
+ dAyUm6/NBAV+i+rtZZvMxwkoFYbyIQBopYKnkEgFCGyBeLRFyJvH64ZS5CPjojcz4Y
+ y0VpFPBo4tKmJuPDUP/2FgeZLMLEweJC8FETqxbEPb2OvjcnQdyzHd0vRgcGa0/u4M
+ U79kDTqrOEif7MOBLNGTJwY8gSh+loFX8RPHP+4JzJ9MxWBxH4YBAYZBYnvXvtwSxn
+ 8Ap95cACfW8zS1DZnD+Cl/a3XMDWqhKePGNfSH1YsuAxGwGaAyr1u6yevuyv5C+bmv
+ R6TMjo+/Z8O/w==
 Received: from localhost.localdomain (pv50p00im-dlb-asmtp-mailmevip.me.com
  [17.56.9.10])
- by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id 7A3074A02AB;
- Thu,  8 Jun 2023 12:41:51 +0000 (UTC)
+ by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id DE89A4A01C6;
+ Thu,  8 Jun 2023 12:41:54 +0000 (UTC)
 From: Mads Ynddal <mads@ynddal.dk>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>, Cleber Rosa <crosa@redhat.com>,
  Mads Ynddal <m.ynddal@samsung.com>
-Subject: [PATCH v3 00/14] simpletrace: refactor and general improvements
-Date: Thu,  8 Jun 2023 14:41:33 +0200
-Message-Id: <20230608124147.51125-1-mads@ynddal.dk>
+Subject: [PATCH v3 01/14] simpletrace: add __all__ to define public interface
+Date: Thu,  8 Jun 2023 14:41:34 +0200
+Message-Id: <20230608124147.51125-2-mads@ynddal.dk>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230608124147.51125-1-mads@ynddal.dk>
+References: <20230608124147.51125-1-mads@ynddal.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: jIRrawKWLwX-Nxaotfwohhy_fY2DUimY
-X-Proofpoint-ORIG-GUID: jIRrawKWLwX-Nxaotfwohhy_fY2DUimY
+X-Proofpoint-GUID: uu5KK2DqgI7idY5dgbXWAwQVelMOrbPK
+X-Proofpoint-ORIG-GUID: uu5KK2DqgI7idY5dgbXWAwQVelMOrbPK
 X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
  =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.572,17.0.605.474.0000000_definitions?=
  =?UTF-8?Q?=3D2022-06-21=5F01:2022-06-21=5F01,2020-02-14=5F11,2020-01-23?=
  =?UTF-8?Q?=5F02_signatures=3D0?=
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  suspectscore=0
- mlxlogscore=251 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=505 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
  clxscore=1030 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2212070000 definitions=main-2306080110
 Received-SPF: pass client-ip=17.58.6.42; envelope-from=mads@ynddal.dk;
@@ -79,52 +80,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mads Ynddal <m.ynddal@samsung.com>
 
-I wanted to use simpletrace.py for an internal project, so I tried to update
-and polish the code. Some of the commits resolve specific issues, while some
-are more subjective.
+It was unclear what was the supported public interface. I.e. when
+refactoring the code, what functions/classes are important to retain.
 
-I've tried to divide it into commits so we can discuss the
-individual changes, and I'm ready to pull things out, if it isn't needed.
+Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
+---
+ scripts/simpletrace.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v3:
- * Added __all__ with public interface
- * Added comment about magic numbers and structs from Stefan Hajnoczi
- * Reintroduced old interface for process, run and Analyzer
- * Added comment about Python 3.6 in ref. to getfullargspec
- * process now accepts events as file-like objects
- * Updated context-manager code for Analyzer
- * Moved logic of event processing to Analyzer class
- * Moved logic of process into _process function
- * Added new Analyzer2 class with kwarg event-processing
- * Reverted changes to process-call in scripts/analyse-locks-simpletrace.py
-v2:
- * Added myself as maintainer of simpletrace.py
- * Improve docstring on `process`
- * Changed call to `process` in scripts/analyse-locks-simpletrace.py to reflect new argument types
- * Replaced `iteritems()` with `items()` in scripts/analyse-locks-simpletrace.py to support Python 3
-
-Mads Ynddal (14):
-  simpletrace: add __all__ to define public interface
-  simpletrace: annotate magic constants from QEMU code
-  simpletrace: improve parsing of sys.argv; fix files never closed.
-  simpletrace: changed naming of edict and idtoname to improve
-    readability
-  simpletrace: update code for Python 3.11
-  simpletrace: improved error handling on struct unpack
-  simpletrace: define exception and add handling
-  simpletrace: made Analyzer into context-manager
-  simpletrace: refactor to separate responsibilities
-  simpletrace: move logic of process into internal function
-  simpletrace: move event processing to Analyzer class
-  simpletrace: added simplified Analyzer2 class
-  MAINTAINERS: add maintainer of simpletrace.py
-  scripts/analyse-locks-simpletrace.py: changed iteritems() to items()
-
- MAINTAINERS                          |   6 +
- scripts/analyse-locks-simpletrace.py |   2 +-
- scripts/simpletrace.py               | 358 ++++++++++++++++++---------
- 3 files changed, 244 insertions(+), 122 deletions(-)
-
+diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
+index 1f6d1ae1f3..b221d9a241 100755
+--- a/scripts/simpletrace.py
++++ b/scripts/simpletrace.py
+@@ -14,6 +14,8 @@
+ from tracetool import read_events, Event
+ from tracetool.backend.simple import is_string
+ 
++__all__ = ['Analyzer', 'process', 'run']
++
+ header_event_id = 0xffffffffffffffff
+ header_magic    = 0xf2b177cb0aa429b4
+ dropped_event_id = 0xfffffffffffffffe
 -- 
 2.38.1
 
