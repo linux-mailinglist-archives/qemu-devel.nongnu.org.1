@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6AC728316
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125DF72831C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 16:56:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Gzq-0005bf-DZ; Thu, 08 Jun 2023 10:52:18 -0400
+	id 1q7H37-0008VW-2M; Thu, 08 Jun 2023 10:55:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7GzZ-0005BN-BU
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:52:05 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q7H2y-0008Sz-2F
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:55:37 -0400
+Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7GzG-0001lN-Fi
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:51:57 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-97460240863so132537666b.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 07:51:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q7H2t-00031O-Fb
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 10:55:30 -0400
+Received: by mail-io1-xd30.google.com with SMTP id
+ ca18e2360f4ac-777a9d7efabso24492239f.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 07:55:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686235895; x=1688827895;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JxL1c+8WHNEQTzF53nQ27ehYDd2x3vCVLz9vMBU59zU=;
- b=vXkM4aq6/9WtZm3ru6jcjPr2ImX24/tDFfJ6UTO2ZagK4XKhR/hA4ddE/+v+OBRWOb
- +HqcEah9dykdso+0W/Cwv/qsWb+y8asWBKyrpeNHht+A36RA9ivaBvVVUjKcYPSgGVbf
- Jg7nZrcZwEqT9yL76Su5W3tWUmRmuc5Oo4m/UsBPxXqGBuYlFJRe9LV/2PEYg62mlyp2
- OzaelIOlcLMRNfXZmHbIzSuLeFQmjaObTnB4INR/zEUhmSBzripaqgR6b7AKz1dG8Q5S
- mzylI/ehDMp0tFuj30II3woYVU9VnKgvOROHIsND8Fnj046hT0Yv+m9bo210MgZVw4Ep
- 8RAA==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1686236124; x=1688828124;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dcgV4A8KaqvjLKmFYnDAKUormAwRgmM4FIFcbvzM0K4=;
+ b=eyUfagcA2PFZKwbgHzEgkBIQkT4saEfAO71Rt1jJLmeNmu51moiLT0DNU4jmggEIKU
+ AZp+K53oazeRWxuubgu1fgLX1JYlaMU7VXIPjcYrwIBM8+0YtThEbMgjjaYbOl+hM/Kh
+ onzt4VshykVuCWx7j104Fkg3TTgsYCBK3NAt1xWeLtJdXKGzDLxt5wiTPHvZk0/k6hpR
+ pn+Ij51wTs2xdZ5GJzyszLnmpzDphM0PToQv7ntgmPQ9fWb12mwhK+rBLSxoRVluWM/I
+ aH7SZTe+uYZSFC8F3yz3M2ovbZ+M7MiVcAMCJn83WT3obYNyZ99RdWKdXNgiu/FDhsq+
+ 0p5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686235895; x=1688827895;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JxL1c+8WHNEQTzF53nQ27ehYDd2x3vCVLz9vMBU59zU=;
- b=SukquxCW+8rgCHCFeV2BI8kO3EpzcGfzdU03J+GwzWMNCMw6C3R0/Kkt+UcV4sBGPE
- asqdILsF5OlQNN1lww8+LYNcXTSM9sTHvjeNeOpWAelLWqofs7cGWPQNbJR8jDzvX3ZT
- ZAJsK12CvLShNogNM2W042J61Pufcb16ZxaNKMXS6lsJ3yu6kbvZH7yqSpLGLI4Tbq9y
- dISOn97xdZt8r+lToZPE9oOvxRHfkHw0lcXxkeCVDyMuf2DKs2GXNtj+y14+uaLY195e
- o8MboJpimgf/cqa0KBq4wuenhdoCuZWMcJjz2UlxetnqR4Fw5qL98hZN+deA3cZqQeuv
- MrbA==
-X-Gm-Message-State: AC+VfDxMHo1W3qh+iH4tcJ6a4ddGo4aiq3wSr/Zavph7q/+DP7KXTh0m
- YrXxFp0E8tXVmFwJ2J+vFFBcCDbeUTlOsIbM2MdVraDbDIgwm0dn
-X-Google-Smtp-Source: ACHHUZ6j9RisQvUoiRvbIpSj0pO87CnphOvSRxJrf6SqQsYViT9m+x9vzijLG5JxqVxcY0NUH8FZxdC/dbnY7IbrUn0=
-X-Received: by 2002:a17:907:3f97:b0:96f:be1e:bf1d with SMTP id
- hr23-20020a1709073f9700b0096fbe1ebf1dmr9827813ejc.69.1686235894975; Thu, 08
- Jun 2023 07:51:34 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686236124; x=1688828124;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dcgV4A8KaqvjLKmFYnDAKUormAwRgmM4FIFcbvzM0K4=;
+ b=FdxfWzP9BbLtjvWaRjiNyfKlbAVBLaFuvlTTN2XUq8fY+ZW4XN4kpEhWlJc8CdIg2P
+ 98SOpKugUPCHRQJqhQwCLCVTaDHUSxPILEtIhlyDVQdunXGmIjmzasFSFs4J2qk3+9wK
+ wXBK0cxLGzg9cASQwd1KEq5Vin1zc/y6+odJaRHN1nFCTteIWk/lSa/GVtAFU3K2iXZH
+ xOnCrerj87adxlPkGx73grjOlsw9vBPAdCMWE27htDNaEYQqp5O76cJqCkpbqJUfB+mj
+ IGOUZL61Io2gG2pxMXbmkSat6T5kttpE8gM5plghE0o7eJlPIMZlBNYlFDwwlTt7umPc
+ tLYA==
+X-Gm-Message-State: AC+VfDytCMZgkVcm7OvBdi6XNyRKOdx8DNg5g8WmImZyofS+JuuoFiwK
+ /snuk0r23vrqwIbRo4/u5AP4lfzQqx6rG0NUiy0=
+X-Google-Smtp-Source: ACHHUZ4KR+3edoQtKyqwAvr3hhGbFG/HwWGN/b23yQcyv2osbBT9D9NxopV11iN2cJRix2Gf8toe6Q==
+X-Received: by 2002:a92:c090:0:b0:335:1ed:359b with SMTP id
+ h16-20020a92c090000000b0033501ed359bmr10547516ile.15.1686236124612; 
+ Thu, 08 Jun 2023 07:55:24 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ m4-20020a17090a71c400b0025671de4606sm3196863pjs.4.2023.06.08.07.55.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 07:55:24 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, Antonio Caggiano <quic_acaggian@quicinc.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH] sdl2: Check if window exists before updating it
+Date: Thu,  8 Jun 2023 23:55:12 +0900
+Message-Id: <20230608145512.25970-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230531203559.29140-1-philmd@linaro.org>
- <20230531203559.29140-12-philmd@linaro.org>
-In-Reply-To: <20230531203559.29140-12-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 Jun 2023 15:51:24 +0100
-Message-ID: <CAFEAcA_J6w_Lopq4RR3nZPMo1fOa_B4CdckbnpkjBCFfW0CDGg@mail.gmail.com>
-Subject: Re: [PATCH 11/15] hw/timer/arm_timer: Iterate on timers using for()
- loop statement
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
- Sergey Kambalin <serg.oker@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::d30;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-io1-xd30.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,17 +89,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 at 21:37, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> The same pattern is used for each timer, 2 or 3 times. To avoid
-> too much code churn in the next commits, iterate on the number
-> of timers using a for() loop statement.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+A console does not have a window if the surface is a placeholder and
+the console is not the first one. sdl2 cannot update the texture in
+such a case.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Add a proper check for window existence. Such a check is only necessary
+for the "gl" implementation as the "2d" implementation checks for the
+texture, which is set only if a window exists.
 
-thanks
--- PMM
+Fixes: c821a58ee7 ("ui/console: Pass placeholder surface to displays")
+Reported-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ ui/sdl2-gl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
+index 39cab8cde7..bbfa70eac3 100644
+--- a/ui/sdl2-gl.c
++++ b/ui/sdl2-gl.c
+@@ -67,6 +67,10 @@ void sdl2_gl_update(DisplayChangeListener *dcl,
+ 
+     assert(scon->opengl);
+ 
++    if (!scon->real_window) {
++        return;
++    }
++
+     SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
+     surface_gl_update_texture(scon->gls, scon->surface, x, y, w, h);
+     scon->updates++;
+-- 
+2.40.1
+
 
