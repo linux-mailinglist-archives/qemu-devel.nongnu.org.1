@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739D0728128
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47485728119
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:19:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWi-0003R9-Kd; Thu, 08 Jun 2023 09:18:08 -0400
+	id 1q7FWu-0003gR-Kh; Thu, 08 Jun 2023 09:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D69-0002HP-Kz
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:33 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D67-0002H6-MI
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:31 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D65-0006Sw-E3
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:33 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-4f63006b4e3so590279e87.1
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D65-0006T0-7K
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:31 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4f642a24555so558524e87.3
  for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220946; x=1688812946;
+ d=gmail.com; s=20221208; t=1686220947; x=1688812947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MrxcB4KoNu+w11NX5AcvNib0cKW/SO6hoef67m3ZfsQ=;
- b=RJWlECkv5b2l5cbRXbHxvu7sRuyo9iCik/0+7Ds+VnuzFT4a7DSHW7mwIZkdbgTNMC
- YC4omyLCOqeLkgjOcU9nklSnBgRgfvXkka1MxIntPHX0xbPjpKJgXfmzqSQBSdIx+Vsp
- Bxse/2ZVDDVH/yehR2RWS34kMgVFmYl6JPEtVBdFmFj5CWp8LyxWxUP5RzGskbofyFbd
- F7uaqqvxQQRxcra8b/q+VLXPc1vkqAOifMkeDtLUTtkW2JIY9jnxykRZQSfK9Dl+ZVzJ
- NnYMBK/9zxdYe4/XPK8LSwWvhO0iWEgf8qyizzLRZ7PuMR/ClHfWug4DDLW7LZXOJiho
- OGmw==
+ bh=8VYSwYNBoGdVkr6LwKT2BwpwsiRD5YPfDCGwo+rcgl4=;
+ b=KpDu6h+RjA5nQNJGG0hndawR10gfBa58ppdg0OgTKRGE4LvRL0ja1NxMpkiW9BwvEB
+ zivpbxIp8DJu5RaxUrTq//pSIdpvj/cyrv8ZEJBInLEoeTzO6ypk2AP0JXNlCWs+d3Hv
+ awcVj3T4VXn9EGSg7JOD4Q0fTPqe/Fy28NlPA8YFqZPtKBJIDinreC4TatMvsjIrSB2l
+ Z6G6U4CWMPl923lPO57u8QsaIIv7HZwZSPkjPWpgbWX44xzVBnozd2kw9+2seiTSIcj3
+ Qkf2GOMQpamEW7NmnjoYptA+1zF/tJPcRNSLamKTOuYrFHXccIwNiyp1bSVzXNNkTWuf
+ gcEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220946; x=1688812946;
+ d=1e100.net; s=20221208; t=1686220947; x=1688812947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MrxcB4KoNu+w11NX5AcvNib0cKW/SO6hoef67m3ZfsQ=;
- b=EkAj/b0ZLCsGmLSHGWeBbjlMZnJNsRjsClvRf55XIqsynuf2uhKevUW+lYfV6gR8Dp
- 2ADL/G6cwXh/CZTCYdO+RsCA+nFN2hhLcw9yufu8LPhAtnX6A6d19UhbOSSmlmBS0A+6
- 0eE4rY5Ur54CwkEy2p8D/siFLGW7Gs1f1fHa1kqxz4YytgcDmmeVp1H8wOji8cKYvcrD
- 7xNb1K5MfezjfCVpbpzxx3q7D1MK/F7kNInXkkmH6at5oCQuzwqN/sCznPmsIJoivYdl
- u2lLj4hEbH16u9r6isUqHpKx3zSyurDrlyVKDEt6W9G75PPLcWOlacDu1jpweAK5j7XN
- ODcA==
-X-Gm-Message-State: AC+VfDx8nrWUY+hYdGjDWu3kaOT4oj6WltSlX2IOqAECj2N1aME3o/Xv
- pbtl6swCuPemAkD8UVbTNndCrYFFGe0=
-X-Google-Smtp-Source: ACHHUZ6NV4gGk7H2o6gSnpJew0eIInybJ0aFQNiBaiJ/SNGuG4QgZKXpM9cw9TIPmoA4lXat4oDwmQ==
-X-Received: by 2002:a19:ee13:0:b0:4f4:cae3:8a2f with SMTP id
- g19-20020a19ee13000000b004f4cae38a2fmr3400749lfb.16.1686220945714; 
- Thu, 08 Jun 2023 03:42:25 -0700 (PDT)
+ bh=8VYSwYNBoGdVkr6LwKT2BwpwsiRD5YPfDCGwo+rcgl4=;
+ b=fT6wx2suCAANGYfxDuDbxFm7NgMPFqAkDTaeVKBLB4egqMM/KdkH16GcOFBgwqrYNQ
+ CA+MgYGA3SdpqOJnA02wKk/WZb+6uJL1HgAzjNMkCAg0N/hN+gZkIdVUVQmxYTyz7cMk
+ L242WqHvPYCxy+tuVG6FG63l0nX+xvrRKUd6QwinFtnRnUtfzg9RTuzXKKIsd+ETuuDD
+ y6Y3xdiMiT6Huez/xvxetuIe9wEEQ5PVs0J0H4VQWTrUwbY5JmjA2017xmEpUTIEWOi7
+ TJiukdL4vux27PGHxSiyK3Yrb9oGd9I2b1CAVCJ6p6oegEHuoIyV3dKiXbsFchWzjnPl
+ /gLA==
+X-Gm-Message-State: AC+VfDy4e1SuQdMovQtz1sa50gqzva8Lxujbt0ufhT1beBannJKd0iEJ
+ 9dM0aiYsZQ2s1/GjAur+BkkAZL8d8+s=
+X-Google-Smtp-Source: ACHHUZ4PZV5cjdHXJv5MLVCRP4DB1R7KTqC1IdcZHLZSjwALHH+3GTMZo59SxQvVtSC0DWjFMWuIfQ==
+X-Received: by 2002:ac2:4474:0:b0:4e0:a426:6ddc with SMTP id
+ y20-20020ac24474000000b004e0a4266ddcmr2769583lfl.0.1686220946755; 
+ Thu, 08 Jun 2023 03:42:26 -0700 (PDT)
 Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
  [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.24
+ w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:42:25 -0700 (PDT)
+ Thu, 08 Jun 2023 03:42:26 -0700 (PDT)
 From: Siarhei Volkau <lis8215@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
@@ -62,18 +62,16 @@ Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Stefan Markovic <smarkovic@wavecomp.com>,
  Aleksandar Markovic <amarkovic@wavecomp.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 01/33] target/mips: Add emulation of MXU instructions for
- 32-bit load/store
-Date: Thu,  8 Jun 2023 13:41:50 +0300
-Message-Id: <20230608104222.1520143-2-lis8215@gmail.com>
+Subject: [PATCH 02/33] Add support of two XBurst CPUs
+Date: Thu,  8 Jun 2023 13:41:51 +0300
+Message-Id: <20230608104222.1520143-3-lis8215@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 References: <20230608104222.1520143-1-lis8215@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=lis8215@gmail.com; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,409 +96,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for emulating:
-- S32LDDV and S32LDDVR
-- S32STD and S32STDR
-- S32STDV and S32STDVR
-MXU instructions.
-
-Add support for emulating MXU instructions with address register
-post-modify counterparts:
-- S32LDI and S32LDIR
-- S32LDIV and S32LDIVR
-- S32SDI and S32SDIR
-- S32SDIV and S32SDIVR
-
-Refactor support for emulating the S32LDD and S32LDDR instructions.
+XBurstR1 - is the MIPS32R1 CPU which aims to cover all Ingenic SoCs
+older than JZ4770 and some newer.
+XBurstR2 - is the MIPS32R2 CPU which aims to cover all Ingenic SoCs
+starting from to JZ4770.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
 ---
- target/mips/tcg/mxu_translate.c | 302 +++++++++++++++++++++++++++++---
- 1 file changed, 279 insertions(+), 23 deletions(-)
+ target/mips/cpu-defs.c.inc | 46 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index be038b5f07..f7485a10cc 100644
---- a/target/mips/tcg/mxu_translate.c
-+++ b/target/mips/tcg/mxu_translate.c
-@@ -239,11 +239,11 @@
-  *          ├─ 001100 ─ OPC_MXU_D16MADL
-  *          ├─ 001101 ─ OPC_MXU_S16MAD
-  *          ├─ 001110 ─ OPC_MXU_Q16ADD
-- *          ├─ 001111 ─ OPC_MXU_D16MACE     23
-+ *          ├─ 001111 ─ OPC_MXU_D16MACE     20 (13..10 don't care)
-  *          │                            ┌─ 0 ─ OPC_MXU_S32LDD
-  *          ├─ 010000 ─ OPC_MXU__POOL04 ─┴─ 1 ─ OPC_MXU_S32LDDR
-  *          │
-- *          │                               23
-+ *          │                               20 (13..10 don't care)
-  *          ├─ 010001 ─ OPC_MXU__POOL05 ─┬─ 0 ─ OPC_MXU_S32STD
-  *          │                            └─ 1 ─ OPC_MXU_S32STDR
-  *          │
-@@ -255,11 +255,11 @@
-  *          ├─ 010011 ─ OPC_MXU__POOL07 ─┬─ 0000 ─ OPC_MXU_S32STDV
-  *          │                            └─ 0001 ─ OPC_MXU_S32STDVR
-  *          │
-- *          │                               23
-+ *          │                               20 (13..10 don't care)
-  *          ├─ 010100 ─ OPC_MXU__POOL08 ─┬─ 0 ─ OPC_MXU_S32LDI
-  *          │                            └─ 1 ─ OPC_MXU_S32LDIR
-  *          │
-- *          │                               23
-+ *          │                               20 (13..10 don't care)
-  *          ├─ 010101 ─ OPC_MXU__POOL09 ─┬─ 0 ─ OPC_MXU_S32SDI
-  *          │                            └─ 1 ─ OPC_MXU_S32SDIR
-  *          │
-@@ -359,6 +359,13 @@ enum {
-     OPC_MXU_D16MUL   = 0x08,
-     OPC_MXU_D16MAC   = 0x0A,
-     OPC_MXU__POOL04  = 0x10,
-+    OPC_MXU__POOL05  = 0x11,
-+    OPC_MXU__POOL06  = 0x12,
-+    OPC_MXU__POOL07  = 0x13,
-+    OPC_MXU__POOL08  = 0x14,
-+    OPC_MXU__POOL09  = 0x15,
-+    OPC_MXU__POOL10  = 0x16,
-+    OPC_MXU__POOL11  = 0x17,
-     OPC_MXU_S8LDD    = 0x22,
-     OPC_MXU__POOL16  = 0x27,
-     OPC_MXU_S32M2I   = 0x2E,
-@@ -380,11 +387,11 @@ enum {
- };
- 
- /*
-- * MXU pool 04
-+ * MXU pool 04 05 06 07 08 09 10 11
-  */
- enum {
--    OPC_MXU_S32LDD   = 0x00,
--    OPC_MXU_S32LDDR  = 0x01,
-+    OPC_MXU_S32LDST  = 0x00,
-+    OPC_MXU_S32LDSTR = 0x01,
- };
- 
- /*
-@@ -808,35 +815,147 @@ static void gen_mxu_q8mul_q8mulsu(DisasContext *ctx)
- 
- /*
-  * S32LDD  XRa, Rb, S12 - Load a word from memory to XRF
-- * S32LDDR XRa, Rb, S12 - Load a word from memory to XRF, reversed byte seq.
-+ * S32LDDR XRa, Rb, S12 - Load a word from memory to XRF
-+ *   in reversed byte seq.
-+ * S32LDI  XRa, Rb, S12 - Load a word from memory to XRF,
-+ *   post modify base address GPR.
-+ * S32LDIR XRa, Rb, S12 - Load a word from memory to XRF,
-+ *   post modify base address GPR and load in reversed byte seq.
-  */
--static void gen_mxu_s32ldd_s32lddr(DisasContext *ctx)
-+static void gen_mxu_s32ldxx(DisasContext *ctx, bool reversed, bool postinc)
- {
-     TCGv t0, t1;
--    uint32_t XRa, Rb, s12, sel;
-+    uint32_t XRa, Rb, s12;
- 
-     t0 = tcg_temp_new();
-     t1 = tcg_temp_new();
- 
-     XRa = extract32(ctx->opcode, 6, 4);
--    s12 = extract32(ctx->opcode, 10, 10);
--    sel = extract32(ctx->opcode, 20, 1);
-+    s12 = sextract32(ctx->opcode, 10, 10);
-     Rb = extract32(ctx->opcode, 21, 5);
- 
-     gen_load_gpr(t0, Rb);
-+    tcg_gen_movi_tl(t1, s12 * 4);
-+    tcg_gen_add_tl(t0, t0, t1);
- 
--    tcg_gen_movi_tl(t1, s12);
--    tcg_gen_shli_tl(t1, t1, 2);
--    if (s12 & 0x200) {
--        tcg_gen_ori_tl(t1, t1, 0xFFFFF000);
-+    tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx,
-+                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-+                        ctx->default_tcg_memop_mask);
-+    gen_store_mxu_gpr(t1, XRa);
-+
-+    if (postinc) {
-+        gen_store_gpr(t0, Rb);
-+    }
-+}
-+
-+/*
-+ * S32STD  XRa, Rb, S12 - Store a word from XRF to memory
-+ * S32STDR XRa, Rb, S12 - Store a word from XRF to memory
-+ *   in reversed byte seq.
-+ * S32SDI  XRa, Rb, S12 - Store a word from XRF to memory,
-+ *   post modify base address GPR.
-+ * S32SDIR XRa, Rb, S12 - Store a word from XRF to memory,
-+ *   post modify base address GPR and store in reversed byte seq.
-+ */
-+static void gen_mxu_s32stxx(DisasContext *ctx, bool reversed, bool postinc)
-+{
-+    TCGv t0, t1;
-+    uint32_t XRa, Rb, s12;
-+
-+    t0 = tcg_temp_new();
-+    t1 = tcg_temp_new();
-+
-+    XRa = extract32(ctx->opcode, 6, 4);
-+    s12 = sextract32(ctx->opcode, 10, 10);
-+    Rb = extract32(ctx->opcode, 21, 5);
-+
-+    gen_load_gpr(t0, Rb);
-+    tcg_gen_movi_tl(t1, s12 * 4);
-+    tcg_gen_add_tl(t0, t0, t1);
-+
-+    gen_load_mxu_gpr(t1, XRa);
-+    tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx,
-+                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-+                        ctx->default_tcg_memop_mask);
-+
-+    if (postinc) {
-+        gen_store_gpr(t0, Rb);
-     }
--    tcg_gen_add_tl(t1, t0, t1);
--    tcg_gen_qemu_ld_tl(t1, t1, ctx->mem_idx, (MO_TESL ^ (sel * MO_BSWAP)) |
--                       ctx->default_tcg_memop_mask);
-+}
-+
-+/*
-+ * S32LDDV  XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
-+ * S32LDDVR XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
-+ *   in reversed byte seq.
-+ * S32LDIV  XRa, Rb, Rc, STRD2 - Load a word from memory to XRF,
-+ *   post modify base address GPR.
-+ * S32LDIVR XRa, Rb, Rc, STRD2 - Load a word from memory to XRF,
-+ *   post modify base address GPR and load in reversed byte seq.
-+ */
-+static void gen_mxu_s32ldxvx(DisasContext *ctx, bool reversed,
-+                             bool postinc, uint32_t strd2)
-+{
-+    TCGv t0, t1;
-+    uint32_t XRa, Rb, Rc;
-+
-+    t0 = tcg_temp_new();
-+    t1 = tcg_temp_new();
-+
-+    XRa = extract32(ctx->opcode, 6, 4);
-+    Rc = extract32(ctx->opcode, 16, 5);
-+    Rb = extract32(ctx->opcode, 21, 5);
-+
-+    gen_load_gpr(t0, Rb);
-+    gen_load_gpr(t1, Rc);
-+    tcg_gen_shli_tl(t1, t1, strd2);
-+    tcg_gen_add_tl(t0, t0, t1);
- 
-+    tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx,
-+                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-+                        ctx->default_tcg_memop_mask);
-     gen_store_mxu_gpr(t1, XRa);
-+
-+    if (postinc) {
-+        gen_store_gpr(t0, Rb);
-+    }
- }
- 
-+/*
-+ * S32STDV  XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
-+ * S32STDVR XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
-+ *   in reversed byte seq.
-+ * S32SDIV  XRa, Rb, Rc, STRD2 - Load a word from memory to XRF,
-+ *   post modify base address GPR.
-+ * S32SDIVR XRa, Rb, Rc, STRD2 - Load a word from memory to XRF,
-+ *   post modify base address GPR and store in reversed byte seq.
-+ */
-+static void gen_mxu_s32stxvx(DisasContext *ctx, bool reversed,
-+                             bool postinc, uint32_t strd2)
-+{
-+    TCGv t0, t1;
-+    uint32_t XRa, Rb, Rc;
-+
-+    t0 = tcg_temp_new();
-+    t1 = tcg_temp_new();
-+
-+    XRa = extract32(ctx->opcode, 6, 4);
-+    Rc = extract32(ctx->opcode, 16, 5);
-+    Rb = extract32(ctx->opcode, 21, 5);
-+
-+    gen_load_gpr(t0, Rb);
-+    gen_load_gpr(t1, Rc);
-+    tcg_gen_shli_tl(t1, t1, strd2);
-+    tcg_gen_add_tl(t0, t0, t1);
-+
-+    gen_load_mxu_gpr(t1, XRa);
-+    tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx,
-+                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-+                        ctx->default_tcg_memop_mask);
-+
-+    if (postinc) {
-+        gen_store_gpr(t0, Rb);
-+    }
-+}
- 
- /*
-  *                 MXU instruction category: logic
-@@ -1442,13 +1561,129 @@ static void decode_opc_mxu__pool00(DisasContext *ctx)
- 
- static void decode_opc_mxu__pool04(DisasContext *ctx)
- {
--    uint32_t opcode = extract32(ctx->opcode, 20, 1);
-+    uint32_t reversed = extract32(ctx->opcode, 20, 1);
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
- 
-+    /* Don't care about opcode bits as their meaning is unknown yet */
-     switch (opcode) {
--    case OPC_MXU_S32LDD:
--    case OPC_MXU_S32LDDR:
--        gen_mxu_s32ldd_s32lddr(ctx);
-+    default:
-+        gen_mxu_s32ldxx(ctx, reversed, false);
-         break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool05(DisasContext *ctx)
-+{
-+    uint32_t reversed = extract32(ctx->opcode, 20, 1);
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+
-+    /* Don't care about opcode bits as their meaning is unknown yet */
-+    switch (opcode) {
-+    default:
-+        gen_mxu_s32stxx(ctx, reversed, false);
-+        break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool06(DisasContext *ctx)
-+{
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+    uint32_t strd2  = extract32(ctx->opcode, 14, 2);
-+
-+    switch (opcode) {
-+    case OPC_MXU_S32LDST:
-+    case OPC_MXU_S32LDSTR:
-+        if (strd2 <= 2) {
-+            gen_mxu_s32ldxvx(ctx, opcode, false, strd2);
-+            break;
-+        }
-+        /* fallthrough */
-+    default:
-+        MIPS_INVAL("decode_opc_mxu");
-+        gen_reserved_instruction(ctx);
-+        break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool07(DisasContext *ctx)
-+{
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+    uint32_t strd2  = extract32(ctx->opcode, 14, 2);
-+
-+    switch (opcode) {
-+    case OPC_MXU_S32LDST:
-+    case OPC_MXU_S32LDSTR:
-+        if (strd2 <= 2) {
-+            gen_mxu_s32stxvx(ctx, opcode, false, strd2);
-+            break;
-+        }
-+        /* fallthrough */
-+    default:
-+        MIPS_INVAL("decode_opc_mxu");
-+        gen_reserved_instruction(ctx);
-+        break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool08(DisasContext *ctx)
-+{
-+    uint32_t reversed = extract32(ctx->opcode, 20, 1);
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+
-+    /* Don't care about opcode bits as their meaning is unknown yet */
-+    switch (opcode) {
-+    default:
-+        gen_mxu_s32ldxx(ctx, reversed, true);
-+        break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool09(DisasContext *ctx)
-+{
-+    uint32_t reversed = extract32(ctx->opcode, 20, 1);
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+
-+    /* Don't care about opcode bits as their meaning is unknown yet */
-+    switch (opcode) {
-+    default:
-+        gen_mxu_s32stxx(ctx, reversed, true);
-+        break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool10(DisasContext *ctx)
-+{
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+    uint32_t strd2  = extract32(ctx->opcode, 14, 2);
-+
-+    switch (opcode) {
-+    case OPC_MXU_S32LDST:
-+    case OPC_MXU_S32LDSTR:
-+        if (strd2 <= 2) {
-+            gen_mxu_s32ldxvx(ctx, opcode, true, strd2);
-+            break;
-+        }
-+        /* fallthrough */
-+    default:
-+        MIPS_INVAL("decode_opc_mxu");
-+        gen_reserved_instruction(ctx);
-+        break;
-+    }
-+}
-+
-+static void decode_opc_mxu__pool11(DisasContext *ctx)
-+{
-+    uint32_t opcode = extract32(ctx->opcode, 10, 4);
-+    uint32_t strd2  = extract32(ctx->opcode, 14, 2);
-+
-+    switch (opcode) {
-+    case OPC_MXU_S32LDST:
-+    case OPC_MXU_S32LDSTR:
-+        if (strd2 <= 2) {
-+            gen_mxu_s32stxvx(ctx, opcode, true, strd2);
-+            break;
-+        }
-+        /* fallthrough */
-     default:
-         MIPS_INVAL("decode_opc_mxu");
-         gen_reserved_instruction(ctx);
-@@ -1534,6 +1769,27 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU__POOL04:
-             decode_opc_mxu__pool04(ctx);
-             break;
-+        case OPC_MXU__POOL05:
-+            decode_opc_mxu__pool05(ctx);
-+            break;
-+        case OPC_MXU__POOL06:
-+            decode_opc_mxu__pool06(ctx);
-+            break;
-+        case OPC_MXU__POOL07:
-+            decode_opc_mxu__pool07(ctx);
-+            break;
-+        case OPC_MXU__POOL08:
-+            decode_opc_mxu__pool08(ctx);
-+            break;
-+        case OPC_MXU__POOL09:
-+            decode_opc_mxu__pool09(ctx);
-+            break;
-+        case OPC_MXU__POOL10:
-+            decode_opc_mxu__pool10(ctx);
-+            break;
-+        case OPC_MXU__POOL11:
-+            decode_opc_mxu__pool11(ctx);
-+            break;
-         case OPC_MXU_S8LDD:
-             gen_mxu_s8ldd(ctx);
-             break;
+diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
+index d45f245a67..b67ccf171d 100644
+--- a/target/mips/cpu-defs.c.inc
++++ b/target/mips/cpu-defs.c.inc
+@@ -117,6 +117,26 @@ const mips_def_t mips_defs[] =
+         .insn_flags = CPU_MIPS32R1,
+         .mmu_type = MMU_TYPE_R4000,
+     },
++    {
++        .name = "XBurstR1",
++        .CP0_PRid = 0x1ed0024f,
++        .CP0_Config0 = MIPS_CONFIG0 | (MMU_TYPE_R4000 << CP0C0_MT),
++        .CP0_Config1 = MIPS_CONFIG1 | (15 << CP0C1_MMU) |
++                       (0 << CP0C1_IS) | (3 << CP0C1_IL) | (1 << CP0C1_IA) |
++                       (0 << CP0C1_DS) | (3 << CP0C1_DL) | (1 << CP0C1_DA) |
++                       (0 << CP0C1_CA),
++        .CP0_Config2 = MIPS_CONFIG2,
++        .CP0_Config3 = MIPS_CONFIG3,
++        .CP0_LLAddr_rw_bitmask = 0,
++        .CP0_LLAddr_shift = 4,
++        .SYNCI_Step = 32,
++        .CCRes = 2,
++        .CP0_Status_rw_bitmask = 0x1278FF17,
++        .SEGBITS = 32,
++        .PABITS = 32,
++        .insn_flags = CPU_MIPS32R1 | ASE_MXU,
++        .mmu_type = MMU_TYPE_R4000,
++    },
+     {
+         .name = "4KEmR1",
+         .CP0_PRid = 0x00018500,
+@@ -323,6 +343,32 @@ const mips_def_t mips_defs[] =
+         .insn_flags = CPU_MIPS32R2 | ASE_MIPS16 | ASE_DSP | ASE_DSP_R2,
+         .mmu_type = MMU_TYPE_R4000,
+     },
++    {
++        .name = "XBurstR2",
++        .CP0_PRid = 0x2ed1024f,
++        .CP0_Config0 = MIPS_CONFIG0 | (0x1 << CP0C0_AR) |
++                    (MMU_TYPE_R4000 << CP0C0_MT),
++        .CP0_Config1 = MIPS_CONFIG1 | (1 << CP0C1_FP) | (15 << CP0C1_MMU) |
++                       (0 << CP0C1_IS) | (3 << CP0C1_IL) | (1 << CP0C1_IA) |
++                       (0 << CP0C1_DS) | (3 << CP0C1_DL) | (1 << CP0C1_DA) |
++                       (1 << CP0C1_CA),
++        .CP0_Config2 = MIPS_CONFIG2,
++        .CP0_Config3 = MIPS_CONFIG3 | (1 << CP0C3_DSP2P) | (1 << CP0C3_DSPP) |
++                       (1 << CP0C3_VInt),
++        .CP0_LLAddr_rw_bitmask = 0,
++        .CP0_LLAddr_shift = 4,
++        .SYNCI_Step = 32,
++        .CCRes = 2,
++        .CP0_Status_rw_bitmask = 0x3778FF1F,
++        .CP1_fcr0 = (1 << FCR0_F64) | (1 << FCR0_L) | (1 << FCR0_W) |
++                    (1 << FCR0_D) | (1 << FCR0_S) | (0x93 << FCR0_PRID),
++        .CP1_fcr31 = 0,
++        .CP1_fcr31_rw_bitmask = 0xFF83FFFF,
++        .SEGBITS = 32,
++        .PABITS = 32,
++        .insn_flags = CPU_MIPS32R2 | ASE_MXU,
++        .mmu_type = MMU_TYPE_R4000,
++    },
+     {
+         .name = "M14K",
+         .CP0_PRid = 0x00019b00,
 -- 
 2.40.0
 
