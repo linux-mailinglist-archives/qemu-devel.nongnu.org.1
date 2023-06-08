@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36972728132
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 838B1728121
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 15:20:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7FWi-0003R7-Gl; Thu, 08 Jun 2023 09:18:08 -0400
+	id 1q7FWX-0003Md-Oz; Thu, 08 Jun 2023 09:17:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6F-0002J1-U8
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:39 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6H-0002JB-7G
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:41 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6D-0006V6-53
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:39 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4f122ff663eso550659e87.2
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lis8215@gmail.com>) id 1q7D6E-0006VM-Fo
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:42:40 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4f4b384c09fso550808e87.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 03:42:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686220955; x=1688812955;
+ d=gmail.com; s=20221208; t=1686220956; x=1688812956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VOKWKGLAIXv9YiGFIoj/OF3at1WTFXY+plOc1+ku6cg=;
- b=PMkrJPldKugqj1+qbWKmcs7i7i5Kn0zqE+dtlGOMOX9kS687Dj7SEjzbM7bz8JG352
- A7ywmAmkr32wsGPhDyfdsrILaxny5B3cr8ixHMCVm8Zmav/Awqtj8zqwtSGzXDJ0ZY4Z
- fqAlyNoDSYYyiHmESOL1mZ6gkEPvBRGPdhmeR2mZQHSnZXDcjR0LJjOKQaCJ3GYDMELu
- k0M7pNt1hCnS8VNQFDvrKgnihu72XuD035wXOw4/5aXpwWX2t49jXggx7J2PKXxSUu1e
- 5tOS+v7qOt3dMCU1b1/Rnb9Nm7GJxM83/uJFsjvIhVQi2JUb6uL5ANXKBo2/4U6Hd5t1
- owQw==
+ bh=LwWjK9SsNWU0odkW1I3f9wANPMtQ81Hp5nXl4kMSUs8=;
+ b=InEXUWeVIz+SWzq0jaDdQzO3P35PJbTYhMgULU42uCsi7ymtdNTGhh05L653GThtr3
+ 24Dzt8+qX8Jz6dP6klbQvldQaOk1GUaRjnxBlppeipCsr6FX1tLkeL0ELRMYVUmLRR1b
+ mAruSGhpGzVQ+5oauff6c3wLID/rP8/MNlos+dMyRvhcQsq7knXQz/g8blUq4zA8RCyC
+ UnEEPCGR4V+onG4JVy4jmdnhjqqcK13kUW94Wiu9KoNhXv6kE6cmpN5WKPip6kL+VY1V
+ d7ax/luyooLVJ1K7Ozp6k04joMu1xrHFiqckzdgy80mNspP9BtGFSoj/Iko4n8k/KhC5
+ AyrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686220955; x=1688812955;
+ d=1e100.net; s=20221208; t=1686220956; x=1688812956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VOKWKGLAIXv9YiGFIoj/OF3at1WTFXY+plOc1+ku6cg=;
- b=QE4XjsNh/ExpsgE7fneX3gqvQUFALrIVjVUw7azY47aMkFTYax97BY3AiLEJ7nfmkU
- S9/fv2LQqP/LzAQPPfDPUQWVubDeD4agBwMqAWyHJlImtDSkMHr3PUlgqXQzpAmFKYfE
- gG5fG/zlbimDFBW2/dE8p10/yzwdGlDpflZoeDNMDHwo6GLB+uoYwiBMxfTzZjqY1mKA
- jKQYDMZzpzKNYLNBYa2KogU3nATOBO96xfqHYXnsumXNlebfW41/5XjUWpqWJz+vTj/5
- 1d9mZ2IhVyIBMNrLwYSfQkkrPazaI6K4MdivXeSwyp0o2GgMUPGNBe+V93max1woGIPl
- viGQ==
-X-Gm-Message-State: AC+VfDychpL2BNQ/I3jUtk0ecYwlS+HMJNq11HXre6TcypMZDSSTvKRF
- kd3PVmKEGXUJvUZ86ZTGI8opSkRDDdE=
-X-Google-Smtp-Source: ACHHUZ59xw8r0w5bd2NKru5o2v90CKh+qLQ6d5Z5qu659dsYoAfofI2ks2jdKcdmw+LsCx/60g514g==
-X-Received: by 2002:a19:ee07:0:b0:4f3:a812:5ae with SMTP id
- g7-20020a19ee07000000b004f3a81205aemr2979000lfb.37.1686220955382; 
- Thu, 08 Jun 2023 03:42:35 -0700 (PDT)
+ bh=LwWjK9SsNWU0odkW1I3f9wANPMtQ81Hp5nXl4kMSUs8=;
+ b=W6SU08M5PE43pOhLeTZ2j55ZiZqLRpZiG3lMJoO2nE0GopVf+F0grum1X3GuI0ekjy
+ sUwgOeeulT0yUt0GS0SkbbaJBqLHrK999B8YILd4RCIl+23+XIat54mmgWy28MTEow8J
+ W8tBxtRe+rHn7EGDwW1vYNjD3Y/Mn7K1/qpWdNgSTSTF3moJjB8O4zSlWP6iYVNUV8Ic
+ t4nkUY9RskysmnllfD4Vx0ujm7yq0YDw6ImjSW4PNkDiM3X61rshlAsb4qa+oxWMlfmc
+ M+ffac3CJMJFc6hPukDiHmA5kQJgJDehQUz9Pzw4Aeyxztb7Ug8hvFMDWPCEYhTyQkjf
+ 0hmw==
+X-Gm-Message-State: AC+VfDzxwNEa946z/1Em3xyJA0Fmgn65A9DiSCq0A77uxqNjo8mj3GCb
+ +1hq9pHJX8Ael0MItxT/JSnqj4aCcZ4=
+X-Google-Smtp-Source: ACHHUZ7o5+YQY62erb2cbtdJz58GMuI/3sJSdJPO4NqFKVjTw11P2yUkEUBTpQq04hmuvKqRdHVKdg==
+X-Received: by 2002:ac2:4a7c:0:b0:4f3:b32d:f72c with SMTP id
+ q28-20020ac24a7c000000b004f3b32df72cmr2856791lfp.9.1686220956497; 
+ Thu, 08 Jun 2023 03:42:36 -0700 (PDT)
 Received: from hp-power-15.localdomain (78-62-135-63.static.zebra.lt.
  [78.62.135.63]) by smtp.gmail.com with ESMTPSA id
- w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.34
+ w7-20020ac24427000000b004f3945751b2sm142632lfl.43.2023.06.08.03.42.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 03:42:35 -0700 (PDT)
+ Thu, 08 Jun 2023 03:42:36 -0700 (PDT)
 From: Siarhei Volkau <lis8215@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
@@ -62,17 +62,17 @@ Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Stefan Markovic <smarkovic@wavecomp.com>,
  Aleksandar Markovic <amarkovic@wavecomp.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>
-Subject: [PATCH 10/33] target/mips: Add emulation of MXU D16MULF D16MULE
+Subject: [PATCH 11/33] target/mips: Add emulation of MXU D16MACF D16MACE
  instructions
-Date: Thu,  8 Jun 2023 13:41:59 +0300
-Message-Id: <20230608104222.1520143-11-lis8215@gmail.com>
+Date: Thu,  8 Jun 2023 13:42:00 +0300
+Message-Id: <20230608104222.1520143-12-lis8215@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 References: <20230608104222.1520143-1-lis8215@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=lis8215@gmail.com; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=lis8215@gmail.com; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,85 +97,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These instructions are part of pool3, see the grand tree above
-in the file.
-The instructions are close to D16MUL so common generation function
+These instructions are close to D16MAC so common generation function
 provided.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
 ---
- target/mips/tcg/mxu_translate.c | 95 +++++++++++++++++++++++++++++++--
- 1 file changed, 90 insertions(+), 5 deletions(-)
+ target/mips/tcg/mxu_translate.c | 74 ++++++++++++++++++++++++++++++---
+ 1 file changed, 68 insertions(+), 6 deletions(-)
 
 diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index b3e3937545..d1f4fc79de 100644
+index d1f4fc79de..cd93992eed 100644
 --- a/target/mips/tcg/mxu_translate.c
 +++ b/target/mips/tcg/mxu_translate.c
-@@ -363,6 +363,7 @@ enum {
-     OPC_MXU__POOL01  = 0x06,
-     OPC_MXU__POOL02  = 0x07,
+@@ -365,6 +365,8 @@ enum {
      OPC_MXU_D16MUL   = 0x08,
-+    OPC_MXU__POOL03  = 0x09,
+     OPC_MXU__POOL03  = 0x09,
      OPC_MXU_D16MAC   = 0x0A,
++    OPC_MXU_D16MACF  = 0x0B,
++    OPC_MXU_D16MACE  = 0x0F,
      OPC_MXU__POOL04  = 0x10,
      OPC_MXU__POOL05  = 0x11,
-@@ -418,6 +419,14 @@ enum {
-     OPC_MXU_Q16SAT   = 0x06,
- };
- 
-+/*
-+ * MXU pool 03
-+ */
-+enum {
-+    OPC_MXU_D16MULF  = 0x00,
-+    OPC_MXU_D16MULE  = 0x01,
-+};
-+
- /*
-  * MXU pool 04 05 06 07 08 09 10 11
-  */
-@@ -662,9 +671,14 @@ static void gen_mxu_s8ldd(DisasContext *ctx)
+     OPC_MXU__POOL06  = 0x12,
+@@ -774,10 +776,15 @@ static void gen_mxu_d16mul(DisasContext *ctx, bool fractional,
  }
  
  /*
-- * D16MUL XRa, XRb, XRc, XRd, optn2 - Signed 16 bit pattern multiplication
-+ * D16MUL  XRa, XRb, XRc, XRd, optn2 - Signed 16 bit pattern multiplication
-+ * D16MULF XRa, XRb, XRc, optn2 - Signed Q15 fraction pattern multiplication
-+ *   with rounding and packing result
-+ * D16MULE XRa, XRb, XRc, XRd, optn2 - Signed Q15 fraction pattern
-+ *   multiplication with rounding
+- * D16MAC XRa, XRb, XRc, XRd, aptn2, optn2 - Signed 16 bit pattern multiply
+- *                                           and accumulate
++ * D16MAC XRa, XRb, XRc, XRd, aptn2, optn2
++ *   Signed 16 bit pattern multiply and accumulate
++ * D16MACF XRa, XRb, XRc, aptn2, optn2
++ *   Signed Q15 fraction pattern multiply accumulate and pack
++ * D16MACE XRa, XRb, XRc, XRd, aptn2, optn2
++ *   Signed Q15 fraction pattern multiply and accumulate
   */
--static void gen_mxu_d16mul(DisasContext *ctx)
-+static void gen_mxu_d16mul(DisasContext *ctx, bool fractional,
+-static void gen_mxu_d16mac(DisasContext *ctx)
++static void gen_mxu_d16mac(DisasContext *ctx, bool fractional,
 +                           bool packed_result)
  {
      TCGv t0, t1, t2, t3;
-     uint32_t XRa, XRb, XRc, XRd, optn2;
-@@ -680,6 +694,12 @@ static void gen_mxu_d16mul(DisasContext *ctx)
-     XRd = extract32(ctx->opcode, 18, 4);
-     optn2 = extract32(ctx->opcode, 22, 2);
- 
-+    /*
-+     * TODO: XRd field isn't used for D16MULF
-+     * There's no knowledge how this field affect
-+     * instruction decoding/behavior
-+     */
-+
-     gen_load_mxu_gpr(t1, XRb);
-     tcg_gen_sextract_tl(t0, t1, 0, 16);
-     tcg_gen_sextract_tl(t1, t1, 16, 16);
-@@ -705,8 +725,52 @@ static void gen_mxu_d16mul(DisasContext *ctx)
+     uint32_t XRa, XRb, XRc, XRd, optn2, aptn2;
+@@ -820,6 +827,11 @@ static void gen_mxu_d16mac(DisasContext *ctx)
          tcg_gen_mul_tl(t2, t1, t2);
+         break;
+     }
++
++    if (fractional) {
++        tcg_gen_shli_tl(t3, t3, 1);
++        tcg_gen_shli_tl(t2, t2, 1);
++    }
+     gen_load_mxu_gpr(t0, XRa);
+     gen_load_mxu_gpr(t1, XRd);
+ 
+@@ -841,8 +853,52 @@ static void gen_mxu_d16mac(DisasContext *ctx)
+         tcg_gen_sub_tl(t2, t1, t2);
          break;
      }
 -    gen_store_mxu_gpr(t3, XRa);
 -    gen_store_mxu_gpr(t2, XRd);
++
 +    if (fractional) {
 +        TCGLabel *l_done = gen_new_label();
 +        TCGv rounding = tcg_temp_new();
 +
-+        tcg_gen_shli_tl(t3, t3, 1);
-+        tcg_gen_shli_tl(t2, t2, 1);
 +        tcg_gen_andi_tl(rounding, mxu_CR, 0x2);
 +        tcg_gen_brcondi_tl(TCG_COND_EQ, rounding, 0, l_done);
 +        if (packed_result) {
@@ -185,7 +169,7 @@ index b3e3937545..d1f4fc79de 100644
 +            TCGv bias = tcg_temp_new();
 +
 +            /*
-+             * D16MULF supports unbiased rounding aka "bankers rounding",
++             * D16MACF supports unbiased rounding aka "bankers rounding",
 +             * "round to even", "convergent rounding"
 +             */
 +            tcg_gen_andi_tl(bias, mxu_CR, 0x4);
@@ -201,12 +185,13 @@ index b3e3937545..d1f4fc79de 100644
 +            gen_set_label(l_apply_bias_r);
 +            tcg_gen_addi_tl(t2, t2, 0x8000);
 +        } else {
-+            /* D16MULE doesn't support unbiased rounding */
++            /* D16MACE doesn't support unbiased rounding */
 +            tcg_gen_addi_tl(t3, t3, 0x8000);
 +            tcg_gen_addi_tl(t2, t2, 0x8000);
 +        }
 +        gen_set_label(l_done);
 +    }
++
 +    if (!packed_result) {
 +        gen_store_mxu_gpr(t3, XRa);
 +        gen_store_mxu_gpr(t2, XRd);
@@ -219,50 +204,21 @@ index b3e3937545..d1f4fc79de 100644
  }
  
  /*
-@@ -2374,6 +2438,24 @@ static void decode_opc_mxu__pool02(DisasContext *ctx)
-     }
- }
- 
-+static void decode_opc_mxu__pool03(DisasContext *ctx)
-+{
-+    uint32_t opcode = extract32(ctx->opcode, 24, 2);
-+
-+    switch (opcode) {
-+    case OPC_MXU_D16MULF:
-+        gen_mxu_d16mul(ctx, true, true);
-+        break;
-+    case OPC_MXU_D16MULE:
-+        gen_mxu_d16mul(ctx, true, false);
-+        break;
-+    default:
-+        MIPS_INVAL("decode_opc_mxu");
-+        gen_reserved_instruction(ctx);
-+        break;
-+    }
-+}
-+
- static void decode_opc_mxu__pool04(DisasContext *ctx)
- {
-     uint32_t reversed = extract32(ctx->opcode, 20, 1);
-@@ -2615,7 +2697,7 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-             decode_opc_mxu__pool00(ctx);
-             break;
-         case OPC_MXU_D16MUL:
--            gen_mxu_d16mul(ctx);
-+            gen_mxu_d16mul(ctx, false, false);
+@@ -2700,7 +2756,13 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+             gen_mxu_d16mul(ctx, false, false);
              break;
          case OPC_MXU_D16MAC:
-             gen_mxu_d16mac(ctx);
-@@ -2626,6 +2708,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU__POOL02:
-             decode_opc_mxu__pool02(ctx);
-             break;
-+        case OPC_MXU__POOL03:
-+            decode_opc_mxu__pool03(ctx);
+-            gen_mxu_d16mac(ctx);
++            gen_mxu_d16mac(ctx, false, false);
 +            break;
-         case OPC_MXU__POOL04:
-             decode_opc_mxu__pool04(ctx);
++        case OPC_MXU_D16MACF:
++            gen_mxu_d16mac(ctx, true, true);
++            break;
++        case OPC_MXU_D16MACE:
++            gen_mxu_d16mac(ctx, true, false);
              break;
+         case OPC_MXU__POOL01:
+             decode_opc_mxu__pool01(ctx);
 -- 
 2.40.0
 
