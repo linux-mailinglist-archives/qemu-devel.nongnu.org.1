@@ -2,59 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594327288FB
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 21:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 429A67288FE
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 21:49:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Lcs-0005io-4C; Thu, 08 Jun 2023 15:48:54 -0400
+	id 1q7Lc7-0004J3-PY; Thu, 08 Jun 2023 15:48:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lucas.chollet@free.fr>)
- id 1q7Lcp-0005ZG-Lq
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:48:51 -0400
-Received: from smtp2-g21.free.fr ([212.27.42.2])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q7Lc0-0004In-AL
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:48:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lucas.chollet@free.fr>)
- id 1q7Lcm-0005ew-SG
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:48:51 -0400
-Received: from asub.. (unknown [198.16.189.195])
- (Authenticated sender: lucas.chollet@free.fr)
- by smtp2-g21.free.fr (Postfix) with ESMTPSA id BDF992003DD;
- Thu,  8 Jun 2023 21:48:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
- s=smtp-20201208; t=1686253726;
- bh=Uof9DIkGtWXRDu1ZoX5EIg56ovWdmJYmIrAd9zwy5mc=;
- h=From:To:Cc:Subject:Date:From;
- b=s+McuU2ee0i2Es4rIBBAuXIpi02q0GV93bHpG2qsFisiFhOG1Ebjzf4UDWdTmsLKl
- P4Q3tqKBr0BX+XmM4iQBABRSwnz9olR118XF2cE4Rqytuq4XZdqzqWLny8+ERq+rsK
- JZl+8tonGnmiF8E/C1W7LpO3z9TLL3wm78xON/82EzFtxF1K1ZxhvLkF4EjNV4UrCK
- dDHsSb+JVG41A9b4Oo2WA6OLOh+NaaVQOOFEbBRGyB4A7bf1/lBVAlpwMLaqm077gG
- 17Mo3J9a7Y9C1yt4VJDGHf/plTHc88Lgf3UF1BgFjaKLrknwO1lq1BgqAffZkhCHzL
- 5qfMnGQTJXI+Q==
-From: Lucas Chollet <lucas.chollet@free.fr>
-To: qemu-devel@nongnu.org
-Cc: Lucas Chollet <lucas.chollet@free.fr>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH] hw/i386/vmmouse: use the new input api
-Date: Thu,  8 Jun 2023 15:47:00 -0400
-Message-Id: <20230608194658.711387-1-lucas.chollet@free.fr>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q7Lbv-0005PU-Tz
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 15:47:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686253674;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=m5Ni/9Aed397AbtOkVQKcrnRvkjFz2U9eWH3dn/XX1M=;
+ b=Zfl1OeNPCES3l8IMyiOWZUUjwBsw1rNlYa+yD/pREi7q39EBWTfeDza6OXMqV13EBrv9xI
+ 2uZKPnn+maK9JPNGh8kSBNsoZcGTAHAV9dtfea6l3ZmNneeNgauCL7lhXUS9oppgaxCgrR
+ 6XvINurOO+k/4RduER3bXJTzEd5zruo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-qUF_amErMrSGlsYKHJNcdg-1; Thu, 08 Jun 2023 15:47:53 -0400
+X-MC-Unique: qUF_amErMrSGlsYKHJNcdg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f7e7cfcae4so5610825e9.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 12:47:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686253672; x=1688845672;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m5Ni/9Aed397AbtOkVQKcrnRvkjFz2U9eWH3dn/XX1M=;
+ b=FR3DgWWMXhYploprE0QvZvVkZubF0urL/b6TnHQspPMJSQ+YIMrIwqfdtGL+TbChYk
+ SiwhgzWN+obPu+yW59G3XBqq+OZeSTDCaJQP1Djvgjdt4V7ELkyVCUhIQV3erSzuOwgw
+ POD6NrIKS1eP2Z5QeT/I141l5SQ7Kr01Hx8k0J4hmwmUGG+5e1PmWm4JUHqeuasbfRlB
+ KSfBL7LyIIsopdhgy51YHcVLcBpQo1BWOwM0zHAE6TKKfcwKbniMVdglt/SB1srlLFln
+ dDLI6DbGK2EAC+DfVXAulEth0EVDAsmdCS6Zlvi8PRpuAWVOqUQp4Zf4geuZqAMww1eN
+ jDCQ==
+X-Gm-Message-State: AC+VfDzuGeKGEfLIS0Y1IG86wUcMAtWgBzieC/m6FdVfFuR5qtVC8Xj/
+ /EE5viT/AA5HqxiEjSNV8ddVJkxBLdd7qQXAXs1V4ucv3Hc4x3mkRPXaVPnCAIdby11LJPEt2RA
+ QamXaoBLKFFML3jA=
+X-Received: by 2002:a5d:498f:0:b0:307:cb94:85de with SMTP id
+ r15-20020a5d498f000000b00307cb9485demr12072992wrq.11.1686253672264; 
+ Thu, 08 Jun 2023 12:47:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6qOSDt/1MS03Jwpdns38870llbCOgOu8T0w2TzB4g5AGgdk2goGk6UKx5tALyJOqNL9nHiIQ==
+X-Received: by 2002:a5d:498f:0:b0:307:cb94:85de with SMTP id
+ r15-20020a5d498f000000b00307cb9485demr12072983wrq.11.1686253671976; 
+ Thu, 08 Jun 2023 12:47:51 -0700 (PDT)
+Received: from redhat.com ([2.55.4.169]) by smtp.gmail.com with ESMTPSA id
+ i7-20020adffc07000000b0030631a599a0sm2417352wrr.24.2023.06.08.12.47.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 12:47:51 -0700 (PDT)
+Date: Thu, 8 Jun 2023 15:47:48 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2] hw/acpi: Fix PM control register access
+Message-ID: <20230608154721-mutt-send-email-mst@kernel.org>
+References: <20230607200125.A9988746377@zero.eik.bme.hu>
+ <c080f8f6-b1d4-4ffb-7fcb-f29c7ddaf980@ilande.co.uk>
+ <20230608111241-mutt-send-email-mst@kernel.org>
+ <5f6e8650-5468-0091-9cd6-eaeeac12a2d5@ilande.co.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.27.42.2; envelope-from=lucas.chollet@free.fr;
- helo=smtp2-g21.free.fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f6e8650-5468-0091-9cd6-eaeeac12a2d5@ilande.co.uk>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,175 +99,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No functional changes intended.
+On Thu, Jun 08, 2023 at 08:35:42PM +0100, Mark Cave-Ayland wrote:
+> On 08/06/2023 16:13, Michael S. Tsirkin wrote:
+> 
+> > On Thu, Jun 08, 2023 at 12:37:08PM +0100, Mark Cave-Ayland wrote:
+> > > On 07/06/2023 21:01, BALATON Zoltan wrote:
+> > > 
+> > > > On pegasos2 which has ACPI as part of VT8231 south bridge the board
+> > > > firmware writes PM control register by accessing the second byte so
+> > > > addr will be 1. This wasn't handled correctly and the write went to
+> > > > addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
+> > > > only once and does not take addr into account and handle non-zero
+> > > > address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
+> > > > pegasos2 firmware.
+> > > > 
+> > > > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> > > > ---
+> > > >    hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
+> > > >    1 file changed, 26 insertions(+), 26 deletions(-)
+> > > > 
+> > > > diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+> > > > index 6da275c599..00b1e79a30 100644
+> > > > --- a/hw/acpi/core.c
+> > > > +++ b/hw/acpi/core.c
+> > > > @@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
+> > > >    }
+> > > >    /* ACPI PM1aCNT */
+> > > > -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
+> > > > -{
+> > > > -    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+> > > > -
+> > > > -    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
+> > > > -        /* change suspend type */
+> > > > -        uint16_t sus_typ = (val >> 10) & 7;
+> > > > -        switch (sus_typ) {
+> > > > -        case 0: /* soft power off */
+> > > > -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> > > > -            break;
+> > > > -        case 1:
+> > > > -            qemu_system_suspend_request();
+> > > > -            break;
+> > > > -        default:
+> > > > -            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
+> > > > -                qapi_event_send_suspend_disk();
+> > > > -                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> > > > -            }
+> > > > -            break;
+> > > > -        }
+> > > > -    }
+> > > > -}
+> > > > -
+> > > >    void acpi_pm1_cnt_update(ACPIREGS *ar,
+> > > >                             bool sci_enable, bool sci_disable)
+> > > >    {
+> > > > @@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
+> > > >    static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
+> > > >    {
+> > > >        ACPIREGS *ar = opaque;
+> > > > -    return ar->pm1.cnt.cnt;
+> > > > +    return ar->pm1.cnt.cnt >> addr * 8;
+> > > 
+> > > This shift here...
+> > > 
+> > > >    }
+> > > >    static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
+> > > >                                  unsigned width)
+> > > >    {
+> > > > -    acpi_pm1_cnt_write(opaque, val);
+> > > > +    ACPIREGS *ar = opaque;
+> > > > +
+> > > > +    if (addr == 1) {
+> > > > +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
+> > > > +    }
+> > > 
+> > > and this shift here look similar to my workaround in https://patchew.org/QEMU/20230524211104.686087-1-mark.cave-ayland@ilande.co.uk/20230524211104.686087-31-mark.cave-ayland@ilande.co.uk/
+> > > which is a symptom of https://gitlab.com/qemu-project/qemu/-/issues/360.
+> > > 
+> > > Whilst there is no imminent fix for the above issue, it may be worth a few
+> > > mins to determine if this is the same issue and if so document it with
+> > > comments accordingly as I did so that the workaround can be removed at a
+> > > later date.
+> > 
+> > So I will add
+> > this triggers a but in memory core,
+> > (see
+> > https://gitlab.com/qemu-project/qemu/-/issues/360 for more detail)
+> > 
+> > ?
+> 
+> Well it was just an observation based on its similarity to my patch, but it
+> would need a quick check with the debugger to step back up from the access
+> to confirm if it were caused by the same issue (see the above issue #360 for
+> detail).
+> 
+> As per my previous message no objection to the patch, but if it does have
+> the same underlying cause then it could explain why this has been a tricky
+> problem to solve (as in general the memory API "just works") and also
+> provide another test case for a potential fix.
+> 
+> > > > +    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+> > > > +
+> > > > +    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
+> > > > +        /* change suspend type */
+> > > > +        uint16_t sus_typ = (val >> 10) & 7;
+> > > > +        switch (sus_typ) {
+> > > > +        case 0: /* soft power off */
+> > > > +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> > > > +            break;
+> > > > +        case 1:
+> > > > +            qemu_system_suspend_request();
+> > > > +            break;
+> > > > +        default:
+> > > > +            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
+> > > > +                qapi_event_send_suspend_disk();
+> > > > +                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> > > > +            }
+> > > > +            break;
+> > > > +        }
+> > > > +    }
+> > > >    }
+> > > >    static const MemoryRegionOps acpi_pm_cnt_ops = {
+> 
+> 
+> ATB,
+> 
+> Mark.
 
-Signed-off-by: Lucas Chollet <lucas.chollet@free.fr>
----
-Hey, this is my first patch submission to QEMU so I made a small     
-patch to start with.
+Yea look at e.g. discussion around
+https://lore.kernel.org/all/20211108130934.59B48748F52%40zero.eik.bme.hu/t.mbox.gz
 
-I tried to make sure that I followed all rules to submit the patch,
-but I might have missed something, please tell me if something is
-wrong.
-
-I think that I have properly tested my patch but don't hesitate to
-ask me to do more test or verify edge cases.
-
-Have a nice day - and review :^)
-Lucas
-
- hw/i386/vmmouse.c | 95 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 71 insertions(+), 24 deletions(-)
-
-diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
-index a56c185f15..bdddbb64ac 100644
---- a/hw/i386/vmmouse.c
-+++ b/hw/i386/vmmouse.c
-@@ -24,7 +24,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
--#include "ui/console.h"
-+#include "ui/input.h"
- #include "hw/i386/vmport.h"
- #include "hw/input/i8042.h"
- #include "hw/qdev-properties.h"
-@@ -61,7 +61,10 @@ struct VMMouseState {
-     uint16_t nb_queue;
-     uint16_t status;
-     uint8_t absolute;
--    QEMUPutMouseEntry *entry;
-+    int32_t last_x;
-+    int32_t last_y;
-+    int32_t last_buttons;
-+    QemuInputHandlerState *entry;
-     ISAKBDState *i8042;
- };
- 
-@@ -91,33 +94,72 @@ static uint32_t vmmouse_get_status(VMMouseState *s)
-     return (s->status << 16) | s->nb_queue;
- }
- 
--static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_state)
-+static void vmmouse_mouse_event(DeviceState *dev, QemuConsole *src,
-+                                InputEvent *evt)
- {
--    VMMouseState *s = opaque;
--    int buttons = 0;
-+    static const int bmap[INPUT_BUTTON__MAX] = {
-+        [INPUT_BUTTON_LEFT]   = 0x20,
-+        [INPUT_BUTTON_MIDDLE] = 0x08,
-+        [INPUT_BUTTON_RIGHT]  = 0x10,
-+    };
-+
-+    VMMouseState *s = VMMOUSE(dev);
-+    InputMoveEvent *move;
-+    InputBtnEvent *btn;
-+
-+    int32_t dz = 0;
- 
-     if (s->nb_queue > (VMMOUSE_QUEUE_SIZE - 4))
-         return;
- 
--    DPRINTF("vmmouse_mouse_event(%d, %d, %d, %d)\n",
--            x, y, dz, buttons_state);
-+    switch (evt->type) {
-+    case INPUT_EVENT_KIND_REL:
-+        move = evt->u.rel.data;
-+        if (move->axis == INPUT_AXIS_X) {
-+            s->last_x += move->value;
-+        } else if (move->axis == INPUT_AXIS_Y) {
-+            s->last_y -= move->value;
-+        }
-+        break;
- 
--    if ((buttons_state & MOUSE_EVENT_LBUTTON))
--        buttons |= 0x20;
--    if ((buttons_state & MOUSE_EVENT_RBUTTON))
--        buttons |= 0x10;
--    if ((buttons_state & MOUSE_EVENT_MBUTTON))
--        buttons |= 0x08;
-+    case INPUT_EVENT_KIND_ABS:
-+        move = evt->u.rel.data;
-+        if (move->axis == INPUT_AXIS_X) {
-+            s->last_x = move->value;
-+        } else if (move->axis == INPUT_AXIS_Y) {
-+            s->last_y = move->value;
-+        }
-+        break;
- 
--    if (s->absolute) {
--        x <<= 1;
--        y <<= 1;
-+    case INPUT_EVENT_KIND_BTN:
-+        btn = evt->u.btn.data;
-+        if (btn->down) {
-+            s->last_buttons |= bmap[btn->button];
-+            if (btn->button == INPUT_BUTTON_WHEEL_UP) {
-+                dz--;
-+            } else if (btn->button == INPUT_BUTTON_WHEEL_DOWN) {
-+                dz++;
-+            }
-+
-+        } else {
-+          s->last_buttons &= ~bmap[btn->button];
-+        }
-+        break;
-+
-+    default:
-+        /* keep gcc happy */
-+        break;
-     }
- 
--    s->queue[s->nb_queue++] = buttons;
--    s->queue[s->nb_queue++] = x;
--    s->queue[s->nb_queue++] = y;
-+    s->queue[s->nb_queue++] = s->last_buttons;
-+    s->queue[s->nb_queue++] = s->absolute ? s->last_x << 1 : s->last_x;
-+    s->queue[s->nb_queue++] = s->absolute ? s->last_y << 1 : s->last_y;
-     s->queue[s->nb_queue++] = dz;
-+}
-+
-+static void vmmouse_mouse_sync(DeviceState *dev)
-+{
-+    VMMouseState *s = VMMOUSE(dev);
- 
-     /* need to still generate PS2 events to notify driver to
-        read from queue */
-@@ -127,11 +169,18 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
- static void vmmouse_remove_handler(VMMouseState *s)
- {
-     if (s->entry) {
--        qemu_remove_mouse_event_handler(s->entry);
-+        qemu_input_handler_unregister(s->entry);
-         s->entry = NULL;
-     }
- }
- 
-+static QemuInputHandler vm_mouse_handler = {
-+    .name  = "vmmouse",
-+    .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
-+    .event = vmmouse_mouse_event,
-+    .sync  = vmmouse_mouse_sync,
-+};
-+
- static void vmmouse_update_handler(VMMouseState *s, int absolute)
- {
-     if (s->status != 0) {
-@@ -142,10 +191,8 @@ static void vmmouse_update_handler(VMMouseState *s, int absolute)
-         vmmouse_remove_handler(s);
-     }
-     if (s->entry == NULL) {
--        s->entry = qemu_add_mouse_event_handler(vmmouse_mouse_event,
--                                                s, s->absolute,
--                                                "vmmouse");
--        qemu_activate_mouse_event_handler(s->entry);
-+        s->entry = qemu_input_handler_register(DEVICE(s), &vm_mouse_handler);
-+        qemu_input_handler_activate(s->entry);
-     }
- }
- 
 -- 
-2.39.2
+MST
 
 
