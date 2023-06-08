@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C6A727938
+	by mail.lfdr.de (Postfix) with ESMTPS id 998BC727937
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:54:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ARj-0002SO-8r; Thu, 08 Jun 2023 03:52:39 -0400
+	id 1q7AS7-0002Zh-Io; Thu, 08 Jun 2023 03:53:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7ARh-0002Qy-Op
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:52:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q7AS3-0002Z4-EY
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:53:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7ARg-0003Ug-3Y
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:52:37 -0400
+ id 1q7AS1-0003bN-Sw
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:52:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686210754;
+ s=mimecast20190719; t=1686210776;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C5lJXOfbvLkinUTVYWrdi9zX6g8n2i9lt1NIH+dF6SY=;
- b=QJK1+b9uk0hGwniKSSJ4RroCYhBEUW2CnB3MU5b1x4uMf4ZzMu8vrg1o8b1/5E48os6tef
- s6B7Q6qe1oKQ4gC83MiRTNb/rgTwm8JQG/1oEJ5Rya+9Ut1wQca2FksLHkObrr6yWux8Gg
- cj0HsHiK5VCE1HXHdd9NgH3H+GvvAiQ=
+ bh=+Jn7d9p738AKRZsqgqvMRLDR9Ep8gFbrZrDi9+VjKNg=;
+ b=PBaAyP8RNM910ml2VQcYVS5R3dVQJIIY9Rrrhb7xoxonzzl6kPs+/L9QQmNmODTa0+X2fn
+ urrB4e5TIvOmORp0fHSWgZUSB+KNEWbWE1rVjAM0DzQl2BgfBdNiW1kCkIG9vQlM5ZZBE5
+ K5huhcCjT3hEjR3BB0HD690KIxafANw=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-577-tcEB1Pw0NWWBIh18GGW5SQ-1; Thu, 08 Jun 2023 03:52:31 -0400
-X-MC-Unique: tcEB1Pw0NWWBIh18GGW5SQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-164-bGag4VugO8alQ45xp94Dfg-1; Thu, 08 Jun 2023 03:52:53 -0400
+X-MC-Unique: bGag4VugO8alQ45xp94Dfg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77FFF280158F;
- Thu,  8 Jun 2023 07:52:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 02F523C0CEED;
+ Thu,  8 Jun 2023 07:52:53 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.54])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C05642166B25;
- Thu,  8 Jun 2023 07:52:28 +0000 (UTC)
-Date: Thu, 8 Jun 2023 08:52:26 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AD12D492B00;
+ Thu,  8 Jun 2023 07:52:49 +0000 (UTC)
+Date: Thu, 8 Jun 2023 08:52:47 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
@@ -51,19 +51,18 @@ Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
  marcel.apfelbaum@gmail.com, imammedo@redhat.com, jusual@redhat.com,
  dfaggioli@suse.com, joao.m.martins@oracle.com, jon.grimm@amd.com,
  santosh.Shukla@amd.com
-Subject: Re: [PATCH v6 1/2] hw/i386/pc: Default to use SMBIOS 3.0 for newer
- machine models
-Message-ID: <ZIGIun9SQKIywONC@redhat.com>
+Subject: Re: [PATCH v6 2/2] pc: q35: Bump max_cpus to 1024
+Message-ID: <ZIGIz9II4dF+ul2m@redhat.com>
 References: <20230607205717.737749-1-suravee.suthikulpanit@amd.com>
- <20230607205717.737749-2-suravee.suthikulpanit@amd.com>
+ <20230607205717.737749-3-suravee.suthikulpanit@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230607205717.737749-2-suravee.suthikulpanit@amd.com>
+In-Reply-To: <20230607205717.737749-3-suravee.suthikulpanit@amd.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,24 +87,29 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 07, 2023 at 03:57:16PM -0500, Suravee Suthikulpanit wrote:
-> Currently, pc-q35 and pc-i44fx machine models are default to use SMBIOS 2.8
-> (32-bit entry point). Since SMBIOS 3.0 (64-bit entry point) is now fully
-> supported since QEMU 7.0, default to use SMBIOS 3.0 for newer machine
-> models. This is necessary to avoid the following message when launching
-> a VM with large number of vcpus.
+On Wed, Jun 07, 2023 at 03:57:17PM -0500, Suravee Suthikulpanit wrote:
+> Since KVM_MAX_VCPUS is currently defined to 1024 for x86 as shown in
+> arch/x86/include/asm/kvm_host.h, update QEMU limits to the same number.
 > 
->    "SMBIOS 2.1 table length 66822 exceeds 65535"
+> In case KVM could not support the specified number of vcpus, QEMU would
+> return the following error message:
 > 
+>   qemu-system-x86_64: kvm_init_vcpu: kvm_get_vcpu failed (xxx): Invalid argument
+> 
+> Also, keep max_cpus at 288 for machine version 8.0 and older.
+> 
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Daniel P. Berrangé <berrange@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Julia Suvorova <jusual@redhat.com>
+> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 > Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 > ---
->  hw/i386/pc.c         | 4 +++-
->  hw/i386/pc_piix.c    | 5 +++++
->  hw/i386/pc_q35.c     | 5 +++++
->  include/hw/i386/pc.h | 1 +
->  4 files changed, 14 insertions(+), 1 deletion(-)
+>  hw/i386/pc_q35.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
 
 With regards,
 Daniel
