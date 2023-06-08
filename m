@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11423727C49
+	by mail.lfdr.de (Postfix) with ESMTPS id 6721E727C4B
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 12:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7CWW-000059-Dp; Thu, 08 Jun 2023 06:05:44 -0400
+	id 1q7CWh-00007B-Ul; Thu, 08 Jun 2023 06:05:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q7CWM-0008VC-Az
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:05:35 -0400
+ id 1q7CWP-00004z-E0
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:05:37 -0400
 Received: from mga17.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q7CWI-0007r9-O3
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:05:32 -0400
+ id 1q7CWM-0007rz-0F
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 06:05:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686218730; x=1717754730;
+ t=1686218734; x=1717754734;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=OaIkrpT4BJ2w/bnS1O5gHV/Ymm37eAt1QkoERXNUudw=;
- b=TyH2348QyE4Tmn1j+UvjHHH3GwXml4M3a8iG7amoaqWuIMpCABr92Hh2
- I+k/CWT8Ndz2o3Ch8eONPHu4g/r5jYh/m6sudeUmI87zn+4Au0uQHTIzW
- 66Mj5Ycq2y/oQpFxFVPhQH4CmT3xONKxyB1u8sqqtiHfF8HERbMwgwVRe
- 5JXRLCbhCrm24rhjCblFQrRVu2vCUFQjIO6poV2dSi9sc2OS1l2qPUVqD
- PHGvIukdx+uxGjaPIcZvEcOpB4y3ccMCM+naE44IYX6yHTf5hrP4A5RRs
- CcRf0mqIJgR3qA63xA35utwZqzanmertl7oTvtZt5bHjAuBqFvLykhjdh A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337624405"
-X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="337624405"
+ bh=IjNIqIydqN09clBHDQ6C2od4itkNTcrM6ssdImRA6h8=;
+ b=bL9vsJUCeH7M2EcSWK8hVs4g4QCu5wCasCnwS4fqf3GcoX/CqzQA+akK
+ UubziOuUJhvo6jtxFo0LO34ncT+Ax8RI0Ic2fQHQvb2w8nNgp+D9LEqn1
+ i1YiZ5aBd1OOWsSEarWOv5agjhXPUaHrhiIvXqhe/975lniFE53w1otPp
+ HkYdHF9PoClwamD6iTy64h6wNTywPXZzMvI3XB2TtwqYvZE+HF7C7TLgp
+ cXZ2zTrjaBudKtJjvzOxAyVKPQQ1OYfz3EMVrtOximCFriKTUT3Gb/JVc
+ euaSFqyxZMz7uaXCOSy3Q6ZsgtSmC87ihgbD+aAJ9l1E/KN8zjfXnjC2k Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337624420"
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="337624420"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2023 03:05:26 -0700
+ 08 Jun 2023 03:05:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="956652033"
-X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="956652033"
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="956652054"
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; d="scan'208";a="956652054"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2023 03:05:22 -0700
+ 08 Jun 2023 03:05:26 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, peterx@redhat.com, jasowang@redhat.com,
@@ -48,9 +48,10 @@ Cc: mst@redhat.com, peterx@redhat.com, jasowang@redhat.com,
  marcel.apfelbaum@gmail.com, alex.williamson@redhat.com, clg@redhat.com,
  david@redhat.com, philmd@linaro.org, kwankhede@nvidia.com, cjia@nvidia.com,
  yi.l.liu@intel.com, chao.p.peng@intel.com
-Subject: [PATCH v3 1/5] util: Add iova_tree_foreach_range_data
-Date: Thu,  8 Jun 2023 17:52:27 +0800
-Message-Id: <20230608095231.225450-2-zhenzhong.duan@intel.com>
+Subject: [PATCH v3 2/5] intel_iommu: Fix a potential issue in VFIO dirty page
+ sync
+Date: Thu,  8 Jun 2023 17:52:28 +0800
+Message-Id: <20230608095231.225450-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230608095231.225450-1-zhenzhong.duan@intel.com>
 References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
@@ -80,103 +81,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is a variant of iova_tree_foreach and support tranversing
-a range to trigger callback with a private data.
+Peter Xu found a potential issue:
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+"The other thing is when I am looking at the new code I found that we
+actually extended the replay() to be used also in dirty tracking of vfio,
+in vfio_sync_dirty_bitmap().  For that maybe it's already broken if
+unmap_all() because afaiu log_sync() can be called in migration thread
+anytime during DMA so I think it means the device is prone to DMA with the
+IOMMU pgtable quickly erased and rebuilt here, which means the DMA could
+fail unexpectedly.  Copy Alex, Kirti and Neo."
+
+Fix it by replacing the unmap_all() to only evacuate the iova tree
+(keeping all host mappings untouched, IOW, don't notify UNMAP), and
+do a full resync in page walk which will notify all existing mappings
+as MAP. This way we don't interrupt with any existing mapping if there
+is (e.g. for the dirty sync case), meanwhile we keep sync too to latest
+(for moving a vfio device into an existing iommu group).
+
+Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/qemu/iova-tree.h | 17 +++++++++++++++--
- util/iova-tree.c         | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+), 2 deletions(-)
+ hw/i386/intel_iommu.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/include/qemu/iova-tree.h b/include/qemu/iova-tree.h
-index 8528e5c98fbc..df3dba79e671 100644
---- a/include/qemu/iova-tree.h
-+++ b/include/qemu/iova-tree.h
-@@ -39,6 +39,7 @@ typedef struct DMAMap {
-     IOMMUAccessFlags perm;
- } QEMU_PACKED DMAMap;
- typedef gboolean (*iova_tree_iterator)(DMAMap *map);
-+typedef gboolean (*iova_tree_iterator_2)(DMAMap *map, gpointer *private);
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 94d52f4205d2..34af12f392f5 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -3825,13 +3825,10 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
+     IntelIOMMUState *s = vtd_as->iommu_state;
+     uint8_t bus_n = pci_bus_num(vtd_as->bus);
+     VTDContextEntry ce;
++    DMAMap map = { .iova = 0, .size = HWADDR_MAX };
  
- /**
-  * iova_tree_new:
-@@ -131,11 +132,23 @@ const DMAMap *iova_tree_find_address(const IOVATree *tree, hwaddr iova);
-  * @iterator: the interator for the mappings, return true to stop
-  *
-  * Iterate over the iova tree.
-- *
-- * Return: 1 if found any overlap, 0 if not, <0 if error.
-  */
- void iova_tree_foreach(IOVATree *tree, iova_tree_iterator iterator);
+-    /*
+-     * The replay can be triggered by either a invalidation or a newly
+-     * created entry. No matter what, we release existing mappings
+-     * (it means flushing caches for UNMAP-only registers).
+-     */
+-    vtd_address_space_unmap(vtd_as, n);
++    /* replay is protected by BQL, page walk will re-setup it safely */
++    iova_tree_remove(vtd_as->iova_tree, map);
  
-+/**
-+ * iova_tree_foreach_range_data:
-+ *
-+ * @tree: the iova tree to iterate on
-+ * @range: the iova range to iterate in
-+ * @func: the interator for the mappings, return true to stop
-+ * @private: parameter passed to @func
-+ *
-+ * Iterate over an iova range in iova tree.
-+ */
-+void iova_tree_foreach_range_data(IOVATree *tree, DMAMap *range,
-+                                  iova_tree_iterator_2 func,
-+                                  gpointer *private);
-+
- /**
-  * iova_tree_alloc_map:
-  *
-diff --git a/util/iova-tree.c b/util/iova-tree.c
-index 536789797e47..a3cbd5198410 100644
---- a/util/iova-tree.c
-+++ b/util/iova-tree.c
-@@ -42,6 +42,12 @@ typedef struct IOVATreeFindIOVAArgs {
-     const DMAMap *result;
- } IOVATreeFindIOVAArgs;
- 
-+typedef struct IOVATreeIterator {
-+    DMAMap *range;
-+    iova_tree_iterator_2 func;
-+    gpointer *private;
-+} IOVATreeIterator;
-+
- /**
-  * Iterate args to the next hole
-  *
-@@ -164,6 +170,31 @@ void iova_tree_foreach(IOVATree *tree, iova_tree_iterator iterator)
-     g_tree_foreach(tree->tree, iova_tree_traverse, iterator);
- }
- 
-+static gboolean iova_tree_traverse_range(gpointer key, gpointer value,
-+                                         gpointer data)
-+{
-+    DMAMap *map = key;
-+    IOVATreeIterator *iterator = data;
-+    DMAMap *range = iterator->range;
-+
-+    g_assert(key == value);
-+
-+    if (iova_tree_compare(map, range, NULL)) {
-+        return false;
-+    }
-+
-+    return iterator->func(map, iterator->private);
-+}
-+
-+void iova_tree_foreach_range_data(IOVATree *tree, DMAMap *range,
-+                                  iova_tree_iterator_2 func,
-+                                  gpointer *private)
-+{
-+    IOVATreeIterator iterator = {range, func, private};
-+
-+    g_tree_foreach(tree->tree, iova_tree_traverse_range, &iterator);
-+}
-+
- void iova_tree_remove(IOVATree *tree, DMAMap map)
- {
-     const DMAMap *overlap;
+     if (vtd_dev_to_context_entry(s, bus_n, vtd_as->devfn, &ce) == 0) {
+         trace_vtd_replay_ce_valid(s->root_scalable ? "scalable mode" :
 -- 
 2.34.1
 
