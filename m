@@ -2,51 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A3F7283A3
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 175377283DF
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 17:42:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7HRP-0005Z2-1D; Thu, 08 Jun 2023 11:20:47 -0400
+	id 1q7Hl7-00042M-H3; Thu, 08 Jun 2023 11:41:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q7HRM-0005Yq-AM
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:20:44 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7Hl6-00041V-CK
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:41:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q7HRJ-0001Mz-NI
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:20:44 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 6B5AA74638A;
- Thu,  8 Jun 2023 17:20:38 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E8461746377; Thu,  8 Jun 2023 17:20:37 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E699E746369;
- Thu,  8 Jun 2023 17:20:37 +0200 (CEST)
-Date: Thu, 8 Jun 2023 17:20:37 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org, 
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] hw/acpi: Fix PM control register access
-In-Reply-To: <20230608111241-mutt-send-email-mst@kernel.org>
-Message-ID: <a37ca4bf-ad22-9086-b3a8-3c0d4f55da27@eik.bme.hu>
-References: <20230607200125.A9988746377@zero.eik.bme.hu>
- <c080f8f6-b1d4-4ffb-7fcb-f29c7ddaf980@ilande.co.uk>
- <20230608111241-mutt-send-email-mst@kernel.org>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7Hl3-0005Qh-Np
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 11:41:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686238863;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RGT/UfpiOVwyrJBmSbv/D4uweEXUIu50GQMEXgTpiKQ=;
+ b=iV4Tp1K3tdZnz1FbYDU0kc09w2KZ9P7WxQko5UCVO38tQY85vCq8QOISXNjXd/R7VM21dj
+ 7Djz4YEz8JFiAj4N5cbb3LaV/heXiYV1hH9TcZBjbcWI8qrl3u1gNl25ooyzIoAMA8w0K5
+ vIIUQmbeqHteKhbkgb29kDmIhPTyXIQ=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-283-IwouAy1JPkyGLpTV62XXVA-1; Thu, 08 Jun 2023 11:41:00 -0400
+X-MC-Unique: IwouAy1JPkyGLpTV62XXVA-1
+Received: by mail-oi1-f197.google.com with SMTP id
+ 5614622812f47-39ac408a2f5so106629b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 08:40:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686238859; x=1688830859;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RGT/UfpiOVwyrJBmSbv/D4uweEXUIu50GQMEXgTpiKQ=;
+ b=D95MiO+b5wYJFBm6Jv0w9/MY0x5fUBoHyloiYaWkYrfL6I/Bl90LhoiYdRANtmNwuH
+ I8D0d2OWfW6cqXYfP1GQWOTf6Gq8hyg3AZrd5JazEhAJIHfPw6C8KVdLVaBJR+6ZDjxZ
+ uZPQgbO6zP13hr00IJ3uJprdUXwZ4uEiD1blvOpWGbPeXd14dumRHp+BlxfAuwPgOgs3
+ /u/gH6al/Yo8ne1TgRHYHdStCPM59P03MGS9HS6MC+6FgjjCyJfXVWmV4r3z/DkU4FJJ
+ XU6irZTquOr/xZJtBE76mWgmJR7clfBngpc7ST7+I/SrHYCMPcjXymBK+/dBaYcC45G0
+ VqzQ==
+X-Gm-Message-State: AC+VfDynmN+u8aDRGJ6UgC3xB2KVC+rPr1qvadtj9HtRhZGukns73OaV
+ sbd5twtAWFXZQ4pjqcuAyej0mbHkvzoqnT9QRdqPdnuShEd7gAOrkjh4PsGnP/FGQ2Xs4Ueffmt
+ NyQbQ8oa/46rSBUA=
+X-Received: by 2002:aca:61d6:0:b0:39a:2b38:5a67 with SMTP id
+ v205-20020aca61d6000000b0039a2b385a67mr4500114oib.4.1686238859177; 
+ Thu, 08 Jun 2023 08:40:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7A+Zuoaf2Tz/1ALQYe1dTcCu/vF6eyikluhcWmkeggIhY6wqzkBhGQ92ZteI/4feYpBjWScA==
+X-Received: by 2002:aca:61d6:0:b0:39a:2b38:5a67 with SMTP id
+ v205-20020aca61d6000000b0039a2b385a67mr4500092oib.4.1686238858856; 
+ Thu, 08 Jun 2023 08:40:58 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ s12-20020a0cdc0c000000b006262956aa0fsm461760qvk.106.2023.06.08.08.40.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jun 2023 08:40:57 -0700 (PDT)
+Date: Thu, 8 Jun 2023 11:40:55 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org,
+ mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, alex.williamson@redhat.com,
+ clg@redhat.com, david@redhat.com, philmd@linaro.org,
+ kwankhede@nvidia.com, cjia@nvidia.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com
+Subject: Re: [PATCH v3 5/5] intel_iommu: Optimize out some unnecessary UNMAP
+ calls
+Message-ID: <ZIH2h7GAV6qirAgw@x1n>
+References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
+ <20230608095231.225450-6-zhenzhong.duan@intel.com>
+ <ZIHgFFSaBJWFUNd7@x1n> <ZIHhgyUv7YmWsG3H@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZIHhgyUv7YmWsG3H@nvidia.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,128 +105,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 Jun 2023, Michael S. Tsirkin wrote:
-> On Thu, Jun 08, 2023 at 12:37:08PM +0100, Mark Cave-Ayland wrote:
->> On 07/06/2023 21:01, BALATON Zoltan wrote:
->>
->>> On pegasos2 which has ACPI as part of VT8231 south bridge the board
->>> firmware writes PM control register by accessing the second byte so
->>> addr will be 1. This wasn't handled correctly and the write went to
->>> addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
->>> only once and does not take addr into account and handle non-zero
->>> address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
->>> pegasos2 firmware.
->>>
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>>   hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
->>>   1 file changed, 26 insertions(+), 26 deletions(-)
->>>
->>> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
->>> index 6da275c599..00b1e79a30 100644
->>> --- a/hw/acpi/core.c
->>> +++ b/hw/acpi/core.c
->>> @@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
->>>   }
->>>   /* ACPI PM1aCNT */
->>> -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
->>> -{
->>> -    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
->>> -
->>> -    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
->>> -        /* change suspend type */
->>> -        uint16_t sus_typ = (val >> 10) & 7;
->>> -        switch (sus_typ) {
->>> -        case 0: /* soft power off */
->>> -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
->>> -            break;
->>> -        case 1:
->>> -            qemu_system_suspend_request();
->>> -            break;
->>> -        default:
->>> -            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
->>> -                qapi_event_send_suspend_disk();
->>> -                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
->>> -            }
->>> -            break;
->>> -        }
->>> -    }
->>> -}
->>> -
->>>   void acpi_pm1_cnt_update(ACPIREGS *ar,
->>>                            bool sci_enable, bool sci_disable)
->>>   {
->>> @@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
->>>   static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
->>>   {
->>>       ACPIREGS *ar = opaque;
->>> -    return ar->pm1.cnt.cnt;
->>> +    return ar->pm1.cnt.cnt >> addr * 8;
->>
->> This shift here...
->>
->>>   }
->>>   static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
->>>                                 unsigned width)
->>>   {
->>> -    acpi_pm1_cnt_write(opaque, val);
->>> +    ACPIREGS *ar = opaque;
->>> +
->>> +    if (addr == 1) {
->>> +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
->>> +    }
->>
->> and this shift here look similar to my workaround in https://patchew.org/QEMU/20230524211104.686087-1-mark.cave-ayland@ilande.co.uk/20230524211104.686087-31-mark.cave-ayland@ilande.co.uk/
->> which is a symptom of https://gitlab.com/qemu-project/qemu/-/issues/360.
->>
->> Whilst there is no imminent fix for the above issue, it may be worth a few
->> mins to determine if this is the same issue and if so document it with
->> comments accordingly as I did so that the workaround can be removed at a
->> later date.
->
-> So I will add
-> this triggers a but in memory core,
-> (see
-> https://gitlab.com/qemu-project/qemu/-/issues/360 for more detail)
->
-> ?
+On Thu, Jun 08, 2023 at 11:11:15AM -0300, Jason Gunthorpe wrote:
+> On Thu, Jun 08, 2023 at 10:05:08AM -0400, Peter Xu wrote:
+> 
+> > IIUC what VFIO does here is it returns succeed if unmap over nothing rather
+> > than failing like iommufd.  Curious (like JasonW) on why that retval?  I'd
+> > assume for returning "how much unmapped" we can at least still return 0 for
+> > nothing.
+> 
+> In iommufd maps are objects, you can only map or unmap entire
+> objects. The ability to batch unmap objects by specifying an range
+> that spans many is something that was easy to do and that VFIO had,
+> but I'm not sure it is actually usefull..
+> 
+> So asking to unmap an object that is already known not to be mapped is
+> actually possibly racy, especially if you consider iommufd's support
+> for kernel-side IOVA allocation. It should not be done, or if it is
+> done, with user space locking to protect it.
+> 
+> For VFIO, long long ago, VFIO could unmap IOVA page at a time - ie it
+> wasn't objects. In this world it made some sense that the unmap would
+> 'succeed' as the end result was unmapped.
+> 
+> > Are you probably suggesting that we can probably handle that in QEMU side
+> > on -ENOENT here for iommufd only (a question to Yi?).
+> 
+> Yes, this can be done, ENOENT is reliably returned and qemu doesn't
+> use the kernel-side IOVA allocator.
+> 
+> But if there is the proper locks to prevent a map/unmap race, then
+> there should also be the proper locks to check that there is no map in
+> the first place and avoid the kernel call..
 
-Apart from the typo but -> bug I'm not sure this is related to that issue 
-but in any case this does not trigger but works around some possible bug 
-so maybe "This work around may be related to issue URL" or something like 
-that maybe? I'm also not sure what comment to add where so I'd appreciate 
-if you can handle this on merging.
+The problem is IIRC guest iommu driver can do smart things like batching
+invalidations, it means when QEMU gets it from the guest OS it may already
+not matching one mapped objects.
 
-Regards,
-BALATON Zoltan
+We can definitely lookup every single object and explicitly unmap, but it
+loses partial of the point of batching that guest OS does.  Logically QEMU
+can redirect that batched invalidation into one ioctl() to the host, rather
+than a lot of smaller ones.
 
->>> +    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
->>> +
->>> +    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
->>> +        /* change suspend type */
->>> +        uint16_t sus_typ = (val >> 10) & 7;
->>> +        switch (sus_typ) {
->>> +        case 0: /* soft power off */
->>> +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
->>> +            break;
->>> +        case 1:
->>> +            qemu_system_suspend_request();
->>> +            break;
->>> +        default:
->>> +            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
->>> +                qapi_event_send_suspend_disk();
->>> +                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
->>> +            }
->>> +            break;
->>> +        }
->>> +    }
->>>   }
->>>   static const MemoryRegionOps acpi_pm_cnt_ops = {
->>
->>
->> ATB,
->>
->> Mark.
->
->
+While for this specific patch - Zhenzhong/Yi, do you agree that we should
+just handle -ENOENT in the iommufd series (I assume it's still under work),
+then for this specific patch it's only about performance difference?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
