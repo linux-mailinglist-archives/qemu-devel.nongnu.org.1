@@ -2,86 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84677278B0
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A858E7278E5
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 09:34:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q79zY-0002HO-CE; Thu, 08 Jun 2023 03:23:32 -0400
+	id 1q7A8w-0007Ty-Nw; Thu, 08 Jun 2023 03:33:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q79zW-0002H7-Ux
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:23:30 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q79zV-0006fI-Bz
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 03:23:30 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-55b00ad09feso198959eaf.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 00:23:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1686209008; x=1688801008;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pBp5P34pomIf/TRV0HfYpflM8Flhf0grZdqWN9dKPh0=;
- b=jcxde9qPNrfNLIOo+NX7t4h8IA4Ei+JWWsmqB+P5OzueESgCLuHDNIMrdbH3YQAK76
- r3vSdfs1dI94yhLhfLJNIxZKW8RHy7KJnMrMy6yBYBhPfNsdsxKpm35e+N8z0+H8xIXi
- kPVsNkqXWOHKUML3KlMi2pHFJbujkbc7/26TpsxGEcYihJX5glOmzhIbwTX6wvKtID2D
- psJNricnNTHs/yELjrsqWVgnj9c+lSeGUbV1+fT+llJlAm1vQ0dHlTLDdH1d2hfZ6AOu
- EZ9DTidqPZnL4UTdHnXABfIcKasySNPyyN9oJuIH63UwbFYkwci3ECPBTKIDgVXR6pio
- 9iiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686209008; x=1688801008;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pBp5P34pomIf/TRV0HfYpflM8Flhf0grZdqWN9dKPh0=;
- b=DHLInp4ASSoeBcbHXdep4XrTcq2DxzVHw3SU5NjD+axPszTYB4HsvDisv0zJ5ToWw4
- RXJ/HnBwqcvkA1ZpjFtHVm4U5ulY+usmjfodMTY8NZHnGbHQ0JKZ+Sug9JIp/QZJrE2q
- ayGJP5AQCTXFdbUGoPNfBuxZ+gUsXiCyf7DGpQY9JUh2ddyx2LleU3UP6aF28IhrKZbJ
- vIxF3AHMoarCKrtjnnY65/kAAQvZrpf+NykBdqoYW0loG1ZUa+ckbAiOKdz9vEon8Qtc
- bkCIN2z6SSjmjJ86ED4L0d5dAOAf+OgaUxCaDPcIJ/cCMWNrKzcEuVHySMRPqS+q6vP+
- EREQ==
-X-Gm-Message-State: AC+VfDxmP5a5N05UhoY4uvYVqbVKMUZcxe5vl2Z/WCIoX5NySh1LzqOK
- oPOEXIGcnPJ0FsFctpxoI/eB/IJSBUKgeOr15FfeGUcNQVvX69NZ/2SmclySbCMSNzIHOhszLxp
- bP/TuAgEVrG4KtINPFOpFiS6Y/L337A+CNYM0tzaZx8DoNLJBR9WINTWUekadf2a62W8MJ98n3v
- aT
-X-Google-Smtp-Source: ACHHUZ5y77BAl2HVL2EpguyRmXdU8MayXA9SXKTbFUbIRppFIzPi1FqYtZTKWl8N43HZjj1AkxORsQ==
-X-Received: by 2002:a4a:b384:0:b0:558:b224:ce9f with SMTP id
- p4-20020a4ab384000000b00558b224ce9fmr5878171ooo.7.1686209007656; 
- Thu, 08 Jun 2023 00:23:27 -0700 (PDT)
-Received: from sw05.internal.sifive.com ([64.62.193.194])
- by smtp.gmail.com with ESMTPSA id
- x144-20020a4a4196000000b0051134f333d3sm274293ooa.16.2023.06.08.00.23.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 00:23:27 -0700 (PDT)
-From: Tommy Wu <tommy.wu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: frank.chang@sifive.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
- Tommy Wu <tommy.wu@sifive.com>
-Subject: [PATCH v4 4/4] target/riscv: Add Smrnmi mnret instruction.
-Date: Thu,  8 Jun 2023 00:23:14 -0700
-Message-Id: <20230608072314.3561109-5-tommy.wu@sifive.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230608072314.3561109-1-tommy.wu@sifive.com>
-References: <20230608072314.3561109-1-tommy.wu@sifive.com>
+ (Exim 4.90_1) (envelope-from <SRS0=uqJq=B4=kaod.org=clg@ozlabs.org>)
+ id 1q7A8v-0007Tm-MK; Thu, 08 Jun 2023 03:33:13 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=uqJq=B4=kaod.org=clg@ozlabs.org>)
+ id 1q7A8t-0008J5-Ea; Thu, 08 Jun 2023 03:33:13 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QcGCC4vFgz4x4K;
+ Thu,  8 Jun 2023 17:32:55 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QcGC96CPCz4x4B;
+ Thu,  8 Jun 2023 17:32:52 +1000 (AEST)
+Message-ID: <a274071c-b2c0-8371-b10d-82a883edef1f@kaod.org>
+Date: Thu, 8 Jun 2023 09:32:48 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=tommy.wu@sifive.com; helo=mail-oo1-xc2f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] target/ppc: Implement gathering irq statistics
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=uqJq=B4=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,125 +66,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
-Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
----
- target/riscv/helper.h                         |  1 +
- target/riscv/insn32.decode                    |  3 ++
- .../riscv/insn_trans/trans_privileged.c.inc   | 12 +++++
- target/riscv/op_helper.c                      | 49 +++++++++++++++++++
- 4 files changed, 65 insertions(+)
+On 6/7/23 00:02, BALATON Zoltan wrote:
+> Count exceptions which can be queried with info irq monitor command.
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index 98e97810fd..00f1032086 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -112,6 +112,7 @@ DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
- #ifndef CONFIG_USER_ONLY
- DEF_HELPER_1(sret, tl, env)
- DEF_HELPER_1(mret, tl, env)
-+DEF_HELPER_1(mnret, tl, env)
- DEF_HELPER_1(wfi, void, env)
- DEF_HELPER_1(tlb_flush, void, env)
- DEF_HELPER_1(tlb_flush_all, void, env)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 73d5d1b045..e0698f9dfb 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -111,6 +111,9 @@ wfi         0001000    00101 00000 000 00000 1110011
- sfence_vma  0001001    ..... ..... 000 00000 1110011 @sfence_vma
- sfence_vm   0001000    00100 ..... 000 00000 1110011 @sfence_vm
- 
-+# *** NMI ***
-+mnret       0111000    00010 00000 000 00000 1110011
-+
- # *** RV32I Base Instruction Set ***
- lui      ....................       ..... 0110111 @u
- auipc    ....................       ..... 0010111 @u
-diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
-index 528baa1652..ef7f102069 100644
---- a/target/riscv/insn_trans/trans_privileged.c.inc
-+++ b/target/riscv/insn_trans/trans_privileged.c.inc
-@@ -104,6 +104,18 @@ static bool trans_mret(DisasContext *ctx, arg_mret *a)
- #endif
- }
- 
-+static bool trans_mnret(DisasContext *ctx, arg_mnret *a)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    gen_helper_mnret(cpu_pc, cpu_env);
-+    tcg_gen_exit_tb(NULL, 0); /* no chaining */
-+    ctx->base.is_jmp = DISAS_NORETURN;
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
- static bool trans_wfi(DisasContext *ctx, arg_wfi *a)
- {
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index f563dc3981..b27beec871 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -359,6 +359,55 @@ target_ulong helper_mret(CPURISCVState *env)
-     return retpc;
- }
- 
-+target_ulong helper_mnret(CPURISCVState *env)
-+{
-+    if (!riscv_cpu_cfg(env)->ext_smrnmi) {
-+        /* RNMI feature is not presented. */
-+        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-+    }
-+
-+    if (!(env->priv >= PRV_M)) {
-+        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-+    }
-+
-+    /* Get return PC from mnepc CSR. */
-+    target_ulong retpc = env->mnepc;
-+    if (!riscv_has_ext(env, RVC) && (retpc & 0x3)) {
-+        riscv_raise_exception(env, RISCV_EXCP_INST_ADDR_MIS, GETPC());
-+    }
-+
-+    /* Get previous privilege level from mnstatus CSR. */
-+    target_ulong prev_priv = get_field(env->mnstatus, MNSTATUS_MNPP);
-+
-+    if (riscv_cpu_cfg(env)->pmp &&
-+        !pmp_get_num_rules(env) && (prev_priv != PRV_M)) {
-+        riscv_raise_exception(env, RISCV_EXCP_ILLEGAL_INST, GETPC());
-+    }
-+
-+    riscv_cpu_set_mode(env, prev_priv);
-+    env->mnstatus = set_field(env->mnstatus, MNSTATUS_NMIE, true);
-+
-+    target_ulong prev_virt = get_field(env->mnstatus, MNSTATUS_MNPV);
-+
-+    /*
-+     * If MNRET changes the privilege mode to a mode
-+     * less privileged than M, it also sets mstatus.MPRV to 0.
-+     */
-+    if (prev_priv < PRV_M) {
-+        env->mstatus = set_field(env->mstatus, MSTATUS_MPRV, false);
-+    }
-+
-+    if (riscv_has_ext(env, RVH)) {
-+        if (prev_virt) {
-+            riscv_cpu_swap_hypervisor_regs(env);
-+        }
-+
-+        riscv_cpu_set_virt_enabled(env, prev_virt);
-+    }
-+
-+    return retpc;
-+}
-+
- void helper_wfi(CPURISCVState *env)
- {
-     CPUState *cs = env_cpu(env);
--- 
-2.31.1
+I don't think the TYPE_INTERRUPT_STATS_PROVIDER interface was designed
+for CPUs. It is more suitable for interrupt controllers.
+
+C.
+
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   target/ppc/cpu.h         |  1 +
+>   target/ppc/cpu_init.c    | 18 ++++++++++++++++++
+>   target/ppc/excp_helper.c |  1 +
+>   3 files changed, 20 insertions(+)
+> 
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index c7c2a5534c..d3a9197e02 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -1194,6 +1194,7 @@ struct CPUArchState {
+>       int error_code;
+>       uint32_t pending_interrupts;
+>   #if !defined(CONFIG_USER_ONLY)
+> +    uint64_t excp_stats[POWERPC_EXCP_NB];
+>       /*
+>        * This is the IRQ controller, which is implementation dependent and only
+>        * relevant when emulating a complete machine. Note that this isn't used
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index 05bf73296b..716f2b5d64 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -48,6 +48,7 @@
+>   
+>   #ifndef CONFIG_USER_ONLY
+>   #include "hw/boards.h"
+> +#include "hw/intc/intc.h"
+>   #endif
+>   
+>   /* #define PPC_DEBUG_SPR */
+> @@ -7123,6 +7124,16 @@ static bool ppc_cpu_is_big_endian(CPUState *cs)
+>       return !FIELD_EX64(env->msr, MSR, LE);
+>   }
+>   
+> +static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
+> +                              uint64_t **irq_counts, unsigned int *nb_irqs)
+> +{
+> +    CPUPPCState *env = &POWERPC_CPU(obj)->env;
+> +
+> +    *irq_counts = env->excp_stats;
+> +    *nb_irqs = ARRAY_SIZE(env->excp_stats);
+> +    return true;
+> +}
+> +
+>   #ifdef CONFIG_TCG
+>   static void ppc_cpu_exec_enter(CPUState *cs)
+>   {
+> @@ -7286,6 +7297,7 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
+>       cc->gdb_write_register = ppc_cpu_gdb_write_register;
+>   #ifndef CONFIG_USER_ONLY
+>       cc->sysemu_ops = &ppc_sysemu_ops;
+> +    INTERRUPT_STATS_PROVIDER_CLASS(oc)->get_statistics = ppc_get_irq_stats;
+>   #endif
+>   
+>       cc->gdb_num_core_regs = 71;
+> @@ -7323,6 +7335,12 @@ static const TypeInfo ppc_cpu_type_info = {
+>       .abstract = true,
+>       .class_size = sizeof(PowerPCCPUClass),
+>       .class_init = ppc_cpu_class_init,
+> +#ifndef CONFIG_USER_ONLY
+> +    .interfaces = (InterfaceInfo[]) {
+> +          { TYPE_INTERRUPT_STATS_PROVIDER },
+> +          { }
+> +    },
+> +#endif
+>   };
+>   
+>   #ifndef CONFIG_USER_ONLY
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index fea9221501..5480d9d2c7 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -1652,6 +1652,7 @@ static void powerpc_excp(PowerPCCPU *cpu, int excp)
+>       qemu_log_mask(CPU_LOG_INT, "Raise exception at " TARGET_FMT_lx
+>                     " => %s (%d) error=%02x\n", env->nip, powerpc_excp_name(excp),
+>                     excp, env->error_code);
+> +    env->excp_stats[excp]++;
+>   
+>       switch (env->excp_model) {
+>       case POWERPC_EXCP_40x:
 
 
