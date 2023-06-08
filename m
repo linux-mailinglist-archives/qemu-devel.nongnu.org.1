@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC57728B58
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7589E728B6E
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 00:55:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7OSV-0003Y5-Vt; Thu, 08 Jun 2023 18:50:24 -0400
+	id 1q7OSU-0003XZ-Ll; Thu, 08 Jun 2023 18:50:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q7OSR-0003X2-W2
+ id 1q7OSS-0003XL-GI
  for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:50:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q7OSQ-000523-EP
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:50:19 -0400
+ id 1q7OSR-00052L-1L
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 18:50:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686264617;
+ s=mimecast20190719; t=1686264618;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ooZDVu2u6stJR54x4HIx0421sLGbHoWHpwjasvtyWl4=;
- b=Q+ZVZSzTK8SmCY2b7T97ykpXNBvzK7s8HtQoF64I1MJ/T1LEa08mU6NxcBdX5VygPhmmcX
- 3l8erKV00fpc8oCGMdQ+YJQTQ9ebtV2Xkv7FoeMU/rqq+uuZdz743QdpyJCkr3tZVsyfnX
- ySoozyRjhW68UFYT3eEGm5CbrTLI7qo=
+ bh=YF5zaFACHYRMZKZN/az3fcgRTJqGCYVOIz68XsYtrmY=;
+ b=AY36YcNeIaxsdBcJWoGvf5SVHbAOMKYgxSS3qlNqcCsdnvucuTOfQJOPkybV3nHBkgMsSV
+ 8HL7DPq4IQEKoOmM5ZZzXnK3+neN0KZyzK1WdgWou/vp9wcqoW3OMk+PSKnaXc+TnLDnwd
+ 4RmKC5HGOP8wd/ZUkDOSr1BjDrEj/J0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-562-uGC5y3flMq-GYodPuuYhMQ-1; Thu, 08 Jun 2023 18:50:13 -0400
-X-MC-Unique: uGC5y3flMq-GYodPuuYhMQ-1
+ us-mta-76-CJTNoqLFPO-P_Rr7hMjGUw-1; Thu, 08 Jun 2023 18:50:15 -0400
+X-MC-Unique: CJTNoqLFPO-P_Rr7hMjGUw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3E8C811E85;
- Thu,  8 Jun 2023 22:50:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5A5D85A5A8;
+ Thu,  8 Jun 2023 22:50:14 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.3])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 739A0515541;
- Thu,  8 Jun 2023 22:50:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 47C23515541;
+ Thu,  8 Jun 2023 22:50:13 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -50,9 +50,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Juan Quintela <quintela@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 14/42] migration-test: test_migrate_start() always return 0
-Date: Fri,  9 Jun 2023 00:49:15 +0200
-Message-Id: <20230608224943.3877-15-quintela@redhat.com>
+Subject: [PATCH 15/42] migration-test: migrate_postcopy_prepare() always
+ return 0
+Date: Fri,  9 Jun 2023 00:49:16 +0200
+Message-Id: <20230608224943.3877-16-quintela@redhat.com>
 In-Reply-To: <20230608224943.3877-1-quintela@redhat.com>
 References: <20230608224943.3877-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -83,125 +84,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So make it return void instead and adjust all callers.
+So make it return void.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- tests/qtest/migration-test.c | 38 ++++++++++--------------------------
- 1 file changed, 10 insertions(+), 28 deletions(-)
+ tests/qtest/migration-test.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 5837060138..b57811da75 100644
+index b57811da75..e623c43957 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -629,8 +629,8 @@ typedef struct {
-     bool postcopy_preempt;
- } MigrateCommon;
+@@ -1146,9 +1146,9 @@ test_migrate_compress_nowait_start(QTestState *from,
+     return NULL;
+ }
  
--static int test_migrate_start(QTestState **from, QTestState **to,
--                              const char *uri, MigrateStart *args)
-+static void test_migrate_start(QTestState **from, QTestState **to,
-+                               const char *uri, MigrateStart *args)
+-static int migrate_postcopy_prepare(QTestState **from_ptr,
+-                                    QTestState **to_ptr,
+-                                    MigrateCommon *args)
++static void migrate_postcopy_prepare(QTestState **from_ptr,
++                                     QTestState **to_ptr,
++                                     MigrateCommon *args)
  {
-     g_autofree gchar *arch_source = NULL;
-     g_autofree gchar *arch_target = NULL;
-@@ -745,8 +745,6 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     if (args->use_shmem) {
-         unlink(shmem_path);
-     }
+     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+     QTestState *from, *to;
+@@ -1179,8 +1179,6 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
+ 
+     *from_ptr = from;
+     *to_ptr = to;
 -
 -    return 0;
  }
  
- static void test_migrate_end(QTestState *from, QTestState *to, bool test_dest)
-@@ -1155,9 +1153,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+ static void migrate_postcopy_complete(QTestState *from, QTestState *to,
+@@ -1207,9 +1205,7 @@ static void test_postcopy_common(MigrateCommon *args)
+ {
      QTestState *from, *to;
  
--    if (test_migrate_start(&from, &to, uri, &args->start)) {
--        return -1;
--    }
-+    test_migrate_start(&from, &to, uri, &args->start);
- 
-     if (args->start_hook) {
-         args->postcopy_data = args->start_hook(from, to);
-@@ -1387,9 +1383,7 @@ static void test_baddest(void)
-     };
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
+-    if (migrate_postcopy_prepare(&from, &to, args)) {
 -        return;
 -    }
-+    test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args);
-     migrate_qmp(from, "tcp:127.0.0.1:0", "{}");
-     wait_for_migration_fail(from, false);
-     test_migrate_end(from, to, false);
-@@ -1400,9 +1394,7 @@ static void test_precopy_common(MigrateCommon *args)
-     QTestState *from, *to;
-     void *data_hook = NULL;
++    migrate_postcopy_prepare(&from, &to, args);
+     migrate_postcopy_start(from, to);
+     migrate_postcopy_complete(from, to, args);
+ }
+@@ -1270,9 +1266,7 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
+     /* Always hide errors for postcopy recover tests since they're expected */
+     args->start.hide_stderr = true;
  
--    if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
+-    if (migrate_postcopy_prepare(&from, &to, args)) {
 -        return;
 -    }
-+    test_migrate_start(&from, &to, args->listen_uri, &args->start);
++    migrate_postcopy_prepare(&from, &to, args);
  
-     if (args->start_hook) {
-         data_hook = args->start_hook(from, to);
-@@ -1592,9 +1584,7 @@ static void test_ignore_shared(void)
-         .use_shmem = true
-     };
- 
--    if (test_migrate_start(&from, &to, uri, &args)) {
--        return;
--    }
-+    test_migrate_start(&from, &to, uri, &args);
- 
-     migrate_set_capability(from, "x-ignore-shared", true);
-     migrate_set_capability(to, "x-ignore-shared", true);
-@@ -1893,9 +1883,7 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-     QTestState *from, *to;
- 
--    if (test_migrate_start(&from, &to, uri, args)) {
--        return;
--    }
-+    test_migrate_start(&from, &to, uri, args);
- 
-     /*
-      * UUID validation is at the begin of migration. So, the main process of
-@@ -1990,9 +1978,7 @@ static void test_migrate_auto_converge(void)
-      */
-     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
- 
--    if (test_migrate_start(&from, &to, uri, &args)) {
--        return;
--    }
-+    test_migrate_start(&from, &to, uri, &args);
- 
-     migrate_set_capability(from, "auto-converge", true);
-     migrate_set_parameter_int(from, "cpu-throttle-initial", init_pct);
-@@ -2302,9 +2288,7 @@ static void test_multifd_tcp_cancel(void)
-     QTestState *from, *to, *to2;
-     g_autofree char *uri = NULL;
- 
--    if (test_migrate_start(&from, &to, "defer", &args)) {
--        return;
--    }
-+    test_migrate_start(&from, &to, "defer", &args);
- 
-     migrate_ensure_non_converge(from);
- 
-@@ -2337,9 +2321,7 @@ static void test_multifd_tcp_cancel(void)
-         .only_target = true,
-     };
- 
--    if (test_migrate_start(&from, &to2, "defer", &args)) {
--        return;
--    }
-+    test_migrate_start(&from, &to2, "defer", &args);
- 
-     migrate_set_parameter_int(to2, "multifd-channels", 16);
- 
+     /* Turn postcopy speed down, 4K/s is slow enough on any machines */
+     migrate_set_parameter_int(from, "max-postcopy-bandwidth", 4096);
 -- 
 2.40.1
 
