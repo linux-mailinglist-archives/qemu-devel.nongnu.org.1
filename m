@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D230727A0B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 10:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979F3727A32
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 10:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7B5s-0002Lk-Af; Thu, 08 Jun 2023 04:34:08 -0400
+	id 1q7BCe-0003qZ-7l; Thu, 08 Jun 2023 04:41:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q7B5m-0002LW-S6
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 04:34:02 -0400
+ id 1q7BCb-0003qP-Fl
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 04:41:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q7B5g-0004CV-OU
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 04:34:01 -0400
+ id 1q7BCZ-0005yD-PI
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 04:41:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686213236;
+ s=mimecast20190719; t=1686213662;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rTrnvPrv+I8mNCUMGk8lpFLZyXGR3A3OPevN/XzQnIM=;
- b=bKrLHlgCXFgr+UmY8ajWrrBYjm2/hlBRVJ5TOhUROzay2a9HyXu+3klqLv3FpK17u2Z8NG
- vbrlXQlFBkmkQ2lgSJjRfTzHAHrjge71ZXM4wZPAiuF+D47ZqT+jguVtNsJ6cv1kXL/s9X
- vVrzhFQ3brYEp3k6UMDFL9SeV542xNE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=207WCJxsiMVhadsl1Xs1hFvc7tXR727IwCou2dKzeCQ=;
+ b=LTnRiz4K+kDnbmHVL1W8U0uUemvrjgE1hpDaIlMcDzD2P11AC9lq2ECZ0keQZ8O2vH/27+
+ MwncKZC+MQDUa/eTyGbp/YOWqweakAeBcpYmSniHT9k4KLJU/XhdgpzD/NRiHSjeLaCeK8
+ CgU5nmRhycRRfLnq3F3Gblb9DWqhGsI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-v1wX6s90ONaVsrLnN-uDRw-1; Thu, 08 Jun 2023 04:33:54 -0400
-X-MC-Unique: v1wX6s90ONaVsrLnN-uDRw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-977d4b0d9e3so39089066b.0
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 01:33:54 -0700 (PDT)
+ us-mta-121-3_Ryw5hNM_eFUZ2xnhm8Pw-1; Thu, 08 Jun 2023 04:41:00 -0400
+X-MC-Unique: 3_Ryw5hNM_eFUZ2xnhm8Pw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-94a348facbbso56037766b.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 01:41:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686213233; x=1688805233;
+ d=1e100.net; s=20221208; t=1686213659; x=1688805659;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rTrnvPrv+I8mNCUMGk8lpFLZyXGR3A3OPevN/XzQnIM=;
- b=OLLyGpG1Os0XQq2nk7JSNStlwr5d1ug0E/fI0M4rrlOzDBwW1YY66m5f70Op0IpHB+
- hlS5NlIfNx6UrY33zIw3THbPpXdg+9LD7CEmabzhMyzRoINzQnz/53kKswj88NbEVGHq
- mLrfXkHsAr4FNHJ3eroO6JqqohXJ9lzk6xO/ZEG89AeN9bch5RlX0CGT3XMDym7Y1OuT
- KV300yUsyHouflXVOfaaxD9xkzzXibVSsLFuaY9XhNWaAAPIVWPzl3cmHnazQ8sW7CvP
- +sjUc5khSOoM66o+yF/lA2g1eqlx0rQFV8DhNEHMR7NMynlVt6fViZV9W01bCMpuAB7s
- wXHw==
-X-Gm-Message-State: AC+VfDz+hB6rl4rwsuZrNE6cp6qurCARpGZt6/RA9dkaEJXCyHfK2/f8
- DpMEn8mAahU/haQboJbNTcl2cHmST90fAZdc6PYdktJiYaQ6RLTwtmvT8nLiLhp9KzgdEbnL7M6
- DyW+VweOt/XJG4J0=
-X-Received: by 2002:a17:906:6a28:b0:973:92d4:9f4e with SMTP id
- qw40-20020a1709066a2800b0097392d49f4emr9226299ejc.53.1686213233613; 
- Thu, 08 Jun 2023 01:33:53 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5u4KsttfCF9O+LzyOuqjkKaVdgfZTXjJLoyueHleoEtq5l4zgqKwz/PdOcpj2Ssxs7fP+bSQ==
-X-Received: by 2002:a17:906:6a28:b0:973:92d4:9f4e with SMTP id
- qw40-20020a1709066a2800b0097392d49f4emr9226279ejc.53.1686213233335; 
- Thu, 08 Jun 2023 01:33:53 -0700 (PDT)
+ bh=207WCJxsiMVhadsl1Xs1hFvc7tXR727IwCou2dKzeCQ=;
+ b=J9Ybf6jfUfNNIWyc9Y6osKrM00T0Kk1x9RwbkSW8yBWItaJkFajVc4XQkoe89q1ZTu
+ NXeAJa8ILrP4pRA4PAa90IYU0bNEAXNww8AAISgU1sH2ihYbVtgyfppfEXRc80o3IKXI
+ 6Y3fJq6u/HyUAC3GXve6u8fe4ewKCBhxL4WiY2uQfpmNVnRHr683UN/aDd+0K/gUHEUb
+ gTHxelMPaWH62VN4/12pBLV8N10D/K0K1x8WLHKhx3jGIfKEOn4oC4EJw0+8P0Ov/Ypf
+ T8caTz5BZGtIcv/fu7OzOpPzonHFyJf31k4R344z2AsvG/Je/2CuDSLftGzvQIp+QgMM
+ LF5g==
+X-Gm-Message-State: AC+VfDxA0iGJW1Q+9JnExqCeHooP3Wep3EetQLKTGaaYeh0Jgij3OnuU
+ L6lumXe8EG4OEKmBn1b4VaUY6ytQJAMbFUkwjfA3Je6aRAsWkXvaJ1LKbLiOBeMCPvth+sv1tA8
+ zFiVapO0T4l/PzWg=
+X-Received: by 2002:a17:907:3f9a:b0:974:1e85:6a69 with SMTP id
+ hr26-20020a1709073f9a00b009741e856a69mr9345220ejc.16.1686213659541; 
+ Thu, 08 Jun 2023 01:40:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5auG2hP4MejL/TxilOgQl6D9TBbEJoCjarIoQpGezi9K6rFXyLb/xBVtoOBStHzLY0nrYtTw==
+X-Received: by 2002:a17:907:3f9a:b0:974:1e85:6a69 with SMTP id
+ hr26-20020a1709073f9a00b009741e856a69mr9345207ejc.16.1686213659265; 
+ Thu, 08 Jun 2023 01:40:59 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- i12-20020a17090639cc00b0096f71ace804sm388052eje.99.2023.06.08.01.33.52
+ z18-20020a170906945200b00978874d1083sm391463ejx.135.2023.06.08.01.40.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 01:33:52 -0700 (PDT)
-Date: Thu, 8 Jun 2023 10:33:51 +0200
+ Thu, 08 Jun 2023 01:40:58 -0700 (PDT)
+Date: Thu, 8 Jun 2023 10:40:57 +0200
 From: Igor Mammedov <imammedo@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] hw/acpi: Fix PM control register access
-Message-ID: <20230608103351.76371cae@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230607200125.A9988746377@zero.eik.bme.hu>
-References: <20230607200125.A9988746377@zero.eik.bme.hu>
+To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>,
+ <richard.henderson@linaro.org>, <eduardo@habkost.net>, <mst@redhat.com>,
+ <marcel.apfelbaum@gmail.com>, <berrange@redhat.com>, <jusual@redhat.com>,
+ <dfaggioli@suse.com>, <joao.m.martins@oracle.com>, <jon.grimm@amd.com>,
+ <santosh.Shukla@amd.com>
+Subject: Re: [PATCH v6 1/2] hw/i386/pc: Default to use SMBIOS 3.0 for newer
+ machine models
+Message-ID: <20230608104057.4c0ac74b@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230607205717.737749-2-suravee.suthikulpanit@amd.com>
+References: <20230607205717.737749-1-suravee.suthikulpanit@amd.com>
+ <20230607205717.737749-2-suravee.suthikulpanit@amd.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -83,8 +88,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,99 +105,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed,  7 Jun 2023 22:01:25 +0200 (CEST)
-BALATON Zoltan <balaton@eik.bme.hu> wrote:
+On Wed, 7 Jun 2023 15:57:16 -0500
+Suravee Suthikulpanit <suravee.suthikulpanit@amd.com> wrote:
 
-> On pegasos2 which has ACPI as part of VT8231 south bridge the board
-> firmware writes PM control register by accessing the second byte so
-> addr will be 1. This wasn't handled correctly and the write went to
-> addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
-> only once and does not take addr into account and handle non-zero
-> address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
-> pegasos2 firmware.
+> Currently, pc-q35 and pc-i44fx machine models are default to use SMBIOS 2.8
+> (32-bit entry point). Since SMBIOS 3.0 (64-bit entry point) is now fully
+> supported since QEMU 7.0, default to use SMBIOS 3.0 for newer machine
+> models. This is necessary to avoid the following message when launching
+> a VM with large number of vcpus.
 > 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>    "SMBIOS 2.1 table length 66822 exceeds 65535"
+> 
+> Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+
+Looks good to me (see comment below for extra cleanup possibility):
 
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
 > ---
->  hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
->  1 file changed, 26 insertions(+), 26 deletions(-)
+>  hw/i386/pc.c         | 4 +++-
+>  hw/i386/pc_piix.c    | 5 +++++
+>  hw/i386/pc_q35.c     | 5 +++++
+>  include/hw/i386/pc.h | 1 +
+>  4 files changed, 14 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
-> index 6da275c599..00b1e79a30 100644
-> --- a/hw/acpi/core.c
-> +++ b/hw/acpi/core.c
-> @@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
->  }
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index bb62c994fa..33ffb03a32 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1853,6 +1853,7 @@ static void pc_machine_set_max_fw_size(Object *obj, Visitor *v,
+>  static void pc_machine_initfn(Object *obj)
+>  {
+>      PCMachineState *pcms = PC_MACHINE(obj);
+> +    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+
+since you introduce this local,
+I suggest you to post an extra clean up patch on top of this series
+
+here is a line to cleanup with 'pcmc'
+
+    /* acpi build is enabled by default if machine supports it */                
+    pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;  
+
 >  
->  /* ACPI PM1aCNT */
-> -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
-> -{
-> -    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
-> -
-> -    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> -        /* change suspend type */
-> -        uint16_t sus_typ = (val >> 10) & 7;
-> -        switch (sus_typ) {
-> -        case 0: /* soft power off */
-> -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> -            break;
-> -        case 1:
-> -            qemu_system_suspend_request();
-> -            break;
-> -        default:
-> -            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
-> -                qapi_event_send_suspend_disk();
-> -                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> -            }
-> -            break;
-> -        }
-> -    }
-> -}
-> -
->  void acpi_pm1_cnt_update(ACPIREGS *ar,
->                           bool sci_enable, bool sci_disable)
->  {
-> @@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
->  static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
->  {
->      ACPIREGS *ar = opaque;
-> -    return ar->pm1.cnt.cnt;
-> +    return ar->pm1.cnt.cnt >> addr * 8;
->  }
+>  #ifdef CONFIG_VMPORT
+>      pcms->vmport = ON_OFF_AUTO_AUTO;
+> @@ -1860,7 +1861,7 @@ static void pc_machine_initfn(Object *obj)
+>      pcms->vmport = ON_OFF_AUTO_OFF;
+>  #endif /* CONFIG_VMPORT */
+>      pcms->max_ram_below_4g = 0; /* use default */
+> -    pcms->smbios_entry_point_type = SMBIOS_ENTRY_POINT_TYPE_32;
+> +    pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
 >  
->  static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
->                                unsigned width)
+>      /* acpi build is enabled by default if machine supports it */
+>      pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;
+> @@ -1980,6 +1981,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+>      mc->nvdimm_supported = true;
+>      mc->smp_props.dies_supported = true;
+>      mc->default_ram_id = "pc.ram";
+> +    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
+>  
+>      object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
+>          pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index d5b0dcd1fe..49462b0e29 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -476,11 +476,16 @@ DEFINE_I440FX_MACHINE(v8_1, "pc-i440fx-8.1", NULL,
+>  
+>  static void pc_i440fx_8_0_machine_options(MachineClass *m)
 >  {
-> -    acpi_pm1_cnt_write(opaque, val);
-> +    ACPIREGS *ar = opaque;
+> +    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
 > +
-> +    if (addr == 1) {
-> +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
-> +    }
-> +    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+>      pc_i440fx_8_1_machine_options(m);
+>      m->alias = NULL;
+>      m->is_default = false;
+>      compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
+>      compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
 > +
-> +    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> +        /* change suspend type */
-> +        uint16_t sus_typ = (val >> 10) & 7;
-> +        switch (sus_typ) {
-> +        case 0: /* soft power off */
-> +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> +            break;
-> +        case 1:
-> +            qemu_system_suspend_request();
-> +            break;
-> +        default:
-> +            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
-> +                qapi_event_send_suspend_disk();
-> +                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> +            }
-> +            break;
-> +        }
-> +    }
+> +    /* For pc-i44fx-8.0 and older, use SMBIOS 2.8 by default */
+> +    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
 >  }
 >  
->  static const MemoryRegionOps acpi_pm_cnt_ops = {
+>  DEFINE_I440FX_MACHINE(v8_0, "pc-i440fx-8.0", NULL,
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 6155427e48..6b9fd4d537 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -387,10 +387,15 @@ DEFINE_Q35_MACHINE(v8_1, "pc-q35-8.1", NULL,
+>  
+>  static void pc_q35_8_0_machine_options(MachineClass *m)
+>  {
+> +    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+> +
+>      pc_q35_8_1_machine_options(m);
+>      m->alias = NULL;
+>      compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
+>      compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
+> +
+> +    /* For pc-q35-8.0 and older, use SMBIOS 2.8 by default */
+> +    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
+>  }
+>  
+>  DEFINE_Q35_MACHINE(v8_0, "pc-q35-8.0", NULL,
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index c661e9cc80..6eec0fc51d 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -110,6 +110,7 @@ struct PCMachineClass {
+>      bool smbios_defaults;
+>      bool smbios_legacy_mode;
+>      bool smbios_uuid_encoded;
+> +    SmbiosEntryPointType default_smbios_ep_type;
+>  
+>      /* RAM / address space compat: */
+>      bool gigabyte_align;
 
 
