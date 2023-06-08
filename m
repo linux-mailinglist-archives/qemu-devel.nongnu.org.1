@@ -2,61 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2950A7286C0
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 19:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA207286E2
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 20:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7JtK-0008UH-Pd; Thu, 08 Jun 2023 13:57:46 -0400
+	id 1q7K0m-0002Ht-1a; Thu, 08 Jun 2023 14:05:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1q7JtJ-0008Tk-7A
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 13:57:45 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q7K0j-0002Hj-PX
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 14:05:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1q7JtH-0000dX-I5
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 13:57:44 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q7K0d-0002Gn-El
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 14:05:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686247061;
+ s=mimecast20190719; t=1686247517;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type;
- bh=4mJL0p+dXYtHUNHX84VZGaRjD5xRWpy6/Fuia8VRXOk=;
- b=DEdsakNUtQDWn/R5zHarFUgP0kQsrpk47s8Gniiz5Rp/8Mhyt/t0xLsELKgIzw1bE/BpGV
- mvnJs2JeyUrxVA2W8DTVwz97k7gmslaEBcOhRH96jNFwMVObhOEbgwHu6ezNIInr0uyiqV
- jK3dJIc66lLKBxu5/I2/d8oa6WtKHp4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=49u8wm8tMHo5Md5v6dAbkMDqEosMCEYTdPd7IjWOLKo=;
+ b=XzR+lDpR0IEPIKNcZ1v/YbBvnXKPgYTyzeuErQONsjXDTVpT7K+p/ElpxsxI7JFybPC1h6
+ CCBtAZrjrfhzZ6Iwk1l9ePGLGS9FpouToeMJwXfDNc8aJpRudRx+JPI1bdLo+Zrt0sUY6i
+ MhW57XpIaqSWiZSKqfUujpxOmtkMVdk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-208-c-m8oDkwM76BAJomyXGwEA-1; Thu, 08 Jun 2023 13:57:39 -0400
-X-MC-Unique: c-m8oDkwM76BAJomyXGwEA-1
+ us-mta-224-OYVSfApHONyJurW3UvjW9Q-1; Thu, 08 Jun 2023 14:05:15 -0400
+X-MC-Unique: OYVSfApHONyJurW3UvjW9Q-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9DCD83C0C89F
- for <qemu-devel@nongnu.org>; Thu,  8 Jun 2023 17:57:39 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 62C662026D49
- for <qemu-devel@nongnu.org>; Thu,  8 Jun 2023 17:57:39 +0000 (UTC)
-Date: Thu, 8 Jun 2023 18:57:38 +0100
-From: "Richard W.M. Jones" <rjones@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8021585A5AA
+ for <qemu-devel@nongnu.org>; Thu,  8 Jun 2023 18:05:15 +0000 (UTC)
+Received: from omen.home.shazbot.org (unknown [10.22.33.254])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2DF5E2026D49;
+ Thu,  8 Jun 2023 18:05:15 +0000 (UTC)
+From: Alex Williamson <alex.williamson@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: Collecting information from a hung qemu process
-Message-ID: <20230608175738.GA32610@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	clg@redhat.com
+Subject: [PATCH v2] hw/vfio/pci-quirks: Support alternate offset for GPUDirect
+ Cliques
+Date: Thu,  8 Jun 2023 12:05:07 -0600
+Message-Id: <20230608180507.3229259-1-alex.williamson@redhat.com>
+In-Reply-To: <20230608174211.3227138-1-alex.williamson@redhat.com>
+References: <20230608174211.3227138-1-alex.williamson@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=rjones@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,26 +80,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I filed this bug about recent Linux hanging very rarely when booting
-on recent qemu:
+NVIDIA Turing and newer GPUs implement the MSI-X capability at the offset
+previously reserved for use by hypervisors to implement the GPUDirect
+Cliques capability.  A revised specification provides an alternate
+location.  Add a config space walk to the quirk to check for conflicts,
+allowing us to fall back to the new location or generate an error at the
+quirk setup rather than when the real conflicting capability is added
+should there be no available location.
 
-https://gitlab.com/qemu-project/qemu/-/issues/1696
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+---
+ hw/vfio/pci-quirks.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-As I'm able to reproduce this bug at will (albeit I have to wait for
-100s or 1000s of iterations of the test), I am able to observe the
-qemu process after it hangs.  Is there any information which is useful
-to collect from the hung qemu, such as stack traces, etc?
-
-I know how to collect a stack trace, but if there's other information
-please give me a guide about how to collect that.
-
-Rich.
-
+diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+index f0147a050aaa..0ed2fcd53152 100644
+--- a/hw/vfio/pci-quirks.c
++++ b/hw/vfio/pci-quirks.c
+@@ -1490,6 +1490,9 @@ void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev)
+  * +---------------------------------+---------------------------------+
+  *
+  * https://lists.gnu.org/archive/html/qemu-devel/2017-08/pdfUda5iEpgOS.pdf
++ *
++ * Specification for Turning and later GPU architectures:
++ * https://lists.gnu.org/archive/html/qemu-devel/2023-06/pdf142OR4O4c2.pdf
+  */
+ static void get_nv_gpudirect_clique_id(Object *obj, Visitor *v,
+                                        const char *name, void *opaque,
+@@ -1530,7 +1533,9 @@ const PropertyInfo qdev_prop_nv_gpudirect_clique = {
+ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+ {
+     PCIDevice *pdev = &vdev->pdev;
+-    int ret, pos = 0xC8;
++    int ret, pos;
++    bool c8_conflict = false, d4_conflict = false;
++    uint8_t tmp;
+ 
+     if (vdev->nv_gpudirect_clique == 0xFF) {
+         return 0;
+@@ -1547,6 +1552,40 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+         return -EINVAL;
+     }
+ 
++    /*
++     * Per the updated specification above, it's recommended to use offset
++     * D4h for Turing and later GPU architectures due to a conflict of the
++     * MSI-X capability at C8h.  We don't know how to determine the GPU
++     * architecture, instead we walk the capability chain to mark conflicts
++     * and choose one or error based on the result.
++     *
++     * NB. Cap list head in pdev->config is already cleared, read from device.
++     */
++    ret = pread(vdev->vbasedev.fd, &tmp, 1,
++                vdev->config_offset + PCI_CAPABILITY_LIST);
++    if (ret != 1 || !tmp) {
++        error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting cap list");
++        return -EINVAL;
++    }
++
++    do {
++        if (tmp == 0xC8) {
++            c8_conflict = true;
++        } else if (tmp == 0xD4) {
++            d4_conflict = true;
++        }
++        tmp = pdev->config[tmp + PCI_CAP_LIST_NEXT];
++    } while (tmp);
++
++    if (!c8_conflict) {
++        pos = 0xC8;
++    } else if (!d4_conflict) {
++        pos = 0xD4;
++    } else {
++        error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid config space");
++        return -EINVAL;
++    }
++
+     ret = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, 8, errp);
+     if (ret < 0) {
+         error_prepend(errp, "Failed to add NVIDIA GPUDirect cap: ");
 -- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-Fedora Windows cross-compiler. Compile Windows programs, test, and
-build Windows installers. Over 100 libraries supported.
-http://fedoraproject.org/wiki/MinGW
+2.39.2
 
 
