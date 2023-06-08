@@ -2,49 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D56A727B8A
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 11:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676FB727BAE
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 11:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7C2M-0008EV-Kr; Thu, 08 Jun 2023 05:34:34 -0400
+	id 1q7C9z-0001ta-8s; Thu, 08 Jun 2023 05:42:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q7C2K-0008E1-BR; Thu, 08 Jun 2023 05:34:32 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q7C2I-0001Oa-1t; Thu, 08 Jun 2023 05:34:32 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 10A93746377;
- Thu,  8 Jun 2023 11:34:23 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CB286746369; Thu,  8 Jun 2023 11:34:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C9101745720;
- Thu,  8 Jun 2023 11:34:22 +0200 (CEST)
-Date: Thu, 8 Jun 2023 11:34:22 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, Greg Kurz <groug@kaod.org>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH] target/ppc: Implement gathering irq statistics
-In-Reply-To: <a274071c-b2c0-8371-b10d-82a883edef1f@kaod.org>
-Message-ID: <074e4215-2f3d-2292-4f93-2048233fa33a@eik.bme.hu>
-References: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
- <a274071c-b2c0-8371-b10d-82a883edef1f@kaod.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7C9x-0001tQ-H8
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:42:25 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q7C9v-0003JH-Rw
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 05:42:25 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5149e65c218so680298a12.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 02:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686217342; x=1688809342;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=4z91XAPrs91Rq0RO5FmKkOCbRCXzmsSEfDlfnwhGS3I=;
+ b=orHyxY5sW+7bMHtEswKdcL/fCfKgVUX6dFy/3pgnN1MsLdtr0EZBtAYFS6MPF5BfPZ
+ k4zsYzWsWcUOyYNGuJChdV0f/VH5r8/PTdM6akASfODDKjuoZK/XWXowuz5+zZzfK0Q5
+ 5mUHn0Oml0fXiBz7yGy8Y9csF13bp8ohSPA151fAQ2fQFs6R1taKcrgQPfOMg5A0TLoA
+ ksjHMXgCfDBiC2qtEnvmiJLHOjJJEL5Pl4+YKcrl9BskrAa3vPuJOZWkaCQlf6wU/1uw
+ HeIYFkqEZvBsdpGDhUrXrC9tzCcFYJsVnz/f8pUuhX8KdfjVfSVMOdRN0WeXFVd5F2+z
+ Tkmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686217342; x=1688809342;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4z91XAPrs91Rq0RO5FmKkOCbRCXzmsSEfDlfnwhGS3I=;
+ b=lD0O2C1SAa1TP4L0bxooP0zsUsPEozFESSSPAzNLC6cmFXv/rKLhzEzRS1WU9W1CJp
+ 3vS9njQJIBO5XyjiKlwdeCWwQ2KSI4F9ytd//U8QaK0Z7iCFf+I3JOWvxB/pg0EbK9oc
+ rkojNviBrKTqEOlOmA7pEi7t7pEm1fh7d2jYGBDM8LEfqS8fV9usPYq3sJgCdWmicOfz
+ OJnOzzqn5zRHGafbtXiQ68wQggJ2IUaL7kzezWVk4/M4kcIjSmmpjkWyIMmsTSH+f6r3
+ kAwg3eVCEzOrIKgIHKKo+AVbBZBXEZcJyCId6AvuL3qKyQ0n/t829RahraSq2r753zyG
+ aSjw==
+X-Gm-Message-State: AC+VfDwBJuYXn6VNDZ2BzkG7/V8opU6C9PtinBm0MoNU2qdp8Ch8MJUg
+ HH5WUKO2Ij5zauzu2X1yEAGYhKc5YQvIT6JDkUzt7w==
+X-Google-Smtp-Source: ACHHUZ5IdBr1a/lBkLgNgufQPT6wG41WUCIhFmKKhYcqP/ZXZAu4U/LK7c2Mg2XulV0yr74z38idgS4tvk+8N5IVuAY=
+X-Received: by 2002:aa7:d697:0:b0:510:8ee2:2b05 with SMTP id
+ d23-20020aa7d697000000b005108ee22b05mr6129039edr.38.1686217342003; Thu, 08
+ Jun 2023 02:42:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1358146602-1686216862=:35520"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230530212259.7111-1-vikram.garhwal@amd.com>
+In-Reply-To: <20230530212259.7111-1-vikram.garhwal@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 Jun 2023 10:42:11 +0100
+Message-ID: <CAFEAcA9nPRghOXb6vc6eQ_4iGFW3J8z2XyZzgv8BNb1RpBO+wg@mail.gmail.com>
+Subject: Re: [QEMU][PATCH v6 4/4] tests/qtest: Introduce tests for Xilinx
+ VERSAL CANFD controller
+To: Vikram Garhwal <vikram.garhwal@amd.com>
+Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,117 +88,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-1358146602-1686216862=:35520
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Thu, 8 Jun 2023, Cédric Le Goater wrote:
-> On 6/7/23 00:02, BALATON Zoltan wrote:
->> Count exceptions which can be queried with info irq monitor command.
+On Tue, 30 May 2023 at 22:23, Vikram Garhwal <vikram.garhwal@amd.com> wrote:
 >
-> I don't think the TYPE_INTERRUPT_STATS_PROVIDER interface was designed
-> for CPUs. It is more suitable for interrupt controllers.
-
-True but:
-- It works and provides useful statistics
-- At least older PPC CPUs have embedded interrupt controller as the 
-comment in cpu.h shows
-
-so is this just a comment, question or you want something changed in this 
-patch?
-
-Regards,
-BALATON Zoltan
-
-> C.
+> The QTests perform three tests on the Xilinx VERSAL CANFD controller:
+>     Tests the CANFD controllers in loopback.
+>     Tests the CANFD controllers in normal mode with CAN frame.
+>     Tests the CANFD controllers in normal mode with CANFD frame.
 >
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   target/ppc/cpu.h         |  1 +
->>   target/ppc/cpu_init.c    | 18 ++++++++++++++++++
->>   target/ppc/excp_helper.c |  1 +
->>   3 files changed, 20 insertions(+)
->> 
->> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
->> index c7c2a5534c..d3a9197e02 100644
->> --- a/target/ppc/cpu.h
->> +++ b/target/ppc/cpu.h
->> @@ -1194,6 +1194,7 @@ struct CPUArchState {
->>       int error_code;
->>       uint32_t pending_interrupts;
->>   #if !defined(CONFIG_USER_ONLY)
->> +    uint64_t excp_stats[POWERPC_EXCP_NB];
->>       /*
->>        * This is the IRQ controller, which is implementation dependent and 
->> only
->>        * relevant when emulating a complete machine. Note that this isn't 
->> used
->> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
->> index 05bf73296b..716f2b5d64 100644
->> --- a/target/ppc/cpu_init.c
->> +++ b/target/ppc/cpu_init.c
->> @@ -48,6 +48,7 @@
->>     #ifndef CONFIG_USER_ONLY
->>   #include "hw/boards.h"
->> +#include "hw/intc/intc.h"
->>   #endif
->>     /* #define PPC_DEBUG_SPR */
->> @@ -7123,6 +7124,16 @@ static bool ppc_cpu_is_big_endian(CPUState *cs)
->>       return !FIELD_EX64(env->msr, MSR, LE);
->>   }
->>   +static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
->> +                              uint64_t **irq_counts, unsigned int 
->> *nb_irqs)
->> +{
->> +    CPUPPCState *env = &POWERPC_CPU(obj)->env;
->> +
->> +    *irq_counts = env->excp_stats;
->> +    *nb_irqs = ARRAY_SIZE(env->excp_stats);
->> +    return true;
->> +}
->> +
->>   #ifdef CONFIG_TCG
->>   static void ppc_cpu_exec_enter(CPUState *cs)
->>   {
->> @@ -7286,6 +7297,7 @@ static void ppc_cpu_class_init(ObjectClass *oc, void 
->> *data)
->>       cc->gdb_write_register = ppc_cpu_gdb_write_register;
->>   #ifndef CONFIG_USER_ONLY
->>       cc->sysemu_ops = &ppc_sysemu_ops;
->> +    INTERRUPT_STATS_PROVIDER_CLASS(oc)->get_statistics = 
->> ppc_get_irq_stats;
->>   #endif
->>         cc->gdb_num_core_regs = 71;
->> @@ -7323,6 +7335,12 @@ static const TypeInfo ppc_cpu_type_info = {
->>       .abstract = true,
->>       .class_size = sizeof(PowerPCCPUClass),
->>       .class_init = ppc_cpu_class_init,
->> +#ifndef CONFIG_USER_ONLY
->> +    .interfaces = (InterfaceInfo[]) {
->> +          { TYPE_INTERRUPT_STATS_PROVIDER },
->> +          { }
->> +    },
->> +#endif
->>   };
->>     #ifndef CONFIG_USER_ONLY
->> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
->> index fea9221501..5480d9d2c7 100644
->> --- a/target/ppc/excp_helper.c
->> +++ b/target/ppc/excp_helper.c
->> @@ -1652,6 +1652,7 @@ static void powerpc_excp(PowerPCCPU *cpu, int excp)
->>       qemu_log_mask(CPU_LOG_INT, "Raise exception at " TARGET_FMT_lx
->>                     " => %s (%d) error=%02x\n", env->nip, 
->> powerpc_excp_name(excp),
->>                     excp, env->error_code);
->> +    env->excp_stats[excp]++;
->>         switch (env->excp_model) {
->>       case POWERPC_EXCP_40x:
->
->
->
---3866299591-1358146602-1686216862=:35520--
+> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+> Acked-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+Hi; Coverity has spotted some issues with this test code; could
+you investigate and send followup patches, please ?
+
+
+> +static void match_rx_tx_data(const uint32_t *buf_tx, const uint32_t *buf_rx,
+> +                             bool is_canfd_frame)
+> +{
+> +    uint16_t size = 0;
+> +    uint8_t len = CAN_FRAME_SIZE;
+> +
+> +    if (is_canfd_frame) {
+> +        len = CANFD_FRAME_SIZE;
+> +    }
+
+Here len is either 4 (if !is_canfd_frame) or 18 (if is_canfd_frame)...
+
+> +
+> +    while (size < len) {
+
+...and we loop with size always less than len...
+
+> +        if (R_RX0_ID_OFFSET + 4 * size == R_RX0_DLC_OFFSET)  {
+> +            g_assert_cmpint((buf_rx[size] & DLC_FD_BIT_MASK), ==,
+> +                            (buf_tx[size] & DLC_FD_BIT_MASK));
+> +        } else {
+> +            if (!is_canfd_frame && size == 4) {
+
+...so here this condition can never be true: if !is_canfd_frame
+then we know size is less than 4.
+
+What was the intention here ?
+
+(CID 1512900)
+
+> +                break;
+> +            }
+> +
+> +            g_assert_cmpint(buf_rx[size], ==, buf_tx[size]);
+> +        }
+> +
+> +        size++;
+> +    }
+> +}
+> +/*
+> + * Xilinx CANFD supports both CAN and CANFD frames. This test will be
+> + * transferring CAN frame i.e. 8 bytes of data from CANFD0 and CANFD1 through
+> + * canbus. CANFD0 initiate the data transfer to can-bus, CANFD1 receives the
+> + * data. Test compares the can frame data sent from CANFD0 and received on
+> + * CANFD1.
+> + */
+> +static void test_can_data_transfer(void)
+> +{
+> +    uint32_t buf_tx[CAN_FRAME_SIZE] = { 0x5a5bb9a4, 0x80000000,
+> +                                        0x12345678, 0x87654321 };
+> +    uint32_t buf_rx[CAN_FRAME_SIZE] = { 0x00, 0x00, 0x00, 0x00 };
+
+The buf_rx[] array here is only 4 bytes long...
+
+> +    uint32_t status = 0;
+> +
+> +    generate_random_data(buf_tx, false);
+> +
+> +    QTestState *qts = qtest_init("-machine xlnx-versal-virt"
+> +                " -object can-bus,id=canbus"
+> +                " -machine canbus0=canbus"
+> +                " -machine canbus1=canbus"
+> +                );
+> +
+> +    configure_canfd(qts, MSR_NORMAL_MODE);
+> +
+> +    /* Check if CANFD0 and CANFD1 are in Normal mode. */
+> +    status = qtest_readl(qts, CANFD0_BASE_ADDR + R_SR_OFFSET);
+> +    status = status & STATUS_REG_MASK;
+> +    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
+> +
+> +    status = qtest_readl(qts, CANFD1_BASE_ADDR + R_SR_OFFSET);
+> +    status = status & STATUS_REG_MASK;
+> +    g_assert_cmpint(status, ==, STATUS_NORMAL_MODE);
+> +
+> +    write_data(qts, CANFD0_BASE_ADDR, buf_tx, false);
+> +
+> +    send_data(qts, CANFD0_BASE_ADDR);
+> +    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
+
+...but read_data() will write up to 17 bytes of data to the buffer,
+if the incoming data from the device claims it to be a canfd frame.
+The device shouldn't really do that, but the point of a test is
+that the device might not be functioning correctly, so we should
+size buf_rx[] large enough to fit whatever read_data() writes to it.
+
+(CID 1512899)
+
+> +    match_rx_tx_data(buf_tx, buf_rx, false);
+> +
+> +    qtest_quit(qts);
+> +}
+
+thanks
+-- PMM
 
