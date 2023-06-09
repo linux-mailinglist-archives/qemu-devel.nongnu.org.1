@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0D0728DF8
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 04:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C646728DF6
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 04:30:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7RpK-0006Ye-Ps; Thu, 08 Jun 2023 22:26:10 -0400
+	id 1q7RpV-0007ve-Cn; Thu, 08 Jun 2023 22:26:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7Rod-0003lZ-6s
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:25:27 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1q7Roh-00047e-4M
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:25:31 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7Rnp-0005os-ME
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:25:26 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-65131e85be4so1326564b3a.1
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 19:24:36 -0700 (PDT)
+ id 1q7Rnr-0005pX-AV
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:25:30 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6563ccf5151so1361808b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 19:24:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686277476; x=1688869476;
+ d=linaro.org; s=google; t=1686277477; x=1688869477;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qGYhm+c+tUnjVrf/DJrmcZwZlQ1qyCVFhkVCduCzuuY=;
- b=xsE/SrQDJQpszwI/XV9bgk0izK4Ys4imEwnowJBwwD5uz2IGxMOfLQRRo1RLjJ1dFi
- TFtx20ZgCmHqWItJsBWXub0ZElc8wCiAMcvGc7NvfX4aOWAOjf/ptg7tJGGKnanwOIaK
- aLBca4pbkpWcaTfBC04NNnLg5d4meBIVhMAoCFXjm7U4qWryvcH6L56lhPKbENL+IX6x
- HFsoqxGLCcCB7t/6OELCBvu5HrA8DHozW7MJmNffAzq6hUAORKBmux/kgtYByYffirwa
- 3xeaUdoTO0vm8+fN91gj1juk8U6adm9c4xMH2X3lCtgYUu5+xDbgm+65/N2m45xmvsAY
- IGBw==
+ bh=sPtIUE7c/k8ebTTYu8yGa6+TIEoSCFv5hTgDoXGO8Z0=;
+ b=sEDwI4e9NsnBUdS7KVdZ6SNyZCWg+yG667RBjWexqleyA6wNjkL9/gZ5FnofF3+wAj
+ BOig0tVWwKqEnhSH0iVBAuBnMKjZ9PJbB1yoRfrV5Dk2hWxEoOuODTzRqmD6sDuWwrBp
+ /TkrFpfmoSakFO2VDQK/YBy8Cj4mZrk7XEE7l4yFB2ZoBKHO22YqLuBYtaZmUdyXPj6c
+ YE//dJIPQO6htBel4u29BU/pPB79ofu5Tq8DkDK8DhdxbEyzbi6CQb/lIDiOJlsZQZ5N
+ PKeu4WvB9ononpeIfCUc0ZJv1ozMh0Ldn9RnY84+FP0CZFjvjikxrSCeBQ0i/O012MeC
+ 4nSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686277476; x=1688869476;
+ d=1e100.net; s=20221208; t=1686277477; x=1688869477;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qGYhm+c+tUnjVrf/DJrmcZwZlQ1qyCVFhkVCduCzuuY=;
- b=IyBAqkIzK3WKykBT/OzBTm+4epusGxJR4w3Ofd3HHp824KsXiCSkp19+4ZD7l+m4Ke
- nUFGmSxNOG3A8UH5eiEbVkddInupcqK3ITVQ/6Qx7A3eneCE+++mCrl2YJPY41cWKVYX
- 8Uwpzsm8wsaRwejjNS6TbzKFjZTI8I1tACSiKtNugFXfxYm9Z7OT8/lQnHHLg6xtSRuq
- VXeiCW98JFcRqo8b2Fz4b7E8dsqLuw7TQzK2OmvKa5WRWwmr2CNe3EacgGUD0QopEp5B
- Ds1ZJNYQSdIr4o2LB4vYVBMvlLCZq37kUZS/VVMiYO+wmtt6nuukMeeVWTt2AOTVO0fs
- +hkQ==
-X-Gm-Message-State: AC+VfDxCUVRAai+ski7ybeg7N0E8S3bpMrLi6mU71H1qHWd9ritqgGYo
- OnldtCzUHi1CznXP6Cn72FJonydR0X4pVvIbTFM=
-X-Google-Smtp-Source: ACHHUZ5ItoFklVpYVB1EoLtHyi0k2ZKo7/frEc6ocnShCSzyd5pqVAqXCoY1XVcBUHL6zQbLnOJZMA==
-X-Received: by 2002:a05:6a20:429f:b0:10a:9f55:292b with SMTP id
- o31-20020a056a20429f00b0010a9f55292bmr10310519pzj.57.1686277476064; 
+ bh=sPtIUE7c/k8ebTTYu8yGa6+TIEoSCFv5hTgDoXGO8Z0=;
+ b=ajzXRB7Md9CfvUvEAmhXXnTqnfaIAVYRWOMfpA5EXQcC4bwhniA3vJhXL3L8gsRb3E
+ T8FNlzsp8TIOtfMPm4AuHh7Kg9xBj6RayEn+f0Y/1tC10E0yhI+tJLwyWYemHdN/7r+q
+ FamvoOU4b7Xbml9jZLWVstYN9whooLSvJiwyR3uRjp5cNUCnCH7irGlpNe/t4sP9PWiQ
+ Lujqhh+b0xKEErcbvz1mzetmxd3Xu9BAmFRZZUi4TH4uT48zSpmcW02W3uXkR0DBjaFH
+ N+pSaC/pKiTyQg1EuvyYmtRnOtRgpquEMG6XHPKTI/7o+QiwHWxoR/4rPJkU9Mpa5Glx
+ ahOg==
+X-Gm-Message-State: AC+VfDzqE+kCkVXrdXzt4e3AssH+7Xnn+77LQT/zQWDyw10/46jJ8hkV
+ xN7hIlIYCwBgwWsFrNUUuTcdRqRMV/e1z9FdruU=
+X-Google-Smtp-Source: ACHHUZ5KcXHvLUaUXDLmU2C87tRLjh5lF4bdrszNb5jjecL9F4ujswOHYFhfLAnXOEYGj2eZ7k3hxA==
+X-Received: by 2002:a05:6a00:2d21:b0:652:a91c:5599 with SMTP id
+ fa33-20020a056a002d2100b00652a91c5599mr12637829pfb.24.1686277476881; 
  Thu, 08 Jun 2023 19:24:36 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:b071:df63:5761:f449])
  by smtp.gmail.com with ESMTPSA id
- x25-20020a62fb19000000b0063afb08afeesm1686458pfm.67.2023.06.08.19.24.35
+ x25-20020a62fb19000000b0063afb08afeesm1686458pfm.67.2023.06.08.19.24.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 19:24:35 -0700 (PDT)
+ Thu, 08 Jun 2023 19:24:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ardb@kernel.org, berrange@redhat.com, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-Subject: [PATCH v2 36/38] host/include/i386: Implement aes-round.h
-Date: Thu,  8 Jun 2023 19:23:59 -0700
-Message-Id: <20230609022401.684157-37-richard.henderson@linaro.org>
+Subject: [PATCH v2 37/38] host/include/aarch64: Implement aes-round.h
+Date: Thu,  8 Jun 2023 19:24:00 -0700
+Message-Id: <20230609022401.684157-38-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230609022401.684157-1-richard.henderson@linaro.org>
 References: <20230609022401.684157-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,22 +96,41 @@ Detect AES in cpuinfo; implement the accel hooks.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/i386/host/aes-round.h   | 152 +++++++++++++++++++++++++++
- host/include/i386/host/cpuinfo.h     |   1 +
- host/include/x86_64/host/aes-round.h |   1 +
- util/cpuinfo-i386.c                  |   3 +
- 4 files changed, 157 insertions(+)
- create mode 100644 host/include/i386/host/aes-round.h
- create mode 100644 host/include/x86_64/host/aes-round.h
+ meson.build                           |   9 ++
+ host/include/aarch64/host/aes-round.h | 205 ++++++++++++++++++++++++++
+ host/include/aarch64/host/cpuinfo.h   |   1 +
+ util/cpuinfo-aarch64.c                |   2 +
+ 4 files changed, 217 insertions(+)
+ create mode 100644 host/include/aarch64/host/aes-round.h
 
-diff --git a/host/include/i386/host/aes-round.h b/host/include/i386/host/aes-round.h
+diff --git a/meson.build b/meson.build
+index 34306a6205..d622e54bef 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2665,6 +2665,15 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
+     int main(int argc, char *argv[]) { return bar(argv[0]); }
+   '''), error_message: 'AVX512BW not available').allowed())
+ 
++# For both AArch64 and AArch32, detect if builtins are available.
++config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
++    #include <arm_neon.h>
++    #ifndef __ARM_FEATURE_AES
++    __attribute__((target("+crypto")))
++    #endif
++    void foo(uint8x16_t *p) { *p = vaesmcq_u8(*p); }
++  '''))
++
+ have_pvrdma = get_option('pvrdma') \
+   .require(rdma.found(), error_message: 'PVRDMA requires OpenFabrics libraries') \
+   .require(cc.compiles(gnu_source_prefix + '''
+diff --git a/host/include/aarch64/host/aes-round.h b/host/include/aarch64/host/aes-round.h
 new file mode 100644
-index 0000000000..f9abb7c352
+index 0000000000..6c126c3e89
 --- /dev/null
-+++ b/host/include/i386/host/aes-round.h
-@@ -0,0 +1,152 @@
++++ b/host/include/aarch64/host/aes-round.h
+@@ -0,0 +1,205 @@
 +/*
-+ * x86 specific aes acceleration.
++ * AArch64 specific aes acceleration.
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
@@ -119,37 +138,91 @@ index 0000000000..f9abb7c352
 +#define HOST_AES_ROUND_H
 +
 +#include "host/cpuinfo.h"
-+#include <immintrin.h>
++#include <arm_neon.h>
 +
-+#if defined(__AES__) && defined(__SSSE3__)
++#ifdef __ARM_FEATURE_AES
 +# define HAVE_AES_ACCEL  true
-+# define ATTR_AES_ACCEL
 +#else
 +# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_AES)
-+# define ATTR_AES_ACCEL  __attribute__((target("aes,ssse3")))
++#endif
++#if !defined(__ARM_FEATURE_AES) && defined(CONFIG_ARM_AES_BUILTIN)
++# define ATTR_AES_ACCEL  __attribute__((target("+crypto")))
++#else
++# define ATTR_AES_ACCEL
 +#endif
 +
-+static inline __m128i ATTR_AES_ACCEL
-+aes_accel_bswap(__m128i x)
++static inline uint8x16_t aes_accel_bswap(uint8x16_t x)
 +{
-+    return _mm_shuffle_epi8(x, _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8,
-+                                            9, 10, 11, 12, 13, 14, 15));
++    return vqtbl1q_u8(x, (uint8x16_t){ 15, 14, 13, 12, 11, 10, 9, 8,
++                                        7,  6,  5,  4,  3,  2, 1, 0, });
 +}
++
++#ifdef CONFIG_ARM_AES_BUILTIN
++# define aes_accel_aesd            vaesdq_u8
++# define aes_accel_aese            vaeseq_u8
++# define aes_accel_aesmc           vaesmcq_u8
++# define aes_accel_aesimc          vaesimcq_u8
++# define aes_accel_aesd_imc(S, K)  vaesimcq_u8(vaesdq_u8(S, K))
++# define aes_accel_aese_mc(S, K)   vaesmcq_u8(vaeseq_u8(S, K))
++#else
++static inline uint8x16_t aes_accel_aesd(uint8x16_t d, uint8x16_t k)
++{
++    asm(".arch_extension aes\n\t"
++        "aesd %0.16b, %1.16b" : "+w"(d) : "w"(k));
++    return d;
++}
++
++static inline uint8x16_t aes_accel_aese(uint8x16_t d, uint8x16_t k)
++{
++    asm(".arch_extension aes\n\t"
++        "aese %0.16b, %1.16b" : "+w"(d) : "w"(k));
++    return d;
++}
++
++static inline uint8x16_t aes_accel_aesmc(uint8x16_t d)
++{
++    asm(".arch_extension aes\n\t"
++        "aesmc %0.16b, %1.16b" : "=w"(d) : "w"(d));
++    return d;
++}
++
++static inline uint8x16_t aes_accel_aesimc(uint8x16_t d)
++{
++    asm(".arch_extension aes\n\t"
++        "aesimc %0.16b, %1.16b" : "=w"(d) : "w"(d));
++    return d;
++}
++
++/* Most CPUs fuse AESD+AESIMC in the execution pipeline. */
++static inline uint8x16_t aes_accel_aesd_imc(uint8x16_t d, uint8x16_t k)
++{
++    asm(".arch_extension aes\n\t"
++        "aesd %0.16b, %1.16b\n\t"
++        "aesimc %0.16b, %0.16b" : "+w"(d) : "w"(k));
++    return d;
++}
++
++/* Most CPUs fuse AESE+AESMC in the execution pipeline. */
++static inline uint8x16_t aes_accel_aese_mc(uint8x16_t d, uint8x16_t k)
++{
++    asm(".arch_extension aes\n\t"
++        "aese %0.16b, %1.16b\n\t"
++        "aesmc %0.16b, %0.16b" : "+w"(d) : "w"(k));
++    return d;
++}
++#endif /* CONFIG_ARM_AES_BUILTIN */
 +
 +static inline void ATTR_AES_ACCEL
 +aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
-+    __m128i z = _mm_setzero_si128();
++    uint8x16_t t = (uint8x16_t)st->v;
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
-+        t = _mm_aesdeclast_si128(t, z);
-+        t = _mm_aesenc_si128(t, z);
++        t = aes_accel_aesmc(t);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesdeclast_si128(t, z);
-+        t = _mm_aesenc_si128(t, z);
++        t = aes_accel_aesmc(t);
 +    }
 +    ret->v = (AESStateVec)t;
 +}
@@ -158,49 +231,47 @@ index 0000000000..f9abb7c352
 +aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
 +                      const AESState *rk, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
-+    __m128i k = (__m128i)rk->v;
++    uint8x16_t t = (uint8x16_t)st->v;
++    uint8x16_t z = { };
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
-+        k = aes_accel_bswap(k);
-+        t = _mm_aesenclast_si128(t, k);
++        t = aes_accel_aese(t, z);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesenclast_si128(t, k);
++        t = aes_accel_aese(t, z);
 +    }
-+    ret->v = (AESStateVec)t;
++    ret->v = (AESStateVec)t ^ rk->v;
 +}
 +
 +static inline void ATTR_AES_ACCEL
 +aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
 +                         const AESState *rk, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
-+    __m128i k = (__m128i)rk->v;
++    uint8x16_t t = (uint8x16_t)st->v;
++    uint8x16_t z = { };
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
-+        k = aes_accel_bswap(k);
-+        t = _mm_aesenc_si128(t, k);
++        t = aes_accel_aese_mc(t, z);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesenc_si128(t, k);
++        t = aes_accel_aese_mc(t, z);
 +    }
-+    ret->v = (AESStateVec)t;
++    ret->v = (AESStateVec)t ^ rk->v;
 +}
 +
 +static inline void ATTR_AES_ACCEL
 +aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
++    uint8x16_t t = (uint8x16_t)st->v;
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
-+        t = _mm_aesimc_si128(t);
++        t = aes_accel_aesimc(t);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesimc_si128(t);
++        t = aes_accel_aesimc(t);
 +    }
 +    ret->v = (AESStateVec)t;
 +}
@@ -209,36 +280,38 @@ index 0000000000..f9abb7c352
 +aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
 +                        const AESState *rk, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
-+    __m128i k = (__m128i)rk->v;
++    uint8x16_t t = (uint8x16_t)st->v;
++    uint8x16_t z = { };
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
-+        k = aes_accel_bswap(k);
-+        t = _mm_aesdeclast_si128(t, k);
++        t = aes_accel_aesd(t, z);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesdeclast_si128(t, k);
++        t = aes_accel_aesd(t, z);
 +    }
-+    ret->v = (AESStateVec)t;
++    ret->v = (AESStateVec)t ^ rk->v;
 +}
 +
 +static inline void ATTR_AES_ACCEL
 +aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
 +                            const AESState *rk, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
-+    __m128i k = (__m128i)rk->v;
++    uint8x16_t t = (uint8x16_t)st->v;
++    uint8x16_t k = (uint8x16_t)rk->v;
++    uint8x16_t z = { };
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
 +        k = aes_accel_bswap(k);
-+        t = _mm_aesdeclast_si128(t, k);
-+        t = _mm_aesimc_si128(t);
++        t = aes_accel_aesd(t, z);
++        t ^= k;
++        t = aes_accel_aesimc(t);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesdeclast_si128(t, k);
-+        t = _mm_aesimc_si128(t);
++        t = aes_accel_aesd(t, z);
++        t ^= k;
++        t = aes_accel_aesimc(t);
 +    }
 +    ret->v = (AESStateVec)t;
 +}
@@ -247,54 +320,49 @@ index 0000000000..f9abb7c352
 +aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
 +                            const AESState *rk, bool be)
 +{
-+    __m128i t = (__m128i)st->v;
-+    __m128i k = (__m128i)rk->v;
++    uint8x16_t t = (uint8x16_t)st->v;
++    uint8x16_t z = { };
 +
 +    if (be) {
 +        t = aes_accel_bswap(t);
-+        k = aes_accel_bswap(k);
-+        t = _mm_aesdec_si128(t, k);
++        t = aes_accel_aesd_imc(t, z);
 +        t = aes_accel_bswap(t);
 +    } else {
-+        t = _mm_aesdec_si128(t, k);
++        t = aes_accel_aesd_imc(t, z);
 +    }
-+    ret->v = (AESStateVec)t;
++    ret->v = (AESStateVec)t ^ rk->v;
 +}
 +
 +#endif
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index a6537123cf..073d0a426f 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -26,6 +26,7 @@
- #define CPUINFO_AVX512VBMI2     (1u << 15)
- #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
- #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
-+#define CPUINFO_AES             (1u << 18)
+diff --git a/host/include/aarch64/host/cpuinfo.h b/host/include/aarch64/host/cpuinfo.h
+index 82227890b4..05feeb4f43 100644
+--- a/host/include/aarch64/host/cpuinfo.h
++++ b/host/include/aarch64/host/cpuinfo.h
+@@ -9,6 +9,7 @@
+ #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+ #define CPUINFO_LSE             (1u << 1)
+ #define CPUINFO_LSE2            (1u << 2)
++#define CPUINFO_AES             (1u << 3)
  
  /* Initialized with a constructor. */
  extern unsigned cpuinfo;
-diff --git a/host/include/x86_64/host/aes-round.h b/host/include/x86_64/host/aes-round.h
-new file mode 100644
-index 0000000000..7da13f5424
---- /dev/null
-+++ b/host/include/x86_64/host/aes-round.h
-@@ -0,0 +1 @@
-+#include "host/include/i386/host/aes-round.h"
-diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index ab6143d9e7..3a7b7e0ad1 100644
---- a/util/cpuinfo-i386.c
-+++ b/util/cpuinfo-i386.c
-@@ -40,6 +40,9 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
-         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
+diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
+index f99acb7884..ababc39550 100644
+--- a/util/cpuinfo-aarch64.c
++++ b/util/cpuinfo-aarch64.c
+@@ -56,10 +56,12 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+     unsigned long hwcap = qemu_getauxval(AT_HWCAP);
+     info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
+     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
++    info |= (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
+ #endif
+ #ifdef CONFIG_DARWIN
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE") * CPUINFO_LSE;
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE2") * CPUINFO_LSE2;
++    info |= sysctl_for_bool("hw.optional.arm.FEAT_AES") * CPUINFO_AES;
+ #endif
  
-+        /* Our AES support requires PSHUFB as well. */
-+        info |= ((c & bit_AES) && (c & bit_SSSE3) ? CPUINFO_AES : 0);
-+
-         /* For AVX features, we must check available and usable. */
-         if ((c & bit_AVX) && (c & bit_OSXSAVE)) {
-             unsigned bv = xgetbv_low(0);
+     cpuinfo = info;
 -- 
 2.34.1
 
