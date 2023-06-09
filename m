@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38324729F05
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3978B729F04
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:47:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7cmq-0001ib-Ps; Fri, 09 Jun 2023 10:08:24 -0400
+	id 1q7cnq-0002M5-LD; Fri, 09 Jun 2023 10:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1q7cmk-0001iQ-NX
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:08:15 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1q7cmi-00007h-W7
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:08:14 -0400
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 359Dw3I3014023; Fri, 9 Jun 2023 14:08:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=sYbCOEW2hN4b2TzCX/G9Pc6nIfeY03bCBJZUfd6YxIk=;
- b=Gkv3wpYIbCIgrr2O7K5gZDKo9Z9qP4fZkXg8kNT0r3OXiIHBiFOOGRV0EP0vugzEBN/L
- QZb3WeVPaOcix+3QyWOfEpXD/t6Se/DBQ/S3gTt6ML53pvcftY4U56mqc21vjGR1gJgH
- n+SuKQy8Pks5GGMST1GEy7/Hgbuvu87Fh5XfDoB5u5SPzjH8rPsPbaQBXt2m62yFfh6J
- Yu5xMuXqTcjjCe0olnK6mh94aufncYZ8Zz4krL3LMqhxmEWE/KE6aI3VUXq7Xe+wq9dx
- ImH8tyf4AVAr0lRBi6JB+4m/y2GwtEjMdFWW6hdHZDgGwuNzd0Nu+ZGf4Z1EMqyiHWKA EA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r3vu4h0nk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Jun 2023 14:08:11 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 359E8AvF028026
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 9 Jun 2023 14:08:10 GMT
-Received: from acaggian1-mac.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Fri, 9 Jun 2023 07:08:07 -0700
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
- <marcandre.lureau@redhat.com>
-Subject: [PATCH v3] ui/sdl2: OpenGL window context
-Date: Fri, 9 Jun 2023 16:07:52 +0200
-Message-ID: <20230609140752.69758-1-quic_acaggian@quicinc.com>
-X-Mailer: git-send-email 2.40.0
+ (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
+ id 1q7cnn-0002L3-AY; Fri, 09 Jun 2023 10:09:19 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
+ id 1q7cni-0000FE-Hn; Fri, 09 Jun 2023 10:09:17 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f61b45ee0dso2305469e87.0; 
+ Fri, 09 Jun 2023 07:09:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686319752; x=1688911752;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=q1Fqkrl7UDXmonoxDtBH8mU2gjHZZdApn9BUS7kN7w8=;
+ b=XcDsJ3COEVVwaA5HbzL4BK5mtR3xQ30shdeh+815axhLbvHjbpt/7nbnpvsqoH/nRH
+ prFMyVj/Dk5lRud1DWZaATdR6B+h8iIOxRGMHros0d+zaYFy0FAM7mnvt//Towyvs+An
+ MPzB/oT+pqSWvKPvCuhSvrnjg9U7gkuJhyaMHd10DpurE3rDtJQtGzwPfv3Lfd+b5Wyt
+ zvPRtwtpGr9Du1xRGslGlu/7Q8YzHuWC3vaKx9OLUKrEi7JUXgeJbON0TTlnIW7e2qv4
+ q33NyOQ19/kJYI7EJGFo0RUXyQzDLedzevQH+u+H532lmjTJaXJHcKDrCHbn5oInwelH
+ ZzYg==
+X-Gm-Message-State: AC+VfDwEaJN3UQG17M0uNcHWJXWG/T794Hj8ojWrFmN++xebWhLGkPvH
+ +LOmtqYcUKZU1DxMWjv6pncIkMQCjXiAqxaI
+X-Google-Smtp-Source: ACHHUZ7k7U2RDCCslqjccyyCV2oUfkcJahgeShFvV9NRLeCwUFm+J8BtTCL65MIP3uDK0dMZXEOs6A==
+X-Received: by 2002:a05:6512:205:b0:4f2:74d3:8996 with SMTP id
+ a5-20020a056512020500b004f274d38996mr915516lfo.8.1686319751745; 
+ Fri, 09 Jun 2023 07:09:11 -0700 (PDT)
+Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
+ [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
+ r13-20020ac25a4d000000b004f3a79c9e0fsm557255lfn.57.2023.06.09.07.09.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Jun 2023 07:09:11 -0700 (PDT)
+Received: by flawful.org (Postfix, from userid 112)
+ id 72EB319EB; Fri,  9 Jun 2023 16:09:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+ t=1686319749; bh=N4kiXFTgZHCX/JZKdOPGrMBPxbfBCt7yrPHw0sZmuUA=;
+ h=From:To:Cc:Subject:Date:From;
+ b=jnNHBsxlINFIFnHkwX8k2o8GCm1zsABVAoOIb4iQcjjmsUzb4lkrnTp59Gl0WQKOO
+ 7QFkmmRKHxyn8zdrMiJAT2mdzTYH88+5W2JDU404SR6BOlipLOobEFXWLlRLjTwHXF
+ 4OFoMnzRP4m0qfwnb+JS3/yLEykXbFxnNnaM+lzY=
+Received: from x1-carbon.lan (unknown [129.253.182.58])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by flawful.org (Postfix) with ESMTPSA id C3F031746;
+ Fri,  9 Jun 2023 16:08:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+ t=1686319740; bh=N4kiXFTgZHCX/JZKdOPGrMBPxbfBCt7yrPHw0sZmuUA=;
+ h=From:To:Cc:Subject:Date:From;
+ b=is54Tpo2AYx6RBiNTWYLpOJUY0aN4X8+joCMuhgBIypUd0sDMlb87PHWlhOjUuCPZ
+ zfSZjDkFH7vI2MwFIdExZrB/TK4VtNN35FF27uv1L8IvaElKiHzgowVNnbIDiByWZ3
+ 0HybIEZXG8S8qcUc2cgWMHEZs90ARlEH6rYa61eQ=
+From: Niklas Cassel <nks@flawful.org>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
+Subject: [PATCH v3 0/8] misc AHCI cleanups
+Date: Fri,  9 Jun 2023 16:08:36 +0200
+Message-Id: <20230609140844.202795-1-nks@flawful.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: qsc3Pg8erHZ9szFjgVaoMtDDDsUo7naG
-X-Proofpoint-ORIG-GUID: qsc3Pg8erHZ9szFjgVaoMtDDDsUo7naG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-09_10,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=801
- lowpriorityscore=0 phishscore=0 priorityscore=1501 clxscore=1015
- suspectscore=0 spamscore=0 mlxscore=0 adultscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306090119
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_acaggian@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When OpenGL is enabled, create only the OpenGL context, ignoring the SDL
-renderer as it is unused anyway.
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
----
-v2: There is no need to specify major and minor version if the SDL renderer is
-    not created. Also, tested on Windows.
-v3: Completely messed up the commit, now fixed.
+Hello John,
 
- ui/sdl2.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Here comes some misc AHCI cleanups.
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 9d703200bf..82e6ee5511 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -113,11 +113,11 @@ void sdl2_window_create(struct sdl2_console *scon)
- 
-         SDL_SetHint(SDL_HINT_RENDER_DRIVER, driver);
-         SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
--    }
--    scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
- 
--    if (scon->opengl) {
-         scon->winctx = SDL_GL_CreateContext(scon->real_window);
-+    } else {
-+        /* The SDL renderer is only used by sdl2-2D, when OpenGL is disabled */
-+        scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
-     }
-     sdl_update_caption(scon);
- }
+Most are related to error handling.
+
+Please review.
+
+Changes since v2:
+-Squashed in the test commits that were sent out as a separate series into
+ the patch "hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set",
+ and reordered some of the patches, such that each and every commit passes
+ the ahci test suite as a separate unit. This way it will be possible to
+ perform a git bisect without seeing any failures in the ahci test suite.
+
+
+Kind regards,
+Niklas
+
+Niklas Cassel (8):
+  hw/ide/ahci: remove stray backslash
+  hw/ide/core: set ERR_STAT in unsupported command completion
+  hw/ide/ahci: write D2H FIS when processing NCQ command
+  hw/ide/ahci: simplify and document PxCI handling
+  hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+  hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+  hw/ide/ahci: fix ahci_write_fis_sdb()
+  hw/ide/ahci: fix broken SError handling
+
+ hw/ide/ahci.c             | 112 +++++++++++++++++++++++++++-----------
+ hw/ide/core.c             |   2 +-
+ tests/qtest/libqos/ahci.c | 106 +++++++++++++++++++++++++++---------
+ tests/qtest/libqos/ahci.h |   8 +--
+ 4 files changed, 164 insertions(+), 64 deletions(-)
+
 -- 
-2.40.0
+2.40.1
 
 
