@@ -2,42 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735AA72BCE4
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 11:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DBC729F85
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:01:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8e2p-0008Bk-VR; Mon, 12 Jun 2023 05:41:03 -0400
+	id 1q7axy-0005r6-6d; Fri, 09 Jun 2023 08:11:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q8e2V-00084X-N4
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 05:40:52 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q8e2S-0002tn-Cz
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 05:40:43 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id C21AC11EEDE;
- Mon, 12 Jun 2023 09:40:36 +0000 (UTC)
-From: ~jhogberg <jhogberg@git.sr.ht>
-Date: Fri, 09 Jun 2023 14:04:14 +0200
-Subject: [PATCH qemu v2 2/2] tests/tcg/aarch64: Add testcases for IC IVAU and
- dual-mapped code
+ (Exim 4.90_1) (envelope-from <mrolnik@gmail.com>)
+ id 1q7axv-0005qS-Tf; Fri, 09 Jun 2023 08:11:39 -0400
+Received: from mail-vs1-xe35.google.com ([2607:f8b0:4864:20::e35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mrolnik@gmail.com>)
+ id 1q7axt-0001rj-Fa; Fri, 09 Jun 2023 08:11:39 -0400
+Received: by mail-vs1-xe35.google.com with SMTP id
+ ada2fe7eead31-43b2c7d9b52so520448137.3; 
+ Fri, 09 Jun 2023 05:11:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686312695; x=1688904695;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UlY6VZAINvZtgTpUTkUvHFILZ0edqwXEnqRop/VXX2w=;
+ b=WpKV28u14qPXX1GFATalb8wjAMr0VD43EFUUJ2W2GVFuIGMSbhmGIHI85PqHYU3Dka
+ z3I+KVvcwSksFYXT57wjkZpyewcM+KmA9z42bwLeMkctIbhUbz8icrwKfVxbl35gTI8j
+ YiNBwzdwvGqlZDLeEI1ewGy7toZ+HEzXf949OnQ9wlMEHIZxevivD2KQyX/hmkHFPOaM
+ K8J/I0tregpQFmvYwEnmD47EMBVOwwMttvWP4x3AoV2gxO1PX0Q4Xp3sjZY0uws0fS5B
+ 9hTbJl7X2O3VBkNY5whP09BmIxl6dpJ/0wDK5qGHIsHkQzCmVlCsqni9MzaIP0cE5TYg
+ AJ1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686312695; x=1688904695;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UlY6VZAINvZtgTpUTkUvHFILZ0edqwXEnqRop/VXX2w=;
+ b=I8PorKv1KzRDE5QGj9D8DEh+o7EfdCJ/C6NQDHeem+FFDIbIfFnLgS3ax/1+ngYfDJ
+ d7wReSzMNtQoy11ROU5o8wWBWUlfBBb2T5SXVoHm9KZe4kfNAt5zZ/JJD5dHkNVto41W
+ BpX1GHXBvTAq9s2gAbNLSlu7xwrYRaz+TF1hRSzoGAFyJ0o+rM+3zZcJEwDsR00nCDdg
+ ifr6qRLTJpAFzlQmLKugqkhrbwFpfMySlyINgpiCg7D0+69dGBT2yPy5mi40WgJlC9CE
+ e2TAxsaRWy9pS5pXQGcH6kvJcIUFLqAYCdiwumdFbAFB4e4Z8+6DJeVzpswMf5/33YGP
+ u3eA==
+X-Gm-Message-State: AC+VfDxCMpo0J9dR39kzP1pBc2zsVSn7noWu2BO9Nnb7B3FJlIlb6ruw
+ xFbQJ/uR8/+Q3aT0Qgi/kXuswbWU4rX8l05VgA0=
+X-Google-Smtp-Source: ACHHUZ6BhWrKvC582GEtO5K2/b5VJejMfaZ+s0rdB4AteWnkiNqWovbzk/rY9XhQaus6lw+CJSkL95JuZOtb6IOzP9Y=
+X-Received: by 2002:a67:fd75:0:b0:43b:240f:b92e with SMTP id
+ h21-20020a67fd75000000b0043b240fb92emr628102vsa.18.1686312695525; Fri, 09 Jun
+ 2023 05:11:35 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <168656283612.26761.9869630057811681568-2@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168656283612.26761.9869630057811681568-0@git.sr.ht>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <CAB295yB5cFSZpGE74EW5hDMSNGnZfw06UC5ydepUL0sdT96WGg@mail.gmail.com>
+ <CAB295yAzhzPpKC7KtpKk6t6x4Dn7Bpam=Nwfx8z0wAkZRP-JSg@mail.gmail.com>
+In-Reply-To: <CAB295yAzhzPpKC7KtpKk6t6x4Dn7Bpam=Nwfx8z0wAkZRP-JSg@mail.gmail.com>
+From: Michael Rolnik <mrolnik@gmail.com>
+Date: Fri, 9 Jun 2023 15:10:59 +0300
+Message-ID: <CAK4993g-cQ3jF4dhvi4obszDxoETK6fwA-Kj0vCVa+hsn0s1wA@mail.gmail.com>
+Subject: Re: QEMU AVR Patch - Correct handling of AVR interrupts
+To: Adecy <ld.adecy@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000032747a05fdb14595"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e35;
+ envelope-from=mrolnik@gmail.com; helo=mail-vs1-xe35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -51,254 +80,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~jhogberg <john.hogberg@ericsson.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John H=C3=B6gberg <john.hogberg@ericsson.com>
+--00000000000032747a05fdb14595
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-https://gitlab.com/qemu-project/qemu/-/issues/1034
+Reviewed-by: Michael Rolnik <mrolnik@gmail.com>
 
-Signed-off-by: John H=C3=B6gberg <john.hogberg@ericsson.com>
----
- tests/tcg/aarch64/Makefile.target |   3 +-
- tests/tcg/aarch64/icivau.c        | 204 ++++++++++++++++++++++++++++++
- 2 files changed, 206 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/aarch64/icivau.c
+On Fri, Jun 9, 2023 at 12:04=E2=80=AFAM Adecy <ld.adecy@gmail.com> wrote:
 
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.t=
-arget
-index 3430fd3cd8..de6566d0d4 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -9,9 +9,10 @@ AARCH64_SRC=3D$(SRC_PATH)/tests/tcg/aarch64
- VPATH 		+=3D $(AARCH64_SRC)
-=20
- # Base architecture tests
--AARCH64_TESTS=3Dfcvt pcalign-a64
-+AARCH64_TESTS=3Dfcvt pcalign-a64 icivau
-=20
- fcvt: LDFLAGS+=3D-lm
-+icivau: LDFLAGS+=3D-lrt
-=20
- run-fcvt: fcvt
- 	$(call run-test,$<,$(QEMU) $<, "$< on $(TARGET_NAME)")
-diff --git a/tests/tcg/aarch64/icivau.c b/tests/tcg/aarch64/icivau.c
-new file mode 100644
-index 0000000000..ff80d3d868
---- /dev/null
-+++ b/tests/tcg/aarch64/icivau.c
-@@ -0,0 +1,204 @@
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <string.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+
-+#define PAYLOAD_SIZE (256)
-+
-+typedef int (*SelfModTestPtr)(char *, const char*, int);
-+typedef int (*CompareTestPtr)(int, int);
-+
-+void flush_icache(const char *exec_data, size_t length)
-+{
-+    size_t dcache_stride, icache_stride, i;
-+    unsigned long ctr_el0;
-+
-+    /*
-+     * Step according to minimum cache sizes, as the cache maintenance
-+     * instructions operate on the cache line of the given address.
-+     *
-+     * We assume that exec_data is properly aligned.
-+     */
-+    __asm__("mrs %0, ctr_el0\n" : "=3Dr"(ctr_el0));
-+    dcache_stride =3D (4 << ((ctr_el0 >> 16) & 0xF));
-+    icache_stride =3D (4 << (ctr_el0 & 0xF));
-+
-+    for (i =3D 0; i < length; i +=3D dcache_stride) {
-+        const char *dc_addr =3D &exec_data[i];
-+        __asm__ ("dc cvau, %x[dc_addr]\n"
-+                 : /* no outputs */
-+                 : [dc_addr] "r"(dc_addr)
-+                 : "memory");
-+    }
-+
-+    __asm__ ("dmb ish\n");
-+
-+    for (i =3D 0; i < length; i +=3D icache_stride) {
-+        const char *ic_addr =3D &exec_data[i];
-+        __asm__ ("ic ivau, %x[ic_addr]\n"
-+                 : /* no outputs */
-+                 : [ic_addr] "r"(ic_addr)
-+                 : "memory");
-+    }
-+
-+    __asm__ ("dmb ish\n"
-+             "isb sy\n");
-+}
-+
-+/*
-+ * The unmodified assembly of this function returns 0, it self-modifies to
-+ * return the value indicated by new_move.
-+ */
-+int self_modification_payload(char *rw_data, const char *exec_data,
-+                              int new_move)
-+{
-+    register int result __asm__ ("w0") =3D new_move;
-+
-+    __asm__ (/* Get the writable address of __modify_me. */
-+             "sub %x[rw_data], %x[rw_data], %x[exec_data]\n"
-+             "adr %x[exec_data], __modify_me\n"
-+             "add %x[rw_data], %x[rw_data], %x[exec_data]\n"
-+             /* Overwrite the `MOV W0, #0` with the new move. */
-+             "str %w[result], [%x[rw_data]]\n"
-+             /*
-+              * Mark the code as modified.
-+              *
-+              * Note that we align to the nearest 64 bytes in an attempt to =
-put
-+              * the flush sequence in the same cache line as the modified mo=
-ve.
-+              */
-+             ".align 6\n"
-+             "dc cvau, %x[exec_data]\n"
-+             ".align 2\n"
-+             "dmb ish\n"
-+             "ic ivau, %x[exec_data]\n"
-+             "dmb ish\n"
-+             "isb sy\n"
-+             "__modify_me: mov w0, #0x0\n"
-+             : [result] "+r"(result),
-+               [rw_data] "+r"(rw_data),
-+               [exec_data] "+r"(exec_data)
-+             : /* No untouched inputs */
-+             : "memory");
-+
-+    return result;
-+}
-+
-+int self_modification_test(char *rw_data, const char *exec_data)
-+{
-+    SelfModTestPtr copied_ptr =3D (SelfModTestPtr)exec_data;
-+    int i;
-+
-+    /*
-+     * Bluntly assumes that the payload is position-independent and not larg=
-er
-+     * than PAYLOAD_SIZE.
-+     */
-+    memcpy(rw_data, self_modification_payload, PAYLOAD_SIZE);
-+
-+    /*
-+     * Notify all PEs that the code at exec_data has been altered.
-+     *
-+     * For completeness we could assert that we should fail when this is
-+     * omitted, which works in user mode and on actual hardware as the
-+     * modification won't "take," but doesn't work in system mode as the
-+     * softmmu handles everything for us.
-+     */
-+    flush_icache(exec_data, PAYLOAD_SIZE);
-+
-+    for (i =3D 1; i < 10; i++) {
-+        const int mov_w0_template =3D 0x52800000;
-+
-+        /* MOV W0, i */
-+        if (copied_ptr(rw_data, exec_data, mov_w0_template | (i << 5)) !=3D =
-i) {
-+            return 0;
-+        }
-+    }
-+
-+    return 1;
-+}
-+
-+int compare_copied(char *rw_data, const char *exec_data,
-+                   int (*reference_ptr)(int, int))
-+{
-+    CompareTestPtr copied_ptr =3D (CompareTestPtr)exec_data;
-+    int a, b;
-+
-+    memcpy(rw_data, reference_ptr, PAYLOAD_SIZE);
-+    flush_icache(exec_data, PAYLOAD_SIZE);
-+
-+    for (a =3D 1; a < 10; a++) {
-+        for (b =3D 1; b < 10; b++) {
-+            if (copied_ptr(a, b) !=3D reference_ptr(a, b)) {
-+                return 0;
-+            }
-+        }
-+    }
-+
-+    return 1;
-+}
-+
-+int compare_alpha(int a, int b)
-+{
-+    return a + b;
-+}
-+
-+int compare_beta(int a, int b)
-+{
-+    return a - b;
-+}
-+
-+int compare_gamma(int a, int b)
-+{
-+    return a * b;
-+}
-+
-+int compare_delta(int a, int b)
-+{
-+    return a / b;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    const char *shm_name =3D "qemu-test-tcg-aarch64-icivau";
-+    int fd;
-+
-+    fd =3D shm_open(shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-+
-+    if (fd < 0) {
-+        return EXIT_FAILURE;
-+    }
-+
-+    /* Unlink early to avoid leaving garbage in case the test crashes. */
-+    shm_unlink(shm_name);
-+
-+    if (ftruncate(fd, PAYLOAD_SIZE) =3D=3D 0) {
-+        const char *exec_data;
-+        char *rw_data;
-+
-+        rw_data =3D mmap(0, PAYLOAD_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
-+                       fd, 0);
-+        exec_data =3D mmap(0, PAYLOAD_SIZE, PROT_READ | PROT_EXEC, MAP_SHARE=
-D,
-+                         fd, 0);
-+
-+        if (rw_data && exec_data) {
-+            CompareTestPtr compare_tests[4] =3D {compare_alpha,
-+                                               compare_beta,
-+                                               compare_gamma,
-+                                               compare_delta};
-+            int success, i;
-+
-+            success =3D self_modification_test(rw_data, exec_data);
-+
-+            for (i =3D 0; i < 4; i++) {
-+                success &=3D compare_copied(rw_data, exec_data, compare_test=
-s[i]);
-+            }
-+
-+            if (success) {
-+                return EXIT_SUCCESS;
-+            }
-+        }
-+    }
-+
-+    return EXIT_FAILURE;
-+}
+>
+>
+> ---------- Forwarded message ---------
+> De : Adecy <ld.adecy@gmail.com>
+> Date: jeu. 1 juin 2023 =C3=A0 21:34
+> Subject: QEMU AVR Patch - Correct handling of AVR interrupts
+> To: <qemu-trivial@nongnu.org>
+>
+>
+> Hello,
+>
+> I would like to submit the attached patch.
+>
+> Best regards
+>
+
+
 --=20
-2.38.5
+Best Regards,
+Michael Rolnik
+
+--00000000000032747a05fdb14595
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Michael Rolnik &lt;<a href=3D"mailto:mrolnik@=
+gmail.com">mrolnik@gmail.com</a>&gt;</div><br><div class=3D"gmail_quote"><d=
+iv dir=3D"ltr" class=3D"gmail_attr">On Fri, Jun 9, 2023 at 12:04=E2=80=AFAM=
+ Adecy &lt;<a href=3D"mailto:ld.adecy@gmail.com">ld.adecy@gmail.com</a>&gt;=
+ wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
+0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=
+=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail=
+_attr">---------- Forwarded message ---------<br>De=C2=A0: <strong class=3D=
+"gmail_sendername" dir=3D"auto">Adecy</strong> <span dir=3D"auto">&lt;<a hr=
+ef=3D"mailto:ld.adecy@gmail.com" target=3D"_blank">ld.adecy@gmail.com</a>&g=
+t;</span><br>Date: jeu. 1 juin 2023 =C3=A0=C2=A021:34<br>Subject: QEMU AVR =
+Patch - Correct handling of AVR interrupts<br>To:  &lt;<a href=3D"mailto:qe=
+mu-trivial@nongnu.org" target=3D"_blank">qemu-trivial@nongnu.org</a>&gt;<br=
+></div><br><br><div dir=3D"ltr"><div>Hello,</div><div><div><br></div><div>I=
+ would like to submit the attached patch.</div></div><div><br></div><div>Be=
+st regards</div></div>
+</div></div>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Be=
+st Regards,<br>Michael Rolnik</div>
+
+--00000000000032747a05fdb14595--
 
