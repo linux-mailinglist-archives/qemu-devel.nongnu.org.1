@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F9B72A133
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BED372A134
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7fqU-0006yW-JB; Fri, 09 Jun 2023 13:24:22 -0400
+	id 1q7fqf-000751-7u; Fri, 09 Jun 2023 13:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aaron@os.amperecomputing.com>)
- id 1q7fqF-0006xb-N2; Fri, 09 Jun 2023 13:24:03 -0400
+ id 1q7fqL-0006zn-18; Fri, 09 Jun 2023 13:24:10 -0400
 Received: from mail-bn8nam04on20706.outbound.protection.outlook.com
  ([2a01:111:f400:7e8d::706]
  helo=NAM04-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aaron@os.amperecomputing.com>)
- id 1q7fqD-0004ny-Ho; Fri, 09 Jun 2023 13:24:03 -0400
+ id 1q7fqI-0004ny-DB; Fri, 09 Jun 2023 13:24:08 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FHEtUtNejARcOTdorTlSsIB1PukojolY4NghIEnx7szMC9e+FupeWP20vhlQdYxuyzC7mAkY3CHZqBc22npk4gDqaZ/s53O5YDl4mc70JP45WU6ZALFqEdWHXD9lwUbCFqUphJ6YIL2fAP97Lx5lgElda4ykt0WtPKoWCrC92fJAte9TcREJ056Q2HIpTpdJ1gsgApJJ+4pZwUK0O1XIsb6g9GKWx4cE0f0y6mJlT1MQfjfG9W0ugFDHtTsbttTclIp6vn8/VREoP498/8XW4+pRRX24xIAUWzgE0FN7J0c5ibkq63lfVr0NSeGjfYAH+Hi9xUyDOgx+/FeBNHAEWA==
+ b=JCEZJc5QzqW0PlJKxHOd6Vrfn+OYaX0N94vtO/dotrMi56n/hmyt4k/aVq+sKwScnqr9v652hHj6f/8oVjP/SloPH4XCtEpRjUvh5uOd2pigCOr4QS3K1X8wG84p9IBFGwnYZBd0ZoLG1Ztd/nLgwWMnaDBjxNkKvByq/nGJ96rYzXpHEkJ1Xl3K+xV4YlrzH9QmMf6w5jofc9/pWu72SowEI41wAfawFIz+Omb9ohoAQBQ8Il2r3FIOySJ2Ah20iE5p1uVxoK5+01npQoxp14gE24Tl8EDM7oW/lBJhRsuky3TXCFoYS7s9BRXjYomRmEGuGJr21XUSLIY0ilp7fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lFsA/NscXzn1m1UVysR91UL7Upk5Y9pzyb2gUJB6ATE=;
- b=WuE1xQsZZJg859s9C+YedstWUJcm53mDKsAqvA/2Q5OJycrV3unSjtQ2WmY1nKIM6dAOcePieSuL83E3CCmlYiHRL75nO0OMLbSQN3LGboyAMyShh9hbTvRtNg3Xvao+oIKA4JHrVgXYBA9bmRIGtWsH+Ln/kt+oDmJRKNf8amKN6k+AvCqVE/uB9bKp+P61YATVYfJW5c9V0seLfmqFL5rkEg6o2HQ2kjKFwWr/WfY6Jysb0EI5dfQPVzNy9bDmlm42360pNjVzlbi5NuMa46JclbUYitQLHezm3xD9agKAnSkf8ecNTpuoageheR/0omIh8BvMLPrsN56QqbXpZw==
+ bh=rG0MjqHOncKe64g/eFBXwRCtLf0aeWOUoKS30sy8Jh0=;
+ b=aOAJq20ObVR6SUruCmbwpT/eiqOxJ2SviEU0DvWB40c+yHjwfLcMWQV7oECj2j8rRdbWe6VKc0eYRlcwuqA5TwQYqeIZLgvfcnnxgHgk+N+yd3Q1KrV3wiQfb4G0oW9mg/4IgAs1AtVZNClZmBrRo17epxDdQz3m/VzxcozX4WP0Ha8YwE9fZctSV9eS1eiJN7S7l/5V1CF0OM2dvSt5PGgW79AT4Ab7u+EeoCVzy1qByNdxYEBgycUa1jE3PI2+Q78+nvcDUZT1BoFZtUhAmThIR/YC3yI+ZT0FPwoevpZkAkQXmVOh38XMeAWaN/FDtH2vq3YbzPz5tmoSt1S8/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -32,8 +32,8 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lFsA/NscXzn1m1UVysR91UL7Upk5Y9pzyb2gUJB6ATE=;
- b=GupRWy2J0k5LCl9CZWQRSQ4z5Uut7xPvaW6KHtxaUyrrVIkuRd74eSEUDJL7oGmym1PMCcXKGgcSeIsXqejgdMiSNmYNXZDX1YshoSmxYtDFgE5mCVun1RaUX6cOxbDQTYXHtNivnDdX9mh1C2lcIfKu9gepHORIHJDus4qhyBA=
+ bh=rG0MjqHOncKe64g/eFBXwRCtLf0aeWOUoKS30sy8Jh0=;
+ b=SuiXD2qf8f2lZkM8oxCjDzjGczthPYb9fPEQ14f/NT01BzgaKBg4EhDKPWCXeMX+CUiSdKF2ejQAZ0erRzDlpL58fzezSdDNoXwzlRnYa2axvZFnpkFlYWqYrdttr7R/2ojkcKSWgF6POad5cIB2jys5o9dam+I6SloKFpHtbnc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from CH0PR01MB7124.prod.exchangelabs.com (2603:10b6:610:f3::20) by
@@ -51,9 +51,10 @@ To: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: Aaron Lindsay <aaron@os.amperecomputing.com>
-Subject: [PATCH v3 7/8] target/arm: Implement v8.3 FPAC and FPACCOMBINE
-Date: Fri,  9 Jun 2023 13:23:23 -0400
-Message-Id: <20230609172324.982888-8-aaron@os.amperecomputing.com>
+Subject: [PATCH v3 8/8] target/arm: Add CPU property for QARMA3,
+ enable FPACCombined by default
+Date: Fri,  9 Jun 2023 13:23:24 -0400
+Message-Id: <20230609172324.982888-9-aaron@os.amperecomputing.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609172324.982888-1-aaron@os.amperecomputing.com>
 References: <20230609172324.982888-1-aaron@os.amperecomputing.com>
@@ -65,53 +66,53 @@ X-ClientProxiedBy: CH0PR03CA0009.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR01MB7124:EE_|SJ2PR01MB8126:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8291e95-9fb9-4c4a-92b1-08db690e4d3f
+X-MS-Office365-Filtering-Correlation-Id: 8697f11a-876e-4dbb-5161-08db690e4d82
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nFThhXFcXE9tDRRpspQk1iG+zbUTIPdacdA6Z3nrHJ4OYTlacKsyVH0NO9+515JF3hpvgkzZLSnaQi2gp3JR1wivk0eQkRXOBZshFyLEzuiE0G+2vZslU0hS+lN9Tk1s/ZhP2ubKK+k7si9BKVsJkdsxVkLq0zGGLZEEt8hx2GKb0Qcb7VKUrd/KOLHCjNwYGXVWA2TH0Jg90rKtym6lOt+C1KQte5RtG2oalG/rUkylFZqfrqwWm0D6HtINXYsjLl674UbncUO0ogSR/thUkM+iV/9qT3ju6c/sGfKgLJR1GByBo115cK3cTWXBZqhiGFMPWSC8TgMyEKmoLZs8LGekNKD4n8WMi77P7cAfpxU9iVYRDkejFEs8EKZ9e1NDX2d2QfN6vhCVHt4DYfA+lkHNTYQfB+k5pUMGCNWgEYxVBsq0OwyLQFr6eSUb/JDP3qgTofJTVZrFYpWC4HMew765pylOt1KQBnRHfdRqSAuKRiDcmBkRvtQP/E2va7dVc3Qqvmieat0VEvSfUG9UJvznFE+gyXUYVPXpp+0VcKDYnrkDVMfOgPgOOrMGXv1cOIQdRW8i8/KSQNS6INlG2mLw1rRW3A8C/c0nM+eEQYE+KlaG5/IkdVeC8QTDyRBz
+X-Microsoft-Antispam-Message-Info: RkEuCOfBWDE3Mwd/SULuvS2Sxnpk6sSwnaLWOtoCXwdYe8xuOeFTZFtFvPY5XY7HJd47J6KgzqYINFqHPviCI8LoXjAroPQb3mwBcFA4LTC6uKVsvquzBliNWh207cdbOk7jh7t9sEsAMUtO4RhafOzCcpJp5y5J/u6wUazt+bepHOwMHlPOsLGE0bb5N4FRKNsOwWEmcrOfwdKdfbvqCyP6zDUXfC43WsG2a4Yvrwu/q/bc5e/poGogPuHyv6i/g2VnbhCfFi4NhFOzkC95RYvWTaPXvq2hkWc/jtxksdpc8hu3DLly9cDwD3wqB9TBuaJZ6yuzZiLgm0fVjzUvbIisiPd4bl775yPDke+VFSXUjQl1S2jxFRtVbdzPwVvtCmIRbqhj6dHV5OO2y99v+soJImznrN0UMFDngd/EMHJU2gUC6hgciCfjAmqsq/CuIavKf0BDHRAcKX8YBEtqcIU/FMe/bYVbo61haIy3wKBs/tq0lX11Kw+BlzG+RvDU0LKvh5SCXySM3WzAYRyjSmPryofpPsYEW+GWkANL7aOsOCysDOvCSC+yJ7X9r0n49/+qsuB9/K/qOgnSmComwf0C9+iXIhFjXQ4Wl6zOzqwE6HlzdoHtX49rekGpVl4J
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR01MB7124.prod.exchangelabs.com; PTR:; CAT:NONE;
  SFS:(13230028)(4636009)(39850400004)(396003)(136003)(376002)(366004)(346002)(451199021)(8676002)(316002)(5660300002)(66946007)(66476007)(66556008)(4326008)(2906002)(8936002)(41300700001)(110136005)(52116002)(6666004)(6486002)(6512007)(26005)(1076003)(186003)(107886003)(2616005)(6506007)(83380400001)(478600001)(38350700002)(38100700002)(86362001);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Im+KYSph2VgTG6P9gk4LYTljPCfjhgwrq+6scMB9RfkVU7Za0omgYsRbh5/e?=
- =?us-ascii?Q?WM0AAFzihsieYrry72xk0jAR+YxwR2fCkIONVA+85U9/db/jVoUQX/ggRJbC?=
- =?us-ascii?Q?Qiq4BgcoyUPaGbkqXAPz8MdMJ5wdMeFuMA21fLB7+fnZaroxdJJvudteVizR?=
- =?us-ascii?Q?kcLmyHmlJGITw6B/VnvXRkiNDHYJl/WLciUWphzOALyy9A1fdCHNhakhXwxq?=
- =?us-ascii?Q?z93PgLBFzM1ztxSmcRGXjxKA+ixdLmOwWX6ZORvh+5fUU47fP5qE32A+0jMX?=
- =?us-ascii?Q?D2FkJwv8EA6QKlJxEgjE9tCNzSXXG1jjnttNMbA8xM6UIj87jmCB9sdNI+cS?=
- =?us-ascii?Q?UOLaylMJSsCuEcrG3OZ+wLcXDumJmZma63YIEq0NThIxUEzUGsuU4rnb6SvE?=
- =?us-ascii?Q?8/x9/Ab7SKOVXwRMumAsJZWzfJUdRctr6QnBYwXnv6IMCtC08Vt4/oo6ffRw?=
- =?us-ascii?Q?0u5aK5GsrlLHNbQkDb9Ou3gCJYF7yPrPXyJlcnRrU2HvtAa0RFIawCysjb6y?=
- =?us-ascii?Q?jFAOLgJQ94Mq8xR5VbvPFM3fjLPShX955edV1rcLXWIU+l2DNND2R9wbaUrF?=
- =?us-ascii?Q?r1yiyk0Nenc9/DHiA3f7NqSZ9IJjAdl9D1q4f/DJtYm48gXg3vA/O2jt7/mg?=
- =?us-ascii?Q?kt/xYo7JqGAVaAI40pYjzNYJjdQm3Qp6JSNgkIcK/Z/OuUNb9Nv9fK2jLM35?=
- =?us-ascii?Q?zxLUxdL0jYMDEsiXyoO4dRmDUMZeS9Cf8EbK7TBQw0LjGAxC4omEqK4TpgPo?=
- =?us-ascii?Q?5DfdDTKwfSP55WPKPsjyvOvRctkKsyBbQ4PynLJz9WolUPpoPMk714npKBNR?=
- =?us-ascii?Q?0Myabo57rsIeIbsLlTe3VotLtEHR3A48zdLdMMQoyV3Hb6CsBFzerRdSwxq9?=
- =?us-ascii?Q?1HCX4U+urhNoqnqkJ7X4K81EUCJhIl0YGfupE7DnqegspoZ4MJwrJ79tZTKW?=
- =?us-ascii?Q?a1kKPLKwNb+vAkethphwDBS1g4JJ73YQRDQFJRFwEEUV9nRsR3dBDDkaHBp4?=
- =?us-ascii?Q?vom3GMFaIGf7f7ubMiMUQIucmKJcJFLXH+sg8aUe7zEDhXCaB1TTm8lfisBb?=
- =?us-ascii?Q?9N/GK4oez6M9t93bqavcFfXVN0K2ZvzqDZG/NaHsvWg5ENMK77Y16oTDK/eF?=
- =?us-ascii?Q?KI0JVnEKeRrSCMMPCaZGJ1/tZQvKis7f4ctDJ2G7h+iIqCgjc7Z9EF/8R3dU?=
- =?us-ascii?Q?Q5/pDKzMKbUly0ZYHGnrdP/nwOPVYPGVGnvhwGsKYgk8NuJWh+cKA1K+HVEO?=
- =?us-ascii?Q?pbUClI202BqfNl3aVAUbw+d+ORzcFgmJM4QJXn2wvXTaJyxmP2+qzNYmhalt?=
- =?us-ascii?Q?Yglo3IvNUvxYyzp5tgsMyL42xjl4quwQDzI+NrJyQR0kd3jO6+NRMls/uhPB?=
- =?us-ascii?Q?MCbfCAVofMgS+advntIF6G9lHkZtNhx2dfdlXOOSGb2YMLFpwdcByn6sMX9X?=
- =?us-ascii?Q?V6sZXd+x624Vq3XVSLdpWhHyOZI90EbNXFjuzWozt0PGEx3HGfSS4kIdj4Ux?=
- =?us-ascii?Q?PEJzfkU6bFhbOogFDnkQUzI4NRP/d8RS8OiJebMIMM6KQejRf2w8fdHxa761?=
- =?us-ascii?Q?yg1+6MgjmjjX1BRp+sXqPTwP7WRzXAM0d8c7/efa9sqoYATlfPz2cJTrMPz/?=
- =?us-ascii?Q?0SeebO45UTL8ruN/l9SMt/0=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Jz/BZoxnJILxNvG0PYjgZPzO7LlohNRMR7b0OSK133mAM8hJhrfd6ADLYggZ?=
+ =?us-ascii?Q?OMCOwdKvXcqfH2Cvjn/V1L8RS8QvDg1BcHXPQjjvyCwrsXTsdLVxddceblPX?=
+ =?us-ascii?Q?hcD+TQllMRMAeVvltUeQv2ttAVsa4W8x0eI5wSPbb1OGvd/sqOb8Qa2i6Ojy?=
+ =?us-ascii?Q?zNVNzD1uQCSMbOq0YnVZi7rZvHYt2AzpHOJuB+QUSrA03OcBBk9A6oHCfDFZ?=
+ =?us-ascii?Q?/TXY1K0SHUU0GymOexsMWj0ry1WBfo2KgHMz+U6DAAzOTmgX3AxqKYytt1u3?=
+ =?us-ascii?Q?2LfqM2pO1QqlwUlhBstWydFY5XDBXBUrMuTAI3LczvUwlEvOHPlxTo5T4zMI?=
+ =?us-ascii?Q?1PaBTtKdukEnPMXy6wWkpeRbq5A+DYRPjoyBO04LYgN1BsK4iqqkxyuga7rf?=
+ =?us-ascii?Q?HrRYUsv+ABh7qblgUPK3O90goeabUQ4Z5AO59jhf8rPSJUei+kRPoWgwhaZx?=
+ =?us-ascii?Q?KKBqLwBLFtwUQuFE/EkmQLU4Obk48qQOuouf7iW8g+A3dQg3/uKAps9Wgo/E?=
+ =?us-ascii?Q?yqQrE2PrW6+Gm9eQHWDv+2sOoaIqU8u7IVqWHXZcfXRBj5ZlFMYFlc/e+OhS?=
+ =?us-ascii?Q?alOoz30ole/ZlJozI6XEFTotnvTyIXplJFQu5XjJKYzjnfpNiXQtsmIsF6jt?=
+ =?us-ascii?Q?llqlh1rWHOK4UvvBBMz5uPYgxmRk7VNKjZjExzo5TvPg47TvzdRmLPFm3Hzb?=
+ =?us-ascii?Q?Um91P4sQVbHLgscHFsClqrCdhddPffgA6PfixeKSei33hnihwUYJ7FyL1x6e?=
+ =?us-ascii?Q?pher46Wtsmq7CpNRpg/YUFyvIyaD7AnyxmYzK6cL25jajm8up2aKicQw+ToS?=
+ =?us-ascii?Q?pM5KX1+vcqXs6ZozDpvT8367tzlMjPXCm1GE13iyUqhNfQ64g02NMBgvEEKb?=
+ =?us-ascii?Q?I8Cja+EBct4Wm83lDi9B6I51LCMpttKLMLyhZm8VRH0J1h6H0nOuL6cW6AFW?=
+ =?us-ascii?Q?eacPiephFC+MZi/1p2YMkpgx4rcaNWJbPzpUobHDjAcpLWK3mwEsLc8hGdq+?=
+ =?us-ascii?Q?58SVJDqDOT5JxBUzVyGn8Fm1nIK6LjCivQYWer1F/OwtOqscXfMp8XiWHbp3?=
+ =?us-ascii?Q?GjuCx/5TL5Nxj8vL58CBHJw+Wt3c8Tz2it3iRLh2qWrm5WmE4rVTXakNElbI?=
+ =?us-ascii?Q?rdCCjAVBNKRX7XhIJOcI/JEe05RD0ahrEqWiErUb8VhOPlFEMDbxFlxEPwOC?=
+ =?us-ascii?Q?0ZwphAa+RRr1x85+k2qpGLOfKm7vaTK04YXo2XrSKSD7EpAK9qJ//fSF6Awa?=
+ =?us-ascii?Q?iTf3d197p0UUNoUS42ubVzv53aS0VM7Ml9ilvC09v920zrNeSbv6ojPQQZYi?=
+ =?us-ascii?Q?16tScO3ivN0Ci45089URwQR4SiwA3MzSdpYp1wlZD0TMDIVF/F6pSci/6Hl6?=
+ =?us-ascii?Q?nbev786ZkknZ+jdpcmqCGOMxRwqjp12fDEdQEzEy7hLHepfCLO4DezX8zw56?=
+ =?us-ascii?Q?gqnZeeczE+KYtKRz45P3qz/l5zhgKeQVJXgyzu4Bt5SGRLka3REldaGYWDZW?=
+ =?us-ascii?Q?+HSX75GA+ZfNaC2sb05NnTfY56zqaMOtzRiiGBFBGwfxdMM74LSG8ltGBCq/?=
+ =?us-ascii?Q?5OAjrEFqAr2iEveVVsxh1NlRBLn44YfCUKW3+hDHyTCh2ZBqkiEozt1D/oT6?=
+ =?us-ascii?Q?HDswJTFFftkItoTatujLHSk=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8291e95-9fb9-4c4a-92b1-08db690e4d3f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8697f11a-876e-4dbb-5161-08db690e4d82
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB7124.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 17:23:55.0734 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 17:23:55.5204 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dFtzHalMEJ2GnvGQ9GMxbOHBDcbtFKKNHpmyHUfHZLsIf6XPmHvNHj8Kt7YTFAal0v0FFdaxD1NbYbJKcFUdKuSUxuYPghoNsphK70O/yFoM+5zlEgd2Tfjfl/V5fWOW
+X-MS-Exchange-CrossTenant-UserPrincipalName: nLOiemtIf8paoBvXvd/kyiXJIl4gz2++dVuFiegF3m9hRoTHzeEcY+7Xps1p4IORMwLmvyuNFzhGXt6RgDAdqljzG7zslpPwkDRx3ql0LpZql3hg0vTfi/H9Nf1DQoau
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR01MB8126
 Received-SPF: pass client-ip=2a01:111:f400:7e8d::706;
  envelope-from=aaron@os.amperecomputing.com;
@@ -139,69 +140,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
 ---
- target/arm/syndrome.h         |  7 +++++++
- target/arm/tcg/pauth_helper.c | 16 ++++++++++++++++
- 2 files changed, 23 insertions(+)
+ target/arm/cpu.h   |  1 +
+ target/arm/cpu64.c | 48 +++++++++++++++++++++++++++++++---------------
+ 2 files changed, 34 insertions(+), 15 deletions(-)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index d27d1bc31f..bf79c539d9 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -49,6 +49,7 @@ enum arm_exception_class {
-     EC_SYSTEMREGISTERTRAP     = 0x18,
-     EC_SVEACCESSTRAP          = 0x19,
-     EC_ERETTRAP               = 0x1a,
-+    EC_PACFAIL                = 0x1c,
-     EC_SMETRAP                = 0x1d,
-     EC_INSNABORT              = 0x20,
-     EC_INSNABORT_SAME_EL      = 0x21,
-@@ -231,6 +232,12 @@ static inline uint32_t syn_smetrap(SMEExceptionType etype, bool is_16bit)
-         | (is_16bit ? 0 : ARM_EL_IL) | etype;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 22dd898577..0c4c6c9c82 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1061,6 +1061,7 @@ struct ArchCPU {
+      */
+     bool prop_pauth;
+     bool prop_pauth_impdef;
++    bool prop_pauth_qarma3;
+     bool prop_lpa2;
+ 
+     /* DCZ blocksize, in log_2(words), ie low 4 bits of DCZID_EL0 */
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 6eaf8e32cf..b0a5af7a31 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -473,9 +473,6 @@ void aarch64_add_sme_properties(Object *obj)
+ 
+ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+ {
+-    int arch_val = 0, impdef_val = 0;
+-    uint64_t t;
+-
+     /* Exit early if PAuth is enabled, and fall through to disable it */
+     if ((kvm_enabled() || hvf_enabled()) && cpu->prop_pauth) {
+         if (!cpu_isar_feature(aa64_pauth, cpu)) {
+@@ -486,30 +483,50 @@ void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
+         return;
+     }
+ 
+-    /* TODO: Handle HaveEnhancedPAC, HaveEnhancedPAC2, HaveFPAC. */
++    /* Write the features into the correct field for the algorithm in use */
+     if (cpu->prop_pauth) {
++        uint64_t t;
++
++        if (cpu->prop_pauth_impdef && cpu->prop_pauth_qarma3) {
++            error_setg(errp, "Cannot set both qarma3 ('pauth-qarma3') and "
++                    "impdef ('pauth-impdef') pointer authentication ciphers");
++            return;
++        }
++
++        /* Implement FEAT_FPACCOMBINE for address authentication and enable
++         * generic authentication for the chosen cipher.
++         */
++        int address_auth = 0b0101;
++        int generic_auth = 0b0001;
++
+         if (cpu->prop_pauth_impdef) {
+-            impdef_val = 1;
++            t = cpu->isar.id_aa64isar1;
++            t = FIELD_DP64(t, ID_AA64ISAR1, API, address_auth);
++            t = FIELD_DP64(t, ID_AA64ISAR1, GPI, generic_auth);
++            cpu->isar.id_aa64isar1 = t;
++        } else if (cpu->prop_pauth_qarma3) {
++            t = cpu->isar.id_aa64isar2;
++            t = FIELD_DP64(t, ID_AA64ISAR2, APA3, address_auth);
++            t = FIELD_DP64(t, ID_AA64ISAR2, GPA3, generic_auth);
++            cpu->isar.id_aa64isar2 = t;
+         } else {
+-            arch_val = 1;
++            t = cpu->isar.id_aa64isar1;
++            t = FIELD_DP64(t, ID_AA64ISAR1, APA, address_auth);
++            t = FIELD_DP64(t, ID_AA64ISAR1, GPA, generic_auth);
++            cpu->isar.id_aa64isar1 = t;
+         }
+-    } else if (cpu->prop_pauth_impdef) {
+-        error_setg(errp, "cannot enable pauth-impdef without pauth");
++    } else if (cpu->prop_pauth_impdef || cpu->prop_pauth_qarma3) {
++        error_setg(errp, "cannot enable pauth-impdef or pauth-qarma3 without pauth");
+         error_append_hint(errp, "Add pauth=on to the CPU property list.\n");
+     }
+-
+-    t = cpu->isar.id_aa64isar1;
+-    t = FIELD_DP64(t, ID_AA64ISAR1, APA, arch_val);
+-    t = FIELD_DP64(t, ID_AA64ISAR1, GPA, arch_val);
+-    t = FIELD_DP64(t, ID_AA64ISAR1, API, impdef_val);
+-    t = FIELD_DP64(t, ID_AA64ISAR1, GPI, impdef_val);
+-    cpu->isar.id_aa64isar1 = t;
  }
  
-+static inline uint32_t syn_pacfail(bool data, int keynumber)
-+{
-+    int error_code = (data << 1) | keynumber;
-+    return (EC_PACFAIL << ARM_EL_EC_SHIFT) | ARM_EL_IL | error_code;
-+}
-+
- static inline uint32_t syn_pactrap(void)
+ static Property arm_cpu_pauth_property =
+     DEFINE_PROP_BOOL("pauth", ARMCPU, prop_pauth, true);
+ static Property arm_cpu_pauth_impdef_property =
+     DEFINE_PROP_BOOL("pauth-impdef", ARMCPU, prop_pauth_impdef, false);
++static Property arm_cpu_pauth_qarma3_property =
++    DEFINE_PROP_BOOL("pauth-qarma3", ARMCPU, prop_pauth_qarma3, false);
+ 
+ void aarch64_add_pauth_properties(Object *obj)
  {
-     return EC_PACTRAP << ARM_EL_EC_SHIFT;
-diff --git a/target/arm/tcg/pauth_helper.c b/target/arm/tcg/pauth_helper.c
-index 278d6d36bc..f42945257f 100644
---- a/target/arm/tcg/pauth_helper.c
-+++ b/target/arm/tcg/pauth_helper.c
-@@ -395,6 +395,13 @@ static uint64_t pauth_original_ptr(uint64_t ptr, ARMVAParameters param)
+@@ -529,6 +546,7 @@ void aarch64_add_pauth_properties(Object *obj)
+         cpu->prop_pauth = cpu_isar_feature(aa64_pauth, cpu);
+     } else {
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_impdef_property);
++        qdev_property_add_static(DEVICE(obj), &arm_cpu_pauth_qarma3_property);
      }
  }
  
-+static G_NORETURN
-+void pauth_fail_exception(CPUARMState *env, bool data, int keynumber, uintptr_t ra)
-+{
-+    int target_el = exception_target_el(env);
-+    raise_exception_ra(env, EXCP_UDEF, syn_pacfail(data, keynumber), target_el, ra);
-+}
-+
- static uint64_t pauth_auth(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-                            ARMPACKey *key, bool data, int keynumber,
-                            uintptr_t ra, bool is_combined)
-@@ -414,6 +421,15 @@ static uint64_t pauth_auth(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-         uint64_t xor_mask = MAKE_64BIT_MASK(bot_bit, top_bit - bot_bit + 1) &
-             ~MAKE_64BIT_MASK(55, 1);
-         result = ptr ^ (pac & xor_mask);
-+        if (cpu_isar_feature(aa64_fpac_combine, cpu)
-+                || (cpu_isar_feature(aa64_fpac, cpu) && !is_combined)) {
-+            int fpac_top = param.tbi ? 55 : 64;
-+            uint64_t fpac_mask = MAKE_64BIT_MASK(bot_bit, fpac_top - bot_bit);
-+            test = (result ^ sextract64(result, 55, 1)) & fpac_mask;
-+            if (unlikely(test)) {
-+                pauth_fail_exception(env, data, keynumber, ra);
-+            }
-+        }
-     } else {
-         test = (pac ^ ptr) & ~MAKE_64BIT_MASK(55, 1);
-         if (unlikely(extract64(test, bot_bit, top_bit - bot_bit))) {
 -- 
 2.25.1
 
