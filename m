@@ -2,87 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D8A72A206
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 20:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 850CC72A2A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 20:53:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ghf-0002jF-GN; Fri, 09 Jun 2023 14:19:15 -0400
+	id 1q7hD6-0000xE-CD; Fri, 09 Jun 2023 14:51:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7ghd-0002im-8Z
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 14:19:13 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7ghb-0002AC-RA
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 14:19:13 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1b2439e9004so8655695ad.3
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 11:19:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686334750; x=1688926750;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Vj9qLPTAFB5HpMrexujty68fWg2vGI4QLTTfk+cGxg8=;
- b=iRziXdzW75n/iV0y/+4ZytZf8+oNfM5ZIcYGEjWJOs9iWoc/cEtwkdf3+ugw+lzNG+
- HipeH/vGIKEO66eyzrfsW84hnDdBKTHcvGjJ9+rXjiAu55PY2vVVG4TFAhucrXsmXRsZ
- /vbq9VXy+5UeECynIcRSsT5lqrMUzhRrqFCNE/Fm2XjRrorQn5IGJa7nN6v/OzTKqD90
- 8qQVxvqhSGbmNC/90+mgj4CwQiPQKplveSCBbuAb99pZCIpktiWFAKqItB1tLsC1mALT
- CY/DfSKBJEKj4J9HT+zGWKzlTWmxoBaj4kfLri9y6RvHkCNR9qHHyQ4r72FIcqzaKoSQ
- CA9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686334750; x=1688926750;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Vj9qLPTAFB5HpMrexujty68fWg2vGI4QLTTfk+cGxg8=;
- b=Dx3mFzE5Tk5nTFNJZ0ye26PIOeGmNxqldhsPxSnAkUEhno49NqJpKuTRFmMuGS5NUi
- HxNmwgZrjrLn2MLxEZu6afOR3gEThUtaQjh4cXZRg4kRdp8xPDH0GQskKjh7WRBO3xxx
- eZ5YACVvsLz0Mb61Mc+POrF14SEACPcIet3Ah+65E0T087w4QzFJoiEPU+pBjwSYFEXA
- ZyUaaX8G7xTre47HhCSRQ+n6nLd3XQNshqCT0QX+4cpJ/KCa48FUT1F2KbgBy/vla2fe
- cnKj6zYtrksxObUcUy72UCDONCvZojD+uMRbw6jpamVOzgpGWsKmHSo8C0IJ5EfEeiVi
- Gnnw==
-X-Gm-Message-State: AC+VfDys1CuDYCx12ZmpvmeEXWiYnAHDnSGL5JjSqHox831XP76FgRXD
- xdbY9yWWEmro/WW+2HPCVF+T2Q==
-X-Google-Smtp-Source: ACHHUZ7aXQDoR9x5AD7GiyXkcDH509EKV0jl4j5l5WDCBkUyRXaWPOd0cDmA3wY4evGIkvonqB/22A==
-X-Received: by 2002:a17:902:e5d0:b0:1a6:b23c:3bf2 with SMTP id
- u16-20020a170902e5d000b001a6b23c3bf2mr2357187plf.10.1686334749807; 
- Fri, 09 Jun 2023 11:19:09 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:20be:c4cb:f609:8cca?
- ([2602:ae:1598:4c01:20be:c4cb:f609:8cca])
- by smtp.gmail.com with ESMTPSA id
- jc22-20020a17090325d600b001a6f7744a27sm3586141plb.87.2023.06.09.11.19.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jun 2023 11:19:09 -0700 (PDT)
-Message-ID: <a54137e1-d34f-32b0-78ed-c05b0d33e428@linaro.org>
-Date: Fri, 9 Jun 2023 11:19:07 -0700
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q7hD0-0000w8-9Z; Fri, 09 Jun 2023 14:51:38 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q7hCy-0002ln-Ij; Fri, 09 Jun 2023 14:51:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=4Kz8y0Af0iyiDaVRfnHiGCVR/DdurHENOOX2nebe9cQ=; b=BQ++Bhi+ok440NAeZnjchS5FJf
+ GNoRy0499epSXw1N0dsNacD3KvuFxryFOrNiSRsFXEHAJD6jjj2TiOEtrPSSHwxPY4ApsIWSB7IIU
+ CsABOXL5tygySDTcnf/y4AoFg4HCDpijihVxZFU+rCr6s4wCGLC9vjYJcVzF4QQL7rCmCYwAMp3PM
+ 3buyWVikjOQKDMmphBcEnyKfAN6ijmnx0kRRJ69OuaTtsoi/Ai9CibnpaIr4rdsudpHvVl4nEVRVe
+ GzPZHdUUHWG8jWEXoItvwPTFDuNFBd8Z8wPFbVED2Mgxl3YnN0pxw6/nxrtd396/dLqsr5FpvrgF3
+ pT2wAW8PsQ/FNpkROvvjTDzBNEH1E7AlKnfHAtR/VCIMadl4LvA0ULgDSE8Xi3k9DAXz3ozYW2e9W
+ liO65/1zI1tAQCz3zOXFVm4I0Nb8j7f+kxRfUQ6C0R9ZL8Rou8I//nBzqFO1nEAyMHUVRVzP2jvt2
+ lCLYWuroE50buWzlSqcC6/KH2Hs8gSU5m73tInsqYqLOqDiOke9FpoB3adqXtrdICNaP9Qvf4b0Mr
+ yWirx7PH11qyZOsGDLsk92tWQTZbo3oOSroCDP4xMyFdr8OmNlbkSNcN38Hhyxnzag+jEvSpuMct0
+ PQDKQsBQX/5pho76WTtEWdJAvbB1dAfFUjz73N6a4=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q7hCm-0000p5-5w; Fri, 09 Jun 2023 19:51:28 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: jsnow@redhat.com, shentey@gmail.com, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Date: Fri,  9 Jun 2023 19:51:14 +0100
+Message-Id: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 07/22] target/arm/tcg: Expose some iwmmxt methods in
- 'translate.h'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20230609104717.95555-1-philmd@linaro.org>
- <20230609104717.95555-8-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230609104717.95555-8-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 0/5] cmd646: move device-specific BMDMA registers to separate
+ memory region
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,15 +73,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/9/23 03:47, Philippe Mathieu-Daudé wrote:
-> Expose a few methods and variables before extracting iwmmxt
-> code from translate.c.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/arm/tcg/translate.h | 6 ++++++
->   target/arm/tcg/translate.c | 8 ++++----
->   2 files changed, 10 insertions(+), 4 deletions(-)
+This series follows on from a comment I made on Bernhard's PCI IDE tidy-up series [1]
+that it should be possible to further consolidate the BMDMA registers into the PCI
+IDE device with some minor rework to the CMD646 device.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+It does this by moving the CMD646 device-specific BMDMA registers to a separate
+memory region, and then aliasing the device-specific BMDMA registers from 
+the existing BMDMAState memory region. With this in place it should be fairly
+trivial to extend the consolidation implementation in [1].
+
+Before "info mtree" output:
+    0000000000008200-000000000000820f (prio 1, i/o): cmd646-bmdma
+      0000000000008200-0000000000008203 (prio 0, i/o): cmd646-bmdma-bus
+      0000000000008204-0000000000008207 (prio 0, i/o): cmd646-bmdma-ioport
+      0000000000008208-000000000000820b (prio 0, i/o): cmd646-bmdma-bus
+      000000000000820c-000000000000820f (prio 0, i/o): cmd646-bmdma-ioport
+
+After "info mtree" output:
+    0000000000008200-000000000000820f (prio 1, i/o): cmd646-bmdma
+      0000000000008200-0000000000008203 (prio 0, i/o): cmd646-bmdma-bus
+        0000000000008201-0000000000008201 (prio 0, i/o): alias cmd646-bmdma[1] @cmd646-bmdma 0000000000000001-0000000000000001
+        0000000000008203-0000000000008203 (prio 0, i/o): alias cmd646-bmdma[3] @cmd646-bmdma 0000000000000003-0000000000000003
+      0000000000008204-0000000000008207 (prio 0, i/o): cmd646-bmdma-ioport
+      0000000000008208-000000000000820b (prio 0, i/o): cmd646-bmdma-bus
+        0000000000008209-0000000000008209 (prio 0, i/o): alias cmd646-bmdma[1] @cmd646-bmdma 0000000000000001-0000000000000001
+        000000000000820b-000000000000820b (prio 0, i/o): alias cmd646-bmdma[3] @cmd646-bmdma 0000000000000003-0000000000000003
+      000000000000820c-000000000000820f (prio 0, i/o): cmd646-bmdma-ioport
+
+The series was tested by confirming that breakpoints on the CMD646-specific
+BMDMA registers were being hit and that my test Debian install ISO still
+boots under qemu-system-sparc64.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1] https://patchew.org/QEMU/20230422150728.176512-1-shentey@gmail.com/
+
+
+Mark Cave-Ayland (5):
+  cmd646: checkpatch fixes
+  cmd646: create separate header and QOM type for CMD646_IDE
+  cmd646: use TYPE_CMD646_IDE instead of hardcoded "cmd646-ide" string
+  cmd646: rename cmd646_bmdma_ops to bmdma_ops
+  cmd646: move device-specific BMDMA registers to separate memory region
+
+ hw/alpha/dp264.c        |   4 +-
+ hw/ide/cmd646.c         | 122 ++++++++++++++++++++++++++++++----------
+ hw/sparc64/sun4u.c      |   4 +-
+ include/hw/ide/cmd646.h |  42 ++++++++++++++
+ 4 files changed, 139 insertions(+), 33 deletions(-)
+ create mode 100644 include/hw/ide/cmd646.h
+
+-- 
+2.30.2
+
 
