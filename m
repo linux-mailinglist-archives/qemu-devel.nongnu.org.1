@@ -2,88 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBB1729EEE
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1EF729F0C
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:48:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7cph-000439-QF; Fri, 09 Jun 2023 10:11:17 -0400
+	id 1q7dSH-00034Z-Bn; Fri, 09 Jun 2023 10:51:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7cpf-0003uk-KA; Fri, 09 Jun 2023 10:11:15 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7cpd-0000h8-UF; Fri, 09 Jun 2023 10:11:15 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b1aecef94fso19967221fa.3; 
- Fri, 09 Jun 2023 07:11:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686319870; x=1688911870;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vpw0xLuydvT7GFr8RIfSnERhs9PDAhGa5JWXYO3jpus=;
- b=UIOwuwZhErCneu5quKb9AJV/VDaZZ3fuDcai4rDM+Arcl8BTAXrYnjc3IUHju05mAu
- y2e5C+yJjuU62m8n08g281YQ2AOdHzfVd/P8Gwa0kI694k/v+z5o7wRYbsOGu21kcmcy
- jGfGkD1/ok/zYLTsgbs+fmaRbXIkIg+BT0D8A8FRq27N1sLuCS+m8Sup/f6re0LByE0/
- Rcprg3ugGZgmXDMjZ0PNjpzlFuPRYsnOB4LKCKBvekQcF3w7GIj6ns0QoODhwBWVJYTT
- /syX3kZFJux+mow3Hjit92VtB48XJQNkhXxNMczlbqBqDWOgZ8sOHP4cZmArxv0SigXT
- 7O2A==
-X-Gm-Message-State: AC+VfDxLnypWLrw5dyFq+3gyJaB4zUCbJrJ96cmYwcbMrKkpyP6W3c6B
- FVc6u4w1kJNpRnyCxn/9T6g6Udff9uMA/uym
-X-Google-Smtp-Source: ACHHUZ7XrVyNzOqZ6E+NvIzKIT6PgWoWIvWZbizLuwbfr4mI5gkvw1xyHF7U424VxeKOZ4/HlcUkMw==
-X-Received: by 2002:a2e:9256:0:b0:2b1:e6eb:1bbc with SMTP id
- v22-20020a2e9256000000b002b1e6eb1bbcmr1001157ljg.32.1686319870522; 
- Fri, 09 Jun 2023 07:11:10 -0700 (PDT)
-Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
- [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
- s4-20020a2e98c4000000b002b1a8e9d728sm396323ljj.64.2023.06.09.07.11.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Jun 2023 07:11:10 -0700 (PDT)
-Received: by flawful.org (Postfix, from userid 112)
- id 51A811763; Fri,  9 Jun 2023 16:11:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319869; bh=wq7rsN/ynAZulkdl9oezyNlPiXKk6FZZrfXY0CHj0x0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=reUXXUrSEy1F7XcCoWqS8dS+3n216HXp2NASLFTFrBPSlhan89nmM8RdB3HgAOMZe
- OaMj75usJqs+xJ88d5NBSvrMDUhazFVrj+7mp63AqbjJ4SAyeQL1CrrfL8y0vgJqm6
- duhSxKvfeDk4h7E6IREyldZPm7PZ1DSUqXoGhYPo=
-Received: from x1-carbon.lan (unknown [129.253.182.58])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id E6CDE1746;
- Fri,  9 Jun 2023 16:09:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319791; bh=wq7rsN/ynAZulkdl9oezyNlPiXKk6FZZrfXY0CHj0x0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=usYoMw5F+2178HSpbL+VV0Pn+z56UYzCB3hLKeDaVbIcH0e6mSPcPChn195+Dx041
- 8TOhqV3Cb3k7LWwNkWQKkJCFpSs8iQoq2aIPhCnK0NSOaI654acxyMQMe3VyiU/Ggh
- NFK/PX9NSuocIfewZVu6vsRmsG51rUtBmjhKGcoQ=
-From: Niklas Cassel <nks@flawful.org>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v3 8/8] hw/ide/ahci: fix broken SError handling
-Date: Fri,  9 Jun 2023 16:08:44 +0200
-Message-Id: <20230609140844.202795-9-nks@flawful.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230609140844.202795-1-nks@flawful.org>
-References: <20230609140844.202795-1-nks@flawful.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (Exim 4.90_1)
+ (envelope-from <2eeee9fb69ae76cc3783462790981e2a69c3b20e@lizzy.crudebyte.com>)
+ id 1q7dSE-00032V-OF
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:51:06 -0400
+Received: from lizzy.crudebyte.com ([91.194.90.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <2eeee9fb69ae76cc3783462790981e2a69c3b20e@lizzy.crudebyte.com>)
+ id 1q7dSB-0008WK-0H
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:51:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=lizzy; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=X9OngP7WLrmiNjB9OHAZGXN3jxGoGIr0dQHeTAFlTBQ=; b=mKNHu
+ rdoTZYCDa1i4TL9vPRPYGL/39daworCzVEjdKJxkMH5cW/MtQU8e7x39nka14LT1O4uT0CLWfcDmG
+ +c+5Y0w7GP78BYazxExK77pM+DbWtCr0Kh21VL6t0LoWX64ma6QlekVuR4ziWZ7x1h7jjB2unXd8a
+ ejGvKQHtQ177OJgAn3QcvpddVfNfIgxfUXt7wbsVj3bR1xigxAokBOk2O41PBwoluYGtwVBx5BhwQ
+ e/FNDg/vnIY+aybIxN63XHZ92pFJL9CldrfWOwmwap9juaj59b8KJA0XkPO5qm7AM0IqLb1C+P6wp
+ IkCMhbMZ+vRBhxkP9jIHdiCe72J8Q==;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Fri, 9 Jun 2023 16:17:14 +0200
+Subject: [PATCH] 9pfs: deprecate 'proxy' backend
+To: qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>
+Message-Id: <E1q7czB-0000OX-12@lizzy.crudebyte.com>
+Received-SPF: none client-ip=91.194.90.13;
+ envelope-from=2eeee9fb69ae76cc3783462790981e2a69c3b20e@lizzy.crudebyte.com;
+ helo=lizzy.crudebyte.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,50 +59,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is in
+bad shape. Using the 'proxy' backend was already discouraged for safety
+reasons before and we recommended to use the 'local' backend instead,
+but now it is time to officially deprecate the 'proxy' backend.
 
-When encountering an NCQ error, you should not write the NCQ tag to the
-SError register. This is completely wrong.
-
-The SError register has a clear definition, where each bit represents a
-different error, see PxSERR definition in AHCI 1.3.1.
-
-If we write a random value (like the NCQ tag) in SError, e.g. Linux will
-read SError, and will trigger arbitrary error handling depending on the
-NCQ tag that happened to be executing.
-
-In case of success, ncq_cb() will call ncq_finish().
-In case of error, ncq_cb() will call ncq_err() (which will clear
-ncq_tfs->used), and then call ncq_finish(), thus using ncq_tfs->used is
-sufficient to tell if finished should get set or not.
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
- hw/ide/ahci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ MAINTAINERS               |  7 +++++++
+ docs/about/deprecated.rst | 17 +++++++++++++++++
+ fsdev/qemu-fsdev.c        |  5 +++++
+ meson.build               |  2 +-
+ softmmu/vl.c              |  5 +++++
+ 5 files changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index ef6c9fc378..d0a774bc17 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1012,7 +1012,6 @@ static void ncq_err(NCQTransferState *ncq_tfs)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 436b3f0afe..185d694b2e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2118,13 +2118,20 @@ S: Odd Fixes
+ W: https://wiki.qemu.org/Documentation/9p
+ F: hw/9pfs/
+ X: hw/9pfs/xen-9p*
++X: hw/9pfs/9p-proxy*
+ F: fsdev/
++X: fsdev/virtfs-proxy-helper.c
+ F: docs/tools/virtfs-proxy-helper.rst
+ F: tests/qtest/virtio-9p-test.c
+ F: tests/qtest/libqos/virtio-9p*
+ T: git https://gitlab.com/gkurz/qemu.git 9p-next
+ T: git https://github.com/cschoenebeck/qemu.git 9p.next
  
-     ide_state->error = ABRT_ERR;
-     ide_state->status = READY_STAT | ERR_STAT;
--    ncq_tfs->drive->port_regs.scr_err |= (1 << ncq_tfs->tag);
-     qemu_sglist_destroy(&ncq_tfs->sglist);
-     ncq_tfs->used = 0;
- }
-@@ -1022,7 +1021,7 @@ static void ncq_finish(NCQTransferState *ncq_tfs)
-     /* If we didn't error out, set our finished bit. Errored commands
-      * do not get a bit set for the SDB FIS ACT register, nor do they
-      * clear the outstanding bit in scr_act (PxSACT). */
--    if (!(ncq_tfs->drive->port_regs.scr_err & (1 << ncq_tfs->tag))) {
-+    if (ncq_tfs->used) {
-         ncq_tfs->drive->finished |= (1 << ncq_tfs->tag);
++virtio-9p-proxy
++F: hw/9pfs/9p-proxy*
++F: fsdev/virtfs-proxy-helper.c
++S: Obsolete
++
+ virtio-blk
+ M: Stefan Hajnoczi <stefanha@redhat.com>
+ L: qemu-block@nongnu.org
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 0743459862..9b2c780365 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -343,6 +343,23 @@ the addition of volatile memory support, it is now necessary to distinguish
+ between persistent and volatile memory backends.  As such, memdev is deprecated
+ in favor of persistent-memdev.
+ 
++``-fsdev proxy`` and ``-virtfs proxy`` (since 8.1)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++The 9p ``proxy`` filesystem backend driver has been deprecated and will be
++removed in a future version of QEMU. Please use ``-fsdev local`` or
++``-virtfs local`` for using the ``local`` 9p filesystem backend instead.
++
++The 9p ``proxy`` backend was originally developed as an alternative to the 9p
++``local`` backend. The idea was to enhance security by dispatching actual low
++level filesystem operations from 9p server (QEMU process) over to a separate
++process (the virtfs-proxy-helper binary). However this alternative never gained
++momentum. The proxy backend is much slower than the local backend, hasn't seen
++any development in years, and showed to be less secure, especially due to the
++fact that its helper daemon must be run as root, whereas with the local backend
++QEMU is typically run as unprivileged user and allows to tighten behaviour by
++mapping permissions et al.
++
+ 
+ Block device options
+ ''''''''''''''''''''
+diff --git a/fsdev/qemu-fsdev.c b/fsdev/qemu-fsdev.c
+index 3da64e9f72..242f54ab49 100644
+--- a/fsdev/qemu-fsdev.c
++++ b/fsdev/qemu-fsdev.c
+@@ -133,6 +133,11 @@ int qemu_fsdev_add(QemuOpts *opts, Error **errp)
      }
  
+     if (fsdriver) {
++        if (strncmp(fsdriver, "proxy", 5) == 0) {
++            warn_report("'-fsdev proxy' is deprecated, use '-fsdev local' "
++                        "instead");
++        }
++
+         for (i = 0; i < ARRAY_SIZE(FsDrivers); i++) {
+             if (strcmp(FsDrivers[i].name, fsdriver) == 0) {
+                 break;
+diff --git a/meson.build b/meson.build
+index 34306a6205..05c01b72bb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4170,7 +4170,7 @@ if have_block
+   summary_info += {'Block whitelist (ro)': get_option('block_drv_ro_whitelist')}
+   summary_info += {'Use block whitelist in tools': get_option('block_drv_whitelist_in_tools')}
+   summary_info += {'VirtFS (9P) support':    have_virtfs}
+-  summary_info += {'VirtFS (9P) Proxy Helper support': have_virtfs_proxy_helper}
++  summary_info += {'VirtFS (9P) Proxy Helper support (deprecated)': have_virtfs_proxy_helper}
+   summary_info += {'Live block migration': config_host_data.get('CONFIG_LIVE_BLOCK_MIGRATION')}
+   summary_info += {'replication support': config_host_data.get('CONFIG_REPLICATION')}
+   summary_info += {'bochs support':     get_option('bochs').allowed()}
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index b0b96f67fa..e60648b591 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -3102,6 +3102,11 @@ void qemu_init(int argc, char **argv)
+                     error_report("Usage: -virtfs fsdriver,mount_tag=tag");
+                     exit(1);
+                 }
++                if (strncmp(qemu_opt_get(opts, "fsdriver"), "proxy", 5) == 0) {
++                    warn_report("'-virtfs proxy' is deprecated, use "
++                                "'-virtfs local' instead");
++                }
++
+                 fsdev = qemu_opts_create(qemu_find_opts("fsdev"),
+                                          qemu_opts_id(opts) ?:
+                                          qemu_opt_get(opts, "mount_tag"),
 -- 
-2.40.1
+2.30.2
 
 
