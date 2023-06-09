@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AF672A491
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 22:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB8872A49F
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 22:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ia2-0001zC-Tt; Fri, 09 Jun 2023 16:19:30 -0400
+	id 1q7ia7-00020Z-00; Fri, 09 Jun 2023 16:19:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q7ia1-0001yy-8K; Fri, 09 Jun 2023 16:19:29 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ id 1q7ia4-0001zq-TG; Fri, 09 Jun 2023 16:19:32 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q7iZz-00009L-P7; Fri, 09 Jun 2023 16:19:29 -0400
+ id 1q7ia3-00009y-DT; Fri, 09 Jun 2023 16:19:32 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 5CEDC21A7A;
- Fri,  9 Jun 2023 20:19:26 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CD37721A37;
+ Fri,  9 Jun 2023 20:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1686341966; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1686341969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vFwsJTPWJty3/T05QzFhYEKl4bsab+BWn3aE/jqF4R4=;
- b=jIG0CYfylW1Hc90egWl7UJIgp3HMUJfvjqNp2C2VF2i/GzNxPtZVVOAp19JUq/XesT7z0r
- nQbBYJPQpXBY8Z7AP+kONODf1c7I4JiLCNNAOq/U8O3raLkRqXvaGVK9Rd1KV4pTX/H8FN
- rRqJbF95tGyV1mBbk2FQmOQSjho/gqY=
+ bh=Jh5sG1xHrngl1FNbbZPSUScxdD6RZ8Ufzb6l9Teg74M=;
+ b=WbzjSUiipfucxhWysqpze0E4zNjJfxnOTZvE//o9H/eXOyrp+bQjnkLG+CXkdGi1zDEM05
+ q4xuaK8kYvVYI01ZGOWeW/B0l7mA/jtTuslyjOWHGfpRGhsMwhDOLfF1bE3XsIfzeM2qU7
+ +kevUTPDFOne/CljiH6enAVxI4epBK0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1686341966;
+ s=susede2_ed25519; t=1686341969;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vFwsJTPWJty3/T05QzFhYEKl4bsab+BWn3aE/jqF4R4=;
- b=xYSfuXEQ7jTqCoFz75uSc8nhlbN0ivH+5cn/ZzxJnXemMDNeg1X+zP5pDabZQPNC3NDHne
- Nnda1ZfJqCH3joAw==
+ bh=Jh5sG1xHrngl1FNbbZPSUScxdD6RZ8Ufzb6l9Teg74M=;
+ b=A8yVtKHsYmRY2AnvMfds3rVDk4s6FhpCo7N2P+GlYDSkgk//BUJU8qet4QMjO3VQxECO5a
+ PjI1SOvQuMOUynBQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 024A5139C8;
- Fri,  9 Jun 2023 20:19:22 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D50E6139C8;
+ Fri,  9 Jun 2023 20:19:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id SGvnLUqJg2R/SwAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 09 Jun 2023 20:19:22 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id OGC/JU6Jg2R/SwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 09 Jun 2023 20:19:26 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Jo=C3=A3o=20Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
  Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
- Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-Subject: [PATCH v2 03/10] block: Allow the wrapper script to see functions
- declared in qapi.h
-Date: Fri,  9 Jun 2023 17:19:03 -0300
-Message-Id: <20230609201910.12100-4-farosas@suse.de>
+ Eric Blake <eblake@redhat.com>
+Subject: [PATCH v2 04/10] block: Temporarily mark
+ bdrv_co_get_allocated_file_size as mixed
+Date: Fri,  9 Jun 2023 17:19:04 -0300
+Message-Id: <20230609201910.12100-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230609201910.12100-1-farosas@suse.de>
 References: <20230609201910.12100-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -90,40 +89,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches will add co_wrapper annotations to functions
-declared in qapi.h. Add that header to the set of files used by
-block-coroutine-wrapper.py.
+Some callers of this function are about to be converted to run in
+coroutines, so allow it to be executed both inside and outside a
+coroutine while we convert all the callers.
+
+This will be reverted once all callers of bdrv_do_query_node_info run
+in a coroutine.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- block/meson.build                  | 1 +
- scripts/block-coroutine-wrapper.py | 1 +
- 2 files changed, 2 insertions(+)
+ include/block/block-io.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/meson.build b/block/meson.build
-index fb4332bd66..7ad6a396a4 100644
---- a/block/meson.build
-+++ b/block/meson.build
-@@ -150,6 +150,7 @@ block_gen_c = custom_target('block-gen.c',
-                                       '../include/block/dirty-bitmap.h',
-                                       '../include/block/block_int-io.h',
-                                       '../include/block/block-global-state.h',
-+                                      '../include/block/qapi.h',
-                                       '../include/sysemu/block-backend-global-state.h',
-                                       '../include/sysemu/block-backend-io.h',
-                                       'coroutines.h'
-diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
-index d4a183db61..814b62df26 100644
---- a/scripts/block-coroutine-wrapper.py
-+++ b/scripts/block-coroutine-wrapper.py
-@@ -44,6 +44,7 @@ def gen_header():
- #include "block/block-gen.h"
- #include "block/block_int.h"
- #include "block/dirty-bitmap.h"
-+#include "block/qapi.h"
- """
+diff --git a/include/block/block-io.h b/include/block/block-io.h
+index 43af816d75..f31e25cf56 100644
+--- a/include/block/block-io.h
++++ b/include/block/block-io.h
+@@ -87,7 +87,7 @@ int64_t co_wrapper_mixed_bdrv_rdlock bdrv_getlength(BlockDriverState *bs);
+ int64_t coroutine_fn GRAPH_RDLOCK
+ bdrv_co_get_allocated_file_size(BlockDriverState *bs);
  
+-int64_t co_wrapper_bdrv_rdlock
++int64_t co_wrapper_mixed_bdrv_rdlock
+ bdrv_get_allocated_file_size(BlockDriverState *bs);
  
+ BlockMeasureInfo *bdrv_measure(BlockDriver *drv, QemuOpts *opts,
 -- 
 2.35.3
 
