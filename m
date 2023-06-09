@@ -2,64 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BF572A29E
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 20:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B42B772A2A5
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 20:55:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7hDJ-00011z-3v; Fri, 09 Jun 2023 14:51:57 -0400
+	id 1q7hGT-00060p-21; Fri, 09 Jun 2023 14:55:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7hDG-00011H-Vb; Fri, 09 Jun 2023 14:51:55 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7hDF-0002vl-99; Fri, 09 Jun 2023 14:51:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=BjIXwPrt4L4/BuNkHvOZ69CiJDN7mTCQ/Qs0TuUfOgM=; b=jBlfasiRs19XtRnaUGye42j8RK
- eBMbNUvl5H3sYgVgjawiMhewpfbeXRxNGp9wdBcY8p2a4ay4tP088SEaZjpnre8e9Oc7YXn8oFx9b
- w7QkiRWCgK1YuEQnKa/mWNQZagUXnaGhd1xM4GMQb31Ajnciara1peZORxIPaJNzIReYjNE459bFa
- xbJ2G56iUn3jrQ0R0Jyf/3MSA577l36K7cp8CqwnMU5DVlvk3BZ8Yn2nxQ/B1HZ5gJoCdE+YTXvpB
- YTBBJt6yCjTsm8UFaOtZlTtbKNUlSonAzTsxumWZOH98b2r+7RCtM6sDp6lZgJaYsj2eg2IwjygNJ
- kvK7AQMThXbuG3vcjjx7cu8Z5tDwMcX1VXPRW+UUHFMQDi14fvHwo+Z+xNkYvpPK6rbOCvXlWf0Hi
- FtVJJgob+ZYKTBlL6oBLP6x3uboPa/aSaEYA5DlWjzmZVeanC7CodTe/7erKhSCWvZ+8OWc/Q7C8B
- He3X2Fb78A1KJlc0EWWnDBGnnhlmFIC9iqArB0J2f/1R1Teot6j+xO6GGGGOtwNwvdVrPPZEnZ3ut
- +UYJk9s4hPqbuH4c+mt5R74nFOuLKKsV2tYrQFnPC2So8gnIZULssorzrgkk/jvpuj0kWtURz2Bmi
- 72eEHDbtSGxagA6iE42eSQGKkI9lz8C1H4A502dWk=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7hD6-0000p5-Ra; Fri, 09 Jun 2023 19:51:48 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: jsnow@redhat.com, shentey@gmail.com, qemu-devel@nongnu.org,
- qemu-block@nongnu.org
-Date: Fri,  9 Jun 2023 19:51:19 +0100
-Message-Id: <20230609185119.691152-6-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
-References: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q7hGP-00060P-5u
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 14:55:09 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q7hGN-00049h-KW
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 14:55:08 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5445ef3ef1eso1004645a12.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 11:55:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686336906; x=1688928906;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NSa2TqVpO7VWFTaChUl5Klq/d7SCYiq5CUpPCygi03A=;
+ b=SJvuZ+qKYwejL8YLhKlfNjdlh+Y5YHBWq8duglHnfp6kOkmj8/5PJcr8GHLKGHU3o/
+ UUWtqPN31LE0wkmzMiVSpPdWutl1TOjMUMXpFYcMztYsg9PWbL4EsmwvYBrvZloc80DH
+ xXfQLMo4WpCEDWdQxo/s8NwIIV/IlTk7zM9LArl1rHrY0ieRKiO/fIRNPuMsXmOJIBzG
+ Q/lg5z0prHZSyYEllrYLFNzdStGKzemGNyiFCynZpxE+VqYu0QNJAP7Rlg9PfCpkXgQD
+ G7UNb2WnbaooGLozKvQHMyWK1ccXYPoa/OyCAObMJAKJgrUviM9Rp1NaiofqjQNsdJGp
+ 9qrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686336906; x=1688928906;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NSa2TqVpO7VWFTaChUl5Klq/d7SCYiq5CUpPCygi03A=;
+ b=UzjbCYkJcX39qB2Tq1mtHDxmycdcr2yfgy1HdbmoOxSOnnGpgxk0TuFma7JSBiBvCS
+ auXYnBgOohZtdLn58qndfSqB5OzGszP+k3d9i/zp6K41RAbsb0aAdGZ2N8OQMJh0++B2
+ szoyi1s36NsSb4NMW18rrPEukyMWaqjbQ7HXoaLhDDlyhE1T65245TV6rP0p4fMnNrlo
+ NygqQckMlNfnpCpy2sRfLZo8KIK7VitKyDnOagY1uo29SQ8vCrbuZCT64dnuZ1s+PbEx
+ ozUQ38uiGOVK1mJCMgNx7WnBLdVCVN993dFgHWa5q0QJZl7/NmM0KVGtXGnQiy2Wfo/S
+ qqtg==
+X-Gm-Message-State: AC+VfDw09Lc/vVK6CnDkJRjGYexwgLl7CEo67iuOYAXeZbC3oJGetCdX
+ TDI9p5JKM4T8UMdlRFBztTCOgQ==
+X-Google-Smtp-Source: ACHHUZ7A/W6dD0Yr/hW/XWfJ45fkenSNae6U3HWtdjKm63RBbSL/fL25+ZiTBfgRK+K+jaaGgdIceA==
+X-Received: by 2002:a17:902:dacc:b0:1af:c1a7:3bb5 with SMTP id
+ q12-20020a170902dacc00b001afc1a73bb5mr2299215plx.4.1686336905913; 
+ Fri, 09 Jun 2023 11:55:05 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:20be:c4cb:f609:8cca?
+ ([2602:ae:1598:4c01:20be:c4cb:f609:8cca])
+ by smtp.gmail.com with ESMTPSA id
+ t6-20020a170902e84600b001a65fa33e62sm3603138plg.154.2023.06.09.11.55.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 09 Jun 2023 11:55:05 -0700 (PDT)
+Message-ID: <e3cbbf73-21c2-f91c-572a-13b4bb271770@linaro.org>
+Date: Fri, 9 Jun 2023 11:55:03 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] tcg/tci: Fix MemOpIdx operand index for 3-operand memops
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20230608162925.677598-1-richard.henderson@linaro.org>
+ <cb9be1e8-889c-f315-8a8d-18b81dda3f4a@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <cb9be1e8-889c-f315-8a8d-18b81dda3f4a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 5/5] cmd646: move device-specific BMDMA registers to separate
- memory region
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,203 +96,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The aim here is to eliminate any device-specific registers from the main BMDMA
-bar memory region so it can potentially be moved into the shared PCI IDE device.
+On 6/8/23 09:58, Philippe Mathieu-Daudé wrote:
+> On 8/6/23 18:29, Richard Henderson wrote:
+>> Cut and paste error from the 4-operand memops.
+>>
+>> Fixes: ab64da797740 ("tcg/tci: Adjust passing of MemOpIdx")
+> 
+> I had this patch tagged for review but you were quicker
+> (not sure I'd have caught the issue although)
+> 
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   tcg/tci/tcg-target.c.inc | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> 
 
-For each BMDMA bus create a new cmd646-bmdma-specific memory region representing
-the device-specific BMDMA registers and then map them using aliases onto the
-existing BMDMAState memory region.
+Applied to master, though it hasn't completely greened the board.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/ide/cmd646.c         | 111 +++++++++++++++++++++++++++++++---------
- include/hw/ide/cmd646.h |   4 ++
- 2 files changed, 90 insertions(+), 25 deletions(-)
 
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index 9103da581f..dd495f2e1b 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -90,7 +90,6 @@ static uint64_t bmdma_read(void *opaque, hwaddr addr,
-                            unsigned size)
- {
-     BMDMAState *bm = opaque;
--    PCIDevice *pci_dev = PCI_DEVICE(bm->pci_dev);
-     uint32_t val;
- 
-     if (size != 1) {
-@@ -101,19 +100,9 @@ static uint64_t bmdma_read(void *opaque, hwaddr addr,
-     case 0:
-         val = bm->cmd;
-         break;
--    case 1:
--        val = pci_dev->config[MRDMODE];
--        break;
-     case 2:
-         val = bm->status;
-         break;
--    case 3:
--        if (bm == &bm->pci_dev->bmdma[0]) {
--            val = pci_dev->config[UDIDETCR0];
--        } else {
--            val = pci_dev->config[UDIDETCR1];
--        }
--        break;
-     default:
-         val = 0xff;
-         break;
-@@ -127,7 +116,6 @@ static void bmdma_write(void *opaque, hwaddr addr,
-                         uint64_t val, unsigned size)
- {
-     BMDMAState *bm = opaque;
--    PCIDevice *pci_dev = PCI_DEVICE(bm->pci_dev);
- 
-     if (size != 1) {
-         return;
-@@ -138,23 +126,10 @@ static void bmdma_write(void *opaque, hwaddr addr,
-     case 0:
-         bmdma_cmd_writeb(bm, val);
-         break;
--    case 1:
--        pci_dev->config[MRDMODE] =
--            (pci_dev->config[MRDMODE] & ~0x30) | (val & 0x30);
--        cmd646_update_dma_interrupts(pci_dev);
--        cmd646_update_irq(pci_dev);
--        break;
-     case 2:
-         bm->status = (val & 0x60) | (bm->status & 1) |
-                      (bm->status & ~val & 0x06);
-         break;
--    case 3:
--        if (bm == &bm->pci_dev->bmdma[0]) {
--            pci_dev->config[UDIDETCR0] = val;
--        } else {
--            pci_dev->config[UDIDETCR1] = val;
--        }
--        break;
-     }
- }
- 
-@@ -181,6 +156,91 @@ static void bmdma_setup_bar(PCIIDEState *d)
-     }
- }
- 
-+static uint64_t cmd646_bmdma_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    BMDMAState *bm = opaque;
-+    PCIDevice *pci_dev = PCI_DEVICE(bm->pci_dev);
-+    uint32_t val;
-+
-+    if (size != 1) {
-+        return ((uint64_t)1 << (size * 8)) - 1;
-+    }
-+
-+    switch (addr & 3) {
-+    case 1:
-+        val = pci_dev->config[MRDMODE];
-+        break;
-+    case 3:
-+        if (bm == &bm->pci_dev->bmdma[0]) {
-+            val = pci_dev->config[UDIDETCR0];
-+        } else {
-+            val = pci_dev->config[UDIDETCR1];
-+        }
-+        break;
-+    default:
-+        val = 0xff;
-+        break;
-+    }
-+
-+    trace_bmdma_read_cmd646(addr, val);
-+    return val;
-+}
-+
-+static void cmd646_bmdma_write(void *opaque, hwaddr addr, uint64_t val,
-+                               unsigned size)
-+{
-+    BMDMAState *bm = opaque;
-+    PCIDevice *pci_dev = PCI_DEVICE(bm->pci_dev);
-+
-+    if (size != 1) {
-+        return;
-+    }
-+
-+    trace_bmdma_write_cmd646(addr, val);
-+    switch (addr & 3) {
-+    case 1:
-+        pci_dev->config[MRDMODE] =
-+            (pci_dev->config[MRDMODE] & ~0x30) | (val & 0x30);
-+        cmd646_update_dma_interrupts(pci_dev);
-+        cmd646_update_irq(pci_dev);
-+        break;
-+    case 3:
-+        if (bm == &bm->pci_dev->bmdma[0]) {
-+            pci_dev->config[UDIDETCR0] = val;
-+        } else {
-+            pci_dev->config[UDIDETCR1] = val;
-+        }
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps cmd646_bmdma_ops = {
-+    .read = cmd646_bmdma_read,
-+    .write = cmd646_bmdma_write,
-+};
-+
-+static void cmd646_bmdma_setup(PCIIDEState *d)
-+{
-+    CMD646IDEState *s = CMD646_IDE(d);
-+    BMDMAState *bm;
-+    int i;
-+
-+    /* Setup aliases for device-specific BMDMA registers */
-+    for (i = 0; i < 2; i++) {
-+        bm = &d->bmdma[i];
-+        memory_region_init_io(&s->bmdma_mem[i], OBJECT(d), &cmd646_bmdma_ops,
-+                              bm, "cmd646-bmdma", 4);
-+        memory_region_init_alias(&s->bmdma_mem_alias[i][0], OBJECT(d),
-+                                 "cmd646-bmdma[1]", &s->bmdma_mem[i], 0x1, 1);
-+        memory_region_add_subregion(&bm->extra_io, 0x1,
-+                                    &s->bmdma_mem_alias[i][0]);
-+        memory_region_init_alias(&s->bmdma_mem_alias[i][1], OBJECT(d),
-+                                 "cmd646-bmdma[3]", &s->bmdma_mem[i], 0x3, 1);
-+        memory_region_add_subregion(&bm->extra_io, 0x3,
-+                                    &s->bmdma_mem_alias[i][1]);
-+    }
-+}
-+
- static void cmd646_update_irq(PCIDevice *pd)
- {
-     int pci_level;
-@@ -289,6 +349,7 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
- 
-     bmdma_setup_bar(d);
-     pci_register_bar(dev, 4, PCI_BASE_ADDRESS_SPACE_IO, &d->bmdma_bar);
-+    cmd646_bmdma_setup(d);
- 
-     /* TODO: RST# value should be 0 */
-     pci_conf[PCI_INTERRUPT_PIN] = 0x01; /* interrupt on pin 1 */
-diff --git a/include/hw/ide/cmd646.h b/include/hw/ide/cmd646.h
-index 4780b1132c..5329964533 100644
---- a/include/hw/ide/cmd646.h
-+++ b/include/hw/ide/cmd646.h
-@@ -29,10 +29,14 @@
- #define TYPE_CMD646_IDE "cmd646-ide"
- OBJECT_DECLARE_SIMPLE_TYPE(CMD646IDEState, CMD646_IDE)
- 
-+#include "exec/memory.h"
- #include "hw/ide/pci.h"
- 
- struct CMD646IDEState {
-     PCIIDEState parent_obj;
-+
-+    MemoryRegion bmdma_mem[2];
-+    MemoryRegion bmdma_mem_alias[2][2];
- };
- 
- #endif
--- 
-2.30.2
-
+r~
 
