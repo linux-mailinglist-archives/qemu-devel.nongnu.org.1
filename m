@@ -2,168 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BF2729EF0
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3725C729EF8
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:45:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7dAU-0003iE-0O; Fri, 09 Jun 2023 10:32:46 -0400
+	id 1q7dBN-00041i-NO; Fri, 09 Jun 2023 10:33:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q7dAS-0003hu-Mm
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:32:44 -0400
-Received: from mga06b.intel.com ([134.134.136.31] helo=mga06.intel.com)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q7dBH-000413-LA
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:33:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q7dAQ-0004s3-BI
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:32:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686321162; x=1717857162;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=HEdwR3yB5DMoGsnDLTWUmptEYJCraUKyYtCKd0mmyPw=;
- b=Xsyuxc8RTx/8/w0662sgU2lyV9GJh/tSuTqaaWmL7osR5wsaAmfn2gh5
- ak3CvX93wEEVBVtqmz4sQoBZApdDl9N2obR4qEp5mZ8rISFQXFQhwi2t8
- g7wBRS4nEEmSxM7X08nA9qsBi6vZlKqhxzqbCqYLig9I9NKFx7jedZByr
- 87CfjmdGJsn4kqvOhiWEzIVsdgRRe+W8UKXoCNKe4GM49wT7aVVWDSBQN
- nFyPjwmZK+xvZ2bR8O7LMLfCWI/XnamnSFrVLlspMsy7c2I/dpr0UoVBj
- O8SxOiFn2XFWA+V3CuLdxPAPJBH5++s/qxku+u9pnYVVyuI62WxJcHYZP A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="421199669"
-X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; d="scan'208";a="421199669"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jun 2023 07:32:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="710378457"
-X-IronPort-AV: E=Sophos;i="6.00,229,1681196400"; d="scan'208";a="710378457"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orsmga002.jf.intel.com with ESMTP; 09 Jun 2023 07:32:31 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 9 Jun 2023 07:32:30 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Fri, 9 Jun 2023 07:32:30 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.174)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Fri, 9 Jun 2023 07:32:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=huANxuNqGltu7vR4HpTyb1DB/CvzLIvj6EcyI9qANHdWZnmxHKnFGjqN8wYEcE9/Q1qWqWBKa4kpIMApEBbqY0542uhAm5lS86kM/GMvtVyrt0LxZqvlHzEBP5GeB6alWyOwvgz0hDLBsxW8vb0dYg24/pNGXAsvEoTS2GU3C8hB8jgI+0x/TigpJJZgZ/12s9XX1i5L92UxkSG/LYe/WviUzTX02SOf75iE9msZcj5cfdgXY8fKHgvg9xebRSlpWUuxPcdX7GobXowzt4a6ADhGCHaOCEnUTNnKWSyZH0zqkc+e8bnomWKf8jJsJviXEeAxJSz+fpNMrvY+jshUTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=roD+rYwJVgWx2D/Fn5sPtOiJ8ghXf5s1x+UmbnU0i2o=;
- b=avmT/j9Pw/X1Lj52yNCVtVfInQTSObDHMm2rQX6GfUG+4zr9+0lz8Cab637tBOaTI1QMtZfWaD+8+koacNR1o00TkanTZrfyepMBi6gURQXJT3Q/K79fooqJAxTQpTJRTa5JMIuZwOVyOzBFRt7kdPJ3N2E62I9GIQmyAuk3HHA9IfqaOEUItztQZ8tuyAF6vNpiiprgLNgfm02t1cjjllVORxrZbUrUXnv2x/Xj5hq1jH90QqAd/SUhC7rkxZmssYGgxiwM4dr2+htRAYzWh+beIR4+M0DoZFZokfgtHCrKxEJRzjQCqJp5t1E9EvGpX47Hj3e3CiPF+x7Lb0dCkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BY5PR11MB4500.namprd11.prod.outlook.com (2603:10b6:a03:1c3::24)
- by BN9PR11MB5547.namprd11.prod.outlook.com (2603:10b6:408:104::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.44; Fri, 9 Jun
- 2023 14:32:30 +0000
-Received: from BY5PR11MB4500.namprd11.prod.outlook.com
- ([fe80::db38:4ad3:bc43:5602]) by BY5PR11MB4500.namprd11.prod.outlook.com
- ([fe80::db38:4ad3:bc43:5602%4]) with mapi id 15.20.6455.030; Fri, 9 Jun 2023
- 14:32:30 +0000
-Message-ID: <da39dc7a-4741-7c1e-fc64-ac2bf76e4354@intel.com>
-Date: Fri, 9 Jun 2023 22:32:18 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v14 08/10] Adding info [tb-list|tb] commands to HMP (WIP)
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Richard Henderson <richard.henderson@linaro.org>,
- <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>, "Vanderson M. do Rosario"
- <vandersonmr2@gmail.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Dr. David Alan Gilbert"
- <dave@treblig.org>
-References: <20230530083526.2174430-1-fei2.wu@intel.com>
- <20230530083526.2174430-9-fei2.wu@intel.com>
- <387127a0-4030-32b9-ccbb-db2f95bd618b@linaro.org>
- <dddb5c1d-be72-15a7-97c3-eb306acd656f@intel.com>
- <ffe308e6-8d20-3282-a3b8-a9d6474fe7eb@intel.com>
- <CAFEAcA_YGEHouLDdnEHUUeYDiEgjY4W83-XjzPyjDTGzf2+Qdg@mail.gmail.com>
-From: "Wu, Fei" <fei2.wu@intel.com>
-In-Reply-To: <CAFEAcA_YGEHouLDdnEHUUeYDiEgjY4W83-XjzPyjDTGzf2+Qdg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR04CA0004.apcprd04.prod.outlook.com
- (2603:1096:4:197::22) To BY5PR11MB4500.namprd11.prod.outlook.com
- (2603:10b6:a03:1c3::24)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q7dBF-00053c-JF
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:33:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686321205;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EYEAzTo5ZGuSQdlfqeiqW7OP3oEFdMwM3YkaxG0uRZ8=;
+ b=LFZHV3EUqUGuCcFCCY+mNwwHw8SIu0KjxpO3Q9haTf38/gsHIK7ssrNwt2sqfzKoMnjgIG
+ Gbx/HF6FRBsFl0Zd926oVxhgnUc+ul6yK0zf50SW6uBXGIIcBKLSqKO5UqwXDVBwIonELd
+ OvLb/bWbApxVv4Yp5FS9jlhuyf3Ce14=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-K-rhgzthN0Wu2P5AXgUCJg-1; Fri, 09 Jun 2023 10:33:24 -0400
+X-MC-Unique: K-rhgzthN0Wu2P5AXgUCJg-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-568fd72993cso62774227b3.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 07:33:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686321204; x=1688913204;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EYEAzTo5ZGuSQdlfqeiqW7OP3oEFdMwM3YkaxG0uRZ8=;
+ b=J99+NIMH3IJiJ8zfloG4g7k7dYudlAaSojk5Z+jtQtz/zAT8Z5BZNb12kC7b93uYuf
+ elhDR8GosapXpkNreeKuOcuGtxqU/OMLLN4ECdA5sUWcpIYdi8MsV7RcY3yNZCNveRF2
+ ShmlVUXDfzLAyZYWBkiG3VF5fVZ73sNrFeo0936vF/lhPpzWj11ZTUhfzvVp2zlbmuGK
+ ehqv0HXbjwaoF+Ifm+IeNfpBs7cNKDRYPr3OElncX2jvnOZL7YWPYGd6/mBdBz0i+90n
+ xw249QsYcM/QgM1JuITyCHXHO5BPXTvU8Tmz1qQ1ToBznBgIdKGh7ASVNXshFuas1wo9
+ iXqg==
+X-Gm-Message-State: AC+VfDwY9UJQgKvwpoV9jbet6l/zNoRxLgRKivs/epOh5G+7ChEd7Mm6
+ nWC11CXN1XqepspVGVSrrbWZBn6viiOjksaqu+L6bgjbyz/N2N8izLy149WYpC5Zv4oXOyFvDx2
+ ob9ErV68YjJP1u7LLI1OhdxnDJhcIvZE=
+X-Received: by 2002:a81:8397:0:b0:565:b76d:82c8 with SMTP id
+ t145-20020a818397000000b00565b76d82c8mr2050263ywf.5.1686321203907; 
+ Fri, 09 Jun 2023 07:33:23 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6laW8DgT3cQDP3DzkwzuE8w6gNB1nFUoa40FaohlrNx7Wl0LweE4Var+TyjaG9fQfkVaBo+p+lBiWAgZ7gUhg=
+X-Received: by 2002:a81:8397:0:b0:565:b76d:82c8 with SMTP id
+ t145-20020a818397000000b00565b76d82c8mr2050242ywf.5.1686321203604; Fri, 09
+ Jun 2023 07:33:23 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR11MB4500:EE_|BN9PR11MB5547:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e486c45-391e-46e5-0651-08db68f65ad8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /ZAqCi8LAFSt50iZbpc6bWei4V5RNCOIJGnEod6aV/bbaBeiz12vC5O265zMqLQv3cjDuOdwgQ5b6HdV4SR3M0fGhnlqX2MowwRzc+fhjUixafC1TQN3C7uZ/N4Ay1BbeXksKMVb8rki9QzgF2H9R6MsVUtxglUrbUdEZgaoHlhxJ31uxGwBbuaQUWdbE+D+7eTYc64vSjCxa6mJ+HShryt4QpDj1JKmUElsY1xkHPEGKGIDNgxjWArVIkYfIqTEHkRn9ELAYrRAm4V6hbGLWrD366lvefTSRUcInmO5/aluP0I9Y58JG+aK3nRJOIibPrn9n60x2y8QNbI1zPUffJEn0TS7QGktZ4S56x+HpaHqtoRKogOi6O83HA2L9M85exqR4Mjgsyw4KJuvDAddD/MZKy7aCj+2hEtvZn+HhBpLiJx5Xe3lnwT56/LCoS2cBh5+e55POle5ZV+vciOUD0dfK+xJsj8T8CbkyO+LvRFQpT9K3/lpvMWDfYtxr/xXS22+f7XV/eLIjmQBgYCCmmQAK4xwAl3fcvzwlQDQ8waeO+DgOqx6HG5jpdhsKXlINGy0K1VsctTbzg6XWIPqKCylTMuUy8Rd4dHiIAIPBAvcuU75web6rho+Zvnt/O3KWIjN2TVz/4dUuy0KD+Pv5w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR11MB4500.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(396003)(346002)(136003)(39860400002)(376002)(451199021)(31696002)(36756003)(86362001)(54906003)(478600001)(6916009)(4326008)(316002)(66946007)(66556008)(66476007)(6666004)(6486002)(8936002)(8676002)(41300700001)(5660300002)(2906002)(82960400001)(38100700002)(2616005)(53546011)(6512007)(6506007)(26005)(83380400001)(186003)(31686004)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c0w1TzE4YnpuNGtxYk00L3dhdTdNT0I2ZGdKZEZobXhHZmtVb0QrNkNHdXFR?=
- =?utf-8?B?NTAyOVo4Y3NwM1ZBS2oyOGxPcW1WMWc4akNwdE1JSVozYkdZeTlQc3hURExZ?=
- =?utf-8?B?QjFSZlpDV2o3RnBrSXBtNFFCbE9HVE1KcHAzTEVUQ1dweGsxaGFZMnE3Vk0y?=
- =?utf-8?B?Z3JwaS9pOWt2Z21WT1JIeVBxT2JieVdZcm1oajk4aHl4c09USlAycnNKWG9p?=
- =?utf-8?B?WlFuRm1kYU9xN2k0bGY3akhoT1ZrK21oTkhBRHhYQTV0ODhzTzE1YUJWWUxa?=
- =?utf-8?B?UUw1RjJxdGhNUExCMWoxdGlZQ3pOWTRSUEU2bjNwOWxhdTE5NUYwMFVtaDgz?=
- =?utf-8?B?K0crVjRmRmJ3VUNROGp2eEtEYTBHZnQ3N215K3oybkswNTF3dVN1QlhSOU43?=
- =?utf-8?B?eFFVQWc5aGtOZXlyOUVwWFlLaVVnS3h3akxCV0c3WXlhZU1QTDhMOVlMckpE?=
- =?utf-8?B?SWZnTDFXUTh4QXFFdFRRVHJVVHRLZTdDd3lXdnU1TzBRcUdVVjJuTkMzM2pD?=
- =?utf-8?B?Mis0WXM2REtSYmhkVndtZ2dvNGlDVXpsYy9OMXQ3RE9TS0x4Uk9PeGpQSFRS?=
- =?utf-8?B?RkVCKzFjS2tlM0NEM3poTkhqVnBCSmdRak1EVlVhYTlxYlllQ1d0ZHVvVUxw?=
- =?utf-8?B?TEJQZGpKbjFCVnVZWGdWbXNoUEs2RzMyekFndkd3UEtEUU9McEt5N1lUeTMw?=
- =?utf-8?B?TGlzY3pyS0tnbXVNTEZpSjFPQVBjLzVobzRqN0FPVzcvQmYvWmpjdUNpK3JQ?=
- =?utf-8?B?bnBkWWlIWEl5TEJicGxVRm5UUnNmVEJxUEcxSHBzK2hhRFhPQWY4bjMrQ2FM?=
- =?utf-8?B?aWNqQkVhTnYzY0FUaitHT0pFdXAvdTBLNElmanhpZGNMSldFYVFvRk1hNFhy?=
- =?utf-8?B?dUdNQm15VHRmOVJlR1hFUHJhUysvTVNCMEp1eUFIQWpvUVhQVWxuOWcxdmhk?=
- =?utf-8?B?STluaUIvb0tkQUFvaWUxYlNvVnZrQVRqV3RtbDNmTHNUWTM2MGFNMDZFOXd1?=
- =?utf-8?B?eHdmMzR1S1o0YmgxUVl4a3BVYXRnN1YyZ1dQNkZVZ1Z1R3l2SENzcVp2NkFn?=
- =?utf-8?B?RmJyTXlsUTBvb1lFSDEzYkhTWk9GR0hpUlgxN1JkQXJmTXZWRWVSMnJzTkx1?=
- =?utf-8?B?OExhY3BzR1FCWmJZZGVVbnlhcW9VTXJiOEc4QUVUR1RzTVlreWdDYkVFZU9H?=
- =?utf-8?B?bE1nRmQydGlQSzhUMTRaRDBubEFjWnRmMlk1TUQ0QjZadUttQ3pNR3A2MGpY?=
- =?utf-8?B?MTcvb2FDZEFHbkppMWVoQlJ2OGZkcWRCUlN6K3VzY0JsL3J1anZLUHlqM2N1?=
- =?utf-8?B?d1dzaitybDJJVGtLOW5lTks0QjRETzVGTXgvNFVhM25tYXRIRm9yTEhWMXoy?=
- =?utf-8?B?cUx6K2F5TWxwWmVmbXdIZDVQdUVZWjYzQ0ZUOHB2WjdsbzlVMng2eVlkNGdD?=
- =?utf-8?B?SkRFN1AxWTBYb0dScjhCeVZPMjFJYmExdlNxbWhFVXh5Y3Q2SVFZQVpqNXZT?=
- =?utf-8?B?WVd6ODd3UHR4eFZCYmlLdzBkTE1LZ1Jib0xsdmJ4YmZuNW1PeXlKV2hnZ2dQ?=
- =?utf-8?B?YzNiZmI2ejJtcFdmdnR1Y3V4VkhuMDVKR3pCZ2ZRZkRENjJsTkxzTENldnBV?=
- =?utf-8?B?YnhnRDVpZmp2azRXQmNMQ0IvU3dISmpXSmlhallOODJDZUVsRmdPQVl3TUVB?=
- =?utf-8?B?MXRNeTFEbHBRMFBPYzJGbzVEUE5LSk1XN1ZkVzJkendNQUd0TlluOEtHL2lx?=
- =?utf-8?B?eHRWbkMzUmJtdTVyc1AyRUVDU0l0N0lGMVk2Y2JHU0VDUDF3QzhvZEF2aEdw?=
- =?utf-8?B?V1RvTXZqRlFBWjV4MGZPY3FyYVFEY3h1OWxsWGo4ZGlrcEJ0WmhkYVhMOXZq?=
- =?utf-8?B?YUhLSTFLbStUb3JQNU93UTdoQkNadlpoc3cyMVovdld4eDdUdVZFKzJuZzJ3?=
- =?utf-8?B?MzZ0N2JrSTVLZDlac2Z5RHUwZTQ4Wkd4SGp1S2JWaWRJM3c1cndVL2pYOXlZ?=
- =?utf-8?B?YlcwTVBDcFpOQVcwdEk2WGR4WmJvSjhna01OMDBTdnR2UDA1SVdGbWxGRFU5?=
- =?utf-8?B?UWU2YVJlRXZGd25GeTNQUHhFU2YxcnNLSEdUbmZXRUJ2bmk5RWgydm1KQnNx?=
- =?utf-8?Q?oIq75wanx0DXlgPvsZwR90Ut2?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e486c45-391e-46e5-0651-08db68f65ad8
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4500.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 14:32:30.1717 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kEq2ZyfRRtMAzGbvRalxeLzOs7XKHnogRSsYVOtGAgF5B/kSRpyqF23lWWUQ/4iEFYmvhpekGsRVseLS1MmaZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5547
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.31; envelope-from=fei2.wu@intel.com;
- helo=mga06.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <CAJaqyWdV6pKP0SVZciMiu_HN86aJriZh0HBiwHNkO7+yErXnBA@mail.gmail.com>
+ <c59d2d67-d31a-b6e6-54c5-5b81c18d9547@oracle.com>
+ <CAJaqyWegsVHEVZt2_mf4wA8MuF7UXmU=UbHJfwyzURDRxfRgmg@mail.gmail.com>
+ <bff286b8-0103-1698-c77d-736417396405@oracle.com>
+In-Reply-To: <bff286b8-0103-1698-c77d-736417396405@oracle.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Fri, 9 Jun 2023 16:32:47 +0200
+Message-ID: <CAJaqyWcwFgEH3MCOAhHe20P3oy2_aq2BUkTA9_7wePsT8=GoAg@mail.gmail.com>
+Subject: Re: Reducing vdpa migration downtime because of memory pin / maps
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>, 
+ Michael Tsirkin <mst@redhat.com>, Longpeng <longpeng2@huawei.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, Eli Cohen <elic@nvidia.com>, 
+ Parav Pandit <parav@nvidia.com>, Juan Quintela <quintela@redhat.com>, 
+ David Gilbert <dgilbert@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -179,46 +101,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/2023 5:23 PM, Peter Maydell wrote:
-> On Thu, 8 Jun 2023 at 08:44, Wu, Fei <fei2.wu@intel.com> wrote:
->>
->> On 6/7/2023 8:49 PM, Wu, Fei wrote:
->>> On 6/1/2023 10:40 AM, Richard Henderson wrote:
->>>> Did you really need something different than monitor_disas?  You almost
->>>> certainly want to read physical memory and not virtual anyway.
->>>>
->>> Yes, it's usually okay for kernel address, but cannot re-gen the code
->>> for userspace virtual address (guest kernel panic on riscv guest). I
->>> tried monitor_disas() but it failed to disas too:
->>>     monitor_disas(mon, mon_get_cpu(mon), tbs->phys_pc, num_inst, true);
->>>
->>> How to use this function correctly?
->>>
->> 'phys_pc' in tbs is returned by get_page_addr_code_hostp(), which is not
->> guest phys address actually, but ram_addr_t instead, so it's always
->> wrong for monitor_disas. After some dirty changes, tbs can record the
->> guest pa. Now we can disas both kernel and user space code. But still,
->> no code is regenerated, disas in 'info tb' is just a convenient way to 'xp'.
->>
->> Is there any existing function to convert ram_addr_t to guest pa?
-> 
-> Such a function would not be well-defined, because a block of RAM
-> as specified by a ram_addr_t could be present at (aliased to) multiple
-> guest physical addresses, or even currently not mapped to any guest
-> physical address at all. And it could be present at different physical
-> addresses for different vCPUs.
-> 
-Thank you, Peter. What's the scenario of the last different physical
-addresses for different vCPUs?
+On Fri, Jun 9, 2023 at 12:39=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> =
+wrote:
+>
+>
+> On 6/7/23 01:08, Eugenio Perez Martin wrote:
+> > On Wed, Jun 7, 2023 at 12:43=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.c=
+om> wrote:
+> >> Sorry for reviving this old thread, I lost the best timing to follow u=
+p
+> >> on this while I was on vacation. I have been working on this and found
+> >> out some discrepancy, please see below.
+> >>
+> >> On 4/5/23 04:37, Eugenio Perez Martin wrote:
+> >>> Hi!
+> >>>
+> >>> As mentioned in the last upstream virtio-networking meeting, one of
+> >>> the factors that adds more downtime to migration is the handling of
+> >>> the guest memory (pin, map, etc). At this moment this handling is
+> >>> bound to the virtio life cycle (DRIVER_OK, RESET). In that sense, the
+> >>> destination device waits until all the guest memory / state is
+> >>> migrated to start pinning all the memory.
+> >>>
+> >>> The proposal is to bind it to the char device life cycle (open vs
+> >>> close),
+> >> Hmmm, really? If it's the life cycle for char device, the next guest /
+> >> qemu launch on the same vhost-vdpa device node won't make it work.
+> >>
+> > Maybe my sentence was not accurate, but I think we're on the same page =
+here.
+> >
+> > Two qemu instances opening the same char device at the same time are
+> > not allowed, and vhost_vdpa_release clean all the maps. So the next
+> > qemu that opens the char device should see a clean device anyway.
+>
+> I mean the pin can't be done at the time of char device open, where the
+> user address space is not known/bound yet. The earliest point possible
+> for pinning would be until the vhost_attach_mm() call from SET_OWNER is
+> done.
 
-For this specific case, I found I don't have to convert ram_addr_t to
-gpa, the real requirement is converting ram_addr_t to hva, this one
-seems well defined using qemu_map_ram_ptr(0, ram_addr) ?
+Maybe we are deviating, let me start again.
 
-Thanks,
-Fei.
+Using QEMU code, what I'm proposing is to modify the lifecycle of the
+.listener member of struct vhost_vdpa.
 
-> thanks
-> -- PMM
+At this moment, the memory listener is registered at
+vhost_vdpa_dev_start(dev, started=3Dtrue) call for the last vhost_dev,
+and is unregistered in both vhost_vdpa_reset_status and
+vhost_vdpa_cleanup.
+
+My original proposal was just to move the memory listener registration
+to the last vhost_vdpa_init, and remove the unregister from
+vhost_vdpa_reset_status. The calls to vhost_vdpa_dma_map/unmap would
+be the same, the device should not realize this change.
+
+One of the concerns was that it could delay VM initialization, and I
+didn't profile it but I think that may be the case. I'm not sure about
+the right fix but I think the change is easy to profile. If that is
+the case, we could:
+* use a flag (listener->address_space ?) and only register the
+listener in _init if waiting for a migration, do it in _start
+otherwise.
+* something like io_uring, where the map can be done in parallel and
+we can fail _start if some of them fails.
+
+> Actually I think the counterpart vhost_detach_mm() only gets
+> handled in vhost_vdpa_release() at device close time is a resulting
+> artifact and amiss of today's vhost protocol - the opposite RESET_OWNER
+> call is not made mandatory hence only seen implemented in vhost-net
+> device today. One qemu instance could well exec(3) another new qemu
+> instance to live upgrade itself while keeping all emulated devices and
+> guest alive. The current vhost design simply prohibits this from happenin=
+g.
+>
+
+Ok, I was not aware of this. Thanks for explaining it!
+
+>
+> >
+> >>>    so all the guest memory can be pinned for all the guest / qemu
+> >>> lifecycle.
+> >> I think to tie pinning to guest / qemu process life cycle makes more
+> >> sense. Essentially this pinning part needs to be decoupled from the
+> >> iotlb mapping abstraction layer, and can / should work as a standalone
+> >> uAPI. Such that QEMU at the destination may launch and pin all guest's
+> >> memory as needed without having to start the device, while awaiting an=
+y
+> >> incoming migration request. Though problem is, there's no existing vho=
+st
+> >> uAPI that could properly serve as the vehicle for that. SET_OWNER /
+> >> SET_MEM_TABLE / RESET_OWNER seems a remote fit.. Any objection against
+> >> introducing a new but clean vhost uAPI for pinning guest pages, subjec=
+t
+> >> to guest's life cycle?
+> >>
+> > I think that to pin or not pin memory maps should be a kernel
+> > decision, not to be driven by qemu.
+>
+> It's kernel decision for sure. I am with this part.
+>
+> > I'm not against it if needed, but
+> > let me know if the current "clean at close" address your concerns.
+>
+> To better facilitate QEMU exec (live update) case, I propose we add new
+> vhost uAPI pair for explicit pinning request - which would live with
+> user mm's, or more precisely qemu instance's lifecycle.
+>
+
+Ok I see your problem better now, but I think it should be solved at
+kernel level. Does that live update need to forcefully unpin and pin
+the memory again, or that is just a consequence of how it works the
+memory listener right now?
+
+Why not extend the RESET_OWNER to the rest of devices? It seems the
+most natural way to me.
+
+Thanks!
+
+
+> >
+> >> Another concern is the use_va stuff, originally it tags to the device
+> >> level and is made static at the time of device instantiation, which is
+> >> fine. But others to come just find a new home at per-group level or
+> >> per-vq level struct. Hard to tell whether or not pinning is actually
+> >> needed for the latter use_va friends, as they are essentially tied to
+> >> the virtio life cycle or feature negotiation. While guest / Qemu start=
+s
+> >> way earlier than that. Perhaps just ignore those sub-device level use_=
+va
+> >> usages? Presumably !use_va at the device level is sufficient to infer
+> >> the need of pinning for device?
+> >>
+> > I don't follow this. But I have the feeling that the subject of my
+> > original mail is way more accurate if I would have said just "memory
+> > maps".
+>
+> I think the iotlb layer in vhost-vdpa just provides the abstraction for
+> mapping, not pinning. Although in some case mapping implicitly relies on
+> pinning for DMA purpose, it doesn't have to tie to that in uAPI
+> semantics. We can do explicit on-demand pinning for cases for e.g.
+> warming up device at live migration destination.
+>
+>
+> >
+> > I still consider the way to fix it is to actually delegate that to the
+> > kernel vdpa, so it can choose if a particular ASID needs the pin or
+> > not. But let me know if I missed something.
+>
+> You can disregard this for now. I will discuss that further with you
+> guys while bind_mm and per-group use_va stuffs are landed.
+>
+> Thanks!
+> -Siwei
+>
+>
+>
+> >
+> > Thanks!
+> >
+> >> Regards,
+> >> -Siwei
+> >>
+> >>
+> >>> This has two main problems:
+> >>> * At this moment the reset semantics forces the vdpa device to unmap
+> >>> all the memory. So this change needs a vhost vdpa feature flag.
+> >>> * This may increase the initialization time. Maybe we can delay it if
+> >>> qemu is not the destination of a LM. Anyway I think this should be
+> >>> done as an optimization on top.
+> >>>
+> >>> Any ideas or comments in this regard?
+> >>>
+> >>> Thanks!
+> >>>
+>
 
 
