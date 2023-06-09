@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D6E72A12F
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F9B72A133
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:25:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7fqb-00072U-QN; Fri, 09 Jun 2023 13:24:25 -0400
+	id 1q7fqU-0006yW-JB; Fri, 09 Jun 2023 13:24:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aaron@os.amperecomputing.com>)
- id 1q7fqI-0006zJ-77; Fri, 09 Jun 2023 13:24:07 -0400
-Received: from mail-bn8nam04on20731.outbound.protection.outlook.com
- ([2a01:111:f400:7e8d::731]
+ id 1q7fqF-0006xb-N2; Fri, 09 Jun 2023 13:24:03 -0400
+Received: from mail-bn8nam04on20706.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8d::706]
  helo=NAM04-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aaron@os.amperecomputing.com>)
- id 1q7fqF-0004ne-Ek; Fri, 09 Jun 2023 13:24:05 -0400
+ id 1q7fqD-0004ny-Ho; Fri, 09 Jun 2023 13:24:03 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jd3PAjxmUyMr5feI4zITj6TQjaZD1P4Ylq12Hx+Rq5k3GdLAFR2ijTp0RZ6SnEADMCpWRUwreylYe5nlN9ejXhtcbh8ZRQfMOUzqETsWQG4578zyHBC2NktqbYYZIpeBK2sOzdjU6uZKOVqSZsf9+LV/zRxtoPbHzueuz7gNW6bc8MHhPLEpc+1uTcKbJE305LH1x3H6EHqbd+Rwxzaej4gvnHcuuDi6PNvctrD+QtsJF59Y3hOootNozMhohYkNjBJf3L6+3wAiAxyG6ofaXVfynTFSjtmohWw8golCokgqiTUl8IjixTzAByXrjv1tjnUJM+fI52GghXDlE2eQWQ==
+ b=FHEtUtNejARcOTdorTlSsIB1PukojolY4NghIEnx7szMC9e+FupeWP20vhlQdYxuyzC7mAkY3CHZqBc22npk4gDqaZ/s53O5YDl4mc70JP45WU6ZALFqEdWHXD9lwUbCFqUphJ6YIL2fAP97Lx5lgElda4ykt0WtPKoWCrC92fJAte9TcREJ056Q2HIpTpdJ1gsgApJJ+4pZwUK0O1XIsb6g9GKWx4cE0f0y6mJlT1MQfjfG9W0ugFDHtTsbttTclIp6vn8/VREoP498/8XW4+pRRX24xIAUWzgE0FN7J0c5ibkq63lfVr0NSeGjfYAH+Hi9xUyDOgx+/FeBNHAEWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bxn4vPThl+baVuxP8ItkNRPLUFSSsevGoNesf5gj2Ic=;
- b=g+051uCMqi7e+0aHu14Q6TnQVNpZzY+r+Mhaz7YkUu0dym5mlxcFHkq1Y7JYYoNnWYR9jRNQ4pxbi6TFanRQD0O1DGEVC3i6s7Lac+r0JF694vyBjjVMhRYTBV/O57oUvvOjDoR0LsHJF1mlCWE/mgyQTsUNlSDzOdrE08nMvQKHmv+nYrpYFhc9W0RW/SPBLgkfWMwgrq64GvKseRj/tpEm6j94mOtls9lKwWkHQRGlFDR9z+ADKUGsz1m0a1RN0QgxWrjh/WWGyD8J8d6XzV3H2M3iy35mvlLFRiNymyWi0d4Z/088NV9EttO6/+yS4SLsUOUtnc0bhUasZl7YoA==
+ bh=lFsA/NscXzn1m1UVysR91UL7Upk5Y9pzyb2gUJB6ATE=;
+ b=WuE1xQsZZJg859s9C+YedstWUJcm53mDKsAqvA/2Q5OJycrV3unSjtQ2WmY1nKIM6dAOcePieSuL83E3CCmlYiHRL75nO0OMLbSQN3LGboyAMyShh9hbTvRtNg3Xvao+oIKA4JHrVgXYBA9bmRIGtWsH+Ln/kt+oDmJRKNf8amKN6k+AvCqVE/uB9bKp+P61YATVYfJW5c9V0seLfmqFL5rkEg6o2HQ2kjKFwWr/WfY6Jysb0EI5dfQPVzNy9bDmlm42360pNjVzlbi5NuMa46JclbUYitQLHezm3xD9agKAnSkf8ecNTpuoageheR/0omIh8BvMLPrsN56QqbXpZw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -32,18 +32,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bxn4vPThl+baVuxP8ItkNRPLUFSSsevGoNesf5gj2Ic=;
- b=eaWAJAS0gQw7SCEX9mujn1X5ZmyfZXeeIl3BNZrxTPsNnkEB07JAHM34c24QNxxnFmD36xhdwesq+9IDHa33V5eTvd1mN4oVlSMK85VSPslEnXh25LaMeoysgT8oclTnz1qBt5suNvk/RLe2rdMovef972KNSkSdDkdjegG6csU=
+ bh=lFsA/NscXzn1m1UVysR91UL7Upk5Y9pzyb2gUJB6ATE=;
+ b=GupRWy2J0k5LCl9CZWQRSQ4z5Uut7xPvaW6KHtxaUyrrVIkuRd74eSEUDJL7oGmym1PMCcXKGgcSeIsXqejgdMiSNmYNXZDX1YshoSmxYtDFgE5mCVun1RaUX6cOxbDQTYXHtNivnDdX9mh1C2lcIfKu9gepHORIHJDus4qhyBA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from CH0PR01MB7124.prod.exchangelabs.com (2603:10b6:610:f3::20) by
  SJ2PR01MB8126.prod.exchangelabs.com (2603:10b6:a03:4fb::6) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.33; Fri, 9 Jun 2023 17:23:54 +0000
+ 15.20.6455.33; Fri, 9 Jun 2023 17:23:55 +0000
 Received: from CH0PR01MB7124.prod.exchangelabs.com
  ([fe80::9a78:4703:c6a9:16ed]) by CH0PR01MB7124.prod.exchangelabs.com
  ([fe80::9a78:4703:c6a9:16ed%6]) with mapi id 15.20.6455.030; Fri, 9 Jun 2023
- 17:23:54 +0000
+ 17:23:55 +0000
 From: Aaron Lindsay <aaron@os.amperecomputing.com>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -51,10 +51,9 @@ To: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: Aaron Lindsay <aaron@os.amperecomputing.com>
-Subject: [PATCH v3 6/8] targer/arm: Inform helpers whether a PAC instruction
- is 'combined'
-Date: Fri,  9 Jun 2023 13:23:22 -0400
-Message-Id: <20230609172324.982888-7-aaron@os.amperecomputing.com>
+Subject: [PATCH v3 7/8] target/arm: Implement v8.3 FPAC and FPACCOMBINE
+Date: Fri,  9 Jun 2023 13:23:23 -0400
+Message-Id: <20230609172324.982888-8-aaron@os.amperecomputing.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609172324.982888-1-aaron@os.amperecomputing.com>
 References: <20230609172324.982888-1-aaron@os.amperecomputing.com>
@@ -66,55 +65,55 @@ X-ClientProxiedBy: CH0PR03CA0009.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR01MB7124:EE_|SJ2PR01MB8126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11085a27-53bd-4cdd-3937-08db690e4ce0
+X-MS-Office365-Filtering-Correlation-Id: a8291e95-9fb9-4c4a-92b1-08db690e4d3f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: VocPE2Zcb8HFQEZeuW9HlVVRep/JLOim1MIYPOc/ocA4MQIn0aq+icPxyxA+XYG+w81G2jrsKMKzMqTIALIPG+O2mEWjQVIZqvoP9y4yfnSAg1xfJNK+khOdIFRYz7b/jsFzWC1zqLExvQsbpT6p1nRopUZX9QIfinrY1VxP3CUWNj3VRxTt4DVyziXs5v1mZrzl9PyMtltKT2MWrHIY/baQlV1tCMIbZsagO7ePk8cR3NOZhab5vJnP0PMobHCOchty7tZFVEiR9Zp+LC04wbDyFxXLqKLU378JgwpCvemwHi4Kv6k8Df8Sm5hbjy7Fxu34zAKmUCrlY67YsxvlWdy8wA+LuzCl9Iwzmap8mKq7gK+W92nYhbW8STxADeIvy0o4kFwXC6aJUGYVyS+WxByUG6QEnutYY1Dx/39u2ukKwyALeGF/zPKtETEzzHnvjCayjvAjfEZgMqWSPE00/Z8pRzeXB3uZ1yX9uNuvmuikZhjOWMtTL5pBBjk0Kmg1zp7lZAYtTTsoWLp3nSADTD9V9KgPEuufNpfvwblDdIJLw1s1SxhqLVKfacZw0mKdSEsCwfDbPCffS9vx63vKrNmBr26tS1nVLVBFhTVbSMeDmd2l2O8Ldndlnp2Ba+kr
+X-Microsoft-Antispam-Message-Info: nFThhXFcXE9tDRRpspQk1iG+zbUTIPdacdA6Z3nrHJ4OYTlacKsyVH0NO9+515JF3hpvgkzZLSnaQi2gp3JR1wivk0eQkRXOBZshFyLEzuiE0G+2vZslU0hS+lN9Tk1s/ZhP2ubKK+k7si9BKVsJkdsxVkLq0zGGLZEEt8hx2GKb0Qcb7VKUrd/KOLHCjNwYGXVWA2TH0Jg90rKtym6lOt+C1KQte5RtG2oalG/rUkylFZqfrqwWm0D6HtINXYsjLl674UbncUO0ogSR/thUkM+iV/9qT3ju6c/sGfKgLJR1GByBo115cK3cTWXBZqhiGFMPWSC8TgMyEKmoLZs8LGekNKD4n8WMi77P7cAfpxU9iVYRDkejFEs8EKZ9e1NDX2d2QfN6vhCVHt4DYfA+lkHNTYQfB+k5pUMGCNWgEYxVBsq0OwyLQFr6eSUb/JDP3qgTofJTVZrFYpWC4HMew765pylOt1KQBnRHfdRqSAuKRiDcmBkRvtQP/E2va7dVc3Qqvmieat0VEvSfUG9UJvznFE+gyXUYVPXpp+0VcKDYnrkDVMfOgPgOOrMGXv1cOIQdRW8i8/KSQNS6INlG2mLw1rRW3A8C/c0nM+eEQYE+KlaG5/IkdVeC8QTDyRBz
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR01MB7124.prod.exchangelabs.com; PTR:; CAT:NONE;
  SFS:(13230028)(4636009)(39850400004)(396003)(136003)(376002)(366004)(346002)(451199021)(8676002)(316002)(5660300002)(66946007)(66476007)(66556008)(4326008)(2906002)(8936002)(41300700001)(110136005)(52116002)(6666004)(6486002)(6512007)(26005)(1076003)(186003)(107886003)(2616005)(6506007)(83380400001)(478600001)(38350700002)(38100700002)(86362001);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?z1nLNhH/klC9HISph90jOnELFHz7jv3iQx1xkJBZnJolggBOwSKiTIjtoi+O?=
- =?us-ascii?Q?VEvzReCzwp6/Of6xBS0d8VIfs19TcjrPoHuWBbw+x2SeQ3SlgXl+JuFJyg9s?=
- =?us-ascii?Q?rBQASTS2Q1MaYnMONwxJMk+cViCjQTXyN8fICRnAaopTtcWY1ohDUlpeB2Tt?=
- =?us-ascii?Q?RX50TxAHST9ucx0Pc9oWKpnBy6fSZqtXdgE21nV2CHC9iwK/F5Jf3nVpR3S9?=
- =?us-ascii?Q?MPuD25U6FWfzNlobiw9XZLM+QUcs6UZH8KHbhYgcivVL2qt4jnmCcg/YTsH3?=
- =?us-ascii?Q?DLocTPEhmnzA80SvVoes4uwMuE0V5jdnQno/vDHOe0b37NdlTP6RykQ2kXS9?=
- =?us-ascii?Q?OlYxnDpR13xO/bxU2LaYbIyS27Zi61vwyI7LMymuAZhjoLCW+2DVIkA5Czla?=
- =?us-ascii?Q?nm1R+PtL4Oe/ArXRyzswAAtf3ag7jUUBRmnIqRM8HhipvOeHIGHopdQg3+K0?=
- =?us-ascii?Q?S65PvZZTTUMKk8LYBXl73utUFH340EqbgjYId3MbNawnlOrCBimGk/1oHV16?=
- =?us-ascii?Q?6UK3NEb0SBpwGfd9Qk3ZkwDxfzo9wtyisNc9tAy+LGgKwrpvuckL50vuPDC9?=
- =?us-ascii?Q?1UNc8/yGV47pU1DWeoESb0bA5v/upDOM9Hlm6exadrVDEqpFcoprpEn96T4C?=
- =?us-ascii?Q?W5SbwfnIIOPD8EMloXfy3IBewK14uxZfjRIz1N+sD9O0G92d8cMYVsL7s9zI?=
- =?us-ascii?Q?g12gq+XkOMz1TcdxiKrtRFcnXCmEptu3t9T6x+NRmPFQrgNivgpJQT9NzuIt?=
- =?us-ascii?Q?C7l/Fw0/TjPYs0bB7I3wTpososXWqORG43+zxeBJ1ENoHLwYxSDfsSZ3eEmJ?=
- =?us-ascii?Q?eW+jl9A1weiqcOm3HivbQzgjRJ6xJ9KVruRnPvuaHjeq34fe1Hk3K5tKvjZ+?=
- =?us-ascii?Q?D6rPrLOoV0VgguLJ8tZOv8eksPsFuUdg6yEo7mvSNotaC3JDHb1zRPSWzdkq?=
- =?us-ascii?Q?3faLLftGOQGXGf57SSr3hp/5rR3HsR4qJ9RkQMFvmSwb76eefJ3b5mfEHXe5?=
- =?us-ascii?Q?VxINpK7aHLnPlWuyDxulDmGPEQDlC/wa2qSo9PGUbQHN0Uhk2+oS7xNrM4Mt?=
- =?us-ascii?Q?m7JkPihvf0hlCeNzvJlbK1yTCZmPXgL7nmNmeEKLX973g8dcVmdaMGe0fVTG?=
- =?us-ascii?Q?GjmBH/ax2P/9P6IKK8tP0Th2ARipWL4Y7W2zNzk6b+qFBEXovtpyHJTzvIfb?=
- =?us-ascii?Q?9x+TG0Ka4P0BkNjDdsutkWgB63sXe6VCtzRr/x3StZmylWlvfBcTdvHcJWmf?=
- =?us-ascii?Q?1mrxdwVHGQHRplnKejcsXsrFSaVklyepSW5HaHEmFStAs5sTpFxQSskEEINh?=
- =?us-ascii?Q?MIuSPwWHzs4HrDUPp9KRxYImIY4dMk4CphX1AqB+TTQ9n6nUtDVGtMW+3ZBH?=
- =?us-ascii?Q?lP27CwkjVdUDONwRydr9FRdJIc3mSLPLzh8NE3zpx0/WRf2CjKgSKVVavESz?=
- =?us-ascii?Q?jrDVvph8cNvuN3reivxdJfsWAb4KEWkbaipKEiFWx00QoQHUY71CmJdjzwG/?=
- =?us-ascii?Q?5SGkDUoZFrWJJqM3hXtnICQIf15309CZfZqhJz+wMAHbwqClf1cxGjESn020?=
- =?us-ascii?Q?hg7cuVaHyWxT9PlxeXMgXWlADH90Ldj00lmwchH0U//wyZen9kGPhPJJje+b?=
- =?us-ascii?Q?2fUyUpFTalGKy+qIqyL+Zwk=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Im+KYSph2VgTG6P9gk4LYTljPCfjhgwrq+6scMB9RfkVU7Za0omgYsRbh5/e?=
+ =?us-ascii?Q?WM0AAFzihsieYrry72xk0jAR+YxwR2fCkIONVA+85U9/db/jVoUQX/ggRJbC?=
+ =?us-ascii?Q?Qiq4BgcoyUPaGbkqXAPz8MdMJ5wdMeFuMA21fLB7+fnZaroxdJJvudteVizR?=
+ =?us-ascii?Q?kcLmyHmlJGITw6B/VnvXRkiNDHYJl/WLciUWphzOALyy9A1fdCHNhakhXwxq?=
+ =?us-ascii?Q?z93PgLBFzM1ztxSmcRGXjxKA+ixdLmOwWX6ZORvh+5fUU47fP5qE32A+0jMX?=
+ =?us-ascii?Q?D2FkJwv8EA6QKlJxEgjE9tCNzSXXG1jjnttNMbA8xM6UIj87jmCB9sdNI+cS?=
+ =?us-ascii?Q?UOLaylMJSsCuEcrG3OZ+wLcXDumJmZma63YIEq0NThIxUEzUGsuU4rnb6SvE?=
+ =?us-ascii?Q?8/x9/Ab7SKOVXwRMumAsJZWzfJUdRctr6QnBYwXnv6IMCtC08Vt4/oo6ffRw?=
+ =?us-ascii?Q?0u5aK5GsrlLHNbQkDb9Ou3gCJYF7yPrPXyJlcnRrU2HvtAa0RFIawCysjb6y?=
+ =?us-ascii?Q?jFAOLgJQ94Mq8xR5VbvPFM3fjLPShX955edV1rcLXWIU+l2DNND2R9wbaUrF?=
+ =?us-ascii?Q?r1yiyk0Nenc9/DHiA3f7NqSZ9IJjAdl9D1q4f/DJtYm48gXg3vA/O2jt7/mg?=
+ =?us-ascii?Q?kt/xYo7JqGAVaAI40pYjzNYJjdQm3Qp6JSNgkIcK/Z/OuUNb9Nv9fK2jLM35?=
+ =?us-ascii?Q?zxLUxdL0jYMDEsiXyoO4dRmDUMZeS9Cf8EbK7TBQw0LjGAxC4omEqK4TpgPo?=
+ =?us-ascii?Q?5DfdDTKwfSP55WPKPsjyvOvRctkKsyBbQ4PynLJz9WolUPpoPMk714npKBNR?=
+ =?us-ascii?Q?0Myabo57rsIeIbsLlTe3VotLtEHR3A48zdLdMMQoyV3Hb6CsBFzerRdSwxq9?=
+ =?us-ascii?Q?1HCX4U+urhNoqnqkJ7X4K81EUCJhIl0YGfupE7DnqegspoZ4MJwrJ79tZTKW?=
+ =?us-ascii?Q?a1kKPLKwNb+vAkethphwDBS1g4JJ73YQRDQFJRFwEEUV9nRsR3dBDDkaHBp4?=
+ =?us-ascii?Q?vom3GMFaIGf7f7ubMiMUQIucmKJcJFLXH+sg8aUe7zEDhXCaB1TTm8lfisBb?=
+ =?us-ascii?Q?9N/GK4oez6M9t93bqavcFfXVN0K2ZvzqDZG/NaHsvWg5ENMK77Y16oTDK/eF?=
+ =?us-ascii?Q?KI0JVnEKeRrSCMMPCaZGJ1/tZQvKis7f4ctDJ2G7h+iIqCgjc7Z9EF/8R3dU?=
+ =?us-ascii?Q?Q5/pDKzMKbUly0ZYHGnrdP/nwOPVYPGVGnvhwGsKYgk8NuJWh+cKA1K+HVEO?=
+ =?us-ascii?Q?pbUClI202BqfNl3aVAUbw+d+ORzcFgmJM4QJXn2wvXTaJyxmP2+qzNYmhalt?=
+ =?us-ascii?Q?Yglo3IvNUvxYyzp5tgsMyL42xjl4quwQDzI+NrJyQR0kd3jO6+NRMls/uhPB?=
+ =?us-ascii?Q?MCbfCAVofMgS+advntIF6G9lHkZtNhx2dfdlXOOSGb2YMLFpwdcByn6sMX9X?=
+ =?us-ascii?Q?V6sZXd+x624Vq3XVSLdpWhHyOZI90EbNXFjuzWozt0PGEx3HGfSS4kIdj4Ux?=
+ =?us-ascii?Q?PEJzfkU6bFhbOogFDnkQUzI4NRP/d8RS8OiJebMIMM6KQejRf2w8fdHxa761?=
+ =?us-ascii?Q?yg1+6MgjmjjX1BRp+sXqPTwP7WRzXAM0d8c7/efa9sqoYATlfPz2cJTrMPz/?=
+ =?us-ascii?Q?0SeebO45UTL8ruN/l9SMt/0=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11085a27-53bd-4cdd-3937-08db690e4ce0
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8291e95-9fb9-4c4a-92b1-08db690e4d3f
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB7124.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 17:23:54.5207 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 17:23:55.0734 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cpwbwtbTWu+7YEHBMb5ArynMXcgApaxMTf/p8qbTr9mgSoNy59zv1vh8l5qQBF6UlY2cMyyH3q8pCTDDrVxOOJOFBIkujsiPeiIig2rVp39e7/3z+GDeLNs2TjS/rIJi
+X-MS-Exchange-CrossTenant-UserPrincipalName: dFtzHalMEJ2GnvGQ9GMxbOHBDcbtFKKNHpmyHUfHZLsIf6XPmHvNHj8Kt7YTFAal0v0FFdaxD1NbYbJKcFUdKuSUxuYPghoNsphK70O/yFoM+5zlEgd2Tfjfl/V5fWOW
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR01MB8126
-Received-SPF: pass client-ip=2a01:111:f400:7e8d::731;
+Received-SPF: pass client-ip=2a01:111:f400:7e8d::706;
  envelope-from=aaron@os.amperecomputing.com;
  helo=NAM04-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -19
@@ -138,185 +137,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An instruction is a 'combined' Pointer Authentication instruction if it
-does something in addition to PAC - for instance, branching to or
-loading an address from the authenticated pointer. Knowing whether a PAC
-operation is 'combined' is needed to implement the FPACCOMBINE feature
-for ARMv8.3.
-
 Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-a64.h    |  4 ++
- target/arm/tcg/pauth_helper.c  | 71 +++++++++++++++++++++++++++-------
- target/arm/tcg/translate-a64.c | 12 +++---
- 3 files changed, 68 insertions(+), 19 deletions(-)
+ target/arm/syndrome.h         |  7 +++++++
+ target/arm/tcg/pauth_helper.c | 16 ++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index 3d5957c11f..57cfd68569 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -90,9 +90,13 @@ DEF_HELPER_FLAGS_3(pacda, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_3(pacdb, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_3(pacga, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_3(autia, TCG_CALL_NO_WG, i64, env, i64, i64)
-+DEF_HELPER_FLAGS_3(autia_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_3(autib, TCG_CALL_NO_WG, i64, env, i64, i64)
-+DEF_HELPER_FLAGS_3(autib_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_3(autda, TCG_CALL_NO_WG, i64, env, i64, i64)
-+DEF_HELPER_FLAGS_3(autda_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_3(autdb, TCG_CALL_NO_WG, i64, env, i64, i64)
-+DEF_HELPER_FLAGS_3(autdb_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
- DEF_HELPER_FLAGS_2(xpaci, TCG_CALL_NO_RWG_SE, i64, env, i64)
- DEF_HELPER_FLAGS_2(xpacd, TCG_CALL_NO_RWG_SE, i64, env, i64)
+diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
+index d27d1bc31f..bf79c539d9 100644
+--- a/target/arm/syndrome.h
++++ b/target/arm/syndrome.h
+@@ -49,6 +49,7 @@ enum arm_exception_class {
+     EC_SYSTEMREGISTERTRAP     = 0x18,
+     EC_SVEACCESSTRAP          = 0x19,
+     EC_ERETTRAP               = 0x1a,
++    EC_PACFAIL                = 0x1c,
+     EC_SMETRAP                = 0x1d,
+     EC_INSNABORT              = 0x20,
+     EC_INSNABORT_SAME_EL      = 0x21,
+@@ -231,6 +232,12 @@ static inline uint32_t syn_smetrap(SMEExceptionType etype, bool is_16bit)
+         | (is_16bit ? 0 : ARM_EL_IL) | etype;
+ }
  
++static inline uint32_t syn_pacfail(bool data, int keynumber)
++{
++    int error_code = (data << 1) | keynumber;
++    return (EC_PACFAIL << ARM_EL_EC_SHIFT) | ARM_EL_IL | error_code;
++}
++
+ static inline uint32_t syn_pactrap(void)
+ {
+     return EC_PACTRAP << ARM_EL_EC_SHIFT;
 diff --git a/target/arm/tcg/pauth_helper.c b/target/arm/tcg/pauth_helper.c
-index b0282d1a05..278d6d36bc 100644
+index 278d6d36bc..f42945257f 100644
 --- a/target/arm/tcg/pauth_helper.c
 +++ b/target/arm/tcg/pauth_helper.c
-@@ -396,7 +396,8 @@ static uint64_t pauth_original_ptr(uint64_t ptr, ARMVAParameters param)
+@@ -395,6 +395,13 @@ static uint64_t pauth_original_ptr(uint64_t ptr, ARMVAParameters param)
+     }
  }
  
++static G_NORETURN
++void pauth_fail_exception(CPUARMState *env, bool data, int keynumber, uintptr_t ra)
++{
++    int target_el = exception_target_el(env);
++    raise_exception_ra(env, EXCP_UDEF, syn_pacfail(data, keynumber), target_el, ra);
++}
++
  static uint64_t pauth_auth(CPUARMState *env, uint64_t ptr, uint64_t modifier,
--                           ARMPACKey *key, bool data, int keynumber)
-+                           ARMPACKey *key, bool data, int keynumber,
-+                           uintptr_t ra, bool is_combined)
- {
-     ARMCPU *cpu = env_archcpu(env);
-     ARMMMUIdx mmu_idx = arm_stage1_mmu_idx(env);
-@@ -518,44 +519,88 @@ uint64_t HELPER(pacga)(CPUARMState *env, uint64_t x, uint64_t y)
-     return pac & 0xffffffff00000000ull;
- }
- 
--uint64_t HELPER(autia)(CPUARMState *env, uint64_t x, uint64_t y)
-+static uint64_t pauth_autia(CPUARMState *env, uint64_t x, uint64_t y,
-+                            uintptr_t ra, bool is_combined)
- {
-     int el = arm_current_el(env);
-     if (!pauth_key_enabled(env, el, SCTLR_EnIA)) {
-         return x;
-     }
--    pauth_check_trap(env, el, GETPC());
--    return pauth_auth(env, x, y, &env->keys.apia, false, 0);
-+    pauth_check_trap(env, el, ra);
-+    return pauth_auth(env, x, y, &env->keys.apia, false, 0, ra, is_combined);
- }
- 
--uint64_t HELPER(autib)(CPUARMState *env, uint64_t x, uint64_t y)
-+uint64_t HELPER(autia)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autia(env, x, y, GETPC(), false);
-+}
-+
-+uint64_t HELPER(autia_combined)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autia(env, x, y, GETPC(), true);
-+}
-+
-+static uint64_t pauth_autib(CPUARMState *env, uint64_t x, uint64_t y,
-+                            uintptr_t ra, bool is_combined)
- {
-     int el = arm_current_el(env);
-     if (!pauth_key_enabled(env, el, SCTLR_EnIB)) {
-         return x;
-     }
--    pauth_check_trap(env, el, GETPC());
--    return pauth_auth(env, x, y, &env->keys.apib, false, 1);
-+    pauth_check_trap(env, el, ra);
-+    return pauth_auth(env, x, y, &env->keys.apib, false, 1, ra, is_combined);
- }
- 
--uint64_t HELPER(autda)(CPUARMState *env, uint64_t x, uint64_t y)
-+uint64_t HELPER(autib)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autib(env, x, y, GETPC(), false);
-+}
-+
-+uint64_t HELPER(autib_combined)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autib(env, x, y, GETPC(), true);
-+}
-+
-+static uint64_t pauth_autda(CPUARMState *env, uint64_t x, uint64_t y,
-+                            uintptr_t ra, bool is_combined)
- {
-     int el = arm_current_el(env);
-     if (!pauth_key_enabled(env, el, SCTLR_EnDA)) {
-         return x;
-     }
--    pauth_check_trap(env, el, GETPC());
--    return pauth_auth(env, x, y, &env->keys.apda, true, 0);
-+    pauth_check_trap(env, el, ra);
-+    return pauth_auth(env, x, y, &env->keys.apda, true, 0, ra, is_combined);
- }
- 
--uint64_t HELPER(autdb)(CPUARMState *env, uint64_t x, uint64_t y)
-+uint64_t HELPER(autda)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autda(env, x, y, GETPC(), false);
-+}
-+
-+uint64_t HELPER(autda_combined)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autda(env, x, y, GETPC(), true);
-+}
-+
-+static uint64_t pauth_autdb(CPUARMState *env, uint64_t x, uint64_t y,
-+                            uintptr_t ra, bool is_combined)
- {
-     int el = arm_current_el(env);
-     if (!pauth_key_enabled(env, el, SCTLR_EnDB)) {
-         return x;
-     }
--    pauth_check_trap(env, el, GETPC());
--    return pauth_auth(env, x, y, &env->keys.apdb, true, 1);
-+    pauth_check_trap(env, el, ra);
-+    return pauth_auth(env, x, y, &env->keys.apdb, true, 1, ra, is_combined);
-+}
-+
-+uint64_t HELPER(autdb)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autdb(env, x, y, GETPC(), false);
-+}
-+
-+uint64_t HELPER(autdb_combined)(CPUARMState *env, uint64_t x, uint64_t y)
-+{
-+    return pauth_autdb(env, x, y, GETPC(), true);
- }
- 
- uint64_t HELPER(xpaci)(CPUARMState *env, uint64_t a)
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index aa93f37e21..e1e49b7325 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1508,9 +1508,9 @@ static TCGv_i64 auth_branch_target(DisasContext *s, TCGv_i64 dst,
- 
-     truedst = tcg_temp_new_i64();
-     if (use_key_a) {
--        gen_helper_autia(truedst, cpu_env, dst, modifier);
-+        gen_helper_autia_combined(truedst, cpu_env, dst, modifier);
+                            ARMPACKey *key, bool data, int keynumber,
+                            uintptr_t ra, bool is_combined)
+@@ -414,6 +421,15 @@ static uint64_t pauth_auth(CPUARMState *env, uint64_t ptr, uint64_t modifier,
+         uint64_t xor_mask = MAKE_64BIT_MASK(bot_bit, top_bit - bot_bit + 1) &
+             ~MAKE_64BIT_MASK(55, 1);
+         result = ptr ^ (pac & xor_mask);
++        if (cpu_isar_feature(aa64_fpac_combine, cpu)
++                || (cpu_isar_feature(aa64_fpac, cpu) && !is_combined)) {
++            int fpac_top = param.tbi ? 55 : 64;
++            uint64_t fpac_mask = MAKE_64BIT_MASK(bot_bit, fpac_top - bot_bit);
++            test = (result ^ sextract64(result, 55, 1)) & fpac_mask;
++            if (unlikely(test)) {
++                pauth_fail_exception(env, data, keynumber, ra);
++            }
++        }
      } else {
--        gen_helper_autib(truedst, cpu_env, dst, modifier);
-+        gen_helper_autib_combined(truedst, cpu_env, dst, modifier);
-     }
-     return truedst;
- }
-@@ -3587,11 +3587,11 @@ static void disas_ldst_pac(DisasContext *s, uint32_t insn,
- 
-     if (s->pauth_active) {
-         if (use_key_a) {
--            gen_helper_autda(dirty_addr, cpu_env, dirty_addr,
--                             tcg_constant_i64(0));
-+            gen_helper_autda_combined(dirty_addr, cpu_env, dirty_addr,
-+                                      tcg_constant_i64(0));
-         } else {
--            gen_helper_autdb(dirty_addr, cpu_env, dirty_addr,
--                             tcg_constant_i64(0));
-+            gen_helper_autdb_combined(dirty_addr, cpu_env, dirty_addr,
-+                                      tcg_constant_i64(0));
-         }
-     }
- 
+         test = (pac ^ ptr) & ~MAKE_64BIT_MASK(55, 1);
+         if (unlikely(extract64(test, bot_bit, top_bit - bot_bit))) {
 -- 
 2.25.1
 
