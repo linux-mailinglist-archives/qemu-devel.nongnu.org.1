@@ -2,102 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CFD729752
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 12:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9D9729753
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 12:47:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ZeB-0000i4-7w; Fri, 09 Jun 2023 06:47:11 -0400
+	id 1q7ZeQ-0000jQ-Tt; Fri, 09 Jun 2023 06:47:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=517b6bf9d=anthony.perard@citrix.com>)
- id 1q7Ze8-0000g6-FA
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:08 -0400
-Received: from esa3.hc3370-68.iphmx.com ([216.71.145.155])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=517b6bf9d=anthony.perard@citrix.com>)
- id 1q7Ze5-00015P-Mc
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1686307625;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dM7o+uJm3jltHB6pCR+shMRrsvJK+PlElVIJWU5Ryow=;
- b=GxMfWadfE98BMA3vfrw+7LBjzcI88LAAVe+Hi600lNZ3k+GU1Mgma4WO
- o86GYcvTaUoMtZUmSlHBqfa4legLIXxSxniz/mpgbnoPbDyRcx4njGLxN
- DOBXTfhwCAq+ENk/29XbxEI2fBDwB5O75j5ME+nigLfXaq6C1YXhMYrNC Q=;
-Authentication-Results: esa3.hc3370-68.iphmx.com;
- dkim=none (message not signed) header.i=none
-X-SBRS: 4.0
-X-MesageID: 112212280
-X-Ironport-Server: esa3.hc3370-68.iphmx.com
-X-Remote-IP: 162.221.156.123
-X-Policy: $RELAYED
-IronPort-Data: A9a23:SwSY0qrT9axPg4ExK0lFKEzLB31eBmI0YhIvgKrLsJaIsI4StFCzt
- garIBmGOf2DYWujctwnad7goU0P7cXRy4RiHAY4pCg2Hi9B8puZCYyVIHmrMnLJJKUvbq7FA
- +Y2MYCccZ9uHhcwgj/3b9ANeFEljfngqoLUUbKCYWYpA1c/Ek/NsDo788YhmIlknNOlNA2Ev
- NL2sqX3NUSsnjV5KQr40YrawP9UlKq04GtwUmAWP6gR5weAzyhNVfrzGInqR5fGatgMdgKFb
- 76rIIGRpgvx4xorA9W5pbf3GmVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0MC+7vw6hjdFpo
- OihgLTrIesf0g8gr8xGO/VQO3kW0aSrY9YrK1Dn2SCY5xWun3cBX5yCpaz5VGEV0r8fPI1Ay
- RAXABQwdz2G2KHr/Le+ENR3jPQYCNLuf6pK7xmMzRmBZRonaZXKQqGM7t5ExjYgwMtJGJ4yZ
- eJAN2ApNk6ZJUQSZBFOUslWcOSA3xETdxVRrk6VoqwmpXDe1gVr3JDmMcbPe8zMTsJQ9qqdj
- jufpT6gWEtKbLRzzxK19CyimO/XsRnQY9pPBrCmtdVPjVCqkzl75Bo+CgLg/KjRZlSFc8lEN
- 0Ue9y4qrK4z3E+mVN/wW1u/unHslgUcVtxMHvwS5wSEy66S6AGcbkABVSJpctEqtMYqAzct0
- zehht7sGHljvaOYTVqb8bGbqy70PjIaRUcYZCQERBEJpdnupo0+lAnISP5nEai8lNqzHiv/q
- xiPpTI1irFVhNYF2qGx9E3Cqz2pr5nNCAUy423/Un2g8StwYYe3YIru4l+d8PUoBIuVU1Cbs
- H8sm8GU7+cVEdeLmTDlaO8XF7G07PWXGDTbhRhkGJxJ3z2w4XOnfI1WyDhjPkptaZxCfzL1C
- GfToQRM/4RSOlOwYKZ8f4WqTcMwwsDIDd34UtjEY9wIZYJ+HCef9iZod0+W3kj3nUQsmL15M
- pCeGe60DXceDKhPyDuwTv0al7gxyUgW1W7VAJz20Rmj+b6ff2KOD6cINkOUaeI057/Cpx/am
- /5WL8aQwg9TePH/aCLQt4UUKDg3wWMTXM6s7ZYNL6jaf1QgQTt6YxPM/V8/U6hYholQyaSVw
- nS4AHJDwmrEoWbCaizfPxiPd4jTdZp4qHs6OwklMlCpx2UvbO6T0UsPS3ckVeJ5rbI+lJaYW
- 9FAIpzdWaoXFlwr7hxHNfHAQJpemANHbO5kFw6se3ABcpFpXGQlEfe0L1K0pEHi4sda3PbSQ
- oFMNSuBG/LvojiO6+6IAM9DN3vr4RAgdBtaBiMk2OV7dkT265RNICfslPIxKMxkAUydlmXAi
- 1fMW0pH/rmlT2oJHD7h3/nskmtUO7EmQhoy85fzsN5ayhU2DkL8mNQdAY5kjBjWVX/u+bXKW
- Amm56iUDRHzp34T69AUO+8yncoDCy7H++cyIvJMQC+aMDxGy9pIfhG74CW4nvcdm+cA6FPnC
- hrnFxszEezhBf4J2WU5fGINBtlvH9lN8tUOxZzZ+HnH2RI=
-IronPort-HdrOrdr: A9a23:qmGjV6rE/2DMQuuA2mcmXPMaV5obeYIsimQD101hICG9Ffb1qy
- nOppsmPHrP4wr5N0tPpTntAsi9qArnhOdICOsqTNWftXjd2FdARbsKheGO/9SKIVycygcy79
- YGT4FOTPH2EFhmnYLbzWCDYrAdKQC8gcWVbDHlvhNQcT0=
-X-Talos-CUID: 9a23:Jj4GHWyHkuQZiU80TJJ3BgUwJ9kIdyKekUvVJhWFEmxZc5mOTBy5rfY=
-X-Talos-MUID: =?us-ascii?q?9a23=3AzmdNLA44YlZvQSlSKlQjDVG1xoxY5fqgFkAVva8?=
- =?us-ascii?q?tgJHZJyFueBy4gTmOF9o=3D?=
-X-IronPort-AV: E=Sophos;i="6.00,229,1681185600"; d="scan'208";a="112212280"
-Date: Fri, 9 Jun 2023 11:46:53 +0100
-To: Stefano Stabellini <sstabellini@kernel.org>
-CC: Bernhard Beschow <shentey@gmail.com>, <mst@redhat.com>,
- <qemu-devel@nongnu.org>, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, David Woodhouse
- <dwmw@amazon.co.uk>, Eduardo Habkost <eduardo@habkost.net>, Chuck Zmudzinski
- <brchuckz@aol.com>, Aurelien Jarno <aurelien@aurel32.net>,
- =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>, Paul Durrant
- <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, Philippe
- =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH v4 0/7] Resolve TYPE_PIIX3_XEN_DEVICE
-Message-ID: <0372b3c8-fc50-4d61-83da-72748a439405@perard>
-References: <20230403074124.3925-1-shentey@gmail.com>
- <20230421033757-mutt-send-email-mst@kernel.org>
- <9EB9A984-61E5-4226-8352-B5DDC6E2C62E@gmail.com>
- <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
- <EB3E61EB-B543-4B15-94A9-C16A66437601@gmail.com>
- <ADD39905-0305-477A-8801-C1F561E0DFD4@gmail.com>
- <alpine.DEB.2.22.394.2306081542170.3803068@ubuntu-linux-20-04-desktop>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZeP-0000j6-9S
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:25 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZeN-0001AJ-4V
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:25 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-30e53cacc10so1110096f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 03:47:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686307641; x=1688899641;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HJ5HI0lL3qjrViOVTfhSFThyUieC3Zv2QHm9pLeOb3Y=;
+ b=CjcWwxj7J3aWhPFCLcAWd8QwV2klkvtWSZ8RsuH/yZovIYJFZbwJLOk53n8o4Cfdq0
+ HArgQBPMXM3YAb8fLAjxajKD7BBpu31FZtHxjD6iq+LjNpvOJhYMZIv9UOsm3UwA1Znf
+ oSpMpU3jUIIbAdKKcOB1BHINd9bxEa9ctjqw5kMTbblMthu6vsnx33btjl8ikevyv2ca
+ QcwA+r8JG2nOGoTkfqjK1AzfYRp0jvfMReeIIUGdsgO5217VTwyj/zlnsrXCJj0pp9P0
+ Uyzn5MaDFzDSl2bO1yxf/8e8Bl725KORS9bvGCGW+bKMyCTOOKwmwBWoG6G+l+1iAqR9
+ fZMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686307641; x=1688899641;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HJ5HI0lL3qjrViOVTfhSFThyUieC3Zv2QHm9pLeOb3Y=;
+ b=Pmyur8i5PsjbAkZgYIGjzylBl2iNt8+GB47if17YvF7kcvf5WsWrlw2ds/kjzrhkH+
+ 2l1dAPOBpyy477UFOYfvpOi+BQEsIJPAHBWaA1UV5t4h1l1DlsZ+1FLk+9HfaCUBijTT
+ lvuvfnOBrYrrXOGCHrwtXBIWkglfRi001DnhK8CHD7/qJluCe2Q2TbeOUnmMI9ljZlm+
+ zPrMsmHIw7NCsOvksEVqEROUUH1K+k8gq9voYvb8oM25sKK8fTvQ7fqpi2PVQIVSs3OG
+ T5kPLv6AUsFxARIz52N0aLKWkeE344NyoQEwrj/zi+ECJx694sZ20YFKN0OoxNSkoQas
+ YPDA==
+X-Gm-Message-State: AC+VfDxG11VLpm+IZ/08RlZGGpHgfue7/ws7ATDjxobJ/Ga2Hzt6opqO
+ iaCUj/khueeRK8v4KMC9EfL9RIIgnfsVmAMbsE1HEw==
+X-Google-Smtp-Source: ACHHUZ6tx/QjkUl2ar5mPangUWyyDMKCgAKUsJHt/RFW6GCk/FfPfcpuqr0AcEAvoZBfD2tQAnoZ1g==
+X-Received: by 2002:a5d:4bd0:0:b0:30a:eeee:2fba with SMTP id
+ l16-20020a5d4bd0000000b0030aeeee2fbamr558252wrt.34.1686307641228; 
+ Fri, 09 Jun 2023 03:47:21 -0700 (PDT)
+Received: from localhost.localdomain (23.171.88.92.rev.sfr.net. [92.88.171.23])
+ by smtp.gmail.com with ESMTPSA id
+ k10-20020adff5ca000000b003077a19cf75sm4108102wrp.60.2023.06.09.03.47.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 09 Jun 2023 03:47:20 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/22] target/arm/tcg: Remove inclusions of
+ 'exec/helper-[proto/gen].h'
+Date: Fri,  9 Jun 2023 12:46:55 +0200
+Message-Id: <20230609104717.95555-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2306081542170.3803068@ubuntu-linux-20-04-desktop>
-Received-SPF: pass client-ip=216.71.145.155;
- envelope-from=prvs=517b6bf9d=anthony.perard@citrix.com;
- helo=esa3.hc3370-68.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,59 +87,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anthony PERARD <anthony.perard@citrix.com>
-From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 03:43:32PM -0700, Stefano Stabellini wrote:
-> On Mon, 5 Jun 2023, Bernhard Beschow wrote:
-> > Am 22. Mai 2023 15:42:03 UTC schrieb Bernhard Beschow <shentey@gmail.com>:
-> > >
-> > >
-> > >Am 15. Mai 2023 20:52:40 UTC schrieb Stefano Stabellini <sstabellini@kernel.org>:
-> > >>On Sat, 13 May 2023, Bernhard Beschow wrote:
-> > >>> Am 21. April 2023 07:38:10 UTC schrieb "Michael S. Tsirkin" <mst@redhat.com>:
-> > >>> >On Mon, Apr 03, 2023 at 09:41:17AM +0200, Bernhard Beschow wrote:
-> > >>> >> There is currently a dedicated PIIX3 device model for use under Xen. By reusing
-> > >>> >> existing PCI API during initialization this device model can be eliminated and
-> > >>> >> the plain PIIX3 device model can be used instead.
-> > >>> >> 
-> > >>> >> Resolving TYPE_PIIX3_XEN_DEVICE results in less code while also making Xen
-> > >>> >> agnostic towards the precise south bridge being used in the PC machine. The
-> > >>> >> latter might become particularily interesting once PIIX4 becomes usable in the
-> > >>> >> PC machine, avoiding the "Frankenstein" use of PIIX4_ACPI in PIIX3.
-> > >>> >
-> > >>> >xen stuff so I assume that tree?
-> > >>> 
-> > >>> Ping
-> > >>
-> > >>I am OK either way. Michael, what do you prefer?
-> > >>
-> > >>Normally I would suggest for you to pick up the patches. But as it
-> > >>happens I'll have to likely send another pull request in a week or two
-> > >>and I can add these patches to it.
-> > >>
-> > >>Let me know your preference and I am happy to follow it.
-> > >
-> > >Hi Stefano,
-> > >
-> > >Michael's PR was merged last week. How about including this series into your PR then?
-> > 
-> > Ping
-> 
-> Sorry for the late reply, it looks like patch #3 breaks the build:
+Hi,
 
-Hi Stefano,
+This series tries to do what Richard suggested in [*]:
 
-Sorry I forgot to reply to these mails. I've sent a pull request for
-this earlier this week (along with other patches I had to send), so the
-series should be applied now.
+  Targets that have a tcg/ subdir should have helper.h.inc
+  moved into there.  At the end, include/exec/helper-gen.h
+  and include/exec/helper-proto.h become unused and go away.
 
-I guess the build issue is due to trying to apply the same patch again.
+but only for the ARM target, to first see if this is heading
+in the correct direction.
 
-Cheers,
+Instead of having TCG generated helpers included by all
+translate/helper units, they are reduced to the few places
+really needing them. I expect the build step to be slighly
+improved, since the compiler doesn't have to compile and
+track unused helpers definitions.
+
+[*] https://lore.kernel.org/qemu-devel/cad000d7-f408-9337-9328-ccb262c5fcc7@linaro.org/
+
+Philippe Mathieu-Daudé (22):
+  plugins: Remove unused 'exec/helper-proto.h' header
+  accel/tcg/cpu-exec: Use generic 'helper-proto-common.h' header
+  target/arm/tcg: Remove CONFIG_TCG #ifdef'ry check
+  target/arm/tcg: Rename helper template headers as '.h.inc'
+  target/arm/tcg: Extract iwMMXt helpers from the generic 'helper.h'
+  target/arm/tcg: Fix iwmmxt-related code style
+  target/arm/tcg: Expose some iwmmxt methods in 'translate.h'
+  target/arm/tcg: Extract iwmmxt code to translate-iwmmxt.c
+  target/arm/tcg: Reduce 'helper-iwmmxt.h.inc' inclusion
+  target/arm/tcg: Extract VFP definitions to 'helper-vfp.h.inc'
+  target/arm/tcg: Reduce 'helper-vfp.h.inc' inclusion
+  target/arm/tcg: Move neon_tbl() from op_helper.c to neon_helper.c
+  target/arm/tcg: Extract NEON definitions to 'helper-neon.h.inc'
+  target/arm/tcg: Reduce 'helper-neon.h.inc' inclusion
+  target/arm/tcg: Extract SVE2 definitions to 'helper-sve.h.inc'
+  target/arm/tcg: Reduce 'helper-sve.h.inc' inclusion
+  target/arm/tcg: Reduce 'helper-mve.h.inc' inclusion
+  target/arm/tcg: Define SME set_svcr() helper in common 'helper.h'
+  target/arm/tcg: Reduce 'helper-sme.h.inc' inclusion
+  target/arm/tcg: Reduce 'helper-a64.h.inc' inclusion
+  target/arm/tcg: Remove inclusions of 'exec/helper-[proto/gen].h'
+  tests/tcg/aarch64: Rename bti-crt.inc.c -> bti-crt.c.inc
+
+ target/arm/tcg/translate.h                    |   11 +-
+ .../tcg/{helper-a64.h => helper-a64.h.inc}    |    0
+ target/arm/tcg/helper-iwmmxt.h.inc            |  114 ++
+ .../tcg/{helper-mve.h => helper-mve.h.inc}    |    0
+ target/arm/tcg/helper-neon.h.inc              |  205 +++
+ .../tcg/{helper-sme.h => helper-sme.h.inc}    |    2 -
+ .../tcg/{helper-sve.h => helper-sve.h.inc}    |   46 +
+ target/arm/tcg/helper-vfp.h.inc               |  136 ++
+ target/arm/{helper.h => tcg/helper.h.inc}     |  488 +-----
+ accel/tcg/cpu-exec.c                          |    2 +-
+ plugins/core.c                                |    1 -
+ target/arm/debug_helper.c                     |    7 +-
+ target/arm/helper.c                           |    7 +-
+ target/arm/tcg/cpu32.c                        |    4 +-
+ target/arm/tcg/crypto_helper.c                |    6 +-
+ target/arm/tcg/helper-a64.c                   |   11 +-
+ target/arm/tcg/hflags.c                       |    6 +-
+ target/arm/tcg/iwmmxt_helper.c                |    6 +-
+ target/arm/tcg/m_helper.c                     |   12 +-
+ target/arm/tcg/mte_helper.c                   |    5 +-
+ target/arm/tcg/mve_helper.c                   |   16 +-
+ target/arm/tcg/neon_helper.c                  |   28 +-
+ target/arm/tcg/op_helper.c                    |   28 +-
+ target/arm/tcg/pauth_helper.c                 |    5 +-
+ target/arm/tcg/psci.c                         |    6 +-
+ target/arm/tcg/sme_helper.c                   |   11 +-
+ target/arm/tcg/sve_helper.c                   |   20 +-
+ target/arm/tcg/tlb_helper.c                   |    5 +-
+ target/arm/tcg/translate-a64.c                |   16 +
+ target/arm/tcg/translate-iwmmxt.c             | 1340 +++++++++++++++++
+ target/arm/tcg/translate-mve.c                |    6 +
+ target/arm/tcg/translate-neon.c               |   11 +
+ target/arm/tcg/translate-sme.c                |   16 +
+ target/arm/tcg/translate-sve.c                |    5 +
+ target/arm/tcg/translate-vfp.c                |    6 +
+ target/arm/tcg/translate.c                    | 1274 +---------------
+ target/arm/tcg/vec_helper.c                   |   26 +-
+ target/arm/vfp_helper.c                       |   11 +-
+ tests/tcg/aarch64/bti-1.c                     |    2 +-
+ tests/tcg/aarch64/bti-3.c                     |    2 +-
+ .../aarch64/{bti-crt.inc.c => bti-crt.c.inc}  |    0
+ target/arm/tcg/meson.build                    |    1 +
+ 42 files changed, 2100 insertions(+), 1804 deletions(-)
+ rename target/arm/tcg/{helper-a64.h => helper-a64.h.inc} (100%)
+ create mode 100644 target/arm/tcg/helper-iwmmxt.h.inc
+ rename target/arm/tcg/{helper-mve.h => helper-mve.h.inc} (100%)
+ create mode 100644 target/arm/tcg/helper-neon.h.inc
+ rename target/arm/tcg/{helper-sme.h => helper-sme.h.inc} (99%)
+ rename target/arm/tcg/{helper-sve.h => helper-sve.h.inc} (98%)
+ create mode 100644 target/arm/tcg/helper-vfp.h.inc
+ rename target/arm/{helper.h => tcg/helper.h.inc} (56%)
+ create mode 100644 target/arm/tcg/translate-iwmmxt.c
+ rename tests/tcg/aarch64/{bti-crt.inc.c => bti-crt.c.inc} (100%)
 
 -- 
-Anthony PERARD
+2.38.1
+
 
