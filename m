@@ -2,92 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3AD729EFF
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EE9729F7A
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:00:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7c32-000710-Ff; Fri, 09 Jun 2023 09:21:00 -0400
+	id 1q7c8i-0000VR-1s; Fri, 09 Jun 2023 09:26:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1q7c2z-00070l-Ld
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 09:20:57 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1q7c8T-0000LM-Ie; Fri, 09 Jun 2023 09:26:42 -0400
+Received: from mail-db3eur04on2138.outbound.protection.outlook.com
+ ([40.107.6.138] helo=EUR04-DB3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1q7c2w-0000TI-87
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 09:20:57 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3598fxVY019336; Fri, 9 Jun 2023 13:20:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=pRXS0BcpRehLbDUJyCMToWY2XLYbJiIzTEj6CAUITaU=;
- b=4NLi9AtGtXAIr5yOPBKICrssxKRP9bMivA58MfoJBnWMuTMYpKZt5abtpsuBSfw1LbfR
- fwqE5yMqD+j41V91B4NFf2Krp2s5GEMUiqAJNY/xpExlQf0mF0DZrzFb/4U2RDzvKdCP
- HnW6P7xRkmjyi1huuoieeX+0/jyqyztiFHLWccdUqeGPXRFhEqG+8XrRGuOEWr9bH+R9
- U9nro8NmJ4tqkrZfIyEUiYSzgC+33tvaekbNKJr5pSieTij0dmNuhXts7vZMGRRkcdCj
- MRkchC3MRSiIOMbFei5y24XTshvxaPBcohZ+qMlafSnYoA05N4iOJFx99/mwGVTo+y1J qg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r2a6refxt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 09 Jun 2023 13:20:50 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 359DBA99015974; Fri, 9 Jun 2023 13:20:49 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r2a6pdhbr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 09 Jun 2023 13:20:48 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 359DK5YB035303;
- Fri, 9 Jun 2023 13:20:48 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-39-219-26.vpn.oracle.com
- [10.39.219.26])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3r2a6pdh62-3; Fri, 09 Jun 2023 13:20:48 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
- boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
- viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net
-Subject: [PATCH v2 2/2] qmp: update virtio feature maps,
- vhost-user-gpio instrospection
-Date: Fri,  9 Jun 2023 09:20:40 -0400
-Message-Id: <20230609132040.2180710-3-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230609132040.2180710-1-jonah.palmer@oracle.com>
-References: <20230609132040.2180710-1-jonah.palmer@oracle.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1q7c8Q-0001Ql-1J; Fri, 09 Jun 2023 09:26:36 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=O2T6WUb9LJfa9PeP8B1Riu6MqS+o2ryy0CTJHjpmRCNu3cqOHAsTc50alkcDevk9dcT4ilqUt3lQrQyPl8UErO9OluGD8wSQRkz6fnNuE7tbOJ3KfA7f+hxMRh5fvxJqVt9e19mCobcKP+Ds1BRJGYr2fLcbqytjvjugvlLFMxvfO7fUzHGcXvYrAT6N/EQ1BvgZhnWgE5kRSK5rqaPWppRH5MT16ML/9McLusmQAdu/SFig/dm8lWb7ZKeby9zojq8oEJJN5AGDe/5e2FbEksTi58nBcxdQr5+Vj5sCdibSq9UrUhiuQqf5UGZMXl3jBU2A67NIrLp50CVyn1dGHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qFGIXINJf1Rbnt5xbsfDvNkPHjenwd2FawnhRXw+tTw=;
+ b=eIjWlg7yDFxp/7rU4TM7zlNDLQEZGWSjrXgtP4e2vQuJs4lQdnkyxcAoM0ivrHH3JNqyMYuDfXmvBtRMTXHkrtkB5iAAU4nDnI3l1tZ/3aWDJuFdcLzlpgpzkarsSVzrFBmOa9EKE7Qlo8wY6kGzARTOerehtYXokEWOPvMHFcxE4PRrkjjn/SJ5y+xi09mIsYW3UVloSDcaa2WT2y01Emw4YnWxOVtyiEzdwfSD5+IgkGuzq2XykNNOz3VCgwzF4eNbQBDUIcgERecdkiC1CDhd6jfJnRQgFoHZLBG4BxnVbWEt+5rTJrsGqyWiWqBM0c6C0wgYsjCyn/1o8i0BmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qFGIXINJf1Rbnt5xbsfDvNkPHjenwd2FawnhRXw+tTw=;
+ b=HeIEa17Vfrr1MNeN82e41v42VCZd97gmI96Yi7XysajsoHdcSrDeQMm2MvB//iv4qmmmAXDmPrTGgXBac5GhWJbXXot8Rqt+P/M1ZiULivGW90neJlbFJJ9iCGp3NA8aTlr9SwmqbrDHjTlvzk4jl2+N5DAS1h94AwL9vCyVBMW2d83yPdiMWrbdSkIBLlT7CUdeRUoqBpZNppBI5KhOMvifMG5RGbjUmypXZtreJhRqatFHahKqIclJ33efsXTrX18rYtLiMDUHiRqwdE+fNqWRpJslWmiRk6il5fj+3Be6c1V2FXnKdPi3BNP9KEERIVB35+ilcsaI8GeW0LqzjA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
+ by AS4PR08MB7630.eurprd08.prod.outlook.com (2603:10a6:20b:4cd::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Fri, 9 Jun
+ 2023 13:21:21 +0000
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::ea9f:354c:ea46:3243]) by AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::ea9f:354c:ea46:3243%6]) with mapi id 15.20.6477.016; Fri, 9 Jun 2023
+ 13:21:20 +0000
+Message-ID: <e22757a4-9853-9044-3a3f-6d8f0e486bb3@virtuozzo.com>
+Date: Fri, 9 Jun 2023 15:21:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 5/5] parallels: Image repairing in parallels_open()
+Content-Language: en-US
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, kwolf@redhat.com
+References: <20230529151503.34006-1-alexander.ivanov@virtuozzo.com>
+ <20230529151503.34006-6-alexander.ivanov@virtuozzo.com>
+ <32385c08-0c72-bf53-d5bb-5fa13dce7089@redhat.com>
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+In-Reply-To: <32385c08-0c72-bf53-d5bb-5fa13dce7089@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-09_09,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- suspectscore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306090113
-X-Proofpoint-ORIG-GUID: kLF_8rod1E32o3Sgp_1zuENfIQnOFzv9
-X-Proofpoint-GUID: kLF_8rod1E32o3Sgp_1zuENfIQnOFzv9
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-ClientProxiedBy: VI1PR06CA0133.eurprd06.prod.outlook.com
+ (2603:10a6:803:a0::26) To AS8PR08MB7095.eurprd08.prod.outlook.com
+ (2603:10a6:20b:402::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|AS4PR08MB7630:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7cd18a68-66f3-44be-cdd5-08db68ec6a40
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: X9P8KvZ4Kk1tgDkQCQKERH7Axilg5doLbcAGWx+KDooBhwaKBcjmomgGV3KSp4ojW+bPBGBlsVrYaNig6iF86Dz8uhjOeum2xPS1QjgknVyMFMeOz3v2iLpaCzlhumVXhQpgJWEfwshFGrRWz0f7dlvENJxYtZG+ioM+q30m8t8LA5H8R2P16D+XPJXiXK6giDImL+kT1Fr6F2+KMqrVL5IB6p2c7VfXgXgDWdfe98v9pGoTFA68KFdYoIA1lHV/w2UdHleRdk1zCusIc1VhPL2KKbWQMSUIFu/biINOgGDE/huQsKzWIG2zj7V71gEaOBOY6Gzxbf+o7KK4vz0QU6EsiOCAp9U7WWc3lvkY7UbXCUJmK7/Ejv78MvTd+43BlscnYS96ZoZGLR6uJnla/d1cjVyT2B8U5FvZuxmdaYps4yYZDL32Y5pd1Be/pIAiUgh5cI1r4CMe+4mxT10aHXWBOzNdq1YcXNzt4HJCYEPB96W/KgAZP48YjhvvakIJCF/LVPjuD/+u4WtwKv2jVrAigHaJP3QgkkB0+tXyF0DgWrKYYYfxaWGQMIdcOpOmxrGDYhJsUKM2LLrQS0zHjy+jFea4YhzJPNQ/eWxYMDSPs90uqukz4bMMjJcRK/7gsb1b6GJwHmDFmm1OmY4la+UkG9g3uGo8Y99c63PuX9XpDtSAVP9eb4+FauA5exeX
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(39850400004)(346002)(396003)(136003)(366004)(376002)(451199021)(2906002)(36756003)(31696002)(86362001)(8936002)(38350700002)(38100700002)(41300700001)(5660300002)(478600001)(8676002)(316002)(44832011)(26005)(4326008)(66556008)(66946007)(31686004)(66476007)(83380400001)(6506007)(2616005)(53546011)(6512007)(186003)(52116002)(6486002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TUE5SGt4bDJYUkFqeU5aTjh4UTk2em0rTERocEZ3MVE0WTA0aGdyMTdEKzRG?=
+ =?utf-8?B?OUtTR1lOTnNyK0p4RHVkVzhzNmRNVGloMElLem5Dd2xURStpWUVVLzdTcXpw?=
+ =?utf-8?B?dVFPbzVZMlZLcTcxRjNoVHJsaGFlaTVTaTM0dXl6aGpOUWY5cnZaZytKVTlR?=
+ =?utf-8?B?YURtNmljQWFDNkRXV3pQbklPdmphMk1sNlVBTGdqSjVRU2UwcktSNVNoMnJ1?=
+ =?utf-8?B?dVd2SzFMcUFFZlBPbjNSbk1scnQ0WHMrN2NqZERGOUJrZmZUWkw4L0htelEy?=
+ =?utf-8?B?NkZtUXhZSUtkdEpiRUc4bFVHQWk0STRDU3FPM2g1N0dFcEZ6SmpvMi9Eb1BK?=
+ =?utf-8?B?cXQzVVgzNWFVbnBnd1hOd1hLV2RCMXpDVzhOYjFpZmFkUjZMck5xNGRGb290?=
+ =?utf-8?B?LzVIR1poQUhqV2NQYy9rQ21GVmdSbTE4TUpQREUweVZYdFJLRnUwUis5bkgy?=
+ =?utf-8?B?L3B3SFFqaDFuYVN5NDBLZ0ZGUmp3eW9qNnFJbmhuNlI4TCt2RVMrNFQxUVE5?=
+ =?utf-8?B?UVQ3d0R2YkRhWWc2MThJdEs3SzlXNVJSaE5FQm5DNEVXdjhOSG1JZ0ZjNFJm?=
+ =?utf-8?B?dXpxN3ViZ3BuRlRYcEZUNktCU2FSdEUxQ1BHcnkwSXJiRFRHS0IrU3BIYUwx?=
+ =?utf-8?B?MWRDZUJNQVEvREdLeTVCT0xBUWJscmZBMnlFcmZKRE1Qak1qR1BWNDZIclNK?=
+ =?utf-8?B?MWRhcU52T0UrVUZiOXpsZ0IxaERyNSs3azZ2MysyR1oyUWRuVGhvYkZJc3hk?=
+ =?utf-8?B?dXpoZjZBdkJOYWxQRitEQ3JnM2JteTJ6cE05bVliYkNMdHppRS9YdXZuU1ND?=
+ =?utf-8?B?b3l3Z1YvT0QydHlrcXFNL25nZUo5ZmQ3UHE3ZnNWdzRRUlFrSytvWmZORzUx?=
+ =?utf-8?B?NGhtTnF5UGhxbVdFMERHN0VrR0JRbU9RdVZodjdQQk1OOXlUQUZqbWk3K1BZ?=
+ =?utf-8?B?cTV0dG91aGJTZXh0UkdCeEZ1YUNiSzNYOElsUjBmMEU3aFkrOXk4dXkwR3F5?=
+ =?utf-8?B?RWljdlZjME91QTR3N1NoeTA3aXZRTE94ajhISkhaZWZmQmh0ZUJXZ1R5L3Uz?=
+ =?utf-8?B?VjhmbWdYc1J1TFhDcCtiOWREM2tMUDBWUk5xMGcyRUMwYU5RTncwSFgvc3Jv?=
+ =?utf-8?B?TWQxcEJaL09obTlLQW9OM1VSUDlxWjI3WlNiYmdQdHhjUjNnNDMzaGRSMTlD?=
+ =?utf-8?B?akFZYjE0a1JmZlZLcXBTU1FtVHNSM3FiVFpHNkI3SnR0TmpqOXVPUmYvUURn?=
+ =?utf-8?B?cm9sYzhiRGRIZXJ5OHRVdWtYTXdQZ29TYzdEd3U5U1IrcHBVYmUvdGpaMWlx?=
+ =?utf-8?B?ZUhpeU0wSCtGZU1qNEY3aFVhdUhHSkJTUmh3Q2svanpEVHNVM2luMU5QRXBt?=
+ =?utf-8?B?N1BlTUZGQWo2emdOVG9WU3N4cGZ1SEttaGlEY1l4NDZTL1ZQc3k2VEVKazVL?=
+ =?utf-8?B?WmdZN05xQUNxMFNsZDFUYWNqbjZuVWgyTk50Ty9VTWxqMWhod0R0eXhUMHBJ?=
+ =?utf-8?B?bHZ2aEpKTmtwL3BKL1pkZVVWczRrdzhNQXpUTG5nVThGN2k2NlpaUlo3ellI?=
+ =?utf-8?B?aVZFQ2VWa1lOelJMSVd4V3I4ZGJMY1JsTW5FYWJHTkpSYUt3QUtYdmkyM01P?=
+ =?utf-8?B?R1R3S2hzRy9MSy96enlQOFNjbnRQM1JwSzhlbjYvRzFrQUVlUjFVaUJhNnJm?=
+ =?utf-8?B?MkMyQUhtWVJBMnluUEZDYzRxeWdrNGhJWGVHbDJidm9lSXJoUTgxL3JaWlBI?=
+ =?utf-8?B?WTFvNVJ6am40KzdzWEZOeFVwWW1qTml6TXBVdlhaSEppeVk1a1haR05qQ05N?=
+ =?utf-8?B?MkZia1dCK2xVaEJQNlh1OUx1VjhtZ0ZYKzdYWldjV2Y0TG91clhtUFAyMExi?=
+ =?utf-8?B?cElvWDZUZHQrTW5wWDFXbVJvd2J3M3VqQi9zTnc0bmVnblIrNEdhZTVwbFQ3?=
+ =?utf-8?B?cHdzeWRyeFNJOWJraFBSdzM4TEg5U1Nlc2NtU3ZCRElyeG43d25Vbjc1ZEhI?=
+ =?utf-8?B?VjNNZmJoemp2eWlFN1hsOG0weEM5Y1RRR2ZxVDVjR2ZIR2cyaGF5NmsvVVF4?=
+ =?utf-8?B?QXAyYlRlQXFqT1FPSzBEdzRMQnJpSmIvaWduMU12eUJ6LzNVWEt4a0wxWGps?=
+ =?utf-8?B?RHYrTi8zS093TTJWcm1jbVpLZ3NUU2ZHUFArOW9DczQyNjlGcituWCtCVG4y?=
+ =?utf-8?Q?8iZ/s4Pz5XN68fwc4LwKh3s=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cd18a68-66f3-44be-cdd5-08db68ec6a40
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 13:21:20.8740 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Jer+g1kHNSCA8pQe1fD6JqkqkZhiHI2NGAvj0bU+KGLsNc5p6cqjf+lfsSo6dW7bwlHBSfUuoeOmQAD5OSjn206TrkIYKV45TSzCKjzb/7E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7630
+Received-SPF: pass client-ip=40.107.6.138;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,222 +147,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new virtio transport feature to transport feature map:
- - VIRTIO_F_RING_RESET
 
-Add new vhost-user protocol feature to vhost-user protocol feature map
-and enumeration:
- - VHOST_USER_PROTOCOL_F_STATUS
 
-Add new virtio device features for several virtio devices to their
-respective feature mappings:
+On 6/2/23 16:59, Hanna Czenczek wrote:
+> On 29.05.23 17:15, Alexander Ivanov wrote:
+>> Repair an image at opening if the image is unclean or out-of-image
+>> corruption was detected.
+>>
+>> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+>> ---
+>>   block/parallels.c | 65 +++++++++++++++++++++++++----------------------
+>>   1 file changed, 35 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/block/parallels.c b/block/parallels.c
+>> index d64e8007d5..7bbd5cb112 100644
+>> --- a/block/parallels.c
+>> +++ b/block/parallels.c
+>
+> [...]
+>
+>> @@ -1130,6 +1101,40 @@ static int parallels_open(BlockDriverState 
+>> *bs, QDict *options, int flags,
+>>           goto fail;
+>>       }
+>>       qemu_co_mutex_init(&s->lock);
+>> +
+>> +    if (le32_to_cpu(ph.inuse) == HEADER_INUSE_MAGIC) {
+>> +        s->header_unclean = true;
+>> +    }
+>> +
+>> +    for (i = 0; i < s->bat_size; i++) {
+>> +        sector = bat2sect(s, i);
+>> +        if (sector + s->tracks > s->data_end) {
+>> +            s->data_end = sector + s->tracks;
+>> +        }
+>> +    }
+>> +
+>> +    /*
+>> +     * We don't repair the image here if it's opened for checks. 
+>> Also we don't
+>> +     * want to change inactive images and can't change readonly images.
+>> +     */
+>> +    if ((flags & (BDRV_O_CHECK | BDRV_O_INACTIVE)) || !(flags & 
+>> BDRV_O_RDWR)) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    /*
+>> +     * Repair the image if it's dirty or
+>> +     * out-of-image corruption was detected.
+>> +     */
+>> +    if (s->data_end > file_nb_sectors || s->header_unclean) {
+>> +        BdrvCheckResult res;
+>> +        ret = bdrv_check(bs, &res, BDRV_FIX_ERRORS | BDRV_FIX_LEAKS);
+>> +        if (ret < 0) {
+>
+> Should we also verify that res->corruptions == res->corruptions_fixed 
+> && res->check_errors == 0?
+If ret == 0 there must be res->check_errors == 0 and res->corruptions == 
+res->corruptions_fixed.
+>
+>> + error_free(s->migration_blocker);
+>
+> I’d move this clean-up to a new error path below, then we could even 
+> reuse that where migrate_add_blocker() fails.
+Is this guaranteed that s->migration_blocker is NULL at the function 
+parallels_open() beginning? If so it could be easy to move the clean-up,
+otherwise it could lead to code complication.
+>
+> Anyway, not wrong as-is, just suggestion, so:
+>
+> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+>
+>> +            error_setg_errno(errp, -ret, "Could not repair corrupted 
+>> image");
+>> +            goto fail;
+>> +        }
+>> +    }
+>> +
+>>       return 0;
+>>     fail_format:
+>
 
-virtio-blk:
- - VIRTIO_BLK_F_SECURE_ERASE
-
-virtio-net:
- - VIRTIO_NET_F_NOTF_COAL
- - VIRTIO_NET_F_GUEST_USO4
- - VIRTIO_NET_F_GUEST_USO6
- - VIRTIO_NET_F_HOST_USO
-
-virtio/vhost-user-gpio:
- - VIRTIO_GPIO_F_IRQ
- - VHOST_F_LOG_ALL
- - VHOST_USER_F_PROTOCOL_FEATURES
-
-virtio-bt:
- - VIRTIO_BT_F_VND_HCI
- - VIRTIO_BT_F_MSFT_EXT
- - VIRTIO_BT_F_AOSP_EXT
- - VIRTIO_BT_F_CONFIG_V2
-
-virtio-scmi:
- - VIRTIO_SCMI_F_P2A_CHANNELS
- - VIRTIO_SCMI_F_SHARED_MEMORY
-
-Add support for introspection on vhost-user-gpio devices.
-
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- hw/virtio/vhost-user-gpio.c |  7 ++++
- hw/virtio/virtio-qmp.c      | 79 +++++++++++++++++++++++++++++++++++--
- 2 files changed, 83 insertions(+), 3 deletions(-)
-
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index d6927b610a..e88ca5370f 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -205,6 +205,12 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
-     vhost_virtqueue_mask(&gpio->vhost_dev, vdev, idx, mask);
- }
- 
-+static struct vhost_dev *vu_gpio_get_vhost(VirtIODevice *vdev)
-+{
-+    VHostUserGPIO *gpio = VHOST_USER_GPIO(vdev);
-+    return &gpio->vhost_dev;
-+}
-+
- static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserGPIO *gpio)
- {
-     virtio_delete_queue(gpio->command_vq);
-@@ -413,6 +419,7 @@ static void vu_gpio_class_init(ObjectClass *klass, void *data)
-     vdc->get_config = vu_gpio_get_config;
-     vdc->set_status = vu_gpio_set_status;
-     vdc->guest_notifier_mask = vu_gpio_guest_notifier_mask;
-+    vdc->get_vhost = vu_gpio_get_vhost;
- }
- 
- static const TypeInfo vu_gpio_info = {
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index e936cc8ce5..140c420d87 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -53,6 +53,7 @@ enum VhostUserProtocolFeature {
-     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-+    VHOST_USER_PROTOCOL_F_STATUS = 16,
-     VHOST_USER_PROTOCOL_F_MAX
- };
- 
-@@ -79,6 +80,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-             "VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform"),
-     FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
-             "VIRTIO_F_SR_IOV: Device supports single root I/O virtualization"),
-+    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
-+            "VIRTIO_F_RING_RESET: Driver can reset individual VQs"),
-     /* Virtio ring transport features */
-     FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
-             "VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported"),
-@@ -134,6 +137,9 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
-     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS, \
-             "VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS: Configuration for "
-             "memory slots supported"),
-+    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
-+            "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
-+            "device statuses supported"),
-     { -1, "" }
- };
- 
-@@ -176,6 +182,8 @@ static const qmp_virtio_feature_map_t virtio_blk_feature_map[] = {
-             "VIRTIO_BLK_F_DISCARD: Discard command supported"),
-     FEATURE_ENTRY(VIRTIO_BLK_F_WRITE_ZEROES, \
-             "VIRTIO_BLK_F_WRITE_ZEROES: Write zeroes command supported"),
-+    FEATURE_ENTRY(VIRTIO_BLK_F_SECURE_ERASE, \
-+            "VIRTIO_BLK_F_SECURE_ERASE: Secure erase supported"),
-     FEATURE_ENTRY(VIRTIO_BLK_F_ZONED, \
-             "VIRTIO_BLK_F_ZONED: Zoned block devices"),
- #ifndef VIRTIO_BLK_NO_LEGACY
-@@ -299,6 +307,14 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_NET_F_CTRL_MAC_ADDR, \
-             "VIRTIO_NET_F_CTRL_MAC_ADDR: MAC address set through control "
-             "channel"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_NOTF_COAL, \
-+            "VIRTIO_NET_F_NOTF_COAL: Device supports coalescing notifications"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
-+            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
-+            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
-+            "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
-     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
-             "VIRTIO_NET_F_HASH_REPORT: Hash reporting supported"),
-     FEATURE_ENTRY(VIRTIO_NET_F_RSS, \
-@@ -469,6 +485,48 @@ static const qmp_virtio_feature_map_t virtio_rng_feature_map[] = {
- };
- #endif
- 
-+/* virtio/vhost-gpio features mapping */
-+#ifdef CONFIG_VIRTIO_GPIO
-+static const qmp_virtio_feature_map_t virtio_gpio_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_GPIO_F_IRQ, \
-+            "VIRTIO_GPIO_F_IRQ: Device supports interrupts on GPIO lines"),
-+    FEATURE_ENTRY(VHOST_F_LOG_ALL, \
-+            "VHOST_F_LOG_ALL: Logging write descriptors supported"),
-+    FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
-+            "VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features "
-+            "negotiation supported"),
-+    { -1, "" }
-+};
-+#endif
-+
-+/* virtio-bluetooth features mapping */
-+#ifdef CONFIG_VIRTIO_BT
-+static const qmp_virtio_feature_map_t virtio_bt_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_BT_F_VND_HCI, \
-+            "VIRTIO_BT_F_VND_HCI: Vendor command supported"),
-+    FEATURE_ENTRY(VIRTIO_BT_F_MSFT_EXT, \
-+            "VIRTIO_BT_F_MSFT_EXT: MSFT vendor supported"),
-+    FEATURE_ENTRY(VIRTIO_BT_F_AOSP_EXT, \
-+            "VIRTIO_BT_F_AOSP_EXT: AOSP vendor supported"),
-+    FEATURE_ENTRY(VIRTIO_BT_F_CONFIG_V2, \
-+            "VIRTIO_BT_F_CONFIG_V2: Using v2 configuration"),
-+    { -1, "" }
-+};
-+#endif
-+
-+/* virtio-scmi features mapping */
-+#ifdef CONFIG_VIRTIO_SCMI
-+static const qmp_virtio_feature_map_t virtio_scmi_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_SCMI_F_P2A_CHANNELS, \
-+            "VIRTIO_SCMI_F_P2A_CHANNELS: SCMI notifications or delayed "
-+            "responses implemented"),
-+    FEATURE_ENTRY(VIRTIO_SCMI_F_SHARED_MEMORY, \
-+            "VIRTIO_SCMI_F_SHARED_MEMORY: SCMI shared memory region statistics "
-+            "implemented"),
-+    { -1, "" }
-+};
-+#endif
-+
- #define CONVERT_FEATURES(type, map, is_status, bitmap)   \
-     ({                                                   \
-         type *list = NULL;                               \
-@@ -625,6 +683,24 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
-         features->dev_features =
-             CONVERT_FEATURES(strList, virtio_rng_feature_map, 0, bitmap);
-         break;
-+#endif
-+#ifdef CONFIG_VIRTIO_GPIO
-+    case VIRTIO_ID_GPIO:
-+        features->dev_features =
-+            CONVERT_FEATURES(strList, virtio_gpio_feature_map, 0, bitmap);
-+        break;
-+#endif
-+#ifdef CONFIG_VIRTIO_BT
-+    case VIRTIO_ID_BT:
-+        features->dev_features =
-+            CONVERT_FEATURES(strList, virtio_bt_feature_map, 0, bitmap);
-+        break;
-+#endif
-+#ifdef CONFIG_VIRTIO_SCMI
-+    case VIRTIO_ID_SCMI:
-+        features->dev_features =
-+            CONVERT_FEATURES(strList, virtio_scmi_feature_map, 0, bitmap);
-+        break;
- #endif
-     /* No features */
-     case VIRTIO_ID_9P:
-@@ -640,18 +716,15 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
-     case VIRTIO_ID_SIGNAL_DIST:
-     case VIRTIO_ID_PSTORE:
-     case VIRTIO_ID_SOUND:
--    case VIRTIO_ID_BT:
-     case VIRTIO_ID_RPMB:
-     case VIRTIO_ID_VIDEO_ENCODER:
-     case VIRTIO_ID_VIDEO_DECODER:
--    case VIRTIO_ID_SCMI:
-     case VIRTIO_ID_NITRO_SEC_MOD:
-     case VIRTIO_ID_WATCHDOG:
-     case VIRTIO_ID_CAN:
-     case VIRTIO_ID_DMABUF:
-     case VIRTIO_ID_PARAM_SERV:
-     case VIRTIO_ID_AUDIO_POLICY:
--    case VIRTIO_ID_GPIO:
-         break;
-     default:
-         g_assert_not_reached();
 -- 
-2.39.3
+Best regards,
+Alexander Ivanov
 
 
