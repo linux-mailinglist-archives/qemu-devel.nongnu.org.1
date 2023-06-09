@@ -2,109 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A034172A087
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2352C72A070
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:44:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7fFz-00084i-Hw; Fri, 09 Jun 2023 12:46:35 -0400
+	id 1q7fCQ-00078M-G9; Fri, 09 Jun 2023 12:42:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q7fFx-00084X-GY
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:46:33 -0400
-Received: from mail-dm6nam11on2084.outbound.protection.outlook.com
- ([40.107.223.84] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ id 1q7fCG-000781-D5
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:42:44 -0400
+Received: from mail-mw2nam12on20630.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5a::630]
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Suravee.Suthikulpanit@amd.com>)
- id 1q7fFv-0006kz-SA
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:46:33 -0400
+ id 1q7fCC-00064J-VD
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:42:43 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ge/onru51kvDlCpSkfGex7zorfnFsz8pbHgq+9Xybsl3Tlvfd5DHIiiW9gvC8FCWdWHzGlTEnkaT58eyPedSRUDGgZ7uNeRxDLBhTgLxt3WTNFWNqkcHpbIMvVo3oYaAhW6va6kb4YfhLm5kBaN7RD4xLnP9MTm4ju8WekFJ1dZufAuvb/bwVmVt2bX90RI5Gk69cSzQbACrlqJBkdS6FKpFXSzVDRejgYS5hQkvx14dY5NMTVqxIN0QtOVVQv19NX+/ECBV+cFi5CeQLIBcZ1h3RIZA6VcW9QQerglS/WnGvhha98jWoz3ft9hpOM5rlSpKJ2b6E6dnYa/X2GWdbw==
+ b=aLM6A1h7YHEIHsyLlVgU/RQ2+uovM1bqCN/l2H80Dm2plMfEZLjLhcbQueW1qQuSlAederrGEqF65mFFbtk+k3u/8KvPNlHvrGCf0UXKCP2aWPI0b84xQoGGv9XQIAN4vE8/MQm7t3SWP9L26Lu6UZuX930U7SBwf3JUaHw1NmpadS3JRT+78kgfFHa7hUOgMLCuBecb8AnfNUJ+5RdYB3WlRtdImSByMBk8ccBL6r8opcCsXv5yGintpFtQhJJjZrwF3Ho4ifhZ+74Le+WyQB5WsdsjlJB/DNygdyqeyQjwgx+OVCmXMT9bss7eq13uugr+5n1x7mbu/vDIAmGAuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZCcsfClrdoLSSPjJSUwmhCvRhi0OR7WEtaTDXK8wL5M=;
- b=hTl6Xejlhmf96zVyc+nW/iJBknSvvhXQJiX0WgaUgMylcXNllJyiG8lKlH3RWPJblizNZ+eGRKnVcRo6bdw5SKL1ajSBcU39FfJ9Jmv1O+J6DBwPGPQplPuAGSPLOIKjUoaskOnBHi69zZrLRU1Zg2wS2Sft1FPG7nO4dQBFtEgvFlNJidYAFluPWx9MagMB/qn/DqLYrFMEr2cYOg6DOaFkM21J4ZI/2Uf+7Jt2x3kGogIDc3zLuPbIFofpet1mAZIfe+8BNhYOK8bSFyB1QLSNMqLGjWAU6MkjKBbnGp5xt+yo0BVJPhm96SaRYbB83qMh+eRtvXDMZ/ve6eHsGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=lUbwUWoimGJz+z2ZAMvO/BkXEQTWVfAoj2tJuCDkDCo=;
+ b=bjgRkDs3eb5CG5P5jLjb1giHujDubCwQ2pvl4NK2ZludHomV7gJl0QSF+NqM+ENCREqM2B3Y+e5Dnn6LgaPEF/YVSlHNhpcCipeB8HayaaWhMIASVUlJbuE2praQ+4UGENb4xlhTe8C/shrGqssvPrLS1/BmfQ52nECNWGNs8KPMGoMG0MB9rjLgWhhm+YE+0GrAqzKAVmfhW75m5qrkSvJCDdX2jpQY7XIrs7X0VxF88LwOzFXd4w7252bsjJ1tNShPb3Am2Uro25YaDsj1g48FHrkG0wqgrqnXHvlbvRebnjgyX23aUlRS9KTUtpc5RdEgB5QOx5MJvPYcosUiZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZCcsfClrdoLSSPjJSUwmhCvRhi0OR7WEtaTDXK8wL5M=;
- b=e0kzgoi3WT1BqXVbwRpcu7odqwMPIVTUuDOFeCXo8aQ5GYLl5R3aAXRmztu4BgpPAhyopmk4vjckf/9pemwvZT7GjnDmTTDE2+UO+4blY9eY9nsj13io6giWTBbypwrWGThgRH9/5ZGWUkahwjqgmHH5+ptd6gORYa7n7KQfX80=
-Received: from CY5PR19CA0084.namprd19.prod.outlook.com (2603:10b6:930:69::20)
- by IA0PR12MB7650.namprd12.prod.outlook.com (2603:10b6:208:436::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Fri, 9 Jun
- 2023 16:41:26 +0000
-Received: from CY4PEPF0000EE37.namprd05.prod.outlook.com
- (2603:10b6:930:69:cafe::6e) by CY5PR19CA0084.outlook.office365.com
- (2603:10b6:930:69::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.27 via Frontend
- Transport; Fri, 9 Jun 2023 16:41:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE37.mail.protection.outlook.com (10.167.242.43) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6477.13 via Frontend Transport; Fri, 9 Jun 2023 16:41:25 +0000
-Received: from ruby-95f9host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 9 Jun
- 2023 11:41:24 -0500
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <imammedo@redhat.com>,
- <jon.grimm@amd.com>, <santosh.Shukla@amd.com>, Suravee Suthikulpanit
- <suravee.suthikulpanit@amd.com>
-Subject: [PATCH] hw/i386/pc: Clean up pc_machine_initfn
-Date: Fri, 9 Jun 2023 11:41:07 -0500
-Message-ID: <20230609164107.23404-1-suravee.suthikulpanit@amd.com>
-X-Mailer: git-send-email 2.34.1
+ bh=lUbwUWoimGJz+z2ZAMvO/BkXEQTWVfAoj2tJuCDkDCo=;
+ b=ZVO9bnTt3qIzmKLbTBNh7h4oZYpJHJbT1VBV5QM0qooPaWFjiVaRSqI7xyJqGfL+yTX/YxjShaxNXihGOG1dYGkwZhbsEabijiqFFphNjxIbR5KE0AMx0wdd7mbAcxqg66TMm7nVaX7yzKu5gkf5VLWfXtYGHOJsZLt1/OgyUE4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM8PR12MB5445.namprd12.prod.outlook.com (2603:10b6:8:24::7) by
+ DM8PR12MB5479.namprd12.prod.outlook.com (2603:10b6:8:38::18) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6455.33; Fri, 9 Jun 2023 16:42:23 +0000
+Received: from DM8PR12MB5445.namprd12.prod.outlook.com
+ ([fe80::1f96:31ad:7de0:2175]) by DM8PR12MB5445.namprd12.prod.outlook.com
+ ([fe80::1f96:31ad:7de0:2175%4]) with mapi id 15.20.6455.039; Fri, 9 Jun 2023
+ 16:42:23 +0000
+Message-ID: <9cee57bb-18ef-f8d4-6d2c-3c888ad6bca0@amd.com>
+Date: Fri, 9 Jun 2023 09:42:19 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v6 1/2] hw/i386/pc: Default to use SMBIOS 3.0 for newer
+ machine models
+Content-Language: en-US
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, richard.henderson@linaro.org, 
+ eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ berrange@redhat.com, jusual@redhat.com, dfaggioli@suse.com,
+ joao.m.martins@oracle.com, jon.grimm@amd.com, santosh.Shukla@amd.com
+References: <20230607205717.737749-1-suravee.suthikulpanit@amd.com>
+ <20230607205717.737749-2-suravee.suthikulpanit@amd.com>
+ <20230608104057.4c0ac74b@imammedo.users.ipa.redhat.com>
+From: "Suthikulpanit, Suravee" <suravee.suthikulpanit@amd.com>
+In-Reply-To: <20230608104057.4c0ac74b@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR07CA0100.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::41) To DM8PR12MB5445.namprd12.prod.outlook.com
+ (2603:10b6:8:24::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE37:EE_|IA0PR12MB7650:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec484828-1e10-4f16-1b77-08db69085db2
+X-MS-TrafficTypeDiagnostic: DM8PR12MB5445:EE_|DM8PR12MB5479:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fccd6a4-8fdf-41ae-9d02-08db69087fda
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sGZgvITOsPfkjC2janlK1N1/1j2kNtdrSj5EGBdREkcmXJLjNYVyiKYqj/pbiPddwQAczZXc1unSHqKdSR8On6u9SCFaHK+KKXinzmY6zoCPrrH3XR7fXq/7J+5i0mO6mt2V6eLgKgJFtF3lz+v3jqFFcxCWC82qlJRkAVlGk1fGyQrGlo/yxcI14qhVh0zmhX0PMtiEa0oXW2Ax2T9nVrLHZczZuFUdNJPVgTgUeb23QxLLdnaGWQd6gNhyRerIZNAYoRZa8LeP+01oGpE+Am1qVj5AKbk2oS4dgdGVOFSZEyOmG85VKmPCICaGYxUxuADoZcXMa8SlDLuE8Ebm0Cb5IaQrFduV149oghDrNnV/yyYWXpk7CuchKeWotjiB9OORMJ6UTY5HkuH1qyX5+rI02zYAuHeIjFCkUIjb+oPcEr/KgBXELTCqeRkK/OrEsmyRCSeRXmpcNM7ZgPHX9xjrEygHIbgAVvPCYcPdrHyyy/R0fVtUY+jDwcp/E7mJ6GwQ1a6kT3f+53Y9mJpLepqUIaJb4bhBZBH/vinnk6yTrAuMomuUWlF8Jw+GZDmdxVnKvEJR5po4j3qWHVX8xhfu4vWnbPFeqkMqW8G3cw+Co8oYyFvuJNFM+nGSd2PNMqlDx04HiDvrgdwFVzHp8nvZmimgIkKI5tiwOpUdLbECOZLJWpXqRNLQoJIJpg2uGcVvobz+0kM7ElEvhHm4T2Sf0p1GrdwRarh+Uw36/EWf4pbKKsI38JQk4332VoDQTAMLFql1nkerrknFvy6A0A==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(376002)(346002)(396003)(39860400002)(136003)(451199021)(46966006)(40470700004)(36840700001)(356005)(1076003)(2616005)(36860700001)(41300700001)(336012)(7696005)(426003)(186003)(26005)(16526019)(47076005)(83380400001)(6666004)(478600001)(40480700001)(4744005)(40460700003)(54906003)(81166007)(82310400005)(70586007)(6916009)(70206006)(316002)(82740400003)(5660300002)(4326008)(2906002)(8676002)(44832011)(86362001)(8936002)(36756003)(36900700001);
+X-Microsoft-Antispam-Message-Info: F3mqLj3xMaw7yEUa5c88QPQn6UgV1qdp3CNsRhhA5kwhnlI94CRboPvS50i/5UESrLdB67RBLu9v23h5xuOiNtjwRoz8Hbb0rW14k5AR07q08Zss2ciChTUXRLxBWrD99pixAt0Ri5L9JmSVEzczvymxqlhSWl1j7uJtVGacltNNHjGjDmiv+APtF//ly/5pj1dYnxZgk6BwnSKupp5wS4aCRCNUyJAn7JlmXU0bjnB/VXSJPUT/qRU+9zhxsk67q6w1RhpNXGglRHhDU2mWT72BMKEEeUUzfTHpIc121LOKJHCnGrvgYEvVSlNCTg1Ne8aUnXkqDgm/0qQJcYJHaMAWB5D7dcahtam2jOmlOAAjry5Sutb8sbWaAYp7Smjtaz1KflrUiwVndz2OCPplgrcnVf2UFOjbeipBwvrxCmHZI+GL7sPa8xWND4ZlndEzn48uEPEZ9BhWc6lyCgvvFD14KdOoQ7Htb3E9vvoKzgrfsiq/fnE4UE4Mi2JGADLYN1t2hzmvo3Uiv7terlc33c26o7UZh3e1Gwp/3ziueRooAAL6Q/o1qAjLQ01mZpg7z2RMSlMMvlUmwEKO5+Vw8QcgfJJpL0Fj+3/70vOYKVmJRaC1qZNiajaKUjofLrEcemTmW/HmrMOft4DD0fYkcxF+mr2CUY5A/xh1u7/M6EC3adDsGOryRc+SdUiJ933O
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR12MB5445.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(346002)(366004)(396003)(136003)(376002)(39860400002)(451199021)(86362001)(83380400001)(66476007)(38100700002)(4326008)(66946007)(66556008)(6916009)(6666004)(6486002)(478600001)(186003)(36756003)(8676002)(5660300002)(8936002)(41300700001)(2616005)(31696002)(2906002)(316002)(31686004)(7416002)(53546011)(6512007)(6506007)(26005)(170073001)(43740500002)(45980500001);
  DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXJ1MkRGdHNzeWk3bkZEWDV5Q0E4OXhlOHdxRENCQTRvY1NqelJDaVFxemx6?=
+ =?utf-8?B?RjlpaStHL0RyWlBuMm1OZHlSem4xQWdvUzFZQ205WnhoUUYyLzZTTStVZmk3?=
+ =?utf-8?B?R01KVE8vanV6OUI2cnQwRWRNVkJmSzZMU0FvVGYwMTFWaUZ3c0xvblNJeG9z?=
+ =?utf-8?B?bjIrc2pxOUNoUTBpVElveUh5ZDFjNHBtdG5yNVE3bDJSN3R4Ym9rQlhJT2ty?=
+ =?utf-8?B?dEUrK1ZPYlVPb2I3TUxZbmtMd3lVL2FMcWdGYkdkNlBkRXlLSDlpa0s5ekxs?=
+ =?utf-8?B?aHpyc3dRQXZTUFY0bTZJVjY5RnFoSDFVeVZWaEFoSW1zMXV0VjlXZTkyRkdW?=
+ =?utf-8?B?TU9IL25PY1h1Zk5Pa21FYnJvaGU4STVuQVRjMzlua1NaMktxSnpsc3lFUE82?=
+ =?utf-8?B?c1lXN0JkRkZwM29oM3hOR2oxbU1odnpLbTRTMTdPMElTVE96U0tIUVdXOWY4?=
+ =?utf-8?B?V0M5QWtjVTlKOUZxMksxUytrMVVPYkhUcWtnQUlTWk5sVVhDMEZ6R0dlMGhY?=
+ =?utf-8?B?VmdORDhPYkkzUVFlYkRyQ0xKZXNNKytHU3pkcjBSNkZWVURpSnpuL01DeEtD?=
+ =?utf-8?B?ZmVrUVVQZU1hS3FaRE9xa1Y1WGZkaThXMVk1TGZVdG5nOUs5SmdRV3pEakIr?=
+ =?utf-8?B?M0w4MUdWSUxhRzdyUm8vb0lzNWI0MllJV1NQZzNsWHNUSFV4RHdienZOVHNR?=
+ =?utf-8?B?S1ZTQUUrZTNCWXFRenhHYnFQSERmNk1SczQ4L1Q0UGRPMm1QbWw2ZkMvMmhV?=
+ =?utf-8?B?TnZMZDNuclZSOVdYcTloWmN0dmt6VGpRMGp0T1hETDJuNzFzS0hlY3FOOHQv?=
+ =?utf-8?B?MWRzMWRVcGtmUUpNYktQeWlMZGV3ZkhyTklYUFU3bzg5bmlJRDhJQkdlOVMz?=
+ =?utf-8?B?bkU2ckQ1TkQyTDk5ajJJL1ErOWdhTEFzbHlISUNkK1dRK1RLVkUyWnFmT2ZI?=
+ =?utf-8?B?SDFYVFY2NTRVZWtSejMxSVZaWjVqSDgrNndGOVphRTk3Z3BaRWJHS3MwYno3?=
+ =?utf-8?B?R1JnU2M0cVhoN2FsSlJzbXgwNHdJMkpjZTJ5K29CQW1mZi9Kb0pSbk5vNGpj?=
+ =?utf-8?B?N2RCV1pKWFN6T2JZQUg5VEJZa1ZtWVdkQmZiOGF6aGZicFdIaU5IQUUvakxI?=
+ =?utf-8?B?ZXlnd05DTGNQSWNDYnZBL0FLNDZMNFoxaS91N2hWMkJtWHJteU0wVEYzRERY?=
+ =?utf-8?B?R1NsWEs4TnhEajFyNmZhMjhZSnJpcHg0RFI2WjBPcXYvS0RRTEFkR3JvcVVR?=
+ =?utf-8?B?dTlVU295aXphQ1hOeWhSbCtDLzhmZEttak1ITkI2RFBaNHZ0SXVuODFvTE9M?=
+ =?utf-8?B?dlpqb3BQY1RFeXZ0OXI4d1Nzb0lCS0NaR3RISlFpMDRZYWE3NHlEb1VraHU0?=
+ =?utf-8?B?ODQ0KzhCT2YzZW8yR3VydXN3ai9yYlppejk5SzR2dzZRcmp6U21DT0YyVS9v?=
+ =?utf-8?B?cXArays2RVVkRDV0R1JFM2NQa3llT0JGMjFyVjFCQmMyeDRvYjJzbnhyejRM?=
+ =?utf-8?B?N1YvZ0JkOHBzeVFsVURBY09EcmU3anFycWs2QmNLVEJ0L0JqbGFwZkZVbGNN?=
+ =?utf-8?B?ZlZZQ1A2K21oZTYwckFCZm5EVm1YRHhLd3hpRHJXNTBXZi9kaWtwODAvVVpt?=
+ =?utf-8?B?RTl2V0NQOWJiYnZKb2F0S1VQSXZHN3pVcnNqRC9lWnJTU204amswZys0Nm5t?=
+ =?utf-8?B?WmRwNTMxQXZXY096WEV6VWUrNDBDbUdLaGh3Z3c5TllPYmR6R3pMaVJ4YmEv?=
+ =?utf-8?B?cjFTaGVqL3Qxa1pGcEtkclMzYldZbDZzbGF5K3JYVm1MK29aQnpxOUhiTWxL?=
+ =?utf-8?B?SDhBZ2dOc3Z4NVFzVmVadnR6cENuT3lodWFlNWM5dHIwTlliSmFHQ1IvOVZ2?=
+ =?utf-8?B?ZHhtL3JHK1JYMWdVRjlnTDJFMU40VXhEa3dqekNocC9Uc0xWZGpONXBPcUVC?=
+ =?utf-8?B?RlVOdTV1a3ByR2J4MUNHWjExVU1DVXAzemlaSzBaSkNqelg3ODk3TVlYRlpQ?=
+ =?utf-8?B?WFVacHJEYU1DbGdUcXZlaFBoc1RVOEppUmJJcjAzNFFIWUVCc1VzajBiaWlY?=
+ =?utf-8?B?YVdySE8yMnh3TU1ESWk5ZDdUU2Z6ZXlhYXkreXRXVEJOOGJrWURQRFpSRm1Q?=
+ =?utf-8?Q?wjw+Pab+L4PG0oV0NkLUyvj0/?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 16:41:25.4571 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec484828-1e10-4f16-1b77-08db69085db2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fccd6a4-8fdf-41ae-9d02-08db69087fda
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR12MB5445.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 16:42:23.0814 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE37.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7650
-Received-SPF: softfail client-ip=40.107.223.84;
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xeIf3uippByEFn8GJp0sYxehJxlhOG7x6vNGtkzcAumP+PzW2JGuqeJb0tAKFEQCTQzet9YswyLw2D1+0mBKYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5479
+Received-SPF: softfail client-ip=2a01:111:f400:fe5a::630;
  envelope-from=Suravee.Suthikulpanit@amd.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,28 +151,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To use the newly introduced PC machine class local variable.
 
-Suggedted-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
----
- hw/i386/pc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 33ffb03a32..f8d105e829 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1864,7 +1864,7 @@ static void pc_machine_initfn(Object *obj)
-     pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
- 
-     /* acpi build is enabled by default if machine supports it */
--    pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;
-+    pcms->acpi_build_enabled = pcmc->has_acpi_build;
-     pcms->smbus_enabled = true;
-     pcms->sata_enabled = true;
-     pcms->i8042_enabled = true;
--- 
-2.34.1
+On 6/8/2023 3:40 PM, Igor Mammedov wrote:
+> On Wed, 7 Jun 2023 15:57:16 -0500
+> Suravee Suthikulpanit<suravee.suthikulpanit@amd.com>  wrote:
+> 
+>> Currently, pc-q35 and pc-i44fx machine models are default to use SMBIOS 2.8
+>> (32-bit entry point). Since SMBIOS 3.0 (64-bit entry point) is now fully
+>> supported since QEMU 7.0, default to use SMBIOS 3.0 for newer machine
+>> models. This is necessary to avoid the following message when launching
+>> a VM with large number of vcpus.
+>>
+>>     "SMBIOS 2.1 table length 66822 exceeds 65535"
+>>
+>> Signed-off-by: Suravee Suthikulpanit<suravee.suthikulpanit@amd.com>
+> Looks good to me (see comment below for extra cleanup possibility):
+> 
+> Reviewed-by: Igor Mammedov<imammedo@redhat.com>
+> 
+>> ---
+>>   hw/i386/pc.c         | 4 +++-
+>>   hw/i386/pc_piix.c    | 5 +++++
+>>   hw/i386/pc_q35.c     | 5 +++++
+>>   include/hw/i386/pc.h | 1 +
+>>   4 files changed, 14 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> index bb62c994fa..33ffb03a32 100644
+>> --- a/hw/i386/pc.c
+>> +++ b/hw/i386/pc.c
+>> @@ -1853,6 +1853,7 @@ static void pc_machine_set_max_fw_size(Object *obj, Visitor *v,
+>>   static void pc_machine_initfn(Object *obj)
+>>   {
+>>       PCMachineState *pcms = PC_MACHINE(obj);
+>> +    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+> since you introduce this local,
+> I suggest you to post an extra clean up patch on top of this series
+> 
+> here is a line to cleanup with 'pcmc'
+> 
+>      /* acpi build is enabled by default if machine supports it */
+>      pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;
 
+Sure just sent out the "[PATCH] hw/i386/pc: Clean up pc_machine_initfn".
+
+Thanks,
+Suravee
 
