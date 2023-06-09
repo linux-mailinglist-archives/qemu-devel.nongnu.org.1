@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B004C72A362
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 21:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C1E72A363
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 21:50:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7i6d-0004wR-HA; Fri, 09 Jun 2023 15:49:07 -0400
+	id 1q7i7M-0005dL-4M; Fri, 09 Jun 2023 15:49:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7i6X-0004vN-Tz
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:49:02 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1q7i7K-0005cy-LB
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:49:50 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7i6S-00011P-JM
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:49:00 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1b24eba185cso9779165ad.2
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 12:48:56 -0700 (PDT)
+ id 1q7i7J-0001Cf-7G
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:49:50 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-65311774e52so1741890b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 12:49:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686340135; x=1688932135;
+ d=linaro.org; s=google; t=1686340188; x=1688932188;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1gGVdbMQGaYb5uaHCOOcdB3rUi92fHQh5O9tvdZ01vU=;
- b=QNWSmNfLY06lwCgYj1CTbg3OrmGqXHK0LX8cDNz6O4VXhk71xdEvSoQuJ47vUA0nYD
- rC9fyQUraCGL9J1Ud8X1/+XHRzq6CrHFtjzp12tOTSW7zyCSH/Wn05eDoEBhiYHGnZSl
- zgmwcaKenHlk9npaDXkISBaYXhosd7ZjFxZ/ksaz9p7sUd2tYT92k9ZPNe8rWHBdulqC
- mgQRpvThop//XhxaDeApOBPFuQOYmhrmelNwUSLVBuCNyQTcvDz1PcZuRoynh1z/FZFW
- WZ9+/K9hKfe60mFdXPmhI/xMAAOV0BiHf770NIBY9fN8mB4W1W7fUw74mQCtXlrLPb13
- Hi7Q==
+ bh=Drg4WP1wZ1Y1t8wan6VVGf2/z7ogGRSmyqWKwVjUdNQ=;
+ b=dySVUljN4ItoVwKeb/mv+hvLVi6105w5FishF3qHcBA39yh0jvMp6fjvwpJzC9Ty1D
+ kIXYNQbUb9OJkALGoFytZo/5j1aoC7rK5Dbe5kUXIlKYrU/Y3hclPXSC1Efz/WLYtNeh
+ aHN7IXjH4IR8429YcvKlVpv2JY/VksUW4fYkNcAbOV3auCYQ8xA385/ig3NXelmeCP1e
+ 8OGXDajhGonJ0PHrylBDgegx3Z+5AAofvMmgQ5CZI+k4WdbL8ytyR7miq+sK2N8uzy/b
+ Hql5GZwvGut//CJ6LDaJ7IE1yLc69sNx3VL6AHuQstxCGm0tsKG4vskNWSpERSfeG7ld
+ AXIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686340135; x=1688932135;
+ d=1e100.net; s=20221208; t=1686340188; x=1688932188;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1gGVdbMQGaYb5uaHCOOcdB3rUi92fHQh5O9tvdZ01vU=;
- b=WO9HNUru/p5aTvo7hBVyHjcrQZVfsJCd/0z1FF7P1L36n6pKlnFSyS1C8rNB4L8zdJ
- fhetkamWhBJsFnvqNx/HpTcE5VtJHaAHZPvUS1UbdEF+aUZBhEZDeCi950ZLXloXWoEl
- G7+HmkVk7XsdllYzVOD4+cT9SJaAjcArfbPtNd0ciZ+6emVh6uPVKGz2yqkBA1ThCDXP
- fhgZWp5CqNp7LvPoi+2HYWsCZYyi2aLPAxbZhuVDDzfrs/n9Uj0hwROJREtvFA7dUGqH
- PwDqrctZSPRQSNn8pAIfbCWOcVLZdjjBe0W7SG68f+sV/GpcgA9c5klnbZUK1b97h6kI
- Xq1Q==
-X-Gm-Message-State: AC+VfDyS0om2UFwIZhAVL6szVUETOruxSPFVv6Vb3XuKJ4/yu13/0NuC
- cz10zf4+0SuQjUgOVb1OTNStLw==
-X-Google-Smtp-Source: ACHHUZ6o1l35xyaSE1WBOJDHwtNFLAQM8sQR/7CE1inKG/0DfM3x4OyRrQLODFKJwr70MM8OI9Ks6g==
-X-Received: by 2002:a17:903:2344:b0:1b1:93f9:4305 with SMTP id
- c4-20020a170903234400b001b193f94305mr2235478plh.60.1686340135115; 
- Fri, 09 Jun 2023 12:48:55 -0700 (PDT)
+ bh=Drg4WP1wZ1Y1t8wan6VVGf2/z7ogGRSmyqWKwVjUdNQ=;
+ b=leVVxj0+1ib2g2QVaq2MfrP+HblbnHR9Fv9mS4BKXFqem/nCVdn9IVct7I7ueMam9q
+ ZuxpzTwmk/bV9mKJkQITzT68wAFsIvAeR38N6CetzH0EL2AIwZutaN/47anWHNVC4Pqd
+ fImEHtalBFH9KNvAeKOL5If8ADZGk5T0FNdofI4TPoZXAkPHMqleaRcisPcHdy80IxNh
+ 1be1f/l/5Xq+Po5gKb8hIKn3ROXzv9FoD9Ekk+xurQNzv0nCxxezVzu1qTYE71VkOyOg
+ cn0qWgMSbKZpNVvrtPZpsbBi9ZXnxjUyaCANr/a2pzkSEEAogWcRkiGypNRV3FFn62Pc
+ m3Ng==
+X-Gm-Message-State: AC+VfDzvdW9UHK8NS3U2P7a6ArsKTRrPTYXZ2bMMPruZfbknMbqFq3tn
+ x4wNl0dFu38iIi9PB9n4XBYrscQRjBuLYuWExw8=
+X-Google-Smtp-Source: ACHHUZ5XVmNmHgomYUzoBeA7tPIpigsuB4Nqwo7nwTGP1yW4WPn3ThbQzz2hjS16fdQbsx0fbyIvGQ==
+X-Received: by 2002:a05:6a20:1004:b0:110:29b9:9652 with SMTP id
+ gs4-20020a056a20100400b0011029b99652mr1685440pzc.56.1686340188001; 
+ Fri, 09 Jun 2023 12:49:48 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:20be:c4cb:f609:8cca?
  ([2602:ae:1598:4c01:20be:c4cb:f609:8cca])
  by smtp.gmail.com with ESMTPSA id
- n10-20020a170902d2ca00b001b03c225c0asm3624075plc.221.2023.06.09.12.48.54
+ l4-20020a63ba44000000b005443c83b176sm2971812pgu.69.2023.06.09.12.49.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jun 2023 12:48:54 -0700 (PDT)
-Message-ID: <fc2d01f9-b624-7678-4da1-09dc7cfb1205@linaro.org>
-Date: Fri, 9 Jun 2023 12:48:52 -0700
+ Fri, 09 Jun 2023 12:49:47 -0700 (PDT)
+Message-ID: <fdf5b36e-a8f1-0a41-b957-0720f2c53cb6@linaro.org>
+Date: Fri, 9 Jun 2023 12:49:45 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 15/22] target/arm/tcg: Extract SVE2 definitions to
- 'helper-sve.h.inc'
+Subject: Re: [PATCH 05/22] target/arm/tcg: Extract iwMMXt helpers from the
+ generic 'helper.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20230609104717.95555-1-philmd@linaro.org>
- <20230609104717.95555-16-philmd@linaro.org>
+ <20230609104717.95555-6-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230609104717.95555-16-philmd@linaro.org>
+In-Reply-To: <20230609104717.95555-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -99,16 +99,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/9/23 03:47, Philippe Mathieu-Daudé wrote:
-> helper.h is used by all units, but not all require the
-> SVE2 definitions. We already have helper-sve.h.inc for
-> SVE* definitions, move them there. The next commit will
-> remove it from the common helper.h.
-> 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/arm/helper.h             | 46 ---------------------------------
->   target/arm/tcg/helper-sve.h.inc | 46 +++++++++++++++++++++++++++++++++
->   2 files changed, 46 insertions(+), 46 deletions(-)
+>   target/arm/helper.h                |  96 +-----------------------
+>   target/arm/tcg/helper-iwmmxt.h.inc | 114 +++++++++++++++++++++++++++++
+>   2 files changed, 115 insertions(+), 95 deletions(-)
+>   create mode 100644 target/arm/tcg/helper-iwmmxt.h.inc
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
