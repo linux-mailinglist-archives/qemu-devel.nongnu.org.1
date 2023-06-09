@@ -2,85 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C03272A2C8
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 21:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE02072A301
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 21:22:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7hPu-0002dm-39; Fri, 09 Jun 2023 15:04:58 -0400
+	id 1q7hfB-0006Av-S6; Fri, 09 Jun 2023 15:20:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7hPp-0002cy-Vj
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:04:55 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7hPm-0006mc-RF
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:04:53 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-650c89c7e4fso2212120b3a.0
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 12:04:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686337489; x=1688929489;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+C8+d0S2bw00YZMFNjh1AFwTSdqeQQ3MkDo/fZGPraw=;
- b=Y/YL2PmZrytoNAe6ol0hXfZA0L/+J2jaszdpgBdJUWadlXlUyE2PKI+hJhNQGVgeMk
- xC5hA/EySjTKgBW2cPvBEg9hLcne9wMvuUx49uiSRNLSrS1abCVW2WjV43PIgc5U+0xQ
- VyGQdWAw/bk3ccyQFIkJZN37Kc+cOH/MTfT3qS8E69cMn8ahAPPdJA4FtRnjGtKGbQSo
- 5mwX4VDr79JPO6LxjK7lIf2lDIX8xCckr5pSaXAlP4uJeEdByVwnwkAqkiQb0jLan0Jm
- kE60e0+bDXo63a24qDtNtmMh8kTaibq8aT1vtLDm5y5DGqn5QKBJFQRLgtQZTxiqWOqF
- wRxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686337489; x=1688929489;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+C8+d0S2bw00YZMFNjh1AFwTSdqeQQ3MkDo/fZGPraw=;
- b=CNU1wZ+krESp+Fllw/sMIHFMFuVWaY8IDC3BqkJvNUipqsyUx4lT2uPip6isGf6hKy
- fJe8PA5gB5zZ9kunAUEMPDVeEl84LeTa7GLlhy72z13j0sZwDaiZpv05QaFoATM775JH
- nMpUC1WnU0unZeovgWoaBddC3bzlLD02PSFTrV96ljOBYmBffqAse+8lVf4XExq7Q1Yr
- e4vDFXS0z4xU+iS4XzIkIyb+3IBxmO0Uau00teKX2dzK7My5/UkUvvzwDdiLP93lP7om
- /pSGSj19lp+ditR1xDrrEjbnFEvWvjX4vFzG4bRaG73ji7umdluj9OHZHMjDMV7Bdg8R
- u2Xw==
-X-Gm-Message-State: AC+VfDwrZF8hBB6YmKDx77/+hCnJlXnxMJKBQX0alHFO2yVnkq6ZExB/
- 8dfOpOFpbBk0B4qXx2UV7lUbO9/jY4fBsPI0O/Y=
-X-Google-Smtp-Source: ACHHUZ6zIh/BzafpbFIpAMpPtjWSzw6thhgbnj/UYJwqVvAb6tHVWT4k4/IpwHckBWfK3gT1N3UFcw==
-X-Received: by 2002:a05:6a00:2d0b:b0:64f:5406:d59e with SMTP id
- fa11-20020a056a002d0b00b0064f5406d59emr2840562pfb.17.1686337489346; 
- Fri, 09 Jun 2023 12:04:49 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:20be:c4cb:f609:8cca?
- ([2602:ae:1598:4c01:20be:c4cb:f609:8cca])
- by smtp.gmail.com with ESMTPSA id
- v65-20020a632f44000000b00543e9e17207sm3247680pgv.30.2023.06.09.12.04.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jun 2023 12:04:48 -0700 (PDT)
-Message-ID: <0e66e8cd-7ad4-106b-ae79-9606d5b5fc4d@linaro.org>
-Date: Fri, 9 Jun 2023 12:04:47 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 11/22] target/arm/tcg: Reduce 'helper-vfp.h.inc' inclusion
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20230609104717.95555-1-philmd@linaro.org>
- <20230609104717.95555-12-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230609104717.95555-12-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7hey-00069E-8w
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:20:32 -0400
+Received: from pv50p00im-zteg10021401.me.com ([17.58.6.47])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1q7hew-0002Jn-Ew
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 15:20:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ t=1686338422; bh=yUTl2fkzFaHsYhEA2iHXPxAbPTPE8YG2vGRqQUJHqT4=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+ b=fRtTaB2ZE9Yle7dNcht328rglXWvBg9mtNZAXzhIPiREUQQJmFUT7HJ8O2TQK7IqR
+ 45DRNhQjFM85xvEHKjk4n7vgs6vXGVyi7giHU2zvGainpbseI/glntCFYRkrcB1+JL
+ G8gy8qBG3maYYAw9k+UOm2+loLQNLGNlqYKguVxvRe9Ba0/wosBv4T2IhxkCr1okDo
+ UUeEJQo1/+wM3JPIEVKxH7QwdNNKb3w3L3iMWIcMz/Am2qSc8F1j9YvixoMO9lEHmd
+ K1Ihs8B8r1LO0K7Wims8pZFheOmlHZI/Va1d3j0stnE1XJ3r0+8bXk6GuJJs4ekU3I
+ KFamq/fo2kujw==
+Received: from smtpclient.apple (pv50p00im-dlb-asmtp-mailmevip.me.com
+ [17.56.9.10])
+ by pv50p00im-zteg10021401.me.com (Postfix) with ESMTPSA id 8D6D68E0308;
+ Fri,  9 Jun 2023 19:20:20 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Re: [PATCH v3 12/14] simpletrace: added simplified Analyzer2 class
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20230608124147.51125-13-mads@ynddal.dk>
+Date: Fri, 9 Jun 2023 21:20:07 +0200
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <B5979ACE-9AC2-4E72-B132-4EFC150CB684@ynddal.dk>
+References: <20230608124147.51125-1-mads@ynddal.dk>
+ <20230608124147.51125-13-mads@ynddal.dk>
+To: qemu-devel@nongnu.org
+X-Mailer: Apple Mail (2.3731.600.7)
+X-Proofpoint-GUID: Y2prbdkDLnET1ttdKb8sDujcXD3KyOng
+X-Proofpoint-ORIG-GUID: Y2prbdkDLnET1ttdKb8sDujcXD3KyOng
+X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.11.64.514.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2022-02-23?=
+ =?UTF-8?Q?=5F01_signatures=3D0?=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ adultscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=725 malwarescore=0 clxscore=1030 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2306090162
+Received-SPF: pass client-ip=17.58.6.47; envelope-from=mads@ynddal.dk;
+ helo=pv50p00im-zteg10021401.me.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,49 +79,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/9/23 03:47, Philippe Mathieu-Daudé wrote:
-> Instead of including helper-vfp.h.inc via helper.h which
-> is included by all TCG files, restrict it to the few files
-> that require it.
+
+> On 8 Jun 2023, at 14.41, Mads Ynddal <mads@ynddal.dk> wrote:
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> From: Mads Ynddal <m.ynddal@samsung.com>
+> 
+> By moving the dynamic argument construction to keyword-arguments,
+> we can remove all of the specialized handling, and streamline it.
+> If a tracing method wants to access these, they can define the
+> kwargs, or ignore it be placing `**kwargs` at the end of the
+> function's arguments list.
+> 
+> Added deprecation warning to Analyzer class to make users aware
+> of the Analyzer2 class. No removal date is planned.
+> 
+> Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
 > ---
->   target/arm/helper.h             | 1 -
->   target/arm/tcg/mve_helper.c     | 5 +++++
->   target/arm/tcg/sve_helper.c     | 4 ++++
->   target/arm/tcg/translate-a64.c  | 5 +++++
->   target/arm/tcg/translate-neon.c | 5 +++++
->   target/arm/tcg/translate-vfp.c  | 6 ++++++
->   target/arm/tcg/vec_helper.c     | 5 +++++
->   target/arm/vfp_helper.c         | 5 +++++
->   8 files changed, 35 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/arm/helper.h b/target/arm/helper.h
-> index 9d85675d17..4d1b7ec6b4 100644
-> --- a/target/arm/helper.h
-> +++ b/target/arm/helper.h
-> @@ -813,5 +813,4 @@ DEF_HELPER_FLAGS_5(gvec_uclamp_d, TCG_CALL_NO_RWG,
->   #include "tcg/helper-sme.h.inc"
->   #endif
->   
-> -#include "tcg/helper-vfp.h.inc"
->   #include "tcg/helper-mve.h.inc"
-> diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-> index 403b345ea3..9914f45b16 100644
-> --- a/target/arm/tcg/mve_helper.c
-> +++ b/target/arm/tcg/mve_helper.c
-> @@ -27,6 +27,11 @@
->   #include "tcg/tcg.h"
->   #include "fpu/softfloat.h"
->   
-> +#define HELPER_H "tcg/helper-vfp.h.inc"
-> +#include "exec/helper-proto.h.inc"
-> +#include "exec/helper-gen.h.inc"
-> +#undef  HELPER_H
-> +
+> scripts/simpletrace.py | 72 ++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 72 insertions(+)
 
-Again, none of the *_helper.c need helper-gen.h.inc, only prototypes.
-
-
-r~
+I noticed I'm missing Analyzer2 in __all__
 
