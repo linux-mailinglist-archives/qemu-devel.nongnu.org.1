@@ -2,73 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82CB7297D0
+	by mail.lfdr.de (Postfix) with ESMTPS id E08BC7297D1
 	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 13:07:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Zwg-0004eK-VQ; Fri, 09 Jun 2023 07:06:19 -0400
+	id 1q7Zwn-0004fu-Sq; Fri, 09 Jun 2023 07:06:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7Zwa-0004cu-QB
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:06:14 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7Zwh-0004f5-D7
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:06:19 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7ZwY-0005u5-RL
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:06:12 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2b203891b2cso17603981fa.3
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 04:06:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7Zwe-0005xR-H1
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:06:19 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f6370ddd27so2009517e87.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 04:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686308768; x=1688900768;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=VCWmmOH099LoMnFejNB7Wrepsh2izdQnSDpyFHuq4YU=;
- b=w+ceYkYQ55DtIYH0wix1hmPWkOqX0M3CJM3V8gSrd+WNmWU4XcO5bUUqCjXBiXK0+S
- BoleNeI7Z1PTki28i9ZH20OkNrWfBuGzyhN8G446wW+qBXmy0F5CxcJklwXQp/0jglHq
- SWOFJHFPnAgJNumJICIx9GCiWghF1cNj01TsHDx7CkKY2K6QqBXlwcGpB9NPKbrlS9kq
- XBJdjtaUxmm86H0I5zBiK+3r6DbjA4OtAdvkIlW8Emq4F2/7gOy1h+3tC9vazusSKim1
- b9jbCExhAUKrt+1mVo0pj53mEAwKwkh2EzQd511yHoGdXsufNx6wozqOmPQHWMxbg+AZ
- TIBQ==
+ d=linaro.org; s=google; t=1686308774; x=1688900774;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0x5RkekOKaQzjq74QOJJSHShIn0DszZlo1yndNssGxA=;
+ b=QCTxdq0q/Qj+vWiwGVoWQKyHg7sq3gRxK6fWXUljLmkP1kGs+Q1hmX5kPcA3WSN/L/
+ 31zj2Y28b8rwamuWNx5sK3Vel+QxciDwVxNvgRy8+uxajDi6P318gEEebyzdSOt2PlTm
+ svmlWNHS1e2yxxCS4BBLD8gr0fmMqyhS4gHZKvec9aei2QLWGPQFFf4yzseAVGY2lpW2
+ B5x7qMyPy2JwGdERW2Y4eQ+rX2b8QfUpxCrL5gOmkL8YlVM22GZ5kFx60BLBNkDvz5KJ
+ C+BMYGrcbN/EPRHJsgk29s9o6hWNDQ48QEdbCPojf4vNZQV683KiXc8D+bnTFSPb6Qpc
+ GJVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686308768; x=1688900768;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VCWmmOH099LoMnFejNB7Wrepsh2izdQnSDpyFHuq4YU=;
- b=OvnfKyKk9HyRLrwaw43ZSxBV811RhBE8DJtsGK2RNfKOZBSdDcNZlFVqqq+PJRMgU0
- yKmrfTH85vJ3hfWBw+BdJpqEYEYBRlrMWqHjnyim7UdnCnhFKHHVJSFRBCDxjzvqlPA1
- 0N3AcnlX48GE6CiHC9za/cVLIrusHQTZ9BMJFQaOmXXCErR6mlZS3rI1uCayzyggdeTr
- 7gYq5HtULSAzeVlMJfsBgEPHCZG9uOiSNujVj8baxAMFTP+SxNCRwbEajZHOCpgMR9U7
- z77UtCOE0m4Cgm20zfla5BfaMrN4dhYMacbWgrkluGGSR50JJGViqmZu6wtxN8pZJzsy
- mZpg==
-X-Gm-Message-State: AC+VfDw2dIw14ATXUzKtiDM+h/zzAR08pFxiMtM6XVVhhLHvD1LsqW7/
- B6JWOn5cetr8Eo0j6h1dFZR0Nf/X24WFG78fQjTSjhgCQn7/KhWJjIk=
-X-Google-Smtp-Source: ACHHUZ7sY4UsIEXfYK2LqgfZ1aWgWPFL3/1qhFzPaflQ0RtfAXb452iLrQfphzJyqyPZcloggZCak+69WDVTep9InU4=
-X-Received: by 2002:a2e:9d4a:0:b0:2b1:e369:40 with SMTP id
- y10-20020a2e9d4a000000b002b1e3690040mr810502ljj.27.1686308768510; 
- Fri, 09 Jun 2023 04:06:08 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686308774; x=1688900774;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0x5RkekOKaQzjq74QOJJSHShIn0DszZlo1yndNssGxA=;
+ b=GWHen4Rpy131VGmKqfIQj6Z5kyHKT7EPhmYLTGkBAaoiUftlbsHvm2Y9ss03vpPGrw
+ HcroJ9glGG6OUGaKaDRQVgBNNrYQ6Tvv4ce3P1FXMxlsYSPhYz5bhxCczoDVnvZqb9QB
+ pDg3Jxokl6xHGPDImT0IJFyXDS7zP/mSYljTZUFg5o6hbsj/Ejo0fWPfA0Hh7MaKEtIM
+ HNctJfEwhfi0l1hdYT1ME72ftX9YnbU5Os+lFxn54oqbfFGB4tIcYgJf0LDIyRvPMC3X
+ 4JrVBy7f9BmQTf99kgE8D5of+N5EOKR7difoSijISYECHFxrX735HO5CrzOX6VAy5B6F
+ 0OfA==
+X-Gm-Message-State: AC+VfDwMx4nyRC3DUmdPJylzrhecGk1OHUjPxW0Yb+Q8pWibHLuWlgec
+ EYqnqxQmR5Y7Sq8ca7Q6IEfdD0q4tkSvV9OYJ/+uhw==
+X-Google-Smtp-Source: ACHHUZ52GFoS/5Vlw5pKutC08bvDAv3ol4PhRC8s/qleFVRW1kLhWghjhN7TMjgro19BIBDkkSe3Ow==
+X-Received: by 2002:ac2:4db2:0:b0:4f4:d83e:4140 with SMTP id
+ h18-20020ac24db2000000b004f4d83e4140mr672628lfe.34.1686308774436; 
+ Fri, 09 Jun 2023 04:06:14 -0700 (PDT)
+Received: from [192.168.192.175] (23.171.88.92.rev.sfr.net. [92.88.171.23])
+ by smtp.gmail.com with ESMTPSA id
+ u26-20020a05600c211a00b003f42314832fsm2356751wml.18.2023.06.09.04.06.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 09 Jun 2023 04:06:14 -0700 (PDT)
+Message-ID: <cbfc9573-736a-2f2b-9bd3-f69c7575b171@linaro.org>
+Date: Fri, 9 Jun 2023 13:06:10 +0200
 MIME-Version: 1.0
-References: <CAFEAcA8oS7fOr9Ro6Z9G5UW6FbgwTo3BTcGL4ELdVc_G7O5Obg@mail.gmail.com>
-In-Reply-To: <CAFEAcA8oS7fOr9Ro6Z9G5UW6FbgwTo3BTcGL4ELdVc_G7O5Obg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 9 Jun 2023 12:05:57 +0100
-Message-ID: <CAFEAcA9=P+P09Gi+gO7PhSm==L5-4VZyujujEUCLN1HfprA0XQ@mail.gmail.com>
-Subject: Re: vmovqdu/vmovqda inline asm doesn't compile on macos catalina
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH 08/22] target/arm/tcg: Extract iwmmxt code to
+ translate-iwmmxt.c
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230609104717.95555-1-philmd@linaro.org>
+ <20230609104717.95555-9-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230609104717.95555-9-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,92 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard: ping, any idea if we can get rid of these errors?
+On 9/6/23 12:47, Philippe Mathieu-Daudé wrote:
+> Extract 1300 lines from the big enough translate.c.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/arm/tcg/translate-iwmmxt.c | 1334 +++++++++++++++++++++++++++++
+>   target/arm/tcg/translate.c        | 1312 ----------------------------
+>   target/arm/tcg/meson.build        |    1 +
+>   3 files changed, 1335 insertions(+), 1312 deletions(-)
+>   create mode 100644 target/arm/tcg/translate-iwmmxt.c
+> 
+> diff --git a/target/arm/tcg/translate-iwmmxt.c b/target/arm/tcg/translate-iwmmxt.c
+> new file mode 100644
+> index 0000000000..a054064c98
+> --- /dev/null
+> +++ b/target/arm/tcg/translate-iwmmxt.c
+> @@ -0,0 +1,1334 @@
+> +/*
+> + * AArch64 SVE translation
+> + *
+> + * Copyright (c) 2018 Linaro, Ltd
 
-I have a simple standalone reproducer if you want to try different
-asm syntax:
+Argh, wrong copy/paste!
 
-$ cat atomic.c
-__int128_t atomic16_read_ro(const __int128_t *ptr)
-{
-    __int128_t i;
-    asm("vmovqda %1, %0" : "=x" (i) : "m" (*ptr));
-    return i;
-}
-$ cc -o /tmp/atomic.o atomic.c
-atomic.c:4:9: error: couldn't allocate output register for constraint 'x'
+> + * This library is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU Lesser General Public
+> + * License as published by the Free Software Foundation; either
+> + * version 2.1 of the License, or (at your option) any later version.
+> + *
+> + * This library is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * Lesser General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU Lesser General Public
+> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+> + */
 
-thanks
--- PMM
-
-On Mon, 5 Jun 2023 at 11:55, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> I just noticed that the recent atomicity changes introduce a build
-> failure on x86 macos (Catalina). Now if we wanted to, we can say "this
-> is too old and outside our support policy", of course...
-> (I don't know if newer x86 macos is OK -- this machine can't
-> upgrade to anything newer than Catalina. So it's due to be
-> decommissioned pretty soon anyway.)
->
-> In file included from ../../accel/tcg/cputlb.c:1673:
-> In file included from ../../accel/tcg/ldst_atomicity.c.inc:12:
-> /Users/pm215/src/qemu/host/include/x86_64/host/load-extract-al16-al8.h:38:13:
-> error: couldn't allocate output register for constraint 'x'
->         asm("vmovdqu %1, %0" : "=x" (r.i) : "m" (*ptr_align));
->             ^
-> /Users/pm215/src/qemu/host/include/x86_64/host/load-extract-al16-al8.h:40:13:
-> error: couldn't allocate output register for constraint 'x'
->         asm("vmovdqa %1, %0" : "=x" (r.i) : "m" (*ptr_align));
->             ^
-> In file included from ../../accel/tcg/cputlb.c:34:
-> In file included from /Users/pm215/src/qemu/include/qemu/atomic128.h:62:
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:31:9:
-> error: couldn't allocate output register for constraint 'x'
->     asm("vmovdqa %1, %0" : "=x" (r.i) : "m" (*ptr));
->         ^
-> In file included from ../../accel/tcg/cputlb.c:1673:
-> In file included from ../../accel/tcg/ldst_atomicity.c.inc:12:
-> /Users/pm215/src/qemu/host/include/x86_64/host/load-extract-al16-al8.h:38:13:
-> error: couldn't allocate output register for constraint 'x'
->         asm("vmovdqu %1, %0" : "=x" (r.i) : "m" (*ptr_align));
->             ^
-> /Users/pm215/src/qemu/host/include/x86_64/host/load-extract-al16-al8.h:40:13:
-> error: couldn't allocate output register for constraint 'x'
->         asm("vmovdqa %1, %0" : "=x" (r.i) : "m" (*ptr_align));
->             ^
-> In file included from ../../accel/tcg/cputlb.c:34:
-> In file included from /Users/pm215/src/qemu/include/qemu/atomic128.h:62:
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:31:9:
-> error: couldn't allocate output register for constraint 'x'
->     asm("vmovdqa %1, %0" : "=x" (r.i) : "m" (*ptr));
->         ^
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:31:9:
-> error: couldn't allocate output register for constraint 'x'
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:31:9:
-> error: couldn't allocate output register for constraint 'x'
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:55:13:
-> error: couldn't allocate input reg for constraint 'x'
->         asm("vmovdqa %1, %0" : "=m"(*ptr_align) : "x" (new.i));
->             ^
-> In file included from ../../accel/tcg/cputlb.c:1673:
-> In file included from ../../accel/tcg/ldst_atomicity.c.inc:12:
-> /Users/pm215/src/qemu/host/include/x86_64/host/load-extract-al16-al8.h:38:13:
-> error: couldn't allocate output register for constraint 'x'
->         asm("vmovdqu %1, %0" : "=x" (r.i) : "m" (*ptr_align));
->             ^
-> /Users/pm215/src/qemu/host/include/x86_64/host/load-extract-al16-al8.h:40:13:
-> error: couldn't allocate output register for constraint 'x'
->         asm("vmovdqa %1, %0" : "=x" (r.i) : "m" (*ptr_align));
->             ^
-> In file included from ../../accel/tcg/cputlb.c:34:
-> In file included from /Users/pm215/src/qemu/include/qemu/atomic128.h:62:
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:31:9:
-> error: couldn't allocate output register for constraint 'x'
->     asm("vmovdqa %1, %0" : "=x" (r.i) : "m" (*ptr));
->         ^
-> /Users/pm215/src/qemu/host/include/x86_64/host/atomic128-ldst.h:31:9:
-> error: couldn't allocate output register for constraint 'x'
-> 13 errors generated.
->
-> -- PMM
 
