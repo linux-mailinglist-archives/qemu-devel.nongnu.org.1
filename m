@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0117290F6
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 09:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3ACF7290F4
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 09:29:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7WXg-0005uT-Hp; Fri, 09 Jun 2023 03:28:16 -0400
+	id 1q7WXd-0005qN-Dr; Fri, 09 Jun 2023 03:28:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1q7WXd-0005se-Vy
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:14 -0400
-Received: from mout.kundenserver.de ([212.227.126.134])
+ id 1q7WXZ-0005mC-Dn
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:10 -0400
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1q7WXc-0003FB-AE
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:13 -0400
+ id 1q7WXX-0003Ea-IE
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:08 -0400
 Received: from lenovo-t14s.redhat.com ([82.142.8.70]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MG9Pg-1qO2n32bmO-00Gcju; Fri, 09 Jun 2023 09:27:49 +0200
+ id 1M3D7V-1qB6VP0PuP-003eAJ; Fri, 09 Jun 2023 09:27:50 +0200
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Gibson <dgibson@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 0/3] net: socket: do not close file descriptor if it's not a
- socket
-Date: Fri,  9 Jun 2023 09:27:45 +0200
-Message-Id: <20230609072748.4179873-1-lvivier@redhat.com>
+Subject: [PATCH 1/3] net: socket: prepare to cleanup net_init_socket()
+Date: Fri,  9 Jun 2023 09:27:46 +0200
+Message-Id: <20230609072748.4179873-2-lvivier@redhat.com>
 X-Mailer: git-send-email 2.39.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230609072748.4179873-1-lvivier@redhat.com>
+References: <20230609072748.4179873-1-lvivier@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:z7LUGgFK7iVV3DR48Aqr3u91uglL/618/zJ2SDTRqXVJZ2LueYm
- 22vll6WonoO8uABTu+mWgVOluIOh8Y0rfCXqVjJGBiKdEocyKisS/btyYmBFskkReC3Bmri
- 44dro2xrUGH8nUWbJ/zaiK9eQC/MkWsFOqX0hArKa3rnRxRBHB87MOc8E4MbkVYhznUroVx
- vw93+oPDKGEc/6WqA/ofw==
-UI-OutboundReport: notjunk:1;M01:P0:NJNDcdeCNkM=;LOMzWbabnE6EiIH6zoswWrLWogm
- QUNf/ry5SJaPfVPhMYcHeDx85RNFitf4YA03zYZp5oEf838GKAyk5bBwJWJcHiKNaqTEbdPtE
- fnUcYtYYtR7WZhDyp2U9fKCEVxBJDy/Xif7Ro4TcsGsZxkuZDKYzut4S/hAmKIzkR9QC+IfWX
- Yso0mVlUWCo/dSpAAWo9fnzh/KojTOvmITu9Px3XO6mJoXvEGX8xi2NnfcAGXz1CqBabQePtl
- 4Sf0j5keC/G3HWeuGQmGb9ebGz9q5qPm8mqWLC0lxPk1wKk0UcgV5YJbBg576kQdOtL+J7YDc
- lFg60pFcIYTpCXfCHLRIbHLo8buP3NitcBtGN2+MmhxP8KmW4cmlnCJ9OoCF09vQDf/zLrdWM
- efARy2Rye0lYpjuN0CqVg8Pw1eW4CTU6ygY6p/UamBUxg5gAB3aqhqt7tdGod+uKHxZhdPmtL
- pqxVhORvgRmmBEj6YtB147yHQCDkL3JdKyrmpXxaFTv2ao4d+vo5K1fQAmyUllyrAvmjMm5nj
- ceOcknf+BEy955sUx9Udm14ewgRKS3vE4f5Y/z9W0ughKR8ra++9UVR5g77S/k72MNaQlvliI
- 7NobL9+1bcvehM+vYvo1cSCV4XYusRsQUUicBlcWfhQ0rAnB1R+dyICcoh14J5R5NabdRnMxC
- YSYP9ufVk1Ds3dptiqMjbZjZkX/wZpZczG/pxXQJvg==
-Received-SPF: permerror client-ip=212.227.126.134;
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:XMYS/ig/0imZSVzknFzyerXeZnCZ2k5JC4dbipEgt5bRYPtRunJ
+ 0lDuIvBqI5ZSogwm/aO5JJAvAS/h7YUuJL5LkNapqd+ryxaOVjiw9bBIwrEW8FpQKgR/3s5
+ YsVYUkxfbTbqlHcERW+9JWJ+D82DzMubnMJ2s0uCmg6g7lhvjpFsU0OoSC6co/di9dybxL2
+ IC/jOctIClsyxO21pd7lg==
+UI-OutboundReport: notjunk:1;M01:P0:wp2GhohRp9Q=;gE/9dynBftzCaIdQiZnq9V/b41e
+ KgvppQH6OQzoFkLc4uLZcD1SLGespR10N0wXCRVFqy+JEHWDa1EjqZ9JT7Q2mcnmEvm2AVNQe
+ 8s+IEMqh/J8FFGw7ReOE18jBimARjpOYEoeHCg76PrCV+sMp2hD9wsfdtFDpBdM8YNC9HkTXq
+ umZHVhm0/wA45F3WpLY06OhY2EB8i/vv4//lvSDcPAu/mMTVMZaIQnRqTuXbwTzQO3aQr/5Tp
+ siibWFbbf8A6GK82OE1iNhWdfGD7vtbkuhxNyK5+dSriQQu8Y4MYx9tsQ0jCCAgMtUKn0/oa5
+ sOMb6Bj6+TP3gkbmbuxGd37BzLZ5NOQpRX4oYr1vI5sDwHvrCZ7glgxOd8zKXnPsbWd0PoEjH
+ wYzymMP/2QC+YcieDOPNQwFWmrTZBQ4Gr9pui56UNuWDZ8lyUrTgoxqRilBDHNbOqsMvFsv+3
+ mbgQXQi2D1EzHuxtPPleroFQ8pDsExJBqfUbstubrqqiU9jjg47MZ/i5ogbnV2EseUfUMMDAO
+ PlvPCNQ7lx2mfxPXFJyMja6FEA/WVPVVM/uq1uIyn/c3BLq99gDLZZLED2KMMUOxrg7mlkb7/
+ OPqL3Ip7fgYPB8bsZNXj8h+TX+BKabBzpo1zyoNeFZXya/+F6AYAGp5lPn7IILvxKBL09ETpu
+ EYhPvFco7URxj3cGi303/yNkgc2kR9ZgOlJKrJqDwQ==
+Received-SPF: permerror client-ip=212.227.126.130;
  envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
  SPF_HELO_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -72,40 +72,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The socket netdev with a file descriptor (fd) cannot be removed=0D
-and then added again because the fd is closed when the backend is=0D
-removed and thus is not available anymore when we want to add the=0D
-backend again.=0D
-=0D
-But this can bring to a core dump:=0D
-1- boot a VM with an fd socket netdev=0D
-2- remove the netdev=0D
-3- reboot=0D
-4- add the netdev again, it fails because the fd is not a=0D
-   socket, and then closed=0D
-5- stop QEMU -> core dump=0D
-=0D
-On reboot (step 3) the fd is allocated to another use in QEMU, and when=0D
-we try to use it with a socket netdev, it fails. But the netdev backend=0D
-closes the file descriptor that is in use by another part of QEMU.=0D
-We can see the core dump on QEMU exit because it tries to close=0D
-an invalid file descriptor.=0D
-=0D
-It happens for instance when we have a PCI device and the fd is allocated=0D
-to a VirtIOIRQFD on reboot.=0D
-=0D
-Moreover, using "netdev socket,fd=3DX" allows an user to close any QEMU=0D
-internal file descriptor from an HMP or QMP interface.=0D
-=0D
-Laurent Vivier (3):=0D
-  net: socket: prepare to cleanup net_init_socket()=0D
-  net: socket: move fd type checking to its own function=0D
-  net: socket: remove net_init_socket()=0D
-=0D
- net/socket.c | 53 +++++++++++++++++++++++++++-------------------------=0D
- 1 file changed, 28 insertions(+), 25 deletions(-)=0D
-=0D
--- =0D
-2.39.2=0D
-=0D
+Use directly net_socket_fd_init_stream() and net_socket_fd_init_dgram()
+when the socket type is already known.
+
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+---
+ net/socket.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/socket.c b/net/socket.c
+index ba6e5b0b0035..24dcaa55bc46 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -587,7 +587,7 @@ static int net_socket_connect_init(NetClientState *peer,
+             break;
+         }
+     }
+-    s = net_socket_fd_init(peer, model, name, fd, connected, NULL, errp);
++    s = net_socket_fd_init_stream(peer, model, name, fd, connected);
+     if (!s) {
+         return -1;
+     }
+@@ -629,7 +629,7 @@ static int net_socket_mcast_init(NetClientState *peer,
+         return -1;
+     }
+ 
+-    s = net_socket_fd_init(peer, model, name, fd, 0, NULL, errp);
++    s = net_socket_fd_init_dgram(peer, model, name, fd, 0, NULL, errp);
+     if (!s) {
+         return -1;
+     }
+@@ -683,7 +683,7 @@ static int net_socket_udp_init(NetClientState *peer,
+     }
+     qemu_socket_set_nonblock(fd);
+ 
+-    s = net_socket_fd_init(peer, model, name, fd, 0, NULL, errp);
++    s = net_socket_fd_init_dgram(peer, model, name, fd, 0, NULL, errp);
+     if (!s) {
+         return -1;
+     }
+-- 
+2.39.2
+
 
