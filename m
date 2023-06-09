@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4387772A4A4
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 22:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF5E72A492
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 22:21:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7iaV-00025S-Nh; Fri, 09 Jun 2023 16:19:59 -0400
+	id 1q7iaY-00027C-TI; Fri, 09 Jun 2023 16:20:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q7iaR-00023z-DG; Fri, 09 Jun 2023 16:19:56 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ id 1q7iaU-00024d-Qp; Fri, 09 Jun 2023 16:19:58 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q7ia9-0000BA-V7; Fri, 09 Jun 2023 16:19:39 -0400
+ id 1q7iaR-0000Da-Ia; Fri, 09 Jun 2023 16:19:58 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8394E1FD6D;
- Fri,  9 Jun 2023 20:19:36 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DDCC421A89;
+ Fri,  9 Jun 2023 20:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1686341976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1686341979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tpsBsTWWwIgYxCL079sJNHRptOhse1wDEWsxBAJclkY=;
- b=GYDyhdSbarljKxwWeOHTMR+IOUudyXBvFWCQ4/nGYUJSJPb5tui+h/hDKTMT6NgahGipq3
- w0m9Z19lwgyRBxl/IM6CFYUsBancfIxMUXwdqcZBr20sVCmCPvVDo3OL67Qy6sBU3uSR/4
- EL9KhU0jtDQ4jS4jfxawCkri+fdfFmI=
+ bh=pKxypfCH/TWYNn3NOXAvEalB2qXeE4bPySVDgd5YRIg=;
+ b=SX+uPmHOrQLflHH8hZ90+gEZRg2+aX6gVn4rDglsuDHXvajM42dHOqjYJODea1nvo//2Fa
+ IFJzyLrvUM3toAvkwrFv637RWTPXzFXLxfphLhfTcZVnQfmU1HYx0v1qCXCrP40wWeGqad
+ FoN16aqjIStzxexBVHg304ggOAFjJUY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1686341976;
+ s=susede2_ed25519; t=1686341979;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tpsBsTWWwIgYxCL079sJNHRptOhse1wDEWsxBAJclkY=;
- b=sRK+L+DG+z3qwDeRzqHvAy3o9Z5Q8lNTVqWbeExxPxxdH4MXxA168dl59gdNSKtrDVoGvo
- r4/48xZff6EKLtAA==
+ bh=pKxypfCH/TWYNn3NOXAvEalB2qXeE4bPySVDgd5YRIg=;
+ b=oja0keUZBFL7mgPWsH3tuU2JtvnfIkJNtqiSXhZiZPuzN6jW7B7NQC6gL1wsGKQKipIbGQ
+ 6+22gjfQyHeF/IAA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A16EA139C8;
- Fri,  9 Jun 2023 20:19:33 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 08DDF139C8;
+ Fri,  9 Jun 2023 20:19:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id WFDzGFWJg2R/SwAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 09 Jun 2023 20:19:33 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id MIOuL1iJg2R/SwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 09 Jun 2023 20:19:36 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -56,16 +56,17 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Jo=C3=A3o=20Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
  Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [PATCH v2 06/10] block: Convert bdrv_block_device_info into co_wrapper
-Date: Fri,  9 Jun 2023 17:19:06 -0300
-Message-Id: <20230609201910.12100-7-farosas@suse.de>
+Subject: [PATCH v2 07/10] block: Convert qmp_query_named_block_nodes to
+ coroutine
+Date: Fri,  9 Jun 2023 17:19:07 -0300
+Message-Id: <20230609201910.12100-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230609201910.12100-1-farosas@suse.de>
 References: <20230609201910.12100-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -88,73 +89,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Lin Ma <lma@suse.com>
+
 We're converting callers of bdrv_get_allocated_file_size() to run in
 coroutines because that function will be made asynchronous when called
 (indirectly) from the QMP dispatcher.
 
-This function is a candidate because it calls bdrv_query_image_info()
--> bdrv_do_query_node_info() -> bdrv_get_allocated_file_size().
+This QMP command is a candidate because it indirectly calls
+bdrv_get_allocated_file_size() through bdrv_block_device_info() ->
+bdrv_query_image_info() -> bdrv_query_image_info().
 
-It is safe to turn this is a coroutine because the code it calls is
-made up of either simple accessors and string manipulation functions
-[1] or it has already been determined to be safe [2].
+The previous patches have determined that bdrv_query_image_info() and
+bdrv_do_query_node_info() are coroutine-safe so we can just make the
+QMP command run in a coroutine.
 
-1) bdrv_refresh_filename(), bdrv_is_read_only(),
-   blk_enable_write_cache(), bdrv_cow_bs(), blk_get_public(),
-   throttle_group_get_name(), bdrv_write_threshold_get(),
-   bdrv_query_dirty_bitmaps(), throttle_group_get_config(),
-   bdrv_filter_or_cow_bs(), bdrv_skip_implicit_filters()
-
-2) bdrv_do_query_node_info() (see previous commit);
-
+Signed-off-by: Lin Ma <lma@suse.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- block/qapi.c         |  8 ++++----
- include/block/qapi.h | 12 ++++++++----
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ block.c              | 2 +-
+ blockdev.c           | 6 +++---
+ qapi/block-core.json | 3 ++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/block/qapi.c b/block/qapi.c
-index a2e71edaff..20660e15d6 100644
---- a/block/qapi.c
-+++ b/block/qapi.c
-@@ -41,10 +41,10 @@
- #include "qemu/qemu-print.h"
- #include "sysemu/block-backend.h"
+diff --git a/block.c b/block.c
+index f94cee8930..abed744b60 100644
+--- a/block.c
++++ b/block.c
+@@ -6148,7 +6148,7 @@ BlockDeviceInfoList *bdrv_named_nodes_list(bool flat,
  
--BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
--                                        BlockDriverState *bs,
--                                        bool flat,
--                                        Error **errp)
-+BlockDeviceInfo *coroutine_fn bdrv_co_block_device_info(BlockBackend *blk,
-+                                                        BlockDriverState *bs,
-+                                                        bool flat,
-+                                                        Error **errp)
+     list = NULL;
+     QTAILQ_FOREACH(bs, &graph_bdrv_states, node_list) {
+-        BlockDeviceInfo *info = bdrv_block_device_info(NULL, bs, flat, errp);
++        BlockDeviceInfo *info = bdrv_co_block_device_info(NULL, bs, flat, errp);
+         if (!info) {
+             qapi_free_BlockDeviceInfoList(list);
+             return NULL;
+diff --git a/blockdev.c b/blockdev.c
+index e6eba61484..8b5f7d06c8 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -2818,9 +2818,9 @@ void qmp_drive_backup(DriveBackup *backup, Error **errp)
+     blockdev_do_action(&action, errp);
+ }
+ 
+-BlockDeviceInfoList *qmp_query_named_block_nodes(bool has_flat,
+-                                                 bool flat,
+-                                                 Error **errp)
++BlockDeviceInfoList *coroutine_fn qmp_query_named_block_nodes(bool has_flat,
++                                                              bool flat,
++                                                              Error **errp)
  {
-     ImageInfo **p_image_info;
-     ImageInfo *backing_info;
-diff --git a/include/block/qapi.h b/include/block/qapi.h
-index 7035bcd1ae..5cb0202791 100644
---- a/include/block/qapi.h
-+++ b/include/block/qapi.h
-@@ -30,10 +30,14 @@
- #include "block/snapshot.h"
- #include "qapi/qapi-types-block-core.h"
+     bool return_flat = has_flat && flat;
  
--BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
--                                        BlockDriverState *bs,
--                                        bool flat,
--                                        Error **errp);
-+BlockDeviceInfo *coroutine_fn bdrv_co_block_device_info(BlockBackend *blk,
-+                                                        BlockDriverState *bs,
-+                                                        bool flat,
-+                                                        Error **errp);
-+BlockDeviceInfo *co_wrapper bdrv_block_device_info(BlockBackend *blk,
-+                                                   BlockDriverState *bs,
-+                                                   bool flat,
-+                                                   Error **errp);
- int bdrv_query_snapshot_info_list(BlockDriverState *bs,
-                                   SnapshotInfoList **p_list,
-                                   Error **errp);
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 5dd5f7e4b0..9d4c92f2c9 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1972,7 +1972,8 @@
+ { 'command': 'query-named-block-nodes',
+   'returns': [ 'BlockDeviceInfo' ],
+   'data': { '*flat': 'bool' },
+-  'allow-preconfig': true }
++  'allow-preconfig': true,
++  'coroutine': true}
+ 
+ ##
+ # @XDbgBlockGraphNodeType:
 -- 
 2.35.3
 
