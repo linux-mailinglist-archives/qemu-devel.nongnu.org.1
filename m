@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE070728E0E
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 04:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 142B5728DE2
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 04:26:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7Rog-0003qQ-Ex; Thu, 08 Jun 2023 22:25:30 -0400
+	id 1q7Rp9-00050i-U4; Thu, 08 Jun 2023 22:25:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7Rnu-0002sD-B9
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:24:43 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1q7Rnz-0002wT-A0
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:24:51 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7RnY-0005eL-I6
- for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:24:42 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-652dd220d67so1290596b3a.3
- for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 19:24:18 -0700 (PDT)
+ id 1q7RnZ-0005gE-8S
+ for qemu-devel@nongnu.org; Thu, 08 Jun 2023 22:24:45 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6af93a6166fso268741a34.3
+ for <qemu-devel@nongnu.org>; Thu, 08 Jun 2023 19:24:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686277458; x=1688869458;
+ d=linaro.org; s=google; t=1686277459; x=1688869459;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QRqjQC8v/J/3z0IiE+GLS9BAOlnmnUcZezvum6TPI3k=;
- b=jTZ1GdnuaVJ/K9msc/E4nzU9PPq7Ifnw3S7658EFXGNtEaBhIoTQNrs2vSeowMjVHa
- DNjSxUo3gqIhCcdXCnHNI1UG5276w6vvHiOY87WVW/gfAi2vbHzjX1oeiUIBUjyL7PtH
- Dq0La4s7K+6+1ik0J66iAP/Q9v7VfEFjFRQ9d7gVYMZx1X6PKrLk1gsEOELSYXzPIknu
- DW/Mi9KszF+LmdqJGxll1rGhcr7KgIqzR47ZR+Pic5IzeBi8jNAmrUdsW+Bk+oPlOsg9
- 3gwy0jeB8q/YUqlaolh/3jQ+ziwDUWvw3Wz+34lDGtT5/kMUOhrbdJdkvE+OR18Y1oDz
- Usxg==
+ bh=pS9H3nW1oUdrmNzz27iCH6iSm9j7i3Aiq4G8rnUmTu4=;
+ b=Y2RepjWegCsrpeqXzgnR+0DHfg1Vwts6vMSgpOaS5z3sRO83kA8RoJMtEPXOqtZwwk
+ CiM9GswB2SlNmWk/ykQ0lcN5tXiKthcobDKzJYuCM8z/xAZRhwmCp7Sg5OG2KQK7tN4q
+ njCMxA0/qnvZNQyKq2bwvreOUJd1JEJ6Fp26/btDwFUpq6Ng+Tv+huXlVA5v7sxQ0N0G
+ 1+znq7Hj56DBZoO3A0gQf0eBqtpLlpi7mleaBOLKSyEozw+kanKnjXMjRlwRTT3ztE0n
+ rxlFfidSPcIRDUsUH95Ht6MD8OEfDzjKkNW0D76dXOTxmnAK5tWoPb3EplaRgD78bQzH
+ qu/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686277458; x=1688869458;
+ d=1e100.net; s=20221208; t=1686277459; x=1688869459;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QRqjQC8v/J/3z0IiE+GLS9BAOlnmnUcZezvum6TPI3k=;
- b=fSlx8nUQgwizsVhNa21vp7W5sTbDTsfiGEQOaD3bi5f8LJxSfRE/7dJtD9o48EDRcu
- 4ueV1kQkYBClaH6LKHzIKIE6RGdmcI0DEYvyytBJgrb+DAzzMo2lyhWNM0MYq+lqZbrm
- 9Dh/5VWno6aj/TsYPQRwqP5H8G959FuJdFiEMQWDcVjmNx0VmBbv54UdBxPrL3ZClDSE
- GOpmW1ztvoHiGcjWyl7d/B69r1LckGPhOw6cJ5uk7ntg9xw6OrDPP7Bm+L0NAjuXT6Tg
- VH2JTm6KjpxmtafG/KlYt9O6MWkHrgFaPgkZ5kkHAckgt55vUaUBlLnhghIpDvCyGCBi
- GXNg==
-X-Gm-Message-State: AC+VfDwC3Ho+kJ/OVKKJC6seH2Cw0OcFVfQf6oINYMnmFKEBm+n/bpno
- BIrVWA85xbaWTBAB+bSWq/kIx1ozI+Bt+D7cTN8=
-X-Google-Smtp-Source: ACHHUZ5ahTZeKSRjV4yF5dfQARGmSl/5nar5EgANY6dYjtjRIazT9M6taKsJQ5vxR2R/ppgT/hQSgA==
-X-Received: by 2002:a05:6a20:3cab:b0:10b:7400:cef7 with SMTP id
- b43-20020a056a203cab00b0010b7400cef7mr73162pzj.17.1686277458070; 
+ bh=pS9H3nW1oUdrmNzz27iCH6iSm9j7i3Aiq4G8rnUmTu4=;
+ b=PYcGGl2sHupPnPXTe9XF4AGNeaa1Poy2mjctu698DbosglONPrHvAGzO+hBUbbnFHm
+ WtQgi1aJlE7oDRht3oz3Bnpc90/otfPI1uyviQ8TfQZcJsFWC0VdN/LaOMbLw2TeS/Q3
+ DLdx1ppO7vYBFjdGoUULnYNP1kpZoyEkedgRqGk3FJH0hevvX5/yjJ8hqoa1E2JTqcZe
+ sqc1flOptsmRcEpVEt6rT08FBBkPJhepl8O/2psdZ5j7d8fJglvW8jmUK99dyTROy/rP
+ +IjMJFozkGrm0eGEeFmwaQL7HtBWniNCKvJWpjOPKslJ5ptvlqc4rBw4Q0seentVaLwq
+ AODA==
+X-Gm-Message-State: AC+VfDwfUZ4ChRTcYpq8LZ5S3i5D8OOFbe/qnUe2K120BOFtlUlgIBiR
+ YBPszBdkwqsydSb7tpeLkhOFiS3WC+Qf9V/rpMs=
+X-Google-Smtp-Source: ACHHUZ5XdGTrkIjyWl0RcQGgc5CcBCSkspn23rTSTtt3z6tpy0bEbAGEP3TbomUfghj0EDNwXf6IaQ==
+X-Received: by 2002:a05:6830:1483:b0:6b1:5e8f:e508 with SMTP id
+ s3-20020a056830148300b006b15e8fe508mr148822otq.33.1686277458977; 
  Thu, 08 Jun 2023 19:24:18 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:b071:df63:5761:f449])
  by smtp.gmail.com with ESMTPSA id
- x25-20020a62fb19000000b0063afb08afeesm1686458pfm.67.2023.06.08.19.24.17
+ x25-20020a62fb19000000b0063afb08afeesm1686458pfm.67.2023.06.08.19.24.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jun 2023 19:24:17 -0700 (PDT)
+ Thu, 08 Jun 2023 19:24:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: ardb@kernel.org, berrange@redhat.com, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-Subject: [PATCH v2 16/38] target/riscv: Use aesdec_ISB_ISR_AK
-Date: Thu,  8 Jun 2023 19:23:39 -0700
-Message-Id: <20230609022401.684157-17-richard.henderson@linaro.org>
+Subject: [PATCH v2 17/38] crypto: Add aesenc_MC
+Date: Thu,  8 Jun 2023 19:23:40 -0700
+Message-Id: <20230609022401.684157-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230609022401.684157-1-richard.henderson@linaro.org>
 References: <20230609022401.684157-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,31 +92,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the AES64DS instruction.
+Add a primitive for MixColumns.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/crypto_helper.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ host/include/generic/host/aes-round.h |  2 +
+ include/crypto/aes-round.h            | 18 ++++++++
+ crypto/aes.c                          | 59 +++++++++++++++++++++++++++
+ 3 files changed, 79 insertions(+)
 
-diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
-index b072fed3e2..e61f7fe1e5 100644
---- a/target/riscv/crypto_helper.c
-+++ b/target/riscv/crypto_helper.c
-@@ -213,7 +213,12 @@ target_ulong HELPER(aes64es)(target_ulong rs1, target_ulong rs2)
+diff --git a/host/include/generic/host/aes-round.h b/host/include/generic/host/aes-round.h
+index e8f6bb0b99..b00e9b50b1 100644
+--- a/host/include/generic/host/aes-round.h
++++ b/host/include/generic/host/aes-round.h
+@@ -9,6 +9,8 @@
+ #define HAVE_AES_ACCEL  false
+ #define ATTR_AES_ACCEL
  
- target_ulong HELPER(aes64ds)(target_ulong rs1, target_ulong rs2)
- {
--    return aes64_operation(rs1, rs2, false, false);
-+    AESState t;
++void aesenc_MC_accel(AESState *, const AESState *, bool)
++    QEMU_ERROR("unsupported accel");
+ void aesenc_SB_SR_AK_accel(AESState *, const AESState *,
+                            const AESState *, bool)
+     QEMU_ERROR("unsupported accel");
+diff --git a/include/crypto/aes-round.h b/include/crypto/aes-round.h
+index 56376cc83b..9f263ca726 100644
+--- a/include/crypto/aes-round.h
++++ b/include/crypto/aes-round.h
+@@ -20,6 +20,24 @@ typedef union {
+ 
+ #include "host/aes-round.h"
+ 
++/*
++ * Perform MixColumns.
++ */
 +
-+    t.d[HOST_BIG_ENDIAN] = rs1;
-+    t.d[!HOST_BIG_ENDIAN] = rs2;
-+    aesdec_ISB_ISR_AK(&t, &t, &aes_zero, false);
-+    return t.d[HOST_BIG_ENDIAN];
++void aesenc_MC_gen(AESState *ret, const AESState *st);
++void aesenc_MC_genrev(AESState *ret, const AESState *st);
++
++static inline void aesenc_MC(AESState *r, const AESState *st, bool be)
++{
++    if (HAVE_AES_ACCEL) {
++        aesenc_MC_accel(r, st, be);
++    } else if (HOST_BIG_ENDIAN == be) {
++        aesenc_MC_gen(r, st);
++    } else {
++        aesenc_MC_genrev(r, st);
++    }
++}
++
+ /*
+  * Perform SubBytes + ShiftRows.
+  */
+diff --git a/crypto/aes.c b/crypto/aes.c
+index 767930223c..89de8e8db4 100644
+--- a/crypto/aes.c
++++ b/crypto/aes.c
+@@ -28,6 +28,8 @@
+  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ #include "qemu/osdep.h"
++#include "qemu/bswap.h"
++#include "qemu/bitops.h"
+ #include "crypto/aes.h"
+ #include "crypto/aes-round.h"
+ 
+@@ -1293,6 +1295,63 @@ void aesenc_SB_SR_AK_genrev(AESState *r, const AESState *s, const AESState *k)
+     aesenc_SB_SR_AK_swap(r, s, k, true);
  }
  
- target_ulong HELPER(aes64dsm)(target_ulong rs1, target_ulong rs2)
++/* Perform MixColumns. */
++static inline void
++aesenc_MC_swap(AESState *r, const AESState *st, bool swap)
++{
++    int swap_b = swap * 0xf;
++    int swap_w = swap * 0x3;
++    bool be = HOST_BIG_ENDIAN ^ swap;
++    uint32_t t;
++
++    /* Note that AES_mc_rot is encoded for little-endian. */
++    t = (      AES_mc_rot[st->b[swap_b ^ 0x0]] ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x1]], 8) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x2]], 16) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x3]], 24));
++    if (be) {
++        t = bswap32(t);
++    }
++    r->w[swap_w ^ 0] = t;
++
++    t = (      AES_mc_rot[st->b[swap_b ^ 0x4]] ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x5]], 8) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x6]], 16) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x7]], 24));
++    if (be) {
++        t = bswap32(t);
++    }
++    r->w[swap_w ^ 1] = t;
++
++    t = (      AES_mc_rot[st->b[swap_b ^ 0x8]] ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0x9]], 8) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0xA]], 16) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0xB]], 24));
++    if (be) {
++        t = bswap32(t);
++    }
++    r->w[swap_w ^ 2] = t;
++
++    t = (      AES_mc_rot[st->b[swap_b ^ 0xC]] ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0xD]], 8) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0xE]], 16) ^
++         rol32(AES_mc_rot[st->b[swap_b ^ 0xF]], 24));
++    if (be) {
++        t = bswap32(t);
++    }
++    r->w[swap_w ^ 3] = t;
++}
++
++void aesenc_MC_gen(AESState *r, const AESState *st)
++{
++    aesenc_MC_swap(r, st, false);
++}
++
++void aesenc_MC_genrev(AESState *r, const AESState *st)
++{
++    aesenc_MC_swap(r, st, true);
++}
++
+ /* Perform InvSubBytes + InvShiftRows. */
+ static inline void
+ aesdec_ISB_ISR_AK_swap(AESState *ret, const AESState *st,
 -- 
 2.34.1
 
