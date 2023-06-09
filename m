@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F1A7291BD
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 09:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D51427291CA
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 09:55:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7WtG-0005KP-Gp; Fri, 09 Jun 2023 03:50:34 -0400
+	id 1q7Wwa-0006lq-Fc; Fri, 09 Jun 2023 03:54:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7WtC-0005K5-5S
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:50:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q7WwW-0006lD-L0
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:53:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q7WtA-0008Ee-GW
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:50:29 -0400
+ id 1q7WwU-0000TE-O3
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:53:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686297027;
+ s=mimecast20190719; t=1686297233;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=g9WukYKVpsXuL7CpFHrxCcfdjzGsv2mMxzaZDzlebmM=;
- b=jHYFduMF032txHrKHynMLM76iSRDc+BpGPwG5wNfetyNxwRht1xXWMWznwOUdtsBCYo/72
- xUWevBYZV2bUXdz6Q5HRQ7VDEhhq57qUlz23TgFWrrDPy4Sx6FEG9vp+Q4btOd/wGBGSFy
- nOIf2Eo/tgI0RQ4z6IGIZcd7ZZ/Vgzk=
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=LSeVeYcO6vo4wKqzbb9/9JkjK1jyzjVJTp3eCX6j67Y=;
+ b=cklxuT88TSRAcfo83EmctbKgLhCNzJsqzvbgkrltBx8PfU/aWfVrl6Uns0fB6pHjJn8ee5
+ wxXHHldk0fURlsCGaoTdSoNUH7tanHW3mj7cHxNBoWthNOjE/RBGoCysWWgy3ikhG6Y16O
+ cuRGQEuLLRyBf9CNu9IjEXfIKYLlEfk=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-460-Xep2CeMXMDWvl6No2XK8FA-1; Fri, 09 Jun 2023 03:50:20 -0400
-X-MC-Unique: Xep2CeMXMDWvl6No2XK8FA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-175-XUhKtUPTNoGKypbD1dLeWg-1; Fri, 09 Jun 2023 03:53:49 -0400
+X-MC-Unique: XUhKtUPTNoGKypbD1dLeWg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05276280BC7B;
- Fri,  9 Jun 2023 07:50:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB1DD1C06927;
+ Fri,  9 Jun 2023 07:53:48 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.32])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5EB03C09A07;
- Fri,  9 Jun 2023 07:50:18 +0000 (UTC)
-Date: Fri, 9 Jun 2023 08:50:16 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C23D110C13;
+ Fri,  9 Jun 2023 07:53:47 +0000 (UTC)
+Date: Fri, 9 Jun 2023 08:53:45 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Henrik Carlqvist <hc981@poolhem.se>
-Cc: mark.cave-ayland@ilande.co.uk, hc1245@poolhem.se, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6] Emulate dip switch language layout settings on SUN
- keyboard
-Message-ID: <ZILZuOranwy1xEo/@redhat.com>
-References: <d2850ef0-d825-bb03-09d4-0d1427cf6577@ilande.co.uk>
- <20230123200937.32eb19eb.hc981@poolhem.se>
- <20230304220754.0c6ae562.hc981@poolhem.se>
- <ZCLzUyiDeKLfQqWT@redhat.com>
- <20230328191958.3e3eb5e4.hc981@poolhem.se>
- <ZCMq/imcAq0ApLQp@redhat.com>
- <20230328221608.328ab80f.hc981@poolhem.se>
- <20230430225533.1a57879a.hc981@poolhem.se>
- <ZIIAPz/HOqPXjKIs@redhat.com>
- <20230608201221.376ca6ce.hc981@poolhem.se>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 24/42] migration-test: Re-enable multifd_cancel test
+Message-ID: <ZILaiceoEZSpJsLe@redhat.com>
+References: <20230608224943.3877-1-quintela@redhat.com>
+ <20230608224943.3877-25-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230608201221.376ca6ce.hc981@poolhem.se>
+In-Reply-To: <20230608224943.3877-25-quintela@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,25 +83,40 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 08:12:21PM +0200, Henrik Carlqvist wrote:
-> On Thu, 8 Jun 2023 17:22:23 +0100
-> Daniel P. BerrangÃ© <berrange@redhat.com> wrote:
-> 
-> > On Sun, Apr 30, 2023 at 10:55:33PM +0200, Henrik Carlqvist wrote:
-> > > What is the best way to document this kind of global parameters?
-> > 
-> > You can put it in docs/system/sparc.rst (or sparc64.rst whichever is best?)
-> 
-> Thanks for your reply! As far as I know those dip switches are only in the
-> keyboards of the old 32 bit sparc machines, ultrasparc used USB keyboards
-> instead without any dip switches. I will add the text to
-> docs/system/target-sparc.rst.
-> 
-> Would you like the documentation as a separate patch or added to the patch
-> which adds the functionality to hw/char/escc.c?
+On Fri, Jun 09, 2023 at 12:49:25AM +0200, Juan Quintela wrote:
 
-Either way is fine imho, mild perference to have it in the same patch if
-the docs are reasonably short.
+Please explain why this is considered ok, given the comment about
+why it is disabled. ie if we fixed something, refrence the commit.
+
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>  tests/qtest/migration-test.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index 01ab51a391..9f86d9bc80 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -2886,14 +2886,8 @@ int main(int argc, char **argv)
+>      }
+>      qtest_add_func("/migration/multifd/tcp/plain/none",
+>                     test_multifd_tcp_none);
+> -    /*
+> -     * This test is flaky and sometimes fails in CI and otherwise:
+> -     * don't run unless user opts in via environment variable.
+> -     */
+> -    if (getenv("QEMU_TEST_FLAKY_TESTS")) {
+> -        qtest_add_func("/migration/multifd/tcp/plain/cancel",
+> -                       test_multifd_tcp_cancel);
+> -    }
+> +    qtest_add_func("/migration/multifd/tcp/plain/cancel",
+> +                   test_multifd_tcp_cancel);
+>      qtest_add_func("/migration/multifd/tcp/plain/zlib",
+>                     test_multifd_tcp_zlib);
+>  #ifdef CONFIG_ZSTD
+> -- 
+> 2.40.1
+> 
 
 With regards,
 Daniel
