@@ -2,59 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFC672A0E2
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6287972A0E5
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:09:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7fao-0005l3-1p; Fri, 09 Jun 2023 13:08:06 -0400
+	id 1q7fap-0005lm-Ko; Fri, 09 Jun 2023 13:08:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1q7fam-0005k6-8F
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 13:08:04 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ id 1q7fan-0005kd-A2
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 13:08:05 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1q7fak-00027Q-LF
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 13:08:03 -0400
+ id 1q7fal-00027V-Ti
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 13:08:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 354BE6164C;
- Fri,  9 Jun 2023 17:08:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8786C433D2;
- Fri,  9 Jun 2023 17:08:00 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 5C24265A2F;
+ Fri,  9 Jun 2023 17:08:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D29C4339C;
+ Fri,  9 Jun 2023 17:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1686330481;
- bh=StE9EQZ/cbvXv90I/dH/Pb6J0YEc6PobNdBqFEVZB70=;
+ s=k20201202; t=1686330482;
+ bh=sirEIIl6otJqKLK3fIB8RQ2gvm6l1N15xKFUdbKurpA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Rx7eFxErQWw1dFbdXb21eypM9XctZE1YK73BHhikf9sZUriFm/Kc/jkOg3GtIZDut
- V94fGO078/sl/EJGxMaqdWwaHj7yBTRENp7WpC1HM3X3rCAdQCouJmk19unCGulxZV
- 4mAu0GfmD8CA1R3cAzCeNyAVKhuUZGkyvY96m6CXhJdSm1/5MKVn4Vr/vEdjc6nskJ
- rXmcBaA39WrPSzN49yE6TYv486fqs75IO/1i/tKqB3z+sK+7Xw5pOcNOhz7ZqUNKqO
- sRVk34mJGE/EvYuqgeo7xfjiutFB3inhLp0o2w1hop2/bRXVSM0WRm3up4Oim/9ell
- NmHv5qCOJfi0A==
+ b=bs4MJ9+Dn9c/HryFIqsuXkAt2ONbyWRoXHd0kp2BFnOBgP1RLJRy3NOJhM6aiu2+s
+ qzMpjX4Ux2VucTXWBGqjCwsWUlkJasYrzaxkHNUxcPgMe31z9bvvFHVQRmqN3KsGSk
+ 4RHIEturejGQqm9iqnSuecd9jKjKWHQ6ESguVpJclJUZHjrV8qcm0mpm3oy5PbLZZq
+ ih+ND1cv607+OAmYKke65ndZTEFk83jAyg41sf0KtZlzsAbrVz+OZSRNrXVeXJFFVz
+ 7H7sKLHQzKUBUMVUSCsyYB0pP7YQty42FNna8/wWEqxNyodgWyoCLsEZTcpc77ED7b
+ EfrxiOjGlOjJg==
 From: Stefano Stabellini <sstabellini@kernel.org>
 To: peter.maydell@linaro.org
 Cc: sstabellini@kernel.org, qemu-devel@nongnu.org, vikram.garhwal@amd.com,
- richard.henderson@linaro.org, Paul Durrant <paul@xen.org>
-Subject: [PULL v4 07/10] hw/xen/xen-hvm-common: Use g_new and error_report
-Date: Fri,  9 Jun 2023 10:07:48 -0700
-Message-Id: <20230609170751.4059054-7-sstabellini@kernel.org>
+ richard.henderson@linaro.org,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL v4 08/10] meson.build: do not set have_xen_pci_passthrough for
+ aarch64 targets
+Date: Fri,  9 Jun 2023 10:07:49 -0700
+Message-Id: <20230609170751.4059054-8-sstabellini@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <alpine.DEB.2.22.394.2306091007210.3803068@ubuntu-linux-20-04-desktop>
 References: <alpine.DEB.2.22.394.2306091007210.3803068@ubuntu-linux-20-04-desktop>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217;
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
  envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,72 +75,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vikram Garhwal <vikram.garhwal@amd.com>
+From: Stefano Stabellini <stefano.stabellini@amd.com>
 
-Replace g_malloc with g_new and perror with error_report.
+have_xen_pci_passthrough is only used for Xen x86 VMs.
 
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Reviewed-by: Paul Durrant <paul@xen.org>
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/xen/xen-hvm-common.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ meson.build | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index cb82f4b83d..42339c96bd 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -33,7 +33,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-     trace_xen_ram_alloc(ram_addr, size);
+diff --git a/meson.build b/meson.build
+index 34306a6205..481865bfa9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1726,6 +1726,8 @@ have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
+            error_message: 'Xen PCI passthrough requested but Xen not enabled') \
+   .require(targetos == 'linux',
+            error_message: 'Xen PCI passthrough not available on this platform') \
++  .require(cpu == 'x86'  or cpu == 'x86_64',
++           error_message: 'Xen PCI passthrough not available on this platform') \
+   .allowed()
  
-     nr_pfn = size >> TARGET_PAGE_BITS;
--    pfn_list = g_malloc(sizeof (*pfn_list) * nr_pfn);
-+    pfn_list = g_new(xen_pfn_t, nr_pfn);
- 
-     for (i = 0; i < nr_pfn; i++) {
-         pfn_list[i] = (ram_addr >> TARGET_PAGE_BITS) + i;
-@@ -730,7 +730,7 @@ void destroy_hvm_domain(bool reboot)
-             return;
-         }
-         if (errno != ENOTTY /* old Xen */) {
--            perror("xendevicemodel_shutdown failed");
-+            error_report("xendevicemodel_shutdown failed with error %d", errno);
-         }
-         /* well, try the old thing then */
-     }
-@@ -784,7 +784,7 @@ static void xen_do_ioreq_register(XenIOState *state,
-     }
- 
-     /* Note: cpus is empty at this point in init */
--    state->cpu_by_vcpu_id = g_malloc0(max_cpus * sizeof(CPUState *));
-+    state->cpu_by_vcpu_id = g_new0(CPUState *, max_cpus);
- 
-     rc = xen_set_ioreq_server_state(xen_domid, state->ioservid, true);
-     if (rc < 0) {
-@@ -793,7 +793,7 @@ static void xen_do_ioreq_register(XenIOState *state,
-         goto err;
-     }
- 
--    state->ioreq_local_port = g_malloc0(max_cpus * sizeof (evtchn_port_t));
-+    state->ioreq_local_port = g_new0(evtchn_port_t, max_cpus);
- 
-     /* FIXME: how about if we overflow the page here? */
-     for (i = 0; i < max_cpus; i++) {
-@@ -850,13 +850,13 @@ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
- 
-     state->xce_handle = qemu_xen_evtchn_open();
-     if (state->xce_handle == NULL) {
--        perror("xen: event channel open");
-+        error_report("xen: event channel open failed with error %d", errno);
-         goto err;
-     }
- 
-     state->xenstore = xs_daemon_open();
-     if (state->xenstore == NULL) {
--        perror("xen: xenstore open");
-+        error_report("xen: xenstore open failed with error %d", errno);
-         goto err;
-     }
  
 -- 
 2.25.1
