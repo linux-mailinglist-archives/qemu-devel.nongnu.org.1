@@ -2,100 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAF6729F6F
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 679BB729F79
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7cII-0003dn-FE; Fri, 09 Jun 2023 09:36:46 -0400
+	id 1q7cNR-0004io-DC; Fri, 09 Jun 2023 09:42:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7cIG-0003dd-Td
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 09:36:44 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q7cNQ-0004iJ-0F
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 09:42:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q7cIF-00032c-8Y
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 09:36:44 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q7cNO-0003ta-C8
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 09:42:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686317802;
+ s=mimecast20190719; t=1686318121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2eZ12lkThj2IWogeENIs9h7/dv5+lmqzk3CVSioIGLQ=;
- b=WNPHqZ0SFitBcg62t4TCtz0O+675zJRNTfMkX5d393+zso4dZ2fBWVYddT37gLCI3xdDhs
- 8ylnZ5oBICfylbjucQN1Q5B5lvzRfQlW2zsCFAnMQvI+p790BZmkM+DKRF4p2Zss9G4KeO
- Sr/LquzoP6naw2m+tuB01G4W0fepTLc=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+Evb9H/2A9WJhBqIkLWtUG0H0Udea+11YBS1tu+WaiE=;
+ b=RwKscqzZX2LEp8GAJrvlb2VZVb4mWE0Y4d+Z1V2ET1npxXK2FRqmBoW0ro80/nfR05fPTO
+ tt/XXC94iBVh7sGsLzXTXaFFHcJEbbtOkB0WkFBlGV0j8td7kHZyeRVjkGnIAPrbqCFo4l
+ yjfbS6RUhFY5lGR6253QyZFB4axIDy4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-Mza2CtPUM9KejyjV62eEeg-1; Fri, 09 Jun 2023 09:36:40 -0400
-X-MC-Unique: Mza2CtPUM9KejyjV62eEeg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-62b683503e0so3578706d6.1
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 06:36:40 -0700 (PDT)
+ us-mta-318-3xC8EhjyOcamfsYUwlJxrA-1; Fri, 09 Jun 2023 09:41:59 -0400
+X-MC-Unique: 3xC8EhjyOcamfsYUwlJxrA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9750bb0695dso337701666b.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 06:41:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686317800; x=1688909800;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2eZ12lkThj2IWogeENIs9h7/dv5+lmqzk3CVSioIGLQ=;
- b=dVYihwYn7T28uH4cs2Dcl0hdSlxe3WHLsSAMZE4nPUOJ2gRhk32mEXRI/3x3fzmEju
- 08Oa+ui2CGb2vbuzg2kZh9uwPCpiN9mdAy6YgGPNWbh8r9HIb9ocC6XImN9wh5BByfA1
- xYIh7tbJ3vU6vXubJqv35C4vmtQTRTEQoKJGUge0tA2NwsYaydIkuJxCrvVZC2DYyL5L
- 2iXdaiLnK3qBOJlrOmnXfJJkf7d+DcCvZsvADzrmgjFMo/XLtIYmaWE8Tna6GwffPIWC
- PTdWm9Fa04H0tCD2R9qzkczrNb4tXNrFUIN9FZqwnny+VuWVjGFPrI9gs/KSSvSUv7NJ
- NZXQ==
-X-Gm-Message-State: AC+VfDxx+8SfGLUphcXlFqjIZAysM7ueXYC6sU8U5QhZ8irjf7ei0mK4
- k1mJuSdCsIp4r5tiO/PeRNjXJRIf3OKBOGCmOteQQaYTNMmGiagXIgcSzunPWVjSBbFAQqMPFzt
- A50cxoeyR0bsCSxM=
-X-Received: by 2002:a05:6214:768:b0:628:268c:1d72 with SMTP id
- f8-20020a056214076800b00628268c1d72mr1818055qvz.5.1686317799715; 
- Fri, 09 Jun 2023 06:36:39 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5oQ1Yd5eAW0DgF1XVhy2KdW9khzjTW1Rxm/wL4hLCqnI/lG5ZnX0hnUMjtBBa0r1caV/funA==
-X-Received: by 2002:a05:6214:768:b0:628:268c:1d72 with SMTP id
- f8-20020a056214076800b00628268c1d72mr1818031qvz.5.1686317799411; 
- Fri, 09 Jun 2023 06:36:39 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- s3-20020a0cb303000000b0062b35b691cdsm1142911qve.93.2023.06.09.06.36.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Jun 2023 06:36:38 -0700 (PDT)
-Date: Fri, 9 Jun 2023 09:36:37 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "mst@redhat.com" <mst@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "eduardo@habkost.net" <eduardo@habkost.net>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "kwankhede@nvidia.com" <kwankhede@nvidia.com>,
- "cjia@nvidia.com" <cjia@nvidia.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: Re: [PATCH v3 4/5] intel_iommu: Fix address space unmap
-Message-ID: <ZIMq5d1zGnYD9jsu@x1n>
-References: <20230608095231.225450-1-zhenzhong.duan@intel.com>
- <20230608095231.225450-5-zhenzhong.duan@intel.com>
- <ZIHcEMO2ZWp636t+@x1n>
- <SJ0PR11MB6744928AFD8CCB2C8C78D7959251A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ d=1e100.net; s=20221208; t=1686318118; x=1688910118;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+Evb9H/2A9WJhBqIkLWtUG0H0Udea+11YBS1tu+WaiE=;
+ b=Auw2HuIWzU4KQtD3heFYdlyqHJEsxOuYolku/sSH4P1dWmL8n3C4pbDMN9jmVYvjoL
+ k9/70pJXkgbkoF8VgrycQt5hIPSVAIjMj1S61lDnlQj7g6jnhykcNXQClpXWBlW9v43O
+ h4H6FirnlJ+63Iv4hWEIOEs9Ci8dSg5IPtWm4LNFP/BLMveTerNLMfV0vVL2gi/tXV+J
+ KcplJLCAGeX0TioHfyxNZBGx/oH0kRwvJBVhpi/f64YJH/2Lwy7uA1GY8L0v3qXbYlp0
+ U0nJh7hVft2ltIauLI3olqb1t1dusK0SfHPiiQ4FcMKMvyxTHLOUXtHjKMlY+eP3Po3W
+ Xjeg==
+X-Gm-Message-State: AC+VfDzDWyTcq8qYjcByJ43t2F2iEINnGURGiJDv8XxyKiuZmfV5Entp
+ PUsp09cSzhqFwH0wPFzunHeRIKfIZksb2ZePnWR/i2pKWQak0CDyJjzu+m8fI5eKhtpH5Ny6KIz
+ dwognN+GUldsuDYA=
+X-Received: by 2002:a17:907:3f91:b0:978:8a30:a8b with SMTP id
+ hr17-20020a1709073f9100b009788a300a8bmr2084856ejc.27.1686318118591; 
+ Fri, 09 Jun 2023 06:41:58 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7EWtgidvI5IeDbVa5SlkQrcWdD0OVjFj9rsiDbejtURstfo4FAtt7CMO8qBBm01FRQNErWZA==
+X-Received: by 2002:a17:907:3f91:b0:978:8a30:a8b with SMTP id
+ hr17-20020a1709073f9100b009788a300a8bmr2084831ejc.27.1686318118270; 
+ Fri, 09 Jun 2023 06:41:58 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d727:f67d:a473:8b17:9e70:3186?
+ (p200300cfd727f67da4738b179e703186.dip0.t-ipconnect.de.
+ [2003:cf:d727:f67d:a473:8b17:9e70:3186])
+ by smtp.gmail.com with ESMTPSA id
+ s20-20020a170906c31400b0096f71ace804sm1306647ejz.99.2023.06.09.06.41.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 09 Jun 2023 06:41:57 -0700 (PDT)
+Message-ID: <fd771f6f-8f5f-cb2f-a20c-da0f149a06a6@redhat.com>
+Date: Fri, 9 Jun 2023 15:41:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB6744928AFD8CCB2C8C78D7959251A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v5 5/5] parallels: Image repairing in parallels_open()
+Content-Language: en-US
+To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, kwolf@redhat.com
+References: <20230529151503.34006-1-alexander.ivanov@virtuozzo.com>
+ <20230529151503.34006-6-alexander.ivanov@virtuozzo.com>
+ <32385c08-0c72-bf53-d5bb-5fa13dce7089@redhat.com>
+ <e22757a4-9853-9044-3a3f-6d8f0e486bb3@virtuozzo.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <e22757a4-9853-9044-3a3f-6d8f0e486bb3@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,43 +106,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 09, 2023 at 03:31:46AM +0000, Duan, Zhenzhong wrote:
-> 
-> 
-> >-----Original Message-----
-> >From: Peter Xu <peterx@redhat.com>
-> >Sent: Thursday, June 8, 2023 9:48 PM
-> >To: Duan, Zhenzhong <zhenzhong.duan@intel.com>
-> >Cc: qemu-devel@nongnu.org; mst@redhat.com; jasowang@redhat.com;
-> >pbonzini@redhat.com; richard.henderson@linaro.org; eduardo@habkost.net;
-> >marcel.apfelbaum@gmail.com; alex.williamson@redhat.com;
-> >clg@redhat.com; david@redhat.com; philmd@linaro.org;
-> >kwankhede@nvidia.com; cjia@nvidia.com; Liu, Yi L <yi.l.liu@intel.com>; Peng,
-> >Chao P <chao.p.peng@intel.com>
-> >Subject: Re: [PATCH v3 4/5] intel_iommu: Fix address space unmap
-> >
-> >On Thu, Jun 08, 2023 at 05:52:30PM +0800, Zhenzhong Duan wrote:
-> >> During address space unmap, corresponding IOVA tree entries are also
-> >> removed. But DMAMap is set beyond notifier's scope by 1, so in theory
-> >> there is possibility to remove a continuous entry above the notifier's
-> >> scope but falling in adjacent notifier's scope.
-> >
-> >This function is only called in "loop over all notifiers" case (or replay() that just
-> >got removed, but even so there'll be only 1 notifier normally iiuc at least for
-> >vt-d), hopefully it means no bug exist (no Fixes needed, no backport needed
-> >either), but still worth fixing it up.
-> 
-> Not two notifiers as vtd-ir splits for vt-d?
+On 09.06.23 15:21, Alexander Ivanov wrote:
+>
+>
+> On 6/2/23 16:59, Hanna Czenczek wrote:
+>> On 29.05.23 17:15, Alexander Ivanov wrote:
+>>> Repair an image at opening if the image is unclean or out-of-image
+>>> corruption was detected.
+>>>
+>>> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+>>> ---
+>>>   block/parallels.c | 65 
+>>> +++++++++++++++++++++++++----------------------
+>>>   1 file changed, 35 insertions(+), 30 deletions(-)
+>>>
+>>> diff --git a/block/parallels.c b/block/parallels.c
+>>> index d64e8007d5..7bbd5cb112 100644
+>>> --- a/block/parallels.c
+>>> +++ b/block/parallels.c
+>>
+>> [...]
+>>
+>>> @@ -1130,6 +1101,40 @@ static int parallels_open(BlockDriverState 
+>>> *bs, QDict *options, int flags,
+>>>           goto fail;
+>>>       }
+>>>       qemu_co_mutex_init(&s->lock);
+>>> +
+>>> +    if (le32_to_cpu(ph.inuse) == HEADER_INUSE_MAGIC) {
+>>> +        s->header_unclean = true;
+>>> +    }
+>>> +
+>>> +    for (i = 0; i < s->bat_size; i++) {
+>>> +        sector = bat2sect(s, i);
+>>> +        if (sector + s->tracks > s->data_end) {
+>>> +            s->data_end = sector + s->tracks;
+>>> +        }
+>>> +    }
+>>> +
+>>> +    /*
+>>> +     * We don't repair the image here if it's opened for checks. 
+>>> Also we don't
+>>> +     * want to change inactive images and can't change readonly 
+>>> images.
+>>> +     */
+>>> +    if ((flags & (BDRV_O_CHECK | BDRV_O_INACTIVE)) || !(flags & 
+>>> BDRV_O_RDWR)) {
+>>> +        return 0;
+>>> +    }
+>>> +
+>>> +    /*
+>>> +     * Repair the image if it's dirty or
+>>> +     * out-of-image corruption was detected.
+>>> +     */
+>>> +    if (s->data_end > file_nb_sectors || s->header_unclean) {
+>>> +        BdrvCheckResult res;
+>>> +        ret = bdrv_check(bs, &res, BDRV_FIX_ERRORS | BDRV_FIX_LEAKS);
+>>> +        if (ret < 0) {
+>>
+>> Should we also verify that res->corruptions == res->corruptions_fixed 
+>> && res->check_errors == 0?
+> If ret == 0 there must be res->check_errors == 0 and res->corruptions 
+> == res->corruptions_fixed.
 
-The two notifiers will all be attached to the same IOMMU mr, so
-IOMMU_NOTIFIER_FOREACH() will loop over them all always?
+OK.
 
-And this actually shouldn't matter, IMHO, as the IR split has the
-0xfeeXXXXX hole only, so when notifying with end=0xfee00000 (comparing to
-end=0xfedfffff) it shouldn't make a difference iiuc because there should
-have no iova entry at 0xfee00000 anyway in the tree.
+>>
+>>> + error_free(s->migration_blocker);
+>>
+>> I’d move this clean-up to a new error path below, then we could even 
+>> reuse that where migrate_add_blocker() fails.
+> Is this guaranteed that s->migration_blocker is NULL at the function 
+> parallels_open() beginning? If so it could be easy to move the clean-up,
+> otherwise it could lead to code complication.
 
--- 
-Peter Xu
+Three answers here:
+
+First, I just realized that we probably need to undo the 
+migrate_add_blocker() call, too, i.e. call migrate_del_blocker() here.
+
+Second, I’m pretty sure that s->migration_blocker must be NULL before 
+the error_setg(&s->migration_blocker) call, because error_setg() asserts 
+that the *errp passed to it is NULL.
+
+Third, I meant to add a new path e.g.:
+
+```
+fail_blocker:
+     error_free(s->migration_blocker);
+fail_format:
+[...]
+```
+
+And then use `goto fail_blocker;` here and in the migrate_add_blocker() 
+error path, so it shouldn’t really matter whether s->migration_blocker 
+is NULL before the error_setg() call.  But then again, I think the 
+probably necessary migrate_del_blocker() call complicates things further.
+
+Hanna
+
+>>
+>> Anyway, not wrong as-is, just suggestion, so:
+>>
+>> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+>>
+>>> +            error_setg_errno(errp, -ret, "Could not repair 
+>>> corrupted image");
+>>> +            goto fail;
+>>> +        }
+>>> +    }
+>>> +
+>>>       return 0;
+>>>     fail_format:
+>>
+>
 
 
