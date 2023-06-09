@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7831A72A12D
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78ECE72A131
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 19:25:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7fqY-0006za-BS; Fri, 09 Jun 2023 13:24:22 -0400
+	id 1q7fqd-00074W-Qq; Fri, 09 Jun 2023 13:24:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aaron@os.amperecomputing.com>)
- id 1q7fqG-0006yJ-Ib; Fri, 09 Jun 2023 13:24:04 -0400
+ id 1q7fqJ-0006zZ-Q2; Fri, 09 Jun 2023 13:24:08 -0400
 Received: from mail-bn8nam12on20703.outbound.protection.outlook.com
  ([2a01:111:f400:fe5b::703]
  helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aaron@os.amperecomputing.com>)
- id 1q7fqE-0004mw-VH; Fri, 09 Jun 2023 13:24:04 -0400
+ id 1q7fqI-0004mw-4Y; Fri, 09 Jun 2023 13:24:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=evDJpxaUsn1OHKHax6zBK1cJ84bwP3Mj/X/wC3ec4YJjZKJSch16ygiCarFkYLXBRr7sRCV0/ZOqLpsLSSdvfVs9jRo6lHEUW1z2n7RVw+hecnBNLwkbGxIrOo7vKrTK9R6cACPoL/vlRIavDtVb+xHW7yamIyOiukDnIn9YR80+pViyvnQvYKWzijetoGIkGX7qobv3501jW6YII6HU+C0H85KToS+/gAACm6s3tYz31E/SMklPjx6UVlv4yOszp6ansvIqdtKp1jP2odYY0JRVLpnh9MvVzYSM0zVtM/EiWQoKegy/DMEOqM+PDvcMdwyUaJWcF8Yd2I1ve4hphw==
+ b=AAQCYmObKq3tkFaPueS1V1V14q7Pbe3bjEGZ4ZGbYuDLnNtvP5Xac4MtmlVIiNYg4j/HfSlloyx4WHDA9/IbBmcdeec0tfM9LaIy9sN+aB5NxvSuL99y39M6mfWTy21Jiqee6PfAORywyRLQ7Goa2eIvXFqfcREHQ0KdxMeCGvuSunJQDnmWwlD7JAgksfgysKWxi0JXRkRsoquwHGmciZkAXHXcnJfFOkxW/WxzkqOuoWkWZr+R7U5z41biwjrLGRZVLXH4LiY0PSCENjkAbsTyJ1sDwe/yGix1w0ZxzAESMHAfFtzecab9aRCWWgLzSoWjzzYTq0hq7bJjzkM6Bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u5O0U2P+y5TeFeDFmULhjEX93KahaFs/lwrUMg4Yx28=;
- b=Xfn6TaiktibldD12M0fEzAAHp+6+KGHcmFS5pc9p19xc7NXs1qtQgDxdYrbzTceeq6SZl+splbnlIVXi6vdh9Sgq6HgOX9RmAoNqeE8283xfFgB2C4gBNbF8pd6JPz/57iL13gSOE6k4modm74/LMRKBZg0pil4SaVrO7KXzsrUNzlnSG8L2EoT3nZyHeQM1/CX5EBnPwLkkivBzsmplif0xSiziJml3ZBmoL9wCgcPqqgrNt5Fk67K7YiPTBBGZ7+xF/gGOog3ucnz43J4MEkz8jU6Fk9wHNkwzJDsus9qZ3F4sl02DiQBv2p8GF2s0Rs5R60zG4F3ZHPLvQ7XHvQ==
+ bh=xcJxsvx6FUu9stgirpLFuzIgGEys/dzaCRNKasjZZQo=;
+ b=GIB+ynUIhLPU/uxHWhylIZ9QxT3aflicR5U2quYRts9T7YOvbKKh3s5LhOZJS6i2CjLPZfgntik0TZ4VHf5qC2oDrso9wi5rX49A/iwW/+IVwaIwTylc4TplCFt48NFuaUDa4K4+dkXHAYC38Ni908Y6l69oxNnaNsjdDHxo9wTksdPr0xMmjrn4hnqiOmnx31T19MMooYwluyNp3aTbguhw23EZ4ffsqfECyKnySGc0Hq4bPu8ySyQFct33Ej1o3FvRTV5dkTxRttlxSiaYT3DFgz+HczL6kS9zDP8kbqA4yAYnhrtz4A4lqIREpne1U4lQ26Z1nwxdR9Gc3nR8Mg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -32,18 +32,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u5O0U2P+y5TeFeDFmULhjEX93KahaFs/lwrUMg4Yx28=;
- b=MAUi1dpUTCGZw28Zjrb+ggFZBeUtqV+uVN7Q202pZ/DS1xYrj/RRx5AUuj+HEfIHbkRDZeo5N/16zLJLaqb5nz63dQIS2Ugd+P7hV38eFdlwzls8vIZSQZKHgh45h85wJbmHYi/QzAKXvPfYnzNFvJSm/mfP0k5gWIfecY+5Iy8=
+ bh=xcJxsvx6FUu9stgirpLFuzIgGEys/dzaCRNKasjZZQo=;
+ b=J638GnXErWVNGkiFaXEWYFrJpZHuCBMSsQBvvYeYbCAcA/h5S2tRJcfb8TL7YQWf7lf6Z3n0qyfh4hbm/j/sUQ2HZrR7+uhEFBi51Qf5FZIUCOKcQjk88/rqqqzoDKEF3nEFOSn5pK58QKY4Hz3MjQZdx0GQfV4LodogbRYvUVE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from CH0PR01MB7124.prod.exchangelabs.com (2603:10b6:610:f3::20) by
  SJ2PR01MB8481.prod.exchangelabs.com (2603:10b6:a03:562::7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.44; Fri, 9 Jun 2023 17:23:51 +0000
+ 15.20.6455.44; Fri, 9 Jun 2023 17:23:52 +0000
 Received: from CH0PR01MB7124.prod.exchangelabs.com
  ([fe80::9a78:4703:c6a9:16ed]) by CH0PR01MB7124.prod.exchangelabs.com
  ([fe80::9a78:4703:c6a9:16ed%6]) with mapi id 15.20.6455.030; Fri, 9 Jun 2023
- 17:23:51 +0000
+ 17:23:52 +0000
 From: Aaron Lindsay <aaron@os.amperecomputing.com>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -51,9 +51,9 @@ To: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
 Cc: Aaron Lindsay <aaron@os.amperecomputing.com>
-Subject: [PATCH v3 1/8] target/arm: Add ID_AA64ISAR2_EL1
-Date: Fri,  9 Jun 2023 13:23:17 -0400
-Message-Id: <20230609172324.982888-2-aaron@os.amperecomputing.com>
+Subject: [PATCH v3 2/8] target/arm: v8.3 PAC ID_AA64ISAR[12] feature-detection
+Date: Fri,  9 Jun 2023 13:23:18 -0400
+Message-Id: <20230609172324.982888-3-aaron@os.amperecomputing.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609172324.982888-1-aaron@os.amperecomputing.com>
 References: <20230609172324.982888-1-aaron@os.amperecomputing.com>
@@ -65,53 +65,53 @@ X-ClientProxiedBy: CH0PR03CA0009.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR01MB7124:EE_|SJ2PR01MB8481:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc3dbb7c-885b-483c-a05c-08db690e4b0a
+X-MS-Office365-Filtering-Correlation-Id: 6d0c2b5d-86d2-4332-4a36-08db690e4b59
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uZYaD/WcjYhDJ+mJnATGDShqfJ89vq8e6O2X87JlW99DuguvO0451M1e8u71CL+7OCXk5d6T0+pWDinMtSTaoT2SGiki0jQt3Yya/iBfRW82UamxJ/NGCLZZsPTFMh8USC49HwnFPwzoYvbKqn9TZWG1YhHVqsX24WrfUCZ8AoFSQcWLIofSYXwE3lsYd45o6spzRcUw/u4mEj27VDNwQrgkotu6f2KUp+plWFnjOuH3K87UqCccfmpRsd9sqXRrdDk1J27CXTYPZLXILVniRk3/E1gbUal5lbEbHUK/TYpUAQTucXZ89tJjIxtKUNyyC9kjbG5QXbr1tVjwP7ETIMjW03xvx1uiYP6+0xN58oSCnW1tYVdgSPx9iIhi6er/Ys8aJzZUFdelURiC34VFL1pdY7d3UFppLY9U7GAA46ylKQ+0kZ9ZKVFdb6zDJqMTtvfjgsWA5uIxcUHbWlIGqDXSIQUCk+/IbxB9EH8yTe1K3rwfsPfGGIl2+YDRzsuALsMcG6Qix8ZHZSdoFVGwwrlLS6CoCqpOoZ9nSE2QBZjfZQ/Fwk2EJLlqpHARGOluOlnOC5LoFasiyRADLhTrM9YllJG0Wr2cTJTIkXwJjKvMxbY//ZM6acXHoJ+gcqkS
+X-Microsoft-Antispam-Message-Info: tGFe8ABmkf8AOjLlZx1N6Yiahn6bVuGRwt5gPzCrs3gwgNM8R3MNPxIgUsy/Lk89b0Z0b2tNDs1U5pUyzRYh8g+WfShZMvBLDXiAowKtyYxBIbz05fGdpvwm8QzB9jB3j50pu/GKXJBR74il6B8bAvpvMRrfqko66HEdOGd2kcNWjXCXDTB1FukG8nz2F53KbTv8UVMvkXgaPKC5FBUZC7AiTrTIo9pvuWYmGuG+Bhn+NwDTTy1Zh68qWrCaVVQVVo8+274J9IBNu3crnd9pOgHwebs1Jzv8bamTGcAgZIMW1oM81DVfhhsuiQu3rZyX7prOk11cqs3NJPD8DDpP0UwJUGgJPvyRqFViJDW45oOZLnLZkVqIskmpA23kPxtZTRjCU4/jKLpfLMJtmnTOEJCqWR8Dk8Y4kRacABq6yLDWDecbkuI6tvhV1b0t6eDSBWQVUpWcCrBGhrglYLsGlRsgNtHQeT/ysqFw3H/HGFJ7uk3F8wv7f0qq1JBgRXHb/TdlTp0yFCiYEouBRLrBEGiAdlCg7S776ncMgFdBZjuieM9otd1HAjt3U1HSLiH5RAVoLUu2pG7FwAdmz9gAYL9tFT8xy4C217qFVITuYVLFqZ1Ff2YtQkvUuZOI4d+9
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR01MB7124.prod.exchangelabs.com; PTR:; CAT:NONE;
  SFS:(13230028)(4636009)(366004)(136003)(346002)(39850400004)(396003)(376002)(451199021)(2906002)(83380400001)(26005)(1076003)(6506007)(6512007)(478600001)(110136005)(107886003)(52116002)(6486002)(6666004)(8936002)(8676002)(41300700001)(5660300002)(2616005)(66946007)(66476007)(4326008)(66556008)(186003)(316002)(38100700002)(38350700002)(86362001);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cRyTW02TTksbgHE62ysLiN1P7V54diDQfn3cJTnbhTnITPE/398Q6b9m7ecp?=
- =?us-ascii?Q?OSyh2ncY6M9j9DesA2ZnAr6aR2W3JvNaS27RQCa46T5EYimJfF2RJAaqhiF6?=
- =?us-ascii?Q?8XNOL91TZMzs0EexcHNznohX1oKhfr/0utqxkV0VMEaxxlYblkYAyIEufHAW?=
- =?us-ascii?Q?moR+5PribqdmzFsnOMPJzaOXr/hj+UosGA/xck1QThabGOHW4+qrdgE9yJ/S?=
- =?us-ascii?Q?TAHW6Y4SyH+4UFkve7yhvfMsyN6CakG5ZmAWKbj5eZpnqWgVsd2KpB7UjsLQ?=
- =?us-ascii?Q?WCrdWb0tTzi6ecgtDI77+goghul32scxIl3qqWZvyRLw8WMm+pROzn+/hw2R?=
- =?us-ascii?Q?FKYfmuT7bzreRP3/OaZ8DvlDAGwQopbwX7iVmxl58UJNVn8uqZV1ksl9WauY?=
- =?us-ascii?Q?5Q1oGuQHBzXvMYJP/CSZ/pnr3BfhG8xiKGPwK2HOB3JGZ2YdhqfdZPbPXHbL?=
- =?us-ascii?Q?faHNZKGPMHVxDj0VjllWYhBcE9dZODb5Kvbvp6VVRa8D1grOQJEkPK69Eq3x?=
- =?us-ascii?Q?JBHr41PGlR6bSLJYr2t8adkM43G/XM/IE0laKzVDtlUqijNnVjqQQlcjLWM7?=
- =?us-ascii?Q?jnbYOTtd50gqYogvbazEngxCDzQ4dEfWmK18iWMTGrFq6b+Vt2jnXjvsak/0?=
- =?us-ascii?Q?YRgsPUt0q4qqX4JY0ySa8QejGepVTGBNEiX4PxBFb9o0YfbUFmvz5PTJSscl?=
- =?us-ascii?Q?6X173oD34kZv8umIAaMtStGDyaYwFt4lvPvwyBZWc7r/4uFAXiSyby2J4ZZC?=
- =?us-ascii?Q?o4fwYdO4hAeWpYdmd17uz6vcLR9Pjrcv+sxWGHRbZ3lfHyWV5g0sHQ1dFAjC?=
- =?us-ascii?Q?FcjII2x6GT3Dos78meliTYqAmlAIw2DOXsYNlxKCGtlVxJsEismCd3hqe8fK?=
- =?us-ascii?Q?/sO/2ov/Tta8tQ+SQwfIOreUJhrRrQ+xj2+UoEpPMblPEwFkTkU9aUaPRn2k?=
- =?us-ascii?Q?pKEZqGyo6zveKgX9uoJ97CT1fP+YNvDjBoUT+wq5Qi4mQ0qccAQDzW0MDlEy?=
- =?us-ascii?Q?DaWrpgJBkhzwu9qFyTT6r0ioelrlMiLEJ3xnBXRW7ptilYnDtSnNj4ZRroGD?=
- =?us-ascii?Q?3sXpwGGpkNaaYBG+pAPTAyCtC9sL4K4HXkhFgKsKD5o2GTQdkAj0Ra2MQMlu?=
- =?us-ascii?Q?5aaccG+V2fL5kJNmRMK+zDqXrEMu398e0rOgKVPiA32y5mvCNF8QHTnkI8Bi?=
- =?us-ascii?Q?g9238OOKZCT9gjPLdSvXIteI8sVebIYoHg+iWUbZUA+3IBu1ZwKxhjDhhzZF?=
- =?us-ascii?Q?xgAPWba7IKoof1VTy/qs56WcDs/Cyg809WB0a9GGjP+v4WJ7sBaz0gL2NXAl?=
- =?us-ascii?Q?CYfACdSohRlY+rNF7wvk8FvF1pi963tV2n47O/y8GU9KL5W9qpaDA8OTGA6W?=
- =?us-ascii?Q?95z9sYmW4lh1g8SFOUDjNa0gwEXb0cLDNrv37XYup7DaI1cuKYqjOQqnNv8S?=
- =?us-ascii?Q?bZNQ2y8D7T0LHCpjTT8feIItnlCIbe3NJOXlE4Lii8z2PahMk5yALnsmxqAt?=
- =?us-ascii?Q?n7OPFslIJA4i8f3C3kxPNy3XNUXS/e8kC4+7V2Zjvei6He+3uZ2rbERu+mzk?=
- =?us-ascii?Q?y2GB82mNEWq9XJSWVwfpVDbAwLvfaBtCfeULtzhWDKmX6s20s6Gdu7JRbmSx?=
- =?us-ascii?Q?Qud1nJQSkeq90woTB3mT2eE=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XBeQqbUup/3S9llsBFMJt2ScH3tZvVC3u9HGL31TBvyWycL8Ua6RqcMGRnIr?=
+ =?us-ascii?Q?+6VW0KI4gkDxWbFluzboROxyHre480VTXlkjUPfHjwY1JujF1ZJ4bTTux5zG?=
+ =?us-ascii?Q?eBNMn1oRqSLShInbWRW6isaAF+QJZsE758aLyLYv9OI7onnQk6Rd3Ba35WcX?=
+ =?us-ascii?Q?sGXjnzIu1DDEXJ54IKiS6aoa1ppswQ6C5fWMT8dwaxI5lj+S+/VtZfiyOSIg?=
+ =?us-ascii?Q?HqjN1OjfjvgmW9GTnajA0abuIUhyQu4/3Xy8IpiVOStLhxhUI3xMdGBY2Y9s?=
+ =?us-ascii?Q?9oi1W/lKUHKwsgweZPkhsrFdAxGv+Lq+vH4fRyiVG65+HivFncUGm7YWOXVO?=
+ =?us-ascii?Q?SRPqZgiINP56fy1mxkdWcbYWM8aus+scLvGsugT/EvSIbWbQBPxPqzuCripD?=
+ =?us-ascii?Q?N1y7cLTfFhs4xH3Vu583qJ84mu50v+ZM12MozcEPIN8jbircqbOX1Dj+qVH8?=
+ =?us-ascii?Q?x9VBOdOqAy/AA8Pmg86Oa2eM2P26xIhNgnjgPEkBt74L1HtRMkXgmD1ZF+Em?=
+ =?us-ascii?Q?Nt7o5+w96J0Xp/ncoS2UYkyddL/o3McFndj3+lZMYCHrPRs2E4im41OD9cKV?=
+ =?us-ascii?Q?oPqEttufGwRMlIsQM95sRMT8FAXkUIuVkHoRO++C3WOQDcz7e8PnX1xzuy79?=
+ =?us-ascii?Q?zqOEhM1/VqJ/E7+CooKkaVEGEUyOiAZf3mE8aAYz0usN7cXDiVJXcrF/qrsk?=
+ =?us-ascii?Q?oU1Mdb9X7e9Fk/AJvY7JIV+nLvBVUK521SxfA4EIEyqrKK69CiRjxAzaf46H?=
+ =?us-ascii?Q?xIz8nvxXothExQN6bQ35KEmUsgwFGgj6vFL49kajKBXwZC0TxgRCMV3CqIoA?=
+ =?us-ascii?Q?0iynCVrhk+x6OY/IR+o7pKAvq4kN6VbeJAJI4SnLt45pFrZqQVt9slU0I+XB?=
+ =?us-ascii?Q?amiG+46tzuhaLCZjOfsmj7sFgK4ijCHrS4a7wVNHx3kk9vX2oNssOnZZK8wq?=
+ =?us-ascii?Q?GzwyhTqnTGsePvTESldp19WXfvCX69FeYAAjft6aHG50KCO1NKhNq4lAYP5d?=
+ =?us-ascii?Q?5RLAb7x7N0OuPBDIJ+UFNcX0AsbELnoTy0oclp4+8lVhMdA9663NVkbD21nT?=
+ =?us-ascii?Q?5McJe40efS9N2z4QDQ+92DgWRbrT3cDJmSJrQ5Wgcd4rHXgTOem+pOafWry5?=
+ =?us-ascii?Q?e6iv96rnWzetwb9i0jxZtKkF6xYU4CWGHYkWWtdjMTLOAeqIU0pdU963nND4?=
+ =?us-ascii?Q?iUXjDyEAAb5frITk2VHBBeUKVwvBzw3o0xB7Lkt3FGlAKSj0HbUkxUSEtKqe?=
+ =?us-ascii?Q?Tp+imZkeks9PqIh+gXAQx/rNfDmbhiPpwfwNeWGB14wTH3xwgebwuymm7MC2?=
+ =?us-ascii?Q?L1IX2+NLxqie8ytH7mO9viJtFC5WLA5ll8ZUJ7waHnV4otuorsHOiTy7wC7W?=
+ =?us-ascii?Q?1V4AGkBao9tpmHP4oxMZD1CTZRDPLZxiBLFIfKU7sAeD9RAXaUZIQN81KOTM?=
+ =?us-ascii?Q?oDza+xbrGKhMZE0WPCenaR2iuIftAOZ6zVpgPpAKaEUQnWV8aT52BncYR5H0?=
+ =?us-ascii?Q?QyG2Dt8gVA7fhV9sK/ML4EzasdNmK3ebgzXtHRCMN15NgxLImNm+a69sjQhT?=
+ =?us-ascii?Q?mbsDq5lkPyZeHQ7GRUwanwM0yeC8W0oE2jiJR1aqLmLHTrp1kjIyiVTUqvN0?=
+ =?us-ascii?Q?8QNiD5PKDgAldkl9QwQ86yg=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc3dbb7c-885b-483c-a05c-08db690e4b0a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d0c2b5d-86d2-4332-4a36-08db690e4b59
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB7124.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 17:23:51.3966 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 17:23:51.9173 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eS8FbJCu6xd1i7sIR0qVWmpMz4PUt+Tq5j73lBpuJCwqpi/kI3ZAJUDXvqRHEd2uVrWuB7vUm4oEo38OiO09DBgkRBGxAWaqcDRWE8QmTsmCX8VgHP0SXe4OP+0s+V6Q
+X-MS-Exchange-CrossTenant-UserPrincipalName: P9e1UFooJ0Sld+v0HpPbac5cf2K8ACpqUWQNFAX31q2DZxZhXF3JigSJcV2FQUSHF9DHdA0Ic/Ry/wYzMQkCLQW8X1N4gmuVI2K8owezHL8W++5onI0tzdKT6r41e4aU
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR01MB8481
 Received-SPF: pass client-ip=2a01:111:f400:fe5b::703;
  envelope-from=aaron@os.amperecomputing.com;
@@ -139,67 +139,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
 ---
- target/arm/cpu.h     | 1 +
- target/arm/helper.c  | 4 ++--
- target/arm/hvf/hvf.c | 1 +
- target/arm/kvm64.c   | 2 ++
- 4 files changed, 6 insertions(+), 2 deletions(-)
+ target/arm/cpu.h              | 65 +++++++++++++++++++++++++++++++++--
+ target/arm/tcg/pauth_helper.c |  2 +-
+ 2 files changed, 63 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 36c608f0e6..df04c9a9ab 100644
+index df04c9a9ab..22dd898577 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -1023,6 +1023,7 @@ struct ArchCPU {
-         uint32_t dbgdevid1;
-         uint64_t id_aa64isar0;
-         uint64_t id_aa64isar1;
-+        uint64_t id_aa64isar2;
-         uint64_t id_aa64pfr0;
-         uint64_t id_aa64pfr1;
-         uint64_t id_aa64mmfr0;
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index d4bee43bd0..4ced2f71e5 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -8204,11 +8204,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
-               .resetvalue = cpu->isar.id_aa64isar1 },
--            { .name = "ID_AA64ISAR2_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-+            { .name = "ID_AA64ISAR2_EL1", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 6, .opc2 = 2,
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
--              .resetvalue = 0 },
-+              .resetvalue = cpu->isar.id_aa64isar2 },
-             { .name = "ID_AA64ISAR3_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 6, .opc2 = 3,
-               .access = PL1_R, .type = ARM_CP_CONST,
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 8f72624586..bf567b24db 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -847,6 +847,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-         { HV_SYS_REG_ID_AA64DFR1_EL1, &host_isar.id_aa64dfr1 },
-         { HV_SYS_REG_ID_AA64ISAR0_EL1, &host_isar.id_aa64isar0 },
-         { HV_SYS_REG_ID_AA64ISAR1_EL1, &host_isar.id_aa64isar1 },
-+        { HV_SYS_REG_ID_AA64ISAR2_EL1, &host_isar.id_aa64isar2 },
-         { HV_SYS_REG_ID_AA64MMFR0_EL1, &host_isar.id_aa64mmfr0 },
-         { HV_SYS_REG_ID_AA64MMFR1_EL1, &host_isar.id_aa64mmfr1 },
-         { HV_SYS_REG_ID_AA64MMFR2_EL1, &host_isar.id_aa64mmfr2 },
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 94bbd9661f..e2d05d7fc0 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -306,6 +306,8 @@ bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-                               ARM64_SYS_REG(3, 0, 0, 6, 0));
-         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64isar1,
-                               ARM64_SYS_REG(3, 0, 0, 6, 1));
-+        err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64isar2,
-+                              ARM64_SYS_REG(3, 0, 0, 6, 2));
-         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64mmfr0,
-                               ARM64_SYS_REG(3, 0, 0, 7, 0));
-         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64mmfr1,
+@@ -3714,18 +3714,77 @@ static inline bool isar_feature_aa64_pauth(const ARMISARegisters *id)
+             (FIELD_DP64(0, ID_AA64ISAR1, APA, 0xf) |
+              FIELD_DP64(0, ID_AA64ISAR1, API, 0xf) |
+              FIELD_DP64(0, ID_AA64ISAR1, GPA, 0xf) |
+-             FIELD_DP64(0, ID_AA64ISAR1, GPI, 0xf))) != 0;
++             FIELD_DP64(0, ID_AA64ISAR1, GPI, 0xf))) != 0 ||
++           (id->id_aa64isar2 &
++            (FIELD_DP64(0, ID_AA64ISAR2, APA3, 0xf) |
++             FIELD_DP64(0, ID_AA64ISAR2, GPA3, 0xf))) != 0;
+ }
+ 
+-static inline bool isar_feature_aa64_pauth_arch(const ARMISARegisters *id)
++static inline bool isar_feature_aa64_pauth_arch_qarma5(const ARMISARegisters *id)
+ {
+     /*
+-     * Return true if pauth is enabled with the architected QARMA algorithm.
++     * Return true if pauth is enabled with the architected QARMA5 algorithm.
+      * QEMU will always set APA+GPA to the same value.
+      */
+     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, APA) != 0;
+ }
+ 
++static inline bool isar_feature_aa64_pauth_arch_qarma3(const ARMISARegisters *id)
++{
++    /*
++     * Return true if pauth is enabled with the architected QARMA3 algorithm.
++     * QEMU will always set APA3+GPA3 to the same result.
++     */
++    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, APA3) != 0;
++}
++
++static inline bool isar_feature_aa64_pauth_arch(const ARMISARegisters *id)
++{
++    return isar_feature_aa64_pauth_arch_qarma5(id) ||
++        isar_feature_aa64_pauth_arch_qarma3(id);
++}
++
++static inline int isar_feature_pauth_get_features(const ARMISARegisters *id)
++{
++    if (isar_feature_aa64_pauth_arch_qarma5(id)) {
++        return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, APA);
++    } else if (isar_feature_aa64_pauth_arch_qarma3(id)) {
++        return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, APA3);
++    } else {
++        return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, API);
++    }
++}
++
++static inline bool isar_feature_aa64_pauth_epac(const ARMISARegisters *id)
++{
++    /*
++     * Note that unlike most AArch64 features, EPAC is treated (in the ARM
++     * psedocode, at least) as not being implemented by larger values of this
++     * field. Our usage of '>=' rather than '==' here causes our implementation
++     * of PAC logic to diverge from ARM pseudocode - we must check that
++     * isar_feature_aa64_pauth2() returns false AND
++     * isar_feature_aa64_pauth_epac() returns true, where the pseudocode reads
++     * as if EPAC is not implemented if the value of this register is > 0b10.
++     * See the implementation of pauth_addpac() for an example.
++     */
++    return isar_feature_pauth_get_features(id) >= 0b0010;
++}
++
++static inline bool isar_feature_aa64_pauth2(const ARMISARegisters *id)
++{
++    return isar_feature_pauth_get_features(id) >= 0b0011;
++}
++
++static inline bool isar_feature_aa64_fpac(const ARMISARegisters *id)
++{
++    return isar_feature_pauth_get_features(id) >= 0b0100;
++}
++
++static inline bool isar_feature_aa64_fpac_combine(const ARMISARegisters *id)
++{
++    return isar_feature_pauth_get_features(id) >= 0b0101;
++}
++
+ static inline bool isar_feature_aa64_tlbirange(const ARMISARegisters *id)
+ {
+     return FIELD_EX64(id->id_aa64isar0, ID_AA64ISAR0, TLB) == 2;
+diff --git a/target/arm/tcg/pauth_helper.c b/target/arm/tcg/pauth_helper.c
+index 62af569341..3ff4610a26 100644
+--- a/target/arm/tcg/pauth_helper.c
++++ b/target/arm/tcg/pauth_helper.c
+@@ -282,7 +282,7 @@ static uint64_t pauth_computepac_impdef(uint64_t data, uint64_t modifier,
+ static uint64_t pauth_computepac(CPUARMState *env, uint64_t data,
+                                  uint64_t modifier, ARMPACKey key)
+ {
+-    if (cpu_isar_feature(aa64_pauth_arch, env_archcpu(env))) {
++    if (cpu_isar_feature(aa64_pauth_arch_qarma5, env_archcpu(env))) {
+         return pauth_computepac_architected(data, modifier, key);
+     } else {
+         return pauth_computepac_impdef(data, modifier, key);
 -- 
 2.25.1
 
