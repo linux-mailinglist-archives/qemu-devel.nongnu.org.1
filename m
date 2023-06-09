@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CAE729EEF
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF755729F70
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7coU-0002gV-Ew; Fri, 09 Jun 2023 10:10:02 -0400
+	id 1q7cpM-0003K2-Lo; Fri, 09 Jun 2023 10:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7coS-0002b4-D3; Fri, 09 Jun 2023 10:10:00 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1q7coo-00038q-2s; Fri, 09 Jun 2023 10:10:22 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7coQ-0000JM-Og; Fri, 09 Jun 2023 10:10:00 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f640e48bc3so2260929e87.2; 
- Fri, 09 Jun 2023 07:09:48 -0700 (PDT)
+ id 1q7col-0000aL-Ev; Fri, 09 Jun 2023 10:10:21 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b1ba50e50bso19854951fa.1; 
+ Fri, 09 Jun 2023 07:10:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686319787; x=1688911787;
+ d=1e100.net; s=20221208; t=1686319813; x=1688911813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cy91cBRqAqiwy9cOS34w2pZldiLcmYPrCZe3pVyd0X4=;
- b=YGE28Gx9zoJeQJbCbJ76ETmliBa961tRsu5jtPlMH1J/2MeCmHOatnreYwkSkSpjF1
- bEV4Kd5BG28S4nuryPZZZH3Vw5ZUU/l2F0ENH8GFRAiCgEbRnVtzBK+4cAvZ58yTVVsm
- 5PBPrHKQ4btewSAndVIs056tyQePZ6kXCaxq5cWxD3IRj+TSOBBphSjE69iShRL9u9ga
- fXDaDTErvfBU+n87yoiakcuWxHPTxgVnNESxXv5MBTdMUi+Uus57Nq4fSkC2RYPXY+By
- 14a8OGp+AGwBVVPQSTDu2iDJT4r8A+tVcFkpIRP9Dr28p1QdathGO/jkm/VuZVCirTU0
- ROlw==
-X-Gm-Message-State: AC+VfDyHgmzA6Dqkyg35qWyl33Lp35I2NiejqFfTgL48cXvgdCIwXyc3
- RyNeydnnZKtwn5qQlplVQtUfnBjXgI+jHIMX
-X-Google-Smtp-Source: ACHHUZ7lXc4/8vJ7V723jHNjEFo00sD34psLVyqNRdq34CLlnTJxkn0K3F1E/+vWh5YNR7xMFUb7cQ==
-X-Received: by 2002:ac2:520e:0:b0:4f5:fbf6:7de with SMTP id
- a14-20020ac2520e000000b004f5fbf607demr943735lfl.6.1686319787128; 
- Fri, 09 Jun 2023 07:09:47 -0700 (PDT)
+ bh=stzNPKEEsb93NVPera4GoUbdc/j/tKWSRzl0WF+RC+A=;
+ b=bx8cRmlv4HXlRN+DmvN8vZrQbA5gSQDVwhIcffcMgdjYA9LpNRsjKO/TlmGEEJi4o9
+ QsilLDKD0YtU8p/XHIVK5reiiPG8nbrd0kyDMzzLRXhdMVz++4scrnHSAUJaLMYuc+pb
+ aU74RR/bAJPeFGi4HElQ0rGqAKiCgv+CFgm1PFO5IddL6GYvMCTXWFZqYYbvmxjjAyCe
+ NZDyymJkF/NyYz/6YoknvxgO1lU6/QczgMLzl+L0tOoX/CXBgmHRFtLu10d9hwasIDOM
+ xseQ6AwhhWzZxav1kJhJYWGzF8/PQe5BviI9prWnXFWlMWtlxQAaEmkn9pLfSr2gtP4K
+ ToKw==
+X-Gm-Message-State: AC+VfDxE+H2lNgV6JGzwGfX2Fjpfck1kwPXUgqH/BbpB9EH4lMaVuC5o
+ Ksx6+9SrKsd3ugtsa/qlLVGJAk2rSJ46zXRU
+X-Google-Smtp-Source: ACHHUZ7I6+Zf0eUm0HognUYaLA5agLVQbxST4vcdZZ68xl/3djLVsGVizE2VpapVmPZA2Mu/P86YKg==
+X-Received: by 2002:a2e:87d6:0:b0:2b1:b4e9:4c3 with SMTP id
+ v22-20020a2e87d6000000b002b1b4e904c3mr1322862ljj.2.1686319813495; 
+ Fri, 09 Jun 2023 07:10:13 -0700 (PDT)
 Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
  [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
- y22-20020ac255b6000000b004f1406b059asm552996lfg.219.2023.06.09.07.09.46
+ m23-20020a2e97d7000000b002ac7b0fc473sm407006ljj.38.2023.06.09.07.10.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Jun 2023 07:09:46 -0700 (PDT)
+ Fri, 09 Jun 2023 07:10:13 -0700 (PDT)
 Received: by flawful.org (Postfix, from userid 112)
- id 2B60019C2; Fri,  9 Jun 2023 16:09:45 +0200 (CEST)
+ id 9581C1763; Fri,  9 Jun 2023 16:10:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319785; bh=DZ5fMdq9LwskNjWpW+fDBE+ZAvAUizJvqdAFmYrDvXM=;
+ t=1686319811; bh=Q3Hm6FMI2aGPQjjUBTN4kaiW9jrcrf+oWe6LEXPzIxY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ajuqm82uw73JaKXakTxxsdONmJAJBKJoNYqLVlPFfMcYfImd26sDjL/WSmXdemGLd
- pt8wDvHAOHjB1Myf2lUtTNQKgmM90rH7CdbPzdswAxrOwlS9l1YdAEd3LTFUpIGj7t
- B2FQx7fP64e0rrWo0OGssWhY7F51ID7Ioq5qo0Y4=
+ b=iPFhBknqtd+FJwpeyCY9noCxUnXohTgv0H3g5a6ykV4gBPhra5ZSpAoKs4YYddUsL
+ Z4M5YE91ijGwk6RqIUaSizBtoXa762aSNU7itKR48BJSz/EGO+so203Vja5GRIDolq
+ DvZIftuZIv/vOrZ+7GwwiQXplQJFGWEhxD9atQ+I=
 Received: from x1-carbon.lan (unknown [129.253.182.58])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id 051C41763;
- Fri,  9 Jun 2023 16:09:08 +0200 (CEST)
+ by flawful.org (Postfix) with ESMTPSA id E334517AD;
+ Fri,  9 Jun 2023 16:09:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319752; bh=DZ5fMdq9LwskNjWpW+fDBE+ZAvAUizJvqdAFmYrDvXM=;
+ t=1686319759; bh=Q3Hm6FMI2aGPQjjUBTN4kaiW9jrcrf+oWe6LEXPzIxY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=L2UhMoRdTAmrdVe5oc8Bmh56QWN1ff9ovw5DwtbJO5chRA4V74GLNz7v57mu+8IG/
- fLKHvqDyimHTcAVmTMrak8KCpMIin5lyuemBOcuVQ/WhrrE4AG+MFO3viYVBQsng63
- 3UUhUrnuH1kpO2PG8UuUAH7BCVh6lXN8ShWFG8VA=
+ b=NETuw3C2fb1f0lIBRRbAh+pToHTbQx4GpC5Pl0u4S0iDv9hgPgbS9O9HFpud9xlNP
+ qYnx+zoLJqT7YDDv/g0KhWghqBMyuvZi24zDg0CGkEboxydgZH98fEA2rUwWRLfG6J
+ Oj4Ti+BMk2yyCnHPmU+GV2pbdjz90cdbBYWNF9tM=
 From: Niklas Cassel <nks@flawful.org>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
  Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v3 2/8] hw/ide/core: set ERR_STAT in unsupported command
- completion
-Date: Fri,  9 Jun 2023 16:08:38 +0200
-Message-Id: <20230609140844.202795-3-nks@flawful.org>
+Subject: [PATCH v3 3/8] hw/ide/ahci: write D2H FIS when processing NCQ command
+Date: Fri,  9 Jun 2023 16:08:39 +0200
+Message-Id: <20230609140844.202795-4-nks@flawful.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609140844.202795-1-nks@flawful.org>
 References: <20230609140844.202795-1-nks@flawful.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -102,50 +101,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-Currently, the first time sending an unsupported command
-(e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
-Sending the unsupported command again, will correctly have ERR_STAT set.
+The way that BUSY + PxCI is cleared for NCQ (FPDMA QUEUED) commands is
+described in SATA 3.5a Gold:
 
-When ide_cmd_permitted() returns false, it calls ide_abort_command().
-ide_abort_command() first calls ide_transfer_stop(), which will call
-ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
-sets ERR_STAT in status.
+11.15 FPDMA QUEUED command protocol
+DFPDMAQ2: ClearInterfaceBsy
+"Transmit Register Device to Host FIS with the BSY bit cleared to zero
+and the DRQ bit cleared to zero and Interrupt bit cleared to zero to
+mark interface ready for the next command."
 
-ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
-current status in the FIS, and raises an IRQ. (The status here will not
-have ERR_STAT set!).
+PxCI is currently cleared by handle_cmd(), but we don't write the D2H
+FIS to the FIS Receive Area that actually caused PxCI to be cleared.
 
-Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
-ide_transfer_stop() will result in the FIS being written and an IRQ
-being raised.
+Similar to how ahci_pio_transfer() calls ahci_write_fis_pio() with an
+additional parameter to write a PIO Setup FIS without raising an IRQ,
+add a parameter to ahci_write_fis_d2h() so that ahci_write_fis_d2h()
+also can write the FIS to the FIS Receive Area without raising an IRQ.
 
-The reason why it works the second time, is that ERR_STAT will still
-be set from the previous command, so when writing the FIS, the
-completion will correctly have ERR_STAT set.
+Change process_ncq_command() to call ahci_write_fis_d2h() without
+raising an IRQ (similar to ahci_pio_transfer()), such that the FIS
+Receive Area is in sync with the PxTFD shadow register.
 
-Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
-raise an error IRQ correctly when receiving an unsupported command.
+E.g. Linux reads status and error fields from the FIS Receive Area
+directly, so it is wise to keep the FIS Receive Area and the PxTFD
+shadow register in sync.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 ---
- hw/ide/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ide/ahci.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index de48ff9f86..07971c0218 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -533,9 +533,9 @@ BlockAIOCB *ide_issue_trim(
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index 48d550f633..4b272397fd 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -43,7 +43,7 @@
+ static void check_cmd(AHCIState *s, int port);
+ static int handle_cmd(AHCIState *s, int port, uint8_t slot);
+ static void ahci_reset_port(AHCIState *s, int port);
+-static bool ahci_write_fis_d2h(AHCIDevice *ad);
++static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i);
+ static void ahci_init_d2h(AHCIDevice *ad);
+ static int ahci_dma_prepare_buf(const IDEDMA *dma, int32_t limit);
+ static bool ahci_map_clb_address(AHCIDevice *ad);
+@@ -618,7 +618,7 @@ static void ahci_init_d2h(AHCIDevice *ad)
+         return;
+     }
  
- void ide_abort_command(IDEState *s)
- {
--    ide_transfer_stop(s);
-     s->status = READY_STAT | ERR_STAT;
-     s->error = ABRT_ERR;
-+    ide_transfer_stop(s);
+-    if (ahci_write_fis_d2h(ad)) {
++    if (ahci_write_fis_d2h(ad, true)) {
+         ad->init_d2h_sent = true;
+         /* We're emulating receiving the first Reg H2D Fis from the device;
+          * Update the SIG register, but otherwise proceed as normal. */
+@@ -850,7 +850,7 @@ static void ahci_write_fis_pio(AHCIDevice *ad, uint16_t len, bool pio_fis_i)
+     }
  }
  
- static void ide_set_retry(IDEState *s)
+-static bool ahci_write_fis_d2h(AHCIDevice *ad)
++static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i)
+ {
+     AHCIPortRegs *pr = &ad->port_regs;
+     uint8_t *d2h_fis;
+@@ -864,7 +864,7 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
+     d2h_fis = &ad->res_fis[RES_FIS_RFIS];
+ 
+     d2h_fis[0] = SATA_FIS_TYPE_REGISTER_D2H;
+-    d2h_fis[1] = (1 << 6); /* interrupt bit */
++    d2h_fis[1] = d2h_fis_i ? (1 << 6) : 0; /* interrupt bit */
+     d2h_fis[2] = s->status;
+     d2h_fis[3] = s->error;
+ 
+@@ -890,7 +890,10 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
+         ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_TFES);
+     }
+ 
+-    ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
++    if (d2h_fis_i) {
++        ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
++    }
++
+     return true;
+ }
+ 
+@@ -1120,6 +1123,8 @@ static void process_ncq_command(AHCIState *s, int port, const uint8_t *cmd_fis,
+         return;
+     }
+ 
++    ahci_write_fis_d2h(ad, false);
++
+     ncq_tfs->used = 1;
+     ncq_tfs->drive = ad;
+     ncq_tfs->slot = slot;
+@@ -1506,7 +1511,7 @@ static void ahci_cmd_done(const IDEDMA *dma)
+     }
+ 
+     /* update d2h status */
+-    ahci_write_fis_d2h(ad);
++    ahci_write_fis_d2h(ad, true);
+ 
+     if (ad->port_regs.cmd_issue && !ad->check_bh) {
+         ad->check_bh = qemu_bh_new_guarded(ahci_check_cmd_bh, ad,
 -- 
 2.40.1
 
