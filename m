@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56482729EEB
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA36729F84
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ZzY-0006i4-Cf; Fri, 09 Jun 2023 07:09:16 -0400
+	id 1q7a4y-0007hz-At; Fri, 09 Jun 2023 07:14:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZzR-0006g9-Pc
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:09:12 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7a4w-0007hd-Ae
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:14:50 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZzP-0006zq-L4
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:09:09 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f619c2ba18so1977958e87.1
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 04:09:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7a4u-0007rZ-Nk
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:14:50 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f642a24568so2021532e87.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 04:14:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686308945; x=1688900945;
+ d=linaro.org; s=google; t=1686309286; x=1688901286;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MdoSKogVQ1XOoeFoTQtaWTQ6TXfifc8d0OLtiPzVbF0=;
- b=FDxLWSct2+2kbRvfcTVQYri8IB0UfTRYFFciF+3RveL0bZh/zp6yI5lAzWv7d5g050
- i8RlEeu1bQVU9j29gXl/3C76P8XadmQYwN2qdooirCEFgo2n/1p/zJ+k9u8+XejAQ/IS
- M3rc9aZWllBWehh5BP0CLRSaUxJPvE8+3W8uox4kl6fBHfQ0t83prF4afhI4UOiQWbrd
- kOFwYjYfAk4TGTWGnG2ynOnH5LjGS6j1WcDz+q8cS4oLJovsAyMoIIEhBI3nwzgwjAsR
- lTq6pLoGBfKNtMiutbB+hioAsJMZHybD2LA9sdck5aus9IQrXsWR4k2ThF1NbodODJeI
- J+/A==
+ bh=+3LAhUxotuY5R4Iip7QpvQDuZPru9h4ppdfcex9TmXA=;
+ b=h06IQQYMr9x4KpuInOeIxlJRkjOa9nV+8egs7+IacpSfXUS6mX+5N4TE6gvXQJhHfL
+ V6L5PsBIT43Lc43DIUIXRMFBOi4yXidd9OGsC2gWWF+TVyzxY9nc+p2290YG6kqQ8CYF
+ tQ7Fgp3TeYpHe5s9JlBX2rj29ZIZ8ucMp57nVih6IWgDbfICU1tRFtstXvj8V/haWhgw
+ S6o7M07j65PEI/iJEvbbaiQANqqDdHAyg3xXKM6y99HqpSj5ilF5wmKvpt0fAw6pokUt
+ gjY7He4ARSanBurbs/R6HUH9t/dkf80wrFUC0BeZVLqKfaC+IstyOBTU22e8Z8Drbf0e
+ RpFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686308945; x=1688900945;
+ d=1e100.net; s=20221208; t=1686309286; x=1688901286;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MdoSKogVQ1XOoeFoTQtaWTQ6TXfifc8d0OLtiPzVbF0=;
- b=WutW3yy/PWLQkODj84yQCK8aQkdiAS3Zl8MZQ6MiLNZo9GR8+PbPaXMvb0ltdOqIVU
- GCQQkjWOor17bcz/FoFCgzdRBTOU4JpedNvC7sAz+b4D94bikU9P844mlrWAGZaGc6GM
- tGwaI54fqsQO8/8xEcnLwSxiBswcdOpQP29bxfUJDYvogyDQT+BfSI/p4tg92DgtrkE1
- dwGphW4vlPS3pd6Krjea1O6+me3gQMN4AjbWs+sH2JPLGNJXZTcjVsfoueDEy78eOYOR
- J7NrLCog23HuY7FGtwlUxVaQQBAiTt/AOAdWx2tz9yKvCxKENDtsuzKeX3+QybiQnZKM
- 89mA==
-X-Gm-Message-State: AC+VfDzXd8babUtWQ04Lvh1WPZkKXICDUaxgBH7sihBmAf9isARbyjYP
- ZOsyj6k7nT968lN/Z7JZ4lG90k5V3mS46riZUkL6Eg==
-X-Google-Smtp-Source: ACHHUZ6MmvCLJWtyPugsATEZ4HYvS6bpfHKFMp1O/9OOp5t2fHNC8Dosfg1W+9oj7qODAqvWw/cXbA==
-X-Received: by 2002:ac2:5bd1:0:b0:4f4:b47d:5c07 with SMTP id
- u17-20020ac25bd1000000b004f4b47d5c07mr629311lfn.46.1686308945478; 
- Fri, 09 Jun 2023 04:09:05 -0700 (PDT)
+ bh=+3LAhUxotuY5R4Iip7QpvQDuZPru9h4ppdfcex9TmXA=;
+ b=gaSeR96yS5DtAtWGNGo59VPPqZ/KU/SEVsUXLg+xOr/YnKg4eRye1L1lfPGApRaYDW
+ 2Nu5TVX/48ypXnCA1rgS4EcXyGZw15ObIQOVMoLHEx+wt7AsVJFmLXzIsSTAu8j/kSXQ
+ OP18nXNO/pS/YkgICT5Azf82CKmHrDrE6KqGDGRRiTXiFF7rqPA5BWhpb7mpOm85QOWz
+ oJzMWbdf/BD6lvQzzfQXX+D9cPadE575yR6xRDMCky+eC59pQlbThTxpMaAAa8VZZ1FX
+ Fkt0CYlwOoYT6MiQtQBUD/91S6eNgKOXzYI8AX6A/ckAhfTIGPw9AQeHy3chlths/V47
+ wCbg==
+X-Gm-Message-State: AC+VfDw0RXXWG6V/RLeeVdHi9ZaN1cJVh9ad+WWiF7rhO9aREzedmqUe
+ 0KoEpI2GqS8HGCOdJlSD686z1DBZ2khoAAFJ4nveBA==
+X-Google-Smtp-Source: ACHHUZ5C+o0+R84hlprOAK/Vl6hBviuBEfrdbbh6Zt9dT9oOKaMo7AzDT/YjR5ysVe+wvNKGzBdcjQ==
+X-Received: by 2002:ac2:5bd1:0:b0:4f6:2852:5f56 with SMTP id
+ u17-20020ac25bd1000000b004f628525f56mr754037lfn.18.1686309286638; 
+ Fri, 09 Jun 2023 04:14:46 -0700 (PDT)
 Received: from [192.168.192.175] (23.171.88.92.rev.sfr.net. [92.88.171.23])
  by smtp.gmail.com with ESMTPSA id
- 10-20020a05600c22ca00b003f427687ba7sm2311838wmg.41.2023.06.09.04.09.04
+ 8-20020a05600c230800b003f7ed9dae70sm2433595wmo.0.2023.06.09.04.14.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jun 2023 04:09:05 -0700 (PDT)
-Message-ID: <767f5518-7bdb-1336-2c5a-51aa829c6e91@linaro.org>
-Date: Fri, 9 Jun 2023 13:09:03 +0200
+ Fri, 09 Jun 2023 04:14:46 -0700 (PDT)
+Message-ID: <12f7b5ec-708a-0dcf-f80e-58581cf66761@linaro.org>
+Date: Fri, 9 Jun 2023 13:14:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 00/22] target/arm/tcg: Remove inclusions of
- 'exec/helper-[proto/gen].h'
+Subject: Re: [PATCH] build: further refine build.ninja rules
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-References: <20230609104717.95555-1-philmd@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20230608134314.943615-1-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230609104717.95555-1-philmd@linaro.org>
+In-Reply-To: <20230608134314.943615-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/6/23 12:46, Philippe Mathieu-Daudé wrote:
-> Hi,
+On 8/6/23 15:43, Paolo Bonzini wrote:
+> In commit b0fcc6fc7fc1 ("build: rebuild build.ninja using
+> "meson setup --reconfigure"", 2023-05-19) I changed the build.ninja
+> rule in the Makefile to use "meson setup" so that the Makefile would
+> pick up a changed path to the meson binary.
 > 
-> This series tries to do what Richard suggested in [*]:
+> However, there was a reason why build.ninja was rebuilt using $(NINJA)
+> itself.  Namely, ninja has its own cache of file modification times,
+> and if it does not know about the modification that was done outside
+> its control, it will *also* try to regenerate build.ninja.  This can be
+> simply by running "make" on a fresh tree immediately after "configure";
+> that will trigger an unnecessary meson run.
 > 
->    Targets that have a tcg/ subdir should have helper.h.inc
->    moved into there.  At the end, include/exec/helper-gen.h
->    and include/exec/helper-proto.h become unused and go away.
+> So, apply a refinement to the rule in order to cover both cases:
 > 
-> but only for the ARM target, to first see if this is heading
-> in the correct direction.
+> - track the meson binary that was used (and that is embedded in
+>    build.ninja's reconfigure rules); to do this, write build.ninja.stamp
+>    right after executing meson successfully
 > 
-> Instead of having TCG generated helpers included by all
-> translate/helper units, they are reduced to the few places
-> really needing them. I expect the build step to be slighly
-> improved, since the compiler doesn't have to compile and
-> track unused helpers definitions.
+> - if it changed, force usage of "$(MESON) setup --reconfigure" to
+>    update the path in the reconfigure rule
+> 
+> - if it didn't change, use "$(NINJA) build.ninja" just like before
+>    commit b0fcc6fc7fc1.
+> 
+> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   Makefile  | 17 +++++++++++++----
+>   configure |  1 +
+>   2 files changed, 14 insertions(+), 4 deletions(-)
 
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->   42 files changed, 2100 insertions(+), 1804 deletions(-)
->   create mode 100644 target/arm/tcg/helper-iwmmxt.h.inc
->   create mode 100644 target/arm/tcg/helper-neon.h.inc
->   create mode 100644 target/arm/tcg/helper-vfp.h.inc
->   create mode 100644 target/arm/tcg/translate-iwmmxt.c
-
-Note to myself, these new files miss a license.
-
-Perhaps we could have a check for SPDX in checkpatch.pl, along with
-"added, moved or deleted file(s), does MAINTAINERS need updating?".
 
