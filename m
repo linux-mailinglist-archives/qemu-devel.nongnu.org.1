@@ -2,85 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3700729F6E
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA97729EE8
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:43:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ci7-0008LX-NM; Fri, 09 Jun 2023 10:03:27 -0400
+	id 1q7clF-0000rA-P5; Fri, 09 Jun 2023 10:06:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1q7chr-0008Kl-Qq
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:03:11 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q7cl9-0000qa-UJ
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:06:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1q7chp-0007QV-D7
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:03:11 -0400
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 359D7Yf1029493; Fri, 9 Jun 2023 14:03:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=EXC1vyZWH6y3zU6VDY/bn0i/D0cnVRYEJVXm1/Cacos=;
- b=P0IvwKmdMDb4XEIvkZIvWkzJ3u0BTdFlfizP4fiIjV0N7I6BxVjobenv4mHnCvHY2toU
- CfHwxRpPaPHeU6cyXiJ8vmPMlbM6aHeXLlROMGivAb0whzZn4Y4Z5SLAfpgDlNDtyjw7
- z2+QCQORuf3Lmjzk5KFy2SI3KixF3WkUjkOuvucVOOrhqb2KWvgkRa5QUx9vqDWdoF9u
- Ql70U+WiL+1Gtbz47EYa0TaBUMhEkTO8PL09YPmAYD0Xx5jQYJkfdBmUUOl4JzgOODU7
- 036ZpahwkB8trMju63/mpq2hdnjd/6gWYViJWw0Fix6GyDrwyxFNqkolFALvzCMrxRRm 2g== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r43d4882s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Jun 2023 14:03:05 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 359E34KV007967
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 9 Jun 2023 14:03:04 GMT
-Received: from acaggian1-mac.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Fri, 9 Jun 2023 07:03:01 -0700
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
- <marcandre.lureau@redhat.com>
-Subject: [PATCH v2] ui/sdl2: OpenGL window context
-Date: Fri, 9 Jun 2023 16:02:35 +0200
-Message-ID: <20230609140235.68740-1-quic_acaggian@quicinc.com>
-X-Mailer: git-send-email 2.40.0
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q7cl7-0008KR-QL
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 10:06:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686319591;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w68Gb+6wjxy8mGU5IAVZ/yYNWDeAAOE0hY6FdEu6oqI=;
+ b=jFy1u/Pi/qE9CHcO1t7BBPqLYVyCm4dxd+V2/K7K7tWVHKkc+6B59uh4nw+gJrmTmVrxe4
+ XZ9yZEoRt/tiOiiYRSoWQDa+OvFXa6fqOoMwzX4pNfEZlfjvInG0G0IK4W1+bx48h479W3
+ +hm798/iXPGL0dvSmFx1BIr8EIvsIMA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-295-EhvlTRn2On-wQK7UvF4Ftw-1; Fri, 09 Jun 2023 10:06:29 -0400
+X-MC-Unique: EhvlTRn2On-wQK7UvF4Ftw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94a34d3e5ebso147921266b.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 07:06:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686319587; x=1688911587;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w68Gb+6wjxy8mGU5IAVZ/yYNWDeAAOE0hY6FdEu6oqI=;
+ b=NXMPTdvoRleNs22UFCKDMZFX11e4O6bqGELTaWVAhv6kLAo9zadNEv8h1j4nHpkiQh
+ Po8wriZ24nlgaCqeoSCJ0UrsRiWmRE/00Nn6SZFrNrbe4WAxvuhfH8RUHVXvoC4Ze6wy
+ rDehZ9++hk5UeqHJ1bfSFvyvNsjHhJlGlnfAm8RFg/GNoFTNRSU02JMlKrCc7CRfRKSW
+ 9JSIcDr5mK3mEtDzrf/NQDv02c6Z7PMSnN5wR7s18PH/0R1zqK3sFw8OOH/THLzvy0nV
+ LwxsLiDqrIo2TpT0vV+QNG+Qoelog3sjv0uyZ5zVZ9ERwH5rjbw1xkDx90bI+bjy6zP8
+ 6yeg==
+X-Gm-Message-State: AC+VfDx2B0lfk+7oJuHrsxnzsuYF/C5ctZxK8/PeCMK38MtfsEj80Nlp
+ Ul4AH2xwLk3UtcJ8mzcZacX01DJa2INTiwayIdEhYYalvJEV6alaczABXSephmfklnpy/BgPYPv
+ O0phg3jF8lz9pTvvad+DJbQf7j82FnzKvx8/9eyC9YZEYXGDPzL1UZa195g+7KIKZ3tUegEhEQa
+ o=
+X-Received: by 2002:a17:907:3da3:b0:971:eb29:a086 with SMTP id
+ he35-20020a1709073da300b00971eb29a086mr1906459ejc.75.1686319587595; 
+ Fri, 09 Jun 2023 07:06:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7AihuzTjKEhhhqfAY2V8rctQNq2kLJVg2Zj1mDwMlCpASHEkYaLGNOcko5Ve97t7/RsErljA==
+X-Received: by 2002:a17:907:3da3:b0:971:eb29:a086 with SMTP id
+ he35-20020a1709073da300b00971eb29a086mr1906433ejc.75.1686319587229; 
+ Fri, 09 Jun 2023 07:06:27 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ u20-20020a170906781400b009764f0c5fe6sm1362760ejm.7.2023.06.09.07.06.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Jun 2023 07:06:26 -0700 (PDT)
+Date: Fri, 9 Jun 2023 16:06:25 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: pbonzini@redhat.com
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, wangyanan55@huawei.com,
+ thuth@redhat.com
+Subject: Re: [PATCH] machine: do not crash if default RAM backend name has
+ been stollen
+Message-ID: <20230609160625.3cb92853@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230522131717.3780533-1-imammedo@redhat.com>
+References: <20230522131717.3780533-1-imammedo@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: 6bMixxB51AYQJwa6GYVJ-sODQDPI1-Zr
-X-Proofpoint-GUID: 6bMixxB51AYQJwa6GYVJ-sODQDPI1-Zr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-09_10,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 phishscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
- bulkscore=0 mlxlogscore=701 clxscore=1015 adultscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306090119
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_acaggian@quicinc.com; helo=mx0b-0031df01.pphosted.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,66 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When OpenGL is enabled, create only the OpenGL context, ignoring the SDL
-renderer as it is unused anyway.
+On Mon, 22 May 2023 15:17:17 +0200
+Igor Mammedov <imammedo@redhat.com> wrote:
 
-Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
----
-v2: There is no need to specify major and minor version if the SDL renderer is
-    not created. Also, tested on Windows.
+Paolo,
+can you pick it up?
 
- ui/sdl2.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
-
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 9d703200bf..cf1833b1ad 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -104,7 +104,11 @@ void sdl2_window_create(struct sdl2_console *scon)
-                                          surface_width(scon->surface),
-                                          surface_height(scon->surface),
-                                          flags);
-+
-     if (scon->opengl) {
-+        scon->winctx = SDL_GL_CreateContext(scon->real_window);
-+    } else {
-+        /* The SDL renderer is only used by sdl2-2D, when OpenGL is disabled */
-         const char *driver = "opengl";
- 
-         if (scon->opts->gl == DISPLAYGL_MODE_ES) {
-@@ -113,11 +117,8 @@ void sdl2_window_create(struct sdl2_console *scon)
- 
-         SDL_SetHint(SDL_HINT_RENDER_DRIVER, driver);
-         SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
--    }
--    scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
- 
--    if (scon->opengl) {
--        scon->winctx = SDL_GL_CreateContext(scon->real_window);
-+        scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
-     }
-     sdl_update_caption(scon);
- }
-@@ -128,10 +129,14 @@ void sdl2_window_destroy(struct sdl2_console *scon)
-         return;
-     }
- 
--    SDL_GL_DeleteContext(scon->winctx);
--    scon->winctx = NULL;
--    SDL_DestroyRenderer(scon->real_renderer);
--    scon->real_renderer = NULL;
-+    if (scon->winctx) {
-+        SDL_GL_DeleteContext(scon->winctx);
-+        scon->winctx = NULL;
-+    }
-+    if (scon->real_renderer) {
-+        SDL_DestroyRenderer(scon->real_renderer);
-+        scon->real_renderer = NULL;
-+    }
-     SDL_DestroyWindow(scon->real_window);
-     scon->real_window = NULL;
- }
--- 
-2.40.0
+> QEMU aborts when default RAM backend should be used (i.e. no
+> explicit '-machine memory-backend=' specified) but user
+> has created an object which 'id' equals to default RAM backend
+> name used by board.
+> 
+>  $QEMU -machine pc \
+>        -object memory-backend-ram,id=pc.ram,size=4294967296
+> 
+>  Actual results:
+>  QEMU 7.2.0 monitor - type 'help' for more information
+>  (qemu) Unexpected error in object_property_try_add() at ../qom/object.c:1239:
+>  qemu-kvm: attempt to add duplicate property 'pc.ram' to object (type 'container')
+>  Aborted (core dumped)
+> 
+> Instead of abort, check for the conflicting 'id' and exit with
+> an error, suggesting how to remedy the issue.
+> 
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> CC: thuth@redhat.com
+> ---
+>  hw/core/machine.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 07f763eb2e..1000406211 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1338,6 +1338,14 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>          }
+>      } else if (machine_class->default_ram_id && machine->ram_size &&
+>                 numa_uses_legacy_mem()) {
+> +        if (object_property_find(object_get_objects_root(),
+> +                                 machine_class->default_ram_id)) {
+> +            error_setg(errp, "object name '%s' is reserved for the default"
+> +                " RAM backend, it can't be used for any other purposes."
+> +                " Change the object's 'id' to something else",
+> +                machine_class->default_ram_id);
+> +            return;
+> +        }
+>          if (!create_default_memdev(current_machine, mem_path, errp)) {
+>              return;
+>          }
 
 
