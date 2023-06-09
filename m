@@ -2,81 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA36729F84
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F86729F89
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:02:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7a4y-0007hz-At; Fri, 09 Jun 2023 07:14:52 -0400
+	id 1q7aAs-00005n-D5; Fri, 09 Jun 2023 07:20:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7a4w-0007hd-Ae
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:14:50 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7a4u-0007rZ-Nk
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:14:50 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4f642a24568so2021532e87.2
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 04:14:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686309286; x=1688901286;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+3LAhUxotuY5R4Iip7QpvQDuZPru9h4ppdfcex9TmXA=;
- b=h06IQQYMr9x4KpuInOeIxlJRkjOa9nV+8egs7+IacpSfXUS6mX+5N4TE6gvXQJhHfL
- V6L5PsBIT43Lc43DIUIXRMFBOi4yXidd9OGsC2gWWF+TVyzxY9nc+p2290YG6kqQ8CYF
- tQ7Fgp3TeYpHe5s9JlBX2rj29ZIZ8ucMp57nVih6IWgDbfICU1tRFtstXvj8V/haWhgw
- S6o7M07j65PEI/iJEvbbaiQANqqDdHAyg3xXKM6y99HqpSj5ilF5wmKvpt0fAw6pokUt
- gjY7He4ARSanBurbs/R6HUH9t/dkf80wrFUC0BeZVLqKfaC+IstyOBTU22e8Z8Drbf0e
- RpFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686309286; x=1688901286;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+3LAhUxotuY5R4Iip7QpvQDuZPru9h4ppdfcex9TmXA=;
- b=gaSeR96yS5DtAtWGNGo59VPPqZ/KU/SEVsUXLg+xOr/YnKg4eRye1L1lfPGApRaYDW
- 2Nu5TVX/48ypXnCA1rgS4EcXyGZw15ObIQOVMoLHEx+wt7AsVJFmLXzIsSTAu8j/kSXQ
- OP18nXNO/pS/YkgICT5Azf82CKmHrDrE6KqGDGRRiTXiFF7rqPA5BWhpb7mpOm85QOWz
- oJzMWbdf/BD6lvQzzfQXX+D9cPadE575yR6xRDMCky+eC59pQlbThTxpMaAAa8VZZ1FX
- Fkt0CYlwOoYT6MiQtQBUD/91S6eNgKOXzYI8AX6A/ckAhfTIGPw9AQeHy3chlths/V47
- wCbg==
-X-Gm-Message-State: AC+VfDw0RXXWG6V/RLeeVdHi9ZaN1cJVh9ad+WWiF7rhO9aREzedmqUe
- 0KoEpI2GqS8HGCOdJlSD686z1DBZ2khoAAFJ4nveBA==
-X-Google-Smtp-Source: ACHHUZ5C+o0+R84hlprOAK/Vl6hBviuBEfrdbbh6Zt9dT9oOKaMo7AzDT/YjR5ysVe+wvNKGzBdcjQ==
-X-Received: by 2002:ac2:5bd1:0:b0:4f6:2852:5f56 with SMTP id
- u17-20020ac25bd1000000b004f628525f56mr754037lfn.18.1686309286638; 
- Fri, 09 Jun 2023 04:14:46 -0700 (PDT)
-Received: from [192.168.192.175] (23.171.88.92.rev.sfr.net. [92.88.171.23])
- by smtp.gmail.com with ESMTPSA id
- 8-20020a05600c230800b003f7ed9dae70sm2433595wmo.0.2023.06.09.04.14.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jun 2023 04:14:46 -0700 (PDT)
-Message-ID: <12f7b5ec-708a-0dcf-f80e-58581cf66761@linaro.org>
-Date: Fri, 9 Jun 2023 13:14:44 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q7aAn-00005M-7b
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:20:53 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q7aAk-0000eB-HU
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 07:20:52 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qcz8j2wMKz6J7vv;
+ Fri,  9 Jun 2023 19:18:13 +0800 (CST)
+Received: from localhost (10.126.170.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 9 Jun
+ 2023 12:20:34 +0100
+Date: Fri, 9 Jun 2023 12:20:31 +0100
+To: Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "<\"qemu-devel@nongnu.org\"" <qemu-devel@nongnu.org>
+Subject: Re: [EXT] Re: Concept of LD-ID in QEMU
+Message-ID: <20230609122031.00004bb8@Huawei.com>
+In-Reply-To: <DM6PR18MB2844E5BFADF8599A9393358AAF50A@DM6PR18MB2844.namprd18.prod.outlook.com>
+References: <20230607221651.2454764-1-terry.bowman@amd.com>
+ <20230607221651.2454764-15-terry.bowman@amd.com>
+ <DM6PR18MB2844C099FB0671E864AA953DAF53A@DM6PR18MB2844.namprd18.prod.outlook.com>
+ <20230608113153.000033ef@Huawei.com>
+ <20230608113631.00007a53@Huawei.com>
+ <DM6PR18MB2844E5BFADF8599A9393358AAF50A@DM6PR18MB2844.namprd18.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] build: further refine build.ninja rules
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20230608134314.943615-1-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230608134314.943615-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.126.170.42]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,41 +67,186 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/6/23 15:43, Paolo Bonzini wrote:
-> In commit b0fcc6fc7fc1 ("build: rebuild build.ninja using
-> "meson setup --reconfigure"", 2023-05-19) I changed the build.ninja
-> rule in the Makefile to use "meson setup" so that the Makefile would
-> pick up a changed path to the meson binary.
-> 
-> However, there was a reason why build.ninja was rebuilt using $(NINJA)
-> itself.  Namely, ninja has its own cache of file modification times,
-> and if it does not know about the modification that was done outside
-> its control, it will *also* try to regenerate build.ninja.  This can be
-> simply by running "make" on a fresh tree immediately after "configure";
-> that will trigger an unnecessary meson run.
-> 
-> So, apply a refinement to the rule in order to cover both cases:
-> 
-> - track the meson binary that was used (and that is embedded in
->    build.ninja's reconfigure rules); to do this, write build.ninja.stamp
->    right after executing meson successfully
-> 
-> - if it changed, force usage of "$(MESON) setup --reconfigure" to
->    update the path in the reconfigure rule
-> 
-> - if it didn't change, use "$(NINJA) build.ninja" just like before
->    commit b0fcc6fc7fc1.
-> 
-> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   Makefile  | 17 +++++++++++++----
->   configure |  1 +
->   2 files changed, 14 insertions(+), 4 deletions(-)
+On Thu, 8 Jun 2023 23:38:34 +0000
+Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com> wrote:
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Hi,
+>=20
+> Thinking a bit more, LD in CXL are PCIe endpoint functions. Therefore 1-1=
+ mapping of cxl-i2c device per PCIe device is sufficient, and we use functi=
+on number in BDF as the LD-ID. Does it makes sense ?
+
+LDs are PCIe endpoint functions (always function 0) as seen from the Virtual
+Heirarchies (as they end up under a particular vPBB - which look like a
+downstream port of a switch to the host) but they aren't from a more general
+topology point of view of actual fabric topology and when we are tunneling =
+we
+address them via physical port, not virtual port I think (not read that bit
+of the spec for a while). See figure 7-23 in CXL 3.0
+
+Outer tunneling command targets a port number (unwrapped at the switch),
+inner one targets the LD - unwrapped at the MLD and sent to appropriate LD
+including FM owned LD (if I understand this stack directly).
+
+Also no relationship between BDF and LD-ID so don't do that as the maximum
+ID is only 16 which would rather limit your PCI toplogies if that's the BDF=
+ as
+well.
+
+For now just do what you originally said and add an ID (starting from 0).
+We can probably do that automatically once more infrastructure is in place.
+
+Jonathan
+
+
+>=20
+> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Sent: Thursday, June 8, 2023 3:36 AM
+> To: Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>
+> Cc: linux-cxl@vger.kernel.org <linux-cxl@vger.kernel.org>; <"qemu-devel@n=
+ongnu.org" <qemu-devel@nongnu.org>
+> Subject: [EXT] Re: Concept of LD-ID in QEMU=20
+> =A0
+> External Email
+>=20
+> ----------------------------------------------------------------------
+>=20
+> Shesha,
+>=20
+> You've sent an email with the 'In-reply-to' set to one of Terry's patches.
+> Please check why that happened and make sure you don't do that in future =
+as
+> it hides your unrelated thread in email clients and the archives!
+>=20
+> See
+> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lore.kernel.org_li=
+nux-2Dcxl_20230607221651.2454764-2D1-2Dterry.bowman-40amd.com_T_-23t&d=3DDw=
+IFAw&c=3DnKjWec2b6R0mOyPaz7xtfQ&r=3DZta64bwn4nurTRpD4LY2OGr8KklkMRPn7Z_Qy0o=
+4unU&m=3DZMaAF9tkNCKfk8gYXMiPERZeIhavaQ7MdKtqCbShRF6w5ISrgHqAl6XDOONYbprZ&s=
+=3DERVX40JlAgnvRvPLm8sYZalsYDbpUU7YAqI0Ol0faPI&e=3D=A0=20
+> for example
+>=20
+> ss - Apologies. Will be careful.
+>=20
+> Jonathan
+>=20
+> On Thu, 8 Jun 2023 11:31:53 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+>=20
+> > On Wed, 7 Jun 2023 23:01:11 +0000
+> > Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com> wrote:
+> >  =20
+> > > Hi,
+> > > For DCD sideband there needs=A0to=A0be LD-ID. Is the following approa=
+ch acceptable?=A0  =20
+> >=20
+> > QEMU question so +CC qemu-devel
+> >  =20
+> > >=20
+> > > =A0-device cxl-type3,bus=3Dswport0,volatile-memdev=3Dvmem0,dc-memdev=
+=3Dvmem1,id=3Dcxl-vmem0,num-dc-regions=3D2,ldid=3D0 \
+> > > =A0-device cxl-type3,bus=3Dswport0,volatile-memdev=3Dvmem1,dc-memdev=
+=3Dvmem2,id=3Dcxl-vmem1,num-dc-regions=3D2,ldid=3D1 \=A0  =20
+> >=20
+> > Those will be PCI functions at this level so you can't do this until we=
+ have more advanced switch support
+> > (it has to know about multiple VHs - right now we only support fixed co=
+nfig switches).=A0 You could connect them
+> > to different switch ports - effectively that will be what it looks like=
+ when we do emulate a configurable switch.
+> >  =20
+> > > =A0-device i2c_mctp_cxl,bus=3Daspeed.i2c.bus.0,address=3D24,target=3D=
+cxl-vmem0,cxl-vmem1")
+> > >=20
+> > > With this configuration, the same i2c device is handing both LDs and =
+in FMAPI commands we use the LDID specified above.=A0  =20
+> >=20
+> > This effectively becomes a partial implementation of either an MLD or a=
+n MH-SLD
+> > To manage the actual memory access, those will almost certainly need a =
+bunch of other shared
+> > infrastructure.=A0 So I'd ultimately expect the i2c_mctp_cxl device to =
+target whatever
+> > device represents that shared infrastructure - it might be a separate d=
+evice or a 'lead' type 3 device.
+> >=20
+> > So I'm not sure how this will fit together longer term.=A0 We need same=
+ infrastructure
+> > to work for a mailbox CCI on a MH-SLD/MLD as well and in that case ther=
+e isn't a separate
+> > device to which we can provide multiple targets as you've done in your =
+proposal here.
+> >=20
+> > So I think we need to work out how to handle all of (I've probably forg=
+otten something)
+> > X marks done or in progress.
+> >=20
+> > X 1) i2c_mctp_cxl to an SLD (no PCI Mailbox definition for this one)
+> >=A0=A0 2) i2c_mctp_cxl directly to an MLD (your case)
+> > X 3) i2c_mctp_cxl to a fixed config switch (single fixed VH no MLD capa=
+ble ports)
+> > X 4) PCI mailbox via switch CCI device that fixed config switch (no MLD=
+ capable ports)
+> >=A0=A0=A0=A0=A0=A0=A0 Even with this simple design some fun things you c=
+an do.
+> >=A0=A0 5) i2c_mctp_cxl to a configurable switch (probably a separate as =
+yet to be defined management interface - that messes with hotplug)
+> >=A0=A0 6) PCI mailbox via switch CCI to configurable switch (again to de=
+fined management interface).
+> >=A0=A0 7) i2c_mctp_cxl to an MH-SLD - probably to which ever device also=
+ has support for
+> >=A0=A0=A0=A0=A0 tunneling to the FM owned LD via the PCI mailbox.
+> > X 8) PCI mailbox on MH-SLD tunneling to the FM owned LD.
+> >=A0=A0 9) i2c_mctp_cxl to an MH-MLD - similar to above - this one isn't =
+that much more complex than MH-SLD case.
+> > X 10) PCI mailbox to MH-MLD - similar to above.
+> >=A0=A0 11) Tunneling via the switch CCI (then over PCI-VDM - though that=
+ detail isn't visible in QEMU) to an SLD
+> >=A0=A0 12) Tunneling via the switch CCI (then PCI-VDM) to an MH-SLD and =
+on to he FM owned LD.
+> >=A0=A0 13) Tunneling via the switch CCI (then over PCI-VDM) to an MLD / =
+MH-MLD
+> >=A0=20
+> > Current i2c_mctp_cxl covers 1 and 3
+> > I'm part way through the tunnelling support for (8 and 100) - need to r=
+evisit and wire up the switch CCI PoC
+> > properly which will give us 4.
+> >=20
+> > 2 needs MLD support in general which we could maybe make work with a st=
+atic binding in a switch but that
+> >=A0=A0 would be odd - so we probably need to emulate a configurable swit=
+ch for that
+> > 5,6 need configurable switch
+> > 7 needs same as 2 plus tunneling part similar to 4
+> > 9 again probably configurable switch for the MLD part to make sense
+> > 11 is fairly straight forward - but not done yet.
+> > 12 also not too bad, but needs the MH-SLD part to be fleshed out (some =
+work on going )
+> > 13 needs pretty much everything defined.
+> >=20
+> > Trying to get the command line interface and device model right until w=
+e have PoC code
+> > for a few more cases is going to be at most a draft of what it might lo=
+ok like.
+> >=20
+> > So in short, lots to do.=A0 For now feel free to hack whatever you need=
+ in to be able
+> > to test the FM-API side of things, we can move that towards a clean com=
+mand line definition
+> > once we have one figured out!
+> >=20
+> > Jonathan
+> >=20
+> >  =20
+> > >=20
+> > > Thanks,
+> > > Shesha.=A0  =20
+> >=20
+> >  =20
 
 
