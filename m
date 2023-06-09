@@ -2,80 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2532729369
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 10:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB39729F86
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:02:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7XdG-0008S7-Fu; Fri, 09 Jun 2023 04:38:06 -0400
+	id 1q7dZd-0002Vo-Ki; Fri, 09 Jun 2023 10:58:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q7XdE-0008Rv-QO
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 04:38:04 -0400
-Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q7Xd3-0002Zn-Nv
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 04:38:04 -0400
-Received: by mail-ua1-x930.google.com with SMTP id
- a1e0cc1a2514c-789de11638fso599732241.1
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 01:37:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1686299872; x=1688891872;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kKJgu0Y3h26oBcC7LozsU/J1Ar+vqf0d27xOH+ejCy8=;
- b=OY5vB9lol2EcVOnATr/S9xcrevPNcbmSx9BN/Di08fNHdgchDw4vyvC016MasCLAHA
- egpsR9D0Z9h0DOx3jC9B5gRSeSNbv8psxMkwTJoOdYPd8gJ5M/jO6BM4vMrlrwy9b9EA
- PFdiSIVdURZ0Xwd7MK3zDKIdBSLILUTQgzKQv26HNRpvEkd6g2Ir32dr6oAwM1oX7+Yb
- GNWG2fLF9WAhvvITN7PTASFjdJHhTRiGTxpoSCpsOAD1+9RlQLZUBflYEAC5UrNvhIqx
- rHpwf7nGm7oe6VUnbQXKH7OdcgbCjD5xnDQksrJfvLT0MaUHzrLBMo+Q4y+i2PrZnL13
- fvcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686299872; x=1688891872;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kKJgu0Y3h26oBcC7LozsU/J1Ar+vqf0d27xOH+ejCy8=;
- b=FeZUTzTkEhF1D+sxVlRwmDCVOYAsyRvQ4uaCJFhtYaGKQXfO0qeUlp9vieto4zqoUR
- hIPcbwzFXkOgCqJuXHHK24tCyD23oJ+oezVwcSqCLUJU3fb/IaPTd/GBO6UmZuB4ydY7
- 8SIBvEohh2QIE8xFxILi6RPHs3MlzKsXKjtY2MkmGcQ5K/+cJML6JVpfGu3mvH22bLZC
- w5Gybafz+hVzYOGyyafzqYp/BNdl/JoAbSi2TonMtWQ/rcrkDDydmx0TzaUTz9DWvipW
- G7/r4xseZN8Iu/R4AM7HlF2mbtWWSJAtaZh8mH0xri6SDBn2TXkueXZIESlxYKSqFgHz
- C5Tw==
-X-Gm-Message-State: AC+VfDxxCdU7R+t62aCOM4R1+AdqK+/pCBGfbNPqCXKgEgGxrYFI66FL
- Iesaw45V6/JKxrYVbTexWGQeaXUcHdfxvGJn8tC0Hw==
-X-Google-Smtp-Source: ACHHUZ7tnDy2VT2LAW+rFEtZUmX6zcfD7rrKMxku+pCIUNAa7pGMQatRbfvZUZSsnrgrXmN1+C/HmuF+v3y8MJrDyVI=
-X-Received: by 2002:a05:6102:34f9:b0:43b:458f:b078 with SMTP id
- bi25-20020a05610234f900b0043b458fb078mr522568vsb.30.1686299872113; Fri, 09
- Jun 2023 01:37:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <j.devantier@samsung.com>)
+ id 1q7XeV-0000fC-6G
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 04:39:23 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <j.devantier@samsung.com>)
+ id 1q7XeR-0002i2-AF
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 04:39:22 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+ by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id
+ 20230609083912euoutp0259049498fc05be78ac6fffef9907ea95~m8N9X27fE3237532375euoutp02v
+ for <qemu-devel@nongnu.org>; Fri,  9 Jun 2023 08:39:12 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com
+ 20230609083912euoutp0259049498fc05be78ac6fffef9907ea95~m8N9X27fE3237532375euoutp02v
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1686299952;
+ bh=tLQ/Cxo8hQuR66R+l3m86Wl2Of0R26lw2EJ1z7rYtyY=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=BrEBMELPm2FigY9X0Y1U+8QDncTKJodS/BMpHYT2rr4xlAtFQ9bNRyhyMhct2u4Dn
+ lWg1icLfSq4DWvvC3Gf6UtLzuyEoPxyAsHouNa8mYfiMrso9qwKaIpvrahnHFZLXOV
+ IZNsvrTDnRU62tGMp+Oik6LQwGKRg+pcWzeV8XSU=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230609083912eucas1p1f165334c7e4af3bea9c3eefcc49e2485~m8N9Jb5Q-2683826838eucas1p1h;
+ Fri,  9 Jun 2023 08:39:12 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+ eusmges1new.samsung.com (EUCPMTA) with SMTP id 2B.A7.42423.035E2846; Fri,  9
+ Jun 2023 09:39:12 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20230609083911eucas1p19c8484fdbfc404bdab8bec9ffe903153~m8N8t6Tbj2628126281eucas1p1h;
+ Fri,  9 Jun 2023 08:39:11 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+ eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20230609083911eusmtrp173ea4a0fe8cf6acaa1daec691f226bc4~m8N8svPvc0632906329eusmtrp1c;
+ Fri,  9 Jun 2023 08:39:11 +0000 (GMT)
+X-AuditID: cbfec7f2-a51ff7000002a5b7-80-6482e5300963
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+ eusmgms2.samsung.com (EUCPMTA) with SMTP id 4F.50.14344.F25E2846; Fri,  9
+ Jun 2023 09:39:11 +0100 (BST)
+Received: from CAMSVWEXC01.scsc.local (unknown [106.1.227.71]) by
+ eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20230609083911eusmtip1085094f3ceb9c5baec7bb9b57aeeaf15~m8N8i8iHR1673416734eusmtip1w;
+ Fri,  9 Jun 2023 08:39:11 +0000 (GMT)
+Received: from CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) by
+ CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Fri, 9 Jun 2023 09:39:10 +0100
+Received: from CAMSVWEXC02.scsc.local ([::1]) by CAMSVWEXC02.scsc.local
+ ([fe80::3c08:6c51:fa0a:6384%13]) with mapi id 15.00.1497.012; Fri, 9 Jun
+ 2023 09:39:10 +0100
+From: Jesper Devantier <j.devantier@samsung.com>
+To: Klaus Jensen <its@irrelevant.dk>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-block@nongnu.org"
+ <qemu-block@nongnu.org>, Keith Busch <kbusch@kernel.org>, "Klaus B. Jensen"
+ <k.jensen@samsung.com>
+Subject: Re: [PATCH 0/4] hw/nvme: tp4146 misc
+Thread-Topic: [PATCH 0/4] hw/nvme: tp4146 misc
+Thread-Index: AQHZjjGcZS6wcy/8/UyXDUNaon+D0q+CLo0A
+Date: Fri, 9 Jun 2023 08:39:09 +0000
+Message-ID: <20230609083906.sdotefyaqj54qinv@jwdssdr>
+In-Reply-To: <20230524111904.91179-1-its@irrelevant.dk>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [106.210.248.13]
+Content-ID: <8CEDCD30F2891D4984F36091FCB7824A@scsc.local>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20230523114454.717708-1-tommy.wu@sifive.com>
- <20230523114454.717708-2-tommy.wu@sifive.com>
- <CAKmqyKOfkhN=3+asF-u3r7y83GiZjv34mv42Yp0Ye0NzUEnezQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKOfkhN=3+asF-u3r7y83GiZjv34mv42Yp0Ye0NzUEnezQ@mail.gmail.com>
-From: Tommy Wu <tommy.wu@sifive.com>
-Date: Fri, 9 Jun 2023 16:37:41 +0800
-Message-ID: <CANj3q_ng7=2-gosL7HywNRVcqZqkK4aWodBNp6rjqV8OpMJDEA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/riscv: Add a function to refresh the dynamic
- CSRs xml.
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, frank.chang@sifive.com, 
- alistair.francis@wdc.com, apatel@ventanamicro.com, palmer@rivosinc.com, 
- dbarboza@ventanamicro.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com
-Content-Type: multipart/alternative; boundary="000000000000dcd43805fdae4838"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
- envelope-from=tommy.wu@sifive.com; helo=mail-ua1-x930.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djPc7oGT5tSDI5t57XYf/Abq8WkQ9cY
+ LWa9a2ezON67g8WBxePcjvPsHptWdbJ5PLm2mSmAOYrLJiU1J7MstUjfLoEr48b3aawFl9gq
+ VrfdZG5gnM/axcjJISFgIrF580ogm4tDSGAFo8TsqW1sEM4XRon5b9ewQDifGSXOTb3I3MXI
+ AdbS9r4KpFtIYDmjxPOjYnA1r95dgeo+zSjxd8Y6Fri509duAVvIJmAgsefIKhYQW0RAReLp
+ v71gRcwCmxkl5rUsYgNJCAvoSqzufMUIUaQnca1rGlSDkcTkXS/AbBag5oXfz4PV8AqYSkw8
+ /h5sAaeAuUTj97lgcxgFZCUerfzFDmIzC4hL3Hoynwnia0GJRbP3MEPYYhL/dj1kg7B1JM5e
+ f8IIYRtIbF26jwXCVgLadYgNYo6lxJEHs1khbG2JZQtfM0PcIChxcuYTsGckBFZzSkx5dZUV
+ El4uElPavSDmCEu8Or6FHcKWkTg9uYdlAqPOLCTnzUKyYhaSFbOQrJgFNJVZQFNi/S79BYys
+ qxjFU0uLc9NTiw3zUsv1ihNzi0vz0vWS83M3MQITzul/xz/tYJz76qPeIUYmDsZDjBIczEoi
+ vFn29SlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEebVtTyYLCaQnlqRmp6YWpBbBZJk4OKUamFjj
+ XBquvHQyTVl+ZtaE/TMenbPiXdWz4MTD7y/K5b28ZrT5t2wNWXRYb+bV3P+tO6Y8LhU4nXXZ
+ WpD/cRM3G2/Q8gZv/1NKt4Iea08qtpgr2llV7aD5qHtCWJeC3iaxGw07xVXS0vaX7NJtO71l
+ Jtv85SkL+jhjXG/5Hj3R8chXru3hh19P3IReynxw/ay3qIqx/sIVEdn6lXIGfCLxXKZ2ursW
+ LDm/9tPSH+I2io0b1sSsbViV7/S4TulwUeyTijye43UF5kyeonZ/BbzqDn6Y/uKS3tbE6bMu
+ fb6bMPWSyLV7ouc+btm6dmnDwfnyAjevZM9p4vY1yf3WMPdLoHHNtIN6r5oP92Tksq/nWqTE
+ UpyRaKjFXFScCADWU+DXpwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDKsWRmVeSWpSXmKPExsVy+t/xu7r6T5tSDBZd0LPYf/Abq8WkQ9cY
+ LWa9a2ezON67g8WBxePcjvPsHptWdbJ5PLm2mSmAOUrPpii/tCRVISO/uMRWKdrQwkjP0NJC
+ z8jEUs/Q2DzWyshUSd/OJiU1J7MstUjfLkEv4+y6BsaCI2wV19pKGxgnsnYxcnBICJhItL2v
+ 6mLk4hASWMoo8W3TPaA4J1BcRmLjl6tQtrDEn2tdbBBFHxklHnxsY4dwTjNK/Hi5mwXCWcEo
+ 0fF5JQtIC5uAgcSeI6vAbBEBFYmn//aCFTELbGaUmNeyiA0kISygK7G68xUjRJGexLWuaVAN
+ RhKTd70As1mAmhd+Pw9WwytgKjHx+Huwu4UEzCSm94SChDkFzCUav88FG8koICvxaOUvdhCb
+ WUBc4taT+UwQLwhILNlznhnCFpV4+fgf1Gs6EmevP2GEsA0kti7dxwJhKwGtPcQGMUdHYsHu
+ T1C2pcSRB7NZIWxtiWULXzNDnCYocXLmE5YJjDKzkKyehaR9FpL2WUjaZyFpX8DIuopRJLW0
+ ODc9t9hIrzgxt7g0L10vOT93EyMwmWw79nPLDsaVrz7qHWJk4mA8xCjBwawkwptlX58ixJuS
+ WFmVWpQfX1Sak1p8iNEUGHQTmaVEk/OB6SyvJN7QzMDU0MTM0sDU0sxYSZzXs6AjUUggPbEk
+ NTs1tSC1CKaPiYNTqoEp/gZ/52IOydTwNctPmb5V3rEnnlknRHXudunG2+YfhOKEJ989zdzc
+ ray/sbt8Rpxac1yFycFiqas/z18NbklfPO1uwqzNqi2nuCQ4pjEX2DEc5FjIrsnjVL1az0lN
+ +NINManNz8UXyu45sK7H+uETUebihLPvZv2SWng85EhY7oOJTQqt57PiBRnUv1e/dQ+fdO/r
+ svnB1zPuiy+638uw64NAgQnnw7MblvOJ7bqjfn+NZKjyxsaHF39PuzfNKdxX3dTji9h/nnq+
+ DyVxjqEMTLzfmvf9rF+VsuCDz5HpdcqPX1r4qG3Kds57W2g1vSTE42tkz/vJ5ey5zipJL15x
+ SPFdDJ19KdBv1tGXKj1KLMUZiYZazEXFiQBKEsF9rwMAAA==
+X-CMS-MailID: 20230609083911eucas1p19c8484fdbfc404bdab8bec9ffe903153
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20230609083911eucas1p19c8484fdbfc404bdab8bec9ffe903153
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20230609083911eucas1p19c8484fdbfc404bdab8bec9ffe903153
+References: <20230524111904.91179-1-its@irrelevant.dk>
+ <CGME20230609083911eucas1p19c8484fdbfc404bdab8bec9ffe903153@eucas1p1.samsung.com>
+Received-SPF: pass client-ip=210.118.77.12;
+ envelope-from=j.devantier@samsung.com; helo=mailout2.w1.samsung.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 09 Jun 2023 10:58:41 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,218 +148,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000dcd43805fdae4838
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, May 24, 2023 at 01:19:00PM +0200, Klaus Jensen wrote:
+> From: Klaus Jensen <k.jensen=40samsung.com>
+>=20
+> A set of fixes and small quality-of-life improvements for the TP4146
+> (=22Flexible Data Placement=22) support.
+>=20
+> Klaus Jensen (4):
+>   hw/nvme: fix verification of number of ruhis
+>   hw/nvme: verify uniqueness of reclaim unit handle identifiers
+>   hw/nvme: add placement handle list ranges
+>   docs: update hw/nvme documentation for TP4146
+>=20
+>  docs/system/devices/nvme.rst =7C 37 +++++++++++++++++++++++-
+>  hw/nvme/ns.c                 =7C 55 ++++++++++++++++++++++++++++--------
+>  hw/nvme/subsys.c             =7C  6 ++--
+>  3 files changed, 84 insertions(+), 14 deletions(-)
+>=20
+> --=20
+> 2.40.0
+>=20
+>=20
 
-Hi Alistair,
-Thanks for the suggestion! Do you mean
-```
-    ...
-    g_free(cpu->dyn_csr_xml);
-    riscv_gen_dynamic_csr_xml(cs, cpu-> gdb_num_regs  -  CSR_TABLE_SIZE);
-    ...
-``` ?
+Looks good to me :)
 
-Or maybe we don't need this refresh function, and just add ext_ssaia &
-ext_smaia in the command line.
-
-Best Regards,
-Tommy
-
-On Thu, May 25, 2023 at 10:33=E2=80=AFAM Alistair Francis <alistair23@gmail=
-.com>
-wrote:
-
-> On Tue, May 23, 2023 at 9:46=E2=80=AFPM Tommy Wu <tommy.wu@sifive.com> wr=
-ote:
-> >
-> > When we change the cpu extension state after the cpu is
-> > realized, we cannot print the value of some CSRs in the remote
-> > gdb debugger. The root cause is that the dynamic CSR xml is
-> > generated when the cpu is realized.
-> >
-> > This patch add a function to refresh the dynamic CSR xml after
-> > the cpu is realized.
-> >
-> > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-> > Reviewed-by: Frank Chang <frank.chang@sifive.com>
-> > ---
-> >  target/riscv/cpu.h     |  2 ++
-> >  target/riscv/gdbstub.c | 12 ++++++++++++
-> >  2 files changed, 14 insertions(+)
-> >
-> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> > index de7e43126a..dc8e592275 100644
-> > --- a/target/riscv/cpu.h
-> > +++ b/target/riscv/cpu.h
-> > @@ -494,6 +494,7 @@ struct ArchCPU {
-> >      CPUNegativeOffsetState neg;
-> >      CPURISCVState env;
-> >
-> > +    int dyn_csr_base_reg;
-> >      char *dyn_csr_xml;
-> >      char *dyn_vreg_xml;
-> >
-> > @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno,
-> riscv_csr_operations *ops);
-> >  void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
-> >
-> >  void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
-> > +void riscv_refresh_dynamic_csr_xml(CPUState *cs);
-> >
-> >  uint8_t satp_mode_max_from_map(uint32_t map);
-> >  const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
-> > diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-> > index 524bede865..9e97ee2c35 100644
-> > --- a/target/riscv/gdbstub.c
-> > +++ b/target/riscv/gdbstub.c
-> > @@ -230,6 +230,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs,
-> int base_reg)
-> >          bitsize =3D 64;
-> >      }
-> >
-> > +    cpu->dyn_csr_base_reg =3D base_reg;
-> > +
-> >      g_string_printf(s, "<?xml version=3D\"1.0\"?>");
-> >      g_string_append_printf(s, "<!DOCTYPE feature SYSTEM
-> \"gdb-target.dtd\">");
-> >      g_string_append_printf(s, "<feature
-> name=3D\"org.gnu.gdb.riscv.csr\">");
-> > @@ -349,3 +351,13 @@ void
-> riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-> >                                   "riscv-csr.xml", 0);
-> >      }
-> >  }
-> > +
-> > +void riscv_refresh_dynamic_csr_xml(CPUState *cs)
-> > +{
-> > +    RISCVCPU *cpu =3D RISCV_CPU(cs);
-> > +    if (!cpu->dyn_csr_xml) {
-> > +        g_assert_not_reached();
-> > +    }
-> > +    g_free(cpu->dyn_csr_xml);
-> > +    riscv_gen_dynamic_csr_xml(cs, cpu->dyn_csr_base_reg);
->
-> I don't really understand why we need dyn_csr_base_reg, could we just
-> use cs->gdb_num_regs directly here?
->
-> Alistair
->
-> > +}
-> > --
-> > 2.38.1
-> >
-> >
->
-
---000000000000dcd43805fdae4838
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Alistair,<br>Thanks for the suggestion! Do you mean=C2=
-=A0<div>```</div><div>=C2=A0 =C2=A0 ...</div><div>=C2=A0 =C2=A0 g_free(cpu-=
-&gt;dyn_csr_xml);<br>=C2=A0 =C2=A0 riscv_gen_dynamic_csr_xml(cs, cpu-&gt;
-
-gdb_num_regs=C2=A0 -=C2=A0 CSR_TABLE_SIZE);<br></div><div>=C2=A0 =C2=A0 ...=
-</div><div>``` ?</div><div><br></div><div>Or maybe we don&#39;t need this r=
-efresh function, and just add ext_ssaia=C2=A0&amp; ext_smaia in the command=
- line.</div><div><br>Best Regards,<br>Tommy</div></div><br><div class=3D"gm=
-ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, May 25, 2023 at 10=
-:33=E2=80=AFAM Alistair Francis &lt;<a href=3D"mailto:alistair23@gmail.com"=
->alistair23@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
-ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
-4);padding-left:1ex">On Tue, May 23, 2023 at 9:46=E2=80=AFPM Tommy Wu &lt;<=
-a href=3D"mailto:tommy.wu@sifive.com" target=3D"_blank">tommy.wu@sifive.com=
-</a>&gt; wrote:<br>
-&gt;<br>
-&gt; When we change the cpu extension state after the cpu is<br>
-&gt; realized, we cannot print the value of some CSRs in the remote<br>
-&gt; gdb debugger. The root cause is that the dynamic CSR xml is<br>
-&gt; generated when the cpu is realized.<br>
-&gt;<br>
-&gt; This patch add a function to refresh the dynamic CSR xml after<br>
-&gt; the cpu is realized.<br>
-&gt;<br>
-&gt; Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" tar=
-get=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
-&gt; Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com"=
- target=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 target/riscv/cpu.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 ++<br>
-&gt;=C2=A0 target/riscv/gdbstub.c | 12 ++++++++++++<br>
-&gt;=C2=A0 2 files changed, 14 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h<br>
-&gt; index de7e43126a..dc8e592275 100644<br>
-&gt; --- a/target/riscv/cpu.h<br>
-&gt; +++ b/target/riscv/cpu.h<br>
-&gt; @@ -494,6 +494,7 @@ struct ArchCPU {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 CPUNegativeOffsetState neg;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 CPURISCVState env;<br>
-&gt;<br>
-&gt; +=C2=A0 =C2=A0 int dyn_csr_base_reg;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 char *dyn_csr_xml;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 char *dyn_vreg_xml;<br>
-&gt;<br>
-&gt; @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno, riscv_csr_operat=
-ions *ops);<br>
-&gt;=C2=A0 void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);<br=
->
-&gt;<br>
-&gt;=C2=A0 void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);<br>
-&gt; +void riscv_refresh_dynamic_csr_xml(CPUState *cs);<br>
-&gt;<br>
-&gt;=C2=A0 uint8_t satp_mode_max_from_map(uint32_t map);<br>
-&gt;=C2=A0 const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);<br=
->
-&gt; diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c<br>
-&gt; index 524bede865..9e97ee2c35 100644<br>
-&gt; --- a/target/riscv/gdbstub.c<br>
-&gt; +++ b/target/riscv/gdbstub.c<br>
-&gt; @@ -230,6 +230,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs,=
- int base_reg)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bitsize =3D 64;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;<br>
-&gt; +=C2=A0 =C2=A0 cpu-&gt;dyn_csr_base_reg =3D base_reg;<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 g_string_printf(s, &quot;&lt;?xml version=3D\&quot=
-;1.0\&quot;?&gt;&quot;);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 g_string_append_printf(s, &quot;&lt;!DOCTYPE featu=
-re SYSTEM \&quot;gdb-target.dtd\&quot;&gt;&quot;);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 g_string_append_printf(s, &quot;&lt;feature name=
-=3D\&quot;org.gnu.gdb.riscv.csr\&quot;&gt;&quot;);<br>
-&gt; @@ -349,3 +351,13 @@ void riscv_cpu_register_gdb_regs_for_features(CPU=
-State *cs)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;riscv-csr.xml&=
-quot;, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 }<br>
-&gt; +<br>
-&gt; +void riscv_refresh_dynamic_csr_xml(CPUState *cs)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 RISCVCPU *cpu =3D RISCV_CPU(cs);<br>
-&gt; +=C2=A0 =C2=A0 if (!cpu-&gt;dyn_csr_xml) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_assert_not_reached();<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 g_free(cpu-&gt;dyn_csr_xml);<br>
-&gt; +=C2=A0 =C2=A0 riscv_gen_dynamic_csr_xml(cs, cpu-&gt;dyn_csr_base_reg)=
-;<br>
-<br>
-I don&#39;t really understand why we need dyn_csr_base_reg, could we just<b=
-r>
-use cs-&gt;gdb_num_regs directly here?<br>
-<br>
-Alistair<br>
-<br>
-&gt; +}<br>
-&gt; --<br>
-&gt; 2.38.1<br>
-&gt;<br>
-&gt;<br>
-</blockquote></div>
-
---000000000000dcd43805fdae4838--
+Reviewed-by: Jesper Wendel Devantier <j.devantier=40samsung.com>
 
