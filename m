@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C2A729F11
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE53729F87
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7cpL-0003JL-2Y; Fri, 09 Jun 2023 10:10:56 -0400
+	id 1q7cpd-0003ac-AU; Fri, 09 Jun 2023 10:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7cp1-0003GN-Qt; Fri, 09 Jun 2023 10:10:40 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ id 1q7cpV-0003SH-KV; Fri, 09 Jun 2023 10:11:06 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7cov-0000dY-TL; Fri, 09 Jun 2023 10:10:33 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2b1b66a8fd5so20146011fa.0; 
- Fri, 09 Jun 2023 07:10:26 -0700 (PDT)
+ id 1q7cpQ-0000fg-N6; Fri, 09 Jun 2023 10:11:05 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2b1b2ca09b9so20050711fa.1; 
+ Fri, 09 Jun 2023 07:10:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686319825; x=1688911825;
+ d=1e100.net; s=20221208; t=1686319858; x=1688911858;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nTPYZzbPBWQnltn+rjRZCiQSk+YmkRCKklq606/aWiM=;
- b=O0K/zoN9QXWNnBKoybmrP3lLkIaJabhSkiTM37WJCZskMZl5WSdrgCyNfrSchwkQn9
- Gz+rJwViYQD7624MdwlfZ9zdxQEkqLq5NRhFuJxxvTS2gtAU1Adx1Fz2SejF1VLk3djC
- T3xYSwEjIrhIScPsxiuJRd7Lpz5f73DjOUz3qk6HeX7zvfXagwGdaDHThtOJF/36MUKY
- 15SCpxrgVdClqiLzWcRLsskKu5/yCdkknFMbNw5RRXsMNXwdGbr0oQ22GanN0lHkdecV
- 8FyRxlMTKYQyTdn5PrCxMwQeMmpk31EyVtGLC/EBCDGQFxc5PCkbQvHyqj/5nIXIp1kY
- QPFQ==
-X-Gm-Message-State: AC+VfDwWEu2vD3OjFKBHZZhCnE/ZgkuZ6CkoEIqwN04ZpTOnJJd31Kqo
- 7GOzR45WBfUUSO1yJ9gccm9beDnI1Z6fc0LY
-X-Google-Smtp-Source: ACHHUZ4sAijVqfMiv/ASfnhNKm3ngycCaCnnOHHu82D6aDsBnLv+4cgj1wsrwgeaBz7Mx2PZV25rog==
-X-Received: by 2002:a2e:360e:0:b0:2af:29d2:2ffe with SMTP id
- d14-20020a2e360e000000b002af29d22ffemr1128952lja.15.1686319825166; 
- Fri, 09 Jun 2023 07:10:25 -0700 (PDT)
+ bh=mkwTC8Vty9tpt7HJGEvIurSy9HSAeKfGf7/QzOLfMEs=;
+ b=dgVuAG9Al84hbDKOal3VnlbF5puz7iFOAAKZANxxEtUTeU4CJrbXPUhBY9sMietPHK
+ TI8jsfWHAyew0u5u7J0b3yzhGCBEVbfR8lMFEWA7wZ1IAdYDV/i09bwXlCMzVVWNne0G
+ 0aok5WS3evg8KmCi3W6Nxp9BGcrAWRFZC3aV0+l17WlRMmiFcH0qoVv9xmCqfhmX17/v
+ ulmRW2xHjIYuPcgvyw07lBsnoVKPUGLwOchATzAaItLebfZoLBJHyiTYJ9or30+yF53e
+ /lzFi6r7hD0VdSyM9aLH9wC441lkUBewUo4HHDdL9YpeLfhcZE/vsAk/UixLlBS2zELZ
+ WZTA==
+X-Gm-Message-State: AC+VfDxomEXTdZW6b7r9maC1jxV3YcZV0szcZv4ejywHu3ga/UeATQ9f
+ xp1QSzM6HuvpCBRB3vOMK7Pqvp0vKC/+wm7q
+X-Google-Smtp-Source: ACHHUZ525L84Z6b9zWgZI8erbfXecAPm5h0OzEWwxHZ1LidZiSGGwpJwIGvHwfx2cSJzZELqxoUKgg==
+X-Received: by 2002:a2e:9bc7:0:b0:2a8:a6a5:e26e with SMTP id
+ w7-20020a2e9bc7000000b002a8a6a5e26emr1197903ljj.20.1686319857860; 
+ Fri, 09 Jun 2023 07:10:57 -0700 (PDT)
 Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
  [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
- v7-20020a2e9f47000000b002b20058ecf9sm405479ljk.32.2023.06.09.07.10.24
+ p9-20020a2ea409000000b002aa40d705a5sm411403ljn.11.2023.06.09.07.10.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Jun 2023 07:10:24 -0700 (PDT)
+ Fri, 09 Jun 2023 07:10:57 -0700 (PDT)
 Received: by flawful.org (Postfix, from userid 112)
- id 7EA4417AD; Fri,  9 Jun 2023 16:10:23 +0200 (CEST)
+ id D589319A5; Fri,  9 Jun 2023 16:10:55 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319823; bh=4uJviMPFEwnIcHq2YXftAn5at7cFfEl+tvwWCuj/ojI=;
+ t=1686319856; bh=pUL6u6eRxrW/o4YQuJ/qElOefIt5US8w+5dHg4FA0Os=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=R8+XNoD/57wmvo75XMUH8cR2dty6aZGQoXBxp9RI7Tvrbd5AQ4Xf5wYlMa996KJy3
- nP/ixk0Of3RWBSwp2K/jdlF4mF4/CrNnQj89CwYRpRULyY9Khh12BeIYPMAleQpMw7
- fkagYrCPniiGxZo0rMyEbMSf1GkcrCzzKhlq9fuk=
+ b=BdmxT903T6xuWCfuZxI8S7AdXPJxHI6dFEPKEvr3CXYmspmkzaioqo0DCq6Ripn85
+ fl0cRP5OsEHL5lUTWkoT/cSrg8+Xtpl7ALMNRPkQQtYcM53AwWt7XK0s2D0OqLCi0K
+ rDDtvzdntthlVuL8Epeo3+V/WnZkjl6j1xGX3VIA=
 Received: from x1-carbon.lan (unknown [129.253.182.58])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id C5EEC19A5;
- Fri,  9 Jun 2023 16:09:26 +0200 (CEST)
+ by flawful.org (Postfix) with ESMTPSA id 7FC5F180D;
+ Fri,  9 Jun 2023 16:09:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319770; bh=4uJviMPFEwnIcHq2YXftAn5at7cFfEl+tvwWCuj/ojI=;
+ t=1686319775; bh=pUL6u6eRxrW/o4YQuJ/qElOefIt5US8w+5dHg4FA0Os=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PROkTmNW3QyggNBHVtI6hNcn26mH6s3QquJRZ4E9PcoqhCxAc/NW8DDyc8PWQk9V1
- LtrpiAznnwW7vlw+qJizWgi/IrOHvnZwry8reeqWZ3etUnvAEOXTE6GZSh5H6ccTz0
- 9Le3W+V33y+x5i4W1dVc3vkGUY6ofZTJm/Vemw3Y=
+ b=pyZbVsJlaWoyAiBQdDZV7SEQU857JLbuXHr9PRf558cZlQAdG2DVQkrkXNSOLZtYo
+ ydH2UmJZe7yeqcxVslepp3+E7dp3vVrpbnEEBDn3y3dWllOT0uCqabMOV3ztVxf6uy
+ qNTjMuAKWiPRigZPlAlwg2D7sNDWlRb7BdH66o3E=
 From: Niklas Cassel <nks@flawful.org>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
  Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v3 5/8] hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST
- is cleared
-Date: Fri,  9 Jun 2023 16:08:41 +0200
-Message-Id: <20230609140844.202795-6-nks@flawful.org>
+Subject: [PATCH v3 6/8] hw/ide/ahci: PxCI should not get cleared when ERR_STAT
+ is set
+Date: Fri,  9 Jun 2023 16:08:42 +0200
+Message-Id: <20230609140844.202795-7-nks@flawful.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609140844.202795-1-nks@flawful.org>
 References: <20230609140844.202795-1-nks@flawful.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -102,41 +102,237 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-According to AHCI 1.3.1 definition of PxSACT:
-This field is cleared when PxCMD.ST is written from a '1' to a '0' by
-software. This field is not cleared by a COMRESET or a software reset.
+For NCQ, PxCI is cleared on command queued successfully.
+For non-NCQ, PxCI is cleared on command completed successfully.
+Successfully means ERR_STAT, BUSY and DRQ are all cleared.
 
-According to AHCI 1.3.1 definition of PxCI:
-This field is also cleared when PxCMD.ST is written from a '1' to a '0'
-by software.
+A command that has ERR_STAT set, does not get to clear PxCI.
+See AHCI 1.3.1, section 5.3.8, states RegFIS:Entry and RegFIS:ClearCI,
+and 5.3.16.5 ERR:FatalTaskfile.
 
-Clearing PxCMD.ST is part of the error recovery procedure, see
-AHCI 1.3.1, section "6.2 Error Recovery".
-
-If we don't clear PxCI on error recovery, the previous command will
-incorrectly still be marked as pending after error recovery.
+In the case of non-NCQ commands, not clearing PxCI is needed in order
+for host software to be able to see which command slot that failed.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 ---
- hw/ide/ahci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/ide/ahci.c             |   7 ++-
+ tests/qtest/libqos/ahci.c | 106 ++++++++++++++++++++++++++++----------
+ tests/qtest/libqos/ahci.h |   8 ++-
+ 3 files changed, 88 insertions(+), 33 deletions(-)
 
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 3deaf01add..a31e6fa65e 100644
+index a31e6fa65e..12aaadc554 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -329,6 +329,11 @@ static void ahci_port_write(AHCIState *s, int port, int offset, uint32_t val)
-         ahci_check_irq(s);
-         break;
-     case AHCI_PORT_REG_CMD:
-+        if ((pr->cmd & PORT_CMD_START) && !(val & PORT_CMD_START)) {
-+            pr->scr_act = 0;
-+            pr->cmd_issue = 0;
-+        }
+@@ -1523,7 +1523,8 @@ static void ahci_clear_cmd_issue(AHCIDevice *ad, uint8_t slot)
+ {
+     IDEState *ide_state = &ad->port.ifs[0];
+ 
+-    if (!(ide_state->status & (BUSY_STAT | DRQ_STAT))) {
++    if (!(ide_state->status & ERR_STAT) &&
++        !(ide_state->status & (BUSY_STAT | DRQ_STAT))) {
+         ad->port_regs.cmd_issue &= ~(1 << slot);
+     }
+ }
+@@ -1532,6 +1533,7 @@ static void ahci_clear_cmd_issue(AHCIDevice *ad, uint8_t slot)
+ static void ahci_cmd_done(const IDEDMA *dma)
+ {
+     AHCIDevice *ad = DO_UPCAST(AHCIDevice, dma, dma);
++    IDEState *ide_state = &ad->port.ifs[0];
+ 
+     trace_ahci_cmd_done(ad->hba, ad->port_no);
+ 
+@@ -1548,7 +1550,8 @@ static void ahci_cmd_done(const IDEDMA *dma)
+      */
+     ahci_write_fis_d2h(ad, true);
+ 
+-    if (ad->port_regs.cmd_issue && !ad->check_bh) {
++    if (!(ide_state->status & ERR_STAT) &&
++        ad->port_regs.cmd_issue && !ad->check_bh) {
+         ad->check_bh = qemu_bh_new_guarded(ahci_check_cmd_bh, ad,
+                                            &ad->mem_reentrancy_guard);
+         qemu_bh_schedule(ad->check_bh);
+diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
+index f53f12aa99..a2c94c6e06 100644
+--- a/tests/qtest/libqos/ahci.c
++++ b/tests/qtest/libqos/ahci.c
+@@ -404,57 +404,110 @@ void ahci_port_clear(AHCIQState *ahci, uint8_t port)
+ /**
+  * Check a port for errors.
+  */
+-void ahci_port_check_error(AHCIQState *ahci, uint8_t port,
+-                           uint32_t imask, uint8_t emask)
++void ahci_port_check_error(AHCIQState *ahci, AHCICommand *cmd)
+ {
++    uint8_t port = cmd->port;
+     uint32_t reg;
+ 
+-    /* The upper 9 bits of the IS register all indicate errors. */
+-    reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
+-    reg &= ~imask;
+-    reg >>= 23;
+-    g_assert_cmphex(reg, ==, 0);
++    /* If expecting TF error, ensure that TFES is set. */
++    if (cmd->errors) {
++        reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
++        ASSERT_BIT_SET(reg, AHCI_PX_IS_TFES);
++    } else {
++        /* The upper 9 bits of the IS register all indicate errors. */
++        reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
++        reg &= ~cmd->interrupts;
++        reg >>= 23;
++        g_assert_cmphex(reg, ==, 0);
++    }
+ 
+-    /* The Sata Error Register should be empty. */
++    /* The Sata Error Register should be empty, even when expecting TF error. */
+     reg = ahci_px_rreg(ahci, port, AHCI_PX_SERR);
+     g_assert_cmphex(reg, ==, 0);
+ 
++    /* If expecting TF error, and TFES was set, perform error recovery
++     * (see AHCI 1.3 section 6.2.2.1) such that we can send new commands. */
++    if (cmd->errors) {
++        /* This will clear PxCI. */
++        ahci_px_clr(ahci, port, AHCI_PX_CMD, AHCI_PX_CMD_ST);
 +
-         /* Block any Read-only fields from being set;
-          * including LIST_ON and FIS_ON.
-          * The spec requires to set ICC bits to zero after the ICC change
++        /* The port has 500ms to disengage. */
++        usleep(500000);
++        reg = ahci_px_rreg(ahci, port, AHCI_PX_CMD);
++        ASSERT_BIT_CLEAR(reg, AHCI_PX_CMD_CR);
++
++        /* Clear PxIS. */
++        reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
++        ahci_px_wreg(ahci, port, AHCI_PX_IS, reg);
++
++        /* Check if we need to perform a COMRESET.
++         * Not implemented right now, as there is no reason why our QEMU model
++         * should need a COMRESET when expecting TF error. */
++        reg = ahci_px_rreg(ahci, port, AHCI_PX_TFD);
++        ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_STS_BSY | AHCI_PX_TFD_STS_DRQ);
++
++        /* Enable issuing new commands. */
++        ahci_px_set(ahci, port, AHCI_PX_CMD, AHCI_PX_CMD_ST);
++    }
++
+     /* The TFD also has two error sections. */
+     reg = ahci_px_rreg(ahci, port, AHCI_PX_TFD);
+-    if (!emask) {
++    if (!cmd->errors) {
+         ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_STS_ERR);
+     } else {
+         ASSERT_BIT_SET(reg, AHCI_PX_TFD_STS_ERR);
+     }
+-    ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_ERR & (~emask << 8));
+-    ASSERT_BIT_SET(reg, AHCI_PX_TFD_ERR & (emask << 8));
++    ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_ERR & (~cmd->errors << 8));
++    ASSERT_BIT_SET(reg, AHCI_PX_TFD_ERR & (cmd->errors << 8));
+ }
+ 
+-void ahci_port_check_interrupts(AHCIQState *ahci, uint8_t port,
+-                                uint32_t intr_mask)
++void ahci_port_check_interrupts(AHCIQState *ahci, AHCICommand *cmd)
+ {
++    uint8_t port = cmd->port;
+     uint32_t reg;
+ 
++    /* If we expect errors, error handling in ahci_port_check_error() will
++     * already have cleared PxIS, so in that case this function cannot verify
++     * and clear expected interrupts. */
++    if (cmd->errors) {
++        return;
++    }
++
+     /* Check for expected interrupts */
+     reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
+-    ASSERT_BIT_SET(reg, intr_mask);
++    ASSERT_BIT_SET(reg, cmd->interrupts);
+ 
+     /* Clear expected interrupts and assert all interrupts now cleared. */
+-    ahci_px_wreg(ahci, port, AHCI_PX_IS, intr_mask);
++    ahci_px_wreg(ahci, port, AHCI_PX_IS, cmd->interrupts);
+     g_assert_cmphex(ahci_px_rreg(ahci, port, AHCI_PX_IS), ==, 0);
+ }
+ 
+-void ahci_port_check_nonbusy(AHCIQState *ahci, uint8_t port, uint8_t slot)
++void ahci_port_check_nonbusy(AHCIQState *ahci, AHCICommand *cmd)
+ {
++    uint8_t slot = cmd->slot;
++    uint8_t port = cmd->port;
+     uint32_t reg;
+ 
+-    /* Assert that the command slot is no longer busy (NCQ) */
++    /* For NCQ command with error PxSACT bit should still be set.
++     * For NCQ command without error, PxSACT bit should be cleared.
++     * For non-NCQ command, PxSACT bit should always be cleared. */
+     reg = ahci_px_rreg(ahci, port, AHCI_PX_SACT);
+-    ASSERT_BIT_CLEAR(reg, (1 << slot));
++    if (cmd->props->ncq && cmd->errors) {
++        ASSERT_BIT_SET(reg, (1 << slot));
++    } else {
++        ASSERT_BIT_CLEAR(reg, (1 << slot));
++    }
+ 
+-    /* Non-NCQ */
++    /* For non-NCQ command with error, PxCI bit should still be set.
++     * For non-NCQ command without error, PxCI bit should be cleared.
++     * For NCQ command without error, PxCI bit should be cleared.
++     * For NCQ command with error, PxCI bit may or may not be cleared. */
+     reg = ahci_px_rreg(ahci, port, AHCI_PX_CI);
+-    ASSERT_BIT_CLEAR(reg, (1 << slot));
++    if (!cmd->props->ncq && cmd->errors) {
++        ASSERT_BIT_SET(reg, (1 << slot));
++    } else if (!cmd->errors) {
++        ASSERT_BIT_CLEAR(reg, (1 << slot));
++    }
+ 
+     /* And assert that we are generally not busy. */
+     reg = ahci_px_rreg(ahci, port, AHCI_PX_TFD);
+@@ -1207,9 +1260,10 @@ void ahci_command_wait(AHCIQState *ahci, AHCICommand *cmd)
+ 
+ #define RSET(REG, MASK) (BITSET(ahci_px_rreg(ahci, cmd->port, (REG)), (MASK)))
+ 
+-    while (RSET(AHCI_PX_TFD, AHCI_PX_TFD_STS_BSY) ||
+-           RSET(AHCI_PX_CI, 1 << cmd->slot) ||
+-           (cmd->props->ncq && RSET(AHCI_PX_SACT, 1 << cmd->slot))) {
++    while (!RSET(AHCI_PX_TFD, AHCI_PX_TFD_STS_ERR) &&
++           (RSET(AHCI_PX_TFD, AHCI_PX_TFD_STS_BSY) ||
++            RSET(AHCI_PX_CI, 1 << cmd->slot) ||
++            (cmd->props->ncq && RSET(AHCI_PX_SACT, 1 << cmd->slot)))) {
+         usleep(50);
+     }
+ 
+@@ -1226,9 +1280,9 @@ void ahci_command_verify(AHCIQState *ahci, AHCICommand *cmd)
+     uint8_t slot = cmd->slot;
+     uint8_t port = cmd->port;
+ 
+-    ahci_port_check_error(ahci, port, cmd->interrupts, cmd->errors);
+-    ahci_port_check_interrupts(ahci, port, cmd->interrupts);
+-    ahci_port_check_nonbusy(ahci, port, slot);
++    ahci_port_check_nonbusy(ahci, cmd);
++    ahci_port_check_error(ahci, cmd);
++    ahci_port_check_interrupts(ahci, cmd);
+     ahci_port_check_cmd_sanity(ahci, cmd);
+     if (cmd->interrupts & AHCI_PX_IS_DHRS) {
+         ahci_port_check_d2h_sanity(ahci, port, slot);
+diff --git a/tests/qtest/libqos/ahci.h b/tests/qtest/libqos/ahci.h
+index 88835b6228..48017864bf 100644
+--- a/tests/qtest/libqos/ahci.h
++++ b/tests/qtest/libqos/ahci.h
+@@ -590,11 +590,9 @@ void ahci_set_command_header(AHCIQState *ahci, uint8_t port,
+ void ahci_destroy_command(AHCIQState *ahci, uint8_t port, uint8_t slot);
+ 
+ /* AHCI sanity check routines */
+-void ahci_port_check_error(AHCIQState *ahci, uint8_t port,
+-                           uint32_t imask, uint8_t emask);
+-void ahci_port_check_interrupts(AHCIQState *ahci, uint8_t port,
+-                                uint32_t intr_mask);
+-void ahci_port_check_nonbusy(AHCIQState *ahci, uint8_t port, uint8_t slot);
++void ahci_port_check_error(AHCIQState *ahci, AHCICommand *cmd);
++void ahci_port_check_interrupts(AHCIQState *ahci, AHCICommand *cmd);
++void ahci_port_check_nonbusy(AHCIQState *ahci, AHCICommand *cmd);
+ void ahci_port_check_d2h_sanity(AHCIQState *ahci, uint8_t port, uint8_t slot);
+ void ahci_port_check_pio_sanity(AHCIQState *ahci, AHCICommand *cmd);
+ void ahci_port_check_cmd_sanity(AHCIQState *ahci, AHCICommand *cmd);
 -- 
 2.40.1
 
