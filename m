@@ -2,67 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A7E729FA5
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F413D72A032
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 18:30:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7eea-00017n-5Z; Fri, 09 Jun 2023 12:07:56 -0400
+	id 1q7ezM-0004sH-NW; Fri, 09 Jun 2023 12:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7eeX-00017Y-Js
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:07:53 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1q7ezJ-0004s3-Ju
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:29:21 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q7eeS-00084P-Od
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:07:53 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-51480d3e161so2957387a12.3
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 09:07:47 -0700 (PDT)
+ id 1q7ezI-0003QY-1i
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 12:29:21 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4f62d93f38aso2555333e87.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 09:29:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686326866; x=1688918866;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=d2q+iD2oatzZJNMSb35yWPhbrydsyhb38QQ9VqspPFA=;
- b=qooEwqB8Ast64LQISUgZLjZJMudJwiSZhxlzaKq2Eb+zgfp+oqQWAJjs6k99mYd86W
- 6WMxCADwPFbgA4/xyxpmd4vXvEL6IBzAFDbH9GA0EdRSJwHQ5NUAC34X5jl0G2/gC8Wi
- mwuSrc2QjIYPmxohB3+iOa5sgcgPNzPZx8eHvWqtUI0OQH2T/pvpOAxa/b5NmjeSi80W
- i1DLIIwqY/Gb0kRdT8M7iyU8syHYfbvfyBcwwBpCsY5KJ+BbmwR0NTBOywTnM8tKWFvZ
- L5fFzwD6YoIcxq+GK9gZq/kLEpjfxf6s8TkQToo+PND2HlObFTgyxzOUQjMX5TdH3CJV
- IOZA==
+ d=linaro.org; s=google; t=1686328157; x=1688920157;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QdtNiuSZhg+5KnK2ViBDg+P4Ibn+zLdzYsmVmaZa+6Y=;
+ b=YhdvN4qWCPnWP9x7hcQFF7yhRP6AlivNB2lnsGAa8PhKtuOawsmpI/PvyjxB07jHcJ
+ UNby2MN6K456+7BqCWBy/ey23eEFT5pio+OuEchOA8zplF58f7faB8yNMXmIk0pgmzBb
+ rVJwAyBC4nWQJUI0iUlUjAClebV31QmCGYsv1xWMD/shvG0hal4r5/Ed+EKGuJx8DkL2
+ BMKEwacG7+EkG5JZYVYsxSna5P1ipBp+5Qu1If18tWmRvmCokNNC1H0LjIWsc2LWEFK+
+ KZ2d5tWIY90ufCwW2BaZYnmvL+mC1y+F0PByt5vvrQENWhvyDWcigHySbznQfsfPsIAc
+ 4p4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686326866; x=1688918866;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1686328157; x=1688920157;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=d2q+iD2oatzZJNMSb35yWPhbrydsyhb38QQ9VqspPFA=;
- b=R2wCNXxRVJED2Dea9u9bY8XpRfPKOJxs9TTZhCHhS6XqJ8Ur87P/kxa0nnNivdA1ED
- M61xsI+eleyApNlziJ1teppNBd+OiDxRkVEYA5DoGcB1kB5Yf/BlhrwMyBsVEsX06xDf
- EaeNbD3j4gssy8RXG1fvc+Dr1Rk84wdjpaY92UlbwC8Pp0dvDITMeURl/QapU81Glfhn
- C2qrnllj9rxFw6m6GQx2wlIdsEWpXPcotrVoGuEM/2RcHG8WX0j+K1EyUtjtNb1OMrSk
- Pr+2HYBFF9unmDPZLUHQuxU+jZxiePxDGWWGWa0wPnqWdccxqBPju2OO8AmuLGw3Jg/R
- 6Q5Q==
-X-Gm-Message-State: AC+VfDyVX0UrKvF0y5OkCl+uL84FSg2fjcmMDnS4BOzbmW+uALMbGAsB
- WaVeEkA56KL9Rk7qPqq1/QCR8TIGDAyqjkgaRkYPMedrLaJ4HF12
-X-Google-Smtp-Source: ACHHUZ56cXi7MRNZIYS6lHZRuI+Doc48Tg/p0h8DMcyJ9PQQ/pbxGyrKDKoE69RkM720wWIzY5UFz9wXU1LBjXKu+QA=
-X-Received: by 2002:a05:6402:31e6:b0:50b:c77e:b071 with SMTP id
- dy6-20020a05640231e600b0050bc77eb071mr1413754edb.18.1686326866423; Fri, 09
- Jun 2023 09:07:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAFEAcA8CsmTHXDf80fP_wAXG8_5J-AUeJqMRH5Nr23cF+ST8TA@mail.gmail.com>
- <8343e06a-12bc-b9b1-75ae-79d69fb2ebac@linaro.org>
-In-Reply-To: <8343e06a-12bc-b9b1-75ae-79d69fb2ebac@linaro.org>
+ bh=QdtNiuSZhg+5KnK2ViBDg+P4Ibn+zLdzYsmVmaZa+6Y=;
+ b=IguYP26rXdnoithxEMhc/Ka8jhpfu949Ha839wNkw9xkg+Zedqc67jprTG5mbCOluI
+ jLvC+hqGLsF4Zs9KklpOs0u9VLiCFLgrW384KfAVNl7nN2KkpdzeBHuXBm4P8WDeVTiY
+ NFNQ3TyFPnR2FKGXjFB5vs4gpWy3ZyaEMXcgeZNOWiUnPBBt2h1POMIbhCyjN3ed3HgA
+ 9ic6J1dsBHcNK/yHDScv7rJsisBMcZdwSORQLeGQ7j96ttwqb391gZ4iC7RB4HuoZ41s
+ 3siSu6hkwKpxPEYk/mczX+VyzxXE7c0/Q7w58NrPYpAVAfbEMxBn+h7gq3h3vDl5McbV
+ jsig==
+X-Gm-Message-State: AC+VfDxoJbr/5kgJ2dXu4gzZl3ll27pA5xmkO91zsLFOt53HF7FzJVID
+ gQf/zvkDGP4WX5zAWFnabmSXBzvpIntEgBIYWRs=
+X-Google-Smtp-Source: ACHHUZ4Gx5ZGK71UGPuFxZ9l+Zq/o7niLB8oA5ENMfr2ynkcszSQVbqM0NuojrJ0HW9g0PHq1GzBmw==
+X-Received: by 2002:a19:4303:0:b0:4f2:62aa:986a with SMTP id
+ q3-20020a194303000000b004f262aa986amr1287244lfa.21.1686328157178; 
+ Fri, 09 Jun 2023 09:29:17 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ u3-20020a5d4683000000b0030aefd11892sm4939300wrq.41.2023.06.09.09.29.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 Jun 2023 09:29:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 9 Jun 2023 17:07:35 +0100
-Message-ID: <CAFEAcA98jdxyNQUZ+T3=9_RT8jCoobB_QLJzjS=BQ+9f1JsRKw@mail.gmail.com>
-Subject: Re: arm: couple of finalize_memop related oddities
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v2] linux-user: Return EINVAL for getgroups() with negative
+ gidsetsize
+Date: Fri,  9 Jun 2023 17:29:15 +0100
+Message-Id: <20230609162915.175810-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,39 +90,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 9 Jun 2023 at 17:03, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 6/9/23 03:47, Peter Maydell wrote:
-> > I noticed a couple of finalize_memop related oddities while I
-> > was rebasing my decodetree series:
-> >
-> > (1) in disas_ldst_reg_imm9(), we calculate a memop, but then
-> > when we call gen_mte_check1_mmuidx() we don't pass the memop
-> > as that function's memop argument, we just pass size. Everywhere
-> > else that calls gen_mte_check* functions passes memop. Intentional?
->
-> No, looks like a bug.
->
-> > (2) disas_ldst_reg_roffset() and disas_ldst_reg_unsigned_imm()
-> > use finalize_memop() for both vector and normal register
-> > loads/stores. Should they be using finalize_memop_asimd()
-> > for the vector versions?
-> >
-> > (3) disas_ldst_multiple_struct() and disas_ldst_single_struct()
-> > use finalize_memop() even though they always load/store
-> > vector registers. Should they be using finalize_memop_asimd() ?
->
-> Yes.
->
-> Everywhere that uses CreateAccDescASIMD in the pseudocode should use finalize_memop_asimd
-> for clarity.  (If size is never 128-bit then it will be same as just finalize_memop, so
-> some of those places were not actual bugs.  But definitely unclear.)
+Coverity doesn't like the way we might end up calling getgroups()
+with a NULL grouplist pointer. This is fine for the special case
+of gidsetsize == 0, but we will also do it if the guest passes
+us a negative gidsetsize. (CID 1512465)
 
-OK, thanks. The rebase of my decodetree patches for ld/st
-turned out hairy enough that I think I'll resend a v2 of
-that, so I'll add in some patches at the start that fix
-these finalize_memop bits before the conversion.
+Explicitly fail the negative gidsetsize with EINVAL, as the kernel
+does. This means we definitely only call the libc getgroups()
+with valid parameters. It also brings the getgroups() code in
+to line with the setgroups() code.
 
--- PMM
+Possibly Coverity may still complain about getgroups(0, NULL), but
+that would be a false positive.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+v2: also change TARGET_NR_getgroups32 code
+---
+ linux-user/syscall.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 83685f0aa59..bb29444ca7e 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -11676,7 +11676,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             g_autofree gid_t *grouplist = NULL;
+             int i;
+ 
+-            if (gidsetsize > NGROUPS_MAX) {
++            if (gidsetsize > NGROUPS_MAX || gidsetsize < 0) {
+                 return -TARGET_EINVAL;
+             }
+             if (gidsetsize > 0) {
+@@ -12012,7 +12012,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             g_autofree gid_t *grouplist = NULL;
+             int i;
+ 
+-            if (gidsetsize > NGROUPS_MAX) {
++            if (gidsetsize > NGROUPS_MAX || gidsetsize < 0) {
+                 return -TARGET_EINVAL;
+             }
+             if (gidsetsize > 0) {
+-- 
+2.34.1
+
 
