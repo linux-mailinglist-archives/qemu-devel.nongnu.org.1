@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9D9729753
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 12:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B87B729758
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 12:48:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7ZeQ-0000jQ-Tt; Fri, 09 Jun 2023 06:47:26 -0400
+	id 1q7ZeV-0000kM-HJ; Fri, 09 Jun 2023 06:47:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZeP-0000j6-9S
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:25 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZeU-0000k5-C0
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:30 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZeN-0001AJ-4V
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:25 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-30e53cacc10so1110096f8f.0
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 03:47:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q7ZeS-0001B8-Uc
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 06:47:30 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f735259fa0so15721495e9.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 03:47:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686307641; x=1688899641;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HJ5HI0lL3qjrViOVTfhSFThyUieC3Zv2QHm9pLeOb3Y=;
- b=CjcWwxj7J3aWhPFCLcAWd8QwV2klkvtWSZ8RsuH/yZovIYJFZbwJLOk53n8o4Cfdq0
- HArgQBPMXM3YAb8fLAjxajKD7BBpu31FZtHxjD6iq+LjNpvOJhYMZIv9UOsm3UwA1Znf
- oSpMpU3jUIIbAdKKcOB1BHINd9bxEa9ctjqw5kMTbblMthu6vsnx33btjl8ikevyv2ca
- QcwA+r8JG2nOGoTkfqjK1AzfYRp0jvfMReeIIUGdsgO5217VTwyj/zlnsrXCJj0pp9P0
- Uyzn5MaDFzDSl2bO1yxf/8e8Bl725KORS9bvGCGW+bKMyCTOOKwmwBWoG6G+l+1iAqR9
- fZMQ==
+ d=linaro.org; s=google; t=1686307647; x=1688899647;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t1gQ05YVuLQqB4KG1j7pOjx2rNDQj4Y5tpKZYfWuMtY=;
+ b=gM7Xu01QhbWT6jQTJNAKFdl70jHpQPVBkiQ2LEiyMLl+DUQXzBHHmwscBtr0yxty+U
+ 99zeX7aafIn0MrAtmoVRpnmViRXQMjC2ejLewkkKlABwZe+ev9uf4yVFP5QYETvMRJpY
+ 9ijxH5yAu9lWpWp1whZCGu/sy3dZbOi+sDtXusr2bGWXqgilFyVqGgE9orcPoLbeh5gc
+ ijFFxSbQ99VIFCIQ8z/z3hi1qduR/00cxtJJoEosTWM7I/2tsh5aqQwGPDU/GYl6n9Fr
+ kZ6SWg1bNOI1q9heclwrwRcAcdE9qPdYLx8BLzJHNRqip1uLs8y1PDVBWVnrIn6UCxRj
+ pSoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686307641; x=1688899641;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HJ5HI0lL3qjrViOVTfhSFThyUieC3Zv2QHm9pLeOb3Y=;
- b=Pmyur8i5PsjbAkZgYIGjzylBl2iNt8+GB47if17YvF7kcvf5WsWrlw2ds/kjzrhkH+
- 2l1dAPOBpyy477UFOYfvpOi+BQEsIJPAHBWaA1UV5t4h1l1DlsZ+1FLk+9HfaCUBijTT
- lvuvfnOBrYrrXOGCHrwtXBIWkglfRi001DnhK8CHD7/qJluCe2Q2TbeOUnmMI9ljZlm+
- zPrMsmHIw7NCsOvksEVqEROUUH1K+k8gq9voYvb8oM25sKK8fTvQ7fqpi2PVQIVSs3OG
- T5kPLv6AUsFxARIz52N0aLKWkeE344NyoQEwrj/zi+ECJx694sZ20YFKN0OoxNSkoQas
- YPDA==
-X-Gm-Message-State: AC+VfDxG11VLpm+IZ/08RlZGGpHgfue7/ws7ATDjxobJ/Ga2Hzt6opqO
- iaCUj/khueeRK8v4KMC9EfL9RIIgnfsVmAMbsE1HEw==
-X-Google-Smtp-Source: ACHHUZ6tx/QjkUl2ar5mPangUWyyDMKCgAKUsJHt/RFW6GCk/FfPfcpuqr0AcEAvoZBfD2tQAnoZ1g==
-X-Received: by 2002:a5d:4bd0:0:b0:30a:eeee:2fba with SMTP id
- l16-20020a5d4bd0000000b0030aeeee2fbamr558252wrt.34.1686307641228; 
- Fri, 09 Jun 2023 03:47:21 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686307647; x=1688899647;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=t1gQ05YVuLQqB4KG1j7pOjx2rNDQj4Y5tpKZYfWuMtY=;
+ b=BqHGC+rV1xFv0sxE4PnB5g550g8hPmxZvusjGh4u9eY06SomBB1E86MgcOwetbXWI3
+ tIo7g7aVdbsWtl6Q3b0H7GOqdqTRqXVNym202cCqm9mm/ULerM1KYvrTPugRbAtx2pTn
+ k2YxQIIruJ51VcaEsD3tVduDiJxsx/mys7pWUiVPQXy7IZV2vWuZjRBDvHM7IQPAU9uY
+ YydovsY57ALovY8As7cuxwVXCKLkukhHCvNsUKykYPJ388w54H+Ne0y9nITf7Bk0A2Kl
+ 2NEr9ur8TpZ1+VoXLes2J9f/ji4ln8Yc7bcKSvqDqOohNQGGIeuBWlu3ZMPnEUja052a
+ EZbw==
+X-Gm-Message-State: AC+VfDyPe64wIXb+Bpq9Idt/8qFOP/fk5cl9l50CqrFloksvvjZEpGhX
+ OVzogZINV1+ukNiDUH+BC7Sh5TeHf5oFmYcp9fIJmw==
+X-Google-Smtp-Source: ACHHUZ4PBUpV63hQV36TtswotDP0ZmJrzSjtcX3DzOW2I6G5s+P3ot9hYKGEFlV4diSGc68GqFORrg==
+X-Received: by 2002:a05:600c:2204:b0:3f7:35a9:dfdf with SMTP id
+ z4-20020a05600c220400b003f735a9dfdfmr836061wml.24.1686307647181; 
+ Fri, 09 Jun 2023 03:47:27 -0700 (PDT)
 Received: from localhost.localdomain (23.171.88.92.rev.sfr.net. [92.88.171.23])
  by smtp.gmail.com with ESMTPSA id
- k10-20020adff5ca000000b003077a19cf75sm4108102wrp.60.2023.06.09.03.47.19
+ 4-20020a05600c024400b003f60101074dsm2274132wmj.33.2023.06.09.03.47.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 09 Jun 2023 03:47:20 -0700 (PDT)
+ Fri, 09 Jun 2023 03:47:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/22] target/arm/tcg: Remove inclusions of
- 'exec/helper-[proto/gen].h'
-Date: Fri,  9 Jun 2023 12:46:55 +0200
-Message-Id: <20230609104717.95555-1-philmd@linaro.org>
+Subject: [PATCH 01/22] plugins: Remove unused 'exec/helper-proto.h' header
+Date: Fri,  9 Jun 2023 12:46:56 +0200
+Message-Id: <20230609104717.95555-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230609104717.95555-1-philmd@linaro.org>
+References: <20230609104717.95555-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,103 +92,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ plugins/core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-This series tries to do what Richard suggested in [*]:
-
-  Targets that have a tcg/ subdir should have helper.h.inc
-  moved into there.  At the end, include/exec/helper-gen.h
-  and include/exec/helper-proto.h become unused and go away.
-
-but only for the ARM target, to first see if this is heading
-in the correct direction.
-
-Instead of having TCG generated helpers included by all
-translate/helper units, they are reduced to the few places
-really needing them. I expect the build step to be slighly
-improved, since the compiler doesn't have to compile and
-track unused helpers definitions.
-
-[*] https://lore.kernel.org/qemu-devel/cad000d7-f408-9337-9328-ccb262c5fcc7@linaro.org/
-
-Philippe Mathieu-Daudé (22):
-  plugins: Remove unused 'exec/helper-proto.h' header
-  accel/tcg/cpu-exec: Use generic 'helper-proto-common.h' header
-  target/arm/tcg: Remove CONFIG_TCG #ifdef'ry check
-  target/arm/tcg: Rename helper template headers as '.h.inc'
-  target/arm/tcg: Extract iwMMXt helpers from the generic 'helper.h'
-  target/arm/tcg: Fix iwmmxt-related code style
-  target/arm/tcg: Expose some iwmmxt methods in 'translate.h'
-  target/arm/tcg: Extract iwmmxt code to translate-iwmmxt.c
-  target/arm/tcg: Reduce 'helper-iwmmxt.h.inc' inclusion
-  target/arm/tcg: Extract VFP definitions to 'helper-vfp.h.inc'
-  target/arm/tcg: Reduce 'helper-vfp.h.inc' inclusion
-  target/arm/tcg: Move neon_tbl() from op_helper.c to neon_helper.c
-  target/arm/tcg: Extract NEON definitions to 'helper-neon.h.inc'
-  target/arm/tcg: Reduce 'helper-neon.h.inc' inclusion
-  target/arm/tcg: Extract SVE2 definitions to 'helper-sve.h.inc'
-  target/arm/tcg: Reduce 'helper-sve.h.inc' inclusion
-  target/arm/tcg: Reduce 'helper-mve.h.inc' inclusion
-  target/arm/tcg: Define SME set_svcr() helper in common 'helper.h'
-  target/arm/tcg: Reduce 'helper-sme.h.inc' inclusion
-  target/arm/tcg: Reduce 'helper-a64.h.inc' inclusion
-  target/arm/tcg: Remove inclusions of 'exec/helper-[proto/gen].h'
-  tests/tcg/aarch64: Rename bti-crt.inc.c -> bti-crt.c.inc
-
- target/arm/tcg/translate.h                    |   11 +-
- .../tcg/{helper-a64.h => helper-a64.h.inc}    |    0
- target/arm/tcg/helper-iwmmxt.h.inc            |  114 ++
- .../tcg/{helper-mve.h => helper-mve.h.inc}    |    0
- target/arm/tcg/helper-neon.h.inc              |  205 +++
- .../tcg/{helper-sme.h => helper-sme.h.inc}    |    2 -
- .../tcg/{helper-sve.h => helper-sve.h.inc}    |   46 +
- target/arm/tcg/helper-vfp.h.inc               |  136 ++
- target/arm/{helper.h => tcg/helper.h.inc}     |  488 +-----
- accel/tcg/cpu-exec.c                          |    2 +-
- plugins/core.c                                |    1 -
- target/arm/debug_helper.c                     |    7 +-
- target/arm/helper.c                           |    7 +-
- target/arm/tcg/cpu32.c                        |    4 +-
- target/arm/tcg/crypto_helper.c                |    6 +-
- target/arm/tcg/helper-a64.c                   |   11 +-
- target/arm/tcg/hflags.c                       |    6 +-
- target/arm/tcg/iwmmxt_helper.c                |    6 +-
- target/arm/tcg/m_helper.c                     |   12 +-
- target/arm/tcg/mte_helper.c                   |    5 +-
- target/arm/tcg/mve_helper.c                   |   16 +-
- target/arm/tcg/neon_helper.c                  |   28 +-
- target/arm/tcg/op_helper.c                    |   28 +-
- target/arm/tcg/pauth_helper.c                 |    5 +-
- target/arm/tcg/psci.c                         |    6 +-
- target/arm/tcg/sme_helper.c                   |   11 +-
- target/arm/tcg/sve_helper.c                   |   20 +-
- target/arm/tcg/tlb_helper.c                   |    5 +-
- target/arm/tcg/translate-a64.c                |   16 +
- target/arm/tcg/translate-iwmmxt.c             | 1340 +++++++++++++++++
- target/arm/tcg/translate-mve.c                |    6 +
- target/arm/tcg/translate-neon.c               |   11 +
- target/arm/tcg/translate-sme.c                |   16 +
- target/arm/tcg/translate-sve.c                |    5 +
- target/arm/tcg/translate-vfp.c                |    6 +
- target/arm/tcg/translate.c                    | 1274 +---------------
- target/arm/tcg/vec_helper.c                   |   26 +-
- target/arm/vfp_helper.c                       |   11 +-
- tests/tcg/aarch64/bti-1.c                     |    2 +-
- tests/tcg/aarch64/bti-3.c                     |    2 +-
- .../aarch64/{bti-crt.inc.c => bti-crt.c.inc}  |    0
- target/arm/tcg/meson.build                    |    1 +
- 42 files changed, 2100 insertions(+), 1804 deletions(-)
- rename target/arm/tcg/{helper-a64.h => helper-a64.h.inc} (100%)
- create mode 100644 target/arm/tcg/helper-iwmmxt.h.inc
- rename target/arm/tcg/{helper-mve.h => helper-mve.h.inc} (100%)
- create mode 100644 target/arm/tcg/helper-neon.h.inc
- rename target/arm/tcg/{helper-sme.h => helper-sme.h.inc} (99%)
- rename target/arm/tcg/{helper-sve.h => helper-sve.h.inc} (98%)
- create mode 100644 target/arm/tcg/helper-vfp.h.inc
- rename target/arm/{helper.h => tcg/helper.h.inc} (56%)
- create mode 100644 target/arm/tcg/translate-iwmmxt.c
- rename tests/tcg/aarch64/{bti-crt.inc.c => bti-crt.c.inc} (100%)
-
+diff --git a/plugins/core.c b/plugins/core.c
+index 9912f2cfdb..3c4e26c7ed 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -25,7 +25,6 @@
+ 
+ #include "exec/exec-all.h"
+ #include "exec/tb-flush.h"
+-#include "exec/helper-proto.h"
+ #include "tcg/tcg.h"
+ #include "tcg/tcg-op.h"
+ #include "plugin.h"
 -- 
 2.38.1
 
