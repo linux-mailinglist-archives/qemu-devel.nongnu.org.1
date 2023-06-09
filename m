@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC1E7360F9
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 03:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324D97360FA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 03:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBPn1-0004az-Dp; Mon, 19 Jun 2023 21:04:11 -0400
+	id 1qBPn2-0004bV-DS; Mon, 19 Jun 2023 21:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBPmy-0004aa-Vs
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 21:04:08 -0400
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBPmz-0004ab-2q
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 21:04:09 -0400
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBPmw-0004dA-U0
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBPmw-0004dB-WD
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 21:04:08 -0400
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 70BD011EEC6;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 95A7011EEDD;
  Tue, 20 Jun 2023 01:04:05 +0000 (UTC)
 From: ~jhogberg <jhogberg@git.sr.ht>
-Date: Thu, 08 Jun 2023 19:49:15 +0200
-Subject: [PATCH qemu v3 1/2] target/arm: Handle IC IVAU to improve
- compatibility with JITs
+Date: Fri, 09 Jun 2023 14:04:14 +0200
+Subject: [PATCH qemu v3 2/2] tests/tcg/aarch64: Add testcases for IC IVAU and
+ dual-mapped code
 MIME-Version: 1.0
-Message-ID: <168722304495.6281.8113287217736957231-1@git.sr.ht>
+Message-ID: <168722304495.6281.8113287217736957231-2@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <168722304495.6281.8113287217736957231-0@git.sr.ht>
 To: qemu-devel@nongnu.org
@@ -58,113 +58,214 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John H=C3=B6gberg <john.hogberg@ericsson.com>
 
-Unlike architectures with precise self-modifying code semantics
-(e.g. x86) ARM processors do not maintain coherency for instruction
-execution and memory, and require the explicit use of cache
-management instructions as well as an instruction barrier to make
-code updates visible (the latter on every core that is going to
-execute said code).
+https://gitlab.com/qemu-project/qemu/-/issues/1034
 
-While this is required to make JITs work on actual hardware, QEMU
-has gotten away with not handling this since it does not emulate
-caches, and unconditionally invalidates code whenever the softmmu
-or the user-mode page protection logic detects that code has been
-modified.
-
-Unfortunately the latter does not work in the face of dual-mapped
-code (a common W^X workaround), where one page is executable and
-the other is writable: user-mode has no way to connect one with the
-other as that is only known to the kernel and the emulated
-application.
-
-This commit works around the issue by invalidating code in
-IC IVAU instructions.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1034
-
-Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: John H=C3=B6gberg <john.hogberg@ericsson.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/helper.c | 47 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 3 deletions(-)
+ tests/tcg/aarch64/Makefile.target |   3 +-
+ tests/tcg/aarch64/icivau.c        | 169 ++++++++++++++++++++++++++++++
+ 2 files changed, 171 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/aarch64/icivau.c
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index d4bee43bd0..235e3cd0b6 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5228,6 +5228,36 @@ static void mdcr_el2_write(CPUARMState *env, const ARM=
-CPRegInfo *ri,
-     }
- }
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.t=
+arget
+index 3430fd3cd8..de6566d0d4 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -9,9 +9,10 @@ AARCH64_SRC=3D$(SRC_PATH)/tests/tcg/aarch64
+ VPATH 		+=3D $(AARCH64_SRC)
 =20
-+#ifdef CONFIG_USER_ONLY
+ # Base architecture tests
+-AARCH64_TESTS=3Dfcvt pcalign-a64
++AARCH64_TESTS=3Dfcvt pcalign-a64 icivau
+=20
+ fcvt: LDFLAGS+=3D-lm
++icivau: LDFLAGS+=3D-lrt
+=20
+ run-fcvt: fcvt
+ 	$(call run-test,$<,$(QEMU) $<, "$< on $(TARGET_NAME)")
+diff --git a/tests/tcg/aarch64/icivau.c b/tests/tcg/aarch64/icivau.c
+new file mode 100644
+index 0000000000..a01f45f172
+--- /dev/null
++++ b/tests/tcg/aarch64/icivau.c
+@@ -0,0 +1,169 @@
 +/*
-+ * `IC IVAU` is handled to improve compatibility with JITs that dual-map the=
-ir
-+ * code to get around W^X restrictions, where one region is writable and the
-+ * other is executable.
++ * Tests the IC IVAU-driven workaround for catching changes made to dual-map=
+ped
++ * code that would otherwise go unnoticed in user mode.
 + *
-+ * Since the executable region is never written to we cannot detect code
-+ * changes when running in user mode, and rely on the emulated JIT telling us
-+ * that the code has changed by executing this instruction.
++ * Copyright (c) 2023 Ericsson AB
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+static void ic_ivau_write(CPUARMState *env, const ARMCPRegInfo *ri,
-+                          uint64_t value)
++
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <string.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <fcntl.h>
++
++#define MAX_CODE_SIZE 128
++
++typedef int (SelfModTest)(uint32_t, uint32_t*);
++typedef int (BasicTest)(int);
++
++static void mark_code_modified(const uint32_t *exec_data, size_t length)
 +{
-+    uint64_t icache_line_mask, start_address, end_address;
-+    const ARMCPU *cpu;
++    size_t dcache_stride, icache_stride, i;
++    unsigned long ctr_el0;
 +
-+    cpu =3D env_archcpu(env);
-+
-+    icache_line_mask =3D (4 << extract32(cpu->ctr, 0, 4)) - 1;
-+    start_address =3D value & ~icache_line_mask;
-+    end_address =3D value | icache_line_mask;
-+
-+    mmap_lock();
-+
-+    tb_invalidate_phys_range(start_address, end_address);
-+
-+    mmap_unlock();
-+}
-+#endif
-+
- static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-     /*
-      * Minimal set of EL0-visible registers. This will need to be expanded
-@@ -5267,7 +5297,10 @@ static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-     { .name =3D "CURRENTEL", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 3, .opc1 =3D 0, .opc2 =3D 2, .crn =3D 4, .crm =3D 2,
-       .access =3D PL1_R, .type =3D ARM_CP_CURRENTEL },
--    /* Cache ops: all NOPs since we don't emulate caches */
 +    /*
-+     * Instruction cache ops. All of these except `IC IVAU` NOP because we
-+     * don't emulate caches.
++     * Step according to minimum cache sizes, as the cache maintenance
++     * instructions operate on the cache line of the given address.
++     *
++     * We assume that exec_data is properly aligned.
 +     */
-     { .name =3D "IC_IALLUIS", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 1, .opc1 =3D 0, .crn =3D 7, .crm =3D 1, .opc2 =3D 0,
-       .access =3D PL1_W, .type =3D ARM_CP_NOP,
-@@ -5280,9 +5313,17 @@ static const ARMCPRegInfo v8_cp_reginfo[] =3D {
-       .accessfn =3D access_tocu },
-     { .name =3D "IC_IVAU", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 1, .opc1 =3D 3, .crn =3D 7, .crm =3D 5, .opc2 =3D 1,
--      .access =3D PL0_W, .type =3D ARM_CP_NOP,
-+      .access =3D PL0_W,
-       .fgt =3D FGT_ICIVAU,
--      .accessfn =3D access_tocu },
-+      .accessfn =3D access_tocu,
-+#ifdef CONFIG_USER_ONLY
-+      .type =3D ARM_CP_NO_RAW,
-+      .writefn =3D ic_ivau_write
-+#else
-+      .type =3D ARM_CP_NOP
-+#endif
-+    },
-+    /* Cache ops: all NOPs since we don't emulate caches */
-     { .name =3D "DC_IVAC", .state =3D ARM_CP_STATE_AA64,
-       .opc0 =3D 1, .opc1 =3D 0, .crn =3D 7, .crm =3D 6, .opc2 =3D 1,
-       .access =3D PL1_W, .accessfn =3D aa64_cacheop_poc_access,
++    asm ("mrs %0, ctr_el0\n" : "=3Dr"(ctr_el0));
++    dcache_stride =3D (4 << ((ctr_el0 >> 16) & 0xF));
++    icache_stride =3D (4 << (ctr_el0 & 0xF));
++
++    /*
++     * For completeness we might be tempted to assert that we should fail wh=
+en
++     * the whole code update sequence is omitted, but that would make the te=
+st
++     * flaky as it can succeed by coincidence on actual hardware.
++     */
++    for (i =3D 0; i < length; i +=3D dcache_stride) {
++        const char *dc_addr =3D &((const char *)exec_data)[i];
++        asm volatile ("dc cvau, %x[dc_addr]\n"
++                      : /* no outputs */
++                      : [dc_addr] "r"(dc_addr)
++                      : "memory");
++    }
++
++    asm volatile ("dmb ish\n");
++
++    for (i =3D 0; i < length; i +=3D icache_stride) {
++        const char *ic_addr =3D &((const char *)exec_data)[i];
++        asm volatile ("ic ivau, %x[ic_addr]\n"
++                      : /* no outputs */
++                      : [ic_addr] "r"(ic_addr)
++                      : "memory");
++    }
++
++    asm volatile ("dmb ish\n"
++                  "isb sy\n");
++}
++
++static int basic_test(uint32_t *rw_data, const uint32_t *exec_data)
++{
++    /*
++     * As user mode only misbehaved for dual-mapped code when previously
++     * translated code had been changed, we'll start off with this basic test
++     * function to ensure that there's already some translated code at
++     * exec_data before the next test. This should cause the next test to fa=
+il
++     * if `mark_code_modified` fails to invalidate the code.
++     *
++     * Note that the payload is in binary form instead of inline assembler
++     * because we cannot use __attribute__((naked)) on this platform and the
++     * workarounds are at least as ugly as this is.
++     */
++    static const uint32_t basic_payload[] =3D {
++        0xD65F03C0 /* 0x00: RET */
++    };
++
++    BasicTest *copied_ptr =3D (BasicTest *)exec_data;
++
++    memcpy(rw_data, basic_payload, sizeof(basic_payload));
++    mark_code_modified(exec_data, sizeof(basic_payload));
++
++    return copied_ptr(1234) =3D=3D 1234;
++}
++
++static int self_modification_test(uint32_t *rw_data, const uint32_t *exec_da=
+ta)
++{
++    /*
++     * This test is self-modifying in an attempt to cover an edge case where
++     * the IC IVAU instruction invalidates itself.
++     *
++     * Note that the IC IVAU instruction is 16 bytes into the function, in w=
+hat
++     * will be the same cache line as the modifed instruction on machines wi=
+th
++     * a cache line size >=3D 16 bytes.
++     */
++    static const uint32_t self_mod_payload[] =3D {
++        /* Overwrite the placeholder instruction with the new one. */
++        0xB9001C20, /* 0x00: STR w0, [x1, 0x1C] */
++
++        /* Get the executable address of the modified instruction. */
++        0x100000A8, /* 0x04: ADR x8, <0x1C> */
++
++        /* Mark the modified instruction as updated. */
++        0xD50B7B28, /* 0x08: DC CVAU x8 */
++        0xD5033BBF, /* 0x0C: DMB ISH */
++        0xD50B7528, /* 0x10: IC IVAU x8 */
++        0xD5033BBF, /* 0x14: DMB ISH */
++        0xD5033FDF, /* 0x18: ISB */
++
++        /* Placeholder instruction, overwritten above. */
++        0x52800000, /* 0x1C: MOV w0, 0 */
++
++        0xD65F03C0  /* 0x20: RET */
++    };
++
++    SelfModTest *copied_ptr =3D (SelfModTest *)exec_data;
++    int i;
++
++    memcpy(rw_data, self_mod_payload, sizeof(self_mod_payload));
++    mark_code_modified(exec_data, sizeof(self_mod_payload));
++
++    for (i =3D 1; i < 10; i++) {
++        /* Replace the placeholder instruction with `MOV w0, i` */
++        uint32_t new_instr =3D 0x52800000 | (i << 5);
++
++        if (copied_ptr(new_instr, rw_data) !=3D i) {
++            return 0;
++        }
++    }
++
++    return 1;
++}
++
++int main(int argc, char **argv)
++{
++    const char *shm_name =3D "qemu-test-tcg-aarch64-icivau";
++    int fd;
++
++    fd =3D shm_open(shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
++
++    if (fd < 0) {
++        return EXIT_FAILURE;
++    }
++
++    /* Unlink early to avoid leaving garbage in case the test crashes. */
++    shm_unlink(shm_name);
++
++    if (ftruncate(fd, MAX_CODE_SIZE) =3D=3D 0) {
++        const uint32_t *exec_data;
++        uint32_t *rw_data;
++
++        rw_data =3D mmap(0, MAX_CODE_SIZE, PROT_READ | PROT_WRITE,
++                       MAP_SHARED, fd, 0);
++        exec_data =3D mmap(0, MAX_CODE_SIZE, PROT_READ | PROT_EXEC,
++                         MAP_SHARED, fd, 0);
++
++        if (rw_data && exec_data) {
++            if (basic_test(rw_data, exec_data) &&
++                self_modification_test(rw_data, exec_data)) {
++                return EXIT_SUCCESS;
++            }
++        }
++    }
++
++    return EXIT_FAILURE;
++}
 --=20
 2.38.5
-
 
