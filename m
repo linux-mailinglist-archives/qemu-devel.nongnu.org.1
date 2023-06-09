@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850CC72A2A2
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 20:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B1472A29D
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 20:52:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7hD6-0000xE-CD; Fri, 09 Jun 2023 14:51:44 -0400
+	id 1q7hD8-0000xc-L6; Fri, 09 Jun 2023 14:51:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7hD0-0000w8-9Z; Fri, 09 Jun 2023 14:51:38 -0400
+ id 1q7hD1-0000wW-MS; Fri, 09 Jun 2023 14:51:39 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7hCy-0002ln-Ij; Fri, 09 Jun 2023 14:51:38 -0400
+ id 1q7hD0-0002pa-6a; Fri, 09 Jun 2023 14:51:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=4Kz8y0Af0iyiDaVRfnHiGCVR/DdurHENOOX2nebe9cQ=; b=BQ++Bhi+ok440NAeZnjchS5FJf
- GNoRy0499epSXw1N0dsNacD3KvuFxryFOrNiSRsFXEHAJD6jjj2TiOEtrPSSHwxPY4ApsIWSB7IIU
- CsABOXL5tygySDTcnf/y4AoFg4HCDpijihVxZFU+rCr6s4wCGLC9vjYJcVzF4QQL7rCmCYwAMp3PM
- 3buyWVikjOQKDMmphBcEnyKfAN6ijmnx0kRRJ69OuaTtsoi/Ai9CibnpaIr4rdsudpHvVl4nEVRVe
- GzPZHdUUHWG8jWEXoItvwPTFDuNFBd8Z8wPFbVED2Mgxl3YnN0pxw6/nxrtd396/dLqsr5FpvrgF3
- pT2wAW8PsQ/FNpkROvvjTDzBNEH1E7AlKnfHAtR/VCIMadl4LvA0ULgDSE8Xi3k9DAXz3ozYW2e9W
- liO65/1zI1tAQCz3zOXFVm4I0Nb8j7f+kxRfUQ6C0R9ZL8Rou8I//nBzqFO1nEAyMHUVRVzP2jvt2
- lCLYWuroE50buWzlSqcC6/KH2Hs8gSU5m73tInsqYqLOqDiOke9FpoB3adqXtrdICNaP9Qvf4b0Mr
- yWirx7PH11qyZOsGDLsk92tWQTZbo3oOSroCDP4xMyFdr8OmNlbkSNcN38Hhyxnzag+jEvSpuMct0
- PQDKQsBQX/5pho76WTtEWdJAvbB1dAfFUjz73N6a4=;
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=+zG1+zsLiApFxKVTbKvT2753to4bpAB1vEbcK9znN+g=; b=B+0HE1CDZ+DGeWLRZ4z+KAWMfa
+ onPUEe3Nn8pp5lhL3LNwLGYWUSy5qyKABfOsqt9eUIXbRts6MbcoOWPC0EgIUiYm4SrUQ5Ay0jCOB
+ V+sU4dfjm5ylpSfztxHnl5rYi3HyvUxRd5+h8y5cPrpg+baCoWd5odPYJuleDWlm+TqVvJNLBoHcy
+ WrsyJDx4qS0+dgYdNqEUPn5jrOQuvxiarPC8vbmWDxe0z2XpWLCq2U8xv47Z4Qkrb9YRxGTPpE/xL
+ wvY8DWjXzUBwMnqYKabfVla0E+AjhEh1RyOl5SIFlhqMbRZY/ur4dy90xOZRgSiM8jfmAw6XTC+qM
+ u1VcrICj8kvG3Bi7L7VnLLdemyJnB9y4lbZOJ9oK3W/R6mG1itNs5oW+I/2T0Scc+q46fVxJqSsU5
+ d4FCLncoTkz4N93EWQQ2UCllyjs7aW7JO85QGZY79yvjxV8kZ8AL5ygTbG9kwvOY5jWY9+A/Op0L4
+ e5knnH0BPAt89r/JrbnzOH2PlaHynstSp3tmC+9sWqWgqxMFySL1geOmknDgjwFSsVg9jNN6KhuR2
+ 3JVoqt5RO/kj7MWf8uoiDCK8Vm2JbN3jdRT2op7uSzv32+0e2wSZ4X0sw8IIs+zD0gKcQA7ClE6Xo
+ +/m6kMabjFJZzhwJIxOmnOn1w+mElvssvHGvxQONw=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q7hCm-0000p5-5w; Fri, 09 Jun 2023 19:51:28 +0100
+ id 1q7hCq-0000p5-4p; Fri, 09 Jun 2023 19:51:32 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: jsnow@redhat.com, shentey@gmail.com, qemu-devel@nongnu.org,
  qemu-block@nongnu.org
-Date: Fri,  9 Jun 2023 19:51:14 +0100
-Message-Id: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
+Date: Fri,  9 Jun 2023 19:51:15 +0100
+Message-Id: <20230609185119.691152-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
+References: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 0/5] cmd646: move device-specific BMDMA registers to separate
- memory region
+Subject: [PATCH 1/5] cmd646: checkpatch fixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -73,56 +74,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series follows on from a comment I made on Bernhard's PCI IDE tidy-up series [1]
-that it should be possible to further consolidate the BMDMA registers into the PCI
-IDE device with some minor rework to the CMD646 device.
-
-It does this by moving the CMD646 device-specific BMDMA registers to a separate
-memory region, and then aliasing the device-specific BMDMA registers from 
-the existing BMDMAState memory region. With this in place it should be fairly
-trivial to extend the consolidation implementation in [1].
-
-Before "info mtree" output:
-    0000000000008200-000000000000820f (prio 1, i/o): cmd646-bmdma
-      0000000000008200-0000000000008203 (prio 0, i/o): cmd646-bmdma-bus
-      0000000000008204-0000000000008207 (prio 0, i/o): cmd646-bmdma-ioport
-      0000000000008208-000000000000820b (prio 0, i/o): cmd646-bmdma-bus
-      000000000000820c-000000000000820f (prio 0, i/o): cmd646-bmdma-ioport
-
-After "info mtree" output:
-    0000000000008200-000000000000820f (prio 1, i/o): cmd646-bmdma
-      0000000000008200-0000000000008203 (prio 0, i/o): cmd646-bmdma-bus
-        0000000000008201-0000000000008201 (prio 0, i/o): alias cmd646-bmdma[1] @cmd646-bmdma 0000000000000001-0000000000000001
-        0000000000008203-0000000000008203 (prio 0, i/o): alias cmd646-bmdma[3] @cmd646-bmdma 0000000000000003-0000000000000003
-      0000000000008204-0000000000008207 (prio 0, i/o): cmd646-bmdma-ioport
-      0000000000008208-000000000000820b (prio 0, i/o): cmd646-bmdma-bus
-        0000000000008209-0000000000008209 (prio 0, i/o): alias cmd646-bmdma[1] @cmd646-bmdma 0000000000000001-0000000000000001
-        000000000000820b-000000000000820b (prio 0, i/o): alias cmd646-bmdma[3] @cmd646-bmdma 0000000000000003-0000000000000003
-      000000000000820c-000000000000820f (prio 0, i/o): cmd646-bmdma-ioport
-
-The series was tested by confirming that breakpoints on the CMD646-specific
-BMDMA registers were being hit and that my test Debian install ISO still
-boots under qemu-system-sparc64.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/ide/cmd646.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-[1] https://patchew.org/QEMU/20230422150728.176512-1-shentey@gmail.com/
-
-
-Mark Cave-Ayland (5):
-  cmd646: checkpatch fixes
-  cmd646: create separate header and QOM type for CMD646_IDE
-  cmd646: use TYPE_CMD646_IDE instead of hardcoded "cmd646-ide" string
-  cmd646: rename cmd646_bmdma_ops to bmdma_ops
-  cmd646: move device-specific BMDMA registers to separate memory region
-
- hw/alpha/dp264.c        |   4 +-
- hw/ide/cmd646.c         | 122 ++++++++++++++++++++++++++++++----------
- hw/sparc64/sun4u.c      |   4 +-
- include/hw/ide/cmd646.h |  42 ++++++++++++++
- 4 files changed, 139 insertions(+), 33 deletions(-)
- create mode 100644 include/hw/ide/cmd646.h
-
+diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
+index a68357c1c5..20f1e41d57 100644
+--- a/hw/ide/cmd646.c
++++ b/hw/ide/cmd646.c
+@@ -96,7 +96,7 @@ static uint64_t bmdma_read(void *opaque, hwaddr addr,
+         return ((uint64_t)1 << (size * 8)) - 1;
+     }
+ 
+-    switch(addr & 3) {
++    switch (addr & 3) {
+     case 0:
+         val = bm->cmd;
+         break;
+@@ -133,7 +133,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+     }
+ 
+     trace_bmdma_write_cmd646(addr, val);
+-    switch(addr & 3) {
++    switch (addr & 3) {
+     case 0:
+         bmdma_cmd_writeb(bm, val);
+         break;
+@@ -144,7 +144,8 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         cmd646_update_irq(pci_dev);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bm->status = (val & 0x60) | (bm->status & 1) |
++                     (bm->status & ~val & 0x06);
+         break;
+     case 3:
+         if (bm == &bm->pci_dev->bmdma[0]) {
+@@ -167,7 +168,7 @@ static void bmdma_setup_bar(PCIIDEState *d)
+     int i;
+ 
+     memory_region_init(&d->bmdma_bar, OBJECT(d), "cmd646-bmdma", 16);
+-    for(i = 0;i < 2; i++) {
++    for (i = 0; i < 2; i++) {
+         bm = &d->bmdma[i];
+         memory_region_init_io(&bm->extra_io, OBJECT(d), &cmd646_bmdma_ops, bm,
+                               "cmd646-bmdma-bus", 4);
+@@ -255,7 +256,7 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
+ 
+     pci_conf[PCI_CLASS_PROG] = 0x8f;
+ 
+-    pci_conf[CNTRL] = CNTRL_EN_CH0; // enable IDE0
++    pci_conf[CNTRL] = CNTRL_EN_CH0; /* enable IDE0 */
+     if (d->secondary) {
+         /* XXX: if not enabled, really disable the seconday IDE controller */
+         pci_conf[CNTRL] |= CNTRL_EN_CH1; /* enable IDE1 */
+@@ -289,7 +290,7 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
+     pci_register_bar(dev, 4, PCI_BASE_ADDRESS_SPACE_IO, &d->bmdma_bar);
+ 
+     /* TODO: RST# value should be 0 */
+-    pci_conf[PCI_INTERRUPT_PIN] = 0x01; // interrupt on pin 1
++    pci_conf[PCI_INTERRUPT_PIN] = 0x01; /* interrupt on pin 1 */
+ 
+     qdev_init_gpio_in(ds, cmd646_set_irq, 2);
+     for (i = 0; i < 2; i++) {
 -- 
 2.30.2
 
