@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080E37290F5
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 09:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDC87290F3
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 09:29:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7WXY-0005jY-KP; Fri, 09 Jun 2023 03:28:08 -0400
+	id 1q7WXc-0005oI-5V; Fri, 09 Jun 2023 03:28:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1q7WXP-0005gG-BT
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:00 -0400
-Received: from mout.kundenserver.de ([212.227.126.134])
+ id 1q7WXZ-0005mB-DW
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:10 -0400
+Received: from mout.kundenserver.de ([212.227.126.135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1q7WXM-0003Db-Q9
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:27:59 -0400
+ id 1q7WXX-0003Eb-I7
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 03:28:09 -0400
 Received: from lenovo-t14s.redhat.com ([82.142.8.70]) by
  mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MJmbB-1qRXQd2Mrh-00K4aR; Fri, 09 Jun 2023 09:27:50 +0200
+ id 1MlwO3-1pgkce05lj-00j4bB; Fri, 09 Jun 2023 09:27:51 +0200
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Gibson <dgibson@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 2/3] net: socket: move fd type checking to its own function
-Date: Fri,  9 Jun 2023 09:27:47 +0200
-Message-Id: <20230609072748.4179873-3-lvivier@redhat.com>
+Subject: [PATCH 3/3] net: socket: remove net_init_socket()
+Date: Fri,  9 Jun 2023 09:27:48 +0200
+Message-Id: <20230609072748.4179873-4-lvivier@redhat.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230609072748.4179873-1-lvivier@redhat.com>
 References: <20230609072748.4179873-1-lvivier@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:cztB8MdkBmIykCnvIrcDf518aaMMcFPAiZncFkuXYiUI2DnzNQ6
- hPpOaqxz3Co6Ws6uDw5Z6YHtXm1vZxs6EHBUMvFMdFfVWbgpWXyHcgXO5ujKNyM0hLryMtR
- sPoeeJiMIAzI5qZXenhrn+dOXtJ+5A9TQOtOQm51OFI1vPWT4ffQpQKXVyhq1zMHf4vuuMF
- Is3nJYLOohErY/mpYtbrw==
-UI-OutboundReport: notjunk:1;M01:P0:xBiCijUMv7w=;1tMROFDRfC0XhM3Vr60dk9br4lU
- nhUSJPBaF+zwFD4CPUwc9cgTygCERfdvDrF486rXIYe9ruyWUTNqjIxwlNhTDh6IIxPuO6xBr
- h33srMIQcbJfLBCfw9+3wFxAUYWVZDihN11JJZO7JRddemqsc7Zpp+ZApETvJ5MkewWW5LGWD
- CB5Fvfw9ttHlzRSApI9nyTfRDccSNvq3VzKt1vHA2pvFkYzvvTRotvHKhT0sZI7AcTsZZRVdB
- XXYRwZUsYB4k155/6poXgybf8cw1n+RmUfvkDq1hxKHk6Ng1MgzrLFoYuu22zW92yHiNB68+F
- LNZblnoaPuM3G+xRQck3iKkC0viyEcFTrS2Q2a1CidjiXDr7o1CUSELAI91PZKNHSIF63SJU1
- dFl0ZJdpCF+PiQ7yIOLNycjZpx4Knb3PuEw6Kkl0kLN6h1V1YWeAJRICYfHDjoVjxftxoPPRg
- wfZpRfl3OtAmCUJAKGRgpybTwCaL9rAgU8gp5YtjO5wblqMYXUMc7ygKCrUjKHSWV/utNAo1l
- o7ORyRdQYyyz35mNzBscZUeSEY0iS8U5ZiLmkltg3RzYVZVPrupbHtfYwUNjWvYMC5wW4M6EH
- /H3aClMHeYfcB907ZoNK2MXRV2YpaAKecSdw8Xyi3D+6+2sqD4If09WgjAvLeDsTBUnvRJLPO
- 091Qigz7nVpZgUDNbxBBPlEeaOkUo4i6F61OWm8sRA==
-Received-SPF: permerror client-ip=212.227.126.134;
+X-Provags-ID: V03:K1:ai+PZTUpg7xPKapldGkX0W2tDQvzP5aFqVCZG2T384nKe8Z0kTD
+ jFEjGcCA6G9HJ+ezEmbbNJLskOGI2DdPMaUVSpdM//Xi+tGckzd8bYUg0RzbnhXtBR9sAXG
+ XhUGM8oRaih2B5+K/aqRfmz+Sk9TJ6DEvi7+pPWYIARiiAWUx8+C7RMIFZFQ28NXljmoLXT
+ Pz93Sr8GKMf2clwHvPtww==
+UI-OutboundReport: notjunk:1;M01:P0:YpHilEg/hG4=;a75PTYmP1qnjcr3YD7mD5cX2deZ
+ OVWEWLXRRQtSBBOsH7s/yGHTlF3Sln+4W27FCabye5U7IendYnOZzjnGQsC+JadNh99EioyIV
+ uj2G89ZYpODDsCyDUMCp9ZQ8CMsx319urtc7i1+RHWWgjveeneiB591H/JYQyOGz4XrsBygT+
+ haw7EyNDvayIhf4tZoAl07yWQ2fRjZ18b8RxM/6bwXl4U+rOeTfR/CJn/uMYp+o9/fF/WPm7d
+ PtL48J/lErl+/7HSgVV8yQhRaZk6NKb7OYg9AZXvuHdLDWwDlUGkbu34xV+Ei2SRovbubjhTq
+ y+gSMd50yX3uYwW91Awozi/bl5DCGOqJuCGCAtB3MQJ3rQaIr/Z1Xhq+BzJ+Ci4Ue8JY3+snd
+ hKaBgmOk9iUbOX/HdDse7tCAauuCPPZXBNbya6ehdBPmCwQltwUapFnzWREaX2zE3+O59HgZv
+ H5OwJAd72u4JTrxcWbLDwoK5r7lp+c5IQ1hOt4jTjSFCmdvj57ZNGU6+HZzc353p8VXskaQTF
+ ayQD6Nzfh7r6+stgw+s/IYoNwddnGtjy0LBrVboBN/CnJjb/zbH8rdrjGqqImhypck1u1oKUD
+ a0c3/cT3igi2/Xl2PjNyDqXZ62ENgQa6vc2eSc/dTvTf9yB0nkkvJJS9FKelgICD2zkDgVJwG
+ cRKpgLByKTuek/y1VZ1AvuzmaijcobU+i1+8bIzgMA==
+Received-SPF: permerror client-ip=212.227.126.135;
  envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -72,63 +72,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Move the file descriptor type checking before doing anything with it.
+If it's not usable, don't close it as it could be in use by another
+part of QEMU, only fail and report an error.
+
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- net/socket.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ net/socket.c | 43 +++++++++++++++++--------------------------
+ 1 file changed, 17 insertions(+), 26 deletions(-)
 
 diff --git a/net/socket.c b/net/socket.c
-index 24dcaa55bc46..6b1f0fec3a10 100644
+index 6b1f0fec3a10..8e3702e1f3a8 100644
 --- a/net/socket.c
 +++ b/net/socket.c
-@@ -446,16 +446,32 @@ static NetSocketState *net_socket_fd_init_stream(NetClientState *peer,
-     return s;
+@@ -463,28 +463,6 @@ static int net_socket_fd_check(int fd, Error **errp)
+     return so_type;
  }
  
-+static int net_socket_fd_check(int fd, Error **errp)
-+{
-+    int so_type, optlen = sizeof(so_type);
-+
-+    if (getsockopt(fd, SOL_SOCKET, SO_TYPE, (char *)&so_type,
-+        (socklen_t *)&optlen) < 0) {
-+        error_setg(errp, "can't get socket option SO_TYPE");
-+        return -1;
-+    }
-+    if (so_type != SOCK_DGRAM && so_type != SOCK_STREAM) {
-+        error_setg(errp, "socket type=%d for fd=%d must be either"
-+                   " SOCK_DGRAM or SOCK_STREAM", so_type, fd);
-+        return -1;
-+    }
-+    return so_type;
-+}
-+
- static NetSocketState *net_socket_fd_init(NetClientState *peer,
-                                           const char *model, const char *name,
-                                           int fd, int is_connected,
-                                           const char *mc, Error **errp)
- {
--    int so_type = -1, optlen=sizeof(so_type);
-+    int so_type;
- 
--    if(getsockopt(fd, SOL_SOCKET, SO_TYPE, (char *)&so_type,
--        (socklen_t *)&optlen)< 0) {
--        error_setg(errp, "can't get socket option SO_TYPE");
-+    so_type = net_socket_fd_check(fd, errp);
-+    if (so_type < 0) {
-         close(fd);
-         return NULL;
-     }
-@@ -465,10 +481,6 @@ static NetSocketState *net_socket_fd_init(NetClientState *peer,
-                                         mc, errp);
-     case SOCK_STREAM:
-         return net_socket_fd_init_stream(peer, model, name, fd, is_connected);
--    default:
--        error_setg(errp, "socket type=%d for fd=%d must be either"
--                   " SOCK_DGRAM or SOCK_STREAM", so_type, fd);
+-static NetSocketState *net_socket_fd_init(NetClientState *peer,
+-                                          const char *model, const char *name,
+-                                          int fd, int is_connected,
+-                                          const char *mc, Error **errp)
+-{
+-    int so_type;
+-
+-    so_type = net_socket_fd_check(fd, errp);
+-    if (so_type < 0) {
 -        close(fd);
+-        return NULL;
+-    }
+-    switch(so_type) {
+-    case SOCK_DGRAM:
+-        return net_socket_fd_init_dgram(peer, model, name, fd, is_connected,
+-                                        mc, errp);
+-    case SOCK_STREAM:
+-        return net_socket_fd_init_stream(peer, model, name, fd, is_connected);
+-    }
+-    return NULL;
+-}
+-
+ static void net_socket_accept(void *opaque)
+ {
+     NetSocketState *s = opaque;
+@@ -728,21 +706,34 @@ int net_init_socket(const Netdev *netdev, const char *name,
      }
-     return NULL;
- }
+ 
+     if (sock->fd) {
+-        int fd, ret;
++        int fd, ret, so_type;
+ 
+         fd = monitor_fd_param(monitor_cur(), sock->fd, errp);
+         if (fd == -1) {
+             return -1;
+         }
++        so_type = net_socket_fd_check(fd, errp);
++        if (so_type < 0) {
++            return -1;
++        }
+         ret = qemu_socket_try_set_nonblock(fd);
+         if (ret < 0) {
+             error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
+                              name, fd);
+             return -1;
+         }
+-        if (!net_socket_fd_init(peer, "socket", name, fd, 1, sock->mcast,
+-                                errp)) {
+-            return -1;
++        switch (so_type) {
++        case SOCK_DGRAM:
++            if (!net_socket_fd_init_dgram(peer, "socket", name, fd, 1,
++                                          sock->mcast, errp)) {
++                return -1;
++            }
++            break;
++        case SOCK_STREAM:
++            if (!net_socket_fd_init_stream(peer, "socket", name, fd, 1)) {
++                return -1;
++            }
++            break;
+         }
+         return 0;
+     }
 -- 
 2.39.2
 
