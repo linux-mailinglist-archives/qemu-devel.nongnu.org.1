@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADD6729EED
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CAE729EEF
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Jun 2023 17:44:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7cnz-0002N5-50; Fri, 09 Jun 2023 10:09:31 -0400
+	id 1q7coU-0002gV-Ew; Fri, 09 Jun 2023 10:10:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7cnx-0002MW-8A; Fri, 09 Jun 2023 10:09:29 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ id 1q7coS-0002b4-D3; Fri, 09 Jun 2023 10:10:00 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1q7cnv-0000Hw-N3; Fri, 09 Jun 2023 10:09:28 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f004cc54f4so2362726e87.3; 
- Fri, 09 Jun 2023 07:09:26 -0700 (PDT)
+ id 1q7coQ-0000JM-Og; Fri, 09 Jun 2023 10:10:00 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-4f640e48bc3so2260929e87.2; 
+ Fri, 09 Jun 2023 07:09:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686319765; x=1688911765;
+ d=1e100.net; s=20221208; t=1686319787; x=1688911787;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:dkim-signature:dkim-signature
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=laqE+jDbGMxNloibp38IdoI5cMDWlF6ShBRxAGY56M8=;
- b=PDHt+3rUkGeNDyfvPAtJSp680aFIJZnkyzv5nDsn4Wg9wOsEV+QggsnmcuKSkv8r37
- UnsuCnXh64Nw8ITFk+UIUvafBw+7zUvJ8MuODYm3hDpkCJvvjJR9eO0SBb/wTvdRbrwO
- vvLH1WnRyF7N77nVXaa4KkZJZasVTJFA+kZzOdatbkG0snBHwSGdrKhQwBQCOI6qImXH
- +83XTAd1CtvepqAD5Ej5vM+eDkoFK+YPaA8+A9NjWrQY26Z9I7utXNezFxaVkzOMDclc
- aKwUS9A/TIBmWlHivZdx5MMrK/rAfk5PDmJGGrn1dNFA2ZA2yAVJxwjGTm2y02tTo2RL
- be6Q==
-X-Gm-Message-State: AC+VfDyxTbsaIJ4UOXyWYKioo2qDM9HNzVcFV9w51pvwPCfg9F9GOXB5
- nE1/rooxLvO7eTGJHUax2veIurvWrrhoVSVf
-X-Google-Smtp-Source: ACHHUZ4h6PTV7PBCFO81O+6f1+pXOPjNSte8Laet4eMCVu9KK6b90tL/YRMoqM5WlntKXC9MhetCeg==
-X-Received: by 2002:a19:9119:0:b0:4f3:a3e0:850e with SMTP id
- t25-20020a199119000000b004f3a3e0850emr951440lfd.35.1686319765610; 
- Fri, 09 Jun 2023 07:09:25 -0700 (PDT)
+ bh=cy91cBRqAqiwy9cOS34w2pZldiLcmYPrCZe3pVyd0X4=;
+ b=YGE28Gx9zoJeQJbCbJ76ETmliBa961tRsu5jtPlMH1J/2MeCmHOatnreYwkSkSpjF1
+ bEV4Kd5BG28S4nuryPZZZH3Vw5ZUU/l2F0ENH8GFRAiCgEbRnVtzBK+4cAvZ58yTVVsm
+ 5PBPrHKQ4btewSAndVIs056tyQePZ6kXCaxq5cWxD3IRj+TSOBBphSjE69iShRL9u9ga
+ fXDaDTErvfBU+n87yoiakcuWxHPTxgVnNESxXv5MBTdMUi+Uus57Nq4fSkC2RYPXY+By
+ 14a8OGp+AGwBVVPQSTDu2iDJT4r8A+tVcFkpIRP9Dr28p1QdathGO/jkm/VuZVCirTU0
+ ROlw==
+X-Gm-Message-State: AC+VfDyHgmzA6Dqkyg35qWyl33Lp35I2NiejqFfTgL48cXvgdCIwXyc3
+ RyNeydnnZKtwn5qQlplVQtUfnBjXgI+jHIMX
+X-Google-Smtp-Source: ACHHUZ7lXc4/8vJ7V723jHNjEFo00sD34psLVyqNRdq34CLlnTJxkn0K3F1E/+vWh5YNR7xMFUb7cQ==
+X-Received: by 2002:ac2:520e:0:b0:4f5:fbf6:7de with SMTP id
+ a14-20020ac2520e000000b004f5fbf607demr943735lfl.6.1686319787128; 
+ Fri, 09 Jun 2023 07:09:47 -0700 (PDT)
 Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
  [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
- h22-20020a197016000000b004f517c21ef4sm561125lfc.44.2023.06.09.07.09.25
+ y22-20020ac255b6000000b004f1406b059asm552996lfg.219.2023.06.09.07.09.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Jun 2023 07:09:25 -0700 (PDT)
+ Fri, 09 Jun 2023 07:09:46 -0700 (PDT)
 Received: by flawful.org (Postfix, from userid 112)
- id 5A82B193F; Fri,  9 Jun 2023 16:09:24 +0200 (CEST)
+ id 2B60019C2; Fri,  9 Jun 2023 16:09:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319764; bh=+7Lfn6Z7q7WKc/uSkZhwLaBrCOUaYvjqYUoBgBJpe9g=;
+ t=1686319785; bh=DZ5fMdq9LwskNjWpW+fDBE+ZAvAUizJvqdAFmYrDvXM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=JlHgjcl/uI1mE3C3WPULgN8f04liEmFLXQPfutUwHddygbYqOvHv6RDx/XIYwJS1i
- YSIo7/McR9i1YIBWnKVbyNdx9n4s/LWUjAYNPqEt8DgypQLgfGtqKexVCsXsPGq8Pk
- t9vBDWguk7wY7gaqvor3m7EDQNYEM9G19Bq3AcVY=
+ b=ajuqm82uw73JaKXakTxxsdONmJAJBKJoNYqLVlPFfMcYfImd26sDjL/WSmXdemGLd
+ pt8wDvHAOHjB1Myf2lUtTNQKgmM90rH7CdbPzdswAxrOwlS9l1YdAEd3LTFUpIGj7t
+ B2FQx7fP64e0rrWo0OGssWhY7F51ID7Ioq5qo0Y4=
 Received: from x1-carbon.lan (unknown [129.253.182.58])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id D6D721754;
- Fri,  9 Jun 2023 16:09:01 +0200 (CEST)
+ by flawful.org (Postfix) with ESMTPSA id 051C41763;
+ Fri,  9 Jun 2023 16:09:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1686319746; bh=+7Lfn6Z7q7WKc/uSkZhwLaBrCOUaYvjqYUoBgBJpe9g=;
+ t=1686319752; bh=DZ5fMdq9LwskNjWpW+fDBE+ZAvAUizJvqdAFmYrDvXM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=umSl+GVfY4oxHV5BJaFFrQdH4stW27YoKJc9PbPV2YJjeFwImmMMUS9UHN18TlmwU
- i8NpaPaNve+HEh6Ul4awFhvF7ienJKlWlafa5V5ZEQeOrAi9OTxDgUriiO7iFSnw4O
- bI92igZOAlgiqeEj8r31iei1YUpbKFSGHUu+Zz90=
+ b=L2UhMoRdTAmrdVe5oc8Bmh56QWN1ff9ovw5DwtbJO5chRA4V74GLNz7v57mu+8IG/
+ fLKHvqDyimHTcAVmTMrak8KCpMIin5lyuemBOcuVQ/WhrrE4AG+MFO3viYVBQsng63
+ 3UUhUrnuH1kpO2PG8UuUAH7BCVh6lXN8ShWFG8VA=
 From: Niklas Cassel <nks@flawful.org>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 1/8] hw/ide/ahci: remove stray backslash
-Date: Fri,  9 Jun 2023 16:08:37 +0200
-Message-Id: <20230609140844.202795-2-nks@flawful.org>
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
+Subject: [PATCH v3 2/8] hw/ide/core: set ERR_STAT in unsupported command
+ completion
+Date: Fri,  9 Jun 2023 16:08:38 +0200
+Message-Id: <20230609140844.202795-3-nks@flawful.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609140844.202795-1-nks@flawful.org>
 References: <20230609140844.202795-1-nks@flawful.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -103,28 +102,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-This backslash obviously does not belong here, so remove it.
+Currently, the first time sending an unsupported command
+(e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
+Sending the unsupported command again, will correctly have ERR_STAT set.
+
+When ide_cmd_permitted() returns false, it calls ide_abort_command().
+ide_abort_command() first calls ide_transfer_stop(), which will call
+ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
+sets ERR_STAT in status.
+
+ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
+current status in the FIS, and raises an IRQ. (The status here will not
+have ERR_STAT set!).
+
+Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
+ide_transfer_stop() will result in the FIS being written and an IRQ
+being raised.
+
+The reason why it works the second time, is that ERR_STAT will still
+be set from the previous command, so when writing the FIS, the
+completion will correctly have ERR_STAT set.
+
+Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
+raise an error IRQ correctly when receiving an unsupported command.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: John Snow <jsnow@redhat.com>
 ---
- hw/ide/ahci.c | 2 +-
+ hw/ide/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 4e76d6b191..48d550f633 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -690,7 +690,7 @@ static void ahci_reset_port(AHCIState *s, int port)
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index de48ff9f86..07971c0218 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -533,9 +533,9 @@ BlockAIOCB *ide_issue_trim(
  
-     s->dev[port].port_state = STATE_RUN;
-     if (ide_state->drive_kind == IDE_CD) {
--        ahci_set_signature(d, SATA_SIGNATURE_CDROM);\
-+        ahci_set_signature(d, SATA_SIGNATURE_CDROM);
-         ide_state->status = SEEK_STAT | WRERR_STAT | READY_STAT;
-     } else {
-         ahci_set_signature(d, SATA_SIGNATURE_DISK);
+ void ide_abort_command(IDEState *s)
+ {
+-    ide_transfer_stop(s);
+     s->status = READY_STAT | ERR_STAT;
+     s->error = ABRT_ERR;
++    ide_transfer_stop(s);
+ }
+ 
+ static void ide_set_retry(IDEState *s)
 -- 
 2.40.1
 
