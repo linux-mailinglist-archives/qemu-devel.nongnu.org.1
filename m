@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CE772A98E
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 08:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253D172A9A4
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 09:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7sY9-0002hq-QA; Sat, 10 Jun 2023 02:58:13 -0400
+	id 1q7sY8-0002gy-JV; Sat, 10 Jun 2023 02:58:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sY6-0002gz-OX; Sat, 10 Jun 2023 02:58:10 -0400
+ id 1q7sY5-0002ej-DB; Sat, 10 Jun 2023 02:58:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sY4-0005to-GC; Sat, 10 Jun 2023 02:58:10 -0400
+ id 1q7sY3-0005tv-Mc; Sat, 10 Jun 2023 02:58:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A7833BE22;
+ by isrv.corpit.ru (Postfix) with ESMTP id C26A4BE23;
  Sat, 10 Jun 2023 09:57:59 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 309AFB28F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 618AEB290;
  Sat, 10 Jun 2023 09:57:59 +0300 (MSK)
-Received: (nullmailer pid 1107499 invoked by uid 1000);
+Received: (nullmailer pid 1107502 invoked by uid 1000);
  Sat, 10 Jun 2023 06:57:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
- Stefan Weil <sw@weilnetz.de>
-Subject: [PULL 02/16] hw/virtio/virtio-qmp.c: spelling: suppoted
-Date: Sat, 10 Jun 2023 09:57:40 +0300
-Message-Id: <46e75a77a9f5a5d88e4c8bb6de37f1531aa7d8b0.1686379708.git.mjt@tls.msk.ru>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
+Subject: [PULL 03/16] spelling: information
+Date: Sat, 10 Jun 2023 09:57:41 +0300
+Message-Id: <40b89515d026915a0593993712e322addac095b9.1686379708.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1686379708.git.mjt@tls.msk.ru>
 References: <cover.1686379708.git.mjt@tls.msk.ru>
@@ -59,26 +58,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: f3034ad71fcd0a6a58bc37830f182b307f089159
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Stefan Weil <sw@weilnetz.de>
----
- hw/virtio/virtio-qmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+3 trivial fixes: 2 .json comments which goes to
+executables, and 1 .h file comment.
 
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index b5e1835299..3528fc628d 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -331,7 +331,7 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
- static const qmp_virtio_feature_map_t virtio_scsi_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_SCSI_F_INOUT, \
-             "VIRTIO_SCSI_F_INOUT: Requests including read and writable data "
--            "buffers suppoted"),
-+            "buffers supported"),
-     FEATURE_ENTRY(VIRTIO_SCSI_F_HOTPLUG, \
-             "VIRTIO_SCSI_F_HOTPLUG: Reporting and handling hot-plug events "
-             "supported"),
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ include/ui/clipboard.h | 2 +-
+ qapi/cryptodev.json    | 2 +-
+ qga/qapi-schema.json   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/ui/clipboard.h b/include/ui/clipboard.h
+index ce76aa451f..ab6acdbd8a 100644
+--- a/include/ui/clipboard.h
++++ b/include/ui/clipboard.h
+@@ -170,7 +170,7 @@ void qemu_clipboard_peer_release(QemuClipboardPeer *peer,
+  *
+  * @selection: clipboard selection.
+  *
+- * Return the current clipboard data & owner informations.
++ * Return the current clipboard data & owner information.
+  */
+ QemuClipboardInfo *qemu_clipboard_info(QemuClipboardSelection selection);
+ 
+diff --git a/qapi/cryptodev.json b/qapi/cryptodev.json
+index 77f48a9c21..68289f4984 100644
+--- a/qapi/cryptodev.json
++++ b/qapi/cryptodev.json
+@@ -75,7 +75,7 @@
+ #
+ # @service: supported service types of a crypto device
+ #
+-# @client: the additional infomation of the crypto device
++# @client: the additional information of the crypto device
+ #
+ # Since: 8.0
+ ##
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index 42fb046eb7..b720dd4379 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -931,7 +931,7 @@
+ ##
+ # @GuestNVMeSmart:
+ #
+-# NVMe smart informations, based on NVMe specification, section
++# NVMe smart information, based on NVMe specification, section
+ # <SMART / Health Information (Log Identifier 02h)>
+ #
+ # Since: 7.1
 -- 
 2.39.2
 
