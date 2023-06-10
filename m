@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1FE72A98F
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 08:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3404E72A99E
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 09:00:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7sYB-0002iy-MJ; Sat, 10 Jun 2023 02:58:15 -0400
+	id 1q7sYD-0002jx-IJ; Sat, 10 Jun 2023 02:58:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sY8-0002hl-DZ; Sat, 10 Jun 2023 02:58:12 -0400
+ id 1q7sY9-0002iV-LF; Sat, 10 Jun 2023 02:58:13 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sY6-0005uM-Qf; Sat, 10 Jun 2023 02:58:12 -0400
+ id 1q7sY8-0005vw-6M; Sat, 10 Jun 2023 02:58:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7B35BE24;
- Sat, 10 Jun 2023 09:57:59 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2A205BE25;
+ Sat, 10 Jun 2023 09:58:00 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 83C50B291;
+ by tsrv.corpit.ru (Postfix) with SMTP id A9748B292;
  Sat, 10 Jun 2023 09:57:59 +0300 (MSK)
-Received: (nullmailer pid 1107505 invoked by uid 1000);
+Received: (nullmailer pid 1107508 invoked by uid 1000);
  Sat, 10 Jun 2023 06:57:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Mattias Nissler <mnissler@rivosinc.com>, qemu-trivial@nongnu.org,
- Jagannathan Raman <jag.raman@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 04/16] hw/remote: Fix vfu_cfg trace offset format
-Date: Sat, 10 Jun 2023 09:57:42 +0300
-Message-Id: <5fb9e8295531f957cf7ac20e89736c8963a25e04.1686379708.git.mjt@tls.msk.ru>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 05/16] block.c: add newline for "Detected format" warning
+Date: Sat, 10 Jun 2023 09:57:43 +0300
+Message-Id: <fbdffb08dfe5db0ffed22619bad1772a675e11e2.1686379708.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1686379708.git.mjt@tls.msk.ru>
 References: <cover.1686379708.git.mjt@tls.msk.ru>
@@ -62,35 +60,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mattias Nissler <mnissler@rivosinc.com>
+Add the forgotten trailing newline.
 
-The printed offset value is prefixed with 0x, but was actually printed
-in decimal. To spare others the confusion, adjust the format specifier
-to hexadecimal.
-
-Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/remote/trace-events | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/remote/trace-events b/hw/remote/trace-events
-index c167b3c7a5..0d1b7d56a5 100644
---- a/hw/remote/trace-events
-+++ b/hw/remote/trace-events
-@@ -5,8 +5,8 @@ mpqemu_recv_io_error(int cmd, int size, int nfds) "failed to receive %d size %d,
- 
- # vfio-user-obj.c
- vfu_prop(const char *prop, const char *val) "vfu: setting %s as %s"
--vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x%u -> 0x%x"
--vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%u <- 0x%x"
-+vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x -> 0x%x"
-+vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x <- 0x%x"
- vfu_dma_register(uint64_t gpa, size_t len) "vfu: registering GPA 0x%"PRIx64", %zu bytes"
- vfu_dma_unregister(uint64_t gpa) "vfu: unregistering GPA 0x%"PRIx64""
- vfu_bar_register(int i, uint64_t addr, uint64_t size) "vfu: BAR %d: addr 0x%"PRIx64" size 0x%"PRIx64""
+diff --git a/block.c b/block.c
+index dae629075c..0637265c26 100644
+--- a/block.c
++++ b/block.c
+@@ -7158,7 +7158,7 @@ void bdrv_img_create(const char *filename, const char *fmt,
+             if (!backing_fmt) {
+                 error_setg(&local_err,
+                            "Backing file specified without backing format");
+-                error_append_hint(&local_err, "Detected format of %s.",
++                error_append_hint(&local_err, "Detected format of %s.\n",
+                                   bs->drv->format_name);
+                 goto out;
+             }
 -- 
 2.39.2
 
