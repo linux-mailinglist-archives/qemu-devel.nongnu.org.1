@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E1F72ABB9
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F9D72ABB2
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:33:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7yhD-0004Qr-Ft; Sat, 10 Jun 2023 09:31:59 -0400
+	id 1q7yhF-0004S9-9d; Sat, 10 Jun 2023 09:32:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7yhB-0004Q5-1r; Sat, 10 Jun 2023 09:31:57 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1q7yhD-0004Rk-I2; Sat, 10 Jun 2023 09:31:59 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7yh9-0007aD-Ds; Sat, 10 Jun 2023 09:31:56 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-38c35975545so1272323b6e.1; 
- Sat, 10 Jun 2023 06:31:54 -0700 (PDT)
+ id 1q7yhB-0007ag-VD; Sat, 10 Jun 2023 09:31:59 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-392116b8f31so1084076b6e.2; 
+ Sat, 10 Jun 2023 06:31:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686403913; x=1688995913;
+ d=gmail.com; s=20221208; t=1686403916; x=1688995916;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dJA42PKMV5DCxoTW+swU3bkKFLofsw1iAtmb+IC54bs=;
- b=dO+CwLVvALxOVUpdzCfnplyK6DyB3PSWTzGhI8/0zRaCA7QehI/2w8BXUPCdGQlOub
- 5Zrsci7YRRdbBdQ25J5Xm9BC84AE6KaJG0b1soZEvPuaiWWun7fHzPO3TjVECp0FAK0a
- fanjvyfWmzC3ZLfgRSXRC+n7MEI/ZYWxj3k1D3jQimZCHAjKkjWkGwC654wummwFnjBq
- P5lm2IXCo5JPl04fANZ+X0F+bisNdV0/Q7OkGI22CdnFYJl9nxFZxqC2qytges4dSwER
- jkfH503YykD/DVx6TBo8Rj4gfpQrG1Qmm0t/ldqLzpBhOGAsPCAw/CdSYdwJxVImNSZH
- c6jQ==
+ bh=fOEa2w/fkURRqcuIxb/Ag8RczwbXIRPEzS5xPskCu5Y=;
+ b=pZiaOOX384qzwVHzT6m7sdIMsyfNjDSVzGUW6PyMsfW2iRJt6syixSyJs4vxbYuzDc
+ /Id/8rYMLeEGCDVzC5rNLtI+GEVtAkqb8MokFyHj7Medbw94/vLfwF6x4DPMueb0KcXa
+ DeWdxd+xKkx34NTa9XEElzIf0KmU2YIXb6U3+nvqymOthj2xwRlJc6/RrlmbH/i1u37+
+ gLcFPYQwMtO7a0ypldC4rpYk5sIobMYgtQXCHNcOlVSy/M6VgjDz2nxI8hnmxUFQaHoL
+ zpYJbfn3hgQ7rjib//rGhf1g/7U2VfNNxGNMGXfZkKzOe+kC0gmV3vW4wZu8ZQ8cGSlu
+ Oy8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686403913; x=1688995913;
+ d=1e100.net; s=20221208; t=1686403916; x=1688995916;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dJA42PKMV5DCxoTW+swU3bkKFLofsw1iAtmb+IC54bs=;
- b=MY3fZCDiykSvj1v7PRe+kvuUZuUcPlZ6HT2Y3pkekga7Mm4ZiplFqdpwjWCwXuQ7Ld
- dH07HQ3Mf2ilvjaN08TfiAQwvxvLgvjrtIQuG6L5jk9l5UwJtNjsL1QPoMrF3LFg0GIp
- 45KaldRlEC3ie6eXH6BlsBO++dDmxexDt8HCSC4Ikj1erv6xx2wePYx2VF2A8Bq4LcQP
- 9qTDhL6r6mTDS681ZlaI2q0hJ46tJWiRn/R7jCIQuXNkv3WgF/elPlTby5kbWeGp8zQn
- +JoACYKFKcgmM21IX4EhqM/tqaUJ7eIYQ5M/Alv7CRrtseEckPgH54cfqHplsmbYMoI+
- eZzA==
-X-Gm-Message-State: AC+VfDzpyPC1GfE24+X/4iWAKsCRYYEY6egOX+kMXQHo9D3b9x4cDpAU
- s2b3F3MFOBBv0ws3Cvr6B5rRHhqFiUs=
-X-Google-Smtp-Source: ACHHUZ7L/vOP0Qi337ra/k0o+81FnncGWSfj1Xq0L8Q6HMUGSWHHO7jl7OmyZ8JV8z6aJ1NycCDV5A==
-X-Received: by 2002:a05:6808:1b11:b0:398:1104:ef6c with SMTP id
- bx17-20020a0568081b1100b003981104ef6cmr957546oib.43.1686403913589; 
- Sat, 10 Jun 2023 06:31:53 -0700 (PDT)
+ bh=fOEa2w/fkURRqcuIxb/Ag8RczwbXIRPEzS5xPskCu5Y=;
+ b=Mv1vWUMBFTYkLaXj46DOY4Iyag9tkN6LMsFn2GWQkEAxzcGjJlN2iDyWA9OSksk5UY
+ WlkDOYKXePQjUm9lS8XIoPyROjboneSChhORCzagLaja8vx0JCg8Uu9pb9qYbUkBNy4b
+ PD9FbevSUSFjUdBOVgJ7urMmJkTmAfCRgnc4ke3YmXoujLPhTutmCmUa1hktuxFbWB/n
+ QQA1fu4Xz0o+nVXjW0JuoYA6UWnhEvJMuZWLJ8w6tHol+xt4xVd3359XYZ2fGeK5e8dq
+ 4Ul6DtpzByrdA50dRrL+RKL/uVRKwe6MkunFKhUI82lByyrX8UEInYtXVRrwA392sTy2
+ U4Kg==
+X-Gm-Message-State: AC+VfDyXWUHj32cloBFH4DR6Y6GOlPhIiS0T4vWmiB752H6U1v+nNVVi
+ EBL9KhkSqh/zn+g220e/CjBZ7o8I/H4=
+X-Google-Smtp-Source: ACHHUZ41CkjvoOOtDDqL/U0nfY4HbEJve5cr6sM9eQGF070eWdWuk4qbpehcNslVVYqlB0Kx3ozYkA==
+X-Received: by 2002:a05:6808:3087:b0:39c:785a:9751 with SMTP id
+ bl7-20020a056808308700b0039c785a9751mr1075816oib.32.1686403916046; 
+ Sat, 10 Jun 2023 06:31:56 -0700 (PDT)
 Received: from grind.. ([177.170.117.52]) by smtp.gmail.com with ESMTPSA id
- y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.31.51
+ y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.31.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 10 Jun 2023 06:31:53 -0700 (PDT)
+ Sat, 10 Jun 2023 06:31:55 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Frederic Barrat <fbarrat@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
-Date: Sat, 10 Jun 2023 10:31:08 -0300
-Message-Id: <20230610133132.290703-6-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
+ balaton@eik.bme.hu, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 06/29] target/ppc: Fix nested-hv HEAI delivery
+Date: Sat, 10 Jun 2023 10:31:09 -0300
+Message-Id: <20230610133132.290703-7-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230610133132.290703-1-danielhb413@gmail.com>
 References: <20230610133132.290703-1-danielhb413@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,69 +91,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-The Thread Interrupt Management Area (TIMA) can be accessed through 4
-ports, targeted by the address. The base address of a TIMA
-is using port 0 and the other ports are 0x80 apart. Using one port or
-another can be useful to balance the load on the snoop buses. With
-skiboot and linux, we currently use port 0, but as it tends to be
-busy, another hypervisor is using port 1 for TIMA access.
+ppc hypervisors turn HEAI interrupts into program interrupts injected
+into the guest that executed the illegal instruction, if the hypervisor
+doesn't handle it some other way.
 
-The port address bits fall in between the special op indication
-bits (the 2 MSBs) and the register offset bits (the 6 LSBs). They are
-"don't care" for the hardware when processing a TIMA operation. This
-patch filters out those port address bits so that a TIMA operation can
-be triggered using any port.
+The nested-hv implementation failed to account for this HEAI->program
+conversion. The virtual hypervisor wants to see the HEAI when running
+a nested guest, so that interrupt type can be returned to its KVM
+caller.
 
-It is also true for indirect access (through the IC BAR) and it's
-actually nothing new, it was already the case on P9. Which helps here,
-as the TIMA handling code is common between P9 (xive) and P10 (xive2).
-
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-Id: <20230601121331.487207-6-fbarrat@linux.ibm.com>
+Fixes: 7cebc5db2eba6 ("target/ppc: Introduce a vhyp framework for nested HV support")
+Cc: balaton@eik.bme.hu
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Message-Id: <20230530132127.385001-1-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/intc/pnv_xive2.c | 4 ++++
- hw/intc/xive.c      | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ target/ppc/excp_helper.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 132f82a035..e5a028c1e6 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -1662,6 +1662,8 @@ static void pnv_xive2_tm_write(void *opaque, hwaddr offset,
-     bool gen1_tima_os =
-         xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index fea9221501..9ffcfe788a 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1358,9 +1358,12 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
  
-+    offset &= TM_ADDRESS_MASK;
-+
-     /* TODO: should we switch the TM ops table instead ? */
-     if (!gen1_tima_os && offset == HV_PUSH_OS_CTX_OFFSET) {
-         xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
-@@ -1681,6 +1683,8 @@ static uint64_t pnv_xive2_tm_read(void *opaque, hwaddr offset, unsigned size)
-     bool gen1_tima_os =
-         xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+     /*
+      * We don't want to generate a Hypervisor Emulation Assistance
+-     * Interrupt if we don't have HVB in msr_mask (PAPR mode).
++     * Interrupt if we don't have HVB in msr_mask (PAPR mode),
++     * unless running a nested-hv guest, in which case the L1
++     * kernel wants the interrupt.
+      */
+-    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB)) {
++    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB) &&
++            !books_vhyp_handles_hv_excp(cpu)) {
+         excp = POWERPC_EXCP_PROGRAM;
+     }
  
-+    offset &= TM_ADDRESS_MASK;
-+
-     /* TODO: should we switch the TM ops table instead ? */
-     if (!gen1_tima_os && offset == HV_PULL_OS_CTX_OFFSET) {
-         return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index ebe399bc09..5204c14b87 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -500,7 +500,7 @@ static const XiveTmOp xive_tm_operations[] = {
- static const XiveTmOp *xive_tm_find_op(hwaddr offset, unsigned size, bool write)
- {
-     uint8_t page_offset = (offset >> TM_SHIFT) & 0x3;
--    uint32_t op_offset = offset & 0xFFF;
-+    uint32_t op_offset = offset & TM_ADDRESS_MASK;
-     int i;
- 
-     for (i = 0; i < ARRAY_SIZE(xive_tm_operations); i++) {
 -- 
 2.40.1
 
