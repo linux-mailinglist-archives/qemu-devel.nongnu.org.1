@@ -2,47 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8B972A991
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 08:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A9672A9B2
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 09:07:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7sZA-00039E-SR; Sat, 10 Jun 2023 02:59:17 -0400
+	id 1q7sgj-00067a-8N; Sat, 10 Jun 2023 03:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sZ7-00038P-Nv; Sat, 10 Jun 2023 02:59:13 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q7sgg-00067I-0s
+ for qemu-devel@nongnu.org; Sat, 10 Jun 2023 03:07:02 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sZ6-00064Y-5B; Sat, 10 Jun 2023 02:59:13 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 49930BE30;
- Sat, 10 Jun 2023 09:58:02 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C7713B29D;
- Sat, 10 Jun 2023 09:58:01 +0300 (MSK)
-Received: (nullmailer pid 1107541 invoked by uid 1000);
- Sat, 10 Jun 2023 06:57:58 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Andrew Jeffery <andrew@aj.id.au>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 16/16] linux-user: elfload: Specify -R is an option for
- qemu-user binaries
-Date: Sat, 10 Jun 2023 09:57:54 +0300
-Message-Id: <e928907105cfeb48b68cedce232bbd4784536707.1686379708.git.mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1686379708.git.mjt@tls.msk.ru>
-References: <cover.1686379708.git.mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q7sgd-0007WO-Jd
+ for qemu-devel@nongnu.org; Sat, 10 Jun 2023 03:07:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=RUttQlBIfCo5WXEkPK1AJT/rTc1IKSBeqx0ECKUMwNg=; b=Tb7tjRYtYxDWTBAMZNffkbg59S
+ Ruz4A7Xshd1cAWw6+/gkBmW72X4jZMCtvzeRCY8OTd6oHr5oR/e4c1BVavHDCB3ahUVzEAAmZjcmy
+ 9lGWdHpRQnPllfKcEA35hR+Bao/eiDK3QMVSxXXjuC1o+zl8a7tpD3u9K47kpzXpv3wh5T7k0CPfy
+ sI1nSCrED7gJXq2gg+RwZjgDccttHFuCeCVDqRe7BnwnizOjpD71LjCw/j9PmyS3JKkqpscAJsDvF
+ eLBzSVarV3reZUVeFRgZZWgNl/pvXaqPmaXgF5G9xN4ax97uljSNQnoIb6voP6UMu77xa3215H6Bf
+ Iz/Kyq5lsMzshHHiqflqfDfiDfDBsrMdpEDtVrb4wyJzjUiQobouufBTvYKx1j2+r4hmZysYj2Y72
+ /RBNinlnO1ouUpyAD+c/1rOPbLiDgKVk7appAEEXbq/Oh3lfP/mSGFYBMIzS7JnR1qn85ywumx9SU
+ BtX6EZdTmLEE5oPNh25RYN0dYvGNrg2NbhQjyAK+mQS6pEIZFIiglWg8bNLVyA+A7UMpIA0MX4Svn
+ fngblX2+oRBX/ePh4do6Fp4D0AkWq2+mF4VTj7dm83qzj34SH3eVibVMmufkAizEij3L3f1Ui35gw
+ gR2vEYJsxlOG/xkxr41OQhxocjHzGA7ze/9/QB2AI=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q7sgS-0005IN-T9; Sat, 10 Jun 2023 08:06:52 +0100
+Message-ID: <4e8f027a-ca00-c54f-ef2f-f0df1f5b2f9e@ilande.co.uk>
+Date: Sat, 10 Jun 2023 08:06:47 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To: Henrik Carlqvist <hc981@poolhem.se>
+Cc: berrange@redhat.com, hc1245@poolhem.se, qemu-devel@nongnu.org
+References: <167305907804.10652.2746409341903316717-1@git.sr.ht>
+ <d2850ef0-d825-bb03-09d4-0d1427cf6577@ilande.co.uk>
+ <20230123200937.32eb19eb.hc981@poolhem.se>
+ <20230304220754.0c6ae562.hc981@poolhem.se> <ZCLzUyiDeKLfQqWT@redhat.com>
+ <20230328191958.3e3eb5e4.hc981@poolhem.se> <ZCMq/imcAq0ApLQp@redhat.com>
+ <20230328221608.328ab80f.hc981@poolhem.se>
+ <20230430225533.1a57879a.hc981@poolhem.se>
+ <20230608181439.7ea3a5c5.hc981@poolhem.se>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230608181439.7ea3a5c5.hc981@poolhem.se>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: Ping: [PATCH v6] Emulate dip switch language layout settings on
+ SUN keyboard
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,33 +88,256 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Jeffery <andrew@aj.id.au>
+On 08/06/2023 17:14, Henrik Carlqvist wrote:
 
-Given several different concepts are suggested for investigation, let's
-not confuse e.g. ulimit's -R with what was actually intended.
+> I didn't get much response to my last version of the patch to implement
+> emulation of language selection dip switch on SUN keyboards. By request, I
+> changed the patch to listen for -global escc.sunkbd_layout= instead of using
+> the -k switch to select keyboard layout.
+> 
+> What do you think about this patch? Would you like to apply it as is, or do
+> you want any more changes?
 
-Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- linux-user/elfload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Apologies for the delay in getting to this, let me add a few comments below.
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 76874833e3..9a2ec568b0 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2799,7 +2799,8 @@ static void pgb_reserved_va(const char *image_name, abi_ulong guest_loaddr,
-         error_report("Unable to reserve 0x%lx bytes of virtual address "
-                      "space at %p (%s) for use as guest address space (check your "
-                      "virtual memory ulimit setting, mmap_min_addr or reserve less "
--                     "using -R option)", reserved_va + 1, test, strerror(errno));
-+                     "using qemu-user's -R option)",
-+                     reserved_va + 1, test, strerror(errno));
-         exit(EXIT_FAILURE);
-     }
- 
--- 
-2.39.2
+> Best regards Henrik
+> 
+> On Sun, 30 Apr 2023 22:55:33 +0200
+> Henrik Carlqvist <hc981@poolhem.se> wrote:
+> 
+>> I have now changed the patch to instead of using the -k switch use
+>>
+>> -global escc.sunkbd_layout=
+>>
+>> to select keyboard layout. It would be nice to somehow document this. Yes,
+>> in the monitor, you can type "info qtree" and see something like:
+>>
+>>    dev: escc, id ""
+>>      gpio-out "sysbus-irq" 2
+>>      frequency = 4915200 (0x4b0000)
+>>      it_shift = 1 (0x1)
+>>      bit_swap = false
+>>      disabled = 0 (0x0)
+>>      chnBtype = 2 (0x2)
+>>      chnAtype = 1 (0x1)
+>>      chrB = ""
+>>      chrA = ""
+>>      sunkbd_layout = "43"
+>>      mmio 0000000071000000/0000000000000008
+>>   
+>> but that information is not easy to find and it does not say anything about
+>> possible values. What is the best way to document this kind of global
+>> parameters?
+>>
+>> Please cc me any reply as I am no longer subscribed to the mailing list.
+>>
+>> best regards Henrik
+>>
+>> SUN Type 4, 5 and 5c keyboards have dip switches to choose the language
+>> layout of the keyboard. Solaris makes an ioctl to query the value of the
+>> dipswitches and uses that value to select keyboard layout. Also the SUN bios
+>> like the one in the file ss5.bin uses this value to support at least some
+>> keyboard layouts. However, the OpenBIOS provided with qemu is hardcoded to
+>> always use an US keyboard layout.
+>>
+>> Before this patch, qemu allways gave dip switch value 0x21 (US keyboard),
+>> this patch uses a command line switch like "-global escc.sunkbd_layout=de"
+>> to select dip switch value. A table is used to lookup values from arguments
+>> like:
+>>
+>> -global escc.sunkbd_layout=fr
+>> -global escc.sunkbd_layout=es
+>>
+>> But the patch also accepts numeric dip switch values directly to the -k
+>> switch:
+>>
+>> -global escc.sunkbd_layout=0x2b
+>> -global escc.sunkbd_layout=43
+>>
+>> Both values above are the same and select swedish keyboard as explained in
+>> table 3-15 at
+>> https://docs.oracle.com/cd/E19683-01/806-6642/new-43/index.html
+>>
+>> Unless you want to do a full Solaris installation but happen to have
+>> access to a bios file, the easiest way to test that the patch works is to:
+>>
+>> qemu-system-sparc -global escc.sunkbd_layout=sv -bios /path/to/ss5.bin
+>>
+>> If you already happen to have a Solaris installation in a qemu disk image
+>> file you can easily try different keyboard layouts after this patch is
+>> applied.
+>>
+>> Signed-off-by: Henrik Carlqvist <hc1245@poolhem.se>
+>> ---
+>>   hw/char/escc.c         | 81 +++++++++++++++++++++++++++++++++++++++---
+>>   include/hw/char/escc.h |  1 +
+>>   2 files changed, 78 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/hw/char/escc.c b/hw/char/escc.c
+>> index 17a908c59b..0aac4f0f92 100644
+>> --- a/hw/char/escc.c
+>> +++ b/hw/char/escc.c
+>> @@ -31,6 +31,8 @@
+>>   #include "qemu/module.h"
+>>   #include "hw/char/escc.h"
+>>   #include "ui/console.h"
+>> +
+>> +#include "qemu/cutils.h"
+>>   #include "trace.h"
+>>   
+>>   /*
+>> @@ -190,7 +192,8 @@
+>>   #define R_MISC1I 14
+>>   #define R_EXTINT 15
+>>   
+>> -static void handle_kbd_command(ESCCChannelState *s, int val);
+>> +static unsigned char sun_keyboard_layout_dip_switch(const char
+>> *keyboard_layout);+static void handle_kbd_command(ESCCChannelState *s, int
+>> val, ESCCState *k);
+>>   static int serial_can_receive(void *opaque);
+>>   static void serial_receive_byte(ESCCChannelState *s, int ch);
+>>   
+>> @@ -657,7 +660,7 @@ static void escc_mem_write(void *opaque, hwaddr addr,
+>>                    */
+>>                   qemu_chr_fe_write_all(&s->chr, &s->tx, 1);
+>>               } else if (s->type == escc_kbd && !s->disabled) {
+>> -                handle_kbd_command(s, val);
+>> +                handle_kbd_command(s, val, serial);
+>>               }
+>>           }
+>>           s->rregs[R_STATUS] |= STATUS_TXEMPTY; /* Tx buffer empty */
+>> @@ -846,7 +849,76 @@ static QemuInputHandler sunkbd_handler = {
+>>       .event = sunkbd_handle_event,
+>>   };
+>>   
+>> -static void handle_kbd_command(ESCCChannelState *s, int val)
+>> +static unsigned char sun_keyboard_layout_dip_switch(const char
+>> *keyboard_layout)+{
+>> +    /* Return the value of the dip-switches in a SUN Type 5 keyboard */
+>> +    static unsigned char ret = 0xff;
+>> +
+>> +    if ((ret == 0xff) && keyboard_layout) {
+>> +        int i;
+>> +        struct layout_values {
+>> +            const char *lang;
+>> +            unsigned char dip;
+>> +        } languages[] =
+>> +    /* Dip values from table 3-16 Layouts for Type 4, 5, and 5c Keyboards
+>> */+            {
+>> +                {"en-us", 0x21}, /* U.S.A. (US5.kt) */
+>> +                                 /* 0x22 is some other US (US_UNIX5.kt)*/
+>> +                {"fr",    0x23}, /* France (France5.kt) */
+>> +                {"da",    0x24}, /* Denmark (Denmark5.kt) */
+>> +                {"de",    0x25}, /* Germany (Germany5.kt) */
+>> +                {"it",    0x26}, /* Italy (Italy5.kt) */
+>> +                {"nl",    0x27}, /* The Netherlands (Netherland5.kt) */
+>> +                {"no",    0x28}, /* Norway (Norway.kt) */
+>> +                {"pt",    0x29}, /* Portugal (Portugal5.kt) */
+>> +                {"es",    0x2a}, /* Spain (Spain5.kt) */
+>> +                {"sv",    0x2b}, /* Sweden (Sweden5.kt) */
+>> +                {"fr-ch", 0x2c}, /* Switzerland/French (Switzer_Fr5.kt) */
+>> +                {"de-ch", 0x2d}, /* Switzerland/German (Switzer_Ge5.kt) */
+>> +                {"en-gb", 0x2e}, /* Great Britain (UK5.kt) */
+>> +                {"ko",    0x2f}, /* Korea (Korea5.kt) */
+>> +                {"tw",    0x30}, /* Taiwan (Taiwan5.kt) */
+>> +                {"ja",    0x31}, /* Japan (Japan5.kt) */
+>> +                {"fr-ca", 0x32}, /* Canada/French (Canada_Fr5.kt) */
+>> +                {"hu",    0x33}, /* Hungary (Hungary5.kt) */
+>> +                {"pl",    0x34}, /* Poland (Poland5.kt) */
+>> +                {"cz",    0x35}, /* Czech (Czech5.kt) */
+>> +                {"ru",    0x36}, /* Russia (Russia5.kt) */
+>> +                {"lv",    0x37}, /* Latvia (Latvia5.kt) */
+>> +                {"tr",    0x38}, /* Turkey-Q5 (TurkeyQ5.kt) */
+>> +                {"gr",    0x39}, /* Greece (Greece5.kt) */
+>> +                {"ar",    0x3a}, /* Arabic (Arabic5.kt) */
+>> +                {"lt",    0x3b}, /* Lithuania (Lithuania5.kt) */
+>> +                {"nl-be", 0x3c}, /* Belgium (Belgian5.kt) */
+>> +                {"be",    0x3c}, /* Belgium (Belgian5.kt) */
+>> +            };
+>> +
+>> +        for (i = 0;
+>> +             i < sizeof(languages) / sizeof(struct layout_values);
+>> +             i++) {
+>> +            if (!strcmp(keyboard_layout, languages[i].lang)) {
+>> +                ret = languages[i].dip;
+>> +                return ret;
+>> +            }
+>> +        }
+>> +        /* Found no known language code */
+>> +
+>> +        if ((keyboard_layout[0] >= '0') && (keyboard_layout[0] <= '9')) {
+>> +            unsigned int tmp;
+>> +            /* As a fallback we also accept numeric dip switch value */
+>> +            if (!qemu_strtoui(keyboard_layout, NULL, 0, &tmp)) {
+>> +                ret = (unsigned char)tmp;
+>> +            }
+>> +        }
+>> +    }
+>> +    if (ret == 0xff) {
+>> +        /* Final fallback if keyboard_layout was not set or recognized */
+>> +        ret = 0x21; /* en-us layout */
+>> +    }
+>> +    return ret;
+>> +}
+>> +
+>> +static void handle_kbd_command(ESCCChannelState *s, int val, ESCCState *k)
+
+This feels like your keyboard_layout variable should be in ESCCChannelState rather 
+than ESCCState, which makes sense since the keyboard is a device plugged into one of 
+the serial ports.
+
+I see that there are 2 different naming conventions here: in some places you use 
+keyboard, others kbd. I think you should standardise on sunkbd_layout since it 
+emphasises that this is a Sun-specific feature.
+
+>>   {
+>>       trace_escc_kbd_command(val);
+>>       if (s->led_mode) { /* Ignore led byte */
+>> @@ -867,7 +939,7 @@ static void handle_kbd_command(ESCCChannelState *s, int
+>> val)
+>>       case 0xf:
+>>           clear_queue(s);
+>>           put_queue(s, 0xfe);
+>> -        put_queue(s, 0x21); /*  en-us layout */
+>> +        put_queue(s, sun_keyboard_layout_dip_switch(k->keyboard_layout));
+
+sunkbd_layout_dip_switch()
+
+>>           break;
+>>       default:
+>>           break;
+>> @@ -976,6 +1048,7 @@ static Property escc_properties[] = {
+>>       DEFINE_PROP_UINT32("chnAtype",  ESCCState, chn[1].type, 0),
+>>       DEFINE_PROP_CHR("chrB", ESCCState, chn[0].chr),
+>>       DEFINE_PROP_CHR("chrA", ESCCState, chn[1].chr),
+>> +    DEFINE_PROP_STRING("sunkbd_layout", ESCCState, keyboard_layout),
+
+DEFINE_PROP_STRING("chrA-sunkbd-layout", ESCCState, chn[1].sunkbd_layout),
+
+Our qdev property naming guidelines did state that hyphens should be used in 
+preference to underscores.
+
+>>       DEFINE_PROP_END_OF_LIST(),
+>>   };
+>>   
+>> diff --git a/include/hw/char/escc.h b/include/hw/char/escc.h
+>> index 7e9482dee2..2830876a17 100644
+>> --- a/include/hw/char/escc.h
+>> +++ b/include/hw/char/escc.h
+>> @@ -56,6 +56,7 @@ struct ESCCState {
+>>       MemoryRegion mmio;
+>>       uint32_t disabled;
+>>       uint32_t frequency;
+>> +    char *keyboard_layout;
+>>   };
+>>   
+>>   #endif
+>> -- 
+>> 2.30.4
+
+
+ATB,
+
+Mark.
 
 
