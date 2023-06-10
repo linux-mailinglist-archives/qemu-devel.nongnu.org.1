@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C57372A998
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 09:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB31972A993
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 08:59:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7sYo-0002vQ-F1; Sat, 10 Jun 2023 02:58:54 -0400
+	id 1q7sYn-0002uz-EF; Sat, 10 Jun 2023 02:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sYh-0002pD-QU; Sat, 10 Jun 2023 02:58:48 -0400
+ id 1q7sYi-0002qh-Ew; Sat, 10 Jun 2023 02:58:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sYg-0005xe-5d; Sat, 10 Jun 2023 02:58:47 -0400
+ id 1q7sYg-00063Y-Qf; Sat, 10 Jun 2023 02:58:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 95F7CBE2C;
+ by isrv.corpit.ru (Postfix) with ESMTP id BEDACBE2D;
  Sat, 10 Jun 2023 09:58:01 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2E5F7B299;
+ by tsrv.corpit.ru (Postfix) with SMTP id 57995B29A;
  Sat, 10 Jun 2023 09:58:01 +0300 (MSK)
-Received: (nullmailer pid 1107529 invoked by uid 1000);
+Received: (nullmailer pid 1107532 invoked by uid 1000);
  Sat, 10 Jun 2023 06:57:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 12/16] linux-user: add comments for TARGET_NR_[gs]etgroups{, 32}
-Date: Sat, 10 Jun 2023 09:57:50 +0300
-Message-Id: <725160fe56eb9f6b9b13214b9adf519c25b9d527.1686379708.git.mjt@tls.msk.ru>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 13/16] linux-user: Return EINVAL for getgroups() with negative
+ gidsetsize
+Date: Sat, 10 Jun 2023 09:57:51 +0300
+Message-Id: <8fbf89a9669520ac09b3ae0013ff3eb34f8cab23.1686379708.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1686379708.git.mjt@tls.msk.ru>
 References: <cover.1686379708.git.mjt@tls.msk.ru>
@@ -58,57 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are 2 pairs of identical code (with different types)
-for TARGET_NR_setgroups & TARGET_NR_setgroups32, and
-for TARGET_NR_getgroups & TARGET_NR_getgroups32.  Add
-comments stating this fact, so that further modifications
-are done in two places.
+From: Peter Maydell <peter.maydell@linaro.org>
 
+Coverity doesn't like the way we might end up calling getgroups()
+with a NULL grouplist pointer. This is fine for the special case
+of gidsetsize == 0, but we will also do it if the guest passes
+us a negative gidsetsize. (CID 1512465)
+
+Explicitly fail the negative gidsetsize with EINVAL, as the kernel
+does. This means we definitely only call the libc getgroups()
+with valid parameters. It also brings the getgroups() code in
+to line with the setgroups() code.
+
+Possibly Coverity may still complain about getgroups(0, NULL), but
+that would be a false positive.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/syscall.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ linux-user/syscall.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 83685f0aa5..94256cc262 100644
+index 94256cc262..f2cb101d83 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -11670,7 +11670,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-     case TARGET_NR_setregid:
-         return get_errno(setregid(low2highgid(arg1), low2highgid(arg2)));
-     case TARGET_NR_getgroups:
--        {
-+        { /* the same code as for TARGET_NR_getgroups32 */
-             int gidsetsize = arg1;
-             target_id *target_grouplist;
+@@ -11676,7 +11676,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
              g_autofree gid_t *grouplist = NULL;
-@@ -11701,7 +11701,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             return ret;
-         }
-     case TARGET_NR_setgroups:
--        {
-+        { /* the same code as for TARGET_NR_setgroups32 */
-             int gidsetsize = arg1;
-             target_id *target_grouplist;
+             int i;
+ 
+-            if (gidsetsize > NGROUPS_MAX) {
++            if (gidsetsize > NGROUPS_MAX || gidsetsize < 0) {
+                 return -TARGET_EINVAL;
+             }
+             if (gidsetsize > 0) {
+@@ -12012,7 +12012,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
              g_autofree gid_t *grouplist = NULL;
-@@ -12006,7 +12006,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #endif
- #ifdef TARGET_NR_getgroups32
-     case TARGET_NR_getgroups32:
--        {
-+        { /* the same code as for TARGET_NR_getgroups */
-             int gidsetsize = arg1;
-             uint32_t *target_grouplist;
-             g_autofree gid_t *grouplist = NULL;
-@@ -12038,7 +12038,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #endif
- #ifdef TARGET_NR_setgroups32
-     case TARGET_NR_setgroups32:
--        {
-+        { /* the same code as for TARGET_NR_setgroups */
-             int gidsetsize = arg1;
-             uint32_t *target_grouplist;
-             g_autofree gid_t *grouplist = NULL;
+             int i;
+ 
+-            if (gidsetsize > NGROUPS_MAX) {
++            if (gidsetsize > NGROUPS_MAX || gidsetsize < 0) {
+                 return -TARGET_EINVAL;
+             }
+             if (gidsetsize > 0) {
 -- 
 2.39.2
 
