@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604D072AB0B
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 12:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB9B72AB08
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 12:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7wH3-0006ra-Qm; Sat, 10 Jun 2023 06:56:49 -0400
+	id 1q7wH9-0006w5-GG; Sat, 10 Jun 2023 06:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q7wH1-0006qi-Od
- for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:47 -0400
+ id 1q7wH7-0006ve-Jh
+ for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:53 -0400
 Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q7wH0-000349-85
- for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:47 -0400
+ id 1q7wH6-00034S-0S
+ for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=c1eHoRDZMRsXuakpBXFZ0U/le1Sii/aMXLLhTU6FKuY=; b=Jz4bvaZNm52f4i14QXLkR6TZJf
- 894d70mfT1LLqg1m7ws/jfG3XbaYrE594/KE1BvnXM1bh1tFyOMvxTpmIP7RqbF3xYUKiXlkbh8qJ
- nOwkqxesOlFKuhqYMdAEOqvHJBAgpRxobuT94okIOf2SVzgDPAILqbvyQ9QamurAQCRg=;
+ bh=RO1cA5JHL4Vobd8xvkxn6MxtyrWdifrnyYHF9tlg5wY=; b=Ri7vOVF7tI+n1U9oWLbr0ahOuS
+ 5dAkQK2WdIYvGU4HJhwjjxU8eOXcqWUWsQHae02Mr+u5p79O6S9m3qP5VgAFak2gZ1l2SGyA5A7Ug
+ K3Gx3+lr6q/XndQKFKFiCrpsfoiYW000nGPDYeIjwyhSMKCXWhsABwMfC5wqtJb6ABxw=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH 3/6] target/tricore: Add LHA insn
-Date: Sat, 10 Jun 2023 12:55:44 +0200
-Message-Id: <20230610105547.159148-4-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 4/6] target/tricore: Add crc32l.w insn
+Date: Sat, 10 Jun 2023 12:55:45 +0200
+Message-Id: <20230610105547.159148-5-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230610105547.159148-1-kbastian@mail.uni-paderborn.de>
 References: <20230610105547.159148-1-kbastian@mail.uni-paderborn.de>
@@ -42,8 +42,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.10.104517, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.10.600000
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=239495, da=174003668, mc=20, sc=0,
- hc=20, sp=0, fso=239495, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=239501, da=174003674, mc=22, sc=0,
+ hc=22, sp=0, fso=239501, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -73,71 +73,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c       | 14 ++++++++++++--
- target/tricore/tricore-opcodes.h |  9 ++++++++-
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ target/tricore/helper.h          |  3 ++-
+ target/tricore/op_helper.c       | 10 +++++++++-
+ target/tricore/translate.c       | 12 ++++++++++--
+ target/tricore/tricore-opcodes.h |  3 ++-
+ 4 files changed, 23 insertions(+), 5 deletions(-)
 
+diff --git a/target/tricore/helper.h b/target/tricore/helper.h
+index b64780c37d..24da5e97c0 100644
+--- a/target/tricore/helper.h
++++ b/target/tricore/helper.h
+@@ -131,7 +131,8 @@ DEF_HELPER_FLAGS_5(mul_h, TCG_CALL_NO_RWG_SE, i64, i32, i32, i32, i32, i32)
+ DEF_HELPER_FLAGS_5(mulm_h, TCG_CALL_NO_RWG_SE, i64, i32, i32, i32, i32, i32)
+ DEF_HELPER_FLAGS_5(mulr_h, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32, i32, i32)
+ /* crc32 */
+-DEF_HELPER_FLAGS_2(crc32, TCG_CALL_NO_RWG_SE, i32, i32, i32)
++DEF_HELPER_FLAGS_2(crc32_be, TCG_CALL_NO_RWG_SE, i32, i32, i32)
++DEF_HELPER_FLAGS_2(crc32_le, TCG_CALL_NO_RWG_SE, i32, i32, i32)
+ /* CSA */
+ DEF_HELPER_2(call, void, env, i32)
+ DEF_HELPER_1(ret, void, env)
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 54f54811d9..8ce404cb93 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -2284,7 +2284,7 @@ uint32_t helper_mulr_h(uint32_t arg00, uint32_t arg01,
+     return (result1 & 0xffff0000) | (result0 >> 16);
+ }
+ 
+-uint32_t helper_crc32(uint32_t arg0, uint32_t arg1)
++uint32_t helper_crc32_be(uint32_t arg0, uint32_t arg1)
+ {
+     uint8_t buf[4];
+     stl_be_p(buf, arg0);
+@@ -2292,6 +2292,14 @@ uint32_t helper_crc32(uint32_t arg0, uint32_t arg1)
+     return crc32(arg1, buf, 4);
+ }
+ 
++uint32_t helper_crc32_le(uint32_t arg0, uint32_t arg1)
++{
++    uint8_t buf[4];
++    stl_le_p(buf, arg0);
++
++    return crc32(arg1, buf, 4);
++}
++
+ /* context save area (CSA) related helpers */
+ 
+ static int cdc_increment(target_ulong *psw)
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 26b284bcec..898557d22a 100644
+index 898557d22a..250de80de5 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -7931,7 +7931,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
- 
- static void decode_32Bit_opc(DisasContext *ctx)
- {
--    int op1;
-+    int op1, op2;
-     int32_t r1, r2, r3;
-     int32_t address, const16;
-     int8_t b, const4;
-@@ -7982,9 +7982,19 @@ static void decode_32Bit_opc(DisasContext *ctx)
-         tcg_gen_qemu_ld_tl(cpu_gpr_d[r1], temp, ctx->mem_idx, MO_LEUW);
-         tcg_gen_shli_tl(cpu_gpr_d[r1], cpu_gpr_d[r1], 16);
+@@ -6190,13 +6190,21 @@ static void decode_rr_divide(DisasContext *ctx)
+         CHECK_REG_PAIR(r3);
+         gen_unpack(cpu_gpr_d[r3], cpu_gpr_d[r3+1], cpu_gpr_d[r1]);
          break;
--    case OPC1_32_ABS_LEA:
-+    case OPCM_32_ABS_LEA_LHA:
-         address = MASK_OP_ABS_OFF18(ctx->opcode);
-         r1 = MASK_OP_ABS_S1D(ctx->opcode);
-+
+-    case OPC2_32_RR_CRC32:
++    case OPC2_32_RR_CRC32: /* CRC32B.W in 1.6.2 */
+         if (has_feature(ctx, TRICORE_FEATURE_161)) {
+-            gen_helper_crc32(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
++            gen_helper_crc32_be(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         } else {
+             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+         }
+         break;
++    case OPC2_32_RR_CRC32L_W:
 +        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            op2 = MASK_OP_ABS_OP2(ctx->opcode);
-+            if (op2 == OPC2_32_ABS_LHA) {
-+                tcg_gen_movi_tl(cpu_gpr_a[r1], address << 14);
-+                break;
-+            }
-+            /* otherwise translate regular LEA */
++            gen_helper_crc32_le(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
++        } else {
++            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
 +        }
++        break;
 +
-         tcg_gen_movi_tl(cpu_gpr_a[r1], EA_ABS_FORMAT(address));
-         break;
- /* ABSB-format */
+     case OPC2_32_RR_POPCNT_W:
+         if (has_feature(ctx, TRICORE_FEATURE_162)) {
+             tcg_gen_ctpop_tl(cpu_gpr_d[r3], cpu_gpr_d[r1]);
 diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index 59aa39a7a5..9fab4bd75c 100644
+index 9fab4bd75c..be07f82ec1 100644
 --- a/target/tricore/tricore-opcodes.h
 +++ b/target/tricore/tricore-opcodes.h
-@@ -430,7 +430,7 @@ enum {
-     OPCM_32_ABS_STOREB_H                             = 0x25,
-     OPC1_32_ABS_STOREQ                               = 0x65,
-     OPC1_32_ABS_LD_Q                                 = 0x45,
--    OPC1_32_ABS_LEA                                  = 0xc5,
-+    OPCM_32_ABS_LEA_LHA                              = 0xc5,
- /* ABSB Format */
-     OPC1_32_ABSB_ST_T                                = 0xd5,
- /* B Format */
-@@ -592,6 +592,13 @@ enum {
-     OPC2_32_ABS_ST_B                             = 0x00,
-     OPC2_32_ABS_ST_H                             = 0x02,
- };
-+
-+/* OPCM_32_ABS_LEA_LHA */
-+enum {
-+    OPC2_32_ABS_LEA                              = 0x00,
-+    OPC2_32_ABS_LHA                              = 0x01,
-+};
-+
- /*
-  * Bit Format
-  */
+@@ -1139,7 +1139,8 @@ enum {
+     OPC2_32_RR_DVINIT_U                          = 0x0a,
+     OPC2_32_RR_PARITY                            = 0x02,
+     OPC2_32_RR_UNPACK                            = 0x08,
+-    OPC2_32_RR_CRC32                             = 0x03,
++    OPC2_32_RR_CRC32                             = 0x03, /* CRC32B.W in 1.6.2 */
++    OPC2_32_RR_CRC32L_W                          = 0x07, /* 1.6.2 only */
+     OPC2_32_RR_POPCNT_W                          = 0x22, /* 1.6.2 only */
+     OPC2_32_RR_DIV                               = 0x20,
+     OPC2_32_RR_DIV_U                             = 0x21,
 -- 
 2.40.1
 
