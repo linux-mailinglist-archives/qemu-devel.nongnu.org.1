@@ -2,87 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D84D72A674
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 01:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2851372A729
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 02:56:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7l53-0001uU-Kv; Fri, 09 Jun 2023 18:59:41 -0400
+	id 1q7mt3-0007aJ-39; Fri, 09 Jun 2023 20:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7l51-0001uM-QB
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 18:59:39 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <mohdyusuf@gmail.com>)
+ id 1q7m3i-0001C8-0T
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 20:02:22 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q7l4z-0003zl-St
- for qemu-devel@nongnu.org; Fri, 09 Jun 2023 18:59:39 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1b23f04e333so10037065ad.3
- for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 15:59:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mohdyusuf@gmail.com>)
+ id 1q7m3g-0002vP-9U
+ for qemu-devel@nongnu.org; Fri, 09 Jun 2023 20:02:21 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5147e8972a1so3973060a12.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Jun 2023 17:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686351575; x=1688943575;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LjdKC/yQ8eCPAjlJxYBF043KGpHNIiIUTdPhq2N4uI0=;
- b=sJxZpX7cgTP5xJ3XVEortBHxO+k0AOLBpLeX/qjkcQg0MvzN4ry3WRDH6pOhEZrg+f
- QmoUCvk4YaSEQVoke50L9oymZWywPhyN+2SS5+fCnX1c5uCksuiD6m7lIv3W/JPAMFsH
- 34qeW3OvCbUYBv3ECpx+cI7B/VBkN1NszV9o/EsFcd7nqlOMsKb7vjwm2CtP3dbwJcGV
- OZSugl2ABgo2UfK+i/X7nKJLfTFYJZO+4geX4eFEeV6l51R1TLfM3JN41F5B1j3iMDw4
- j1VlzxWPdQH/KwC9Ryj3Jsck8A/zE8idHWzljEMhcZanZNdTrrKskzDFL3eaS1/oJBpW
- spAg==
+ d=gmail.com; s=20221208; t=1686355335; x=1688947335;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=/QuchKypPQ0B3Gsi7xKJPyQzsRyESRF7ZuZ1xZgVaeE=;
+ b=XV1KvfDqgm46vXJvNxyNlqd0Jny3mQgnUYCk/1WuJf2QOMzFKDPoYTJST2gWOuhM3v
+ HXTEPCuOaWVaPk/kUmnb4rqf0bo67sEdJSE9g5qi+mWxDKyJlNlXbZgpYPT6WcGmqlUe
+ vL6O3ZUielUYyz/LEzkuplkEQ1YQIiYyOLjq6caFrTwESXPFJU+df6TBSAN5ygmXr0wS
+ So7TI9lodtbNHNc5aJeAGzJ+gHFzSfGxGeDL8Jp2XeOykcPs/26DOSJtZYDhM8UZysrJ
+ urBUSaFiZ4EgQBnof8yjh11H3Cz0/a/mfPYadV3wrIFDfs/cgINmIW3x/A+A2xOlAKUL
+ vjVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686351575; x=1688943575;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LjdKC/yQ8eCPAjlJxYBF043KGpHNIiIUTdPhq2N4uI0=;
- b=Zrs4iQUtN4tjUyW+SgwwZvr6KF6fIqKA2xtN78hvJDkwgKRFG7r5GKijFVJJNfOzr/
- ZzcVDspZ+TN9chd9vYh2r0M2aHDu8/8jok+lYHdBL3ocHJPlaeaWYkFNlsRAFrt/c10c
- jiP0NfFfCeVFGrAbALdLU1VPtYJD6VUQ/C1U/IBZLEB/xs3IyRogMjJl+KWTnp2AlCtJ
- XKwX/E/3b+cqy3dsrBt723usYCnlKS30oYKnaOS8iQMquE/wBKkbG9xJs2TT0M+OPknE
- 93YyWaCvube+5fKnnjyJYcY+in0Va+ikvsR3ZaEx1kdsnYAZm5Ftwhloe+zz5jtH6DUK
- cD+A==
-X-Gm-Message-State: AC+VfDwYAfltg3vHxsePI+HXPT5KBfvOqJ7Z8UXCE31i9GHM12/RrmlE
- 1PVyksb7Rm5nypKzKfiM3ATujQ==
-X-Google-Smtp-Source: ACHHUZ57d2oP0GgqgfX9iJdHNijcNAQgKhEl6IyMUfxwrRDFQvfJgZ+dq+2y7stkMIxr/XLOh8gFMw==
-X-Received: by 2002:a17:903:2441:b0:1ac:63b6:f1ca with SMTP id
- l1-20020a170903244100b001ac63b6f1camr288774pls.0.1686351575327; 
- Fri, 09 Jun 2023 15:59:35 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:20be:c4cb:f609:8cca?
- ([2602:ae:1598:4c01:20be:c4cb:f609:8cca])
- by smtp.gmail.com with ESMTPSA id
- q66-20020a17090a17c800b0024dfbac9e2fsm5473154pja.21.2023.06.09.15.59.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 Jun 2023 15:59:34 -0700 (PDT)
-Message-ID: <3925158f-cd95-781f-5f46-fe3f5d8326ab@linaro.org>
-Date: Fri, 9 Jun 2023 15:59:32 -0700
+ d=1e100.net; s=20221208; t=1686355335; x=1688947335;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/QuchKypPQ0B3Gsi7xKJPyQzsRyESRF7ZuZ1xZgVaeE=;
+ b=A+AN6RQPValK0fp5+aWcRiWQm5iO/kztxbADDzdSJC3sw/r4v1/c2tZ/4QOcR37zKw
+ Ch3zVvloPCRmmXdiGfsMNC3fpGBgeVGPWNfPKOKlPNbA2Z2PoORIaWxwIMehqmDTKfa7
+ /pekDBAFAntLBRK0TILwT/n8GjVm4aLYusXbRe2xr88oRixj+4jFPFRY8gKmY0JVANe+
+ te/L+AQsmizkRGFzJnIpMHH42YEFDvU9LCdW0CK7aIqzg+GRSWhXFyat3KaLixdI8Gc7
+ ML0QOpQYBhRT6sHgcvCUX1pZ2LbTsbSSoYzqVxNjW2g/oTPqhtiYqRJy/4abA7DkNlD7
+ mvzw==
+X-Gm-Message-State: AC+VfDxLaF5oN371UDNwaPPwzODvoEsiBCYSZrnIFi0s8ZmazEl84AYI
+ hRUvDvSvifDHpzMVYGNscDuJGSxel6M0bMx+ivHS4hsh7lUl5A==
+X-Google-Smtp-Source: ACHHUZ6oEgBuw7cFbBUD1yTlSYXyWw1CqaLbgVLnTjKg3P83fYD9JvKhoWgISXy9vU0yCzsUE9WD+FCk7S6JSEAnXnA=
+X-Received: by 2002:a17:906:db0c:b0:978:ab4a:2154 with SMTP id
+ xj12-20020a170906db0c00b00978ab4a2154mr3435975ejb.1.1686355334807; Fri, 09
+ Jun 2023 17:02:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL v4 09/10] hw/arm: introduce xenpvh machine
-Content-Language: en-US
-To: Stefano Stabellini <sstabellini@kernel.org>, peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org, vikram.garhwal@amd.com,
- Stefano Stabellini <stefano.stabellini@amd.com>
-References: <alpine.DEB.2.22.394.2306091007210.3803068@ubuntu-linux-20-04-desktop>
- <20230609170751.4059054-9-sstabellini@kernel.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230609170751.4059054-9-sstabellini@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+From: Mohd Yusuf Abdul Hamid <mohdyusuf@gmail.com>
+Date: Fri, 9 Jun 2023 17:01:38 -0700
+Message-ID: <CALKsAjDBgWvuG5Q8r6N44-VdX8+8zozkN=EZhXJ-8n8DXz2DqA@mail.gmail.com>
+Subject: QEMU virt (arm64) does not honor reserved-memory set in device tree
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000b2455b05fdbb329c"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=mohdyusuf@gmail.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 09 Jun 2023 20:55:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,65 +81,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/9/23 10:07, Stefano Stabellini wrote:
-> From: Vikram Garhwal<vikram.garhwal@amd.com>
-> 
-> Add a new machine xenpvh which creates a IOREQ server to register/connect with
-> Xen Hypervisor.
-> 
-> Optional: When CONFIG_TPM is enabled, it also creates a tpm-tis-device, adds a
-> TPM emulator and connects to swtpm running on host machine via chardev socket
-> and support TPM functionalities for a guest domain.
-> 
-> Extra command line for aarch64 xenpvh QEMU to connect to swtpm:
->      -chardev socket,id=chrtpm,path=/tmp/myvtpm2/swtpm-sock \
->      -tpmdev emulator,id=tpm0,chardev=chrtpm \
->      -machine tpm-base-addr=0x0c000000 \
-> 
-> swtpm implements a TPM software emulator(TPM 1.2 & TPM 2) built on libtpms and
-> provides access to TPM functionality over socket, chardev and CUSE interface.
-> Github repo:https://github.com/stefanberger/swtpm
-> Example for starting swtpm on host machine:
->      mkdir /tmp/vtpm2
->      swtpm socket --tpmstate dir=/tmp/vtpm2 \
->      --ctrl type=unixio,path=/tmp/vtpm2/swtpm-sock &
-> 
-> Signed-off-by: Vikram Garhwal<vikram.garhwal@amd.com>
-> Signed-off-by: Stefano Stabellini<stefano.stabellini@amd.com>
-> Reviewed-by: Stefano Stabellini<sstabellini@kernel.org>
-> ---
->   docs/system/arm/xenpvh.rst    |  34 +++++++
->   docs/system/target-arm.rst    |   1 +
->   hw/arm/meson.build            |   2 +
->   hw/arm/xen_arm.c              | 181 ++++++++++++++++++++++++++++++++++
->   include/hw/arm/xen_arch_hvm.h |   9 ++
->   include/hw/xen/arch_hvm.h     |   2 +
->   6 files changed, 229 insertions(+)
->   create mode 100644 docs/system/arm/xenpvh.rst
->   create mode 100644 hw/arm/xen_arm.c
->   create mode 100644 include/hw/arm/xen_arch_hvm.h
+--000000000000b2455b05fdbb329c
+Content-Type: text/plain; charset="UTF-8"
 
-Fails testing.
+Hi,
+I am trying to reserve a portion of the system memory in QEMU (arm64 virt),
+v7.2.1 - but the kernel never honors the reserved memory area and keeps
+using the area.
 
-Summary of Failures:
-  10/423 qemu:qtest+qtest-aarch64 / qtest-aarch64/test-hmp                  ERROR 
-161.45s   killed by signal 6 SIGABRT
-210/423 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test                  ERROR 
-327.56s   killed by signal 6 SIGABRT
+Say, I dumped out DTB and added:
 
-# starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-669817.sock -qtest-log 
-/dev/null -chardev socket,path=/tmp/qtest-669817.qmp,id=char0 -mon 
-chardev=char0,mode=control -display none -machine xenpvh -accel qtest
-qemu-system-aarch64: The -accel and "-machine accel=" options are incompatible
-socket_accept failed: Resource temporarily unavailable
-**
-ERROR:../src/tests/qtest/libqtest.c:474:qtest_init_without_qmp_handshake: assertion 
-failed: (s->fd >= 0 && s->qmp_fd >= 0)
-Bail out! ERROR:../src/tests/qtest/libqtest.c:474:qtest_init_without_qmp_handshake: 
-assertion failed: (s->fd >= 0 && s->qmp_fd >= 0)
-../src/tests/qtest/libqtest.c:186: kill_qemu() tried to terminate QEMU process but 
-encountered exit status 1 (expected 0)
+reserved-memory {
+  #address-cells = <0x02>;
+  #size-cells = <0x02>;
 
+  rsvdram@50000000 {
+  no-map;
+  reg = <0x00 0x50000000 0x00 0x20000000>;
+  };
+};
 
-r~
+When booted, /proc/iomem still shows the kernel is using the entire space -
+eg 2GB.
+
+Is this a supported feature or I would need to modify the virt.c and define
+scratch area for some device driver scratch area.
+
+Mohd Yusuf Abdul Hamid
+
+--000000000000b2455b05fdbb329c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi,<div>I am trying to reserve a portion of the system mem=
+ory in QEMU (arm64 virt), v7.2.1 - but the kernel never honors the reserved=
+ memory area and keeps using the area.</div><div><br></div><div>Say, I dump=
+ed out DTB and added:</div><div><br></div><div>reserved-memory {<br>=C2=A0 =
+#address-cells =3D &lt;0x02&gt;;<br>=C2=A0 #size-cells =3D &lt;0x02&gt;;<br=
+><br>=C2=A0 rsvdram@50000000 {<br>=C2=A0 no-map;<br>=C2=A0 reg =3D &lt;0x00=
+ 0x50000000 0x00 0x20000000&gt;;<br>=C2=A0 };<br>	};<br></div><div><br></di=
+v><div>When booted, /proc/iomem still shows the kernel is using the entire =
+space - eg 2GB.=C2=A0</div><div><br></div><div>Is this a supported feature =
+or I would need to modify the virt.c and define scratch area for some devic=
+e driver scratch area.</div><div><br clear=3D"all"><div><div dir=3D"ltr" cl=
+ass=3D"gmail_signature" data-smartmail=3D"gmail_signature">Mohd Yusuf Abdul=
+ Hamid</div></div></div></div>
+
+--000000000000b2455b05fdbb329c--
 
