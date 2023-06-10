@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589A272ABD1
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 290CE72ABB7
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:33:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7yi5-0005CJ-RZ; Sat, 10 Jun 2023 09:32:53 -0400
+	id 1q7yi9-0005Ht-1t; Sat, 10 Jun 2023 09:32:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7yi4-0005BK-G4; Sat, 10 Jun 2023 09:32:52 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1q7yi7-0005GB-5F; Sat, 10 Jun 2023 09:32:55 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7yi2-0007jN-TE; Sat, 10 Jun 2023 09:32:52 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-39c77cf32deso1164280b6e.0; 
- Sat, 10 Jun 2023 06:32:50 -0700 (PDT)
+ id 1q7yi5-0007jc-MQ; Sat, 10 Jun 2023 09:32:54 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-55afa2472d9so1793675eaf.0; 
+ Sat, 10 Jun 2023 06:32:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686403969; x=1688995969;
+ d=gmail.com; s=20221208; t=1686403972; x=1688995972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+To2/YJ6TCkaBB4yMFK0NMzrQ35wgpmINRBjFlxrk0M=;
- b=AXs/MSArX0Z3XqgXlulhjDnEE6B9SaJWBqKde18TvdvA6g1IP/gynahoEF3taBUwPy
- O2kss7NH7yDswWOHeVtxkin5xo3Zb/WDMQXCh5Hq6Ub5Is/hQtst3Px7Q/tbIk3BlVlG
- bJfbN3RUfCaZO2c42QG+76ME9oOMNQqOoWtv1cADv+SazBeDq9IvedVMQIekUtyll0sk
- 2px6bUVlpOVAaeI+i986ahMeEzU6ucnxr7VhTcpdeoDk+7hyGk4LVuABmlMdMt8TxR6y
- NV1JEtRT4BHQ4rs/6m0Ag3qg0JrkG2NbuGGHf87KZx/33SEABg+MbbMRCalW64RKf002
- 21NA==
+ bh=TLzeS7gztbAOBe2aKBq1DtCEM+pkrfXK/dxGLvsedFc=;
+ b=G2WoAZFUISa6vtPMinlBcsX8n9oMbWorUOyPyrUdhBrYl/XrY4L59Y/qx6S1O+zpl2
+ X4qXc8whicejvXUKhb5ueu11ol6utrR3eKP3JGrhTu7Eu/z7IdapaVxolU4Xnmt3oUH7
+ q3oMyNlFRBsNN9s3kpHOsyqcvl9rhcXCHWX297b9KUiy9gA8teacyweay00rQMg57HaB
+ 6Vqi7wNC3xjZGAZZD6RIoq7AA83WjT/luFqNhA6vC112ubdHTZDLVm9hDDEQQba21xIw
+ /ENBNqGwgxsKntrNtN78xdKGVhc8mCN2Hns4cJgDI+gsCzrhPJOg3Z03JyAkeFoUEjk/
+ E1sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686403969; x=1688995969;
+ d=1e100.net; s=20221208; t=1686403972; x=1688995972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+To2/YJ6TCkaBB4yMFK0NMzrQ35wgpmINRBjFlxrk0M=;
- b=dxUVHVrEhiHyTLEBna8WNcMUXkt06z+WrGMYSyNqxMEKEELX/1/NJEAnBujEAj10UA
- 7tpATK9IVxqHH+hXxm96L6mY3PoCvvXf74RxbFn3phQKaMle5SZdY3B1rzfIMwzsdGq7
- 6Oqw4gNN9dl6JtIaC2U/OzomEsppr4ejZcKdVoaz/yHHbFmz5D38Zku74rIoIHidswDU
- 1NckCOBXeK0kW6Mg77j2kLKXxakQNukPDVje5VIGY6UPf3Y6+n21bHEAoPrp866Na1Qb
- p3ylr7RhevriwEcUHwg/jOD2zuAcQtF6KI25V0Qzzx7WYrkhPeH97Z5gE2XwG4KN6/rN
- wK4A==
-X-Gm-Message-State: AC+VfDzIJBk5asxs69nEHAzkthjTqZKok85Z1jsiHhGad+xqpBSC8k87
- 3pwljB4VeyVwFGw/WFVVOPUHn3WE/64=
-X-Google-Smtp-Source: ACHHUZ5HyvTOdbAaxslG8tKjEkOGN5RfMVwWoxEqOs8YTEXyCPnq9ZIDosrkuRyGVWS57Z35J/Ibmw==
-X-Received: by 2002:a05:6808:220c:b0:39a:98bc:10e8 with SMTP id
- bd12-20020a056808220c00b0039a98bc10e8mr752420oib.28.1686403969383; 
- Sat, 10 Jun 2023 06:32:49 -0700 (PDT)
+ bh=TLzeS7gztbAOBe2aKBq1DtCEM+pkrfXK/dxGLvsedFc=;
+ b=Cox1Z/57AN8UE7ZBj/Av1iYxSzU9LwPDNqJJFnVacscT6MVNAQxPSca4oiL9Q4UuMY
+ DZqZMazPlO0egimxHuLYIWFnRrdfWcR5enws66U+TeAqP0YB360ID56eIRve6/ZWhRqh
+ iRbqCCtib6JHB5TPlsUuDbWV9cXtc2ZOEpJD6fafiY+Ok2DFB/Eb9vS1ZY62FXelLAwc
+ eJFAekTnJksV6iqcKByv57f4y8KJ6+raV1jPLE2eorjJhXnJCpxKbV5maYbnO3WGi2e/
+ U2DOrgzMhb2zPMkfDFOLgEDXkWXzh/Rb8kGB2KYm+K5InQzepZfxpPpd9HDVtbgm+uL3
+ 7VOg==
+X-Gm-Message-State: AC+VfDwHvQxmqPNxRPoFZOXD8T/r1Xfh5589Or95+TnRataB6iPOzJaM
+ GZnzckJbySjzqAl2ZcQeDYF8jbgRWOU=
+X-Google-Smtp-Source: ACHHUZ4wBQ02xXVpn57yA5vhc0r4N87Xk2oC1lgOX9+vglcR8jNqwMsLG+RcSZUw85NkNpIvJVxYFQ==
+X-Received: by 2002:aca:bcc1:0:b0:39c:6024:430a with SMTP id
+ m184-20020acabcc1000000b0039c6024430amr785785oif.8.1686403971819; 
+ Sat, 10 Jun 2023 06:32:51 -0700 (PDT)
 Received: from grind.. ([177.170.117.52]) by smtp.gmail.com with ESMTPSA id
- y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.32.47
+ y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.32.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 10 Jun 2023 06:32:49 -0700 (PDT)
+ Sat, 10 Jun 2023 06:32:51 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/29] target/ppc: Implement gathering irq statistics
-Date: Sat, 10 Jun 2023 10:31:31 -0300
-Message-Id: <20230610133132.290703-29-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 29/29] hw/ppc/Kconfig: MAC_NEWWORLD should always select
+ USB_OHCI_PCI
+Date: Sat, 10 Jun 2023 10:31:32 -0300
+Message-Id: <20230610133132.290703-30-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230610133132.290703-1-danielhb413@gmail.com>
 References: <20230610133132.290703-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,94 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Thomas Huth <thuth@redhat.com>
 
-Count exceptions which can be queried with info irq monitor command.
+The PowerMacs have an OHCI controller soldered on the motherboard,
+so this should always be enabled for the "mac99" machine.
+This fixes the problem that QEMU aborts when the user tries to run
+the "mac99" machine with a build that has been compiled with the
+"--without-default-devices" configure switch.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-Id: <20230530102041.55527-1-thuth@redhat.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/cpu.h         |  1 +
- target/ppc/cpu_init.c    | 18 ++++++++++++++++++
- target/ppc/excp_helper.c |  1 +
- 3 files changed, 20 insertions(+)
+ hw/ppc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 20508bac5e..0ee2adc105 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1195,6 +1195,7 @@ struct CPUArchState {
-     int error_code;
-     uint32_t pending_interrupts;
- #if !defined(CONFIG_USER_ONLY)
-+    uint64_t excp_stats[POWERPC_EXCP_NB];
-     /*
-      * This is the IRQ controller, which is implementation dependent and only
-      * relevant when emulating a complete machine. Note that this isn't used
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index d4ef074afb..9f97222655 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -48,6 +48,7 @@
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index a689d9b219..5dfbf47ef5 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -115,6 +115,7 @@ config MAC_NEWWORLD
+     select MAC_PMU
+     select UNIN_PCI
+     select FW_CFG_PPC
++    select USB_OHCI_PCI
  
- #ifndef CONFIG_USER_ONLY
- #include "hw/boards.h"
-+#include "hw/intc/intc.h"
- #endif
- 
- /* #define PPC_DEBUG_SPR */
-@@ -7123,6 +7124,16 @@ static bool ppc_cpu_is_big_endian(CPUState *cs)
-     return !FIELD_EX64(env->msr, MSR, LE);
- }
- 
-+static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
-+                              uint64_t **irq_counts, unsigned int *nb_irqs)
-+{
-+    CPUPPCState *env = &POWERPC_CPU(obj)->env;
-+
-+    *irq_counts = env->excp_stats;
-+    *nb_irqs = ARRAY_SIZE(env->excp_stats);
-+    return true;
-+}
-+
- #ifdef CONFIG_TCG
- static void ppc_cpu_exec_enter(CPUState *cs)
- {
-@@ -7286,6 +7297,7 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
-     cc->gdb_write_register = ppc_cpu_gdb_write_register;
- #ifndef CONFIG_USER_ONLY
-     cc->sysemu_ops = &ppc_sysemu_ops;
-+    INTERRUPT_STATS_PROVIDER_CLASS(oc)->get_statistics = ppc_get_irq_stats;
- #endif
- 
-     cc->gdb_num_core_regs = 71;
-@@ -7323,6 +7335,12 @@ static const TypeInfo ppc_cpu_type_info = {
-     .abstract = true,
-     .class_size = sizeof(PowerPCCPUClass),
-     .class_init = ppc_cpu_class_init,
-+#ifndef CONFIG_USER_ONLY
-+    .interfaces = (InterfaceInfo[]) {
-+          { TYPE_INTERRUPT_STATS_PROVIDER },
-+          { }
-+    },
-+#endif
- };
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 8b95410c36..12d8a7257b 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1655,6 +1655,7 @@ static void powerpc_excp(PowerPCCPU *cpu, int excp)
-     qemu_log_mask(CPU_LOG_INT, "Raise exception at " TARGET_FMT_lx
-                   " => %s (%d) error=%02x\n", env->nip, powerpc_excp_name(excp),
-                   excp, env->error_code);
-+    env->excp_stats[excp]++;
- 
-     switch (env->excp_model) {
-     case POWERPC_EXCP_40x:
+ config E500
+     bool
 -- 
 2.40.1
 
