@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4996672ABC5
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F15D672ABBC
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:34:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7yha-0004ij-Pz; Sat, 10 Jun 2023 09:32:22 -0400
+	id 1q7yhe-0004kR-AS; Sat, 10 Jun 2023 09:32:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7yhX-0004g9-UO; Sat, 10 Jun 2023 09:32:20 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1q7yha-0004jn-7f; Sat, 10 Jun 2023 09:32:22 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7yhW-0007dh-64; Sat, 10 Jun 2023 09:32:19 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-39c7f5706f0so1293921b6e.3; 
- Sat, 10 Jun 2023 06:32:17 -0700 (PDT)
+ id 1q7yhY-0007eE-K8; Sat, 10 Jun 2023 09:32:21 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-55b77d50465so93865eaf.0; 
+ Sat, 10 Jun 2023 06:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686403936; x=1688995936;
+ d=gmail.com; s=20221208; t=1686403939; x=1688995939;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ivav2ycIvnakR2ciKDG+0QBgSTpSm1FFjGE6ZxOkydU=;
- b=HWIha1pMgg3qaDIkX9W5bH3J4Ejn+4ele3/4XNHGGRRalurKRLyJTda+Gz51CSobCa
- iIHsXGUs+i6WhzRYUCplxa/uvt4vttz4778dHo6NbfrYpnOo1Dxb/YfmTY9vzkd9YbQX
- hoZcLN43hDSu40kta/Ni6m/KGF7V6e9c2rT2/US0lqoWbSZcH8L+g4oO8PDrU15+8Efz
- TB92zuUPg9j3LOJzT8Umu270UjDEBskH2DQpSNLwQRlo4M54s4SP/lSad/C0dVvsmbBb
- K2cqGseK5pzZcVt7ka/7NdKD3MReUz6N92IJYqDsILXlABFoDfGoLwqY80d4i+V5k4qW
- TTHw==
+ bh=qhjrjAHVfDmMP6keqerIsH20Muxa9kDhjH4N6Qa7GQQ=;
+ b=n0qzAksFXImeqbALnp4yBMtBIgMevm+g3+SmiuwZyZdbV0+0UBUL2Q1lSR339aL4+U
+ F4/44VYsFx7O+eyli5y7pmK8AFDfyYdW2RdWsH4BZGgIgqcfYKn2C+JRuCg4TQ3rniXG
+ iU3po+D61EXWjmsXTDZpdQ9/oJaqQQE5gsGcYCHjJfESZfKraYWwMZDNp5zP19Gw8uFf
+ kJdQ4jPD6cN6DYZbeg/iyLnvAGhs4fBoz0L+wszUyLzSGvTn5Aqgb6Mr6Rdp4sGlKbrV
+ TtyaZM4E+RsFMoNLeRbF7yDmsPJlenMnY6ygcjuTzhusjxEGI6eB0hO5y1He6e3Vws20
+ Kjkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686403936; x=1688995936;
+ d=1e100.net; s=20221208; t=1686403939; x=1688995939;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ivav2ycIvnakR2ciKDG+0QBgSTpSm1FFjGE6ZxOkydU=;
- b=gaqNijClTDScHzgvb3MwhnJEnzCMH0x++2CBA2nden8eRIvcxBcpN/rLRrtWINjAty
- 15fwVX2WJrXxKGb0ZsrqIB0QHM4x5MozET/0CoZ4MTj3pn4nxo22xhePXOkLcxMzZaKz
- 4sPOVJUrL7EaS8946DCLu8XaQ/uzwo4d6fMWlqsh+k5YO9MX7c3GQAa/xpN0t+/0C3mO
- vdHqAVoyY9qH5JhfKv3dWzJUGNKerIAoah4ZyfckSMEx0i+Lf0dN+sM4iLY/E4crpmXx
- eDLt3yNeJywIioKzuH6TrcyoLDPgZlf8kScs77ZT506wDyU9MpBPJJGsiIQXIT/+hpdx
- X3Lg==
-X-Gm-Message-State: AC+VfDx87CNGCQzNUC78Bmgnub65ngIB/dgLXs251SSmd91nNdRKdIdM
- GLrAksDv9g5Hw94e540h0fc7EAg5mc8=
-X-Google-Smtp-Source: ACHHUZ42kLmON6mz3KvuqWD4GtxsK3us+Zra2I24EaEgltAIYBpT0FLKfeBSESU0q3pERzpvjRtBzQ==
-X-Received: by 2002:a05:6808:150d:b0:398:57fe:5fa with SMTP id
- u13-20020a056808150d00b0039857fe05famr1184716oiw.29.1686403936700; 
- Sat, 10 Jun 2023 06:32:16 -0700 (PDT)
+ bh=qhjrjAHVfDmMP6keqerIsH20Muxa9kDhjH4N6Qa7GQQ=;
+ b=EgXOHla301EJP0cO33gLjRDlfLdYI/FC4Ygwg0BmYeTS4O+IsgtPC13zjXA3xpiDgq
+ 7RSAczsI6X64/FUkUNg88ScFrmuPklwe2k3occJ9U/rV+y71lNWgEE7vj5ZUiVG2BEAC
+ rIE38y8xOHkuIpm070O+BVSINAHkZLwcvwp3aaRwrbEXPlJBCyrpxgo5JUvBGaN14TET
+ ShQLSUAfh+bJF5c01irTJizkDqwG+mekSevilZ30XaDEW8xPjT5X7o8LF61+ZQ+1b+78
+ LPtpOGkOilgLQvhWdbU/VNld0sk6PV33g5gVjLtlvpFMrg20XLu5i2uStkcTXS6fcdR5
+ 8SMQ==
+X-Gm-Message-State: AC+VfDx7Nxtgq0eV6Dp82D55MNmiIm72MFSOx3r6pErNBfMiLIjzfHno
+ 04NxPdT7FQDvsTBDzW/hnHjme5FwxHg=
+X-Google-Smtp-Source: ACHHUZ4nvLdqyuu7rj82pK8pTZDK7K3mT/LqfU6eECIBVW8pqBBH4rqHfrCG+Q5+VkKnES4e6GwCZQ==
+X-Received: by 2002:a05:6808:1598:b0:39a:bde6:3eed with SMTP id
+ t24-20020a056808159800b0039abde63eedmr855886oiw.10.1686403938955; 
+ Sat, 10 Jun 2023 06:32:18 -0700 (PDT)
 Received: from grind.. ([177.170.117.52]) by smtp.gmail.com with ESMTPSA id
- y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.32.14
+ y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.32.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 10 Jun 2023 06:32:16 -0700 (PDT)
+ Sat, 10 Jun 2023 06:32:18 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 15/29] target/ppc: Move ppcemb_tlb_search() to mmu_common.c
-Date: Sat, 10 Jun 2023 10:31:18 -0300
-Message-Id: <20230610133132.290703-16-danielhb413@gmail.com>
+Subject: [PULL 16/29] target/ppc: Remove some unneded line breaks
+Date: Sat, 10 Jun 2023 10:31:19 -0300
+Message-Id: <20230610133132.290703-17-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230610133132.290703-1-danielhb413@gmail.com>
 References: <20230610133132.290703-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,107 +94,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-This function is the only reason why ppcemb_tlb_check() is not static
-to mmu_common.c but it also better fits in mmu_common.c so move it
-there.
+Make lines shorter and fix indentation in some functions prototypes.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-Id: <b64fd712a773558dea9b84945c57785546c0ae2e.1685448535.git.balaton@eik.bme.hu>
+Message-Id: <70952ba2d82141db1cf5cfcf4b227402be575874.1685448535.git.balaton@eik.bme.hu>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/cpu.h        |  4 +---
- target/ppc/mmu_common.c | 22 +++++++++++++++++++++-
- target/ppc/mmu_helper.c | 21 ---------------------
- 3 files changed, 22 insertions(+), 25 deletions(-)
+ target/ppc/cpu.h        | 8 +++-----
+ target/ppc/mmu_common.c | 8 +++-----
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 557e02e697..8001582d52 100644
+index 8001582d52..c7c2a5534c 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -1427,9 +1427,7 @@ void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp);
- int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb,
-                             hwaddr *raddrp, target_ulong address,
-                             uint32_t pid);
--int ppcemb_tlb_check(CPUPPCState *env, ppcemb_tlb_t *tlb,
--                            hwaddr *raddrp,
--                            target_ulong address, uint32_t pid, int i);
-+int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid);
- hwaddr booke206_tlb_to_page_size(CPUPPCState *env,
-                                         ppcmas_tlb_t *tlb);
+@@ -1424,12 +1424,10 @@ void store_booke_tsr(CPUPPCState *env, target_ulong val);
+ void ppc_tlb_invalidate_all(CPUPPCState *env);
+ void ppc_tlb_invalidate_one(CPUPPCState *env, target_ulong addr);
+ void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp);
+-int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb,
+-                            hwaddr *raddrp, target_ulong address,
+-                            uint32_t pid);
++int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
++                     target_ulong address, uint32_t pid);
+ int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid);
+-hwaddr booke206_tlb_to_page_size(CPUPPCState *env,
+-                                        ppcmas_tlb_t *tlb);
++hwaddr booke206_tlb_to_page_size(CPUPPCState *env, ppcmas_tlb_t *tlb);
  #endif
+ 
+ void ppc_store_fpscr(CPUPPCState *env, target_ulong val);
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 21a353c51a..845eee4c6f 100644
+index 845eee4c6f..a84bc7de88 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -489,7 +489,7 @@ static int get_segment_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+@@ -694,8 +694,7 @@ static int mmubooke_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     return ret;
  }
  
- /* Generic TLB check function for embedded PowerPC implementations */
--int ppcemb_tlb_check(CPUPPCState *env, ppcemb_tlb_t *tlb,
-+static int ppcemb_tlb_check(CPUPPCState *env, ppcemb_tlb_t *tlb,
-                             hwaddr *raddrp,
-                             target_ulong address, uint32_t pid, int i)
+-hwaddr booke206_tlb_to_page_size(CPUPPCState *env,
+-                                        ppcmas_tlb_t *tlb)
++hwaddr booke206_tlb_to_page_size(CPUPPCState *env, ppcmas_tlb_t *tlb)
  {
-@@ -516,6 +516,26 @@ int ppcemb_tlb_check(CPUPPCState *env, ppcemb_tlb_t *tlb,
-     return 0;
+     int tlbm_size;
+ 
+@@ -705,9 +704,8 @@ hwaddr booke206_tlb_to_page_size(CPUPPCState *env,
  }
  
-+/* Generic TLB search function for PowerPC embedded implementations */
-+int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid)
-+{
-+    ppcemb_tlb_t *tlb;
-+    hwaddr raddr;
-+    int i, ret;
-+
-+    /* Default return value is no match */
-+    ret = -1;
-+    for (i = 0; i < env->nb_tlb; i++) {
-+        tlb = &env->tlb.tlbe[i];
-+        if (ppcemb_tlb_check(env, tlb, &raddr, address, pid, i) == 0) {
-+            ret = i;
-+            break;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
- static int mmu40x_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-                                        target_ulong address,
-                                        MMUAccessType access_type)
-diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index e7275eaec1..d3ea7588f9 100644
---- a/target/ppc/mmu_helper.c
-+++ b/target/ppc/mmu_helper.c
-@@ -112,27 +112,6 @@ static void ppc6xx_tlb_store(CPUPPCState *env, target_ulong EPN, int way,
-     env->last_way = way;
- }
- 
--/* Generic TLB search function for PowerPC embedded implementations */
--static int ppcemb_tlb_search(CPUPPCState *env, target_ulong address,
--                             uint32_t pid)
--{
--    ppcemb_tlb_t *tlb;
--    hwaddr raddr;
--    int i, ret;
--
--    /* Default return value is no match */
--    ret = -1;
--    for (i = 0; i < env->nb_tlb; i++) {
--        tlb = &env->tlb.tlbe[i];
--        if (ppcemb_tlb_check(env, tlb, &raddr, address, pid, i) == 0) {
--            ret = i;
--            break;
--        }
--    }
--
--    return ret;
--}
--
- /* Helpers specific to PowerPC 40x implementations */
- static inline void ppc4xx_tlb_invalidate_all(CPUPPCState *env)
+ /* TLB check function for MAS based SoftTLBs */
+-int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb,
+-                            hwaddr *raddrp, target_ulong address,
+-                            uint32_t pid)
++int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
++                     target_ulong address, uint32_t pid)
  {
+     hwaddr mask;
+     uint32_t tlb_pid;
 -- 
 2.40.1
 
