@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC86872A994
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 08:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C883072A99C
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 09:00:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7sYF-0002ko-Dn; Sat, 10 Jun 2023 02:58:19 -0400
+	id 1q7sYi-0002lM-6V; Sat, 10 Jun 2023 02:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sYB-0002jK-8C; Sat, 10 Jun 2023 02:58:15 -0400
+ id 1q7sYC-0002k1-K4; Sat, 10 Jun 2023 02:58:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q7sY9-0005wF-P4; Sat, 10 Jun 2023 02:58:14 -0400
+ id 1q7sYB-0005wS-32; Sat, 10 Jun 2023 02:58:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 62134BE26;
+ by isrv.corpit.ru (Postfix) with ESMTP id AA78EBE27;
  Sat, 10 Jun 2023 09:58:00 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DF930B293;
- Sat, 10 Jun 2023 09:57:59 +0300 (MSK)
-Received: (nullmailer pid 1107511 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1E2F4B294;
+ Sat, 10 Jun 2023 09:58:00 +0300 (MSK)
+Received: (nullmailer pid 1107514 invoked by uid 1000);
  Sat, 10 Jun 2023 06:57:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Carlos Santos <casantos@redhat.com>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 06/16] meson: install keyboard maps only if necessary
-Date: Sat, 10 Jun 2023 09:57:44 +0300
-Message-Id: <890e37e27cd6b38a6e9bccf48c05700bab429b53.1686379708.git.mjt@tls.msk.ru>
+Subject: [PULL 07/16] target/m68k/fpu_helper: Use FloatRelation enum to hold
+ comparison result
+Date: Sat, 10 Jun 2023 09:57:45 +0300
+Message-Id: <d8ca9712f58f05f5668c43678f132330f2636ac3.1686379708.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1686379708.git.mjt@tls.msk.ru>
 References: <cover.1686379708.git.mjt@tls.msk.ru>
@@ -61,38 +63,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Carlos Santos <casantos@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-They are required only for system emulation (i.e. have_system is true).
+Use the FloatRelation enum to hold the comparison result (missed
+in commit 71bfd65c5f "softfloat: Name compare relation enum").
 
-Signed-off-by: Carlos Santos <casantos@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Inspired-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- pc-bios/keymaps/meson.build | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/m68k/fpu_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
-index 158a3b410c..bff3083313 100644
---- a/pc-bios/keymaps/meson.build
-+++ b/pc-bios/keymaps/meson.build
-@@ -47,7 +47,7 @@ if native_qemu_keymap.found()
-                        build_by_default: true,
-                        output: km,
-                        command: [native_qemu_keymap, '-f', '@OUTPUT@', args.split()],
--                       install: true,
-+                       install: have_system,
-                        install_dir: qemu_datadir / 'keymaps')
-   endforeach
+diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
+index 3a37d8f584..ab120b5f59 100644
+--- a/target/m68k/fpu_helper.c
++++ b/target/m68k/fpu_helper.c
+@@ -349,7 +349,7 @@ void HELPER(fsgldiv)(CPUM68KState *env, FPReg *res, FPReg *val0, FPReg *val1)
+     PREC_END();
+ }
  
-@@ -56,4 +56,6 @@ else
-   install_data(keymaps.keys(), install_dir: qemu_datadir / 'keymaps')
- endif
+-static int float_comp_to_cc(int float_compare)
++static int float_comp_to_cc(FloatRelation float_compare)
+ {
+     switch (float_compare) {
+     case float_relation_equal:
+@@ -367,7 +367,7 @@ static int float_comp_to_cc(int float_compare)
  
--install_data(['sl', 'sv'], install_dir: qemu_datadir / 'keymaps')
-+if have_system
-+  install_data(['sl', 'sv'], install_dir: qemu_datadir / 'keymaps')
-+endif
+ void HELPER(fcmp)(CPUM68KState *env, FPReg *val0, FPReg *val1)
+ {
+-    int float_compare;
++    FloatRelation float_compare;
+ 
+     float_compare = floatx80_compare(val1->d, val0->d, &env->fp_status);
+     env->fpsr = (env->fpsr & ~FPSR_CC_MASK) | float_comp_to_cc(float_compare);
 -- 
 2.39.2
 
