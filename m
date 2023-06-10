@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9703172AB07
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1E872AB05
 	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 12:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7wGs-0006ms-8s; Sat, 10 Jun 2023 06:56:38 -0400
+	id 1q7wGz-0006om-Sn; Sat, 10 Jun 2023 06:56:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q7wGq-0006md-3a
- for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:36 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+ id 1q7wGx-0006oO-Oy
+ for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:43 -0400
+Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q7wGo-00033P-Kb
- for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:35 -0400
+ id 1q7wGw-00033t-2h
+ for qemu-devel@nongnu.org; Sat, 10 Jun 2023 06:56:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=oAfWvlniy2wckuRjf5V2/iOxmoku2wFs7KQNkqmZAWI=; b=htMPxO1sxqjry3gJ2TQGh4SnNl
- 6zwin1TZMf86zZeYQCkec+Nr2ddTh/ofo0HnR1rvjDqO3hyHy48zMkO8WkKO3SbE2d9AcKM+Ut4fq
- u6GxECWS6Pk2tIjZ4V/2BzTHgf1yfJdnPLEFPKcnJdlWHZ7XxyctYHrkCW3D8LQU6uOE=;
+ bh=lgvQGM7RFslIpjYY2NgjWhMKP4yv9fsKzTY0UM2IqGM=; b=Esgr/BGDfORBuSxWVR+vahS5Pb
+ 6T+DKQS8ETU1UIaQVxnq61beXVvnasxg525x1ET7WKcm6/YzHzlu7aQRGs1ne9U6TVEuj5JmsK+e8
+ uYjn/y/FvpYCzVJMpffeqBfe62exrVhRwJX1IxBjokGxb1XlW1gZoy6EgxnGFoKC86bk=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH 1/6] target/tricore: Introduce ISA 1.6.2 feature
-Date: Sat, 10 Jun 2023 12:55:42 +0200
-Message-Id: <20230610105547.159148-2-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 2/6] target/tricore: Add popcnt.w insn
+Date: Sat, 10 Jun 2023 12:55:43 +0200
+Message-Id: <20230610105547.159148-3-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230610105547.159148-1-kbastian@mail.uni-paderborn.de>
 References: <20230610105547.159148-1-kbastian@mail.uni-paderborn.de>
@@ -41,20 +41,19 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.10.104517, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.10.600000
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=239484, da=174003657, mc=16, sc=0,
- hc=16, sp=0, fso=239484, re=0, sd=0, hd=0
+ AntiVirus-Data: 2023.6.10.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=239490, da=174003663, mc=18, sc=0,
+ hc=18, sp=0, fso=239490, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2001:638:502:c003::19;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,64 +70,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we also introduce the tc37x CPU that implements that ISA version.
-
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/cpu.c | 13 +++++++++++++
- target/tricore/cpu.h |  1 +
- 2 files changed, 14 insertions(+)
+ target/tricore/translate.c       | 7 +++++++
+ target/tricore/tricore-opcodes.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index 7fa113fed2..f15169bd1b 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -104,6 +104,10 @@ static void tricore_cpu_realizefn(DeviceState *dev, Error **errp)
-     }
- 
-     /* Some features automatically imply others */
-+    if (tricore_feature(env, TRICORE_FEATURE_162)) {
-+        set_feature(env, TRICORE_FEATURE_161);
-+    }
-+
-     if (tricore_feature(env, TRICORE_FEATURE_161)) {
-         set_feature(env, TRICORE_FEATURE_16);
-     }
-@@ -164,6 +168,14 @@ static void tc27x_initfn(Object *obj)
-     set_feature(&cpu->env, TRICORE_FEATURE_161);
- }
- 
-+static void tc37x_initfn(Object *obj)
-+{
-+    TriCoreCPU *cpu = TRICORE_CPU(obj);
-+
-+    set_feature(&cpu->env, TRICORE_FEATURE_162);
-+}
-+
-+
- #include "hw/core/sysemu-cpu-ops.h"
- 
- static const struct SysemuCPUOps tricore_sysemu_ops = {
-@@ -226,6 +238,7 @@ static const TypeInfo tricore_cpu_type_infos[] = {
-     DEFINE_TRICORE_CPU_TYPE("tc1796", tc1796_initfn),
-     DEFINE_TRICORE_CPU_TYPE("tc1797", tc1797_initfn),
-     DEFINE_TRICORE_CPU_TYPE("tc27x", tc27x_initfn),
-+    DEFINE_TRICORE_CPU_TYPE("tc37x", tc37x_initfn),
- };
- 
- DEFINE_TYPES(tricore_cpu_type_infos)
-diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
-index d98a3fb671..041fc0b6e5 100644
---- a/target/tricore/cpu.h
-+++ b/target/tricore/cpu.h
-@@ -273,6 +273,7 @@ enum tricore_features {
-     TRICORE_FEATURE_131,
-     TRICORE_FEATURE_16,
-     TRICORE_FEATURE_161,
-+    TRICORE_FEATURE_162,
- };
- 
- static inline int tricore_feature(CPUTriCoreState *env, int feature)
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index cd33a1dcdd..26b284bcec 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -6197,6 +6197,13 @@ static void decode_rr_divide(DisasContext *ctx)
+             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+         }
+         break;
++    case OPC2_32_RR_POPCNT_W:
++        if (has_feature(ctx, TRICORE_FEATURE_162)) {
++            tcg_gen_ctpop_tl(cpu_gpr_d[r3], cpu_gpr_d[r1]);
++        } else {
++            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        }
++        break;
+     case OPC2_32_RR_DIV:
+         if (has_feature(ctx, TRICORE_FEATURE_16)) {
+             GEN_HELPER_RR(divide, cpu_gpr_d[r3], cpu_gpr_d[r3+1], cpu_gpr_d[r1],
+diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
+index f7135f183d..59aa39a7a5 100644
+--- a/target/tricore/tricore-opcodes.h
++++ b/target/tricore/tricore-opcodes.h
+@@ -1133,6 +1133,7 @@ enum {
+     OPC2_32_RR_PARITY                            = 0x02,
+     OPC2_32_RR_UNPACK                            = 0x08,
+     OPC2_32_RR_CRC32                             = 0x03,
++    OPC2_32_RR_POPCNT_W                          = 0x22, /* 1.6.2 only */
+     OPC2_32_RR_DIV                               = 0x20,
+     OPC2_32_RR_DIV_U                             = 0x21,
+     OPC2_32_RR_MUL_F                             = 0x04,
 -- 
 2.40.1
 
