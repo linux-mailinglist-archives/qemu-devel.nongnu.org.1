@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EA272ABCE
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9FA72ABC8
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 Jun 2023 15:37:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q7yh8-0004N8-4v; Sat, 10 Jun 2023 09:31:54 -0400
+	id 1q7yh8-0004NB-CJ; Sat, 10 Jun 2023 09:31:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7ygz-0004M6-Tn; Sat, 10 Jun 2023 09:31:45 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1q7yh2-0004MV-1l; Sat, 10 Jun 2023 09:31:48 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q7ygy-0007YQ-28; Sat, 10 Jun 2023 09:31:45 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-39cc64e4a44so23254b6e.0; 
- Sat, 10 Jun 2023 06:31:43 -0700 (PDT)
+ id 1q7yh0-0007Yg-5Y; Sat, 10 Jun 2023 09:31:47 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-38ede2e0e69so1287802b6e.2; 
+ Sat, 10 Jun 2023 06:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686403902; x=1688995902;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FD54A2CQMoPOBvUvSal4XxhuKyLO9IjgKkFlRLNNTEA=;
- b=qp30MgRLI+lQ9GuejTowTUAZr/NDOABlh1J6ngTmGD2ARGIpAf34tETniaA5ULJjqn
- 38BNFfX1v99BR0n29MJuNEVERxgsUa6f1phodKq8mMYVgeq9/X0MKWTGmfbdXrUhY528
- YMp2EZAcf8EULv5UIiIw8+KZrM6L/H92H8FNAz9h1WaSqC5nDsifkLhGE8q8StOe2pab
- BauEm+g0OoWpG4UpOlDkqvVRuMnymbzcrw5gQfB+bBmjp/9GLNpCraFBflBFCUsHW64P
- zz2cd7uyb7qTB0llYjVnyB6SwmF+jDYr7s6E4ct8UG9elh+qpXkWSZBBYdxarTa2MmWB
- i7cw==
+ d=gmail.com; s=20221208; t=1686403904; x=1688995904;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=OmR0h6/YvxlicyT6sKm9gabjuCHgBWHDRClts4Pnvbk=;
+ b=DRR+SWKxLcn6pPUx7e0fOlXQN4y/w37mcf2gFiXHg2jrelvfLvjXRAU4lUSHUHjNwc
+ Qx8UCSpFZdmHTiVWNSLmnXB01HQ/7RB8BIHBL/rwxbtqZ6qSx6T9FL9WydvCOJHFDgS7
+ 3sGuxB0qYrJWC1HXgiQu0RqR8Pb+zRvGKXyt+kvqJa2CIuQlSzA9+NsOkPYu58nKgbpM
+ YYPC+tHxViFT4vG3yNhxvxgCWudWbYcJIZ46s43tN8aPiJSvBKjZZF4TfAMbKBMi4ssB
+ D07JMBY94re1fgJ7p4dBF5tI84HXU3WVSa8d6eQ/FLGPB44Zeh9NCKZCje9f2yLlcf3r
+ 0ofg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686403902; x=1688995902;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FD54A2CQMoPOBvUvSal4XxhuKyLO9IjgKkFlRLNNTEA=;
- b=TNZcWwAZq5Ih3op7of/nRa1eLZclP67oZKWoKTBIpkCRe9ocO9AZoYFrcs92uwp5bZ
- PY9KoewYDGhrI1GP2tkyNqye9uf+epBpZhnp9CS/oKqY2wMNRcglS75NiLR5WVDwVbbO
- j5LdyETVMoMTGwPFEZ6AALQyGahGE2JkAfFf9NntB40tiK9xQpQXly8O/H9blNLLXST0
- 0psvMCafSXADM2ykqw7LYv+fbkVG/JD4keEXz8RsqxIlZbIXjkNaTSKJmpTRMpzmIRLV
- ZuQ//v0/CNmhzvFBZUdhi6uHTdEKEj3Z4YWyNY2YkWRC0LIIqmmQWwVFMUIfoTs5Cwy/
- JYXQ==
-X-Gm-Message-State: AC+VfDzLrSIddHlrwk6L/CQZlImbYj9MyQpYwUnhmQ+Rn7UDoIJEojBu
- YSzqZLbipE3S4Sl0Z/EYCHmqavRLC0U=
-X-Google-Smtp-Source: ACHHUZ5UhPaiiemNxJoc406KLYk71nE59LoI/ebQEPGVmwL8ORIsetvMYFSjL07mFDaUggkuaCd1iw==
-X-Received: by 2002:a05:6808:1785:b0:39a:ad7c:dec7 with SMTP id
- bg5-20020a056808178500b0039aad7cdec7mr1034697oib.15.1686403901918; 
- Sat, 10 Jun 2023 06:31:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686403904; x=1688995904;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OmR0h6/YvxlicyT6sKm9gabjuCHgBWHDRClts4Pnvbk=;
+ b=G6HYkzLbfW+F4wgroo1wLXdriGZg2habA8E4UaYqkZL+o6f53RWKFWrjsbXmWQr5sd
+ VMy5stewnqdFD8jVcfCeBx9ZmlLiz0oSjLAGXwTFekan9TpMBQl+uHtW5d8TSERxJD9t
+ gSkg4ih/nezn4m6Gm6WVShqlYFHDkVI2PFxt+TQspS2vw+h2SXVN6bRyVZRZGQTsH7CU
+ WXKjvKK4UkSM6YB+JSHIlCz/UxucueiV09fH2O+XSKZ8Ib2qze48eDGXTZXXtXVlJhdl
+ 1E1I5kEGB6Mp+EowRwWm1HV0yTGuCF3brYO5gEnyC61v3B46a7Vz7bJwzt3RJ1Ox5mia
+ n90g==
+X-Gm-Message-State: AC+VfDwBuEIl50RdlH10W15wNlTuEQu6bHlxX0QasgogedWl8j7VMXUc
+ CDfc+tN5DjpBzVwll6JddKp4pGIgsek=
+X-Google-Smtp-Source: ACHHUZ7hEs4IEc0F3CEpjOQRzndWQc05m8tWTvTR5xK+qcJyHPYTzdrC48zXoj2/9XrnFDM0H88eow==
+X-Received: by 2002:a05:6808:1249:b0:39a:5e92:2b45 with SMTP id
+ o9-20020a056808124900b0039a5e922b45mr1196193oiv.10.1686403904214; 
+ Sat, 10 Jun 2023 06:31:44 -0700 (PDT)
 Received: from grind.. ([177.170.117.52]) by smtp.gmail.com with ESMTPSA id
- y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.31.40
+ y3-20020a544d83000000b00395f2c84b81sm2428420oix.54.2023.06.10.06.31.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 10 Jun 2023 06:31:41 -0700 (PDT)
+ Sat, 10 Jun 2023 06:31:43 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org
-Subject: [PULL 00/29] ppc queue
-Date: Sat, 10 Jun 2023 10:31:03 -0300
-Message-Id: <20230610133132.290703-1-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 01/29] pnv/xive2: Add definition for TCTXT Config register
+Date: Sat, 10 Jun 2023 10:31:04 -0300
+Message-Id: <20230610133132.290703-2-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230610133132.290703-1-danielhb413@gmail.com>
+References: <20230610133132.290703-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,83 +92,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3673ad389622d9ef4d2743101253c642def7935a:
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-  tcg/tci: Fix MemOpIdx operand index for 3-operand memops (2023-06-09 08:30:56 -0700)
+Add basic read/write support for the TCTXT Config register on P10. qemu
+doesn't do anything with it yet, but it avoids logging a guest error
+when skiboot configures the fused-core state:
 
-are available in the Git repository at:
+qemu-system-ppc64 -machine powernv10 ... -d guest_errors
+  ...
+[    0.131670000,5] XIVE: [ IC 00  ] Initializing XIVE block ID 0...
+XIVE[0] - TCTXT: invalid read @140
+XIVE[0] - TCTXT: invalid write @140
 
-  https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230610
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Message-Id: <20230601121331.487207-2-fbarrat@linux.ibm.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+---
+ hw/intc/pnv_xive2.c      | 8 +++++++-
+ hw/intc/pnv_xive2_regs.h | 4 ++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-for you to fetch changes up to 9ec08f3569be3bc8bfd4d9b8b0445b9136910661:
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index 7176d70234..889e409929 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -1265,6 +1265,9 @@ static uint64_t pnv_xive2_ic_tctxt_read(void *opaque, hwaddr offset,
+     case TCTXT_EN1_RESET:
+         val = xive->tctxt_regs[TCTXT_EN1 >> 3];
+         break;
++    case TCTXT_CFG:
++        val = xive->tctxt_regs[reg];
++        break;
+     default:
+         xive2_error(xive, "TCTXT: invalid read @%"HWADDR_PRIx, offset);
+     }
+@@ -1276,6 +1279,7 @@ static void pnv_xive2_ic_tctxt_write(void *opaque, hwaddr offset,
+                                      uint64_t val, unsigned size)
+ {
+     PnvXive2 *xive = PNV_XIVE2(opaque);
++    uint32_t reg = offset >> 3;
+ 
+     switch (offset) {
+     /*
+@@ -1297,7 +1301,9 @@ static void pnv_xive2_ic_tctxt_write(void *opaque, hwaddr offset,
+     case TCTXT_EN1_RESET:
+         xive->tctxt_regs[TCTXT_EN1 >> 3] &= ~val;
+         break;
+-
++    case TCTXT_CFG:
++        xive->tctxt_regs[reg] = val;
++        break;
+     default:
+         xive2_error(xive, "TCTXT: invalid write @%"HWADDR_PRIx, offset);
+         return;
+diff --git a/hw/intc/pnv_xive2_regs.h b/hw/intc/pnv_xive2_regs.h
+index 0c096e4adb..8f1e0a1fde 100644
+--- a/hw/intc/pnv_xive2_regs.h
++++ b/hw/intc/pnv_xive2_regs.h
+@@ -405,6 +405,10 @@
+ #define X_TCTXT_EN1_RESET                       0x307
+ #define TCTXT_EN1_RESET                         0x038
+ 
++/* TCTXT Config register */
++#define X_TCTXT_CFG                             0x328
++#define TCTXT_CFG                               0x140
++
+ /*
+  * VSD Tables
+  */
+-- 
+2.40.1
 
-  hw/ppc/Kconfig: MAC_NEWWORLD should always select USB_OHCI_PCI (2023-06-10 10:19:24 -0300)
-
-----------------------------------------------------------------
-ppc patch queue for 2023-06-10:
-
-This queue includes several assorted fixes for target/ppc emulation and
-XIVE2. It also includes an openpic fix, an avocado fix for ppc64
-binaries without slipr and a Kconfig change for MAC_NEWWORLD.
-
-----------------------------------------------------------------
-BALATON Zoltan (8):
-      target/ppc: Remove single use function
-      target/ppc: Remove "ext" parameter of ppcemb_tlb_check()
-      target/ppc: Move ppcemb_tlb_search() to mmu_common.c
-      target/ppc: Remove some unneded line breaks
-      target/ppc: Simplify ppcemb_tlb_search()
-      target/ppc: Change ppcemb_tlb_check() to return bool
-      target/ppc: Eliminate goto in mmubooke_check_tlb()
-      target/ppc: Implement gathering irq statistics
-
-Frederic Barrat (6):
-      pnv/xive2: Add definition for TCTXT Config register
-      pnv/xive2: Add definition for the ESB cache configuration register
-      pnv/xive2: Allow writes to the Physical Thread Enable registers
-      pnv/xive2: Introduce macros to manipulate TIMA addresses
-      pnv/xive2: Handle TIMA access through all ports
-      pnv/xive2: Quiet down some error messages
-
-Nicholas Piggin (12):
-      target/ppc: Fix nested-hv HEAI delivery
-      target/ppc: Fix PMU hflags calculation
-      target/ppc: PMU do not clear MMCR0[FCECE] on performance monitor alert
-      target/ppc: Fix msgclrp interrupt type
-      target/ppc: Support directed privileged doorbell interrupt (SDOOR)
-      target/ppc: PMU implement PERFM interrupts
-      target/ppc: Fix lqarx to set cpu_reserve
-      target/ppc: Ensure stcx size matches larx
-      target/ppc: Remove larx/stcx. memory barrier semantics
-      target/ppc: Rework store conditional to avoid branch
-      target/ppc: Fix decrementer time underflow and infinite timer loop
-      target/ppc: Decrementer fix BookE semantics
-
-Philippe Mathieu-Daudé (1):
-      hw/ppc/openpic: Do not open-code ROUND_UP() macro
-
-Thomas Huth (2):
-      tests/avocado/tuxrun_baselines: Fix ppc64 tests for binaries without slirp
-      hw/ppc/Kconfig: MAC_NEWWORLD should always select USB_OHCI_PCI
-
- hw/intc/pnv_xive2.c               | 24 ++++++++++-
- hw/intc/pnv_xive2_regs.h          |  8 ++++
- hw/intc/xive.c                    | 16 +++----
- hw/ppc/Kconfig                    |  1 +
- hw/ppc/ppc.c                      | 11 ++---
- include/hw/ppc/openpic.h          |  2 +-
- include/hw/ppc/xive_regs.h        | 16 +++++++
- target/ppc/cpu.h                  | 19 ++++----
- target/ppc/cpu_init.c             | 24 +++++++++--
- target/ppc/excp_helper.c          | 14 +++---
- target/ppc/helper_regs.c          | 73 +++++++++++++++++++++++--------
- target/ppc/helper_regs.h          |  1 +
- target/ppc/machine.c              |  8 ++--
- target/ppc/mmu_common.c           | 91 ++++++++++++++++++++++-----------------
- target/ppc/mmu_helper.c           | 32 +-------------
- target/ppc/power8-pmu.c           | 60 +++++++++++++++-----------
- target/ppc/power8-pmu.h           |  4 +-
- target/ppc/translate.c            | 80 ++++++++++++++++------------------
- tests/avocado/tuxrun_baselines.py |  1 +
- 19 files changed, 289 insertions(+), 196 deletions(-)
 
