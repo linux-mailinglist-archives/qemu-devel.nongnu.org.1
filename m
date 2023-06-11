@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F9D72B2B0
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 18:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F5772B2C7
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 18:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8NVe-0006V0-SO; Sun, 11 Jun 2023 12:01:42 -0400
+	id 1q8NVg-0006XA-5A; Sun, 11 Jun 2023 12:01:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q8NUp-0005wV-Ae
+ id 1q8NUp-0005wt-KU
  for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:53 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q8NUj-0000Ub-1p
+ id 1q8NUj-0000WL-Dc
  for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:51 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-30af86a96b4so2285594f8f.3
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-30e412a852dso2205549f8f.0
  for <qemu-devel@nongnu.org>; Sun, 11 Jun 2023 09:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686499243; x=1689091243;
+ d=linaro.org; s=google; t=1686499244; x=1689091244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=L/WClOmRe7ZqC6CcCm7m1pNSLACFLdzYSCXTc15BbAs=;
- b=uUo6tIr9qAAHR0PMVFXpG0ELF2wSp8bSWyIy6xdwV4UGKACECpTcWeuo18NwyboXSh
- yfcT7oeu9JFmjhvMrB1QAkENGOtXQImsMOMC0hF2NQXwSkAqTGJkEOd/kQkAReeMCa53
- XbEspJCdek5KX+wZ4zSSaK7ullBazzwQT/YHcqGhzUfrINbx7jX75R6YKtYXdVIaDjx1
- 52hvc0inrwcisO0y8x7l3/VQD83NZTvLwuk4RwNa+oETNmaUBYdXDg+NmOWjv5zgsqKW
- NcPDrWfvNmzRwNzuK40NwHhae+sEnuKI2d6Uie2nOkBhdrt/vP/VzbipeeLv56VSWJYI
- CAUQ==
+ :reply-to; bh=oLXqPmCYkrVQJjFssdMLngIfPo1Xii5VF1gQjOemTjU=;
+ b=FztI6AKJSqmxnkw6DQTdM5787q4EEfj/2IRls1cxJXF40xY4Q64XQq5n56GYm8rQmf
+ B2QUiPpJYLm3Q2wiHZH33wjPOyhwTuY9IHBlCNfaPeS5ZrlCjMIBrvMWxcOLdSGR8Tvc
+ q/lNygn+VySdGz/V+78E3jBCSpII5ghqxasHM1svvqOO2/0ISyCqLFhbeYecZ9/2WGt2
+ WKQfgK2c2jEubr1FJAKSleT4oaorSah2AYcv2Uwum3Oir3e93bWqAq+/Ug5Boy5+EI6t
+ HggNsj7yQaThluJdH0N5UH1jEayJWHC5pZQHXOxxLxft4Qn+EBUIyqSdfjW14ZPWRsW/
+ jK6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686499243; x=1689091243;
+ d=1e100.net; s=20221208; t=1686499244; x=1689091244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L/WClOmRe7ZqC6CcCm7m1pNSLACFLdzYSCXTc15BbAs=;
- b=NKfH0h4W1lsPyPzSmGY+yr+mltDXt3SOjbzsGajEM3tGlp3YiJOh8zdAEa4zVHZRyV
- XS6FqKz0ROYQdaD0TwuzL7pteYCA3athUrlDOA8COC00cTiW/2tYCdmS/Bty4ZRGePpC
- EaQ1G8d3iFXHeNuRfmO8KeYG28h3rImDW3+hP7qABCdXz3Xo9nprXhX25Sp6NJz4YMqg
- 9yiEKdFuRTyd7ZORP3cm67P2BWDw0wUUG6+TNUiNcrm+rD7c6k605+w8lPGBiX73DEGt
- oGgosnXKFIXF00KE5u+kIzwRimx57NlX0OhKv/Wi/4TutkFP64OA6B5waJeUJf7cmVmB
- StTg==
-X-Gm-Message-State: AC+VfDyzi+E9ngUDKc6IGH+tmJQzTIogc7zJoaxxXbnIqSYVC1QzpEO5
- KnBycaHwP/QgiBbG3YcH4WT7wg==
-X-Google-Smtp-Source: ACHHUZ7/UxvWpxiYPbDsSB5JoWoyEGZKjPTkL4tVGl+m4vsXSkQ1Sch8FawkBLC3qBb2ZNAkxF1TNA==
-X-Received: by 2002:a5d:50c2:0:b0:309:303b:3dc5 with SMTP id
- f2-20020a5d50c2000000b00309303b3dc5mr3050531wrt.7.1686499243280; 
+ bh=oLXqPmCYkrVQJjFssdMLngIfPo1Xii5VF1gQjOemTjU=;
+ b=l7QdzL82vl6ppVmX2J5rutn79n8ZNKLSOp+5zvabPxiOFqtikJSJRwjBv04RD1IeXd
+ yBzoT+997SkF4DcZl3m6KmSUuRVpGd00Bw+Kwj8jupbWHfzekNLO/PvNDrCEjQ9GHatn
+ OFTvL5WaIA2AueL1WSyFR9yTAY4ABNcFEQsR46apI7tGQKOr5lcnaUMYTU4qUnLA+FlJ
+ 9jt3X0c+eGrh/9CihYIbcV3Wux4q1vOXZ8QS3MPxCy5AVUJ9gVie5/eUIlEBTuveZQ+N
+ q81XihYN3x0O83kHTdPGyI2sL7SmTGqFuhta7K/FadbaxmqYcGBQTam2pfB1sJlgKA0g
+ 4bNQ==
+X-Gm-Message-State: AC+VfDwSxfS1QwMwbyorWuKGWTQB/A/JRrcCTgReW5JzuzRPxEXEdqEA
+ QqEqKTr4XL6ZfpHhYyOIdvnvXA==
+X-Google-Smtp-Source: ACHHUZ7Aj0/tieaFGlWPf0cvh8zHacxNdQM++DsJwV06/TgQQAICw+m2NsAd9N4L3GHTV68/Shd85w==
+X-Received: by 2002:adf:f642:0:b0:2f0:2dfe:e903 with SMTP id
+ x2-20020adff642000000b002f02dfee903mr2240852wrp.69.1686499243992; 
  Sun, 11 Jun 2023 09:00:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- m9-20020a056000008900b0030ae499da59sm9923022wrx.111.2023.06.11.09.00.42
+ m9-20020a056000008900b0030ae499da59sm9923022wrx.111.2023.06.11.09.00.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Jun 2023 09:00:42 -0700 (PDT)
+ Sun, 11 Jun 2023 09:00:43 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 17/23] target/arm: Convert LDR/STR reg+reg to decodetree
-Date: Sun, 11 Jun 2023 17:00:26 +0100
-Message-Id: <20230611160032.274823-18-peter.maydell@linaro.org>
+Subject: [PATCH v2 18/23] target/arm: Convert atomic memory ops to decodetree
+Date: Sun, 11 Jun 2023 17:00:27 +0100
+Message-Id: <20230611160032.274823-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230611160032.274823-1-peter.maydell@linaro.org>
 References: <20230611160032.274823-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,254 +90,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the LDR and STR instructions which take a register
-plus register offset to decodetree.
+Convert the insns in the atomic memory operations group to
+decodetree.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-15-peter.maydell@linaro.org
+Message-id: 20230602155223.2040685-16-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  22 +++++
- target/arm/tcg/translate-a64.c | 173 +++++++++++++++------------------
- 2 files changed, 103 insertions(+), 92 deletions(-)
+ target/arm/tcg/a64.decode      |  15 ++++
+ target/arm/tcg/translate-a64.c | 153 ++++++++++++---------------------
+ 2 files changed, 70 insertions(+), 98 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index d6b31c10838..5c086d6af6d 100644
+index 5c086d6af6d..799c5ecb77a 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -420,3 +420,25 @@ STR_v_i         sz:2 111 1 01 00 ............ ..... ..... @ldst_uimm sign=0 ext=
- STR_v_i         00 111 1 01 10 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=4
- LDR_v_i         sz:2 111 1 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=0
- LDR_v_i         00 111 1 01 11 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=4
+@@ -442,3 +442,18 @@ STR_v           sz:2 111 1 00 00 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
+ STR_v           00 111 1 00 10 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=4
+ LDR_v           sz:2 111 1 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
+ LDR_v           00 111 1 00 11 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=4
 +
-+# Load/store with register offset
-+&ldst rm rn rt sign ext sz opt s
-+@ldst           .. ... . .. .. . rm:5 opt:3 s:1 .. rn:5 rt:5 &ldst
-+STR             sz:2 111 0 00 00 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
-+LDR             00 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=1 sz=0
-+LDR             01 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=1 sz=1
-+LDR             10 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=1 sz=2
-+LDR             11 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=3
-+LDR             00 111 0 00 10 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=0 sz=0
-+LDR             01 111 0 00 10 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=0 sz=1
-+LDR             10 111 0 00 10 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=0 sz=2
-+LDR             00 111 0 00 11 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=1 sz=0
-+LDR             01 111 0 00 11 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=1 sz=1
++# Atomic memory operations
++&atomic         rs rn rt a r sz
++@atomic         sz:2 ... . .. a:1 r:1 . rs:5 . ... .. rn:5 rt:5 &atomic
++LDADD           .. 111 0 00 . . 1 ..... 0000 00 ..... ..... @atomic
++LDCLR           .. 111 0 00 . . 1 ..... 0001 00 ..... ..... @atomic
++LDEOR           .. 111 0 00 . . 1 ..... 0010 00 ..... ..... @atomic
++LDSET           .. 111 0 00 . . 1 ..... 0011 00 ..... ..... @atomic
++LDSMAX          .. 111 0 00 . . 1 ..... 0100 00 ..... ..... @atomic
++LDSMIN          .. 111 0 00 . . 1 ..... 0101 00 ..... ..... @atomic
++LDUMAX          .. 111 0 00 . . 1 ..... 0110 00 ..... ..... @atomic
++LDUMIN          .. 111 0 00 . . 1 ..... 0111 00 ..... ..... @atomic
++SWP             .. 111 0 00 . . 1 ..... 1000 00 ..... ..... @atomic
 +
-+# PRFM
-+NOP             11 111 0 00 10 1 ----- -1- - 10 ----- -----
-+
-+STR_v           sz:2 111 1 00 00 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
-+STR_v           00 111 1 00 10 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=4
-+LDR_v           sz:2 111 1 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
-+LDR_v           00 111 1 00 11 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=4
++LDAPR           sz:2 111 0 00 1 0 1 11111 1100 00 rn:5 rt:5
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index e1936c7c246..3d161169411 100644
+index 3d161169411..ba072e557e1 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -3153,104 +3153,95 @@ static bool trans_LDR_v_i(DisasContext *s, arg_ldst_imm *a)
+@@ -3244,113 +3244,32 @@ static bool trans_STR_v(DisasContext *s, arg_ldst *a)
      return true;
  }
  
--/*
-- * Load/store (register offset)
+-/* Atomic memory operations
 - *
-- * 31 30 29   27  26 25 24 23 22 21  20  16 15 13 12 11 10 9  5 4  0
-- * +----+-------+---+-----+-----+---+------+-----+--+-----+----+----+
-- * |size| 1 1 1 | V | 0 0 | opc | 1 |  Rm  | opt | S| 1 0 | Rn | Rt |
-- * +----+-------+---+-----+-----+---+------+-----+--+-----+----+----+
+- *  31  30      27  26    24    22  21   16   15    12    10    5     0
+- * +------+-------+---+-----+-----+---+----+----+-----+-----+----+-----+
+- * | size | 1 1 1 | V | 0 0 | A R | 1 | Rs | o3 | opc | 0 0 | Rn |  Rt |
+- * +------+-------+---+-----+-----+--------+----+-----+-----+----+-----+
 - *
-- * For non-vector:
-- *   size: 00-> byte, 01 -> 16 bit, 10 -> 32bit, 11 -> 64bit
-- *   opc: 00 -> store, 01 -> loadu, 10 -> loads 64, 11 -> loads 32
-- * For vector:
-- *   size is opc<1>:size<1:0> so 100 -> 128 bit; 110 and 111 unallocated
-- *   opc<0>: 0 -> store, 1 -> load
-- * V: 1 -> vector/simd
-- * opt: extend encoding (see DecodeRegExtend)
-- * S: if S=1 then scale (essentially index by sizeof(size))
-- * Rt: register to transfer into/out of
-- * Rn: address register or SP for base
-- * Rm: offset register or ZR for offset
+- * Rt: the result register
+- * Rn: base address or SP
+- * Rs: the source register for the operation
+- * V: vector flag (always 0 as of v8.3)
+- * A: acquire flag
+- * R: release flag
 - */
--static void disas_ldst_reg_roffset(DisasContext *s, uint32_t insn,
--                                   int opc,
--                                   int size,
--                                   int rt,
--                                   bool is_vector)
-+static void op_addr_ldst_pre(DisasContext *s, arg_ldst *a,
-+                             TCGv_i64 *clean_addr, TCGv_i64 *dirty_addr,
-+                             bool is_store, MemOp memop)
+-static void disas_ldst_atomic(DisasContext *s, uint32_t insn,
+-                              int size, int rt, bool is_vector)
++
++static bool do_atomic_ld(DisasContext *s, arg_atomic *a, AtomicThreeOpFn *fn,
++                         int sign, bool invert)
  {
+-    int rs = extract32(insn, 16, 5);
 -    int rn = extract32(insn, 5, 5);
--    int shift = extract32(insn, 12, 1);
--    int rm = extract32(insn, 16, 5);
--    int opt = extract32(insn, 13, 3);
--    bool is_signed = false;
--    bool is_store = false;
--    bool is_extended = false;
--    TCGv_i64 tcg_rm, clean_addr, dirty_addr;
--    MemOp memop;
-+    TCGv_i64 tcg_rm;
+-    int o3_opc = extract32(insn, 12, 4);
+-    bool r = extract32(insn, 22, 1);
+-    bool a = extract32(insn, 23, 1);
+-    TCGv_i64 tcg_rs, tcg_rt, clean_addr;
+-    AtomicThreeOpFn *fn = NULL;
+-    MemOp mop = size;
++    MemOp mop = a->sz | sign;
++    TCGv_i64 clean_addr, tcg_rs, tcg_rt;
  
--    if (extract32(opt, 1, 1) == 0) {
+-    if (is_vector || !dc_isar_feature(aa64_atomics, s)) {
 -        unallocated_encoding(s);
 -        return;
 -    }
--
--    if (is_vector) {
--        size |= (opc & 2) << 1;
--        if (size > 4) {
+-    switch (o3_opc) {
+-    case 000: /* LDADD */
+-        fn = tcg_gen_atomic_fetch_add_i64;
+-        break;
+-    case 001: /* LDCLR */
+-        fn = tcg_gen_atomic_fetch_and_i64;
+-        break;
+-    case 002: /* LDEOR */
+-        fn = tcg_gen_atomic_fetch_xor_i64;
+-        break;
+-    case 003: /* LDSET */
+-        fn = tcg_gen_atomic_fetch_or_i64;
+-        break;
+-    case 004: /* LDSMAX */
+-        fn = tcg_gen_atomic_fetch_smax_i64;
+-        mop |= MO_SIGN;
+-        break;
+-    case 005: /* LDSMIN */
+-        fn = tcg_gen_atomic_fetch_smin_i64;
+-        mop |= MO_SIGN;
+-        break;
+-    case 006: /* LDUMAX */
+-        fn = tcg_gen_atomic_fetch_umax_i64;
+-        break;
+-    case 007: /* LDUMIN */
+-        fn = tcg_gen_atomic_fetch_umin_i64;
+-        break;
+-    case 010: /* SWP */
+-        fn = tcg_gen_atomic_xchg_i64;
+-        break;
+-    case 014: /* LDAPR, LDAPRH, LDAPRB */
+-        if (!dc_isar_feature(aa64_rcpc_8_3, s) ||
+-            rs != 31 || a != 1 || r != 0) {
 -            unallocated_encoding(s);
 -            return;
 -        }
--        is_store = !extract32(opc, 0, 1);
--        if (!fp_access_check(s)) {
--            return;
--        }
--        memop = finalize_memop_asimd(s, size);
--    } else {
--        if (size == 3 && opc == 2) {
--            /* PRFM - prefetch */
--            return;
--        }
--        if (opc == 3 && size > 1) {
--            unallocated_encoding(s);
--            return;
--        }
--        is_store = (opc == 0);
--        is_signed = !is_store && extract32(opc, 1, 1);
--        is_extended = (size < 3) && extract32(opc, 0, 1);
--        memop = finalize_memop(s, size + is_signed * MO_SIGN);
+-        break;
+-    default:
+-        unallocated_encoding(s);
+-        return;
 -    }
 -
 -    if (rn == 31) {
 +    if (a->rn == 31) {
          gen_check_sp_alignment(s);
      }
--    dirty_addr = read_cpu_reg_sp(s, rn, 1);
-+    *dirty_addr = read_cpu_reg_sp(s, a->rn, 1);
- 
--    tcg_rm = read_cpu_reg(s, rm, 1);
--    ext_and_shift_reg(tcg_rm, tcg_rm, opt, shift ? size : 0);
-+    tcg_rm = read_cpu_reg(s, a->rm, 1);
-+    ext_and_shift_reg(tcg_rm, tcg_rm, a->opt, a->s ? a->sz : 0);
- 
--    tcg_gen_add_i64(dirty_addr, dirty_addr, tcg_rm);
-+    tcg_gen_add_i64(*dirty_addr, *dirty_addr, tcg_rm);
-+    *clean_addr = gen_mte_check1(s, *dirty_addr, is_store, true, memop);
-+}
- 
--    clean_addr = gen_mte_check1(s, dirty_addr, is_store, true, memop);
-+static bool trans_LDR(DisasContext *s, arg_ldst *a)
-+{
-+    TCGv_i64 clean_addr, dirty_addr, tcg_rt;
-+    bool iss_sf = ldst_iss_sf(a->sz, a->sign, a->ext);
-+    MemOp memop;
- 
--    if (is_vector) {
--        if (is_store) {
--            do_fp_st(s, rt, clean_addr, memop);
--        } else {
--            do_fp_ld(s, rt, clean_addr, memop);
--        }
--    } else {
--        TCGv_i64 tcg_rt = cpu_reg(s, rt);
--        bool iss_sf = disas_ldst_compute_iss_sf(size, is_signed, opc);
 -
--        if (is_store) {
--            do_gpr_st(s, tcg_rt, clean_addr, memop,
--                      true, rt, iss_sf, false);
--        } else {
--            do_gpr_ld(s, tcg_rt, clean_addr, memop,
--                      is_extended, true, rt, iss_sf, false);
--        }
-+    if (extract32(a->opt, 1, 1) == 0) {
-+        return false;
+-    mop = check_atomic_align(s, rn, mop);
+-    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, rn), false, rn != 31, mop);
+-
+-    if (o3_opc == 014) {
+-        /*
+-         * LDAPR* are a special case because they are a simple load, not a
+-         * fetch-and-do-something op.
+-         * The architectural consistency requirements here are weaker than
+-         * full load-acquire (we only need "load-acquire processor consistent"),
+-         * but we choose to implement them as full LDAQ.
+-         */
+-        do_gpr_ld(s, cpu_reg(s, rt), clean_addr, mop, false,
+-                  true, rt, disas_ldst_compute_iss_sf(size, false, 0), true);
+-        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+-        return;
+-    }
+-
+-    tcg_rs = read_cpu_reg(s, rs, true);
+-    tcg_rt = cpu_reg(s, rt);
+-
+-    if (o3_opc == 1) { /* LDCLR */
++    mop = check_atomic_align(s, a->rn, mop);
++    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn), false,
++                                a->rn != 31, mop);
++    tcg_rs = read_cpu_reg(s, a->rs, true);
++    tcg_rt = cpu_reg(s, a->rt);
++    if (invert) {
+         tcg_gen_not_i64(tcg_rs, tcg_rs);
      }
-+
-+    memop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
-+    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, false, memop);
-+    tcg_rt = cpu_reg(s, a->rt);
-+    do_gpr_ld(s, tcg_rt, clean_addr, memop,
-+              a->ext, true, a->rt, iss_sf, false);
+-
+-    /* The tcg atomic primitives are all full barriers.  Therefore we
++    /*
++     * The tcg atomic primitives are all full barriers.  Therefore we
+      * can ignore the Acquire and Release bits of this instruction.
+      */
+     fn(tcg_rt, clean_addr, tcg_rs, get_mem_index(s), mop);
+ 
+     if (mop & MO_SIGN) {
+-        switch (size) {
++        switch (a->sz) {
+         case MO_8:
+             tcg_gen_ext8u_i64(tcg_rt, tcg_rt);
+             break;
+@@ -3366,6 +3285,46 @@ static void disas_ldst_atomic(DisasContext *s, uint32_t insn,
+             g_assert_not_reached();
+         }
+     }
 +    return true;
 +}
 +
-+static bool trans_STR(DisasContext *s, arg_ldst *a)
-+{
-+    TCGv_i64 clean_addr, dirty_addr, tcg_rt;
-+    bool iss_sf = ldst_iss_sf(a->sz, a->sign, a->ext);
-+    MemOp memop;
++TRANS_FEAT(LDADD, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_add_i64, 0, false)
++TRANS_FEAT(LDCLR, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_and_i64, 0, true)
++TRANS_FEAT(LDEOR, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_xor_i64, 0, false)
++TRANS_FEAT(LDSET, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_or_i64, 0, false)
++TRANS_FEAT(LDSMAX, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_smax_i64, MO_SIGN, false)
++TRANS_FEAT(LDSMIN, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_smin_i64, MO_SIGN, false)
++TRANS_FEAT(LDUMAX, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_umax_i64, 0, false)
++TRANS_FEAT(LDUMIN, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_umin_i64, 0, false)
++TRANS_FEAT(SWP, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_xchg_i64, 0, false)
 +
-+    if (extract32(a->opt, 1, 1) == 0) {
++static bool trans_LDAPR(DisasContext *s, arg_LDAPR *a)
++{
++    bool iss_sf = ldst_iss_sf(a->sz, false, false);
++    TCGv_i64 clean_addr;
++    MemOp mop;
++
++    if (!dc_isar_feature(aa64_atomics, s) ||
++        !dc_isar_feature(aa64_rcpc_8_3, s)) {
 +        return false;
 +    }
-+
-+    memop = finalize_memop(s, a->sz);
-+    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, true, memop);
-+    tcg_rt = cpu_reg(s, a->rt);
-+    do_gpr_st(s, tcg_rt, clean_addr, memop, true, a->rt, iss_sf, false);
-+    return true;
-+}
-+
-+static bool trans_LDR_v(DisasContext *s, arg_ldst *a)
-+{
-+    TCGv_i64 clean_addr, dirty_addr;
-+    MemOp memop;
-+
-+    if (extract32(a->opt, 1, 1) == 0) {
-+        return false;
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
 +    }
-+
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    memop = finalize_memop_asimd(s, a->sz);
-+    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, false, memop);
-+    do_fp_ld(s, a->rt, clean_addr, memop);
-+    return true;
-+}
-+
-+static bool trans_STR_v(DisasContext *s, arg_ldst *a)
-+{
-+    TCGv_i64 clean_addr, dirty_addr;
-+    MemOp memop;
-+
-+    if (extract32(a->opt, 1, 1) == 0) {
-+        return false;
-+    }
-+
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    memop = finalize_memop_asimd(s, a->sz);
-+    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, true, memop);
-+    do_fp_st(s, a->rt, clean_addr, memop);
++    mop = check_atomic_align(s, a->rn, a->sz);
++    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn), false,
++                                a->rn != 31, mop);
++    /*
++     * LDAPR* are a special case because they are a simple load, not a
++     * fetch-and-do-something op.
++     * The architectural consistency requirements here are weaker than
++     * full load-acquire (we only need "load-acquire processor consistent"),
++     * but we choose to implement them as full LDAQ.
++     */
++    do_gpr_ld(s, cpu_reg(s, a->rt), clean_addr, mop, false,
++              true, a->rt, iss_sf, true);
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
 +    return true;
  }
  
- /* Atomic memory operations
-@@ -3531,7 +3522,6 @@ static void disas_ldst_ldapr_stlr(DisasContext *s, uint32_t insn)
- static void disas_ldst_reg(DisasContext *s, uint32_t insn)
- {
-     int rt = extract32(insn, 0, 5);
--    int opc = extract32(insn, 22, 2);
-     bool is_vector = extract32(insn, 26, 1);
-     int size = extract32(insn, 30, 2);
- 
-@@ -3545,8 +3535,7 @@ static void disas_ldst_reg(DisasContext *s, uint32_t insn)
-             disas_ldst_atomic(s, insn, size, rt, is_vector);
-             return;
-         case 2:
--            disas_ldst_reg_roffset(s, insn, opc, size, rt, is_vector);
+ /*
+@@ -3532,8 +3491,6 @@ static void disas_ldst_reg(DisasContext *s, uint32_t insn)
+         }
+         switch (extract32(insn, 10, 2)) {
+         case 0:
+-            disas_ldst_atomic(s, insn, size, rt, is_vector);
 -            return;
-+            break;
+         case 2:
+             break;
          default:
-             disas_ldst_pac(s, insn, size, rt, is_vector);
-             return;
 -- 
 2.34.1
 
