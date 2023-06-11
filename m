@@ -2,73 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E22A72B1D4
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 14:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B77BC72B208
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 15:17:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8KAv-0004nj-5c; Sun, 11 Jun 2023 08:28:05 -0400
+	id 1q8KvY-0005Xl-7e; Sun, 11 Jun 2023 09:16:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sagigrim@gmail.com>)
- id 1q8KAs-0004n5-Nn
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 08:28:02 -0400
-Received: from mail-wm1-f52.google.com ([209.85.128.52])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sagigrim@gmail.com>)
- id 1q8KAq-000680-T4
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 08:28:02 -0400
-Received: by mail-wm1-f52.google.com with SMTP id
- 5b1f17b1804b1-3f7e7a5aaacso6739245e9.0
- for <qemu-devel@nongnu.org>; Sun, 11 Jun 2023 05:28:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686486479; x=1689078479;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+F2YCPuCvNucfU27hbM0z+XpuVFvj66Ick2ebriOypA=;
- b=Lqd22K4ZY+0wH5/2wOh3qsSExuyewU8CBzYrDFBBKxFLmJ3N1J1kNQ4d4s5KgQkV1A
- /Nx3uWHLYMs2smMEiRlvXKcqbhR3Ozl5Alo9id98jElVPWK9RcOaBDxCla7feV4yD0EO
- kbB+2Gmb+XanocHnesyAATK8Yf2KqbpJNI6bnqtfxRjpGEHw73GaBbjOon0G7sxgk7rD
- EN97Ij55fJYeRkP0KRMCunj5KXZDHf8K1uAG54KwypMfn9we+SbNaWWzeEK8r7dsfHNl
- wSDUNpv+17hQCLDrPm+g490CdAV5stOifhAa5MW5lwFbMRHweX5d0zUCRPlnO2p+Bwlo
- zwbg==
-X-Gm-Message-State: AC+VfDycSYpybRalZY6phwYtHeygDaV6lsemF8pxCGiOeitMIhH05wqr
- hDoH2RH51dltB3la2ICCsam34dKrpq8=
-X-Google-Smtp-Source: ACHHUZ4m8pq4txsHvcj8ukwSuRRy79vTijg6ghstlv+RRoXTPZLoCBU2i1OgPnPoRXkq7ODfUZUqnA==
-X-Received: by 2002:a05:600c:4746:b0:3f8:651:e25e with SMTP id
- w6-20020a05600c474600b003f80651e25emr5314025wmo.4.1686486478539; 
- Sun, 11 Jun 2023 05:27:58 -0700 (PDT)
-Received: from [192.168.64.192] (bzq-219-42-90.isdn.bezeqint.net.
- [62.219.42.90]) by smtp.gmail.com with ESMTPSA id
- l17-20020a1ced11000000b003f810be0231sm4517721wmh.32.2023.06.11.05.27.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 11 Jun 2023 05:27:58 -0700 (PDT)
-Message-ID: <d8028f17-8d33-790b-8d3e-fa1170108774@grimberg.me>
-Date: Sun, 11 Jun 2023 15:27:57 +0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q8KvT-0005XA-Jf; Sun, 11 Jun 2023 09:16:12 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q8KvR-0001sC-8C; Sun, 11 Jun 2023 09:16:11 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id D474A746335;
+ Sun, 11 Jun 2023 15:15:59 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 9D15C74632B; Sun, 11 Jun 2023 15:15:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 97506745720;
+ Sun, 11 Jun 2023 15:15:58 +0200 (CEST)
+Date: Sun, 11 Jun 2023 15:15:58 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ qemu-trivial@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 2/2] hw/char/parallel-isa: Export struct ISAParallelState
+In-Reply-To: <20230611110008.32638-3-shentey@gmail.com>
+Message-ID: <229b5f39-2a3e-e47b-5269-9ae2c43492ae@eik.bme.hu>
+References: <20230611110008.32638-1-shentey@gmail.com>
+ <20230611110008.32638-3-shentey@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: virtio-blk using a single iothread
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Qemu Developers <qemu-devel@nongnu.org>
-References: <c206fa1d-077d-ae9b-476f-f43eec36a187@grimberg.me>
- <20230608160817.GK2138915@fedora>
-From: Sagi Grimberg <sagi@grimberg.me>
-In-Reply-To: <20230608160817.GK2138915@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.128.52; envelope-from=sagigrim@gmail.com;
- helo=mail-wm1-f52.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,128 +68,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sun, 11 Jun 2023, Bernhard Beschow wrote:
+> Allows the struct to be embedded directly into device models without additional
+> allocation.
+>
+> Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
+Patches missing SoB, checkpatch should have cought this.
 
-On 6/8/23 19:08, Stefan Hajnoczi wrote:
-> On Thu, Jun 08, 2023 at 10:40:57AM +0300, Sagi Grimberg wrote:
->> Hey Stefan, Paolo,
->>
->> I just had a report from a user experiencing lower virtio-blk
->> performance than he expected. This user is running virtio-blk on top of
->> nvme-tcp device. The guest is running 12 CPU cores.
->>
->> The guest read/write throughput is capped at around 30% of the available
->> throughput from the host (~800MB/s from the guest vs. 2800MB/s from the
->> host - 25Gb/s nic). The workload running on the guest is a
->> multi-threaded fio workload.
->>
->> What is observed is the fact that virtio-blk is using a single disk-wide
->> iothread processing all the vqs. Specifically nvme-tcp (similar to other
->> tcp based protocols) is negatively impacted by lack of thread
->> concurrency that can distribute I/O requests to different TCP
->> connections.
->>
->> We also attempted to move the iothread to a dedicated core, however that
->> did yield any meaningful performance improvements). The reason appears
->> to be less about CPU utilization on the iothread core, but more around
->> single TCP connection serialization.
->>
->> Moving to io=threads does increase the throughput, however sacrificing
->> latency significantly.
->>
->> So the user find itself with available host cpus and TCP connections
->> that it could easily use to get maximum throughput, without the ability
->> to leverage them. True, other guests will use different
->> threads/contexts, however the goal here is to allow the full performance
->> from a single device.
->>
->> I've seen several discussions and attempts in the past to allow a
->> virtio-blk device leverage multiple iothreads, but around 2 years ago
->> the discussions over this paused. So wanted to ask, are there any plans
->> or anything in the works to address this limitation?
->>
->> I've seen that the spdk folks are heading in this direction with their
->> vhost-blk implementation:
->> https://review.spdk.io/gerrit/c/spdk/spdk/+/16068
-> 
-> Hi Sagi,
-> Yes, there is an ongoing QEMU multi-queue block layer effort to make it
-> possible for multiple IOThreads to process disk I/O for the same
-> --blockdev in parallel.
+I don't see any of the machines or device models actually embedding 
+ISAParallelState or ParallelState so don't know what this patch is trying 
+to achieve. Please post the whole series with the patches that this is a 
+preparation for so we can se where this leads.
 
-Great to know.
+Regards,
+BALATON Zoltan
 
-> Most of my recent QEMU patches have been part of this effort. There is a
-> work-in-progress branch that supports mapping virtio-blk virtqueues to
-> specific IOThreads:
-> https://gitlab.com/stefanha/qemu/-/commits/virtio-blk-iothread-vq-mapping
-
-Thanks for the pointer.
-
-> The syntax is:
-> 
->    --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"}],"drive":"drive0"}'
-> 
-> This says "assign virtqueues round-robin to iothread0 and iothread1".
-> Half the virtqueues will be processed by iothread0 and the other half by
-> iothread1. There is also syntax for assigning specific virtqueues to
-> each IOThread, but usually the automatic round-robin assignment is all
-> that's needed.
-> 
-> This work is not finished yet. Basic I/O (e.g. fio) works without
-> crashes, but expect to hit issues if you use blockjobs, hotplug, etc.
-> 
-> Performance optimization work has just begun, so it won't deliver all
-> the benefits yet. I ran a benchmark yesterday where going from 1 to 2
-> IOThreads increased performance by 25%. That's much less than we're
-> aiming for; attaching two independent virtio-blk devices improves the
-> performance by ~100%. I know we can get there eventually. Some of the
-> bottlenecks are known (e.g. block statistics collection causes lock
-> contention) and others are yet to be investigated.
-
-Hmm, I rebased this branch on top of mainline master and ran a naive
-test, and it seems that performance regressed quite a bit :(
-
-I'm running this test on my laptop (Intel(R) Core(TM) i7-8650U CPU
-@1.90GHz), so this is more qualitative test for BW only.
-I use null_blk as the host device.
-
-With mainline master I get ~9GB/s 64k randread, and with your branch
-I get ~5GB/s, this is regardless of assigning iothreads (one or
-two) or not.
-
-my qemu command:
-taskset -c 0-3 build/qemu-system-x86_64 -cpu host -m 1G -enable-kvm -smp 
-4 -drive 
-file=/var/lib/libvirt/images/ubuntu-22/root-disk-clone.qcow2,format=qcow2 
--drive 
-if=none,id=drive0,cache=none,aio=native,format=raw,file=/dev/nullb0 
--device virtio-blk-pci,drive=drive0,scsi=off -nographic
-
-my guest fio jobfile:
---
-[global]
-group_reporting
-runtime=3000
-time_based
-loops=1
-direct=1
-invalidate=1
-randrepeat=0
-norandommap
-exitall
-cpus_allowed=0-3
-cpus_allowed_policy=split
-
-[read]
-filename=/dev/vda
-numjobs=4
-iodepth=32
-bs=64k
-rw=randread
-ioengine=io_uring
---
-
-Maybe I'm doing something wrong? Didn't expect to find a regression
-against mainline on the default setup.
+> ---
+> include/hw/char/parallel-isa.h | 46 ++++++++++++++++++++++++++++++++++
+> include/hw/char/parallel.h     |  2 --
+> hw/char/parallel-isa.c         |  1 +
+> hw/char/parallel.c             | 12 +--------
+> hw/i386/pc_piix.c              |  2 +-
+> hw/i386/pc_q35.c               |  2 +-
+> hw/isa/isa-superio.c           |  1 +
+> hw/sparc64/sun4u.c             |  2 +-
+> 8 files changed, 52 insertions(+), 16 deletions(-)
+> create mode 100644 include/hw/char/parallel-isa.h
+>
+> diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
+> new file mode 100644
+> index 0000000000..27bdacf1a3
+> --- /dev/null
+> +++ b/include/hw/char/parallel-isa.h
+> @@ -0,0 +1,46 @@
+> +/*
+> + * QEMU ISA Parallel PORT emulation
+> + *
+> + * Copyright (c) 2003-2005 Fabrice Bellard
+> + * Copyright (c) 2007 Marko Kohtala
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a copy
+> + * of this software and associated documentation files (the "Software"), to deal
+> + * in the Software without restriction, including without limitation the rights
+> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> + * copies of the Software, and to permit persons to whom the Software is
+> + * furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+> + * THE SOFTWARE.
+> + */
+> +
+> +#ifndef HW_PARALLEL_ISA_H
+> +#define HW_PARALLEL_ISA_H
+> +
+> +#include "parallel.h"
+> +
+> +#include "hw/isa/isa.h"
+> +#include "qom/object.h"
+> +
+> +#define TYPE_ISA_PARALLEL "isa-parallel"
+> +OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
+> +
+> +struct ISAParallelState {
+> +    ISADevice parent_obj;
+> +
+> +    uint32_t index;
+> +    uint32_t iobase;
+> +    uint32_t isairq;
+> +    ParallelState state;
+> +};
+> +
+> +#endif /* HW_PARALLEL_ISA_H */
+> diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
+> index 9f76edca81..7b5a309a03 100644
+> --- a/include/hw/char/parallel.h
+> +++ b/include/hw/char/parallel.h
+> @@ -25,8 +25,6 @@ typedef struct ParallelState {
+>     PortioList portio_list;
+> } ParallelState;
+>
+> -#define TYPE_ISA_PARALLEL "isa-parallel"
+> -
+> void parallel_hds_isa_init(ISABus *bus, int n);
+>
+> bool parallel_mm_init(MemoryRegion *address_space,
+> diff --git a/hw/char/parallel-isa.c b/hw/char/parallel-isa.c
+> index 547ae69304..ab0f879998 100644
+> --- a/hw/char/parallel-isa.c
+> +++ b/hw/char/parallel-isa.c
+> @@ -13,6 +13,7 @@
+> #include "sysemu/sysemu.h"
+> #include "hw/isa/isa.h"
+> #include "hw/qdev-properties.h"
+> +#include "hw/char/parallel-isa.h"
+> #include "hw/char/parallel.h"
+> #include "qapi/error.h"
+>
+> diff --git a/hw/char/parallel.c b/hw/char/parallel.c
+> index e75fc5019d..147c900f0d 100644
+> --- a/hw/char/parallel.c
+> +++ b/hw/char/parallel.c
+> @@ -31,6 +31,7 @@
+> #include "hw/qdev-properties.h"
+> #include "hw/qdev-properties-system.h"
+> #include "migration/vmstate.h"
+> +#include "hw/char/parallel-isa.h"
+> #include "hw/char/parallel.h"
+> #include "sysemu/reset.h"
+> #include "sysemu/sysemu.h"
+> @@ -73,17 +74,6 @@
+>
+> #define PARA_CTR_SIGNAL (PARA_CTR_SELECT|PARA_CTR_INIT|PARA_CTR_AUTOLF|PARA_CTR_STROBE)
+>
+> -OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
+> -
+> -struct ISAParallelState {
+> -    ISADevice parent_obj;
+> -
+> -    uint32_t index;
+> -    uint32_t iobase;
+> -    uint32_t isairq;
+> -    ParallelState state;
+> -};
+> -
+> static void parallel_update_irq(ParallelState *s)
+> {
+>     if (s->irq_pending)
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index 42af03dbb4..44146e6ff5 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -26,7 +26,7 @@
+> #include CONFIG_DEVICES
+>
+> #include "qemu/units.h"
+> -#include "hw/char/parallel.h"
+> +#include "hw/char/parallel-isa.h"
+> #include "hw/dma/i8257.h"
+> #include "hw/loader.h"
+> #include "hw/i386/x86.h"
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 6155427e48..a9a59ed42b 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -30,7 +30,7 @@
+>
+> #include "qemu/osdep.h"
+> #include "qemu/units.h"
+> -#include "hw/char/parallel.h"
+> +#include "hw/char/parallel-isa.h"
+> #include "hw/loader.h"
+> #include "hw/i2c/smbus_eeprom.h"
+> #include "hw/rtc/mc146818rtc.h"
+> diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
+> index 9292ec3bcf..7dbfc374da 100644
+> --- a/hw/isa/isa-superio.c
+> +++ b/hw/isa/isa-superio.c
+> @@ -21,6 +21,7 @@
+> #include "hw/isa/superio.h"
+> #include "hw/qdev-properties.h"
+> #include "hw/input/i8042.h"
+> +#include "hw/char/parallel-isa.h"
+> #include "hw/char/serial.h"
+> #include "trace.h"
+>
+> diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+> index e2858a0331..29e9b6cc26 100644
+> --- a/hw/sparc64/sun4u.c
+> +++ b/hw/sparc64/sun4u.c
+> @@ -35,7 +35,7 @@
+> #include "hw/qdev-properties.h"
+> #include "hw/pci-host/sabre.h"
+> #include "hw/char/serial.h"
+> -#include "hw/char/parallel.h"
+> +#include "hw/char/parallel-isa.h"
+> #include "hw/rtc/m48t59.h"
+> #include "migration/vmstate.h"
+> #include "hw/input/i8042.h"
+>
 
