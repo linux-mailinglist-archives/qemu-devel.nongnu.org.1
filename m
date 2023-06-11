@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BE472B2BC
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 18:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8562B72B2C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 18:05:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8NVk-0006eY-91; Sun, 11 Jun 2023 12:01:48 -0400
+	id 1q8NVg-0006Za-T9; Sun, 11 Jun 2023 12:01:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q8NUt-000611-48
+ id 1q8NUu-00061g-Iw
  for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:01:00 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q8NUm-0000XV-El
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:54 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3f7f6341bf9so35039965e9.1
+ id 1q8NUm-0000Xq-Ez
+ for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:56 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-30c55d2b9f3so2247213f8f.2
  for <qemu-devel@nongnu.org>; Sun, 11 Jun 2023 09:00:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686499246; x=1689091246;
+ d=linaro.org; s=google; t=1686499247; x=1689091247;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Tjmthin5TQuDssMEMCBUr/UdC5X7+Wb+s2H58zsniSY=;
- b=Lju/q0TO9G1cE68bmBTRp3Nf1tEI8A/zakHeNQNTRrvYHijd3iYUeeqrH9yjUVsXiR
- Myq/OQ1MMkVdnFElEbVyBZ3JyIBAUTNNZTVvQin2carC/o3z/4DGrQZ3LxUzO7CqS77g
- yyLA5IYj5X7E81JuqAPdYlJBUuafGAcTA2bmjZTdOZ4Rg3az/2diw1VaM5VuACxqIKq6
- J24POTSNFy7nwL7OciLcSW/DE080pYbEwIf0aig/XKeqJ7QMAhaQLPv003VDRjpmQ4Yp
- kz2bdYDqf7OKLqS+bPwzICQtwEMyuJ+8+ggwSLJkjmm1eB0G5ARjPJfqJc8XTdCOCXOx
- +Fcg==
+ :reply-to; bh=N3PW9VYsAGC1K2Fi7FePAHwlou4P1DBl1fvZGT4Ua6o=;
+ b=R3EahtEMoyCM0Z+UROplgAYMMPCKNPfbwBnGvJKOfrWp5vOkPJbW8ZK9hJc3ZbUpVI
+ 5+qqx618f7pY/7FbXgfn8CkyjwBbG0Jzdp/GlPrr618ap7R+HqFv2l9d+9tpFfIo46Xy
+ bnfwPL67QDXA/nnDyryiQBW7OhM0OiRnelNdWlsyzgp4g+k230yOKmMb1Sz+rM8H3brs
+ T/TRT/Jc6ud0kmsDgRoaPrzfrKiTh1YGVP1syU9xLaC0r2+siCc21hmE10kHn+To0591
+ ZoDUT9eeL5GqqdaaDvVkBevbZb+yZn/5K+CW2IXbP/GFL22m+tb+PaBdStjwr96JEAJW
+ wv4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686499246; x=1689091246;
+ d=1e100.net; s=20221208; t=1686499247; x=1689091247;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tjmthin5TQuDssMEMCBUr/UdC5X7+Wb+s2H58zsniSY=;
- b=d+szbYstzrDcqcSI0EdIvri27B25voEh6ckf8T0acESztOeISddHAUnhu0kvJlKOOL
- ZR9gUf9pehB9sgIPhJgKOrU1D+6bNzWjne5HzWv4GpC7qp6Irdwl1YEIQE73ON3PvBSG
- SiwOcGWRacTDt2aRqNvHhc0fOCtV/EFu1d4+H9CoYJdbtL6Br2uEsXaW9lXFu2yzbEQ5
- OM+FbltaLP7mtIDAiCRGTbNOI3tJEqZfst3yGJMX7mPfAF+qB4t6+QnYBCP9YnhDAGxD
- b6IKlBOajLpZiWG+2YDpwF1WSfyFUfy19uMpBNYIA6X0pY17JuN22Dvtky0BfRkPVdnz
- 779g==
-X-Gm-Message-State: AC+VfDxYya0g8X52Ar7EN31ZizvK+VFqv5DpYCA27ft5Eicehvwa9O4H
- NaSsZu8u6FOwfDmfCpou87HbHVtvL0VqPhnbX3I=
-X-Google-Smtp-Source: ACHHUZ5e3mwyeyrp6feU+7cHXcnKxUrnfXm8LGRRXp4qV9ESAaY7WbStESCZ44QXipirGe+SpsPasQ==
-X-Received: by 2002:a5d:6107:0:b0:30a:ec3b:58d8 with SMTP id
- v7-20020a5d6107000000b0030aec3b58d8mr3326192wrt.3.1686499246427; 
- Sun, 11 Jun 2023 09:00:46 -0700 (PDT)
+ bh=N3PW9VYsAGC1K2Fi7FePAHwlou4P1DBl1fvZGT4Ua6o=;
+ b=h8b+kMgGeijlhj3F8xVGOMhhH/hkTQjHZFOx9aLcWAqAxTDZNMKystY7dhgPgYM/Dc
+ 9Y1h+bVtKSOXLyw+Mm3EIk+TEUFCFodCdVlXDdAkqIV2wqigfaxj2gIV96f1B5IPzN2W
+ oFasdfgjQcVIuNQDF5HG5rf1qqrgUTOKDvAYcWobvVG8Qduocn4RiFE3TYxNQfZVZg7R
+ uzEXZlN924rKMEN3j8Y3XhWus2DLW3LD8wItB/2iSYoZbZrScLLXUkE3e1qe/WNgNOs3
+ 1KAPAuHRHpKmxA6Zea7lro0VlVALGYvpiAe+UOaJe2IP5lVuhv4InOcgosh3WI2dPq7N
+ mjmw==
+X-Gm-Message-State: AC+VfDx7/lb3ySo5Fvit0kv6JcXRHJd34x6A99Tz1rPClen7/+OwvJTF
+ qhHK0n01MaHPekdRgJBnGteXEmlmInbctrnf5uY=
+X-Google-Smtp-Source: ACHHUZ5pisSMJqRMcubg0WtV4BPnLOVkSKOttbeHmK/73zLaIg878QB4u481/LEi+CRQ/qaXxe/FjA==
+X-Received: by 2002:adf:e906:0:b0:30f:be0f:fbf with SMTP id
+ f6-20020adfe906000000b0030fbe0f0fbfmr1109970wrm.22.1686499247015; 
+ Sun, 11 Jun 2023 09:00:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- m9-20020a056000008900b0030ae499da59sm9923022wrx.111.2023.06.11.09.00.45
+ m9-20020a056000008900b0030ae499da59sm9923022wrx.111.2023.06.11.09.00.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 11 Jun 2023 09:00:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 22/23] target/arm: Convert load/store single structure to
+Subject: [PATCH v2 23/23] target/arm: Convert load/store tags insns to
  decodetree
-Date: Sun, 11 Jun 2023 17:00:31 +0100
-Message-Id: <20230611160032.274823-23-peter.maydell@linaro.org>
+Date: Sun, 11 Jun 2023 17:00:32 +0100
+Message-Id: <20230611160032.274823-24-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230611160032.274823-1-peter.maydell@linaro.org>
 References: <20230611160032.274823-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,315 +91,467 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the ASIMD load/store single structure insns to decodetree.
+Convert the instructions in the load/store memory tags instruction
+group to decodetree.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230602155223.2040685-20-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230602155223.2040685-21-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  34 +++++
- target/arm/tcg/translate-a64.c | 219 +++++++++++++++------------------
- 2 files changed, 136 insertions(+), 117 deletions(-)
+ target/arm/tcg/a64.decode      |  25 +++
+ target/arm/tcg/translate-a64.c | 360 ++++++++++++++++-----------------
+ 2 files changed, 199 insertions(+), 186 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 69bdfa2e73b..4ffdc91865f 100644
+index 4ffdc91865f..ef64a3f9cba 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -494,3 +494,37 @@ LD_mult         0 . 001100 . 1 0 ..... 0110 .. ..... ..... @ldst_mult rpt=3 sele
- LD_mult         0 . 001100 . 1 0 ..... 0111 .. ..... ..... @ldst_mult rpt=1 selem=1
- LD_mult         0 . 001100 . 1 0 ..... 1000 .. ..... ..... @ldst_mult rpt=1 selem=2
- LD_mult         0 . 001100 . 1 0 ..... 1010 .. ..... ..... @ldst_mult rpt=2 selem=1
+@@ -528,3 +528,28 @@ LD_single          0 . 001101 . 1 . ..... 10 . 001 ..... .....  @ldst_single_d
+ 
+ # Replicating load case
+ LD_single_repl  0 q:1 001101 p:1 1 . rm:5 11 . 0 scale:2 rn:5 rt:5 selem=%ldst_single_selem
 +
-+# Load/store single structure
-+&ldst_single    rm rn rt p selem index scale
++%tag_offset     12:s9 !function=scale_by_log2_tag_granule
++&ldst_tag       rn rt imm p w
++@ldst_tag       ........ .. . ......... .. rn:5 rt:5 &ldst_tag imm=%tag_offset
++@ldst_tag_mult  ........ .. . 000000000 .. rn:5 rt:5 &ldst_tag imm=0
 +
-+%ldst_single_selem 13:1 21:1 !function=plus_1
++STZGM           11011001 00 1 ......... 00 ..... ..... @ldst_tag_mult p=0 w=0
++STG             11011001 00 1 ......... 01 ..... ..... @ldst_tag p=1 w=1
++STG             11011001 00 1 ......... 10 ..... ..... @ldst_tag p=0 w=0
++STG             11011001 00 1 ......... 11 ..... ..... @ldst_tag p=0 w=1
 +
-+%ldst_single_index_b  30:1 10:3
-+%ldst_single_index_h  30:1 11:2
-+%ldst_single_index_s  30:1 12:1
++LDG             11011001 01 1 ......... 00 ..... ..... @ldst_tag p=0 w=0
++STZG            11011001 01 1 ......... 01 ..... ..... @ldst_tag p=1 w=1
++STZG            11011001 01 1 ......... 10 ..... ..... @ldst_tag p=0 w=0
++STZG            11011001 01 1 ......... 11 ..... ..... @ldst_tag p=0 w=1
 +
-+@ldst_single_b     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
-+                   &ldst_single scale=0 selem=%ldst_single_selem \
-+                   index=%ldst_single_index_b
-+@ldst_single_h     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
-+                   &ldst_single scale=1 selem=%ldst_single_selem \
-+                   index=%ldst_single_index_h
-+@ldst_single_s     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
-+                   &ldst_single scale=2 selem=%ldst_single_selem \
-+                   index=%ldst_single_index_s
-+@ldst_single_d     . index:1 ...... p:1 .. rm:5 ...... rn:5 rt:5 \
-+                   &ldst_single scale=3 selem=%ldst_single_selem
++STGM            11011001 10 1 ......... 00 ..... ..... @ldst_tag_mult p=0 w=0
++ST2G            11011001 10 1 ......... 01 ..... ..... @ldst_tag p=1 w=1
++ST2G            11011001 10 1 ......... 10 ..... ..... @ldst_tag p=0 w=0
++ST2G            11011001 10 1 ......... 11 ..... ..... @ldst_tag p=0 w=1
 +
-+ST_single          0 . 001101 . 0 . ..... 00 . ... ..... .....  @ldst_single_b
-+ST_single          0 . 001101 . 0 . ..... 01 . ..0 ..... .....  @ldst_single_h
-+ST_single          0 . 001101 . 0 . ..... 10 . .00 ..... .....  @ldst_single_s
-+ST_single          0 . 001101 . 0 . ..... 10 . 001 ..... .....  @ldst_single_d
-+
-+LD_single          0 . 001101 . 1 . ..... 00 . ... ..... .....  @ldst_single_b
-+LD_single          0 . 001101 . 1 . ..... 01 . ..0 ..... .....  @ldst_single_h
-+LD_single          0 . 001101 . 1 . ..... 10 . .00 ..... .....  @ldst_single_s
-+LD_single          0 . 001101 . 1 . ..... 10 . 001 ..... .....  @ldst_single_d
-+
-+# Replicating load case
-+LD_single_repl  0 q:1 001101 p:1 1 . rm:5 11 . 0 scale:2 rn:5 rt:5 selem=%ldst_single_selem
++LDGM            11011001 11 1 ......... 00 ..... ..... @ldst_tag_mult p=0 w=0
++STZ2G           11011001 11 1 ......... 01 ..... ..... @ldst_tag p=1 w=1
++STZ2G           11011001 11 1 ......... 10 ..... ..... @ldst_tag p=0 w=0
++STZ2G           11011001 11 1 ......... 11 ..... ..... @ldst_tag p=0 w=1
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 1c8a57f7b52..6e7fe1f35cf 100644
+index 6e7fe1f35cf..43963287a8c 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -3587,141 +3587,129 @@ static bool trans_ST_mult(DisasContext *s, arg_ldst_mult *a)
+@@ -62,6 +62,12 @@ static int uimm_scaled(DisasContext *s, int x)
+     return imm << scale;
+ }
+ 
++/* For load/store memory tags: scale offset by LOG2_TAG_GRANULE */
++static int scale_by_log2_tag_granule(DisasContext *s, int x)
++{
++    return x << LOG2_TAG_GRANULE;
++}
++
+ /*
+  * Include the generated decoders.
+  */
+@@ -3712,185 +3718,184 @@ static bool trans_LD_single_repl(DisasContext *s, arg_LD_single_repl *a)
      return true;
  }
  
--/* AdvSIMD load/store single structure
+-/*
+- * Load/Store memory tags
 - *
-- *  31  30  29           23 22 21 20       16 15 13 12  11  10 9    5 4    0
-- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
-- * | 0 | Q | 0 0 1 1 0 1 0 | L R | 0 0 0 0 0 | opc | S | size |  Rn  |  Rt  |
-- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
-- *
-- * AdvSIMD load/store single structure (post-indexed)
-- *
-- *  31  30  29           23 22 21 20       16 15 13 12  11  10 9    5 4    0
-- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
-- * | 0 | Q | 0 0 1 1 0 1 1 | L R |     Rm    | opc | S | size |  Rn  |  Rt  |
-- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
-- *
-- * Rt: first (or only) SIMD&FP register to be transferred
-- * Rn: base address or SP
-- * Rm (post-index only): post-index register (when !31) or size dependent #imm
-- * index = encoded in Q:S:size dependent on size
-- *
-- * lane_size = encoded in R, opc
-- * transfer width = encoded in opc, S, size
+- *  31 30 29         24     22  21     12    10      5      0
+- * +-----+-------------+-----+---+------+-----+------+------+
+- * | 1 1 | 0 1 1 0 0 1 | op1 | 1 | imm9 | op2 |  Rn  |  Rt  |
+- * +-----+-------------+-----+---+------+-----+------+------+
 - */
--static void disas_ldst_single_struct(DisasContext *s, uint32_t insn)
-+static bool trans_ST_single(DisasContext *s, arg_ldst_single *a)
+-static void disas_ldst_tag(DisasContext *s, uint32_t insn)
++static bool trans_STZGM(DisasContext *s, arg_ldst_tag *a)
  {
 -    int rt = extract32(insn, 0, 5);
 -    int rn = extract32(insn, 5, 5);
--    int rm = extract32(insn, 16, 5);
--    int size = extract32(insn, 10, 2);
--    int S = extract32(insn, 12, 1);
--    int opc = extract32(insn, 13, 3);
--    int R = extract32(insn, 21, 1);
--    int is_load = extract32(insn, 22, 1);
--    int is_postidx = extract32(insn, 23, 1);
--    int is_q = extract32(insn, 30, 1);
--
--    int scale = extract32(opc, 1, 2);
--    int selem = (extract32(opc, 0, 1) << 1 | R) + 1;
--    bool replicate = false;
--    int index = is_q << 3 | S << 2 | size;
--    int xs, total;
-+    int xs, total, rt;
-     TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
-     MemOp mop;
+-    uint64_t offset = sextract64(insn, 12, 9) << LOG2_TAG_GRANULE;
+-    int op2 = extract32(insn, 10, 2);
+-    int op1 = extract32(insn, 22, 2);
+-    bool is_load = false, is_pair = false, is_zero = false, is_mult = false;
+-    int index = 0;
+     TCGv_i64 addr, clean_addr, tcg_rt;
++    int size = 4 << s->dcz_blocksize;
  
--    if (extract32(insn, 31, 1)) {
--        unallocated_encoding(s);
--        return;
-+    if (!a->p && a->rm != 0) {
+-    /* We checked insn bits [29:24,21] in the caller.  */
+-    if (extract32(insn, 30, 2) != 3) {
+-        goto do_unallocated;
++    if (!dc_isar_feature(aa64_mte, s)) {
++        return false;
++    }
++    if (s->current_el == 0) {
 +        return false;
      }
--    if (!is_postidx && rm != 0) {
+ 
+-    /*
+-     * @index is a tri-state variable which has 3 states:
+-     * < 0 : post-index, writeback
+-     * = 0 : signed offset
+-     * > 0 : pre-index, writeback
+-     */
+-    switch (op1) {
+-    case 0:
+-        if (op2 != 0) {
+-            /* STG */
+-            index = op2 - 2;
+-        } else {
+-            /* STZGM */
+-            if (s->current_el == 0 || offset != 0) {
+-                goto do_unallocated;
+-            }
+-            is_mult = is_zero = true;
+-        }
+-        break;
+-    case 1:
+-        if (op2 != 0) {
+-            /* STZG */
+-            is_zero = true;
+-            index = op2 - 2;
+-        } else {
+-            /* LDG */
+-            is_load = true;
+-        }
+-        break;
+-    case 2:
+-        if (op2 != 0) {
+-            /* ST2G */
+-            is_pair = true;
+-            index = op2 - 2;
+-        } else {
+-            /* STGM */
+-            if (s->current_el == 0 || offset != 0) {
+-                goto do_unallocated;
+-            }
+-            is_mult = true;
+-        }
+-        break;
+-    case 3:
+-        if (op2 != 0) {
+-            /* STZ2G */
+-            is_pair = is_zero = true;
+-            index = op2 - 2;
+-        } else {
+-            /* LDGM */
+-            if (s->current_el == 0 || offset != 0) {
+-                goto do_unallocated;
+-            }
+-            is_mult = is_load = true;
+-        }
+-        break;
+-
+-    default:
+-    do_unallocated:
 -        unallocated_encoding(s);
 -        return;
 -    }
 -
--    switch (scale) {
--    case 3:
--        if (!is_load || S) {
--            unallocated_encoding(s);
--            return;
--        }
--        scale = size;
--        replicate = true;
--        break;
--    case 0:
--        break;
--    case 1:
--        if (extract32(size, 0, 1)) {
--            unallocated_encoding(s);
--            return;
--        }
--        index >>= 1;
--        break;
--    case 2:
--        if (extract32(size, 1, 1)) {
--            unallocated_encoding(s);
--            return;
--        }
--        if (!extract32(size, 0, 1)) {
--            index >>= 2;
--        } else {
--            if (S) {
--                unallocated_encoding(s);
--                return;
--            }
--            index >>= 3;
--            scale = 3;
--        }
--        break;
--    default:
--        g_assert_not_reached();
+-    if (is_mult
+-        ? !dc_isar_feature(aa64_mte, s)
+-        : !dc_isar_feature(aa64_mte_insn_reg, s)) {
+-        goto do_unallocated;
 -    }
 -
-     if (!fp_access_check(s)) {
--        return;
-+        return true;
-     }
- 
 -    if (rn == 31) {
 +    if (a->rn == 31) {
          gen_check_sp_alignment(s);
      }
  
--    total = selem << scale;
--    tcg_rn = cpu_reg_sp(s, rn);
-+    total = a->selem << a->scale;
-+    tcg_rn = cpu_reg_sp(s, a->rn);
- 
--    mop = finalize_memop_asimd(s, scale);
--
--    clean_addr = gen_mte_checkN(s, tcg_rn, !is_load, is_postidx || rn != 31,
-+    mop = finalize_memop_asimd(s, a->scale);
-+    clean_addr = gen_mte_checkN(s, tcg_rn, true, a->p || a->rn != 31,
-                                 total, mop);
- 
--    tcg_ebytes = tcg_constant_i64(1 << scale);
--    for (xs = 0; xs < selem; xs++) {
--        if (replicate) {
--            /* Load and replicate to all elements */
--            TCGv_i64 tcg_tmp = tcg_temp_new_i64();
--
--            tcg_gen_qemu_ld_i64(tcg_tmp, clean_addr, get_mem_index(s), mop);
--            tcg_gen_gvec_dup_i64(scale, vec_full_reg_offset(s, rt),
--                                 (is_q + 1) * 8, vec_full_reg_size(s),
--                                 tcg_tmp);
--        } else {
--            /* Load/store one element per register */
--            if (is_load) {
--                do_vec_ld(s, rt, index, clean_addr, mop);
--            } else {
--                do_vec_st(s, rt, index, clean_addr, mop);
--            }
--        }
-+    tcg_ebytes = tcg_constant_i64(1 << a->scale);
-+    for (xs = 0, rt = a->rt; xs < a->selem; xs++, rt = (rt + 1) % 32) {
-+        do_vec_st(s, rt, a->index, clean_addr, mop);
-         tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
--        rt = (rt + 1) % 32;
+-    addr = read_cpu_reg_sp(s, rn, true);
+-    if (index >= 0) {
++    addr = read_cpu_reg_sp(s, a->rn, true);
++    tcg_gen_addi_i64(addr, addr, a->imm);
++    tcg_rt = cpu_reg(s, a->rt);
++
++    if (s->ata) {
++        gen_helper_stzgm_tags(cpu_env, addr, tcg_rt);
++    }
++    /*
++     * The non-tags portion of STZGM is mostly like DC_ZVA,
++     * except the alignment happens before the access.
++     */
++    clean_addr = clean_data_tbi(s, addr);
++    tcg_gen_andi_i64(clean_addr, clean_addr, -size);
++    gen_helper_dc_zva(cpu_env, clean_addr);
++    return true;
++}
++
++static bool trans_STGM(DisasContext *s, arg_ldst_tag *a)
++{
++    TCGv_i64 addr, clean_addr, tcg_rt;
++
++    if (!dc_isar_feature(aa64_mte, s)) {
++        return false;
++    }
++    if (s->current_el == 0) {
++        return false;
++    }
++
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++
++    addr = read_cpu_reg_sp(s, a->rn, true);
++    tcg_gen_addi_i64(addr, addr, a->imm);
++    tcg_rt = cpu_reg(s, a->rt);
++
++    if (s->ata) {
++        gen_helper_stgm(cpu_env, addr, tcg_rt);
++    } else {
++        MMUAccessType acc = MMU_DATA_STORE;
++        int size = 4 << GMID_EL1_BS;
++
++        clean_addr = clean_data_tbi(s, addr);
++        tcg_gen_andi_i64(clean_addr, clean_addr, -size);
++        gen_probe_access(s, clean_addr, acc, size);
++    }
++    return true;
++}
++
++static bool trans_LDGM(DisasContext *s, arg_ldst_tag *a)
++{
++    TCGv_i64 addr, clean_addr, tcg_rt;
++
++    if (!dc_isar_feature(aa64_mte, s)) {
++        return false;
++    }
++    if (s->current_el == 0) {
++        return false;
++    }
++
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++
++    addr = read_cpu_reg_sp(s, a->rn, true);
++    tcg_gen_addi_i64(addr, addr, a->imm);
++    tcg_rt = cpu_reg(s, a->rt);
++
++    if (s->ata) {
++        gen_helper_ldgm(tcg_rt, cpu_env, addr);
++    } else {
++        MMUAccessType acc = MMU_DATA_LOAD;
++        int size = 4 << GMID_EL1_BS;
++
++        clean_addr = clean_data_tbi(s, addr);
++        tcg_gen_andi_i64(clean_addr, clean_addr, -size);
++        gen_probe_access(s, clean_addr, acc, size);
++        /* The result tags are zeros.  */
++        tcg_gen_movi_i64(tcg_rt, 0);
++    }
++    return true;
++}
++
++static bool trans_LDG(DisasContext *s, arg_ldst_tag *a)
++{
++    TCGv_i64 addr, clean_addr, tcg_rt;
++
++    if (!dc_isar_feature(aa64_mte_insn_reg, s)) {
++        return false;
++    }
++
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++
++    addr = read_cpu_reg_sp(s, a->rn, true);
++    if (!a->p) {
+         /* pre-index or signed offset */
+-        tcg_gen_addi_i64(addr, addr, offset);
++        tcg_gen_addi_i64(addr, addr, a->imm);
      }
  
--    if (is_postidx) {
--        if (rm == 31) {
-+    if (a->p) {
-+        if (a->rm == 31) {
-             tcg_gen_addi_i64(tcg_rn, tcg_rn, total);
+-    if (is_mult) {
+-        tcg_rt = cpu_reg(s, rt);
++    tcg_gen_andi_i64(addr, addr, -TAG_GRANULE);
++    tcg_rt = cpu_reg(s, a->rt);
++    if (s->ata) {
++        gen_helper_ldg(tcg_rt, cpu_env, addr, tcg_rt);
++    } else {
++        /*
++         * Tag access disabled: we must check for aborts on the load
++         * load from [rn+offset], and then insert a 0 tag into rt.
++         */
++        clean_addr = clean_data_tbi(s, addr);
++        gen_probe_access(s, clean_addr, MMU_DATA_LOAD, MO_8);
++        gen_address_with_allocation_tag0(tcg_rt, tcg_rt);
++    }
+ 
+-        if (is_zero) {
+-            int size = 4 << s->dcz_blocksize;
+-
+-            if (s->ata) {
+-                gen_helper_stzgm_tags(cpu_env, addr, tcg_rt);
+-            }
+-            /*
+-             * The non-tags portion of STZGM is mostly like DC_ZVA,
+-             * except the alignment happens before the access.
+-             */
+-            clean_addr = clean_data_tbi(s, addr);
+-            tcg_gen_andi_i64(clean_addr, clean_addr, -size);
+-            gen_helper_dc_zva(cpu_env, clean_addr);
+-        } else if (s->ata) {
+-            if (is_load) {
+-                gen_helper_ldgm(tcg_rt, cpu_env, addr);
+-            } else {
+-                gen_helper_stgm(cpu_env, addr, tcg_rt);
+-            }
+-        } else {
+-            MMUAccessType acc = is_load ? MMU_DATA_LOAD : MMU_DATA_STORE;
+-            int size = 4 << GMID_EL1_BS;
+-
+-            clean_addr = clean_data_tbi(s, addr);
+-            tcg_gen_andi_i64(clean_addr, clean_addr, -size);
+-            gen_probe_access(s, clean_addr, acc, size);
+-
+-            if (is_load) {
+-                /* The result tags are zeros.  */
+-                tcg_gen_movi_i64(tcg_rt, 0);
+-            }
++    if (a->w) {
++        /* pre-index or post-index */
++        if (a->p) {
++            /* post-index */
++            tcg_gen_addi_i64(addr, addr, a->imm);
+         }
+-        return;
++        tcg_gen_mov_i64(cpu_reg_sp(s, a->rn), addr);
++    }
++    return true;
++}
++
++static bool do_STG(DisasContext *s, arg_ldst_tag *a, bool is_zero, bool is_pair)
++{
++    TCGv_i64 addr, tcg_rt;
++
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
+     }
+ 
+-    if (is_load) {
+-        tcg_gen_andi_i64(addr, addr, -TAG_GRANULE);
+-        tcg_rt = cpu_reg(s, rt);
+-        if (s->ata) {
+-            gen_helper_ldg(tcg_rt, cpu_env, addr, tcg_rt);
++    addr = read_cpu_reg_sp(s, a->rn, true);
++    if (!a->p) {
++        /* pre-index or signed offset */
++        tcg_gen_addi_i64(addr, addr, a->imm);
++    }
++    tcg_rt = cpu_reg_sp(s, a->rt);
++    if (!s->ata) {
++        /*
++         * For STG and ST2G, we need to check alignment and probe memory.
++         * TODO: For STZG and STZ2G, we could rely on the stores below,
++         * at least for system mode; user-only won't enforce alignment.
++         */
++        if (is_pair) {
++            gen_helper_st2g_stub(cpu_env, addr);
          } else {
--            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, rm));
-+            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, a->rm));
+-            /*
+-             * Tag access disabled: we must check for aborts on the load
+-             * load from [rn+offset], and then insert a 0 tag into rt.
+-             */
+-            clean_addr = clean_data_tbi(s, addr);
+-            gen_probe_access(s, clean_addr, MMU_DATA_LOAD, MO_8);
+-            gen_address_with_allocation_tag0(tcg_rt, tcg_rt);
++            gen_helper_stg_stub(cpu_env, addr);
++        }
++    } else if (tb_cflags(s->base.tb) & CF_PARALLEL) {
++        if (is_pair) {
++            gen_helper_st2g_parallel(cpu_env, addr, tcg_rt);
++        } else {
++            gen_helper_stg_parallel(cpu_env, addr, tcg_rt);
+         }
+     } else {
+-        tcg_rt = cpu_reg_sp(s, rt);
+-        if (!s->ata) {
+-            /*
+-             * For STG and ST2G, we need to check alignment and probe memory.
+-             * TODO: For STZG and STZ2G, we could rely on the stores below,
+-             * at least for system mode; user-only won't enforce alignment.
+-             */
+-            if (is_pair) {
+-                gen_helper_st2g_stub(cpu_env, addr);
+-            } else {
+-                gen_helper_stg_stub(cpu_env, addr);
+-            }
+-        } else if (tb_cflags(s->base.tb) & CF_PARALLEL) {
+-            if (is_pair) {
+-                gen_helper_st2g_parallel(cpu_env, addr, tcg_rt);
+-            } else {
+-                gen_helper_stg_parallel(cpu_env, addr, tcg_rt);
+-            }
++        if (is_pair) {
++            gen_helper_st2g(cpu_env, addr, tcg_rt);
+         } else {
+-            if (is_pair) {
+-                gen_helper_st2g(cpu_env, addr, tcg_rt);
+-            } else {
+-                gen_helper_stg(cpu_env, addr, tcg_rt);
+-            }
++            gen_helper_stg(cpu_env, addr, tcg_rt);
          }
      }
-+    return true;
-+}
-+
-+static bool trans_LD_single(DisasContext *s, arg_ldst_single *a)
-+{
-+    int xs, total, rt;
-+    TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
-+    MemOp mop;
-+
-+    if (!a->p && a->rm != 0) {
-+        return false;
-+    }
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
-+    }
-+
-+    total = a->selem << a->scale;
-+    tcg_rn = cpu_reg_sp(s, a->rn);
-+
-+    mop = finalize_memop_asimd(s, a->scale);
-+    clean_addr = gen_mte_checkN(s, tcg_rn, false, a->p || a->rn != 31,
-+                                total, mop);
-+
-+    tcg_ebytes = tcg_constant_i64(1 << a->scale);
-+    for (xs = 0, rt = a->rt; xs < a->selem; xs++, rt = (rt + 1) % 32) {
-+        do_vec_ld(s, rt, a->index, clean_addr, mop);
-+        tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
-+    }
-+
-+    if (a->p) {
-+        if (a->rm == 31) {
-+            tcg_gen_addi_i64(tcg_rn, tcg_rn, total);
-+        } else {
-+            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, a->rm));
-+        }
-+    }
-+    return true;
-+}
-+
-+static bool trans_LD_single_repl(DisasContext *s, arg_LD_single_repl *a)
-+{
-+    int xs, total, rt;
-+    TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
-+    MemOp mop;
-+
-+    if (!a->p && a->rm != 0) {
-+        return false;
-+    }
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
-+    }
-+
-+    total = a->selem << a->scale;
-+    tcg_rn = cpu_reg_sp(s, a->rn);
-+
-+    mop = finalize_memop_asimd(s, a->scale);
-+    clean_addr = gen_mte_checkN(s, tcg_rn, false, a->p || a->rn != 31,
-+                                total, mop);
-+
-+    tcg_ebytes = tcg_constant_i64(1 << a->scale);
-+    for (xs = 0, rt = a->rt; xs < a->selem; xs++, rt = (rt + 1) % 32) {
-+        /* Load and replicate to all elements */
-+        TCGv_i64 tcg_tmp = tcg_temp_new_i64();
-+
-+        tcg_gen_qemu_ld_i64(tcg_tmp, clean_addr, get_mem_index(s), mop);
-+        tcg_gen_gvec_dup_i64(a->scale, vec_full_reg_offset(s, rt),
-+                             (a->q + 1) * 8, vec_full_reg_size(s), tcg_tmp);
-+        tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
-+    }
-+
-+    if (a->p) {
-+        if (a->rm == 31) {
-+            tcg_gen_addi_i64(tcg_rn, tcg_rn, total);
-+        } else {
-+            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, a->rm));
-+        }
-+    }
+ 
+@@ -3911,32 +3916,21 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
+         }
+     }
+ 
+-    if (index != 0) {
++    if (a->w) {
+         /* pre-index or post-index */
+-        if (index < 0) {
++        if (a->p) {
+             /* post-index */
+-            tcg_gen_addi_i64(addr, addr, offset);
++            tcg_gen_addi_i64(addr, addr, a->imm);
+         }
+-        tcg_gen_mov_i64(cpu_reg_sp(s, rn), addr);
++        tcg_gen_mov_i64(cpu_reg_sp(s, a->rn), addr);
+     }
 +    return true;
  }
  
- /*
-@@ -3937,9 +3925,6 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
- static void disas_ldst(DisasContext *s, uint32_t insn)
- {
-     switch (extract32(insn, 24, 6)) {
--    case 0x0d: /* AdvSIMD load/store single structure */
--        disas_ldst_single_struct(s, insn);
+-/* Loads and stores */
+-static void disas_ldst(DisasContext *s, uint32_t insn)
+-{
+-    switch (extract32(insn, 24, 6)) {
+-    case 0x19:
+-        if (extract32(insn, 21, 1) != 0) {
+-            disas_ldst_tag(s, insn);
+-        } else {
+-            unallocated_encoding(s);
+-        }
 -        break;
-     case 0x19:
-         if (extract32(insn, 21, 1) != 0) {
-             disas_ldst_tag(s, insn);
+-    default:
+-        unallocated_encoding(s);
+-        break;
+-    }
+-}
++TRANS_FEAT(STG, aa64_mte_insn_reg, do_STG, a, false, false)
++TRANS_FEAT(STZG, aa64_mte_insn_reg, do_STG, a, true, false)
++TRANS_FEAT(ST2G, aa64_mte_insn_reg, do_STG, a, false, true)
++TRANS_FEAT(STZ2G, aa64_mte_insn_reg, do_STG, a, true, true)
+ 
+ typedef void ArithTwoOp(TCGv_i64, TCGv_i64, TCGv_i64);
+ 
+@@ -13832,12 +13826,6 @@ static bool btype_destination_ok(uint32_t insn, bool bt, int btype)
+ static void disas_a64_legacy(DisasContext *s, uint32_t insn)
+ {
+     switch (extract32(insn, 25, 4)) {
+-    case 0x4:
+-    case 0x6:
+-    case 0xc:
+-    case 0xe:      /* Loads and stores */
+-        disas_ldst(s, insn);
+-        break;
+     case 0x5:
+     case 0xd:      /* Data processing - register */
+         disas_data_proc_reg(s, insn);
 -- 
 2.34.1
 
