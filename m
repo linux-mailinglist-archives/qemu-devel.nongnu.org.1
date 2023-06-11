@@ -2,139 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D1B72B1BF
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 13:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E22A72B1D4
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 14:29:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8JeD-0007ZV-2M; Sun, 11 Jun 2023 07:54:17 -0400
+	id 1q8KAv-0004nj-5c; Sun, 11 Jun 2023 08:28:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.hogberg@ericsson.com>)
- id 1q8JeA-0007ZK-ON
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 07:54:14 -0400
-Received: from mail-db3eur04on061b.outbound.protection.outlook.com
- ([2a01:111:f400:fe0c::61b]
- helo=EUR04-DB3-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.hogberg@ericsson.com>)
- id 1q8Je8-00088x-Rl
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 07:54:14 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B2hID1LlxGoWnYq9pAS3q91UGV7M8Gplhkv8KpxpBLYE3SXFDAdCpmI9g3aE2XuQ++2rGoy4Kw1iEsVI4uWDiGYjg97nisJi/2MNqW51mpY1a+OxtMepSQhsYnF3HxIYK9SQg5tq/cp4psiEeDP6x/7yJVsyi//54k37YCX78blD6EN1ClET5gDoX28phLkWOK+s/Lqx4K7rL+SUn5rnoFzkZnXf2WierZ1iWO06qyzX+MNsL5/rZpdJb6htfzwSGHU3Ds+DT14yUTiuM4NZKWuMCUU+KCRuLc6ai4YBx9dln5X1qXl6IR9cQDK2N9G5mZMuKy2LoHv5hLh1SVXFgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gFW77lzn1ZK3N73vC+NUxRjMYltfw4iy7PXItfj0o5s=;
- b=Gyyr+n1yrPDyp7ANGab4oOK1L+rMOWkAWqbQ5Zn2ORcvLpJifCs+ZBewiFyLDv+fYMN3+MjLmRlfrylq0mKFWbaNupbaVeiyCFlnpmcaupxWOCO7ERV66LfZFCLoN89qxTve7LyUtbsf0uzrF3a84GBOWBUH/e3nm9KkrL0Uct38U36ax7r0qGy2/aIskvrYa7Z2M3fCchTWDtVyLH0VaLn6Amt6OSyc9fVfY7anNpZ23f/O5mCWxt8hb4yfqNyRI9OAMAomrnH2fOTb5KNdV8RDVG86VpLPMpbfAHtvAt0L89o0O3Avr6EDHsbUEXKOmWow9HEEU9rBn841krNhUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ericsson.com; dmarc=pass action=none header.from=ericsson.com;
- dkim=pass header.d=ericsson.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gFW77lzn1ZK3N73vC+NUxRjMYltfw4iy7PXItfj0o5s=;
- b=tCV3zcTTXJYP+bUeZRcnMIZQ1Rp6ow/v/YfWsEdvNN9XgcK643Kt6xC6Y+gYK/5E3SLGDEOQoZ9cLWyhu4DVOKCD/YOZTEchIP1Tr+J8mZqjdPHsUO8HN0wMcMT1pihLcO306eaT0LdwShspJ7DzQIl7Dpa96oPJ8QPj+73vnWU=
-Received: from DU0PR07MB8833.eurprd07.prod.outlook.com (2603:10a6:10:310::5)
- by VI1PR07MB6606.eurprd07.prod.outlook.com (2603:10a6:800:185::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.38; Sun, 11 Jun
- 2023 11:54:09 +0000
-Received: from DU0PR07MB8833.eurprd07.prod.outlook.com
- ([fe80::568:2863:92fb:8e85]) by DU0PR07MB8833.eurprd07.prod.outlook.com
- ([fe80::568:2863:92fb:8e85%7]) with mapi id 15.20.6455.030; Sun, 11 Jun 2023
- 11:54:09 +0000
-From: =?utf-8?B?Sm9obiBIw7ZnYmVyZw==?= <john.hogberg@ericsson.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>
-Subject: [PATCH 2/2] tests/tcg/aarch64: Add testcases for IC IVAU and
- dual-mapped code
-Thread-Topic: [PATCH 2/2] tests/tcg/aarch64: Add testcases for IC IVAU and
- dual-mapped code
-Thread-Index: AQHZnFtu/DkQ/Y7eOEG5yn3LJGJQbg==
-Date: Sun, 11 Jun 2023 11:54:09 +0000
-Message-ID: <cc8a3458ce32558e74bfd8858c532d234c59db7d.camel@ericsson.com>
-References: <833e7382b3fb90a2bbb007932cb5dbb8cfff5a33.camel@ericsson.com>
-In-Reply-To: <833e7382b3fb90a2bbb007932cb5dbb8cfff5a33.camel@ericsson.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ericsson.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR07MB8833:EE_|VI1PR07MB6606:EE_
-x-ms-office365-filtering-correlation-id: e1f82403-5a16-49c0-8bff-08db6a729138
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: LK1RMAz1sh4gEqT6fZn2qMYey+ULOny7d9zO5ZjkTBVMl899vc7ZXCUofqmWAzb4n/bt0nCTMOEODHnhs9FnlXCnHJycKwrwGeqQ8X187liIjRcbTw0Ju15iJA1xaP89vBFVOsAJsjaBdg2OhLTDbgVwh9uu4s+TxP1Un0CfdIRMArXtHLLSoDsIYDMEsh/bOUQwdCEwVuAfleIz96gYfr3foMZoz39o4iK3DOImhgCc0Yinx99IQvV1g4aaAeTw7xr8AFqPK36ItMG6i6ONrJ77zItmWB5XRwDfBy9hNzfB9SnXFXsINnXkb9MDnkR9mU9/Px8wRi82W561Tdg8ZRAaDuDKJV+v13oTJ30u7RlmU8AGtIHNgIthQNAPy/HympamVgpDjvJke3XJfGM7OuEsLBuzNMa3kXVbpOsRNsDVMsTfxSI1npOZhle3wRm4HJRo4jRlTMRzJZJG8Vk9MYMXpvcyRmFUH6Vb9Vc9noROubwilTAt7AvBEPlD28QbuRd7nlJJH0z1I3KUPv2htPXitqEBCD+2vMn4E3xuGpswiwnDR4jg3LpbWTVXU4vK6txhtGMD/6Sv83jElNoE9VELZj3Y67ZNJS8X9yJA5rI=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DU0PR07MB8833.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(346002)(366004)(136003)(39860400002)(376002)(451199021)(966005)(6486002)(316002)(41300700001)(2616005)(83380400001)(186003)(38070700005)(26005)(6506007)(86362001)(66574015)(6512007)(2906002)(82960400001)(122000001)(38100700002)(5660300002)(85182001)(36756003)(8936002)(85202003)(8676002)(66946007)(66556008)(66476007)(76116006)(91956017)(478600001)(71200400001)(66446008)(4326008)(6916009)(64756008);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UHNNK3ZpNVpnWEJUaWNHdk15Sy9qZ0xRd244aS9DZG5ZZmR0dlVvV1A1VFN4?=
- =?utf-8?B?ZTRXdVNGT2R5YTNUWmtiWGNjMWJVRkxxR2xodUdzSmQzeWxWK0YvbzQ5eFQv?=
- =?utf-8?B?bnhNOWthTXhZc1E3b1RwaksyalNhdzE5ZnNsbGpFWGg1RDdjQWU1Slh3R1hH?=
- =?utf-8?B?dmpSWlpIcWpiUGJ0UjZLQlFoRmdhemo4TWxKZE1LZk1FMW1FSDFIZHBqbm9P?=
- =?utf-8?B?WGprMGxVcHZnYm5veSs4TWdOenJ1cURYamhPWllsRVJhZExtQktsUVpZZ0Jn?=
- =?utf-8?B?UEJvSFFwb1dUSWZHNjRuRUM4SDNqdmh3U0NkRHhZTDI2Wi9FOFVlT25ocGNt?=
- =?utf-8?B?QjJOdE0zZWVUbUhDM2RVZWFkaTAwL2pQOWtmc256Q1llWCt2eThIamxrMTJH?=
- =?utf-8?B?K2t0TmdrUEhkUExZWjFRVmxoWjVTeFZEL0tMSy81TERVRE9sc2M3Q3NvNkY4?=
- =?utf-8?B?a1dja0tEODZScXYvWGtYT3BRSkRSUTZKbnJpSnArK1paWmlpUTVLeWpNWTdU?=
- =?utf-8?B?NVFpWlMyTmJaZThTRkFzUENrVG9Mc2VpSkdoUksrNlNZRkliclNwYnpTZ21s?=
- =?utf-8?B?R1l3T1dqVlBmZW1nalFiTGd5c3l3NXVtZU40TkQwTEpyMXdxYmZMRVJHUlBN?=
- =?utf-8?B?ZXJ1eENUem5nRnRMR3NyL3U3NG04bEUwbXBuMlVEU3JFazBoN0I1R0xiS0Nj?=
- =?utf-8?B?YnQvRksxR3JNNG5hc1VxZEswaDd6NEdRcXFGeXR3d2VzS1pBSzlPeUwrb3ZN?=
- =?utf-8?B?NUJJY2RKbll3Rk5OUUZEeXJWVEtDUnR2bEpPaml6bSt2K0FORkhYbTBncTJP?=
- =?utf-8?B?aHZEUU4zNUlzcDhJMWpiRXRKcnU5dGpSVEo0SUNNb0tYeVBneVB4RzNhU3pk?=
- =?utf-8?B?ZDB3RXk0eEgzMnVUWmF3MUdOQVluVi9NN2l0YWJteUplRFVSamZzQkdqNll3?=
- =?utf-8?B?c0RwL2p6K2FydElzUUhDYjhMQTkxZmlIY1FPbW1zcWxPTGNzL2FvMURCbUNO?=
- =?utf-8?B?NnVzMndvQ05pS1hkaUhPZXErZ2pzbTJkSkE1ZFFDbWhBSVVYMUpHaUdTQ2k0?=
- =?utf-8?B?ZituMTNsUkdwTkRKcmdUdWl6dTh2WEs0ZkhTYjhsSUYxMElmVkk3MTE5ZDZQ?=
- =?utf-8?B?R1ROUDQ5TlJqb3B1T3o3Ly9FMVNwR2VOY0lndnp6S1hRd3JpTXZxQjloNjhH?=
- =?utf-8?B?cDB1RU5mYVlRUGdnUTl2VjhDd09rdGI0SWx4eWJPNFlFTTk1V3pGNEs4ckFV?=
- =?utf-8?B?dk82M2doN0M5cVZ4c21lOG9QS2poMXREL1p4SGJHUUtZQk44SDg0RjQ3am41?=
- =?utf-8?B?SnJkWTlMNlpTY1RWQkZORGk5N01aV2JaVnllYmJ1RzVnckRHSVo2MVoyd0lm?=
- =?utf-8?B?cHA2VHlIejhkUmh0U1YrQ0V0WXl6a3cyajZxYWxobTJITWhYMExpL1g3Ymkv?=
- =?utf-8?B?UVFUSXoxaEtyQ2ZEc1BOcGhZS0tFaGxqMkdld0t5SlhDQ2pXWHU2anM4d2d6?=
- =?utf-8?B?YVk5bWxzTHFlc3FNYXVYblhTdWZ5enFYcjM4a3pPclNsR1ErV1dkTHhBOVZI?=
- =?utf-8?B?Sk9yY2htYmhnMktXVFMzbUlwSnFTYkdHRDhqbVFSaU50cU45OGVPTkRYa1Jt?=
- =?utf-8?B?U2cxSWlUNjBZeE56eFp2SmZWdHJKK2pROU94NGM5U2J0NGE5UFNMSEJEY09U?=
- =?utf-8?B?VS95T3h6U0hPaEVMcDA2VysvcFVBTCtybGJQUXFvbDEwTzdJTTVuZ3RUZkFr?=
- =?utf-8?B?cVdUVys1VTBqRkdyc0gvMnlrNXNhWDA4QURhbk56NXAzbFJIZ0tpOEdHT0Zs?=
- =?utf-8?B?M3YrYkRwMTJ4UXU2TFVSVm9RWE03dDFOYllEQ0tQU0lsMVRCL0Z0cEh6dk9D?=
- =?utf-8?B?eko1VEFCYlVSQlZEWFEwV1lwdkg4eUs5aGJkeVo4NkRVajlvQ1pHeUZ3bzRZ?=
- =?utf-8?B?NzBMNUFTc2RLZFNKU01abTlCMUMrRDRiYktUc2cyL0FOelIrbDFVZEJ3N1lT?=
- =?utf-8?B?elEzeGlNWmY5R0pRQlFWQmQrY3JtQVQ5cDB5UnVINXo3QTNvZlVaalBwaklm?=
- =?utf-8?B?eFdFQVpHRHVMYjB0WWNWM2FkKzk4UDFhcmhTSWpjODJRbWJtM0Fqc21iOWpt?=
- =?utf-8?B?SWZhdHZ4QytqcmNKM2hpVWM1cmI4WkJRMFpSSUlOVE02c0s5cGtVZEpQWDFm?=
- =?utf-8?B?NVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <90E17B1CA15491438DBE015578355C8E@eurprd07.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <sagigrim@gmail.com>)
+ id 1q8KAs-0004n5-Nn
+ for qemu-devel@nongnu.org; Sun, 11 Jun 2023 08:28:02 -0400
+Received: from mail-wm1-f52.google.com ([209.85.128.52])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sagigrim@gmail.com>)
+ id 1q8KAq-000680-T4
+ for qemu-devel@nongnu.org; Sun, 11 Jun 2023 08:28:02 -0400
+Received: by mail-wm1-f52.google.com with SMTP id
+ 5b1f17b1804b1-3f7e7a5aaacso6739245e9.0
+ for <qemu-devel@nongnu.org>; Sun, 11 Jun 2023 05:28:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686486479; x=1689078479;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+F2YCPuCvNucfU27hbM0z+XpuVFvj66Ick2ebriOypA=;
+ b=Lqd22K4ZY+0wH5/2wOh3qsSExuyewU8CBzYrDFBBKxFLmJ3N1J1kNQ4d4s5KgQkV1A
+ /Nx3uWHLYMs2smMEiRlvXKcqbhR3Ozl5Alo9id98jElVPWK9RcOaBDxCla7feV4yD0EO
+ kbB+2Gmb+XanocHnesyAATK8Yf2KqbpJNI6bnqtfxRjpGEHw73GaBbjOon0G7sxgk7rD
+ EN97Ij55fJYeRkP0KRMCunj5KXZDHf8K1uAG54KwypMfn9we+SbNaWWzeEK8r7dsfHNl
+ wSDUNpv+17hQCLDrPm+g490CdAV5stOifhAa5MW5lwFbMRHweX5d0zUCRPlnO2p+Bwlo
+ zwbg==
+X-Gm-Message-State: AC+VfDycSYpybRalZY6phwYtHeygDaV6lsemF8pxCGiOeitMIhH05wqr
+ hDoH2RH51dltB3la2ICCsam34dKrpq8=
+X-Google-Smtp-Source: ACHHUZ4m8pq4txsHvcj8ukwSuRRy79vTijg6ghstlv+RRoXTPZLoCBU2i1OgPnPoRXkq7ODfUZUqnA==
+X-Received: by 2002:a05:600c:4746:b0:3f8:651:e25e with SMTP id
+ w6-20020a05600c474600b003f80651e25emr5314025wmo.4.1686486478539; 
+ Sun, 11 Jun 2023 05:27:58 -0700 (PDT)
+Received: from [192.168.64.192] (bzq-219-42-90.isdn.bezeqint.net.
+ [62.219.42.90]) by smtp.gmail.com with ESMTPSA id
+ l17-20020a1ced11000000b003f810be0231sm4517721wmh.32.2023.06.11.05.27.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 11 Jun 2023 05:27:58 -0700 (PDT)
+Message-ID: <d8028f17-8d33-790b-8d3e-fa1170108774@grimberg.me>
+Date: Sun, 11 Jun 2023 15:27:57 +0300
 MIME-Version: 1.0
-X-OriginatorOrg: ericsson.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR07MB8833.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1f82403-5a16-49c0-8bff-08db6a729138
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jun 2023 11:54:09.8107 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ivql4StnzjCB89Ojuy6Nnah0cAX4LP/bmadas/5Vhgu2UkXRVnay9tj6JRkdvCYCURoO1aqIK2rVcloOCsX8KxjTrH8LmruGumnZHcpvimU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR07MB6606
-Received-SPF: pass client-ip=2a01:111:f400:fe0c::61b;
- envelope-from=john.hogberg@ericsson.com;
- helo=EUR04-DB3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: virtio-blk using a single iothread
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Qemu Developers <qemu-devel@nongnu.org>
+References: <c206fa1d-077d-ae9b-476f-f43eec36a187@grimberg.me>
+ <20230608160817.GK2138915@fedora>
+From: Sagi Grimberg <sagi@grimberg.me>
+In-Reply-To: <20230608160817.GK2138915@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=209.85.128.52; envelope-from=sagigrim@gmail.com;
+ helo=mail-wm1-f52.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,129 +84,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-aHR0cHM6Ly9naXRsYWIuY29tL3FlbXUtcHJvamVjdC9xZW11Ly0vaXNzdWVzLzEwMzQNCg0KU2ln
-bmVkLW9mZi1ieTogSm9obiBIw7ZnYmVyZyA8am9obi5ob2diZXJnQGVyaWNzc29uLmNvbT4NCi0t
-LQ0KIHRlc3RzL3RjZy9hYXJjaDY0L01ha2VmaWxlLnRhcmdldCB8ICAgMyArLQ0KIHRlc3RzL3Rj
-Zy9hYXJjaDY0L2ljaXZhdS5jICAgICAgICB8IDIwNCArKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysNCiAyIGZpbGVzIGNoYW5nZWQsIDIwNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0p
-DQogY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3RjZy9hYXJjaDY0L2ljaXZhdS5jDQoNCmRpZmYg
-LS1naXQgYS90ZXN0cy90Y2cvYWFyY2g2NC9NYWtlZmlsZS50YXJnZXQNCmIvdGVzdHMvdGNnL2Fh
-cmNoNjQvTWFrZWZpbGUudGFyZ2V0DQppbmRleCAzNDMwZmQzY2Q4Li5kZTY1NjZkMGQ0IDEwMDY0
-NA0KLS0tIGEvdGVzdHMvdGNnL2FhcmNoNjQvTWFrZWZpbGUudGFyZ2V0DQorKysgYi90ZXN0cy90
-Y2cvYWFyY2g2NC9NYWtlZmlsZS50YXJnZXQNCkBAIC05LDkgKzksMTAgQEAgQUFSQ0g2NF9TUkM9
-JChTUkNfUEFUSCkvdGVzdHMvdGNnL2FhcmNoNjQNCiBWUEFUSCAJCSs9ICQoQUFSQ0g2NF9TUkMp
-DQogDQogIyBCYXNlIGFyY2hpdGVjdHVyZSB0ZXN0cw0KLUFBUkNINjRfVEVTVFM9ZmN2dCBwY2Fs
-aWduLWE2NA0KK0FBUkNINjRfVEVTVFM9ZmN2dCBwY2FsaWduLWE2NCBpY2l2YXUNCiANCiBmY3Z0
-OiBMREZMQUdTKz0tbG0NCitpY2l2YXU6IExERkxBR1MrPS1scnQNCiANCiBydW4tZmN2dDogZmN2
-dA0KIAkkKGNhbGwgcnVuLXRlc3QsJDwsJChRRU1VKSAkPCwgIiQ8IG9uICQoVEFSR0VUX05BTUUp
-IikNCmRpZmYgLS1naXQgYS90ZXN0cy90Y2cvYWFyY2g2NC9pY2l2YXUuYyBiL3Rlc3RzL3RjZy9h
-YXJjaDY0L2ljaXZhdS5jDQpuZXcgZmlsZSBtb2RlIDEwMDY0NA0KaW5kZXggMDAwMDAwMDAwMC4u
-ZmY4MGQzZDg2OA0KLS0tIC9kZXYvbnVsbA0KKysrIGIvdGVzdHMvdGNnL2FhcmNoNjQvaWNpdmF1
-LmMNCkBAIC0wLDAgKzEsMjA0IEBADQorI2luY2x1ZGUgPHN5cy9tbWFuLmg+DQorI2luY2x1ZGUg
-PHN5cy9zdGF0Lmg+DQorI2luY2x1ZGUgPHN0cmluZy5oPg0KKyNpbmNsdWRlIDxzdGRsaWIuaD4N
-CisjaW5jbHVkZSA8dW5pc3RkLmg+DQorI2luY2x1ZGUgPGZjbnRsLmg+DQorDQorI2RlZmluZSBQ
-QVlMT0FEX1NJWkUgKDI1NikNCisNCit0eXBlZGVmIGludCAoKlNlbGZNb2RUZXN0UHRyKShjaGFy
-ICosIGNvbnN0IGNoYXIqLCBpbnQpOw0KK3R5cGVkZWYgaW50ICgqQ29tcGFyZVRlc3RQdHIpKGlu
-dCwgaW50KTsNCisNCit2b2lkIGZsdXNoX2ljYWNoZShjb25zdCBjaGFyICpleGVjX2RhdGEsIHNp
-emVfdCBsZW5ndGgpDQorew0KKyAgICBzaXplX3QgZGNhY2hlX3N0cmlkZSwgaWNhY2hlX3N0cmlk
-ZSwgaTsNCisgICAgdW5zaWduZWQgbG9uZyBjdHJfZWwwOw0KKw0KKyAgICAvKg0KKyAgICAgKiBT
-dGVwIGFjY29yZGluZyB0byBtaW5pbXVtIGNhY2hlIHNpemVzLCBhcyB0aGUgY2FjaGUgbWFpbnRl
-bmFuY2UNCisgICAgICogaW5zdHJ1Y3Rpb25zIG9wZXJhdGUgb24gdGhlIGNhY2hlIGxpbmUgb2Yg
-dGhlIGdpdmVuIGFkZHJlc3MuDQorICAgICAqDQorICAgICAqIFdlIGFzc3VtZSB0aGF0IGV4ZWNf
-ZGF0YSBpcyBwcm9wZXJseSBhbGlnbmVkLg0KKyAgICAgKi8NCisgICAgX19hc21fXygibXJzICUw
-LCBjdHJfZWwwXG4iIDogIj1yIihjdHJfZWwwKSk7DQorICAgIGRjYWNoZV9zdHJpZGUgPSAoNCA8
-PCAoKGN0cl9lbDAgPj4gMTYpICYgMHhGKSk7DQorICAgIGljYWNoZV9zdHJpZGUgPSAoNCA8PCAo
-Y3RyX2VsMCAmIDB4RikpOw0KKw0KKyAgICBmb3IgKGkgPSAwOyBpIDwgbGVuZ3RoOyBpICs9IGRj
-YWNoZV9zdHJpZGUpIHsNCisgICAgICAgIGNvbnN0IGNoYXIgKmRjX2FkZHIgPSAmZXhlY19kYXRh
-W2ldOw0KKyAgICAgICAgX19hc21fXyAoImRjIGN2YXUsICV4W2RjX2FkZHJdXG4iDQorICAgICAg
-ICAgICAgICAgICA6IC8qIG5vIG91dHB1dHMgKi8NCisgICAgICAgICAgICAgICAgIDogW2RjX2Fk
-ZHJdICJyIihkY19hZGRyKQ0KKyAgICAgICAgICAgICAgICAgOiAibWVtb3J5Iik7DQorICAgIH0N
-CisNCisgICAgX19hc21fXyAoImRtYiBpc2hcbiIpOw0KKw0KKyAgICBmb3IgKGkgPSAwOyBpIDwg
-bGVuZ3RoOyBpICs9IGljYWNoZV9zdHJpZGUpIHsNCisgICAgICAgIGNvbnN0IGNoYXIgKmljX2Fk
-ZHIgPSAmZXhlY19kYXRhW2ldOw0KKyAgICAgICAgX19hc21fXyAoImljIGl2YXUsICV4W2ljX2Fk
-ZHJdXG4iDQorICAgICAgICAgICAgICAgICA6IC8qIG5vIG91dHB1dHMgKi8NCisgICAgICAgICAg
-ICAgICAgIDogW2ljX2FkZHJdICJyIihpY19hZGRyKQ0KKyAgICAgICAgICAgICAgICAgOiAibWVt
-b3J5Iik7DQorICAgIH0NCisNCisgICAgX19hc21fXyAoImRtYiBpc2hcbiINCisgICAgICAgICAg
-ICAgImlzYiBzeVxuIik7DQorfQ0KKw0KKy8qDQorICogVGhlIHVubW9kaWZpZWQgYXNzZW1ibHkg
-b2YgdGhpcyBmdW5jdGlvbiByZXR1cm5zIDAsIGl0IHNlbGYtDQptb2RpZmllcyB0bw0KKyAqIHJl
-dHVybiB0aGUgdmFsdWUgaW5kaWNhdGVkIGJ5IG5ld19tb3ZlLg0KKyAqLw0KK2ludCBzZWxmX21v
-ZGlmaWNhdGlvbl9wYXlsb2FkKGNoYXIgKnJ3X2RhdGEsIGNvbnN0IGNoYXIgKmV4ZWNfZGF0YSwN
-CisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpbnQgbmV3X21vdmUpDQorew0KKyAgICBy
-ZWdpc3RlciBpbnQgcmVzdWx0IF9fYXNtX18gKCJ3MCIpID0gbmV3X21vdmU7DQorDQorICAgIF9f
-YXNtX18gKC8qIEdldCB0aGUgd3JpdGFibGUgYWRkcmVzcyBvZiBfX21vZGlmeV9tZS4gKi8NCisg
-ICAgICAgICAgICAgInN1YiAleFtyd19kYXRhXSwgJXhbcndfZGF0YV0sICV4W2V4ZWNfZGF0YV1c
-biINCisgICAgICAgICAgICAgImFkciAleFtleGVjX2RhdGFdLCBfX21vZGlmeV9tZVxuIg0KKyAg
-ICAgICAgICAgICAiYWRkICV4W3J3X2RhdGFdLCAleFtyd19kYXRhXSwgJXhbZXhlY19kYXRhXVxu
-Ig0KKyAgICAgICAgICAgICAvKiBPdmVyd3JpdGUgdGhlIGBNT1YgVzAsICMwYCB3aXRoIHRoZSBu
-ZXcgbW92ZS4gKi8NCisgICAgICAgICAgICAgInN0ciAld1tyZXN1bHRdLCBbJXhbcndfZGF0YV1d
-XG4iDQorICAgICAgICAgICAgIC8qDQorICAgICAgICAgICAgICAqIE1hcmsgdGhlIGNvZGUgYXMg
-bW9kaWZpZWQuDQorICAgICAgICAgICAgICAqDQorICAgICAgICAgICAgICAqIE5vdGUgdGhhdCB3
-ZSBhbGlnbiB0byB0aGUgbmVhcmVzdCA2NCBieXRlcyBpbiBhbg0KYXR0ZW1wdCB0byBwdXQNCisg
-ICAgICAgICAgICAgICogdGhlIGZsdXNoIHNlcXVlbmNlIGluIHRoZSBzYW1lIGNhY2hlIGxpbmUg
-YXMgdGhlDQptb2RpZmllZCBtb3ZlLg0KKyAgICAgICAgICAgICAgKi8NCisgICAgICAgICAgICAg
-Ii5hbGlnbiA2XG4iDQorICAgICAgICAgICAgICJkYyBjdmF1LCAleFtleGVjX2RhdGFdXG4iDQor
-ICAgICAgICAgICAgICIuYWxpZ24gMlxuIg0KKyAgICAgICAgICAgICAiZG1iIGlzaFxuIg0KKyAg
-ICAgICAgICAgICAiaWMgaXZhdSwgJXhbZXhlY19kYXRhXVxuIg0KKyAgICAgICAgICAgICAiZG1i
-IGlzaFxuIg0KKyAgICAgICAgICAgICAiaXNiIHN5XG4iDQorICAgICAgICAgICAgICJfX21vZGlm
-eV9tZTogbW92IHcwLCAjMHgwXG4iDQorICAgICAgICAgICAgIDogW3Jlc3VsdF0gIityIihyZXN1
-bHQpLA0KKyAgICAgICAgICAgICAgIFtyd19kYXRhXSAiK3IiKHJ3X2RhdGEpLA0KKyAgICAgICAg
-ICAgICAgIFtleGVjX2RhdGFdICIrciIoZXhlY19kYXRhKQ0KKyAgICAgICAgICAgICA6IC8qIE5v
-IHVudG91Y2hlZCBpbnB1dHMgKi8NCisgICAgICAgICAgICAgOiAibWVtb3J5Iik7DQorDQorICAg
-IHJldHVybiByZXN1bHQ7DQorfQ0KKw0KK2ludCBzZWxmX21vZGlmaWNhdGlvbl90ZXN0KGNoYXIg
-KnJ3X2RhdGEsIGNvbnN0IGNoYXIgKmV4ZWNfZGF0YSkNCit7DQorICAgIFNlbGZNb2RUZXN0UHRy
-IGNvcGllZF9wdHIgPSAoU2VsZk1vZFRlc3RQdHIpZXhlY19kYXRhOw0KKyAgICBpbnQgaTsNCisN
-CisgICAgLyoNCisgICAgICogQmx1bnRseSBhc3N1bWVzIHRoYXQgdGhlIHBheWxvYWQgaXMgcG9z
-aXRpb24taW5kZXBlbmRlbnQgYW5kDQpub3QgbGFyZ2VyDQorICAgICAqIHRoYW4gUEFZTE9BRF9T
-SVpFLg0KKyAgICAgKi8NCisgICAgbWVtY3B5KHJ3X2RhdGEsIHNlbGZfbW9kaWZpY2F0aW9uX3Bh
-eWxvYWQsIFBBWUxPQURfU0laRSk7DQorDQorICAgIC8qDQorICAgICAqIE5vdGlmeSBhbGwgUEVz
-IHRoYXQgdGhlIGNvZGUgYXQgZXhlY19kYXRhIGhhcyBiZWVuIGFsdGVyZWQuDQorICAgICAqDQor
-ICAgICAqIEZvciBjb21wbGV0ZW5lc3Mgd2UgY291bGQgYXNzZXJ0IHRoYXQgd2Ugc2hvdWxkIGZh
-aWwgd2hlbiB0aGlzDQppcw0KKyAgICAgKiBvbWl0dGVkLCB3aGljaCB3b3JrcyBpbiB1c2VyIG1v
-ZGUgYW5kIG9uIGFjdHVhbCBoYXJkd2FyZSBhcyB0aGUNCisgICAgICogbW9kaWZpY2F0aW9uIHdv
-bid0ICJ0YWtlLCIgYnV0IGRvZXNuJ3Qgd29yayBpbiBzeXN0ZW0gbW9kZSBhcw0KdGhlDQorICAg
-ICAqIHNvZnRtbXUgaGFuZGxlcyBldmVyeXRoaW5nIGZvciB1cy4NCisgICAgICovDQorICAgIGZs
-dXNoX2ljYWNoZShleGVjX2RhdGEsIFBBWUxPQURfU0laRSk7DQorDQorICAgIGZvciAoaSA9IDE7
-IGkgPCAxMDsgaSsrKSB7DQorICAgICAgICBjb25zdCBpbnQgbW92X3cwX3RlbXBsYXRlID0gMHg1
-MjgwMDAwMDsNCisNCisgICAgICAgIC8qIE1PViBXMCwgaSAqLw0KKyAgICAgICAgaWYgKGNvcGll
-ZF9wdHIocndfZGF0YSwgZXhlY19kYXRhLCBtb3ZfdzBfdGVtcGxhdGUgfCAoaSA8PCA1KSkNCiE9
-IGkpIHsNCisgICAgICAgICAgICByZXR1cm4gMDsNCisgICAgICAgIH0NCisgICAgfQ0KKw0KKyAg
-ICByZXR1cm4gMTsNCit9DQorDQoraW50IGNvbXBhcmVfY29waWVkKGNoYXIgKnJ3X2RhdGEsIGNv
-bnN0IGNoYXIgKmV4ZWNfZGF0YSwNCisgICAgICAgICAgICAgICAgICAgaW50ICgqcmVmZXJlbmNl
-X3B0cikoaW50LCBpbnQpKQ0KK3sNCisgICAgQ29tcGFyZVRlc3RQdHIgY29waWVkX3B0ciA9IChD
-b21wYXJlVGVzdFB0cilleGVjX2RhdGE7DQorICAgIGludCBhLCBiOw0KKw0KKyAgICBtZW1jcHko
-cndfZGF0YSwgcmVmZXJlbmNlX3B0ciwgUEFZTE9BRF9TSVpFKTsNCisgICAgZmx1c2hfaWNhY2hl
-KGV4ZWNfZGF0YSwgUEFZTE9BRF9TSVpFKTsNCisNCisgICAgZm9yIChhID0gMTsgYSA8IDEwOyBh
-KyspIHsNCisgICAgICAgIGZvciAoYiA9IDE7IGIgPCAxMDsgYisrKSB7DQorICAgICAgICAgICAg
-aWYgKGNvcGllZF9wdHIoYSwgYikgIT0gcmVmZXJlbmNlX3B0cihhLCBiKSkgew0KKyAgICAgICAg
-ICAgICAgICByZXR1cm4gMDsNCisgICAgICAgICAgICB9DQorICAgICAgICB9DQorICAgIH0NCisN
-CisgICAgcmV0dXJuIDE7DQorfQ0KKw0KK2ludCBjb21wYXJlX2FscGhhKGludCBhLCBpbnQgYikN
-Cit7DQorICAgIHJldHVybiBhICsgYjsNCit9DQorDQoraW50IGNvbXBhcmVfYmV0YShpbnQgYSwg
-aW50IGIpDQorew0KKyAgICByZXR1cm4gYSAtIGI7DQorfQ0KKw0KK2ludCBjb21wYXJlX2dhbW1h
-KGludCBhLCBpbnQgYikNCit7DQorICAgIHJldHVybiBhICogYjsNCit9DQorDQoraW50IGNvbXBh
-cmVfZGVsdGEoaW50IGEsIGludCBiKQ0KK3sNCisgICAgcmV0dXJuIGEgLyBiOw0KK30NCisNCitp
-bnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpDQorew0KKyAgICBjb25zdCBjaGFyICpzaG1f
-bmFtZSA9ICJxZW11LXRlc3QtdGNnLWFhcmNoNjQtaWNpdmF1IjsNCisgICAgaW50IGZkOw0KKw0K
-KyAgICBmZCA9IHNobV9vcGVuKHNobV9uYW1lLCBPX0NSRUFUIHwgT19SRFdSLCBTX0lSVVNSIHwg
-U19JV1VTUik7DQorDQorICAgIGlmIChmZCA8IDApIHsNCisgICAgICAgIHJldHVybiBFWElUX0ZB
-SUxVUkU7DQorICAgIH0NCisNCisgICAgLyogVW5saW5rIGVhcmx5IHRvIGF2b2lkIGxlYXZpbmcg
-Z2FyYmFnZSBpbiBjYXNlIHRoZSB0ZXN0IGNyYXNoZXMuDQoqLw0KKyAgICBzaG1fdW5saW5rKHNo
-bV9uYW1lKTsNCisNCisgICAgaWYgKGZ0cnVuY2F0ZShmZCwgUEFZTE9BRF9TSVpFKSA9PSAwKSB7
-DQorICAgICAgICBjb25zdCBjaGFyICpleGVjX2RhdGE7DQorICAgICAgICBjaGFyICpyd19kYXRh
-Ow0KKw0KKyAgICAgICAgcndfZGF0YSA9IG1tYXAoMCwgUEFZTE9BRF9TSVpFLCBQUk9UX1JFQUQg
-fCBQUk9UX1dSSVRFLA0KTUFQX1NIQVJFRCwNCisgICAgICAgICAgICAgICAgICAgICAgIGZkLCAw
-KTsNCisgICAgICAgIGV4ZWNfZGF0YSA9IG1tYXAoMCwgUEFZTE9BRF9TSVpFLCBQUk9UX1JFQUQg
-fCBQUk9UX0VYRUMsDQpNQVBfU0hBUkVELA0KKyAgICAgICAgICAgICAgICAgICAgICAgICBmZCwg
-MCk7DQorDQorICAgICAgICBpZiAocndfZGF0YSAmJiBleGVjX2RhdGEpIHsNCisgICAgICAgICAg
-ICBDb21wYXJlVGVzdFB0ciBjb21wYXJlX3Rlc3RzWzRdID0ge2NvbXBhcmVfYWxwaGEsDQorICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb21wYXJlX2JldGEs
-DQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb21wYXJl
-X2dhbW1hLA0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-Y29tcGFyZV9kZWx0YX07DQorICAgICAgICAgICAgaW50IHN1Y2Nlc3MsIGk7DQorDQorICAgICAg
-ICAgICAgc3VjY2VzcyA9IHNlbGZfbW9kaWZpY2F0aW9uX3Rlc3QocndfZGF0YSwgZXhlY19kYXRh
-KTsNCisNCisgICAgICAgICAgICBmb3IgKGkgPSAwOyBpIDwgNDsgaSsrKSB7DQorICAgICAgICAg
-ICAgICAgIHN1Y2Nlc3MgJj0gY29tcGFyZV9jb3BpZWQocndfZGF0YSwgZXhlY19kYXRhLA0KY29t
-cGFyZV90ZXN0c1tpXSk7DQorICAgICAgICAgICAgfQ0KKw0KKyAgICAgICAgICAgIGlmIChzdWNj
-ZXNzKSB7DQorICAgICAgICAgICAgICAgIHJldHVybiBFWElUX1NVQ0NFU1M7DQorICAgICAgICAg
-ICAgfQ0KKyAgICAgICAgfQ0KKyAgICB9DQorDQorICAgIHJldHVybiBFWElUX0ZBSUxVUkU7DQor
-fQ0KLS0gDQoyLjM0LjENCg0KDQo=
+
+
+On 6/8/23 19:08, Stefan Hajnoczi wrote:
+> On Thu, Jun 08, 2023 at 10:40:57AM +0300, Sagi Grimberg wrote:
+>> Hey Stefan, Paolo,
+>>
+>> I just had a report from a user experiencing lower virtio-blk
+>> performance than he expected. This user is running virtio-blk on top of
+>> nvme-tcp device. The guest is running 12 CPU cores.
+>>
+>> The guest read/write throughput is capped at around 30% of the available
+>> throughput from the host (~800MB/s from the guest vs. 2800MB/s from the
+>> host - 25Gb/s nic). The workload running on the guest is a
+>> multi-threaded fio workload.
+>>
+>> What is observed is the fact that virtio-blk is using a single disk-wide
+>> iothread processing all the vqs. Specifically nvme-tcp (similar to other
+>> tcp based protocols) is negatively impacted by lack of thread
+>> concurrency that can distribute I/O requests to different TCP
+>> connections.
+>>
+>> We also attempted to move the iothread to a dedicated core, however that
+>> did yield any meaningful performance improvements). The reason appears
+>> to be less about CPU utilization on the iothread core, but more around
+>> single TCP connection serialization.
+>>
+>> Moving to io=threads does increase the throughput, however sacrificing
+>> latency significantly.
+>>
+>> So the user find itself with available host cpus and TCP connections
+>> that it could easily use to get maximum throughput, without the ability
+>> to leverage them. True, other guests will use different
+>> threads/contexts, however the goal here is to allow the full performance
+>> from a single device.
+>>
+>> I've seen several discussions and attempts in the past to allow a
+>> virtio-blk device leverage multiple iothreads, but around 2 years ago
+>> the discussions over this paused. So wanted to ask, are there any plans
+>> or anything in the works to address this limitation?
+>>
+>> I've seen that the spdk folks are heading in this direction with their
+>> vhost-blk implementation:
+>> https://review.spdk.io/gerrit/c/spdk/spdk/+/16068
+> 
+> Hi Sagi,
+> Yes, there is an ongoing QEMU multi-queue block layer effort to make it
+> possible for multiple IOThreads to process disk I/O for the same
+> --blockdev in parallel.
+
+Great to know.
+
+> Most of my recent QEMU patches have been part of this effort. There is a
+> work-in-progress branch that supports mapping virtio-blk virtqueues to
+> specific IOThreads:
+> https://gitlab.com/stefanha/qemu/-/commits/virtio-blk-iothread-vq-mapping
+
+Thanks for the pointer.
+
+> The syntax is:
+> 
+>    --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"}],"drive":"drive0"}'
+> 
+> This says "assign virtqueues round-robin to iothread0 and iothread1".
+> Half the virtqueues will be processed by iothread0 and the other half by
+> iothread1. There is also syntax for assigning specific virtqueues to
+> each IOThread, but usually the automatic round-robin assignment is all
+> that's needed.
+> 
+> This work is not finished yet. Basic I/O (e.g. fio) works without
+> crashes, but expect to hit issues if you use blockjobs, hotplug, etc.
+> 
+> Performance optimization work has just begun, so it won't deliver all
+> the benefits yet. I ran a benchmark yesterday where going from 1 to 2
+> IOThreads increased performance by 25%. That's much less than we're
+> aiming for; attaching two independent virtio-blk devices improves the
+> performance by ~100%. I know we can get there eventually. Some of the
+> bottlenecks are known (e.g. block statistics collection causes lock
+> contention) and others are yet to be investigated.
+
+Hmm, I rebased this branch on top of mainline master and ran a naive
+test, and it seems that performance regressed quite a bit :(
+
+I'm running this test on my laptop (Intel(R) Core(TM) i7-8650U CPU
+@1.90GHz), so this is more qualitative test for BW only.
+I use null_blk as the host device.
+
+With mainline master I get ~9GB/s 64k randread, and with your branch
+I get ~5GB/s, this is regardless of assigning iothreads (one or
+two) or not.
+
+my qemu command:
+taskset -c 0-3 build/qemu-system-x86_64 -cpu host -m 1G -enable-kvm -smp 
+4 -drive 
+file=/var/lib/libvirt/images/ubuntu-22/root-disk-clone.qcow2,format=qcow2 
+-drive 
+if=none,id=drive0,cache=none,aio=native,format=raw,file=/dev/nullb0 
+-device virtio-blk-pci,drive=drive0,scsi=off -nographic
+
+my guest fio jobfile:
+--
+[global]
+group_reporting
+runtime=3000
+time_based
+loops=1
+direct=1
+invalidate=1
+randrepeat=0
+norandommap
+exitall
+cpus_allowed=0-3
+cpus_allowed_policy=split
+
+[read]
+filename=/dev/vda
+numjobs=4
+iodepth=32
+bs=64k
+rw=randread
+ioengine=io_uring
+--
+
+Maybe I'm doing something wrong? Didn't expect to find a regression
+against mainline on the default setup.
 
