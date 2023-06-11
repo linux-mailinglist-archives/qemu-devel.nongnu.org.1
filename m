@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21A672B2B7
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 18:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A2272B2C6
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 18:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8NVd-0006Tt-PU; Sun, 11 Jun 2023 12:01:41 -0400
+	id 1q8NVh-0006ah-Qe; Sun, 11 Jun 2023 12:01:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q8NUj-0005r4-Jn
+ id 1q8NUk-0005rO-N5
  for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:50 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q8NUf-0000T7-IP
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:45 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-30c55d2b9f3so2247158f8f.2
- for <qemu-devel@nongnu.org>; Sun, 11 Jun 2023 09:00:40 -0700 (PDT)
+ id 1q8NUg-0000TQ-1h
+ for qemu-devel@nongnu.org; Sun, 11 Jun 2023 12:00:46 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f81b449357so1577435e9.0
+ for <qemu-devel@nongnu.org>; Sun, 11 Jun 2023 09:00:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1686499240; x=1689091240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SdGx08aoksaLp21YxsKPPHNcMRVUjRR75hXQYQOrgY4=;
- b=YOour/a+FPdkh8tOB4eNA5N8M21lsK3pynHJQlbYnyyUNF8VukyYld1chuEbl4XgcD
- o3lV4x+CvIkNXGNf/oX2XobxmXDcQLrkrK7TW/94uoEkUrc57+Jw0y/LzsIrIkUgfO+e
- BzdL4zEn0FJgav3tsELGatLDBIGlLz+HfMG0LmMc5Gz1tMxR8g0Nyxoidk3x4xDBL+P/
- iH+8Jyv3sxet1WPY3UXGsO9tsGLNtxjRQFqwMqZwrW26DotcVbM41V0eXPnBbZkXhIYu
- rcF5elCprmkF7zDadHW6I4M1pKPumC2i0O+3NzV0G+Ren9LDcnkyTphkz4vYBEgVXd1M
- U5Xw==
+ :reply-to; bh=6KI6vCKi2hK4kMqI/ACVjSnqVa1PBuwOd1A7QPwu8LI=;
+ b=tkc3WpNKu9t+jbTLQ4dI/E6epyt1V6zRVfi95pLb26KnoL9Hv7ZseTzzFIzIzzbN9f
+ GtV5plRcAbM3FKzo4mMIeN9ctAjedU3vXF7eENT3rI1Ms8vrf+itIb3JCVvH/HlQ80VT
+ 18LACp7PIIneOnds8bZH5ekkcVA56idVTo46mRarqO7bnPQx0BDf66v1mJLGu/IVkr5M
+ MuGL4q1Vro4N2hmJ5O1oudSMKAhIIcQxiAJ2Lp0lwx9mYQRalWVsNdtSIK0Qsy0Ey1Do
+ T2FdpEHeS+Zk0B2pSvCnZ8HNRLp1UNwetrknyBYaM4Y0Lh11xuUL9UYnVme1LS8QoaGh
+ ZBTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1686499240; x=1689091240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SdGx08aoksaLp21YxsKPPHNcMRVUjRR75hXQYQOrgY4=;
- b=Hv9nZL1d4FqRxYn0tUd6f5b1ceVKMVsf+tOKYzrwtGluZ0ehXV/jMtkKFN1zOLrFsA
- oYcjcI3rTT0XuaicslIFQ08cRwpZQjVHeMUX5lJ/ZriGNuFPBAIi7VLPESrlJaa3kMtb
- 7EmnEgIOP/Yh6YeR9drXjSPgx8UXh1dzQzJAYoWDE0lA7mQGcVpDRJ3KP3ieS8Ic63dR
- bm2Csd9IOHOA88UU3DCZHGrlhfH3VkiNth5QzfTpXhoUIx1SHFnqVeUBRez1YMT67QpC
- N6GjZUp0f4qulJ7+BVZYoUMxpFErNi1/P2xfL+B3D7PdTztZRjoiHcCr++7YLP9nXltn
- /vFg==
-X-Gm-Message-State: AC+VfDyecsI9/ayonwUs32ijceRnw4tR5rVyI+z7Z6T+ftnP6F0CKFTk
- 2zEkkqmk9sYUOHBAFRAtMw0lEQ==
-X-Google-Smtp-Source: ACHHUZ78A1hrsPWPkWScIJ2j+eJWJwSBxb3D6tfEDclu/rE1gav1IGr4DUC6dFf/bsjgFYr4I92/1A==
-X-Received: by 2002:adf:e8d0:0:b0:309:31ac:6663 with SMTP id
- k16-20020adfe8d0000000b0030931ac6663mr2852103wrn.16.1686499239782; 
- Sun, 11 Jun 2023 09:00:39 -0700 (PDT)
+ bh=6KI6vCKi2hK4kMqI/ACVjSnqVa1PBuwOd1A7QPwu8LI=;
+ b=gDfakUfY4ADzogKJ2RhgZ+ARJsfaUC4JLJTxEzT1DuF/HYvWnQdgr5TAmGi4bD+STz
+ U/JPfuQtQxZV4Yz3vBr9zIDA352649I6H40fjCGyuiDiEofnri1UtUuRrgvXIV+idz9/
+ uBkRPQRRH9NRca6BTEqctSj/vGgosaQW1dgBEqcE33o2LmCZRDyNZVEtcylPr6VOIp61
+ 9lQjAbnv4V8JVnU3MH7UbBYULBAm7uhoUetOLIh7t+ztjD1z0oBnxPW5B5xEnL/hNSIy
+ WDxvJOJ0KqOLvovDEaW71dSU3Ll/G51ZRfNDTXeGJOg4ftIiuhUyegawSRQ1UcEY8Ddh
+ HRAg==
+X-Gm-Message-State: AC+VfDy1SC/Aoa9jvhzguIk5ujZoFRnQCKg/zhLN7sz6OlsPOqFQOH7H
+ uNJytu+UwBeqX6W318rzUS9jAivVog3LpIowKoY=
+X-Google-Smtp-Source: ACHHUZ66newDqLoY928ay/To/oTbrFivPPS4UJb4QlB12jD9IDqKuHKPlCwAeaJwlZuZ0xDRF/s5Xw==
+X-Received: by 2002:a5d:4952:0:b0:309:3bc3:7d1f with SMTP id
+ r18-20020a5d4952000000b003093bc37d1fmr2681565wrs.70.1686499240359; 
+ Sun, 11 Jun 2023 09:00:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  m9-20020a056000008900b0030ae499da59sm9923022wrx.111.2023.06.11.09.00.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Jun 2023 09:00:39 -0700 (PDT)
+ Sun, 11 Jun 2023 09:00:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 11/23] target/arm: Convert load/store exclusive and ordered
- to decodetree
-Date: Sun, 11 Jun 2023 17:00:20 +0100
-Message-Id: <20230611160032.274823-12-peter.maydell@linaro.org>
+Subject: [PATCH v2 12/23] target/arm: Convert LDXP, STXP, CASP,
+ CAS to decodetree
+Date: Sun, 11 Jun 2023 17:00:21 +0100
+Message-Id: <20230611160032.274823-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230611160032.274823-1-peter.maydell@linaro.org>
 References: <20230611160032.274823-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,229 +91,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the instructions in the load/store exclusive (STXR,
-STLXR, LDXR, LDAXR) and load/store ordered (STLR, STLLR,
-LDAR, LDLAR) to decodetree.
-
-Note that for STLR, STLLR, LDAR, LDLAR this fixes an under-decoding
-in the legacy decoder where we were not checking that the RES1 bits
-in the Rs and Rt2 fields were set.
-
-The new function ldst_iss_sf() is equivalent to the existing
-disas_ldst_compute_iss_sf(), but it takes the pre-decoded 'ext' field
-rather than taking an undecoded two-bit opc field and extracting
-'ext' from it. Once all the loads and stores have been converted
-to decodetree disas_ldst_compute_iss_sf() will be unused and
-can be deleted.
+Convert the load/store exclusive pair (LDXP, STXP, LDAXP, STLXP),
+compare-and-swap pair (CASP, CASPA, CASPAL, CASPL), and compare-and
+swap (CAS, CASA, CASAL, CASL) instructions to decodetree.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-9-peter.maydell@linaro.org
+Message-id: 20230602155223.2040685-10-peter.maydell@linaro.org
 ---
  target/arm/tcg/a64.decode      |  11 +++
- target/arm/tcg/translate-a64.c | 154 ++++++++++++++++++++-------------
- 2 files changed, 103 insertions(+), 62 deletions(-)
+ target/arm/tcg/translate-a64.c | 121 ++++++++++++---------------------
+ 2 files changed, 53 insertions(+), 79 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index eeaca08ae83..c5894fc06d2 100644
+index c5894fc06d2..6b1079b8bdf 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -230,3 +230,14 @@ HLT             1101 0100 010 ................ 000 00 @i16
- # DCPS1         1101 0100 101 ................ 000 01 @i16
- # DCPS2         1101 0100 101 ................ 000 10 @i16
- # DCPS3         1101 0100 101 ................ 000 11 @i16
+@@ -237,7 +237,18 @@ HLT             1101 0100 010 ................ 000 00 @i16
+ &stlr           rn rt sz lasr
+ @stxr           sz:2 ...... ... rs:5 lasr:1 rt2:5 rn:5 rt:5 &stxr
+ @stlr           sz:2 ...... ... ..... lasr:1 ..... rn:5 rt:5 &stlr
++%imm1_30_p2 30:1 !function=plus_2
++@stxp           .. ...... ... rs:5 lasr:1 rt2:5 rn:5 rt:5 &stxr sz=%imm1_30_p2
+ STXR            .. 001000 000 ..... . ..... ..... ..... @stxr  # inc STLXR
+ LDXR            .. 001000 010 ..... . ..... ..... ..... @stxr  # inc LDAXR
+ STLR            .. 001000 100 11111 . 11111 ..... ..... @stlr  # inc STLLR
+ LDAR            .. 001000 110 11111 . 11111 ..... ..... @stlr  # inc LDLAR
 +
-+# Loads and stores
++STXP            1 . 001000 001 ..... . ..... ..... ..... @stxp # inc STLXP
++LDXP            1 . 001000 011 ..... . ..... ..... ..... @stxp # inc LDAXP
 +
-+&stxr           rn rt rt2 rs sz lasr
-+&stlr           rn rt sz lasr
-+@stxr           sz:2 ...... ... rs:5 lasr:1 rt2:5 rn:5 rt:5 &stxr
-+@stlr           sz:2 ...... ... ..... lasr:1 ..... rn:5 rt:5 &stlr
-+STXR            .. 001000 000 ..... . ..... ..... ..... @stxr  # inc STLXR
-+LDXR            .. 001000 010 ..... . ..... ..... ..... @stxr  # inc LDAXR
-+STLR            .. 001000 100 11111 . 11111 ..... ..... @stlr  # inc STLLR
-+LDAR            .. 001000 110 11111 . 11111 ..... ..... @stlr  # inc LDLAR
++# CASP, CASPA, CASPAL, CASPL (we don't decode the bits that determine
++# acquire/release semantics because QEMU's cmpxchg always has those)
++CASP            0 . 001000 0 - 1 rs:5 - 11111 rn:5 rt:5 sz=%imm1_30_p2
++# CAS, CASA, CASAL, CASL
++CAS             sz:2 001000 1 - 1 rs:5 - 11111 rn:5 rt:5
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a2a71b4062f..1ba2d6a75e4 100644
+index 1ba2d6a75e4..ff4338ee4df 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -2652,6 +2652,95 @@ static bool disas_ldst_compute_iss_sf(int size, bool is_signed, int opc)
-     return regsize == 64;
+@@ -2741,84 +2741,50 @@ static bool trans_LDAR(DisasContext *s, arg_stlr *a)
+     return true;
  }
  
-+static bool ldst_iss_sf(int size, bool sign, bool ext)
-+{
-+
-+    if (sign) {
-+        /*
-+         * Signed loads are 64 bit results if we are not going to
-+         * do a zero-extend from 32 to 64 after the load.
-+         * (For a store, sign and ext are always false.)
-+         */
-+        return !ext;
-+    } else {
-+        /* Unsigned loads/stores work at the specified size */
-+        return size == MO_64;
-+    }
-+}
-+
-+static bool trans_STXR(DisasContext *s, arg_stxr *a)
-+{
+-/* Load/store exclusive
+- *
+- *  31 30 29         24  23  22   21  20  16  15  14   10 9    5 4    0
+- * +-----+-------------+----+---+----+------+----+-------+------+------+
+- * | sz  | 0 0 1 0 0 0 | o2 | L | o1 |  Rs  | o0 |  Rt2  |  Rn  | Rt   |
+- * +-----+-------------+----+---+----+------+----+-------+------+------+
+- *
+- *  sz: 00 -> 8 bit, 01 -> 16 bit, 10 -> 32 bit, 11 -> 64 bit
+- *   L: 0 -> store, 1 -> load
+- *  o2: 0 -> exclusive, 1 -> not
+- *  o1: 0 -> single register, 1 -> register pair
+- *  o0: 1 -> load-acquire/store-release, 0 -> not
+- */
+-static void disas_ldst_excl(DisasContext *s, uint32_t insn)
++static bool trans_STXP(DisasContext *s, arg_stxr *a)
+ {
+-    int rt = extract32(insn, 0, 5);
+-    int rn = extract32(insn, 5, 5);
+-    int rt2 = extract32(insn, 10, 5);
+-    int rs = extract32(insn, 16, 5);
+-    int is_lasr = extract32(insn, 15, 1);
+-    int o2_L_o1_o0 = extract32(insn, 21, 3) * 2 | is_lasr;
+-    int size = extract32(insn, 30, 2);
+-
+-    switch (o2_L_o1_o0) {
+-    case 0x2: case 0x3: /* CASP / STXP */
+-        if (size & 2) { /* STXP / STLXP */
+-            if (rn == 31) {
+-                gen_check_sp_alignment(s);
+-            }
+-            if (is_lasr) {
+-                tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
+-            }
+-            gen_store_exclusive(s, rs, rt, rt2, rn, size, true);
+-            return;
+-        }
+-        if (rt2 == 31
+-            && ((rt | rs) & 1) == 0
+-            && dc_isar_feature(aa64_atomics, s)) {
+-            /* CASP / CASPL */
+-            gen_compare_and_swap_pair(s, rs, rt, rn, size | 2);
+-            return;
+-        }
+-        break;
+-
+-    case 0x6: case 0x7: /* CASPA / LDXP */
+-        if (size & 2) { /* LDXP / LDAXP */
+-            if (rn == 31) {
+-                gen_check_sp_alignment(s);
+-            }
+-            gen_load_exclusive(s, rt, rt2, rn, size, true);
+-            if (is_lasr) {
+-                tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+-            }
+-            return;
+-        }
+-        if (rt2 == 31
+-            && ((rt | rs) & 1) == 0
+-            && dc_isar_feature(aa64_atomics, s)) {
+-            /* CASPA / CASPAL */
+-            gen_compare_and_swap_pair(s, rs, rt, rn, size | 2);
+-            return;
+-        }
+-        break;
+-
+-    case 0xa: /* CAS */
+-    case 0xb: /* CASL */
+-    case 0xe: /* CASA */
+-    case 0xf: /* CASAL */
+-        if (rt2 == 31 && dc_isar_feature(aa64_atomics, s)) {
+-            gen_compare_and_swap(s, rs, rt, rn, size);
+-            return;
+-        }
+-        break;
+-    default:
+-        /* Handled in decodetree */
+-        break;
 +    if (a->rn == 31) {
 +        gen_check_sp_alignment(s);
-+    }
+     }
+-    unallocated_encoding(s);
 +    if (a->lasr) {
 +        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
 +    }
-+    gen_store_exclusive(s, a->rs, a->rt, a->rt2, a->rn, a->sz, false);
++    gen_store_exclusive(s, a->rs, a->rt, a->rt2, a->rn, a->sz, true);
 +    return true;
 +}
 +
-+static bool trans_LDXR(DisasContext *s, arg_stxr *a)
++static bool trans_LDXP(DisasContext *s, arg_stxr *a)
 +{
 +    if (a->rn == 31) {
 +        gen_check_sp_alignment(s);
 +    }
-+    gen_load_exclusive(s, a->rt, a->rt2, a->rn, a->sz, false);
++    gen_load_exclusive(s, a->rt, a->rt2, a->rn, a->sz, true);
 +    if (a->lasr) {
 +        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
 +    }
 +    return true;
 +}
 +
-+static bool trans_STLR(DisasContext *s, arg_stlr *a)
++static bool trans_CASP(DisasContext *s, arg_CASP *a)
 +{
-+    TCGv_i64 clean_addr;
-+    MemOp memop;
-+    bool iss_sf = ldst_iss_sf(a->sz, false, false);
-+
-+    /*
-+     * StoreLORelease is the same as Store-Release for QEMU, but
-+     * needs the feature-test.
-+     */
-+    if (!a->lasr && !dc_isar_feature(aa64_lor, s)) {
++    if (!dc_isar_feature(aa64_atomics, s)) {
 +        return false;
 +    }
-+    /* Generate ISS for non-exclusive accesses including LASR.  */
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
++    if (((a->rt | a->rs) & 1) != 0) {
++        return false;
 +    }
-+    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
-+    memop = check_ordered_align(s, a->rn, 0, true, a->sz);
-+    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn),
-+                                true, a->rn != 31, memop);
-+    do_gpr_st(s, cpu_reg(s, a->rt), clean_addr, memop, true, a->rt,
-+              iss_sf, a->lasr);
++
++    gen_compare_and_swap_pair(s, a->rs, a->rt, a->rn, a->sz);
 +    return true;
 +}
 +
-+static bool trans_LDAR(DisasContext *s, arg_stlr *a)
++static bool trans_CAS(DisasContext *s, arg_CAS *a)
 +{
-+    TCGv_i64 clean_addr;
-+    MemOp memop;
-+    bool iss_sf = ldst_iss_sf(a->sz, false, false);
-+
-+    /* LoadLOAcquire is the same as Load-Acquire for QEMU.  */
-+    if (!a->lasr && !dc_isar_feature(aa64_lor, s)) {
++    if (!dc_isar_feature(aa64_atomics, s)) {
 +        return false;
 +    }
-+    /* Generate ISS for non-exclusive accesses including LASR.  */
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
-+    }
-+    memop = check_ordered_align(s, a->rn, 0, false, a->sz);
-+    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn),
-+                                false, a->rn != 31, memop);
-+    do_gpr_ld(s, cpu_reg(s, a->rt), clean_addr, memop, false, true,
-+              a->rt, iss_sf, a->lasr);
-+    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
++    gen_compare_and_swap(s, a->rs, a->rt, a->rn, a->sz);
 +    return true;
-+}
-+
- /* Load/store exclusive
-  *
-  *  31 30 29         24  23  22   21  20  16  15  14   10 9    5 4    0
-@@ -2674,70 +2763,8 @@ static void disas_ldst_excl(DisasContext *s, uint32_t insn)
-     int is_lasr = extract32(insn, 15, 1);
-     int o2_L_o1_o0 = extract32(insn, 21, 3) * 2 | is_lasr;
-     int size = extract32(insn, 30, 2);
--    TCGv_i64 clean_addr;
--    MemOp memop;
- 
-     switch (o2_L_o1_o0) {
--    case 0x0: /* STXR */
--    case 0x1: /* STLXR */
--        if (rn == 31) {
--            gen_check_sp_alignment(s);
--        }
--        if (is_lasr) {
--            tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
--        }
--        gen_store_exclusive(s, rs, rt, rt2, rn, size, false);
--        return;
--
--    case 0x4: /* LDXR */
--    case 0x5: /* LDAXR */
--        if (rn == 31) {
--            gen_check_sp_alignment(s);
--        }
--        gen_load_exclusive(s, rt, rt2, rn, size, false);
--        if (is_lasr) {
--            tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
--        }
--        return;
--
--    case 0x8: /* STLLR */
--        if (!dc_isar_feature(aa64_lor, s)) {
--            break;
--        }
--        /* StoreLORelease is the same as Store-Release for QEMU.  */
--        /* fall through */
--    case 0x9: /* STLR */
--        /* Generate ISS for non-exclusive accesses including LASR.  */
--        if (rn == 31) {
--            gen_check_sp_alignment(s);
--        }
--        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
--        memop = check_ordered_align(s, rn, 0, true, size);
--        clean_addr = gen_mte_check1(s, cpu_reg_sp(s, rn),
--                                    true, rn != 31, memop);
--        do_gpr_st(s, cpu_reg(s, rt), clean_addr, memop, true, rt,
--                  disas_ldst_compute_iss_sf(size, false, 0), is_lasr);
--        return;
--
--    case 0xc: /* LDLAR */
--        if (!dc_isar_feature(aa64_lor, s)) {
--            break;
--        }
--        /* LoadLOAcquire is the same as Load-Acquire for QEMU.  */
--        /* fall through */
--    case 0xd: /* LDAR */
--        /* Generate ISS for non-exclusive accesses including LASR.  */
--        if (rn == 31) {
--            gen_check_sp_alignment(s);
--        }
--        memop = check_ordered_align(s, rn, 0, false, size);
--        clean_addr = gen_mte_check1(s, cpu_reg_sp(s, rn),
--                                    false, rn != 31, memop);
--        do_gpr_ld(s, cpu_reg(s, rt), clean_addr, memop, false, true,
--                  rt, disas_ldst_compute_iss_sf(size, false, 0), is_lasr);
--        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
--        return;
--
-     case 0x2: case 0x3: /* CASP / STXP */
-         if (size & 2) { /* STXP / STLXP */
-             if (rn == 31) {
-@@ -2787,6 +2814,9 @@ static void disas_ldst_excl(DisasContext *s, uint32_t insn)
-             return;
-         }
-         break;
-+    default:
-+        /* Handled in decodetree */
-+        break;
-     }
-     unallocated_encoding(s);
  }
+ 
+ /*
+@@ -4247,9 +4213,6 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
+ static void disas_ldst(DisasContext *s, uint32_t insn)
+ {
+     switch (extract32(insn, 24, 6)) {
+-    case 0x08: /* Load/store exclusive */
+-        disas_ldst_excl(s, insn);
+-        break;
+     case 0x18: case 0x1c: /* Load register (literal) */
+         disas_ld_lit(s, insn);
+         break;
 -- 
 2.34.1
 
