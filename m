@@ -2,59 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E0172B375
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 20:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECE172B3BA
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Jun 2023 21:41:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8QBq-00006X-HU; Sun, 11 Jun 2023 14:53:26 -0400
+	id 1q8QuW-00016e-TH; Sun, 11 Jun 2023 15:39:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q8QBp-00006N-8q
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 14:53:25 -0400
-Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q8QuV-000167-4g
+ for qemu-devel@nongnu.org; Sun, 11 Jun 2023 15:39:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q8QBn-0001n8-CE
- for qemu-devel@nongnu.org; Sun, 11 Jun 2023 14:53:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=VQpNYELafW+779uTstjQWHaGWz+0brh7mugbZGGVmA0=; b=ONL7zMpO864wMj/KE8Y9IWsM/K
- VNpvhB0+I3RkDXt50G91zBlSSMs5cX8v6sZd12Wp8hdqnTTT3c0BoRdmWRYZ8gQokDAHxFH3ChNdb
- oXTEKFpSPJjds3rr8MPmuP5v6+39+LUJpv6/w0e23vTB4iWA8icaSjEZyVshNwoQSaU0=;
-X-Envelope-From: <kbastian@mail.uni-paderborn.de>
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q8QuT-0008Lk-ME
+ for qemu-devel@nongnu.org; Sun, 11 Jun 2023 15:39:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686512371;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+n8G6yTzwrEyBmx0c+esTTD24rSyG19DzYuods5UpVY=;
+ b=UtuCZzkEXS8A/K/L9ZMah17ibXZ853oP3yub6TLd5ePGeG1CDQoU/qqk9y6nCs8T6JW2Ga
+ ZfTCHsAiYYIn0ecmKR2t+is2AQT0+doabF6KSwziImLgScTlk/girXE5mF6iphJS6BgngY
+ gnoG/njn9SAI53oIq+gKuPQwYd7Rzy8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-38-kHVYPRAoPoiI5ftOZ4r3hA-1; Sun, 11 Jun 2023 15:39:28 -0400
+X-MC-Unique: kHVYPRAoPoiI5ftOZ4r3hA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD83F811E78;
+ Sun, 11 Jun 2023 19:39:27 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.10])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C402B2166B25;
+ Sun, 11 Jun 2023 19:39:26 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de,
-	richard.henderson@linaro.org
-Subject: [PATCH v2 6/6] target/tricore: Add shuffle insn
-Date: Sun, 11 Jun 2023 20:52:13 +0200
-Message-Id: <20230611185213.51345-7-kbastian@mail.uni-paderborn.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230611185213.51345-1-kbastian@mail.uni-paderborn.de>
-References: <20230611185213.51345-1-kbastian@mail.uni-paderborn.de>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, kwolf@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>, <qemu-block@nongnu.org>,
+ Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Jean-Louis Dupond <jean-louis@dupond.be>
+Subject: [PATCH] virtio-scsi: avoid dangling host notifier in
+ ->ioeventfd_stop()
+Date: Sun, 11 Jun 2023 15:39:24 -0400
+Message-Id: <20230611193924.2444914-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.11.183916, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=354492, da=174118665, mc=40, sc=0,
- hc=40, sp=0, fso=354492, re=0, sd=0, hd=0
-X-IMT-Source: Intern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::19;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,110 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this is based on code by volumit (https://github.com/volumit/qemu/)
+virtio_scsi_dataplane_stop() calls blk_drain_all(), which invokes
+->drained_begin()/->drained_end() after we've already detached the host
+notifier. virtio_scsi_drained_end() currently attaches the host notifier
+again and leaves it dangling after dataplane has stopped.
 
-Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+This results in the following assertion failure because
+virtio_scsi_defer_to_dataplane() is called from the IOThread instead of
+the main loop thread:
+
+  qemu-system-x86_64: ../softmmu/memory.c:1111: memory_region_transaction_commit: Assertion `qemu_mutex_iothread_locked()' failed.
+
+Reported-by: Jean-Louis Dupond <jean-louis@dupond.be>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
-v1 -> v2:
-    - Shuffle now uses shifts, instead of a buffer
-    - Shuffle now does rev8 for all bytes in parallel
+ hw/scsi/virtio-scsi.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
- target/tricore/helper.h          |  1 +
- target/tricore/op_helper.c       | 36 ++++++++++++++++++++++++++++++++
- target/tricore/translate.c       |  8 +++++++
- target/tricore/tricore-opcodes.h |  1 +
- 4 files changed, 46 insertions(+)
-
-diff --git a/target/tricore/helper.h b/target/tricore/helper.h
-index a10576e09e..31d71eac7a 100644
---- a/target/tricore/helper.h
-+++ b/target/tricore/helper.h
-@@ -134,6 +134,7 @@ DEF_HELPER_FLAGS_5(mulr_h, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32b, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_be, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_le, TCG_CALL_NO_RWG_SE, i32, i32, i32)
-+DEF_HELPER_FLAGS_2(shuffle, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- /* CSA */
- DEF_HELPER_2(call, void, env, i32)
- DEF_HELPER_1(ret, void, env)
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index b6ef1462e4..026e15f3e0 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2308,6 +2308,42 @@ uint32_t helper_crc32_le(uint32_t arg0, uint32_t arg1)
-     return crc32(arg1, buf, 4);
- }
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 9c8ef0aaa6..45b95ea070 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -1125,7 +1125,16 @@ static void virtio_scsi_drained_begin(SCSIBus *bus)
+     uint32_t total_queues = VIRTIO_SCSI_VQ_NUM_FIXED +
+                             s->parent_obj.conf.num_queues;
  
-+uint32_t helper_shuffle(uint32_t arg0, uint32_t arg1)
-+{
-+    uint32_t resb;
-+    uint32_t byte_select;
-+    uint32_t res = 0;
-+
-+    byte_select = arg1 & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 0;
-+
-+    byte_select = (arg1 >> 2) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 8;
-+
-+    byte_select = (arg1 >> 4) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 16;
-+
-+    byte_select = (arg1 >> 6) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 24;
-+
-+    if (arg1 & 0x100) {
-+        /* Assign the correct nibble position.  */
-+        res = ((res & 0xf0f0f0f0) >> 4)
-+          | ((res & 0x0f0f0f0f) << 4);
-+        /* Assign the correct bit position.  */
-+        res = ((res & 0x88888888) >> 3)
-+          | ((res & 0x44444444) >> 1)
-+          | ((res & 0x22222222) << 1)
-+          | ((res & 0x11111111) << 3);
-+    }
-+
-+    return res;
-+}
-+
- /* context save area (CSA) related helpers */
- 
- static int cdc_increment(target_ulong *psw)
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 85526ef4db..a4c60e8ae2 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -5011,6 +5011,14 @@ static void decode_rc_logical_shift(DisasContext *ctx)
-     case OPC2_32_RC_XOR:
-         tcg_gen_xori_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], const9);
-         break;
-+    case OPC2_32_RC_SHUFFLE:
-+        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            TCGv temp = tcg_constant_i32(const9);
-+            gen_helper_shuffle(cpu_gpr_d[r2], cpu_gpr_d[r1], temp);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-+        break;
-     default:
-         generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+-    if (!s->dataplane_started) {
++    /*
++     * Drain is called when stopping dataplane but the host notifier has
++     * already been detached. Detaching multiple times is a no-op if nothing
++     * else is using the monitoring same file descriptor, but avoid it just in
++     * case.
++     *
++     * Also, don't detach if dataplane has not even been started yet because
++     * the host notifier isn't attached.
++     */
++    if (s->dataplane_stopping || !s->dataplane_started) {
+         return;
      }
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index 27f80e1702..af63926731 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -885,6 +885,7 @@ enum {
-     OPC2_32_RC_SHAS                              = 0x02,
-     OPC2_32_RC_XNOR                              = 0x0d,
-     OPC2_32_RC_XOR                               = 0x0c,
-+    OPC2_32_RC_SHUFFLE                           = 0x07, /* v1.6.2 only */
- };
- /* OPCM_32_RC_ACCUMULATOR                           */
- enum {
+ 
+@@ -1143,7 +1152,14 @@ static void virtio_scsi_drained_end(SCSIBus *bus)
+     uint32_t total_queues = VIRTIO_SCSI_VQ_NUM_FIXED +
+                             s->parent_obj.conf.num_queues;
+ 
+-    if (!s->dataplane_started) {
++    /*
++     * Drain is called when stopping dataplane. Keep the host notifier detached
++     * so it's not left dangling after dataplane is stopped.
++     *
++     * Also, don't attach if dataplane has not even been started yet. We're not
++     * ready.
++     */
++    if (s->dataplane_stopping || !s->dataplane_started) {
+         return;
+     }
+ 
 -- 
 2.40.1
 
