@@ -2,75 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59F872CF04
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 21:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C495772CF26
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 21:15:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8msx-0003uG-AN; Mon, 12 Jun 2023 15:07:27 -0400
+	id 1q8mzD-0005aa-U2; Mon, 12 Jun 2023 15:13:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8msu-0003pk-Jl; Mon, 12 Jun 2023 15:07:24 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q8mzC-0005aB-7d
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:13:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mss-0000mM-1O; Mon, 12 Jun 2023 15:07:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zKBWPFcKe/S1cIOaZb7Cs+Th8+MuEqDvGePqW+VvoDk=; b=oR+konLBcEbFgx6IBy0f04mEGg
- 3VBtjPEwJrB/TiSRVzEG52Ea4pAP3rQCC7NfPF6WGtK4xL1oFm2B8CUaJ1DTzdkhRQsdwPI3UYHeh
- HfLuaeToVSE3NEcUlGhR8daXzZuuO3u5FOEV2olfoE/wRXuv7ji0pP+hB+/BJASQM7NoEZZx2905c
- 5drW4ez2OEKb1nifIOw04cJ2If/JcTBvZd0xnWyQqf+NrnpHz0ECpbxb6UmH520llGnTQB5qUqBNW
- vm+3F33JB4vFbtsg1haxMcdKcdzEI6JMBjEifN+bQepCWNTH/w49txlDKTloEvVrBkvNBAav9Ggwn
- GHC6JkpBOMPNHfcMxtNcMdArnd+vVOsPdFmkYlDoobxD59+nuaujGxpxphJSJKLrEbVU2YnhLrr0E
- 8v744/Kv0XJx48UhoiHUoOI4T+Q0hze20hPRCvQHOscc0NqkvvFCWjXE4FMBYfy85AQ1DSzhPqQPX
- AdnDg7uuT8hXlsBf0p1ZGXbHywIIW/AE2rBPBhH+zGutAsnnvebdb0Cikn7J8LDRo32tdTnkqncpA
- GD4EjMi8Bmn206F6rTRmvAltCEpQdO8BBk83S4I03ceEV89P/4BY8QwUPs5UmkK1x9/iJz/SZOz6V
- GAyqEqoupUGUvEMsZT24gH4KgERLlBT296KcoRx+I=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mse-0009Jt-40; Mon, 12 Jun 2023 20:07:12 +0100
-Message-ID: <138a3e15-604b-7ea9-20ef-202c0d426f58@ilande.co.uk>
-Date: Mon, 12 Jun 2023 20:07:09 +0100
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q8mzA-00020A-Bw
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:13:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686597230;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PGDpvPBKnFYLlU+em7dtFYBnVBjeRlrb4ESIAODT5TQ=;
+ b=YHaterhCWEZk28U6wNd/fR2RF5PdguRlFmF6U1r5nQRQz3XJ1QfW3Tr92JmnLLnjYbZTK3
+ Eb3l1RKAo7dpsopFsg/WM0/Fv6+BfJNoDppnTLHbfLGitoeiYJWZpeJQ03YkERAJzcMI5V
+ lZIVUzgiOBRYRDa8WG9uP7IsbD0nlfk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-480-srgltRR3NzSBVTqkMUAawg-1; Mon, 12 Jun 2023 15:13:47 -0400
+X-MC-Unique: srgltRR3NzSBVTqkMUAawg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A284D85A5BA;
+ Mon, 12 Jun 2023 19:13:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.27])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D54F492CAC;
+ Mon, 12 Jun 2023 19:13:45 +0000 (UTC)
+Date: Mon, 12 Jun 2023 14:13:43 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, libguestfs@redhat.com, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v4 06/24] nbd/client: Simplify cookie vs. index computation
+Message-ID: <cjaslqexf3x5bgk7nghtuod443hjeay3jfbjaatarnicmvn75h@prynubowgy7r>
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-7-eblake@redhat.com>
+ <c85245c5-cfa9-bb52-a1a7-a260ad194b60@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, qemu-trivial@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230611110008.32638-1-shentey@gmail.com>
- <20230611110008.32638-3-shentey@gmail.com>
- <229b5f39-2a3e-e47b-5269-9ae2c43492ae@eik.bme.hu>
- <F47D47A6-B68A-46E7-BF36-C6447AC8E4CD@gmail.com>
- <24583ff5-542b-d645-378d-ce6a7b4affb7@eik.bme.hu>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <24583ff5-542b-d645-378d-ce6a7b4affb7@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 2/2] hw/char/parallel-isa: Export struct ISAParallelState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c85245c5-cfa9-bb52-a1a7-a260ad194b60@yandex-team.ru>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,49 +80,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/06/2023 11:06, BALATON Zoltan wrote:
-
-> On Mon, 12 Jun 2023, Bernhard Beschow wrote:
->> Am 11. Juni 2023 13:15:58 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
->>> On Sun, 11 Jun 2023, Bernhard Beschow wrote:
->>>> Allows the struct to be embedded directly into device models without additional
->>>> allocation.
->>>>
->>>> Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>
->>> Patches missing SoB, checkpatch should have cought this.
->>
->> Thanks for catching again. Fixed in v2.
->>
->>>
->>> I don't see any of the machines or device models actually embedding 
->>> ISAParallelState or ParallelState so don't know what this patch is trying to 
->>> achieve. Please post the whole series with the patches that this is a preparation 
->>> for so we can se where this leads.
->>
->> No further plans from my side.
+On Mon, Jun 12, 2023 at 05:27:19PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 08.06.23 16:56, Eric Blake wrote:
+> > Our code relies on a sentinel cookie value of zero for deciding when a
+> > packet has been handled, as well as relying on array indices between 0
+> > and MAX_NBD_REQUESTS-1 for dereferencing purposes.  As long as we can
+> > symmetrically convert between two forms, there is no reason to go with
+> > the odd choice of using XOR with a random pointer, when we can instead
+> > simplify the mappings with a mere offset of 1.
 > 
-> Then IMO these patches are not needed. Keeping the struct definitions in parallel.c 
-> ensures they are not accessed by anything else and keeps the object encapsulation. I 
-> don't see a point for moving the defs to a header if nothing wants to use them. This 
-> is done for other devices to allow them to be embedded in other devices but if that's 
-> not the case here then why this series? (The TYPE_ISA_PARALLEL #define seems to be 
-> already in include/hw/chsr/parallel.h so if you only want to use that like in the 
-> series you've referenced in the cover letter then that can be done without these 
-> patches.)
+> Should we go further and use (uint64)-1 as a sentinel cookie value, and just use index as a cookie?  Or, using zero cookie in a wire looks too asymmetric?
 
-The TYPE_ISA_PARALLEL constant was only moved there in commit 963e94a97b 
-("hw/char/parallel: Move TYPE_ISA_PARALLEL to the header file") but having each 
-separate type defined in its own file is how we've done things for some time: there 
-is nothing new here.
+I thought about that too, but in the end I decided it would require
+auditing more lines of code to make sure I was catching all places
+where we currently expected a zero sentinel (where some of those uses
+are not obvious, because of things like hiding behind g_new0).  And
+there is indeed the argument that if data corruption is going to
+happen, it's harder to tell if an all-zero field on the wire was
+intentional than a non-zero field.
 
-In particular it is done this way so that ParallelState could be used on a non-ISA 
-bus, and to allow users who are security conscious to compile out particular devices 
-as needed.
+> 
+> > 
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> 
+> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+Thanks; for now, I'll just leave this one as-is.
 
 
-ATB,
-
-Mark.
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
 
