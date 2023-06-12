@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A6572CFC4
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 21:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8F972CFE7
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 21:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8nQI-0001y3-AM; Mon, 12 Jun 2023 15:41:54 -0400
+	id 1q8ndp-0006w5-DF; Mon, 12 Jun 2023 15:55:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q8nQF-0001xs-Ry
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:41:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q8ndZ-0006s9-AD
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:55:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q8nQE-00081L-Ag
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:41:51 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q8ndV-0002aB-Ub
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:55:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686598909;
+ s=mimecast20190719; t=1686599732;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Lp6P0f2wpD1/wiNvmbsVTX3xsf6/YziMkKFJOniIvkk=;
- b=ZXKWV5jPI4/nZPq2Xhj+1WaOXW0ohjBo4ma5QA0S5EHzm0FN54+dr1b3amOeK4/faXftF2
- P0JI/Ln4b4MFj7BLgGfGaK1gB7s+qpd9wLzjRHGx18Cng+oOJy8t1v4s9Ba8ZElDU+2SYb
- IkXdygezGwfxa53wMrIBQVhGzZJFa3M=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=n4j0wyWg13B9F3SP2Ggfa4RVJQXhooE2MVh+v70BjFo=;
+ b=D4iF8w5DwxugkAb7zYqOHiPjeDhcWL1QVEHzdfOf7PMsZgoDHMxRA4mz6CBTOYz86BZt8H
+ jffLo1jfHpCfA6mr7BybJ5ucmRUt7W7X2jXODLXtTwGlV1oQuVnYN3lbDW+Acgf7b0vDUz
+ hdMtlZkgWbnTMMBFMXY2Xm1Y+SxYLtI=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-IoEmHu_FNzmiZhB-o8ed8Q-1; Mon, 12 Jun 2023 15:41:48 -0400
-X-MC-Unique: IoEmHu_FNzmiZhB-o8ed8Q-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-74faf5008bbso100859085a.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 12:41:47 -0700 (PDT)
+ us-mta-198-Ae9mSUeAONO4pBbI1LCpVQ-1; Mon, 12 Jun 2023 15:55:29 -0400
+X-MC-Unique: Ae9mSUeAONO4pBbI1LCpVQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-3f9e7a1caf2so6443151cf.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 12:55:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686598907; x=1689190907;
+ d=1e100.net; s=20221208; t=1686599729; x=1689191729;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lp6P0f2wpD1/wiNvmbsVTX3xsf6/YziMkKFJOniIvkk=;
- b=E0t+/YJdogi4bqITU1C6HqZ+YsF0h6Iv4HEJTsqJ8+rCvE1PQ6UjN3tiRnO0P9Ay3m
- nXIF6sbOAoccPhBttSiC5D03XR9Er337fGnvKvZH3QnMFiJdMvIjq0sV8bG/uqqYR6E8
- 0yTSgEoeIR0qntaGuhMRgdko+J5zKVcLC+57nuffBIcwNvJ01xO70nHYhk727fqc8yEN
- C7J1bMR2vQ886VSLaEu/n8awrGuFz0BxP9UR4pBovAU9el4s4JZD6eM5RW5ohncoBxdR
- oEvOYa0pra4+xmp0FiDOaQXlqPgPltxQWAaY5UjtvcjbHAUY2hY28V1GtKNRh70oQCQs
- ptUg==
-X-Gm-Message-State: AC+VfDyE99L+LrJvijOvX8JOMGQf/Wew0iCwUMk6YZH36LoHpu91wl5i
- EUPfoGq/IVmXL+62/g0/5anGZE9rDz1h+x/D0Col1hdhCQEISt/+9qmXzGLatL0AgLARKSZfE1I
- oqHq5PuYa/U9zpOk=
-X-Received: by 2002:a05:6214:c4b:b0:629:e646:bdad with SMTP id
- r11-20020a0562140c4b00b00629e646bdadmr12929731qvj.4.1686598907523; 
- Mon, 12 Jun 2023 12:41:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6X2042Z60VSGd5HeewAJCDhwmWw4QRTCP8oVFXLS7UB9IlbTUAXlfUtNHeyGbaRE4k5IqpjA==
-X-Received: by 2002:a05:6214:c4b:b0:629:e646:bdad with SMTP id
- r11-20020a0562140c4b00b00629e646bdadmr12929715qvj.4.1686598907265; 
- Mon, 12 Jun 2023 12:41:47 -0700 (PDT)
+ bh=n4j0wyWg13B9F3SP2Ggfa4RVJQXhooE2MVh+v70BjFo=;
+ b=fnRRoi5Fz8Ndk2KHvViBfRcOg/aWpQbgFnKHyyTLQLRq13KkcQPjrSESEp0nqgi3qv
+ B0WnKEi0MKd5F5fLRTLuikltfcYmXb58LKZez/pcoTsSbQMaGuGaEzZQoecNTGx/uruz
+ JgKpfGpnneWdFS0WUudSu6MC5NsedGB0iBrHGdlcvHjMY8XwlUDZPpp3KeAskNjMjNdQ
+ R9nBOfIchUDPAtdI9J/bUfnWLKr8tm8/T9MZbkfTO5kydkZ3WD/mH5yGBeHOBEToI0+x
+ BemzjkuETudHO5YIPgHAshuDqIk+PmdzFjFK7/80cITAP4CQyzXLRQLFry+X+ZekQ6iy
+ GeTw==
+X-Gm-Message-State: AC+VfDwHPUQ6eSBnJ+PUIDg60Gv86EVUU1ll0vzhyIG0TiqOtILpmx4O
+ dZIbSShqPTzEK8uE4hXNs/8ceeRUwKtDhnTFY8Om1DlnWB7LYgQehEU2/tv5qA7aTbk0yDyP8dK
+ rx1fP8eMNs/vIYYU=
+X-Received: by 2002:a05:622a:1a25:b0:3f6:b493:8ee4 with SMTP id
+ f37-20020a05622a1a2500b003f6b4938ee4mr13421405qtb.0.1686599728999; 
+ Mon, 12 Jun 2023 12:55:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5SFFfwpKVLwLZzEFCA0MQ9QFkP6IaGlgtFVmEzNCkHc7BSpRkhaKYp4LDf38z5YtDUpXaoRA==
+X-Received: by 2002:a05:622a:1a25:b0:3f6:b493:8ee4 with SMTP id
+ f37-20020a05622a1a2500b003f6b4938ee4mr13421398qtb.0.1686599728749; 
+ Mon, 12 Jun 2023 12:55:28 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a20-20020a0ca994000000b0062de1ed9d15sm1674178qvb.102.2023.06.12.12.41.45
+ z16-20020ac87cb0000000b003e69c51cf53sm3643970qtv.72.2023.06.12.12.55.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jun 2023 12:41:46 -0700 (PDT)
-Date: Mon, 12 Jun 2023 15:41:44 -0400
+ Mon, 12 Jun 2023 12:55:28 -0700 (PDT)
+Date: Mon, 12 Jun 2023 15:55:26 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
- Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-Message-ID: <ZId0+HYF/ETLVri3@x1n>
-References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH V2] migration: file URI
+Message-ID: <ZId4LggDVgxbtGTn@x1n>
+References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
+ <ZIdnj7Hr1L3iDVUG@x1n>
+ <bddfc088-268b-2d9b-7a28-6345b8bfa2e7@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230612193344.3796-5-quintela@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <bddfc088-268b-2d9b-7a28-6345b8bfa2e7@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,46 +100,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 12, 2023 at 09:33:42PM +0200, Juan Quintela wrote:
-> Only "defer" is recommended.  After setting all migation parameters,
-> start incoming migration with "migrate-incoming uri" command.
+On Mon, Jun 12, 2023 at 03:39:34PM -0400, Steven Sistare wrote:
+> On 6/12/2023 2:44 PM, Peter Xu wrote:
+> > Hi, Steve,
+> > 
+> > On Wed, Jun 07, 2023 at 11:38:59AM -0700, Steve Sistare wrote:
+> >> Extend the migration URI to support file:<filename>.  This can be used for
+> >> any migration scenario that does not require a reverse path.  It can be used
+> >> as an alternative to 'exec:cat > file' in minimized containers that do not
+> >> contain /bin/sh, and it is easier to use than the fd:<fdname> URI.  It can
+> >> be used in HMP commands, and as a qemu command-line parameter.
+> > 
+> > I have similar question on the fixed-ram work,
 > 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  docs/about/deprecated.rst | 7 +++++++
->  softmmu/vl.c              | 2 ++
->  2 files changed, 9 insertions(+)
+> Sorry, what is the "fixed-ram work"?
+
+https://lore.kernel.org/all/20230330180336.2791-1-farosas@suse.de
+
+It has similar requirement to migrate to a file, though slightly different
+use case.
+
 > 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 47e98dc95e..518672722d 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
->  ``blk`` functionality can be acchieved using
->  ``migrate_set_parameter block-incremental true``.
->  
-> +``-incoming uri`` (since 8.1)
-> +'''''''''''''''''''''''''''''
-> +
-> +Everything except ``-incoming defer`` are deprecated.  This allows to
-> +setup parameters before launching the proper migration with
-> +``migrate-incoming uri``.
-> +
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index b0b96f67fa..7fe865ab59 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
->      if (incoming) {
->          Error *local_err = NULL;
->          if (strcmp(incoming, "defer") != 0) {
-> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
-> +                        " set the uri with migrate-incoming.", incoming);
+> > on whether we should assume
+> > the vm stopped before doing so.  Again, it leaves us space for
+> > optimizations on top without breaking anyone.
+> 
+> I do not assume the vm is stopped.  The migration code will stop the vm
+> in migration_iteration_finish.
+> 
+> > The other thing is considering a very busy guest, migration may not even
+> > converge for "file:" URI (the same to other URIs) but I think that doesn't
+> > make much sense to not converge for a "file:" URI.  The user might be very
+> > confused too.
+> 
+> The file URI is mainly intended for the case where guest ram is backed by shared memory 
+> and preserved in place, in which case writes are not tracked and convergence is not an
+> issue.  If not shared memory, the user should be advised to stop the machine first.
+> I should document these notes in qemu-options and/or migration.json.
 
-I still use uri for all my scripts, alongside with "-global migration.xxx"
-and it works.
+My question was whether we should treat "file:" differently from most of
+other URIs.  It makes the URI slightly tricky for sure, but it also does
+make sense to me because "file:" implies more than the rest URIs, where
+we're sure about the consequence of the migration (vm stops), in that case
+keeping vm live makes it less performant, and also weird.
 
-Shall we just leave it there?  Or is deprecating it helps us in any form?
+It doesn't need to be special in memory type being shared, e.g. what if
+there's a device that contains a lot of data to migrate in the future?
+Assuming "shared memory will always migrate very fast" may not hold true.
+
+Do you think it makes more sense to just always stop VM when migrating to
+file URI?  Then if someone tries to restart the VM or cancel the migration,
+we always do both (cancel migration, then start VM).
 
 -- 
 Peter Xu
