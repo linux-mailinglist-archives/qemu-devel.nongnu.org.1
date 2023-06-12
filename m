@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B95272C29C
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 13:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB8172C29F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 13:12:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8fRk-0001fQ-EO; Mon, 12 Jun 2023 07:10:52 -0400
+	id 1q8fRk-0001fO-Dh; Mon, 12 Jun 2023 07:10:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1q8fRe-0001d6-Va
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:10:46 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1q8fRh-0001dc-7m
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:10:49 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1q8fRc-0002MZ-Rc
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:10:46 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5151934a4e3so6266513a12.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 04:10:44 -0700 (PDT)
+ id 1q8fRf-0002NG-3l
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:10:48 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-977d0288fd2so709441566b.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 04:10:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1686568243; x=1689160243;
+ d=vrull.eu; s=google; t=1686568245; x=1689160245;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0zgNWA5Q0Kl9DZsF6umj5xs+kEU0/rrvuCkR9VqJ004=;
- b=dtlc9drGbzbD4tm/3k0NPJIr3f2VFxgL+JbQTpfgZU3aooH7vF8jud9218Bhda7kkl
- WIetSC0fnkThqwTc7ZTs71cfNSYx0fNv/EjQWKdCY2taTZPBH+KnHI0TC2qT7vJRjaeX
- cf47lEsopV3n+PD4IhJmnE/DZo5tPHcYRHvCLWKkXpZmNpIMR9DdMqXj0OXjf7vbKXdv
- Gx9l970qt6lMH/ljGin2eRE5doF92YputbKtpIbhPgw+YjaVYNoLHTRxbG/MOrGb/3W/
- 6wmHZKZ2ipfMDnIrRZipweND8yrVNCjLEIz4RJWDMVO4eSyPDZvXd4NSyV6deQcK+ohB
- GqPw==
+ bh=pDxAjzmph+UEa8qklNFlGCNprQng00uTGl0gUn8QEQk=;
+ b=ScvN58W0FAvPfjC8T+gSduiIrbVi1oJSdFhvoIrHcORDh0zuHe6v9XYGKDzvKtLzbM
+ NoCmj8UcKd/VIw2UU5C+Udr0Y1VcOZ2rhO2j8DKE5Dw7hetjDf0MOM+JrRj0WpXWQTfF
+ aoUtl9hInrHBTlrkZcoFO8m2D70+L17I9b3S+V83DG2Fvovn9+kKMys4pogvIEu2UyIW
+ ioy8xBb0HKoaukUfUBcx5prqv/Sbv+NDbhWA6qFYP6NxpYrSZ6eJGxHDCOe/PTcdExYl
+ TBGJ+DjDgF0p5QKUfbD8ZYy36qbIbm9zvAVQvBfMJiJfzH4nEFV+rieg3ogoUCOzlIcl
+ 83dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686568243; x=1689160243;
+ d=1e100.net; s=20221208; t=1686568245; x=1689160245;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0zgNWA5Q0Kl9DZsF6umj5xs+kEU0/rrvuCkR9VqJ004=;
- b=N+/SfW8KPqdszT+94sXAk6/Dya5+oFRTwSza5irglSDv1lpBsUvHsXUN/CGgvT/kbg
- 2T/yREXTSB+LOghRJE/GGS9RznxiFxyRbcxd5TfTEuNrOlhrN91SUt832DIAjKIyVzAO
- ETxsaQSSk/t36vTysoX491qvW8McV9uhCx4WThPK5sbCxB8kfZqXdjtUByRJEJJTajeE
- QHBwMnJ1KOxZMtv4sIRtgOiB3WcmkwyyttpgCXbiCKLKbTDjCYVVCxR539vCvuQYca4U
- gOlHgoVH+FN6mzjPX1G6yrmbde994l1T/1zRoAu2TUL0B/ZxtQ4TNzPmXjGex3hhbG3U
- V+tA==
-X-Gm-Message-State: AC+VfDw2alHFd5HGKRFfMTPrhU7Qxra/qOOPcTnlUECBV1yuvsiJiPA+
- RfcVVB/ypvON/TLaeG2yakwxkw==
-X-Google-Smtp-Source: ACHHUZ5p2rICPyMI6Ly79mEa5Ff6u9WGrv6lq24G5ML2MvIZMkoQx/RSvr+Z/KmGJbPA254WqVM/wg==
-X-Received: by 2002:a17:907:934b:b0:966:b4b:eb0 with SMTP id
- bv11-20020a170907934b00b009660b4b0eb0mr10106652ejc.30.1686568243510; 
- Mon, 12 Jun 2023 04:10:43 -0700 (PDT)
+ bh=pDxAjzmph+UEa8qklNFlGCNprQng00uTGl0gUn8QEQk=;
+ b=Yh1rLfdUdeZPkoeGG6s0+J8WufdXXvoodCEQkiFr28rjQMqRZbR2ZrJn8DKbJgGxLy
+ 1DLbiBHgm4MwuRHEhUVkBw6lYP6MTNseaFSQo49p1zcsyo2nZg7qQX1R+aempaa/6Ygx
+ eBqciDze9bGa2iGfmdO+I1MGW/VINUxqTKJ5R5lFV+yftwD8swMFrHzqLJPDXYAP1ivK
+ clKlOIX1n6CGgothxjSBK57mdcsFpBWTA5kmdA8qAHY9tAvIIQvd2zjZLopznVpfgvgU
+ ijlIvduRP/jSNe539D4fN2KeU75K8Pc3rx+fPgr4TZSCbGSY8ey7pU/NRNxflF3Mbx/B
+ LDDw==
+X-Gm-Message-State: AC+VfDz7PM/UHQD11FRojge2kDGkIoxYoEhHIqdreZbyxWXwKmMpYH/E
+ xZfD35Uf2X2KxmRZPWwAvcyQ7Q==
+X-Google-Smtp-Source: ACHHUZ7TMCf7pfFU0/KtsqlaKLhgTXdEmW85n4omotgy2sI3vbLs/HuLQP5BTc+RzB1SRu09JTw4Lg==
+X-Received: by 2002:a17:907:a01:b0:978:8ecd:fa6c with SMTP id
+ bb1-20020a1709070a0100b009788ecdfa6cmr9496329ejc.34.1686568245208; 
+ Mon, 12 Jun 2023 04:10:45 -0700 (PDT)
 Received: from beast.fritz.box (62-178-148-172.cable.dynamic.surfer.at.
  [62.178.148.172]) by smtp.gmail.com with ESMTPSA id
- w23-20020a1709064a1700b00978723f594bsm5000948eju.101.2023.06.12.04.10.42
+ w23-20020a1709064a1700b00978723f594bsm5000948eju.101.2023.06.12.04.10.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jun 2023 04:10:43 -0700 (PDT)
+ Mon, 12 Jun 2023 04:10:44 -0700 (PDT)
 From: Christoph Muellner <christoph.muellner@vrull.eu>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -67,17 +67,17 @@ To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
  Alistair Francis <Alistair.Francis@wdc.com>
-Subject: [PATCH v2 4/8] disas/riscv: Make rv_op_illegal a shared enum value
-Date: Mon, 12 Jun 2023 13:10:30 +0200
-Message-Id: <20230612111034.3955227-5-christoph.muellner@vrull.eu>
+Subject: [PATCH v2 5/8] disas/riscv: Encapsulate opcode_data into decode
+Date: Mon, 12 Jun 2023 13:10:31 +0200
+Message-Id: <20230612111034.3955227-6-christoph.muellner@vrull.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
 References: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,47 +102,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Christoph Müllner <christoph.muellner@vrull.eu>
 
-The enum value 'rv_op_illegal' does not represent an
-instruction, but is a catch-all value in case we have
-no match in the decoder. Let's make the value a shared
-one, so that other compile units can reuse it.
+This patch adds a reference to a struct rv_opcode_data object
+into struct rv_decode. This further allows to remove all references
+to the global variable opcode_data (which is renamed to rvi_opcode_data).
 
+This patch does not introduce any functional change, but prepares
+the code for more struct rv_opcode_data objects in the future.
+
+This patch is based on previous work from Liu Zhiwei:
+  https://lists.nongnu.org/archive/html/qemu-devel/2022-08/msg03662.html
+
+Co-developed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
 ---
- disas/riscv.c | 2 +-
- disas/riscv.h | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ disas/riscv.c |  9 ++++++++-
+ disas/riscv.h | 33 +++++++++++++++++----------------
+ 2 files changed, 25 insertions(+), 17 deletions(-)
 
 diff --git a/disas/riscv.c b/disas/riscv.c
-index 4a55348267..b6ced2a26a 100644
+index b6ced2a26a..b6789ab92a 100644
 --- a/disas/riscv.c
 +++ b/disas/riscv.c
-@@ -23,7 +23,7 @@
- #include "disas/riscv.h"
+@@ -1068,7 +1068,7 @@ static const rv_comp_data rvcp_fsgnjx_q[] = {
  
- typedef enum {
--    rv_op_illegal = 0,
-+    /* 0 is reserved for rv_op_illegal. */
-     rv_op_lui = 1,
-     rv_op_auipc = 2,
-     rv_op_jal = 3,
+ /* instruction metadata */
+ 
+-const rv_opcode_data opcode_data[] = {
++const rv_opcode_data rvi_opcode_data[] = {
+     { "illegal", rv_codec_illegal, rv_fmt_none, NULL, 0, 0, 0 },
+     { "lui", rv_codec_u, rv_fmt_rd_imm, NULL, 0, 0, 0 },
+     { "auipc", rv_codec_u, rv_fmt_rd_offset, NULL, 0, 0, 0 },
+@@ -3889,6 +3889,7 @@ static uint32_t operand_tbl_index(rv_inst inst)
+ 
+ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
+ {
++    const rv_opcode_data *opcode_data = dec->opcode_data;
+     rv_inst inst = dec->inst;
+     dec->codec = opcode_data[dec->op].codec;
+     switch (dec->codec) {
+@@ -4371,6 +4372,7 @@ static void append(char *s1, const char *s2, size_t n)
+ 
+ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
+ {
++    const rv_opcode_data *opcode_data = dec->opcode_data;
+     char tmp[64];
+     const char *fmt;
+ 
+@@ -4612,6 +4614,7 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
+ 
+ static void decode_inst_lift_pseudo(rv_decode *dec)
+ {
++    const rv_opcode_data *opcode_data = dec->opcode_data;
+     const rv_comp_data *comp_data = opcode_data[dec->op].pseudo;
+     if (!comp_data) {
+         return;
+@@ -4630,6 +4633,7 @@ static void decode_inst_lift_pseudo(rv_decode *dec)
+ 
+ static void decode_inst_decompress_rv32(rv_decode *dec)
+ {
++    const rv_opcode_data *opcode_data = dec->opcode_data;
+     int decomp_op = opcode_data[dec->op].decomp_rv32;
+     if (decomp_op != rv_op_illegal) {
+         if ((opcode_data[dec->op].decomp_data & rvcd_imm_nz)
+@@ -4644,6 +4648,7 @@ static void decode_inst_decompress_rv32(rv_decode *dec)
+ 
+ static void decode_inst_decompress_rv64(rv_decode *dec)
+ {
++    const rv_opcode_data *opcode_data = dec->opcode_data;
+     int decomp_op = opcode_data[dec->op].decomp_rv64;
+     if (decomp_op != rv_op_illegal) {
+         if ((opcode_data[dec->op].decomp_data & rvcd_imm_nz)
+@@ -4658,6 +4663,7 @@ static void decode_inst_decompress_rv64(rv_decode *dec)
+ 
+ static void decode_inst_decompress_rv128(rv_decode *dec)
+ {
++    const rv_opcode_data *opcode_data = dec->opcode_data;
+     int decomp_op = opcode_data[dec->op].decomp_rv128;
+     if (decomp_op != rv_op_illegal) {
+         if ((opcode_data[dec->op].decomp_data & rvcd_imm_nz)
+@@ -4694,6 +4700,7 @@ disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
+     rv_decode dec = { 0 };
+     dec.pc = pc;
+     dec.inst = inst;
++    dec.opcode_data = rvi_opcode_data;
+     dec.cfg = cfg;
+     decode_inst_opcode(&dec, isa);
+     decode_inst_operands(&dec, isa);
 diff --git a/disas/riscv.h b/disas/riscv.h
-index 9288255915..debbe69239 100644
+index debbe69239..460196510c 100644
 --- a/disas/riscv.h
 +++ b/disas/riscv.h
-@@ -191,6 +191,10 @@ typedef struct {
-     const rvc_constraint *constraints;
- } rv_comp_data;
+@@ -163,10 +163,27 @@ typedef enum {
  
-+enum {
-+    rv_op_illegal = 0
-+};
+ /* structures */
+ 
++typedef struct {
++    const int op;
++    const rvc_constraint *constraints;
++} rv_comp_data;
 +
++typedef struct {
++    const char * const name;
++    const rv_codec codec;
++    const char * const format;
++    const rv_comp_data *pseudo;
++    const short decomp_rv32;
++    const short decomp_rv64;
++    const short decomp_rv128;
++    const short decomp_data;
++} rv_opcode_data;
++
+ typedef struct {
+     RISCVCPUConfig *cfg;
+     uint64_t  pc;
+     uint64_t  inst;
++    const rv_opcode_data *opcode_data;
+     int32_t   imm;
+     uint16_t  op;
+     uint8_t   codec;
+@@ -186,11 +203,6 @@ typedef struct {
+     uint8_t   rlist;
+ } rv_decode;
+ 
+-typedef struct {
+-    const int op;
+-    const rvc_constraint *constraints;
+-} rv_comp_data;
+-
  enum {
+     rv_op_illegal = 0
+ };
+@@ -199,17 +211,6 @@ enum {
      rvcd_imm_nz = 0x1
  };
+ 
+-typedef struct {
+-    const char * const name;
+-    const rv_codec codec;
+-    const char * const format;
+-    const rv_comp_data *pseudo;
+-    const short decomp_rv32;
+-    const short decomp_rv64;
+-    const short decomp_rv128;
+-    const short decomp_data;
+-} rv_opcode_data;
+-
+ /* instruction formats */
+ 
+ #define rv_fmt_none                   "O\t"
 -- 
 2.40.1
 
