@@ -2,155 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB2D72B6DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 06:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3816C72B6F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 07:00:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8ZWA-00032s-Ng; Mon, 12 Jun 2023 00:51:02 -0400
+	id 1q8ZeR-0004ep-9C; Mon, 12 Jun 2023 00:59:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
- id 1q8ZW8-00032c-KR
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 00:51:00 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
- id 1q8ZW6-0000pi-D1
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 00:51:00 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35BLSA4u008856; Sun, 11 Jun 2023 21:50:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint20171006;
- bh=PVc3x/Yq5laaclGPPPtLX6eY8ARerVYdcE33yxx8iyI=;
- b=Bs+6J2rte3qTle/iQQUd5k5QpHSqaWVwVEVibym36PpD8yr48OnUbyTAxO0cwi/GM4z+
- 69Puqt/JjzIcrii7879rSuzqB40Z5BdQsOHYipSGsyFNV+qSfDD2nn/zlvS+UEKvRN/z
- ljiYMmVSoYnolwkC1H1ooiwV2T3mndY4pDGpOvxdiqY09y33e3LMP/XQ14OCSWQX/teT
- rzt5eJm8XyBYIUI/BPN1pUfWwCCdjwV78D4P/FvPUcE0rOJllgOW933a44GjtL2BbeJv
- utoeeBhuE8XmhQov+GNLuST/VJP4JyeW+mpI6qnyERPU0XWtvG32ewsynrdP9ukw5R3h RA== 
-Received: from nam02-dm3-obe.outbound.protection.outlook.com
- (mail-dm3nam02lp2044.outbound.protection.outlook.com [104.47.56.44])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3r4rgd282b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 11 Jun 2023 21:50:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=isP2ZOYSTXTVpovXHobKhR1UBythW2r6XiAL4JCHLhQlEBprELNVorUFssCaJr+MRPKlO1KBH8+E8kEoWQafMXg/va8mkD0c/NmEutATc3KwqmYA6syAjZQWCmlqKDhDZ7WdST/930fdmD55ueW4C69s9VLVvyj8DZJ9AhDRwaSxHtQ6JN8sLPKuw4OZiUDGiKYtDT0Bb3o/d+mLHss8Lb76iZJHArsMHfg7f/DWZvdaZFAyhvOJ4+0SLzyJ6PrznTHb+2I5Vko2jsXKEc5/yYeK2lSh4ZePfOwpeOgMQ3waai3q0vg65I7bMD9MdHqZ7rciiFAXLpIvG7BFQu8/GA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PVc3x/Yq5laaclGPPPtLX6eY8ARerVYdcE33yxx8iyI=;
- b=mo0ucz5clnWYBKKBYnTZb89AbL51I6LrN5xzcOzmeF4M/9inOayaDTGeyuoeQpzVd8r1v3pETN6IFfugCi/kWDYl6A4VwIrnWUsX1DalRDkp2VjVJeka+B/e081nj4fPl0kQq/df5aazVyQbuESorT3SRTp2jbqUEVGmWapU5aLoXYIhJw7tHC16GaxDlME5SUIIdKQ26LCMtAE1/LpVofdQeZqS2TC+ICuvmso0UkXna5ZoICC6pjFAFp0Ib+FzrSvAlXGWaBdCgRYyQEKkdF7l6AefDUbP4fKzs70xuRqd4aNqPgf/kkzZrcC8V9LO5mI08Z9xvR0vlJUSRT4uXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PVc3x/Yq5laaclGPPPtLX6eY8ARerVYdcE33yxx8iyI=;
- b=ysKwTLCDnDyCxPiREOjq/gDgSiDDTJo/M1NWpIHkVhIp5fbOKKQjPoifk41OHFgEDr1b+rd9mnbThSyQl8vYOPQmmWnazoZ5OTSAU3jdnBkVGE5daYsxRT8Ow3EnMP9g/GePkAgDGnvzzTBHXnfREY0EpGdm0EgS1L+3mpDJXiuCJBylnOf2BRq8jrov+vh8XyuP4C+CFSuU1qfX5GaRYKBQuyQ55QtgEXPPcz/qGxVYTLUPIwNAViQO/xFqhUW3upHZ4iCErR6D2ICUNy0iyh6Yn7Bb5Cxv650Slo1dxiF1G+YavOjTKZQkerslZ+eAz9C8gvGJlmdiO5q9RDXdCQ==
-Received: from BYAPR02MB4806.namprd02.prod.outlook.com (2603:10b6:a03:42::30)
- by IA1PR02MB8897.namprd02.prod.outlook.com (2603:10b6:208:38b::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.31; Mon, 12 Jun
- 2023 04:50:52 +0000
-Received: from BYAPR02MB4806.namprd02.prod.outlook.com
- ([fe80::4f5f:3660:5304:57f7]) by BYAPR02MB4806.namprd02.prod.outlook.com
- ([fe80::4f5f:3660:5304:57f7%6]) with mapi id 15.20.6477.028; Mon, 12 Jun 2023
- 04:50:52 +0000
-Message-ID: <476feab2-63e4-1d26-ea8c-6a7f7418b3f2@nutanix.com>
-Date: Mon, 12 Jun 2023 10:20:38 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v4 0/2] migration: Update error description whenever
- migration fails
-To: qemu-devel@nongnu.org, quintela@redhat.com
-Cc: peterx@redhat.com, leobras@redhat.com, berrange@redhat.com
-References: <20230523124638.16270-1-tejus.gk@nutanix.com>
-Content-Language: en-US
-From: Tejus GK <tejus.gk@nutanix.com>
-In-Reply-To: <20230523124638.16270-1-tejus.gk@nutanix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0P287CA0014.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::16) To BYAPR02MB4806.namprd02.prod.outlook.com
- (2603:10b6:a03:42::30)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q8ZeL-0004bh-7Y; Mon, 12 Jun 2023 00:59:30 -0400
+Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q8ZeJ-0002e3-El; Mon, 12 Jun 2023 00:59:28 -0400
+Received: by mail-vk1-xa2e.google.com with SMTP id
+ 71dfb90a1353d-46288dcacb5so1150365e0c.3; 
+ Sun, 11 Jun 2023 21:59:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686545965; x=1689137965;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=z9sNA9OJGqc1Ib1amtQG4m3ZKe9U2YZZkJOFPx3Sj3Q=;
+ b=mAV1Tk+6on5XppjIft6Jy+7P8dcOl50G/CiLKezJVDlybmo0q6CgEftcXV4RHl2uOO
+ HWhaGi4wkfIWmW4JcAZDIxussq5ok4v0MQr6p27352iPPt/bnzxahRznGuGS1lbgOuc8
+ /f5BLXcheIjx3Jp3eDoWBxNGDQpamFFIDZZUrQRO6ZtkWDbdeGXfGvNnX/IvRisieAmx
+ JvCkJMX2me0q4FxK/CXD4ZjyeoA2eZsMooVNzwpUUIsmB7agIh0wBcOZtMCN6A6OAfri
+ lJsGShJ9ICyG9Dsx4wJ0H4SO5TTEdoKUhDA2+gWkI7DBDxC+9MZwSvpSYdorTNG1q5sr
+ iP/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686545965; x=1689137965;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=z9sNA9OJGqc1Ib1amtQG4m3ZKe9U2YZZkJOFPx3Sj3Q=;
+ b=gs4t7xgWcI9YoJ8KBC7pK5KCuuEQEIRegz3seN1wO+gVmXsOoplO4mG34MceGW7MXQ
+ xcJeWGRlg+rqtxrjIHjQBEFmHLA0aRP8yLGu2aX1DoTOQMQcmt0HHMyk3F3nEmICBW8v
+ jlCFlyCpZVYzStNTKYoSVMKbWmLY7MxC56DYxenS3Unz3cRrcOW4BozxIMX6+0sbJnCt
+ ddN7n4QxHjUJhZXY294lUU0+Ag66deOH3nVwqV1Znm2VTblIrRDZSsskarednlCZW1cf
+ wjpDFn/m4RX2BQBS2vrq79p5fwjGu/3TpuVRphOuK+OLN3fw5tkcPrMkaRG7OGsVE/sH
+ rERQ==
+X-Gm-Message-State: AC+VfDzHntTvOkD7WXquUunga5k7aG1Q4jrwT5kxTdN1yAPJSyFc+QA2
+ hVsSyTXp9X/uWTxBRVI9iq2peputLXxPtccbcfY=
+X-Google-Smtp-Source: ACHHUZ7qRypLXyrob/OaCipR+xkdCFcUxDadEfUtfPKzfYunJr1qvmHbUqPT5V9nXn3GQpWWQkCKxvp43/5GQIaFzWs=
+X-Received: by 2002:a05:6102:2741:b0:43b:2507:4419 with SMTP id
+ p1-20020a056102274100b0043b25074419mr3000637vsu.32.1686545965605; Sun, 11 Jun
+ 2023 21:59:25 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4806:EE_|IA1PR02MB8897:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd103c74-cb66-4510-c59f-08db6b009942
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: omfieBrJCUQzHzes74xb2XVEpMO2VWh8tyK852KAc777q4wATvOTZEniq7IwY77sIMdGzBfycQHSybG3iD/7gMJaAH9MxrgSGy4MnEdjMi7bE5Asz1nXQ6Vey3cWlXpH2mzHhaheqxQpaPSnOTtIfj0rw9DTtPNsxZTo8Q0z3jFIwwZ3fflxQmdnFRr+8ZgAvzNpHMU+demK+MurIexit4LVuCm5fgb0JBZypFnuEIZ/8vdamgyaSG/sVjfVXqgpWh6Gr9m3NGbpiodsajdL2xmp6lFGe/Gi7afq6X1VGCSmMdLqwAR8UFVXABzDfu7nUmlWu2nHmllUbyh8wmkR3pdjZpgM1sHgiKcxhJEC55M78Bu2J6SaWZ11LQ13DbXPMi3RbYgwcX7RC22W38HnvyyEmRTDdW8OU9EABX5nT9m2FCADapZ9mzGOIHJ9v3RCjN89EfS06dxLPSHQVFPyWVQCiU9n8C2TEUr/rGGOz13WVnRz6/SC+JtSanHfT7eOVGl5lMP5ivHYtsCgrly7PsWFYFl+t8LfkPLZuQOe8KlN4WQH5N/vmDWbYcWk4GIPXu5mKCfin34NErdksKDgH3u4MDP2FS19OGfI6uCGSemaQ+gfPwndxLLl7td0/MuDgRLcIjt+M7/AYsicaiu6T9Xh/eF0LCvUM1UyxHWNHTxvNsS3rn0pFuzBoFRxv5thR1i35m7ztjjJRrmg7ZiBAw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4806.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(39860400002)(366004)(136003)(346002)(376002)(451199021)(478600001)(38100700002)(66946007)(36756003)(6666004)(4326008)(66556008)(66476007)(31696002)(86362001)(38350700002)(6486002)(316002)(2906002)(2616005)(15650500001)(186003)(41300700001)(8936002)(966005)(31686004)(8676002)(6506007)(6512007)(53546011)(5660300002)(83380400001)(52116002)(26005)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UW9iMW5XN2FHc2NpTzYxeG05NFF3TXUwL09ueXVSODRjZzNGV2Z5MnF2dnM0?=
- =?utf-8?B?R0VnTDBOUVBFZlk1NjlUYTNXeWhsZklGU3RIcXhxYytheWk0a0YwWm54NkEw?=
- =?utf-8?B?ZmxPMTVmZFBLOVhEaUV6dm1hWkRTakhEVStlYndNVHNPRGZrZHRUQkVmZ0o0?=
- =?utf-8?B?TUxhMTkzUHU3emVuMnRlU291US9NUlp1WUk3bzMxWWFHMk5nVjdTTS83UmJy?=
- =?utf-8?B?dUxMYzNCa0EzR1ZhR2RudzRFWTh0U3lKcW1NRWdIdjZlMk1LeDhrN1M5MVoz?=
- =?utf-8?B?RmVzRVBldVJrazcwTEpVRDBEN0s0cEhab2JydzVORGUxWm95NW5tYlVhRENX?=
- =?utf-8?B?ZVB6eXY3NXdlQUdWVmZnOTB6WVVLbEdocWtYWVYrMEdtNE5FOEVmWWdvK1Fr?=
- =?utf-8?B?V1pVU1ViNXJLMFZzdlh0MnlpcjNtM0dhYm5ERzN5U0NyN2lvWlRTTDFHU0c1?=
- =?utf-8?B?d3NYMnQ5RDJJbk5raWJibkt6LzJsWitZVVlKaGVzTmdCNzRFcmRxUGo3U1lw?=
- =?utf-8?B?YVhXTDRYWUJxM3VXTmF4SDk4Q1YyUXhybTVXZ3o2MGMwMG0rQjgzSCtaMm16?=
- =?utf-8?B?SzBZNStlVVJQTHVaZ3EvV1NRdVVBckRVaEZnd2IyTnlzaG16ckNoTkcrMnFh?=
- =?utf-8?B?SVRyWG5QWjZYRGltSy85WUk5MTBQTnUwZHZxOGc1clJMZkRPMEZuYXAyY0s0?=
- =?utf-8?B?TzA2SzZ6aEFuSER4UmVuampweDdRNGY4SHRFck9WTXh4STlhS202dUdiZXV6?=
- =?utf-8?B?REhQK2N0QWluVjdLSTVTN1Nod3JFMXJFNkNNb2poaEVQTFB2Qkc2bm5JakFk?=
- =?utf-8?B?U2x4bnExUGIwcWdCV1dQdEp5YitJcERUZVU3RHkrV1pLWG9TWk52TFFObXNj?=
- =?utf-8?B?ZkhxSkdTMmRaTk4zL3hTVm5FRlhGTU9qYk5OcEdWd0hEbE9aM1N4eXhuZlJG?=
- =?utf-8?B?Y3U2M2tOaWpMSTgyR3BsNWpRZ0hONTErZUp0NE0vSFpoZ1FTNis0ZWl3NGhF?=
- =?utf-8?B?M29oQUwrWU0wMzZlME9XTUs4TkphQ0EwZnhCelZMcXVLODhmZjJweWJpbXpP?=
- =?utf-8?B?eE1MR1NuRzFlNmNTTmJ1d1NIS3pCMXpPL0xIM0hwL0RjWDc0N2c3Slo1WWdu?=
- =?utf-8?B?dHZWa1JFM2pDb1VjL1drV3o2K2M0TlpCbTJQTFBOekcxNlg1elZ6aUU3TXVI?=
- =?utf-8?B?N1Q2UDdHa0VUd3FxeEFZb3cwdUhZUk9iQ1BEU3FDeEVORTJkNXhXbHRMUk53?=
- =?utf-8?B?cjdINXJ0QjQ4akp0MHZ0UWFKa3Q3SmlxR2hjcENQVlRDQUlnZmY5M1dicnZq?=
- =?utf-8?B?ZEF1MEU1UUFVMG1tWWtUa2t1NlpyRnNuendXTm5wdEhXdnd2U20rck9tMWV0?=
- =?utf-8?B?L2ovZTA3RW1PejVHb2JmdmdRVmZQNGo5WEUxMS9iMGtMVFR1UlFqeTdNeTdO?=
- =?utf-8?B?b0FJdVpuclFSQ29YQUZyT0ovY0Q4QTVhL0o4RG03TW5xaDcrYkpHdWJXVTlK?=
- =?utf-8?B?ZEl0WU1BNzZUaDNvQVhuY2dkc0RMcFg1SWl2d282czQ4ak96TUpoYzEvcnlk?=
- =?utf-8?B?djNnSDVYQWdTOGdTZ2xBZ3d1emh3YjVmZ0hpbTN5V0U3V25PSDhZUWVRN2Vx?=
- =?utf-8?B?QklkT3NrcUNORURWL0hKYmRCK2VqUGo5QkFHYkZYZHNsb2F1TFF1czM3L2dJ?=
- =?utf-8?B?MTJMTERQWmwrU3lVU1ZGc0EzVzg2dXhVeHhmNmwzdU5ETTVzS1VwRnVUZnpw?=
- =?utf-8?B?cjdjYkN5dnV6MHhVdWxSOHlhcHFUYUU3dlNtbkU5YXl6WEE2Y0xwMXcrNWVI?=
- =?utf-8?B?UmF4cnVhYnlBaElRQnhBWDB1dDFZVm5CWGt1dWZUbE1ZQUxWcVJpZ0JNcXNR?=
- =?utf-8?B?STlIVHJhU3VzVHY4Q0E1bGNDTk1MZjhSUEpkV0VpUGdLK0kySGtTdkxqM2lq?=
- =?utf-8?B?UEYzV2cyeWgzclg5QXVKWDNHYUgrb3o0VUZGbWU1MmNUOHlGT3R1NEVzNkVs?=
- =?utf-8?B?WjhmeWlBKzQ5S1hldWNpRkFFZzhBRHFKMG13ak42dEhRQU9GSGRtTldaK1Vm?=
- =?utf-8?B?QjZGVVg4c1FhQzRVZnlEQXpPSkhMdld3SllGQjJad0RTNW52U2ZoZEVNUFhB?=
- =?utf-8?Q?rMz7MWaCSVntNoL1rZm3Zlxjk?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd103c74-cb66-4510-c59f-08db6b009942
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4806.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2023 04:50:51.9998 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MzS7czjlmx1qGgXYJs9OU64jmfCe+2FvYiJ4MUhBLGJ2Nk6N3PGYq2/Uc0JWmKeWEfaksbR8pCANI4TFPwQN4g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB8897
-X-Proofpoint-GUID: IDjGILSy2stB0mw28gBN-Ci22TcoJCBY
-X-Proofpoint-ORIG-GUID: IDjGILSy2stB0mw28gBN-Ci22TcoJCBY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-12_02,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=tejus.gk@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230608072314.3561109-1-tommy.wu@sifive.com>
+ <20230608072314.3561109-3-tommy.wu@sifive.com>
+In-Reply-To: <20230608072314.3561109-3-tommy.wu@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 12 Jun 2023 14:58:59 +1000
+Message-ID: <CAKmqyKO9kcK=FB+gy534dmy9DmKMJF-+Mdm1dOs-WmNxjpOaxQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/4] target/riscv: Add Smrnmi CSRs.
+To: Tommy Wu <tommy.wu@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, frank.chang@sifive.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -167,43 +89,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/05/23 6:16 pm, Tejus GK wrote:
-> Hi everyone, 
-> 
-> Thank you for the reviews, this is the v4 patchset based on the reviews
-> received on the previous ones.
-> 
-> Links to the previous patchsets:
-> v1: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00868.html
-> v2: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg01943.html
-> v3: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04463.html
-> 
-> I've broken down this patchset into two	parts, the first, which updates
-> the error description in migration.c, and the second which refactors a
-> repeated call of yank_unregister_instance(). I've also added the 
-> reviewed-by as asked. 
-> 
-> A thing	to note	here, in the patchset previously sent, the second patch	
-> which handled the updation of error descriptions outside of migration.c,
-> was breaking a unit-test and hence breaking the build. I've removed that 
-> patch here and will  be sending that out as part of a different 
-> patchset.
-> 
-> Regards, 
-> Tejus
-> 
-> 
-> Tejus GK (2):
->   migration: Update error description whenever migration fails
->   migration: Refactor repeated call of yank_unregister_instance
-> 
->  migration/migration.c | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
-> 
-Hi Juan, 
+On Thu, Jun 8, 2023 at 5:25=E2=80=AFPM Tommy Wu <tommy.wu@sifive.com> wrote=
+:
+>
+> Signed-off-by: Frank Chang <frank.chang@sifive.com>
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 
-Can this be queued for merge, as the patches have already been reviewed? If they require any further changes, please do let me know. 
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Regards,
-Tejus
+Alistair
+
+> ---
+>  target/riscv/cpu.c      |  5 +++
+>  target/riscv/cpu.h      |  4 ++
+>  target/riscv/cpu_bits.h | 11 ++++++
+>  target/riscv/csr.c      | 82 +++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 102 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index c8dc0eaa87..ee0a4bf33f 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -810,6 +810,11 @@ static void riscv_cpu_reset_hold(Object *obj)
+>          riscv_trigger_init(env);
+>      }
+>
+> +    if (cpu->cfg.ext_smrnmi) {
+> +        env->rnmip =3D 0;
+> +        env->mnstatus =3D set_field(env->mnstatus, MNSTATUS_NMIE, false)=
+;
+> +    }
+> +
+>      if (kvm_enabled()) {
+>          kvm_riscv_reset_vcpu(cpu);
+>      }
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 6c14b93cb5..f44fd95f16 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -368,6 +368,10 @@ struct CPUArchState {
+>      uint64_t kvm_timer_frequency;
+>
+>      /* RNMI */
+> +    target_ulong mnscratch;
+> +    target_ulong mnepc;
+> +    target_ulong mncause; /* mncause without bit XLEN-1 set to 1 */
+> +    target_ulong mnstatus;
+>      target_ulong rnmip;
+>      uint64_t rnmi_irqvec;
+>      uint64_t rnmi_excpvec;
+> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+> index 7cb43b88f3..d7bd4538ab 100644
+> --- a/target/riscv/cpu_bits.h
+> +++ b/target/riscv/cpu_bits.h
+> @@ -355,6 +355,12 @@
+>  #define CSR_PMPADDR14       0x3be
+>  #define CSR_PMPADDR15       0x3bf
+>
+> +/* RNMI */
+> +#define CSR_MNSCRATCH       0x740
+> +#define CSR_MNEPC           0x741
+> +#define CSR_MNCAUSE         0x742
+> +#define CSR_MNSTATUS        0x744
+> +
+>  /* Debug/Trace Registers (shared with Debug Mode) */
+>  #define CSR_TSELECT         0x7a0
+>  #define CSR_TDATA1          0x7a1
+> @@ -624,6 +630,11 @@ typedef enum {
+>  #define SATP64_ASID         0x0FFFF00000000000ULL
+>  #define SATP64_PPN          0x00000FFFFFFFFFFFULL
+>
+> +/* RNMI mnstatus CSR mask */
+> +#define MNSTATUS_NMIE       0x00000008
+> +#define MNSTATUS_MNPV       0x00000080
+> +#define MNSTATUS_MNPP       0x00001800
+> +
+>  /* VM modes (satp.mode) privileged ISA 1.10 */
+>  #define VM_1_10_MBARE       0
+>  #define VM_1_10_SV32        1
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 4451bd1263..a1d39fc116 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -536,6 +536,18 @@ static RISCVException debug(CPURISCVState *env, int =
+csrno)
+>
+>      return RISCV_EXCP_ILLEGAL_INST;
+>  }
+> +
+> +static RISCVException rnmi(CPURISCVState *env, int csrno)
+> +{
+> +    RISCVCPU *cpu =3D env_archcpu(env);
+> +
+> +    if (cpu->cfg.ext_smrnmi) {
+> +        return RISCV_EXCP_NONE;
+> +    }
+> +
+> +    return RISCV_EXCP_ILLEGAL_INST;
+> +}
+> +
+>  #endif
+>
+>  static RISCVException seed(CPURISCVState *env, int csrno)
+> @@ -2336,6 +2348,66 @@ static RISCVException rmw_miph(CPURISCVState *env,=
+ int csrno,
+>      return ret;
+>  }
+>
+> +static int read_mnscratch(CPURISCVState *env, int csrno, target_ulong *v=
+al)
+> +{
+> +    *val =3D env->mnscratch;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int write_mnscratch(CPURISCVState *env, int csrno, target_ulong v=
+al)
+> +{
+> +    env->mnscratch =3D val;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int read_mnepc(CPURISCVState *env, int csrno, target_ulong *val)
+> +{
+> +    *val =3D env->mnepc;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int write_mnepc(CPURISCVState *env, int csrno, target_ulong val)
+> +{
+> +    env->mnepc =3D val;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int read_mncause(CPURISCVState *env, int csrno, target_ulong *val=
+)
+> +{
+> +    *val =3D env->mncause;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int write_mncause(CPURISCVState *env, int csrno, target_ulong val=
+)
+> +{
+> +    env->mncause =3D val;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int read_mnstatus(CPURISCVState *env, int csrno, target_ulong *va=
+l)
+> +{
+> +    *val =3D env->mnstatus;
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+> +static int write_mnstatus(CPURISCVState *env, int csrno, target_ulong va=
+l)
+> +{
+> +    target_ulong mask =3D (MNSTATUS_NMIE | MNSTATUS_MNPP);
+> +
+> +    if (riscv_has_ext(env, RVH)) {
+> +        /* Flush tlb on mnstatus fields that affect VM. */
+> +        if ((val ^ env->mnstatus) & MNSTATUS_MNPV) {
+> +            tlb_flush(env_cpu(env));
+> +        }
+> +
+> +        mask |=3D MNSTATUS_MNPV;
+> +    }
+> +
+> +    /* mnstatus.mnie can only be cleared by hardware. */
+> +    env->mnstatus =3D (env->mnstatus & MNSTATUS_NMIE) | (val & mask);
+> +    return RISCV_EXCP_NONE;
+> +}
+> +
+>  /* Supervisor Trap Setup */
+>  static RISCVException read_sstatus_i128(CPURISCVState *env, int csrno,
+>                                          Int128 *val)
+> @@ -4204,6 +4276,16 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D {
+>                          write_sstateen_1_3,
+>                          .min_priv_ver =3D PRIV_VERSION_1_12_0 },
+>
+> +    /* RNMI */
+> +    [CSR_MNSCRATCH] =3D { "mnscratch", rnmi, read_mnscratch, write_mnscr=
+atch,
+> +                        .min_priv_ver =3D PRIV_VERSION_1_12_0           =
+    },
+> +    [CSR_MNEPC]     =3D { "mnepc",     rnmi, read_mnepc,     write_mnepc=
+,
+> +                        .min_priv_ver =3D PRIV_VERSION_1_12_0           =
+    },
+> +    [CSR_MNCAUSE]   =3D { "mncause",   rnmi, read_mncause,   write_mncau=
+se,
+> +                        .min_priv_ver =3D PRIV_VERSION_1_12_0           =
+    },
+> +    [CSR_MNSTATUS]  =3D { "mnstatus",  rnmi, read_mnstatus,  write_mnsta=
+tus,
+> +                        .min_priv_ver =3D PRIV_VERSION_1_12_0           =
+    },
+> +
+>      /* Supervisor Trap Setup */
+>      [CSR_SSTATUS]    =3D { "sstatus",    smode, read_sstatus,    write_s=
+status,
+>                           NULL,                read_sstatus_i128         =
+     },
+> --
+> 2.31.1
+>
+>
 
