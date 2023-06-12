@@ -2,80 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA75572C520
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 14:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E200272C561
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:03:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8h3U-0000tv-KJ; Mon, 12 Jun 2023 08:53:56 -0400
+	id 1q8hBT-0002eE-4e; Mon, 12 Jun 2023 09:02:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q8h3R-0000tb-I9
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 08:53:53 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q8h3P-0005Qk-Qv
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 08:53:53 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-30ad458f085so3110194f8f.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 05:53:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686574430; x=1689166430;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hL13j2KdI0fqpjpp00fiRTsYjCvqT1bo9Gl6NsUyLTY=;
- b=VNcPyIu2iWoXWUnh6edXQ5VBOdbLankVWoGMXCajN03a1x4XHcpyWMXUQq1EHNxiTT
- gaBZf4lt/BFRPvbxTQs6gseY8smZ2zoZDF4rmNVFILBMxT7xwLFwn9PrAQImy1zSRVRD
- AsJfyoC2Mizyl10yxEJotBH0MAkzYRsdf3EQKIVltKPPGTy9hB/2pk5AeFrz6MAfbw/T
- AdBW1utJkB147I0sGhIeXiCqXbQj/NXdBvABQuh3La/geDyMozgwe8pllYkopaWx5Idl
- +lOJZfigYQAGI01baS6kVUSx7+Jq+7O9l8UtvJk3z43poSV1Qf0nYzpn9JRhXdgeY86T
- OD8A==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q8hBL-0002dw-C5
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:02:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q8hBI-0007NV-B8
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:02:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686574918;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CrnMG3eXR2O9o7RD5BH5mVZ0oQvM/Bod72bw4W7QnAo=;
+ b=gS+dVcg0heC3S+uMCFT6ySeIHQ/hyms13zyWWDiTZmTsdI/HKb/qZWmDDAcdc5C2fVRStQ
+ K1b6EuStPCCWe0KeV9abjVWaPV5LkGEFgkXxLwNmmoT9KlYEPBExwzbNBp+3XErp0Skb4H
+ 5VU8BY3Vb+BtAO/HEYqjOpw5otde9tc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-493-Ud3Z111CPYmib7-u7lh6SQ-1; Mon, 12 Jun 2023 09:01:57 -0400
+X-MC-Unique: Ud3Z111CPYmib7-u7lh6SQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-94a34e35f57so403691566b.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 06:01:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686574430; x=1689166430;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hL13j2KdI0fqpjpp00fiRTsYjCvqT1bo9Gl6NsUyLTY=;
- b=i2RJzE/RbzLWlHvnF+GsjsDYbd6sZDgp3mXKCg9hwUkd36E7ZSlN+6n/2mXOdz5Gu5
- qQadsTRPqSD11SVaUgP6ddjkQms7Xm9sTxgCmrJgbkGwdDpieZiT9FUyf00KFAHQCNaj
- KmzlZvVLnszBYNozQ9eo7D1HpMZJOw2zWcj8prFcRmBWUXSkEuU4UhwIwgSLJ3eDIdy2
- ezBwRK591ifZpzg7q7Aiz46WEiK0M6AvT2FU51e2oH53nuA/HpwD/DK0BNufgg/VRUYN
- ZBmMIn/juD4oWL5QIi+in32uxFnTzPC06Conl83eBSTY9O7HQwBe3NL/cxQmQBZi+iL9
- colg==
-X-Gm-Message-State: AC+VfDyoNO/PR8W9iKvzKGlo0lJuuN+fwOjK5HnuQWV4dLQNImBqyfXJ
- QCuRDb6o8hBrurCAv4jSzkcBlg==
-X-Google-Smtp-Source: ACHHUZ5aiQfbLWRhs78wXQmnRQ8b79D9B2nVbmho3BAcPMmxusghK1/qrMk/XLdu7E/hhnOHCdhzBw==
-X-Received: by 2002:a5d:5592:0:b0:30f:ba3a:85c5 with SMTP id
- i18-20020a5d5592000000b0030fba3a85c5mr3776337wrv.25.1686574430124; 
- Mon, 12 Jun 2023 05:53:50 -0700 (PDT)
-Received: from [192.168.112.175] (176.red-88-28-1.dynamicip.rima-tde.net.
- [88.28.1.176]) by smtp.gmail.com with ESMTPSA id
- p4-20020a5d48c4000000b0030903d44dbcsm12367471wrs.33.2023.06.12.05.53.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 05:53:49 -0700 (PDT)
-Message-ID: <268c1ca3-409f-bc43-0e88-c32f1eae71f9@linaro.org>
-Date: Mon, 12 Jun 2023 14:53:47 +0200
+ d=1e100.net; s=20221208; t=1686574916; x=1689166916;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CrnMG3eXR2O9o7RD5BH5mVZ0oQvM/Bod72bw4W7QnAo=;
+ b=OSmh6DGSYga/3QjsTJ2vPeU3Ni4X5kR5rOS8lA//uvXKeSqpSx9+Tie+M7Bo/IoTaO
+ gZp2Bear3/uRZtgr51QcWMeNiurM61xcf99Le2zNELimBLiWXTE/mtm9AZq08d42Md1W
+ HmCIfzx7gITq++AAh9pej7SCWeQd7oSZBBpaUG3FCEy2G0HIbibLE2MXMF9ov02J3aN0
+ IF/uCIdCK6UcKRRG5TztUWzKeOyt4W1irlQvovE0Riz5S9IWpcd8WtJ2lpiW1yNm43uf
+ pYyWB/9j9/cjXKoMJGndAmeUfBOpTgBCToMEFP5PTEXLbybdR211JakB3qV9qWGwQUX7
+ GIQg==
+X-Gm-Message-State: AC+VfDxOO67HRWzveXrc5WGE5SPxiKH371YluDUYuh4OO4gP6OilHaHo
+ GhH+2E2elG3YpUj6KXtVq3Gr4ZdEqEwPtS83t8gRsBJNEF9V1rZPKeIcZWFm1OQyCIlLtKIXTSt
+ 3sguV4Cc/qUR8dHI=
+X-Received: by 2002:a17:907:60d3:b0:978:8937:19ba with SMTP id
+ hv19-20020a17090760d300b00978893719bamr9805873ejc.44.1686574916029; 
+ Mon, 12 Jun 2023 06:01:56 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6uB20QMLciVqVrHs5EqJ5C1cFeANRzuQSWrph/cjlVaOqqurQRn/QGqU++hNh60Hz4Ku+zTQ==
+X-Received: by 2002:a17:907:60d3:b0:978:8937:19ba with SMTP id
+ hv19-20020a17090760d300b00978893719bamr9805848ejc.44.1686574915640; 
+ Mon, 12 Jun 2023 06:01:55 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ f10-20020a170906824a00b00971433ed5fesm5169881ejx.184.2023.06.12.06.01.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jun 2023 06:01:55 -0700 (PDT)
+Date: Mon, 12 Jun 2023 15:01:54 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 02/15] hw/pci-host/q35: Fix double, contradicting
+ .endianness assignment
+Message-ID: <20230612150154.438d842f@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230611103412.12109-3-shentey@gmail.com>
+References: <20230611103412.12109-1-shentey@gmail.com>
+ <20230611103412.12109-3-shentey@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: Fwd: QEMU AVR Patch - Correct handling of AVR interrupts
-Content-Language: en-US
-To: Adecy <ld.adecy@gmail.com>, qemu-devel@nongnu.org
-Cc: mrolnik@gmail.com, qemu-trivial@nongnu.org
-References: <CAB295yB5cFSZpGE74EW5hDMSNGnZfw06UC5ydepUL0sdT96WGg@mail.gmail.com>
- <CAB295yAzhzPpKC7KtpKk6t6x4Dn7Bpam=Nwfx8z0wAkZRP-JSg@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAB295yAzhzPpKC7KtpKk6t6x4Dn7Bpam=Nwfx8z0wAkZRP-JSg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,38 +104,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Lucas,
+On Sun, 11 Jun 2023 12:33:59 +0200
+Bernhard Beschow <shentey@gmail.com> wrote:
 
-On 8/6/23 23:03, Adecy wrote:
-> ---------- Forwarded message ---------
-> De : *Adecy* <ld.adecy@gmail.com <mailto:ld.adecy@gmail.com>>
-> Date: jeu. 1 juin 2023 à 21:34
-> Subject: QEMU AVR Patch - Correct handling of AVR interrupts
-> To: <qemu-trivial@nongnu.org <mailto:qemu-trivial@nongnu.org>>
+> Fixes the following clangd warning (-Winitializer-overrides):
 > 
+>   q35.c:297:19: Initializer overrides prior initialization of this subobject
+>   q35.c:292:19: previous initialization is here
 > 
-> Hello,
+> Settle on native endian which causes the least overhead.
+indeed it doesn't matter which way we read all ones, so that should work.
+but does it really matter (I mean the overhead/what workload)?
+If not, I'd prefer explicit LE as it's now to be consistent
+the the rest of memops on Q35.
+
 > 
-> I would like to submit the attached patch.
-
-Unfortunately your patch doesn't apply cleanly:
-
-Applying: Fix handling of AVR interrupts above 33 by switching ctz32 to 
-ctz64
-error: patch failed: target/avr/helper.c:45
-error: target/avr/helper.c: patch does not apply
-Patch failed at 0001 Fix handling of AVR interrupts above 33 by 
-switching ctz32 to ctz64
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
-You can find help on how to send your patch here:
-https://www.qemu.org/docs/master/devel/submitting-a-patch.html#submitting-your-patches
-
-Thanks,
-
-Phil.
+> Fixes: bafc90bdc594 ("q35: implement TSEG")
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>  hw/pci-host/q35.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+> index fd18920e7f..859c197f25 100644
+> --- a/hw/pci-host/q35.c
+> +++ b/hw/pci-host/q35.c
+> @@ -290,7 +290,6 @@ static const MemoryRegionOps blackhole_ops = {
+>      .valid.max_access_size = 4,
+>      .impl.min_access_size = 4,
+>      .impl.max_access_size = 4,
+> -    .endianness = DEVICE_LITTLE_ENDIAN,
+>  };
+>  
+>  /* PCIe MMCFG */
 
 
