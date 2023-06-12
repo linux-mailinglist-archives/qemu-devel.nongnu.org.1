@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5F172CEA6
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8925572CEAD
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8mTb-0004YR-0V; Mon, 12 Jun 2023 14:41:15 -0400
+	id 1q8mWz-0005jr-GH; Mon, 12 Jun 2023 14:44:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mTO-0004Xk-1x
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:41:02 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q8mWt-0005jO-5U
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:44:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mTM-0002Yg-4T
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:41:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=v6in0Kd7TNVfrog6hZgbtbEZ5BYfrMf+UpXWzMV1NAc=; b=g+zKCt2jEJtqb7amEO1Fi3A8ir
- wv0KBhvGEAcIUJLgOIAB2VTK75Eij3gupfBz6Re/NGOsfPgX8ZRSxjfAAisxwdmXEGqazY68AP2SM
- uUrWq9d/BYe6mONk4/SaKHa0exWNN8/x1aKbGc+1uPTgGVEzF+7jY+rh4AsC168sOO6FXzO8CKfYT
- XZ2gRElEJPggll91SnybKhAss+o9BZshIQwaZ2tCe1FQcFwNxkea29fpjf4w7rst9bY8QPa2dGQmG
- qciCtImDn2D3gcX8cFgfQ6qBx53/qlmlbaiGqqRzI4SvuPFE8nRu8MpSPmwELfQWj8fPmEis4PHOV
- qiBUiLl/+APtTFt5S48gOxXcMrN7YmXudccEq3eD3gNQDsi7heXlQXjhGmkpV5bj6oVTswJyM+kz+
- 1kdozOVtjKinyFS2+Hu2hNowYz/0+NEF013cV/LSiFJ0hsmVkFwaSnUGA9wdvMQ7pRl1NmU7Gz+5R
- 1k82PqLAFhoq0Ly5dYfyJpeMIajDOYFc4BZprkWHeq1A2D5I1ODGCTL2eM6vI+MoPpEmd1XUtR/IZ
- q1bplakz9cVUHbU13I2dum41xI85hGJUYrT+Kbkd8ygbtI6yXtBe5hKN0Nu1zLxjYjpsSkLVvUKZA
- CcmqNI1G9V1BzJs0Dn2bYO7C0dh/btRqEAV5xMq1c=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mSq-00097n-DO; Mon, 12 Jun 2023 19:40:32 +0100
-Message-ID: <805feb0f-2511-65b8-80c9-8607bf6e57ab@ilande.co.uk>
-Date: Mon, 12 Jun 2023 19:40:29 +0100
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q8mWr-0003F4-DF
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:44:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686595475;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jF3Y2EIozxjY37HcJikvZf1inn50vrqWnwaz9bJqDu8=;
+ b=XU5i2ebcFtHBkOJt/tALgbVuuBMP7A505TZHgLUafV/RmZBuLbDqHho1UtpwQKrXe/Cgaf
+ K/KTnnaC/GpgE2n9X+DeQ9G8ZnPLvaNcl/K/KKBokfIy1zalffp3GX5jBy5iK0nI2veurv
+ 0j7077FqO35wYonYtQO7/yXs+hTnFYo=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-451-n_ESAQhbPhGiTDl9TYeiYw-1; Mon, 12 Jun 2023 14:44:33 -0400
+X-MC-Unique: n_ESAQhbPhGiTDl9TYeiYw-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-75ec325d255so57228685a.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 11:44:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686595473; x=1689187473;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jF3Y2EIozxjY37HcJikvZf1inn50vrqWnwaz9bJqDu8=;
+ b=IZe3SjUmk9zsgDvYPoRH5wnTI8enYJQWLzma4MAtlOTy5w6G9HBE52W90HmO7bV0jV
+ TnidzIiV4OmGSqDFsJ2JDzRSOmmVxd/0pKnDbGaMxi9Wi24uC+em3QDOlDlkgG8fWLBb
+ CrhleLxia/qLJtZJ5VZQCBfvqPc62Fg1ac6gF39QnvdcvD8KuK6wr5Ci4YvEPSnMF0bL
+ SIUAHKLB0wIc/RB/Hu3BrA+PxFhS6hKAtp8hPeUpdO/UPTADAEPZM+hOlgWTxcq8bo3T
+ t6YAEIcuzFwez964HImZ9UjGBXOMaYgCZw2pdYQ7v3ub94S5+CTp9axy6MgK37swL6bN
+ Ks9A==
+X-Gm-Message-State: AC+VfDynbHjYb1n90BGWhJYsE4f/4vyRJ8g85EeVGzZOgQuBydjiP5Ms
+ ypBnDD1OJs1Gi/7Roeo1erFroNecRzaURjNZTmPRxr93vtm5vDa1LIW49ay/vemRa3d770xL/AX
+ fgzuCL2X5ZmRnTcc=
+X-Received: by 2002:a05:620a:6745:b0:75d:5259:1f87 with SMTP id
+ rq5-20020a05620a674500b0075d52591f87mr9356921qkn.7.1686595473349; 
+ Mon, 12 Jun 2023 11:44:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6KqIFjm6p+GDLrDeLGdp7tHM+P7CN0yISZMALdlRQeumcZGxtrJGzWtH94oyxXNWuUjaV2HA==
+X-Received: by 2002:a05:620a:6745:b0:75d:5259:1f87 with SMTP id
+ rq5-20020a05620a674500b0075d52591f87mr9356911qkn.7.1686595473153; 
+ Mon, 12 Jun 2023 11:44:33 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ c2-20020a05620a164200b00759322a6089sm3069154qko.14.2023.06.12.11.44.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jun 2023 11:44:32 -0700 (PDT)
+Date: Mon, 12 Jun 2023 14:44:31 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH V2] migration: file URI
+Message-ID: <ZIdnj7Hr1L3iDVUG@x1n>
+References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20230606094814.3581397-1-peter.maydell@linaro.org>
- <20230606094814.3581397-27-peter.maydell@linaro.org>
- <20230612162044.00002fdc@huawei.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230612162044.00002fdc@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PULL 26/42] target/arm: Use tcg_gen_qemu_{ld, st}_i128 in
- gen_sve_{ld, st}r
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,56 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/06/2023 16:20, Jonathan Cameron via wrote:
+Hi, Steve,
 
-> On Tue,  6 Jun 2023 10:47:58 +0100
-> Peter Maydell <peter.maydell@linaro.org> wrote:
-> 
->> From: Richard Henderson <richard.henderson@linaro.org>
->>
->> Round len_align to 16 instead of 8, handling an odd 8-byte as part
->> of the tail.  Use MO_ATOM_NONE to indicate that all of these memory
->> ops have only byte atomicity.
->>
->> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> Message-id: 20230530191438.411344-8-richard.henderson@linaro.org
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> 
-> Early in debugging but a git bisect pointed at this patch causing:
-> 
-> ERROR:../../tcg/tcg.c:4317:temp_load: code should not be reached
-> Bail out! ERROR:../../tcg/tcg.c:4317:temp_load: code should not be reached
-> Aborted
-> 
-> Just after Run /sbin/init arm64 / virt running on an x86 host.
-> cpu max.
-> 
-> Just reverting this patch results in length check failures.
-> I reverted as follows
-> 
-> 
-> revert: Revert "target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r"
-> revert: Revert "target/arm: Sink gen_mte_check1 into load/store_exclusive"
-> revert: Revert "target/arm: Load/store integer pair with one tcg operation"
-> revert: Revert "target/arm: Hoist finalize_memop out of do_gpr_{ld, st}"
-> revert: Revert "target/arm: Hoist finalize_memop out of do_fp_{ld, st}"
-> revert: Revert "target/arm: Pass memop to gen_mte_check1*"
-> revert: Revert "target/arm: Pass single_memop to gen_mte_checkN"
-> revert: Revert "target/arm: Check alignment in helper_mte_check"
-> revert: Revert "target/arm: Add SCTLR.nAA to TBFLAG_A64"
-> revert: Revert "target/arm: Relax ordered/atomic alignment checks for LSE2"
-> revert: Revert "target/arm: Move mte check for store-exclusive"
-> 
-> and all is good - obviously that's probably massive overkill.
-> 
-> Jonathan
+On Wed, Jun 07, 2023 at 11:38:59AM -0700, Steve Sistare wrote:
+> Extend the migration URI to support file:<filename>.  This can be used for
+> any migration scenario that does not require a reverse path.  It can be used
+> as an alternative to 'exec:cat > file' in minimized containers that do not
+> contain /bin/sh, and it is easier to use than the fd:<fdname> URI.  It can
+> be used in HMP commands, and as a qemu command-line parameter.
 
-Could this possibly be the same as https://gitlab.com/qemu-project/qemu/-/issues/1704?
+I have similar question on the fixed-ram work, on whether we should assume
+the vm stopped before doing so.  Again, it leaves us space for
+optimizations on top without breaking anyone.
 
+The other thing is considering a very busy guest, migration may not even
+converge for "file:" URI (the same to other URIs) but I think that doesn't
+make much sense to not converge for a "file:" URI.  The user might be very
+confused too.
 
-ATB,
-
-Mark.
+-- 
+Peter Xu
 
 
