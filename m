@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CDF72C71A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 16:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B74172C880
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 16:29:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8iHT-0001oH-55; Mon, 12 Jun 2023 10:12:27 -0400
+	id 1q8iWA-00072X-IU; Mon, 12 Jun 2023 10:27:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q8iHP-0001nj-Jo; Mon, 12 Jun 2023 10:12:24 -0400
+ id 1q8iW7-00070U-Bm; Mon, 12 Jun 2023 10:27:35 -0400
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q8iHM-0002bx-H4; Mon, 12 Jun 2023 10:12:23 -0400
+ id 1q8iW4-0006bb-A5; Mon, 12 Jun 2023 10:27:35 -0400
 Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:2c24:0:640:73f8:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 22E7E60354;
- Mon, 12 Jun 2023 17:12:10 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 89C8160376;
+ Mon, 12 Jun 2023 17:27:20 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:8910::1:11] (unknown
  [2a02:6b8:b081:8910::1:11])
  by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 9CaxMT1OrSw0-yYz2JMGb; Mon, 12 Jun 2023 17:12:09 +0300
+ ESMTPSA id JRaXXT1Oc8c0-QFIVnA9E; Mon, 12 Jun 2023 17:27:19 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; 
- t=1686579129; bh=fZEsIG1ywTFMVkomRfHT3LQlZJseFbNUly2hyC9dZjo=;
+ t=1686580039; bh=XtSNvFXmbTd0HYmNvOLuq82BceXa2AcBnhQIeeaeOMg=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=GsXn15Mue0wLLOegx7Oa4LlYt3Z0dkTPQ0oiZZ1r2S2/8OQBjQhSAX7ui+uzBGDlc
- isc8xH5UWVF3lWxnZAFnIY+OSP8gZcucle5gdnCgrrCWbYU9jAHx/dq19/Iv0q7a1k
- 9nQ9d9lR64CvIxRZL9bvp0TWTYVnxTFuHXgqRslo=
+ b=eKwHxWrAPVVgo1Dz5U6E7QXnN34YQCbIYQGZB4PftrhVUPyQPm9ZA/QFV5Yfexk23
+ PF7lrcSJyRACAG4WHKa6Jekx4/QjMSDu/ylMR0OHMQJ9IMU2sZM/Jth4wffLm9+0yy
+ tC+p+RqJlPDzvY4kxsIRBGKfMyEgAl7Pam92OACE=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <959ca055-69a9-9b2a-0991-307bb6f3925a@yandex-team.ru>
-Date: Mon, 12 Jun 2023 17:12:09 +0300
+Message-ID: <c85245c5-cfa9-bb52-a1a7-a260ad194b60@yandex-team.ru>
+Date: Mon, 12 Jun 2023 17:27:19 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v4 05/24] nbd: s/handle/cookie/ to match NBD spec
+Subject: Re: [PATCH v4 06/24] nbd/client: Simplify cookie vs. index computation
 Content-Language: en-US
 To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, libguestfs@redhat.com,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
 References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-6-eblake@redhat.com>
+ <20230608135653.2918540-7-eblake@redhat.com>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230608135653.2918540-6-eblake@redhat.com>
+In-Reply-To: <20230608135653.2918540-7-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
@@ -77,19 +77,45 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 08.06.23 16:56, Eric Blake wrote:
-> Externally, libnbd exposed the 64-bit opaque marker for each client
-> NBD packet as the "cookie", because it was less confusing when
-> contrasted with 'struct nbd_handle *' holding all libnbd state.  It
-> also avoids confusion between the nown 'handle' as a way to identify a
-> packet and the verb 'handle' for reacting to things like signals.
-> Upstream NBD changed their spec to favor the name "cookie" based on
-> libnbd's recommendations[1], so we can do likewise.
+> Our code relies on a sentinel cookie value of zero for deciding when a
+> packet has been handled, as well as relying on array indices between 0
+> and MAX_NBD_REQUESTS-1 for dereferencing purposes.  As long as we can
+> symmetrically convert between two forms, there is no reason to go with
+> the odd choice of using XOR with a random pointer, when we can instead
+> simplify the mappings with a mere offset of 1.
+
+Should we go further and use (uint64)-1 as a sentinel cookie value, and just use index as a cookie?  Or, using zero cookie in a wire looks too asymmetric?
+
 > 
-> [1]https://github.com/NetworkBlockDevice/nbd/commit/ca4392eb2b
-> 
-> Signed-off-by: Eric Blake<eblake@redhat.com>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+> ---
+> 
+> v4: new patch
+> ---
+>   block/nbd.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/block/nbd.c b/block/nbd.c
+> index be3c46c6fee..5322e66166c 100644
+> --- a/block/nbd.c
+> +++ b/block/nbd.c
+> @@ -50,8 +50,8 @@
+>   #define EN_OPTSTR ":exportname="
+>   #define MAX_NBD_REQUESTS    16
+> 
+> -#define COOKIE_TO_INDEX(bs, cookie) ((cookie) ^ (uint64_t)(intptr_t)(bs))
+> -#define INDEX_TO_COOKIE(bs, index)  ((index)  ^ (uint64_t)(intptr_t)(bs))
+
+That looked like some security trick to hide real indices. But I don't think that index of request in a list is a secret information.
+
+> +#define COOKIE_TO_INDEX(cookie) ((cookie) - 1)
+> +#define INDEX_TO_COOKIE(index)  ((index) + 1)
+> 
+
+[..]
 
 -- 
 Best regards,
