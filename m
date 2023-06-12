@@ -2,89 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DBC72C391
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 13:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B5A72C395
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 14:00:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8gC9-0000pm-7z; Mon, 12 Jun 2023 07:58:49 -0400
+	id 1q8gDG-0001Y6-0h; Mon, 12 Jun 2023 07:59:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <baxiantai@gmail.com>)
- id 1q8gC6-0000p9-17; Mon, 12 Jun 2023 07:58:46 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <baxiantai@gmail.com>)
- id 1q8gC4-0002kr-5o; Mon, 12 Jun 2023 07:58:45 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1b3be39e666so8915065ad.0; 
- Mon, 12 Jun 2023 04:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686571122; x=1689163122;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Wcf7mc+shhfQcwKF7sHQ9cz4ZrU639Uy1ZfRCWgw9Xk=;
- b=r7ZNc8qw5YyyfUjk/Qi3qZZBt2gtPT/ftL0pvLJPc27+svmz7tzCw9YRhGFWFQvsCJ
- gH0RyWOppdIHyQqDowirLiGibDrSVfn3WzDDuDQAxOoPO811TYBeYpeVOm83W4frkV2p
- r78hrS3Ex++LP21XW1azuBBqHB+ZzG09UguLrzpaoB48mnwCUuwOFMS+HrG5oa4Y6MBT
- 37HzNZWv01mghRSA5h8XVvKJnXYR2Mn3C3E22wUHlgtp/W55qzWZ4b4BGO5+jOzRRuJ7
- PJDPrbWLuAbHvRrZlsZt4R9fWFqQMW1ZTLg6mYYgflPQZWQod5DkLbt3p0OtSXqj7AMt
- DVQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686571122; x=1689163122;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wcf7mc+shhfQcwKF7sHQ9cz4ZrU639Uy1ZfRCWgw9Xk=;
- b=ITR8TlaNRPQvPlIpAEGOatBudHhkkhV1dwX+1y72ZrALs9BJgF2LIOhj8t+ZQ4W11J
- 395alAvC4vKCbYad+jDq9KKo+Tnl8zBzIEkuCAF/Vdh++oow+a8nKegooVKoNLmkDIkl
- oOryK1SZ5vgNdY0phvgqefjLRfzcOPvhLkzTomNQ1cZUs3ZaiGamaErhxHdJ99CWw/1R
- +rTNauG/9P95NOH3Tp6Vhwo5EKJqENy+iSL5muXr1+g8n4F4uthWZ1r3YSrJD0bA5JrT
- e6oOfhDtA19pb3v5O9dmeGncNwkcHkbmEltkaoC/D+FfzhE3y37O2d24Lzs8Y4cAIaNt
- hs/w==
-X-Gm-Message-State: AC+VfDxzAJ+cdGKYyctFtUJ3lDQb1N/zh72JIToh1tavUMgSKmgeeUiQ
- cJ6Ol+OQpxGgtjkxYqO1uZ0=
-X-Google-Smtp-Source: ACHHUZ7lqyjAxlm/pNx2WgFKc9pJTFbqvwSqqJKyeL0ADnlaVKUJ9BUxNvmzjP1AV3uxgPpQYJuuDg==
-X-Received: by 2002:a17:902:d2c3:b0:1b2:3e9f:69d1 with SMTP id
- n3-20020a170902d2c300b001b23e9f69d1mr6689382plc.18.1686571122307; 
- Mon, 12 Jun 2023 04:58:42 -0700 (PDT)
-Received: from [30.221.96.167] ([47.246.101.55])
- by smtp.gmail.com with ESMTPSA id
- w22-20020a1709027b9600b001ac95be5081sm8052657pll.307.2023.06.12.04.58.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 04:58:42 -0700 (PDT)
-Message-ID: <7f1545ff-3896-4dee-b96a-72f417a5c339@gmail.com>
-Date: Mon, 12 Jun 2023 19:58:20 +0800
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q8gD4-0001Rm-Co; Mon, 12 Jun 2023 07:59:48 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q8gD1-0002tn-HT; Mon, 12 Jun 2023 07:59:46 -0400
+Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:a49a:0:640:edd6:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 032DE5EDAD;
+ Mon, 12 Jun 2023 14:59:32 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8910::1:11] (unknown
+ [2a02:6b8:b081:8910::1:11])
+ by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id VxXRYA1OjeA0-MrQw1uB9; Mon, 12 Jun 2023 14:59:31 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1686571171; bh=vfY3EV2GEsvqz4lwsl+fB32jeq14UqBNHnPrEiZX6/c=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=om3R6lo6vSQoeEZaxXT6PGHRQWZyxKSpjI9IFNTuYDHgbNVbeyy703+jBINoO8lj9
+ Y4wT7SVZTgMbyWXFYJ9eRxSS8YcQ1Oxa+MPfx5qcbQMUTF77z4iH514cVVh6Q/yeTP
+ 1urIV5Ii4DZpO1rd6oT1S+wmLb05gXqvrSd5gVb0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <800e121f-e5be-9207-fdbc-492524ce0119@yandex-team.ru>
+Date: Mon, 12 Jun 2023 14:59:31 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 2/8] target/riscv: Factor out extension tests to
- cpu_cfg.h
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [Libguestfs] [PATCH v4 02/24] nbd: Consistent typedef usage in
+ header
 Content-Language: en-US
-To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhiwei Liu <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Weiwei Li <liweiwei@iscas.ac.cn>
-References: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
- <20230612111034.3955227-3-christoph.muellner@vrull.eu>
-From: LIU Zhiwei <baxiantai@gmail.com>
-In-Reply-To: <20230612111034.3955227-3-christoph.muellner@vrull.eu>
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ libguestfs@redhat.com, qemu-block@nongnu.org
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-3-eblake@redhat.com>
+ <jo2eqbij3xyku4n5hm2ftahzymkimjulpm6kmjh47lbec4t3ov@y4m4ypbhm4ie>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <jo2eqbij3xyku4n5hm2ftahzymkimjulpm6kmjh47lbec4t3ov@y4m4ypbhm4ie>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=baxiantai@gmail.com; helo=mail-pl1-x633.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,116 +77,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 08.06.23 17:17, Eric Blake wrote:
+> On Thu, Jun 08, 2023 at 08:56:31AM -0500, Eric Blake wrote:
+>> We had a mix of struct declarataions followed by typedefs, and direct
+> 
+> declarations
+> 
+>> struct definitions as part of a typedef.  Pick a single style.  Also
+>> float a couple of opaque typedefs earlier in the file, as a later
+>> patch wants to refer NBDExport* in NBDRequest.  No semantic impact.
+> 
+> The curse of writing a commit message and then rebasing to a different
+> idea; in patch 22, I had originally intended to make NBDMetaContexts a
+> concrete type in nbd.h (which depends on NBDExport*, and would be
+> directly used in NBDRequest, which in turn is declared before the
+> pre-patch mention of NBDExport), but then changed my mind to instead
+> have NBDMetaContexts itself also be an opaque type with NBDRequest
+> only using NBDMetaContexts*.  And I missed floating the typedef for
+> NBDClientConnection to the same point, because we somewhat separated
+> opaque types along the lines of which .c files provide various
+> functions and opaque types.
+> 
+>> @@ -26,24 +26,25 @@
+>>   #include "qapi/error.h"
+>>   #include "qemu/bswap.h"
+>>
+>> +typedef struct NBDExport NBDExport;
+>> +typedef struct NBDClient NBDClient;
+>> +
+> 
+> Preferences on how I should tweak that aspect of this patch?  Options:
+> 
+> - Don't float NBDExport or NBDClient, and drop that part of the commit
+>    message.  However, the later patch that adds the typedef for
+>    NBDMetaContexts still has to do it earlier than the definition of
+>    NBDRequest, rather than alongside the other opaque types relevant to
+>    server.c
+> 
+> - Also float NBDClientConnection up here, and reword the commit
+>    message along the lines of: Also float forward declarations of
+>    opaque types to the top of the file, rather than interspersed with
+>    function declarations, which will help a future patch that wants to
+>    expose yet another opaque type that will be referenced in
+>    NBDRequest.
 
-On 2023/6/12 19:10, Christoph Muellner wrote:
-> From: Christoph Müllner <christoph.muellner@vrull.eu>
->
-> This patch moves the extension test functions that are used
-> to gate vendor extension decoders, into cpu_cfg.h.
-> This allows to reuse them in the disassembler.
->
-> This patch does not introduce new functionality.
-> However, the patch includes a small change:
-> The parameter for the extension test functions has been changed
-> from 'DisasContext*' to 'const RISCVCPUConfig*' to keep
-> the code in cpu_cfg.h self-contained.
->
-> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+Sounds good to me. Anyway:
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> 
+> - something else?
+> 
 
-Zhiwei
+-- 
+Best regards,
+Vladimir
 
-> ---
->   target/riscv/cpu_cfg.h   | 26 ++++++++++++++++++++++++++
->   target/riscv/translate.c | 27 ++-------------------------
->   2 files changed, 28 insertions(+), 25 deletions(-)
->
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index c4a627d335..0b4fe4b540 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -133,4 +133,30 @@ struct RISCVCPUConfig {
->   };
->   
->   typedef struct RISCVCPUConfig RISCVCPUConfig;
-> +
-> +/* Helper functions to test for extensions.  */
-> +
-> +static inline bool always_true_p(const RISCVCPUConfig *cfg __attribute__((__unused__)))
-> +{
-> +    return true;
-> +}
-> +
-> +static inline bool has_xthead_p(const RISCVCPUConfig *cfg)
-> +{
-> +    return cfg->ext_xtheadba || cfg->ext_xtheadbb ||
-> +           cfg->ext_xtheadbs || cfg->ext_xtheadcmo ||
-> +           cfg->ext_xtheadcondmov ||
-> +           cfg->ext_xtheadfmemidx || cfg->ext_xtheadfmv ||
-> +           cfg->ext_xtheadmac || cfg->ext_xtheadmemidx ||
-> +           cfg->ext_xtheadmempair || cfg->ext_xtheadsync;
-> +}
-> +
-> +#define MATERIALISE_EXT_PREDICATE(ext) \
-> +    static inline bool has_ ## ext ## _p(const RISCVCPUConfig *cfg) \
-> +    { \
-> +        return cfg->ext_ ## ext ; \
-> +    }
-> +
-> +MATERIALISE_EXT_PREDICATE(XVentanaCondOps)
-> +
->   #endif
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index 859d5b2dcf..275b922811 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -119,29 +119,6 @@ static inline bool has_ext(DisasContext *ctx, uint32_t ext)
->       return ctx->misa_ext & ext;
->   }
->   
-> -static bool always_true_p(DisasContext *ctx  __attribute__((__unused__)))
-> -{
-> -    return true;
-> -}
-> -
-> -static bool has_xthead_p(DisasContext *ctx  __attribute__((__unused__)))
-> -{
-> -    return ctx->cfg_ptr->ext_xtheadba || ctx->cfg_ptr->ext_xtheadbb ||
-> -           ctx->cfg_ptr->ext_xtheadbs || ctx->cfg_ptr->ext_xtheadcmo ||
-> -           ctx->cfg_ptr->ext_xtheadcondmov ||
-> -           ctx->cfg_ptr->ext_xtheadfmemidx || ctx->cfg_ptr->ext_xtheadfmv ||
-> -           ctx->cfg_ptr->ext_xtheadmac || ctx->cfg_ptr->ext_xtheadmemidx ||
-> -           ctx->cfg_ptr->ext_xtheadmempair || ctx->cfg_ptr->ext_xtheadsync;
-> -}
-> -
-> -#define MATERIALISE_EXT_PREDICATE(ext)  \
-> -    static bool has_ ## ext ## _p(DisasContext *ctx)    \
-> -    { \
-> -        return ctx->cfg_ptr->ext_ ## ext ; \
-> -    }
-> -
-> -MATERIALISE_EXT_PREDICATE(XVentanaCondOps);
-> -
->   #ifdef TARGET_RISCV32
->   #define get_xl(ctx)    MXL_RV32
->   #elif defined(CONFIG_USER_ONLY)
-> @@ -1132,7 +1109,7 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
->        * that are tested in-order until a decoder matches onto the opcode.
->        */
->       static const struct {
-> -        bool (*guard_func)(DisasContext *);
-> +        bool (*guard_func)(const RISCVCPUConfig *);
->           bool (*decode_func)(DisasContext *, uint32_t);
->       } decoders[] = {
->           { always_true_p,  decode_insn32 },
-> @@ -1161,7 +1138,7 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
->           ctx->opcode = opcode32;
->   
->           for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
-> -            if (decoders[i].guard_func(ctx) &&
-> +            if (decoders[i].guard_func(ctx->cfg_ptr) &&
->                   decoders[i].decode_func(ctx, opcode32)) {
->                   return;
->               }
 
