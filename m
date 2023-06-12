@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E813C72CEB4
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F04872CEBD
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:53:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8mbv-0007cH-3G; Mon, 12 Jun 2023 14:49:51 -0400
+	id 1q8mev-0008VJ-P1; Mon, 12 Jun 2023 14:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mbt-0007by-57; Mon, 12 Jun 2023 14:49:49 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mbr-0004Ll-FF; Mon, 12 Jun 2023 14:49:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=ssSLfPUBUFPcPPZc7SPwhgze+t5ggiIJ4M2VA9CQYvA=; b=B27Lqi58xIvytAhFd2xB2JFQZ+
- /sB003VfPvEQohIK7XlkyjM4jhay1iw9W+ZPJ1iNUWcRLV/MvnTU/9lBmSVTjJGWdhPVRnO4lqDR5
- dgU86Bi0hk44kTCMvdqwSkcj14lVmQkqb9j1mHVvi7Sq53oac0X6tAGzKzgFuu1uM62WRqnjFQvE1
- SEG5VTvqqnbCCbkAhqDlTPFoI99fDMtgCtt9DVvX9DZAYrEEhkpX16gixXl4kiWVnDtT76cbLSPRE
- VmC/hQ5e1Vb9b7iiePR0QMfixrOTYziDi4pnyS5mRlI1ZpFKqzStXH9eUH5a3/4KIeb3cH4YqSX78
- tg3rZdxAwu4aZfGTROC6UpBPovB+tg4IjyFrAY10EYE+QSKx42PBQ/MJeswfHAjGLtpJ6jgF86pQ4
- m2vHKQDbiniYEl9d9WNGyYpzBweNMRYFNEzeY8lHZaVTIr0i6yrQ+cQcWhGff+TFGF3tHM0369lSS
- s5WWsaZK8tWntL6OjGxHNpdS6tsu0PIH+DIBCIWuMv41TVoobQK/ybfKoyrj+a0d8N2oMZ8rpl6y/
- IViSFSiHWApAaaVSZPs5J/o4k6u3a9R/wyGAmDS63FOu+9wqpwei01A7H6y6t+BygsyaZg235nLAq
- km+QFK9CL+BGjWnL01WweaPcefgqF9T1OPCNpqHT8=;
-Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mbd-0009Cm-5S; Mon, 12 Jun 2023 19:49:36 +0100
-Message-ID: <74c666c7-c207-fe0d-e941-8fdc60f552ad@ilande.co.uk>
-Date: Mon, 12 Jun 2023 19:49:34 +0100
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q8meu-0008Ue-0c
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:52:56 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q8mes-0005Fv-7u
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:52:55 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-1a67ea77c3bso1564631fac.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 11:52:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1686595972; x=1689187972;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aD8qe9csH0sOC8p8kSAWXpM8VCNQTyu5/Z78QX/GAEc=;
+ b=cvKo0C2PGqn5BIw93+Gp/u9ayiwdlWxeY1M6TJ02v/C5a8/1jvK9qbvXg7cIxYlH7a
+ fC8gccKcVLbxVP928zMDyiKeIKGDomMz8AU1H48BAWuIt6htQvh9u3eG4WTcwIBGxOIk
+ geBxmMHwnfvhDQ8pmwykj5urgguM2Kk7qbu5m5uTNaxyzOm3J+I0jW4A1ZgMfxzOwghg
+ nSuO4Knw9LcDbAuRFUiT2QAAVyMl4N67iipnWo8r/ZMMTQgZ43Xj/bHdSjTzlhdvoI8S
+ NUOHSCt+JuLps0Z6g6YXsZ7UYUpdXMMD2bQdtrFairBjlWl4P8fZLWmIZbIfMnVchVHv
+ DEnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686595972; x=1689187972;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aD8qe9csH0sOC8p8kSAWXpM8VCNQTyu5/Z78QX/GAEc=;
+ b=isZqmt4Fezv0BKwtX8yGswibqJy3QLwX7RZsy/AUnVC7RWxk0qVQEOc4CtAEk1Pgd/
+ OBkkZKsxKeBOrXD1UNrJCW5PPubqrkVedaquWDVRVnWur410ldPFN3pphh4CxBXC59OB
+ EbbHOil3NIcswIe+dRa/zIglKQjNzGCCObZ5c98yG5O/maRA9iwhL7nzYfZGp7nfDj61
+ Ck8S+yzBBElJoTDLwt7q6Osna/DatKUqECRrIJRxk3KE8MaGaNK3R+0guqmnvnyUxj/l
+ lPiWlzOLylla4r4iROoH4Dcq28IGQCZNXceBzNGN7k70HuyotGb5J/Nx3yYtcLaNALUI
+ uaBg==
+X-Gm-Message-State: AC+VfDw2x90uHoKflfcnaj1L5IHmPYt0ii/cxglXCrwatwvsHwhP9o2/
+ U0EstbUxIMa6poVk1ay+xl93yA==
+X-Google-Smtp-Source: ACHHUZ7AdBkpfeSspDu8brOXhRQQ6LPLPkKu7QL7WJBrDKOsc2oMTbThMttdWjf+L4ja3FxFnF7N6Q==
+X-Received: by 2002:a05:6870:d2a5:b0:191:f657:13ee with SMTP id
+ d37-20020a056870d2a500b00191f65713eemr6730583oae.11.1686595972605; 
+ Mon, 12 Jun 2023 11:52:52 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.52])
+ by smtp.gmail.com with ESMTPSA id
+ k17-20020a0568301bf100b006a62aac5736sm4192109otb.28.2023.06.12.11.52.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Jun 2023 11:52:52 -0700 (PDT)
+Message-ID: <11aee932-be06-ed42-bf7e-09c8e3ed1045@ventanamicro.com>
+Date: Mon, 12 Jun 2023 15:52:48 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
+Subject: Re: [PATCH 03/16] target/riscv/cpu.c: restrict 'mvendorid' value
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-trivial@nongnu.org,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230612081238.1742-1-shentey@gmail.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230612081238.1742-1-shentey@gmail.com>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, Andrew Jones <ajones@ventanamicro.com>
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-4-dbarboza@ventanamicro.com>
+ <CAKmqyKNm1cH+fqqNKtm6+bKovdCqajoAcbTpWtA7BH=wLK5j+Q@mail.gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CAKmqyKNm1cH+fqqNKtm6+bKovdCqajoAcbTpWtA7BH=wLK5j+Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 0/2] Export struct ISAParallelState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,40 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/06/2023 09:12, Bernhard Beschow wrote:
 
-> This series incorporates rebased versions of the ISAParallelState patches of
-> [1] as requested by Mark.
+
+On 6/12/23 00:56, Alistair Francis wrote:
+> On Wed, May 31, 2023 at 5:49 AM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>> We're going to change the handling of mvendorid/marchid/mimpid by the
+>> KVM driver. Since these are always present in all CPUs let's put the
+>> same validation for everyone.
+>>
+>> It doesn't make sense to allow 'mvendorid' to be different than it
+>> is already set in named (vendor) CPUs. Generic (dynamic) CPUs can have
+>> any 'mvendorid' they want.
+>>
+>> Change 'mvendorid' to be a class property created via
+>> 'object_class_property_add', instead of using the DEFINE_PROP_UINT32()
+>> macro. This allow us to define a custom setter for it that will verify,
+>> for named CPUs, if mvendorid is different than it is already set by the
+>> CPU. This is the error thrown for the 'veyron-v1' CPU if 'mvendorid' is
+>> set to an invalid value:
+>>
+>> $ qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mvendorid=2
+>> qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mvendorid=2:
+>>      Unable to change veyron-v1-riscv-cpu mvendorid (0x61f)
 > 
-> v2:
-> * Add forgotten SoB tags (Zoltan, Phil)
+> Is this something we want to enforce? What if someone wanted to test
+> using the veyron-v1 CPU but they wanted to change some properties. I
+> don't see an advantage in not letting them do that
+
+The idea is to keep things simpler for us. As it is today we forbid users to
+enable/disable extensions for vendor CPUs. Doing the same thing for
+mvendorid/marchid/mimpid seems consistent with what we're already doing.
+
+Also, guest software might rely on vendor IDs from the CPU to take certain
+actions, and if the user is free to change the CPU ID from vendor CPUs the
+software will misbehave and the user can claim "I created a veyron-v1 CPU and
+the guest it's like like it's not". Allowing mvendorid and friends to be changed
+doesn't do much for users (we forbid enabling/disabling extensions, so what's
+to gain from changing machine IDs?) and it can be a potential source of bugs.
+
+
+
+Thanks,
+
+
+Daniel
+
+
 > 
-> Changes since [1]:
-> * Don't export register definitions (Phil)
-> * Rephrase commit message of second patch (Zoltan)
+> Alistair
 > 
-> [1] https://patchew.org/QEMU/20230521123049.312349-1-shentey@gmail.com/
-> 
-> Bernhard Beschow (2):
->    hw/char/parallel: Export struct ParallelState
->    hw/char/parallel-isa: Export struct ISAParallelState
-> 
->   include/hw/char/parallel-isa.h | 46 ++++++++++++++++++++++++++++++++++
->   include/hw/char/parallel.h     | 21 +++++++++++++++-
->   hw/char/parallel-isa.c         |  1 +
->   hw/char/parallel.c             | 32 +----------------------
->   hw/i386/pc_piix.c              |  2 +-
->   hw/i386/pc_q35.c               |  2 +-
->   hw/isa/isa-superio.c           |  1 +
->   hw/sparc64/sun4u.c             |  2 +-
->   8 files changed, 72 insertions(+), 35 deletions(-)
->   create mode 100644 include/hw/char/parallel-isa.h
-
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-
-ATB,
-
-Mark.
-
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c | 31 ++++++++++++++++++++++++++++++-
+>>   1 file changed, 30 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 72f5433776..bcd69bb032 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1723,7 +1723,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>>   static Property riscv_cpu_properties[] = {
+>>       DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+>>
+>> -    DEFINE_PROP_UINT32("mvendorid", RISCVCPU, cfg.mvendorid, 0),
+>>       DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_MARCHID),
+>>       DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIMPID),
+>>
+>> @@ -1810,6 +1809,32 @@ static const struct TCGCPUOps riscv_tcg_ops = {
+>>   #endif /* !CONFIG_USER_ONLY */
+>>   };
+>>
+>> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+>> +{
+>> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+>> +}
+>> +
+>> +static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+>> +                              void *opaque, Error **errp)
+>> +{
+>> +    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
+>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>> +    uint32_t prev_val = cpu->cfg.mvendorid;
+>> +    uint32_t value;
+>> +
+>> +    if (!visit_type_uint32(v, name, &value, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!dynamic_cpu && prev_val != value) {
+>> +        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
+>> +                   object_get_typename(obj), prev_val);
+>> +        return;
+>> +    }
+>> +
+>> +    cpu->cfg.mvendorid = value;
+>> +}
+>> +
+>>   static void riscv_cpu_class_init(ObjectClass *c, void *data)
+>>   {
+>>       RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
+>> @@ -1841,6 +1866,10 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+>>       cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+>>       cc->tcg_ops = &riscv_tcg_ops;
+>>
+>> +    object_class_property_add(c, "mvendorid", "uint32", NULL,
+>> +                              cpu_set_mvendorid,
+>> +                              NULL, NULL);
+>> +
+>>       device_class_set_props(dc, riscv_cpu_properties);
+>>   }
+>>
+>> --
+>> 2.40.1
+>>
+>>
 
