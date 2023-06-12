@@ -2,64 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D4C72BF75
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 12:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A7672C57B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:07:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8f0h-0001Pa-WE; Mon, 12 Jun 2023 06:42:56 -0400
+	id 1q8hFQ-0004Nx-N6; Mon, 12 Jun 2023 09:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <viktor.prutyanov@phystech.edu>)
- id 1q8f0d-0001PC-Fu
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 06:42:51 -0400
-Received: from forward500c.mail.yandex.net ([178.154.239.208])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <viktor.prutyanov@phystech.edu>)
- id 1q8f0b-0004jz-AJ
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 06:42:51 -0400
-Received: from mail-nwsmtp-mxback-production-main-28.myt.yp-c.yandex.net
- (mail-nwsmtp-mxback-production-main-28.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:1110:0:640:4f89:0])
- by forward500c.mail.yandex.net (Yandex) with ESMTP id 3E65E5E59A;
- Mon, 12 Jun 2023 13:42:42 +0300 (MSK)
-Received: from mail.yandex.ru (2a02:6b8:c12:1e1b:0:640:f562:0
- [2a02:6b8:c12:1e1b:0:640:f562:0])
- by mail-nwsmtp-mxback-production-main-28.myt.yp-c.yandex.net (mxback/Yandex)
- with HTTP id cgW3Uo2W5Sw0-2IQ0x7aZ; Mon, 12 Jun 2023 13:42:41 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phystech.edu; s=mail;
- t=1686566561; bh=6SB0nyEz1XKqrbh5HN4LOKTHz+/mlOiyU4u639biT8s=;
- h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
- b=ght8Y0Ha3NciFgsYjlPai7YPv8CaovHzMXUGne7qN3O3ynssh6usXo1ViAvWRaQdT
- xuGtKnHggP6CcBsYURPDoSseRqhI7ZD3gHUbH6SACxBF17p75oFh+xeuRWgApZaQ9w
- n7KBoUZ56THEtqKZjDGS3MxDzIEQLPm8jlTgX8TQ=
-Authentication-Results: mail-nwsmtp-mxback-production-main-28.myt.yp-c.yandex.net;
- dkim=pass header.i=@phystech.edu
-Received: by lduixalyeduyxu6q.myt.yp-c.yandex.net with HTTP;
- Mon, 12 Jun 2023 13:42:41 +0300
-From: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,
-	Viktor Prutyanov <viktor@daynix.com>
-In-Reply-To: <20230611033434.14659-1-akihiko.odaki@daynix.com>
-References: <20230611033434.14659-1-akihiko.odaki@daynix.com>
-Subject: Re: [PATCH] elf2dmp: Don't abandon when Prcb is set to 0
-MIME-Version: 1.0
-X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date: Mon, 12 Jun 2023 13:42:41 +0300
-Message-Id: <260451686566561@lduixalyeduyxu6q.myt.yp-c.yandex.net>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=178.154.239.208;
- envelope-from=viktor.prutyanov@phystech.edu; helo=forward500c.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <18622748025@163.com>)
+ id 1q8fG6-0006ms-Kv
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 06:58:50 -0400
+Received: from m12.mail.163.com ([220.181.12.196])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <18622748025@163.com>) id 1q8fG3-0007Zm-5Q
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 06:58:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id; bh=g7vV/XyaRF0tLb3bWD
+ 25d/+bYgjHDS/M7rpU3HZlSUo=; b=G/qTFnNKYzqZC4FlAziRV0O7N8qW9gCqrf
+ IE3ELak9V1IRDmJsReUXKkGy+K1OaqYhvvsF9h7L2Bxxbv0HYsY6LTe0JW1KSRdC
+ ZGWrGfNy08tl+VPkKW88OQACrg8wKwYmiYZqbprbN1GC4DLlKXfMOH/H7V6W2vhz
+ OdhxwOKXk=
+Received: from localhost.localdomain (unknown [211.94.241.37])
+ by zwqz-smtp-mta-g4-4 (Coremail) with SMTP id _____wBHPv5c+oZkbTpaAQ--.13852S2;
+ Mon, 12 Jun 2023 18:58:36 +0800 (CST)
+From: "liguang.zhang" <18622748025@163.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, "liguang.zhang" <liguang.zhang@hexintek.com>,
+ "liguang . zhang" <18622748025@163.com>
+Subject: [PATCH] target/riscv: fix the issue of guest reboot then no response
+ or crash in kvm-mode
+Date: Mon, 12 Jun 2023 18:58:33 +0800
+Message-Id: <20230612105833.6481-1-18622748025@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: _____wBHPv5c+oZkbTpaAQ--.13852S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw17Zw4fZF43uFyfJw1UKFg_yoWrXr4fpF
+ srC343Cr4rt34xJw4ftrZrXr1ru3929F4DArWxCw4fAF45JrZ8Gwn7K3y3tr98GryUurWa
+ kF45CF13u3yUtaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jTBT5UUUUU=
+X-Originating-IP: [211.94.241.37]
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiPR2MWWI0XX8pZgAAsO
+Received-SPF: pass client-ip=220.181.12.196; envelope-from=18622748025@163.com;
+ helo=m12.mail.163.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.01,
+ RCVD_IN_MSPIKE_L4=1.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 12 Jun 2023 09:06:04 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,40 +69,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Prcb may be set to 0 for some CPUs if the dump was taken before they
-> start. The dump may still contain valuable information for started CPUs
-> so don't abandon conversion in such a case.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
-> contrib/elf2dmp/main.c | 5 +++++
-> 1 file changed, 5 insertions(+)
-> 
-> diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-> index d77b8f98f7..91c58e4424 100644
-> --- a/contrib/elf2dmp/main.c
-> +++ b/contrib/elf2dmp/main.c
-> @@ -312,6 +312,11 @@ static int fill_context(KDDEBUGGER_DATA64 *kdbg,
-> return 1;
-> }
-> 
-> + if (!Prcb) {
-> + eprintf("Context for CPU #%d is missing\n", i);
-> + continue;
-> + }
-> +
-> if (va_space_rw(vs, Prcb + kdbg->OffsetPrcbContext, 
-> &Context, sizeof(Context), 0)) {
-> eprintf("Failed to read CPU #%d ContextFrame location\n", i);
-> 
-> --
-> 2.40.1
+From: "liguang.zhang" <liguang.zhang@hexintek.com>
 
-Hi Akihiko,
+kernel log
+```shell
+reboot
 
-How this fix can be tested?
+The system is going down NOW!
+Sent SIGTERM to all processes
+logout
+Sent SIGKILL to all processes
+Requesting system reboot
 
-NumberProcessors field is still set to qemu_elf.state_nr, how does WinDbg react to this?
+```
+then no response
 
-Viktor
+for qemu command:
+system_reset:
+
+kernel log:
+```shell
+[   53.739556] kvm [150]: VCPU exit error -95
+[   53.739563] kvm [148]: VCPU exit error -95
+[   53.739557] kvm [149]: VCPU exit error -95
+[   53.740957] kvm [149]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+[   53.740957] kvm [148]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+[   53.741054] kvm [148]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+[   53.741058] kvm [149]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+[   53.756187] kvm [150]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+[   53.757797] kvm [150]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+```
+
+solution:
+
+add reset csr and context for riscv vcpu
+qemu ioctl reset vcpu->arch.power_off state of kvm
+
+tests:
+
+qemu-system-riscv64 -M virt -bios none -kernel Image \
+   -smp 4 -enable-kvm \
+   -append "rootwait root=/dev/vda ro" \
+   -drive file=rootfs.ext2,format=raw,id=hd0 \
+   -device virtio-blk-device,drive=hd0
+
+in guest shell:
+reboot
+
+qemu command:
+system_reset
+
+Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
+Signed-off-by: liguang.zhang <18622748025@163.com>
+---
+ target/riscv/kvm.c       | 43 ++++++++++++++++++++++++++++++++++++++++
+ target/riscv/kvm_riscv.h |  1 +
+ 2 files changed, 44 insertions(+)
+
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 0f932a5b96..c6a7824c9e 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -42,6 +42,8 @@
+ #include "migration/migration.h"
+ #include "sysemu/runstate.h"
+ 
++static bool cap_has_mp_state;
++
+ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+                                  uint64_t idx)
+ {
+@@ -335,6 +337,25 @@ int kvm_arch_get_registers(CPUState *cs)
+     return ret;
+ }
+ 
++int kvm_riscv_set_mpstate_to_kvm(RISCVCPU *cpu, int state)
++{
++    if (cap_has_mp_state) {
++
++        struct kvm_mp_state mp_state = {
++            .mp_state = state
++        };
++
++        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
++        if (ret) {
++            fprintf(stderr, "%s: failed to set MP_STATE %d/%s\n",
++                    __func__, ret, strerror(-ret));
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
+ int kvm_arch_put_registers(CPUState *cs, int level)
+ {
+     int ret = 0;
+@@ -354,6 +375,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+         return ret;
+     }
+ 
++    if (KVM_PUT_RESET_STATE == level) {
++        RISCVCPU *cpu = RISCV_CPU(cs);
++        if (cs->cpu_index == 0) {
++            ret = kvm_riscv_set_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
++        } else {
++            ret = kvm_riscv_set_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
++        }
++        if (ret) {
++            return ret;
++        }
++    }
++
+     return ret;
+ }
+ 
+@@ -428,6 +461,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
+ 
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
++    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+     return 0;
+ }
+ 
+@@ -506,10 +540,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+     if (!kvm_enabled()) {
+         return;
+     }
++    for (int i=0; i<32; i++)
++        env->gpr[i] = 0;
+     env->pc = cpu->env.kernel_addr;
+     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
+     env->satp = 0;
++    env->mie = 0;
++    env->stvec = 0;
++    env->sscratch = 0;
++    env->sepc = 0;
++    env->scause = 0;
++    env->stval = 0;
++    env->mip = 0;
+ }
+ 
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+index ed281bdce0..4a4c262820 100644
+--- a/target/riscv/kvm_riscv.h
++++ b/target/riscv/kvm_riscv.h
+@@ -21,5 +21,6 @@
+ 
+ void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
++int kvm_riscv_set_mpstate_to_kvm(RISCVCPU *cpu, int state);
+ 
+ #endif
+-- 
+2.17.1
+
 
