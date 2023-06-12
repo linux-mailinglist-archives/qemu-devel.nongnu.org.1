@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEA572C5FC
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687C272D44C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 00:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8hcq-0001Yg-6L; Mon, 12 Jun 2023 09:30:29 -0400
+	id 1q8pqq-0006uh-Sa; Mon, 12 Jun 2023 18:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q8hcF-0001HV-DC
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:29:59 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q8pqp-0006u2-1d
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 18:17:27 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q8hcC-0003v1-Pk
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:29:50 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f730c1253fso32191695e9.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 06:29:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q8pqm-0004rZ-Dr
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 18:17:26 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5147dce372eso7220470a12.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 15:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686576584; x=1689168584;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jAMQoHZxfYMqcnfieTtCppnl0NUwfjitoGqUvmdMOvk=;
- b=Z7ngyV80G/HZBUnADXDwohHvUjxCTV+W9gP3gh/T0eQ6mtPBEsEjjXtMNPn9OviORp
- ZkrH/y/Ofm7BtigUL5oAVUF/BKXdF68SbSC0l4j3bxZJH7e3a/7ahHe2SuhG6Q9xELbS
- rjGX9UMT9d1VIzdIiRcntri1fAPD0qf/Tja87oO1dsoi6/Ej4cyeE01A+OW9PkEZt2Pu
- q3dXvGiIq+/En392SyzJYbwhCgGp/a02IjnMfnuESXisnNU+iPPUAJxS5tMxX8CNZ74z
- inXao+rbo9yz1LGZgyIYkHte/97hYnx0Ha6wwgy8W4N32BD8W/zWZis1XDmp/eJIChFv
- X3xw==
+ d=linaro.org; s=google; t=1686608242; x=1689200242;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=b0f5TjXlgRyoRtOMkfcy9jl0thKSw7AmRg3kqPelvws=;
+ b=h522zqq/PIgZLUffQUjDgZZJ/lrgKZOjiwxvNuveiOJFddL/2sfPW9JJDyrwolSKZR
+ V1pbWMpUiKn6da6TV5KlDo/ef9sxHXE51YHEn7YqovbxWQEVbYGV4b+wtVSJ9JIaqp7P
+ hl/WEfxjGaqmWb2FPh7lveye96rM1+zRKkgSAD951KarsQMmpL30YMulu/7P9MaZ1zPT
+ FC/f0Vdn8n9vFAPDc2SW1OHmxAYMxgrglHBIkxUCAbzlhAGbheYHaeJBssrnsZ4tAfs4
+ Us5E/02eDQhGajzAvHbYoIxTyxU8gNFeLtVmUyGsPMZOb5/O+x9pKMBx+aWpNKtGol3o
+ 6iZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686576584; x=1689168584;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=jAMQoHZxfYMqcnfieTtCppnl0NUwfjitoGqUvmdMOvk=;
- b=NPFdsEkhPPb9g9mm+ViWE7eXcxIbefqY7+7BLZURQ6AyZY1VcIxhzyHQvd1DzLW3gB
- gD4QKS0l0L8I9N1nPDijRnoZGaKaqvK86a6J1oLQlCX8Z14HF0HM0stgrJ/9cAPRjGOL
- 64JMXMUjOr5U7OfE3b7fC2H84y6QhmXG0BSHQpnSKBi9nCOK90BJeIC722vDwoq8MyJj
- QNvrpEK7sygyTLWJGsuSLI2Bb+PT2KygOxwoPXCog0tpLQSvxh/Om0UCMrHA2DvqUO0m
- e8KVnhftA+63vljiJxeHuXYmMrxXZZ/gbPavCgyr5PA+0seAsplSRmoZVUefK5lqmX30
- vd7w==
-X-Gm-Message-State: AC+VfDziGCMFwu4Qgjv3A+Nh2HLZ8PvjRnTvvz1SUiYOSUz0EVr6BXDi
- fGGLqGb9Ly9akahAkMFMjpmfJQ==
-X-Google-Smtp-Source: ACHHUZ6rC53bNdVLgzZhGOaQlTaCFE99efAqv+VHZm3hoeEo0nt52M56qSZ65MhX6wXnNTwwHu3jLA==
-X-Received: by 2002:a05:600c:2212:b0:3f7:865d:ce63 with SMTP id
- z18-20020a05600c221200b003f7865dce63mr6311042wml.21.1686576584455; 
- Mon, 12 Jun 2023 06:29:44 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1686608242; x=1689200242;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b0f5TjXlgRyoRtOMkfcy9jl0thKSw7AmRg3kqPelvws=;
+ b=LVbuUS5KU7JoXEU0YkFthpPF8m0pYQGGJO67CJosW8zAiKCj5QAv6IKX1pTusy4/Dr
+ /PZ/5ML1Q/HW73aaQ+BRi/eJznS+aK9VMr4jcUUOh+jzRXFCNVbXswqwQMIPDLJmU4L8
+ Rh4N3ApVl3ZHcH36k0OCQsK1QpfhKg1PLgn0k1rjDGMWMnhOM0hffxgmB6QCxTddS2me
+ rAhIg31IUz7ssKgd95CWbW4UUU+eDsc5gDz+uvDwUVYTcMV/9xh1ELvfxBtdxtYaTMXL
+ EmzwI3PqBY1h2QkUI/szIVbskdMFfCHAQ0MJCqJt9zNcefz0B5Cwr1rfl78Om2CiUen1
+ DREw==
+X-Gm-Message-State: AC+VfDyftTwCTLEFlnaCPmXxuPDg2Y5Wug0BynpSY9orL8gpGUCvWI6M
+ v4vtBDJvQJPum/Cl6eTtbPliaA==
+X-Google-Smtp-Source: ACHHUZ6bEjYybbhP0p00KykirhuOMCR5VxWoWQCUXiknBjJsWswQHZmqMU0JPVicqClxKKBiNy4/XA==
+X-Received: by 2002:a17:907:318d:b0:974:6176:2223 with SMTP id
+ xe13-20020a170907318d00b0097461762223mr12259944ejb.13.1686608242167; 
+ Mon, 12 Jun 2023 15:17:22 -0700 (PDT)
+Received: from [10.10.0.115] ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- i12-20020a05600c290c00b003f7e653c3e3sm11475045wmd.21.2023.06.12.06.29.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jun 2023 06:29:44 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 9F87D1FFBB;
- Mon, 12 Jun 2023 14:29:43 +0100 (BST)
-References: <20230607164750.829586-1-fufuyqqqqqq@gmail.com>
- <20230607164750.829586-7-fufuyqqqqqq@gmail.com>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, Laurent Vivier
- <laurent@vivier.eu>
-Subject: Re: [RFC v2 6/6] linux-user: Add '-native-bypass' option
-Date: Mon, 12 Jun 2023 14:23:04 +0100
-In-reply-to: <20230607164750.829586-7-fufuyqqqqqq@gmail.com>
-Message-ID: <874jnc7qrc.fsf@linaro.org>
+ p22-20020a170906229600b009745c628bcdsm5752124eja.93.2023.06.12.15.17.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Jun 2023 15:17:21 -0700 (PDT)
+Message-ID: <239a543f-6d97-eb14-ba4f-284093fccfba@linaro.org>
+Date: Mon, 12 Jun 2023 15:23:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH] imx_serial: set wake bit when we receive a data byte
+Content-Language: en-US
+To: Martin Kaiser <martin@kaiser.cx>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20230608154129.133169-1-martin@kaiser.cx>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230608154129.133169-1-martin@kaiser.cx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,172 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Martin,
 
-Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
-
-> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+On 8/6/23 17:41, Martin Kaiser wrote:
+> The linux kernel added a flood check for rx data recently in commmit
+> 496a4471b7c3 ("serial: imx: work-around for hardware RX flood"). This
+> check uses the wake bit in the uart status register 2. The wake bit
+> indicates that the receiver detected a start bit. If the kernel sees a
+> number of rx interrupts without the wake bit being set, it treats this as
+> spurious data and resets the uart port. imx_serial does never set the
+> wake bit and triggers the kernel's flood check.
+> 
+> This patch adds support for the wake bit. wake is set when we receive a
+> new character (it's not set for break events). It seems that wake is
+> cleared by the kernel driver, the hardware does not have to clear it
+> automatically after data was read.
+> 
+> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
 > ---
->  include/qemu/envlist.h |  1 +
->  linux-user/main.c      | 23 +++++++++++++++++
->  util/envlist.c         | 56 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 80 insertions(+)
->
-> diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
-> index 6006dfae44..865eb18e17 100644
-> --- a/include/qemu/envlist.h
-> +++ b/include/qemu/envlist.h
-> @@ -7,6 +7,7 @@ envlist_t *envlist_create(void);
->  void envlist_free(envlist_t *);
->  int envlist_setenv(envlist_t *, const char *);
->  int envlist_unsetenv(envlist_t *, const char *);
-> +int envlist_appendenv(envlist_t *, const char *, const char *);
->  int envlist_parse_set(envlist_t *, const char *);
->  int envlist_parse_unset(envlist_t *, const char *);
->  char **envlist_to_environ(const envlist_t *, size_t *);
-> diff --git a/linux-user/main.c b/linux-user/main.c
-> index 5e6b2e1714..313c116b3b 100644
-> --- a/linux-user/main.c
-> +++ b/linux-user/main.c
-> @@ -125,6 +125,8 @@ static void usage(int exitcode);
->  static const char *interp_prefix =3D CONFIG_QEMU_INTERP_PREFIX;
->  const char *qemu_uname_release;
->=20=20
-> +static const char *native_lib;
+>   hw/char/imx_serial.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+> index ee1375e26d..44125d5f47 100644
+> --- a/hw/char/imx_serial.c
+> +++ b/hw/char/imx_serial.c
+> @@ -321,6 +321,9 @@ static void imx_put_data(void *opaque, uint32_t value)
+>   
+>   static void imx_receive(void *opaque, const uint8_t *buf, int size)
+>   {
+> +    IMXSerialState *s = (IMXSerialState *)opaque;
 > +
->  #if !defined(TARGET_DEFAULT_STACK_SIZE)
->  /* XXX: on x86 MAP_GROWSDOWN only works if ESP <=3D address + 32, so
->     we allocate a bigger stack. Need a better solution, for example
-> @@ -293,6 +295,13 @@ static void handle_arg_set_env(const char *arg)
->      free(r);
->  }
->=20=20
-> +#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
+> +    s->usr2 |= USR2_WAKE;
+>       imx_put_data(opaque, *buf);
+>   }
+>   
 
-CONFIG_USER_ONLY is a pointless check as by definition this file is
-user-mode only.
+Shouldn't we mask this bit for interruptions now?
 
-> +static void handle_arg_native_bypass(const char *arg)
-> +{
-> +    native_lib =3D arg;
+-- >8 --
+diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
+index 91c9894ad5..b823f94519 100644
+--- a/include/hw/char/imx_serial.h
++++ b/include/hw/char/imx_serial.h
+@@ -71,6 +71,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
 
-canonicalise the path and maybe verify it exists/is accessible?
+  #define UCR4_DREN       BIT(0)    /* Receive Data Ready interrupt 
+enable */
+  #define UCR4_TCEN       BIT(3)    /* TX complete interrupt enable */
++#define UCR4_WKEN       BIT(7)    /* WAKE interrupt enable */
 
-> +}
-> +#endif
-> +
->  static void handle_arg_unset_env(const char *arg)
->  {
->      char *r, *p, *token;
-> @@ -522,6 +531,10 @@ static const struct qemu_argument arg_table[] =3D {
->       "",           "Generate a /tmp/perf-${pid}.map file for perf"},
->      {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
->       "",           "Generate a jit-${pid}.dump file for perf"},
-> +#if defined(CONFIG_USER_ONLY)  && defined(CONFIG_USER_NATIVE_CALL)
+  #define UTS1_TXEMPTY    (1<<6)
+  #define UTS1_RXEMPTY    (1<<5)
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index ee1375e26d..c8ec247350 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -80,7 +80,7 @@ static void imx_update(IMXSerialState *s)
+       * TCEN and TXDC are both bit 3
+       * RDR and DREN are both bit 0
+       */
+-    mask |= s->ucr4 & (UCR4_TCEN | UCR4_DREN);
++    mask |= s->ucr4 & (UCR4_WKEN | UCR4_TCEN | UCR4_DREN);
 
-see above re CONFIG_USER_ONLY.
-
-> +    {"native-bypass", "QEMU_NATIVE_BYPASS", true, handle_arg_native_bypa=
-ss,
-> +     "",           "native bypass for library calls in user mode only."},
-> +#endif
->      {NULL, NULL, false, NULL, NULL, NULL}
->  };
->=20=20
-> @@ -826,6 +839,16 @@ int main(int argc, char **argv, char **envp)
->          }
->      }
->=20=20
-> +    /* Set the library for native bypass  */
-> +    if (native_lib !=3D NULL) {
-> +        char *token =3D malloc(strlen(native_lib) + 12);
-> +        strcpy(token, "LD_PRELOAD=3D");
-> +        strcat(token, native_lib);
-> +         if (envlist_appendenv(envlist, token, ":") !=3D 0) {
-> +            usage(EXIT_FAILURE);
-> +        }
-> +    }
-> +
->      target_environ =3D envlist_to_environ(envlist, NULL);
->      envlist_free(envlist);
->=20=20
-> diff --git a/util/envlist.c b/util/envlist.c
-> index db937c0427..713d52497e 100644
-> --- a/util/envlist.c
-> +++ b/util/envlist.c
-> @@ -201,6 +201,62 @@ envlist_unsetenv(envlist_t *envlist, const char *env)
->      return (0);
->  }
->
-
-I think adding this function should be a separate commit. It would be
-nice to add some unittests for the functionality while we are at it.
-
-> +/*
-> + * Appends environment value to envlist. If the environment
-> + * variable already exists, the new value is appended to the
-> + * existing one.
-> + *
-> + * Returns 0 in success, errno otherwise.
-> + */
-> +int
-> +envlist_appendenv(envlist_t *envlist, const char *env, const char *separ=
-ator)
-> +{
-> +    struct envlist_entry *entry =3D NULL;
-> +    const char *eq_sign;
-> +    size_t envname_len;
-> +
-> +    if ((envlist =3D=3D NULL) || (env =3D=3D NULL)) {
-> +        return (EINVAL);
-> +    }
-> +
-> +    /* find out first equals sign in given env */
-> +    eq_sign =3D strchr(env, '=3D');
-> +    if (eq_sign =3D=3D NULL) {
-> +        return (EINVAL);
-> +    }
-> +    envname_len =3D eq_sign - env + 1;
-> +
-> +    /*
-> +     * If there already exists variable with given name,
-> +     * we append the new value to the existing one.
-> +     */
-> +    for (entry =3D envlist->el_entries.lh_first; entry !=3D NULL;
-> +        entry =3D entry->ev_link.le_next) {
-> +        if (strncmp(entry->ev_var, env, envname_len) =3D=3D 0) {
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (entry !=3D NULL) {
-> +        char *new_env_value =3D NULL;
-> +        size_t new_env_len =3D strlen(entry->ev_var) + strlen(eq_sign)
-> +            + strlen(separator) + 1;
-> +        new_env_value =3D g_malloc(new_env_len);
-> +        strcpy(new_env_value, entry->ev_var);
-> +        strcat(new_env_value, separator);
-> +        strcat(new_env_value, eq_sign + 1);
-
-See other comments about string functions.
-
-> +        g_free((char *)entry->ev_var);
-> +        entry->ev_var =3D new_env_value;
-> +    } else {
-> +        envlist->el_count++;
-> +        entry =3D g_malloc(sizeof(*entry));
-> +        entry->ev_var =3D g_strdup(env);
-> +        QLIST_INSERT_HEAD(&envlist->el_entries, entry, ev_link);
-> +    }
-> +
-> +    return (0);
-> +}
-> +
->  /*
->   * Returns given envlist as array of strings (in same form that
->   * global variable environ is).  Caller must free returned memory
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+      usr2 = s->usr2 & mask;
+---
 
