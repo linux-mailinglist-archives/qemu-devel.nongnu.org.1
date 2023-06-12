@@ -2,84 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD96172C2CD
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 13:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A558B72C57D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:07:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8fmG-0004KG-45; Mon, 12 Jun 2023 07:32:04 -0400
+	id 1q8hFP-0004L1-0G; Mon, 12 Jun 2023 09:06:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q8fmA-00049o-Jq
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:31:58 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q8fm7-0006Z3-4N
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:31:56 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f6d7abe934so29077475e9.2
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 04:31:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686569514; x=1689161514;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Hd/sfT9Mdzw8Iv+EmqF3Z9OrbvEFGNDblV3FzAecSso=;
- b=Z8Ae9bkDvENDs9gG34ZEumLQMMd/hOsIEdGN3LB1r9FiJDULJ3gG0lVDv5zZjWAURq
- XNTieT3nHWgXdqebUQUiKGRvAynN9ITIpmVoAvMKJLEfsslJIZWBNs486fTznNiW1a22
- B8iz5SuWT0tz9KTUer6OOTfYmdHDdpDNlqaEX4oKYnAt9l4fXkEZdY/6b2micY4Zvyn5
- ys3Ho4D2koVWHPqUWl4d4ZfNtCbehvadlslwAzbCjB2ux9Ibu7ZMttgDQXL885e2vhAw
- HeoP8/88Q7BZkShLiVn5X2jo1opQvW1YaDwAprlXvdTP8s6tpNHASA1X3InU76lqgPv4
- vSRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686569514; x=1689161514;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Hd/sfT9Mdzw8Iv+EmqF3Z9OrbvEFGNDblV3FzAecSso=;
- b=RZRXv5ZMeSFncS0inXnt41qcNKXbRuEM2lMHCjy7omdqOpPrwelzEZSygAMc3PYKHD
- KwmObQti9tEnndjx8u8rH8m1Yh8LZnyQw0477TJTfmHebL2X5NyA3JKlhT+PZXiEu8Gn
- yznDPDG/yOuic5eyv8Ikilegghv9BW8hCbiHV6i5hGvLQ0QruKXYoNxA3Tkp4e+/cEU2
- Gu9ezrOU5YzVK2dp4KLMFKzOS3/x858y2OWqRy7RHBwCajGFnEDX3BXPg9liiQK+R64t
- Rk5E1mX/9P/G9rDzJUhzTjwPe9AwHaerMnKitZk02Ej09Y0bbof5yk11Tl8fcRoaebzJ
- h3Ig==
-X-Gm-Message-State: AC+VfDzZGAcgRQz6fBWQv08JExhbdWdyArQWWaYWaI5HbJFAaNAl81/i
- RpBi7I1/IPIjInHxFg/TjmWoeCmMi0tIkIFiJUgItg==
-X-Google-Smtp-Source: ACHHUZ6QVIu2sXD5cNixFXVE3UN91a0PT8bLPISX2Em7TwTe0VrUtUxSXmw6Ne4zfIC5wAz86JXLeg==
-X-Received: by 2002:a1c:740d:0:b0:3f7:26f8:4cc0 with SMTP id
- p13-20020a1c740d000000b003f726f84cc0mr5466081wmc.17.1686569513708; 
- Mon, 12 Jun 2023 04:31:53 -0700 (PDT)
-Received: from [192.168.112.175] (176.red-88-28-1.dynamicip.rima-tde.net.
- [88.28.1.176]) by smtp.gmail.com with ESMTPSA id
- n26-20020a1c721a000000b003f78fd2cf5esm11126455wmc.40.2023.06.12.04.31.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 04:31:53 -0700 (PDT)
-Message-ID: <93679995-37da-8cf5-431b-5ce9a7b59294@linaro.org>
-Date: Mon, 12 Jun 2023 12:37:49 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v2 09/23] target/arm: Convert MSR (reg), MRS, SYS, SYSL to
- decodetree
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230611160032.274823-1-peter.maydell@linaro.org>
- <20230611160032.274823-10-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230611160032.274823-10-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ (Exim 4.90_1) (envelope-from <18622748025@163.com>)
+ id 1q8eyd-0001Hi-6q
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 06:40:48 -0400
+Received: from m12.mail.163.com ([220.181.12.197])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <18622748025@163.com>) id 1q8eyZ-0004bq-N9
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 06:40:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id; bh=1EghS0/DCmpW2schBS
+ rcg/MX3b8q8Jj+V8D4M7ReZ7k=; b=kp3fKFvA/VMeD5ILzWE/GbI6g4saCaJtua
+ 3bQswgvQSnNAQJUFUfh59LlwcajQNuMK4CFNC4Uz62LsEWmMFYKDsR1O1u1xEdXr
+ 8Jlx5T6cZiMlNCXLDMxr6t6y2b9tPQk4sj/yLcDE4mJ15Hlu6BQCz+ZrDCDmrScB
+ Z/l8qNu3k=
+Received: from localhost.localdomain (unknown [211.94.241.37])
+ by zwqz-smtp-mta-g0-1 (Coremail) with SMTP id _____wCnJpcd9oZkSvteAQ--.32949S2;
+ Mon, 12 Jun 2023 18:40:30 +0800 (CST)
+From: "liguang.zhang" <18622748025@163.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	"liguang.zhang" <liguang.zhang@hexintek.com>
+Subject: [PATCH] target/riscv: fix the issue of guest reboot then no response
+ or crash in kvm-mode
+Date: Mon, 12 Jun 2023 18:40:26 +0800
+Message-Id: <20230612104026.5110-1-18622748025@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: _____wCnJpcd9oZkSvteAQ--.32949S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw17WF4fWF43Gr13WF17KFg_yoWrGF4fpF
+ 4DC3y3Cr18t34xJw1ftrZrXr1ru3929F4DArWxCw4fAF45JrZ8G3Z7K3y3tr98GFyUurWa
+ kF45CF13u3yUtaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07bw-erUUUUU=
+X-Originating-IP: [211.94.241.37]
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiyB+MWVp7Kqdd8QAAsC
+Received-SPF: pass client-ip=220.181.12.197; envelope-from=18622748025@163.com;
+ helo=m12.mail.163.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.01,
+ RCVD_IN_MSPIKE_L4=1.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 12 Jun 2023 09:06:04 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,18 +69,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/6/23 18:00, Peter Maydell wrote:
-> Convert MSR (reg), MRS, SYS, SYSL to decodetree.  For QEMU these are
-> all essentially the same instruction (system register access).
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-id: 20230602155223.2040685-7-peter.maydell@linaro.org
-> ---
->   target/arm/tcg/a64.decode      |  8 ++++++++
->   target/arm/tcg/translate-a64.c | 32 +++++---------------------------
->   2 files changed, 13 insertions(+), 27 deletions(-)
+From: "liguang.zhang" <liguang.zhang@hexintek.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+kernel log
+```shell
+The system is going down NOW!
+Sent SIGTERM to all processes
+logout
+Sent SIGKILL to all processes
+Requesting system reboot
+
+```
+then no response
+
+for qemu command:
+system_reset:
+
+kernel log:
+```shell
+[   53.739556] kvm [150]: VCPU exit error -95
+[   53.739563] kvm [148]: VCPU exit error -95
+[   53.739557] kvm [149]: VCPU exit error -95
+[   53.740957] kvm [149]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+[   53.740957] kvm [148]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+[   53.741054] kvm [148]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+[   53.741058] kvm [149]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+[   53.756187] kvm [150]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+[   53.757797] kvm [150]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+```
+
+solution:
+
+add reset csr and context for riscv vcpu
+qemu ioctl reset vcpu->arch.power_off state of kvm
+
+tests:
+
+qemu-system-riscv64 -M virt -bios none -kernel Image \
+   -smp 4 -enable-kvm \
+   -append "rootwait root=/dev/vda ro" \
+   -drive file=rootfs.ext2,format=raw,id=hd0 \
+   -device virtio-blk-device,drive=hd0
+
+in guest shell:
+
+qemu command:
+system_reset
+
+Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
+---
+ target/riscv/kvm.c       | 43 ++++++++++++++++++++++++++++++++++++++++
+ target/riscv/kvm_riscv.h |  1 +
+ 2 files changed, 44 insertions(+)
+
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 0f932a5b96..c6a7824c9e 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -42,6 +42,8 @@
+ #include "migration/migration.h"
+ #include "sysemu/runstate.h"
+ 
++static bool cap_has_mp_state;
++
+ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+                                  uint64_t idx)
+ {
+@@ -335,6 +337,25 @@ int kvm_arch_get_registers(CPUState *cs)
+     return ret;
+ }
+ 
++int kvm_riscv_set_mpstate_to_kvm(RISCVCPU *cpu, int state)
++{
++    if (cap_has_mp_state) {
++
++        struct kvm_mp_state mp_state = {
++            .mp_state = state
++        };
++
++        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
++        if (ret) {
++            fprintf(stderr, "%s: failed to set MP_STATE %d/%s\n",
++                    __func__, ret, strerror(-ret));
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
+ int kvm_arch_put_registers(CPUState *cs, int level)
+ {
+     int ret = 0;
+@@ -354,6 +375,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+         return ret;
+     }
+ 
++    if (KVM_PUT_RESET_STATE == level) {
++        RISCVCPU *cpu = RISCV_CPU(cs);
++        if (cs->cpu_index == 0) {
++            ret = kvm_riscv_set_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
++        } else {
++            ret = kvm_riscv_set_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
++        }
++        if (ret) {
++            return ret;
++        }
++    }
++
+     return ret;
+ }
+ 
+@@ -428,6 +461,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
+ 
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
++    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+     return 0;
+ }
+ 
+@@ -506,10 +540,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+     if (!kvm_enabled()) {
+         return;
+     }
++    for (int i=0; i<32; i++)
++        env->gpr[i] = 0;
+     env->pc = cpu->env.kernel_addr;
+     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
+     env->satp = 0;
++    env->mie = 0;
++    env->stvec = 0;
++    env->sscratch = 0;
++    env->sepc = 0;
++    env->scause = 0;
++    env->stval = 0;
++    env->mip = 0;
+ }
+ 
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+index ed281bdce0..4a4c262820 100644
+--- a/target/riscv/kvm_riscv.h
++++ b/target/riscv/kvm_riscv.h
+@@ -21,5 +21,6 @@
+ 
+ void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
++int kvm_riscv_set_mpstate_to_kvm(RISCVCPU *cpu, int state);
+ 
+ #endif
+-- 
+2.17.1
 
 
