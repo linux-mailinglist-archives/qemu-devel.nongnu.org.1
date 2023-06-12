@@ -2,58 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4793272B95B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 09:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A61572B9F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 10:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8cPR-00067p-Hk; Mon, 12 Jun 2023 03:56:17 -0400
+	id 1q8cfg-00019q-Vc; Mon, 12 Jun 2023 04:13:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=IHII=CA=kaod.org=clg@ozlabs.org>)
- id 1q8cPP-00067d-RJ; Mon, 12 Jun 2023 03:56:15 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=IHII=CA=kaod.org=clg@ozlabs.org>)
- id 1q8cPM-0008PF-GX; Mon, 12 Jun 2023 03:56:15 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QfkX33rXfz4xGj;
- Mon, 12 Jun 2023 17:56:03 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QfkWw50Qjz4xFn;
- Mon, 12 Jun 2023 17:55:56 +1000 (AEST)
-Message-ID: <14168a66-38ba-82e6-08d2-830f6216b4e1@kaod.org>
-Date: Mon, 12 Jun 2023 09:55:54 +0200
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q8cfV-00015a-SF; Mon, 12 Jun 2023 04:12:54 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q8cfT-0002Q9-5Q; Mon, 12 Jun 2023 04:12:52 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4f63a2e1c5fso4670433e87.2; 
+ Mon, 12 Jun 2023 01:12:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686557567; x=1689149567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HOEqzFSrin5gmX0JDUeP2hg2RhP1PtWraFlhD+j+YFU=;
+ b=k62nstcpnJ5qIcmYpJoKkQSzCqANGBVR3fZjZ3+XSpN+XbErGSj3qOOP8Zlz9lqZs9
+ TtDRRJz7+OqqePTPJJKJBRb5oEq6jNNWgA7oHPVMEWVMEJVkj9qwhnnhgX4A0cijJiXv
+ 5p5AI3haqaLV8MBAJoOByiA+dTlqgpAuOCenyAMDmP1zny45tGg8CR8oeZdRTXzuL1Xx
+ cD5UL7Ef2FlTJ6QqRH0UWoHOnO/VH2DcloZF+eNZiJjoWOQE1vR7QaZGCEuCDUHdorzs
+ dFWtQ0aIQG688LtC7AfrnetE3OuHn+4kxnTX+YKHtroCPalcRxOVhdq8c74hkFvPTKF6
+ yU1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686557567; x=1689149567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HOEqzFSrin5gmX0JDUeP2hg2RhP1PtWraFlhD+j+YFU=;
+ b=IHOOFA2mNPleqU5Kpv59LUlRPNeEvJOsLoXZvSpXz5inCHTxiEhIWOWK4Oaoxj07tR
+ XQjjIfOkJbXL7MPMfyrsVCrC2CuYIr3dQBlPkATL7/qyM71nj3+pl6NgUScvsQ3P9tlU
+ RGZuKGJtCIzpNsxYIyK5mv+q3UM/JoF1NTZpjizQSJ5pIK2xTBzuLuFoXCb2V0Y6Y7CP
+ 0mBZfDF1bkj+baR/jrcVoO/Evtuv9ClOiO8Qt2REylU47wTRS/ia6upvSUhK/NRvQ5Wu
+ E8KASOQ6mCAgKyC38NHYlCrlxbhYzrjQmTpI5CXSgChqe41GaDtUzALoIkZdOyaELe2A
+ u0nQ==
+X-Gm-Message-State: AC+VfDw/vXLTFpzynZH6VHayQuicOr2+J6GwMaEoPHe7xtQ3t98N8q17
+ bFsuE9ynIasi5cZiIrDSe/LYV6FJk2A=
+X-Google-Smtp-Source: ACHHUZ66fzbe7vmqT3v5lLJLtI2MiJgZYC38TVLIJlooYeqeQeGsO8f+gbV0qrPzzCYfwWqtm/S6zA==
+X-Received: by 2002:a2e:8898:0:b0:2af:b260:fd4d with SMTP id
+ k24-20020a2e8898000000b002afb260fd4dmr2377664lji.44.1686557567100; 
+ Mon, 12 Jun 2023 01:12:47 -0700 (PDT)
+Received: from archlinux.. (ip5f5bd7f9.dynamic.kabel-deutschland.de.
+ [95.91.215.249]) by smtp.gmail.com with ESMTPSA id
+ c23-20020aa7d617000000b005148e981bd3sm4678514edr.12.2023.06.12.01.12.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jun 2023 01:12:46 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-trivial@nongnu.org,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v2 0/2] Export struct ISAParallelState
+Date: Mon, 12 Jun 2023 10:12:36 +0200
+Message-ID: <20230612081238.1742-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v20 09/21] machine: adding s390 topology to query-cpu-fast
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
- cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com
-References: <20230425161456.21031-1-pmorel@linux.ibm.com>
- <20230425161456.21031-10-pmorel@linux.ibm.com>
-Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230425161456.21031-10-pmorel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=IHII=CA=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.093, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=shentey@gmail.com; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,65 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Pierre,
-
-On 4/25/23 18:14, Pierre Morel wrote:
-> S390x provides two more topology attributes, entitlement and dedication.
-> 
-> Let's add these CPU attributes to the QAPI command query-cpu-fast.
-> 
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> ---
->   qapi/machine.json          | 9 ++++++++-
->   hw/core/machine-qmp-cmds.c | 2 ++
->   2 files changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index 1cdd83f3fd..c6a12044e0 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -55,10 +55,17 @@
->   # Additional information about a virtual S390 CPU
->   #
->   # @cpu-state: the virtual CPU's state
-> +# @dedicated: the virtual CPU's dedication (since 8.1)
-> +# @entitlement: the virtual CPU's entitlement (since 8.1)
->   #
->   # Since: 2.12
->   ##
-> -{ 'struct': 'CpuInfoS390', 'data': { 'cpu-state': 'CpuS390State' } }
-> +{ 'struct': 'CpuInfoS390',
-> +  'data': { 'cpu-state': 'CpuS390State',
-> +            'dedicated': 'bool',
-> +            'entitlement': 'CpuS390Entitlement'
-> +  }
-> +}
->   
->   ##
->   # @CpuInfoFast:
-> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-> index b98ff15089..3f35ed83a6 100644
-> --- a/hw/core/machine-qmp-cmds.c
-> +++ b/hw/core/machine-qmp-cmds.c
-> @@ -35,6 +35,8 @@ static void cpustate_to_cpuinfo_s390(CpuInfoS390 *info, const CPUState *cpu)
->       CPUS390XState *env = &s390_cpu->env;
->   
->       info->cpu_state = env->cpu_state;
-> +    info->dedicated = env->dedicated;
-> +    info->entitlement = env->entitlement;
-
-When you resend, please protect these assignments with :
-
-  #if !defined(CONFIG_USER_ONLY)
-
-Thanks,
-
-C.
-
->   #else
->       abort();
->   #endif
-
+This series incorporates rebased versions of the ISAParallelState patches o=
+f=0D
+[1] as requested by Mark.=0D
+=0D
+v2:=0D
+* Add forgotten SoB tags (Zoltan, Phil)=0D
+=0D
+Changes since [1]:=0D
+* Don't export register definitions (Phil)=0D
+* Rephrase commit message of second patch (Zoltan)=0D
+=0D
+[1] https://patchew.org/QEMU/20230521123049.312349-1-shentey@gmail.com/=0D
+=0D
+Bernhard Beschow (2):=0D
+  hw/char/parallel: Export struct ParallelState=0D
+  hw/char/parallel-isa: Export struct ISAParallelState=0D
+=0D
+ include/hw/char/parallel-isa.h | 46 ++++++++++++++++++++++++++++++++++=0D
+ include/hw/char/parallel.h     | 21 +++++++++++++++-=0D
+ hw/char/parallel-isa.c         |  1 +=0D
+ hw/char/parallel.c             | 32 +----------------------=0D
+ hw/i386/pc_piix.c              |  2 +-=0D
+ hw/i386/pc_q35.c               |  2 +-=0D
+ hw/isa/isa-superio.c           |  1 +=0D
+ hw/sparc64/sun4u.c             |  2 +-=0D
+ 8 files changed, 72 insertions(+), 35 deletions(-)=0D
+ create mode 100644 include/hw/char/parallel-isa.h=0D
+=0D
+-- =0D
+2.41.0=0D
+=0D
 
