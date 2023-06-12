@@ -2,86 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE7072CF53
+	by mail.lfdr.de (Postfix) with ESMTPS id 643B272CF50
 	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 21:26:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8n9Z-0008KT-BF; Mon, 12 Jun 2023 15:24:37 -0400
+	id 1q8n9z-0008P6-45; Mon, 12 Jun 2023 15:25:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q8n9X-0008K8-By
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:24:35 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q8n9T-0003wN-6W
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:24:35 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1a4ffe97a88so2187098fac.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 12:24:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686597858; x=1689189858;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mtxzXrH3Pc/VkJOoK3n7+8YcQLMH9TI4Stm6s5e7O7w=;
- b=AkZJfgiy19xhCN6oX/4BKjZWWWkHVeTBxVCgIXXSoYhvFeWAl8EJkrb/KpmvaEj6ca
- yTiCe8VT7J6K+huTqPWpyxdTj4j8O/IfFxQIVicm1SbNbpOQ59OAs1OTKqYabhpU0dHg
- XWzurxAotCuUVjLHBrkDQqZF6zHIatgr+C0glSx7JyIOzADfiuX5ZIOGgkmWIZjywJkW
- x6jJ8kA5RT9+ksr/cigQV1kFt49h07B6fk3QEhXIZmi2rajX+zOHv7yH2vCfGKJYbzG+
- VlrVQAVSB1IagApatVvo6fOHkNlNu2LGgPrsdr4H7wGKE/3Si89Nl73Wd8I21AV7Wy0Y
- eLww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686597858; x=1689189858;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mtxzXrH3Pc/VkJOoK3n7+8YcQLMH9TI4Stm6s5e7O7w=;
- b=QdRY+JAyqiZLYQfntYohMKHhCKwCzjvP9WXh0luaP3LKXJlzTela+p8VrQZV23k6os
- XTsIH35Y55FC5NZQBpVSnSa7LyYk/RzJKyyefmivDRE5UUqPaf/YgsDng3hrEjbk4aRH
- Ji7ISocN6R5vGXc8BRuYLSDWuj9Z/cDbQllY32QPe++fSFzvy5VLLSIAF12el2+diQ1I
- 3U0y93QP454Xq1TA9/J1AXtwhO205pTN1adcGdTToKrM4FQXQ1q7Z/4Vdgx86n7xZrXF
- YnkvgdaV41AqsrTPtglOy/z9UvTOTp1/tT3X5FfJC+if7Iic+CIwJ6ldNOnC7/UB+/h6
- DNfA==
-X-Gm-Message-State: AC+VfDyUK6W2jzxlWZCPceXDMqx+aRI1jAiPPUdMLhC+4nAWv/51ARM+
- 2clAESErPlPr6HxCJ0gvMtjsyA==
-X-Google-Smtp-Source: ACHHUZ6LtMhOJYRrtA/e2tVTSO8XK0XFuOwbdlT6Ja0WqzwMQKBDtDzaz3kCrSe3ZZThYn2n/X2cOQ==
-X-Received: by 2002:a05:6870:e493:b0:19e:eca6:7e20 with SMTP id
- v19-20020a056870e49300b0019eeca67e20mr6892400oag.45.1686597858137; 
- Mon, 12 Jun 2023 12:24:18 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
- by smtp.gmail.com with ESMTPSA id
- e14-20020a4ae0ce000000b0055afd810b50sm3435887oot.44.2023.06.12.12.24.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 12:24:17 -0700 (PDT)
-Message-ID: <ff3e57bb-ec46-aca4-b941-fdd4993a4d45@ventanamicro.com>
-Date: Mon, 12 Jun 2023 16:24:13 -0300
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q8n9x-0008OP-6Q
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:25:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q8n9v-0003zs-MB
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 15:25:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686597899;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dkDn1TGIOLa6aoRpY9ZP02KVV0tE2vkfSy1hCCVxPRk=;
+ b=PTPAWgVU9zI4txYq/XucH8DP6LSYlxePpWuQi5vQ6Np3GFI4CYuiFU0HEzuf+jv0R5+aob
+ zaeJOTaGoTWnjsWWDXgR3HZGVgQSXTJt28PZyYCV+wuZd0xbn0lFGitEO1YUFPNjeapIjR
+ Yq+OiAAPLvJaoZRvA0aTgAf7tJtLovE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-401-IdK_wLNtNhufQBx6ieRBFA-1; Mon, 12 Jun 2023 15:24:55 -0400
+X-MC-Unique: IdK_wLNtNhufQBx6ieRBFA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77AF8101A531;
+ Mon, 12 Jun 2023 19:24:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.27])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4277040D1B60;
+ Mon, 12 Jun 2023 19:24:54 +0000 (UTC)
+Date: Mon, 12 Jun 2023 14:24:52 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, libguestfs@redhat.com, qemu-block@nongnu.org
+Subject: Re: [Libguestfs] [PATCH v4 09/24] nbd: Replace bool structured_reply
+ with mode enum
+Message-ID: <vzwphyejirnqfwk6bnncsai2eftfybq3jz7bvqhrufgtbbi2pw@lnr6zcmtmzar>
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-10-eblake@redhat.com>
+ <0b857f56-8d61-dcad-d62f-5ca067c138bd@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 13/16] target/riscv/kvm.c: add multi-letter extension KVM
- properties
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-14-dbarboza@ventanamicro.com>
- <20230607-9a499522ac7de9ebcf0c8699@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230607-9a499522ac7de9ebcf0c8699@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b857f56-8d61-dcad-d62f-5ca067c138bd@yandex-team.ru>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -99,240 +80,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Jun 12, 2023 at 06:07:59PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 08.06.23 16:56, Eric Blake wrote:
+> > The upcoming patches for 64-bit extensions requires various points in
+> > the protocol to make decisions based on what was negotiated.  While we
+> > could easily add a 'bool extended_headers' alongside the existing
+> > 'bool structured_reply', this does not scale well if more modes are
+> > added in the future.  Better is to expose the mode enum added in the
+> > previous patch out to a wider use in the code base.
+> > 
+> > Where the code previously checked for structured_reply being set or
+> > clear, it now prefers checking for an inequality; this works because
+> > the nodes are in a continuum of increasing abilities, and allows us to
+> > touch fewer places if we ever insert other modes in the middle of the
+> > enum.  There should be no semantic change in this patch.
+> > 
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> > ---
+> > 
+> > v4: new patch, expanding enum idea from v3 4/14
+> > ---
+> 
+> [..]
+> 
+> > diff --git a/nbd/server.c b/nbd/server.c
+> > index 8486b64b15d..bade4f7990c 100644
+> > --- a/nbd/server.c
+> > +++ b/nbd/server.c
+
+> > @@ -1261,13 +1262,13 @@ static int nbd_negotiate_options(NBDClient *client, Error **errp)
+> >               case NBD_OPT_STRUCTURED_REPLY:
+> >                   if (length) {
+> >                       ret = nbd_reject_length(client, false, errp);
+> > -                } else if (client->structured_reply) {
+> > +                } else if (client->mode >= NBD_MODE_STRUCTURED) {
+> >                       ret = nbd_negotiate_send_rep_err(
+> >                           client, NBD_REP_ERR_INVALID, errp,
+> >                           "structured reply already negotiated");
+> >                   } else {
+> >                       ret = nbd_negotiate_send_rep(client, NBD_REP_ACK, errp);
+> > -                    client->structured_reply = true;
+> > +                    client->mode = NBD_MODE_STRUCTURED;
+> 
+> Hmm. in all other cases in server code client.mode remains zero = OLDSTYLE, which is not quite correct.
+
+Good catch.  Consider this squashed in (note that as a server we NEVER
+talk NBD_MODE_OLDSTYLE - we ripped that out back in commit 7f7dfe2a;
+but whether we end up on EXPORT_NAME or SIMPLE depends on the client's
+response to our initial flag advertisement.  The only reason I didn't
+spot it sooner is that in the server, all subsequent checks of
+client->mode grouped OLDSTYLE, EXPORT_NAME, and SIMPLE into the same
+handling.
+
+diff --git a/nbd/server.c b/nbd/server.c
+index bade4f7990c..bc6858cafe6 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -1123,10 +1123,12 @@ static int nbd_negotiate_options(NBDClient *client, Error **errp)
+     if (nbd_read32(client->ioc, &flags, "flags", errp) < 0) {
+         return -EIO;
+     }
++    client->mode = NBD_MODE_EXPORT_NAME;
+     trace_nbd_negotiate_options_flags(flags);
+     if (flags & NBD_FLAG_C_FIXED_NEWSTYLE) {
+         fixedNewstyle = true;
+         flags &= ~NBD_FLAG_C_FIXED_NEWSTYLE;
++        client->mode = NBD_MODE_SIMPLE;
+     }
+     if (flags & NBD_FLAG_C_NO_ZEROES) {
+         no_zeroes = true;
 
 
-On 6/7/23 08:48, Andrew Jones wrote:
-> On Tue, May 30, 2023 at 04:46:20PM -0300, Daniel Henrique Barboza wrote:
->> Let's add KVM user properties for the multi-letter extensions that KVM
->> currently supports: zicbom, zicboz, zihintpause, zbb, ssaia, sstc,
->> svinval and svpbmt.
->>
->> As with the recently added MISA properties we're also going to add a
->> 'user_set' flag in each of them. The flag will be set only if the user
->> chose an option that's different from the host and will require extra
->> handling from the KVM driver.
->>
->> However, multi-letter CPUs have more cases to cover than MISA
->> extensions, so we're adding an extra 'supported' flag as well. This flag
->> will reflect if a given extension is supported by KVM, i.e. KVM knows
->> how to handle it. This is determined during KVM extension discovery in
->> kvm_riscv_init_multiext_cfg(), where we test for EINVAL errors. Any
->> other error different from EINVAL will cause an abort.
-> 
-> I wish that was ENOENT, but I suppose that ship sailed.
-> 
->>
->> The 'supported' flag will then be used later on to give an exception for
->> users that are disabling multi-letter extensions that are unknown to
->> KVM.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/kvm.c | 136 +++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 136 insertions(+)
->>
->> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
->> index bb1dafe263..b4193a10d8 100644
->> --- a/target/riscv/kvm.c
->> +++ b/target/riscv/kvm.c
->> @@ -202,6 +202,99 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
->>       }
->>   }
->>   
->> +typedef struct RISCVCPUMultiExtConfig {
->> +    const char *name;
-> 
-> No description? I'd prefer we use the same cfg struct for single-letter
-> and multi-letter extensions. We can use a union to overlap cpu_cfg_offset
-> and misa_bit.
-> 
->> +    int kvm_reg_id;
->> +    int cpu_cfg_offset;
->> +    bool supported;
->> +    bool user_set;
->> +} RISCVCPUMultiExtConfig;
->> +
->> +#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
->> +
->> +/*
->> + * KVM ISA Multi-letter extensions. We care about the order
->> + * since it'll be used to create the ISA string later on.
->> + * We follow the same ordering rules of isa_edata_arr[]
->> + * from target/riscv/cpu.c.
->> + */
->> +static RISCVCPUMultiExtConfig kvm_multi_ext_cfgs[] = {
->> +    {.name = "zicbom", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZICBOM,
->> +     .cpu_cfg_offset = CPUCFG(ext_icbom)},
->> +    {.name = "zicboz", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZICBOZ,
->> +     .cpu_cfg_offset = CPUCFG(ext_icboz)},
->> +    {.name = "zihintpause", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZIHINTPAUSE,
->> +     .cpu_cfg_offset = CPUCFG(ext_zihintpause)},
->> +    {.name = "zbb", .kvm_reg_id = KVM_RISCV_ISA_EXT_ZBB,
->> +     .cpu_cfg_offset = CPUCFG(ext_zbb)},
->> +    {.name = "ssaia", .kvm_reg_id = KVM_RISCV_ISA_EXT_SSAIA,
->> +     .cpu_cfg_offset = CPUCFG(ext_ssaia)},
->> +    {.name = "sstc", .kvm_reg_id = KVM_RISCV_ISA_EXT_SSTC,
->> +     .cpu_cfg_offset = CPUCFG(ext_sstc)},
->> +    {.name = "svinval", .kvm_reg_id = KVM_RISCV_ISA_EXT_SVINVAL,
->> +     .cpu_cfg_offset = CPUCFG(ext_svinval)},
->> +    {.name = "svpbmt", .kvm_reg_id = KVM_RISCV_ISA_EXT_SVPBMT,
->> +     .cpu_cfg_offset = CPUCFG(ext_svpbmt)},
-> 
-> As pointed out in the last patch, it'd be nice to share names (and
-> descriptions) with TCG.
-> 
->> +};
->> +
->> +static void kvm_cpu_cfg_set(RISCVCPU *cpu, RISCVCPUMultiExtConfig *multi_ext,
->> +                            uint32_t val)
->> +{
->> +    int cpu_cfg_offset = multi_ext->cpu_cfg_offset;
->> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->> +
->> +    *ext_enabled = val;
->> +}
->> +
->> +static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
->> +                                RISCVCPUMultiExtConfig *multi_ext)
->> +{
->> +    int cpu_cfg_offset = multi_ext->cpu_cfg_offset;
->> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
->> +
->> +    return *ext_enabled;
->> +}
->> +
->> +static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
->> +                                      const char *name,
->> +                                      void *opaque, Error **errp)
->> +{
->> +    RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
->> +    RISCVCPU *cpu = RISCV_CPU(obj);
->> +    bool value, host_val;
->> +
->> +    if (!visit_type_bool(v, name, &value, errp)) {
->> +        return;
->> +    }
->> +
->> +    host_val = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
->> +
->> +    /*
->> +     * Ignore if the user is setting the same value
->> +     * as the host.
->> +     */
->> +    if (value == host_val) {
->> +        return;
->> +    }
->> +
->> +    if (!multi_ext_cfg->supported) {
->> +        /*
->> +         * Error out if the user is trying to enable an
->> +         * extension that KVM doesn't support. Ignore
->> +         * option otherwise.
->> +         */
->> +        if (value) {
->> +            error_setg(errp, "KVM does not support disabling extension %s",
->> +                       multi_ext_cfg->name);
->> +        }
->> +
->> +        return;
->> +    }
->> +
->> +    multi_ext_cfg->user_set = true;
->> +    kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
->> +}
->> +
->>   static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>   {
->>       int i;
->> @@ -216,6 +309,15 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>           object_property_set_description(cpu_obj, misa_cfg->name,
->>                                           misa_cfg->description);
->>       }
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *multi_cfg = &kvm_multi_ext_cfgs[i];
->> +
->> +        object_property_add(cpu_obj, multi_cfg->name, "bool",
->> +                            NULL,
-> 
-> You have a getter function, so we might as well set it here, no?
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
-I was going back to do this change then realized that we don't have a get() for
-this case. We have kvm_cpu_cfg_get(), which is a way of retrieving the value of
-cpu->cfg.<attr>. It's not the same as a get() impl for object_property_add().
-
-
-Thanks,
-
-
-Daniel
-
-
-
-> 
->> +                            kvm_cpu_set_multi_ext_cfg,
->> +                            NULL, multi_cfg);
->> +    }
->>   }
->>   
->>   static int kvm_riscv_get_regs_core(CPUState *cs)
->> @@ -531,6 +633,39 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
->>       env->misa_ext = env->misa_ext_mask;
->>   }
->>   
->> +static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
->> +{
->> +    CPURISCVState *env = &cpu->env;
->> +    uint64_t val;
->> +    int i, ret;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
->> +        struct kvm_one_reg reg;
->> +
->> +        reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
->> +                                  multi_ext_cfg->kvm_reg_id);
->> +        reg.addr = (uint64_t)&val;
->> +        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
->> +        if (ret != 0) {
->> +            if (ret == -EINVAL) {
->> +                /* Silently default to 'false' if KVM does not support it. */
->> +                multi_ext_cfg->supported = false;
->> +                val = false;
->> +            } else {
->> +                error_report("Unable to read ISA_EXT KVM register %s, "
->> +                             "error %d", multi_ext_cfg->name, ret);
->> +                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
-> 
-> I don't think we usually bother cleaning up when exiting, we just let exit
-> do it, but OK.
-> 
->> +                exit(EXIT_FAILURE);
->> +            }
->> +        } else {
->> +            multi_ext_cfg->supported = true;
->> +        }
->> +
->> +        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
->> +    }
->> +}
->> +
->>   void kvm_riscv_init_user_properties(Object *cpu_obj)
->>   {
->>       RISCVCPU *cpu = RISCV_CPU(cpu_obj);
->> @@ -543,6 +678,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
->>       kvm_riscv_add_cpu_user_properties(cpu_obj);
->>       kvm_riscv_init_machine_ids(cpu, &kvmcpu);
->>       kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
->> +    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
->>   
->>       kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
->>   }
->> -- 
->> 2.40.1
->>
->>
-> 
-> Thanks,
-> drew
 
