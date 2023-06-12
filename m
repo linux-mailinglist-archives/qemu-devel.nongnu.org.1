@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F1972DA66
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 09:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A37172B64C
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 06:12:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8y54-0005xs-TB; Tue, 13 Jun 2023 03:04:42 -0400
+	id 1q8YuE-0003kJ-RU; Mon, 12 Jun 2023 00:11:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q8y52-0005xG-Tv
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 03:04:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q8y50-0003NI-W3
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 03:04:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686639878;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=NVWRoN9LCyMgvdfb7vW8I5G7oOE97+Hjd/nQcnjjVN0=;
- b=eSHEaQOu0RP0qmrTinE3i6qXzz5k6i9fVL/8/26Y8k9QDt8h5dY501Fv4lvsGdwMWheH+G
- HfzyTxOikYJEcktoED9DolSPeCZ+t8dvNOpNVH58v9g1xSiHZBK2e1UJ8hKuQL64RffyCM
- A5WdHVE9OOKAuFZ8lwq0wDHmISqw5RI=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-633-voIjIbBhMyunRpibuoanOg-1; Tue, 13 Jun 2023 03:04:32 -0400
-X-MC-Unique: voIjIbBhMyunRpibuoanOg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 605133C0F180;
- Tue, 13 Jun 2023 07:04:32 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.231])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E8DB62166B25;
- Tue, 13 Jun 2023 07:04:31 +0000 (UTC)
-Date: Mon, 12 Jun 2023 00:10:16 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, dlemoal@kernel.org, dmitry.fomichev@wdc.com,
- hare@suse.de, Markus Armbruster <armbru@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Eric Blake <eblake@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [RFC 1/4] docs/qcow2: add the zoned format feature
-Message-ID: <20230612041016.GA2446610@fedora>
-References: <20230605104108.125270-1-faithilikerun@gmail.com>
- <20230605104108.125270-2-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q8YuA-0003jm-AV; Mon, 12 Jun 2023 00:11:47 -0400
+Received: from mail-ua1-x92e.google.com ([2607:f8b0:4864:20::92e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q8Yu8-00086W-92; Mon, 12 Jun 2023 00:11:45 -0400
+Received: by mail-ua1-x92e.google.com with SMTP id
+ a1e0cc1a2514c-786e637f06dso1338740241.2; 
+ Sun, 11 Jun 2023 21:11:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686543103; x=1689135103;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qQ3xHbf4POZ0yqbsGW7+wM4C8k3ij6uEO9UMZXrKipI=;
+ b=U66qSc1pEufTwI9Mwhm0mzY7uPnL/SaC4aldnn3m+ZbY4/HF+b6TdNe8QoIEzZLA73
+ NTYXPAfuutPhYHrsFOe0qTCD6SOE+EKD1BYBbB/hU+GmiTRFY1OL/L+HwQKLA8XeZYrH
+ zLChhXIB1PHCqJZtKWw8w2zEQvvyWWd1YfwZklzff2gf6PUkFGqhqBBheLcZX1KX+grs
+ CK/bxI0ND4QkNSZwZ0D+/Na1d73Ub+2iyXKvcHMGiGXVTCmUF3vCNM2Oo9LCAc5si5iW
+ DaXx1FVj8lnCPxLwAx9+PMOcFyh0ywmGZmX1/camH1WE/DCrZ2ZZEfoBi/HYUUd0y4sh
+ FwNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686543103; x=1689135103;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qQ3xHbf4POZ0yqbsGW7+wM4C8k3ij6uEO9UMZXrKipI=;
+ b=MKjOly6jb384F49dPaQsOnvX2UJrf4w8at2DaXUrUaSq9ng2d/9ggqzwTpY22pOPWb
+ uFvMDCz0W5onNRQtoTm1xPnM2YNTUSpLnKcyeApsKnBQ/RXyJd6GH+nBVfEWvNZlvwGB
+ ZLqajvY10Ie6Ys+8fzlk7ietHUsQd9oqVJXgHAMEbVR90327y8OSKrcwnsQfLu+u1xhs
+ LimlfSNYHaBeb6sBmDz/wMU9pEkEsrE4dBvpdJPQ/6o1BB4UzQFbtbKdpBUqzYUpSTnZ
+ c3J+SmGvKADOEH1Ts1PkVrDEB0A0QvvWWrbVMWWH/V86Io4g80s48kMo4cclFnmDUu8x
+ jCyg==
+X-Gm-Message-State: AC+VfDzsM8iBiqkbm5252rhqt1uVjk0uSosww23KPKUXn8hqhhJsyuxG
+ xa1FNTY4JmbfKrVFaIPA1EIn63wVHve8+uws7Ms=
+X-Google-Smtp-Source: ACHHUZ6qyzd2dlHYAj4SaFHDrxK0wMuxTV2M1GP2CLtpI1byGmpmXJU3v9spwgsJJ3s50DzORQF+XPKgYW1Z/GjPIlE=
+X-Received: by 2002:a05:6102:2da:b0:43b:4550:3a06 with SMTP id
+ h26-20020a05610202da00b0043b45503a06mr3190160vsh.31.1686543102754; Sun, 11
+ Jun 2023 21:11:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="TlKRIjRMDv4f7IB/"
-Content-Disposition: inline
-In-Reply-To: <20230605104108.125270-2-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230609055936.3925438-1-tommy.wu@sifive.com>
+In-Reply-To: <20230609055936.3925438-1-tommy.wu@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 12 Jun 2023 14:11:16 +1000
+Message-ID: <CAKmqyKMoeAn_7h=S0S=QR6YcYmvTd5VfT749Umm1BprUTrAjeg@mail.gmail.com>
+Subject: Re: [PATCH] hw/intc: If mmsiaddrcfgh.L == 1, smsiaddrcfg and
+ smsiaddrcfgh are read-only.
+To: Tommy Wu <tommy.wu@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Frank Chang <frank.chang@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Anup Patel <anup@brainfault.org>, Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Ivan Klokov <ivan.klokov@syntacore.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92e;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,112 +90,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Jun 9, 2023 at 4:01=E2=80=AFPM Tommy Wu <tommy.wu@sifive.com> wrote=
+:
+>
+> According to the `The RISC-V Advanced Interrupt Architecture`
+> document, if register `mmsiaddrcfgh` of the domain has bit L set
+> to one, then `smsiaddrcfg` and `smsiaddrcfgh` are locked as
+> read-only alongside `mmsiaddrcfg` and `mmsiaddrcfgh`.
+>
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
 
---TlKRIjRMDv4f7IB/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks!
 
-On Mon, Jun 05, 2023 at 06:41:05PM +0800, Sam Li wrote:
-> Add the specs for the zoned format feature of the qcow2 driver. Once
-> the zoned_profile is set to `zbc`, then the qcow2 file can be taken
-> as zoned devices and passed through by virtio-blk device to the guest.
->=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
+Applied to riscv-to-apply.next
+
+Alistair
+
 > ---
->  docs/system/qemu-block-drivers.rst.inc | 31 ++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
->=20
-> diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-bl=
-ock-drivers.rst.inc
-> index 105cb9679c..fdcf343652 100644
-> --- a/docs/system/qemu-block-drivers.rst.inc
-> +++ b/docs/system/qemu-block-drivers.rst.inc
-> @@ -172,6 +172,37 @@ This section describes each format and the options t=
-hat are supported for it.
->      filename`` to check if the NOCOW flag is set or not (Capital 'C' is
->      NOCOW flag).
-> =20
-> +  .. option:: zoned_profile
-> +
-> +    The option configures the zoned format feature on the qcow2 driver. =
-If
-> +    this is set to ``zbc``, then it follows the basics of ZBC/ZAC protoc=
-ol.
-
-What about virtio-blk? NVMe ZNS? Please indicate what effect the profile
-has and whether it works with all emulated storage controllers that
-support zoned storage.
-
-> +
-> +  .. option:: zone_size
-> +
-> +    The size of a zone of the zoned device. The zoned device have the sa=
-me
-
-"in bytes"? Please document the units.
-
-> +    size of zones with an optional smaller last zone.
-
-"The device is divided into zones of this size with the exception of the
-last zone, which may be smaller."
-
-> +
-> +  .. option:: zone_capacity
-> +
-> +    The capacity of a zone of the zoned device.
-
-This can be expanded:
-
-  The initial capacity value for all zones. The capacity must be less
-  than or equal to zone size. If the last zone is smaller, then its
-  capacity is capped.
-
-> The zoned device follows the
-> +    ZBC protocol tends to have the same size as its zone.
-> +
-> +  .. option:: zone_nr_conv
-> +
-> +    The number of conventional zones of the zoned device.
-> +
-> +  .. option:: max_open_zones
-> +
-> +    The maximal allowed open zones.
-> +
-> +  .. option:: max_active_zones
-> +
-> +    The limit of the zones with implicit open, explicit open or closed s=
-tate.
-> +
-> +  .. option:: max_append_sectors
-> +
-> +    The maximal sectors that is allowed to append to zones while writing.
-
-Does "sectors" mean 512B blocks or logical block size?
-
-> +
->  .. program:: image-formats
->  .. option:: qed
-> =20
-> --=20
-> 2.40.1
->=20
-
---TlKRIjRMDv4f7IB/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSGmqgACgkQnKSrs4Gr
-c8icYAf9H+k3Xw8SblCF9um7MdeU0WzMChS27CaDi9TPSNbfGC4k6Z0sdx1Di3lW
-ZrO4P8ygJZ/vPV5AJg1+vWdwJGXAITi+xBWxTW8owhKmW0oyE+YWl7LtiS74/6Ip
-V88m0dyPHD6H1HT99XehyogaxDM75XgGQXAyldm48zCwGwy/nafPt9Sfs3Hh0ixo
-+l9NJl3z2Sbk8TXE15RI/QreshqIlRodpG7PxZzl9VWBdlrMangjdPQ04DCpmiEE
-nJwGzJQ2hFlPBI9/oFvkiV0ROR8Jjmt2vDHo/uYwtePC8hYp1Wq+Spu3zV3f6OL+
-Q3IOrDGwC5prSigK90R2/SKF7+MFHQ==
-=50Vv
------END PGP SIGNATURE-----
-
---TlKRIjRMDv4f7IB/--
-
+>  hw/intc/riscv_aplic.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+> index afc5b54dbb..4bdc6a5d1a 100644
+> --- a/hw/intc/riscv_aplic.c
+> +++ b/hw/intc/riscv_aplic.c
+> @@ -688,13 +688,13 @@ static void riscv_aplic_write(void *opaque, hwaddr =
+addr, uint64_t value,
+>           * domains).
+>           */
+>          if (aplic->num_children &&
+> -            !(aplic->smsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+> +            !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+>              aplic->smsicfgaddr =3D value;
+>          }
+>      } else if (aplic->mmode && aplic->msimode &&
+>                 (addr =3D=3D APLIC_SMSICFGADDRH)) {
+>          if (aplic->num_children &&
+> -            !(aplic->smsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+> +            !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+>              aplic->smsicfgaddrH =3D value & APLIC_xMSICFGADDRH_VALID_MAS=
+K;
+>          }
+>      } else if ((APLIC_SETIP_BASE <=3D addr) &&
+> --
+> 2.31.1
+>
+>
 
