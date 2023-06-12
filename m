@@ -2,86 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F04872CEBD
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF0172CED2
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:57:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8mev-0008VJ-P1; Mon, 12 Jun 2023 14:52:57 -0400
+	id 1q8mis-0001J4-GB; Mon, 12 Jun 2023 14:57:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q8meu-0008Ue-0c
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:52:56 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q8mes-0005Fv-7u
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 14:52:55 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1a67ea77c3bso1564631fac.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 11:52:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686595972; x=1689187972;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aD8qe9csH0sOC8p8kSAWXpM8VCNQTyu5/Z78QX/GAEc=;
- b=cvKo0C2PGqn5BIw93+Gp/u9ayiwdlWxeY1M6TJ02v/C5a8/1jvK9qbvXg7cIxYlH7a
- fC8gccKcVLbxVP928zMDyiKeIKGDomMz8AU1H48BAWuIt6htQvh9u3eG4WTcwIBGxOIk
- geBxmMHwnfvhDQ8pmwykj5urgguM2Kk7qbu5m5uTNaxyzOm3J+I0jW4A1ZgMfxzOwghg
- nSuO4Knw9LcDbAuRFUiT2QAAVyMl4N67iipnWo8r/ZMMTQgZ43Xj/bHdSjTzlhdvoI8S
- NUOHSCt+JuLps0Z6g6YXsZ7UYUpdXMMD2bQdtrFairBjlWl4P8fZLWmIZbIfMnVchVHv
- DEnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686595972; x=1689187972;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aD8qe9csH0sOC8p8kSAWXpM8VCNQTyu5/Z78QX/GAEc=;
- b=isZqmt4Fezv0BKwtX8yGswibqJy3QLwX7RZsy/AUnVC7RWxk0qVQEOc4CtAEk1Pgd/
- OBkkZKsxKeBOrXD1UNrJCW5PPubqrkVedaquWDVRVnWur410ldPFN3pphh4CxBXC59OB
- EbbHOil3NIcswIe+dRa/zIglKQjNzGCCObZ5c98yG5O/maRA9iwhL7nzYfZGp7nfDj61
- Ck8S+yzBBElJoTDLwt7q6Osna/DatKUqECRrIJRxk3KE8MaGaNK3R+0guqmnvnyUxj/l
- lPiWlzOLylla4r4iROoH4Dcq28IGQCZNXceBzNGN7k70HuyotGb5J/Nx3yYtcLaNALUI
- uaBg==
-X-Gm-Message-State: AC+VfDw2x90uHoKflfcnaj1L5IHmPYt0ii/cxglXCrwatwvsHwhP9o2/
- U0EstbUxIMa6poVk1ay+xl93yA==
-X-Google-Smtp-Source: ACHHUZ7AdBkpfeSspDu8brOXhRQQ6LPLPkKu7QL7WJBrDKOsc2oMTbThMttdWjf+L4ja3FxFnF7N6Q==
-X-Received: by 2002:a05:6870:d2a5:b0:191:f657:13ee with SMTP id
- d37-20020a056870d2a500b00191f65713eemr6730583oae.11.1686595972605; 
- Mon, 12 Jun 2023 11:52:52 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.52])
- by smtp.gmail.com with ESMTPSA id
- k17-20020a0568301bf100b006a62aac5736sm4192109otb.28.2023.06.12.11.52.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 11:52:52 -0700 (PDT)
-Message-ID: <11aee932-be06-ed42-bf7e-09c8e3ed1045@ventanamicro.com>
-Date: Mon, 12 Jun 2023 15:52:48 -0300
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q8mip-0001Hw-Ng; Mon, 12 Jun 2023 14:56:59 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q8mio-0006EO-2V; Mon, 12 Jun 2023 14:56:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=SuU8/W9tK/QTuhyvDmeFj2DmHDJaYC+bvoboIo1UDQw=; b=hMhg3F8gTjDBSA4hbxHyIZ7Zuf
+ SsLay0MG60rDHyAs3V17fY7Ih2RSZOpgFDb1/bnjmz5ZGA/ySPwQRpiKxMUx4xQ89mT0eA9XRuAy1
+ X386fkPHUroiKMF+AI0jcPRjDxMhfjgLY28seCXwIHLj8w4bZk/fe+htYYtpbe03ZIjoJHIJ21rTG
+ h9d9VPJpNXLjflO9vus8Us3jQLvMyeC8phBI46/RSkNPDYevzRwsgGNdH+3qRCxGl9sDXBFlyVCY4
+ IjFWcud1WjhEicF1okVecHxL5js4ZsJX3ONBkcwd7K3wDBAuMK5zkcMzfnkRHxWHDACMk10k2QUQ+
+ xZ1vSROakI987shyRBJ3eP9q4j7IwadJXZ5eFAQT6bke6VNZdUjI1rYAmHuhZiCZWR9d0HqAUGvHL
+ c7aS3DJQm4ybSAwoIelDTxcdY3sSarlUc+cWv4A2xpAT3SgOnxtphFbYpPgCYRVTd4Y1lC3mwdWXN
+ PsMSKuBbyt/mhTiqGeQXmO6EF1Fyilw95Komy8O1sAuAjiMwpbgTUDE4pxLNRwkdoT3AixFvL1Mxg
+ 4Eojsu1F88gbxShENZqZpJK3QGrd9qJfWAKyRg1woAfVja6YOnkk3Y/ugeRlgdOOXwgb0FcoAGoGB
+ xJ50W/lNJqgOG0l+uDqXPWHIvD1YWvseD9VYNvfPk=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q8mid-0009GE-DR; Mon, 12 Jun 2023 19:56:51 +0100
+Message-ID: <6c52add1-863e-b3d8-5711-979d064df2b2@ilande.co.uk>
+Date: Mon, 12 Jun 2023 19:56:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 03/16] target/riscv/cpu.c: restrict 'mvendorid' value
 Content-Language: en-US
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, Andrew Jones <ajones@ventanamicro.com>
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-4-dbarboza@ventanamicro.com>
- <CAKmqyKNm1cH+fqqNKtm6+bKovdCqajoAcbTpWtA7BH=wLK5j+Q@mail.gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKmqyKNm1cH+fqqNKtm6+bKovdCqajoAcbTpWtA7BH=wLK5j+Q@mail.gmail.com>
+To: Bernhard Beschow <shentey@gmail.com>, jsnow@redhat.com,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
+ <20230609185119.691152-3-mark.cave-ayland@ilande.co.uk>
+ <3A202437-705C-49FB-BB8D-FA3CEFF0CAD7@gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <3A202437-705C-49FB-BB8D-FA3CEFF0CAD7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x36.google.com
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 2/5] cmd646: create separate header and QOM type for
+ CMD646_IDE
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,121 +81,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 12/06/2023 10:21, Bernhard Beschow wrote:
 
-
-On 6/12/23 00:56, Alistair Francis wrote:
-> On Wed, May 31, 2023 at 5:49 AM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
+> Am 9. Juni 2023 18:51:16 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+>> This will enable CMD646-specific fields to be added to CMD6464IDEState in
+>> future.
 >>
->> We're going to change the handling of mvendorid/marchid/mimpid by the
->> KVM driver. Since these are always present in all CPUs let's put the
->> same validation for everyone.
->>
->> It doesn't make sense to allow 'mvendorid' to be different than it
->> is already set in named (vendor) CPUs. Generic (dynamic) CPUs can have
->> any 'mvendorid' they want.
->>
->> Change 'mvendorid' to be a class property created via
->> 'object_class_property_add', instead of using the DEFINE_PROP_UINT32()
->> macro. This allow us to define a custom setter for it that will verify,
->> for named CPUs, if mvendorid is different than it is already set by the
->> CPU. This is the error thrown for the 'veyron-v1' CPU if 'mvendorid' is
->> set to an invalid value:
->>
->> $ qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mvendorid=2
->> qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mvendorid=2:
->>      Unable to change veyron-v1-riscv-cpu mvendorid (0x61f)
-> 
-> Is this something we want to enforce? What if someone wanted to test
-> using the veyron-v1 CPU but they wanted to change some properties. I
-> don't see an advantage in not letting them do that
-
-The idea is to keep things simpler for us. As it is today we forbid users to
-enable/disable extensions for vendor CPUs. Doing the same thing for
-mvendorid/marchid/mimpid seems consistent with what we're already doing.
-
-Also, guest software might rely on vendor IDs from the CPU to take certain
-actions, and if the user is free to change the CPU ID from vendor CPUs the
-software will misbehave and the user can claim "I created a veyron-v1 CPU and
-the guest it's like like it's not". Allowing mvendorid and friends to be changed
-doesn't do much for users (we forbid enabling/disabling extensions, so what's
-to gain from changing machine IDs?) and it can be a potential source of bugs.
-
-
-
-Thanks,
-
-
-Daniel
-
-
-> 
-> Alistair
-> 
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >> ---
->>   target/riscv/cpu.c | 31 ++++++++++++++++++++++++++++++-
->>   1 file changed, 30 insertions(+), 1 deletion(-)
+>> hw/ide/cmd646.c         |  4 +++-
+>> include/hw/ide/cmd646.h | 38 ++++++++++++++++++++++++++++++++++++++
+>> 2 files changed, 41 insertions(+), 1 deletion(-)
+>> create mode 100644 include/hw/ide/cmd646.h
 >>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 72f5433776..bcd69bb032 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -1723,7 +1723,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
->>   static Property riscv_cpu_properties[] = {
->>       DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+>> diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
+>> index 20f1e41d57..a3e227fba7 100644
+>> --- a/hw/ide/cmd646.c
+>> +++ b/hw/ide/cmd646.c
+>> @@ -33,6 +33,7 @@
+>> #include "sysemu/reset.h"
 >>
->> -    DEFINE_PROP_UINT32("mvendorid", RISCVCPU, cfg.mvendorid, 0),
->>       DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_MARCHID),
->>       DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIMPID),
+>> #include "hw/ide/pci.h"
+>> +#include "hw/ide/cmd646.h"
+>> #include "trace.h"
 >>
->> @@ -1810,6 +1809,32 @@ static const struct TCGCPUOps riscv_tcg_ops = {
->>   #endif /* !CONFIG_USER_ONLY */
->>   };
+>> /* CMD646 specific */
+>> @@ -339,9 +340,10 @@ static void cmd646_ide_class_init(ObjectClass *klass, void *data)
+>> }
 >>
->> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
->> +{
->> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
->> +}
+>> static const TypeInfo cmd646_ide_info = {
+>> -    .name          = "cmd646-ide",
+>> +    .name          = TYPE_CMD646_IDE,
+>>      .parent        = TYPE_PCI_IDE,
+>>      .class_init    = cmd646_ide_class_init,
+>> +    .instance_size = sizeof(CMD646IDEState),
+>> };
+>>
+>> static void cmd646_ide_register_types(void)
+>> diff --git a/include/hw/ide/cmd646.h b/include/hw/ide/cmd646.h
+>> new file mode 100644
+>> index 0000000000..4780b1132c
+>> --- /dev/null
+>> +++ b/include/hw/ide/cmd646.h
+>> @@ -0,0 +1,38 @@
+>> +/*
+>> + * QEMU IDE Emulation: PCI cmd646 support.
+>> + *
+>> + * Copyright (c) 2003 Fabrice Bellard
+>> + * Copyright (c) 2006 Openedhand Ltd.
+>> + *
+>> + * Permission is hereby granted, free of charge, to any person obtaining a copy
+>> + * of this software and associated documentation files (the "Software"), to deal
+>> + * in the Software without restriction, including without limitation the rights
+>> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+>> + * copies of the Software, and to permit persons to whom the Software is
+>> + * furnished to do so, subject to the following conditions:
+>> + *
+>> + * The above copyright notice and this permission notice shall be included in
+>> + * all copies or substantial portions of the Software.
+>> + *
+>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+>> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+>> + * THE SOFTWARE.
+>> + */
 >> +
->> +static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
->> +                              void *opaque, Error **errp)
->> +{
->> +    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
->> +    RISCVCPU *cpu = RISCV_CPU(obj);
->> +    uint32_t prev_val = cpu->cfg.mvendorid;
->> +    uint32_t value;
+>> +#ifndef HW_IDE_CMD646_H
+>> +#define HW_IDE_CMD646_H
 >> +
->> +    if (!visit_type_uint32(v, name, &value, errp)) {
->> +        return;
->> +    }
+>> +#define TYPE_CMD646_IDE "cmd646-ide"
+>> +OBJECT_DECLARE_SIMPLE_TYPE(CMD646IDEState, CMD646_IDE)
 >> +
->> +    if (!dynamic_cpu && prev_val != value) {
->> +        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
->> +                   object_get_typename(obj), prev_val);
->> +        return;
->> +    }
+>> +#include "hw/ide/pci.h"
 >> +
->> +    cpu->cfg.mvendorid = value;
->> +}
->> +
->>   static void riscv_cpu_class_init(ObjectClass *c, void *data)
->>   {
->>       RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
->> @@ -1841,6 +1866,10 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
->>       cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
->>       cc->tcg_ops = &riscv_tcg_ops;
->>
->> +    object_class_property_add(c, "mvendorid", "uint32", NULL,
->> +                              cpu_set_mvendorid,
->> +                              NULL, NULL);
->> +
->>       device_class_set_props(dc, riscv_cpu_properties);
->>   }
->>
->> --
->> 2.40.1
->>
->>
+>> +struct CMD646IDEState {
+>> +    PCIIDEState parent_obj;
+> 
+> No public / private sections here? From the naming this attribute is often considered private and the rest public. I guess what this scheme communicates is that `parent_obj` should be accessed via `IDE_PCI()` only.
+
+Whilst the public/private comments were included in the original QOM documentation, 
+it's not something that tends to be used now. These days people are looking to use 
+interfaces such as SysBus to indicated which MemoryRegions and IRQs are "public", but 
+certainly the detail is still up for active discussion.
+
+The QOM cast macros will allow the object referenced to be converted to any of the 
+parent types directly, so indeed there should be no direct references to parent_obj.
+
+
+ATB,
+
+Mark.
+
 
