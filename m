@@ -2,92 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A7A72C66C
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3BE72C68D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:55:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8hxJ-00022C-0g; Mon, 12 Jun 2023 09:51:37 -0400
+	id 1q8hzu-0003Bn-O2; Mon, 12 Jun 2023 09:54:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q8hxH-00020U-E0
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:51:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q8hzs-0003BR-ML; Mon, 12 Jun 2023 09:54:16 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q8hxF-0007x4-Si
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:51:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686577893;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kKsNyRdaPXOi49/DYV89yMCnk97ouiTuCV4P/tGhP58=;
- b=WP3sMlFPj1GVO3hGZ2v11ohsmATM1iqenaB/ce6UqUI5lCT8FJZY9gO7yby10RzzBFyVgB
- qe/AKt8AbnOuYLxoKl7e1YbdvQX33xurAR0Yg7bKOMTxPMMcvr2fiZqO1o98kJKOrZRf+n
- FtzQULhTPt+PrJ9KRAfE3O+Siub8gtg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-DzLwjXd8Ni2_7HC2hwc4_w-1; Mon, 12 Jun 2023 09:51:28 -0400
-X-MC-Unique: DzLwjXd8Ni2_7HC2hwc4_w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-95847b4b4e7so511954766b.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 06:51:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686577886; x=1689169886;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kKsNyRdaPXOi49/DYV89yMCnk97ouiTuCV4P/tGhP58=;
- b=S9AwhWknznjVS1ClfLTxEpfHWTV9cxEFULuEqtuh2iszKRVn7ufyM4BITrqJYILFWb
- Xj0nTkzjxKPne8Ka/LNOzwrfIMl+TUVpV/K6qCsDW4IU0GT9vcjtLPGviSP4Kb1bW/Hw
- WOS3JmqPpveoee2PbcwXma6tefX/n+Fk8ygYcgwtZwD5qSi2boSe+KiGWkKE5H0sgvws
- vtHIK1JAcupdZNB+o54nptstlsiOw9PVf+9cOHN6z9b16Jprj1pCGTbKg2d6UmYENY9p
- n98NrRd5I3cRIajI5se0NZpRTVIdJUJUZl+85snqNyZ5tiG6zIhWrf+xmhrgJL3oNJqN
- Q1PA==
-X-Gm-Message-State: AC+VfDzHf56OAvKvF+a+IIHdOc0XF2CMchVoxMytMDcLokUCnb3uc84h
- l2PQDMxPCYWNdYq3GuOfZYhT429FSzgKY43Ez84y2Z2sSn1HFR6jApw2zRDsE2lQ9vkh6WVB/ZY
- J2OY3S/XBrB2Oc+s60ZZrpjM=
-X-Received: by 2002:a17:907:a427:b0:94a:9f9a:b3c4 with SMTP id
- sg39-20020a170907a42700b0094a9f9ab3c4mr10983346ejc.49.1686577886028; 
- Mon, 12 Jun 2023 06:51:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4mTHUqKNUkzDCoOB4i/gc4Yp89Z/vYmpc43/bCu0vslYkEsXwC7W3QqQHJTTFgMIxewY4AyQ==
-X-Received: by 2002:a17:907:a427:b0:94a:9f9a:b3c4 with SMTP id
- sg39-20020a170907a42700b0094a9f9ab3c4mr10983334ejc.49.1686577885795; 
- Mon, 12 Jun 2023 06:51:25 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- um14-20020a170906cf8e00b00977d14d89fesm5219969ejb.34.2023.06.12.06.51.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jun 2023 06:51:25 -0700 (PDT)
-Date: Mon, 12 Jun 2023 15:51:24 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 05/15] hw/pci-host/q35: Initialize PCI_HOST_BYPASS_IOMMU
- property from board code
-Message-ID: <20230612155124.346595a2@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230611103412.12109-6-shentey@gmail.com>
-References: <20230611103412.12109-1-shentey@gmail.com>
- <20230611103412.12109-6-shentey@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q8hzp-00086p-JU; Mon, 12 Jun 2023 09:54:16 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:2c24:0:640:73f8:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 3D2615EE4B;
+ Mon, 12 Jun 2023 16:54:00 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8910::1:11] (unknown
+ [2a02:6b8:b081:8910::1:11])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id wrZs9T1OkuQ0-kRyKBAMQ; Mon, 12 Jun 2023 16:53:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1686578039; bh=PW2hM1EgaP8iyiCCmIGq7e3QyKoi2Af4ltVPBUE/hd0=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=XqbSo2y4qoF9ZM9mWoBCt2gk4vljT1s+dYVipV5/90Od1ojtji3Vp8xu43rDSvGv+
+ DcgwCChUo0QO8pUykbo7V2VelTTTlGif11KfX1VamCHgMrx1DdOyrDLlp/CAKlCcs6
+ PC3jLXlgmLj8FRvBRUTLOBwiNeZt51LFp4aByg+Q=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <6042078f-7815-b2f4-2d63-96cc9f3a02ab@yandex-team.ru>
+Date: Mon, 12 Jun 2023 16:53:58 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 03/24] nbd/server: Prepare for alternate-size headers
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, libguestfs@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-4-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230608135653.2918540-4-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,49 +76,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 11 Jun 2023 12:34:02 +0200
-Bernhard Beschow <shentey@gmail.com> wrote:
-
-> The Q35 PCI host already has a PCI_HOST_BYPASS_IOMMU property. However, the
-> host initializes this property itself by accessing global machine state,
-> thereby assuming it to be a PC machine. Avoid this by having board code
-> set this property.
+On 08.06.23 16:56, Eric Blake wrote:
+> Upstream NBD now documents[1] an extension that supports 64-bit effect
+> lengths in requests.  As part of that extension, the size of the reply
+> headers will change in order to permit a 64-bit length in the reply
+> for symmetry[2].  Additionally, where the reply header is currently 16
+> bytes for simple reply, and 20 bytes for structured reply; with the
+> extension enabled, there will only be one extended reply header, of 32
+> bytes, with both structured and extended modes sending identical
+> payloads for chunked replies.
 > 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-
-> ---
->  hw/i386/pc_q35.c  | 2 ++
->  hw/pci-host/q35.c | 3 +--
->  2 files changed, 3 insertions(+), 2 deletions(-)
+> Since we are already wired up to use iovecs, it is easiest to allow
+> for this change in header size by splitting each structured reply
+> across multiple iovecs, one for the header (which will become wider in
+> a future patch according to client negotiation), and the other(s) for
+> the chunk payload, and removing the header from the payload struct
+> definitions.  Rename the affected functions with s/structured/chunk/
+> to make it obvious that the code will be reused in extended mode.
 > 
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index 29b46d3e1c..5220b535b2 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -230,6 +230,8 @@ static void pc_q35_init(MachineState *machine)
->                              x86ms->below_4g_mem_size, NULL);
->      object_property_set_int(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
->                              x86ms->above_4g_mem_size, NULL);
-> +    object_property_set_bool(phb, PCI_HOST_BYPASS_IOMMU,
-> +                             pcms->default_bus_bypass_iommu, NULL);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
->  
->      /* pci */
-> diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-> index 23b689dba3..7980ddde69 100644
-> --- a/hw/pci-host/q35.c
-> +++ b/hw/pci-host/q35.c
-> @@ -66,8 +66,7 @@ static void q35_host_realize(DeviceState *dev, Error **errp)
->                                  s->mch.pci_address_space,
->                                  s->mch.address_space_io,
->                                  0, TYPE_PCIE_BUS);
-> -    pci->bypass_iommu =
-> -        PC_MACHINE(qdev_get_machine())->default_bus_bypass_iommu;
-> +
->      qdev_realize(DEVICE(&s->mch), BUS(pci->bus), &error_fatal);
->  }
->  
+> Interestingly, the client side code never utilized the packed types,
+> so only the server code needs to be updated.
+> 
+> [1]https://github.com/NetworkBlockDevice/nbd/blob/extension-ext-header/doc/proto.md
+> as of NBD commit e6f3b94a934
+> 
+> [2] Note that on the surface, this is because some future server might
+> permit a 4G+ NBD_CMD_READ and need to reply with that much data in one
+> transaction.  But even though the extended reply length is widened to
+> 64 bits, for now the NBD spec is clear that servers will not reply
+> with more than a maximum payload bounded by the 32-bit
+> NBD_INFO_BLOCK_SIZE field; allowing a client and server to mutually
+> agree to transactions larger than 4G would require yet another
+> extension.
+> 
+> Signed-off-by: Eric Blake<eblake@redhat.com>
+
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+-- 
+Best regards,
+Vladimir
 
 
