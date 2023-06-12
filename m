@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3633C72C396
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 14:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C8D72C4B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 14:44:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8gEJ-0001yp-Jj; Mon, 12 Jun 2023 08:01:06 -0400
+	id 1q8gtC-0005BI-8C; Mon, 12 Jun 2023 08:43:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1q8gDM-0001f6-99; Mon, 12 Jun 2023 08:00:05 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1q8gtA-0005B9-7Y
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 08:43:16 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1q8gDI-0002x1-V0; Mon, 12 Jun 2023 08:00:03 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3f6dfc4dffaso31217355e9.0; 
- Mon, 12 Jun 2023 04:59:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1q8gt7-0003eY-Aw
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 08:43:15 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b1adf27823so50469741fa.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 05:43:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686571198; x=1689163198;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uHReZ0Lx0WvKbkCI6sE/oOgsiPhDR1RQjangIkX+Aa4=;
- b=Z22pFmg7IwqZKs8DkadKGT8p8GG9pX6z1LbNCkRV7kJA5JjsNmzXX+5hE1Eu0CcSmD
- gzVREEedy2CyyXuCschZqvMm/m8DyMC3HID01GT7XJ67cvwEXe6LZJUbXbvKrtzHoBT/
- EvTw+0Mv00Rin126gKbMmnNRICcXKKtH3adKRcOTNF7veJCB+DZnL0qKJgWE9qMIVg64
- oZJeCostwh1j0bAKPRGTP2veIMXVhIF2wgfcoAwRrYl4sSk2Jg5u9oLONrcjm5CEyVEw
- FWgUetcopKG6lsApHlaDgByfLgZuIZSq2Z3ZgnpgdeIICQPmyxtEDKivsR/oRGEIuDCK
- RVxA==
+ d=gmail.com; s=20221208; t=1686573791; x=1689165791;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=N58B17C5fURhBB5nIx9iUkcEv0MPfPVKFfxs1GVB5Pc=;
+ b=gi/gK9K84sIQD5ZZEWlSnHkF5V2H+6IUb6nNFvN4QS+9oB852fmKpBLH0OhYecQNnq
+ jJF6VVt/dC1u407uMDyZiz5BfJBpf62ifXHfDGWY8ffXneKYn6j7DghCN7mT2ubxFNYs
+ 7TmtzVhRhxKfYuMQEixF9mHroawExIcphRBubRQS0UlwU/uKDiHd3Omb8J1zJ0aPISd9
+ R3GKn1guN8BhPdlNa045rkQxdQUo83HH2xYmciowzsjexS3qut/pRKqLyqQ4fZ4kCRch
+ xKUNSj2vwyg7uoDaS/ldQIue24a7KdeXRPJz6JouPK3DV8mkIQvMD8Al3Qiht1o0zkvC
+ c3og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686571198; x=1689163198;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uHReZ0Lx0WvKbkCI6sE/oOgsiPhDR1RQjangIkX+Aa4=;
- b=EoZyPYom9bX48Ai6HspjQA0xVJXii/gdcRAoraMGq3bP68wuo7piWXbxsZV4mdGgTC
- RGDobznu7hasVJ4oDypn8lPWtzXtppCjrIPd0gr6W/jMSfxM6ixIogMgIz+QWR/fCcp/
- jR8bdl/nt+fs7VvlOnJjtPk7K2BSz16kzK3mXd491NqJdxobnOZWVm80h5Ed5c0EV2p/
- U0Xn1Zl3i4v46F6peb4DqfLn0A2ut+TI/HSB1VwlGeYt45X25Qsi1jY9wrpucIpyp1kf
- AD2a9dKVP6bWMkY7iQRipZFTl2F9t17D9RGzpqby9GkdXG5d8iurI7ebTqWaY6uWvhzc
- YLYw==
-X-Gm-Message-State: AC+VfDx9tcpG5xSYjDKlBArD+adY4tUsDi1e6czvGxudcmJCjVGIPh/z
- gOOIMM2pim4khTWYHYuz2HE4fImaKTflSQ==
-X-Google-Smtp-Source: ACHHUZ5CE9Rq7wt0mrH6sxd62O5VsMMLaBxp+XdK4sMHt7mr5wXLj+0UKF2gRa28k83ccRNq2bWMQA==
-X-Received: by 2002:a05:600c:3792:b0:3f7:e548:6611 with SMTP id
- o18-20020a05600c379200b003f7e5486611mr5421922wmr.40.1686571197703; 
- Mon, 12 Jun 2023 04:59:57 -0700 (PDT)
-Received: from sergevik-thinkpad.localdomain ([213.197.136.186])
- by smtp.gmail.com with ESMTPSA id
- 10-20020a05600c24ca00b003f7e4d143cfsm11153271wmu.15.2023.06.12.04.59.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jun 2023 04:59:56 -0700 (PDT)
-From: Sergey Kambalin <serg.oker@gmail.com>
-X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v2] Use named constants in BCM props
-Date: Mon, 12 Jun 2023 14:59:50 +0300
-Message-Id: <20230612115950.5002-1-sergey.kambalin@auriga.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <5b407848-2a4c-6447-6726-cf85f278f3e7@linaro.org>
-References: <5b407848-2a4c-6447-6726-cf85f278f3e7@linaro.org>
+ d=1e100.net; s=20221208; t=1686573791; x=1689165791;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=N58B17C5fURhBB5nIx9iUkcEv0MPfPVKFfxs1GVB5Pc=;
+ b=JtLc7LBf7REUVsOa3c3xPrnDMKbbOZ7uiAq6JPYOcGjmgaxHQP1GDdgZ1UnRMuKxZB
+ dE3rRnYMJT/CLt9PwyvlNAIaCqpj9oL9rlm/dn90DCt4nZF1rfCpEONnzy/h/VImjmRL
+ tx4kHnXO50S9n/LvJbDijrYBXdB/tgo0GDBjRLieckMg3xz92fGD5uH3StirRZaOKj8P
+ wgoUjQkg6Z7/aPmCUYiTREKXyKErNC8JuDVVMExWYRHqpkca0p4kB2OmBYwIvhR5Bmf5
+ wgmT+QXVYojRtyTT8nTVnEg2jWD7qW3A8tELFLvQy4+3+rF8l9AdIqLogfhATQJyVS1C
+ lK+w==
+X-Gm-Message-State: AC+VfDzw0/8/B8O2eocePsi384PSjE4K4NUONtXFxKTaymUYMgkdIghZ
+ VFf7YlcmmVYdwrCKKuUHzQ+W1o6rkFKo4JAl/jg=
+X-Google-Smtp-Source: ACHHUZ4lFekx0o8+JnU/Vu/KsFWf/lorng1VqvXq6OPSHmxg5Bz4uHFKMgAy71vh88lU55xyyms8qE0RrIl235Tfim8=
+X-Received: by 2002:a2e:8e82:0:b0:2b1:b6e8:60b6 with SMTP id
+ z2-20020a2e8e82000000b002b1b6e860b6mr2535623ljk.4.1686573790855; Mon, 12 Jun
+ 2023 05:43:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=serg.oker@gmail.com; helo=mail-wm1-x32e.google.com
+References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
+ <20230608025655.1674357-2-Jiqian.Chen@amd.com>
+In-Reply-To: <20230608025655.1674357-2-Jiqian.Chen@amd.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 12 Jun 2023 14:42:55 +0200
+Message-ID: <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
+Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
+ suspend
+To: Jiqian Chen <Jiqian.Chen@amd.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ Damien Hedde <damien.hedde@greensocs.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony PERARD <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+ Jan Beulich <jbeulich@suse.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>, 
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>, qemu-devel@nongnu.org, 
+ xen-devel@lists.xenproject.org, Alex Deucher <Alexander.Deucher@amd.com>, 
+ Christian Koenig <Christian.Koenig@amd.com>,
+ Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
+ Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>, 
+ Julia Zhang <Julia.Zhang@amd.com>, Huang Rui <Ray.Huang@amd.com>
+Content-Type: multipart/alternative; boundary="000000000000b105e705fdee0f2d"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,517 +100,428 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping
+--000000000000b105e705fdee0f2d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-- PI_FIRMWARE_*_RATE constsnts were moved to raspberrypi-fw-defs.h
-  (seems more suitable place for them)
-- inclusion of "qemu/osdep.h" has been removed
-- year in copyright header has been updated 
+Hi
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- hw/misc/bcm2835_property.c            | 120 ++++++++++---------
- include/hw/arm/raspi_platform.h       |   6 +
- include/hw/misc/raspberrypi-fw-defs.h | 163 ++++++++++++++++++++++++++
- 3 files changed, 236 insertions(+), 53 deletions(-)
- create mode 100644 include/hw/misc/raspberrypi-fw-defs.h
+On Thu, Jun 8, 2023 at 6:26=E2=80=AFAM Jiqian Chen <Jiqian.Chen@amd.com> wr=
+ote:
 
-diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
-index 251b3d865d..871f71fdcd 100644
---- a/hw/misc/bcm2835_property.c
-+++ b/hw/misc/bcm2835_property.c
-@@ -12,10 +12,12 @@
- #include "migration/vmstate.h"
- #include "hw/irq.h"
- #include "hw/misc/bcm2835_mbox_defs.h"
-+#include "hw/misc/raspberrypi-fw-defs.h"
- #include "sysemu/dma.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
- #include "trace.h"
-+#include "hw/arm/raspi_platform.h"
- 
- /* https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface */
- 
-@@ -51,48 +53,48 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-         /* @(value + 8) : Request/response indicator */
-         resplen = 0;
-         switch (tag) {
--        case 0x00000000: /* End tag */
-+        case RPI_FWREQ_PROPERTY_END: /* End tag */
-             break;
--        case 0x00000001: /* Get firmware revision */
-+        case RPI_FWREQ_GET_FIRMWARE_REVISION: /* Get firmware revision */
-             stl_le_phys(&s->dma_as, value + 12, 346337);
-             resplen = 4;
-             break;
--        case 0x00010001: /* Get board model */
-+        case RPI_FWREQ_GET_BOARD_MODEL: /* Get board model */
-             qemu_log_mask(LOG_UNIMP,
-                           "bcm2835_property: 0x%08x get board model NYI\n",
-                           tag);
-             resplen = 4;
-             break;
--        case 0x00010002: /* Get board revision */
-+        case RPI_FWREQ_GET_BOARD_REVISION: /* Get board revision */
-             stl_le_phys(&s->dma_as, value + 12, s->board_rev);
-             resplen = 4;
-             break;
--        case 0x00010003: /* Get board MAC address */
-+        case RPI_FWREQ_GET_BOARD_MAC_ADDRESS: /* Get board MAC address */
-             resplen = sizeof(s->macaddr.a);
-             dma_memory_write(&s->dma_as, value + 12, s->macaddr.a, resplen,
-                              MEMTXATTRS_UNSPECIFIED);
-             break;
--        case 0x00010004: /* Get board serial */
-+        case RPI_FWREQ_GET_BOARD_SERIAL: /* Get board serial */
-             qemu_log_mask(LOG_UNIMP,
-                           "bcm2835_property: 0x%08x get board serial NYI\n",
-                           tag);
-             resplen = 8;
-             break;
--        case 0x00010005: /* Get ARM memory */
-+        case RPI_FWREQ_GET_ARM_MEMORY: /* Get ARM memory */
-             /* base */
-             stl_le_phys(&s->dma_as, value + 12, 0);
-             /* size */
-             stl_le_phys(&s->dma_as, value + 16, s->fbdev->vcram_base);
-             resplen = 8;
-             break;
--        case 0x00010006: /* Get VC memory */
-+        case RPI_FWREQ_GET_VC_MEMORY: /* Get VC memory */
-             /* base */
-             stl_le_phys(&s->dma_as, value + 12, s->fbdev->vcram_base);
-             /* size */
-             stl_le_phys(&s->dma_as, value + 16, s->fbdev->vcram_size);
-             resplen = 8;
-             break;
--        case 0x00028001: /* Set power state */
-+        case RPI_FWREQ_SET_POWER_STATE: /* Set power state */
-             /* Assume that whatever device they asked for exists,
-              * and we'll just claim we set it to the desired state
-              */
-@@ -103,38 +105,42 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
- 
-         /* Clocks */
- 
--        case 0x00030001: /* Get clock state */
-+        case RPI_FWREQ_GET_CLOCK_STATE: /* Get clock state */
-             stl_le_phys(&s->dma_as, value + 16, 0x1);
-             resplen = 8;
-             break;
- 
--        case 0x00038001: /* Set clock state */
-+        case RPI_FWREQ_SET_CLOCK_STATE: /* Set clock state */
-             qemu_log_mask(LOG_UNIMP,
-                           "bcm2835_property: 0x%08x set clock state NYI\n",
-                           tag);
-             resplen = 8;
-             break;
- 
--        case 0x00030002: /* Get clock rate */
--        case 0x00030004: /* Get max clock rate */
--        case 0x00030007: /* Get min clock rate */
-+        case RPI_FWREQ_GET_CLOCK_RATE: /* Get clock rate */
-+        case RPI_FWREQ_GET_MAX_CLOCK_RATE: /* Get max clock rate */
-+        case RPI_FWREQ_GET_MIN_CLOCK_RATE: /* Get min clock rate */
-             switch (ldl_le_phys(&s->dma_as, value + 12)) {
--            case 1: /* EMMC */
--                stl_le_phys(&s->dma_as, value + 16, 50000000);
-+            case RPI_FIRMWARE_EMMC_CLK_ID: /* EMMC */
-+                stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_EMMC_CLK_RATE);
-                 break;
--            case 2: /* UART */
--                stl_le_phys(&s->dma_as, value + 16, 3000000);
-+            case RPI_FIRMWARE_UART_CLK_ID: /* UART */
-+                stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_UART_CLK_RATE);
-+                break;
-+            case RPI_FIRMWARE_CORE_CLK_ID: /* Core Clock */
-+                stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_CORE_CLK_RATE);
-                 break;
-             default:
--                stl_le_phys(&s->dma_as, value + 16, 700000000);
-+                stl_le_phys(&s->dma_as, value + 16,
-+                            RPI_FIRMWARE_DEFAULT_CLK_RATE);
-                 break;
-             }
-             resplen = 8;
-             break;
- 
--        case 0x00038002: /* Set clock rate */
--        case 0x00038004: /* Set max clock rate */
--        case 0x00038007: /* Set min clock rate */
-+        case RPI_FWREQ_SET_CLOCK_RATE: /* Set clock rate */
-+        case RPI_FWREQ_SET_MAX_CLOCK_RATE: /* Set max clock rate */
-+        case RPI_FWREQ_SET_MIN_CLOCK_RATE: /* Set min clock rate */
-             qemu_log_mask(LOG_UNIMP,
-                           "bcm2835_property: 0x%08x set clock rate NYI\n",
-                           tag);
-@@ -143,121 +149,128 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
- 
-         /* Temperature */
- 
--        case 0x00030006: /* Get temperature */
-+        case RPI_FWREQ_GET_TEMPERATURE: /* Get temperature */
-             stl_le_phys(&s->dma_as, value + 16, 25000);
-             resplen = 8;
-             break;
- 
--        case 0x0003000A: /* Get max temperature */
-+        case RPI_FWREQ_GET_MAX_TEMPERATURE: /* Get max temperature */
-             stl_le_phys(&s->dma_as, value + 16, 99000);
-             resplen = 8;
-             break;
- 
-         /* Frame buffer */
- 
--        case 0x00040001: /* Allocate buffer */
-+        case RPI_FWREQ_FRAMEBUFFER_ALLOCATE: /* Allocate buffer */
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.base);
-             stl_le_phys(&s->dma_as, value + 16,
-                         bcm2835_fb_get_size(&fbconfig));
-             resplen = 8;
-             break;
--        case 0x00048001: /* Release buffer */
-+        case RPI_FWREQ_FRAMEBUFFER_RELEASE: /* Release buffer */
-             resplen = 0;
-             break;
--        case 0x00040002: /* Blank screen */
-+        case RPI_FWREQ_FRAMEBUFFER_BLANK: /* Blank screen */
-             resplen = 4;
-             break;
--        case 0x00044003: /* Test physical display width/height */
--        case 0x00044004: /* Test virtual display width/height */
-+        /* Test physical display width/height */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_PHYSICAL_WIDTH_HEIGHT:
-+        /* Test virtual display width/height */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_WIDTH_HEIGHT:
-             resplen = 8;
-             break;
--        case 0x00048003: /* Set physical display width/height */
-+        /* Set physical display width/height */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_PHYSICAL_WIDTH_HEIGHT:
-             fbconfig.xres = ldl_le_phys(&s->dma_as, value + 12);
-             fbconfig.yres = ldl_le_phys(&s->dma_as, value + 16);
-             bcm2835_fb_validate_config(&fbconfig);
-             fbconfig_updated = true;
-             /* fall through */
--        case 0x00040003: /* Get physical display width/height */
-+        /* Get physical display width/height */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_PHYSICAL_WIDTH_HEIGHT:
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.xres);
-             stl_le_phys(&s->dma_as, value + 16, fbconfig.yres);
-             resplen = 8;
-             break;
--        case 0x00048004: /* Set virtual display width/height */
-+        /* Set virtual display width/height */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT:
-             fbconfig.xres_virtual = ldl_le_phys(&s->dma_as, value + 12);
-             fbconfig.yres_virtual = ldl_le_phys(&s->dma_as, value + 16);
-             bcm2835_fb_validate_config(&fbconfig);
-             fbconfig_updated = true;
-             /* fall through */
--        case 0x00040004: /* Get virtual display width/height */
-+        /* Get virtual display width/height */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_VIRTUAL_WIDTH_HEIGHT:
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.xres_virtual);
-             stl_le_phys(&s->dma_as, value + 16, fbconfig.yres_virtual);
-             resplen = 8;
-             break;
--        case 0x00044005: /* Test depth */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_DEPTH: /* Test depth */
-             resplen = 4;
-             break;
--        case 0x00048005: /* Set depth */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_DEPTH: /* Set depth */
-             fbconfig.bpp = ldl_le_phys(&s->dma_as, value + 12);
-             bcm2835_fb_validate_config(&fbconfig);
-             fbconfig_updated = true;
-             /* fall through */
--        case 0x00040005: /* Get depth */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_DEPTH: /* Get depth */
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.bpp);
-             resplen = 4;
-             break;
--        case 0x00044006: /* Test pixel order */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_PIXEL_ORDER: /* Test pixel order */
-             resplen = 4;
-             break;
--        case 0x00048006: /* Set pixel order */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_PIXEL_ORDER: /* Set pixel order */
-             fbconfig.pixo = ldl_le_phys(&s->dma_as, value + 12);
-             bcm2835_fb_validate_config(&fbconfig);
-             fbconfig_updated = true;
-             /* fall through */
--        case 0x00040006: /* Get pixel order */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_PIXEL_ORDER: /* Get pixel order */
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.pixo);
-             resplen = 4;
-             break;
--        case 0x00044007: /* Test pixel alpha */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_ALPHA_MODE: /* Test pixel alpha */
-             resplen = 4;
-             break;
--        case 0x00048007: /* Set alpha */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_ALPHA_MODE: /* Set alpha */
-             fbconfig.alpha = ldl_le_phys(&s->dma_as, value + 12);
-             bcm2835_fb_validate_config(&fbconfig);
-             fbconfig_updated = true;
-             /* fall through */
--        case 0x00040007: /* Get alpha */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_ALPHA_MODE: /* Get alpha */
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.alpha);
-             resplen = 4;
-             break;
--        case 0x00040008: /* Get pitch */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_PITCH: /* Get pitch */
-             stl_le_phys(&s->dma_as, value + 12,
-                         bcm2835_fb_get_pitch(&fbconfig));
-             resplen = 4;
-             break;
--        case 0x00044009: /* Test virtual offset */
-+        /* Test virtual offset */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_OFFSET:
-             resplen = 8;
-             break;
--        case 0x00048009: /* Set virtual offset */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_VIRTUAL_OFFSET: /* Set virtual offset */
-             fbconfig.xoffset = ldl_le_phys(&s->dma_as, value + 12);
-             fbconfig.yoffset = ldl_le_phys(&s->dma_as, value + 16);
-             bcm2835_fb_validate_config(&fbconfig);
-             fbconfig_updated = true;
-             /* fall through */
--        case 0x00040009: /* Get virtual offset */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_VIRTUAL_OFFSET: /* Get virtual offset */
-             stl_le_phys(&s->dma_as, value + 12, fbconfig.xoffset);
-             stl_le_phys(&s->dma_as, value + 16, fbconfig.yoffset);
-             resplen = 8;
-             break;
--        case 0x0004000a: /* Get/Test/Set overscan */
--        case 0x0004400a:
--        case 0x0004800a:
-+        case RPI_FWREQ_FRAMEBUFFER_GET_OVERSCAN: /* Get/Test/Set overscan */
-+        case RPI_FWREQ_FRAMEBUFFER_TEST_OVERSCAN:
-+        case RPI_FWREQ_FRAMEBUFFER_SET_OVERSCAN:
-             stl_le_phys(&s->dma_as, value + 12, 0);
-             stl_le_phys(&s->dma_as, value + 16, 0);
-             stl_le_phys(&s->dma_as, value + 20, 0);
-             stl_le_phys(&s->dma_as, value + 24, 0);
-             resplen = 16;
-             break;
--        case 0x0004800b: /* Set palette */
-+        case RPI_FWREQ_FRAMEBUFFER_SET_PALETTE: /* Set palette */
-             offset = ldl_le_phys(&s->dma_as, value + 12);
-             length = ldl_le_phys(&s->dma_as, value + 16);
-             n = 0;
-@@ -270,18 +283,19 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-             stl_le_phys(&s->dma_as, value + 12, 0);
-             resplen = 4;
-             break;
--        case 0x00040013: /* Get number of displays */
-+        /* Get number of displays */
-+        case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
-             stl_le_phys(&s->dma_as, value + 12, 1);
-             resplen = 4;
-             break;
- 
--        case 0x00060001: /* Get DMA channels */
-+        case RPI_FWREQ_GET_DMA_CHANNELS: /* Get DMA channels */
-             /* channels 2-5 */
-             stl_le_phys(&s->dma_as, value + 12, 0x003C);
-             resplen = 4;
-             break;
- 
--        case 0x00050001: /* Get command line */
-+        case RPI_FWREQ_GET_COMMAND_LINE: /* Get command line */
-             /*
-              * We follow the firmware behaviour: no NUL terminator is
-              * written to the buffer, and if the buffer is too short
-diff --git a/include/hw/arm/raspi_platform.h b/include/hw/arm/raspi_platform.h
-index 4a56dd4b89..92a317950a 100644
---- a/include/hw/arm/raspi_platform.h
-+++ b/include/hw/arm/raspi_platform.h
-@@ -170,4 +170,10 @@
- #define INTERRUPT_ILLEGAL_TYPE0        6
- #define INTERRUPT_ILLEGAL_TYPE1        7
- 
-+/* Clock rates */
-+#define RPI_FIRMWARE_EMMC_CLK_RATE    50000000
-+#define RPI_FIRMWARE_UART_CLK_RATE    3000000
-+#define RPI_FIRMWARE_CORE_CLK_RATE    350000000
-+#define RPI_FIRMWARE_DEFAULT_CLK_RATE 700000000
-+
- #endif
-diff --git a/include/hw/misc/raspberrypi-fw-defs.h b/include/hw/misc/raspberrypi-fw-defs.h
-new file mode 100644
-index 0000000000..4551fe7450
---- /dev/null
-+++ b/include/hw/misc/raspberrypi-fw-defs.h
-@@ -0,0 +1,163 @@
-+/*
-+ * Raspberry Pi firmware definitions
-+ *
-+ * Copyright (C) 2022  Auriga LLC, based on Linux kernel
-+ *   `include/soc/bcm2835/raspberrypi-firmware.h` (Copyright © 2015 Broadcom)
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
-+#define INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
-+
-+#include "qemu/osdep.h"
-+
-+enum rpi_firmware_property_tag {
-+    RPI_FWREQ_PROPERTY_END =                           0,
-+    RPI_FWREQ_GET_FIRMWARE_REVISION =                  0x00000001,
-+    RPI_FWREQ_GET_FIRMWARE_VARIANT =                   0x00000002,
-+    RPI_FWREQ_GET_FIRMWARE_HASH =                      0x00000003,
-+
-+    RPI_FWREQ_SET_CURSOR_INFO =                        0x00008010,
-+    RPI_FWREQ_SET_CURSOR_STATE =                       0x00008011,
-+
-+    RPI_FWREQ_GET_BOARD_MODEL =                        0x00010001,
-+    RPI_FWREQ_GET_BOARD_REVISION =                     0x00010002,
-+    RPI_FWREQ_GET_BOARD_MAC_ADDRESS =                  0x00010003,
-+    RPI_FWREQ_GET_BOARD_SERIAL =                       0x00010004,
-+    RPI_FWREQ_GET_ARM_MEMORY =                         0x00010005,
-+    RPI_FWREQ_GET_VC_MEMORY =                          0x00010006,
-+    RPI_FWREQ_GET_CLOCKS =                             0x00010007,
-+    RPI_FWREQ_GET_POWER_STATE =                        0x00020001,
-+    RPI_FWREQ_GET_TIMING =                             0x00020002,
-+    RPI_FWREQ_SET_POWER_STATE =                        0x00028001,
-+    RPI_FWREQ_GET_CLOCK_STATE =                        0x00030001,
-+    RPI_FWREQ_GET_CLOCK_RATE =                         0x00030002,
-+    RPI_FWREQ_GET_VOLTAGE =                            0x00030003,
-+    RPI_FWREQ_GET_MAX_CLOCK_RATE =                     0x00030004,
-+    RPI_FWREQ_GET_MAX_VOLTAGE =                        0x00030005,
-+    RPI_FWREQ_GET_TEMPERATURE =                        0x00030006,
-+    RPI_FWREQ_GET_MIN_CLOCK_RATE =                     0x00030007,
-+    RPI_FWREQ_GET_MIN_VOLTAGE =                        0x00030008,
-+    RPI_FWREQ_GET_TURBO =                              0x00030009,
-+    RPI_FWREQ_GET_MAX_TEMPERATURE =                    0x0003000a,
-+    RPI_FWREQ_GET_STC =                                0x0003000b,
-+    RPI_FWREQ_ALLOCATE_MEMORY =                        0x0003000c,
-+    RPI_FWREQ_LOCK_MEMORY =                            0x0003000d,
-+    RPI_FWREQ_UNLOCK_MEMORY =                          0x0003000e,
-+    RPI_FWREQ_RELEASE_MEMORY =                         0x0003000f,
-+    RPI_FWREQ_EXECUTE_CODE =                           0x00030010,
-+    RPI_FWREQ_EXECUTE_QPU =                            0x00030011,
-+    RPI_FWREQ_SET_ENABLE_QPU =                         0x00030012,
-+    RPI_FWREQ_GET_DISPMANX_RESOURCE_MEM_HANDLE =       0x00030014,
-+    RPI_FWREQ_GET_EDID_BLOCK =                         0x00030020,
-+    RPI_FWREQ_GET_CUSTOMER_OTP =                       0x00030021,
-+    RPI_FWREQ_GET_EDID_BLOCK_DISPLAY =                 0x00030023,
-+    RPI_FWREQ_GET_DOMAIN_STATE =                       0x00030030,
-+    RPI_FWREQ_GET_THROTTLED =                          0x00030046,
-+    RPI_FWREQ_GET_CLOCK_MEASURED =                     0x00030047,
-+    RPI_FWREQ_NOTIFY_REBOOT =                          0x00030048,
-+    RPI_FWREQ_SET_CLOCK_STATE =                        0x00038001,
-+    RPI_FWREQ_SET_CLOCK_RATE =                         0x00038002,
-+    RPI_FWREQ_SET_VOLTAGE =                            0x00038003,
-+    RPI_FWREQ_SET_MAX_CLOCK_RATE =                     0x00038004,
-+    RPI_FWREQ_SET_MIN_CLOCK_RATE =                     0x00038007,
-+    RPI_FWREQ_SET_TURBO =                              0x00038009,
-+    RPI_FWREQ_SET_CUSTOMER_OTP =                       0x00038021,
-+    RPI_FWREQ_SET_DOMAIN_STATE =                       0x00038030,
-+    RPI_FWREQ_GET_GPIO_STATE =                         0x00030041,
-+    RPI_FWREQ_SET_GPIO_STATE =                         0x00038041,
-+    RPI_FWREQ_SET_SDHOST_CLOCK =                       0x00038042,
-+    RPI_FWREQ_GET_GPIO_CONFIG =                        0x00030043,
-+    RPI_FWREQ_SET_GPIO_CONFIG =                        0x00038043,
-+    RPI_FWREQ_GET_PERIPH_REG =                         0x00030045,
-+    RPI_FWREQ_SET_PERIPH_REG =                         0x00038045,
-+    RPI_FWREQ_GET_POE_HAT_VAL =                        0x00030049,
-+    RPI_FWREQ_SET_POE_HAT_VAL =                        0x00038049,
-+    RPI_FWREQ_SET_POE_HAT_VAL_OLD =                    0x00030050,
-+    RPI_FWREQ_NOTIFY_XHCI_RESET =                      0x00030058,
-+    RPI_FWREQ_GET_REBOOT_FLAGS =                       0x00030064,
-+    RPI_FWREQ_SET_REBOOT_FLAGS =                       0x00038064,
-+    RPI_FWREQ_NOTIFY_DISPLAY_DONE =                    0x00030066,
-+
-+    /* Dispmanx TAGS */
-+    RPI_FWREQ_FRAMEBUFFER_ALLOCATE =                   0x00040001,
-+    RPI_FWREQ_FRAMEBUFFER_BLANK =                      0x00040002,
-+    RPI_FWREQ_FRAMEBUFFER_GET_PHYSICAL_WIDTH_HEIGHT =  0x00040003,
-+    RPI_FWREQ_FRAMEBUFFER_GET_VIRTUAL_WIDTH_HEIGHT =   0x00040004,
-+    RPI_FWREQ_FRAMEBUFFER_GET_DEPTH =                  0x00040005,
-+    RPI_FWREQ_FRAMEBUFFER_GET_PIXEL_ORDER =            0x00040006,
-+    RPI_FWREQ_FRAMEBUFFER_GET_ALPHA_MODE =             0x00040007,
-+    RPI_FWREQ_FRAMEBUFFER_GET_PITCH =                  0x00040008,
-+    RPI_FWREQ_FRAMEBUFFER_GET_VIRTUAL_OFFSET =         0x00040009,
-+    RPI_FWREQ_FRAMEBUFFER_GET_OVERSCAN =               0x0004000a,
-+    RPI_FWREQ_FRAMEBUFFER_GET_PALETTE =                0x0004000b,
-+    RPI_FWREQ_FRAMEBUFFER_GET_LAYER =                  0x0004000c,
-+    RPI_FWREQ_FRAMEBUFFER_GET_TRANSFORM =              0x0004000d,
-+    RPI_FWREQ_FRAMEBUFFER_GET_VSYNC =                  0x0004000e,
-+    RPI_FWREQ_FRAMEBUFFER_GET_TOUCHBUF =               0x0004000f,
-+    RPI_FWREQ_FRAMEBUFFER_GET_GPIOVIRTBUF =            0x00040010,
-+    RPI_FWREQ_FRAMEBUFFER_RELEASE =                    0x00048001,
-+    RPI_FWREQ_FRAMEBUFFER_GET_DISPLAY_ID =             0x00040016,
-+    RPI_FWREQ_FRAMEBUFFER_SET_DISPLAY_NUM =            0x00048013,
-+    RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS =           0x00040013,
-+    RPI_FWREQ_FRAMEBUFFER_GET_DISPLAY_SETTINGS =       0x00040014,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_PHYSICAL_WIDTH_HEIGHT = 0x00044003,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_WIDTH_HEIGHT =  0x00044004,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_DEPTH =                 0x00044005,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_PIXEL_ORDER =           0x00044006,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_ALPHA_MODE =            0x00044007,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_OFFSET =        0x00044009,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_OVERSCAN =              0x0004400a,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_PALETTE =               0x0004400b,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_LAYER =                 0x0004400c,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_TRANSFORM =             0x0004400d,
-+    RPI_FWREQ_FRAMEBUFFER_TEST_VSYNC =                 0x0004400e,
-+    RPI_FWREQ_FRAMEBUFFER_SET_PHYSICAL_WIDTH_HEIGHT =  0x00048003,
-+    RPI_FWREQ_FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT =   0x00048004,
-+    RPI_FWREQ_FRAMEBUFFER_SET_DEPTH =                  0x00048005,
-+    RPI_FWREQ_FRAMEBUFFER_SET_PIXEL_ORDER =            0x00048006,
-+    RPI_FWREQ_FRAMEBUFFER_SET_ALPHA_MODE =             0x00048007,
-+    RPI_FWREQ_FRAMEBUFFER_SET_PITCH =                  0x00048008,
-+    RPI_FWREQ_FRAMEBUFFER_SET_VIRTUAL_OFFSET =         0x00048009,
-+    RPI_FWREQ_FRAMEBUFFER_SET_OVERSCAN =               0x0004800a,
-+    RPI_FWREQ_FRAMEBUFFER_SET_PALETTE =                0x0004800b,
-+
-+    RPI_FWREQ_FRAMEBUFFER_SET_TOUCHBUF =               0x0004801f,
-+    RPI_FWREQ_FRAMEBUFFER_SET_GPIOVIRTBUF =            0x00048020,
-+    RPI_FWREQ_FRAMEBUFFER_SET_VSYNC =                  0x0004800e,
-+    RPI_FWREQ_FRAMEBUFFER_SET_LAYER =                  0x0004800c,
-+    RPI_FWREQ_FRAMEBUFFER_SET_TRANSFORM =              0x0004800d,
-+    RPI_FWREQ_FRAMEBUFFER_SET_BACKLIGHT =              0x0004800f,
-+
-+    RPI_FWREQ_VCHIQ_INIT =                             0x00048010,
-+
-+    RPI_FWREQ_SET_PLANE =                              0x00048015,
-+    RPI_FWREQ_GET_DISPLAY_TIMING =                     0x00040017,
-+    RPI_FWREQ_SET_TIMING =                             0x00048017,
-+    RPI_FWREQ_GET_DISPLAY_CFG =                        0x00040018,
-+    RPI_FWREQ_SET_DISPLAY_POWER =                      0x00048019,
-+    RPI_FWREQ_GET_COMMAND_LINE =                       0x00050001,
-+    RPI_FWREQ_GET_DMA_CHANNELS =                       0x00060001,
-+};
-+
-+enum rpi_firmware_clk_id {
-+    RPI_FIRMWARE_EMMC_CLK_ID = 1,
-+    RPI_FIRMWARE_UART_CLK_ID,
-+    RPI_FIRMWARE_ARM_CLK_ID,
-+    RPI_FIRMWARE_CORE_CLK_ID,
-+    RPI_FIRMWARE_V3D_CLK_ID,
-+    RPI_FIRMWARE_H264_CLK_ID,
-+    RPI_FIRMWARE_ISP_CLK_ID,
-+    RPI_FIRMWARE_SDRAM_CLK_ID,
-+    RPI_FIRMWARE_PIXEL_CLK_ID,
-+    RPI_FIRMWARE_PWM_CLK_ID,
-+    RPI_FIRMWARE_HEVC_CLK_ID,
-+    RPI_FIRMWARE_EMMC2_CLK_ID,
-+    RPI_FIRMWARE_M2MC_CLK_ID,
-+    RPI_FIRMWARE_PIXEL_BVB_CLK_ID,
-+    RPI_FIRMWARE_VEC_CLK_ID,
-+    RPI_FIRMWARE_NUM_CLK_ID,
-+};
-+
-+#endif /* INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_ */
--- 
-2.34.1
+> After suspending and resuming guest VM, you will get
+> a black screen, and the display can't come back.
+>
+> This is because when guest did suspending, it called
+> into qemu to call virtio_gpu_gl_reset. In function
+> virtio_gpu_gl_reset, it destroyed resources and reset
+> renderer, which were used for display. As a result,
+> guest's screen can't come back to the time when it was
+> suspended and only showed black.
+>
+> So, this patch adds a new ctrl message
+> VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from
+> guest. If guest is during suspending, it sets freezing
+> status of virtgpu to true, this will prevent destroying
+> resources and resetting renderer when guest calls into
+> virtio_gpu_gl_reset. If guest is during resuming, it sets
+> freezing to false, and then virtio_gpu_gl_reset will keep
+> its origin actions and has no other impaction.
+>
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> ---
+>  hw/display/virtio-gpu-gl.c                  |  9 ++++++-
+>  hw/display/virtio-gpu-virgl.c               |  3 +++
+>  hw/display/virtio-gpu.c                     | 26 +++++++++++++++++++--
+>  include/hw/virtio/virtio-gpu.h              |  3 +++
+>  include/standard-headers/linux/virtio_gpu.h |  9 +++++++
+>  5 files changed, 47 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+> index e06be60dfb..e11ad233eb 100644
+> --- a/hw/display/virtio-gpu-gl.c
+> +++ b/hw/display/virtio-gpu-gl.c
+> @@ -100,7 +100,14 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
+>       */
+>      if (gl->renderer_inited && !gl->renderer_reset) {
+>          virtio_gpu_virgl_reset_scanout(g);
+> -        gl->renderer_reset =3D true;
+> +        /*
+> +         * If guest is suspending, we shouldn't reset renderer,
+> +         * otherwise, the display can't come back to the time when
+> +         * it was suspended after guest resumed.
+> +         */
+> +        if (!g->freezing) {
+> +            gl->renderer_reset =3D true;
+> +        }
+>      }
+>  }
+>
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.=
+c
+> index 73cb92c8d5..183ec92d53 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -464,6 +464,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+>      case VIRTIO_GPU_CMD_GET_EDID:
+>          virtio_gpu_get_edid(g, cmd);
+>          break;
+> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
+> +        virtio_gpu_cmd_status_freezing(g, cmd);
+> +        break;
+>      default:
+>          cmd->error =3D VIRTIO_GPU_RESP_ERR_UNSPEC;
+>          break;
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index 5e15c79b94..8f235d7848 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -373,6 +373,16 @@ static void virtio_gpu_resource_create_blob(VirtIOGP=
+U
+> *g,
+>      QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+>  }
+>
+> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
+> +                         struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct virtio_gpu_status_freezing sf;
+> +
+> +    VIRTIO_GPU_FILL_CMD(sf);
+> +    virtio_gpu_bswap_32(&sf, sizeof(sf));
+> +    g->freezing =3D sf.freezing;
+> +}
+> +
+>  static void virtio_gpu_disable_scanout(VirtIOGPU *g, int scanout_id)
+>  {
+>      struct virtio_gpu_scanout *scanout =3D
+> &g->parent_obj.scanout[scanout_id];
+> @@ -986,6 +996,9 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
+>      case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
+>          virtio_gpu_resource_detach_backing(g, cmd);
+>          break;
+> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
+> +        virtio_gpu_cmd_status_freezing(g, cmd);
+> +        break;
+>      default:
+>          cmd->error =3D VIRTIO_GPU_RESP_ERR_UNSPEC;
+>          break;
+> @@ -1344,6 +1357,8 @@ void virtio_gpu_device_realize(DeviceState *qdev,
+> Error **errp)
+>      QTAILQ_INIT(&g->reslist);
+>      QTAILQ_INIT(&g->cmdq);
+>      QTAILQ_INIT(&g->fenceq);
+> +
+> +    g->freezing =3D false;
+>  }
+>
+>  void virtio_gpu_reset(VirtIODevice *vdev)
+> @@ -1352,8 +1367,15 @@ void virtio_gpu_reset(VirtIODevice *vdev)
+>      struct virtio_gpu_simple_resource *res, *tmp;
+>      struct virtio_gpu_ctrl_command *cmd;
+>
+> -    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> -        virtio_gpu_resource_destroy(g, res);
+> +    /*
+> +     * If guest is suspending, we shouldn't destroy resources,
+> +     * otherwise, the display can't come back to the time when
+> +     * it was suspended after guest resumed.
+> +     */
+> +    if (!g->freezing) {
+> +        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> +            virtio_gpu_resource_destroy(g, res);
+> +        }
+>      }
+>
+>      while (!QTAILQ_EMPTY(&g->cmdq)) {
+> diff --git a/include/hw/virtio/virtio-gpu.h
+> b/include/hw/virtio/virtio-gpu.h
+> index 2e28507efe..c21c2990fb 100644
+> --- a/include/hw/virtio/virtio-gpu.h
+> +++ b/include/hw/virtio/virtio-gpu.h
+> @@ -173,6 +173,7 @@ struct VirtIOGPU {
+>
+>      uint64_t hostmem;
+>
+> +    bool freezing;
+>      bool processing_cmdq;
+>      QEMUTimer *fence_poll;
+>      QEMUTimer *print_stats;
+> @@ -284,5 +285,7 @@ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
+>  void virtio_gpu_virgl_reset(VirtIOGPU *g);
+>  int virtio_gpu_virgl_init(VirtIOGPU *g);
+>  int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
+> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
+> +                         struct virtio_gpu_ctrl_command *cmd);
+>
+>  #endif
+> diff --git a/include/standard-headers/linux/virtio_gpu.h
+> b/include/standard-headers/linux/virtio_gpu.h
+> index 2da48d3d4c..aefffbd751 100644
+> --- a/include/standard-headers/linux/virtio_gpu.h
+> +++ b/include/standard-headers/linux/virtio_gpu.h
+> @@ -116,6 +116,9 @@ enum virtio_gpu_ctrl_type {
+>         VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID,
+>         VIRTIO_GPU_RESP_ERR_INVALID_CONTEXT_ID,
+>         VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER,
+> +
+> +       /* status */
+> +       VIRTIO_GPU_CMD_STATUS_FREEZING =3D 0x1300,
+>  };
+>
 
+Adding a new command requires new feature flag (and maybe it should be in
+the <0x1000 range instead)
+
+But I am not sure we need a new message at the virtio-gpu level. Gerd, wdyt=
+?
+
+Maybe it's not a good place to reset all GPU resources during QEMU reset()
+after all, if it's called during s3 and there is no mechanism to restore
+it. Damien?
+
+thanks
+
+
+...
+
+>  enum virtio_gpu_shm_id {
+> @@ -453,4 +456,10 @@ struct virtio_gpu_resource_unmap_blob {
+>         uint32_t padding;
+>  };
+>
+> +/* VIRTIO_GPU_CMD_STATUS_FREEZING */
+> +struct virtio_gpu_status_freezing {
+> +       struct virtio_gpu_ctrl_hdr hdr;
+> +       __u32 freezing;
+> +};
+> +
+>  #endif
+> --
+> 2.34.1
+>
+>
+>
+
+--=20
+Marc-Andr=C3=A9 Lureau
+
+--000000000000b105e705fdee0f2d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
+"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 8, 2023 at 6:26=E2=80=
+=AFAM Jiqian Chen &lt;<a href=3D"mailto:Jiqian.Chen@amd.com">Jiqian.Chen@am=
+d.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">After suspending and resuming guest VM, you will get<br>
+a black screen, and the display can&#39;t come back.<br>
+<br>
+This is because when guest did suspending, it called<br>
+into qemu to call virtio_gpu_gl_reset. In function<br>
+virtio_gpu_gl_reset, it destroyed resources and reset<br>
+renderer, which were used for display. As a result,<br>
+guest&#39;s screen can&#39;t come back to the time when it was<br>
+suspended and only showed black.<br>
+<br>
+So, this patch adds a new ctrl message<br>
+VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from<br>
+guest. If guest is during suspending, it sets freezing<br>
+status of virtgpu to true, this will prevent destroying<br>
+resources and resetting renderer when guest calls into<br>
+virtio_gpu_gl_reset. If guest is during resuming, it sets<br>
+freezing to false, and then virtio_gpu_gl_reset will keep<br>
+its origin actions and has no other impaction.<br>
+<br>
+Signed-off-by: Jiqian Chen &lt;<a href=3D"mailto:Jiqian.Chen@amd.com" targe=
+t=3D"_blank">Jiqian.Chen@amd.com</a>&gt;<br>
+---<br>
+=C2=A0hw/display/virtio-gpu-gl.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 9 ++++++-<br>
+=C2=A0hw/display/virtio-gpu-virgl.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0|=C2=A0 3 +++<br>
+=C2=A0hw/display/virtio-gpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 26 +++++++++++++++++++--<br>
+=C2=A0include/hw/virtio/virtio-gpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 |=C2=A0 3 +++<br>
+=C2=A0include/standard-headers/linux/virtio_gpu.h |=C2=A0 9 +++++++<br>
+=C2=A05 files changed, 47 insertions(+), 3 deletions(-)<br>
+<br>
+diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c<br>
+index e06be60dfb..e11ad233eb 100644<br>
+--- a/hw/display/virtio-gpu-gl.c<br>
++++ b/hw/display/virtio-gpu-gl.c<br>
+@@ -100,7 +100,14 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)<br=
+>
+=C2=A0 =C2=A0 =C2=A0 */<br>
+=C2=A0 =C2=A0 =C2=A0if (gl-&gt;renderer_inited &amp;&amp; !gl-&gt;renderer_=
+reset) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_gpu_virgl_reset_scanout(g);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 gl-&gt;renderer_reset =3D true;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* If guest is suspending, we shouldn&#39=
+;t reset renderer,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* otherwise, the display can&#39;t come =
+back to the time when<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* it was suspended after guest resumed.<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!g-&gt;freezing) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gl-&gt;renderer_reset =3D true;<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0}<br>
+<br>
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c<=
+br>
+index 73cb92c8d5..183ec92d53 100644<br>
+--- a/hw/display/virtio-gpu-virgl.c<br>
++++ b/hw/display/virtio-gpu-virgl.c<br>
+@@ -464,6 +464,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,<br>
+=C2=A0 =C2=A0 =C2=A0case VIRTIO_GPU_CMD_GET_EDID:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_gpu_get_edid(g, cmd);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
++=C2=A0 =C2=A0 case VIRTIO_GPU_CMD_STATUS_FREEZING:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_gpu_cmd_status_freezing(g, cmd);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0 =C2=A0 =C2=A0default:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;error =3D VIRTIO_GPU_RESP_ERR_UNS=
+PEC;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c<br>
+index 5e15c79b94..8f235d7848 100644<br>
+--- a/hw/display/virtio-gpu.c<br>
++++ b/hw/display/virtio-gpu.c<br>
+@@ -373,6 +373,16 @@ static void virtio_gpu_resource_create_blob(VirtIOGPU =
+*g,<br>
+=C2=A0 =C2=A0 =C2=A0QTAILQ_INSERT_HEAD(&amp;g-&gt;reslist, res, next);<br>
+=C2=A0}<br>
+<br>
++void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0struct virtio_gpu_ctrl_command *cmd)<br>
++{<br>
++=C2=A0 =C2=A0 struct virtio_gpu_status_freezing sf;<br>
++<br>
++=C2=A0 =C2=A0 VIRTIO_GPU_FILL_CMD(sf);<br>
++=C2=A0 =C2=A0 virtio_gpu_bswap_32(&amp;sf, sizeof(sf));<br>
++=C2=A0 =C2=A0 g-&gt;freezing =3D sf.freezing;<br>
++}<br>
++<br>
+=C2=A0static void virtio_gpu_disable_scanout(VirtIOGPU *g, int scanout_id)<=
+br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0struct virtio_gpu_scanout *scanout =3D &amp;g-&gt;paren=
+t_obj.scanout[scanout_id];<br>
+@@ -986,6 +996,9 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,<br>
+=C2=A0 =C2=A0 =C2=A0case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_gpu_resource_detach_backing(g, cmd=
+);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
++=C2=A0 =C2=A0 case VIRTIO_GPU_CMD_STATUS_FREEZING:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_gpu_cmd_status_freezing(g, cmd);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0 =C2=A0 =C2=A0default:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;error =3D VIRTIO_GPU_RESP_ERR_UNS=
+PEC;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+@@ -1344,6 +1357,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, Err=
+or **errp)<br>
+=C2=A0 =C2=A0 =C2=A0QTAILQ_INIT(&amp;g-&gt;reslist);<br>
+=C2=A0 =C2=A0 =C2=A0QTAILQ_INIT(&amp;g-&gt;cmdq);<br>
+=C2=A0 =C2=A0 =C2=A0QTAILQ_INIT(&amp;g-&gt;fenceq);<br>
++<br>
++=C2=A0 =C2=A0 g-&gt;freezing =3D false;<br>
+=C2=A0}<br>
+<br>
+=C2=A0void virtio_gpu_reset(VirtIODevice *vdev)<br>
+@@ -1352,8 +1367,15 @@ void virtio_gpu_reset(VirtIODevice *vdev)<br>
+=C2=A0 =C2=A0 =C2=A0struct virtio_gpu_simple_resource *res, *tmp;<br>
+=C2=A0 =C2=A0 =C2=A0struct virtio_gpu_ctrl_command *cmd;<br>
+<br>
+-=C2=A0 =C2=A0 QTAILQ_FOREACH_SAFE(res, &amp;g-&gt;reslist, next, tmp) {<br=
+>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_gpu_resource_destroy(g, res);<br>
++=C2=A0 =C2=A0 /*<br>
++=C2=A0 =C2=A0 =C2=A0* If guest is suspending, we shouldn&#39;t destroy res=
+ources,<br>
++=C2=A0 =C2=A0 =C2=A0* otherwise, the display can&#39;t come back to the ti=
+me when<br>
++=C2=A0 =C2=A0 =C2=A0* it was suspended after guest resumed.<br>
++=C2=A0 =C2=A0 =C2=A0*/<br>
++=C2=A0 =C2=A0 if (!g-&gt;freezing) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 QTAILQ_FOREACH_SAFE(res, &amp;g-&gt;reslist, n=
+ext, tmp) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_gpu_resource_destroy(g, r=
+es);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0while (!QTAILQ_EMPTY(&amp;g-&gt;cmdq)) {<br>
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.=
+h<br>
+index 2e28507efe..c21c2990fb 100644<br>
+--- a/include/hw/virtio/virtio-gpu.h<br>
++++ b/include/hw/virtio/virtio-gpu.h<br>
+@@ -173,6 +173,7 @@ struct VirtIOGPU {<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0uint64_t hostmem;<br>
+<br>
++=C2=A0 =C2=A0 bool freezing;<br>
+=C2=A0 =C2=A0 =C2=A0bool processing_cmdq;<br>
+=C2=A0 =C2=A0 =C2=A0QEMUTimer *fence_poll;<br>
+=C2=A0 =C2=A0 =C2=A0QEMUTimer *print_stats;<br>
+@@ -284,5 +285,7 @@ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);<br>
+=C2=A0void virtio_gpu_virgl_reset(VirtIOGPU *g);<br>
+=C2=A0int virtio_gpu_virgl_init(VirtIOGPU *g);<br>
+=C2=A0int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);<br>
++void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0struct virtio_gpu_ctrl_command *cmd);<br>
+<br>
+=C2=A0#endif<br>
+diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard=
+-headers/linux/virtio_gpu.h<br>
+index 2da48d3d4c..aefffbd751 100644<br>
+--- a/include/standard-headers/linux/virtio_gpu.h<br>
++++ b/include/standard-headers/linux/virtio_gpu.h<br>
+@@ -116,6 +116,9 @@ enum virtio_gpu_ctrl_type {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VIRTIO_GPU_RESP_ERR_INVALID_CONTEXT_ID,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER,<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0/* status */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0VIRTIO_GPU_CMD_STATUS_FREEZING =3D 0x1300,<br>
+=C2=A0};<br></blockquote><div><br></div><div>Adding a new command requires =
+new feature flag (and maybe it should be in the &lt;0x1000 range instead) <=
+br></div><div><br></div><div>But I am not sure we need a new message at the=
+ virtio-gpu level. Gerd, wdyt?<br></div><div><br></div><div>Maybe it&#39;s =
+not a good place to reset all GPU resources during QEMU reset() after all, =
+if it&#39;s called during s3 and there is no mechanism to restore it. Damie=
+n?</div><div><br></div><div>thanks<br></div><div><br></div><div><br></div><=
+div>...<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
+0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0enum virtio_gpu_shm_id {<br>
+@@ -453,4 +456,10 @@ struct virtio_gpu_resource_unmap_blob {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint32_t padding;<br>
+=C2=A0};<br>
+<br>
++/* VIRTIO_GPU_CMD_STATUS_FREEZING */<br>
++struct virtio_gpu_status_freezing {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0struct virtio_gpu_ctrl_hdr hdr;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0__u32 freezing;<br>
++};<br>
++<br>
+=C2=A0#endif<br>
+-- <br>
+2.34.1<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
+
+--000000000000b105e705fdee0f2d--
 
