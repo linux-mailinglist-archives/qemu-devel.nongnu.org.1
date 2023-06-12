@@ -2,74 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3886172C602
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3E272C641
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 15:43:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8hdj-0003jQ-Fp; Mon, 12 Jun 2023 09:31:24 -0400
+	id 1q8hoS-0007O8-6g; Mon, 12 Jun 2023 09:42:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1q8hdM-0003Qh-Po
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:31:04 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1q8hdJ-0004Hi-Ub
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:31:00 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f629ccb8ebso5023147e87.1
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 06:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686576656; x=1689168656;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vtm2dqomgP00nhnh5YSvjSebLnxbRokqgf/Wg0TGa80=;
- b=Dpj52mM/Hr2o4HcrpeK/6ZrriruuomhMBb4MINLshR1KhKPSX5R7qa0RxIIXt7mnZi
- Ojzthrm4AQEkzUyk7WhgcrqoUu6F3Yn10IfMRSpwK+rPiV5ijXm03zYAOHuF9QZzQPsC
- mlSx1robcxC4FmNbtwXey29jeCEuFvFLM6IFeuP8b+AQ1aPu9liwW/6QmgsuiQpO6crF
- MbzjEQi3ErKKBDS5QrP5aEqf/0atJDckUJYxw74j8ZSyZYVfNzspjWoIIwu4bnmCP8jd
- bQ4ZpTHh+9vm3b1ChdRr/HcGD7/FDQQoJrfQRdtsJO3+0MQ+TU3qGWTsBZq/whRV1sHa
- 0Gxw==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q8hoQ-0007Ni-3B
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:42:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q8hoO-0006Or-HB
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 09:42:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686577342;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VIHRkHIk31UtksEpOUT6Bc8hNYG5AGq8W88SjYBvB34=;
+ b=PfCePmONIho+MveL8GxWA0L7NohNZ1on/y/DhKYIoS8l52K9lJFI37W3LJvd6ZIy1f8qbr
+ VuqhobimfROcrKrGGCeZ1LRGqe/ZV0T+KBwOq5y0Yde6fFL/zMLU6jaNSp9yvVR3vDtJ71
+ RZcEdp+JPP/qRHvuIiMY+mZ1s/eSQCw=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-460-QbgU_zqpP_GrKg3ZWUDYKQ-1; Mon, 12 Jun 2023 09:42:21 -0400
+X-MC-Unique: QbgU_zqpP_GrKg3ZWUDYKQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-977cb78acfcso391667066b.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 06:42:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686576656; x=1689168656;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vtm2dqomgP00nhnh5YSvjSebLnxbRokqgf/Wg0TGa80=;
- b=Xgl32wxrzCXyeo05sMiZANtMR0NhVmyzZlglzRBCKCGGGaTh+7w5ekv/nLx334f4pg
- BceloHv5pWkdoqTkXNEQ2nUiTdSmcxnGAcqI3b0yPHTd6/GHommEU0Vn+k1/TyAR8LaI
- 1Ly9i0jB0lb6IKYsESnE108JV8e1v4PDtve0nvADfr0g1+qnBuM18EFopqpP3EZNAc4t
- 3HFLjR/LTgRKqrTtIwvPyKYTVAGSNe27mdlgxLyNBzuBk70/DPAKWu5Fka2Nn1tGvhLZ
- tuJN++LT07JNyJ0PhAotZTyEnybzq3N3ZkHWF5db6Xp/uhdjWLZdhIeGbSDTu+H1nP7k
- IXPg==
-X-Gm-Message-State: AC+VfDzh2A9Ph1l1jCDoqwY0M4tTEM9+4csIR8eStes22vCU/+VSIjsV
- zeWuNT1DDpT2nA4EaT+zGw6gYOCEdwYca70uEcs=
-X-Google-Smtp-Source: ACHHUZ4xaZMo55Jfuilzueg+FNd5cHQiW3zJL681eytFu7zW1/nIGzMxFs1RJWoFSZjDVxazC3zcREc2X1EkYVNQyRw=
-X-Received: by 2002:a2e:b24d:0:b0:2b0:2976:172d with SMTP id
- n13-20020a2eb24d000000b002b02976172dmr2939117ljm.9.1686576655666; Mon, 12 Jun
- 2023 06:30:55 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686577340; x=1689169340;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VIHRkHIk31UtksEpOUT6Bc8hNYG5AGq8W88SjYBvB34=;
+ b=ZLD6AKSq6U44riFOxjkZTuMY52knTAhpq98x5j5OlFgM73IgrN+2BIgYCAwyy1gqnC
+ sXcFlH0VuBONDrabd3jo0IU4+ChcwZM4hI9YC/9+Pgyw8gW7souexkHZX0cGrYQx8yQS
+ osGYkyBN6sLrw1mtcXx/+UrozyHo2/FWIH9FPcZTtNBMBZY9fqQ9ZgtoozJscc5i+AcB
+ CzXjnDQrxqViOqUy6+Ep+1MF5aHEhWHB0huef8bcumd5a4/2Yzt+vV4BW9eWt2BxVXei
+ v6Y1kt3aXIg24OBEd5h3a2/58Io9PmrMvxw+C5JOZ7FQt3VGGicScOBLBqx3M7Z8RvtP
+ SmOA==
+X-Gm-Message-State: AC+VfDx+LyAP9L6R3QibAJkin+YriM7BrVVZyohUP4/ii9ROUg7c/qv0
+ WbS/JiKRW9HpINYrcoE9LMsvx+mxlhsRFGAXYjl/qRm/2eYUpqy4tnhGuaKYKaan6K9qUHtqkCo
+ mzmauT5SuxAwPUig=
+X-Received: by 2002:a17:907:2da4:b0:981:a949:27f3 with SMTP id
+ gt36-20020a1709072da400b00981a94927f3mr3388305ejc.55.1686577340329; 
+ Mon, 12 Jun 2023 06:42:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5rYWHIUxxatq7Pz9AH0RLAqpg3ySW0r2R7Uv26FngdxvQNXxv83MDSrGl2OzomSngQH7P0xQ==
+X-Received: by 2002:a17:907:2da4:b0:981:a949:27f3 with SMTP id
+ gt36-20020a1709072da400b00981a94927f3mr3388293ejc.55.1686577339964; 
+ Mon, 12 Jun 2023 06:42:19 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ r26-20020a1709067fda00b0096a1ba4e0d1sm5234668ejs.32.2023.06.12.06.42.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jun 2023 06:42:19 -0700 (PDT)
+Date: Mon, 12 Jun 2023 15:42:18 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 03/15] hw/pci-host/q35: Initialize PCMachineState::bus
+ in board code
+Message-ID: <20230612154218.13efd9db@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230611103412.12109-4-shentey@gmail.com>
+References: <20230611103412.12109-1-shentey@gmail.com>
+ <20230611103412.12109-4-shentey@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230510160441.1249170-1-pbonzini@redhat.com>
- <20230510160441.1249170-2-pbonzini@redhat.com>
-In-Reply-To: <20230510160441.1249170-2-pbonzini@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 12 Jun 2023 15:30:40 +0200
-Message-ID: <CAJ+F1CKJCU07WsLcQ4w9_oWekfEpjcOz6OXOyGHYj9tm0Z2_NA@mail.gmail.com>
-Subject: Re: [PATCH] coroutine-asm: add x86 CET shadow stack support
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org
-Content-Type: multipart/alternative; boundary="00000000000072951c05fdeeba5a"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-lf1-x12b.google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,586 +105,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000072951c05fdeeba5a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Sun, 11 Jun 2023 12:34:00 +0200
+Bernhard Beschow <shentey@gmail.com> wrote:
 
-Hi Paolo
+> The Q35 PCI host currently sets the PC machine's PCI bus attribute
+> through global state, thereby assuming the machine to be a PC machine.
+> The Q35 machine code already holds on to Q35's pci bus attribute, so can
+> easily set its own property while preserving encapsulation.
+> 
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 
-On Wed, May 10, 2023 at 6:05=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->
-
-patch looks generally good, but does not apply anymore.
-
-Are you planning to update it later to support the more secure "
-map_shadow_stack" syscall, if/when it is added?
-
----
->  meson.build          | 16 +++++++--
->  util/coroutine-asm.c | 82 ++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 93 insertions(+), 5 deletions(-)
->
-> diff --git a/meson.build b/meson.build
-> index 0121ccab78dd..17e4a3bc582e 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -328,6 +328,10 @@ elif coroutine_backend not in supported_backends
->          .format(coroutine_backend, ', '.join(supported_backends)))
->  endif
->
-> +if cfi_mode =3D=3D 'hw' and coroutine_backend !=3D 'asm'
-> +  error('Hardware control-flow integrity requires the "asm" coroutine
-> backend.')
-> +endif
+> ---
+>  hw/i386/pc_q35.c  | 4 +++-
+>  hw/pci-host/q35.c | 1 -
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 62c5d652b7..29b46d3e1c 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -230,10 +230,12 @@ static void pc_q35_init(MachineState *machine)
+>                              x86ms->below_4g_mem_size, NULL);
+>      object_property_set_int(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
+>                              x86ms->above_4g_mem_size, NULL);
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
+>  
+>      /* pci */
+> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
+>      host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
+> +    pcms->bus = host_bus;
 > +
->  # Compiles if SafeStack *not* enabled
->  safe_stack_probe =3D '''
->    int main(void)
-> @@ -469,16 +473,22 @@ if cfi_mode =3D=3D 'sw'
->      endif
->    endif
->  elif cfi_mode in ['hw', 'auto']
-> -  if cfi_mode =3D=3D 'hw'
-> -    error('Hardware CFI is not supported yet')
-> +  if cpu in ['x86', 'x86_64']
-> +    cfi_flags +=3D cc.get_supported_arguments('-fcf-protection=3Dfull')
-> +    if cfi_mode =3D=3D 'hw'
-> +      error('C compiler does not support -fcf-protection')
-> +    endif
-> +  elif cfi_mode =3D=3D 'hw'
-> +    error('Hardware CFI is only supported on x86')
->    endif
->    if cfi_flags =3D=3D [] and cfi_mode =3D=3D 'auto'
->      cfi_mode =3D 'disabled'
->    endif
->  endif
-> -if cpu in ['x86', 'x86_64']
-> +if cpu in ['x86', 'x86_64'] and cfi_mode !=3D 'hw'
->    cfi_flags +=3D cc.get_supported_arguments('-fcf-protection=3Dbranch')
->  endif
-> +
->  add_global_arguments(cfi_flags, native: false, language: all_languages)
->  add_global_link_arguments(cfi_flags, native: false, language:
-> all_languages)
->
-> diff --git a/util/coroutine-asm.c b/util/coroutine-asm.c
-> index a06ecbcb0a07..771b1d4a0fc9 100644
-> --- a/util/coroutine-asm.c
-> +++ b/util/coroutine-asm.c
-> @@ -22,6 +22,13 @@
->  #include "qemu/osdep.h"
->  #include "qemu-common.h"
->  #include "qemu/coroutine_int.h"
-> +#include "qemu/error-report.h"
-> +
-> +#ifdef CONFIG_CF_PROTECTION
-> +#include <asm/prctl.h>
-> +#include <sys/prctl.h>
-> +int arch_prctl(int code, unsigned long addr);
-> +#endif
->
->  #ifdef CONFIG_VALGRIND_H
->  #include <valgrind/valgrind.h>
-> @@ -39,10 +46,14 @@
->  typedef struct {
->      Coroutine base;
->      void *sp;
-> +    void *ssp;
->
->      void *stack;
->      size_t stack_size;
->
-> +    /* x86: CET shadow stack */
-> +    void *sstack;
-> +    size_t sstack_size;
->  #ifdef CONFIG_VALGRIND_H
->      unsigned int valgrind_stack_id;
->  #endif
-> @@ -77,6 +88,35 @@ static void start_switch_fiber(void **fake_stack_save,
->  #endif
->  }
->
-> +static bool have_sstack(void)
-> +{
-> +#if defined CONFIG_CF_PROTECTION && defined __x86_64__
-> +    uint64_t ssp;
-> +    asm ("xor %0, %0; rdsspq %0\n" : "=3Dr" (ssp));
-> +    return !!ssp;
-> +#else
-> +    return 0;
-> +#endif
-> +}
-> +
-> +static void *alloc_sstack(size_t sz)
-> +{
-> +#if defined CONFIG_CF_PROTECTION && defined __x86_64__
-> +#ifndef ARCH_X86_CET_ALLOC_SHSTK
-> +#define ARCH_X86_CET_ALLOC_SHSTK 0x3004
-> +#endif
-> +
-> +    uint64_t arg =3D sz;
-> +    if (arch_prctl(ARCH_X86_CET_ALLOC_SHSTK, (unsigned long) &arg) < 0) =
-{
-> +        abort();
-> +    }
-> +
-> +    return (void *)arg;
-> +#else
-> +    abort();
-> +#endif
-> +}
-> +
->  #ifdef __x86_64__
->  /*
->   * We hardcode all operands to specific registers so that we can write
-> down all the
-> @@ -88,6 +128,26 @@ static void start_switch_fiber(void **fake_stack_save=
-,
->   * Note that push and call would clobber the red zone.  Makefile.objs
-> compiles this
->   * file with -mno-red-zone.  The alternative is to subtract/add 128 byte=
-s
-> from rsp
->   * around the switch, with slightly lower cache performance.
-> + *
-> + * The RSTORSSP and SAVEPREVSSP instructions are intricate.  In a
-> nutshell they are:
-> + *
-> + *      RSTORSSP(mem):    oldSSP =3D SSP
-> + *                        SSP =3D mem
-> + *                        *SSP =3D oldSSP
-> + *
-> + *      SAVEPREVSSP:      oldSSP =3D shadow_stack_pop()
-> + *                        *(oldSSP - 8) =3D oldSSP       # "push" to old
-> shadow stack
-> + *
-> + * Therefore, RSTORSSP(mem) followed by SAVEPREVSSP is the same as
-> + *
-> + *     shadow_stack_push(SSP)
-> + *     SSP =3D mem
-> + *     shadow_stack_pop()
-> + *
-> + * From the simplified description you can see that co->ssp, being store=
-d
-> before
-> + * the RSTORSSP+SAVEPREVSSP sequence, points to the top actual entry of
-> the shadow
-> + * stack, not to the restore token.  Hence we use an offset of -8 in the
-> operand
-> + * of rstorssp.
->   */
->  #define CO_SWITCH(from, to, action, jump) ({
->             \
->      int action_ =3D action;
->              \
-> @@ -100,7 +160,15 @@ static void start_switch_fiber(void **fake_stack_sav=
-e,
->          "jmp 2f\n"                          /* switch back continues at
-> label 2 */    \
->
->              \
->          "1: .cfi_adjust_cfa_offset 8\n"
->              \
-> -        "movq %%rsp, %c[SP](%[FROM])\n"     /* save source SP */
->             \
-> +        "xor %%rbp, %%rbp\n"                /* use old frame pointer as
-> scratch reg */ \
-> +        "rdsspq %%rbp\n"
->             \
-> +        "test %%rbp, %%rbp\n"               /* if CET is enabled... */
->             \
-> +        "jz 9f\n"
->              \
-> +        "movq %%rbp, %c[SSP](%[FROM])\n"    /* ... save source shadow SP=
-,
-> */         \
-> +        "movq %c[SSP](%[TO]), %%rbp\n"      /* restore destination shado=
-w
-> stack, */  \
-> +        "rstorssp -8(%%rbp)\n"
->             \
-> +        "saveprevssp\n"                     /* and save source shadow SP
-> token */     \
-> +        "9: movq %%rsp, %c[SP](%[FROM])\n"  /* save source SP */
->             \
->          "movq %c[SP](%[TO]), %%rsp\n"       /* load destination SP */
->              \
->          jump "\n"                           /* coroutine switch */
->             \
->
->              \
-> @@ -108,7 +176,8 @@ static void start_switch_fiber(void **fake_stack_save=
-,
->          "popq %%rbp\n"
->             \
->          ".cfi_adjust_cfa_offset -8\n"
->              \
->          : "+a" (action_), [FROM] "+b" (from_), [TO] "+D" (to_)
->             \
-> -        : [SP] "i" (offsetof(CoroutineAsm, sp))
->              \
-> +        : [SP] "i" (offsetof(CoroutineAsm, sp)),
->             \
-> +          [SSP] "i" (offsetof(CoroutineAsm, ssp))
->              \
->          : "rcx", "rdx", "rsi", "r8", "r9", "r10", "r11", "r12", "r13",
-> "r14", "r15",  \
->            "memory");
->             \
->      action_;
->             \
-> @@ -141,6 +210,12 @@ Coroutine *qemu_coroutine_new(void)
->      co->stack =3D qemu_alloc_stack(&co->stack_size);
->      co->sp =3D co->stack + co->stack_size;
->
-> +    if (have_sstack()) {
-> +        co->sstack_size =3D COROUTINE_SHADOW_STACK_SIZE;
-> +        co->sstack =3D alloc_sstack(co->sstack_size);
-> +        co->ssp =3D co->sstack + co->sstack_size;
-> +    }
-> +
->  #ifdef CONFIG_VALGRIND_H
->      co->valgrind_stack_id =3D
->          VALGRIND_STACK_REGISTER(co->stack, co->stack + co->stack_size);
-> @@ -186,6 +261,9 @@ void qemu_coroutine_delete(Coroutine *co_)
->  #endif
->
->      qemu_free_stack(co->stack, co->stack_size);
-> +    if (co->sstack) {
-> +        munmap(co->sstack, co->sstack_size);
-> +    }
->      g_free(co);
->  }
->
-> --
-> 2.40.1
->
->
->
+>      /* create ISA bus */
+>      lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC), true,
+>                                  TYPE_ICH9_LPC_DEVICE);
+> diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+> index 859c197f25..23b689dba3 100644
+> --- a/hw/pci-host/q35.c
+> +++ b/hw/pci-host/q35.c
+> @@ -66,7 +66,6 @@ static void q35_host_realize(DeviceState *dev, Error **errp)
+>                                  s->mch.pci_address_space,
+>                                  s->mch.address_space_io,
+>                                  0, TYPE_PCIE_BUS);
+> -    PC_MACHINE(qdev_get_machine())->bus = pci->bus;
+>      pci->bypass_iommu =
+>          PC_MACHINE(qdev_get_machine())->default_bus_bypass_iommu;
+>      qdev_realize(DEVICE(&s->mch), BUS(pci->bus), &error_fatal);
 
---=20
-Marc-Andr=C3=A9 Lureau
-
---00000000000072951c05fdeeba5a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi Paolo<br></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 10, 2023 at 6:05=
-=E2=80=AFPM Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" target=
-=3D"_blank">pbonzini@redhat.com</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">Signed-off-by: Paolo Bonzini &lt;<a href=
-=3D"mailto:pbonzini@redhat.com" target=3D"_blank">pbonzini@redhat.com</a>&g=
-t;<br></blockquote><div><br></div><div>patch looks generally good, but does=
- not apply anymore.</div><div><br></div><div>Are you planning to update it =
-later to support the more secure &quot;<span class=3D"gmail-il">map_shadow_=
-stack&quot;</span> syscall, if/when it is added?</div><div><br> </div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 16 +++++++--<br>
-=C2=A0util/coroutine-asm.c | 82 ++++++++++++++++++++++++++++++++++++++++++-=
--<br>
-=C2=A02 files changed, 93 insertions(+), 5 deletions(-)<br>
-<br>
-diff --git a/meson.build b/meson.build<br>
-index 0121ccab78dd..17e4a3bc582e 100644<br>
---- a/meson.build<br>
-+++ b/meson.build<br>
-@@ -328,6 +328,10 @@ elif coroutine_backend not in supported_backends<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.format(coroutine_backend, &#39;, &#39;.j=
-oin(supported_backends)))<br>
-=C2=A0endif<br>
-<br>
-+if cfi_mode =3D=3D &#39;hw&#39; and coroutine_backend !=3D &#39;asm&#39;<b=
-r>
-+=C2=A0 error(&#39;Hardware control-flow integrity requires the &quot;asm&q=
-uot; coroutine backend.&#39;)<br>
-+endif<br>
-+<br>
-=C2=A0# Compiles if SafeStack *not* enabled<br>
-=C2=A0safe_stack_probe =3D &#39;&#39;&#39;<br>
-=C2=A0 =C2=A0int main(void)<br>
-@@ -469,16 +473,22 @@ if cfi_mode =3D=3D &#39;sw&#39;<br>
-=C2=A0 =C2=A0 =C2=A0endif<br>
-=C2=A0 =C2=A0endif<br>
-=C2=A0elif cfi_mode in [&#39;hw&#39;, &#39;auto&#39;]<br>
--=C2=A0 if cfi_mode =3D=3D &#39;hw&#39;<br>
--=C2=A0 =C2=A0 error(&#39;Hardware CFI is not supported yet&#39;)<br>
-+=C2=A0 if cpu in [&#39;x86&#39;, &#39;x86_64&#39;]<br>
-+=C2=A0 =C2=A0 cfi_flags +=3D cc.get_supported_arguments(&#39;-fcf-protecti=
-on=3Dfull&#39;)<br>
-+=C2=A0 =C2=A0 if cfi_mode =3D=3D &#39;hw&#39;<br>
-+=C2=A0 =C2=A0 =C2=A0 error(&#39;C compiler does not support -fcf-protectio=
-n&#39;)<br>
-+=C2=A0 =C2=A0 endif<br>
-+=C2=A0 elif cfi_mode =3D=3D &#39;hw&#39;<br>
-+=C2=A0 =C2=A0 error(&#39;Hardware CFI is only supported on x86&#39;)<br>
-=C2=A0 =C2=A0endif<br>
-=C2=A0 =C2=A0if cfi_flags =3D=3D [] and cfi_mode =3D=3D &#39;auto&#39;<br>
-=C2=A0 =C2=A0 =C2=A0cfi_mode =3D &#39;disabled&#39;<br>
-=C2=A0 =C2=A0endif<br>
-=C2=A0endif<br>
--if cpu in [&#39;x86&#39;, &#39;x86_64&#39;]<br>
-+if cpu in [&#39;x86&#39;, &#39;x86_64&#39;] and cfi_mode !=3D &#39;hw&#39;=
-<br>
-=C2=A0 =C2=A0cfi_flags +=3D cc.get_supported_arguments(&#39;-fcf-protection=
-=3Dbranch&#39;)<br>
-=C2=A0endif<br>
-+<br>
-=C2=A0add_global_arguments(cfi_flags, native: false, language: all_language=
-s)<br>
-=C2=A0add_global_link_arguments(cfi_flags, native: false, language: all_lan=
-guages)<br>
-<br>
-diff --git a/util/coroutine-asm.c b/util/coroutine-asm.c<br>
-index a06ecbcb0a07..771b1d4a0fc9 100644<br>
---- a/util/coroutine-asm.c<br>
-+++ b/util/coroutine-asm.c<br>
-@@ -22,6 +22,13 @@<br>
-=C2=A0#include &quot;qemu/osdep.h&quot;<br>
-=C2=A0#include &quot;qemu-common.h&quot;<br>
-=C2=A0#include &quot;qemu/coroutine_int.h&quot;<br>
-+#include &quot;qemu/error-report.h&quot;<br>
-+<br>
-+#ifdef CONFIG_CF_PROTECTION<br>
-+#include &lt;asm/prctl.h&gt;<br>
-+#include &lt;sys/prctl.h&gt;<br>
-+int arch_prctl(int code, unsigned long addr);<br>
-+#endif<br>
-<br>
-=C2=A0#ifdef CONFIG_VALGRIND_H<br>
-=C2=A0#include &lt;valgrind/valgrind.h&gt;<br>
-@@ -39,10 +46,14 @@<br>
-=C2=A0typedef struct {<br>
-=C2=A0 =C2=A0 =C2=A0Coroutine base;<br>
-=C2=A0 =C2=A0 =C2=A0void *sp;<br>
-+=C2=A0 =C2=A0 void *ssp;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0void *stack;<br>
-=C2=A0 =C2=A0 =C2=A0size_t stack_size;<br>
-<br>
-+=C2=A0 =C2=A0 /* x86: CET shadow stack */<br>
-+=C2=A0 =C2=A0 void *sstack;<br>
-+=C2=A0 =C2=A0 size_t sstack_size;<br>
-=C2=A0#ifdef CONFIG_VALGRIND_H<br>
-=C2=A0 =C2=A0 =C2=A0unsigned int valgrind_stack_id;<br>
-=C2=A0#endif<br>
-@@ -77,6 +88,35 @@ static void start_switch_fiber(void **fake_stack_save,<b=
-r>
-=C2=A0#endif<br>
-=C2=A0}<br>
-<br>
-+static bool have_sstack(void)<br>
-+{<br>
-+#if defined CONFIG_CF_PROTECTION &amp;&amp; defined __x86_64__<br>
-+=C2=A0 =C2=A0 uint64_t ssp;<br>
-+=C2=A0 =C2=A0 asm (&quot;xor %0, %0; rdsspq %0\n&quot; : &quot;=3Dr&quot; =
-(ssp));<br>
-+=C2=A0 =C2=A0 return !!ssp;<br>
-+#else<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+#endif<br>
-+}<br>
-+<br>
-+static void *alloc_sstack(size_t sz)<br>
-+{<br>
-+#if defined CONFIG_CF_PROTECTION &amp;&amp; defined __x86_64__<br>
-+#ifndef ARCH_X86_CET_ALLOC_SHSTK<br>
-+#define ARCH_X86_CET_ALLOC_SHSTK 0x3004<br>
-+#endif<br>
-+<br>
-+=C2=A0 =C2=A0 uint64_t arg =3D sz;<br>
-+=C2=A0 =C2=A0 if (arch_prctl(ARCH_X86_CET_ALLOC_SHSTK, (unsigned long) &am=
-p;arg) &lt; 0) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 abort();<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 return (void *)arg;<br>
-+#else<br>
-+=C2=A0 =C2=A0 abort();<br>
-+#endif<br>
-+}<br>
-+<br>
-=C2=A0#ifdef __x86_64__<br>
-=C2=A0/*<br>
-=C2=A0 * We hardcode all operands to specific registers so that we can writ=
-e down all the<br>
-@@ -88,6 +128,26 @@ static void start_switch_fiber(void **fake_stack_save,<=
-br>
-=C2=A0 * Note that push and call would clobber the red zone.=C2=A0 Makefile=
-.objs compiles this<br>
-=C2=A0 * file with -mno-red-zone.=C2=A0 The alternative is to subtract/add =
-128 bytes from rsp<br>
-=C2=A0 * around the switch, with slightly lower cache performance.<br>
-+ *<br>
-+ * The RSTORSSP and SAVEPREVSSP instructions are intricate.=C2=A0 In a nut=
-shell they are:<br>
-+ *<br>
-+ *=C2=A0 =C2=A0 =C2=A0 RSTORSSP(mem):=C2=A0 =C2=A0 oldSSP =3D SSP<br>
-+ *=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 SSP =3D mem<br>
-+ *=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 *SSP =3D oldSSP<br>
-+ *<br>
-+ *=C2=A0 =C2=A0 =C2=A0 SAVEPREVSSP:=C2=A0 =C2=A0 =C2=A0 oldSSP =3D shadow_=
-stack_pop()<br>
-+ *=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 *(oldSSP - 8) =3D oldSSP=C2=A0 =C2=A0 =C2=A0 =C2=A0# &quot;pu=
-sh&quot; to old shadow stack<br>
-+ *<br>
-+ * Therefore, RSTORSSP(mem) followed by SAVEPREVSSP is the same as<br>
-+ *<br>
-+ *=C2=A0 =C2=A0 =C2=A0shadow_stack_push(SSP)<br>
-+ *=C2=A0 =C2=A0 =C2=A0SSP =3D mem<br>
-+ *=C2=A0 =C2=A0 =C2=A0shadow_stack_pop()<br>
-+ *<br>
-+ * From the simplified description you can see that co-&gt;ssp, being stor=
-ed before<br>
-+ * the RSTORSSP+SAVEPREVSSP sequence, points to the top actual entry of th=
-e shadow<br>
-+ * stack, not to the restore token.=C2=A0 Hence we use an offset of -8 in =
-the operand<br>
-+ * of rstorssp.<br>
-=C2=A0 */<br>
-=C2=A0#define CO_SWITCH(from, to, action, jump) ({=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0int action_ =3D action;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-@@ -100,7 +160,15 @@ static void start_switch_fiber(void **fake_stack_save,=
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;jmp 2f\n&quot;=C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* sw=
-itch back continues at label 2 */=C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0\<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;1: .cfi_adjust_cfa_offset 8\n&quot;=
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0\<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;movq %%rsp, %c[SP](%[FROM])\n&quot;=C2=
-=A0 =C2=A0 =C2=A0/* save source SP */=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;xor %%rbp, %%rbp\n&quot;=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* use old frame pointer as scrat=
-ch reg */ \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;rdsspq %%rbp\n&quot;=C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;test %%rbp, %%rbp\n&quot;=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* if CET is enabled... */=C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;jz 9f\n&quot;=C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;movq %%rbp, %c[SSP](%[FROM])\n&quot;=C2=
-=A0 =C2=A0 /* ... save source shadow SP, */=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0\<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;movq %c[SSP](%[TO]), %%rbp\n&quot;=C2=A0=
- =C2=A0 =C2=A0 /* restore destination shadow stack, */=C2=A0 \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;rstorssp -8(%%rbp)\n&quot;=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;saveprevssp\n&quot;=C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* and save source s=
-hadow SP token */=C2=A0 =C2=A0 =C2=A0\<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;9: movq %%rsp, %c[SP](%[FROM])\n&quot;=
-=C2=A0 /* save source SP */=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;movq %c[SP](%[TO]), %%rsp\n&quot;=
-=C2=A0 =C2=A0 =C2=A0 =C2=A0/* load destination SP */=C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0jump &quot;\n&quot;=C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0/* coroutine switch */=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0\<br>
-@@ -108,7 +176,8 @@ static void start_switch_fiber(void **fake_stack_save,<=
-br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;popq %%rbp\n&quot;=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;.cfi_adjust_cfa_offset -8\n&quot;=
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0: &quot;+a&quot; (action_), [FROM] &quot;=
-+b&quot; (from_), [TO] &quot;+D&quot; (to_)=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 : [SP] &quot;i&quot; (offsetof(CoroutineAsm, s=
-p))=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 : [SP] &quot;i&quot; (offsetof(CoroutineAsm, s=
-p)),=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 [SSP] &quot;i&quot; (offsetof(Coroutine=
-Asm, ssp))=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0: &quot;rcx&quot;, &quot;rdx&quot;, &quot=
-;rsi&quot;, &quot;r8&quot;, &quot;r9&quot;, &quot;r10&quot;, &quot;r11&quot=
-;, &quot;r12&quot;, &quot;r13&quot;, &quot;r14&quot;, &quot;r15&quot;,=C2=
-=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;memory&quot;);=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0action_;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-@@ -141,6 +210,12 @@ Coroutine *qemu_coroutine_new(void)<br>
-=C2=A0 =C2=A0 =C2=A0co-&gt;stack =3D qemu_alloc_stack(&amp;co-&gt;stack_siz=
-e);<br>
-=C2=A0 =C2=A0 =C2=A0co-&gt;sp =3D co-&gt;stack + co-&gt;stack_size;<br>
-<br>
-+=C2=A0 =C2=A0 if (have_sstack()) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 co-&gt;sstack_size =3D COROUTINE_SHADOW_STACK_=
-SIZE;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 co-&gt;sstack =3D alloc_sstack(co-&gt;sstack_s=
-ize);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 co-&gt;ssp =3D co-&gt;sstack + co-&gt;sstack_s=
-ize;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-=C2=A0#ifdef CONFIG_VALGRIND_H<br>
-=C2=A0 =C2=A0 =C2=A0co-&gt;valgrind_stack_id =3D<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VALGRIND_STACK_REGISTER(co-&gt;stack, co-=
-&gt;stack + co-&gt;stack_size);<br>
-@@ -186,6 +261,9 @@ void qemu_coroutine_delete(Coroutine *co_)<br>
-=C2=A0#endif<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0qemu_free_stack(co-&gt;stack, co-&gt;stack_size);<br>
-+=C2=A0 =C2=A0 if (co-&gt;sstack) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 munmap(co-&gt;sstack, co-&gt;sstack_size);<br>
-+=C2=A0 =C2=A0 }<br>
-=C2=A0 =C2=A0 =C2=A0g_free(co);<br>
-=C2=A0}<br>
-<br>
--- <br>
-2.40.1<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---00000000000072951c05fdeeba5a--
 
