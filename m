@@ -2,62 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2830172B881
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 09:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 388F572B882
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 09:17:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8bn2-0007HG-On; Mon, 12 Jun 2023 03:16:36 -0400
+	id 1q8bnh-0007g7-AX; Mon, 12 Jun 2023 03:17:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q8bmz-0007Gg-D4
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 03:16:33 -0400
-Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q8bmt-0002n7-Nb
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 03:16:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=43AOr3JuYXn8Obd3T349zxf4PssBwMWVSZ1lfjKApiI=; b=HKYKV1tuz5s759hZWM0CuKTeuT
- vQb270NJJFjmgn9shUcrZt4FdN7sxiDVvbs/ak94aSYi5Aq0bs/65Fm1sqLxrWfOzduAXmv8Z2Dsi
- lRqQMR/2liBNUntM4/ZbXfazRtGfLZH2ck1o0di+gENtaBn59fUDV0F1KPz0Rfu3fAV8=;
-Date: Mon, 12 Jun 2023 09:16:17 +0200
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: Siqi Chen <coc.cyqh@gmail.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org
-Subject: Re: [PATCH] target/tricore: Fix out-of-bounds index in imask
- instruction
-Message-ID: <mag5k52yv25pp2zztoqvcuda4fsa64gq2igw4cmrpiillr3ime@drnnlcfi3gdb>
-References: <20230612065633.149152-1-coc.cyqh@gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q8bnb-0007fm-Ku
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 03:17:11 -0400
+Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q8bnZ-0002qq-Qx
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 03:17:11 -0400
+Received: by mail-yb1-xb34.google.com with SMTP id
+ 3f1490d57ef6-bc476bf5239so2119147276.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 00:17:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686554228; x=1689146228;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=oYYxvVOm7SuokDORqy+h1gBCSkGxi8qwS8+yjMWgu64=;
+ b=e0ynxhO2w4kH0ekb2iYusfBJpF5akhFWEEuOv/HBRbUWw2ONFPMSck44PY1jra5Jvm
+ UFAHEPnAoPqHc81rQrQxc5Ma9scmA5auq3FrQAwndHXolGASQWjWaUPUGTqDmDNKT6Bf
+ D7h3PF2e2jHUQGOKC56F1W07+oNg0FoKBrMiJYKNFQuINckMJzTFbU7Mx6oDPRiSaOJx
+ OFvUtEagJdbg4p4eBn0ivyXypgly3HCG+nTSfKd68PFIPE1g2xIINWb/RKCH/eA4NDae
+ MzrXhqECywzAwE+Bx7valmSzdrrqFy2ZU+9k2tqwm4DsoTxDfIW3MskSUfBxWK9ryEmE
+ eK+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686554228; x=1689146228;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oYYxvVOm7SuokDORqy+h1gBCSkGxi8qwS8+yjMWgu64=;
+ b=TJ9wbg+PS/GxAzxCTWilY1gz1HFPIKgF0G8j6VA1dLyw1BJyVPmvle1s3b4l50uqsX
+ LYDvKMir4cu+yTNVyOjYwAyj74zOpKObr3/ffs5RtdL8mLrcB8FPB7ZJ2whzXjQ6Fikx
+ Bqn/FgSPFjf0b0/ImAm6vqZQ9UziRXkmO9yACQK1dEteqVfymM1zeW76uN8qsRLWGhnL
+ HR/0IvkkRQc3LLFlu5szedzs4egRJMWJpXp4oTOjAcJkStMSGAiAxweFpoBih43AUOOv
+ /CX9XWLkKIJs8gLp1+urD1siWaSfjFQSJ/ETww0hoiHJG57iYxa1HRa7gJMIP+M1/eSm
+ 0aQA==
+X-Gm-Message-State: AC+VfDxkUXdcFiTt9uyW/+ZDJwtTtRlaY3mToUj4pN1JnjbURrTXz7Kb
+ UobKJcQAAUqS0qsHvv76tp1CuQ==
+X-Google-Smtp-Source: ACHHUZ5o4lxlEafvI/npsibpmhkmaMFBYUBwhvaEnUduWeQsfdP/HhIu0AaMHU5hHDKnpHhxlLEV4g==
+X-Received: by 2002:a25:8a0a:0:b0:bad:125f:9156 with SMTP id
+ g10-20020a258a0a000000b00bad125f9156mr8040493ybl.35.1686554228387; 
+ Mon, 12 Jun 2023 00:17:08 -0700 (PDT)
+Received: from [192.168.85.227] ([172.58.160.122])
+ by smtp.gmail.com with ESMTPSA id
+ l23-20020a25b317000000b00bc9588e9a05sm677329ybj.37.2023.06.12.00.17.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Jun 2023 00:17:07 -0700 (PDT)
+Message-ID: <63354939-ae21-dbbd-c788-1acacc64abae@linaro.org>
+Date: Mon, 12 Jun 2023 09:17:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612065633.149152-1-coc.cyqh@gmail.com>
-X-IMT-Source: Extern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-rspamd-score: 4
-X-IMT-rspamd-bar: /
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=399070, da=174163243, mc=42, sc=0,
- hc=42, sp=0, fso=399070, re=0, sd=0, hd=0
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.12.70316, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
-Received-SPF: pass client-ip=2001:638:502:c003::15;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=shirlock.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v15 07/10] tb-stats: Adding info [tb-list|tb] commands to
+ HMP (WIP)
+Content-Language: en-US
+To: "Wu, Fei" <fei2.wu@intel.com>, alex.bennee@linaro.org,
+ qemu-devel@nongnu.org
+Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230607122411.3394702-1-fei2.wu@intel.com>
+ <20230607122411.3394702-8-fei2.wu@intel.com>
+ <81e761e4-7776-b569-229f-f0bd8257145d@intel.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <81e761e4-7776-b569-229f-f0bd8257145d@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yb1-xb34.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,18 +102,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 12, 2023 at 02:56:33PM +0800, Siqi Chen wrote:
-> When translating  "imask" instruction of Tricore architecture, QEMU did not check whether the register index was out of bounds, resulting in a global-buffer-overflow.
+On 6/12/23 03:44, Wu, Fei wrote:
+> On 6/7/2023 8:24 PM, Fei Wu wrote:
+>> +void hmp_info_tb(Monitor *mon, const QDict *qdict)
+>> +{
+>> +    const int id = qdict_get_int(qdict, "id");
+>> +    g_autoptr(GString) buf = g_string_new("");
+>> +
+>> +    if (!tcg_enabled()) {
+>> +        monitor_printf(mon, "Only available with accel=tcg\n");
+>> +        return;
+>> +    }
+>> +
+>> +    TBStatistics *tbs = get_tbstats_by_id(id);
+>> +    if (tbs == NULL) {
+>> +        monitor_printf(mon, "TB %d information is not recorded\n", id);
+>> +        return;
+>> +    }
+>> +
+>> +    monitor_printf(mon, "\n------------------------------\n\n");
+>> +
+>> +    int valid_tb_num = dump_tb_info(buf, tbs, id);
+>> +    monitor_printf(mon, "%s", buf->str);
+>> +
+>> +    if (valid_tb_num > 0) {
+>> +        unsigned num_inst = tbs->code.num_guest_inst / tbs->translations.total;
+>> +
+>> +        monitor_printf(mon, "\n----------------n\n");
+>> +        // FIXME: cannot disas
+>> +        monitor_disas(mon, mon_get_cpu(mon), tbs->phys_pc, num_inst, true);
+>> +        monitor_printf(mon, "\n------------------------------\n\n");
+>> +    }
+>> +}
+>> +
+> So far the following methods are candidates for monitor_disas:
 > 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1698
-> Reported-by: Siqi Chen <coc.cyqh@gmail.com>
-> Signed-off-by: Siqi Chen <coc.cyqh@gmail.com>
-> ---
->  target/tricore/translate.c | 1 +
->  1 file changed, 1 insertion(+)
+> 1. still use ram_addr_t for tbs->phys_pc, and extend monitor_disas to
+> support disassemble ram_addr_t by using qemu_map_ram_ptr(NULL, ram_addr)
+> to convert it to hva first
+> 
+> 2. use gpa for tbs->phys_pc, there is no need to change monitor_disas,
+> but add another parameter for get_page_addr_code_hostp() to return extra
+> gpa, probe_access_internal() has already returned CPUTLBEntryFull, so
+> it's plain to get gpa here.
 
-Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+No, we need the ram_addr_t for dirty-page handling in order to detect self-modifying code. 
+  Leave tb->phys_pc alone.
 
-Cheers,
-Bastian
+
+r~
+
+> 
+> 3. record gpa in another field of tbs, and keep tbs->phys_pc as it is,
+> this is just a variation of #2.
+> 
+> I'm inclined to use method #2. I think gpa carries more information for
+> debugging than ram_addr_t, guest can map gpa to the executable file
+> etc., but it has little knowledge of ram_addr_t.
+> 
+> What do you suggest?
+> 
+> Thanks,
+> Fei.
+> 
+
 
