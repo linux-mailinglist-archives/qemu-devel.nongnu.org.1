@@ -2,92 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1612772C8F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 16:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D31E72C917
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 16:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8iu3-0005dA-QP; Mon, 12 Jun 2023 10:52:19 -0400
+	id 1q8j01-0001Dj-6o; Mon, 12 Jun 2023 10:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q8iu1-0005cI-Nn
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 10:52:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1q8izg-000119-Ep
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 10:58:11 -0400
+Received: from 4.mo552.mail-out.ovh.net ([178.33.43.201])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q8itq-00055N-Q6
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 10:52:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686581525;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5DJZFzt/FbS5ADzADTcZ3bqokzzOImk2x83ZZ9jCPuM=;
- b=SLAiXKE+t9663JqLdPbPvoukeumfUuTkRltayx9SPu3KLFnE1dfFi3VsqOPFE/dy5Qr131
- hIcCeeFjfhVwxDy1t1ZtvtpmAGO8syZnCS9UkWtk2nJBIcZbk6GGdoR8eabAZN1lObjxr3
- YBwN6o3cxlclWd3xOAFZM0iFxeywXzk=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-yNmcu-_aMky0biYKSSV_Xg-1; Mon, 12 Jun 2023 10:51:58 -0400
-X-MC-Unique: yNmcu-_aMky0biYKSSV_Xg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-94a355c9028so498791566b.3
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 07:51:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686581517; x=1689173517;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5DJZFzt/FbS5ADzADTcZ3bqokzzOImk2x83ZZ9jCPuM=;
- b=TPKvCVfqTQdPtSR0R7uh4HKisi6DrJaiQx1/kzdyfq1WLbI8nnNY+DJIWwLeQHSJKH
- 8IPbis4ch1usVHGl18AcV2iG/VXVzXd3ku+QY99rXpbPUHfGRhDF3w1nhmWojaZIys7d
- p4uDh1Ou+kexSJ3t/ofFREvLWb5wbxPbuqnuYT/7nf06ny7IrgiM2earATpz3s+H4xRR
- 2hruLoFo66hJUHgim58kL+capEjkJXI3lR4a50m1MutnuBnszYA+gplexPTiralru79f
- SITK/wnmPtjpfpKdjnEvFO9OOo22uGINsCUHHFcN5JHK3p+qCDXhnfduGwJqJn4IX8oF
- icSg==
-X-Gm-Message-State: AC+VfDxHjNJv3HIum4LEg1I4htabYQ/YxCJDMKXUjnHSbjO/qUkuLp+C
- G30zs4E+upCneIeGMumz2YIktxrQIyNspqA282RiNEMVsYJfAZCRNzzgbJKTNWoA0+MLVN3IIvA
- QgggMKT4e9AWNq+8=
-X-Received: by 2002:a17:907:984:b0:974:1c99:7d3 with SMTP id
- bf4-20020a170907098400b009741c9907d3mr8279888ejc.25.1686581517168; 
- Mon, 12 Jun 2023 07:51:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7H4RzJCNARVdEzfYFSU8vqXMAAzsA+IBVLFi7F/nu7gg/Rgx3who8qsNkiKUvicA+67M3U8w==
-X-Received: by 2002:a17:907:984:b0:974:1c99:7d3 with SMTP id
- bf4-20020a170907098400b009741c9907d3mr8279877ejc.25.1686581516855; 
- Mon, 12 Jun 2023 07:51:56 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- f13-20020a170906390d00b009584c5bcbc7sm5275772eje.49.2023.06.12.07.51.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Jun 2023 07:51:56 -0700 (PDT)
-Date: Mon, 12 Jun 2023 16:51:55 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 15/15] hw/i386/pc_piix: Move i440fx' realize near its
- qdev_new()
-Message-ID: <20230612165155.087ba275@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230611103412.12109-16-shentey@gmail.com>
-References: <20230611103412.12109-1-shentey@gmail.com>
- <20230611103412.12109-16-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1q8izT-0007RO-59
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 10:58:07 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.138.118])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id D091928C44;
+ Mon, 12 Jun 2023 14:57:44 +0000 (UTC)
+Received: from kaod.org (37.59.142.107) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 12 Jun
+ 2023 16:57:44 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-107S001f589b468-8bf9-4153-8e2b-979231ee3e12,
+ C702A98F5937862C7434D61827BC201166595ECC) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Mon, 12 Jun 2023 16:57:42 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+CC: <qemu-devel@nongnu.org>
+Subject: Re: [SPAM] [PATCH v3] 9pfs: deprecate 'proxy' backend
+Message-ID: <20230612165742.3333ea08@bahia>
+In-Reply-To: <E1q7ytt-0005Fl-JX@lizzy.crudebyte.com>
+References: <E1q7ytt-0005Fl-JX@lizzy.crudebyte.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Originating-IP: [37.59.142.107]
+X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 3c5dddca-b004-4446-a7d3-d56a1f46ec04
+X-Ovh-Tracer-Id: 3632153103541967258
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrgeduhedgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpefgudefueeigeeviedujeeuieevhfeuiedvkeelkeetkeekkeegvdehheeuvdehgfenucffohhmrghinhepqhgvmhhurdhorhhgpdhgihhtlhgrsgdrtghomhdpghhithhhuhgsrdgtohhmnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutdejpdejkedrudeljedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehgrhhouhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepqhgvmhhupghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdfovfetjfhoshhtpehmohehhedvpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=178.33.43.201; envelope-from=groug@kaod.org;
+ helo=4.mo552.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,132 +70,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 11 Jun 2023 12:34:12 +0200
-Bernhard Beschow <shentey@gmail.com> wrote:
+Hi Christian,
 
-> I440FX realization is currently mixed with PIIX3 creation. Furthermore, it is
-> common practice to only set properties between a device's qdev_new() and
-> qdev_realize(). Clean up to resolve both issues.
+On Sat, 10 Jun 2023 15:39:44 +0200
+Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
+
+> As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is in
+> bad shape. Using the 'proxy' backend was already discouraged for safety
+> reasons before and we recommended to use the 'local' backend instead,
+> but now it is time to officially deprecate the 'proxy' backend.
 > 
-> Since I440FX spawns a PCI bus let's also move the pci_bus initialization there.
-> 
-> Note that when running `qemu-system-x86_64 -M pc -S` before and after this
-> patch, `info mtree` in the QEMU console doesn't show any differences except that
-> the ordering is different.
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+
+For the records :
+
+The 'proxy' backend is an old thing that predates vhost-user. It
+really turns QEMU into a proxy : all requests go to QEMU, which
+forwads them to the helper and the other way around for responses.
+Data is copied both ways. All of this severely damages latency.
+
+If someone really wants to offload 9p stuff to a separate process,
+they should come up with a vhost-user-9p implementation. The whole
+server would be offloaded, possibly sharing most of the code with
+the in-QEMU server, QEMU wouldn't be involved anymore in the I/Os.
+No more copies.
+
+> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 > ---
->  hw/i386/pc_piix.c | 57 ++++++++++++++++++++++++-----------------------
->  1 file changed, 29 insertions(+), 28 deletions(-)
+>  v2 -> v3:
+>  * Fix copy wasted typo (-> 'backend').
 > 
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 22173b122b..23b9725c94 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -126,7 +126,6 @@ static void pc_init1(MachineState *machine,
->      MemoryRegion *rom_memory;
->      ram_addr_t lowmem;
->      uint64_t hole64_size;
-> -    Object *i440fx_host;
+>  MAINTAINERS                        |  7 +++++++
+>  docs/about/deprecated.rst          | 17 +++++++++++++++++
+>  docs/tools/virtfs-proxy-helper.rst |  3 +++
+>  fsdev/qemu-fsdev.c                 |  5 +++++
+>  fsdev/virtfs-proxy-helper.c        |  5 +++++
+>  hw/9pfs/9p-proxy.c                 |  5 +++++
+>  hw/9pfs/9p-proxy.h                 |  5 +++++
+>  meson.build                        |  2 +-
+>  qemu-options.hx                    |  6 +++++-
+>  softmmu/vl.c                       |  5 +++++
+>  10 files changed, 58 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 436b3f0afe..185d694b2e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2118,13 +2118,20 @@ S: Odd Fixes
+>  W: https://wiki.qemu.org/Documentation/9p
+>  F: hw/9pfs/
+>  X: hw/9pfs/xen-9p*
+> +X: hw/9pfs/9p-proxy*
+>  F: fsdev/
+> +X: fsdev/virtfs-proxy-helper.c
+>  F: docs/tools/virtfs-proxy-helper.rst
+>  F: tests/qtest/virtio-9p-test.c
+>  F: tests/qtest/libqos/virtio-9p*
+>  T: git https://gitlab.com/gkurz/qemu.git 9p-next
+>  T: git https://github.com/cschoenebeck/qemu.git 9p.next
 >  
->      /*
->       * Calculate ram split, for memory below and above 4G.  It's a bit
-> @@ -198,17 +197,43 @@ static void pc_init1(MachineState *machine,
+> +virtio-9p-proxy
+> +F: hw/9pfs/9p-proxy*
+> +F: fsdev/virtfs-proxy-helper.c
+> +S: Obsolete
+> +
+>  virtio-blk
+>  M: Stefan Hajnoczi <stefanha@redhat.com>
+>  L: qemu-block@nongnu.org
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 0743459862..9b2c780365 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -343,6 +343,23 @@ the addition of volatile memory support, it is now necessary to distinguish
+>  between persistent and volatile memory backends.  As such, memdev is deprecated
+>  in favor of persistent-memdev.
+>  
+> +``-fsdev proxy`` and ``-virtfs proxy`` (since 8.1)
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +The 9p ``proxy`` filesystem backend driver has been deprecated and will be
+> +removed in a future version of QEMU. Please use ``-fsdev local`` or
+> +``-virtfs local`` for using the ``local`` 9p filesystem backend instead.
+> +
+> +The 9p ``proxy`` backend was originally developed as an alternative to the 9p
+> +``local`` backend. The idea was to enhance security by dispatching actual low
+> +level filesystem operations from 9p server (QEMU process) over to a separate
+> +process (the virtfs-proxy-helper binary). However this alternative never gained
+> +momentum. The proxy backend is much slower than the local backend, hasn't seen
+> +any development in years, and showed to be less secure, especially due to the
+> +fact that its helper daemon must be run as root, whereas with the local backend
+> +QEMU is typically run as unprivileged user and allows to tighten behaviour by
+> +mapping permissions et al.
+> +
+>  
+>  Block device options
+>  ''''''''''''''''''''
+> diff --git a/docs/tools/virtfs-proxy-helper.rst b/docs/tools/virtfs-proxy-helper.rst
+> index 6cdeedf8e9..bd310ebb07 100644
+> --- a/docs/tools/virtfs-proxy-helper.rst
+> +++ b/docs/tools/virtfs-proxy-helper.rst
+> @@ -9,6 +9,9 @@ Synopsis
+>  Description
+>  -----------
+>  
+> +NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> +removed, along with this daemon, in a future version of QEMU!
+> +
+>  Pass-through security model in QEMU 9p server needs root privilege to do
+>  few file operations (like chown, chmod to any mode/uid:gid).  There are two
+>  issues in pass-through security model:
+> diff --git a/fsdev/qemu-fsdev.c b/fsdev/qemu-fsdev.c
+> index 3da64e9f72..242f54ab49 100644
+> --- a/fsdev/qemu-fsdev.c
+> +++ b/fsdev/qemu-fsdev.c
+> @@ -133,6 +133,11 @@ int qemu_fsdev_add(QemuOpts *opts, Error **errp)
 >      }
 >  
->      if (pcmc->pci_enabled) {
-> +        Object *phb;
+>      if (fsdriver) {
+> +        if (strncmp(fsdriver, "proxy", 5) == 0) {
+> +            warn_report("'-fsdev proxy' is deprecated, use '-fsdev local' "
+> +                        "instead");
+> +        }
 > +
->          pci_memory = g_new(MemoryRegion, 1);
->          memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
->          rom_memory = pci_memory;
-> -        i440fx_host = OBJECT(qdev_new(host_type));
-> -        hole64_size = object_property_get_uint(i440fx_host,
+>          for (i = 0; i < ARRAY_SIZE(FsDrivers); i++) {
+>              if (strcmp(FsDrivers[i].name, fsdriver) == 0) {
+>                  break;
+> diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
+> index d9511f429c..5dd5d99284 100644
+> --- a/fsdev/virtfs-proxy-helper.c
+> +++ b/fsdev/virtfs-proxy-helper.c
+> @@ -9,6 +9,11 @@
+>   * the COPYING file in the top-level directory.
+>   */
+>  
+> +/*
+> + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> + * removed in a future version of QEMU!
+> + */
 > +
-> +        phb = OBJECT(qdev_new(host_type));
-> +        object_property_add_child(OBJECT(machine), "i440fx", phb);
-> +        object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
-> +                                 OBJECT(ram_memory), &error_fatal);
-> +        object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
-> +                                 OBJECT(pci_memory), &error_fatal);
-> +        object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
-> +                                 OBJECT(system_memory), &error_fatal);
-> +        object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
-> +                                 OBJECT(system_io), &error_fatal);
-> +        object_property_set_uint(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
-> +                                 x86ms->below_4g_mem_size, &error_fatal);
-> +        object_property_set_uint(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
-> +                                 x86ms->above_4g_mem_size, &error_fatal);
-> +        object_property_set_str(phb, I440FX_HOST_PROP_PCI_TYPE, pci_type,
-> +                                &error_fatal);
-> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
+
+What about having the proxy to print a deprecation warning as well ?
+
+>  #include "qemu/osdep.h"
+>  #include <glib/gstdio.h>
+>  #include <sys/resource.h>
+> diff --git a/hw/9pfs/9p-proxy.c b/hw/9pfs/9p-proxy.c
+> index 99d115ff0d..905cae6992 100644
+> --- a/hw/9pfs/9p-proxy.c
+> +++ b/hw/9pfs/9p-proxy.c
+> @@ -15,6 +15,11 @@
+>   * https://wiki.qemu.org/Documentation/9p
+>   */
+>  
+> +/*
+> + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> + * removed in a future version of QEMU!
+> + */
 > +
-> +        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
-> +        pci_bus_map_irqs(pci_bus,
-> +                         xen_enabled() ? xen_pci_slot_get_pirq
-> +                                       : pc_pci_slot_get_pirq);
-> +        pcms->bus = pci_bus;
+>  #include "qemu/osdep.h"
+>  #include <sys/socket.h>
+>  #include <sys/un.h>
+> diff --git a/hw/9pfs/9p-proxy.h b/hw/9pfs/9p-proxy.h
+> index b84301d001..9be4718d3e 100644
+> --- a/hw/9pfs/9p-proxy.h
+> +++ b/hw/9pfs/9p-proxy.h
+> @@ -10,6 +10,11 @@
+>   * the COPYING file in the top-level directory.
+>   */
+>  
+> +/*
+> + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> + * removed in a future version of QEMU!
+> + */
 > +
-> +        hole64_size = object_property_get_uint(phb,
->                                                 PCI_HOST_PROP_PCI_HOLE64_SIZE,
->                                                 &error_abort);
-
-before patch memory region links were set after the original
-regions were initialized by pc_memory_init(), but after this
-patch you 1st set links and only later pc_memory_init().
-I doesn't look to me as a safe thing to do.
-
->      } else {
-
-
->          pci_memory = NULL;
->          rom_memory = system_memory;
-> -        i440fx_host = NULL;
-> +        pci_bus = NULL;
->          hole64_size = 0;
-
-is it possible to turn these into initializers, and get rid of 
-'else'  branch?
-
->      }
+>  #ifndef QEMU_9P_PROXY_H
+>  #define QEMU_9P_PROXY_H
 >  
-> @@ -243,29 +268,6 @@ static void pc_init1(MachineState *machine,
->          PIIX3State *piix3;
->          PCIDevice *pci_dev;
+> diff --git a/meson.build b/meson.build
+> index 34306a6205..05c01b72bb 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -4170,7 +4170,7 @@ if have_block
+>    summary_info += {'Block whitelist (ro)': get_option('block_drv_ro_whitelist')}
+>    summary_info += {'Use block whitelist in tools': get_option('block_drv_whitelist_in_tools')}
+>    summary_info += {'VirtFS (9P) support':    have_virtfs}
+> -  summary_info += {'VirtFS (9P) Proxy Helper support': have_virtfs_proxy_helper}
+> +  summary_info += {'VirtFS (9P) Proxy Helper support (deprecated)': have_virtfs_proxy_helper}
+>    summary_info += {'Live block migration': config_host_data.get('CONFIG_LIVE_BLOCK_MIGRATION')}
+>    summary_info += {'replication support': config_host_data.get('CONFIG_REPLICATION')}
+>    summary_info += {'bochs support':     get_option('bochs').allowed()}
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index b57489d7ca..3a6c7d3ef9 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -1735,7 +1735,9 @@ SRST
+>          Accesses to the filesystem are done by QEMU.
 >  
-> -        object_property_add_child(OBJECT(machine), "i440fx", i440fx_host);
-> -        object_property_set_link(i440fx_host, PCI_HOST_PROP_RAM_MEM,
-> -                                 OBJECT(ram_memory), &error_fatal);
-> -        object_property_set_link(i440fx_host, PCI_HOST_PROP_PCI_MEM,
-> -                                 OBJECT(pci_memory), &error_fatal);
-> -        object_property_set_link(i440fx_host, PCI_HOST_PROP_SYSTEM_MEM,
-> -                                 OBJECT(system_memory), &error_fatal);
-> -        object_property_set_link(i440fx_host, PCI_HOST_PROP_IO_MEM,
-> -                                 OBJECT(system_io), &error_fatal);
-> -        object_property_set_uint(i440fx_host, PCI_HOST_BELOW_4G_MEM_SIZE,
-> -                                 x86ms->below_4g_mem_size, &error_fatal);
-> -        object_property_set_uint(i440fx_host, PCI_HOST_ABOVE_4G_MEM_SIZE,
-> -                                 x86ms->above_4g_mem_size, &error_fatal);
-> -        object_property_set_str(i440fx_host, I440FX_HOST_PROP_PCI_TYPE,
-> -                                pci_type, &error_fatal);
-> -        sysbus_realize_and_unref(SYS_BUS_DEVICE(i440fx_host), &error_fatal);
-> -
-> -        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(i440fx_host), "pci.0"));
-> -        pci_bus_map_irqs(pci_bus,
-> -                         xen_enabled() ? xen_pci_slot_get_pirq
-> -                                       : pc_pci_slot_get_pirq);
-> -        pcms->bus = pci_bus;
-> -
->          pci_dev = pci_create_simple_multifunction(pci_bus, -1, true,
->                                                    TYPE_PIIX3_DEVICE);
+>      ``proxy``
+> -        Accesses to the filesystem are done by virtfs-proxy-helper(1).
+> +        Accesses to the filesystem are done by virtfs-proxy-helper(1). This
+> +        option is deprecated (since QEMU 8.1) and will be removed in a future
+> +        version of QEMU. Use ``local`` instead.
 >  
-> @@ -290,7 +292,6 @@ static void pc_init1(MachineState *machine,
->          rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
->                                                               "rtc"));
->      } else {
-> -        pci_bus = NULL;
->          isa_bus = isa_bus_new(NULL, system_memory, system_io,
->                                &error_abort);
+>      ``synth``
+>          Synthetic filesystem, only used by QTests.
+> @@ -1867,6 +1869,8 @@ SRST
 >  
+>      ``proxy``
+>          Accesses to the filesystem are done by virtfs-proxy-helper(1).
+> +        This option is deprecated (since QEMU 8.1) and will be removed in a
+> +        future version of QEMU. Use ``local`` instead.
+>  
+>      ``synth``
+>          Synthetic filesystem, only used by QTests.
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..e60648b591 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -3102,6 +3102,11 @@ void qemu_init(int argc, char **argv)
+>                      error_report("Usage: -virtfs fsdriver,mount_tag=tag");
+>                      exit(1);
+>                  }
+> +                if (strncmp(qemu_opt_get(opts, "fsdriver"), "proxy", 5) == 0) {
+> +                    warn_report("'-virtfs proxy' is deprecated, use "
+> +                                "'-virtfs local' instead");
+> +                }
+> +
+>                  fsdev = qemu_opts_create(qemu_find_opts("fsdev"),
+>                                           qemu_opts_id(opts) ?:
+>                                           qemu_opt_get(opts, "mount_tag"),
 
+Since an `-fsdev` is generated internally for each `-virtfs` we end up with
+two warnings, which seems a bit weird :
+
+$ qemu-system-x86_64-mbuild -virtfs proxy,id=fsdev0,mount_tag=9p
+qemu-system-x86_64: -virtfs proxy,id=fsdev0,mount_tag=9p: warning: '-virtfs proxy' is deprecated, use '-virtfs local' instead
+qemu-system-x86_64: -virtfs proxy,id=fsdev0,mount_tag=9p: warning: '-fsdev proxy' is deprecated, use '-fsdev local' instead
+...
+
+Since it might be quite complex to guess in qemu_fsdev_add() that
+we're dealing with such an internally generated opt, I'd adapt
+the text so that it works for both cases.
+
+e.g. '-fsdev proxy' and '-virtfs proxy' are deprecated, use 'local' instead of 'proxy'
+
+Cheers,
+
+-- 
+Greg
 
