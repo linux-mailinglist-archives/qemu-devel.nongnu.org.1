@@ -2,108 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D1D72B907
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 09:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4793272B95B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 09:57:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8cG1-0004EH-Ml; Mon, 12 Jun 2023 03:46:33 -0400
+	id 1q8cPR-00067p-Hk; Mon, 12 Jun 2023 03:56:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q8cFz-0004Dx-0a
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 03:46:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=IHII=CA=kaod.org=clg@ozlabs.org>)
+ id 1q8cPP-00067d-RJ; Mon, 12 Jun 2023 03:56:15 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q8cFx-00079U-Af
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 03:46:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686555987;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yP4vMHkO+yCSQ+z82iPRDsudDDu4cQh6jmBlyoee49w=;
- b=MjisV+eiM7lhIJAbrwALYToMgji3BkE1ezY4OUE0dYSiVHzuxUtKlhzfx3MxYqKtAsEBeP
- TCXrWCl14r1XSDeh8y+ktg7ZNRp8Yw23PaJCKcXCinwPkqhZUYtEhk/ANxYXO/lgFA4Tvp
- 4/zQdD1Ky9i3YU8cU7uJSA5b0Ky7ORU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-oYYq8h_1P9uWgRSdoyEZUA-1; Mon, 12 Jun 2023 03:46:25 -0400
-X-MC-Unique: oYYq8h_1P9uWgRSdoyEZUA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30fc5d6e697so130394f8f.0
- for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 00:46:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686555984; x=1689147984;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yP4vMHkO+yCSQ+z82iPRDsudDDu4cQh6jmBlyoee49w=;
- b=irdZWXL4AzupqprF2jcXhTyp4paFmdMncZukp/NDYqiDms61Kw2hcNNKhU5zYk7x40
- OWunywGYsRXCfcsY3kXZleLIDBkSpyV2A9h0IYfSiEDmhuZNGheVwj08uKOCGj/aju8A
- 2grsDf0T6f6PMVutJn8KPaGt8nTReteRAMo2yj69Np8VWIA7Pax2sh9lkZ0+0vts+hTh
- btJ4csZf9wpfwVt7bNxYUjrp8I2jlO33XrPRTcbsTwOHN6DVGQHynPrOqDqKLAw8AEQ9
- KPyOfEx0CfVV8cKLaMbWRrXl1A7XkMriZsuCRzf0Lqjf/AecESSfWj0sM0lNo4opIoc+
- 9nGA==
-X-Gm-Message-State: AC+VfDw5orvZXWx33+GfAcpjwo1O0l1b5zJ9iTLELPil52PeNlbziEJ5
- Im1+XE/ZGzdlCnD94XU2ZCbsIW2iakbTZkjDH5SAGE1HdVT4+hUXDLLKagMR06GBZkRY9/4pSzE
- wtGjJhM08aUa/owk=
-X-Received: by 2002:a05:6000:14c:b0:30f:a895:d991 with SMTP id
- r12-20020a056000014c00b0030fa895d991mr3131808wrx.55.1686555984695; 
- Mon, 12 Jun 2023 00:46:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ73G0tqHUKMiC3veRGtl5w/v7h2Kk9F4KUkzVL4unSRQmLHkul9W56Mg29yppbvMAA2E73L5A==
-X-Received: by 2002:a05:6000:14c:b0:30f:a895:d991 with SMTP id
- r12-20020a056000014c00b0030fa895d991mr3131789wrx.55.1686555984277; 
- Mon, 12 Jun 2023 00:46:24 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74e:1600:4f67:25b2:3e8c:2a4e?
- (p200300cbc74e16004f6725b23e8c2a4e.dip0.t-ipconnect.de.
- [2003:cb:c74e:1600:4f67:25b2:3e8c:2a4e])
- by smtp.gmail.com with ESMTPSA id
- b5-20020adff905000000b0030aedb8156esm11491237wrr.102.2023.06.12.00.46.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 00:46:23 -0700 (PDT)
-Message-ID: <281caf4f-25da-3a73-554b-4fb252963035@redhat.com>
-Date: Mon, 12 Jun 2023 09:46:22 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=IHII=CA=kaod.org=clg@ozlabs.org>)
+ id 1q8cPM-0008PF-GX; Mon, 12 Jun 2023 03:56:15 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QfkX33rXfz4xGj;
+ Mon, 12 Jun 2023 17:56:03 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QfkWw50Qjz4xFn;
+ Mon, 12 Jun 2023 17:55:56 +1000 (AEST)
+Message-ID: <14168a66-38ba-82e6-08d2-830f6216b4e1@kaod.org>
+Date: Mon, 12 Jun 2023 09:55:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
+Subject: Re: [PATCH v20 09/21] machine: adding s390 topology to query-cpu-fast
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
+ cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com
+References: <20230425161456.21031-1-pmorel@linux.ibm.com>
+ <20230425161456.21031-10-pmorel@linux.ibm.com>
 Content-Language: en-US
-To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Hugh Dickins <hughd@google.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Kim, Dongwon"
- <dongwon.kim@intel.com>, "Chang, Junxiao" <junxiao.chang@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "Hocko, Michal" <mhocko@suse.com>, "jmarchan@redhat.com"
- <jmarchan@redhat.com>, "muchun.song@linux.dev" <muchun.song@linux.dev>,
- James Houghton <jthoughton@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230608204927.88711-1-mike.kravetz@oracle.com>
- <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
-In-Reply-To: <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230425161456.21031-10-pmorel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=IHII=CA=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.093, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,56 +69,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.06.23 09:10, Kasireddy, Vivek wrote:
-> Hi Mike,
+Hello Pierre,
 
-Hi Vivek,
-
+On 4/25/23 18:14, Pierre Morel wrote:
+> S390x provides two more topology attributes, entitlement and dedication.
 > 
-> Sorry for the late reply; I just got back from vacation.
-> If it is unsafe to directly use the subpages of a hugetlb page, then reverting
-> this patch seems like the only option for addressing this issue immediately.
-> So, this patch is
-> Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> Let's add these CPU attributes to the QAPI command query-cpu-fast.
 > 
-> As far as the use-case is concerned, there are two main users of the udmabuf
-> driver: Qemu and CrosVM VMMs. However, it appears Qemu is the only one
-> that uses hugetlb pages (when hugetlb=on is set) as the backing store for
-> Guest (Linux, Android and Windows) system memory. The main goal is to
-> share the pages associated with the Guest allocated framebuffer (FB) with
-> the Host GPU driver and other components in a zero-copy way. To that end,
-> the guest GPU driver (virtio-gpu) allocates 4k size pages (associated with
-> the FB) and pins them before sharing the (guest) physical (or dma) addresses
-> (and lengths) with Qemu. Qemu then translates the addresses into file
-> offsets and shares these offsets with udmabuf.
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   qapi/machine.json          | 9 ++++++++-
+>   hw/core/machine-qmp-cmds.c | 2 ++
+>   2 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index 1cdd83f3fd..c6a12044e0 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -55,10 +55,17 @@
+>   # Additional information about a virtual S390 CPU
+>   #
+>   # @cpu-state: the virtual CPU's state
+> +# @dedicated: the virtual CPU's dedication (since 8.1)
+> +# @entitlement: the virtual CPU's entitlement (since 8.1)
+>   #
+>   # Since: 2.12
+>   ##
+> -{ 'struct': 'CpuInfoS390', 'data': { 'cpu-state': 'CpuS390State' } }
+> +{ 'struct': 'CpuInfoS390',
+> +  'data': { 'cpu-state': 'CpuS390State',
+> +            'dedicated': 'bool',
+> +            'entitlement': 'CpuS390Entitlement'
+> +  }
+> +}
+>   
+>   ##
+>   # @CpuInfoFast:
+> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+> index b98ff15089..3f35ed83a6 100644
+> --- a/hw/core/machine-qmp-cmds.c
+> +++ b/hw/core/machine-qmp-cmds.c
+> @@ -35,6 +35,8 @@ static void cpustate_to_cpuinfo_s390(CpuInfoS390 *info, const CPUState *cpu)
+>       CPUS390XState *env = &s390_cpu->env;
+>   
+>       info->cpu_state = env->cpu_state;
+> +    info->dedicated = env->dedicated;
+> +    info->entitlement = env->entitlement;
 
-Is my understanding correct, that we can effectively long-term pin 
-(worse than mlock) 64 MiB per UDMABUF_CREATE, allowing eventually !root 
-users
+When you resend, please protect these assignments with :
 
-ll /dev/udmabuf
-crw-rw---- 1 root kvm 10, 125 12. Jun 08:12 /dev/udmabuf
+  #if !defined(CONFIG_USER_ONLY)
 
-to bypass there effective MEMLOCK limit, fragmenting physical memory and 
-breaking swap?
+Thanks,
 
+C.
 
-Regarding the udmabuf_vm_fault(), I assume we're mapping pages we 
-obtained from the memfd ourselves into a special VMA (mmap() of the 
-udmabuf). I'm not sure how well shmem pages are prepared for getting 
-mapped by someone else into an arbitrary VMA (page->index?).
-
-... also, just imagine someone doing FALLOC_FL_PUNCH_HOLE / ftruncate() 
-on the memfd. What's mapped into the memfd no longer corresponds to 
-what's pinned / mapped into the VMA.
-
-
-Was linux-mm (and especially shmem maintainers, ccing Hugh) involved in 
-the upstreaming of udmabuf?
-
--- 
-Cheers,
-
-David / dhildenb
+>   #else
+>       abort();
+>   #endif
 
 
