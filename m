@@ -2,113 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34FC72C92A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 17:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7335A72C951
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 17:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8j2D-0002RS-TQ; Mon, 12 Jun 2023 11:00:47 -0400
+	id 1q8j6o-0003v1-7M; Mon, 12 Jun 2023 11:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mgalaxy@akamai.com>)
- id 1q8j1k-0002Qh-JP
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:00:17 -0400
-Received: from mx0a-00190b01.pphosted.com ([2620:100:9001:583::1])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q8j6i-0003uF-19
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:05:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mgalaxy@akamai.com>)
- id 1q8j1g-00088e-A5
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:00:14 -0400
-Received: from pps.filterd (m0122333.ppops.net [127.0.0.1])
- by mx0a-00190b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35CEhDuM026465; Mon, 12 Jun 2023 15:59:42 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=jan2016.eng;
- bh=BqzTAdR/y6fspoGYyX+ETcM2zJKBGZrgXeXGHpMxZQc=;
- b=hONtvAoBeenbuYIZ/nmuRu4AwDc8g5zjrpac6aZ5SaSyavw90kRPo3HTw4gVsTSdX8Rt
- 741IUfL7xsp4YLa74z4GIZMenL0corvy1/nz6YmzN8AkcUNGXCA3Qnf6vlqWMb3MbTz4
- B9yRMji+CHJc1D4gJOPoB2EkcHQVbf0nS4mSlt8oGU3zk5AIbVW2UGuDVGkpClDPDZiz
- hOPD1tuRKWJwGGeY0XF8s4WCjZ4Wy9Ow28bAXZE9sQs6Rj2N3g6QjdhtTsfVgwLgXPuS
- V++HI/D5K6w603foyLwIRy+hX8teCk4l0LbGFzK4G3nnLMQmrfv7q4AZ/vp11AxLakRi wQ== 
-Received: from prod-mail-ppoint1 (prod-mail-ppoint1.akamai.com [184.51.33.18]
- (may be forged))
- by mx0a-00190b01.pphosted.com (PPS) with ESMTPS id 3r4gec8mf2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jun 2023 15:59:41 +0100
-Received: from pps.filterd (prod-mail-ppoint1.akamai.com [127.0.0.1])
- by prod-mail-ppoint1.akamai.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35CDtmYs013286; Mon, 12 Jun 2023 10:59:40 -0400
-Received: from prod-mail-relay10.akamai.com ([172.27.118.251])
- by prod-mail-ppoint1.akamai.com (PPS) with ESMTP id 3r4mgvqq9v-1;
- Mon, 12 Jun 2023 10:59:40 -0400
-Received: from [100.64.0.1] (prod-aoa-dallas2clt14.dfw02.corp.akamai.com
- [172.27.166.123])
- by prod-mail-relay10.akamai.com (Postfix) with ESMTP id D4EEA5FF56;
- Mon, 12 Jun 2023 14:59:35 +0000 (GMT)
-Message-ID: <f9c3117e-3dc5-03fa-8fcd-4092660e44fc@akamai.com>
-Date: Mon, 12 Jun 2023 09:59:36 -0500
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q8j6d-0001Or-To
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:05:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686582316;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Pv9Homp0rkwSGAoiuFZa7nDEMcvT/l/Y5xeKMGVuggs=;
+ b=LKrOt76SGSiNE/Xh4ckHopQm3v+sGj1m6Way/1n83NjkyAVvIQcbRcz5PBH2A589p4FxwC
+ jCJujSAPDJM68o8Hp+BjpNYNuZ6xRndV61PTFMy6LTu0qYtTncHyVT+lA7ckvx8uMOkzPY
+ g2fcsmBpSih/nwg1Wk+tgwn5StX3tcc=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-ZMhEy-ELN_qmMda5KnXAMw-1; Mon, 12 Jun 2023 11:05:15 -0400
+X-MC-Unique: ZMhEy-ELN_qmMda5KnXAMw-1
+Received: by mail-il1-f199.google.com with SMTP id
+ e9e14a558f8ab-34055a08934so3095325ab.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 08:05:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686582314; x=1689174314;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Pv9Homp0rkwSGAoiuFZa7nDEMcvT/l/Y5xeKMGVuggs=;
+ b=WS47SIXKc8z6h+w/iaAxak3kOiHP65dK6l78uWZIayrtuCs9IIPhFlBAMGwee0LZyZ
+ GVChKB3hYbGhzB4xmOuiJRiy6Eo+56Berwpej0ewDe3W8O83g0CTjp31gcQHLhkZ5j/e
+ xwKZa2W2ux2ACTDoNIPkNNa29GxxQnDpLddFAaNvD6OKhxo8hvUZmKLSNmmPA6gqXF4H
+ Q8tKBNK7OjvyYK4+m7W+TNtxB8lEPK7ehALihBs+Q7l7H7DfVz7sDARJq+Xlr6998RPv
+ Tcb1rXpnRODKXDDmd/FMh8E7xVClEvc/lzmHyUQu+qlDXPZr8hz8lN8MQdL+ijsbXnnM
+ TQPQ==
+X-Gm-Message-State: AC+VfDxcT0STKlvcH7Qnj03tsC7V6yILZ1vAXPnEa649oHO/ASQCfJgA
+ kkEyD/K2LI+of2dwnOniPGKN4tJY6jkUVGC2DxEwAzOm6BjVl6nwEoSLSA7UR9N0HDQE25UMGsr
+ 6UaMkjyImxsAeLl0=
+X-Received: by 2002:a92:cad1:0:b0:33c:b395:a89d with SMTP id
+ m17-20020a92cad1000000b0033cb395a89dmr7380290ilq.14.1686582314181; 
+ Mon, 12 Jun 2023 08:05:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ78iCbPzRAmifhS05DuZ607q1c/b2uPcGVbvbUp3x5JM4tzxXmWQHmjCZ/hm5CA3KLklZ+H7g==
+X-Received: by 2002:a92:cad1:0:b0:33c:b395:a89d with SMTP id
+ m17-20020a92cad1000000b0033cb395a89dmr7380274ilq.14.1686582313872; 
+ Mon, 12 Jun 2023 08:05:13 -0700 (PDT)
+Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
+ v5-20020a92d245000000b0032957b21c26sm3195255ilg.77.2023.06.12.08.05.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jun 2023 08:05:13 -0700 (PDT)
+Date: Mon, 12 Jun 2023 09:05:11 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] hw/vfio/pci-quirks: Support alternate offset for
+ GPUDirect Cliques
+Message-ID: <20230612090511.17ac3557.alex.williamson@redhat.com>
+In-Reply-To: <a44455cc-1eca-c50d-9394-8faab699c804@redhat.com>
+References: <20230608174211.3227138-1-alex.williamson@redhat.com>
+ <20230608180507.3229259-1-alex.williamson@redhat.com>
+ <a44455cc-1eca-c50d-9394-8faab699c804@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH V9 00/46] Live Update
-Content-Language: en-US
-To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- Juan Quintela <quintela@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Jason Zeng <jason.zeng@linux.intel.com>, Zheng Chuan
- <zhengchuan@huawei.com>,
- Mark Kanda <mark.kanda@oracle.com>, Guoyi Tu <tugy@chinatelecom.cn>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philippe.mathieu.daude@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- David Hildenbrand <david@redhat.com>, John Snow <jsnow@redhat.com>,
- Peng Liang <tcx4c70@gmail.com>, "Hunt, Joshua" <johunt@akamai.com>
-References: <1658851843-236870-1-git-send-email-steven.sistare@oracle.com>
- <53075574-9e73-f773-ccb1-cca42a719801@oracle.com>
- <ada81103-d4eb-dd02-45a8-176dae06d26c@akamai.com>
- <c4f8a36f-53e6-9d88-f542-bcbcf5deabd4@akamai.com>
- <2ed16545-c0f0-0103-a1e0-03fcc49959e1@oracle.com>
-From: Michael Galaxy <mgalaxy@akamai.com>
-In-Reply-To: <2ed16545-c0f0-0103-a1e0-03fcc49959e1@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-12_06,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999
- phishscore=0 bulkscore=0 mlxscore=0 suspectscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306120127
-X-Proofpoint-GUID: XsF-lp58DMeRcxJ5qlC5AjcIzDWKusSY
-X-Proofpoint-ORIG-GUID: XsF-lp58DMeRcxJ5qlC5AjcIzDWKusSY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-12_06,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- spamscore=0 adultscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=999 mlxscore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306120128
-Received-SPF: pass client-ip=2620:100:9001:583::1;
- envelope-from=mgalaxy@akamai.com; helo=mx0a-00190b01.pphosted.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,79 +102,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Steve,
+On Mon, 12 Jun 2023 16:07:33 +0200
+C=C3=A9dric Le Goater <clg@redhat.com> wrote:
 
+> On 6/8/23 20:05, Alex Williamson wrote:
+> > NVIDIA Turing and newer GPUs implement the MSI-X capability at the offs=
+et
+> > previously reserved for use by hypervisors to implement the GPUDirect
+> > Cliques capability.  A revised specification provides an alternate
+> > location.  Add a config space walk to the quirk to check for conflicts,
+> > allowing us to fall back to the new location or generate an error at the
+> > quirk setup rather than when the real conflicting capability is added
+> > should there be no available location.
+> >=20
+> > Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> > ---
+> >   hw/vfio/pci-quirks.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+> >   1 file changed, 40 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+> > index f0147a050aaa..0ed2fcd53152 100644
+> > --- a/hw/vfio/pci-quirks.c
+> > +++ b/hw/vfio/pci-quirks.c
+> > @@ -1490,6 +1490,9 @@ void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev)
+> >    * +---------------------------------+-------------------------------=
+--+
+> >    *
+> >    * https://lists.gnu.org/archive/html/qemu-devel/2017-08/pdfUda5iEpgO=
+S.pdf
+> > + *
+> > + * Specification for Turning and later GPU architectures: =20
+>=20
+> s/Turning/Turing/
+>=20
+> I will fix that.
 
-On 6/7/23 12:37, Steven Sistare wrote:
-> On 6/7/2023 11:55 AM, Michael Galaxy wrote:
->> Another option could be to expose "-migrate-mode-disable" (instead of enable) and just enable all 3 modes by default,
->> since we are already required to switch from "normal" mode to a CPR-specific mode when it is time to do a live update,
->> if the intention is to preserve the capability to completely prevent a running QEMU from using these modes
->> before the VM starts up.
->>
->> - Michael
->>
->> On 6/6/23 17:15, Michael Galaxy wrote:
->>> Hi Steve,
->>>
->>> In the current design you have, we have to specify both the command line parameter "-migrate-mode-enable cpr-reboot"
->>> *and* issue the monitor command "migrate_set_parameter mode cpr-${mode}".
->>>
->>> Is it possible to opt-in to the CPR mode just once over the monitor instead of having to specify it twice on the command line?
->>> This would also match the live migration model: You do not need to necessarily "opt in" to live migration mode through
->>> a command line parameter, you simply request it when you need to. Can CPR behave the same way?
->>>
->>> This would also make switching over to a CPR-capable version of QEMU much simpler and would even make it work for
->>> existing libvirt-managed guests as their command line parameters would no longer need to change. This would allow us to
->>> simply power-off and power-on existing VMs to make them CPR-capable and then work on a libvirt patch later when
->>> we're ready to do so.
->>>
->>>
->>> Comments?
-> Hi Michael,
->    Requiring -migrate-enable-mode allows qemu to initialize objects
-> differently, if necessary, so that migration for a mode is not blocked.
-> See callers of migrate_mode_enabled.  There is only one so far, in
-> ram_block_add.  If the mode is cpr-exec, then it creates anonymous ram
-> blocks using memfd_create, else using MAP_ANON.  In the V7 series, this
-> was controlled by a '-machine memfd-alloc=on' option.
->
-> migrate-enable-mode is more future proof for the user.  If something new must
-> initialize differently to support cpr, then it adds a call to migrate_mode_enabled,
-> and the command line remains the same.  However, I could be persuaded to go either way.
+Yes, thanks!
+=20
+> > + * https://lists.gnu.org/archive/html/qemu-devel/2023-06/pdf142OR4O4c2=
+.pdf
+> >    */
+> >   static void get_nv_gpudirect_clique_id(Object *obj, Visitor *v,
+> >                                          const char *name, void *opaque,
+> > @@ -1530,7 +1533,9 @@ const PropertyInfo qdev_prop_nv_gpudirect_clique =
+=3D {
+> >   static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **err=
+p)
+> >   {
+> >       PCIDevice *pdev =3D &vdev->pdev;
+> > -    int ret, pos =3D 0xC8;
+> > +    int ret, pos;
+> > +    bool c8_conflict =3D false, d4_conflict =3D false;
+> > +    uint8_t tmp;
+> >  =20
+> >       if (vdev->nv_gpudirect_clique =3D=3D 0xFF) {
+> >           return 0;
+> > @@ -1547,6 +1552,40 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevi=
+ce *vdev, Error **errp)
+> >           return -EINVAL;
+> >       }
+> >  =20
+> > +    /*
+> > +     * Per the updated specification above, it's recommended to use of=
+fset
+> > +     * D4h for Turing and later GPU architectures due to a conflict of=
+ the
+> > +     * MSI-X capability at C8h.  We don't know how to determine the GP=
+U =20
+>=20
+> There is a way :
+>=20
+>    # nvidia-smi -q | grep Architecture
+>        Product Architecture                  : Turing
 
+There are a few problems with that:
 
-OK, so it is cpr-exec that needs this option (because of ram block 
-allocation), not really cpr-reboot.
-Could the option then be made to only be required for cpr-exec and not 
-cpr-reboot, then,
-since cpr-reboot doesn't require that consideration?
+ 1) nvidia-smi is a proprietary tool.
 
+ 2) Using nvidia-smi, or even the PCI IDs database, would require
+    ongoing maintenance to update the string or IDs for future
+    architectures.
 
-> A secondary reason for -migrate-enable-mode is to support the only-cpr-capable
-> option.  It needs to know which mode will be used, in order to check a
-> mode-specific blocker list.
+ 3) nvidia-smi requires the device to be managed by the nvidia driver,
+    which becomes and chicken and egg problem when we require the
+    device to be managed by a vfio compatible driver by this point.
 
-Still, only-cpr-capable is also optional. If and only if one needs this 
-option, the mode could be
-specified as part of the option itself, rather than requiring an extra 
-command line parameter, no?
+> but it must be vendor specific and the proposed solution is as good.
+>=20
+> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
 
-Further, in many clouds (including ours), our VM-management is 
-generational with the
-development of the software versioning, so we *always* run tests and 
-know whether or not a VM is CPR-capable.
+Thanks!
 
-If it is not CPR-capable, we would never run the VM in the first place, 
-which means we would never
-really use that option at all.
+Alex
 
-I do see the appeal of the option, but could we simplify it, since it is 
-opt-in?
+> > +     * architecture, instead we walk the capability chain to mark conf=
+licts
+> > +     * and choose one or error based on the result.
+> > +     *
+> > +     * NB. Cap list head in pdev->config is already cleared, read from=
+ device.
+> > +     */
+> > +    ret =3D pread(vdev->vbasedev.fd, &tmp, 1,
+> > +                vdev->config_offset + PCI_CAPABILITY_LIST);
+> > +    if (ret !=3D 1 || !tmp) {
+> > +        error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting ca=
+p list");
+> > +        return -EINVAL;
+> > +    }
+> > +
+> > +    do {
+> > +        if (tmp =3D=3D 0xC8) {
+> > +            c8_conflict =3D true;
+> > +        } else if (tmp =3D=3D 0xD4) {
+> > +            d4_conflict =3D true;
+> > +        }
+> > +        tmp =3D pdev->config[tmp + PCI_CAP_LIST_NEXT];
+> > +    } while (tmp);
+> > +
+> > +    if (!c8_conflict) {
+> > +        pos =3D 0xC8;
+> > +    } else if (!d4_conflict) {
+> > +        pos =3D 0xD4;
+> > +    } else {
+> > +        error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid config s=
+pace");
+> > +        return -EINVAL;
+> > +    }
+> > +
+> >       ret =3D pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, 8, errp);
+> >       if (ret < 0) {
+> >           error_prepend(errp, "Failed to add NVIDIA GPUDirect cap: "); =
+=20
+>=20
 
-- Michael
-
-
->
-> - Steve
 
