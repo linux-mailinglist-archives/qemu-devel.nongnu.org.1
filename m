@@ -2,55 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F231B72C9C9
+	by mail.lfdr.de (Postfix) with ESMTPS id EA95B72C9C8
 	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 17:22:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8jM0-0008LY-AB; Mon, 12 Jun 2023 11:21:12 -0400
+	id 1q8jMK-0008Nr-J5; Mon, 12 Jun 2023 11:21:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q8jLw-0008LL-46
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:21:08 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q8jMG-0008NI-9A
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:21:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q8jLr-0005F3-6s
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:21:07 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QfwNT5wkbz6J70D;
- Mon, 12 Jun 2023 23:20:09 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 12 Jun
- 2023 16:20:45 +0100
-Date: Mon, 12 Jun 2023 16:20:44 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: <qemu-devel@nongnu.org>
-Subject: Re: [PULL 26/42] target/arm: Use tcg_gen_qemu_{ld, st}_i128 in
- gen_sve_{ld, st}r
-Message-ID: <20230612162044.00002fdc@huawei.com>
-In-Reply-To: <20230606094814.3581397-27-peter.maydell@linaro.org>
-References: <20230606094814.3581397-1-peter.maydell@linaro.org>
- <20230606094814.3581397-27-peter.maydell@linaro.org>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q8jME-0005KA-1i
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 11:21:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686583284;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TmJZulT4CHY0Z0EBDz3v2SuSYrFg1fxqCVoaKFA6wZ4=;
+ b=hmvoItMtEDm+IY9LVllMc53NfkzQQf0eMEn08hfKdgjfvd9ihp82jP9SX7jPFHZSkfNtBJ
+ fDYgoFen8Rw10xMacLn9VJb7ugClRBoYE0qEujovmuBu1JKgGXGXcwKal2dvXUZTiGFwye
+ TQUqoPIj18e5QHliU21i/4u23UEnAT8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-265-i1aCoEofNfGNEt2mYTvYqg-1; Mon, 12 Jun 2023 11:21:22 -0400
+X-MC-Unique: i1aCoEofNfGNEt2mYTvYqg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-978876e43a7so528850066b.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Jun 2023 08:21:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686583281; x=1689175281;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TmJZulT4CHY0Z0EBDz3v2SuSYrFg1fxqCVoaKFA6wZ4=;
+ b=LOW0hKqQjW46tYlGUT38jfvsyvWjdkvZ5cJI651/oVi6va7aDodXPhKy4ycF+ha68a
+ /1dIMedauaN/eStkoA+M7rfyzSXO/phcjtp85/HtHENRQHToSLhXEPGQOf8EizlYPPEb
+ ZbyL17CO03jy2tGpkTOGksfO/EiHLY0Tl1bL+Naqz48mPDBv3+tktoXNB5IxTtU/ucpm
+ zzmV6aqoSB4BcpED3sQzdg02QdpHikZXQfoNODQ55niP5Yj4myGhGXjBmp0pzfNStuFZ
+ gUxyJKBfMZCM/V4WChd95T5c/VTI2/T7j5uaZgEaUlKLPrYdMH2KO1kFSTq40CgcV7j2
+ MvRw==
+X-Gm-Message-State: AC+VfDxGyWB292NBJ0U0lB3o4GqoPUNijRYE8wqLi0u2LPTUIBQRKRHB
+ SrB/dea183tCgPeoFBF4D6Cn1yzGhqJA4hJyy+gTSge163Lp3r2OGTsDMZLAjICW+lRBy9vmp4x
+ o9fKIOmo/i+vyVQk=
+X-Received: by 2002:a17:907:360e:b0:974:1ef1:81fb with SMTP id
+ bk14-20020a170907360e00b009741ef181fbmr11085581ejc.22.1686583281686; 
+ Mon, 12 Jun 2023 08:21:21 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4YixnMl+aNmFL0wUIp7Cub1NsUbO5DElrEKTfb8XfcdsrD3T4xicLSgE0H9WqOiwNVwLphsQ==
+X-Received: by 2002:a17:907:360e:b0:974:1ef1:81fb with SMTP id
+ bk14-20020a170907360e00b009741ef181fbmr11085561ejc.22.1686583281339; 
+ Mon, 12 Jun 2023 08:21:21 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ a19-20020a17090682d300b009775eb0343bsm5372325ejy.79.2023.06.12.08.21.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jun 2023 08:21:20 -0700 (PDT)
+Date: Mon, 12 Jun 2023 17:21:19 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 15/15] hw/i386/pc_piix: Move i440fx' realize near its
+ qdev_new()
+Message-ID: <20230612172119.5b9e6d7e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230612165155.087ba275@imammedo.users.ipa.redhat.com>
+References: <20230611103412.12109-1-shentey@gmail.com>
+ <20230611103412.12109-16-shentey@gmail.com>
+ <20230612165155.087ba275@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,248 +102,143 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  6 Jun 2023 10:47:58 +0100
-Peter Maydell <peter.maydell@linaro.org> wrote:
+On Mon, 12 Jun 2023 16:51:55 +0200
+Igor Mammedov <imammedo@redhat.com> wrote:
 
-> From: Richard Henderson <richard.henderson@linaro.org>
+> On Sun, 11 Jun 2023 12:34:12 +0200
+> Bernhard Beschow <shentey@gmail.com> wrote:
 > 
-> Round len_align to 16 instead of 8, handling an odd 8-byte as part
-> of the tail.  Use MO_ATOM_NONE to indicate that all of these memory
-> ops have only byte atomicity.
+> > I440FX realization is currently mixed with PIIX3 creation. Furthermore, it is
+> > common practice to only set properties between a device's qdev_new() and
+> > qdev_realize(). Clean up to resolve both issues.
+> > 
+> > Since I440FX spawns a PCI bus let's also move the pci_bus initialization there.
+> > 
+> > Note that when running `qemu-system-x86_64 -M pc -S` before and after this
+> > patch, `info mtree` in the QEMU console doesn't show any differences except that
+> > the ordering is different.
+> > 
+> > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> > ---
+> >  hw/i386/pc_piix.c | 57 ++++++++++++++++++++++++-----------------------
+> >  1 file changed, 29 insertions(+), 28 deletions(-)
+> > 
+> > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> > index 22173b122b..23b9725c94 100644
+> > --- a/hw/i386/pc_piix.c
+> > +++ b/hw/i386/pc_piix.c
+> > @@ -126,7 +126,6 @@ static void pc_init1(MachineState *machine,
+> >      MemoryRegion *rom_memory;
+> >      ram_addr_t lowmem;
+> >      uint64_t hole64_size;
+> > -    Object *i440fx_host;
+> >  
+> >      /*
+> >       * Calculate ram split, for memory below and above 4G.  It's a bit
+> > @@ -198,17 +197,43 @@ static void pc_init1(MachineState *machine,
+> >      }
+> >  
+> >      if (pcmc->pci_enabled) {
+> > +        Object *phb;
+> > +
+> >          pci_memory = g_new(MemoryRegion, 1);
+> >          memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
+> >          rom_memory = pci_memory;
+> > -        i440fx_host = OBJECT(qdev_new(host_type));
+> > -        hole64_size = object_property_get_uint(i440fx_host,
+> > +
+> > +        phb = OBJECT(qdev_new(host_type));
+> > +        object_property_add_child(OBJECT(machine), "i440fx", phb);
+> > +        object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
+> > +                                 OBJECT(ram_memory), &error_fatal);
+> > +        object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
+> > +                                 OBJECT(pci_memory), &error_fatal);
+> > +        object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
+> > +                                 OBJECT(system_memory), &error_fatal);
+> > +        object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
+> > +                                 OBJECT(system_io), &error_fatal);
+> > +        object_property_set_uint(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
+> > +                                 x86ms->below_4g_mem_size, &error_fatal);
+> > +        object_property_set_uint(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
+> > +                                 x86ms->above_4g_mem_size, &error_fatal);
+> > +        object_property_set_str(phb, I440FX_HOST_PROP_PCI_TYPE, pci_type,
+> > +                                &error_fatal);
+> > +        sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
+> > +
+> > +        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
+> > +        pci_bus_map_irqs(pci_bus,
+> > +                         xen_enabled() ? xen_pci_slot_get_pirq
+> > +                                       : pc_pci_slot_get_pirq);
+> > +        pcms->bus = pci_bus;
+> > +
+> > +        hole64_size = object_property_get_uint(phb,
+> >                                                 PCI_HOST_PROP_PCI_HOLE64_SIZE,
+> >                                                 &error_abort);  
 > 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-id: 20230530191438.411344-8-richard.henderson@linaro.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> before patch memory region links were set after the original
+> regions were initialized by pc_memory_init(), but after this
+> patch you 1st set links and only later pc_memory_init().
+> I doesn't look to me as a safe thing to do.
 
-Early in debugging but a git bisect pointed at this patch causing:
+or maybe it doesn't matter, but still I have hard time
+convincing myself that it is so. 
 
-ERROR:../../tcg/tcg.c:4317:temp_load: code should not be reached
-Bail out! ERROR:../../tcg/tcg.c:4317:temp_load: code should not be reached
-Aborted
-
-Just after Run /sbin/init arm64 / virt running on an x86 host.
-cpu max.
-
-Just reverting this patch results in length check failures.
-I reverted as follows
-
-
-revert: Revert "target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r"
-revert: Revert "target/arm: Sink gen_mte_check1 into load/store_exclusive"
-revert: Revert "target/arm: Load/store integer pair with one tcg operation"
-revert: Revert "target/arm: Hoist finalize_memop out of do_gpr_{ld, st}"
-revert: Revert "target/arm: Hoist finalize_memop out of do_fp_{ld, st}"
-revert: Revert "target/arm: Pass memop to gen_mte_check1*"
-revert: Revert "target/arm: Pass single_memop to gen_mte_checkN"
-revert: Revert "target/arm: Check alignment in helper_mte_check"
-revert: Revert "target/arm: Add SCTLR.nAA to TBFLAG_A64"
-revert: Revert "target/arm: Relax ordered/atomic alignment checks for LSE2"
-revert: Revert "target/arm: Move mte check for store-exclusive"
-
-and all is good - obviously that's probably massive overkill.
-
-Jonathan
-
-> ---
->  target/arm/tcg/translate-sve.c | 95 +++++++++++++++++++++++++---------
->  1 file changed, 70 insertions(+), 25 deletions(-)
 > 
-> diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-> index d9d5810ddea..57051a4729a 100644
-> --- a/target/arm/tcg/translate-sve.c
-> +++ b/target/arm/tcg/translate-sve.c
-> @@ -4167,11 +4167,12 @@ TRANS_FEAT(UCVTF_dd, aa64_sve, gen_gvec_fpst_arg_zpz,
->  void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
->                   int len, int rn, int imm)
->  {
-> -    int len_align = QEMU_ALIGN_DOWN(len, 8);
-> -    int len_remain = len % 8;
-> -    int nparts = len / 8 + ctpop8(len_remain);
-> +    int len_align = QEMU_ALIGN_DOWN(len, 16);
-> +    int len_remain = len % 16;
-> +    int nparts = len / 16 + ctpop8(len_remain);
->      int midx = get_mem_index(s);
->      TCGv_i64 dirty_addr, clean_addr, t0, t1;
-> +    TCGv_i128 t16;
->  
->      dirty_addr = tcg_temp_new_i64();
->      tcg_gen_addi_i64(dirty_addr, cpu_reg_sp(s, rn), imm);
-> @@ -4188,10 +4189,16 @@ void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
->          int i;
->  
->          t0 = tcg_temp_new_i64();
-> -        for (i = 0; i < len_align; i += 8) {
-> -            tcg_gen_qemu_ld_i64(t0, clean_addr, midx, MO_LEUQ);
-> +        t1 = tcg_temp_new_i64();
-> +        t16 = tcg_temp_new_i128();
-> +
-> +        for (i = 0; i < len_align; i += 16) {
-> +            tcg_gen_qemu_ld_i128(t16, clean_addr, midx,
-> +                                 MO_LE | MO_128 | MO_ATOM_NONE);
-> +            tcg_gen_extr_i128_i64(t0, t1, t16);
->              tcg_gen_st_i64(t0, base, vofs + i);
-> -            tcg_gen_addi_i64(clean_addr, clean_addr, 8);
-> +            tcg_gen_st_i64(t1, base, vofs + i + 8);
-> +            tcg_gen_addi_i64(clean_addr, clean_addr, 16);
->          }
->      } else {
->          TCGLabel *loop = gen_new_label();
-> @@ -4200,14 +4207,21 @@ void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
->          tcg_gen_movi_ptr(i, 0);
->          gen_set_label(loop);
->  
-> -        t0 = tcg_temp_new_i64();
-> -        tcg_gen_qemu_ld_i64(t0, clean_addr, midx, MO_LEUQ);
-> -        tcg_gen_addi_i64(clean_addr, clean_addr, 8);
-> +        t16 = tcg_temp_new_i128();
-> +        tcg_gen_qemu_ld_i128(t16, clean_addr, midx,
-> +                             MO_LE | MO_128 | MO_ATOM_NONE);
-> +        tcg_gen_addi_i64(clean_addr, clean_addr, 16);
->  
->          tp = tcg_temp_new_ptr();
->          tcg_gen_add_ptr(tp, base, i);
-> -        tcg_gen_addi_ptr(i, i, 8);
-> +        tcg_gen_addi_ptr(i, i, 16);
-> +
-> +        t0 = tcg_temp_new_i64();
-> +        t1 = tcg_temp_new_i64();
-> +        tcg_gen_extr_i128_i64(t0, t1, t16);
-> +
->          tcg_gen_st_i64(t0, tp, vofs);
-> +        tcg_gen_st_i64(t1, tp, vofs + 8);
->  
->          tcg_gen_brcondi_ptr(TCG_COND_LTU, i, len_align, loop);
->      }
-> @@ -4216,6 +4230,16 @@ void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
->       * Predicate register loads can be any multiple of 2.
->       * Note that we still store the entire 64-bit unit into cpu_env.
->       */
-> +    if (len_remain >= 8) {
-> +        t0 = tcg_temp_new_i64();
-> +        tcg_gen_qemu_ld_i64(t0, clean_addr, midx, MO_LEUQ | MO_ATOM_NONE);
-> +        tcg_gen_st_i64(t0, base, vofs + len_align);
-> +        len_remain -= 8;
-> +        len_align += 8;
-> +        if (len_remain) {
-> +            tcg_gen_addi_i64(clean_addr, clean_addr, 8);
-> +        }
-> +    }
->      if (len_remain) {
->          t0 = tcg_temp_new_i64();
->          switch (len_remain) {
-> @@ -4223,14 +4247,14 @@ void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
->          case 4:
->          case 8:
->              tcg_gen_qemu_ld_i64(t0, clean_addr, midx,
-> -                                MO_LE | ctz32(len_remain));
-> +                                MO_LE | ctz32(len_remain) | MO_ATOM_NONE);
->              break;
->  
->          case 6:
->              t1 = tcg_temp_new_i64();
-> -            tcg_gen_qemu_ld_i64(t0, clean_addr, midx, MO_LEUL);
-> +            tcg_gen_qemu_ld_i64(t0, clean_addr, midx, MO_LEUL | MO_ATOM_NONE);
->              tcg_gen_addi_i64(clean_addr, clean_addr, 4);
-> -            tcg_gen_qemu_ld_i64(t1, clean_addr, midx, MO_LEUW);
-> +            tcg_gen_qemu_ld_i64(t1, clean_addr, midx, MO_LEUW | MO_ATOM_NONE);
->              tcg_gen_deposit_i64(t0, t0, t1, 32, 32);
->              break;
->  
-> @@ -4245,11 +4269,12 @@ void gen_sve_ldr(DisasContext *s, TCGv_ptr base, int vofs,
->  void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
->                   int len, int rn, int imm)
->  {
-> -    int len_align = QEMU_ALIGN_DOWN(len, 8);
-> -    int len_remain = len % 8;
-> -    int nparts = len / 8 + ctpop8(len_remain);
-> +    int len_align = QEMU_ALIGN_DOWN(len, 16);
-> +    int len_remain = len % 16;
-> +    int nparts = len / 16 + ctpop8(len_remain);
->      int midx = get_mem_index(s);
-> -    TCGv_i64 dirty_addr, clean_addr, t0;
-> +    TCGv_i64 dirty_addr, clean_addr, t0, t1;
-> +    TCGv_i128 t16;
->  
->      dirty_addr = tcg_temp_new_i64();
->      tcg_gen_addi_i64(dirty_addr, cpu_reg_sp(s, rn), imm);
-> @@ -4267,10 +4292,15 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
->          int i;
->  
->          t0 = tcg_temp_new_i64();
-> +        t1 = tcg_temp_new_i64();
-> +        t16 = tcg_temp_new_i128();
->          for (i = 0; i < len_align; i += 8) {
->              tcg_gen_ld_i64(t0, base, vofs + i);
-> -            tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUQ);
-> -            tcg_gen_addi_i64(clean_addr, clean_addr, 8);
-> +            tcg_gen_ld_i64(t1, base, vofs + i + 8);
-> +            tcg_gen_concat_i64_i128(t16, t0, t1);
-> +            tcg_gen_qemu_st_i128(t16, clean_addr, midx,
-> +                                 MO_LE | MO_128 | MO_ATOM_NONE);
-> +            tcg_gen_addi_i64(clean_addr, clean_addr, 16);
->          }
->      } else {
->          TCGLabel *loop = gen_new_label();
-> @@ -4280,18 +4310,33 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
->          gen_set_label(loop);
->  
->          t0 = tcg_temp_new_i64();
-> +        t1 = tcg_temp_new_i64();
->          tp = tcg_temp_new_ptr();
->          tcg_gen_add_ptr(tp, base, i);
->          tcg_gen_ld_i64(t0, tp, vofs);
-> -        tcg_gen_addi_ptr(i, i, 8);
-> +        tcg_gen_ld_i64(t1, tp, vofs + 8);
-> +        tcg_gen_addi_ptr(i, i, 16);
->  
-> -        tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUQ);
-> -        tcg_gen_addi_i64(clean_addr, clean_addr, 8);
-> +        t16 = tcg_temp_new_i128();
-> +        tcg_gen_concat_i64_i128(t16, t0, t1);
-> +
-> +        tcg_gen_qemu_st_i128(t16, clean_addr, midx, MO_LEUQ);
-> +        tcg_gen_addi_i64(clean_addr, clean_addr, 16);
->  
->          tcg_gen_brcondi_ptr(TCG_COND_LTU, i, len_align, loop);
->      }
->  
->      /* Predicate register stores can be any multiple of 2.  */
-> +    if (len_remain >= 8) {
-> +        t0 = tcg_temp_new_i64();
-> +        tcg_gen_st_i64(t0, base, vofs + len_align);
-> +        tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUQ | MO_ATOM_NONE);
-> +        len_remain -= 8;
-> +        len_align += 8;
-> +        if (len_remain) {
-> +            tcg_gen_addi_i64(clean_addr, clean_addr, 8);
-> +        }
-> +    }
->      if (len_remain) {
->          t0 = tcg_temp_new_i64();
->          tcg_gen_ld_i64(t0, base, vofs + len_align);
-> @@ -4301,14 +4346,14 @@ void gen_sve_str(DisasContext *s, TCGv_ptr base, int vofs,
->          case 4:
->          case 8:
->              tcg_gen_qemu_st_i64(t0, clean_addr, midx,
-> -                                MO_LE | ctz32(len_remain));
-> +                                MO_LE | ctz32(len_remain) | MO_ATOM_NONE);
->              break;
->  
->          case 6:
-> -            tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUL);
-> +            tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUL | MO_ATOM_NONE);
->              tcg_gen_addi_i64(clean_addr, clean_addr, 4);
->              tcg_gen_shri_i64(t0, t0, 32);
-> -            tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUW);
-> +            tcg_gen_qemu_st_i64(t0, clean_addr, midx, MO_LEUW | MO_ATOM_NONE);
->              break;
->  
->          default:
+> >      } else {  
+> 
+> 
+> >          pci_memory = NULL;
+> >          rom_memory = system_memory;
+> > -        i440fx_host = NULL;
+> > +        pci_bus = NULL;
+> >          hole64_size = 0;  
+> 
+> is it possible to turn these into initializers, and get rid of 
+> 'else'  branch?
+> 
+> >      }
+> >  
+> > @@ -243,29 +268,6 @@ static void pc_init1(MachineState *machine,
+> >          PIIX3State *piix3;
+> >          PCIDevice *pci_dev;
+> >  
+> > -        object_property_add_child(OBJECT(machine), "i440fx", i440fx_host);
+> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_RAM_MEM,
+> > -                                 OBJECT(ram_memory), &error_fatal);
+> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_PCI_MEM,
+> > -                                 OBJECT(pci_memory), &error_fatal);
+> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_SYSTEM_MEM,
+> > -                                 OBJECT(system_memory), &error_fatal);
+> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_IO_MEM,
+> > -                                 OBJECT(system_io), &error_fatal);
+> > -        object_property_set_uint(i440fx_host, PCI_HOST_BELOW_4G_MEM_SIZE,
+> > -                                 x86ms->below_4g_mem_size, &error_fatal);
+> > -        object_property_set_uint(i440fx_host, PCI_HOST_ABOVE_4G_MEM_SIZE,
+> > -                                 x86ms->above_4g_mem_size, &error_fatal);
+> > -        object_property_set_str(i440fx_host, I440FX_HOST_PROP_PCI_TYPE,
+> > -                                pci_type, &error_fatal);
+> > -        sysbus_realize_and_unref(SYS_BUS_DEVICE(i440fx_host), &error_fatal);
+> > -
+> > -        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(i440fx_host), "pci.0"));
+> > -        pci_bus_map_irqs(pci_bus,
+> > -                         xen_enabled() ? xen_pci_slot_get_pirq
+> > -                                       : pc_pci_slot_get_pirq);
+> > -        pcms->bus = pci_bus;
+> > -
+> >          pci_dev = pci_create_simple_multifunction(pci_bus, -1, true,
+> >                                                    TYPE_PIIX3_DEVICE);
+> >  
+> > @@ -290,7 +292,6 @@ static void pc_init1(MachineState *machine,
+> >          rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
+> >                                                               "rtc"));
+> >      } else {
+> > -        pci_bus = NULL;
+> >          isa_bus = isa_bus_new(NULL, system_memory, system_io,
+> >                                &error_abort);
+> >    
+> 
 
 
