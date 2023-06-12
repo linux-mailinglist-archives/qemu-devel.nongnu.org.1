@@ -2,88 +2,170 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111EF72BB87
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 11:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A1E72BBCF
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 11:13:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8dR1-0002dL-3R; Mon, 12 Jun 2023 05:01:59 -0400
+	id 1q8daY-0005L1-Sx; Mon, 12 Jun 2023 05:11:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q8dQq-0002aI-RS; Mon, 12 Jun 2023 05:01:48 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q8dQo-0002Hw-S1; Mon, 12 Jun 2023 05:01:48 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51496f57e59so5719957a12.2; 
- Mon, 12 Jun 2023 02:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686560505; x=1689152505;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9BH4fedupL/Xj2nHnp16H8jJ3HEclWLXok4aZ5xpN2s=;
- b=GgWRPfe2pYHXa1+eDRhyy9fQGUCuP6kvzLfIT3NfzavbY+84bodRsYt76s9KYqCare
- o/hDdbAQDQMdh9DMdMj3uzYKcO7W+vEhbVUPN9Nm7GkM+BS46xGuVffsUISa11qu86sr
- bgOOjScddYk5bLmxHeE5zwBafvJaP3Va8vcu1+VDIFET4OiQaHaJwJbfCuD1C89NBpkQ
- DrYqesIUnx5eBi2pLtDyeyxZr/XvreftDCqCU723bqOwcAsIMqYVDFlFkZPejW48ODz1
- Us2850To7BWMA8gnr291LgFRwtDwTFPj3qWOJYf2ZoDfvs71BmWmjf3wb3Luhp31xk3W
- u5yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686560505; x=1689152505;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9BH4fedupL/Xj2nHnp16H8jJ3HEclWLXok4aZ5xpN2s=;
- b=Riq0Pdnjq/+Jk5RbRceMpt4Du4TkZDYPzlqCtxoEXOFrkEddWstCiGhbwpf/H3NqJl
- CtymxsglevcByr1QxZSUD37g/ym8d5dUuGIyKvbCtKVuQcVzfiSxvKsPvInmE1oxtjnI
- LVdClhpPYROIBRWt7SdRARMWBaZfRqehxkUN7NSv/9EFXJXEpLCl/aHWGwygBrXI3ai8
- Uqb9S/xEA9rirtzjPCrnlCdj0qP+9cjogxGDg3RFEsp10dMYXSNnuQxF7JdwLtjBqLGC
- XlSov85wssF970SbWYITixKmdgkBiw/v2GtWcKxqj4W7Gr3pSwt8NdOCCpGkl+25MYB0
- ayIA==
-X-Gm-Message-State: AC+VfDyjAjnhOL4R7xNwUfWZrkr7vI9J4kRwoFg2+5TD4vr4I5Cw5rQ5
- Z+NBJkbabZaXozKbD1Mb8c4=
-X-Google-Smtp-Source: ACHHUZ5vwMNhs2NfeN5PZg3uK19MB2Wqi7UjQtg94U62zkBnRzpLAsdOim1UmOUUjgGFXXfYtVfDVg==
-X-Received: by 2002:a17:907:72c7:b0:978:8746:bd75 with SMTP id
- du7-20020a17090772c700b009788746bd75mr8503686ejc.58.1686560505003; 
- Mon, 12 Jun 2023 02:01:45 -0700 (PDT)
-Received: from [127.0.0.1] ([62.214.191.67]) by smtp.gmail.com with ESMTPSA id
- q15-20020a170906940f00b00977eb9957e9sm4919015ejx.128.2023.06.12.02.01.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Jun 2023 02:01:44 -0700 (PDT)
-Date: Mon, 12 Jun 2023 09:01:28 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-trivial@nongnu.org,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 2/2] hw/char/parallel-isa: Export struct ISAParallelState
-In-Reply-To: <229b5f39-2a3e-e47b-5269-9ae2c43492ae@eik.bme.hu>
-References: <20230611110008.32638-1-shentey@gmail.com>
- <20230611110008.32638-3-shentey@gmail.com>
- <229b5f39-2a3e-e47b-5269-9ae2c43492ae@eik.bme.hu>
-Message-ID: <F47D47A6-B68A-46E7-BF36-C6447AC8E4CD@gmail.com>
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q8daW-0005Kh-3R
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 05:11:48 -0400
+Received: from mga18.intel.com ([134.134.136.126])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q8daT-0003qt-Ew
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 05:11:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1686561105; x=1718097105;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=1FhNqEdk/T5nPjTrk/PK/ksQiwtofiesueWxlbQ/M1U=;
+ b=haYf7R6p8/q/ZYfGA5Kkfut3Agac49huh6cj0h4R+H8Kqsnxj/nITljB
+ aCE6ZmEgUpKO/vedobMbm6Zos7BYyIhzJtVkUApNrNXYfAhPAhAsPHQ1R
+ JFmDsasgx61rykNuncmkJRYx8nfaL7c4ItxQonub2zOO1Vrs2V0lopy5v
+ ugYLxIP0Wi8N3NlJGwgRAiliWgrPk1Sbb22nEkcM4pxYqm9vNsVDQmitI
+ /8Ow0p6fRxoJPQtQiRHlkyf8KsgmopoohfI0AFldwR/Dre6ys6J2/uoVG
+ HCO7UnmzPbVEozTKS+yCr5MLI7qYWbNbE2cSninjLJJDnhUP3aR1cNdd9 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10738"; a="342675669"
+X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; d="scan'208";a="342675669"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2023 02:11:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10738"; a="661518745"
+X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; d="scan'208";a="661518745"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orsmga003.jf.intel.com with ESMTP; 12 Jun 2023 02:11:35 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 12 Jun 2023 02:11:35 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 12 Jun 2023 02:11:34 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Mon, 12 Jun 2023 02:11:34 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Mon, 12 Jun 2023 02:11:33 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a45knApon9ICda7uw+Pb7x+t5cZblTWpge4h8emg0cFtfYCnooFM0GhX1C3pRp1GyHxFoLJZpdxf/QeCIa/cs26XwND096Q1BkM0KAYwCWuHmaxJISVi246uZ8oHWDzd8g5yGKjQ+DUeHziHN8jttJ08VRAXPSb7cvGKZBeq+C2XDHrZyFcE2rGzUHyQmO65pFta1n30ymW4hRL7/YLDjFYQDBq+6DOkRIPRJK7w0aCPClFlh0geRZnGvfrRtWxGYehZZYEOq4hUnmChm3oV815ErR7Lq1XlRpS1qrtFBL99EU67UjOqIyq/Xg5UavrhugcjtCaQd0IH8CEIxuBSsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Hd8+v9Qr+JAl7RI/BAGkdSyZxOEaWN43Pxz43pvdCTs=;
+ b=ed/IrWWcFLCX8w/TK39tf8Vi/iIAW8GibiZ4ijbPsu/YMg8OB9hbVvm8KSXcPNIjcOFna/rWKqEFp8OwdIBgAUrdCOyom5HMBtFPhDJAIa6dY4g+v5emn509LDjGkYcHA1PvuqmT6paW6otl6jE8xzDX32xGQZkqnGGa6z4YpOFxwyKpAwxut8r4PJ1nZQpuf5lUWi+QVf9up++sCIZ3p2CGF9z/8ei5gldKSYUem8Z7OB6dnXRHVe5+xIHFRJAjlY341Bvs1rCrbRZt4MH10E+zLacH3gUB4xxZmi/tDskrYDpqexsT7F4WSvURswpvL9C5aCSimiw6O/zLTWVSDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BY5PR11MB4500.namprd11.prod.outlook.com (2603:10b6:a03:1c3::24)
+ by PH8PR11MB7117.namprd11.prod.outlook.com (2603:10b6:510:217::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.44; Mon, 12 Jun
+ 2023 09:11:31 +0000
+Received: from BY5PR11MB4500.namprd11.prod.outlook.com
+ ([fe80::db38:4ad3:bc43:5602]) by BY5PR11MB4500.namprd11.prod.outlook.com
+ ([fe80::db38:4ad3:bc43:5602%4]) with mapi id 15.20.6477.028; Mon, 12 Jun 2023
+ 09:11:31 +0000
+Message-ID: <f8673f20-1acb-34b3-98f7-cda8766ceb5c@intel.com>
+Date: Mon, 12 Jun 2023 17:11:23 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.11.2
+Subject: Re: [PATCH v15 07/10] tb-stats: Adding info [tb-list|tb] commands to
+ HMP (WIP)
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
+CC: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>, "Dr . David Alan
+ Gilbert" <dgilbert@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Dr.
+ David Alan Gilbert" <dave@treblig.org>, Peter Maydell
+ <peter.maydell@linaro.org>
+References: <20230607122411.3394702-1-fei2.wu@intel.com>
+ <20230607122411.3394702-8-fei2.wu@intel.com>
+ <81e761e4-7776-b569-229f-f0bd8257145d@intel.com>
+ <63354939-ae21-dbbd-c788-1acacc64abae@linaro.org>
+From: "Wu, Fei" <fei2.wu@intel.com>
+In-Reply-To: <63354939-ae21-dbbd-c788-1acacc64abae@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR06CA0015.apcprd06.prod.outlook.com
+ (2603:1096:4:186::7) To BY5PR11MB4500.namprd11.prod.outlook.com
+ (2603:10b6:a03:1c3::24)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR11MB4500:EE_|PH8PR11MB7117:EE_
+X-MS-Office365-Filtering-Correlation-Id: aad2dd22-5b93-46c8-683a-08db6b250308
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Pm2+JZHd7G2KgRk+K4qrD3Jf6u4h+lAcou/12XQikBvMvxTm7KKwrL523Xfe0zBNNAjoy/ubOxwq/KHu1DtF0b8qCWJBlNMenNEAKwUlxNqkJiqXnMKNy4bpoyp6E6utj5k/PddOQukN3ZUDdCkdOJpvU6ewKeLD/We1PLdCCALZ8XyQM632XmnCtbSbwZ2veKkeFACbpYdvwqugaoSgteYQYOPyutZjc3UJApwHs5/4BdomMUyXu5E1t10RteDfurur4cSNbWXJRbQAWqX71GoNPR8xEYyiOA+tPAMNt0S1dOIlzlaIoyCoad9i+6kK9J2W0q5kfOetk0QLoEDn1vDrR7vMqkb6O4gKM4UC6GNO0GoxRtnJJgQjfmEvcRg0s1mM0/W6p28ZRwmnEpUzb1t6Ab5CkIBiynnDddnouMttivV1DL57AGHjrzUNXPjn3LQ1JtRXILloTgDoCzlsJJ22HgcQLO0X4cCzmZfkRtvE2KUSASsUOwU8Plu0GJvxx3gdpjIYA9Rpr/XWavUHgtzOSbvxysGHLFNrMNkkwxZjXI4//vw5BkkQwwiGp4hgOoV3VgIGTrzvvL+DOVBnZltTatE5b5ESgUqb4WWx1765IFNU8ZCV2FAK1JCvjSauYFy1IhtwHz10UTehpbN/iA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR11MB4500.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(396003)(366004)(39860400002)(136003)(376002)(346002)(451199021)(31686004)(66946007)(4326008)(66476007)(66556008)(36756003)(186003)(478600001)(2616005)(2906002)(54906003)(8676002)(316002)(41300700001)(31696002)(86362001)(6486002)(6666004)(6506007)(53546011)(8936002)(82960400001)(83380400001)(5660300002)(26005)(38100700002)(6512007)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Nkw4WHpjVEFVaWxUY2p5UlI5YWk3eWhyVzc5ZzdRTWNlUzh2Tm5WVW10UWZF?=
+ =?utf-8?B?T0lMS2JBVjJTZklHSUI5UHFTQ1NQU0JCbXVIUThHYjJwV2F0ZlAxcEVrN1lT?=
+ =?utf-8?B?c2pTTVZ4TUFTZDNYUTk0b3FzTUFabnYyU3lxYWZETlNUM3pxdVhjM3BQam5x?=
+ =?utf-8?B?SkdZb2MxQjNCMXVMcnB6U0RQWlNYeXFkQ01URXYvOUhqWE5QK1VDVFVxNjht?=
+ =?utf-8?B?L1JiTXM1MkZNa2E2MGdIQzdzanlqQStsV1NTMHVscytRLzYvMkF5RkljNTFq?=
+ =?utf-8?B?bjJOc28wbEg3QmxYWjhUam5iYk9Hc1hmN002L0lJdmtncEVET25Nbjc0NEZE?=
+ =?utf-8?B?M0Ivblk0aVBncDBUWGpTV1Jua003cUZ3N2tlR1hsUnFyTHA1TWh1OEpDaGJQ?=
+ =?utf-8?B?KzhhSHpuSk9hbHdCNFlzckZYRlgxelQ2dDgxWk83V1EzRVVFbXhjdERzTTU1?=
+ =?utf-8?B?dy9iYUFDUXNya1E0Z1QxbnNHc2Y2dkdTeEVUZmkrdjkxNFJtbFhlblpWbjIv?=
+ =?utf-8?B?dGpaOFhDS0U3U0FTNEJFYlgrVHluQXowcHNaTmc2SmNVWFlXQkhPYUFJeXBG?=
+ =?utf-8?B?dHkzaDFjQ28vWkFwNGJ3MlZsSzhTMjdYcU9HMHlOSklEYVVvRXFMRERmZWdq?=
+ =?utf-8?B?MmNkdUcxWlRCQmtSTzlXd3ZIQXlFZmNuclgwU0cwbEFmK09BUWpwdkw4Y3Ay?=
+ =?utf-8?B?M0l2WGdBdVdYOHdXc0w4amU3dEpKQWwrUTVKOC9lTHBDaWFUYjUweGhWVWtl?=
+ =?utf-8?B?QXFvQjRlYlV2WUhSeE1kV0ljdisrM0YwU24rbXVUV0E0R2lMWUtwbjJUaW1o?=
+ =?utf-8?B?N3V2SXhMRjZ3T3EwNmpjUmRBeHA3VHYzOTBnU1BoNkJ1RWFta0JpWVdLdzJB?=
+ =?utf-8?B?Y3R1bGpFNFJGRW5sdjJwNDlQUXVUTlhXclpvdGtPdXJxT24yNmNaWnM4ZkNQ?=
+ =?utf-8?B?Sm5hNVNCRy94dzExdStWemo0YUhpMnc1SEwrbnFLUnlaQ0pKdDNuQTZwSWtu?=
+ =?utf-8?B?bXVzMHZHU0w4ZzhsUjIrd2hMcVp3eDJZaE1xNGVVcWR2d0JKTVRzZ0ZEMXdH?=
+ =?utf-8?B?SkdWVHZweXhHMlppSTR6OWg3N0g1cnorc0lGWDRUbEJkRzJWQ1RpK0xyVmNL?=
+ =?utf-8?B?dkRRQmhoWXdOMHFZQlpNVlFxN0dBV0grSnAzRFhnc2Z2MWx5eWRrV1BXL2RL?=
+ =?utf-8?B?bmNkQlBVdHJ5Z1ZJZlA5M090Tm9EMkZMQWg2SEczQWpMcjBiRnlJVUVFRklT?=
+ =?utf-8?B?dW01RzVZY2lad0piSUFkN3ZmVVJqOS8zSDNkL01UVkxJNjRVSXdpWGxueG05?=
+ =?utf-8?B?SWhHREhXNmhjcGNKSTduQ2JMaVBsaEtLZlBWdU5zZDZNRzdsZWdkMlRWYzUv?=
+ =?utf-8?B?MnM2VmRnSFBTeUdaK0k4b203bUVHM2NvZ00xWHFFQUlBOW5Mb1dJckZqK29V?=
+ =?utf-8?B?NXQyQlFmWTRKY1ZhVUNwbFBNbE9Bck5xeEoreTBoL2NpN3RLeXFOUDlTTDdo?=
+ =?utf-8?B?bE5vaFczTnFJUUpjS3ZKQTNqUTZkYTBEWlRoM0NOMHBLMjVLMnlKVEZXazZS?=
+ =?utf-8?B?VUdjdWdURmQ3anNzbVR2MmRpcC9ZTUNyWjZsc0RNdlhwY3hEQW1mZE5kY29T?=
+ =?utf-8?B?K1dvV1U4NlJtU29Fa3ZQYWFENGU1d29zUFp0M29TYnh6TWl1N2ExWnRteExs?=
+ =?utf-8?B?UTZmMDhEMXZFUTZhMzM4Qk9zdlk2Wk4ycmhrTEtZcVJFMC94SkpleEp3L24x?=
+ =?utf-8?B?TVhkeFhLUWwyUDRZS0t0RE5MWWx0YVZ6bExSSHZHUFFPRU92U095ZVJoMU92?=
+ =?utf-8?B?a2ZobStTWDArT2lzOFZEWG5TWXdKOVZBM090Y0IxR3hEODk3YWpjakh3dlIy?=
+ =?utf-8?B?ZDN6aEl6eXhwSTVTUlREUkhraVMxbXdLM3FXTFdJemZlWlZobkQvVHllSDA4?=
+ =?utf-8?B?VWFNK25PK3crWG1TRDIyTVg2YTh3cE9nTERUbDR0M0oyRUV0NkRqRHhBQlFD?=
+ =?utf-8?B?YjBHdjFWVkpSd1pRS0dmVWZoajlNdThVUStsNTZKTjUzVExKWS94VHhkWnpT?=
+ =?utf-8?B?a1lXdlZwVFdSN1hlVm5SU05sTHJuRGlXelord3dmMWJPVEdEZlAxaHRkamM0?=
+ =?utf-8?Q?RJRRof0KazOTYKfnndOqMgl7m?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: aad2dd22-5b93-46c8-683a-08db6b250308
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4500.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2023 09:11:31.4663 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iWZxyYfnNh/x8RAFMrF7WaFUM9ppzIsQCfxCLCaiJzEUyf//Gbd8IYrM4IoUwte5Z/E7i894gfAWWe8jjfkdJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7117
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.126; envelope-from=fei2.wu@intel.com;
+ helo=mga18.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,221 +182,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/12/2023 3:17 PM, Richard Henderson wrote:
+> On 6/12/23 03:44, Wu, Fei wrote:
+>> On 6/7/2023 8:24 PM, Fei Wu wrote:
+>>> +void hmp_info_tb(Monitor *mon, const QDict *qdict)
+>>> +{
+>>> +    const int id = qdict_get_int(qdict, "id");
+>>> +    g_autoptr(GString) buf = g_string_new("");
+>>> +
+>>> +    if (!tcg_enabled()) {
+>>> +        monitor_printf(mon, "Only available with accel=tcg\n");
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    TBStatistics *tbs = get_tbstats_by_id(id);
+>>> +    if (tbs == NULL) {
+>>> +        monitor_printf(mon, "TB %d information is not recorded\n", id);
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    monitor_printf(mon, "\n------------------------------\n\n");
+>>> +
+>>> +    int valid_tb_num = dump_tb_info(buf, tbs, id);
+>>> +    monitor_printf(mon, "%s", buf->str);
+>>> +
+>>> +    if (valid_tb_num > 0) {
+>>> +        unsigned num_inst = tbs->code.num_guest_inst /
+>>> tbs->translations.total;
+>>> +
+>>> +        monitor_printf(mon, "\n----------------n\n");
+>>> +        // FIXME: cannot disas
+>>> +        monitor_disas(mon, mon_get_cpu(mon), tbs->phys_pc, num_inst,
+>>> true);
+>>> +        monitor_printf(mon, "\n------------------------------\n\n");
+>>> +    }
+>>> +}
+>>> +
+>> So far the following methods are candidates for monitor_disas:
+>>
+>> 1. still use ram_addr_t for tbs->phys_pc, and extend monitor_disas to
+>> support disassemble ram_addr_t by using qemu_map_ram_ptr(NULL, ram_addr)
+>> to convert it to hva first
+>>
+>> 2. use gpa for tbs->phys_pc, there is no need to change monitor_disas,
+>> but add another parameter for get_page_addr_code_hostp() to return extra
+>> gpa, probe_access_internal() has already returned CPUTLBEntryFull, so
+>> it's plain to get gpa here.
+> 
+> No, we need the ram_addr_t for dirty-page handling in order to detect
+> self-modifying code.  Leave tb->phys_pc alone.
+> 
+I mean return both ram_addr_t and gpa from get_page_addr_code_hostp(),
+tb->phys_pc will not be changed, I'm not going to change tbs->phys_pc
+either (like #3), the extra gpa will be saved in tbs for 'info tb' purpose.
 
+In short, no change on phys_pc, but add gpa to tbs, sounds good?
 
-Am 11=2E Juni 2023 13:15:58 UTC schrieb BALATON Zoltan <balaton@eik=2Ebme=
-=2Ehu>:
->On Sun, 11 Jun 2023, Bernhard Beschow wrote:
->> Allows the struct to be embedded directly into device models without ad=
-ditional
->> allocation=2E
->>=20
->> Suggested-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
->
->Patches missing SoB, checkpatch should have cought this=2E
+Thanks,
+Fei.
 
-Thanks for catching again=2E Fixed in v2=2E
+> 
+> r~
+> 
+>>
+>> 3. record gpa in another field of tbs, and keep tbs->phys_pc as it is,
+>> this is just a variation of #2.
+>>
+>> I'm inclined to use method #2. I think gpa carries more information for
+>> debugging than ram_addr_t, guest can map gpa to the executable file
+>> etc., but it has little knowledge of ram_addr_t.
+>>
+>> What do you suggest?
+>>
+>> Thanks,
+>> Fei.
+>>
+> 
 
->
->I don't see any of the machines or device models actually embedding ISAPa=
-rallelState or ParallelState so don't know what this patch is trying to ach=
-ieve=2E Please post the whole series with the patches that this is a prepar=
-ation for so we can se where this leads=2E
-
-No further plans from my side=2E
-
-Best regards,
-Bernhard
-
->
->Regards,
->BALATON Zoltan
->
->> ---
->> include/hw/char/parallel-isa=2Eh | 46 +++++++++++++++++++++++++++++++++=
-+
->> include/hw/char/parallel=2Eh     |  2 --
->> hw/char/parallel-isa=2Ec         |  1 +
->> hw/char/parallel=2Ec             | 12 +--------
->> hw/i386/pc_piix=2Ec              |  2 +-
->> hw/i386/pc_q35=2Ec               |  2 +-
->> hw/isa/isa-superio=2Ec           |  1 +
->> hw/sparc64/sun4u=2Ec             |  2 +-
->> 8 files changed, 52 insertions(+), 16 deletions(-)
->> create mode 100644 include/hw/char/parallel-isa=2Eh
->>=20
->> diff --git a/include/hw/char/parallel-isa=2Eh b/include/hw/char/paralle=
-l-isa=2Eh
->> new file mode 100644
->> index 0000000000=2E=2E27bdacf1a3
->> --- /dev/null
->> +++ b/include/hw/char/parallel-isa=2Eh
->> @@ -0,0 +1,46 @@
->> +/*
->> + * QEMU ISA Parallel PORT emulation
->> + *
->> + * Copyright (c) 2003-2005 Fabrice Bellard
->> + * Copyright (c) 2007 Marko Kohtala
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaini=
-ng a copy
->> + * of this software and associated documentation files (the "Software"=
-), to deal
->> + * in the Software without restriction, including without limitation t=
-he rights
->> + * to use, copy, modify, merge, publish, distribute, sublicense, and/o=
-r sell
->> + * copies of the Software, and to permit persons to whom the Software =
-is
->> + * furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be incl=
-uded in
->> + * all copies or substantial portions of the Software=2E
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
-RESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
-LITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT=2E IN NO EVENT=
- SHALL
->> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
-R OTHER
->> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
-SING FROM,
->> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALI=
-NGS IN
->> + * THE SOFTWARE=2E
->> + */
->> +
->> +#ifndef HW_PARALLEL_ISA_H
->> +#define HW_PARALLEL_ISA_H
->> +
->> +#include "parallel=2Eh"
->> +
->> +#include "hw/isa/isa=2Eh"
->> +#include "qom/object=2Eh"
->> +
->> +#define TYPE_ISA_PARALLEL "isa-parallel"
->> +OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
->> +
->> +struct ISAParallelState {
->> +    ISADevice parent_obj;
->> +
->> +    uint32_t index;
->> +    uint32_t iobase;
->> +    uint32_t isairq;
->> +    ParallelState state;
->> +};
->> +
->> +#endif /* HW_PARALLEL_ISA_H */
->> diff --git a/include/hw/char/parallel=2Eh b/include/hw/char/parallel=2E=
-h
->> index 9f76edca81=2E=2E7b5a309a03 100644
->> --- a/include/hw/char/parallel=2Eh
->> +++ b/include/hw/char/parallel=2Eh
->> @@ -25,8 +25,6 @@ typedef struct ParallelState {
->>     PortioList portio_list;
->> } ParallelState;
->>=20
->> -#define TYPE_ISA_PARALLEL "isa-parallel"
->> -
->> void parallel_hds_isa_init(ISABus *bus, int n);
->>=20
->> bool parallel_mm_init(MemoryRegion *address_space,
->> diff --git a/hw/char/parallel-isa=2Ec b/hw/char/parallel-isa=2Ec
->> index 547ae69304=2E=2Eab0f879998 100644
->> --- a/hw/char/parallel-isa=2Ec
->> +++ b/hw/char/parallel-isa=2Ec
->> @@ -13,6 +13,7 @@
->> #include "sysemu/sysemu=2Eh"
->> #include "hw/isa/isa=2Eh"
->> #include "hw/qdev-properties=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> #include "hw/char/parallel=2Eh"
->> #include "qapi/error=2Eh"
->>=20
->> diff --git a/hw/char/parallel=2Ec b/hw/char/parallel=2Ec
->> index e75fc5019d=2E=2E147c900f0d 100644
->> --- a/hw/char/parallel=2Ec
->> +++ b/hw/char/parallel=2Ec
->> @@ -31,6 +31,7 @@
->> #include "hw/qdev-properties=2Eh"
->> #include "hw/qdev-properties-system=2Eh"
->> #include "migration/vmstate=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> #include "hw/char/parallel=2Eh"
->> #include "sysemu/reset=2Eh"
->> #include "sysemu/sysemu=2Eh"
->> @@ -73,17 +74,6 @@
->>=20
->> #define PARA_CTR_SIGNAL (PARA_CTR_SELECT|PARA_CTR_INIT|PARA_CTR_AUTOLF|=
-PARA_CTR_STROBE)
->>=20
->> -OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
->> -
->> -struct ISAParallelState {
->> -    ISADevice parent_obj;
->> -
->> -    uint32_t index;
->> -    uint32_t iobase;
->> -    uint32_t isairq;
->> -    ParallelState state;
->> -};
->> -
->> static void parallel_update_irq(ParallelState *s)
->> {
->>     if (s->irq_pending)
->> diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
->> index 42af03dbb4=2E=2E44146e6ff5 100644
->> --- a/hw/i386/pc_piix=2Ec
->> +++ b/hw/i386/pc_piix=2Ec
->> @@ -26,7 +26,7 @@
->> #include CONFIG_DEVICES
->>=20
->> #include "qemu/units=2Eh"
->> -#include "hw/char/parallel=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> #include "hw/dma/i8257=2Eh"
->> #include "hw/loader=2Eh"
->> #include "hw/i386/x86=2Eh"
->> diff --git a/hw/i386/pc_q35=2Ec b/hw/i386/pc_q35=2Ec
->> index 6155427e48=2E=2Ea9a59ed42b 100644
->> --- a/hw/i386/pc_q35=2Ec
->> +++ b/hw/i386/pc_q35=2Ec
->> @@ -30,7 +30,7 @@
->>=20
->> #include "qemu/osdep=2Eh"
->> #include "qemu/units=2Eh"
->> -#include "hw/char/parallel=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> #include "hw/loader=2Eh"
->> #include "hw/i2c/smbus_eeprom=2Eh"
->> #include "hw/rtc/mc146818rtc=2Eh"
->> diff --git a/hw/isa/isa-superio=2Ec b/hw/isa/isa-superio=2Ec
->> index 9292ec3bcf=2E=2E7dbfc374da 100644
->> --- a/hw/isa/isa-superio=2Ec
->> +++ b/hw/isa/isa-superio=2Ec
->> @@ -21,6 +21,7 @@
->> #include "hw/isa/superio=2Eh"
->> #include "hw/qdev-properties=2Eh"
->> #include "hw/input/i8042=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> #include "hw/char/serial=2Eh"
->> #include "trace=2Eh"
->>=20
->> diff --git a/hw/sparc64/sun4u=2Ec b/hw/sparc64/sun4u=2Ec
->> index e2858a0331=2E=2E29e9b6cc26 100644
->> --- a/hw/sparc64/sun4u=2Ec
->> +++ b/hw/sparc64/sun4u=2Ec
->> @@ -35,7 +35,7 @@
->> #include "hw/qdev-properties=2Eh"
->> #include "hw/pci-host/sabre=2Eh"
->> #include "hw/char/serial=2Eh"
->> -#include "hw/char/parallel=2Eh"
->> +#include "hw/char/parallel-isa=2Eh"
->> #include "hw/rtc/m48t59=2Eh"
->> #include "migration/vmstate=2Eh"
->> #include "hw/input/i8042=2Eh"
->>=20
 
