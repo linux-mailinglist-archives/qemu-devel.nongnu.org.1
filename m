@@ -2,59 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF0172CED2
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 20:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59F872CF04
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 21:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8mis-0001J4-GB; Mon, 12 Jun 2023 14:57:02 -0400
+	id 1q8msx-0003uG-AN; Mon, 12 Jun 2023 15:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mip-0001Hw-Ng; Mon, 12 Jun 2023 14:56:59 -0400
+ id 1q8msu-0003pk-Jl; Mon, 12 Jun 2023 15:07:24 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mio-0006EO-2V; Mon, 12 Jun 2023 14:56:59 -0400
+ id 1q8mss-0000mM-1O; Mon, 12 Jun 2023 15:07:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=SuU8/W9tK/QTuhyvDmeFj2DmHDJaYC+bvoboIo1UDQw=; b=hMhg3F8gTjDBSA4hbxHyIZ7Zuf
- SsLay0MG60rDHyAs3V17fY7Ih2RSZOpgFDb1/bnjmz5ZGA/ySPwQRpiKxMUx4xQ89mT0eA9XRuAy1
- X386fkPHUroiKMF+AI0jcPRjDxMhfjgLY28seCXwIHLj8w4bZk/fe+htYYtpbe03ZIjoJHIJ21rTG
- h9d9VPJpNXLjflO9vus8Us3jQLvMyeC8phBI46/RSkNPDYevzRwsgGNdH+3qRCxGl9sDXBFlyVCY4
- IjFWcud1WjhEicF1okVecHxL5js4ZsJX3ONBkcwd7K3wDBAuMK5zkcMzfnkRHxWHDACMk10k2QUQ+
- xZ1vSROakI987shyRBJ3eP9q4j7IwadJXZ5eFAQT6bke6VNZdUjI1rYAmHuhZiCZWR9d0HqAUGvHL
- c7aS3DJQm4ybSAwoIelDTxcdY3sSarlUc+cWv4A2xpAT3SgOnxtphFbYpPgCYRVTd4Y1lC3mwdWXN
- PsMSKuBbyt/mhTiqGeQXmO6EF1Fyilw95Komy8O1sAuAjiMwpbgTUDE4pxLNRwkdoT3AixFvL1Mxg
- 4Eojsu1F88gbxShENZqZpJK3QGrd9qJfWAKyRg1woAfVja6YOnkk3Y/ugeRlgdOOXwgb0FcoAGoGB
- xJ50W/lNJqgOG0l+uDqXPWHIvD1YWvseD9VYNvfPk=;
+ bh=zKBWPFcKe/S1cIOaZb7Cs+Th8+MuEqDvGePqW+VvoDk=; b=oR+konLBcEbFgx6IBy0f04mEGg
+ 3VBtjPEwJrB/TiSRVzEG52Ea4pAP3rQCC7NfPF6WGtK4xL1oFm2B8CUaJ1DTzdkhRQsdwPI3UYHeh
+ HfLuaeToVSE3NEcUlGhR8daXzZuuO3u5FOEV2olfoE/wRXuv7ji0pP+hB+/BJASQM7NoEZZx2905c
+ 5drW4ez2OEKb1nifIOw04cJ2If/JcTBvZd0xnWyQqf+NrnpHz0ECpbxb6UmH520llGnTQB5qUqBNW
+ vm+3F33JB4vFbtsg1haxMcdKcdzEI6JMBjEifN+bQepCWNTH/w49txlDKTloEvVrBkvNBAav9Ggwn
+ GHC6JkpBOMPNHfcMxtNcMdArnd+vVOsPdFmkYlDoobxD59+nuaujGxpxphJSJKLrEbVU2YnhLrr0E
+ 8v744/Kv0XJx48UhoiHUoOI4T+Q0hze20hPRCvQHOscc0NqkvvFCWjXE4FMBYfy85AQ1DSzhPqQPX
+ AdnDg7uuT8hXlsBf0p1ZGXbHywIIW/AE2rBPBhH+zGutAsnnvebdb0Cikn7J8LDRo32tdTnkqncpA
+ GD4EjMi8Bmn206F6rTRmvAltCEpQdO8BBk83S4I03ceEV89P/4BY8QwUPs5UmkK1x9/iJz/SZOz6V
+ GAyqEqoupUGUvEMsZT24gH4KgERLlBT296KcoRx+I=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q8mid-0009GE-DR; Mon, 12 Jun 2023 19:56:51 +0100
-Message-ID: <6c52add1-863e-b3d8-5711-979d064df2b2@ilande.co.uk>
-Date: Mon, 12 Jun 2023 19:56:48 +0100
+ id 1q8mse-0009Jt-40; Mon, 12 Jun 2023 20:07:12 +0100
+Message-ID: <138a3e15-604b-7ea9-20ef-202c0d426f58@ilande.co.uk>
+Date: Mon, 12 Jun 2023 20:07:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, jsnow@redhat.com,
- qemu-devel@nongnu.org, qemu-block@nongnu.org
-References: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
- <20230609185119.691152-3-mark.cave-ayland@ilande.co.uk>
- <3A202437-705C-49FB-BB8D-FA3CEFF0CAD7@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>, Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, qemu-trivial@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230611110008.32638-1-shentey@gmail.com>
+ <20230611110008.32638-3-shentey@gmail.com>
+ <229b5f39-2a3e-e47b-5269-9ae2c43492ae@eik.bme.hu>
+ <F47D47A6-B68A-46E7-BF36-C6447AC8E4CD@gmail.com>
+ <24583ff5-542b-d645-378d-ce6a7b4affb7@eik.bme.hu>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <3A202437-705C-49FB-BB8D-FA3CEFF0CAD7@gmail.com>
+In-Reply-To: <24583ff5-542b-d645-378d-ce6a7b4affb7@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 2/5] cmd646: create separate header and QOM type for
- CMD646_IDE
+Subject: Re: [PATCH 2/2] hw/char/parallel-isa: Export struct ISAParallelState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -81,94 +88,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/06/2023 10:21, Bernhard Beschow wrote:
+On 12/06/2023 11:06, BALATON Zoltan wrote:
 
-> Am 9. Juni 2023 18:51:16 UTC schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
->> This will enable CMD646-specific fields to be added to CMD6464IDEState in
->> future.
+> On Mon, 12 Jun 2023, Bernhard Beschow wrote:
+>> Am 11. Juni 2023 13:15:58 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>>> On Sun, 11 Jun 2023, Bernhard Beschow wrote:
+>>>> Allows the struct to be embedded directly into device models without additional
+>>>> allocation.
+>>>>
+>>>> Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>
+>>> Patches missing SoB, checkpatch should have cought this.
 >>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->> hw/ide/cmd646.c         |  4 +++-
->> include/hw/ide/cmd646.h | 38 ++++++++++++++++++++++++++++++++++++++
->> 2 files changed, 41 insertions(+), 1 deletion(-)
->> create mode 100644 include/hw/ide/cmd646.h
+>> Thanks for catching again. Fixed in v2.
 >>
->> diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
->> index 20f1e41d57..a3e227fba7 100644
->> --- a/hw/ide/cmd646.c
->> +++ b/hw/ide/cmd646.c
->> @@ -33,6 +33,7 @@
->> #include "sysemu/reset.h"
+>>>
+>>> I don't see any of the machines or device models actually embedding 
+>>> ISAParallelState or ParallelState so don't know what this patch is trying to 
+>>> achieve. Please post the whole series with the patches that this is a preparation 
+>>> for so we can se where this leads.
 >>
->> #include "hw/ide/pci.h"
->> +#include "hw/ide/cmd646.h"
->> #include "trace.h"
->>
->> /* CMD646 specific */
->> @@ -339,9 +340,10 @@ static void cmd646_ide_class_init(ObjectClass *klass, void *data)
->> }
->>
->> static const TypeInfo cmd646_ide_info = {
->> -    .name          = "cmd646-ide",
->> +    .name          = TYPE_CMD646_IDE,
->>      .parent        = TYPE_PCI_IDE,
->>      .class_init    = cmd646_ide_class_init,
->> +    .instance_size = sizeof(CMD646IDEState),
->> };
->>
->> static void cmd646_ide_register_types(void)
->> diff --git a/include/hw/ide/cmd646.h b/include/hw/ide/cmd646.h
->> new file mode 100644
->> index 0000000000..4780b1132c
->> --- /dev/null
->> +++ b/include/hw/ide/cmd646.h
->> @@ -0,0 +1,38 @@
->> +/*
->> + * QEMU IDE Emulation: PCI cmd646 support.
->> + *
->> + * Copyright (c) 2003 Fabrice Bellard
->> + * Copyright (c) 2006 Openedhand Ltd.
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a copy
->> + * of this software and associated documentation files (the "Software"), to deal
->> + * in the Software without restriction, including without limitation the rights
->> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
->> + * copies of the Software, and to permit persons to whom the Software is
->> + * furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
->> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->> + * THE SOFTWARE.
->> + */
->> +
->> +#ifndef HW_IDE_CMD646_H
->> +#define HW_IDE_CMD646_H
->> +
->> +#define TYPE_CMD646_IDE "cmd646-ide"
->> +OBJECT_DECLARE_SIMPLE_TYPE(CMD646IDEState, CMD646_IDE)
->> +
->> +#include "hw/ide/pci.h"
->> +
->> +struct CMD646IDEState {
->> +    PCIIDEState parent_obj;
+>> No further plans from my side.
 > 
-> No public / private sections here? From the naming this attribute is often considered private and the rest public. I guess what this scheme communicates is that `parent_obj` should be accessed via `IDE_PCI()` only.
+> Then IMO these patches are not needed. Keeping the struct definitions in parallel.c 
+> ensures they are not accessed by anything else and keeps the object encapsulation. I 
+> don't see a point for moving the defs to a header if nothing wants to use them. This 
+> is done for other devices to allow them to be embedded in other devices but if that's 
+> not the case here then why this series? (The TYPE_ISA_PARALLEL #define seems to be 
+> already in include/hw/chsr/parallel.h so if you only want to use that like in the 
+> series you've referenced in the cover letter then that can be done without these 
+> patches.)
 
-Whilst the public/private comments were included in the original QOM documentation, 
-it's not something that tends to be used now. These days people are looking to use 
-interfaces such as SysBus to indicated which MemoryRegions and IRQs are "public", but 
-certainly the detail is still up for active discussion.
+The TYPE_ISA_PARALLEL constant was only moved there in commit 963e94a97b 
+("hw/char/parallel: Move TYPE_ISA_PARALLEL to the header file") but having each 
+separate type defined in its own file is how we've done things for some time: there 
+is nothing new here.
 
-The QOM cast macros will allow the object referenced to be converted to any of the 
-parent types directly, so indeed there should be no direct references to parent_obj.
+In particular it is done this way so that ParallelState could be used on a non-ISA 
+bus, and to allow users who are security conscious to compile out particular devices 
+as needed.
 
 
 ATB,
