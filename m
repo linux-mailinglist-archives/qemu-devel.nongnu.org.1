@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061D772C2DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 13:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DCE72C2DA
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Jun 2023 13:34:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8fo5-0000Pv-6b; Mon, 12 Jun 2023 07:33:57 -0400
+	id 1q8fo9-0000QM-9h; Mon, 12 Jun 2023 07:34:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q8fo3-0000Pb-Ba
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:33:55 -0400
+ id 1q8fo7-0000QA-Jg
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:33:59 -0400
 Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q8fo1-0006rj-Ah
- for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:33:55 -0400
+ id 1q8fo5-0006s8-T1
+ for qemu-devel@nongnu.org; Mon, 12 Jun 2023 07:33:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zvWGuccmfDF/BFNxmZxGjWdxLXMle9AUlWSWqEAquYg=; b=Bg34g7+lRAuVByMshlWkx2u9/H
- A4NjB32UYPDuu5iWWq6MpyTl7dixx+FmJTQLFgTiOSRIEXDov6h1m4xRLw9X+0VCKQNYb3Nz9V7sh
- K6U2aVBhdoFshu6s/xbFKfSaJUvVLepE8LRZzl2ThJdx0deILBFM/Yr0vifJXQd2EOOs=;
+ bh=GEvRYU1CuroKRaAfeXOGUElYYVyWSGJQz9WSKG0SJ2s=; b=YOYg834bcyGEbcYg3bEkvg/TLj
+ rfBAu/cdqEg/K3xn72JcJwvtBQtuidn/F8Yeun6mXsQ7Yu5R+9/Z0LWwqYLsZLl5x6Sbfni9NlTTE
+ djSTrSK7g3kMNnYCFuH1pGaEXfmw7peGleTL1XW9sw4JY/zl4WX7ayByJ2TDs1bsjCmw=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH 2/4] target/tricore: Correctly fix saving PSW.CDE to CSA on
- call
-Date: Mon, 12 Jun 2023 13:32:43 +0200
-Message-Id: <20230612113245.56667-3-kbastian@mail.uni-paderborn.de>
+Cc: kbastian@mail.uni-paderborn.de,
+	Siqi Chen <coc.cyqh@gmail.com>
+Subject: [PATCH 3/4] target/tricore: Add CHECK_REG_PAIR() for insn accessing
+ 64 bit regs
+Date: Mon, 12 Jun 2023 13:32:44 +0200
+Message-Id: <20230612113245.56667-4-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230612113245.56667-1-kbastian@mail.uni-paderborn.de>
 References: <20230612113245.56667-1-kbastian@mail.uni-paderborn.de>
@@ -43,8 +44,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.12.112716, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=414521, da=174178694, mc=47, sc=0,
- hc=47, sp=0, fso=414521, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=414527, da=174178700, mc=49, sc=0,
+ hc=49, sp=0, fso=414527, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -71,32 +72,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we don't want to save PSW.CDC to the CSA, but PSW.CDE must be saved.
+some insns were not checking if an even index was used to access a 64
+bit register. In the worst case that could lead to a buffer overflow as
+reported in https://gitlab.com/qemu-project/qemu/-/issues/1698.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1699
+Reported-by: Siqi Chen <coc.cyqh@gmail.com>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/op_helper.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/tricore/translate.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 54f54811d9..d3c836ecd9 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2447,7 +2447,12 @@ void helper_call(CPUTriCoreState *env, uint32_t next_pc)
-     }
-     /* PSW.CDE = 1;*/
-     psw |= MASK_PSW_CDE;
--    psw_write(env, psw);
-+    /*
-+     * we need to save PSW.CDE and not PSW.CDC into the CSAs. psw already
-+     * contains the CDC from cdc_increment(), so we cannot call psw_write()
-+     * here.
-+     */
-+    env->PSW |= MASK_PSW_CDE;
- 
-     /* tmp_FCX = FCX; */
-     tmp_FCX = env->FCX;
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 3b8d3f53ee..2a947e9bd5 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -309,6 +309,7 @@ static void gen_cmpswap(DisasContext *ctx, int reg, TCGv ea)
+ {
+     TCGv temp = tcg_temp_new();
+     TCGv temp2 = tcg_temp_new();
++    CHECK_REG_PAIR(reg);
+     tcg_gen_qemu_ld_tl(temp, ea, ctx->mem_idx, MO_LEUL);
+     tcg_gen_movcond_tl(TCG_COND_EQ, temp2, cpu_gpr_d[reg+1], temp,
+                        cpu_gpr_d[reg], temp);
+@@ -321,7 +322,7 @@ static void gen_swapmsk(DisasContext *ctx, int reg, TCGv ea)
+     TCGv temp = tcg_temp_new();
+     TCGv temp2 = tcg_temp_new();
+     TCGv temp3 = tcg_temp_new();
+-
++    CHECK_REG_PAIR(reg);
+     tcg_gen_qemu_ld_tl(temp, ea, ctx->mem_idx, MO_LEUL);
+     tcg_gen_and_tl(temp2, cpu_gpr_d[reg], cpu_gpr_d[reg+1]);
+     tcg_gen_andc_tl(temp3, temp, cpu_gpr_d[reg+1]);
+@@ -3219,6 +3220,7 @@ static void decode_src_opc(DisasContext *ctx, int op1)
+         break;
+     case OPC1_16_SRC_MOV_E:
+         if (has_feature(ctx, TRICORE_FEATURE_16)) {
++            CHECK_REG_PAIR(r1);
+             tcg_gen_movi_tl(cpu_gpr_d[r1], const4);
+             tcg_gen_sari_tl(cpu_gpr_d[r1+1], cpu_gpr_d[r1], 31);
+         } else {
+@@ -6172,6 +6174,7 @@ static void decode_rr_divide(DisasContext *ctx)
+         tcg_gen_sari_tl(cpu_gpr_d[r3+1], cpu_gpr_d[r1], 31);
+         break;
+     case OPC2_32_RR_DVINIT_U:
++        CHECK_REG_PAIR(r3);
+         /* overflow = (D[b] == 0) */
+         tcg_gen_setcondi_tl(TCG_COND_EQ, cpu_PSW_V, cpu_gpr_d[r2], 0);
+         tcg_gen_shli_tl(cpu_PSW_V, cpu_PSW_V, 31);
+@@ -6200,6 +6203,7 @@ static void decode_rr_divide(DisasContext *ctx)
+         break;
+     case OPC2_32_RR_DIV:
+         if (has_feature(ctx, TRICORE_FEATURE_16)) {
++            CHECK_REG_PAIR(r3);
+             GEN_HELPER_RR(divide, cpu_gpr_d[r3], cpu_gpr_d[r3+1], cpu_gpr_d[r1],
+                           cpu_gpr_d[r2]);
+         } else {
+@@ -6208,6 +6212,7 @@ static void decode_rr_divide(DisasContext *ctx)
+         break;
+     case OPC2_32_RR_DIV_U:
+         if (has_feature(ctx, TRICORE_FEATURE_16)) {
++            CHECK_REG_PAIR(r3);
+             GEN_HELPER_RR(divide_u, cpu_gpr_d[r3], cpu_gpr_d[r3+1],
+                           cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         } else {
+@@ -6734,6 +6739,8 @@ static void decode_rrr2_msub(DisasContext *ctx)
+                      cpu_gpr_d[r3], cpu_gpr_d[r3+1], cpu_gpr_d[r2]);
+         break;
+     case OPC2_32_RRR2_MSUB_U_64:
++        CHECK_REG_PAIR(r4);
++        CHECK_REG_PAIR(r3);
+         gen_msubu64_d(cpu_gpr_d[r4], cpu_gpr_d[r4+1], cpu_gpr_d[r1],
+                       cpu_gpr_d[r3], cpu_gpr_d[r3+1], cpu_gpr_d[r2]);
+         break;
+@@ -7817,7 +7824,7 @@ static void decode_rrrw_extract_insert(DisasContext *ctx)
+         break;
+     case OPC2_32_RRRW_IMASK:
+         temp2 = tcg_temp_new();
+-
++        CHECK_REG_PAIR(r4);
+         tcg_gen_andi_tl(temp, cpu_gpr_d[r3], 0x1f);
+         tcg_gen_movi_tl(temp2, (1 << width) - 1);
+         tcg_gen_shl_tl(temp2, temp2, temp);
 -- 
 2.40.1
 
