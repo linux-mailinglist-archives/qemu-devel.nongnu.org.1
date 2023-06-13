@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D60872EA89
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 20:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6AF72EA8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 20:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q98Qy-0004rr-Hd; Tue, 13 Jun 2023 14:08:00 -0400
+	id 1q98S8-0005Vq-VP; Tue, 13 Jun 2023 14:09:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q98Qw-0004rc-An
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:07:58 -0400
+ id 1q98S7-0005Vf-Cs
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:09:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q98Qu-0005Uy-Oe
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:07:57 -0400
+ id 1q98S5-0005ZA-Vk
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:09:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686679676;
+ s=mimecast20190719; t=1686679748;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EIwjUe70lnPjCqJmJHLMSZF8zyEQb/B/oYc60UT7piA=;
- b=U6La9usjfD3LaPAfKH+9QYRHx155ko7EzckeVX1g9I2nrFHaZzjSzOlzgvwM+d6jORjH1o
- heovfPRqb9XrkofSYGCPI9IWeghf4XnbBZU3McHIGlFj5eLONzqSPJ+q/ZSPosBOTIASOG
- VgN70oI6MWlXKtWsOFUs3Ik9wPbclMI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/RK8dLeYSAcezyRIucDOzMxNn8IuWyRBnfcYCOKVqcA=;
+ b=AMh1ImJGCd2NzpTNsiHJJ6Tf1QvLE+3o/v27MOpCLsmqfE0gDDFnE/zn+Y3qVYlUoiVfYU
+ tQVTfb4Dscy5AY8W8A3OElF/4C5QRFLiNHG9Gw9+NJgctx3d3Hsc2ua/Te04XXfTsAW0O3
+ Z6CQV86bu2oUvOdQItlcf54U7DlZFm0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-CoHWspXvOmSwth4T7dohiA-1; Tue, 13 Jun 2023 14:07:53 -0400
-X-MC-Unique: CoHWspXvOmSwth4T7dohiA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30c6060eb32so8463145f8f.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 11:07:52 -0700 (PDT)
+ us-mta-68-4iBR1YEMPzOXdqMzsmDZkg-1; Tue, 13 Jun 2023 14:09:05 -0400
+X-MC-Unique: 4iBR1YEMPzOXdqMzsmDZkg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f7f4dc6ec2so37430225e9.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 11:09:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686679672; x=1689271672;
+ d=1e100.net; s=20221208; t=1686679743; x=1689271743;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EIwjUe70lnPjCqJmJHLMSZF8zyEQb/B/oYc60UT7piA=;
- b=ZlIkTM2cJPCVZcBSlq+/QAdusOzWXYdDEIVZ9Jmpj/8rNmAZbljx5UChaVsQe7m8LI
- OqWe/MavTqJ1J7gJY43yTZ8ZVrvkt1nsIxypxBQBVNlRzb05YU13SpUdFVebKb64nkuk
- gv6bkUpt+CFUZ/kgLSv2Tu7flM/WIPplFZthpTJ9siwlotYSqwmP61stB6o8/hTmZRhj
- YeHc8ybKfkvLoM8FJ8omM9/38sn9UkjXmpJHlgiwgYzcd0SVododIgEM4buzORfqabyl
- 4m0KqQAV4j6SihI3at1kvwz8PiEPd5AGquexdlf9bco6dDDkXpzfWzETx6KzmJXfatZ8
- 4prQ==
-X-Gm-Message-State: AC+VfDwYOQjygBgHK28WNZKH4lffX+vWJmzIA66qQv0DGcEx4Gkc9N2K
- xgYH+vXfieNYwjbJUx9GGwY1nGGZCQLJ2Zknk7CaaeI6FfJv5uO8E0ffUgRF0jN8hVSXKUE5GJq
- JJjVsBJkDvRlVVKc=
-X-Received: by 2002:a5d:4142:0:b0:30f:d22c:83e1 with SMTP id
- c2-20020a5d4142000000b0030fd22c83e1mr1013148wrq.51.1686679671739; 
- Tue, 13 Jun 2023 11:07:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ69MPa30I3jFcRuehRIzJzMyd5X0fw3q5WWxgSsJlwxpnW3kkQj79ToHSRBUrMSmGhuf0o5HA==
-X-Received: by 2002:a5d:4142:0:b0:30f:d22c:83e1 with SMTP id
- c2-20020a5d4142000000b0030fd22c83e1mr1013130wrq.51.1686679671405; 
- Tue, 13 Jun 2023 11:07:51 -0700 (PDT)
+ bh=/RK8dLeYSAcezyRIucDOzMxNn8IuWyRBnfcYCOKVqcA=;
+ b=hyCpFXMmYqKPWm7aZrHzx5a44nN5orU4N+dMDlHFi4mW3Qyulg6BUUWkXR/3jTBudu
+ /u0+EzSALa1QS7/WTod4xwsAPk5ucyA/9rWJkVNeZ/NE+RCCIJTg/cZb6Qd8C12Szd7G
+ Sln3sF0qBPdCcAiLAF+R4BphYxwh2HlbB85Xw4aIVZh3k55v2ccm4NN2uVPHtFcajlik
+ +WZnSchJWiEXs2nmBroJLUJEMY6GOD6vI5lgnRimf73KM9JVcXEgn0iT3Av8NPVJfmde
+ NtoAEyo3TjNzpv3uuXjIbn3j1MV8DuV4kClW31vJVDNkNr3R/zfw0bdtVaPTVdM8pjcp
+ zY6g==
+X-Gm-Message-State: AC+VfDxJkQJgpUY7JHGaSA7SMyz3yo9Vr2KbSQ/aJ7H/JufLG/3hzXRM
+ IbuQjEeT6/U8dAK7yVkwR94emM70jEzDM78mye6mZ7CG128jtQP0m92dmMvlDII43Wvkf5AiefN
+ QXYoJUTElL9Z7Ozw=
+X-Received: by 2002:a7b:c447:0:b0:3f7:cb42:fa28 with SMTP id
+ l7-20020a7bc447000000b003f7cb42fa28mr9934395wmi.28.1686679743029; 
+ Tue, 13 Jun 2023 11:09:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6iqNU9DhsF/12Vzc4xiOpsfoCJtYi9ntLgNVTJMHmQ/dzpy9rzAYIYf0VXH76ZLlZT7ccM0Q==
+X-Received: by 2002:a7b:c447:0:b0:3f7:cb42:fa28 with SMTP id
+ l7-20020a7bc447000000b003f7cb42fa28mr9934378wmi.28.1686679742669; 
+ Tue, 13 Jun 2023 11:09:02 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- y14-20020adfdf0e000000b003063772a55bsm15989393wrl.61.2023.06.13.11.07.50
+ k20-20020a05600c0b5400b003f4266965fbsm15233592wmr.5.2023.06.13.11.09.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 11:07:50 -0700 (PDT)
+ Tue, 13 Jun 2023 11:09:02 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: ~hyman <hyman@git.sr.ht>
 Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
@@ -73,14 +73,14 @@ Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
  <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Richard
  Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
  =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH QEMU v5 7/8] migration: Extend query-migrate to provide
- dirty page limit info
-In-Reply-To: <168618975839.6361.17407633874747688653-7@git.sr.ht>
- (hyman@git.sr.ht's message of "Thu, 08 Jun 2023 00:21:58 +0800")
-References: <168618975839.6361.17407633874747688653-7@git.sr.ht>
+Subject: Re: [PATCH QEMU v5 8/8] tests: Add migration dirty-limit capability
+ test
+In-Reply-To: <168618975839.6361.17407633874747688653-8@git.sr.ht>
+ (hyman@git.sr.ht's message of "Thu, 08 Jun 2023 00:46:45 +0800")
+References: <168618975839.6361.17407633874747688653-8@git.sr.ht>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Tue, 13 Jun 2023 20:07:49 +0200
-Message-ID: <87fs6vck22.fsf@secure.mitica>
+Date: Tue, 13 Jun 2023 20:09:01 +0200
+Message-ID: <87bkhjck02.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -113,73 +113,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 ~hyman <hyman@git.sr.ht> wrote:
 > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 >
-> Extend query-migrate to provide throttle time and estimated
-> ring full time with dirty-limit capability enabled, through which
-> we can observe if dirty limit take effect during live migration.
+> Add migration dirty-limit capability test if kernel support
+> dirty ring.
+>
+> Migration dirty-limit capability introduce dirty limit
+> capability, two parameters: x-vcpu-dirty-limit-period and
+> vcpu-dirty-limit are introduced to implement the live
+> migration with dirty limit.
+>
+> The test case does the following things:
+> 1. start src, dst vm and enable dirty-limit capability
+> 2. start migrate and set cancel it to check if dirty limit
+>    stop working.
+> 3. restart dst vm
+> 4. start migrate and enable dirty-limit capability
+> 5. check if migration satisfy the convergence condition
+>    during pre-switchover phase.
 >
 > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Nit for the resent.
-
-> +int64_t dirtylimit_throttle_time_per_round(void);
-> +int64_t dirtylimit_ring_full_time(void);
-
-int64?
-> @@ -267,7 +278,9 @@
->             '*postcopy-blocktime' : 'uint32',
->             '*postcopy-vcpu-blocktime': ['uint32'],
->             '*compression': 'CompressionStats',
-> -           '*socket-address': ['SocketAddress'] } }
-> +           '*socket-address': ['SocketAddress'],
-> +           '*dirty-limit-throttle-time-per-round': 'int64',
-> +           '*dirty-limit-ring-full-time': 'int64'} }
-
-int64
-
-
-> +/* Return the max throttle time of each virtual CPU */
-> +int64_t dirtylimit_throttle_time_per_round(void)
+> +static void test_migrate_dirty_limit(void)
 > +{
-> +    CPUState *cpu;
-> +    int64_t max =3D 0;
-> +
-> +    CPU_FOREACH(cpu) {
-> +        if (cpu->throttle_us_per_full > max) {
-> +            max =3D cpu->throttle_us_per_full;
-> +        }
-> +    }
-> +
-> +    return max;
-> +}
+> +    g_autofree char *uri =3D g_strdup_printf("unix:%s/migsocket", tmpfs);
+> +    QTestState *from, *to;
+> +    int64_t remaining, throttle_us_per_full;
 
-s/int64_t/uint64_t/?
+See comments on previous patch about int64_t vs uint64_t.
 
-> +
-> +/*
-> + * Estimate average dirty ring full time of each virtaul CPU.
-> + * Return -1 if guest doesn't dirty memory.
-> + */
-> +int64_t dirtylimit_ring_full_time(void)
-> +{
-> +    CPUState *cpu;
-> +    uint64_t curr_rate =3D 0;
-> +    int nvcpus =3D 0;
-> +
-> +    CPU_FOREACH(cpu) {
-> +        if (cpu->running) {
-> +            nvcpus++;
-> +            curr_rate +=3D vcpu_dirty_rate_get(cpu->cpu_index);
-> +        }
-> +    }
-> +
-> +    if (!curr_rate || !nvcpus) {
-> +        return -1;
+Except if negative values have some meaning, it should be uint64_t.
 
-What does -1 brings up that 0 don't?
-
-i.e. returning 0 here would mean that nothing has been dirtied or that
-we don't have any vcpus running, right?
+Rest seems correct.
 
 Later, Juan.
 
