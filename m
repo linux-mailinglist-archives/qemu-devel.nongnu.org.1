@@ -2,87 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EF472E1CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933C172E1E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:44:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q91HS-000220-4f; Tue, 13 Jun 2023 06:29:42 -0400
+	id 1q91XK-00036o-0I; Tue, 13 Jun 2023 06:46:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q91HQ-00021e-31
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 06:29:40 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q91HI-00058m-KY
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 06:29:39 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-19f3550bcceso3463274fac.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 03:29:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686652167; x=1689244167;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=a+Mfnoeh3AOyFqTecqx2KAWybt2AcUf0LkdEU9CaN2o=;
- b=OteUh0oLfs07ovhIF2f4ZMm56/8yxU9RnXHaERgKgTviJWUHyJbcSbfAJRRm6YtzYX
- MOfxKQXz2tvjLuOxMIwc82a7fNC815Bikx8L/5dInBz3zPFOeSOr3sf+Q12y3I6vb4Ci
- HA5qrN+kSvke2CpAKX1MLDNH9yNnJuEyVYAmS9uFhOCh6KO+xG+JVkbDDhDkLZCFWkQ2
- nDb3tOYuIvqjnTn1R7pXmGIx+4UIbiRIXqCmBhbygiyJOaRbHGrgqLlLfrnWgDYC7BCp
- 3b3+w/xyygskV6GYUE2Fy7fx0KD2hIUrPkXdBgNQ+HOYV95qA2j4KFN1Y0MPXc2u84jn
- l1nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686652167; x=1689244167;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a+Mfnoeh3AOyFqTecqx2KAWybt2AcUf0LkdEU9CaN2o=;
- b=WQv0IYRbtOPiUxvKtbrVXLAU1noPhP7ZcuSTuxpxIpZ0CRNW94xq76AcmP/VwXZ0fa
- vcotIrTf8oh2qtrs3uU7YalX+zo9OjQmNVRxy1H/mNkoIP4qY0qxwM/MzGyAWdJ/Vi7k
- 1bt1KDqpRKyJQxMMTtK04sqzPxYh8nLDW37e3ft4u2jzzBSilVajLn0rxYXe+ECkjHKV
- LeXOAQPI+kH9PmO27Hz1Z5xcr5RSxwsWlZxNQo4BqA3NLOcZ4aKMm1xurpRO/ttWROjN
- hCtR+A8HpadWwuUR4mfv8Qrs4uOxWQJCXBFzTMo9SdsCebXPGywnY0t64nhNM0j/mKii
- DHjA==
-X-Gm-Message-State: AC+VfDwdSItXeR/A+XCN0GrxwbDQBgzOM+2GWOobUIyqvF6JR8bTqb10
- 2y0I2NrBl9Hv56A69B7+EVSHPg==
-X-Google-Smtp-Source: ACHHUZ6pbSij34BScex3qXFzZ6B6G3EzWqa0myZ25D387FThTs9KMrXJRMGc4JwRvesrka+x5AnxDg==
-X-Received: by 2002:a05:6870:d246:b0:177:a158:9ef6 with SMTP id
- h6-20020a056870d24600b00177a1589ef6mr8517369oac.52.1686652167556; 
- Tue, 13 Jun 2023 03:29:27 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.210])
- by smtp.gmail.com with ESMTPSA id
- y39-20020a056870b4a700b0019e59515a0bsm7040875oap.33.2023.06.13.03.29.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 03:29:27 -0700 (PDT)
-Message-ID: <7a4217e2-163b-8e2d-e86b-97fb0733fef3@ventanamicro.com>
-Date: Tue, 13 Jun 2023 07:29:23 -0300
+ (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
+ id 1q91XH-00036c-9v
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 06:46:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
+ id 1q91XD-000849-0S
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 06:46:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686653150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qVUirsNBAfLfxcsWr9eisd8J1vdPufDfdHCRtcbg7h0=;
+ b=hmx7Rp15OdJx/dH6SFtTmGd4xRlIYUhKbIOhaoXveKqlp4xpr01q/MFKON8LeHYOcQwqsE
+ uD5icj4OuVlwc8AAGhPy2VWDGeUtrb8aAarzqXXq95wA7eRBhd6M2leszW55Jgd7X7zO9H
+ CIsh/dWFeQPirECH5JYXVMHKkIZK+9k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-540-_Y_UZvLVPoOka9-1SVzrMQ-1; Tue, 13 Jun 2023 06:45:45 -0400
+X-MC-Unique: _Y_UZvLVPoOka9-1SVzrMQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 367B685A5AA
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 10:45:45 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.45.226.85])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AB84640B4CD7;
+ Tue, 13 Jun 2023 10:45:44 +0000 (UTC)
+From: Bilal Elmoussaoui <belmouss@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Bilal Elmoussaoui <belmouss@redhat.com>
+Subject: [PATCH 1/2] ui/touch: Move event handling to a common helper
+Date: Tue, 13 Jun 2023 12:45:34 +0200
+Message-Id: <20230613104535.356842-1-belmouss@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 14/16] target/riscv: adapt 'riscv_isa_string' for KVM
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
- <20230530194623.272652-15-dbarboza@ventanamicro.com>
- <20230607-8e2b65e6a054c4f5f2962e85@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230607-8e2b65e6a054c4f5f2962e85@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=belmouss@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,143 +75,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To share code between the GTK and DBus UI bakcends
+see the next commit for details
 
+Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
+---
+ include/ui/console.h | 14 ++++++++++
+ ui/console.c         | 65 ++++++++++++++++++++++++++++++++++++++++++++
+ ui/gtk.c             | 62 ++++--------------------------------------
+ 3 files changed, 84 insertions(+), 57 deletions(-)
 
-On 6/7/23 09:21, Andrew Jones wrote:
-> On Tue, May 30, 2023 at 04:46:21PM -0300, Daniel Henrique Barboza wrote:
->> KVM is not using the same attributes as TCG, i.e. it doesn't use
->> isa_edata_arr[]. Add a new kvm_riscv_isa_string_ext() helper that does
->> basically the same thing, but using KVM internals instead.
->>
->> The decision to add this helper target/riscv/kvm.c is to foster the
->> separation between KVM and TCG logic, while still using
->> riscv_isa_string_ext() from target/riscv/cpu.c to retrieve the string
->> to not overcomplicate things.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c       |  5 +++++
->>   target/riscv/kvm.c       | 19 +++++++++++++++++++
->>   target/riscv/kvm_riscv.h |  2 ++
->>   3 files changed, 26 insertions(+)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 3c348049a3..ec1d0c621a 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -1956,6 +1956,11 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
->>       char *new = *isa_str;
->>       int i;
->>   
->> +    if (riscv_running_KVM()) {
->> +        kvm_riscv_isa_string_ext(cpu, isa_str, max_str_len);
->> +        return;
->> +    }
->> +
->>       for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
->>           if (cpu->env.priv_ver >= isa_edata_arr[i].min_version &&
->>               isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
->> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
->> index b4193a10d8..675e18df3b 100644
->> --- a/target/riscv/kvm.c
->> +++ b/target/riscv/kvm.c
->> @@ -320,6 +320,25 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>       }
->>   }
->>   
->> +void kvm_riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
->> +                              int max_str_len)
->> +{
->> +    char *old = *isa_str;
->> +    char *new = *isa_str;
->> +    int i;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
->> +        RISCVCPUMultiExtConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
->> +        if (kvm_cpu_cfg_get(cpu, multi_ext_cfg)) {
->> +            new = g_strconcat(old, "_", multi_ext_cfg->name, NULL);
->> +            g_free(old);
->> +            old = new;
->> +        }
->> +    }
->> +
->> +    *isa_str = new;
->> +}
->> +
->>   static int kvm_riscv_get_regs_core(CPUState *cs)
->>   {
->>       int ret = 0;
->> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
->> index e3ba935808..1a12efa8db 100644
->> --- a/target/riscv/kvm_riscv.h
->> +++ b/target/riscv/kvm_riscv.h
->> @@ -20,6 +20,8 @@
->>   #define QEMU_KVM_RISCV_H
->>   
->>   void kvm_riscv_init_user_properties(Object *cpu_obj);
->> +void kvm_riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
->> +                              int max_str_len);
->>   void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
->>   void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
->>   
->> -- 
->> 2.40.1
->>
->>
-> 
-> Hmm, more duplication. I think we need an abstraction which can support
-> both TCG and KVM extension lists. Allowing functions like
-> riscv_isa_string_ext() to be shared for them.
+diff --git a/include/ui/console.h b/include/ui/console.h
+index ae5ec46..04d4317 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -5,6 +5,7 @@
+ #include "qom/object.h"
+ #include "qemu/notify.h"
+ #include "qapi/qapi-types-ui.h"
++#include "ui/input.h"
+ 
+ #ifdef CONFIG_OPENGL
+ # include <epoxy/gl.h>
+@@ -95,6 +96,19 @@ bool kbd_put_qcode_console(QemuConsole *s, int qcode, bool ctrl);
+ void kbd_put_string_console(QemuConsole *s, const char *str, int len);
+ void kbd_put_keysym(int keysym);
+ 
++/* Touch devices */
++typedef struct touch_slot {
++    int x;
++    int y;
++    int tracking_id;
++} touch_slot;
++
++bool console_handle_touch_event(QemuConsole *con,
++                                struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX],
++                                uint64_t num_slot,
++                                int width, int height,
++                                double x, double y,
++                                InputMultiTouchType type);
+ /* consoles */
+ 
+ #define TYPE_QEMU_CONSOLE "qemu-console"
+diff --git a/ui/console.c b/ui/console.c
+index e173731..8bc6adb 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1635,6 +1635,71 @@ static bool console_compatible_with(QemuConsole *con,
+     return true;
+ }
+ 
++bool console_handle_touch_event(QemuConsole *con,
++                                struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX],
++                                uint64_t num_slot,
++                                int width, int height,
++                                double x, double y,
++                                InputMultiTouchType type)
++{
++    struct touch_slot *slot;
++    bool needs_sync = false;
++    int update;
++    int i;
++
++    if (num_slot >= INPUT_EVENT_SLOTS_MAX) {
++        warn_report("unexpected touch slot number: % " PRId64" >= %d\n",
++                    num_slot, INPUT_EVENT_SLOTS_MAX);
++        return FALSE;
++    }
++
++    slot = &touch_slots[num_slot];
++    slot->x = x;
++    slot->y = y;
++
++    if (type == INPUT_MULTI_TOUCH_TYPE_BEGIN) {
++        slot->tracking_id = num_slot;
++    }
++
++    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; ++i) {
++        if (i == num_slot) {
++            update = type;
++        } else {
++            update = INPUT_MULTI_TOUCH_TYPE_UPDATE;
++        }
++
++        slot = &touch_slots[i];
++
++        if (slot->tracking_id == -1) {
++            continue;
++        }
++
++        if (update == INPUT_MULTI_TOUCH_TYPE_END) {
++            slot->tracking_id = -1;
++            qemu_input_queue_mtt(con, update, i, slot->tracking_id);
++            needs_sync = true;
++        } else {
++            qemu_input_queue_mtt(con, update, i, slot->tracking_id);
++            qemu_input_queue_btn(con, INPUT_BUTTON_TOUCH, true);
++            qemu_input_queue_mtt_abs(con,
++                                    INPUT_AXIS_X, (int) slot->x,
++                                    0, width,
++                                    i, slot->tracking_id);
++            qemu_input_queue_mtt_abs(con,
++                                    INPUT_AXIS_Y, (int) slot->y,
++                                    0, height,
++                                    i, slot->tracking_id);
++            needs_sync = true;
++        }
++    }
++
++    if (needs_sync) {
++        qemu_input_event_sync();
++    }
++
++    return TRUE;
++}
++
+ void qemu_console_set_display_gl_ctx(QemuConsole *con, DisplayGLCtx *gl)
+ {
+     /* display has opengl support */
+diff --git a/ui/gtk.c b/ui/gtk.c
+index e50f950..ebbd304 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -130,11 +130,6 @@ typedef struct VCChardev VCChardev;
+ DECLARE_INSTANCE_CHECKER(VCChardev, VC_CHARDEV,
+                          TYPE_CHARDEV_VC)
+ 
+-struct touch_slot {
+-    int x;
+-    int y;
+-    int tracking_id;
+-};
+ static struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX];
+ 
+ bool gtk_use_gl_area;
+@@ -1068,27 +1063,12 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
+                                void *opaque)
+ {
+     VirtualConsole *vc = opaque;
+-    struct touch_slot *slot;
+     uint64_t num_slot = GPOINTER_TO_UINT(touch->sequence);
+-    bool needs_sync = false;
+-    int update;
+     int type = -1;
+-    int i;
+-
+-    if (num_slot >= INPUT_EVENT_SLOTS_MAX) {
+-        warn_report("gtk: unexpected touch slot number: % " PRId64" >= %d\n",
+-                    num_slot, INPUT_EVENT_SLOTS_MAX);
+-        return FALSE;
+-    }
+-
+-    slot = &touch_slots[num_slot];
+-    slot->x = touch->x;
+-    slot->y = touch->y;
+ 
+     switch (touch->type) {
+     case GDK_TOUCH_BEGIN:
+         type = INPUT_MULTI_TOUCH_TYPE_BEGIN;
+-        slot->tracking_id = num_slot;
+         break;
+     case GDK_TOUCH_UPDATE:
+         type = INPUT_MULTI_TOUCH_TYPE_UPDATE;
+@@ -1099,45 +1079,13 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
+         break;
+     default:
+         warn_report("gtk: unexpected touch event type\n");
++        return FALSE;
+     }
+ 
+-    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; ++i) {
+-        if (i == num_slot) {
+-            update = type;
+-        } else {
+-            update = INPUT_MULTI_TOUCH_TYPE_UPDATE;
+-        }
+-
+-        slot = &touch_slots[i];
+-
+-        if (slot->tracking_id == -1) {
+-            continue;
+-        }
+-
+-        if (update == INPUT_MULTI_TOUCH_TYPE_END) {
+-            slot->tracking_id = -1;
+-            qemu_input_queue_mtt(vc->gfx.dcl.con, update, i, slot->tracking_id);
+-            needs_sync = true;
+-        } else {
+-            qemu_input_queue_mtt(vc->gfx.dcl.con, update, i, slot->tracking_id);
+-            qemu_input_queue_btn(vc->gfx.dcl.con, INPUT_BUTTON_TOUCH, true);
+-            qemu_input_queue_mtt_abs(vc->gfx.dcl.con,
+-                                     INPUT_AXIS_X, (int) slot->x,
+-                                     0, surface_width(vc->gfx.ds),
+-                                     i, slot->tracking_id);
+-            qemu_input_queue_mtt_abs(vc->gfx.dcl.con,
+-                                     INPUT_AXIS_Y, (int) slot->y,
+-                                     0, surface_height(vc->gfx.ds),
+-                                     i, slot->tracking_id);
+-            needs_sync = true;
+-        }
+-    }
+-
+-    if (needs_sync) {
+-        qemu_input_event_sync();
+-    }
+-
+-    return TRUE;
++    return console_handle_touch_event(vc->gfx.dcl.con, touch_slots,
++                                      num_slot, surface_width(vc->gfx.ds),
++                                      surface_height(vc->gfx.ds), touch->x,
++                                      touch->y, type);
+ }
+ 
+ static const guint16 *gd_get_keymap(size_t *maplen)
+-- 
+2.40.1
 
-I tried to play around a bit and didn't manage to find a solution that covers
-both.
-
-The root cause is that the TCG only options are being ignored by KVM, but they
-are still around. I made an attempt of re-using the existing isa_string()
-function with KVM by changing all TCG-only extensions default to 'false'. This
-doesn't change the fact that, with KVM, I can do:
-
-sudo ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
--cpu host,zhinx=true,zhinxmin=true (...)
-
-Note that zhinx and zhinxmin are TCG-only. And the ISA string showed these 2
-extensions:
-
-# cat /proc/device-tree/cpus/cpu@0/riscv,isa
-rv64imafdc_zicbom_zicboz_zbb_zhinx_zhinxmin_sstc
-
-
-Alternatives would be to change TCG code to allow for extra fields for KVM (e.g. the
-'supported' flag) to allow the isa_string() function to ignore the TCG-only extensions.
-Bear in mind that TCG has 63 extensions, so we would do 63 ioctls for each CPU in this
-extension discovery and KVM only 8 support extensions ATM.
-
-Another idea is to make the existing isa_string() compare isa_edata_arr[] with the
-KVM counterpart kvm_multi_ext_cfgs[] and, if running KVM, check if the extension
-in isa_edata_arr[] is also in the KVM array. This also seems a bit inefficient since
-we're adding a search loop for 55 extensions when creating the string.
-
-Another alternative is to exclude all TCG-only extensions from the command line when
-running KVM. We would fork the API though, which is something that we're wanting to
-avoid.
-
-Duplicating this code as we're doing here guarantees that the KVM isa string won't
-have anything that KVM doesn't know about, regardless of the user input. I am not a
-fan of duplication, but at this moment it seems plausible to keep it. At least until
-we sort a way of unifying both TCG and KVM options in a satisfying manner.
-
-I mean, at least as far as a I can see. Suggestions always welcome.
-
-
-Thanks,
-
-
-Daniel
-
-
-
-
-> 
-> Thanks,
-> drew
 
