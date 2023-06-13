@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1AD72E1F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9CA72E1D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:41:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90V2-0005jd-Eg; Tue, 13 Jun 2023 05:39:40 -0400
+	id 1q90Wj-0005vT-OE; Tue, 13 Jun 2023 05:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90V0-0005j5-52
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:38 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Wh-0005vE-G9
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:41:23 -0400
+Received: from mail-ed1-f45.google.com ([209.85.208.45])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Uq-0005el-2e
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:37 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51492ae66a4so7515895a12.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:39:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Vu-00062w-Eb
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:41:23 -0400
+Received: by mail-ed1-f45.google.com with SMTP id
+ 4fb4d7f45d1cf-5147e40bbbbso8018214a12.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686649164; x=1689241164;
+ d=linaro.org; s=google; t=1686649169; x=1689241169;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KTisvpy141VHl6Jl8IdlijmeVIKSJjM3R7YZNyvUfc8=;
- b=psp5IXJgfMdSJYnwqTBwlddCd7bqiI6xXCMYQwJUbZYy5d7h9ZUZBRjlyuNpMl2CyN
- E7Se8ZKfCthsEnV+OhT56ogVP69iE9HNea2ZfRctV6yRpetCsmV5NaT2j/LlUVBiwGzP
- vmvJQx9JqalNNAoT/afiF7iGIpOL2j/hewHY6QG+P3Ira/7sze3F+kltL54Q4xdlobII
- Il8IPfOxXTNgxsabQNrMRAj4EU7twYFqN9tymNsRjLYiikrPgR9butz5nc9eR0BCy7gQ
- IuSLteAufcBPcJyzYybreR+lOS616uOWm+9GOuCUQVMbXvsOxtXcvXhblRmMyX9jT8jq
- fUsg==
+ bh=2UvD454+E/4A8Q/LAPF1RA7H96fHdTps7nh2m1LLDUQ=;
+ b=yfB922hVWq/dpgM5cDzY0Y4iKv2hNGBW6agoFw1UHGnEfO57BSaG6BmpNOgG5adKxb
+ TIlV0tTmGvLNdvwFqfKrDIZ/Ha8UXW0rJTglQGJiLy79vlMGPBGS1VwSb6oKNoA6xVnZ
+ dieOUi0osJiHmUp0b9KSunWgET00P+Si4sGzuBELwEJOVd/VBk+Shk6JwcPu2cmvzp1i
+ ovaHCkLWpcGOzmUNEWIA8YOmXbLUylSSNKXzLN3ZBK9gYrCr0Ud91pOKanYjj/d6cZ0r
+ NIjXbUvkQip0wYzn69F/leUbpXb5BUO2UZdSJoDTYsjSrG+Q5YZJGnQjMtCxKzraNL4C
+ 6Uiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649164; x=1689241164;
+ d=1e100.net; s=20221208; t=1686649169; x=1689241169;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KTisvpy141VHl6Jl8IdlijmeVIKSJjM3R7YZNyvUfc8=;
- b=NklZ8/4ySSpA8H3AKbS3lOzxkP3ea+CULe+rx3TlSAvTqDeW4nj5k20j7T4RG2xNND
- QWQ3/gudZEQvZ3SZXmEYQ8BMSuhQrMscx+LNnNaT7E0MRFZEAeRMIp6B8HF3FxyWqQ1S
- eE+oWfTskiWFI2cKcYpuuHKEtqyUZ5Pm1ndv7O+C9O4eJfwksBOYyjFpqIO8gfVdjnIF
- 8IHJRBos8mRU5QmGCkS5ai/Dk95BHK/b4gpnDW9HYL8gk59mpI571JislY2QKKE0ayHY
- D7j2mGhXy3ajIJaf17G4K/VeDo0Xsl0gTi2av9x6zw588R9dkdj7Ex75+p5XoZuloAiO
- e8vA==
-X-Gm-Message-State: AC+VfDy+rdaTPKwdqd8lbDmpY1MkDo+KoUP6N1EkHuqvYLUo2T1CbirV
- JI9PXeZ1HNbmNg78IJIdwIwoVHS8tDley2cfQM8GTg==
-X-Google-Smtp-Source: ACHHUZ6hpEVEogvD+bdBlqsYRMAaz3ayvQKG8O3mL8chYqUb1kFvBjIGduNoArSoyj1DVrMbhEwuqQ==
-X-Received: by 2002:aa7:ca4b:0:b0:518:797c:6bee with SMTP id
- j11-20020aa7ca4b000000b00518797c6beemr624427edt.5.1686649163810; 
- Tue, 13 Jun 2023 02:39:23 -0700 (PDT)
+ bh=2UvD454+E/4A8Q/LAPF1RA7H96fHdTps7nh2m1LLDUQ=;
+ b=Yjop5uvflPTbsWpnrt940ikZgRCYHWp6Gl1dRiZ/7P6ck+N9jCVFOf1zPBqO8XV1LA
+ +LRjg5JCNwSj/PnKQFmDU+N0OFx0menlhH9h4hjEjjuokoyyuzsxseUaZ8HC5QQRPG6Q
+ A9BVyNzlV0opc7pyL9PlO8pRAXXcdtvl+ykNeM6jnZvi+ImxPqzmufv6IdRU86MRrMPJ
+ 4rknQ+8srN7xQ9QbIjbjory+KbD+HerOj3p/vLj121wOqmcaf3URZAuqFwXr3jqT/0bR
+ OV5fPlY4zZmNKLmyh4Gs0n5psFj3W/n1fGaewnCB72MsD+yOz6Xt+UVBrZdOwUF9cQmE
+ 0Vrw==
+X-Gm-Message-State: AC+VfDxyes5RCYNgLWCtGzMp7kWMSLe2oLCDibnJhjnujj2dY0iGhRrF
+ 2ud+0Egh9CWPIAfzqruKIhETrTw8hsf+HsIqVeecmg==
+X-Google-Smtp-Source: ACHHUZ6e+yr69Ach54IimmTeICsFAHo5OVWxNVs0MJqltvnK4FVNR5hgMcuBcZ8RJ55d+1SgH9VAkQ==
+X-Received: by 2002:a05:6402:44d:b0:50b:d553:3822 with SMTP id
+ p13-20020a056402044d00b0050bd5533822mr6106458edw.7.1686649168926; 
+ Tue, 13 Jun 2023 02:39:28 -0700 (PDT)
 Received: from localhost.localdomain ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- z20-20020a1709064e1400b009745eddf997sm6334993eju.198.2023.06.13.02.39.23
+ k10-20020a056402048a00b005149e012658sm6181916edv.34.2023.06.13.02.39.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 02:39:23 -0700 (PDT)
+ Tue, 13 Jun 2023 02:39:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/17] hw/char/parallel: Export struct ParallelState
-Date: Tue, 13 Jun 2023 11:38:18 +0200
-Message-Id: <20230613093822.63750-14-philmd@linaro.org>
+Subject: [PULL 14/17] hw/char/parallel-isa: Export struct ISAParallelState
+Date: Tue, 13 Jun 2023 11:38:19 +0200
+Message-Id: <20230613093822.63750-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613093822.63750-1-philmd@linaro.org>
 References: <20230613093822.63750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=209.85.208.45; envelope-from=philmd@linaro.org;
+ helo=mail-ed1-f45.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,94 +95,184 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Exporting ParallelState is a precondition for exporing TYPE_ISA_PARALLEL to be
-performed in the next patch.
+Allows the struct to be embedded directly into device models without additional
+allocation.
 
 Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230612081238.1742-2-shentey@gmail.com>
+Message-Id: <20230612081238.1742-3-shentey@gmail.com>
+[PMD: Update MAINTAINERS entry and use SPDX license identifier]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/char/parallel.h | 21 +++++++++++++++++++++
- hw/char/parallel.c         | 20 --------------------
- 2 files changed, 21 insertions(+), 20 deletions(-)
+ MAINTAINERS                    |  2 +-
+ include/hw/char/parallel-isa.h | 30 ++++++++++++++++++++++++++++++
+ include/hw/char/parallel.h     |  2 --
+ hw/char/parallel-isa.c         |  1 +
+ hw/char/parallel.c             | 12 +-----------
+ hw/i386/pc_piix.c              |  2 +-
+ hw/i386/pc_q35.c               |  2 +-
+ hw/isa/isa-superio.c           |  1 +
+ hw/sparc64/sun4u.c             |  2 +-
+ 9 files changed, 37 insertions(+), 17 deletions(-)
+ create mode 100644 include/hw/char/parallel-isa.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4a80a38511..88b5a7ee0a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1740,7 +1740,7 @@ F: hw/rtc/mc146818rtc*
+ F: hw/watchdog/wdt_ib700.c
+ F: hw/watchdog/wdt_i6300esb.c
+ F: include/hw/display/vga.h
+-F: include/hw/char/parallel.h
++F: include/hw/char/parallel*.h
+ F: include/hw/dma/i8257.h
+ F: include/hw/i2c/pm_smbus.h
+ F: include/hw/input/i8042.h
+diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
+new file mode 100644
+index 0000000000..d24ccecf05
+--- /dev/null
++++ b/include/hw/char/parallel-isa.h
+@@ -0,0 +1,30 @@
++/*
++ * QEMU ISA Parallel PORT emulation
++ *
++ * Copyright (c) 2003-2005 Fabrice Bellard
++ * Copyright (c) 2007 Marko Kohtala
++ *
++ * SPDX-License-Identifier: MIT
++ */
++
++#ifndef HW_PARALLEL_ISA_H
++#define HW_PARALLEL_ISA_H
++
++#include "parallel.h"
++
++#include "hw/isa/isa.h"
++#include "qom/object.h"
++
++#define TYPE_ISA_PARALLEL "isa-parallel"
++OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
++
++struct ISAParallelState {
++    ISADevice parent_obj;
++
++    uint32_t index;
++    uint32_t iobase;
++    uint32_t isairq;
++    ParallelState state;
++};
++
++#endif /* HW_PARALLEL_ISA_H */
 diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
-index 29d2876d00..9f76edca81 100644
+index 9f76edca81..7b5a309a03 100644
 --- a/include/hw/char/parallel.h
 +++ b/include/hw/char/parallel.h
-@@ -1,9 +1,30 @@
- #ifndef HW_PARALLEL_H
- #define HW_PARALLEL_H
+@@ -25,8 +25,6 @@ typedef struct ParallelState {
+     PortioList portio_list;
+ } ParallelState;
  
-+#include "exec/ioport.h"
-+#include "exec/memory.h"
- #include "hw/isa/isa.h"
-+#include "hw/irq.h"
-+#include "chardev/char-fe.h"
- #include "chardev/char.h"
- 
-+typedef struct ParallelState {
-+    MemoryRegion iomem;
-+    uint8_t dataw;
-+    uint8_t datar;
-+    uint8_t status;
-+    uint8_t control;
-+    qemu_irq irq;
-+    int irq_pending;
-+    CharBackend chr;
-+    int hw_driver;
-+    int epp_timeout;
-+    uint32_t last_read_offset; /* For debugging */
-+    /* Memory-mapped interface */
-+    int it_shift;
-+    PortioList portio_list;
-+} ParallelState;
-+
- #define TYPE_ISA_PARALLEL "isa-parallel"
- 
+-#define TYPE_ISA_PARALLEL "isa-parallel"
+-
  void parallel_hds_isa_init(ISABus *bus, int n);
+ 
+ bool parallel_mm_init(MemoryRegion *address_space,
+diff --git a/hw/char/parallel-isa.c b/hw/char/parallel-isa.c
+index 547ae69304..ab0f879998 100644
+--- a/hw/char/parallel-isa.c
++++ b/hw/char/parallel-isa.c
+@@ -13,6 +13,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/isa/isa.h"
+ #include "hw/qdev-properties.h"
++#include "hw/char/parallel-isa.h"
+ #include "hw/char/parallel.h"
+ #include "qapi/error.h"
+ 
 diff --git a/hw/char/parallel.c b/hw/char/parallel.c
-index 3d32589bb3..e75fc5019d 100644
+index e75fc5019d..147c900f0d 100644
 --- a/hw/char/parallel.c
 +++ b/hw/char/parallel.c
-@@ -27,10 +27,7 @@
- #include "qapi/error.h"
- #include "qemu/module.h"
- #include "chardev/char-parallel.h"
--#include "chardev/char-fe.h"
- #include "hw/acpi/acpi_aml_interface.h"
--#include "hw/irq.h"
--#include "hw/isa/isa.h"
+@@ -31,6 +31,7 @@
  #include "hw/qdev-properties.h"
  #include "hw/qdev-properties-system.h"
  #include "migration/vmstate.h"
-@@ -76,23 +73,6 @@
++#include "hw/char/parallel-isa.h"
+ #include "hw/char/parallel.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/sysemu.h"
+@@ -73,17 +74,6 @@
  
  #define PARA_CTR_SIGNAL (PARA_CTR_SELECT|PARA_CTR_INIT|PARA_CTR_AUTOLF|PARA_CTR_STROBE)
  
--typedef struct ParallelState {
--    MemoryRegion iomem;
--    uint8_t dataw;
--    uint8_t datar;
--    uint8_t status;
--    uint8_t control;
--    qemu_irq irq;
--    int irq_pending;
--    CharBackend chr;
--    int hw_driver;
--    int epp_timeout;
--    uint32_t last_read_offset; /* For debugging */
--    /* Memory-mapped interface */
--    int it_shift;
--    PortioList portio_list;
--} ParallelState;
+-OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
 -
- OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
+-struct ISAParallelState {
+-    ISADevice parent_obj;
+-
+-    uint32_t index;
+-    uint32_t iobase;
+-    uint32_t isairq;
+-    ParallelState state;
+-};
+-
+ static void parallel_update_irq(ParallelState *s)
+ {
+     if (s->irq_pending)
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 42af03dbb4..44146e6ff5 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -26,7 +26,7 @@
+ #include CONFIG_DEVICES
  
- struct ISAParallelState {
+ #include "qemu/units.h"
+-#include "hw/char/parallel.h"
++#include "hw/char/parallel-isa.h"
+ #include "hw/dma/i8257.h"
+ #include "hw/loader.h"
+ #include "hw/i386/x86.h"
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 6155427e48..a9a59ed42b 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -30,7 +30,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+-#include "hw/char/parallel.h"
++#include "hw/char/parallel-isa.h"
+ #include "hw/loader.h"
+ #include "hw/i2c/smbus_eeprom.h"
+ #include "hw/rtc/mc146818rtc.h"
+diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
+index 9292ec3bcf..7dbfc374da 100644
+--- a/hw/isa/isa-superio.c
++++ b/hw/isa/isa-superio.c
+@@ -21,6 +21,7 @@
+ #include "hw/isa/superio.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/input/i8042.h"
++#include "hw/char/parallel-isa.h"
+ #include "hw/char/serial.h"
+ #include "trace.h"
+ 
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index e2858a0331..29e9b6cc26 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -35,7 +35,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/pci-host/sabre.h"
+ #include "hw/char/serial.h"
+-#include "hw/char/parallel.h"
++#include "hw/char/parallel-isa.h"
+ #include "hw/rtc/m48t59.h"
+ #include "migration/vmstate.h"
+ #include "hw/input/i8042.h"
 -- 
 2.38.1
 
