@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0C972E6AA
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 223F472E6A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:05:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q95Yx-0004sV-G2; Tue, 13 Jun 2023 11:04:04 -0400
+	id 1q95Zx-00069m-67; Tue, 13 Jun 2023 11:05:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q95Y5-0003xE-86
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q95Y5-0003xL-87
  for qemu-devel@nongnu.org; Tue, 13 Jun 2023 11:03:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q95Xd-0008U6-Is
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 11:02:42 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q95Xf-00007L-Hq
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 11:02:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686668551;
+ s=mimecast20190719; t=1686668562;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C3q1VOCi3VSeulPig7kmaGVgtQD3yY/HQD0PCA5v3u8=;
- b=MYRauKCNx8v4RbRA7p2Zyj61lBIHWKy+RuGd4EhoSRt5evc/xAVBQ5DMThDJEF7O3wbkui
- nvJW3yE5I4MfGpFQa2c1i2T8A1Xv4yH62Dmp0tdl75q17Gh48rIrwB3/t5ZyuLq5+yTJW3
- StlD937s88mqqtgvQXTQmzeHtiw+B3c=
+ bh=Bahah386mm2D+G3KkVQO5tZBeu6vtnpcbnvTurX56Iw=;
+ b=PX3Jojt3KF9hn2AdDc80a1j3GKGrRjhzyRhQR9yuRQJD7jdQF7mWeJiuZegUvdfnb1T/k4
+ 6Kquj9R405cWPIz55ySUPjM7+HYfDZ5lyEI/qwzQdhhEdEinic9g0vU+CvtuyDfsylo74z
+ 9T6wsybw32r10mKd86FDU1lHnD87ExA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-DNgGdphGP1WvPmgYP5F72w-1; Tue, 13 Jun 2023 11:02:15 -0400
-X-MC-Unique: DNgGdphGP1WvPmgYP5F72w-1
+ us-mta-571-gCXSHHdDMsmRNrSC_DHu6g-1; Tue, 13 Jun 2023 11:02:38 -0400
+X-MC-Unique: gCXSHHdDMsmRNrSC_DHu6g-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F85080349B;
- Tue, 13 Jun 2023 15:02:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 738C98117B4;
+ Tue, 13 Jun 2023 15:02:16 +0000 (UTC)
 Received: from t480s.fritz.box (unknown [10.39.192.249])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E66A140B4CD6;
- Tue, 13 Jun 2023 15:02:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C91A740C20F5;
+ Tue, 13 Jun 2023 15:02:14 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -51,10 +51,10 @@ Cc: David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
  Gavin Shan <gshan@redhat.com>
-Subject: [PATCH v1 1/5] pc: Properly handle unplug of virtio based memory
- devices
-Date: Tue, 13 Jun 2023 17:02:06 +0200
-Message-Id: <20230613150210.449406-2-david@redhat.com>
+Subject: [PATCH v1 2/5] arm/virt: Properly handle unplug of virtio based
+ memory devices
+Date: Tue, 13 Jun 2023 17:02:07 +0200
+Message-Id: <20230613150210.449406-3-david@redhat.com>
 In-Reply-To: <20230613150210.449406-1-david@redhat.com>
 References: <20230613150210.449406-1-david@redhat.com>
 MIME-Version: 1.0
@@ -98,18 +98,20 @@ next.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/i386/pc.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ hw/arm/virt.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index fc52772fdd..fdd7062929 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1559,7 +1559,25 @@ static void pc_virtio_md_pci_unplug_request(HotplugHandler *hotplug_dev,
- static void pc_virtio_md_pci_unplug(HotplugHandler *hotplug_dev,
-                                     DeviceState *dev, Error **errp)
- {
--    /* We don't support hot unplug of virtio based memory devices */
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 9b9f7d9c68..ed5c3c8fc4 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2794,6 +2794,30 @@ static void virt_virtio_md_pci_plug(HotplugHandler *hotplug_dev,
+     error_propagate(errp, local_err);
+ }
+ 
++static void virt_virtio_md_pci_unplug(HotplugHandler *hotplug_dev,
++                                      DeviceState *dev, Error **errp)
++{
 +    HotplugHandler *hotplug_dev2 = qdev_get_bus_hotplug_handler(dev);
 +    Error *local_err = NULL;
 +
@@ -129,9 +131,20 @@ index fc52772fdd..fdd7062929 100644
 +        warn_report("Unexpected unplug of virtio based memory device");
 +        qdev_unrealize(dev);
 +    }
- }
- 
- static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
++}
++
+ static void virt_virtio_md_pci_unplug_request(HotplugHandler *hotplug_dev,
+                                               DeviceState *dev, Error **errp)
+ {
+@@ -2932,6 +2956,8 @@ static void virt_machine_device_unplug_cb(HotplugHandler *hotplug_dev,
+ {
+     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+         virt_dimm_unplug(hotplug_dev, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
++        virt_virtio_md_pci_unplug(hotplug_dev, dev, errp);
+     } else {
+         error_setg(errp, "virt: device unplug for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
 -- 
 2.40.1
 
