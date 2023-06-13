@@ -2,92 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB3472E732
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E89C72E79B
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:49:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q95ww-00038c-Jg; Tue, 13 Jun 2023 11:28:50 -0400
+	id 1q96Fn-0007ds-Or; Tue, 13 Jun 2023 11:48:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q95wv-00038M-5u
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 11:28:49 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q95wt-00052X-CO
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 11:28:48 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f654d713c0so6582254e87.3
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 08:28:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686670125; x=1689262125;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hgpALJvzjMOdZuCH7jQN7oQrqLsF6RDomTsztZXRmCQ=;
- b=IFZ9XfRpD2D4bwxgSoI73tR9VvxWS5F5H5LvAh7/5kdo1nj3KrVyAEZyhu24RI+ZBW
- 12kDFTUtcIN4q/DjqyBlNPXILeDMi0Ewx1h40zilJXbitBjKmQ5rVUxYH8KPZKLW5OjV
- mjUDLLy/b9Wy8WergrkgzA2jTv+3rTA5ZJWw1ya07w5At+HPnTIBKnRmLTXBmGalW1Gw
- HLGq5DFkj64vxi3LpW8+btmWDY0LLcaGjW2XFT/+eqjX2c8AL0ZpEk16PO7XGMpD5+HZ
- XKmcgiBQVFna2U+Bft4TIHsINEaalRCqjOG4B9ZvzvcEvXTyAi85GZ8SpciejqSeAvgL
- zhnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686670125; x=1689262125;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hgpALJvzjMOdZuCH7jQN7oQrqLsF6RDomTsztZXRmCQ=;
- b=BrO3HxWmPZDR8liPF6f73w88FHVLP+R1jCMoOuH0EowIAYtfUm2iXXPM97Rld45Ydf
- BGrM4/KAi1t7aqfmQ4wJ1V9/Zvz9IA3O+SLdTW7GrMlzOg1ARLWvqNOAwkfrJE99IZ+0
- 1uQ0FBHXLGzrZ9OqUvvvIh9ywOjWzfvydfY6sLkC/manlkfhKJeEYhhYdKkatMV1p1X7
- 5exzkeC2nxuG337/dY5g1QXbLYPrmewGDsQwl0FMpzIQHN1FjM7ED0+nnCLK6PtT1pvE
- 8yR5lie94MgZLtjLSZsAvEy/3r78ieFOgcit0s0du8TfGxKpWCO5uYgQDLWHCpMdSY9E
- PzGA==
-X-Gm-Message-State: AC+VfDxq+4PdapnQYmIbUaWUETZLMcGvif3UangNS84d9lLPW5Fix55k
- +vpecvTEDl1R4IMv/3jkCjU=
-X-Google-Smtp-Source: ACHHUZ43/1aH+M/GsJMAt6pJQIfcm9tIzFsFVKfiLKJxHqvkiBBKb+SRn4b0R7MCBTx8CeiTzqRKPw==
-X-Received: by 2002:a19:434c:0:b0:4f3:87d7:f7a4 with SMTP id
- m12-20020a19434c000000b004f387d7f7a4mr6202939lfj.62.1686670124732; 
- Tue, 13 Jun 2023 08:28:44 -0700 (PDT)
-Received: from [127.0.0.1] ([81.19.4.232]) by smtp.gmail.com with ESMTPSA id
- p4-20020a17090628c400b00977ca819248sm6728623ejd.110.2023.06.13.08.28.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 08:28:44 -0700 (PDT)
-Date: Tue, 13 Jun 2023 15:28:37 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-CC: Igor Mammedov <imammedo@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_02/15=5D_hw/pci-host/q35=3A_Fix_do?=
- =?US-ASCII?Q?uble=2C_contradicting_=2Eendianness_assignment?=
-In-Reply-To: <20230613110114-mutt-send-email-mst@kernel.org>
-References: <20230611103412.12109-1-shentey@gmail.com>
- <20230611103412.12109-3-shentey@gmail.com>
- <20230612150154.438d842f@imammedo.users.ipa.redhat.com>
- <CAG4p6K6yR+iJmjnYOkJFd=GbxPU+QpkzTSEfW1VuUwM95o5_iQ@mail.gmail.com>
- <20230613044810-mutt-send-email-mst@kernel.org>
- <0ff30d22-25f9-750e-3ec1-f0988eee5668@eik.bme.hu>
- <20230613150502.74e46018@imammedo.users.ipa.redhat.com>
- <3b1710cc-b905-e005-a8ab-97513d3c6702@linaro.org>
- <20230613110114-mutt-send-email-mst@kernel.org>
-Message-ID: <955BD93B-AE2B-468C-9265-F7B0999283D4@gmail.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q96Fl-0007dI-1O; Tue, 13 Jun 2023 11:48:17 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q96Fi-0001Zm-LL; Tue, 13 Jun 2023 11:48:16 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:2c24:0:640:73f8:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 8EACA60825;
+ Tue, 13 Jun 2023 18:48:01 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8910::1:11] (unknown
+ [2a02:6b8:b081:8910::1:11])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 0mcIGq1OjSw0-f6RlOyIs; Tue, 13 Jun 2023 18:48:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1686671280; bh=qVhkS1Gg1FJqEczCOc6Pb55GQ/4WXyGX8PQUKSuB7Cc=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=TdRU2UfjQBKfMyV2E9MvAcxVuw8AESLzw8e1GOEL+2lKwz9HTXePmrwbCNM3Xo6or
+ B+QvL50M617nV/LzH3QjizpOaTpY6uqiSi/UYRNegFsrvkT3xdXHwgHq1EE/WOFvb6
+ 4d35Dct+GFUmcGT9rSCRtH6ucKax4i3yVP6/BbqA=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <63c42d0d-630b-b509-217c-93889bc9af82@yandex-team.ru>
+Date: Tue, 13 Jun 2023 18:48:00 +0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=shentey@gmail.com; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v5 00/16] iotests: use vm.cmd()
+Content-Language: en-US
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, jsnow@redhat.com, crosa@redhat.com,
+ kwolf@redhat.com, hreitz@redhat.com
+References: <20230215132547.1620575-1-vsementsov@yandex-team.ru>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230215132547.1620575-1-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,87 +75,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+ping. 03-16 are still applicable to master with "git am -3" and very small conflict in "iotests: QemuStorageDaemon: add cmd() method like in QEMUMachine."
 
+On 15.02.23 16:25, Vladimir Sementsov-Ogievskiy wrote:
+> Hi all!
+> 
+> Let's get rid of pattern
+> 
+>      result = self.vm.qmp(...)
+>      self.assert_qmp(result, 'return', {})
+> 
+> And switch to just
+> 
+>      self.vm.cmd(...)
+> 
+> v5:
+> - include fixups by John
+> - fix 'make check-dev'
+> - split first patch into several [Daniel]
+> 
+> 
+> Vladimir Sementsov-Ogievskiy (16):
+>    python: fix superfluous-parens pylint error
+>    python: fix broad-exception-raised pylint error
+>    python/qemu/qmp/legacy: cmd(): drop cmd_id unused argument
+>    qmp_shell.py: _fill_completion() use .command() instead of .cmd()
+>    scripts/cpu-x86-uarch-abi.py: use .command() instead of .cmd()
+>    python: rename QEMUMonitorProtocol.cmd() to cmd_raw()
+>    python/qemu: rename command() to cmd()
+>    python/machine.py: upgrade vm.cmd() method
+>    iotests: QemuStorageDaemon: add cmd() method like in QEMUMachine.
+>    iotests: add some missed checks of qmp result
+>    iotests: refactor some common qmp result checks into generic pattern
+>    iotests: drop some occasional semicolons
+>    iotests: drop some extra ** in qmp() call
+>    iotests.py: pause_job(): drop return value
+>    tests/vm/basevm.py: use cmd() instead of qmp()
+>    python: use vm.cmd() instead of vm.qmp() where appropriate
+> 
+>   docs/devel/testing.rst                        |  10 +-
+>   python/qemu/machine/machine.py                |  20 +-
+>   python/qemu/qmp/legacy.py                     |  10 +-
+>   python/qemu/qmp/protocol.py                   |   2 +-
+>   python/qemu/qmp/qmp_client.py                 |   2 +-
+>   python/qemu/qmp/qmp_shell.py                  |  20 +-
+>   python/qemu/utils/qemu_ga_client.py           |   8 +-
+>   python/qemu/utils/qom.py                      |   8 +-
+>   python/qemu/utils/qom_common.py               |   2 +-
+>   python/qemu/utils/qom_fuse.py                 |   6 +-
+>   scripts/cpu-x86-uarch-abi.py                  |   8 +-
+>   scripts/device-crash-test                     |   8 +-
+>   scripts/render_block_graph.py                 |   8 +-
+>   tests/avocado/avocado_qemu/__init__.py        |   4 +-
+>   tests/avocado/cpu_queries.py                  |   5 +-
+>   tests/avocado/hotplug_cpu.py                  |  10 +-
+>   tests/avocado/info_usernet.py                 |   4 +-
+>   tests/avocado/machine_arm_integratorcp.py     |   6 +-
+>   tests/avocado/machine_m68k_nextcube.py        |   4 +-
+>   tests/avocado/machine_mips_malta.py           |   6 +-
+>   tests/avocado/machine_s390_ccw_virtio.py      |  28 +-
+>   tests/avocado/migration.py                    |  10 +-
+>   tests/avocado/pc_cpu_hotplug_props.py         |   2 +-
+>   tests/avocado/version.py                      |   4 +-
+>   tests/avocado/virtio_check_params.py          |   6 +-
+>   tests/avocado/virtio_version.py               |   5 +-
+>   tests/avocado/vnc.py                          |  16 +-
+>   tests/avocado/x86_cpu_model_versions.py       |  13 +-
+>   tests/migration/guestperf/engine.py           | 150 +++---
+>   tests/qemu-iotests/030                        | 168 +++---
+>   tests/qemu-iotests/040                        | 171 +++----
+>   tests/qemu-iotests/041                        | 482 ++++++++----------
+>   tests/qemu-iotests/045                        |  15 +-
+>   tests/qemu-iotests/055                        |  62 +--
+>   tests/qemu-iotests/056                        |  77 ++-
+>   tests/qemu-iotests/093                        |  42 +-
+>   tests/qemu-iotests/118                        | 225 ++++----
+>   tests/qemu-iotests/124                        | 102 ++--
+>   tests/qemu-iotests/129                        |  14 +-
+>   tests/qemu-iotests/132                        |   5 +-
+>   tests/qemu-iotests/139                        |  45 +-
+>   tests/qemu-iotests/147                        |  30 +-
+>   tests/qemu-iotests/151                        |  56 +-
+>   tests/qemu-iotests/152                        |   8 +-
+>   tests/qemu-iotests/155                        |  55 +-
+>   tests/qemu-iotests/165                        |   8 +-
+>   tests/qemu-iotests/196                        |   3 +-
+>   tests/qemu-iotests/205                        |   6 +-
+>   tests/qemu-iotests/218                        | 105 ++--
+>   tests/qemu-iotests/245                        | 245 ++++-----
+>   tests/qemu-iotests/256                        |  34 +-
+>   tests/qemu-iotests/257                        |  36 +-
+>   tests/qemu-iotests/264                        |  31 +-
+>   tests/qemu-iotests/281                        |  21 +-
+>   tests/qemu-iotests/295                        |  16 +-
+>   tests/qemu-iotests/296                        |  21 +-
+>   tests/qemu-iotests/298                        |  13 +-
+>   tests/qemu-iotests/300                        |  54 +-
+>   tests/qemu-iotests/iotests.py                 |  25 +-
+>   .../tests/export-incoming-iothread            |   6 +-
+>   .../qemu-iotests/tests/graph-changes-while-io |   6 +-
+>   tests/qemu-iotests/tests/image-fleecing       |   3 +-
+>   .../tests/migrate-bitmaps-postcopy-test       |  33 +-
+>   tests/qemu-iotests/tests/migrate-bitmaps-test |  45 +-
+>   .../qemu-iotests/tests/migrate-during-backup  |  41 +-
+>   .../qemu-iotests/tests/migration-permissions  |   9 +-
+>   .../tests/mirror-ready-cancel-error           |  74 ++-
+>   tests/qemu-iotests/tests/mirror-top-perms     |  16 +-
+>   tests/qemu-iotests/tests/nbd-multiconn        |  12 +-
+>   tests/qemu-iotests/tests/reopen-file          |   3 +-
+>   .../qemu-iotests/tests/stream-error-on-reset  |   6 +-
+>   tests/vm/basevm.py                            |   4 +-
+>   72 files changed, 1196 insertions(+), 1622 deletions(-)
+> 
 
-Am 13=2E Juni 2023 15:01:40 UTC schrieb "Michael S=2E Tsirkin" <mst@redhat=
-=2Ecom>:
->On Tue, Jun 13, 2023 at 03:40:28PM +0200, Philippe Mathieu-Daud=C3=A9 wro=
-te:
->> On 13/6/23 15:05, Igor Mammedov wrote:
->> > On Tue, 13 Jun 2023 13:07:17 +0200 (CEST)
->> > BALATON Zoltan <balaton@eik=2Ebme=2Ehu> wrote:
->> >=20
->> > > On Tue, 13 Jun 2023, Michael S=2E Tsirkin wrote:
->> > > > On Tue, Jun 13, 2023 at 09:46:53AM +0200, Bernhard Beschow wrote:
->> > > > > On Mon, Jun 12, 2023 at 3:01=E2=80=AFPM Igor Mammedov <imammedo=
-@redhat=2Ecom> wrote:
->> > > > >=20
->> > > > >      On Sun, 11 Jun 2023 12:33:59 +0200
->> > > > >      Bernhard Beschow <shentey@gmail=2Ecom> wrote:
->> > > > >     > Fixes the following clangd warning (-Winitializer-overrid=
-es):
->> > > > >     >
->> > > > >     >=C2=A0 =C2=A0q35=2Ec:297:19: Initializer overrides prior i=
-nitialization of this
->> > > > >      subobject
->> > > > >     >=C2=A0 =C2=A0q35=2Ec:292:19: previous initialization is he=
-re
->> > > > >     >
->> > > > >     > Settle on native endian which causes the least overhead=
-=2E
->> > > > >      indeed it doesn't matter which way we read all ones, so th=
-at should work=2E
->> > > > >      but does it really matter (I mean the overhead/what worklo=
-ad)?
->> > > > >      If not, I'd prefer explicit LE as it's now to be consisten=
-t
->> > > > >      the the rest of memops on Q35=2E
->>=20
->> Meaning trying to optimize this single MR on big-endian is irrelevant :=
-)
->>=20
->> > > > >=20
->> > > > > I got a comment from Michael about this in [1], so I've changed=
- it=2E I don't
->> > > > > mind changing it either way=2E
->> > > > >=20
->> > > > > Best regards,
->> > > > > Bernhard
->> > > > >=20
->> > > > > [1] https://patchew=2Eorg/QEMU/20230214131441=2E101760-1-shente=
-y@gmail=2Ecom/
->> > > > > 20230214131441=2E101760-3-shentey@gmail=2Ecom/#
->> > > > > 20230301164339-mutt-send-email-mst@kernel=2Eorg
->> > > >=20
->> > > > Hmm it's not terribly important, and the optimization is trivial,
->> > > > but yes people tend to copy code, good point=2E Maybe add a comme=
-nt?
->> > > > /*
->> > > > * Note: don't copy this!  normally use DEVICE_LITTLE_ENDIAN=2E Th=
-is only
->> > > > * works because we don't allow writes and always read all-ones=2E
->> > > > */
->> > >=20
->> > > Why don't you leave DEVICE_LITTLE_ENDIAN and remove DEVICE_NATIVE_E=
-NDIAN
->> > > instead? If this only returns all 1s then it does not matter and al=
-so
->> > > DEVICE_LITTLE_ENDIAN was the last assignment so likely that was eff=
-ective
->> > > so far anyway=2E
->> >=20
->> > I'm in favor of this as well,
->> > the 'optimization' and then piling comments on top to clarify confusi=
-on
->> > should be justified by usefulness of it (no perf numbers/usecase were=
- present so far)=2E
->> > In absence of above, I'd prefer real hw behavior (LE in this case)=2E
->
->
->OK I'm fine with this too=2E Sorry about leading you astray=2E
-
-No worries=2E I'm happy to change it back to LE=2E
-
+-- 
 Best regards,
-Bernhard
+Vladimir
+
 
