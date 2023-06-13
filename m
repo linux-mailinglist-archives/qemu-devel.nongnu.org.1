@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A988872ED7F
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 23:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072E372ED8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 23:03:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9B7N-00028U-6F; Tue, 13 Jun 2023 16:59:57 -0400
+	id 1q9B7V-00029c-9q; Tue, 13 Jun 2023 17:00:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q9B7H-00027n-QD
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 16:59:52 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1q9B7L-00028a-SU
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 16:59:56 -0400
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q9B7F-0006lW-V9
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 16:59:51 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-39cd0c3e8deso2132443b6e.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 13:59:49 -0700 (PDT)
+ id 1q9B7J-0006m8-IK
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 16:59:55 -0400
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-39c7f7a66abso3317199b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 13:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686689988; x=1689281988;
+ d=ventanamicro.com; s=google; t=1686689991; x=1689281991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6dm9P/uUTs4MZ/sIEWKFivbNK7+MeEV1c5lZeWHAirE=;
- b=my29xTiGSZ0o+EDUbInF1MH+oXijkbRVJ6n3GTkyGoDM00AEqJjlUGSlXNueWWgCUh
- e7xCu87/0uYKruSWA8kpH7+Z95Cw+2Km57CPG8fEW432MgbQLWdvl/KUmiR1NUWmScQn
- wgETCm1r1tI1TRHuv2eAKatfztK8MQZvMVSpa76zclFLSfHweRr8djVXJTZX+dibIuB+
- BLqXSJuKmS8SiWf9tdtxCo1idf+HBbXxRJohUUhUf7GoEYqa4ccKvuMX1ZXSqpn/abuT
- 07LCqDHNu1MdPmwu7y05fzuthQjJ8zMT3i/MGBvQQmgP2eAvaMCpFYyf+N6wL2JPZreh
- TURA==
+ bh=/HhEZIp35mkxQyh7s7sm6RzEn8Kadlavjt1IL8PO4As=;
+ b=mDg/2LzBlzSHYlbg1/OwEH2OYsa6kT5Z4M79mtCF5eJVMyabnW0cMh9zu6/ujVqGq6
+ 3LJc6W23XGegxQ4MaiwR8KauYAU6Uu6WZjcwkW8r6oN6MbhxIymL34vsThYKfiymBhnk
+ yMjOWms+aVib1IPNyxkJV0EyxsDJOElXHtE7j6U5P7+mPsUgbx/+df7anMjGgd4a9uOl
+ V04C7O2eDBykc62DFW6Z+oIPLIcsfSgIbXzJ2CA96luPPAbhUdd8TdSJrLkzhwTmiwdP
+ +ql82Kg++Ga/7CG3UajhQHCjF4e39QTvh3B0PxJSydYvA5Oby+t2bJAJs5piUkhtuKpV
+ Q+bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686689988; x=1689281988;
+ d=1e100.net; s=20221208; t=1686689991; x=1689281991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6dm9P/uUTs4MZ/sIEWKFivbNK7+MeEV1c5lZeWHAirE=;
- b=L034FPRynQ30XkVTYzaUGVCZ4G66RBv1LCHCdUBopbc86o6k8ZpkD1gyTLCtekAAZr
- YmpqAYHdLBVy6bE76ZrQaWsglbUx6LDjd2bJCi7WWX9pJ1WIgOYyiQddNn0wi0RGFEs/
- 9sfHgyhzcfbMuI+SwFyLXcNOR8Ifot/YrSbYXr1eP1wb7CbSBvfElEuknDowJVUI3R2B
- slfGnMUbrpVHVFc02eDNQ29QGz69L7XmcGqo4ck8l93dPosNSLxPQ4fxeO2s/5Wd9Ago
- XTzN+bHLUjWljXAcsCKvcXr4TmFz+f5OqytAZlanXG/HTSI/vZnJj4CP4TI7wdkAEakT
- clsg==
-X-Gm-Message-State: AC+VfDzi55JxTnyoDslwsvyR/LOt7pFu/rL108NswcVi1kVSQuRe8Z3l
- K+DCC0ek3R3T+sx/jVwjYY8DTUF0hku5Pa5ySQA=
-X-Google-Smtp-Source: ACHHUZ4bafB2LDVm22U926k2U+KwzhxaRXRXju2gtRrUrLxORIXYrvwHnWLeC/nl7sMCayHwBpg46g==
-X-Received: by 2002:a05:6808:f91:b0:398:f76:36a5 with SMTP id
- o17-20020a0568080f9100b003980f7636a5mr9469574oiw.56.1686689988215; 
- Tue, 13 Jun 2023 13:59:48 -0700 (PDT)
+ bh=/HhEZIp35mkxQyh7s7sm6RzEn8Kadlavjt1IL8PO4As=;
+ b=l4Tjcrvw3DXy3QvHQ7MI+8BbNjII6B7NR0bQHTGjATIIwLM6gKgmYdjBazTrJb3PJv
+ gNYA038vnARNuZ93aTwmqVsX6TsLSZmAh2+RIWSBhsjVRoQ3u8GvaI/rRX+qERgBuQaO
+ TuATdal6jKbLYlfLYH/zFtmCnYexnFsuXFnU4015rv00CUoJIQHaYFgqOoXI8KSrNNmn
+ 0BenDLBP+zEdqzQSEYr/Iidr232R9caUzKsSFtXPrREgljCMx/tnmZvuEUgy2bZZrpDy
+ jRtMKgdOvmznBunl+PNfcjzZ97OEtcQWpxuR7WgbUpFMvN1yrM9klgD5ZlaBSBotfZ1+
+ JUXA==
+X-Gm-Message-State: AC+VfDyE/1sleoZ4G+nwVjkHgc6EkKyf+/oelI3B2ZsD1exQoTvrjtph
+ s5B5Uei2/koe3sSKY/W/nKKjfP7CQPW1TP8pT5o=
+X-Google-Smtp-Source: ACHHUZ5sQmmsutJmG3uLhOJnEH52Nos+nPdaOt8xc0NbZkjIK60x8z0vsRTQn/+n8uQgjaq8XtPZZg==
+X-Received: by 2002:aca:f009:0:b0:399:ed2a:f4b5 with SMTP id
+ o9-20020acaf009000000b00399ed2af4b5mr5335053oih.24.1686689991186; 
+ Tue, 13 Jun 2023 13:59:51 -0700 (PDT)
 Received: from grind.. ([177.170.117.210]) by smtp.gmail.com with ESMTPSA id
- q82-20020acaf255000000b003982a8a1e3fsm5619514oih.51.2023.06.13.13.59.45
+ q82-20020acaf255000000b003982a8a1e3fsm5619514oih.51.2023.06.13.13.59.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 13:59:47 -0700 (PDT)
+ Tue, 13 Jun 2023 13:59:50 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 11/18] target/riscv/cpu: add misa_ext_infos[]
-Date: Tue, 13 Jun 2023 17:58:50 -0300
-Message-Id: <20230613205857.495165-12-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 12/18] target/riscv: add KVM specific MISA properties
+Date: Tue, 13 Jun 2023 17:58:51 -0300
+Message-Id: <20230613205857.495165-13-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230613205857.495165-1-dbarboza@ventanamicro.com>
 References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,120 +93,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next patch will add KVM specific user properties for both MISA and
-multi-letter extensions. For MISA extensions we want to make use of what
-is already available in misa_ext_cfgs[] to avoid code repetition.
+Using all TCG user properties in KVM is tricky. First because KVM
+supports only a small subset of what TCG provides, so most of the
+cpu->cfg flags do nothing for KVM.
 
-The new misa_ext_infos[] array will hold name and description for each
-MISA extension that misa_ext_cfgs[] is declaring. We'll then use this
-new array in KVM code to avoid duplicating strings.
+Second, and more important, we don't have a way of telling if any given
+value is an user input or not. For TCG this has a small impact since we
+just validating everything and error out if needed. But for KVM it would
+be good to know if a given value was set by the user or if it's a value
+already provided by KVM. Otherwise we don't know how to handle failed
+kvm_set_one_regs() when writing the configurations back.
 
-There's nothing holding us back from doing the same with multi-letter
-extensions. For now doing just with MISA extensions is enough.
+These characteristics make it overly complicated to use the same user
+facing flags for both KVM and TCG. A simpler approach is to create KVM
+specific properties that have specialized logic, forking KVM and TCG use
+cases for those cases only. Fully separating KVM/TCG properties is
+unneeded at this point - in fact we want the user experience to be as
+equal as possible, regardless of the acceleration chosen.
 
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+We'll start this fork with the MISA properties, adding the MISA bits
+that the KVM driver currently supports. A new KVMCPUConfig type is
+introduced. It'll hold general information about an extension. For MISA
+extensions we're going to use the newly created misa_ext_infos[] to
+populate their name and description. 'offset' holds the MISA bit (RVA,
+RVC, ...). We're calling it 'offset' instead of 'misa_bit' because this
+same KVMCPUConfig struct will be used to multi-letter extensions later
+on.
+
+This new type also holds a 'user_set' flag. This flag will be set when
+the user set an option that's different than what is already configured
+in the host, requiring KVM intervention to write the regs back during
+kvm_arch_init_vcpu(). Similar mechanics will be implemented for
+multi-letter extensions as well.
+
+There is no need to duplicate more code than necessary, so we're going
+to use the existing kvm_riscv_init_user_properties() to add the KVM
+specific properties. Any code that is adding a TCG user prop is then
+changed slightly to verify first if there's a KVM prop with the same
+name already added.
+
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 44 ++++++++++++++++++--------------------------
- target/riscv/cpu.h | 22 +++++++++++++++++++++-
- 2 files changed, 39 insertions(+), 27 deletions(-)
+ target/riscv/cpu.c | 10 ++++++
+ target/riscv/kvm.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 86 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 0b25d53bbe..edaf052f25 100644
+index edaf052f25..a4f3ed0c17 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1562,33 +1562,25 @@ static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
-     visit_type_bool(v, name, &value, errp);
- }
+@@ -1590,6 +1590,11 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+     for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
+         const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
  
-+#define MISA_CFG(_bit, _enabled) \
-+    {.name = misa_ext_infos[_bit].name, \
-+     .description = misa_ext_infos[_bit].description, \
-+     .misa_bit = _bit, .enabled = _enabled}
++        /* Check if KVM didn't create the property already */
++        if (object_property_find(cpu_obj, misa_cfg->name)) {
++            continue;
++        }
 +
- static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
--    {.name = "a", .description = "Atomic instructions",
--     .misa_bit = RVA, .enabled = true},
--    {.name = "c", .description = "Compressed instructions",
--     .misa_bit = RVC, .enabled = true},
--    {.name = "d", .description = "Double-precision float point",
--     .misa_bit = RVD, .enabled = true},
--    {.name = "f", .description = "Single-precision float point",
--     .misa_bit = RVF, .enabled = true},
--    {.name = "i", .description = "Base integer instruction set",
--     .misa_bit = RVI, .enabled = true},
--    {.name = "e", .description = "Base integer instruction set (embedded)",
--     .misa_bit = RVE, .enabled = false},
--    {.name = "m", .description = "Integer multiplication and division",
--     .misa_bit = RVM, .enabled = true},
--    {.name = "s", .description = "Supervisor-level instructions",
--     .misa_bit = RVS, .enabled = true},
--    {.name = "u", .description = "User-level instructions",
--     .misa_bit = RVU, .enabled = true},
--    {.name = "h", .description = "Hypervisor",
--     .misa_bit = RVH, .enabled = true},
--    {.name = "x-j", .description = "Dynamic translated languages",
--     .misa_bit = RVJ, .enabled = false},
--    {.name = "v", .description = "Vector operations",
--     .misa_bit = RVV, .enabled = false},
--    {.name = "g", .description = "General purpose (IMAFD_Zicsr_Zifencei)",
--     .misa_bit = RVG, .enabled = false},
-+    MISA_CFG(RVA, true),
-+    MISA_CFG(RVC, true),
-+    MISA_CFG(RVD, true),
-+    MISA_CFG(RVF, true),
-+    MISA_CFG(RVI, true),
-+    MISA_CFG(RVE, false),
-+    MISA_CFG(RVM, true),
-+    MISA_CFG(RVS, true),
-+    MISA_CFG(RVU, true),
-+    MISA_CFG(RVH, true),
-+    MISA_CFG(RVJ, false),
-+    MISA_CFG(RVV, false),
-+    MISA_CFG(RVG, false),
- };
+         object_property_add(cpu_obj, misa_cfg->name, "bool",
+                             cpu_get_misa_ext_cfg,
+                             cpu_set_misa_ext_cfg,
+@@ -1713,6 +1718,11 @@ static void riscv_cpu_add_user_properties(Object *obj)
+     riscv_cpu_add_misa_properties(obj);
  
- static void riscv_cpu_add_misa_properties(Object *cpu_obj)
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index e3e08d315f..6d2acea478 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -41,7 +41,7 @@
+     for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
++        /* Check if KVM didn't create the property already */
++        if (object_property_find(obj, prop->name)) {
++            continue;
++        }
++
+         qdev_property_add_static(dev, prop);
+     }
  
- #define RV(x) ((target_ulong)1 << (x - 'A'))
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 4d0808cb9a..53042a0e86 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -22,8 +22,10 @@
+ #include <linux/kvm.h>
  
--/* Consider updating misa_ext_cfgs[] when adding new MISA bits here */
-+/* Consider updating misa_ext_infos[] when adding new MISA bits here */
- #define RVI RV('I')
- #define RVE RV('E') /* E and I are mutually exclusive */
- #define RVM RV('M')
-@@ -56,6 +56,26 @@
- #define RVJ RV('J')
- #define RVG RV('G')
+ #include "qemu/timer.h"
++#include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
++#include "qapi/visitor.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/kvm_int.h"
+@@ -105,6 +107,79 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+         } \
+     } while (0)
  
-+typedef struct misa_ext_info {
++typedef struct KVMCPUConfig {
 +    const char *name;
 +    const char *description;
-+} MISAExtInfo;
++    target_ulong offset;
++    int kvm_reg_id;
++    bool user_set;
++} KVMCPUConfig;
 +
-+static const MISAExtInfo misa_ext_infos[] = {
-+    [RVA] = {"a", "Atomic instructions"},
-+    [RVC] = {"c", "Compressed instructions"},
-+    [RVD] = {"d", "Double-precision float point"},
-+    [RVF] = {"f", "Single-precision float point"},
-+    [RVI] = {"i", "Base integer instruction set"},
-+    [RVE] = {"e", "Base integer instruction set (embedded)"},
-+    [RVM] = {"m", "Integer multiplication and division"},
-+    [RVS] = {"s", "Supervisor-level instructions"},
-+    [RVU] = {"u", "User-level instructions"},
-+    [RVH] = {"h", "Hypervisor"},
-+    [RVJ] = {"x-j", "Dynamic translated languages"},
-+    [RVV] = {"v", "Vector operations"},
-+    [RVG] = {"g", "General purpose (IMAFD_Zicsr_Zifencei)"},
++#define KVM_MISA_CFG(_bit, _reg_id) \
++    {.name = misa_ext_infos[_bit].name, \
++     .description = misa_ext_infos[_bit].description, \
++     .offset = _bit, .kvm_reg_id = _reg_id}
++
++/* KVM ISA extensions */
++static KVMCPUConfig kvm_misa_ext_cfgs[] = {
++    KVM_MISA_CFG(RVA, KVM_RISCV_ISA_EXT_A),
++    KVM_MISA_CFG(RVC, KVM_RISCV_ISA_EXT_C),
++    KVM_MISA_CFG(RVD, KVM_RISCV_ISA_EXT_D),
++    KVM_MISA_CFG(RVF, KVM_RISCV_ISA_EXT_F),
++    KVM_MISA_CFG(RVH, KVM_RISCV_ISA_EXT_H),
++    KVM_MISA_CFG(RVI, KVM_RISCV_ISA_EXT_I),
++    KVM_MISA_CFG(RVM, KVM_RISCV_ISA_EXT_M),
 +};
++
++static void kvm_cpu_set_misa_ext_cfg(Object *obj, Visitor *v,
++                                     const char *name,
++                                     void *opaque, Error **errp)
++{
++    KVMCPUConfig *misa_ext_cfg = opaque;
++    target_ulong misa_bit = misa_ext_cfg->offset;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
++    bool value, host_bit;
++
++    if (!visit_type_bool(v, name, &value, errp)) {
++        return;
++    }
++
++    host_bit = env->misa_ext_mask & misa_bit;
++
++    if (value == host_bit) {
++        return;
++    }
++
++    if (!value) {
++        misa_ext_cfg->user_set = true;
++        return;
++    }
++
++    /*
++     * Forbid users to enable extensions that aren't
++     * available in the hart.
++     */
++    error_setg(errp, "Enabling MISA bit '%s' is not allowed: it's not "
++               "enabled in the host", misa_ext_cfg->name);
++}
++
++static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
++{
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(kvm_misa_ext_cfgs); i++) {
++        KVMCPUConfig *misa_cfg = &kvm_misa_ext_cfgs[i];
++
++        object_property_add(cpu_obj, misa_cfg->name, "bool",
++                            NULL,
++                            kvm_cpu_set_misa_ext_cfg,
++                            NULL, misa_cfg);
++        object_property_set_description(cpu_obj, misa_cfg->name,
++                                        misa_cfg->description);
++    }
++}
++
+ static int kvm_riscv_get_regs_core(CPUState *cs)
+ {
+     int ret = 0;
+@@ -427,6 +502,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
+         return;
+     }
  
- /* Privileged specification version */
- enum {
++    kvm_riscv_add_cpu_user_properties(cpu_obj);
+     kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+     kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+ 
 -- 
 2.40.1
 
