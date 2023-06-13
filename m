@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4918472E19E
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E756D72E1B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:31:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90UL-0005Qf-Qz; Tue, 13 Jun 2023 05:38:57 -0400
+	id 1q90UL-0005Pt-5V; Tue, 13 Jun 2023 05:38:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UJ-0005Og-Hb
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:55 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UI-0005M1-B5
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:54 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90U9-0005Vp-2h
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:55 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-514953b3aa6so7407178a12.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:38:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UE-0005Yg-Kz
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:54 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9745baf7c13so781169266b.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686649122; x=1689241122;
+ d=linaro.org; s=google; t=1686649127; x=1689241127;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/rEEeIVSi5VMBmvRHFJo6Mhl1pwYu3f8je5JbYKc4lc=;
- b=vN8cYI9jW0YpIeMjga+hw/yspaOnkJJfHu2IbDcuLLQtMDFx3jl6Syn8fBWGVuKxVM
- G0Hsqd4Tc/DXPG8zhL9zc6BNwSbcJWTYXtJBToG2wMhvhUeyFKZoVle8Vm0hXPgwSB/8
- AGQ8KUJRYIYwavVUl8WwunJiFg1nQAo3/J2M3Vs29ZjTefE1aRgY6AweC6vvgIGCWXBj
- LJZF8KERLQVUKw7yubREO3UuSkZwZ+tzB7nZ+idEmlt6NfUgiypkGvOeZ3YNParqBBT5
- lShk8QUE6R6ebYIn04xHEkHqeem5iQ+TVfQ/hDrPlH4XDyCfTn6ETnM7pQdje/VdmB1p
- k1Dg==
+ bh=YSCMOMiEbLUM1Wk1LAbR+FG1B8HkFWQqVaD6LVaKVVI=;
+ b=Fbx+Y2sTOWlOzGtF+XOqdQ4xEH5zruDmrJtMnBiflePZ5DCREag2JlKofH+6PdUQwi
+ 5sJLb50AhBsk/zSAl9yN+kpF5I28dIpL2fM1v7B+i0jEl0rMeOux6y2xlxpKf1qacl6r
+ GI5iDqFJz/bYQ/HKzgp7ay2YRpGdwFGZCnHCZIHR7cpjU5kEKi3BO2SLzmcr9P4OHeWW
+ N9YTE1SXJGN3OrLQUD5de+PJyQUJj8agOabGVTkfkLMrk9+pNlJUd2KHiVGPH6VxK4HL
+ BXHx11A2ALhFDNLLWW90m5acF0TgOl3Hh2X7I7Qj1HxCwJeWgtZ5lCyfnYeeaJMynFkJ
+ YvuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649122; x=1689241122;
+ d=1e100.net; s=20221208; t=1686649127; x=1689241127;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/rEEeIVSi5VMBmvRHFJo6Mhl1pwYu3f8je5JbYKc4lc=;
- b=RwHDrWLT4zQLX5Weq6ijMcVmp1SMdX4XZAJrVCPkbo+bF2SVPL2GVAPhLEClEq3vz4
- 5a/MKurlZT+NUU56SR4EHgM5C3j+aB70fUdyBM1CgkRR89Uo9Ac0sT9EBgXfx+R5KQ2h
- HEcsM5EbpoRrlDfqqq6qT/0vlN2NtB6gUBqKmTEzsLhgYb+kBp9GEem11kqHBa7ogMj4
- EAH7r/DPXEjJBouZ9aAPEO0a/Nn8UZWBLPh31QIqwz7JOiihFB3r3CnX/QHaSwi0SDPm
- /Rpa1FSi5duZTFTtdeNUXLvSiNFo/cL1tuyn0aLLjxOCeJBGqI6gCumEn8FQA1NFqpQi
- stJA==
-X-Gm-Message-State: AC+VfDzR+vVnWRCI50I+Y5uVN/NrlDq9xn3/hypk9EF/Fpnx6G9UX2iv
- qPUdMrmRWcijcVdeNvapo+5R+PuZKINeRyseXTp4fA==
-X-Google-Smtp-Source: ACHHUZ6FkGRCnzDRIUsvgZjL7NfqolRlYfGKjrAYx+1qQxWGnu3tRT17ObwrDOODHJ824HEXI3ZwtQ==
-X-Received: by 2002:a05:6402:70b:b0:504:b177:3ef3 with SMTP id
- w11-20020a056402070b00b00504b1773ef3mr6738675edx.3.1686649122229; 
- Tue, 13 Jun 2023 02:38:42 -0700 (PDT)
+ bh=YSCMOMiEbLUM1Wk1LAbR+FG1B8HkFWQqVaD6LVaKVVI=;
+ b=L3AH7HgD9kb7ufqFCKJJPmu8WrD0g7cXwkF3Ilfg6I1lIiUCF2ofk7LRdPPOJLiwd9
+ hCaCv7FpYMDm3IqGsaQxHFtxHbXMFVOXbxBsi9KQG2qOHunaGDgEWWmSXU1sKtoqrVw5
+ kE5UppMawH1AG+gtRrFTgNgoEUJCPBkOrjJg23Mru3Nt3zEkatJ9j19W5Ie70qD1Jzfz
+ 8X+VcbyAlegXderMg0Zv/GE8U35kUkUgnP5w/3kUvlPWI9f9SvI2P7UTTS2OfGUChzCp
+ VyRwFnlF+TtCnnMD3UxZVq2kxVbaV2xisPfLsijhdpBRMKYOlmLTZSyLEW3meSqveR/u
+ hUcQ==
+X-Gm-Message-State: AC+VfDwkBXS/kozi89f393spH4x28M2tgB9pvs1lWdFy/dst1gHsrkDq
+ E3v5YOi83jpuoYC20mhycqruCl3BI/Tsf6SuLxiMAA==
+X-Google-Smtp-Source: ACHHUZ5ve+O8D8woiB0/eljv2RXuGAKJXZOeX2O7av+uzh85x4tqsIOoSgBkhLyvG7m0r1INRLcBJg==
+X-Received: by 2002:a17:907:97c5:b0:982:45ca:ac06 with SMTP id
+ js5-20020a17090797c500b0098245caac06mr335280ejc.60.1686649127569; 
+ Tue, 13 Jun 2023 02:38:47 -0700 (PDT)
 Received: from localhost.localdomain ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- u11-20020aa7d0cb000000b00514a97b6b80sm6185031edo.78.2023.06.13.02.38.41
+ qc11-20020a170906d8ab00b00977d7ccd9fdsm6532138ejb.95.2023.06.13.02.38.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 02:38:41 -0700 (PDT)
+ Tue, 13 Jun 2023 02:38:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 04/17] util/cacheflush: Avoid possible redundant dcache flush
- on Darwin
-Date: Tue, 13 Jun 2023 11:38:09 +0200
-Message-Id: <20230613093822.63750-5-philmd@linaro.org>
+Cc: qemu-block@nongnu.org, Antonio Caggiano <quic_acaggian@quicinc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 05/17] accel/hvf: Report HV_DENIED error
+Date: Tue, 13 Jun 2023 11:38:10 +0200
+Message-Id: <20230613093822.63750-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613093822.63750-1-philmd@linaro.org>
 References: <20230613093822.63750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,47 +91,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<libkern/OSCacheControl.h> describes sys_icache_invalidate() as
-"equivalent to sys_cache_control(kCacheFunctionPrepareForExecution)",
-having kCacheFunctionPrepareForExecution defined as:
+From: Antonio Caggiano <quic_acaggian@quicinc.com>
 
-  /* Prepare memory for execution.  This should be called
-   * after writing machine instructions to memory, before
-   * executing them.  It syncs the dcache and icache. [...]
-   */
+On MacOS 11 and subsequent versions, in case the resulting binary is not
+signed with the proper entitlement, handle and report the HV_DENIED
+error.
 
-Since the dcache is also sync'd, we can avoid the sys_dcache_flush()
-call when both rx/rw pointers are equal.
-
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+Message-Id: <20230608123014.28715-1-quic_acaggian@quicinc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230605195911.96033-1-philmd@linaro.org>
 ---
- util/cacheflush.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ accel/hvf/hvf-all.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/util/cacheflush.c b/util/cacheflush.c
-index de35616718..a08906155a 100644
---- a/util/cacheflush.c
-+++ b/util/cacheflush.c
-@@ -241,7 +241,14 @@ static void __attribute__((constructor)) init_cache_info(void)
- 
- void flush_idcache_range(uintptr_t rx, uintptr_t rw, size_t len)
- {
--    sys_dcache_flush((void *)rw, len);
-+    if (rx == rw) {
-+        /*
-+         * sys_icache_invalidate() syncs the dcache and icache,
-+         * so no need to call sys_dcache_flush().
-+         */
-+    } else {
-+        sys_dcache_flush((void *)rw, len);
-+    }
-     sys_icache_invalidate((void *)rx, len);
- }
- #else
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index 754707dbfb..4920787af6 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -38,6 +38,12 @@ void assert_hvf_ok(hv_return_t ret)
+     case HV_UNSUPPORTED:
+         error_report("Error: HV_UNSUPPORTED");
+         break;
++#if defined(MAC_OS_VERSION_11_0) && \
++    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
++    case HV_DENIED:
++        error_report("Error: HV_DENIED");
++        break;
++#endif
+     default:
+         error_report("Unknown Error");
+     }
 -- 
 2.38.1
 
