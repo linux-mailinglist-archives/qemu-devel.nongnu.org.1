@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F46572EA73
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 20:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D60872EA89
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 20:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q98Mh-0003sn-Hg; Tue, 13 Jun 2023 14:03:35 -0400
+	id 1q98Qy-0004rr-Hd; Tue, 13 Jun 2023 14:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q98Mf-0003sO-I5
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:03:33 -0400
+ id 1q98Qw-0004rc-An
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:07:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q98Me-0004u7-0s
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:03:33 -0400
+ id 1q98Qu-0005Uy-Oe
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:07:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686679410;
+ s=mimecast20190719; t=1686679676;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4im4cEQwh1voYXMsaMWNtDpSmVXFd2l+MaDEUIpirr4=;
- b=HAc6XxJ0vJWR6nb1fRAQe/pPepOQeF0AD8CwkQrdgILhSkiJzDFYe6v+a3sGmWdT3cpLbO
- LBasMCmFSQwOw2INjm7uTMfAkOt207km/RKkhkyVx6EDXIt0LU0+mpFZTXWgAvwiT4Y29s
- e/FYKVRjgf+we+ACBYc5BKSlp7bem84=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EIwjUe70lnPjCqJmJHLMSZF8zyEQb/B/oYc60UT7piA=;
+ b=U6La9usjfD3LaPAfKH+9QYRHx155ko7EzckeVX1g9I2nrFHaZzjSzOlzgvwM+d6jORjH1o
+ heovfPRqb9XrkofSYGCPI9IWeghf4XnbBZU3McHIGlFj5eLONzqSPJ+q/ZSPosBOTIASOG
+ VgN70oI6MWlXKtWsOFUs3Ik9wPbclMI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-218-e_X8ylIYOZeXOqNs7eetyg-1; Tue, 13 Jun 2023 14:03:29 -0400
-X-MC-Unique: e_X8ylIYOZeXOqNs7eetyg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f7678c74beso37349255e9.3
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 11:03:23 -0700 (PDT)
+ us-mta-382-CoHWspXvOmSwth4T7dohiA-1; Tue, 13 Jun 2023 14:07:53 -0400
+X-MC-Unique: CoHWspXvOmSwth4T7dohiA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30c6060eb32so8463145f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 11:07:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686679402; x=1689271402;
+ d=1e100.net; s=20221208; t=1686679672; x=1689271672;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4im4cEQwh1voYXMsaMWNtDpSmVXFd2l+MaDEUIpirr4=;
- b=O6uUsVh5L+me+UnRS/JNm0K/DjhuSHYQ1A6gB9PRWg6ef3fH2Vo+KgIvDkMe0JTimM
- C6Pl3TCyGz8UjQBSCURkGHoHM0a4goPLzsgKZ/PFWYymdGKdHRmh06yTHIPoAxlB2z5l
- KDN+Y35bS0kUPiELECf+7d7sSaiHyoflvaa4Dmy5iRXfMgI/xs51ulYpDkYpYJu3VkeV
- h6R/W8psBPcevO+TrEN6pxK19O1cE37LSi/umizA5AQE4DSlawAoErzMqoju6jiVIhUh
- up1k1eNrXTD9mGpL5YygURnWZ0oHp4sN/mt77T+BK+WuxE4MhVUsnF1oMgufcPd3FAOv
- RClw==
-X-Gm-Message-State: AC+VfDwTDVRMPhMj8z05CGZoZxtBMvHBmwqOG640Yf/Cqzl+b0IRCweH
- FXr6Y9dOJ9M/7z7gacnohjDbiSi+ZNP2Oj0dFZE8p7/NOjl1dSa2e7dMM8TS/xfdDmFrjX/Ao7o
- Vot/nzY5lNQPds54=
-X-Received: by 2002:a7b:ce8a:0:b0:3f7:b6d9:46a0 with SMTP id
- q10-20020a7bce8a000000b003f7b6d946a0mr10649458wmj.30.1686679402347; 
- Tue, 13 Jun 2023 11:03:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4CgO33IYC7johbq4o8oFO6Fdn/QJKBI/M9sforpHwpP7LvFWc89dtW9PwEn/X+v1/JxbFhFw==
-X-Received: by 2002:a7b:ce8a:0:b0:3f7:b6d9:46a0 with SMTP id
- q10-20020a7bce8a000000b003f7b6d946a0mr10649440wmj.30.1686679402071; 
- Tue, 13 Jun 2023 11:03:22 -0700 (PDT)
+ bh=EIwjUe70lnPjCqJmJHLMSZF8zyEQb/B/oYc60UT7piA=;
+ b=ZlIkTM2cJPCVZcBSlq+/QAdusOzWXYdDEIVZ9Jmpj/8rNmAZbljx5UChaVsQe7m8LI
+ OqWe/MavTqJ1J7gJY43yTZ8ZVrvkt1nsIxypxBQBVNlRzb05YU13SpUdFVebKb64nkuk
+ gv6bkUpt+CFUZ/kgLSv2Tu7flM/WIPplFZthpTJ9siwlotYSqwmP61stB6o8/hTmZRhj
+ YeHc8ybKfkvLoM8FJ8omM9/38sn9UkjXmpJHlgiwgYzcd0SVododIgEM4buzORfqabyl
+ 4m0KqQAV4j6SihI3at1kvwz8PiEPd5AGquexdlf9bco6dDDkXpzfWzETx6KzmJXfatZ8
+ 4prQ==
+X-Gm-Message-State: AC+VfDwYOQjygBgHK28WNZKH4lffX+vWJmzIA66qQv0DGcEx4Gkc9N2K
+ xgYH+vXfieNYwjbJUx9GGwY1nGGZCQLJ2Zknk7CaaeI6FfJv5uO8E0ffUgRF0jN8hVSXKUE5GJq
+ JJjVsBJkDvRlVVKc=
+X-Received: by 2002:a5d:4142:0:b0:30f:d22c:83e1 with SMTP id
+ c2-20020a5d4142000000b0030fd22c83e1mr1013148wrq.51.1686679671739; 
+ Tue, 13 Jun 2023 11:07:51 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ69MPa30I3jFcRuehRIzJzMyd5X0fw3q5WWxgSsJlwxpnW3kkQj79ToHSRBUrMSmGhuf0o5HA==
+X-Received: by 2002:a5d:4142:0:b0:30f:d22c:83e1 with SMTP id
+ c2-20020a5d4142000000b0030fd22c83e1mr1013130wrq.51.1686679671405; 
+ Tue, 13 Jun 2023 11:07:51 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- 18-20020a05600c021200b003f8d6647661sm1001198wmi.15.2023.06.13.11.03.21
+ y14-20020adfdf0e000000b003063772a55bsm15989393wrl.61.2023.06.13.11.07.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 11:03:21 -0700 (PDT)
+ Tue, 13 Jun 2023 11:07:50 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: ~hyman <hyman@git.sr.ht>
 Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
@@ -79,8 +79,8 @@ In-Reply-To: <168618975839.6361.17407633874747688653-7@git.sr.ht>
  (hyman@git.sr.ht's message of "Thu, 08 Jun 2023 00:21:58 +0800")
 References: <168618975839.6361.17407633874747688653-7@git.sr.ht>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Tue, 13 Jun 2023 20:03:20 +0200
-Message-ID: <87mt13ck9j.fsf@secure.mitica>
+Date: Tue, 13 Jun 2023 20:07:49 +0200
+Message-ID: <87fs6vck22.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -120,6 +120,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Nit for the resent.
+
+> +int64_t dirtylimit_throttle_time_per_round(void);
+> +int64_t dirtylimit_ring_full_time(void);
+
+int64?
+> @@ -267,7 +278,9 @@
+>             '*postcopy-blocktime' : 'uint32',
+>             '*postcopy-vcpu-blocktime': ['uint32'],
+>             '*compression': 'CompressionStats',
+> -           '*socket-address': ['SocketAddress'] } }
+> +           '*socket-address': ['SocketAddress'],
+> +           '*dirty-limit-throttle-time-per-round': 'int64',
+> +           '*dirty-limit-ring-full-time': 'int64'} }
+
+int64
+
+
+> +/* Return the max throttle time of each virtual CPU */
+> +int64_t dirtylimit_throttle_time_per_round(void)
+> +{
+> +    CPUState *cpu;
+> +    int64_t max =3D 0;
+> +
+> +    CPU_FOREACH(cpu) {
+> +        if (cpu->throttle_us_per_full > max) {
+> +            max =3D cpu->throttle_us_per_full;
+> +        }
+> +    }
+> +
+> +    return max;
+> +}
+
+s/int64_t/uint64_t/?
+
+> +
+> +/*
+> + * Estimate average dirty ring full time of each virtaul CPU.
+> + * Return -1 if guest doesn't dirty memory.
+> + */
+> +int64_t dirtylimit_ring_full_time(void)
+> +{
+> +    CPUState *cpu;
+> +    uint64_t curr_rate =3D 0;
+> +    int nvcpus =3D 0;
+> +
+> +    CPU_FOREACH(cpu) {
+> +        if (cpu->running) {
+> +            nvcpus++;
+> +            curr_rate +=3D vcpu_dirty_rate_get(cpu->cpu_index);
+> +        }
+> +    }
+> +
+> +    if (!curr_rate || !nvcpus) {
+> +        return -1;
+
+What does -1 brings up that 0 don't?
+
+i.e. returning 0 here would mean that nothing has been dirtied or that
+we don't have any vcpus running, right?
+
+Later, Juan.
 
 
