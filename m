@@ -2,158 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0760972D939
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 07:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF9272DA20
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 08:48:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8wb0-0006IC-Sb; Tue, 13 Jun 2023 01:29:34 -0400
+	id 1q8xni-0003GR-G4; Tue, 13 Jun 2023 02:46:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1q8wai-0006GE-KG
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 01:29:21 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1q8waf-0002Ll-LH
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 01:29:16 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35D2d4kk009115; Mon, 12 Jun 2023 22:29:08 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint20171006;
- bh=zvP9wuUtra/3OpNjcvdIcsrp7ne0J6vVoZxLOAm0AbY=;
- b=UEdsbqEcivnxaBHzd+hjSuo8mim07Lm8vQLgbg47PQ9AUQpQpoT1XJVocgFi2Y+RrCz8
- 4DOfnzd8/Qus1y19HENuJzD6glGfEYuZpiR2+eEwbezeN5ltYyu4mwWNsDeams11f0Qw
- GbxK6uN7q3i9aYPUO+GEMBTJ9vdK0s8ZlLxLepVmi0EFB2Tb87jUg3TwNCULapLUjFiv
- r2qmNxWjA91DcWWUPAM6GV5CQwtLyBawlk6k3XV/YmyvOy4AOnH/kbGpKwF/E/yv0Ypc
- +qFIZruUw4ZNh3qlQLOyXLcdD0eturGJ53ybKTZblPuy8YTsRTt1OBrgIabhveE2ovBP mQ== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2172.outbound.protection.outlook.com [104.47.56.172])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3r4rgd4qr7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jun 2023 22:29:08 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SYv5QLPyjkb/KyV8UmpcMFBEvhZr2a6IdO27J4OeEV061kbOMqTn6XcxZLa0wJnc+FJQqopEdKo3gCbkSXKhSydtos5yljih2zmoUns8/Zzp+5hEYRNVlFE3pdUKyvvI5Z/qvVc/UkLlAlUCPpRQUsl265B4rWU/LpUgdjBYJLKZ9W6huUgnXOOZkU1qXCq8Gt3Imjf8fyDISfXctS4K5s09a0PxYUiAIp9BfopLzPNQ5NAfr8UAkbAJ6C2nLHkdz5I65p3dAPTuKvI2lQWoTNtPRF2k2bf5SdAvDFrcaR2znk8hFDCoNA1xdBbkRaKl7u4LXtIC0c6Et664hsCA9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zvP9wuUtra/3OpNjcvdIcsrp7ne0J6vVoZxLOAm0AbY=;
- b=PueEhQb3yDuELOgCTW0+BcbAy9PXzh0uG+WCjhkQl4cwdc0IqoOAKxiXLjraygdAhro16qElX4rLgTS+YyvKztn7NY1mdMbFg8SJpVTJCl1GRwLgLZPjd1gJWlKMmP6OYuQeDr7DfLCdNSO+gKbsuxv8wfXMeSP+qfuVxu2W5txCjmUZtbpzipkxzclM5vtUCZj4k4c4a+tQOJNEMTXYFCJuYlEXWMzPkjiWjrHFIZcXTODHE3dFsN8WI9hk8ewK6nRHUa+WpR4Mq6gq6XdSspM1Fp2weQAFiixabYil46mK8hnZ5sJEvDP7pnfhi9BGSHg5waUo0D4wLCL++Kou7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zvP9wuUtra/3OpNjcvdIcsrp7ne0J6vVoZxLOAm0AbY=;
- b=u0OsMORuAcw0qpT/SuCaGS42x1jZIbNtWlnzWEdPPzwMycY+vNhfNNhtocDgmeSLdc6sqGMCxLvmhNMZDfk7kSWR7nImr0s5O4XdKNGa35o2Chio7u13RfxLMPfNSj2Sqk7SG5qJvDKgGvf0s0Eg1HhuK4WON6ee9iZsL3Tb4Pi4GAc52VADeDKwOOom1YO/1FmeY8+viJdElZojWgGA8J9a02cknpt/EVQDmcUiEIjURHjidZHevb4RW3jOGM36/R++sWaOsG7DjxwKmdQRJCdv/iEgdBiTx8R+LWoDcI3+sr2GbMQa6m2h/lFtXJ9i15l382mbRRpyXLs87eSoiQ==
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
- by SJ0PR02MB7471.namprd02.prod.outlook.com (2603:10b6:a03:296::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.29; Tue, 13 Jun
- 2023 05:29:04 +0000
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::26a6:11ae:fb38:5920]) by BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::26a6:11ae:fb38:5920%7]) with mapi id 15.20.6455.039; Tue, 13 Jun 2023
- 05:29:04 +0000
-Message-ID: <119c9352-e93f-cb77-f2b0-935d808b0f1e@nutanix.com>
-Date: Tue, 13 Jun 2023 10:58:49 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v6 1/9] migration: introduced 'MigrateAddress' in QAPI for
- migration wire protocol.
-To: qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20230606101557.202060-1-het.gala@nutanix.com>
- <20230606101557.202060-2-het.gala@nutanix.com>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <20230606101557.202060-2-het.gala@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0P287CA0007.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::18) To BYAPR02MB4343.namprd02.prod.outlook.com
- (2603:10b6:a03:57::18)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q8xnf-0003GC-V0; Tue, 13 Jun 2023 02:46:44 -0400
+Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q8xnd-0008Jr-MI; Tue, 13 Jun 2023 02:46:43 -0400
+Received: by mail-vk1-xa2c.google.com with SMTP id
+ 71dfb90a1353d-45bcbd77636so1493827e0c.1; 
+ Mon, 12 Jun 2023 23:46:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1686638800; x=1689230800;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=p33/lqfybUnErs4SFRmt0FIPzHyWBc6NV+aiBjphook=;
+ b=nuDMbuevwuLFvXVJIDQn4g6+3pgP7p50SpN9ZwLyrJshZKdvW/f7tKKP++Gx4Sh9IN
+ ILaJndXDzB9UKq4SbQKhvq/hQNtl4E9uFz2z/jfmbMfimYYyUwnMB7xQOYpEeHnCOo1L
+ 2k43H7a+lGiGuTV8UL8cn6OmTcbKgqzkaTbCJVwkzg7swh0Gg+F3uRQGoBQ13GCIuq+H
+ GX4kk99zG8tiE7q6u97rzUk9OfJ7ftDG712cAZ6fXvnsPEjScBn+s77IAabod5h1ueth
+ yf1VUPdYPIdkZMKi/qpTZl+Wo7sghL4+ZjZczz4PCCYUFbavRAAB9vDfEVHWxXEP/wGR
+ 3Vsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686638800; x=1689230800;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=p33/lqfybUnErs4SFRmt0FIPzHyWBc6NV+aiBjphook=;
+ b=aNTcBka+SAFOAK5Vdox8gG30GXeSv5WwrOGiMnW0mx0Hc+2eUvMS1yyytB08zz6q93
+ h1ATzE4alhe9doIHEgg+qTnX96FJ0hw9EXDDozIyHAGuEpDOmZmJyYK/KdR3AXFVinZ7
+ fyfPiJkzd4EyJ+qLFhCbfSlyC3/JEzShSywFiDOYc3Dk7S0rmJ68xoasr9EZVRsN4K4S
+ yRag75W0vdmDsOsqWBY75DxLRR2bZAWE21Eg6ZZ5rIuhBGU7EsjfnlUu6E+lUqfTbJhu
+ o40IQadoCDC4vbdfz7SqFVGe96nv8n/kv934FJayVax/QZD7CNMovDHjoVKmNaVogsgI
+ jrCA==
+X-Gm-Message-State: AC+VfDwng6MQo36ogcTEKGcjBRNYUZ8XcKy4D8pvn+lvDIFsRjtsm6yR
+ z/zvgEAhJjEh3iCYYyWWYSoLBa79FGaOegPaqYs=
+X-Google-Smtp-Source: ACHHUZ731LfIkypYCZ9Yosw11ICxBLNsdCNYzhFUaktWCQuWN8i4iFbm8dHuhFXncLk1vx0igbZVmD2iYZaxBY56DL8=
+X-Received: by 2002:a1f:5f53:0:b0:45c:d69f:bb89 with SMTP id
+ t80-20020a1f5f53000000b0045cd69fbb89mr5717195vkb.5.1686638799802; Mon, 12 Jun
+ 2023 23:46:39 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|SJ0PR02MB7471:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8acce16f-7d63-4093-0b6b-08db6bcf1977
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EySdyqt7KIr/X9EiWLwzJh7PTBq4hMwTVtNWmhxvCc0ixQcXKK7JpYKfzvzd6Xi64anWO6UUG2iHOeT762EsQA4+thACnmmeikHIvI/r0fcCHtMktElWoY1rc4W2i4uJFJccyhEcdnI3faYmzWgyd5BSmlsCs+j8vSZiIDf+ZXPp/L/G0d09VQ/LzWLw00LnEeC7ZgG2E8/F6qC3dDADojj8UFSZQ9e+MI2+CmkdtQKtdFuMdISYPG426UOHiZxFRgZsPV7v4ndByj3krLVRwFPqfB8LVgAUp1hqavIEJO+0K1yr5J5MiR9MPC19X4+u9xsoJjeaQPSi72j334GQmnbA23V0loqE0aztR9Yo4sHcPVr5Dfy3OyZ3dxmnWe1/FSf/GhUEaKDlkMb9cEFmzaiLQXMFRqDNtkRigd7ZzlG4NDH10XP6WqnOuIHTFpxx2qVuGipxyS47t4jlTc4owgXXhwyuk2m9fYfTpE4HAXtK5KbpDnkK2tmtS1U3GMS+75lHAPgKUXx973SNh5kf1fl6DSwh0RDO8ko27NGR6aVaINtroKcdt0yG1kgP2sRvYM12L5NBFWGt0AWiZc7Yngoge3H8qq2kgxbxzLLT1U8dLn/W/GnI1LtRTfDsVukefnZwLWGklRIJvOfJRmT+Og==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(39860400002)(396003)(376002)(136003)(366004)(346002)(451199021)(31696002)(36756003)(86362001)(66556008)(478600001)(6916009)(4326008)(66946007)(66476007)(6666004)(316002)(107886003)(6486002)(5660300002)(44832011)(2906002)(8936002)(8676002)(41300700001)(38100700002)(2616005)(26005)(53546011)(6512007)(186003)(83380400001)(6506007)(66899021)(31686004)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUJ5V2N2WUJySnZNZC9HU0EzTTByOTdwdTRycEYybU0rNllQc3VqZmhEN0x3?=
- =?utf-8?B?ZDkzSlhCVnBoL2ZwUjVsWXlyaEdqQzFIWHR0cDJ2aWhNUFlNdHozd3dhN0k2?=
- =?utf-8?B?S2VVTjlTMDhYTEV3b0gwODB0dmFwVjI0ZnpYQ0RtckdsRlVDK0dCaHFTRDZz?=
- =?utf-8?B?bnFzREhsY1l5WkJDMzNZbkp3dks1V0ZIWTRNOFpYYkZaY0JNbE1TbTltek5h?=
- =?utf-8?B?Z1BmQURDdEJpWU1DTHNNOFNpSUllcDA4S0JwR3hkVndrNXlUUW5jaGRBeDlX?=
- =?utf-8?B?dVA2QTlMWFpTclUvVkVIOTR2RnBwS0k5cmtVN3Y3WXptcmxETWR5Q0FGaWJI?=
- =?utf-8?B?dytSdnh4ZjhLQ1h3ZnZCcDV5S0tTUkZZWHpiMVBhaDUxNktRano1bFRPNEZv?=
- =?utf-8?B?R1FGZTZMcVk1cmlTOHp5TTRKWm40Q1hqTzFWVS8zZmVsaE1TOGNpU2E5Nloy?=
- =?utf-8?B?N0JBTGJ2R3d3VXhpOUNrTW1Qd3VXU2tOVEVSNHZGT2owYnphVXBMeSt2dmxN?=
- =?utf-8?B?RzN4bENEQjdDS1JYbXRsM2ZKUHVCd1NvZjd2bEp4d0c0Q1QzOUhVVzI4bFY1?=
- =?utf-8?B?U0tWZVorVklPaXQvYVdYdzZSUmRScEpvUDNmWXF0UzZKWjF1di84VWdISXJX?=
- =?utf-8?B?UTluOGU2M0ZOLzM2MlVDVkdtbkU2azUxeVAzRkhlNmROVnU0aTVxUGxLc3Jw?=
- =?utf-8?B?NmFyUHFjbFZlUVdqOXlOdjFXSm5rTE8rYksxUjFIWXN4UVVVUStGTU1hb3Ns?=
- =?utf-8?B?MmtySk45RVFwdklRdXZiWnNscVY0WTFZdnQ5V1FmcWpWOFBYMnZYRVJXVE4x?=
- =?utf-8?B?d3k0WDZLc2Nta2Y0azlzYmxxelFOYnM4bUtQdGpOOG1kNHZ2T0J1NzlTQXZy?=
- =?utf-8?B?emRVQUFXTDlQL1hQaGlTdGVxVElkUDdSVUlPU0hFRHh4SWRud2pBQTRJV0hD?=
- =?utf-8?B?ZXluTkljSmxsbWlpNloxOTZyUnNLVmM2d2ZpVXJrSmRoSVNDdjdtakxGNEoz?=
- =?utf-8?B?Z3JHS0hLcHRsRDVjeFVQNmR0Y0ZRaks0b21QZW1qMEhxN1hRREMvQUg5cHF4?=
- =?utf-8?B?NldXMXVRTE1FejYrWHFkbUVvaVdjQ1JyclRNY3Z4RW5PY1duTWN5b0grTENJ?=
- =?utf-8?B?amNuUm5BMHpMd0FZNmV6cXVIeS9NdUFWalJsemVaRFU4MndpNlB0RXNFYzd5?=
- =?utf-8?B?VHRMMnNCYWNEWk9IUmVVWS9URXV2MXFQY3FNaUtpb2RPMWNVRnR1YVlwQkdF?=
- =?utf-8?B?OU9sbGQyb3hDckp1TzA2UkN6THpWYk5Da3NpNi9uMERJVGtKWG5EVkZJWjNj?=
- =?utf-8?B?NzBHU3lxQkZwUkZ3MEcvSGJWVm9MV2tzTmU2NUVLZWpEWWFoaDdnaUdJYjV0?=
- =?utf-8?B?dkd2dzVMZGdOczZiQ2UyUjR5SExKT25LdzZmcTZqK0p0RmVkeDZzQkh4TW8z?=
- =?utf-8?B?RjMwVEUxN25keS9SQVBLSHRTbDlYMGJRS3BTMnFuUmdwb0lYb2x5N25LUHpI?=
- =?utf-8?B?REN4ZjRnTHNvMUpEbTdLRFJjbFFFaFppRDdHTUloUXhvYzN5L3dCTDFhamRy?=
- =?utf-8?B?MHNIUUZmZjJqc29BZ2YrSkREY1JmNVBtem1UVGV4WEQ4WWtKOE5MUkpFTC9M?=
- =?utf-8?B?c1czMmIrMUhGMmJFeTBoQ2x0bEUya1I3LzBhUm9XbW4wU3dPbTVOS1NjMkFw?=
- =?utf-8?B?bTVDZTVvTUk1SE8yWW1SRmRiY1UrcEFWbFJlUjVEaU9qVHVIQXRyNFYzSms2?=
- =?utf-8?B?NXFaNGEyQWFyY0p1MjVFZXVsaE9TRGFFRFpQZjRKb0QrVlh4LzB4aExDdTdD?=
- =?utf-8?B?RFMweEVsdHZ1b0dyOE9La0Q2QXBIZDZWYXZPWVVVVjNPeWltQ2RlTGtkU3dv?=
- =?utf-8?B?VWx1ZWx1c0xmLzBEa3NvZldkd2p0NFM4TnlmYWZsTzl0cDFrcGxod0tQWEx6?=
- =?utf-8?B?QlorVVdmMmdZRjNoRGNnTk1iSEFmTFpqdlJ1WU1rMWZEa1FlN0lwVkpqWTRl?=
- =?utf-8?B?QUppVnlrNVo3dHpzQ2l6Q0dqZ2luVktnMmhpeEs2VmdDbU0wMndXUWxlckZJ?=
- =?utf-8?B?T2JGOWZ3VXo0TUN4NzZMcWh1SmloT0JGV1BHTDE5RUZVVnpvRXVWTTZkQWxh?=
- =?utf-8?Q?6LDXIEC/MaME3+asmtXyWl5CS?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8acce16f-7d63-4093-0b6b-08db6bcf1977
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2023 05:29:03.7358 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ehHh6l8ei857gcnMLc3sGDj+J2gH/cUMggCS53ArzZwMZr0AnHkpR91uSJtYKn6fvHIKa9vyCwxWRzF1QYYrzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7471
-X-Proofpoint-GUID: fUwmY3QL0m9af4vSdJArPQhOXquWyYqB
-X-Proofpoint-ORIG-GUID: fUwmY3QL0m9af4vSdJArPQhOXquWyYqB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-13_02,2023-06-12_02,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-4-dbarboza@ventanamicro.com>
+ <CAKmqyKNm1cH+fqqNKtm6+bKovdCqajoAcbTpWtA7BH=wLK5j+Q@mail.gmail.com>
+ <11aee932-be06-ed42-bf7e-09c8e3ed1045@ventanamicro.com>
+In-Reply-To: <11aee932-be06-ed42-bf7e-09c8e3ed1045@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 13 Jun 2023 16:46:13 +1000
+Message-ID: <CAKmqyKO9ysf5domWV_SFr_hex5ZudmiQxEzwqiNXEojpW3ZzPg@mail.gmail.com>
+Subject: Re: [PATCH 03/16] target/riscv/cpu.c: restrict 'mvendorid' value
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -170,95 +90,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jun 13, 2023 at 4:52=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+>
+>
+> On 6/12/23 00:56, Alistair Francis wrote:
+> > On Wed, May 31, 2023 at 5:49=E2=80=AFAM Daniel Henrique Barboza
+> > <dbarboza@ventanamicro.com> wrote:
+> >>
+> >> We're going to change the handling of mvendorid/marchid/mimpid by the
+> >> KVM driver. Since these are always present in all CPUs let's put the
+> >> same validation for everyone.
+> >>
+> >> It doesn't make sense to allow 'mvendorid' to be different than it
+> >> is already set in named (vendor) CPUs. Generic (dynamic) CPUs can have
+> >> any 'mvendorid' they want.
+> >>
+> >> Change 'mvendorid' to be a class property created via
+> >> 'object_class_property_add', instead of using the DEFINE_PROP_UINT32()
+> >> macro. This allow us to define a custom setter for it that will verify=
+,
+> >> for named CPUs, if mvendorid is different than it is already set by th=
+e
+> >> CPU. This is the error thrown for the 'veyron-v1' CPU if 'mvendorid' i=
+s
+> >> set to an invalid value:
+> >>
+> >> $ qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mvendorid=3D2
+> >> qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mvendorid=
+=3D2:
+> >>      Unable to change veyron-v1-riscv-cpu mvendorid (0x61f)
+> >
+> > Is this something we want to enforce? What if someone wanted to test
+> > using the veyron-v1 CPU but they wanted to change some properties. I
+> > don't see an advantage in not letting them do that
+>
+> The idea is to keep things simpler for us. As it is today we forbid users=
+ to
+> enable/disable extensions for vendor CPUs. Doing the same thing for
+> mvendorid/marchid/mimpid seems consistent with what we're already doing.
+>
+> Also, guest software might rely on vendor IDs from the CPU to take certai=
+n
+> actions, and if the user is free to change the CPU ID from vendor CPUs th=
+e
+> software will misbehave and the user can claim "I created a veyron-v1 CPU=
+ and
+> the guest it's like like it's not". Allowing mvendorid and friends to be =
+changed
+> doesn't do much for users (we forbid enabling/disabling extensions, so wh=
+at's
+> to gain from changing machine IDs?) and it can be a potential source of b=
+ugs.
 
-On 06/06/23 3:45 pm, Het Gala wrote:
-> This patch introduces well defined MigrateAddress struct and its related
-> child objects.
->
-> The existing argument of 'migrate' and 'migrate-incoming' QAPI - 'uri'
-> is of string type. The current migration flow follows double encoding
-> scheme for  fetching migration parameters such as 'uri' and this is
-> not an ideal design.
->
-> Motive for intoducing struct level design is to prevent double encoding
-> of QAPI arguments, as Qemu should be able to directly use the QAPI
-> arguments without any level of encoding.
->
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   qapi/migration.json | 45 +++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 45 insertions(+)
->
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 179af0c4d8..e61d25eba2 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -1407,6 +1407,51 @@
->   ##
->   { 'command': 'migrate-continue', 'data': {'state': 'MigrationStatus'} }
->   
-> +##
-> +# @MigrationAddressType:
-> +#
-> +# The migration stream transport mechanisms.
-> +#
-> +# @socket: Migrate via socket.
-> +#
-> +# @exec: Direct the migration stream to another process.
-> +#
-> +# @rdma: Migrate via RDMA.
-> +#
-> +# Since 8.1
-> +##
-> +{ 'enum': 'MigrationAddressType',
-> +  'data': ['socket', 'exec', 'rdma'] }
-> +
-> +##
-> +# @MigrationExecCommand:
-> +#
-> +# @args: list of commands for migraton stream execution to a file.
-> +#
-> +# Notes:
-> +#
-> +# 1. @args[0] needs to be the path to the new program.
-> +#
-> +# Since 8.1
-> +##
-> +{ 'struct': 'MigrationExecCommand',
-> +  'data': {'args': [ 'str' ] } }
-> +
-> +##
-> +# @MigrationAddress:
-> +#
-> +# Migration endpoint configuration.
-> +#
-> +# Since 8.1
-> +##
-> +{ 'union': 'MigrationAddress',
-> +  'base': { 'transport' : 'MigrationAddressType'},
-> +  'discriminator': 'transport',
-> +  'data': {
-> +    'socket': 'SocketAddress',
-> +    'exec': 'MigrationExecCommand',
-> +    'rdma': 'InetSocketAddress' } }
-> +
->   ##
->   # @migrate:
->   #
+Fair points. Ok, fine with me then :)
 
-Hi maintainers, this is just a reminder mail for v6 patchset for 
-modification the QAPI design for migration qapis - 'migrate' and 
-'incoming-migrate'. From the last discussion, I have modified 
-definitions specifically around QAPIs in patch 1 and 6, and have tried 
-to make it short and consice and meaningful. Please have a look at it 
-and suggest if any changes required. Tagging maintainers who have 
-actively participated in the discussion in last few iterations : Markus, 
-Daniel, Eric, Juan - but regardless other maintainers are also very well 
-welcomed to share their opinions.
+Alistair
 
-Regards,
-Het Gala
+>
+>
+>
+> Thanks,
+>
+>
+> Daniel
+>
+>
+> >
+> > Alistair
+> >
+> >>
+> >> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> >> ---
+> >>   target/riscv/cpu.c | 31 ++++++++++++++++++++++++++++++-
+> >>   1 file changed, 30 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> >> index 72f5433776..bcd69bb032 100644
+> >> --- a/target/riscv/cpu.c
+> >> +++ b/target/riscv/cpu.c
+> >> @@ -1723,7 +1723,6 @@ static void riscv_cpu_add_user_properties(Object=
+ *obj)
+> >>   static Property riscv_cpu_properties[] =3D {
+> >>       DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+> >>
+> >> -    DEFINE_PROP_UINT32("mvendorid", RISCVCPU, cfg.mvendorid, 0),
+> >>       DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_M=
+ARCHID),
+> >>       DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIM=
+PID),
+> >>
+> >> @@ -1810,6 +1809,32 @@ static const struct TCGCPUOps riscv_tcg_ops =3D=
+ {
+> >>   #endif /* !CONFIG_USER_ONLY */
+> >>   };
+> >>
+> >> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+> >> +{
+> >> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) !=3D =
+NULL;
+> >> +}
+> >> +
+> >> +static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *na=
+me,
+> >> +                              void *opaque, Error **errp)
+> >> +{
+> >> +    bool dynamic_cpu =3D riscv_cpu_is_dynamic(obj);
+> >> +    RISCVCPU *cpu =3D RISCV_CPU(obj);
+> >> +    uint32_t prev_val =3D cpu->cfg.mvendorid;
+> >> +    uint32_t value;
+> >> +
+> >> +    if (!visit_type_uint32(v, name, &value, errp)) {
+> >> +        return;
+> >> +    }
+> >> +
+> >> +    if (!dynamic_cpu && prev_val !=3D value) {
+> >> +        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
+> >> +                   object_get_typename(obj), prev_val);
+> >> +        return;
+> >> +    }
+> >> +
+> >> +    cpu->cfg.mvendorid =3D value;
+> >> +}
+> >> +
+> >>   static void riscv_cpu_class_init(ObjectClass *c, void *data)
+> >>   {
+> >>       RISCVCPUClass *mcc =3D RISCV_CPU_CLASS(c);
+> >> @@ -1841,6 +1866,10 @@ static void riscv_cpu_class_init(ObjectClass *c=
+, void *data)
+> >>       cc->gdb_get_dynamic_xml =3D riscv_gdb_get_dynamic_xml;
+> >>       cc->tcg_ops =3D &riscv_tcg_ops;
+> >>
+> >> +    object_class_property_add(c, "mvendorid", "uint32", NULL,
+> >> +                              cpu_set_mvendorid,
+> >> +                              NULL, NULL);
+> >> +
+> >>       device_class_set_props(dc, riscv_cpu_properties);
+> >>   }
+> >>
+> >> --
+> >> 2.40.1
+> >>
+> >>
 
