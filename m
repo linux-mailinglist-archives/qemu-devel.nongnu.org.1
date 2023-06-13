@@ -2,96 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5027072E115
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EF472E1CF
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:38:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90i1-0007A9-Tl; Tue, 13 Jun 2023 05:53:05 -0400
+	id 1q91HS-000220-4f; Tue, 13 Jun 2023 06:29:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q90hz-00079z-HE
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:53:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1q90ht-0007oQ-TN
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:53:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686649975;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WP1xCac9DEhlLgUxNdwl5p6sn0F+GuhsVzgzd71Ofkc=;
- b=TPv+azNpUi3KkTluNSxsXbKEEvrC/sycIeJZR2DmQMoKiF6koL8kRfICKVslWcqt4EK41Z
- NthXQjLoWw8goOvJHXEtdKeLX7mkGwOiFdUEZkTTlc7iAak/qcu1p9AzSFEx7udlOHxt2U
- sTjmyvEs8uCy2ukIEoQ0/4gcnOeNOcM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-31-aEYu0osjMp-jBT7vCO9yXA-1; Tue, 13 Jun 2023 05:52:53 -0400
-X-MC-Unique: aEYu0osjMp-jBT7vCO9yXA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9715654ab36so473557366b.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:52:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q91HQ-00021e-31
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 06:29:40 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q91HI-00058m-KY
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 06:29:39 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-19f3550bcceso3463274fac.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 03:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1686652167; x=1689244167;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=a+Mfnoeh3AOyFqTecqx2KAWybt2AcUf0LkdEU9CaN2o=;
+ b=OteUh0oLfs07ovhIF2f4ZMm56/8yxU9RnXHaERgKgTviJWUHyJbcSbfAJRRm6YtzYX
+ MOfxKQXz2tvjLuOxMIwc82a7fNC815Bikx8L/5dInBz3zPFOeSOr3sf+Q12y3I6vb4Ci
+ HA5qrN+kSvke2CpAKX1MLDNH9yNnJuEyVYAmS9uFhOCh6KO+xG+JVkbDDhDkLZCFWkQ2
+ nDb3tOYuIvqjnTn1R7pXmGIx+4UIbiRIXqCmBhbygiyJOaRbHGrgqLlLfrnWgDYC7BCp
+ 3b3+w/xyygskV6GYUE2Fy7fx0KD2hIUrPkXdBgNQ+HOYV95qA2j4KFN1Y0MPXc2u84jn
+ l1nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649972; x=1689241972;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WP1xCac9DEhlLgUxNdwl5p6sn0F+GuhsVzgzd71Ofkc=;
- b=IHW7flbzqsEN73J81lT2PAbe9Dt+sfB9sBUu7/KS30ddEd78YCdWnzlOaU0es6rBHA
- J/Q5vSOcl6sn6nzaOza3zy/S8fqmujuJCP9dKdqFvlTLNqjrP8XuRQ1UKcMC5JrnKjxd
- wxYU6PYJGVF2eDlNjbGlRRLDwmIPQrZNMSXtsB8lEkw7XgnLz6qACyy9HuHIEmatrMXt
- F2IwsKHFSRAdXtBvw0HJ+LQ6lD/nikrWSgblo6CPaMavpZ3DVyD7WxVhq23CfWrEkXtY
- FtI44b6bmIQZrjK0AMRg0wCYNastbLV7PxO7WqPiH8WjZk/DkDOZ9aEmFiArzosSn5Oj
- 2a/Q==
-X-Gm-Message-State: AC+VfDyz8qthXosKBpq7hY2g4WNX1GZ+k+8F/RaZHpdpH174407vOYSq
- SynVLR70mrkHIePgW9Yu+ZZaZ9/ZDZWgtA4pvDTJea3V1PxpTIwYkcV+nBZBoR8X79Dt3UBg/cu
- M6RExy43WVIXUiDA=
-X-Received: by 2002:a17:906:fd84:b0:977:bf09:279 with SMTP id
- xa4-20020a170906fd8400b00977bf090279mr11833045ejb.41.1686649972603; 
- Tue, 13 Jun 2023 02:52:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5M6lxQIM2O9rppJ1E4OL9WLUxbOw8rcveOGYJqDjtCFujwRQCFlD/jDxn78hdCeYPFnCQTMw==
-X-Received: by 2002:a17:906:fd84:b0:977:bf09:279 with SMTP id
- xa4-20020a170906fd8400b00977bf090279mr11833033ejb.41.1686649972275; 
- Tue, 13 Jun 2023 02:52:52 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- u2-20020a17090663c200b009662b4230cesm6486933ejk.148.2023.06.13.02.52.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 02:52:51 -0700 (PDT)
-Date: Tue, 13 Jun 2023 11:52:50 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 15/15] hw/i386/pc_piix: Move i440fx' realize near its
- qdev_new()
-Message-ID: <20230613115250.08e03e9b@imammedo.users.ipa.redhat.com>
-In-Reply-To: <4F200210-F39C-49CD-B7FD-AF9F556C8493@gmail.com>
-References: <20230611103412.12109-1-shentey@gmail.com>
- <20230611103412.12109-16-shentey@gmail.com>
- <20230612165155.087ba275@imammedo.users.ipa.redhat.com>
- <20230612172119.5b9e6d7e@imammedo.users.ipa.redhat.com>
- <4F200210-F39C-49CD-B7FD-AF9F556C8493@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20221208; t=1686652167; x=1689244167;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=a+Mfnoeh3AOyFqTecqx2KAWybt2AcUf0LkdEU9CaN2o=;
+ b=WQv0IYRbtOPiUxvKtbrVXLAU1noPhP7ZcuSTuxpxIpZ0CRNW94xq76AcmP/VwXZ0fa
+ vcotIrTf8oh2qtrs3uU7YalX+zo9OjQmNVRxy1H/mNkoIP4qY0qxwM/MzGyAWdJ/Vi7k
+ 1bt1KDqpRKyJQxMMTtK04sqzPxYh8nLDW37e3ft4u2jzzBSilVajLn0rxYXe+ECkjHKV
+ LeXOAQPI+kH9PmO27Hz1Z5xcr5RSxwsWlZxNQo4BqA3NLOcZ4aKMm1xurpRO/ttWROjN
+ hCtR+A8HpadWwuUR4mfv8Qrs4uOxWQJCXBFzTMo9SdsCebXPGywnY0t64nhNM0j/mKii
+ DHjA==
+X-Gm-Message-State: AC+VfDwdSItXeR/A+XCN0GrxwbDQBgzOM+2GWOobUIyqvF6JR8bTqb10
+ 2y0I2NrBl9Hv56A69B7+EVSHPg==
+X-Google-Smtp-Source: ACHHUZ6pbSij34BScex3qXFzZ6B6G3EzWqa0myZ25D387FThTs9KMrXJRMGc4JwRvesrka+x5AnxDg==
+X-Received: by 2002:a05:6870:d246:b0:177:a158:9ef6 with SMTP id
+ h6-20020a056870d24600b00177a1589ef6mr8517369oac.52.1686652167556; 
+ Tue, 13 Jun 2023 03:29:27 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.210])
+ by smtp.gmail.com with ESMTPSA id
+ y39-20020a056870b4a700b0019e59515a0bsm7040875oap.33.2023.06.13.03.29.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Jun 2023 03:29:27 -0700 (PDT)
+Message-ID: <7a4217e2-163b-8e2d-e86b-97fb0733fef3@ventanamicro.com>
+Date: Tue, 13 Jun 2023 07:29:23 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 14/16] target/riscv: adapt 'riscv_isa_string' for KVM
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
+ <20230530194623.272652-15-dbarboza@ventanamicro.com>
+ <20230607-8e2b65e6a054c4f5f2962e85@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230607-8e2b65e6a054c4f5f2962e85@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,160 +98,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 12 Jun 2023 17:49:10 +0000
-Bernhard Beschow <shentey@gmail.com> wrote:
 
-> Am 12. Juni 2023 15:21:19 UTC schrieb Igor Mammedov <imammedo@redhat.com>:
-> >On Mon, 12 Jun 2023 16:51:55 +0200
-> >Igor Mammedov <imammedo@redhat.com> wrote:
-> >  
-> >> On Sun, 11 Jun 2023 12:34:12 +0200
-> >> Bernhard Beschow <shentey@gmail.com> wrote:
-> >>   
-> >> > I440FX realization is currently mixed with PIIX3 creation. Furthermore, it is
-> >> > common practice to only set properties between a device's qdev_new() and
-> >> > qdev_realize(). Clean up to resolve both issues.
-> >> > 
-> >> > Since I440FX spawns a PCI bus let's also move the pci_bus initialization there.
-> >> > 
-> >> > Note that when running `qemu-system-x86_64 -M pc -S` before and after this
-> >> > patch, `info mtree` in the QEMU console doesn't show any differences except that
-> >> > the ordering is different.
-> >> > 
-> >> > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> >> > ---
-> >> >  hw/i386/pc_piix.c | 57 ++++++++++++++++++++++++-----------------------
-> >> >  1 file changed, 29 insertions(+), 28 deletions(-)
-> >> > 
-> >> > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> >> > index 22173b122b..23b9725c94 100644
-> >> > --- a/hw/i386/pc_piix.c
-> >> > +++ b/hw/i386/pc_piix.c
-> >> > @@ -126,7 +126,6 @@ static void pc_init1(MachineState *machine,
-> >> >      MemoryRegion *rom_memory;
-> >> >      ram_addr_t lowmem;
-> >> >      uint64_t hole64_size;
-> >> > -    Object *i440fx_host;
-> >> >  
-> >> >      /*
-> >> >       * Calculate ram split, for memory below and above 4G.  It's a bit
-> >> > @@ -198,17 +197,43 @@ static void pc_init1(MachineState *machine,
-> >> >      }
-> >> >  
-> >> >      if (pcmc->pci_enabled) {
-> >> > +        Object *phb;
-> >> > +
-> >> >          pci_memory = g_new(MemoryRegion, 1);
-> >> >          memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
-> >> >          rom_memory = pci_memory;
-> >> > -        i440fx_host = OBJECT(qdev_new(host_type));
-> >> > -        hole64_size = object_property_get_uint(i440fx_host,
-> >> > +
-> >> > +        phb = OBJECT(qdev_new(host_type));
-> >> > +        object_property_add_child(OBJECT(machine), "i440fx", phb);
-> >> > +        object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
-> >> > +                                 OBJECT(ram_memory), &error_fatal);
-> >> > +        object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
-> >> > +                                 OBJECT(pci_memory), &error_fatal);
-> >> > +        object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
-> >> > +                                 OBJECT(system_memory), &error_fatal);
-> >> > +        object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
-> >> > +                                 OBJECT(system_io), &error_fatal);
-> >> > +        object_property_set_uint(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
-> >> > +                                 x86ms->below_4g_mem_size, &error_fatal);
-> >> > +        object_property_set_uint(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
-> >> > +                                 x86ms->above_4g_mem_size, &error_fatal);
-> >> > +        object_property_set_str(phb, I440FX_HOST_PROP_PCI_TYPE, pci_type,
-> >> > +                                &error_fatal);
-> >> > +        sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
-> >> > +
-> >> > +        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
-> >> > +        pci_bus_map_irqs(pci_bus,
-> >> > +                         xen_enabled() ? xen_pci_slot_get_pirq
-> >> > +                                       : pc_pci_slot_get_pirq);
-> >> > +        pcms->bus = pci_bus;
-> >> > +
-> >> > +        hole64_size = object_property_get_uint(phb,
-> >> >                                                 PCI_HOST_PROP_PCI_HOLE64_SIZE,
-> >> >                                                 &error_abort);    
-> >> 
-> >> before patch memory region links were set after the original
-> >> regions were initialized by pc_memory_init(), but after this
-> >> patch you 1st set links and only later pc_memory_init().
-> >> I doesn't look to me as a safe thing to do.  
-> >
-> >or maybe it doesn't matter, but still I have hard time
-> >convincing myself that it is so.   
-> 
-> AFAICS both pc_memory_init() and i440fx_pcihost_realize() rely on memory_region_init*() having been called on these pointers already. All they seem to do is adding their sub regions. The order in which this happens seems to be irrelevant, otherwise we'd see changes in the QOM console calls I guess.
 
-that's why I said it might not matter, but  ...
-the thing is that now mapping into AS happens in reversed order
-and with overlapped mappings reversed I'm quite unsure if
-that is correct. 
+On 6/7/23 09:21, Andrew Jones wrote:
+> On Tue, May 30, 2023 at 04:46:21PM -0300, Daniel Henrique Barboza wrote:
+>> KVM is not using the same attributes as TCG, i.e. it doesn't use
+>> isa_edata_arr[]. Add a new kvm_riscv_isa_string_ext() helper that does
+>> basically the same thing, but using KVM internals instead.
+>>
+>> The decision to add this helper target/riscv/kvm.c is to foster the
+>> separation between KVM and TCG logic, while still using
+>> riscv_isa_string_ext() from target/riscv/cpu.c to retrieve the string
+>> to not overcomplicate things.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c       |  5 +++++
+>>   target/riscv/kvm.c       | 19 +++++++++++++++++++
+>>   target/riscv/kvm_riscv.h |  2 ++
+>>   3 files changed, 26 insertions(+)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 3c348049a3..ec1d0c621a 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1956,6 +1956,11 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
+>>       char *new = *isa_str;
+>>       int i;
+>>   
+>> +    if (riscv_running_KVM()) {
+>> +        kvm_riscv_isa_string_ext(cpu, isa_str, max_str_len);
+>> +        return;
+>> +    }
+>> +
+>>       for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+>>           if (cpu->env.priv_ver >= isa_edata_arr[i].min_version &&
+>>               isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
+>> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+>> index b4193a10d8..675e18df3b 100644
+>> --- a/target/riscv/kvm.c
+>> +++ b/target/riscv/kvm.c
+>> @@ -320,6 +320,25 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>>       }
+>>   }
+>>   
+>> +void kvm_riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
+>> +                              int max_str_len)
+>> +{
+>> +    char *old = *isa_str;
+>> +    char *new = *isa_str;
+>> +    int i;
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
+>> +        RISCVCPUMultiExtConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
+>> +        if (kvm_cpu_cfg_get(cpu, multi_ext_cfg)) {
+>> +            new = g_strconcat(old, "_", multi_ext_cfg->name, NULL);
+>> +            g_free(old);
+>> +            old = new;
+>> +        }
+>> +    }
+>> +
+>> +    *isa_str = new;
+>> +}
+>> +
+>>   static int kvm_riscv_get_regs_core(CPUState *cs)
+>>   {
+>>       int ret = 0;
+>> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+>> index e3ba935808..1a12efa8db 100644
+>> --- a/target/riscv/kvm_riscv.h
+>> +++ b/target/riscv/kvm_riscv.h
+>> @@ -20,6 +20,8 @@
+>>   #define QEMU_KVM_RISCV_H
+>>   
+>>   void kvm_riscv_init_user_properties(Object *cpu_obj);
+>> +void kvm_riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
+>> +                              int max_str_len);
+>>   void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+>>   void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+>>   
+>> -- 
+>> 2.40.1
+>>
+>>
+> 
+> Hmm, more duplication. I think we need an abstraction which can support
+> both TCG and KVM extension lists. Allowing functions like
+> riscv_isa_string_ext() to be shared for them.
+
+I tried to play around a bit and didn't manage to find a solution that covers
+both.
+
+The root cause is that the TCG only options are being ignored by KVM, but they
+are still around. I made an attempt of re-using the existing isa_string()
+function with KVM by changing all TCG-only extensions default to 'false'. This
+doesn't change the fact that, with KVM, I can do:
+
+sudo ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
+-cpu host,zhinx=true,zhinxmin=true (...)
+
+Note that zhinx and zhinxmin are TCG-only. And the ISA string showed these 2
+extensions:
+
+# cat /proc/device-tree/cpus/cpu@0/riscv,isa
+rv64imafdc_zicbom_zicboz_zbb_zhinx_zhinxmin_sstc
+
+
+Alternatives would be to change TCG code to allow for extra fields for KVM (e.g. the
+'supported' flag) to allow the isa_string() function to ignore the TCG-only extensions.
+Bear in mind that TCG has 63 extensions, so we would do 63 ioctls for each CPU in this
+extension discovery and KVM only 8 support extensions ATM.
+
+Another idea is to make the existing isa_string() compare isa_edata_arr[] with the
+KVM counterpart kvm_multi_ext_cfgs[] and, if running KVM, check if the extension
+in isa_edata_arr[] is also in the KVM array. This also seems a bit inefficient since
+we're adding a search loop for 55 extensions when creating the string.
+
+Another alternative is to exclude all TCG-only extensions from the command line when
+running KVM. We would fork the API though, which is something that we're wanting to
+avoid.
+
+Duplicating this code as we're doing here guarantees that the KVM isa string won't
+have anything that KVM doesn't know about, regardless of the user input. I am not a
+fan of duplication, but at this moment it seems plausible to keep it. At least until
+we sort a way of unifying both TCG and KVM options in a satisfying manner.
+
+I mean, at least as far as a I can see. Suggestions always welcome.
+
+
+Thanks,
+
+
+Daniel
+
+
+
 
 > 
-> >  
-> >>   
-> >> >      } else {    
-> >> 
-> >>   
-> >> >          pci_memory = NULL;
-> >> >          rom_memory = system_memory;
-> >> > -        i440fx_host = NULL;
-> >> > +        pci_bus = NULL;
-> >> >          hole64_size = 0;    
-> >> 
-> >> is it possible to turn these into initializers, and get rid of 
-> >> 'else'  branch?  
-> 
-> Sure, this is possible. I'd add another patch before this one.
-> 
-> Best regards,
-> Bernhard
-> >>   
-> >> >      }
-> >> >  
-> >> > @@ -243,29 +268,6 @@ static void pc_init1(MachineState *machine,
-> >> >          PIIX3State *piix3;
-> >> >          PCIDevice *pci_dev;
-> >> >  
-> >> > -        object_property_add_child(OBJECT(machine), "i440fx", i440fx_host);
-> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_RAM_MEM,
-> >> > -                                 OBJECT(ram_memory), &error_fatal);
-> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_PCI_MEM,
-> >> > -                                 OBJECT(pci_memory), &error_fatal);
-> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_SYSTEM_MEM,
-> >> > -                                 OBJECT(system_memory), &error_fatal);
-> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_IO_MEM,
-> >> > -                                 OBJECT(system_io), &error_fatal);
-> >> > -        object_property_set_uint(i440fx_host, PCI_HOST_BELOW_4G_MEM_SIZE,
-> >> > -                                 x86ms->below_4g_mem_size, &error_fatal);
-> >> > -        object_property_set_uint(i440fx_host, PCI_HOST_ABOVE_4G_MEM_SIZE,
-> >> > -                                 x86ms->above_4g_mem_size, &error_fatal);
-> >> > -        object_property_set_str(i440fx_host, I440FX_HOST_PROP_PCI_TYPE,
-> >> > -                                pci_type, &error_fatal);
-> >> > -        sysbus_realize_and_unref(SYS_BUS_DEVICE(i440fx_host), &error_fatal);
-> >> > -
-> >> > -        pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(i440fx_host), "pci.0"));
-> >> > -        pci_bus_map_irqs(pci_bus,
-> >> > -                         xen_enabled() ? xen_pci_slot_get_pirq
-> >> > -                                       : pc_pci_slot_get_pirq);
-> >> > -        pcms->bus = pci_bus;
-> >> > -
-> >> >          pci_dev = pci_create_simple_multifunction(pci_bus, -1, true,
-> >> >                                                    TYPE_PIIX3_DEVICE);
-> >> >  
-> >> > @@ -290,7 +292,6 @@ static void pc_init1(MachineState *machine,
-> >> >          rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
-> >> >                                                               "rtc"));
-> >> >      } else {
-> >> > -        pci_bus = NULL;
-> >> >          isa_bus = isa_bus_new(NULL, system_memory, system_io,
-> >> >                                &error_abort);
-> >> >      
-> >>   
-> >  
-> 
-
+> Thanks,
+> drew
 
