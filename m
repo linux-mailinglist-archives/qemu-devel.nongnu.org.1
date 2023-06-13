@@ -2,64 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E89C72E79B
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EE172E7C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 18:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q96Fn-0007ds-Or; Tue, 13 Jun 2023 11:48:19 -0400
+	id 1q96Ta-0004pI-4A; Tue, 13 Jun 2023 12:02:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q96Fl-0007dI-1O; Tue, 13 Jun 2023 11:48:17 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q96TW-0004mr-44
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 12:02:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q96Fi-0001Zm-LL; Tue, 13 Jun 2023 11:48:16 -0400
-Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:2c24:0:640:73f8:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 8EACA60825;
- Tue, 13 Jun 2023 18:48:01 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8910::1:11] (unknown
- [2a02:6b8:b081:8910::1:11])
- by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 0mcIGq1OjSw0-f6RlOyIs; Tue, 13 Jun 2023 18:48:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1686671280; bh=qVhkS1Gg1FJqEczCOc6Pb55GQ/4WXyGX8PQUKSuB7Cc=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=TdRU2UfjQBKfMyV2E9MvAcxVuw8AESLzw8e1GOEL+2lKwz9HTXePmrwbCNM3Xo6or
- B+QvL50M617nV/LzH3QjizpOaTpY6uqiSi/UYRNegFsrvkT3xdXHwgHq1EE/WOFvb6
- 4d35Dct+GFUmcGT9rSCRtH6ucKax4i3yVP6/BbqA=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <63c42d0d-630b-b509-217c-93889bc9af82@yandex-team.ru>
-Date: Tue, 13 Jun 2023 18:48:00 +0300
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q96TU-00041L-K5
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 12:02:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686672147;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=4RRgOs2Sbm7hqPt9DtnP5tt5MimC4ZTzB0J7PGxLlDs=;
+ b=P7d/DgdGOvpcr4ctM9N8X70FY6e7tEktqX5GiPGHgFqkyrs/KjahJRXjZR/7aHCJBf2Sur
+ p73lWe6ns7zO08b0v2q+T2Vur1STDNpYXM0ZeSguJKpRpWrYiWccTErcrBh2YppLwUwlr6
+ 4pmymMWTMIKf5PyRdbwkn8AkStOEVXI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-656-KUCIaNXFP7Or4xgFotMwbQ-1; Tue, 13 Jun 2023 12:02:19 -0400
+X-MC-Unique: KUCIaNXFP7Or4xgFotMwbQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30fb891c5e3so4730821f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 09:02:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686672128; x=1689264128;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4RRgOs2Sbm7hqPt9DtnP5tt5MimC4ZTzB0J7PGxLlDs=;
+ b=bcLCRcXU9DZAtu/U/4Z5XX3XU4r3tfSK/DrnflPuB6sVvqDlWqbrhIeFRJuusl9Wzc
+ aoStUmOObiTF6KMCWF98jvyf8lJcmZ5RN8Tkp7MgxyaPhfLJ8m4h475Vj369PwL3tiEr
+ vVSvQ4xWESYTcuxyxc68PHPVIhe7BXErZudAXzCNzi3gF7R6SrF2YRdoQzSldDNFdZFX
+ qod1kyQwWjorMnJ/8av2HxojUJxDT3TIXrIt/XNASPulQ9WiSDKLEPlFlMH/SoXJCUYv
+ aLZ/jDnkZWdYs5iT/30rJXgdZHPm7rBYBonwiTpENz8UktPbaHVWJc6Cto3Jn5Z5CICB
+ ISyA==
+X-Gm-Message-State: AC+VfDwrwQVn3HDmW9tz01ABvS6GQFKDjFaUG5ZoB/UzUDxMJvy0OlF8
+ PwOHsm3bRYkMkW8NU8XFERinJiqo/OZzvlRCb7Spnkjm+p5nm1sT2glHHGyd9Gtg49Fm0+fiLC8
+ pXcBu3MIN3WL7Hmo=
+X-Received: by 2002:a5d:568c:0:b0:30f:ca33:5352 with SMTP id
+ f12-20020a5d568c000000b0030fca335352mr2820130wrv.30.1686672128560; 
+ Tue, 13 Jun 2023 09:02:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5b3xjeeZL6YgNReSkMyb/4gdxZufUoLWaHrhVKz8NxR+VHgDCoJAOgI61S4mu1fZl1EcOohA==
+X-Received: by 2002:a5d:568c:0:b0:30f:ca33:5352 with SMTP id
+ f12-20020a5d568c000000b0030fca335352mr2820110wrv.30.1686672128128; 
+ Tue, 13 Jun 2023 09:02:08 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ t3-20020a5d6903000000b0030fcaf57660sm3030353wru.29.2023.06.13.09.02.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Jun 2023 09:02:06 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Hailiang
+ Zhang <zhanghailiang@xfusion.com>,  Fiona Ebner <f.ebner@proxmox.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,  qemu-block@nongnu.org,  Fam Zheng
+ <fam@euphon.net>
+Subject: Re: [PATCH v2 04/20] qemu-file: We only call
+ qemu_file_transferred_* on the sending side
+In-Reply-To: <ZH4m8nUAEfZglPLD@x1n> (Peter Xu's message of "Mon, 5 Jun 2023
+ 14:18:26 -0400")
+References: <20230530183941.7223-1-quintela@redhat.com>
+ <20230530183941.7223-5-quintela@redhat.com> <ZH4m8nUAEfZglPLD@x1n>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Tue, 13 Jun 2023 18:02:05 +0200
+Message-ID: <87y1kne4g2.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v5 00/16] iotests: use vm.cmd()
-Content-Language: en-US
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, jsnow@redhat.com, crosa@redhat.com,
- kwolf@redhat.com, hreitz@redhat.com
-References: <20230215132547.1620575-1-vsementsov@yandex-team.ru>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230215132547.1620575-1-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,124 +101,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping. 03-16 are still applicable to master with "git am -3" and very small conflict in "iotests: QemuStorageDaemon: add cmd() method like in QEMUMachine."
+Peter Xu <peterx@redhat.com> wrote:
+> On Tue, May 30, 2023 at 08:39:25PM +0200, Juan Quintela wrote:
+>> Remove the increase in qemu_file_fill_buffer() and add asserts to
+>> qemu_file_transferred* functions.
+>> 
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>
+> The read side accounting does look a bit weird and never caught my notice..
+>
+> Maybe worth also touching the document of QEMUFile::total_transferred to
+> clarify what it accounts?
+>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+>
+> Though when I'm looking at the counters (didn't follow every single recent
+> patch on this..), I found that now reading transferred value is actually
+> more expensive - qemu_file_transferred() needs flushing, even if for the
+> fast version, qemu_file_transferred_fast() loops over all possible iovs,
+> which can be as large as MAX_IOV_SIZE==64.
+>
+> To be explicit, I _think_ for each guest page we now need to flush...
+>
+>   ram_save_iterate
+>     migration_rate_exceeded
+>       migration_transferred_bytes
+>         qemu_file_transferred
+>
+> I hope I'm wrong..
 
-On 15.02.23 16:25, Vladimir Sementsov-Ogievskiy wrote:
-> Hi all!
-> 
-> Let's get rid of pattern
-> 
->      result = self.vm.qmp(...)
->      self.assert_qmp(result, 'return', {})
-> 
-> And switch to just
-> 
->      self.vm.cmd(...)
-> 
-> v5:
-> - include fixups by John
-> - fix 'make check-dev'
-> - split first patch into several [Daniel]
-> 
-> 
-> Vladimir Sementsov-Ogievskiy (16):
->    python: fix superfluous-parens pylint error
->    python: fix broad-exception-raised pylint error
->    python/qemu/qmp/legacy: cmd(): drop cmd_id unused argument
->    qmp_shell.py: _fill_completion() use .command() instead of .cmd()
->    scripts/cpu-x86-uarch-abi.py: use .command() instead of .cmd()
->    python: rename QEMUMonitorProtocol.cmd() to cmd_raw()
->    python/qemu: rename command() to cmd()
->    python/machine.py: upgrade vm.cmd() method
->    iotests: QemuStorageDaemon: add cmd() method like in QEMUMachine.
->    iotests: add some missed checks of qmp result
->    iotests: refactor some common qmp result checks into generic pattern
->    iotests: drop some occasional semicolons
->    iotests: drop some extra ** in qmp() call
->    iotests.py: pause_job(): drop return value
->    tests/vm/basevm.py: use cmd() instead of qmp()
->    python: use vm.cmd() instead of vm.qmp() where appropriate
-> 
->   docs/devel/testing.rst                        |  10 +-
->   python/qemu/machine/machine.py                |  20 +-
->   python/qemu/qmp/legacy.py                     |  10 +-
->   python/qemu/qmp/protocol.py                   |   2 +-
->   python/qemu/qmp/qmp_client.py                 |   2 +-
->   python/qemu/qmp/qmp_shell.py                  |  20 +-
->   python/qemu/utils/qemu_ga_client.py           |   8 +-
->   python/qemu/utils/qom.py                      |   8 +-
->   python/qemu/utils/qom_common.py               |   2 +-
->   python/qemu/utils/qom_fuse.py                 |   6 +-
->   scripts/cpu-x86-uarch-abi.py                  |   8 +-
->   scripts/device-crash-test                     |   8 +-
->   scripts/render_block_graph.py                 |   8 +-
->   tests/avocado/avocado_qemu/__init__.py        |   4 +-
->   tests/avocado/cpu_queries.py                  |   5 +-
->   tests/avocado/hotplug_cpu.py                  |  10 +-
->   tests/avocado/info_usernet.py                 |   4 +-
->   tests/avocado/machine_arm_integratorcp.py     |   6 +-
->   tests/avocado/machine_m68k_nextcube.py        |   4 +-
->   tests/avocado/machine_mips_malta.py           |   6 +-
->   tests/avocado/machine_s390_ccw_virtio.py      |  28 +-
->   tests/avocado/migration.py                    |  10 +-
->   tests/avocado/pc_cpu_hotplug_props.py         |   2 +-
->   tests/avocado/version.py                      |   4 +-
->   tests/avocado/virtio_check_params.py          |   6 +-
->   tests/avocado/virtio_version.py               |   5 +-
->   tests/avocado/vnc.py                          |  16 +-
->   tests/avocado/x86_cpu_model_versions.py       |  13 +-
->   tests/migration/guestperf/engine.py           | 150 +++---
->   tests/qemu-iotests/030                        | 168 +++---
->   tests/qemu-iotests/040                        | 171 +++----
->   tests/qemu-iotests/041                        | 482 ++++++++----------
->   tests/qemu-iotests/045                        |  15 +-
->   tests/qemu-iotests/055                        |  62 +--
->   tests/qemu-iotests/056                        |  77 ++-
->   tests/qemu-iotests/093                        |  42 +-
->   tests/qemu-iotests/118                        | 225 ++++----
->   tests/qemu-iotests/124                        | 102 ++--
->   tests/qemu-iotests/129                        |  14 +-
->   tests/qemu-iotests/132                        |   5 +-
->   tests/qemu-iotests/139                        |  45 +-
->   tests/qemu-iotests/147                        |  30 +-
->   tests/qemu-iotests/151                        |  56 +-
->   tests/qemu-iotests/152                        |   8 +-
->   tests/qemu-iotests/155                        |  55 +-
->   tests/qemu-iotests/165                        |   8 +-
->   tests/qemu-iotests/196                        |   3 +-
->   tests/qemu-iotests/205                        |   6 +-
->   tests/qemu-iotests/218                        | 105 ++--
->   tests/qemu-iotests/245                        | 245 ++++-----
->   tests/qemu-iotests/256                        |  34 +-
->   tests/qemu-iotests/257                        |  36 +-
->   tests/qemu-iotests/264                        |  31 +-
->   tests/qemu-iotests/281                        |  21 +-
->   tests/qemu-iotests/295                        |  16 +-
->   tests/qemu-iotests/296                        |  21 +-
->   tests/qemu-iotests/298                        |  13 +-
->   tests/qemu-iotests/300                        |  54 +-
->   tests/qemu-iotests/iotests.py                 |  25 +-
->   .../tests/export-incoming-iothread            |   6 +-
->   .../qemu-iotests/tests/graph-changes-while-io |   6 +-
->   tests/qemu-iotests/tests/image-fleecing       |   3 +-
->   .../tests/migrate-bitmaps-postcopy-test       |  33 +-
->   tests/qemu-iotests/tests/migrate-bitmaps-test |  45 +-
->   .../qemu-iotests/tests/migrate-during-backup  |  41 +-
->   .../qemu-iotests/tests/migration-permissions  |   9 +-
->   .../tests/mirror-ready-cancel-error           |  74 ++-
->   tests/qemu-iotests/tests/mirror-top-perms     |  16 +-
->   tests/qemu-iotests/tests/nbd-multiconn        |  12 +-
->   tests/qemu-iotests/tests/reopen-file          |   3 +-
->   .../qemu-iotests/tests/stream-error-on-reset  |   6 +-
->   tests/vm/basevm.py                            |   4 +-
->   72 files changed, 1196 insertions(+), 1622 deletions(-)
-> 
+See patch 7:
 
--- 
-Best regards,
-Vladimir
+diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+index 79eea8d865..1696185694 100644
+--- a/migration/migration-stats.c
++++ b/migration/migration-stats.c
+@@ -62,7 +62,7 @@ uint64_t migration_transferred_bytes(QEMUFile *f)
+ {
+     uint64_t multifd = stat64_get(&mig_stats.multifd_bytes);
+     uint64_t rdma = stat64_get(&mig_stats.rdma_bytes);
+-    uint64_t qemu_file = qemu_file_transferred(f);
++    uint64_t qemu_file = stat64_get(&mig_stats.qemu_file_transferred);
+ 
+     trace_migration_transferred_bytes(qemu_file, multifd, rdma);
+     return qemu_file + multifd + rdma;
+
+
+> Does it mean that perhaps we simply need "sent and put into send buffer"
+> more than "what really got transferred"?  So I start to wonder what's the
+> origianl purpose of this change, and which one is better..
+
+That is basically what patch 5 and 6 do O:-)
+
+Problem is arriving to something that is bisectable (for correctness)
+and is easy to review.
+
+And yes, my choices can be different from the ones tat you do.
+
+The other reason for the small patches is that:
+a - sometimes I found a different test where things broke, and have to
+    bisect
+b - small patches are much easier to rebase (that I am doing a lot)
+
+Later, Juan.
 
 
