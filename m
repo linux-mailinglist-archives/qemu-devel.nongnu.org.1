@@ -2,96 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F4172EA3C
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8FE72EA3D
 	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 19:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q98A8-0008LI-JU; Tue, 13 Jun 2023 13:50:36 -0400
+	id 1q98An-0008PP-V4; Tue, 13 Jun 2023 13:51:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q98A6-0008L6-44
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 13:50:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q98Ak-0008P9-Bo
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 13:51:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q98A4-0002dk-Ey
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 13:50:33 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q98Ai-0002gf-H7
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 13:51:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686678631;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1686678671;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MFPs25z9ezE4cIHbEHAQveoqKwE26PofVA7ddsZV9T8=;
- b=h32VV/OP3KQE+LQaBymNOg367EBRsM16rWYCMo/wtIY6MnH6wX1ZvNaUcCZtWgQH9SFvXw
- 7UEmtdMQGZ7S8UgURoLXBuv+1hr3huk6kqhIrPvJnvDw+qXK3LV4AbQBdgzyahAPFsHB+U
- 1Zmq5q9/uMZZV2hOSmqzXnxMz+TEmy4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=juXhP8h8oDmvEUGxpUcem9DQ8p6SNtDcHFetvbuMc3c=;
+ b=i5Nt9ICCQ1m1oH6WFBDNiCY4PXEjofmvtij4k868dCgFk5JqolMXF/1lwOzkei4mCzr3uh
+ 2w71B1Ju9TNAQi+UpYMqeEEgUA1/OJDPOUwhaFjxZGM3HKYfmz7//Xh8GU6adXgb0ZTkug
+ mDwV69eiVuU0H42mDJdq/o8WruJ2ILE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-321-MKGnPPYzPlm497TOQwJM7g-1; Tue, 13 Jun 2023 13:50:28 -0400
-X-MC-Unique: MKGnPPYzPlm497TOQwJM7g-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f7eb414fcbso28186375e9.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 10:50:27 -0700 (PDT)
+ us-mta-488-Op7L_dcVOBmy8uwQh7ofbw-1; Tue, 13 Jun 2023 13:51:09 -0400
+X-MC-Unique: Op7L_dcVOBmy8uwQh7ofbw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30fd136ccb7so289746f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 10:51:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686678626; x=1689270626;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MFPs25z9ezE4cIHbEHAQveoqKwE26PofVA7ddsZV9T8=;
- b=Jh07W+mH7LQzJouPUOBbEZbORsuOpO0vZ2jtNegeB67DqbMWz8AEpnJir/N8PqOMpJ
- Ty0Ipn7Lz8IW0Q2uAY4nR9OWly/wraDjUpLZEhvWLxbDci3bSvAAsjgfaDMRXSrOvnUM
- 55KIRMZ++OuJSDMIVNDmPrzJlwxVEFiRuAS9hIUqV/zGCd2ESZJ3dAZ+ajL1YSuuOgtc
- ZqgmAboJBnmkYshrx4VBDFC92UNiGGG5PPj7NUUPuJ/xQ1asnIVgIy3lJXJvs2uNqGDA
- izDqAk8hD/mk1wvzwnBnViNUFl2/ux2xhNDmg2xuoud7+8DCDwUr368IzGMAjWs/HbU8
- +FLw==
-X-Gm-Message-State: AC+VfDx8dnd3hqGz6oNlxuVvhTSDAZXmm/RASw24o0mNFDtFJ973A2cU
- 4k3N1R954n3QkstcMUT6x2HLrInXUGp5xVe5Lp5moVSOfOh2kPEWtCTOJZtqftgUBhg2tiJkMiy
- ThQFBARN0fs88IFk=
-X-Received: by 2002:a1c:790f:0:b0:3f7:e629:9f3 with SMTP id
- l15-20020a1c790f000000b003f7e62909f3mr9062047wme.16.1686678626430; 
- Tue, 13 Jun 2023 10:50:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4HotOaAfBGCmKz4m6diP+WpUT1Dm1nvnT4Ge3FYK6q+M9taA2DhF5vuO+mV9SI5Jg+8u1hmg==
-X-Received: by 2002:a1c:790f:0:b0:3f7:e629:9f3 with SMTP id
- l15-20020a1c790f000000b003f7e62909f3mr9062031wme.16.1686678626000; 
- Tue, 13 Jun 2023 10:50:26 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- o6-20020a05600c378600b003f7cb42fa20sm15085418wmr.42.2023.06.13.10.50.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 10:50:25 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: ~hyman <hyman@git.sr.ht>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
- Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  "Dr.
- David Alan Gilbert" <dgilbert@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Markus Armbruster <armbru@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
- =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH QEMU v5 6/8] migration: Implement dirty-limit
- convergence algo
-In-Reply-To: <168618975839.6361.17407633874747688653-6@git.sr.ht>
- (hyman@git.sr.ht's message of "Thu, 08 Jun 2023 00:12:40 +0800")
-References: <168618975839.6361.17407633874747688653-6@git.sr.ht>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Tue, 13 Jun 2023 19:50:24 +0200
-Message-ID: <87ttvbckv3.fsf@secure.mitica>
+ d=1e100.net; s=20221208; t=1686678668; x=1689270668;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :references:cc:to:content-language:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=juXhP8h8oDmvEUGxpUcem9DQ8p6SNtDcHFetvbuMc3c=;
+ b=PJpAiXmClwZPnBVsxcZj/I4WVrQMXfYRCIqMU26EcybmUsB9txCdxOEf6eT8glAVD2
+ y3+jkNChMhKd5D2AuMjLIfJDT4gMRC0SmatCORV9j0mgPJBqCmavtG7HsNCiT180CHAZ
+ 25CZlI8knVs+Sy1OPPiHmBD0Rr0K6un7BCq0vQRdhYbuKTF0V9WBSh90zWHZaDaq9Tlf
+ pizlZXe4lDndadfTRpzY+kV7Tl3B3Hr4USyHv5Nlz/RjwXjyhyQJIzoy86GtZJLwN/sk
+ hjuPAkfjCnMVYZ10BPwTmdPQ0nG99xZcCGmmauxswG2aFdn2p22IbEcvlXHYXUttYBCs
+ jUww==
+X-Gm-Message-State: AC+VfDz3dNkUF1cc/1on3jAHQW2EhqsDI3P0brv3UGpcmce9k0ESebvI
+ 0KEkHB/vAas5CVkCTXE+o78QFL9ORrL1uojnOxOtb9jsMWR1hkp6mIOJUkIqqxmP+LgAy18aW1T
+ ltgeWYzmo9vvLWd4=
+X-Received: by 2002:a5d:550f:0:b0:30f:d2a2:4789 with SMTP id
+ b15-20020a5d550f000000b0030fd2a24789mr555642wrv.15.1686678667877; 
+ Tue, 13 Jun 2023 10:51:07 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6lyYhUT4jenaM6rLsrwexVg0v9nokG/WYAFV8FGI+Et386/Ww0vCErRFY7lVfu35C1ypzfbg==
+X-Received: by 2002:a5d:550f:0:b0:30f:d2a2:4789 with SMTP id
+ b15-20020a5d550f000000b0030fd2a24789mr555631wrv.15.1686678667516; 
+ Tue, 13 Jun 2023 10:51:07 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c710:ff00:1a06:80f:733a:e8c6?
+ (p200300cbc710ff001a06080f733ae8c6.dip0.t-ipconnect.de.
+ [2003:cb:c710:ff00:1a06:80f:733a:e8c6])
+ by smtp.gmail.com with ESMTPSA id
+ h4-20020adffa84000000b0030647d1f34bsm15965105wrr.1.2023.06.13.10.51.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Jun 2023 10:51:07 -0700 (PDT)
+Message-ID: <676ee47d-8ca0-94c4-7454-46e9915ea36a@redhat.com>
+Date: Tue, 13 Jun 2023 19:51:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Hugh Dickins <hughd@google.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Kim, Dongwon"
+ <dongwon.kim@intel.com>, "Chang, Junxiao" <junxiao.chang@intel.com>,
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "Hocko, Michal" <mhocko@suse.com>, "jmarchan@redhat.com"
+ <jmarchan@redhat.com>, "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ James Houghton <jthoughton@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20230608204927.88711-1-mike.kravetz@oracle.com>
+ <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <281caf4f-25da-3a73-554b-4fb252963035@redhat.com>
+ <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
+In-Reply-To: <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,195 +118,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-~hyman <hyman@git.sr.ht> wrote:
-> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+On 13.06.23 10:26, Kasireddy, Vivek wrote:
+> Hi David,
+> 
+>>
+>> On 12.06.23 09:10, Kasireddy, Vivek wrote:
+>>> Hi Mike,
+>>
+>> Hi Vivek,
+>>
+>>>
+>>> Sorry for the late reply; I just got back from vacation.
+>>> If it is unsafe to directly use the subpages of a hugetlb page, then reverting
+>>> this patch seems like the only option for addressing this issue immediately.
+>>> So, this patch is
+>>> Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+>>>
+>>> As far as the use-case is concerned, there are two main users of the
+>> udmabuf
+>>> driver: Qemu and CrosVM VMMs. However, it appears Qemu is the only
+>> one
+>>> that uses hugetlb pages (when hugetlb=on is set) as the backing store for
+>>> Guest (Linux, Android and Windows) system memory. The main goal is to
+>>> share the pages associated with the Guest allocated framebuffer (FB) with
+>>> the Host GPU driver and other components in a zero-copy way. To that
+>> end,
+>>> the guest GPU driver (virtio-gpu) allocates 4k size pages (associated with
+>>> the FB) and pins them before sharing the (guest) physical (or dma)
+>> addresses
+>>> (and lengths) with Qemu. Qemu then translates the addresses into file
+>>> offsets and shares these offsets with udmabuf.
+>>
+>> Is my understanding correct, that we can effectively long-term pin
+>> (worse than mlock) 64 MiB per UDMABUF_CREATE, allowing eventually !root
+> The 64 MiB limit is the theoretical upper bound that we have not seen hit in
+> practice. Typically, for a 1920x1080 resolution (commonly used in Guests),
+> the size of the FB is ~8 MB (1920x1080x4). And, most modern Graphics
+> compositors flip between two FBs.
+> 
 
-To speed thinkng up, 1-5 are included on next Migration PULL request.
+Okay, but users with privileges to open that file can just create as 
+many as they want? I think I'll have to play with it.
 
-> Implement dirty-limit convergence algo for live migration,
-> which is kind of like auto-converge algo but using dirty-limit
-> instead of cpu throttle to make migration convergent.
->
-> Enable dirty page limit if dirty_rate_high_cnt greater than 2
-> when dirty-limit capability enabled, Disable dirty-limit if
-> migration be cancled.
+>> users
+>>
+>> ll /dev/udmabuf
+>> crw-rw---- 1 root kvm 10, 125 12. Jun 08:12 /dev/udmabuf
+>>
+>> to bypass there effective MEMLOCK limit, fragmenting physical memory and
+>> breaking swap?
+> Right, it does not look like the mlock limits are honored.
+> 
 
-Nit: canceled.
+That should be added.
 
->
-> Note that "set_vcpu_dirty_limit", "cancel_vcpu_dirty_limit"
-> commands are not allowed during dirty-limit live migration.
->
-> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>>
+>> Regarding the udmabuf_vm_fault(), I assume we're mapping pages we
+>> obtained from the memfd ourselves into a special VMA (mmap() of the
+> mmap operation is really needed only if any component on the Host needs
+> CPU access to the buffer. But in most scenarios, we try to ensure direct GPU
+> access (h/w acceleration via gl) to these pages.
+> 
+>> udmabuf). I'm not sure how well shmem pages are prepared for getting
+>> mapped by someone else into an arbitrary VMA (page->index?).
+> Most drm/gpu drivers use shmem pages as the backing store for FBs and
+> other buffers and also provide mmap capability. What concerns do you see
+> with this approach?
 
+Are these mmaping the pages the way udmabuf maps these pages (IOW, 
+on-demand fault where we core-mm will adjust the mapcount etc)?
 
-> + * Enable dirty-limit to throttle down the guest
-> + */
-> +static void migration_dirty_limit_guest(void)
-> +{
-> +    static int64_t quota_dirtyrate;
+Skimming over at shmem_read_mapping_page() users, I assume most of them 
+use a VM_PFNMAP mapping (or don't mmap them at all), where we won't be 
+messing with the struct page at all.
 
-quota_dirtyrate deserves at least a comment.
+(That might even allow you to mmap hugetlb sub-pages, because the struct 
+page -- and mapcount -- will be ignored completely and not touched.)
 
-I guess it means the current quota_dirty_rate that is set, but no clue.
+> 
+>>
+>> ... also, just imagine someone doing FALLOC_FL_PUNCH_HOLE / ftruncate()
+>> on the memfd. What's mapped into the memfd no longer corresponds to
+>> what's pinned / mapped into the VMA.
+> IIUC, making use of the DMA_BUF_IOCTL_SYNC ioctl would help with any
+> coherency issues:
+> https://www.kernel.org/doc/html/v6.2/driver-api/dma-buf.html#c.dma_buf_sync
+> 
 
-> +    MigrationState *s =3D migrate_get_current();
-> +
-> +    /*
-> +     * If dirty limit already enabled and migration parameter
-> +     * vcpu-dirty-limit untouched.
-> +     */
-> +    if (dirtylimit_in_service() &&
-> +        quota_dirtyrate =3D=3D s->parameters.vcpu_dirty_limit) {
-> +        return;
-> +    }
-> +
-> +    quota_dirtyrate =3D s->parameters.vcpu_dirty_limit;
-> +
-> +    /* Set or update quota dirty limit */
-> +    qmp_set_vcpu_dirty_limit(false, -1, quota_dirtyrate, NULL);
+Would it as of now? udmabuf_create() pulls the shmem pages out of the 
+memfd, not sure how DMA_BUF_IOCTL_SYNC would help to update that 
+whenever the pages inside the memfd would change (e.g., 
+FALLOC_FL_PUNCH_HOLE + realloc).
 
-Care to explain why do we have to "reset" the quota?  Or why we can't
-set it when the user issues the command, only when we throttle the guest?
+But that's most probably simply "not supported".
 
-> +    trace_migration_dirty_limit_guest(quota_dirtyrate);
-> +}
-> +
+>>
+>>
+>> Was linux-mm (and especially shmem maintainers, ccing Hugh) involved in
+>> the upstreaming of udmabuf?
+> It does not appear so from the link below although other key lists were cc'd:
+> https://patchwork.freedesktop.org/patch/246100/?series=39879&rev=7
 
-Split this patch in two:
+That's unfortunate :(
 
-a - the logic change
-b - the introduction of dirty limit.
+-- 
+Cheers,
 
-
-Old code:
-
-    /* During block migration the auto-converge logic incorrectly detects
-     * that ram migration makes no progress. Avoid this by disabling the
-     * throttling logic during the bulk phase of block migration. */
-    if (blk_mig_bulk_active()) {
-        return;
-    }
-
-    if (migrate_auto_converge()) {
-        /* The following detection logic can be refined later. For now:
-           Check to see if the ratio between dirtied bytes and the approx.
-           amount of bytes that just got transferred since the last time
-           we were in this routine reaches the threshold. If that happens
-           twice, start or increase throttling. */
-
-        if ((bytes_dirty_period > bytes_dirty_threshold) &&
-            (++rs->dirty_rate_high_cnt >=3D 2)) {
-            trace_migration_throttle();
-            rs->dirty_rate_high_cnt =3D 0;
-            mig_throttle_guest_down(bytes_dirty_period,
-                                    bytes_dirty_threshold);
-        }
-    }
-
-New code:
-    /*
-     * The following detection logic can be refined later. For now:
-     * Check to see if the ratio between dirtied bytes and the approx.
-     * amount of bytes that just got transferred since the last time
-     * we were in this routine reaches the threshold. If that happens
-     * twice, start or increase throttling.
-     */
-
-    if ((bytes_dirty_period > bytes_dirty_threshold) &&
-        (++rs->dirty_rate_high_cnt >=3D 2)) {
-        rs->dirty_rate_high_cnt =3D 0;
-        /*
-         * During block migration the auto-converge logic incorrectly detec=
-ts
-         * that ram migration makes no progress. Avoid this by disabling the
-         * throttling logic during the bulk phase of block migration
-         */
-        if (blk_mig_bulk_active()) {
-            return;
-        }
-
-        if (migrate_auto_converge()) {
-            trace_migration_throttle();
-            mig_throttle_guest_down(bytes_dirty_period,
-                                    bytes_dirty_threshold);
-        } else if (migrate_dirty_limit()) {
-            migration_dirty_limit_guest();
-        }
-    }
-
-Questions:
-
-- Why are we changing blk_mig_bulk_active() position?
-
-  I think that the old code have it in the right place.  Additionally,
-  you just changefd to this version a couple of patches agon.
-
-
-
-
->                                   int64_t cpu_index,
->                                   Error **errp)
->  {
-> +    MigrationState *ms =3D migrate_get_current();
-> +
->      if (!kvm_enabled() || !kvm_dirty_ring_enabled()) {
->          return;
->      }
-> @@ -453,6 +455,15 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
->          return;
->      }
->=20=20
-> +    if (migration_is_running(ms->state) &&
-> +        (!qemu_thread_is_self(&ms->thread)) &&
-> +        migrate_dirty_limit() &&
-> +        dirtylimit_in_service()) {
-> +        error_setg(errp, "can't cancel dirty page limit while"
-> +                   " migration is running");
-
-Error message is bad or wrong.
-You can cancel the dirty page, you ust need to be on the main thread.
-
-Or I am missing something?
-
-
-
-> +        return;
-> +    }
-> +
->      dirtylimit_state_lock();
->=20=20
->      if (has_cpu_index) {
-> @@ -488,6 +499,8 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
->                                uint64_t dirty_rate,
->                                Error **errp)
->  {
-> +    MigrationState *ms =3D migrate_get_current();
-> +
->      if (!kvm_enabled() || !kvm_dirty_ring_enabled()) {
->          error_setg(errp, "dirty page limit feature requires KVM with"
->                     " accelerator property 'dirty-ring-size' set'")
-> @@ -504,6 +517,15 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
->          return;
->      }
->=20=20
-> +    if (migration_is_running(ms->state) &&
-> +        (!qemu_thread_is_self(&ms->thread)) &&
-> +        migrate_dirty_limit() &&
-> +        dirtylimit_in_service()) {
-> +        error_setg(errp, "can't cancel dirty page limit while"
-> +                   " migration is running");
-> +        return;
-> +    }
-
-If you use such a complex expression twice, I think that creating a
-helper function is a good idea.
-
-Later, Juan.
+David / dhildenb
 
 
