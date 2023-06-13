@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6617A72DDC1
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 11:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E04272DDDA
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 11:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90On-00022V-9x; Tue, 13 Jun 2023 05:33:13 -0400
+	id 1q90QY-0003R0-44; Tue, 13 Jun 2023 05:35:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Ok-000224-CV
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:33:10 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90QV-0003Q2-MH
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:34:59 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Od-0004ko-Ls
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:33:10 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9788faaca2dso884906466b.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:32:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Oo-0004lc-5G
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:34:59 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9741caaf9d4so778566966b.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:33:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686648766; x=1689240766;
+ d=linaro.org; s=google; t=1686648788; x=1689240788;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=CylKb+h/aBtIokX4atzffzYSp0vfmbOsuM6UaEXnMB8=;
- b=Cu6JBI3NGbeetzG7UbMKvpoB67+p9VKv5Vi5faetOG3vxTll6rLoAmbl2d5gihstK6
- P98IkG598PvgWPwmt2WMLtyNZjfCsAvyjN/GFwVUGpHufckxkclG+6mA+C0c5HP+mdYP
- SkfKkw4TEKsRVTZig5twxPPNVoY7JGkEVQz5Q9u+9be718235gqiGZla3a40OC0efm5d
- LYZUD5p9w2GT9M3f1rSZXrtgPlgGiP3BjUKPQQWCsE/K3QhlP1B14dfbIMd06Q010prG
- tCJ9dfxNIv974uTHoskmj782s1gsWfgVRBhGSqoojy4oEHMThNhb0gRthxwS8ajKntit
- fbeQ==
+ bh=4MNXdi7MGKpJNYenS9OX8BFrtPE9E2iUOovnT/tyKXE=;
+ b=cl1o3mr4/EmLos4XxLkl97dBnqU6jhjst5oqtVa0vmY5xX8ZCoRfx36/BNTJxLfXt2
+ kaN6ga+BnE/BWPnEpD4J7yPDu5Vh5oUmMJYv1n5lxlQRSoLe5q7qmrW3/HAquWK5bBth
+ MAy2xFr/uWMEvwesNHj5XBu9fsycBYe+0+NE7lVADaxQSpCU0aCKjqVqrQua8fxYljSq
+ wtmBa2q8wj+MSWq3NIeIRzsYNR4iqwRelqST9vDbo4ClEmkjA+vjE+djjFkXmtJUR/n1
+ 0g3tCanr587P7S/BSUJCt/KKEMNx2WTy5ETaBl9n/pd7h/vm+mn19DlDzVJ9lQ3k0JTK
+ ia7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686648766; x=1689240766;
+ d=1e100.net; s=20221208; t=1686648788; x=1689240788;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CylKb+h/aBtIokX4atzffzYSp0vfmbOsuM6UaEXnMB8=;
- b=LUZNQrGwKlLqvkBCOk6GHzi+7J0Q51HXK785V/j0Fw1LRbOM9nacg2UFq/czM+SBrd
- e9E3bMoYIbZbtv/Z/1lSWVx1bP6rgU8k/5VWQcLNZimH+F/qYSSCy715ci7Bkx5GftQ4
- +Vw6IyjdGJZJb0Nme8InDHk9tJjDCARnm3tF+xNvALIlDBcfCM4w0lUtFi4NY/grtirr
- iwiQkpTt4xsr/jcUkzw5H/YnWN5BSg9R9wEn0RHJ3t6JHBGQ5tWk7Igofp8XDie+TZcX
- G2PbREZPtnu5cEwMgjXqHHzlDcEUyAULYBVsWbany8eJiemD2LOqoH+LPXZi0ADO1ohd
- 6haA==
-X-Gm-Message-State: AC+VfDwzXfXe4xLjdqUygU0zDPZ3m6qHqWAf1ZYlNp1Shpyyu1rXdPCs
- /XvYKUOeJxVYDTief0cnzQLjhA==
-X-Google-Smtp-Source: ACHHUZ4r1f0/cXVHv8PHgWLsFOU4+43KgiRsTb9U1NSVCKta+CgaHePqQSBt/iMToQgPEF1nqMsg6g==
-X-Received: by 2002:a17:907:6d98:b0:973:d8c4:a4df with SMTP id
- sb24-20020a1709076d9800b00973d8c4a4dfmr12482179ejc.52.1686648766443; 
- Tue, 13 Jun 2023 02:32:46 -0700 (PDT)
+ bh=4MNXdi7MGKpJNYenS9OX8BFrtPE9E2iUOovnT/tyKXE=;
+ b=ZbjbVpNhhvP1ESxreJOm0mm5XIK2A5Ib/4kzz7qZ80Z0YK7Zj9bX4fP1anIrsO7Bfm
+ qXUiLYFxubpkvzFnoPrl17u0J/kM9W0OIsm1gpIHKPqLptyor61vQkBCINqcraj68VVM
+ t4/mJiL3DpBXlf7JsO+lz/3H62MYelc0NPanRPzwRvWQ0+DeKr6tyZyJNHcp6QEy8oFC
+ zkplFhNoMPzdgSMWywJ1SIzlda7JYEsQwxltu2CeiX97/UkZ6o40oUkIdfsE+q2vH8LJ
+ 6rVgP3Cbmwe+mhdYPqqFbCZ9LaRXnu3N9QUm9heiQ4yg8S81Jx0utY6Wf0IOfWF3PGWo
+ 65yw==
+X-Gm-Message-State: AC+VfDwo5tPUEAnKo8PXzGMrlzCi3gd/LjLjIvh5ye+xrRj5jT82pPK0
+ WD8cLWu8W24Ymp67rIcuKK8FtA==
+X-Google-Smtp-Source: ACHHUZ4drShZBpM60M5Kw24DqXNi0fRsgivQaQoInh9rO0XUBhdmdIbneU/eIuL0nrifoH4XlMijLA==
+X-Received: by 2002:a17:907:78c:b0:96a:ee54:9f20 with SMTP id
+ xd12-20020a170907078c00b0096aee549f20mr11026477ejb.37.1686648788002; 
+ Tue, 13 Jun 2023 02:33:08 -0700 (PDT)
 Received: from [10.10.0.115] ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- q2-20020a1709060e4200b00982362776cbsm961943eji.118.2023.06.13.02.32.45
+ s8-20020a170906500800b009663582a90bsm6485879ejj.19.2023.06.13.02.33.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 02:32:46 -0700 (PDT)
-Message-ID: <223298b8-ca57-0121-3be5-79006295ae41@linaro.org>
-Date: Tue, 13 Jun 2023 11:32:45 +0200
+ Tue, 13 Jun 2023 02:33:07 -0700 (PDT)
+Message-ID: <e51d0bb0-38bc-806d-e54a-68d4f3a9e564@linaro.org>
+Date: Tue, 13 Jun 2023 11:33:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3] linux-user, bsd-user: preserve incoming order of
- environment variables in the target
+Subject: Re: [PATCH v3] hvf: Report HV_DENIED error
 Content-Language: en-US
-To: Andreas Schwab <schwab@suse.de>, Laurent Vivier <laurent@vivier.eu>
-Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- qemu-devel@nongnu.org
-References: <mvmlejfsivd.fsf@suse.de>
+To: Antonio Caggiano <quic_acaggian@quicinc.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <r.bolshakov@yadro.com>
+References: <20230608123014.28715-1-quic_acaggian@quicinc.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <mvmlejfsivd.fsf@suse.de>
+In-Reply-To: <20230608123014.28715-1-quic_acaggian@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,16 +93,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/3/23 17:00, Andreas Schwab wrote:
-> Do not reverse the order of environment variables in the target environ
-> array relative to the incoming environ order.  Some testsuites depend on a
-> specific order, even though it is not defined by any standard.
+On 8/6/23 14:30, Antonio Caggiano wrote:
+> On MacOS 11 and subsequent versions, in case the resulting binary is not
+> signed with the proper entitlement, handle and report the HV_DENIED
+> error.
 > 
-> Signed-off-by: Andreas Schwab <schwab@suse.de>
+> Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 > ---
->   bsd-user/main.c   | 10 +++++++++-
->   linux-user/main.c | 10 +++++++++-
->   2 files changed, 18 insertions(+), 2 deletions(-)
+> v2: Use architecture specific defines from AvailabilityMacros.h to enable the
+>      HV_DENIED case only on MacOS 11 and subsequent versions.
+> v3: Fix ifdef guard.
+> 
+>   accel/hvf/hvf-all.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 
-I'll take this patch in my next PR, thanks!
+Queued, thanks!
+
 
