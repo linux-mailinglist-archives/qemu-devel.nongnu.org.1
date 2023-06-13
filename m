@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE9472E66A
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 16:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DF372E681
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q95TL-00067e-G6; Tue, 13 Jun 2023 10:58:17 -0400
+	id 1q95TT-00069q-5p; Tue, 13 Jun 2023 10:58:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q95TC-00067C-6b
+ id 1q95TC-00067I-Fq
  for qemu-devel@nongnu.org; Tue, 13 Jun 2023 10:58:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q95TA-0007Vm-I6
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 10:58:05 -0400
+ id 1q95TA-0007Vu-Nd
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 10:58:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686668282;
+ s=mimecast20190719; t=1686668283;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=pLBH1sHYqt72KY+62bRvUut4aYkv2oDuULx19KyDGkE=;
- b=Tr6J5iX9AIW1Bi83uOG5iwMjb53sG+Y3nlmQs1inE1q9Jvl4FdTyVVymc2kypjWL4sKpnt
- 2222YDJvwrWVayNsguAHuHwqrjomEfArKioj24GMX8pzaUQnn7acXMffJxTYcFB3UyMubi
- /J8NrVyWcyMFk8tc59RXLePbsKFxfKY=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iqQ1Jj/Ln5VLyhMCA//NvQ21r3Qsfybj2P+onhlxemY=;
+ b=J+55MZ2EEeKAtoa6qEHvRhLtKTFSGGMEZ9zk9c0yxuIX+b/y5yXtOUxyE9D15Mussw4qXK
+ 2u7cAgPYrpxHI9AhVk+5dAsWkNXwrgGCEFZFhNzftozX9i1OlWCK7VYvkoP/kEM6TowpBo
+ WFQqFFUiDdgzxcLEci6yC9mAJw3j8lk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-60-IZ8Nc-BWPXyoAW8TgsosIQ-1; Tue, 13 Jun 2023 10:58:01 -0400
-X-MC-Unique: IZ8Nc-BWPXyoAW8TgsosIQ-1
+ us-mta-492-XyPnRIpeOyWUM1bX1qLusQ-1; Tue, 13 Jun 2023 10:58:01 -0400
+X-MC-Unique: XyPnRIpeOyWUM1bX1qLusQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74DF78030DF;
- Tue, 13 Jun 2023 14:57:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A81448007D9;
+ Tue, 13 Jun 2023 14:58:00 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6118F40C6F5C;
- Tue, 13 Jun 2023 14:57:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B9D0A40C6F5C;
+ Tue, 13 Jun 2023 14:57:59 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Juan Quintela <quintela@redhat.com>
-Subject: [PATCH 00/18] Migration compression cleanup
-Date: Tue, 13 Jun 2023 16:57:39 +0200
-Message-Id: <20230613145757.10131-1-quintela@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 01/18] migration: Give one error if trying to set MULTIFD and
+ XBZRLE
+Date: Tue, 13 Jun 2023 16:57:40 +0200
+Message-Id: <20230613145757.10131-2-quintela@redhat.com>
+In-Reply-To: <20230613145757.10131-1-quintela@redhat.com>
+References: <20230613145757.10131-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
@@ -77,55 +80,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+---
+ migration/options.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-On this series:
-
-- We got errors when setting incompatible migration methods
-  (i.e. compression and RDMA)
-
-- Remove the posibility of running COMPRESSION and XBZRLE together
-  (remember that compression don't work)
-
-- This series is the preliminar work to be able to compile out
-  compression (almost there, but wanted to get this first)
-
-- Move everyting that touches compression_counters to ram-compress.c
-
-- simplify pass of block/file parameter.  We can get them trough the
-  pss.
-
-Please, review.
-
-Juan Quintela (18):
-  migration: Give one error if trying to set MULTIFD and XBZRLE
-  migration: Give one error if trying to set COMPRESSION and XBZRLE
-  migration: RDMA is not compatible with anything else
-  migration: Remove save_page_use_compression()
-  migration: Move compression_counters cleanup ram-compress.c
-  migration: Create populate_compress()
-  migration: Create ram_compressed_pages()
-  migration: Move update_compress_threads_counts() to ram-compress.c
-  migration: Make compress_data_with_multithreads return bool
-  migration: Simplify compress_page_with_multithread()
-  migration: Move busy++ to migrate_with_multithread
-  migration: Create compression_update_rates()
-  migration: Simplify decompress_data_with_multi_threads()
-  migration: Use "i" as an for index in ram-compress.c
-  migration: save_compress_page() can take block through pss
-  migration: control_save_page() can take block through pss
-  migration: Remove not needed block parameter for save_zero_page*
-  migration: Remove not needed file parameter for save_zero_page*
-
- migration/ram-compress.h |  10 +-
- migration/ram.h          |   1 -
- migration/migration.c    |  27 +++---
- migration/options.c      |  14 +++
- migration/ram-compress.c | 198 +++++++++++++++++++++++++++------------
- migration/ram.c          | 121 +++++-------------------
- migration/savevm.c       |   1 -
- 7 files changed, 198 insertions(+), 174 deletions(-)
-
+diff --git a/migration/options.c b/migration/options.c
+index b62ab30cd5..c6674a4753 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -547,6 +547,13 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+         }
+     }
+ 
++    if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
++        if (new_caps[MIGRATION_CAPABILITY_XBZRLE]) {
++            error_setg(errp, "Multifd is not compatible with xbzrle");
++            return false;
++        }
++    }
++
+     return true;
+ }
+ 
 -- 
 2.40.1
 
