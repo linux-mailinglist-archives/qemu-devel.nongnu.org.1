@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D757372E187
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1AD72E1F6
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:47:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90Ur-0005ew-Cn; Tue, 13 Jun 2023 05:39:29 -0400
+	id 1q90V2-0005jd-Eg; Tue, 13 Jun 2023 05:39:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Up-0005eZ-SB
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:27 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90V0-0005j5-52
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:38 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Uj-0005df-SQ
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:27 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-9745d99cfccso937839466b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:39:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Uq-0005el-2e
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:37 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-51492ae66a4so7515895a12.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:39:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686649159; x=1689241159;
+ d=linaro.org; s=google; t=1686649164; x=1689241164;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eupMI3Meu8cffWS+qjznZxnt/lkJ4Ptq7I5pw8yZlMY=;
- b=K2Vb46ASF7WJ45/pWoE+CvyqBsi3zplG7pR4R2HR8XgsS2gLwQatnABew+2l3dLof6
- Qt/X4cnfNlq0xpKVhZaADfy6XfTiEJLjguRDeMSHd4ztui73693xVi21mEiF3Uhqx0pR
- YRKirmzTgX1GertNwhFYaosB4qTLbxJMFTJPXwIi2uh5WlLKtfSZCVFc76KMjoCpqa2S
- v+JhWM0wZaHHZgyDBzGpIAtp3DRhGyqLzwxCm+CCsFuNSRyC3mcF1RbSmbExTOYscn9C
- 2JwNAWJHHLB02mCN05ZqkoybJbblASlRNnOSmlA9etqxksl6DHDQvtNa/2+aO+d9AH67
- UGsQ==
+ bh=KTisvpy141VHl6Jl8IdlijmeVIKSJjM3R7YZNyvUfc8=;
+ b=psp5IXJgfMdSJYnwqTBwlddCd7bqiI6xXCMYQwJUbZYy5d7h9ZUZBRjlyuNpMl2CyN
+ E7Se8ZKfCthsEnV+OhT56ogVP69iE9HNea2ZfRctV6yRpetCsmV5NaT2j/LlUVBiwGzP
+ vmvJQx9JqalNNAoT/afiF7iGIpOL2j/hewHY6QG+P3Ira/7sze3F+kltL54Q4xdlobII
+ Il8IPfOxXTNgxsabQNrMRAj4EU7twYFqN9tymNsRjLYiikrPgR9butz5nc9eR0BCy7gQ
+ IuSLteAufcBPcJyzYybreR+lOS616uOWm+9GOuCUQVMbXvsOxtXcvXhblRmMyX9jT8jq
+ fUsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649159; x=1689241159;
+ d=1e100.net; s=20221208; t=1686649164; x=1689241164;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eupMI3Meu8cffWS+qjznZxnt/lkJ4Ptq7I5pw8yZlMY=;
- b=ZIYvoKvIC6/lwYAafAbPzdwwIMbBhoaHsBptW53XNciBjsnxJP+ehI7PgAA1L0Of/9
- oS4kZY4/EygVbDoyWySnGGvMVhsw27es09AUXjmDHqOebL82aNXU2jb96FZuy8pUVoAu
- X682xcKVQLv778Gfsb3bmZaGYKSIiI/S2HYMEZOK8uHcMcLurTBZ72lULG+LDbP3O6Qp
- oxpw/4lw08Y0iZ5yB9b3fTi4czHeh+j92QKnC+PRJxCqH8R6qnPJVobctQfkR4MsgEG5
- /b2K7JGwUiaF8lp3IpJf/Gs2wHfd/SVBDQstLsHQK9AHo742kZ0sonvVWTa2Cf/iiaen
- BbUw==
-X-Gm-Message-State: AC+VfDwzXMeYFvh0Vc6rQUulCUhpFC3y3XKmVFKP32BE8waCx0y2tfK7
- kSpYIcnQJfHqWTyVwjQnTuMO1tY//bGsDsMK+ejEHA==
-X-Google-Smtp-Source: ACHHUZ6pm/AFHadErPXK5opeCQmLb9IdiBtBTVr4LWpI0tTohdISQqo3tdvQ2rkU3fpu+Ve672F1qQ==
-X-Received: by 2002:a17:907:7da9:b0:973:93d6:189f with SMTP id
- oz41-20020a1709077da900b0097393d6189fmr14472263ejc.61.1686649159550; 
- Tue, 13 Jun 2023 02:39:19 -0700 (PDT)
+ bh=KTisvpy141VHl6Jl8IdlijmeVIKSJjM3R7YZNyvUfc8=;
+ b=NklZ8/4ySSpA8H3AKbS3lOzxkP3ea+CULe+rx3TlSAvTqDeW4nj5k20j7T4RG2xNND
+ QWQ3/gudZEQvZ3SZXmEYQ8BMSuhQrMscx+LNnNaT7E0MRFZEAeRMIp6B8HF3FxyWqQ1S
+ eE+oWfTskiWFI2cKcYpuuHKEtqyUZ5Pm1ndv7O+C9O4eJfwksBOYyjFpqIO8gfVdjnIF
+ 8IHJRBos8mRU5QmGCkS5ai/Dk95BHK/b4gpnDW9HYL8gk59mpI571JislY2QKKE0ayHY
+ D7j2mGhXy3ajIJaf17G4K/VeDo0Xsl0gTi2av9x6zw588R9dkdj7Ex75+p5XoZuloAiO
+ e8vA==
+X-Gm-Message-State: AC+VfDy+rdaTPKwdqd8lbDmpY1MkDo+KoUP6N1EkHuqvYLUo2T1CbirV
+ JI9PXeZ1HNbmNg78IJIdwIwoVHS8tDley2cfQM8GTg==
+X-Google-Smtp-Source: ACHHUZ6hpEVEogvD+bdBlqsYRMAaz3ayvQKG8O3mL8chYqUb1kFvBjIGduNoArSoyj1DVrMbhEwuqQ==
+X-Received: by 2002:aa7:ca4b:0:b0:518:797c:6bee with SMTP id
+ j11-20020aa7ca4b000000b00518797c6beemr624427edt.5.1686649163810; 
+ Tue, 13 Jun 2023 02:39:23 -0700 (PDT)
 Received: from localhost.localdomain ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- m25-20020a1709062b9900b0096637a19dccsm6318257ejg.210.2023.06.13.02.39.18
+ z20-20020a1709064e1400b009745eddf997sm6334993eju.198.2023.06.13.02.39.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 02:39:19 -0700 (PDT)
+ Tue, 13 Jun 2023 02:39:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hannes Reinecke <hare@suse.de>
-Subject: [PULL 12/17] hw/scsi/megasas: Silent GCC duplicated-cond warning
-Date: Tue, 13 Jun 2023 11:38:17 +0200
-Message-Id: <20230613093822.63750-13-philmd@linaro.org>
+Cc: qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 13/17] hw/char/parallel: Export struct ParallelState
+Date: Tue, 13 Jun 2023 11:38:18 +0200
+Message-Id: <20230613093822.63750-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613093822.63750-1-philmd@linaro.org>
 References: <20230613093822.63750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,87 +92,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-GCC9 is confused when building with CFLAG -O3:
+Exporting ParallelState is a precondition for exporing TYPE_ISA_PARALLEL to be
+performed in the next patch.
 
-  hw/scsi/megasas.c: In function ‘megasas_scsi_realize’:
-  hw/scsi/megasas.c:2387:26: error: duplicated ‘if’ condition [-Werror=duplicated-cond]
-   2387 |     } else if (s->fw_sge >= 128 - MFI_PASS_FRAME_SIZE) {
-  hw/scsi/megasas.c:2385:19: note: previously used here
-   2385 |     if (s->fw_sge >= MEGASAS_MAX_SGE - MFI_PASS_FRAME_SIZE) {
-  cc1: all warnings being treated as errors
-
-When this device was introduced in commit e8f943c3bcc, the author
-cared about modularity, using a definition for the firmware limit.
-
-However if the firmware limit isn't changed (MEGASAS_MAX_SGE = 128),
-the code ends doing the same check twice.
-
-Per the maintainer [*]:
-
-> The original code assumed that one could change MFI_PASS_FRAME_SIZE,
-> but it turned out not to be possible as it's being hardcoded in the
-> drivers themselves (even though the interface provides mechanisms to
-> query it). So we can remove the duplicate lines.
-
-Add the 'MEGASAS_MIN_SGE' definition for the '64' magic value,
-slightly rewrite the condition check to simplify a bit the logic
-and remove the unnecessary / duplicated check.
-
-[*] https://lore.kernel.org/qemu-devel/e0029fc5-882f-1d63-15e3-1c3dbe9b6a2c@suse.de/
-
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@redhat.com>
+Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230612081238.1742-2-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Message-Id: <20230328210126.16282-1-philmd@linaro.org>
 ---
- hw/scsi/megasas.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ include/hw/char/parallel.h | 21 +++++++++++++++++++++
+ hw/char/parallel.c         | 20 --------------------
+ 2 files changed, 21 insertions(+), 20 deletions(-)
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 9cbbb16121..32c70c9e99 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -42,6 +42,7 @@
- #define MEGASAS_MAX_FRAMES 2048         /* Firmware limit at 65535 */
- #define MEGASAS_DEFAULT_FRAMES 1000     /* Windows requires this */
- #define MEGASAS_GEN2_DEFAULT_FRAMES 1008     /* Windows requires this */
-+#define MEGASAS_MIN_SGE 64
- #define MEGASAS_MAX_SGE 128             /* Firmware limit */
- #define MEGASAS_DEFAULT_SGE 80
- #define MEGASAS_MAX_SECTORS 0xFFFF      /* No real limit */
-@@ -2356,6 +2357,7 @@ static void megasas_scsi_realize(PCIDevice *dev, Error **errp)
-     MegasasState *s = MEGASAS(dev);
-     MegasasBaseClass *b = MEGASAS_GET_CLASS(s);
-     uint8_t *pci_conf;
-+    uint32_t sge;
-     int i, bar_type;
-     Error *err = NULL;
-     int ret;
-@@ -2424,13 +2426,15 @@ static void megasas_scsi_realize(PCIDevice *dev, Error **errp)
-     if (!s->hba_serial) {
-         s->hba_serial = g_strdup(MEGASAS_HBA_SERIAL);
-     }
--    if (s->fw_sge >= MEGASAS_MAX_SGE - MFI_PASS_FRAME_SIZE) {
--        s->fw_sge = MEGASAS_MAX_SGE - MFI_PASS_FRAME_SIZE;
--    } else if (s->fw_sge >= 128 - MFI_PASS_FRAME_SIZE) {
--        s->fw_sge = 128 - MFI_PASS_FRAME_SIZE;
--    } else {
--        s->fw_sge = 64 - MFI_PASS_FRAME_SIZE;
+diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
+index 29d2876d00..9f76edca81 100644
+--- a/include/hw/char/parallel.h
++++ b/include/hw/char/parallel.h
+@@ -1,9 +1,30 @@
+ #ifndef HW_PARALLEL_H
+ #define HW_PARALLEL_H
+ 
++#include "exec/ioport.h"
++#include "exec/memory.h"
+ #include "hw/isa/isa.h"
++#include "hw/irq.h"
++#include "chardev/char-fe.h"
+ #include "chardev/char.h"
+ 
++typedef struct ParallelState {
++    MemoryRegion iomem;
++    uint8_t dataw;
++    uint8_t datar;
++    uint8_t status;
++    uint8_t control;
++    qemu_irq irq;
++    int irq_pending;
++    CharBackend chr;
++    int hw_driver;
++    int epp_timeout;
++    uint32_t last_read_offset; /* For debugging */
++    /* Memory-mapped interface */
++    int it_shift;
++    PortioList portio_list;
++} ParallelState;
 +
-+    sge = s->fw_sge + MFI_PASS_FRAME_SIZE;
-+    if (sge < MEGASAS_MIN_SGE) {
-+        sge = MEGASAS_MIN_SGE;
-+    } else if (sge >= MEGASAS_MAX_SGE) {
-+        sge = MEGASAS_MAX_SGE;
-     }
-+    s->fw_sge = sge - MFI_PASS_FRAME_SIZE;
-+
-     if (s->fw_cmds > MEGASAS_MAX_FRAMES) {
-         s->fw_cmds = MEGASAS_MAX_FRAMES;
-     }
+ #define TYPE_ISA_PARALLEL "isa-parallel"
+ 
+ void parallel_hds_isa_init(ISABus *bus, int n);
+diff --git a/hw/char/parallel.c b/hw/char/parallel.c
+index 3d32589bb3..e75fc5019d 100644
+--- a/hw/char/parallel.c
++++ b/hw/char/parallel.c
+@@ -27,10 +27,7 @@
+ #include "qapi/error.h"
+ #include "qemu/module.h"
+ #include "chardev/char-parallel.h"
+-#include "chardev/char-fe.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+-#include "hw/irq.h"
+-#include "hw/isa/isa.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "migration/vmstate.h"
+@@ -76,23 +73,6 @@
+ 
+ #define PARA_CTR_SIGNAL (PARA_CTR_SELECT|PARA_CTR_INIT|PARA_CTR_AUTOLF|PARA_CTR_STROBE)
+ 
+-typedef struct ParallelState {
+-    MemoryRegion iomem;
+-    uint8_t dataw;
+-    uint8_t datar;
+-    uint8_t status;
+-    uint8_t control;
+-    qemu_irq irq;
+-    int irq_pending;
+-    CharBackend chr;
+-    int hw_driver;
+-    int epp_timeout;
+-    uint32_t last_read_offset; /* For debugging */
+-    /* Memory-mapped interface */
+-    int it_shift;
+-    PortioList portio_list;
+-} ParallelState;
+-
+ OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
+ 
+ struct ISAParallelState {
 -- 
 2.38.1
 
