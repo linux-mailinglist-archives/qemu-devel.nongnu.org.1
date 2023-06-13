@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF02472DBF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 10:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B6A72DC0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 10:08:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q8yyK-0000TX-Ik; Tue, 13 Jun 2023 04:01:48 -0400
+	id 1q8z49-0001yX-8B; Tue, 13 Jun 2023 04:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q8yyI-0000Sw-QB; Tue, 13 Jun 2023 04:01:46 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q8z47-0001y7-6W; Tue, 13 Jun 2023 04:07:47 -0400
+Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1q8yyH-0004HS-0i; Tue, 13 Jun 2023 04:01:46 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-977e7d6945aso933647866b.2; 
- Tue, 13 Jun 2023 01:01:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q8z45-0005dV-LF; Tue, 13 Jun 2023 04:07:46 -0400
+Received: by mail-vk1-xa33.google.com with SMTP id
+ 71dfb90a1353d-4652fcb2ac1so2136421e0c.1; 
+ Tue, 13 Jun 2023 01:07:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686643299; x=1689235299;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8qjWlw4VIddJByF4ISR8Or1dZy9LWJRppqOpvTAYqOk=;
- b=QuHf0jSvpRSXTG+puM7zR5LxvD/ukesAFomgS5Xpxkw7gLDEwwAw341Gi7D3zJQV2V
- jY2J0/llf0xDYiKMXisf8x+jWLfT7iyxYxH6NAkZCXlBlj+6vKAcUdr9V/+/4KhPTLsz
- eMnd3gcux4MUWGdcKPIjNJ5ny8VE2pHLHOsvNCfLYZRgwm3JsSPgO9JOHJ35qOpdV+Io
- 4EPLCnhLRDrEqaRhY5ZQeuTjkejpgL/HMDJcUO4r2Sb1Yt6ZhluOOeaUOMm9DpBENYmA
- 4DZxsrdPJidZT+J1SQKjMGkDJCpZv46rYaiv8bX5Tm0e5L2rgF/2E2cJKSf92LWVtwWW
- PlRw==
+ d=gmail.com; s=20221208; t=1686643664; x=1689235664;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ciFMPtsm0MR17JnUHMUbyGZPGjmipZFXian0Z+D/0jo=;
+ b=hNOOP/LCJhmYPKA9Hift8B3pLhII1zd8ZWkz5u4WDmGOi5IEVc1k8rbx0IvI0f9dsM
+ GhpkaKprHQ18STeetSYmeUaV4/m6rFsK7NzO9WauPNWpT6ql1EOyy8OzQWV9oNTSiSc0
+ CguVNg38+GtJJm+9R22u4VqqscIH24mT1fMufJifiiucsP55s4UYr4O+ng+Exwv1gked
+ YTm0D+lN5QODEzGeyGIDK1ekd0o1ZsHYtHZMmHKDUGJ1VzKu1VypsI4bRZy3/CRZRGbr
+ 2ux+NW1Dg5g6f7M5rIyS7U0euAErpLjipClvS6983HNRMhTjFrTS9Y9+VlMi8FfgGiaS
+ fxDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686643299; x=1689235299;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8qjWlw4VIddJByF4ISR8Or1dZy9LWJRppqOpvTAYqOk=;
- b=bMRZKSuPjZJtJZt12OUW7by3fFhEhC/dpfW4vQMhxZ7LEBT1Efhcj8I8JD+M716Ip4
- eTe2ax/wkcbkWpXz475GRrujwnUpsR1KvnAAsUy9HSmFg/Gvm7yRgsGQFVjTTSKftJD6
- ++OL57uK4A7DE8v+ZxvZzI/gkspckahDBB7OC+04EqE0YKUX1wkJGi8Dlp4e/Kz0b/tH
- fE8XjNtyRD7+eui+gkvJoS6TUvqi4QMK2DEVyOufsm9MzmA9o67QFrLSgbk2vOlchtMB
- kaDLGL6HujZk1mmsozDG1t7AxW6hTlklabdO0uRPcZdAX9rePVBpCoFP6OQEflv31g4P
- focg==
-X-Gm-Message-State: AC+VfDwfYDcg76QkGFpIY8KQBTWolimiVix051I8kDCcb+bX/HLGDNzt
- Hcbz84f3EN4IjpwtBGZ0lvUExegSnaFKTFt2wTs=
-X-Google-Smtp-Source: ACHHUZ6BoUufz2pAzXvAl51/UMkit4SSMmF4eZfYv0CNzzqgF+PF369aydchcNvWR2SU3o5ms/asp53ddNlluUXkIWQ=
-X-Received: by 2002:a17:906:ef0b:b0:965:ff38:2fbb with SMTP id
- f11-20020a170906ef0b00b00965ff382fbbmr12698129ejs.1.1686643298854; Tue, 13
- Jun 2023 01:01:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1686643664; x=1689235664;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ciFMPtsm0MR17JnUHMUbyGZPGjmipZFXian0Z+D/0jo=;
+ b=hSdQdocoZf1DADz4xDGvtrbPuI3RwpW4R9tr3wr26lq1jrCjN/GTXifGrypbMdcrbw
+ XtLLtBS4uOYnNEeO9Ep1SsqCzBbbavRX7ZTz9OWDXkO/Xe6lGEwNRhmpVYbANqmLrf70
+ THMlePTIw2jSbKeTa4X8paiWQNCBr4oT2JO7/MTIgGYu/lJaxEEmeUIiqbbjmMk+AQX7
+ X2gCtopApsf5ndsyOtBsYlVH8kTGH0U5TuRUwrEqiKpZh170PCMpVY1Q2y3bqcasc4YA
+ wpAFMXjShbM/TAM7ZAlV8cxiXVSoMVmIQTT5VsCsPpbwtF5Tl7L/BPSlC3RTn0gmyJsN
+ jOIA==
+X-Gm-Message-State: AC+VfDxOzsNQgBbt2J34jGTTcmkVDDpMxbO3YBSiYykL84ZxX8tVc3gv
+ oV9MRMac5GuMCEINzcuA2c5eEqFx4nJq7OIbVOQ=
+X-Google-Smtp-Source: ACHHUZ7j+wwlsiCHn2x7sPwNZaZ2c8O8jcyAmeBc0BEgequ525TuaJIoVHnGzgTxYw9ow7xcwJik8Pi38JFGGkwdQUc=
+X-Received: by 2002:a1f:d405:0:b0:464:cd5c:b37e with SMTP id
+ l5-20020a1fd405000000b00464cd5cb37emr6279948vkg.0.1686643664187; Tue, 13 Jun
+ 2023 01:07:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230605104108.125270-1-faithilikerun@gmail.com>
- <20230605104108.125270-2-faithilikerun@gmail.com>
- <20230612041016.GA2446610@fedora>
-In-Reply-To: <20230612041016.GA2446610@fedora>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Tue, 13 Jun 2023 16:01:12 +0800
-Message-ID: <CAAAx-8J2wBu6iCTiJ8hgoijWrSVgorcD92_Nhfsf=HxrMh0jxg@mail.gmail.com>
-Subject: Re: [RFC 1/4] docs/qcow2: add the zoned format feature
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, dlemoal@kernel.org, dmitry.fomichev@wdc.com, 
- hare@suse.de, Markus Armbruster <armbru@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x634.google.com
+References: <20230609185119.691152-1-mark.cave-ayland@ilande.co.uk>
+ <20230609185119.691152-6-mark.cave-ayland@ilande.co.uk>
+ <76F6648A-47D8-4975-8344-93BE5DD6A071@gmail.com>
+ <b2226d76-7c93-3623-69f0-5029ddc42aa3@linaro.org>
+In-Reply-To: <b2226d76-7c93-3623-69f0-5029ddc42aa3@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
+Date: Tue, 13 Jun 2023 10:07:30 +0200
+Message-ID: <CAG4p6K66SoZERUDKEWvWigrqygvZ=N6GaGfYkXYtx7Ze0izZAA@mail.gmail.com>
+Subject: Re: [PATCH 5/5] cmd646: move device-specific BMDMA registers to
+ separate memory region
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, jsnow@redhat.com,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000077776805fdfe5454"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
+ envelope-from=shentey@gmail.com; helo=mail-vk1-xa33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,107 +87,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> =E4=BA=8E2023=E5=B9=B46=E6=9C=8813=E6=
-=97=A5=E5=91=A8=E4=BA=8C 15:04=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Jun 05, 2023 at 06:41:05PM +0800, Sam Li wrote:
-> > Add the specs for the zoned format feature of the qcow2 driver. Once
-> > the zoned_profile is set to `zbc`, then the qcow2 file can be taken
-> > as zoned devices and passed through by virtio-blk device to the guest.
+--00000000000077776805fdfe5454
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jun 13, 2023 at 12:39=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philm=
+d@linaro.org>
+wrote:
+
+> On 12/6/23 21:28, Bernhard Beschow wrote:
 > >
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> > ---
-> >  docs/system/qemu-block-drivers.rst.inc | 31 ++++++++++++++++++++++++++
-> >  1 file changed, 31 insertions(+)
 > >
-> > diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-=
-block-drivers.rst.inc
-> > index 105cb9679c..fdcf343652 100644
-> > --- a/docs/system/qemu-block-drivers.rst.inc
-> > +++ b/docs/system/qemu-block-drivers.rst.inc
-> > @@ -172,6 +172,37 @@ This section describes each format and the options=
- that are supported for it.
-> >      filename`` to check if the NOCOW flag is set or not (Capital 'C' i=
-s
-> >      NOCOW flag).
+> > Am 9. Juni 2023 18:51:19 UTC schrieb Mark Cave-Ayland <
+> mark.cave-ayland@ilande.co.uk>:
+> >> The aim here is to eliminate any device-specific registers from the
+> main BMDMA
+> >> bar memory region so it can potentially be moved into the shared PCI
+> IDE device.
+> >>
+> >> For each BMDMA bus create a new cmd646-bmdma-specific memory region
+> representing
+> >> the device-specific BMDMA registers and then map them using aliases
+> onto the
+> >> existing BMDMAState memory region.
+> >>
+> >> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> >> ---
+> >> hw/ide/cmd646.c         | 111 +++++++++++++++++++++++++++++++---------
+> >> include/hw/ide/cmd646.h |   4 ++
+> >> 2 files changed, 90 insertions(+), 25 deletions(-)
+>
+>
+> >> struct CMD646IDEState {
+> >>      PCIIDEState parent_obj;
+> >> +
+> >> +    MemoryRegion bmdma_mem[2];
+> >> +    MemoryRegion bmdma_mem_alias[2][2];
 > >
-> > +  .. option:: zoned_profile
-> > +
-> > +    The option configures the zoned format feature on the qcow2 driver=
-. If
-> > +    this is set to ``zbc``, then it follows the basics of ZBC/ZAC prot=
-ocol.
+> > The added complexity of a two-dimensional alias array seems like a toug=
+h
+> call for me. I'm not totally against it but I'm reluctant.
 >
-> What about virtio-blk? NVMe ZNS? Please indicate what effect the profile
-> has and whether it works with all emulated storage controllers that
-> support zoned storage.
+> Alternative:
+>
+>          struct {
+>              MemoryRegion mem;
+>              MemoryRegion mem_alias[2];
+>
 
-The ZNS profile hasn't been included in this patch series yet.
+If `mem_alias` became an anonymous struct as well we could avoid fiddling
+with two indices in a matrix, lowering the complexity.
 
-Both ZNS and ZBC profiles can be used as the backing file for
-virtio-blk passthrough. Though the NVMe controller with ZNS can only
-use the ZNS profile. The ZNS profile can have a smaller size of
-zoned_capacity than zone_size and only allows sequential write
-required zoned type.
+Best regards,
+Bernhard
 
+>          } bmdma[2];
 >
-> > +
-> > +  .. option:: zone_size
-> > +
-> > +    The size of a zone of the zoned device. The zoned device have the =
-same
->
-> "in bytes"? Please document the units.
->
-> > +    size of zones with an optional smaller last zone.
->
-> "The device is divided into zones of this size with the exception of the
-> last zone, which may be smaller."
->
-> > +
-> > +  .. option:: zone_capacity
-> > +
-> > +    The capacity of a zone of the zoned device.
->
-> This can be expanded:
->
->   The initial capacity value for all zones. The capacity must be less
->   than or equal to zone size. If the last zone is smaller, then its
->   capacity is capped.
->
-> > The zoned device follows the
-> > +    ZBC protocol tends to have the same size as its zone.
-> > +
-> > +  .. option:: zone_nr_conv
-> > +
-> > +    The number of conventional zones of the zoned device.
-> > +
-> > +  .. option:: max_open_zones
-> > +
-> > +    The maximal allowed open zones.
-> > +
-> > +  .. option:: max_active_zones
-> > +
-> > +    The limit of the zones with implicit open, explicit open or closed=
- state.
-> > +
-> > +  .. option:: max_append_sectors
-> > +
-> > +    The maximal sectors that is allowed to append to zones while writi=
-ng.
->
-> Does "sectors" mean 512B blocks or logical block size?
-
-According to virtio spec, it means 512B blocks.
-
-Thanks!
-
->
-> > +
-> >  .. program:: image-formats
-> >  .. option:: qed
+> >> };
+> >>
+> >> #endif
 > >
-> > --
-> > 2.40.1
-> >
+>
+>
+
+--00000000000077776805fdfe5454
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 13, 2023 at 12:39=E2=80=
+=AFAM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">=
+philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">On 12/6/23 21:28, Bernhard Beschow wrote:<br>
+&gt; <br>
+&gt; <br>
+&gt; Am 9. Juni 2023 18:51:19 UTC schrieb Mark Cave-Ayland &lt;<a href=3D"m=
+ailto:mark.cave-ayland@ilande.co.uk" target=3D"_blank">mark.cave-ayland@ila=
+nde.co.uk</a>&gt;:<br>
+&gt;&gt; The aim here is to eliminate any device-specific registers from th=
+e main BMDMA<br>
+&gt;&gt; bar memory region so it can potentially be moved into the shared P=
+CI IDE device.<br>
+&gt;&gt;<br>
+&gt;&gt; For each BMDMA bus create a new cmd646-bmdma-specific memory regio=
+n representing<br>
+&gt;&gt; the device-specific BMDMA registers and then map them using aliase=
+s onto the<br>
+&gt;&gt; existing BMDMAState memory region.<br>
+&gt;&gt;<br>
+&gt;&gt; Signed-off-by: Mark Cave-Ayland &lt;<a href=3D"mailto:mark.cave-ay=
+land@ilande.co.uk" target=3D"_blank">mark.cave-ayland@ilande.co.uk</a>&gt;<=
+br>
+&gt;&gt; ---<br>
+&gt;&gt; hw/ide/cmd646.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 111 +++++++++++=
+++++++++++++++++++++---------<br>
+&gt;&gt; include/hw/ide/cmd646.h |=C2=A0 =C2=A04 ++<br>
+&gt;&gt; 2 files changed, 90 insertions(+), 25 deletions(-)<br>
+<br>
+<br>
+&gt;&gt; struct CMD646IDEState {<br>
+&gt;&gt;=C2=A0 =C2=A0 =C2=A0 PCIIDEState parent_obj;<br>
+&gt;&gt; +<br>
+&gt;&gt; +=C2=A0 =C2=A0 MemoryRegion bmdma_mem[2];<br>
+&gt;&gt; +=C2=A0 =C2=A0 MemoryRegion bmdma_mem_alias[2][2];<br>
+&gt; <br>
+&gt; The added complexity of a two-dimensional alias array seems like a tou=
+gh call for me. I&#39;m not totally against it but I&#39;m reluctant.<br>
+<br>
+Alternative:<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MemoryRegion mem;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MemoryRegion mem_alias[2];<=
+br></blockquote><div><br></div><div>If `mem_alias` became an anonymous stru=
+ct as well we could avoid fiddling with two indices in a matrix, lowering t=
+he complexity.</div><div><br></div><div>Best regards,</div><div>Bernhard<br=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0} bmdma[2];<br>
+<br>
+&gt;&gt; };<br>
+&gt;&gt;<br>
+&gt;&gt; #endif<br>
+&gt; <br>
+<br>
+</blockquote></div></div>
+
+--00000000000077776805fdfe5454--
 
