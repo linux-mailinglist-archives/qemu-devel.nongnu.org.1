@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A5772E441
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 15:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E8C72E443
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 15:37:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q94CQ-00026m-DC; Tue, 13 Jun 2023 09:36:42 -0400
+	id 1q94CS-0002VL-0B; Tue, 13 Jun 2023 09:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94Bv-0001Wh-1m
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:14 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94C6-0001tZ-JC
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:24 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94Bt-0002gT-3y
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:10 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51878f8e541so873214a12.3
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 06:36:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94C2-0002jf-II
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:22 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-977d0288fd2so914770866b.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 06:36:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686663366; x=1689255366;
+ d=linaro.org; s=google; t=1686663377; x=1689255377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ry/cjrg7XOxc8uRAKLAirJAwrBWEpGHjMR46sXnWNn0=;
- b=Chbfm/4pI28YU3JI6nhR4UtiXjsaLsUVuUbtdFvkuyscadYJNsIKxLkvc/hwoJP+36
- qeq+Ul1KsAwrcLsqikHBwedCOTw9QwoLq2DyOvqjYEgOew0wzXF2qchSiIHvrx46NJSP
- TYVW3hnT1JOmKvC1Px5NTx05V2fE0338Au+belQ+pAXogMkoPebgTp5XwPG4MDyfetDa
- r3u5OM0NeDBUzGCTrZFJOR7NqUtIZwRtNOqgxHtp2PREg63HItxtzb9w4218c1NzRVZe
- 3zN2tihZhTSuHV0l8Dk1/v6en1rTAxtg+G1+PEOtFAdkcb7sWgh+NOYNunYaA/dk8Wq+
- spwA==
+ bh=TTge5Z4b4nMW2vtK7DGlD8HEj0g/6GKKAfDYFgtpth4=;
+ b=XH619R4kQi6Lp5yKVpKuHUy/njKxMMAs2zawhmz311JWOOhmIks7onMHi5FK7yoQxB
+ qZUKm/CbUdWdxgtuXa7VjKtPOuD32dPDZbZkwXc1EW69fpSn/vq3Um7GNG4w8MAnyjTj
+ OUVyMiReFufNPu1q8JYMGrlBCRfB0qJUhYVfdFzx1BE0xPxkee/MTHFuB77GY8cYpSYA
+ pRBk4TOg35dzrVeH2PJxxbQB3PJHUjwrEuBezf70NY7UTxEOaOEQeUdmpSV7UlKOSca5
+ wwH8ozGiitVAd1gTf/FJir+jWxgZZtnRgy+vLbCQT4skAllNj+h4iFdypDJ7EBG5K9o/
+ DD3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686663366; x=1689255366;
+ d=1e100.net; s=20221208; t=1686663377; x=1689255377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ry/cjrg7XOxc8uRAKLAirJAwrBWEpGHjMR46sXnWNn0=;
- b=GQJu1oN6zSeQcUtoXbWxiqiS18X7gVHnCxlCZuNXJQEMhOxVBQyvQ/2bOmabcbHzvl
- GiJ5OREzICiQcF/FfstyJBRm6AIaUEDBmiRkdQrtLy26SLj+RvcBSzRXcS7F2VR6dYRd
- imbKc+BMAOgMydgI6zSTwbo6axcZrkdk8XqzdT3y6WXmNyGHNBilO7aoscdxlTGAH39g
- lGHwAPeXJajhCjYFITFeKHbr9an7NNSYoAH1Dwa1oIa03fAL287hZTCYodezL4FEIUPV
- Fp+qRgUxAWz2ZZ2vlw12wq48/8EMkcJIiZsDHqabKgAjsg7z/No6F5BcyV/1sVG9F+y0
- m+nA==
-X-Gm-Message-State: AC+VfDzDrY730QYVzjng5LlpgjxacvYRV//Zwk7EtUrIepQ2moCbjOec
- nM2pJIAt3YZXjRDmyZlE2uisrYM/nhCDV7XYCvs=
-X-Google-Smtp-Source: ACHHUZ6n6XOMfJzlx9L2HWubKA3hIePQCMFHC+DPA3/iDpRp3/UM3f0z2WTCLd5e/FOSna6y784C7A==
-X-Received: by 2002:aa7:d691:0:b0:514:9e26:1f51 with SMTP id
- d17-20020aa7d691000000b005149e261f51mr7004399edr.24.1686663365840; 
- Tue, 13 Jun 2023 06:36:05 -0700 (PDT)
+ bh=TTge5Z4b4nMW2vtK7DGlD8HEj0g/6GKKAfDYFgtpth4=;
+ b=FczCWD4gw4/GmKcVMWb48+cGF5c3uO5P2WrL9AZ8fzFSWPYymokB0h3w+Y24fVq/mz
+ jT6TApG+WkcvZICmkIyxGiiKlmgrwjvItsPPueKRT2isNYWKdBV57qRrpozcEzBpBun2
+ QI1kKVFZbrF1IK4h/dGvKqAl2qPlKU4/1PjNDD3IfsMDiwTsrmiwHFF3O3qohS+vtc0c
+ BY1fnnYgnp4kpI8Glz2Yi0AmW5vUbz4j6om2ko/50nIFhwzOw5xruz+nasUjs4wPSa7Q
+ F3Wx5IhH8ncikMudHUmiZP4ame81rMMWXHsgUnpSXL/AmB5eYtQPSF73jh3aCiSPoPZU
+ nuLA==
+X-Gm-Message-State: AC+VfDz+zQ9k4YO7tZUn1XZIr/BRtw6amctXgwlXvz301t8k4PS756Uz
+ iEUcQiEZQj5bJ59pVmFF1xeWwhycDNa4qUw/UHc=
+X-Google-Smtp-Source: ACHHUZ6hMVkSHlqaMjppBtKGGgUkagxDy8ZxNeh4aRSSviZEEm+vlH2wy6n/ntGh/gRKGKE/w6MGOw==
+X-Received: by 2002:a17:907:9307:b0:974:1ef7:15be with SMTP id
+ bu7-20020a170907930700b009741ef715bemr14360731ejc.30.1686663376750; 
+ Tue, 13 Jun 2023 06:36:16 -0700 (PDT)
 Received: from localhost.localdomain ([213.235.133.109])
  by smtp.gmail.com with ESMTPSA id
- f14-20020a056402004e00b00514b3dd8638sm6473595edu.67.2023.06.13.06.36.03
+ x15-20020a170906710f00b009745bac0567sm6583544ejj.126.2023.06.13.06.36.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 06:36:05 -0700 (PDT)
+ Tue, 13 Jun 2023 06:36:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>,
  qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 6/9] accel/tcg: Check for USER_ONLY definition instead of
- SOFTMMU one
-Date: Tue, 13 Jun 2023 15:33:44 +0200
-Message-Id: <20230613133347.82210-7-philmd@linaro.org>
+Subject: [PATCH v3 7/9] meson: Alias CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
+Date: Tue, 13 Jun 2023 15:33:45 +0200
+Message-Id: <20230613133347.82210-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613133347.82210-1-philmd@linaro.org>
 References: <20230613133347.82210-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,58 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we *might* have user emulation with softmmu,
-replace the system emulation check by !user emulation one.
-
-Invert some if() ladders for clarity.
+We use the CONFIG_USER_ONLY key to describe user emulation,
+and the CONFIG_SOFTMMU key to describe system emulation. Alias
+it as 'CONFIG_SYSTEM_ONLY' for parity with user emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/internal.h | 6 +++---
- accel/tcg/cpu-exec.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/accel/tcg/internal.h b/accel/tcg/internal.h
-index 24f225cac7..65380ccb42 100644
---- a/accel/tcg/internal.h
-+++ b/accel/tcg/internal.h
-@@ -17,10 +17,10 @@
-  * memory related structures are protected with mmap_lock.
-  * In !user-mode we use per-page locks.
-  */
--#ifdef CONFIG_SOFTMMU
--#define assert_memory_lock()
--#else
-+#ifdef CONFIG_USER_ONLY
- #define assert_memory_lock() tcg_debug_assert(have_mmap_lock())
-+#else
-+#define assert_memory_lock()
- #endif
- 
- #if defined(CONFIG_SOFTMMU) && defined(CONFIG_DEBUG_TCG)
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 42086525d7..1f592adc05 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -563,7 +563,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
-         cpu_tb_exec(cpu, tb, &tb_exit);
-         cpu_exec_exit(cpu);
-     } else {
--#ifndef CONFIG_SOFTMMU
-+#ifdef CONFIG_USER_ONLY
-         clear_helper_retaddr();
-         if (have_mmap_lock()) {
-             mmap_unlock();
-@@ -1020,7 +1020,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
-         /* Non-buggy compilers preserve this; assert the correct value. */
-         g_assert(cpu == current_cpu);
- 
--#ifndef CONFIG_SOFTMMU
-+#ifdef CONFIG_USER_ONLY
-         clear_helper_retaddr();
-         if (have_mmap_lock()) {
-             mmap_unlock();
+diff --git a/meson.build b/meson.build
+index 34306a6205..8bfa37afe2 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2862,6 +2862,7 @@ foreach target : target_dirs
+     endif
+     config_target += { 'CONFIG_BSD_USER': 'y' }
+   elif target.endswith('softmmu')
++    config_target += { 'CONFIG_SYSTEM_ONLY': 'y' }
+     config_target += { 'CONFIG_SOFTMMU': 'y' }
+   endif
+   if target.endswith('-user')
 -- 
 2.38.1
 
