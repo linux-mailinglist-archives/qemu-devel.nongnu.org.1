@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A32072DDC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 11:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C64F72DDC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 11:35:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90PG-0002Au-CW; Tue, 13 Jun 2023 05:33:42 -0400
+	id 1q90QH-0003FS-3J; Tue, 13 Jun 2023 05:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90PF-0002Ae-1t
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:33:41 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90QF-0003EK-6d
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:34:43 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90PB-0004nW-Ny
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:33:40 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-977d4a1cf0eso756931066b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:33:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Q5-0004t9-JI
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:34:42 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-977c89c47bdso955154466b.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:34:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686648815; x=1689240815;
+ d=linaro.org; s=google; t=1686648865; x=1689240865;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vmk3t3RFy1iA0Rtwl25n+ogSSLcU5SknU7pe8RprfBw=;
- b=Kr+TDsyK6HWDWLPikzwYXvZ8dPJa6FqgxxZ5ccWLWZJFCRNkNBHQXVnx55FlTe61Of
- Lbn025z3AtdNh4yNz6OVQkZpgO0dmeseUabPyZHMTeXEbJvC00WVvi75bKFi6gmBSiUH
- 5GlH85kJlIif4ngMxjYg1XP2pQphfm53bVaaxRgu1mhlu6AUikeAS7Ta/U+we4zdcP7r
- P2+JAmzXlMOhx2B71KKLovE169xl+qiTzuM6tLg+nwCZOxTkRJSsonLtvTSQ+e89GKx8
- Llu3tz6luQHJBEt9tg2XgSe9rb1vVXmVMpswwKW/U5k6fooAEwxfsPPeV+Z5ZBx8BrIG
- SVbQ==
+ bh=po8Bu2NN9eN8EOnPq1AOSRaMBRFchIE7Z6J516uwNfo=;
+ b=yboz9TlEtG/u/C9e3AALJaMxIq7EP9GnMQOOpEyoQuN61hV8c4UqZ5xYsPZPojewn7
+ XZdw5qF+OXOi7TM4a8Rtzzv0USj8zLLJSmBcZyqYRGVz3J6pX6W4nyMlcuZxth24mtnG
+ fhtaMy4BZ2UHbiQKuxb03PrJyp6thETu8P9IuTzX6GlFraJmPTCDraY+ZeqWEfkr6N8M
+ lzDFnwP7cqK1og0Gic4JwBffIi/lfzhqTRHOU5ySf86qtpOIUyGasAfUuDL3hDzbqn1N
+ 4OJmKW9COVpTTD271LC8kbTCoMOmP8zEEXw+5s0wpJeQ26UOwtHhrTsPfpkJRq8Hl7JX
+ xQ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686648815; x=1689240815;
+ d=1e100.net; s=20221208; t=1686648865; x=1689240865;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vmk3t3RFy1iA0Rtwl25n+ogSSLcU5SknU7pe8RprfBw=;
- b=cA8E9qV9IHQOHAi/KDacNYHponO5Jtcrq6tg+yfizPpKM2EOxZk2lHgHeUyhNgaiU8
- TXtWwj+1EKjT5V45QY93V/Rae8J4br6pkLIxRy1dH/asuvkKZ/9bt25sguUFfhf7EKmT
- yHz7IGDaf9/SDMyCQcm1FdputO5iQT66K275Jvr3SZpZXwHNNNyjNATTEIT97PaerBfa
- meWn1vlAKlWNsU/MJMTQNCbwNmy4aLrZdIbpiK6Y47lvMj2ZY7rNXvR9rQLc3GfKKa3D
- 3qas0d94k2mdnxFzAiwSf66ff/LxhC6JoF+PBFmgV2o1DCrl/qa/TURwfPL1euc3OJ7l
- lzqQ==
-X-Gm-Message-State: AC+VfDy+egGYrZH19l4Z/8kHXEP9dihXxqkjv/A1H8+/rmv9aDrslLig
- +1GftYSnlG86e6ajJYetpTNSrA==
-X-Google-Smtp-Source: ACHHUZ6s9GELMtn9YySRsowoJxEp1USM55v32gvrqs8DRyZozL35I373PhcP6UHFXxnG7Yp9ZgkUJg==
-X-Received: by 2002:a17:907:2d91:b0:97d:cc56:d9bc with SMTP id
- gt17-20020a1709072d9100b0097dcc56d9bcmr10044395ejc.51.1686648815169; 
- Tue, 13 Jun 2023 02:33:35 -0700 (PDT)
+ bh=po8Bu2NN9eN8EOnPq1AOSRaMBRFchIE7Z6J516uwNfo=;
+ b=fbzBkKZkqhsy+sp6RgPcIdgraZfr8Z0J4zNhzSObBzL57vI1/V29z7bPruNZJyAVcN
+ 2UFY1mTzS0vS3GK+uIJFDXAzaF+dif30MiYRbNQ5txeY7a8zpHjgeieGebIW2wwq/uwX
+ y4HcyX+zF8G0OCfQjjvgAiFePihaogoexvbYKHwv+I+L8H0IhuTmpQjxEZm7g+qWEyzY
+ 4iK1xycId74OZa0QcaOk6ZLBX6gOnGZ/+gb4OI9508FFpgIGkBhKXlEt34F/hqndUz4w
+ PTSyScvZ0OHthnyCjAJKa1Y7DhwYufjf+EuXlTkj9E+8GVagHhYTUS/NLhfx0jiWSbyf
+ a9xg==
+X-Gm-Message-State: AC+VfDywuz2gxyrLV61z0YH8iMznwZ2GlUHd7bbVQb3z/J+Yay7UW+Au
+ fMRidvdG5Jd9w5D6NsHt4akemIjiKWnbnaQ9AxTleQ==
+X-Google-Smtp-Source: ACHHUZ640BtQVB5DolWZHuHc0VMTPGcYO5oaQ1jY71NY8tVXkbKkmd848w5KPm3WpNYVrefhXuCP2A==
+X-Received: by 2002:a17:906:fd88:b0:966:4d75:4a44 with SMTP id
+ xa8-20020a170906fd8800b009664d754a44mr13013345ejb.24.1686648865359; 
+ Tue, 13 Jun 2023 02:34:25 -0700 (PDT)
 Received: from [10.10.0.115] ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- k3-20020a1709065fc300b00977d6723bd6sm6370547ejv.195.2023.06.13.02.33.34
+ f21-20020a170906139500b009745482c5b7sm6368703ejc.94.2023.06.13.02.34.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 02:33:34 -0700 (PDT)
-Message-ID: <db75fc61-9686-5ae7-dff2-44e02a49ee66@linaro.org>
-Date: Tue, 13 Jun 2023 11:33:33 +0200
+ Tue, 13 Jun 2023 02:34:24 -0700 (PDT)
+Message-ID: <a043b593-c576-5dd2-8ac7-63ecad5533af@linaro.org>
+Date: Tue, 13 Jun 2023 11:34:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH V3] memory: RAM_NAMED_FILE flag
+Subject: Re: [PATCH v4 0/2] hw/vfio: Improve vfio_get_dirty_bitmap() tracepoint
 Content-Language: en-US
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Peter Xu <peterx@redhat.com>
-References: <1686151116-253260-1-git-send-email-steven.sistare@oracle.com>
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>
+References: <20230530180556.24441-1-joao.m.martins@oracle.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <1686151116-253260-1-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <20230530180556.24441-1-joao.m.martins@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,25 +95,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 17:18, Steve Sistare wrote:
-> migrate_ignore_shared() is an optimization that avoids copying memory
-> that is visible and can be mapped on the target.  However, a
-> memory-backend-ram or a memory-backend-memfd block with the RAM_SHARED
-> flag set is not migrated when migrate_ignore_shared() is true.  This is
-> wrong, because the block has no named backing store, and its contents will
-> be lost.  To fix, ignore shared memory iff it is a named file.  Define a
-> new flag RAM_NAMED_FILE to distinguish this case.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> ---
->   backends/hostmem-file.c   | 1 +
->   include/exec/cpu-common.h | 1 +
->   include/exec/memory.h     | 3 +++
->   migration/ram.c           | 3 ++-
->   qapi/migration.json       | 4 ++--
->   softmmu/physmem.c         | 7 ++++++-
->   6 files changed, 15 insertions(+), 4 deletions(-)
+On 30/5/23 20:05, Joao Martins wrote:
 
-I'm taking this in my next PR, thanks.
+> Joao Martins (2):
+>    exec/ram_addr: return number of dirty pages in
+>      cpu_physical_memory_set_dirty_lebitmap()
+>    hw/vfio: Add number of dirty pages to vfio_get_dirty_bitmap tracepoint
+
+Queued, thanks.
 
