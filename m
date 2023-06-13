@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95E772E698
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 17:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0917472E66C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 16:59:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q95TY-0006El-1d; Tue, 13 Jun 2023 10:58:28 -0400
+	id 1q95TW-0006ED-Ij; Tue, 13 Jun 2023 10:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q95TN-0006AC-D6
+ id 1q95TO-0006AJ-HW
  for qemu-devel@nongnu.org; Tue, 13 Jun 2023 10:58:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q95TL-0007YC-6y
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 10:58:16 -0400
+ id 1q95TN-0007Yl-56
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 10:58:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686668294;
+ s=mimecast20190719; t=1686668296;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5QaxHG+LmfAB5VqZ9Nwjn2fcIfi43u55saowATej41Q=;
- b=gGcAlaM+9GsqPuXo2VjJ9HkhDYn43Eec/fY6HGEsVWE0MLgXilz7RgbzIsTrNb6JXNRD+A
- iaXbvtyBd9wwtloZdWOO68iHCcmpcHn39Tg6AsOQf+pUCmFqDhquyN4Do6+zf2UeA15/Zi
- KemWuWINox3hJqG2A+c3qChpcNi0OVk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5u+tuTyHdYcoPsVBpk4oMKPHwy05vocsbj2T88lAuiY=;
+ b=c0PLtvWaazd7ZZEKvYhhSG9Ep7Pn/bVKIHIfpIUZ1A7EoScrUYPDejE0epivLeTDpdOKlc
+ r25zx2lgS1/icbffVVO0f66c2quQZGvXvKG0EszMrYGsrMteyF5d0SeJdizUS5eC0/nXZo
+ WHxI2Xvtc5dTEnxw1A11IFNOFeZqrkg=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-279-iEnqKrlHMbiKq9Ffol3Yhw-1; Tue, 13 Jun 2023 10:58:13 -0400
-X-MC-Unique: iEnqKrlHMbiKq9Ffol3Yhw-1
+ us-mta-117-EFz01cNIOV-HsKcgN3jJEw-1; Tue, 13 Jun 2023 10:58:14 -0400
+X-MC-Unique: EFz01cNIOV-HsKcgN3jJEw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1352D101A531;
- Tue, 13 Jun 2023 14:58:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47F4F3C11CC0;
+ Tue, 13 Jun 2023 14:58:13 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 278BB40C6F5E;
- Tue, 13 Jun 2023 14:58:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5A08240C6F5C;
+ Tue, 13 Jun 2023 14:58:12 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Juan Quintela <quintela@redhat.com>
-Subject: [PATCH 10/18] migration: Simplify compress_page_with_multithread()
-Date: Tue, 13 Jun 2023 16:57:49 +0200
-Message-Id: <20230613145757.10131-11-quintela@redhat.com>
+Subject: [PATCH 11/18] migration: Move busy++ to migrate_with_multithread
+Date: Tue, 13 Jun 2023 16:57:50 +0200
+Message-Id: <20230613145757.10131-12-quintela@redhat.com>
 In-Reply-To: <20230613145757.10131-1-quintela@redhat.com>
 References: <20230613145757.10131-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -78,77 +78,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the goto to a while true.
+And now we can simplify save_compress_page().
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/ram-compress.c | 48 ++++++++++++++++++++--------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ migration/ram-compress.c | 1 +
+ migration/ram.c          | 7 +------
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-index 8ce9519f3d..3c44803132 100644
+index 3c44803132..2652cdee8b 100644
 --- a/migration/ram-compress.c
 +++ b/migration/ram-compress.c
-@@ -273,35 +273,35 @@ bool compress_page_with_multi_thread(RAMBlock *block, ram_addr_t offset,
- 
-     thread_count = migrate_compress_threads();
-     qemu_mutex_lock(&comp_done_lock);
--retry:
--    for (idx = 0; idx < thread_count; idx++) {
--        if (comp_param[idx].done) {
--            CompressParam *param = &comp_param[idx];
--            qemu_mutex_lock(&param->mutex);
--            param->done = false;
--            send_queued_data(param);
--            assert(qemu_file_buffer_empty(param->file));
--            compress_reset_result(param);
--            set_compress_params(param, block, offset);
- 
--            qemu_cond_signal(&param->cond);
--            qemu_mutex_unlock(&param->mutex);
-+    while (true) {
-+        for (idx = 0; idx < thread_count; idx++) {
-+            if (comp_param[idx].done) {
-+                CompressParam *param = &comp_param[idx];
-+                qemu_mutex_lock(&param->mutex);
-+                param->done = false;
-+                send_queued_data(param);
-+                assert(qemu_file_buffer_empty(param->file));
-+                compress_reset_result(param);
-+                set_compress_params(param, block, offset);
-+
-+                qemu_cond_signal(&param->cond);
-+                qemu_mutex_unlock(&param->mutex);
-+                qemu_mutex_unlock(&comp_done_lock);
-+                return true;
-+            }
-+        }
-+        if (!wait) {
-             qemu_mutex_unlock(&comp_done_lock);
--            return true;
-+            return false;
+@@ -293,6 +293,7 @@ bool compress_page_with_multi_thread(RAMBlock *block, ram_addr_t offset,
          }
+         if (!wait) {
+             qemu_mutex_unlock(&comp_done_lock);
++            compression_counters.busy++;
+             return false;
+         }
+         /*
+diff --git a/migration/ram.c b/migration/ram.c
+index 2a3ff2c36e..60f24006bc 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -2034,12 +2034,7 @@ static bool save_compress_page(RAMState *rs, PageSearchStatus *pss,
+         return false;
+     }
+ 
+-    if (compress_page_with_multi_thread(block, offset, send_queued_data)) {
+-        return true;
 -    }
 -
--    /*
--     * wait for the free thread if the user specifies 'compress-wait-thread',
--     * otherwise we will post the page out in the main thread as normal page.
--     */
--    if (wait) {
-+        /*
-+         * wait for a free thread if the user specifies
-+         * 'compress-wait-thread', otherwise we will post the page out
-+         * in the main thread as normal page.
-+         */
-         qemu_cond_wait(&comp_done_cond, &comp_done_lock);
--        goto retry;
-     }
--    qemu_mutex_unlock(&comp_done_lock);
--
+-    compression_counters.busy++;
 -    return false;
++    return compress_page_with_multi_thread(block, offset, send_queued_data);
  }
  
- /* return the size after decompression, or negative value on error */
+ /**
 -- 
 2.40.1
 
