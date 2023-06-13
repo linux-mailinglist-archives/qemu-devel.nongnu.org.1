@@ -2,65 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276D472EB0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 20:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE5472EB70
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 21:02:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q98qk-00038G-2y; Tue, 13 Jun 2023 14:34:38 -0400
+	id 1q99GX-0007xG-Qt; Tue, 13 Jun 2023 15:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
- id 1q98qg-00037m-1j
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:34:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1q99GQ-0007w8-A9; Tue, 13 Jun 2023 15:01:10 -0400
+Received: from hq-ms.auriga.com ([82.97.202.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
- id 1q98qe-0001RQ-8f
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 14:34:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686681269;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=PLf49Ied3h2AeJzryXdVHFNtNEUl97ujwZhBk6mbrkM=;
- b=G2zkmA7GFOzowixxG8dNUqgMvGPRzyK5xGHz8a12RkwmIJGkrZ3+wSnx/teoVsm6DSow17
- Oaq3Klfg+4J5DP1PyaJA3qIdD0e2MwgeBB/diOSONwotVUvWU1XsJZfd1D1yiR3R8GAzc1
- V8T2AOpWcnENg8ZHFMSVl5h2+rhDIKE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-605-Iyf8TI5NP5OQ9kyk9mhetg-1; Tue, 13 Jun 2023 14:34:24 -0400
-X-MC-Unique: Iyf8TI5NP5OQ9kyk9mhetg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A117E1C07253;
- Tue, 13 Jun 2023 18:34:24 +0000 (UTC)
-Received: from tpad.localdomain (ovpn-112-2.gru2.redhat.com [10.97.112.2])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5270E140E951;
- Tue, 13 Jun 2023 18:34:24 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
- id 7CD4E404F2954; Tue, 13 Jun 2023 15:22:41 -0300 (-03)
-Date: Tue, 13 Jun 2023 15:22:41 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Mark Kanda <mark.kanda@oracle.com>
-Subject: [PATCH] kvm: reuse per-vcpu stats fd to avoid vcpu interruption
-Message-ID: <ZIiz8R3F76VqTmKO@tpad>
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1q99GM-0006HR-By; Tue, 13 Jun 2023 15:01:09 -0400
+Received: from HQ-MS1.office.auriga.msk (82.97.202.32) by
+ hq-ms1.office.auriga.msk (82.97.202.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.12; Tue, 13 Jun 2023 22:00:57 +0300
+Received: from HQ-MS1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f]) by
+ hq-ms1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f%8]) with mapi id
+ 15.02.1258.012; Tue, 13 Jun 2023 22:00:57 +0300
+From: "Kambalin, Sergey" <sergey.kambalin@auriga.com>
+To: =?gb2312?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkqKY=?= <philmd@linaro.org>, "Sergey
+ Kambalin" <serg.oker@gmail.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2] Use named constants in BCM props
+Thread-Topic: [PATCH v2] Use named constants in BCM props
+Thread-Index: AQHZnSVtuceQCRhQG0GzQIhzANeD2K+HjoKAgAGC8e4=
+Date: Tue, 13 Jun 2023 19:00:57 +0000
+Message-ID: <60638efd8f464e66afc5e2a106f09d5f@auriga.com>
+References: <5b407848-2a4c-6447-6726-cf85f278f3e7@linaro.org>
+ <20230612115950.5002-1-sergey.kambalin@auriga.com>,
+ <6fe833be-d884-663d-a58e-d3716e52e3d9@linaro.org>
+In-Reply-To: <6fe833be-d884-663d-a58e-d3716e52e3d9@linaro.org>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [90.131.37.98]
+x-tm-as-product-ver: SMEX-14.0.0.1158-9.0.1002-27556.003
+x-tm-as-result: No-10--18.360800-8.000000
+x-tmase-matchedrid: FWxETXsSM3yJVA+ukO+5MWg4D2QV/2zL6r3HCixfuKcc4ri4RJV/1d/O
+ 0TkwpBlDW5prtLhe9fW2kdECpOqtDcgM2GUFlvvaAjqAxuWkdTGOVGny5q72hpbI+L60qto8csx
+ FLHbqBOKueOHAsvFJr1fQosWj+mfx+niVaMBfU7P/McoAQhls9ByVg41UOfy6DpnuR5eZKJYdjB
+ 1KZ6xMAIj01BdLzHaRp0zWEHov9BuYdDw4MLzGtmQFd4bOnrT6Yb/nLV/lbk9UjspoiX02F44FX
+ KY0aP1xdEFcfN2dct7j9ZxpJJDibYgrKnsJ1GRgzYK5U+QI3O7BOVz0Jwcxl6vCrG0TnfVUg9xe
+ 4gtUJtpPfFsDwKf5665pphoUR1Toa2mlFaJP/q4IoUOTWQl7Et4Z4Nykx3k2NWO9z3c712SkLR5
+ cMEnz0dY8qTWNMLWmFVZ/qX6HeZqPaFHMfVTC4FSeX1pUaPNfAX9GIncKpj2DcQaLKMLN/Ydm7I
+ Pxq/o0Bqf2t8ki2oqbESrt9trA9C+rMhAlqq34
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--18.360800-8.000000
+x-tmase-version: SMEX-14.0.0.1158-9.0.1002-27556.003
+x-tm-snts-smtp: BBE18B43475DF6BC277C72E2A1E92ACA3D6DABE300A6C01FF418B9CE24FB24A42000:8
+Content-Type: multipart/alternative;
+ boundary="_000_60638efd8f464e66afc5e2a106f09d5faurigacom_"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mtosatti@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=82.97.202.32;
+ envelope-from=sergey.kambalin@auriga.com; helo=hq-ms.auriga.com
+X-Spam_score_int: 5
+X-Spam_score: 0.5
+X-Spam_bar: /
+X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ MIME_CHARSET_FARAWAY=2.45, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,143 +83,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--_000_60638efd8f464e66afc5e2a106f09d5faurigacom_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
-A regression has been detected in latency testing of KVM guests.
-More specifically, it was observed that the cyclictest
-numbers inside of an isolated vcpu (running on isolated pcpu) are:
+DQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCqewp+Q6IFBoaWxpcHBlIE1h
+dGhpZXUtRGF1ZKimIDxwaGlsbWRAbGluYXJvLm9yZz4NCqewp+Sn4afip9Gn06fdp9an36fgOiAx
+MyCn2qfwp9+n8SAyMDIzIKfULiAxOjMwDQqnrKfgp96n5TogU2VyZ2V5IEthbWJhbGluOyBxZW11
+LWFybUBub25nbnUub3JnDQqnrKfgp+Gn2qfxOiBxZW11LWRldmVsQG5vbmdudS5vcmc7IEthbWJh
+bGluLCBTZXJnZXkNCqe0p9an3qfROiBSZTogW1BBVENIIHYyXSBVc2UgbmFtZWQgY29uc3RhbnRz
+IGluIEJDTSBwcm9wcw0KDQpPbiAxMi82LzIzIDEzOjU5LCBTZXJnZXkgS2FtYmFsaW4gd3JvdGU6
+DQo+IHBpbmcNCj4NCj4gLSBQSV9GSVJNV0FSRV8qX1JBVEUgY29uc3RzbnRzIHdlcmUgbW92ZWQg
+dG8gcmFzcGJlcnJ5cGktZnctZGVmcy5oDQo+ICAgIChzZWVtcyBtb3JlIHN1aXRhYmxlIHBsYWNl
+IGZvciB0aGVtKQ0KPiAtIGluY2x1c2lvbiBvZiAicWVtdS9vc2RlcC5oIiBoYXMgYmVlbiByZW1v
+dmVkDQo+IC0geWVhciBpbiBjb3B5cmlnaHQgaGVhZGVyIGhhcyBiZWVuIHVwZGF0ZWQNCj4NCj4g
+U2lnbmVkLW9mZi1ieTogU2VyZ2V5IEthbWJhbGluIDxzZXJnZXkua2FtYmFsaW5AYXVyaWdhLmNv
+bT4NCj4gLS0tDQo+ICAgaHcvbWlzYy9iY20yODM1X3Byb3BlcnR5LmMgICAgICAgICAgICB8IDEy
+MCArKysrKysrKysrLS0tLS0tLS0tDQo+ICAgaW5jbHVkZS9ody9hcm0vcmFzcGlfcGxhdGZvcm0u
+aCAgICAgICB8ICAgNiArDQo+ICAgaW5jbHVkZS9ody9taXNjL3Jhc3BiZXJyeXBpLWZ3LWRlZnMu
+aCB8IDE2MyArKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgIDMgZmlsZXMgY2hhbmdlZCwg
+MjM2IGluc2VydGlvbnMoKyksIDUzIGRlbGV0aW9ucygtKQ0KPiAgIGNyZWF0ZSBtb2RlIDEwMDY0
+NCBpbmNsdWRlL2h3L21pc2MvcmFzcGJlcnJ5cGktZnctZGVmcy5oDQoNCg0KPiBkaWZmIC0tZ2l0
+IGEvaW5jbHVkZS9ody9hcm0vcmFzcGlfcGxhdGZvcm0uaCBiL2luY2x1ZGUvaHcvYXJtL3Jhc3Bp
+X3BsYXRmb3JtLmgNCj4gaW5kZXggNGE1NmRkNGI4OS4uOTJhMzE3OTUwYSAxMDA2NDQNCj4gLS0t
+IGEvaW5jbHVkZS9ody9hcm0vcmFzcGlfcGxhdGZvcm0uaA0KPiArKysgYi9pbmNsdWRlL2h3L2Fy
+bS9yYXNwaV9wbGF0Zm9ybS5oDQo+IEBAIC0xNzAsNCArMTcwLDEwIEBADQo+ICAgI2RlZmluZSBJ
+TlRFUlJVUFRfSUxMRUdBTF9UWVBFMCAgICAgICAgNg0KPiAgICNkZWZpbmUgSU5URVJSVVBUX0lM
+TEVHQUxfVFlQRTEgICAgICAgIDcNCj4NCj4gKy8qIENsb2NrIHJhdGVzICovDQo+ICsjZGVmaW5l
+IFJQSV9GSVJNV0FSRV9FTU1DX0NMS19SQVRFICAgIDUwMDAwMDAwDQoNCk9LLg0KDQo+ICsjZGVm
+aW5lIFJQSV9GSVJNV0FSRV9VQVJUX0NMS19SQVRFICAgIDMwMDAwMDANCg0KT0suDQoNCj4gKyNk
+ZWZpbmUgUlBJX0ZJUk1XQVJFX0NPUkVfQ0xLX1JBVEUgICAgMzUwMDAwMDAwDQoNClNlZW1zIFZD
+NCBmcmVxdWVuY3kgcmFuZ2UsIGFkYXB0ZWQgZm9yIHJhc3BpMyAoQkNNMjgzNykuDQoNCklJVUMg
+dGhlIFZDNiAocmFzcGk0KSBpcyBjbG9ja2VkIGF0IDUwME1Iei4NCg0KUy5LLjogWW91J3JlIHJp
+Z2h0ISBUaGVyZSBzaG91bGQgYmUgMjUwIE1IeiBhcyB0aGVzZSBhcmUgYmNtMjgzNSB2YWx1ZXMs
+IG5vdCBiY20yNzExKHJwaTQpDQoNCj4gKyNkZWZpbmUgUlBJX0ZJUk1XQVJFX0RFRkFVTFRfQ0xL
+X1JBVEUgNzAwMDAwMDAwDQoNClNlZW1zIFZDNCBmcmVxIGZvciByYXNwaTEgKEJDTTI4MzUpDQoN
+Ckxpa2VseSB3ZSBkb24ndCB3YW50IHRvIHVzZSBhIGRlZmF1bHQsIGJ1dCB0aGUgY29ycmVjdCBw
+ZXItc29jDQp2YWx1ZS4uLg0KDQpTLksuOiAgUGVyLXNvYyB2YWx1ZXMgYXJlIG5vdCBpbXBsZW1l
+bnRlZCB5ZXQsIGFuZCBJJ20gbm90IDEwMCUgc3VyZSBpZiBpdCdzIG5lZWRlZC4NCiAgICAgICAg
+ICBTbyBJIGRlY2lkZWQgdG8gcmV0dXJuIEJDTTI4MzUgY29yZSBjbG9jayBhcyBhIGRlZmF1bHQg
+dmFsdWUuDQogICAgICAgICAgTWF5IGJlIGxlYXZpbmcgTE9HX1VOSU1QIG1lc3NhZ2Ugd291bGQg
+aGF2ZSBiZWVuIGEgYmV0dGVyIG9wdGlvbj8NCg0KU2hvdWxkIEkgZml4IGl0IHRoZXJlIG9yIHB1
+bGwgeW91ciBzcGxpdCBwYXRjaCBhbmQgY29udGludWUgaXQgYXMgdjQ/DQo=
 
-# Max Latencies: 00090 00096 00141
+--_000_60638efd8f464e66afc5e2a106f09d5faurigacom_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-Where a maximum of 50us is acceptable.
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<style type=3D"text/css" style=3D"display:none;"><!-- P {margin-top:0;margi=
+n-bottom:0;} --></style>
+</head>
+<body dir=3D"ltr">
+<div id=3D"divtagdefaultwrapper" style=3D"font-size:12pt;color:#000000;font=
+-family:Calibri,Helvetica,sans-serif;" dir=3D"ltr">
+<p><br>
+</p>
+<br>
+<br>
+<div style=3D"color: rgb(0, 0, 0);">
+<div>
+<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
+<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font style=3D"font-size:11pt" face=
+=3D"Calibri, sans-serif" color=3D"#000000"><b>=A7=B0=A7=E4:</b> Philippe Ma=
+thieu-Daud=A8=A6 &lt;philmd@linaro.org&gt;<br>
+<b>=A7=B0=A7=E4=A7=E1=A7=E2=A7=D1=A7=D3=A7=DD=A7=D6=A7=DF=A7=E0:</b> 13 =A7=
+=DA=A7=F0=A7=DF=A7=F1 2023 =A7=D4. 1:30<br>
+<b>=A7=AC=A7=E0=A7=DE=A7=E5:</b> Sergey Kambalin; qemu-arm@nongnu.org<br>
+<b>=A7=AC=A7=E0=A7=E1=A7=DA=A7=F1:</b> qemu-devel@nongnu.org; Kambalin, Ser=
+gey<br>
+<b>=A7=B4=A7=D6=A7=DE=A7=D1:</b> Re: [PATCH v2] Use named constants in BCM =
+props</font>
+<div>&nbsp;</div>
+</div>
+</div>
+<font size=3D"2"><span style=3D"font-size:10pt;">
+<div class=3D"PlainText">On 12/6/23 13:59, Sergey Kambalin wrote:<br>
+&gt; ping<br>
+&gt; <br>
+&gt; - PI_FIRMWARE_*_RATE constsnts were moved to raspberrypi-fw-defs.h<br>
+&gt;&nbsp;&nbsp;&nbsp; (seems more suitable place for them)<br>
+&gt; - inclusion of &quot;qemu/osdep.h&quot; has been removed<br>
+&gt; - year in copyright header has been updated<br>
+&gt; <br>
+&gt; Signed-off-by: Sergey Kambalin &lt;sergey.kambalin@auriga.com&gt;<br>
+&gt; ---<br>
+&gt;&nbsp;&nbsp; hw/misc/bcm2835_property.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 120 &#43;&#43;&#43;&#43;&#43;&#43;&#43=
+;&#43;&#43;&#43;---------<br>
+&gt;&nbsp;&nbsp; include/hw/arm/raspi_platform.h&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; |&nbsp;&nbsp; 6 &#43;<br>
+&gt;&nbsp;&nbsp; include/hw/misc/raspberrypi-fw-defs.h | 163 &#43;&#43;&#43=
+;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43=
+;&#43;&#43;&#43;&#43;&#43;&#43;&#43;&#43;<br>
+&gt;&nbsp;&nbsp; 3 files changed, 236 insertions(&#43;), 53 deletions(-)<br=
+>
+&gt;&nbsp;&nbsp; create mode 100644 include/hw/misc/raspberrypi-fw-defs.h<b=
+r>
+<br>
+<br>
+&gt; diff --git a/include/hw/arm/raspi_platform.h b/include/hw/arm/raspi_pl=
+atform.h<br>
+&gt; index 4a56dd4b89..92a317950a 100644<br>
+&gt; --- a/include/hw/arm/raspi_platform.h<br>
+&gt; &#43;&#43;&#43; b/include/hw/arm/raspi_platform.h<br>
+&gt; @@ -170,4 &#43;170,10 @@<br>
+&gt;&nbsp;&nbsp; #define INTERRUPT_ILLEGAL_TYPE0&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; 6<br>
+&gt;&nbsp;&nbsp; #define INTERRUPT_ILLEGAL_TYPE1&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; 7<br>
+&gt;&nbsp;&nbsp; <br>
+&gt; &#43;/* Clock rates */<br>
+&gt; &#43;#define RPI_FIRMWARE_EMMC_CLK_RATE&nbsp;&nbsp;&nbsp; 50000000<br>
+<br>
+OK.<br>
+<br>
+&gt; &#43;#define RPI_FIRMWARE_UART_CLK_RATE&nbsp;&nbsp;&nbsp; 3000000<br>
+<br>
+OK.<br>
+<br>
+&gt; &#43;#define RPI_FIRMWARE_CORE_CLK_RATE&nbsp;&nbsp;&nbsp; 350000000<br=
+>
+<br>
+Seems VC4 frequency range, adapted for raspi3 (BCM2837).<br>
+<br>
+IIUC the VC6 (raspi4) is clocked at 500MHz.</div>
+<div class=3D"PlainText"><br>
+</div>
+<div class=3D"PlainText"><span style=3D"background-color: rgb(0, 255, 0);">=
+S.K.: You're right! There should be 250 MHz as these are bcm2835 values, no=
+t bcm2711(rpi4</span>)<br>
+<br>
+&gt; &#43;#define RPI_FIRMWARE_DEFAULT_CLK_RATE 700000000<br>
+<br>
+Seems VC4 freq for raspi1 (BCM2835)<br>
+<br>
+Likely we don't want to use a default, but the correct per-soc<br>
+value...</div>
+<div class=3D"PlainText"><br>
+</div>
+<div class=3D"PlainText"><span style=3D"background-color: rgb(0, 255, 0);">=
+S.K.:&nbsp; Per-soc values are not implemented yet, and I'm not 100% sure i=
+f it's needed.
+</span><br>
+</div>
+<div class=3D"PlainText"><span style=3D"background-color: rgb(0, 255, 0);">=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; So I decided to retu=
+rn
+</span><font size=3D"2"><span style=3D"font-size: 10pt; background-color: r=
+gb(0, 255, 0);">BCM2835</span></font><span style=3D"background-color: rgb(0=
+, 255, 0);"> core clock as a default value.
+</span><br>
+</div>
+<div class=3D"PlainText"><span style=3D"background-color: rgb(0, 255, 0);">=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+<span style=3D"background-color: rgb(0, 255, 0);">May be leaving </span><sp=
+an style=3D"background-color: rgb(0, 255, 0);">LOG_UNIMP</span><span style=
+=3D"background-color: rgb(0, 255, 0);"> message would have been a better op=
+tion?</span></div>
+<div class=3D"PlainText"><span style=3D"background-color: rgb(0, 255, 0);">=
+<br>
+</span></div>
+<div class=3D"PlainText"><span style=3D"background-color: rgb(0, 255, 0);">=
+Should I fix it there or pull your split patch and continue it as v4?
+<br>
+</span></div>
+</span></font></div>
+</div>
+</body>
+</html>
 
-The implementation of KVM_GET_STATS_FD uses run_on_cpu to query
-per vcpu statistics, which interrupts the vcpu (and is unnecessary).
-
-To fix this, open the per vcpu stats fd on vcpu initialization,
-and read from that fd from QEMU's main thread.
-
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
-
----
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 7679f397ae..5da2901eca 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -450,6 +450,8 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
-                          "kvm_init_vcpu: kvm_arch_init_vcpu failed (%lu)",
-                          kvm_arch_vcpu_id(cpu));
-     }
-+    cpu->kvm_vcpu_stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
-+
- err:
-     return ret;
- }
-@@ -4007,7 +4009,7 @@ static StatsDescriptors *find_stats_descriptors(StatsTarget target, int stats_fd
- 
-     /* Read stats header */
-     kvm_stats_header = &descriptors->kvm_stats_header;
--    ret = read(stats_fd, kvm_stats_header, sizeof(*kvm_stats_header));
-+    ret = pread(stats_fd, kvm_stats_header, sizeof(*kvm_stats_header), 0);
-     if (ret != sizeof(*kvm_stats_header)) {
-         error_setg(errp, "KVM stats: failed to read stats header: "
-                    "expected %zu actual %zu",
-@@ -4038,7 +4040,8 @@ static StatsDescriptors *find_stats_descriptors(StatsTarget target, int stats_fd
- }
- 
- static void query_stats(StatsResultList **result, StatsTarget target,
--                        strList *names, int stats_fd, Error **errp)
-+                        strList *names, int stats_fd, Error **errp,
-+                        CPUState *cpu)
- {
-     struct kvm_stats_desc *kvm_stats_desc;
-     struct kvm_stats_header *kvm_stats_header;
-@@ -4096,7 +4099,7 @@ static void query_stats(StatsResultList **result, StatsTarget target,
-         break;
-     case STATS_TARGET_VCPU:
-         add_stats_entry(result, STATS_PROVIDER_KVM,
--                        current_cpu->parent_obj.canonical_path,
-+                        cpu->parent_obj.canonical_path,
-                         stats_list);
-         break;
-     default:
-@@ -4133,10 +4136,9 @@ static void query_stats_schema(StatsSchemaList **result, StatsTarget target,
-     add_stats_schema(result, STATS_PROVIDER_KVM, target, stats_list);
- }
- 
--static void query_stats_vcpu(CPUState *cpu, run_on_cpu_data data)
-+static void query_stats_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
- {
--    StatsArgs *kvm_stats_args = (StatsArgs *) data.host_ptr;
--    int stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
-+    int stats_fd = cpu->kvm_vcpu_stats_fd;
-     Error *local_err = NULL;
- 
-     if (stats_fd == -1) {
-@@ -4145,14 +4147,13 @@ static void query_stats_vcpu(CPUState *cpu, run_on_cpu_data data)
-         return;
-     }
-     query_stats(kvm_stats_args->result.stats, STATS_TARGET_VCPU,
--                kvm_stats_args->names, stats_fd, kvm_stats_args->errp);
--    close(stats_fd);
-+                kvm_stats_args->names, stats_fd, kvm_stats_args->errp,
-+                cpu);
- }
- 
--static void query_stats_schema_vcpu(CPUState *cpu, run_on_cpu_data data)
-+static void query_stats_schema_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
- {
--    StatsArgs *kvm_stats_args = (StatsArgs *) data.host_ptr;
--    int stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
-+    int stats_fd = cpu->kvm_vcpu_stats_fd;
-     Error *local_err = NULL;
- 
-     if (stats_fd == -1) {
-@@ -4162,7 +4163,6 @@ static void query_stats_schema_vcpu(CPUState *cpu, run_on_cpu_data data)
-     }
-     query_stats_schema(kvm_stats_args->result.schema, STATS_TARGET_VCPU, stats_fd,
-                        kvm_stats_args->errp);
--    close(stats_fd);
- }
- 
- static void query_stats_cb(StatsResultList **result, StatsTarget target,
-@@ -4180,7 +4180,7 @@ static void query_stats_cb(StatsResultList **result, StatsTarget target,
-             error_setg_errno(errp, errno, "KVM stats: ioctl failed");
-             return;
-         }
--        query_stats(result, target, names, stats_fd, errp);
-+        query_stats(result, target, names, stats_fd, errp, NULL);
-         close(stats_fd);
-         break;
-     }
-@@ -4194,7 +4194,7 @@ static void query_stats_cb(StatsResultList **result, StatsTarget target,
-             if (!apply_str_list_filter(cpu->parent_obj.canonical_path, targets)) {
-                 continue;
-             }
--            run_on_cpu(cpu, query_stats_vcpu, RUN_ON_CPU_HOST_PTR(&stats_args));
-+            query_stats_vcpu(cpu, &stats_args);
-         }
-         break;
-     }
-@@ -4220,6 +4220,6 @@ void query_stats_schemas_cb(StatsSchemaList **result, Error **errp)
-     if (first_cpu) {
-         stats_args.result.schema = result;
-         stats_args.errp = errp;
--        run_on_cpu(first_cpu, query_stats_schema_vcpu, RUN_ON_CPU_HOST_PTR(&stats_args));
-+        query_stats_schema_vcpu(first_cpu, &stats_args);
-     }
- }
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 383456d1b3..4f0fa70755 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -402,6 +402,7 @@ struct CPUState {
-     struct kvm_dirty_gfn *kvm_dirty_gfns;
-     uint32_t kvm_fetch_index;
-     uint64_t dirty_pages;
-+    int kvm_vcpu_stats_fd;
- 
-     /* Use by accel-block: CPU is executing an ioctl() */
-     QemuLockCnt in_ioctl_lock;
-
+--_000_60638efd8f464e66afc5e2a106f09d5faurigacom_--
 
