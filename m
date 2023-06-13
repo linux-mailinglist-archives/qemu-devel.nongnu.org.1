@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE82D72E169
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B495072E1D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:40:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90U9-00055Z-6Z; Tue, 13 Jun 2023 05:38:45 -0400
+	id 1q90UC-00059V-Ff; Tue, 13 Jun 2023 05:38:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90U5-00054a-PF
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:43 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UA-00057F-MM
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:46 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Tw-0005Uy-EB
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:41 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-977d4a1cf0eso757518966b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:38:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90U0-0005VC-Nj
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:46 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-97454836448so755280966b.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:38:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686649108; x=1689241108;
+ d=linaro.org; s=google; t=1686649113; x=1689241113;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sITmXYQVztiFV0Fz7LLqlyOlCvRo8CYW3jqFEkjFY7A=;
- b=T1InBtrB0winLJ23Quu7ivDlnmZDNGABI/CrerU2/H5RfXdeuvS6Nx0+hQTxqNfjQz
- cQ2G0PXKXegcXDvF0YlROhBqQ9Q4xwQ1JZhA5vKeqVXhE2kONcgc4ETXU8tE+zBr2JN2
- op5muaNnR+FhjhrqIaPSpA+QFkDHp5TC3amNwfBijCB2d4vxENCLB0SGM3TA2y6+BhOC
- t6Ce8ZiZbgnPAYcnVWMaPDuIj5ly7HfWQT0zBn8sMYue6grEbSVVWK9PQJVmxXgL0Zrw
- UiAwJsIQa8oarjA/ypaEQmUljTQXYJA08HdDHc8Ck40oxV9gkTXG3j0z4iKixnSQXLKT
- hLJg==
+ bh=coCYRAX/D0a1lARgSgpQz1zwILEZC/GYBuzI7kzZU2k=;
+ b=fvYNJGElWOZz1CVYoJHpvlpNEdZJHYJgVoa3xXhSVBqQoAE6+fe57f1ahMXjFN/Cjl
+ zSmTpPCklpHaSZtxD3geMnY7qUOgZzixJWsp98MDJYA2sErZg78PuwjPxTdyYX+EiiwD
+ t5yokU+RWa0v7UVqzdCsgUDV8VwuNRQsEqHbv1JlUF+CblMnSAdFunig8UYkxSsRG0hN
+ ShdE+2+jHegDisA8I8hPgcoK9ucbVoBShcnoIiWKDpJMMtGE358fnv/RmCP3K6hQGzH7
+ eFT/JpvF8lY9ZXMQMKXsYYJj9RnhU578SD8ujcYd/+DD4zDay6oBgqPp4Jw9DABlOkoJ
+ 7EMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649108; x=1689241108;
+ d=1e100.net; s=20221208; t=1686649113; x=1689241113;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sITmXYQVztiFV0Fz7LLqlyOlCvRo8CYW3jqFEkjFY7A=;
- b=TSHid7VS2UIwaSh21OWVIrjwv8kh19ffXTHto4dpGqZNx8GIVxrzgcABDM78oyhnw6
- agQ9cyjzrPRKhe8ib2ngudUGRMXqCErJaloly/ZhhPdlpKUerMI3OYWXy0X4GZMwixVZ
- lQLrZ5h590LIg4ohAFwO9tEordWssh73tWD25Vgj5IjbEdRR+7D2d9axImohaZ5xutz2
- 5w5p1tTXjc4PbTLupRu8BFHr975rF6HUrkAh62RmnYxsghZn/T13hX5KPpgBdFr9Fih0
- 9kITcOvG9sBrU4UrWHyyWJCBnXqlCKFNfON8ftdTUDfoe9dwNfBe7v1Cp+F0Wl73Hyfi
- pEaQ==
-X-Gm-Message-State: AC+VfDxorRxbLFyo0BQELaQpAtWQPAmYMeC++Q+7NYux/i+uDUAdQMB7
- gDhuXvbxvO3Y/abn7YCd2A6Xx6hnwxUKbUmjLGjjQw==
-X-Google-Smtp-Source: ACHHUZ5xxyqb0lQOG8wwaE5B4zqaD/CusWuONyls3BpkaLYvPGThkZTyQa/5y+e/tl/L6GPvXKKfiQ==
-X-Received: by 2002:a17:907:9617:b0:974:1f03:fcd1 with SMTP id
- gb23-20020a170907961700b009741f03fcd1mr11708489ejc.3.1686649108675; 
- Tue, 13 Jun 2023 02:38:28 -0700 (PDT)
+ bh=coCYRAX/D0a1lARgSgpQz1zwILEZC/GYBuzI7kzZU2k=;
+ b=AdbYeR5ZKl1e6joq2+jE/T236X2hOAI8y/eIE1aRinYW6Hz6eFeYJbYNurmG/l34O2
+ cj0buW7mf6iTmLhjoZERrj61mS0nGUxNR1mQt8uRturf4gJFSTAD9jN28HQKrLDBLNwm
+ 0Xdmf7ObFZHv1/R8d9zPZvyGukl9sLm0/L4yQ0Z/J2wkgoLQ4zDI3IbISGG9OxgwnM6k
+ JqEuzb5rx6oWB+DNPuxeOHKUIELoGz/07niDThWHJHgutpggS7pN6bfkdIjPSKxwb8kJ
+ f+TTCPRV59i0zMlh7Mo96fzS8WN9h82F+lOjYjlFMkhknahvPvhDgZE5okTaV/MzO+6u
+ lnvg==
+X-Gm-Message-State: AC+VfDwITanNPc2z9GWe1q6Y52Yt/ng2oL25uvDPktBtIO18wsmcBphg
+ WZ8RwfHen0i+4yjKpFIRBjjxC8nDeXSp/ABZpAebUg==
+X-Google-Smtp-Source: ACHHUZ59jlwoYPU3KBNv+8oIOiZK4KA4cFoXT5yC1limHVxBEmjQlUFDEX3tcNUOakTQUqgGqklAPA==
+X-Received: by 2002:a17:907:6daa:b0:973:cc48:f19c with SMTP id
+ sb42-20020a1709076daa00b00973cc48f19cmr11331108ejc.56.1686649113701; 
+ Tue, 13 Jun 2023 02:38:33 -0700 (PDT)
 Received: from localhost.localdomain ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- s24-20020a1709060c1800b00969f25b96basm6363606ejf.204.2023.06.13.02.38.28
+ g12-20020a1709064e4c00b00965e1be3002sm4801468ejw.166.2023.06.13.02.38.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 02:38:28 -0700 (PDT)
+ Tue, 13 Jun 2023 02:38:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Andreas Schwab <schwab@suse.de>,
- Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/17] linux-user,
- bsd-user: Preserve incoming order of environment variables in the
- target
-Date: Tue, 13 Jun 2023 11:38:06 +0200
-Message-Id: <20230613093822.63750-2-philmd@linaro.org>
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PULL 02/17] cocoa: Fix warnings about invalid prototype declarations
+Date: Tue, 13 Jun 2023 11:38:07 +0200
+Message-Id: <20230613093822.63750-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613093822.63750-1-philmd@linaro.org>
 References: <20230613093822.63750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,65 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andreas Schwab <schwab@suse.de>
+Fix the following Cocoa trivial warnings:
 
-Do not reverse the order of environment variables in the target environ
-array relative to the incoming environ order.  Some testsuites depend on a
-specific order, even though it is not defined by any standard.
+  C compiler for the host machine: cc (clang 14.0.0 "Apple clang version 14.0.0 (clang-1400.0.29.202)")
+  Objective-C compiler for the host machine: clang (clang 14.0.0)
 
-Signed-off-by: Andreas Schwab <schwab@suse.de>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <mvmlejfsivd.fsf@suse.de>
+  [100/334] Compiling Objective-C object libcommon.fa.p/net_vmnet-bridged.m.o
+  net/vmnet-bridged.m:40:31: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
+  static char* get_valid_ifnames()
+                                ^
+                                 void
+  [742/1436] Compiling Objective-C object libcommon.fa.p/ui_cocoa.m.o
+  ui/cocoa.m:1937:22: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
+  static int cocoa_main()
+                       ^
+                        void
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20230425192820.34063-1-philmd@linaro.org>
 ---
- bsd-user/main.c   | 10 +++++++++-
- linux-user/main.c | 10 +++++++++-
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ net/vmnet-bridged.m | 2 +-
+ ui/cocoa.m          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index cd8b2a670f..b597328118 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -295,8 +295,16 @@ int main(int argc, char **argv)
+diff --git a/net/vmnet-bridged.m b/net/vmnet-bridged.m
+index 46d2282863..76a28abe79 100644
+--- a/net/vmnet-bridged.m
++++ b/net/vmnet-bridged.m
+@@ -37,7 +37,7 @@ static bool validate_ifname(const char *ifname)
+ }
  
-     envlist = envlist_create();
  
--    /* add current environment into the list */
-+    /*
-+     * add current environment into the list
-+     * envlist_setenv adds to the front of the list; to preserve environ
-+     * order add from back to front
-+     */
-     for (wrk = environ; *wrk != NULL; wrk++) {
-+        continue;
-+    }
-+    while (wrk != environ) {
-+        wrk--;
-         (void) envlist_setenv(envlist, *wrk);
-     }
+-static char* get_valid_ifnames()
++static char* get_valid_ifnames(void)
+ {
+     xpc_object_t shared_if_list = vmnet_copy_shared_interface_list();
+     __block char *if_list = NULL;
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index 168170a8a6..0c2153d17c 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -1934,7 +1934,7 @@ static void cocoa_clipboard_request(QemuClipboardInfo *info,
+     exit(status);
+ }
  
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 5e6b2e1714..dba67ffa36 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -692,8 +692,16 @@ int main(int argc, char **argv, char **envp)
- 
-     envlist = envlist_create();
- 
--    /* add current environment into the list */
-+    /*
-+     * add current environment into the list
-+     * envlist_setenv adds to the front of the list; to preserve environ
-+     * order add from back to front
-+     */
-     for (wrk = environ; *wrk != NULL; wrk++) {
-+        continue;
-+    }
-+    while (wrk != environ) {
-+        wrk--;
-         (void) envlist_setenv(envlist, *wrk);
-     }
+-static int cocoa_main()
++static int cocoa_main(void)
+ {
+     QemuThread thread;
  
 -- 
 2.38.1
