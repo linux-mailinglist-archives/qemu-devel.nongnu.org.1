@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E8C72E443
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 15:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6599372E440
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 15:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q94CS-0002VL-0B; Tue, 13 Jun 2023 09:36:44 -0400
+	id 1q94CU-0002pw-87; Tue, 13 Jun 2023 09:36:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94C6-0001tZ-JC
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:24 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94CE-0002BT-Pn
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:32 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94C2-0002jf-II
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:22 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-977d0288fd2so914770866b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 06:36:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94CA-0002lu-4f
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:36:30 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5187aa18410so467003a12.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 06:36:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686663377; x=1689255377;
+ d=linaro.org; s=google; t=1686663384; x=1689255384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TTge5Z4b4nMW2vtK7DGlD8HEj0g/6GKKAfDYFgtpth4=;
- b=XH619R4kQi6Lp5yKVpKuHUy/njKxMMAs2zawhmz311JWOOhmIks7onMHi5FK7yoQxB
- qZUKm/CbUdWdxgtuXa7VjKtPOuD32dPDZbZkwXc1EW69fpSn/vq3Um7GNG4w8MAnyjTj
- OUVyMiReFufNPu1q8JYMGrlBCRfB0qJUhYVfdFzx1BE0xPxkee/MTHFuB77GY8cYpSYA
- pRBk4TOg35dzrVeH2PJxxbQB3PJHUjwrEuBezf70NY7UTxEOaOEQeUdmpSV7UlKOSca5
- wwH8ozGiitVAd1gTf/FJir+jWxgZZtnRgy+vLbCQT4skAllNj+h4iFdypDJ7EBG5K9o/
- DD3g==
+ bh=2FFj/OteWUnTmZ/mZx5h468OXJxPvxYcDtaSl/bRE7s=;
+ b=Fvg8bfIusjG7u3GrT0oecLJ5uqQ6n/wA79vPI2V36nRZl/a/5wp4HhjLQseAJtJmYP
+ 9KMIsQwAjtu/uf2xFPnOJW9PyeCqBL1oTNMt0MGLoo6Slebszgc0wHIq0r3FOkpMp09R
+ yb4WKx4OijMqkU3JXyLCmroy6Wzau+KzjYFsdeR9DAAq3baSfVq9U9yv4i6o/CbdGW0Y
+ 3EIUEwh8CXo9WZjZ9m6SXR6o3by55s6dmGEb2BaT4WkfqUJLVFbsj2EqQk2YwSfRsLPr
+ 7gzIyVL5qomruoTxOTPYCJfFeDyK774i9Y3ChZG9qvxJkJ5IpyCGUz1GbTJyPIA8yaGf
+ x1uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686663377; x=1689255377;
+ d=1e100.net; s=20221208; t=1686663384; x=1689255384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TTge5Z4b4nMW2vtK7DGlD8HEj0g/6GKKAfDYFgtpth4=;
- b=FczCWD4gw4/GmKcVMWb48+cGF5c3uO5P2WrL9AZ8fzFSWPYymokB0h3w+Y24fVq/mz
- jT6TApG+WkcvZICmkIyxGiiKlmgrwjvItsPPueKRT2isNYWKdBV57qRrpozcEzBpBun2
- QI1kKVFZbrF1IK4h/dGvKqAl2qPlKU4/1PjNDD3IfsMDiwTsrmiwHFF3O3qohS+vtc0c
- BY1fnnYgnp4kpI8Glz2Yi0AmW5vUbz4j6om2ko/50nIFhwzOw5xruz+nasUjs4wPSa7Q
- F3Wx5IhH8ncikMudHUmiZP4ame81rMMWXHsgUnpSXL/AmB5eYtQPSF73jh3aCiSPoPZU
- nuLA==
-X-Gm-Message-State: AC+VfDz+zQ9k4YO7tZUn1XZIr/BRtw6amctXgwlXvz301t8k4PS756Uz
- iEUcQiEZQj5bJ59pVmFF1xeWwhycDNa4qUw/UHc=
-X-Google-Smtp-Source: ACHHUZ6hMVkSHlqaMjppBtKGGgUkagxDy8ZxNeh4aRSSviZEEm+vlH2wy6n/ntGh/gRKGKE/w6MGOw==
-X-Received: by 2002:a17:907:9307:b0:974:1ef7:15be with SMTP id
- bu7-20020a170907930700b009741ef715bemr14360731ejc.30.1686663376750; 
- Tue, 13 Jun 2023 06:36:16 -0700 (PDT)
+ bh=2FFj/OteWUnTmZ/mZx5h468OXJxPvxYcDtaSl/bRE7s=;
+ b=joWm4jbhI41bvbhutESaci/0EUrOdYw6UZwSW58mto2WmR3XZXBro5qBDgdcSXkOP3
+ 6Z2zPi1IAhFXVI9w7D2rXM/GbfC8SvaslTOKFnk7+HwoquPrka4JXczsBmJrNICOZQ04
+ B8cK7fe2GV9cvbQOq+ovEx75J+6CSuxEl9QcPqhXQlflbhQEPb8+Zcv6CqvJfFw9Ce+a
+ sNPZamx20kK++63oDEFpiSV9LolT9Tx2rzQ9Olf/o+oLgnuMEVb5LJZeVJRdZCLmi9jV
+ Vf07jC8+CId3dwDcmF8u2t/0lcW9Qci4jbG4rUrL7Ox/cWou2GBtnBYOUpOesEZGRi1w
+ m5tA==
+X-Gm-Message-State: AC+VfDyuNNtK6GP8ma70QsJWCTizfisSDkVbkpwVwMZN8W4jgRZQcJxo
+ YoloC77QHkvAAU7bZzGRxIkEMjesBRj/Yn0wEB0=
+X-Google-Smtp-Source: ACHHUZ7Kga2bagHjpYgj0e3tH+06fcqPxvuiLV0R9Y2sNkvceCNe2LCgkrloeukVjjY3x3KBBT7qnw==
+X-Received: by 2002:aa7:cd09:0:b0:50b:d75d:3155 with SMTP id
+ b9-20020aa7cd09000000b0050bd75d3155mr7803728edw.37.1686663384234; 
+ Tue, 13 Jun 2023 06:36:24 -0700 (PDT)
 Received: from localhost.localdomain ([213.235.133.109])
  by smtp.gmail.com with ESMTPSA id
- x15-20020a170906710f00b009745bac0567sm6583544ejj.126.2023.06.13.06.36.12
+ g25-20020a50ee19000000b0050bfeb15049sm6325757eds.60.2023.06.13.06.36.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 06:36:16 -0700 (PDT)
+ Tue, 13 Jun 2023 06:36:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>,
  qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 7/9] meson: Alias CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
-Date: Tue, 13 Jun 2023 15:33:45 +0200
-Message-Id: <20230613133347.82210-8-philmd@linaro.org>
+Subject: [PATCH v3 8/9] meson: Replace CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
+Date: Tue, 13 Jun 2023 15:33:46 +0200
+Message-Id: <20230613133347.82210-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613133347.82210-1-philmd@linaro.org>
 References: <20230613133347.82210-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,27 +93,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We use the CONFIG_USER_ONLY key to describe user emulation,
-and the CONFIG_SOFTMMU key to describe system emulation. Alias
-it as 'CONFIG_SYSTEM_ONLY' for parity with user emulation.
+Since we *might* have user emulation with softmmu,
+use the clearer 'CONFIG_SYSTEM_ONLY' key to check
+for system emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ meson.build                        | 4 ++--
+ accel/qtest/meson.build            | 2 +-
+ accel/stubs/meson.build            | 2 +-
+ accel/tcg/meson.build              | 6 +++---
+ dump/meson.build                   | 2 +-
+ hw/i386/kvm/meson.build            | 2 +-
+ migration/meson.build              | 2 +-
+ monitor/meson.build                | 2 +-
+ qapi/meson.build                   | 2 +-
+ semihosting/meson.build            | 2 +-
+ softmmu/meson.build                | 4 ++--
+ target/i386/tcg/sysemu/meson.build | 2 +-
+ ui/meson.build                     | 4 ++--
+ 13 files changed, 18 insertions(+), 18 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 34306a6205..8bfa37afe2 100644
+index 8bfa37afe2..c8e443c67c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2862,6 +2862,7 @@ foreach target : target_dirs
-     endif
-     config_target += { 'CONFIG_BSD_USER': 'y' }
-   elif target.endswith('softmmu')
-+    config_target += { 'CONFIG_SYSTEM_ONLY': 'y' }
-     config_target += { 'CONFIG_SOFTMMU': 'y' }
+@@ -2989,7 +2989,7 @@ config_all += config_host
+ config_all += config_all_disas
+ config_all += {
+   'CONFIG_XEN': xen.found(),
+-  'CONFIG_SOFTMMU': have_system,
++  'CONFIG_SYSTEM_ONLY': have_system,
+   'CONFIG_USER_ONLY': have_user,
+   'CONFIG_ALL': true,
+ }
+@@ -3663,7 +3663,7 @@ endif
+ softmmu_ss.add(authz, blockdev, chardev, crypto, io, qmp)
+ common_ss.add(qom, qemuutil)
+ 
+-common_ss.add_all(when: 'CONFIG_SOFTMMU', if_true: [softmmu_ss])
++common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [softmmu_ss])
+ common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+ 
+ common_all = common_ss.apply(config_all, strict: false)
+diff --git a/accel/qtest/meson.build b/accel/qtest/meson.build
+index 176d990ae1..2018de8a05 100644
+--- a/accel/qtest/meson.build
++++ b/accel/qtest/meson.build
+@@ -1 +1 @@
+-qtest_module_ss.add(when: ['CONFIG_SOFTMMU'], if_true: files('qtest.c'))
++qtest_module_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: files('qtest.c'))
+diff --git a/accel/stubs/meson.build b/accel/stubs/meson.build
+index 0249b9258f..f7a9486e06 100644
+--- a/accel/stubs/meson.build
++++ b/accel/stubs/meson.build
+@@ -4,4 +4,4 @@ sysemu_stubs_ss.add(when: 'CONFIG_XEN', if_false: files('xen-stub.c'))
+ sysemu_stubs_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
+ sysemu_stubs_ss.add(when: 'CONFIG_TCG', if_false: files('tcg-stub.c'))
+ 
+-specific_ss.add_all(when: ['CONFIG_SOFTMMU'], if_true: sysemu_stubs_ss)
++specific_ss.add_all(when: ['CONFIG_SYSTEM_ONLY'], if_true: sysemu_stubs_ss)
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index aeb20a6ef0..166bef173b 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -10,18 +10,18 @@ tcg_ss.add(files(
+   'translator.c',
+ ))
+ tcg_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
+-tcg_ss.add(when: 'CONFIG_SOFTMMU', if_false: files('user-exec-stub.c'))
++tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
+ tcg_ss.add(when: 'CONFIG_PLUGIN', if_true: [files('plugin-gen.c')])
+ tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
+ tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
+ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
+ 
+-specific_ss.add(when: ['CONFIG_SOFTMMU', 'CONFIG_TCG'], if_true: files(
++specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
+   'cputlb.c',
+   'monitor.c',
+ ))
+ 
+-tcg_module_ss.add(when: ['CONFIG_SOFTMMU', 'CONFIG_TCG'], if_true: files(
++tcg_module_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
+   'tcg-accel-ops.c',
+   'tcg-accel-ops-mttcg.c',
+   'tcg-accel-ops-icount.c',
+diff --git a/dump/meson.build b/dump/meson.build
+index df52ee4268..3ef1f7ce00 100644
+--- a/dump/meson.build
++++ b/dump/meson.build
+@@ -1,2 +1,2 @@
+ softmmu_ss.add([files('dump.c', 'dump-hmp-cmds.c'), snappy, lzo])
+-specific_ss.add(when: 'CONFIG_SOFTMMU', if_true: files('win_dump.c'))
++specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: files('win_dump.c'))
+diff --git a/hw/i386/kvm/meson.build b/hw/i386/kvm/meson.build
+index 6621ba5cd7..ab143d6474 100644
+--- a/hw/i386/kvm/meson.build
++++ b/hw/i386/kvm/meson.build
+@@ -19,4 +19,4 @@ xen_stubs_ss.add(when: 'CONFIG_XEN_EMU', if_false: files(
+   'xen-stubs.c',
+ ))
+ 
+-specific_ss.add_all(when: 'CONFIG_SOFTMMU', if_true: xen_stubs_ss)
++specific_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: xen_stubs_ss)
+diff --git a/migration/meson.build b/migration/meson.build
+index 8ba6e420fe..9975407cd0 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -40,6 +40,6 @@ if get_option('live_block_migration').allowed()
+ endif
+ softmmu_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
+ 
+-specific_ss.add(when: 'CONFIG_SOFTMMU',
++specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+                 if_true: files('ram.c',
+                                'target.c'))
+diff --git a/monitor/meson.build b/monitor/meson.build
+index ccb4d1a8e6..4c0a33ae65 100644
+--- a/monitor/meson.build
++++ b/monitor/meson.build
+@@ -7,5 +7,5 @@ softmmu_ss.add(files(
+ ))
+ softmmu_ss.add([spice_headers, files('qmp-cmds.c')])
+ 
+-specific_ss.add(when: 'CONFIG_SOFTMMU',
++specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+ 		if_true: [files( 'hmp-cmds-target.c', 'hmp-target.c'), spice])
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 9fd480c4d8..60a668b343 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -141,6 +141,6 @@ foreach output : qapi_specific_outputs + qapi_nonmodule_outputs
+   if output.endswith('.trace-events')
+     qapi_trace_events += qapi_files[i]
    endif
-   if target.endswith('-user')
+-  specific_ss.add(when: 'CONFIG_SOFTMMU', if_true: qapi_files[i])
++  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
+   i = i + 1
+ endforeach
+diff --git a/semihosting/meson.build b/semihosting/meson.build
+index 8057db5494..b07cbd980f 100644
+--- a/semihosting/meson.build
++++ b/semihosting/meson.build
+@@ -3,7 +3,7 @@ specific_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files(
+   'syscalls.c',
+ ))
+ 
+-specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SOFTMMU'], if_true: files(
++specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_true: files(
+   'config.c',
+   'console.c',
+   'uaccess.c',
+diff --git a/softmmu/meson.build b/softmmu/meson.build
+index 974732b0f3..d75f45b7c3 100644
+--- a/softmmu/meson.build
++++ b/softmmu/meson.build
+@@ -1,4 +1,4 @@
+-specific_ss.add(when: 'CONFIG_SOFTMMU', if_true: [files(
++specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
+   'arch_init.c',
+   'ioport.c',
+   'memory.c',
+@@ -6,7 +6,7 @@ specific_ss.add(when: 'CONFIG_SOFTMMU', if_true: [files(
+   'watchpoint.c',
+ )])
+ 
+-specific_ss.add(when: ['CONFIG_SOFTMMU', 'CONFIG_TCG'], if_true: [files(
++specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: [files(
+   'icount.c',
+ )])
+ 
+diff --git a/target/i386/tcg/sysemu/meson.build b/target/i386/tcg/sysemu/meson.build
+index 2e444e766a..7179bd21fb 100644
+--- a/target/i386/tcg/sysemu/meson.build
++++ b/target/i386/tcg/sysemu/meson.build
+@@ -1,4 +1,4 @@
+-i386_softmmu_ss.add(when: ['CONFIG_TCG', 'CONFIG_SOFTMMU'], if_true: files(
++i386_softmmu_ss.add(when: ['CONFIG_TCG', 'CONFIG_SYSTEM_ONLY'], if_true: files(
+   'tcg-cpu.c',
+   'smm_helper.c',
+   'excp_helper.c',
+diff --git a/ui/meson.build b/ui/meson.build
+index e09b616a66..125dd41cd6 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -1,6 +1,6 @@
+ softmmu_ss.add(pixman)
+-specific_ss.add(when: ['CONFIG_SOFTMMU'], if_true: pixman)   # for the include path
+-specific_ss.add(when: ['CONFIG_SOFTMMU'], if_true: opengl)   # for the include path
++specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: pixman)   # for the include path
++specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: opengl)   # for the include path
+ 
+ softmmu_ss.add(png)
+ softmmu_ss.add(files(
 -- 
 2.38.1
 
