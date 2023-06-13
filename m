@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A76372E437
+	by mail.lfdr.de (Postfix) with ESMTPS id 3028C72E435
 	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 15:36:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q94B5-0007jN-Ff; Tue, 13 Jun 2023 09:35:19 -0400
+	id 1q94Ba-0008Us-1b; Tue, 13 Jun 2023 09:35:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94B2-0007cd-NG
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:35:16 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94BX-0008QE-DJ
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:35:47 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94Az-0002QQ-Ug
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:35:15 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-97460240863so889902766b.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 06:35:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q94BT-0002VH-Uw
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 09:35:47 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5184abe9e86so2334928a12.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 06:35:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686663312; x=1689255312;
+ d=linaro.org; s=google; t=1686663342; x=1689255342;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HE4rMdwDzn7Z5hU0mldHp9um1gTSDI5fOpSWPoLYcO8=;
- b=qO0Wk4mIqHnzhNQNLP9LR5c32xCPrPUIGMAF7lcBLHHSnc0q9qbpBy8Jud/I1th9T8
- 3b4d/ZyOOK8PV+4yoRM1ngyTX7/uLTegjEsyWeBK3fHH9y4P/SBN05zziEY/WJqvqXc6
- zhGxUtiMpb0pkwXKLJ8MYhwL3mqwczaBsgSjFC7NEGcDD4Gu2+t7sVCQFouKUPpXkmil
- ROCIaLgtxln9B5/HeGddUWuHC5O65NaTkuBmovEh1Fh4ES/cpO4MklBQZk0IXNuaSx5B
- hrZaPCAF5aootiuaDD8Gw1TMcnDv/dqVrfQRUfbq6CDEi6KsSdX0fTRP4HWeU3IMZjDj
- WZDQ==
+ bh=W5VKZg4F+9MZrxoe7cg5j1eqlVZezbWvVtc1kXE6jLI=;
+ b=J35vi3VH77ic5CB7eWaFNePExdyljKcZQj01xauILe+x4JUst3Ccvn+1XArbonvZLE
+ fyvVfY2fWF4PHdmGDimG/00rBSRngemsdkiopZonH8Z69XHmLdnQTVHHIw52SIYSW1n/
+ i/ZH3hF88cTczOQ7UOPG2M62kO9T2ItuW2Fvk7sgFzkNJPo7mMWkEE7fOi1YD3QmSMhs
+ A5hcVhzG5NvC4CV9qCQEeY2Q0hVXlIHythAcvOYSnSuDeWvxjX0rrkSajPMVXbmv7DTZ
+ rOazquvI7cd80eLY81UoFhaSsH084eqs3rbjHYABRiraAt1Mb9sW3xgEZToCW/wYmxnD
+ jFFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686663312; x=1689255312;
+ d=1e100.net; s=20221208; t=1686663342; x=1689255342;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HE4rMdwDzn7Z5hU0mldHp9um1gTSDI5fOpSWPoLYcO8=;
- b=NtKbhnRvdIoVMg6BpQ/A+1SzikP2i+8kXClIEB7Gipr2YrJxdjzaKXXW/vxDMwdWD+
- PNjUdYg2PIaAPp99We8rTz4Czs6gUrcSkDfF815KgAxe7Ex2RBTCYlguVrJ50SXikwni
- mZ6ennjhImrD4687ht8HT7LOT7mlE8KvPmFfUrvIJQDlAwqNCOpvEaViW4uJ2GuiLKwh
- bY3yTQbcU0GKzpEChN2rKW96mX4XYprLECrwfdpkQnAcAFUKGHX0Ns5trc3UZoQbtfsy
- hXvfUpqMcGn9WL7nstEcH9W4YdZQijekDU8HC0DRQS+r7wt29sAAZ0zANWuPZw9lA32D
- zvAg==
-X-Gm-Message-State: AC+VfDw3c/Qlq+CzcmhsT+aDVt6zfy5FT9x4fcRSjG3wGUigxJRaE9tw
- mYWr4S4TUFldlEXeYNGOnJgvFFVEqZ1RBxWRoQY=
-X-Google-Smtp-Source: ACHHUZ45NWw30EIEYhqRjTisNztnOqv4ALmbqLlInZ/AdwFhpOxdH7yl0bVqKDWj+9re+WyZ+Yj/uw==
-X-Received: by 2002:a17:907:7b9f:b0:982:25d1:bfd3 with SMTP id
- ne31-20020a1709077b9f00b0098225d1bfd3mr4198341ejc.15.1686663311927; 
- Tue, 13 Jun 2023 06:35:11 -0700 (PDT)
+ bh=W5VKZg4F+9MZrxoe7cg5j1eqlVZezbWvVtc1kXE6jLI=;
+ b=GCRudDZsuU3D1HnVxvEEmU+4vjTeMwGHz7EbnIPZqhbUAixkPZJYmqvreNgcdkv7Mg
+ 1cpBYTPf2B/MxsSBhvtqShFmJkN5Ykull41UiCaYW8i3XXdlosIiFBPB9YhgjBNyoCfq
+ RSp8q550wcYhm8qBi9JjGaEOehPp6SDE29eFG8jvogM3U5KWnvUN2d/SxQJnWOtBAxtE
+ wWNQrOBd656TiHuAaAblaWoNTNJt+YNYmowtEmmxEdYGWifBQg9e1iUS9BI7l+bhqdkO
+ CedmIAlN9YQ5ZRMdkp+tZOcYAssVvgz5+yPOB5NVPEot88wDNwEqyAKmkrlyFi3lkz00
+ gTwA==
+X-Gm-Message-State: AC+VfDwRZaQTsV7v0gCgFQ7KFyzI0QdeVBdDnBieb+gXukYOBaZa9L96
+ 9zdaqGUNuK/JVwJA3nWKT+onWK61hCPZywWPW/k=
+X-Google-Smtp-Source: ACHHUZ6+9yQtcr6vv/YSmI0mZdn5emvonq42VnVNLYssP5nUQr3e+ene+geJONoCeiLZ3bN3b0AnxA==
+X-Received: by 2002:a17:907:944f:b0:982:1936:ad20 with SMTP id
+ dl15-20020a170907944f00b009821936ad20mr4363066ejc.2.1686663342192; 
+ Tue, 13 Jun 2023 06:35:42 -0700 (PDT)
 Received: from localhost.localdomain ([213.235.133.109])
  by smtp.gmail.com with ESMTPSA id
- qt17-20020a170906ecf100b00968242f8c37sm6598096ejb.50.2023.06.13.06.35.04
+ kg6-20020a17090776e600b009661484e84esm6639050ejc.191.2023.06.13.06.35.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 06:35:11 -0700 (PDT)
+ Tue, 13 Jun 2023 06:35:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>,
  qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/9] target/tricore: Remove pointless CONFIG_SOFTMMU guard
-Date: Tue, 13 Jun 2023 15:33:40 +0200
-Message-Id: <20230613133347.82210-3-philmd@linaro.org>
+Subject: [PATCH v3 3/9] target/m68k: Check for USER_ONLY definition instead of
+ SOFTMMU one
+Date: Tue, 13 Jun 2023 15:33:41 +0200
+Message-Id: <20230613133347.82210-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613133347.82210-1-philmd@linaro.org>
 References: <20230613133347.82210-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,36 +94,220 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't build any user emulation target for Tricore,
-only the system emulation. No need to check for it as
-it is always defined.
+Since we *might* have user emulation with softmmu,
+replace the system emulation check by !user emulation one.
+
+Invert some if() ladders for clarity.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/tricore/helper.c | 2 --
- 1 file changed, 2 deletions(-)
+ target/m68k/helper.h    |  2 +-
+ target/m68k/cpu.c       | 14 ++++++--------
+ target/m68k/helper.c    |  4 ++--
+ target/m68k/translate.c | 28 ++++++++++++++--------------
+ 4 files changed, 23 insertions(+), 25 deletions(-)
 
-diff --git a/target/tricore/helper.c b/target/tricore/helper.c
-index 284a749e50..951024d491 100644
---- a/target/tricore/helper.c
-+++ b/target/tricore/helper.c
-@@ -31,7 +31,6 @@ enum {
-     TLBRET_MATCH = 0
- };
+diff --git a/target/m68k/helper.h b/target/m68k/helper.h
+index c9bed2b884..2bbe0dc032 100644
+--- a/target/m68k/helper.h
++++ b/target/m68k/helper.h
+@@ -124,7 +124,7 @@ DEF_HELPER_FLAGS_4(bfffo_mem, TCG_CALL_NO_WG, i64, env, i32, s32, i32)
+ DEF_HELPER_3(chk, void, env, s32, s32)
+ DEF_HELPER_4(chk2, void, env, s32, s32, s32)
  
 -#if defined(CONFIG_SOFTMMU)
- static int get_physical_address(CPUTriCoreState *env, hwaddr *physical,
-                                 int *prot, target_ulong address,
-                                 MMUAccessType access_type, int mmu_idx)
-@@ -57,7 +56,6 @@ hwaddr tricore_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
++#if !defined(CONFIG_USER_ONLY)
+ DEF_HELPER_3(ptest, void, env, i32, i32)
+ DEF_HELPER_3(pflush, void, env, i32, i32)
+ DEF_HELPER_FLAGS_1(reset, TCG_CALL_NO_RWG, void, env)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 99af1ab541..70d58471dc 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -80,10 +80,10 @@ static void m68k_cpu_reset_hold(Object *obj)
      }
-     return phys_addr;
+ 
+     memset(env, 0, offsetof(CPUM68KState, end_reset_fields));
+-#ifdef CONFIG_SOFTMMU
+-    cpu_m68k_set_sr(env, SR_S | SR_I);
+-#else
++#ifdef CONFIG_USER_ONLY
+     cpu_m68k_set_sr(env, 0);
++#else
++    cpu_m68k_set_sr(env, SR_S | SR_I);
+ #endif
+     for (i = 0; i < 8; i++) {
+         env->fregs[i].d = nan;
+@@ -334,7 +334,7 @@ static void m68k_cpu_initfn(Object *obj)
+     cpu_set_cpustate_pointers(cpu);
  }
+ 
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+ static bool fpu_needed(void *opaque)
+ {
+     M68kCPU *s = opaque;
+@@ -525,15 +525,13 @@ static const VMStateDescription vmstate_m68k_cpu = {
+         NULL
+     },
+ };
 -#endif
  
- /* TODO: Add exeption support*/
- static void raise_mmu_exception(CPUTriCoreState *env, target_ulong address,
+-#ifndef CONFIG_USER_ONLY
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
+ static const struct SysemuCPUOps m68k_sysemu_ops = {
+     .get_phys_page_debug = m68k_cpu_get_phys_page_debug,
+ };
+-#endif
++#endif /* !CONFIG_USER_ONLY */
+ 
+ #include "hw/core/tcg-cpu-ops.h"
+ 
+@@ -568,7 +566,7 @@ static void m68k_cpu_class_init(ObjectClass *c, void *data)
+     cc->get_pc = m68k_cpu_get_pc;
+     cc->gdb_read_register = m68k_cpu_gdb_read_register;
+     cc->gdb_write_register = m68k_cpu_gdb_write_register;
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     dc->vmsd = &vmstate_m68k_cpu;
+     cc->sysemu_ops = &m68k_sysemu_ops;
+ #endif
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 3b3a6ea8bd..01c18a7c59 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -1480,7 +1480,7 @@ void HELPER(set_mac_extu)(CPUM68KState *env, uint32_t val, uint32_t acc)
+     env->macc[acc + 1] = res;
+ }
+ 
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+ void HELPER(ptest)(CPUM68KState *env, uint32_t addr, uint32_t is_read)
+ {
+     hwaddr physical;
+@@ -1534,4 +1534,4 @@ void HELPER(reset)(CPUM68KState *env)
+ {
+     /* FIXME: reset all except CPU */
+ }
+-#endif
++#endif /* !CONFIG_USER_ONLY */
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 551ef9e52a..e07161d76f 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -2637,10 +2637,10 @@ DISAS_INSN(swap)
+ 
+ DISAS_INSN(bkpt)
+ {
+-#if defined(CONFIG_SOFTMMU)
+-    gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
+-#else
++#if defined(CONFIG_USER_ONLY)
+     gen_exception(s, s->base.pc_next, EXCP_DEBUG);
++#else
++    gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
+ #endif
+ }
+ 
+@@ -2838,7 +2838,7 @@ DISAS_INSN(unlk)
+     tcg_gen_addi_i32(QREG_SP, src, 4);
+ }
+ 
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+ DISAS_INSN(reset)
+ {
+     if (IS_USER(s)) {
+@@ -4398,7 +4398,7 @@ DISAS_INSN(move_from_sr)
+     DEST_EA(env, insn, OS_WORD, sr, NULL);
+ }
+ 
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+ DISAS_INSN(moves)
+ {
+     int opsize;
+@@ -4605,7 +4605,7 @@ DISAS_INSN(cinv)
+     /* Invalidate cache line.  Implement as no-op.  */
+ }
+ 
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+ DISAS_INSN(pflush)
+ {
+     TCGv opmode;
+@@ -5352,7 +5352,7 @@ DISAS_INSN(ftrapcc)
+     do_trapcc(s, &c);
+ }
+ 
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+ DISAS_INSN(frestore)
+ {
+     TCGv addr;
+@@ -5795,7 +5795,7 @@ void register_m68k_insns (CPUM68KState *env)
+     BASE(bitop_im,  08c0, ffc0);
+     INSN(arith_im,  0a80, fff8, CF_ISA_A);
+     INSN(arith_im,  0a00, ff00, M68K);
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     INSN(moves,     0e00, ff00, M68K);
+ #endif
+     INSN(cas,       0ac0, ffc0, CAS);
+@@ -5824,7 +5824,7 @@ void register_m68k_insns (CPUM68KState *env)
+     BASE(move_to_ccr, 44c0, ffc0);
+     INSN(not,       4680, fff8, CF_ISA_A);
+     INSN(not,       4600, ff00, M68K);
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     BASE(move_to_sr, 46c0, ffc0);
+ #endif
+     INSN(nbcd,      4800, ffc0, M68K);
+@@ -5841,7 +5841,7 @@ void register_m68k_insns (CPUM68KState *env)
+     BASE(tst,       4a00, ff00);
+     INSN(tas,       4ac0, ffc0, CF_ISA_B);
+     INSN(tas,       4ac0, ffc0, M68K);
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     INSN(halt,      4ac8, ffff, CF_ISA_A);
+     INSN(halt,      4ac8, ffff, M68K);
+ #endif
+@@ -5855,7 +5855,7 @@ void register_m68k_insns (CPUM68KState *env)
+     BASE(trap,      4e40, fff0);
+     BASE(link,      4e50, fff8);
+     BASE(unlk,      4e58, fff8);
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     INSN(move_to_usp, 4e60, fff8, USP);
+     INSN(move_from_usp, 4e68, fff8, USP);
+     INSN(reset,     4e70, ffff, M68K);
+@@ -5980,7 +5980,7 @@ void register_m68k_insns (CPUM68KState *env)
+     INSN(ftrapcc,   f27a, fffe, FPU);       /* opmode 010, 011 */
+     INSN(ftrapcc,   f27c, ffff, FPU);       /* opmode 100 */
+     INSN(fbcc,      f280, ff80, FPU);
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     INSN(frestore,  f340, ffc0, CF_FPU);
+     INSN(fsave,     f300, ffc0, CF_FPU);
+     INSN(frestore,  f340, ffc0, FPU);
+@@ -6190,7 +6190,7 @@ void m68k_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+         break;
+     }
+     qemu_fprintf(f, "\n");
+-#ifdef CONFIG_SOFTMMU
++#ifndef CONFIG_USER_ONLY
+     qemu_fprintf(f, "%sA7(MSP) = %08x %sA7(USP) = %08x %sA7(ISP) = %08x\n",
+                  env->current_sp == M68K_SSP ? "->" : "  ", env->sp[M68K_SSP],
+                  env->current_sp == M68K_USP ? "->" : "  ", env->sp[M68K_USP],
+@@ -6204,5 +6204,5 @@ void m68k_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+                  env->mmu.ttr[M68K_ITTR0], env->mmu.ttr[M68K_ITTR1]);
+     qemu_fprintf(f, "MMUSR %08x, fault at %08x\n",
+                  env->mmu.mmusr, env->mmu.ar);
+-#endif
++#endif /* !CONFIG_USER_ONLY */
+ }
 -- 
 2.38.1
 
