@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E756D72E1B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3726372E1D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90UL-0005Pt-5V; Tue, 13 Jun 2023 05:38:57 -0400
+	id 1q90UR-0005V9-6G; Tue, 13 Jun 2023 05:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UI-0005M1-B5
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:54 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UO-0005Tm-RV
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:00 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UE-0005Yg-Kz
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:38:54 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9745baf7c13so781169266b.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:38:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90UH-0005Z8-LA
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:00 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-977d02931d1so782493066b.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:38:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686649127; x=1689241127;
+ d=linaro.org; s=google; t=1686649131; x=1689241131;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YSCMOMiEbLUM1Wk1LAbR+FG1B8HkFWQqVaD6LVaKVVI=;
- b=Fbx+Y2sTOWlOzGtF+XOqdQ4xEH5zruDmrJtMnBiflePZ5DCREag2JlKofH+6PdUQwi
- 5sJLb50AhBsk/zSAl9yN+kpF5I28dIpL2fM1v7B+i0jEl0rMeOux6y2xlxpKf1qacl6r
- GI5iDqFJz/bYQ/HKzgp7ay2YRpGdwFGZCnHCZIHR7cpjU5kEKi3BO2SLzmcr9P4OHeWW
- N9YTE1SXJGN3OrLQUD5de+PJyQUJj8agOabGVTkfkLMrk9+pNlJUd2KHiVGPH6VxK4HL
- BXHx11A2ALhFDNLLWW90m5acF0TgOl3Hh2X7I7Qj1HxCwJeWgtZ5lCyfnYeeaJMynFkJ
- YvuA==
+ bh=7g0Yqy2wB54am4pKsVZHqGyVbbprfwoeuCpS8UNAr/Q=;
+ b=VhQ6tJsMl7jtmM9J/i0BhJWFESqjyFFPRIDg00QiFGA/kB7sR0c8ml+n31REt1EuB5
+ taYdKTcZmPEc1q9/OC4fvocy1dvnJNBDmCSMfgYHMRfqxixfe9BGIS+AXnPZtQbZsmmH
+ ADFzxJ6NM/jcqeF17RTpZBxFn2zQD/VjfxmxctYAw9edtGNGDky+Rqa/KyK3NOMh5xsk
+ LMnB+8jUmC62uhf75GS2/61UD5C7Osn6kkBOHgS1HQRGR7DMVZhTxGga3vMK6ovc+w0H
+ YkEodPlXW5nOillgGgNPZ7qPZRZMm6lp5LevBW9e8Vxcs0SbdyEeUWCXGKSbu/P3q8sQ
+ fE3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649127; x=1689241127;
+ d=1e100.net; s=20221208; t=1686649131; x=1689241131;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YSCMOMiEbLUM1Wk1LAbR+FG1B8HkFWQqVaD6LVaKVVI=;
- b=L3AH7HgD9kb7ufqFCKJJPmu8WrD0g7cXwkF3Ilfg6I1lIiUCF2ofk7LRdPPOJLiwd9
- hCaCv7FpYMDm3IqGsaQxHFtxHbXMFVOXbxBsi9KQG2qOHunaGDgEWWmSXU1sKtoqrVw5
- kE5UppMawH1AG+gtRrFTgNgoEUJCPBkOrjJg23Mru3Nt3zEkatJ9j19W5Ie70qD1Jzfz
- 8X+VcbyAlegXderMg0Zv/GE8U35kUkUgnP5w/3kUvlPWI9f9SvI2P7UTTS2OfGUChzCp
- VyRwFnlF+TtCnnMD3UxZVq2kxVbaV2xisPfLsijhdpBRMKYOlmLTZSyLEW3meSqveR/u
- hUcQ==
-X-Gm-Message-State: AC+VfDwkBXS/kozi89f393spH4x28M2tgB9pvs1lWdFy/dst1gHsrkDq
- E3v5YOi83jpuoYC20mhycqruCl3BI/Tsf6SuLxiMAA==
-X-Google-Smtp-Source: ACHHUZ5ve+O8D8woiB0/eljv2RXuGAKJXZOeX2O7av+uzh85x4tqsIOoSgBkhLyvG7m0r1INRLcBJg==
-X-Received: by 2002:a17:907:97c5:b0:982:45ca:ac06 with SMTP id
- js5-20020a17090797c500b0098245caac06mr335280ejc.60.1686649127569; 
- Tue, 13 Jun 2023 02:38:47 -0700 (PDT)
+ bh=7g0Yqy2wB54am4pKsVZHqGyVbbprfwoeuCpS8UNAr/Q=;
+ b=UDNyC+Qmoz0XdXc2W0ELjjbwq7IcNNMxpd5a+vPMCzorWHOe3XKnTjhtGGXM9zA4n4
+ E2HxTaW/n5HjB3nLqiTFTrkp4omq+laLYIoGvLFdwsvLmfU/LkdUzF8apwOrSUWHrvUi
+ ut42e5D131JQPYXHu76HshGIbqXnl/ODE+GnhXRGAgMkNYeBWzEKEdRwAdHMiMOt9w00
+ ydo+esB/6romQYkdnh8oO2SYS+Yr2rPgo2WIxCHzHZ6ziERmAdqUEcN9tW5DkL9ENOHo
+ 8idKNKtuvK9NEcSa2O8zrWEBVPm9zT1dDlpET8ClRYNEqtm+y1uL8xmlEqIqZcA0fYM8
+ QbKw==
+X-Gm-Message-State: AC+VfDzCWehowscLe9yZrAdgZ0BI7S4mXm1w8hRawu246RF0IEVEZd4W
+ 2fUalYqtxBLrAnx4WpuLizR7UKrdU4+/LPU5yQCRuw==
+X-Google-Smtp-Source: ACHHUZ7JhRAiDkneppoHfApMqYVKtBWCST7DJhhsO9DGABO0Lt08jFzLRSEWHTYnIORWmTUkd4RiWg==
+X-Received: by 2002:a17:906:ee82:b0:96a:ca96:3e49 with SMTP id
+ wt2-20020a170906ee8200b0096aca963e49mr13379120ejb.13.1686649131840; 
+ Tue, 13 Jun 2023 02:38:51 -0700 (PDT)
 Received: from localhost.localdomain ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- qc11-20020a170906d8ab00b00977d7ccd9fdsm6532138ejb.95.2023.06.13.02.38.46
+ k7-20020a17090627c700b00977da9d4ef9sm6527305ejc.18.2023.06.13.02.38.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 02:38:47 -0700 (PDT)
+ Tue, 13 Jun 2023 02:38:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Antonio Caggiano <quic_acaggian@quicinc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/17] accel/hvf: Report HV_DENIED error
-Date: Tue, 13 Jun 2023 11:38:10 +0200
-Message-Id: <20230613093822.63750-6-philmd@linaro.org>
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 06/17] target/hppa/meson: Only build int_helper.o with system
+ emulation
+Date: Tue, 13 Jun 2023 11:38:11 +0200
+Message-Id: <20230613093822.63750-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613093822.63750-1-philmd@linaro.org>
 References: <20230613093822.63750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,36 +93,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
+int_helper.c only contains system emulation code:
+remove the #ifdef'ry and move the file to the meson
+softmmu source set.
 
-On MacOS 11 and subsequent versions, in case the resulting binary is not
-signed with the proper entitlement, handle and report the HV_DENIED
-error.
-
-Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
-Message-Id: <20230608123014.28715-1-quic_acaggian@quicinc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230602223016.58647-1-philmd@linaro.org>
 ---
- accel/hvf/hvf-all.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/hppa/int_helper.c | 3 ---
+ target/hppa/meson.build  | 2 +-
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 754707dbfb..4920787af6 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -38,6 +38,12 @@ void assert_hvf_ok(hv_return_t ret)
-     case HV_UNSUPPORTED:
-         error_report("Error: HV_UNSUPPORTED");
-         break;
-+#if defined(MAC_OS_VERSION_11_0) && \
-+    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
-+    case HV_DENIED:
-+        error_report("Error: HV_DENIED");
-+        break;
-+#endif
-     default:
-         error_report("Unknown Error");
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index f599dccfff..d2480b163b 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -25,7 +25,6 @@
+ #include "hw/core/cpu.h"
+ #include "hw/hppa/hppa_hardware.h"
+ 
+-#ifndef CONFIG_USER_ONLY
+ static void eval_interrupt(HPPACPU *cpu)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -273,5 +272,3 @@ bool hppa_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
      }
+     return false;
+ }
+-
+-#endif /* !CONFIG_USER_ONLY */
+diff --git a/target/hppa/meson.build b/target/hppa/meson.build
+index 81b4b4e617..83b1e0ee7d 100644
+--- a/target/hppa/meson.build
++++ b/target/hppa/meson.build
+@@ -7,13 +7,13 @@ hppa_ss.add(files(
+   'fpu_helper.c',
+   'gdbstub.c',
+   'helper.c',
+-  'int_helper.c',
+   'op_helper.c',
+   'translate.c',
+ ))
+ 
+ hppa_softmmu_ss = ss.source_set()
+ hppa_softmmu_ss.add(files(
++  'int_helper.c',
+   'machine.c',
+   'mem_helper.c',
+   'sys_helper.c',
 -- 
 2.38.1
 
