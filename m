@@ -2,58 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EAD72E1A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5910E72E240
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q91s3-0004j4-4C; Tue, 13 Jun 2023 07:07:31 -0400
+	id 1q92YD-0002zb-Kd; Tue, 13 Jun 2023 07:51:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q91s1-0004iu-58
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 07:07:29 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q92YA-0002yq-OS
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 07:51:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q91rz-0002yR-1Z
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 07:07:28 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 366B774633D;
- Tue, 13 Jun 2023 13:07:18 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id F189374632B; Tue, 13 Jun 2023 13:07:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id F0548746335;
- Tue, 13 Jun 2023 13:07:17 +0200 (CEST)
-Date: Tue, 13 Jun 2023 13:07:17 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-cc: Bernhard Beschow <shentey@gmail.com>, Igor Mammedov <imammedo@redhat.com>, 
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 02/15] hw/pci-host/q35: Fix double, contradicting
- .endianness assignment
-In-Reply-To: <20230613044810-mutt-send-email-mst@kernel.org>
-Message-ID: <0ff30d22-25f9-750e-3ec1-f0988eee5668@eik.bme.hu>
-References: <20230611103412.12109-1-shentey@gmail.com>
- <20230611103412.12109-3-shentey@gmail.com>
- <20230612150154.438d842f@imammedo.users.ipa.redhat.com>
- <CAG4p6K6yR+iJmjnYOkJFd=GbxPU+QpkzTSEfW1VuUwM95o5_iQ@mail.gmail.com>
- <20230613044810-mutt-send-email-mst@kernel.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q92Y7-0005s5-6C
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 07:51:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686657057;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fTUyuDhwz4DsPkWiR2OeeNHh5sOowwwQJuQnfMt8Fak=;
+ b=X1PqCPjzS6582+T39GIf3ARxMZdO17v1ga9qVdp0kcjL9MjK0YtXyREuaenUyg0QokXSHM
+ hAn12aDRk3ZOW0FA2C88ULP58c/cmMuMlB1p0w3tdT3rVxI6sXhzs9+O8YB80NSyoKzGet
+ zGt0Ufw1+Q547rGYcfoxzOCo+xT7Y8A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-621-kY6qkLBPOEq2JsxDz4W-GA-1; Tue, 13 Jun 2023 07:50:51 -0400
+X-MC-Unique: kY6qkLBPOEq2JsxDz4W-GA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB4FC85A5AA;
+ Tue, 13 Jun 2023 11:50:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.170])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 190FC2907;
+ Tue, 13 Jun 2023 11:50:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DB08C21E675B; Tue, 13 Jun 2023 13:50:48 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+ <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
+ <87jzwoczq6.fsf@pond.sub.org>
+ <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk>
+ <87y1l38sm0.fsf@pond.sub.org>
+ <c5137e13-5055-15d8-2f05-c132232e415c@ilande.co.uk>
+Date: Tue, 13 Jun 2023 13:50:48 +0200
+In-Reply-To: <c5137e13-5055-15d8-2f05-c132232e415c@ilande.co.uk> (Mark
+ Cave-Ayland's message of "Sat, 3 Jun 2023 21:42:14 +0100")
+Message-ID: <871qiffunb.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1303320310-1686654437=:98157"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,82 +87,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
 
---3866299591-1303320310-1686654437=:98157
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Tue, 13 Jun 2023, Michael S. Tsirkin wrote:
-> On Tue, Jun 13, 2023 at 09:46:53AM +0200, Bernhard Beschow wrote:
->> On Mon, Jun 12, 2023 at 3:01 PM Igor Mammedov <imammedo@redhat.com> wrote:
->>
->>     On Sun, 11 Jun 2023 12:33:59 +0200
->>     Bernhard Beschow <shentey@gmail.com> wrote:
->>
->>    > Fixes the following clangd warning (-Winitializer-overrides):
->>    >
->>    >   q35.c:297:19: Initializer overrides prior initialization of this
->>     subobject
->>    >   q35.c:292:19: previous initialization is here
->>    >
->>    > Settle on native endian which causes the least overhead.
->>     indeed it doesn't matter which way we read all ones, so that should work.
->>     but does it really matter (I mean the overhead/what workload)?
->>     If not, I'd prefer explicit LE as it's now to be consistent
->>     the the rest of memops on Q35.
->>
->>
->> I got a comment from Michael about this in [1], so I've changed it. I don't
->> mind changing it either way.
->>
->> Best regards,
->> Bernhard
->>
->> [1] https://patchew.org/QEMU/20230214131441.101760-1-shentey@gmail.com/
->> 20230214131441.101760-3-shentey@gmail.com/#
->> 20230301164339-mutt-send-email-mst@kernel.org
+> On 01/06/2023 10:00, Markus Armbruster wrote:
 >
-> Hmm it's not terribly important, and the optimization is trivial,
-> but yes people tend to copy code, good point. Maybe add a comment?
-> /*
-> * Note: don't copy this!  normally use DEVICE_LITTLE_ENDIAN. This only
-> * works because we don't allow writes and always read all-ones.
-> */
-
-Why don't you leave DEVICE_LITTLE_ENDIAN and remove DEVICE_NATIVE_ENDIAN 
-instead? If this only returns all 1s then it does not matter and also 
-DEVICE_LITTLE_ENDIAN was the last assignment so likely that was effective 
-so far anyway.
-
-Regards,
-BALATON Zoltan
-
+>> Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
+>>=20
+>>> On 31/05/2023 16:00, Markus Armbruster wrote:
+>>>
+>>>> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>>>>
+>>>>> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>>>>>> Also change the instantiation of the CPU to use object_initialize_ch=
+ild()
+>>>>>> followed by a separate realisation.
+>>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>>> ---
+>>>>>>     hw/m68k/q800.c         | 13 ++++++++-----
+>>>>>>     include/hw/m68k/q800.h |  2 ++
+>>>>>>     2 files changed, 10 insertions(+), 5 deletions(-)
+>>>>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>>>>>> index 3730b30dd1..c34b2548ca 100644
+>>>>>> --- a/hw/m68k/q800.c
+>>>>>> +++ b/hw/m68k/q800.c
+>>>>>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] =3D {
+>>>>>>       static void q800_machine_init(MachineState *machine)
+>>>>>>     {
+>>>>>> -    M68kCPU *cpu =3D NULL;
+>>>>>> +    Q800MachineState *m =3D Q800_MACHINE(machine);
+>>>>>>         int linux_boot;
+>>>>>>         int32_t kernel_size;
+>>>>>>         uint64_t elf_entry;
+>>>>>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *mac=
+hine)
+>>>>>>         }
+>>>>>>           /* init CPUs */
+>>>>>> -    cpu =3D M68K_CPU(cpu_create(machine->cpu_type));
+>>>>>> -    qemu_register_reset(main_cpu_reset, cpu);
+>>>>>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>>>>>> +                            M68K_CPU_TYPE_NAME("m68040"));
+>>>>>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &er=
+ror_fatal);
+>>>>>
+>>>>> CPUs are QDev-based, shouldn't we use qdev_realize()?
+>>>>
+>>>> Yes, we should.
+>>>> [...]
+>>>
+>>> Interesting. I remember thinking that CPUs were different, so I'm fairl=
+y sure I borrowed this from some similar code in hw/arm :)
+>>>
+>>> Shouldn't the above be directly equivalent to qdev_realize(dev, NULL, &=
+error_fatal) given that the CPU doesn't connect to a bus?
 >>
->>    >
->>    > Fixes: bafc90bdc594 ("q35: implement TSEG")
->>    > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>    > ---
->>    >  hw/pci-host/q35.c | 1 -
->>    >  1 file changed, 1 deletion(-)
->>    >
->>    > diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
->>    > index fd18920e7f..859c197f25 100644
->>    > --- a/hw/pci-host/q35.c
->>    > +++ b/hw/pci-host/q35.c
->>    > @@ -290,7 +290,6 @@ static const MemoryRegionOps blackhole_ops = {
->>    >      .valid.max_access_size = 4,
->>    >      .impl.min_access_size = 4,
->>    >      .impl.max_access_size = 4,
->>    > -    .endianness = DEVICE_LITTLE_ENDIAN,
->>    >  };
->>    > 
->>    >  /* PCIe MMCFG */
+>> It's been a while since I worked on this...
 >>
->>
+>> Commit ce189ab230b (qdev: Convert bus-less devices to qdev_realize()
+>> with Coccinelle) looks like you're right.
 >
->
->
---3866299591-1303320310-1686654437=:98157--
+> Thanks for the confirmation! Given that this matches existing code that d=
+oesn't use cpu_create(), I'm inclined to keep this as-is to avoid creating =
+another pattern for instantiating CPUs.
+
+Wherever you *can* use qdev_realize(), you should.  The less we access
+property "realized" outside qdev core, the better.
+
+I few accesses have crept in since I converted the tree to
+qdev_realize() & friends.  Another conversion pass would be in order.
+
 
