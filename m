@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9CA72E1D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A2072E148
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 13:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q90Wj-0005vT-OE; Tue, 13 Jun 2023 05:41:25 -0400
+	id 1q90V9-0005km-68; Tue, 13 Jun 2023 05:39:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Wh-0005vE-G9
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:41:23 -0400
-Received: from mail-ed1-f45.google.com ([209.85.208.45])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90V6-0005kG-Qc
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:44 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Vu-00062w-Eb
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:41:23 -0400
-Received: by mail-ed1-f45.google.com with SMTP id
- 4fb4d7f45d1cf-5147e40bbbbso8018214a12.3
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:40:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q90Uy-0005gc-Ku
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 05:39:44 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5147e8972a1so9235104a12.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 02:39:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686649169; x=1689241169;
+ d=linaro.org; s=google; t=1686649173; x=1689241173;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2UvD454+E/4A8Q/LAPF1RA7H96fHdTps7nh2m1LLDUQ=;
- b=yfB922hVWq/dpgM5cDzY0Y4iKv2hNGBW6agoFw1UHGnEfO57BSaG6BmpNOgG5adKxb
- TIlV0tTmGvLNdvwFqfKrDIZ/Ha8UXW0rJTglQGJiLy79vlMGPBGS1VwSb6oKNoA6xVnZ
- dieOUi0osJiHmUp0b9KSunWgET00P+Si4sGzuBELwEJOVd/VBk+Shk6JwcPu2cmvzp1i
- ovaHCkLWpcGOzmUNEWIA8YOmXbLUylSSNKXzLN3ZBK9gYrCr0Ud91pOKanYjj/d6cZ0r
- NIjXbUvkQip0wYzn69F/leUbpXb5BUO2UZdSJoDTYsjSrG+Q5YZJGnQjMtCxKzraNL4C
- 6Uiw==
+ bh=G228fEEG3KGPqTypnQQNKK4WYtjAfFhy5BxWLUD+e/U=;
+ b=R4rj8sg6Hi0kVUyzc1faFJ1L557UaQ0xAO9Hcf5jAjeQNBD0weg2dfiyBC/CWE3CuF
+ YyiRdR253zu7VNRtRXEVkN08gzWpP3rcxmvCzd8Uj1JAcJah1F9ZbOK6rhXL/H7UzZrH
+ b5ehSPregSQXwUfmwJ/k2yREToZMONAfs/8rntWN4nVV+oolcSSsm+sukGNyQNoLg68j
+ hJ1gVCUEERKe6/RqpsDTjPv9A5JJ56P/pGC4cI/kX7thT0+VubPuDpnYGqw/1wovPbVV
+ HiFaGv2BJb3rrcT+QNld8RBkK9cc3yb5f/VFIcYhe78q6a2dYRttBASU3FrrhMcO1VRS
+ Esog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686649169; x=1689241169;
+ d=1e100.net; s=20221208; t=1686649173; x=1689241173;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2UvD454+E/4A8Q/LAPF1RA7H96fHdTps7nh2m1LLDUQ=;
- b=Yjop5uvflPTbsWpnrt940ikZgRCYHWp6Gl1dRiZ/7P6ck+N9jCVFOf1zPBqO8XV1LA
- +LRjg5JCNwSj/PnKQFmDU+N0OFx0menlhH9h4hjEjjuokoyyuzsxseUaZ8HC5QQRPG6Q
- A9BVyNzlV0opc7pyL9PlO8pRAXXcdtvl+ykNeM6jnZvi+ImxPqzmufv6IdRU86MRrMPJ
- 4rknQ+8srN7xQ9QbIjbjory+KbD+HerOj3p/vLj121wOqmcaf3URZAuqFwXr3jqT/0bR
- OV5fPlY4zZmNKLmyh4Gs0n5psFj3W/n1fGaewnCB72MsD+yOz6Xt+UVBrZdOwUF9cQmE
- 0Vrw==
-X-Gm-Message-State: AC+VfDxyes5RCYNgLWCtGzMp7kWMSLe2oLCDibnJhjnujj2dY0iGhRrF
- 2ud+0Egh9CWPIAfzqruKIhETrTw8hsf+HsIqVeecmg==
-X-Google-Smtp-Source: ACHHUZ6e+yr69Ach54IimmTeICsFAHo5OVWxNVs0MJqltvnK4FVNR5hgMcuBcZ8RJ55d+1SgH9VAkQ==
-X-Received: by 2002:a05:6402:44d:b0:50b:d553:3822 with SMTP id
- p13-20020a056402044d00b0050bd5533822mr6106458edw.7.1686649168926; 
- Tue, 13 Jun 2023 02:39:28 -0700 (PDT)
+ bh=G228fEEG3KGPqTypnQQNKK4WYtjAfFhy5BxWLUD+e/U=;
+ b=I1K8yjzF0vqpDHCWiBVUwdosaDNvKNcNn4J+p4Dy5aSUbAjtMfWuRSeA6b5xBhEJUd
+ C5NyiSdNaHuSV+LrN46sH8LmBZuDizJqo8l101N3yQnqTAqKZhPrR/dTMTeoUXfh+Cxk
+ duKZwSGiQqcdAR0HDKmV4kkCi8+uZVejdOV5w9EAlqYoIHUJaAbkt2lXxslRTCoy6iBU
+ Ot9MrOCX1Yl0PxynhGuTnBihwGuHye0k1gmRTZV717yMuYY8gdI+jelKeb/nqGGeL7aE
+ 1h6IM82nywJ/U36+rcO0mxVaG/KpC8/gDiTF0Mfh2w6uvctN67om+KR0g3p2N8Ty3MMP
+ 805g==
+X-Gm-Message-State: AC+VfDx+D1FNGpjwnzgEVICuREL29Q5t+0f/NozBNHLPzKs+DqaxGGNU
+ mqGknLmBcjH52xOc+GHt0xYRRNzEplkWl479wXCLrw==
+X-Google-Smtp-Source: ACHHUZ7EF8NRUhbcNcf/o6GffypDnxFTyPcq1+IQkLeDMH3F83pnFhg6YxQXQc53f4b+QgK4eyTBDw==
+X-Received: by 2002:a05:6402:1487:b0:518:670a:7c57 with SMTP id
+ e7-20020a056402148700b00518670a7c57mr2243685edv.14.1686649173369; 
+ Tue, 13 Jun 2023 02:39:33 -0700 (PDT)
 Received: from localhost.localdomain ([185.140.244.249])
  by smtp.gmail.com with ESMTPSA id
- k10-20020a056402048a00b005149e012658sm6181916edv.34.2023.06.13.02.39.28
+ a25-20020aa7d919000000b00511aea132b9sm6198912edr.3.2023.06.13.02.39.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Jun 2023 02:39:28 -0700 (PDT)
+ Tue, 13 Jun 2023 02:39:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+Cc: qemu-block@nongnu.org, Joao Martins <joao.m.martins@oracle.com>,
+ Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/17] hw/char/parallel-isa: Export struct ISAParallelState
-Date: Tue, 13 Jun 2023 11:38:19 +0200
-Message-Id: <20230613093822.63750-15-philmd@linaro.org>
+Subject: [PULL 15/17] exec/ram_addr: Return number of dirty pages in
+ cpu_physical_memory_set_dirty_lebitmap()
+Date: Tue, 13 Jun 2023 11:38:20 +0200
+Message-Id: <20230613093822.63750-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613093822.63750-1-philmd@linaro.org>
 References: <20230613093822.63750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.208.45; envelope-from=philmd@linaro.org;
- helo=mail-ed1-f45.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,186 +93,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-Allows the struct to be embedded directly into device models without additional
-allocation.
+In preparation for including the number of dirty pages in the
+vfio_get_dirty_bitmap() tracepoint, return the number of dirty pages in
+cpu_physical_memory_set_dirty_lebitmap() similar to
+cpu_physical_memory_sync_dirty_bitmap().
 
-Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To avoid counting twice when GLOBAL_DIRTY_RATE is enabled, stash the
+number of bits set per bitmap quad in a variable (@nbits) and reuse it
+there.
+
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230612081238.1742-3-shentey@gmail.com>
-[PMD: Update MAINTAINERS entry and use SPDX license identifier]
+Message-Id: <20230530180556.24441-2-joao.m.martins@oracle.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                    |  2 +-
- include/hw/char/parallel-isa.h | 30 ++++++++++++++++++++++++++++++
- include/hw/char/parallel.h     |  2 --
- hw/char/parallel-isa.c         |  1 +
- hw/char/parallel.c             | 12 +-----------
- hw/i386/pc_piix.c              |  2 +-
- hw/i386/pc_q35.c               |  2 +-
- hw/isa/isa-superio.c           |  1 +
- hw/sparc64/sun4u.c             |  2 +-
- 9 files changed, 37 insertions(+), 17 deletions(-)
- create mode 100644 include/hw/char/parallel-isa.h
+ include/exec/ram_addr.h | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4a80a38511..88b5a7ee0a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1740,7 +1740,7 @@ F: hw/rtc/mc146818rtc*
- F: hw/watchdog/wdt_ib700.c
- F: hw/watchdog/wdt_i6300esb.c
- F: include/hw/display/vga.h
--F: include/hw/char/parallel.h
-+F: include/hw/char/parallel*.h
- F: include/hw/dma/i8257.h
- F: include/hw/i2c/pm_smbus.h
- F: include/hw/input/i8042.h
-diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
-new file mode 100644
-index 0000000000..d24ccecf05
---- /dev/null
-+++ b/include/hw/char/parallel-isa.h
-@@ -0,0 +1,30 @@
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 90a8269290..9f2e3893f5 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -334,14 +334,23 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+ }
+ 
+ #if !defined(_WIN32)
+-static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+-                                                          ram_addr_t start,
+-                                                          ram_addr_t pages)
++
 +/*
-+ * QEMU ISA Parallel PORT emulation
-+ *
-+ * Copyright (c) 2003-2005 Fabrice Bellard
-+ * Copyright (c) 2007 Marko Kohtala
-+ *
-+ * SPDX-License-Identifier: MIT
++ * Contrary to cpu_physical_memory_sync_dirty_bitmap() this function returns
++ * the number of dirty pages in @bitmap passed as argument. On the other hand,
++ * cpu_physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
++ * weren't set in the global migration bitmap.
 + */
-+
-+#ifndef HW_PARALLEL_ISA_H
-+#define HW_PARALLEL_ISA_H
-+
-+#include "parallel.h"
-+
-+#include "hw/isa/isa.h"
-+#include "qom/object.h"
-+
-+#define TYPE_ISA_PARALLEL "isa-parallel"
-+OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
-+
-+struct ISAParallelState {
-+    ISADevice parent_obj;
-+
-+    uint32_t index;
-+    uint32_t iobase;
-+    uint32_t isairq;
-+    ParallelState state;
-+};
-+
-+#endif /* HW_PARALLEL_ISA_H */
-diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
-index 9f76edca81..7b5a309a03 100644
---- a/include/hw/char/parallel.h
-+++ b/include/hw/char/parallel.h
-@@ -25,8 +25,6 @@ typedef struct ParallelState {
-     PortioList portio_list;
- } ParallelState;
- 
--#define TYPE_ISA_PARALLEL "isa-parallel"
--
- void parallel_hds_isa_init(ISABus *bus, int n);
- 
- bool parallel_mm_init(MemoryRegion *address_space,
-diff --git a/hw/char/parallel-isa.c b/hw/char/parallel-isa.c
-index 547ae69304..ab0f879998 100644
---- a/hw/char/parallel-isa.c
-+++ b/hw/char/parallel-isa.c
-@@ -13,6 +13,7 @@
- #include "sysemu/sysemu.h"
- #include "hw/isa/isa.h"
- #include "hw/qdev-properties.h"
-+#include "hw/char/parallel-isa.h"
- #include "hw/char/parallel.h"
- #include "qapi/error.h"
- 
-diff --git a/hw/char/parallel.c b/hw/char/parallel.c
-index e75fc5019d..147c900f0d 100644
---- a/hw/char/parallel.c
-+++ b/hw/char/parallel.c
-@@ -31,6 +31,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
- #include "migration/vmstate.h"
-+#include "hw/char/parallel-isa.h"
- #include "hw/char/parallel.h"
- #include "sysemu/reset.h"
- #include "sysemu/sysemu.h"
-@@ -73,17 +74,6 @@
- 
- #define PARA_CTR_SIGNAL (PARA_CTR_SELECT|PARA_CTR_INIT|PARA_CTR_AUTOLF|PARA_CTR_STROBE)
- 
--OBJECT_DECLARE_SIMPLE_TYPE(ISAParallelState, ISA_PARALLEL)
--
--struct ISAParallelState {
--    ISADevice parent_obj;
--
--    uint32_t index;
--    uint32_t iobase;
--    uint32_t isairq;
--    ParallelState state;
--};
--
- static void parallel_update_irq(ParallelState *s)
++static inline
++uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
++                                                ram_addr_t start,
++                                                ram_addr_t pages)
  {
-     if (s->irq_pending)
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 42af03dbb4..44146e6ff5 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -26,7 +26,7 @@
- #include CONFIG_DEVICES
+     unsigned long i, j;
+-    unsigned long page_number, c;
++    unsigned long page_number, c, nbits;
+     hwaddr addr;
+     ram_addr_t ram_addr;
++    uint64_t num_dirty = 0;
+     unsigned long len = (pages + HOST_LONG_BITS - 1) / HOST_LONG_BITS;
+     unsigned long hpratio = qemu_real_host_page_size() / TARGET_PAGE_SIZE;
+     unsigned long page = BIT_WORD(start >> TARGET_PAGE_BITS);
+@@ -369,6 +378,7 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+                 if (bitmap[k]) {
+                     unsigned long temp = leul_to_cpu(bitmap[k]);
  
- #include "qemu/units.h"
--#include "hw/char/parallel.h"
-+#include "hw/char/parallel-isa.h"
- #include "hw/dma/i8257.h"
- #include "hw/loader.h"
- #include "hw/i386/x86.h"
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 6155427e48..a9a59ed42b 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -30,7 +30,7 @@
++                    nbits = ctpopl(temp);
+                     qatomic_or(&blocks[DIRTY_MEMORY_VGA][idx][offset], temp);
  
- #include "qemu/osdep.h"
- #include "qemu/units.h"
--#include "hw/char/parallel.h"
-+#include "hw/char/parallel-isa.h"
- #include "hw/loader.h"
- #include "hw/i2c/smbus_eeprom.h"
- #include "hw/rtc/mc146818rtc.h"
-diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
-index 9292ec3bcf..7dbfc374da 100644
---- a/hw/isa/isa-superio.c
-+++ b/hw/isa/isa-superio.c
-@@ -21,6 +21,7 @@
- #include "hw/isa/superio.h"
- #include "hw/qdev-properties.h"
- #include "hw/input/i8042.h"
-+#include "hw/char/parallel-isa.h"
- #include "hw/char/serial.h"
- #include "trace.h"
+                     if (global_dirty_tracking) {
+@@ -377,10 +387,12 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+                                 temp);
+                         if (unlikely(
+                             global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
+-                            total_dirty_pages += ctpopl(temp);
++                            total_dirty_pages += nbits;
+                         }
+                     }
  
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index e2858a0331..29e9b6cc26 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -35,7 +35,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/pci-host/sabre.h"
- #include "hw/char/serial.h"
--#include "hw/char/parallel.h"
-+#include "hw/char/parallel-isa.h"
- #include "hw/rtc/m48t59.h"
- #include "migration/vmstate.h"
- #include "hw/input/i8042.h"
++                    num_dirty += nbits;
++
+                     if (tcg_enabled()) {
+                         qatomic_or(&blocks[DIRTY_MEMORY_CODE][idx][offset],
+                                    temp);
+@@ -409,9 +421,11 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+         for (i = 0; i < len; i++) {
+             if (bitmap[i] != 0) {
+                 c = leul_to_cpu(bitmap[i]);
++                nbits = ctpopl(c);
+                 if (unlikely(global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
+-                    total_dirty_pages += ctpopl(c);
++                    total_dirty_pages += nbits;
+                 }
++                num_dirty += nbits;
+                 do {
+                     j = ctzl(c);
+                     c &= ~(1ul << j);
+@@ -424,6 +438,8 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+             }
+         }
+     }
++
++    return num_dirty;
+ }
+ #endif /* not _WIN32 */
+ 
 -- 
 2.38.1
 
