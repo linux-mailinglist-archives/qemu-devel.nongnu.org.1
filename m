@@ -2,54 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5373F72E27B
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 14:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E25A72E2DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 14:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q92mp-0001Va-1U; Tue, 13 Jun 2023 08:06:12 -0400
+	id 1q936Y-0007Lz-E2; Tue, 13 Jun 2023 08:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
- id 1q92mk-0001Ut-VT
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 08:06:06 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhaotianrui@loongson.cn>) id 1q92mh-0000RT-UF
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 08:06:06 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxDeukW4hkcKIEAA--.9915S3;
- Tue, 13 Jun 2023 20:05:56 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxZuSgW4hkkh0ZAA--.6290S4; 
- Tue, 13 Jun 2023 20:05:55 +0800 (CST)
-From: Tianrui Zhao <zhaotianrui@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
- alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
- zhaotianrui@loongson.cn, gaosong@loongson.cn
-Subject: [PATCH v2 2/2] hw/intc: Set physical cpuid route for LoongArch ipi
- device
-Date: Tue, 13 Jun 2023 20:05:52 +0800
-Message-Id: <20230613120552.2471420-3-zhaotianrui@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230613120552.2471420-1-zhaotianrui@loongson.cn>
-References: <20230613120552.2471420-1-zhaotianrui@loongson.cn>
+ (Exim 4.90_1) (envelope-from <david.laight@aculab.com>)
+ id 1q936W-0007Lq-Go
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 08:26:32 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david.laight@aculab.com>)
+ id 1q936U-0004g2-Nc
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 08:26:32 -0400
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-403-Ufe39FLKM9uv02YWJ1c2EA-1; Tue, 13 Jun 2023 13:25:11 +0100
+X-MC-Unique: Ufe39FLKM9uv02YWJ1c2EA-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 13 Jun
+ 2023 13:25:03 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Tue, 13 Jun 2023 13:25:03 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: "'Kasireddy, Vivek'" <vivek.kasireddy@intel.com>, David Hildenbrand
+ <david@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Hugh Dickins <hughd@google.com>
+CC: Gerd Hoffmann <kraxel@redhat.com>, "Kim, Dongwon" <dongwon.kim@intel.com>, 
+ "Chang, Junxiao" <junxiao.chang@intel.com>,
+ "kirill.shutemov@linux.intel.com"
+ <kirill.shutemov@linux.intel.com>, "Hocko, Michal" <mhocko@suse.com>,
+ "jmarchan@redhat.com" <jmarchan@redhat.com>, "muchun.song@linux.dev"
+ <muchun.song@linux.dev>, James Houghton <jthoughton@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Andrew Morton
+ <akpm@linux-foundation.org>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>
+Subject: RE: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
+Thread-Topic: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
+Thread-Index: AQHZmkrTMFwnMH2R1EGnnRur83Hw9a+FyCfggAEHOQCAAT7FoIAAoNDA
+Date: Tue, 13 Jun 2023 12:25:03 +0000
+Message-ID: <89652021ecea4aa2ada763c97deeb543@AcuMS.aculab.com>
+References: <20230608204927.88711-1-mike.kravetz@oracle.com>
+ <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <281caf4f-25da-3a73-554b-4fb252963035@redhat.com>
+ <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+In-Reply-To: <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxZuSgW4hkkh0ZAA--.6290S4
-X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=185.58.86.151;
+ envelope-from=david.laight@aculab.com; helo=eu-smtp-delivery-151.mimecast.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,134 +88,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LoongArch ipi device uses physical cpuid to route to different
-vcpus rather logical cpuid, and the physical cpuid is the same
-with cpuid in acpi dsdt and srat table.
-
-Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- hw/intc/loongarch_ipi.c | 44 ++++++++++++++++++++++++++++++++++-------
- hw/loongarch/virt.c     |  1 +
- target/loongarch/cpu.h  |  2 ++
- 3 files changed, 40 insertions(+), 7 deletions(-)
-
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index 3e45381652..67858b521c 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -17,6 +17,8 @@
- #include "target/loongarch/internals.h"
- #include "trace.h"
- 
-+static void loongarch_ipi_writel(void *, hwaddr, uint64_t, unsigned);
-+
- static uint64_t loongarch_ipi_readl(void *opaque, hwaddr addr, unsigned size)
- {
-     IPICore *s = opaque;
-@@ -75,13 +77,42 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
-                       data, MEMTXATTRS_UNSPECIFIED, NULL);
- }
- 
-+static int archid_cmp(const void *a, const void *b)
-+{
-+   CPUArchId *archid_a = (CPUArchId *)a;
-+   CPUArchId *archid_b = (CPUArchId *)b;
-+
-+   return archid_a->arch_id - archid_b->arch_id;
-+}
-+
-+static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
-+{
-+    CPUArchId apic_id, *found_cpu;
-+
-+    apic_id.arch_id = id;
-+    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
-+        ms->possible_cpus->len, sizeof(*ms->possible_cpus->cpus),
-+        archid_cmp);
-+
-+    return found_cpu;
-+}
-+
-+static CPUState *ipi_getcpu(int arch_id)
-+{
-+    MachineState *machine = MACHINE(qdev_get_machine());
-+    CPUArchId *archid;
-+
-+    archid = find_cpu_by_archid(machine, arch_id);
-+    return CPU(archid->cpu);
-+}
-+
- static void ipi_send(uint64_t val)
- {
-     uint32_t cpuid;
-     uint8_t vector;
--    CPULoongArchState *env;
-     CPUState *cs;
-     LoongArchCPU *cpu;
-+    LoongArchIPI *s;
- 
-     cpuid = extract32(val, 16, 10);
-     if (cpuid >= LOONGARCH_MAX_CPUS) {
-@@ -92,11 +123,10 @@ static void ipi_send(uint64_t val)
-     /* IPI status vector */
-     vector = extract8(val, 0, 5);
- 
--    cs = qemu_get_cpu(cpuid);
-+    cs = ipi_getcpu(cpuid);
-     cpu = LOONGARCH_CPU(cs);
--    env = &cpu->env;
--    address_space_stl(&env->address_space_iocsr, 0x1008,
--                      BIT(vector), MEMTXATTRS_UNSPECIFIED, NULL);
-+    s = LOONGARCH_IPI(cpu->env.ipistate);
-+    loongarch_ipi_writel(&s->ipi_core, CORE_SET_OFF, BIT(vector), 4);
- }
- 
- static void mail_send(uint64_t val)
-@@ -114,7 +144,7 @@ static void mail_send(uint64_t val)
-     }
- 
-     addr = 0x1020 + (val & 0x1c);
--    cs = qemu_get_cpu(cpuid);
-+    cs = ipi_getcpu(cpuid);
-     cpu = LOONGARCH_CPU(cs);
-     env = &cpu->env;
-     send_ipi_data(env, val, addr);
-@@ -135,7 +165,7 @@ static void any_send(uint64_t val)
-     }
- 
-     addr = val & 0xffff;
--    cs = qemu_get_cpu(cpuid);
-+    cs = ipi_getcpu(cpuid);
-     cpu = LOONGARCH_CPU(cs);
-     env = &cpu->env;
-     send_ipi_data(env, val, addr);
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index ced5a862f8..17bc37bccd 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -617,6 +617,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
-             memory_region_add_subregion(&env->system_iocsr, APIC_BASE,
-                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi),
-                                 cpu));
-+        env->ipistate = ipi;
-     }
- 
-     /*
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 1f37e36b7c..b23f38c3d5 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -351,6 +351,8 @@ typedef struct CPUArchState {
-     MemoryRegion iocsr_mem;
-     bool load_elf;
-     uint64_t elf_address;
-+    /* Store ipistate to access from this struct */
-+    DeviceState *ipistate;
- #endif
- } CPULoongArchState;
- 
--- 
-2.39.1
+RnJvbTogS2FzaXJlZGR5LCBWaXZlayA8dml2ZWsua2FzaXJlZGR5QGludGVsLmNvbT4NCj4gU2Vu
+dDogMTMgSnVuZSAyMDIzIDA5OjI2DQouLi4NCj4gPiBJcyBteSB1bmRlcnN0YW5kaW5nIGNvcnJl
+Y3QsIHRoYXQgd2UgY2FuIGVmZmVjdGl2ZWx5IGxvbmctdGVybSBwaW4NCj4gPiAod29yc2UgdGhh
+biBtbG9jaykgNjQgTWlCIHBlciBVRE1BQlVGX0NSRUFURSwgYWxsb3dpbmcgZXZlbnR1YWxseSAh
+cm9vdA0KPiA+IHVzZXJzDQo+DQo+IFRoZSA2NCBNaUIgbGltaXQgaXMgdGhlIHRoZW9yZXRpY2Fs
+IHVwcGVyIGJvdW5kIHRoYXQgd2UgaGF2ZSBub3Qgc2VlbiBoaXQgaW4NCj4gcHJhY3RpY2UuIFR5
+cGljYWxseSwgZm9yIGEgMTkyMHgxMDgwIHJlc29sdXRpb24gKGNvbW1vbmx5IHVzZWQgaW4gR3Vl
+c3RzKSwNCj4gdGhlIHNpemUgb2YgdGhlIEZCIGlzIH44IE1CICgxOTIweDEwODB4NCkuIEFuZCwg
+bW9zdCBtb2Rlcm4gR3JhcGhpY3MNCj4gY29tcG9zaXRvcnMgZmxpcCBiZXR3ZWVuIHR3byBGQnMu
+DQoNCldoYXQgY29kZSBkb2VzIGFuZCB3aGF0IHBvdGVudGlhbGx5IG1hbGljaW91cyBjb2RlIG1p
+Z2h0IGRvDQphcmUgZW50aXJlbHkgZGlmZmVyZW50IHRoaW5ncy4NCg0KCURhdmlkDQoNCi0NClJl
+Z2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0
+b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykN
+Cg==
 
 
