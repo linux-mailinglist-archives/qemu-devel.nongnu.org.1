@@ -2,30 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E8F7309E5
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 23:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7523D7309DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 23:35:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Y88-0004UA-9N; Wed, 14 Jun 2023 17:34:16 -0400
+	id 1q9Y89-0004Ua-1B; Wed, 14 Jun 2023 17:34:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9Y86-0004TV-M9; Wed, 14 Jun 2023 17:34:14 -0400
+ id 1q9Y86-0004TX-Qe; Wed, 14 Jun 2023 17:34:14 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9Y85-0003mN-4A; Wed, 14 Jun 2023 17:34:14 -0400
+ id 1q9Y85-0003mY-AR; Wed, 14 Jun 2023 17:34:14 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 0F8AB746377;
- Wed, 14 Jun 2023 23:34:06 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 0FA70746369;
+ Wed, 14 Jun 2023 23:34:07 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DA322746369; Wed, 14 Jun 2023 23:34:05 +0200 (CEST)
-Message-Id: <8384ed0f7335093012bbd3d28fb2a543a2e7346c.1686776990.git.balaton@eik.bme.hu>
+ id E5C7D746335; Wed, 14 Jun 2023 23:34:06 +0200 (CEST)
+Message-Id: <f42761401c708fd6e02f7523d9f709b1972e5863.1686776990.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1686776990.git.balaton@eik.bme.hu>
 References: <cover.1686776990.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 01/10] target/ppc: Remove some superfluous parentheses
+Subject: [PATCH v2 02/10] target/ppc: Remove unneeded parameter from
+ powerpc_reset_wakeup()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -34,7 +35,7 @@ To: qemu-devel@nongnu.org,
 Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>
-Date: Wed, 14 Jun 2023 23:34:05 +0200 (CEST)
+Date: Wed, 14 Jun 2023 23:34:06 +0200 (CEST)
 X-Spam-Probability: 8%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
@@ -58,52 +59,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+CPUState is rarely needed by this function (only for logging a fatal
+error) and it's easy to get from the env parameter so passing it
+separately is not necessary.
+
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Acked-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/ppc/excp_helper.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 12d8a7257b..8298217e78 100644
+index 8298217e78..3783315fdb 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -1009,7 +1009,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-     {
-         int lev = env->error_code;
+@@ -166,8 +166,7 @@ static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
+ }
  
--        if ((lev == 1) && cpu->vhyp) {
-+        if (lev == 1 && cpu->vhyp) {
-             dump_hcall(env);
-         } else {
-             dump_syscall(env);
-@@ -1027,7 +1027,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-          * uses VOF and the 74xx CPUs, so although the 74xx don't have
-          * HV mode, we need to keep hypercall support.
-          */
--        if ((lev == 1) && cpu->vhyp) {
-+        if (lev == 1 && cpu->vhyp) {
-             PPCVirtualHypervisorClass *vhc =
-                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-             vhc->hypercall(cpu->vhyp, cpu);
-@@ -1481,7 +1481,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-         lev = env->error_code;
+ #if defined(TARGET_PPC64)
+-static int powerpc_reset_wakeup(CPUState *cs, CPUPPCState *env, int excp,
+-                                target_ulong *msr)
++static int powerpc_reset_wakeup(CPUPPCState *env, int excp, target_ulong *msr)
+ {
+     /* We no longer are in a PM state */
+     env->resume_as_sreset = false;
+@@ -202,8 +201,8 @@ static int powerpc_reset_wakeup(CPUState *cs, CPUPPCState *env, int excp,
+         *msr |= SRR1_WAKEHVI;
+         break;
+     default:
+-        cpu_abort(cs, "Unsupported exception %d in Power Save mode\n",
+-                  excp);
++        cpu_abort(env_cpu(env),
++                  "Unsupported exception %d in Power Save mode\n", excp);
+     }
+     return POWERPC_EXCP_RESET;
+ }
+@@ -1353,7 +1352,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+      * P7/P8/P9
+      */
+     if (env->resume_as_sreset) {
+-        excp = powerpc_reset_wakeup(cs, env, excp, &msr);
++        excp = powerpc_reset_wakeup(env, excp, &msr);
+     }
  
--        if ((lev == 1) && cpu->vhyp) {
-+        if (lev == 1 && cpu->vhyp) {
-             dump_hcall(env);
-         } else {
-             dump_syscall(env);
-@@ -1494,7 +1494,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-         env->nip += 4;
- 
-         /* "PAPR mode" built-in hypercall emulation */
--        if ((lev == 1) && books_vhyp_handles_hcall(cpu)) {
-+        if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
-             PPCVirtualHypervisorClass *vhc =
-                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-             vhc->hypercall(cpu->vhyp, cpu);
+     /*
 -- 
 2.30.9
 
