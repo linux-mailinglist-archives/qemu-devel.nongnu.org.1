@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871AE72F413
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 07:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B1772F419
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 07:19:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Ish-0006SX-PG; Wed, 14 Jun 2023 01:17:19 -0400
+	id 1q9IuP-0008A2-IG; Wed, 14 Jun 2023 01:19:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9Isd-0006Kk-84
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 01:17:16 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1q9IuE-00085v-7n
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 01:18:54 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9IsZ-0001PE-NQ
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 01:17:14 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f81b449357so3190295e9.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 22:17:07 -0700 (PDT)
+ id 1q9IuC-0001gb-Q2
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 01:18:53 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f8c5d0b216so2184425e9.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 22:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686719826; x=1689311826;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1686719931; x=1689311931;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RUixE331uCC1TmqrKK2xSaxt4BSc1VuFgFBldd9cxmE=;
- b=sDkm3emtXKbGZigvZxWrGyACN2XSTrOuCgKCvclc77uUXo8jQCHb+zSu6Seh1N1KbN
- /JTm8Yr4BCeh4lMUUQf6KABWIJcf4xLjv5M2wJ6xzKgMe8H3a8q/Go3dVaqjkmdjzI1J
- kZxqXg2V4SLER9x2jzFdBwZPqZqalF1dimbJuX62NEiwmt8kjvnY6cGc5fOSan2F/PeJ
- ydcE7NK980ZdciLBJNCM/TPs7yMmeQPYRs2hKW1mm64CJcIuezgd8l7SFi6xWxO2Ny7u
- s9AaHEP7kgpIRVeMC7q1q7K/Blq4QKlM7YtWa9imS7dWZr3rvWWikeJRvANumbSZV9Me
- wscw==
+ bh=p/OemhwbcezN/G/2+1eIZHya+G/idBcQBVZo6oAF9Q0=;
+ b=VIBvBAeWOOIzc2DfHcHORkH6CiuvTDlReW0+04xmisMGnNv+oQpjNeC/bHOseN1+ys
+ Vi/OYnmaybh04OXkaxDw/Zn4JPop1o2P+5c8NK/ZrkXMIJ06XG1nG/VVHXcRU1hjG00q
+ KyckSI+gk2FthJ+41uClr9s3YCCZXD2a437oBIXVAvWK/XBd3V3lDEjEzPA75lxuzyRo
+ Q7g/qPh0o59y+R1RiPTYyXc8VPwlr4J4bcR/N2byLf6txpNJ2UH5a1Dj7PjylxeZ1Mga
+ Mg3ZYr5We8ZmCyDVS5Xd8GU5l1V96guca7/72PwQ4ZWcoY0UuNdtbObEylUIwZTRW51s
+ enyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686719826; x=1689311826;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1686719931; x=1689311931;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RUixE331uCC1TmqrKK2xSaxt4BSc1VuFgFBldd9cxmE=;
- b=SACYygx5PTbyQA92zxcspVihd3lSP3beg6rPtsLb6Mog6kT7mpiHMwzWI+em4emH9+
- ruMgefUD6ltg1OvmHt7/hoAfGlPSVJ5m5OiejSJO9eG/6Z+rRaBotpts1xZjdbOzhn0j
- cmwySh/kNOW+sHBzkTpkhLAp8SrBWS3HFG8Z49ajyPbeefY7FCrGRJshPmN1ryUf+Yr9
- 2b1CQLbWxQYUNOStCB+NZWETGXnWZb3xaBw5hP04ZBIF6/OocwzMxLt3JNo6EXc5OCPR
- bl0rq7rf8qjZK6o0DyMUg79z089Nm6Jw42+Y8va+Auo/H7eY4QQunb9HhJcZHxMTlBsl
- fcLQ==
-X-Gm-Message-State: AC+VfDzcEJ6FHL0JZjWvBMAEy5G0OdkX7SbC1so5SwMXRQacKR1/Nxu2
- QT7qIYP6sYp9Sgwj8+lRcHwy+Q==
-X-Google-Smtp-Source: ACHHUZ56jkvn9MlBwfXlnitRoOizs5TTak4VVvLpwEboA8lbLP2w5v9VJ2YUqn77o/CC/vTirwYQ2w==
-X-Received: by 2002:a7b:c3cb:0:b0:3f8:1af0:802f with SMTP id
- t11-20020a7bc3cb000000b003f81af0802fmr5646688wmj.24.1686719826542; 
- Tue, 13 Jun 2023 22:17:06 -0700 (PDT)
+ bh=p/OemhwbcezN/G/2+1eIZHya+G/idBcQBVZo6oAF9Q0=;
+ b=fxBg1ViyYiaXUUcmGDnb5WYh/tDk/aogmDFEiXM/42emU6CI7VM8Oz+pyF8+GJ7yE9
+ vNMP3IsHm2kps+hGFopzA8w9AIZceqy2gY/2nv7eYE+k3BOIU6Oufrcgsgw+TefqJbcI
+ dy6usZ5sXlOlCOM4APztHAXg7PfjFL7WNUd9o3PkVmykw8Ed5naP6e7dT+Vl7rCPKJdj
+ 1K7/Hf1ukPsEGq649KD0cDZGIShOoQKEQIULM0eTmahBISiSVdp4rwpgiPfYLWIgEskN
+ vac1Wuvw6QPerm7miY9iSEIwEM6dJQ2N+JzjMSfMi5GNNq69uDuzbwb7TGXHY5jWDEsO
+ 67TQ==
+X-Gm-Message-State: AC+VfDzN0EYT81CLzv2a2I7XYQCEV6Itmb4XbiNkSBoMSrrRbjQ6L5TG
+ XusMYRp/AY6IPk9ClCCI/muA2A==
+X-Google-Smtp-Source: ACHHUZ7LKy4b8l3aN7LOKW/QG5o7rabxJfl3ayrvrT/9qLjPrqX8Oc585pI0Sbt6ePM5eudd6gNa/g==
+X-Received: by 2002:a7b:ca46:0:b0:3f4:f4d1:5c28 with SMTP id
+ m6-20020a7bca46000000b003f4f4d15c28mr9265544wml.24.1686719930786; 
+ Tue, 13 Jun 2023 22:18:50 -0700 (PDT)
 Received: from [192.168.4.112] (90-182-62-66.rcp.o2.cz. [90.182.62.66])
  by smtp.gmail.com with ESMTPSA id
- z14-20020a7bc7ce000000b003f50d6ee334sm16182641wmk.47.2023.06.13.22.17.05
+ a7-20020a05600c224700b003f60a9ccd34sm16311201wmm.37.2023.06.13.22.18.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 22:17:06 -0700 (PDT)
-Message-ID: <06aafe2e-afba-431e-c863-c9e124ef1c93@linaro.org>
-Date: Wed, 14 Jun 2023 07:17:04 +0200
+ Tue, 13 Jun 2023 22:18:50 -0700 (PDT)
+Message-ID: <fb4877cf-6066-b062-95ee-2fd8942b3411@linaro.org>
+Date: Wed, 14 Jun 2023 07:18:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v3 8/9] meson: Replace CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
+Subject: Re: [PATCH v2 03/23] target/arm: Pass memop to
+ gen_mte_check1_mmuidx() in reg_imm9 decode
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20230613133347.82210-1-philmd@linaro.org>
- <20230613133347.82210-9-philmd@linaro.org>
+References: <20230611160032.274823-1-peter.maydell@linaro.org>
+ <20230611160032.274823-4-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230613133347.82210-9-philmd@linaro.org>
+In-Reply-To: <20230611160032.274823-4-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,27 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/13/23 15:33, Philippe Mathieu-Daudé wrote:
-> Since we*might*  have user emulation with softmmu,
-> use the clearer 'CONFIG_SYSTEM_ONLY' key to check
-> for system emulation.
+On 6/11/23 18:00, Peter Maydell wrote:
+> In disas_ldst_reg_imm9() we missed one place where a call to
+> a gen_mte_check* function should now be passed the memop we
+> have created rather than just being passed the size. Fix this.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   meson.build                        | 4 ++--
->   accel/qtest/meson.build            | 2 +-
->   accel/stubs/meson.build            | 2 +-
->   accel/tcg/meson.build              | 6 +++---
->   dump/meson.build                   | 2 +-
->   hw/i386/kvm/meson.build            | 2 +-
->   migration/meson.build              | 2 +-
->   monitor/meson.build                | 2 +-
->   qapi/meson.build                   | 2 +-
->   semihosting/meson.build            | 2 +-
->   softmmu/meson.build                | 4 ++--
->   target/i386/tcg/sysemu/meson.build | 2 +-
->   ui/meson.build                     | 4 ++--
->   13 files changed, 18 insertions(+), 18 deletions(-)
+>   target/arm/tcg/translate-a64.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
