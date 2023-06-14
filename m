@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BFE72F1ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AE872F1C4
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FFH-0005SG-6d; Tue, 13 Jun 2023 21:24:23 -0400
+	id 1q9FFF-0005Lb-MO; Tue, 13 Jun 2023 21:24:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FF2-0004t6-QP
+ id 1q9FF5-00050w-Md
  for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:14 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FEz-0004yk-MM
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:08 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-51452556acdso3306526a12.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:04 -0700 (PDT)
+ id 1q9FF2-0004zL-MB
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:10 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-662f0feafb2so4529968b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705843; x=1689297843;
+ d=gmail.com; s=20221208; t=1686705847; x=1689297847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MtnUd9Eg3xOrbdlpw5MJofnOwNsKx+1Kt1WX+Jn5DKg=;
- b=SUiRLyoQnE0/166MwGhrGWc5vmUYLQS53HJL3+pVq5W0hnQ5qJAJAp3KhFXzfJzk1Y
- BPAeEqKGzzZ4eUO0OGiqjmHkbjpu0E5J/mMUCMUF2NfaAy6HlXNKUKXdkJN6plpObmY3
- FxUbHg69vr9gl8xYbAhZKV7fTjgOXBmNw7qFiKdND9+xDBa3xJ5wPgXBRgxbT+lhVtYz
- i60JtHDe7l693DW9BszwpBI1dqQmUE0tyfNp+4tVtqPMQ2/eToz4MjC2yNDHkAgSUOr6
- T3TM/Mu6e1OrNH9PON3mDCyrrGT+WGO3i/jmahnz2FMV97O5Xo103isgMZhO/X4i5fjT
- pmpg==
+ bh=EKxUeaeX1j5XB7BNXbGdK7jp39DBBUSpT+MazWQZo80=;
+ b=XYypENE71IWwI7mzdsrF2VU7ZvKzxPaDT/SH2Wif1lNHAyP530KzSwUfukOyGFrBgD
+ onLtKxtOOH8Bhd6Q9ePa9qY4qLcsLfDHWGeqM8w8g/KzV/2SuvdLlW0ead8VRxUFBaa+
+ r+GF3RCCe29G0/T/F8LnWhYwFpw7fL/ObdoHU/uo8ZugcA0aNuTCJMC0C4nNX+j7qXkL
+ EupRhGTgvZxRBRQhlwDnGcroQRvvviCXUcN3scYotGgNYNKtBHQXHgdmqMzwNpdOBwNs
+ 7xYUBhuBcKakm0MF4Z4lp3lGi/obvLU+GAdw0edQspByVRCnjH0qfUlUzqOe8ZZg6TYA
+ EniQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705843; x=1689297843;
+ d=1e100.net; s=20221208; t=1686705847; x=1689297847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MtnUd9Eg3xOrbdlpw5MJofnOwNsKx+1Kt1WX+Jn5DKg=;
- b=lh70UhnFI93n9awx/y7FoqzJ2YuL+8ZYVDPiF+kBT49VCKCKuWHSVl8MTJbvc4tEg/
- Y5girTAnVPFDzOQ4fPXsGFiSrd+b4gvVgQBBQ5awOaJVJsK8NHs4pRlD42UzIJISOSOp
- sYC/o9xEALMuZfTk77fjtah3TVzAgQzarUjZpTz3qr1HqVOArIeJR1IkpCvGBoU3UROh
- kQwUTsq8DxcQDNzXREQXRBGG1Jx2n+FsMOcsCfW1Rl0Omnmyouhwt+KdbeoFhjB0FsNY
- NGsdDp+6X6m42EiEg5T+niE0Jly/W2Cu7je952eB9MBdf7hrK3LltBfyMiaEzHjffVjx
- 77JA==
-X-Gm-Message-State: AC+VfDyE6brsYgVZeHs8UkklA6tWB/qWoVwqsZwngqkuyX7+L1h6dSAP
- l2xdr37D837JzDrrImd9THLBbXcnmbdj8A==
-X-Google-Smtp-Source: ACHHUZ6uf6/TkAjWgFxiIBpNfVv36yY5FrmOuc5/FtaXpw77sLPPGipZw1avFbyNSp5AvSrv+KFRBw==
-X-Received: by 2002:a05:6a21:598:b0:119:94f4:c614 with SMTP id
- lw24-20020a056a21059800b0011994f4c614mr244224pzb.55.1686705843231; 
- Tue, 13 Jun 2023 18:24:03 -0700 (PDT)
+ bh=EKxUeaeX1j5XB7BNXbGdK7jp39DBBUSpT+MazWQZo80=;
+ b=d+OsLaz7AZpr0K51/4r6syKyuQaFxYoOsaE7BDakMzROJ9Msz4ojs4fOJI95WyY+5P
+ ow1xrqMa5Qv+/BO/K5DPwTx9VwsoKj2ep5SW2Z5X+OQ73HqLnQG3KMA9TPcIMVeAvXGX
+ qDBC/E6dCcMAnzrniBPRvk0Nb9aGcGx8nVojwHyoW8LyJVxNhKULtphWAh0z1/p5qVXA
+ I3CQowt3Acdd6Hr0qBxAyXxoJfHsSq72x7zDxpnu0/C/8Y/kIth0EM+4pKSsU3Cpe6+M
+ mM/TEHDv4DuiQaQt8GYZHRyNKOvoi/0ajxobmABdYJyzuSPzhtsYqs5LJCFpytLcAqeK
+ P9Xg==
+X-Gm-Message-State: AC+VfDz+6yEMOdzvS90WTpHx7RrKWlTCELxXAqHvFK5Sx5m7E+1/hykl
+ Tq4mLUWTOlC2P2s5+wrjTJfYopbB6YXQ2A==
+X-Google-Smtp-Source: ACHHUZ4er1coUWAqJO2AXdDBEo3gFoQGoLencbtocg26YVxXfD7Hy0FljVw2sf/7P751R7hzc6le0A==
+X-Received: by 2002:a05:6a20:7347:b0:10b:bf2d:71bb with SMTP id
+ v7-20020a056a20734700b0010bbf2d71bbmr251147pzc.27.1686705846983; 
+ Tue, 13 Jun 2023 18:24:06 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.00
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:24:02 -0700 (PDT)
+ Tue, 13 Jun 2023 18:24:06 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Sunil V L <sunilvl@ventanamicro.com>,
- Heinrich Schuchardt <xypron.glpk@gmx.de>,
  Andrea Bolognani <abologna@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 52/60] hw/riscv: virt: Assume M-mode FW in pflash0 only when
- "-bios none"
-Date: Wed, 14 Jun 2023 11:20:09 +1000
-Message-Id: <20230614012017.3100663-53-alistair.francis@wdc.com>
+Subject: [PULL 53/60] riscv/virt: Support using pflash via -blockdev option
+Date: Wed, 14 Jun 2023 11:20:10 +1000
+Message-Id: <20230614012017.3100663-54-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,133 +101,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
-Currently, virt machine supports two pflash instances each with
-32MB size. However, the first pflash is always assumed to
-contain M-mode firmware and reset vector is set to this if
-enabled. Hence, for S-mode payloads like EDK2, only one pflash
-instance is available for use. This means both code and NV variables
-of EDK2 will need to use the same pflash.
+Currently, pflash devices can be configured only via -pflash
+or -drive options. This is the legacy way and the
+better way is to use -blockdev as in other architectures.
+libvirt also has moved to use -blockdev method.
 
-The OS distros keep the EDK2 FW code as readonly. When non-volatile
-variables also need to share the same pflash, it is not possible
-to keep it as readonly since variables need write access.
-
-To resolve this issue, the code and NV variables need to be separated.
-But in that case we need an extra flash. Hence, modify the convention
-for non-KVM guests such that, pflash0 will contain the M-mode FW
-only when "-bios none" option is used. Otherwise, pflash0 will contain
-the S-mode payload FW. This enables both pflash instances available
-for EDK2 use.
-
-When KVM is enabled, pflash0 is always assumed to contain the
-S-mode payload firmware only.
-
-Example usage:
-1) pflash0 containing M-mode FW
-qemu-system-riscv64 -bios none -pflash <mmode_fw> -machine virt
-or
-qemu-system-riscv64 -bios none \
--drive file=<mmode_fw>,if=pflash,format=raw,unit=0 -machine virt
-
-2) pflash0 containing S-mode payload like EDK2
-qemu-system-riscv64 -pflash <smode_fw_code> -pflash <smode_vars> -machine  virt
-or
-qemu-system-riscv64 -bios <opensbi_fw> \
--pflash <smode_fw_code> \
--pflash <smode_vars> \
--machine  virt
-or
-qemu-system-riscv64 -bios <opensbi_fw> \
--drive file=<smode_fw_code>,if=pflash,format=raw,unit=0,readonly=on \
--drive file=<smode_fw_vars>,if=pflash,format=raw,unit=1 \
--machine virt
+To support -blockdev option, pflash devices need to be
+created in instance_init itself. So, update the code to
+move the virt_flash_create() to instance_init. Also, use
+standard interfaces to detect whether pflash0 is
+configured or not.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Reported-by: Andrea Bolognani <abologna@redhat.com>
 Tested-by: Andrea Bolognani <abologna@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230601045910.18646-2-sunilvl@ventanamicro.com>
+Message-Id: <20230601045910.18646-3-sunilvl@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 53 ++++++++++++++++++++-----------------------------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+ hw/riscv/virt.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 245c7b97b2..17fdcef223 100644
+index 17fdcef223..95708d890e 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -1245,7 +1245,7 @@ static void virt_machine_done(Notifier *notifier, void *data)
-     target_ulong firmware_end_addr, kernel_start_addr;
+@@ -1246,6 +1246,7 @@ static void virt_machine_done(Notifier *notifier, void *data)
      const char *firmware_name = riscv_default_firmware_name(&s->soc[0]);
      uint32_t fdt_load_addr;
--    uint64_t kernel_entry;
-+    uint64_t kernel_entry = 0;
+     uint64_t kernel_entry = 0;
++    BlockBackend *pflash_blk0;
  
      /*
       * Only direct boot kernel is currently supported for KVM VM,
-@@ -1266,42 +1266,31 @@ static void virt_machine_done(Notifier *notifier, void *data)
+@@ -1266,7 +1267,8 @@ static void virt_machine_done(Notifier *notifier, void *data)
      firmware_end_addr = riscv_find_and_load_firmware(machine, firmware_name,
                                                       start_addr, NULL);
  
--    if (drive_get(IF_PFLASH, 0, 1)) {
--        /*
--         * S-mode FW like EDK2 will be kept in second plash (unit 1).
--         * When both kernel, initrd and pflash options are provided in the
--         * command line, the kernel and initrd will be copied to the fw_cfg
--         * table and opensbi will jump to the flash address which is the
--         * entry point of S-mode FW. It is the job of the S-mode FW to load
--         * the kernel and initrd using fw_cfg table.
--         *
--         * If only pflash is given but not -kernel, then it is the job of
--         * of the S-mode firmware to locate and load the kernel.
--         * In either case, the next_addr for opensbi will be the flash address.
--         */
--        riscv_setup_firmware_boot(machine);
--        kernel_entry = virt_memmap[VIRT_FLASH].base +
--                       virt_memmap[VIRT_FLASH].size / 2;
--    } else if (machine->kernel_filename) {
-+    if (drive_get(IF_PFLASH, 0, 0)) {
-+        if (machine->firmware && !strcmp(machine->firmware, "none") &&
-+            !kvm_enabled()) {
-+            /*
-+             * Pflash was supplied but bios is none and not KVM guest,
-+             * let's overwrite the address we jump to after reset to
-+             * the base of the flash.
-+             */
-+            start_addr = virt_memmap[VIRT_FLASH].base;
-+        } else {
-+            /*
-+             * Pflash was supplied but either KVM guest or bios is not none.
-+             * In this case, base of the flash would contain S-mode payload.
-+             */
-+            riscv_setup_firmware_boot(machine);
-+            kernel_entry = virt_memmap[VIRT_FLASH].base;
-+        }
-+    }
-+
-+    if (machine->kernel_filename && !kernel_entry) {
-         kernel_start_addr = riscv_calc_kernel_start_addr(&s->soc[0],
-                                                          firmware_end_addr);
- 
-         kernel_entry = riscv_load_kernel(machine, &s->soc[0],
-                                          kernel_start_addr, true, NULL);
--    } else {
--       /*
--        * If dynamic firmware is used, it doesn't know where is the next mode
--        * if kernel argument is not set.
--        */
--        kernel_entry = 0;
--    }
--
 -    if (drive_get(IF_PFLASH, 0, 0)) {
--        /*
--         * Pflash was supplied, let's overwrite the address we jump to after
--         * reset to the base of the flash.
--         */
--        start_addr = virt_memmap[VIRT_FLASH].base;
-     }
++    pflash_blk0 = pflash_cfi01_get_blk(s->flash[0]);
++    if (pflash_blk0) {
+         if (machine->firmware && !strcmp(machine->firmware, "none") &&
+             !kvm_enabled()) {
+             /*
+@@ -1499,8 +1501,6 @@ static void virt_machine_init(MachineState *machine)
+     sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
+         qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
  
-     fdt_load_addr = riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
+-    virt_flash_create(s);
+-
+     for (i = 0; i < ARRAY_SIZE(s->flash); i++) {
+         /* Map legacy -drive if=pflash to machine properties */
+         pflash_cfi01_legacy_drive(s->flash[i],
+@@ -1527,6 +1527,8 @@ static void virt_machine_instance_init(Object *obj)
+ {
+     RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
+ 
++    virt_flash_create(s);
++
+     s->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+     s->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+     s->acpi = ON_OFF_AUTO_AUTO;
 -- 
 2.40.1
 
