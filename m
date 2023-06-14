@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C17C72F3CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 06:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A631F72F3D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 06:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9IVr-0005nu-TV; Wed, 14 Jun 2023 00:53:43 -0400
+	id 1q9IXY-0006kc-RC; Wed, 14 Jun 2023 00:55:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9IVo-0005mf-Ta
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:53:41 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ id 1q9IXW-0006jo-E6
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:55:26 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9IVn-0005AN-6h
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:53:40 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-4f6283d0d84so7909748e87.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 21:53:38 -0700 (PDT)
+ id 1q9IXU-0005XO-Sg
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:55:26 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2b1bb2fc9c6so3554261fa.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 21:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686718417; x=1689310417;
+ d=linaro.org; s=google; t=1686718523; x=1689310523;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BwhnD+ZwjQ/WxV3YtLxXWyP7cPVFST1eWPiPfA8zpvA=;
- b=mAvwQRsPGu4s0P7qo8gA4hbiRY0u5baoQ7hbxWtdWmcRaqWYbxg52nYWq50TrIyNSb
- yDIrg9sX2LUpb1COCb77QXlzY2BRV3W2x9eFn+awvPPBGBZPq36l+iHMNo4vnvtuake5
- Ud6oyQFXnSMHe97zkRPOSBrH62TV1nm9mJvno32EOUusltYLiebr9TPz/Eb3dUBsG47y
- Ys+9LCrcsY2mBTuVo0uTyzpXBuVCKak7e8vhqsjSLs6Um8vTNpMfnvRnYSK8sPrYTxfy
- 9gBN+7vlFeaAhgW1MQv94MoPl8A2tn1L9zUQLBaZsMnO64MCEtm8n7BcIpZbGdV/RlbE
- 0AfQ==
+ bh=0M/12ms2R1td4FYCkfV0A/uTWat9Q/VUDDXnu2dZQ2U=;
+ b=qYrPZZpgilp/oBhFx4alD7XNo3erBZaDJyUqIdBhCTCyoKq2MXWJUYd3FEPD6Q1nfa
+ NrxogRoo5D1iFYfQ3+T3/5jy0FeubwT76p9AlqJcBKDtRLjrUfQ6t3i+hJloFCXYWEOq
+ 6kWnx3WG7ozN12DmOf8Y6UR3YEousxde6VM40aM+ZrqBeZ1aM0MHrQAgagVCH/uWLtHl
+ NED73VGjQPu79y9bGcZvBkeBpooAIU5hf73eB/JzVX+q1DIPWsgRloHgJVWNHNobvhhc
+ V+YhbNkUfBpWR+CttKx82nllD4XkZKLEDmMYDzyKATqvgyJneD8snrD4cDznS/yYpAo2
+ SUBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686718417; x=1689310417;
+ d=1e100.net; s=20221208; t=1686718523; x=1689310523;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BwhnD+ZwjQ/WxV3YtLxXWyP7cPVFST1eWPiPfA8zpvA=;
- b=O09jQtvv88bW+Vw4oZdfOniD5+Un4FZfaxjTdWSybyDi99vpM/goSTY7W5faX5R+YV
- dkHu6tuf/ikyaFCW27nLJdFYNhWGEnMcZTcRP5KNYF2HyBWZ/hLc9sxQhYyqA1hRcx7l
- UfANYVM08q6WedYNRwK9Ub99WapDSvF+IwO4Rer+v+szjeS065rme0IteZwbAsDvh55t
- PwFOdBZ0+TEctH0Pk11I6DFUsBmkZXt5qHXNNm3AC2OTcHjehXnF/aEYD+asbjuweSBN
- GzRoqsXHA8AmEEIRrZODWYbxQ7pTQfKspSMutP9PPzwi7yukcMxd2rzhtYHvFQhrjCgA
- epWw==
-X-Gm-Message-State: AC+VfDypo8SQpjqmDRGYJW93jhjZIyL27bKYM5hJSAu4Mt2PxiKzC/XC
- 1A1QREkJ8M61nvlmc11HYdzvCQ==
-X-Google-Smtp-Source: ACHHUZ4JlHOtrrYBfZjR8vpndfHVjnEbkt3be37JpbSE7AKBwZ7xIfrK5IHTAwICJuEUfP5sI5L+qQ==
-X-Received: by 2002:a19:e003:0:b0:4ea:4793:facf with SMTP id
- x3-20020a19e003000000b004ea4793facfmr6448996lfg.13.1686718416964; 
- Tue, 13 Jun 2023 21:53:36 -0700 (PDT)
+ bh=0M/12ms2R1td4FYCkfV0A/uTWat9Q/VUDDXnu2dZQ2U=;
+ b=MakBE9gHDJJC1BVoRi9dTJ4xZsOkibevBCPQHe2mz4xED6V5oHJLh/LKQifd37Xsbo
+ kuRWvsOqO7x7rkP/fyvTLw6jVhsVj2eBm900aTEpwdwn6xwU1J6+eWuTWUhDkH/OfUDg
+ 5Vb5bjvF2cx5YEekQrQM6wpx7RKPUufGM7Jsf3MPy95gybDc0zp1nJScONZhc0lK4Ld3
+ cUl7oqPyktMX+665wmd8doPAyo4eYDp0TRDzrqwAOHAESNXaG2r6Ng6YHXNX5+GCU6z7
+ vVaMqlaRr8gQg6UjhcTW1/o8mRVgZ5E9h62209AkVSjzFKBe6YP4z7/icIsWe2LzYXv9
+ JGuw==
+X-Gm-Message-State: AC+VfDwHB8n8w/GyMrD+Q7/+hZMS5F9V5e0UDUIgbWqLuxjQr9asP2Rs
+ j5TVEwtAHGPhIF/ncS/foRgGMQ==
+X-Google-Smtp-Source: ACHHUZ7ZNTA2LCwiXS0IJ3zlfLGD8ioWZzac23npPD8jhyCTuvDe3i0IOkJHooViqZmPnXoBDCZRbg==
+X-Received: by 2002:a2e:9bd8:0:b0:2b1:eba8:c23e with SMTP id
+ w24-20020a2e9bd8000000b002b1eba8c23emr5622982ljj.27.1686718522879; 
+ Tue, 13 Jun 2023 21:55:22 -0700 (PDT)
 Received: from [192.168.4.112] (90-182-62-66.rcp.o2.cz. [90.182.62.66])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a05600c294500b003f7ec896cefsm16281494wmd.8.2023.06.13.21.53.36
+ o6-20020a05600c378600b003f42d8dd7d1sm16300623wmr.7.2023.06.13.21.55.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 21:53:36 -0700 (PDT)
-Message-ID: <0ae6d048-29d1-0574-23c5-ea3aa93f7874@linaro.org>
-Date: Wed, 14 Jun 2023 06:53:35 +0200
+ Tue, 13 Jun 2023 21:55:22 -0700 (PDT)
+Message-ID: <96940129-08a9-97bb-db71-236789d5b373@linaro.org>
+Date: Wed, 14 Jun 2023 06:55:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 21/26] target/arm/tcg: Extract M-profile definitions to
- 'helper-m.h.inc'
+Subject: Re: [PATCH v2 22/26] target/arm/tcg: Reduce 'helper-m.h.inc' inclusion
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20230611085846.21415-1-philmd@linaro.org>
- <20230611085846.21415-22-philmd@linaro.org>
+ <20230611085846.21415-23-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230611085846.21415-22-philmd@linaro.org>
+In-Reply-To: <20230611085846.21415-23-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,18 +97,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/11/23 10:58, Philippe Mathieu-Daudé wrote:
-> helper.h is used by all units, but not all require the
-> M-profile definitions. Move them to a new header; the next
-> commit will remove it from the common helper.h.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/arm/helper.h           | 17 ++---------------
->   target/arm/tcg/helper-m.h.inc | 23 +++++++++++++++++++++++
->   2 files changed, 25 insertions(+), 15 deletions(-)
->   create mode 100644 target/arm/tcg/helper-m.h.inc
+> +++ b/target/arm/tcg/translate.c
+> @@ -37,6 +37,11 @@
+>   #include "exec/helper-gen.h.inc"
+>   #undef  HELPER_H
+>   
+> +#define HELPER_H "tcg/helper-m.h.inc"
+> +#include "exec/helper-proto.h.inc"
+> +#include "exec/helper-gen.h.inc"
+> +#undef  HELPER_H
 
+You don't need helper-proto.h here do you?
+
+Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
