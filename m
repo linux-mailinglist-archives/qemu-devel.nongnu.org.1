@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6BC72F1F4
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D14772F1AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:23:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FCd-0005Sn-07; Tue, 13 Jun 2023 21:21:39 -0400
+	id 1q9FCf-0005X7-JZ; Tue, 13 Jun 2023 21:21:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FCa-0005Jl-Sv
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:36 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1q9FCe-0005Wj-G8
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:40 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FCY-0004cr-0u
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:35 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6537d2a8c20so4950335b3a.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:21:33 -0700 (PDT)
+ id 1q9FCc-0004fR-PL
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:40 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-665a18f5643so1802896b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:21:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705692; x=1689297692;
+ d=gmail.com; s=20221208; t=1686705697; x=1689297697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aFV+fw31FylRixKzTrvacU7lGvyFfcKEfv9NZgaC2Pw=;
- b=PJHiXcykAr3KdOfgo5OpyzNb2HLiXUSD2QlQvQPjc0CLVuiXwV+2BJQPRe2ZUAs2fh
- EhRoJ8uOFAs+o4Lm1Oco2I3eMgfcPPC226Dlt2oDvjzvENm8E4Pfan9or8twtca6BeX0
- VIZdSSkf5IXabFL4SwzPSvcOBeKemA+aOMXOHafI6axACgTPmlZ0jd122JsEcP8GQ4m3
- hh7la/iChvwyh7AyG4BqcWWyumwUU4bW1lCaGQtDAUzp5kfxV2hCy2DHUU0klytnxRw8
- 0DV9Jf3BJ2QmUPEjUK+5LiOaMwmYSMnOBrSZHQo0P0YbkgEBwgYJ//scI+6fatudVgMM
- o4tQ==
+ bh=8T3G3gsoC6zwG1Ido0iRgV/LB4XR7JdgXKT9l3Z69yw=;
+ b=WzBCL2jmiPJ8K/gOMJ5RquD+/SpFTgWCz2coJ/kPDT/vI/JkZ0+EC+yPSf+BnSlv4T
+ roI2Po1KVbx3Qxz8QxPpFJ+s1aJTotSg1sItYnoUyH3FXUoxxG3naTjcIzuocxS16817
+ HkvWLt1xQy1cWU0H94zs9cuuD1NZc8pgkEEuhlSelM2URIghKn1u1W4jY++J+tsP47FD
+ 4bhtWfz+k4tBizK9wXAlHctWAPotXgEAIgL6jBDwCUhyRPtbNCHU3HSAewa1taJ4o8ls
+ Py2u7Uw/auW8yqrfuYHZ1GXFOPavzTqBUJ7fDU+G2g+wSf/ZpiPYORXTpYItQXnOv6NJ
+ 91aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705692; x=1689297692;
+ d=1e100.net; s=20221208; t=1686705697; x=1689297697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aFV+fw31FylRixKzTrvacU7lGvyFfcKEfv9NZgaC2Pw=;
- b=JEZRF888LfPdLdKYR6kUl3J9JdgPlk4yUBB6kxKpmPXzV64hAdSVvsJM3KzasQx0T9
- FR2I6U3k7ah+Y1ojk5y0LlFrb6zVgkedkyDCNMD0/FUPFGx2MoGIsL1ZJALReCxxtYWh
- QJ9JOaEMf9AlokCvKMwqYR5e6XTL0pdRk2U/RVIMvderaa885gLO8XSEb8fVjB/2vkNq
- e0GGy9I5TZFKBy/vxBKn7sXsU9UDfGxBLMRn5JOWPe87AmROOXHgICl/iCufpylssjkR
- dDTZSO0rrEhaQJGTKJhpdpOnf/j4n7CUnSlZ/3fD9Ut2uK5lg36VfZUJ+dt2pptvMnc2
- 36nA==
-X-Gm-Message-State: AC+VfDxHcz8rIs8cB6XwuKaFghKqwKPCQSMEm5G4i7pAX+iXnyOSAgdb
- HmIk23M11bpLoeUaRD4Tuth8crmFQD4XcA==
-X-Google-Smtp-Source: ACHHUZ5UTl6O0LMrIQA8troqRI1uE4gEOKxTes/kVZJfmDRRz954UAwkF0eeN2vpNzDiScGjMHmHrQ==
-X-Received: by 2002:a05:6a21:1519:b0:101:5037:7542 with SMTP id
- nq25-20020a056a21151900b0010150377542mr622467pzb.10.1686705692598; 
- Tue, 13 Jun 2023 18:21:32 -0700 (PDT)
+ bh=8T3G3gsoC6zwG1Ido0iRgV/LB4XR7JdgXKT9l3Z69yw=;
+ b=A8716GPFgtrQPWQOwkVI1ILzF56UKaSYQqbzKGR1SciNdhGoBnMPdtWWOW6Wl9wBmI
+ MLd6Evrk+iKqwt6f4xpOAiOgfkPqBhDJttoT0Ou0B621RWOanlY/7EM2b252aiUZe5Eu
+ xAqQ6nAAeeeTdPQI0LHuo7AeZzLJqpwIfFNDowlZwYjc59cpZY9r2kH+e6ULRWyybuXW
+ BJougXe+51eVLShd76Ht9ny33UnMcrNZRB7Hl1hNyA6r7VrEmNyB+Y6TEvKcq6I3OwGp
+ yxJ15R14/S7yvjMxSMHSjNDNMXdJBi/sXZx7QsimZcYkyuW+XTKRMJV8wBYqu/8DI6Mu
+ surw==
+X-Gm-Message-State: AC+VfDxuS2jbUUThKYRoJeCK1zXr4SJuw86tv5osfLXCi1dG8/oHYfYT
+ P3DeWT0tarG1KwGBm12kPd4MVmRKWRQTng==
+X-Google-Smtp-Source: ACHHUZ5FkdTRbd7of/AJnaLlXkLyG3E05L02G+DaoHjXE2MH7BdXdB0OLeZuZ+ASV6AjqUEpN6diNQ==
+X-Received: by 2002:a05:6a00:2994:b0:662:9bf:7572 with SMTP id
+ cj20-20020a056a00299400b0066209bf7572mr338355pfb.0.1686705696787; 
+ Tue, 13 Jun 2023 18:21:36 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.21.28
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.21.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:21:32 -0700 (PDT)
+ Tue, 13 Jun 2023 18:21:36 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -65,16 +65,17 @@ Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
  Junqiang Wang <wangjunqiang@iscas.ac.cn>,
  LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 14/60] target/riscv: Update pmp_get_tlb_size()
-Date: Wed, 14 Jun 2023 11:19:31 +1000
-Message-Id: <20230614012017.3100663-15-alistair.francis@wdc.com>
+Subject: [PULL 15/60] target/riscv: Move pmp_get_tlb_size apart from
+ get_physical_address_pmp
+Date: Wed, 14 Jun 2023 11:19:32 +1000
+Message-Id: <20230614012017.3100663-16-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,147 +101,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 
-PMP entries before (including) the matched PMP entry may only cover partial
-of the TLB page, and this may split the page into regions with different
-permissions. Such as for PMP0 (0x80000008~0x8000000F, R) and PMP1 (0x80000000~
-0x80000FFF, RWX), write access to 0x80000000 will match PMP1. However we cannot
-cache the translation result in the TLB since this will make the write access
-to 0x80000008 bypass the check of PMP0. So we should check all of them instead
-of the matched PMP entry in pmp_get_tlb_size() and set the tlb_size to 1 in
-this case.
-Set tlb_size to TARGET_PAGE_SIZE if PMP is not support or there is no PMP rules.
+pmp_get_tlb_size can be separated from get_physical_address_pmp and is only
+needed when ret == TRANSLATE_SUCCESS.
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230517091519.34439-2-liweiwei@iscas.ac.cn>
+Message-Id: <20230517091519.34439-3-liweiwei@iscas.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmp.h        |  3 +-
- target/riscv/cpu_helper.c |  7 ++--
- target/riscv/pmp.c        | 69 ++++++++++++++++++++++++++++++---------
- 3 files changed, 57 insertions(+), 22 deletions(-)
+ target/riscv/cpu_helper.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index b296ea1fc6..0a7e24750b 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -76,8 +76,7 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-                        target_ulong size, pmp_priv_t privs,
-                        pmp_priv_t *allowed_privs,
-                        target_ulong mode);
--target_ulong pmp_get_tlb_size(CPURISCVState *env, int pmp_index,
--                              target_ulong tlb_sa, target_ulong tlb_ea);
-+target_ulong pmp_get_tlb_size(CPURISCVState *env, target_ulong addr);
- void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
- void pmp_update_rule_nums(CPURISCVState *env);
- uint32_t pmp_get_num_rules(CPURISCVState *env);
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 56381aaf26..065b433b88 100644
+index 065b433b88..52d0b043df 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -715,11 +715,8 @@ static int get_physical_address_pmp(CPURISCVState *env, int *prot,
+@@ -688,14 +688,11 @@ void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv)
+  *
+  * @env: CPURISCVState
+  * @prot: The returned protection attributes
+- * @tlb_size: TLB page size containing addr. It could be modified after PMP
+- *            permission checking. NULL if not set TLB page for addr.
+  * @addr: The physical address to be checked permission
+  * @access_type: The type of MMU access
+  * @mode: Indicates current privilege level.
+  */
+-static int get_physical_address_pmp(CPURISCVState *env, int *prot,
+-                                    target_ulong *tlb_size, hwaddr addr,
++static int get_physical_address_pmp(CPURISCVState *env, int *prot, hwaddr addr,
+                                     int size, MMUAccessType access_type,
+                                     int mode)
+ {
+@@ -715,9 +712,6 @@ static int get_physical_address_pmp(CPURISCVState *env, int *prot,
      }
  
      *prot = pmp_priv_to_page_prot(pmp_priv);
--    if ((tlb_size != NULL) && pmp_index != MAX_RISCV_PMPS) {
--        target_ulong tlb_sa = addr & ~(TARGET_PAGE_SIZE - 1);
--        target_ulong tlb_ea = tlb_sa + TARGET_PAGE_SIZE - 1;
--
--        *tlb_size = pmp_get_tlb_size(env, pmp_index, tlb_sa, tlb_ea);
-+    if (tlb_size != NULL) {
-+        *tlb_size = pmp_get_tlb_size(env, addr);
-     }
+-    if (tlb_size != NULL) {
+-        *tlb_size = pmp_get_tlb_size(env, addr);
+-    }
  
      return TRANSLATE_SUCCESS;
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 1f5aca42e8..2bc924340a 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -601,28 +601,67 @@ target_ulong mseccfg_csr_read(CPURISCVState *env)
  }
+@@ -906,7 +900,7 @@ restart:
+         }
  
- /*
-- * Calculate the TLB size if the start address or the end address of
-- * PMP entry is presented in the TLB page.
-+ * Calculate the TLB size.
-+ * It's possible that PMP regions only cover partial of the TLB page, and
-+ * this may split the page into regions with different permissions.
-+ * For example if PMP0 is (0x80000008~0x8000000F, R) and PMP1 is (0x80000000
-+ * ~0x80000FFF, RWX), then region 0x80000008~0x8000000F has R permission, and
-+ * the other regions in this page have RWX permissions.
-+ * A write access to 0x80000000 will match PMP1. However we cannot cache the
-+ * translation result in the TLB since this will make the write access to
-+ * 0x80000008 bypass the check of PMP0.
-+ * To avoid this we return a size of 1 (which means no caching) if the PMP
-+ * region only covers partial of the TLB page.
-  */
--target_ulong pmp_get_tlb_size(CPURISCVState *env, int pmp_index,
--                              target_ulong tlb_sa, target_ulong tlb_ea)
-+target_ulong pmp_get_tlb_size(CPURISCVState *env, target_ulong addr)
- {
--    target_ulong pmp_sa = env->pmp_state.addr[pmp_index].sa;
--    target_ulong pmp_ea = env->pmp_state.addr[pmp_index].ea;
-+    target_ulong pmp_sa;
-+    target_ulong pmp_ea;
-+    target_ulong tlb_sa = addr & ~(TARGET_PAGE_SIZE - 1);
-+    target_ulong tlb_ea = tlb_sa + TARGET_PAGE_SIZE - 1;
-+    int i;
+         int pmp_prot;
+-        int pmp_ret = get_physical_address_pmp(env, &pmp_prot, NULL, pte_addr,
++        int pmp_ret = get_physical_address_pmp(env, &pmp_prot, pte_addr,
+                                                sizeof(target_ulong),
+                                                MMU_DATA_LOAD, PRV_S);
+         if (pmp_ret != TRANSLATE_SUCCESS) {
+@@ -1302,8 +1296,9 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+             prot &= prot2;
  
--    if (pmp_sa <= tlb_sa && pmp_ea >= tlb_ea) {
-+    /*
-+     * If PMP is not supported or there are no PMP rules, the TLB page will not
-+     * be split into regions with different permissions by PMP so we set the
-+     * size to TARGET_PAGE_SIZE.
-+     */
-+    if (!riscv_cpu_cfg(env)->pmp || !pmp_get_num_rules(env)) {
-         return TARGET_PAGE_SIZE;
--    } else {
-+    }
-+
-+    for (i = 0; i < MAX_RISCV_PMPS; i++) {
-+        if (pmp_get_a_field(env->pmp_state.pmp[i].cfg_reg) == PMP_AMATCH_OFF) {
-+            continue;
-+        }
-+
-+        pmp_sa = env->pmp_state.addr[i].sa;
-+        pmp_ea = env->pmp_state.addr[i].ea;
-+
-         /*
--         * At this point we have a tlb_size that is the smallest possible size
--         * That fits within a TARGET_PAGE_SIZE and the PMP region.
--         *
--         * If the size is less then TARGET_PAGE_SIZE we drop the size to 1.
--         * This means the result isn't cached in the TLB and is only used for
--         * a single translation.
-+         * Only the first PMP entry that covers (whole or partial of) the TLB
-+         * page really matters:
-+         * If it covers the whole TLB page, set the size to TARGET_PAGE_SIZE,
-+         * since the following PMP entries have lower priority and will not
-+         * affect the permissions of the page.
-+         * If it only covers partial of the TLB page, set the size to 1 since
-+         * the allowed permissions of the region may be different from other
-+         * region of the page.
-          */
--        return 1;
-+        if (pmp_sa <= tlb_sa && pmp_ea >= tlb_ea) {
-+            return TARGET_PAGE_SIZE;
-+        } else if ((pmp_sa >= tlb_sa && pmp_sa <= tlb_ea) ||
-+                   (pmp_ea >= tlb_sa && pmp_ea <= tlb_ea)) {
-+            return 1;
-+        }
-     }
-+
-+    /*
-+     * If no PMP entry matches the TLB page, the TLB page will also not be
-+     * split into regions with different permissions by PMP so we set the size
-+     * to TARGET_PAGE_SIZE.
-+     */
-+    return TARGET_PAGE_SIZE;
- }
+             if (ret == TRANSLATE_SUCCESS) {
+-                ret = get_physical_address_pmp(env, &prot_pmp, &tlb_size, pa,
++                ret = get_physical_address_pmp(env, &prot_pmp, pa,
+                                                size, access_type, mode);
++                tlb_size = pmp_get_tlb_size(env, pa);
  
- /*
+                 qemu_log_mask(CPU_LOG_MMU,
+                               "%s PMP address=" HWADDR_FMT_plx " ret %d prot"
+@@ -1335,8 +1330,9 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                       __func__, address, ret, pa, prot);
+ 
+         if (ret == TRANSLATE_SUCCESS) {
+-            ret = get_physical_address_pmp(env, &prot_pmp, &tlb_size, pa,
++            ret = get_physical_address_pmp(env, &prot_pmp, pa,
+                                            size, access_type, mode);
++            tlb_size = pmp_get_tlb_size(env, pa);
+ 
+             qemu_log_mask(CPU_LOG_MMU,
+                           "%s PMP address=" HWADDR_FMT_plx " ret %d prot"
 -- 
 2.40.1
 
