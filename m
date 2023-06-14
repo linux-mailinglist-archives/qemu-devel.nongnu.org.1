@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADA772F1BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A59F72F1A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:22:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FC0-0004aQ-SV; Tue, 13 Jun 2023 21:21:00 -0400
+	id 1q9FC4-0004bu-Ta; Tue, 13 Jun 2023 21:21:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FBz-0004aF-8P
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:20:59 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1q9FC3-0004av-7a
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:03 -0400
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FBx-0004Th-9g
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:20:59 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-66577752f05so2324084b3a.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:20:56 -0700 (PDT)
+ id 1q9FC1-0004UW-I5
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:02 -0400
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-3f9b1f43bd0so14927201cf.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:21:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705655; x=1689297655;
+ d=gmail.com; s=20221208; t=1686705660; x=1689297660;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3JQMPJojjtVJaAkqNPQNXV8n2ARoBJfG8GU+/0o+G3A=;
- b=iljnxftepGvBcVAeT8o8I72UNBA+EUUXcLgsrrYbP9IHY/+5ErdJAmb364nWubAD+n
- x26CB4wnxGdLGiVFILXq2ZOslytWQWSAPKfUjuVVfoDk1l60YtYEhSngLlJD3tNnxqNR
- gLn3QzlxClWUheCe9ZH/N5peN1qcNdBwMiclC9iyfR40K63+lU+RFmMetmfvgrIvQ4Oj
- xbqg74Dnl3lhBNODD8AkO3Ge5bjutLAavF1vvv5OaSzfhdLHBy1CfuPyC+XK3hwZ2T2I
- 0/Ut2LqSsogaqs86/h3z5/PJr3yfvKt41oiWykFHBHcaIp3RxRZkcm1NL0tgGd9kgNIV
- XEgA==
+ bh=CzYKPbuynucDIAzF9ze+tOWHKtiot5KEw+AyGFozTco=;
+ b=SWBlkoX03hXqPc7zSLKZNGx6/nSf6la+KzEysTQmPfG9wij97CDEUGcphSXRiv2R7P
+ W40Zu1LKAsAf2Kw5BdCxEy6sFWUIj53zK1XM2TuZtIU8qzyOjT0HqDgu63eNb6TK37s0
+ 3b8SEwo41PVMsRe/R6JS01ydU3+XofLoxDwwXEt0xr2uri9ndRf3tjj85hq6ib64C4cz
+ pxeLIKndcW4W3Zk4t+vA+0p1oFcuGI2fDmYx+mwNGijZt7yZCOLwWL9rvcMXSQ4S2D8v
+ blH+2GH7UnRQj0Ii1RyJAfPhG3Ox+qJnvrYk9V2uG3O9S3i+XOzin3cjHLxnkqQaRCdf
+ OoOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705655; x=1689297655;
+ d=1e100.net; s=20221208; t=1686705660; x=1689297660;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3JQMPJojjtVJaAkqNPQNXV8n2ARoBJfG8GU+/0o+G3A=;
- b=OfjoixMPs3WrGTBfQzcuD3xJKTuaN8MtanbtY5L6nNBXRZKazIdPsG//bJb61gY7r+
- C8L4akXRUeGAN8vH0Rb9/to2Vo5aPHrPpdf8eNhc/jLWVzCbKjdB0ZoP2mcTaG6ef6FE
- KJgWybIRUUJHcf3K/oybkgJTZfewkGnfHwdejg7V/L7uFRxMafWs1763tQUlE4dK4jOA
- wxj19FiKya5Db4ZWX6RPMRb5HIKwTYYJqzr72pQalXu1vYcHXoXdBu7yuFBzxhSRHTOI
- U+UczxapzM4N/r83SSP0vyo3Aa3qIiPgjVheHXAKidSy2igKeAZx8FaEq44b2JulnYdF
- PxYQ==
-X-Gm-Message-State: AC+VfDzu3ZjshY++JqZmlSSBFMtQQYVAJbGTpvvfKrEtiUX9nnK+Z/P3
- WcP212KChfBdgqYvtCVDy7QR7Dlld2n0Aw==
-X-Google-Smtp-Source: ACHHUZ4MPQGvUBgO6MNYbCqjn7qAQZQ03veQeAD88EuxvZSdvt1x/Lq0ZEeJtpI0tLiZp9J6nyHmsA==
-X-Received: by 2002:a05:6a21:338b:b0:11d:7b78:458e with SMTP id
- yy11-20020a056a21338b00b0011d7b78458emr587555pzb.48.1686705655621; 
- Tue, 13 Jun 2023 18:20:55 -0700 (PDT)
+ bh=CzYKPbuynucDIAzF9ze+tOWHKtiot5KEw+AyGFozTco=;
+ b=D/LfcU3cdH2o1uQNiP+gkv2K20yd6CgsPr1vKAmDveBw0yUefqYl7cZNLRwWP6PkN3
+ UdWJjD6YZS0l4BzPEMsPlognunqYvJ+EkFcBftkjnObaoPyDTYtA5q3sMPG+5FfRrcqB
+ 0aORXiC71E93eIX4L7Ewnjh58qyUZ/+kLt6sl2guEOI3KmvEG/qDhormpUYadGORfpoD
+ a68+Kpg6cj9cPwUQSp4MpJLiCMaZyZ9aaWngI1t2FIpG+A72TGUu+T8t1F24wXjp7lL2
+ 7t4p0lWDWzexhMMduBpPnLOlJ0OvEVYMjroPhN20VNf4ufdRoLjPsSmZNsdKz9vcDLhF
+ nPFQ==
+X-Gm-Message-State: AC+VfDzFiyuaQMh2Y2o9GzsjGz4K6DY2d7ChVj2Lj1311SzJKRksOfb0
+ 3FtEkXMPbXoKVPNKAu2KQRvtdYRX02eO/A==
+X-Google-Smtp-Source: ACHHUZ5Vz6D6YpB8TxSktnx8O+YZygDxXEN6Ua9r+Ofu5mp8Huojib1C2DiTbEq09qoCoKubTteJDQ==
+X-Received: by 2002:a05:622a:15ce:b0:3f6:bb5b:8111 with SMTP id
+ d14-20020a05622a15ce00b003f6bb5b8111mr484677qty.60.1686705660450; 
+ Tue, 13 Jun 2023 18:21:00 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.20.51
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.20.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:20:55 -0700 (PDT)
+ Tue, 13 Jun 2023 18:20:59 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Weiwei Li <liweiwei@iscas.ac.cn>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/60] target/riscv/cpu.c: remove set_priv_version()
-Date: Wed, 14 Jun 2023 11:19:22 +1000
-Message-Id: <20230614012017.3100663-6-alistair.francis@wdc.com>
+Subject: [PULL 06/60] target/riscv: add PRIV_VERSION_LATEST
+Date: Wed, 14 Jun 2023 11:19:23 +1000
+Message-Id: <20230614012017.3100663-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=alistair23@gmail.com; helo=mail-qt1-x830.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,142 +101,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The setter is doing nothing special. Just set env->priv_ver directly.
+All these generic CPUs are using the latest priv available, at this
+moment PRIV_VERSION_1_12_0:
+
+- riscv_any_cpu_init()
+- rv32_base_cpu_init()
+- rv64_base_cpu_init()
+- rv128_base_cpu_init()
+
+Create a new PRIV_VERSION_LATEST enum and use it in those cases. I'll
+make it easier to update everything at once when a new priv version is
+available.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230517135714.211809-4-dbarboza@ventanamicro.com>
+Message-Id: <20230517135714.211809-5-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ target/riscv/cpu.h | 2 ++
+ target/riscv/cpu.c | 8 ++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index de7e43126a..15423585d0 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -61,6 +61,8 @@ enum {
+     PRIV_VERSION_1_10_0 = 0,
+     PRIV_VERSION_1_11_0,
+     PRIV_VERSION_1_12_0,
++
++    PRIV_VERSION_LATEST = PRIV_VERSION_1_12_0,
+ };
+ 
+ #define VEXT_VERSION_1_00_0 0x00010000
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 13d725dc20..9fc9d1cc0f 100644
+index 9fc9d1cc0f..a0c4acfb47 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -247,11 +247,6 @@ static void set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext)
-     env->misa_ext_mask = env->misa_ext = ext;
- }
- 
--static void set_priv_version(CPURISCVState *env, int priv_ver)
--{
--    env->priv_ver = priv_ver;
--}
--
- #ifndef CONFIG_USER_ONLY
- static uint8_t satp_mode_from_str(const char *satp_mode_str)
- {
-@@ -350,7 +345,7 @@ static void riscv_any_cpu_init(Object *obj)
+@@ -345,7 +345,7 @@ static void riscv_any_cpu_init(Object *obj)
          VM_1_10_SV32 : VM_1_10_SV57);
  #endif
  
--    set_priv_version(env, PRIV_VERSION_1_12_0);
-+    env->priv_ver = PRIV_VERSION_1_12_0;
+-    env->priv_ver = PRIV_VERSION_1_12_0;
++    env->priv_ver = PRIV_VERSION_LATEST;
  }
  
  #if defined(TARGET_RISCV64)
-@@ -361,7 +356,7 @@ static void rv64_base_cpu_init(Object *obj)
+@@ -356,7 +356,7 @@ static void rv64_base_cpu_init(Object *obj)
      set_misa(env, MXL_RV64, 0);
      riscv_cpu_add_user_properties(obj);
      /* Set latest version of privileged specification */
--    set_priv_version(env, PRIV_VERSION_1_12_0);
-+    env->priv_ver = PRIV_VERSION_1_12_0;
+-    env->priv_ver = PRIV_VERSION_1_12_0;
++    env->priv_ver = PRIV_VERSION_LATEST;
  #ifndef CONFIG_USER_ONLY
      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
  #endif
-@@ -371,7 +366,7 @@ static void rv64_sifive_u_cpu_init(Object *obj)
- {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     set_misa(env, MXL_RV64, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
--    set_priv_version(env, PRIV_VERSION_1_10_0);
-+    env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV39);
- #endif
-@@ -383,7 +378,7 @@ static void rv64_sifive_e_cpu_init(Object *obj)
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
-     set_misa(env, MXL_RV64, RVI | RVM | RVA | RVC | RVU);
--    set_priv_version(env, PRIV_VERSION_1_10_0);
-+    env->priv_ver = PRIV_VERSION_1_10_0;
-     cpu->cfg.mmu = false;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -396,7 +391,7 @@ static void rv64_thead_c906_cpu_init(Object *obj)
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
-     set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU);
--    set_priv_version(env, PRIV_VERSION_1_11_0);
-+    env->priv_ver = PRIV_VERSION_1_11_0;
- 
-     cpu->cfg.ext_zfh = true;
-     cpu->cfg.mmu = true;
-@@ -467,7 +462,7 @@ static void rv128_base_cpu_init(Object *obj)
+@@ -462,7 +462,7 @@ static void rv128_base_cpu_init(Object *obj)
      set_misa(env, MXL_RV128, 0);
      riscv_cpu_add_user_properties(obj);
      /* Set latest version of privileged specification */
--    set_priv_version(env, PRIV_VERSION_1_12_0);
-+    env->priv_ver = PRIV_VERSION_1_12_0;
+-    env->priv_ver = PRIV_VERSION_1_12_0;
++    env->priv_ver = PRIV_VERSION_LATEST;
  #ifndef CONFIG_USER_ONLY
      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
  #endif
-@@ -480,7 +475,7 @@ static void rv32_base_cpu_init(Object *obj)
+@@ -475,7 +475,7 @@ static void rv32_base_cpu_init(Object *obj)
      set_misa(env, MXL_RV32, 0);
      riscv_cpu_add_user_properties(obj);
      /* Set latest version of privileged specification */
--    set_priv_version(env, PRIV_VERSION_1_12_0);
-+    env->priv_ver = PRIV_VERSION_1_12_0;
+-    env->priv_ver = PRIV_VERSION_1_12_0;
++    env->priv_ver = PRIV_VERSION_LATEST;
  #ifndef CONFIG_USER_ONLY
      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
  #endif
-@@ -490,7 +485,7 @@ static void rv32_sifive_u_cpu_init(Object *obj)
- {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
--    set_priv_version(env, PRIV_VERSION_1_10_0);
-+    env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
- #endif
-@@ -502,7 +497,7 @@ static void rv32_sifive_e_cpu_init(Object *obj)
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
-     set_misa(env, MXL_RV32, RVI | RVM | RVA | RVC | RVU);
--    set_priv_version(env, PRIV_VERSION_1_10_0);
-+    env->priv_ver = PRIV_VERSION_1_10_0;
-     cpu->cfg.mmu = false;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -515,7 +510,7 @@ static void rv32_ibex_cpu_init(Object *obj)
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
-     set_misa(env, MXL_RV32, RVI | RVM | RVC | RVU);
--    set_priv_version(env, PRIV_VERSION_1_11_0);
-+    env->priv_ver = PRIV_VERSION_1_11_0;
-     cpu->cfg.mmu = false;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -529,7 +524,7 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
-     set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVC | RVU);
--    set_priv_version(env, PRIV_VERSION_1_10_0);
-+    env->priv_ver = PRIV_VERSION_1_10_0;
-     cpu->cfg.mmu = false;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -1211,7 +1206,7 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-     }
- 
-     if (priv_version >= PRIV_VERSION_1_10_0) {
--        set_priv_version(env, priv_version);
-+        env->priv_ver = priv_version;
-     }
- 
-     riscv_cpu_validate_misa_priv(env, &local_err);
 -- 
 2.40.1
 
