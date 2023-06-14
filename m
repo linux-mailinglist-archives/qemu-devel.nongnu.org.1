@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667A67309E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 23:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D661C7309E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 23:36:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Y8f-00054a-9j; Wed, 14 Jun 2023 17:34:49 -0400
+	id 1q9Y8g-0005CY-DC; Wed, 14 Jun 2023 17:34:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9Y8E-0004hF-IM; Wed, 14 Jun 2023 17:34:22 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1q9Y8d-00053w-JF; Wed, 14 Jun 2023 17:34:47 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9Y8C-0003oq-QE; Wed, 14 Jun 2023 17:34:22 -0400
+ id 1q9Y8E-0003pH-A4; Wed, 14 Jun 2023 17:34:23 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 68AFC748A5F;
- Wed, 14 Jun 2023 23:34:14 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 5C55C748A5D;
+ Wed, 14 Jun 2023 23:34:15 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3506F748A4D; Wed, 14 Jun 2023 23:34:14 +0200 (CEST)
-Message-Id: <ee7c07146e8e2e5a3d1d52aaf5a4eeef695c359d.1686776990.git.balaton@eik.bme.hu>
+ id 3EAE1748A4D; Wed, 14 Jun 2023 23:34:15 +0200 (CEST)
+Message-Id: <f2a22b2c5483a31fa2c6cdd84fe659bfc5d499cd.1686776990.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1686776990.git.balaton@eik.bme.hu>
 References: <cover.1686776990.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 09/10] target/ppc: Simplify syscall exception handlers
+Subject: [PATCH v2 10/10] target/ppc: Get CPUState in one step
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -34,10 +34,10 @@ To: qemu-devel@nongnu.org,
 Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>
-Date: Wed, 14 Jun 2023 23:34:14 +0200 (CEST)
+Date: Wed, 14 Jun 2023 23:34:15 +0200 (CEST)
 X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -58,83 +58,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After previous changes the hypercall handling in 7xx and 74xx
-exception handlers can be folded into one if statement to simpilfy
-this code.
+We can get CPUState from env with env_cpu without going through
+PowerPCCPU and casting that.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/excp_helper.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ target/ppc/excp_helper.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 1682b988ba..662457f342 100644
+index 662457f342..5edf06210f 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -740,26 +740,23 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-     {
--        int lev = env->error_code;
-+        PowerPCCPU *cpu = env_archcpu(env);
+@@ -1506,8 +1506,8 @@ static int p7_interrupt_powersave(CPUPPCState *env)
  
--        if (lev == 1 && cpu->vhyp) {
--            dump_hcall(env);
--        } else {
--            dump_syscall(env);
--        }
-         /*
-          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
-          * instruction to communicate with QEMU. The pegasos2 machine
-          * uses VOF and the 7xx CPUs, so although the 7xx don't have
-          * HV mode, we need to keep hypercall support.
-          */
--        if (lev == 1 && cpu->vhyp) {
-+        if (unlikely(env->error_code == 1 && cpu->vhyp)) {
-             PPCVirtualHypervisorClass *vhc =
-                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-+            dump_hcall(env);
-             vhc->hypercall(cpu->vhyp, cpu);
-             return;
-+        } else {
-+            dump_syscall(env);
-         }
--
-         break;
-     }
-     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
-@@ -884,26 +881,23 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-     {
--        int lev = env->error_code;
-+        PowerPCCPU *cpu = env_archcpu(env);
+ static int p7_next_unmasked_interrupt(CPUPPCState *env)
+ {
+-    PowerPCCPU *cpu = env_archcpu(env);
+-    CPUState *cs = CPU(cpu);
++    CPUState *cs = env_cpu(env);
++
+     /* Ignore MSR[EE] when coming out of some power management states */
+     bool msr_ee = FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sreset;
  
--        if (lev == 1 && cpu->vhyp) {
--            dump_hcall(env);
--        } else {
--            dump_syscall(env);
--        }
-         /*
-          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
-          * instruction to communicate with QEMU. The pegasos2 machine
-          * uses VOF and the 74xx CPUs, so although the 74xx don't have
-          * HV mode, we need to keep hypercall support.
-          */
--        if (lev == 1 && cpu->vhyp) {
-+        if (unlikely(env->error_code == 1 && cpu->vhyp)) {
-             PPCVirtualHypervisorClass *vhc =
-                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-+            dump_hcall(env);
-             vhc->hypercall(cpu->vhyp, cpu);
-             return;
-+        } else {
-+            dump_syscall(env);
-         }
--
-         break;
-     }
-     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+@@ -1596,8 +1596,8 @@ static int p8_interrupt_powersave(CPUPPCState *env)
+ 
+ static int p8_next_unmasked_interrupt(CPUPPCState *env)
+ {
+-    PowerPCCPU *cpu = env_archcpu(env);
+-    CPUState *cs = CPU(cpu);
++    CPUState *cs = env_cpu(env);
++
+     /* Ignore MSR[EE] when coming out of some power management states */
+     bool msr_ee = FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sreset;
+ 
+@@ -1717,8 +1717,8 @@ static int p9_interrupt_powersave(CPUPPCState *env)
+ 
+ static int p9_next_unmasked_interrupt(CPUPPCState *env)
+ {
+-    PowerPCCPU *cpu = env_archcpu(env);
+-    CPUState *cs = CPU(cpu);
++    CPUState *cs = env_cpu(env);
++
+     /* Ignore MSR[EE] when coming out of some power management states */
+     bool msr_ee = FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sreset;
+ 
+@@ -2412,9 +2412,8 @@ void helper_scv(CPUPPCState *env, uint32_t lev)
+ 
+ void helper_pminsn(CPUPPCState *env, uint32_t insn)
+ {
+-    CPUState *cs;
++    CPUState *cs = env_cpu(env);
+ 
+-    cs = env_cpu(env);
+     cs->halted = 1;
+ 
+     /* Condition for waking up at 0x100 */
 -- 
 2.30.9
 
