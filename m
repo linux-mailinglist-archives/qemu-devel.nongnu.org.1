@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CE572F3EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 07:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99EB772F40C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 07:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9IhV-0001bV-2P; Wed, 14 Jun 2023 01:05:45 -0400
+	id 1q9Ipw-0003X6-77; Wed, 14 Jun 2023 01:14:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9IhT-0001bD-GB
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 01:05:43 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q9Ipi-0003UZ-JI; Wed, 14 Jun 2023 01:14:17 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9IhR-0007b4-U4
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 01:05:43 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3094910b150so6239196f8f.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 22:05:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q9Ipg-0000Vn-Rn; Wed, 14 Jun 2023 01:14:14 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b4fef08cfdso1416875ad.1; 
+ Tue, 13 Jun 2023 22:14:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686719140; x=1689311140;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DhJSJwGV3IFbi6Z1MspvvxmS71qe7wNlbKUPvr+cxHY=;
- b=anqae0tUIJifBO0KaTJOn6GrJfv4aBeL7sLS7QSOo8Ibxa9yzWgiEPIG8seoxaDzBc
- AZuEFnfQVURa8A3WfgU+fwiYTHZByNFVtWPFd30KV4K08ZdFkTuYFiunhdvcGL0vW/NR
- 4IwyWQKCCZ8dgQN8rC8m1RAilhpYVtoUhounwktLn8Hc6tz1jDmfOZkGmfWdS/cZadUI
- xE0TWl3oU++HvzEuO/pvZHgI1NbVXRBp4iy1GbU7IL8yhBS9vEgiWq8+I427KX3fAmRS
- 1+oW0mzh4MbXY5zfwfnE3eWgwGhzDYSafx7OpAygWym1BPrEwEeBTASbV5rlKbWyNCfV
- MIZQ==
+ d=gmail.com; s=20221208; t=1686719651; x=1689311651;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JnZ61BcQYKk9V0dUrNvOt5ZmkfLESJjmDyTMVtnco/M=;
+ b=jD0XDjVMLqG2iuXudu4yYdt0YQ/L1t6UzgtFMqS3xLQoHVMMIvSnOrGsHma/al3rGP
+ hKhYoQioUgV367cVr9b0eL9j6213TCU1Q9x4WKZzTL4rxHi53u4c6ZzB2MsJPbLoBne7
+ lgcHltzfdqIG5OkA15MoasJSEuJnuHFj9Posv2p/LRxG3hZsHtJLaTNssE91vpGcjaDT
+ qEpq39sygaUGNRR8cgwxpAzT+8R5WjYSu37SsvFy9nlRNlzKq6JHNF7G8AgpEackB80U
+ wSVdFquuSUWi0j3p4/SH882wsqCjVjoxl17YIdNwCXjpfMUmIzmO9AE7ta9h/TH1np96
+ 4tHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686719140; x=1689311140;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DhJSJwGV3IFbi6Z1MspvvxmS71qe7wNlbKUPvr+cxHY=;
- b=BRF2l4w3GACNb5EbKUeXMELIYSKZDppbqwyfvUUvJou5IRtC415bmPtOAf3p4lH4FD
- cdnJLSwd3lHXrCi9uPAfDn55An0FXL21p0F4st26g89S+p55CiuDSQsDU1UKemfB9Kp0
- 5kxXlq22twluxgda9PH3D/eZO5w8fCpIc1TjEbIYuBz8CtJ+Yy5E46glnvr5juo/DqLt
- vpHmg7C83I4UOmywpnIKM/WCxwxMdfxh3gUlLAEElV9m220qZp50o2I8y3dEkSVNe0GC
- 9nJ3nxKkCClUZzM35qrvxle7ZiIThUNvRCj3qqBHWU2yGf9Jx2K/PQc5VEIT6DHVbV5D
- /7KA==
-X-Gm-Message-State: AC+VfDzZx6uJvs36gbVDkOklTQG16GeqO8q3V2S4j8TtoNDKPQeA2oSA
- cycf2hGgQ3H+N+D55L3cRsMMtA==
-X-Google-Smtp-Source: ACHHUZ4Cb3U4XEKUl/SYSvCeDVlaNoCiDGjSU3LWrxca0bjMXuXKKL9Myp297zpx2Y8oR3mw20qPEg==
-X-Received: by 2002:a5d:484f:0:b0:30f:ca86:98a2 with SMTP id
- n15-20020a5d484f000000b0030fca8698a2mr3604326wrs.24.1686719140166; 
- Tue, 13 Jun 2023 22:05:40 -0700 (PDT)
-Received: from [192.168.4.112] (90-182-62-66.rcp.o2.cz. [90.182.62.66])
+ d=1e100.net; s=20221208; t=1686719651; x=1689311651;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=JnZ61BcQYKk9V0dUrNvOt5ZmkfLESJjmDyTMVtnco/M=;
+ b=LrvL3J7LV+FALPssnwY7Cg2IWxUczPwQ3W97YStK2ifXG/u7Lcm5p2iSrzq4i4Z2qI
+ cbMgxTJK4rBDyqh3kKwNW7uvrJMuoXiRd+djQIrLXntwufOew1/g2E2Gyy//c1DnfTTO
+ VGbM8PSwB8o7nszc+5LfFRJsUuCOXDpNLwBYQwNl2dFiZc/prTLcr5vnPwPpCcoMZ1E5
+ QMOwPkpm8IokLJnWjgWhwAQW5j/imu2nY8DLYW3f1PKwPSq3wYM3lGjC08V0IC/BECzu
+ VgNiP4h/3Yt8N8RyzJ6N5qthWaCrDFM2FvfsjqnOsk7eCryNl95rsn2N1gwtLhzMGZTY
+ C3hQ==
+X-Gm-Message-State: AC+VfDw5In9DSJRdHZTSBJCcMv0Rr5D+k+64dycjEHI2tdBA+l5YuXG8
+ kkbNI24YYmJEZmXuZFKleqA=
+X-Google-Smtp-Source: ACHHUZ6JQKWX2WiqxY6/R5yu4rhWvfcXtbpYM4bjTufDEISNCtGx9lgrUB1nq5Dsfywei4lbpSupPA==
+X-Received: by 2002:a17:902:8205:b0:1b2:439f:aa6f with SMTP id
+ x5-20020a170902820500b001b2439faa6fmr8380984pln.44.1686719650622; 
+ Tue, 13 Jun 2023 22:14:10 -0700 (PDT)
+Received: from localhost (220-244-204-78.tpgi.com.au. [220.244.204.78])
  by smtp.gmail.com with ESMTPSA id
- d17-20020adffbd1000000b0030fb4b55c13sm10938676wrs.96.2023.06.13.22.05.39
+ iw15-20020a170903044f00b001aae909cfbbsm6117244plb.119.2023.06.13.22.14.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 22:05:39 -0700 (PDT)
-Message-ID: <73b5e09d-b8df-9bf6-55df-15b1fbfb587a@linaro.org>
-Date: Wed, 14 Jun 2023 07:05:38 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 25/26] target/arm/tcg: Rename 'helper.h' ->
- 'tcg/helper.h.inc'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20230611085846.21415-1-philmd@linaro.org>
- <20230611085846.21415-26-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230611085846.21415-26-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Tue, 13 Jun 2023 22:14:10 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Jun 2023 15:14:05 +1000
+Message-Id: <CTC47NS1KELC.35U22YEEW26UP@wheely>
+Subject: Re: [PATCH 0/4] ppc/pnv: Add chiptod and core timebase state
+ machine models
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <dbarboza@ventanamicro.com>, "Frederic Barrat"
+ <frederic.barrat@fr.ibm.com>, "Michael Neuling" <mikey@neuling.org>
+X-Mailer: aerc 0.14.0
+References: <20230603233612.125879-1-npiggin@gmail.com>
+ <e3f591df-6569-b396-0cf7-0ea62aee9f0c@kaod.org>
+In-Reply-To: <e3f591df-6569-b396-0cf7-0ea62aee9f0c@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,42 +94,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/11/23 10:58, Philippe Mathieu-Daudé wrote:
-> Since commit 139c1837db ("meson: rename included C source files
-> to .c.inc"), QEMU standard procedure for included C files is to
-> use *.c.inc.
-> 
-> Besides, since commit 6a0057aa22 ("docs/devel: make a statement
-> about includes") this is documented as the Coding Style:
-> 
->    If you do use template header files they should be named with
->    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
->    being included for expansion.
-> 
-> Therefore rename 'helper.h' as 'helper.h.inc'. Since this file
-> is TCG-specific, move it to the tcg/ directory.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/arm/tcg/translate.h                | 2 +-
->   target/arm/{helper.h => tcg/helper.h.inc} | 0
->   target/arm/debug_helper.c                 | 2 +-
->   target/arm/helper.c                       | 2 +-
->   target/arm/tcg/crypto_helper.c            | 2 +-
->   target/arm/tcg/helper-a64.c               | 2 +-
->   target/arm/tcg/hflags.c                   | 2 +-
->   target/arm/tcg/m_helper.c                 | 2 +-
->   target/arm/tcg/op_helper.c                | 2 +-
->   target/arm/tcg/psci.c                     | 2 +-
->   target/arm/tcg/tlb_helper.c               | 2 +-
->   target/arm/tcg/translate.c                | 2 +-
->   target/arm/tcg/vec_helper.c               | 2 +-
->   target/arm/vfp_helper.c                   | 2 +-
->   14 files changed, 13 insertions(+), 13 deletions(-)
->   rename target/arm/{helper.h => tcg/helper.h.inc} (100%)
+On Tue Jun 6, 2023 at 11:59 PM AEST, C=C3=A9dric Le Goater wrote:
+> On 6/4/23 01:36, Nicholas Piggin wrote:
+> > This adds support for chiptod and core timebase state machine models in
+> > the powernv POWER9 and POWER10 models.
+> >=20
+> > This does not actually change the time or the value in TB registers
+> > (because they are alrady synced in QEMU), but it does go through the
+> > motions. It is enough to be able to run skiboot's chiptod initialisatio=
+n
+> > code that synchronises core timebases (after a patch to prevent skiboot
+> > skipping chiptod for QEMU, posted to skiboot mailing list).
+> >=20
+> > Sorry there was some delay since the last posting. There is a bit more
+> > interest in this recently but feedback and comments from RFC was not
+> > forgotten and is much appreciated.
+> >=20
+> > https://lists.gnu.org/archive/html/qemu-ppc/2022-08/msg00324.html
+> >=20
+> > I think I accounted for everything except moving register defines to th=
+e
+> > .h file. I'm on the fence about that but if they are only used in the .=
+c
+> > file I think it's okay to keep them there for now. I cut out a lot of
+> > unused ones so it's not so cluttered now.
+> >=20
+> > Lots of other changes and fixes since that RFC. Notably:
+> > - Register names changed to match the workbook names instead of skiboot=
+.
+> > - TFMR moved to timebase_helper.c from misc_helper.c
+> > - More comprehensive model and error checking, particularly of TFMR.
+> > - POWER10 with multi-chip support.
+> > - chiptod and core timebase linked via specific state instead of TFMR.
+>
+>
+> The chiptod units are not exposed to the OS, it is all handled at FW
+> level AFAIK. Could the OPAL people provide some feedback on the low level
+> models ?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Well, no takers so far. I guess I'm a OPAL people :)
 
+I did some of the P10 chiptod addressing in skiboot, at least. This
+patch does work with the skiboot chiptod driver at least.
 
-r~
+I would eventually like to add in the ability to actually change the
+TB with it, and inject errors and generate HMIs because that's an area
+that seem to be a bit lacking (most of such testing seemed to be done
+on real hardware using special time facility corruption injection).
+
+But yes for now it is a bit difficult to verify it does much useful
+aside from booting skiboot (+ patch to enable chiptod on QEMU I posted
+recently).
+
+Thanks,
+Nick
 
