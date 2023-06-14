@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D0B730AA9
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EA8730AA5
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 00:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Z06-00044I-2g; Wed, 14 Jun 2023 18:30:02 -0400
+	id 1q9Z04-00043o-UG; Wed, 14 Jun 2023 18:30:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1q9Z03-00043U-VK
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1q9Z03-00043R-Qh
  for qemu-devel@nongnu.org; Wed, 14 Jun 2023 18:29:59 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1q9Z01-0001Id-VU
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1q9Z02-0001LV-2R
  for qemu-devel@nongnu.org; Wed, 14 Jun 2023 18:29:59 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f766777605so1903492e87.1
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4f62b512fe2so9820663e87.1
  for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 15:29:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1686781795; x=1689373795;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1686781796; x=1689373796;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+cL2rCd5bn5Vn/mbBGD7fLP06e34FnUV4Sj246qRcww=;
- b=mjdntGTnRSO4dsXKIwKvBPlhV8sKUKSOaxEZ6IiIVThAiHiux/L/4L0VZIId3rg+VH
- KzI1R2BRq0pLtuVctjuuyMQY6mxXCd0K3rlX4rkz8cf8ytZeO5BbJITttQLN0a5ara+m
- 7+Sg3qMEvdH3/znCBcKSz0G4YzUcOJZqsB7lmCUhjPqfk+KVuCAemktikF9ikI/5MO8l
- x9y7chXnKszmZ1V43C/DKQTDUrZ36kkJfYlkBZlGmqc8CQYjgGlx0bhGM0kahy7GHPJS
- 2RgZn+f3GOGBJ79Wt+UwRzS6L3iBAgvnMYQoUdI/ermZaw9w8+HeuvINZThqcpmWKYP/
- bYow==
+ bh=lPRoSPcAAIcfXPxh8LELJDPj5wkGRqtvwliORQSuHGw=;
+ b=C6dZ+T+6Cg/4lYDSUweC3WluXpEzWFSSiQna80ADjLBdWiC/7+XyFdhI2WCEm8OCmO
+ /CvLzFCYnJcXO+rX1FrjojFoQ2tDKw5ZW7XwW+WZ+y22re54rh4f5xYAkDDu5mKktkPi
+ XPLNoH2bisyCgQImeNWXLvkt47V4NjAbrHF5ckbYHXSXlarvjb4sPmlHmKp7XXS3Edu4
+ Ac1wdCO5Y17J0CmjQOhQu1mFAmS0JOKnrH9Z/enhlanz583P8fAsM7LK5d3Tl5PSx1IY
+ YY7yidIBxc0T+EtEFisgL+DhnaqVQzRefXTWk7A/C4k5yr1N40hB/a66s6HNPqhs3UiT
+ tVrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686781795; x=1689373795;
+ d=1e100.net; s=20221208; t=1686781796; x=1689373796;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+cL2rCd5bn5Vn/mbBGD7fLP06e34FnUV4Sj246qRcww=;
- b=Gm1hwxbPHGxVkXoEcWxZjzMyaBUmAyap/y+NpUuhRxg/hU5McSomUhmE7l5kFmJVJf
- FNDRyvIby1ghrf8/jJ6Ic+ye7SmkVXyLdntj6ugurTQ4NuHfTpJyoFjcv3RHG8Qm9s86
- 5Mwd3HhwamEZkwZ2rasKhoeFDdL92NiraORntvIwfM+h5BBiVmWkQb9xqMJFcVMp94aq
- 37rvj9fX0CiEKYe+G5tFTRiIVV/56tv1iqL39qSAAYWaYaYs5kaLhitBhOguqopsjWMr
- fR8a9hUnp9E6nmfe8kUIaRBp8N13/2I6chy4B1THRfFwdodvo3/tVj4+LvyAnUTNEv8/
- C/oA==
-X-Gm-Message-State: AC+VfDx5GK8TdnnJeIYbJRDsnNMjGutgoNEf4fXJCsiFL0X0iUvImhz8
- /ayK3FHAkH7YEScux7Y7u/PUcQ==
-X-Google-Smtp-Source: ACHHUZ6KbwA4b1TczvGebNWSWb6FXpsggFLIyvqDDw3JTCa/fjaTFILc+9F/Cj2sbOiQTP47OoaEgQ==
-X-Received: by 2002:a19:e049:0:b0:4f7:618d:1e74 with SMTP id
- g9-20020a19e049000000b004f7618d1e74mr3442751lfj.12.1686781795133; 
- Wed, 14 Jun 2023 15:29:55 -0700 (PDT)
+ bh=lPRoSPcAAIcfXPxh8LELJDPj5wkGRqtvwliORQSuHGw=;
+ b=gBhIJfe+tCEFI+hBjzHeJJRbttRg1kWkoAsaVV6GMorkTdVNUuuTo1fX20ef2iiSOf
+ cw1KvMOX1ifNHnDrQsXr/SspO35YrygY122ZdRVS2HhC5IhuWBs1JUVKJSG7mLqle7M5
+ iKRW1EvTMLB7DECZXtbUaf2tWzSb9f7fLgfLRd261zJiyP2QXEojESnUpVl3+jWFpwCV
+ gvHidhIpUSAmqosD6my+t3oS30QymUMBlpK1DS8RBEwedJ+KRODftKtUejMoCJlTg6Or
+ VUQtKN5ujvVyuU8wItdEW5kw3zKRrudlCxa/3ZbFitZuLQNdnvdktyiFSDZK6FT3IATN
+ MI6g==
+X-Gm-Message-State: AC+VfDw3ewiB2PaeC9qfa8cnBSubsmhsBeRCeSDaoNUY/QLK661IjG9k
+ hAunJrwP2ldwBOC7hD1T8L1ND1JeboYUTqjLrno=
+X-Google-Smtp-Source: ACHHUZ79+mnFPd2qSDnlqnU7HvBcKbTSADrwvwU8AkqANE29RAkVUnlUWZ2OnxT/u/ROmeiNyBOdaQ==
+X-Received: by 2002:a19:8c05:0:b0:4f7:69b9:fa07 with SMTP id
+ o5-20020a198c05000000b004f769b9fa07mr1496335lfd.45.1686781796496; 
+ Wed, 14 Jun 2023 15:29:56 -0700 (PDT)
 Received: from localhost.localdomain ([46.98.110.34])
  by smtp.gmail.com with ESMTPSA id
- x8-20020ac24888000000b004f39837204fsm2279483lfc.85.2023.06.14.15.29.53
+ x8-20020ac24888000000b004f39837204fsm2279483lfc.85.2023.06.14.15.29.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jun 2023 15:29:54 -0700 (PDT)
+ Wed, 14 Jun 2023 15:29:56 -0700 (PDT)
 From: Andrew Melnychenko <andrew@daynix.com>
 To: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
  qemu-devel@nongnu.org, berrange@redhat.com
 Cc: yuri.benditovich@daynix.com,
 	yan@daynix.com
-Subject: [PATCH v3 4/6] ebpf: Added declaration/initialization routines.
-Date: Thu, 15 Jun 2023 01:10:24 +0300
-Message-Id: <20230614221026.56950-5-andrew@daynix.com>
+Subject: [PATCH v3 5/6] qmp: Added new command to retrieve eBPF blob.
+Date: Thu, 15 Jun 2023 01:10:25 +0300
+Message-Id: <20230614221026.56950-6-andrew@daynix.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230614221026.56950-1-andrew@daynix.com>
 References: <20230614221026.56950-1-andrew@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::133;
- envelope-from=andrew@daynix.com; helo=mail-lf1-x133.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::135;
+ envelope-from=andrew@daynix.com; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,168 +90,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now, the binary objects may be retrieved by id.
-It would require for future qmp commands that may require specific
-eBPF blob.
+Added command "request-ebpf". This command returns
+eBPF program encoded base64. The program taken from the
+skeleton and essentially is an ELF object that can be
+loaded in the future with libbpf.
 
 Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 ---
- ebpf/ebpf.c      | 70 ++++++++++++++++++++++++++++++++++++++++++++++++
- ebpf/ebpf.h      | 31 +++++++++++++++++++++
- ebpf/ebpf_rss.c  |  6 +++++
- ebpf/meson.build |  2 +-
- 4 files changed, 108 insertions(+), 1 deletion(-)
- create mode 100644 ebpf/ebpf.c
- create mode 100644 ebpf/ebpf.h
+ qapi/ebpf.json        | 55 +++++++++++++++++++++++++++++++++++++++++++
+ qapi/meson.build      |  1 +
+ qapi/qapi-schema.json |  1 +
+ 3 files changed, 57 insertions(+)
+ create mode 100644 qapi/ebpf.json
 
-diff --git a/ebpf/ebpf.c b/ebpf/ebpf.c
+diff --git a/qapi/ebpf.json b/qapi/ebpf.json
 new file mode 100644
-index 00000000000..ea97c0403ee
+index 00000000000..6f9a1f1a0c9
 --- /dev/null
-+++ b/ebpf/ebpf.c
-@@ -0,0 +1,70 @@
-+/*
-+ * QEMU eBPF binary declaration routine.
-+ *
-+ * Developed by Daynix Computing LTD (http://www.daynix.com)
-+ *
-+ * Authors:
-+ *  Andrew Melnychenko <andrew@daynix.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * later.  See the COPYING file in the top-level directory.
-+ */
++++ b/qapi/ebpf.json
+@@ -0,0 +1,55 @@
++# -*- Mode: Python -*-
++# vim: filetype=python
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or later.
++# See the COPYING file in the top-level directory.
 +
-+#include "qemu/osdep.h"
-+#include "qemu/queue.h"
-+#include "qapi/error.h"
-+#include "qapi/qapi-commands-ebpf.h"
-+#include "ebpf/ebpf.h"
++##
++# = Machines
++##
 +
-+struct ElfBinaryDataEntry {
-+    int id;
-+    const void *data;
-+    size_t datalen;
++{ 'include': 'common.json' }
 +
-+    QSLIST_ENTRY(ElfBinaryDataEntry) node;
-+};
++##
++# @EbpfObject:
++#
++# Structure that holds eBPF ELF object encoded in base64.
++#
++# Since: 8.1
++#
++##
++{ 'struct': 'EbpfObject',
++  'data': {'object': 'str'} }
 +
-+static QSLIST_HEAD(, ElfBinaryDataEntry) ebpf_elf_obj_list =
-+                                            QSLIST_HEAD_INITIALIZER();
++##
++# @EbpfProgramID:
++#
++# An enumeration of the eBPF programs. Currently, only RSS is presented.
++# RSS - Receive side scaling, technology that allows steering traffic
++# between queues by calculation hash. Users may set up indirection table
++# and hash/packet types configurations. Used with virtio-net.
++#
++# Since: 8.1
++##
++{ 'enum': 'EbpfProgramID',
++  'data': [ { 'name': 'rss', 'if': 'CONFIG_EBPF' } ] }
 +
-+void ebpf_register_binary_data(int id, const void *data, size_t datalen)
-+{
-+    struct ElfBinaryDataEntry *dataentry = NULL;
++##
++# @request-ebpf:
++#
++# Returns eBPF object that can be loaded with libbpf.
++# Management applications (g.e. libvirt) may load it and pass file
++# descriptors to QEMU. Which allows running QEMU without BPF capabilities.
++# It's crucial that eBPF program/map is compatible with QEMU, so it's
++# provided through QMP.
++#
++# Returns: RSS eBPF object encoded in base64.
++#
++# Since: 8.1
++#
++##
++{ 'command': 'request-ebpf',
++  'data': { 'id': 'EbpfProgramID' },
++  'returns': 'EbpfObject',
++  'if': 'CONFIG_EBPF' }
 +
-+    dataentry = g_new0(struct ElfBinaryDataEntry, 1);
-+    dataentry->data = data;
-+    dataentry->datalen = datalen;
-+    dataentry->id = id;
-+
-+    QSLIST_INSERT_HEAD(&ebpf_elf_obj_list, dataentry, node);
-+}
-+
-+const void *ebpf_find_binary_by_id(int id, size_t *sz, Error **errp)
-+{
-+    struct ElfBinaryDataEntry *it = NULL;
-+    QSLIST_FOREACH(it, &ebpf_elf_obj_list, node) {
-+        if (id == it->id) {
-+            *sz = it->datalen;
-+            return it->data;
-+        }
-+    }
-+
-+    error_setg(errp, "can't find eBPF object with id: %d", id);
-+
-+    return NULL;
-+}
-+
-+EbpfObject *qmp_request_ebpf(EbpfProgramID id, Error **errp)
-+{
-+    EbpfObject *ret = NULL;
-+    size_t size = 0;
-+    const void *data = ebpf_find_binary_by_id(id, &size, errp);
-+    if (!data) {
-+        return NULL;
-+    }
-+
-+    ret = g_new0(EbpfObject, 1);
-+    ret->object = g_base64_encode(data, size);
-+
-+    return ret;
-+}
-diff --git a/ebpf/ebpf.h b/ebpf/ebpf.h
-new file mode 100644
-index 00000000000..b6266b28b8c
---- /dev/null
-+++ b/ebpf/ebpf.h
-@@ -0,0 +1,31 @@
-+/*
-+ * QEMU eBPF binary declaration routine.
-+ *
-+ * Developed by Daynix Computing LTD (http://www.daynix.com)
-+ *
-+ * Authors:
-+ *  Andrew Melnychenko <andrew@daynix.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * later.  See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef EBPF_H
-+#define EBPF_H
-+
-+struct Error;
-+
-+void ebpf_register_binary_data(int id, const void *data,
-+                               size_t datalen);
-+const void *ebpf_find_binary_by_id(int id, size_t *sz,
-+                                   struct Error **errp);
-+
-+#define ebpf_binary_init(id, fn)                                           \
-+static void __attribute__((constructor)) ebpf_binary_init_ ## fn(void)     \
-+{                                                                          \
-+    size_t datalen = 0;                                                    \
-+    const void *data = fn(&datalen);                                       \
-+    ebpf_register_binary_data(id, data, datalen);                          \
-+}
-+
-+#endif /* EBPF_H */
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index 24bc6cc409e..8679dc452df 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -13,6 +13,8 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qapi/qapi-types-misc.h"
-+#include "qapi/qapi-commands-ebpf.h"
- 
- #include <bpf/libbpf.h>
- #include <bpf/bpf.h>
-@@ -21,6 +23,8 @@
- 
- #include "ebpf/ebpf_rss.h"
- #include "ebpf/rss.bpf.skeleton.h"
-+#include "ebpf/ebpf.h"
-+
- #include "trace.h"
- 
- void ebpf_rss_init(struct EBPFRSSContext *ctx)
-@@ -261,3 +265,5 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
-     ctx->map_toeplitz_key = -1;
-     ctx->map_indirections_table = -1;
- }
-+
-+ebpf_binary_init(EBPF_PROGRAMID_RSS, rss_bpf__elf_bytes)
-diff --git a/ebpf/meson.build b/ebpf/meson.build
-index 2dd0fd89480..272ec2d5311 100644
---- a/ebpf/meson.build
-+++ b/ebpf/meson.build
-@@ -1 +1 @@
--softmmu_ss.add(when: libbpf, if_true: files('ebpf_rss.c'), if_false: files('ebpf_rss-stub.c'))
-+softmmu_ss.add(when: libbpf, if_true: files('ebpf.c', 'ebpf_rss.c'), if_false: files('ebpf_rss-stub.c'))
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 9fd480c4d81..12a1cb1f9c2 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -52,6 +52,7 @@ qapi_all_modules = [
+   'transaction',
+   'virtio',
+   'yank',
++  'ebpf',
+ ]
+ if have_system
+   qapi_all_modules += [
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index 6594afba312..169cfe8d386 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -79,3 +79,4 @@
+ { 'include': 'virtio.json' }
+ { 'include': 'cryptodev.json' }
+ { 'include': 'cxl.json' }
++{ 'include': 'ebpf.json' }
 -- 
 2.39.1
 
