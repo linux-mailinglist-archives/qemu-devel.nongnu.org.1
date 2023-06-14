@@ -2,48 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B26772FF51
+	by mail.lfdr.de (Postfix) with ESMTPS id 9097C72FF52
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 15:02:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Q7k-0002iT-E3; Wed, 14 Jun 2023 09:01:20 -0400
+	id 1q9Q7j-0002iN-HG; Wed, 14 Jun 2023 09:01:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1q9GF5-0007uE-JV
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 22:28:15 -0400
-Received: from mail-4323.proton.ch ([185.70.43.23])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1q9KQb-0002C1-G3
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 02:56:25 -0400
+Received: from relay2-d.mail.gandi.net ([217.70.183.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1q9GF2-0002ft-DR
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 22:28:15 -0400
-Date: Wed, 14 Jun 2023 02:27:59 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laplante.io;
- s=protonmail3; t=1686709688; x=1686968888;
- bh=8uPW03U55VSYSgjj85LL6fF+t0B9YdJD9M2RWCsyShE=;
- h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
- Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
- b=eXGIMoG+fAVydhTNd2OgL0g4I2P5xXYJB1sSxY6lHEQ98EPgYna7KsyLne5pgh+iX
- vl/W7urSqhEv/CiaysXLB9FnPxIVNksIh1O2SUF0vdfkyweO4EFCqPlYzTNXCZBhdD
- S0jEkK4Jt4HNUQb3mHgNXfd35yiL7/iJQx5sOXeRdzAOCLx/TgfIDC6QuSY2+hvwWS
- BKD9LUcEQ3cjk4WfcOX4DAlmTVwW4M+3AZAwnK0TlSR9YX2UnC7Ua6V48NFg17nDUW
- Qi5lXSIuXgdejWr6n//F0H+tl75M9O2ILZPn6be8nxKLnRwIbTVjTXdB1hjqBQquJg
- iWBy5Z29k1SCQ==
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-From: Chris Laplante <chris@laplante.io>
-Subject: Emulation of 'System OFF' mode in ARM nRF51 SoCs
-Message-ID: <j6_NJPGssQ1eBAedcPGs0eURXeMcehbzMcwJtaGvzN_FdUbQKyTP1cyEJWC759G72UNSVpX-QmQ4u6iJvZmt2c_vRO7rhryDQs9icVy5iEI=@laplante.io>
-Feedback-ID: 43500449:user:proton
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1q9KQZ-0004PW-Kg
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 02:56:25 -0400
+X-GND-Sasl: c@jia.je
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=gm1;
+ t=1686725779;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9o4m1BpX4P9b7JSMXRvUjNvvXUje8lOxH95OaEmqIiM=;
+ b=MWb9f2ZDjxbkJJPxJHjKLLVyGh46lvNBpV0cNbdqi06W2+5+Ty0mAQpDde1Cs8kZ1bZIQI
+ LSOWePsmUwVe2OSJOqKMSC4jQRN/3Tej5aEBrmQ25jHkhh0cnNTgB4EAYynrqxCdJVH6cL
+ G080QvlV4ee3UJTD90GbD94kCaqIrK2gLby9hsamD71PTTymZl6uVHNyT5AYsBZUI5HsuS
+ v3zVazfg91nVvIkYqqBY8sKChg9tclVAVPYgXyTBP9aJCsCWihKYTZDLkrRxvlHnwgP2gd
+ M+BWr6B5S5mXr5PfcDp/xswFMM7xkW0zLpJF8R11Uc942mfXb3SlLelaUqzasw==
+X-GND-Sasl: c@jia.je
+X-GND-Sasl: c@jia.je
+X-GND-Sasl: c@jia.je
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1E5DF40004;
+ Wed, 14 Jun 2023 06:56:16 +0000 (UTC)
+From: Jiajie Chen <c@jia.je>
+To: qemu-devel@nongnu.org
+Cc: Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: [PATCH] target/loongarch: Fix CSR.DMW0-3.VSEG check
+Date: Wed, 14 Jun 2023 14:55:56 +0800
+Message-Id: <20230614065556.2397513-1-c@jia.je>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.43.23; envelope-from=chris@laplante.io;
- helo=mail-4323.proton.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=217.70.183.194; envelope-from=c@jia.je;
+ helo=relay2-d.mail.gandi.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Wed, 14 Jun 2023 09:01:16 -0400
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,38 +69,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+The previous code checks whether the highest 16 bits of virtual address
+equal to that of CSR.DMW0-3. This is incorrect according to the spec,
+and is corrected to compare only the highest four bits instead.
 
-I am working on improving nRF51 emulation. Specifically I want to implement=
- the special "System OFF" mode. System OFF is a power saving mode. In this =
-mode, the system can only be woken up by a reset or a handful of peripheral=
-s (most notably, GPIO via high/low level detection on configured pins).=
-=C2=A0System reset is triggered upon wakeup.
+Signed-off-by: Jiajie Chen <c@jia.je>
+---
+ target/loongarch/tlb_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I've been digging into the QEMU mailing list and source code and have come =
-to the conclusion that deep sleep and low power modes are not implemented. =
-There seems to be support for turning off ARM CPU cores, e.g. as used by im=
-x6_src.c. But that doesn't apply here because I only have one CPU.=C2=A0
+diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
+index cce1db1e0a..6e00190547 100644
+--- a/target/loongarch/tlb_helper.c
++++ b/target/loongarch/tlb_helper.c
+@@ -185,10 +185,10 @@ static int get_physical_address(CPULoongArchState *env, hwaddr *physical,
+     }
+ 
+     plv = kernel_mode | (user_mode << R_CSR_DMW_PLV3_SHIFT);
+-    base_v = address >> TARGET_VIRT_ADDR_SPACE_BITS;
++    base_v = address >> R_CSR_DMW_VSEG_SHIFT;
+     /* Check direct map window */
+     for (int i = 0; i < 4; i++) {
+-        base_c = env->CSR_DMW[i] >> TARGET_VIRT_ADDR_SPACE_BITS;
++        base_c = FIELD_EX64(env->CSR_DMW[i], CSR_DMW, VSEG);
+         if ((plv & env->CSR_DMW[i]) && (base_c == base_v)) {
+             *physical = dmw_va2pa(address);
+             *prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+-- 
+2.30.2
 
-So ultimately what I think I will try to implement is what the nRF51 refere=
-nce manual calls "Emulated System OFF mode". From the reference manual:
-
-    If the device is in debug interface mode, System OFF will be emulated t=
-o secure=20
-    that all required resources needed for debugging are available during S=
-ystem OFF...=20
-    Since the CPU is kept on in emulated System OFF mode, it is recommended=
-=20
-    to add an infinite loop directly after entering System OFF, to prevent =
-the CPU from=20
-    executing code that normally should not be executed.
-
-Does anyone have any guidance on how to implement this? I don't particularl=
-y care about fidelity. As long as a GPIO level trigger can break the CPU ou=
-t of the infinite loop (which the reference manual tells users to add) and =
-jump into the reset vector, it will be good enough for my use. I don't real=
-ly care about masking out other interrupt sources, for example.
-
-Thanks,
-Chris
 
