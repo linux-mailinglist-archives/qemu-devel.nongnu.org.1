@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3612E72F1EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C380572F1FC
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FEX-0003SC-HS; Tue, 13 Jun 2023 21:23:37 -0400
+	id 1q9FEd-0003Wd-1b; Tue, 13 Jun 2023 21:23:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FEJ-0003DZ-Ke
+ id 1q9FEJ-0003Da-P0
  for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:23:24 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FEF-0004rw-CW
+ id 1q9FEI-0004s8-4J
  for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:23:23 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-65314ee05c6so4961794b3a.1
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:23:14 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-652d76be8c2so6520022b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:23:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705793; x=1689297793;
+ d=gmail.com; s=20221208; t=1686705798; x=1689297798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CUHnE2P7VZxRGdyuHNBXBOqkF5jaVDQrNwyjd5LDDLI=;
- b=Md2YVt3Ec3Hf6AFhqsJJHOhE1smFMBn9GVqAWnrq86r9lUZp1hyX7agxJcCpBmtQ5k
- IeRg5YVQ8wMSH0RqgBk2C56ISNrX6VqCGTcDw1CBIn4xTjdz2RVC5Z7brLrBh5ePQqE7
- 2SexufzgAHAXe2oux8K7Ot54VFZBk8fyNJ/sTRvLvFXeU/T867NK4PtUtx65aUbFvSSY
- uCKC3pZT/JGH6ohZx+te8UaxCSSQEKeB0XGRcQaABritE7ezDHy/9r1xX9vX4jQw9+lW
- EjNz5U05yxKu86rZizkakNWBYjfeBhtCAI0kEjlg5/6sJ3sxcqB2GBa8v2+fn1Pc4NUM
- iSuw==
+ bh=QA+M14ZhEeFLD7dM1TXS8+1/+CqbWIar9yiZjOObFMo=;
+ b=JFKh7mk4R76VkA40QVrCTyNZTw8Eesn/3RuNuLAptv8XoSYSkDDPTfBPo/2Hb2CR9x
+ daxUiaYISJGemLiQO2WVFLotu+yTzZHj2UjdnQcA0NTQG/MBz4pBV1eqCuhxnJTHnwKH
+ x43TJLT7M5P+9Jm8XndqLWhwD4UDJpQaJ8/JFCtCR3IAA8CzhLOxwty5X2ClzFKclJ2c
+ n+zMViBL5nDIec/oMXSIbouhCVpw9Zko+YVEVQymkSmbQrqKt0Yb1KI+kPG/1/3EBwkj
+ o892fjcq4kALjdCn5KH1jXc+08tMSqNvAN+5pBvywvHbxK25C7yZpygz3jsfalIlqIuV
+ eTOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705793; x=1689297793;
+ d=1e100.net; s=20221208; t=1686705798; x=1689297798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CUHnE2P7VZxRGdyuHNBXBOqkF5jaVDQrNwyjd5LDDLI=;
- b=bG9UPD8xxUQnW56u61fiH5S/k0qrFRdTqF+3jtqq42z7Q3f3NskqzTn9EOLIJG4ni5
- oi0gkxD5p/5CcuCNgWvMng9vUEJeAWEZtALP4tlBxff4RcbhEshZIGdJsVQAE6reXJd8
- O6tZCU45NmQ59JCq28ic2+HzD7IzqV6KhBpHTwPqcP3w6GSUCWB+yi/2+hgO3F6jleeN
- +C8uVeujkjeb7t9O0eqNqeVPZknQHsuwi4gFEx2PuKomum2zMMgKrXsHRjVgE3MLkiBw
- gzNSEaTORr8zKXlddVoCE3/HSZlu/DPYaA7wxlcc8j+RZ2LkelCLF82enPyV2KycxKv1
- 0gJQ==
-X-Gm-Message-State: AC+VfDyekU/WfUxLJyys1ZjdHK2cIqPkpNJmH2++M3esh8Whrx4K0veS
- vD0/QWsrMC+JvIWqwZZIQUH5m2VKngCx4g==
-X-Google-Smtp-Source: ACHHUZ59kfFUv+34AD4kvx94bGquC5IJun+gkaoMaJLSON0rSasw3W5Ag7sCoGmNKTp4qI5dVvZ+CA==
-X-Received: by 2002:a05:6a00:1307:b0:646:3c2:4d30 with SMTP id
- j7-20020a056a00130700b0064603c24d30mr649472pfu.30.1686705793287; 
- Tue, 13 Jun 2023 18:23:13 -0700 (PDT)
+ bh=QA+M14ZhEeFLD7dM1TXS8+1/+CqbWIar9yiZjOObFMo=;
+ b=jciniLZNUC+PRGNRs8ry0ylmkWVr04Hug/DN1MQLkjS3d4WRyJy0iivmS9kahiW+FR
+ ONxJ8LDcYOYGPWKSnv4eyZl3tLVXqt0Q/lAf3bXpmW58GR5EhRECgbC9bwYZQWqK3FJG
+ SRXr3Tyij7Yio57/wvhGedG1DI+BJdItekXHYltzndMGcKQ6bDfnW5kRi+KGforpC1Cf
+ iVWSp9BhH/3McPqsMs1/VWxl4mNrWmL6quJdzHacoQpilTAbKbHdFODJCzyiIZdjC6LQ
+ 263Zg3YAMsFUZpQHk8WLFqJbNO+WQTZ1ir4sCc/KdBQq27GotgxWyg9qBCtzV78uD3PW
+ RKjg==
+X-Gm-Message-State: AC+VfDx5NKKib3otSTrKiVvszpKv0dpSfmL3cHkDQdgpEeKnaG0tjRam
+ Vt3abZhXQrasUwXLWeuTUKdt47jGyMRXRA==
+X-Google-Smtp-Source: ACHHUZ5zpUjpCZ83KRWD2XPsS6mWAQsImoemr4sgYOkfJScRzCLgTPO7PWTEVsBMOefIFbMBr4suqg==
+X-Received: by 2002:a05:6a20:3d01:b0:10d:d18b:95ce with SMTP id
+ y1-20020a056a203d0100b0010dd18b95cemr527479pzi.22.1686705798127; 
+ Tue, 13 Jun 2023 18:23:18 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.23.08
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.23.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:23:12 -0700 (PDT)
+ Tue, 13 Jun 2023 18:23:17 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -65,16 +65,16 @@ Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
  Junqiang Wang <wangjunqiang@iscas.ac.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 40/60] disas/riscv.c: Support disas for Zcm* extensions
-Date: Wed, 14 Jun 2023 11:19:57 +1000
-Message-Id: <20230614012017.3100663-41-alistair.francis@wdc.com>
+Subject: [PULL 41/60] disas/riscv.c: Support disas for Z*inx extensions
+Date: Wed, 14 Jun 2023 11:19:58 +1000
+Message-Id: <20230614012017.3100663-42-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,52 +100,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Support disas for Zcmt* instructions only when related extensions
-are supported.
+Support disas for Z*inx instructions only when Zfinx extension is supported.
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230523093539.203909-5-liweiwei@iscas.ac.cn>
+Message-Id: <20230523093539.203909-6-liweiwei@iscas.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ disas/riscv.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/disas/riscv.c b/disas/riscv.c
-index f2dd5fd531..6659f92179 100644
+index 6659f92179..c9a81af662 100644
 --- a/disas/riscv.c
 +++ b/disas/riscv.c
-@@ -2505,7 +2505,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 op = rv_op_c_sqsp;
-             } else {
-                 op = rv_op_c_fsdsp;
--                if (((inst >> 12) & 0b01)) {
-+                if (dec->cfg->ext_zcmp && ((inst >> 12) & 0b01)) {
-                     switch ((inst >> 8) & 0b01111) {
-                     case 8:
-                         if (((inst >> 4) & 0b01111) >= 4) {
-@@ -2531,6 +2531,9 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 } else {
-                     switch ((inst >> 10) & 0b011) {
-                     case 0:
-+                        if (!dec->cfg->ext_zcmt) {
-+                            break;
-+                        }
-                         if (((inst >> 2) & 0xFF) >= 32) {
-                             op = rv_op_cm_jalt;
-                         } else {
-@@ -2538,6 +2541,9 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                         }
-                         break;
-                     case 3:
-+                        if (!dec->cfg->ext_zcmp) {
-+                            break;
-+                        }
-                         switch ((inst >> 5) & 0b011) {
-                         case 1: op = rv_op_cm_mvsa01; break;
-                         case 3: op = rv_op_cm_mva01s; break;
+@@ -4598,16 +4598,24 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
+             append(buf, rv_ireg_name_sym[dec->rs2], buflen);
+             break;
+         case '3':
+-            append(buf, rv_freg_name_sym[dec->rd], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rd] :
++                                              rv_freg_name_sym[dec->rd],
++                   buflen);
+             break;
+         case '4':
+-            append(buf, rv_freg_name_sym[dec->rs1], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs1] :
++                                              rv_freg_name_sym[dec->rs1],
++                   buflen);
+             break;
+         case '5':
+-            append(buf, rv_freg_name_sym[dec->rs2], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs2] :
++                                              rv_freg_name_sym[dec->rs2],
++                   buflen);
+             break;
+         case '6':
+-            append(buf, rv_freg_name_sym[dec->rs3], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs3] :
++                                              rv_freg_name_sym[dec->rs3],
++                   buflen);
+             break;
+         case '7':
+             snprintf(tmp, sizeof(tmp), "%d", dec->rs1);
 -- 
 2.40.1
 
