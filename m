@@ -2,83 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741E072F50F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 08:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F45372F557
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 09:03:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9KCQ-0007KM-LS; Wed, 14 Jun 2023 02:41:46 -0400
+	id 1q9KW3-0002hJ-VX; Wed, 14 Jun 2023 03:02:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9KCN-0007Jo-Nm; Wed, 14 Jun 2023 02:41:44 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9KCL-0000c0-7a; Wed, 14 Jun 2023 02:41:42 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1b3be39e35dso30625685ad.0; 
- Tue, 13 Jun 2023 23:41:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686724897; x=1689316897;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gcV+Gc/EtyuGw7zxJaRZXKDWNjiNm4hfNFwOQuu7t6M=;
- b=Jj+Ebt5xU8wjFVSxzG/q8SYoHPELz+MpW/TgKSC74SWLJK44Csm6z5mK3u91l23azQ
- j/EvlznN1RprEZpSMeET7W/KHY14H2dPILWH+wCR2LEBZLykGdJXOl/kSdRXMXn8XlaE
- hhIooBsMzFZ5Hh1agh1YhPfK8wbyo0AOJvWjIO5XY2w5osG39f9c0W2M9SrxpCjnrF8x
- oPxP1/rGGj+FJNbs59GZZkgBxgaoe+vXrpqpnud/EwOqMZiIGPUCRgspl1CJmMZ1AC9E
- USk55b9S4Esj4urvStwEeZWhgWeAykbxu4NtNgamilcnnLyRZ9HYwa1ms/mfdQBR0s0K
- KQlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686724897; x=1689316897;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=gcV+Gc/EtyuGw7zxJaRZXKDWNjiNm4hfNFwOQuu7t6M=;
- b=KP3Nqv86YfYIKtVpF3lf+yR5eSkevOn5KO09HPcuo3U0sJh4/CM01XDcqSuHCmkYNK
- gYIek+FU/w+Nbq5MukB2NlcJne3dEVy9IMmEau0yp/IYFP1RhmjdYVrx3CrMzGn1Wg+K
- DbOj0XWzvqZmTiViiFn91EkB8MgKD93TI8HzDr0KIIaBvp145LFHHMVF1OEAVkeBXwbS
- Ne0Jeq4JKP9oFn6/ou7dWRMZR9rggYHHyPj+defwHdXbA5ZCRmdU+HbYhATddDLZ8AWO
- Ano+mlkHaBG8FbXmGfnSFLbQss2OB6CjCS6wjHUwHG8t+v1WhyDUCopAM07EmYsQDOjE
- fJBg==
-X-Gm-Message-State: AC+VfDwp+LnMcp8Ybs2SKccFYWaC3gZa9BJHhVoYg1FXYmaIoFgcFr6/
- DH2Ime+fj/kjBgboO4t+U0Qf28wvowhWOA==
-X-Google-Smtp-Source: ACHHUZ5oShB3ijo9wApqyIzvoJ3/fmeaYGcnQ4Di/sgzdLiwxqBFgHRo9o22tHzUYScXPviTXtpu6A==
-X-Received: by 2002:a17:902:bc8a:b0:1b0:6e16:b92c with SMTP id
- bb10-20020a170902bc8a00b001b06e16b92cmr10865713plb.54.1686724897393; 
- Tue, 13 Jun 2023 23:41:37 -0700 (PDT)
-Received: from localhost (14-203-144-223.static.tpgi.com.au. [14.203.144.223])
- by smtp.gmail.com with ESMTPSA id
- a7-20020a170902ecc700b001a69c1c78e7sm11429089plh.71.2023.06.13.23.41.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 23:41:36 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 Jun 2023 16:41:31 +1000
-Message-Id: <CTC62LQ76F2F.IT4OWO0UXG4F@wheely>
-Cc: <qemu-block@nongnu.org>, "Thomas Huth" <thuth@redhat.com>,
- <qemu-s390x@nongnu.org>, <qemu-riscv@nongnu.org>, <qemu-arm@nongnu.org>,
- "Richard Henderson" <richard.henderson@linaro.org>, <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH v3 0/9] bulk: Replace CONFIG_SOFTMMU by
- !CONFIG_USER_ONLY/CONFIG_SYSTEM_ONLY
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.14.0
-References: <20230613133347.82210-1-philmd@linaro.org>
-In-Reply-To: <20230613133347.82210-1-philmd@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <SRS0=UREO=CC=kaod.org=clg@ozlabs.org>)
+ id 1q9KVw-0002gu-CK; Wed, 14 Jun 2023 03:01:57 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=UREO=CC=kaod.org=clg@ozlabs.org>)
+ id 1q9KVt-0005k4-8E; Wed, 14 Jun 2023 03:01:55 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QgxDV5024z4xFm;
+ Wed, 14 Jun 2023 17:01:46 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QgxDS4qMXz4x3m;
+ Wed, 14 Jun 2023 17:01:44 +1000 (AEST)
+Message-ID: <5c71cb2b-8fd2-f885-f56b-63dc87f1cac3@kaod.org>
+Date: Wed, 14 Jun 2023 09:01:41 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/4] pnv/chiptod: Add POWER9/10 chiptod model
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Frederic Barrat <frederic.barrat@fr.ibm.com>
+References: <20230603233612.125879-1-npiggin@gmail.com>
+ <20230603233612.125879-2-npiggin@gmail.com>
+ <69c9cd27-87b5-3864-1ae2-a6b01a26086e@kaod.org>
+ <CTC4K105L91Y.YIIZVUGP786T@wheely>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CTC4K105L91Y.YIIZVUGP786T@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=UREO=CC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.098, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,34 +67,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Jun 13, 2023 at 11:33 PM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
-> Missing review: 1, 7, 8
->
-> Since v2:
-> - Rebased
-> - Added R-b tags
-> - Rework i386_tr_init_disas_context() patch (Richard)
-> - Dropped RFC prefix
->
-> This series aims to clarify the CONFIG_[USER|SYSTEM] vs CONFIG_SOFTMMU
-> confusion [*] by using explicit definitions, removing mentions of
-> CONFIG_SOFTMMU in non-TCG code.
->
-> We replace CONFIG_SOFTMMU by !CONFIG_USER_ONLY in C code and
-> by CONFIG_SYSTEM_ONLY in meson config files.
+Hello Nick,
 
-I like the change in general, SOFTMMU does not read well (and is
-not exactly correct for system code as pointed out).
+[ ... ]
 
-Sorry for chiming in late and if I missed it, but was there
-a reason not to define a complementary CONFIG_SYSTEM so system
-code does not have to test !CONFIG_USER_ONLY and invert a bunch
-of the tests?
+>>> +    case TOD_TX_TTYPE_CTRL_REG:
+>>> +        if (val & PPC_BIT(35)) { /* SCOM addressing */
+>>> +            uint32_t addr = val >> 32;
+>>> +            uint32_t reg = addr & 0xfff;
+>>> +            PnvCore *pc;
+>>> +
+>>> +            if (reg != PC_TOD) {
+>>> +                qemu_log_mask(LOG_GUEST_ERROR, "pnv_chiptod: SCOM addressing: "
+>>> +                              "unimplemented slave register 0x%" PRIx32 "\n",
+>>> +                              reg);
+>>> +                return;
+>>> +            }
+>>> +
+>>> +            /*
+>>> +             * This may not deal with P10 big-core addressing at the moment.
+>>> +             * The big-core code in skiboot syncs small cores, but it targets
+>>> +             * the even PIR (first small-core) when syncing second small-core.
+>>> +             */
+>>> +            pc = pnv_get_vcpu_by_xscom_base(chiptod->chip, addr & ~0xfff);
+>>
+>> hmm, couldn't we map xscom subregions, one for each thread instead ?
+> 
+> I'm not sure what you mean. This scom-addressing uses the xscom
+> address of the core's PC unit (where its time facilities are) to
+> point nest chiptod transfers to cores.
 
-Actually I thought you would have CONFIG_SYSTEM and CONFIG_USER
-options and the _ONLY variants could be derivative for convenience,
-but I'm probably missing some detail.
+What I meant is that if you could map one xscom subregion per thread in
+an overall container region, each region could have its own 'opaque' data
+(the thread object you are interested in) and you wouldn't need to do the
+CPU lookup. A bit like for the ICP on POWER8 :
+
+
+     0003ffff80000000-0003ffff800fffff (prio 0, i/o): icp-0
+       0003ffff80008000-0003ffff80008fff (prio 0, i/o): icp-thread
+       0003ffff80010000-0003ffff80010fff (prio 0, i/o): icp-thread
+       0003ffff80018000-0003ffff80018fff (prio 0, i/o): icp-thread
+       0003ffff80020000-0003ffff80020fff (prio 0, i/o): icp-thread
+       0003ffff80028000-0003ffff80028fff (prio 0, i/o): icp-thread
+       0003ffff80030000-0003ffff80030fff (prio 0, i/o): icp-thread
+       0003ffff80048000-0003ffff80048fff (prio 0, i/o): icp-thread
+       0003ffff80050000-0003ffff80050fff (prio 0, i/o): icp-thread
+
+
+But, I missed that part :
+
++        if (val & PPC_BIT(35)) { /* SCOM addressing */
++            uint32_t addr = val >> 32;
++            uint32_t reg = addr & 0xfff;
+
+and pnv_get_vcpu_by_xscom_base() is a bit of a hack. That's why you need
+a backpointer to the chip which is always a bit suspicious for a sub unit.
+An address space would be cleaner since writing to this register generates
+another transaction it seems.
+
+Do you plan to support other registers than PC_TOD ?
+
+The part handling "SCOM addressing" deserves its own patch IMO. It would
+clarifies how the logic works and the modeling.
+
+[ ... ]
+
+>>> +static void pnv_chiptod_realize(DeviceState *dev, Error **errp)
+>>> +{
+>>> +    static bool got_primary = false;
+>>> +    static bool got_secondary = false;
+>>> +
+>>> +    PnvChipTOD *chiptod = PNV_CHIPTOD(dev);
+>>> +    PnvChipTODClass *pctc = PNV_CHIPTOD_GET_CLASS(chiptod);
+>>> +
+>>> +    if (!got_primary) {
+>>> +        got_primary = true;
+>>> +        chiptod->primary = true;
+>>> +        chiptod->pss_mss_ctrl_reg |= PPC_BIT(1); /* TOD is master */
+>>> +    } else if (!got_secondary) {
+>>> +        got_secondary = true;
+>>> +        chiptod->secondary = true;
+>>> +    }
+>>
+>> It would be cleaner to introduce "primary" and "secondary" properties
+>> defined by the model realizing the PnvChipTOD objects.
+> 
+> Hum. There's a few hard-coded primaries on chip_id == 0 already
+
+XCSOM doesn't have a QOM model but it should be done that way. XIVE is
+bit special because the TIMA is an overlapping mapping on all chips.
+
+> in the tree. I don't know how closely related they are, chiptod
+> can set other chips as primary AFAIK but maybe it just makes
+> sense to make primary a chip property.
+
+It really shouldn't be too much work, mostly setting properties in the
+chip realize routine :
+
+     object_property_set_bool(OBJECT(&chip10->chiptod), "primary",
+                              chip->chip_id == 0, &error_abort);
+     object_property_set_bool(OBJECT(&chip10->chiptod), "secondary",
+                              chip->chip_id == 1, &error_abort);
+     if (!qdev_realize(DEVICE(&chip10->chiptod), NULL, errp)) {
+         return;
+     }
+
+  
+> I might dig a bit more into what we (and other IBM firmware) want
+> to test or expect with these primaries. Maybe another pass to
+> tidy all that up can be done.
+
 
 Thanks,
-Nick
+
+C.
+
+
+
 
