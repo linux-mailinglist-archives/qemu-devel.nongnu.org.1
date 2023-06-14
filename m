@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3191E72F9FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2DD72F9F1
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:02:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9NK8-0000hf-Hc; Wed, 14 Jun 2023 06:01:56 -0400
+	id 1q9NKF-0000uh-Sn; Wed, 14 Jun 2023 06:02:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9NK5-0000fa-CD
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:53 -0400
+ id 1q9NKC-0000to-Pg
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:02:00 -0400
 Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9NK3-0005MO-Ic
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:53 -0400
+ id 1q9NKA-0005NF-AT
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:02:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=oHoT//GLF2DlxLNp4QglC0Z6XF7PI42YxZ16yLV/s9A=; b=Ur/XWX/S8Oo+xYg8sheZ8XR4fC
- EadzE70jFfEIWo9CuFMqbokm4hQqiETHXJ9Vze2r1IKItDYHgEXLlvfJ/ezsAOns0EgglBC93CYbi
- yhkrG/99fYCzS+blHST7QQJDAVNxYSuKUt7lSQIqOf9ErdYrC/Ay9wpunBI4lWmMX+vU=;
+ bh=lCN3+vWbeI7Fvbxsn2Fh6wwI5x57wJph8YIRNyNcq+E=; b=UhimOJ8GCc/rvTGEbHPk4ywf15
+ v9ntmJKgqoMTUPa20Co5q2S+NfWz0uAKkAGms4jsuUbnI/vElpAmJhT/wW3YL/gPjCvG0UhE9Y1pG
+ ogCxJt6fo85nwUFwHWGj/6oh5JY3aSBX/X2HLLmsVOudrjj8kGVyuIn66e5JYtKq1UaU=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH v3 6/8] target/tricore: Add shuffle insn
-Date: Wed, 14 Jun 2023 12:00:37 +0200
-Message-Id: <20230614100039.1337971-7-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v3 7/8] target/tricore: Implement SYCSCALL insn
+Date: Wed, 14 Jun 2023 12:00:38 +0200
+Message-Id: <20230614100039.1337971-8-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
 References: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.14.95116, AntiVirus-Engine: 6.0.0,
+ Antispam-Data: 2023.6.14.95417, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=581800, da=174345973, mc=66, sc=0,
- hc=66, sp=0, fso=581800, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=581806, da=174345979, mc=68, sc=0,
+ hc=68, sp=0, fso=581806, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -72,106 +72,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this is based on code by volumit (https://github.com/volumit/qemu/)
-
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1452
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/helper.h          |  1 +
- target/tricore/op_helper.c       | 36 ++++++++++++++++++++++++++++++++
- target/tricore/translate.c       |  8 +++++++
- target/tricore/tricore-opcodes.h |  1 +
- 4 files changed, 46 insertions(+)
+ target/tricore/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/tricore/helper.h b/target/tricore/helper.h
-index a10576e09e..31d71eac7a 100644
---- a/target/tricore/helper.h
-+++ b/target/tricore/helper.h
-@@ -134,6 +134,7 @@ DEF_HELPER_FLAGS_5(mulr_h, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32b, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_be, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_le, TCG_CALL_NO_RWG_SE, i32, i32, i32)
-+DEF_HELPER_FLAGS_2(shuffle, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- /* CSA */
- DEF_HELPER_2(call, void, env, i32)
- DEF_HELPER_1(ret, void, env)
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index b6ef1462e4..026e15f3e0 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2308,6 +2308,42 @@ uint32_t helper_crc32_le(uint32_t arg0, uint32_t arg1)
-     return crc32(arg1, buf, 4);
- }
- 
-+uint32_t helper_shuffle(uint32_t arg0, uint32_t arg1)
-+{
-+    uint32_t resb;
-+    uint32_t byte_select;
-+    uint32_t res = 0;
-+
-+    byte_select = arg1 & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 0;
-+
-+    byte_select = (arg1 >> 2) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 8;
-+
-+    byte_select = (arg1 >> 4) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 16;
-+
-+    byte_select = (arg1 >> 6) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 24;
-+
-+    if (arg1 & 0x100) {
-+        /* Assign the correct nibble position.  */
-+        res = ((res & 0xf0f0f0f0) >> 4)
-+          | ((res & 0x0f0f0f0f) << 4);
-+        /* Assign the correct bit position.  */
-+        res = ((res & 0x88888888) >> 3)
-+          | ((res & 0x44444444) >> 1)
-+          | ((res & 0x22222222) << 1)
-+          | ((res & 0x11111111) << 3);
-+    }
-+
-+    return res;
-+}
-+
- /* context save area (CSA) related helpers */
- 
- static int cdc_increment(target_ulong *psw)
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 85526ef4db..a4c60e8ae2 100644
+index a4c60e8ae2..f01000efd4 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -5011,6 +5011,14 @@ static void decode_rc_logical_shift(DisasContext *ctx)
-     case OPC2_32_RC_XOR:
-         tcg_gen_xori_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], const9);
+@@ -5236,7 +5236,7 @@ static void decode_rc_serviceroutine(DisasContext *ctx)
+         gen_helper_1arg(bisr, const9);
          break;
-+    case OPC2_32_RC_SHUFFLE:
-+        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            TCGv temp = tcg_constant_i32(const9);
-+            gen_helper_shuffle(cpu_gpr_d[r2], cpu_gpr_d[r1], temp);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-+        break;
+     case OPC2_32_RC_SYSCALL:
+-        /* TODO: Add exception generation */
++        generate_trap(ctx, TRAPC_SYSCALL, const9 & 0xff);
+         break;
      default:
          generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-     }
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index 27f80e1702..af63926731 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -885,6 +885,7 @@ enum {
-     OPC2_32_RC_SHAS                              = 0x02,
-     OPC2_32_RC_XNOR                              = 0x0d,
-     OPC2_32_RC_XOR                               = 0x0c,
-+    OPC2_32_RC_SHUFFLE                           = 0x07, /* v1.6.2 only */
- };
- /* OPCM_32_RC_ACCUMULATOR                           */
- enum {
 -- 
 2.40.1
 
