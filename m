@@ -2,72 +2,164 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B4A72F20E
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9742172F25C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 04:01:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FQZ-0004HF-2k; Tue, 13 Jun 2023 21:36:03 -0400
+	id 1q9Fni-0008Fu-Nl; Tue, 13 Jun 2023 21:59:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
- id 1q9FPv-0004CF-BN
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:35:24 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhaotianrui@loongson.cn>) id 1q9FPs-0007Qu-L9
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:35:23 -0400
-Received: from loongson.cn (unknown [10.40.46.158])
- by gateway (Coremail) with SMTP id _____8AxnOpRGYlkheYEAA--.10437S3;
- Wed, 14 Jun 2023 09:35:14 +0800 (CST)
-Received: from [192.168.124.126] (unknown [10.40.46.158])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxKeVPGYlkXP0ZAA--.8391S3; 
- Wed, 14 Jun 2023 09:35:12 +0800 (CST)
-Subject: Re: [PATCH] hw/loongarch: Supplement cpu topology arguments
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
- alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
- gaosong@loongson.cn
-References: <20230613123251.2471878-1-zhaotianrui@loongson.cn>
- <7565da8d-a7ad-ba02-9a59-9a441da2d988@linaro.org>
-From: zhaotianrui <zhaotianrui@loongson.cn>
-Message-ID: <ae679a39-aec8-a38c-9409-fc2d77802017@loongson.cn>
-Date: Wed, 14 Jun 2023 09:35:11 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <7565da8d-a7ad-ba02-9a59-9a441da2d988@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ (Exim 4.90_1) (envelope-from <yongwei.ma@intel.com>)
+ id 1q9Fnh-0008Fm-CK
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:59:57 -0400
+Received: from mga02.intel.com ([134.134.136.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yongwei.ma@intel.com>)
+ id 1q9Fnf-0003s3-65
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:59:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1686707995; x=1718243995;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=YNvTDul6HQEj1VcGt4px/OORA5ACA7+RruCnihs4EY8=;
+ b=Ed/OI5WmzWtgXWldt0cG9ZJibXvUwiz5tIPhmeQxCNDTL0K5aDTCVxsL
+ Pjx01ZdpAQtDNDvI8wvJr7A4sYjB2sx/8mEwiGgR73ttK7JWlRhaUqSIG
+ mwOjfaUXVZPk4ehjqlnRf7qFrrqglWq27ZV0xRFwhi1teOlzIDRhwz4MH
+ qh1wNMtCDA5Noxh/mxfldkIUkIckgzjIQUkqwixeEF264wyfz8G+ce6Eo
+ AdNOhQBT0ZI3ArhTluBvlXWDeeYRdLU4TJb8ls74lVx7If+px8lonuppY
+ GwRN+V/sRwvls8VpHByPHBb8J7gF/igLIgd0Ge5xWO15kL2GZz+O2OZDs g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="348157240"
+X-IronPort-AV: E=Sophos;i="6.00,241,1681196400"; d="scan'208";a="348157240"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2023 18:59:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="706026471"
+X-IronPort-AV: E=Sophos;i="6.00,241,1681196400"; d="scan'208";a="706026471"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orsmga007.jf.intel.com with ESMTP; 13 Jun 2023 18:59:51 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 13 Jun 2023 18:59:50 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 13 Jun 2023 18:59:49 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Tue, 13 Jun 2023 18:59:49 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.107)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Tue, 13 Jun 2023 18:59:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c5g+Ssg74/65vZNChPSdUZJYIRy0Lf4ijO/A3KaRfoQxqu/FuQ2E1g2Eea/G1QiqMEqNHDMlPFyEeKa1QpeyoBVP6AMJzy5kI5upWjefKcA+12Ujyie8fucih/aBQrXwpmgOScFo4JfiM131l5EydAOwKNtJ3xRI4M5pQC2G0kwOluugh7XMLHzYrhzDGwRdN1LhjqxJbhQ69SnmV6QW/QoO7yzBWKTZQUeVOno1k5ttyrxLuDEyTmTcEBVBYlCZiSk+B35rF/JSCY+XUd/jDNef6ksKdEhLg7x6JUV91hq41LqpTuphu2fmbQ7TMqdBqwmcgNDl+4q9T9sb4im/JQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YNvTDul6HQEj1VcGt4px/OORA5ACA7+RruCnihs4EY8=;
+ b=khZuZhstel0aIP7D/3JO8qcGcqfGaBAxx9Urlw9rzx2Lqk6yclgOjXVBJYuJp6smIVcbCVTN6bolKgLybDBYA43g+2JJcy5JGFdbrVYPMwP/21KT3/+BF7ZkPUlFvclbF0d98WMqQG5AFBUqK+cfa3HM39kZAO0Bd1j4/pVgnM098ss6AKl73xegG6lILBugBSzTPOVZpnqv4qvlWIM5Eqneyju0yBilWHpdIoLvLRm2LAJhwpMq3jJU/iiFnBiKXBbU5G6QS1ci65M8Q468SWqs+MCgz9OcEPZFge0B9/n//2mlH49FEUlmKe5l+lr0KBeeeA18y67EaGazm+Jeqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5368.namprd11.prod.outlook.com (2603:10b6:208:311::17)
+ by MW4PR11MB7079.namprd11.prod.outlook.com (2603:10b6:303:22b::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.39; Wed, 14 Jun
+ 2023 01:59:42 +0000
+Received: from BL1PR11MB5368.namprd11.prod.outlook.com
+ ([fe80::24f7:be2d:5d10:11b7]) by BL1PR11MB5368.namprd11.prod.outlook.com
+ ([fe80::24f7:be2d:5d10:11b7%5]) with mapi id 15.20.6455.045; Wed, 14 Jun 2023
+ 01:59:42 +0000
+From: "Ma, Yongwei" <yongwei.ma@intel.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+CC: Eduardo Habkost <eduardo@habkost.net>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
+ <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>, "Michael S .
+ Tsirkin" <mst@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "Wang, Zhenyu Z" <zhenyu.z.wang@intel.com>, "Li,
+ Xiaoyao" <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>, "Liu,
+ Zhao1" <zhao1.liu@intel.com>
+Subject: RE: [PATCH v2 00/17] Support smp.clusters for x86
+Thread-Topic: [PATCH v2 00/17] Support smp.clusters for x86
+Thread-Index: AQHZncthGOwhVCwXt0CYee8Y0soNnq+Ji/9g
+Date: Wed, 14 Jun 2023 01:59:42 +0000
+Message-ID: <BL1PR11MB5368F7A3E16D9DDD5E4F3BD5895AA@BL1PR11MB5368.namprd11.prod.outlook.com>
+References: <20230529123101.411267-1-zhao1.liu@linux.intel.com>
+ <ZIghamzyQD9IdbjO@liuzhao-OptiPlex-7080>
+In-Reply-To: <ZIghamzyQD9IdbjO@liuzhao-OptiPlex-7080>
+Accept-Language: en-US
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8AxKeVPGYlkXP0ZAA--.8391S3
-X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7Gw18uw1Dtr1DZw4rJF13trc_yoWDXFg_GF
- WIk3ykuw4rWr1Ika4UZFs8ZFyDJ3yUua1Yvr98Zr1rW34Fyrs3JF4UW3s3u34Fvay0vrZ3
- Xa1kG393Cry7ZosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUba8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Cr1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
- bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
- AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
- 42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
- IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2
- KfnxnUUI43ZEXa7IU1RBT5UUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.098,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5368:EE_|MW4PR11MB7079:EE_
+x-ms-office365-filtering-correlation-id: 6d144759-de96-4834-3b74-08db6c7b04fe
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: XNEhQSWbmJIqytwolkU5XdIiBrOlUvOaR4NPWzfdu+qDrM/POuM2MYawK/vFke+kXFQHjQ+lXNum23OLVEkFjK8aCD77xYCF389CoQ79YM3W9RU0R2c6UW6zMERUc2k03rRSydzPQPsBDW24R42xLobO+S7WNpnbUkpIRt8gwUscA23IjHUjKjad4jDEiyLLPT2c+eiFMvRkIcs5MZnjY2GdyoVDMcFpbbd9axbRWR7JkqGcNAUy0DJOfG+Kg1Qo+hU5s2tQIHDc425b3vUshCqiJ7rQfY8o76B6ynwTc7u7CU6WkMD/ujpAJp9okjRKzMHvQWPyc0lqAvM/rWi+hfFzozFBuDciyuyGCJCXbKGRb3KpeJ/oEvLmSmsbSXVtOzTYbttlMPEvmyuem/+e9vurH4CGU6rldidzcHDzyKLiNX4hxp5oOmFlAkFgyXy4Q6HbV26Z+bBaxJ1KlJhTCPbvI5onyydR5pKl7FLu6R8rgE8fPs4rps5PRL49ScKzpAOn92w2KAtmu95ARttkA8+LbifTHIRedXwWqbqVB4K9uj8EwXWGkRhdwijci53RcUC2Jweuaa4QIhcq91kwFzp7ujaaLi1msdDrc2v/PtQ=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5368.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(346002)(39860400002)(396003)(376002)(136003)(366004)(451199021)(26005)(8936002)(86362001)(478600001)(6506007)(9686003)(71200400001)(2906002)(186003)(8676002)(966005)(41300700001)(7696005)(66899021)(316002)(64756008)(52536014)(76116006)(5660300002)(33656002)(66946007)(38070700005)(55016003)(54906003)(66476007)(6916009)(66446008)(4326008)(66556008)(7416002)(122000001)(82960400001)(38100700002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?iheEdLh5a3FiO0Y+mRb7Kzex7GRf/Dfy8GwTRdor297Kv3eteFvDFHNJoK?=
+ =?iso-8859-1?Q?c+R/bSkkiR5agYAuzBpBzmAODKvcEpLwkbldJXumWsOFV3Y+AVsCwtj8Oa?=
+ =?iso-8859-1?Q?5wwQg8ZmH5Aib2E7XBPpMLWee5/b3oKDMpnzajbKey7Hh57oQNVN84WjLt?=
+ =?iso-8859-1?Q?XEXXdfWVxKevBFebOY5PjTyUxE2gBOcGtDd8MO8ujmJ6q8U0XFU1USo3tw?=
+ =?iso-8859-1?Q?RRQ2KrfQfPQK97pEvDjMF85r2S4S9OVIMZiOdnhc5psEAsgnFuHUz+Wn8X?=
+ =?iso-8859-1?Q?DHi1fObiZDLfZxgiL7dF+dG6tQJTl57YcLwgxxINlPdJORc3966DYWA4CP?=
+ =?iso-8859-1?Q?FVNDKEMo+u3yTAvN8bc6v5dsA9l5HLPJbQ5t/4uyGSn8od/gdvZX/2R6l0?=
+ =?iso-8859-1?Q?2yOyjMaJHGtgTTKTZ51+a81+m/PL76P8YKJ3Vgx+zZAQZ01Fy1xs8FXCG1?=
+ =?iso-8859-1?Q?cm0rLBA7h3iZjjI72y7BoDCRkdyU6LCUhbadFtm+el2oUKo7dyQ3avRw5I?=
+ =?iso-8859-1?Q?aNdreWe2xF8l3ovVj0TBj5Mr7NUrqOjT/y/yBOHHFT2T6P7ocXnMFrEfGN?=
+ =?iso-8859-1?Q?FZJXErNJ5rKc7aO8Ing2HT2senC6xPj66H42hjN2k31evHezUPg+neyMea?=
+ =?iso-8859-1?Q?/TZMLvc9NZrmTamxtv2CBcaWjEXq1xohKF2t0JnpbImB7yj21PNcnAq4L7?=
+ =?iso-8859-1?Q?iey/eYnOiqBHzjFBKWJsycJJd1ap/ioJZaT9ELYG/hEuRe9jcIHXFTegjY?=
+ =?iso-8859-1?Q?fL+xC1z6ipRCW/4aiLdqJhPXdQFSzTMext9N2UKz8Ehw2mpX58BbSTqDxy?=
+ =?iso-8859-1?Q?xvf+kxBtW3mr/MdMIZF+5vNoAfUcUFYrjn/9EKb+cJ2nTblL1uLXeXXYjp?=
+ =?iso-8859-1?Q?34JX7nlg6kMyWjvrTzOdX7JmnnLbuD8NcV/+YEEj+Gb5w/6AvV17fs29m3?=
+ =?iso-8859-1?Q?8dX7rOEP51htWWXZ6G8/Ygu74KTA5dKe/2t8bC2of0Mb9ETPXMzG78ktfE?=
+ =?iso-8859-1?Q?UZzdHda3fIZJcqSfvL7SLS86SbsI3FlPvzRr/2/jwRf22SsMcLimmbN8/j?=
+ =?iso-8859-1?Q?53lXk/YIDxswYE0injgiAwfOGfCalDwPzKS8sjtPFf/EzryDov2+vHDzEW?=
+ =?iso-8859-1?Q?TGah3gpEuTS27z6TFOCXb0NrbePocMt4OPLyO1xhojOIZG+cTJbmrZMaSu?=
+ =?iso-8859-1?Q?BbPfQviAeP4mX7y8PgYuPpDhWTGv7byn1R4YyKxpvXdITFV9tSHN7lrpqi?=
+ =?iso-8859-1?Q?v8VxLHk3fcYFyFAellksVBgitjoMGDGct4u/g6t3NKJTdy2OROhU9W7p1Q?=
+ =?iso-8859-1?Q?X62QpW4pDIJudkuRqg8h/MTJ97CB2tZFlL6dJCXcQA1a42fTFTIVNgiLKa?=
+ =?iso-8859-1?Q?EmQ/FMXyqsHpwu3qsmMigQD5lwDu0YZdcmGqLYaJcsb4DCThdkUpEHifWJ?=
+ =?iso-8859-1?Q?TEc+15R6b9nuhhq+a1N9vj1T32Rf6qxmDsFym35tdFYYk6lI9yZoarfnWd?=
+ =?iso-8859-1?Q?kBtRAPh1xHafDheqSIpHEFAHt79OgNivPWsEX92Xc1FMAi6KHYy1iUEQda?=
+ =?iso-8859-1?Q?G9ToZ0C/u0AnWXgw8S1wlc3MblPhWzSw8unIOtrNHuSP1Rj0NfIeffiJJA?=
+ =?iso-8859-1?Q?OgEmwf2hW5I4zkygsWDxyeBDQwyHz1fiG3?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5368.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d144759-de96-4834-3b74-08db6c7b04fe
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jun 2023 01:59:42.3325 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OFwbSewl3GYqRtbSSv+k6xrkF4zXMYDyjoJxtz3/gd1hkNOEPwwPWm8Quvv2CfwPf2oLCPm6Ypa5soqcDkthEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7079
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.20; envelope-from=yongwei.ma@intel.com;
+ helo=mga02.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,35 +177,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+> On Mon, May 29, 2023 at 08:30:44PM +0800, Zhao Liu wrote:
+> > Date: Mon, 29 May 2023 20:30:44 +0800
+> > From: Zhao Liu <zhao1.liu@linux.intel.com>
+> > Subject: [PATCH v2 00/17] Support smp.clusters for x86
+> > X-Mailer: git-send-email 2.34.1
+> >
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> >
+> > Hi list,
+> >
+> > This is the our v2 patch series, rebased on the master branch at the
+> > commit ac84b57b4d74 ("Merge tag 'for-upstream' of
+> > https://gitlab.com/bonzini/qemu into staging").
+> >
+> > Comparing with v1 [1], v2 mainly reorganizes patches and does some
+> > cleanup.
+> >
+> > This series add the cluster support for x86 PC machine, which allows
+> > x86 can use smp.clusters to configure the modlue level CPU topology of
+> > x86.
+> >
+> > And since the compatibility issue (see section: ## Why not share L2
+> > cache in cluster directly), this series also introduce a new command
+> > to adjust the topology of the x86 L2 cache.
+> >
+> > Welcome your comments!
+> >
+> >
 
-在 2023/6/13 下午8:55, Philippe Mathieu-Daudé 写道:
-> On 13/6/23 14:32, Tianrui Zhao wrote:
->> Supplement LoongArch cpu topology arguments, including support socket
->> and threads per core.
->>
->> Base-on:
->> https://patchew.org/QEMU/20230613122613.2471743-1-zhaotianrui@loongson.cn/ 
->>
->
-> ^ FYI this tag ...
->
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
->> ---
->
-> ... goes here after the '---' separator, because it is only helpful when
-> testing/merging the patch. Once it is committed, this become irrelevant.
-> (Everything after the '---' separator is normally stripped when applying
-> patches).
->
-Thanks, I will move the 'Base-on' flag after the '---'.
+[snip]
 
-Tianrui Zhao
+>=20
+> Could you please attach the test results?
+>=20
 
->>   hw/loongarch/acpi-build.c | 4 ++++
->>   hw/loongarch/virt.c       | 9 ++++++++-
->>   2 files changed, 12 insertions(+), 1 deletion(-)
->
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested module level APID 'test-x86-topo' cases and 'x-l2-cache-topo'
+ based on CPUID on Intel platform.
+Result looks good hence,
 
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+
+Best Regards,
+Yongwei Ma
 
