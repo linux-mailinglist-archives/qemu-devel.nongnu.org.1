@@ -2,88 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328D1730977
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 22:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 595017309D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 23:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9XVD-0005sM-Lq; Wed, 14 Jun 2023 16:54:03 -0400
+	id 1q9Y2L-0003De-Pw; Wed, 14 Jun 2023 17:28:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q9XVB-0005ms-Da
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 16:54:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q9Y2G-0003DI-Dl; Wed, 14 Jun 2023 17:28:13 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q9XV9-0000Ev-J2
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 16:54:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686776038;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6EelWry+eQQzrriI0k+y6gbidr5FV7E/KMzLshMS8Ys=;
- b=bbcE94j5VAtEbUoLDfzjBdaf9WYjj/XAWeoL60rynoMh0DSaMwNBGgPgRckI933GDThNsA
- nlKjI5R6Mqs2Du4xUJbyzUVqc3ZQ21eAThPQ3d0sXV9hQiYnFAExWTi2RXbKd/S86TUUTl
- 60l8OHOrGaefojpsNGd611VLzfTNhf0=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-669--vnmrTXmMLWlaiafjTGmpA-1; Wed, 14 Jun 2023 16:53:57 -0400
-X-MC-Unique: -vnmrTXmMLWlaiafjTGmpA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-970e0152da7so119263166b.2
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 13:53:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686776036; x=1689368036;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6EelWry+eQQzrriI0k+y6gbidr5FV7E/KMzLshMS8Ys=;
- b=cy6i3kW1/2sX96+jZp2HpUdGSJ2E5dRGN7uegBmReHSuMPOt+OjqbmpQ/nzolI4yqf
- mhEA2mob7hc9PWbI0UwRqgWbFlWEDsxC297bm7JJjFM9TWX1qtrjCmPQ5Ohh+BIOK4Zz
- aRVWt+x7Ccm5mYFtg2FFycQt99IG1/mevXqvsq25+9dgw6ft8uYhKFsvKQMZXuLOY5dl
- ZF9D7kPJA4PGj3Yp5IleRlX84jKVPJ42tT48G8K/ebljAkHzJ7E/x5k7hghl2YNQRQdl
- OUbzi+OxVVSAfp3Af5LXdDsxn3be5c2FvREQ0qP1mV2sxHLUUY83SR00ygkgCq+BjVf6
- Jmxw==
-X-Gm-Message-State: AC+VfDyZhE883CmaGu6bp/xNSmJgoNgOBtcKehDzcMFSnBiOeFuCxqFt
- YYtdajry+srNUeQD6aNM98JkuxUu/J0OKQgZsDpS1L1vrPpCgp3KwxNLGizC7tdugnCX/Zk69Wh
- RxCUkyBT5bmwlssk=
-X-Received: by 2002:a17:907:7da9:b0:973:93d6:189f with SMTP id
- oz41-20020a1709077da900b0097393d6189fmr19850941ejc.61.1686776035988; 
- Wed, 14 Jun 2023 13:53:55 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ZO3aJfjTOfzfWn0/FXjezeDZ600p8/qQkHuxn8+DGv38hUx3FYUAljzPoi6BDWf3L2uaWbQ==
-X-Received: by 2002:a17:907:7da9:b0:973:93d6:189f with SMTP id
- oz41-20020a1709077da900b0097393d6189fmr19850928ejc.61.1686776035704; 
- Wed, 14 Jun 2023 13:53:55 -0700 (PDT)
-Received: from redhat.com (server.hotelpassage.eu. [88.146.207.194])
- by smtp.gmail.com with ESMTPSA id
- u13-20020a1709064acd00b009787ad3157bsm8529518ejt.39.2023.06.14.13.53.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jun 2023 13:53:55 -0700 (PDT)
-Date: Wed, 14 Jun 2023 16:53:53 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com,
- imammedo@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/pci: prevent hotplug of devices on pcie-root-ports
- with wrong devfn address
-Message-ID: <20230614165253-mutt-send-email-mst@kernel.org>
-References: <20230614123150.7077-1-anisinha@redhat.com>
- <20230614102137-mutt-send-email-mst@kernel.org>
- <BDD79A0E-C9D4-4E4B-AFFA-41716326B141@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q9Y2E-00024y-5w; Wed, 14 Jun 2023 17:28:12 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 32197746361;
+ Wed, 14 Jun 2023 23:28:00 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id E3C8A74633D; Wed, 14 Jun 2023 23:27:59 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E1EB6745720;
+ Wed, 14 Jun 2023 23:27:59 +0200 (CEST)
+Date: Wed, 14 Jun 2023 23:27:59 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org, 
+ Greg Kurz <groug@kaod.org>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 08/10] target/ppc: Fix gen_sc to use correct nip
+In-Reply-To: <CTC2DN50X8A2.2UVS9YQ2HNYJ9@wheely>
+Message-ID: <da6086be-ccd8-7cbf-8fbe-e4924d9c230f@eik.bme.hu>
+References: <cover.1686522199.git.balaton@eik.bme.hu>
+ <7ae167986e18144bc665bbdd836b49fe723a90a1.1686522199.git.balaton@eik.bme.hu>
+ <CTC2DN50X8A2.2UVS9YQ2HNYJ9@wheely>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BDD79A0E-C9D4-4E4B-AFFA-41716326B141@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,81 +61,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 14, 2023 at 10:09:35PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 14-Jun-2023, at 7:52 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Wed, Jun 14, 2023 at 06:01:50PM +0530, Ani Sinha wrote:
-> >> PCIE root ports only allow one device on slot 0/function 0.
-> > 
-> > 
-> > Why do you say this? PCI devices can be multifunction.
-> 
-> Yeah you are right, the language needs correction. For hot plugging, I believe only function 0 is relevant. At least that is what it looks like from the code.
+On Wed, 14 Jun 2023, Nicholas Piggin wrote:
+> On Mon Jun 12, 2023 at 8:42 AM AEST, BALATON Zoltan wrote:
+>> Most exceptions are raised with nip pointing to the faulting
+>> instruction but the sc instruction generating a syscall exception
+>> leaves nip pointing to next instruction. Fix gen_sc to not use
+>> gen_exception_err() which sets nip back but correctly set nip to
+>> pc_next so we don't have to patch this in the exception handlers.
+>>
+>> This changes the nip logged in dump_syscall and dump_hcall debug
+>> functions but now this matches how nip would be on a real CPU.
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>  target/ppc/excp_helper.c | 39 ---------------------------------------
+>>  target/ppc/translate.c   |  8 +++++---
+>>  2 files changed, 5 insertions(+), 42 deletions(-)
+>>
+>> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+>> index 885e479301..4f6a6dfb19 100644
+>> --- a/target/ppc/excp_helper.c
+>> +++ b/target/ppc/excp_helper.c
+>> @@ -493,12 +493,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+>>          break;
+>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>          dump_syscall(env);
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>>          break;
+>>      case POWERPC_EXCP_FIT:       /* Fixed-interval timer interrupt           */
+>>          trace_ppc_excp_print("FIT");
+>> @@ -609,12 +603,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+>>          break;
+>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>          dump_syscall(env);
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>>          break;
+>>      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+>>      case POWERPC_EXCP_DECR:      /* Decrementer exception                    */
+>> @@ -757,13 +745,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+>>          } else {
+>>              dump_syscall(env);
+>>          }
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>> -
+>>          /*
+>>           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>>           * instruction to communicate with QEMU. The pegasos2 machine
+>> @@ -908,13 +889,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+>>          } else {
+>>              dump_syscall(env);
+>>          }
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>> -
+>>          /*
+>>           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>>           * instruction to communicate with QEMU. The pegasos2 machine
+>> @@ -1073,12 +1047,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+>>          break;
+>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>          dump_syscall(env);
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>>          break;
+>>      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+>>      case POWERPC_EXCP_APU:       /* Auxiliary processor unavailable          */
+>> @@ -1320,13 +1288,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>>          } else {
+>>              dump_syscall(env);
+>>          }
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>> -
+>>          /* "PAPR mode" built-in hypercall emulation */
+>>          if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
+>>              PPCVirtualHypervisorClass *vhc =
+>> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+>> index a32a9b8a5f..4260d3d66f 100644
+>> --- a/target/ppc/translate.c
+>> +++ b/target/ppc/translate.c
+>> @@ -4419,10 +4419,12 @@ static void gen_hrfid(DisasContext *ctx)
+>>  #endif
+>>  static void gen_sc(DisasContext *ctx)
+>>  {
+>> -    uint32_t lev;
+>> +    uint32_t lev = (ctx->opcode >> 5) & 0x7F;
+>>
+>> -    lev = (ctx->opcode >> 5) & 0x7F;
+>> -    gen_exception_err(ctx, POWERPC_SYSCALL, lev);
+>> +    gen_update_nip(ctx, ctx->base.pc_next);
+>> +    gen_helper_raise_exception_err(cpu_env, tcg_constant_i32(POWERPC_SYSCALL),
+>> +                                   tcg_constant_i32(lev));
+>> +    ctx->base.is_jmp = DISAS_NORETURN;
+>
+> Generally for blame and bisect I don't like to mix cleanup with real
+> change, I guess this is pretty minor though.
+>
+> Great cleanup though, sc is certainly defined to set SRR0 to the
+> instruction past the sc unlike other interrupts so it is more natural
+> and less hacky feeling do it like this.
+>
+> Could you do scv while you are here? It has the same semantics as
+> sc.
 
-Adding function 0 is what makes it visible to guest.
-But you can't block multifunction devices that would be a regression.
+I've tried but scv seems to be a bit different as it can sometimes raise 
+POWERPC_EXCP_FU instead of POWERPC_EXCP_SYSCALL_VECTORED according to 
+excp_helper.c::helper_scv() which may need the nip to be different so I'd 
+rather leave this to somebody who knows what they are doing.
 
-
-> > 
-> >> When hotplugging a
-> >> device on a pcie root port, make sure that the device address passed is
-> >> always 0x00 that represents slot 0 and function 0. Any other slot value and
-> >> function value would be illegal on a root port.
-> >> 
-> >> CC: jusual@redhat.com
-> >> CC: imammedo@redhat.com
-> >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >> ---
-> >> hw/pci/pci.c | 9 +++++++++
-> >> 1 file changed, 9 insertions(+)
-> >> 
-> >> Note:
-> >> I tested this with both native and acpi hotplug enabled on pcie. The
-> >> check seems to work on both.
-> >> 
-> >> (qemu)  netdev_add socket,id=hostnet1,listen=:1234
-> >> (qemu) device_add e1000e,netdev=hostnet1,mac=00:11:22:33:44:03,id=net1,bus=pci.6,addr=0x2.0x5
-> >> Error: PCI: slot 2 function 5 is not valid for e1000e
-> >> (qemu) device_add e1000e,netdev=hostnet1,mac=00:11:22:33:44:03,id=net1,bus=pci.6,addr=0x0.0
-> >> (qemu) info network
-> >> net1: index=0,type=nic,model=e1000e,macaddr=00:11:22:33:44:03
-> >> \ hostnet1: index=0,type=socket,
-> >> (qemu) device_del net1
-> >> (qemu) info network
-> >> hostnet1: index=0,type=socket,
-> >> 
-> >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> >> index bf38905b7d..bc39322dfd 100644
-> >> --- a/hw/pci/pci.c
-> >> +++ b/hw/pci/pci.c
-> >> @@ -64,6 +64,7 @@ bool pci_available = true;
-> >> static char *pcibus_get_dev_path(DeviceState *dev);
-> >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> >> static void pcibus_reset(BusState *qbus);
-> >> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> >> 
-> >> static Property pci_props[] = {
-> >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> >> @@ -1189,6 +1190,14 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >>                    name);
-> >> 
-> >>        return NULL;
-> >> +    } else if (dev->hotplugged &&
-> >> +               !pci_is_vf(pci_dev) &&
-> >> +               pcie_has_upstream_port(pci_dev) && devfn) {
-> >> +        /* For an upstream PCIE port, we only support one device at slot 0 */
-> >> +        error_setg(errp, "PCI: slot %d function %d is not valid for %s",
-> >> +                   PCI_SLOT(devfn), PCI_FUNC(devfn), name);
-> >> +        return NULL;
-> >> +
-> >>     }
-> >> 
-> >>     pci_dev->devfn = devfn;
-> >> -- 
-> >> 2.39.1
-> > 
-
+Regards,
+BALATON Zoltan
 
