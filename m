@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AB872FEFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 14:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2282372FEFD
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 14:47:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9PbF-0006lL-Ss; Wed, 14 Jun 2023 08:27:45 -0400
+	id 1q9Pds-0008LR-NE; Wed, 14 Jun 2023 08:30:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9PbD-0006kO-1G
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 08:27:43 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <mrolnik@gmail.com>)
+ id 1q9Pdh-0008EK-Ot; Wed, 14 Jun 2023 08:30:25 -0400
+Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9PbB-00009p-Ea
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 08:27:42 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-977c89c47bdso108189066b.2
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 05:27:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mrolnik@gmail.com>)
+ id 1q9Pde-0001DL-BM; Wed, 14 Jun 2023 08:30:17 -0400
+Received: by mail-vk1-xa32.google.com with SMTP id
+ 71dfb90a1353d-46e3f05b04bso289249e0c.2; 
+ Wed, 14 Jun 2023 05:30:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686745659; x=1689337659;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=o37TAqTGrX8tIz+TVOfb7QMBpiIOZavy3chHP9lBUu4=;
- b=B9wFYQWuioF04zouqk9X+9G3DUnovCM8iMDesjQuv1gqOcstQ8unoxlqjqNzocfcSj
- EjJ0Pc8bDDx34zhYJVRUInfrWOcxjyGyjT5iP4zFxbKSlKz8g/g/78Lk3FDQFIIudz8t
- skVDaz6AIfDrtdnLLZ34L7ChUcOc/q9LJFICCwejRR/3wZUz4Xuxp0rLWGohqC4YiaUI
- YT6e3CqmvohXEKEDS4Zuggkpet+EOAGL8hDp7kALiC8WuFmgOgGb/1BxJGZ4ruwdyPds
- CS0GE9I2RTZxxREmCJcBgAQJgavWU/vacoUsUd3pQm/46wQxOG3Dac7CkJhh+0I5qK5q
- WTYQ==
+ d=gmail.com; s=20221208; t=1686745810; x=1689337810;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=27mXpjU0rZtFzXpLREMWFj2XIwHSGIa7FhRtrTdGotM=;
+ b=PCkMadfpXHxv0s74cMiSdXEIAdZuMOSd4ND2WzverA7gHvRFlZEgr2xjfmNa86p4wE
+ eV+6wORVHXOYsQl+cSY/NnmW6MN9r/1eQDPLIeK1mIjsfI2sQwDJ2JEdXFN9CpGzDfbB
+ TFpHreSN7RZ/OFfw9Oyy7oaHs85Ewk0kG7jgvXJfPcC4YEyyCEU6JumXEm/nKcC+lQlI
+ nvVCWAnV1GH9F74RQ3UBiyWNky0XqX5/LI5EZdusVafFS0Cqrf9og55ZMEXrDSF5kSXM
+ qxT1JTltQEhPRMQlDl2Mr5wis99keUPaZEg1+wtPwnkyoJUIy6idz9n4PbjIYbAR2278
+ v3Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686745659; x=1689337659;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o37TAqTGrX8tIz+TVOfb7QMBpiIOZavy3chHP9lBUu4=;
- b=DLBuyE+9xBbyjc574zL/STdZg/+uIdBQKw7z7eUBk2wOVC6/XiMb3XxnHhR8oiTQig
- UjidJ767vGx80vFCSICHP9+HSGLqM0N5jKHhM4bAcpbe1eqknfurPPGhfk3ZPlR/72Ik
- cV/CePAOAC8I2nDd1DNaHrJsPZI10U/9ATcoqM4/Jyn7dbrd4A0x1yC7vtfj8ifG1pm0
- SxXQXMRAweF0Lu2gkRzo5d8KeM0ilS4sAh49t3gXl9YTG9bF3YAmSVj7MBprbpR+xTIm
- 9Nc1JkQFlJ5H3hANTragKdrF1P/wDv+ndJLWvg5R4MzMFhLEclZlvx4fYSdrqh22kWeR
- SY6A==
-X-Gm-Message-State: AC+VfDz9xb74hGe+ClZ3Xjvozvzloer+9ilLAziUiaC9nHCNSZiZRrpc
- m9ikPDz1MsS49pH4WbBgwPuBJQ==
-X-Google-Smtp-Source: ACHHUZ52SWeN5GFil7OlY8XQc8TCkvE/unZpOYzoV57mUbTUNYazoN9jM6ELGCYKp3ZLIA+Jo43mBQ==
-X-Received: by 2002:a17:906:fe4d:b0:974:1e0e:91ee with SMTP id
- wz13-20020a170906fe4d00b009741e0e91eemr16521314ejb.13.1686745659393; 
- Wed, 14 Jun 2023 05:27:39 -0700 (PDT)
-Received: from [10.14.201.118] ([213.175.39.66])
- by smtp.gmail.com with ESMTPSA id
- e26-20020a1709062c1a00b00974556e50a6sm7992135ejh.114.2023.06.14.05.27.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 05:27:38 -0700 (PDT)
-Message-ID: <dca0331c-66fb-1b38-8d45-1e5d7c118494@linaro.org>
-Date: Wed, 14 Jun 2023 14:27:38 +0200
+ d=1e100.net; s=20221208; t=1686745810; x=1689337810;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=27mXpjU0rZtFzXpLREMWFj2XIwHSGIa7FhRtrTdGotM=;
+ b=CnpayeiOAql6wkwBUZXKeKrPZnDWSy/c0uvDqeW4aqF4qWzc4aJ/cPkLzirWPHvpw3
+ rh6mROHyC+NhuGCuEPLz2Jd728fjkeYoT6vCc2ixfnA0bPoPbQBsN+Qi9ldqLFqTyw3A
+ fPJjlsxMh+yTLL6hnCnlttNAqSXyqN6G6nzuCqwLhACC/8b3SkKM0uY3bO3qz34r454+
+ 0CdqcWGgK0Li/Nhvq5xHKnYkfcpJDNOOlZPIq3Ym6p8hhS5BjwDx2iVgc/ZFMOdE6/sT
+ 8bun9pT09b3aK0vUpeYjfGy1XgYzBbBUP+ETHQtVpZ08WhkpF878foyY/FdTyPbr1ES2
+ 9fxg==
+X-Gm-Message-State: AC+VfDxEEkXVOJOMucPSXzhj2G1bhnJH5HDd+34cok+/nSfrrF7WCxRW
+ G4iLCa9B0isgGJt1noI5A0bQVSS/L6VND4FaygM=
+X-Google-Smtp-Source: ACHHUZ5T+QIYc/hpdb27thMHAuyFL/uD3r4JDtvVs7r9EQpPfhdOq+xre+dTtRtflP+nONDpEpbCNilLUfN8Zx3xh8o=
+X-Received: by 2002:a1f:450e:0:b0:46e:7738:1a9e with SMTP id
+ s14-20020a1f450e000000b0046e77381a9emr2454280vka.9.1686745810091; Wed, 14 Jun
+ 2023 05:30:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v3 09/10] memory-device: Refactor memory_device_pre_plug()
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>
-References: <20230601121447.272487-1-david@redhat.com>
- <20230601121447.272487-11-david@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230601121447.272487-11-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230614140748.3584-1-ld.adecy@gmail.com>
+ <d7404559-407e-5742-666c-6330da3d3e2c@linaro.org>
+In-Reply-To: <d7404559-407e-5742-666c-6330da3d3e2c@linaro.org>
+From: Michael Rolnik <mrolnik@gmail.com>
+Date: Wed, 14 Jun 2023 15:29:34 +0300
+Message-ID: <CAK4993jzRnmfe1BeAQw2aFum3Z=tnQhQh5HyaQEw-2WrPSyeYw@mail.gmail.com>
+Subject: Re: [PATCH] Fix handling of AVR interrupts above 33.
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Lucas Dietrich <ld.adecy@gmail.com>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000d6422405fe161cb5"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
+ envelope-from=mrolnik@gmail.com; helo=mail-vk1-xa32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,22 +84,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/6/23 14:14, David Hildenbrand wrote:
-> Let's move memory_device_check_addable() and basic checks out of
-> memory_device_get_free_addr() directly into memory_device_pre_plug().
-> 
-> Separating basic checks from address assignment is cleaner and
-> prepares for further changes.
-> 
-> As all memory device users now use memory_devices_init(), and that
-> function enforces that the size is 0, we can drop the check for an empty
-> region.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   hw/mem/memory-device.c | 28 ++++++++++++++--------------
->   1 file changed, 14 insertions(+), 14 deletions(-)
+--000000000000d6422405fe161cb5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Rolnik <mrolnik@gmail.com>
 
+On Wed, Jun 14, 2023 at 3:22=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
+
+> On 14/6/23 16:07, Lucas Dietrich wrote:
+> > This commit addresses a bug in the AVR interrupt handling code.
+> > The modification involves replacing the usage of the ctz32 function
+> > with ctz64 to ensure proper handling of interrupts above 33 in the AVR
+> > target.
+> >
+> > Previously, timers 3, 4, and 5 interrupts were not functioning correctl=
+y
+> > because most of their interrupt vectors are numbered above 33.
+> >
+> > Signed-off-by: Lucas Dietrich <ld.adecy@gmail.com>
+> > ---
+> >   target/avr/helper.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> Thanks for insisting with the patch posting process :)
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+>
+
+--=20
+Best Regards,
+Michael Rolnik
+
+--000000000000d6422405fe161cb5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Michael Rolnik &lt;<a href=3D"mailto:mrolnik@=
+gmail.com">mrolnik@gmail.com</a>&gt;</div><br><div class=3D"gmail_quote"><d=
+iv dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 14, 2023 at 3:22=E2=80=AFPM=
+ Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philm=
+d@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">On 14/6/23 16:07, Lucas Dietrich wrote:<br>
+&gt; This commit addresses a bug in the AVR interrupt handling code.<br>
+&gt; The modification involves replacing the usage of the ctz32 function<br=
+>
+&gt; with ctz64 to ensure proper handling of interrupts above 33 in the AVR=
+<br>
+&gt; target.<br>
+&gt; <br>
+&gt; Previously, timers 3, 4, and 5 interrupts were not functioning correct=
+ly<br>
+&gt; because most of their interrupt vectors are numbered above 33.<br>
+&gt; <br>
+&gt; Signed-off-by: Lucas Dietrich &lt;<a href=3D"mailto:ld.adecy@gmail.com=
+" target=3D"_blank">ld.adecy@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0target/avr/helper.c | 4 ++--<br>
+&gt;=C2=A0 =C2=A01 file changed, 2 insertions(+), 2 deletions(-)<br>
+<br>
+Thanks for insisting with the patch posting process :)<br>
+<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Be=
+st Regards,<br>Michael Rolnik</div>
+
+--000000000000d6422405fe161cb5--
 
