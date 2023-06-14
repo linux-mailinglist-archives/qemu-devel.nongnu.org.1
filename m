@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6497D730038
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 15:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6DF7301AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 16:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Qfk-0005VS-Py; Wed, 14 Jun 2023 09:36:28 -0400
+	id 1q9ROD-0005sX-3T; Wed, 14 Jun 2023 10:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q9Qfj-0005V1-A6
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 09:36:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q9ROB-0005sK-50
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 10:22:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q9Qfh-0006fk-Jz
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 09:36:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q9RO9-0007ES-9K
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 10:22:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686749784;
+ s=mimecast20190719; t=1686752539;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=v+FxCz9bQHpI7KUW51pVfNAx5Njh5yyomy08tKiydos=;
- b=gC9YYIoE+1WcdfPPWUAzqFwdyG0lknidgC0+XSxsmigtJTmt7IZQb6ImYvF7R2UsdCzKay
- oA09LgyyUuVQ6BjkJtHllsBMSJibaXCS1VbDWuVfHiwJWEGmTAdYI3uJOdaYdDQ7M1Q+fV
- eB1uFddgF9JCz/A5JMN8lxpCY2TFZr0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=01CIeBzKp9y8I9726vxtFEtqRH53zZUmzCC6k7gfhtE=;
+ b=TOcLdjIW2H2jrDEEUNMAHtclK1aP6LIJHJxnG5NAPjAc0dOvqqIW4JbTBWGEaXhIJInCWp
+ ITQ4VD8mCRvqe+9GFib17pQ5q9skBRn+wfxx9FMa2z1P5xgegJgFbBpbPj3dDjYKrWKLUK
+ JGHDPX8LYtQF8sVqzQumBt9+62DiqR8=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-XFufmFxpM3a0tQXAWEvViA-1; Wed, 14 Jun 2023 09:36:21 -0400
-X-MC-Unique: XFufmFxpM3a0tQXAWEvViA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-75fd4851fb9so64841685a.0
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 06:36:21 -0700 (PDT)
+ us-mta-533-Nj2JyXHtOLazkX67nQG5fw-1; Wed, 14 Jun 2023 10:22:18 -0400
+X-MC-Unique: Nj2JyXHtOLazkX67nQG5fw-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-bb2202e0108so768479276.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 07:22:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686749781; x=1689341781;
+ d=1e100.net; s=20221208; t=1686752537; x=1689344537;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v+FxCz9bQHpI7KUW51pVfNAx5Njh5yyomy08tKiydos=;
- b=lIfjuqh3iT3nUGAQUwbFVvBWvNa8UgKg7rfwVsufdWepLJaE0vh0VNomcZ5087clVh
- BOJguLW7mTDWf8gWCXsJwLxP6lH41seGRO04H57Ados07apJ21LJM0f5nW0pbDupRjSb
- sVQKBW2RvGOlfpntFdvHnGXhRu0J4YNrnuJfxLQzbma8qyzZ5NJJa0uJVzKXFueRcHEK
- 53yRHgumeQ8lUACnvEYBe2jzvwAcuVSWfyaknZ/M0rvfmcVDl2869C1a2oj0KwORZ/O7
- XHTRhmff+1jjxouMUw40ngxl4nkz+O1VkOQa5QjEeCca5iP2w5yE92Cioog4d9hOXRb5
- q+vw==
-X-Gm-Message-State: AC+VfDxM53DK/xlEAOKsL593ocaS+mhdkxTxm1DWteHlsr8cnS1vPHWQ
- EoaXPVBC/qkmslU2WDKeiPKkP0cp+4K4MX1gYarrQtjLz3HuDmPOaZGIXMRWqEO+Vm+yN9qnwMY
- z8Et3WcSXhAFBkn0=
-X-Received: by 2002:a05:622a:1009:b0:3f8:46d:dacc with SMTP id
- d9-20020a05622a100900b003f8046ddaccmr20041785qte.2.1686749780860; 
- Wed, 14 Jun 2023 06:36:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5a14eV6NGtnbFbMTd+/aHpjHSiRCr/yNqv1AQoU3tkvVff9e8gfcJN2EZkHewMOV+17ACstg==
-X-Received: by 2002:a05:622a:1009:b0:3f8:46d:dacc with SMTP id
- d9-20020a05622a100900b003f8046ddaccmr20041763qte.2.1686749780549; 
- Wed, 14 Jun 2023 06:36:20 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- fg25-20020a05622a581900b003f6b8a6fd18sm5000378qtb.96.2023.06.14.06.36.19
+ bh=01CIeBzKp9y8I9726vxtFEtqRH53zZUmzCC6k7gfhtE=;
+ b=PCVw1K3ux7FI2Aq0X5R39OBv0bvIOfyA8+6HPZTK5VD13Vv2H/TW2f50KAGmMM8Yoy
+ q7Y8QL3emPzOswvM1HCrpJgicG3Nyrp+380HkK6C3pf9GQNxljKWwObhL8DFbMox97Zw
+ yVaL5EfsR6nMyOQL3ZgDaiRgQh6BJcABLHZx5pwjZTf2nP5rpRKT9zTK4nFan5/2fU14
+ GA7G95qTrfgxB2r7i3JC50VrdMJM2ndf2aO+PRhAPQho2v3BJ5oTk17Dzn7gi3lONfk9
+ pN5A5JKESPqoI7/cOtw+Ij4vKBIGB4HT5stfIidbs8MCQFJVmIdMfFvY19uZIUSr/c3Q
+ Ujiw==
+X-Gm-Message-State: AC+VfDxhIUl2blY1J0XkMCrx4vEXpwwz6k3+z5WCAytqosFuU03fDKWY
+ 6Vqo6hH56KCnDQneEQbETXJD+h/XLCxyAcrSIi8y9bg3j8jXScLA6C2zgSef0IPqHfAx+Quo/Lo
+ KsiEt3LOR4ZTLR6g=
+X-Received: by 2002:a25:d0d2:0:b0:bc6:c22f:581a with SMTP id
+ h201-20020a25d0d2000000b00bc6c22f581amr2114466ybg.38.1686752537316; 
+ Wed, 14 Jun 2023 07:22:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5nZVEcJegjNMx++1Ourh9uxN3YnNINjJmhOPlARdoKvjwKPMZ59iPZ3F6nbm/QPxu6kdR/fQ==
+X-Received: by 2002:a25:d0d2:0:b0:bc6:c22f:581a with SMTP id
+ h201-20020a25d0d2000000b00bc6c22f581amr2114447ybg.38.1686752537042; 
+ Wed, 14 Jun 2023 07:22:17 -0700 (PDT)
+Received: from redhat.com ([172.58.139.140]) by smtp.gmail.com with ESMTPSA id
+ y14-20020a25ad0e000000b00bc6a712c523sm2198378ybi.64.2023.06.14.07.22.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jun 2023 06:36:19 -0700 (PDT)
-Date: Wed, 14 Jun 2023 09:36:18 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Fiona Ebner <f.ebner@proxmox.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v2 04/20] qemu-file: We only call qemu_file_transferred_*
- on the sending side
-Message-ID: <ZInCUphJMtmWLkKq@x1n>
-References: <20230530183941.7223-1-quintela@redhat.com>
- <20230530183941.7223-5-quintela@redhat.com> <ZH4m8nUAEfZglPLD@x1n>
- <87y1kne4g2.fsf@secure.mitica>
+ Wed, 14 Jun 2023 07:22:16 -0700 (PDT)
+Date: Wed, 14 Jun 2023 10:22:08 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com,
+ imammedo@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/pci: prevent hotplug of devices on pcie-root-ports
+ with wrong devfn address
+Message-ID: <20230614102137-mutt-send-email-mst@kernel.org>
+References: <20230614123150.7077-1-anisinha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87y1kne4g2.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230614123150.7077-1-anisinha@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,79 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 13, 2023 at 06:02:05PM +0200, Juan Quintela wrote:
-> Peter Xu <peterx@redhat.com> wrote:
-> > On Tue, May 30, 2023 at 08:39:25PM +0200, Juan Quintela wrote:
-> >> Remove the increase in qemu_file_fill_buffer() and add asserts to
-> >> qemu_file_transferred* functions.
-> >> 
-> >> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> >
-> > The read side accounting does look a bit weird and never caught my notice..
-> >
-> > Maybe worth also touching the document of QEMUFile::total_transferred to
-> > clarify what it accounts?
-> >
-> > Reviewed-by: Peter Xu <peterx@redhat.com>
-> >
-> > Though when I'm looking at the counters (didn't follow every single recent
-> > patch on this..), I found that now reading transferred value is actually
-> > more expensive - qemu_file_transferred() needs flushing, even if for the
-> > fast version, qemu_file_transferred_fast() loops over all possible iovs,
-> > which can be as large as MAX_IOV_SIZE==64.
-> >
-> > To be explicit, I _think_ for each guest page we now need to flush...
-> >
-> >   ram_save_iterate
-> >     migration_rate_exceeded
-> >       migration_transferred_bytes
-> >         qemu_file_transferred
-> >
-> > I hope I'm wrong..
+On Wed, Jun 14, 2023 at 06:01:50PM +0530, Ani Sinha wrote:
+> PCIE root ports only allow one device on slot 0/function 0.
+
+
+Why do you say this? PCI devices can be multifunction.
+
+> When hotplugging a
+> device on a pcie root port, make sure that the device address passed is
+> always 0x00 that represents slot 0 and function 0. Any other slot value and
+> function value would be illegal on a root port.
 > 
-> See patch 7:
+> CC: jusual@redhat.com
+> CC: imammedo@redhat.com
+> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  hw/pci/pci.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
-> index 79eea8d865..1696185694 100644
-> --- a/migration/migration-stats.c
-> +++ b/migration/migration-stats.c
-> @@ -62,7 +62,7 @@ uint64_t migration_transferred_bytes(QEMUFile *f)
->  {
->      uint64_t multifd = stat64_get(&mig_stats.multifd_bytes);
->      uint64_t rdma = stat64_get(&mig_stats.rdma_bytes);
-> -    uint64_t qemu_file = qemu_file_transferred(f);
-> +    uint64_t qemu_file = stat64_get(&mig_stats.qemu_file_transferred);
+> Note:
+> I tested this with both native and acpi hotplug enabled on pcie. The
+> check seems to work on both.
+> 
+> (qemu)  netdev_add socket,id=hostnet1,listen=:1234
+> (qemu) device_add e1000e,netdev=hostnet1,mac=00:11:22:33:44:03,id=net1,bus=pci.6,addr=0x2.0x5
+> Error: PCI: slot 2 function 5 is not valid for e1000e
+> (qemu) device_add e1000e,netdev=hostnet1,mac=00:11:22:33:44:03,id=net1,bus=pci.6,addr=0x0.0
+> (qemu) info network
+> net1: index=0,type=nic,model=e1000e,macaddr=00:11:22:33:44:03
+>  \ hostnet1: index=0,type=socket,
+> (qemu) device_del net1
+> (qemu) info network
+> hostnet1: index=0,type=socket,
+> 
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index bf38905b7d..bc39322dfd 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -64,6 +64,7 @@ bool pci_available = true;
+>  static char *pcibus_get_dev_path(DeviceState *dev);
+>  static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>  static void pcibus_reset(BusState *qbus);
+> +static bool pcie_has_upstream_port(PCIDevice *dev);
 >  
->      trace_migration_transferred_bytes(qemu_file, multifd, rdma);
->      return qemu_file + multifd + rdma;
-
-If this is a known regression, should we make a first patchset fix it and
-make it higher priority to merge?
-
-It seems this is even not mentioned in the cover letter.. while IMHO this
-is the most important bit to have in it..
-
-> 
-> 
-> > Does it mean that perhaps we simply need "sent and put into send buffer"
-> > more than "what really got transferred"?  So I start to wonder what's the
-> > origianl purpose of this change, and which one is better..
-> 
-> That is basically what patch 5 and 6 do O:-)
-> 
-> Problem is arriving to something that is bisectable (for correctness)
-> and is easy to review.
-> 
-> And yes, my choices can be different from the ones tat you do.
-> 
-> The other reason for the small patches is that:
-> a - sometimes I found a different test where things broke, and have to
->     bisect
-> b - small patches are much easier to rebase (that I am doing a lot)
-
-That's okay.  Thanks,
-
--- 
-Peter Xu
+>  static Property pci_props[] = {
+>      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> @@ -1189,6 +1190,14 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+>                     name);
+>  
+>         return NULL;
+> +    } else if (dev->hotplugged &&
+> +               !pci_is_vf(pci_dev) &&
+> +               pcie_has_upstream_port(pci_dev) && devfn) {
+> +        /* For an upstream PCIE port, we only support one device at slot 0 */
+> +        error_setg(errp, "PCI: slot %d function %d is not valid for %s",
+> +                   PCI_SLOT(devfn), PCI_FUNC(devfn), name);
+> +        return NULL;
+> +
+>      }
+>  
+>      pci_dev->devfn = devfn;
+> -- 
+> 2.39.1
 
 
