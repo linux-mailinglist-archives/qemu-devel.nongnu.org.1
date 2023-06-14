@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BB4730AD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 00:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C08B8730AD4
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 00:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9ZAq-0001DQ-Cr; Wed, 14 Jun 2023 18:41:08 -0400
+	id 1q9ZAu-0001HB-1Q; Wed, 14 Jun 2023 18:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=52269c73c=graf@amazon.de>)
- id 1q9ZAi-0001Ca-Nr; Wed, 14 Jun 2023 18:41:01 -0400
-Received: from smtp-fw-52002.amazon.com ([52.119.213.150])
+ id 1q9ZAr-0001Ev-Li; Wed, 14 Jun 2023 18:41:09 -0400
+Received: from smtp-fw-9105.amazon.com ([207.171.188.204])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=52269c73c=graf@amazon.de>)
- id 1q9ZAe-00054W-43; Wed, 14 Jun 2023 18:40:59 -0400
+ id 1q9ZAp-000584-4u; Wed, 14 Jun 2023 18:41:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1686782456; x=1718318456;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=812ToqOaq+TruAW8BDtGLvVqU/MJdFb5n9sfiyjsyX8=;
- b=BcmBNfTXuxlI10zVKcNoiH6oLmJN72rzW/+pNew0tmu4tFILyCpPRRzB
- 4HkSBwZG5Gxv0/NkqxH801lgbgtZgAX0YlYo85jM9lSWVIlHfyI8bnOfD
- H1jgWHV3IESQJs2CwmC0LRU3W4RFJdJCXTFrJoDLBDP5cwpZYESqxAC5B c=;
-X-IronPort-AV: E=Sophos;i="6.00,243,1681171200"; d="scan'208";a="566653574"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- email-inbound-relay-pdx-2a-m6i4x-83883bdb.us-west-2.amazon.com) ([10.43.8.6])
- by smtp-border-fw-52002.iad7.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 22:40:50 +0000
-Received: from EX19MTAUWC001.ant.amazon.com
- (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
- by email-inbound-relay-pdx-2a-m6i4x-83883bdb.us-west-2.amazon.com (Postfix)
- with ESMTPS id 24AEB60D91; Wed, 14 Jun 2023 22:40:49 +0000 (UTC)
+ t=1686782467; x=1718318467;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=2fctppHD3w/Jcf/bfpN1CRxKNa2uQAnxsxTpak9z+g0=;
+ b=FgWFoSJKwI/HkSnbMI31HDJe9vtkrh8AvXxVNNmePoSzE9UYH1oNM+7U
+ GWskK3vVxbD0Kdn5EIspEjogG/3v7aNkN+eFEkats3USt1ttwVgKbPTGy
+ BzI1iG5E8+rZnsApU8aAUv109SDkFXbeu020dGO0VpHtxvHL+Q2jJ0/kt Q=;
+X-IronPort-AV: E=Sophos;i="6.00,243,1681171200"; d="scan'208";a="654948828"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO
+ email-inbound-relay-iad-1e-m6i4x-245b69b1.us-east-1.amazon.com)
+ ([10.25.36.214]) by smtp-border-fw-9105.sea19.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 22:40:59 +0000
+Received: from EX19MTAUWB002.ant.amazon.com
+ (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+ by email-inbound-relay-iad-1e-m6i4x-245b69b1.us-east-1.amazon.com (Postfix)
+ with ESMTPS id AF7233401B4; Wed, 14 Jun 2023 22:40:54 +0000 (UTC)
 Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 14 Jun 2023 22:40:41 +0000
+ 15.2.1118.26; Wed, 14 Jun 2023 22:40:43 +0000
 Received: from dev-dsk-graf-1a-5ce218e4.eu-west-1.amazon.com (10.253.83.51) by
  EX19D020UWC004.ant.amazon.com (10.13.138.149) with Microsoft SMTP
  Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 14 Jun 2023 22:40:39 +0000
+ 15.2.1118.26; Wed, 14 Jun 2023 22:40:41 +0000
 From: Alexander Graf <graf@amazon.com>
 To: <qemu-devel@nongnu.org>
 CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
@@ -51,10 +51,12 @@ CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
  <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Marcel Apfelbaum
  <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, "Peter
  Maydell" <peter.maydell@linaro.org>
-Subject: [PATCH 00/12] Introduce new vmapple machine type
-Date: Wed, 14 Jun 2023 22:40:26 +0000
-Message-ID: <20230614224038.86148-1-graf@amazon.com>
+Subject: [PATCH 01/12] build: Only define OS_OBJECT_USE_OBJC with gcc
+Date: Wed, 14 Jun 2023 22:40:27 +0000
+Message-ID: <20230614224038.86148-2-graf@amazon.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230614224038.86148-1-graf@amazon.com>
+References: <20230614224038.86148-1-graf@amazon.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.253.83.51]
 X-ClientProxiedBy: EX19D035UWA004.ant.amazon.com (10.13.139.109) To
@@ -62,8 +64,8 @@ X-ClientProxiedBy: EX19D035UWA004.ant.amazon.com (10.13.139.109) To
 Precedence: Bulk
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=52.119.213.150;
- envelope-from=prvs=52269c73c=graf@amazon.de; helo=smtp-fw-52002.amazon.com
+Received-SPF: pass client-ip=207.171.188.204;
+ envelope-from=prvs=52269c73c=graf@amazon.de; helo=smtp-fw-9105.amazon.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -86,122 +88,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set introduces a new ARM and HVF specific machine type
-called "vmapple". It mimicks the device model that Apple's proprietary
-Virtualization.Framework exposes, but implements it in QEMU.
+Recent versions of macOS use clang instead of gcc. The OS_OBJECT_USE_OBJC
+define is only necessary when building with gcc. Let's not define it when
+building with clang.
 
-With this new machine type, you can run macOS guests on Apple Silicon
-systems via HVF. To do so, you need to first install macOS using
-Virtualization.Framework onto a virtual disk image using a tool like
-macosvm (https://github.com/s-u/macosvm)
+With this patch, I can successfully include GCD headers in QEMU when
+building with clang.
 
-  $ macosvm --disk disk.img,size=32g --aux aux.img \
-            --restore UniversalMac_12.0.1_21A559_Restore.ipsw vm.json
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Then, extract the ECID from the installed VM:
-
-  $ cat "$DIR/macosvm.json" | python3 -c                                 \
-  'import json,sys;obj=json.load(sys.stdin);print(obj["machineId"]) |    \
-  base64 -d | plutil -extract ECID raw -
-
-In addition, cut off the first 16kb of the aux.img:
-
-  $ dd if=aux.img of=aux.img.trimmed bs=$(( 0x4000 )) skip=1
-
-Now, you can just launch QEMU with the bits generated above:
-
-  $ qemu-system-aarch64 -serial mon:stdio                                \
-  -m 4G                                                                  \
-  -M vmapple,uuid=6240349656165161789                                    \
-  -bios /Sys*/Lib*/Fra*/Virtualization.f*/R*/AVPBooter.vmapple2.bin      \
-  -pflash aux.img.trimmed                                                \
-  -pflash disk.img                                                       \
-  -drive file=disk.img,if=none,id=root                                   \
-  -device virtio-blk-pci,drive=root,x-apple-type=1                       \
-  -drive file=aux.img.trimmed,if=none,id=aux                             \
-  -device virtio-blk-pci,drive=aux,x-apple-type=2                        \
-  -accel hvf -no-reboot
-
-There are a few limitations with this implementation:
-
-  - Only runs on macOS because it relies on
-    ParavirtualizesGraphics.Framework
-  - Something is not fully correct on interrupt delivery or
-    similar - the keyboard does not work
-  - No Rosetta in the guest because we lack the private
-    entitlement to enable TSO
-
-Over time, I hope that some of the limitations above could cease to exist.
-This device model would enable very nice use cases with KVM on an Asahi
-Linux device.
-
-
-Alexander Graf (12):
-  build: Only define OS_OBJECT_USE_OBJC with gcc
-  hw/misc/pvpanic: Add MMIO interface
-  hvf: Increase number of possible memory slots
-  hvf: arm: Ignore writes to CNTP_CTL_EL0
-  hw/virtio: Add support for apple virtio-blk
-  hw: Add vmapple subdir
-  gpex: Allow more than 4 legacy IRQs
-  hw/vmapple/aes: Introduce aes engine
-  hw/vmapple/bdif: Introduce vmapple backdoor interface
-  hw/vmapple/cfg: Introduce vmapple cfg region
-  hw/vmapple/apple-gfx: Introduce ParavirtualizedGraphics.Framework
-    support
-  hw/vmapple/vmapple: Add vmapple machine type
-
- MAINTAINERS                                 |   6 +
- accel/hvf/hvf-accel-ops.c                   |   2 +-
- hw/Kconfig                                  |   1 +
- hw/arm/sbsa-ref.c                           |   2 +-
- hw/arm/virt.c                               |   2 +-
- hw/block/virtio-blk.c                       |  23 +
- hw/i386/microvm.c                           |   2 +-
- hw/loongarch/virt.c                         |   2 +-
- hw/meson.build                              |   1 +
- hw/mips/loongson3_virt.c                    |   2 +-
- hw/misc/Kconfig                             |   4 +
- hw/misc/meson.build                         |   1 +
- hw/misc/pvpanic-mmio.c                      |  66 ++
- hw/openrisc/virt.c                          |  12 +-
- hw/pci-host/gpex.c                          |  36 +-
- hw/riscv/virt.c                             |  12 +-
- hw/virtio/virtio-blk-pci.c                  |   7 +
- hw/vmapple/Kconfig                          |  30 +
- hw/vmapple/aes.c                            | 583 +++++++++++++++++
- hw/vmapple/apple-gfx.m                      | 578 +++++++++++++++++
- hw/vmapple/bdif.c                           | 245 ++++++++
- hw/vmapple/cfg.c                            | 105 ++++
- hw/vmapple/meson.build                      |   5 +
- hw/vmapple/trace-events                     |  47 ++
- hw/vmapple/trace.h                          |   1 +
- hw/vmapple/vmapple.c                        | 661 ++++++++++++++++++++
- hw/xtensa/virt.c                            |   2 +-
- include/hw/misc/pvpanic.h                   |   1 +
- include/hw/pci-host/gpex.h                  |   7 +-
- include/hw/pci/pci_ids.h                    |   1 +
- include/hw/virtio/virtio-blk.h              |   1 +
- include/hw/vmapple/bdif.h                   |  31 +
- include/hw/vmapple/cfg.h                    |  68 ++
- include/standard-headers/linux/virtio_blk.h |   3 +
- include/sysemu/hvf_int.h                    |   2 +-
- meson.build                                 |   9 +-
- target/arm/hvf/hvf.c                        |   7 +
- 37 files changed, 2538 insertions(+), 30 deletions(-)
- create mode 100644 hw/misc/pvpanic-mmio.c
- create mode 100644 hw/vmapple/Kconfig
- create mode 100644 hw/vmapple/aes.c
- create mode 100644 hw/vmapple/apple-gfx.m
- create mode 100644 hw/vmapple/bdif.c
- create mode 100644 hw/vmapple/cfg.c
- create mode 100644 hw/vmapple/meson.build
- create mode 100644 hw/vmapple/trace-events
- create mode 100644 hw/vmapple/trace.h
- create mode 100644 hw/vmapple/vmapple.c
- create mode 100644 include/hw/vmapple/bdif.h
- create mode 100644 include/hw/vmapple/cfg.h
-
+diff --git a/meson.build b/meson.build
+index 34306a6205..0bb5ea9d10 100644
+--- a/meson.build
++++ b/meson.build
+@@ -225,7 +225,9 @@ qemu_ldflags = []
+ if targetos == 'darwin'
+   # Disable attempts to use ObjectiveC features in os/object.h since they
+   # won't work when we're compiling with gcc as a C compiler.
+-  qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
++  if compiler.get_id() == 'gcc'
++    qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
++  endif
+ elif targetos == 'solaris'
+   # needed for CMSG_ macros in sys/socket.h
+   qemu_common_flags += '-D_XOPEN_SOURCE=600'
 -- 
 2.39.2 (Apple Git-143)
 
