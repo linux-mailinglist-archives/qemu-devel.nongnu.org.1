@@ -2,51 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6592D72F9F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A6D72F9F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9NIt-0008MF-UK; Wed, 14 Jun 2023 06:00:39 -0400
+	id 1q9NJh-00009C-06; Wed, 14 Jun 2023 06:01:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9NIq-0008Kh-JM; Wed, 14 Jun 2023 06:00:36 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1q9NJd-0008WC-Dc
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:25 -0400
+Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9NIo-00052L-59; Wed, 14 Jun 2023 06:00:36 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 60CD1748A5A;
- Wed, 14 Jun 2023 12:00:24 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2BBD5748A59; Wed, 14 Jun 2023 12:00:24 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 29A4F748A56;
- Wed, 14 Jun 2023 12:00:24 +0200 (CEST)
-Date: Wed, 14 Jun 2023 12:00:24 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, Greg Kurz <groug@kaod.org>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH] target/ppc: Implement gathering irq statistics
-In-Reply-To: <b9285487-fd9a-6955-6857-711f2258b706@kaod.org>
-Message-ID: <f2e43ecf-d015-951c-8f8e-6e0b09dc79df@eik.bme.hu>
-References: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
- <a274071c-b2c0-8371-b10d-82a883edef1f@kaod.org>
- <074e4215-2f3d-2292-4f93-2048233fa33a@eik.bme.hu>
- <b9285487-fd9a-6955-6857-711f2258b706@kaod.org>
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1q9NJa-0005F2-47
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
+ :Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=shtzt5IRzyDfLj6IHv4C4VDklvRs756lcAllta2tAr0=; b=ojr+UUurjecvKNoxaowZFMlWsY
+ QSpq70x0Y7iHMAm5fmjB9VdElTof5jTktYj831SkO78FsCi+RnxIaaEVSjKz9UFex3ELoZDrTaBQM
+ Oe+7YGfxcvnFBMYzKQR4RaR/UJ/tAuxfKXCa1p4yStHqdWkDTlLxU9mFvO3+qZuK0Rho=;
+X-Envelope-From: <kbastian@mail.uni-paderborn.de>
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: qemu-devel@nongnu.org
+Cc: kbastian@mail.uni-paderborn.de,
+	richard.henderson@linaro.org
+Subject: [PATCH v3 0/8] TriCore 1.6.2 Instructions
+Date: Wed, 14 Jun 2023 12:00:31 +0200
+Message-Id: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-265803155-1686736824=:19284"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.14.95116, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.6.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=581766, da=174345939, mc=54, sc=0,
+ hc=54, sp=0, fso=581766, re=0, sd=0, hd=0
+X-IMT-Source: Intern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
+Received-SPF: pass client-ip=2001:638:502:c003::16;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,55 +70,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---3866299591-265803155-1686736824=:19284
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+this patch series is in response to the tickets [1] [2], which point out missing
+instructions from ISA v1.6.2. This is the first series that implements the low
+hanging fruits.
 
-On Wed, 14 Jun 2023, Cédric Le Goater wrote:
-> On 6/8/23 11:34, BALATON Zoltan wrote:
->> On Thu, 8 Jun 2023, Cédric Le Goater wrote:
->>> On 6/7/23 00:02, BALATON Zoltan wrote:
->>>> Count exceptions which can be queried with info irq monitor command.
->>> 
->>> I don't think the TYPE_INTERRUPT_STATS_PROVIDER interface was designed
->>> for CPUs. It is more suitable for interrupt controllers.
->> 
->> True but:
->> - It works and provides useful statistics
->> - At least older PPC CPUs have embedded interrupt controller as the comment 
->> in cpu.h shows
->> 
->> so is this just a comment, question or you want something changed in this 
->> patch?
->
-> It was more a general comment. It is also adding a very large array
-> in an even larger structure. I wonder this has some impact on cache
-> misses.
+Cheers,
+Bastian
 
-I could not measure a performance decrease at least with the tests I did 
-so it likely has no major impact but that could also be host arch 
-specific. I've found exceptions may be one source of slowness because I 
-see a lot of external interrupts raised with MorphOS on pegasos2 while 
-much less with AmigaOS on the same machine and the latter seems to run 
-faster while same MoprhOS on mac99 does not have these interrupts and runs 
-faster than AmigaOS on pegasos2. I've added these irq counts to be able to 
-get some info on this. This series started as an attempt to optimise this 
-part a bit but could not make it much faster so only the clean ups 
-remained at the end. I have more changes that in theory could help but 
-tests showed it made things slower so I've dropped those. These were 
-changing cs parameter to env in other functions such as 
-powerpc_reset_excp_state(), powerpc_set_excp_state(), 
-ppc_interrupts_little_endian(), powerpc_excp() and all its model specific 
-variants to get rid of local cs variables but this made it slower. Or 
-marking error checks with unlikely that also made it slower despite I 
-heven't seen any of those errors firing so it's hard to tell which change 
-would have a performance impact. I've tested that these in this series 
-don't change things much, I still get about the same speed as before.
+v1 -> v2:
+    - Shuffle now uses shifts, instead of a buffer
+    - Shuffle now does rev8 for all bytes in parallel
 
-Regards,
-BALATON Zoltan
---3866299591-265803155-1686736824=:19284--
+v2 -> v3:
+    - Added patch to implement SYSCALL (resolves https://gitlab.com/qemu-project/qemu/-/issues/1452)
+    - Added patch to implement DISABLE insn variant
+
+Bastian Koppelmann (8):
+  target/tricore: Introduce ISA 1.6.2 feature
+  target/tricore: Add popcnt.w insn
+  target/tricore: Add LHA insn
+  target/tricore: Add crc32l.w insn
+  target/tricore: Add crc32.b insn
+  target/tricore: Add shuffle insn
+  target/tricore: Implement SYCSCALL insn
+  target/tricore: Add DISABLE insn variant
+
+ target/tricore/cpu.c             | 13 +++++++
+ target/tricore/cpu.h             |  1 +
+ target/tricore/helper.h          |  5 ++-
+ target/tricore/op_helper.c       | 54 +++++++++++++++++++++++++++-
+ target/tricore/translate.c       | 61 ++++++++++++++++++++++++++++----
+ target/tricore/tricore-opcodes.h | 16 +++++++--
+ 6 files changed, 140 insertions(+), 10 deletions(-)
+
+-- 
+2.40.1
+
 
