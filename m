@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AAF172F19D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD30272F1D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:29:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FCE-0004gy-11; Tue, 13 Jun 2023 21:21:14 -0400
+	id 1q9FCI-0004iN-MW; Tue, 13 Jun 2023 21:21:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FCC-0004gN-77
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:12 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1q9FCF-0004hs-SA
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:15 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FCA-0004VH-9P
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:11 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-543c6a2aa07so3387810a12.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:21:09 -0700 (PDT)
+ id 1q9FCE-0004Ve-23
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:21:15 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-651f2f38634so6201860b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:21:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705668; x=1689297668;
+ d=gmail.com; s=20221208; t=1686705672; x=1689297672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/TPEsts0bLmi2C1xS0E0BsNiJynzg8MYIvX516FXYv8=;
- b=oZ9miai+bBK2bDwGWvly7tlEtHoAtm4f+iJtuiCYTq07/pTkAKNoYpNuntjtse1Epa
- A/Iah9ft3vbth48hLZNLJ5iFHl0LqUfC9ZOU16rlkyYoEtN/NudnanNUXGMQR/A8h0gP
- VbaKEHP1oCrG+ANkG2Ine0ynhT9nUDcmdPjbgy1rMYCPGAK7Y8Opx1OvPlffiytCBT7y
- cWb1nog5nhU53oSOdF9f+KCC92NwOZshzdS19gp9Ny8O5QHI3mno2nKXE0hDBtV011gS
- oyAGe16Y92i6SRf4xcPAswnlhyKTM0iwhThJCFTutrZOcPjCynuhOIDEFy3HUbm+USaX
- VI/Q==
+ bh=qFtv0eonpae4ybQ/RQvPpuIYbe2J3nMJEQYdMUSx6EY=;
+ b=nuHgxfnZIU/RKiGn1OTjeklsrWQaY9NR4N/h1c+2UL76UChVf4Eod21S7z5Ol58o20
+ pljay86y8e/Y8VJfCf0IpnVd68CdQ6jcxzqfuvbrg1+tKYKYG6UsRZ1XHG1BLvuwkHfC
+ PNOD8jxgyla5oHbOwPoZCP9RflUKJTJO8MPXF61+WjrrdToPs+tHL16xb6YxeGEiLjdz
+ rb06PwULcUxWnFtlJM9NZ9UdBpKTJjnifYki3IXBNBUhapGKwDs+jCDofvEGWI4v5uCM
+ 6xOYjN7kR4HFewzkSgHaz+ZzTFurh/Z8VURnLakL4sftOiVL53Rzg6V9+NGSZwifw4Ng
+ aiQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705668; x=1689297668;
+ d=1e100.net; s=20221208; t=1686705672; x=1689297672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/TPEsts0bLmi2C1xS0E0BsNiJynzg8MYIvX516FXYv8=;
- b=cwrzt1Q18qaFqD3/M9svqQDbLv32b0BSx+yTAeI2e/ECiuBMU1LGQAGVNSrtP5zkfh
- yuyoS11Y7MERbiIekO5ejZvSi+Y2MlpgbHW1DFvEHyQPKga1C/JsZFLXok/CVt4ZkPNU
- jJC33IxCqD21S5Xs99DrWP4JBDUL/DZDQq11lpHdrBLl9tufN3ZeyT26SkHwxMSSc8Tg
- YdVM3hH/ktatinVBjR7aI8iMa82yKT3WXFU8RvToOOPVO/riFUUJJp6ppmH+ycJm1PC4
- F07PfWpMBX0ckgisoXb33W2xC6CILiA3F8wrg7CWKXQ28ME2HQ1Hz7yG/lh3KVRPERSP
- Tx1w==
-X-Gm-Message-State: AC+VfDxZUpoKzN0lIMP9tZnbTGDNsHGEZnnox5lmuyNJjMG9SHGX4KBD
- kF6T/x4p5+xLx1UTrYivZcI15W2O1sHsLw==
-X-Google-Smtp-Source: ACHHUZ4HQbzPF2XgIP+zYGCoGgzEI+0FmH1tBKXognQFRnScjXx3pwkJ7BvR57rcrBYrCbOG11TxUQ==
-X-Received: by 2002:a05:6a21:3603:b0:101:282c:2b with SMTP id
- yg3-20020a056a21360300b00101282c002bmr251806pzb.32.1686705668127; 
- Tue, 13 Jun 2023 18:21:08 -0700 (PDT)
+ bh=qFtv0eonpae4ybQ/RQvPpuIYbe2J3nMJEQYdMUSx6EY=;
+ b=fGwxhfpK+rOqmiYSePsTjZ8PlOIWP94VCP+3ogwFeErOSEv5jSiLzI75dpsyJza+V1
+ VPvU0NLmLHsMaq2qpLzBJmb+OKE43UufYwTIPE6oAR3AgbnlsSX4vePxsTdlQlEn06E/
+ zivD7XBFe8j73EbawSk3UCQ74JlnGk89qmzJEfv9poN0jYeODuDbIG9ILi2bePH0OUI7
+ 3jjoSWzOkZRnglF2JnFDzvDWz+zQdo/WGMeB0ZVvgCVJSvj81g0iuXIqm7wt0l24SfEW
+ 1Z7lulp/ZPQYhlvxtzi3ZD/2zLt6GLI3U+BZ/ZClI+uYv36BcSRyU2Nls4P3wXWDVqnR
+ n1gg==
+X-Gm-Message-State: AC+VfDytmkSFrvZxXmt1dfDKZ46cYHmIH9a01gRAhyymIMXICcC84tDA
+ tFS25UTRJ/UXu5KPhXkLQe5ZVRywVmCq0Q==
+X-Google-Smtp-Source: ACHHUZ513YkBfp6Tx6KwneLvgrBUN30uhyjY25HmN6/QpKtOLhLeLbHFhg/wuyPt7RUZRnS0AiYUrg==
+X-Received: by 2002:a05:6a00:1148:b0:64f:e997:5107 with SMTP id
+ b8-20020a056a00114800b0064fe9975107mr627653pfm.1.1686705672458; 
+ Tue, 13 Jun 2023 18:21:12 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.21.05
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.21.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:21:07 -0700 (PDT)
+ Tue, 13 Jun 2023 18:21:11 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 08/60] target/riscv: Update check for Zca/Zcf/Zcd
-Date: Wed, 14 Jun 2023 11:19:25 +1000
-Message-Id: <20230614012017.3100663-9-alistair.francis@wdc.com>
+Subject: [PULL 09/60] target/riscv/cpu.c: add priv_spec validate/disable_exts
+ helpers
+Date: Wed, 14 Jun 2023 11:19:26 +1000
+Message-Id: <20230614012017.3100663-10-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,144 +99,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weiwei Li <liweiwei@iscas.ac.cn>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Even though Zca/Zcf/Zcd can be included by C/F/D, however, their priv
-version is higher than the priv version of C/F/D. So if we use check
-for them instead of check for C/F/D totally, it will trigger new
-problem when we try to disable the extensions based on the configured
-priv version.
+We're doing env->priv_spec validation and assignment at the start of
+riscv_cpu_realize(), which is fine, but then we're doing a force disable
+on extensions that aren't compatible with the priv version.
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+This second step is being done too early. The disabled extensions might be
+re-enabled again in riscv_cpu_validate_set_extensions() by accident. A
+better place to put this code is at the end of
+riscv_cpu_validate_set_extensions() after all the validations are
+completed.
+
+Add a new helper, riscv_cpu_disable_priv_spec_isa_exts(), to disable the
+extesions after the validation is done. While we're at it, create a
+riscv_cpu_validate_priv_spec() helper to host all env->priv_spec related
+validation to unclog riscv_cpu_realize a bit.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230517135714.211809-7-dbarboza@ventanamicro.com>
+Message-Id: <20230517135714.211809-8-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/translate.c                |  5 +++--
- target/riscv/insn_trans/trans_rvd.c.inc | 12 +++++++-----
- target/riscv/insn_trans/trans_rvf.c.inc | 14 ++++++++------
- target/riscv/insn_trans/trans_rvi.c.inc |  5 +++--
- 4 files changed, 21 insertions(+), 15 deletions(-)
+ target/riscv/cpu.c | 91 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 56 insertions(+), 35 deletions(-)
 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 933b11c50d..29f1fb3995 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -551,7 +551,7 @@ static void gen_jal(DisasContext *ctx, int rd, target_ulong imm)
- 
-     /* check misaligned: */
-     next_pc = ctx->base.pc_next + imm;
--    if (!ctx->cfg_ptr->ext_zca) {
-+    if (!has_ext(ctx, RVC) && !ctx->cfg_ptr->ext_zca) {
-         if ((next_pc & 0x3) != 0) {
-             gen_exception_inst_addr_mis(ctx);
-             return;
-@@ -1125,7 +1125,8 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
-          * The Zca extension is added as way to refer to instructions in the C
-          * extension that do not include the floating-point loads and stores
-          */
--        if (ctx->cfg_ptr->ext_zca && decode_insn16(ctx, opcode)) {
-+        if ((has_ext(ctx, RVC) || ctx->cfg_ptr->ext_zca) &&
-+            decode_insn16(ctx, opcode)) {
-             return;
-         }
-     } else {
-diff --git a/target/riscv/insn_trans/trans_rvd.c.inc b/target/riscv/insn_trans/trans_rvd.c.inc
-index 2c51e01c40..6bdb55ef43 100644
---- a/target/riscv/insn_trans/trans_rvd.c.inc
-+++ b/target/riscv/insn_trans/trans_rvd.c.inc
-@@ -31,9 +31,11 @@
-     } \
- } while (0)
- 
--#define REQUIRE_ZCD(ctx) do { \
--    if (!ctx->cfg_ptr->ext_zcd) {  \
--        return false;     \
-+#define REQUIRE_ZCD_OR_DC(ctx) do { \
-+    if (!ctx->cfg_ptr->ext_zcd) { \
-+        if (!has_ext(ctx, RVD) || !has_ext(ctx, RVC)) { \
-+            return false; \
-+        } \
-     } \
- } while (0)
- 
-@@ -67,13 +69,13 @@ static bool trans_fsd(DisasContext *ctx, arg_fsd *a)
- 
- static bool trans_c_fld(DisasContext *ctx, arg_fld *a)
- {
--    REQUIRE_ZCD(ctx);
-+    REQUIRE_ZCD_OR_DC(ctx);
-     return trans_fld(ctx, a);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 81a785d525..a0589abb16 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -864,6 +864,52 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+     env->vext_ver = vext_version;
  }
  
- static bool trans_c_fsd(DisasContext *ctx, arg_fsd *a)
- {
--    REQUIRE_ZCD(ctx);
-+    REQUIRE_ZCD_OR_DC(ctx);
-     return trans_fsd(ctx, a);
++static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
++{
++    CPURISCVState *env = &cpu->env;
++    int priv_version = -1;
++
++    if (cpu->cfg.priv_spec) {
++        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
++            priv_version = PRIV_VERSION_1_12_0;
++        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
++            priv_version = PRIV_VERSION_1_11_0;
++        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
++            priv_version = PRIV_VERSION_1_10_0;
++        } else {
++            error_setg(errp,
++                       "Unsupported privilege spec version '%s'",
++                       cpu->cfg.priv_spec);
++            return;
++        }
++
++        env->priv_ver = priv_version;
++    }
++}
++
++static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
++{
++    CPURISCVState *env = &cpu->env;
++    int i;
++
++    /* Force disable extensions if priv spec version does not match */
++    for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
++        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i]) &&
++            (env->priv_ver < isa_edata_arr[i].min_version)) {
++            isa_ext_update_enabled(cpu, &isa_edata_arr[i], false);
++#ifndef CONFIG_USER_ONLY
++            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
++                        " because privilege spec version does not match",
++                        isa_edata_arr[i].name, env->mhartid);
++#else
++            warn_report("disabling %s extension because "
++                        "privilege spec version does not match",
++                        isa_edata_arr[i].name);
++#endif
++        }
++    }
++}
++
+ /*
+  * Check consistency between chosen extensions while setting
+  * cpu->cfg accordingly.
+@@ -1082,6 +1128,12 @@ static void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         cpu->cfg.ext_zksed = true;
+         cpu->cfg.ext_zksh = true;
+     }
++
++    /*
++     * Disable isa extensions based on priv spec after we
++     * validated and set everything we need.
++     */
++    riscv_cpu_disable_priv_spec_isa_exts(cpu);
  }
  
-diff --git a/target/riscv/insn_trans/trans_rvf.c.inc b/target/riscv/insn_trans/trans_rvf.c.inc
-index b2de4fcf3f..c47138575a 100644
---- a/target/riscv/insn_trans/trans_rvf.c.inc
-+++ b/target/riscv/insn_trans/trans_rvf.c.inc
-@@ -30,10 +30,12 @@
-     } \
- } while (0)
+ #ifndef CONFIG_USER_ONLY
+@@ -1181,7 +1233,6 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+     CPURISCVState *env = &cpu->env;
+     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
+     CPUClass *cc = CPU_CLASS(mcc);
+-    int i, priv_version = -1;
+     Error *local_err = NULL;
  
--#define REQUIRE_ZCF(ctx) do {                  \
--    if (!ctx->cfg_ptr->ext_zcf) {              \
--        return false;                          \
--    }                                          \
-+#define REQUIRE_ZCF_OR_FC(ctx) do {                     \
-+    if (!ctx->cfg_ptr->ext_zcf) {                       \
-+        if (!has_ext(ctx, RVF) || !has_ext(ctx, RVC)) { \
-+            return false;                               \
-+        }                                               \
-+    }                                                   \
- } while (0)
+     cpu_exec_realizefn(cs, &local_err);
+@@ -1190,23 +1241,10 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
- static bool trans_flw(DisasContext *ctx, arg_flw *a)
-@@ -69,13 +71,13 @@ static bool trans_fsw(DisasContext *ctx, arg_fsw *a)
+-    if (cpu->cfg.priv_spec) {
+-        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
+-            priv_version = PRIV_VERSION_1_12_0;
+-        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
+-            priv_version = PRIV_VERSION_1_11_0;
+-        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
+-            priv_version = PRIV_VERSION_1_10_0;
+-        } else {
+-            error_setg(errp,
+-                       "Unsupported privilege spec version '%s'",
+-                       cpu->cfg.priv_spec);
+-            return;
+-        }
+-    }
+-
+-    if (priv_version >= PRIV_VERSION_1_10_0) {
+-        env->priv_ver = priv_version;
++    riscv_cpu_validate_priv_spec(cpu, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
+     }
  
- static bool trans_c_flw(DisasContext *ctx, arg_flw *a)
- {
--    REQUIRE_ZCF(ctx);
-+    REQUIRE_ZCF_OR_FC(ctx);
-     return trans_flw(ctx, a);
- }
+     riscv_cpu_validate_misa_priv(env, &local_err);
+@@ -1215,23 +1253,6 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
- static bool trans_c_fsw(DisasContext *ctx, arg_fsw *a)
- {
--    REQUIRE_ZCF(ctx);
-+    REQUIRE_ZCF_OR_FC(ctx);
-     return trans_fsw(ctx, a);
- }
- 
-diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
-index 2031e9931e..d794247f40 100644
---- a/target/riscv/insn_trans/trans_rvi.c.inc
-+++ b/target/riscv/insn_trans/trans_rvi.c.inc
-@@ -56,7 +56,7 @@ static bool trans_jalr(DisasContext *ctx, arg_jalr *a)
-     tcg_gen_andi_tl(cpu_pc, cpu_pc, (target_ulong)-2);
- 
-     gen_set_pc(ctx, cpu_pc);
--    if (!ctx->cfg_ptr->ext_zca) {
-+    if (!has_ext(ctx, RVC) && !ctx->cfg_ptr->ext_zca) {
-         TCGv t0 = tcg_temp_new();
- 
-         misaligned = gen_new_label();
-@@ -169,7 +169,8 @@ static bool gen_branch(DisasContext *ctx, arg_b *a, TCGCond cond)
- 
-     gen_set_label(l); /* branch taken */
- 
--    if (!ctx->cfg_ptr->ext_zca && ((ctx->base.pc_next + a->imm) & 0x3)) {
-+    if (!has_ext(ctx, RVC) && !ctx->cfg_ptr->ext_zca &&
-+        ((ctx->base.pc_next + a->imm) & 0x3)) {
-         /* misaligned */
-         gen_exception_inst_addr_mis(ctx);
-     } else {
+-    /* Force disable extensions if priv spec version does not match */
+-    for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+-        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i]) &&
+-            (env->priv_ver < isa_edata_arr[i].min_version)) {
+-            isa_ext_update_enabled(cpu, &isa_edata_arr[i], false);
+-#ifndef CONFIG_USER_ONLY
+-            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
+-                        " because privilege spec version does not match",
+-                        isa_edata_arr[i].name, env->mhartid);
+-#else
+-            warn_report("disabling %s extension because "
+-                        "privilege spec version does not match",
+-                        isa_edata_arr[i].name);
+-#endif
+-        }
+-    }
+-
+     if (cpu->cfg.epmp && !cpu->cfg.pmp) {
+         /*
+          * Enhanced PMP should only be available
 -- 
 2.40.1
 
