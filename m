@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8997473059A
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 19:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6581730599
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 19:01:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Tqv-0004Ro-HT; Wed, 14 Jun 2023 13:00:13 -0400
+	id 1q9Tr1-0004TM-0X; Wed, 14 Jun 2023 13:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9Tqo-0004RS-U8
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 13:00:07 -0400
+ id 1q9Tqt-0004ST-VO
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 13:00:13 -0400
 Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9Tqn-0003e3-5o
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 13:00:06 -0400
+ id 1q9Tqr-0003qA-Ew
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 13:00:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=8/gm1apLV8eHNtaiJvhOC41/i1no+XVp6/uvLHUrNeI=; b=i3zUu3oWXlZQxqXTMwBafLQtEE
- 2cwDQyA9btcYFI71Pi/UmHCsJJG9417nFOHkgvwQk4x0BFBSF/TCBxDt81zjDTTcm2fwQh9Hv3BD3
- WDbtnVrrKIg8TrN+KDenYUKPXQuVum2sTvYIUipqhBxigZZpXq29NgHPV3r5/tYDvIOY=;
+ bh=WI/9TiXXKD5686oVjbUTlGX2MGq0ZUiKqizj9hMszdY=; b=NUDxkKU7L9dl590R9Vq9zH//sx
+ HsKNsmpz4S34QQUUQeg/A7gwDMaRSI7/F7+gd9g8bqWCarplJamvK9pN68LrziW0sIguG+mgOnynz
+ pt+vCHuyMxNMOoSM+2H/mhiGwfkJ2E/uCzoxT79C7L10CWhWEwirfhQSD2li6hbcGNU4=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH 3/4] target/tricore: Honour privilege changes on PSW write
-Date: Wed, 14 Jun 2023 18:59:33 +0200
-Message-Id: <20230614165934.1370440-4-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 4/4] target/tricore: Fix ICR.IE offset in RESTORE insn
+Date: Wed, 14 Jun 2023 18:59:34 +0200
+Message-Id: <20230614165934.1370440-5-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614165934.1370440-1-kbastian@mail.uni-paderborn.de>
 References: <20230614165934.1370440-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.14.165116, AntiVirus-Engine: 6.0.0,
+ Antispam-Data: 2023.6.14.164816, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=606892, da=174371065, mc=78, sc=0,
- hc=78, sp=0, fso=606892, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=606898, da=174371071, mc=80, sc=0,
+ hc=80, sp=0, fso=606898, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -72,60 +72,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-the CPU can change the privilege level by writing the corresponding bits
-in PSW. If this happens all instructions after this 'mtcr' in the TB are
-translated with the wrong privilege level. So we have to exit to the
-cpu_loop() and start translating again with the new privilege level.
+from ISA v1.6.1 onwards the bit position of ICR.IE changed.
+ctx->icr_ie_offset contains the correct value for the ISA version used
+by the vCPU.
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/op_helper.c | 11 +++++++++++
- target/tricore/translate.c |  2 ++
- 2 files changed, 13 insertions(+)
+ target/tricore/translate.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 026e15f3e0..17b78c501c 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2839,7 +2839,18 @@ void helper_rslcx(CPUTriCoreState *env)
- 
- void helper_psw_write(CPUTriCoreState *env, uint32_t arg)
- {
-+    uint32_t old_priv, new_priv;
-+    CPUState *cs;
-+
-+    old_priv = extract32(env->PSW, 10, 2);
-     psw_write(env, arg);
-+    new_priv = extract32(env->PSW, 10, 2);
-+
-+    if (old_priv != new_priv) {
-+        cs = env_cpu(env);
-+        env->PC = env->PC + 4;
-+        cpu_loop_exit(cs);
-+    }
- }
- 
- uint32_t helper_psw_read(CPUTriCoreState *env)
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index edbc319fa1..baf13fc205 100644
+index baf13fc205..e4e57130bf 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -331,6 +331,7 @@ static void gen_swapmsk(DisasContext *ctx, int reg, TCGv ea)
-     tcg_gen_mov_tl(cpu_gpr_d[reg], temp);
- }
- 
-+static inline void gen_save_pc(target_ulong pc);
- 
- /* We generate loads and store to core special function register (csfr) through
-    the function gen_mfcr and gen_mtcr. To handle access permissions, we use 3
-@@ -378,6 +379,7 @@ static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
-     if (ctx->priv == TRICORE_PRIV_SM) {
-         /* since we're caching PSW make this a special case */
-         if (offset == 0xfe04) {
-+            gen_save_pc(ctx->base.pc_next);
-             gen_helper_psw_write(cpu_env, r1);
-         } else {
-             switch (offset) {
+@@ -7959,7 +7959,8 @@ static void decode_sys_interrupts(DisasContext *ctx)
+     case OPC2_32_SYS_RESTORE:
+         if (has_feature(ctx, TRICORE_FEATURE_16)) {
+             if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
+-                tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1], 8, 1);
++                tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1],
++                        ctx->icr_ie_offset, 1);
+             } else {
+                 generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
+             }
 -- 
 2.40.1
 
