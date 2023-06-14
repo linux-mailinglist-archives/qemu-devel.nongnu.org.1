@@ -2,47 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A6D72F9F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB6372F9EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9NJh-00009C-06; Wed, 14 Jun 2023 06:01:29 -0400
+	id 1q9NJh-0000Fd-PE; Wed, 14 Jun 2023 06:01:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9NJd-0008WC-Dc
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:25 -0400
+ id 1q9NJe-000096-P4
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:27 -0400
 Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9NJa-0005F2-47
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:25 -0400
+ id 1q9NJc-0005Ft-1X
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:01:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=shtzt5IRzyDfLj6IHv4C4VDklvRs756lcAllta2tAr0=; b=ojr+UUurjecvKNoxaowZFMlWsY
- QSpq70x0Y7iHMAm5fmjB9VdElTof5jTktYj831SkO78FsCi+RnxIaaEVSjKz9UFex3ELoZDrTaBQM
- Oe+7YGfxcvnFBMYzKQR4RaR/UJ/tAuxfKXCa1p4yStHqdWkDTlLxU9mFvO3+qZuK0Rho=;
+ :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=zDPntnPHMN0dDBYGVMuf6Vv/5/cJel9Jtzzkqeampls=; b=J3bxWtGUcxp6/+n6AFAqnJe/Gx
+ yNWY3Ij1BYYguN5DMdpITRwxGxHArhTw3z9ruQL6UDucXxoGx/fkuih/g5nehzfMnVeqG6nSLStwW
+ x1LwxFK8T1oPLTXyUir9VQPVO6CF8zpHlhccNCPNMx8OLZn3+ugcEi6T1hSdgyMA5wP8=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH v3 0/8] TriCore 1.6.2 Instructions
-Date: Wed, 14 Jun 2023 12:00:31 +0200
-Message-Id: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v3 1/8] target/tricore: Introduce ISA 1.6.2 feature
+Date: Wed, 14 Jun 2023 12:00:32 +0200
+Message-Id: <20230614100039.1337971-2-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
+References: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.14.95116, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=581766, da=174345939, mc=54, sc=0,
- hc=54, sp=0, fso=581766, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=581771, da=174345944, mc=56, sc=0,
+ hc=56, sp=0, fso=581771, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -70,41 +72,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+we also introduce the tc37x CPU that implements that ISA version.
 
-this patch series is in response to the tickets [1] [2], which point out missing
-instructions from ISA v1.6.2. This is the first series that implements the low
-hanging fruits.
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+---
+ target/tricore/cpu.c | 13 +++++++++++++
+ target/tricore/cpu.h |  1 +
+ 2 files changed, 14 insertions(+)
 
-Cheers,
-Bastian
-
-v1 -> v2:
-    - Shuffle now uses shifts, instead of a buffer
-    - Shuffle now does rev8 for all bytes in parallel
-
-v2 -> v3:
-    - Added patch to implement SYSCALL (resolves https://gitlab.com/qemu-project/qemu/-/issues/1452)
-    - Added patch to implement DISABLE insn variant
-
-Bastian Koppelmann (8):
-  target/tricore: Introduce ISA 1.6.2 feature
-  target/tricore: Add popcnt.w insn
-  target/tricore: Add LHA insn
-  target/tricore: Add crc32l.w insn
-  target/tricore: Add crc32.b insn
-  target/tricore: Add shuffle insn
-  target/tricore: Implement SYCSCALL insn
-  target/tricore: Add DISABLE insn variant
-
- target/tricore/cpu.c             | 13 +++++++
- target/tricore/cpu.h             |  1 +
- target/tricore/helper.h          |  5 ++-
- target/tricore/op_helper.c       | 54 +++++++++++++++++++++++++++-
- target/tricore/translate.c       | 61 ++++++++++++++++++++++++++++----
- target/tricore/tricore-opcodes.h | 16 +++++++--
- 6 files changed, 140 insertions(+), 10 deletions(-)
-
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 7fa113fed2..f15169bd1b 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -104,6 +104,10 @@ static void tricore_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+     /* Some features automatically imply others */
++    if (tricore_feature(env, TRICORE_FEATURE_162)) {
++        set_feature(env, TRICORE_FEATURE_161);
++    }
++
+     if (tricore_feature(env, TRICORE_FEATURE_161)) {
+         set_feature(env, TRICORE_FEATURE_16);
+     }
+@@ -164,6 +168,14 @@ static void tc27x_initfn(Object *obj)
+     set_feature(&cpu->env, TRICORE_FEATURE_161);
+ }
+ 
++static void tc37x_initfn(Object *obj)
++{
++    TriCoreCPU *cpu = TRICORE_CPU(obj);
++
++    set_feature(&cpu->env, TRICORE_FEATURE_162);
++}
++
++
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
+ static const struct SysemuCPUOps tricore_sysemu_ops = {
+@@ -226,6 +238,7 @@ static const TypeInfo tricore_cpu_type_infos[] = {
+     DEFINE_TRICORE_CPU_TYPE("tc1796", tc1796_initfn),
+     DEFINE_TRICORE_CPU_TYPE("tc1797", tc1797_initfn),
+     DEFINE_TRICORE_CPU_TYPE("tc27x", tc27x_initfn),
++    DEFINE_TRICORE_CPU_TYPE("tc37x", tc37x_initfn),
+ };
+ 
+ DEFINE_TYPES(tricore_cpu_type_infos)
+diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
+index d98a3fb671..041fc0b6e5 100644
+--- a/target/tricore/cpu.h
++++ b/target/tricore/cpu.h
+@@ -273,6 +273,7 @@ enum tricore_features {
+     TRICORE_FEATURE_131,
+     TRICORE_FEATURE_16,
+     TRICORE_FEATURE_161,
++    TRICORE_FEATURE_162,
+ };
+ 
+ static inline int tricore_feature(CPUTriCoreState *env, int feature)
 -- 
 2.40.1
 
