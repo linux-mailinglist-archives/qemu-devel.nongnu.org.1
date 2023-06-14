@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDC273059B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 19:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C82730598
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 19:01:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Tqg-0004Oz-6T; Wed, 14 Jun 2023 12:59:58 -0400
+	id 1q9Tqq-0004QJ-Es; Wed, 14 Jun 2023 13:00:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9Tqb-0004Mi-Nf
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 12:59:55 -0400
+ id 1q9Tqh-0004Q0-F4
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 12:59:59 -0400
 Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9TqZ-0003Zp-VZ
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 12:59:53 -0400
+ id 1q9Tqf-0003bG-Oe
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 12:59:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=eZMV03luAtuQ4QX2gz4oqDQWTuWWgUuUqFQDNsSStCY=; b=cME5x9qz9zROhPkGSWFJZMCebd
- ygA2qUmZXlH1Jg4wRvCOsbimGRH2JI6rTYYNWm8XKVt60/CQZn8576h34KxXma/DUbkJDIoL9hf/H
- aIh/LXFX68hW1RwD9Iw/U+VN1SdWk4Yewh1gZqluvZVoU1T7W9/qm2zZVJlk7IF1ElvE=;
+ bh=zWq1gDLLM5jqqmdQFGS4dr8rwNqabWY7aKJJRq9UQUk=; b=BEOjzfjz+ZnmHXXZ6SS0QaJnHr
+ R+/t/4IFW+7A//UxwQSVdCXMQZnlgQtt/qztMpeIuKmrusMXdDGkZr8kTgB29KjHHrWGHhILZ7H6O
+ 6rBNP96o75q1zK28tAMOTdmSrriebtxElU27NfnF8EryPfLYXbmpmter1FGVHiStUU+k=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH 1/4] target/tricore: Introduce priv tb flag
-Date: Wed, 14 Jun 2023 18:59:31 +0200
-Message-Id: <20230614165934.1370440-2-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 2/4] target/tricore: Implement privilege level for all insns
+Date: Wed, 14 Jun 2023 18:59:32 +0200
+Message-Id: <20230614165934.1370440-3-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614165934.1370440-1-kbastian@mail.uni-paderborn.de>
 References: <20230614165934.1370440-1-kbastian@mail.uni-paderborn.de>
@@ -42,9 +42,9 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.14.165116, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.14.600000
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=606881, da=174371054, mc=74, sc=0,
- hc=74, sp=0, fso=606881, re=0, sd=0, hd=0
+ AntiVirus-Data: 2023.6.6.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=606887, da=174371060, mc=76, sc=0,
+ hc=76, sp=0, fso=606887, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -74,114 +74,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/cpu.h       | 17 ++++++++++++-----
- target/tricore/translate.c | 15 +++++++++------
- 2 files changed, 21 insertions(+), 11 deletions(-)
+ target/tricore/translate.c | 41 +++++++++++++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
-index 041fc0b6e5..257fcf3cee 100644
---- a/target/tricore/cpu.h
-+++ b/target/tricore/cpu.h
-@@ -263,10 +263,11 @@ void icr_set_ie(CPUTriCoreState *env, uint32_t val);
- #define MASK_DBGSR_PEVT 0x40
- #define MASK_DBGSR_EVTSRC 0x1f00
- 
--#define TRICORE_HFLAG_KUU     0x3
--#define TRICORE_HFLAG_UM0     0x00002 /* user mode-0 flag          */
--#define TRICORE_HFLAG_UM1     0x00001 /* user mode-1 flag          */
--#define TRICORE_HFLAG_SM      0x00000 /* kernel mode flag          */
-+enum tricore_priv_levels {
-+    TRICORE_PRIV_UM0 = 0x0, /* user mode-0 flag */
-+    TRICORE_PRIV_UM1 = 0x1, /* user mode-1 flag */
-+    TRICORE_PRIV_SM  = 0x2, /* kernel mode flag */
-+};
- 
- enum tricore_features {
-     TRICORE_FEATURE_13,
-@@ -378,15 +379,21 @@ static inline int cpu_mmu_index(CPUTriCoreState *env, bool ifetch)
- 
- #include "exec/cpu-all.h"
- 
-+FIELD(TB_FLAGS, PRIV, 0, 2)
-+
- void cpu_state_reset(CPUTriCoreState *s);
- void tricore_tcg_init(void);
- 
- static inline void cpu_get_tb_cpu_state(CPUTriCoreState *env, target_ulong *pc,
-                                         target_ulong *cs_base, uint32_t *flags)
- {
-+    uint32_t new_flags = 0;
-     *pc = env->PC;
-     *cs_base = 0;
--    *flags = 0;
-+
-+    new_flags |= FIELD_DP32(new_flags, TB_FLAGS, PRIV,
-+            extract32(env->PSW, 10, 2));
-+    *flags = new_flags;
- }
- 
- #define TRICORE_CPU_TYPE_SUFFIX "-" TYPE_TRICORE_CPU
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 6712d98f6e..a0644dd120 100644
+index a0644dd120..edbc319fa1 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -32,6 +32,7 @@
- #include "tricore-opcodes.h"
- #include "exec/translator.h"
- #include "exec/log.h"
-+#include "hw/registerfields.h"
+@@ -385,7 +385,7 @@ static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
+             }
+         }
+     } else {
+-        /* generate privilege trap */
++        generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
+     }
+ }
  
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-@@ -73,7 +74,7 @@ typedef struct DisasContext {
-     uint32_t opcode;
-     /* Routine used to access memory */
-     int mem_idx;
--    uint32_t hflags, saved_hflags;
-+    int priv;
-     uint64_t features;
-     uint32_t icr_ie_mask, icr_ie_offset;
- } DisasContext;
-@@ -374,7 +375,7 @@ static inline void gen_mfcr(DisasContext *ctx, TCGv ret, int32_t offset)
- static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
-                             int32_t offset)
- {
--    if ((ctx->hflags & TRICORE_HFLAG_KUU) == TRICORE_HFLAG_SM) {
-+    if (ctx->priv == TRICORE_PRIV_SM) {
-         /* since we're caching PSW make this a special case */
-         if (offset == 0xfe04) {
-             gen_helper_psw_write(cpu_env, r1);
-@@ -7911,7 +7912,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
-         ctx->base.is_jmp = DISAS_NORETURN;
+@@ -3372,7 +3372,11 @@ static void decode_sc_opc(DisasContext *ctx, int op1)
+         tcg_gen_andi_tl(cpu_gpr_d[15], cpu_gpr_d[15], const16);
          break;
-     case OPC2_32_SYS_RFM:
--        if ((ctx->hflags & TRICORE_HFLAG_KUU) == TRICORE_HFLAG_SM) {
-+        if (ctx->priv  == TRICORE_PRIV_SM) {
-             tmp = tcg_temp_new();
-             l1 = gen_new_label();
+     case OPC1_16_SC_BISR:
+-        gen_helper_1arg(bisr, const16 & 0xff);
++        if (ctx->priv == TRICORE_PRIV_SM) {
++            gen_helper_1arg(bisr, const16 & 0xff);
++        } else {
++            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
++        }
+         break;
+     case OPC1_16_SC_LD_A:
+         gen_offset_ld(ctx, cpu_gpr_a[15], cpu_gpr_a[10], const16 * 4, MO_LESL);
+@@ -5234,7 +5238,11 @@ static void decode_rc_serviceroutine(DisasContext *ctx)
  
-@@ -7934,8 +7935,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+     switch (op2) {
+     case OPC2_32_RC_BISR:
+-        gen_helper_1arg(bisr, const9);
++        if (ctx->priv == TRICORE_PRIV_SM) {
++            gen_helper_1arg(bisr, const9);
++        } else {
++            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
++        }
          break;
-     case OPC2_32_SYS_RESTORE:
+     case OPC2_32_RC_SYSCALL:
+         generate_trap(ctx, TRAPC_SYSCALL, const9 & 0xff);
+@@ -7882,19 +7890,32 @@ static void decode_sys_interrupts(DisasContext *ctx)
+         /* raise EXCP_DEBUG */
+         break;
+     case OPC2_32_SYS_DISABLE:
+-        tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
++        if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
++            tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
++        } else {
++            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
++        }
+         break;
+     case OPC2_32_SYS_DISABLE_D:
          if (has_feature(ctx, TRICORE_FEATURE_16)) {
--            if ((ctx->hflags & TRICORE_HFLAG_KUU) == TRICORE_HFLAG_SM ||
--                (ctx->hflags & TRICORE_HFLAG_KUU) == TRICORE_HFLAG_UM1) {
+-            tcg_gen_extract_tl(cpu_gpr_d[r1], cpu_ICR, ctx->icr_ie_offset, 1);
+-            tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
 +            if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
-                 tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1], 8, 1);
-             } /* else raise privilege trap */
++                tcg_gen_extract_tl(cpu_gpr_d[r1], cpu_ICR,
++                        ctx->icr_ie_offset, 1);
++                tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
++            } else {
++                generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
++            }
          } else {
-@@ -8305,7 +8305,10 @@ static void tricore_tr_init_disas_context(DisasContextBase *dcbase,
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     CPUTriCoreState *env = cs->env_ptr;
-     ctx->mem_idx = cpu_mmu_index(env, false);
--    ctx->hflags = (uint32_t)ctx->base.tb->flags;
-+
-+    uint32_t tb_flags = (uint32_t)ctx->base.tb->flags;
-+    ctx->priv = FIELD_EX32(tb_flags, TB_FLAGS, PRIV);
-+
-     ctx->features = env->features;
-     if (has_feature(ctx, TRICORE_FEATURE_161)) {
-         ctx->icr_ie_mask = R_ICR_IE_161_MASK;
+             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+         }
+     case OPC2_32_SYS_DSYNC:
+         break;
+     case OPC2_32_SYS_ENABLE:
+-        tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
++        if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
++            tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
++        } else {
++            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
++        }
+         break;
+     case OPC2_32_SYS_ISYNC:
+         break;
+@@ -7924,7 +7945,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+             tcg_gen_exit_tb(NULL, 0);
+             ctx->base.is_jmp = DISAS_NORETURN;
+         } else {
+-            /* generate privilege trap */
++            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
+         }
+         break;
+     case OPC2_32_SYS_RSLCX:
+@@ -7937,7 +7958,9 @@ static void decode_sys_interrupts(DisasContext *ctx)
+         if (has_feature(ctx, TRICORE_FEATURE_16)) {
+             if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
+                 tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1], 8, 1);
+-            } /* else raise privilege trap */
++            } else {
++                generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
++            }
+         } else {
+             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+         }
 -- 
 2.40.1
 
