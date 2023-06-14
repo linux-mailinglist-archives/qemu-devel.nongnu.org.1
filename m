@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7593C72F32E
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 05:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 582BA72F32F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 05:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9HPD-00086j-4N; Tue, 13 Jun 2023 23:42:47 -0400
+	id 1q9HPL-0008Be-Ir; Tue, 13 Jun 2023 23:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9HP8-00085S-TM; Tue, 13 Jun 2023 23:42:42 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1q9HPD-00087i-Th; Tue, 13 Jun 2023 23:42:50 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9HP7-0006fh-H4; Tue, 13 Jun 2023 23:42:42 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-39a55e706deso2713771b6e.3; 
- Tue, 13 Jun 2023 20:42:40 -0700 (PDT)
+ id 1q9HPB-0006h9-JY; Tue, 13 Jun 2023 23:42:47 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-1a6d9d673f1so265981fac.0; 
+ Tue, 13 Jun 2023 20:42:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686714159; x=1689306159;
+ d=gmail.com; s=20221208; t=1686714164; x=1689306164;
  h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mej/8pbx1Ftg/dFhla6kZGyqZQtk9GcncMAyk+UkgpE=;
- b=q83ds6I052ouyBmHMNy8YDoRJxcpp0Uz5WNiz6JE9ABmPpQotB0yq5SAIr45ys/BsA
- 8/Ik0dzqu8rsIaxZ0aYVyN8OZ7gUgHS7hTXN1xQAhBFVl1lIcGo+GHWrkKyC+ccz8OA0
- D4gPxmeajeToBtus09RoZf47n9/TgR8rkj6ji/8k0+JCE5v1i/+3sSgch6IUsGSVyEMU
- JdgtaSGWOUnOHnPRmYcppVY49ggWJvS1pn+zaWYJ9PTnkAY/YMGU/M0sKoTBEsVH0qqd
- TfpkkONghaAyCmWtyObA+l64BJ1rzhHstnYPUeyxWxbjLjYOOvsuaVoMM1P0sCzCKAns
- yvRQ==
+ bh=DhWiz+Fb19yBM5ociID4BqDdRNRJjJqIACh+wSjZHgE=;
+ b=BT3oFuG1SBfcIT27aaiqAL2PlTAXbZuzJFY9ez9LpNEsEEa90v4MLjEYxIRJI21iPK
+ dCrJPnPlkyyXmUG38I3nIaeLpTjA9T4WkWfZAP+wo3v/nn6lLloPbbHcRyLQ++YHy2/K
+ 7dc6SfM8ynnLhyV/DDibfLhjoYDdk1LfYbxFYbs+xHt4mGGDWGKNh0dHYWr0nC+FO+Q+
+ XJsykbe7TvKCGDhchTTFgabwlJbWuMhjQYJcW1uwxe6VGFJckfTwkgMn8yD35gRLwGK4
+ WRY3zip54PWtXeVb+VlS8e5IRQW3KL5E+qt6/k8C1PIq6Mvg2jTztCadvCJY5jcP6oL2
+ hM8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686714159; x=1689306159;
+ d=1e100.net; s=20221208; t=1686714164; x=1689306164;
  h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=mej/8pbx1Ftg/dFhla6kZGyqZQtk9GcncMAyk+UkgpE=;
- b=fQjG0gpqcd+otnm4YZd9aQ0+CvvoY+RU8tjHhnrZqQWBSzrDLHItVY1vywv/i9xCKk
- J+CTxm9rblFxdz28VJp4ArN66/L6e3sce7e+96xnU3Qv5Cuq1kg6eCNMJexDStD6sC0q
- RUQ9G90HAOuxB1P6vBPMl58Vmx/0pQ3R6kc+DSiMarh9xHQTgBaHGq0zgswq87S1Uyuf
- 0lLj03HspvxagwBGuump+kJjKMSHB2n2svCrMSBQWIqBAcYeYy/rCBbJmvhcvsp6YHjl
- cHZ7YH9ob5gsE0NpKEoqTloqhkR65DyGkFNtX4+g19NKdBm9yVySrHc2fXLRaMaUOw7R
- Wpog==
-X-Gm-Message-State: AC+VfDwcqU0+VghjbZPJsuIz2e3ZxGFDJXkaisuBohD9Wl8VwliiBliV
- ri0ujeLwghEQTMLRqAfe1iM=
-X-Google-Smtp-Source: ACHHUZ6hrL7+ktzg+yumqdTuMDRqCjPjXFpRIagoby3AuxKXjLqTXRrJQVGiGYYqXXBkm1QHEyOXVg==
-X-Received: by 2002:a05:6808:49a:b0:398:1045:17ed with SMTP id
- z26-20020a056808049a00b00398104517edmr8448242oid.54.1686714159084; 
- Tue, 13 Jun 2023 20:42:39 -0700 (PDT)
+ bh=DhWiz+Fb19yBM5ociID4BqDdRNRJjJqIACh+wSjZHgE=;
+ b=ZSsMezjeXh0OF/ixSFZv9/Y+0utmIiWcg/zxADw7o+9bO1gvLfYQb5yZ1MZrCjwsSg
+ ycfk5w9JrAEgEbBXrBc+Wvk7FNmI+NB+cjKvJhaCQF6HFxhsQ+u/RpMXPJN7QABgK9ex
+ 2m3nEyWHrC/x3pbNe0W1Guh5Js4Pi1nXglgxx3PvWlCPnNZSEC9mmfpOJLM26vVlAhuY
+ o1m4914KX6i7+ikbiB0WE+Y2mjkiOJ2/GNaOgJXVjc2ZHF6nP2SamH3qVgsEbApEWxDe
+ QyTcfSWaM/uBEY2cyGJE2KUyobdTZtIWwHMqFpPm9BGBP8k6hiJwH0aXCEjA26oIka5t
+ 0Mdw==
+X-Gm-Message-State: AC+VfDztsmeTaQIULQEqhmXygy4KJUVn0aTctlINc1o+oMkW3PiE7ZDS
+ iuWiCSCSyVqLIct2lxwd6EfEUziWJxkNPg==
+X-Google-Smtp-Source: ACHHUZ45gYhso0tudWOaLV/MOFhm3v0BmWW6CFaFH+jqh0NAcbzYJrkwLAWmJuEvhdZJXBr0bvicoQ==
+X-Received: by 2002:a05:6870:8645:b0:1a6:4c71:8dd with SMTP id
+ i5-20020a056870864500b001a64c7108ddmr8682017oal.37.1686714163830; 
+ Tue, 13 Jun 2023 20:42:43 -0700 (PDT)
 Received: from localhost ([1.146.66.73]) by smtp.gmail.com with ESMTPSA id
- 29-20020a17090a019d00b0025bfa061287sm3820650pjc.53.2023.06.13.20.42.34
+ z3-20020a17090a398300b0025e2b703adesm147476pjb.41.2023.06.13.20.42.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 20:42:38 -0700 (PDT)
+ Tue, 13 Jun 2023 20:42:43 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 Jun 2023 13:42:26 +1000
-Message-Id: <CTC29HK3ZXQL.2GCE26RLVYS75@wheely>
+Date: Wed, 14 Jun 2023 13:42:37 +1000
+Message-Id: <CTC29MMOY1BX.L0JG4T0TAX1J@wheely>
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
 Cc: <clg@kaod.org>, "Greg Kurz" <groug@kaod.org>, "Daniel Henrique Barboza"
  <danielhb413@gmail.com>
-Subject: Re: [PATCH 06/10] target/ppc: Readability improvements in exception
- handlers
+Subject: Re: [PATCH 07/10] target/ppd: Remove unused define
 X-Mailer: aerc 0.14.0
 References: <cover.1686522199.git.balaton@eik.bme.hu>
- <edbb93cb67b72bb948155932767ef989cddc8aa0.1686522199.git.balaton@eik.bme.hu>
-In-Reply-To: <edbb93cb67b72bb948155932767ef989cddc8aa0.1686522199.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x22c.google.com
+ <13f743d961c10d03c5b4f745a1b26ece3a7e1494.1686522199.git.balaton@eik.bme.hu>
+In-Reply-To: <13f743d961c10d03c5b4f745a1b26ece3a7e1494.1686522199.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=npiggin@gmail.com; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,21 +93,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon Jun 12, 2023 at 8:42 AM AEST, BALATON Zoltan wrote:
-> Improve readability by shortening some long comments, removing
-> comments that state the obvious and dropping some empty lines so they
-> don't distract when reading the code.
-
-Some changes are a matter of taste, but in the interest of having
-somebody do some spring cleaning of this code I don't want to nitpick
-it, so I won't :)
-
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-
+> Commit 7a3fe174b12d removed usage of POWERPC_SYSCALL_VECTORED, drop
+> the unused define as well.
 >
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
 > ---
->  target/ppc/cpu.h         |   1 +
->  target/ppc/excp_helper.c | 180 +++++++--------------------------------
->  2 files changed, 33 insertions(+), 148 deletions(-)
+>  target/ppc/translate.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index b591f2e496..a32a9b8a5f 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4416,7 +4416,6 @@ static void gen_hrfid(DisasContext *ctx)
+>  #define POWERPC_SYSCALL POWERPC_EXCP_SYSCALL_USER
+>  #else
+>  #define POWERPC_SYSCALL POWERPC_EXCP_SYSCALL
+> -#define POWERPC_SYSCALL_VECTORED POWERPC_EXCP_SYSCALL_VECTORED
+>  #endif
+>  static void gen_sc(DisasContext *ctx)
+>  {
+> --=20
+> 2.30.9
+
 
