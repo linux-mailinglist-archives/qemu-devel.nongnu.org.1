@@ -2,61 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A20C72F9F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FC972FA0F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 12:06:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9NKK-0000vJ-72; Wed, 14 Jun 2023 06:02:08 -0400
+	id 1q9NNp-0006PC-8N; Wed, 14 Jun 2023 06:05:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9NKI-0000v3-9u
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:02:06 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q9NNm-0006O3-1j; Wed, 14 Jun 2023 06:05:42 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q9NKF-0005Ns-Qj
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 06:02:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=cCMlVNUWvmevmX+q3j23/iIOt2KJheKFPAH1juLKDhs=; b=WT0dYetnrSHcHUY3xhZlNmcN/B
- lpzNAoU9ThR4ZiYUta7b4smrGI0TWBXTH/Qp3Dipww8/PhFsyU3pn5Ip43BceRKImUk5FqJgq2dLA
- q3piL7Zm/Fhwj8gIvcTaY3rz6bWKK5i7Ld7m4MssqrNXEPxALi1g0CnQG2e/xzJVnq20=;
-X-Envelope-From: <kbastian@mail.uni-paderborn.de>
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de,
-	richard.henderson@linaro.org
-Subject: [PATCH v3 8/8] target/tricore: Add DISABLE insn variant
-Date: Wed, 14 Jun 2023 12:00:39 +0200
-Message-Id: <20230614100039.1337971-9-kbastian@mail.uni-paderborn.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
-References: <20230614100039.1337971-1-kbastian@mail.uni-paderborn.de>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q9NNj-0006XA-St; Wed, 14 Jun 2023 06:05:41 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 1D585748A5B;
+ Wed, 14 Jun 2023 12:05:33 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id CF3E6748A59; Wed, 14 Jun 2023 12:05:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id CDFA8748A4D;
+ Wed, 14 Jun 2023 12:05:32 +0200 (CEST)
+Date: Wed, 14 Jun 2023 12:05:32 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org, 
+ Greg Kurz <groug@kaod.org>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 08/10] target/ppc: Fix gen_sc to use correct nip
+In-Reply-To: <CTC2DN50X8A2.2UVS9YQ2HNYJ9@wheely>
+Message-ID: <af020db8-df87-976c-842b-8d52c9ebf9d8@eik.bme.hu>
+References: <cover.1686522199.git.balaton@eik.bme.hu>
+ <7ae167986e18144bc665bbdd836b49fe723a90a1.1686522199.git.balaton@eik.bme.hu>
+ <CTC2DN50X8A2.2UVS9YQ2HNYJ9@wheely>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.14.95116, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=581812, da=174345985, mc=70, sc=0,
- hc=70, sp=0, fso=581812, re=0, sd=0, hd=0
-X-IMT-Source: Intern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,67 +61,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this variant saves the 'IE' bit to a 'd' register. The 'IE' bitfield
-changed from ISA version 1.6.1, so we add icr_ie_offset to DisasContext
-as with the other DISABLE insn.
+On Wed, 14 Jun 2023, Nicholas Piggin wrote:
+> On Mon Jun 12, 2023 at 8:42 AM AEST, BALATON Zoltan wrote:
+>> Most exceptions are raised with nip pointing to the faulting
+>> instruction but the sc instruction generating a syscall exception
+>> leaves nip pointing to next instruction. Fix gen_sc to not use
+>> gen_exception_err() which sets nip back but correctly set nip to
+>> pc_next so we don't have to patch this in the exception handlers.
+>>
+>> This changes the nip logged in dump_syscall and dump_hcall debug
+>> functions but now this matches how nip would be on a real CPU.
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>  target/ppc/excp_helper.c | 39 ---------------------------------------
+>>  target/ppc/translate.c   |  8 +++++---
+>>  2 files changed, 5 insertions(+), 42 deletions(-)
+>>
+>> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+>> index 885e479301..4f6a6dfb19 100644
+>> --- a/target/ppc/excp_helper.c
+>> +++ b/target/ppc/excp_helper.c
+>> @@ -493,12 +493,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+>>          break;
+>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>          dump_syscall(env);
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>>          break;
+>>      case POWERPC_EXCP_FIT:       /* Fixed-interval timer interrupt           */
+>>          trace_ppc_excp_print("FIT");
+>> @@ -609,12 +603,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+>>          break;
+>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>          dump_syscall(env);
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>>          break;
+>>      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+>>      case POWERPC_EXCP_DECR:      /* Decrementer exception                    */
+>> @@ -757,13 +745,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+>>          } else {
+>>              dump_syscall(env);
+>>          }
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>> -
+>>          /*
+>>           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>>           * instruction to communicate with QEMU. The pegasos2 machine
+>> @@ -908,13 +889,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+>>          } else {
+>>              dump_syscall(env);
+>>          }
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>> -
+>>          /*
+>>           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>>           * instruction to communicate with QEMU. The pegasos2 machine
+>> @@ -1073,12 +1047,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+>>          break;
+>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>          dump_syscall(env);
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>>          break;
+>>      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+>>      case POWERPC_EXCP_APU:       /* Auxiliary processor unavailable          */
+>> @@ -1320,13 +1288,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>>          } else {
+>>              dump_syscall(env);
+>>          }
+>> -
+>> -        /*
+>> -         * We need to correct the NIP which in this case is supposed
+>> -         * to point to the next instruction
+>> -         */
+>> -        env->nip += 4;
+>> -
+>>          /* "PAPR mode" built-in hypercall emulation */
+>>          if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
+>>              PPCVirtualHypervisorClass *vhc =
+>> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+>> index a32a9b8a5f..4260d3d66f 100644
+>> --- a/target/ppc/translate.c
+>> +++ b/target/ppc/translate.c
+>> @@ -4419,10 +4419,12 @@ static void gen_hrfid(DisasContext *ctx)
+>>  #endif
+>>  static void gen_sc(DisasContext *ctx)
+>>  {
+>> -    uint32_t lev;
+>> +    uint32_t lev = (ctx->opcode >> 5) & 0x7F;
+>>
+>> -    lev = (ctx->opcode >> 5) & 0x7F;
+>> -    gen_exception_err(ctx, POWERPC_SYSCALL, lev);
+>> +    gen_update_nip(ctx, ctx->base.pc_next);
+>> +    gen_helper_raise_exception_err(cpu_env, tcg_constant_i32(POWERPC_SYSCALL),
+>> +                                   tcg_constant_i32(lev));
+>> +    ctx->base.is_jmp = DISAS_NORETURN;
+>
+> Generally for blame and bisect I don't like to mix cleanup with real
+> change, I guess this is pretty minor though.
 
-Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
----
- target/tricore/translate.c       | 11 ++++++++++-
- target/tricore/tricore-opcodes.h |  1 +
- 2 files changed, 11 insertions(+), 1 deletion(-)
+I'm not sure which part you suggest could be split out as a clean up? This 
+is all one change. Maybe I can split it like one patch inlining 
+gen_exception_err() then the rest in another patch but I don't see the 
+point as inlining is really trivial.
 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index f01000efd4..6712d98f6e 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -75,7 +75,7 @@ typedef struct DisasContext {
-     int mem_idx;
-     uint32_t hflags, saved_hflags;
-     uint64_t features;
--    uint32_t icr_ie_mask;
-+    uint32_t icr_ie_mask, icr_ie_offset;
- } DisasContext;
- 
- static int has_feature(DisasContext *ctx, int feature)
-@@ -7883,6 +7883,13 @@ static void decode_sys_interrupts(DisasContext *ctx)
-     case OPC2_32_SYS_DISABLE:
-         tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-         break;
-+    case OPC2_32_SYS_DISABLE_D:
-+        if (has_feature(ctx, TRICORE_FEATURE_16)) {
-+            tcg_gen_extract_tl(cpu_gpr_d[r1], cpu_ICR, ctx->icr_ie_offset, 1);
-+            tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-     case OPC2_32_SYS_DSYNC:
-         break;
-     case OPC2_32_SYS_ENABLE:
-@@ -8302,8 +8309,10 @@ static void tricore_tr_init_disas_context(DisasContextBase *dcbase,
-     ctx->features = env->features;
-     if (has_feature(ctx, TRICORE_FEATURE_161)) {
-         ctx->icr_ie_mask = R_ICR_IE_161_MASK;
-+        ctx->icr_ie_offset = R_ICR_IE_161_SHIFT;
-     } else {
-         ctx->icr_ie_mask = R_ICR_IE_13_MASK;
-+        ctx->icr_ie_offset = R_ICR_IE_13_SHIFT;
-     }
- }
- 
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index af63926731..bc62b73173 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -1467,6 +1467,7 @@ enum {
- enum {
-     OPC2_32_SYS_DEBUG                            = 0x04,
-     OPC2_32_SYS_DISABLE                          = 0x0d,
-+    OPC2_32_SYS_DISABLE_D                        = 0x0f, /* 1.6 up */
-     OPC2_32_SYS_DSYNC                            = 0x12,
-     OPC2_32_SYS_ENABLE                           = 0x0c,
-     OPC2_32_SYS_ISYNC                            = 0x13,
--- 
-2.40.1
+> Great cleanup though, sc is certainly defined to set SRR0 to the
+> instruction past the sc unlike other interrupts so it is more natural
+> and less hacky feeling do it like this.
+>
+> Could you do scv while you are here? It has the same semantics as
+> sc.
 
+I've noticed that but I have no way to test it so I can add a patch but it 
+will be untested and you'll need to verify it won't break anything.
+
+Regards,
+BALATON Zoltan
 
