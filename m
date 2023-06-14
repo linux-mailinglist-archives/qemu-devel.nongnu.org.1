@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AB772ED8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Jun 2023 23:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9E272F19E
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:22:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9B87-0002mE-ET; Tue, 13 Jun 2023 17:00:43 -0400
+	id 1q9FBi-0004XU-MK; Tue, 13 Jun 2023 21:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q9B7n-0002a5-AS
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 17:00:24 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q9FBg-0004XJ-2p
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:20:40 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q9B7c-00072f-GA
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 17:00:16 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-558b70c715cso5639eaf.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 14:00:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q9FBd-0004S7-WD
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:20:39 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-39c84863e34so4003225b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:20:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686690009; x=1689282009;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UmgHpltBv9j1kQYmnmMbSI6QLFwM8nliDr4+gOdlKMM=;
- b=OiSbzSP+i8t9gMDNPfXBjgHrcg7DtQkD9TpsB3g8RCYld29j+I/VGmCZsQ6PhnWafv
- tCQ/8C3PrDoECWb+bqtYWod78925eVZepAsD4/9bXtSFNPsLlylYLJgzCGm/SAoNmyVh
- Nh0HiRfi833dWHylsSJNlPFW+Hi2OBYsjLdlY8PrRCO1KV203UqOdnx4gMFkx9ZlvxDk
- WxcOSWi1yTWjCQx/QMbt8K8UBJTYBcKOZYdqlzM35jQHztEAUnh4MlyPN4CqggI7ACtW
- v/VErxyA/2Mo84iHyjo+QyCyqSCTwGPxnvB1kHjXSaEUWQG1Y7qLVw2x++nEn/QJQyhF
- Hfww==
+ d=gmail.com; s=20221208; t=1686705636; x=1689297636;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YaTAwXCANxG4J1JOic22QCkLK1g2NJR3e6D6p4rHVHA=;
+ b=V/tBmmqTTRAZHksSspPkbH9MSq8JalbxDileZh9lFuhyrVXfDJFI+VEUE/7y3pIlVc
+ ujEqMyG5SiNP2BGj+DLh+DmJY9CGqhDp2tdp7wE3r+yjww7sTwCr1ToazynNCqZ4jqUZ
+ 1/tZ/Zwl+JjnjqIDVBGDFUk+BdR5GOX7iZwcl4P212370DS2qWHHWZm8A+tSnKf/oESm
+ D10AXpPJKDxhyQOdIgWgEf0idveq8rlFQYtWq9bqMwN9k+vQnkY9Cwb086+1xEfqfz1S
+ wmHtLoORZilfonEpInESkRHRd6MYkAIBJmfTu5bXy0U/UlRsb8ik1KYW8slc0kBBpmPY
+ aijw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686690009; x=1689282009;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UmgHpltBv9j1kQYmnmMbSI6QLFwM8nliDr4+gOdlKMM=;
- b=bDIB0wSgtLoQJfnnzfstITnSajQlQf1XpwU5R1PnU4aEXjm6JYaqMvnhTacO2/FwAm
- waIPSnILd66Gm5xtAirOEYPxGAySI4hEVONzRV+QlJOe+oolSS3LdaB/KXiUPK+11q8W
- jTjfyY/oAprVPN8qE4hAStdcjkGlPlFh1kV+cr9RwUJA8xp6+dRSodj3QwJIKq/aeSYP
- ImZm0KzvM1eFEwVHa0Fkjl1Jzn8YG6sF4P2RUKmZNP3rncR/LK1Im18VGxKR9UjvlNHN
- S25TbK4cH9ctUT6nFRsly+j1RGzCrp9MGD/S1vVK8H22KIlS1ALJ2gAFf9GwPyB1ldz2
- hf/g==
-X-Gm-Message-State: AC+VfDyQISNflAPAcfvq6x5H8hLf80USTCKm6HIvzl16E5BOSw2+B4Nr
- abIh3wlgyOzGocx7NFT9pEnM6uG4yKiaBb1/T7Q=
-X-Google-Smtp-Source: ACHHUZ5znRE0Z3ovRGdDc1jTfVk3HEk3omp1zMa1Xo/LiVFcLLo2rK3C1p3GlPy9vDQUWz+5GZvVTw==
-X-Received: by 2002:a05:6808:1885:b0:395:eed6:5193 with SMTP id
- bi5-20020a056808188500b00395eed65193mr9038410oib.10.1686690009234; 
- Tue, 13 Jun 2023 14:00:09 -0700 (PDT)
-Received: from grind.. ([177.170.117.210]) by smtp.gmail.com with ESMTPSA id
- q82-20020acaf255000000b003982a8a1e3fsm5619514oih.51.2023.06.13.14.00.06
+ d=1e100.net; s=20221208; t=1686705636; x=1689297636;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YaTAwXCANxG4J1JOic22QCkLK1g2NJR3e6D6p4rHVHA=;
+ b=TO+bAFGp7HFmb1IhWcqW2V54GTyWla4iWvrhOPx1cYkf3J4CyQZ51p4lGR21tI+EJz
+ Q+/ahKpvwvNUKi/HxYYKjoyyDo5Is9S8NMRbVNjyjNIqhI5mzgnWXqNULX0oxBxyuazO
+ 4U6mIxMswiaCXsnYJ0yQMoSTP3THKj8WlAPim3vZSZmYjxTNAgZf5yMdgQ4Sfa8KSDhr
+ 6NwPDS5YU7yHnGcYhQJXO30dWnEYo5Yj4eU0HyXyFU6AbFX3gsRF1qOZkfkp86t4C5lV
+ EJ1uzz/Ck4i892gUxXp5OhtMohYs99xLkY6OJKhDDBdPE0SaVneVkiPDlgkt/0d03SbI
+ Kjpw==
+X-Gm-Message-State: AC+VfDyKqnsAqDI4ldDJvYWiPjdIzg4z9JIGocY80L/armsIqzxwmb2h
+ p6hwYfFpNOtxteQpAP4FSd8/oKWVM9ckhg==
+X-Google-Smtp-Source: ACHHUZ5yMviIO0IyLXTCXW/aGYJc2ex5/WruXybMdBHEQjPXvOpkTYteRVFHwRvemPcKPsU+Tv2/jw==
+X-Received: by 2002:a05:6808:220f:b0:39a:bda7:adc1 with SMTP id
+ bd15-20020a056808220f00b0039abda7adc1mr12026968oib.2.1686705635661; 
+ Tue, 13 Jun 2023 18:20:35 -0700 (PDT)
+Received: from toolbox.wdc.com
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.20.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 14:00:08 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ Tue, 13 Jun 2023 18:20:34 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 18/18] target/riscv/kvm.c: read/write (cbom|cboz)_blocksize
- in KVM
-Date: Tue, 13 Jun 2023 17:58:57 -0300
-Message-Id: <20230613205857.495165-19-dbarboza@ventanamicro.com>
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/60] riscv-to-apply queue
+Date: Wed, 14 Jun 2023 11:19:17 +1000
+Message-Id: <20230614012017.3100663-1-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230613205857.495165-1-dbarboza@ventanamicro.com>
-References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x231.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,141 +94,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we don't set a proper cbom_blocksize|cboz_blocksize in the FDT the
-Linux Kernel will fail to detect the availability of the CBOM/CBOZ
-extensions, regardless of the contents of the 'riscv,isa' DT prop.
+The following changes since commit fdd0df5340a8ebc8de88078387ebc85c5af7b40f:
 
-The FDT is being written using the cpu->cfg.cbom|z_blocksize attributes,
-so let's expose them as user properties like it is already done with
-TCG.
+  Merge tag 'pull-ppc-20230610' of https://gitlab.com/danielhb/qemu into staging (2023-06-10 07:25:00 -0700)
 
-This will also require us to determine proper blocksize values during
-init() time since the FDT is already created during realize(). We'll
-take a ride in kvm_riscv_init_multiext_cfg() to do it. Note that we
-don't need to fetch both cbom and cboz blocksizes every time: check for
-their parent extensions (icbom and icboz) and only read the blocksizes
-if needed.
+are available in the Git repository at:
 
-In contrast with cbom/z_blocksize properties from TCG, the user is not
-able to set any value that is different from the 'host' value when
-running KVM. KVM can be particularly harsh dealing with it: a ENOTSUPP
-can be thrown for the mere attempt of executing kvm_set_one_reg() for
-these 2 regs.
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230614
 
-Hopefully, we don't need to call kvm_set_one_reg() for these regs.
-We'll check if the user input matches the host value in
-kvm_cpu_set_cbomz_blksize(), the set() accessor for both blocksize
-properties. We'll fail fast since it's already known to not be
-supported.
+for you to fetch changes up to 860029321d9ebdff47e89561de61e9441fead70a:
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/kvm.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+  hw/intc: If mmsiaddrcfgh.L == 1, smsiaddrcfg and smsiaddrcfgh are read-only. (2023-06-14 10:04:30 +1000)
 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 3a9f7b0722..ccd2375d8d 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -283,6 +283,42 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
-     kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
- }
- 
-+static KVMCPUConfig kvm_cbom_blocksize = {
-+    .name = "cbom_blocksize",
-+    .offset = CPUCFG(cbom_blocksize),
-+    .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)
-+};
-+
-+static KVMCPUConfig kvm_cboz_blocksize = {
-+    .name = "cboz_blocksize",
-+    .offset = CPUCFG(cboz_blocksize),
-+    .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
-+};
-+
-+static void kvm_cpu_set_cbomz_blksize(Object *obj, Visitor *v,
-+                                      const char *name,
-+                                      void *opaque, Error **errp)
-+{
-+    KVMCPUConfig *cbomz_cfg = opaque;
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint16_t value, *host_val;
-+
-+    if (!visit_type_uint16(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    host_val = kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-+
-+    if (value != *host_val) {
-+        error_report("Unable to set %s to a different value than "
-+                     "the host (%u)",
-+                     cbomz_cfg->name, *host_val);
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    cbomz_cfg->user_set = true;
-+}
-+
- static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
- {
-     CPURISCVState *env = &cpu->env;
-@@ -332,6 +368,14 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
-                             kvm_cpu_set_multi_ext_cfg,
-                             NULL, multi_cfg);
-     }
-+
-+    object_property_add(cpu_obj, "cbom_blocksize", "uint16",
-+                        NULL, kvm_cpu_set_cbomz_blksize,
-+                        NULL, &kvm_cbom_blocksize);
-+
-+    object_property_add(cpu_obj, "cboz_blocksize", "uint16",
-+                        NULL, kvm_cpu_set_cbomz_blksize,
-+                        NULL, &kvm_cboz_blocksize);
- }
- 
- static int kvm_riscv_get_regs_core(CPUState *cs)
-@@ -647,6 +691,24 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
-     env->misa_ext = env->misa_ext_mask;
- }
- 
-+static void kvm_riscv_read_cbomz_blksize(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-+                                         KVMCPUConfig *cbomz_cfg)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    struct kvm_one_reg reg;
-+    int ret;
-+
-+    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-+                              cbomz_cfg->kvm_reg_id);
-+    reg.addr = (uint64_t)kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-+    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+    if (ret != 0) {
-+        error_report("Unable to read KVM reg %s, error %d",
-+                     cbomz_cfg->name, ret);
-+        exit(EXIT_FAILURE);
-+    }
-+}
-+
- static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- {
-     CPURISCVState *env = &cpu->env;
-@@ -678,6 +740,14 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- 
-         kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
-     }
-+
-+    if (cpu->cfg.ext_icbom) {
-+        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
-+    }
-+
-+    if (cpu->cfg.ext_icboz) {
-+        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-+    }
- }
- 
- void kvm_riscv_init_user_properties(Object *cpu_obj)
--- 
-2.40.1
+----------------------------------------------------------------
+Second RISC-V PR for 8.1
 
+* Skip Vector set tail when vta is zero
+* Move zc* out of the experimental properties
+* Mask the implicitly enabled extensions in isa_string based on priv version
+* Rework CPU extension validation and validate MISA changes
+* Fixup PMP TLB cacheing errors
+* Writing to pmpaddr and MML/MMWP correctly triggers TLB flushes
+* Fixup PMP bypass checks
+* Deny access if access is partially inside a PMP entry
+* Correct OpenTitanState parent type/size
+* Fix QEMU crash when NUMA nodes exceed available CPUs
+* Fix pointer mask transformation for vector address
+* Updates and improvements for Smstateen
+* Support disas for Zcm* extensions
+* Support disas for Z*inx extensions
+* Remove unused decomp_rv32/64 value for vector instructions
+* Enable PC-relative translation
+* Assume M-mode FW in pflash0 only when "-bios none"
+* Support using pflash via -blockdev option
+* Add vector registers to log
+* Clean up reference of Vector MTYPE
+* Remove the check for extra Vector tail elements
+* Smepmp: Return error when access permission not allowed in PMP
+* Fixes for smsiaddrcfg and smsiaddrcfgh in AIA
+
+----------------------------------------------------------------
+Daniel Henrique Barboza (10):
+      target/riscv/vector_helper.c: skip set tail when vta is zero
+      target/riscv/cpu.c: add riscv_cpu_validate_v()
+      target/riscv/cpu.c: remove set_vext_version()
+      target/riscv/cpu.c: remove set_priv_version()
+      target/riscv: add PRIV_VERSION_LATEST
+      target/riscv/cpu.c: add priv_spec validate/disable_exts helpers
+      target/riscv/cpu.c: add riscv_cpu_validate_misa_mxl()
+      target/riscv/cpu.c: validate extensions before riscv_timer_init()
+      target/riscv/cpu.c: remove cfg setup from riscv_cpu_init()
+      target/riscv: rework write_misa()
+
+Himanshu Chauhan (1):
+      target/riscv: Smepmp: Return error when access permission not allowed in PMP
+
+Ivan Klokov (1):
+      util/log: Add vector registers to log
+
+Mayuresh Chitale (3):
+      target/riscv: smstateen check for fcsr
+      target/riscv: Reuse tb->flags.FS
+      target/riscv: smstateen knobs
+
+Philippe Mathieu-Daudé (5):
+      hw/riscv/opentitan: Rename machine_[class]_init() functions
+      hw/riscv/opentitan: Declare QOM types using DEFINE_TYPES() macro
+      hw/riscv/opentitan: Add TYPE_OPENTITAN_MACHINE definition
+      hw/riscv/opentitan: Explicit machine type definition
+      hw/riscv/opentitan: Correct OpenTitanState parent type/size
+
+Sunil V L (3):
+      hw/riscv: virt: Assume M-mode FW in pflash0 only when "-bios none"
+      riscv/virt: Support using pflash via -blockdev option
+      docs/system: riscv: Add pflash usage details
+
+Tommy Wu (1):
+      hw/intc: If mmsiaddrcfgh.L == 1, smsiaddrcfg and smsiaddrcfgh are read-only.
+
+Weiwei Li (33):
+      target/riscv: Move zc* out of the experimental properties
+      target/riscv: Mask the implicitly enabled extensions in isa_string based on priv version
+      target/riscv: Update check for Zca/Zcf/Zcd
+      target/riscv: Update pmp_get_tlb_size()
+      target/riscv: Move pmp_get_tlb_size apart from get_physical_address_pmp
+      target/riscv: Make the short cut really work in pmp_hart_has_privs
+      target/riscv: Change the return type of pmp_hart_has_privs() to bool
+      target/riscv: Make RLB/MML/MMWP bits writable only when Smepmp is enabled
+      target/riscv: Remove unused paramters in pmp_hart_has_privs_default()
+      target/riscv: Flush TLB when MMWP or MML bits are changed
+      target/riscv: Update the next rule addr in pmpaddr_csr_write()
+      target/riscv: Flush TLB when pmpaddr is updated
+      target/riscv: Flush TLB only when pmpcfg/pmpaddr really changes
+      target/riscv: Separate pmp_update_rule() in pmpcfg_csr_write
+      target/riscv: Deny access if access is partially inside the PMP entry
+      target/riscv: Fix pointer mask transformation for vector address
+      target/riscv: Update cur_pmmask/base when xl changes
+      disas: Change type of disassemble_info.target_info to pointer
+      target/riscv: Split RISCVCPUConfig declarations from cpu.h into cpu_cfg.h
+      target/riscv: Pass RISCVCPUConfig as target_info to disassemble_info
+      disas/riscv.c: Support disas for Zcm* extensions
+      disas/riscv.c: Support disas for Z*inx extensions
+      disas/riscv.c: Remove unused decomp_rv32/64 value for vector instructions
+      disas/riscv.c: Fix lines with over 80 characters
+      disas/riscv.c: Remove redundant parentheses
+      target/riscv: Fix target address to update badaddr
+      target/riscv: Introduce cur_insn_len into DisasContext
+      target/riscv: Change gen_goto_tb to work on displacements
+      target/riscv: Change gen_set_pc_imm to gen_update_pc
+      target/riscv: Use true diff for gen_pc_plus_diff
+      target/riscv: Enable PC-relative translation
+      target/riscv: Remove pc_succ_insn from DisasContext
+      target/riscv: Fix initialized value for cur_pmmask
+
+Xiao Wang (2):
+      target/riscv/vector_helper.c: clean up reference of MTYPE
+      target/riscv/vector_helper.c: Remove the check for extra tail elements
+
+Yin Wang (1):
+      hw/riscv: qemu crash when NUMA nodes exceed available CPUs
+
+ docs/system/riscv/virt.rst                     |   31 +
+ include/disas/dis-asm.h                        |    2 +-
+ include/hw/core/cpu.h                          |    2 +
+ include/hw/riscv/opentitan.h                   |    6 +-
+ include/qemu/log.h                             |    1 +
+ target/riscv/cpu.h                             |  117 +--
+ target/riscv/cpu_cfg.h                         |  136 +++
+ target/riscv/pmp.h                             |   11 +-
+ accel/tcg/cpu-exec.c                           |    3 +
+ disas/riscv.c                                  | 1194 +++++++++++++-----------
+ hw/intc/riscv_aplic.c                          |    4 +-
+ hw/riscv/numa.c                                |    6 +
+ hw/riscv/opentitan.c                           |   38 +-
+ hw/riscv/virt.c                                |   59 +-
+ target/riscv/cpu.c                             |  384 +++++---
+ target/riscv/cpu_helper.c                      |   37 +-
+ target/riscv/csr.c                             |   75 +-
+ target/riscv/pmp.c                             |  205 ++--
+ target/riscv/translate.c                       |   99 +-
+ target/riscv/vector_helper.c                   |   33 +-
+ util/log.c                                     |    2 +
+ target/riscv/insn_trans/trans_privileged.c.inc |    2 +-
+ target/riscv/insn_trans/trans_rvd.c.inc        |   12 +-
+ target/riscv/insn_trans/trans_rvf.c.inc        |   21 +-
+ target/riscv/insn_trans/trans_rvi.c.inc        |   46 +-
+ target/riscv/insn_trans/trans_rvv.c.inc        |    4 +-
+ target/riscv/insn_trans/trans_rvzawrs.c.inc    |    2 +-
+ target/riscv/insn_trans/trans_rvzce.c.inc      |   10 +-
+ target/riscv/insn_trans/trans_xthead.c.inc     |    2 +-
+ 29 files changed, 1442 insertions(+), 1102 deletions(-)
+ create mode 100644 target/riscv/cpu_cfg.h
 
