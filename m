@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B659272F4AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 08:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CD672F4BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 08:25:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Jsi-0002br-Gx; Wed, 14 Jun 2023 02:21:24 -0400
+	id 1q9Jwa-0003Tn-0h; Wed, 14 Jun 2023 02:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=UREO=CC=kaod.org=clg@ozlabs.org>)
- id 1q9Jsf-0002bJ-UT; Wed, 14 Jun 2023 02:21:21 -0400
+ id 1q9JwW-0003TS-Tb; Wed, 14 Jun 2023 02:25:20 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=UREO=CC=kaod.org=clg@ozlabs.org>)
- id 1q9Jsd-0001zP-BY; Wed, 14 Jun 2023 02:21:21 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QgwKb5gC9z4x4K;
- Wed, 14 Jun 2023 16:21:07 +1000 (AEST)
+ id 1q9JwT-0003MH-21; Wed, 14 Jun 2023 02:25:19 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QgwQK0VY2z4x4V;
+ Wed, 14 Jun 2023 16:25:13 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QgwKZ0MwQz4x4G;
- Wed, 14 Jun 2023 16:21:04 +1000 (AEST)
-Message-ID: <b9285487-fd9a-6955-6857-711f2258b706@kaod.org>
-Date: Wed, 14 Jun 2023 08:20:56 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QgwQH0jlkz4x3k;
+ Wed, 14 Jun 2023 16:25:10 +1000 (AEST)
+Message-ID: <49f4e25f-e0a5-4941-a2bc-8e273cac6eaa@kaod.org>
+Date: Wed, 14 Jun 2023 08:25:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] target/ppc: Implement gathering irq statistics
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, Greg Kurz <groug@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20230606220200.7EBCC74635C@zero.eik.bme.hu>
- <a274071c-b2c0-8371-b10d-82a883edef1f@kaod.org>
- <074e4215-2f3d-2292-4f93-2048233fa33a@eik.bme.hu>
+Subject: Re: [PATCH 03/10] target/ppc: Move common check in exception handlers
+ to a function
 Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <cover.1686522199.git.balaton@eik.bme.hu>
+ <e7c1a61de1efdee932b71fada93dd58a3ce951cb.1686522199.git.balaton@eik.bme.hu>
+ <CTC23Y9FHUQ9.2CDYVQ4WJ58L0@wheely>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <074e4215-2f3d-2292-4f93-2048233fa33a@eik.bme.hu>
+In-Reply-To: <CTC23Y9FHUQ9.2CDYVQ4WJ58L0@wheely>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=UREO=CC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
 X-Spam_score_int: -40
@@ -68,111 +68,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/23 11:34, BALATON Zoltan wrote:
-> On Thu, 8 Jun 2023, Cédric Le Goater wrote:
->> On 6/7/23 00:02, BALATON Zoltan wrote:
->>> Count exceptions which can be queried with info irq monitor command.
+On 6/14/23 05:35, Nicholas Piggin wrote:
+> On Mon Jun 12, 2023 at 8:42 AM AEST, BALATON Zoltan wrote:
+>> All powerpc exception handlers share some code when handling machine
+>> check exceptions. Move this to a common function.
 >>
->> I don't think the TYPE_INTERRUPT_STATS_PROVIDER interface was designed
->> for CPUs. It is more suitable for interrupt controllers.
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > 
-> True but:
-> - It works and provides useful statistics
-> - At least older PPC CPUs have embedded interrupt controller as the comment in cpu.h shows
-> 
-> so is this just a comment, question or you want something changed in this patch?
+> Hah, I just did very similar to improve some checkstop code (but I can
+> rebase my patches on yours).
 
-It was more a general comment. It is also adding a very large array
-in an even larger structure. I wonder this has some impact on cache
-misses.
+The mce injection was a nice addition. You sent that a while back for pseries
+and powernv. Are you going to revive the series ?
 
 C.
 
 
 > 
-> Regards,
-> BALATON Zoltan
+> This is specifically to test checkstop due to machine check with
+> MSR[ME]=0 (other things can potentially case a checkstop). So
+> maybe rename it powerpc_mcheck_test_checkstop or something like
+> that?
 > 
->> C.
+> Mechanically looks okay though, so other than the name,
+> 
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+> 
+> 
+>> ---
+>>   target/ppc/excp_helper.c | 112 ++++++++-------------------------------
+>>   1 file changed, 23 insertions(+), 89 deletions(-)
 >>
->>>
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>>   target/ppc/cpu.h         |  1 +
->>>   target/ppc/cpu_init.c    | 18 ++++++++++++++++++
->>>   target/ppc/excp_helper.c |  1 +
->>>   3 files changed, 20 insertions(+)
->>>
->>> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
->>> index c7c2a5534c..d3a9197e02 100644
->>> --- a/target/ppc/cpu.h
->>> +++ b/target/ppc/cpu.h
->>> @@ -1194,6 +1194,7 @@ struct CPUArchState {
->>>       int error_code;
->>>       uint32_t pending_interrupts;
->>>   #if !defined(CONFIG_USER_ONLY)
->>> +    uint64_t excp_stats[POWERPC_EXCP_NB];
->>>       /*
->>>        * This is the IRQ controller, which is implementation dependent and only
->>>        * relevant when emulating a complete machine. Note that this isn't used
->>> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
->>> index 05bf73296b..716f2b5d64 100644
->>> --- a/target/ppc/cpu_init.c
->>> +++ b/target/ppc/cpu_init.c
->>> @@ -48,6 +48,7 @@
->>>     #ifndef CONFIG_USER_ONLY
->>>   #include "hw/boards.h"
->>> +#include "hw/intc/intc.h"
->>>   #endif
->>>     /* #define PPC_DEBUG_SPR */
->>> @@ -7123,6 +7124,16 @@ static bool ppc_cpu_is_big_endian(CPUState *cs)
->>>       return !FIELD_EX64(env->msr, MSR, LE);
->>>   }
->>>   +static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
->>> +                              uint64_t **irq_counts, unsigned int *nb_irqs)
->>> +{
->>> +    CPUPPCState *env = &POWERPC_CPU(obj)->env;
->>> +
->>> +    *irq_counts = env->excp_stats;
->>> +    *nb_irqs = ARRAY_SIZE(env->excp_stats);
->>> +    return true;
->>> +}
->>> +
->>>   #ifdef CONFIG_TCG
->>>   static void ppc_cpu_exec_enter(CPUState *cs)
->>>   {
->>> @@ -7286,6 +7297,7 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
->>>       cc->gdb_write_register = ppc_cpu_gdb_write_register;
->>>   #ifndef CONFIG_USER_ONLY
->>>       cc->sysemu_ops = &ppc_sysemu_ops;
->>> +    INTERRUPT_STATS_PROVIDER_CLASS(oc)->get_statistics = ppc_get_irq_stats;
->>>   #endif
->>>         cc->gdb_num_core_regs = 71;
->>> @@ -7323,6 +7335,12 @@ static const TypeInfo ppc_cpu_type_info = {
->>>       .abstract = true,
->>>       .class_size = sizeof(PowerPCCPUClass),
->>>       .class_init = ppc_cpu_class_init,
->>> +#ifndef CONFIG_USER_ONLY
->>> +    .interfaces = (InterfaceInfo[]) {
->>> +          { TYPE_INTERRUPT_STATS_PROVIDER },
->>> +          { }
->>> +    },
->>> +#endif
->>>   };
->>>     #ifndef CONFIG_USER_ONLY
->>> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
->>> index fea9221501..5480d9d2c7 100644
->>> --- a/target/ppc/excp_helper.c
->>> +++ b/target/ppc/excp_helper.c
->>> @@ -1652,6 +1652,7 @@ static void powerpc_excp(PowerPCCPU *cpu, int excp)
->>>       qemu_log_mask(CPU_LOG_INT, "Raise exception at " TARGET_FMT_lx
->>>                     " => %s (%d) error=%02x\n", env->nip, powerpc_excp_name(excp),
->>>                     excp, env->error_code);
->>> +    env->excp_stats[excp]++;
->>>         switch (env->excp_model) {
->>>       case POWERPC_EXCP_40x:
->>
->>
->>
+>> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+>> index 3783315fdb..e4532f5088 100644
+>> --- a/target/ppc/excp_helper.c
+>> +++ b/target/ppc/excp_helper.c
+>> @@ -403,6 +403,23 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
+>>       env->reserve_addr = -1;
+>>   }
+>>   
+>> +static void powerpc_checkstop_state(CPUPPCState *env)
+>> +{
+>> +    if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> +        CPUState *cs = env_cpu(env);
+>> +
+>> +        /* Machine check exception is not enabled. Enter checkstop state. */
+>> +        fprintf(stderr, "Machine check while not allowed. "
+>> +                "Entering checkstop state\n");
+>> +        if (qemu_log_separate()) {
+>> +            qemu_log("Machine check while not allowed. "
+>> +                     "Entering checkstop state\n");
+>> +        }
+>> +        cs->halted = 1;
+>> +        cpu_interrupt_exittb(cs);
+>> +    }
+>> +}
+>> +
+>>   static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+>>   {
+>>       CPUState *cs = CPU(cpu);
+>> @@ -445,21 +462,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+>>           srr1 = SPR_40x_SRR3;
+>>           break;
+>>       case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+>> -        if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> -            /*
+>> -             * Machine check exception is not enabled.  Enter
+>> -             * checkstop state.
+>> -             */
+>> -            fprintf(stderr, "Machine check while not allowed. "
+>> -                    "Entering checkstop state\n");
+>> -            if (qemu_log_separate()) {
+>> -                qemu_log("Machine check while not allowed. "
+>> -                        "Entering checkstop state\n");
+>> -            }
+>> -            cs->halted = 1;
+>> -            cpu_interrupt_exittb(cs);
+>> -        }
+>> -
+>> +        powerpc_checkstop_state(env);
+>>           /* machine check exceptions don't have ME set */
+>>           new_msr &= ~((target_ulong)1 << MSR_ME);
+>>   
+>> @@ -576,21 +579,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+>>       case POWERPC_EXCP_CRITICAL:    /* Critical input                         */
+>>           break;
+>>       case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+>> -        if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> -            /*
+>> -             * Machine check exception is not enabled.  Enter
+>> -             * checkstop state.
+>> -             */
+>> -            fprintf(stderr, "Machine check while not allowed. "
+>> -                    "Entering checkstop state\n");
+>> -            if (qemu_log_separate()) {
+>> -                qemu_log("Machine check while not allowed. "
+>> -                        "Entering checkstop state\n");
+>> -            }
+>> -            cs->halted = 1;
+>> -            cpu_interrupt_exittb(cs);
+>> -        }
+>> -
+>> +        powerpc_checkstop_state(env);
+>>           /* machine check exceptions don't have ME set */
+>>           new_msr &= ~((target_ulong)1 << MSR_ME);
+>>   
+>> @@ -749,21 +738,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+>>   
+>>       switch (excp) {
+>>       case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+>> -        if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> -            /*
+>> -             * Machine check exception is not enabled.  Enter
+>> -             * checkstop state.
+>> -             */
+>> -            fprintf(stderr, "Machine check while not allowed. "
+>> -                    "Entering checkstop state\n");
+>> -            if (qemu_log_separate()) {
+>> -                qemu_log("Machine check while not allowed. "
+>> -                        "Entering checkstop state\n");
+>> -            }
+>> -            cs->halted = 1;
+>> -            cpu_interrupt_exittb(cs);
+>> -        }
+>> -
+>> +        powerpc_checkstop_state(env);
+>>           /* machine check exceptions don't have ME set */
+>>           new_msr &= ~((target_ulong)1 << MSR_ME);
+>>   
+>> @@ -934,21 +909,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+>>   
+>>       switch (excp) {
+>>       case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+>> -        if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> -            /*
+>> -             * Machine check exception is not enabled.  Enter
+>> -             * checkstop state.
+>> -             */
+>> -            fprintf(stderr, "Machine check while not allowed. "
+>> -                    "Entering checkstop state\n");
+>> -            if (qemu_log_separate()) {
+>> -                qemu_log("Machine check while not allowed. "
+>> -                        "Entering checkstop state\n");
+>> -            }
+>> -            cs->halted = 1;
+>> -            cpu_interrupt_exittb(cs);
+>> -        }
+>> -
+>> +        powerpc_checkstop_state(env);
+>>           /* machine check exceptions don't have ME set */
+>>           new_msr &= ~((target_ulong)1 << MSR_ME);
+>>   
+>> @@ -1129,21 +1090,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+>>           srr1 = SPR_BOOKE_CSRR1;
+>>           break;
+>>       case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+>> -        if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> -            /*
+>> -             * Machine check exception is not enabled.  Enter
+>> -             * checkstop state.
+>> -             */
+>> -            fprintf(stderr, "Machine check while not allowed. "
+>> -                    "Entering checkstop state\n");
+>> -            if (qemu_log_separate()) {
+>> -                qemu_log("Machine check while not allowed. "
+>> -                        "Entering checkstop state\n");
+>> -            }
+>> -            cs->halted = 1;
+>> -            cpu_interrupt_exittb(cs);
+>> -        }
+>> -
+>> +        powerpc_checkstop_state(env);
+>>           /* machine check exceptions don't have ME set */
+>>           new_msr &= ~((target_ulong)1 << MSR_ME);
+>>   
+>> @@ -1376,20 +1323,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>>   
+>>       switch (excp) {
+>>       case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+>> -        if (!FIELD_EX64(env->msr, MSR, ME)) {
+>> -            /*
+>> -             * Machine check exception is not enabled.  Enter
+>> -             * checkstop state.
+>> -             */
+>> -            fprintf(stderr, "Machine check while not allowed. "
+>> -                    "Entering checkstop state\n");
+>> -            if (qemu_log_separate()) {
+>> -                qemu_log("Machine check while not allowed. "
+>> -                        "Entering checkstop state\n");
+>> -            }
+>> -            cs->halted = 1;
+>> -            cpu_interrupt_exittb(cs);
+>> -        }
+>> +        powerpc_checkstop_state(env);
+>>           if (env->msr_mask & MSR_HVB) {
+>>               /*
+>>                * ISA specifies HV, but can be delivered to guest with HV
+>> -- 
+>> 2.30.9
+> 
 
 
