@@ -2,82 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9945772FFF0
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 15:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D73772FF6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 15:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9PlG-0002fE-5F; Wed, 14 Jun 2023 08:38:06 -0400
+	id 1q9QBG-0007DL-UV; Wed, 14 Jun 2023 09:04:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9Pl3-0002cO-O7
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 08:37:53 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9Pl0-0002Jc-QK
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 08:37:53 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-977ed383b8aso106328966b.3
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 05:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686746269; x=1689338269;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZLNB7YXANmg/7KCrAhVUC2d8nFaEDBnbf3IFLm52OCw=;
- b=kt9Gd/IimNM7Dc1t/GDRpflBgbsSyivK3Z+XJtWWjaGWD3Elez5YiZ6Ej0yr+koO5P
- L0PMA1ltxDHe/JTKGjlJpzs5/e9fhlcLI/5u1Kaa2NjtB2XpdY+O+AuTciV3gsqP6H3g
- 3n05We9+zJgDfoj/CZI/dwQOgMjqL5WT+7QbMeviMU8eT3xmaF6CMiTNyYPIo5hvJFQd
- RSvG5knqhKRxlhJmbPzsKyzClhlotkrzqTLBcW+lbeDyvYKJ3bD/xikgWuvbnReJoGqI
- uKUhgtKpjTELUEcBmYqAU2/p7KGcWBuqQYK8/NCaKGc/Jv4k2L6xWmuiHC1P7LuAsSYF
- dM4g==
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1q9QBC-0007BV-GA
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 09:04:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1q9QBA-00081f-RF
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 09:04:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686747888;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FNaq1i0YN4QmhH/IAuk4ARL3xays8BeSAQO3C7F6BBw=;
+ b=Hjc/SAs5ZFNmmRL3CPlyivX2NdOKltp6nxxSWkeFte4ot9aXDMSaYnVgXv1T1d+fMzquy5
+ h4kLapnMbiJtmIid+XXqm4CRhcRXbmkHgYIEgORscF71mqjeTinG8Zp+x11rmLLvlEjk14
+ elR1p9GL0sZDI1weCqcI69Iv8N69Gdw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-390-Y7VDnq67OYG39KN9-iBNEQ-1; Wed, 14 Jun 2023 09:04:41 -0400
+X-MC-Unique: Y7VDnq67OYG39KN9-iBNEQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30c5d31b567so2652778f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 06:04:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686746269; x=1689338269;
+ d=1e100.net; s=20221208; t=1686747868; x=1689339868;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZLNB7YXANmg/7KCrAhVUC2d8nFaEDBnbf3IFLm52OCw=;
- b=NOEEVqXvXmnpFYU2pNjmF+GwyuasszNP6Db5esm2CY00PHBvQr5ZUjq4ghpV5ockCE
- nMwLozbda1cz50bEMY7qIVe/YISbs+VwUTHhjAqt0eyko9od2kVq31hcYcf6xYuhw0De
- vCM2D3TYjHj3kU+KbC5PjC0Wb6a/SwadmvlEx0fv0+CzFpbZ/JKS3SHFBZC+/lWI51v4
- C4CjLcYfkejWEDgh7ebVFAkmppupp/va5NHuIBh0eXQ5bUi2hoKxn8/QaIuB8tElj2bn
- tTYjekBKcy5Yds/YgG3cKIi/r5IvR5HvUFpnqBtbBakkon/OzkX/Ffx/DB4Azcsl6hNl
- 2e0g==
-X-Gm-Message-State: AC+VfDyvm8TA78NZYSHichXfo51Cqc8SkRMg30iS4AWmgCHm3ihhF5fM
- bFcs6JjLo7GXFBl+jcAkQglrWw==
-X-Google-Smtp-Source: ACHHUZ5uWczDqJiyLuLUd0QL60th27xXzGPrPKN1w8VzAG4R049b7kvxOk2EH6YTCiu9SfsZDZx4eA==
-X-Received: by 2002:a17:907:6d1e:b0:97a:e0c0:2f91 with SMTP id
- sa30-20020a1709076d1e00b0097ae0c02f91mr14120835ejc.8.1686746268916; 
- Wed, 14 Jun 2023 05:37:48 -0700 (PDT)
-Received: from [10.14.201.118] ([213.175.39.66])
+ bh=FNaq1i0YN4QmhH/IAuk4ARL3xays8BeSAQO3C7F6BBw=;
+ b=ZtmDjOh6nET0TnqyOnzoM5sAkMdezuTzDySKcDtljpnePeaUXI7cLUdVPwfugjY0zr
+ 5suHnIoOQKW9toyTmg8p+XODiUx5VkcFgqDVo1xy7PFB8BaHUwvBBPlGjOOEeKNBxci7
+ vczCw7FTbq4pOaNSN5w6jLVpxt6CXB6NrfJl9g6GfDflZX59/Y1EdemgX0tSB0zfdc14
+ YtDQipmNNwgQ+/UOrv8X/b+BJua1xx6jdpcJOBKoprYCfskVc/gVqifKLux5XNL+1sna
+ 8+GifhkVG9yF20gI2eaheWq70e7NcIDSHZcCITGpF1SuMzd9367pLTLEVxn1fZzBqPCv
+ 1Spw==
+X-Gm-Message-State: AC+VfDzJtcKsHjx5BslCpIecMw1KYr1tymwF4BWAOku+fNziZq6dk96W
+ xcndOY2G1DkNUKtyw1nWxNjWb+nQjDNzOweSmufMjnWUoRmJYVM+463KJJWrdQVqIo7kbO1BQJU
+ xNPy3Bn2qIIoYBKk=
+X-Received: by 2002:a05:6000:100c:b0:306:2c16:8359 with SMTP id
+ a12-20020a056000100c00b003062c168359mr8206208wrx.39.1686747868538; 
+ Wed, 14 Jun 2023 06:04:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ65l9/Nl5QYDChD/sifDY+MQizjMYlVIENFU8gj9MoZAe4TZ2wAi++3eTV0ktJJkSx2+Lk6ig==
+X-Received: by 2002:a05:6000:100c:b0:306:2c16:8359 with SMTP id
+ a12-20020a056000100c00b003062c168359mr8206187wrx.39.1686747868251; 
+ Wed, 14 Jun 2023 06:04:28 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- e26-20020a170906045a00b0096fc35ca733sm7903232eja.41.2023.06.14.05.37.48
+ o7-20020adfeac7000000b002fed865c55esm18321002wrn.56.2023.06.14.06.04.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 05:37:48 -0700 (PDT)
-Message-ID: <9e51e81c-49d0-3fa3-69cb-dc7df7e1b3af@linaro.org>
-Date: Wed, 14 Jun 2023 14:37:47 +0200
+ Wed, 14 Jun 2023 06:04:27 -0700 (PDT)
+Message-ID: <bf83446d-f6b2-f605-7e7d-bdb9635b3b73@redhat.com>
+Date: Wed, 14 Jun 2023 15:04:25 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v2 22/26] target/arm/tcg: Reduce 'helper-m.h.inc' inclusion
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 04/10] hw/ppc/spapr: Use machine_memory_devices_init()
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20230611085846.21415-1-philmd@linaro.org>
- <20230611085846.21415-23-philmd@linaro.org>
- <96940129-08a9-97bb-db71-236789d5b373@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <96940129-08a9-97bb-db71-236789d5b373@linaro.org>
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230601121447.272487-1-david@redhat.com>
+ <20230601121447.272487-6-david@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20230601121447.272487-6-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,24 +111,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/6/23 06:55, Richard Henderson wrote:
-> On 6/11/23 10:58, Philippe Mathieu-Daudé wrote:
->> +++ b/target/arm/tcg/translate.c
->> @@ -37,6 +37,11 @@
->>   #include "exec/helper-gen.h.inc"
->>   #undef  HELPER_H
->> +#define HELPER_H "tcg/helper-m.h.inc"
->> +#include "exec/helper-proto.h.inc"
->> +#include "exec/helper-gen.h.inc"
->> +#undef  HELPER_H
+On 6/1/23 14:14, David Hildenbrand wrote:
+> Let's use our new helper and stop always allocating ms->device_memory.
+> There is no difference in common memory-device code anymore between
+> ms->device_memory being NULL or the size being 0. So we only have to
+> teach spapr code that ms->device_memory isn't always around.
 > 
-> You don't need helper-proto.h here do you?
+> We can now modify two maxram_size checks to rely on ms->device_memory
+> for detecting whether we have memory devices.
+> 
+> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+> Cc: "Cédric Le Goater" <clg@kaod.org>
+> Cc: David Gibson <david@gibson.dropbear.id.au>
+> Cc: Greg Kurz <groug@kaod.org>
+> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Right, rebase left-over...
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-> Otherwise,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Thanks,
 
-Thanks!
+C.
+
+
+> ---
+>   hw/ppc/spapr.c       | 37 +++++++++++++++++++------------------
+>   hw/ppc/spapr_hcall.c |  2 +-
+>   2 files changed, 20 insertions(+), 19 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index dcb7f1c70a..b53aa4b5a8 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -546,10 +546,8 @@ static int spapr_dt_dynamic_reconfiguration_memory(SpaprMachineState *spapr,
+>                                   cpu_to_be32(lmb_size & 0xffffffff)};
+>       MemoryDeviceInfoList *dimms = NULL;
+>   
+> -    /*
+> -     * Don't create the node if there is no device memory
+> -     */
+> -    if (machine->ram_size == machine->maxram_size) {
+> +    /* Don't create the node if there is no device memory. */
+> +    if (!machine->device_memory) {
+>           return 0;
+>       }
+>   
+> @@ -859,16 +857,23 @@ static void spapr_dt_rtas(SpaprMachineState *spapr, void *fdt)
+>       int rtas;
+>       GString *hypertas = g_string_sized_new(256);
+>       GString *qemu_hypertas = g_string_sized_new(256);
+> -    uint64_t max_device_addr = MACHINE(spapr)->device_memory->base +
+> -        memory_region_size(&MACHINE(spapr)->device_memory->mr);
+>       uint32_t lrdr_capacity[] = {
+> -        cpu_to_be32(max_device_addr >> 32),
+> -        cpu_to_be32(max_device_addr & 0xffffffff),
+> +        0,
+> +        0,
+>           cpu_to_be32(SPAPR_MEMORY_BLOCK_SIZE >> 32),
+>           cpu_to_be32(SPAPR_MEMORY_BLOCK_SIZE & 0xffffffff),
+>           cpu_to_be32(ms->smp.max_cpus / ms->smp.threads),
+>       };
+>   
+> +    /* Do we have device memory? */
+> +    if (MACHINE(spapr)->device_memory) {
+> +        uint64_t max_device_addr = MACHINE(spapr)->device_memory->base +
+> +            memory_region_size(&MACHINE(spapr)->device_memory->mr);
+> +
+> +        lrdr_capacity[0] = cpu_to_be32(max_device_addr >> 32);
+> +        lrdr_capacity[1] = cpu_to_be32(max_device_addr & 0xffffffff);
+> +    }
+> +
+>       _FDT(rtas = fdt_add_subnode(fdt, 0, "rtas"));
+>   
+>       /* hypertas */
+> @@ -2454,6 +2459,7 @@ static void spapr_create_lmb_dr_connectors(SpaprMachineState *spapr)
+>       uint32_t nr_lmbs = (machine->maxram_size - machine->ram_size)/lmb_size;
+>       int i;
+>   
+> +    g_assert(!nr_lmbs || machine->device_memory);
+>       for (i = 0; i < nr_lmbs; i++) {
+>           uint64_t addr;
+>   
+> @@ -2866,12 +2872,11 @@ static void spapr_machine_init(MachineState *machine)
+>       /* map RAM */
+>       memory_region_add_subregion(sysmem, 0, machine->ram);
+>   
+> -    /* always allocate the device memory information */
+> -    machine->device_memory = g_malloc0(sizeof(*machine->device_memory));
+> -
+>       /* initialize hotplug memory address space */
+>       if (machine->ram_size < machine->maxram_size) {
+>           ram_addr_t device_mem_size = machine->maxram_size - machine->ram_size;
+> +        hwaddr device_mem_base;
+> +
+>           /*
+>            * Limit the number of hotpluggable memory slots to half the number
+>            * slots that KVM supports, leaving the other half for PCI and other
+> @@ -2890,12 +2895,8 @@ static void spapr_machine_init(MachineState *machine)
+>               exit(1);
+>           }
+>   
+> -        machine->device_memory->base = ROUND_UP(machine->ram_size,
+> -                                                SPAPR_DEVICE_MEM_ALIGN);
+> -        memory_region_init(&machine->device_memory->mr, OBJECT(spapr),
+> -                           "device-memory", device_mem_size);
+> -        memory_region_add_subregion(sysmem, machine->device_memory->base,
+> -                                    &machine->device_memory->mr);
+> +        device_mem_base = ROUND_UP(machine->ram_size, SPAPR_DEVICE_MEM_ALIGN);
+> +        machine_memory_devices_init(machine, device_mem_base, device_mem_size);
+>       }
+>   
+>       if (smc->dr_lmb_enabled) {
+> @@ -5109,7 +5110,7 @@ static bool phb_placement_2_7(SpaprMachineState *spapr, uint32_t index,
+>       int i;
+>   
+>       /* Do we have device memory? */
+> -    if (MACHINE(spapr)->maxram_size > ram_top) {
+> +    if (MACHINE(spapr)->device_memory) {
+>           /* Can't just use maxram_size, because there may be an
+>            * alignment gap between normal and device memory regions
+>            */
+> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+> index b904755575..1dd32f340f 100644
+> --- a/hw/ppc/spapr_hcall.c
+> +++ b/hw/ppc/spapr_hcall.c
+> @@ -31,7 +31,7 @@ bool is_ram_address(SpaprMachineState *spapr, hwaddr addr)
+>       if (addr < machine->ram_size) {
+>           return true;
+>       }
+> -    if ((addr >= dms->base)
+> +    if (dms && (addr >= dms->base)
+>           && ((addr - dms->base) < memory_region_size(&dms->mr))) {
+>           return true;
+>       }
 
 
