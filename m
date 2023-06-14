@@ -2,54 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1DA72F875
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 10:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B4572F87F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 10:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9MII-00078H-Tc; Wed, 14 Jun 2023 04:55:58 -0400
+	id 1q9MLR-0000EG-Hq; Wed, 14 Jun 2023 04:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UREO=CC=kaod.org=clg@ozlabs.org>)
- id 1q9MIH-00077x-GR; Wed, 14 Jun 2023 04:55:57 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UREO=CC=kaod.org=clg@ozlabs.org>)
- id 1q9MIF-0004Yb-Bb; Wed, 14 Jun 2023 04:55:57 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qgzm86ZNGz4x41;
- Wed, 14 Jun 2023 18:55:52 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qgzm73Z6Gz4x3m;
- Wed, 14 Jun 2023 18:55:51 +1000 (AEST)
-Message-ID: <ddf471e7-4662-eff9-0f67-022468db2ec1@kaod.org>
-Date: Wed, 14 Jun 2023 10:55:49 +0200
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q9MLL-0000Ck-DE
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 04:59:07 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q9MLJ-0004xd-69
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 04:59:06 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-555508fd7f9so298553eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 01:59:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1686733143; x=1689325143;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mp6qKwnHe+KsjV34LVJ9sRj3p8qxH2ZQ4O0PgFUZ0Sc=;
+ b=oR3fEwFIc3Py5ZGFxzJycZ5V+6fGp9X5W1AlbXgZpy7fETYhX3f8xMNMaDr/T8mzps
+ 74wDkTKgec51/vUGwE6FgfhBPhwUe5XPXwZBKX4fufox2elXFcQkIR4TCvCOeNqOfLRa
+ Cqw2gHnsCi94g8iC67Nimr55aditd0iGxHAU+gp6wIJdHmba1Vf3AxB5YIjnWQ2EmIRg
+ la5CHI61MKXYPdyFIcznwP//ECTJQw9y2Re0/7d7l2CqJDNZ5AbE/DgqAxoAP37HsslV
+ /Ly9zJzCyRqkFJuotR/LgrvMcv/6/puyw40aEcNhHRfWUOuFWWFPG+SPT04Rp8lhEAWK
+ N8ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686733143; x=1689325143;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mp6qKwnHe+KsjV34LVJ9sRj3p8qxH2ZQ4O0PgFUZ0Sc=;
+ b=Tcat0W/yE/M8w48MzixZ9zARqgHQkTA5rSOeCXoFn45OOEo4Fs1nVWRejpnMh17qs8
+ UHz6Lr+fRPulDlcRuZaBlolIeS9S5/PQEMb3yBbNnZgbWo0QPP4Iuz1qkvEkIxjUHXv1
+ 7YUoH+NG5oh21cGmtHdV5fRZhhu/hRV4DsDHZBcfBbKpOgDhIONe/DX7hTJ2kPbvXiU2
+ B9zyJpz08Zy0RRQC3nszR9TJHsHAX0Qpy4U6oeyG0PO4JWKU0ErVMZ6ZU6VUVSXCmRBs
+ o+I7Z5wK/HbQSuRnMXO+LbmgvOd4JQtBfUGsMb7kiEBu57PgqVBtR0dJJmjKDBYiyn5x
+ VQKg==
+X-Gm-Message-State: AC+VfDyENNrZ5anoDMtZEznXMdAejuDcSt11uwzN8MGy8WXu+aaj3p+1
+ I34zDOusbiDlfrBg+adxfzY05g==
+X-Google-Smtp-Source: ACHHUZ41vggVzS1xlR0cL6acMaYu/0T1OvHbnCGSlRWuq01aZViXoavu0LXvHqoH1BuZWfnTlCOgPA==
+X-Received: by 2002:a4a:c90b:0:b0:552:4bca:a9df with SMTP id
+ v11-20020a4ac90b000000b005524bcaa9dfmr7765501ooq.3.1686733143200; 
+ Wed, 14 Jun 2023 01:59:03 -0700 (PDT)
+Received: from [192.168.68.107] ([177.170.117.210])
+ by smtp.gmail.com with ESMTPSA id
+ bf14-20020a056820174e00b0051134f333d3sm4831348oob.16.2023.06.14.01.58.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Jun 2023 01:59:02 -0700 (PDT)
+Message-ID: <f22d710e-d1bb-d33a-78c1-c86a6740dbe1@ventanamicro.com>
+Date: Wed, 14 Jun 2023 05:58:57 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 4/4] target/ppc: Implement core timebase state machine and
- TFMR
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 2/8] target/riscv: Factor out extension tests to
+ cpu_cfg.h
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230603233612.125879-1-npiggin@gmail.com>
- <20230603233612.125879-5-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230603233612.125879-5-npiggin@gmail.com>
+To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
+ <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhiwei Liu <zhiwei_liu@linux.alibaba.com>
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>
+References: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
+ <20230612111034.3955227-3-christoph.muellner@vrull.eu>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230612111034.3955227-3-christoph.muellner@vrull.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=UREO=CC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.098, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc36.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,254 +101,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/23 01:36, Nicholas Piggin wrote:
-> This implements the core timebase state machine, which is the core side
-> of the time-of-day system in POWER processors. This facility is operated
-> by control fields in the TFMR register, which also contains status
-> fields.
+
+
+On 6/12/23 08:10, Christoph Muellner wrote:
+> From: Christoph Müllner <christoph.muellner@vrull.eu>
 > 
-> The core timebase interacts with the chiptod hardware, primarily to
-> receive TOD updates, to synchronise timebase with other cores. This
-> model does not actually update TB values with TOD or updates received
-> from the chiptod, as timebases are always synchronised. It does step
-> through the states required to perform the update.
+> This patch moves the extension test functions that are used
+> to gate vendor extension decoders, into cpu_cfg.h.
+> This allows to reuse them in the disassembler.
 > 
-> There are several asynchronous state transitions. These are modelled
-> using using mfTFMR to drive state changes, because it is expected that
-> firmware poll the register to wait for those states. This is good enough
-> to test basic firmware behaviour without adding real timers. The values
-> chosen are arbitrary.
+> This patch does not introduce new functionality.
+> However, the patch includes a small change:
+> The parameter for the extension test functions has been changed
+> from 'DisasContext*' to 'const RISCVCPUConfig*' to keep
+> the code in cpu_cfg.h self-contained.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Looks correct,
-
-Acked-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
+> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
 > ---
->   target/ppc/cpu.h             |  34 ++++++++
->   target/ppc/timebase_helper.c | 147 ++++++++++++++++++++++++++++++++++-
->   2 files changed, 179 insertions(+), 2 deletions(-)
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   target/riscv/cpu_cfg.h   | 26 ++++++++++++++++++++++++++
+>   target/riscv/translate.c | 27 ++-------------------------
+>   2 files changed, 28 insertions(+), 25 deletions(-)
 > 
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index d73cce8474..b1520ea4db 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -1177,6 +1177,13 @@ struct CPUArchState {
->       /* PowerNV chiptod / timebase facility state. */
->       int tb_ready_for_tod; /* core TB ready to receive TOD from chiptod */
->       int tod_sent_to_tb;   /* chiptod sent TOD to the core TB */
-> +
-> +    /*
-> +     * Timers for async events are simulated by mfTFAC because TFAC is to be
-> +     * polled for event.
-> +     */
-> +    int tb_state_timer;
-> +    int tb_sync_pulse_timer;
->   #endif
->   #endif
->   
-> @@ -2527,6 +2534,33 @@ enum {
->       HMER_XSCOM_STATUS_MASK      = PPC_BITMASK(21, 23),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index c4a627d335..0b4fe4b540 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -133,4 +133,30 @@ struct RISCVCPUConfig {
 >   };
 >   
-> +/* TFMR */
-> +enum {
-> +    TFMR_CONTROL_MASK           = PPC_BITMASK(0, 24),
-> +    TFMR_MASK_HMI               = PPC_BIT(10),
-> +    TFMR_TB_ECLIPZ              = PPC_BIT(14),
-> +    TFMR_LOAD_TOD_MOD           = PPC_BIT(16),
-> +    TFMR_MOVE_CHIP_TOD_TO_TB    = PPC_BIT(18),
-> +    TFMR_CLEAR_TB_ERRORS        = PPC_BIT(24),
-> +    TFMR_STATUS_MASK            = PPC_BITMASK(25, 63),
-> +    TFMR_TBST_ENCODED           = PPC_BITMASK(28, 31), /* TBST = TB State */
-> +    TFMR_TBST_LAST              = PPC_BITMASK(32, 35), /* Previous TBST */
-> +    TFMR_TB_ENABLED             = PPC_BIT(40),
-> +    TFMR_TB_VALID               = PPC_BIT(41),
-> +    TFMR_TB_SYNC_OCCURED        = PPC_BIT(42),
-> +};
+>   typedef struct RISCVCPUConfig RISCVCPUConfig;
 > +
-> +/* TFMR TBST */
-> +enum {
-> +    TBST_RESET                  = 0x0,
-> +    TBST_SEND_TOD_MOD           = 0x1,
-> +    TBST_NOT_SET                = 0x2,
-> +    TBST_SYNC_WAIT              = 0x6,
-> +    TBST_GET_TOD                = 0x7,
-> +    TBST_TB_RUNNING             = 0x8,
-> +    TBST_TB_ERROR               = 0x9,
-> +};
+> +/* Helper functions to test for extensions.  */
 > +
->   /*****************************************************************************/
->   
->   #define is_isa300(ctx) (!!(ctx->insns_flags2 & PPC2_ISA300))
-> diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
-> index 34b1d5ad05..11a06fafe6 100644
-> --- a/target/ppc/timebase_helper.c
-> +++ b/target/ppc/timebase_helper.c
-> @@ -272,14 +272,157 @@ void helper_store_booke_tsr(CPUPPCState *env, target_ulong val)
->   
->   #if defined(TARGET_PPC64)
->   /* POWER processor Timebase Facility */
-> +static unsigned int tfmr_get_tb_state(uint64_t tfmr)
+> +static inline bool always_true_p(const RISCVCPUConfig *cfg __attribute__((__unused__)))
 > +{
-> +    return (tfmr & TFMR_TBST_ENCODED) >> (63 - 31);
+> +    return true;
 > +}
 > +
-> +static uint64_t tfmr_new_tb_state(uint64_t tfmr, unsigned int tbst)
+> +static inline bool has_xthead_p(const RISCVCPUConfig *cfg)
 > +{
-> +    tfmr &= ~TFMR_TBST_LAST;
-> +    tfmr |= (tfmr & TFMR_TBST_ENCODED) >> 4; /* move state to last state */
-> +    tfmr &= ~TFMR_TBST_ENCODED;
-> +    tfmr |= (uint64_t)tbst << (63 - 31); /* move new state to state */
-> +
-> +    if (tbst == TBST_TB_RUNNING) {
-> +        tfmr |= TFMR_TB_VALID;
-> +    } else {
-> +        tfmr &= ~TFMR_TB_VALID;
-> +    }
-> +
-> +    return tfmr;
+> +    return cfg->ext_xtheadba || cfg->ext_xtheadbb ||
+> +           cfg->ext_xtheadbs || cfg->ext_xtheadcmo ||
+> +           cfg->ext_xtheadcondmov ||
+> +           cfg->ext_xtheadfmemidx || cfg->ext_xtheadfmv ||
+> +           cfg->ext_xtheadmac || cfg->ext_xtheadmemidx ||
+> +           cfg->ext_xtheadmempair || cfg->ext_xtheadsync;
 > +}
 > +
-> +static void tb_state_machine_step(CPUPPCState *env)
-> +{
-> +    uint64_t tfmr = env->spr[SPR_TFMR];
-> +    unsigned int tbst = tfmr_get_tb_state(tfmr);
-> +
-> +    if (!(tfmr & TFMR_TB_ECLIPZ) || tbst == TBST_TB_ERROR) {
-> +        return;
+> +#define MATERIALISE_EXT_PREDICATE(ext) \
+> +    static inline bool has_ ## ext ## _p(const RISCVCPUConfig *cfg) \
+> +    { \
+> +        return cfg->ext_ ## ext ; \
 > +    }
 > +
-> +    if (env->tb_sync_pulse_timer) {
-> +        env->tb_sync_pulse_timer--;
-> +    } else {
-> +        tfmr |= TFMR_TB_SYNC_OCCURED;
-> +        env->spr[SPR_TFMR] = tfmr;
-> +    }
+> +MATERIALISE_EXT_PREDICATE(XVentanaCondOps)
 > +
-> +    if (env->tb_state_timer) {
-> +        env->tb_state_timer--;
-> +        return;
-> +    }
-> +
-> +    if (tfmr & TFMR_LOAD_TOD_MOD) {
-> +        tfmr &= ~TFMR_LOAD_TOD_MOD;
-> +        if (tbst == TBST_GET_TOD) {
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-> +        } else {
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_SEND_TOD_MOD);
-> +            /* State seems to transition immediately */
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_NOT_SET);
-> +        }
-> +    } else if (tfmr & TFMR_MOVE_CHIP_TOD_TO_TB) {
-> +        if (tbst == TBST_SYNC_WAIT) {
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_GET_TOD);
-> +            env->tb_state_timer = 3;
-> +        } else if (tbst == TBST_GET_TOD) {
-> +            if (env->tod_sent_to_tb) {
-> +                tfmr = tfmr_new_tb_state(tfmr, TBST_TB_RUNNING);
-> +                tfmr &= ~TFMR_MOVE_CHIP_TOD_TO_TB;
-> +                env->tb_ready_for_tod = 0;
-> +                env->tod_sent_to_tb = 0;
-> +            }
-> +        } else {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: MOVE_CHIP_TOD_TO_TB "
-> +                          "state machine in invalid state 0x%x\n", tbst);
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-> +            env->tb_ready_for_tod = 0;
-> +        }
-> +    }
-> +
-> +    env->spr[SPR_TFMR] = tfmr;
-> +}
-> +
->   target_ulong helper_load_tfmr(CPUPPCState *env)
->   {
-> -    return env->spr[SPR_TFMR];
-> +    tb_state_machine_step(env);
-> +
-> +    return env->spr[SPR_TFMR] | TFMR_TB_ECLIPZ;
->   }
->   
->   void helper_store_tfmr(CPUPPCState *env, target_ulong val)
->   {
-> -    env->spr[SPR_TFMR] = val;
-> +    uint64_t tfmr = env->spr[SPR_TFMR];
-> +    unsigned int tbst = tfmr_get_tb_state(tfmr);
-> +
-> +    if (!(val & TFMR_TB_ECLIPZ)) {
-> +        qemu_log_mask(LOG_UNIMP, "TFMR non-ECLIPZ mode not implemented\n");
-> +        tfmr &= ~TFMR_TBST_ENCODED;
-> +        tfmr &= ~TFMR_TBST_LAST;
-> +        goto out;
-> +    }
-> +
-> +    /* Update control bits */
-> +    tfmr = (tfmr & ~TFMR_CONTROL_MASK) | (val & TFMR_CONTROL_MASK);
-> +
-> +    /* mtspr always clears this */
-> +    tfmr &= ~TFMR_TB_SYNC_OCCURED;
-> +    env->tb_sync_pulse_timer = 1;
-> +
-> +    /*
-> +     * We don't implement any of the error status bits that can be
-> +     * cleared by writing 1 to them. TB error injection / simulation
-> +     * would have to implement some.
-> +     *
-> +     * Also don't implement mfTB failing when the TB state machine is
-> +     * not running.
-> +     */
-> +
-> +    if (((tfmr | val) & (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB)) ==
-> +                        (TFMR_LOAD_TOD_MOD | TFMR_MOVE_CHIP_TOD_TO_TB)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: LOAD_TOD_MOD and "
-> +                                       "MOVE_CHIP_TOD_TO_TB both set\n");
-> +        tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-> +        env->tb_ready_for_tod = 0;
-> +        goto out;
-> +    }
-> +
-> +    if (tfmr & TFMR_CLEAR_TB_ERRORS) {
-> +        tfmr = tfmr_new_tb_state(tfmr, TBST_RESET);
-> +        tfmr &= ~TFMR_CLEAR_TB_ERRORS;
-> +        tfmr &= ~TFMR_LOAD_TOD_MOD;
-> +        tfmr &= ~TFMR_MOVE_CHIP_TOD_TO_TB;
-> +        env->tb_ready_for_tod = 0;
-> +        env->tod_sent_to_tb = 0;
-> +        goto out;
-> +    }
-> +
-> +    if (tbst == TBST_TB_ERROR) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: mtspr TFMR in TB_ERROR"
-> +                                       " state\n");
-> +        return;
-> +    }
-> +
-> +    if (tfmr & TFMR_LOAD_TOD_MOD) {
-> +        env->tb_state_timer = 3;
-> +    } else if (tfmr & TFMR_MOVE_CHIP_TOD_TO_TB) {
-> +        if (tbst == TBST_NOT_SET) {
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_SYNC_WAIT);
-> +            env->tb_ready_for_tod = 1;
-> +            env->tb_state_timer = 3;
-> +        } else {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "TFMR error: MOVE_CHIP_TOD_TO_TB "
-> +                                           "not in TB not set state 0x%x\n",
-> +                                           tbst);
-> +            tfmr = tfmr_new_tb_state(tfmr, TBST_TB_ERROR);
-> +            env->tb_ready_for_tod = 0;
-> +        }
-> +    }
-> +
-> +out:
-> +    env->spr[SPR_TFMR] = tfmr;
->   }
 >   #endif
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index 859d5b2dcf..275b922811 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -119,29 +119,6 @@ static inline bool has_ext(DisasContext *ctx, uint32_t ext)
+>       return ctx->misa_ext & ext;
+>   }
 >   
-
+> -static bool always_true_p(DisasContext *ctx  __attribute__((__unused__)))
+> -{
+> -    return true;
+> -}
+> -
+> -static bool has_xthead_p(DisasContext *ctx  __attribute__((__unused__)))
+> -{
+> -    return ctx->cfg_ptr->ext_xtheadba || ctx->cfg_ptr->ext_xtheadbb ||
+> -           ctx->cfg_ptr->ext_xtheadbs || ctx->cfg_ptr->ext_xtheadcmo ||
+> -           ctx->cfg_ptr->ext_xtheadcondmov ||
+> -           ctx->cfg_ptr->ext_xtheadfmemidx || ctx->cfg_ptr->ext_xtheadfmv ||
+> -           ctx->cfg_ptr->ext_xtheadmac || ctx->cfg_ptr->ext_xtheadmemidx ||
+> -           ctx->cfg_ptr->ext_xtheadmempair || ctx->cfg_ptr->ext_xtheadsync;
+> -}
+> -
+> -#define MATERIALISE_EXT_PREDICATE(ext)  \
+> -    static bool has_ ## ext ## _p(DisasContext *ctx)    \
+> -    { \
+> -        return ctx->cfg_ptr->ext_ ## ext ; \
+> -    }
+> -
+> -MATERIALISE_EXT_PREDICATE(XVentanaCondOps);
+> -
+>   #ifdef TARGET_RISCV32
+>   #define get_xl(ctx)    MXL_RV32
+>   #elif defined(CONFIG_USER_ONLY)
+> @@ -1132,7 +1109,7 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
+>        * that are tested in-order until a decoder matches onto the opcode.
+>        */
+>       static const struct {
+> -        bool (*guard_func)(DisasContext *);
+> +        bool (*guard_func)(const RISCVCPUConfig *);
+>           bool (*decode_func)(DisasContext *, uint32_t);
+>       } decoders[] = {
+>           { always_true_p,  decode_insn32 },
+> @@ -1161,7 +1138,7 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
+>           ctx->opcode = opcode32;
+>   
+>           for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
+> -            if (decoders[i].guard_func(ctx) &&
+> +            if (decoders[i].guard_func(ctx->cfg_ptr) &&
+>                   decoders[i].decode_func(ctx, opcode32)) {
+>                   return;
+>               }
 
