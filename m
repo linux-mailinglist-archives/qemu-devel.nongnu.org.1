@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A71E72F313
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 05:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6B772F30F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 05:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9H98-0000RM-2Z; Tue, 13 Jun 2023 23:26:10 -0400
+	id 1q9H99-0000TD-Ax; Tue, 13 Jun 2023 23:26:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q9H95-0000Ql-5n; Tue, 13 Jun 2023 23:26:07 -0400
+ id 1q9H96-0000RU-JW; Tue, 13 Jun 2023 23:26:08 -0400
 Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q9H92-0002do-5w; Tue, 13 Jun 2023 23:26:06 -0400
+ id 1q9H92-0002dx-O2; Tue, 13 Jun 2023 23:26:08 -0400
 Received: from localhost.localdomain (unknown [117.61.111.213])
- by APP-01 (Coremail) with SMTP id qwCowAAHX8o9M4lkAAEBAw--.60726S3;
- Wed, 14 Jun 2023 11:25:52 +0800 (CST)
+ by APP-01 (Coremail) with SMTP id qwCowAAHX8o9M4lkAAEBAw--.60726S4;
+ Wed, 14 Jun 2023 11:25:53 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -26,22 +26,22 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
  Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH 1/2] target/riscv: Add additional xlen for address when MPRV=1
-Date: Wed, 14 Jun 2023 11:25:46 +0800
-Message-Id: <20230614032547.35895-2-liweiwei@iscas.ac.cn>
+Subject: [PATCH 2/2] target/riscv: update cur_pmbase/pmmask based on mode
+ affected by MPRV
+Date: Wed, 14 Jun 2023 11:25:47 +0800
+Message-Id: <20230614032547.35895-3-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230614032547.35895-1-liweiwei@iscas.ac.cn>
 References: <20230614032547.35895-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowAAHX8o9M4lkAAEBAw--.60726S3
-X-Coremail-Antispam: 1UD129KBjvJXoW3WryDCF1fKrW7uFy5ur1Utrb_yoW7XFW8pF
- WxGFWak34xXa9rGayftF4UXF1rAFyFk3y5Jwn7Gwsa9F45XrW5CFyDKa43ZFWUWFy8uryj
- kF4kAr1UuF4UZFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUBE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
- x26xkF7I0E14v26r1I6r4UM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+X-CM-TRANSID: qwCowAAHX8o9M4lkAAEBAw--.60726S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxGw17Cw1DWFWDtrW5Kw4DArb_yoWrCr18pr
+ 4kC3yfK3yxtasF9asIyw1Dt3WrJrWUtayUGwsrWayFyFW5J3WrArsFvasxZry8WFW8Xw12
+ vanxCryUZr47ZFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUBE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+ x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
  Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
  A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
  0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
@@ -51,7 +51,7 @@ X-Coremail-Antispam: 1UD129KBjvJXoW3WryDCF1fKrW7uFy5ur1Utrb_yoW7XFW8pF
  6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
  Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
  Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
- IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUqAp5UUUUU
+ IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUc6pPUUUUU
  =
 X-Originating-IP: [117.61.111.213]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
@@ -77,167 +77,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As specified in privilege spec:"When MPRV=1, load and store memory
-addresses are treated as though the current XLEN were set to MPP’s
-XLEN". So the xlen for address may be different from current xlen.
+Pointer mask is also affected by MPRV which means cur_pmbase/pmmask
+should also take MPRV into consideration. As pointer mask for instruction
+is not supported currently, so we can directly update cur_pmbase/pmmask
+based on address related mode and xlen affected by MPRV now.
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 ---
- target/riscv/cpu.h        | 49 +++++++++++++++++++++++++++++++++------
- target/riscv/cpu_helper.c |  1 +
- target/riscv/translate.c  | 13 ++++++++++-
- 3 files changed, 55 insertions(+), 8 deletions(-)
+ target/riscv/cpu_helper.c |  7 +++++--
+ target/riscv/csr.c        | 27 ++++++++++++++++++++-------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index e3e08d315f..cc20ee25a7 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -498,6 +498,7 @@ FIELD(TB_FLAGS, ITRIGGER, 22, 1)
- /* Virtual mode enabled */
- FIELD(TB_FLAGS, VIRT_ENABLED, 23, 1)
- FIELD(TB_FLAGS, PRIV, 24, 2)
-+FIELD(TB_FLAGS, AXL, 26, 2)
- 
- #ifdef TARGET_RISCV32
- #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
-@@ -514,13 +515,20 @@ static inline const RISCVCPUConfig *riscv_cpu_cfg(CPURISCVState *env)
-     return &env_archcpu(env)->cfg;
- }
- 
--#if defined(TARGET_RISCV32)
--#define cpu_recompute_xl(env)  ((void)(env), MXL_RV32)
--#else
--static inline RISCVMXL cpu_recompute_xl(CPURISCVState *env)
-+#if !defined(CONFIG_USER_ONLY)
-+static inline int cpu_address_mode(CPURISCVState *env)
-+{
-+    int mode = env->priv;
-+
-+    if (mode == PRV_M && get_field(env->mstatus, MSTATUS_MPRV)) {
-+        mode = get_field(env->mstatus, MSTATUS_MPP);
-+    }
-+    return mode;
-+}
-+
-+static inline RISCVMXL cpu_get_xl(CPURISCVState *env, target_ulong mode)
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index f85113a3db..2321f9132f 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -148,13 +148,16 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, target_ulong *pc,
+ void riscv_cpu_update_mask(CPURISCVState *env)
  {
-     RISCVMXL xl = env->misa_mxl;
--#if !defined(CONFIG_USER_ONLY)
+     target_ulong mask = 0, base = 0;
++    RISCVMXL xl = env->xl;
      /*
-      * When emulating a 32-bit-only cpu, use RV32.
-      * When emulating a 64-bit cpu, and MXL has been reduced to RV32,
-@@ -528,7 +536,7 @@ static inline RISCVMXL cpu_recompute_xl(CPURISCVState *env)
-      * back to RV64 for lower privs.
+      * TODO: Current RVJ spec does not specify
+      * how the extension interacts with XLEN.
       */
-     if (xl != MXL_RV32) {
+ #ifndef CONFIG_USER_ONLY
++    int mode = cpu_address_mode(env);
++    xl = cpu_get_xl(env, mode);
+     if (riscv_has_ext(env, RVJ)) {
 -        switch (env->priv) {
 +        switch (mode) {
          case PRV_M:
-             break;
-         case PRV_U:
-@@ -539,11 +547,38 @@ static inline RISCVMXL cpu_recompute_xl(CPURISCVState *env)
-             break;
+             if (env->mmte & M_PM_ENABLE) {
+                 mask = env->mpmmask;
+@@ -178,7 +181,7 @@ void riscv_cpu_update_mask(CPURISCVState *env)
          }
      }
--#endif
-     return xl;
- }
  #endif
- 
-+#if defined(TARGET_RISCV32)
-+#define cpu_recompute_xl(env)  ((void)(env), MXL_RV32)
-+#else
-+static inline RISCVMXL cpu_recompute_xl(CPURISCVState *env)
-+{
-+#if !defined(CONFIG_USER_ONLY)
-+    return cpu_get_xl(env, env->priv);
-+#else
-+    return env->misa_mxl;
-+#endif
-+}
-+#endif
-+
-+#if defined(TARGET_RISCV32)
-+#define cpu_address_xl(env)  ((void)(env), MXL_RV32)
-+#else
-+static inline RISCVMXL cpu_address_xl(CPURISCVState *env)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    return env->xl;
-+#else
-+    int mode = cpu_address_mode(env);
-+
-+    return cpu_get_xl(env, mode);
-+#endif
-+}
-+#endif
-+
- static inline int riscv_cpu_xlen(CPURISCVState *env)
- {
-     return 16 << env->xl;
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 90cef9856d..f85113a3db 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -134,6 +134,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, target_ulong *pc,
-     flags = FIELD_DP32(flags, TB_FLAGS, FS, fs);
-     flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
-     flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
-+    flags = FIELD_DP32(flags, TB_FLAGS, AXL, cpu_address_xl(env));
-     if (env->cur_pmmask != 0) {
-         flags = FIELD_DP32(flags, TB_FLAGS, PM_MASK_ENABLED, 1);
-     }
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 8a33da811e..4bf61766b6 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -64,6 +64,7 @@ typedef struct DisasContext {
-     target_ulong priv_ver;
-     RISCVMXL misa_mxl_max;
-     RISCVMXL xl;
-+    RISCVMXL address_xl;
-     uint32_t misa_ext;
-     uint32_t opcode;
-     RISCVExtStatus mstatus_fs;
-@@ -152,6 +153,14 @@ MATERIALISE_EXT_PREDICATE(XVentanaCondOps);
- #define get_xl(ctx)    ((ctx)->xl)
- #endif
- 
-+#ifdef TARGET_RISCV32
-+#define get_address_xl(ctx)    MXL_RV32
-+#elif defined(CONFIG_USER_ONLY)
-+#define get_address_xl(ctx)    MXL_RV64
-+#else
-+#define get_address_xl(ctx)    ((ctx)->address_xl)
-+#endif
-+
- /* The word size for this machine mode. */
- static inline int __attribute__((unused)) get_xlen(DisasContext *ctx)
- {
-@@ -598,12 +607,13 @@ static TCGv get_address(DisasContext *ctx, int rs1, int imm)
-     tcg_gen_addi_tl(addr, src1, imm);
-     if (ctx->pm_mask_enabled) {
-         tcg_gen_andc_tl(addr, addr, pm_mask);
--    } else if (get_xl(ctx) == MXL_RV32) {
-+    } else if (get_address_xl(ctx) == MXL_RV32) {
-         tcg_gen_ext32u_tl(addr, addr);
-     }
-     if (ctx->pm_base_enabled) {
-         tcg_gen_or_tl(addr, addr, pm_base);
+-    if (env->xl == MXL_RV32) {
++    if (xl == MXL_RV32) {
+         env->cur_pmmask = mask & UINT32_MAX;
+         env->cur_pmbase = base & UINT32_MAX;
+     } else {
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 58499b5afc..63cc5d7e2d 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -1335,8 +1335,9 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
+      */
+     if (env->debugger) {
+         env->xl = cpu_recompute_xl(env);
+-        riscv_cpu_update_mask(env);
      }
 +
-     return addr;
++    riscv_cpu_update_mask(env);
+     return RISCV_EXCP_NONE;
  }
  
-@@ -1200,6 +1210,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->vl_eq_vlmax = FIELD_EX32(tb_flags, TB_FLAGS, VL_EQ_VLMAX);
-     ctx->misa_mxl_max = env->misa_mxl_max;
-     ctx->xl = FIELD_EX32(tb_flags, TB_FLAGS, XL);
-+    ctx->address_xl = FIELD_EX32(tb_flags, TB_FLAGS, AXL);
-     ctx->cs = cs;
-     ctx->pm_mask_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_MASK_ENABLED);
-     ctx->pm_base_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_BASE_ENABLED);
+@@ -3639,7 +3640,7 @@ static RISCVException write_mpmmask(CPURISCVState *env, int csrno,
+     uint64_t mstatus;
+ 
+     env->mpmmask = val;
+-    if ((env->priv == PRV_M) && (env->mmte & M_PM_ENABLE)) {
++    if ((cpu_address_mode(env) == PRV_M) && (env->mmte & M_PM_ENABLE)) {
+         env->cur_pmmask = val;
+     }
+     env->mmte |= EXT_STATUS_DIRTY;
+@@ -3667,8 +3668,11 @@ static RISCVException write_spmmask(CPURISCVState *env, int csrno,
+         return RISCV_EXCP_NONE;
+     }
+     env->spmmask = val;
+-    if ((env->priv == PRV_S) && (env->mmte & S_PM_ENABLE)) {
++    if ((cpu_address_mode(env) == PRV_S) && (env->mmte & S_PM_ENABLE)) {
+         env->cur_pmmask = val;
++        if (cpu_get_xl(env, PRV_S) == MXL_RV32) {
++            env->cur_pmmask &= UINT32_MAX;
++        }
+     }
+     env->mmte |= EXT_STATUS_DIRTY;
+ 
+@@ -3695,8 +3699,11 @@ static RISCVException write_upmmask(CPURISCVState *env, int csrno,
+         return RISCV_EXCP_NONE;
+     }
+     env->upmmask = val;
+-    if ((env->priv == PRV_U) && (env->mmte & U_PM_ENABLE)) {
++    if ((cpu_address_mode(env) == PRV_U) && (env->mmte & U_PM_ENABLE)) {
+         env->cur_pmmask = val;
++        if (cpu_get_xl(env, PRV_U) == MXL_RV32) {
++            env->cur_pmmask &= UINT32_MAX;
++        }
+     }
+     env->mmte |= EXT_STATUS_DIRTY;
+ 
+@@ -3719,7 +3726,7 @@ static RISCVException write_mpmbase(CPURISCVState *env, int csrno,
+     uint64_t mstatus;
+ 
+     env->mpmbase = val;
+-    if ((env->priv == PRV_M) && (env->mmte & M_PM_ENABLE)) {
++    if ((cpu_address_mode(env) == PRV_M) && (env->mmte & M_PM_ENABLE)) {
+         env->cur_pmbase = val;
+     }
+     env->mmte |= EXT_STATUS_DIRTY;
+@@ -3747,8 +3754,11 @@ static RISCVException write_spmbase(CPURISCVState *env, int csrno,
+         return RISCV_EXCP_NONE;
+     }
+     env->spmbase = val;
+-    if ((env->priv == PRV_S) && (env->mmte & S_PM_ENABLE)) {
++    if ((cpu_address_mode(env) == PRV_S) && (env->mmte & S_PM_ENABLE)) {
+         env->cur_pmbase = val;
++        if (cpu_get_xl(env, PRV_S) == MXL_RV32) {
++            env->cur_pmbase &= UINT32_MAX;
++        }
+     }
+     env->mmte |= EXT_STATUS_DIRTY;
+ 
+@@ -3775,8 +3785,11 @@ static RISCVException write_upmbase(CPURISCVState *env, int csrno,
+         return RISCV_EXCP_NONE;
+     }
+     env->upmbase = val;
+-    if ((env->priv == PRV_U) && (env->mmte & U_PM_ENABLE)) {
++    if ((cpu_address_mode(env) == PRV_U) && (env->mmte & U_PM_ENABLE)) {
+         env->cur_pmbase = val;
++        if (cpu_get_xl(env, PRV_U) == MXL_RV32) {
++            env->cur_pmbase &= UINT32_MAX;
++        }
+     }
+     env->mmte |= EXT_STATUS_DIRTY;
+ 
 -- 
 2.25.1
 
