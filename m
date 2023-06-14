@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E5972F37A
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 06:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FB972F394
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 06:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Hzh-0001F1-RL; Wed, 14 Jun 2023 00:20:29 -0400
+	id 1q9IBe-00034Y-Bi; Wed, 14 Jun 2023 00:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9Hzf-0001En-FZ
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:20:27 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1q9IBc-00033z-9P
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:32:48 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9Hzd-00077n-R9
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:20:27 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-30e412a852dso4313552f8f.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 21:20:25 -0700 (PDT)
+ id 1q9IBa-00017L-L3
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 00:32:48 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f8c5d0b216so1956945e9.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 21:32:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686716423; x=1689308423;
+ d=linaro.org; s=google; t=1686717164; x=1689309164;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hIkw/EmrdzYUGFrPOAFK5KXobF9DSTMY4i6PeCRrGOg=;
- b=gM3+T/y2yqmZBZQGW7x5bEzH2w0j2QOxJGlXSt8BAAHSAcYGDeIKIQZKtbQpudzG60
- ffsHvPSioAgfAoeiamay8/9eyibxTuO60FNynTCWmPrDKdrr8Qzc4BCsaA9QiTqHXmVH
- /wKFhD/UHu9lcYwtJlxGxxvfghUMws50G9TTphZmx+oJiAEtwewX+jaHolWPzkXTJdUN
- A+IypYJBdhHaLwjI/p2xuuF7VO5VIeI0migLp5F8oXntdUyNeu9BvL8Tg8wTgTbaSDaN
- s6C/wYjr3IjYeN6/9KZnDu8ZKwZmOll86to5L3bH0zZLdk0aKPHVmLOegPBPFJSDDcJs
- 9crA==
+ bh=yzejSnTugRMRaHNWGD6Unp0zRAuHslT4snDxbcb0Za8=;
+ b=lZdOfcGz7uLxq0gdYhVyQ8Sr3rdPSXK6NFTvYWPxl+k/GLnfbuVVt7FG1PxgRBMqAa
+ lR8j1ZkkHyo6VIG5sOcJBWRDXgGmlL7fJv3V6Z7ee6KSKyxIMN2UZG0B/F2q6cqgvgX5
+ crTRTtxKZ5BlWIjJQbNPlPGrHO/aF5o3/3Xk0CWjCY61AR4yiYZtHvopWxY8vIjiPenh
+ o7O916nCmzWQsTpmLDEBAGAnlDR2l/ETbRxndz0997nHTHihXBTc+ORBkuSz3UU2CklW
+ /thSeLc6UQQdUQuIv/RBtT1eKt4A/HIf0HL8G/7jwdybqpOGCUtW87Vve1POsuLbEwoe
+ Sx9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686716423; x=1689308423;
+ d=1e100.net; s=20221208; t=1686717164; x=1689309164;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hIkw/EmrdzYUGFrPOAFK5KXobF9DSTMY4i6PeCRrGOg=;
- b=hIP80sGhJh88pPxaHYcxXnrbiPEcUuvxFuuIE8dKU09H5mfv/gif/2Oi280W641ZfQ
- U5bS7DMNszAPaqgbzFhwmPtknmCXyk9JAGq4uDPCxfLHgouHSLUCKXl+SgJeB4g7dq/U
- YUDh1BgtJwZkxB5UBlK8WmuzkWCupzOIGSBiQnKXUo1XRaBr5OFlBo7WtUFIopJc7hbT
- P3YcCQCkc43Bi3yybKqQ2FvvZPec2aR4NUS/OO6iWGGtcJXNO9Sw2tke/RcpxaUi47eA
- oMUmSAM599Wgaz7adALPY426xENrfHwBN/2zHeV+lNGeoiW5ZazurGPn6VsreFRUwjfQ
- KvDw==
-X-Gm-Message-State: AC+VfDxIqd5Q/Z44nX7E8eAQT9qp30xTuCLgvhU8zIC9cTYe/jJp0Gi2
- DPu0O1DirQf6hXfs/IW0r4OFfA==
-X-Google-Smtp-Source: ACHHUZ7oo0XpkH7nQGPu5HvHWH9sz08Z1QAfKM981Wqu52qkVg761HQ6OUAXI7X2X0KqGjxs8RhOcw==
-X-Received: by 2002:adf:ee0a:0:b0:30a:c2c4:7133 with SMTP id
- y10-20020adfee0a000000b0030ac2c47133mr6868784wrn.49.1686716423557; 
- Tue, 13 Jun 2023 21:20:23 -0700 (PDT)
+ bh=yzejSnTugRMRaHNWGD6Unp0zRAuHslT4snDxbcb0Za8=;
+ b=ZGxSc4eDuLM2Mul4fikmiUGX0xsDsDC+cwfvvhIkU3zxvOLcqRd/kVRvV4wIoEX8wG
+ E/mDYV0GnMyWIeCVDuTJwqAturBmgN8NagYMT432HagtKrQcWOVU228Op3Vre+GFf7Ed
+ as41VwE7QUwQKj2cNyzLmdZEmCIs5TKiQwiCIy73X2fxIPtNyk5/PsNzcuwU23HWedPM
+ ynNFEEeIpL5+ybB9+tzUHieZJJ/a0Cg3Ue3X0TrvTUhxuPTMRrDTpPDfrtQqb/CzvW3x
+ PTJoIiRaS/TfJHoOM6u6jcSTxkFXRmghW11lzyN9QHYA/FL34vrT0M/cHaTkluHaGKw7
+ kbFQ==
+X-Gm-Message-State: AC+VfDw0x3k0FMIy4PIiOtFChzQOIk7xB53SGRwCp3j9a4+kjIehQJhe
+ Lbj4X5vh+pX45mnkpEHhfVbidw==
+X-Google-Smtp-Source: ACHHUZ5Gh7d6o4mX5Z5873/DtzTIK5KcOOQiIQesKC4ubfgxvtE4rqun7/uF5QyfrZZJGbPsey4+3g==
+X-Received: by 2002:adf:f385:0:b0:30f:cf93:4bb8 with SMTP id
+ m5-20020adff385000000b0030fcf934bb8mr2412685wro.57.1686717164001; 
+ Tue, 13 Jun 2023 21:32:44 -0700 (PDT)
 Received: from [192.168.4.112] (90-182-62-66.rcp.o2.cz. [90.182.62.66])
  by smtp.gmail.com with ESMTPSA id
- t11-20020adfdc0b000000b0030ae3a6be5bsm17000426wri.78.2023.06.13.21.20.22
+ m1-20020a5d4a01000000b003062ad45243sm17039054wrq.14.2023.06.13.21.32.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 21:20:23 -0700 (PDT)
-Message-ID: <34aad222-408d-0817-1bb7-87a5a10b2092@linaro.org>
-Date: Wed, 14 Jun 2023 06:20:21 +0200
+ Tue, 13 Jun 2023 21:32:43 -0700 (PDT)
+Message-ID: <341999c5-2cac-7f25-441c-0e5bd9db4ee4@linaro.org>
+Date: Wed, 14 Jun 2023 06:32:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL v4 09/10] hw/arm: introduce xenpvh machine
+Subject: Re: [PATCH] Fix handling of AVR interrupts above 33.
 Content-Language: en-US
-To: Vikram Garhwal <vikram.garhwal@amd.com>,
- Stefano Stabellini <sstabellini@kernel.org>, peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <stefano.stabellini@amd.com>
-References: <alpine.DEB.2.22.394.2306091007210.3803068@ubuntu-linux-20-04-desktop>
- <20230609170751.4059054-9-sstabellini@kernel.org>
- <3925158f-cd95-781f-5f46-fe3f5d8326ab@linaro.org>
- <6ad25146-0cd2-f58f-ada4-fd0a3f8a5b95@amd.com>
+To: Lucas Dietrich <ld.adecy@gmail.com>, philmd@linaro.org
+Cc: qemu-devel@nongnu.org, mrolnik@gmail.com, qemu-trivial@nongnu.org
+References: <20230613193446.4372-1-ld.adecy@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <6ad25146-0cd2-f58f-ada4-fd0a3f8a5b95@amd.com>
+In-Reply-To: <20230613193446.4372-1-ld.adecy@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,25 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/12/23 02:10, Vikram Garhwal wrote:
-> Found the fix. QTest adds 'accel = qtest' and xen machines already have "accel = xen" 
-> option by default. Adding this xenpvh machine to skip fixed the issue, other xen machines 
-> are already in skip list. I am running the gitlab-ci locally to see if there are other fails/
+On 6/13/23 21:34, Lucas Dietrich wrote:
+> This commit addresses a bug in the AVR interrupt handling code.
+> The modification involves replacing the usage of the ctz32 function
+> with ctz64 to ensure proper handling of interrupts above 33 in the AVR
+> target.
+> 
+> Previously, timers 3, 4, and 5 interrupts were not functioning correctly
+> because most of their interrupt vectors are numbered above 33.
+> 
+> Signed-off-by: Lucas Dietrich <ld.adecy@gmail.com>
 
-Sounds right.
-
-> i checked your pipeline and can see there are other failure but unrelated to Xen. To make 
-> sure, are there any others failures related to my patches?
-
-I don't think so.
-
-> Also, I am not an expert on gitlab ci flow. What i do to run gitlab-ci is this: Create a 
-> new gitlab pipeline with QEMU_CI = 2 and this runs around 120+ jobs. Is this enough or 
-> there any other variable setting needed?
-
-That's correct.
+The change to target/avr/ looks right, but you shouldn't have all the subproject changes.
 
 
 r~
+
+> ---
+>   capstone                      | 1 +
+>   dtc                           | 1 +
+>   meson                         | 1 +
+>   roms/sgabios                  | 1 +
+>   slirp                         | 1 +
+>   target/avr/helper.c           | 4 ++--
+>   tests/fp/berkeley-softfloat-3 | 1 +
+>   tests/fp/berkeley-testfloat-3 | 1 +
+>   ui/keycodemapdb               | 1 +
+>   9 files changed, 10 insertions(+), 2 deletions(-)
+>   create mode 160000 capstone
+>   create mode 160000 dtc
+>   create mode 160000 meson
+>   create mode 160000 roms/sgabios
+>   create mode 160000 slirp
+>   create mode 160000 tests/fp/berkeley-softfloat-3
+>   create mode 160000 tests/fp/berkeley-testfloat-3
+>   create mode 160000 ui/keycodemapdb
 
 
