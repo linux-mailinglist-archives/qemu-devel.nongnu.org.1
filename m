@@ -2,59 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9097C72FF52
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 15:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AB872FEFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 14:47:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9Q7j-0002iN-HG; Wed, 14 Jun 2023 09:01:19 -0400
+	id 1q9PbF-0006lL-Ss; Wed, 14 Jun 2023 08:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1q9KQb-0002C1-G3
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 02:56:25 -0400
-Received: from relay2-d.mail.gandi.net ([217.70.183.194])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1q9KQZ-0004PW-Kg
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 02:56:25 -0400
-X-GND-Sasl: c@jia.je
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=gm1;
- t=1686725779;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=9o4m1BpX4P9b7JSMXRvUjNvvXUje8lOxH95OaEmqIiM=;
- b=MWb9f2ZDjxbkJJPxJHjKLLVyGh46lvNBpV0cNbdqi06W2+5+Ty0mAQpDde1Cs8kZ1bZIQI
- LSOWePsmUwVe2OSJOqKMSC4jQRN/3Tej5aEBrmQ25jHkhh0cnNTgB4EAYynrqxCdJVH6cL
- G080QvlV4ee3UJTD90GbD94kCaqIrK2gLby9hsamD71PTTymZl6uVHNyT5AYsBZUI5HsuS
- v3zVazfg91nVvIkYqqBY8sKChg9tclVAVPYgXyTBP9aJCsCWihKYTZDLkrRxvlHnwgP2gd
- M+BWr6B5S5mXr5PfcDp/xswFMM7xkW0zLpJF8R11Uc942mfXb3SlLelaUqzasw==
-X-GND-Sasl: c@jia.je
-X-GND-Sasl: c@jia.je
-X-GND-Sasl: c@jia.je
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1E5DF40004;
- Wed, 14 Jun 2023 06:56:16 +0000 (UTC)
-From: Jiajie Chen <c@jia.je>
-To: qemu-devel@nongnu.org
-Cc: Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH] target/loongarch: Fix CSR.DMW0-3.VSEG check
-Date: Wed, 14 Jun 2023 14:55:56 +0800
-Message-Id: <20230614065556.2397513-1-c@jia.je>
-X-Mailer: git-send-email 2.30.2
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9PbD-0006kO-1G
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 08:27:43 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9PbB-00009p-Ea
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 08:27:42 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-977c89c47bdso108189066b.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 05:27:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1686745659; x=1689337659;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o37TAqTGrX8tIz+TVOfb7QMBpiIOZavy3chHP9lBUu4=;
+ b=B9wFYQWuioF04zouqk9X+9G3DUnovCM8iMDesjQuv1gqOcstQ8unoxlqjqNzocfcSj
+ EjJ0Pc8bDDx34zhYJVRUInfrWOcxjyGyjT5iP4zFxbKSlKz8g/g/78Lk3FDQFIIudz8t
+ skVDaz6AIfDrtdnLLZ34L7ChUcOc/q9LJFICCwejRR/3wZUz4Xuxp0rLWGohqC4YiaUI
+ YT6e3CqmvohXEKEDS4Zuggkpet+EOAGL8hDp7kALiC8WuFmgOgGb/1BxJGZ4ruwdyPds
+ CS0GE9I2RTZxxREmCJcBgAQJgavWU/vacoUsUd3pQm/46wQxOG3Dac7CkJhh+0I5qK5q
+ WTYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686745659; x=1689337659;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o37TAqTGrX8tIz+TVOfb7QMBpiIOZavy3chHP9lBUu4=;
+ b=DLBuyE+9xBbyjc574zL/STdZg/+uIdBQKw7z7eUBk2wOVC6/XiMb3XxnHhR8oiTQig
+ UjidJ767vGx80vFCSICHP9+HSGLqM0N5jKHhM4bAcpbe1eqknfurPPGhfk3ZPlR/72Ik
+ cV/CePAOAC8I2nDd1DNaHrJsPZI10U/9ATcoqM4/Jyn7dbrd4A0x1yC7vtfj8ifG1pm0
+ SxXQXMRAweF0Lu2gkRzo5d8KeM0ilS4sAh49t3gXl9YTG9bF3YAmSVj7MBprbpR+xTIm
+ 9Nc1JkQFlJ5H3hANTragKdrF1P/wDv+ndJLWvg5R4MzMFhLEclZlvx4fYSdrqh22kWeR
+ SY6A==
+X-Gm-Message-State: AC+VfDz9xb74hGe+ClZ3Xjvozvzloer+9ilLAziUiaC9nHCNSZiZRrpc
+ m9ikPDz1MsS49pH4WbBgwPuBJQ==
+X-Google-Smtp-Source: ACHHUZ52SWeN5GFil7OlY8XQc8TCkvE/unZpOYzoV57mUbTUNYazoN9jM6ELGCYKp3ZLIA+Jo43mBQ==
+X-Received: by 2002:a17:906:fe4d:b0:974:1e0e:91ee with SMTP id
+ wz13-20020a170906fe4d00b009741e0e91eemr16521314ejb.13.1686745659393; 
+ Wed, 14 Jun 2023 05:27:39 -0700 (PDT)
+Received: from [10.14.201.118] ([213.175.39.66])
+ by smtp.gmail.com with ESMTPSA id
+ e26-20020a1709062c1a00b00974556e50a6sm7992135ejh.114.2023.06.14.05.27.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Jun 2023 05:27:38 -0700 (PDT)
+Message-ID: <dca0331c-66fb-1b38-8d45-1e5d7c118494@linaro.org>
+Date: Wed, 14 Jun 2023 14:27:38 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH v3 09/10] memory-device: Refactor memory_device_pre_plug()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+References: <20230601121447.272487-1-david@redhat.com>
+ <20230601121447.272487-11-david@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230601121447.272487-11-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=217.70.183.194; envelope-from=c@jia.je;
- helo=relay2-d.mail.gandi.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 14 Jun 2023 09:01:16 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,33 +95,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous code checks whether the highest 16 bits of virtual address
-equal to that of CSR.DMW0-3. This is incorrect according to the spec,
-and is corrected to compare only the highest four bits instead.
+On 1/6/23 14:14, David Hildenbrand wrote:
+> Let's move memory_device_check_addable() and basic checks out of
+> memory_device_get_free_addr() directly into memory_device_pre_plug().
+> 
+> Separating basic checks from address assignment is cleaner and
+> prepares for further changes.
+> 
+> As all memory device users now use memory_devices_init(), and that
+> function enforces that the size is 0, we can drop the check for an empty
+> region.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   hw/mem/memory-device.c | 28 ++++++++++++++--------------
+>   1 file changed, 14 insertions(+), 14 deletions(-)
 
-Signed-off-by: Jiajie Chen <c@jia.je>
----
- target/loongarch/tlb_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-index cce1db1e0a..6e00190547 100644
---- a/target/loongarch/tlb_helper.c
-+++ b/target/loongarch/tlb_helper.c
-@@ -185,10 +185,10 @@ static int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-     }
- 
-     plv = kernel_mode | (user_mode << R_CSR_DMW_PLV3_SHIFT);
--    base_v = address >> TARGET_VIRT_ADDR_SPACE_BITS;
-+    base_v = address >> R_CSR_DMW_VSEG_SHIFT;
-     /* Check direct map window */
-     for (int i = 0; i < 4; i++) {
--        base_c = env->CSR_DMW[i] >> TARGET_VIRT_ADDR_SPACE_BITS;
-+        base_c = FIELD_EX64(env->CSR_DMW[i], CSR_DMW, VSEG);
-         if ((plv & env->CSR_DMW[i]) && (base_c == base_v)) {
-             *physical = dmw_va2pa(address);
-             *prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
--- 
-2.30.2
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
