@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE6B72F1BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 249FF72F20F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FFz-0006Ga-0W; Tue, 13 Jun 2023 21:25:07 -0400
+	id 1q9FFr-0006E6-Rf; Tue, 13 Jun 2023 21:24:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FFQ-0005jI-CA
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:32 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1q9FFU-0005jr-Qo
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:40 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FFM-00051i-9F
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:29 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-39aa8256db7so2859509b6e.0
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:26 -0700 (PDT)
+ id 1q9FFP-00053T-GV
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:32 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-650bacd6250so4761094b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705866; x=1689297866;
+ d=gmail.com; s=20221208; t=1686705870; x=1689297870;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3zg0oY0/z+XRd1Ia6EFmpNFinq5qxvZY9johtFaxpY8=;
- b=Ug/5L9B2GiD5ht39ca+lA/+jlsLkES7RM73hAUU8v5jEbz6DNwMIgTIS/E9pCERIDH
- WEngHVgYF2Xm0Y9uiHGQqvz62jPA2UyhJBtjg4kE4ZK+tbu3qVbnz7x6b2JqRSwJ0Nrj
- HYAXBeJLqfSXqdB2rSHVS+rcfmAGw5RsbfDzWz9/BO3UR5qVlgoTDk+2PDB8eeeZ6cQu
- oBFl/tU6thqKZ/YPhRfCoC/PhJqvVbCPHmcj2lRerdNieQ0aZt9bzo/u7iL5wZh471oj
- Ew9S3gZky30XsK202+3iskHlT04LQuussbF4BkEFJTSZtjlHsP6JySpea1++uhFXxOAb
- dIKA==
+ bh=bqYjPp66NtVgNcAMiH48m1IIJyKmfxBKldx1OZytYDk=;
+ b=Et2vnWmJJC/DUjoARyFm80JBYw9HPypFrWQqpDOEYKYJl0mzPI8Q8XZel5enHqn41i
+ fpdJWfekVNzWE/TJIGWFUWrGi9rY24Yyh2pjUnufnsb/8kiXQAvta/Go8Uxd9Oub/sEh
+ 28tEwF0mKU46xd1tdonf3ZF9FmlSy782veDTueCP+nuQddD/trpcKXLaLBa21djj0vdz
+ io7UtWjQUUPH6IpDPEJnwx/HRyzaIf6qZtV92YPm1SlgJhrvQXoLbt67bPuNeu/0hOor
+ pX+ZQAsOZHgZ1J+HDDwQ3XqOOG1npqQg85QQe0QQFsU802MW3r292Ls+oyraBgQjl3z9
+ Uqmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705866; x=1689297866;
+ d=1e100.net; s=20221208; t=1686705870; x=1689297870;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3zg0oY0/z+XRd1Ia6EFmpNFinq5qxvZY9johtFaxpY8=;
- b=cU1v6gStdUatjiFmLHCPPnW+Ccz8tG8rmsDOk4xSCugKKOkby1UiVtuKBvHD353nrW
- gGw/7O5v13hYNt6xUcZM87EgroLi+vrRbHQ2V1pHsQiRA/c3as2du1fAgVTjywb6roxk
- B+Rtu7mfrpxQeTUAJRXJrA6C4T5s+0bkmt3Z2NHHjdhtrtT9vcsVWK+bVAY9kUkyP3KC
- LE+maYoviUpTSPzuONrYYVwMPhF00eJE/kCEvsNJ0u6ub59JqNSWN2M/f4SydyA+xOX8
- gLpaTwpnY9WUfQWxqBZaCifcs1DSJCml45pyMZgDx+8hNZv9yMKi8QSp0joSysh1Fj3u
- qdjA==
-X-Gm-Message-State: AC+VfDxUhsa7y+uEll5xuOqA1ZrOMsq5RryZkDq0CfMEfITaKOMD5ycD
- rqsZA736O8N0JcfxAlMl1cDLVOlYl7UINw==
-X-Google-Smtp-Source: ACHHUZ6YnFGk9jdgKz15tAln1BC1KdqGLi+Vr7zy0r2qx37UrMLXMbFmH7HF15jtTMvfFFv3BQl+7g==
-X-Received: by 2002:a05:6808:2010:b0:396:9fe5:1a65 with SMTP id
- q16-20020a056808201000b003969fe51a65mr10233056oiw.16.1686705865722; 
- Tue, 13 Jun 2023 18:24:25 -0700 (PDT)
+ bh=bqYjPp66NtVgNcAMiH48m1IIJyKmfxBKldx1OZytYDk=;
+ b=D49E2enZhIOmwBpSFTsOeFsDWtzgU9q3bUvY/CbDSM5i0PhgdSW9DQiQ6vNnGC3Pmv
+ aObIgPELr4qjtWr6lu0xa8n3wH+NK/eW9oBe6NpK/06p4avhPiUHD1I2ZC2gh6fn33aG
+ Jlj0Ffox3lOdzqjjGGPsaXKom5DyWQbe4/VcM5J1FTgeRhRBKiVdnYOrPH7lTNQB/pcs
+ 4NKpBGCQ6Ex+8a0fi4FeL/yKf9tzIrHuLy3Eql8JymUgPpgaT0uWV7S+4m1Y5BLa0D7g
+ 1OpEww1Rol45w+T+OVhwxkehAKAJCAVt5pxIfz+z7U66pxzvKiuMmcXLdMo4kJT+Ws01
+ a8nQ==
+X-Gm-Message-State: AC+VfDytaz2oGxLQt4PX/nbe8Qn3z4E2Y/Wz3kRi78JfMdfo9SRtYXCm
+ 7RHg8MDKH99ciidm4kCX5PyA2Q5YqAXH1Q==
+X-Google-Smtp-Source: ACHHUZ6zEA0Ndg1bTAbiOyyoSx0hLwklJ3Ofp/5XqIPiAhcpPqhe1POo/5fNkdOjmGjCRUT09ltqUA==
+X-Received: by 2002:a05:6a00:1489:b0:666:5fc4:36b1 with SMTP id
+ v9-20020a056a00148900b006665fc436b1mr166885pfu.26.1686705870043; 
+ Tue, 13 Jun 2023 18:24:30 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.22
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:24:25 -0700 (PDT)
+ Tue, 13 Jun 2023 18:24:29 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Xiao Wang <xiao.w.wang@intel.com>,
+Cc: alistair23@gmail.com, Himanshu Chauhan <hchauhan@ventanamicro.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Weiwei Li <liweiwei@iscas.ac.cn>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 58/60] target/riscv/vector_helper.c: Remove the check for extra
- tail elements
-Date: Wed, 14 Jun 2023 11:20:15 +1000
-Message-Id: <20230614012017.3100663-59-alistair.francis@wdc.com>
+Subject: [PULL 59/60] target/riscv: Smepmp: Return error when access
+ permission not allowed in PMP
+Date: Wed, 14 Jun 2023 11:20:16 +1000
+Message-Id: <20230614012017.3100663-60-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x22c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,109 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiao Wang <xiao.w.wang@intel.com>
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
 
-Commit 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector
-load / store instructions") added an extra check for LMUL fragmentation,
-intended for setting the "rest tail elements" in the last register for a
-segment load insn.
+On an address match, skip checking for default permissions and return error
+based on access defined in PMP configuration.
 
-Actually, the max_elements derived in vext_ld*() won't be a fraction of
-vector register size, since the lmul encoded in desc is emul, which has
-already been adjusted to 1 for LMUL fragmentation case by vext_get_emul()
-in trans_rvv.c.inc, for ld_stride(), ld_us(), ld_index() and ldff().
+v3 Changes:
+o Removed explicit return of boolean value from comparision
+  of priv/allowed_priv
 
-Besides, vext_get_emul() has also taken EEW/SEW into consideration, so no
-need to call vext_get_total_elems() which would base on the emul to derive
-another emul, the second emul would be incorrect when esz differs from sew.
+v2 Changes:
+o Removed goto to return in place when address matches
+o Call pmp_hart_has_privs_default at the end of the loop
 
-Thus this patch removes the check for extra tail elements.
-
-Fixes: 752614cab8e6 ("target/riscv: rvv: Add tail agnostic for vector load / store instructions")
-
-Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
+Fixes: 90b1fafce06 ("target/riscv: Smepmp: Skip applying default rules when address matches")
+Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Message-Id: <20230607091646.4049428-1-xiao.w.wang@intel.com>
+Message-Id: <20230605164548.715336-1-hchauhan@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ target/riscv/pmp.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index e8af64e626..1e06e7447c 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -264,11 +264,10 @@ GEN_VEXT_ST_ELEM(ste_h, int16_t, H2, stw)
- GEN_VEXT_ST_ELEM(ste_w, int32_t, H4, stl)
- GEN_VEXT_ST_ELEM(ste_d, int64_t, H8, stq)
- 
--static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
--                                   void *vd, uint32_t desc, uint32_t nf,
-+static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
-+                                   uint32_t desc, uint32_t nf,
-                                    uint32_t esz, uint32_t max_elems)
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 418738afd8..9d8db493e6 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -291,7 +291,6 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+                         pmp_priv_t *allowed_privs, target_ulong mode)
  {
--    uint32_t total_elems, vlenb, registers_used;
-     uint32_t vta = vext_vta(desc);
-     int k;
- 
-@@ -276,19 +275,10 @@ static void vext_set_tail_elems_1s(CPURISCVState *env, target_ulong vl,
-         return;
+     int i = 0;
+-    bool ret = false;
+     int pmp_size = 0;
+     target_ulong s = 0;
+     target_ulong e = 0;
+@@ -435,17 +434,12 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+              * defined with PMP must be used. We shouldn't fallback on
+              * finding default privileges.
+              */
+-            ret = true;
+-            break;
++            return (privs & *allowed_privs) == privs;
+         }
      }
  
--    total_elems = vext_get_total_elems(env, desc, esz);
--    vlenb = riscv_cpu_cfg(env)->vlen >> 3;
--
-     for (k = 0; k < nf; ++k) {
-         vext_set_elems_1s(vd, vta, (k * max_elems + vl) * esz,
-                           (k * max_elems + max_elems) * esz);
-     }
--
--    if (nf * max_elems % total_elems != 0) {
--        registers_used = ((nf * max_elems) * esz + (vlenb - 1)) / vlenb;
--        vext_set_elems_1s(vd, vta, (nf * max_elems) * esz,
--                          registers_used * vlenb);
+     /* No rule matched */
+-    if (!ret) {
+-        ret = pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
 -    }
+-
+-    return ret;
++    return pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
  }
  
  /*
-@@ -324,7 +314,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LD_STRIDE(NAME, ETYPE, LOAD_FN)                        \
-@@ -383,7 +373,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, evl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
- }
- 
- /*
-@@ -504,7 +494,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LD_INDEX(NAME, ETYPE, INDEX_FN, LOAD_FN)                  \
-@@ -634,7 +624,7 @@ ProbeSuccess:
-     }
-     env->vstart = 0;
- 
--    vext_set_tail_elems_1s(env, env->vl, vd, desc, nf, esz, max_elems);
-+    vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
- }
- 
- #define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
 -- 
 2.40.1
 
