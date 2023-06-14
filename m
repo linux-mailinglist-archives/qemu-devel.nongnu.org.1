@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE48730B00
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 00:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5E3730B07
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 00:57:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9ZNi-00076Y-28; Wed, 14 Jun 2023 18:54:26 -0400
+	id 1q9ZQ2-00085r-RB; Wed, 14 Jun 2023 18:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=52269c73c=graf@amazon.de>)
- id 1q9ZNd-00075T-IM; Wed, 14 Jun 2023 18:54:21 -0400
-Received: from smtp-fw-2101.amazon.com ([72.21.196.25])
+ id 1q9ZPr-00084U-7g; Wed, 14 Jun 2023 18:56:39 -0400
+Received: from smtp-fw-52003.amazon.com ([52.119.213.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=52269c73c=graf@amazon.de>)
- id 1q9ZNb-0008MT-Qx; Wed, 14 Jun 2023 18:54:21 -0400
+ id 1q9ZPo-0000eb-0o; Wed, 14 Jun 2023 18:56:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1686783260; x=1718319260;
+ t=1686783396; x=1718319396;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zKkF0UqGso6xrNyDondoNFmpobwsBP9EsTGid/0zLew=;
- b=ApIO8DXwDUcF4oPfOCv5nQ6v3pbqSUEwruIJoSSXqdfMDTLVMXtZFvHc
- NrH3rW05J/wmS0EHPtK13+xEVmaD4rUMn+zsd1KCs687AplKWcxSHAX3D
- 45c8kZXDeoOKXAze0QVNEYTDao1Ci4QOOqUWIcoLS8xba54iAPJEwgWg5 A=;
-X-IronPort-AV: E=Sophos;i="6.00,243,1681171200"; d="scan'208";a="334147696"
+ bh=HkoVjAiIpnHIOcBeQ5R/tis/X7PpChro1Dy9refD3/o=;
+ b=sg6EZ+wNPBg7EAousLqSpqeU6H1xpo80DT3fjFbajc/m7GaFRbUoDIy6
+ ugTNZEwTbKVAfvRmEqwYXqO+975GAY7dF9fG7rJIwFeTaA5DcgmTpJmJR
+ 0TXZ/kyUTFEy1DT4w/ofs7raNa/5lJ1wS8QFEU9eDTgkd7MUl/A29/Lc/ I=;
+X-IronPort-AV: E=Sophos;i="6.00,243,1681171200"; d="scan'208";a="590668780"
 Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- email-inbound-relay-iad-1d-m6i4x-b404fda3.us-east-1.amazon.com) ([10.43.8.6])
- by smtp-border-fw-2101.iad2.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 22:54:15 +0000
-Received: from EX19MTAUWC001.ant.amazon.com
- (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
- by email-inbound-relay-iad-1d-m6i4x-b404fda3.us-east-1.amazon.com (Postfix)
- with ESMTPS id B1958807DA; Wed, 14 Jun 2023 22:54:11 +0000 (UTC)
+ email-inbound-relay-iad-1e-m6i4x-7dc0ecf1.us-east-1.amazon.com) ([10.43.8.6])
+ by smtp-border-fw-52003.iad7.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 22:56:35 +0000
+Received: from EX19MTAUWB001.ant.amazon.com
+ (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+ by email-inbound-relay-iad-1e-m6i4x-7dc0ecf1.us-east-1.amazon.com (Postfix)
+ with ESMTPS id CFD0380FA5; Wed, 14 Jun 2023 22:56:30 +0000 (UTC)
 Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 14 Jun 2023 22:54:11 +0000
+ 15.2.1118.26; Wed, 14 Jun 2023 22:56:30 +0000
 Received: from dev-dsk-graf-1a-5ce218e4.eu-west-1.amazon.com (10.253.83.51) by
  EX19D020UWC004.ant.amazon.com (10.13.138.149) with Microsoft SMTP
  Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 14 Jun 2023 22:54:09 +0000
+ 15.2.1118.26; Wed, 14 Jun 2023 22:56:28 +0000
 From: Alexander Graf <graf@amazon.com>
 To: <qemu-devel@nongnu.org>
 CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
@@ -51,29 +51,29 @@ CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
  <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Marcel Apfelbaum
  <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, "Peter
  Maydell" <peter.maydell@linaro.org>
-Subject: [PATCH 04/12] hvf: arm: Ignore writes to CNTP_CTL_EL0
-Date: Wed, 14 Jun 2023 22:54:07 +0000
-Message-ID: <20230614225407.96216-1-graf@amazon.com>
+Subject: [PATCH 05/12] hw/virtio: Add support for apple virtio-blk
+Date: Wed, 14 Jun 2023 22:56:22 +0000
+Message-ID: <20230614225626.97734-1-graf@amazon.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614224038.86148-1-graf>
 References: <20230614224038.86148-1-graf>
 MIME-Version: 1.0
 X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
+X-ClientProxiedBy: EX19D040UWB004.ant.amazon.com (10.13.138.91) To
  EX19D020UWC004.ant.amazon.com (10.13.138.149)
 Precedence: Bulk
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=72.21.196.25;
- envelope-from=prvs=52269c73c=graf@amazon.de; helo=smtp-fw-2101.amazon.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=52.119.213.152;
+ envelope-from=prvs=52269c73c=graf@amazon.de; helo=smtp-fw-52003.amazon.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,40 +88,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MacOS unconditionally disables interrupts of the physical timer on boot
-and then continues to use the virtual one. We don't really want to support
-a full physical timer emulation, so let's just ignore those writes.
+Apple has its own virtio-blk PCI device ID where it deviates from the
+official virtio-pci spec slightly: It puts a new "apple type"
+field at a static offset in config space and introduces a new discard
+command.
+
+This patch adds a new qdev property called "apple-type" to virtio-blk-pci.
+When that property is set, we assume the virtio-blk device is an Apple one
+of the specific type and act accordingly.
 
 Signed-off-by: Alexander Graf <graf@amazon.com>
 ---
- target/arm/hvf/hvf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/block/virtio-blk.c                       | 23 +++++++++++++++++++++
+ hw/virtio/virtio-blk-pci.c                  |  7 +++++++
+ include/hw/pci/pci_ids.h                    |  1 +
+ include/hw/virtio/virtio-blk.h              |  1 +
+ include/standard-headers/linux/virtio_blk.h |  3 +++
+ 5 files changed, 35 insertions(+)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 8f72624586..0dff63fb5f 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -179,6 +179,7 @@ void hvf_arm_init_debug(void)
- #define SYSREG_OSLSR_EL1      SYSREG(2, 0, 1, 1, 4)
- #define SYSREG_OSDLR_EL1      SYSREG(2, 0, 1, 3, 4)
- #define SYSREG_CNTPCT_EL0     SYSREG(3, 3, 14, 0, 1)
-+#define SYSREG_CNTP_CTL_EL0   SYSREG(3, 3, 14, 2, 1)
- #define SYSREG_PMCR_EL0       SYSREG(3, 3, 9, 12, 0)
- #define SYSREG_PMUSERENR_EL0  SYSREG(3, 3, 9, 14, 0)
- #define SYSREG_PMCNTENSET_EL0 SYSREG(3, 3, 9, 12, 1)
-@@ -1551,6 +1552,12 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
-     case SYSREG_OSLAR_EL1:
-         env->cp15.oslsr_el1 = val & 1;
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index 39e7f23fab..76b85bb3cb 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -1120,6 +1120,20 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+ 
          break;
-+    case SYSREG_CNTP_CTL_EL0:
-+        /*
-+         * Guests should not rely on the physical counter, but macOS emits
-+         * disable writes to it. Let it do so, but ignore the requests.
-+         */
+     }
++    case VIRTIO_BLK_T_APPLE1:
++    {
++        if (s->conf.x_apple_type) {
++            /* Only valid on Apple Virtio */
++            char buf[iov_size(in_iov, in_num)];
++            memset(buf, 0, sizeof(buf));
++            iov_from_buf(in_iov, in_num, 0, buf, sizeof(buf));
++            virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
++        } else {
++            virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
++        }
++        virtio_blk_free_request(req);
 +        break;
-     case SYSREG_OSDLR_EL1:
-         /* Dummy register */
-         break;
++    }
+     default:
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+         virtio_blk_free_request(req);
+@@ -1351,6 +1365,10 @@ static void virtio_blk_update_config(VirtIODevice *vdev, uint8_t *config)
+     } else {
+         blkcfg.zoned.model = VIRTIO_BLK_Z_NONE;
+     }
++    if (s->conf.x_apple_type) {
++        /* Apple abuses the same location for its type id */
++        blkcfg.max_secure_erase_sectors = s->conf.x_apple_type;
++    }
+     memcpy(config, &blkcfg, s->config_size);
+ }
+ 
+@@ -1625,6 +1643,10 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
+ 
+     s->config_size = virtio_get_config_size(&virtio_blk_cfg_size_params,
+                                             s->host_features);
++    if (s->conf.x_apple_type) {
++        /* Apple Virtio puts the blk type at 0x3c, make sure we have space. */
++        s->config_size = MAX(s->config_size, 0x3d);
++    }
+     virtio_init(vdev, VIRTIO_ID_BLOCK, s->config_size);
+ 
+     s->blk = conf->conf.blk;
+@@ -1734,6 +1756,7 @@ static Property virtio_blk_properties[] = {
+                        conf.max_write_zeroes_sectors, BDRV_REQUEST_MAX_SECTORS),
+     DEFINE_PROP_BOOL("x-enable-wce-if-config-wce", VirtIOBlock,
+                      conf.x_enable_wce_if_config_wce, true),
++    DEFINE_PROP_UINT32("x-apple-type", VirtIOBlock, conf.x_apple_type, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/hw/virtio/virtio-blk-pci.c b/hw/virtio/virtio-blk-pci.c
+index 9743bee965..5fbf98f750 100644
+--- a/hw/virtio/virtio-blk-pci.c
++++ b/hw/virtio/virtio-blk-pci.c
+@@ -62,6 +62,13 @@ static void virtio_blk_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+     }
+ 
+     qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
++
++    if (conf->x_apple_type) {
++        /* Apple virtio-blk uses a different vendor/device id */
++        pci_config_set_vendor_id(vpci_dev->pci_dev.config, PCI_VENDOR_ID_APPLE);
++        pci_config_set_device_id(vpci_dev->pci_dev.config,
++                                 PCI_DEVICE_ID_APPLE_VIRTIO_BLK);
++    }
+ }
+ 
+ static void virtio_blk_pci_class_init(ObjectClass *klass, void *data)
+diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
+index e4386ebb20..74e589a298 100644
+--- a/include/hw/pci/pci_ids.h
++++ b/include/hw/pci/pci_ids.h
+@@ -188,6 +188,7 @@
+ #define PCI_DEVICE_ID_APPLE_UNI_N_AGP    0x0020
+ #define PCI_DEVICE_ID_APPLE_U3_AGP       0x004b
+ #define PCI_DEVICE_ID_APPLE_UNI_N_GMAC   0x0021
++#define PCI_DEVICE_ID_APPLE_VIRTIO_BLK   0x1a00
+ 
+ #define PCI_VENDOR_ID_SUN                0x108e
+ #define PCI_DEVICE_ID_SUN_EBUS           0x1000
+diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
+index dafec432ce..7117ce754c 100644
+--- a/include/hw/virtio/virtio-blk.h
++++ b/include/hw/virtio/virtio-blk.h
+@@ -46,6 +46,7 @@ struct VirtIOBlkConf
+     uint32_t max_discard_sectors;
+     uint32_t max_write_zeroes_sectors;
+     bool x_enable_wce_if_config_wce;
++    uint32_t x_apple_type;
+ };
+ 
+ struct VirtIOBlockDataPlane;
+diff --git a/include/standard-headers/linux/virtio_blk.h b/include/standard-headers/linux/virtio_blk.h
+index 7155b1a470..bbea5d50b9 100644
+--- a/include/standard-headers/linux/virtio_blk.h
++++ b/include/standard-headers/linux/virtio_blk.h
+@@ -204,6 +204,9 @@ struct virtio_blk_config {
+ /* Reset All zones command */
+ #define VIRTIO_BLK_T_ZONE_RESET_ALL 26
+ 
++/* Write zeroes command */
++#define VIRTIO_BLK_T_APPLE1	0x10000
++
+ #ifndef VIRTIO_BLK_NO_LEGACY
+ /* Barrier before this op. */
+ #define VIRTIO_BLK_T_BARRIER	0x80000000
 -- 
 2.39.2 (Apple Git-143)
 
