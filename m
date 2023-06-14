@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249FF72F20F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A86E72F1C2
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FFr-0006E6-Rf; Tue, 13 Jun 2023 21:24:59 -0400
+	id 1q9FFz-0006H1-0A; Tue, 13 Jun 2023 21:25:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FFU-0005jr-Qo
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:40 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1q9FFe-0005nV-TK
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:46 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FFP-00053T-GV
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:32 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-650bacd6250so4761094b3a.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:31 -0700 (PDT)
+ id 1q9FFU-00053t-Fl
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:41 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-66577752f05so2325429b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705870; x=1689297870;
+ d=gmail.com; s=20221208; t=1686705875; x=1689297875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bqYjPp66NtVgNcAMiH48m1IIJyKmfxBKldx1OZytYDk=;
- b=Et2vnWmJJC/DUjoARyFm80JBYw9HPypFrWQqpDOEYKYJl0mzPI8Q8XZel5enHqn41i
- fpdJWfekVNzWE/TJIGWFUWrGi9rY24Yyh2pjUnufnsb/8kiXQAvta/Go8Uxd9Oub/sEh
- 28tEwF0mKU46xd1tdonf3ZF9FmlSy782veDTueCP+nuQddD/trpcKXLaLBa21djj0vdz
- io7UtWjQUUPH6IpDPEJnwx/HRyzaIf6qZtV92YPm1SlgJhrvQXoLbt67bPuNeu/0hOor
- pX+ZQAsOZHgZ1J+HDDwQ3XqOOG1npqQg85QQe0QQFsU802MW3r292Ls+oyraBgQjl3z9
- Uqmw==
+ bh=dgK4bxXOYWNquzr7OgnHi2SewH75uRulMmWDwRwzDe8=;
+ b=ClGnDA00xY4RtOGTpcc+kwe4sfxttwtjU1vm0TCEzrfPkzPy/ZL1zQwOqbiddWEFeH
+ EoFwJfDsK060BHCEx7wZ6A8kWNp6GWxeTU/kxPYgyyB0wt4YgAUcFNtz7/WcVBS9p/5T
+ ZDuRU3aESa7lNogau/jySAr+ZBQqtuK3w965P9rXjFXAIZkycnCFxihvKZ1PkX1R8tOn
+ 6/qhm1Z7Skp01eWXX7Y30WN5H12oIxj3ThZys+fflIcJkhwNXtH5Px9+Z5ooMEA0PFNa
+ NaUEZib6/YZWTzrQ+I+6ImRCe6X32dJqohlEZiyE6FicVcsIYje+bYxd5ryGZFmWFjbW
+ CwPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705870; x=1689297870;
+ d=1e100.net; s=20221208; t=1686705875; x=1689297875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bqYjPp66NtVgNcAMiH48m1IIJyKmfxBKldx1OZytYDk=;
- b=D49E2enZhIOmwBpSFTsOeFsDWtzgU9q3bUvY/CbDSM5i0PhgdSW9DQiQ6vNnGC3Pmv
- aObIgPELr4qjtWr6lu0xa8n3wH+NK/eW9oBe6NpK/06p4avhPiUHD1I2ZC2gh6fn33aG
- Jlj0Ffox3lOdzqjjGGPsaXKom5DyWQbe4/VcM5J1FTgeRhRBKiVdnYOrPH7lTNQB/pcs
- 4NKpBGCQ6Ex+8a0fi4FeL/yKf9tzIrHuLy3Eql8JymUgPpgaT0uWV7S+4m1Y5BLa0D7g
- 1OpEww1Rol45w+T+OVhwxkehAKAJCAVt5pxIfz+z7U66pxzvKiuMmcXLdMo4kJT+Ws01
- a8nQ==
-X-Gm-Message-State: AC+VfDytaz2oGxLQt4PX/nbe8Qn3z4E2Y/Wz3kRi78JfMdfo9SRtYXCm
- 7RHg8MDKH99ciidm4kCX5PyA2Q5YqAXH1Q==
-X-Google-Smtp-Source: ACHHUZ6zEA0Ndg1bTAbiOyyoSx0hLwklJ3Ofp/5XqIPiAhcpPqhe1POo/5fNkdOjmGjCRUT09ltqUA==
-X-Received: by 2002:a05:6a00:1489:b0:666:5fc4:36b1 with SMTP id
- v9-20020a056a00148900b006665fc436b1mr166885pfu.26.1686705870043; 
- Tue, 13 Jun 2023 18:24:30 -0700 (PDT)
+ bh=dgK4bxXOYWNquzr7OgnHi2SewH75uRulMmWDwRwzDe8=;
+ b=g5ylLuatj1H+VhWKb7XyE8GtVjvIfdn9Z+mSKrsjKD3wCo5jlq89uwg2DHbJFCIOqo
+ 5Uqb0LeSv+Wr5+R7OcsW1o/EYRA1e9gt5Dr67iwgaNQkZd8Kd8p5U9gQFQwyd/lH7YQ3
+ Y2cALIUpjk9EiQuoLbyyHV7DErt6QH2yCds2T338akIl1O6AjDOROa4VkAHBDfdG4KrX
+ 5P51iXN9ebC8m/4ASCqkYTMp3AdZbtAa1MgdWP1PZzeJssFPXVLbRFn22JEhSFQIQqH0
+ AR4r1dAkQzbYIYduZOHsqj/Ivd4JQOWhGaysnyTmfNiFlc15JQd53nvVbY1QTMB6L8uS
+ zNWQ==
+X-Gm-Message-State: AC+VfDy/krwVvI5wZbKs2zlAwjvcX/0DrjQzDR9o8GKMaZpYLhJxT+cC
+ 0V93T93oBDAKYs/B+cGKHazLKqudnB5Ykw==
+X-Google-Smtp-Source: ACHHUZ51Z5OGMyibDVzTbN4ciBAXyXGj+hemic9/lTnlnvtidc5OR7TvPlBMFXO9NiBhPrB7I2+twA==
+X-Received: by 2002:a05:6a00:1821:b0:646:59e4:94eb with SMTP id
+ y33-20020a056a00182100b0064659e494ebmr1082090pfa.15.1686705874968; 
+ Tue, 13 Jun 2023 18:24:34 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.26
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:24:29 -0700 (PDT)
+ Tue, 13 Jun 2023 18:24:34 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Himanshu Chauhan <hchauhan@ventanamicro.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 59/60] target/riscv: Smepmp: Return error when access
- permission not allowed in PMP
-Date: Wed, 14 Jun 2023 11:20:16 +1000
-Message-Id: <20230614012017.3100663-60-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Tommy Wu <tommy.wu@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Anup Patel <anup@brainfault.org>
+Subject: [PULL 60/60] hw/intc: If mmsiaddrcfgh.L == 1,
+ smsiaddrcfg and smsiaddrcfgh are read-only.
+Date: Wed, 14 Jun 2023 11:20:17 +1000
+Message-Id: <20230614012017.3100663-61-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,61 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+From: Tommy Wu <tommy.wu@sifive.com>
 
-On an address match, skip checking for default permissions and return error
-based on access defined in PMP configuration.
+According to the `The RISC-V Advanced Interrupt Architecture`
+document, if register `mmsiaddrcfgh` of the domain has bit L set
+to one, then `smsiaddrcfg` and `smsiaddrcfgh` are locked as
+read-only alongside `mmsiaddrcfg` and `mmsiaddrcfgh`.
 
-v3 Changes:
-o Removed explicit return of boolean value from comparision
-  of priv/allowed_priv
-
-v2 Changes:
-o Removed goto to return in place when address matches
-o Call pmp_hart_has_privs_default at the end of the loop
-
-Fixes: 90b1fafce06 ("target/riscv: Smepmp: Skip applying default rules when address matches")
-Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Message-Id: <20230605164548.715336-1-hchauhan@ventanamicro.com>
+Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Message-Id: <20230609055936.3925438-1-tommy.wu@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmp.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ hw/intc/riscv_aplic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 418738afd8..9d8db493e6 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -291,7 +291,6 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-                         pmp_priv_t *allowed_privs, target_ulong mode)
- {
-     int i = 0;
--    bool ret = false;
-     int pmp_size = 0;
-     target_ulong s = 0;
-     target_ulong e = 0;
-@@ -435,17 +434,12 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-              * defined with PMP must be used. We shouldn't fallback on
-              * finding default privileges.
-              */
--            ret = true;
--            break;
-+            return (privs & *allowed_privs) == privs;
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index afc5b54dbb..4bdc6a5d1a 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -688,13 +688,13 @@ static void riscv_aplic_write(void *opaque, hwaddr addr, uint64_t value,
+          * domains).
+          */
+         if (aplic->num_children &&
+-            !(aplic->smsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
++            !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+             aplic->smsicfgaddr = value;
          }
-     }
- 
-     /* No rule matched */
--    if (!ret) {
--        ret = pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
--    }
--
--    return ret;
-+    return pmp_hart_has_privs_default(env, privs, allowed_privs, mode);
- }
- 
- /*
+     } else if (aplic->mmode && aplic->msimode &&
+                (addr == APLIC_SMSICFGADDRH)) {
+         if (aplic->num_children &&
+-            !(aplic->smsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
++            !(aplic->mmsicfgaddrH & APLIC_xMSICFGADDRH_L)) {
+             aplic->smsicfgaddrH = value & APLIC_xMSICFGADDRH_VALID_MASK;
+         }
+     } else if ((APLIC_SETIP_BASE <= addr) &&
 -- 
 2.40.1
 
