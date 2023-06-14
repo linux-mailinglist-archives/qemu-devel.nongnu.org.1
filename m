@@ -2,87 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D08E72F889
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 11:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A46B72F8BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 11:11:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9MMd-0000wm-UG; Wed, 14 Jun 2023 05:00:28 -0400
+	id 1q9MW1-0002VI-L8; Wed, 14 Jun 2023 05:10:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q9MMb-0000w0-DB
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 05:00:25 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q9MMZ-0005FF-Jb
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 05:00:25 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-1a67ea77c3bso3349928fac.3
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 02:00:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1686733222; x=1689325222;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PSiVnoNXwA/9+IsbqMn7p7LJuDWj7Q4v/whuwhU8Za8=;
- b=Fbj9bbV4zh/7QLA0S9zUnxkKTQ87CBp7k3jlTleXdEa5/ttMc/KisiZvfNGU6y4rIm
- t/tf0Z6zpDaFmcb8HtZo01pezHiJFj5GbkvNmfmYS4+Vgw3ANGJDUTrweNpAhHupCtLQ
- b5czFn7nsEbGKHdRcsoQ6yWaojrs+3YTPp+O2emLOdImmxMqob9Ps3SNSKe2tF46Le7q
- K7yctblqCqNlV/eFWPC4Aomub4aK8uPyd//pdWAHUVzWC47WK/V9jBCumMAzAMEHcMPi
- QKO4ZoyV0S9ojwuf1h0BSmxJtIlJp6UHO4fjr080uKF0nS0q1MwLsfahCejramED+G1h
- WOnw==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q9MW0-0002V2-0G
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 05:10:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q9MVy-00077q-Cb
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 05:10:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686733805;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8HURIhnaM69iRttU1+pKgIm0TAFPtJYpzFlhjrQhN60=;
+ b=O4CfmT8C+tT8Ns+XwxVlhHP4qCx6DG5ao74GRWdf0IQrudMC9GkeXnU4lHEc0rv0oinQHV
+ nOu59RlkBmuDLVEpPM6qRRX3vmmqzd10SJfwKvZmCddcGuusl8rhOh7JiAIwiOB8JrRVuW
+ K9su6kTNifng9Nqaor+gc/xGJcFbi4E=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-hxDD5A7tMHeLOoWMG4iOPA-1; Wed, 14 Jun 2023 05:10:04 -0400
+X-MC-Unique: hxDD5A7tMHeLOoWMG4iOPA-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4edc7406cbaso1370633e87.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 02:10:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686733222; x=1689325222;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PSiVnoNXwA/9+IsbqMn7p7LJuDWj7Q4v/whuwhU8Za8=;
- b=gI21aNKxU3HrcS4HBsVpS0hkeDXQQsjg1caFVcUaVg9G0rLF6/LHlUbJ3kgXgsn3z3
- wTIwOJ58uMPzlM7IehUPd/uTlYT+dT6rnjpwdSZqBc0j/EYICNOOhg5pLqVruanCKWgz
- WNEzEurXNiJw/Th37yw6yF1A/EBT2R+XzEXENX01E/DiiVhE12iwYyRqEfxvJVU8oZsg
- 0lPCrB6FfWoaBRzDDBUZC5w8hzoBtD7vcYxEuIuyfIpYV8IF9gTimcQsJRcGuin1O1OJ
- omoiOhrfCfD4ShsABqAqbMAJU+RCVvl3I0AIij5X9He1p1BhhUfMvAi6yQDAFhjtlJlv
- QRSw==
-X-Gm-Message-State: AC+VfDwF+3rPnqY0CJtXD7PEnmxc4pya1bWsz0Mfl6CHQHw9SRUUqynT
- nIkuQclB+kWzIYpjNA4cEhnh8g==
-X-Google-Smtp-Source: ACHHUZ4R8H4rselBxiDDnpEjbvfTuSqtKWzQ81mtjX+Dies7JGDrs7O43yhCDyglLYpQqEJhVry59A==
-X-Received: by 2002:a05:6870:5415:b0:19f:a1da:49d3 with SMTP id
- d21-20020a056870541500b0019fa1da49d3mr10424859oan.51.1686733221940; 
- Wed, 14 Jun 2023 02:00:21 -0700 (PDT)
-Received: from [192.168.68.107] ([177.170.117.210])
+ d=1e100.net; s=20221208; t=1686733802; x=1689325802;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8HURIhnaM69iRttU1+pKgIm0TAFPtJYpzFlhjrQhN60=;
+ b=MA4DNnIX7JJgdCkIJM59ywvzl4jKCO7wW3hmXFOhMTGODf9rWcTwTsS1ElVN74I7Zo
+ +SZ7p2OhZA9aIaDK8FElN41WZrf3TMm3v0VHK8yXuXNwtseRVKesU7o/5QC+PcsXbbci
+ MKwJXcjDZbt0kwgXRiVFqkwQX8YsucmgFQzctgJ040LZqhqqzeAbV9lhmPO31mhhKwaR
+ 0m3AbYFHxMHZ1qsyk75nvpLq0Bv76kbG+E8BvyergUfRKNpfhH7Mw97oFEZgBSNhI71g
+ 0/W+vcHl0bnHkdrlhcYln8bGRvvyYZ33rA/6PYEb8ApkbxyV1R/QGyoK/7zl/y6MSNZg
+ uy/g==
+X-Gm-Message-State: AC+VfDwAFRG8CEct/CLO0nMdH5KjT05WmzMVm6+3Byx06px9yv5kuHuW
+ GHX/IwGIFkKvX8SFzAO8c9IR5uUSeRjC+g7H/+CXCYfsKF7bgiRwf52TFACaD9/MJftQxpZWbf6
+ VfAmsyYHk17WqzxF4IIv9d2lu8jBMYJ/ooAYc+YDAndcCp80UvK1Ks3YYdw85n2JbLd/Up8M=
+X-Received: by 2002:a05:6512:286:b0:4f6:3ab6:3d9e with SMTP id
+ j6-20020a056512028600b004f63ab63d9emr7691113lfp.59.1686733802725; 
+ Wed, 14 Jun 2023 02:10:02 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5aGhXJ0bTPYvv3F9EEWFY8KyxFfstNJ8eIPqnfv8VadgfEJ4YQ3R23QtatFgsguP+U/SfiBQ==
+X-Received: by 2002:a05:6512:286:b0:4f6:3ab6:3d9e with SMTP id
+ j6-20020a056512028600b004f63ab63d9emr7691080lfp.59.1686733802254; 
+ Wed, 14 Jun 2023 02:10:02 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c704:b200:7d03:23db:ad5:2d21?
+ (p200300cbc704b2007d0323db0ad52d21.dip0.t-ipconnect.de.
+ [2003:cb:c704:b200:7d03:23db:ad5:2d21])
  by smtp.gmail.com with ESMTPSA id
- r21-20020a05687032d500b001a663e49523sm5241974oac.36.2023.06.14.02.00.19
+ f9-20020a7bc8c9000000b003f8140763c7sm11729459wml.30.2023.06.14.02.10.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 02:00:21 -0700 (PDT)
-Message-ID: <de6d5a44-66e4-4795-0604-b56beb18a2c8@ventanamicro.com>
-Date: Wed, 14 Jun 2023 06:00:17 -0300
+ Wed, 14 Jun 2023 02:10:01 -0700 (PDT)
+Message-ID: <83978976-1b13-8300-19b0-7b3c24be556c@redhat.com>
+Date: Wed, 14 Jun 2023 11:10:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 7/8] disas/riscv: Add support for XVentanaCondOps
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 00/10] memory-device: Some cleanups
 Content-Language: en-US
-To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Zhiwei Liu <zhiwei_liu@linux.alibaba.com>
-References: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
- <20230612111034.3955227-8-christoph.muellner@vrull.eu>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230612111034.3955227-8-christoph.muellner@vrull.eu>
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230601121447.272487-1-david@redhat.com>
+ <20230601121447.272487-2-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230601121447.272487-2-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x34.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,135 +118,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/12/23 08:10, Christoph Muellner wrote:
-> From: Christoph Müllner <christoph.muellner@vrull.eu>
+On 01.06.23 14:14, David Hildenbrand wrote:
+> Working on adding multi-memslot support for virtio-mem (teaching memory
+> device code about memory devices that can consume multiple memslots), I
+> have some preparatory cleanups in my queue that make sense independent of
+> the actual memory-device/virtio-mem extensions.
 > 
-> This patch adds XVentanaCondOps support to the RISC-V disassembler.
+> v2 -> v3:
+> - "memory-device: Introduce machine_memory_devices_init()"
+> -- Declare the function in hw/boards.h
+> - "hw/loongarch/virt: Use machine_memory_devices_init()"
+> -- Use VIRT_HIGHMEM_BASE
+> -- No need to include memory-device.h
+> - "hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZ"
+> -- Add more details why it's ok to the patch description
+> - Adjust to memory_devices_init() -> machine_memory_devices_init()
+> - Add RBs
 > 
-> Co-developed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   disas/meson.build      |  5 ++++-
->   disas/riscv-xventana.c | 41 +++++++++++++++++++++++++++++++++++++++++
->   disas/riscv-xventana.h | 18 ++++++++++++++++++
->   disas/riscv.c          |  4 ++++
->   4 files changed, 67 insertions(+), 1 deletion(-)
->   create mode 100644 disas/riscv-xventana.c
->   create mode 100644 disas/riscv-xventana.h
+> v1 -> v2:
+> - Allocate ms->device_memory only if the size > 0.
+> - Split it up and include more cleanups
 > 
-> diff --git a/disas/meson.build b/disas/meson.build
-> index 832727e4b3..e0ee326411 100644
-> --- a/disas/meson.build
-> +++ b/disas/meson.build
-> @@ -6,7 +6,10 @@ common_ss.add(when: 'CONFIG_M68K_DIS', if_true: files('m68k.c'))
->   common_ss.add(when: 'CONFIG_MICROBLAZE_DIS', if_true: files('microblaze.c'))
->   common_ss.add(when: 'CONFIG_MIPS_DIS', if_true: files('mips.c', 'nanomips.c'))
->   common_ss.add(when: 'CONFIG_NIOS2_DIS', if_true: files('nios2.c'))
-> -common_ss.add(when: 'CONFIG_RISCV_DIS', if_true: files('riscv.c'))
-> +common_ss.add(when: 'CONFIG_RISCV_DIS', if_true: files(
-> +    'riscv.c',
-> +    'riscv-xventana.c'
-> +))
->   common_ss.add(when: 'CONFIG_SH4_DIS', if_true: files('sh4.c'))
->   common_ss.add(when: 'CONFIG_SPARC_DIS', if_true: files('sparc.c'))
->   common_ss.add(when: 'CONFIG_XTENSA_DIS', if_true: files('xtensa.c'))
-> diff --git a/disas/riscv-xventana.c b/disas/riscv-xventana.c
-> new file mode 100644
-> index 0000000000..a0224d1fb3
-> --- /dev/null
-> +++ b/disas/riscv-xventana.c
-> @@ -0,0 +1,41 @@
-> +/*
-> + * QEMU RISC-V Disassembler for xventana.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "disas/riscv.h"
-> +#include "disas/riscv-xventana.h"
-> +
-> +typedef enum {
-> +    /* 0 is reserved for rv_op_illegal. */
-> +    ventana_op_vt_maskc = 1,
-> +    ventana_op_vt_maskcn = 2,
-> +} rv_ventana_op;
-> +
-> +const rv_opcode_data ventana_opcode_data[] = {
-> +    { "vt.illegal", rv_codec_illegal, rv_fmt_none, NULL, 0, 0, 0 },
-> +    { "vt.maskc", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-> +    { "vt.maskcn", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-> +};
-> +
-> +void decode_xventanacondops(rv_decode *dec, rv_isa isa)
-> +{
-> +    rv_inst inst = dec->inst;
-> +    rv_opcode op = rv_op_illegal;
-> +
-> +    switch (((inst >> 0) & 0b11)) {
-> +    case 3:
-> +        switch (((inst >> 2) & 0b11111)) {
-> +        case 30:
-> +            switch (((inst >> 22) & 0b1111111000) | ((inst >> 12) & 0b0000000111)) {
-> +            case 6: op = ventana_op_vt_maskc; break;
-> +            case 7: op = ventana_op_vt_maskcn; break;
-> +            }
-> +            break;
-> +        }
-> +        break;
-> +    }
-> +
-> +    dec->op = op;
-> +}
-> diff --git a/disas/riscv-xventana.h b/disas/riscv-xventana.h
-> new file mode 100644
-> index 0000000000..72be9ffa16
-> --- /dev/null
-> +++ b/disas/riscv-xventana.h
-> @@ -0,0 +1,18 @@
-> +/*
-> + * QEMU disassembler -- RISC-V specific header (xventana*).
-> + *
-> + * Copyright (c) 2023 VRULL GmbH
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef DISAS_RISCV_XVENTANA_H
-> +#define DISAS_RISCV_XVENTANA_H
-> +
-> +#include "disas/riscv.h"
-> +
-> +extern const rv_opcode_data ventana_opcode_data[];
-> +
-> +void decode_xventanacondops(rv_decode*, rv_isa);
-> +
-> +#endif /* DISAS_RISCV_XVENTANA_H */
-> diff --git a/disas/riscv.c b/disas/riscv.c
-> index dc3bfb0123..c7bfd4ed32 100644
-> --- a/disas/riscv.c
-> +++ b/disas/riscv.c
-> @@ -22,6 +22,9 @@
->   #include "target/riscv/cpu_cfg.h"
->   #include "disas/riscv.h"
->   
-> +/* Vendor extensions */
-> +#include "disas/riscv-xventana.h"
-> +
->   typedef enum {
->       /* 0 is reserved for rv_op_illegal. */
->       rv_op_lui = 1,
-> @@ -4708,6 +4711,7 @@ disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
->           void (*decode_func)(rv_decode *, rv_isa);
->       } decoders[] = {
->           { always_true_p, rvi_opcode_data, decode_inst_opcode },
-> +        { has_XVentanaCondOps_p, ventana_opcode_data, decode_xventanacondops },
->       };
->   
->       for (size_t i = 0; i < ARRAY_SIZE(decoders); i++) {
+> David Hildenbrand (10):
+>    memory-device: Unify enabled vs. supported error messages
+>    memory-device: Introduce machine_memory_devices_init()
+>    hw/arm/virt: Use machine_memory_devices_init()
+>    hw/ppc/spapr: Use machine_memory_devices_init()
+>    hw/loongarch/virt: Use machine_memory_devices_init()
+>    hw/i386/pc: Use machine_memory_devices_init()
+>    hw/i386/acpi-build: Rely on machine->device_memory when building SRAT
+>    hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
+>    memory-device: Refactor memory_device_pre_plug()
+>    memory-device: Track used region size in DeviceMemoryState
+> 
+>   hw/arm/virt.c          |  9 +-----
+>   hw/i386/acpi-build.c   |  9 ++----
+>   hw/i386/pc.c           | 36 +++-------------------
+>   hw/loongarch/virt.c    | 12 ++------
+>   hw/mem/memory-device.c | 69 +++++++++++++++++++-----------------------
+>   hw/ppc/spapr.c         | 37 +++++++++++-----------
+>   hw/ppc/spapr_hcall.c   |  2 +-
+>   include/hw/boards.h    |  4 +++
+>   include/hw/i386/pc.h   |  1 -
+>   9 files changed, 67 insertions(+), 112 deletions(-)
+> 
+
+Any further comments? If not, I'm planning on taking this through my 
+memory-device tree.
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
