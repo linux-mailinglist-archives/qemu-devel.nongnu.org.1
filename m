@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D8D7302EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 17:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B9B730425
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 17:49:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9S68-0007f8-NL; Wed, 14 Jun 2023 11:07:48 -0400
+	id 1q9Sit-0007Dc-KC; Wed, 14 Jun 2023 11:47:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q9S67-0007eh-9e
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 11:07:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q9S64-00015r-Gd
- for qemu-devel@nongnu.org; Wed, 14 Jun 2023 11:07:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686755263;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q9Sir-0007DR-R8
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 11:47:49 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q9Siq-0001lF-1Y
+ for qemu-devel@nongnu.org; Wed, 14 Jun 2023 11:47:49 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4C57121989;
+ Wed, 14 Jun 2023 15:47:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1686757665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RKKe453kAJrG+QS/ujv1eKoVCPR8A21rK9epL+S0kt4=;
- b=Z6kncb9ZCDYgTNzDw4KddsBb3knQ9GEO4ONGt1EDyH5ipgAO+MeyI2XbKyl+IMDAxPitC8
- V9mhVRto1U+Z+WAzZQft3NQ0CIZF6PIetHHW9XMczxqRN9E/wHZu6URXEPWhb20A/DSYoL
- b9Zaxa7/Ywz+yUcxef6jSKzpPEY7N78=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-LmM98cf5PG-BFYQe6YiBzA-1; Wed, 14 Jun 2023 11:07:42 -0400
-X-MC-Unique: LmM98cf5PG-BFYQe6YiBzA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-62f6c47e89cso2081796d6.0
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 08:07:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686755261; x=1689347261;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RKKe453kAJrG+QS/ujv1eKoVCPR8A21rK9epL+S0kt4=;
- b=devk2v2t4YSsapapmSek0AtSYjoB3z1AqI2Sossn1Rxh0ja2IoDQomE6vKHqAfgmuC
- aMklDpP7ZvnkKoK5MADzO5wNm9Te56k567vlyhpdsOSStkI6cMv54zuerXzBwwb1bVzp
- hYP40LqDHMxa+P57C14tHDupnMMnIe6XSQ3e7ByuW+zsOBdKizsc8zQEWahLkOayZjn0
- uEn93fknsrkAhMyK9y/caQ8lrQwz64Oq2df0H+eGHozE6o3yVh+BIJE0+rtjTLdJH96z
- sSF98rt/PJOZLGRQqjFYo3I2VsgS6aKPRLt/A3EDsoS/TW5CtyvL00FcGGYsuk40NCnk
- aPww==
-X-Gm-Message-State: AC+VfDxm27LAjoSpMUG6oZIcmcgq+OeR/AYsjzUhgsoZQV83Sf8eW/DI
- ZsyDB+/0v6RBKqV5WjymSBDdpDgAgKhuT0mOPlOozWjk7Hc71PVNar9Ylafty9H1LY6W1hLxMfS
- 4N3kcDVStPFvhQ3qGHZUmOew=
-X-Received: by 2002:ad4:5bca:0:b0:5ed:c96e:ca4a with SMTP id
- t10-20020ad45bca000000b005edc96eca4amr18561823qvt.1.1686755261357; 
- Wed, 14 Jun 2023 08:07:41 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Plj+Gl02Tv3vXzMZnupQDJAYWccBnn3DXZfHuIWZNxVRvCqVSmH7DGGbxS6Iai/M6qOLVaA==
-X-Received: by 2002:ad4:5bca:0:b0:5ed:c96e:ca4a with SMTP id
- t10-20020ad45bca000000b005edc96eca4amr18561806qvt.1.1686755261026; 
- Wed, 14 Jun 2023 08:07:41 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- c19-20020a0cf2d3000000b0062ded562c53sm149545qvm.37.2023.06.14.08.07.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jun 2023 08:07:40 -0700 (PDT)
-Date: Wed, 14 Jun 2023 11:07:33 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Fiona Ebner <f.ebner@proxmox.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v2 16/20] migration/rdma: Split qemu_fopen_rdma() into
- input/output functions
-Message-ID: <ZInXtXhl7gF+nMDJ@x1n>
-References: <20230530183941.7223-1-quintela@redhat.com>
- <20230530183941.7223-17-quintela@redhat.com>
+ bh=M1Z1wlz2h+Ql1PsUXPWLzFnFhY8nhg4iY+frQNSrd48=;
+ b=TGnTUaeGzy8n/otp35QISkctLV9V2KBTj2oRAF1zL30yHRgNK2+js78LsMbMzTzME4v4Ul
+ KEC+sfbNOafI9bCGSr1n9YdJYTCPsfhiEKYJkhU3/fjGrprEYFrxpH0pYWjuVIOiGApUBL
+ Gx7Sf2eA9hWngyI704C/niwxLXilOro=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1686757665;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=M1Z1wlz2h+Ql1PsUXPWLzFnFhY8nhg4iY+frQNSrd48=;
+ b=M5yMXOm5T257KZR8Gyx/3tgFfe56bnp+vtzVTGt4BgS2ETzvxFTZrRGRWDUmeSXGlUpU/q
+ qvxC7/eGENuDmZAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9886E1357F;
+ Wed, 14 Jun 2023 15:47:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id AvJjESDhiWSiJQAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 14 Jun 2023 15:47:44 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, "Daniel P.
+ Berrange" <berrange@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH V2] migration: file URI
+In-Reply-To: <ZId4LggDVgxbtGTn@x1n>
+References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
+ <ZIdnj7Hr1L3iDVUG@x1n> <bddfc088-268b-2d9b-7a28-6345b8bfa2e7@oracle.com>
+ <ZId4LggDVgxbtGTn@x1n>
+Date: Wed, 14 Jun 2023 12:47:41 -0300
+Message-ID: <877cs6ujtu.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230530183941.7223-17-quintela@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,89 +85,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 08:39:37PM +0200, Juan Quintela wrote:
-> This is how everything else in QEMUFile is structured.
-> As a bonus they are three less lines of code.
-> 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  migration/rdma.c | 35 ++++++++++++++++-------------------
->  1 file changed, 16 insertions(+), 19 deletions(-)
-> 
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index 3ef35fc635..606837bd45 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -4046,25 +4046,22 @@ static void qio_channel_rdma_register_types(void)
->  
->  type_init(qio_channel_rdma_register_types);
->  
-> -static QEMUFile *qemu_fopen_rdma(RDMAContext *rdma, const char *mode)
-> +static QEMUFile *rdma_new_input(RDMAContext *rdma)
->  {
-> -    QIOChannelRDMA *rioc;
-> +    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-> +    rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
-> +    rioc->rdmain = rdma;
-> +    rioc->rdmaout = rdma->return_path;
->  
-> -    if (qemu_file_mode_is_not_valid(mode)) {
+Peter Xu <peterx@redhat.com> writes:
 
-We can also drop this function together.  If with that:
+> On Mon, Jun 12, 2023 at 03:39:34PM -0400, Steven Sistare wrote:
+>> On 6/12/2023 2:44 PM, Peter Xu wrote:
+>> > Hi, Steve,
+>> > 
+>> > On Wed, Jun 07, 2023 at 11:38:59AM -0700, Steve Sistare wrote:
+>> >> Extend the migration URI to support file:<filename>.  This can be used for
+>> >> any migration scenario that does not require a reverse path.  It can be used
+>> >> as an alternative to 'exec:cat > file' in minimized containers that do not
+>> >> contain /bin/sh, and it is easier to use than the fd:<fdname> URI.  It can
+>> >> be used in HMP commands, and as a qemu command-line parameter.
+>> > 
+>> > I have similar question on the fixed-ram work,
+>> 
+>> Sorry, what is the "fixed-ram work"?
+>
+> https://lore.kernel.org/all/20230330180336.2791-1-farosas@suse.de
+>
+> It has similar requirement to migrate to a file, though slightly different
+> use case.
+>
+>> 
+>> > on whether we should assume
+>> > the vm stopped before doing so.  Again, it leaves us space for
+>> > optimizations on top without breaking anyone.
+>> 
+>> I do not assume the vm is stopped.  The migration code will stop the vm
+>> in migration_iteration_finish.
+>> 
+>> > The other thing is considering a very busy guest, migration may not even
+>> > converge for "file:" URI (the same to other URIs) but I think that doesn't
+>> > make much sense to not converge for a "file:" URI.  The user might be very
+>> > confused too.
+>> 
+>> The file URI is mainly intended for the case where guest ram is backed by shared memory 
+>> and preserved in place, in which case writes are not tracked and convergence is not an
+>> issue.  If not shared memory, the user should be advised to stop the machine first.
+>> I should document these notes in qemu-options and/or migration.json.
+>
+> My question was whether we should treat "file:" differently from most of
+> other URIs.  It makes the URI slightly tricky for sure, but it also does
+> make sense to me because "file:" implies more than the rest URIs, where
+> we're sure about the consequence of the migration (vm stops), in that case
+> keeping vm live makes it less performant, and also weird.
+>
+> It doesn't need to be special in memory type being shared, e.g. what if
+> there's a device that contains a lot of data to migrate in the future?
+> Assuming "shared memory will always migrate very fast" may not hold true.
+>
+> Do you think it makes more sense to just always stop VM when migrating to
+> file URI?  Then if someone tries to restart the VM or cancel the migration,
+> we always do both (cancel migration, then start VM).
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+From our discussions in the other thread, I have implemented a
+MIGRATION_CAPABILITY_SUSPEND to allow the management layer to decide
+whether the guest should be stopped by QEMU before the migration.
 
-> -        return NULL;
-> -    }
-> +    return rioc->file;
-> +}
->  
-> -    rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-> -
-> -    if (mode[0] == 'w') {
-> -        rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
-> -        rioc->rdmaout = rdma;
-> -        rioc->rdmain = rdma->return_path;
-> -    } else {
-> -        rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
-> -        rioc->rdmain = rdma;
-> -        rioc->rdmaout = rdma->return_path;
-> -    }
-> +static QEMUFile *rdma_new_output(RDMAContext *rdma)
-> +{
-> +    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-> +    rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
-> +    rioc->rdmaout = rdma;
-> +    rioc->rdmain = rdma->return_path;
->  
->      return rioc->file;
->  }
-> @@ -4090,9 +4087,9 @@ static void rdma_accept_incoming_migration(void *opaque)
->          return;
->      }
->  
-> -    f = qemu_fopen_rdma(rdma, "rb");
-> +    f = rdma_new_input(rdma);
->      if (f == NULL) {
-> -        fprintf(stderr, "RDMA ERROR: could not qemu_fopen_rdma\n");
-> +        fprintf(stderr, "RDMA ERROR: could not open RDMA for input\n");
->          qemu_rdma_cleanup(rdma);
->          return;
->      }
-> @@ -4217,7 +4214,7 @@ void rdma_start_outgoing_migration(void *opaque,
->      trace_rdma_start_outgoing_migration_after_rdma_connect();
->  
->      s->rdma_migration = true;
-> -    s->to_dst_file = qemu_fopen_rdma(rdma, "wb");
-> +    s->to_dst_file = rdma_new_output(rdma);
->      migrate_fd_connect(s, NULL);
->      return;
->  return_path_err:
-> -- 
-> 2.40.1
-> 
-
--- 
-Peter Xu
-
+I'm not opposed to coupling file URI with a stopped VM, although I
+think, at least for fixed-ram, libvirt would prefer to be able to decide
+when to stop.
 
