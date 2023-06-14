@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC63C72F214
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1560472F1F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 03:31:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9FFI-0005XI-7z; Tue, 13 Jun 2023 21:24:24 -0400
+	id 1q9FG2-0006Me-Ex; Tue, 13 Jun 2023 21:25:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FFF-0005S8-Cz
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:21 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1q9FFN-0005j7-BO
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:29 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q9FFD-00050u-Hm
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:21 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-54fd6aa3b0dso37374a12.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:19 -0700 (PDT)
+ id 1q9FFH-00051K-LD
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 21:24:25 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-662f0feafb2so4530071b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 18:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686705858; x=1689297858;
+ d=gmail.com; s=20221208; t=1686705862; x=1689297862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z0hO3OutD+wDj/+AHKx6cyQ6HNhdwZkx3uVs9WxZzxs=;
- b=WKlhxE9L8PiaP5vfZiNBycVgx8k5UWrd1/PPLp9SFQ47kAlDG4WqiPV+JZauB1AlU6
- QtejE6WaUNfYuJig4G/q46UPz98GMOxhDgYryN7u+tQW3k2vYHw0pTaJ+fmY/PylmXd2
- kY+6QH3PV34tSS34sIuwmhCU2VEbV/pXHFzP8EHIfq+j/wI8Q4k/HaRLYH0jC0SyfnPY
- 0fNSEVoxaz0KKfBB7Ehf9bOmIRHjh49gCEPMxRWIPVl1xwW6CH/MklysaKOZjNEwcuaq
- jLtNUjpDhzm1NCTWWLvcSnDFnsj0eOFA7tkfkHCJnu1e8P4SS4zP+0/PYbDQfMMF4Bti
- 43nw==
+ bh=EKsu31DdEac+zt28WxA5NELSUtvT8osZvWAWCSHx2zc=;
+ b=PV0yCw6uTsREN/jgjK3a9jpJmEKylxvWyhofBD+4ZVfHrRC9GBAW5L+JORtk3CqBcX
+ hezijzaG3/jtyqnMGomgoQPSdAezJ65jeksfbPNsKGOl6WY6r6wAhW54qkZ3JAn6qshk
+ lN/jM5Z2G/o+lXXrvPt5dSElpHCEXtf0Db6aQzOzNz68PMG+rnThqjinSmkhyE+a7SFu
+ 9tUvhTIPen144H9IZ9a+qUXKwIZZW+PTJViLqkx72KGEMYgJABVKdkguUHBjPhbkKwSe
+ WHeGG+fY1bV9WAqaOGEYNUENk85eozvbxq5c0W3pOFnLWs2RLi5aGjpwbOMrbML85RvZ
+ xdSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686705858; x=1689297858;
+ d=1e100.net; s=20221208; t=1686705862; x=1689297862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z0hO3OutD+wDj/+AHKx6cyQ6HNhdwZkx3uVs9WxZzxs=;
- b=aobr+6kXgT2YcLPGvJoTr5CkdFbEM5Jfx8vgRouI/zUMiFylbZGUCkpfNvsnSDVLz8
- Gz6Hbk6jrWzWth4YF0Qr76CRDNp3ORWrKJQfUhv85rpClYe1luYvAlZ5XdCwg6qy7cSd
- RX3VorjkXKLrFiGJI+y/oSVUwXjUzPcCnAJ96wtTgv2eI5kInEcQ8qCxoE00NES7PZeZ
- Y0ikoWaGP5NVwycz4cjGlu/FLfOSvYFfjsuDMr4XmEz8ZzZkf1SDS7n1JwKdF9L2bwmm
- +EnW7KNEmdu1RzaLIrqkoSLVhkHdPoeUxWFxpDj1p8gplV5KKG/D3RxsOEjcoeGLQEH0
- CzOw==
-X-Gm-Message-State: AC+VfDyXUOs6nRV80m7W+hv6+uLu3hzA0xgaTqrL+ycEcmWJka+amEzG
- NjUqHBhnhiaFvQ7XPfQTsMRbXzex/MIiFQ==
-X-Google-Smtp-Source: ACHHUZ6xmtd3U1n+8AZcqakhbKhOyQXie8HseRYhfrf6JDMrnw3Q82ZhgrSjH6rqHoTtcK6te4h6og==
-X-Received: by 2002:a05:6a21:3984:b0:117:d4d:15fb with SMTP id
- ad4-20020a056a21398400b001170d4d15fbmr284800pzc.10.1686705857963; 
- Tue, 13 Jun 2023 18:24:17 -0700 (PDT)
+ bh=EKsu31DdEac+zt28WxA5NELSUtvT8osZvWAWCSHx2zc=;
+ b=Svn5FKPnuX7+5fgLs25a/u9udmVVBsQVNQ6DvtfLeJ8ZHxEjLom7r/2sONMnTvGZhV
+ PqPL1cu8rU+555MM1Pr7/bg8eumWUtg/hUQ7qny12DnPmqgtNjVOPp0kC8tGHkGkK45D
+ Otq2ZrwVEJP+bIW1ZnyPhIVdv8EXu5SBHpP6cPET7pKIEvA5Dj+p66o1mX8fZYsgpO/2
+ Sf9FspLUV4TtjkVDkx6JDpxsrfULd99qtnw5h/Q8VvsDkcDl5QH/hnpRRedtJI10XK6S
+ SGkD3ykljy7yM3C2Vlpi62Zqzuj7N9mY2tX4JMZB4/9uL6SxUJ5d1Uwr6hpLft84Oj1u
+ CrBw==
+X-Gm-Message-State: AC+VfDxuHkdmiEDQH/E2tucpffIKQhatq18ND7ZRJ/gHQS3oFBlZZtWR
+ ubO1TLz8Hgp5iD79ib7H1rJDIo+q/zmhpg==
+X-Google-Smtp-Source: ACHHUZ6U4HLrlG+O1lG3wAIj+6omXy6b3mqeGyiOIqUjNDg6rQc1LdkHwGspm5WiIw/AKYstlj4JWg==
+X-Received: by 2002:a05:6a00:2d87:b0:645:834c:f521 with SMTP id
+ fb7-20020a056a002d8700b00645834cf521mr201613pfb.17.1686705861860; 
+ Tue, 13 Jun 2023 18:24:21 -0700 (PDT)
 Received: from toolbox.wdc.com
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.14
+ u1-20020aa78381000000b0064f7c56d8b7sm9112238pfm.219.2023.06.13.18.24.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Jun 2023 18:24:17 -0700 (PDT)
+ Tue, 13 Jun 2023 18:24:21 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>,
+Cc: alistair23@gmail.com, Xiao Wang <xiao.w.wang@intel.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 56/60] target/riscv: Fix initialized value for cur_pmmask
-Date: Wed, 14 Jun 2023 11:20:13 +1000
-Message-Id: <20230614012017.3100663-57-alistair.francis@wdc.com>
+Subject: [PULL 57/60] target/riscv/vector_helper.c: clean up reference of MTYPE
+Date: Wed, 14 Jun 2023 11:20:14 +1000
+Message-Id: <20230614012017.3100663-58-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230614012017.3100663-1-alistair.francis@wdc.com>
 References: <20230614012017.3100663-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,45 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weiwei Li <liweiwei@iscas.ac.cn>
+From: Xiao Wang <xiao.w.wang@intel.com>
 
-We initialize cur_pmmask as -1(UINT32_MAX/UINT64_MAX) and regard it
-as if pointer mask is disabled in current implementation. However,
-the addresses for vector load/store will be adjusted to zero in this
-case and -1(UINT32_MAX/UINT64_MAX) is valid value for pmmask when
-pointer mask is enabled.
+There's no code using MTYPE, which was a concept used in older vector
+implementation.
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-Id: <20230610094651.43786-1-liweiwei@iscas.ac.cn>
+Message-Id: <20230608053517.4102648-1-xiao.w.wang@intel.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/vector_helper.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 523311b184..90cef9856d 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -134,7 +134,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, target_ulong *pc,
-     flags = FIELD_DP32(flags, TB_FLAGS, FS, fs);
-     flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
-     flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
--    if (env->cur_pmmask < (env->xl == MXL_RV32 ? UINT32_MAX : UINT64_MAX)) {
-+    if (env->cur_pmmask != 0) {
-         flags = FIELD_DP32(flags, TB_FLAGS, PM_MASK_ENABLED, 1);
-     }
-     if (env->cur_pmbase != 0) {
-@@ -146,7 +146,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, target_ulong *pc,
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 7505f9470a..e8af64e626 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -388,7 +388,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
  
- void riscv_cpu_update_mask(CPURISCVState *env)
- {
--    target_ulong mask = -1, base = 0;
-+    target_ulong mask = 0, base = 0;
-     /*
-      * TODO: Current RVJ spec does not specify
-      * how the extension interacts with XLEN.
+ /*
+  * masked unit-stride load and store operation will be a special case of
+- * stride, stride = NF * sizeof (MTYPE)
++ * stride, stride = NF * sizeof (ETYPE)
+  */
+ 
+ #define GEN_VEXT_LD_US(NAME, ETYPE, LOAD_FN)                            \
+@@ -660,10 +660,6 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d)
+ #define DO_MAX(N, M)  ((N) >= (M) ? (N) : (M))
+ #define DO_MIN(N, M)  ((N) >= (M) ? (M) : (N))
+ 
+-/* Unsigned min/max */
+-#define DO_MAXU(N, M) DO_MAX((UMTYPE)N, (UMTYPE)M)
+-#define DO_MINU(N, M) DO_MIN((UMTYPE)N, (UMTYPE)M)
+-
+ /*
+  * load and store whole register instructions
+  */
 -- 
 2.40.1
 
