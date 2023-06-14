@@ -2,87 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C587072F322
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 05:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF5372F329
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Jun 2023 05:41:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9HNF-0006N9-Pw; Tue, 13 Jun 2023 23:40:45 -0400
+	id 1q9HNk-0006kp-Ia; Tue, 13 Jun 2023 23:41:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9HND-0006Ll-6O
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 23:40:43 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <hughd@google.com>) id 1q9HNi-0006gT-0L
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 23:41:14 -0400
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q9HNA-00068c-Gx
- for qemu-devel@nongnu.org; Tue, 13 Jun 2023 23:40:42 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-31109cd8d8cso106613f8f.2
- for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 20:40:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <hughd@google.com>) id 1q9HNf-0006HW-N6
+ for qemu-devel@nongnu.org; Tue, 13 Jun 2023 23:41:13 -0400
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-56d304e5f83so2661537b3.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Jun 2023 20:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686714038; x=1689306038;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=L6K/NmwQs8K/GbD67mVMV6a2RgYlMcLBnHP5k6Y04s4=;
- b=iorcpyY999QWehIb+CAgrA/F1N36in6cm7c1xcz3U7MfL2vyFgHedlBylx1ziCuvVS
- 6hDNVpZ6lP7/9eAFG96KxzKNl2HhnwnKPK5QObniPPw2KacRaR45KHN5BNwQ/fBN1TXQ
- U5RpYQn/tF0sz0HWy9+ubLlJ7YnSBixn33/5t6Eq0CtS6cKkyc6K6OYYMQ/eFjAqYHCb
- hXETirYPQAPIQA8VlSLXLSEaDNiuMIatOAOvJhC+kyTgDnkFMtRqcljuLWr2TCuqESGi
- ocDTciV7b4uNGmeum+J6Upimotn2JRrMfMVdsGmEYxK3plrzy86NRJ5xIlO+VqD33li6
- D79Q==
+ d=google.com; s=20221208; t=1686714070; x=1689306070;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=89E/vNm15KXI4BNl5Qj1rAiYLsSjfnECEfyhr24KnlQ=;
+ b=vKTCEq/gV+PVeQNXgMkpr+n7v5Y/DXhSWm8RnVXfDxcCC+faivAk0lNIjtdHQFn8Sa
+ BgWYqlj92ejqHVkr5i/UNnuCNju9kW52golDDRmlzB4jLuwh8zjt7CQofNLG+RhgD9FS
+ x2io964yVNzQHIQprnB67rxEXKMUPeUAvM32bdh8zZcn3rxYJsLwEDgwkJIzFwtn9DQr
+ pzIQ3oOLP1aaCBfAQ00kOxXpp68UriNs3EjF+FUBbb5pls3Z2TJMn+e9hmzPr2pKjffK
+ JGuQhr4vY87GLfRZ92kpYzlDA2SL93gxuxlDYkT2a5N5IptTgXwoAd0wICSLzPvzIKuU
+ WI1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686714038; x=1689306038;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L6K/NmwQs8K/GbD67mVMV6a2RgYlMcLBnHP5k6Y04s4=;
- b=jg/XPA9cn6MEKsCxPcn0YE1jHgzKrFGH+6TETz3lUtkjYJtm7mKp0/0yaPVJP+22Dl
- uQYIjYcp+qTP0znYBte1kCfUUC0sS6b5kxdJFCkzGwmG6o0zReIGRtaZMs71txUQPwyH
- +8FEgvGDLKQjmSh+l5T3abrqY4IH5EThGWeqoi/HBxbQNBtSntKyNQIH2jh0hi8dvBhu
- W+aeRDQHAfcXsHAmpT1hEIgOh/eVXJbtSlOiT7mmNasJuDsCcUfllIfmonYFSkUrlBTs
- r5dMCbQUt4xWBp8Dlmak118nLwt/6IpbQyehLsDv3rjSAEfmo2S4jDZDQfuSKDw2BAlk
- MDrQ==
-X-Gm-Message-State: AC+VfDyhxCF9FsX4J5qKQE8c2xFXcRR5MEorTvwdSAzkdeGq961b9LTu
- rXST43naSIxzQmhaxnB9JN40KA==
-X-Google-Smtp-Source: ACHHUZ4aWTG5W05cUIT4zylXDSRz78kF6JI8I9XWAoMiPFUy6icBSFAV4yrrX70Rn2DB1VQxr5htrw==
-X-Received: by 2002:adf:fa85:0:b0:30f:ba73:dff8 with SMTP id
- h5-20020adffa85000000b0030fba73dff8mr6002074wrr.28.1686714038089; 
- Tue, 13 Jun 2023 20:40:38 -0700 (PDT)
-Received: from [192.168.4.112] (90-182-62-66.rcp.o2.cz. [90.182.62.66])
+ d=1e100.net; s=20221208; t=1686714070; x=1689306070;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=89E/vNm15KXI4BNl5Qj1rAiYLsSjfnECEfyhr24KnlQ=;
+ b=LtWLA8BxZOInC6a7u/6u20bWHaE9uraxFyuG/vuUImH+wrOCmPwulNZLuHsCzvsFJt
+ 28xlkV82gRZqV48FE2K+SVb29BP0rid40Ju9O3mKuEGS5d9JPAvujKukfabqbQG+OHoU
+ sgjEOwnjbO+gzX09u1xMmDkZOFRpksdueakPI5crJJ0j7ADj7tqR29qoAUsfbeemcNLS
+ /e4zKGqVtKnjJ0eHQFUp6fzKeajklv15j75O/VKlK0cK1vYY32hbm0lc17494jV4HeZM
+ JPiVzxUR7g0EhaMw/pe/cKt+n3svSbqApg438XPILKWAfZZoRgbKj4Cztv6lBxl48wAd
+ GbVw==
+X-Gm-Message-State: AC+VfDxlqmnH5tTPEmMQHCBfJy6THA7OCdmoRraGzRCV5wKahHOsHGZo
+ by/dx7Q/8ZeT0XibBK6U5LwwLA==
+X-Google-Smtp-Source: ACHHUZ5XIq5blHpZPaXxTMKFfNHRQa1tcMVkEWdNxYUmPW3WiJJjwg4PcLqdZC9W6ULm6CU+iXKYfg==
+X-Received: by 2002:a0d:d6d5:0:b0:55d:626c:b62f with SMTP id
+ y204-20020a0dd6d5000000b0055d626cb62fmr563052ywd.51.1686714069952; 
+ Tue, 13 Jun 2023 20:41:09 -0700 (PDT)
+Received: from ripple.attlocal.net
+ (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
  by smtp.gmail.com with ESMTPSA id
- q25-20020a7bce99000000b003f17848673fsm16017895wmj.27.2023.06.13.20.40.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Jun 2023 20:40:37 -0700 (PDT)
-Message-ID: <cd379806-ef2b-d13e-472c-a15d21532bb3@linaro.org>
-Date: Wed, 14 Jun 2023 05:40:35 +0200
+ f9-20020a816a09000000b00545dc7c4a9esm38074ywc.111.2023.06.13.20.41.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Jun 2023 20:41:09 -0700 (PDT)
+Date: Tue, 13 Jun 2023 20:40:58 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: David Hildenbrand <david@redhat.com>
+cc: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>, 
+ Mike Kravetz <mike.kravetz@oracle.com>, 
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ Hugh Dickins <hughd@google.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ "Kim, Dongwon" <dongwon.kim@intel.com>, 
+ "Chang, Junxiao" <junxiao.chang@intel.com>, 
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, 
+ "Hocko, Michal" <mhocko@suse.com>, 
+ "jmarchan@redhat.com" <jmarchan@redhat.com>, 
+ "muchun.song@linux.dev" <muchun.song@linux.dev>, 
+ James Houghton <jthoughton@google.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
+In-Reply-To: <676ee47d-8ca0-94c4-7454-46e9915ea36a@redhat.com>
+Message-ID: <5dd5b94c-7bf-4de-40db-aeea8aa7b45e@google.com>
+References: <20230608204927.88711-1-mike.kravetz@oracle.com>
+ <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <281caf4f-25da-3a73-554b-4fb252963035@redhat.com>
+ <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <676ee47d-8ca0-94c4-7454-46e9915ea36a@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 03/38] tests/multiarch: Add test-aes
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: ardb@kernel.org, berrange@redhat.com, qemu-ppc@nongnu.org,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- qemu-devel@nongnu.org
-References: <20230609022401.684157-1-richard.henderson@linaro.org>
- <20230609022401.684157-4-richard.henderson@linaro.org>
- <87zg5468ed.fsf@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87zg5468ed.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=hughd@google.com; helo=mail-yw1-x1129.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,33 +109,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/12/23 16:46, Alex Bennée wrote:
+On Tue, 13 Jun 2023, David Hildenbrand wrote:
+> On 13.06.23 10:26, Kasireddy, Vivek wrote:
+> >> On 12.06.23 09:10, Kasireddy, Vivek wrote:
+> >>> Sorry for the late reply; I just got back from vacation.
+> >>> If it is unsafe to directly use the subpages of a hugetlb page, then
+> >>> reverting
+> >>> this patch seems like the only option for addressing this issue
+> >>> immediately.
+> >>> So, this patch is
+> >>> Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> >>>
+> >>> As far as the use-case is concerned, there are two main users of the
+> >> udmabuf
+> >>> driver: Qemu and CrosVM VMMs. However, it appears Qemu is the only
+> >> one
+> >>> that uses hugetlb pages (when hugetlb=on is set) as the backing store for
+> >>> Guest (Linux, Android and Windows) system memory. The main goal is to
+> >>> share the pages associated with the Guest allocated framebuffer (FB) with
+> >>> the Host GPU driver and other components in a zero-copy way. To that
+> >> end,
+> >>> the guest GPU driver (virtio-gpu) allocates 4k size pages (associated with
+> >>> the FB) and pins them before sharing the (guest) physical (or dma)
+> >> addresses
+> >>> (and lengths) with Qemu. Qemu then translates the addresses into file
+> >>> offsets and shares these offsets with udmabuf.
+> >>
+> >> Is my understanding correct, that we can effectively long-term pin
+> >> (worse than mlock) 64 MiB per UDMABUF_CREATE, allowing eventually !root
+> > The 64 MiB limit is the theoretical upper bound that we have not seen hit in
+> > practice. Typically, for a 1920x1080 resolution (commonly used in Guests),
+> > the size of the FB is ~8 MB (1920x1080x4). And, most modern Graphics
+> > compositors flip between two FBs.
+> > 
 > 
-> Richard Henderson <richard.henderson@linaro.org> writes:
+> Okay, but users with privileges to open that file can just create as many as
+> they want? I think I'll have to play with it.
 > 
->> Use a shared driver and backends for i386, aarch64, ppc64, riscv64.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   tests/tcg/aarch64/test-aes.c            |  58 ++++++++
->>   tests/tcg/i386/test-aes.c               |  68 +++++++++
->>   tests/tcg/ppc64/test-aes.c              | 116 +++++++++++++++
->>   tests/tcg/riscv64/test-aes.c            |  76 ++++++++++
->>   tests/tcg/multiarch/test-aes-main.c.inc | 183
->> ++++++++++++++++++++++++
+> >> users
+> >>
+> >> ll /dev/udmabuf
+> >> crw-rw---- 1 root kvm 10, 125 12. Jun 08:12 /dev/udmabuf
+> >>
+> >> to bypass there effective MEMLOCK limit, fragmenting physical memory and
+> >> breaking swap?
+> > Right, it does not look like the mlock limits are honored.
+> > 
 > 
-> I find it odd the file with the main function is the c.inc and the per
-> guest impl's are the plain .c files. Is it possible to have it the other
-> way around?
+> That should be added.
 
-Not with the way tests/tcg is structured, no.
+Agreed.
 
-> If we have a fallback library function for aes then we could
-> enable the test for all targets (a true multiarch test) with some having CPU specific
-> accelerations where available.
+> 
+> >>
+> >> Regarding the udmabuf_vm_fault(), I assume we're mapping pages we
+> >> obtained from the memfd ourselves into a special VMA (mmap() of the
+> > mmap operation is really needed only if any component on the Host needs
+> > CPU access to the buffer. But in most scenarios, we try to ensure direct GPU
+> > access (h/w acceleration via gl) to these pages.
+> > 
+> >> udmabuf). I'm not sure how well shmem pages are prepared for getting
+> >> mapped by someone else into an arbitrary VMA (page->index?).
+> > Most drm/gpu drivers use shmem pages as the backing store for FBs and
+> > other buffers and also provide mmap capability. What concerns do you see
+> > with this approach?
+> 
+> Are these mmaping the pages the way udmabuf maps these pages (IOW, on-demand
+> fault where we core-mm will adjust the mapcount etc)?
+> 
+> Skimming over at shmem_read_mapping_page() users, I assume most of them use a
+> VM_PFNMAP mapping (or don't mmap them at all), where we won't be messing with
+> the struct page at all.
+> 
+> (That might even allow you to mmap hugetlb sub-pages, because the struct page
+> -- and mapcount -- will be ignored completely and not touched.)
 
-We don't have that either.
+You're well ahead of me: I didn't reach an understanding of whether or not
+mapcount would get manipulated here - though if Junxiao's original patch
+did fix the immediate hugetlb symptoms, presumably it is (and without much
+point, since udmabuf holds on to that extra reference which pins each
+page for the duration).
 
+> 
+> > 
+> >>
+> >> ... also, just imagine someone doing FALLOC_FL_PUNCH_HOLE / ftruncate()
+> >> on the memfd. What's mapped into the memfd no longer corresponds to
+> >> what's pinned / mapped into the VMA.
+> > IIUC, making use of the DMA_BUF_IOCTL_SYNC ioctl would help with any
+> > coherency issues:
+> > https://www.kernel.org/doc/html/v6.2/driver-api/dma-buf.html#c.dma_buf_sync
+> > 
+> 
+> Would it as of now? udmabuf_create() pulls the shmem pages out of the memfd,
+> not sure how DMA_BUF_IOCTL_SYNC would help to update that whenever the pages
+> inside the memfd would change (e.g., FALLOC_FL_PUNCH_HOLE + realloc).
+> 
+> But that's most probably simply "not supported".
 
-r~
+Yes, the pages which udmabuf is holding would be the originals: they will
+then be detached from the hole-punched file, and subsequent faults or writes
+to that backing file (through shmem, rather than through udmabuf) can fill
+in the holes with new, different pages.  So long as that's well understood,
+then it's not necessarily a disaster.
+
+I see udmabuf asks for SEAL_SHRINK (I guess to keep away from SIGBUS),
+but refuses SEAL_WRITE - so hole-punching remains permitted.
+
+> 
+> >>
+> >>
+> >> Was linux-mm (and especially shmem maintainers, ccing Hugh) involved in
+> >> the upstreaming of udmabuf?
+
+Thanks for the Cc, David.  No, I wasn't involved at all; but I probably
+would not have understood their needs much better then than now.
+
+I don't see anything obviously wrong with its use of shmem, aside from
+the unlimited pinning of pages which you pointed out; and I'll tend to
+assume that it's okay, from its five years of use.  But certainly the
+more recent addition of hugetlb was mistaken, and needs to be reverted.
+
+> > It does not appear so from the link below although other key lists were
+> > cc'd:
+> > https://patchwork.freedesktop.org/patch/246100/?series=39879&rev=7
+
+The i915 folks (looks like Daniel Vetter was involved there) have been
+using shmem_read_mapping_page() for a very long time: but they take care
+to register a shrinker and swap out under pressure, rather than holding
+pins indefinitely.
+
+I wonder, if we're taking MFD_HUGETLB away from them, whether this
+would be another call for MFD_HUGEPAGE (shmem memfd using THPs):
+https://lore.kernel.org/linux-mm/c140f56a-1aa3-f7ae-b7d1-93da7d5a3572@google.com/
+
+And that series did also support F_MEM_LOCK, which could be used to
+help with the accounting of the locked pages.  (But IIRC the necessary
+way of accounting changed just afterwards - or was it just before? -
+so that old series may not show what's needed today.)
+
+I was happy with using fcntls in that series; but could not decide the
+right restrictionss for F_MEM_UNLOCK (how assured is a memlock if anyone
+can unlock it?) - maybe F_MEM_UNLOCK should be refused while pins are
+outstanding.
+
+But I digress.  Yes, please do revert that hugetlb usage from udmabuf.
+
+Hugh
+
+> 
+> That's unfortunate :(
+> 
+> -- 
+> Cheers,
+> 
+> David / dhildenb
 
