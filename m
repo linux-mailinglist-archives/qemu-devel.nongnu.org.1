@@ -2,53 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87D0731F44
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 19:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 488C07320E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 22:28:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9qt9-0000gS-Lh; Thu, 15 Jun 2023 13:36:03 -0400
+	id 1q9tYQ-00027a-BG; Thu, 15 Jun 2023 16:26:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
- id 1q9qt7-0000fL-PS; Thu, 15 Jun 2023 13:36:01 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1q9tYO-000279-60
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 16:26:48 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
- id 1q9qt5-0007kh-B3; Thu, 15 Jun 2023 13:36:01 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhqFm2dcTz4x0H;
- Fri, 16 Jun 2023 03:35:56 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhqFk1KJ0z4x08;
- Fri, 16 Jun 2023 03:35:53 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 6/6] target/arm: Allow users to set the number of VFP registers
-Date: Thu, 15 Jun 2023 19:35:25 +0200
-Message-Id: <20230615173525.428831-7-clg@kaod.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230615173525.428831-1-clg@kaod.org>
-References: <20230615173525.428831-1-clg@kaod.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=xCJj=CD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1q9tYM-0002FU-LO
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 16:26:47 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35FGJkpn028481; Thu, 15 Jun 2023 20:26:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id; s=corp-2023-03-30;
+ bh=+Z9yrGG1vzAC8u6kCO4qi5GqX85nrZ5FcFYxcpseHRE=;
+ b=ua/Xh2XEqXf3fHRV5xET0vdh9ir3jSHRX/M+08GGldeWjxBXVwWzj6SauGXpnRVjh6Rs
+ HJeRKaLgQhxbW4iMg9NvbRFoSR2rFiwQrDZp/siSdN6SbTZ64TKuj/gm5sxMchp485Qw
+ EJ5N2qQvpYTdwvzY8YaORO8znpoSQzoHmm5/0DnyV2l3LxCkQkPkXPSnBFOhihZBUdOS
+ WoRrrUi3zNGuc9iwmUrCFjgnRLyt1YHn2xRhOftnVKexCBFY8zysky2QyyPMFC6mLkOf
+ dOXll/+BhmpqnXXpSh3Uah63lhA7dUTG8yemwiR+IfAGjgLXUCQyDFsKIoFB81Dy2mtG dQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r4g3bu21h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 Jun 2023 20:26:42 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35FKDTeX038916; Thu, 15 Jun 2023 20:26:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3r4fm75mmw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 Jun 2023 20:26:41 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35FKQeq4003391;
+ Thu, 15 Jun 2023 20:26:40 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 3r4fm75mmg-1; Thu, 15 Jun 2023 20:26:40 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V1 0/3] fix migration of suspended runstate
+Date: Thu, 15 Jun 2023 13:26:37 -0700
+Message-Id: <1686860800-34667-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-15_16,2023-06-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ suspectscore=0
+ mlxscore=0 adultscore=0 spamscore=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306150176
+X-Proofpoint-ORIG-GUID: ZGCEfSWj6RHyfHsEAMJI4tiH_G1sxYxb
+X-Proofpoint-GUID: ZGCEfSWj6RHyfHsEAMJI4tiH_G1sxYxb
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,107 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cortex A7 CPUs with an FPU implementing VFPv4 without NEON support
-have 16 64-bit FPU registers and not 32 registers. Let users set the
-number of VFP registers with a CPU property.
+Migration of a guest in the suspended runstate is broken.
+The incoming migration code automatically tries to wake the guest,
+which IMO is wrong -- the guest should end migration in the same
+runstate it started.  Further, the automatic wakeup fails.  The guest
+appears to be running, but is not.  See the commit messages for
+the details.
 
-The primary use case of this property is for the Cortex A7 of the
-Aspeed AST2600 SoC.
+Steve Sistare (3):
+  vl: start on wakeup request
+  migration: fix suspended runstate
+  tests/qtest: live migration suspended state
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- target/arm/cpu.h        |  2 ++
- hw/arm/aspeed_ast2600.c |  2 ++
- target/arm/cpu.c        | 32 ++++++++++++++++++++++++++++++++
- 3 files changed, 36 insertions(+)
+ include/sysemu/runstate.h            |  1 +
+ migration/migration.c                | 11 +++-----
+ softmmu/runstate.c                   | 16 +++++++++++-
+ tests/migration/i386/Makefile        |  5 ++--
+ tests/migration/i386/a-b-bootblock.S | 49 +++++++++++++++++++++++++++++++++---
+ tests/migration/i386/a-b-bootblock.h | 22 ++++++++++------
+ tests/qtest/migration-helpers.c      |  2 +-
+ tests/qtest/migration-test.c         | 31 +++++++++++++++++++++--
+ 8 files changed, 112 insertions(+), 25 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 36c608f0e6e1..af0119addfb6 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -924,6 +924,8 @@ struct ArchCPU {
-     bool has_pmu;
-     /* CPU has VFP */
-     bool has_vfp;
-+    /* CPU has 32 VFP registers */
-+    bool has_vfp_d32;
-     /* CPU has Neon */
-     bool has_neon;
-     /* CPU has M-profile DSP extension */
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 1bf12461481c..a8b3a8065a11 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -316,6 +316,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-                                 &error_abort);
-         object_property_set_bool(OBJECT(&s->cpu[i]), "neon", false,
-                                 &error_abort);
-+        object_property_set_bool(OBJECT(&s->cpu[i]), "vfp-d32", false,
-+                                &error_abort);
-         object_property_set_link(OBJECT(&s->cpu[i]), "memory",
-                                  OBJECT(s->memory), &error_abort);
- 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 4d5bb57f0797..353fc4856739 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1277,6 +1277,9 @@ static Property arm_cpu_cfgend_property =
- static Property arm_cpu_has_vfp_property =
-             DEFINE_PROP_BOOL("vfp", ARMCPU, has_vfp, true);
- 
-+static Property arm_cpu_has_vfp_d32_property =
-+            DEFINE_PROP_BOOL("vfp-d32", ARMCPU, has_vfp_d32, true);
-+
- static Property arm_cpu_has_neon_property =
-             DEFINE_PROP_BOOL("neon", ARMCPU, has_neon, true);
- 
-@@ -1408,6 +1411,22 @@ void arm_cpu_post_init(Object *obj)
-         }
-     }
- 
-+    if (cpu->has_vfp && cpu_isar_feature(aa32_simd_r32, cpu)) {
-+        cpu->has_vfp_d32 = true;
-+        if (!kvm_enabled()) {
-+            /*
-+             * The permitted values of the SIMDReg bits [3:0] on
-+             * Armv8-A are either 0b0000 and 0b0010. On such CPUs,
-+             * make sure that has_vfp_d32 can not be set to false.
-+             */
-+            if (!(arm_feature(&cpu->env, ARM_FEATURE_V8) &&
-+                  !arm_feature(&cpu->env, ARM_FEATURE_M))) {
-+                qdev_property_add_static(DEVICE(obj),
-+                                         &arm_cpu_has_vfp_d32_property);
-+            }
-+        }
-+    }
-+
-     if (arm_feature(&cpu->env, ARM_FEATURE_NEON)) {
-         cpu->has_neon = true;
-         if (!kvm_enabled()) {
-@@ -1674,6 +1693,19 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    if (cpu->has_vfp_d32 != cpu->has_neon) {
-+        error_setg(errp, "ARM CPUs must have both VFP-D32 and Neon or neither");
-+        return;
-+    }
-+
-+   if (!cpu->has_vfp_d32) {
-+        uint32_t u;
-+
-+        u = cpu->isar.mvfr0;
-+        u = FIELD_DP32(u, MVFR0, SIMDREG, 1); /* 16 registers */
-+        cpu->isar.mvfr0 = u;
-+    }
-+
-     if (!cpu->has_vfp) {
-         uint64_t t;
-         uint32_t u;
 -- 
-2.40.1
+1.8.3.1
 
 
