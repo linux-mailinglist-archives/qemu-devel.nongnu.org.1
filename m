@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB6C731F53
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 19:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E70C1731F63
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 19:39:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9qt4-0000c9-4W; Thu, 15 Jun 2023 13:35:58 -0400
+	id 1q9qt6-0000cX-2g; Thu, 15 Jun 2023 13:36:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
- id 1q9qsu-0000Zp-RO; Thu, 15 Jun 2023 13:35:48 -0400
+ id 1q9qsu-0000Zr-Re; Thu, 15 Jun 2023 13:35:48 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
- id 1q9qsq-0007g9-6P; Thu, 15 Jun 2023 13:35:48 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhqFM0bsCz4x0D;
- Fri, 16 Jun 2023 03:35:35 +1000 (AEST)
+ id 1q9qsp-0007gQ-JS; Thu, 15 Jun 2023 13:35:48 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhqFP44Z3z4x0G;
+ Fri, 16 Jun 2023 03:35:37 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhqFK2nQDz4x0B;
- Fri, 16 Jun 2023 03:35:33 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhqFM4TqKz4x0B;
+ Fri, 16 Jun 2023 03:35:35 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Ninad Palsule <ninad@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 0/6] aspeed queue
-Date: Thu, 15 Jun 2023 19:35:19 +0200
-Message-Id: <20230615173525.428831-1-clg@kaod.org>
+Subject: [PULL 1/6] hw/arm/aspeed: Add VPD data for Rainier machine
+Date: Thu, 15 Jun 2023 19:35:20 +0200
+Message-Id: <20230615173525.428831-2-clg@kaod.org>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230615173525.428831-1-clg@kaod.org>
+References: <20230615173525.428831-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -62,45 +66,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 7efd65423ab22e6f5890ca08ae40c84d6660242f:
+From: Ninad Palsule <ninad@linux.ibm.com>
 
-  Merge tag 'pull-riscv-to-apply-20230614' of https://github.com/alistair23/qemu into staging (2023-06-14 05:28:51 +0200)
+The current modeling of Rainier machine creates zero filled VPDs(EEPROMs).
+This makes some services and applications unhappy and causing them to fail.
+Hence this drop adds some fabricated data for system and BMC FRU so that
+vpd services are happy and active.
 
-are available in the Git repository at:
+Tested:
+   - The system-vpd.service is active.
+   - VPD service related to bmc is active.
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20230615
+Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+[ clg: commit title cleanup ]
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ hw/arm/aspeed_eeprom.h |  5 +++++
+ hw/arm/aspeed.c        |  6 ++++--
+ hw/arm/aspeed_eeprom.c | 45 +++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 53 insertions(+), 3 deletions(-)
 
-for you to fetch changes up to 42bea956f6f7477c06186c7add62fa0107a27a9c:
+diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+index 86db6f0479b7..bbf9e54365b8 100644
+--- a/hw/arm/aspeed_eeprom.h
++++ b/hw/arm/aspeed_eeprom.h
+@@ -22,4 +22,9 @@ extern const size_t fby35_bmc_fruid_len;
+ extern const uint8_t yosemitev2_bmc_fruid[];
+ extern const size_t yosemitev2_bmc_fruid_len;
+ 
++extern const uint8_t rainier_bb_fruid[];
++extern const size_t rainier_bb_fruid_len;
++extern const uint8_t rainier_bmc_fruid[];
++extern const size_t rainier_bmc_fruid_len;
++
+ #endif
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 0b29028fe115..bfc2070bd2ed 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -788,8 +788,10 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
+                      0x48);
+     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 8), TYPE_TMP105,
+                      0x4a);
+-    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 8), 0x50, 64 * KiB);
+-    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 8), 0x51, 64 * KiB);
++    at24c_eeprom_init_rom(aspeed_i2c_get_bus(&soc->i2c, 8), 0x50,
++                          64 * KiB, rainier_bb_fruid, rainier_bb_fruid_len);
++    at24c_eeprom_init_rom(aspeed_i2c_get_bus(&soc->i2c, 8), 0x51,
++                          64 * KiB, rainier_bmc_fruid, rainier_bmc_fruid_len);
+     create_pca9552(soc, 8, 0x60);
+     create_pca9552(soc, 8, 0x61);
+     /* Bus 8: ucd90320@11 */
+diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+index dc33a88a5466..ace5266cec91 100644
+--- a/hw/arm/aspeed_eeprom.c
++++ b/hw/arm/aspeed_eeprom.c
+@@ -119,9 +119,52 @@ const uint8_t yosemitev2_bmc_fruid[] = {
+     0x6e, 0x66, 0x69, 0x67, 0x20, 0x41, 0xc1, 0x45,
+ };
+ 
++const uint8_t rainier_bb_fruid[] = {
++    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84,
++    0x28, 0x00, 0x52, 0x54, 0x04, 0x56, 0x48, 0x44, 0x52, 0x56, 0x44, 0x02,
++    0x01, 0x00, 0x50, 0x54, 0x0e, 0x56, 0x54, 0x4f, 0x43, 0x00, 0x00, 0x37,
++    0x00, 0x4a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0x46, 0x08, 0x00, 0x00,
++    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46, 0x00, 0x52, 0x54,
++    0x04, 0x56, 0x54, 0x4f, 0x43, 0x50, 0x54, 0x38, 0x56, 0x49, 0x4e, 0x49,
++    0x00, 0x00, 0x81, 0x00, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x56, 0x53,
++    0x59, 0x53, 0x00, 0x00, 0xbb, 0x00, 0x27, 0x00, 0x00, 0x00, 0x00, 0x00,
++    0x56, 0x43, 0x45, 0x4e, 0x00, 0x00, 0xe2, 0x00, 0x27, 0x00, 0x00, 0x00,
++    0x00, 0x00, 0x56, 0x53, 0x42, 0x50, 0x00, 0x00, 0x09, 0x01, 0x19, 0x00,
++    0x00, 0x00, 0x00, 0x00, 0x50, 0x46, 0x01, 0x00, 0x00, 0x00, 0x36, 0x00,
++    0x52, 0x54, 0x04, 0x56, 0x49, 0x4e, 0x49, 0x44, 0x52, 0x04, 0x44, 0x45,
++    0x53, 0x43, 0x48, 0x57, 0x02, 0x30, 0x31, 0x43, 0x43, 0x04, 0x33, 0x34,
++    0x35, 0x36, 0x46, 0x4e, 0x04, 0x46, 0x52, 0x34, 0x39, 0x53, 0x4e, 0x04,
++    0x53, 0x52, 0x31, 0x32, 0x50, 0x4e, 0x04, 0x50, 0x52, 0x39, 0x39, 0x50,
++    0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0x00, 0x52, 0x54,
++    0x04, 0x56, 0x53, 0x59, 0x53, 0x53, 0x45, 0x07, 0x49, 0x42, 0x4d, 0x53,
++    0x59, 0x53, 0x31, 0x54, 0x4d, 0x08, 0x32, 0x32, 0x32, 0x32, 0x2d, 0x32,
++    0x32, 0x32, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23,
++    0x00, 0x52, 0x54, 0x04, 0x56, 0x43, 0x45, 0x4e, 0x53, 0x45, 0x07, 0x31,
++    0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x46, 0x43, 0x08, 0x31, 0x31, 0x31,
++    0x31, 0x2d, 0x31, 0x31, 0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00,
++    0x00, 0x00, 0x15, 0x00, 0x52, 0x54, 0x04, 0x56, 0x53, 0x42, 0x50, 0x49,
++    0x4d, 0x04, 0x50, 0x00, 0x10, 0x01, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00,
++    0x00, 0x00,
++};
++
++/* Rainier BMC FRU */
++const uint8_t rainier_bmc_fruid[] = {
++    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84,
++    0x28, 0x00, 0x52, 0x54, 0x04, 0x56, 0x48, 0x44, 0x52, 0x56, 0x44, 0x02,
++    0x01, 0x00, 0x50, 0x54, 0x0e, 0x56, 0x54, 0x4f, 0x43, 0x00, 0x00, 0x37,
++    0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0x46, 0x08, 0x00, 0x00,
++    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x52, 0x54,
++    0x04, 0x56, 0x54, 0x4f, 0x43, 0x50, 0x54, 0x0e, 0x56, 0x49, 0x4e, 0x49,
++    0x00, 0x00, 0x57, 0x00, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0x46,
++    0x01, 0x00, 0x00, 0x00, 0x1a, 0x00, 0x52, 0x54, 0x04, 0x56, 0x49, 0x4e,
++    0x49, 0x44, 0x52, 0x04, 0x44, 0x45, 0x53, 0x43, 0x48, 0x57, 0x02, 0x30,
++    0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
++};
++
+ const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
+ const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
+ const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
+ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
+-
+ const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
++const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
++const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
+-- 
+2.40.1
 
-  target/arm: Allow users to set the number of VFP registers (2023-06-15 18:35:58 +0200)
-
-----------------------------------------------------------------
-aspeed queue:
-
-* extension of the rainier machine with VPD contents
-* fixes for Coverity issues
-* new "bmc-console" machine option
-* new "vfp-d32" ARM CPU property
-
-----------------------------------------------------------------
-Cédric Le Goater (5):
-      aspeed/hace: Initialize g_autofree pointer
-      aspeed: Introduce a boot_rom region at the machine level
-      aspeed: Use the boot_rom region of the fby35 machine
-      aspeed: Introduce a "bmc-console" machine option
-      target/arm: Allow users to set the number of VFP registers
-
-Ninad Palsule (1):
-      hw/arm/aspeed: Add VPD data for Rainier machine
-
- docs/system/arm/aspeed.rst | 11 +++++++++
- hw/arm/aspeed_eeprom.h     |  5 ++++
- target/arm/cpu.h           |  2 ++
- hw/arm/aspeed.c            | 58 ++++++++++++++++++++++++++++++++++++++--------
- hw/arm/aspeed_ast2600.c    |  2 ++
- hw/arm/aspeed_eeprom.c     | 45 ++++++++++++++++++++++++++++++++++-
- hw/arm/fby35.c             | 29 ++++++++++++-----------
- hw/misc/aspeed_hace.c      |  2 +-
- target/arm/cpu.c           | 32 +++++++++++++++++++++++++
- 9 files changed, 160 insertions(+), 26 deletions(-)
 
