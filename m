@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849A1731F5F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 19:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D9D731F43
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 19:37:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9qt7-0000ei-Kn; Thu, 15 Jun 2023 13:36:01 -0400
+	id 1q9qt9-0000gC-Fx; Thu, 15 Jun 2023 13:36:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
- id 1q9qt4-0000cw-6F; Thu, 15 Jun 2023 13:35:58 -0400
+ id 1q9qt6-0000e6-6u; Thu, 15 Jun 2023 13:36:00 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
- id 1q9qt1-0007jb-Ge; Thu, 15 Jun 2023 13:35:57 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhqFf4PTVz4x0L;
- Fri, 16 Jun 2023 03:35:50 +1000 (AEST)
+ id 1q9qt2-0007k2-O6; Thu, 15 Jun 2023 13:35:59 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhqFj4ZFlz4x0G;
+ Fri, 16 Jun 2023 03:35:53 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhqFb5Jysz4x08;
- Fri, 16 Jun 2023 03:35:47 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhqFg1B2Mz4x0H;
+ Fri, 16 Jun 2023 03:35:50 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Delevoryas <peter@pjd.dev>, Joel Stanley <joel@jms.id.au>
-Subject: [PULL 4/6] aspeed: Use the boot_rom region of the fby35 machine
-Date: Thu, 15 Jun 2023 19:35:23 +0200
-Message-Id: <20230615173525.428831-5-clg@kaod.org>
+ Abhishek Singh Dagur <abhishek@drut.io>, Joel Stanley <joel@jms.id.au>
+Subject: [PULL 5/6] aspeed: Introduce a "bmc-console" machine option
+Date: Thu, 15 Jun 2023 19:35:24 +0200
+Message-Id: <20230615173525.428831-6-clg@kaod.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230615173525.428831-1-clg@kaod.org>
 References: <20230615173525.428831-1-clg@kaod.org>
@@ -63,71 +64,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change completes commits 5aa281d757 ("aspeed: Introduce a
-spi_boot region under the SoC") and 8b744a6a47 ("aspeed: Add a
-boot_rom overlap region in the SoC spi_boot container") which
-introduced a spi_boot container at the SoC level to map the boot rom
-region as an overlap.
+Most of the Aspeed machines use the UART5 device for the boot console,
+and QEMU connects the first serial Chardev to this SoC device for this
+purpose. See routine connect_serial_hds_to_uarts().
 
-It also fixes a Coverity report (CID 1508061) for a memory leak
-warning when the QEMU process exits by using an bmc_boot_rom
-MemoryRegion available at the machine level.
+Nevertheless, some machines use another boot console, such as the fuji,
+and commit 5d63d0c76c ("hw/arm/aspeed: Allow machine to set UART
+default") introduced a SoC class attribute 'uart_default' and property
+to be able to change the boot console device. It was later changed by
+commit d2b3eaefb4 ("aspeed: Refactor UART init for multi-SoC machines").
 
-Cc: Peter Delevoryas <peter@pjd.dev>
+The "bmc-console" machine option goes a step further and lets the user define
+the UART device from the QEMU command line without introducing a new
+machine definition. For instance, to use device UART3 (mapped on
+/dev/ttyS2 under Linux) instead of the default UART5, one would use :
+
+  -M ast2500-evb,bmc-console=uart3
+
+Cc: Abhishek Singh Dagur <abhishek@drut.io>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/arm/fby35.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ docs/system/arm/aspeed.rst | 11 +++++++++++
+ hw/arm/aspeed.c            | 40 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/fby35.c b/hw/arm/fby35.c
-index f4600c290b62..f2ff6c1abfd9 100644
---- a/hw/arm/fby35.c
-+++ b/hw/arm/fby35.c
-@@ -70,8 +70,6 @@ static void fby35_bmc_write_boot_rom(DriveInfo *dinfo, MemoryRegion *mr,
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index d4e293e7f986..80538422a1a4 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -122,6 +122,11 @@ Options specific to Aspeed machines are :
  
- static void fby35_bmc_init(Fby35State *s)
- {
--    DriveInfo *drive0 = drive_get(IF_MTD, 0, 0);
--
-     object_initialize_child(OBJECT(s), "bmc", &s->bmc, "ast2600-a3");
+  * ``spi-model`` to change the SPI Flash model.
  
-     memory_region_init(&s->bmc_memory, OBJECT(&s->bmc), "bmc-memory",
-@@ -95,18 +93,21 @@ static void fby35_bmc_init(Fby35State *s)
-     aspeed_board_init_flashes(&s->bmc.fmc, "n25q00", 2, 0);
++ * ``bmc-console`` to change the default console device. Most of the
++   machines use the ``UART5`` device for a boot console, which is
++   mapped on ``/dev/ttyS4`` under Linux, but it is not always the
++   case.
++
+ For instance, to start the ``ast2500-evb`` machine with a different
+ FMC chip and a bigger (64M) SPI chip, use :
  
-     /* Install first FMC flash content as a boot rom. */
--    if (drive0) {
--        AspeedSMCFlash *fl = &s->bmc.fmc.flashes[0];
--        MemoryRegion *boot_rom = g_new(MemoryRegion, 1);
--        uint64_t size = memory_region_size(&fl->mmio);
--
--        if (!s->mmio_exec) {
--            memory_region_init_rom(boot_rom, NULL, "aspeed.boot_rom",
--                                   size, &error_abort);
--            memory_region_add_subregion(&s->bmc_memory, FBY35_BMC_FIRMWARE_ADDR,
--                                        boot_rom);
--            fby35_bmc_write_boot_rom(drive0, boot_rom, FBY35_BMC_FIRMWARE_ADDR,
--                                     size, &error_abort);
-+    if (!s->mmio_exec) {
-+        DriveInfo *mtd0 = drive_get(IF_MTD, 0, 0);
+@@ -129,6 +134,12 @@ FMC chip and a bigger (64M) SPI chip, use :
+ 
+   -M ast2500-evb,fmc-model=mx25l25635e,spi-model=mx66u51235f
+ 
++To change the boot console and use device ``UART3`` (``/dev/ttyS2``
++under Linux), use :
 +
-+        if (mtd0) {
-+            AspeedSoCState *bmc = &s->bmc;
-+            uint64_t rom_size = memory_region_size(&bmc->spi_boot);
++.. code-block:: bash
 +
-+            memory_region_init_rom(&s->bmc_boot_rom, NULL, "aspeed.boot_rom",
-+                                   rom_size, &error_abort);
-+            memory_region_add_subregion_overlap(&bmc->spi_boot_container, 0,
-+                                                &s->bmc_boot_rom, 1);
-+
-+            fby35_bmc_write_boot_rom(mtd0, &s->bmc_boot_rom,
-+                                     FBY35_BMC_FIRMWARE_ADDR,
-+                                     rom_size, &error_abort);
++  -M ast2500-evb,bmc-console=uart3
+ 
+ Aspeed minibmc family boards (``ast1030-evb``)
+ ==================================================================
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 76a1e7303de1..6880998484cd 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -42,6 +42,7 @@ struct AspeedMachineState {
+     AspeedSoCState soc;
+     MemoryRegion boot_rom;
+     bool mmio_exec;
++    uint32_t uart_chosen;
+     char *fmc_model;
+     char *spi_model;
+ };
+@@ -333,10 +334,11 @@ static void connect_serial_hds_to_uarts(AspeedMachineState *bmc)
+     AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
+     AspeedSoCState *s = &bmc->soc;
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
++    int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
+ 
+-    aspeed_soc_uart_set_chr(s, amc->uart_default, serial_hd(0));
++    aspeed_soc_uart_set_chr(s, uart_chosen, serial_hd(0));
+     for (int i = 1, uart = ASPEED_DEV_UART1; i < sc->uarts_num; i++, uart++) {
+-        if (uart == amc->uart_default) {
++        if (uart == uart_chosen) {
+             continue;
          }
-     }
+         aspeed_soc_uart_set_chr(s, uart, serial_hd(i));
+@@ -1078,6 +1080,35 @@ static void aspeed_set_spi_model(Object *obj, const char *value, Error **errp)
+     bmc->spi_model = g_strdup(value);
  }
+ 
++static char *aspeed_get_bmc_console(Object *obj, Error **errp)
++{
++    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
++    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
++    int uart_chosen = bmc->uart_chosen ? bmc->uart_chosen : amc->uart_default;
++
++    return g_strdup_printf("uart%d", uart_chosen - ASPEED_DEV_UART1 + 1);
++}
++
++static void aspeed_set_bmc_console(Object *obj, const char *value, Error **errp)
++{
++    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
++    AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(bmc);
++    AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
++    int val;
++
++    if (sscanf(value, "uart%u", &val) != 1) {
++        error_setg(errp, "Bad value for \"uart\" property");
++        return;
++    }
++
++    /* The number of UART depends on the SoC */
++    if (val < 1 || val > sc->uarts_num) {
++        error_setg(errp, "\"uart\" should be in range [1 - %d]", sc->uarts_num);
++        return;
++    }
++    bmc->uart_chosen = ASPEED_DEV_UART1 + val - 1;
++}
++
+ static void aspeed_machine_class_props_init(ObjectClass *oc)
+ {
+     object_class_property_add_bool(oc, "execute-in-place",
+@@ -1086,6 +1117,11 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
+     object_class_property_set_description(oc, "execute-in-place",
+                            "boot directly from CE0 flash device");
+ 
++    object_class_property_add_str(oc, "bmc-console", aspeed_get_bmc_console,
++                                  aspeed_set_bmc_console);
++    object_class_property_set_description(oc, "bmc-console",
++                           "Change the default UART to \"uartX\"");
++
+     object_class_property_add_str(oc, "fmc-model", aspeed_get_fmc_model,
+                                    aspeed_set_fmc_model);
+     object_class_property_set_description(oc, "fmc-model",
 -- 
 2.40.1
 
