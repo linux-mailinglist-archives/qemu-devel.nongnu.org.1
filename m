@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79D9730C76
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 03:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87076730C78
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 03:01:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9bLE-0002Sw-56; Wed, 14 Jun 2023 21:00:00 -0400
+	id 1q9bMf-0003Jz-6s; Wed, 14 Jun 2023 21:01:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9bLB-0002SP-DT; Wed, 14 Jun 2023 20:59:57 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ id 1q9bMd-0003JF-De; Wed, 14 Jun 2023 21:01:27 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9bL9-0001qk-N3; Wed, 14 Jun 2023 20:59:56 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-55b78f40301so1053280eaf.0; 
- Wed, 14 Jun 2023 17:59:54 -0700 (PDT)
+ id 1q9bMb-0002I3-QK; Wed, 14 Jun 2023 21:01:27 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-544c0d768b9so5162103a12.0; 
+ Wed, 14 Jun 2023 18:01:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686790794; x=1689382794;
+ d=gmail.com; s=20221208; t=1686790883; x=1689382883;
  h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/MblX7+FiPWLQcEUwjuZdUkBHMD4GoC8mxKbcYUdANk=;
- b=iYovWwWm8A98Ckw/pU0Mq9FFq3Xkprm75aKMBHENgna53uyqCVy/+FUEEjMoF4DC+J
- euY32Rffb8g6BUP56eGaA3kebOJKYp5uvFxSPSM3M/MU8cP8fGDkPsmANoYwdnB5uiNS
- LdaZnNUqfFF4Trp9wyfMLCuA9L5/ZC9gpScexXK4yFyfoyx0pIWf0JqIkbZO+mtxl6wW
- EpDLIlML+kc+MbDvCEuQ9On8mlIJOqhP2jJQM6k/j6c3XAfTNvgbPQJEEKx7q8jXPcTl
- oKYmBrC9xYIdTQam+Rh0qQJZu+5vI6s38vat0a84WhE2ky+3hjBRekPjNCSB29+Rf0uP
- MfJQ==
+ bh=vH/WXODOmIy98dBl2mOicoCNcX8hlv1ZCu0sK5nORK8=;
+ b=gWC464gnjdE81UKPXmtzrnubmDescVYjco+hWfNaS0OTzUeIn/nDwLTTZGfWc8bXda
+ JKdlRxsHteTaCKFGbge/6GRnwJheV5zfQWdSGLQIWTzRB9//NgKDCcxW5TWqEho0dWkw
+ rNjA98JjN7F+f0nK9PLqmz2Cbky540ZxcTvOqYPxA8S2AVR6cubpsmxIMX7mD/P2z+E+
+ E9nRlU9WSN1Bzs/8n5JggRo/XWyieD6kztN0QEdi5/4vcmKC35Rde9sc8mXMlSORs+2n
+ c3XXJabI/CBfThZneSUzXUcajnKuPr+neitv6rHQdRwk8P/ctLA4K7M1XKKvsH3G6Qpc
+ UTIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686790794; x=1689382794;
+ d=1e100.net; s=20221208; t=1686790883; x=1689382883;
  h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=/MblX7+FiPWLQcEUwjuZdUkBHMD4GoC8mxKbcYUdANk=;
- b=iNZhhlJUQXNYknc5M3AouWRqyX+ZuykAP5ciRzJFXxBxnkHc6p1uBtVteTm0otZQAY
- 5pw5wQNWr0wYgkJarfuD63Rt4q5Pqi511cqyW9f2wjdVgaCPx2J3WyT672+FF3ioM7At
- /50BnaOSwXhJ+NsQDuWISPLlCMEBimUvg/UDpsm9HHPfMRKFMzXVIom6fTk6J/yEUFZ8
- rZm2R0dB8idxLKWTdtWx/tTixO+XXr0r1j1lbyDoVGPCP6IZ4lQWyZrAlUm1ml3OFR5D
- mqG9YRNJ8G5JmLrqC+cli958OVhV0vtdumqRAjWbJ61luR0Z1tbvKSAdJNv3UZvjrwRf
- yd6A==
-X-Gm-Message-State: AC+VfDxwCDR0/HD/xJrUTLy9Mt01U590ngpOtVPs3Em4396c9vSN348r
- UJEXCR54+YrStZwZpBNZ+Ws=
-X-Google-Smtp-Source: ACHHUZ7B73vekQtUAC7G/EiXgJj77im4NX9eXw+/xK81C9NT2HY4lnotJfcUe0RS6VPQimM54OO1hA==
-X-Received: by 2002:a54:4f84:0:b0:39c:4563:d23c with SMTP id
- g4-20020a544f84000000b0039c4563d23cmr11901645oiy.46.1686790793750; 
- Wed, 14 Jun 2023 17:59:53 -0700 (PDT)
+ bh=vH/WXODOmIy98dBl2mOicoCNcX8hlv1ZCu0sK5nORK8=;
+ b=EVq9JbHEdUPOnJBp7/49JdzQ851hdqhRzUREgjTvZtDb5pujK+xoYbdYxS+NuFhAgd
+ nOTqLAQq1+MJlxs6+tIObWMDg2riZcyt3QqYI+rEts38g89Rd3t3yLB/AD4hupfzTh39
+ RGHddkZdV1qeaEcMMRjxnKcARyDWPSHX03JXfkq7N26M+Ryr2UON1W8W6Ed8ok7TrQ6n
+ v7Rf38YHY0LpQS2kpyl//wpyLZF3wgUJUloKna3Um9hWzP7A8o6EcD/ApahiJ6FaJPRZ
+ p3cMl31QYUBHq/UX938UYGIdXAWkF+mKYSpIP5vtzAmMjXEHrZn2QyDpDzGmhkPKXkAP
+ 37pQ==
+X-Gm-Message-State: AC+VfDywhYNA2+qlnctecHYW6t3HfzAHigeNy6n/fo2iOYvaMlEiO68j
+ +PUlg0JHpLsqRUQGphvD52o=
+X-Google-Smtp-Source: ACHHUZ5N2XrYaJde8zT85t56EznBhcPoBGQc2mMrM+i6TlabySqv/ocM9HfMtHve884s+4MeWqIdvA==
+X-Received: by 2002:a17:90a:8a95:b0:25c:2dc:361f with SMTP id
+ x21-20020a17090a8a9500b0025c02dc361fmr3017584pjn.31.1686790883237; 
+ Wed, 14 Jun 2023 18:01:23 -0700 (PDT)
 Received: from localhost (14-203-144-223.static.tpgi.com.au. [14.203.144.223])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a17090a004c00b0025bf1ea918asm5959966pjb.55.2023.06.14.17.59.50
+ 28-20020a17090a031c00b0025c02ef91f6sm4849515pje.22.2023.06.14.18.01.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 17:59:53 -0700 (PDT)
+ Wed, 14 Jun 2023 18:01:22 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Jun 2023 10:59:48 +1000
-Message-Id: <CTCTFII272SS.1FS8EBMFYFE5G@wheely>
+Date: Thu, 15 Jun 2023 11:01:18 +1000
+Message-Id: <CTCTGNU6HWW8.3G84N87G7BWUN@wheely>
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>
 Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, <clg@kaod.org>, "Greg
  Kurz" <groug@kaod.org>, "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH 06/10] target/ppc: Readability improvements in exception
- handlers
+Subject: Re: [PATCH 04/10] target/ppc: Use env_cpu for cpu_abort in excp_helper
 X-Mailer: aerc 0.14.0
 References: <cover.1686522199.git.balaton@eik.bme.hu>
- <edbb93cb67b72bb948155932767ef989cddc8aa0.1686522199.git.balaton@eik.bme.hu>
- <CTC29HK3ZXQL.2GCE26RLVYS75@wheely>
- <38943a8a-5e25-8336-586a-615716ac1369@eik.bme.hu>
-In-Reply-To: <38943a8a-5e25-8336-586a-615716ac1369@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=npiggin@gmail.com; helo=mail-oo1-xc2f.google.com
+ <2323bc631817a134319fc1978531160986ecbe13.1686522199.git.balaton@eik.bme.hu>
+ <CTC24VY5AQCR.2VUJY58072BV9@wheely>
+ <439d20a4-f436-5007-9fa5-63d4162869a7@eik.bme.hu>
+In-Reply-To: <439d20a4-f436-5007-9fa5-63d4162869a7@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,29 +94,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 14, 2023 at 8:07 PM AEST, BALATON Zoltan wrote:
+On Wed Jun 14, 2023 at 8:13 PM AEST, BALATON Zoltan wrote:
 > On Wed, 14 Jun 2023, Nicholas Piggin wrote:
 > > On Mon Jun 12, 2023 at 8:42 AM AEST, BALATON Zoltan wrote:
-> >> Improve readability by shortening some long comments, removing
-> >> comments that state the obvious and dropping some empty lines so they
-> >> don't distract when reading the code.
+> >> Use the env_cpu function to get the CPUState for cpu_abort. These are
+> >> only needed in case of fatal errors so this allows to avoid casting
+> >> and storing CPUState in a local variable wnen not needed.
 > >
-> > Some changes are a matter of taste, but in the interest of having
-> > somebody do some spring cleaning of this code I don't want to nitpick
-> > it, so I won't :)
+> > I don't entirely mind keeping cs around as a variable...
 >
-> Thanks. I prefer functions to be less streched out vertically so more=20
-> lines fit in a single screen. Ideally the whole function should be visibl=
-e=20
-> so it's easier to comprehend than having to scroll around but if there's=
-=20
-> something really bothering you I can consider changing that. But if you=
-=20
-> can accept this as it is then that's less work for me.
+> What for? This was only needed for error messages so most of the time=20
+> useless and having less locals make the function a bit simpler. If this i=
+s=20
 
-I don't mind vertical white space, actually like it. I don't like too
-much stuff done per line.
+Declaring cs, cpu, env, etc at the start of the function is very common
+though so it doesn't take much thinking. You don't even need to look at
+the declaration to know what it is.
 
 Thanks,
 Nick
+
+> needed for something else than errors later it could be added back but=20
+> then it will only be in the model specific function that needs it.
+>
+> What I could change is to use CPU(cpu) instead of env_cpu(env) now that=
+=20
+> I've dropped the rest of the series that also changed the func parameter=
+=20
+> to get env instead of PowerPCCPU which may avoid some line breaks but not=
+=20
+> sure if that's any better.
+>
+> Regards,
+> BALATON Zoltan
+>
+> > Thanks,
+> > Nick
+> >
+> >>
+> >> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> >> ---
+> >>  target/ppc/excp_helper.c | 118 +++++++++++++++++++++-----------------=
+-
+> >>  1 file changed, 63 insertions(+), 55 deletions(-)
+> >>
+> >> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> >> index e4532f5088..51202f7028 100644
+> >> --- a/target/ppc/excp_helper.c
+> >> +++ b/target/ppc/excp_helper.c
+> >> @@ -422,7 +422,6 @@ static void powerpc_checkstop_state(CPUPPCState *e=
+nv)
+> >>
+> >>  static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+> >>  {
+> >> -    CPUState *cs =3D CPU(cpu);
+> >>      CPUPPCState *env =3D &cpu->env;
+> >>      target_ulong msr, new_msr, vector;
+> >>      int srr0, srr1;
+> >
+> > [snip]
+> >
+> >
+
 
