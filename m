@@ -2,31 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056EB73230B
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 01:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCC7732304
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 01:05:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9w02-0002Wm-4Y; Thu, 15 Jun 2023 19:03:30 -0400
+	id 1q9w04-0002eu-4t; Thu, 15 Jun 2023 19:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9vzz-0002Qk-QR; Thu, 15 Jun 2023 19:03:27 -0400
+ id 1q9w00-0002VO-VS; Thu, 15 Jun 2023 19:03:28 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9vzy-0007jf-4D; Thu, 15 Jun 2023 19:03:27 -0400
+ id 1q9vzz-0007k5-8x; Thu, 15 Jun 2023 19:03:28 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 202C3748A5B;
- Fri, 16 Jun 2023 01:03:19 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 48629748A5D;
+ Fri, 16 Jun 2023 01:03:20 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 01FFB748A56; Fri, 16 Jun 2023 01:03:19 +0200 (CEST)
-Message-Id: <b7317331ebccb0209fd0b12687945af6f626b0eb.1686868895.git.balaton@eik.bme.hu>
+ id 167BE748A56; Fri, 16 Jun 2023 01:03:20 +0200 (CEST)
+Message-Id: <ec260247d973fa0b60f2bb7920ed09c599ac2586.1686868895.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1686868895.git.balaton@eik.bme.hu>
 References: <cover.1686868895.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 09/14] target/ppc: Move patching nip from exception handler
- to helper_scv
+Subject: [PATCH v3 10/14] target/ppc: Simplify syscall exception handlers
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -35,7 +34,7 @@ To: qemu-devel@nongnu.org,
 Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>
-Date: Fri, 16 Jun 2023 01:03:19 +0200 (CEST)
+Date: Fri, 16 Jun 2023 01:03:20 +0200 (CEST)
 X-Spam-Probability: 8%
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
@@ -59,59 +58,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+After previous changes the hypercall handling in 7xx and 74xx
+exception handlers can be folded into one if statement to simpilfy
+this code.
 
-Unlike sc, for scv a facility unavailable interrupt must be generated
-if FSCR[SCV]=0 so we can't raise the exception with nip set to next
-instruction but we can move advancing nip if the FSCR check passes to
-helper_scv so the exception handler does not need to change it.
-
-[balaton: added commit message]
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
-This needs SoB from Nick
-
- target/ppc/excp_helper.c | 2 +-
- target/ppc/translate.c   | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ target/ppc/excp_helper.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 903216c2a6..ef363b0285 100644
+index ef363b0285..a62103b8ac 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -1304,7 +1304,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SYSCALL_VECTORED: /* scv exception                     */
-         lev = env->error_code;
-         dump_syscall(env);
--        env->nip += 4;
-         new_msr |= env->msr & ((target_ulong)1 << MSR_EE);
-         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
- 
-@@ -2410,6 +2409,7 @@ void helper_ppc_maybe_interrupt(CPUPPCState *env)
- void helper_scv(CPUPPCState *env, uint32_t lev)
- {
-     if (env->spr[SPR_FSCR] & (1ull << FSCR_SCV)) {
-+        env->nip += 4;
-         raise_exception_err(env, POWERPC_EXCP_SYSCALL_VECTORED, lev);
-     } else {
-         raise_exception_err(env, POWERPC_EXCP_FU, FSCR_IC_SCV);
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 4260d3d66f..0360a17fb3 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -4433,7 +4433,11 @@ static void gen_scv(DisasContext *ctx)
- {
-     uint32_t lev = (ctx->opcode >> 5) & 0x7F;
- 
--    /* Set the PC back to the faulting instruction. */
-+    /*
-+     * Set the PC back to the scv instruction (unlike sc), because a facility
-+     * unavailable interrupt must be generated if FSCR[SCV]=0. The helper
-+     * advances nip if the FSCR check passes.
-+     */
-     gen_update_nip(ctx, ctx->cia);
-     gen_helper_scv(cpu_env, tcg_constant_i32(lev));
- 
+@@ -741,25 +741,21 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+     {
+         int lev = env->error_code;
+-
+-        if (lev == 1 && cpu->vhyp) {
+-            dump_hcall(env);
+-        } else {
+-            dump_syscall(env);
+-        }
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+          * uses VOF and the 7xx CPUs, so although the 7xx don't have
+          * HV mode, we need to keep hypercall support.
+          */
+-        if (lev == 1 && cpu->vhyp) {
++        if (unlikely(lev == 1 && cpu->vhyp)) {
+             PPCVirtualHypervisorClass *vhc =
+                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
++            dump_hcall(env);
+             vhc->hypercall(cpu->vhyp, cpu);
+             return;
++        } else {
++            dump_syscall(env);
+         }
+-
+         break;
+     }
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+@@ -885,25 +881,21 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+     {
+         int lev = env->error_code;
+-
+-        if (lev == 1 && cpu->vhyp) {
+-            dump_hcall(env);
+-        } else {
+-            dump_syscall(env);
+-        }
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+          * uses VOF and the 74xx CPUs, so although the 74xx don't have
+          * HV mode, we need to keep hypercall support.
+          */
+-        if (lev == 1 && cpu->vhyp) {
++        if (unlikely(lev == 1 && cpu->vhyp)) {
+             PPCVirtualHypervisorClass *vhc =
+                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
++            dump_hcall(env);
+             vhc->hypercall(cpu->vhyp, cpu);
+             return;
++        } else {
++            dump_syscall(env);
+         }
+-
+         break;
+     }
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
 -- 
 2.30.9
 
