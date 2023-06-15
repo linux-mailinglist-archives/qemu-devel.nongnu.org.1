@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C93730E8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 07:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A61730E95
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 07:17:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9fGH-0005o5-6n; Thu, 15 Jun 2023 01:11:09 -0400
+	id 1q9fLw-00079O-QS; Thu, 15 Jun 2023 01:17:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@redhat.com>)
- id 1q9fGB-0005m7-Gm
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 01:11:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1q9fLv-00079F-3p
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 01:16:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@redhat.com>)
- id 1q9fG9-0004Ay-W0
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 01:11:03 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1q9fLs-0005d4-U9
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 01:16:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686805861;
+ s=mimecast20190719; t=1686806216;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YFY3HnmHmJ0UcWPx5gVIRWs7AirJ+PzwhJGKjHE1lmk=;
- b=jFnItnvTuUw5tAwsQamt+zRAapx0nbFONbUEXWtfk0V2btEatMVP1V0V1nrXXoaqMiL3/F
- MBYxFiqaU/QBUocHm9mCJOX4249ISqitOBEtQPI3B4i1fP8dYrjzZqQV3DCLgnvMOb1eSU
- zUomxxWvUC1lLcJ7p10b0uwzoq8vTUI=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=cmUyql7+dpZi3HAq3nccH9iirFrjowjrbYZr5+pucTY=;
+ b=dWa01sIHGC8q4rQi42IO/lBL94nHnKvxede+Ug1HX9P0nuUM3uWBYGNs5RutfpExrbCc8+
+ fJqzFmV0pSNdzQurGED9GEhPjMQWDLHAp3YNFdxcs7PTFqQgtDyEjip2VxQINFgliZJUDK
+ JPtkfzFOdGicWTAQkPyuiYUtnUTaIv4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-Bd19eSBKPyes5u7Vc1wWvA-1; Thu, 15 Jun 2023 01:10:59 -0400
-X-MC-Unique: Bd19eSBKPyes5u7Vc1wWvA-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1b3e18add74so18405625ad.1
- for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 22:10:58 -0700 (PDT)
+ us-mta-45-MBfN675mPUegqBO5tna4jg-1; Thu, 15 Jun 2023 01:16:54 -0400
+X-MC-Unique: MBfN675mPUegqBO5tna4jg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-3f9d8c685b6so39990971cf.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Jun 2023 22:16:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686805858; x=1689397858;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YFY3HnmHmJ0UcWPx5gVIRWs7AirJ+PzwhJGKjHE1lmk=;
- b=CnqO7BzbDclfwvGdbXNS7ceht5fjkBvahhSG8wzLO5rHEn51CBCidPFvn3ACIRYDgK
- fG7oWjDBLwx+QFSQ4D8WmDiaSUg/9rDti9J78CRjlXuWvrevW0VUF1ORES6a8JJz/LaE
- 3i7nFWvbfzOX6a8akQJpbQAGxcGsfmh8L5eC2QILkBkJUNuo3+/vIxLZgzFUksrtxqLT
- ORRZO5z3MHaHjNZXW6G/Dp01BzI3yd3Wd+Svolq+VGSQvVjviewI84K2h18DGBleFL6c
- vhtN0I4M4tXmDcAa+LEU9PHqBdGBYXRvGCTxdEVhcPuZI7XJwRPE7HX/l6kXu5QQn6yx
- EcPQ==
-X-Gm-Message-State: AC+VfDxA+xU8Ep6m0mDMeWUvcM7oEalVHjE6UxBQthTEvOow1u3VmM7E
- w5WYPXuWMqG9cJuh7LE6QpuyZKTRsbgLlri8UPx7mwYdc/lz360csBPw2fahj51jlypOepWFKNP
- ZZlp7o/wph2rnIl4=
-X-Received: by 2002:a17:902:da89:b0:1b5:1475:2efb with SMTP id
- j9-20020a170902da8900b001b514752efbmr1398878plx.5.1686805857973; 
- Wed, 14 Jun 2023 22:10:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5m509IUTCYcL+sTRgXBl3yWehdXj48Z3u65vKMGeE1PGhwpDjvSHooGCPKIpi1oipARc6GmQ==
-X-Received: by 2002:a17:902:da89:b0:1b5:1475:2efb with SMTP id
- j9-20020a170902da8900b001b514752efbmr1398868plx.5.1686805857676; 
- Wed, 14 Jun 2023 22:10:57 -0700 (PDT)
-Received: from zatzit ([2001:4479:e300:2800:4b3b:7242:1327:c685])
- by smtp.gmail.com with ESMTPSA id
- o4-20020a170902bcc400b001ac897026cesm13050661pls.102.2023.06.14.22.10.55
+ d=1e100.net; s=20221208; t=1686806214; x=1689398214;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cmUyql7+dpZi3HAq3nccH9iirFrjowjrbYZr5+pucTY=;
+ b=Hxhj8MV7L4wT1WOamJZY/Vs1GWuGsLGk23MIEYcLoT+xl72kEmDsq5ZCU8cVz/IxmI
+ nqZ+sHBfNlm7lvT96U9mvGKjgznmVehMj5z2ssWKMhhvK9PPsVTiHBvQkt3aBhwspvOr
+ dfOf3Xjh9fTSAvqnCfUCHCS8gqiN39BFN4/CesVzfTXCDmgGEpFg81dQt7ZHXqK5+KR6
+ mTzSCEOFTAk7AMGkhSETdeWsJXzuTd03DQ9cCb1bWWhSrJkCxNXqkL5yUhjToZR4faTr
+ 7SbB36mqDejkVjMt4wZ6aZuQ9bVy0JXRScHczLNm54/rFTfcj0FSM2MPnMxQXOI2/DVN
+ 17kg==
+X-Gm-Message-State: AC+VfDwbIktTLn2l+ekRj6u4X8WqA+rhh9CIpn7o68sfPBNbVetV0C60
+ AAWDKukbsQfhFn2D6OuiVgYM6gdLq/8xAieRiIRlLqHJTNod7YyB4u623TtOx/L6du5dHEWPKOz
+ 303wInuIRM4Z0s9A=
+X-Received: by 2002:a05:622a:254:b0:3f9:b5e3:8f18 with SMTP id
+ c20-20020a05622a025400b003f9b5e38f18mr5422817qtx.24.1686806214289; 
+ Wed, 14 Jun 2023 22:16:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ60jvS5h/Q/pL9NyMg0uJMbVkNK/0KAeo3/dagrU3nkT8y7GWrdzK1A6WDN2Il4uhHxJJiGVg==
+X-Received: by 2002:a05:622a:254:b0:3f9:b5e3:8f18 with SMTP id
+ c20-20020a05622a025400b003f9b5e38f18mr5422798qtx.24.1686806214009; 
+ Wed, 14 Jun 2023 22:16:54 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.122.99])
+ by smtp.googlemail.com with ESMTPSA id
+ j17-20020a62e911000000b0065379c6d549sm11028068pfh.215.2023.06.14.22.16.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jun 2023 22:10:57 -0700 (PDT)
-Date: Thu, 15 Jun 2023 15:10:53 +1000
-From: David Gibson <dgibson@redhat.com>
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH 3/3] net: socket: remove net_init_socket()
-Message-ID: <20230615151053.5c03f7fe@zatzit>
-In-Reply-To: <20230609072748.4179873-4-lvivier@redhat.com>
-References: <20230609072748.4179873-1-lvivier@redhat.com>
- <20230609072748.4179873-4-lvivier@redhat.com>
-Organization: Red Hat
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Wed, 14 Jun 2023 22:16:53 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Ani Sinha <anisinha@redhat.com>, jusual@redhat.com, imammedo@redhat.com,
+ qemu-devel@nongnu.org
+Subject: [PATCH v2] hw/pci: prevent hotplug of devices on pcie-root-ports on
+ the wrong slot
+Date: Thu, 15 Jun 2023 10:46:45 +0530
+Message-Id: <20230615051645.4798-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=dgibson@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,100 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri,  9 Jun 2023 09:27:48 +0200
-Laurent Vivier <lvivier@redhat.com> wrote:
+PCIE root ports and other upstream ports only allow one device on slot 0.
+When hotplugging a device on a pcie root port, make sure that the device
+address passed always represents slot 0. Any other slot value would be
+illegal on a root port.
 
-> Move the file descriptor type checking before doing anything with it.
-> If it's not usable, don't close it as it could be in use by another
-> part of QEMU, only fail and report an error.
-> 
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+CC: jusual@redhat.com
+CC: imammedo@redhat.com
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/pci/pci.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+changelog:
+v2: feedback from mst included.
 
-> ---
->  net/socket.c | 43 +++++++++++++++++--------------------------
->  1 file changed, 17 insertions(+), 26 deletions(-)
-> 
-> diff --git a/net/socket.c b/net/socket.c
-> index 6b1f0fec3a10..8e3702e1f3a8 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -463,28 +463,6 @@ static int net_socket_fd_check(int fd, Error **errp)
->      return so_type;
->  }
->  
-> -static NetSocketState *net_socket_fd_init(NetClientState *peer,
-> -                                          const char *model, const char *name,
-> -                                          int fd, int is_connected,
-> -                                          const char *mc, Error **errp)
-> -{
-> -    int so_type;
-> -
-> -    so_type = net_socket_fd_check(fd, errp);
-> -    if (so_type < 0) {
-> -        close(fd);
-> -        return NULL;
-> -    }
-> -    switch(so_type) {
-> -    case SOCK_DGRAM:
-> -        return net_socket_fd_init_dgram(peer, model, name, fd, is_connected,
-> -                                        mc, errp);
-> -    case SOCK_STREAM:
-> -        return net_socket_fd_init_stream(peer, model, name, fd, is_connected);
-> -    }
-> -    return NULL;
-> -}
-> -
->  static void net_socket_accept(void *opaque)
->  {
->      NetSocketState *s = opaque;
-> @@ -728,21 +706,34 @@ int net_init_socket(const Netdev *netdev, const char *name,
->      }
->  
->      if (sock->fd) {
-> -        int fd, ret;
-> +        int fd, ret, so_type;
->  
->          fd = monitor_fd_param(monitor_cur(), sock->fd, errp);
->          if (fd == -1) {
->              return -1;
->          }
-> +        so_type = net_socket_fd_check(fd, errp);
-> +        if (so_type < 0) {
-> +            return -1;
-> +        }
->          ret = qemu_socket_try_set_nonblock(fd);
->          if (ret < 0) {
->              error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
->                               name, fd);
->              return -1;
->          }
-> -        if (!net_socket_fd_init(peer, "socket", name, fd, 1, sock->mcast,
-> -                                errp)) {
-> -            return -1;
-> +        switch (so_type) {
-> +        case SOCK_DGRAM:
-> +            if (!net_socket_fd_init_dgram(peer, "socket", name, fd, 1,
-> +                                          sock->mcast, errp)) {
-> +                return -1;
-> +            }
-> +            break;
-> +        case SOCK_STREAM:
-> +            if (!net_socket_fd_init_stream(peer, "socket", name, fd, 1)) {
-> +                return -1;
-> +            }
-> +            break;
->          }
->          return 0;
->      }
-> -- 
-> 2.39.2
-> 
-
-
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index bf38905b7d..66999352cc 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -64,6 +64,7 @@ bool pci_available = true;
+ static char *pcibus_get_dev_path(DeviceState *dev);
+ static char *pcibus_get_fw_dev_path(DeviceState *dev);
+ static void pcibus_reset(BusState *qbus);
++static bool pcie_has_upstream_port(PCIDevice *dev);
+ 
+ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+@@ -1182,6 +1183,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+     } else if (dev->hotplugged &&
+                !pci_is_vf(pci_dev) &&
+                pci_get_function_0(pci_dev)) {
++        /*
++         * populating function 0 triggers a bus scan from the guest that
++         * exposes other non-zero functions. Hence we need to ensure that
++         * function 0 is available.
++         */
+         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
+                    " new func %s cannot be exposed to guest.",
+                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
+@@ -1189,6 +1195,16 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+                    name);
+ 
+        return NULL;
++    } else if (dev->hotplugged &&
++               !pci_is_vf(pci_dev) &&
++               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
++        /*
++         * If the device is being plugged into an upstream PCIE port,
++         * like a pcie root port, we only support one device at slot 0
++         */
++        error_setg(errp, "PCI: slot %d is not valid for %s",
++                   PCI_SLOT(devfn), name);
++        return NULL;
+     }
+ 
+     pci_dev->devfn = devfn;
 -- 
-David Gibson <dgibson@redhat.com>
-Principal Software Engineer, Virtualization, Red Hat
+2.39.1
 
 
