@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86C773152F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 12:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CDE7315F9
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 12:59:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9kBF-0001FB-Gr; Thu, 15 Jun 2023 06:26:17 -0400
+	id 1q9kgJ-0006R5-89; Thu, 15 Jun 2023 06:58:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9kB2-00014M-5Q
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 06:26:09 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q9kB0-000862-DY
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 06:26:03 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f76a0a19d4so2174356e87.2
- for <qemu-devel@nongnu.org>; Thu, 15 Jun 2023 03:26:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686824760; x=1689416760;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tWNh5l5zansgkYD8JM+QZqpVlxfmhmpr1H7kB5PRlzc=;
- b=OZBY5bTGLwXNlKlniFuBR+MU4SI5z0PtB1i3oWBTykgh9LmJD/q3UowGwIFi2sIc1z
- dnHb+uJRdV8KTRMrawf1flu6tZlPOcvdZVfxD1eEQ58fFDSVzFtybBKpVN79y1fKqPG6
- HYeTm0E9vVY0vpTU/p3WI2L90nsFIEeX/lu0UlM/XfKoMAf7wQbmR52/+aS3VH0rAb9p
- xqEEknGC4IcKMoMcUAwRy575B/tjCzup0tfrHBS5GvYt6AY9WQt0z3dGU8GBo0MpfZlw
- gvLJau/dCl4Icxl3i43x9HS/fSXQhAv8F4WWRu3vLk8AhRuBZgm7GqKybl0fZKzV+3qg
- DV0A==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1q9kgG-0006Qr-LU
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 06:58:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1q9kgE-0000PQ-RE
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 06:58:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686826697;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7th6PkipmyJZQoN8VJmVMRkViIKKOVVQFHt78dCE+jU=;
+ b=Tg7VhzcmUGLnlIWUpxNEDoccCTWVMXwJVTDFnjLrZD+l/I8xHiRVIhBn4FckAfSmlO/Kli
+ bl7qS4UVcyAwM2TEU5Xn0hMzvDGXyhMD1vSG8YtYEZvQGFC1zTqHHYtYjqmzWN+SR97PLI
+ /I21nmW087x3IeHmZ2CeNc6bqCAV/9M=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-131-K5UVIiknMFyjnUlLIUNoPA-1; Thu, 15 Jun 2023 06:58:15 -0400
+X-MC-Unique: K5UVIiknMFyjnUlLIUNoPA-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4f5847463baso6605958e87.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Jun 2023 03:58:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686824760; x=1689416760;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tWNh5l5zansgkYD8JM+QZqpVlxfmhmpr1H7kB5PRlzc=;
- b=PjW/Kc/U/uQXrwYCFs7DSjGkUjyB7r+uFkAZQWviWIOizfdqUeoyjvtYTbAc1QCnJ+
- aLZF7FIwhFqKh9N/8WEM2/9GzQHFKswX7pehypow5bxhIyyxRcM0afyk48tmQq4+a+vE
- UkXUmALu5uNGBOUJUU2Uw9qUgD+Ki+r8vTGDMwFR3xqWdsvTZi+wEqxCMKGLI0GAmA3W
- Sx73TV4W/gh/PJMUU/RYUbm3HdUy/+GNaKVz85CANrq677a0B7f/4wAGSXeRIZHVkSFB
- mvFi5tEm3zpKkRr+UQzynWKxvcMbpKZbl7oTX/RasPR+sY+2inTU8JehcJmtGSxqCALm
- p8Bg==
-X-Gm-Message-State: AC+VfDxSElfnQ7u0+k2E2KBoHZ7kFY7eQCMEZY38gIg3Jj/g+905UkEm
- Stplr25UgWrPuIdb7X9stTeTDw==
-X-Google-Smtp-Source: ACHHUZ4nwkraB7Q2Yo9AZ6t9G0Wi7nRVdJ3LcoSvKUE1x+PpKP5+OsGTe9ImmmOIdJ4ytXHflma/EQ==
-X-Received: by 2002:ac2:5307:0:b0:4f4:b864:1da0 with SMTP id
- c7-20020ac25307000000b004f4b8641da0mr10462407lfh.15.1686824760445; 
- Thu, 15 Jun 2023 03:26:00 -0700 (PDT)
-Received: from [10.14.201.118] ([213.175.39.66])
- by smtp.gmail.com with ESMTPSA id
- jw23-20020a17090776b700b00974630b1e85sm9180146ejc.155.2023.06.15.03.25.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Jun 2023 03:26:00 -0700 (PDT)
-Message-ID: <8622a181-95e5-b2df-d09f-77c8c45718f1@linaro.org>
-Date: Thu, 15 Jun 2023 12:25:59 +0200
+ d=1e100.net; s=20221208; t=1686826693; x=1689418693;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7th6PkipmyJZQoN8VJmVMRkViIKKOVVQFHt78dCE+jU=;
+ b=WflWYRXOIZzhiblvOP/t0LZzxAmHI8dabloQOOMznoStX1BJBvRFsUbLt8HWfDoJoL
+ azgrQFDT8k0wRc7wMA8ccu6bJ42933T3HG5oyh/lcyTcwOVYwFEjyaPJ40ce4OEpeWWk
+ M80WR0SlFMQoBIswb2Xj4VsfVawAGhb4JWvCeqIDDg4729EnwhAG69uPiY1vVV+qgHTg
+ gVNUFOY3fVp6UfijVzK4m/LYJP/hLBI5R45P5P+T5rRAAz+5zMDE/wK5IbbyUcbbT2bG
+ Z8Fyn2AkiJJ6+G0+mjsSrL5oXwu5q9wg7gGcwahdzmC4bnun2HnI63W4h6T4e4nGy47C
+ RUXA==
+X-Gm-Message-State: AC+VfDzred4m58U6Dr+Tm85hxwGWouoJ15NVBHuJg4QqvXoqR1t4vBwx
+ Vi76EXyc4fufQKpD4tnY43jyNnuopLGkMBMIt65CIZxpidk0X7o3w5oBknzQ0A3MfA4CUqIO1Jj
+ vlG6nr3Fj4gn6OX7SwiF/6YH+Pi8lMjPeHqcAKdc=
+X-Received: by 2002:a2e:874a:0:b0:2b4:473e:8cbc with SMTP id
+ q10-20020a2e874a000000b002b4473e8cbcmr718834ljj.52.1686826693500; 
+ Thu, 15 Jun 2023 03:58:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6WLGrNsFw/Ov2ltg2ZhWk+uvkUMYxPm85ov6Suxi2Mt1DQ9KLIhqZykYQZcr22y2jAjhgK9wkzW5qXNmSBciI=
+X-Received: by 2002:a2e:874a:0:b0:2b4:473e:8cbc with SMTP id
+ q10-20020a2e874a000000b002b4473e8cbcmr718818ljj.52.1686826693008; Thu, 15 Jun
+ 2023 03:58:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH] hw/riscv/virt.c: fix typo in 'aia' description
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- qemu-trivial@nongnu.org
-References: <20230615092148.612875-1-dbarboza@ventanamicro.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230615092148.612875-1-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <tencent_8DA57B405D427A560FD40F8FB0C0B1ADDE09@qq.com>
+In-Reply-To: <tencent_8DA57B405D427A560FD40F8FB0C0B1ADDE09@qq.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Thu, 15 Jun 2023 12:57:55 +0200
+Message-ID: <CAMxuvawc2x2mt4Kk4V1U0fMeNKZj5qE_Lai8Gjo38T_Q_cVdpQ@mail.gmail.com>
+Subject: Re: [PATCH] chardev/char-win-stdio: Support VT sequences on Windows
+ 11 host
+To: Zhang Huasen <huasenzhang@foxmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000d5b8b505fe28f140"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,13 +92,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/6/23 11:21, Daniel Henrique Barboza wrote:
-> Cc: qemu-trivial@nongnu.org
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   hw/riscv/virt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+--000000000000d5b8b505fe28f140
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi
+
+On Thu, Jun 15, 2023 at 12:36=E2=80=AFPM Zhang Huasen <huasenzhang@foxmail.=
+com>
+wrote:
+
+> If the monitor or the serial port use STDIO as backend on Windows 11 host=
+,
+> e.g. -nographic options is used, the monitor or the guest Linux do not
+> response to arrow keys.
+>
+> When Windows creates a console, ENABLE_VIRTUAL_PROCESS_INPUT is disabled
+> by default. Arrow keys cannot be retrieved by ReadFile or ReadConsoleInpu=
+t
+> functions.
+>
+> Add ENABLE_VIRTUAL_PROCESS_INPUT to the flag which is passed to
+> SetConsoleMode,
+> when opening stdio console.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1674
+>
+> Signed-off-by: Zhang Huasen <huasenzhang@foxmail.com>
+> ---
+>  chardev/char-win-stdio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
+> index eb830eabd9..1a18999e78 100644
+> --- a/chardev/char-win-stdio.c
+> +++ b/chardev/char-win-stdio.c
+> @@ -190,7 +190,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
+>          }
+>      }
+>
+> -    dwMode |=3D ENABLE_LINE_INPUT;
+> +    dwMode |=3D ENABLE_LINE_INPUT | ENABLE_VIRTUAL_TERMINAL_INPUT;
+>
+
+I think we should set it only when is_console (although that may not make a
+difference otherwise)
+
+thanks
+
+
+>      if (is_console) {
+>          /* set the terminal in raw mode */
+> --
+> 2.41.0.windows.1
+>
+>
+
+--000000000000d5b8b505fe28f140
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
+"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 15, 2023 at 12:36=E2=80=
+=AFPM Zhang Huasen &lt;<a href=3D"mailto:huasenzhang@foxmail.com">huasenzha=
+ng@foxmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">If the monitor or the serial port use STDIO as backend on Win=
+dows 11 host,<br>
+e.g. -nographic options is used, the monitor or the guest Linux do not<br>
+response to arrow keys.<br>
+<br>
+When Windows creates a console, ENABLE_VIRTUAL_PROCESS_INPUT is disabled<br=
+>
+by default. Arrow keys cannot be retrieved by ReadFile or ReadConsoleInput<=
+br>
+functions.<br>
+<br>
+Add ENABLE_VIRTUAL_PROCESS_INPUT to the flag which is passed to SetConsoleM=
+ode,<br>
+when opening stdio console.<br>
+<br>
+Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/1674" re=
+l=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/i=
+ssues/1674</a><br>
+<br>
+Signed-off-by: Zhang Huasen &lt;<a href=3D"mailto:huasenzhang@foxmail.com" =
+target=3D"_blank">huasenzhang@foxmail.com</a>&gt;<br>
+---<br>
+=C2=A0chardev/char-win-stdio.c | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c<br>
+index eb830eabd9..1a18999e78 100644<br>
+--- a/chardev/char-win-stdio.c<br>
++++ b/chardev/char-win-stdio.c<br>
+@@ -190,7 +190,7 @@ static void qemu_chr_open_stdio(Chardev *chr,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+-=C2=A0 =C2=A0 dwMode |=3D ENABLE_LINE_INPUT;<br>
++=C2=A0 =C2=A0 dwMode |=3D ENABLE_LINE_INPUT | ENABLE_VIRTUAL_TERMINAL_INPU=
+T;<br></blockquote><div><br></div><div>I think we should set it only when i=
+s_console (although that may not make a difference otherwise) <br></div><di=
+v><br></div><div>thanks</div><div><br></div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">
+<br>
+=C2=A0 =C2=A0 =C2=A0if (is_console) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* set the terminal in raw mode */<br>
+-- <br>
+2.41.0.windows.1<br>
+<br>
+</blockquote></div></div>
+
+--000000000000d5b8b505fe28f140--
 
 
