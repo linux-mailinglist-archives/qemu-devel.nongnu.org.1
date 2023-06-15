@@ -2,86 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CEC0731C19
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 17:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA0F731C4A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 17:17:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9oSf-0001WW-3F; Thu, 15 Jun 2023 11:00:33 -0400
+	id 1q9ohT-0004pv-UW; Thu, 15 Jun 2023 11:15:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1q9oSc-0001Vt-HY
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 11:00:30 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1q9oSa-00044P-GK
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 11:00:30 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f8d2bfed53so7167905e9.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jun 2023 08:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1686841227; x=1689433227; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=e9hoXFihqoav7uigoHf8z1pYQZosKQ81YbYvGxkixvs=;
- b=IO7Z9xYD5coCWV9fozndLQzo68AyRynu9WVYQyr9q5rpD3ONGuj+PQcSdfHkJOebYE
- KmODozhQZxWhqSfthxY6oRHLgViBkfmfMlf+9lOiU6JqoMleGK21Mavw3G6idkqEI4Fa
- F8tT+JXwN6KKplmRN7sV5mGwmL5z9MTruViMZuZ7EihxEHt3XkM3ad9BfoFrImYkzgLg
- 4QL8OvYuQAh6d9G2tTAQrWEVptKHUdz2kSzXW22N03L7dmmYolIIATpVeDmri69pDaMw
- rKagNOKWSy+BVmhrSCTG8z+tuQrOCPOdGxbZUCYx23iSG4AtvWJoF9Tb3d7O8MstiMGN
- aNlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686841227; x=1689433227;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e9hoXFihqoav7uigoHf8z1pYQZosKQ81YbYvGxkixvs=;
- b=Qp0q2qPNbEIvljPxBgp5HAaZxuWXRPw+/wNVRnrKK5wT6ChznVv8LHHr4/CimWZ3D/
- 4xkhNdSFt+GjZHH1wQYewZ1QxKYlqNdp81+V9b6Z9gjyAbxcMOiCWo53tOMYbY3RHTus
- MNpRatqKadz+aaeMT+t0QK3X5N6X24JljZQzJQedWu565Nl4GkyRZhxZy3ywMCK4/2rv
- Y8EI77nTIiNh1yA7PJkll3KpBhrNt7hslG1H/3a+o6TKBgdwVG04OMJ95t/fbvD2Ixz/
- lxK8xs/SymA7omjpJ3sMnmHK034SZEaRirw639JYm6mzVECkBwCvOqDXTLGDtEMH8YuR
- UIKw==
-X-Gm-Message-State: AC+VfDyNTWt2WlJiQqBlSGb6h+kNwOM6v/rHj1Y+OMGl0LcExV4kIDd1
- Vg0flgiy0jUOE3VgRvD4LISrEw==
-X-Google-Smtp-Source: ACHHUZ6PGFvaYdodPi0YdsCF3xWgPF89IUhWisrlKXbjgi8FcgOOyA2EgcCpmL1UGMLigj2S1Eg4Ow==
-X-Received: by 2002:a1c:740b:0:b0:3f7:f4af:5fb3 with SMTP id
- p11-20020a1c740b000000b003f7f4af5fb3mr4217597wmc.9.1686841226761; 
- Thu, 15 Jun 2023 08:00:26 -0700 (PDT)
-Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- m11-20020a5d6a0b000000b0030b5d203e7esm21290372wru.97.2023.06.15.08.00.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Jun 2023 08:00:26 -0700 (PDT)
-Message-ID: <51b6de6ac5a6b8b5de9dc40069d95a601f5b2055.camel@rivosinc.com>
-Subject: Re: [PATCH v2 1/6] target/riscv: Add properties for BF16 extensions
-From: Rob Bradford <rbradford@rivosinc.com>
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org, 
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-Date: Thu, 15 Jun 2023 16:00:25 +0100
-In-Reply-To: <e274be8a-a863-8c39-9806-349b37e94b50@iscas.ac.cn>
-References: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
- <20230615063302.102409-2-liweiwei@iscas.ac.cn>
- <4b6274c6741baf435b5579f5a089c65997a8e0e6.camel@rivosinc.com>
- <e274be8a-a863-8c39-9806-349b37e94b50@iscas.ac.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1 (3.48.1-1.module_f38+16663+080ec715) 
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1q9ohH-0004l1-00
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 11:15:40 -0400
+Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1q9ohE-0006tY-LY
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 11:15:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=jVSr3HvaLalf5qY0mX387BhH1wZUlcm5kyKf6WIY+hA=; b=kflLrqaEo2/jMd+nu9u8cLzdvP
+ 7MZvILxo1uBweEqkaB7wSbwPg8pL6I+kkmihXmsLc6U8Sha9Pc7esm+FceHKsETIbCeme7XchYaf4
+ Ls8j8Y1gE2ramQAMEKwolCjkrBN8vG8rlRT9ES5onl0bqCd78ThXpC4I9rrsAl8jgJCE=;
+Date: Thu, 15 Jun 2023 17:15:22 +0200
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/4] target/tricore: Honour privilege changes on PSW write
+Message-ID: <o5jdl2ahtebqt55njmugofamov7lmmizmnj2hcjcpex4nxamzz@jjqrjuq4lprs>
+References: <20230614165934.1370440-1-kbastian@mail.uni-paderborn.de>
+ <20230614165934.1370440-4-kbastian@mail.uni-paderborn.de>
+ <293ea058-8380-0610-80f3-a0bf089245dc@linaro.org>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <293ea058-8380-0610-80f3-a0bf089245dc@linaro.org>
+X-IMT-Source: Extern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-rspamd-score: 4
+X-IMT-rspamd-bar: /
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.15.150617, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.15.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=687017, da=174451190, mc=82, sc=0,
+ hc=82, sp=0, fso=687017, re=0, sd=0, hd=0
+X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
+Received-SPF: pass client-ip=2001:638:502:c003::17;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,138 +74,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-06-15 at 21:14 +0800, Weiwei Li wrote:
->=20
-> On 2023/6/15 20:58, Rob Bradford wrote:
-> > On Thu, 2023-06-15 at 14:32 +0800, Weiwei Li wrote:
-> > > Add ext_zfbfmin/zvfbfmin/zvfbfwma properties.
-> > > Add require check for BF16 extensions.
-> > >=20
-> > > Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> > > Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-> > > Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > > ---
-> > > =C2=A0=C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0 | 20 +++++++++=
-+++++++++++
-> > > =C2=A0=C2=A0target/riscv/cpu_cfg.h |=C2=A0 3 +++
-> > > =C2=A0=C2=A02 files changed, 23 insertions(+)
-> > >=20
-> > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > > index 881bddf393..dc6b2f72f6 100644
-> > > --- a/target/riscv/cpu.c
-> > > +++ b/target/riscv/cpu.c
-> > > @@ -1059,6 +1059,11 @@ void
-> > > riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > > =C2=A0=20
-> > > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zfbfmin && !riscv_has_ext(env, R=
-VF)) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zfbfmin=
- extension depends on F
-> > > extension");
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > +=C2=A0=C2=A0=C2=A0 }
-> > > +
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (riscv_has_ext(env, RVD) && !riscv_=
-has_ext(env, RVF)) {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(err=
-p, "D extension requires F extension");
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > @@ -1109,6 +1114,21 @@ void
-> > > riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > > =C2=A0=20
-> > > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmi=
-n) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfmi=
-n extension depends on Zfbfmin
-> > > extension");
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > +=C2=A0=C2=A0=C2=A0 }
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f=
-) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfmi=
-n extension depends on Zve32f
-> > > extension");
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > +=C2=A0=C2=A0=C2=A0 }
-> > I don't think this is correct - from the spec:
-> >=20
-> > "This extension [Zvfbfmin] depends on the Zfbfmin extension and
-> > either
-> > the "V" extension or the Zve32f embedded vector extension."
-> >=20
-> > So this should be:
-> >=20
-> > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfmin && !(cpu->cfg.ext_zve32f =
-|| cpu-
-> > > cfg.ext_v) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfmin =
-extension depends on Zve32f or
-> > V
-> > extension");
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
->=20
-> Zve32f will be enabled when V is enabled. So we can simply check
-> Zve32f=20
-> here.
+On Thu, Jun 15, 2023 at 09:37:23AM +0200, Richard Henderson wrote:
+> On 6/14/23 18:59, Bastian Koppelmann wrote:
+> >   void helper_psw_write(CPUTriCoreState *env, uint32_t arg)
+> >   {
+> > +    uint32_t old_priv, new_priv;
+> > +    CPUState *cs;
+> > +
+> > +    old_priv = extract32(env->PSW, 10, 2);
+> >       psw_write(env, arg);
+> > +    new_priv = extract32(env->PSW, 10, 2);
+> > +
+> > +    if (old_priv != new_priv) {
+> > +        cs = env_cpu(env);
+> > +        env->PC = env->PC + 4;
+> > +        cpu_loop_exit(cs);
+> > +    }
+> >   }
+> 
+> I think you should unconditionally end the TB after write to PSW. I think
+> that you should not manipulate the PC here, nor use cpu_loop_exit.
+> 
+> You should add
+> 
+> #define DISAS_EXIT         DISAS_TARGET_0
+> #define DISAS_EXIT_UPDATE  DISAS_TARGET_1
 
-Great, thank you for the clarification - I missed that this this
-enforced directly above.
+ok.
 
-Cheers,
+> 
+> > @@ -378,6 +379,7 @@ static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
+> >      if (ctx->priv == TRICORE_PRIV_SM) {
+> >          /* since we're caching PSW make this a special case */
+> >          if (offset == 0xfe04) {
+> > +            gen_save_pc(ctx->base.pc_next);
+> >              gen_helper_psw_write(cpu_env, r1);
+> 
+> Instead set ctx->base.is_jmp = DISAS_EXIT,
+> 
+> and in tricore_tr_tb_stop add
+> 
+>     case DISAS_EXIT_UPDATE:
+>         gen_save_pc(ctx->base.pc_next);
+>         /* fall through */
+>     case DISAS_EXIT:
+>         tcg_gen_exit_tb(NULL, 0);
+>         break;
+> 
+> There are a number of places (e.g. rfe), which can then use DISAS_EXIT
+> instead of issuing the exit directly.
 
-Rob
+ok.
 
->=20
-> Regards,
->=20
-> Weiwei Li
->=20
-> > Cheers,
-> >=20
-> > Rob
-> >=20
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfwma && !cpu->cfg.ext_zvfbfm=
-in) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfwm=
-a extension depends on Zvfbfmin
-> > > extension");
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > > +=C2=A0=C2=A0=C2=A0 }
-> > > +
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Set the ISA extensions, checks shou=
-ld have happened
-> > > above */
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zhinx) {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu->cfg.ext_z=
-hinxmin =3D true;
-> > > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> > > index c4a627d335..7d16f32720 100644
-> > > --- a/target/riscv/cpu_cfg.h
-> > > +++ b/target/riscv/cpu_cfg.h
-> > > @@ -75,6 +75,7 @@ struct RISCVCPUConfig {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_svpbmt;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zdinx;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zawrs;
-> > > +=C2=A0=C2=A0=C2=A0 bool ext_zfbfmin;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfh;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfhmin;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfinx;
-> > > @@ -84,6 +85,8 @@ struct RISCVCPUConfig {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zve64f;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zve64d;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zmmul;
-> > > +=C2=A0=C2=A0=C2=A0 bool ext_zvfbfmin;
-> > > +=C2=A0=C2=A0=C2=A0 bool ext_zvfbfwma;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zvfh;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zvfhmin;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_smaia;
->=20
+> 
+> I'll also say that there are a number of other places using tcg_gen_exit_tb
+> which should instead be using tcg_gen_lookup_and_goto_ptr -- all of the
+> indirect branches for instance.  I would suggest adding
+> 
+> #define DISAS_JUMP    DISAS_TARGET_2
+> 
+> to handle those, again with the code within tricore_tr_tb_stop.
 
+I'll look into that. However, this is out of scope for this patch series.
+
+> 
+> Finally, does JLI really clobber A[11] before branching to A[a]?
+> If so, this could use a comment, because it looks like a bug.
+
+Yes, it does. A[11] is the link register (not only by convention), so it is hard
+coded to save the return address to A[11]. See [1] page 29. Why does it look like a bug to you?
+
+Thanks,
+Bastian
+
+[1] https://www.infineon.com/dgdl/Infineon-AURIX_TC3xx_Architecture_vol1-UserManual-v01_00-EN.pdf?fileId=5546d46276fb756a01771bc4c2e33bdd
 
