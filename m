@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40D6730F70
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 08:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAA9730F6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 08:35:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9gYp-0007Ow-8S; Thu, 15 Jun 2023 02:34:23 -0400
+	id 1q9gYk-0007DE-Mk; Thu, 15 Jun 2023 02:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q9gY0-0006Vj-03; Thu, 15 Jun 2023 02:33:32 -0400
+ id 1q9gXz-0006Vh-Tp; Thu, 15 Jun 2023 02:33:32 -0400
 Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q9gXr-0004AL-Ru; Thu, 15 Jun 2023 02:33:25 -0400
+ id 1q9gXq-0004Ah-Jy; Thu, 15 Jun 2023 02:33:25 -0400
 Received: from localhost.localdomain (unknown [117.61.111.213])
- by APP-05 (Coremail) with SMTP id zQCowAD3_h6isIpkuxShAg--.21989S6;
- Thu, 15 Jun 2023 14:33:16 +0800 (CST)
+ by APP-05 (Coremail) with SMTP id zQCowAD3_h6isIpkuxShAg--.21989S7;
+ Thu, 15 Jun 2023 14:33:18 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 4/6] target/riscv: Add support for Zvfbfwma extension
-Date: Thu, 15 Jun 2023 14:33:00 +0800
-Message-Id: <20230615063302.102409-5-liweiwei@iscas.ac.cn>
+ Weiwei Li <liweiwei@iscas.ac.cn>
+Subject: [PATCH v2 5/6] target/riscv: Expose properties for BF16 extensions
+Date: Thu, 15 Jun 2023 14:33:01 +0800
+Message-Id: <20230615063302.102409-6-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
 References: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowAD3_h6isIpkuxShAg--.21989S6
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF45Gr48trWDKF1rZryrZwb_yoWrKw1xpF
- 4xGrya939xCFyxAa1ftF45Aw4Ygws3Gw4UAwn3WwsxAay7GrZ8Jryqyw4Ikr4jvFWDur42
- 9ayqyry3Cws2qa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID: zQCowAD3_h6isIpkuxShAg--.21989S7
+X-Coremail-Antispam: 1UD129KBjvJXoW7KFy7CF45Xw1DCF1rGF17KFg_yoW8uF1xpr
+ 4jga4UGw15Jr13WwnxtrWDGa15Jw45X3s7K3yxCa4xXrWfCrsrGFnrC39rWayUKF4rZa1I
+ qr1a9w1xJr4kta7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
  9KBjDU0xBIdaVrnRJUUUPF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
  rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
  kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -49,7 +48,7 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxAF45Gr48trWDKF1rZryrZwb_yoWrKw1xpF
  M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
  kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
  14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAF
  wI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
  W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOBTY
  UUUUU
@@ -78,136 +77,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add trans_* and helper function for Zvfbfwma instructions.
-
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/helper.h                      |  3 ++
- target/riscv/insn32.decode                 |  4 ++
- target/riscv/insn_trans/trans_rvbf16.c.inc | 58 ++++++++++++++++++++++
- target/riscv/vector_helper.c               | 11 ++++
- 4 files changed, 76 insertions(+)
+ target/riscv/cpu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index fc48853e07..3170b8daa6 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -1160,3 +1160,6 @@ DEF_HELPER_FLAGS_2(fcvt_s_bf16, TCG_CALL_NO_RWG, i64, env, i64)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index dc6b2f72f6..feb0ee5e6f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -83,6 +83,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
++    ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
+     ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+     ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_1_11_0, ext_zfhmin),
+     ISA_EXT_DATA_ENTRY(zfinx, PRIV_VERSION_1_12_0, ext_zfinx),
+@@ -114,6 +115,8 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zve32f, PRIV_VERSION_1_10_0, ext_zve32f),
+     ISA_EXT_DATA_ENTRY(zve64f, PRIV_VERSION_1_10_0, ext_zve64f),
+     ISA_EXT_DATA_ENTRY(zve64d, PRIV_VERSION_1_10_0, ext_zve64d),
++    ISA_EXT_DATA_ENTRY(zvfbfmin, PRIV_VERSION_1_12_0, ext_zvfbfmin),
++    ISA_EXT_DATA_ENTRY(zvfbfwma, PRIV_VERSION_1_12_0, ext_zvfbfwma),
+     ISA_EXT_DATA_ENTRY(zvfh, PRIV_VERSION_1_12_0, ext_zvfh),
+     ISA_EXT_DATA_ENTRY(zvfhmin, PRIV_VERSION_1_12_0, ext_zvfhmin),
+     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+@@ -1703,6 +1706,10 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("x-zvfh", RISCVCPU, cfg.ext_zvfh, false),
+     DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, cfg.ext_zvfhmin, false),
  
- DEF_HELPER_5(vfncvtbf16_f_f_w, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_5(vfwcvtbf16_f_f_v, void, ptr, ptr, ptr, env, i32)
++    DEFINE_PROP_BOOL("x-zfbfmin", RISCVCPU, cfg.ext_zfbfmin, false),
++    DEFINE_PROP_BOOL("x-zvfbfmin", RISCVCPU, cfg.ext_zvfbfmin, false),
++    DEFINE_PROP_BOOL("x-zvfbfwma", RISCVCPU, cfg.ext_zvfbfwma, false),
 +
-+DEF_HELPER_6(vfwmaccbf16_vv, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vfwmaccbf16_vf, void, ptr, ptr, i64, ptr, env, i32)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 10d001f14d..8c5d293f07 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -916,3 +916,7 @@ fcvt_s_bf16       0100000  00110 ..... ... ..... 1010011 @r2_rm
- # *** Zvfbfmin Standard Extension ***
- vfncvtbf16_f_f_w  010010 . ..... 11101 001 ..... 1010111 @r2_vm
- vfwcvtbf16_f_f_v  010010 . ..... 01101 001 ..... 1010111 @r2_vm
-+
-+# *** Zvfbfwma Standard Extension ***
-+vfwmaccbf16_vv    111011 . ..... ..... 001 ..... 1010111 @r_vm
-+vfwmaccbf16_vf    111011 . ..... ..... 101 ..... 1010111 @r_vm
-diff --git a/target/riscv/insn_trans/trans_rvbf16.c.inc b/target/riscv/insn_trans/trans_rvbf16.c.inc
-index f794a3f745..911bc29908 100644
---- a/target/riscv/insn_trans/trans_rvbf16.c.inc
-+++ b/target/riscv/insn_trans/trans_rvbf16.c.inc
-@@ -28,6 +28,12 @@
-     } \
- } while (0)
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-+#define REQUIRE_ZVFBFWMA(ctx) do { \
-+    if (!ctx->cfg_ptr->ext_zvfbfwma) { \
-+        return false; \
-+    } \
-+} while (0)
-+
- static bool trans_fcvt_bf16_s(DisasContext *ctx, arg_fcvt_bf16_s *a)
- {
-     REQUIRE_FPU;
-@@ -115,3 +121,55 @@ static bool trans_vfwcvtbf16_f_f_v(DisasContext *ctx, arg_vfwcvtbf16_f_f_v *a)
-     }
-     return false;
- }
-+
-+static bool trans_vfwmaccbf16_vv(DisasContext *ctx, arg_vfwmaccbf16_vv *a)
-+{
-+    REQUIRE_FPU;
-+    REQUIRE_ZVFBFWMA(ctx);
-+
-+    if (require_rvv(ctx) && vext_check_isa_ill(ctx) && (ctx->sew == MO_16) &&
-+        vext_check_dss(ctx, a->rd, a->rs1, a->rs2, a->vm)) {
-+        uint32_t data = 0;
-+        TCGLabel *over = gen_new_label();
-+
-+        gen_set_rm_chkfrm(ctx, RISCV_FRM_DYN);
-+        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
-+        tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
-+
-+        data = FIELD_DP32(data, VDATA, VM, a->vm);
-+        data = FIELD_DP32(data, VDATA, LMUL, ctx->lmul);
-+        data = FIELD_DP32(data, VDATA, VTA, ctx->vta);
-+        data = FIELD_DP32(data, VDATA, VMA, ctx->vma);
-+        tcg_gen_gvec_4_ptr(vreg_ofs(ctx, a->rd), vreg_ofs(ctx, 0),
-+                           vreg_ofs(ctx, a->rs1),
-+                           vreg_ofs(ctx, a->rs2), cpu_env,
-+                           ctx->cfg_ptr->vlen / 8,
-+                           ctx->cfg_ptr->vlen / 8, data,
-+                           gen_helper_vfwmaccbf16_vv);
-+        mark_vs_dirty(ctx);
-+        gen_set_label(over);
-+        return true;
-+    }
-+    return false;
-+}
-+
-+static bool trans_vfwmaccbf16_vf(DisasContext *ctx, arg_vfwmaccbf16_vf *a)
-+{
-+    REQUIRE_FPU;
-+    REQUIRE_ZVFBFWMA(ctx);
-+
-+    if (require_rvv(ctx) && (ctx->sew == MO_16) && vext_check_isa_ill(ctx) &&
-+        vext_check_ds(ctx, a->rd, a->rs2, a->vm)) {
-+        uint32_t data = 0;
-+
-+        gen_set_rm(ctx, RISCV_FRM_DYN);
-+        data = FIELD_DP32(data, VDATA, VM, a->vm);
-+        data = FIELD_DP32(data, VDATA, LMUL, ctx->lmul);
-+        data = FIELD_DP32(data, VDATA, VTA, ctx->vta);
-+        data = FIELD_DP32(data, VDATA, VMA, ctx->vma);
-+        return opfvf_trans(a->rd, a->rs1, a->rs2, data,
-+                           gen_helper_vfwmaccbf16_vf, ctx);
-+    }
-+
-+    return false;
-+}
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4d2bd42155..71bb9b4457 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -3554,6 +3554,17 @@ RVVCALL(OPFVF3, vfwmacc_vf_w, WOP_UUU_W, H8, H4, fwmacc32)
- GEN_VEXT_VF(vfwmacc_vf_h, 4)
- GEN_VEXT_VF(vfwmacc_vf_w, 8)
- 
-+static uint32_t fwmaccbf16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
-+{
-+    return float32_muladd(bfloat16_to_float32(a, s),
-+                          bfloat16_to_float32(b, s), d, 0, s);
-+}
-+
-+RVVCALL(OPFVV3, vfwmaccbf16_vv, WOP_UUU_H, H4, H2, H2, fwmaccbf16)
-+GEN_VEXT_VV_ENV(vfwmaccbf16_vv, 4)
-+RVVCALL(OPFVF3, vfwmaccbf16_vf, WOP_UUU_H, H4, H2, fwmacc16)
-+GEN_VEXT_VF(vfwmaccbf16_vf, 4)
-+
- static uint32_t fwnmacc16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
- {
-     return float32_muladd(float16_to_float32(a, true, s),
 -- 
 2.25.1
 
