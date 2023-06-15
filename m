@@ -2,54 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D606731B1C
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 16:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C3F731B43
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 16:26:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9nkQ-0000tl-JU; Thu, 15 Jun 2023 10:14:51 -0400
+	id 1q9ntn-0003BV-Hd; Thu, 15 Jun 2023 10:24:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anton.kochkov@proton.me>)
- id 1q9nkF-0000tB-6L
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 10:14:39 -0400
-Received: from mail-4322.protonmail.ch ([185.70.43.22])
+ (Exim 4.90_1) (envelope-from <postmaster@kaiser.cx>)
+ id 1q9nti-0003Aw-4g; Thu, 15 Jun 2023 10:24:26 -0400
+Received: from viti.kaiser.cx ([2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anton.kochkov@proton.me>)
- id 1q9nkB-0006HW-Tf
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 10:14:38 -0400
-Date: Thu, 15 Jun 2023 14:14:18 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
- s=protonmail; t=1686838466; x=1687097666;
- bh=OnH08nwM5RhEArqTt9jtnTass0gLngC5Spfe+xJrNfc=;
- h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
- Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
- b=B7izKVhxBt/Mks9biKeqx/5GonGlfZ8P8e9rMGZ/zJK0HgbC5ID/p+odVhXblSenl
- UIG2pRI+t9B5rbcjh7Z/NLB+iDslfXiXQSPdymWcYQT0eevlhMsvxzLdfrR5wbHUEG
- 8TMPKtcDEzGHIiT0EBipxYP38qHGlp2F4V9lFAvE+TdKfttfM13EEaZ+7NblNqNW5E
- xfjEYhqqwa9/NUn+ro6t2JvCLsZJY67Qe0gfKKjolfLnpAdHySBaIt1ifMdQSpSHlu
- frrdtHx9HL7EUih7zW3CVa6v7K08tc55DxzwK5NtzoNN+xROBDZghFrAJAtIhMH1W2
- n8V97DO4ji15A==
-To: qemu-devel@nongnu.org
-From: Anton Kochkov <anton.kochkov@proton.me>
-Cc: Anton Kochkov <anton.kochkov@proton.me>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH] contrib/plugins: add meson build file
-Message-ID: <20230615141315.961315-1-anton.kochkov@proton.me>
-Feedback-ID: 53490844:user:proton
+ (Exim 4.90_1) (envelope-from <postmaster@kaiser.cx>)
+ id 1q9ntg-00086e-JY; Thu, 15 Jun 2023 10:24:25 -0400
+Received: from [94.118.66.68] (helo=martin-debian-2.paytec.ch)
+ by viti.kaiser.cx with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.89) (envelope-from <martin@kaiser.cx>)
+ id 1q9ntX-0001T5-QI; Thu, 15 Jun 2023 16:24:16 +0200
+From: Martin Kaiser <martin@kaiser.cx>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Martin Kaiser <martin@kaiser.cx>
+Subject: [PATCH v3] imx_serial: set wake bit when we receive a data byte
+Date: Thu, 15 Jun 2023 15:22:56 +0100
+Message-Id: <20230615142256.1142849-1-martin@kaiser.cx>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230608154129.133169-1-martin@kaiser.cx>
+References: <20230608154129.133169-1-martin@kaiser.cx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.43.22;
- envelope-from=anton.kochkov@proton.me; helo=mail-4322.protonmail.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f;
+ envelope-from=postmaster@kaiser.cx; helo=viti.kaiser.cx
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,67 +58,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add crossplatform Meson file to build TCG plugins since
-the Makefile makes wrong assumptions about it being used only
-on Linux. Tested on Linux and macOS.
+The Linux kernel added a flood check for RX data recently in commit
+496a4471b7c3 ("serial: imx: work-around for hardware RX flood"). This
+check uses the wake bit in the UART status register 2. The wake bit
+indicates that the receiver detected a start bit on the RX line. If the
+kernel sees a number of RX interrupts without the wake bit being set, it
+treats this as spurious data and resets the UART port. imx_serial does
+never set the wake bit and triggers the kernel's flood check.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1710
-Signed-off-by: Anton Kochkov <anton.kochkov@proton.me>
+This patch adds support for the wake bit. wake is set when we receive a
+new character (it's not set for break events). It seems that wake is
+cleared by the kernel driver, the hardware does not have to clear it
+automatically after data was read.
+
+The wake bit can be configured as an interrupt source. Support this
+mechanism as well.
+
+Co-developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
 ---
- contrib/plugins/meson.build       | 31 +++++++++++++++++++++++++++++++
- contrib/plugins/meson_options.txt |  1 +
- 2 files changed, 32 insertions(+)
- create mode 100644 contrib/plugins/meson.build
- create mode 100644 contrib/plugins/meson_options.txt
+v3:
+ - fix some spelling mistakes in the commit message
+ - add Philippe's Reviewed-by
 
-diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-new file mode 100644
-index 0000000000..72c4167461
---- /dev/null
-+++ b/contrib/plugins/meson.build
-@@ -0,0 +1,31 @@
-+project('qemu-plugins', 'c', meson_version: '>=3D0.50.0')
-+
-+qemu_src =3D get_option('qemu_path')
-+if qemu_src =3D=3D ''
-+  qemu_src =3D '../..'
-+endif
-+
-+qemu_include =3D qemu_src + '/include/qemu'
-+incdir =3D include_directories(qemu_include)
-+
-+plugins =3D [
-+  'execlog',
-+  'hotblocks',
-+  'hotpages',
-+  'howvec',
-+  'lockstep',
-+  'hwprofile',
-+  'cache',
-+  'drcov',
-+]
-+
-+th =3D dependency('threads', required: true)
-+glib =3D dependency('glib-2.0', required: true)
-+
-+foreach p: plugins
-+  library(p, p + '.c',
-+    include_directories: incdir,
-+    dependencies: [th, glib],
-+    override_options: ['b_lundef=3Dfalse']
-+  )
-+endforeach
-diff --git a/contrib/plugins/meson_options.txt b/contrib/plugins/meson_opti=
-ons.txt
-new file mode 100644
-index 0000000000..2d76cda496
---- /dev/null
-+++ b/contrib/plugins/meson_options.txt
-@@ -0,0 +1 @@
-+option('qemu_path', type : 'string', value : '', description : 'Full path =
-to the QEMU sources to build plugins for')
---
-2.40.1
+v2:
+ - support interrupts from wake
+ - clean up the commit message
 
+ hw/char/imx_serial.c         | 5 ++++-
+ include/hw/char/imx_serial.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index ee1375e26d..1b75a89588 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -80,7 +80,7 @@ static void imx_update(IMXSerialState *s)
+      * TCEN and TXDC are both bit 3
+      * RDR and DREN are both bit 0
+      */
+-    mask |= s->ucr4 & (UCR4_TCEN | UCR4_DREN);
++    mask |= s->ucr4 & (UCR4_WKEN | UCR4_TCEN | UCR4_DREN);
+ 
+     usr2 = s->usr2 & mask;
+ 
+@@ -321,6 +321,9 @@ static void imx_put_data(void *opaque, uint32_t value)
+ 
+ static void imx_receive(void *opaque, const uint8_t *buf, int size)
+ {
++    IMXSerialState *s = (IMXSerialState *)opaque;
++
++    s->usr2 |= USR2_WAKE;
+     imx_put_data(opaque, *buf);
+ }
+ 
+diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
+index 91c9894ad5..b823f94519 100644
+--- a/include/hw/char/imx_serial.h
++++ b/include/hw/char/imx_serial.h
+@@ -71,6 +71,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ 
+ #define UCR4_DREN       BIT(0)    /* Receive Data Ready interrupt enable */
+ #define UCR4_TCEN       BIT(3)    /* TX complete interrupt enable */
++#define UCR4_WKEN       BIT(7)    /* WAKE interrupt enable */
+ 
+ #define UTS1_TXEMPTY    (1<<6)
+ #define UTS1_RXEMPTY    (1<<5)
+-- 
+2.30.2
 
 
