@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FB673230A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 01:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C92E6732309
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 01:06:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9w01-0002Ul-0y; Thu, 15 Jun 2023 19:03:29 -0400
+	id 1q9w01-0002W6-QS; Thu, 15 Jun 2023 19:03:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9vzx-0002JL-TL; Thu, 15 Jun 2023 19:03:25 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1q9vzy-0002NO-Sj; Thu, 15 Jun 2023 19:03:26 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9vzw-0007ip-8T; Thu, 15 Jun 2023 19:03:25 -0400
+ id 1q9vzx-0007jD-0e; Thu, 15 Jun 2023 19:03:26 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 0AFD5748A62;
- Fri, 16 Jun 2023 01:03:17 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 14CC1748A59;
+ Fri, 16 Jun 2023 01:03:18 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DCC96748A56; Fri, 16 Jun 2023 01:03:16 +0200 (CEST)
-Message-Id: <50adc24f9d408882128e896d8a81a1a059c41836.1686868895.git.balaton@eik.bme.hu>
+ id E46A0748A56; Fri, 16 Jun 2023 01:03:17 +0200 (CEST)
+Message-Id: <e38e606e937e7b6dfc679c881c762c7037b325a4.1686868895.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1686868895.git.balaton@eik.bme.hu>
 References: <cover.1686868895.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 07/14] target/ppd: Remove unused define
+Subject: [PATCH v3 08/14] target/ppc: Fix gen_sc to use correct nip
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -34,10 +34,10 @@ To: qemu-devel@nongnu.org,
 Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>
-Date: Fri, 16 Jun 2023 01:03:16 +0200 (CEST)
+Date: Fri, 16 Jun 2023 01:03:17 +0200 (CEST)
 X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -58,28 +58,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 7a3fe174b12d removed usage of POWERPC_SYSCALL_VECTORED, drop
-the unused define as well.
+Most exceptions are raised with nip pointing to the faulting
+instruction but the sc instruction generating a syscall exception
+leaves nip pointing to next instruction. Fix gen_sc to not use
+gen_exception_err() which sets nip back but correctly set nip to
+pc_next so we don't have to patch this in the exception handlers.
+
+This changes the nip logged in dump_syscall and dump_hcall debug
+functions but now this matches how nip would be on a real CPU.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/ppc/excp_helper.c | 39 ---------------------------------------
+ target/ppc/translate.c   |  8 +++++---
+ 2 files changed, 5 insertions(+), 42 deletions(-)
 
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index f19a0f2d1d..903216c2a6 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -495,12 +495,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         dump_syscall(env);
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+         break;
+     case POWERPC_EXCP_FIT:       /* Fixed-interval timer interrupt           */
+         trace_ppc_excp_print("FIT");
+@@ -611,12 +605,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         dump_syscall(env);
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+         break;
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+     case POWERPC_EXCP_DECR:      /* Decrementer exception                    */
+@@ -759,13 +747,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+         } else {
+             dump_syscall(env);
+         }
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+-
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+@@ -910,13 +891,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+         } else {
+             dump_syscall(env);
+         }
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+-
+         /*
+          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+          * instruction to communicate with QEMU. The pegasos2 machine
+@@ -1075,12 +1049,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         dump_syscall(env);
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+         break;
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+     case POWERPC_EXCP_APU:       /* Auxiliary processor unavailable          */
+@@ -1322,13 +1290,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+         } else {
+             dump_syscall(env);
+         }
+-
+-        /*
+-         * We need to correct the NIP which in this case is supposed
+-         * to point to the next instruction
+-         */
+-        env->nip += 4;
+-
+         /* "PAPR mode" built-in hypercall emulation */
+         if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
+             PPCVirtualHypervisorClass *vhc =
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index b591f2e496..a32a9b8a5f 100644
+index a32a9b8a5f..4260d3d66f 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -4416,7 +4416,6 @@ static void gen_hrfid(DisasContext *ctx)
- #define POWERPC_SYSCALL POWERPC_EXCP_SYSCALL_USER
- #else
- #define POWERPC_SYSCALL POWERPC_EXCP_SYSCALL
--#define POWERPC_SYSCALL_VECTORED POWERPC_EXCP_SYSCALL_VECTORED
+@@ -4419,10 +4419,12 @@ static void gen_hrfid(DisasContext *ctx)
  #endif
  static void gen_sc(DisasContext *ctx)
  {
+-    uint32_t lev;
++    uint32_t lev = (ctx->opcode >> 5) & 0x7F;
+ 
+-    lev = (ctx->opcode >> 5) & 0x7F;
+-    gen_exception_err(ctx, POWERPC_SYSCALL, lev);
++    gen_update_nip(ctx, ctx->base.pc_next);
++    gen_helper_raise_exception_err(cpu_env, tcg_constant_i32(POWERPC_SYSCALL),
++                                   tcg_constant_i32(lev));
++    ctx->base.is_jmp = DISAS_NORETURN;
+ }
+ 
+ #if defined(TARGET_PPC64)
 -- 
 2.30.9
 
