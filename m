@@ -2,107 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8E0730E74
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 06:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1DE730E6B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 06:54:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9f4k-0002xc-1R; Thu, 15 Jun 2023 00:59:14 -0400
+	id 1q9ezP-0001b0-Pj; Thu, 15 Jun 2023 00:53:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1q9f4h-0002xP-Oh
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 00:59:11 -0400
-Received: from mail-bn7nam10on2048.outbound.protection.outlook.com
- ([40.107.92.48] helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1q9ezM-0001aV-P1; Thu, 15 Jun 2023 00:53:40 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1q9f4f-0001ty-Ds
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 00:59:11 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FORZc2vqlHDoRGFPOm1FGiFviz5Rja1pVYmgrugoxDrngjadHCODRrrmW80Z+nxuk2DEOJ4kO2fQKakzVZRf2WV/30E/5bQGwjdj+1gaaFjZiwZIxRscNxZqf4i75lKlUNLfrXT35wFXg1gN64R6tszfAgcBYh0U8MzoL4JKpOA3Ec3sjyJ0oqawrcKJISUWMRz3w2dQoLnJYfyQa63Dvdj9YQDvvfeNW45sXdYhNoK64M7ufbJnspNeeLoOPbrcKeZBhfh4NdJoFVrb5/OcAcx3jlWIT2koYjr59Zj6gJlGmEDNkDai+IJavY//+njiCPW6DC/lHY9wxAmwPfEraA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lpzFdxYLzCqq9baTJu1xa7qkftBU3wC/Xy1DvrZqmyw=;
- b=Sp+KdO7DSbjfpDL+Avc+GVgjBk9pWTubQO1z+ATTXDORYEMp3bN9/VqY8Vo8BKy4M2W0fblbhgI9QM1zdOg2LhPkPnf7nyIePh/e76WviwgxIN9EZwwyuvxQLM+8hDtfaUFEHH5DKJxHrHFS/lSXVv/hl8zg4kXGJjKHfP0ZbA6opvRqi8MDAwIA+4SMvgX13RQ8CYHeKRZ7IjC3MHc/tYAj3xGksD2K8iJ6znZGNVLX+u9kjLz4WNI0XZGr+yhaIQBAdaXVf17vQMBO64ogBKdI2Cr+OFnbNPXUTXboQnmPq5FEC8RKIGZ/k3nL20FbESMpsoY1Y2dMKLU/St2K3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lpzFdxYLzCqq9baTJu1xa7qkftBU3wC/Xy1DvrZqmyw=;
- b=Yo5RPV3TCLpCtzHHeVaHHi1Oror3sSUuTx+MphWslh+Ww3luJbkVVx90/o3qWMnrZfUkvDUXyR6WGKvWJigTSc8AHbjWYGDlLihIXAkhqi3jmuVlNQdsJNLEKNV6+Q+zXSBN5YsG4c8nTDj/fashyQqDRl22jwOHQuiqoMQvGLI=
-Received: from BN9PR03CA0912.namprd03.prod.outlook.com (2603:10b6:408:107::17)
- by CY5PR12MB6525.namprd12.prod.outlook.com (2603:10b6:930:32::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37; Thu, 15 Jun
- 2023 04:54:04 +0000
-Received: from BN8NAM11FT067.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:107:cafe::e5) by BN9PR03CA0912.outlook.office365.com
- (2603:10b6:408:107::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37 via Frontend
- Transport; Thu, 15 Jun 2023 04:54:04 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT067.mail.protection.outlook.com (10.13.177.159) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6500.26 via Frontend Transport; Thu, 15 Jun 2023 04:54:04 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 14 Jun
- 2023 23:53:58 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH] docs/devel: Document the tarball publishing/release process
-Date: Wed, 14 Jun 2023 23:52:41 -0500
-Message-ID: <20230615045241.5838-1-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1q9ezK-00011B-Kb; Thu, 15 Jun 2023 00:53:40 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35F4coBO005778; Thu, 15 Jun 2023 04:53:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=j9NzkR7QzB6JCZo2hO29YyH9endTorWnU4AVhWPUMBY=;
+ b=Wmo6U4LfsqHQefP9kA2E41tfEqwmGUQ2fEBXDU2sW7iVlVUzx6I5T+1agb+h08+7Y/JL
+ vOz+sgmKefarqgZEo+h2f6Kcr0+pKQ2IsghMnML2naTairzuZHJbeet5WlOVh+1RRmt+
+ FTvBON+lOZID13HaBogIsw1Qxv86eMYnNvSTl5b2UgIx8zgDNOzruZsKKRBglWoVjNbw
+ M7orgl37U1Jv4o/GN73yY63rgxfz+GYElFXbYrNLISV3cdef+4U0CiBEG5AoyjfENQ/b
+ xYiwQItY3Rl/2iItNLggm2bwYAEP2o7oIM0tFXH1tHFYYDgrWUDcAkIzyVr9U/IiKlez 0Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r7u8grubf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 Jun 2023 04:53:36 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35F4d71E007088;
+ Thu, 15 Jun 2023 04:53:36 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r7u8grub9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 Jun 2023 04:53:36 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35F1BMnA010721;
+ Thu, 15 Jun 2023 04:53:36 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+ by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3r4gt5s5d9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 Jun 2023 04:53:35 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35F4rYJQ29098258
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 Jun 2023 04:53:35 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DE7E958055;
+ Thu, 15 Jun 2023 04:53:34 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41E7F5803F;
+ Thu, 15 Jun 2023 04:53:33 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 Jun 2023 04:53:32 +0000 (GMT)
+Message-ID: <0aa62167-b6f3-bd98-b4c3-35ab599f151f@linux.ibm.com>
+Date: Thu, 15 Jun 2023 10:23:31 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT067:EE_|CY5PR12MB6525:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb70c3c2-0e56-4adb-3152-08db6d5c8b64
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sRVSGcwxqpkm/xSvBurPnJa+wvzhdRHs7d0ON0cUcQngri5fxqOe+bB1Btbw+K20GkvHdYR+WPfnvERvNMjQQLII+7IqkE5iqrZb5CwEApS64hjOHqxD0LQtajK/NDcZ1DP8aO9tncthmN2FheD2OIQg+9OGRlXrLVRsScG7Q25o7aByHv4DH1v3fNdqfNaVKKWcHUzH0oSr1wIKYJsw+sOr+FVpQiLhG4PJHT+9GmxzfEp5WRzNRk7DEv0dFUC9VulOTOQISBmNpyDL/1HIWFRWBi4W8HkVv9nH/GU3wY/GIAp/vhlhT3iLjXJGsfmmFPCdVRwUeCy3Me0hNvCj+jtS2J4b8uoJMAymSdMz76FXRn69zb8QcELNu0PX1H/ycN3furfX53SUKgkk0o4DgnoRCYy1pAsFDSkmRR3ElwGraX01jD7WVs0NkISi9qdQqSaWXQ31nESlvXAIrfEOut7DvFaxy/AQyzqSUyQtFxdNUuhdfXaOylyOmDWOC219fCqEWaM5Tg8/ekG4PwKUqQiioTUXozKUUlfHAkRemuzUrlW4SviIm8Ql1EWmCLd4UCa26HzEFmQAJN1h73drGnX7yQFpPUA0MZmRDjN9uvApJmd0Vc4IegXudTRKPHsSLlGPvBfP/kPpRjU86Ln9xVYHWbRMJwRergkN0/+oq+sn0CBNC7XyJaXBLw5BMICDxSHJ7t6U9rQZLJDWPHX+8z8EJnW3tZKh0Z34YW03Mb468AY2l3BsMuTIWeGMQ+oo8c0ROtHge6X0xL0tmPlCfAf93of7V+6hIP++O+bxrBY=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(346002)(39860400002)(136003)(376002)(451199021)(40470700004)(46966006)(36840700001)(81166007)(86362001)(82740400003)(5660300002)(8676002)(356005)(82310400005)(316002)(44832011)(41300700001)(8936002)(6916009)(70206006)(70586007)(36860700001)(4326008)(54906003)(426003)(83380400001)(47076005)(336012)(2616005)(186003)(40460700003)(478600001)(16526019)(1076003)(26005)(36756003)(6666004)(2906002)(40480700001)(966005)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2023 04:54:04.5450 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb70c3c2-0e56-4adb-3152-08db6d5c8b64
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT067.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6525
-Received-SPF: softfail client-ip=40.107.92.48;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 3/4] ppc/spapr: load and store l2 state with helper
+ functions
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230608091344.88685-1-npiggin@gmail.com>
+ <20230608091344.88685-4-npiggin@gmail.com>
+ <90f62b35-aba5-df79-a50d-29f78a79c7b3@linux.ibm.com>
+ <CTCCW8LJ6EZR.1VDVZ6UVH6FGF@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CTCCW8LJ6EZR.1VDVZ6UVH6FGF@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wiQI4dr-7egYZc7LGmzWj1dQuTGSKH3g
+X-Proofpoint-ORIG-GUID: 4kOtn4en_3QcmKnVbTuumMq0pRAdn06c
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-15_02,2023-06-14_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306150037
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,159 +117,288 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This hopefully contains most of the information one would need to
-generate/publish QEMU tarballs and make the related announcements. The
-main goal is to quickly get others up to speed on the process so we can
-have multiple people able to handle releases at any point in time.
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
----
- docs/devel/tarball-release-process.rst | 132 +++++++++++++++++++++++++
- 1 file changed, 132 insertions(+)
- create mode 100644 docs/devel/tarball-release-process.rst
 
-diff --git a/docs/devel/tarball-release-process.rst b/docs/devel/tarball-release-process.rst
-new file mode 100644
-index 0000000000..5512dad5cf
---- /dev/null
-+++ b/docs/devel/tarball-release-process.rst
-@@ -0,0 +1,132 @@
-+.. _tarball-release-process:
-+
-+QEMU source tarballs and the release management process
-+=======================================================
-+
-+Overview
-+--------
-+
-+Once an official release is tagged in the QEMU git tree by the current
-+upstream maintainer (for major releases), or current stable maintainer
-+(for stable releases), additional work is needed to generate/publish a
-+source tarball for consumption by distros, vendors, and end-users who
-+may not use git sources directly. A person involved in producing these
-+tarballs is referred to herein as a "release maintainer" (not to be
-+confused with the upstream/stable maintainers who are responsible for
-+managing/tagging the git trees from which the tarballs are generated).
-+
-+This documents provides an overview of this release process and is
-+mainly intended as a reference for current/prospective release maintainers
-+and other individuals involved in the release management process, but it
-+may also be useful to consumers of these source tarballs.
-+
-+Generating source tarballs
-+--------------------------
-+
-+The following example describes the tarball creation process for a
-+particular tagged commit in the QEMU source tree, in this case v8.0.0:
-+
-+  .. code::
-+
-+     # Check out the tagged commit
-+     push ${qemu_git_dir}
-+     git checkout v8.0.0
-+     popd
-+
-+     # Generate the .bz2 tarball
-+     mkdir ${qemu_build_dir}
-+     cd ${qemu_build_dir}
-+     ${qemu_git_dir}/configure
-+     make qemu-8.0.0.tar.bz2
-+
-+     # Generate the .xz tarball
-+     bzip2 -k -d qemu-8.0.0.tar.bz2
-+     xz -9 -k qemu-8.0.0.tar
-+
-+     # Sign the resulting tarballs
-+     gpg -b qemu-8.0.0.tar.bz2
-+     gpg -b qemu-8.0.0.tar.xz
-+
-+Testing source tarballs
-+-----------------------
-+
-+While releases tagged in the QEMU git tree will have undergone the full
-+range of CI testing already, the scripts/process to generate the source
-+tree contained in a tarball warrant some additional testing to guard
-+against regressions being introduced at this stage in the process. At a
-+minimum, an all-target build of QEMU using features commonly enabled by
-+distros should be performed, e.g.:
-+
-+  .. code::
-+
-+     tar jxvf qemu-8.0.0.tar.bz2
-+     mkdir qemu-8.0.0-build
-+     cd qemu-8.0.0-build
-+     ../qemu-8.0.0/configure --extra-cflags=-Wall \
-+        --enable-gtk --enable-numa --enable-linux-aio --enable-usb-redir \
-+        --enable-virtfs --enable-libusb
-+     make
-+     make check
-+
-+Publishing source tarballs
-+--------------------------
-+
-+The publishing process generally involves the following steps:
-+
-+1) Upload the tarballs and their corresponding signatures to qemu.org's
-+   file host. This process may change occasionally due to qemu.org's
-+   changing bandwidth/infrastructure needs, so check with the QEMU team on
-+   setting up access and getting details on the specific upload process. One
-+   fairly constant requirement however is to upload all the required
-+   components to the appropriate location, e.g.:
-+
-+  .. code::
-+
-+     qemu-8.0.0.tar.bz2
-+     qemu-8.0.0.tar.bz2.sig
-+     qemu-8.0.0.tar.xz
-+     qemu-8.0.0.tar.xz.sig
-+
-+2) Update the links on the qemu.org download page. This is currently
-+   handled automatically when pushing updates to the git repo used to
-+   manage the content on qemu.org. An example of the commit
-+   corresponding to publishing the QEMU 8.0.0 release can be seen here:
-+
-+   https://gitlab.com/qemu-project/qemu-web/-/commit/8a2082e67c1b39d41bd526bfa0435de34199d6d9
-+
-+   Prior to a final release there are usually a number of release
-+   candidates tarballs which are also published on qemu.org. An example for
-+   QEMU 8.0.0-rc4 can be seen here:
-+
-+   https://gitlab.com/qemu-project/qemu-web/-/commit/c976cbe248ca76eae9e938f718372a2dba1a21af
-+
-+3) Send an announcement to the QEMU mailing list. The format may differ
-+   slightly for major releases, RCs, and stable stable releases. It may
-+   also change a bit based on the preferences of the current release
-+   maintainer or other factors.
-+
-+   For reference, an example announcement for the QEMU 8.0.0 major release
-+   can be found here:
-+
-+   https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg02755.html
-+
-+   An example announcement for the QEMU 8.0.0-rc4 major release candidate
-+   can be found here:
-+
-+   https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg02026.html
-+
-+   An example announcement for the QEMU 8.0.2 stable release can be found
-+   here:
-+
-+   https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg00221.html
-+
-+4) For major releases, add an accompanying blog entry to the git repo used
-+   to manage qemu.org. It should generally follow the format of the
-+   above-mentioned announcement sent to the QEMU mailing list. Generally
-+   this is only done for final releases, and not for RCs, e.g.:
-+
-+   https://gitlab.com/qemu-project/qemu-web/-/commit/a5cb9e1a81e46b7e431ec3a0c130d0b4bf93d39a
-+
-+   For stable releases there generally isn't an associated blog entry, but
-+   providing one may be worthwhile in some cases for bringing additional
-+   attention to releases that address critical functional/security issues.
--- 
-2.25.1
+On 6/14/23 17:32, Nicholas Piggin wrote:
+> On Fri Jun 9, 2023 at 6:00 PM AEST, Harsh Prateek Bora wrote:
+>>
+>>
+>> On 6/8/23 14:43, Nicholas Piggin wrote:
+>>> Arguably this is just shuffling around register accesses, but one nice
+>>> thing it does is allow the exit to save away the L2 state then switch
+>>> the environment to the L1 before copying L2 data back to the L1, which
+>>> logically flows more naturally and simplifies the error paths.
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>    hw/ppc/spapr_hcall.c | 164 ++++++++++++++++++++++---------------------
+>>>    1 file changed, 85 insertions(+), 79 deletions(-)
+>>>
+>>> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+>>> index d5b8d54692..da6440f235 100644
+>>> --- a/hw/ppc/spapr_hcall.c
+>>> +++ b/hw/ppc/spapr_hcall.c
+>>> @@ -1663,9 +1663,9 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
+>>>                                       target_ulong *args)
+>>>    {
+>>>        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+>>> -    CPUState *cs = CPU(cpu);
+>>>        CPUPPCState *env = &cpu->env;
+>>>        SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
+>>> +    struct nested_ppc_state l2_state;
+>>>        target_ulong hv_ptr = args[0];
+>>>        target_ulong regs_ptr = args[1];
+>>>        target_ulong hdec, now = cpu_ppc_load_tbl(env);
+>>> @@ -1699,6 +1699,10 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
+>>>            return H_PARAMETER;
+>>>        }
+>>>    
+>>> +    if (hv_state.lpid == 0) {
+>>> +        return H_PARAMETER;
+>>> +    }
+>>> +
+>>>        spapr_cpu->nested_host_state = g_try_new(struct nested_ppc_state, 1);
+>>>        if (!spapr_cpu->nested_host_state) {
+>>>            return H_NO_MEM;
+>>> @@ -1717,46 +1721,49 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
+>>>            return H_P2;
+>>>        }
+>>>    
+>>> -    len = sizeof(env->gpr);
+>>> +    len = sizeof(l2_state.gpr);
+>>>        assert(len == sizeof(regs->gpr));
+>>> -    memcpy(env->gpr, regs->gpr, len);
+>>> +    memcpy(l2_state.gpr, regs->gpr, len);
+>>>    
+>>> -    env->lr = regs->link;
+>>> -    env->ctr = regs->ctr;
+>>> -    cpu_write_xer(env, regs->xer);
+>>> -    ppc_set_cr(env, regs->ccr);
+>>> -
+>>> -    env->msr = regs->msr;
+>>> -    env->nip = regs->nip;
+>>> +    l2_state.lr = regs->link;
+>>> +    l2_state.ctr = regs->ctr;
+>>> +    l2_state.xer = regs->xer;
+>>> +    l2_state.cr = regs->ccr;
+>>> +    l2_state.msr = regs->msr;
+>>> +    l2_state.nip = regs->nip;
+>>>    
+>>>        address_space_unmap(CPU(cpu)->as, regs, len, len, false);
+>>>    
+>>> -    env->cfar = hv_state.cfar;
+>>> -
+>>> -    assert(env->spr[SPR_LPIDR] == 0);
+>>> -    env->spr[SPR_LPIDR] = hv_state.lpid;
+>>> +    l2_state.cfar = hv_state.cfar;
+>>> +    l2_state.lpidr = hv_state.lpid;
+>>>    
+>>>        lpcr_mask = LPCR_DPFD | LPCR_ILE | LPCR_AIL | LPCR_LD | LPCR_MER;
+>>>        lpcr = (env->spr[SPR_LPCR] & ~lpcr_mask) | (hv_state.lpcr & lpcr_mask);
+>>>        lpcr |= LPCR_HR | LPCR_UPRT | LPCR_GTSE | LPCR_HVICE | LPCR_HDICE;
+>>>        lpcr &= ~LPCR_LPES0;
+>>> -    env->spr[SPR_LPCR] = lpcr & pcc->lpcr_mask;
+>>> +    l2_state.lpcr = lpcr & pcc->lpcr_mask;
+>>>    
+>>> -    env->spr[SPR_PCR] = hv_state.pcr;
+>>> +    l2_state.pcr = hv_state.pcr;
+>>>        /* hv_state.amor is not used */
+>>> -    env->spr[SPR_DPDES] = hv_state.dpdes;
+>>> -    env->spr[SPR_HFSCR] = hv_state.hfscr;
+>>> -    hdec = hv_state.hdec_expiry - now;
+>>> +    l2_state.dpdes = hv_state.dpdes;
+>>> +    l2_state.hfscr = hv_state.hfscr;
+>>>        /* TCG does not implement DAWR*, CIABR, PURR, SPURR, IC, VTB, HEIR SPRs*/
+>>> -    env->spr[SPR_SRR0] = hv_state.srr0;
+>>> -    env->spr[SPR_SRR1] = hv_state.srr1;
+>>> -    env->spr[SPR_SPRG0] = hv_state.sprg[0];
+>>> -    env->spr[SPR_SPRG1] = hv_state.sprg[1];
+>>> -    env->spr[SPR_SPRG2] = hv_state.sprg[2];
+>>> -    env->spr[SPR_SPRG3] = hv_state.sprg[3];
+>>> -    env->spr[SPR_BOOKS_PID] = hv_state.pidr;
+>>> -    env->spr[SPR_PPR] = hv_state.ppr;
+>>> +    l2_state.srr0 = hv_state.srr0;
+>>> +    l2_state.srr1 = hv_state.srr1;
+>>> +    l2_state.sprg0 = hv_state.sprg[0];
+>>> +    l2_state.sprg1 = hv_state.sprg[1];
+>>> +    l2_state.sprg2 = hv_state.sprg[2];
+>>> +    l2_state.sprg3 = hv_state.sprg[3];
+>>> +    l2_state.pidr = hv_state.pidr;
+>>> +    l2_state.ppr = hv_state.ppr;
+>>> +    l2_state.tb_offset = env->tb_env->tb_offset + hv_state.tb_offset;
+>>> +
+>>> +    /*
+>>> +     * Switch to the nested guest environment and start the "hdec" timer.
+>>> +     */
+>>> +    nested_load_state(cpu, &l2_state);
+>>>    
+>>> +    hdec = hv_state.hdec_expiry - now;
+>>>        cpu_ppc_hdecr_init(env);
+>>>        cpu_ppc_store_hdecr(env, hdec);
+>>>    
+>>> @@ -1772,14 +1779,8 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
+>>>         * and it's not obviously worth a new data structure to do it.
+>>>         */
+>>>    
+>>> -    env->tb_env->tb_offset += hv_state.tb_offset;
+>>>        spapr_cpu->in_nested = true;
+>>>    
+>>> -    hreg_compute_hflags(env);
+>>> -    ppc_maybe_interrupt(env);
+>>> -    tlb_flush(cs);
+>>> -    env->reserve_addr = -1; /* Reset the reservation */
+>>> -
+>>>        /*
+>>>         * The spapr hcall helper sets env->gpr[3] to the return value, but at
+>>>         * this point the L1 is not returning from the hcall but rather we
+>>> @@ -1793,49 +1794,69 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+>>>    {
+>>>        CPUPPCState *env = &cpu->env;
+>>>        SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
+>>> -    target_ulong r3_return = env->excp_vectors[excp]; /* hcall return value */
+>>> +    struct nested_ppc_state l2_state;
+>>>        target_ulong hv_ptr = spapr_cpu->nested_host_state->gpr[4];
+>>>        target_ulong regs_ptr = spapr_cpu->nested_host_state->gpr[5];
+>>> +    target_ulong hsrr0, hsrr1, hdar, asdr, hdsisr;
+>>>        struct kvmppc_hv_guest_state *hvstate;
+>>>        struct kvmppc_pt_regs *regs;
+>>>        hwaddr len;
+>>>    
+>>>        assert(spapr_cpu->in_nested);
+>>>    
+>>> +    nested_save_state(&l2_state, cpu);
+>>> +    hsrr0 = env->spr[SPR_HSRR0];
+>>> +    hsrr1 = env->spr[SPR_HSRR1];
+>>> +    hdar = env->spr[SPR_HDAR];
+>>> +    hdsisr = env->spr[SPR_HDSISR];
+>>> +    asdr = env->spr[SPR_ASDR];
+>>> +
+>>> +    /*
+>>> +     * Switch back to the host environment (including for any error).
+>>> +     */
+>>> +    assert(env->spr[SPR_LPIDR] != 0);
+>>> +    nested_load_state(cpu, spapr_cpu->nested_host_state);
+>>> +    env->gpr[3] = env->excp_vectors[excp]; /* hcall return value */
+>>> +
+>>>        cpu_ppc_hdecr_exit(env);
+>>>    
+>>> +    spapr_cpu->in_nested = false;
+>>> +
+>>> +    g_free(spapr_cpu->nested_host_state);
+>>> +    spapr_cpu->nested_host_state = NULL;
+>>> +
+>>>        len = sizeof(*hvstate);
+>>>        hvstate = address_space_map(CPU(cpu)->as, hv_ptr, &len, true,
+>>>                                    MEMTXATTRS_UNSPECIFIED);
+>>>        if (len != sizeof(*hvstate)) {
+>>>            address_space_unmap(CPU(cpu)->as, hvstate, len, 0, true);
+>>> -        r3_return = H_PARAMETER;
+>>> -        goto out_restore_l1;
+>>> +        env->gpr[3] = H_PARAMETER;
+>>> +	return;
+>>>        }
+>>>    
+>>> -    hvstate->cfar = env->cfar;
+>>> -    hvstate->lpcr = env->spr[SPR_LPCR];
+>>> -    hvstate->pcr = env->spr[SPR_PCR];
+>>> -    hvstate->dpdes = env->spr[SPR_DPDES];
+>>> -    hvstate->hfscr = env->spr[SPR_HFSCR];
+>>> +    hvstate->cfar = l2_state.cfar;
+>>> +    hvstate->lpcr = l2_state.lpcr;
+>>> +    hvstate->pcr = l2_state.pcr;
+>>> +    hvstate->dpdes = l2_state.dpdes;
+>>> +    hvstate->hfscr = l2_state.hfscr;
+>>>    
+>>>        if (excp == POWERPC_EXCP_HDSI) {
+>>> -        hvstate->hdar = env->spr[SPR_HDAR];
+>>> -        hvstate->hdsisr = env->spr[SPR_HDSISR];
+>>> -        hvstate->asdr = env->spr[SPR_ASDR];
+>>> +        hvstate->hdar = hdar;
+>>> +        hvstate->hdsisr = hdsisr;
+>>> +        hvstate->asdr = asdr;
+>>>        } else if (excp == POWERPC_EXCP_HISI) {
+>>> -        hvstate->asdr = env->spr[SPR_ASDR];
+>>> +        hvstate->asdr = asdr;
+>>>        }
+>>>    
+>>>        /* HEIR should be implemented for HV mode and saved here. */
+>>> -    hvstate->srr0 = env->spr[SPR_SRR0];
+>>> -    hvstate->srr1 = env->spr[SPR_SRR1];
+>>> -    hvstate->sprg[0] = env->spr[SPR_SPRG0];
+>>> -    hvstate->sprg[1] = env->spr[SPR_SPRG1];
+>>> -    hvstate->sprg[2] = env->spr[SPR_SPRG2];
+>>> -    hvstate->sprg[3] = env->spr[SPR_SPRG3];
+>>> -    hvstate->pidr = env->spr[SPR_BOOKS_PID];
+>>> -    hvstate->ppr = env->spr[SPR_PPR];
+>>> +    hvstate->srr0 = l2_state.srr0;
+>>> +    hvstate->srr1 = l2_state.srr1;
+>>> +    hvstate->sprg[0] = l2_state.sprg0;
+>>> +    hvstate->sprg[1] = l2_state.sprg1;
+>>> +    hvstate->sprg[2] = l2_state.sprg2;
+>>> +    hvstate->sprg[3] = l2_state.sprg3;
+>>> +    hvstate->pidr = l2_state.pidr;
+>>> +    hvstate->ppr = l2_state.ppr;
+>>>    
+>>>        /* Is it okay to specify write length larger than actual data written? */
+>>>        address_space_unmap(CPU(cpu)->as, hvstate, len, len, true);
+>>> @@ -1845,46 +1866,31 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+>>>                                    MEMTXATTRS_UNSPECIFIED);
+>>>        if (!regs || len != sizeof(*regs)) {
+>>>            address_space_unmap(CPU(cpu)->as, regs, len, 0, true);
+>>> -        r3_return = H_P2;
+>>> -        goto out_restore_l1;
+>>> +        env->gpr[3] = H_P2;
+>>> +	return;
+>>>        }
+>>>    
+>>>        len = sizeof(env->gpr);
+>>>        assert(len == sizeof(regs->gpr));
+>>> -    memcpy(regs->gpr, env->gpr, len);
+>>> +    memcpy(regs->gpr, l2_state.gpr, len);
+>>>    
+>>> -    regs->link = env->lr;
+>>> -    regs->ctr = env->ctr;
+>>> -    regs->xer = cpu_read_xer(env);
+>>> -    regs->ccr = ppc_get_cr(env);
+>>> +    regs->link = l2_state.lr;
+>>> +    regs->ctr = l2_state.ctr;
+>>> +    regs->xer = l2_state.xer;
+>>> +    regs->ccr = l2_state.cr;
+>>>    
+>>>        if (excp == POWERPC_EXCP_MCHECK ||
+>>>            excp == POWERPC_EXCP_RESET ||
+>>>            excp == POWERPC_EXCP_SYSCALL) {
+>>> -        regs->nip = env->spr[SPR_SRR0];
+>>> -        regs->msr = env->spr[SPR_SRR1] & env->msr_mask;
+>>> +        regs->nip = l2_state.srr0;
+>>> +        regs->msr = l2_state.srr1 & env->msr_mask;
+>>>        } else {
+>>> -        regs->nip = env->spr[SPR_HSRR0];
+>>> -        regs->msr = env->spr[SPR_HSRR1] & env->msr_mask;
+>>> +        regs->nip = hsrr0;
+>>> +        regs->msr = hsrr1 & env->msr_mask;
+>>>        }
+>>>    
+>>
+>> Can the copying of L2 data to L1 be abstraced with an inline helper
+>> routine as well ? Then the spapr_exit_nested will look more neat:
+>>    - nested_save_state(l2)
+>>    - nested_load_state(host)
+>>    - copy_l2_state_to_l1() <=== something like this?
+> 
+> I did start to look at that, but I thought having the code to move
+> the data in and out of the actual the hcall API format in the
+> hcall functions themselves worked okay.
+> 
+> If there could be some streamlining or code sharing with the v2
+> nested-HV API, I wouldn't mind that but would probably like to see
+> it done as part of the v2 patches so we can see how it works.
+> 
+Sure, that can be done along with future patches too.
 
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> Thanks,
+> Nick
+> 
 
