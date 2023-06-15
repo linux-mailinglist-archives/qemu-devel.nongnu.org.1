@@ -2,47 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C3F731B43
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 16:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E912A731BCF
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 16:52:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9ntn-0003BV-Hd; Thu, 15 Jun 2023 10:24:31 -0400
+	id 1q9oJB-0007TL-5B; Thu, 15 Jun 2023 10:50:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <postmaster@kaiser.cx>)
- id 1q9nti-0003Aw-4g; Thu, 15 Jun 2023 10:24:26 -0400
-Received: from viti.kaiser.cx ([2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <postmaster@kaiser.cx>)
- id 1q9ntg-00086e-JY; Thu, 15 Jun 2023 10:24:25 -0400
-Received: from [94.118.66.68] (helo=martin-debian-2.paytec.ch)
- by viti.kaiser.cx with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.89) (envelope-from <martin@kaiser.cx>)
- id 1q9ntX-0001T5-QI; Thu, 15 Jun 2023 16:24:16 +0200
-From: Martin Kaiser <martin@kaiser.cx>
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Martin Kaiser <martin@kaiser.cx>
-Subject: [PATCH v3] imx_serial: set wake bit when we receive a data byte
-Date: Thu, 15 Jun 2023 15:22:56 +0100
-Message-Id: <20230615142256.1142849-1-martin@kaiser.cx>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230608154129.133169-1-martin@kaiser.cx>
-References: <20230608154129.133169-1-martin@kaiser.cx>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q9oJ4-0007RM-0W
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 10:50:42 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q9oJ2-0008WK-4h
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 10:50:37 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id EF9161FE25;
+ Thu, 15 Jun 2023 14:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1686840632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=LDt/01TN3vKLRLrQ5EAbnsFEJCZp2wAG9HgKc/igdd8=;
+ b=ee79uRWdyZnMnBEkDl4SFBOxrQHS24GwJnSbF3+WofTIKSvnaI4DZ6T4rN6DVWHgNcfhLX
+ wMUv60al4NgZBCiTg6iKUNhgQ/fTJiHIU0hLWkhrxm8n3VQvP8HLtav1qBC9AF9VXGdbO2
+ IzOCKHanydp+PreyUWGT01qsdQM20fE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1686840632;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=LDt/01TN3vKLRLrQ5EAbnsFEJCZp2wAG9HgKc/igdd8=;
+ b=ZTQXeHVE2nbMDeFwneX5BRhetwTFkFxWG4K7PZU74qAmRPvRdAVufnGuDnqzhPp+JK9GIO
+ A0YSxJDHcwo+4QDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 48F3213A32;
+ Thu, 15 Jun 2023 14:50:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id XneCATgli2T4AgAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 15 Jun 2023 14:50:32 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org, Juan
+ Quintela <quintela@redhat.com>, "Daniel P. Berrange"
+ <berrange@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH V2] migration: file URI
+In-Reply-To: <ZIoJFoBlkS5WFOyZ@x1n>
+References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
+ <ZIdnj7Hr1L3iDVUG@x1n> <bddfc088-268b-2d9b-7a28-6345b8bfa2e7@oracle.com>
+ <ZId4LggDVgxbtGTn@x1n> <877cs6ujtu.fsf@suse.de> <ZInhvxq9YgoM9ykZ@x1n>
+ <874jn9vs9x.fsf@suse.de> <ZIoJFoBlkS5WFOyZ@x1n>
+Date: Thu, 15 Jun 2023 11:50:28 -0300
+Message-ID: <87cz1wzsnf.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f;
- envelope-from=postmaster@kaiser.cx; helo=viti.kaiser.cx
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,74 +87,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Linux kernel added a flood check for RX data recently in commit
-496a4471b7c3 ("serial: imx: work-around for hardware RX flood"). This
-check uses the wake bit in the UART status register 2. The wake bit
-indicates that the receiver detected a start bit on the RX line. If the
-kernel sees a number of RX interrupts without the wake bit being set, it
-treats this as spurious data and resets the UART port. imx_serial does
-never set the wake bit and triggers the kernel's flood check.
+Peter Xu <peterx@redhat.com> writes:
 
-This patch adds support for the wake bit. wake is set when we receive a
-new character (it's not set for break events). It seems that wake is
-cleared by the kernel driver, the hardware does not have to clear it
-automatically after data was read.
+> On Wed, Jun 14, 2023 at 02:59:54PM -0300, Fabiano Rosas wrote:
+>> In this message Daniel mentions virDomainSnapshotXXX which would benefit
+>> from using the same "file" migration, but being done live:
+>> 
+>> https://lore.kernel.org/r/ZD7MRGQ+4QsDBtKR@redhat.com
+>> 
+>> And from your response here:
+>>  https://lore.kernel.org/r/ZEA759BSs75ldW6Y@x1n
+>> 
+>> I had understood that having a new SUSPEND cap to decide whether to do
+>> it live or non-live would be enough to cover all use-cases.
+>
+> Oh, I probably lost some of the contexts there, sorry about that - so it's
+> about not being able to live snapshot on !LINUX worlds properly, am I
+> right?
+>
 
-The wake bit can be configured as an interrupt source. Support this
-mechanism as well.
+Right, so that gives us for now a reasonable use-case for keeping live
+migration behavior possible with "file:".
 
-Co-developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
----
-v3:
- - fix some spelling mistakes in the commit message
- - add Philippe's Reviewed-by
+> In the ideal world where we can always synchronously tracking guest pages
+> (like what we do with userfaultfd wr-protections on modern Linux), the
+> !SUSPEND case should always be covered by CAP_BACKGROUND_SNAPSHOT already
+> in a more performant way.  IOW, !SUSPEND seems to be not useful to Linux,
+> because whenever we want to set !SUSPEND we should just use BG_SNAPSHOT.
+>
 
-v2:
- - support interrupts from wake
- - clean up the commit message
+I agree.
 
- hw/char/imx_serial.c         | 5 ++++-
- include/hw/char/imx_serial.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+> But I think indeed the live snapshot support is not good enough. Even on
+> Linux, it lacks different memory type supports, multi-process support, and
+> also no-go on very old kernels.  So I assume the fallback makes sense, and
+> then we can't always rely on that.
+>
+> Then I agree we can keep "file:" the same as others like proposed here, but
+> I'd like to double check with all of us so we're on the same page..
 
-diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
-index ee1375e26d..1b75a89588 100644
---- a/hw/char/imx_serial.c
-+++ b/hw/char/imx_serial.c
-@@ -80,7 +80,7 @@ static void imx_update(IMXSerialState *s)
-      * TCEN and TXDC are both bit 3
-      * RDR and DREN are both bit 0
-      */
--    mask |= s->ucr4 & (UCR4_TCEN | UCR4_DREN);
-+    mask |= s->ucr4 & (UCR4_WKEN | UCR4_TCEN | UCR4_DREN);
- 
-     usr2 = s->usr2 & mask;
- 
-@@ -321,6 +321,9 @@ static void imx_put_data(void *opaque, uint32_t value)
- 
- static void imx_receive(void *opaque, const uint8_t *buf, int size)
- {
-+    IMXSerialState *s = (IMXSerialState *)opaque;
-+
-+    s->usr2 |= USR2_WAKE;
-     imx_put_data(opaque, *buf);
- }
- 
-diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
-index 91c9894ad5..b823f94519 100644
---- a/include/hw/char/imx_serial.h
-+++ b/include/hw/char/imx_serial.h
-@@ -71,6 +71,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
- 
- #define UCR4_DREN       BIT(0)    /* Receive Data Ready interrupt enable */
- #define UCR4_TCEN       BIT(3)    /* TX complete interrupt enable */
-+#define UCR4_WKEN       BIT(7)    /* WAKE interrupt enable */
- 
- #define UTS1_TXEMPTY    (1<<6)
- #define UTS1_RXEMPTY    (1<<5)
--- 
-2.30.2
++1
 
+> And maybe we should mention some discussions into commit message or
+> comments where proper in the code, so we can track what has happened
+> easier.
+>
+
+I'll add some words where appropriate in my series as well. A v2 is
+already overdue with all the refactorings that have happened in the
+migration code.
 
