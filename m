@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61929730D23
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 04:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8402F730D5A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 04:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9cZE-0007Gu-4G; Wed, 14 Jun 2023 22:18:32 -0400
+	id 1q9d5D-00037u-6v; Wed, 14 Jun 2023 22:51:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9cZ5-0007GK-Pl; Wed, 14 Jun 2023 22:18:23 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1q9d57-00037I-Pf; Wed, 14 Jun 2023 22:51:29 -0400
+Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9cZ3-0004Wq-Ky; Wed, 14 Jun 2023 22:18:23 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-25e89791877so446643a91.2; 
- Wed, 14 Jun 2023 19:18:20 -0700 (PDT)
+ id 1q9d56-00034w-A9; Wed, 14 Jun 2023 22:51:29 -0400
+Received: by mail-qk1-x72f.google.com with SMTP id
+ af79cd13be357-762092e1fb7so124326085a.1; 
+ Wed, 14 Jun 2023 19:51:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686795499; x=1689387499;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=gmail.com; s=20221208; t=1686797483; x=1689389483;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GRqgkiTdepNvQ8Hg5bFUAeZzPlfYHzx5R+qJNPGDrQE=;
- b=POQ+anvPIiRKjbIdCrm2rx1WNTfZ7QuVfhNIIHNwFJdJi4cLy7MLTu2ShcKRz8IUyR
- pVws/tnTKi+NJEOAVJx3MlQQPo+dFC1sfVC+JkZdC85ffSDW3VDEKKvB/wUnHJ9ShZju
- 1NVYRRRa6kflYVBimCzfDeSpP/XhbQVYmHF/Z+t4thJjRaB15GGS3hTenyf/SKPRLRle
- cHfUyhrwlYlmrUpzqfQCOVWGl03KtgDfcqW5bhy3Qmu6ATENcnBKtg6B5BfLqbEpFb+m
- 5ypohTg54OGfHgi1S10B4vX1ICEDjSVSi+idRvoo6TtTXUUSXl6kbOvSg92RHYqyZtQc
- iUMA==
+ bh=483N0eGSwd7mtHeI6tPr01SaCebSA8BFPvAXSW6CXyM=;
+ b=G73pn8T7iEHxIGaP4+eO+Qe2UG1pOMpz6Qbq2Dsh2j410s2Mv6CE4QG4l/uksIsV3W
+ 56ari/Effeq4sOgvINiJr4nhLBOV/A0QC1tscwRLjQS7a47m/+HzHl5nUaB3KSEXX2u9
+ dm/HVnGQcQSaTGi/5ArWUXC/NqE5bYHU9uz+1xZkvuXrWkretIc+GzdSlG8Oew53YIAU
+ a/M/FDZX7OEq7ocxiZRbhOFNLKj581rLEIKIW3Eq0SNw4ha6StR+2ZIOTeRMNClstBmo
+ eCAfB8das/KjLTC+l2j7M07St+dFQfvHnpetXtGCFnhJb/v/J2aaIVIa3ezd7Y1zMlfD
+ iwQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686795499; x=1689387499;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=1e100.net; s=20221208; t=1686797483; x=1689389483;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=GRqgkiTdepNvQ8Hg5bFUAeZzPlfYHzx5R+qJNPGDrQE=;
- b=Zb8NVNeSl2qzZHz0voJKKb8GHFxfKU1vZTzNdzr0yB1uQ4ykyxuksVJmAJ44jPKBxz
- fj1iKLxrhv5LrsUc5JM6NJDF3/WNKwIhhUt0qRvs2CIQ5pJx2LJKyfw3F2OuMFD04jeg
- rxxiBQ5u7nJ0sZgXkJM7406XKKeaGixpLZnjH19IZuu5y5D8OQMEoGAmqrzeuk5N4M8S
- HTJN/mJNHxCY+67kd6PIMvByIvbFniP6g/ecdGJ6fMI0CfNadGwqWyK9Jr31nva9Z4wZ
- lHieqtlQbyxEx49hVQjROP+SHVudk8Q7gF9cu0QFIrOKVzhoJzf4V3jtJ8JvI7HrN5Dn
- cDKA==
-X-Gm-Message-State: AC+VfDyWthsBE83WDlnQUnSlNA+OLW1vDzEwTbbU+R4sIw7q1pm1raNh
- wHsvSxXNg/WBUcS2XKA25vE=
-X-Google-Smtp-Source: ACHHUZ6pM7+OmbrMzj0XRasj/v+ygXsPOU1kNrjMfuRyJSl+kFG4CFrRl/TaiCacVFGyl3wPG9FhMg==
-X-Received: by 2002:a17:90a:1002:b0:259:1812:c9f9 with SMTP id
- b2-20020a17090a100200b002591812c9f9mr2705965pja.1.1686795499462; 
- Wed, 14 Jun 2023 19:18:19 -0700 (PDT)
+ bh=483N0eGSwd7mtHeI6tPr01SaCebSA8BFPvAXSW6CXyM=;
+ b=GisxYmWz2PGQMcZLjmfYYVQGv1uMcCl/eMsJka4QeoVPBzaBRJ+efre04qsOXHmU/m
+ 1TiqYxXL+RyMIjfhSa1ZhAYQ2BTfTuwT7AYJm3VX0Iw/xHN1tVzQem7HF2gBNHVcRCcL
+ zOw1I9pL744Kvdpr+TdC2yLYyTQN8CwFwFzQ3pmA8BCLWWX+jt2X5f3zrtB2yJwO9aXF
+ UenW8V9/R7NOFSnDyWHnggO336yBzNtA34gnYBNTyj2fd1ZoYI3WbZbhkIDI5Gvn6y5+
+ eby9YqsB2dkSjXGSc+F7nT4TjL9Yxr/BrKV8uUcqDsgijUlK15N+HYlbDpfzxkRwP43k
+ Llow==
+X-Gm-Message-State: AC+VfDwnY46mwULKFOnmhaxbRpoBG7duASt1kFNbtALUKQTEycGmM+rg
+ cQK1CH4+vFNEYUS7ZCvOByA=
+X-Google-Smtp-Source: ACHHUZ7JWjeru8XpuHTaMtF7xH0oqkjTWkux7qbeL4pPquo1NasVO+xdz4JiHA3ddGOYF+CaWQfRBg==
+X-Received: by 2002:a37:64d7:0:b0:760:7209:55e7 with SMTP id
+ y206-20020a3764d7000000b00760720955e7mr12342309qkb.27.1686797482809; 
+ Wed, 14 Jun 2023 19:51:22 -0700 (PDT)
 Received: from localhost (14-203-144-223.static.tpgi.com.au. [14.203.144.223])
  by smtp.gmail.com with ESMTPSA id
- p14-20020a170902e74e00b001b39e866324sm9056875plf.306.2023.06.14.19.18.16
+ g17-20020a631111000000b0054ff36967f7sm376546pgl.54.2023.06.14.19.51.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 19:18:18 -0700 (PDT)
+ Wed, 14 Jun 2023 19:51:22 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Jun 2023 12:18:13 +1000
-Message-Id: <CTCV3K9JWBVQ.3R7AH302X3VHQ@wheely>
-Subject: Re: [PATCH 0/4] ppc/pnv: Add chiptod and core timebase state
- machine models
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Date: Thu, 15 Jun 2023 12:51:17 +1000
+Message-Id: <CTCVSVIX21N6.3V2JEPOBPPX3Q@wheely>
 Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>, "Frederic Barrat"
- <frederic.barrat@fr.ibm.com>, "Michael Neuling" <mikey@neuling.org>
+ <dbarboza@ventanamicro.com>, <harshpb@linux.ibm.com>
+Subject: Re: [PATCH v4 1/6] target/ppc: Fix instruction loading endianness
+ in alignment interrupt
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Anushree Mathur" <anushree.mathur@linux.vnet.ibm.com>,
+ <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.14.0
-References: <20230603233612.125879-1-npiggin@gmail.com>
- <e3f591df-6569-b396-0cf7-0ea62aee9f0c@kaod.org>
- <CTC47NS1KELC.35U22YEEW26UP@wheely>
- <e2e88fc1-8099-7eab-b51b-8212063fa6a5@kaod.org>
-In-Reply-To: <e2e88fc1-8099-7eab-b51b-8212063fa6a5@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
+References: <20230530132543.385138-2-npiggin@gmail.com>
+ <0bbbffa7-d66c-66f2-f660-321e4f8aa026@linux.vnet.ibm.com>
+In-Reply-To: <0bbbffa7-d66c-66f2-f660-321e4f8aa026@linux.vnet.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
+ envelope-from=npiggin@gmail.com; helo=mail-qk1-x72f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,88 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 14, 2023 at 6:54 PM AEST, C=C3=A9dric Le Goater wrote:
-> On 6/14/23 07:14, Nicholas Piggin wrote:
-> > On Tue Jun 6, 2023 at 11:59 PM AEST, C=C3=A9dric Le Goater wrote:
-> >> On 6/4/23 01:36, Nicholas Piggin wrote:
-> >>> This adds support for chiptod and core timebase state machine models =
-in
-> >>> the powernv POWER9 and POWER10 models.
-> >>>
-> >>> This does not actually change the time or the value in TB registers
-> >>> (because they are alrady synced in QEMU), but it does go through the
-> >>> motions. It is enough to be able to run skiboot's chiptod initialisat=
-ion
-> >>> code that synchronises core timebases (after a patch to prevent skibo=
-ot
-> >>> skipping chiptod for QEMU, posted to skiboot mailing list).
-> >>>
-> >>> Sorry there was some delay since the last posting. There is a bit mor=
-e
-> >>> interest in this recently but feedback and comments from RFC was not
-> >>> forgotten and is much appreciated.
-> >>>
-> >>> https://lists.gnu.org/archive/html/qemu-ppc/2022-08/msg00324.html
-> >>>
-> >>> I think I accounted for everything except moving register defines to =
-the
-> >>> .h file. I'm on the fence about that but if they are only used in the=
- .c
-> >>> file I think it's okay to keep them there for now. I cut out a lot of
-> >>> unused ones so it's not so cluttered now.
-> >>>
-> >>> Lots of other changes and fixes since that RFC. Notably:
-> >>> - Register names changed to match the workbook names instead of skibo=
-ot.
-> >>> - TFMR moved to timebase_helper.c from misc_helper.c
-> >>> - More comprehensive model and error checking, particularly of TFMR.
-> >>> - POWER10 with multi-chip support.
-> >>> - chiptod and core timebase linked via specific state instead of TFMR=
-.
-> >>
-> >>
-> >> The chiptod units are not exposed to the OS, it is all handled at FW
-> >> level AFAIK. Could the OPAL people provide some feedback on the low le=
-vel
-> >> models ?
-> >=20
-> > Well, no takers so far. I guess I'm a OPAL people :)
-> >> I did some of the P10 chiptod addressing in skiboot, at least. This
-> > patch does work with the skiboot chiptod driver at least.
+On Wed Jun 14, 2023 at 3:51 PM AEST, Anushree Mathur wrote:
 >
-> cool, with 2 chips ?
-
-Yes it worked with 2 chips.
-
-> > I would eventually like to add in the ability to actually change the
-> > TB with it, and inject errors and generate HMIs because that's an area
-> > that seem to be a bit lacking (most of such testing seemed to be done
-> > on real hardware using special time facility corruption injection).
+> On 5/30/23 18:55, Nicholas Piggin wrote:
+> > powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
+> > after cpu_ldl_code(). This corrects DSISR bits in alignment
+> > interrupts when running in little endian mode.
+> >
+> > Reviewed-by: Fabiano Rosas<farosas@suse.de>
+> > Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
+> > ---
+> >   target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
+> >   1 file changed, 21 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> > index c13f2afa04..0274617b4a 100644
+> > --- a/target/ppc/excp_helper.c
+> > +++ b/target/ppc/excp_helper.c
+> > @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
+> >                     env->nip);
+> >   }
+> >  =20
+> > +#ifdef CONFIG_TCG
+> > +/* Return true iff byteswap is needed in a scalar memop */
+> > +static inline bool need_byteswap(CPUArchState *env)
+> > +{
+> > +    /* SOFTMMU builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is =
+set */
+> > +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
+> > +}
+> > +
+> > +static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
 >
-> The MCE injection was a nice addon
->
->    https://lore.kernel.org/qemu-devel/20200325144147.221875-1-npiggin@gma=
-il.com/
->    https://lore.kernel.org/qemu-devel/20211013214042.618918-1-clg@kaod.or=
-g/
->
-> I hope it will get more attention if you resend.
+> This hunk fails to compile with configure --disable-tcg
 
-Will take another look.
+I don't see how since it's inside CONFIG_TCG. Seems to work here.
+You don't have an old version of the patch applied?
 
-> > But yes for now it is a bit difficult to verify it does much useful
-> > aside from booting skiboot (+ patch to enable chiptod on QEMU I posted
-> > recently).
->
-> It's difficult to review PATCH 4 without some good knowledge of HW. I kno=
-w
-> you do but you can not review your own patches ! That said, the impact is
-> limited to PowerNV machines, I guess we are fine.
-
-Yeah. I appreciate all the review so far. It's pretty complicated even
-with the workbook. I might be able to add a simpler and higher-level
-description of the basic init sequence and states. You would still have
-to trust me, but it might make it easier to see what's going on.
+What configure options exactly?
 
 Thanks,
 Nick
