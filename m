@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8402F730D5A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 04:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 512A3730D69
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 05:04:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9d5D-00037u-6v; Wed, 14 Jun 2023 22:51:35 -0400
+	id 1q9dG2-0005OS-GQ; Wed, 14 Jun 2023 23:02:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9d57-00037I-Pf; Wed, 14 Jun 2023 22:51:29 -0400
-Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
+ id 1q9dG0-0005Nt-6d; Wed, 14 Jun 2023 23:02:44 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9d56-00034w-A9; Wed, 14 Jun 2023 22:51:29 -0400
-Received: by mail-qk1-x72f.google.com with SMTP id
- af79cd13be357-762092e1fb7so124326085a.1; 
- Wed, 14 Jun 2023 19:51:23 -0700 (PDT)
+ id 1q9dFy-00050X-ND; Wed, 14 Jun 2023 23:02:43 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1b3cc77ccbfso26580715ad.1; 
+ Wed, 14 Jun 2023 20:02:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686797483; x=1689389483;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20221208; t=1686798160; x=1689390160;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=483N0eGSwd7mtHeI6tPr01SaCebSA8BFPvAXSW6CXyM=;
- b=G73pn8T7iEHxIGaP4+eO+Qe2UG1pOMpz6Qbq2Dsh2j410s2Mv6CE4QG4l/uksIsV3W
- 56ari/Effeq4sOgvINiJr4nhLBOV/A0QC1tscwRLjQS7a47m/+HzHl5nUaB3KSEXX2u9
- dm/HVnGQcQSaTGi/5ArWUXC/NqE5bYHU9uz+1xZkvuXrWkretIc+GzdSlG8Oew53YIAU
- a/M/FDZX7OEq7ocxiZRbhOFNLKj581rLEIKIW3Eq0SNw4ha6StR+2ZIOTeRMNClstBmo
- eCAfB8das/KjLTC+l2j7M07St+dFQfvHnpetXtGCFnhJb/v/J2aaIVIa3ezd7Y1zMlfD
- iwQA==
+ bh=6G4IXwGpoUdWL3Jj26QlGSDuiNxEjCjHlS4hHitS9FY=;
+ b=GOg+ZPxRGBheX5NiFnwchnIk6F9ucBIBZkHECyciq1u+1Lbw73d3KXyMNOJ5K7EGsa
+ DLKZNF6jBpC3ZnlkfQwAvDq7EjlkHz9J82xuBaIavB3mlD2Pi0bfyASTRcL7Joz1+9Pi
+ Nch/MQnKGvYv5fT+9VUMYDZUwHGL3gg+YCzN4NoY0K0QrTX5ppT4+x9waNF+QDmVliJV
+ YmCmrICVINR5cNM2tmXppwHAmwYspROGTazQG4swifGWdQE5UU1Lw9tMf2n3DMm70PDH
+ MO+lReBH35ycVa9ao6mhLkOcWmJebpodOPTgpxYjZ21Mxdx0iak2X4OFZyLtHtIpa9oB
+ CjbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686797483; x=1689389483;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20221208; t=1686798160; x=1689390160;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=483N0eGSwd7mtHeI6tPr01SaCebSA8BFPvAXSW6CXyM=;
- b=GisxYmWz2PGQMcZLjmfYYVQGv1uMcCl/eMsJka4QeoVPBzaBRJ+efre04qsOXHmU/m
- 1TiqYxXL+RyMIjfhSa1ZhAYQ2BTfTuwT7AYJm3VX0Iw/xHN1tVzQem7HF2gBNHVcRCcL
- zOw1I9pL744Kvdpr+TdC2yLYyTQN8CwFwFzQ3pmA8BCLWWX+jt2X5f3zrtB2yJwO9aXF
- UenW8V9/R7NOFSnDyWHnggO336yBzNtA34gnYBNTyj2fd1ZoYI3WbZbhkIDI5Gvn6y5+
- eby9YqsB2dkSjXGSc+F7nT4TjL9Yxr/BrKV8uUcqDsgijUlK15N+HYlbDpfzxkRwP43k
- Llow==
-X-Gm-Message-State: AC+VfDwnY46mwULKFOnmhaxbRpoBG7duASt1kFNbtALUKQTEycGmM+rg
- cQK1CH4+vFNEYUS7ZCvOByA=
-X-Google-Smtp-Source: ACHHUZ7JWjeru8XpuHTaMtF7xH0oqkjTWkux7qbeL4pPquo1NasVO+xdz4JiHA3ddGOYF+CaWQfRBg==
-X-Received: by 2002:a37:64d7:0:b0:760:7209:55e7 with SMTP id
- y206-20020a3764d7000000b00760720955e7mr12342309qkb.27.1686797482809; 
- Wed, 14 Jun 2023 19:51:22 -0700 (PDT)
+ bh=6G4IXwGpoUdWL3Jj26QlGSDuiNxEjCjHlS4hHitS9FY=;
+ b=TjcUsWc7XL2P/VamF9A71611Hp3vQGhUTREh9KJFQOzWDsZbJw8pyE6UILwXQxsb7J
+ Y2M0f19VIL3LJ4Uyi1fYI4tjN/gpCjLKPbsWFTy82vwpwRynLV30ihsZvxcx/HAGgui+
+ PPiyNB7ciA5gyYSMwed7gQDqtplJc7fNEerz1o+pkOAyGTMV2er8Skezqj/6rQ1Y7oFH
+ 1WilAKQOskvcNYTZgMiI2BVHov2IdSZcW28eC23rfy/esOYgDpzPX5A8CE+yEfYKXIDw
+ D3tP2VZ3W96tcCwkFPEajPI89UJOpCc42DzL/pCC6VSHoyoq+/SiD7GB6Vd1cbJ1qbiz
+ iNcQ==
+X-Gm-Message-State: AC+VfDwLFrazuFHm02qDoEt7AP4ipTTFTjyCly5eKbhu+eKrdjENpN//
+ Am66dg7l2WQdGvgH5UF7JCM=
+X-Google-Smtp-Source: ACHHUZ6lgjIPBI0Tymldtf6QR27S0ioLRgoC0GF43wVBjXefXq1as6jZvCfbw6Hn4lMDb5hFgodfSA==
+X-Received: by 2002:a17:902:e314:b0:1af:fe12:4e18 with SMTP id
+ q20-20020a170902e31400b001affe124e18mr11243125plc.20.1686798160453; 
+ Wed, 14 Jun 2023 20:02:40 -0700 (PDT)
 Received: from localhost (14-203-144-223.static.tpgi.com.au. [14.203.144.223])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a631111000000b0054ff36967f7sm376546pgl.54.2023.06.14.19.51.19
+ w5-20020a170902d70500b001ac94b33ab1sm4164815ply.304.2023.06.14.20.02.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 19:51:22 -0700 (PDT)
+ Wed, 14 Jun 2023 20:02:40 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Jun 2023 12:51:17 +1000
-Message-Id: <CTCVSVIX21N6.3V2JEPOBPPX3Q@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>, <harshpb@linux.ibm.com>
-Subject: Re: [PATCH v4 1/6] target/ppc: Fix instruction loading endianness
- in alignment interrupt
+Date: Thu, 15 Jun 2023 13:02:34 +1000
+Message-Id: <CTCW1ILCXTMA.24T7LU9PQBTDA@wheely>
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Anushree Mathur" <anushree.mathur@linux.vnet.ibm.com>,
- <qemu-ppc@nongnu.org>
+To: "Joel Stanley" <joel@jms.id.au>
+Cc: <kvm@vger.kernel.org>, "Laurent Vivier" <lvivier@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [kvm-unit-tests v4 00/12] powerpc: updates, P10, PNV support
 X-Mailer: aerc 0.14.0
-References: <20230530132543.385138-2-npiggin@gmail.com>
- <0bbbffa7-d66c-66f2-f660-321e4f8aa026@linux.vnet.ibm.com>
-In-Reply-To: <0bbbffa7-d66c-66f2-f660-321e4f8aa026@linux.vnet.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
- envelope-from=npiggin@gmail.com; helo=mail-qk1-x72f.google.com
+References: <20230608075826.86217-1-npiggin@gmail.com>
+ <CACPK8XdpAxjvP+bFNFJzQQzBYvEwsE69QkbNWRumZtUW2wOrrA@mail.gmail.com>
+In-Reply-To: <CACPK8XdpAxjvP+bFNFJzQQzBYvEwsE69QkbNWRumZtUW2wOrrA@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,44 +93,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 14, 2023 at 3:51 PM AEST, Anushree Mathur wrote:
->
-> On 5/30/23 18:55, Nicholas Piggin wrote:
-> > powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
-> > after cpu_ldl_code(). This corrects DSISR bits in alignment
-> > interrupts when running in little endian mode.
+On Wed Jun 14, 2023 at 11:09 AM AEST, Joel Stanley wrote:
+> On Thu, 8 Jun 2023 at 07:58, Nicholas Piggin <npiggin@gmail.com> wrote:
 > >
-> > Reviewed-by: Fabiano Rosas<farosas@suse.de>
-> > Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
-> > ---
-> >   target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
-> >   1 file changed, 21 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> > index c13f2afa04..0274617b4a 100644
-> > --- a/target/ppc/excp_helper.c
-> > +++ b/target/ppc/excp_helper.c
-> > @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
-> >                     env->nip);
-> >   }
-> >  =20
-> > +#ifdef CONFIG_TCG
-> > +/* Return true iff byteswap is needed in a scalar memop */
-> > +static inline bool need_byteswap(CPUArchState *env)
-> > +{
-> > +    /* SOFTMMU builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is =
-set */
-> > +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
-> > +}
-> > +
-> > +static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
+> > Posting again, a couple of patches were merged and accounted for review
+> > comments from last time.
 >
-> This hunk fails to compile with configure --disable-tcg
+> I saw some failures in the spr tests running on a power9 powernv system:
+>
+> $ TESTNAME=3Dsprs TIMEOUT=3D90s ACCEL=3D ./powerpc/run powerpc/sprs.elf -=
+smp
+> 1 |grep FAIL
+> FAIL: WORT      ( 895):    0x00000000c0deba80 <=3D=3D> 0x0000000000000000
 
-I don't see how since it's inside CONFIG_TCG. Seems to work here.
-You don't have an old version of the patch applied?
+This is just TCG machine? I'm not sure why WORT fails, AFAIKS it's the
+same on POWER8 and doesn't do anything just a simple register. I think
+on real hardware WORT may not have any bits implemented on POWER9
+though.
 
-What configure options exactly?
+> $ MIGRATION=3Dyes TESTNAME=3Dsprs-migration TIMEOUT=3D90s ACCEL=3D
+> ./powerpc/run powerpc/sprs.elf -smp 1 -append '-w' | grep FAIL
+> FAIL: SRR0      (  26):    0xcafefacec0debabc <=3D=3D> 0x0000000000402244
+> FAIL: SRR1      (  27):    0xc0000006409ebab6 <=3D=3D> 0x8000000000001001
+> FAIL: CTRL      ( 136):            0x00000000 <=3D=3D>         0x00008001
+> FAIL: WORT      ( 895):    0x00000000c0deba80 <=3D=3D> 0x0000000000000000
+> FAIL: PIR       (1023):            0x00000010 <=3D=3D>         0x00000049
+>
+> Linux 6.2.0-20-generic
+> QEMU emulator version 7.2.0 (Debian 1:7.2+dfsg-5ubuntu2)
+>
+> On a power8 powernv:
+>
+> MIGRATION=3Dyes TESTNAME=3Dsprs-migration TIMEOUT=3D90s ACCEL=3D ./powerp=
+c/run
+> powerpc/sprs.elf -smp 1 -append '-w' |grep FAIL
+> FAIL: SRR0      (  26):    0xcafefacec0debabc <=3D=3D> 0x0000000000402234
+> FAIL: SRR1      (  27):    0xc0000006409ebab6 <=3D=3D> 0x8000000000001000
+> FAIL: CTRL      ( 136):            0x00000000 <=3D=3D>         0x00008001
+> FAIL: PIR       (1023):            0x00000060 <=3D=3D>         0x00000030
+
+Hmm, seems we take some interrupt over migration test that is not
+accounted for (could check the address in SRR0 to see where it is).
+Either need to prevent that interrupt or avoid failing on SRR0/1 on
+this test.
+
+Interesting about CTRL, I wonder if that not migrating correctly.
+PIR looks like a migration issue as well, it can't be changed so
+destination CPU has got a different PIR. I would be inclined to
+leave those as failing to remind us to look into them.
+
+I'll take a look at the others though.
 
 Thanks,
 Nick
