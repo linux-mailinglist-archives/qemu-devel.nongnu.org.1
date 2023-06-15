@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D455731A8A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 15:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33777731A6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 15:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9nQV-0006Jl-Op; Thu, 15 Jun 2023 09:54:15 -0400
+	id 1q9nM9-00045N-1C; Thu, 15 Jun 2023 09:49:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kinsey.moore@oarcorp.com>)
- id 1q9nQT-0006Jc-PW
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 09:54:13 -0400
-Received: from mail-dm6nam12on2139.outbound.protection.outlook.com
- ([40.107.243.139] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ id 1q9nM6-00044s-Fu
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 09:49:42 -0400
+Received: from mail-dm6nam12on20706.outbound.protection.outlook.com
+ ([2a01:111:f400:fe59::706]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kinsey.moore@oarcorp.com>)
- id 1q9nQQ-0001cQ-1A
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 09:54:12 -0400
+ id 1q9nM4-0007yv-7G
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 09:49:42 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fgcq7r/bBOqf0MSB0IQNDRsmg2RwXMfjvDwt2nPmd4KayXu2Wqu6aNsuRs2x4BWashhT1M4Mzc6Xsbn0fRZl9lVuwuIak3t1+pfWjowbOQTeNpQNfa63u0cv9dE4RxO0EYVp5ej4MGoFrIYjPRshrVuzhgiSLhxoAdB9BmT3Py/F0ob80x9C75fRLzqO1/1mhhqmJA1JoK6d79unaThLHDtNZREFCHkm1uhhpYsHK7hiBIcO2+awf9mlrCfYVoQAiwzP7XZpL/wYoAXQU5K19sF7gJIMDOPSj1k7cpnIedxbljxRE0/AaBaaEBVIcszqHmzHcwzyZNuXYV+GLqcWMA==
+ b=ZiOFn/NevI7mxADGTjIXvfcX5ScqM2p3yp4IJZvwGGKtlWDnuSehQYi+bxoe0JBpObiK0kIS+N05gVZ8Cbgc3tRmVu+feX9L+HiMkv6zLFCeYNZBh7NUpFSSuFboUVQCsEEQb0FWSRKFCSCLLd+5PrwYx5TkCF/AQ6WNXqErXNLMQCoOWijVk4RNoeaDBAW+pl3J14vR2WY448NJhaNEFOHcuxxKXHrX5sDvbCb6AyislPz+riCfD2SwKXhxG6xgtF4xakO1s87vjzIP22u2gZFuMFtrXoE843EGqezNxCsXAYwllnKP0LCNE/qvJ/ozhuHg8BusF/pVPdVd3UALeg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PrYveiKZJ1ezTJjyPK+TqMQcgYqzIxUFufaiQOoNgJo=;
- b=PMcYkKzWick6QyPHHKYfJhkbvAPBupavMy1puzYOWAncX/k1IZSKZjXhci0h10j2x7J2JTHzEkshqzmVjJj+BdDBJHDiSenpUp2/+05v70oyHU54n1dvsXOXvYadgsdqK4hwTzq3etP3D8C7gBLeRNuQ1vp2O67newss2WB683OnK/pm+AVc9XqtpUZ9KY/HAz/11FIH4IF63V30s99zYnVvqdIh43Ag4DfGsaDjeszw4DvzVlmnjmoz7fDQnUImEm/jzg1N3Spnm1ePkBhRJ2p0SCS1IYunEpIBsOxO3jii9I5OObYZFjrDcpAtWXObc1QdauDlslnq67uJqJ3GPg==
+ bh=NDsYxdeQqbopLft/fOp2kNeAhWx0vp5YrDS0UHTkjx0=;
+ b=F1C0eg+RVTOHWqCyxj9P5to+sset2GLgcK0SaX/Q36yb2rQf0ZAdkIq4jKDD3WBtVN+zKxkHO9jf336HiAsywNSAKorDHuVTayr6dG7hf4DzVfy2OCr1Fc/nUA5WhtOARSkcIl5JYQfDCcTBh7LbZfXU8Vxlx5GeJyykY+XvsKGGGJIIzrIitXBnUNikTyXnsEbkdo6sVuiIiXzPOVn5wIyjmz0MXjk7XK7/ExHL1z3R1AfvN/tcmDxLxmzbpP2X8Y4UTwvlK1sghW/rSoGtCDocVeHbGP7TvrEY88hs6OZ4TVGpFjCZM9wkQWbe7U7S0qMV9L6ULhpjcbTuTwjiAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oarcorp.com; dmarc=pass action=none header.from=oarcorp.com;
  dkim=pass header.d=oarcorp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oarcorp.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PrYveiKZJ1ezTJjyPK+TqMQcgYqzIxUFufaiQOoNgJo=;
- b=A/W4SJE/60V0pPJLHN0Y4raALB5xu3Wj/+fPfRRhh12L8nOoUwCVyrz0rCYmrb8zAqxcO8AZ53PI0KSbWFWSKF2TALnfV4gY9f8Jg312ISfsfuNPjMPO1ToPgLpPJKxm5pZbh3AXRMR1dJ9Uc0dxTAEK8V/qwR8lu+ys5D9E7g4=
+ bh=NDsYxdeQqbopLft/fOp2kNeAhWx0vp5YrDS0UHTkjx0=;
+ b=MptpyFBfdKMqZMQ3ejAFOFy4QjTSOc9IM8lVAuC2dyHX4pje6PfkEFPadkAO3WPCtVICdV999L5Ep/S+0t/+f0+HsTPuplPORUwPWiQfuDb3eZekaXnnkpB2deuadQZuvJHncl965QFMIZ6av/dV04itbXcaLM1xSIBvypabH5w=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oarcorp.com;
 Received: from BN6PR19MB3314.namprd19.prod.outlook.com (2603:10b6:405:76::12)
  by CH2PR19MB4055.namprd19.prod.outlook.com (2603:10b6:610:91::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.28; Thu, 15 Jun
- 2023 13:49:00 +0000
+ 2023 13:49:02 +0000
 Received: from BN6PR19MB3314.namprd19.prod.outlook.com
  ([fe80::f6b3:3419:418b:709e]) by BN6PR19MB3314.namprd19.prod.outlook.com
  ([fe80::f6b3:3419:418b:709e%4]) with mapi id 15.20.6500.025; Thu, 15 Jun 2023
- 13:49:00 +0000
+ 13:49:02 +0000
 From: Kinsey Moore <kinsey.moore@oarcorp.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/1] Secondary Cadence GEM IRQs
-Date: Thu, 15 Jun 2023 08:48:46 -0500
-Message-Id: <20230615134847.4157666-1-kinsey.moore@oarcorp.com>
+Cc: Kinsey Moore <kinsey.moore@oarcorp.com>
+Subject: [PATCH] hw/arm/xlnx: Connect secondary CGEM IRQs
+Date: Thu, 15 Jun 2023 08:48:47 -0500
+Message-Id: <20230615134847.4157666-2-kinsey.moore@oarcorp.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230615134847.4157666-1-kinsey.moore@oarcorp.com>
+References: <20230615134847.4157666-1-kinsey.moore@oarcorp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: BN9PR03CA0639.namprd03.prod.outlook.com
@@ -59,62 +63,61 @@ X-ClientProxiedBy: BN9PR03CA0639.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BN6PR19MB3314:EE_|CH2PR19MB4055:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4469f669-9db9-4267-b837-08db6da745ab
+X-MS-Office365-Filtering-Correlation-Id: 4d991467-3d31-49a7-a191-08db6da7471f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: W4RU2DMSED7HtxupPsRzJkLEVYxLXrJsH2OTpmMaZo8pWKf/CSzcH4ZhI+FhG8pYhOhNrPrXoVVRz+GzwhIqDTX2eXHNXO+VfKusRpw81F73DJ4KkGThrVagjkqOwG1Zbp73nnSlCJpyHscgB6PnmF9tOUcj8AdN27sdJwgxARFnVX2iv73+wYGnAIc3K1CSYGt1F+vIcQT6Rw8BbKcg6qLM6HaxdLhT+APbNBe9ZCVHeel9/3bWOpTNuGo87Oqd/6Kzw3o3bbiW29imqhtK5ggZLDUtbw2tv1bXndXqBvdIaaLxxowa1mTah5rR/RjMBVCwu0sqbQvVpnlPFGw8tWIInzTteGbp55vbcZ308CN4uI+ABuSIpZoCtdmsnzRXPR0zDbvtL3DZeuE/TuTE+BYINFBSHYmiZnPQGLoBNQOakqZTmUYARNk2hgqlE2T6VTppN+spRrURyfO8Cp/XG3sw2XyzgGlS3TGpEBhvzugC7vNdBrg/SzJ0kKEm/UY/pudKb6ooDvkp9gFupkv6FhDefHcwnmERIO9hV+m6BT9oGBBvSpqkevLWf3f+nN6lZRCXtCFVoqmVNr8CTNCyLOe56TW+ezQgDoAsHIYzFYtcGRQ8wvITz/L6A04JGia5
+X-Microsoft-Antispam-Message-Info: FkQwmbDKFs9yfelNR6Bhbcc+L2GLjdJTTHzXCvnTIOzrl771UNNfRS+e9/IhFI+/u9cKkI19IFyCzX6nvNpdfBw2JJumFh1Zu58Qk4WuodVqcAhnwWuqKc2WTLQE1BhrinYPb27hb4usNNG/dLFPT/V4vRxTgELKp2smt1PQjxuVJR/B/aZyviUB4Tbz+F+GIhTuhr4NhTc7mGE97FPcroRA4arCsucuA+ND6YI+oFKh0Ewr/zsi9MOW3iq0328J1BTMciQeGxxOBkb6HAu+NximPbJWYFJOS23oZhIH7WCo7nEqJ1/RDCd9/J4tcMLAo6mSmxSiCbGKiFLVwYUsch7RTkVdcp/xJ33baKrYsOyJfJmY0+6SPCSqJIbWA0h0Co+Pe6JMX1Ou2d5Iby70JnOklBBNwo3t0DfPDgTJQEGPpbPY5e0gzG11UfQ3+9u+ZbG3jIUXFBBwpbqdk/F9kj74IcMoG7lDKrqPwQCqfTZKcwVblhd2HNgPYc6q9HByNWWD6qaZE8UOt+QkwMb/jqUqW63aFV7HzarQKDMsGWBac9tC8E31BzzQbYMHovGMBl6fs1wlr/XHG03tbLyx+jhQ7vj8JZRhbYPZfw7fY2gY4JMm0UaejT9SqPwiIWxE
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BN6PR19MB3314.namprd19.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(136003)(346002)(376002)(39830400003)(366004)(42606007)(451199021)(38350700002)(38100700002)(52116002)(6506007)(1076003)(26005)(6512007)(8676002)(2906002)(4744005)(44832011)(8936002)(86362001)(5660300002)(83380400001)(186003)(2616005)(6486002)(6666004)(36756003)(66476007)(6916009)(66556008)(478600001)(316002)(41300700001)(66946007);
+ SFS:(13230028)(396003)(136003)(346002)(376002)(39830400003)(366004)(42606007)(451199021)(38350700002)(38100700002)(107886003)(52116002)(6506007)(1076003)(26005)(6512007)(8676002)(2906002)(44832011)(8936002)(86362001)(5660300002)(186003)(2616005)(6486002)(6666004)(36756003)(4326008)(66476007)(6916009)(66556008)(478600001)(316002)(41300700001)(66946007);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1uZEfYXtTCiYB5Tl8ENdSKShkpXW2s63bqRAciNzsrDb/Z87wKuszS82hJ3q?=
- =?us-ascii?Q?tb7GyZNfXuH4xkZ1aSrdD2QWjEryi5qUoPJaKXQwQxqzfXJwHZdcwu1JGYMd?=
- =?us-ascii?Q?RNrSJPAJF8T3P2RCLOLHEkAFVywDDrLfs9l9EkRzJFbihs6MIgA31wbt4/MM?=
- =?us-ascii?Q?T65Ls27xD4lnT20cIA3oR7Y7JetC4ahbHYKOPi3YrvFOI0fGWkYm1xyv0bKO?=
- =?us-ascii?Q?TXWnNKpHoCiQjOxcKF6mioUSjvkdM1jT0lDiFZnNVhP3CmVBRh5EUY+QbqcB?=
- =?us-ascii?Q?FLs0pVz55x8NYPS7VMmOEcGSf/iruU5F2Kdp/x01dj7yjGpK5gXDNTOeqliU?=
- =?us-ascii?Q?UfgA8ibRNlqNXdXUFHYk4x5leEepeYp0FooTnblPUXYtq483w7PnMfi781Sw?=
- =?us-ascii?Q?f+zF4XbsxTy4psdU4L5npeZSt8L+i4Ns+hKKRgs5czyQvDrCKtG7bIlA7ooW?=
- =?us-ascii?Q?HOl7lcN1KuxsGLGogtMPeovyLleu4kobTO7anNWT0aI5eVrlFO1C8GmT4Ww6?=
- =?us-ascii?Q?9mIIru+vVkWMny1mAabOsZxbMNZHXQNS7zDAhDx2HC4Up4p1ux8xSOzG692u?=
- =?us-ascii?Q?LYnl5BG5r0T1YL2leZ6AoBfpglHs0RSxs5HraYZVFiEd0AgHOYlGZPwXNRIX?=
- =?us-ascii?Q?rncxpm9JzM8X6pFMRpTlj3uIjYoFChn2D9B5P8Sws7/LBlnJ2xHLEglHkqAi?=
- =?us-ascii?Q?2PH26KrLl2sbWVNQ2XVdQ7fTWH7nbYpVOrPeoHc8wM6DhlBzPDcIknOPCAeA?=
- =?us-ascii?Q?Ijku+SnbUB38/TCdMTOLbaXaQrxumvOA58E3jSSDs11Ms7Vcj0SMhzt3OHO4?=
- =?us-ascii?Q?u6Oq2oALWujJ4va6VUxEwrezolXlO+JO8yZ9COnNYSA+RdS3zkQmcLs+4f85?=
- =?us-ascii?Q?AAu2Qjl4RNEWtZq0H2PkBK69iE7mQKzyxHjfyM7SYhxZyAD1WNcYtssXnuGQ?=
- =?us-ascii?Q?+UNKwoVXk8RABBV5TdI/cUBIME1AFqs41XiNXqnlTu+7o4NIEKpsYnXPax06?=
- =?us-ascii?Q?sYyEreCkdQCcTaGKwsBfGBRFU65vl2rIVN+e7F4jbXVA24omajyR/tFws+o8?=
- =?us-ascii?Q?4tb+L05nIH2Hc7bSlRM64GSGZod3zxbcfq2wMMVJvYRLAKkRoU+MimN6WmxQ?=
- =?us-ascii?Q?VS9WuTo7VWUvhBqPtg1mbUqpTSDfKX2cI7DaEkjQdw4FqbjKva8HFsiAMmb6?=
- =?us-ascii?Q?36z38Gt+BxI5jSTXDUW5LnGRhqwW8owtUhdhdnjtrzx2iwoGhj9M6whnGk+w?=
- =?us-ascii?Q?Nw/SKMLG6+LeC98C7DloYXPHcUSFw61BtQjnQStlBnrvtcs9Aty8/urXh11Z?=
- =?us-ascii?Q?ERlFDTS0VwadNz/MbGLrhbWxlS0G2M1D0NIQKPyZdHrpB7aBQgC64y/Db2yL?=
- =?us-ascii?Q?Xo4iZIVZ4MLhwPOKTLIv07NCFV8fXH/4/5rhxoDVBmpN9aJlQUyfRGlxitzA?=
- =?us-ascii?Q?aLV9lMKAPuxnjxgskkPA+SzyC7k5kyju11OUMImnvCvXV1Kr2DKSxR440VTy?=
- =?us-ascii?Q?NkFiyM9f6txQGNRnmKuab2okSne9p8niQ1w643/1pxWZZxRB739La9VMoP3V?=
- =?us-ascii?Q?F0LrhwUztIt6Wpg8Y0tbitQBxWTywY3kyRLZyT5M?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VwmGyu2ukjC2IeV71jy9HhjDB3ZD1eaMlB+qIu5/YVw1stJAdLmh4YYqQxAn?=
+ =?us-ascii?Q?Lxl5t2/NwugQ677OnV94oJH/biMn8vDCUhgYDHKeKZ5n0uYucK4dwierGAoo?=
+ =?us-ascii?Q?8MrH8h9grcvKuukN7JFCy23Qn0pGazUXhaF0ypiWHsMwYVRvkJwBzQZvgTTc?=
+ =?us-ascii?Q?kOv/KURdd9gxj0d+t39KB1L4ORQsoDH7sduLOZmK09Cp5A137trUIdL3rCMh?=
+ =?us-ascii?Q?eNYaEnzyyeeFvfs9Bsh/Yu8tVZv02WhLBGHwEDONR0vks3wezJu2ViIsHhBS?=
+ =?us-ascii?Q?C89WqwOqOqJPGrjl3Dm1qqM7JgdTmmVnS+iw/kG6f8YbdF36JLw0E6NWOlst?=
+ =?us-ascii?Q?Lgd5lV1ZPmy7daC+LSTDPVnmLf0ZFToFWqF80Rypa0G8voM42ItX4qWrscte?=
+ =?us-ascii?Q?SU4GgBuq4GwXveZUNHw6ljhH6EXfD3TA3keANzEEfAQLaZm2eH3iDDlilN8F?=
+ =?us-ascii?Q?bb2XWFnnwKXHJzZAL6+f54l4Ob84n8lXuhVPOlYIjL3z1nnFmlCA7hSisMQv?=
+ =?us-ascii?Q?0Oi0jJYS6p7tcPJ+4AnCRBwL/fMJQvFROz2BjD88CDT8LglH89ZTqsnD1QEC?=
+ =?us-ascii?Q?m3qGMuCD6kB4QY8uOP3ZE2sWj9RwvMZyByicT7mPLcYFwmxFQJugGN1g38cK?=
+ =?us-ascii?Q?VLQfPaYKtiuCR/3dhp2kT5grZ8TzlOFq6OgCRBTkXGRKkztbDaghLw2o9rgG?=
+ =?us-ascii?Q?YcYbcwqNkoCcfSuTYbYnxVpMvRTHJKAphJXISj8IT1fhaJRdDgN7/xsaXmNO?=
+ =?us-ascii?Q?9SlVCCTrSMGzL8u0hUnEMuAwCM5J0uhoZw6tkxzpDBPGgUE886huPhlGuiO/?=
+ =?us-ascii?Q?0HR33Q38Gvw+XJBPHaXNFtPAATO0o1zatNSoWKQm34dxc20pmHwg+qyYIO4p?=
+ =?us-ascii?Q?1qnAXqHkC4+Wzq4v+s2F0g3Rznd4q0CzBJQWpyQmlj5z0MrjZH4yx22rpghh?=
+ =?us-ascii?Q?ivhDzgBlb5W9e5LMdwII0mKWTWPFnp6pfANBbOqvbks1vQK988ZrH9udcFJH?=
+ =?us-ascii?Q?k3OB3JIbV3dQqwA9J2uUp3k1DaXD1CkppdbSb5/Atan0kA0FGH3mqLYMeNgQ?=
+ =?us-ascii?Q?K8qlRWjhHbATisAWsNLAg6y+AxA4x2NxJ+aGAHD6jonRkwovWTrBc2Cyhagc?=
+ =?us-ascii?Q?IMR8CzdBnlOZcVYcTmiP6VkMPG79ThygmU0YltRoy2WNV0EDXF5zdYMaGJM3?=
+ =?us-ascii?Q?TmDscoshUb5kQ4+MrY1Y5MT4cXm7whFa0YxwsZfn3oc1owuFtzm+tyNninqJ?=
+ =?us-ascii?Q?Jh2gu30IQIgVV6L8RF9oZ6KzE5r42vsB3rQ0eO1T6dojVjXQd44io75aR9Zk?=
+ =?us-ascii?Q?AHFd/fEPtq+ZwzH889K32p6YAn4OifLvjqEcNHkt1uSXTTeHOtGd5VsdTzlL?=
+ =?us-ascii?Q?12QconOpFgfBeVcGc+e/n10LssVX8ywmIBXSrS9ptkpOa8/Ae9LtJPJ/kxMf?=
+ =?us-ascii?Q?ux+ZgCtdgB173BP/h842uRbBPyX/j4K4Z4uheZ9rYHdBdlfNJrsrBpadvf3I?=
+ =?us-ascii?Q?vwL3Ck1eLRhldEDyjMipaE4IyR2bvxnCQAankRgLr7i/PflFkmrSNqU4QHc3?=
+ =?us-ascii?Q?Z/BtRto7mMdfkAHUq3txeNwUyapcJpnye9tPBje7?=
 X-OriginatorOrg: oarcorp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4469f669-9db9-4267-b837-08db6da745ab
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d991467-3d31-49a7-a191-08db6da7471f
 X-MS-Exchange-CrossTenant-AuthSource: BN6PR19MB3314.namprd19.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2023 13:49:00.2569 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2023 13:49:02.5934 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 7bdf32a6-03de-4c70-a71b-8665ba1294e3
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JkY8DFnRs6NyItKtoIUtsqNbY9P7LPvoUkXCDKzRVfJ4oq7nqdqoG3NfcxYX5kl7x9Sn4XFXwsNcFH9p5O3ahQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: e9mcL0bRy2EuX/qoj/ZgMtnUAXAOAmV1zA0njDP5dV69zh29OPeQv5+jwB8+9xVtZDTcTAD7ivOXcuoPzsw3qw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR19MB4055
-Received-SPF: pass client-ip=40.107.243.139;
+Received-SPF: pass client-ip=2a01:111:f400:fe59::706;
  envelope-from=kinsey.moore@oarcorp.com;
  helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -131,15 +134,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In testing RTEMS on the ZynqMP platform, I noticed that priority queues
-were not functioning properly. I tracked this down to an unconnected
-interrupt source in the Cadence GEM when multiple priority queues are
-configured. I'm not sure if the Cadence IP can actually be configured
-for separate interrupt sources per queue, so I opted to leave the
-multiple IRQ sources intact and connect the additional sources on
-platforms that need it. If it makes more sense to route all interrutps
-for this peripheral through a single interrupt source, I can submit that
-patch instead.
+The Cadence GEM peripherals as configured for Zynq MPSoC and Versal
+platforms have two priority queues with separate interrupt sources for
+each. If the interrupt source for the second priority queue is not
+connected, they work in polling mode only. This change connects the
+second interrupt source for platforms where it is available. This patch
+has been tested using the lwIP stack with a Xilinx-supplied driver from
+their embeddedsw repository.
 
+Signed-off-by: Kinsey Moore <kinsey.moore@oarcorp.com>
+---
+ hw/arm/xlnx-versal.c | 1 +
+ hw/arm/xlnx-zynqmp.c | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 60bf5fe657..a9e06b7fd1 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -272,6 +272,7 @@ static void versal_create_gems(Versal *s, qemu_irq *pic)
+         memory_region_add_subregion(&s->mr_ps, addrs[i], mr);
+ 
+         sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[irqs[i]]);
++        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 1, pic[irqs[i]]);
+         g_free(name);
+     }
+ }
+diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+index 5905a33015..b919b38e91 100644
+--- a/hw/arm/xlnx-zynqmp.c
++++ b/hw/arm/xlnx-zynqmp.c
+@@ -635,6 +635,8 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->gem[i]), 0, gem_addr[i]);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gem[i]), 0,
+                            gic_spi[gem_intr[i]]);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gem[i]), 1,
++                           gic_spi[gem_intr[i]]);
+     }
+ 
+     for (i = 0; i < XLNX_ZYNQMP_NUM_UARTS; i++) {
+-- 
+2.30.2
 
 
