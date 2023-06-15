@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A301730F72
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 08:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2488A730F6E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 08:35:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9gYl-0007JZ-RO; Thu, 15 Jun 2023 02:34:19 -0400
+	id 1q9gYh-00078Z-Np; Thu, 15 Jun 2023 02:34:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q9gXz-0006Vg-Ua; Thu, 15 Jun 2023 02:33:32 -0400
+ id 1q9gXs-0006SN-Cf; Thu, 15 Jun 2023 02:33:24 -0400
 Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q9gXq-000494-7c; Thu, 15 Jun 2023 02:33:25 -0400
+ id 1q9gXp-00049D-L1; Thu, 15 Jun 2023 02:33:24 -0400
 Received: from localhost.localdomain (unknown [117.61.111.213])
- by APP-05 (Coremail) with SMTP id zQCowAD3_h6isIpkuxShAg--.21989S2;
- Thu, 15 Jun 2023 14:33:08 +0800 (CST)
+ by APP-05 (Coremail) with SMTP id zQCowAD3_h6isIpkuxShAg--.21989S3;
+ Thu, 15 Jun 2023 14:33:10 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -26,29 +26,32 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
  Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v2 0/6] target/riscv: Add support for BF16 extensions
-Date: Thu, 15 Jun 2023 14:32:56 +0800
-Message-Id: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
+Subject: [PATCH v2 1/6] target/riscv: Add properties for BF16 extensions
+Date: Thu, 15 Jun 2023 14:32:57 +0800
+Message-Id: <20230615063302.102409-2-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
+References: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowAD3_h6isIpkuxShAg--.21989S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtryUKr4DCryDXw48Kr48Zwb_yoW8JrW7pw
- 4rW3y3CrZ8trZ7J3yftF1UJw15JF4Fgr4fAwn7Aw18Jay3ArW5Jrn2kw43CF1DJFW8Wr9F
- k3WUCr13uw4UJFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUvj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
- JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
- CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
- 2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
- W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
- Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
- xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
- MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
- 0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
- JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoO
- J5UUUUU
+X-CM-TRANSID: zQCowAD3_h6isIpkuxShAg--.21989S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4rGFyrZFyfAFWUKr4fGrg_yoW8uw13pr
+ srGas0kryDJr9rC343JFyUtw1UCws29w4xK393t3WxZFWfX3y5JF1qkw1jgr4UJF4ruF4a
+ 9w47uFWUursrZa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUBE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+ x26xkF7I0E14v26r1I6r4UM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+ Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+ A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+ 0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+ IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+ Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+ xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
+ 6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
+ Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
+ Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
+ IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUqAp5UUUUU
+ =
 X-Originating-IP: [117.61.111.213]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
 Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
@@ -74,38 +77,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Specification for BF16 extensions can be found in:
-https://github.com/riscv/riscv-bfloat16
+Add ext_zfbfmin/zvfbfmin/zvfbfwma properties.
+Add require check for BF16 extensions.
 
-The port is available here:
-https://github.com/plctlab/plct-qemu/tree/plct-bf16-upstream-v2
+Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c     | 20 ++++++++++++++++++++
+ target/riscv/cpu_cfg.h |  3 +++
+ 2 files changed, 23 insertions(+)
 
-v2:
-* Update dependancy check for BF16 extensions in patch 1 and patch 4
-* Update encodings for BF16 instructions in patch 2,3,4
-* Add disas support for BF16 instructions in patch 6
-
-Weiwei Li (6):
-  target/riscv: Add properties for BF16 extensions
-  target/riscv: Add support for Zfbfmin extension
-  target/riscv: Add support for Zvfbfmin extension
-  target/riscv: Add support for Zvfbfwma extension
-  target/riscv: Expose properties for BF16 extensions
-  target/riscv: Add disas support for BF16 extensions
-
- disas/riscv.c                              |  44 ++++++
- target/riscv/cpu.c                         |  27 ++++
- target/riscv/cpu_cfg.h                     |   3 +
- target/riscv/fpu_helper.c                  |  12 ++
- target/riscv/helper.h                      |  10 ++
- target/riscv/insn32.decode                 |  12 ++
- target/riscv/insn_trans/trans_rvbf16.c.inc | 175 +++++++++++++++++++++
- target/riscv/insn_trans/trans_rvzfh.c.inc  |  12 +-
- target/riscv/translate.c                   |   1 +
- target/riscv/vector_helper.c               |  17 ++
- 10 files changed, 307 insertions(+), 6 deletions(-)
- create mode 100644 target/riscv/insn_trans/trans_rvbf16.c.inc
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 881bddf393..dc6b2f72f6 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1059,6 +1059,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         return;
+     }
+ 
++    if (cpu->cfg.ext_zfbfmin && !riscv_has_ext(env, RVF)) {
++        error_setg(errp, "Zfbfmin extension depends on F extension");
++        return;
++    }
++
+     if (riscv_has_ext(env, RVD) && !riscv_has_ext(env, RVF)) {
+         error_setg(errp, "D extension requires F extension");
+         return;
+@@ -1109,6 +1114,21 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         return;
+     }
+ 
++    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmin) {
++        error_setg(errp, "Zvfbfmin extension depends on Zfbfmin extension");
++        return;
++    }
++
++    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f) {
++        error_setg(errp, "Zvfbfmin extension depends on Zve32f extension");
++        return;
++    }
++
++    if (cpu->cfg.ext_zvfbfwma && !cpu->cfg.ext_zvfbfmin) {
++        error_setg(errp, "Zvfbfwma extension depends on Zvfbfmin extension");
++        return;
++    }
++
+     /* Set the ISA extensions, checks should have happened above */
+     if (cpu->cfg.ext_zhinx) {
+         cpu->cfg.ext_zhinxmin = true;
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index c4a627d335..7d16f32720 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -75,6 +75,7 @@ struct RISCVCPUConfig {
+     bool ext_svpbmt;
+     bool ext_zdinx;
+     bool ext_zawrs;
++    bool ext_zfbfmin;
+     bool ext_zfh;
+     bool ext_zfhmin;
+     bool ext_zfinx;
+@@ -84,6 +85,8 @@ struct RISCVCPUConfig {
+     bool ext_zve64f;
+     bool ext_zve64d;
+     bool ext_zmmul;
++    bool ext_zvfbfmin;
++    bool ext_zvfbfwma;
+     bool ext_zvfh;
+     bool ext_zvfhmin;
+     bool ext_smaia;
 -- 
 2.25.1
 
