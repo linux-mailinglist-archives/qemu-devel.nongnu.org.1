@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00660731415
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 11:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707CA73145F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 11:47:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9jNt-0008GR-2S; Thu, 15 Jun 2023 05:35:17 -0400
+	id 1q9jYX-0001w6-32; Thu, 15 Jun 2023 05:46:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1q9jNp-0008F6-6B
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 05:35:13 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
+ id 1q9jYU-0001vM-Cy; Thu, 15 Jun 2023 05:46:14 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1q9jNm-0004ni-48
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 05:35:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=nbky7/ufc4iCE3UxQAfS/lMpjjqCsqBO7Ztha1sH1mo=; b=uqDds5g60DxV1cKXTcFJOqAJK3
- 3Y5JWXaffaYsyShyN8ugUVui5ieT0jNHsyMGTde7k45ShZZvicC68nr/uQeDCKe57VEpRtLzxD/kw
- VxhnpDsMSvJIJ1dn4TrrK8qh8rvXb4ZvU2F3ku+8PibN+QGEmjlb0vpmU7bFwLGPUN/xcSw24TG1d
- szTRWm2/Hr1v3gKdipN+QfgcyO0f3bpMLpWbQ5dZY3pxt2txX0bbx8TjHsYkFwfgz46aA66QSW8TE
- cAkrOMcqk544Q1cgbpMK1MJ/WPUpKGI1KFh5jPvO7NQi0+IBv4aUw6UP/i6meJxbp4yRRGw/z/rBC
- xpe+oc1rLqKfMvdCM1MEKLQbSmiCAKuhtCeI9A0MpyZJ7BJYPa63FhjZUZZNh4vYPEGa3Bwyx83LI
- sHkVz2/GyI72lpucl+KZzpZhv0cwWXXHwX//Bpsx6KvMGsAtPgvLoGSFNCCEWfIpu0tlSgZBO4HgS
- T0DB3mfrtC3n8mu8o6OPtZdUM5xlfrS/Qp7Bw2k42IuMYIYTR6aBwJsZNU+hQMsAB1AImMsL1FZmz
- bTfuUbAT1uRO9w0qsKb0GgBY18ijqZsZFv207PQ4Gd2c3F7Dy0LjWBg1zMDeshp6HDdhq6GlhxyLU
- 0cMegoHErx3aKk3V1Rvp574zI9yHiet/SWJYpfyxw=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH v3] 9pfs: deprecate 'proxy' backend
-Date: Thu, 15 Jun 2023 11:35:05 +0200
-Message-ID: <56228851.nTe795Zz4E@silver>
-In-Reply-To: <E1q7ytt-0005Fl-JX@lizzy.crudebyte.com>
-References: <E1q7ytt-0005Fl-JX@lizzy.crudebyte.com>
+ (Exim 4.90_1) (envelope-from <SRS0=xCJj=CD=kaod.org=clg@ozlabs.org>)
+ id 1q9jYS-0006ls-LN; Thu, 15 Jun 2023 05:46:14 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhcqY18Xpz4wfg;
+ Thu, 15 Jun 2023 19:46:01 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhcqW0GqPz4wjD;
+ Thu, 15 Jun 2023 19:45:58 +1000 (AEST)
+Message-ID: <34de2184-3743-45f8-77c6-ab688b143e64@kaod.org>
+Date: Thu, 15 Jun 2023 11:45:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/4] ppc/pnv: Add chiptod and core timebase state machine
+ models
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Frederic Barrat <frederic.barrat@fr.ibm.com>,
+ Michael Neuling <mikey@neuling.org>
+References: <20230603233612.125879-1-npiggin@gmail.com>
+ <e3f591df-6569-b396-0cf7-0ea62aee9f0c@kaod.org>
+ <CTC47NS1KELC.35U22YEEW26UP@wheely>
+ <e2e88fc1-8099-7eab-b51b-8212063fa6a5@kaod.org>
+ <CTCV3K9JWBVQ.3R7AH302X3VHQ@wheely>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CTCV3K9JWBVQ.3R7AH302X3VHQ@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=xCJj=CD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.098, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,221 +69,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Saturday, June 10, 2023 3:39:44 PM CEST Christian Schoenebeck wrote:
-> As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is in
-> bad shape. Using the 'proxy' backend was already discouraged for safety
-> reasons before and we recommended to use the 'local' backend instead,
-> but now it is time to officially deprecate the 'proxy' backend.
+[ ... ]
+> Yes it worked with 2 chips.
+
+I will give the next series a try.
+
+[ ... ]
+
+>> It's difficult to review PATCH 4 without some good knowledge of HW. I know
+>> you do but you can not review your own patches ! That said, the impact is
+>> limited to PowerNV machines, I guess we are fine.
 > 
-> Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> ---
->  v2 -> v3:
->  * Fix copy wasted typo (-> 'backend').
-> 
->  MAINTAINERS                        |  7 +++++++
->  docs/about/deprecated.rst          | 17 +++++++++++++++++
->  docs/tools/virtfs-proxy-helper.rst |  3 +++
->  fsdev/qemu-fsdev.c                 |  5 +++++
->  fsdev/virtfs-proxy-helper.c        |  5 +++++
->  hw/9pfs/9p-proxy.c                 |  5 +++++
->  hw/9pfs/9p-proxy.h                 |  5 +++++
->  meson.build                        |  2 +-
->  qemu-options.hx                    |  6 +++++-
->  softmmu/vl.c                       |  5 +++++
->  10 files changed, 58 insertions(+), 2 deletions(-)
+> Yeah. I appreciate all the review so far. It's pretty complicated even
+> with the workbook. I might be able to add a simpler and higher-level
+> description of the basic init sequence and states. You would still have
+> to trust me, but it might make it easier to see what's going on.
 
-Or would it be better to split this up, e.g. into 3 separate patches (runtime
-messages, docs, MAINTAINERS)?
+Sure. Patches 2-4 are acked. I am only looking at patch 1 now.
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 436b3f0afe..185d694b2e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2118,13 +2118,20 @@ S: Odd Fixes
->  W: https://wiki.qemu.org/Documentation/9p
->  F: hw/9pfs/
->  X: hw/9pfs/xen-9p*
-> +X: hw/9pfs/9p-proxy*
->  F: fsdev/
-> +X: fsdev/virtfs-proxy-helper.c
->  F: docs/tools/virtfs-proxy-helper.rst
+Thanks,
 
-I missed virtfs-proxy-helper.rst here. That should be moved to the new 'proxy'
-section below as well.
-
->  F: tests/qtest/virtio-9p-test.c
->  F: tests/qtest/libqos/virtio-9p*
->  T: git https://gitlab.com/gkurz/qemu.git 9p-next
->  T: git https://github.com/cschoenebeck/qemu.git 9p.next
->  
-> +virtio-9p-proxy
-> +F: hw/9pfs/9p-proxy*
-> +F: fsdev/virtfs-proxy-helper.c
-> +S: Obsolete
-> +
->  virtio-blk
->  M: Stefan Hajnoczi <stefanha@redhat.com>
->  L: qemu-block@nongnu.org
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 0743459862..9b2c780365 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -343,6 +343,23 @@ the addition of volatile memory support, it is now necessary to distinguish
->  between persistent and volatile memory backends.  As such, memdev is deprecated
->  in favor of persistent-memdev.
->  
-> +``-fsdev proxy`` and ``-virtfs proxy`` (since 8.1)
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +The 9p ``proxy`` filesystem backend driver has been deprecated and will be
-> +removed in a future version of QEMU. Please use ``-fsdev local`` or
-> +``-virtfs local`` for using the ``local`` 9p filesystem backend instead.
-> +
-> +The 9p ``proxy`` backend was originally developed as an alternative to the 9p
-> +``local`` backend. The idea was to enhance security by dispatching actual low
-> +level filesystem operations from 9p server (QEMU process) over to a separate
-> +process (the virtfs-proxy-helper binary). However this alternative never gained
-> +momentum. The proxy backend is much slower than the local backend, hasn't seen
-> +any development in years, and showed to be less secure, especially due to the
-> +fact that its helper daemon must be run as root, whereas with the local backend
-> +QEMU is typically run as unprivileged user and allows to tighten behaviour by
-> +mapping permissions et al.
-> +
->  
->  Block device options
->  ''''''''''''''''''''
-> diff --git a/docs/tools/virtfs-proxy-helper.rst b/docs/tools/virtfs-proxy-helper.rst
-> index 6cdeedf8e9..bd310ebb07 100644
-> --- a/docs/tools/virtfs-proxy-helper.rst
-> +++ b/docs/tools/virtfs-proxy-helper.rst
-> @@ -9,6 +9,9 @@ Synopsis
->  Description
->  -----------
->  
-> +NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-> +removed, along with this daemon, in a future version of QEMU!
-> +
->  Pass-through security model in QEMU 9p server needs root privilege to do
->  few file operations (like chown, chmod to any mode/uid:gid).  There are two
->  issues in pass-through security model:
-> diff --git a/fsdev/qemu-fsdev.c b/fsdev/qemu-fsdev.c
-> index 3da64e9f72..242f54ab49 100644
-> --- a/fsdev/qemu-fsdev.c
-> +++ b/fsdev/qemu-fsdev.c
-> @@ -133,6 +133,11 @@ int qemu_fsdev_add(QemuOpts *opts, Error **errp)
->      }
->  
->      if (fsdriver) {
-> +        if (strncmp(fsdriver, "proxy", 5) == 0) {
-> +            warn_report("'-fsdev proxy' is deprecated, use '-fsdev local' "
-> +                        "instead");
-> +        }
-> +
->          for (i = 0; i < ARRAY_SIZE(FsDrivers); i++) {
->              if (strcmp(FsDrivers[i].name, fsdriver) == 0) {
->                  break;
-> diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
-> index d9511f429c..5dd5d99284 100644
-> --- a/fsdev/virtfs-proxy-helper.c
-> +++ b/fsdev/virtfs-proxy-helper.c
-> @@ -9,6 +9,11 @@
->   * the COPYING file in the top-level directory.
->   */
->  
-> +/*
-> + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-> + * removed in a future version of QEMU!
-> + */
-> +
->  #include "qemu/osdep.h"
->  #include <glib/gstdio.h>
->  #include <sys/resource.h>
-> diff --git a/hw/9pfs/9p-proxy.c b/hw/9pfs/9p-proxy.c
-> index 99d115ff0d..905cae6992 100644
-> --- a/hw/9pfs/9p-proxy.c
-> +++ b/hw/9pfs/9p-proxy.c
-> @@ -15,6 +15,11 @@
->   * https://wiki.qemu.org/Documentation/9p
->   */
->  
-> +/*
-> + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-> + * removed in a future version of QEMU!
-> + */
-> +
->  #include "qemu/osdep.h"
->  #include <sys/socket.h>
->  #include <sys/un.h>
-> diff --git a/hw/9pfs/9p-proxy.h b/hw/9pfs/9p-proxy.h
-> index b84301d001..9be4718d3e 100644
-> --- a/hw/9pfs/9p-proxy.h
-> +++ b/hw/9pfs/9p-proxy.h
-> @@ -10,6 +10,11 @@
->   * the COPYING file in the top-level directory.
->   */
->  
-> +/*
-> + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-> + * removed in a future version of QEMU!
-> + */
-> +
->  #ifndef QEMU_9P_PROXY_H
->  #define QEMU_9P_PROXY_H
->  
-> diff --git a/meson.build b/meson.build
-> index 34306a6205..05c01b72bb 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -4170,7 +4170,7 @@ if have_block
->    summary_info += {'Block whitelist (ro)': get_option('block_drv_ro_whitelist')}
->    summary_info += {'Use block whitelist in tools': get_option('block_drv_whitelist_in_tools')}
->    summary_info += {'VirtFS (9P) support':    have_virtfs}
-> -  summary_info += {'VirtFS (9P) Proxy Helper support': have_virtfs_proxy_helper}
-> +  summary_info += {'VirtFS (9P) Proxy Helper support (deprecated)': have_virtfs_proxy_helper}
->    summary_info += {'Live block migration': config_host_data.get('CONFIG_LIVE_BLOCK_MIGRATION')}
->    summary_info += {'replication support': config_host_data.get('CONFIG_REPLICATION')}
->    summary_info += {'bochs support':     get_option('bochs').allowed()}
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index b57489d7ca..3a6c7d3ef9 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -1735,7 +1735,9 @@ SRST
->          Accesses to the filesystem are done by QEMU.
->  
->      ``proxy``
-> -        Accesses to the filesystem are done by virtfs-proxy-helper(1).
-> +        Accesses to the filesystem are done by virtfs-proxy-helper(1). This
-> +        option is deprecated (since QEMU 8.1) and will be removed in a future
-> +        version of QEMU. Use ``local`` instead.
->  
->      ``synth``
->          Synthetic filesystem, only used by QTests.
-> @@ -1867,6 +1869,8 @@ SRST
->  
->      ``proxy``
->          Accesses to the filesystem are done by virtfs-proxy-helper(1).
-> +        This option is deprecated (since QEMU 8.1) and will be removed in a
-> +        future version of QEMU. Use ``local`` instead.
->  
->      ``synth``
->          Synthetic filesystem, only used by QTests.
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index b0b96f67fa..e60648b591 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -3102,6 +3102,11 @@ void qemu_init(int argc, char **argv)
->                      error_report("Usage: -virtfs fsdriver,mount_tag=tag");
->                      exit(1);
->                  }
-> +                if (strncmp(qemu_opt_get(opts, "fsdriver"), "proxy", 5) == 0) {
-> +                    warn_report("'-virtfs proxy' is deprecated, use "
-> +                                "'-virtfs local' instead");
-> +                }
-> +
->                  fsdev = qemu_opts_create(qemu_find_opts("fsdev"),
->                                           qemu_opts_id(opts) ?:
->                                           qemu_opt_get(opts, "mount_tag"),
-> 
-
+C.
 
 
