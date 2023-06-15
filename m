@@ -2,96 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F6373191B
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 14:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9B173196B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 15:00:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9mGn-0004l3-DX; Thu, 15 Jun 2023 08:40:09 -0400
+	id 1q9mYO-0007jT-HI; Thu, 15 Jun 2023 08:58:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1q9mGi-0004ka-Ht
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 08:40:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1q9mGg-0002TZ-G7
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 08:40:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686832801;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LcUkEj3K+8Dv5U7WwMsL88tampUxF9GV0oDLpskuklQ=;
- b=DFGLYzBvIGKyHq2nHZDZuo7JETheRFxCoPpViN7FeUT4V3ODjy3vqxPkKnrB98qheNh73y
- 6QScBe/53Gsn9VysU4Ux9i16XaY4Etsng1xJ+YfvD2DckD3Wq7KuUOyJPph/k/xO6gVqX6
- 0PM7q4Gptdw8CNixPl6KN89QVW6FKFw=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-bhnekf27POuif2veI-RXDA-1; Thu, 15 Jun 2023 08:38:35 -0400
-X-MC-Unique: bhnekf27POuif2veI-RXDA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-4f0176dcc1eso454945e87.1
- for <qemu-devel@nongnu.org>; Thu, 15 Jun 2023 05:38:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1q9mYM-0007ip-Gx
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 08:58:18 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1q9mYK-0005i9-C6
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 08:58:18 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-30fba11b1ceso5049974f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Jun 2023 05:58:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1686833894; x=1689425894; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=LRzh51+4ZLcW0C37vuin+uAT5EbtMs9l5mZLom2bfqA=;
+ b=XO0wc1i90Ahbo+/ZlcOJgKshA4CumA3ZEPW7naBHmiVCpsXXnTtkLBn44nUXu6dDWJ
+ c9pA7wumnlXhLzu3ayV8JkmtBGMUxiUylzefcyXarckVHn5V2gOHEb+fX3oLbyJ3JcCe
+ w70ODpgmxS1wynmbTBSAiQGGCSjvm1eJ+7xqA83B7ayz74zeG/ygzn7fsClpZ4vxDfc9
+ Ug3TXlKBSteNrsH2ic0chqilv7uUKsQw0GhIC/ifa0JxXOPQpY8tQSJcFl2prjZQQqPX
+ 69WpR7a2dMmh2wiHyE9IDHL3DNbpFNc33FHA/9r0XYe8pmDpNIlg/tbtd9Hq+rdb4Y2R
+ NVMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686832714; x=1689424714;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LcUkEj3K+8Dv5U7WwMsL88tampUxF9GV0oDLpskuklQ=;
- b=AWuN1ya+VHPZghEnZGDGB+mX//3kdh2NJ88/+L/66ThdOFwfuiajkmF2IFQAIRjZG7
- BPnwpTkkltOunMRBtuDAh1dRoQs1XWkDlZvArnrBuSM6XL8ScLsV4k9Pn75O42rVzR5b
- pCOHmwWCV1Wo7SzDLTwtsuCVS8riRQjhPObPPIh+WrnU0CRoLhYOAM/CnWjVx3AD2lPO
- KUCmu4ImWgZ82YtnOJWuJYqsaz8yCYgua4EB9cgIVpnscOUBJ/yfASIAXIXIEnc38Q6/
- y6TPbN5aFREPHmY+2O1sY+eq0dRirTRj2pGuzuU9M/cXq4c/O+5vk0pSq3SnJZ7UIs+Z
- AqLA==
-X-Gm-Message-State: AC+VfDxo5ZgJ9Bzm2+NyMGMAqwLVkZdUqekYDNFDtpyuDeEJ5ajSLs/4
- ZrC8uz6PaTcTD9Dj3Dl8sSjpTeW6Oybu3BDz+VSCPpjde1CqRItf3IB+GAnqLYvT/g3Fn+UClN5
- rI3LCpio2DwuTjpy6VFS36Rlw8dEAHGE=
-X-Received: by 2002:a05:6512:b97:b0:4f0:3e1:9ada with SMTP id
- b23-20020a0565120b9700b004f003e19adamr1545596lfv.31.1686832714247; 
- Thu, 15 Jun 2023 05:38:34 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ67H+jc7tZyA+D6PnIK5uex3pBcCXD5zI6IqUrqMsSJNFAJA8uGmy1Y7a4vbFIxj10kyn53hK/rhcvZ5NKInBI=
-X-Received: by 2002:a05:6512:b97:b0:4f0:3e1:9ada with SMTP id
- b23-20020a0565120b9700b004f003e19adamr1545571lfv.31.1686832713886; Thu, 15
- Jun 2023 05:38:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230530144821.1557-1-avihaih@nvidia.com>
- <20230530144821.1557-2-avihaih@nvidia.com>
-In-Reply-To: <20230530144821.1557-2-avihaih@nvidia.com>
-From: YangHang Liu <yanghliu@redhat.com>
-Date: Thu, 15 Jun 2023 20:38:22 +0800
-Message-ID: <CAGYh1E97X85v+90B2G1q7DUaD=zS+5Jr+BPvLuh6p6PAoYUCLg@mail.gmail.com>
-Subject: Re: [PATCH v5 1/9] migration: Add switchover ack capability
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, Juan Quintela <quintela@redhat.com>, 
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Maor Gottlieb <maorg@nvidia.com>, 
- Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>, 
- Joao Martins <joao.m.martins@oracle.com>
+ d=1e100.net; s=20221208; t=1686833894; x=1689425894;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LRzh51+4ZLcW0C37vuin+uAT5EbtMs9l5mZLom2bfqA=;
+ b=G6L9h29cDVCgAZ9dE8OwlmJ8TnFRPHfWQvQT5A5p2vNSkml3+edvwrmTHXKPmOgdI8
+ WQks9z4+AS9AqcbFU8zpRwM6pMSIW7qxmWg7lAyUzrDtkibKVbe2YEY6f3p6FN356C9j
+ pRQnyFSkurbWWixF8uWNa6mGKU+4PPdIzk+Bdjbt7t68aa4URYzlCqz2pK/E9pz5LdUz
+ hLsZgKM72V2IOJ0xiU7NYib7FXuzsXfhCwDmddeCb3kvVxYCGcQjE6euYiyK4HBPvaXd
+ u6VIW79ETeHp68C5PSiFtFK6fVxXf3ZTQMMGOnOznMR5h+9zHD/W3U06pNVbTa6gCbG+
+ RKDQ==
+X-Gm-Message-State: AC+VfDxIBQLsnQg7ggb2w3V56XcL69ZoZP7ds1HSwQKCxi1mybCFmhZj
+ NocPlsxK3rLrsgJLHuBeZy8xWQ==
+X-Google-Smtp-Source: ACHHUZ7/iO4b0ZJxkZVC+TlILlfTb74P5p7GdYBPgGbscrJsOf3luCXMiP8ILDfQ7spVlRUb/vlt5w==
+X-Received: by 2002:adf:f050:0:b0:30f:c1ab:f72b with SMTP id
+ t16-20020adff050000000b0030fc1abf72bmr11002159wro.62.1686833893895; 
+ Thu, 15 Jun 2023 05:58:13 -0700 (PDT)
+Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ u3-20020a5d5143000000b0030fcda0508fsm7379976wrt.110.2023.06.15.05.58.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Jun 2023 05:58:13 -0700 (PDT)
+Message-ID: <4b6274c6741baf435b5579f5a089c65997a8e0e6.camel@rivosinc.com>
+Subject: Re: [PATCH v2 1/6] target/riscv: Add properties for BF16 extensions
+From: Rob Bradford <rbradford@rivosinc.com>
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org, 
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+Date: Thu, 15 Jun 2023 13:58:12 +0100
+In-Reply-To: <20230615063302.102409-2-liweiwei@iscas.ac.cn>
+References: <20230615063302.102409-1-liweiwei@iscas.ac.cn>
+ <20230615063302.102409-2-liweiwei@iscas.ac.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=yanghliu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Evolution 3.48.1 (3.48.1-1.module_f38+16663+080ec715) 
+MIME-Version: 1.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,166 +95,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test in the following two scenarios:
-
-[1]  Test scenario:  Both source VM and target VM (in listening mode)
-have enabled return-path and switchover-ack capability:
-
-Test result : The VFIO migration completed successfully
-
-[2]  Test scenario :  The source VM has enabled return-path and
-switchover-ack capability while the target VM (in listening mode) not
-
-Test result : The VFIO migration fails
-
-The detailed error thrown by qemu-kvm when VFIO migration fails:
-    Target VM:
-          0000:17:00.2: Received INIT_DATA_SENT but switchover ack is not u=
-sed
-          error while loading state section id 81(0000:00:02.4:00.0/vfio)
-          load of migration failed: Invalid argument
-    Source VM:
-           failed to save SaveStateEntry with id(name): 2(ram): -5
-           Unable to write to socket: Connection reset by peer
-           Unable to write to socket: Connection reset by peer
-
-Tested-by: YangHang Liu <yanghliu@redhat.com>
-
-
-
-
-On Wed, May 31, 2023 at 1:46=E2=80=AFAM Avihai Horon <avihaih@nvidia.com> w=
-rote:
->
-> Migration downtime estimation is calculated based on bandwidth and
-> remaining migration data. This assumes that loading of migration data in
-> the destination takes a negligible amount of time and that downtime
-> depends only on network speed.
->
-> While this may be true for RAM, it's not necessarily true for other
-> migrated devices. For example, loading the data of a VFIO device in the
-> destination might require from the device to allocate resources, prepare
-> internal data structures and so on. These operations can take a
-> significant amount of time which can increase migration downtime.
->
-> This patch adds a new capability "switchover ack" that prevents the
-> source from stopping the VM and completing the migration until an ACK
-> is received from the destination that it's OK to do so.
->
-> This can be used by migrated devices in various ways to reduce downtime.
-> For example, a device can send initial precopy metadata to pre-allocate
-> resources in the destination and use this capability to make sure that
-> the pre-allocation is completed before the source VM is stopped, so it
-> will have full effect.
->
-> This new capability relies on the return path capability to communicate
-> from the destination back to the source.
->
-> The actual implementation of the capability will be added in the
-> following patches.
->
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Acked-by: Markus Armbruster <armbru@redhat.com>
+On Thu, 2023-06-15 at 14:32 +0800, Weiwei Li wrote:
+> Add ext_zfbfmin/zvfbfmin/zvfbfwma properties.
+> Add require check for BF16 extensions.
+>=20
+> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
->  qapi/migration.json | 12 +++++++++++-
->  migration/options.h |  1 +
->  migration/options.c | 21 +++++++++++++++++++++
->  3 files changed, 33 insertions(+), 1 deletion(-)
->
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 179af0c4d8..061ea512e0 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -487,6 +487,16 @@
->  #     and should not affect the correctness of postcopy migration.
->  #     (since 7.1)
->  #
-> +# @switchover-ack: If enabled, migration will not stop the source VM
-> +#     and complete the migration until an ACK is received from the
-> +#     destination that it's OK to do so.  Exactly when this ACK is
-> +#     sent depends on the migrated devices that use this feature.
-> +#     For example, a device can use it to make sure some of its data
-> +#     is sent and loaded in the destination before doing switchover.
-> +#     This can reduce downtime if devices that support this capability
-> +#     are present.  'return-path' capability must be enabled to use
-> +#     it.  (since 8.1)
-> +#
->  # Features:
->  #
->  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
-> @@ -502,7 +512,7 @@
->             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
->             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
->             'validate-uuid', 'background-snapshot',
-> -           'zero-copy-send', 'postcopy-preempt'] }
-> +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
->
->  ##
->  # @MigrationCapabilityStatus:
-> diff --git a/migration/options.h b/migration/options.h
-> index 45991af3c2..9aaf363322 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -40,6 +40,7 @@ bool migrate_postcopy_ram(void);
->  bool migrate_rdma_pin_all(void);
->  bool migrate_release_ram(void);
->  bool migrate_return_path(void);
-> +bool migrate_switchover_ack(void);
->  bool migrate_validate_uuid(void);
->  bool migrate_xbzrle(void);
->  bool migrate_zero_blocks(void);
-> diff --git a/migration/options.c b/migration/options.c
-> index b62ab30cd5..16007afca6 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -185,6 +185,8 @@ Property migration_properties[] =3D {
->      DEFINE_PROP_MIG_CAP("x-zero-copy-send",
->              MIGRATION_CAPABILITY_ZERO_COPY_SEND),
->  #endif
-> +    DEFINE_PROP_MIG_CAP("x-switchover-ack",
-> +                        MIGRATION_CAPABILITY_SWITCHOVER_ACK),
->
->      DEFINE_PROP_END_OF_LIST(),
->  };
-> @@ -308,6 +310,13 @@ bool migrate_return_path(void)
->      return s->capabilities[MIGRATION_CAPABILITY_RETURN_PATH];
->  }
->
-> +bool migrate_switchover_ack(void)
-> +{
-> +    MigrationState *s =3D migrate_get_current();
+> =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0 | 20 +++++++++++++++++++=
++
+> =C2=A0target/riscv/cpu_cfg.h |=C2=A0 3 +++
+> =C2=A02 files changed, 23 insertions(+)
+>=20
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 881bddf393..dc6b2f72f6 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1059,6 +1059,11 @@ void
+> riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zfbfmin && !riscv_has_ext(env, RVF))=
+ {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zfbfmin ext=
+ension depends on F
+> extension");
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> +=C2=A0=C2=A0=C2=A0 }
 > +
-> +    return s->capabilities[MIGRATION_CAPABILITY_SWITCHOVER_ACK];
-> +}
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (riscv_has_ext(env, RVD) && !riscv_has_ext(en=
+v, RVF)) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "D exte=
+nsion requires F extension");
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> @@ -1109,6 +1114,21 @@ void
+> riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmin) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfmin ex=
+tension depends on Zfbfmin
+> extension");
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> +=C2=A0=C2=A0=C2=A0 }
 > +
->  bool migrate_validate_uuid(void)
->  {
->      MigrationState *s =3D migrate_get_current();
-> @@ -547,6 +556,18 @@ bool migrate_caps_check(bool *old_caps, bool *new_ca=
-ps, Error **errp)
->          }
->      }
->
-> +    if (new_caps[MIGRATION_CAPABILITY_SWITCHOVER_ACK]) {
-> +        if (!new_caps[MIGRATION_CAPABILITY_RETURN_PATH]) {
-> +            error_setg(errp, "Capability 'switchover-ack' requires capab=
-ility "
-> +                             "'return-path'");
-> +            return false;
-> +        }
+> +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfmin ex=
+tension depends on Zve32f
+> extension");
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> +=C2=A0=C2=A0=C2=A0 }
+
+I don't think this is correct - from the spec:
+
+"This extension [Zvfbfmin] depends on the Zfbfmin extension and either
+the "V" extension or the Zve32f embedded vector extension."
+
+So this should be:=20
+
++    if (cpu->cfg.ext_zvfbfmin && !(cpu->cfg.ext_zve32f || cpu-
+>cfg.ext_v) {
++        error_setg(errp, "Zvfbfmin extension depends on Zve32f or V
+extension");
++        return;
++    }
+
+Cheers,
+
+Rob
+
 > +
-> +        /* Disable this capability until it's implemented */
-> +        error_setg(errp, "'switchover-ack' is not implemented yet");
-> +        return false;
-> +    }
+> +=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zvfbfwma && !cpu->cfg.ext_zvfbfmin) =
+{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zvfbfwma ex=
+tension depends on Zvfbfmin
+> extension");
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> +=C2=A0=C2=A0=C2=A0 }
 > +
->      return true;
->  }
->
-> --
-> 2.26.3
->
->
+> =C2=A0=C2=A0=C2=A0=C2=A0 /* Set the ISA extensions, checks should have ha=
+ppened above */
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (cpu->cfg.ext_zhinx) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu->cfg.ext_zhinxmin =
+=3D true;
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index c4a627d335..7d16f32720 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -75,6 +75,7 @@ struct RISCVCPUConfig {
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_svpbmt;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zdinx;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zawrs;
+> +=C2=A0=C2=A0=C2=A0 bool ext_zfbfmin;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfh;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfhmin;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfinx;
+> @@ -84,6 +85,8 @@ struct RISCVCPUConfig {
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zve64f;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zve64d;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zmmul;
+> +=C2=A0=C2=A0=C2=A0 bool ext_zvfbfmin;
+> +=C2=A0=C2=A0=C2=A0 bool ext_zvfbfwma;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zvfh;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zvfhmin;
+> =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_smaia;
 
 
