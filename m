@@ -2,48 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6843D7322ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 01:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9087322F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 01:03:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9vxQ-0000ip-Uc; Thu, 15 Jun 2023 19:00:48 -0400
+	id 1q9vzB-0001ZL-G8; Thu, 15 Jun 2023 19:02:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9vxN-0000iH-Nz; Thu, 15 Jun 2023 19:00:45 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1q9vz9-0001Yg-64; Thu, 15 Jun 2023 19:02:35 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q9vxK-0006ze-Dn; Thu, 15 Jun 2023 19:00:45 -0400
+ id 1q9vz7-0007Xu-Fa; Thu, 15 Jun 2023 19:02:34 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 8D20A746361;
- Fri, 16 Jun 2023 01:00:30 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 6887F748A5A;
+ Fri, 16 Jun 2023 01:02:24 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 26B1F746335; Fri, 16 Jun 2023 01:00:30 +0200 (CEST)
+ id 31926748A59; Fri, 16 Jun 2023 01:02:24 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 250EC745720;
- Fri, 16 Jun 2023 01:00:30 +0200 (CEST)
-Date: Fri, 16 Jun 2023 01:00:30 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3047A748A56;
+ Fri, 16 Jun 2023 01:02:24 +0200 (CEST)
+Date: Fri, 16 Jun 2023 01:02:24 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Nicholas Piggin <npiggin@gmail.com>
 cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org, 
  Greg Kurz <groug@kaod.org>, 
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 05/10] target/ppc: Change parameter of
- cpu_interrupt_exittb() to an env pointer
-In-Reply-To: <CTD723ZCV2NQ.2GYK12U9AFQ2J@wheely>
-Message-ID: <16e73ab0-93a1-67c6-6ae4-44c8708bac7d@eik.bme.hu>
+Subject: Re: [PATCH v2 09/10] target/ppc: Simplify syscall exception handlers
+In-Reply-To: <CTD76STWP0IB.11UB5PDLZYKUP@wheely>
+Message-ID: <7093c254-d78a-c562-3642-8b9f533dc6db@eik.bme.hu>
 References: <cover.1686776990.git.balaton@eik.bme.hu>
- <78ecd505a8b523e236cbeab335aa0621f7834cc5.1686776990.git.balaton@eik.bme.hu>
- <CTCWOA3I3X48.2RZG2THERVO2@wheely>
- <33d841e7-38ab-07d3-4914-a055b029605c@eik.bme.hu>
- <CTD723ZCV2NQ.2GYK12U9AFQ2J@wheely>
+ <ee7c07146e8e2e5a3d1d52aaf5a4eeef695c359d.1686776990.git.balaton@eik.bme.hu>
+ <CTCWPOXSQZLU.275T4DDJIY90X@wheely>
+ <6550e18f-b03d-134b-bc45-a947a25cf5de@eik.bme.hu>
+ <CTD76STWP0IB.11UB5PDLZYKUP@wheely>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -65,27 +64,59 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu, 15 Jun 2023, Nicholas Piggin wrote:
-> On Thu Jun 15, 2023 at 7:19 PM AEST, BALATON Zoltan wrote:
+> On Thu Jun 15, 2023 at 7:25 PM AEST, BALATON Zoltan wrote:
 >> On Thu, 15 Jun 2023, Nicholas Piggin wrote:
 >>> On Thu Jun 15, 2023 at 7:34 AM AEST, BALATON Zoltan wrote:
->>>> Changing the parameter of cpu_interrupt_exittb() from CPUState to env
->>>> allows removing some more local CPUState variables in callers.
+>>>> After previous changes the hypercall handling in 7xx and 74xx
+>>>> exception handlers can be folded into one if statement to simpilfy
+>>>> this code.
+>>>>
+>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>>> ---
+>>>>  target/ppc/excp_helper.c | 26 ++++++++++----------------
+>>>>  1 file changed, 10 insertions(+), 16 deletions(-)
+>>>>
+>>>> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+>>>> index 1682b988ba..662457f342 100644
+>>>> --- a/target/ppc/excp_helper.c
+>>>> +++ b/target/ppc/excp_helper.c
+>>>> @@ -740,26 +740,23 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+>>>>          break;
+>>>>      case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+>>>>      {
+>>>> -        int lev = env->error_code;
 >>>
->>> I think it's more consistent to keep cs, which is same as
->>> cpu_interrupt().
+>>> I would still keep lev. Self documenting and consistent with books
+>>> handler.
 >>
->> But with this patch it's more consistent with the other functions devlared
->> in helper_regs.h and gets rid of the #ifdef in hreg_store_msr() so I'd
->> still like to keep this patch. Callers already have env so it should not
->> matter.
+>> lev is still there in the books version, but probably not really needed in
+>> these 7xx versions which does not really have level parameter. This hack
+>> should likely go away and replaced with something else on the long run as
+>> this won't work with KVM but that needs some support from VOF or compiling
+>> a different version for pegasos2 which wasn't considered so far. I can add
+>> the local back if you really insist but I don't think it really makes much
+>> sense in these cases for 7xx and 74xx.
 >
-> Being consistent with functions of the same file is not important or
-> really makes sense. It's important to be consistent with functions
-> of similar type. cpu_interrupt_exittb() is a helper to call
-> cpu_interrupt() so makes sense to be similar. At best it seems like
-> pointless churn.
+> It is using the sc 1 instruction which does have a lev field though? The
+> hardware might not have such a thing but what is being emulatd here
+> does, so I think lev makes sense.
+>
+> Removing this would be fine, but while you have it yes please just leave
+> it as lev.
+>
+>>>> +        PowerPCCPU *cpu = env_archcpu(env);
+>>>
+>>> Is this necessary?
+>>
+>> Yes, for cpu->vhyp below.
+>
+> cpu->vhyp was there before your patch...
 
-OK I've revised it in v3 and dropped most of this patch.
+Originally I had another patch that chnaged these functions to take an env 
+pointer and since cpu is only needed here this was declared local to where 
+it's used. Now that we don't have those patches that change more functions 
+parameters to env then it's indeed not needed. I've added back lev in v3 
+instead.
 
 Regards,
 BALATON Zoltan
