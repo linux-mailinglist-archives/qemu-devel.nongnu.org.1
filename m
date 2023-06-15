@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5F5730D93
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 05:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFBA730D9B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Jun 2023 05:36:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q9dka-0003pA-7X; Wed, 14 Jun 2023 23:34:20 -0400
+	id 1q9dlq-0004fA-AS; Wed, 14 Jun 2023 23:35:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9dkY-0003oL-7T; Wed, 14 Jun 2023 23:34:18 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ id 1q9dlm-0004eu-UP; Wed, 14 Jun 2023 23:35:35 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q9dkW-0002qQ-Jx; Wed, 14 Jun 2023 23:34:17 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-558cf19575dso1099876eaf.3; 
- Wed, 14 Jun 2023 20:34:15 -0700 (PDT)
+ id 1q9dll-000382-Ck; Wed, 14 Jun 2023 23:35:34 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3909756b8b1so3512975b6e.1; 
+ Wed, 14 Jun 2023 20:35:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1686800055; x=1689392055;
+ d=gmail.com; s=20221208; t=1686800130; x=1689392130;
  h=in-reply-to:references:from:subject:cc:to:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qRTo0mWr4vKRVz6NY6Fa0dSWecS5M6reW1ki3STyxoI=;
- b=CSSY1xLOKOTYGGHlYHqPORGFmpWBGQeAAm+HmNhn0RureWQJXAELsWCiswlsmNlRMO
- D/hk318ZXFz3WRzoxOAm/1fQ2pQlmfSSg6Rz2bqdmq6NPz+qyZgR0ZH2yq2FzVX3qeRk
- s+wcgvGnTdJwH++hu/rTt4iIqtFIDQQoUaadBLdkXF6t9hPc5Q4Rj4nP4k87wnyAmdzD
- cv02qpsUB7IkOsycI81OImd0+LsATfT7JTBcd5RIRnP05Drrymp7q4Cy1T0lW9yqivMv
- VMa6sHE/KIQrSqIHrk98tZyK29D6eKjSzyzUZTjtNhSPr9MbaBHep8kEnX2dIPQ4sBcs
- 3pGA==
+ bh=yzOTlsWjRRWPWD4HvW4rG7/FWmwBTd1oU7iz9Gy7UTQ=;
+ b=roIV5TfMjf7B+j+QdpIlfPQDz+EQ+wjNJnRBFhkDfm/ZBZMeO+KPSdsmio7wq//r4d
+ zmN/Yoo7+vAUWCgPpVHZX5I2mFUGO+DGWcb3LutmDlPQXjgeqsLPW78ajARQya7OtiMx
+ SDXHwAa+wPQG8CWRihv7dgf5KMe4Mdhp3Zp0o8Q/8TwMaX8w4YZMkiuJpSSUZEeCgl3E
+ PB24Rzv7C+jBPuae6oLYHUePVNxkhd6nPBYKe/Iz1w5HSpvU2ahpAMAp0oFteMxap1Ee
+ GDr/ih9VDEkkb8jdgpoWEU+pxERXbj5WAI0DTothTCwuTE32P8jmJ7X57UJ4cnROVt2r
+ QxUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686800055; x=1689392055;
+ d=1e100.net; s=20221208; t=1686800130; x=1689392130;
  h=in-reply-to:references:from:subject:cc:to:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=qRTo0mWr4vKRVz6NY6Fa0dSWecS5M6reW1ki3STyxoI=;
- b=C1HgaAEu5rIv12FUwyaoPDTZKkyxyFg3n+L0EU3866X0IlKqZ7hcEAgmd+iZHplLYG
- dG+kRaketNEA39SlhxIl9adQEq9ttMMn7n58D/7QusLOssdITcpcG57WxjxSPwOCtlIr
- 7lhy9gAc6WEq2+FFYFtBnnuBD7Ar/yzYNsFcNliEYNiEVNDfD3Os3qqVI+sYjb9Agocy
- MP23Mx5osX8LaqTqkc61Rbap3RWi5Mv+d2U3sCE5mj/h6+PxQWD5fXL+iJ+/Z6HCEtYx
- HePlKTQyLwACm948gLuJroyM+yfG8StGYH11vzk8aXf2MqrWoGDYiahy+3RnjuLYXLcC
- adoQ==
-X-Gm-Message-State: AC+VfDx3drCRIrXsD/0AVMfis1IFMu2sbdBTUk5idMrYV0EcNKUvwNlC
- kPilwLXaLMdxMLDEMUrd70I=
-X-Google-Smtp-Source: ACHHUZ4RQ3UHVxBwhjj2Zh6GKOEmRjRjnboUBtMWPhmc9lAwr1lzEtC8zMeAWskmd2mTfB15cR2wpg==
-X-Received: by 2002:a05:6808:1509:b0:39e:8bc3:e63a with SMTP id
- u9-20020a056808150900b0039e8bc3e63amr885881oiw.6.1686800054727; 
- Wed, 14 Jun 2023 20:34:14 -0700 (PDT)
+ bh=yzOTlsWjRRWPWD4HvW4rG7/FWmwBTd1oU7iz9Gy7UTQ=;
+ b=YM4ILto8CHMi1x4aT5c6MGwcuHsihu4w3FaadMeKBNyCfjzlRO1h1sMTZMJ6NCT0Uz
+ zgRe3OFZv/fQffs47CceJgh/lKx4CLPjoQIxI9miuihrj8JZng3uSdo11rZG/Fdv3J9W
+ CZMAdFOULZAFlADnE0ws1SSvjpkzf2UnbgNiTfcB03Yk/bCztJQBg9zG2JloxPvxeKM5
+ BQLq1KKVaozU40hnQj5CdfQPj/inIDShyVmNSJOiTJ+muhRWVI08aFrHpPWJ2/FqDiWx
+ KxSbStAvMYPivhBkjbIm4pKiZhOxr/qa1DJKuWy9CCghsI0oEGu9+3eOKYiBZW8GScQ6
+ F7zQ==
+X-Gm-Message-State: AC+VfDz4q+hD3nF8dsbRbvAsEfT7lA+M4UyI4ZbrYUAGV5krCCJgmuLy
+ T8jZsVrUBTzZMrN48B2HuL+hohpZ4+k=
+X-Google-Smtp-Source: ACHHUZ5sSSNGZC7sFEdCE69zyouoVJ6yoNt4NBkrghweXI6D+5zwmY298jaeDqna1vQNNCwUJ+kSJw==
+X-Received: by 2002:a05:6808:9a4:b0:398:4385:baf4 with SMTP id
+ e4-20020a05680809a400b003984385baf4mr10652082oig.49.1686800130451; 
+ Wed, 14 Jun 2023 20:35:30 -0700 (PDT)
 Received: from localhost (14-203-144-223.static.tpgi.com.au. [14.203.144.223])
  by smtp.gmail.com with ESMTPSA id
- qe10-20020a17090b4f8a00b00259b53dccddsm11662282pjb.34.2023.06.14.20.34.11
+ 12-20020a17090a004c00b0025bf1ea918asm6105032pjb.55.2023.06.14.20.35.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Jun 2023 20:34:14 -0700 (PDT)
+ Wed, 14 Jun 2023 20:35:30 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Jun 2023 13:34:09 +1000
-Message-Id: <CTCWPOXSQZLU.275T4DDJIY90X@wheely>
+Date: Thu, 15 Jun 2023 13:35:25 +1000
+Message-Id: <CTCWQNY1WICB.22H2C7EM4JJKT@wheely>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
 Cc: <clg@kaod.org>, "Greg Kurz" <groug@kaod.org>, "Daniel Henrique Barboza"
  <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 09/10] target/ppc: Simplify syscall exception handlers
+Subject: Re: [PATCH v2 10/10] target/ppc: Get CPUState in one step
 From: "Nicholas Piggin" <npiggin@gmail.com>
 X-Mailer: aerc 0.14.0
 References: <cover.1686776990.git.balaton@eik.bme.hu>
- <ee7c07146e8e2e5a3d1d52aaf5a4eeef695c359d.1686776990.git.balaton@eik.bme.hu>
-In-Reply-To: <ee7c07146e8e2e5a3d1d52aaf5a4eeef695c359d.1686776990.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=npiggin@gmail.com; helo=mail-oo1-xc2f.google.com
+ <f2a22b2c5483a31fa2c6cdd84fe659bfc5d499cd.1686776990.git.balaton@eik.bme.hu>
+In-Reply-To: <f2a22b2c5483a31fa2c6cdd84fe659bfc5d499cd.1686776990.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,99 +94,68 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu Jun 15, 2023 at 7:34 AM AEST, BALATON Zoltan wrote:
-> After previous changes the hypercall handling in 7xx and 74xx
-> exception handlers can be folded into one if statement to simpilfy
-> this code.
+> We can get CPUState from env with env_cpu without going through
+> PowerPCCPU and casting that.
 >
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
+
 > ---
->  target/ppc/excp_helper.c | 26 ++++++++++----------------
->  1 file changed, 10 insertions(+), 16 deletions(-)
+>  target/ppc/excp_helper.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
 >
 > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 1682b988ba..662457f342 100644
+> index 662457f342..5edf06210f 100644
 > --- a/target/ppc/excp_helper.c
 > +++ b/target/ppc/excp_helper.c
-> @@ -740,26 +740,23 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int e=
-xcp)
->          break;
->      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
-     */
->      {
-> -        int lev =3D env->error_code;
-
-I would still keep lev. Self documenting and consistent with books
-handler.
-
-> +        PowerPCCPU *cpu =3D env_archcpu(env);
-
-Is this necessary?
-
-Thanks,
-Nick
-
+> @@ -1506,8 +1506,8 @@ static int p7_interrupt_powersave(CPUPPCState *env)
 > =20
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> -            dump_hcall(env);
-> -        } else {
-> -            dump_syscall(env);
-> -        }
->          /*
->           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
->           * instruction to communicate with QEMU. The pegasos2 machine
->           * uses VOF and the 7xx CPUs, so although the 7xx don't have
->           * HV mode, we need to keep hypercall support.
->           */
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> +        if (unlikely(env->error_code =3D=3D 1 && cpu->vhyp)) {
->              PPCVirtualHypervisorClass *vhc =3D
->                  PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-> +            dump_hcall(env);
->              vhc->hypercall(cpu->vhyp, cpu);
->              return;
-> +        } else {
-> +            dump_syscall(env);
->          }
-> -
->          break;
->      }
->      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception=
-     */
-> @@ -884,26 +881,23 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int =
-excp)
->          break;
->      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
-     */
->      {
-> -        int lev =3D env->error_code;
-> +        PowerPCCPU *cpu =3D env_archcpu(env);
+>  static int p7_next_unmasked_interrupt(CPUPPCState *env)
+>  {
+> -    PowerPCCPU *cpu =3D env_archcpu(env);
+> -    CPUState *cs =3D CPU(cpu);
+> +    CPUState *cs =3D env_cpu(env);
+> +
+>      /* Ignore MSR[EE] when coming out of some power management states */
+>      bool msr_ee =3D FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sres=
+et;
 > =20
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> -            dump_hcall(env);
-> -        } else {
-> -            dump_syscall(env);
-> -        }
->          /*
->           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
->           * instruction to communicate with QEMU. The pegasos2 machine
->           * uses VOF and the 74xx CPUs, so although the 74xx don't have
->           * HV mode, we need to keep hypercall support.
->           */
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> +        if (unlikely(env->error_code =3D=3D 1 && cpu->vhyp)) {
->              PPCVirtualHypervisorClass *vhc =3D
->                  PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-> +            dump_hcall(env);
->              vhc->hypercall(cpu->vhyp, cpu);
->              return;
-> +        } else {
-> +            dump_syscall(env);
->          }
-> -
->          break;
->      }
->      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception=
-     */
+> @@ -1596,8 +1596,8 @@ static int p8_interrupt_powersave(CPUPPCState *env)
+> =20
+>  static int p8_next_unmasked_interrupt(CPUPPCState *env)
+>  {
+> -    PowerPCCPU *cpu =3D env_archcpu(env);
+> -    CPUState *cs =3D CPU(cpu);
+> +    CPUState *cs =3D env_cpu(env);
+> +
+>      /* Ignore MSR[EE] when coming out of some power management states */
+>      bool msr_ee =3D FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sres=
+et;
+> =20
+> @@ -1717,8 +1717,8 @@ static int p9_interrupt_powersave(CPUPPCState *env)
+> =20
+>  static int p9_next_unmasked_interrupt(CPUPPCState *env)
+>  {
+> -    PowerPCCPU *cpu =3D env_archcpu(env);
+> -    CPUState *cs =3D CPU(cpu);
+> +    CPUState *cs =3D env_cpu(env);
+> +
+>      /* Ignore MSR[EE] when coming out of some power management states */
+>      bool msr_ee =3D FIELD_EX64(env->msr, MSR, EE) || env->resume_as_sres=
+et;
+> =20
+> @@ -2412,9 +2412,8 @@ void helper_scv(CPUPPCState *env, uint32_t lev)
+> =20
+>  void helper_pminsn(CPUPPCState *env, uint32_t insn)
+>  {
+> -    CPUState *cs;
+> +    CPUState *cs =3D env_cpu(env);
+> =20
+> -    cs =3D env_cpu(env);
+>      cs->halted =3D 1;
+> =20
+>      /* Condition for waking up at 0x100 */
 > --=20
 > 2.30.9
 
