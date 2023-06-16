@@ -2,87 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4E0733308
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 16:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C2C73330E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 16:05:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAA0t-0006UA-4F; Fri, 16 Jun 2023 10:01:19 -0400
+	id 1qAA4P-0001qY-1o; Fri, 16 Jun 2023 10:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0q-0006St-Ev
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:16 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0n-00050s-Nz
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:16 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3111547c8f9so576377f8f.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 07:01:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686924072; x=1689516072;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1vdthDz2o64xcLeOTa4DRezOZa/pgzos86q0Eeg+/GI=;
- b=juSKlnSEmpgwI+HqozKgwvAQL/4gPw+gaarvb8UPKtWp3xXrfoV36+iOsmM5HqDb6G
- bs+lPm6RCKre5/4DG5dZ9AO1r+/m/MPSU8rdPJV5whETWnWYhWEy/LEkD6okvuDaIXAv
- ShYXmLnnn3jTUoO0L1xo0K/o6UbwzqvSFS05alfKzKMNHBuspOx4PZA81hetcZVIGR2R
- BL7A2SGchnm5Et+KWsI6TMtgie1mYk1LCiWuvfZ/K08L1bGw8NzI9erCVfHJnW4SlpJh
- nnzngde6l0ng0yBlPkxQWKKfRJIJFdWOOIz0+3kxDOdeVf9LiUEslgUaTsy6zRCitqSK
- Op9A==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qAA4N-0001qG-0x
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:04:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qAA4L-0005n2-4P
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:04:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686924291;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Tse9FEbqCfvkGIhQA9qQyGQPGBI3qyEj4Y3DdvOeQMI=;
+ b=Llo4Ve+FJywVPB6nakQ5vXBCQ8D3YACTHZ4YkejdeJAvHHbrKwxxtQKwqa8Oap86At7STM
+ 5kXl7rFAz14oISqrLclLp+rs0zB8TpgSYnFHgzPFY1TsT6DY0nBvl8FTngmmWS7YGa+2LJ
+ Oj7pOJhUr53XsoIGtn228ngpUh9mbpU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-250-NIac8U2GPjefqOqi_4XqbQ-1; Fri, 16 Jun 2023 10:04:49 -0400
+X-MC-Unique: NIac8U2GPjefqOqi_4XqbQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f8f8e29771so2466995e9.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 07:04:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686924072; x=1689516072;
+ d=1e100.net; s=20221208; t=1686924288; x=1689516288;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1vdthDz2o64xcLeOTa4DRezOZa/pgzos86q0Eeg+/GI=;
- b=ICt++/3F39btam+bWpOgQdbTeDu+A1o7TtNQ7RflAKcSb+0UY1bvC2G1pD99MD2ypr
- oENJ7EU5QZO53nytqweMxfFEHVxnpxKjEFTWdLST0OEK5Jnhzqc+RLpn1shpjYCMce0U
- oW5ZgDnuzKjTkC7QBTu9L11gwFco7L79uLhu4X3y6IuARc02cy94Cy/Sy3CRyZYi9KDf
- PNDNE/lMPoTfKt4H3+eUjB/Bw182iHlek7X/3EpqDoWGi5idlUPO07HVGQ+Ch4lU4Yz5
- be1mSujez4F+kQJn9nagl6Jg2hSX2oYQIUk+viA8saEl6JVl3JeVzpC6/2xB00tzLPHN
- +lvQ==
-X-Gm-Message-State: AC+VfDyWDkDySBa/ecCcxrb0H4c2pg2zKuIv3Q3KdTHaQgi3/MFMSiWJ
- vSdl3CFMk5xs0lBAi3cFi5hQ2A==
-X-Google-Smtp-Source: ACHHUZ7D05CR7pa9ArPWlyhatxQOiwf2EqbSIYFkoU3nV1y5yMob+P1q8pRlZqKcymfd+OU+ZGeh6Q==
-X-Received: by 2002:a5d:4643:0:b0:30e:4a21:808b with SMTP id
- j3-20020a5d4643000000b0030e4a21808bmr1384926wrs.55.1686924071592; 
- Fri, 16 Jun 2023 07:01:11 -0700 (PDT)
-Received: from [192.168.164.175] (146.red-88-29-160.dynamicip.rima-tde.net.
- [88.29.160.146]) by smtp.gmail.com with ESMTPSA id
- z18-20020a5d44d2000000b003110dc7f408sm6836175wrr.41.2023.06.16.07.01.09
+ bh=Tse9FEbqCfvkGIhQA9qQyGQPGBI3qyEj4Y3DdvOeQMI=;
+ b=O4t+GuAin6WCmqBGSs1yJn9zhcdMR4wZp7S9feGIiCVv7RvcFUNGQL6pgYO3KN2wHt
+ /Uw1+TvL1HhulggZddrMO/UvCIR6dCrtF3rkDUd2ZddyKljAgfeWcMog73vTszLLypqG
+ v0IJYzVATh05GrnwzLeNDHC9vM1Un8MQQwEasSXCY2bIdQw76Y0eAWCrVMB1a5zMnFsN
+ gKf/fm4pBqIHMgRLVFfLd0bLLxY9zdYLiDVxBTSVzWB7vmPPUNcCVemE6Y/WVgQ9mocw
+ Xvl/87TxT2kOLm3w3GdBpF4iP11ywB2UEoadIE4ejPZRS15XDo2t2sU9ZDg8dzmHj8qb
+ 30+A==
+X-Gm-Message-State: AC+VfDxziAtb1hkK3beu5B5ZtUB5KK4ROlkRQfYAylPDIYBTwZoZY0RV
+ w5mkoyH9Ef2ZyiYofaWNQ7S94vbskTMBawlv8y8Ju8fDu7QhnlQiTLUtgwwdLlo+DP8ifAUbxwZ
+ VU0ejtP5mzcDf0Sw=
+X-Received: by 2002:a05:600c:5562:b0:3f7:ba55:d03e with SMTP id
+ ja2-20020a05600c556200b003f7ba55d03emr7122813wmb.6.1686924288154; 
+ Fri, 16 Jun 2023 07:04:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4P2u7m8pIPk1BwVIGp/wErk8BLAJ+dfDVBl/u+fzK1QjBV/n+ptSr0+1/jqgSSKftI0yYBpg==
+X-Received: by 2002:a05:600c:5562:b0:3f7:ba55:d03e with SMTP id
+ ja2-20020a05600c556200b003f7ba55d03emr7122793wmb.6.1686924287722; 
+ Fri, 16 Jun 2023 07:04:47 -0700 (PDT)
+Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
+ ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
+ by smtp.gmail.com with ESMTPSA id
+ n6-20020a05600c294600b003f7e4639aabsm2322170wmd.10.2023.06.16.07.04.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jun 2023 07:01:11 -0700 (PDT)
-Message-ID: <d77b97c1-2f59-bf40-bea6-4f1a72a3aa24@linaro.org>
-Date: Fri, 16 Jun 2023 12:47:43 +0200
+ Fri, 16 Jun 2023 07:04:47 -0700 (PDT)
+Message-ID: <c28aa967-ef65-a8be-8ae5-b04c604ba988@redhat.com>
+Date: Fri, 16 Jun 2023 16:04:45 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 10/12] hw/vmapple/cfg: Introduce vmapple cfg region
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] vfio/migration: Fix return value of
+ vfio_migration_realize()
 Content-Language: en-US
-To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-References: <20230614224038.86148-1-graf>
- <20230614225734.806-1-graf@amazon.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230614225734.806-1-graf@amazon.com>
+To: Joao Martins <joao.m.martins@oracle.com>,
+ "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20230615081851.326816-1-zhenzhong.duan@intel.com>
+ <67af377f-a8b7-c879-516e-9544d6a4fab2@oracle.com>
+ <SJ0PR11MB6744E8D7540A3B9E540A9F69925BA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <186c9e07-c1e6-74ae-0a4f-7d6bc0c8ceb6@oracle.com>
+ <SJ0PR11MB674488BE146A88E35D763C639258A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <2f3ee2ab-e37b-c429-e604-b62440d37278@oracle.com>
+ <SJ0PR11MB6744FA7630BA42F4DBFB30FA9258A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <b5023864-f56e-24b5-4e1b-007184484c2f@oracle.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <b5023864-f56e-24b5-4e1b-007184484c2f@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,145 +112,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/6/23 00:57, Alexander Graf wrote:
-> Instead of device tree or other more standardized means, VMApple passes
-> platform configuration to the first stage boot loader in a binary encoded
-> format that resides at a dedicated RAM region in physical address space.
+On 6/16/23 12:12, Joao Martins wrote:
+> On 16/06/2023 10:53, Duan, Zhenzhong wrote:
+>>> -----Original Message-----
+>>> From: Joao Martins <joao.m.martins@oracle.com>
+>>> Sent: Friday, June 16, 2023 5:06 PM
+>>> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>
+>>> Cc: alex.williamson@redhat.com; clg@redhat.com; qemu-devel@nongnu.org;
+>>> Peng, Chao P <chao.p.peng@intel.com>
+>>> Subject: Re: [PATCH] vfio/migration: Fix return value of vfio_migration_realize()
+>>>
+>>> On 16/06/2023 03:42, Duan, Zhenzhong wrote:
+>>>>> -----Original Message-----
+>>>>> From: Joao Martins <joao.m.martins@oracle.com>
+>>>>> Sent: Thursday, June 15, 2023 6:23 PM
+>>>>> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>
+>>>>> Cc: alex.williamson@redhat.com; clg@redhat.com;
+>>>>> qemu-devel@nongnu.org; Peng, Chao P <chao.p.peng@intel.com>
+>>>>> Subject: Re: [PATCH] vfio/migration: Fix return value of
+>>>>> vfio_migration_realize()
+>>>>>
+>>>>> On 15/06/2023 10:19, Duan, Zhenzhong wrote:
+>>>>>>> -----Original Message-----
+>>>>>>> From: Joao Martins <joao.m.martins@oracle.com>
+>>>>>>> Sent: Thursday, June 15, 2023 4:54 PM
+>>>>>>> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>
+>>>>>>> Cc: alex.williamson@redhat.com; clg@redhat.com;
+>>>>>>> qemu-devel@nongnu.org; Peng, Chao P <chao.p.peng@intel.com>
+>>>>>>> Subject: Re: [PATCH] vfio/migration: Fix return value of
+>>>>>>> vfio_migration_realize()
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> On 15/06/2023 09:18, Zhenzhong Duan wrote:
+>>>>>>>> We should print "Migration disabled" when migration is blocked in
+>>>>>>>> vfio_migration_realize().
+>>>>>>>>
+>>>>>>>> Fix it by reverting return value of migrate_add_blocker(),
+>>>>>>>> meanwhile error out directly once migrate_add_blocker() failed.
+>>>>>>>>
+>>>>>>>
+>>>>>>> It wasn't immediately obvious from commit message that this is
+>>>>>>> mainly about just printing an error message when blockers get added
+>>>>>>> and that well
+>>>>>>> migrate_add_blocker() returns 0 on success and caller of
+>>>>>>> vfio_migration_realize expects the opposite when blockers are added.
+>>>>>>>
+>>>>>>> Perhaps better wording would be:
+>>>>>>>
+>>>>>>> migrate_add_blocker() returns 0 when successfully adding the
+>>>>>>> migration blocker. However, the caller of vfio_migration_realize()
+>>>>>>> considers that migration was blocked when the latter returned an
+>>>>>>> error. Fix it by negating the return value obtained by
+>>>>>>> migrate_add_blocker(). What matters for migration is that the
+>>>>>>> blocker is added in core migration, so this cleans up usability
+>>>>>>> such that user sees "Migrate disabled" when any of the vfio
+>>>>>>> migration blockers are
+>>>>> active.
+>>>>>>
+>>>>>> Great, I'll use your words.
+>>>>>>
+>>>>>>>
+>>>>>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>>>>>>> ---
+>>>>>>>>   hw/vfio/common.c    | 4 ++--
+>>>>>>>>   hw/vfio/migration.c | 6 +++---
+>>>>>>>>   2 files changed, 5 insertions(+), 5 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c index
+>>>>>>>> fa8fd949b1cf..8505385798f3 100644
+>>>>>>>> --- a/hw/vfio/common.c
+>>>>>>>> +++ b/hw/vfio/common.c
+>>>>>>>> @@ -399,7 +399,7 @@ int
+>>>>>>>> vfio_block_multiple_devices_migration(Error
+>>>>>>> **errp)
+>>>>>>>>           multiple_devices_migration_blocker = NULL;
+>>>>>>>>       }
+>>>>>>>>
+>>>>>>>> -    return ret;
+>>>>>>>> +    return !ret;
+>>>>>>>>   }
+>>>>>>>>
+>>>>>>>>   void vfio_unblock_multiple_devices_migration(void)
+>>>>>>>> @@ -444,7 +444,7 @@ int vfio_block_giommu_migration(Error **errp)
+>>>>>>>>           giommu_migration_blocker = NULL;
+>>>>>>>>       }
+>>>>>>>>
+>>>>>>>> -    return ret;
+>>>>>>>> +    return !ret;
+>>>>>>>>   }
+>>>>>>>>
+>>>>>>>>   void vfio_migration_finalize(void) diff --git
+>>>>>>>> a/hw/vfio/migration.c b/hw/vfio/migration.c index
+>>>>>>>> 6b58dddb8859..0146521d129a 100644
+>>>>>>>> --- a/hw/vfio/migration.c
+>>>>>>>> +++ b/hw/vfio/migration.c
+>>>>>>>> @@ -646,12 +646,12 @@ int vfio_migration_realize(VFIODevice
+>>>>>>>> *vbasedev,
+>>>>>>> Error **errp)
+>>>>>>>>       }
+>>>>>>>>
+>>>>>>>>       ret = vfio_block_multiple_devices_migration(errp);
+>>>>>>>> -    if (ret) {
+>>>>>>>> +    if (ret || (errp && *errp)) {
+>>>>>>>
+>>>>>>> Why do you need this extra clause?
+>>>>>>
+>>>>>> Now that error happens, no need to add other blockers which will
+>>>>>> fail for same reason.
+>>>>>>
+>>>>>
+>>>>> But you don't need the (errp && *errp) for that as that's the whole
+>>>>> point of negating the result.
+>>>>>
+>>>>> And if there's an error set it means migrate_add_blocker failed to
+>>>>> add the blocker (e.g. snapshotting IIUC), and you would be failing here
+>>> unnecessarily?
+>>>>
+>>>> If there is an error qdev_device_add() will fail, continue execution is
+>>> meaningless here?
+>>>> There is ERRP_GUARD in this path, so it looks (*errp) is enough.
+>>>>
+>>>> If I removed (errp && *errp) to continue, need below change to bypass
+>>>> trace_vfio_migration_probe Do you prefer this way?
+>>>>
+>>>>      if (!*errp) {
+>>>>          trace_vfio_migration_probe(vbasedev->name);
+>>>>      }
+>>>>
+>>>
+>>> I am mainly questioning that the error testing is correct to test here.
+>>>
+>>> IIUC, the only one that can propagate any *new* error in
+>>> vfio_migration_realize is the calls to migrate_add_blocker failing within the
+>>> vfio_block* (migration code suggests that this happens on snapshotting).
+>>> Failing to add migration blocker just means we haven't installed any blockers.
+>>> And the current code presents that as a "Migration disabled" case. If we want
+>>> to preserve that behaviour on migration_add_blocker() failures (which seems
+>>> like that's what you are doing here) then instead of this:
+>>
+>> Current behavior(without my patch):
+>> "Migration disabled" isn't printed if migrate_add_blocker succeed.
+>> "Migration disabled" is printed if migrate_add_blocker fail.
+>>
+>> I think this behavior isn't correct, I want to revert it not preserve it, so I used !ret.
+>> Imagine we hotplug a vfio device when snapshotting, migrate_add_blocker failure
+>> will lead to hotplug fail, then the guest is still migratable as no vfio plugged.
+>> But we see "Migration disabled" which will confuse us.
+>>
 > 
-> This patch models this configuration space as a qdev device which we can
-> then map at the fixed location in the address space. That way, we can
-> influence and annotate all configuration fields easily.
-> 
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> ---
->   hw/vmapple/Kconfig       |   3 ++
->   hw/vmapple/cfg.c         | 105 +++++++++++++++++++++++++++++++++++++++
->   hw/vmapple/meson.build   |   1 +
->   include/hw/vmapple/cfg.h |  68 +++++++++++++++++++++++++
->   4 files changed, 177 insertions(+)
->   create mode 100644 hw/vmapple/cfg.c
->   create mode 100644 include/hw/vmapple/cfg.h
+> /me nods
 
+Yes. Overall, the reason for which migration is not supported or is
+disabled is not very clear today (for the user). It might need some
+more adjustments, like this one, before we remove the experimental flag.
+It will also help QE to define test scenarios and track expected results.
 
-> diff --git a/hw/vmapple/cfg.c b/hw/vmapple/cfg.c
-> new file mode 100644
-> index 0000000000..d48e3c3afa
-> --- /dev/null
-> +++ b/hw/vmapple/cfg.c
-> @@ -0,0 +1,105 @@
-> +/*
-> + * VMApple Configuration Region
-> + *
-> + * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "hw/vmapple/cfg.h"
-> +#include "qemu/log.h"
-> +#include "qemu/module.h"
-> +#include "qapi/error.h"
-> +
-> +static void vmapple_cfg_reset(DeviceState *dev)
-> +{
-> +    VMAppleCfgState *s = VMAPPLE_CFG(dev);
-> +    VMAppleCfg *cfg;
-> +
-> +    cfg = memory_region_get_ram_ptr(&s->mem);
-> +    memset((void *)cfg, 0, VMAPPLE_CFG_SIZE);
+>   >>
+>>> 	return !ret;
+>>>
+>>> you would do this:
+>>>
+>>> 	ret = migration_add_blocker(...);
+>>> 	if (ret < 0) {
+>>> 		error_free(...);
+>>> 		blocker = NULL;
+>>> +		return ret;
+>>> 	}
+>>>
+>>> +	return 1;
+>>>
+>>> Or something like that. And then if you return early as you intended?
+>>
+>> Yes, this change make sense, I also want to add below:
+>>
+>>       if (!pdev->failover_pair_id) {
+>>           ret = vfio_migration_realize(vbasedev, errp);
+>> -        if (ret) {
+>> +        if (ret > 0) {
+>>               error_report("%s: Migration disabled", vbasedev->name);
+>>           }
+>>
+> Makes sense. Checking errp above before printing the tracepoint (like you
+> suggested) is also an option taking the discussion so far, but perhaps the
+> return type to be bool to make it clear to callers that this is not no longer an
+> error code? Maybe let's wait for others on what style is generally preferred in
+> error propagation.
 
-I'm a bit confused here: DeviceReset() handler is called _after_
-DeviceRealize().
+I think the code should follow the qdev_realize() prototype, which returns
+a bool.
 
-> +    *cfg = s->cfg;
-> +}
-> +
-> +static void vmapple_cfg_realize(DeviceState *dev, Error **errp)
-> +{
-> +    VMAppleCfgState *s = VMAPPLE_CFG(dev);
-> +    uint32_t i;
-> +
-> +    strncpy(s->cfg.serial, s->serial, sizeof(s->cfg.serial));
-> +    strncpy(s->cfg.model, s->model, sizeof(s->cfg.model));
-> +    strncpy(s->cfg.soc_name, s->soc_name, sizeof(s->cfg.soc_name));
-> +    strncpy(s->cfg.unk8, "D/A", sizeof(s->cfg.soc_name));
-> +    s->cfg.ecid = cpu_to_be64(s->cfg.ecid);
-> +    s->cfg.version = 2;
-> +    s->cfg.unk1 = 1;
-> +    s->cfg.unk2 = 1;
-> +    s->cfg.unk3 = 0x20;
-> +    s->cfg.unk4 = 0;
-> +    s->cfg.unk5 = 1;
-> +    s->cfg.unk6 = 1;
-> +    s->cfg.unk7 = 0;
-> +    s->cfg.unk10 = 1;
-> +
-> +    g_assert(s->cfg.nr_cpus < ARRAY_SIZE(s->cfg.cpu_ids));
-> +    for (i = 0; i < s->cfg.nr_cpus; i++) {
-> +        s->cfg.cpu_ids[i] = i;
-> +    }
-> +}
+Thanks,
 
+C.
 
-> diff --git a/include/hw/vmapple/cfg.h b/include/hw/vmapple/cfg.h
-> new file mode 100644
-> index 0000000000..3337064e44
-> --- /dev/null
-> +++ b/include/hw/vmapple/cfg.h
-> @@ -0,0 +1,68 @@
-> +/*
-> + * VMApple Configuration Region
-> + *
-> + * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#ifndef HW_VMAPPLE_CFG_H
-> +#define HW_VMAPPLE_CFG_H
-> +
-> +#include "hw/sysbus.h"
-> +#include "qom/object.h"
-> +#include "net/net.h"
-> +
-> +typedef struct VMAppleCfg {
-> +    uint32_t version;         /* 0x000 */
-> +    uint32_t nr_cpus;         /* 0x004 */
-> +    uint32_t unk1;            /* 0x008 */
-> +    uint32_t unk2;            /* 0x00c */
-> +    uint32_t unk3;            /* 0x010 */
-> +    uint32_t unk4;            /* 0x014 */
-> +    uint64_t ecid;            /* 0x018 */
-> +    uint64_t ram_size;        /* 0x020 */
-> +    uint32_t run_installer1;  /* 0x028 */
-> +    uint32_t unk5;            /* 0x02c */
-> +    uint32_t unk6;            /* 0x030 */
-> +    uint32_t run_installer2;  /* 0x034 */
-> +    uint32_t rnd;             /* 0x038 */
-> +    uint32_t unk7;            /* 0x03c */
-> +    MACAddr mac_en0;          /* 0x040 */
-> +    uint8_t pad1[2];
-> +    MACAddr mac_en1;          /* 0x048 */
-> +    uint8_t pad2[2];
-> +    MACAddr mac_wifi0;        /* 0x050 */
-> +    uint8_t pad3[2];
-> +    MACAddr mac_bt0;          /* 0x058 */
-> +    uint8_t pad4[2];
-> +    uint8_t reserved[0xa0];   /* 0x060 */
-> +    uint32_t cpu_ids[0x80];   /* 0x100 */
-> +    uint8_t scratch[0x200];   /* 0x180 */
-> +    char serial[32];          /* 0x380 */
-> +    char unk8[32];            /* 0x3a0 */
-> +    char model[32];           /* 0x3c0 */
-> +    uint8_t unk9[32];         /* 0x3e0 */
-> +    uint32_t unk10;           /* 0x400 */
-> +    char soc_name[32];        /* 0x404 */
-> +} VMAppleCfg;
-
-Since you access this structure via qdev properties (which is
-good), then we can restrict its definition to cfg.c (no need to
-expose it).
 
