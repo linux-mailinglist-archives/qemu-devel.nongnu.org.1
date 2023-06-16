@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB5E73330A
+	by mail.lfdr.de (Postfix) with ESMTPS id 591EB733307
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 16:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAA0d-0006Nh-Io; Fri, 16 Jun 2023 10:01:03 -0400
+	id 1qAA0k-0006Qg-Ea; Fri, 16 Jun 2023 10:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0b-0006NL-VD
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:01 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0g-0006P1-VX
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:07 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0a-0004rF-0X
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:01 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f8fcaa31c7so1771035e9.3
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 07:00:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0e-0004wi-FH
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:06 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-30c4c1fd511so560850f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 07:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686924058; x=1689516058;
+ d=linaro.org; s=google; t=1686924063; x=1689516063;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=X+A5OPfH2NtcQuN06uhG+2NwIyNLjzxp6ZM91SB6oNk=;
- b=BP4YVwMSzoHWKz1TyRqYyBCZw2CUakFwO6T9O5s0lda+/t3FP0zwU0Y4Pfai6Q27iH
- 7AW51OquEWxpLfT4hLeVISZD01BsBn+kx0xiYCxk9x9HZ1o8//O8FfnfcxiplJKfGWCY
- IR3a5ad00nA6en1G2XS+al7KESuXFZFPLP64GOLz5vCB5lYGtnR/oCbUhYMs4bhpVwxv
- Q/vqIMomLkt4QwzQ1lgEtedWfleQBFsPOnZWEa4GjzIa0aOt5rHuAVhqaOogllbtwpWP
- yqvVgt2cwX+RnI688rghdlS041KRhtwr2CCT5hdYWvdqpt65MVpJf/iBWTvES/z6qeH6
- hO7Q==
+ bh=n8AuekZeNcC6N2BLHlhkki18GOpXN0XdSt2mq7QEgMg=;
+ b=hi1Fthb4Y841gHS9od+cFebkadJlLHSBzr5zBiO3bAvXXOLIgzCVNYLQULW2RGajc0
+ 2unBkPpJRRx4uNWzT9BTxSuJJuclycB2AsErz3gQfzlcZ+UdqyCKec7zbdbv/Cvpkxxk
+ mbiPVfIL8LsZeioe2GN/g1vSdUq08AcGk4y9vexeZ2TlQQp+Fn6a8C6bLDEl5WHuaCii
+ O64VhA1tfBXzNWQiRGe0HVQmkXgoJrwY75tGbv0KUd2am23DaK7TmxezoljV3lqfzYVK
+ NOF1CL3YM5l1FPjmnfR4vnKogcUrkFCDfWq88yDfWdgaCSazENRKFB2R4A8PvU5gdgxi
+ SW/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686924058; x=1689516058;
+ d=1e100.net; s=20221208; t=1686924063; x=1689516063;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X+A5OPfH2NtcQuN06uhG+2NwIyNLjzxp6ZM91SB6oNk=;
- b=c0asoA8S6pdPxibLZIBwKPNKCCcfUXa7Q9IAvShtCEIVxq+vIuCMLbxwmVca7B2SP7
- iJH+1KGYFZbp8mFQklyxTuVBGBNKPBf3YvrBTXS4ow85OKHPYLcMwyh8SSbMMGw6n6px
- znsawSh3j/ghNWKY70iSd9UkHIkBMSUK0Yr7qiCwzpdyIF61/oPwegxmj+pSX3bK1emX
- Cy7cCLdkp/KRTvFuZHxk4lq3huK3c/X4j8Q73ZdrwPMo716Z3OFz74K4zwFNXRfU1AIH
- VsU2VPqhV5ZZaxzcnw/Bykd4O7zSTPNpVb0RmBNQ41r2jbc/Xv9uPd3ny+NnLYZSl9yP
- VgyA==
-X-Gm-Message-State: AC+VfDz699EYKHoC3N+bxgfGb9xSoXzsh2E9bH8bpVH47FBV8usffPzk
- wSxB60GmScNiotPI/kfWhuAiug==
-X-Google-Smtp-Source: ACHHUZ668rWVWtAWyOgfkFfd29gZ1O93tjslO4j+0maNAbvGLKEr7PdP3vvC/AAB86yy5g5upPUVKg==
-X-Received: by 2002:adf:e6c4:0:b0:30f:b7be:4089 with SMTP id
- y4-20020adfe6c4000000b0030fb7be4089mr1610462wrm.3.1686924058232; 
- Fri, 16 Jun 2023 07:00:58 -0700 (PDT)
+ bh=n8AuekZeNcC6N2BLHlhkki18GOpXN0XdSt2mq7QEgMg=;
+ b=GGJUncbRGnkziBIbzwyDonOpq7FIvbRZ0A4jGr3MDVigJ1pPS7h5Odve4N0eBwX5YP
+ +jeoHCS2WgTGj6VSBi0Cm0cNZ6NUID8TB2odleeS56zNYR8C85iG2IRzlyVjZqvZDvCZ
+ TURL0C02VNIZCCJMRcG/V1tptVJ8j5DNlRia33dNxAJICQGdhCDT3KWVeL0RlttIACXk
+ hm1F96EK9czj3Omp3Rmz8VhVDqiUDJ6sv3gdfnm7dpEKNM7jdmIdSxDEgUNbJzjkXTmS
+ 2pQn/MVCcbKCX8NP3uJ+IJUGUOhZ8P1fjYkivk2erDElXKFRr8USwTyRyLS6mhht2PHk
+ RFaA==
+X-Gm-Message-State: AC+VfDzavodXRV2J2em1sqpkUH/WRViEx+fg4X2aShUCDu8HzJXI6VbN
+ bPlS8bS3dfxHVF6Am7eXXVJ6Wg==
+X-Google-Smtp-Source: ACHHUZ43yK27ICOKaUL4FPOw2eUuCEZrCS+nHPjcL+0b9nSrK78vkggMEx4h1YgZbH9E4JHGqmn0PQ==
+X-Received: by 2002:adf:f046:0:b0:30f:c3e4:506b with SMTP id
+ t6-20020adff046000000b0030fc3e4506bmr1528003wro.44.1686924062166; 
+ Fri, 16 Jun 2023 07:01:02 -0700 (PDT)
 Received: from [192.168.164.175] (146.red-88-29-160.dynamicip.rima-tde.net.
  [88.29.160.146]) by smtp.gmail.com with ESMTPSA id
- j15-20020a05600c2b8f00b003f4266965fbsm2322965wmc.5.2023.06.16.07.00.56
+ t11-20020adfdc0b000000b0030ae3a6be5bsm23837728wri.78.2023.06.16.07.01.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jun 2023 07:00:57 -0700 (PDT)
-Message-ID: <7f606624-7744-6c1f-c5bb-fb62f4e65495@linaro.org>
-Date: Fri, 16 Jun 2023 12:28:24 +0200
+ Fri, 16 Jun 2023 07:01:01 -0700 (PDT)
+Message-ID: <a0604a0d-a3ed-c852-bb8c-b565d95b5a3f@linaro.org>
+Date: Fri, 16 Jun 2023 12:31:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 03/12] hvf: Increase number of possible memory slots
+Subject: Re: [PATCH 04/12] hvf: arm: Ignore writes to CNTP_CTL_EL0
 Content-Language: en-US
 To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
@@ -69,14 +69,14 @@ Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
  Hanna Reitz <hreitz@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-References: <20230614224038.86148-1-graf@amazon.com>
- <20230614224038.86148-4-graf@amazon.com>
+References: <20230614224038.86148-1-graf>
+ <20230614225407.96216-1-graf@amazon.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230614224038.86148-4-graf@amazon.com>
+In-Reply-To: <20230614225407.96216-1-graf@amazon.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -5
 X-Spam_score: -0.6
 X-Spam_bar: /
@@ -99,45 +99,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/6/23 00:40, Alexander Graf wrote:
-> For PVG we will need more than the current 32 possible memory slots.
-> Bump the limit to 512 instead.
+On 15/6/23 00:54, Alexander Graf wrote:
+> MacOS unconditionally disables interrupts of the physical timer on boot
+> and then continues to use the virtual one. We don't really want to support
+> a full physical timer emulation, so let's just ignore those writes.
 > 
 > Signed-off-by: Alexander Graf <graf@amazon.com>
 > ---
->   accel/hvf/hvf-accel-ops.c | 2 +-
->   include/sysemu/hvf_int.h  | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-> index 9c3da03c94..bf0caaa852 100644
-> --- a/accel/hvf/hvf-accel-ops.c
-> +++ b/accel/hvf/hvf-accel-ops.c
-> @@ -88,7 +88,7 @@ struct mac_slot {
->       uint64_t gva;
->   };
->   
-> -struct mac_slot mac_slots[32];
-> +struct mac_slot mac_slots[512];
->   
->   static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
->   {
-> diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
-> index 6ab119e49f..c7623a2c09 100644
-> --- a/include/sysemu/hvf_int.h
-> +++ b/include/sysemu/hvf_int.h
-> @@ -40,7 +40,7 @@ typedef struct hvf_vcpu_caps {
->   
->   struct HVFState {
->       AccelState parent;
-> -    hvf_slot slots[32];
-> +    hvf_slot slots[512];
->       int num_slots;
->   
->       hvf_vcpu_caps *hvf_caps;
+>   target/arm/hvf/hvf.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
 
-Please add a definition in this header (using in ops.c).
 
-In order to save memory and woods, what about keeping
-32 on x86 and only raising to 512 on arm?
+> @@ -1551,6 +1552,12 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+>       case SYSREG_OSLAR_EL1:
+>           env->cp15.oslsr_el1 = val & 1;
+>           break;
+> +    case SYSREG_CNTP_CTL_EL0:
+> +        /*
+> +         * Guests should not rely on the physical counter, but macOS emits
+> +         * disable writes to it. Let it do so, but ignore the requests.
+> +         */
+
+Still it could be useful to report that calling
+qemu_log_mask(LOG_UNIMP,...) here.
+
+> +        break;
 
