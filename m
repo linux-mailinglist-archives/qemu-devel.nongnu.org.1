@@ -2,105 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705EC732670
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 06:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E92FF7326FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 08:03:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA1XG-0007kS-Ii; Fri, 16 Jun 2023 00:58:10 -0400
+	id 1qA2X6-0003kD-1E; Fri, 16 Jun 2023 02:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qA1XE-0007jv-0f; Fri, 16 Jun 2023 00:58:08 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <huasenzhang@foxmail.com>)
+ id 1qA2Wy-0003jd-7U
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 02:01:59 -0400
+Received: from out162-62-57-87.mail.qq.com ([162.62.57.87])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qA1XB-0005nI-UK; Fri, 16 Jun 2023 00:58:07 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35G4uXjW005362; Fri, 16 Jun 2023 04:58:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=mt6gvq7oYfSsCMxU+vcrNt4LRIyZ08ZDSpTp2603a0o=;
- b=BI4HVg0OAXxRTSCyIP4jkjT3g+fMtw2FGpO90mstiYvgz0wIDUmILjH+sZ8hR59y3AcJ
- IgpaQy16uPv957vQhqSbe17hfiW6Vv8eEF8yltPnwRerJpn0tSSOBIHOGESZ/aq5dBNr
- U5ncPesPrfg+utlTOyVAfgUguE7RomJTUzBjTO/OIApugqMBpwPWSoaWynbxnBH5uDOi
- VUng7nwbxgiY7eEmBvdfprddwthY4bFCsdyJmxYoq3ywdNGRHXVvftY/B7s/ke692CH9
- k4SOrfgCFcmiEZ3HE6q2fdNwzPHmMFv0JmncFZShVvWOwVVw6yneL8NhK3zEIIcGhiYk Sg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8h5e00y9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Jun 2023 04:58:01 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35G4ux61006842;
- Fri, 16 Jun 2023 04:58:01 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8h5e00xy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Jun 2023 04:58:01 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35FJFQJh030230;
- Fri, 16 Jun 2023 04:58:00 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
- by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3r4gt51tr7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Jun 2023 04:58:00 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35G4vxXA57016784
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Jun 2023 04:57:59 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29F2D58051;
- Fri, 16 Jun 2023 04:57:59 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 684535805A;
- Fri, 16 Jun 2023 04:57:57 +0000 (GMT)
-Received: from [9.171.16.45] (unknown [9.171.16.45])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 16 Jun 2023 04:57:57 +0000 (GMT)
-Message-ID: <b36dae31-d1e1-629b-485b-75442ee2b13e@linux.ibm.com>
-Date: Fri, 16 Jun 2023 10:27:55 +0530
+ (Exim 4.90_1) (envelope-from <huasenzhang@foxmail.com>)
+ id 1qA2Ws-00007j-Gu
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 02:01:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+ s=s201512; t=1686895302;
+ bh=Tdjj5h0Ar/K0J42qcgOxMyhQOTRaHQPNZCgYg73e9ZM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=YzknCjZh8+6BKbzf9ocADx9KP6i2hO0LTnj2fwb2pMuhlqo3ZlMMdrzehUzMXkIRK
+ x3vYtRjEJmmuEZhAP3XcQSaYJFXNcUgB6Q6Q5AL0HMlSTDcWpGa3DnIG9vMEmJyW5w
+ 8vRuOEda7JEFHVYJBSh+nKO+cLGC+By8DmJ6FoYk=
+Received: from localhost.localdomain ([14.18.187.46])
+ by newxmesmtplogicsvrszb9-0.qq.com (NewEsmtp) with SMTP
+ id A56B56CC; Fri, 16 Jun 2023 13:41:22 +0800
+X-QQ-mid: xmsmtpt1686894082tsy85sse5
+Message-ID: <tencent_9F4A874CACFEABCB1C69837F59A54A3B820A@qq.com>
+X-QQ-XMAILINFO: MBjwNRQMz5zU5P7B3ZcabJESGsVgDmiSaQBuK4pIInuw6ZB2AYqy+c+s8rwYXm
+ +QGDmuGNk+NJyT349aQdocR/IvVE0nmNIvN/OQef0L/D6QC6BMXdjlhKcBRFLCas+0j/IsTriwda
+ RP1OawYqMUkawPFfXhFBMFM7FvHFZM9Aynv7sx/gYoh3YA+txQ3/vcKdPXHENJuY8am11sYqn4c0
+ khdt6yggcDoglNebC0sAC2nzNL/KkrfAf7+FS5Ab6yHdwXmxktymCtys/syw0DYspNbzE7eZgIKl
+ oQsunozhw4rLjkhle/12X7s9DTXis0SbzNh9+Jolkq0SDX/gShKw7/nk44g8crZX7m0tp8EZvBkY
+ 157FET20/zCPNBKSvy1PicB6NWbrh9LRdRZbkx3vPIYMp2q/AJxQFuXwk6zehysGommnxcoRX3zn
+ FhvqbbyeLrEB9gSdf/n0uMXlkphMFRlMEvUgvzhncTMaOwO43Gff1Tcfa0DQZxK662xr4F/Yc4Iv
+ M13qAvFn2EvZGh8y31FL9uvxRG8gM4zdZ4MjDcRTiKpUJx8zLKrVtuMff4Wldgvcv+Gx2rXttRuU
+ GkwhD+Zvs0Z+tNhNNs1bFhk9UtKGpsCLBWuBuI/Y3BIj/QHAuBXUNVdKRG/GaYpfzpFMG4mKjC2S
+ JTH5Y93s0bVSGSOEk7I/yLnevOG5n+FzQFd0HPa480bAfEBuXzexwvTPtyx2fNkGD+sp3Xbt4/cv
+ dIrseWWB0gd4OFgV71qAEUX74hvkEsroYuKX2+w7ylnoSU4VXWvNhz47+gX3mXPbfbgi7ggRhAZi
+ 57FpsAf8d7GAZXZmyDL+0MaRYem/CIdeQAEuBsv7FIV4Gt9spItOFh11ymo450BoBancC/DHduKo
+ 6OWROpF76zKFLlDJLQsLfMdrgrkqm0nCioPhNHrNeHf8ftiBhc2FbZ57IkI1MbaYbz0CoPZ+1/0u
+ TTTBZW4AVRI+vOcB+mXjGGQ8Mw4INd+LiPY5jzfjN0X1lmW8Ukwk8kqonmXpzGQxAEHK2nnV82G2
+ HjTcAjsLHzI4uBUSB8Y12eCYB2LgVDSxeMJMv+qGCiip0CtLCY
+X-QQ-XMRINFO: MMd9k4KOWfk4EI9u9DiMAPPHFKKkl9Wo5w==
+From: Zhang Huasen <huasenzhang@foxmail.com>
+To: marcandre.lureau@redhat.com
+Cc: huasenzhang@foxmail.com,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH] chardev/char-win-stdio: Support VT sequences on Windows
+ 11 host
+Date: Fri, 16 Jun 2023 13:40:18 +0800
+X-OQ-MSGID: <20230616054018.721-2-huasenzhang@foxmail.com>
+X-Mailer: git-send-email 2.41.0.windows.1
+In-Reply-To: <CAMxuvawc2x2mt4Kk4V1U0fMeNKZj5qE_Lai8Gjo38T_Q_cVdpQ@mail.gmail.com>
+References: <CAMxuvawc2x2mt4Kk4V1U0fMeNKZj5qE_Lai8Gjo38T_Q_cVdpQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 4/4] ppc/spapr: Move spapr nested HV to a new file
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230608091344.88685-1-npiggin@gmail.com>
- <20230608091344.88685-5-npiggin@gmail.com>
- <497ec7c7-2f8e-fb79-92dd-077fa12957af@linux.ibm.com>
- <CTD7AE00VYIP.2IPHRORV44U1P@wheely>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <CTD7AE00VYIP.2IPHRORV44U1P@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Re-SDm2ZYXaxhd7EHXR04GzXEG-l8bIF
-X-Proofpoint-GUID: gQ_mi8Gz1hzwXhQD5wGLVp7LeAG_aktb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-16_02,2023-06-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=999 lowpriorityscore=0 phishscore=0
- malwarescore=0 adultscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306160041
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=162.62.57.87;
+ envelope-from=huasenzhang@foxmail.com; helo=out162-62-57-87.mail.qq.com
+X-Spam_score_int: 8
+X-Spam_score: 0.8
+X-Spam_bar: /
+X-Spam_report: (0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,116 +85,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Huasen Zhang <huasenzhang@foxmail.com>
 
+Hello,
 
-On 6/15/23 17:21, Nicholas Piggin wrote:
-> On Thu Jun 15, 2023 at 4:30 PM AEST, Harsh Prateek Bora wrote:
->>
->>
->> On 6/8/23 14:43, Nicholas Piggin wrote:
->>> Create spapr_nested.c for most of the nested HV implementation.
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>    hw/ppc/meson.build     |   1 +
->>>    hw/ppc/spapr_hcall.c   | 415 +---------------------------------
->>>    hw/ppc/spapr_nested.c  | 496 +++++++++++++++++++++++++++++++++++++++++
->>>    include/hw/ppc/spapr.h |  61 +----
->>>    4 files changed, 499 insertions(+), 474 deletions(-)
->>>    create mode 100644 hw/ppc/spapr_nested.c
+On Thu, 15 Jun 2023 12:57:55 +0200 Marc-André Lureau <marcandre.lureau@redhat.com>
+wrote:
+> Hi
 > 
-> [snip]
+> On Thu, Jun 15, 2023 at 12:36 PM Zhang Huasen <huasenzhang@foxmail.com>
+> wrote:
 > 
->>> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
->>> new file mode 100644
->>> index 0000000000..c06dd8903c
->>> --- /dev/null
->>> +++ b/hw/ppc/spapr_nested.c
->>> @@ -0,0 +1,496 @@
->>> +#include "qemu/osdep.h"
->>> +#include "qemu/cutils.h"
->>> +#include "exec/exec-all.h"
->>> +#include "helper_regs.h"
->>> +#include "hw/ppc/ppc.h"
->>> +#include "hw/ppc/spapr.h"
->>> +#include "hw/ppc/spapr_cpu_core.h"
->>> +
->>> +/*
->>> + * Register state for entering a nested guest with H_ENTER_NESTED.
->>> + * New member must be added at the end.
->>> + */
->>> +struct kvmppc_hv_guest_state {
->>> +    uint64_t version;      /* version of this structure layout, must be first */
->>> +    uint32_t lpid;
->>> +    uint32_t vcpu_token;
->>> +    /* These registers are hypervisor privileged (at least for writing) */
->>> +    uint64_t lpcr;
->>> +    uint64_t pcr;
->>> +    uint64_t amor;
->>> +    uint64_t dpdes;
->>> +    uint64_t hfscr;
->>> +    int64_t tb_offset;
->>> +    uint64_t dawr0;
->>> +    uint64_t dawrx0;
->>> +    uint64_t ciabr;
->>> +    uint64_t hdec_expiry;
->>> +    uint64_t purr;
->>> +    uint64_t spurr;
->>> +    uint64_t ic;
->>> +    uint64_t vtb;
->>> +    uint64_t hdar;
->>> +    uint64_t hdsisr;
->>> +    uint64_t heir;
->>> +    uint64_t asdr;
->>> +    /* These are OS privileged but need to be set late in guest entry */
->>> +    uint64_t srr0;
->>> +    uint64_t srr1;
->>> +    uint64_t sprg[4];
->>> +    uint64_t pidr;
->>> +    uint64_t cfar;
->>> +    uint64_t ppr;
->>> +    /* Version 1 ends here */
->>> +    uint64_t dawr1;
->>> +    uint64_t dawrx1;
->>> +    /* Version 2 ends here */
->>> +};
->>> +
->>> +/* Latest version of hv_guest_state structure */
->>> +#define HV_GUEST_STATE_VERSION  2
->>> +
->>> +/* Linux 64-bit powerpc pt_regs struct, used by nested HV */
->>> +struct kvmppc_pt_regs {
->>> +    uint64_t gpr[32];
->>> +    uint64_t nip;
->>> +    uint64_t msr;
->>> +    uint64_t orig_gpr3;    /* Used for restarting system calls */
->>> +    uint64_t ctr;
->>> +    uint64_t link;
->>> +    uint64_t xer;
->>> +    uint64_t ccr;
->>> +    uint64_t softe;        /* Soft enabled/disabled */
->>> +    uint64_t trap;         /* Reason for being here */
->>> +    uint64_t dar;          /* Fault registers */
->>> +    uint64_t dsisr;        /* on 4xx/Book-E used for ESR */
->>> +    uint64_t result;       /* Result of a system call */
->>> +};
->>
->> Now that we have a separated spapr_nested.c for nested related code,
->> Can above definitions and other nested related defines (like struct
->> nested_ppc_state below) be moved to a new spapr_nested.h as well?
->> Otherwise, looks good to me.
+> > If the monitor or the serial port use STDIO as backend on Windows 11 host,
+> > e.g. -nographic options is used, the monitor or the guest Linux do not
+> > response to arrow keys.
+> >
+> > When Windows creates a console, ENABLE_VIRTUAL_PROCESS_INPUT is disabled
+> > by default. Arrow keys cannot be retrieved by ReadFile or ReadConsoleInput
+> > functions.
+> >
+> > Add ENABLE_VIRTUAL_PROCESS_INPUT to the flag which is passed to
+> > SetConsoleMode,
+> > when opening stdio console.
+> >
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1674
+> >
+> > Signed-off-by: Zhang Huasen <huasenzhang@foxmail.com>
+> > ---
+> >  chardev/char-win-stdio.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
+> > index eb830eabd9..1a18999e78 100644
+> > --- a/chardev/char-win-stdio.c
+> > +++ b/chardev/char-win-stdio.c
+> > @@ -190,7 +190,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
+> >          }
+> >      }
+> >
+> > -    dwMode |= ENABLE_LINE_INPUT;
+> > +    dwMode |= ENABLE_LINE_INPUT | ENABLE_VIRTUAL_TERMINAL_INPUT;
+> >
 > 
-> They're private to this file, so do we need to? I'm on the fence about
-> it, maybe because they're hcall ABI. I don't object to adding a new
-> spapr_nested.h for nested related things in general though.
+> I think we should set it only when is_console (although that may not make a
+> difference otherwise)
+
+It is okay to set ENABLE_VIRTUAL_TERMINAL_INPUT only when is_console is TRUE.
+
+I do not understand some points of original code.
+If the stdin is not a console, i.e. GetConsoleMode fails, we still
+call SetConsoleMode and set ENABLE_LINE_INPUT.
+Could you please tell what the purpose is?
+
+> thanks
 > 
+> 
+> >      if (is_console) {
+> >          /* set the terminal in raw mode */
+> > --
+> > 2.41.0.windows.1
+> >
+> >
 
-Yeh, I would recommend moving nested specific declarations to 
-spapr_nested.h as would be more organized.
-
-Thanks
-Harsh
-
-> Thanks,
-> Nick
 
