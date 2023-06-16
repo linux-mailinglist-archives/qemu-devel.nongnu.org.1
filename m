@@ -2,68 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195AD732887
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 09:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8237732907
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 09:38:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA3cH-0001W1-2p; Fri, 16 Jun 2023 03:11:29 -0400
+	id 1qA40a-00015N-NI; Fri, 16 Jun 2023 03:36:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qA3cF-0001Vo-0y
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:11:27 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qA3cD-0006pP-4D
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:11:26 -0400
-Received: from loongson.cn (unknown [10.20.42.57])
- by gateway (Coremail) with SMTP id _____8AxV+kaC4xkq+AFAA--.10531S3;
- Fri, 16 Jun 2023 15:11:22 +0800 (CST)
-Received: from [10.20.42.57] (unknown [10.20.42.57])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxZuQaC4xkBv4cAA--.16735S3; 
- Fri, 16 Jun 2023 15:11:22 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: Fix CSR.DMW0-3.VSEG check
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230614065556.2397513-1-c@jia.je>
-From: Song Gao <gaosong@loongson.cn>
-Message-ID: <7d1e54b9-76ee-4583-b5b4-a871ae81f70b@loongson.cn>
-Date: Fri, 16 Jun 2023 15:11:22 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20230614065556.2397513-1-c@jia.je>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8AxZuQaC4xkBv4cAA--.16735S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJrWxtr4fKFW5uw1xKryrZrc_yoW8JFyUpF
- n3CF42yayUGrWDCan29wn0q3W5XFs7K3W2v3Z7JryFkrn0g34I9F48Gwn8KF4xJF4xua10
- vr4jy34FvF1kX3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAF
- wI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI
- 0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280
- aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2
- xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
- x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r
- 17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF
- 7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxV
- W8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU
- cHUqUUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-0.098, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qA40M-00015B-Ci
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:36:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qA40K-0006eM-JC
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:36:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686900975;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qzxT0HBVR43htf94mczgCfjN0Lcgg/Q61wP4ebVCSFc=;
+ b=TmCIX55+wXiNwstGICkkIEfivNacbuWFScR45J9QVoQzpxv4OMP8pzj32FBgSiCxf8N/BY
+ VuC2wU2hI5n62oYPd6UpI8JEHWLrkV3wdm5Q2ylaKXXWU06TEIJLpX2tIl9m5DE3SHiyoh
+ Osu5fqDTMhmE5DGHnAgNQ8FUqWWtqj0=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-fqnS_77YMe2J5jZj5SQKPg-1; Fri, 16 Jun 2023 03:36:13 -0400
+X-MC-Unique: fqnS_77YMe2J5jZj5SQKPg-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1b5277e57d6so4328955ad.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 00:36:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1686900972; x=1689492972;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qzxT0HBVR43htf94mczgCfjN0Lcgg/Q61wP4ebVCSFc=;
+ b=AenpMNGuDyRuHFyov0DWcAnx+uDXtXZk4wUzGt2iyQaodG1Qmry8A6Ez58gK7r0u5J
+ EpXEIxJFou4aaMm31MH4vRftSVZOho0zZVDjpq0rQMuZXe3kKi8ps0umeT2TjYRmlAdH
+ UHC+R/yrxCT4p4/DCn4a1SGB40LUH/59BsH75L4QgoB+Ald1iKLK5SHn/kMXgjrIeTtB
+ SIakeyj822F6V+fb/owe6lcejsgA9yPaI85UCv9eAwGKX7I/j4yiut4IaMncDIrEOg3S
+ 8jZz35K+vsyu6DsFUn//djZsQf2TDPvshquCmJYWlcgvu9+I1PiRptb8mayp6OPw7oMx
+ gYOg==
+X-Gm-Message-State: AC+VfDx9Y+DYTRHuC2gvm/0vSlIK9f/+fmFuMUeo8MJJ0Aegr9hoVzT9
+ I6zYqVpF6psSOshalRZ23gEmHUOMSa4NWRox40wsU1WlUWjlA6Z2pTcibWiQwchnsr/+B4Z8ZUT
+ IEc5NS2baOK1rqeo=
+X-Received: by 2002:a17:903:18a:b0:1b0:1095:f4f6 with SMTP id
+ z10-20020a170903018a00b001b01095f4f6mr1365898plg.24.1686900971990; 
+ Fri, 16 Jun 2023 00:36:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7/CEpmQSXX296bkb6dYoFKZRCp5rWR6tPLsiwKqVg6X72j5yUkqSJzs0J+Tf5KURG55nfX0g==
+X-Received: by 2002:a17:903:18a:b0:1b0:1095:f4f6 with SMTP id
+ z10-20020a170903018a00b001b01095f4f6mr1365883plg.24.1686900971563; 
+ Fri, 16 Jun 2023 00:36:11 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.159.188])
+ by smtp.gmail.com with ESMTPSA id
+ x1-20020a170902ec8100b001a6f7744a27sm9404508plg.87.2023.06.16.00.36.09
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 16 Jun 2023 00:36:11 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v2] hw/pci: prevent hotplug of devices on pcie-root-ports
+ on the wrong slot
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
+Date: Fri, 16 Jun 2023 13:06:06 +0530
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D505615B-F22E-441A-9F6C-566E46C714E8@redhat.com>
+References: <20230615051645.4798-1-anisinha@redhat.com>
+ <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,35 +107,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-ÔÚ 2023/6/14 ÏÂÎç2:55, Jiajie Chen Ð´µÀ:
-> The previous code checks whether the highest 16 bits of virtual address
-> equal to that of CSR.DMW0-3. This is incorrect according to the spec,
-> and is corrected to compare only the highest four bits instead.
->
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> ---
->   target/loongarch/tlb_helper.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+> On 15-Jun-2023, at 4:56 PM, Igor Mammedov <imammedo@redhat.com> wrote:
+>=20
+> On Thu, 15 Jun 2023 10:46:45 +0530
+> Ani Sinha <anisinha@redhat.com> wrote:
+>=20
+>> PCIE root ports and other upstream ports only allow one device on =
+slot 0.
+>> When hotplugging a device on a pcie root port, make sure that the =
+device
+>> address passed always represents slot 0. Any other slot value would =
+be
+>> illegal on a root port.
+>>=20
+>> CC: jusual@redhat.com
+>> CC: imammedo@redhat.com
+>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> ---
+>> hw/pci/pci.c | 16 ++++++++++++++++
+>> 1 file changed, 16 insertions(+)
+>>=20
+>> changelog:
+>> v2: feedback from mst included.
+>>=20
+>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>> index bf38905b7d..66999352cc 100644
+>> --- a/hw/pci/pci.c
+>> +++ b/hw/pci/pci.c
+>> @@ -64,6 +64,7 @@ bool pci_available =3D true;
+>> static char *pcibus_get_dev_path(DeviceState *dev);
+>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>> static void pcibus_reset(BusState *qbus);
+>> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>>=20
+>> static Property pci_props[] =3D {
+>>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+>> @@ -1182,6 +1183,11 @@ static PCIDevice =
+*do_pci_register_device(PCIDevice *pci_dev,
+>>     } else if (dev->hotplugged &&
+>>                !pci_is_vf(pci_dev) &&
+>>                pci_get_function_0(pci_dev)) {
+>> +        /*
+>> +         * populating function 0 triggers a bus scan from the guest =
+that
+>> +         * exposes other non-zero functions. Hence we need to ensure =
+that
+>> +         * function 0 is available.
+>> +         */
+>>         error_setg(errp, "PCI: slot %d function 0 already occupied by =
+%s,"
+>>                    " new func %s cannot be exposed to guest.",
+>>                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
+>> @@ -1189,6 +1195,16 @@ static PCIDevice =
+*do_pci_register_device(PCIDevice *pci_dev,
+>>                    name);
+>>=20
+>>        return NULL;
+>> +    } else if (dev->hotplugged &&
+>> +               !pci_is_vf(pci_dev) &&
+>> +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
+>> +        /*
+>> +         * If the device is being plugged into an upstream PCIE =
+port,
+>=20
+> you probably mixing up downstream port with upstream one,
+> the only thing that could be plugged into upstream port
+> is PCIE switch.
+>=20
+> Also I'm not sure that we should do this at all.
+> Looking at BZ it seems that QEMU crashes inside backend
+> and tear down/cleanup sequence is broken somewhere.
+> And that is the root cause, so I'd rather fix that 1st
+> and only after that consider adding workarounds if any
+> were necessary.
 
-Thanks.
-Song Gao
-> diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-> index cce1db1e0a..6e00190547 100644
-> --- a/target/loongarch/tlb_helper.c
-> +++ b/target/loongarch/tlb_helper.c
-> @@ -185,10 +185,10 @@ static int get_physical_address(CPULoongArchState *env, hwaddr *physical,
->       }
->   
->       plv = kernel_mode | (user_mode << R_CSR_DMW_PLV3_SHIFT);
-> -    base_v = address >> TARGET_VIRT_ADDR_SPACE_BITS;
-> +    base_v = address >> R_CSR_DMW_VSEG_SHIFT;
->       /* Check direct map window */
->       for (int i = 0; i < 4; i++) {
-> -        base_c = env->CSR_DMW[i] >> TARGET_VIRT_ADDR_SPACE_BITS;
-> +        base_c = FIELD_EX64(env->CSR_DMW[i], CSR_DMW, VSEG);
->           if ((plv & env->CSR_DMW[i]) && (base_c == base_v)) {
->               *physical = dmw_va2pa(address);
->               *prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+I have added more details in the ticket. I still believe that my =
+approach is in the right direction.
+
+>=20
+>=20
+>> +         * like a pcie root port, we only support one device at slot =
+0
+>> +         */
+>> +        error_setg(errp, "PCI: slot %d is not valid for %s",
+>> +                   PCI_SLOT(devfn), name);
+>> +        return NULL;
+>>     }
+>>=20
+>>     pci_dev->devfn =3D devfn;
 
 
