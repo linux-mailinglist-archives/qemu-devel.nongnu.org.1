@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C642473383C
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 20:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E18C733855
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 20:49:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAEIk-0007g3-J4; Fri, 16 Jun 2023 14:36:02 -0400
+	id 1qAEUx-0003K3-5n; Fri, 16 Jun 2023 14:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qAEIi-0007fS-8j; Fri, 16 Jun 2023 14:36:00 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ id 1qAEUr-0003He-Ss; Fri, 16 Jun 2023 14:48:36 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qAEIf-0000Td-6o; Fri, 16 Jun 2023 14:35:59 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 8DAF760565;
- Fri, 16 Jun 2023 21:35:45 +0300 (MSK)
+ id 1qAEUp-0002Nb-AW; Fri, 16 Jun 2023 14:48:33 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:1421:0:640:53a0:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 011FB6066B;
+ Fri, 16 Jun 2023 21:48:19 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:b4af::1:5] (unknown
  [2a02:6b8:b081:b4af::1:5])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id iZi4Ek0MeW20-mzinP0zh; Fri, 16 Jun 2023 21:35:45 +0300
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id Imidhi0OcW20-nR59QgWU; Fri, 16 Jun 2023 21:48:18 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; 
- t=1686940545; bh=rSTNAxFDtVBh1mf3z8CjZ8WRb/8nFedu7eD6LO7gqDE=;
+ t=1686941298; bh=tyDPw0Ljr2Pe7LvM/RtHhoWLyJVyIvlToN7WVNF8GuQ=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=K5tF+0AoC4O2nJreKwyaYSjH0LVpKbevCMPEC83VxZDESCUGx/TBUsOPxIH++nvvs
- 2ppa4iLS1vo8fZGX6QzbYL9OeqK2m1zjjzzSNqB1Ga6oahmF92XGjumpEX/rHlyPc9
- Sqizq9YphYP2w/5G7lSW5Xzc5rHgQCR4QX/XUF7E=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ b=HAmJr1W64a9PjJXiIXsIuKCHothKq/9tyqhWxVlXBrGWJhHac0NCqN7mZTR6VYeoV
+ s8qNEIFh0NBV6Hg/2qZhMOugRi1kXdQUZ7p+GwzlrUjRUduCH1TVq58Fip6/Y3TXUY
+ dnRDG8LKTn7CHxPkEneMWyPQMqv6iHj3Q5fcptlI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <b76e5f2f-05ab-2e7d-4a80-dcdd5e43e9b7@yandex-team.ru>
-Date: Fri, 16 Jun 2023 21:35:44 +0300
+Message-ID: <90f29beb-c032-b057-733e-b272ccb8deb0@yandex-team.ru>
+Date: Fri, 16 Jun 2023 21:48:18 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v4 14/24] nbd/server: Prepare to receive extended header
- requests
+Subject: Re: [PATCH v4 15/24] nbd/server: Prepare to send extended header
+ replies
 Content-Language: en-US
 To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, libguestfs@redhat.com
 References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-15-eblake@redhat.com>
+ <20230608135653.2918540-16-eblake@redhat.com>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230608135653.2918540-15-eblake@redhat.com>
+In-Reply-To: <20230608135653.2918540-16-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -77,22 +77,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 08.06.23 16:56, Eric Blake wrote:
 > Although extended mode is not yet enabled, once we do turn it on, we
-> need to accept extended requests for all messages.  Previous patches
-> have already taken care of supporting 64-bit lengths, now we just need
-> to read it off the wire.
+> need to reply with extended headers to all messages.  Update the low
+> level entry points necessary so that all other callers automatically
+> get the right header based on the current mode.
 > 
-> Note that this implementation will block indefinitely on a buggy
-> client that sends a non-extended payload (that is, we try to read a
-> full packet before we ever check the magic number, but a client that
-> mistakenly sends a simple request after negotiating extended headers
-> doesn't send us enough bytes), but it's no different from any other
-> client that stops talking to us partway through a packet and thus not
-> worth coding around.
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
 > 
-> Signed-off-by: Eric Blake<eblake@redhat.com>
+> v4: new patch, split out from v3 9/14
+> ---
+>   nbd/server.c | 30 ++++++++++++++++++++++--------
+>   1 file changed, 22 insertions(+), 8 deletions(-)
+> 
+> diff --git a/nbd/server.c b/nbd/server.c
+> index 119ac765f09..84c848a31d3 100644
+> --- a/nbd/server.c
+> +++ b/nbd/server.c
+> @@ -1947,8 +1947,6 @@ static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
+>                                   size_t niov, uint16_t flags, uint16_t type,
+>                                   NBDRequest *request)
+>   {
+> -    /* TODO - handle structured vs. extended replies */
+> -    NBDStructuredReplyChunk *chunk = iov->iov_base;
+>       size_t i, length = 0;
+> 
+>       for (i = 1; i < niov; i++) {
+> @@ -1956,12 +1954,26 @@ static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
+>       }
+>       assert(length <= NBD_MAX_BUFFER_SIZE + sizeof(NBDStructuredReadData));
+> 
+> -    iov[0].iov_len = sizeof(*chunk);
+> -    stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
+> -    stw_be_p(&chunk->flags, flags);
+> -    stw_be_p(&chunk->type, type);
+> -    stq_be_p(&chunk->cookie, request->cookie);
+> -    stl_be_p(&chunk->length, length);
+> +    if (client->mode >= NBD_MODE_EXTENDED) {
+> +        NBDExtendedReplyChunk *chunk = iov->iov_base;
+> +
+> +        iov->iov_len = sizeof(*chunk);
 
+I'd prefer to keep iov[0].iov_len notation, to stress that iov is an array
 
+anyway:
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+> +        stl_be_p(&chunk->magic, NBD_EXTENDED_REPLY_MAGIC);
+> +        stw_be_p(&chunk->flags, flags);
+> +        stw_be_p(&chunk->type, type);
+> +        stq_be_p(&chunk->cookie, request->cookie);
+
+Hm. Not about this patch:
+
+we now moved to simple cookies. And it seems that actually, 64bit is too much for number of request.
+
+> +        stq_be_p(&chunk->offset, request->from);
+> +        stq_be_p(&chunk->length, length);
+> +    } else {
+> +        NBDStructuredReplyChunk *chunk = iov->iov_base;
+> +
+> +        iov->iov_len = sizeof(*chunk);
+> +        stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
+> +        stw_be_p(&chunk->flags, flags);
+> +        stw_be_p(&chunk->type, type);
+> +        stq_be_p(&chunk->cookie, request->cookie);
+> +        stl_be_p(&chunk->length, length);
+> +    }
+>   }
+> 
+>   static int coroutine_fn nbd_co_send_chunk_done(NBDClient *client,
+> @@ -2478,6 +2490,8 @@ static coroutine_fn int nbd_send_generic_reply(NBDClient *client,
+>   {
+>       if (client->mode >= NBD_MODE_STRUCTURED && ret < 0) {
+>           return nbd_co_send_chunk_error(client, request, -ret, error_msg, errp);
+> +    } else if (client->mode >= NBD_MODE_EXTENDED) {
+> +        return nbd_co_send_chunk_done(client, request, errp);
+>       } else {
+>           return nbd_co_send_simple_reply(client, request, ret < 0 ? -ret : 0,
+>                                           NULL, 0, errp);
 
 -- 
 Best regards,
