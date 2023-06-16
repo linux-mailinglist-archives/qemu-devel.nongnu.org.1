@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A584D7325D0
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FC97325D1
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 05:24:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA03b-0000EA-KG; Thu, 15 Jun 2023 23:23:27 -0400
+	id 1qA03e-0000Ed-D5; Thu, 15 Jun 2023 23:23:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qA03Z-0000DK-US
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:25 -0400
+ id 1qA03b-0000EU-UG
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:27 -0400
 Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qA03Y-0002FT-CW
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:25 -0400
+ id 1qA03a-0002FT-DG
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686885804; x=1718421804;
+ t=1686885806; x=1718421806;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g5659xiMVup3wt5LX08hxZGyXfUKj970C0M06dtCxOA=;
- b=nSeXQtlgQysytmMKWFqpA2aRMJXxIYoAqr/KhsooA50X3kC5sSXRMNiG
- 4R8J/jZ7gP3bcN8HoH4hxm/gSXSMlpWbnyoRqCIxex25R3bnvasoilbNP
- V3vJdmJZZ6cNLBFWLnDUNIBk+xa7wYuWyFN3JHI1RDeI6do31tfePxbkq
- RzTq+mBdr+FCke+RIrMYy8wsGBcZotI5BQPCu75Vxf1UocV8QVRN8427A
- RBlQ9RZDr/FeLKA3peSNLOdz738Ot5QQpbkiNLkaVKdEUs/yE2cmRxt6v
- 6H6LoYxf1+OCaCLldQx7jPK+nFV6MgMJVwY82u1ZkgBoizY0xKMV4ZMwf w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="357979162"
-X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="357979162"
+ bh=MUTK+oCoXEsWO+pwqGUVkFjo79OvtzDYyt+nk5Bdc04=;
+ b=YVPUrxrBShM2PD+IsXebw/TV08OULtutHfPlpSmC+yPUYqqaxjoTlEGe
+ bv6sJ8u91GNtjfHr78wRVUCOvzTJt68/bXRNQC4fImHdY+/TcO6F4ZN44
+ fNQN+SjGQ9kEVBV8gON65fWht+tzb+R6ZNgW0vaPgIj0qI0MhSpZ1Oleb
+ DJTbKq0CxFAX1h8WoNKse6KvoB5i0T1JGY/oTjHenRUNACoJjlHfIjFFc
+ erhMuMu3SzPEGAPiaqPCCrIzeSGfePGMSjtU1KORBmrUmUGrWpHjx04qA
+ WPie0sVqStSNwijNngyGfvYiEsvjrbpcG1rmYyf5Lxx6sUT5RrDZQgJhk w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="357979167"
+X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="357979167"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2023 20:23:23 -0700
+ 15 Jun 2023 20:23:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="715845986"
-X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="715845986"
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="715846004"
+X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="715846004"
 Received: from st-server.bj.intel.com ([10.240.193.102])
- by fmsmga007.fm.intel.com with ESMTP; 15 Jun 2023 20:23:21 -0700
+ by fmsmga007.fm.intel.com with ESMTP; 15 Jun 2023 20:23:23 -0700
 From: Tao Su <tao1.su@linux.intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, lei4.wang@intel.com,
  qian.wen@intel.com, imammedo@redhat.com, tao1.su@linux.intel.com
-Subject: [PATCH 3/7] target/i386: Allow MCDT_NO if host supports
-Date: Fri, 16 Jun 2023 11:23:07 +0800
-Message-Id: <20230616032311.19137-4-tao1.su@linux.intel.com>
+Subject: [PATCH 4/7] target/i386: Add new bit definitions of
+ MSR_IA32_ARCH_CAPABILITIES
+Date: Fri, 16 Jun 2023 11:23:08 +0800
+Message-Id: <20230616032311.19137-5-tao1.su@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230616032311.19137-1-tao1.su@linux.intel.com>
 References: <20230616032311.19137-1-tao1.su@linux.intel.com>
@@ -76,33 +77,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MCDT_NO bit indicates HW contains the security fix and doesn't need to
-be mitigated to avoid data-dependent behaviour for certain instructions.
-It needs no hypervisor support. Treat it as supported regardless of what
-KVM reports.
+Currently, bit 13, 14, 15 and 24 of MSR_IA32_ARCH_CAPABILITIES are
+disclosed for fixing security issues, so add those bit definitions
+and feature names.
 
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/kvm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/i386/cpu.c | 4 ++--
+ target/i386/cpu.h | 4 ++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index de531842f6..4defd8b479 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -432,6 +432,11 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-         uint32_t eax;
-         host_cpuid(7, 1, &eax, &unused, &unused, &unused);
-         ret |= eax & (CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC);
-+    } else if (function == 7 && index == 2 && reg == R_EDX) {
-+        /* Not new instructions, just an optimization.  */
-+        uint32_t edx;
-+        host_cpuid(7, 2, &unused, &unused, &unused, &edx);
-+        ret |= edx & CPUID_7_2_EDX_MCDT_NO;
-     } else if (function == 0xd && index == 0 &&
-                (reg == R_EAX || reg == R_EDX)) {
-         /*
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 7898a4c79a..b5321240c6 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1069,10 +1069,10 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "rdctl-no", "ibrs-all", "rsba", "skip-l1dfl-vmentry",
+             "ssb-no", "mds-no", "pschange-mc-no", "tsx-ctrl",
+             "taa-no", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
+             NULL, "fb-clear", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            "pbrsb-no", NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .msr = {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 64d50acf41..6221b1c0a4 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1022,7 +1022,11 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define MSR_ARCH_CAP_PSCHANGE_MC_NO     (1U << 6)
+ #define MSR_ARCH_CAP_TSX_CTRL_MSR       (1U << 7)
+ #define MSR_ARCH_CAP_TAA_NO             (1U << 8)
++#define MSR_ARCH_CAP_SBDR_SSDP_NO       (1u << 13)
++#define MSR_ARCH_CAP_FBSDP_NO           (1u << 14)
++#define MSR_ARCH_CAP_PSDP_NO            (1u << 15)
+ #define MSR_ARCH_CAP_FB_CLEAR           (1U << 17)
++#define MSR_ARCH_CAP_PBRSB_NO           (1U << 24)
+ 
+ #define MSR_CORE_CAP_SPLIT_LOCK_DETECT  (1U << 5)
+ 
 -- 
 2.34.1
 
