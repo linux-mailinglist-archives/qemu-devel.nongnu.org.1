@@ -2,89 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36B9733431
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 17:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4160C7334A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 17:21:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAAzP-00082H-OR; Fri, 16 Jun 2023 11:03:51 -0400
+	id 1qABFS-0002b7-Li; Fri, 16 Jun 2023 11:20:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qAAzL-00081a-Pd
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:03:47 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qAAz9-00075G-T0
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:03:38 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-25ea635570eso685070a91.3
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 08:03:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1686927808; x=1689519808;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4fzBxoJrsqA72FLagFuZLlHo+kt6oB7EGHhB5rZfKO8=;
- b=MMD6/t7meD6X6L9VC02efaxefBKQJAo7FvOUR+aIrnZutOpv8tpfiddGAQkaI9jqXm
- a9mgLfIBM1OYb3VWEqPPbEUykAq5C29TXC9dDM3Pk9lfjNmPTbbsEeKOmtlUGk/Yz/gE
- qLPjCsYl3NKXRXIVIeR2ZP+jxsDUIMbSpxyX9aeoEay2hYon5u2lYErpXsXWn+CEZ7QP
- GBpldaCU+KdIkMUJgUsyM3yZtXhw/yO7tG51PLl/S0FDHdCKfs0HTpBWhLxKPZvxcG4s
- kwHuG9aTPLe5Lbfq1/stkoVrnEWeGDohCrOhqPAujJww17QPEqG/pT+o6df5Dmg2ey9N
- xXVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686927808; x=1689519808;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4fzBxoJrsqA72FLagFuZLlHo+kt6oB7EGHhB5rZfKO8=;
- b=f9Pi8M6rwcJ3zvKGREAynLqTiVsY4aXJdq/15Nsbo7qQlBC4AzvMRqeaRpX5b2WMNP
- rSkfSvXKDRFwiMEtDfTudKfsiWdltiPc5mtiH5K7QqVF2gztZyBzE6AcQXf2CyboDI+1
- RH2NJOjCsJFdpvHu3tc5OnDsyE9OfS7j3MLxPpqkgT0Wi8+dngBZMtKDAajtysVFVZyo
- OjlNll8sdhttZ42ItsJL6WLyZDFNU7NINdSmpvcbeU3otHuGZQDcjt+2GqtR8wWUNsv5
- X8gFunK+0NQubbs7J5xlZeK1U84vi2AO1e7odA+kNHBZQWNM/2Bc1Kzfeek7T2w4G7wG
- QLFQ==
-X-Gm-Message-State: AC+VfDzbPL9Tm3sVQYJsebP+Z61Qyqjp4Ik5d6E970r7z4/dPGYL+p4B
- GP3uB4Qg7dnystO5Y23zWQDMdA==
-X-Google-Smtp-Source: ACHHUZ4aOnHVZ5iEXNcHInIHf3v62fXtxXlbjjKJ3pqNhg6vMzwrZqWv72dZtiMYgXbv5MDf16sRDA==
-X-Received: by 2002:a17:90a:199d:b0:259:3e17:7e15 with SMTP id
- 29-20020a17090a199d00b002593e177e15mr2081082pji.7.1686927807648; 
- Fri, 16 Jun 2023 08:03:27 -0700 (PDT)
-Received: from [10.11.0.74] (125-228-20-175.hinet-ip.hinet.net.
- [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- h2-20020a17090a298200b002310ed024adsm1606329pjd.12.2023.06.16.08.03.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jun 2023 08:03:27 -0700 (PDT)
-Message-ID: <f1662612-ea0b-dd32-1c51-ebfa9c1cf950@sifive.com>
-Date: Fri, 16 Jun 2023 23:03:22 +0800
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>) id 1qABFQ-0002ae-0w
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:20:24 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>) id 1qABFO-0006Tc-6T
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:20:23 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35GFHYb7032523
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 15:20:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=PCLVPtoeF0ox3a0wVXYoFORBAE4dXbtdaAd7iKNbfvw=;
+ b=B3eT8X6+Q3or3B9X5mg6wzwZ4kQ1hAsja6APdO85lbreuhKgK7Y3gd3SgCheRi+6IZGx
+ /DHso6tjGnDxtQSOkmedCEwuDopsWjs4Ij6uMh4nLpl6RBo1aQeLForvonz5sJryT64v
+ IUNXptx+m4GM1uvoCPRTjKq4VN8mXUL76u+Ro8uveABdZo4/cdVFi+FtQGgpj032Satg
+ JoCsmRmae/9mwfI5f8hRqezGcceTHfKIOV6q6IW8yd5JxaLiJB4M1g9N36hESF/emIpU
+ WMm6i1rh2/goy0EAChCCmJkOhetzOrU7PU+d9bYlzWXDgPwRzxVHzHhsnA20Y5PoVemc 3Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8t8dr4v9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 15:20:19 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35GFIAu4001960
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 15:20:19 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8t8dr4t7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Jun 2023 15:20:19 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35G6MahB009776;
+ Fri, 16 Jun 2023 15:20:17 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r4gt54e77-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Jun 2023 15:20:16 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35GFKEk521824056
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Jun 2023 15:20:14 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E4432004B;
+ Fri, 16 Jun 2023 15:20:14 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1CCE620043;
+ Fri, 16 Jun 2023 15:20:14 +0000 (GMT)
+Received: from li-7e0de7cc-2d9d-11b2-a85c-de26c016e5ad.ibm.com (unknown
+ [9.171.84.241]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 16 Jun 2023 15:20:14 +0000 (GMT)
+Message-ID: <bcd7bd4829ba2046b7cc8196e8e83fba338f2f94.camel@linux.ibm.com>
+Subject: Re: [PATCH 07/10] pc-bios/s390-ccw: always build network bootloader
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: thuth@redhat.com, berrange@redhat.com
+Date: Fri, 16 Jun 2023 17:20:13 +0200
+In-Reply-To: <20230605095223.107653-8-pbonzini@redhat.com>
+References: <20230605095223.107653-1-pbonzini@redhat.com>
+ <20230605095223.107653-8-pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 00/19] Add RISC-V vector cryptographic instruction set
- support
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
- dickon.hood@codethink.co.uk, nazar.kazakov@codethink.co.uk,
- kiran.ostrolenk@codethink.co.uk, frank.chang@sifive.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, pbonzini@redhat.com,
- philipp.tomsich@vrull.eu, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- richard.henderson@linaro.org
-References: <20230428144757.57530-1-lawrence.hunter@codethink.co.uk>
- <7f2b7328-8c0b-0664-574f-fcf6fe442b74@ventanamicro.com>
-From: Max Chou <max.chou@sifive.com>
-In-Reply-To: <7f2b7328-8c0b-0664-574f-fcf6fe442b74@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=max.chou@sifive.com; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UlIAeFHlYtjUbkDKSnXg74AAuc2q_9GN
+X-Proofpoint-GUID: jXuYozRAGOFA3IM5IyvbuQsLdP7-ivrY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-16_10,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 adultscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 mlxscore=0
+ clxscore=1015 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306160136
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,159 +113,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
+On Mon, 2023-06-05 at 11:52 +0200, Paolo Bonzini wrote:
+> In the beginning, the network bootloader was considered experimental and
+> thus optional, but it is well established nowadays and configure always
+> checks for roms/SLOF before compiling pc-bios/s390-ccw.
 
-I'm Max Chou from SiFive, one of the authors of this patchset.
+Only if run in a git repository, not in a tree generated with archive-sourc=
+e.sh
+which doesn't package roms/SLOF.
+So without the check below the build fails.
+This is not inteded, is it?
 
-I'll take over to update this patchset to the v20230531 version of the 
-RISC-V vector cryptography specification and take the comments from 
-Weiwei Li into consideration.
-Then I'll re-send, rebased on top of Alistair's riscv-to-apply.next in 
-the next few days.
+>=20
+> Therefore, it makes sense to always build it together with the other
+> part of the s390-ccw bios.
+>=20
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  pc-bios/s390-ccw/Makefile | 5 -----
+>  1 file changed, 5 deletions(-)
+>=20
+> diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
+> index 9c5276f8ade..2e8cc015aa0 100644
+> --- a/pc-bios/s390-ccw/Makefile
+> +++ b/pc-bios/s390-ccw/Makefile
+> @@ -67,12 +67,7 @@ s390-ccw.img: s390-ccw.elf
+> =20
+>  $(OBJECTS): Makefile
+> =20
+> -ifneq ($(wildcard $(SRC_PATH)/../../roms/SLOF/lib/libnet),)
+>  include $(SRC_PATH)/netboot.mak
+> -else
+> -s390-netboot.img:
+> -	@echo "s390-netboot.img not built since roms/SLOF/ is not available."
+> -endif
+> =20
+>  ALL_OBJS =3D $(sort $(OBJECTS) $(NETOBJS) $(LIBCOBJS) $(LIBNETOBJS))
+>  -include $(ALL_OBJS:%.o=3D%.d)
 
-Thanks,
-
-Max
-
-On 2023/6/16 5:21 PM, Daniel Henrique Barboza wrote:
-> Hi Lawrence,
->
-> Can you please re-send, rebased on top of Alistair's 
-> riscv-to-apply.next? There are
-> some comments from Weiwei Li that are worth considering. Richard 
-> Henderson also took
-> patches 8-9-10 via his tcg queue so you don't have to worry about those.
->
-> CC my email in the next version and I'll get some reviews going. QEMU 
-> feature
-> freeze for 8.1 is July 11th - perhaps we can squeeze this in for 8.1.
->
->
-> Thanks,
->
-> Daniel
->
-> On 4/28/23 11:47, Lawrence Hunter wrote:
->> This patchset provides an implementation for Zvbb, Zvbc, Zvkned, 
->> Zvknh, Zvksh, Zvkg, and Zvksed of the draft RISC-V vector 
->> cryptography extensions as per the v20230425 version of the 
->> specification(1) (6a7ae7f2). This is an update to the patchset 
->> submitted to qemu-devel on Monday, 17 Apr 2023 14:58:36 +0100.
->>
->> v2:
->>
->>      squashed commits into one commit per extension with separate 
->> commits for
->>      each refactoring
->>      unified trans_rvzvk*.c.inc files into one trans_rvvk.c.inc
->>      style fixes in insn32.decode and other files
->>      added macros for EGS values in translation functions.
->>      updated from v20230303 to v20230407 of the spec:
->>          Zvkb has been split into Zvbb and Zvbc
->>          vbrev, vclz, vctz, vcpop and vwsll have been added to Zvbb.
->>
->> v3:
->>
->>      New patch 03/19 removes redundant “cpu_vl == 0” checks from 
->> trans_rvv.c.inc
->>      Introduction of new tcg ops has been factored out of patch 11/19 
->> and into 09/19
->>          These ops are now added to non riscv-specific files
->>
->> As v20230425 is a freeze candidate, we are not expecting any 
->> significant changes to the specification or this patch series.
->>
->> Please note that the Zvkt data-independent execution latency 
->> extension (and all extensions including it) has not been implemented, 
->> and we would recommend not using these patches in an environment 
->> where timing attacks are an issue.
->>
->> Work performed by Dickon, Lawrence, Nazar, Kiran, and William from 
->> Codethink sponsored by SiFive, as well as Max Chou and Frank Chang 
->> from SiFive.
->>
->> For convenience we have created a git repo with our patches on top of 
->> a recent master. https://github.com/CodethinkLabs/qemu-ct
->>
->>      https://github.com/riscv/riscv-crypto/releases
->>
->> Thanks to those who have already reviewed:
->>
->>      Richard Henderson richard.henderson@linaro.org
->>          [PATCH v2 02/17] target/riscv: Refactor vector-vector 
->> translation macro
->>          [PATCH v2 04/17] target/riscv: Move vector translation checks
->>          [PATCH v2 05/17] target/riscv: Refactor translation of 
->> vector-widening instruction
->>          [PATCH v2 07/17] qemu/bitops.h: Limit rotate amounts
->>          [PATCH v2 08/17] qemu/host-utils.h: Add clz and ctz 
->> functions for lower-bit integers
->>          [PATCH v2 14/17] crypto: Create sm4_subword
->>      Alistair Francis alistair.francis@wdc.com
->>          [PATCH v2 02/17] target/riscv: Refactor vector-vector 
->> translation macro
->>      Philipp Tomsich philipp.tomsich@vrull.eu
->>          Various v1 reviews
->>      Christoph Müllner christoph.muellner@vrull.eu
->>          Various v1 reviews
->>
->>
->> Dickon Hood (3):
->>    target/riscv: Refactor translation of vector-widening instruction
->>    qemu/bitops.h: Limit rotate amounts
->>    target/riscv: Add Zvbb ISA extension support
->>
->> Kiran Ostrolenk (5):
->>    target/riscv: Refactor some of the generic vector functionality
->>    target/riscv: Refactor vector-vector translation macro
->>    target/riscv: Refactor some of the generic vector functionality
->>    qemu/host-utils.h: Add clz and ctz functions for lower-bit integers
->>    target/riscv: Add Zvknh ISA extension support
->>
->> Lawrence Hunter (2):
->>    target/riscv: Add Zvbc ISA extension support
->>    target/riscv: Add Zvksh ISA extension support
->>
->> Max Chou (3):
->>    crypto: Create sm4_subword
->>    crypto: Add SM4 constant parameter CK
->>    target/riscv: Add Zvksed ISA extension support
->>
->> Nazar Kazakov (6):
->>    target/riscv: Remove redundant "cpu_vl == 0" checks
->>    target/riscv: Move vector translation checks
->>    tcg: Add andcs and rotrs tcg gvec ops
->>    target/riscv: Add Zvkned ISA extension support
->>    target/riscv: Add Zvkg ISA extension support
->>    target/riscv: Expose Zvk* and Zvb[b,c] cpu properties
->>
->>   accel/tcg/tcg-runtime-gvec.c             |   11 +
->>   accel/tcg/tcg-runtime.h                  |    1 +
->>   crypto/sm4.c                             |   10 +
->>   include/crypto/sm4.h                     |    9 +
->>   include/qemu/bitops.h                    |   24 +-
->>   include/qemu/host-utils.h                |   54 ++
->>   include/tcg/tcg-op-gvec.h                |    4 +
->>   target/arm/tcg/crypto_helper.c           |   10 +-
->>   target/riscv/cpu.c                       |   39 +
->>   target/riscv/cpu.h                       |    8 +
->>   target/riscv/helper.h                    |   95 ++
->>   target/riscv/insn32.decode               |   58 ++
->>   target/riscv/insn_trans/trans_rvv.c.inc  |  174 ++--
->>   target/riscv/insn_trans/trans_rvvk.c.inc |  593 ++++++++++++
->>   target/riscv/meson.build                 |    4 +-
->>   target/riscv/op_helper.c                 |    6 +
->>   target/riscv/translate.c                 |    1 +
->>   target/riscv/vcrypto_helper.c            | 1052 ++++++++++++++++++++++
->>   target/riscv/vector_helper.c             |  243 +----
->>   target/riscv/vector_internals.c          |   81 ++
->>   target/riscv/vector_internals.h          |  228 +++++
->>   tcg/tcg-op-gvec.c                        |   23 +
->>   22 files changed, 2365 insertions(+), 363 deletions(-)
->>   create mode 100644 target/riscv/insn_trans/trans_rvvk.c.inc
->>   create mode 100644 target/riscv/vcrypto_helper.c
->>   create mode 100644 target/riscv/vector_internals.c
->>   create mode 100644 target/riscv/vector_internals.h
->>
->
 
