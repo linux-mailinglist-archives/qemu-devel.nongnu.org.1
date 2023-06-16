@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043667334C6
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 17:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D10A7334C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 17:29:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qABMu-0004N3-49; Fri, 16 Jun 2023 11:28:08 -0400
+	id 1qABNs-0006B4-PO; Fri, 16 Jun 2023 11:29:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qABMr-0004MN-JK
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:28:05 -0400
-Received: from bg4.exmail.qq.com ([43.155.67.158])
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qABNp-00069x-GA
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:29:05 -0400
+Received: from bg4.exmail.qq.com ([43.154.221.58])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qABMo-0000em-FD
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:28:05 -0400
-X-QQ-mid: bizesmtp84t1686929267tgjdfi8k
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qABNn-0000uV-9Q
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 11:29:05 -0400
+X-QQ-mid: bizesmtp84t1686929270t60oiv8o
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Fri, 16 Jun 2023 23:27:46 +0800 (CST)
+ id ; Fri, 16 Jun 2023 23:27:49 +0800 (CST)
 X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: +ynUkgUhZJnlA1MWv37RMzQMUYwVOeuiJMqkxFQ2dA8KvJgdzh7bl2OT65aeL
- txwDQZ5e5ht5SLBSel5AY1tjn5YuYS/UvIT9668SAPRtKYgbXI6zLWTi+PQiaCBIuHmeVGe
- EsB4+gFxBGpf7exdaZpN252B2FIO2RQCDXSqw9HZlzmzGt+HZv/rp5kwtVX4fcK4zrsc0ic
- Drvs8DTyoMleAQrQO9RMHwnscXya3rhBiSPmM/FLBWj+L894SOGUurSxxBaEYlXq4K3BECL
- HTwDP88LyW4F2fu+GMeiYxLeWDxh/h1PTzghX0MpxyfCN0nKw812bg3BMZDdlYioIsH7jEv
- Mk7WMT+qneVwVJeYrEefIObixT0Qa2E4nlEZVDqaWStGOvaJvs=
+X-QQ-FEAT: 90EFqYDyPxAadufHtL43FjIlVtvePuzH9FZHXO8miEAY9G+nVafLL5Y6i1iBB
+ m/FRQFCEV+iIJbO/bdxZdaQsaKNYxXjd4BDTXr+FEzwIL5ltCq6ntX5SS4eRKeH0gUHKIKD
+ EwmOkpzGpu+/mVLfUpdn+U88UBYy+VlvSLSRp4gE3ejzXIuKA4/glLpg0Cx9+S/vzOv6eRb
+ qHW3SE0FeTAMLf5G+9jB1cXjdSuI+2d8FlWThMJ6dmCJM9oX52LT1ZM6qOxr5W47tIioFQa
+ nE/2CK9ffVdxqg1ul53M5o4vU8/hN+pSJFFwK4p57EM8KPramtlFDCLlouriyl/X2UYs65H
+ iXmCko9IitjSzJr7OGppG+8QpqheorIMA9HGnwZtje31QAK5f4=
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 8888829801256046820
+X-BIZMAIL-ID: 11881041971104729125
 From: Bin Meng <bmeng@tinylab.org>
 To: qemu-devel@nongnu.org
 Cc: Zhangjin Wu <falcon@tinylab.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v2 2/6] tests/tcg/cris: Correct the off-by-one error
-Date: Fri, 16 Jun 2023 23:27:33 +0800
-Message-Id: <20230616152737.23545-3-bmeng@tinylab.org>
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH v2 3/6] util/async-teardown: Fall back to close fds one by one
+Date: Fri, 16 Jun 2023 23:27:34 +0800
+Message-Id: <20230616152737.23545-4-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230616152737.23545-1-bmeng@tinylab.org>
 References: <20230616152737.23545-1-bmeng@tinylab.org>
@@ -42,7 +44,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.155.67.158; envelope-from=bmeng@tinylab.org;
+Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
  helo=bg4.exmail.qq.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
@@ -65,35 +67,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sysconf(_SC_OPEN_MAX) returns the maximum number of files that
-a process can have open at any time, which means the fd should
-not be larger than or equal to the return value.
+When opening /proc/self/fd fails, current codes just return directly,
+but we can fall back to close fds one by one.
 
 Signed-off-by: Bin Meng <bmeng@tinylab.org>
 ---
 
 (no changes since v1)
 
- tests/tcg/cris/libc/check_openpf5.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ util/async-teardown.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/cris/libc/check_openpf5.c b/tests/tcg/cris/libc/check_openpf5.c
-index 0037fbca4c..7f585c6d37 100644
---- a/tests/tcg/cris/libc/check_openpf5.c
-+++ b/tests/tcg/cris/libc/check_openpf5.c
-@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
-     strcpy(fn, "/");
-     strcat(fn, argv[0]);
+diff --git a/util/async-teardown.c b/util/async-teardown.c
+index 3ab19c8740..7e0177a8da 100644
+--- a/util/async-teardown.c
++++ b/util/async-teardown.c
+@@ -48,7 +48,11 @@ static void close_all_open_fd(void)
  
--    for (i = 0; i < filemax + 1; i++) {
-+    for (i = 0; i < filemax; i++) {
-         if (open(fn, O_RDONLY) < 0) {
-             /* Shouldn't happen too early.  */
--            if (i < filemax - 3 - 1) {
-+            if (i < filemax - 3) {
-                 fprintf(stderr, "i: %d\n", i);
-                 abort();
-             }
+     dir = opendir("/proc/self/fd");
+     if (!dir) {
+-        /* If /proc is not mounted, there is nothing that can be done. */
++        /* If /proc is not mounted, close fds one by one. */
++        int open_max = sysconf(_SC_OPEN_MAX), i;
++        for (i = 0; i < open_max; i++) {
++                close(i);
++        }
+         return;
+     }
+     /* Avoid closing the directory. */
 -- 
 2.34.1
 
