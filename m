@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCDC732B7C
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 11:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D83BD732B81
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 11:28:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA5jk-0004yo-Dc; Fri, 16 Jun 2023 05:27:20 -0400
+	id 1qA5jl-0004z8-4K; Fri, 16 Jun 2023 05:27:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5ji-0004yD-1T
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:18 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5jj-0004yb-LL
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5jg-0000HL-FH
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:17 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5ji-0000HZ-3M
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686907635;
+ s=mimecast20190719; t=1686907637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iYAGcIiBozkpSp3T5+K2LJNfVGImLOKVErgdOfZyLGs=;
- b=ikJRqfYCh8T2sVTPfaTri7sFmW9xQaSs0HI67YX+IeG1OBi+1P/RNUt/+0HV8FepHMRpWw
- 4hzVr7QrrMwhHDY3KhnMegequGI/gZkF3IKQBfLVdRU3mqEQQMjYEzGAifkd8McJxYHCks
- UU9c3toXkgv2OZGvLxIlfCoPa6IDsC8=
+ bh=odcrL41tL0J76rDneIgWHoMsdg/15Ub++D/5ea+DdKw=;
+ b=H3yj68dUX4vW/ea9vXF9HdCm8VXaUuc+KganOlGbaOgxi+qG5+4TuvRQETQakOBuKuAzqH
+ Vl4afsWA/IPY7QuN6h118oWVxh4TZwm8w0+HqokFe9TUUx55tLHK5c0+gFT3q5NO3Pesu3
+ Atnm5CWRAvg8XJ7GGasldzpjGUVtgoA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-314-603ggW9-NtO0DCIu0SPyKQ-1; Fri, 16 Jun 2023 05:27:12 -0400
-X-MC-Unique: 603ggW9-NtO0DCIu0SPyKQ-1
+ us-mta-418--8SSEMSJPJicBGTms1NJEw-1; Fri, 16 Jun 2023 05:27:15 -0400
+X-MC-Unique: -8SSEMSJPJicBGTms1NJEw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5187A810BBA;
- Fri, 16 Jun 2023 09:27:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 524D885A58A;
+ Fri, 16 Jun 2023 09:27:15 +0000 (UTC)
 Received: from t480s.fritz.box (unknown [10.39.194.44])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5447C1121314;
- Fri, 16 Jun 2023 09:27:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 983681121314;
+ Fri, 16 Jun 2023 09:27:12 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -54,10 +54,9 @@ Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Gavin Shan <gshan@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH v1 01/15] memory-device: Track the required memslots in
- DeviceMemoryState
-Date: Fri, 16 Jun 2023 11:26:40 +0200
-Message-Id: <20230616092654.175518-2-david@redhat.com>
+Subject: [PATCH v1 02/15] kvm: Add stub for kvm_get_max_memslots()
+Date: Fri, 16 Jun 2023 11:26:41 +0200
+Message-Id: <20230616092654.175518-3-david@redhat.com>
 In-Reply-To: <20230616092654.175518-1-david@redhat.com>
 References: <20230616092654.175518-1-david@redhat.com>
 MIME-Version: 1.0
@@ -88,63 +87,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's track how many memslots are currently required by plugged memory
-devices. We'll use this number to perform sanity checks next (soft limit
-to warn the user).
+We'll need the stub soon from memory device context.
 
-Right now, each memory device consumes exactly one memslot, and the
-number of required memslots matches the number of used memslots.
-
-Once we support memory devices that consume multiple memslots
-dynamically, the requested number of memslots will no longer correspond to
-the number of memory devices, and there will be a difference between
-required and actually used memslots.
+While at it, use "unsigned int" as return value and place the
+declaration next to kvm_get_free_memslots().
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/mem/memory-device.c | 2 ++
- include/hw/boards.h    | 2 ++
- 2 files changed, 4 insertions(+)
+ accel/kvm/kvm-all.c    | 2 +-
+ accel/stubs/kvm-stub.c | 5 +++++
+ include/sysemu/kvm.h   | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index 667d56bd29..28ad419dc0 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -275,6 +275,7 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
-     g_assert(ms->device_memory);
- 
-     ms->device_memory->used_region_size += memory_region_size(mr);
-+    ms->device_memory->required_memslots++;
-     memory_region_add_subregion(&ms->device_memory->mr,
-                                 addr - ms->device_memory->base, mr);
-     trace_memory_device_plug(DEVICE(md)->id ? DEVICE(md)->id : "", addr);
-@@ -294,6 +295,7 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
- 
-     memory_region_del_subregion(&ms->device_memory->mr, mr);
-     ms->device_memory->used_region_size -= memory_region_size(mr);
-+    ms->device_memory->required_memslots--;
-     trace_memory_device_unplug(DEVICE(md)->id ? DEVICE(md)->id : "",
-                                mdc->get_addr(md));
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 7679f397ae..94d672010e 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -174,7 +174,7 @@ void kvm_resample_fd_notify(int gsi)
+     }
  }
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index fcaf40b9da..a346b4ec4a 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -297,12 +297,14 @@ struct MachineClass {
-  * @mr: address space container for memory devices
-  * @dimm_size: the sum of plugged DIMMs' sizes
-  * @used_region_size: the part of @mr already used by memory devices
-+ * @required_memslots: the number of memslots required by memory devices
-  */
- typedef struct DeviceMemoryState {
-     hwaddr base;
-     MemoryRegion mr;
-     uint64_t dimm_size;
-     uint64_t used_region_size;
-+    unsigned int required_memslots;
- } DeviceMemoryState;
  
- /**
+-int kvm_get_max_memslots(void)
++unsigned int kvm_get_max_memslots(void)
+ {
+     KVMState *s = KVM_STATE(current_accel());
+ 
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 5d2dd8f351..506bc8c9e4 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -108,6 +108,11 @@ int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
+     return -ENOSYS;
+ }
+ 
++unsigned int kvm_get_max_memslots(void)
++{
++    return UINT_MAX;
++}
++
+ bool kvm_has_free_slot(MachineState *ms)
+ {
+     return false;
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 88f5ccfbce..7a999eff52 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -213,6 +213,7 @@ typedef struct KVMRouteChange {
+ 
+ /* external API */
+ 
++unsigned int kvm_get_max_memslots(void);
+ bool kvm_has_free_slot(MachineState *ms);
+ bool kvm_has_sync_mmu(void);
+ int kvm_has_vcpu_events(void);
+@@ -559,7 +560,6 @@ int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source);
+  */
+ int kvm_get_one_reg(CPUState *cs, uint64_t id, void *target);
+ struct ppc_radix_page_info *kvm_get_radix_page_info(void);
+-int kvm_get_max_memslots(void);
+ 
+ /* Notify resamplefd for EOI of specific interrupts. */
+ void kvm_resample_fd_notify(int gsi);
 -- 
 2.40.1
 
