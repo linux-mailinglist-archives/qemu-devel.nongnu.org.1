@@ -2,82 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40475733FE8
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jun 2023 11:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5C87341A8
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jun 2023 16:30:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qASRv-00005Z-PN; Sat, 17 Jun 2023 05:42:27 -0400
+	id 1qAWvX-0003Tw-Rp; Sat, 17 Jun 2023 10:29:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qASRt-00005P-No
- for qemu-devel@nongnu.org; Sat, 17 Jun 2023 05:42:25 -0400
+ (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
+ id 1qAWvV-0003TN-3F
+ for qemu-devel@nongnu.org; Sat, 17 Jun 2023 10:29:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qASRr-0005Fd-QQ
- for qemu-devel@nongnu.org; Sat, 17 Jun 2023 05:42:25 -0400
+ (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
+ id 1qAWvT-0006jp-E4
+ for qemu-devel@nongnu.org; Sat, 17 Jun 2023 10:29:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686994942;
+ s=mimecast20190719; t=1687012151;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RqcZIotmCKnATTd15geStq/pRMWKnAlvLha8f8Oi0G8=;
- b=D/a8qs2bWi/RQ17TYZcsdKKslrrboFH8jUjf5M0MnhBeGYzIy0YxBOwMZGNpQC0iE+VcVW
- 1s2WXs4iwuVVZZYHugajeMSAHGHbq7N2qgU/8ajF63LPIYrj7g6RivjZ4NwfGWqxMT+Qpn
- kkHd3/ETY7B6yhe5fsFoklWWxOrWoIY=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-KkzuE4aWPEuRe6GLTAYrzQ-1; Sat, 17 Jun 2023 05:42:20 -0400
-X-MC-Unique: KkzuE4aWPEuRe6GLTAYrzQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-51866148986so992499a12.3
- for <qemu-devel@nongnu.org>; Sat, 17 Jun 2023 02:42:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686994938; x=1689586938;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RqcZIotmCKnATTd15geStq/pRMWKnAlvLha8f8Oi0G8=;
- b=jgFuBueHGpoM05F384F+bqwIBl1FQIe/3JphNzp0uv/qDfhCHpFUl0MWARnEpo+pKu
- CiMRah4MFhxuvhDyQD5/+BEGObCRFrhCJn9JyspTTfuvS8pQ+yQSsL5W9Pyl/bEuLVTw
- 5aAUcwAxu/VTVXqigyxqhbOua33Dt5F5Lnko8mPQ3kO5aMifNR/YGE3iGxfWyWl8UbOt
- d+cwdeDLfVUmtCJLNFmXAR+hrnNi0m8GG5JiD9pSFuxPpCOuwdczp5i3fUX9+NNjg6zj
- dsDvX/xXyLAxXBQq1fAILOzJKMiwrSMipt0bDcaKIRE6mk+PICXYQRuirZVdazjTmTAf
- siVw==
-X-Gm-Message-State: AC+VfDwv4bj/OBVqqxODECsgyrMGqSbJb+iKwxPbh1fgldOOCMYdY3Px
- QmI6kfEgVpyTUzKbKcNTN+kY7fYypNqxJAx9x3p0GtsRqBCkRoSAQo/esOSI7tELT+IBhYVuYxR
- lI9SeWqERIA788cazenNV77r6tb29OrMU15cJ+7+iBQ==
-X-Received: by 2002:aa7:c706:0:b0:51a:3fc2:f60f with SMTP id
- i6-20020aa7c706000000b0051a3fc2f60fmr2101852edq.42.1686994938326; 
- Sat, 17 Jun 2023 02:42:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4MxQFnikpN7izcQ2fLyn51x1RYe61UXw8PCYPAIpa9ImzHaKHcaebw0sswhaQKRsWbrMmZHKBKa1I+5+TeReo=
-X-Received: by 2002:aa7:c706:0:b0:51a:3fc2:f60f with SMTP id
- i6-20020aa7c706000000b0051a3fc2f60fmr2101847edq.42.1686994938015; Sat, 17 Jun
- 2023 02:42:18 -0700 (PDT)
+ bh=ZErPQfnaOi1iRbKc+DoIEKgN1o6hNfwdJXjQGK4F1gU=;
+ b=ceQePvLkUiDS5jILK7ef3XHk4zyOFTC9vTCj6gkojW0bhAIxbdQ3mdb60jj9IzBSNb1rfr
+ 25s5w4zwm9SjzShbCT6DNujShWdjE/nlPoenJRb+axA+m8WeqOD0u56jS0jdvNg4kyHt2G
+ 1Jn840G6WKu8C5UJOOps9/vJ9zYlS6I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-115-ktOcF-SHMxmN9QyT6NXqRg-1; Sat, 17 Jun 2023 10:29:07 -0400
+X-MC-Unique: ktOcF-SHMxmN9QyT6NXqRg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C31F85A58C;
+ Sat, 17 Jun 2023 14:29:07 +0000 (UTC)
+Received: from tpad.localdomain (ovpn-112-3.gru2.redhat.com [10.97.112.3])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3B4C940C95E3;
+ Sat, 17 Jun 2023 14:29:07 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+ id AABD0403E9C61; Fri, 16 Jun 2023 14:44:29 -0300 (-03)
+Date: Fri, 16 Jun 2023 14:44:29 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Kanda <mark.kanda@oracle.com>
+Subject: [PATCH v2] kvm: reuse per-vcpu stats fd to avoid vcpu interruption
+Message-ID: <ZIyffW2qasdS4PVN@tpad>
+References: <ZIiz8R3F76VqTmKO@tpad>
+ <87h6rab8gv.fsf@pond.sub.org>
 MIME-Version: 1.0
-References: <CAMxuvawc2x2mt4Kk4V1U0fMeNKZj5qE_Lai8Gjo38T_Q_cVdpQ@mail.gmail.com>
- <tencent_9F4A874CACFEABCB1C69837F59A54A3B820A@qq.com>
-In-Reply-To: <tencent_9F4A874CACFEABCB1C69837F59A54A3B820A@qq.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Sat, 17 Jun 2023 11:42:06 +0200
-Message-ID: <CAMxuvax0L=9dPM1+K+2vW_pXRLpZ7WJsmai_qG5gtm9_GeOt7Q@mail.gmail.com>
-Subject: Re: [PATCH] chardev/char-win-stdio: Support VT sequences on Windows
- 11 host
-To: Zhang Huasen <huasenzhang@foxmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000004c98305fe501e63"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h6rab8gv.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mtosatti@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,166 +81,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000004c98305fe501e63
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi
+A regression has been detected in latency testing of KVM guests.  
+More specifically, it was observed that the cyclictest  
+numbers inside of an isolated vcpu (running on isolated pcpu) are:  
+                                            
+# Max Latencies: 00090 00096 00141  
+  
+Where a maximum of 50us is acceptable.   
+                   
+The implementation of KVM_GET_STATS_FD uses run_on_cpu to query  
+per vcpu statistics, which interrupts the vcpu (and is unnecessary).  
+                
+To fix this, open the per vcpu stats fd on vcpu initialization,  
+and read from that fd from QEMU's main thread.  
+             
+Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>  
 
-On Fri, Jun 16, 2023 at 7:41=E2=80=AFAM Zhang Huasen <huasenzhang@foxmail.c=
-om>
-wrote:
+---
 
-> From: Huasen Zhang <huasenzhang@foxmail.com>
->
-> Hello,
->
-> On Thu, 15 Jun 2023 12:57:55 +0200 Marc-Andr=C3=A9 Lureau <
-> marcandre.lureau@redhat.com>
-> wrote:
-> > Hi
-> >
-> > On Thu, Jun 15, 2023 at 12:36=E2=80=AFPM Zhang Huasen <huasenzhang@foxm=
-ail.com>
-> > wrote:
-> >
-> > > If the monitor or the serial port use STDIO as backend on Windows 11
-> host,
-> > > e.g. -nographic options is used, the monitor or the guest Linux do no=
-t
-> > > response to arrow keys.
-> > >
-> > > When Windows creates a console, ENABLE_VIRTUAL_PROCESS_INPUT is
-> disabled
-> > > by default. Arrow keys cannot be retrieved by ReadFile or
-> ReadConsoleInput
-> > > functions.
-> > >
-> > > Add ENABLE_VIRTUAL_PROCESS_INPUT to the flag which is passed to
-> > > SetConsoleMode,
-> > > when opening stdio console.
-> > >
-> > > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1674
-> > >
-> > > Signed-off-by: Zhang Huasen <huasenzhang@foxmail.com>
-> > > ---
-> > >  chardev/char-win-stdio.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
-> > > index eb830eabd9..1a18999e78 100644
-> > > --- a/chardev/char-win-stdio.c
-> > > +++ b/chardev/char-win-stdio.c
-> > > @@ -190,7 +190,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
-> > >          }
-> > >      }
-> > >
-> > > -    dwMode |=3D ENABLE_LINE_INPUT;
-> > > +    dwMode |=3D ENABLE_LINE_INPUT | ENABLE_VIRTUAL_TERMINAL_INPUT;
-> > >
-> >
-> > I think we should set it only when is_console (although that may not
-> make a
-> > difference otherwise)
->
-> It is okay to set ENABLE_VIRTUAL_TERMINAL_INPUT only when is_console is
-> TRUE.
->
-> I do not understand some points of original code.
-> If the stdin is not a console, i.e. GetConsoleMode fails, we still
-> call SetConsoleMode and set ENABLE_LINE_INPUT.
-> Could you please tell what the purpose is?
->
+v2: use convention for Error parameter order (Markus Armbruster)
 
-I have no clue. It has been this way since the beginning (commit db418a0a7)=
-.
-
-The code doesn't check SetConsoleMode() return value, so I'd just go with
-your patch for now.
-
---00000000000004c98305fe501e63
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jun 16, 2023 at 7:41=E2=80=
-=AFAM Zhang Huasen &lt;<a href=3D"mailto:huasenzhang@foxmail.com">huasenzha=
-ng@foxmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">From: Huasen Zhang &lt;<a href=3D"mailto:huasenzhang@foxmail.=
-com" target=3D"_blank">huasenzhang@foxmail.com</a>&gt;<br>
-<br>
-Hello,<br>
-<br>
-On Thu, 15 Jun 2023 12:57:55 +0200 Marc-Andr=C3=A9 Lureau &lt;<a href=3D"ma=
-ilto:marcandre.lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat=
-.com</a>&gt;<br>
-wrote:<br>
-&gt; Hi<br>
-&gt; <br>
-&gt; On Thu, Jun 15, 2023 at 12:36=E2=80=AFPM Zhang Huasen &lt;<a href=3D"m=
-ailto:huasenzhang@foxmail.com" target=3D"_blank">huasenzhang@foxmail.com</a=
->&gt;<br>
-&gt; wrote:<br>
-&gt; <br>
-&gt; &gt; If the monitor or the serial port use STDIO as backend on Windows=
- 11 host,<br>
-&gt; &gt; e.g. -nographic options is used, the monitor or the guest Linux d=
-o not<br>
-&gt; &gt; response to arrow keys.<br>
-&gt; &gt;<br>
-&gt; &gt; When Windows creates a console, ENABLE_VIRTUAL_PROCESS_INPUT is d=
-isabled<br>
-&gt; &gt; by default. Arrow keys cannot be retrieved by ReadFile or ReadCon=
-soleInput<br>
-&gt; &gt; functions.<br>
-&gt; &gt;<br>
-&gt; &gt; Add ENABLE_VIRTUAL_PROCESS_INPUT to the flag which is passed to<b=
-r>
-&gt; &gt; SetConsoleMode,<br>
-&gt; &gt; when opening stdio console.<br>
-&gt; &gt;<br>
-&gt; &gt; Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issue=
-s/1674" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-projec=
-t/qemu/-/issues/1674</a><br>
-&gt; &gt;<br>
-&gt; &gt; Signed-off-by: Zhang Huasen &lt;<a href=3D"mailto:huasenzhang@fox=
-mail.com" target=3D"_blank">huasenzhang@foxmail.com</a>&gt;<br>
-&gt; &gt; ---<br>
-&gt; &gt;=C2=A0 chardev/char-win-stdio.c | 2 +-<br>
-&gt; &gt;=C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)<br>
-&gt; &gt;<br>
-&gt; &gt; diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c<=
-br>
-&gt; &gt; index eb830eabd9..1a18999e78 100644<br>
-&gt; &gt; --- a/chardev/char-win-stdio.c<br>
-&gt; &gt; +++ b/chardev/char-win-stdio.c<br>
-&gt; &gt; @@ -190,7 +190,7 @@ static void qemu_chr_open_stdio(Chardev *chr,=
-<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; &gt;<br>
-&gt; &gt; -=C2=A0 =C2=A0 dwMode |=3D ENABLE_LINE_INPUT;<br>
-&gt; &gt; +=C2=A0 =C2=A0 dwMode |=3D ENABLE_LINE_INPUT | ENABLE_VIRTUAL_TER=
-MINAL_INPUT;<br>
-&gt; &gt;<br>
-&gt; <br>
-&gt; I think we should set it only when is_console (although that may not m=
-ake a<br>
-&gt; difference otherwise)<br>
-<br>
-It is okay to set ENABLE_VIRTUAL_TERMINAL_INPUT only when is_console is TRU=
-E.<br>
-<br>
-I do not understand some points of original code.<br>
-If the stdin is not a console, i.e. GetConsoleMode fails, we still<br>
-call SetConsoleMode and set ENABLE_LINE_INPUT.<br>
-Could you please tell what the purpose is?<br></blockquote><div><br></div>I=
- have no clue. It has been this way since the beginning (commit db418a0a7).=
-</div><div class=3D"gmail_quote"><br></div><div class=3D"gmail_quote">The c=
-ode doesn&#39;t check SetConsoleMode() return value, so I&#39;d just go wit=
-h your patch for now.<br></div></div>
-
---00000000000004c98305fe501e63--
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 7679f397ae..9aa898db14 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -450,6 +450,8 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+                          "kvm_init_vcpu: kvm_arch_init_vcpu failed (%lu)",
+                          kvm_arch_vcpu_id(cpu));
+     }
++    cpu->kvm_vcpu_stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
++
+ err:
+     return ret;
+ }
+@@ -4007,7 +4009,7 @@ static StatsDescriptors *find_stats_descriptors(StatsTarget target, int stats_fd
+ 
+     /* Read stats header */
+     kvm_stats_header = &descriptors->kvm_stats_header;
+-    ret = read(stats_fd, kvm_stats_header, sizeof(*kvm_stats_header));
++    ret = pread(stats_fd, kvm_stats_header, sizeof(*kvm_stats_header), 0);
+     if (ret != sizeof(*kvm_stats_header)) {
+         error_setg(errp, "KVM stats: failed to read stats header: "
+                    "expected %zu actual %zu",
+@@ -4038,7 +4040,8 @@ static StatsDescriptors *find_stats_descriptors(StatsTarget target, int stats_fd
+ }
+ 
+ static void query_stats(StatsResultList **result, StatsTarget target,
+-                        strList *names, int stats_fd, Error **errp)
++                        strList *names, int stats_fd, CPUState *cpu,
++                        Error **errp)
+ {
+     struct kvm_stats_desc *kvm_stats_desc;
+     struct kvm_stats_header *kvm_stats_header;
+@@ -4096,7 +4099,7 @@ static void query_stats(StatsResultList **result, StatsTarget target,
+         break;
+     case STATS_TARGET_VCPU:
+         add_stats_entry(result, STATS_PROVIDER_KVM,
+-                        current_cpu->parent_obj.canonical_path,
++                        cpu->parent_obj.canonical_path,
+                         stats_list);
+         break;
+     default:
+@@ -4133,10 +4136,9 @@ static void query_stats_schema(StatsSchemaList **result, StatsTarget target,
+     add_stats_schema(result, STATS_PROVIDER_KVM, target, stats_list);
+ }
+ 
+-static void query_stats_vcpu(CPUState *cpu, run_on_cpu_data data)
++static void query_stats_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
+ {
+-    StatsArgs *kvm_stats_args = (StatsArgs *) data.host_ptr;
+-    int stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
++    int stats_fd = cpu->kvm_vcpu_stats_fd;
+     Error *local_err = NULL;
+ 
+     if (stats_fd == -1) {
+@@ -4145,14 +4147,13 @@ static void query_stats_vcpu(CPUState *cpu, run_on_cpu_data data)
+         return;
+     }
+     query_stats(kvm_stats_args->result.stats, STATS_TARGET_VCPU,
+-                kvm_stats_args->names, stats_fd, kvm_stats_args->errp);
+-    close(stats_fd);
++                kvm_stats_args->names, stats_fd, cpu,
++                kvm_stats_args->errp);
+ }
+ 
+-static void query_stats_schema_vcpu(CPUState *cpu, run_on_cpu_data data)
++static void query_stats_schema_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
+ {
+-    StatsArgs *kvm_stats_args = (StatsArgs *) data.host_ptr;
+-    int stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
++    int stats_fd = cpu->kvm_vcpu_stats_fd;
+     Error *local_err = NULL;
+ 
+     if (stats_fd == -1) {
+@@ -4162,7 +4163,6 @@ static void query_stats_schema_vcpu(CPUState *cpu, run_on_cpu_data data)
+     }
+     query_stats_schema(kvm_stats_args->result.schema, STATS_TARGET_VCPU, stats_fd,
+                        kvm_stats_args->errp);
+-    close(stats_fd);
+ }
+ 
+ static void query_stats_cb(StatsResultList **result, StatsTarget target,
+@@ -4180,7 +4180,7 @@ static void query_stats_cb(StatsResultList **result, StatsTarget target,
+             error_setg_errno(errp, errno, "KVM stats: ioctl failed");
+             return;
+         }
+-        query_stats(result, target, names, stats_fd, errp);
++        query_stats(result, target, names, stats_fd, NULL, errp);
+         close(stats_fd);
+         break;
+     }
+@@ -4194,7 +4194,7 @@ static void query_stats_cb(StatsResultList **result, StatsTarget target,
+             if (!apply_str_list_filter(cpu->parent_obj.canonical_path, targets)) {
+                 continue;
+             }
+-            run_on_cpu(cpu, query_stats_vcpu, RUN_ON_CPU_HOST_PTR(&stats_args));
++            query_stats_vcpu(cpu, &stats_args);
+         }
+         break;
+     }
+@@ -4220,6 +4220,6 @@ void query_stats_schemas_cb(StatsSchemaList **result, Error **errp)
+     if (first_cpu) {
+         stats_args.result.schema = result;
+         stats_args.errp = errp;
+-        run_on_cpu(first_cpu, query_stats_schema_vcpu, RUN_ON_CPU_HOST_PTR(&stats_args));
++        query_stats_schema_vcpu(first_cpu, &stats_args);
+     }
+ }
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 383456d1b3..4f0fa70755 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -402,6 +402,7 @@ struct CPUState {
+     struct kvm_dirty_gfn *kvm_dirty_gfns;
+     uint32_t kvm_fetch_index;
+     uint64_t dirty_pages;
++    int kvm_vcpu_stats_fd;
+ 
+     /* Use by accel-block: CPU is executing an ioctl() */
+     QemuLockCnt in_ioctl_lock;
 
 
