@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD19732888
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 09:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF1C732886
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 09:12:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA3bi-0001Kg-65; Fri, 16 Jun 2023 03:10:54 -0400
+	id 1qA3bj-0001LN-Si; Fri, 16 Jun 2023 03:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qA3be-0001Jy-OI
+ id 1qA3bb-0001JZ-0k
  for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:10:50 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qA3bZ-0006da-I7
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:10:47 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qA3bY-0006e0-5w
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:10:46 -0400
 Received: from loongson.cn (unknown [10.20.42.57])
- by gateway (Coremail) with SMTP id _____8CxtOjpCoxkh+AFAA--.2205S3;
- Fri, 16 Jun 2023 15:10:34 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cxd+nuCoxki+AFAA--.10569S3;
+ Fri, 16 Jun 2023 15:10:38 +0800 (CST)
 Received: from [10.20.42.57] (unknown [10.20.42.57])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxfcroCoxky_0cAA--.7897S3; 
- Fri, 16 Jun 2023 15:10:32 +0800 (CST)
-Subject: Re: [PATCH v2 1/2] hw/loongarch/virt: Add cpu arch_id support
+ AQAAf8AxfcruCoxk2v0cAA--.7898S3; 
+ Fri, 16 Jun 2023 15:10:38 +0800 (CST)
+Subject: Re: [PATCH v2 2/2] hw/intc: Set physical cpuid route for LoongArch
+ ipi device
 To: Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
  philmd@linaro.org, imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
  alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
 References: <20230613120552.2471420-1-zhaotianrui@loongson.cn>
- <20230613120552.2471420-2-zhaotianrui@loongson.cn>
+ <20230613120552.2471420-3-zhaotianrui@loongson.cn>
 From: Song Gao <gaosong@loongson.cn>
-Message-ID: <3b92e25d-f2fa-c8ef-c5d1-b5fdde1d3090@loongson.cn>
-Date: Fri, 16 Jun 2023 15:10:32 +0800
+Message-ID: <ed9b9fbe-b5d0-017d-8020-61c03fbd0a57@loongson.cn>
+Date: Fri, 16 Jun 2023 15:10:38 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20230613120552.2471420-2-zhaotianrui@loongson.cn>
+In-Reply-To: <20230613120552.2471420-3-zhaotianrui@loongson.cn>
 Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8AxfcroCoxky_0cAA--.7897S3
+X-CM-TRANSID: AQAAf8AxfcruCoxk2v0cAA--.7898S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ar1UXFyUGF1DCrWxWryUJwc_yoWxJryUpw
- 4jyayFvrnrXr93ZwsrG34agF1rAr1kWw12ga1xKrsYk3WDK348JFW8KwsIyFZFkwn7WF1D
- Xr4kta17WFW7ArbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxWw45Ww17CFyDZF43Jr13GFX_yoWrWr4xpF
+ ZruF1agF40qFZxX3Z3Xa4UXrn8Arn7Wa429F4IkanYkF4DWrykWF1kG34DXFWDA34rWF4j
+ vrs7Kr42gF47trgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
  0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
  xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv
  67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE
- 7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
- 8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
- CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
- 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
- vfC2KfnxnUUI43ZEXa7IU1RBT5UUUUU==
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1Li
+ SJUUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: 4
@@ -86,150 +87,135 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 ÔÚ 2023/6/13 ÏÂÎç8:05, Tianrui Zhao Ð´µÀ:
-> With acpi madt table, there is cpu physical coreid, which may
-> be different with logical id in qemu. This patch adds cpu arch_id
-> support, and fill madt table with arch_id. For the present cpu
-> arch_id is still equal to logical id.
+> LoongArch ipi device uses physical cpuid to route to different
+> vcpus rather logical cpuid, and the physical cpuid is the same
+> with cpuid in acpi dsdt and srat table.
 >
 > Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
 > Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   hw/loongarch/acpi-build.c | 20 ++++++++++++++------
->   hw/loongarch/virt.c       | 34 ++++++++++++++++++++++++++++++++--
->   2 files changed, 46 insertions(+), 8 deletions(-)
+>   hw/intc/loongarch_ipi.c | 44 ++++++++++++++++++++++++++++++++++-------
+>   hw/loongarch/virt.c     |  1 +
+>   target/loongarch/cpu.h  |  2 ++
+>   3 files changed, 40 insertions(+), 7 deletions(-)
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 
 Thanks.
 Song Gao
-> diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-> index 8e3ce07367..232344e1c7 100644
-> --- a/hw/loongarch/acpi-build.c
-> +++ b/hw/loongarch/acpi-build.c
-> @@ -107,7 +107,9 @@ static void
->   build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
+> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+> index 3e45381652..67858b521c 100644
+> --- a/hw/intc/loongarch_ipi.c
+> +++ b/hw/intc/loongarch_ipi.c
+> @@ -17,6 +17,8 @@
+>   #include "target/loongarch/internals.h"
+>   #include "trace.h"
+>   
+> +static void loongarch_ipi_writel(void *, hwaddr, uint64_t, unsigned);
+> +
+>   static uint64_t loongarch_ipi_readl(void *opaque, hwaddr addr, unsigned size)
 >   {
->       MachineState *ms = MACHINE(lams);
-> -    int i;
-> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
-> +    const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
-> +    int i, arch_id;
->       AcpiTable table = { .sig = "APIC", .rev = 1, .oem_id = lams->oem_id,
->                           .oem_table_id = lams->oem_table_id };
->   
-> @@ -117,13 +119,15 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
->       build_append_int_noprefix(table_data, 0, 4);
->       build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
->   
-> -    for (i = 0; i < ms->smp.cpus; i++) {
-> +    for (i = 0; i < arch_ids->len; i++) {
->           /* Processor Core Interrupt Controller Structure */
-> +        arch_id = arch_ids->cpus[i].arch_id;
-> +
->           build_append_int_noprefix(table_data, 17, 1);    /* Type */
->           build_append_int_noprefix(table_data, 15, 1);    /* Length */
->           build_append_int_noprefix(table_data, 1, 1);     /* Version */
->           build_append_int_noprefix(table_data, i + 1, 4); /* ACPI Processor ID */
-> -        build_append_int_noprefix(table_data, i, 4);     /* Core ID */
-> +        build_append_int_noprefix(table_data, arch_id, 4); /* Core ID */
->           build_append_int_noprefix(table_data, 1, 4);     /* Flags */
->       }
->   
-> @@ -159,9 +163,11 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
->   static void
->   build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
->   {
-> -    uint64_t i;
-> +    int i, arch_id;
->       LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
->       MachineState *ms = MACHINE(lams);
-> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
-> +    const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
->       AcpiTable table = { .sig = "SRAT", .rev = 1, .oem_id = lams->oem_id,
->                           .oem_table_id = lams->oem_table_id };
->   
-> @@ -169,13 +175,15 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
->       build_append_int_noprefix(table_data, 1, 4); /* Reserved */
->       build_append_int_noprefix(table_data, 0, 8); /* Reserved */
->   
-> -    for (i = 0; i < ms->smp.cpus; ++i) {
-> +    for (i = 0; i < arch_ids->len; ++i) {
-> +        arch_id = arch_ids->cpus[i].arch_id;
-> +
->           /* Processor Local APIC/SAPIC Affinity Structure */
->           build_append_int_noprefix(table_data, 0, 1);  /* Type  */
->           build_append_int_noprefix(table_data, 16, 1); /* Length */
->           /* Proximity Domain [7:0] */
->           build_append_int_noprefix(table_data, 0, 1);
-> -        build_append_int_noprefix(table_data, i, 1); /* APIC ID */
-> +        build_append_int_noprefix(table_data, arch_id, 1); /* APIC ID */
->           /* Flags, Table 5-36 */
->           build_append_int_noprefix(table_data, 1, 4);
->           build_append_int_noprefix(table_data, 0, 1); /* Local SAPIC EID */
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index ceddec1b23..ced5a862f8 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -771,6 +771,9 @@ static void loongarch_init(MachineState *machine)
->       LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
->       int i;
->       hwaddr fdt_base;
-> +    const CPUArchIdList *possible_cpus;
-> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
-> +    CPUState *cpu;
->   
->       if (!cpu_model) {
->           cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
-> @@ -787,8 +790,12 @@ static void loongarch_init(MachineState *machine)
->       }
->       create_fdt(lams);
->       /* Init CPUs */
-> -    for (i = 0; i < machine->smp.cpus; i++) {
-> -        cpu_create(machine->cpu_type);
-> +
-> +    possible_cpus = mc->possible_cpu_arch_ids(machine);
-> +    for (i = 0; i < possible_cpus->len; i++) {
-> +        cpu = cpu_create(machine->cpu_type);
-> +        cpu->cpu_index = i;
-> +        machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
->       }
->       fdt_add_cpu_nodes(lams);
->       /* Add memory region */
-> @@ -1022,6 +1029,28 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
->       return NULL;
+>       IPICore *s = opaque;
+> @@ -75,13 +77,42 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
+>                         data, MEMTXATTRS_UNSPECIFIED, NULL);
 >   }
 >   
-> +static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+> +static int archid_cmp(const void *a, const void *b)
 > +{
-> +    int n;
-> +    unsigned int max_cpus = ms->smp.max_cpus;
+> +   CPUArchId *archid_a = (CPUArchId *)a;
+> +   CPUArchId *archid_b = (CPUArchId *)b;
 > +
-> +    if (ms->possible_cpus) {
-> +        assert(ms->possible_cpus->len == max_cpus);
-> +        return ms->possible_cpus;
-> +    }
-> +
-> +    ms->possible_cpus = g_malloc0(sizeof(CPUArchIdList) +
-> +                                  sizeof(CPUArchId) * max_cpus);
-> +    ms->possible_cpus->len = max_cpus;
-> +    for (n = 0; n < ms->possible_cpus->len; n++) {
-> +        ms->possible_cpus->cpus[n].type = ms->cpu_type;
-> +        ms->possible_cpus->cpus[n].arch_id = n;
-> +        ms->possible_cpus->cpus[n].props.has_core_id = true;
-> +        ms->possible_cpus->cpus[n].props.core_id = n % ms->smp.cores;
-> +    }
-> +    return ms->possible_cpus;
+> +   return archid_a->arch_id - archid_b->arch_id;
 > +}
 > +
->   static void loongarch_class_init(ObjectClass *oc, void *data)
+> +static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
+> +{
+> +    CPUArchId apic_id, *found_cpu;
+> +
+> +    apic_id.arch_id = id;
+> +    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
+> +        ms->possible_cpus->len, sizeof(*ms->possible_cpus->cpus),
+> +        archid_cmp);
+> +
+> +    return found_cpu;
+> +}
+> +
+> +static CPUState *ipi_getcpu(int arch_id)
+> +{
+> +    MachineState *machine = MACHINE(qdev_get_machine());
+> +    CPUArchId *archid;
+> +
+> +    archid = find_cpu_by_archid(machine, arch_id);
+> +    return CPU(archid->cpu);
+> +}
+> +
+>   static void ipi_send(uint64_t val)
 >   {
->       MachineClass *mc = MACHINE_CLASS(oc);
-> @@ -1038,6 +1067,7 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
->       mc->block_default_type = IF_VIRTIO;
->       mc->default_boot_order = "c";
->       mc->no_cdrom = 1;
-> +    mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
->       mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
->       mc->default_nic = "virtio-net-pci";
->       hc->plug = loongarch_machine_device_plug_cb;
+>       uint32_t cpuid;
+>       uint8_t vector;
+> -    CPULoongArchState *env;
+>       CPUState *cs;
+>       LoongArchCPU *cpu;
+> +    LoongArchIPI *s;
+>   
+>       cpuid = extract32(val, 16, 10);
+>       if (cpuid >= LOONGARCH_MAX_CPUS) {
+> @@ -92,11 +123,10 @@ static void ipi_send(uint64_t val)
+>       /* IPI status vector */
+>       vector = extract8(val, 0, 5);
+>   
+> -    cs = qemu_get_cpu(cpuid);
+> +    cs = ipi_getcpu(cpuid);
+>       cpu = LOONGARCH_CPU(cs);
+> -    env = &cpu->env;
+> -    address_space_stl(&env->address_space_iocsr, 0x1008,
+> -                      BIT(vector), MEMTXATTRS_UNSPECIFIED, NULL);
+> +    s = LOONGARCH_IPI(cpu->env.ipistate);
+> +    loongarch_ipi_writel(&s->ipi_core, CORE_SET_OFF, BIT(vector), 4);
+>   }
+>   
+>   static void mail_send(uint64_t val)
+> @@ -114,7 +144,7 @@ static void mail_send(uint64_t val)
+>       }
+>   
+>       addr = 0x1020 + (val & 0x1c);
+> -    cs = qemu_get_cpu(cpuid);
+> +    cs = ipi_getcpu(cpuid);
+>       cpu = LOONGARCH_CPU(cs);
+>       env = &cpu->env;
+>       send_ipi_data(env, val, addr);
+> @@ -135,7 +165,7 @@ static void any_send(uint64_t val)
+>       }
+>   
+>       addr = val & 0xffff;
+> -    cs = qemu_get_cpu(cpuid);
+> +    cs = ipi_getcpu(cpuid);
+>       cpu = LOONGARCH_CPU(cs);
+>       env = &cpu->env;
+>       send_ipi_data(env, val, addr);
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index ced5a862f8..17bc37bccd 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -617,6 +617,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+>               memory_region_add_subregion(&env->system_iocsr, APIC_BASE,
+>                                   sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi),
+>                                   cpu));
+> +        env->ipistate = ipi;
+>       }
+>   
+>       /*
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index 1f37e36b7c..b23f38c3d5 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -351,6 +351,8 @@ typedef struct CPUArchState {
+>       MemoryRegion iocsr_mem;
+>       bool load_elf;
+>       uint64_t elf_address;
+> +    /* Store ipistate to access from this struct */
+> +    DeviceState *ipistate;
+>   #endif
+>   } CPULoongArchState;
+>   
 
 
