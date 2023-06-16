@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62360733309
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB5E73330A
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 16:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAA0P-0006LH-LE; Fri, 16 Jun 2023 10:00:50 -0400
+	id 1qAA0d-0006Nh-Io; Fri, 16 Jun 2023 10:01:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA07-0006I7-Bg
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:00:31 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0b-0006NL-VD
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:01 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA03-0004ee-E2
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:00:30 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f8d2bfed53so6239595e9.1
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 07:00:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAA0a-0004rF-0X
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 10:01:01 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f8fcaa31c7so1771035e9.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 07:00:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686924024; x=1689516024;
+ d=linaro.org; s=google; t=1686924058; x=1689516058;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=iy5ZxnR3pIZc5lAQUDvBKzsQwzHhU4/RE3u4YPG9eEA=;
- b=STZPd56DE5nWzSN1EOCHlvEAjkXD0Cu03dHOqZ3+ZKeBeXBEJqgsfYf9JPdz6jvbc9
- 0bX/hihP9eqgv6G3G0Xi1es5B87HKbttaRN767KyTS3Av0eCsrVebBziZusUDkzbhwj1
- uskz9rdxOpQ7rm1Lf+YItHoKKbD5pxbO5jMuhy3R2vK7Lhsbc4G/VEeIHVF4KNAVtv/7
- 8q2+AsNpDqruNhwgznHTZqmJ/FLalSmr6kyJNPGPtH+7ZGW4do8ZA5QxOQcUUwnuuWTd
- O/t5WhNDeTEr7P9FdTZfNmz4daIVOhUEw1Nm/peOcX1jcKmW942W/+9g+kCOeMTi+Vyq
- rRIg==
+ bh=X+A5OPfH2NtcQuN06uhG+2NwIyNLjzxp6ZM91SB6oNk=;
+ b=BP4YVwMSzoHWKz1TyRqYyBCZw2CUakFwO6T9O5s0lda+/t3FP0zwU0Y4Pfai6Q27iH
+ 7AW51OquEWxpLfT4hLeVISZD01BsBn+kx0xiYCxk9x9HZ1o8//O8FfnfcxiplJKfGWCY
+ IR3a5ad00nA6en1G2XS+al7KESuXFZFPLP64GOLz5vCB5lYGtnR/oCbUhYMs4bhpVwxv
+ Q/vqIMomLkt4QwzQ1lgEtedWfleQBFsPOnZWEa4GjzIa0aOt5rHuAVhqaOogllbtwpWP
+ yqvVgt2cwX+RnI688rghdlS041KRhtwr2CCT5hdYWvdqpt65MVpJf/iBWTvES/z6qeH6
+ hO7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686924024; x=1689516024;
+ d=1e100.net; s=20221208; t=1686924058; x=1689516058;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iy5ZxnR3pIZc5lAQUDvBKzsQwzHhU4/RE3u4YPG9eEA=;
- b=ZjzTAPdM7/yU0kzhZTkX3hrq+sx9ITV+tLfrCXGPdfGu35pRemgbZMMmlH4ZTyOfTM
- KxpwpHpHKzzvQQzIPinoX9MZC+vKWHW5nd81wOcn47CWzf7V9XkozA8VWN0FmiaEOlhw
- kJ7vpqLDz+oXNhKDww+pWEEcemNpEhFQxR2l8vQdFPFIizKz2UDRVkSEpR14CuHcuZld
- 9RQgQkCY1Vew70EmHztej6W33QtRLqmrvhRE0euXiQJvUQ99yNeWm7J30yIWLUYKC7q1
- /mrGl8UxnVVDjOjJM5OsN4nJKyyNcV/DvBIfioRvupXyH+SDmmY9ZrLY0i7ephal7eBm
- PtzA==
-X-Gm-Message-State: AC+VfDynePOTK3by6wcCBSbYnrl5gUZw6b6Js/bA+Kwont/UjmB7N/g6
- 81GNUbSqMfwboN78HoDRtUiPSQ==
-X-Google-Smtp-Source: ACHHUZ6kPj+FMGGuTj0YDhgwONdGHoS+BS3HeKvdgsfdFnlVK34YImvQtzNGSKgPexIHdJ7LqnklUw==
-X-Received: by 2002:a05:600c:378b:b0:3f7:2b61:4c98 with SMTP id
- o11-20020a05600c378b00b003f72b614c98mr1784777wmr.13.1686924024383; 
- Fri, 16 Jun 2023 07:00:24 -0700 (PDT)
+ bh=X+A5OPfH2NtcQuN06uhG+2NwIyNLjzxp6ZM91SB6oNk=;
+ b=c0asoA8S6pdPxibLZIBwKPNKCCcfUXa7Q9IAvShtCEIVxq+vIuCMLbxwmVca7B2SP7
+ iJH+1KGYFZbp8mFQklyxTuVBGBNKPBf3YvrBTXS4ow85OKHPYLcMwyh8SSbMMGw6n6px
+ znsawSh3j/ghNWKY70iSd9UkHIkBMSUK0Yr7qiCwzpdyIF61/oPwegxmj+pSX3bK1emX
+ Cy7cCLdkp/KRTvFuZHxk4lq3huK3c/X4j8Q73ZdrwPMo716Z3OFz74K4zwFNXRfU1AIH
+ VsU2VPqhV5ZZaxzcnw/Bykd4O7zSTPNpVb0RmBNQ41r2jbc/Xv9uPd3ny+NnLYZSl9yP
+ VgyA==
+X-Gm-Message-State: AC+VfDz699EYKHoC3N+bxgfGb9xSoXzsh2E9bH8bpVH47FBV8usffPzk
+ wSxB60GmScNiotPI/kfWhuAiug==
+X-Google-Smtp-Source: ACHHUZ668rWVWtAWyOgfkFfd29gZ1O93tjslO4j+0maNAbvGLKEr7PdP3vvC/AAB86yy5g5upPUVKg==
+X-Received: by 2002:adf:e6c4:0:b0:30f:b7be:4089 with SMTP id
+ y4-20020adfe6c4000000b0030fb7be4089mr1610462wrm.3.1686924058232; 
+ Fri, 16 Jun 2023 07:00:58 -0700 (PDT)
 Received: from [192.168.164.175] (146.red-88-29-160.dynamicip.rima-tde.net.
  [88.29.160.146]) by smtp.gmail.com with ESMTPSA id
- k15-20020a7bc40f000000b003f7eafe9d76sm2274260wmi.37.2023.06.16.07.00.21
+ j15-20020a05600c2b8f00b003f4266965fbsm2322965wmc.5.2023.06.16.07.00.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jun 2023 07:00:23 -0700 (PDT)
-Message-ID: <96ec686c-e384-ac79-8027-2c439a090cbb@linaro.org>
-Date: Fri, 16 Jun 2023 12:14:39 +0200
+ Fri, 16 Jun 2023 07:00:57 -0700 (PDT)
+Message-ID: <7f606624-7744-6c1f-c5bb-fb62f4e65495@linaro.org>
+Date: Fri, 16 Jun 2023 12:28:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 02/12] hw/misc/pvpanic: Add MMIO interface
+Subject: Re: [PATCH 03/12] hvf: Increase number of possible memory slots
 Content-Language: en-US
 To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
@@ -70,13 +70,13 @@ Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
 References: <20230614224038.86148-1-graf@amazon.com>
- <20230614224038.86148-3-graf@amazon.com>
+ <20230614224038.86148-4-graf@amazon.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230614224038.86148-3-graf@amazon.com>
+In-Reply-To: <20230614224038.86148-4-graf@amazon.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -5
 X-Spam_score: -0.6
 X-Spam_bar: /
@@ -100,104 +100,44 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 15/6/23 00:40, Alexander Graf wrote:
-> In addition to the ISA and PCI variants of pvpanic, let's add an MMIO
-> platform device that we can use in embedded arm environments.
+> For PVG we will need more than the current 32 possible memory slots.
+> Bump the limit to 512 instead.
 > 
 > Signed-off-by: Alexander Graf <graf@amazon.com>
 > ---
->   hw/misc/Kconfig           |  4 +++
->   hw/misc/meson.build       |  1 +
->   hw/misc/pvpanic-mmio.c    | 66 +++++++++++++++++++++++++++++++++++++++
->   include/hw/misc/pvpanic.h |  1 +
->   4 files changed, 72 insertions(+)
->   create mode 100644 hw/misc/pvpanic-mmio.c
+>   accel/hvf/hvf-accel-ops.c | 2 +-
+>   include/sysemu/hvf_int.h  | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+> index 9c3da03c94..bf0caaa852 100644
+> --- a/accel/hvf/hvf-accel-ops.c
+> +++ b/accel/hvf/hvf-accel-ops.c
+> @@ -88,7 +88,7 @@ struct mac_slot {
+>       uint64_t gva;
+>   };
+>   
+> -struct mac_slot mac_slots[32];
+> +struct mac_slot mac_slots[512];
+>   
+>   static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
+>   {
+> diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
+> index 6ab119e49f..c7623a2c09 100644
+> --- a/include/sysemu/hvf_int.h
+> +++ b/include/sysemu/hvf_int.h
+> @@ -40,7 +40,7 @@ typedef struct hvf_vcpu_caps {
+>   
+>   struct HVFState {
+>       AccelState parent;
+> -    hvf_slot slots[32];
+> +    hvf_slot slots[512];
+>       int num_slots;
+>   
+>       hvf_vcpu_caps *hvf_caps;
 
+Please add a definition in this header (using in ops.c).
 
-> diff --git a/hw/misc/pvpanic-mmio.c b/hw/misc/pvpanic-mmio.c
-> new file mode 100644
-> index 0000000000..aebe7227e6
-> --- /dev/null
-> +++ b/hw/misc/pvpanic-mmio.c
-> @@ -0,0 +1,66 @@
-> +/*
-> + * QEMU simulated pvpanic device (MMIO frontend)
-> + *
-> + * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-
-Preferably SPDX tag.
-
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/module.h"
-
-Unused header.
-
-> +#include "sysemu/runstate.h"
-> +
-> +#include "hw/nvram/fw_cfg.h"
-
-Ditto.
-
-> +#include "hw/qdev-properties.h"
-> +#include "hw/misc/pvpanic.h"
-> +#include "qom/object.h"
-
-Ditto.
-
-> +#include "hw/isa/isa.h"
-
-Ditto.
-
-> +#include "standard-headers/linux/pvpanic.h"
-> +
-> +OBJECT_DECLARE_SIMPLE_TYPE(PVPanicMMIOState, PVPANIC_MMIO_DEVICE)
-> +
-> +#define PVPANIC_MMIO_SIZE 0x2
-> +
-> +struct PVPanicMMIOState {
-> +    SysBusDevice parent_obj;
-
-Mising "sysbus.h"
-
-> +
-> +    PVPanicState pvpanic;
-> +};
-
-This worked for me:
-
--- >8 --
---- a/hw/misc/pvpanic-mmio.c
-+++ b/hw/misc/pvpanic-mmio.c
-@@ -3,19 +3,13 @@
-   *
-   * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights 
-Reserved.
-   *
-- * This work is licensed under the terms of the GNU GPL, version 2 or 
-later.
-- * See the COPYING file in the top-level directory.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-   */
-
-  #include "qemu/osdep.h"
--#include "qemu/module.h"
--#include "sysemu/runstate.h"
--
--#include "hw/nvram/fw_cfg.h"
-  #include "hw/qdev-properties.h"
-  #include "hw/misc/pvpanic.h"
--#include "qom/object.h"
--#include "hw/isa/isa.h"
-+#include "hw/sysbus.h"
-  #include "standard-headers/linux/pvpanic.h"
----
-
-Fixing the includes:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In order to save memory and woods, what about keeping
+32 on x86 and only raising to 512 on arm?
 
