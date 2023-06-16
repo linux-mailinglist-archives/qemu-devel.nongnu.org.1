@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69187325D3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 05:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCFC7325D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 05:24:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA03i-0000Fj-0M; Thu, 15 Jun 2023 23:23:34 -0400
+	id 1qA03l-0000Ga-HT; Thu, 15 Jun 2023 23:23:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qA03h-0000FO-38
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:33 -0400
+ id 1qA03j-0000G9-6q
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:35 -0400
 Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qA03e-0002FT-UK
- for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:32 -0400
+ id 1qA03h-0002FT-CL
+ for qemu-devel@nongnu.org; Thu, 15 Jun 2023 23:23:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1686885810; x=1718421810;
+ t=1686885813; x=1718421813;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Q2JGAnkMBBQNMGB+r+lLb7vJ/6J18IISmrsux0gXhms=;
- b=SX/nwhns2rLliBhSG07VBEkknGkXyufkYKwu45Oh4pu3LpoISW27fGJl
- T/XhhAimD3wOEtREeQopwRWY9p8DqBKvCWhXh2OskhjOMIhE6w+VpYXfa
- xUrwB4LCsMy76mQuu7FSxfZ0XUsbl/c6/Empfen7IdyDO94/g556C7tXd
- yFSuHpjPWDaARznJkas5EMX6UAfsnNTnP9yPdzDqER5nmnIqisPApiTPs
- j9/u2hIsnEM2PmpBYL9YnC4ExXsHR+QL/ACnQK7+bk+LZLdmRZ9L+llnW
- Qnfqg0WPRgV42O6wG6NZBeEs6yZlttf0icFcWPTblfprCTNwPbPMuhpso Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="357979181"
-X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="357979181"
+ bh=yYvxNHjZWYRg+mu3YoFPGrI9MEA7dSAgEL34PwIBMJg=;
+ b=djUWhUt1KFOmi/PpmusFCN5YCVePYfiobmejWT2OvyY4kq5xMC/H8B8g
+ FXsLhZLJMMxl1bHLBV2+XrmA2xzeQhzkYzRxQ6RVNyiMKD4Qc4lCE1Fqv
+ axc/B90MEOCSkeupwuIN+t8CkcDYGCjI0mVpqTD5kZ5BecFmahw2HqLRs
+ V2Ci1dF+N5RbMwzdeiubpAxAiKOYtmYV9RSUAfjUC2AfQtejXr3cvjJGo
+ CXAoXhm6aZnlamGzl6PQx7vxQdOLOx8lFQStPTE/htCcnwr8dmkr2HuU/
+ Iba+ipyIZ7xBvOfsUolS+huLRiCb0wMzmmWsP8qPxs2rCHkk4V/K45Gds w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="357979186"
+X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="357979186"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2023 20:23:30 -0700
+ 15 Jun 2023 20:23:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="715846011"
-X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="715846011"
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="715846021"
+X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; d="scan'208";a="715846021"
 Received: from st-server.bj.intel.com ([10.240.193.102])
- by fmsmga007.fm.intel.com with ESMTP; 15 Jun 2023 20:23:28 -0700
+ by fmsmga007.fm.intel.com with ESMTP; 15 Jun 2023 20:23:30 -0700
 From: Tao Su <tao1.su@linux.intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, lei4.wang@intel.com,
  qian.wen@intel.com, imammedo@redhat.com, tao1.su@linux.intel.com
-Subject: [PATCH 6/7] target/i386: Add new CPU model EmeraldRapids
-Date: Fri, 16 Jun 2023 11:23:10 +0800
-Message-Id: <20230616032311.19137-7-tao1.su@linux.intel.com>
+Subject: [PATCH 7/7] target/i386: Add new CPU model GraniteRapids
+Date: Fri, 16 Jun 2023 11:23:11 +0800
+Message-Id: <20230616032311.19137-8-tao1.su@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230616032311.19137-1-tao1.su@linux.intel.com>
 References: <20230616032311.19137-1-tao1.su@linux.intel.com>
@@ -60,7 +60,7 @@ X-Spam_bar: ----
 X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=ham autolearn_force=no
+ UPPERCASE_75_100=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,50 +76,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Qian Wen <qian.wen@intel.com>
+The GraniteRapids CPU model mainly adds the following new features based
+on SapphireRapids:
 
-Emerald Rapids (EMR) is the next generation of Xeon server processor
-after Sapphire Rapids (SPR).
+- PREFETCHITI CPUID.(EAX=7,ECX=1):EDX[bit 14]
+- AMX-FP16 CPUID.(EAX=7,ECX=1):EAX[bit 21]
+- MCDT_NO CPUID.(EAX=7,ECX=2):EDX[bit 5]
+- SBDR_SSDP_NO MSR_IA32_ARCH_CAPABILITIES[bit 13]
+- FBSDP_NO MSR_IA32_ARCH_CAPABILITIES[bit 14]
+- PSDP_NO MSR_IA32_ARCH_CAPABILITIES[bit 15]
+- PBRSB_NO MSR_IA32_ARCH_CAPABILITIES[bit 24]
 
-Currently, regarding the feature set that can be exposed to guest, there
-isn't any one new comparing with SPR cpu model, except that EMR has a
-different model number.
-
-Though it's practicable to define EMR as an alias of a new version of
-SPR by only updating the model number and model name, it loses the
-flexibility when new version of EMR cpu model are needed for adding new
-features (that hasn't virtalized/supported by KVM yet).
-
-So just add EMR as a standalone cpu model.
-
-Signed-off-by: Qian Wen <qian.wen@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes to original patch
-(https://lore.kernel.org/qemu-devel/20230515025308.1050277-1-qian.wen@intel.com/)
-
-- Add MSR_ARCH_CAP_SBDR_SSDP_NO, MSR_ARCH_CAP_FBSDP_NO and
-  MSR_ARCH_CAP_PSDP_NO
----
- target/i386/cpu.c | 127 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
+ target/i386/cpu.c | 136 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 136 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f84fd20bb1..7faf6dfaee 100644
+index 7faf6dfaee..860106fc24 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -3866,6 +3866,133 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-             { /* end of list */ }
-         }
+@@ -3993,6 +3993,142 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             { /* end of list */ },
+         },
      },
 +    {
-+        .name = "EmeraldRapids",
++        .name = "GraniteRapids",
 +        .level = 0x20,
 +        .vendor = CPUID_VENDOR_INTEL,
 +        .family = 6,
-+        .model = 207,
-+        .stepping = 1,
++        .model = 173,
++        .stepping = 0,
++        /*
++         * please keep the ascending order so that we can have a clear view of
++         * bit position of each feature.
++         */
 +        .features[FEAT_1_EDX] =
 +            CPUID_FP87 | CPUID_VME | CPUID_DE | CPUID_PSE | CPUID_TSC |
 +            CPUID_MSR | CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC |
@@ -166,7 +159,7 @@ index f84fd20bb1..7faf6dfaee 100644
 +            MSR_ARCH_CAP_SKIP_L1DFL_VMENTRY | MSR_ARCH_CAP_MDS_NO |
 +            MSR_ARCH_CAP_PSCHANGE_MC_NO | MSR_ARCH_CAP_TAA_NO |
 +            MSR_ARCH_CAP_SBDR_SSDP_NO | MSR_ARCH_CAP_FBSDP_NO |
-+            MSR_ARCH_CAP_PSDP_NO,
++            MSR_ARCH_CAP_PSDP_NO | MSR_ARCH_CAP_PBRSB_NO,
 +        .features[FEAT_XSAVE] =
 +            CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XSAVEC |
 +            CPUID_XSAVE_XGETBV1 | CPUID_XSAVE_XSAVES | CPUID_D_1_EAX_XFD,
@@ -174,7 +167,12 @@ index f84fd20bb1..7faf6dfaee 100644
 +            CPUID_6_EAX_ARAT,
 +        .features[FEAT_7_1_EAX] =
 +            CPUID_7_1_EAX_AVX_VNNI | CPUID_7_1_EAX_AVX512_BF16 |
-+            CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC,
++            CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC |
++            CPUID_7_1_EAX_AMX_FP16,
++        .features[FEAT_7_1_EDX] =
++            CPUID_7_1_EDX_PREFETCHITI,
++        .features[FEAT_7_2_EDX] =
++            CPUID_7_2_EDX_MCDT_NO,
 +        .features[FEAT_VMX_BASIC] =
 +            MSR_VMX_BASIC_INS_OUTS | MSR_VMX_BASIC_TRUE_CTLS,
 +        .features[FEAT_VMX_ENTRY_CTLS] =
@@ -234,7 +232,7 @@ index f84fd20bb1..7faf6dfaee 100644
 +        .features[FEAT_VMX_VMFUNC] =
 +            MSR_VMX_VMFUNC_EPT_SWITCHING,
 +        .xlevel = 0x80000008,
-+        .model_id = "Intel Xeon Processor (EmeraldRapids)",
++        .model_id = "Intel Xeon Processor (GraniteRapids)",
 +        .versions = (X86CPUVersionDefinition[]) {
 +            { .version = 1 },
 +            { /* end of list */ },
