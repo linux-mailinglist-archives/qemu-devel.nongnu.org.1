@@ -2,93 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8237732907
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 09:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C6C732917
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 09:44:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA40a-00015N-NI; Fri, 16 Jun 2023 03:36:36 -0400
+	id 1qA47f-0002QJ-Rr; Fri, 16 Jun 2023 03:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qA40M-00015B-Ci
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:36:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qA40K-0006eM-JC
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 03:36:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686900975;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qzxT0HBVR43htf94mczgCfjN0Lcgg/Q61wP4ebVCSFc=;
- b=TmCIX55+wXiNwstGICkkIEfivNacbuWFScR45J9QVoQzpxv4OMP8pzj32FBgSiCxf8N/BY
- VuC2wU2hI5n62oYPd6UpI8JEHWLrkV3wdm5Q2ylaKXXWU06TEIJLpX2tIl9m5DE3SHiyoh
- Osu5fqDTMhmE5DGHnAgNQ8FUqWWtqj0=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-fqnS_77YMe2J5jZj5SQKPg-1; Fri, 16 Jun 2023 03:36:13 -0400
-X-MC-Unique: fqnS_77YMe2J5jZj5SQKPg-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1b5277e57d6so4328955ad.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 00:36:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686900972; x=1689492972;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qzxT0HBVR43htf94mczgCfjN0Lcgg/Q61wP4ebVCSFc=;
- b=AenpMNGuDyRuHFyov0DWcAnx+uDXtXZk4wUzGt2iyQaodG1Qmry8A6Ez58gK7r0u5J
- EpXEIxJFou4aaMm31MH4vRftSVZOho0zZVDjpq0rQMuZXe3kKi8ps0umeT2TjYRmlAdH
- UHC+R/yrxCT4p4/DCn4a1SGB40LUH/59BsH75L4QgoB+Ald1iKLK5SHn/kMXgjrIeTtB
- SIakeyj822F6V+fb/owe6lcejsgA9yPaI85UCv9eAwGKX7I/j4yiut4IaMncDIrEOg3S
- 8jZz35K+vsyu6DsFUn//djZsQf2TDPvshquCmJYWlcgvu9+I1PiRptb8mayp6OPw7oMx
- gYOg==
-X-Gm-Message-State: AC+VfDx9Y+DYTRHuC2gvm/0vSlIK9f/+fmFuMUeo8MJJ0Aegr9hoVzT9
- I6zYqVpF6psSOshalRZ23gEmHUOMSa4NWRox40wsU1WlUWjlA6Z2pTcibWiQwchnsr/+B4Z8ZUT
- IEc5NS2baOK1rqeo=
-X-Received: by 2002:a17:903:18a:b0:1b0:1095:f4f6 with SMTP id
- z10-20020a170903018a00b001b01095f4f6mr1365898plg.24.1686900971990; 
- Fri, 16 Jun 2023 00:36:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7/CEpmQSXX296bkb6dYoFKZRCp5rWR6tPLsiwKqVg6X72j5yUkqSJzs0J+Tf5KURG55nfX0g==
-X-Received: by 2002:a17:903:18a:b0:1b0:1095:f4f6 with SMTP id
- z10-20020a170903018a00b001b01095f4f6mr1365883plg.24.1686900971563; 
- Fri, 16 Jun 2023 00:36:11 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.159.188])
- by smtp.gmail.com with ESMTPSA id
- x1-20020a170902ec8100b001a6f7744a27sm9404508plg.87.2023.06.16.00.36.09
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 16 Jun 2023 00:36:11 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v2] hw/pci: prevent hotplug of devices on pcie-root-ports
- on the wrong slot
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
-Date: Fri, 16 Jun 2023 13:06:06 +0530
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D505615B-F22E-441A-9F6C-566E46C714E8@redhat.com>
-References: <20230615051645.4798-1-anisinha@redhat.com>
- <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
+ id 1qA47a-0002O0-Fm; Fri, 16 Jun 2023 03:43:50 -0400
+Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <wangyuquan1236@phytium.com.cn>)
+ id 1qA47T-0007vP-Vi; Fri, 16 Jun 2023 03:43:49 -0400
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAnrF04Eoxk0yU6AA--.29718S2;
+ Fri, 16 Jun 2023 15:41:44 +0800 (CST)
+Received: from WYQ-S (unknown [218.76.62.144])
+ by mail (Coremail) with SMTP id AQAAfwA3dAahEoxkR3IAAA--.1739S3;
+ Fri, 16 Jun 2023 15:43:30 +0800 (CST)
+Date: Fri, 16 Jun 2023 15:43:31 +0800
+From: "Yuquan Wang" <wangyuquan1236@phytium.com.cn>
+To: jonathan.cameron <jonathan.cameron@huawei.com>, 
+ "Gregory Price" <gregory.price@memverge.com>
+Cc: qemu-arm <qemu-arm@nongnu.org>, 
+	qemu-devel <qemu-devel@nongnu.org>
+Subject: A confusion about CXL in arm virt machine
+X-Priority: 3
+X-GUID: 1CA737B7-7292-4BAB-85B6-16F638FABB2E
+X-Has-Attach: no
+X-Mailer: Foxmail 7.2.25.228[cn]
+Mime-Version: 1.0
+Message-ID: <2023061615433049315231@phytium.com.cn>
+Content-Type: multipart/alternative;
+ boundary="----=_001_NextPart601833761820_=----"
+X-CM-TRANSID: AQAAfwA3dAahEoxkR3IAAA--.1739S3
+X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAMAWSLYqgCrgABsE
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
+ 1236@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=129.150.39.64;
+ envelope-from=wangyuquan1236@phytium.com.cn;
+ helo=sgoci-sdnproxy-4.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_FONT_LOW_CONTRAST=0.001,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_KAM_HTML_FONT_INVALID=0.01,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,96 +69,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a multi-part message in MIME format.
 
+------=_001_NextPart601833761820_=----
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
 
-> On 15-Jun-2023, at 4:56 PM, Igor Mammedov <imammedo@redhat.com> wrote:
->=20
-> On Thu, 15 Jun 2023 10:46:45 +0530
-> Ani Sinha <anisinha@redhat.com> wrote:
->=20
->> PCIE root ports and other upstream ports only allow one device on =
-slot 0.
->> When hotplugging a device on a pcie root port, make sure that the =
-device
->> address passed always represents slot 0. Any other slot value would =
-be
->> illegal on a root port.
->>=20
->> CC: jusual@redhat.com
->> CC: imammedo@redhat.com
->> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> hw/pci/pci.c | 16 ++++++++++++++++
->> 1 file changed, 16 insertions(+)
->>=20
->> changelog:
->> v2: feedback from mst included.
->>=20
->> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->> index bf38905b7d..66999352cc 100644
->> --- a/hw/pci/pci.c
->> +++ b/hw/pci/pci.c
->> @@ -64,6 +64,7 @@ bool pci_available =3D true;
->> static char *pcibus_get_dev_path(DeviceState *dev);
->> static char *pcibus_get_fw_dev_path(DeviceState *dev);
->> static void pcibus_reset(BusState *qbus);
->> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>=20
->> static Property pci_props[] =3D {
->>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->> @@ -1182,6 +1183,11 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>     } else if (dev->hotplugged &&
->>                !pci_is_vf(pci_dev) &&
->>                pci_get_function_0(pci_dev)) {
->> +        /*
->> +         * populating function 0 triggers a bus scan from the guest =
-that
->> +         * exposes other non-zero functions. Hence we need to ensure =
-that
->> +         * function 0 is available.
->> +         */
->>         error_setg(errp, "PCI: slot %d function 0 already occupied by =
-%s,"
->>                    " new func %s cannot be exposed to guest.",
->>                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
->> @@ -1189,6 +1195,16 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>                    name);
->>=20
->>        return NULL;
->> +    } else if (dev->hotplugged &&
->> +               !pci_is_vf(pci_dev) &&
->> +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
->> +        /*
->> +         * If the device is being plugged into an upstream PCIE =
-port,
->=20
-> you probably mixing up downstream port with upstream one,
-> the only thing that could be plugged into upstream port
-> is PCIE switch.
->=20
-> Also I'm not sure that we should do this at all.
-> Looking at BZ it seems that QEMU crashes inside backend
-> and tear down/cleanup sequence is broken somewhere.
-> And that is the root cause, so I'd rather fix that 1st
-> and only after that consider adding workarounds if any
-> were necessary.
+SGksIEdyZWdvcnkNCg0KVGhlcmUgaXMgb25lIGNvbmZ1c2lvbiBhYm91dCBDWEwgaW4gUUVNVSBJ
+IGhvcGUgdG8gY29uc3VsdC4gDQpJZiB5b3UgaGF2ZSBzb21lIHRpbWUgdG8gbG9vayBhdCB0aGlz
+IGVtYWlsLCBJIHdvdWxkIGhhdmUgYmV0dGVyIHVuZGVyc3RhbmRpbmcgb2YgQ1hMIA0KZW11bGF0
+aW9uIGluIFFFTVUuDQoNCk9uIGRvY3Mvc3lzdGVtL2RldmljZXMvY3hsLnJzdCAsICBHcmVnb3J5
+IHdyb3RlOg0KQSB2ZXJ5IHNpbXBsZSBzZXR1cCB3aXRoIGp1c3Qgb25lIGRpcmVjdGx5IGF0dGFj
+aGVkIENYTCBUeXBlIDMgVm9sYXRpbGUgTWVtb3J5IGRldmljZTo6DQpxZW11LXN5c3RlbS1hYXJj
+aDY0IC1NIHZpcnQsZ2ljLXZlcnNpb249MyxjeGw9b24gLW0gNGcsbWF4bWVtPThHLHNsb3RzPTgg
+LWNwdSBtYXggXA0KLi4uLi4uDQoNCkFzIHRoZSBjdXJyZW50IG1hc3RlciBicmFuY2ggb2YgUUVN
+VSBoYXMgbm90IHlldCBjb21wbGVtZW50ZWQgdGhlIENYTCBvcHRpb24vZXhwYW5zaW9uIA0KaW4g
+YXJtIHZpcnQgbWFjaGluZSwgaG93IHRoaXMgZXhhbXBsZSBjb21tYW5kIGxpbmVzIHdvcmtlZD8g
+T3IgaGVyZSB1c2VkIGFub3RoZXIgYnJhbmNoIA0KcmF0aGVyIHRoYW4gbWFzdGVyPw0KDQpNYW55
+IHRoYW5rcw0KWXVxdWFuDQo=
 
-I have added more details in the ticket. I still believe that my =
-approach is in the right direction.
+------=_001_NextPart601833761820_=----
+Content-Type: text/html;
+	charset="GB2312"
+Content-Transfer-Encoding: quoted-printable
 
->=20
->=20
->> +         * like a pcie root port, we only support one device at slot =
-0
->> +         */
->> +        error_setg(errp, "PCI: slot %d is not valid for %s",
->> +                   PCI_SLOT(devfn), name);
->> +        return NULL;
->>     }
->>=20
->>     pci_dev->devfn =3D devfn;
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charse=
+t=3DGB2312"><style>body { line-height: 1.5; }blockquote { margin-top: 0px;=
+ margin-bottom: 0px; margin-left: 0.5em; }div.FoxDiv20230616153421567746 {=
+ }body { font-size: 13px; font-family: "Times New Roman"; color: rgb(0, 0,=
+ 0); line-height: 1.5; }</style></head><body>=0A<div><span></span></div><b=
+lockquote style=3D"margin-Top: 0px; margin-Bottom: 0px; margin-Left: 0.5em=
+; margin-Right: inherit"><div><span style=3D"background-color: transparent=
+;">Hi,&nbsp;</span><span style=3D"background-color: transparent;">G</span>=
+<span style=3D"background-color: transparent;">regory</span></div><div><di=
+v class=3D"FoxDiv20230616153421567746"><div><span style=3D"background-colo=
+r: transparent;"><br></span></div><div><span style=3D"background-color: tr=
+ansparent;">There is one confusion about CXL in QEMU&nbsp;</span><span sty=
+le=3D"background-color: transparent;">I hope to consult</span><span style=
+=3D"background-color: transparent;">.&nbsp;</span></div><div><span style=
+=3D"background-color: transparent;">If you have some time&nbsp;</span><spa=
+n style=3D"color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);">to&nb=
+sp;look&nbsp;at&nbsp;this email,&nbsp;</span><span style=3D"color: rgb(0, =
+0, 0); background-color: rgba(0, 0, 0, 0);">I would have better understand=
+ing of CXL&nbsp;</span></div><div><span style=3D"color: rgb(0, 0, 0); back=
+ground-color: rgba(0, 0, 0, 0);">emulation in QEMU.</span></div><div><span=
+ style=3D"background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0);"><br></=
+span></div>=0AOn&nbsp;docs/system/devices/cxl.rst&nbsp;,&nbsp; G<span>rego=
+ry</span>&nbsp;wrote:<div><span style=3D"background-color: rgba(0, 0, 0, 0=
+); color: rgb(0, 0, 0);">A&nbsp;very&nbsp;simple&nbsp;setup&nbsp;with&nbsp=
+;just&nbsp;one&nbsp;directly&nbsp;attached&nbsp;CXL&nbsp;Type&nbsp;3&nbsp;=
+Volatile&nbsp;Memory&nbsp;device::</span></div><div><span style=3D"color: =
+rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);">qemu-system-aarch64&nbs=
+p;-M&nbsp;virt,gic-version=3D3,cxl=3Don&nbsp;-m&nbsp;4g,maxmem=3D8G,slots=
+=3D8&nbsp;-cpu&nbsp;max&nbsp;\</span><br><div></div><div>......</div><div>=
+<br></div><div>As the current master branch of&nbsp;<span style=3D"backgro=
+und-color: transparent;">QEMU has not yet complemented the CXL option/</sp=
+an><span style=3D"background-color: transparent;">expansion&nbsp;</span></=
+div><div><span style=3D"background-color: transparent;">in arm virt machin=
+e, how this e</span><span style=3D"background-color: rgba(0, 0, 0, 0); col=
+or: rgb(0, 0, 0);">xample&nbsp;command&nbsp;lines worked? Or here used ano=
+ther branch&nbsp;</span></div><div><span style=3D"background-color: rgba(0=
+, 0, 0, 0); color: rgb(0, 0, 0);">rather than master?</span></div><div><br=
+></div><div>Many thanks</div><div>Yuquan</div></div></div></div></blockquo=
+te>=0A</body></html>
+------=_001_NextPart601833761820_=------
 
 
