@@ -2,82 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E1A732E4A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 12:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57B3733069
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 13:50:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA6i2-0006l2-SS; Fri, 16 Jun 2023 06:29:38 -0400
+	id 1qA7wv-0006Uy-Jp; Fri, 16 Jun 2023 07:49:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qA6i0-0006ki-DM
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 06:29:36 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qA6hy-0006Ml-Mt
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 06:29:36 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51a1d539ffaso1285911a12.0
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 03:29:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1686911372; x=1689503372;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=92xWwc/xn57EVrGt32pxXKL5nOzCl0xs34WGS1IXpSE=;
- b=P08M/cyzR3ByoOAAbGav9X2nKlnEJ6MjrWNZFmgoD9Ss7uxAzFmMSHoYZdbptbD0+9
- GJr1c+6iWWprSVKLmG6vG4ew0FzdhPvhh2cTyyfvKistGOS4gCy/vKdlE9moqyT4zkpH
- A9cEKdRdXhzEZcPIOOZZ9aFk1ZSaHEnJFFoBAnW5iI973UVm1tyZVCPPEFaAio8cuIrI
- jurKGugsDtMYAyYNCPuUrf6SGeSEeRZslHGsqDdkDolO6fQGVu/rJxfKAmi0/rb4OE/X
- 7cpxcu4YD6kYwL+5xJvvohgxeuOXCnoj41Begpzhc9hEhK3hRAt8/3i4onyn90Hd9amy
- ezgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686911372; x=1689503372;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=92xWwc/xn57EVrGt32pxXKL5nOzCl0xs34WGS1IXpSE=;
- b=lrb2SQTnBnL3HZnWU6JgZ37HRXqIApasI5KkUuZQsZIVKjOcmxqlRLhFvKIxretPj2
- 8sC1LeVe7c0U/WWVAmdOVzP1eJyAWb3icT+Yi4a2FVN9k+arJEYja1QdaHQpvAq75aYq
- zhwlNw5APpv5Wp2qM/HXlBRCpG20akXuPWBGT/aP32bX3HU2TxpRUBFk2E7tb8DmT9s9
- xkYWeQwW9S68NObnSqlbA+Ry1B9PKZWZuhz5ieNQ8SWGnePzs/z4dOCn7LspzzBzCgTj
- SDjf6lrQsKLwU+wiktMLPQrz/HklaNE3wHF7OrzcW6/viGfx56fCXFg39sCo7Ik/LFOO
- k6AQ==
-X-Gm-Message-State: AC+VfDy6VUu90eAelq5RBuG0HrXKZyu4e84ecOcXZ+ep+HRzeXwE6Wpz
- jThJjkbSSnBpZ6Ss3esY+/8bVQ==
-X-Google-Smtp-Source: ACHHUZ7WnxwvQNFfAZUDhtRpliTbQur5gGSpTR8HVd8O/UKCmGxcP93DvTEtFqsg6RHk2G68ct8yXg==
-X-Received: by 2002:aa7:d0c2:0:b0:518:79d2:208c with SMTP id
- u2-20020aa7d0c2000000b0051879d2208cmr1399255edo.18.1686911372614; 
- Fri, 16 Jun 2023 03:29:32 -0700 (PDT)
-Received: from [192.168.85.227] ([91.223.100.45])
- by smtp.gmail.com with ESMTPSA id
- f9-20020a056402068900b0051495ce23absm9695536edy.10.2023.06.16.03.29.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jun 2023 03:29:32 -0700 (PDT)
-Message-ID: <c8f2136b-9564-a1c7-b1ba-409c1f700e60@linaro.org>
-Date: Fri, 16 Jun 2023 12:29:29 +0200
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qA7wt-0006UK-DY
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 07:49:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qA7wr-0004F1-KC
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 07:49:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686916140;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L9tgbgzrBAtM2duhTjvf4sc7TXMeB8Ua4SklVk41HPw=;
+ b=MmWAYme/qNmTz2a1XiLlx9rbg8lJtcEvkUM/qdkc8felVq5K4Snhyo6yiCiAcvQ42ao69P
+ tR02QcjMaw4ATZHgcZ40bfXF1Nhsa7CyO4HDCssn99weSTT82pZktr6PtJ31qpK4iTXi55
+ aoHnhW64u2/57hxQGd+5EY4v+A4f3YM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-556-E-3rkRUzNcq5644LhscMrA-1; Fri, 16 Jun 2023 07:48:56 -0400
+X-MC-Unique: E-3rkRUzNcq5644LhscMrA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A701185A792;
+ Fri, 16 Jun 2023 11:48:56 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.166])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5571440C20F5;
+ Fri, 16 Jun 2023 11:48:53 +0000 (UTC)
+Date: Fri, 16 Jun 2023 13:48:51 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Alexander Graf <graf@amazon.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <r.bolshakov@yadro.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 05/12] hw/virtio: Add support for apple virtio-blk
+Message-ID: <ZIxMIyi1KY7Ku9Xm@redhat.com>
+References: <20230614224038.86148-1-graf>
+ <20230614225626.97734-1-graf@amazon.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 0/6] aspeed queue
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230615173525.428831-1-clg@kaod.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230615173525.428831-1-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230614225626.97734-1-graf@amazon.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,30 +84,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/15/23 19:35, Cédric Le Goater wrote:
-> The following changes since commit 7efd65423ab22e6f5890ca08ae40c84d6660242f:
-> 
->    Merge tag 'pull-riscv-to-apply-20230614' ofhttps://github.com/alistair23/qemu  into staging (2023-06-14 05:28:51 +0200)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/legoater/qemu/  tags/pull-aspeed-20230615
-> 
-> for you to fetch changes up to 42bea956f6f7477c06186c7add62fa0107a27a9c:
-> 
->    target/arm: Allow users to set the number of VFP registers (2023-06-15 18:35:58 +0200)
-> 
-> ----------------------------------------------------------------
-> aspeed queue:
-> 
-> * extension of the rainier machine with VPD contents
-> * fixes for Coverity issues
-> * new "bmc-console" machine option
-> * new "vfp-d32" ARM CPU property
+Am 15.06.2023 um 00:56 hat Alexander Graf geschrieben:
+> Apple has its own virtio-blk PCI device ID where it deviates from the
+> official virtio-pci spec slightly: It puts a new "apple type"
+> field at a static offset in config space and introduces a new discard
+> command.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+In other words, it's a different device. We shouldn't try to
+differentiate only with a property, but actually model it as a separate
+device.
 
+> This patch adds a new qdev property called "apple-type" to virtio-blk-pci.
+> When that property is set, we assume the virtio-blk device is an Apple one
+> of the specific type and act accordingly.
 
-r~
+Do we have any information on what the number in "apple-type" actually
+means or do we have to treat it as a black box?
+
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> ---
+>  hw/block/virtio-blk.c                       | 23 +++++++++++++++++++++
+>  hw/virtio/virtio-blk-pci.c                  |  7 +++++++
+>  include/hw/pci/pci_ids.h                    |  1 +
+>  include/hw/virtio/virtio-blk.h              |  1 +
+>  include/standard-headers/linux/virtio_blk.h |  3 +++
+>  5 files changed, 35 insertions(+)
+> 
+> diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+> index 39e7f23fab..76b85bb3cb 100644
+> --- a/hw/block/virtio-blk.c
+> +++ b/hw/block/virtio-blk.c
+> @@ -1120,6 +1120,20 @@ static int virtio_blk_handle_request(VirtIOBlockReq *req, MultiReqBuffer *mrb)
+>  
+>          break;
+>      }
+> +    case VIRTIO_BLK_T_APPLE1:
+
+Can we have a more descriptive name?
+
+> +    {
+> +        if (s->conf.x_apple_type) {
+> +            /* Only valid on Apple Virtio */
+> +            char buf[iov_size(in_iov, in_num)];
+> +            memset(buf, 0, sizeof(buf));
+> +            iov_from_buf(in_iov, in_num, 0, buf, sizeof(buf));
+> +            virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
+
+So this is a command that simply fills the guest buffer with zeros
+without accessing the disk content? Weird, but ok, if that's what they
+are doing...
+
+The commit message talks about a discard command. I would have expected
+a command that discards/unmaps data from the disk. I think it would be
+good to call it something else in the commit message if it has nothing
+to do with this.
+
+> +        } else {
+> +            virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+> +        }
+> +        virtio_blk_free_request(req);
+> +        break;
+> +    }
+>      default:
+>          virtio_blk_req_complete(req, VIRTIO_BLK_S_UNSUPP);
+>          virtio_blk_free_request(req);
+> @@ -1351,6 +1365,10 @@ static void virtio_blk_update_config(VirtIODevice *vdev, uint8_t *config)
+>      } else {
+>          blkcfg.zoned.model = VIRTIO_BLK_Z_NONE;
+>      }
+> +    if (s->conf.x_apple_type) {
+> +        /* Apple abuses the same location for its type id */
+> +        blkcfg.max_secure_erase_sectors = s->conf.x_apple_type;
+
+Ideally, blkcfg would contain a union there. Since this is a type
+imported from the kernel, we can't change it inside of QEMU only. Works
+for me with this comment.
+
+> +    }
+>      memcpy(config, &blkcfg, s->config_size);
+>  }
+>  
+> @@ -1625,6 +1643,10 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
+>  
+>      s->config_size = virtio_get_config_size(&virtio_blk_cfg_size_params,
+>                                              s->host_features);
+> +    if (s->conf.x_apple_type) {
+> +        /* Apple Virtio puts the blk type at 0x3c, make sure we have space. */
+> +        s->config_size = MAX(s->config_size, 0x3d);
+> +    }
+>      virtio_init(vdev, VIRTIO_ID_BLOCK, s->config_size);
+>  
+>      s->blk = conf->conf.blk;
+> @@ -1734,6 +1756,7 @@ static Property virtio_blk_properties[] = {
+>                         conf.max_write_zeroes_sectors, BDRV_REQUEST_MAX_SECTORS),
+>      DEFINE_PROP_BOOL("x-enable-wce-if-config-wce", VirtIOBlock,
+>                       conf.x_enable_wce_if_config_wce, true),
+> +    DEFINE_PROP_UINT32("x-apple-type", VirtIOBlock, conf.x_apple_type, 0),
+
+In a separate device, this would probably be called "apple-type"
+(without "x-") like promised in the commit message?
+
+If not, what is the reason for having an "x-" prefix?
+
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> diff --git a/hw/virtio/virtio-blk-pci.c b/hw/virtio/virtio-blk-pci.c
+> index 9743bee965..5fbf98f750 100644
+> --- a/hw/virtio/virtio-blk-pci.c
+> +++ b/hw/virtio/virtio-blk-pci.c
+> @@ -62,6 +62,13 @@ static void virtio_blk_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+>      }
+>  
+>      qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
+> +
+> +    if (conf->x_apple_type) {
+> +        /* Apple virtio-blk uses a different vendor/device id */
+> +        pci_config_set_vendor_id(vpci_dev->pci_dev.config, PCI_VENDOR_ID_APPLE);
+> +        pci_config_set_device_id(vpci_dev->pci_dev.config,
+> +                                 PCI_DEVICE_ID_APPLE_VIRTIO_BLK);
+> +    }
+>  }
+>  
+>  static void virtio_blk_pci_class_init(ObjectClass *klass, void *data)
+> diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
+> index e4386ebb20..74e589a298 100644
+> --- a/include/hw/pci/pci_ids.h
+> +++ b/include/hw/pci/pci_ids.h
+> @@ -188,6 +188,7 @@
+>  #define PCI_DEVICE_ID_APPLE_UNI_N_AGP    0x0020
+>  #define PCI_DEVICE_ID_APPLE_U3_AGP       0x004b
+>  #define PCI_DEVICE_ID_APPLE_UNI_N_GMAC   0x0021
+> +#define PCI_DEVICE_ID_APPLE_VIRTIO_BLK   0x1a00
+>  
+>  #define PCI_VENDOR_ID_SUN                0x108e
+>  #define PCI_DEVICE_ID_SUN_EBUS           0x1000
+> diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
+> index dafec432ce..7117ce754c 100644
+> --- a/include/hw/virtio/virtio-blk.h
+> +++ b/include/hw/virtio/virtio-blk.h
+> @@ -46,6 +46,7 @@ struct VirtIOBlkConf
+>      uint32_t max_discard_sectors;
+>      uint32_t max_write_zeroes_sectors;
+>      bool x_enable_wce_if_config_wce;
+> +    uint32_t x_apple_type;
+>  };
+>  
+>  struct VirtIOBlockDataPlane;
+> diff --git a/include/standard-headers/linux/virtio_blk.h b/include/standard-headers/linux/virtio_blk.h
+> index 7155b1a470..bbea5d50b9 100644
+> --- a/include/standard-headers/linux/virtio_blk.h
+> +++ b/include/standard-headers/linux/virtio_blk.h
+> @@ -204,6 +204,9 @@ struct virtio_blk_config {
+>  /* Reset All zones command */
+>  #define VIRTIO_BLK_T_ZONE_RESET_ALL 26
+>  
+> +/* Write zeroes command */
+> +#define VIRTIO_BLK_T_APPLE1	0x10000
+
+Hm... The commit message says discard, this says write zeroes, and the
+implementation seems to be read zeroes? I'm confused.
+
+> +
+>  #ifndef VIRTIO_BLK_NO_LEGACY
+>  /* Barrier before this op. */
+>  #define VIRTIO_BLK_T_BARRIER	0x80000000
+
+Kevin
 
 
