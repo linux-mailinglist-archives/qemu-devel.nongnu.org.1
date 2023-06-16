@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFE87329A3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 10:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0BE7329B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 10:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA4c4-0007CJ-53; Fri, 16 Jun 2023 04:15:20 -0400
+	id 1qA4kG-0000Jn-Ot; Fri, 16 Jun 2023 04:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1qA4c1-0007Bm-1M
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:15:17 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1qA4by-00056I-V3
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:15:16 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1b52bf6e659so2879655ad.3
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 01:15:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1686903307; x=1689495307;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LgB3lhZX+xrq91uN1rfRRA4Yo5zSXGBPIKI4XR6EYHc=;
- b=jH5phApCUktCyO0YT4p9x2+dSJvO2tf4K3QDWCyKFgaSs5thy1NqshTbDs13fvIQWJ
- 0Hm1a46BO+gbKDyDcKzxbS8Hst1BL5MR+QXn4dQ94GOv8btsgL2lA5R8+htKAOmZkEQ1
- 2IyWntXx0rh5i6D7EttK2R2wTDyZx2yehyC+RPx971LK0PuHOz4gGJCTaktYt74AvAnK
- X0te4Rq6F/BkeUqzj1C8YKPlq46YQNAmiC0Is9yg3kr/BGxqhMvCXGExJffMF17k5fVw
- WtaFpQbkYmykPNRAb8YQQHekjCDVoSMW0Yg+h0Ap2zKomXw9NWTQYeljfF2iGxaMGMVG
- oEqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686903307; x=1689495307;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=LgB3lhZX+xrq91uN1rfRRA4Yo5zSXGBPIKI4XR6EYHc=;
- b=PbavWS7z9fcYumRO43NFoZmtCofL0irMkPr6x8UnW7ScPFzM+WE73o/DnEylIcVdHE
- jkXZLDK/HFQ+XkTU6xv0ecN1CreJaosjjmCELL3pQZpTttw8i/8qwMQnLRtrd/EQVg9P
- RzoGmBg7CFCTWqtNVczI8Sx79/iYXJ9qQlMriBEsKuTQ+LkRMMM45SvjiCQFu/5zrPIw
- NsVpt0rEPlnFvNJDMVtfX5rFVBMnm4oJ7rcWDeQvZz3KPy0oGeEpzlbZY0a/5taYA4YQ
- rB7dPTgqF6b3y1x+4KyjUjymRH04k1RR0iSErOdBFthQop8ki80EZVKf8k3A1S05sURJ
- vqiQ==
-X-Gm-Message-State: AC+VfDwDsvepRZp8Ir/J99QmBsn8plDiiG+fqGSVDNf7H9/MNTExT/5V
- nlWIvl1UWOgivVmGljHsS8ZWYQ==
-X-Google-Smtp-Source: ACHHUZ6r9cKEKYOsL+okkKmI60Hf9CkpLEuHU/7cTxWBgVhqNfAsYuqap118T9m12J+BHnvy1Y2MSQ==
-X-Received: by 2002:a17:903:11c7:b0:1ae:7631:7fa9 with SMTP id
- q7-20020a17090311c700b001ae76317fa9mr1178633plh.37.1686903307240; 
- Fri, 16 Jun 2023 01:15:07 -0700 (PDT)
-Received: from [10.94.53.13] ([203.208.167.146])
- by smtp.gmail.com with ESMTPSA id
- t11-20020a1709028c8b00b001ae0152d280sm15120448plo.193.2023.06.16.01.15.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Jun 2023 01:15:06 -0700 (PDT)
-Message-ID: <93b9e037-9c26-e37e-3327-bc7f91e18ad2@bytedance.com>
-Date: Fri, 16 Jun 2023 16:15:02 +0800
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qA4kE-0000J2-OW
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:23:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qA4kC-0006Vv-CX
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:23:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1686903822;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z8ayrUEnHWwM2G/lrM1b4tHQlknk65c/0LWpzT63LBQ=;
+ b=Nn8Vo1BoJqncKPuXFyMtTz5wmRI1XdZND7zmtKIhKjeL1Q+bVmXj+Gijeoi19sWMd7VWnb
+ SZBe6eVlI0q8CrC54UUDfJ8MRp06J/zCQMaGOTzcOJWu9IkSU5Ov8gntpAOGMwV2lI2GnT
+ z3YonEKPOM5bwu0Dc5dJ5HlqzCQGLiU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-449-hZpySoJ8Ocy1mpLmVD9eQg-1; Fri, 16 Jun 2023 04:23:38 -0400
+X-MC-Unique: hZpySoJ8Ocy1mpLmVD9eQg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D986E8022EF;
+ Fri, 16 Jun 2023 08:23:37 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.196])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 50724C1603B;
+ Fri, 16 Jun 2023 08:23:37 +0000 (UTC)
+Date: Fri, 16 Jun 2023 10:23:35 +0200
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Jeuk Kim <jeuk20.kim@samsung.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kwolf@redhat.com" <kwolf@redhat.com>,
+ "hreitz@redhat.com" <hreitz@redhat.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "fam@euphon.net" <fam@euphon.net>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ Klaus Birkelund Jensen <k.jensen@samsung.com>
+Subject: Re: [PATCH v2 0/3] hw/ufs: Add Universal Flash Storage (UFS) support
+Message-ID: <20230616082335.GB2478180@fedora>
+References: <CGME20230616065816epcms2p82787f1aeb410ec4b8ab6ffedb6edf4d2@epcms2p8>
+ <20230616065816epcms2p82787f1aeb410ec4b8ab6ffedb6edf4d2@epcms2p8>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v8 0/6] migration: reduce time of loading non-iterable
- vmstate
-From: Chuang Xu <xuchuangxclwt@bytedance.com>
-To: pbonzini@redhat.com
-Cc: qemu-devel@nongnu.org, dgilbert@redhat.com, quintela@redhat.com,
- peterx@redhat.com, david@redhat.com, philmd@linaro.org
-References: <20230317081904.24389-1-xuchuangxclwt@bytedance.com>
-In-Reply-To: <20230317081904.24389-1-xuchuangxclwt@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=xuchuangxclwt@bytedance.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001,
- NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="4IN38Vn7zCF5aWH0"
+Content-Disposition: inline
+In-Reply-To: <20230616065816epcms2p82787f1aeb410ec4b8ab6ffedb6edf4d2@epcms2p8>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,87 +85,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Paolo,
 
-A few months ago, Juan told me that this series requires your or someone 
-familiar with memory API's feedback.
+--4IN38Vn7zCF5aWH0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Could you please review it and provide some suggestions?
+On Fri, Jun 16, 2023 at 03:58:16PM +0900, Jeuk Kim wrote:
+> Since v1:
+> - use macros of "hw/registerfields.h" (Addressed Philippe's review commen=
+ts)
+>=20
+> This patch series adds support for a new PCI-based UFS device.
+>=20
+> The UFS pci device id (PCI_DEVICE_ID_REDHAT_UFS) is not registered
+> in the Linux kernel yet, so it does not work right away, but I confirmed
+> that it works with Linux when the UFS pci device id is registered.
+>=20
+> I have also verified that it works with Windows 10.
+>=20
+> Jeuk Kim (3):
+>   hw/ufs: Initial commit for emulated Universal-Flash-Storage
+>   hw/ufs: Support for Query Transfer Requests
+>   hw/ufs: Support for UFS logical unit
 
-On 2023/3/17 下午4:18, Chuang Xu wrote:
-> In this version:
->
-> - delete useless line change.
-> - update comments and commit messages.
->
-> The duration of loading non-iterable vmstate accounts for a significant
-> portion of downtime (starting with the timestamp of source qemu stop and
-> ending with the timestamp of target qemu start). Most of the time is spent
-> committing memory region changes repeatedly.
->
-> This patch packs all the changes to memory region during the period of	
-> loading non-iterable vmstate in a single memory transaction. With the
-> increase of devices, this patch will greatly improve the performance.
->
-> Here are the test1 results:
-> test info:
-> - Host
->    - Intel(R) Xeon(R) Platinum 8362 CPU
->    - Mellanox Technologies MT28841
-> - VM
->    - 32 CPUs 128GB RAM VM
->    - 8 16-queue vhost-net device
->    - 16 4-queue vhost-user-blk device.
->
-> 	time of loading non-iterable vmstate     downtime
-> before		 112 ms			  	  285 ms
-> after		 20 ms			  	  194 ms
->
->
-> In test2, we keep the number of the device the same as test1, reduce the
-> number of queues per device:
->
-> Here are the test2 results:
-> test info:
-> - Host
->    - Intel(R) Xeon(R) Platinum 8362 CPU
->    - Mellanox Technologies MT28841
-> - VM
->    - 32 CPUs 128GB RAM VM
->    - 8 1-queue vhost-net device
->    - 16 1-queue vhost-user-blk device.
->
-> 	time of loading non-iterable vmstate     downtime
-> before		 65 ms			 	  151 ms
->
-> after		 19 ms			  	  100 ms
->
->
-> In test3, we keep the number of queues per device the same as test1, reduce
-> the number of devices:
->
-> Here are the test3 results:
-> test info:
-> - Host
->    - Intel(R) Xeon(R) Platinum 8362 CPU
->    - Mellanox Technologies MT28841
-> - VM
->    - 32 CPUs 128GB RAM VM
->    - 1 16-queue vhost-net device
->    - 1 4-queue vhost-user-blk device.
->
-> 	time of loading non-iterable vmstate     downtime
-> before		 24 ms			  	  51 ms
-> after		 9 ms			 	  36 ms
->
->
-> As we can see from the test results above, both the number of queues and
-> the number of devices have a great impact on the time of loading non-iterable
-> vmstate. The growth of the number of devices and queues will lead to more
-> mr commits, and the time consumption caused by the flatview reconstruction
-> will also increase.
->
-> Please review, Chuang
->
-Thanks!
+For future patch series (no need to resend):
+
+These patch emails are not threaded. Please use email threads so that CI
+systems and patch management tools can easily identify which emails
+belong together in a patch series:
+
+  git send-email --thread --no-chain-reply-to ...
+
+It is easiest to permanently set these options with:
+
+  git config format.thread shallow
+  git config sendemail.chainReplyTo false
+
+Thanks,
+Stefan
+
+>=20
+>  MAINTAINERS              |    6 +
+>  hw/Kconfig               |    1 +
+>  hw/meson.build           |    1 +
+>  hw/ufs/Kconfig           |    4 +
+>  hw/ufs/lu.c              | 1441 ++++++++++++++++++++++++++++++++++++
+>  hw/ufs/meson.build       |    1 +
+>  hw/ufs/trace-events      |   58 ++
+>  hw/ufs/trace.h           |    1 +
+>  hw/ufs/ufs.c             | 1511 ++++++++++++++++++++++++++++++++++++++
+>  hw/ufs/ufs.h             |  130 ++++
+>  include/block/ufs.h      | 1048 ++++++++++++++++++++++++++
+>  include/hw/pci/pci.h     |    1 +
+>  include/hw/pci/pci_ids.h |    1 +
+>  include/scsi/constants.h |    1 +
+>  meson.build              |    1 +
+>  15 files changed, 4206 insertions(+)
+>  create mode 100644 hw/ufs/Kconfig
+>  create mode 100644 hw/ufs/lu.c
+>  create mode 100644 hw/ufs/meson.build
+>  create mode 100644 hw/ufs/trace-events
+>  create mode 100644 hw/ufs/trace.h
+>  create mode 100644 hw/ufs/ufs.c
+>  create mode 100644 hw/ufs/ufs.h
+>  create mode 100644 include/block/ufs.h
+>=20
+> --=20
+> 2.34.1
+>=20
+
+--4IN38Vn7zCF5aWH0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSMHAcACgkQnKSrs4Gr
+c8hgtAf+Lo5+WoAMqL6mJ1CMNBOluKzZUOpLrSPRfAOBVnQUcz+dDiKt+kDUBiEx
+jWuHJF6UPGMNIZgk5jENRwh9FwjZAn7vbHAckI/Pj0qz6RqtbJ3Nn/Eaz7qfU11l
+c1/rQIogUAPjgi5czlSmXDfTU+oIuilqnIttnYkW/wbATLJc0OLxqUHKc/16IPRP
+7jaPB4Hnq8chFVfX4pcwqAvnyGaWXW6ecvwmxyRaWuaG5tGMe/KQtP8/ylhIiE8a
+9H1fxBri5xdlBGO2EusFq+TIpDovubYmlWXZ4elSZ/K6EW590KNOV3hVgh+UjAAy
+BxxMVpvWsUKH1CmslAfsNzEkZ9hv1w==
+=XnHg
+-----END PGP SIGNATURE-----
+
+--4IN38Vn7zCF5aWH0--
+
 
