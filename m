@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4E47329E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 10:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CB2732A93
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 10:54:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA4st-0002bg-20; Fri, 16 Jun 2023 04:32:43 -0400
+	id 1qA5Co-0006Qv-Ts; Fri, 16 Jun 2023 04:53:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qA4sp-0002bE-9L
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:32:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qA4sn-0000JZ-Br
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:32:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686904356;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XF0M1+ZDdaVDq+SOm9Zj3jaoDeDZABLdummikl+eH+0=;
- b=MozvyMHomdvEdhyr1RvpcOlhYt86BKmPNq6tiwvqPZRsyiQPK9meLD42S0VkQUBxwmap4D
- ohCFtKXPba5eXqlF6FraHuPRAzgYn2kqDf5LLkASFyuU/eMlwatBgeegIm7H7F5VkeIdIN
- y16TAY/pAVNx++6C6OCOMHHiJEXCZNQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-O18zt0A5NbCL3iLnYyxdqg-1; Fri, 16 Jun 2023 04:32:30 -0400
-X-MC-Unique: O18zt0A5NbCL3iLnYyxdqg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-311143796afso171124f8f.3
- for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 01:32:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1qA5Cm-0006PF-MB
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:53:16 -0400
+Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1qA5Ck-0006Zf-Bj
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 04:53:16 -0400
+Received: by mail-qv1-xf30.google.com with SMTP id
+ 6a1803df08f44-62ddb103e1dso5109166d6.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Jun 2023 01:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1686905590; x=1689497590;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :references:mime-version:user-agent:in-reply-to:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=N1ONw5aelAwc4TnCV1dZroMSgrwCi/mYyw6fVtmBmrg=;
+ b=O55Ou7ZOdSSkcip57tY2ImEalGX3Xzl2fmzGc2WzS3InNrx9NqCkot4+YPtdXm3Gbh
+ DQiH90C0KwuoUnPYHomMn9lwv4qLHDtKA41my/19Llm82ucG5IpudaN8+CicK4oA2F8U
+ lQzKemN0Vu2VdG+DOp8wuoITlOcTjqPjoa5zBuQkpzEH+lu6GtuYrvWVlXEonN1QJeHT
+ KerDwW5eB5fJ6/gmzCVF9qULtatdAx9SpUSe5NWcpH+1OuQdys3lfBdKTYzExu4kvNhe
+ 8c0mp8Ql4QbqgBefQ4XZS1qHNIwmAiRWrHqs/G6PCSpAYsTriUsmxvsF9igHEqNKojDu
+ ArVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1686904349; x=1689496349;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XF0M1+ZDdaVDq+SOm9Zj3jaoDeDZABLdummikl+eH+0=;
- b=MLq1H1ewtKDdyrQ10Bk526Ax6m4M0fIeJQ2Pkiyx/R8iOhAWidOmxSe4bEJC4JKTLT
- MeGnGiPhdHzdrjcblq+CzHFmO2lHyXORYt6rsP2dMOOJzceSEZIeccl95wNNwsWxbh4A
- J8xQG8Vle/EJw99WPgvxKlkFFK3Wf6WUyfIIAWXWKqNcfpX43rqj2KCwgrUcCTuqQm0O
- dCQLp8joECpBnjtk1CBQPZuZnu2ImBZvMzt0RraoautSsVdFmBqV9lAaTL0DPq0L3D7u
- jN8gGGzJSfu/yUwf8mmzj4ObMjAFuugzSIgN+N8iN3DhsDpzl4O6pY4XRriLT1mPsbnq
- n0ig==
-X-Gm-Message-State: AC+VfDxziJna9XxNi0YaOZP84VZjYc8x6gMjjqRBlAK/1OaTKLTF+o0v
- yozqXhohKw15eE8rCOumvo8zWLbxO9ijT1+qo8Av/gMv33D2N9UVmiIIvV2M8C/Nlmq8jP5ax8W
- 98PUVFU8R7tnmE9I=
-X-Received: by 2002:adf:ee51:0:b0:311:13a7:2d87 with SMTP id
- w17-20020adfee51000000b0031113a72d87mr805762wro.66.1686904349155; 
- Fri, 16 Jun 2023 01:32:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ713m3NziD0SgvmT1NtfwPhFqZDcFpc6EM4BeyiLGR0xras8SjfB+WgiyyVbQ9iOG/ZXOJ7pw==
-X-Received: by 2002:adf:ee51:0:b0:311:13a7:2d87 with SMTP id
- w17-20020adfee51000000b0031113a72d87mr805748wro.66.1686904348824; 
- Fri, 16 Jun 2023 01:32:28 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- f11-20020a5d50cb000000b0030fb828511csm16395270wrt.100.2023.06.16.01.32.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Jun 2023 01:32:28 -0700 (PDT)
-Date: Fri, 16 Jun 2023 10:32:27 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Julia Suvorova <jusual@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] hw/pci: prevent hotplug of devices on
- pcie-root-ports on the wrong slot
-Message-ID: <20230616103227.0028f4fa@imammedo.users.ipa.redhat.com>
-In-Reply-To: <D505615B-F22E-441A-9F6C-566E46C714E8@redhat.com>
-References: <20230615051645.4798-1-anisinha@redhat.com>
- <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
- <D505615B-F22E-441A-9F6C-566E46C714E8@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20221208; t=1686905590; x=1689497590;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :references:mime-version:user-agent:in-reply-to:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=N1ONw5aelAwc4TnCV1dZroMSgrwCi/mYyw6fVtmBmrg=;
+ b=TxG47IDOoHLkZnnxX10XEwc6jvF7SEn0AUKugGrVDhKi8SQD1r2Sl3ayCUeCrjSWia
+ IwB9idFvF42xJh/wd6sEA69ey3h5b0F9Z3tVRbdpBzVhoxl3qYXUg48T9Ci9xmHMgRoi
+ TUNFbZ84oN3Tl+JycsPpS0iBq2EUKqTW0tXyFB2dkH3OWOj2KcaZJsB5FsIt1YyTUpCV
+ kxp5mqOFHc2z1ShAcywMLJuA4ydrvDUQ24CAiHfI8+mBNwm2577LkF/Rkr90qLj27+TE
+ 6iMDNoZbm+kAljA1ZWboJqQMNA4UHEfRJ85s/jOEPmsFVa+A8LcQSsXCYWR/cBH553q1
+ ZcDQ==
+X-Gm-Message-State: AC+VfDy4aqCUHi4/SNBNd8FkiTddiYtDeQWq3c+G+GgaDk3CZVPcveH4
+ b+3hqoDiQwZJKIcPBJA2XVycUjRcIW/kgAikjVVsJQ==
+X-Google-Smtp-Source: ACHHUZ6M9oY6iHLR2WN9zLR4kjA9zl9MgAspogu4Ap462rMZ/n6pNnblPyWirnHFsFFpGQWwSTldzyDdG2wgcSJE/8Y=
+X-Received: by 2002:a05:6214:411c:b0:62d:eae2:a441 with SMTP id
+ kc28-20020a056214411c00b0062deae2a441mr1275773qvb.64.1686905590699; Fri, 16
+ Jun 2023 01:53:10 -0700 (PDT)
+Received: from 44278815321 named unknown by gmailapi.google.com with HTTPREST; 
+ Fri, 16 Jun 2023 03:53:10 -0500
+In-Reply-To: <20230130080956.3047-5-quintela@redhat.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Mime-Version: 1.0
+References: <20230130080956.3047-1-quintela@redhat.com>
+ <20230130080956.3047-5-quintela@redhat.com>
+From: Chuang Xu <xuchuangxclwt@bytedance.com>
+Date: Fri, 16 Jun 2023 03:53:10 -0500
+Message-ID: <CALophutb+J2Qqa-msbY_aW+sz-OPW-XoQQLfCVfEXLfcaWa8xQ@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] multifd: Count the number of bytes sent correctly
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
+ envelope-from=xuchuangxclwt@bytedance.com; helo=mail-qv1-xf30.google.com
+X-Spam_score_int: 6
+X-Spam_score: 0.6
+X-Spam_bar: /
+X-Spam_report: (0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_MUA_MOZILLA=2.309,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001,
+ NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,98 +96,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 16 Jun 2023 13:06:06 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
+Hi,Juan,
 
-> > On 15-Jun-2023, at 4:56 PM, Igor Mammedov <imammedo@redhat.com> wrote:
-> > 
-> > On Thu, 15 Jun 2023 10:46:45 +0530
-> > Ani Sinha <anisinha@redhat.com> wrote:
-> >   
-> >> PCIE root ports and other upstream ports only allow one device on slot 0.
-> >> When hotplugging a device on a pcie root port, make sure that the device
-> >> address passed always represents slot 0. Any other slot value would be
-> >> illegal on a root port.
-> >> 
-> >> CC: jusual@redhat.com
-> >> CC: imammedo@redhat.com
-> >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >> ---
-> >> hw/pci/pci.c | 16 ++++++++++++++++
-> >> 1 file changed, 16 insertions(+)
-> >> 
-> >> changelog:
-> >> v2: feedback from mst included.
-> >> 
-> >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> >> index bf38905b7d..66999352cc 100644
-> >> --- a/hw/pci/pci.c
-> >> +++ b/hw/pci/pci.c
-> >> @@ -64,6 +64,7 @@ bool pci_available = true;
-> >> static char *pcibus_get_dev_path(DeviceState *dev);
-> >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> >> static void pcibus_reset(BusState *qbus);
-> >> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> >> 
-> >> static Property pci_props[] = {
-> >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> >> @@ -1182,6 +1183,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >>     } else if (dev->hotplugged &&
-> >>                !pci_is_vf(pci_dev) &&
-> >>                pci_get_function_0(pci_dev)) {
-> >> +        /*
-> >> +         * populating function 0 triggers a bus scan from the guest that
-> >> +         * exposes other non-zero functions. Hence we need to ensure that
-> >> +         * function 0 is available.
-> >> +         */
-> >>         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
-> >>                    " new func %s cannot be exposed to guest.",
-> >>                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
-> >> @@ -1189,6 +1195,16 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >>                    name);
-> >> 
-> >>        return NULL;
-> >> +    } else if (dev->hotplugged &&
-> >> +               !pci_is_vf(pci_dev) &&
-> >> +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> >> +        /*
-> >> +         * If the device is being plugged into an upstream PCIE port,  
-> > 
-> > you probably mixing up downstream port with upstream one,
-> > the only thing that could be plugged into upstream port
-> > is PCIE switch.
-> > 
-> > Also I'm not sure that we should do this at all.
-> > Looking at BZ it seems that QEMU crashes inside backend
-> > and tear down/cleanup sequence is broken somewhere.
-> > And that is the root cause, so I'd rather fix that 1st
-> > and only after that consider adding workarounds if any
-> > were necessary.  
-> 
-> I have added more details in the ticket. I still believe that my approach is in the right direction.
+On 2023/1/30 =E4=B8=8B=E5=8D=884:09, Juan Quintela wrote:
+> Current code asumes that all pages are whole.  That is not true for
+> example for compression already.  Fix it for creating a new field
+> ->sent_bytes that includes it.
+>
+> All ram_counters are used only from the migration thread, so we have
+> two options:
+> - put a mutex and fill everything when we sent it (not only
+>    ram_counters, also qemu_file->xfer_bytes).
+> - Create a local variable that implements how much has been sent
+>    through each channel.  And when we push another packet, we "add" the
+>    previous stats.
+>
+> I choose two due to less changes overall.  On the previous code we
+> increase transferred and then we sent.  Current code goes the other
+> way around.  It sents the data, and after the fact, it updates the
+> counters.  Notice that each channel can have a maximum of half a
+> megabyte of data without counting, so it is not very important.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>   migration/multifd.h | 2 ++
+>   migration/multifd.c | 6 ++++--
+>   2 files changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/migration/multifd.h b/migration/multifd.h
+> index e2802a9ce2..36f899c56f 100644
+> --- a/migration/multifd.h
+> +++ b/migration/multifd.h
+> @@ -102,6 +102,8 @@ typedef struct {
+>       uint32_t flags;
+>       /* global number of generated multifd packets */
+>       uint64_t packet_num;
+> +    /* How many bytes have we sent on the last packet */
+> +    uint64_t sent_bytes;
+>       /* thread has work to do */
+>       int pending_job;
+>       /* array of pages to sent.
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 61cafe4c76..cd26b2fda9 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -394,7 +394,6 @@ static int multifd_send_pages(QEMUFile *f)
+>       static int next_channel;
+>       MultiFDSendParams *p =3D NULL; /* make happy gcc */
+>       MultiFDPages_t *pages =3D multifd_send_state->pages;
+> -    uint64_t transferred;
+>
+>       if (qatomic_read(&multifd_send_state->exiting)) {
+>           return -1;
+> @@ -429,7 +428,8 @@ static int multifd_send_pages(QEMUFile *f)
+>       p->packet_num =3D multifd_send_state->packet_num++;
+>       multifd_send_state->pages =3D p->pages;
+>       p->pages =3D pages;
+> -    transferred =3D ((uint64_t) pages->num) * p->page_size + p->packet_l=
+en;
+> +    uint64_t transferred =3D p->sent_bytes;
+> +    p->sent_bytes =3D 0;
+>       qemu_file_acct_rate_limit(f, transferred);
+>       qemu_mutex_unlock(&p->mutex);
+>       stat64_add(&ram_atomic_counters.multifd_bytes, transferred);
+> @@ -719,6 +719,8 @@ static void *multifd_send_thread(void *opaque)
+>               }
+>
+>               qemu_mutex_lock(&p->mutex);
+> +            p->sent_bytes +=3D p->packet_len;
+> +            p->sent_bytes +=3D p->next_packet_size;
 
-eject is _optional_ and guest is free to ignore eject request.
-That shall not cause improper QEMU behavior.
+Consider a scenario where some normal pages are transmitted in the first ro=
+und,
+followed by several consecutive rounds of zero pages. When zero pages
+are transmitted,
+next_packet_size of first round is still incorrectly added to
+sent_bytes. If we set a rate
+limiting for dirty page transmission, the transmission performance of
+multi zero check
+will degrade.
 
-Preventing bug trigger is ok if we can't fix root cause but
-then one should explain in commit message what root cause
-is and why it can't be fixed.
+Maybe we should set next_packet_size to 0 in multifd_send_pages()?
 
-does it work for similar coldplugged setup without unplug
-(if yes then why)?
-
-> 
-> > 
-> >   
-> >> +         * like a pcie root port, we only support one device at slot 0
-> >> +         */
-> >> +        error_setg(errp, "PCI: slot %d is not valid for %s",
-> >> +                   PCI_SLOT(devfn), name);
-> >> +        return NULL;
-> >>     }
-> >> 
-> >>     pci_dev->devfn = devfn;  
-> 
-
+>               p->pending_job--;
+>               qemu_mutex_unlock(&p->mutex);
+>
 
