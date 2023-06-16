@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28F0732B8A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 11:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AAE732B80
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Jun 2023 11:28:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qA5k2-00054D-N1; Fri, 16 Jun 2023 05:27:38 -0400
+	id 1qA5k9-00055X-9T; Fri, 16 Jun 2023 05:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5k0-00053n-Mx
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5k6-00054y-Vn
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5jz-0000Kp-1W
- for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:36 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qA5k5-0000LV-CV
+ for qemu-devel@nongnu.org; Fri, 16 Jun 2023 05:27:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1686907654;
+ s=mimecast20190719; t=1686907660;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qXmqZ0NqwuS8jR7uBp7mMBXLm/o6YAZgNQHf3c5IcyA=;
- b=c2BDILUbew07yf/aeOHz1J9SJljmXzyrc6iCNxGUsEYWwoyP9uyOwOu5p0HQzjTLfkI05B
- mwG1aY5HPUsIs3JPmjF//UfGJcJ+FBTmJp7i2H+qNJ7SOBj3RTvHu9zcemcKMS8Rr89SaK
- c4djHpfh8m4iLeGuhExwctpBGVnYhvA=
+ bh=rxp9aQJbdO7YPukV3KcasUUlhaPToacJ7ZXPjhPwib0=;
+ b=R09UEFCnVHfHeY5dMmfgAMnevMfWARGrGs3+vrKBSCaOZ8MoWCudSZk4DY9/ocyyYk5yV7
+ OtU+NsvUWnBDMUMZafdg1b3uRYJEQ72KNdpskoQS5sRqFBWTkPmQ/kJNhPw1zcnkROqDcR
+ mD4TO6FkAUz3soxH1Jh04ksvfs/Imro=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-445-HSZbfOTJO9arMAKckwDhAw-1; Fri, 16 Jun 2023 05:27:32 -0400
-X-MC-Unique: HSZbfOTJO9arMAKckwDhAw-1
+ us-mta-574-1LEM7-YGMkiXaoy7aMfVRA-1; Fri, 16 Jun 2023 05:27:36 -0400
+X-MC-Unique: 1LEM7-YGMkiXaoy7aMfVRA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 638198028AF;
- Fri, 16 Jun 2023 09:27:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F17885A5AA;
+ Fri, 16 Jun 2023 09:27:36 +0000 (UTC)
 Received: from t480s.fritz.box (unknown [10.39.194.44])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7EE4E1121314;
- Fri, 16 Jun 2023 09:27:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C26E91121314;
+ Fri, 16 Jun 2023 09:27:32 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -54,23 +54,24 @@ Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Gavin Shan <gshan@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH v1 07/15] memory-device: Support memory devices that
- statically consume multiple memslots
-Date: Fri, 16 Jun 2023 11:26:46 +0200
-Message-Id: <20230616092654.175518-8-david@redhat.com>
+Subject: [PATCH v1 08/15] memory-device: Track the actually used memslots in
+ DeviceMemoryState
+Date: Fri, 16 Jun 2023 11:26:47 +0200
+Message-Id: <20230616092654.175518-9-david@redhat.com>
 In-Reply-To: <20230616092654.175518-1-david@redhat.com>
 References: <20230616092654.175518-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,157 +88,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to support memory devices that have a memory region container as
-device memory region where they statically map multiple RAM memory
-regions.
+Let's track how many memslots are currently getting used by memory
+devices in the device memory region, and how many could be used at
+maximum ("required"). "required - used" is the number of reserved memslots
+that will get used in the future: we'll have to consider them when plugging
+new vhost devices or new memory devices.
 
-We already have one device that uses a container as device memory region:
-NVDIMMs. However, a NVDIMM always ends up consuming exactly one memslot.
+For now, the number of used and required memslots is always equal and
+directly matches the number of memory devices. This is a preparation for
+memory devices that want to dynamically consume memslots at runtime.
 
-Let's add support for that by asking the memory device via a new
-callback how many memslots it consumes.
-
-While at it in memory_device_check_addable(), perform the region size
-check first and don't check separately for KVM and vhost, both things will
-come in handy later.
+To track the number of used memslots, create a new address space for
+our device memory and register a memory listener (add/remove) for that
+address space.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/mem/memory-device.c         | 46 +++++++++++++++++++++++-----------
- include/hw/mem/memory-device.h | 18 +++++++++++++
- 2 files changed, 49 insertions(+), 15 deletions(-)
+ hw/mem/memory-device.c | 52 ++++++++++++++++++++++++++++++++++++++++++
+ include/hw/boards.h    |  8 ++++++-
+ 2 files changed, 59 insertions(+), 1 deletion(-)
 
 diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index 2f19183a25..a9dcc0c4ef 100644
+index a9dcc0c4ef..752258333b 100644
 --- a/hw/mem/memory-device.c
 +++ b/hw/mem/memory-device.c
-@@ -82,6 +82,12 @@ static unsigned int get_max_memslots(void)
-     return MIN(vhost_get_max_memslots(), kvm_get_max_memslots());
+@@ -406,6 +406,50 @@ uint64_t memory_device_get_region_size(const MemoryDeviceState *md,
+     return memory_region_size(mr);
  }
  
-+/* Overall number of free memslots */
-+static unsigned int get_free_memslots(void)
++static void memory_devices_region_mod(MemoryListener *listener,
++                                      MemoryRegionSection *mrs, bool add)
 +{
-+    return MIN(vhost_get_free_memslots(), kvm_get_free_memslots());
-+}
++    DeviceMemoryState *dms = container_of(listener, DeviceMemoryState,
++                                          listener);
 +
- /*
-  * The memslot soft limit for memory devices. The soft limit might change at
-  * runtime in corner cases (that should certainly be avoided), for example, when
-@@ -126,21 +132,23 @@ void memory_devices_notify_vhost_device_added(void)
-     memory_devices_check_memslot_soft_limit(ms);
- }
- 
--static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
--                                        Error **errp)
-+static unsigned int memory_device_get_memslots(MemoryDeviceState *md)
- {
--    const uint64_t used_region_size = ms->device_memory->used_region_size;
--    const uint64_t size = memory_region_size(mr);
-+    const MemoryDeviceClass *mdc = MEMORY_DEVICE_GET_CLASS(md);
- 
--    /* we will need a new memory slot for kvm and vhost */
--    if (!kvm_get_free_memslots()) {
--        error_setg(errp, "hypervisor has no free memory slots left");
--        return;
--    }
--    if (!vhost_get_free_memslots()) {
--        error_setg(errp, "a used vhost backend has no free memory slots left");
--        return;
-+    if (mdc->get_memslots) {
-+        return mdc->get_memslots(md);
-     }
-+    return 1;
-+}
-+
-+static void memory_device_check_addable(MachineState *ms, MemoryDeviceState *md,
-+                                        MemoryRegion *mr, Error **errp)
-+{
-+    const uint64_t used_region_size = ms->device_memory->used_region_size;
-+    const unsigned int available_memslots = get_free_memslots();
-+    const uint64_t size = memory_region_size(mr);
-+    unsigned int required_memslots;
- 
-     /* will we exceed the total amount of memory specified */
-     if (used_region_size + size < used_region_size ||
-@@ -151,6 +159,14 @@ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-         return;
-     }
- 
-+    /* ... are there still sufficient memslots available? */
-+    required_memslots = memory_device_get_memslots(md);
-+    if (available_memslots < required_memslots) {
-+        error_setg(errp, "Insufficient memory slots for memory device"
-+                   "available. Available: %u, Required: %u",
-+                   available_memslots, required_memslots);
++    if (!memory_region_is_ram(mrs->mr)) {
++        warn_report("Unexpected memory region mapped into device memory region.");
 +        return;
 +    }
- }
- 
- static uint64_t memory_device_get_free_addr(MachineState *ms,
-@@ -307,7 +323,7 @@ void memory_device_pre_plug(MemoryDeviceState *md, MachineState *ms,
-         goto out;
-     }
- 
--    memory_device_check_addable(ms, mr, &local_err);
-+    memory_device_check_addable(ms, md, mr, &local_err);
-     if (local_err) {
-         goto out;
-     }
-@@ -349,7 +365,7 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
-     g_assert(ms->device_memory);
- 
-     ms->device_memory->used_region_size += memory_region_size(mr);
--    ms->device_memory->required_memslots++;
-+    ms->device_memory->required_memslots += memory_device_get_memslots(md);
-     memory_devices_check_memslot_soft_limit(ms);
-     memory_region_add_subregion(&ms->device_memory->mr,
-                                 addr - ms->device_memory->base, mr);
-@@ -370,7 +386,7 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
- 
-     memory_region_del_subregion(&ms->device_memory->mr, mr);
-     ms->device_memory->used_region_size -= memory_region_size(mr);
--    ms->device_memory->required_memslots--;
-+    ms->device_memory->required_memslots -= memory_device_get_memslots(md);
-     trace_memory_device_unplug(DEVICE(md)->id ? DEVICE(md)->id : "",
-                                mdc->get_addr(md));
- }
-diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
-index 813c3b9da6..755f6304c6 100644
---- a/include/hw/mem/memory-device.h
-+++ b/include/hw/mem/memory-device.h
-@@ -42,6 +42,11 @@ typedef struct MemoryDeviceState MemoryDeviceState;
-  * successive memory regions are used, a covering memory region has to
-  * be provided. Scattered memory regions are not supported for single
-  * devices.
-+ *
-+ * The device memory region returned via @get_memory_region may either be a
-+ * single RAM/ROM memory region or a memory region container with subregions
-+ * that are RAM/ROM memory regions or aliases to RAM/ROM memory regions. Other
-+ * memory regions or subregions are not supported.
-  */
- struct MemoryDeviceClass {
-     /* private */
-@@ -89,6 +94,19 @@ struct MemoryDeviceClass {
-      */
-     MemoryRegion *(*get_memory_region)(MemoryDeviceState *md, Error **errp);
- 
-+    /*
-+     * Optional for memory devices that consume only a single memslot,
-+     * required for all other memory devices: Return the number of memslots
-+     * (distinct RAM memory regions in the device memory region) that are
-+     * required by the device.
-+     *
-+     * If this function is not implemented, the assumption is "1".
-+     *
-+     * Called when (un)plugging the memory device, to check if the requirements
-+     * can be satisfied, and to do proper accounting.
-+     */
-+    unsigned int (*get_memslots)(MemoryDeviceState *md);
 +
-     /*
-      * Optional: Return the desired minimum alignment of the device in guest
-      * physical address space. The final alignment is computed based on this
++    /*
++     * The expectation is that each distinct RAM memory region section in
++     * our region for memory devices consumes exactly one memslot in KVM
++     * and in vhost. For vhost, this is true, except:
++     * * ROM memory regions don't consume a memslot. These get used very
++     *   rarely for memory devices (R/O NVDIMMs).
++     * * Memslots without a fd (memory-backend-ram) don't necessarily
++     *   consume a memslot. Such setups are quite rare and possibly bogus:
++     *   the memory would be inaccessible by such vhost devices.
++     *
++     * So for vhost, in corner cases we might over-estimate the number of
++     * memslots that are currently used or that might still be reserved
++     * (required - used).
++     */
++    dms->used_memslots += add ? 1 : -1;
++
++    if (dms->used_memslots > dms->required_memslots) {
++        warn_report("Memory devices use more memory slots than indicated as required.");
++    }
++}
++
++static void memory_devices_region_add(MemoryListener *listener,
++                                      MemoryRegionSection *mrs)
++{
++    return memory_devices_region_mod(listener, mrs, true);
++}
++
++static void memory_devices_region_del(MemoryListener *listener,
++                                      MemoryRegionSection *mrs)
++{
++    return memory_devices_region_mod(listener, mrs, false);
++}
++
+ void machine_memory_devices_init(MachineState *ms, hwaddr base, uint64_t size)
+ {
+     g_assert(size);
+@@ -415,8 +459,16 @@ void machine_memory_devices_init(MachineState *ms, hwaddr base, uint64_t size)
+ 
+     memory_region_init(&ms->device_memory->mr, OBJECT(ms), "device-memory",
+                        size);
++    address_space_init(&ms->device_memory->as, &ms->device_memory->mr,
++                       "device-memory");
+     memory_region_add_subregion(get_system_memory(), ms->device_memory->base,
+                                 &ms->device_memory->mr);
++
++    /* Track the number of memslots used by memory devices. */
++    ms->device_memory->listener.region_add = memory_devices_region_add;
++    ms->device_memory->listener.region_del = memory_devices_region_del;
++    memory_listener_register(&ms->device_memory->listener,
++                             &ms->device_memory->as);
+ }
+ 
+ static const TypeInfo memory_device_info = {
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index a346b4ec4a..dcb6dc83ec 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -294,17 +294,23 @@ struct MachineClass {
+  * DeviceMemoryState:
+  * @base: address in guest physical address space where the memory
+  * address space for memory devices starts
+- * @mr: address space container for memory devices
++ * @mr: memory region container for memory devices
++ * @as: address space for memory devices
++ * @listener: memory listener used to track used memslots in the addres space
+  * @dimm_size: the sum of plugged DIMMs' sizes
+  * @used_region_size: the part of @mr already used by memory devices
+  * @required_memslots: the number of memslots required by memory devices
++ * @used_memslots: the number of memslots currently used by memory devices
+  */
+ typedef struct DeviceMemoryState {
+     hwaddr base;
+     MemoryRegion mr;
++    AddressSpace as;
++    MemoryListener listener;
+     uint64_t dimm_size;
+     uint64_t used_region_size;
+     unsigned int required_memslots;
++    unsigned int used_memslots;
+ } DeviceMemoryState;
+ 
+ /**
 -- 
 2.40.1
 
