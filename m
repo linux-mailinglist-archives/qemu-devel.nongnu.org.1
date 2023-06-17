@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEBA733E68
+	by mail.lfdr.de (Postfix) with ESMTPS id E419C733E69
 	for <lists+qemu-devel@lfdr.de>; Sat, 17 Jun 2023 07:38:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAOcH-0003Me-P3; Sat, 17 Jun 2023 01:36:53 -0400
+	id 1qAOcW-0003OC-8n; Sat, 17 Jun 2023 01:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qAOcD-0003Lr-7E
- for qemu-devel@nongnu.org; Sat, 17 Jun 2023 01:36:49 -0400
-Received: from bg4.exmail.qq.com ([43.154.221.58])
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qAOcU-0003Nh-2M
+ for qemu-devel@nongnu.org; Sat, 17 Jun 2023 01:37:06 -0400
+Received: from bg4.exmail.qq.com ([43.155.67.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qAOcA-0006Vg-4R
- for qemu-devel@nongnu.org; Sat, 17 Jun 2023 01:36:48 -0400
-X-QQ-mid: bizesmtp73t1686980190t1xfj5e8
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qAOcS-0006Xe-8U
+ for qemu-devel@nongnu.org; Sat, 17 Jun 2023 01:37:05 -0400
+X-QQ-mid: bizesmtp73t1686980193tu7g7u6w
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Sat, 17 Jun 2023 13:36:29 +0800 (CST)
+ id ; Sat, 17 Jun 2023 13:36:32 +0800 (CST)
 X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: YGEVfbPozqkO9POhzd51vSxElWC7EL7UwAVUoogEZckGocwj8Fa9KF7UPkIhc
- HhaDOPpJYMALsp50mih9Z/rndETnopcwMC8299iEPF2UJ4kb72GWhoYeYlQgS5PnmPVaDqV
- 34ZljOZOCKuTYMoQ+RovAywB9gVioXagbzesF2+iyanxdWWXRM3jOp0eqf6r8XhrXf9fiVx
- CCXu9s5woMNiCfiybP8i1dwDFxeExmm1KnZGqzaxH1b3GfHrFfzsjaFlU3GACOq2hhWkpj9
- 7CWajRuD4aNWxrb/eHQ6+9St/hKTCEAJq84Ws2LrCw/APhjPB7AZDxvdZfbF/Ipvb7cE7Wu
- USUPDm1AlPtNPgLu/njSxvRm/uiQa4QvJRa4M/Hyb5SUbhx6x4=
+X-QQ-FEAT: rZJGTgY0+YOT3oQmERRSL+DXWsKs2Jcv63KNGwgGy65bHQCMbDNI5X4MYzei9
+ p5eWKVFGrxJBR+BhLzCExe7hqX7hGdVrJ1OoCx6NQxsUoY4m56F1O9bUZmKKMMSzU5tUaTE
+ 7yKL+/MAYSaZ3s7E57uglnL0+H8AcY34D0kaDjlEqo+B0envreyzLRtCanqRbtjZo+wB2R+
+ NXJX3RYs+j/Wqk9QhhemKshbU0uPO997tAGHSznNC/uvHujBNiBriQaZyDaSNpPk0W65msX
+ nIQKOZaqoa2AszbrNZYuvoJKpomVCfcOTIJ0uPjyGPWWijobI6ZdIfiHh3MmvQ2NMPFutHh
+ SVchiRmR7fXk55Vu6V5bwXJOLXPqVLHQS2zupR9DwTJMBkIx0U=
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17397187323243324688
+X-BIZMAIL-ID: 8674422273484162088
 From: Bin Meng <bmeng@tinylab.org>
 To: qemu-devel@nongnu.org
 Cc: Zhangjin Wu <falcon@tinylab.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v3 2/6] tests/tcg/cris: Correct the off-by-one error
-Date: Sat, 17 Jun 2023 13:36:17 +0800
-Message-Id: <20230617053621.50359-3-bmeng@tinylab.org>
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH v3 3/6] util/async-teardown: Fall back to close fds one by one
+Date: Sat, 17 Jun 2023 13:36:18 +0800
+Message-Id: <20230617053621.50359-4-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230617053621.50359-1-bmeng@tinylab.org>
 References: <20230617053621.50359-1-bmeng@tinylab.org>
@@ -42,7 +44,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
+Received-SPF: pass client-ip=43.155.67.158; envelope-from=bmeng@tinylab.org;
  helo=bg4.exmail.qq.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
@@ -65,9 +67,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sysconf(_SC_OPEN_MAX) returns the maximum number of files that
-a process can have open at any time, which means the fd should
-not be larger than or equal to the return value.
+When opening /proc/self/fd fails, current codes just return directly,
+but we can fall back to close fds one by one.
 
 Signed-off-by: Bin Meng <bmeng@tinylab.org>
 
@@ -76,28 +77,28 @@ Signed-off-by: Bin Meng <bmeng@tinylab.org>
 (no changes since v2)
 
 Changes in v2:
-- new patch: "tests/tcg/cris: Correct the off-by-one error"
+- new patch: "util/async-teardown: Fall back to close fds one by one"
 
- tests/tcg/cris/libc/check_openpf5.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ util/async-teardown.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/cris/libc/check_openpf5.c b/tests/tcg/cris/libc/check_openpf5.c
-index 0037fbca4c..7f585c6d37 100644
---- a/tests/tcg/cris/libc/check_openpf5.c
-+++ b/tests/tcg/cris/libc/check_openpf5.c
-@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
-     strcpy(fn, "/");
-     strcat(fn, argv[0]);
+diff --git a/util/async-teardown.c b/util/async-teardown.c
+index 3ab19c8740..7e0177a8da 100644
+--- a/util/async-teardown.c
++++ b/util/async-teardown.c
+@@ -48,7 +48,11 @@ static void close_all_open_fd(void)
  
--    for (i = 0; i < filemax + 1; i++) {
-+    for (i = 0; i < filemax; i++) {
-         if (open(fn, O_RDONLY) < 0) {
-             /* Shouldn't happen too early.  */
--            if (i < filemax - 3 - 1) {
-+            if (i < filemax - 3) {
-                 fprintf(stderr, "i: %d\n", i);
-                 abort();
-             }
+     dir = opendir("/proc/self/fd");
+     if (!dir) {
+-        /* If /proc is not mounted, there is nothing that can be done. */
++        /* If /proc is not mounted, close fds one by one. */
++        int open_max = sysconf(_SC_OPEN_MAX), i;
++        for (i = 0; i < open_max; i++) {
++                close(i);
++        }
+         return;
+     }
+     /* Avoid closing the directory. */
 -- 
 2.34.1
 
