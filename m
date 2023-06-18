@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC29734739
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 19:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AD973473A
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 19:32:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAwEZ-0003dB-6D; Sun, 18 Jun 2023 13:30:39 -0400
+	id 1qAwFd-0004DA-BP; Sun, 18 Jun 2023 13:31:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qAwET-0003cz-Mp
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:30:33 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qAwFb-00047X-LY
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:31:43 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qAwER-0007d3-Sg
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:30:33 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f906d8fca3so11007095e9.1
- for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 10:30:30 -0700 (PDT)
+ id 1qAwFa-0007sn-1q
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:31:43 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-30e3caa6aa7so2519559f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 10:31:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687109429; x=1689701429;
+ d=linaro.org; s=google; t=1687109500; x=1689701500;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lVTcwUXKz596o0XCz+4YD+Gvod2kC5JSERFMqUFvFrI=;
- b=c735d7tpCjZbg2iHk8EIxDsuD+Fiu/qQXTkuf9ALDbYa8FVglxboy5p39/kI4bniFh
- 4z8OE54rsxVzmiGFq5d7+R7MA7bBviGmtxUIuBHNgD7vrXAfKUj7RgWW9qjVwjPbvyjy
- 8s4/f2PiLdW+/bAiTzDT9FdYuRQ7MXFyxa9OqHCz8rjGr/5gt+gX4YeiqxJfwxjReDl7
- p8BepWNQ2rGubaf9uIQvyElLYsx1MMo9XjSJRackcbu5sIPvU+OHLYK31RWvj+9emah+
- fBaVO6cOQALkuB9xqIVtmWQLBQ9dCVERaL3dYD+xcqLm+8zj2v3OECP0aaUqb8nknhxZ
- vd5g==
+ bh=u485/JfSnTPD54vkc1Evb28cQ71rmunaWzYsknPHm2k=;
+ b=a+qlniEKtXDxuBvzH+cz+moIHPl+9EoJu8ec9i0XkOVaxgVSpYEtBlIDSgbDp2GZpd
+ O05PjC3t9swzxG+aW24+zOh/8CYIbcSinStuNhDSSsBAjvvGrf64yAkyI0p7Ke0pTemI
+ 9QZ2gYVPwHMSk4lzY8IVdFIUmGWzOfMj+i/sKosvewROhoHSEmHaKtjj8HmQu2EVRv/x
+ gumaJTbyXptpqgmgjah+HkZqRl41UGlndQF6CdQEQ0tPqDG96mcBcnjy6v5pjiZnvhg6
+ Hs9K+DhUbSIgsAr/U4jXrWne9EYZYQ0GWGpjFJgsE1h/ykJTJzR2luYLeMsSvOkTi/CQ
+ KMfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687109429; x=1689701429;
+ d=1e100.net; s=20221208; t=1687109500; x=1689701500;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lVTcwUXKz596o0XCz+4YD+Gvod2kC5JSERFMqUFvFrI=;
- b=FGRQpQKp1iO5TOIStIJ7qW9o9nxBgy3i6A943+t8Ja2zVtYcJaPOvneu1QiX5t0S/B
- uXUVQOreO9UZfS6Xx9u3U1fMGXVzgXOJRa/GVZV7psRWJ1acLWpJRDNuM+hFVs0qwE4w
- r5gzxs7Lzlw3pcLcenwiw34FFL+113ZT4Wz/7KLXhd1gi23xAQaoCB1sgvUYDPkZTQQZ
- I+1cDYhu++Tb9ysPnKxlGLMkd3T49QJjjsv1gIii/PA/YvQtNMvm0B+3TwzJx2V3DT4g
- hgpfooB6I1ROC992+r1FB1PyRtQuRJKcGLeUHT6/gxxI4iKokvTOqig9EDcj+3I1i1u8
- jzng==
-X-Gm-Message-State: AC+VfDzD5KHmb7HFrtT+44YEX4JjwUK1c8eC09ULYLOpfDX0wmy589lE
- 5pr0lwaPH2TXr3JhW8q4BW6ovQ==
-X-Google-Smtp-Source: ACHHUZ7h6IRdr/70zIpSOaQ6wDOyrEoI2XDauuD8QCxVtH5jO4yLlrD/60YqqpLPu7cQFffr22Qkeg==
-X-Received: by 2002:a05:600c:2c2:b0:3f7:3699:c294 with SMTP id
- 2-20020a05600c02c200b003f73699c294mr5550552wmn.29.1687109429178; 
- Sun, 18 Jun 2023 10:30:29 -0700 (PDT)
+ bh=u485/JfSnTPD54vkc1Evb28cQ71rmunaWzYsknPHm2k=;
+ b=UxIjuxxTn9HKfquXTOsMSFs0wXqKPSXtBaqUIsE0aPYE91ZAMngkc/xs16f9fvLaQ/
+ gdHxEh6lyoBZ7jn0jDR1b4MVRuKIjWmyxGbUPcsiWA0eNieGDfaPGCzE4EQMYADXJWZJ
+ Pif4MJG3XXX7eANnMk87q6GXYoIFCMX6BX78HTQGBtn6UOTU5B5OvjdKNn18rpD5m6gB
+ 70jdzeJt/ObM7wGayfjla+7ko9i00PeiKVUMZp++6b+dLsMfIoUk7eU8kVdXNOgUjIe+
+ zjN9nQR3o+hfCKORb51eou370YAYCxei0NqPyzsBZiFSVh0c6g2lTSKIamDsYAMZQJZL
+ y/uQ==
+X-Gm-Message-State: AC+VfDz2du1zJKuMonCuMNaZ1v9ly1Q5eQstRcDqqtVz+eyzniIF2B1b
+ ZjANF/Fv1OprEb3oiCEvuSjXHg==
+X-Google-Smtp-Source: ACHHUZ5+5JVU9cuwFhtAMPCavzaM4jiqRqNAVX7wwjeSRJs0SFHjpl+H4mTAzDyA6hrJxjZvs69mqg==
+X-Received: by 2002:adf:cf05:0:b0:310:fe5e:894a with SMTP id
+ o5-20020adfcf05000000b00310fe5e894amr6199562wrj.6.1687109500233; 
+ Sun, 18 Jun 2023 10:31:40 -0700 (PDT)
 Received: from [192.168.69.129] (mon75-h03-176-184-51-101.dsl.sta.abo.bbox.fr.
  [176.184.51.101]) by smtp.gmail.com with ESMTPSA id
- u9-20020a05600c00c900b003f9b0cfbe34sm634174wmm.33.2023.06.18.10.30.28
+ i17-20020a5d6311000000b0030fae360f14sm23754471wru.68.2023.06.18.10.31.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Jun 2023 10:30:28 -0700 (PDT)
-Message-ID: <fdf7ba8d-efab-cb64-796d-2ca53b8103e4@linaro.org>
-Date: Sun, 18 Jun 2023 19:30:25 +0200
+ Sun, 18 Jun 2023 10:31:39 -0700 (PDT)
+Message-ID: <db46abbc-cb4d-2727-299a-b7eb634c2b41@linaro.org>
+Date: Sun, 18 Jun 2023 19:31:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 1/8] target/tricore: Fix RR_JLI clobbering reg A[11]
+Subject: Re: [PATCH v2 2/8] target/tricore: Introduce DISAS_TARGET_EXIT
 Content-Language: en-US
 To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-devel@nongnu.org
 References: <20230616152808.1499082-1-kbastian@mail.uni-paderborn.de>
- <20230616152808.1499082-2-kbastian@mail.uni-paderborn.de>
+ <20230616152808.1499082-3-kbastian@mail.uni-paderborn.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230616152808.1499082-2-kbastian@mail.uni-paderborn.de>
+In-Reply-To: <20230616152808.1499082-3-kbastian@mail.uni-paderborn.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,14 +95,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/16/23 17:28, Bastian Koppelmann wrote:
-> if A[r1] == A[11], then we would overwrite the destination address of
-> the jump with the return address.
+> this replaces all calls to tcg_gen_exit_tb() and moves them to
+> tricore_tb_stop().
 > 
-> Reported-by: Richard Henderson<richard.henderson@linaro.org>
 > Signed-off-by: Bastian Koppelmann<kbastian@mail.uni-paderborn.de>
 > ---
->   target/tricore/translate.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   target/tricore/translate.c | 25 ++++++++++++-------------
+>   1 file changed, 12 insertions(+), 13 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
