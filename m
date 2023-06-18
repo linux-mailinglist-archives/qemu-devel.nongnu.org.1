@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F4A7348B8
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 23:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE917348B4
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 23:52:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB0Ix-0002nl-9O; Sun, 18 Jun 2023 17:51:27 -0400
+	id 1qB0Iy-0002oA-M6; Sun, 18 Jun 2023 17:51:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qB0Iv-0002nW-DZ
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 17:51:25 -0400
+ id 1qB0Ix-0002nm-5o
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 17:51:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qB0It-0006VO-U0
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 17:51:25 -0400
+ id 1qB0Iv-0006Vh-NJ
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 17:51:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687125083;
+ s=mimecast20190719; t=1687125084;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lgxeCtFMSIiD02O7MZKA8Zu+VBfme7I0NGA2UZarPVQ=;
- b=ewPUg2zIxw+1tufK6WICvMXd1zo6dgGUlx5DRqqPpPndZG8FLRmJv1b/uc/hyAvnsHCY8h
- cJ9FMtMizf8flAMmCER1Zz1nwIRQyPlILP+fo5dWJa6Hmw4OPQyw/DE8MgQ2Z7+U/aHk15
- FpSBKbMftkwHT0e0As6t2hEkvOuFLVQ=
+ bh=8VBSHWK3C4o/OpcNsqQu+B6EL43Z871mwHgC4743Mmk=;
+ b=MkmP2KG95lkeU3WaBBXLSXzAUZMgk0obUWmz/ayUthyAYywgogPdEsYmbchF21EkKPxLRr
+ 3uzqOc8PM4/z0chS4cqaJtfQnoC8C/8eaPooTNM91iG7+ItGAOwvFd3rJocY78FtZ9OMQS
+ ansRZ1GHZMu8ilTJVAEzfxgf3fz3XVc=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-jiViesAxPmy4HOdwUCrLLQ-1; Sun, 18 Jun 2023 17:51:21 -0400
-X-MC-Unique: jiViesAxPmy4HOdwUCrLLQ-1
+ us-mta-623-hEN3owDDPmuS-17MxLF78g-1; Sun, 18 Jun 2023 17:51:23 -0400
+X-MC-Unique: hEN3owDDPmuS-17MxLF78g-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-988907e1b15so60644766b.3
- for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 14:51:21 -0700 (PDT)
+ a640c23a62f3a-98890dda439so41882366b.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 14:51:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687125080; x=1689717080;
+ d=1e100.net; s=20221208; t=1687125081; x=1689717081;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lgxeCtFMSIiD02O7MZKA8Zu+VBfme7I0NGA2UZarPVQ=;
- b=GuDuntrPAR4vEuozjnPHE8zpAaC1rKobURG8PMJpRmfqif6fvkFhON3jUk39m/okbX
- hB1L6EcnBN4jUED9px58pbzeHkIeQyGwvqOOo2i2GU+ifPCV1HTDk6IOItl9buGGlARR
- F6ZJFmxIvJGos9u7SpPI+PjUDrv5LxvsoPtGMKnscubyvFEOYJV4xZQHma16ZOpVGlF5
- HVGc6Qc900Apc9LwK9zjDrhrFd5xXKsFaYxupwUkA07BZz2hqL66nD9+ImLFxGszO74V
- BbcYS9OglGmfW3Nk/HhSqw4fsbbvuMmUsYvnRkxNtRngQKnjPYdtVjrsnksOC6K1/6fz
- p9RA==
-X-Gm-Message-State: AC+VfDwxmIJgKdCpmlv3vH6gPid2D7yocbJFHgVNjeqWi9c0Nbd+G9ns
- fcfQb8/TFESVls4HQacfd6Uu0okmO6SVbsW383p+TCPT7+jWAgmUk3WMSz7QYAzwS4qZGSjD9I8
- vnPdPL3553DU1x83A9xSW/4OcC/ySaQ3UJ6ftP2tD+OCDe7s0VEovvpYlDoIzXQKuDc2lPv44Hr
- edig==
-X-Received: by 2002:a17:907:8a15:b0:988:acb4:f74 with SMTP id
- sc21-20020a1709078a1500b00988acb40f74mr1027882ejc.34.1687125079812; 
- Sun, 18 Jun 2023 14:51:19 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ClbIayv+vuXIqlUUyEIzddl/VZ/URgulQ9+Ri3rfoEHiWCq95ItBuGYRKs+HVVYkZ4LwM7A==
-X-Received: by 2002:a17:907:8a15:b0:988:acb4:f74 with SMTP id
- sc21-20020a1709078a1500b00988acb40f74mr1027869ejc.34.1687125079480; 
- Sun, 18 Jun 2023 14:51:19 -0700 (PDT)
+ bh=8VBSHWK3C4o/OpcNsqQu+B6EL43Z871mwHgC4743Mmk=;
+ b=dq29gRe2WsLhE5erIggNCdxSXUosyFTalLX6X1TlklwUqw4eW8lsyIlZQCDrAHbK/2
+ /9/OQ/gj/i++9TRUYjqzumz+eD/l+6C8lSHVrCM4GzX8/vFZm6X4oXtvWlIWTIgUbssS
+ ePmr3a2RBqHVihHMACnSi2JQn6NPYdO+BEXDOvAEkhRWBHLT+6KSbEDCCD4DcScQkpbi
+ C4McY4Y5PxUsNyiehI4JhL6hEANwueJoD83GofmUo4yREdU5FpRuFQzsE91DhI0kq8lY
+ PPyEIvdsF0ju86m/4F7gOQ1s59uN8lcqXG/XYzDS5gwXkIgIGj3s3RRb6bQ9H1w5WhzQ
+ 8LaA==
+X-Gm-Message-State: AC+VfDzVg1xwUm2euaxZJ4lqXZB3NvblPbM5mph8WyBeHbjZg1OvBUu9
+ D2o9WS/uBOcukjPbp1GNTy+Tqtfpqt7V9aEEafk0e3P2Es2EwVzHAv65hiJpRk/vfXkGQhYVvHK
+ RKOnSuY7+GkIi/xbGQuatAggHTaKhAYoGfKgH7j+KGy59fStuOUTUEEUk803mP/Rwsx1lkN2XeT
+ 7LiA==
+X-Received: by 2002:a17:907:968c:b0:988:b204:66a7 with SMTP id
+ hd12-20020a170907968c00b00988b20466a7mr655833ejc.74.1687125081746; 
+ Sun, 18 Jun 2023 14:51:21 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4vaXPyy94JjCNz2sPwo6aW6NAlSPnofn034NQ/EX17vBbh4sUJSNfOsms2Z5v5uLTwp7K0mw==
+X-Received: by 2002:a17:907:968c:b0:988:b204:66a7 with SMTP id
+ hd12-20020a170907968c00b00988b20466a7mr655824ejc.74.1687125081418; 
+ Sun, 18 Jun 2023 14:51:21 -0700 (PDT)
 Received: from [192.168.60.219] (server.hotelpassage.eu. [88.146.207.194])
  by smtp.gmail.com with ESMTPSA id
- n25-20020a170906379900b00977cc473b41sm13985984ejc.142.2023.06.18.14.51.18
+ d7-20020a170906040700b0098860721959sm1667654eja.198.2023.06.18.14.51.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jun 2023 14:51:19 -0700 (PDT)
+ Sun, 18 Jun 2023 14:51:21 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 1/7] target/i386: fix INVD vmexit
-Date: Sun, 18 Jun 2023 23:51:08 +0200
-Message-Id: <20230618215114.107337-2-pbonzini@redhat.com>
+Subject: [PATCH 2/7] target/i386: TCG supports 3DNow! prefetch(w)
+Date: Sun, 18 Jun 2023 23:51:09 +0200
+Message-Id: <20230618215114.107337-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230618215114.107337-1-pbonzini@redhat.com>
 References: <20230618215114.107337-1-pbonzini@redhat.com>
@@ -100,28 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Due to a typo or perhaps a brain fart, the INVD vmexit was never generated.
-Fix it (but not that fixing just the typo would break both INVD and WBINVD,
-due to a case of two wrongs making a right).
+The AMD prefetch(w) instructions have not been deprecated together with the rest
+of 3DNow!, and in fact are even supported by newer Intel processor.  Mark them
+as supported by TCG, as it supports all of 3DNow!.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 2 +-
- 1 file changed, 1 insertions(+), 1 deletions(-)
+ target/i386/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 5cf14311a60..9783fe80a30 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -6119,7 +6119,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x108: /* invd */
-     case 0x109: /* wbinvd */
-         if (check_cpl0(s)) {
--            gen_svm_check_intercept(s, (b & 2) ? SVM_EXIT_INVD : SVM_EXIT_WBINVD);
-+            gen_svm_check_intercept(s, (b & 1) ? SVM_EXIT_WBINVD : SVM_EXIT_INVD);
-             /* nothing to do */
-         }
-         break;
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1242bd541a5..ff3dcd02dcb 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -647,7 +647,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+           CPUID_EXT2_3DNOW | CPUID_EXT2_3DNOWEXT | CPUID_EXT2_PDPE1GB | \
+           TCG_EXT2_X86_64_FEATURES)
+ #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
+-          CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A)
++          CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
++          CPUID_EXT3_3DNOWPREFETCH)
+ #define TCG_EXT4_FEATURES 0
+ #define TCG_SVM_FEATURES (CPUID_SVM_NPT | CPUID_SVM_VGIF | \
+           CPUID_SVM_SVME_ADDR_CHK)
 -- 
 2.40.1
 
