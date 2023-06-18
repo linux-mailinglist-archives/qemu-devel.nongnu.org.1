@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363FF73473D
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 19:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F11073473E
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 19:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAwI6-0005oi-SV; Sun, 18 Jun 2023 13:34:18 -0400
+	id 1qAwIr-0006Qy-Lv; Sun, 18 Jun 2023 13:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qAwI4-0005oa-RD
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:34:16 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qAwIp-0006Qp-PT
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:35:03 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qAwI3-00089x-9c
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:34:16 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f9b0f139feso2378505e9.3
- for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 10:34:14 -0700 (PDT)
+ id 1qAwIo-0008Ee-0h
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 13:35:03 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f8d5262dc8so18474635e9.0
+ for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 10:35:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687109653; x=1689701653;
+ d=linaro.org; s=google; t=1687109700; x=1689701700;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=t5cGdwe7n8jZdIbjOIj9IdZCThNjh0TjinYpzMtlbgw=;
- b=yjhItUdomZwcnBTeoXb2v+TB8M5HCBzTJtBjetQP05fFOqnW78i9f/7hhibKNyiNOt
- gOtfs68zJy2sjoMZhMuNTyWwFO6LGwNn7wM89jWNlHDrjA0LW/bdUr+J0uDDztUhWKAl
- B5wL0L5UqHs5Ts0CA2El3/EfR/a/NqMiThjysFfSpB8ihnJd0qKv0pElN1j5ol4W6MJ8
- iT3N0EW9SfJH2U+IbKXbTLhWwhkjNw/bKHYQZ+n1dRcah/GqvnJnxSz6xCB9eFKwnCVK
- 412b2/2fjIQL0Fv70khlJEXnO1vCGeS0XNdivVIbS/mP8dXq8bP+atTLKeQNqmYcT3b3
- MkXw==
+ bh=JGVkija+bOiSBW82FMOQ2yZn0YWF9WH/aJeJ1f08A+4=;
+ b=HqwkBY78th2LTJwzCmTTCKHhQm1WKzUa7kqMMnjx+nIdzXEeo1l3zI1oYt5G76XLdU
+ q13clLWPIbqbUCgozKUk2JO75f2f0pHi9FrPJDw1eJBb9WNo556JgD2CQdnVMv5GhUmI
+ hPwkOvbavfY6X2l2mjdnPYFoGxu0HPkxRNFfkXButpTrwYGkqriK0Fs3ULjY/zk71j5g
+ GDi7ySdv9gdK3n/vPgUCi0y5g92lHiQq6iWmHoFWk8nglMzAcSmlrAo7U3Q86Iv/Hlj4
+ Y4yYexpNjRPczvb9lsNSR6mP7eyTGKLK+NFqH+nQLZOJgHZjLUaw/GeH5lrHsav4yiTm
+ fJeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687109653; x=1689701653;
+ d=1e100.net; s=20221208; t=1687109700; x=1689701700;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t5cGdwe7n8jZdIbjOIj9IdZCThNjh0TjinYpzMtlbgw=;
- b=JQJtkppncDvXtI6Rs0s4mwbIXeXCgj4HluCNdBPVQcinUlSHeYykg/rBRTbureKfFk
- evMwq9RbNkk41VsjmlRUUmxWM23u8I02fHclkXxIFi11DLZbh1Kw8bEZ/cTpMFfLnp2j
- xlzRMb3kFQG4od5I/dwqUpfFxg9e41mJtsep+ITJrMmmFQNwWCRt2uCDaqQlNUX8La8b
- E4o630OJ7JFq9+PRUamU468QvW7pfEvhS9KDBLreg3lIgSQYeRzsU9r5ROzXOvcHqULd
- JpmANeDG7PMdYueteGlYRYdXsAnseQXGzmBE87lDvviJI5geD1nzen7h8hYyBXmFq9YL
- TY3g==
-X-Gm-Message-State: AC+VfDyruBUGFoskD8OxML+NKbaZGf3jtQJo7fKDfHdAFRkUPTeRIhor
- ssVDJOnZw6IUGlVmXbLvW42sCgf2zsTGOLHmzIQQVdcM
-X-Google-Smtp-Source: ACHHUZ6Pv9+DdKa8dvtsjN6NEgHZ9COcdCrvDKI8EcbQ678g6BruAHk3oBePUPTTxqOuN5vh1dvxvQ==
-X-Received: by 2002:a7b:c39a:0:b0:3f9:19f6:b817 with SMTP id
- s26-20020a7bc39a000000b003f919f6b817mr1656705wmj.30.1687109653323; 
- Sun, 18 Jun 2023 10:34:13 -0700 (PDT)
+ bh=JGVkija+bOiSBW82FMOQ2yZn0YWF9WH/aJeJ1f08A+4=;
+ b=B41Ld3zSLCpVBwN5zXVti45V18BWITJTUS+DimfdrWqPmf46/8vRczpvovRxR9unDW
+ hr+4EHw1tzNaYqKKtEEf9EBPO83+gQD/UhkTj0yvrZvCTQ0uFjUspDijaFX6DRALd/SR
+ EY2zxJubDkO8VE7UHqHg3I++nkwvq4keohxnvsQ4YEvk/6tv+qCw4VLFgLNe8O7BYueH
+ KUFCTI7b+f5bMEPep/bG21aYGBMI0vo2nOPDBQhoWBOqgbtfhwBFonODeugvHn2GP/Cp
+ KD6Zyo2b1asMnWr8/nyzWRsL5q+BM1/K+koOubuUnuu0fwGUexXDjYOm2uU6TjG9Munw
+ KxNQ==
+X-Gm-Message-State: AC+VfDxXYtfHJf2iJ1LVb49Cgl3Y7O2rgxBDi1mhvxfX0wpTRtJhXl3a
+ iWcwLwGMQZJE1mjRuJmCcdIdyw==
+X-Google-Smtp-Source: ACHHUZ6OKXTKywSV9xThjTCfpzg1VwhXhWxyq6FzUIdoi/fqn+YJJ49A0jEn47p8c6NOLizM6SytqQ==
+X-Received: by 2002:a05:600c:1ca7:b0:3f9:b0db:9ff1 with SMTP id
+ k39-20020a05600c1ca700b003f9b0db9ff1mr389090wms.11.1687109700071; 
+ Sun, 18 Jun 2023 10:35:00 -0700 (PDT)
 Received: from [192.168.69.129] (mon75-h03-176-184-51-101.dsl.sta.abo.bbox.fr.
  [176.184.51.101]) by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c021100b003f735ba7736sm8173807wmi.46.2023.06.18.10.34.12
+ hn10-20020a05600ca38a00b003f60eb72cf5sm8435057wmb.2.2023.06.18.10.34.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Jun 2023 10:34:12 -0700 (PDT)
-Message-ID: <e4673a26-f943-88ee-6cbb-88ff78a1749a@linaro.org>
-Date: Sun, 18 Jun 2023 19:34:10 +0200
+ Sun, 18 Jun 2023 10:34:59 -0700 (PDT)
+Message-ID: <c5838f5d-ed6e-7cf4-9abd-22151b69d16e@linaro.org>
+Date: Sun, 18 Jun 2023 19:34:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 4/8] target/tricore: Indirect jump insns use
- tcg_gen_lookup_and_goto_ptr()
+Subject: Re: [PATCH v2 7/8] target/tricore: Honour privilege changes on PSW
+ write
 Content-Language: en-US
 To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-devel@nongnu.org
 References: <20230616152808.1499082-1-kbastian@mail.uni-paderborn.de>
- <20230616152808.1499082-5-kbastian@mail.uni-paderborn.de>
+ <20230616152808.1499082-8-kbastian@mail.uni-paderborn.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230616152808.1499082-5-kbastian@mail.uni-paderborn.de>
+In-Reply-To: <20230616152808.1499082-8-kbastian@mail.uni-paderborn.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,17 +96,44 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/16/23 17:28, Bastian Koppelmann wrote:
-> @@ -6075,7 +6076,7 @@ static void decode_rr_idirect(DisasContext *ctx)
->       default:
->           generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
->       }
-> -    ctx->base.is_jmp = DISAS_EXIT;
-> +    ctx->base.is_jmp = DISAS_JUMP;
->   }
+> the CPU can change the privilege level by writing the corresponding bits
+> in PSW. If this happens all instructions after this 'mtcr' in the TB are
+> translated with the wrong privilege level. So we have to exit to the
+> cpu_loop() and start translating again with the new privilege level.
+> 
+> Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+> ---
+> v1 -> v2:
+>      - Removed helper_psw_write() calling cpu_loop_exit().
+>        Instead we unconditionally exit for each write to psw.
+> 
+> 
+>   target/tricore/translate.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not quite correct, as generate_trap is NORETURN.
-Return early from the function there?
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
+> 
+> diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+> index 71e3842601..5f9bc2b558 100644
+> --- a/target/tricore/translate.c
+> +++ b/target/tricore/translate.c
+> @@ -333,7 +333,6 @@ static void gen_swapmsk(DisasContext *ctx, int reg, TCGv ea)
+>       tcg_gen_mov_tl(cpu_gpr_d[reg], temp);
+>   }
+>   
+> -
+>   /* We generate loads and store to core special function register (csfr) through
+>      the function gen_mfcr and gen_mtcr. To handle access permissions, we use 3
+>      makros R, A and E, which allow read-only, all and endinit protected access.
+> @@ -381,6 +380,7 @@ static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
+>           /* since we're caching PSW make this a special case */
+>           if (offset == 0xfe04) {
+>               gen_helper_psw_write(cpu_env, r1);
+> +            ctx->base.is_jmp = DISAS_EXIT_UPDATE;
+>           } else {
+>               switch (offset) {
+>   #include "csfr.h.inc"
+
 
