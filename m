@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2709E734469
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 01:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88D573448E
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 02:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qAeuv-0002Jv-Uu; Sat, 17 Jun 2023 19:01:14 -0400
+	id 1qAgTT-00069c-S1; Sat, 17 Jun 2023 20:40:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAeuj-0002I5-PY
- for qemu-devel@nongnu.org; Sat, 17 Jun 2023 19:01:02 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qAeuh-0006qu-W6
- for qemu-devel@nongnu.org; Sat, 17 Jun 2023 19:01:01 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9827bd8e0afso333445966b.1
- for <qemu-devel@nongnu.org>; Sat, 17 Jun 2023 16:00:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687042857; x=1689634857;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cy27xGiAcRXfgBmx++aR1JaCOJvCFkxE3gynhdtYCfc=;
- b=PrG7Bi3XBvpMlIq5QBnkdgX6R1hmIJjyrlJriZfoJ7++qaFzyFGyQ9hNeVGX1CKCOU
- qgcheExMvAzDLmMbjZ/FbDcjAsSusjObfZdvlVT04QkiaJQP89AoUgPCyybWc88owhKN
- 0HA+aRZudasXIUV2m73BQPdj3Pi8Z3QuSKh+afq71jnNUNjq94jYaaGGlcNoASP0RrjL
- wse1hRD3YDXbALsI1AQintkZrOZxgF7J47eApZxZj5U6jYIFcDzEkxJM3xJu+HHt0d3/
- HuRVL8yv/cUKOQjYRBL8JapV4/xscui1uzzhNevWE/msh4GJ1pJmz94QvMn7tXGR+yDx
- wC2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687042857; x=1689634857;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cy27xGiAcRXfgBmx++aR1JaCOJvCFkxE3gynhdtYCfc=;
- b=c0h4n3UzPFKAZ2UlikR5l6DdDEuuK1LlYv6EAqxZ1J97GdvwOzBfPAW6OkCnRukD2a
- UZILIbX8MO5sJb2+e0lJv/0RIb7aqHthGZomiB1Da99VSizAN6T/BeXy1+ouWw+qfSFL
- lNp5B47G1+EpPBLt6JvwLsfu7J0rA3h8zvr/cUKuL7Hu6fCoyee0XX85efkEaU/ABsMT
- AyrGbxxgB6rYMy/DGALc2CxzG6zhEV+BvvXqXi+KjhqtmY4k7yPIOiyTKyxoS/pyVJ0G
- KysWrdWJN7QCj1C5qUmVuyYvxaqEI4eS+1C0pfW9jviyUkSDrCbkcBf0QHPPfirTOw2O
- qTiQ==
-X-Gm-Message-State: AC+VfDyVerDBxmna5pHAWL1Zt9yYkAQLnw/NbhIiMa8ghPjSnt/jdXmW
- 1U6aB4/97ccuu12ajjyOqSK/Cw==
-X-Google-Smtp-Source: ACHHUZ4+KKaB4KOO7YWhTgg76gHBaX0eo6R9EPi+m7re2GMxmcyiajmNTgjZ6YM/9EfPOSQghK8AbA==
-X-Received: by 2002:a17:907:7e9f:b0:988:7ccc:3e11 with SMTP id
- qb31-20020a1709077e9f00b009887ccc3e11mr72762ejc.24.1687042856872; 
- Sat, 17 Jun 2023 16:00:56 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.141.220])
- by smtp.gmail.com with ESMTPSA id
- v18-20020a5d43d2000000b0030ae93bd196sm27212824wrr.21.2023.06.17.16.00.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Jun 2023 16:00:56 -0700 (PDT)
-Message-ID: <e3705cba-d57d-27f7-aa1e-ad4a3c0bfe52@linaro.org>
-Date: Sun, 18 Jun 2023 01:00:54 +0200
+ (Exim 4.90_1) (envelope-from <qianfanguijin@163.com>)
+ id 1qAgTN-000691-Mo; Sat, 17 Jun 2023 20:40:53 -0400
+Received: from m12.mail.163.com ([220.181.12.216])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qianfanguijin@163.com>)
+ id 1qAgTI-00087r-54; Sat, 17 Jun 2023 20:40:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+ Content-Type; bh=I6TqtY4KPSoXZG8OJ1QcUnW+BY4AXr6VCSHCzkQy7og=;
+ b=iRfRBfgubmmEPqiVlp8HUTq8BQcFOQO0mOTVezsXuWIMIQC+BwsDDxe5KDtB/g
+ IsroFcwnjq8dEsPbFTSDi3p6PIcDF9D1jHXmuB1dURpTZflolrO7vS0HfjiNlcgp
+ 9R0cWRAWVbtNuoUJ6E7CAuTSBNQ8ZhX1qUWda9gyCM0TU=
+Received: from [192.168.31.2] (unknown [27.216.213.168])
+ by zwqz-smtp-mta-g5-1 (Coremail) with SMTP id _____wBXDSJ8Uo5knpLSAA--.32248S2;
+ Sun, 18 Jun 2023 08:40:29 +0800 (CST)
+Message-ID: <10cf3c5e-655d-fc8b-cf48-3949588c2dcf@163.com>
+Date: Sun, 18 Jun 2023 08:40:28 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v2] kvm: reuse per-vcpu stats fd to avoid vcpu interruption
-Content-Language: en-US
-To: Marcelo Tosatti <mtosatti@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Kanda <mark.kanda@oracle.com>
-References: <ZIiz8R3F76VqTmKO@tpad> <87h6rab8gv.fsf@pond.sub.org>
- <ZIyffW2qasdS4PVN@tpad>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ZIyffW2qasdS4PVN@tpad>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and allwinner-r40
+ support
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>
+References: <20230523100508.32564-1-qianfanguijin@163.com>
+ <20230523100508.32564-2-qianfanguijin@163.com>
+ <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
+From: qianfan <qianfanguijin@163.com>
+In-Reply-To: <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wBXDSJ8Uo5knpLSAA--.32248S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CFWkZr48AFy8ZryUtFW7XFb_yoW8Zw1fpr
+ WY9an8Gay8Kr1Yy3W0qw48XrW5Wa1kWrWFgr98G3s5t3Z8Kr92vrySyws8Cay3uws09ayY
+ yFWjya47u34DZaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR5rcfUUUUU=
+X-Originating-IP: [27.216.213.168]
+X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/xtbBzgGS7WI0ZjFKjQAAs2
+Received-SPF: pass client-ip=220.181.12.216;
+ envelope-from=qianfanguijin@163.com; helo=m12.mail.163.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,60 +78,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marcelo,
 
-On 16/6/23 19:44, Marcelo Tosatti wrote:
-> 
-> A regression has been detected in latency testing of KVM guests.
-> More specifically, it was observed that the cyclictest
-> numbers inside of an isolated vcpu (running on isolated pcpu) are:
->                                              
-> # Max Latencies: 00090 00096 00141
->    
-> Where a maximum of 50us is acceptable.
->                     
-> The implementation of KVM_GET_STATS_FD uses run_on_cpu to query
-> per vcpu statistics, which interrupts the vcpu (and is unnecessary).
->                  
-> To fix this, open the per vcpu stats fd on vcpu initialization,
-> and read from that fd from QEMU's main thread.
->               
-> Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+在 2023/6/18 0:29, Guenter Roeck 写道:
+> Hi,
+>
+> On Tue, May 23, 2023 at 06:04:58PM +0800, qianfanguijin@163.com wrote:
+>> From: qianfan Zhao <qianfanguijin@163.com>
+>>
+>> Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
+>> and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
+>> for In-Car Entertainment usage, A40i and A40pro are variants that
+>> differ in applicable temperatures range (industrial and military).
+>>
+>> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+>> Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+> I tried this in mainline linux with the following command.
+>
+> qemu-system-arm -M bpim2u \
+> 	-kernel arch/arm/boot/zImage -no-reboot \
+> 	-snapshot -drive file=rootfs-armv7a.ext2,format=raw,if=sd \
+> 	-nic user \
+> 	--append "root=/dev/mmcblk0 rootwait console=ttyS0,115200" \
+> 	-dtb arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb \
+> 	-nographic -monitor null -serial stdio
+>
+> Main problem is that the SD card gets instantiated randomly to
+> mmc0, mmc1, or mmc2, making it all but impossible to specify a
+> root file system device. The non-instantiated cards are always
+> reported as non-removable, including mmc0. Example:
+>
+> mmc0: Failed to initialize a non-removable card
+>
+> Using "-sd <file>" instead of "-drive file=<file>" does not
+> make a difference.
+>
+> I can fix (work around ?) the problem by adding the following information
+> to the devicetree file.
+>
+>          aliases {
+>                  ethernet0 = &gmac;
+>                  serial0 = &uart0;
+> +               mmc0 = &mmc0;
+> +               mmc1 = &mmc1;
+> +               mmc2 = &mmc2;
+>          };
+>
+> Linux upstream commits fa2d0aa96941 and 2a43322ca7f3 describe the
+> logic behind this change.
+>
+> Is this a bug in the Linux kernel, or a problem with the qemu emulation ?
 
+On my work, the linux kenrel doesn't startup ext4 rootfs directly, it start
 
->   static void query_stats(StatsResultList **result, StatsTarget target,
-> -                        strList *names, int stats_fd, Error **errp)
-> +                        strList *names, int stats_fd, CPUState *cpu,
-> +                        Error **errp)
->   {
->       struct kvm_stats_desc *kvm_stats_desc;
->       struct kvm_stats_header *kvm_stats_header;
-> @@ -4096,7 +4099,7 @@ static void query_stats(StatsResultList **result, StatsTarget target,
->           break;
->       case STATS_TARGET_VCPU:
->           add_stats_entry(result, STATS_PROVIDER_KVM,
-> -                        current_cpu->parent_obj.canonical_path,
-> +                        cpu->parent_obj.canonical_path,
+a custom ramdisk and we can handle this in ramdisk scripts.
 
-Can we get a NULL deref here ...
-
->                           stats_list);
->           break;
->       default:
-
-
->   static void query_stats_cb(StatsResultList **result, StatsTarget target,
-> @@ -4180,7 +4180,7 @@ static void query_stats_cb(StatsResultList **result, StatsTarget target,
->               error_setg_errno(errp, errno, "KVM stats: ioctl failed");
->               return;
->           }
-> -        query_stats(result, target, names, stats_fd, errp);
-> +        query_stats(result, target, names, stats_fd, NULL, errp);
-
-... from here?
-
->           close(stats_fd);
->           break;
->       }
+> Either case, is there a way to specify a qemu command line that doesn't
+> result in random assignments of the provided drive to mmc0/1/2 ?
+>
+> Thanks,
+> Guenter
 
 
