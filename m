@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7A27348BA
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Jun 2023 23:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AA9734917
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 00:22:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB0JA-0002sw-8l; Sun, 18 Jun 2023 17:51:40 -0400
+	id 1qB0lr-0002lT-Mj; Sun, 18 Jun 2023 18:21:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qB0J8-0002sa-BD
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 17:51:38 -0400
+ id 1qB0lp-0002lF-Al
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 18:21:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qB0J6-0006XD-M8
- for qemu-devel@nongnu.org; Sun, 18 Jun 2023 17:51:38 -0400
+ id 1qB0ln-0004U8-Qc
+ for qemu-devel@nongnu.org; Sun, 18 Jun 2023 18:21:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687125096;
+ s=mimecast20190719; t=1687126874;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pwhgzbvG7T4FJXqSfC+4/m2TD+a0zefm3IPCck6mj44=;
- b=WhSpZem96XVRGBzXeNL1bBPEr1Jpjc0YOS/lepbVHbWHqmHZQ0CaWfrzQ4WP2VQA2tr5fq
- XbLb5Ijx3w56ZALB2v9zcgIou8Rb7Pp443w2agwCUWdpu3HyAwq54SgljDqmZd0j6stQhL
- aDcfy4cE4DjkxVzs5EGDlk9NzoZmdM4=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=KnvewLEAbpl6Zh6vL0c6mhjRAU42VrGnfWPQDY+DN4A=;
+ b=ElVzkchCZ24deqhO0/Gwg8OQJA20zxVBaANVLQD2LGLZQsUb39WpJedvsrk1JMXUIeGMJY
+ Y3LlwjCflSkj/V9GBWpXcu+Sk4JyDjGpk2leWPEIHL2zHGP6LUuhMVakhjOhsSv/NZ2deu
+ JjF80FVnwS7WEzUitzQ1BQCtTa0ejHc=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-cfaI9g8EP_u3LfjYh_JXrA-1; Sun, 18 Jun 2023 17:51:34 -0400
-X-MC-Unique: cfaI9g8EP_u3LfjYh_JXrA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-94a35b0d4ceso161385666b.3
- for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 14:51:34 -0700 (PDT)
+ us-mta-519-0RGJUY4vMvSonEjiOHdcPA-1; Sun, 18 Jun 2023 18:21:13 -0400
+X-MC-Unique: 0RGJUY4vMvSonEjiOHdcPA-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5147e3dfccdso1503906a12.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 15:21:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687125093; x=1689717093;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pwhgzbvG7T4FJXqSfC+4/m2TD+a0zefm3IPCck6mj44=;
- b=jV7WHTloz26diSWlZ3GfiH+Y07udO1q1LaE9c1Ghn9IKIfIYdKIGpqzQXIFP4XmMYQ
- EhBgdDy/+tLklFmSfOK0BmApbqoZIgzT4+CGdiVQSRI80vj9sM2KCm+sfex7ZfCxE8AR
- nNG0SD/NeNwESZwcYKriziimri+UhecmMdR6waDqqyH7eyQ0JYQYczRNMr+oNHLer9bq
- JlUNM2UGWWj0SlHUZVT7y1GKJuOZPEzFYUR5C7gWNXvGoSdYKmFHIEzKeLlDLIFlIIog
- HX1ihMeHGmPdenKgJpIqZYgy9+tnQTvl7byg1IPCA/BrN1sLS85iYpyiWuqdsLr+xFfM
- nBHg==
-X-Gm-Message-State: AC+VfDwXGEktAT9+DWJnOg11XPQWGDIu8pdVURnfSINRv2hthgXxRo7Z
- vWo6r7Bvi6BS+KvCzxOg07XqGIzpdNqI8wHuy+/OPrJIn1LwY66x8+wZGpkXgXgJIlqw/+WLsnP
- zuIy0JFzX+ygn17Pd8fudND1bkUwWEoyX4x58Ig66YvIR4NOv+VdzbQFoxSVyClRTu952c86naH
- 32RA==
-X-Received: by 2002:aa7:dcd2:0:b0:51a:5af9:36f6 with SMTP id
- w18-20020aa7dcd2000000b0051a5af936f6mr529033edu.29.1687125092825; 
- Sun, 18 Jun 2023 14:51:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7hCh2qfesAe+3FhUSwah332tL346fJOFTDC5RjhVwTAwgii9DbIyjCNuO4V/ptJCQTB4tPVg==
-X-Received: by 2002:aa7:dcd2:0:b0:51a:5af9:36f6 with SMTP id
- w18-20020aa7dcd2000000b0051a5af936f6mr529029edu.29.1687125092484; 
- Sun, 18 Jun 2023 14:51:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687126872; x=1689718872;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KnvewLEAbpl6Zh6vL0c6mhjRAU42VrGnfWPQDY+DN4A=;
+ b=FPiRLXg/xrDRHZKiCHIR+g4dvZUK9shyfx+CQhTAWj+qt7prcn4VWQ2vlSKXGEOYHe
+ lsXZNQTt5hv8UjG5E0efqHCI7F6K0p8Og6FbyZ99EceQNo62O8zHFC9CVh3eSBabeZh/
+ uZiK1w4T1isgcUAYdWElWarpcx5TXse2P2f3JrF+me4JJJFYFw3BAxgB36x+N6SkaAj0
+ 21dyiL/RgmzfKxmoftLLCHZRp3gNb7x+gIL7zZE5AKrZmrgUyjro/Nmavc87PLwyGs43
+ +yI2jYK1ehjVRvBj9ql9VsNZZSXUTaBTaOhXMeuft1ne6cey0PgkflYjfsfwoezvaMXN
+ corw==
+X-Gm-Message-State: AC+VfDxV/qs+osgW5xtp2KlJKazUaXEKFCTMZopajrNlr41DapHOTgVw
+ bU7Pl2bEFsqhMukh51FIhBv2LY8RSULCW78pxXWlhFgvs6m1oIEdTmBAz/+H1dH2vsczoD9nVnf
+ 6/xYcO/zZR/SXVpKtzkvvlpI8bFytXZzX4D2OW+sPTs8DJiRcIEmhuFmiykeE7dyXCrO8Oeizf9
+ EwJg==
+X-Received: by 2002:a05:6402:88e:b0:514:7f39:aa80 with SMTP id
+ e14-20020a056402088e00b005147f39aa80mr4882585edy.18.1687126871845; 
+ Sun, 18 Jun 2023 15:21:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7FGgI/aOktdrKqIRmU0dO+eJmiuoxOIbB6sQ8AijWreBiXAMSXz3TH8aLBViCGqc7qslyORw==
+X-Received: by 2002:a05:6402:88e:b0:514:7f39:aa80 with SMTP id
+ e14-20020a056402088e00b005147f39aa80mr4882579edy.18.1687126871484; 
+ Sun, 18 Jun 2023 15:21:11 -0700 (PDT)
 Received: from [192.168.60.219] (server.hotelpassage.eu. [88.146.207.194])
  by smtp.gmail.com with ESMTPSA id
- j19-20020a50ed13000000b0051a216e7df7sm4252072eds.87.2023.06.18.14.51.31
+ e21-20020a056402149500b0051a1ef536c9sm4563371edv.64.2023.06.18.15.21.10
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jun 2023 14:51:32 -0700 (PDT)
+ Sun, 18 Jun 2023 15:21:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 7/7] target/i386: implement WBNOINVD in TCG
-Date: Sun, 18 Jun 2023 23:51:14 +0200
-Message-Id: <20230618215114.107337-8-pbonzini@redhat.com>
+Subject: [PATCH 0/2] target/i386: allow using named CPU modeles with user mode
+ emulation
+Date: Mon, 19 Jun 2023 00:21:07 +0200
+Message-Id: <20230618222109.110843-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230618215114.107337-1-pbonzini@redhat.com>
-References: <20230618215114.107337-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -100,66 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-WBNOINVD is the same as INVD or WBINVD as far as TCG is concerned, but it does
-not generate a vmexit if the processor supports it.  If it does not, it is treated
-as WBINVD and generates a vmexit.
+When running qemu-i386 even with -cpu Nehalem (aka x86_64-v2), it raises the
+warning
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c           |  3 ++-
- target/i386/tcg/translate.c | 10 +++++++++-
- 2 files changed, 11 insertions(+), 2 deletions(-)
+  TCG doesn't support requested feature: CPUID.80000001H:EDX.lm [bit 29]
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 68218103108..dec376ab56d 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -686,7 +686,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- #define TCG_SGX_12_0_EBX_FEATURES 0
- #define TCG_SGX_12_1_EAX_FEATURES 0
- 
--#define TCG_8000_0008_EBX  CPUID_8000_0008_EBX_XSAVEERPTR
-+#define TCG_8000_0008_EBX  (CPUID_8000_0008_EBX_XSAVEERPTR | \
-+          CPUID_8000_0008_EBX_WBNOINVD)
- 
- FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-     [FEAT_1_EDX] = {
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 9023f47fa69..c3d4410cdf1 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -122,6 +122,7 @@ typedef struct DisasContext {
-     int cpuid_ext3_features;
-     int cpuid_7_0_ebx_features;
-     int cpuid_7_0_ecx_features;
-+    int cpuid_8000_0008_ebx_features;
-     int cpuid_xsave_features;
- 
-     /* TCG local temps */
-@@ -6127,8 +6128,14 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-         }
-         break;
- 
-+    case 0x109: /* wbinvd; wbnoinvd with REPZ prefix */
-+        if ((s->cpuid_8000_0008_ebx_features & CPUID_8000_0008_EBX_WBNOINVD) &&
-+            s->prefix & PREFIX_REPZ) {
-+            check_cpl0(s);
-+            break;
-+        }
-+        /* fallthrough */
-     case 0x108: /* invd */
--    case 0x109: /* wbinvd */
-         if (check_cpl0(s)) {
-             gen_svm_check_intercept(s, (b & 1) ? SVM_EXIT_WBINVD : SVM_EXIT_INVD);
-             /* nothing to do */
-@@ -6936,6 +6943,7 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     dc->cpuid_7_0_ebx_features = env->features[FEAT_7_0_EBX];
-     dc->cpuid_7_0_ecx_features = env->features[FEAT_7_0_ECX];
-     dc->cpuid_xsave_features = env->features[FEAT_XSAVE];
-+    dc->cpuid_8000_0008_ebx_features = env->features[FEAT_8000_0008_EBX];
-     dc->jmp_opt = !((cflags & CF_NO_GOTO_TB) ||
-                     (flags & (HF_TF_MASK | HF_INHIBIT_IRQ_MASK)));
-     /*
+Likewise using qemu-x86_64 with -cpu Haswell, it raises warnings for
+
+  TCG doesn't support requested feature: CPUID.01H:ECX.pcid [bit 17]
+  TCG doesn't support requested feature: CPUID.01H:ECX.x2apic [bit 21]
+  TCG doesn't support requested feature: CPUID.01H:ECX.tsc-deadline [bit 24]
+  TCG doesn't support requested feature: CPUID.07H:EBX.invpcid [bit 10]
+
+Even though x86_64-v3 is the level that qemu-user is supposed to provide.
+These are two related problems:
+
+- for Haswell, the 4 missing features are only relevant to code running
+  in kernel mode; we can ignore them and mark them as supported even
+  though they are not.  The supported features are only used to print
+  the warnings
+
+- for qemu-i386, the issue is that the i386 target is not about running
+  programs on a 32-bit processor, but rather running programs using the
+  32-bit kernel ABI on any processor; the behavior of the processor in
+  compatibility (32-bit) mode is independent of the LM feature.  Therefore,
+  LM can also be treated as a feature that is only relevant in kernel
+  mode.
+
+Other CPU models have warnings for the ARCH_CAPABILITIES MSR; hide
+them as well in a similar manner.
+
+Based-on: <20230618215114.107337-1-pbonzini@redhat.com>
+
+Paolo Bonzini (2):
+  target/i386: ignore ARCH_CAPABILITIES features in user mode emulation
+  target/i386: ignore CPL0-specific features in user mode emulation
+
+ target/i386/cpu.c | 95 ++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 86 insertions(+), 9 deletions(-)
+
 -- 
 2.40.1
 
