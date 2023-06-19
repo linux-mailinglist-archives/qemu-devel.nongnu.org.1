@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C662A7359A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3954A73599E
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFtb-0001pm-KO; Mon, 19 Jun 2023 10:30:20 -0400
+	id 1qBFtT-0001ad-Pw; Mon, 19 Jun 2023 10:30:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsp-0000eB-K3
+ id 1qBFsp-0000eC-KO
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:31 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsl-0002F7-W1
+ id 1qBFsm-0002FU-EM
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:30 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4f6283d0d84so4574906e87.1
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4f004cc54f4so4649864e87.3
  for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687184965; x=1689776965;
+ d=linaro.org; s=google; t=1687184966; x=1689776966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ecFzLygpAx1acENNT2vpDRF7LirFVwYSwEwJOiBRXNw=;
- b=dw0Y9OkdwRM6niVfLFQQN+pPcgH7yplnpRCyI0FtZRsi07ClNjpvlNwgeHw7CBqJ83
- ixkky6w8rrvZBUDBqTledNeLAc4iSH00yNm5nj7XwvcBcrctBkOQ76AYv0u8pelE+8nK
- X4xhj/RQ5IzAFvBhyBrCx1jLVVz8ea1PhduAD8bBmxOaK7LBZFD5yycUNS4eGhrlXzjX
- l7mQvse3ZHx2J3dYpPVGqaaRBTmatjaKJgY5b4z0wAmjTDT9V2C60h203GyKTd6woC71
- S+KRdJPYN5FuEJJduRhEEsCIOSsagi5TyYiJDl8Y/aHMokU4zaRvT4hcegLCagYp4RRQ
- QEEA==
+ :reply-to; bh=PtPIKJjcfFQdrBAt/+UBZeTWmTkL2YszBATqTZTTZWY=;
+ b=MLwu3vJagLhfLEsKomdcV+6vXVhODkt/kXrnEftDrWH9VNXppDluPvEo0wI7Vt7tJ/
+ DW5rng25Gno6n8YRRjK+Wo83o0Gtk2vsijNNeZ7TQzcl1cp8QmNuj4AFBw+v2nAhEEkM
+ XQn2wMxF1xwDDG95h9ij4D2tpFFRz1rtw/o6QO4nSaR1bBn9WuyM6cF8SZ2J4J/PfE8I
+ kleN0y3VT39RO6dwOdIWa6l4fVZrQ0rvU0BJcbJbjFoVXx9gu7n739Sbr2IKvPMhrBNy
+ B3pFoxYKRQAx4ucLDlB46t6ggdyqGjsIMBMo0x91h+gRqkQH3t3JJ28pHXOv4rBOq8KD
+ MsXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687184966; x=1689776966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ecFzLygpAx1acENNT2vpDRF7LirFVwYSwEwJOiBRXNw=;
- b=Ds7q97SUrtehi2QvBIGXIJ7y4wYCf9+BkyZXUq82xcAughiJKNpk5zFzfKpj+7+Bfx
- 7CAuTjE0azQcQ1W2fJ333Yeh5xflCb7MfC1MSHuUMbUGN9mVKazGDcZVTvm6nm+H3/qT
- o8c+E9qX4NkjDOoAjZwVKViT4tJStOWaNPBIokU5YZVBqPoeVnJC1nL/XcjfR6RvYgRA
- w4Q2/gsFTYlYbesH2RMyIzTFcivvhFTk3zd637olagwPhn0rMsrR6f73RQvZ+WzMimTt
- 9qbdHC2XSLcALf13+gvaEMzmFfEqab689Nz9Jzf5kysV3xv6wAB0T0Mc4EpwoHRWXfl7
- CAVg==
-X-Gm-Message-State: AC+VfDxMizBVTnYQAeUjyyNpbRKNVGPrV1s6ogeUhiN7is6kKtKZKs8F
- UHcF8dXNZ36erI7t62a8twZlKhOPmQSGL1ZNtCE=
-X-Google-Smtp-Source: ACHHUZ69RSulJoZptmSnesqUeq/Z9cn2Fm5GQV/XdmQxVOMsUimjoUw1a4kjunSq3NIOwv9n+VTtWA==
-X-Received: by 2002:a19:3851:0:b0:4f5:a181:97bf with SMTP id
- d17-20020a193851000000b004f5a18197bfmr4751203lfj.58.1687184965704; 
- Mon, 19 Jun 2023 07:29:25 -0700 (PDT)
+ bh=PtPIKJjcfFQdrBAt/+UBZeTWmTkL2YszBATqTZTTZWY=;
+ b=LF8domKu/96UBuda/UMvdsVs1E1QvLQHxVFD7rVROfK/8pQyfpbap/GldhOZJzJYml
+ VS/E0J0Kjpw9ENRM4rp7Z3NGEUvAA5+u9ANXwVQwF+jkyQDlRmjCFiDbYcMLm4/SeWXb
+ HXJsTmuaefvYlGHzZdD1u9engE53YM31SHMOKiA8OXVNI7QmDKpoZ96ebhUJ7a3qzVBk
+ 9Ny1+0eaMrUFF+ucw54CiQHCKm7NyyqADvVwnpkVWCiMlAdZfYCZNFWx6RMy4dwxn+o9
+ b3EYCdDZwU0Ae9Fbxgw8NCynSdCcXQS0AuOf8YKke3QcifoY5gWotT6UTlcMpH8i+2Ex
+ WeqA==
+X-Gm-Message-State: AC+VfDy/B/3XmULovu3HuyGBPfsle9OMzuvAVntYbjMvOTcUFcIBQW+9
+ SANYUdzAYn0QH6PWwlqzbsg25ctUec/1sXtqvM4=
+X-Google-Smtp-Source: ACHHUZ6d2OEKr3VAvhXZ6hmkhvsdheEpYPGveAseBZ3fh7sgCUh7WRRSH/WB54zqVKqk3BVR3kmC/Q==
+X-Received: by 2002:a05:6512:2e7:b0:4f8:71ca:bb15 with SMTP id
+ m7-20020a05651202e700b004f871cabb15mr1686654lfq.48.1687184966294; 
+ Mon, 19 Jun 2023 07:29:26 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.25
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 19 Jun 2023 07:29:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/33] target/arm: Convert load/store (multiple structures) to
+Subject: [PULL 22/33] target/arm: Convert load/store single structure to
  decodetree
-Date: Mon, 19 Jun 2023 15:29:02 +0100
-Message-Id: <20230619142914.963184-22-peter.maydell@linaro.org>
+Date: Mon, 19 Jun 2023 15:29:03 +0100
+Message-Id: <20230619142914.963184-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,146 +91,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the instructions in the ASIMD load/store multiple structures
-instruction classes to decodetree.
+Convert the ASIMD load/store single structure insns to decodetree.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20230602155223.2040685-20-peter.maydell@linaro.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-19-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  20 +++
- target/arm/tcg/translate-a64.c | 222 ++++++++++++++++-----------------
- 2 files changed, 131 insertions(+), 111 deletions(-)
+ target/arm/tcg/a64.decode      |  34 +++++
+ target/arm/tcg/translate-a64.c | 219 +++++++++++++++------------------
+ 2 files changed, 136 insertions(+), 117 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index db4f44c4f40..69bdfa2e73b 100644
+index 69bdfa2e73b..4ffdc91865f 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -474,3 +474,23 @@ LDAPR_i         01 011001 10 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext
- LDAPR_i         10 011001 10 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext=0 sz=2
- LDAPR_i         00 011001 11 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext=1 sz=0
- LDAPR_i         01 011001 11 0 ......... 00 ..... ..... @ldapr_stlr_i sign=1 ext=1 sz=1
+@@ -494,3 +494,37 @@ LD_mult         0 . 001100 . 1 0 ..... 0110 .. ..... ..... @ldst_mult rpt=3 sele
+ LD_mult         0 . 001100 . 1 0 ..... 0111 .. ..... ..... @ldst_mult rpt=1 selem=1
+ LD_mult         0 . 001100 . 1 0 ..... 1000 .. ..... ..... @ldst_mult rpt=1 selem=2
+ LD_mult         0 . 001100 . 1 0 ..... 1010 .. ..... ..... @ldst_mult rpt=2 selem=1
 +
-+# Load/store multiple structures
-+# The 4-bit opcode in [15:12] encodes repeat count and structure elements
-+&ldst_mult      rm rn rt sz q p rpt selem
-+@ldst_mult      . q:1 ...... p:1 . . rm:5 .... sz:2 rn:5 rt:5 &ldst_mult
-+ST_mult         0 . 001100 . 0 0 ..... 0000 .. ..... ..... @ldst_mult rpt=1 selem=4
-+ST_mult         0 . 001100 . 0 0 ..... 0010 .. ..... ..... @ldst_mult rpt=4 selem=1
-+ST_mult         0 . 001100 . 0 0 ..... 0100 .. ..... ..... @ldst_mult rpt=1 selem=3
-+ST_mult         0 . 001100 . 0 0 ..... 0110 .. ..... ..... @ldst_mult rpt=3 selem=1
-+ST_mult         0 . 001100 . 0 0 ..... 0111 .. ..... ..... @ldst_mult rpt=1 selem=1
-+ST_mult         0 . 001100 . 0 0 ..... 1000 .. ..... ..... @ldst_mult rpt=1 selem=2
-+ST_mult         0 . 001100 . 0 0 ..... 1010 .. ..... ..... @ldst_mult rpt=2 selem=1
++# Load/store single structure
++&ldst_single    rm rn rt p selem index scale
 +
-+LD_mult         0 . 001100 . 1 0 ..... 0000 .. ..... ..... @ldst_mult rpt=1 selem=4
-+LD_mult         0 . 001100 . 1 0 ..... 0010 .. ..... ..... @ldst_mult rpt=4 selem=1
-+LD_mult         0 . 001100 . 1 0 ..... 0100 .. ..... ..... @ldst_mult rpt=1 selem=3
-+LD_mult         0 . 001100 . 1 0 ..... 0110 .. ..... ..... @ldst_mult rpt=3 selem=1
-+LD_mult         0 . 001100 . 1 0 ..... 0111 .. ..... ..... @ldst_mult rpt=1 selem=1
-+LD_mult         0 . 001100 . 1 0 ..... 1000 .. ..... ..... @ldst_mult rpt=1 selem=2
-+LD_mult         0 . 001100 . 1 0 ..... 1010 .. ..... ..... @ldst_mult rpt=2 selem=1
++%ldst_single_selem 13:1 21:1 !function=plus_1
++
++%ldst_single_index_b  30:1 10:3
++%ldst_single_index_h  30:1 11:2
++%ldst_single_index_s  30:1 12:1
++
++@ldst_single_b     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
++                   &ldst_single scale=0 selem=%ldst_single_selem \
++                   index=%ldst_single_index_b
++@ldst_single_h     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
++                   &ldst_single scale=1 selem=%ldst_single_selem \
++                   index=%ldst_single_index_h
++@ldst_single_s     .. ...... p:1 .. rm:5 ...... rn:5 rt:5 \
++                   &ldst_single scale=2 selem=%ldst_single_selem \
++                   index=%ldst_single_index_s
++@ldst_single_d     . index:1 ...... p:1 .. rm:5 ...... rn:5 rt:5 \
++                   &ldst_single scale=3 selem=%ldst_single_selem
++
++ST_single          0 . 001101 . 0 . ..... 00 . ... ..... .....  @ldst_single_b
++ST_single          0 . 001101 . 0 . ..... 01 . ..0 ..... .....  @ldst_single_h
++ST_single          0 . 001101 . 0 . ..... 10 . .00 ..... .....  @ldst_single_s
++ST_single          0 . 001101 . 0 . ..... 10 . 001 ..... .....  @ldst_single_d
++
++LD_single          0 . 001101 . 1 . ..... 00 . ... ..... .....  @ldst_single_b
++LD_single          0 . 001101 . 1 . ..... 01 . ..0 ..... .....  @ldst_single_h
++LD_single          0 . 001101 . 1 . ..... 10 . .00 ..... .....  @ldst_single_s
++LD_single          0 . 001101 . 1 . ..... 10 . 001 ..... .....  @ldst_single_d
++
++# Replicating load case
++LD_single_repl  0 q:1 001101 p:1 1 . rm:5 11 . 0 scale:2 rn:5 rt:5 selem=%ldst_single_selem
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index c0d38c48798..f2d9ceeed04 100644
+index f2d9ceeed04..f9a76141eb6 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -3414,99 +3414,28 @@ static bool trans_STLR_i(DisasContext *s, arg_ldapr_stlr_i *a)
+@@ -3584,141 +3584,129 @@ static bool trans_ST_mult(DisasContext *s, arg_ldst_mult *a)
      return true;
  }
  
--/* AdvSIMD load/store multiple structures
+-/* AdvSIMD load/store single structure
 - *
-- *  31  30  29           23 22  21         16 15    12 11  10 9    5 4    0
-- * +---+---+---------------+---+-------------+--------+------+------+------+
-- * | 0 | Q | 0 0 1 1 0 0 0 | L | 0 0 0 0 0 0 | opcode | size |  Rn  |  Rt  |
-- * +---+---+---------------+---+-------------+--------+------+------+------+
+- *  31  30  29           23 22 21 20       16 15 13 12  11  10 9    5 4    0
+- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
+- * | 0 | Q | 0 0 1 1 0 1 0 | L R | 0 0 0 0 0 | opc | S | size |  Rn  |  Rt  |
+- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
 - *
-- * AdvSIMD load/store multiple structures (post-indexed)
+- * AdvSIMD load/store single structure (post-indexed)
 - *
-- *  31  30  29           23 22  21  20     16 15    12 11  10 9    5 4    0
-- * +---+---+---------------+---+---+---------+--------+------+------+------+
-- * | 0 | Q | 0 0 1 1 0 0 1 | L | 0 |   Rm    | opcode | size |  Rn  |  Rt  |
-- * +---+---+---------------+---+---+---------+--------+------+------+------+
+- *  31  30  29           23 22 21 20       16 15 13 12  11  10 9    5 4    0
+- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
+- * | 0 | Q | 0 0 1 1 0 1 1 | L R |     Rm    | opc | S | size |  Rn  |  Rt  |
+- * +---+---+---------------+-----+-----------+-----+---+------+------+------+
 - *
 - * Rt: first (or only) SIMD&FP register to be transferred
 - * Rn: base address or SP
 - * Rm (post-index only): post-index register (when !31) or size dependent #imm
+- * index = encoded in Q:S:size dependent on size
+- *
+- * lane_size = encoded in R, opc
+- * transfer width = encoded in opc, S, size
 - */
--static void disas_ldst_multiple_struct(DisasContext *s, uint32_t insn)
-+static bool trans_LD_mult(DisasContext *s, arg_ldst_mult *a)
+-static void disas_ldst_single_struct(DisasContext *s, uint32_t insn)
++static bool trans_ST_single(DisasContext *s, arg_ldst_single *a)
  {
 -    int rt = extract32(insn, 0, 5);
 -    int rn = extract32(insn, 5, 5);
 -    int rm = extract32(insn, 16, 5);
 -    int size = extract32(insn, 10, 2);
--    int opcode = extract32(insn, 12, 4);
--    bool is_store = !extract32(insn, 22, 1);
--    bool is_postidx = extract32(insn, 23, 1);
--    bool is_q = extract32(insn, 30, 1);
+-    int S = extract32(insn, 12, 1);
+-    int opc = extract32(insn, 13, 3);
+-    int R = extract32(insn, 21, 1);
+-    int is_load = extract32(insn, 22, 1);
+-    int is_postidx = extract32(insn, 23, 1);
+-    int is_q = extract32(insn, 30, 1);
+-
+-    int scale = extract32(opc, 1, 2);
+-    int selem = (extract32(opc, 0, 1) << 1 | R) + 1;
+-    bool replicate = false;
+-    int index = is_q << 3 | S << 2 | size;
+-    int xs, total;
++    int xs, total, rt;
      TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
-     MemOp endian, align, mop;
+     MemOp mop;
  
-     int total;    /* total bytes */
-     int elements; /* elements per vector */
--    int rpt;    /* num iterations */
--    int selem;  /* structure elements */
-     int r;
-+    int size = a->sz;
- 
--    if (extract32(insn, 31, 1) || extract32(insn, 21, 1)) {
+-    if (extract32(insn, 31, 1)) {
 -        unallocated_encoding(s);
 -        return;
 +    if (!a->p && a->rm != 0) {
-+        /* For non-postindexed accesses the Rm field must be 0 */
 +        return false;
      }
--
 -    if (!is_postidx && rm != 0) {
--        unallocated_encoding(s);
--        return;
-+    if (size == 3 && !a->q && a->selem != 1) {
-+        return false;
-     }
--
--    /* From the shared decode logic */
--    switch (opcode) {
--    case 0x0:
--        rpt = 1;
--        selem = 4;
--        break;
--    case 0x2:
--        rpt = 4;
--        selem = 1;
--        break;
--    case 0x4:
--        rpt = 1;
--        selem = 3;
--        break;
--    case 0x6:
--        rpt = 3;
--        selem = 1;
--        break;
--    case 0x7:
--        rpt = 1;
--        selem = 1;
--        break;
--    case 0x8:
--        rpt = 1;
--        selem = 2;
--        break;
--    case 0xa:
--        rpt = 2;
--        selem = 1;
--        break;
--    default:
 -        unallocated_encoding(s);
 -        return;
 -    }
 -
--    if (size == 3 && !is_q && selem != 1) {
--        /* reserved */
--        unallocated_encoding(s);
--        return;
+-    switch (scale) {
+-    case 3:
+-        if (!is_load || S) {
+-            unallocated_encoding(s);
+-            return;
+-        }
+-        scale = size;
+-        replicate = true;
+-        break;
+-    case 0:
+-        break;
+-    case 1:
+-        if (extract32(size, 0, 1)) {
+-            unallocated_encoding(s);
+-            return;
+-        }
+-        index >>= 1;
+-        break;
+-    case 2:
+-        if (extract32(size, 1, 1)) {
+-            unallocated_encoding(s);
+-            return;
+-        }
+-        if (!extract32(size, 0, 1)) {
+-            index >>= 2;
+-        } else {
+-            if (S) {
+-                unallocated_encoding(s);
+-                return;
+-            }
+-            index >>= 3;
+-            scale = 3;
+-        }
+-        break;
+-    default:
+-        g_assert_not_reached();
 -    }
 -
      if (!fp_access_check(s)) {
@@ -243,161 +255,41 @@ index c0d38c48798..f2d9ceeed04 100644
          gen_check_sp_alignment(s);
      }
  
-@@ -3516,22 +3445,22 @@ static void disas_ldst_multiple_struct(DisasContext *s, uint32_t insn)
-         endian = MO_LE;
-     }
- 
--    total = rpt * selem * (is_q ? 16 : 8);
+-    total = selem << scale;
 -    tcg_rn = cpu_reg_sp(s, rn);
-+    total = a->rpt * a->selem * (a->q ? 16 : 8);
++    total = a->selem << a->scale;
 +    tcg_rn = cpu_reg_sp(s, a->rn);
  
-     /*
-      * Issue the MTE check vs the logical repeat count, before we
-      * promote consecutive little-endian elements below.
-      */
--    clean_addr = gen_mte_checkN(s, tcg_rn, is_store, is_postidx || rn != 31,
--                                total, finalize_memop_asimd(s, size));
-+    clean_addr = gen_mte_checkN(s, tcg_rn, false, a->p || a->rn != 31, total,
-+                                finalize_memop_asimd(s, size));
+-    mop = finalize_memop_asimd(s, scale);
+-
+-    clean_addr = gen_mte_checkN(s, tcg_rn, !is_load, is_postidx || rn != 31,
++    mop = finalize_memop_asimd(s, a->scale);
++    clean_addr = gen_mte_checkN(s, tcg_rn, true, a->p || a->rn != 31,
+                                 total, mop);
  
-     /*
-      * Consecutive little-endian elements from a single register
-      * can be promoted to a larger little-endian operation.
-      */
-     align = MO_ALIGN;
--    if (selem == 1 && endian == MO_LE) {
-+    if (a->selem == 1 && endian == MO_LE) {
-         align = pow2_align(size);
-         size = 3;
-     }
-@@ -3540,45 +3469,119 @@ static void disas_ldst_multiple_struct(DisasContext *s, uint32_t insn)
-     }
-     mop = endian | size | align;
- 
--    elements = (is_q ? 16 : 8) >> size;
-+    elements = (a->q ? 16 : 8) >> size;
-     tcg_ebytes = tcg_constant_i64(1 << size);
--    for (r = 0; r < rpt; r++) {
-+    for (r = 0; r < a->rpt; r++) {
-         int e;
-         for (e = 0; e < elements; e++) {
-             int xs;
--            for (xs = 0; xs < selem; xs++) {
--                int tt = (rt + r + xs) % 32;
--                if (is_store) {
--                    do_vec_st(s, tt, e, clean_addr, mop);
--                } else {
--                    do_vec_ld(s, tt, e, clean_addr, mop);
--                }
-+            for (xs = 0; xs < a->selem; xs++) {
-+                int tt = (a->rt + r + xs) % 32;
-+                do_vec_ld(s, tt, e, clean_addr, mop);
-                 tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
-             }
-         }
-     }
- 
--    if (!is_store) {
--        /* For non-quad operations, setting a slice of the low
--         * 64 bits of the register clears the high 64 bits (in
--         * the ARM ARM pseudocode this is implicit in the fact
--         * that 'rval' is a 64 bit wide variable).
--         * For quad operations, we might still need to zero the
--         * high bits of SVE.
--         */
--        for (r = 0; r < rpt * selem; r++) {
--            int tt = (rt + r) % 32;
--            clear_vec_high(s, is_q, tt);
-+    /*
-+     * For non-quad operations, setting a slice of the low 64 bits of
-+     * the register clears the high 64 bits (in the ARM ARM pseudocode
-+     * this is implicit in the fact that 'rval' is a 64 bit wide
-+     * variable).  For quad operations, we might still need to zero
-+     * the high bits of SVE.
-+     */
-+    for (r = 0; r < a->rpt * a->selem; r++) {
-+        int tt = (a->rt + r) % 32;
-+        clear_vec_high(s, a->q, tt);
-+    }
-+
-+    if (a->p) {
-+        if (a->rm == 31) {
-+            tcg_gen_addi_i64(tcg_rn, tcg_rn, total);
-+        } else {
-+            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, a->rm));
-+        }
-+    }
-+    return true;
-+}
-+
-+static bool trans_ST_mult(DisasContext *s, arg_ldst_mult *a)
-+{
-+    TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
-+    MemOp endian, align, mop;
-+
-+    int total;    /* total bytes */
-+    int elements; /* elements per vector */
-+    int r;
-+    int size = a->sz;
-+
-+    if (!a->p && a->rm != 0) {
-+        /* For non-postindexed accesses the Rm field must be 0 */
-+        return false;
-+    }
-+    if (size == 3 && !a->q && a->selem != 1) {
-+        return false;
-+    }
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
-+    }
-+
-+    /* For our purposes, bytes are always little-endian.  */
-+    endian = s->be_data;
-+    if (size == 0) {
-+        endian = MO_LE;
-+    }
-+
-+    total = a->rpt * a->selem * (a->q ? 16 : 8);
-+    tcg_rn = cpu_reg_sp(s, a->rn);
-+
-+    /*
-+     * Issue the MTE check vs the logical repeat count, before we
-+     * promote consecutive little-endian elements below.
-+     */
-+    clean_addr = gen_mte_checkN(s, tcg_rn, true, a->p || a->rn != 31, total,
-+                                finalize_memop_asimd(s, size));
-+
-+    /*
-+     * Consecutive little-endian elements from a single register
-+     * can be promoted to a larger little-endian operation.
-+     */
-+    align = MO_ALIGN;
-+    if (a->selem == 1 && endian == MO_LE) {
-+        align = pow2_align(size);
-+        size = 3;
-+    }
-+    if (!s->align_mem) {
-+        align = 0;
-+    }
-+    mop = endian | size | align;
-+
-+    elements = (a->q ? 16 : 8) >> size;
-+    tcg_ebytes = tcg_constant_i64(1 << size);
-+    for (r = 0; r < a->rpt; r++) {
-+        int e;
-+        for (e = 0; e < elements; e++) {
-+            int xs;
-+            for (xs = 0; xs < a->selem; xs++) {
-+                int tt = (a->rt + r + xs) % 32;
-+                do_vec_st(s, tt, e, clean_addr, mop);
-+                tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
-+            }
-         }
+-    tcg_ebytes = tcg_constant_i64(1 << scale);
+-    for (xs = 0; xs < selem; xs++) {
+-        if (replicate) {
+-            /* Load and replicate to all elements */
+-            TCGv_i64 tcg_tmp = tcg_temp_new_i64();
+-
+-            tcg_gen_qemu_ld_i64(tcg_tmp, clean_addr, get_mem_index(s), mop);
+-            tcg_gen_gvec_dup_i64(scale, vec_full_reg_offset(s, rt),
+-                                 (is_q + 1) * 8, vec_full_reg_size(s),
+-                                 tcg_tmp);
+-        } else {
+-            /* Load/store one element per register */
+-            if (is_load) {
+-                do_vec_ld(s, rt, index, clean_addr, mop);
+-            } else {
+-                do_vec_st(s, rt, index, clean_addr, mop);
+-            }
+-        }
++    tcg_ebytes = tcg_constant_i64(1 << a->scale);
++    for (xs = 0, rt = a->rt; xs < a->selem; xs++, rt = (rt + 1) % 32) {
++        do_vec_st(s, rt, a->index, clean_addr, mop);
+         tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
+-        rt = (rt + 1) % 32;
      }
  
 -    if (is_postidx) {
@@ -411,19 +303,104 @@ index c0d38c48798..f2d9ceeed04 100644
          }
      }
 +    return true;
++}
++
++static bool trans_LD_single(DisasContext *s, arg_ldst_single *a)
++{
++    int xs, total, rt;
++    TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
++    MemOp mop;
++
++    if (!a->p && a->rm != 0) {
++        return false;
++    }
++    if (!fp_access_check(s)) {
++        return true;
++    }
++
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++
++    total = a->selem << a->scale;
++    tcg_rn = cpu_reg_sp(s, a->rn);
++
++    mop = finalize_memop_asimd(s, a->scale);
++    clean_addr = gen_mte_checkN(s, tcg_rn, false, a->p || a->rn != 31,
++                                total, mop);
++
++    tcg_ebytes = tcg_constant_i64(1 << a->scale);
++    for (xs = 0, rt = a->rt; xs < a->selem; xs++, rt = (rt + 1) % 32) {
++        do_vec_ld(s, rt, a->index, clean_addr, mop);
++        tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
++    }
++
++    if (a->p) {
++        if (a->rm == 31) {
++            tcg_gen_addi_i64(tcg_rn, tcg_rn, total);
++        } else {
++            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, a->rm));
++        }
++    }
++    return true;
++}
++
++static bool trans_LD_single_repl(DisasContext *s, arg_LD_single_repl *a)
++{
++    int xs, total, rt;
++    TCGv_i64 clean_addr, tcg_rn, tcg_ebytes;
++    MemOp mop;
++
++    if (!a->p && a->rm != 0) {
++        return false;
++    }
++    if (!fp_access_check(s)) {
++        return true;
++    }
++
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++
++    total = a->selem << a->scale;
++    tcg_rn = cpu_reg_sp(s, a->rn);
++
++    mop = finalize_memop_asimd(s, a->scale);
++    clean_addr = gen_mte_checkN(s, tcg_rn, false, a->p || a->rn != 31,
++                                total, mop);
++
++    tcg_ebytes = tcg_constant_i64(1 << a->scale);
++    for (xs = 0, rt = a->rt; xs < a->selem; xs++, rt = (rt + 1) % 32) {
++        /* Load and replicate to all elements */
++        TCGv_i64 tcg_tmp = tcg_temp_new_i64();
++
++        tcg_gen_qemu_ld_i64(tcg_tmp, clean_addr, get_mem_index(s), mop);
++        tcg_gen_gvec_dup_i64(a->scale, vec_full_reg_offset(s, rt),
++                             (a->q + 1) * 8, vec_full_reg_size(s), tcg_tmp);
++        tcg_gen_add_i64(clean_addr, clean_addr, tcg_ebytes);
++    }
++
++    if (a->p) {
++        if (a->rm == 31) {
++            tcg_gen_addi_i64(tcg_rn, tcg_rn, total);
++        } else {
++            tcg_gen_add_i64(tcg_rn, tcg_rn, cpu_reg(s, a->rm));
++        }
++    }
++    return true;
  }
  
- /* AdvSIMD load/store single structure
-@@ -3931,9 +3934,6 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
+ /*
+@@ -3934,9 +3922,6 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
  static void disas_ldst(DisasContext *s, uint32_t insn)
  {
      switch (extract32(insn, 24, 6)) {
--    case 0x0c: /* AdvSIMD load/store multiple structures */
--        disas_ldst_multiple_struct(s, insn);
+-    case 0x0d: /* AdvSIMD load/store single structure */
+-        disas_ldst_single_struct(s, insn);
 -        break;
-     case 0x0d: /* AdvSIMD load/store single structure */
-         disas_ldst_single_struct(s, insn);
-         break;
+     case 0x19:
+         if (extract32(insn, 21, 1) != 0) {
+             disas_ldst_tag(s, insn);
 -- 
 2.34.1
 
