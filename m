@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77E47358E7
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12607358F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:50:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFDu-00030I-VK; Mon, 19 Jun 2023 09:47:15 -0400
+	id 1qBFGI-0004M8-Ru; Mon, 19 Jun 2023 09:49:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1qBFDn-0002wt-Rg
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:47:09 -0400
-Received: from qs51p00im-qukt01080501.me.com ([17.57.155.22])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBFG7-0004Lp-OD
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:49:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1qBFDl-0006PM-CU
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:47:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1687182423; bh=EcDTfFvPiDbu6xKRzq1KBQP9u7bfAG3ORDug4/njrBc=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
- b=HOYRyX3YnwaAGY0t8g2X1MuWPmdySTYmN+ez62Q2qhKcaA9JTD8Io6w9idAk6x5mB
- SoDp2WObu409/2plc2SaQpvvvUZHLtKAyjkKlyAxU3w4ZMMrhS10luwWm/K58WTKqq
- 3YfOpRSg5a/Rv9iphtBxhb2iR6WNbchYHOqRkobZGhJsvGEvgVaMDod03C2jlwtV46
- oDttjmRplBT/TqJx8v5BDggoAdBCO6iG5stysWYhaNeGuKZHnpwd3zKRZrzFyeHlS5
- 5RiTmy4qSMbGfhqUYRaW2B6uWPgpPiPqFkq5dR+awASc56w7k1WKZoUDQ9Kd+ypMuH
- L9QXcrZWIny1A==
-Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com
- [17.57.155.28])
- by qs51p00im-qukt01080501.me.com (Postfix) with ESMTPSA id F3FDF19802C7;
- Mon, 19 Jun 2023 13:47:00 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [PATCH v2 12/12] target/arm: Allow users to set the number of VFP
- registers
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <c027687b-da81-3e3f-9305-43a6eadc17fe@kaod.org>
-Date: Mon, 19 Jun 2023 15:46:49 +0200
-Cc: "open list:ARM cores" <qemu-arm@nongnu.org>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@aj.id.au>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <21DCF8D7-06DA-4F3E-B3E8-890B9D401978@ynddal.dk>
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-13-clg@kaod.org>
- <955C217E-FE0F-41E2-8E97-9AFD8C4A0DBE@ynddal.dk>
- <c027687b-da81-3e3f-9305-43a6eadc17fe@kaod.org>
-To: =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-Proofpoint-ORIG-GUID: QrN7nG6HdqmsH9aEXif00vEOAxBWskLb
-X-Proofpoint-GUID: QrN7nG6HdqmsH9aEXif00vEOAxBWskLb
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.790,17.0.605.474.0000000_definitions?=
- =?UTF-8?Q?=3D2022-01-12=5F03:2022-01-11=5F01,2022-01-12=5F03,2020-01-23?=
- =?UTF-8?Q?=5F02_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 clxscore=1030
- bulkscore=0 phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=595
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2306190126
-Received-SPF: pass client-ip=17.57.155.22; envelope-from=mads@ynddal.dk;
- helo=qs51p00im-qukt01080501.me.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBFG5-0006uH-8x
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:49:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687182567;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bLzMxjQCoNSWqFSI03GNszVFCgzmxprpSpY1/CGSVio=;
+ b=POY/cdKDxPn28tHoPwG//80N4eLbh8Jm/iPrQrWyL+XRKglsVNeQutM1HQYkJso1N3FRgQ
+ eTPjT6G2HXawXBLroQ9fW1xXRBMo20V62dVaRjB83cz4hi4BBu+OSDIO/ZgjBXYV2nqe8k
+ bGhpey0kXbcHdQB33ZUm7PBFExfz0vo=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-2HxTUBsWPhOZseeKWHVWtg-1; Mon, 19 Jun 2023 09:49:25 -0400
+X-MC-Unique: 2HxTUBsWPhOZseeKWHVWtg-1
+Received: by mail-vk1-f200.google.com with SMTP id
+ 71dfb90a1353d-471795eaba7so198552e0c.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:49:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687182565; x=1689774565;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bLzMxjQCoNSWqFSI03GNszVFCgzmxprpSpY1/CGSVio=;
+ b=BgEtgPVSpp99UgZb4MyrpnIj/RvpvcYGnzwVBDhdhNOH8R8+iwh92PXWY0AAyjPFiD
+ I0lWlHdmZHE8s1RVm83cmkxO9KWAgB2J2yADP5zlPniI2oENcKBsVVH3hqk8zKcdNo3c
+ OWURN3ELrNm+Ba+1kllZo86NMAEsYICuFUuAdnlpT7rO+rOsWAtGZY+VHJbZ1p6L2L/m
+ T/e7fi8d140HUUmjxF4lmu2XqxX4yTCcmz5WCHqCo2wh6fg75QlGuZx1PsrISLqZYeue
+ wKYyCcaAMcpxgXJtIBPPHG9fSp3cZP3LgQNI0jn0WqR+hafD3lD+q5u1EV/+Eg7yFqeZ
+ nSHQ==
+X-Gm-Message-State: AC+VfDyXH48fP3wOZJoCLtx5rUpcEwwWuE9FSZhnA/R2boqV17+rnOKb
+ U7LDuEhEXA2lkntqArqfvicEnR9OlqVsxmZST2YvC2XIWZlnid1H8YfinktVX/clMbTidY27tZf
+ gBjEjzQ1dG7pnnr6OBPtpcXnZKyCNxSuWzVUkf6ByEw==
+X-Received: by 2002:a05:6102:51b:b0:434:8401:beae with SMTP id
+ l27-20020a056102051b00b004348401beaemr666375vsa.34.1687182565091; 
+ Mon, 19 Jun 2023 06:49:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ405SgiUG/zVoCt+rHOQzudHKBOK0TQ4RDFlL0BjVAMYq88CUf/luTXKs3BbyIJlLcRHelqO+IqofkLlPaf5mI=
+X-Received: by 2002:a05:6102:51b:b0:434:8401:beae with SMTP id
+ l27-20020a056102051b00b004348401beaemr666368vsa.34.1687182564810; Mon, 19 Jun
+ 2023 06:49:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230618215114.107337-1-pbonzini@redhat.com>
+ <20230618215114.107337-5-pbonzini@redhat.com>
+In-Reply-To: <20230618215114.107337-5-pbonzini@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 19 Jun 2023 15:49:12 +0200
+Message-ID: <CABgObfaW6bccGJE4SEuck32Eg6fqRgsaJxfBZ+MePKfoNkR6vw@mail.gmail.com>
+Subject: Re: [PATCH 4/7] target/i386: TCG supports 32-bit SYSCALL
+To: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="00000000000072762405fe7bcd46"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,92 +90,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--00000000000072762405fe7bcd46
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> ARM's "Vector Floating Point" unit has many implementation with =
-different
-> features: VFPv3-D16/D32, *FP16, VFPv4-D16/D32, Neon, etc. The test =
-might
-> be too strict and could possibly be removed.
->=20
-> Could you send us the result of 'cat /proc/cpuinfo' on the host ?
->=20
-> Thanks,
->=20
-> C.
+Il dom 18 giu 2023, 23:51 Paolo Bonzini <pbonzini@redhat.com> ha scritto:
 
-The host is macOS, so there's no '/proc/cpuinfo'. I can get this from =
-sysctl:
+> TCG supports both 32-bit and 64-bit SYSCALL, so expose it
+> with "-cpu max" even for 32-bit emulators.
+>
 
-$ sysctl -a | grep hw.optional
-hw.optional.arm.FEAT_FlagM: 1
-hw.optional.arm.FEAT_FlagM2: 1
-hw.optional.arm.FEAT_FHM: 1
-hw.optional.arm.FEAT_DotProd: 1
-hw.optional.arm.FEAT_SHA3: 1
-hw.optional.arm.FEAT_RDM: 1
-hw.optional.arm.FEAT_LSE: 1
-hw.optional.arm.FEAT_SHA256: 1
-hw.optional.arm.FEAT_SHA512: 1
-hw.optional.arm.FEAT_SHA1: 1
-hw.optional.arm.FEAT_AES: 1
-hw.optional.arm.FEAT_PMULL: 1
-hw.optional.arm.FEAT_SPECRES: 0
-hw.optional.arm.FEAT_SB: 1
-hw.optional.arm.FEAT_FRINTTS: 1
-hw.optional.arm.FEAT_LRCPC: 1
-hw.optional.arm.FEAT_LRCPC2: 1
-hw.optional.arm.FEAT_FCMA: 1
-hw.optional.arm.FEAT_JSCVT: 1
-hw.optional.arm.FEAT_PAuth: 1
-hw.optional.arm.FEAT_PAuth2: 0
-hw.optional.arm.FEAT_FPAC: 0
-hw.optional.arm.FEAT_DPB: 1
-hw.optional.arm.FEAT_DPB2: 1
-hw.optional.arm.FEAT_BF16: 0
-hw.optional.arm.FEAT_I8MM: 0
-hw.optional.arm.FEAT_ECV: 1
-hw.optional.arm.FEAT_LSE2: 1
-hw.optional.arm.FEAT_CSV2: 1
-hw.optional.arm.FEAT_CSV3: 1
-hw.optional.arm.FEAT_DIT: 1
-hw.optional.arm.FEAT_FP16: 1
-hw.optional.arm.FEAT_SSBS: 1
-hw.optional.arm.FEAT_BTI: 0
-hw.optional.arm.FP_SyncExceptions: 1
-hw.optional.floatingpoint: 1
-hw.optional.neon: 1
-hw.optional.neon_hpfp: 1
-hw.optional.neon_fp16: 1
-hw.optional.armv8_1_atomics: 1
-hw.optional.armv8_2_fhm: 1
-hw.optional.armv8_2_sha512: 1
-hw.optional.armv8_2_sha3: 1
-hw.optional.armv8_3_compnum: 1
-hw.optional.watchpoint: 4
-hw.optional.breakpoint: 6
-hw.optional.armv8_crc32: 1
-hw.optional.armv8_gpi: 1
-hw.optional.AdvSIMD: 1
-hw.optional.AdvSIMD_HPFPCvt: 1
-hw.optional.ucnormal_mem: 1
-hw.optional.arm64: 1
+Nope, this is broken... My bad for assuming that glibc will use syscall if
+available=E2=80=94that doesn't happen because the syscall instruction actua=
+lly is
+in the vsyscall page or vDSO.
+
+The fix is still pretty easy, and even SYSENTER could be supported since
+after all QEMU *is* exposing the SEP feature when doing user mode
+emulation. SYSENTER's design is so hideous though, that in practice no
+program will ever use it outside the vDSO/vsyscall page.
+
+Paolo
 
 
-If it's any help, the Linux guest looks like this:
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  target/i386/cpu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index fc4246223d4..be16c66341d 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -637,7 +637,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
+> vendor1,
+>            CPUID_EXT_X2APIC, CPUID_EXT_TSC_DEADLINE_TIMER */
+>
+>  #ifdef TARGET_X86_64
+> -#define TCG_EXT2_X86_64_FEATURES (CPUID_EXT2_SYSCALL | CPUID_EXT2_LM)
+> +#define TCG_EXT2_X86_64_FEATURES CPUID_EXT2_LM
+>  #else
+>  #define TCG_EXT2_X86_64_FEATURES 0
+>  #endif
+> @@ -645,7 +645,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
+> vendor1,
+>  #define TCG_EXT2_FEATURES ((TCG_FEATURES & CPUID_EXT2_AMD_ALIASES) | \
+>            CPUID_EXT2_NX | CPUID_EXT2_MMXEXT | CPUID_EXT2_RDTSCP | \
+>            CPUID_EXT2_3DNOW | CPUID_EXT2_3DNOWEXT | CPUID_EXT2_PDPE1GB | =
+\
+> -          TCG_EXT2_X86_64_FEATURES)
+> +          CPUID_EXT2_SYSCALL | TCG_EXT2_X86_64_FEATURES)
+>  #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
+>            CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
+>            CPUID_EXT3_3DNOWPREFETCH)
+> --
+> 2.40.1
+>
+>
 
-$ cat /proc/cpuinfo
-processor : 0
-BogoMIPS : 48.00
-Features : fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp =
-asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 asimddp sha512 =
-asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp flagm2 frint
-CPU implementer : 0x00
-CPU architecture: 8
-CPU variant : 0x0
-CPU part : 0x000
-CPU revision : 0
+--00000000000072762405fe7bcd46
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-=E2=80=94
-Mads Ynddal
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il dom 18 giu 2023, 23:51 Paolo Bonzini &lt;<a href=3D=
+"mailto:pbonzini@redhat.com">pbonzini@redhat.com</a>&gt; ha scritto:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
+:1px #ccc solid;padding-left:1ex">TCG supports both 32-bit and 64-bit SYSCA=
+LL, so expose it<br>
+with &quot;-cpu max&quot; even for 32-bit emulators.<br></blockquote></div>=
+</div><div dir=3D"auto"><br></div><div dir=3D"auto">Nope, this is broken...=
+ My bad for assuming that glibc will use syscall if available=E2=80=94that =
+doesn&#39;t happen because the syscall instruction actually is in the vsysc=
+all page or vDSO.</div><div dir=3D"auto"><br></div><div dir=3D"auto">The fi=
+x is still pretty easy, and even SYSENTER could be supported since after al=
+l QEMU *is* exposing the SEP feature when doing user mode emulation. SYSENT=
+ER&#39;s design is so hideous though, that in practice no program will ever=
+ use it outside the vDSO/vsyscall page.</div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><d=
+iv class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:=
+0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+Signed-off-by: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" tar=
+get=3D"_blank" rel=3D"noreferrer">pbonzini@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0target/i386/cpu.c | 4 ++--<br>
+=C2=A01 file changed, 2 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c<br>
+index fc4246223d4..be16c66341d 100644<br>
+--- a/target/i386/cpu.c<br>
++++ b/target/i386/cpu.c<br>
+@@ -637,7 +637,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
+r1,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_EXT_X2APIC, CPUID_EXT_TSC_DE=
+ADLINE_TIMER */<br>
+<br>
+=C2=A0#ifdef TARGET_X86_64<br>
+-#define TCG_EXT2_X86_64_FEATURES (CPUID_EXT2_SYSCALL | CPUID_EXT2_LM)<br>
++#define TCG_EXT2_X86_64_FEATURES CPUID_EXT2_LM<br>
+=C2=A0#else<br>
+=C2=A0#define TCG_EXT2_X86_64_FEATURES 0<br>
+=C2=A0#endif<br>
+@@ -645,7 +645,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
+r1,<br>
+=C2=A0#define TCG_EXT2_FEATURES ((TCG_FEATURES &amp; CPUID_EXT2_AMD_ALIASES=
+) | \<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_EXT2_NX | CPUID_EXT2_MMXEXT =
+| CPUID_EXT2_RDTSCP | \<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_EXT2_3DNOW | CPUID_EXT2_3DNO=
+WEXT | CPUID_EXT2_PDPE1GB | \<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 TCG_EXT2_X86_64_FEATURES)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 CPUID_EXT2_SYSCALL | TCG_EXT2_X86_64_FE=
+ATURES)<br>
+=C2=A0#define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM=
+ | CPUID_EXT3_SSE4A | \<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_EXT3_3DNOWPREFETCH)<br>
+-- <br>
+2.40.1<br>
+<br>
+</blockquote></div></div></div>
+
+--00000000000072762405fe7bcd46--
 
 
