@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B379873598A
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830D073599A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFsg-0000YR-4D; Mon, 19 Jun 2023 10:29:22 -0400
+	id 1qBFsh-0000ZG-SM; Mon, 19 Jun 2023 10:29:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFse-0000Xx-7Z
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:20 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qBFsf-0000YE-Aj
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:21 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsc-0002AH-54
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:19 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f90b8acefdso13061015e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:17 -0700 (PDT)
+ id 1qBFsd-0002AP-2l
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:20 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-4f122ff663eso4496103e87.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687184956; x=1689776956;
+ d=linaro.org; s=google; t=1687184957; x=1689776957;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QYoLjQUBzDtsQLiewQeHZyMx2G0pXSiMumiEHL4MRBM=;
- b=mJyHVSeDzjgtg4uCTejlEQhY7vrzr1rh51K82VWaS5ngwkSJ2eCoYW4/pdG74lVwZV
- bFcljNGsZ2v4quUPBNpTVX/qUHGfLOwaP+eDoSJOfLi6URq8UQHTGlunY81Tm0PZX7fx
- RK5lOLcaBrFOvJT2SXqUJgo68WTxOZgUH0njFIMrTh8XylR9uv9+6GBLao4889vyGNqg
- +Fj6rHhgnACRZA2VMZA015IpmeMAodTuV52+gM35fpFeUHnBxCf5fJVilbCKan2nt4Bh
- 7jbyMJlxMHmJLSSSCkH1QOyJ6i9k6MwLs6Ixf4Ebk7KeQia8NVHXjjB0WCTjHZZEtAkI
- t54Q==
+ :reply-to; bh=3mwJOChiCQUlVNSGMLtjTUS0WqEV7jHFVk5J5OdBzPw=;
+ b=wyVZvXysiK8nU+VO8MMjtO2pB/vpgNMQbSYFkyeZot8GjsJ/SibcZ7LG2ezFXxInOd
+ Wq/vV/AVvghSJGL3N9ke8BIusYIKxsHL+SPY/ZyD/eFwSDixxKVZ4kY8U+cYe6yUme9p
+ oN8VdfeLtae/rRer/Mwxx3JATi79Evs2O/kQmW+1n3u8cQpLeIiEv2tJR7ocx37i0Sau
+ 6f/Gthpdz98kO8pitpBsgD/aKDVwwQAXr3Q+AlDBCCp9dVSfUgwO2099cLPDvjWjs+jp
+ sWobWV6HUMthsf+2OJxZVF5OtrpkVVf5XTrZ1nycaOObVgUrCB6ya/U6G15jZzY+WxBx
+ 5nUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687184956; x=1689776956;
+ d=1e100.net; s=20221208; t=1687184957; x=1689776957;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QYoLjQUBzDtsQLiewQeHZyMx2G0pXSiMumiEHL4MRBM=;
- b=C3rUlpsKt0abGQPzHhbEDdp8K94+3L7BtO4LyzU/uTmu/UoG2WH3Lh9vGqNUn30rAP
- 6Xv85WtaHDQuaNCfXfOJPpdB1b6mFgL+9JHemCJDrPjs59qbSGblUN0nHLavwpCcWN3o
- uzHjz3zxVkcEHzuqetpVuGG9nylyeHNZyWqcMNTnnBKJ7Rsn1XYorIa0B/oUAtQfDJqa
- A9sB5w4EhEIrsQ+AGkng2kKVnjx7F8KssjbZuLgvP0ARCZ+9xsWSCtfNfttiiQrTCla+
- u8XBwpGQmbCSHxHNM0W2donSf5qUuY3OC4hY+6dKr0JmczjBeFZJqM7aSIHBTKYLMKCb
- +NKg==
-X-Gm-Message-State: AC+VfDzRauTTrkkgpmGOxOc3nA0pT2Oih5T2f+gF1qDSU6V2JDOkDhG7
- LwcV3RcO1TyeVaeWEBb9AoLkJvkp2RlAg0lN8Bo=
-X-Google-Smtp-Source: ACHHUZ7yk0dYqEmmnTnhq+ZC6tcP89CG5yXHxc2vr7ZgrmPWaxfxhxN0ZjAJJOGW56cYOy6yEtjEXA==
-X-Received: by 2002:a7b:c407:0:b0:3f7:e605:287c with SMTP id
- k7-20020a7bc407000000b003f7e605287cmr6359827wmi.40.1687184956636; 
- Mon, 19 Jun 2023 07:29:16 -0700 (PDT)
+ bh=3mwJOChiCQUlVNSGMLtjTUS0WqEV7jHFVk5J5OdBzPw=;
+ b=QT8T5q5CHYbCmscc/UfGiFJs+5SH6WDkn4hLDcCBDq540c07hVqVkRvfLrKP0+Qv3H
+ TfBciJs8+kVOq5d56ngCSxpGIOuUqOnM/iGo7rPhbv9jMT6cZqwj3bdO7TRxGiBwv6tv
+ bgLrS3XNIVhFDz/gHFDpy3KZ1VAW6nc2XqUS6NMXqOtC98dg6cllC8pMT4fTAywEwaRy
+ InMdjfVCKxSO4wPHtRGk4G1SOAdpB2DWFw5zouT3szMep3kLxEIPJxr+GhHXuUoQvI1/
+ RSTK9lji4guJ7pHqwfZ+BP8R0niIoRqBXDO7tZ+MrQFnELcu1PFx0yaWuqCgRaRCXkKl
+ kNRQ==
+X-Gm-Message-State: AC+VfDzK+Rhnmih6wDk4nkv2YXQiLGePSEr9wchmQsaLEM8T+k+tD0/P
+ /xM9/GO4IDWZz8PKIfSk48uRorPf6CfGniGCwWc=
+X-Google-Smtp-Source: ACHHUZ4xtYO4bynF2LGOFuA9Th1+oZP3RP7kjKRB8xRFsLXbDAs2fJvP5Rby97BPg1Q9/wzC+fAI5g==
+X-Received: by 2002:ac2:5f9b:0:b0:4ed:d2cf:857b with SMTP id
+ r27-20020ac25f9b000000b004edd2cf857bmr5373226lfe.5.1687184957097; 
+ Mon, 19 Jun 2023 07:29:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.16
@@ -58,17 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 19 Jun 2023 07:29:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/33] target/arm: Fix return value from LDSMIN/LDSMAX 8/16 bit
- atomics
-Date: Mon, 19 Jun 2023 15:28:42 +0100
-Message-Id: <20230619142914.963184-2-peter.maydell@linaro.org>
+Subject: [PULL 02/33] target/arm: Return correct result for LDG when ATA=0
+Date: Mon, 19 Jun 2023 15:28:43 +0100
+Message-Id: <20230619142914.963184-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,56 +90,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The atomic memory operations are supposed to return the old memory
-data value in the destination register.  This value is not
-sign-extended, even if the operation is the signed minimum or
-maximum.  (In the pseudocode for the instructions the returned data
-value is passed to ZeroExtend() to create the value in the register.)
+The LDG instruction loads the tag from a memory address (identified
+by [Xn + offset]), and then merges that tag into the destination
+register Xt. We implemented this correctly for the case when
+allocation tags are enabled, but didn't get it right when ATA=0:
+instead of merging the tag bits into Xt, we merged them into the
+memory address [Xn + offset] and then set Xt to that.
 
-We got this wrong because we were doing a 32-to-64 zero extend on the
-result for 8 and 16 bit data values, rather than the correct amount
-of zero extension.
-
-Fix the bug by using ext8u and ext16u for the MO_8 and MO_16 data
-sizes rather than ext32u.
+Merge the tag bits into the old Xt value, as they should be.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: c15294c1e36a7dd9b25 ("target/arm: Implement LDG, STG, ST2G instructions")
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-2-peter.maydell@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ target/arm/tcg/translate-a64.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index aa93f37e216..246e3c15145 100644
+index 246e3c15145..4ec857bcd8d 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -3545,8 +3545,22 @@ static void disas_ldst_atomic(DisasContext *s, uint32_t insn,
-      */
-     fn(tcg_rt, clean_addr, tcg_rs, get_mem_index(s), mop);
- 
--    if ((mop & MO_SIGN) && size != MO_64) {
--        tcg_gen_ext32u_i64(tcg_rt, tcg_rt);
-+    if (mop & MO_SIGN) {
-+        switch (size) {
-+        case MO_8:
-+            tcg_gen_ext8u_i64(tcg_rt, tcg_rt);
-+            break;
-+        case MO_16:
-+            tcg_gen_ext16u_i64(tcg_rt, tcg_rt);
-+            break;
-+        case MO_32:
-+            tcg_gen_ext32u_i64(tcg_rt, tcg_rt);
-+            break;
-+        case MO_64:
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     }
- }
- 
+@@ -4201,9 +4201,13 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
+         if (s->ata) {
+             gen_helper_ldg(tcg_rt, cpu_env, addr, tcg_rt);
+         } else {
++            /*
++             * Tag access disabled: we must check for aborts on the load
++             * load from [rn+offset], and then insert a 0 tag into rt.
++             */
+             clean_addr = clean_data_tbi(s, addr);
+             gen_probe_access(s, clean_addr, MMU_DATA_LOAD, MO_8);
+-            gen_address_with_allocation_tag0(tcg_rt, addr);
++            gen_address_with_allocation_tag0(tcg_rt, tcg_rt);
+         }
+     } else {
+         tcg_rt = cpu_reg_sp(s, rt);
 -- 
 2.34.1
 
