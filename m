@@ -2,106 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9A1734FD7
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDB6734FDC
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:25:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBB7K-00072J-PU; Mon, 19 Jun 2023 05:24:10 -0400
+	id 1qBB8E-0007mn-PD; Mon, 19 Jun 2023 05:25:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qBB7I-00071W-62
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:08 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qBB7G-0003H3-Aw
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:07 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35J8uh1b011872; Mon, 19 Jun 2023 09:24:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=V+81pi3FfF65LU0O+0t4wpzFudO8GtXpyje/ZgK8yv4=;
- b=lMZ7fz4ZeHe+0796s+IzLnp0ErP6+hgvE0U/jHbIHU1Llm/5VoO72d9BvgK1x058exm9
- soQ0EyKh6SYfWYJVGwsBgkYcRmdzj6u8RmbX3zD+GCfHNHdWgdyN2V0wd0qNw/fh1crv
- v7xiaVb19vzdxglzYR5KcuNI7zNUzKB+ndoY9YYvgzKvb2wqNfP2o05i6y63ptpRzKwE
- 3KBmzGbGRFetyJQZyET5O6CdxZVFsqtnLx2PtUV00wIIQ4+dfWozYhBZM+KIxi36a0aw
- je7LWBEZ6OrNMu/EtElDShNI1ASUXuUh307n0pppM4kZ5A8JqfrUxCVh9lI7vLdQZQOG xA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3raky28nnq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jun 2023 09:24:04 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J9IB2q007092;
- Mon, 19 Jun 2023 09:24:04 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3raky28nn5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jun 2023 09:24:03 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J6ovvT006976;
- Mon, 19 Jun 2023 09:24:02 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3r94f50xx0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Jun 2023 09:24:02 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35J9NxRl62062990
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Jun 2023 09:23:59 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB53A2004B;
- Mon, 19 Jun 2023 09:23:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D3E120040;
- Mon, 19 Jun 2023 09:23:59 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.66])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 19 Jun 2023 09:23:59 +0000 (GMT)
-Date: Mon, 19 Jun 2023 11:23:41 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Bin Meng <bmeng@tinylab.org>
-Cc: qemu-devel@nongnu.org, Zhangjin Wu <falcon@tinylab.org>, Jason Wang
- <jasowang@redhat.com>
-Subject: Re: [PATCH v3 6/6] net: tap: Use qemu_close_range() to close fds
-Message-ID: <20230619112341.1b9e98de@p-imbrenda>
-In-Reply-To: <20230617053621.50359-7-bmeng@tinylab.org>
-References: <20230617053621.50359-1-bmeng@tinylab.org>
- <20230617053621.50359-7-bmeng@tinylab.org>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3on0qLIrMouL8pkpPyorJ5HrhgbMZow8
-X-Proofpoint-GUID: aBXotlc58lrvnZ4dcnKCESkBLscHCVAi
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBB83-0007hG-6u
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:55 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBB81-0003f0-Is
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:54 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2b47354c658so15854161fa.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 02:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687166692; x=1689758692;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IrH6vgdoDkPFw6JCRQiJbmDNr82gUYPa1Xc7CXwFh1c=;
+ b=cZ/cC3dt7+cJc2TreJQPAlXY6ir1A+1xCoiIKf8Jfzu+TlzsYXO1M/Ko3DD9e5Y+Kz
+ ajo0NDqxT+v2mZloxDn4Su6USew2BqnsuZg3cfcKOzPbNf4TYcWGqU/AR/kWSdW+nebH
+ oBg3dJgXMx5i8RlB6MFTwdm6+olJT1c6HJlZiIWDfdHFhsSkbyJ7+K+8FwDhC0TeXHnW
+ zKtarrJ2d9fPkMg3Kmvfjbv5FNnK3UHfUYair3J8h1swvc6qZJeI7tAS9Xq8cXWaZN0U
+ NtX/85h2zioYngmUAFBnfbJcty/Cc8n/+z9M+JpZZwWyOuU3y1wDxBp4X1/vfQIfG9n8
+ MNYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687166692; x=1689758692;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IrH6vgdoDkPFw6JCRQiJbmDNr82gUYPa1Xc7CXwFh1c=;
+ b=kvxoMSXZnTXjFMEY8203k/5mDLbwn9+abvP5NlxNDAo6B3SpIVRIlrrMmkW3mDrrAK
+ pE9sIUtr2W2XKurCbxiBNjj8ItovlUuaxwABlu2Lp1FPMjmI5SoYzKjRa+s4hSFKnXDh
+ Hz1WqXKvwUC00F9p6+AhY7wmq/CbF0UBYqHfYxizLIMf+6GiX3fblReZTavLAgHvo9JL
+ UXrKD1pbVygADNkDmr+8DThD/Ndh6aWkAMRyf2K2a6p+fizd3xfIeIobeeusrS2c5hzs
+ j+h0XOtoP4vgD7JX/YJAsSPcSOgmmvArWixem1DLNILCBxjro/QG6yD2xS+Dw6JSAzZZ
+ wk7g==
+X-Gm-Message-State: AC+VfDwi0iOR1hZVMoJlKb4uG6P2ftTL9e1woSOwSGgOHyuq8+0rzilh
+ o+UrWn06gdWCyH/E9djH0A2sOYFWbF5haf5geHDoaA==
+X-Google-Smtp-Source: ACHHUZ5pJ5K1WbtqMkhpRCCFyf0306l5M3g8kzCiOIxBU5xPUuVhUJSLdJ2Wv5x2/ybSvOWqCNC+DWOairb3Bqdsxso=
+X-Received: by 2002:a2e:b0c6:0:b0:2b4:7f2e:a42b with SMTP id
+ g6-20020a2eb0c6000000b002b47f2ea42bmr649685ljl.37.1687166691919; Mon, 19 Jun
+ 2023 02:24:51 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-19_06,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- malwarescore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- mlxscore=0 impostorscore=0 spamscore=0 phishscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306190081
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230609055936.3925438-1-tommy.wu@sifive.com>
+ <CAKmqyKMoeAn_7h=S0S=QR6YcYmvTd5VfT749Umm1BprUTrAjeg@mail.gmail.com>
+In-Reply-To: <CAKmqyKMoeAn_7h=S0S=QR6YcYmvTd5VfT749Umm1BprUTrAjeg@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 Jun 2023 10:24:41 +0100
+Message-ID: <CAFEAcA83+kaM9r4PqWks8tjCncnMS_Mh3NW=RyGFULV6wE5LMA@mail.gmail.com>
+Subject: Re: [PATCH] hw/intc: If mmsiaddrcfgh.L == 1, smsiaddrcfg and
+ smsiaddrcfgh are read-only.
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Tommy Wu <tommy.wu@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, Frank Chang <frank.chang@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Anup Patel <anup@brainfault.org>, Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Ivan Klokov <ivan.klokov@syntacore.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,92 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 17 Jun 2023 13:36:21 +0800
-Bin Meng <bmeng@tinylab.org> wrote:
+On Mon, 12 Jun 2023 at 05:12, Alistair Francis <alistair23@gmail.com> wrote=
+:
+>
+> On Fri, Jun 9, 2023 at 4:01=E2=80=AFPM Tommy Wu <tommy.wu@sifive.com> wro=
+te:
+> >
+> > According to the `The RISC-V Advanced Interrupt Architecture`
+> > document, if register `mmsiaddrcfgh` of the domain has bit L set
+> > to one, then `smsiaddrcfg` and `smsiaddrcfgh` are locked as
+> > read-only alongside `mmsiaddrcfg` and `mmsiaddrcfgh`.
+> >
+> > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> > Reviewed-by: Frank Chang <frank.chang@sifive.com>
+>
+> Thanks!
+>
+> Applied to riscv-to-apply.next
 
-> From: Zhangjin Wu <falcon@tinylab.org>
-> 
-> Current codes using a brute-force traversal of all file descriptors
-> do not scale on a system where the maximum number of file descriptors
-> is set to a very large value (e.g.: in a Docker container of Manjaro
-> distribution it is set to 1073741816). QEMU just looks frozen during
-> start-up.
-> 
-> The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
-> 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
-> doesn't need to manually close the fds for child process as the proper
-> O_CLOEXEC flag should have been set properly on files with its own
-> codes, QEMU uses a huge number of 3rd party libraries and we don't
-> trust them to reliably be using O_CLOEXEC on everything they open.
-> 
-> Modern Linux and BSDs have the close_range() call we can use to do the
-> job, and on Linux we have one more way to walk through /proc/self/fd
-> to complete the task efficiently, which is what qemu_close_range() does.
-> 
-> Reported-by: Zhangjin Wu <falcon@tinylab.org>
-> Co-developed-by: Bin Meng <bmeng@tinylab.org>
-> Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
-> Signed-off-by: Bin Meng <bmeng@tinylab.org>
-> 
-> ---
-> 
-> (no changes since v2)
-> 
-> Changes in v2:
-> - Change to use qemu_close_range() to close fds for child process efficiently
-> - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
-> 
->  net/tap.c | 23 +++++++++++------------
->  1 file changed, 11 insertions(+), 12 deletions(-)
-> 
-> diff --git a/net/tap.c b/net/tap.c
-> index 1bf085d422..d482fabdff 100644
-> --- a/net/tap.c
-> +++ b/net/tap.c
-> @@ -446,13 +446,13 @@ static void launch_script(const char *setup_script, const char *ifname,
->          return;
->      }
->      if (pid == 0) {
-> -        int open_max = sysconf(_SC_OPEN_MAX), i;
-> +        unsigned int last_fd = sysconf(_SC_OPEN_MAX) - 1;
-> +
-> +        /* skip stdin, stdout and stderr */
-> +        qemu_close_range(3, fd - 1);
-> +        /* skip the currently used fd */
-> +        qemu_close_range(fd + 1, last_fd);
->  
-> -        for (i = 3; i < open_max; i++) {
-> -            if (i != fd) {
-> -                close(i);
-> -            }
-> -        }
->          parg = args;
->          *parg++ = (char *)setup_script;
->          *parg++ = (char *)ifname;
-> @@ -536,16 +536,15 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
->          return -1;
->      }
->      if (pid == 0) {
-> -        int open_max = sysconf(_SC_OPEN_MAX), i;
-> +        unsigned int last_fd = sysconf(_SC_OPEN_MAX) - 1, fd = sv[1];
+If it hasn't gone in already, would you mind tweaking the
+subject line so that it says which interrupt controller
+the change is for ? (ie "hw/intc/riscv_aplic", not just "hw/intc".)
 
-please put fd on its own line
-
->          char *fd_buf = NULL;
->          char *br_buf = NULL;
->          char *helper_cmd = NULL;
->  
-> -        for (i = 3; i < open_max; i++) {
-> -            if (i != sv[1]) {
-> -                close(i);
-> -            }
-> -        }
-> +        /* skip stdin, stdout and stderr */
-> +        qemu_close_range(3, fd - 1);
-> +        /* skip the currently used fd */
-> +        qemu_close_range(fd + 1, last_fd);
->  
->          fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
->  
-
+thanks
+-- PMM
 
