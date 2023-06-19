@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E049734BF5
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 08:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7964A734C01
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 09:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB8oJ-00011c-0y; Mon, 19 Jun 2023 02:56:24 -0400
+	id 1qB8ro-0002Yt-Gm; Mon, 19 Jun 2023 03:00:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qB8nx-0000fb-4S
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 02:56:07 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1qB8rg-0002YY-V0
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 02:59:53 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qB8nt-0003Gh-FW
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 02:56:00 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9829b12b80fso487181766b.2
- for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 23:55:57 -0700 (PDT)
+ id 1qB8re-0003nE-J0
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 02:59:52 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5186a157b85so4572741a12.0
+ for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 23:59:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687157755; x=1689749755;
+ d=linaro.org; s=google; t=1687157988; x=1689749988;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=TpSg8e/eKDUqeKruCbgMujSFK3lOba2d/KBtH+rYPw8=;
- b=vkdX7MCG1iGAojKVz2DvtymMQ5NiukDxsNEKCSC6aVmEs6i95R0vpQ4NZrg+OMvwlG
- Qb5zMkIS/jRYydqDD9AquU5ih4VIT0LOOhPvdS7Lq1TdzQgAZg+ejexAQJGDyDayNkN8
- YO0GhmYQUWFLNMVM1EBQWwLMEpFIhikbDb4bCLKdwrSlwbrrLq6vtPBIMElxmgNAUm6t
- ATOyevsc5EDlEL80Dw4aGhUmOt9exmFIHVKdSEtqw/EiSklmQwb4FX02hUlyjCUg43Fd
- /luM5OxQRBA38wn81Fqe6hY0Evtun1pnODXtG+Nxae3lgBFVg3J5+NbWgv9KlGXrK5wa
- 9bjw==
+ bh=v0bjX897cKkTr+QGHXfVJFQj7qsJcrHGU9tUpY/7pm4=;
+ b=hyyhU2zmafPzJv/rjJDCXrpTyQPks8JXbS7ELY8WDOZqUcTO9fNFubk7X6PtB9VJcS
+ Xxbz73rX0J3i24LadzUh/igGdnIF1cVi56+Wp7qUH3cce7Yn798G6T4bIu/gNYc3HarG
+ UAtAjn1ZcY2JVcWvc66KtL0EKzGTVKz7dmjJtp86skhwnTHNNRjH+/wlWiiDdM99j0+r
+ tTjnrVnZZSPg7tzXkijCvrM3EfxW0b5c6QRaw4W2D+o9fzhE6gaXDxhTaDR3TEagpQG7
+ 5Ah9Z69ExTofAArB4Ml/vYkwlHTNaogKD3uczf9LsSFd1HwOdddJNN5ECRPNOGgplWtb
+ RpQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687157755; x=1689749755;
+ d=1e100.net; s=20221208; t=1687157988; x=1689749988;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TpSg8e/eKDUqeKruCbgMujSFK3lOba2d/KBtH+rYPw8=;
- b=Z41xzgYUWoX3DwJm/tam1ifFYProbIgBH3+lzKKxrjB1B40MxW/Q72nIuAXBj03X5a
- pooF32N3rwGsjwI1PyvArVmSGIltQ1mIguSbH0CBrFmH355IP+Pd3n4hx98ApswvER6T
- nk4RLQn6Rnm4IDR08D3j025kTYrB85TVEF2RvdMcrrVKWXq+Ni97QwzhKJTX/0xPrcuH
- IUzRuMOU4UV42CKbSk1GTGonRYBJo6GOd1VvIXlzr0wHNxJKgSlH9atJsv7f9lwWvoJS
- 0jJFW8fDfU+/xCk0slS+Pi9rAIEAm+nyftVuig0XgoZPTJFW40tAVtvOD0VUvXYjafWH
- TVMw==
-X-Gm-Message-State: AC+VfDzSxSC2ZaJtjHHUjmuUCOaIPssbKRiL3CV4moY7Aqe96pwykJEe
- vLHjt7BPhgSAO0bp8YC6WQkGO1Cyndvu8FIMWelwBDpN
-X-Google-Smtp-Source: ACHHUZ6fo7VO3JSUXdZNfLShxfB83CJIkdUo1t0hpzpZThSP01wT/MEOtVNg2yL58aM9XE6TallZsw==
-X-Received: by 2002:a17:907:9603:b0:969:813c:9868 with SMTP id
- gb3-20020a170907960300b00969813c9868mr8312196ejc.18.1687157754979; 
- Sun, 18 Jun 2023 23:55:54 -0700 (PDT)
+ bh=v0bjX897cKkTr+QGHXfVJFQj7qsJcrHGU9tUpY/7pm4=;
+ b=QpFtkr4rBXeZjxhHMDYYauDEGDbXHBNLYgxyecVkJ7hrl8Ovl23s0njJFEBhxmjb5A
+ cdEVyfsEnFelVYRmeUm8givakBVAumUWRQvuEL+MS/RywkwuVfsCs75CsHLV/ISihjrn
+ UCPTHGduBbWtrOWt0CDuSSAzz2O4unbI3S+aR7zMihA7eOHYyPrXnCz5rsE0o0gIo8sW
+ L5jz4W6zdczOZhlsdIr6x51mCkl9HyNSNkOxVT+SBluORyAP5WHtkhhShlUoggI9YZMH
+ Od9yqABtcmi7uSQl0iYftjIyPFQ5AG0dHKmWRv7QW8wE99/P1tlAges3Z4RUG4Gv+RSL
+ 350w==
+X-Gm-Message-State: AC+VfDzsKRd2LVBuAKwrguSBodr7jAhQYxnLY5zpiQYqvNswHwpG4Wi2
+ V70dkQidOSxSRU/fgzsoWeDhcYb9UXxyWM4owjjfZujX
+X-Google-Smtp-Source: ACHHUZ4dt+DtLo5X2130Tcxu1OGgB8Yui2BXgdJ6zV56hPxiSg++0bV0KgA1MOVIYmleroNHNdXpHw==
+X-Received: by 2002:a50:ed0d:0:b0:510:72b1:5f4e with SMTP id
+ j13-20020a50ed0d000000b0051072b15f4emr5442970eds.22.1687157988018; 
+ Sun, 18 Jun 2023 23:59:48 -0700 (PDT)
 Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- w18-20020a17090633d200b009875f08c213sm3015429eja.181.2023.06.18.23.55.54
+ u8-20020aa7d988000000b0051a4c1dc813sm1866529eds.82.2023.06.18.23.59.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 18 Jun 2023 23:55:54 -0700 (PDT)
-Message-ID: <26c8ff0d-67cc-f6fb-1c02-55bd8ec97d53@linaro.org>
-Date: Mon, 19 Jun 2023 08:55:52 +0200
+ Sun, 18 Jun 2023 23:59:47 -0700 (PDT)
+Message-ID: <c1e1c570-828a-f943-adfe-7d0fc05a2389@linaro.org>
+Date: Mon, 19 Jun 2023 08:59:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/6] tests/tcg/cris: Correct the off-by-one error
+Subject: Re: [PATCH v2 3/6] util/async-teardown: Fall back to close fds one by
+ one
 Content-Language: en-US
 To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org
 Cc: Zhangjin Wu <falcon@tinylab.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
 References: <20230616152737.23545-1-bmeng@tinylab.org>
- <20230616152737.23545-3-bmeng@tinylab.org>
+ <20230616152737.23545-4-bmeng@tinylab.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230616152737.23545-3-bmeng@tinylab.org>
+In-Reply-To: <20230616152737.23545-4-bmeng@tinylab.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,19 +99,38 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/16/23 17:27, Bin Meng wrote:
-> sysconf(_SC_OPEN_MAX) returns the maximum number of files that
-> a process can have open at any time, which means the fd should
-> not be larger than or equal to the return value.
+> When opening /proc/self/fd fails, current codes just return directly,
+> but we can fall back to close fds one by one.
 > 
-> Signed-off-by: Bin Meng<bmeng@tinylab.org>
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
 > ---
 > 
 > (no changes since v1)
 > 
->   tests/tcg/cris/libc/check_openpf5.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   util/async-teardown.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/util/async-teardown.c b/util/async-teardown.c
+> index 3ab19c8740..7e0177a8da 100644
+> --- a/util/async-teardown.c
+> +++ b/util/async-teardown.c
+> @@ -48,7 +48,11 @@ static void close_all_open_fd(void)
+>   
+>       dir = opendir("/proc/self/fd");
+>       if (!dir) {
+> -        /* If /proc is not mounted, there is nothing that can be done. */
+> +        /* If /proc is not mounted, close fds one by one. */
+> +        int open_max = sysconf(_SC_OPEN_MAX), i;
+> +        for (i = 0; i < open_max; i++) {
+> +                close(i);
+> +        }
+>           return;
+>       }
+>       /* Avoid closing the directory. */
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Do we really need to make the 1M close calls?
+The process is on its way to exit anyway...
+
 
 r~
 
