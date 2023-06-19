@@ -2,62 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB617356DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7A57356DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBDz6-0003iv-UZ; Mon, 19 Jun 2023 08:27:52 -0400
+	id 1qBE0K-00048R-2R; Mon, 19 Jun 2023 08:29:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBDyw-0003ib-89
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:27:43 -0400
+ id 1qBE0E-00045p-7D
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:29:02 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBDyP-00061G-Hi
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:27:11 -0400
+ id 1qBE0C-0006HT-Il
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:29:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=N/o21fn9c5ozsRFqIxOt51/Osm9o3U35QBTDRNrLa1w=; b=QxABxpMDK58ZBYby80g6o5Bwy3
- QumFq8GaGM/VqJVBaZBxM2KdCZjrLLLFvQ51Xuvr1Jz2LWUyncNLwlrD3JI6Rwjnl6RDVtwSi/87N
- kUra0nhpXzGz9PvByH+gGUsq4pPZr1FnmAMgsWiYdyfcXCAnpiCtXHFhCoj8BgFddYYb7IWeIXwTK
- r9N52cc0clZpiPudr7myPYMqUCzSh0PzdP98PXKOH8rAXNEPvdwMDCueGfv2F36Di3V+aEEvH3Ooy
- xuyIRm4+7MbA56GzYkKCOOcGPnlpg38pavy/fjXkohMRTyvWueuHTQhv9gwLUrIzJn5HP7YPIZgZH
- R7nrBNgKvvHJ6xlSuFqtpYsWcrlmtjAykBxURD6wmQ3szT8kKug4P2Pi31jSpenhdfgMAcOywmNF3
- ytjqjw9pi9YfFTix6j//3Efir9MQPB65V2yxZDuLHgBxHNgCK3i/lEBUU/npGxJJhGmpyMZkjPSj7
- +aLpgm1NSPU5fEizv8B1rrg5WEwbOfpfxmfHINWa1pha+qXNPPs891v6MsVqhrYBgytoKxkPDiaou
- lWiQzWLrfFvEDz+Hh2iJadSeLK4vKoLKim0VQ8n1h8+UupcFkWfHE0XwrLCrnpbQrckrmWrlt6/wi
- gk8eRwGm+AEtAGnI+X+mRDkIalZdHSMKaJodJfvqw=;
+ bh=w+L3IV1gmYHf1Du/x0SZqikPU0CqAoYI4OlX1wlSl78=; b=Qda4oZia4lkDzLi8iEq27LIg8Z
+ Cqp4NmqvsJCrkwYqbLlvFM9f2e5vuA4ZwX/XuU/7apOnCTppfZzcKqoM/Ysl9xfxxIoI5BBGYEyzS
+ 3Q9luNFqOapnju1N98N1PhMhk7T85OKQLA8AKIGKM4ZEpne2UFqzDS63QXZ/9kcBnPab02hqb62lQ
+ wiRa5JVUjqfNoCUTEwU6ZQIM8mCyRPpAQEnfXzpimbVXa8npcvkCdRl7LHH1M5S6L/9ufMmj9K8da
+ gwpeCsdcXH91OG/InSSjZKCfAzsn4yTNtOUg+zIuYYKoXsWIyE1V9YkGdJC+XF/hIaacKg5zT5NbM
+ 20N1Al4ZGvojEIBSvnh3XuS1gt+EwXk0D0r6Q29DjFPfs/TA7NYjrJk1ZTEO/ur7TCE6gW2WGnq2w
+ 6hvqyCKPj7ESTnDkADW+u293jVWRa9e0n9K9j3rzIiNE6HIXr10rM/VMqzf7dRzstbJUyl2ae6lxB
+ RZr4tkaqVcfVsxiGBenHz+9CtzzzAN+hIdMoCDsUH5f2OIXpNMeSHV6OkH7TY4PWAdNQFCYoP8eWS
+ 0TpPdurqiTMCD3jL1smCUhidqkPsTcTl3Xa1MjOJrXyN/rq/HHMc3mYnFuvdIeYcXIkzRiCzzAHeV
+ fBfn74IO6MI6VObuqkiLHxh6ggFn9UXb6jQiUxLyc=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=[10.8.0.6])
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBDyA-0007hA-TE; Mon, 19 Jun 2023 13:26:59 +0100
-Message-ID: <341ff172-03b4-e8b5-40c7-1517a6ed3c57@ilande.co.uk>
-Date: Mon, 19 Jun 2023 13:26:56 +0100
+ id 1qBE00-0007hm-Cb; Mon, 19 Jun 2023 13:28:52 +0100
+Message-ID: <1af5ad0a-f44a-de4e-18d2-9ce5b44f39cc@ilande.co.uk>
+Date: Mon, 19 Jun 2023 13:28:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
- <20230604131450.428797-8-mark.cave-ayland@ilande.co.uk>
- <d6b7f5ff-d51d-f821-5c2a-20ae7c2d0cc4@linaro.org>
 Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+ <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
+ <87jzwoczq6.fsf@pond.sub.org>
+ <d3e2d573-dc09-6c31-be8e-fab0e3fc9ce5@ilande.co.uk>
+ <87y1l38sm0.fsf@pond.sub.org>
+ <c5137e13-5055-15d8-2f05-c132232e415c@ilande.co.uk>
+ <871qiffunb.fsf@pond.sub.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <d6b7f5ff-d51d-f821-5c2a-20ae7c2d0cc4@linaro.org>
+In-Reply-To: <871qiffunb.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v3 07/23] q800: move GLUE device into separate q800-glue.c
- file
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -84,114 +89,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/06/2023 13:41, Philippe Mathieu-Daudé wrote:
+On 13/06/2023 12:50, Markus Armbruster wrote:
 
-> On 4/6/23 15:14, Mark Cave-Ayland wrote:
->> This will allow the q800-glue.h header to be included separately so that the
->> GLUE device can be referenced externally.
+> Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
+> 
+>> On 01/06/2023 10:00, Markus Armbruster wrote:
 >>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
->> ---
->>   MAINTAINERS                 |   2 +
->>   hw/m68k/meson.build         |   2 +-
->>   hw/m68k/q800-glue.c         | 252 ++++++++++++++++++++++++++++++++++++
->>   hw/m68k/q800.c              | 238 +---------------------------------
->>   include/hw/m68k/q800-glue.h |  50 +++++++
->>   5 files changed, 306 insertions(+), 238 deletions(-)
->>   create mode 100644 hw/m68k/q800-glue.c
->>   create mode 100644 include/hw/m68k/q800-glue.h
+>>> Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
+>>>
+>>>> On 31/05/2023 16:00, Markus Armbruster wrote:
+>>>>
+>>>>> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+>>>>>
+>>>>>> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>>>>>>> Also change the instantiation of the CPU to use object_initialize_child()
+>>>>>>> followed by a separate realisation.
+>>>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>>>> ---
+>>>>>>>      hw/m68k/q800.c         | 13 ++++++++-----
+>>>>>>>      include/hw/m68k/q800.h |  2 ++
+>>>>>>>      2 files changed, 10 insertions(+), 5 deletions(-)
+>>>>>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>>>>>>> index 3730b30dd1..c34b2548ca 100644
+>>>>>>> --- a/hw/m68k/q800.c
+>>>>>>> +++ b/hw/m68k/q800.c
+>>>>>>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+>>>>>>>        static void q800_machine_init(MachineState *machine)
+>>>>>>>      {
+>>>>>>> -    M68kCPU *cpu = NULL;
+>>>>>>> +    Q800MachineState *m = Q800_MACHINE(machine);
+>>>>>>>          int linux_boot;
+>>>>>>>          int32_t kernel_size;
+>>>>>>>          uint64_t elf_entry;
+>>>>>>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+>>>>>>>          }
+>>>>>>>            /* init CPUs */
+>>>>>>> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+>>>>>>> -    qemu_register_reset(main_cpu_reset, cpu);
+>>>>>>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>>>>>>> +                            M68K_CPU_TYPE_NAME("m68040"));
+>>>>>>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_fatal);
+>>>>>>
+>>>>>> CPUs are QDev-based, shouldn't we use qdev_realize()?
+>>>>>
+>>>>> Yes, we should.
+>>>>> [...]
+>>>>
+>>>> Interesting. I remember thinking that CPUs were different, so I'm fairly sure I borrowed this from some similar code in hw/arm :)
+>>>>
+>>>> Shouldn't the above be directly equivalent to qdev_realize(dev, NULL, &error_fatal) given that the CPU doesn't connect to a bus?
+>>>
+>>> It's been a while since I worked on this...
+>>>
+>>> Commit ce189ab230b (qdev: Convert bus-less devices to qdev_realize()
+>>> with Coccinelle) looks like you're right.
+>>
+>> Thanks for the confirmation! Given that this matches existing code that doesn't use cpu_create(), I'm inclined to keep this as-is to avoid creating another pattern for instantiating CPUs.
 > 
-> 
->> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
->> new file mode 100644
->> index 0000000000..793bdb110c
->> --- /dev/null
->> +++ b/hw/m68k/q800-glue.c
->> @@ -0,0 +1,252 @@
->> +/*
->> + * QEMU q800 logic glue
-> 
-> Although mentioned later, could we describe as "GLUE (General
-> Logic Unit)" here?
+> Wherever you *can* use qdev_realize(), you should.  The less we access
+> property "realized" outside qdev core, the better.
 
-Sure, I can fix this in v4.
+No worries, in that case I will switch it to use qdev_realize() in v4.
 
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a copy
->> + * of this software and associated documentation files (the "Software"), to deal
->> + * in the Software without restriction, including without limitation the rights
->> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
->> + * copies of the Software, and to permit persons to whom the Software is
->> + * furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
->> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->> + * THE SOFTWARE.
-> 
-> Or simpler:
-> 
->    * SPDX-License-Identifier: MIT
-
-Thanks, I didn't realise that we could do this. In this particular case the header is 
-simply a copy of the one from q800.c where the code originated from, so my thinking 
-is that it makes sense to leave this for now and consider a wider update for the m68k 
-machines as a follow-up.
-
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +#include "cpu.h"
->> +#include "hw/m68k/q800-glue.h"
->> +#include "hw/boards.h"
->> +#include "hw/irq.h"
->> +#include "hw/nmi.h"
->> +#include "hw/qdev-properties.h"
->> +#include "migration/vmstate.h"
->> +
->> +/*
->> + * The GLUE (General Logic Unit) is an Apple custom integrated circuit chip
->> + * that performs a variety of functions (RAM management, clock generation, ...).
->> + * The GLUE chip receives interrupt requests from various devices,
->> + * assign priority to each, and asserts one or more interrupt line to the
->> + * CPU.
->> + */
-> 
-> 
->> +static const TypeInfo glue_info = {
->> +    .name = TYPE_GLUE,
->> +    .parent = TYPE_SYS_BUS_DEVICE,
->> +    .instance_size = sizeof(GLUEState),
->> +    .instance_init = glue_init,
->> +    .instance_finalize = glue_finalize,
->> +    .class_init = glue_class_init,
->> +    .interfaces = (InterfaceInfo[]) {
->> +         { TYPE_NMI },
->> +         { }
->> +    },
->> +};
->> +
->> +static void glue_register_types(void)
->> +{
->> +    type_register_static(&glue_info);
->> +}
->  > +
->  > +type_init(glue_register_types)
-> 
-> Soon DEFINE_TYPES() will be recommended over type_init().
-
-I see, I'll add this as a separate patch in v4.
-
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Thanks!
+> I few accesses have crept in since I converted the tree to
+> qdev_realize() & friends.  Another conversion pass would be in order.
 
 
 ATB,
