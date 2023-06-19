@@ -2,69 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911C47350EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781D37350F0
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:54:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBBa3-0007dG-8R; Mon, 19 Jun 2023 05:53:51 -0400
+	id 1qBBah-0007fY-Sr; Mon, 19 Jun 2023 05:54:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qBBZz-0007cb-Qh
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:53:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qBBZy-0001iP-3m
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:53:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687168425;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wkdoducEiRL0rmlxujIWIGv+A0qNGAFdmjzP0bguqUI=;
- b=CJ/umr72lTozjjVaZlufZzKb+GR/CyQpfZfnx8Dr6L2oq2yvwdVLCOiXOMc9HBc0DPZbvm
- ETAAR3mLp+js4+QVGwXpykZPowFWBhUpzj1QszkLelZ9V99u7tlGnwWv5aBa+u6d9r6QkQ
- 5l5ke7SzgUQj5HiHlVoJ4OC7IjgwLj0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-452-zWgYZHYCPe6set3gVwcc9A-1; Mon, 19 Jun 2023 05:53:43 -0400
-X-MC-Unique: zWgYZHYCPe6set3gVwcc9A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 38FF280123E
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 09:53:43 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.45.224.119])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B1EFC2166B26;
- Mon, 19 Jun 2023 09:53:41 +0000 (UTC)
-From: Bilal Elmoussaoui <belmouss@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Bilal Elmoussaoui <belmouss@redhat.com>
-Subject: [PATCH v4 2/2] ui/dbus: Expose a touch device interface
-Date: Mon, 19 Jun 2023 11:53:37 +0200
-Message-ID: <20230619095337.9899-3-belmouss@redhat.com>
-In-Reply-To: <20230619095337.9899-1-belmouss@redhat.com>
-References: <20230619095337.9899-1-belmouss@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBBaN-0007eX-6A
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:54:11 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBBaL-0001kp-Dw
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:54:10 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-311394406d0so881245f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 02:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687168447; x=1689760447;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bJC0ZOYLGGFywn0IevTM4EiGvprzqsGKkYPh8vZdReE=;
+ b=u0tKBBx+xTt6DgsgNST+/7XmY/agvl745Opy0/9ZI+mmQVBLHZJ48WLMNU7H6qLm4X
+ gJXc36SxNXT9OarsMf3+Xm0Yh3gJ9Z9nX2cRQOnRvYobsC2sqaURXHkCfr2NET1gSsR3
+ kQ+9Bhal4BU2CB1u04qL3a63fSpi8Pve973FGKE+ZsTALQpTcvAQQ9eMJXPO54UlVLpP
+ bZtUdm9p7TzIZLNfiCbAeyinTHhHVARbOrB2HLhPm4U02s1cW5/Pq8Ac5MRn1ZM+t/FU
+ UwDFlxILURgtXZPutTg0FrppEoRPtlif3C0XtaA6dPPglWP93DDgRHweLpS5aUNDNXqy
+ vFZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687168447; x=1689760447;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bJC0ZOYLGGFywn0IevTM4EiGvprzqsGKkYPh8vZdReE=;
+ b=PdTsxBq0Nj9z4e6DMjdP2dBPCfmFnLsqTYeIcl+jw9BWRBvQaFpU/xlJJXKYTOaSUO
+ bFITKYwLbEeyJEHRYCR2ZPViXQxcsTuTJ3RPT/wScVkaY+0/KN1xeEOiKwwfS30vI8UM
+ N6YR3rBK7qLDzVYAvaA+UZRS85B3823L/XAgQHInRPpn62ULfP8POoZ95l7rG87oMl0o
+ ANBVrf1fA7cKH4bYi78ReOjQdeRhTg18juD/I9xYw5BT2WfKUY4e8LKeJNVf4y2iJGF5
+ RIK+IwmCoeH37hNtW4CyVoI1BqxvuvUOPp1Sd6SY/rC26SzYNv+Bp7auQy4b7bdaAwqT
+ UFLg==
+X-Gm-Message-State: AC+VfDxgd1G1CsQS4ZgY40KTanSgDQoGh3UMuHuw2v8MUs/FDiA/Hhcp
+ U9DocwT+/hNMKsnS8kTTFrHsaQ==
+X-Google-Smtp-Source: ACHHUZ6czBey5t/K0wbwL/7GM06y+Ec6O/IdCguqg7uwaNGLqlrYXRbSQiMGSq9Rv5A/VhHMKAR3HA==
+X-Received: by 2002:adf:f00f:0:b0:311:1120:f298 with SMTP id
+ j15-20020adff00f000000b003111120f298mr5658059wro.1.1687168447515; 
+ Mon, 19 Jun 2023 02:54:07 -0700 (PDT)
+Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
+ [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
+ y3-20020a5d6203000000b003062c0ef959sm31037711wru.69.2023.06.19.02.54.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Jun 2023 02:54:07 -0700 (PDT)
+Message-ID: <ece02116-0041-ca15-c958-eb989156d854@linaro.org>
+Date: Mon, 19 Jun 2023 11:54:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 2/2] accel/tcg: Make probe_access() a generic TCG helper
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230619091901.51607-1-philmd@linaro.org>
+ <20230619091901.51607-3-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230619091901.51607-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=belmouss@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,193 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So that clients making use of the DBus backend could
-send touch events through the new org.qemu.Display1.Touch
-interface
+On 6/19/23 11:19, Philippe Mathieu-Daudé wrote:
+> +
+> +void HELPER(probe_access)(CPUArchState *env, uint64_t ptr,
+> +                          uint32_t access_type, uint32_t mmu_idx,
+> +                          uint32_t size)
+> +{
+> +    uint32_t in_page = -((uint32_t)ptr | TARGET_PAGE_SIZE);
+> +    uintptr_t ra = GETPC();
+> +
+> +    if (likely(size <= in_page)) {
+> +        probe_access(env, ptr, size, access_type, mmu_idx, ra);
+> +    } else {
+> +        probe_access(env, ptr, in_page, access_type, mmu_idx, ra);
+> +        probe_access(env, ptr + in_page, size - in_page,
+> +                     access_type, mmu_idx, ra);
+> +    }
+> +}
 
-Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
----
- ui/dbus-console.c    | 59 +++++++++++++++++++++++++++++++++++++++++++-
- ui/dbus-display1.xml | 45 +++++++++++++++++++++++++++++++--
- ui/trace-events      |  1 +
- 3 files changed, 102 insertions(+), 3 deletions(-)
+This works if and only if size is <= TARGET_PAGE_SIZE.
+This should probably have been documented for Arm, but
+should definitely be documented for its new location.
 
-diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-index f77bc49..bc97614 100644
---- a/ui/dbus-console.c
-+++ b/ui/dbus-console.c
-@@ -32,6 +32,8 @@
- 
- #include "dbus.h"
- 
-+static struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX];
-+
- struct _DBusDisplayConsole {
-     GDBusObjectSkeleton parent_instance;
-     DisplayChangeListener dcl;
-@@ -44,6 +46,7 @@ struct _DBusDisplayConsole {
-     QKbdState *kbd;
- 
-     QemuDBusDisplay1Mouse *iface_mouse;
-+    QemuDBusDisplay1MultiTouch *iface_touch;
-     gboolean last_set;
-     guint last_x;
-     guint last_y;
-@@ -345,6 +348,46 @@ dbus_mouse_rel_motion(DBusDisplayConsole *ddc,
-     return DBUS_METHOD_INVOCATION_HANDLED;
- }
- 
-+static gboolean
-+dbus_touch_send_event(DBusDisplayConsole *ddc,
-+                      GDBusMethodInvocation *invocation,
-+                      guint kind, uint64_t num_slot,
-+                      double x, double y)
-+{
-+    Error *error = NULL;
-+    int width, height;
-+    trace_dbus_touch_send_event(kind, num_slot, x, y);
-+
-+    if (kind != INPUT_MULTI_TOUCH_TYPE_BEGIN &&
-+        kind != INPUT_MULTI_TOUCH_TYPE_UPDATE &&
-+        kind != INPUT_MULTI_TOUCH_TYPE_CANCEL &&
-+        kind != INPUT_MULTI_TOUCH_TYPE_END)
-+    {
-+        g_dbus_method_invocation_return_error(
-+            invocation, DBUS_DISPLAY_ERROR,
-+            DBUS_DISPLAY_ERROR_INVALID,
-+            "Invalid touch event kind");
-+        return DBUS_METHOD_INVOCATION_HANDLED;
-+    }
-+    width = qemu_console_get_width(ddc->dcl.con, 0);
-+    height = qemu_console_get_height(ddc->dcl.con, 0);
-+
-+    console_handle_touch_event(ddc->dcl.con, touch_slots,
-+                               num_slot, width, height,
-+                               x, y, kind, &error);
-+    if (error != NULL) {
-+        g_dbus_method_invocation_return_error(
-+            invocation, DBUS_DISPLAY_ERROR,
-+            DBUS_DISPLAY_ERROR_INVALID,
-+            error_get_pretty(error), NULL);
-+        error_free(error);
-+    } else {
-+        qemu_dbus_display1_multi_touch_complete_send_event(ddc->iface_touch,
-+                                                           invocation);
-+    }
-+    return DBUS_METHOD_INVOCATION_HANDLED;
-+}
-+
- static gboolean
- dbus_mouse_set_pos(DBusDisplayConsole *ddc,
-                    GDBusMethodInvocation *invocation,
-@@ -440,7 +483,7 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-     g_autofree char *label = NULL;
-     char device_addr[256] = "";
-     DBusDisplayConsole *ddc;
--    int idx;
-+    int idx, i;
- 
-     assert(display);
-     assert(con);
-@@ -495,6 +538,20 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(ddc),
-         G_DBUS_INTERFACE_SKELETON(ddc->iface_mouse));
- 
-+    ddc->iface_touch = qemu_dbus_display1_multi_touch_skeleton_new();
-+    g_object_connect(ddc->iface_touch,
-+        "swapped-signal::handle-send-event", dbus_touch_send_event, ddc,
-+        NULL);
-+    qemu_dbus_display1_multi_touch_set_max_slots(ddc->iface_touch,
-+                                                 INPUT_EVENT_SLOTS_MAX);
-+    g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(ddc),
-+        G_DBUS_INTERFACE_SKELETON(ddc->iface_touch));
-+
-+    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; i++) {
-+        struct touch_slot *slot = &touch_slots[i];
-+        slot->tracking_id = -1;
-+    }
-+
-     register_displaychangelistener(&ddc->dcl);
-     ddc->mouse_mode_notifier.notify = dbus_mouse_mode_change;
-     qemu_add_mouse_mode_change_notifier(&ddc->mouse_mode_notifier);
-diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
-index c3b2293..cc0c9b6 100644
---- a/ui/dbus-display1.xml
-+++ b/ui/dbus-display1.xml
-@@ -39,8 +39,9 @@
-       "Text" (see :dbus:prop:`Type` and other properties).
- 
-       Interactions with a console may be done with
--      :dbus:iface:`org.qemu.Display1.Keyboard` and
--      :dbus:iface:`org.qemu.Display1.Mouse` interfaces when available.
-+      :dbus:iface:`org.qemu.Display1.Keyboard`,
-+      :dbus:iface:`org.qemu.Display1.Mouse` and
-+      :dbus:iface:`org.qemu.Display1.MultiTouch` interfaces when available.
-   -->
-   <interface name="org.qemu.Display1.Console">
-     <!--
-@@ -236,6 +237,46 @@
-     <property name="IsAbsolute" type="b" access="read"/>
-   </interface>
- 
-+  <!--
-+      org.qemu.Display1.MultiTouch:
-+
-+      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
-+      :dbus:iface:`~org.qemu.Display1.Console` documentation).
-+
-+      .. _dbus-kind-values:
-+
-+      **Kind values**::
-+
-+        Begin       = 0
-+        Update      = 1
-+        End         = 2
-+        Cancel      = 3
-+  -->
-+  <interface name="org.qemu.Display1.MultiTouch">
-+    <!--
-+        SendEvent:
-+        @kind: The touch event kind
-+        @num_slot: The slot number.
-+        @x: The x coordinates.
-+        @y: The y coordinates.
-+
-+        Send a touch gesture event.
-+    -->
-+    <method name="SendEvent">
-+      <arg type="u" name="kind" direction="in"/>
-+      <arg type="t" name="num_slot" direction="in"/>
-+      <arg type="d" name="x" direction="in"/>
-+      <arg type="d" name="y" direction="in"/>
-+    </method>
-+
-+    <!--
-+        MaxSlots:
-+
-+        The maximum number of slots.
-+    -->
-+    <property name="MaxSlots" type="i" access="read"/>
-+  </interface>
-+
-   <!--
-       org.qemu.Display1.Listener:
- 
-diff --git a/ui/trace-events b/ui/trace-events
-index 6747361..138a09c 100644
---- a/ui/trace-events
-+++ b/ui/trace-events
-@@ -154,6 +154,7 @@ dbus_mouse_press(unsigned int button) "button %u"
- dbus_mouse_release(unsigned int button) "button %u"
- dbus_mouse_set_pos(unsigned int x, unsigned int y) "x=%u, y=%u"
- dbus_mouse_rel_motion(int dx, int dy) "dx=%d, dy=%d"
-+dbus_touch_send_event(unsigned int kind, uint32_t num_slot, uint32_t x, uint32_t y) "kind=%u, num_slot=%u, x=%d, y=%d"
- dbus_update(int x, int y, int w, int h) "x=%d, y=%d, w=%d, h=%d"
- dbus_clipboard_grab_failed(void) ""
- dbus_clipboard_register(const char *bus_name) "peer %s"
--- 
-2.41.0
+It looks like this could be used for
 
+hexagon: HELPER(probe_noshuf_load)
+s390x/tcg/mem_helper.c:void HELPER(probe_write_access)
+
+Although s390x is written to handle much larger SIZE, the maximum that it will ever issue 
+is 16 * 16 = 256 for op_vstm.  But it also handles target-specific address wrap at the end 
+of the address space, which the above does not.
+
+So perhaps it's not worth moving this after all?
+
+
+r~
 
