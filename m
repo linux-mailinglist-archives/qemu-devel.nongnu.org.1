@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54787735987
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC4C73599B
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFsi-0000Ze-Bj; Mon, 19 Jun 2023 10:29:24 -0400
+	id 1qBFsl-0000bd-LF; Mon, 19 Jun 2023 10:29:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsg-0000Yy-MR
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:22 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qBFsh-0000ZD-20
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:23 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFse-0002Ax-M5
+ id 1qBFsf-0002B3-Au
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:22 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3f9002a1a9bso33459135e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:19 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f9b4a715d9so3310635e9.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687184959; x=1689776959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bu9xu6sgDL960caTpLR2VLDgZoGVO/M9+l0fW87QI0Y=;
- b=vJzuyE/j6PvhSdUc4dxjwMoZqQg5Ug7OBFChZhp8wBbCL61cH5DAtrp2cz3J7qHk3s
- 02mmatn2fNmoo1da4u87cVH4aV1pinu/4SqR+ayQuANnPifrfx4ikBlZo5nYUH+l+Pqk
- 7L88kbpoSj5M6Lh00rO7Ap+S4FxucdAUe4lQDtD4ZpHunw0FvfzpnaLmoCdHhpQZmbTi
- 8IQtTQjPQ92IKy0EqCKpI3ab8yDrAADzqcZWsXx+axlsRNy5n4ovdGdnKov6aPamQWZO
- QtNBU9aAOaTgJGOcVBvy/ZKACXiUO16z54LXE0iAkigpexQrJgsCWoSY53Iym/eKxkBM
- EMXA==
+ :reply-to; bh=EhniXz311o/2DcPgdcKAEpSrZXehm+PpvIlCx/ZyH40=;
+ b=M05wa6NuqfLZtUxI2Eq4C+jES/JGo4SSb0VTNy36Nz4VlcySUN0XORWuat/KyK0gCF
+ iBFH9WlfftHTEVCjLlbCgyVn34RYw9ccPFw7ifa5zPJAdxdrRFkcgxJSw+eFo2iTSMsA
+ X8ym3ZjFs9F+L4Kb1cnqDUxnA+LF0Jt/xDR+SHxy+82NMJ3h5OQXBYjoPpnCX8x0RMnt
+ YFutFtRRfv2tqnFSxAGJ0t+37BhZ3ZnAKopbAgh742wtxZEZCzsVPCvHfO5wVeug7SUX
+ NDBIIfNf6st0tNQdBIYoNijwWFps3ak+cWwIf9XmgGTlG3e/LcNthHFbYlTZ1NjYYTw0
+ QiVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687184959; x=1689776959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bu9xu6sgDL960caTpLR2VLDgZoGVO/M9+l0fW87QI0Y=;
- b=UhvbzQQJYJ1IpZazhgJbCA8f/HTB4uzcq1SbsRXpqgeHyJeNHoFZiiXkGLSH/8TqiG
- MUD9aiiRo3Z9CooQEYOsZAR3CmiXezXT+sBOt0+syw/2iXehV1nIj4UGpA/+2PR8FELR
- /ficPRzwm6P9XwYxgeL/0LGKBNHJmCdjrrOyLmBoBtgzFwB9Oei0dfekSU7m3LlTXLfO
- HDngFtYqWOQqKs0Qowcke6MYLpAl+EfhuzZfgDyOmA8tsUtayzenX+HTicChbcUZoaxL
- jbvG1HbWympwBUmGrcB4gVfhk+77TdSN4KhFPJb7k7VbFo9OIc44Sfvr3KfOIzV07wKL
- ornA==
-X-Gm-Message-State: AC+VfDwk9Qa2t/uufQ/Vu38omhXPC2Zdtlk7c3jhkMQeeL+2+C4416QS
- JEBqNEA+Rj4cQ97iOtF3BVMNqtN3ZusHjb3TC78=
-X-Google-Smtp-Source: ACHHUZ6N93mCXCndo1ax5X/sWZur8bmB77Am9LbnVrq1DjrJ8yzw31kX1/Y/YHcy4AljpYjlHY323Q==
-X-Received: by 2002:a1c:770a:0:b0:3f9:c04:e76c with SMTP id
- t10-20020a1c770a000000b003f90c04e76cmr3541339wmi.28.1687184958987; 
- Mon, 19 Jun 2023 07:29:18 -0700 (PDT)
+ bh=EhniXz311o/2DcPgdcKAEpSrZXehm+PpvIlCx/ZyH40=;
+ b=ANCq86zsPvlx5VzSv9/VVIsKLO4hzse1pg/17Lq0tbSdEUeez/Huia8uXO3DUexD/7
+ 8Qoy5YDugfZhM7uDiR3/hGz2l8cLa3fj+1qAEWot8wuwBj7kfgowC14W7cX+1x2UoAG+
+ OZSXuL9f2Fj7KA1zbMWwDcydVpaV1Rikoa8dzMpKtBqgpHXcbyR4qlX80TuIAtSKBCSj
+ 2AZ5AeXezqeK4kcwgq86GhTX5SkK/XatbOggArWeLaVCnZM1T5xAnlb/xhPaWozCv5l3
+ AsqUoqdI1LOnhnpIj0FLPn7LSbqKVHLViguO6qamSRaB3tp0CG8uWlGG40OqP7f2DV6C
+ vJAA==
+X-Gm-Message-State: AC+VfDzZQBlWhdU5OSsvSybzKcTYyid80HJeIe4M0DQDJyhoKQb+ftnj
+ 3KADO3wGOmB9VWLKclmBFBIjN9hxqBHgbl0TbLM=
+X-Google-Smtp-Source: ACHHUZ50M0GHqy+mCLcse1lQD5WR9zm1bMkAuE+l56frfmGNXvT7oylRkQTOce1kVAc+rchNBHaUoQ==
+X-Received: by 2002:a1c:4b11:0:b0:3f7:e78e:8a41 with SMTP id
+ y17-20020a1c4b11000000b003f7e78e8a41mr14072873wma.18.1687184959425; 
+ Mon, 19 Jun 2023 07:29:19 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.18
+ a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 07:29:18 -0700 (PDT)
+ Mon, 19 Jun 2023 07:29:19 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/33] target/arm: Convert barrier insns to decodetree
-Date: Mon, 19 Jun 2023 15:28:47 +0100
-Message-Id: <20230619142914.963184-7-peter.maydell@linaro.org>
+Subject: [PULL 07/33] target/arm: Convert CFINV,
+ XAFLAG and AXFLAG to decodetree
+Date: Mon, 19 Jun 2023 15:28:48 +0100
+Message-Id: <20230619142914.963184-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,154 +91,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the insns in the "Barriers" instruction class to
-decodetree: CLREX, DSB, DMB, ISB and SB.
+Convert the CFINV, XAFLAG and AXFLAG insns to decodetree.
+The old decoder handles these in handle_msr_i(), but
+the architecture defines them as separate instructions
+from MSR (immediate).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-4-peter.maydell@linaro.org
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230602155223.2040685-5-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  7 +++
- target/arm/tcg/translate-a64.c | 92 ++++++++++++++--------------------
- 2 files changed, 46 insertions(+), 53 deletions(-)
+ target/arm/tcg/a64.decode      |  6 ++++
+ target/arm/tcg/translate-a64.c | 53 +++++++++++++++++-----------------
+ 2 files changed, 32 insertions(+), 27 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 1efd436e175..b3608d38dc9 100644
+index b3608d38dc9..fd23fc3e0ff 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -181,3 +181,10 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
-   # that isn't specifically allocated to an instruction must NOP
-   NOP           1101 0101 0000 0011 0010 ---- --- 11111
- }
+@@ -188,3 +188,9 @@ CLREX           1101 0101 0000 0011 0011 ---- 010 11111
+ DSB_DMB         1101 0101 0000 0011 0011 domain:2 types:2 10- 11111
+ ISB             1101 0101 0000 0011 0011 ---- 110 11111
+ SB              1101 0101 0000 0011 0011 0000 111 11111
 +
-+# Barriers
++# PSTATE
 +
-+CLREX           1101 0101 0000 0011 0011 ---- 010 11111
-+DSB_DMB         1101 0101 0000 0011 0011 domain:2 types:2 10- 11111
-+ISB             1101 0101 0000 0011 0011 ---- 110 11111
-+SB              1101 0101 0000 0011 0011 0000 111 11111
++CFINV           1101 0101 0000 0 000 0100 0000 000 11111
++XAFLAG          1101 0101 0000 0 000 0100 0000 001 11111
++AXFLAG          1101 0101 0000 0 000 0100 0000 010 11111
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index eb8addac1b3..088dfd8b1fd 100644
+index 088dfd8b1fd..c1b02b96183 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -1812,67 +1812,56 @@ static bool trans_AUTIBSP(DisasContext *s, arg_AUTIBSP *a)
+@@ -1864,9 +1864,24 @@ static bool trans_SB(DisasContext *s, arg_SB *a)
      return true;
  }
  
--static void gen_clrex(DisasContext *s, uint32_t insn)
-+static bool trans_CLREX(DisasContext *s, arg_CLREX *a)
+-static void gen_xaflag(void)
++static bool trans_CFINV(DisasContext *s, arg_CFINV *a)
  {
-     tcg_gen_movi_i64(cpu_exclusive_addr, -1);
+-    TCGv_i32 z = tcg_temp_new_i32();
++    if (!dc_isar_feature(aa64_condm_4, s)) {
++        return false;
++    }
++    tcg_gen_xori_i32(cpu_CF, cpu_CF, 1);
++    return true;
++}
++
++static bool trans_XAFLAG(DisasContext *s, arg_XAFLAG *a)
++{
++    TCGv_i32 z;
++
++    if (!dc_isar_feature(aa64_condm_5, s)) {
++        return false;
++    }
++
++    z = tcg_temp_new_i32();
+ 
+     tcg_gen_setcondi_i32(TCG_COND_EQ, z, cpu_ZF, 0);
+ 
+@@ -1890,10 +1905,16 @@ static void gen_xaflag(void)
+ 
+     /* C | Z */
+     tcg_gen_or_i32(cpu_CF, cpu_CF, z);
++
 +    return true;
  }
  
--/* CLREX, DSB, DMB, ISB */
--static void handle_sync(DisasContext *s, uint32_t insn,
--                        unsigned int op1, unsigned int op2, unsigned int crm)
-+static bool trans_DSB_DMB(DisasContext *s, arg_DSB_DMB *a)
+-static void gen_axflag(void)
++static bool trans_AXFLAG(DisasContext *s, arg_AXFLAG *a)
  {
-+    /* We handle DSB and DMB the same way */
-     TCGBar bar;
++    if (!dc_isar_feature(aa64_condm_5, s)) {
++        return false;
++    }
++
+     tcg_gen_sari_i32(cpu_VF, cpu_VF, 31);         /* V ? -1 : 0 */
+     tcg_gen_andc_i32(cpu_CF, cpu_CF, cpu_VF);     /* C & !V */
  
--    if (op1 != 3) {
--        unallocated_encoding(s);
--        return;
-+    switch (a->types) {
-+    case 1: /* MBReqTypes_Reads */
-+        bar = TCG_BAR_SC | TCG_MO_LD_LD | TCG_MO_LD_ST;
-+        break;
-+    case 2: /* MBReqTypes_Writes */
-+        bar = TCG_BAR_SC | TCG_MO_ST_ST;
-+        break;
-+    default: /* MBReqTypes_All */
-+        bar = TCG_BAR_SC | TCG_MO_ALL;
-+        break;
-     }
-+    tcg_gen_mb(bar);
+@@ -1902,6 +1923,8 @@ static void gen_axflag(void)
+ 
+     tcg_gen_movi_i32(cpu_NF, 0);
+     tcg_gen_movi_i32(cpu_VF, 0);
++
 +    return true;
-+}
+ }
  
--    switch (op2) {
--    case 2: /* CLREX */
--        gen_clrex(s, insn);
--        return;
--    case 4: /* DSB */
--    case 5: /* DMB */
--        switch (crm & 3) {
--        case 1: /* MBReqTypes_Reads */
--            bar = TCG_BAR_SC | TCG_MO_LD_LD | TCG_MO_LD_ST;
--            break;
--        case 2: /* MBReqTypes_Writes */
--            bar = TCG_BAR_SC | TCG_MO_ST_ST;
--            break;
--        default: /* MBReqTypes_All */
--            bar = TCG_BAR_SC | TCG_MO_ALL;
--            break;
--        }
--        tcg_gen_mb(bar);
--        return;
--    case 6: /* ISB */
--        /* We need to break the TB after this insn to execute
--         * a self-modified code correctly and also to take
--         * any pending interrupts immediately.
--         */
--        reset_btype(s);
--        gen_goto_tb(s, 0, 4);
--        return;
-+static bool trans_ISB(DisasContext *s, arg_ISB *a)
-+{
-+    /*
-+     * We need to break the TB after this insn to execute
-+     * self-modifying code correctly and also to take
-+     * any pending interrupts immediately.
-+     */
-+    reset_btype(s);
-+    gen_goto_tb(s, 0, 4);
-+    return true;
-+}
+ /* MSR (immediate) - move immediate to processor state field */
+@@ -1914,30 +1937,6 @@ static void handle_msr_i(DisasContext *s, uint32_t insn,
+     s->base.is_jmp = DISAS_TOO_MANY;
  
--    case 7: /* SB */
--        if (crm != 0 || !dc_isar_feature(aa64_sb, s)) {
+     switch (op) {
+-    case 0x00: /* CFINV */
+-        if (crm != 0 || !dc_isar_feature(aa64_condm_4, s)) {
 -            goto do_unallocated;
 -        }
--        /*
--         * TODO: There is no speculation barrier opcode for TCG;
--         * MB and end the TB instead.
--         */
--        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_SC);
--        gen_goto_tb(s, 0, 4);
--        return;
+-        tcg_gen_xori_i32(cpu_CF, cpu_CF, 1);
+-        s->base.is_jmp = DISAS_NEXT;
+-        break;
 -
--    default:
--    do_unallocated:
--        unallocated_encoding(s);
--        return;
-+static bool trans_SB(DisasContext *s, arg_SB *a)
-+{
-+    if (!dc_isar_feature(aa64_sb, s)) {
-+        return false;
-     }
-+    /*
-+     * TODO: There is no speculation barrier opcode for TCG;
-+     * MB and end the TB instead.
-+     */
-+    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_SC);
-+    gen_goto_tb(s, 0, 4);
-+    return true;
- }
- 
- static void gen_xaflag(void)
-@@ -2336,9 +2325,6 @@ static void disas_system(DisasContext *s, uint32_t insn)
-             return;
-         }
-         switch (crn) {
--        case 3: /* CLREX, DSB, DMB, ISB */
--            handle_sync(s, insn, op1, op2, crm);
--            break;
-         case 4: /* MSR (immediate) */
-             handle_msr_i(s, insn, op1, op2, crm);
-             break;
+-    case 0x01: /* XAFlag */
+-        if (crm != 0 || !dc_isar_feature(aa64_condm_5, s)) {
+-            goto do_unallocated;
+-        }
+-        gen_xaflag();
+-        s->base.is_jmp = DISAS_NEXT;
+-        break;
+-
+-    case 0x02: /* AXFlag */
+-        if (crm != 0 || !dc_isar_feature(aa64_condm_5, s)) {
+-            goto do_unallocated;
+-        }
+-        gen_axflag();
+-        s->base.is_jmp = DISAS_NEXT;
+-        break;
+-
+     case 0x03: /* UAO */
+         if (!dc_isar_feature(aa64_uao, s) || s->current_el == 0) {
+             goto do_unallocated;
 -- 
 2.34.1
 
