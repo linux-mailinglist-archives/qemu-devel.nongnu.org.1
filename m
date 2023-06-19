@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A501C734D0C
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70017734D0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:06:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB9tb-00063P-1d; Mon, 19 Jun 2023 04:05:58 -0400
+	id 1qB9to-00067w-G6; Mon, 19 Jun 2023 04:06:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qB9tL-00062w-Sz
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:05:41 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1qB9tj-00065X-Gt
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:06:05 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qB9tK-00018g-23
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:05:39 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-988aefaa44eso111571066b.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 01:05:36 -0700 (PDT)
+ id 1qB9tg-0001Fp-J9
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:06:02 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-987c932883bso324384166b.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 01:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687161935; x=1689753935;
+ d=linaro.org; s=google; t=1687161959; x=1689753959;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pkuyy9Qu55P6NOyPQmGtz0+oG22qvc0HNbqokeNrZNg=;
- b=nyHVpnefgOD5WWUdiP7CwN9VtJziD0KZGfpc1fbLbhv3LPxpgABgehY1G+2OjuPZPd
- LEKMEUk4MM0AQHzJAHVBHX6mSlghAQf5OQ1VkjVeGKvcfpudSD8TgzR4bcCHWIJzw6OK
- iN6crXqrsGRiYkBRt0geWLcqRVhPMf0JuG1mPqAKUjBPxnw34xRLFJNArGtWcaEbSrgT
- QufYOHJxXsHDQ7yjWxsYU8eChGLmZRWq/qgsjypMgIECJZ0FreNLjV9XbZ1Ilmzxqi04
- pt8fghYbxfmEWDs/9i1v9eiiy4eR/VqDMkIsGhM3dhdxGOh3F/LCSgVMnDkvMmZwXCtx
- VCGQ==
+ bh=j0l5GOaHWYG0L0zKQlFk/9TlrxBHtaYkVp2Z4p8EEnY=;
+ b=D2D2iNFhbRpX0HCq0mM24zFaSrXA5S4oTEbSnp3xl9XIFMEIMZrARRa/0WtoS69MMh
+ 1wCfOucya6V4etrMO3VlUlxlxm5Jdt+6QyFezeprGFibc3yewc6KQ19L7QNSj+eR1Vnl
+ garbCXPb4vLQ1TxsL/bk+tkIm2aGcTe8PQw79GdckIT1XMq9gl7r6GuE8KEveZUxN2Jr
+ 6qwY5Au0hjpaiRe0mc2svwzZjlj0req7r+uyR+pBu9ZYVWZVefARZyJAh2mgqIgZ+VNw
+ Hnq7Kfh1DeMfZ7HGRA4cOqFMCTU1lrXjxuSvz0r4SLQtyxYEFQVd+RlexIBcddoS4mVa
+ j6Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687161935; x=1689753935;
+ d=1e100.net; s=20221208; t=1687161959; x=1689753959;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pkuyy9Qu55P6NOyPQmGtz0+oG22qvc0HNbqokeNrZNg=;
- b=LVoRWjTWosIZErWdtBD3Ijo0gS/svv9qPf5bE5YA94PJouas+PQDSq8dfhsPi2hPIC
- d29n5XkI91nAN22dc9lUVgJ7XwU6LkPqaWoKegNiXJBrgthoV7U50rqna6WaQyxJvG43
- YGDUMMctNwn0c0eP5t3PmTHZ+DMjePVYCOJGpupf3rGYi3xpJa4MUGbKVSzTrRKPfCmV
- 2+SlAvhVavbvlNWiDdFEnah1CH9GhkJq76J2g5c7o2uzaf6uEjXacZJA2Tx7ZldYv4QG
- xXqxvWQX0hAKUfdEhKM8gyI7Z8rRrzWI2yJIDEEQG3sPqSpUoPRCIbldUGaIenCtaCOM
- 2qwQ==
-X-Gm-Message-State: AC+VfDxe9QrLoEKkgLh5rwU67AD5CCLjY3DirsY+Ttnds8YOxWqwCwJW
- I6COD7qlYud/XaVp4fyuYtuDmA==
-X-Google-Smtp-Source: ACHHUZ5t4qYonxd0izt5cd45PC+spp5Z2UupLaYQNRCYkX1hLwqWNPaaHdPkzG9hGa19M9USGRnSJw==
-X-Received: by 2002:a17:906:9b88:b0:988:9641:fe38 with SMTP id
- dd8-20020a1709069b8800b009889641fe38mr2275959ejc.32.1687161934788; 
- Mon, 19 Jun 2023 01:05:34 -0700 (PDT)
+ bh=j0l5GOaHWYG0L0zKQlFk/9TlrxBHtaYkVp2Z4p8EEnY=;
+ b=FKK5fhEJBtRp13KweBsbvpNlYry/PHrsVOlNrY14MzEWmosY/AWU1PaCMRK+5u8F36
+ LpWGTjI+AxGjlVSvXDpTRUL1Dw+7izx5fNsLwrESnvpBro1Hm5yxBQNz0Gbs0754850R
+ by9quL1ysiMnHCp26AKCATiWRI5Y2flTsbt0qGXgyIs7nalXcsJ/0/SizgNEvA+IGQdi
+ X40zzhIVfl0jMcXywy5LQISBxWulHNAKC+/KsF+n4C8cSRyQ6YyuXW4SJtV1URLDS6Hq
+ L0zeM9xDPvEB0qhkPbQCfdiSYlx3KwKVsxPwOcGj5B63MjUz4r32cC1vbAPHQycQuD3o
+ bcZA==
+X-Gm-Message-State: AC+VfDzxrx14CSsjJDeQSES/bEmHyj/1OyrduZYpvsZaFpiX9gsZSdeK
+ xHuIyx/kOIVue8LB0eNCONQLYg==
+X-Google-Smtp-Source: ACHHUZ49YEn+5itFRHuTll43hZznxgato+HMnQvuoh8l0WLgNI4U3K8ec4WhybOgDvxxrSKxEeu9Rw==
+X-Received: by 2002:a17:907:1c95:b0:987:15ee:4399 with SMTP id
+ nb21-20020a1709071c9500b0098715ee4399mr6970592ejc.29.1687161958726; 
+ Mon, 19 Jun 2023 01:05:58 -0700 (PDT)
 Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- gz17-20020a170906f2d100b00988936b142bsm1476186ejb.147.2023.06.19.01.05.33
+ a12-20020a170906670c00b00988b2050f47sm964912ejp.20.2023.06.19.01.05.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 01:05:34 -0700 (PDT)
-Message-ID: <2920d8da-4298-82e9-7d41-f00892a03e29@linaro.org>
-Date: Mon, 19 Jun 2023 10:05:30 +0200
+ Mon, 19 Jun 2023 01:05:58 -0700 (PDT)
+Message-ID: <73329920-8d4c-dd55-2a09-1167b37a1903@linaro.org>
+Date: Mon, 19 Jun 2023 10:05:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 1/4] hw/net/i82596: Include missing
- 'exec/address-spaces.h' header
+Subject: Re: [PATCH 2/4] hw/dma/etraxfs: Include missing 'exec/memory.h' header
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -70,13 +69,13 @@ Cc: kvm@vger.kernel.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Jason Wang <jasowang@redhat.com>
 References: <20230619074153.44268-1-philmd@linaro.org>
- <20230619074153.44268-2-philmd@linaro.org>
+ <20230619074153.44268-3-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230619074153.44268-2-philmd@linaro.org>
+In-Reply-To: <20230619074153.44268-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,20 +99,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/19/23 09:41, Philippe Mathieu-Daudé wrote:
-> hw/net/i82596.c access the global 'address_space_memory'
-> calling the ld/st_phys() API. address_space_memory is
-> declared in "exec/address-spaces.h". Currently this header
-> is indirectly pulled in via another header. Explicitly include
-> it to avoid when refactoring unrelated headers:
+> The 'fs_dma_ctrl' structure has a MemoryRegion 'mmio' field
+> which is initialized in etraxfs_dmac_init() calling
+> memory_region_init_io() and memory_region_add_subregion().
 > 
->    hw/net/i82596.c:91:23: error: use of undeclared identifier 'address_space_memory'; did you mean 'address_space_destroy'?
->      return ldub_phys(&address_space_memory, addr);
->                        ^~~~~~~~~~~~~~~~~~~~
->                        address_space_destroy
+> These functions are declared in "exec/memory.h", along with
+> the MemoryRegion structure. Include the missing header.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   hw/net/i82596.c | 1 +
+>   hw/dma/etraxfs_dma.c | 1 +
 >   1 file changed, 1 insertion(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
