@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9F273575D
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C79735760
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:53:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBEMz-0005Eg-L0; Mon, 19 Jun 2023 08:52:33 -0400
+	id 1qBENa-0006ED-MO; Mon, 19 Jun 2023 08:53:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qBEMy-0005EK-2L
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:52:32 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBENX-0006AN-T7
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:53:07 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qBEMw-00061U-Hp
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:52:31 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-9741caaf9d4so416093166b.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 05:52:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBENW-00067a-AD
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:53:07 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f76a0a19d4so4291760e87.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 05:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687179148; x=1689771148;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=WHg6Kxw9oXcCg7qjcrpufZ3GjlvbaQFLwe7ZCIiP6Gc=;
- b=ox14YewVLqPkvwugigYhgQ9ioo7sOjwLh1ImBtb8eNdtxX4wexavEhru7gTzcry+t1
- tX2Nkk0iLAhNAQqh3ElUK9CNiXSUaOtbyTd87iddPGB7zB/G3cIeAOw+C9r3PJcIR++6
- A9ORHe3/J+YT9jDso1RU5qNolLDHi+/wawSjlkIAVX7VYP8JJZZxGJ56/BT/WqZd1+PC
- HkV6En/LwUmyqp2y2J9ZyyEsGvPBvZF+7gwesBP3w17K9iEeZChK0x4myq6IoCu1sI1u
- ljeMnVQCXSskjt4UzY8OmoRO4Nif+CIOc7WIG23SN7izUatd7lx/MIcediupVDBJ8npj
- dfgA==
+ d=linaro.org; s=google; t=1687179184; x=1689771184;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=w61GMLuOJlYAzuL0e6VboE27HsfD2McTSrV1nphgMVg=;
+ b=fL1gBtFFfp18r9hJsyqg9CVhTGQAUIu0Ut5OhpfIjBOgWTpHlORa4PDWQrmEJkMTso
+ AsQ4xsjPpBnk4c0BkoW3jmWaPB9+fd18LT5nf90ecYb2D1LBjJdejE5mNk8VZGgyKQio
+ TxsXvzv4NcB5VaEUO145aG1RJvrmoxrJlKLpNRlBFzxW1WO26PmIRsFNq+CiXKhYQk+U
+ VDzoGJcjHsbzrLBhjkRmDteD76JTF7n3KxttqsFakW/5C8UHgG0+phNtT9c+dShVGAvL
+ ummibZDjo/w2Rg8KThgkz5uqfsJuajOYQZu5czS05KkDaRQpEKXCv/gyXlNO1Y08sQm0
+ vqXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687179148; x=1689771148;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1687179184; x=1689771184;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=WHg6Kxw9oXcCg7qjcrpufZ3GjlvbaQFLwe7ZCIiP6Gc=;
- b=lipGfi+eN2RXEl3kpcQXetvhaZ6jL+l22uq69A0MInPqEYi0n0/H7jxBQXv70/Tifu
- +/iAv6li4hiLQYDpC3KVyoOomtexHtU7uU5OtBQdYTpHM+N6pLyMp+mQL/iHA7foaW6m
- cxJ3MYQ2fkVhTvcGEE4n3dxxmE+h2PmJFBniSj4T+a/9llYwLOjRm+ftEDeu1a/BBmxs
- DohJS/7BbK5FZrTc8juX+plDy14bXB7lGyueVsVAVr9L+ipbtxn5dPwsFKb0Zeis6CTd
- LhrmQjZAcfcNUoH9ry8CkG3esM1F2elyzEUSYPxonq0JwssyqewiEypVGFFJBYIeOmbZ
- n53w==
-X-Gm-Message-State: AC+VfDyKznzN7BUtIpZ2V1/t6o++inr06A1hUIva/23TcMswd2tFg3iA
- TYDwWgM0wqCddmuz1OrjLwaM+w==
-X-Google-Smtp-Source: ACHHUZ7XpkfX8RkyyEpZPJ3GCEYyKJPdrlOv9sEQvBxGbrn2jjMx1/H5gZ4B6wCjbkJKySpf4Uxp4g==
-X-Received: by 2002:a17:907:94c1:b0:982:7d5f:f608 with SMTP id
- dn1-20020a17090794c100b009827d5ff608mr8168803ejc.46.1687179148621; 
- Mon, 19 Jun 2023 05:52:28 -0700 (PDT)
-Received: from [192.168.200.206] (83.11.39.176.ipv4.supernova.orange.pl.
- [83.11.39.176]) by smtp.gmail.com with ESMTPSA id
- pv19-20020a170907209300b00988ac5482c3sm1403585ejb.69.2023.06.19.05.52.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 05:52:28 -0700 (PDT)
-Message-ID: <25d9a1e1-7e02-5cc2-ba14-83c47c93a514@linaro.org>
-Date: Mon, 19 Jun 2023 14:52:26 +0200
+ bh=w61GMLuOJlYAzuL0e6VboE27HsfD2McTSrV1nphgMVg=;
+ b=FrIadNJfJgwxvAglvgODJ1eY/R9MVM/zrxkyzhylx0sBDYS1FyAK6f51IOGtanEFhL
+ XGNFlOow+SZLyGbjgOJp/S1bqxOtXlrie69Qm+SlEAy20MBM2/PDzyad1IWOLQgtqfDm
+ KYEM0yJRL1rS8M5V+4VsyO7YEzNiQcdXJJpuw1D5KaZTRHHpUvbVkGqGsSNWCXAkz863
+ 3uj2du3znxd7trYQpWUYydtlqJhHBauhLs7b6ez7aYyH/DMByW0CDuJWDd3JHfMI7eU8
+ X+nwOrL9NEMzd0KctjTo/8ixQfS3fmIvypHqSBcRTCG81NbPIkfgnE4QOTG0gCLBs/Jh
+ cxZA==
+X-Gm-Message-State: AC+VfDytFvCoZ4xtpXxrG/aodblETAhuGWPdMZ46qCW/qVPaCN0mlMKc
+ YN0R7fJfhknL7Hqq+8SicZQeGY6l3zzuYQsV51QkVQ==
+X-Google-Smtp-Source: ACHHUZ58sgcPTzBmbZmhUUeg17X/9rVk/BXPvWWgKwsLQTlTk8mJJhO2dmuenmaBMZpV+/6ZNMYwBsFWBBxcDdx/Djg=
+X-Received: by 2002:a05:6512:32b0:b0:4f8:5f19:4b4e with SMTP id
+ q16-20020a05651232b000b004f85f194b4emr3129315lfe.51.1687179184331; Mon, 19
+ Jun 2023 05:53:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/1] docs: sbsa: document board to firmware interface
-Content-Language: pl-PL, en-GB, en-HK
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>
-References: <20230531171834.236569-1-marcin.juszkiewicz@linaro.org>
- <CAFEAcA9dA_Siv5aKbF8Fj6nqm5KsuzU=qjEgiFC2KR6AhyaoDg@mail.gmail.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <CAFEAcA9dA_Siv5aKbF8Fj6nqm5KsuzU=qjEgiFC2KR6AhyaoDg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230606182414.637467-1-marcin.juszkiewicz@linaro.org>
+ <20230606182414.637467-2-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20230606182414.637467-2-marcin.juszkiewicz@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 Jun 2023 13:52:53 +0100
+Message-ID: <CAFEAcA-u8KP4Lnt7TWwwOTeUdq9c0mE6NWv1duEYn0ujE8B6wg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] hw/arm/sbsa-ref: add ITS support in SBSA GIC
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
+ Shashi Mallela <shashi.mallela@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,13 +87,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 19.06.2023 o 14:41, Peter Maydell pisze:
-> I'm going to apply this to target-arm.next with this squashed in
-> to fix a few grammar/format nits and add some text from the comment
-> in the source file about the platform version part.
+On Tue, 6 Jun 2023 at 19:24, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
+>
+> From: Shashi Mallela <shashi.mallela@linaro.org>
+>
+> Included creation of ITS as part of SBSA platform GIC
+> initialization.
+>
+> Signed-off-by: Shashi Mallela <shashi.mallela@linaro.org>
 
-Thanks.
+Marcin, this should have your signed-off-by too because
+the patch came to us via you.
 
-My English grammar sucks so I am glad that you looked and improved that 
-text.
+> +static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
+>  {
+>      unsigned int smp_cpus = MACHINE(sms)->smp.cpus;
+>      SysBusDevice *gicbusdev;
+> @@ -436,6 +451,12 @@ static void create_gic(SBSAMachineState *sms)
+>      qdev_prop_set_uint32(sms->gic, "len-redist-region-count", 1);
+>      qdev_prop_set_uint32(sms->gic, "redist-region-count[0]", redist0_count);
+>
+> +    if (!kvm_irqchip_in_kernel()) {
+> +        object_property_set_link(OBJECT(sms->gic), "sysmem",
+> +                                OBJECT(mem), &error_fatal);
+> +        qdev_prop_set_bit(sms->gic, "has-lpi", true);
+> +    }
+
+sbsa-ref never uses KVM, so we don't need the
+kvm_irqchip_in_kernel() check, we can just always
+set the link and the has-lpi prop.
+
+Otherwise this looks OK.
+
+thanks
+-- PMM
 
