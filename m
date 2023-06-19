@@ -2,72 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4287358D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2587358DC
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBF8b-0007F4-AN; Mon, 19 Jun 2023 09:41:45 -0400
+	id 1qBFBd-0000LH-75; Mon, 19 Jun 2023 09:44:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBF8T-0007D7-VM
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:41:39 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1qBFBb-0000Kp-DQ
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:44:51 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBF8S-0004kY-7p
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:41:37 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-988aefaa44eso158732666b.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:41:35 -0700 (PDT)
+ id 1qBFBZ-0005fH-RZ
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:44:51 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-51a1d539ffaso6677959a12.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687182094; x=1689774094;
+ d=linaro.org; s=google; t=1687182288; x=1689774288;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=R7iWOfq6yyVMl+4WGC/6g/d+jKGFb6uwUoaTDvuxXx0=;
- b=HK7fsvDcRbP4jLbm4Jekvp5oGi33/ZYt6elH6tQf70aGPNAe4b0ULH56mzzMXLMotF
- qVyLuMDv8Kbg5K7rQua55jy/QfC63XXCeO2wwVHa35PcODnr+D68yyzSu0JPZ/YDpkph
- AVbD0HH8RKcMOjhoGHzdVzomLPo5reKr5vAnubL5QENpEcq5PRTRDiurWOHZ+1DX1WyZ
- 9mxTfWXNcIUYN3Xq330oKZgknlv5ih42V9Ji4DkepR7PKA04DjJ4sHHoySBcZfaS/a4S
- jqBGVNdPic1Wc33iwqyZeIAD4DKmD9ZHgomqWbcXMLp/AnJXbr+lmTt/SSdmO3Q6eUwu
- 5ZPg==
+ bh=7yDQnwe+pqE5E+Xpo8oKLCJ4tiyERQoa8z2BYvAWQG0=;
+ b=b0osIN35Qnhk6g3TYupQ1W/u6pQLAUrMnIqvG4dsmfSwevQEWIuHHdQ700zuC09Vpo
+ P32Q04XpI0r+XW2h50v8WsgUnV80oifU+D4/gGaDnGRCmRf9t7zbkQb28+hgPZFNtQ8g
+ zy/qay45nOnH3xo2R0ZvmWjbIdfVgSRyLId3Ep6Hpn5w3PLUJmAwp+8+t+VFsm94OIcX
+ URnFAei4YQ7zvTSQlYO2CNeawK/X3HRIDwIyl2w7OK7UmF/jf585YYJPQT/DDUuHRYY9
+ udfw0jLpsXYvRf8ZXUsMj625pIU9bem4nMZ8WEY5M2Xbyunfp8l2cXjmESuvwwyLeF2Y
+ SuoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687182094; x=1689774094;
+ d=1e100.net; s=20221208; t=1687182288; x=1689774288;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=R7iWOfq6yyVMl+4WGC/6g/d+jKGFb6uwUoaTDvuxXx0=;
- b=UsCkHRH2+l6dfVuqgM4mn5Dfas5XZwgD49UjN4OQyaCdmZJivHK7Bm1v7j71JnjkjJ
- yGpGkfDZvVrCA5G+XwlVuv0FsW4byC6WHgskw/J4KkT8JH8fawA6WvQEE8TxyJhhbwtz
- tGyAK9OuG/L2D2xF60yjVntRjnya79TdykKBgUtaOG42RcdxWTRRyF7yB/wpo00ItQ62
- EwztmgzCF5EpypEI0CXjRVCEEG+2HkwvncRkVJw7Wat2zBk3Az1ssD0zfGgsnq1k7vdV
- WbtjlhjNpNgJJOqbdOHJtmpYYTj86Jo2bSVgKO8NoDBuDuc+8LMaxwmE0fdl56gHGsHF
- M7CQ==
-X-Gm-Message-State: AC+VfDzO7NBatyMJEU5ZCeRwNrhEaajjHgI9JnzmCFfH9/T54Jg0aY5m
- empBSbDLCzwbzjj0SSWofURozCWH9VNJIF6SvpH2+A==
-X-Google-Smtp-Source: ACHHUZ4BmFOBVCbVWMtIuqgvjJ12nDcUaa0cN3WUrQCHUGmSDJlnWZVyWXK3Gr7a7VEEoN0Mwu+uGHq3HNcrfVdoltY=
-X-Received: by 2002:a17:906:4fc5:b0:973:daa0:2f6 with SMTP id
- i5-20020a1709064fc500b00973daa002f6mr9870738ejw.3.1687182094410; Mon, 19 Jun
- 2023 06:41:34 -0700 (PDT)
+ bh=7yDQnwe+pqE5E+Xpo8oKLCJ4tiyERQoa8z2BYvAWQG0=;
+ b=B12MWc4v3Zr0MGUSmSh9WdvelHefpDjoFtOEpJwD8raxHJp/Cmxh6DDapWGRnqEy3t
+ Tn3rQnzt2E/TMhmS9kK7x7+/7DbXhDW55MBi/uvJBjiA4+AgDQYdHwMZZ7hjVEC4F6jO
+ o13Hm0acI4j5vBcpkrEV5feAxDHRBlRWxQdlDRg+WdLEqyM9j3yn2gZ7wzg1DhGwCspE
+ ucwqqFqjrSvcQWSHNmcj88AKd0R8+gI3WPeKdd6bwdDupoVA2tueRSEZV1l4OP41HRep
+ onu/j1NcDKsT0MtjLSWjyDuJW0U+25moBfSJ2vzUAj49H7JL7Ra/ffDCPWa8UPd01J6t
+ 6laQ==
+X-Gm-Message-State: AC+VfDwyRNYj4rP/3XlXbZQABDHco4iWoQbK+A6iTVpEwhLzl/V1RUpF
+ 1wKjOM8J7VBDxIyoj4IxbLLsG3AouQsyHu07xpvLCA==
+X-Google-Smtp-Source: ACHHUZ75vT+dkZDvBIa7fA/R7qQMz4NXO7sX5Ny8EoAxxCtbOMz6QYfwjjnlGMdelLwX9DwprZtsmkZO4Q3BwVARpBY=
+X-Received: by 2002:a05:6402:2683:b0:51a:4c1e:c94a with SMTP id
+ w3-20020a056402268300b0051a4c1ec94amr4305318edd.2.1687182288129; Mon, 19 Jun
+ 2023 06:44:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-13-clg@kaod.org>
- <955C217E-FE0F-41E2-8E97-9AFD8C4A0DBE@ynddal.dk>
-In-Reply-To: <955C217E-FE0F-41E2-8E97-9AFD8C4A0DBE@ynddal.dk>
+References: <20230619132548.400875-1-richard.henderson@linaro.org>
+In-Reply-To: <20230619132548.400875-1-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 19 Jun 2023 14:41:23 +0100
-Message-ID: <CAFEAcA-siVrV0NWOZYR10UanT-Rrh37CqJ7Xm83Y90eGV91jSw@mail.gmail.com>
-Subject: Re: [PATCH v2 12/12] target/arm: Allow users to set the number of VFP
- registers
-To: Mads Ynddal <mads@ynddal.dk>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- "open list:ARM cores" <qemu-arm@nongnu.org>, qemu-devel@nongnu.org,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Mon, 19 Jun 2023 14:44:37 +0100
+Message-ID: <CAFEAcA-TeLU36SqMK27xpPg-NLLvG5+3UmHbUa0SJFWZF1pjZA@mail.gmail.com>
+Subject: Re: [PATCH] accel/tcg: Handle MO_ATOM_WITHIN16 in do_st16_leN
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,83 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Jun 2023 at 13:47, Mads Ynddal <mads@ynddal.dk> wrote:
+On Mon, 19 Jun 2023 at 14:26, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Sorry, if this has already been acknowledged, but I couldn't find it on the
-> mailinglist.
+> Otherwise we hit the default assert not reached.
+> Handle it as MO_ATOM_NONE, because of size and misalignment.
+> We already handle this correctly in do_ld16_beN.
 >
-> This commit seems to break compatibility with macOS accelerator hvf when
-> virtualizing ARM CPUs.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
 >
-> It breaks the VM on boot-up with the message "ARM CPUs must have both VFP-D32
-> and Neon or neither". I haven't looked into what VFP-D32 and Neon are, but the
-> same VM worked on earlier versions of QEMU.
+> Fixes an abort booting debian11 with -cpu max.
 >
-> It can be reproduced with the following:
+> r~
 >
-> qemu-system-aarch64 \
->   -nodefaults \
->   -display "none" \
->   -machine "virt" \
->   -accel "hvf" \
->   -cpu "host" \
->   -serial "mon:stdio"
-> qemu-system-aarch64: ARM CPUs must have both VFP-D32 and Neon or neither
+> ---
+>  accel/tcg/cputlb.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
->
-> If you fix/work on this issue in a separate thread/patch, you can add
-> reported-by, so I'll automatically follow and help test it:
->
-> Reported-by: Mads Ynddal <mads@ynddal.dk>
->
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index 5e2ca47243..14ce97c33b 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -2727,6 +2727,7 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
+>           * and so neither is atomic.
+>           */
+>      case MO_ATOM_IFALIGN:
+> +    case MO_ATOM_WITHIN16:
+>      case MO_ATOM_NONE:
+>          stq_le_p(p->haddr, int128_getlo(val_le));
+>          return store_bytes_leN(p->haddr + 8, p->size - 8,
+> --
 
-
-> > @@ -1406,6 +1409,22 @@ void arm_cpu_post_init(Object *obj)
-> >         }
-> >     }
-> >
-> > +    if (cpu->has_vfp && cpu_isar_feature(aa32_simd_r32, cpu)) {
-> > +        cpu->has_vfp_d32 = true;
-> > +        if (!kvm_enabled()) {
-
-Probably this should be "if (!kvm_enabled() && !hvf_enabled())".
-Is that sufficient to fix the regression ? (I have a feeling it
-isn't, but we might as well test...)
-
-> > +            /*
-> > +             * The permitted values of the SIMDReg bits [3:0] on
-> > +             * Armv8-A are either 0b0000 and 0b0010. On such CPUs,
-> > +             * make sure that has_vfp_d32 can not be set to false.
-> > +             */
-> > +            if (!(arm_feature(&cpu->env, ARM_FEATURE_V8) &&
-> > +                  !arm_feature(&cpu->env, ARM_FEATURE_M))) {
-> > +                qdev_property_add_static(DEVICE(obj),
-> > +                                         &arm_cpu_has_vfp_d32_property);
-> > +            }
-> > +        }
-> > +    }
-> > +
-> >     if (arm_feature(&cpu->env, ARM_FEATURE_NEON)) {
-> >         cpu->has_neon = true;
-> >         if (!kvm_enabled()) {
-> > @@ -1672,6 +1691,19 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-> >         return;
-> >     }
-> >
-> > +    if (cpu->has_vfp_d32 != cpu->has_neon) {
-> > +        error_setg(errp, "ARM CPUs must have both VFP-D32 and Neon or neither");
-> > +        return;
-> > +    }
-
-The other thing I see looking again at this code is that it
-doesn't account for CPUs which don't have AArch32 support
-at all. The MVFR0 register which the aa32_simd_r32 feature
-test is looking at is an AArch32 register, and the test
-will not return a sensible answer on an AArch64-only CPU.
-
-On the other side of this, target/arm/hvf/hvf.c always
-sets ARM_FEATURE_NEON, which I think is probably not
-correct given that Neon is also an AArch32-only thing.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
