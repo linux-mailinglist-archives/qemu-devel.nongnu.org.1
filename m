@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1817359D8
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9211B7359E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBG3i-0007Z1-G3; Mon, 19 Jun 2023 10:40:46 -0400
+	id 1qBG5I-0008HL-Hj; Mon, 19 Jun 2023 10:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qBG3c-0007WW-Vx
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:40:43 -0400
+ id 1qBG5H-0008HB-3S
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:42:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qBG3a-0006F6-QU
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:40:40 -0400
+ id 1qBG5F-0006f5-O4
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:42:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687185638;
+ s=mimecast20190719; t=1687185741;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xxZ+oMcxxKSX3cys38mFagURnbIkT9nXhAto4riqm9o=;
- b=X5tSjBACFF6kQ0qfJM+l4MUwmNsJij9qJXg2JgJPRg8C1BSyrGJXAGeRl1UFU9Xhxb1I56
- BNGhkA0M60xBXHXqnFbD0VQFrMLYQSy6fR+CWLXM/d0aA6iN0le0kDZhX+tP+4rBt/Ircp
- vyck2FfQiiwebW6hqFGqVVVz+vzyUUY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UV+bBGGy/94oj9kCZL6np4OFys3EWGyo42nWN/vxYCE=;
+ b=U0Wz25+jyPmUuPPbwSi481phD1gwmDmngSCmca5SMS+7qRe931Eajg7RK7jK6taoxXntFN
+ Z/LU1qqPj2H/nVl24iNg6Y3dHF4vIeUtWmSNOhllOQf/hBSQnZxce2pkxSCqqiMA6Ln25+
+ 0w/PbspaEiOaMxBKQI+EdoIsRBpuHsg=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-41-j263Iv3CPseJ4kl30Ntalg-1; Mon, 19 Jun 2023 10:40:34 -0400
-X-MC-Unique: j263Iv3CPseJ4kl30Ntalg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-381-lLdv3rn7OQONHx8Mt_HCrA-1; Mon, 19 Jun 2023 10:42:17 -0400
+X-MC-Unique: lLdv3rn7OQONHx8Mt_HCrA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2842680120F;
- Mon, 19 Jun 2023 14:40:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C4013C0E203;
+ Mon, 19 Jun 2023 14:42:17 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.41])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A60591415102;
- Mon, 19 Jun 2023 14:40:33 +0000 (UTC)
-Date: Mon, 19 Jun 2023 16:40:31 +0200
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DB3CB492B06;
+ Mon, 19 Jun 2023 14:42:16 +0000 (UTC)
+Date: Mon, 19 Jun 2023 16:42:15 +0200
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Sam Li <faithilikerun@gmail.com>
 Cc: qemu-devel@nongnu.org, dlemoal@kernel.org, dmitry.fomichev@wdc.com,
  hare@suse.de, Markus Armbruster <armbru@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
  Eric Blake <eblake@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [RFC 4/4] iotests: test the zoned format feature for qcow2 file
-Message-ID: <20230619144031.GE2497337@fedora>
+Subject: Re: [RFC 2/4] qcow2: add configurations for zoned format extension
+Message-ID: <20230619144215.GF2497337@fedora>
 References: <20230605104108.125270-1-faithilikerun@gmail.com>
- <20230605104108.125270-5-faithilikerun@gmail.com>
+ <20230605104108.125270-3-faithilikerun@gmail.com>
+ <20230619101031.GC2497337@fedora>
+ <CAAAx-8+WmeTGM=PoRxorGmexYqM8uUGyqGeLYyQPLQ0+K6iaUA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="eZuivMguxG32AiNC"
+ protocol="application/pgp-signature"; boundary="cEmZ1wZ11IWSBEr7"
 Content-Disposition: inline
-In-Reply-To: <20230605104108.125270-5-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+In-Reply-To: <CAAAx-8+WmeTGM=PoRxorGmexYqM8uUGyqGeLYyQPLQ0+K6iaUA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,285 +85,61 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---eZuivMguxG32AiNC
-Content-Type: text/plain; charset=us-ascii
+--cEmZ1wZ11IWSBEr7
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 05, 2023 at 06:41:08PM +0800, Sam Li wrote:
-> The zoned format feature can be tested by:
-> $ tests/qemu-iotests/check zoned-qcow2
+On Mon, Jun 19, 2023 at 06:32:52PM +0800, Sam Li wrote:
+> Stefan Hajnoczi <stefanha@redhat.com> =E4=BA=8E2023=E5=B9=B46=E6=9C=8819=
+=E6=97=A5=E5=91=A8=E4=B8=80 18:10=E5=86=99=E9=81=93=EF=BC=9A
+> > On Mon, Jun 05, 2023 at 06:41:06PM +0800, Sam Li wrote:
+> > > diff --git a/block/qcow2.h b/block/qcow2.h
+> > > index 4f67eb912a..fe18dc4d97 100644
+> > > --- a/block/qcow2.h
+> > > +++ b/block/qcow2.h
+> > > @@ -235,6 +235,20 @@ typedef struct Qcow2CryptoHeaderExtension {
+> > >      uint64_t length;
+> > >  } QEMU_PACKED Qcow2CryptoHeaderExtension;
+> > >
+> > > +typedef struct Qcow2ZonedHeaderExtension {
+> > > +    /* Zoned device attributes */
+> > > +    BlockZonedProfile zoned_profile;
+> > > +    BlockZoneModel zoned;
+> > > +    uint32_t zone_size;
+> > > +    uint32_t zone_capacity;
+> > > +    uint32_t nr_zones;
+> > > +    uint32_t zone_nr_conv;
+> > > +    uint32_t max_active_zones;
+> > > +    uint32_t max_open_zones;
+> > > +    uint32_t max_append_sectors;
+> > > +    uint8_t padding[3];
+> >
+> > This looks strange. Why is there 3 bytes of padding at the end? Normally
+> > padding would align to an even power-of-two number of bytes like 2, 4,
+> > 8, etc.
 >=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  tests/qemu-iotests/tests/zoned-qcow2     | 110 +++++++++++++++++++++++
->  tests/qemu-iotests/tests/zoned-qcow2.out |  87 ++++++++++++++++++
->  2 files changed, 197 insertions(+)
->  create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
->  create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
->=20
-> diff --git a/tests/qemu-iotests/tests/zoned-qcow2 b/tests/qemu-iotests/te=
-sts/zoned-qcow2
-> new file mode 100755
-> index 0000000000..6aa5ab3a03
-> --- /dev/null
-> +++ b/tests/qemu-iotests/tests/zoned-qcow2
-> @@ -0,0 +1,110 @@
-> +#!/usr/bin/env bash
-> +#
-> +# Test zone management operations for qcow2 file.
-> +#
-> +
-> +seq=3D"$(basename $0)"
-> +echo "QA output created by $seq"
-> +status=3D1 # failure is the default!
-> +
-> +file_name=3D"zbc.qcow2"
+> It is calculated as 3 if sizeof(zoned+zoned_profile) =3D 8. Else if it's
+> 16, the padding is 2.
 
-Please use $TEST_IMG_FILE instead of defining your own variable here.
-(TEST_IMG_FILE is already defined in common.rc.)
+I don't understand. Can you explain why there is padding at the end of
+this struct?
 
-> +_cleanup()
-> +{
-> +  _cleanup_test_img
-> +  _rm_test_img "$file_name"
-> +}
-> +trap "_cleanup; exit \$status" 0 1 2 3 15
-> +
-> +# get standard environment, filters and checks
-> +. ../common.rc
-> +. ../common.filter
-> +. ../common.qemu
-> +
-> +# This test only runs on Linux hosts with qcow2 image files.
-
-Then you need to add:
-_supported_fmt qcow2
-
-> +_supported_proto file
-> +_supported_os Linux
-
-Is this test really Linux-specific?
-
-> +
-> +echo
-> +echo "=3D=3D=3D Initial image setup =3D=3D=3D"
-> +echo
-> +
-> +$QEMU_IMG create -f qcow2 $file_name -o size=3D768M -o zone_size=3D64M \
-> +-o zone_capacity=3D64M -o zone_nr_conv=3D0 -o max_append_sectors=3D512 \
-> +-o max_open_zones=3D0 -o max_active_zones=3D0 -o zoned_profile=3Dzbc
-> +
-> +IMG=3D"--image-opts -n driver=3Dqcow2,file.driver=3Dfile,file.filename=
-=3D$file_name"
-> +QEMU_IO_OPTIONS=3D$QEMU_IO_OPTIONS_NO_FMT
-> +
-> +echo
-> +echo "=3D=3D=3D Testing a qcow2 img with zoned format =3D=3D=3D"
-> +echo
-> +echo "case 1: if the operations work"
-> +
-> +echo "(1) report the first zone:"
-> +$QEMU_IO $IMG -c "zrp 0 1"
-> +echo
-> +echo "report the first 10 zones"
-> +$QEMU_IO $IMG -c "zrp 0 10"
-> +echo
-> +echo "report the last zone:"
-> +$QEMU_IO $IMG -c "zrp 0x2C000000 2" # 0x2C000000 / 512 =3D 0x160000
-> +echo
-> +echo
-> +echo "(2) opening the first zone"
-> +$QEMU_IO $IMG -c "zo 0 0x4000000" # 0x4000000 / 512 =3D 0x20000
-> +echo "report after:"
-> +$QEMU_IO $IMG -c "zrp 0 1"
-> +echo
-> +echo "opening the second zone"
-> +$QEMU_IO $IMG -c "zo 0x4000000 0x4000000"
-> +echo "report after:"
-> +$QEMU_IO $IMG -c "zrp 0x4000000 1"
-> +echo
-> +echo "opening the last zone"
-> +$QEMU_IO $IMG -c "zo 0x2C000000 0x4000000"
-> +echo "report after:"
-> +$QEMU_IO $IMG -c "zrp 0x2C000000 2"
-> +echo
-> +echo
-> +echo "(3) closing the first zone"
-> +$QEMU_IO $IMG -c "zc 0 0x4000000"
-> +echo "report after:"
-> +$QEMU_IO $IMG -c "zrp 0 1"
-> +echo
-> +echo "closing the last zone"
-> +$QEMU_IO $IMG -c "zc 0x3e70000000 0x4000000"
-> +echo "report after:"
-> +$QEMU_IO $IMG -c "zrp 0x3e70000000 2"
-> +echo
-> +echo
-> +echo "(4) finishing the second zone"
-> +$QEMU_IO $IMG -c "zf 0x4000000 0x4000000"
-> +echo "After finishing a zone:"
-> +$QEMU_IO $IMG -c "zrp 0x4000000 1"
-> +echo
-> +echo
-> +echo "(5) resetting the second zone"
-> +$QEMU_IO $IMG -c "zrs 0x4000000 0x4000000"
-> +echo "After resetting a zone:"
-> +$QEMU_IO $IMG -c "zrp 0x4000000 1"
-> +echo
-> +echo
-> +echo "(6) append write" # the physical block size of the device is 4096
-> +$QEMU_IO $IMG -c "zrp 0 1"
-> +$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-> +echo "After appending the first zone firstly:"
-> +$QEMU_IO $IMG -c "zrp 0 1"
-> +$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-> +echo "After appending the first zone secondly:"
-> +$QEMU_IO $IMG -c "zrp 0 1"
-> +$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-> +echo "After appending the second zone firstly:"
-> +$QEMU_IO $IMG -c "zrp 0x4000000 1"
-> +$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-> +echo "After appending the second zone secondly:"
-> +$QEMU_IO $IMG -c "zrp 0x4000000 1"
-> +
-> +# success, all done
-> +echo "*** done"
-> +rm -f $seq.full
-> +status=3D0
-> diff --git a/tests/qemu-iotests/tests/zoned-qcow2.out b/tests/qemu-iotest=
-s/tests/zoned-qcow2.out
-> new file mode 100644
-> index 0000000000..288bceffc4
-> --- /dev/null
-> +++ b/tests/qemu-iotests/tests/zoned-qcow2.out
-> @@ -0,0 +1,87 @@
-> +QA output created by zoned-qcow2
-> +
-> +=3D=3D=3D Initial image setup =3D=3D=3D
-> +
-> +Formatting 'zbc.qcow2', fmt=3Dqcow2 cluster_size=3D65536 extended_l2=3Do=
-ff compression_type=3Dzlib zoned_profile=3Dzbc zone_size=3D67108864 zone_ca=
-pacity=3D67108864 zone_nr_conv=3D0 max_append_sectors=3D512 max_active_zone=
-s=3D0 max_open_zones=3D0 size=3D805306368 lazy_refcounts=3Doff refcount_bit=
-s=3D16
-> +
-> +=3D=3D=3D Testing a qcow2 img with zoned format =3D=3D=3D
-> +
-> +case 1: if the operations work
-> +(1) report the first zone:
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-> +
-> +report the first 10 zones
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-> +start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: =
-2]
-> +start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: =
-2]
-> +start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: =
-2]
-> +start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: =
-2]
-> +start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: =
-2]
-> +start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: =
-2]
-> +start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: =
-2]
-> +start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type=
-: 2]
-> +start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type=
-: 2]
-> +
-> +report the last zone:
-> +start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type=
-: 2]
-> +
-> +
-> +(2) opening the first zone
-> +wps[0]: 0x0
-> +report after:
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:3, [type: 2]
-> +
-> +opening the second zone
-> +wps[1]: 0x20000
-> +report after:
-> +start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:3, [type: =
-2]
-> +
-> +opening the last zone
-> +wps[11]: 0x160000
-> +report after:
-> +start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type=
-: 2]
-> +
-> +
-> +(3) closing the first zone
-> +wps[0]: 0x0
-> +report after:
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-> +
-> +closing the last zone
-> +zone close failed: Input/output error
-> +report after:
-> +start: 0x1f380000, len 0x20000, cap 0x20000, wptr 0x0, zcond:0, [type: 2]
-> +start: 0x1f3a0000, len 0x20000, cap 0x20000, wptr 0x0, zcond:0, [type: 2]
-> +
-> +
-> +(4) finishing the second zone
-> +wps[1]: 0x40000
-> +After finishing a zone:
-> +start: 0x20000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:14, [type:=
- 2]
-> +
-> +
-> +(5) resetting the second zone
-> +wps[1]: 0x20000
-> +After resetting a zone:
-> +start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: =
-2]
-> +
-> +
-> +(6) append write
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-> +wps[0]: 0x18
-> +After zap done, the append sector is 0x0
-> +After appending the first zone firstly:
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x18, zcond:2, [type: 2]
-> +wps[0]: 0x30
-> +After zap done, the append sector is 0x18
-> +After appending the first zone secondly:
-> +start: 0x0, len 0x20000, cap 0x20000, wptr 0x30, zcond:2, [type: 2]
-> +wps[1]: 0x20018
-> +After zap done, the append sector is 0x20000
-> +After appending the second zone firstly:
-> +start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20018, zcond:2, [type: =
-2]
-> +wps[1]: 0x20030
-> +After zap done, the append sector is 0x20018
-> +After appending the second zone secondly:
-> +start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20030, zcond:2, [type: =
-2]
-> +*** done
-> --=20
-> 2.40.1
->=20
-
---eZuivMguxG32AiNC
+--cEmZ1wZ11IWSBEr7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSQaN8ACgkQnKSrs4Gr
-c8ghhAgAudoyHkD0Nuu9TOb4vWaEsbLY9yHO+0aYmZe/+xnwCT7iw7rQtVBkVqH4
-Y2A1p9S0ddLQTMAcO4fPxVShz2tazYJIN81DGKt7OGV0h8JBb76pZtdPtGRjHcz/
-XxHhIE9xneNP2tQ75rSVLZBhDDTPh7qr6uZIQnEgjDrYSHqH1v4++MyuY1IruMYF
-V2SnhGaVDgR3DDvps+ljQex+FOAphp7H1ahKmmeuxiw8UaLPPfdzG3hQ30LIh/qy
-1LYfGmGKxZMr2lGYVMftln3zk1rqVH7OF0trkSp543EfjkJBQWHuKsbU9CErT0Cu
-1j+PJ85QMRliScSsUac/0BZQzxkFYw==
-=8ePv
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSQaUcACgkQnKSrs4Gr
+c8jg6wf/RBRQltzhhuDVIt+/v2HzKTutC8ybAfWnZ3VZReKVJYvV7u64v5Ca8eLM
+jtUq1PleaAsoubT9MKENb90g8BC6vu7qIelVD7hw/ccFBjQOukY4vk8ndOyr/jWG
+Ss+3TbRbrrKVS5utSThCJ6qWzhWcvyfFdzBirK3W7dGTeY6pd5Zb1bXZ1GS2csmF
+ssST2Dkop/5ASRyecsl+d8Sh4R1w3mdfePkRFwWXPpLqvkJpY1Z+fFqKYBucCtkf
+v6WwlAGrSsdLMM7a5BK1+RjBigd/2xiHUlK4uEWwCaTBKxeQMAquiqsGe2/LBHvr
+5bC2BwYDRJJjUYANKHAvymqiaK8eSQ==
+=s0HE
 -----END PGP SIGNATURE-----
 
---eZuivMguxG32AiNC--
+--cEmZ1wZ11IWSBEr7--
 
 
