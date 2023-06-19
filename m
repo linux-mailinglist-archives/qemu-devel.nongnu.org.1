@@ -2,72 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4125B734F98
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9A1734FD7
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:24:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBB6G-0006Ge-Nu; Mon, 19 Jun 2023 05:23:04 -0400
+	id 1qBB7K-00072J-PU; Mon, 19 Jun 2023 05:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qBB6E-0006Fj-Hb
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:23:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qBB7I-00071W-62
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:08 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qBB6C-0002rE-Rm
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:23:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687166579;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AmKtW8HJc0NAQyaw2K4NO0cjStJ3CU6kcls924xHpm8=;
- b=NX9k/r5lA2oXCo+SPcDJrLi8VRkv2dtrUvg1gebNIiOCv+/JC67TmARV4x858D05/Ko/IU
- EjdTyv88H8mL/3eXeVcojEQ5yxmFK8P8pY7L2LXtpr/Cvhlksu6eFE6wRJEHSIWV7h/mAy
- nZ3a/f589UCT/auRyavqRtnHA2Fh+9E=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-367-arkq29n1M9KVdlkmxfxNLg-1; Mon, 19 Jun 2023 05:22:55 -0400
-X-MC-Unique: arkq29n1M9KVdlkmxfxNLg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F2AE3C11C66;
- Mon, 19 Jun 2023 09:22:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.131])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D7701112132C;
- Mon, 19 Jun 2023 09:22:54 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id CD07521E675B; Mon, 19 Jun 2023 11:22:53 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qBB7G-0003H3-Aw
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:07 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35J8uh1b011872; Mon, 19 Jun 2023 09:24:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=V+81pi3FfF65LU0O+0t4wpzFudO8GtXpyje/ZgK8yv4=;
+ b=lMZ7fz4ZeHe+0796s+IzLnp0ErP6+hgvE0U/jHbIHU1Llm/5VoO72d9BvgK1x058exm9
+ soQ0EyKh6SYfWYJVGwsBgkYcRmdzj6u8RmbX3zD+GCfHNHdWgdyN2V0wd0qNw/fh1crv
+ v7xiaVb19vzdxglzYR5KcuNI7zNUzKB+ndoY9YYvgzKvb2wqNfP2o05i6y63ptpRzKwE
+ 3KBmzGbGRFetyJQZyET5O6CdxZVFsqtnLx2PtUV00wIIQ4+dfWozYhBZM+KIxi36a0aw
+ je7LWBEZ6OrNMu/EtElDShNI1ASUXuUh307n0pppM4kZ5A8JqfrUxCVh9lI7vLdQZQOG xA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3raky28nnq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jun 2023 09:24:04 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J9IB2q007092;
+ Mon, 19 Jun 2023 09:24:04 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3raky28nn5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jun 2023 09:24:03 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J6ovvT006976;
+ Mon, 19 Jun 2023 09:24:02 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3r94f50xx0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jun 2023 09:24:02 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35J9NxRl62062990
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Jun 2023 09:23:59 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB53A2004B;
+ Mon, 19 Jun 2023 09:23:59 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9D3E120040;
+ Mon, 19 Jun 2023 09:23:59 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Jun 2023 09:23:59 +0000 (GMT)
+Date: Mon, 19 Jun 2023 11:23:41 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 To: Bin Meng <bmeng@tinylab.org>
-Cc: qemu-devel@nongnu.org,  Zhangjin Wu <falcon@tinylab.org>,  Alberto Faria
- <afaria@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  =?utf-8?Q?Marc-Andr?=
- =?utf-8?Q?=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Nikita Ivanov <nivanov@cloudlinux.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Thomas Huth <thuth@redhat.com>,
- Xuzhou Cheng <xuzhou.cheng@windriver.com>
-Subject: Re: [PATCH v3 4/6] util/osdep: Introduce qemu_close_range()
+Cc: qemu-devel@nongnu.org, Zhangjin Wu <falcon@tinylab.org>, Jason Wang
+ <jasowang@redhat.com>
+Subject: Re: [PATCH v3 6/6] net: tap: Use qemu_close_range() to close fds
+Message-ID: <20230619112341.1b9e98de@p-imbrenda>
+In-Reply-To: <20230617053621.50359-7-bmeng@tinylab.org>
 References: <20230617053621.50359-1-bmeng@tinylab.org>
- <20230617053621.50359-5-bmeng@tinylab.org>
-Date: Mon, 19 Jun 2023 11:22:53 +0200
-In-Reply-To: <20230617053621.50359-5-bmeng@tinylab.org> (Bin Meng's message of
- "Sat, 17 Jun 2023 13:36:19 +0800")
-Message-ID: <87a5wv24cy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ <20230617053621.50359-7-bmeng@tinylab.org>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3on0qLIrMouL8pkpPyorJ5HrhgbMZow8
+X-Proofpoint-GUID: aBXotlc58lrvnZ4dcnKCESkBLscHCVAi
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-19_06,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015
+ malwarescore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
+ mlxscore=0 impostorscore=0 spamscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306190081
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,144 +117,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bin Meng <bmeng@tinylab.org> writes:
+On Sat, 17 Jun 2023 13:36:21 +0800
+Bin Meng <bmeng@tinylab.org> wrote:
 
-> This introduces a new QEMU API qemu_close_range() that closes all
-> open file descriptors from first to last (included).
->
-> This API will try a more efficient call to close_range(), or walk
-> through of /proc/self/fd whenever these are possible, otherwise it
-> falls back to a plain close loop.
->
-> Co-developed-by: Zhangjin Wu <falcon@tinylab.org>
+> From: Zhangjin Wu <falcon@tinylab.org>
+> 
+> Current codes using a brute-force traversal of all file descriptors
+> do not scale on a system where the maximum number of file descriptors
+> is set to a very large value (e.g.: in a Docker container of Manjaro
+> distribution it is set to 1073741816). QEMU just looks frozen during
+> start-up.
+> 
+> The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
+> 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
+> doesn't need to manually close the fds for child process as the proper
+> O_CLOEXEC flag should have been set properly on files with its own
+> codes, QEMU uses a huge number of 3rd party libraries and we don't
+> trust them to reliably be using O_CLOEXEC on everything they open.
+> 
+> Modern Linux and BSDs have the close_range() call we can use to do the
+> job, and on Linux we have one more way to walk through /proc/self/fd
+> to complete the task efficiently, which is what qemu_close_range() does.
+> 
+> Reported-by: Zhangjin Wu <falcon@tinylab.org>
+> Co-developed-by: Bin Meng <bmeng@tinylab.org>
+> Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
 > Signed-off-by: Bin Meng <bmeng@tinylab.org>
->
+> 
 > ---
->
-> Changes in v3:
-> - fix win32 build failure
->
+> 
+> (no changes since v2)
+> 
 > Changes in v2:
-> - new patch: "util/osdep: Introduce qemu_close_range()"
->
->  include/qemu/osdep.h |  1 +
->  util/osdep.c         | 48 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 49 insertions(+)
->
-> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-> index cc61b00ba9..e22434ce10 100644
-> --- a/include/qemu/osdep.h
-> +++ b/include/qemu/osdep.h
-> @@ -560,6 +560,7 @@ int qemu_open_old(const char *name, int flags, ...);
->  int qemu_open(const char *name, int flags, Error **errp);
->  int qemu_create(const char *name, int flags, mode_t mode, Error **errp);
->  int qemu_close(int fd);
-> +int qemu_close_range(unsigned int first, unsigned int last);
->  int qemu_unlink(const char *name);
->  #ifndef _WIN32
->  int qemu_dup_flags(int fd, int flags);
-> diff --git a/util/osdep.c b/util/osdep.c
-> index e996c4744a..91275e70f8 100644
-> --- a/util/osdep.c
-> +++ b/util/osdep.c
-> @@ -30,6 +30,7 @@
->  #include "qemu/mprotect.h"
->  #include "qemu/hw-version.h"
->  #include "monitor/monitor.h"
-> +#include <dirent.h>
+> - Change to use qemu_close_range() to close fds for child process efficiently
+> - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
+> 
+>  net/tap.c | 23 +++++++++++------------
+>  1 file changed, 11 insertions(+), 12 deletions(-)
+> 
+> diff --git a/net/tap.c b/net/tap.c
+> index 1bf085d422..d482fabdff 100644
+> --- a/net/tap.c
+> +++ b/net/tap.c
+> @@ -446,13 +446,13 @@ static void launch_script(const char *setup_script, const char *ifname,
+>          return;
+>      }
+>      if (pid == 0) {
+> -        int open_max = sysconf(_SC_OPEN_MAX), i;
+> +        unsigned int last_fd = sysconf(_SC_OPEN_MAX) - 1;
+> +
+> +        /* skip stdin, stdout and stderr */
+> +        qemu_close_range(3, fd - 1);
+> +        /* skip the currently used fd */
+> +        qemu_close_range(fd + 1, last_fd);
 >  
->  static const char *hw_version = QEMU_HW_VERSION;
+> -        for (i = 3; i < open_max; i++) {
+> -            if (i != fd) {
+> -                close(i);
+> -            }
+> -        }
+>          parg = args;
+>          *parg++ = (char *)setup_script;
+>          *parg++ = (char *)ifname;
+> @@ -536,16 +536,15 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+>          return -1;
+>      }
+>      if (pid == 0) {
+> -        int open_max = sysconf(_SC_OPEN_MAX), i;
+> +        unsigned int last_fd = sysconf(_SC_OPEN_MAX) - 1, fd = sv[1];
+
+please put fd on its own line
+
+>          char *fd_buf = NULL;
+>          char *br_buf = NULL;
+>          char *helper_cmd = NULL;
 >  
-> @@ -411,6 +412,53 @@ int qemu_close(int fd)
->      return close(fd);
->  }
+> -        for (i = 3; i < open_max; i++) {
+> -            if (i != sv[1]) {
+> -                close(i);
+> -            }
+> -        }
+> +        /* skip stdin, stdout and stderr */
+> +        qemu_close_range(3, fd - 1);
+> +        /* skip the currently used fd */
+> +        qemu_close_range(fd + 1, last_fd);
 >  
-> +int qemu_close_range(unsigned int first, unsigned int last)
-> +{
-> +    DIR *dir = NULL;
-> +
-> +#ifdef CONFIG_CLOSE_RANGE
-> +    int r = close_range(first, last, 0);
-
-close_range(2) explains flag
-
-       CLOSE_RANGE_UNSHARE
-              Unshare  the specified file descriptors from any other processes
-              before closing them, avoiding races with other  threads  sharing
-              the file descriptor table.
-
-Can anybody explain the races this avoids?
-
-> +    if (!r) {
-> +        /* Success, no need to try other ways. */
-> +        return 0;
-> +    }
-
-What are the failure modes of close_range() where the other ways are
-worth trying?
-
-> +#endif
-> +
-> +#ifdef __linux__
-> +    dir = opendir("/proc/self/fd");
-> +#endif
-> +    if (!dir) {
-> +        /*
-> +         * If /proc is not mounted or /proc/self/fd is not supported,
-> +         * try close() from first to last.
-> +         */
-> +        for (int i = first; i <= last; i++) {
-> +            close(i);
-> +        }
-> +
-> +        return 0;
-> +    }
-> +
-> +#ifndef _WIN32
-> +    /* Avoid closing the directory */
-> +    int dfd = dirfd(dir);
-
-This directory contains "." "..", "0", "1", ...
-
-> +
-> +    for (struct dirent *de = readdir(dir); de; de = readdir(dir)) {
-> +        int fd = atoi(de->d_name);
-
-Maps "." and ".." to 0.  Unclean.
-
-Please use qemu_strtoi(de->d_name, NULL, 10, &fd), and skip entries
-where it fails.
-
-> +        if (fd < first || fd > last) {
-> +            /* Exclude the fds outside the target range */
-> +            continue;
-> +        }
-> +        if (fd != dfd) {
-> +            close(fd);
-> +        }
-> +    }
-> +    closedir(dir);
-> +#endif /* _WIN32 */
-> +
-> +    return 0;
-> +}
-
-I'd prefer to order this from most to least preferred:
-
-    close_range()
-    iterate over /proc/self/fd
-    iterate from first to last
-
-Unlike close_range(), qemu_close_range() returns 0 when last < first.
-If we want to deviate from close_range(), we better document the
-differences.
-
-This is a generalized version of async-teardown.c's close_all_open_fd().
-I'd mention this in the commit message.  Suggestion, not demand.
-
-> +
->  /*
->   * Delete a file from the filesystem, unless the filename is /dev/fdset/...
->   *
+>          fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
+>  
 
 
