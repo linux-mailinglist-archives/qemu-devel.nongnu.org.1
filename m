@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BA6734F81
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AF9734F82
 	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBB2R-00032a-UH; Mon, 19 Jun 2023 05:19:07 -0400
+	id 1qBB2Z-00034F-Pm; Mon, 19 Jun 2023 05:19:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBB2Q-00032F-OM
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:19:06 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBB2W-00033O-ED
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:19:12 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBB2P-0001wE-8M
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:19:06 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f90b51ab39so16574135e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 02:19:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBB2U-0001xi-SA
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:19:12 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f9b1a117caso4353235e9.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 02:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687166343; x=1689758343;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2/VrtV3ZTG0nVUxDR9INjm9Agnxp2gFnf7e5hISX48c=;
- b=cYuvRcVJSAt4kwdpznzDNN3LtwpME9MY3GI7h2kitDa0M8Xep1JxqmzUGDvvqQidiG
- +toBs+ZtE25SIpUCNHN0ef6vcPcZvblcSYKpvN0PvqgyDI46dz92exV2zfclbMjbtRQn
- LRJGMfsksfmNh4UusCikQ75S/mBGhqhI2JH3nAHhTDjfVWKGigrTf4dnPAlW43n25oQn
- gFHtjl9me3LLUPJp4D7sZcqdHcV4e05Afu5qlNOKK9XiSBCuaz9mHVPf90kSzunjJNl2
- QxgG5FpkzZgsQVIMAsd01k5Qo1JohMUHrnGuYh4V2jnmqcpVlI7fKBD6xq0OnzynDDuS
- 4PZw==
+ d=linaro.org; s=google; t=1687166349; x=1689758349;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ymckh/jJUuhk+bN7W/yTN4TDJ8aIcl8RwV72SXESkek=;
+ b=VYTjg9ouQCSN11FK8Enjl5bbtCqNjPTp9kwTO9PT3gZIi7b/8f9LAPiQhMGyfVkpvv
+ rXFA6Z0QRwuLGlgI+5eA2hcOcPEf7x842iKYmVShuiKlnip5+hRhWTXnOP8OqKbvP4CV
+ FUTIL9HW08VhtZUAhjhBmoOfFghlBtVjduqOJeAOSyro9u6mLqVSCP+rf8P+0xElt0xC
+ JhtjBVKf4TSCn/O0QjaUnCACMnf7E8bgDsjgJ1yjomUwmujcBl9y1MgRAXMSHtoYEXD0
+ +IbHeKDIMt+kOZqEsoUToeQ+FyBVEjLDjoLJZS5Wl4xopBFkaUh7vVO3anDBPdEgw1Mq
+ sCww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687166343; x=1689758343;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2/VrtV3ZTG0nVUxDR9INjm9Agnxp2gFnf7e5hISX48c=;
- b=OFx5N9KIKzANpUStBlmFJ8Oxz6MGLP6HhuK7BP8f9vIHBDUs6ifeMNZAyJd9XGjSP7
- Zk/Lv7Fz8dzS7+fchKw0q2JqbCHklf/z8UPyXp8qW6OYKpNx88XrOC3b/XyUGaCIliQz
- 1pEd6B8ZAuv9/RxO5C3kAtRER6/74xZMIUZA+EoF6IjGxFci5jlKQ4NR3CUv0J5oDYHy
- +O383Cz7APeTQ6KfdcuVJJntBRcV+p6pUe6hMVLoMJJMbfCtv978PDNh22PhbypOJe47
- VTi7l0hrmuFyu0+KjlHTVqxPi1Ck1CaFilaSvT8sP9cONpZ4yDIczykJt1UxXy41s3uq
- 3S7g==
-X-Gm-Message-State: AC+VfDxCNYK2GqEsw1YM6wINCxkpcGuSZVN1eEoT4ztsYcirCc0cvRq8
- Rg1zqBe1da+ZK5GdFhAf01bmTqI4ZoDz+eYKY/g9GA==
-X-Google-Smtp-Source: ACHHUZ6UyOhZy0cCURSovSHM/sc5myg0J6hCqKSg7m9cBITXDPikNwiKfrVVEW6dkRD0SU8O8aKzOw==
-X-Received: by 2002:adf:f287:0:b0:311:1dc3:d22e with SMTP id
- k7-20020adff287000000b003111dc3d22emr8522722wro.46.1687166343684; 
- Mon, 19 Jun 2023 02:19:03 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687166349; x=1689758349;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ymckh/jJUuhk+bN7W/yTN4TDJ8aIcl8RwV72SXESkek=;
+ b=iX6GLT1xvCRaWk18u9QOUNP5vCtPGTbSM4WbFD6HB8DfIoCnabsUHYxnBBt97iaNty
+ udRLH81hlFApphJi/neG7QWe4tafDssYB9Wd/8frA+7GpjYgY3Dt44/rX2k4q48wd4FL
+ cwfKo2O0dtMejp0kNeCBhTUD06n5Wg/lyn1b2Q8sI71V882IYhnJZbt973JKfVvbZKga
+ jTjMWBYxL/bs1mnNUi5ezM9dp/KztfsJgupzRh69ixE6I90TqWnPa2/2nGXkr1WfJVES
+ 9x4zDze5qRdL9UpwAZwyXiy3tyejaYeQ8Vf/44bTZu0HaK3wdIVx0XhlbS8Gi2lS2Yln
+ utjg==
+X-Gm-Message-State: AC+VfDz3gqpJrKAtbfHYd34VzkxKb+QlDEYaL8TbItt7rvjJ82JIhJDV
+ hRb4ohVYJ4jccCAy/eWjytUBkkMwKnj0D3hJGkSz1Q==
+X-Google-Smtp-Source: ACHHUZ4mnnZS6YCWE/XWziTozH56HFwBnuGL0GtO3P6iDdTd0azRWGuMHTQIAUMOWJ/l4yACGg7miA==
+X-Received: by 2002:a05:600c:acd:b0:3f9:92d:9ffe with SMTP id
+ c13-20020a05600c0acd00b003f9092d9ffemr2854342wmr.14.1687166349005; 
+ Mon, 19 Jun 2023 02:19:09 -0700 (PDT)
 Received: from localhost.localdomain (194.red-95-127-33.staticip.rima-tde.net.
  [95.127.33.194]) by smtp.gmail.com with ESMTPSA id
- b10-20020adfe30a000000b00300aee6c9cesm31022560wrj.20.2023.06.19.02.19.02
+ g18-20020a7bc4d2000000b003f8d0308604sm10189156wmk.9.2023.06.19.02.19.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jun 2023 02:19:03 -0700 (PDT)
+ Mon, 19 Jun 2023 02:19:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/2] accel/tcg: Make probe_access() a generic TCG helper
-Date: Mon, 19 Jun 2023 11:18:59 +0200
-Message-Id: <20230619091901.51607-1-philmd@linaro.org>
+Subject: [PATCH v2 1/2] target/arm: Widen probe_access()'s address argument to
+ 64-bits
+Date: Mon, 19 Jun 2023 11:19:00 +0200
+Message-Id: <20230619091901.51607-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230619091901.51607-1-philmd@linaro.org>
+References: <20230619091901.51607-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,20 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-probe_access() is not ARM specific and can be reused by
-other targets, so make it a generic helper (after widening
-its address argument to 64-bits).
+Make probe_access() agnostic to the address size of the guest,
+using a uint64_t type since usage varies between guests.
 
-Philippe Mathieu-Daudé (2):
-  target/arm: Widen probe_access()'s address argument to 64-bits
-  accel/tcg: Make probe_access() a generic TCG helper
+Since we don't access any CPUARMState particular env field,
+use the generic CPUArchState type insted.
 
- accel/tcg/tcg-runtime.h    |  2 ++
- target/arm/helper.h        |  2 --
- accel/tcg/tcg-runtime.c    | 16 ++++++++++++++++
- target/arm/tcg/op_helper.c | 16 ----------------
- 4 files changed, 18 insertions(+), 18 deletions(-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/arm/helper.h        | 2 +-
+ target/arm/tcg/op_helper.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/target/arm/helper.h b/target/arm/helper.h
+index 3335c2b10b..cee9462c73 100644
+--- a/target/arm/helper.h
++++ b/target/arm/helper.h
+@@ -101,7 +101,7 @@ DEF_HELPER_FLAGS_1(rebuild_hflags_a32_newel, TCG_CALL_NO_RWG, void, env)
+ DEF_HELPER_FLAGS_2(rebuild_hflags_a32, TCG_CALL_NO_RWG, void, env, int)
+ DEF_HELPER_FLAGS_2(rebuild_hflags_a64, TCG_CALL_NO_RWG, void, env, int)
+ 
+-DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, tl, i32, i32, i32)
++DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, i64, i32, i32, i32)
+ 
+ DEF_HELPER_1(vfp_get_fpscr, i32, env)
+ DEF_HELPER_2(vfp_set_fpscr, void, env, i32)
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 3baf8004f6..6cb84bc994 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -1009,7 +1009,7 @@ uint32_t HELPER(ror_cc)(CPUARMState *env, uint32_t x, uint32_t i)
+     }
+ }
+ 
+-void HELPER(probe_access)(CPUARMState *env, target_ulong ptr,
++void HELPER(probe_access)(CPUArchState *env, uint64_t ptr,
+                           uint32_t access_type, uint32_t mmu_idx,
+                           uint32_t size)
+ {
 -- 
 2.38.1
 
