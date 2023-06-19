@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5DA734B73
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 07:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 095C9734BE4
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 08:53:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB7oB-0005pA-Vq; Mon, 19 Jun 2023 01:52:12 -0400
+	id 1qB8kg-0007LM-3T; Mon, 19 Jun 2023 02:52:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qB7oA-0005om-1c
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 01:52:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qB8kd-0007L1-KS
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 02:52:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qB7o8-0007R0-BX
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 01:52:09 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qB8kb-0002XG-6Y
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 02:52:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687153926;
+ s=mimecast20190719; t=1687157552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GlrjG10CZLJa3GvmOUGDn83nthNz240bNXtC2Rn7jPA=;
- b=HkbI57QZp14g2m6tsvA1no1c+1hrZnDTcr+OY/aknOGOlNvwPZTHeHkbR5IjuSiuWKXoXx
- cO+JDmaKJgpdSI19Lthr1aC8bvfZzLAOaVg5oKc9ePx4NKKyWV30hWhooN08uOfVoQdMNs
- o1QPlBwTMkJId//Ic6qpW+8JbY46oms=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-593-r718yv1DMUyJJxfdjW64rQ-1; Mon, 19 Jun 2023 01:52:04 -0400
-X-MC-Unique: r718yv1DMUyJJxfdjW64rQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BCBC638025EA;
- Mon, 19 Jun 2023 05:52:03 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.131])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8E38EC1604C;
- Mon, 19 Jun 2023 05:52:03 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 733EB21E4AA0; Mon, 19 Jun 2023 07:52:02 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  =?utf-8?Q?Marc?=
- =?utf-8?Q?-Andr=C3=A9?= Lureau
- <marcandre.lureau@gmail.com>,  Michael Roth <michael.roth@amd.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH V2 1/4] qapi: strList_from_string
-References: <1675795727-235010-1-git-send-email-steven.sistare@oracle.com>
- <1675795727-235010-2-git-send-email-steven.sistare@oracle.com>
- <CAJ+F1CLFMUDvaOq2QXCKpb8Zj4PRr-tKV1q9L8m2EfgORPLj7A@mail.gmail.com>
- <32f34f74-213d-7107-907d-dda0a509878e@oracle.com>
- <87h6vwnstx.fsf@linaro.org> <87cz6j6tt0.fsf@pond.sub.org>
- <d25846e4-13fd-c683-b5e1-1660f4470d35@oracle.com>
- <875yca23dd.fsf@pond.sub.org>
- <7beaf84a-008e-c9a3-3698-2a230196acf9@oracle.com>
- <87cz6izmtz.fsf@pond.sub.org>
- <1bb65a74-d444-7601-47d3-290959239831@oracle.com>
- <87sffdvpmu.fsf@pond.sub.org>
- <555c8a46-a530-c258-8614-0485536c60ee@oracle.com>
- <87legnee48.fsf@pond.sub.org>
- <27092461-aa2c-5a0e-ea9d-3742d9284a15@oracle.com>
-Date: Mon, 19 Jun 2023 07:52:02 +0200
-In-Reply-To: <27092461-aa2c-5a0e-ea9d-3742d9284a15@oracle.com> (Steven
- Sistare's message of "Thu, 15 Jun 2023 17:25:21 -0400")
-Message-ID: <87a5ww2e4d.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5m2P3wcvvjG8v5suCZN3jqQeQerTlx7tlf8rrtXx3Rc=;
+ b=eU3h9tciY3XQ+/cobz7K0hTbTwZ7PosTVsiUl1MvIxxyjB7h1Nw+4W3nxgs9zZb2AWTEDs
+ XBdxR686WAe7PCnZvnzsQ2WbqndqBgotsIAwstYRG2CENUBw5yCLuphyr9LL8imdgXWViv
+ N3yK5YiTSh9vchuWJWXsCvyezy3JnIY=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-626-zYN453lsNlmuYgGYvvkJXQ-1; Mon, 19 Jun 2023 02:52:30 -0400
+X-MC-Unique: zYN453lsNlmuYgGYvvkJXQ-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-260a18f1b43so144232a91.0
+ for <qemu-devel@nongnu.org>; Sun, 18 Jun 2023 23:52:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687157549; x=1689749549;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5m2P3wcvvjG8v5suCZN3jqQeQerTlx7tlf8rrtXx3Rc=;
+ b=C1LquAU8njSR+aBi9LBH+ZevB874PYjNGYUFdJanPrY9bLF7mgpIOACi1IDbnDCkTe
+ Lp+Cc28QjUaKH8zxc7EdPpojiC3G9+Vb2KQF52BIZlB9ezSOhJCnDcPsNRtXDRUVmJb9
+ 7D9P3GOyu1RbtNht0Rip/Ih0SbM0k5V830H4zznbgSYNOqw2MbzAN9PFQ/26Q/YErCkL
+ 8X8T2UI+VviIfD00cLI6L+SfwVl6QjdwV6prVopCZLJ1o/TasboDWMZrDYG30nVxEWBW
+ aMjI8IICKkvIg0cZVzpH7bpAy7PZHfq9HqfyQ8rVBeKPUYy3eGDvhM4JDJvl11izHoVh
+ azbA==
+X-Gm-Message-State: AC+VfDxIWMe6dJa+3EAelY37RYtysNyO5hhnyWWFXKgsfV02BqRZ9txu
+ BvCrEFXE3Mw5rmHw/L5Djy/q17eUZeHcf1XscQeUto8NMOFqh1fIXe9vneO17UEJn67bBFS9Spr
+ 1BeaiqLrA+k7+hjY=
+X-Received: by 2002:a17:90b:1643:b0:256:5174:f58b with SMTP id
+ il3-20020a17090b164300b002565174f58bmr4338141pjb.46.1687157548978; 
+ Sun, 18 Jun 2023 23:52:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7TU0Z80Gy5B/+fNv+VaHcu4nfLhXjrGFUF3IwiXlfM/KkvUL8jtKS6Lziu8+G7WUCPK7KxIQ==
+X-Received: by 2002:a17:90b:1643:b0:256:5174:f58b with SMTP id
+ il3-20020a17090b164300b002565174f58bmr4338133pjb.46.1687157548623; 
+ Sun, 18 Jun 2023 23:52:28 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.121.2])
+ by smtp.googlemail.com with ESMTPSA id
+ qa2-20020a17090b4fc200b0025bf0d7c186sm4895501pjb.29.2023.06.18.23.52.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 18 Jun 2023 23:52:28 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, imammedo@redhat.com, jusual@redhat.com,
+ mst@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH] vhost-vdpa: do not cleanup the vdpa/vhost-net structures if
+ peer nic is present
+Date: Mon, 19 Jun 2023 12:22:09 +0530
+Message-Id: <20230619065209.442185-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,54 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steven Sistare <steven.sistare@oracle.com> writes:
+When a peer nic is still attached to the vdpa backend, it is too early to free
+up the vhost-net and vdpa structures. If these structures are freed here, then
+QEMU crashes when the guest is being shut down. The following call chain
+would result in an assertion failure since the pointer returned from
+vhost_vdpa_get_vhost_net() would be NULL:
 
-> On 6/13/2023 8:33 AM, Markus Armbruster wrote:
->> Steven Sistare <steven.sistare@oracle.com> writes:
+do_vm_stop() -> vm_state_notify() -> virtio_set_status() ->
+virtio_net_vhost_status() -> get_vhost_net().
 
-[...]
+Therefore, we defer freeing up the structures until at guest shutdown
+time when qemu_cleanup() calls net_cleanup() which then calls
+qemu_del_net_client() which would eventually call vhost_vdpa_cleanup()
+again to free up the structures. This time, the loop in net_cleanup()
+ensures that vhost_vdpa_cleanup() will be called one last time when
+all the peer nics are detached and freed.
 
->>> What design principle does strList_from_string contradict?  Are you OK with 
->>> putting the simplified version shown above in qapi-util?
->> 
->> The design principle is "use JSON to encode structured data as text in
->> QAPI/QMP".
->> 
->> Do: "mumble": [1, 2, 3]
->> 
->> Don't: "mumble": "1,2,3"
->
-> I don't mumble, but I sometimes mutter and ramble.
+All unit tests pass with this change.
 
-Hah!
+CC: imammedo@redhat.com
+CC: jusual@redhat.com
+CC: mst@redhat.com
 
->> We violate the principle in a couple of places.  Some are arguably
->> mistakes, some are pragmatic exceptions.
->> 
->> The principle implies "the only parser QAPI needs is the JSON parser".
->> 
->> By adding other parsers to QAPI, we send a misleading signal, namely
->> that encoding structured data in a way that requires parsing is okay.
->> It's not, generally.
->> 
->> So, I'd prefer to find another home for code that splits strings at
->> comma / delimiter.
->> 
->>> (and apologies for my long delay in continuing this conversation).
->> 
->> I'm in no position to take offense there ;)
->
-> Thanks, that makes it clear.
->
-> I propose to move strList_from_string and strv_from_strList to new files
-> util/strList.c and include/qemu/strList.h, and leave QAPI_LIST_LENGTH in 
-> include/qapi/util.h.
->
-> (cutil.c already has string functions, but only uses simple C types, so
-> not the best place to add the strList type).
->
-> Sound OK?
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ net/vhost-vdpa.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Works for me.  Thanks!
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 37cdc84562..ef9dd0afdb 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -185,6 +185,14 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+ {
+     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
+ 
++    /*
++     * If a peer NIC is attached, do not cleanup anything.
++     * Cleanup will happen as a part of qemu_cleanup() -> net_cleanup()
++     * when the guest is shutting down.
++     */
++    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_NIC) {
++        return;
++    }
+     qemu_vfree(s->cvq_cmd_out_buffer);
+     qemu_vfree(s->status);
+     if (s->vhost_net) {
+-- 
+2.39.1
 
 
