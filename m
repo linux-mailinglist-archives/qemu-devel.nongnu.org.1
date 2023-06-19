@@ -2,137 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A4C73558F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 13:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1DF735596
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 13:17:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBCpU-0004MA-Q4; Mon, 19 Jun 2023 07:13:52 -0400
+	id 1qBCsG-0006OW-4J; Mon, 19 Jun 2023 07:16:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qBCpR-0004Ly-Ny
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 07:13:49 -0400
-Received: from mail-dm6nam10on20614.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::614]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
+ id 1qBCsA-0006Nb-Vn
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 07:16:39 -0400
+Received: from mailout3.samsung.com ([203.254.224.33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qBCpP-0003ha-7U
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 07:13:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GMjL1usOQMzY5yUV0YJyqrJaDruFcYpYA6Dut3qqMulAkoNsFMoqsSYdUlMEmWGMWkt3zIga6ujh2VPr54i6F07IdUPiUZzHUZQ5pM8OAgGbksRyCo+DMudSk/L2JOR1jb27hFksTSAEbwVhQM4gT/t/ORa9TpiooZ9aMPn+tbyBPP42yLTMhuLQn+6wxkZo9A9RbONeV6HRILDL/6/xF2S/SyUq0PKtiJmmfL1wNiNjQBQwdDEVtM6mo4YE0LNPZw3wNTGoFG4siXlTfuKdTF1H2CbQ81WBRnquX/Nrcp5WqbgLcrwE0+wlKDB40NqHMphtnjQCrnxv0tIDNIYdZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0ueeyPUUMFHk5oIZsj0nM4LoEhMutOxSKFKQ1ajbAfA=;
- b=oAU1Ew6FbY0i6RKvSbnxe1JfAgjW/ye7HkBbIx2zMnu7xDs8vrHgoGMUgXk/iTNdw/lzJDe010M+Pel1WdshZD5yGHyDT225u3zWFwpVx5rS5FdYHbPSO0qd9r8GFOB6sEptLpqxZc5CeVMJ+qIWfM/xz1VnRje4U11A3wt8Z3ay5SziPk/x9lPo1MK7Ulq1Q7SIrSeiquKkTuzf+wJ6mrWV5FTPENyn94zLNEPu2oY0Q37d1XGy0WwgaftASNVFFmsvO7rbrgdnIztIsODTZl9JkdoUrQLUf5nUuGTaB1ZbzMt9XZPBiUaA+gd0sTp6ypODv7GG2bAjW4wiNW4ytg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0ueeyPUUMFHk5oIZsj0nM4LoEhMutOxSKFKQ1ajbAfA=;
- b=ITPX8IfVDuQBhKSg2TK4HBZ4X6byD9SlqtMudGtggl0tPIEeMflo6CMYe/Yxlf6KHUlCuUa77YxhrkC0hR4LyenZOxuzYVgvx6+g4sCDLoYgrGdfOshOaYZ6bhkI8eSUrdeUHKMui1mYAmobZx5X9gKy7s0ciEtNUb7xKy2m7p86QBI5Xl4VeHCFOrXmr5e2yZlbzcZ4Gqsx7HBqxE2G4kh6I3RBNoHjh4ZXRdANBpTn8zt30fd6jlvSdK+h+AxGa0pWPbzhKAqDYfLx+kbEUyHACBCH2VZ9od1mzK8BNWKhigBlZfek2tXIx4+bdLZzsAMPnEtt47oaK3mP55JefQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by DM6PR12MB4060.namprd12.prod.outlook.com (2603:10b6:5:216::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.36; Mon, 19 Jun
- 2023 11:13:43 +0000
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::dbd4:621f:5387:9e2b]) by DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::dbd4:621f:5387:9e2b%6]) with mapi id 15.20.6500.036; Mon, 19 Jun 2023
- 11:13:43 +0000
-Message-ID: <41469da8-dae3-df36-6de1-4b44bf6ba508@nvidia.com>
-Date: Mon, 19 Jun 2023 14:13:35 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] vfio/migration: Refactor and fix print of "Migration
- disabled"
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
- chao.p.peng@intel.com
-References: <20230619084446.399059-1-zhenzhong.duan@intel.com>
-From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <20230619084446.399059-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
+ id 1qBCs5-0004Ic-TS
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 07:16:38 -0400
+Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
+ by mailout3.samsung.com (KnoxPortal) with ESMTP id
+ 20230619111629epoutp03be7eea3c956f7ad155c6f1985875cfad~qC0JU5JmV1707617076epoutp03E
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 11:16:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
+ 20230619111629epoutp03be7eea3c956f7ad155c6f1985875cfad~qC0JU5JmV1707617076epoutp03E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1687173389;
+ bh=rev++SsXn5cRS0HBVNGGpD/DDmZaAwFGo6YDqkjd/N4=;
+ h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
+ b=h2LU5Qn/QTru+/tnIkPa/xq/luGliI8CIIdmpoTkrbygU97RYQs2z/UyMJeYoFTm4
+ 7j5RgjY6yPiqO/2r2pHTmbfv8WJBJjz0lQ+wAjRHnYW+oMktHRdgm+iIhlckSJDWtA
+ wey+S3xLABy/TftPof+uHURr2bpUA4oYbBg+vMVQ=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas2p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230619111629epcas2p24944bced22c85f43548e05c41ec04bc8~qC0Id-sdH2431424314epcas2p2U;
+ Mon, 19 Jun 2023 11:16:29 +0000 (GMT)
+Received: from epsmgec2p1-new.samsung.com (unknown [182.195.36.68]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4Ql6f41l3dz4x9Pt; Mon, 19 Jun
+ 2023 11:16:28 +0000 (GMT)
+X-AuditID: b6c32a4d-637c170000047356-18-6490390c475d
+Received: from epcas2p4.samsung.com ( [182.195.41.56]) by
+ epsmgec2p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ E5.38.29526.C0930946; Mon, 19 Jun 2023 20:16:28 +0900 (KST)
+Mime-Version: 1.0
+Subject: Re: [PATCH v2 3/3] hw/ufs: Support for UFS logical unit
+From: Jeuk Kim <jeuk20.kim@samsung.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "fam@euphon.net" <fam@euphon.net>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>, "kwolf@redhat.com"
+ <kwolf@redhat.com>, "hreitz@redhat.com" <hreitz@redhat.com>, Klaus Birkelund
+ Jensen <k.jensen@samsung.com>, "eblake@redhat.com" <eblake@redhat.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+In-Reply-To: <20230619082325.GB2497337@fedora>
+X-CPGS-Detection: blocking_info_exchange
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20230619111627epcms2p70ab099f30804d2819b72f105c6f28e19@epcms2p7>
+Date: Mon, 19 Jun 2023 20:16:27 +0900
+X-CMS-MailID: 20230619111627epcms2p70ab099f30804d2819b72f105c6f28e19
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0149.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:96::16) To DM6PR12MB5549.namprd12.prod.outlook.com
- (2603:10b6:5:209::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DM6PR12MB4060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64773d1b-688f-4ebb-9cf3-08db70b63e1f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2Yson0N7cIa0gbNX056qqFwoIQpPQeCHCXNxnD6SXiTQZfeT0SPFK/QiIPDu4DOWKr0ye9QSOM6fQoFhYv2Csw1LSNlNyW2Y6UL5ehElV+phvew05U3+iG+qzUYJDJ3rHNB1l5MMqL7rcMg2bty5Si9vutkMtWOCTI1UhZlRIKHyAGahnK87AWX0QvVgqiB0psOZwjUSojE60nZMfDqu+PUhVheCzwn+zFDOUp4ffs183dA5Mwgt3Sgb0r7XyNzvWPBrZKFqbVDQ8VjY9J1fUjQmzTZ/PdztaFFUzj7ON0bQ8Y8elwItXEqysb8XTwqmKlyrDJxrIZSkQqcCAHFTpiIkkE6+jZeiEp1osKlSQ0rhMA0i0j+dHiIf8XzWTA5W+L+3GmqkEk0+SlIj0ydPpx4SLhv/KxyeLnUwMgLYCJJiTLaAfUomvT4WWxKP5BEj+DPumdy7u4ir+vOoSFB5rsswDo/ps1N//pB/RF+YrK9wZhuxGk3wKX7O1U43Y53vWCb/oHn7jruD+GCrWWgR0wTXdu4HPF15I6vv9NZCTbqBUH5R/a16tLp+ZrMIA7kcZAYSyuWVsCKBz5G9L3gLt3jNe2SXFNf1N3Ph5mLiQgS21q5M4w7FwcQh8IFL4V2j75wpa9JSD93hd+AQbEWlhQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(346002)(366004)(39860400002)(376002)(136003)(451199021)(53546011)(66946007)(8936002)(8676002)(66556008)(66476007)(26005)(186003)(6506007)(6512007)(36756003)(83380400001)(31686004)(41300700001)(38100700002)(5660300002)(4326008)(316002)(2616005)(6666004)(6486002)(31696002)(478600001)(2906002)(86362001)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2swNENpRzkrYnhxM0FlN1ZodWVNdUowdmZZR2M0REozeVVrQllYRFduTDJ0?=
- =?utf-8?B?enc5dExvN1lzemlSTnpzUEhUSDNoVmNDMVlzZ3FFbUd1VlNPRUNId1FjSkR5?=
- =?utf-8?B?elUzRkJFb3hJODZmYmlFM3BTVFdlVW5idEY0Nm5QSmVva0pRZ2pYWDlxelB2?=
- =?utf-8?B?c01qaVRyWkFYSEFuOVRSaHhUWVd6OUp0Y3ljK0FPaFhQYUw2K2JjcmoyS2NQ?=
- =?utf-8?B?UXFUUXNQdURqTGhpVUo0OHQyOVVHVFFTVzZLS3F2RlpCT252S1R6NW5hOGdu?=
- =?utf-8?B?cndLazV0cXJEVnBiMGh2L0hBNXdicnZGeGJtSjR2c1I4RUY1bHdFZlFtbGw0?=
- =?utf-8?B?cldoYWwzOFFFU3N2aDFSdlI4aUFxYm03S3NlU3JMSldxUXpNWlR1Qm1sYlIz?=
- =?utf-8?B?SUtUdUdrSWVNbUlSS3JXRldBM3dNb0VWWGRaQUQwYjB2Y2IxQVlJdlVHdHJ1?=
- =?utf-8?B?WmVDYW9tbGIxUEV5K3haNFRZK2V4MVZXWUFIQVVhMkhsYWR3MitVMEE3a3F1?=
- =?utf-8?B?emI0aUIyYmJnQU12anp6MDBhZ3ovNWFZRWV5TXRzQXlSQ2JXQ0pvQlVRZFZK?=
- =?utf-8?B?cTVoREJZM0JacXhlN3VtMEJBRWpqR0d6d2JweWE1a3JJL3MwNWpwUVhBRmo4?=
- =?utf-8?B?T3ovNkJueGpsa29mcERDNTNSb3hJNVFxRUhuL3BxeGlQWjNkVFZLa0gzMWhv?=
- =?utf-8?B?VTlMakJuRnNwc1k4QmhlOExQb1A5cHBQV0FSTHNyaXA1bGVhbjJ2Y2dQV3N6?=
- =?utf-8?B?OGRCaHl1cUFVMkJnZmUrems2UG1DelhOdHJzOU1iNk9hcCtCYUxaNzFrWE5Q?=
- =?utf-8?B?eE8xQ1BLcmlQV201YUJmSjIvODJUTER3eFNmMUQ0bENnSzJSbFBGYzRla1dD?=
- =?utf-8?B?dExlV1pieVRvRmZvbEV6UEVOQXd1aUFNMVByWHBCWXZjc2MxZWFZOHByNHAz?=
- =?utf-8?B?WEpDUkc1b0ovK1NJSlZoQ0tkb1c4cjBkcjUxTUszSnRuMjhoWm9KTnZhMWp5?=
- =?utf-8?B?ak0yb2RRbk9IV3YyR0VVR0dRZFJqOFZNbVRTOHB0ZXFRMVNYOUQzRWNqMThD?=
- =?utf-8?B?bDJGdVJXR0VlZGlYcGpBQTFIS2o5T3FXSnU3aXluSzlKWDh6UWZVV3o1Zi9q?=
- =?utf-8?B?T3lZYzRvN01JbDJyVmxaajFSdWtteTlSOUtNUytsbGMxL2FROGVqeTNpUzVl?=
- =?utf-8?B?M3gxbGF2NmlyQUE5UzlOYWhQdnlaN2xZNDF2UjNYdC9GNFJGNVVDVVJIbm14?=
- =?utf-8?B?bjUyV0dRWEJlbjFybzdtSGt2bkF0cWRSZERtdkdudDFCS2oxUjc2dmJvRFoy?=
- =?utf-8?B?SXJsT2VvbTRrSVh6aGQwL1pyS0hRZHNIRURNNUxwVnpNRHVSbUx6OFJMU0FP?=
- =?utf-8?B?bTJSdGExYTRhOFQvZjV1U1ZGT1V3YnRiVEZYMkdncjRpdlpjR1E2UUdVNVp6?=
- =?utf-8?B?R2pNQzF6V3EyQ3g3a2daTUtvb1FpamVOeTZxVWttQk9xRHd3YWJxbjNLclR3?=
- =?utf-8?B?ek03ZTBWRnpXSHdlTkRoMklucHVJekRVUTZYanlqZnJFTDRxUnBwTzZiOE1Z?=
- =?utf-8?B?K0oxQno3R3BCVHdzT0syeEYyOGpsZDlBekNuclF0L1FaSy9WdkdJSmF5QXZ6?=
- =?utf-8?B?UHpJTUgxNFBUTWpQaGxTYitwSnppWHJUODZucnZtWW13VWxrSEdzQTc4ZXRR?=
- =?utf-8?B?emZweUJ6VVlWa1AxVElxNEh1Q1ZySG4xS0FYOThucGh1ZHB2WTUza1poUlZK?=
- =?utf-8?B?WmZqUzhrc0xaTXIzVjVkRjhwTHdNWWY3aWlkdlkvYlJvSEFKT3E0OVNURUdR?=
- =?utf-8?B?dDZIVUsyTk9yZTNZQnlPSTZvWlRJcEljeEo4QXRqUWZrdHRLdk1DMk5oWVNQ?=
- =?utf-8?B?b3AvMEplUTBsNzVpNzQ4eWFyVzJPdm1CVEhPUVBrWEVoS09GZlFzSFNVZncz?=
- =?utf-8?B?UnZBWHNaY0NrREtRL0FCT3A2QUU5WE1paHJ1YnpONlRXWUZ3S1kydzVEVFRZ?=
- =?utf-8?B?ZXRnakJaSjVkNHltSFZYcHhuMUV0S1k4QytISnlZeXRBVDZPdXlmTHFYbkRH?=
- =?utf-8?B?dExQL2Z5S0k0NlRBN3VGdmVMek9idnBmVk9YRVlEclJBMUJXMVlxK1hnNHVx?=
- =?utf-8?Q?ynnjVufXhw8Fd2H6GgjY9hxUi?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64773d1b-688f-4ebb-9cf3-08db70b63e1f
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2023 11:13:43.3688 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uSFMyQDV3Bb4UyR+NXr6r7tfpUYIQm5L0EdKLCmUKN3uHjv+MC9TnN9uIH79v+z0nnAOJS+dlhxObUlai6iVgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4060
-Received-SPF: softfail client-ip=2a01:111:f400:7e88::614;
- envelope-from=avihaih@nvidia.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+X-CPGSPASS: Y
+X-CPGSPASS: Y
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMJsWRmVeSWpSXmKPExsWy7bCmhS6P5YQUg7MbWC1eHtK0mPh2PavF
+ lf3nGS0e3O1ntDjZuIfVYsnFVIv92/6xWsx6185mcbx3B4vF60n/WR24PH6ca2fzeHJtM5PH
+ +31X2Tz6tqxiDGCJyrbJSE1MSS1SSM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy
+ 8QnQdcvMAbpHSaEsMacUKBSQWFyspG9nU5RfWpKqkJFfXGKrlFqQklNgXqBXnJhbXJqXrpeX
+ WmJlaGBgZApUmJCdMWNSE3PB3aUsFf2HZ7I0MC6cwNzFyMkhIWAicXv2HFYQW0hgD6PEypvW
+ XYwcHLwCghJ/dwiDhIUFHCTmnvzFBFGiIDFnWwc7RFxTYvr6iUwg5WwC6hKnF5qDmCJA4Rvd
+ gl2MXBzMAk+YJP7tW88IsYlXYkb7UxYIW1pi+/KtYHFOAT2Jub9Ws0HENSR+LOuFukxU4ubq
+ t+ww9vtj86HmiEi03jsLVSMo8eDnbqi4pMSpb49ZIezpjBIL/puCHCEhsIBR4lfzdKgGfYlr
+ HRvBjuAV8JV4uncRWDOLgKrEnTOtUMe5SMx4cgJsMbOAvMT2t3OYQR5jBnps/S59EFNCQFni
+ yC0WiAo+iY7Df9lhXmzY+Bsre8e8J0wQtorE4ubDrBMYlWchwnkWkl2zEHYtYGRexSiVWlCc
+ m56abFRgqJuXWg6P3+T83E2M4NSp5buD8fX6v3qHGJk4GA8xSnAwK4nwBu3tSxHiTUmsrEot
+ yo8vKs1JLT7EaAr06URmKdHkfGDyziuJNzSxNDAxMzM0NzI1MFcS593m3pkiJJCeWJKanZpa
+ kFoE08fEwSnVwDSv9kX8lQlfnPK6HqYtS95vdueRm4274u55D4VDDQ0uTcj20ve+FbBC45Bc
+ ZPnO1H/bPj1vSN15WWZv07wf/kUh0/Xi525bHzX3+7/bF8Vdtz5dmb24O+K4oLehz6cf1zem
+ pvu1/avjWb8isy7iwAntw207TIQl2Wu+LnHh31Nw+uqkCZuX+b5wqza97JJz0kk+ffHLs7zh
+ 7neCrl8POMk573zOs5P2cx/0HQ9K1xQ9cHWr8abtOezq/iEOEb5+vyS9+2bf8P22xFlr65uL
+ 9pKbo3VtT//cnuopc6dK2Prgm3ahDg/FvVX7S+e8jhTa8+tTmUSIY1DejEefoxQ3czt6R4Q2
+ 1Ra6SB2Ocme4dlaJpTgj0VCLuag4EQAYsYQAJgQAAA==
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007
+References: <20230619082325.GB2497337@fedora>
+ <20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p2>
+ <CGME20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p7>
+Received-SPF: pass client-ip=203.254.224.33;
+ envelope-from=jeuk20.kim@samsung.com; helo=mailout3.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,275 +114,2012 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: jeuk20.kim@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
+On Fri, Jun 19, 2023, Stefan Hajnoczi wrote:
+>On Fri, Jun 16, 2023 at 03:58:27PM +0900, Jeuk Kim wrote:
+>> This commit adds support for ufs logical unit.
+>> The LU handles processing for the SCSI command,
+>> unit descriptor query request.
+>> 
+>> This commit enables the UFS device to process
+>> IO requests.
+>
+>Is UFS a SCSI Host Bus Adapter capable of exposing any SCSI device? The
+>code is written as if UFS was a special-purpose SCSI bus that cannot
+>handle regular SCSI devices already emulated by QEMU (like scsi-hd). As
+>a result, it duplicates a lot of SCSI device code instead of just
+>focussing on unwrapping/wrapping the SCSI commands and responses from
+>the UFS interface.
+>
+>Would it be possible to have:
+>
+>  --device ufs,id=<bus-name>
+>  --device scsi-hd,bus=<bus-name>
+>
+>?
+>
+>I think that would involve less code and be more flexible.
+>
 
-On 19/06/2023 11:44, Zhenzhong Duan wrote:
-> External email: Use caution opening links or attachments
->
->
-> This patch refactors vfio_migration_realize() and its dependend code
-> as follows:
->
-> 1. Change vfio_block_*_migration() to be only a checker.
-> 2. It's redundant in vfio_migration_realize() to registers multiple blockers,
->     refactor it to register one migration blocker per device.
-> 3. Remove useless vfio_unblock_*_migration() and *_migration_blocker,
->     remove empty vfio_migration_finalize().
-> 4. Change vfio_migration_realize() and dependent vfio_block_*_migration() to
->     return bool type.
-> 5. Change to print "Migration disabled" only after adding blocker succeed.
->
-> migrate_add_blocker() returns 0 when successfully adding the migration blocker.
-> However, the caller of vfio_migration_realize() considers that migration was
-> blocked when the latter returned an error. What matters for migration is that
-> the blocker is added in core migration, so this cleans up usability such that
-> user sees "Migrate disabled" when any of the vfio migration blockers are active.
->
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
-> v2: Based on suggestions from Joao and Cedric, refactored vfio migration
->      blocker related code.
->      Use Joao's words to update description.
->
-> Tested vfio hotplug/unplug with vfio migration supported and unsupported cases.
->
->   hw/vfio/common.c              | 66 +++--------------------------------
->   hw/vfio/migration.c           | 36 +++++++++----------
->   hw/vfio/pci.c                 |  6 +---
->   include/hw/vfio/vfio-common.h |  8 ++---
->   4 files changed, 25 insertions(+), 91 deletions(-)
->
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index fa8fd949b1cf..606e23a66514 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -361,9 +361,6 @@ bool vfio_mig_active(void)
->       return true;
->   }
->
-> -static Error *multiple_devices_migration_blocker;
-> -static Error *giommu_migration_blocker;
-> -
->   static unsigned int vfio_migratable_device_num(void)
->   {
->       VFIOGroup *group;
-> @@ -381,37 +378,9 @@ static unsigned int vfio_migratable_device_num(void)
->       return device_num;
->   }
->
-> -int vfio_block_multiple_devices_migration(Error **errp)
-> -{
-> -    int ret;
-> -
-> -    if (multiple_devices_migration_blocker ||
-> -        vfio_migratable_device_num() <= 1) {
-> -        return 0;
-> -    }
-> -
-> -    error_setg(&multiple_devices_migration_blocker,
-> -               "Migration is currently not supported with multiple "
-> -               "VFIO devices");
-> -    ret = migrate_add_blocker(multiple_devices_migration_blocker, errp);
-> -    if (ret < 0) {
-> -        error_free(multiple_devices_migration_blocker);
-> -        multiple_devices_migration_blocker = NULL;
-> -    }
-> -
-> -    return ret;
-> -}
-> -
-> -void vfio_unblock_multiple_devices_migration(void)
-> +bool vfio_block_multiple_devices_migration(Error **errp)
->   {
-> -    if (!multiple_devices_migration_blocker ||
-> -        vfio_migratable_device_num() > 1) {
-> -        return;
-> -    }
-> -
-> -    migrate_del_blocker(multiple_devices_migration_blocker);
-> -    error_free(multiple_devices_migration_blocker);
-> -    multiple_devices_migration_blocker = NULL;
-> +    return vfio_migratable_device_num() > 1;
->   }
->
->   static bool vfio_viommu_preset(void)
-> @@ -427,36 +396,9 @@ static bool vfio_viommu_preset(void)
->       return false;
->   }
->
-> -int vfio_block_giommu_migration(Error **errp)
-> +bool vfio_block_giommu_migration(Error **errp)
->   {
-> -    int ret;
-> -
-> -    if (giommu_migration_blocker ||
-> -        !vfio_viommu_preset()) {
-> -        return 0;
-> -    }
-> -
-> -    error_setg(&giommu_migration_blocker,
-> -               "Migration is currently not supported with vIOMMU enabled");
-> -    ret = migrate_add_blocker(giommu_migration_blocker, errp);
-> -    if (ret < 0) {
-> -        error_free(giommu_migration_blocker);
-> -        giommu_migration_blocker = NULL;
-> -    }
-> -
-> -    return ret;
-> -}
-> -
-> -void vfio_migration_finalize(void)
-> -{
-> -    if (!giommu_migration_blocker ||
-> -        vfio_viommu_preset()) {
-> -        return;
-> -    }
-> -
-> -    migrate_del_blocker(giommu_migration_blocker);
-> -    error_free(giommu_migration_blocker);
-> -    giommu_migration_blocker = NULL;
-> +    return vfio_viommu_preset();
->   }
->
->   static void vfio_set_migration_error(int err)
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 6b58dddb8859..bc51aa765cb8 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -632,42 +632,41 @@ int64_t vfio_mig_bytes_transferred(void)
->       return bytes_transferred;
->   }
->
-> -int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-> +bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
->   {
-> -    int ret = -ENOTSUP;
-> +    int ret;
->
-> -    if (!vbasedev->enable_migration) {
-> +    if (!vbasedev->enable_migration || vfio_migration_init(vbasedev)) {
-> +        error_setg(&vbasedev->migration_blocker,
-> +                   "VFIO device doesn't support migration");
->           goto add_blocker;
->       }
->
-> -    ret = vfio_migration_init(vbasedev);
-> -    if (ret) {
-> +    if (vfio_block_multiple_devices_migration(errp)) {
-> +        error_setg(&vbasedev->migration_blocker,
-> +                   "Migration is currently not supported with multiple "
-> +                   "VFIO devices");
->           goto add_blocker;
->       }
+Unfortunately, UFS is not a generic SCSI Host Bus Adapter.
+UFS uses the SCSI specification to communicate with the driver,
+but its behaviour is very different from that of a typical SCSI device.
+(So it's intentional that UFS looks like a special-purpose SCSI bus.)
 
-Here you are tying the multiple devices blocker to a specific device.
-This could be problematic:
-If you add vfio device #1 and then device #2 then the blocker will be 
-added to device #2. If you then remove device #1, migration will still 
-be blocked although it shouldn't.
+For example, UFS has the well-known lu.
+Unlike typical SCSI devices, where each lu is independent,
+UFS can control other lu's through the well-known lu.
 
-I think we should keep it as a global blocker and not a per-device blocker.
+Therefore, UFS can only work properly with ufs-lu, and not with
+other scsi devices such as scsi-hd. :'(
 
-Thanks.
+That's why I made the UFS bus and added the ufs_bus_check_address()
+to prevent normal scsi devices and UFS from connecting to each other.
 
->
-> -    ret = vfio_block_multiple_devices_migration(errp);
-> -    if (ret) {
-> -        return ret;
-> -    }
-> -
-> -    ret = vfio_block_giommu_migration(errp);
-> -    if (ret) {
-> -        return ret;
-> +    if (vfio_block_giommu_migration(errp)) {
-> +        error_setg(&vbasedev->migration_blocker,
-> +                   "Migration is currently not supported with vIOMMU enabled");
-> +        goto add_blocker;
->       }
->
->       trace_vfio_migration_probe(vbasedev->name);
-> -    return 0;
-> +    return true;
->
->   add_blocker:
-> -    error_setg(&vbasedev->migration_blocker,
-> -               "VFIO device doesn't support migration");
-> -
->       ret = migrate_add_blocker(vbasedev->migration_blocker, errp);
->       if (ret < 0) {
->           error_free(vbasedev->migration_blocker);
->           vbasedev->migration_blocker = NULL;
-> +    } else {
-> +        error_report("%s: Migration disabled", vbasedev->name);
->       }
-> -    return ret;
-> +    return false;
->   }
->
->   void vfio_migration_exit(VFIODevice *vbasedev)
-> @@ -679,7 +678,6 @@ void vfio_migration_exit(VFIODevice *vbasedev)
->           qemu_del_vm_change_state_handler(migration->vm_state);
->           unregister_savevm(VMSTATE_IF(vbasedev->dev), "vfio", vbasedev);
->           vfio_migration_free(vbasedev);
-> -        vfio_unblock_multiple_devices_migration();
->       }
->
->       if (vbasedev->migration_blocker) {
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 73874a94de12..12b82b3667ef 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3207,10 +3207,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       }
->
->       if (!pdev->failover_pair_id) {
-> -        ret = vfio_migration_realize(vbasedev, errp);
-> -        if (ret) {
-> -            error_report("%s: Migration disabled", vbasedev->name);
-> -        }
-> +        vfio_migration_realize(vbasedev, errp);
->       }
->
->       vfio_register_err_notifier(vdev);
-> @@ -3247,7 +3244,6 @@ static void vfio_instance_finalize(Object *obj)
->        */
->       vfio_put_device(vdev);
->       vfio_put_group(group);
-> -    vfio_migration_finalize();
->   }
->
->   static void vfio_exitfn(PCIDevice *pdev)
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index eed244f25f34..23ba3654acda 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -220,9 +220,8 @@ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
->   extern VFIOGroupList vfio_group_list;
->
->   bool vfio_mig_active(void);
-> -int vfio_block_multiple_devices_migration(Error **errp);
-> -void vfio_unblock_multiple_devices_migration(void);
-> -int vfio_block_giommu_migration(Error **errp);
-> +bool vfio_block_multiple_devices_migration(Error **errp);
-> +bool vfio_block_giommu_migration(Error **errp);
->   int64_t vfio_mig_bytes_transferred(void);
->
->   #ifdef CONFIG_LINUX
-> @@ -246,8 +245,7 @@ int vfio_spapr_create_window(VFIOContainer *container,
->   int vfio_spapr_remove_window(VFIOContainer *container,
->                                hwaddr offset_within_address_space);
->
-> -int vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
-> +bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
->   void vfio_migration_exit(VFIODevice *vbasedev);
-> -void vfio_migration_finalize(void);
->
->   #endif /* HW_VFIO_VFIO_COMMON_H */
-> --
-> 2.34.1
->
->
+Also, in the future, I will add more ufs-specific features
+like hibernation and zoned, which are different from normal SCSI devices.
+
+So personally, I think we should define ufs-lu separately as we do now.
+Is that okay?
+
+>> 
+>> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+>> ---
+>>  hw/ufs/lu.c              | 1441 ++++++++++++++++++++++++++++++++++++++
+>>  hw/ufs/meson.build       |    2 +-
+>>  hw/ufs/trace-events      |   25 +
+>>  hw/ufs/ufs.c             |  252 ++++++-
+>>  hw/ufs/ufs.h             |   43 ++
+>>  include/scsi/constants.h |    1 +
+>>  6 files changed, 1757 insertions(+), 7 deletions(-)
+>>  create mode 100644 hw/ufs/lu.c
+>> 
+>> diff --git a/hw/ufs/lu.c b/hw/ufs/lu.c
+>> new file mode 100644
+>> index 0000000000..ef69de61a5
+>> --- /dev/null
+>> +++ b/hw/ufs/lu.c
+>> @@ -0,0 +1,1441 @@
+>> +/*
+>> + * QEMU UFS Logical Unit
+>> + *
+>> + * Copyright (c) 2023 Samsung Electronics Co., Ltd. All rights reserved.
+>> + *
+>> + * Written by Jeuk Kim <jeuk20.kim@samsung.com>
+>> + *
+>> + * This code is licensed under the GNU GPL v2 or later.
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qemu/units.h"
+>> +#include "qapi/error.h"
+>> +#include "qemu/memalign.h"
+>> +#include "hw/scsi/scsi.h"
+>> +#include "scsi/constants.h"
+>> +#include "sysemu/block-backend.h"
+>> +#include "qemu/cutils.h"
+>> +#include "trace.h"
+>> +#include "ufs.h"
+>> +
+>> +/*
+>> + * The code below handling SCSI commands is copied from hw/scsi/scsi-disk.c,
+>> + * with minor adjustments to make it work for UFS.
+>> + */
+>> +
+>> +#define SCSI_DMA_BUF_SIZE (128 * KiB)
+>> +#define SCSI_MAX_INQUIRY_LEN 256
+>> +#define SCSI_INQUIRY_DATA_SIZE 36
+>> +#define SCSI_MAX_MODE_LEN 256
+>> +
+>> +typedef struct UfsSCSIReq {
+>> +    SCSIRequest req;
+>> +    /* Both sector and sector_count are in terms of BDRV_SECTOR_SIZE bytes.  */
+>> +    uint64_t sector;
+>> +    uint32_t sector_count;
+>> +    uint32_t buflen;
+>> +    bool started;
+>> +    bool need_fua_emulation;
+>> +    struct iovec iov;
+>> +    QEMUIOVector qiov;
+>> +    BlockAcctCookie acct;
+>> +} UfsSCSIReq;
+>> +
+>> +static void ufs_scsi_free_request(SCSIRequest *req)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +
+>> +    qemu_vfree(r->iov.iov_base);
+>> +}
+>> +
+>> +static void scsi_check_condition(UfsSCSIReq *r, SCSISense sense)
+>> +{
+>> +    trace_ufs_scsi_check_condition(r->req.tag, sense.key, sense.asc,
+>> +                                   sense.ascq);
+>> +    scsi_req_build_sense(&r->req, sense);
+>> +    scsi_req_complete(&r->req, CHECK_CONDITION);
+>> +}
+>> +
+>> +static int ufs_scsi_emulate_vpd_page(SCSIRequest *req, uint8_t *outbuf,
+>> +                                     uint32_t outbuf_len)
+>> +{
+>> +    UfsHc *u = UFS(req->bus->qbus.parent);
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, req->dev);
+>> +    uint8_t page_code = req->cmd.buf[2];
+>> +    int start, buflen = 0;
+>> +
+>> +    if (outbuf_len < SCSI_INQUIRY_DATA_SIZE) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    outbuf[buflen++] = lu->qdev.type & 0x1f;
+>> +    outbuf[buflen++] = page_code;
+>> +    outbuf[buflen++] = 0x00;
+>> +    outbuf[buflen++] = 0x00;
+>> +    start = buflen;
+>> +
+>> +    switch (page_code) {
+>> +    case 0x00: /* Supported page codes, mandatory */
+>> +    {
+>> +        trace_ufs_scsi_emulate_vpd_page_00(req->cmd.xfer);
+>> +        outbuf[buflen++] = 0x00; /* list of supported pages (this page) */
+>> +        if (u->params.serial) {
+>> +            outbuf[buflen++] = 0x80; /* unit serial number */
+>> +        }
+>> +        outbuf[buflen++] = 0x87; /* mode page policy */
+>> +        break;
+>> +    }
+>> +    case 0x80: /* Device serial number, optional */
+>> +    {
+>> +        int l;
+>> +
+>> +        if (!u->params.serial) {
+>> +            trace_ufs_scsi_emulate_vpd_page_80_not_supported();
+>> +            return -1;
+>> +        }
+>> +
+>> +        l = strlen(u->params.serial);
+>> +        if (l > SCSI_INQUIRY_DATA_SIZE) {
+>> +            l = SCSI_INQUIRY_DATA_SIZE;
+>> +        }
+>> +
+>> +        trace_ufs_scsi_emulate_vpd_page_80(req->cmd.xfer);
+>> +        memcpy(outbuf + buflen, u->params.serial, l);
+>> +        buflen += l;
+>> +        break;
+>> +    }
+>> +    case 0x87: /* Mode Page Policy, mandatory */
+>> +    {
+>> +        trace_ufs_scsi_emulate_vpd_page_87(req->cmd.xfer);
+>> +        outbuf[buflen++] = 0x3f; /* apply to all mode pages and subpages */
+>> +        outbuf[buflen++] = 0xff;
+>> +        outbuf[buflen++] = 0; /* shared */
+>> +        outbuf[buflen++] = 0;
+>> +        break;
+>> +    }
+>> +    default:
+>> +        return -1;
+>> +    }
+>> +    /* done with EVPD */
+>> +    assert(buflen - start <= 255);
+>> +    outbuf[start - 1] = buflen - start;
+>> +    return buflen;
+>> +}
+>> +
+>> +static int ufs_scsi_emulate_inquiry(SCSIRequest *req, uint8_t *outbuf,
+>> +                                    uint32_t outbuf_len)
+>> +{
+>> +    int buflen = 0;
+>> +
+>> +    if (outbuf_len < SCSI_INQUIRY_DATA_SIZE) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    if (req->cmd.buf[1] & 0x1) {
+>> +        /* Vital product data */
+>> +        return ufs_scsi_emulate_vpd_page(req, outbuf, outbuf_len);
+>> +    }
+>> +
+>> +    /* Standard INQUIRY data */
+>> +    if (req->cmd.buf[2] != 0) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    /* PAGE CODE == 0 */
+>> +    buflen = req->cmd.xfer;
+>> +    if (buflen > SCSI_MAX_INQUIRY_LEN) {
+>> +        buflen = SCSI_MAX_INQUIRY_LEN;
+>> +    }
+>> +
+>> +    if (is_wlun(req->lun)) {
+>> +        outbuf[0] = TYPE_WLUN;
+>> +    } else {
+>> +        outbuf[0] = 0;
+>> +    }
+>> +    outbuf[1] = 0;
+>> +
+>> +    strpadcpy((char *)&outbuf[16], 16, "QEMU UFS", ' ');
+>> +    strpadcpy((char *)&outbuf[8], 8, "QEMU", ' ');
+>> +
+>> +    memset(&outbuf[32], 0, 4);
+>> +
+>> +    outbuf[2] = 0x06; /* SPC-4 */
+>> +    outbuf[3] = 0x2;
+>> +
+>> +    if (buflen > SCSI_INQUIRY_DATA_SIZE) {
+>> +        outbuf[4] = buflen - 5; /* Additional Length = (Len - 1) - 4 */
+>> +    } else {
+>> +        /*
+>> +         * If the allocation length of CDB is too small, the additional
+>> +         * length is not adjusted
+>> +         */
+>> +        outbuf[4] = SCSI_INQUIRY_DATA_SIZE - 5;
+>> +    }
+>> +
+>> +    /* Support TCQ.  */
+>> +    outbuf[7] = req->bus->info->tcq ? 0x02 : 0;
+>> +    return buflen;
+>> +}
+>> +
+>> +static int mode_sense_page(UfsLu *lu, int page, uint8_t **p_outbuf,
+>> +                           int page_control)
+>> +{
+>> +    static const int mode_sense_valid[0x3f] = {
+>> +        [MODE_PAGE_CACHING] = 1,
+>> +        [MODE_PAGE_R_W_ERROR] = 1,
+>> +        [MODE_PAGE_CONTROL] = 1,
+>> +    };
+>> +
+>> +    uint8_t *p = *p_outbuf + 2;
+>> +    int length;
+>> +
+>> +    assert(page < ARRAY_SIZE(mode_sense_valid));
+>> +    if ((mode_sense_valid[page]) == 0) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    /*
+>> +     * If Changeable Values are requested, a mask denoting those mode parameters
+>> +     * that are changeable shall be returned. As we currently don't support
+>> +     * parameter changes via MODE_SELECT all bits are returned set to zero.
+>> +     * The buffer was already memset to zero by the caller of this function.
+>> +     */
+>> +    switch (page) {
+>> +    case MODE_PAGE_CACHING:
+>> +        length = 0x12;
+>> +        if (page_control == 1 || /* Changeable Values */
+>> +            blk_enable_write_cache(lu->qdev.conf.blk)) {
+>> +            p[0] = 4; /* WCE */
+>> +        }
+>> +        break;
+>> +
+>> +    case MODE_PAGE_R_W_ERROR:
+>> +        length = 10;
+>> +        if (page_control == 1) { /* Changeable Values */
+>> +            break;
+>> +        }
+>> +        p[0] = 0x80; /* Automatic Write Reallocation Enabled */
+>> +        break;
+>> +
+>> +    case MODE_PAGE_CONTROL:
+>> +        length = 10;
+>> +        if (page_control == 1) { /* Changeable Values */
+>> +            break;
+>> +        }
+>> +        p[1] = 0x10; /* Queue Algorithm modifier */
+>> +        p[8] = 0xff; /* Busy Timeout Period */
+>> +        p[9] = 0xff;
+>> +        break;
+>> +
+>> +    default:
+>> +        return -1;
+>> +    }
+>> +
+>> +    assert(length < 256);
+>> +    (*p_outbuf)[0] = page;
+>> +    (*p_outbuf)[1] = length;
+>> +    *p_outbuf += length + 2;
+>> +    return length + 2;
+>> +}
+>> +
+>> +static int ufs_scsi_emulate_mode_sense(UfsSCSIReq *r, uint8_t *outbuf)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +    bool dbd;
+>> +    int page, buflen, ret, page_control;
+>> +    uint8_t *p;
+>> +    uint8_t dev_specific_param = 0;
+>> +
+>> +    dbd = (r->req.cmd.buf[1] & 0x8) != 0;
+>> +    if (!dbd) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    page = r->req.cmd.buf[2] & 0x3f;
+>> +    page_control = (r->req.cmd.buf[2] & 0xc0) >> 6;
+>> +
+>> +    trace_ufs_scsi_emulate_mode_sense((r->req.cmd.buf[0] == MODE_SENSE) ? 6 :
+>> +                                                                          10,
+>> +                                      page, r->req.cmd.xfer, page_control);
+>> +    memset(outbuf, 0, r->req.cmd.xfer);
+>> +    p = outbuf;
+>> +
+>> +    if (!blk_is_writable(lu->qdev.conf.blk)) {
+>> +        dev_specific_param |= 0x80; /* Readonly.  */
+>> +    }
+>> +
+>> +    p[2] = 0; /* Medium type.  */
+>> +    p[3] = dev_specific_param;
+>> +    p[6] = p[7] = 0; /* Block descriptor length.  */
+>> +    p += 8;
+>> +
+>> +    if (page_control == 3) {
+>> +        /* Saved Values */
+>> +        scsi_check_condition(r, SENSE_CODE(SAVING_PARAMS_NOT_SUPPORTED));
+>> +        return -1;
+>> +    }
+>> +
+>> +    if (page == 0x3f) {
+>> +        for (page = 0; page <= 0x3e; page++) {
+>> +            mode_sense_page(lu, page, &p, page_control);
+>> +        }
+>> +    } else {
+>> +        ret = mode_sense_page(lu, page, &p, page_control);
+>> +        if (ret == -1) {
+>> +            return -1;
+>> +        }
+>> +    }
+>> +
+>> +    buflen = p - outbuf;
+>> +    /*
+>> +     * The mode data length field specifies the length in bytes of the
+>> +     * following data that is available to be transferred. The mode data
+>> +     * length does not include itself.
+>> +     */
+>> +    outbuf[0] = ((buflen - 2) >> 8) & 0xff;
+>> +    outbuf[1] = (buflen - 2) & 0xff;
+>> +    return buflen;
+>> +}
+>> +
+>> +/*
+>> + * scsi_handle_rw_error has two return values.  False means that the error
+>> + * must be ignored, true means that the error has been processed and the
+>> + * caller should not do anything else for this request.  Note that
+>> + * scsi_handle_rw_error always manages its reference counts, independent
+>> + * of the return value.
+>> + */
+>> +static bool scsi_handle_rw_error(UfsSCSIReq *r, int ret, bool acct_failed)
+>> +{
+>> +    bool is_read = (r->req.cmd.mode == SCSI_XFER_FROM_DEV);
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +    SCSISense sense = SENSE_CODE(NO_SENSE);
+>> +    int error = 0;
+>> +    bool req_has_sense = false;
+>> +    BlockErrorAction action;
+>> +    int status;
+>> +
+>> +    if (ret < 0) {
+>> +        status = scsi_sense_from_errno(-ret, &sense);
+>> +        error = -ret;
+>> +    } else {
+>> +        /* A passthrough command has completed with nonzero status.  */
+>> +        status = ret;
+>> +        if (status == CHECK_CONDITION) {
+>> +            req_has_sense = true;
+>> +            error = scsi_sense_buf_to_errno(r->req.sense, sizeof(r->req.sense));
+>> +        } else {
+>> +            error = EINVAL;
+>> +        }
+>> +    }
+>> +
+>> +    /*
+>> +     * Check whether the error has to be handled by the guest or should
+>> +     * rather follow the rerror=/werror= settings.  Guest-handled errors
+>> +     * are usually retried immediately, so do not post them to QMP and
+>> +     * do not account them as failed I/O.
+>> +     */
+>> +    if (req_has_sense && scsi_sense_buf_is_guest_recoverable(
+>> +                             r->req.sense, sizeof(r->req.sense))) {
+>> +        action = BLOCK_ERROR_ACTION_REPORT;
+>> +        acct_failed = false;
+>> +    } else {
+>> +        action = blk_get_error_action(lu->qdev.conf.blk, is_read, error);
+>> +        blk_error_action(lu->qdev.conf.blk, action, is_read, error);
+>> +    }
+>> +
+>> +    switch (action) {
+>> +    case BLOCK_ERROR_ACTION_REPORT:
+>> +        if (acct_failed) {
+>> +            block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +        }
+>> +        if (!req_has_sense && status == CHECK_CONDITION) {
+>> +            scsi_req_build_sense(&r->req, sense);
+>> +        }
+>> +        scsi_req_complete(&r->req, status);
+>> +        return true;
+>> +
+>> +    case BLOCK_ERROR_ACTION_IGNORE:
+>> +        return false;
+>> +
+>> +    case BLOCK_ERROR_ACTION_STOP:
+>> +        scsi_req_retry(&r->req);
+>> +        return true;
+>> +
+>> +    default:
+>> +        g_assert_not_reached();
+>> +    }
+>> +}
+>> +
+>> +static bool ufs_scsi_req_check_error(UfsSCSIReq *r, int ret, bool acct_failed)
+>> +{
+>> +    if (r->req.io_canceled) {
+>> +        scsi_req_cancel_complete(&r->req);
+>> +        return true;
+>> +    }
+>> +
+>> +    if (ret < 0) {
+>> +        return scsi_handle_rw_error(r, ret, acct_failed);
+>> +    }
+>> +
+>> +    return false;
+>> +}
+>> +
+>> +static void scsi_aio_complete(void *opaque, int ret)
+>> +{
+>> +    UfsSCSIReq *r = (UfsSCSIReq *)opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb != NULL);
+>> +    r->req.aiocb = NULL;
+>> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
+>> +    if (ufs_scsi_req_check_error(r, ret, true)) {
+>> +        goto done;
+>> +    }
+>> +
+>> +    block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    scsi_req_complete(&r->req, GOOD);
+>> +
+>> +done:
+>> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
+>> +    scsi_req_unref(&r->req);
+>> +}
+>> +
+>> +static int32_t ufs_scsi_emulate_command(SCSIRequest *req, uint8_t *buf)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, req->dev);
+>> +    uint8_t *outbuf;
+>> +    int buflen;
+>> +
+>> +    switch (req->cmd.buf[0]) {
+>> +    case INQUIRY:
+>> +    case MODE_SENSE_10:
+>> +    case START_STOP:
+>> +    case REQUEST_SENSE:
+>> +        break;
+>> +
+>> +    default:
+>> +        if (!blk_is_available(lu->qdev.conf.blk)) {
+>> +            scsi_check_condition(r, SENSE_CODE(NO_MEDIUM));
+>> +            return 0;
+>> +        }
+>> +        break;
+>> +    }
+>> +
+>> +    /*
+>> +     * FIXME: we shouldn't return anything bigger than 4k, but the code
+>> +     * requires the buffer to be as big as req->cmd.xfer in several
+>> +     * places.  So, do not allow CDBs with a very large ALLOCATION
+>> +     * LENGTH.  The real fix would be to modify scsi_read_data and
+>> +     * dma_buf_read, so that they return data beyond the buflen
+>> +     * as all zeros.
+>> +     */
+>> +    if (req->cmd.xfer > 65536) {
+>> +        goto illegal_request;
+>> +    }
+>> +    r->buflen = MAX(4096, req->cmd.xfer);
+>> +
+>> +    if (!r->iov.iov_base) {
+>> +        r->iov.iov_base = blk_blockalign(lu->qdev.conf.blk, r->buflen);
+>> +    }
+>> +
+>> +    outbuf = r->iov.iov_base;
+>> +    memset(outbuf, 0, r->buflen);
+>> +    switch (req->cmd.buf[0]) {
+>> +    case TEST_UNIT_READY:
+>> +        assert(blk_is_available(lu->qdev.conf.blk));
+>> +        break;
+>> +    case INQUIRY:
+>> +        buflen = ufs_scsi_emulate_inquiry(req, outbuf, r->buflen);
+>> +        if (buflen < 0) {
+>> +            goto illegal_request;
+>> +        }
+>> +        break;
+>> +    case MODE_SENSE_10:
+>> +        buflen = ufs_scsi_emulate_mode_sense(r, outbuf);
+>> +        if (buflen < 0) {
+>> +            goto illegal_request;
+>> +        }
+>> +        break;
+>> +    case READ_CAPACITY_10:
+>> +        /* The normal LEN field for this command is zero.  */
+>> +        memset(outbuf, 0, 8);
+>> +
+>> +        outbuf[0] = (lu->qdev.max_lba >> 24) & 0xff;
+>> +        outbuf[1] = (lu->qdev.max_lba >> 16) & 0xff;
+>> +        outbuf[2] = (lu->qdev.max_lba >> 8) & 0xff;
+>> +        outbuf[3] = lu->qdev.max_lba & 0xff;
+>> +        outbuf[4] = (lu->qdev.blocksize >> 24) & 0xff;
+>> +        outbuf[5] = (lu->qdev.blocksize >> 16) & 0xff;
+>> +        outbuf[6] = (lu->qdev.blocksize >> 8) & 0xff;
+>> +        outbuf[7] = lu->qdev.blocksize & 0xff;
+>> +        break;
+>> +    case REQUEST_SENSE:
+>> +        /* Just return "NO SENSE".  */
+>> +        buflen = scsi_convert_sense(NULL, 0, outbuf, r->buflen,
+>> +                                    (req->cmd.buf[1] & 1) == 0);
+>> +        if (buflen < 0) {
+>> +            goto illegal_request;
+>> +        }
+>> +        break;
+>> +    case SYNCHRONIZE_CACHE:
+>> +        /* The request is used as the AIO opaque value, so add a ref.  */
+>> +        scsi_req_ref(&r->req);
+>> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
+>> +                         BLOCK_ACCT_FLUSH);
+>> +        r->req.aiocb = blk_aio_flush(lu->qdev.conf.blk, scsi_aio_complete, r);
+>> +        return 0;
+>> +    case VERIFY_10:
+>> +        trace_ufs_scsi_emulate_command_VERIFY((req->cmd.buf[1] >> 1) & 3);
+>> +        if (req->cmd.buf[1] & 6) {
+>> +            goto illegal_request;
+>> +        }
+>> +        break;
+>> +    case SERVICE_ACTION_IN_16:
+>> +        /* Service Action In subcommands. */
+>> +        if ((req->cmd.buf[1] & 31) == SAI_READ_CAPACITY_16) {
+>> +            trace_ufs_scsi_emulate_command_SAI_16();
+>> +            memset(outbuf, 0, req->cmd.xfer);
+>> +
+>> +            outbuf[0] = (lu->qdev.max_lba >> 56) & 0xff;
+>> +            outbuf[1] = (lu->qdev.max_lba >> 48) & 0xff;
+>> +            outbuf[2] = (lu->qdev.max_lba >> 40) & 0xff;
+>> +            outbuf[3] = (lu->qdev.max_lba >> 32) & 0xff;
+>> +            outbuf[4] = (lu->qdev.max_lba >> 24) & 0xff;
+>> +            outbuf[5] = (lu->qdev.max_lba >> 16) & 0xff;
+>> +            outbuf[6] = (lu->qdev.max_lba >> 8) & 0xff;
+>> +            outbuf[7] = lu->qdev.max_lba & 0xff;
+>> +            outbuf[8] = (lu->qdev.blocksize >> 24) & 0xff;
+>> +            outbuf[9] = (lu->qdev.blocksize >> 16) & 0xff;
+>> +            outbuf[10] = (lu->qdev.blocksize >> 8) & 0xff;
+>> +            outbuf[11] = lu->qdev.blocksize & 0xff;
+>> +            outbuf[12] = 0;
+>> +            outbuf[13] = get_physical_block_exp(&lu->qdev.conf);
+>> +
+>> +            if (lu->unit_desc.provisioning_type == 2 ||
+>> +                lu->unit_desc.provisioning_type == 3) {
+>> +                outbuf[14] = 0x80;
+>> +            }
+>> +            /* Protection, exponent and lowest lba field left blank. */
+>> +            break;
+>> +        }
+>> +        trace_ufs_scsi_emulate_command_SAI_unsupported();
+>> +        goto illegal_request;
+>> +    case MODE_SELECT_10:
+>> +        trace_ufs_scsi_emulate_command_MODE_SELECT_10(r->req.cmd.xfer);
+>> +        break;
+>> +    case START_STOP:
+>> +        /*
+>> +         * TODO: START_STOP is not yet implemented. It always returns success.
+>> +         * Revisit it when ufs power management is implemented.
+>> +         */
+>> +        trace_ufs_scsi_emulate_command_START_STOP();
+>> +        break;
+>> +    case FORMAT_UNIT:
+>> +        trace_ufs_scsi_emulate_command_FORMAT_UNIT();
+>> +        break;
+>> +    case SEND_DIAGNOSTIC:
+>> +        trace_ufs_scsi_emulate_command_SEND_DIAGNOSTIC();
+>> +        break;
+>> +    default:
+>> +        trace_ufs_scsi_emulate_command_UNKNOWN(buf[0],
+>> +                                               scsi_command_name(buf[0]));
+>> +        scsi_check_condition(r, SENSE_CODE(INVALID_OPCODE));
+>> +        return 0;
+>> +    }
+>> +    assert(!r->req.aiocb);
+>> +    r->iov.iov_len = MIN(r->buflen, req->cmd.xfer);
+>> +    if (r->iov.iov_len == 0) {
+>> +        scsi_req_complete(&r->req, GOOD);
+>> +    }
+>> +    if (r->req.cmd.mode == SCSI_XFER_TO_DEV) {
+>> +        assert(r->iov.iov_len == req->cmd.xfer);
+>> +        return -r->iov.iov_len;
+>> +    } else {
+>> +        return r->iov.iov_len;
+>> +    }
+>> +
+>> +illegal_request:
+>> +    if (r->req.status == -1) {
+>> +        scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
+>> +    }
+>> +    return 0;
+>> +}
+>> +
+>> +static void ufs_scsi_emulate_read_data(SCSIRequest *req)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +    int buflen = r->iov.iov_len;
+>> +
+>> +    if (buflen) {
+>> +        trace_ufs_scsi_emulate_read_data(buflen);
+>> +        r->iov.iov_len = 0;
+>> +        r->started = true;
+>> +        scsi_req_data(&r->req, buflen);
+>> +        return;
+>> +    }
+>> +
+>> +    /* This also clears the sense buffer for REQUEST SENSE.  */
+>> +    scsi_req_complete(&r->req, GOOD);
+>> +}
+>> +
+>> +static int ufs_scsi_check_mode_select(UfsLu *lu, int page, uint8_t *inbuf,
+>> +                                      int inlen)
+>> +{
+>> +    uint8_t mode_current[SCSI_MAX_MODE_LEN];
+>> +    uint8_t mode_changeable[SCSI_MAX_MODE_LEN];
+>> +    uint8_t *p;
+>> +    int len, expected_len, changeable_len, i;
+>> +
+>> +    /*
+>> +     * The input buffer does not include the page header, so it is
+>> +     * off by 2 bytes.
+>> +     */
+>> +    expected_len = inlen + 2;
+>> +    if (expected_len > SCSI_MAX_MODE_LEN) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    /* MODE_PAGE_ALLS is only valid for MODE SENSE commands */
+>> +    if (page == MODE_PAGE_ALLS) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    p = mode_current;
+>> +    memset(mode_current, 0, inlen + 2);
+>> +    len = mode_sense_page(lu, page, &p, 0);
+>> +    if (len < 0 || len != expected_len) {
+>> +        return -1;
+>> +    }
+>> +
+>> +    p = mode_changeable;
+>> +    memset(mode_changeable, 0, inlen + 2);
+>> +    changeable_len = mode_sense_page(lu, page, &p, 1);
+>> +    assert(changeable_len == len);
+>> +
+>> +    /*
+>> +     * Check that unchangeable bits are the same as what MODE SENSE
+>> +     * would return.
+>> +     */
+>> +    for (i = 2; i < len; i++) {
+>> +        if (((mode_current[i] ^ inbuf[i - 2]) & ~mode_changeable[i]) != 0) {
+>> +            return -1;
+>> +        }
+>> +    }
+>> +    return 0;
+>> +}
+>> +
+>> +static void ufs_scsi_apply_mode_select(UfsLu *lu, int page, uint8_t *p)
+>> +{
+>> +    switch (page) {
+>> +    case MODE_PAGE_CACHING:
+>> +        blk_set_enable_write_cache(lu->qdev.conf.blk, (p[0] & 4) != 0);
+>> +        break;
+>> +
+>> +    default:
+>> +        break;
+>> +    }
+>> +}
+>> +
+>> +static int mode_select_pages(UfsSCSIReq *r, uint8_t *p, int len, bool change)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    while (len > 0) {
+>> +        int page, page_len;
+>> +
+>> +        page = p[0] & 0x3f;
+>> +        if (p[0] & 0x40) {
+>> +            goto invalid_param;
+>> +        } else {
+>> +            if (len < 2) {
+>> +                goto invalid_param_len;
+>> +            }
+>> +            page_len = p[1];
+>> +            p += 2;
+>> +            len -= 2;
+>> +        }
+>> +
+>> +        if (page_len > len) {
+>> +            goto invalid_param_len;
+>> +        }
+>> +
+>> +        if (!change) {
+>> +            if (ufs_scsi_check_mode_select(lu, page, p, page_len) < 0) {
+>> +                goto invalid_param;
+>> +            }
+>> +        } else {
+>> +            ufs_scsi_apply_mode_select(lu, page, p);
+>> +        }
+>> +
+>> +        p += page_len;
+>> +        len -= page_len;
+>> +    }
+>> +    return 0;
+>> +
+>> +invalid_param:
+>> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM));
+>> +    return -1;
+>> +
+>> +invalid_param_len:
+>> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM_LEN));
+>> +    return -1;
+>> +}
+>> +
+>> +static void ufs_scsi_emulate_mode_select(UfsSCSIReq *r, uint8_t *inbuf)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +    uint8_t *p = inbuf;
+>> +    int len = r->req.cmd.xfer;
+>> +    int hdr_len = 8;
+>> +    int bd_len;
+>> +    int pass;
+>> +
+>> +    /* We only support PF=1, SP=0.  */
+>> +    if ((r->req.cmd.buf[1] & 0x11) != 0x10) {
+>> +        goto invalid_field;
+>> +    }
+>> +
+>> +    if (len < hdr_len) {
+>> +        goto invalid_param_len;
+>> +    }
+>> +
+>> +    bd_len = lduw_be_p(&p[6]);
+>> +    if (bd_len != 0) {
+>> +        goto invalid_param;
+>> +    }
+>> +
+>> +    len -= hdr_len;
+>> +    p += hdr_len;
+>> +
+>> +    /* Ensure no change is made if there is an error!  */
+>> +    for (pass = 0; pass < 2; pass++) {
+>> +        if (mode_select_pages(r, p, len, pass == 1) < 0) {
+>> +            assert(pass == 0);
+>> +            return;
+>> +        }
+>> +    }
+>> +
+>> +    if (!blk_enable_write_cache(lu->qdev.conf.blk)) {
+>> +        /* The request is used as the AIO opaque value, so add a ref.  */
+>> +        scsi_req_ref(&r->req);
+>> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
+>> +                         BLOCK_ACCT_FLUSH);
+>> +        r->req.aiocb = blk_aio_flush(lu->qdev.conf.blk, scsi_aio_complete, r);
+>> +        return;
+>> +    }
+>> +
+>> +    scsi_req_complete(&r->req, GOOD);
+>> +    return;
+>> +
+>> +invalid_param:
+>> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM));
+>> +    return;
+>> +
+>> +invalid_param_len:
+>> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM_LEN));
+>> +    return;
+>> +
+>> +invalid_field:
+>> +    scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
+>> +}
+>> +
+>> +/* sector_num and nb_sectors expected to be in qdev blocksize */
+>> +static inline bool check_lba_range(UfsLu *lu, uint64_t sector_num,
+>> +                                   uint32_t nb_sectors)
+>> +{
+>> +    /*
+>> +     * The first line tests that no overflow happens when computing the last
+>> +     * sector.  The second line tests that the last accessed sector is in
+>> +     * range.
+>> +     *
+>> +     * Careful, the computations should not underflow for nb_sectors == 0,
+>> +     * and a 0-block read to the first LBA beyond the end of device is
+>> +     * valid.
+>> +     */
+>> +    return (sector_num <= sector_num + nb_sectors &&
+>> +            sector_num + nb_sectors <= lu->qdev.max_lba + 1);
+>> +}
+>> +
+>> +static void ufs_scsi_emulate_write_data(SCSIRequest *req)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +
+>> +    if (r->iov.iov_len) {
+>> +        int buflen = r->iov.iov_len;
+>> +        trace_ufs_scsi_emulate_write_data(buflen);
+>> +        r->iov.iov_len = 0;
+>> +        scsi_req_data(&r->req, buflen);
+>> +        return;
+>> +    }
+>> +
+>> +    switch (req->cmd.buf[0]) {
+>> +    case MODE_SELECT_10:
+>> +        /* This also clears the sense buffer for REQUEST SENSE.  */
+>> +        ufs_scsi_emulate_mode_select(r, r->iov.iov_base);
+>> +        break;
+>> +    default:
+>> +        abort();
+>> +    }
+>> +}
+>> +
+>> +/* Return a pointer to the data buffer.  */
+>> +static uint8_t *ufs_scsi_get_buf(SCSIRequest *req)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +
+>> +    return (uint8_t *)r->iov.iov_base;
+>> +}
+>> +
+>> +static int32_t ufs_scsi_dma_command(SCSIRequest *req, uint8_t *buf)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, req->dev);
+>> +    uint32_t len;
+>> +    uint8_t command;
+>> +
+>> +    command = buf[0];
+>> +
+>> +    if (!blk_is_available(lu->qdev.conf.blk)) {
+>> +        scsi_check_condition(r, SENSE_CODE(NO_MEDIUM));
+>> +        return 0;
+>> +    }
+>> +
+>> +    len = scsi_data_cdb_xfer(r->req.cmd.buf);
+>> +    switch (command) {
+>> +    case READ_6:
+>> +    case READ_10:
+>> +        trace_ufs_scsi_dma_command_READ(r->req.cmd.lba, len);
+>> +        if (r->req.cmd.buf[1] & 0xe0) {
+>> +            goto illegal_request;
+>> +        }
+>> +        if (!check_lba_range(lu, r->req.cmd.lba, len)) {
+>> +            goto illegal_lba;
+>> +        }
+>> +        r->sector = r->req.cmd.lba * (lu->qdev.blocksize / BDRV_SECTOR_SIZE);
+>> +        r->sector_count = len * (lu->qdev.blocksize / BDRV_SECTOR_SIZE);
+>> +        break;
+>> +    case WRITE_6:
+>> +    case WRITE_10:
+>> +        trace_ufs_scsi_dma_command_WRITE(r->req.cmd.lba, len);
+>> +        if (!blk_is_writable(lu->qdev.conf.blk)) {
+>> +            scsi_check_condition(r, SENSE_CODE(WRITE_PROTECTED));
+>> +            return 0;
+>> +        }
+>> +        if (r->req.cmd.buf[1] & 0xe0) {
+>> +            goto illegal_request;
+>> +        }
+>> +        if (!check_lba_range(lu, r->req.cmd.lba, len)) {
+>> +            goto illegal_lba;
+>> +        }
+>> +        r->sector = r->req.cmd.lba * (lu->qdev.blocksize / BDRV_SECTOR_SIZE);
+>> +        r->sector_count = len * (lu->qdev.blocksize / BDRV_SECTOR_SIZE);
+>> +        break;
+>> +    default:
+>> +        abort();
+>> +    illegal_request:
+>> +        scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
+>> +        return 0;
+>> +    illegal_lba:
+>> +        scsi_check_condition(r, SENSE_CODE(LBA_OUT_OF_RANGE));
+>> +        return 0;
+>> +    }
+>> +    r->need_fua_emulation = ((r->req.cmd.buf[1] & 8) != 0);
+>> +    if (r->sector_count == 0) {
+>> +        scsi_req_complete(&r->req, GOOD);
+>> +    }
+>> +    assert(r->iov.iov_len == 0);
+>> +    if (r->req.cmd.mode == SCSI_XFER_TO_DEV) {
+>> +        return -r->sector_count * BDRV_SECTOR_SIZE;
+>> +    } else {
+>> +        return r->sector_count * BDRV_SECTOR_SIZE;
+>> +    }
+>> +}
+>> +
+>> +static void scsi_write_do_fua(UfsSCSIReq *r)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb == NULL);
+>> +    assert(!r->req.io_canceled);
+>> +
+>> +    if (r->need_fua_emulation) {
+>> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
+>> +                         BLOCK_ACCT_FLUSH);
+>> +        r->req.aiocb = blk_aio_flush(lu->qdev.conf.blk, scsi_aio_complete, r);
+>> +        return;
+>> +    }
+>> +
+>> +    scsi_req_complete(&r->req, GOOD);
+>> +    scsi_req_unref(&r->req);
+>> +}
+>> +
+>> +static void scsi_dma_complete_noio(UfsSCSIReq *r, int ret)
+>> +{
+>> +    assert(r->req.aiocb == NULL);
+>> +    if (ufs_scsi_req_check_error(r, ret, false)) {
+>> +        goto done;
+>> +    }
+>> +
+>> +    r->sector += r->sector_count;
+>> +    r->sector_count = 0;
+>> +    if (r->req.cmd.mode == SCSI_XFER_TO_DEV) {
+>> +        scsi_write_do_fua(r);
+>> +        return;
+>> +    } else {
+>> +        scsi_req_complete(&r->req, GOOD);
+>> +    }
+>> +
+>> +done:
+>> +    scsi_req_unref(&r->req);
+>> +}
+>> +
+>> +static void scsi_dma_complete(void *opaque, int ret)
+>> +{
+>> +    UfsSCSIReq *r = (UfsSCSIReq *)opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb != NULL);
+>> +    r->req.aiocb = NULL;
+>> +
+>> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
+>> +    if (ret < 0) {
+>> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    } else {
+>> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    }
+>> +    scsi_dma_complete_noio(r, ret);
+>> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
+>> +}
+>> +
+>> +static BlockAIOCB *scsi_dma_readv(int64_t offset, QEMUIOVector *iov,
+>> +                                  BlockCompletionFunc *cb, void *cb_opaque,
+>> +                                  void *opaque)
+>> +{
+>> +    UfsSCSIReq *r = opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +    return blk_aio_preadv(lu->qdev.conf.blk, offset, iov, 0, cb, cb_opaque);
+>> +}
+>> +
+>> +static void scsi_init_iovec(UfsSCSIReq *r, size_t size)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    if (!r->iov.iov_base) {
+>> +        r->buflen = size;
+>> +        r->iov.iov_base = blk_blockalign(lu->qdev.conf.blk, r->buflen);
+>> +    }
+>> +    r->iov.iov_len = MIN(r->sector_count * BDRV_SECTOR_SIZE, r->buflen);
+>> +    qemu_iovec_init_external(&r->qiov, &r->iov, 1);
+>> +}
+>> +
+>> +static void scsi_read_complete_noio(UfsSCSIReq *r, int ret)
+>> +{
+>> +    uint32_t n;
+>> +
+>> +    assert(r->req.aiocb == NULL);
+>> +    if (ufs_scsi_req_check_error(r, ret, false)) {
+>> +        goto done;
+>> +    }
+>> +
+>> +    n = r->qiov.size / BDRV_SECTOR_SIZE;
+>> +    r->sector += n;
+>> +    r->sector_count -= n;
+>> +    scsi_req_data(&r->req, r->qiov.size);
+>> +
+>> +done:
+>> +    scsi_req_unref(&r->req);
+>> +}
+>> +
+>> +static void scsi_read_complete(void *opaque, int ret)
+>> +{
+>> +    UfsSCSIReq *r = (UfsSCSIReq *)opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb != NULL);
+>> +    r->req.aiocb = NULL;
+>> +    trace_ufs_scsi_read_data_count(r->sector_count);
+>> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
+>> +    if (ret < 0) {
+>> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    } else {
+>> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +        trace_ufs_scsi_read_complete(r->req.tag, r->qiov.size);
+>> +    }
+>> +    scsi_read_complete_noio(r, ret);
+>> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
+>> +}
+>> +
+>> +/* Actually issue a read to the block device.  */
+>> +static void scsi_do_read(UfsSCSIReq *r, int ret)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb == NULL);
+>> +    if (ufs_scsi_req_check_error(r, ret, false)) {
+>> +        goto done;
+>> +    }
+>> +
+>> +    /* The request is used as the AIO opaque value, so add a ref.  */
+>> +    scsi_req_ref(&r->req);
+>> +
+>> +    if (r->req.sg) {
+>> +        dma_acct_start(lu->qdev.conf.blk, &r->acct, r->req.sg, BLOCK_ACCT_READ);
+>> +        r->req.residual -= r->req.sg->size;
+>> +        r->req.aiocb = dma_blk_io(
+>> +            blk_get_aio_context(lu->qdev.conf.blk), r->req.sg,
+>> +            r->sector << BDRV_SECTOR_BITS, BDRV_SECTOR_SIZE, scsi_dma_readv, r,
+>> +            scsi_dma_complete, r, DMA_DIRECTION_FROM_DEVICE);
+>> +    } else {
+>> +        scsi_init_iovec(r, SCSI_DMA_BUF_SIZE);
+>> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct,
+>> +                         r->qiov.size, BLOCK_ACCT_READ);
+>> +        r->req.aiocb = scsi_dma_readv(r->sector << BDRV_SECTOR_BITS, &r->qiov,
+>> +                                      scsi_read_complete, r, r);
+>> +    }
+>> +
+>> +done:
+>> +    scsi_req_unref(&r->req);
+>> +}
+>> +
+>> +static void scsi_do_read_cb(void *opaque, int ret)
+>> +{
+>> +    UfsSCSIReq *r = (UfsSCSIReq *)opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb != NULL);
+>> +    r->req.aiocb = NULL;
+>> +
+>> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
+>> +    if (ret < 0) {
+>> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    } else {
+>> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    }
+>> +    scsi_do_read(opaque, ret);
+>> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
+>> +}
+>> +
+>> +/* Read more data from scsi device into buffer.  */
+>> +static void scsi_read_data(SCSIRequest *req)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +    bool first;
+>> +
+>> +    trace_ufs_scsi_read_data_count(r->sector_count);
+>> +    if (r->sector_count == 0) {
+>> +        /* This also clears the sense buffer for REQUEST SENSE.  */
+>> +        scsi_req_complete(&r->req, GOOD);
+>> +        return;
+>> +    }
+>> +
+>> +    /* No data transfer may already be in progress */
+>> +    assert(r->req.aiocb == NULL);
+>> +
+>> +    /* The request is used as the AIO opaque value, so add a ref.  */
+>> +    scsi_req_ref(&r->req);
+>> +    if (r->req.cmd.mode == SCSI_XFER_TO_DEV) {
+>> +        trace_ufs_scsi_read_data_invalid();
+>> +        scsi_read_complete_noio(r, -EINVAL);
+>> +        return;
+>> +    }
+>> +
+>> +    if (!blk_is_available(req->dev->conf.blk)) {
+>> +        scsi_read_complete_noio(r, -ENOMEDIUM);
+>> +        return;
+>> +    }
+>> +
+>> +    first = !r->started;
+>> +    r->started = true;
+>> +    if (first && r->need_fua_emulation) {
+>> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
+>> +                         BLOCK_ACCT_FLUSH);
+>> +        r->req.aiocb = blk_aio_flush(lu->qdev.conf.blk, scsi_do_read_cb, r);
+>> +    } else {
+>> +        scsi_do_read(r, 0);
+>> +    }
+>> +}
+>> +
+>> +static void scsi_write_complete_noio(UfsSCSIReq *r, int ret)
+>> +{
+>> +    uint32_t n;
+>> +
+>> +    assert(r->req.aiocb == NULL);
+>> +    if (ufs_scsi_req_check_error(r, ret, false)) {
+>> +        goto done;
+>> +    }
+>> +
+>> +    n = r->qiov.size / BDRV_SECTOR_SIZE;
+>> +    r->sector += n;
+>> +    r->sector_count -= n;
+>> +    if (r->sector_count == 0) {
+>> +        scsi_write_do_fua(r);
+>> +        return;
+>> +    } else {
+>> +        scsi_init_iovec(r, SCSI_DMA_BUF_SIZE);
+>> +        trace_ufs_scsi_write_complete_noio(r->req.tag, r->qiov.size);
+>> +        scsi_req_data(&r->req, r->qiov.size);
+>> +    }
+>> +
+>> +done:
+>> +    scsi_req_unref(&r->req);
+>> +}
+>> +
+>> +static void scsi_write_complete(void *opaque, int ret)
+>> +{
+>> +    UfsSCSIReq *r = (UfsSCSIReq *)opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    assert(r->req.aiocb != NULL);
+>> +    r->req.aiocb = NULL;
+>> +
+>> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
+>> +    if (ret < 0) {
+>> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    } else {
+>> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
+>> +    }
+>> +    scsi_write_complete_noio(r, ret);
+>> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
+>> +}
+>> +
+>> +static BlockAIOCB *scsi_dma_writev(int64_t offset, QEMUIOVector *iov,
+>> +                                   BlockCompletionFunc *cb, void *cb_opaque,
+>> +                                   void *opaque)
+>> +{
+>> +    UfsSCSIReq *r = opaque;
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +    return blk_aio_pwritev(lu->qdev.conf.blk, offset, iov, 0, cb, cb_opaque);
+>> +}
+>> +
+>> +static void scsi_write_data(SCSIRequest *req)
+>> +{
+>> +    UfsSCSIReq *r = DO_UPCAST(UfsSCSIReq, req, req);
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, r->req.dev);
+>> +
+>> +    /* No data transfer may already be in progress */
+>> +    assert(r->req.aiocb == NULL);
+>> +
+>> +    /* The request is used as the AIO opaque value, so add a ref.  */
+>> +    scsi_req_ref(&r->req);
+>> +    if (r->req.cmd.mode != SCSI_XFER_TO_DEV) {
+>> +        trace_ufs_scsi_write_data_invalid();
+>> +        scsi_write_complete_noio(r, -EINVAL);
+>> +        return;
+>> +    }
+>> +
+>> +    if (!r->req.sg && !r->qiov.size) {
+>> +        /* Called for the first time.  Ask the driver to send us more data.  */
+>> +        r->started = true;
+>> +        scsi_write_complete_noio(r, 0);
+>> +        return;
+>> +    }
+>> +    if (!blk_is_available(req->dev->conf.blk)) {
+>> +        scsi_write_complete_noio(r, -ENOMEDIUM);
+>> +        return;
+>> +    }
+>> +
+>> +    if (r->req.sg) {
+>> +        dma_acct_start(lu->qdev.conf.blk, &r->acct, r->req.sg,
+>> +                       BLOCK_ACCT_WRITE);
+>> +        r->req.residual -= r->req.sg->size;
+>> +        r->req.aiocb = dma_blk_io(
+>> +            blk_get_aio_context(lu->qdev.conf.blk), r->req.sg,
+>> +            r->sector << BDRV_SECTOR_BITS, BDRV_SECTOR_SIZE, scsi_dma_writev, r,
+>> +            scsi_dma_complete, r, DMA_DIRECTION_TO_DEVICE);
+>> +    } else {
+>> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct,
+>> +                         r->qiov.size, BLOCK_ACCT_WRITE);
+>> +        r->req.aiocb = scsi_dma_writev(r->sector << BDRV_SECTOR_BITS, &r->qiov,
+>> +                                       scsi_write_complete, r, r);
+>> +    }
+>> +}
+>> +
+>> +static const SCSIReqOps ufs_scsi_emulate_reqops = {
+>> +    .size = sizeof(UfsSCSIReq),
+>> +    .free_req = ufs_scsi_free_request,
+>> +    .send_command = ufs_scsi_emulate_command,
+>> +    .read_data = ufs_scsi_emulate_read_data,
+>> +    .write_data = ufs_scsi_emulate_write_data,
+>> +    .get_buf = ufs_scsi_get_buf,
+>> +};
+>> +
+>> +static const SCSIReqOps ufs_scsi_dma_reqops = {
+>> +    .size = sizeof(UfsSCSIReq),
+>> +    .free_req = ufs_scsi_free_request,
+>> +    .send_command = ufs_scsi_dma_command,
+>> +    .read_data = scsi_read_data,
+>> +    .write_data = scsi_write_data,
+>> +    .get_buf = ufs_scsi_get_buf,
+>> +};
+>> +
+>> +/*
+>> + * Following commands are not yet supported
+>> + * PRE_FETCH(10),
+>> + * UNMAP,
+>> + * WRITE_BUFFER, READ_BUFFER,
+>> + * SECURITY_PROTOCOL_IN, SECURITY_PROTOCOL_OUT
+>> + */
+>> +static const SCSIReqOps *const ufs_scsi_reqops_dispatch[256] = {
+>> +    [TEST_UNIT_READY] = &ufs_scsi_emulate_reqops,
+>> +    [INQUIRY] = &ufs_scsi_emulate_reqops,
+>> +    [MODE_SENSE_10] = &ufs_scsi_emulate_reqops,
+>> +    [START_STOP] = &ufs_scsi_emulate_reqops,
+>> +    [READ_CAPACITY_10] = &ufs_scsi_emulate_reqops,
+>> +    [REQUEST_SENSE] = &ufs_scsi_emulate_reqops,
+>> +    [SYNCHRONIZE_CACHE] = &ufs_scsi_emulate_reqops,
+>> +    [MODE_SELECT_10] = &ufs_scsi_emulate_reqops,
+>> +    [VERIFY_10] = &ufs_scsi_emulate_reqops,
+>> +    [FORMAT_UNIT] = &ufs_scsi_emulate_reqops,
+>> +    [SERVICE_ACTION_IN_16] = &ufs_scsi_emulate_reqops,
+>> +    [SEND_DIAGNOSTIC] = &ufs_scsi_emulate_reqops,
+>> +
+>> +    [READ_6] = &ufs_scsi_dma_reqops,
+>> +    [READ_10] = &ufs_scsi_dma_reqops,
+>> +    [WRITE_6] = &ufs_scsi_dma_reqops,
+>> +    [WRITE_10] = &ufs_scsi_dma_reqops,
+>> +};
+>> +
+>> +static SCSIRequest *scsi_new_request(SCSIDevice *dev, uint32_t tag,
+>> +                                     uint32_t lun, uint8_t *buf,
+>> +                                     void *hba_private)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, dev);
+>> +    SCSIRequest *req;
+>> +    const SCSIReqOps *ops;
+>> +    uint8_t command;
+>> +
+>> +    command = buf[0];
+>> +    ops = ufs_scsi_reqops_dispatch[command];
+>> +    if (!ops) {
+>> +        ops = &ufs_scsi_emulate_reqops;
+>> +    }
+>> +    req = scsi_req_alloc(ops, &lu->qdev, tag, lun, hba_private);
+>> +
+>> +    return req;
+>> +}
+>> +
+>> +static Property ufs_lu_props[] = {
+>> +    DEFINE_PROP_DRIVE_IOTHREAD("drive", UfsLu, qdev.conf.blk),
+>> +    DEFINE_BLOCK_PROPERTIES_BASE(UfsLu, qdev.conf),
+>> +    DEFINE_BLOCK_ERROR_PROPERTIES(UfsLu, qdev.conf),
+>> +    DEFINE_PROP_END_OF_LIST(),
+>> +};
+>> +
+>> +static bool ufs_lu_brdv_init(UfsLu *lu, Error **errp)
+>> +{
+>> +    SCSIDevice *dev = &lu->qdev;
+>> +    bool read_only;
+>> +
+>> +    if (!lu->qdev.conf.blk) {
+>> +        error_setg(errp, "drive property not set");
+>> +        return false;
+>> +    }
+>> +
+>> +    if (!blkconf_blocksizes(&lu->qdev.conf, errp)) {
+>> +        return false;
+>> +    }
+>> +
+>> +    if (blk_get_aio_context(lu->qdev.conf.blk) != qemu_get_aio_context() &&
+>> +        !lu->qdev.hba_supports_iothread) {
+>> +        error_setg(errp, "HBA does not support iothreads");
+>> +        return false;
+>> +    }
+>> +
+>> +    read_only = !blk_supports_write_perm(lu->qdev.conf.blk);
+>> +
+>> +    if (!blkconf_apply_backend_options(&dev->conf, read_only,
+>> +                                       dev->type == TYPE_DISK, errp)) {
+>> +        return false;
+>> +    }
+>> +
+>> +    if (blk_is_sg(lu->qdev.conf.blk)) {
+>> +        error_setg(errp, "unwanted /dev/sg*");
+>> +        return false;
+>> +    }
+>> +
+>> +    blk_iostatus_enable(lu->qdev.conf.blk);
+>> +    return true;
+>> +}
+>> +
+>> +static bool ufs_add_lu(UfsHc *u, UfsLu *lu, Error **errp)
+>> +{
+>> +    BlockBackend *blk = lu->qdev.conf.blk;
+>> +    int64_t brdv_len = blk_getlength(blk);
+>> +    uint64_t raw_dev_cap =
+>> +        be64_to_cpu(u->geometry_desc.total_raw_device_capacity);
+>> +
+>> +    if (u->device_desc.number_lu >= UFS_MAX_LUS) {
+>> +        error_setg(errp, "ufs host controller has too many logical units.");
+>> +        return false;
+>> +    }
+>> +
+>> +    if (u->lus[lu->lun] != NULL) {
+>> +        error_setg(errp, "ufs logical unit %d already exists.", lu->lun);
+>> +        return false;
+>> +    }
+>> +
+>> +    u->lus[lu->lun] = lu;
+>> +    u->device_desc.number_lu++;
+>> +    raw_dev_cap += (brdv_len >> UFS_GEOMETRY_CAPACITY_SHIFT);
+>> +    u->geometry_desc.total_raw_device_capacity = cpu_to_be64(raw_dev_cap);
+>> +    return true;
+>> +}
+>> +
+>> +static inline uint8_t ufs_log2(uint64_t input)
+>> +{
+>> +    int log = 1;
+>> +    while (input >> log) {
+>> +        log++;
+>> +    }
+>> +    return log;
+>> +}
+>> +
+>> +static void ufs_init_lu(UfsLu *lu)
+>> +{
+>> +    BlockBackend *blk = lu->qdev.conf.blk;
+>> +    int64_t brdv_len = blk_getlength(blk);
+>> +
+>> +    lu->lun = lu->qdev.lun;
+>> +    memset(&lu->unit_desc, 0, sizeof(lu->unit_desc));
+>> +    lu->unit_desc.length = sizeof(UnitDescriptor);
+>> +    lu->unit_desc.descriptor_idn = QUERY_DESC_IDN_UNIT;
+>> +    lu->unit_desc.lu_enable = 0x01;
+>> +    lu->unit_desc.logical_block_size = ufs_log2(lu->qdev.blocksize);
+>> +    lu->unit_desc.unit_index = lu->qdev.lun;
+>> +    lu->unit_desc.logical_block_count =
+>> +        cpu_to_be64(brdv_len / (1 << lu->unit_desc.logical_block_size));
+>> +}
+>> +
+>> +static bool ufs_lu_check_constraints(UfsLu *lu, Error **errp)
+>> +{
+>> +    if (!blk_is_available(lu->qdev.conf.blk)) {
+>> +        error_setg(errp, "block backend not configured");
+>> +        return false;
+>> +    }
+>> +
+>> +    if (lu->qdev.channel != 0) {
+>> +        error_setg(errp, "ufs logical unit does not support channel");
+>> +        return false;
+>> +    }
+>> +
+>> +    if (lu->qdev.lun >= UFS_MAX_LUS) {
+>> +        error_setg(errp, "lun must be between 1 and %d", UFS_MAX_LUS - 1);
+>> +        return false;
+>> +    }
+>> +
+>> +    return true;
+>> +}
+>> +
+>> +static void ufs_lu_realize(SCSIDevice *dev, Error **errp)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, dev);
+>> +    BusState *s = qdev_get_parent_bus(&dev->qdev);
+>> +    UfsHc *u = UFS(s->parent);
+>> +    AioContext *ctx = NULL;
+>> +    uint64_t nb_sectors, nb_blocks;
+>> +
+>> +    if (!ufs_lu_check_constraints(lu, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (lu->qdev.conf.blk) {
+>> +        ctx = blk_get_aio_context(lu->qdev.conf.blk);
+>> +        aio_context_acquire(ctx);
+>> +        if (!blkconf_blocksizes(&lu->qdev.conf, errp)) {
+>> +            goto out;
+>> +        }
+>> +    }
+>> +    lu->qdev.blocksize = lu->qdev.conf.logical_block_size;
+>> +    blk_get_geometry(lu->qdev.conf.blk, &nb_sectors);
+>> +    nb_blocks = nb_sectors / (lu->qdev.blocksize / BDRV_SECTOR_SIZE) - 1;
+>> +    if (nb_blocks > UINT32_MAX) {
+>> +        nb_blocks = UINT32_MAX;
+>> +    }
+>> +    lu->qdev.max_lba = nb_blocks;
+>> +    lu->qdev.type = TYPE_DISK;
+>> +
+>> +    ufs_init_lu(lu);
+>> +    if (!ufs_add_lu(u, lu, errp)) {
+>> +        goto out;
+>> +    }
+>> +
+>> +    ufs_lu_brdv_init(lu, errp);
+>> +out:
+>> +    if (ctx) {
+>> +        aio_context_release(ctx);
+>> +    }
+>> +}
+>> +
+>> +static void ufs_lu_unrealize(SCSIDevice *dev)
+>> +{
+>> +    UfsLu *lu = DO_UPCAST(UfsLu, qdev, dev);
+>> +
+>> +    blk_drain(lu->qdev.conf.blk);
+>> +}
+>> +
+>> +static void ufs_wlu_realize(DeviceState *qdev, Error **errp)
+>> +{
+>> +    UfsWLu *wlu = UFSWLU(qdev);
+>> +    SCSIDevice *dev = &wlu->qdev;
+>> +
+>> +    if (!is_wlun(dev->lun)) {
+>> +        error_setg(errp, "not well-known logical unit number");
+>> +        return;
+>> +    }
+>> +
+>> +    QTAILQ_INIT(&dev->requests);
+>> +}
+>> +
+>> +static void ufs_lu_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(oc);
+>> +    SCSIDeviceClass *sc = SCSI_DEVICE_CLASS(oc);
+>> +
+>> +    sc->realize = ufs_lu_realize;
+>> +    sc->unrealize = ufs_lu_unrealize;
+>> +    sc->alloc_req = scsi_new_request;
+>> +    dc->bus_type = TYPE_UFS_BUS;
+>> +    device_class_set_props(dc, ufs_lu_props);
+>> +    dc->desc = "Virtual UFS logical unit";
+>> +}
+>> +
+>> +static void ufs_wlu_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(oc);
+>> +    SCSIDeviceClass *sc = SCSI_DEVICE_CLASS(oc);
+>> +
+>> +    /*
+>> +     * The realize() function of TYPE_SCSI_DEVICE causes a segmentation fault
+>> +     * if a block drive does not exist. Define a new realize function for
+>> +     * well-known LUs that do not have a block drive.
+>> +     */
+>> +    dc->realize = ufs_wlu_realize;
+>> +    sc->alloc_req = scsi_new_request;
+>> +    dc->bus_type = TYPE_UFS_BUS;
+>> +    dc->desc = "Virtual UFS well-known logical unit";
+>> +}
+>> +
+>> +static const TypeInfo ufs_lu_info = {
+>> +    .name = TYPE_UFS_LU,
+>> +    .parent = TYPE_SCSI_DEVICE,
+>> +    .class_init = ufs_lu_class_init,
+>> +    .instance_size = sizeof(UfsLu),
+>> +};
+>> +
+>> +static const TypeInfo ufs_wlu_info = {
+>> +    .name = TYPE_UFS_WLU,
+>> +    .parent = TYPE_SCSI_DEVICE,
+>> +    .class_init = ufs_wlu_class_init,
+>> +    .instance_size = sizeof(UfsWLu),
+>> +};
+>> +
+>> +static void ufs_lu_register_types(void)
+>> +{
+>> +    type_register_static(&ufs_lu_info);
+>> +    type_register_static(&ufs_wlu_info);
+>> +}
+>> +
+>> +type_init(ufs_lu_register_types)
+>> diff --git a/hw/ufs/meson.build b/hw/ufs/meson.build
+>> index c1d90eeea6..9953b4fd9b 100644
+>> --- a/hw/ufs/meson.build
+>> +++ b/hw/ufs/meson.build
+>> @@ -1 +1 @@
+>> -softmmu_ss.add(when: 'CONFIG_UFS_PCI', if_true: files('ufs.c'))
+>> +softmmu_ss.add(when: 'CONFIG_UFS_PCI', if_true: files('ufs.c', 'lu.c'))
+>> diff --git a/hw/ufs/trace-events b/hw/ufs/trace-events
+>> index 17793929b1..644a4c60bc 100644
+>> --- a/hw/ufs/trace-events
+>> +++ b/hw/ufs/trace-events
+>> @@ -12,6 +12,31 @@ ufs_exec_scsi_cmd(uint32_t slot, uint8_t lun, uint8_t opcode) "slot %"PRIu32", l
+>>  ufs_exec_query_cmd(uint32_t slot, uint8_t opcode) "slot %"PRIu32", opcode 0x%"PRIx8""
+>>  ufs_process_uiccmd(uint32_t uiccmd, uint32_t ucmdarg1, uint32_t ucmdarg2, uint32_t ucmdarg3) "uiccmd 0x%"PRIx32", ucmdarg1 0x%"PRIx32", ucmdarg2 0x%"PRIx32", ucmdarg3 0x%"PRIx32""
+>>  
+>> +# lu.c
+>> +ufs_scsi_check_condition(uint32_t tag, uint8_t key, uint8_t asc, uint8_t ascq) "Command complete tag=0x%x sense=%d/%d/%d"
+>> +ufs_scsi_read_complete(uint32_t tag, size_t size) "Data ready tag=0x%x len=%zd"
+>> +ufs_scsi_read_data_count(uint32_t sector_count) "Read sector_count=%d"
+>> +ufs_scsi_read_data_invalid(void) "Data transfer direction invalid"
+>> +ufs_scsi_write_complete_noio(uint32_t tag, size_t size) "Write complete tag=0x%x more=%zd"
+>> +ufs_scsi_write_data_invalid(void) "Data transfer direction invalid"
+>> +ufs_scsi_emulate_vpd_page_00(size_t xfer) "Inquiry EVPD[Supported pages] buffer size %zd"
+>> +ufs_scsi_emulate_vpd_page_80_not_supported(void) "Inquiry EVPD[Serial number] not supported"
+>> +ufs_scsi_emulate_vpd_page_80(size_t xfer) "Inquiry EVPD[Serial number] buffer size %zd"
+>> +ufs_scsi_emulate_vpd_page_87(size_t xfer) "Inquiry EVPD[Mode Page Policy] buffer size %zd"
+>> +ufs_scsi_emulate_mode_sense(int cmd, int page, size_t xfer, int control) "Mode Sense(%d) (page %d, xfer %zd, page_control %d)"
+>> +ufs_scsi_emulate_read_data(int buflen) "Read buf_len=%d"
+>> +ufs_scsi_emulate_write_data(int buflen) "Write buf_len=%d"
+>> +ufs_scsi_emulate_command_START_STOP(void) "START STOP UNIT"
+>> +ufs_scsi_emulate_command_FORMAT_UNIT(void) "FORMAT UNIT"
+>> +ufs_scsi_emulate_command_SEND_DIAGNOSTIC(void) "SEND DIAGNOSTIC"
+>> +ufs_scsi_emulate_command_SAI_16(void) "SAI READ CAPACITY(16)"
+>> +ufs_scsi_emulate_command_SAI_unsupported(void) "Unsupported Service Action In"
+>> +ufs_scsi_emulate_command_MODE_SELECT_10(size_t xfer) "Mode Select(10) (len %zd)"
+>> +ufs_scsi_emulate_command_VERIFY(int bytchk) "Verify (bytchk %d)"
+>> +ufs_scsi_emulate_command_UNKNOWN(int cmd, const char *name) "Unknown SCSI command (0x%2.2x=%s)"
+>> +ufs_scsi_dma_command_READ(uint64_t lba, uint32_t len) "Read (block %" PRIu64 ", count %u)"
+>> +ufs_scsi_dma_command_WRITE(uint64_t lba, int len) "Write (block %" PRIu64 ", count %u)"
+>> +
+>>  # error condition
+>>  ufs_err_memory_allocation(void) "failed to allocate memory"
+>>  ufs_err_dma_read_utrd(uint32_t slot, uint64_t addr) "failed to read utrd. UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
+>> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+>> index 10ecc8cd7b..d17f75446a 100644
+>> --- a/hw/ufs/ufs.c
+>> +++ b/hw/ufs/ufs.c
+>> @@ -8,6 +8,19 @@
+>>   * This code is licensed under the GNU GPL v2 or later.
+>>   */
+>>  
+>> +/**
+>> + * Reference Specs: https://protect2.fireeye.com/v1/url?k=eaa18e87-8b2a9bb4-eaa005c8-000babff9bb7-8dba191136b00dda&q=1&e=7e262b13-a0d3-4218-8710-562dce8a5176&u=https%3A%2F%2Fwww.jedec.org%2F, 3.1
+>> + *
+>> + * Usage
+>> + * -----
+>> + *
+>> + * Add options:
+>> + *      -drive file=<file>,if=none,id=<drive_id>
+>> + *      -device ufs,serial=<serial>,id=<bus_name>, \
+>> + *              nutrs=<N[optional]>,nutmrs=<N[optional]>
+>> + *      -device ufs-lu,drive=<drive_id>,bus=<bus_name>
+>> + */
+>> +
+>>  #include "qemu/osdep.h"
+>>  #include "qapi/error.h"
+>>  #include "migration/vmstate.h"
+>> @@ -459,6 +472,19 @@ static const MemoryRegionOps ufs_mmio_ops = {
+>>      },
+>>  };
+>>  
+>> +static QEMUSGList *ufs_get_sg_list(SCSIRequest *scsi_req)
+>> +{
+>> +    UfsRequest *req = scsi_req->hba_private;
+>> +    return req->sg;
+>> +}
+>> +
+>> +static void ufs_build_upiu_sense_data(UfsRequest *req, SCSIRequest *scsi_req)
+>> +{
+>> +    req->rsp_upiu.sr.sense_data_len = cpu_to_be16(scsi_req->sense_len);
+>> +    assert(scsi_req->sense_len <= SCSI_SENSE_LEN);
+>> +    memcpy(req->rsp_upiu.sr.sense_data, scsi_req->sense, scsi_req->sense_len);
+>> +}
+>> +
+>>  static void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type,
+>>                                    uint8_t flags, uint8_t response,
+>>                                    uint8_t scsi_status,
+>> @@ -472,6 +498,98 @@ static void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type,
+>>      req->rsp_upiu.header.data_segment_length = cpu_to_be16(data_segment_length);
+>>  }
+>>  
+>> +static void ufs_scsi_command_complete(SCSIRequest *scsi_req, size_t resid)
+>> +{
+>> +    UfsRequest *req = scsi_req->hba_private;
+>> +    int16_t status = scsi_req->status;
+>> +    uint32_t expected_len = be32_to_cpu(req->req_upiu.sc.exp_data_transfer_len);
+>> +    uint32_t transfered_len = scsi_req->cmd.xfer - resid;
+>> +    uint8_t flags = 0, response = COMMAND_RESULT_SUCESS;
+>> +    uint16_t data_segment_length;
+>> +
+>> +    if (expected_len > transfered_len) {
+>> +        req->rsp_upiu.sr.residual_transfer_count =
+>> +            cpu_to_be32(expected_len - transfered_len);
+>> +        flags |= UFS_UPIU_FLAG_UNDERFLOW;
+>> +    } else if (expected_len < transfered_len) {
+>> +        req->rsp_upiu.sr.residual_transfer_count =
+>> +            cpu_to_be32(transfered_len - expected_len);
+>> +        flags |= UFS_UPIU_FLAG_OVERFLOW;
+>> +    }
+>> +
+>> +    if (status != 0) {
+>> +        ufs_build_upiu_sense_data(req, scsi_req);
+>> +        response = COMMAND_RESULT_FAIL;
+>> +    }
+>> +
+>> +    data_segment_length = cpu_to_be16(scsi_req->sense_len +
+>> +                                      sizeof(req->rsp_upiu.sr.sense_data_len));
+>> +    ufs_build_upiu_header(req, UPIU_TRANSACTION_RESPONSE, flags, response,
+>> +                          status, data_segment_length);
+>> +
+>> +    ufs_complete_req(req, UFS_REQUEST_SUCCESS);
+>> +
+>> +    scsi_req->hba_private = NULL;
+>> +    scsi_req_unref(scsi_req);
+>> +}
+>> +
+>> +static const struct SCSIBusInfo ufs_scsi_info = {
+>> +    .tcq = true,
+>> +    .max_target = 0,
+>> +    .max_lun = UFS_MAX_LUS,
+>> +    .max_channel = 0,
+>> +
+>> +    .get_sg_list = ufs_get_sg_list,
+>> +    .complete = ufs_scsi_command_complete,
+>> +};
+>> +
+>> +static UfsReqResult ufs_exec_scsi_cmd(UfsRequest *req)
+>> +{
+>> +    UfsHc *u = req->hc;
+>> +    uint8_t lun = req->req_upiu.header.lun;
+>> +    uint8_t task_tag = req->req_upiu.header.task_tag;
+>> +    SCSIDevice *dev = NULL;
+>> +
+>> +    trace_ufs_exec_scsi_cmd(req->slot, lun, req->req_upiu.sc.cdb[0]);
+>> +
+>> +    if (!is_wlun(lun)) {
+>> +        if (lun >= u->device_desc.number_lu) {
+>> +            trace_ufs_err_scsi_cmd_invalid_lun(lun);
+>> +            return UFS_REQUEST_ERROR;
+>> +        } else if (u->lus[lun] == NULL) {
+>> +            trace_ufs_err_scsi_cmd_invalid_lun(lun);
+>> +            return UFS_REQUEST_ERROR;
+>> +        }
+>> +    }
+>> +
+>> +    switch (lun) {
+>> +    case UFS_UPIU_REPORT_LUNS_WLUN:
+>> +        dev = &u->report_wlu->qdev;
+>> +        break;
+>> +    case UFS_UPIU_UFS_DEVICE_WLUN:
+>> +        dev = &u->dev_wlu->qdev;
+>> +        break;
+>> +    case UFS_UPIU_BOOT_WLUN:
+>> +        dev = &u->boot_wlu->qdev;
+>> +        break;
+>> +    case UFS_UPIU_RPMB_WLUN:
+>> +        dev = &u->rpmb_wlu->qdev;
+>> +        break;
+>> +    default:
+>> +        dev = &u->lus[lun]->qdev;
+>> +    }
+>> +
+>> +    SCSIRequest *scsi_req = scsi_req_new(
+>> +        dev, task_tag, lun, req->req_upiu.sc.cdb, UFS_CDB_SIZE, req);
+>> +
+>> +    uint32_t len = scsi_req_enqueue(scsi_req);
+>> +    if (len) {
+>> +        scsi_req_continue(scsi_req);
+>> +    }
+>> +
+>> +    return UFS_REQUEST_NO_COMPLETE;
+>> +}
+>> +
+>>  static UfsReqResult ufs_exec_nop_cmd(UfsRequest *req)
+>>  {
+>>      trace_ufs_exec_nop_cmd(req->slot);
+>> @@ -749,9 +867,11 @@ static const RpmbUnitDescriptor rpmb_unit_desc = {
+>>  
+>>  static QueryRespCode ufs_read_unit_desc(UfsRequest *req)
+>>  {
+>> +    UfsHc *u = req->hc;
+>>      uint8_t lun = req->req_upiu.qr.index;
+>>  
+>> -    if (lun != UFS_UPIU_RPMB_WLUN && lun > UFS_MAX_LUS) {
+>> +    if (lun != UFS_UPIU_RPMB_WLUN &&
+>> +        (lun > UFS_MAX_LUS || u->lus[lun] == NULL)) {
+>>          trace_ufs_err_query_invalid_index(req->req_upiu.qr.opcode, lun);
+>>          return QUERY_RESULT_INVALID_INDEX;
+>>      }
+>> @@ -759,8 +879,8 @@ static QueryRespCode ufs_read_unit_desc(UfsRequest *req)
+>>      if (lun == UFS_UPIU_RPMB_WLUN) {
+>>          memcpy(&req->rsp_upiu.qr.data, &rpmb_unit_desc, rpmb_unit_desc.length);
+>>      } else {
+>> -        /* unit descriptor is not yet supported */
+>> -        return QUERY_RESULT_INVALID_INDEX;
+>> +        memcpy(&req->rsp_upiu.qr.data, &u->lus[lun]->unit_desc,
+>> +               sizeof(u->lus[lun]->unit_desc));
+>>      }
+>>  
+>>      return QUERY_RESULT_SUCCESS;
+>> @@ -976,8 +1096,7 @@ static void ufs_exec_req(UfsRequest *req)
+>>          req_result = ufs_exec_nop_cmd(req);
+>>          break;
+>>      case UPIU_TRANSACTION_COMMAND:
+>> -        /* Not yet implemented */
+>> -        req_result = UFS_REQUEST_ERROR;
+>> +        req_result = ufs_exec_scsi_cmd(req);
+>>          break;
+>>      case UPIU_TRANSACTION_QUERY_REQ:
+>>          req_result = ufs_exec_query_cmd(req);
+>> @@ -988,7 +1107,14 @@ static void ufs_exec_req(UfsRequest *req)
+>>          req_result = UFS_REQUEST_ERROR;
+>>      }
+>>  
+>> -    ufs_complete_req(req, req_result);
+>> +    /*
+>> +     * The ufs_complete_req for scsi commands is handled by the
+>> +     * ufs_scsi_command_complete() callback function. Therefore, to avoid
+>> +     * duplicate processing, ufs_complete_req() is not called for scsi commands.
+>> +     */
+>> +    if (req_result != UFS_REQUEST_NO_COMPLETE) {
+>> +        ufs_complete_req(req, req_result);
+>> +    }
+>>  }
+>>  
+>>  static void ufs_process_req(void *opaque)
+>> @@ -1202,6 +1328,28 @@ static void ufs_init_hc(UfsHc *u)
+>>      u->flags.permanently_disable_fw_update = 1;
+>>  }
+>>  
+>> +static bool ufs_init_wlu(UfsHc *u, UfsWLu **wlu, uint8_t wlun, Error **errp)
+>> +{
+>> +    UfsWLu *new_wlu = UFSWLU(qdev_new(TYPE_UFS_WLU));
+>> +
+>> +    qdev_prop_set_uint32(DEVICE(new_wlu), "lun", wlun);
+>> +
+>> +    /*
+>> +     * The well-known lu shares the same bus as the normal lu. If the well-known
+>> +     * lu writes the same channel value as the normal lu, the report will be
+>> +     * made not only for the normal lu but also for the well-known lu at
+>> +     * REPORT_LUN time. To prevent this, the channel value of normal lu is fixed
+>> +     * to 0 and the channel value of well-known lu is fixed to 1.
+>> +     */
+>> +    qdev_prop_set_uint32(DEVICE(new_wlu), "channel", 1);
+>> +    if (!qdev_realize_and_unref(DEVICE(new_wlu), BUS(&u->bus), errp)) {
+>> +        return false;
+>> +    }
+>> +
+>> +    *wlu = new_wlu;
+>> +    return true;
+>> +}
+>> +
+>>  static void ufs_realize(PCIDevice *pci_dev, Error **errp)
+>>  {
+>>      UfsHc *u = UFS(pci_dev);
+>> @@ -1210,15 +1358,55 @@ static void ufs_realize(PCIDevice *pci_dev, Error **errp)
+>>          return;
+>>      }
+>>  
+>> +    qbus_init(&u->bus, sizeof(UfsBus), TYPE_UFS_BUS, &pci_dev->qdev,
+>> +              u->parent_obj.qdev.id);
+>> +    u->bus.parent_bus.info = &ufs_scsi_info;
+>> +
+>>      ufs_init_state(u);
+>>      ufs_init_hc(u);
+>>      ufs_init_pci(u, pci_dev);
+>> +
+>> +    if (!ufs_init_wlu(u, &u->report_wlu, UFS_UPIU_REPORT_LUNS_WLUN, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!ufs_init_wlu(u, &u->dev_wlu, UFS_UPIU_UFS_DEVICE_WLUN, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!ufs_init_wlu(u, &u->boot_wlu, UFS_UPIU_BOOT_WLUN, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!ufs_init_wlu(u, &u->rpmb_wlu, UFS_UPIU_RPMB_WLUN, errp)) {
+>> +        return;
+>> +    }
+>>  }
+>>  
+>>  static void ufs_exit(PCIDevice *pci_dev)
+>>  {
+>>      UfsHc *u = UFS(pci_dev);
+>>  
+>> +    if (u->dev_wlu) {
+>> +        object_unref(OBJECT(u->dev_wlu));
+>> +        u->dev_wlu = NULL;
+>> +    }
+>> +
+>> +    if (u->report_wlu) {
+>> +        object_unref(OBJECT(u->report_wlu));
+>> +        u->report_wlu = NULL;
+>> +    }
+>> +
+>> +    if (u->rpmb_wlu) {
+>> +        object_unref(OBJECT(u->rpmb_wlu));
+>> +        u->rpmb_wlu = NULL;
+>> +    }
+>> +
+>> +    if (u->boot_wlu) {
+>> +        object_unref(OBJECT(u->boot_wlu));
+>> +        u->boot_wlu = NULL;
+>> +    }
+>> +
+>>      qemu_bh_delete(u->doorbell_bh);
+>>      qemu_bh_delete(u->complete_bh);
+>>  
+>> @@ -1255,6 +1443,49 @@ static void ufs_class_init(ObjectClass *oc, void *data)
+>>      dc->vmsd = &ufs_vmstate;
+>>  }
+>>  
+>> +static bool ufs_bus_check_address(BusState *qbus, DeviceState *qdev,
+>> +                                  Error **errp)
+>> +{
+>> +    SCSIDevice *dev = SCSI_DEVICE(qdev);
+>> +    UfsBusClass *ubc = UFS_BUS_GET_CLASS(qbus);
+>> +    UfsHc *u = UFS(qbus->parent);
+>> +
+>> +    if (strcmp(object_get_typename(OBJECT(dev)), TYPE_UFS_WLU) == 0) {
+>> +        if (dev->lun != UFS_UPIU_REPORT_LUNS_WLUN &&
+>> +            dev->lun != UFS_UPIU_UFS_DEVICE_WLUN &&
+>> +            dev->lun != UFS_UPIU_BOOT_WLUN && dev->lun != UFS_UPIU_RPMB_WLUN) {
+>> +            error_setg(errp, "bad well-known lun: %d", dev->lun);
+>> +            return false;
+>> +        }
+>> +
+>> +        if ((dev->lun == UFS_UPIU_REPORT_LUNS_WLUN && u->report_wlu != NULL) ||
+>> +            (dev->lun == UFS_UPIU_UFS_DEVICE_WLUN && u->dev_wlu != NULL) ||
+>> +            (dev->lun == UFS_UPIU_BOOT_WLUN && u->boot_wlu != NULL) ||
+>> +            (dev->lun == UFS_UPIU_RPMB_WLUN && u->rpmb_wlu != NULL)) {
+>> +            error_setg(errp, "well-known lun %d already exists", dev->lun);
+>> +            return false;
+>> +        }
+>> +
+>> +        return true;
+>> +    }
+>> +
+>> +    if (strcmp(object_get_typename(OBJECT(dev)), TYPE_UFS_LU) != 0) {
+>> +        error_setg(errp, "%s cannot be connected to ufs-bus",
+>> +                   object_get_typename(OBJECT(dev)));
+>> +        return false;
+>> +    }
+>> +
+>> +    return ubc->parent_check_address(qbus, qdev, errp);
+>> +}
+>> +
+>> +static void ufs_bus_class_init(ObjectClass *class, void *data)
+>> +{
+>> +    BusClass *bc = BUS_CLASS(class);
+>> +    UfsBusClass *ubc = UFS_BUS_CLASS(class);
+>> +    ubc->parent_check_address = bc->check_address;
+>> +    bc->check_address = ufs_bus_check_address;
+>> +}
+>> +
+>>  static const TypeInfo ufs_info = {
+>>      .name = TYPE_UFS,
+>>      .parent = TYPE_PCI_DEVICE,
+>> @@ -1263,9 +1494,18 @@ static const TypeInfo ufs_info = {
+>>      .interfaces = (InterfaceInfo[]){ { INTERFACE_PCIE_DEVICE }, {} },
+>>  };
+>>  
+>> +static const TypeInfo ufs_bus_info = {
+>> +    .name = TYPE_UFS_BUS,
+>> +    .parent = TYPE_SCSI_BUS,
+>> +    .class_init = ufs_bus_class_init,
+>> +    .class_size = sizeof(UfsBusClass),
+>> +    .instance_size = sizeof(UfsBus),
+>> +};
+>> +
+>>  static void ufs_register_types(void)
+>>  {
+>>      type_register_static(&ufs_info);
+>> +    type_register_static(&ufs_bus_info);
+>>  }
+>>  
+>>  type_init(ufs_register_types)
+>> diff --git a/hw/ufs/ufs.h b/hw/ufs/ufs.h
+>> index 5d4fd818f9..6d2dc000e9 100644
+>> --- a/hw/ufs/ufs.h
+>> +++ b/hw/ufs/ufs.h
+>> @@ -18,6 +18,18 @@
+>>  #define UFS_MAX_LUS 32
+>>  #define UFS_LOGICAL_BLK_SIZE 4096
+>>  
+>> +typedef struct UfsBusClass {
+>> +    BusClass parent_class;
+>> +    bool (*parent_check_address)(BusState *bus, DeviceState *dev, Error **errp);
+>> +} UfsBusClass;
+>> +
+>> +typedef struct UfsBus {
+>> +    SCSIBus parent_bus;
+>> +} UfsBus;
+>> +
+>> +#define TYPE_UFS_BUS "ufs-bus"
+>> +DECLARE_OBJ_CHECKERS(UfsBus, UfsBusClass, UFS_BUS, TYPE_UFS_BUS)
+>> +
+>>  typedef enum UfsRequestState {
+>>      UFS_REQUEST_IDLE = 0,
+>>      UFS_REQUEST_READY = 1,
+>> @@ -28,6 +40,7 @@ typedef enum UfsRequestState {
+>>  typedef enum UfsReqResult {
+>>      UFS_REQUEST_SUCCESS = 0,
+>>      UFS_REQUEST_ERROR = 1,
+>> +    UFS_REQUEST_NO_COMPLETE = 2,
+>>  } UfsReqResult;
+>>  
+>>  typedef struct UfsRequest {
+>> @@ -43,6 +56,17 @@ typedef struct UfsRequest {
+>>      QEMUSGList *sg;
+>>  } UfsRequest;
+>>  
+>> +typedef struct UfsLu {
+>> +    SCSIDevice qdev;
+>> +    uint8_t lun;
+>> +    UnitDescriptor unit_desc;
+>> +} UfsLu;
+>> +
+>> +typedef struct UfsWLu {
+>> +    SCSIDevice qdev;
+>> +    uint8_t lun;
+>> +} UfsWLu;
+>> +
+>>  typedef struct UfsParams {
+>>      char *serial;
+>>      uint8_t nutrs; /* Number of UTP Transfer Request Slots */
+>> @@ -51,12 +75,18 @@ typedef struct UfsParams {
+>>  
+>>  typedef struct UfsHc {
+>>      PCIDevice parent_obj;
+>> +    UfsBus bus;
+>>      MemoryRegion iomem;
+>>      UfsReg reg;
+>>      UfsParams params;
+>>      uint32_t reg_size;
+>>      UfsRequest *req_list;
+>>  
+>> +    UfsLu *lus[UFS_MAX_LUS];
+>> +    UfsWLu *report_wlu;
+>> +    UfsWLu *dev_wlu;
+>> +    UfsWLu *boot_wlu;
+>> +    UfsWLu *rpmb_wlu;
+>>      DeviceDescriptor device_desc;
+>>      GeometryDescriptor geometry_desc;
+>>      Attributes attributes;
+>> @@ -70,6 +100,12 @@ typedef struct UfsHc {
+>>  #define TYPE_UFS "ufs"
+>>  #define UFS(obj) OBJECT_CHECK(UfsHc, (obj), TYPE_UFS)
+>>  
+>> +#define TYPE_UFS_LU "ufs-lu"
+>> +#define UFSLU(obj) OBJECT_CHECK(UfsLu, (obj), TYPE_UFS_LU)
+>> +
+>> +#define TYPE_UFS_WLU "ufs-wlu"
+>> +#define UFSWLU(obj) OBJECT_CHECK(UfsWLu, (obj), TYPE_UFS_WLU)
+>> +
+>>  typedef enum UfsQueryFlagPerm {
+>>      UFS_QUERY_FLAG_NONE = 0x0,
+>>      UFS_QUERY_FLAG_READ = 0x1,
+>> @@ -84,4 +120,11 @@ typedef enum UfsQueryAttrPerm {
+>>      UFS_QUERY_ATTR_WRITE = 0x2,
+>>  } UfsQueryAttrPerm;
+>>  
+>> +static inline bool is_wlun(uint8_t lun)
+>> +{
+>> +    return (lun == UFS_UPIU_REPORT_LUNS_WLUN ||
+>> +            lun == UFS_UPIU_UFS_DEVICE_WLUN || lun == UFS_UPIU_BOOT_WLUN ||
+>> +            lun == UFS_UPIU_RPMB_WLUN);
+>> +}
+>> +
+>>  #endif /* HW_UFS_UFS_H */
+>> diff --git a/include/scsi/constants.h b/include/scsi/constants.h
+>> index 6a8bad556a..9b98451912 100644
+>> --- a/include/scsi/constants.h
+>> +++ b/include/scsi/constants.h
+>> @@ -231,6 +231,7 @@
+>>  #define MODE_PAGE_FLEXIBLE_DISK_GEOMETRY      0x05
+>>  #define MODE_PAGE_CACHING                     0x08
+>>  #define MODE_PAGE_AUDIO_CTL                   0x0e
+>> +#define MODE_PAGE_CONTROL                     0x0a
+>>  #define MODE_PAGE_POWER                       0x1a
+>>  #define MODE_PAGE_FAULT_FAIL                  0x1c
+>>  #define MODE_PAGE_TO_PROTECT                  0x1d
+>> -- 
+>> 2.34.1
+>> 
 
