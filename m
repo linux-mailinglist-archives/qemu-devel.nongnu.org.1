@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F26735997
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3278873599D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFsm-0000cY-7M; Mon, 19 Jun 2023 10:29:28 -0400
+	id 1qBFsl-0000bU-Cm; Mon, 19 Jun 2023 10:29:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsi-0000aD-Q0
+ id 1qBFsi-0000aC-Om
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:24 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsg-0002C8-Jv
+ id 1qBFsg-0002CN-OM
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:24 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4f867700f36so2395275e87.0
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f9b1a117caso7703345e9.0
  for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687184961; x=1689776961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Hv0rchOEEfJPVEoDeEXmaUe1CECfSOxYqHxG0bO7LPk=;
- b=yN8zbjoZ01J/E/bTph9yxu/8RGmfJw99jLqBMAPzKZ6YSINjZ0gzbZnsO0N3ptWqpD
- Tf8+UtoNz9P16zVSA/xvHPwGF1jqm7ZVTeBm1YU9kVrw2k1J4qvUauz66Bt0G+RR2K9b
- xxEaCY5oCfnyeF/1ku6TMIq2VVrPOpdfRT+v8bbhBMhw2QVgghFX5KsgX5pHxgcCqlJ9
- 9X5a3jXj63f8O3cojGbEGwheykPg08OXa7GCC9I1PLaxzpdL5KSvMzz53FN7LMB1bz/b
- kNjjvllVKYGZXMjOO6aN4Fu2IiLZgFTmFMi8f/LKV5XSwewmn5Ev/E8O8CGWuvnF/eqU
- /JaA==
+ :reply-to; bh=SdGx08aoksaLp21YxsKPPHNcMRVUjRR75hXQYQOrgY4=;
+ b=IAJRk+C6GWSGPogaUp/RbEq6dXH07m7t1SSErcVbtYlZFb0STpYbcufmNMCdvHPE61
+ ZpYicsezUW6YnS9YheybYNID+oKTbwlQxQ+8Zkx1wjwu7xwyoFKjL6adtSf7XD91EAYy
+ ikPXVvRDU2VxLEftDkWLqfwi0xNUy3C/4IEAWEe4s810zNgXekwaVp/HkM9HzXXO8vOI
+ JV1OBzCyPjQ6uwIYtZFuvedw7dUEblXtjQ0VSDyXiej9+QGBF43q9EGo2W8LSIKBOI3s
+ bcQKzEipNxrhqyCOS4Bb+tIaXYt7YYuezs79xzTs77okvRsYchQQ10lSJ3OeaLqFE2tS
+ rSZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687184961; x=1689776961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hv0rchOEEfJPVEoDeEXmaUe1CECfSOxYqHxG0bO7LPk=;
- b=jqkkuzhHaf5ChQ0Qjq79j4NFjz1unuIQSiw5zxolMTyAssbvtomQCWoI2CPWXO0ccT
- 3DY9+0xfCCFXWdzV8RlsW9oKQDo473dqYuiqmZFwoRiQOrlyKQfJ16Ghlb6nldpFIDVJ
- ZpnVJv7sj7g6R+PcHWGfK2ZhjYZnBNS/EiziOM/dOSIU6NetabRrTZwBRbNsdLw0waSY
- ZHvqZ0ASZ9JdepKNHYsvJmyr8O0X1EWJ7i+cXG8CWmB2fyyGRHWKgCWkch4ERwFLp9mQ
- X2HN0xYC7dsiEMxwkoGP5fdUrRpT8juAHfejLdjRjdFNGCSVsqWrmrrJ5GfCBeMpKVZQ
- KtJA==
-X-Gm-Message-State: AC+VfDwiOT40YmteGBKMRXrMqImR7BYwwPvpe7tcKoAppiCmjIX+OPJv
- Q0Bs5XPi3m9WHWGh0LUetKpsmrLdzeDBfDr7dlU=
-X-Google-Smtp-Source: ACHHUZ5j3f1v/s90ClXfwrZfFWOnhsgmnt5EvtdNpyqajDhjyUktr9h8T5m4Q5Ev3MbdSgXtuyyfZA==
-X-Received: by 2002:a19:f201:0:b0:4f7:42de:3a8f with SMTP id
- q1-20020a19f201000000b004f742de3a8fmr4899376lfh.56.1687184960929; 
- Mon, 19 Jun 2023 07:29:20 -0700 (PDT)
+ bh=SdGx08aoksaLp21YxsKPPHNcMRVUjRR75hXQYQOrgY4=;
+ b=ZNawbRvCVSVUUjxfKhoIOe53YpB8yzS6UO6V0RMxZ3h9454q37DB1RnVmt+IK9iWPU
+ Ccc2wVpgJW9nkLlOJCl7dd1TRZFer+CMC5YSSA8AeO20hOEpZ9j5OiNXqhle2mJYPVv7
+ 17WlDmiSh90B+0fyuvOf5TnKe9hUuK3yuQWk1oV1302nUTdREZN8fsASuUwvCFMGagVJ
+ OAXr0vmjNnhCY3Aov/4DRJiB9kb92TPuO3EifuITqLt36ieUBz5GtY7FoFIQY2soR9HU
+ 3+p+8jUz5tgAhH/oIf2qxH81kmbN5SJhgKZwhR+3Omm33xbIxkk3BQJvXbFhzLFylCZD
+ stfw==
+X-Gm-Message-State: AC+VfDwdLjt5vy1mzz/FHkuSlL0ZvUw2CuKRAYB/TLCxES9dN34LNhkb
+ ktw+dqe8OdN4fmj52RzjKtzxk7B8pJzQnjEAOy4=
+X-Google-Smtp-Source: ACHHUZ7ihJBdRvOMN0rSa+qGhG90A4MsF6Z7o38TCjbMHZ6FPOnis0F/GG7GO2E3PYOkQUm2qkjDDw==
+X-Received: by 2002:a1c:7405:0:b0:3f9:b05a:90b6 with SMTP id
+ p5-20020a1c7405000000b003f9b05a90b6mr1882331wmc.36.1687184961429; 
+ Mon, 19 Jun 2023 07:29:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.20
+ a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 07:29:20 -0700 (PDT)
+ Mon, 19 Jun 2023 07:29:21 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/33] target/arm: Convert exception generation instructions to
+Subject: [PULL 11/33] target/arm: Convert load/store exclusive and ordered to
  decodetree
-Date: Mon, 19 Jun 2023 15:28:51 +0100
-Message-Id: <20230619142914.963184-11-peter.maydell@linaro.org>
+Date: Mon, 19 Jun 2023 15:28:52 +0100
+Message-Id: <20230619142914.963184-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,242 +91,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the exception generation instructions SVC, HVC, SMC, BRK and
-HLT to decodetree.
+Convert the instructions in the load/store exclusive (STXR,
+STLXR, LDXR, LDAXR) and load/store ordered (STLR, STLLR,
+LDAR, LDLAR) to decodetree.
 
-The old decoder decoded the halting-debug insnns DCPS1, DCPS2 and
-DCPS3 just in order to then make them UNDEF; as with DRPS, we don't
-bother to decode them, but document the patterns in a64.decode.
+Note that for STLR, STLLR, LDAR, LDLAR this fixes an under-decoding
+in the legacy decoder where we were not checking that the RES1 bits
+in the Rs and Rt2 fields were set.
+
+The new function ldst_iss_sf() is equivalent to the existing
+disas_ldst_compute_iss_sf(), but it takes the pre-decoded 'ext' field
+rather than taking an undecoded two-bit opc field and extracting
+'ext' from it. Once all the loads and stores have been converted
+to decodetree disas_ldst_compute_iss_sf() will be unused and
+can be deleted.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-8-peter.maydell@linaro.org
+Message-id: 20230602155223.2040685-9-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  15 +++
- target/arm/tcg/translate-a64.c | 173 ++++++++++++---------------------
- 2 files changed, 79 insertions(+), 109 deletions(-)
+ target/arm/tcg/a64.decode      |  11 +++
+ target/arm/tcg/translate-a64.c | 154 ++++++++++++++++++++-------------
+ 2 files changed, 103 insertions(+), 62 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index c49215cca8d..eeaca08ae83 100644
+index eeaca08ae83..c5894fc06d2 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -215,3 +215,18 @@ MSR_i_SVCR      1101 0101 0000 0 011 0100 0 mask:2 imm:1 011 11111
- SYS             1101 0101 00 l:1 01 op1:3 crn:4 crm:4 op2:3 rt:5 op0=1
- SYS             1101 0101 00 l:1 10 op1:3 crn:4 crm:4 op2:3 rt:5 op0=2
- SYS             1101 0101 00 l:1 11 op1:3 crn:4 crm:4 op2:3 rt:5 op0=3
+@@ -230,3 +230,14 @@ HLT             1101 0100 010 ................ 000 00 @i16
+ # DCPS1         1101 0100 101 ................ 000 01 @i16
+ # DCPS2         1101 0100 101 ................ 000 10 @i16
+ # DCPS3         1101 0100 101 ................ 000 11 @i16
 +
-+# Exception generation
++# Loads and stores
 +
-+@i16            .... .... ... imm:16           ... .. &i
-+SVC             1101 0100 000 ................ 000 01 @i16
-+HVC             1101 0100 000 ................ 000 10 @i16
-+SMC             1101 0100 000 ................ 000 11 @i16
-+BRK             1101 0100 001 ................ 000 00 @i16
-+HLT             1101 0100 010 ................ 000 00 @i16
-+# These insns always UNDEF unless in halting debug state, which
-+# we don't implement. So we don't need to decode them. The patterns
-+# are listed here as documentation.
-+# DCPS1         1101 0100 101 ................ 000 01 @i16
-+# DCPS2         1101 0100 101 ................ 000 10 @i16
-+# DCPS3         1101 0100 101 ................ 000 11 @i16
++&stxr           rn rt rt2 rs sz lasr
++&stlr           rn rt sz lasr
++@stxr           sz:2 ...... ... rs:5 lasr:1 rt2:5 rn:5 rt:5 &stxr
++@stlr           sz:2 ...... ... ..... lasr:1 ..... rn:5 rt:5 &stlr
++STXR            .. 001000 000 ..... . ..... ..... ..... @stxr  # inc STLXR
++LDXR            .. 001000 010 ..... . ..... ..... ..... @stxr  # inc LDAXR
++STLR            .. 001000 100 11111 . 11111 ..... ..... @stlr  # inc STLLR
++LDAR            .. 001000 110 11111 . 11111 ..... ..... @stlr  # inc LDLAR
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 74a389da4a7..a2a71b4062f 100644
+index a2a71b4062f..1ba2d6a75e4 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -2313,119 +2313,77 @@ static bool trans_SYS(DisasContext *s, arg_SYS *a)
-     return true;
+@@ -2652,6 +2652,95 @@ static bool disas_ldst_compute_iss_sf(int size, bool is_signed, int opc)
+     return regsize == 64;
  }
  
--/* Exception generation
-- *
-- *  31             24 23 21 20                     5 4   2 1  0
-- * +-----------------+-----+------------------------+-----+----+
-- * | 1 1 0 1 0 1 0 0 | opc |          imm16         | op2 | LL |
-- * +-----------------------+------------------------+----------+
-- */
--static void disas_exc(DisasContext *s, uint32_t insn)
-+static bool trans_SVC(DisasContext *s, arg_i *a)
- {
--    int opc = extract32(insn, 21, 3);
--    int op2_ll = extract32(insn, 0, 5);
--    int imm16 = extract32(insn, 5, 16);
--    uint32_t syndrome;
--
--    switch (opc) {
--    case 0:
--        /* For SVC, HVC and SMC we advance the single-step state
--         * machine before taking the exception. This is architecturally
--         * mandated, to ensure that single-stepping a system call
--         * instruction works properly.
--         */
--        switch (op2_ll) {
--        case 1:                                                     /* SVC */
--            syndrome = syn_aa64_svc(imm16);
--            if (s->fgt_svc) {
--                gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
--                break;
--            }
--            gen_ss_advance(s);
--            gen_exception_insn(s, 4, EXCP_SWI, syndrome);
--            break;
--        case 2:                                                     /* HVC */
--            if (s->current_el == 0) {
--                unallocated_encoding(s);
--                break;
--            }
--            /* The pre HVC helper handles cases when HVC gets trapped
--             * as an undefined insn by runtime configuration.
--             */
--            gen_a64_update_pc(s, 0);
--            gen_helper_pre_hvc(cpu_env);
--            gen_ss_advance(s);
--            gen_exception_insn_el(s, 4, EXCP_HVC, syn_aa64_hvc(imm16), 2);
--            break;
--        case 3:                                                     /* SMC */
--            if (s->current_el == 0) {
--                unallocated_encoding(s);
--                break;
--            }
--            gen_a64_update_pc(s, 0);
--            gen_helper_pre_smc(cpu_env, tcg_constant_i32(syn_aa64_smc(imm16)));
--            gen_ss_advance(s);
--            gen_exception_insn_el(s, 4, EXCP_SMC, syn_aa64_smc(imm16), 3);
--            break;
--        default:
--            unallocated_encoding(s);
--            break;
--        }
--        break;
--    case 1:
--        if (op2_ll != 0) {
--            unallocated_encoding(s);
--            break;
--        }
--        /* BRK */
--        gen_exception_bkpt_insn(s, syn_aa64_bkpt(imm16));
--        break;
--    case 2:
--        if (op2_ll != 0) {
--            unallocated_encoding(s);
--            break;
--        }
--        /* HLT. This has two purposes.
--         * Architecturally, it is an external halting debug instruction.
--         * Since QEMU doesn't implement external debug, we treat this as
--         * it is required for halting debug disabled: it will UNDEF.
--         * Secondly, "HLT 0xf000" is the A64 semihosting syscall instruction.
--         */
--        if (semihosting_enabled(s->current_el == 0) && imm16 == 0xf000) {
--            gen_exception_internal_insn(s, EXCP_SEMIHOST);
--        } else {
--            unallocated_encoding(s);
--        }
--        break;
--    case 5:
--        if (op2_ll < 1 || op2_ll > 3) {
--            unallocated_encoding(s);
--            break;
--        }
--        /* DCPS1, DCPS2, DCPS3 */
--        unallocated_encoding(s);
--        break;
--    default:
--        unallocated_encoding(s);
--        break;
-+    /*
-+     * For SVC, HVC and SMC we advance the single-step state
-+     * machine before taking the exception. This is architecturally
-+     * mandated, to ensure that single-stepping a system call
-+     * instruction works properly.
-+     */
-+    uint32_t syndrome = syn_aa64_svc(a->imm);
-+    if (s->fgt_svc) {
-+        gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
-+        return true;
-     }
-+    gen_ss_advance(s);
-+    gen_exception_insn(s, 4, EXCP_SWI, syndrome);
-+    return true;
- }
- 
--/* Branches, exception generating and system instructions */
--static void disas_b_exc_sys(DisasContext *s, uint32_t insn)
-+static bool trans_HVC(DisasContext *s, arg_i *a)
- {
--    switch (extract32(insn, 25, 7)) {
--    case 0x6a: /* Exception generation / System */
--        if (insn & (1 << 24)) {
--            unallocated_encoding(s);
--        } else {
--            disas_exc(s, insn);
--        }
--        break;
--    default:
-+    if (s->current_el == 0) {
-         unallocated_encoding(s);
--        break;
-+        return true;
-     }
-+    /*
-+     * The pre HVC helper handles cases when HVC gets trapped
-+     * as an undefined insn by runtime configuration.
-+     */
-+    gen_a64_update_pc(s, 0);
-+    gen_helper_pre_hvc(cpu_env);
-+    /* Architecture requires ss advance before we do the actual work */
-+    gen_ss_advance(s);
-+    gen_exception_insn_el(s, 4, EXCP_HVC, syn_aa64_hvc(a->imm), 2);
-+    return true;
-+}
-+
-+static bool trans_SMC(DisasContext *s, arg_i *a)
++static bool ldst_iss_sf(int size, bool sign, bool ext)
 +{
-+    if (s->current_el == 0) {
-+        unallocated_encoding(s);
-+        return true;
-+    }
-+    gen_a64_update_pc(s, 0);
-+    gen_helper_pre_smc(cpu_env, tcg_constant_i32(syn_aa64_smc(a->imm)));
-+    /* Architecture requires ss advance before we do the actual work */
-+    gen_ss_advance(s);
-+    gen_exception_insn_el(s, 4, EXCP_SMC, syn_aa64_smc(a->imm), 3);
-+    return true;
-+}
 +
-+static bool trans_BRK(DisasContext *s, arg_i *a)
-+{
-+    gen_exception_bkpt_insn(s, syn_aa64_bkpt(a->imm));
-+    return true;
-+}
-+
-+static bool trans_HLT(DisasContext *s, arg_i *a)
-+{
-+    /*
-+     * HLT. This has two purposes.
-+     * Architecturally, it is an external halting debug instruction.
-+     * Since QEMU doesn't implement external debug, we treat this as
-+     * it is required for halting debug disabled: it will UNDEF.
-+     * Secondly, "HLT 0xf000" is the A64 semihosting syscall instruction.
-+     */
-+    if (semihosting_enabled(s->current_el == 0) && a->imm == 0xf000) {
-+        gen_exception_internal_insn(s, EXCP_SEMIHOST);
++    if (sign) {
++        /*
++         * Signed loads are 64 bit results if we are not going to
++         * do a zero-extend from 32 to 64 after the load.
++         * (For a store, sign and ext are always false.)
++         */
++        return !ext;
 +    } else {
-+        unallocated_encoding(s);
++        /* Unsigned loads/stores work at the specified size */
++        return size == MO_64;
++    }
++}
++
++static bool trans_STXR(DisasContext *s, arg_stxr *a)
++{
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++    if (a->lasr) {
++        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++    }
++    gen_store_exclusive(s, a->rs, a->rt, a->rt2, a->rn, a->sz, false);
++    return true;
++}
++
++static bool trans_LDXR(DisasContext *s, arg_stxr *a)
++{
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++    gen_load_exclusive(s, a->rt, a->rt2, a->rn, a->sz, false);
++    if (a->lasr) {
++        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
 +    }
 +    return true;
- }
++}
++
++static bool trans_STLR(DisasContext *s, arg_stlr *a)
++{
++    TCGv_i64 clean_addr;
++    MemOp memop;
++    bool iss_sf = ldst_iss_sf(a->sz, false, false);
++
++    /*
++     * StoreLORelease is the same as Store-Release for QEMU, but
++     * needs the feature-test.
++     */
++    if (!a->lasr && !dc_isar_feature(aa64_lor, s)) {
++        return false;
++    }
++    /* Generate ISS for non-exclusive accesses including LASR.  */
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
++    memop = check_ordered_align(s, a->rn, 0, true, a->sz);
++    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn),
++                                true, a->rn != 31, memop);
++    do_gpr_st(s, cpu_reg(s, a->rt), clean_addr, memop, true, a->rt,
++              iss_sf, a->lasr);
++    return true;
++}
++
++static bool trans_LDAR(DisasContext *s, arg_stlr *a)
++{
++    TCGv_i64 clean_addr;
++    MemOp memop;
++    bool iss_sf = ldst_iss_sf(a->sz, false, false);
++
++    /* LoadLOAcquire is the same as Load-Acquire for QEMU.  */
++    if (!a->lasr && !dc_isar_feature(aa64_lor, s)) {
++        return false;
++    }
++    /* Generate ISS for non-exclusive accesses including LASR.  */
++    if (a->rn == 31) {
++        gen_check_sp_alignment(s);
++    }
++    memop = check_ordered_align(s, a->rn, 0, false, a->sz);
++    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn),
++                                false, a->rn != 31, memop);
++    do_gpr_ld(s, cpu_reg(s, a->rt), clean_addr, memop, false, true,
++              a->rt, iss_sf, a->lasr);
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
++    return true;
++}
++
+ /* Load/store exclusive
+  *
+  *  31 30 29         24  23  22   21  20  16  15  14   10 9    5 4    0
+@@ -2674,70 +2763,8 @@ static void disas_ldst_excl(DisasContext *s, uint32_t insn)
+     int is_lasr = extract32(insn, 15, 1);
+     int o2_L_o1_o0 = extract32(insn, 21, 3) * 2 | is_lasr;
+     int size = extract32(insn, 30, 2);
+-    TCGv_i64 clean_addr;
+-    MemOp memop;
  
- /*
-@@ -14188,9 +14146,6 @@ static bool btype_destination_ok(uint32_t insn, bool bt, int btype)
- static void disas_a64_legacy(DisasContext *s, uint32_t insn)
- {
-     switch (extract32(insn, 25, 4)) {
--    case 0xa: case 0xb: /* Branch, exception generation and system insns */
--        disas_b_exc_sys(s, insn);
--        break;
-     case 0x4:
-     case 0x6:
-     case 0xc:
+     switch (o2_L_o1_o0) {
+-    case 0x0: /* STXR */
+-    case 0x1: /* STLXR */
+-        if (rn == 31) {
+-            gen_check_sp_alignment(s);
+-        }
+-        if (is_lasr) {
+-            tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
+-        }
+-        gen_store_exclusive(s, rs, rt, rt2, rn, size, false);
+-        return;
+-
+-    case 0x4: /* LDXR */
+-    case 0x5: /* LDAXR */
+-        if (rn == 31) {
+-            gen_check_sp_alignment(s);
+-        }
+-        gen_load_exclusive(s, rt, rt2, rn, size, false);
+-        if (is_lasr) {
+-            tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+-        }
+-        return;
+-
+-    case 0x8: /* STLLR */
+-        if (!dc_isar_feature(aa64_lor, s)) {
+-            break;
+-        }
+-        /* StoreLORelease is the same as Store-Release for QEMU.  */
+-        /* fall through */
+-    case 0x9: /* STLR */
+-        /* Generate ISS for non-exclusive accesses including LASR.  */
+-        if (rn == 31) {
+-            gen_check_sp_alignment(s);
+-        }
+-        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
+-        memop = check_ordered_align(s, rn, 0, true, size);
+-        clean_addr = gen_mte_check1(s, cpu_reg_sp(s, rn),
+-                                    true, rn != 31, memop);
+-        do_gpr_st(s, cpu_reg(s, rt), clean_addr, memop, true, rt,
+-                  disas_ldst_compute_iss_sf(size, false, 0), is_lasr);
+-        return;
+-
+-    case 0xc: /* LDLAR */
+-        if (!dc_isar_feature(aa64_lor, s)) {
+-            break;
+-        }
+-        /* LoadLOAcquire is the same as Load-Acquire for QEMU.  */
+-        /* fall through */
+-    case 0xd: /* LDAR */
+-        /* Generate ISS for non-exclusive accesses including LASR.  */
+-        if (rn == 31) {
+-            gen_check_sp_alignment(s);
+-        }
+-        memop = check_ordered_align(s, rn, 0, false, size);
+-        clean_addr = gen_mte_check1(s, cpu_reg_sp(s, rn),
+-                                    false, rn != 31, memop);
+-        do_gpr_ld(s, cpu_reg(s, rt), clean_addr, memop, false, true,
+-                  rt, disas_ldst_compute_iss_sf(size, false, 0), is_lasr);
+-        tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ);
+-        return;
+-
+     case 0x2: case 0x3: /* CASP / STXP */
+         if (size & 2) { /* STXP / STLXP */
+             if (rn == 31) {
+@@ -2787,6 +2814,9 @@ static void disas_ldst_excl(DisasContext *s, uint32_t insn)
+             return;
+         }
+         break;
++    default:
++        /* Handled in decodetree */
++        break;
+     }
+     unallocated_encoding(s);
+ }
 -- 
 2.34.1
 
