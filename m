@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B46F7359AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0047359A8
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:34:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFti-0002LQ-4O; Mon, 19 Jun 2023 10:30:26 -0400
+	id 1qBFte-00024v-CP; Mon, 19 Jun 2023 10:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFss-0000ef-LW
+ id 1qBFss-0000ee-LJ
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:36 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsp-0002Gi-Aw
+ id 1qBFsp-0002Gs-BP
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:33 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f9002a1a39so19964235e9.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:29 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f90b8acefeso15542395e9.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687184969; x=1689776969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MmGNmH8MdwxGE6tW13V4FAIDv1rJBSbOYavkF0+ToBY=;
- b=xwGgUekKwmHsgQwM+wLcF4p3ZuRMqDeLXnHUq/qhBEy0LLE7JBb6ZIVKMDFiWGlZYt
- 3jP1wDjiyfexzrmYC+RrLh9yDptfwAcAGYqQ15OkSdKnE463IDlGh2SpBzEZWtUhLleY
- 8iKe+3vC6u+veiHvYr278fmkoEJwLF16x5rULGLck5kWw1V+smElk35x3I/TILh1+gAK
- n1Q/BE+J1Avl76eaEeTAFbwROIG52AvFHxAid3JhTMKFz8VMWKm1+qpUSinYFh+Nykol
- h3pIpoT6cwD2pECRKvt98F8S/MXQ/FaSP9bVs0xKXr49htxMemi7/dEt8cL2JF7ft47k
- Q0yg==
+ :reply-to; bh=NI6UwYNEBMwFDagdkUVm7AUEy/k4n7TnuACIpknFIYg=;
+ b=sp70xA4RWw5A6piT8JSXreZF6x7BoillK9qDflhBejeIebW+SWvMNpk1uCwxfNbZam
+ 1j8Gi4ctBF1PF2wJYpRQx4hXekKWxz+7Q2WiqDPbaddzcW7sHP3/IgLn4nq0H4/Cu91M
+ DjxwHsoRVTkL0hOEwHnhU2l7S4YVmyrRHC7JYgwj4jDBZ9xYgwbaOMJwRgQ4/t4pOYOb
+ Ukl1q6YBqzs5j8l+FjHlfTSFw7R8iXXTQ06piVwWTqLI9X4f5LEUj6662tbNicaHb8YL
+ ePk3/F039k12wNj4iNCcBNU++SLtF7O4QQsNlKx4Jvfv9EGsh+469TA7rZ4f5YppMw/S
+ DCOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687184969; x=1689776969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MmGNmH8MdwxGE6tW13V4FAIDv1rJBSbOYavkF0+ToBY=;
- b=KmwLCnsNfe8tQlnvlbdXi0+0VboJcQPl/V5cVeANF9XoOnOyLNTyJkrBDN991s7tHB
- 0ayv877RgOvB0SbZO8rMLe8a4Vi5277/ArrYSxYgKuB8AUUqALZfGXsPbBuiEYZL75L1
- KRuZpm2tOtoyoxYEHmZ8ec8xevnH6Pk/oEYEDnkGXs6UwpYjUXkd612ctrstV0EDU8pI
- BMZAgjAEllZJhGsx2g5cckX5ysjhZ4U4fd3ZzO2XtwAqh2UtwkE7QCtAXEXR6fbiZiRe
- g9+SH1kuuEFYRw21hW7YWwBYDU0NT7fu30sriAyH82Szyc3MPCio21xnfm/xEUwMNnD1
- g/8g==
-X-Gm-Message-State: AC+VfDxLMHmzk3NiCHBerD1h2aZmqkOdbLvUVtomtmuqYZw19WTM3LAi
- B4BCG8pO8kwCMEsfzuT+TmhSxRl5BGPKfywgILM=
-X-Google-Smtp-Source: ACHHUZ6ZP+lsSzDGEEBPzEwwuz3tLwkDv127ahGD9L7SfeFda5dUzdaSONaYPj3vozPC08DsaXmIkw==
-X-Received: by 2002:a1c:7514:0:b0:3f8:fe2a:25c2 with SMTP id
- o20-20020a1c7514000000b003f8fe2a25c2mr5644661wmc.38.1687184968944; 
- Mon, 19 Jun 2023 07:29:28 -0700 (PDT)
+ bh=NI6UwYNEBMwFDagdkUVm7AUEy/k4n7TnuACIpknFIYg=;
+ b=chl4X45QE+p2aq5Gtg6EnRyFr9aVybYIOKRsaVtpEmFfup5cd4s5ae2LFPLlbWWH1W
+ nQ4LuwbM4EH1/BEQlNKYafuRuscx9nv8Nbi/fGNNvGD/hkjOPnfivzZItH417vgQJQOR
+ ViSSgD2DaOAwZuGo0yelGxGHjLnN2VjlC6jnTi3uFlABkFimApsfNGfGqIhC20UY36Qp
+ IbcC1c9r7wn8MrGq00rf0aKkWbIWKdHeKfHpInSue7YQvwMdp5Ud9qGOD+e/rBH2xiG0
+ zwXNEUS//KlBGfQ5rjmPvBj6etkDsurcWtrmTAtFN1FTAXJKd3iShoMF3HE3xrVedTsz
+ 8Vpg==
+X-Gm-Message-State: AC+VfDztpar/aH3M+WGSQ4LAW9R5YAzegNIUh0C6T4KduG0BQ+y5kNHD
+ 2XFvb/boP763zcWbINM5+3g0Yz5qsjq0E81h4rM=
+X-Google-Smtp-Source: ACHHUZ4uR6zDvnEjZDitR8995SosALGXNHWSCkmh+SCftWScnYjSsHeywI9AmpeqT3fmwYexJO6mcA==
+X-Received: by 2002:a1c:7904:0:b0:3f9:5db4:e8d8 with SMTP id
+ l4-20020a1c7904000000b003f95db4e8d8mr2706758wme.18.1687184969307; 
+ Mon, 19 Jun 2023 07:29:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.28
+ a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 07:29:28 -0700 (PDT)
+ Mon, 19 Jun 2023 07:29:29 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/33] imx_serial: set wake bit when we receive a data byte
-Date: Mon, 19 Jun 2023 15:29:09 +0100
-Message-Id: <20230619142914.963184-29-peter.maydell@linaro.org>
+Subject: [PULL 29/33] docs: sbsa: document board to firmware interface
+Date: Mon, 19 Jun 2023 15:29:10 +0100
+Message-Id: <20230619142914.963184-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,69 +91,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-The Linux kernel added a flood check for RX data recently in commit
-496a4471b7c3 ("serial: imx: work-around for hardware RX flood"). This
-check uses the wake bit in the UART status register 2. The wake bit
-indicates that the receiver detected a start bit on the RX line. If the
-kernel sees a number of RX interrupts without the wake bit being set, it
-treats this as spurious data and resets the UART port. imx_serial does
-never set the wake bit and triggers the kernel's flood check.
+We plan to add more hardware information into DeviceTree to limit amount
+of hardcoded values in firmware.
 
-This patch adds support for the wake bit. wake is set when we receive a
-new character (it's not set for break events). It seems that wake is
-cleared by the kernel driver, the hardware does not have to clear it
-automatically after data was read.
-
-The wake bit can be configured as an interrupt source. Support this
-mechanism as well.
-
-Co-developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-id: 20230531171834.236569-1-marcin.juszkiewicz@linaro.org
+[PMM: fix format nits, add text about platform version fields from
+ a comment in the C source file]
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/char/imx_serial.h | 1 +
- hw/char/imx_serial.c         | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ docs/system/arm/sbsa.rst | 38 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
-index 91c9894ad55..b823f945195 100644
---- a/include/hw/char/imx_serial.h
-+++ b/include/hw/char/imx_serial.h
-@@ -71,6 +71,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
+index 016776aed82..f571fe645e7 100644
+--- a/docs/system/arm/sbsa.rst
++++ b/docs/system/arm/sbsa.rst
+@@ -6,12 +6,7 @@ any real hardware the ``sbsa-ref`` board intends to look like real
+ hardware. The `Server Base System Architecture
+ <https://developer.arm.com/documentation/den0029/latest>`_ defines a
+ minimum base line of hardware support and importantly how the firmware
+-reports that to any operating system. It is a static system that
+-reports a very minimal DT to the firmware for non-discoverable
+-information about components affected by the qemu command line (i.e.
+-cpus and memory). As a result it must have a firmware specifically
+-built to expect a certain hardware layout (as you would in a real
+-machine).
++reports that to any operating system.
  
- #define UCR4_DREN       BIT(0)    /* Receive Data Ready interrupt enable */
- #define UCR4_TCEN       BIT(3)    /* TX complete interrupt enable */
-+#define UCR4_WKEN       BIT(7)    /* WAKE interrupt enable */
+ It is intended to be a machine for developing firmware and testing
+ standards compliance with operating systems.
+@@ -19,7 +14,7 @@ standards compliance with operating systems.
+ Supported devices
+ """""""""""""""""
  
- #define UTS1_TXEMPTY    (1<<6)
- #define UTS1_RXEMPTY    (1<<5)
-diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
-index ee1375e26d7..1b75a895881 100644
---- a/hw/char/imx_serial.c
-+++ b/hw/char/imx_serial.c
-@@ -80,7 +80,7 @@ static void imx_update(IMXSerialState *s)
-      * TCEN and TXDC are both bit 3
-      * RDR and DREN are both bit 0
-      */
--    mask |= s->ucr4 & (UCR4_TCEN | UCR4_DREN);
-+    mask |= s->ucr4 & (UCR4_WKEN | UCR4_TCEN | UCR4_DREN);
+-The sbsa-ref board supports:
++The ``sbsa-ref`` board supports:
  
-     usr2 = s->usr2 & mask;
+   - A configurable number of AArch64 CPUs
+   - GIC version 3
+@@ -30,3 +25,32 @@ The sbsa-ref board supports:
+   - Bochs display adapter on PCIe bus
+   - A generic SBSA watchdog device
  
-@@ -321,6 +321,9 @@ static void imx_put_data(void *opaque, uint32_t value)
- 
- static void imx_receive(void *opaque, const uint8_t *buf, int size)
- {
-+    IMXSerialState *s = (IMXSerialState *)opaque;
 +
-+    s->usr2 |= USR2_WAKE;
-     imx_put_data(opaque, *buf);
- }
- 
++Board to firmware interface
++"""""""""""""""""""""""""""
++
++``sbsa-ref`` is a static system that reports a very minimal devicetree to the
++firmware for non-discoverable information about system components. This
++includes both internal hardware and parts affected by the qemu command line
++(i.e. CPUs and memory). As a result it must have a firmware specifically built
++to expect a certain hardware layout (as you would in a real machine).
++
++DeviceTree information
++''''''''''''''''''''''
++
++The devicetree provided by the board model to the firmware is not intended
++to be a complete compliant DT. It currently reports:
++
++   - CPUs
++   - memory
++   - platform version
++   - GIC addresses
++
++The platform version is only for informing platform firmware about
++what kind of ``sbsa-ref`` board it is running on. It is neither
++a QEMU versioned machine type nor a reflection of the level of the
++SBSA/SystemReady SR support provided.
++
++The ``machine-version-major`` value is updated when changes breaking
++fw compatibility are introduced. The ``machine-version-minor`` value
++is updated when features are added that don't break fw compatibility.
 -- 
 2.34.1
 
