@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D6A73587E
+	by mail.lfdr.de (Postfix) with ESMTPS id B48AA73587F
 	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:27:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBEtR-0000Ry-3F; Mon, 19 Jun 2023 09:26:05 -0400
+	id 1qBEtm-0000X1-BN; Mon, 19 Jun 2023 09:26:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBEtF-0000RS-UP
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:25:54 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBEtf-0000WT-U2
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:26:19 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBEtE-0007nA-D6
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:25:53 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9741caaf9d4so420943666b.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:25:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBEtd-0007yE-Sl
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:26:19 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-51a1d539ffaso6641923a12.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687181150; x=1689773150;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=EzMr6N2DSG+x4yjs5VDDLx4neEvdpghxE9jkpPNpTyo=;
- b=gHToEPu2Z/siSiboNWwDUvVGiDszlXZcz0qTSpL72zggDnDOeY5e58OQxXWBsgs3ha
- V2DtSng+VDJ7N7IMiFS6p2Ae7PkdoEHJdLBq8EB5w/X/y7oeJ9oeygjlFoLnfaqEQu1l
- ZfJSeUoqzRCFyKQM6IO8GJ+m5h0mY0ABuApvUoxtDzfqm6kFVWq3T1UwM8It/Rvr88cv
- 5wZ+yVX436eI3rV8LKHus6tGnV6fiWZAmqkEFIyN0w3EJ645y/xxHE9XfjovVx7Ero3+
- 5lC/EoNUcN6AR+zVixuUeGSiY3BH4dD+Yoy5p2mv9XIvIKL59wJMIhg85yOqtYxUg6HJ
- 2qoQ==
+ d=linaro.org; s=google; t=1687181176; x=1689773176;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Xoozm2wdhr6p4GLAFgOFoBqhwe2ZAaeUEnD5rTWcTEk=;
+ b=x2/d0X1q47Rw4WO4x4iELJo5Vl1QTdkEgBkj1j9MMeRwNJJzPCpRbs5nIakX7mrCdu
+ KZifC3zV15FHg/ij9owm8c9sAco9wRi9xeAvmstPlisKW6EYfZMFjbQNkHW1ZWNlcfqI
+ nvTvDACoGgZL46ZVc5Fq/zJrkIF4D12KnJSrwd14SJiNejwOcJv4K8y8xWiCiUn+BRjy
+ uRLfsgcW/hBUafnYqjqrO71JVuOhIp3FChs+G6jQCzh7H/15ug4mw5qGglQkVsksNZT+
+ TAI6WOnVF7Fbjfrb25eQp5Lbv2oXSLvUlDE4o8GSYuEflnHYzZb8ZLSkQfo+KeMtv1Hp
+ /liQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687181150; x=1689773150;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EzMr6N2DSG+x4yjs5VDDLx4neEvdpghxE9jkpPNpTyo=;
- b=S9p9TJi/45bcySDNkeuacxAED3JXe/KWs/VIUx5/9ghPMQT+6Zcu/8tZIRGDVLCOav
- fCRggf99OE1ghvRGyKJP3xzKO7NWQUlOlKjENB/SIrfNSiuXGaWbrP55QBoXh7JSRaBi
- 4wqXAOwVT1WSrJ8NxF4u0pfboBl78ZaHV+/WJ9qSwIlaWypj15eRBj9Rv39v7pZ70IrN
- m+wcq3ivAy49Hpid9/DbYkA4M5tULV7Dx9ENL0Q6n6/W83qjUmXgYZeLx5n5Xl92xyu3
- dXNfyl14J496u977+nYI6o2eiBT2xW13POi0LH9IFKBebG9vwWEyWEYIJ7wv/Od+Rgsy
- ifew==
-X-Gm-Message-State: AC+VfDwvaIj1X041TulSnl36sTHb8w/DcqZ4yu1M5fFrb15CMhD/l3yZ
- gkZlGpESybeicOlpYIEPVEI3b9XiE/0fSiIFFtES35rD
-X-Google-Smtp-Source: ACHHUZ640yG4JGi0WNtHkRWKN135ZPFolP+otvC2P/KbzzTRwHzUAhnUQge9n+v7e6TzyvFX4PiCHg==
-X-Received: by 2002:a17:906:ef06:b0:961:be96:b0e7 with SMTP id
- f6-20020a170906ef0600b00961be96b0e7mr7160504ejs.48.1687181150554; 
- Mon, 19 Jun 2023 06:25:50 -0700 (PDT)
-Received: from stoup.lan (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
- [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- f25-20020a1709062c5900b0098866a94f14sm2495315ejh.125.2023.06.19.06.25.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 06:25:50 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH] accel/tcg: Handle MO_ATOM_WITHIN16 in do_st16_leN
-Date: Mon, 19 Jun 2023 15:25:48 +0200
-Message-Id: <20230619132548.400875-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20221208; t=1687181176; x=1689773176;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Xoozm2wdhr6p4GLAFgOFoBqhwe2ZAaeUEnD5rTWcTEk=;
+ b=iOPpJ7P85FDovB3UoVshqWOZOOUvMvGvzvQyxwOzI6kGtvHu5wGVp1eYKIeJOKbB0X
+ /9ZLUYJ2tlJc+uJvT+kdGLgWco3/osIwuJdRXqFuNPN4yRZAqXukzKUmCuLqEOBxiarg
+ N9PhVPCYfAM+mPHZtf7Po3DR5/HxArMgdfuQbHGSELc7Qz6K9v/keQjkx40UAMAnGq34
+ 0CgwwRlEUN0chgsCTV6oJaolghrU2Kq2QiB4Hz4SX379/9F7ZHnVvvrx/Hlrn7rouxfu
+ LE0OnT7EAr1RMLtQtiuVyWYKUju6pvymvOMkQ4WBnH8oy84CEM2tRiO5s4IfrzVt0an/
+ +xMw==
+X-Gm-Message-State: AC+VfDwJCV+DbOt1DR5NqTLQnb5OH4iy1gJXhlvmyBhERTAszFjllh3b
+ iPZjRAn1NdBVDR/1mgQg8DfXFEKoeAgntXW5jJ0JLg==
+X-Google-Smtp-Source: ACHHUZ7zknep0/S3FEaSBQ129ARz3BdpljVityn/xtliHpK6ZML3XDuso5fbmtwjvpxTIPpyfr+3horqFmOQVEj+gzU=
+X-Received: by 2002:aa7:c604:0:b0:51a:3dfb:ae1a with SMTP id
+ h4-20020aa7c604000000b0051a3dfbae1amr7680958edq.4.1687181176240; Mon, 19 Jun
+ 2023 06:26:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x630.google.com
+References: <168656283612.26761.9869630057811681568-0@git.sr.ht>
+ <168656283612.26761.9869630057811681568-2@git.sr.ht>
+In-Reply-To: <168656283612.26761.9869630057811681568-2@git.sr.ht>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 Jun 2023 14:26:04 +0100
+Message-ID: <CAFEAcA-M=7DCRSONNFCdMGf_HjLV7V8-_NxL8_HnBXPOhSzuUw@mail.gmail.com>
+Subject: Re: [PATCH qemu v2 2/2] tests/tcg/aarch64: Add testcases for IC IVAU
+ and dual-mapped code
+To: "~jhogberg" <john.hogberg@ericsson.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,34 +88,288 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Otherwise we hit the default assert not reached.
-Handle it as MO_ATOM_NONE, because of size and misalignment.
-We already handle this correctly in do_ld16_beN.
+On Mon, 12 Jun 2023 at 10:40, ~jhogberg <jhogberg@git.sr.ht> wrote:
+>
+> From: John H=C3=B6gberg <john.hogberg@ericsson.com>
+>
+> https://gitlab.com/qemu-project/qemu/-/issues/1034
+>
+> Signed-off-by: John H=C3=B6gberg <john.hogberg@ericsson.com>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
+> diff --git a/tests/tcg/aarch64/icivau.c b/tests/tcg/aarch64/icivau.c
+> new file mode 100644
+> index 0000000000..ff80d3d868
+> --- /dev/null
+> +++ b/tests/tcg/aarch64/icivau.c
+> @@ -0,0 +1,204 @@
+> +#include <sys/mman.h>
 
-Fixes an abort booting debian11 with -cpu max.
+All new source files must start with a license-and-copyright
+comment.
 
-r~
+> +#include <sys/stat.h>
+> +#include <string.h>
+> +#include <stdlib.h>
+> +#include <unistd.h>
+> +#include <fcntl.h>
+> +
+> +#define PAYLOAD_SIZE (256)
+> +
+> +typedef int (*SelfModTestPtr)(char *, const char*, int);
+> +typedef int (*CompareTestPtr)(int, int);
 
----
- accel/tcg/cputlb.c | 1 +
- 1 file changed, 1 insertion(+)
+Generally in QEMU we prefer to typedef the function type,
+not the pointer-to-function type.
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 5e2ca47243..14ce97c33b 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2727,6 +2727,7 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
-          * and so neither is atomic.
-          */
-     case MO_ATOM_IFALIGN:
-+    case MO_ATOM_WITHIN16:
-     case MO_ATOM_NONE:
-         stq_le_p(p->haddr, int128_getlo(val_le));
-         return store_bytes_leN(p->haddr + 8, p->size - 8,
--- 
-2.34.1
+> +
+> +void flush_icache(const char *exec_data, size_t length)
+> +{
+> +    size_t dcache_stride, icache_stride, i;
+> +    unsigned long ctr_el0;
+> +
+> +    /*
+> +     * Step according to minimum cache sizes, as the cache maintenance
+> +     * instructions operate on the cache line of the given address.
+> +     *
+> +     * We assume that exec_data is properly aligned.
+> +     */
+> +    __asm__("mrs %0, ctr_el0\n" : "=3Dr"(ctr_el0));
+> +    dcache_stride =3D (4 << ((ctr_el0 >> 16) & 0xF));
+> +    icache_stride =3D (4 << (ctr_el0 & 0xF));
+> +
+> +    for (i =3D 0; i < length; i +=3D dcache_stride) {
+> +        const char *dc_addr =3D &exec_data[i];
+> +        __asm__ ("dc cvau, %x[dc_addr]\n"
+> +                 : /* no outputs */
+> +                 : [dc_addr] "r"(dc_addr)
+> +                 : "memory");
+> +    }
+> +
+> +    __asm__ ("dmb ish\n");
 
+You should probably mark all these asm statements as 'volatile'
+to ensure that the compiler doesn't decide it can helpfully
+reorder or remove them.
+
+> +
+> +    for (i =3D 0; i < length; i +=3D icache_stride) {
+> +        const char *ic_addr =3D &exec_data[i];
+> +        __asm__ ("ic ivau, %x[ic_addr]\n"
+> +                 : /* no outputs */
+> +                 : [ic_addr] "r"(ic_addr)
+> +                 : "memory");
+> +    }
+> +
+> +    __asm__ ("dmb ish\n"
+> +             "isb sy\n");
+> +}
+> +
+> +/*
+> + * The unmodified assembly of this function returns 0, it self-modifies =
+to
+> + * return the value indicated by new_move.
+> + */
+> +int self_modification_payload(char *rw_data, const char *exec_data,
+> +                              int new_move)
+> +{
+> +    register int result __asm__ ("w0") =3D new_move;
+
+Why use an explicit register variable for this rather than
+having the __asm__ return its result via an output ?
+
+> +
+> +    __asm__ (/* Get the writable address of __modify_me. */
+> +             "sub %x[rw_data], %x[rw_data], %x[exec_data]\n"
+> +             "adr %x[exec_data], __modify_me\n"
+> +             "add %x[rw_data], %x[rw_data], %x[exec_data]\n"
+> +             /* Overwrite the `MOV W0, #0` with the new move. */
+> +             "str %w[result], [%x[rw_data]]\n"
+> +             /*
+> +              * Mark the code as modified.
+> +              *
+> +              * Note that we align to the nearest 64 bytes in an attempt=
+ to put
+> +              * the flush sequence in the same cache line as the modifie=
+d move.
+> +              */
+
+This is a QEMU test case, though, and QEMU doesn't care about
+cache lines because we don't model the cache. So why does it
+matter ?
+
+> +             ".align 6\n"
+> +             "dc cvau, %x[exec_data]\n"
+> +             ".align 2\n"
+> +             "dmb ish\n"
+> +             "ic ivau, %x[exec_data]\n"
+> +             "dmb ish\n"
+> +             "isb sy\n"
+> +             "__modify_me: mov w0, #0x0\n"
+> +             : [result] "+r"(result),
+> +               [rw_data] "+r"(rw_data),
+> +               [exec_data] "+r"(exec_data)
+> +             : /* No untouched inputs */
+> +             : "memory");
+> +
+> +    return result;
+> +}
+> +
+> +int self_modification_test(char *rw_data, const char *exec_data)
+> +{
+> +    SelfModTestPtr copied_ptr =3D (SelfModTestPtr)exec_data;
+> +    int i;
+> +
+> +    /*
+> +     * Bluntly assumes that the payload is position-independent and not =
+larger
+> +     * than PAYLOAD_SIZE.
+> +     */
+> +    memcpy(rw_data, self_modification_payload, PAYLOAD_SIZE);
+
+Your asm code may be position-independent, but you're copying the
+entire function here including the preamble and postamble that the
+compiler emits for it, and you don't do anything in the makefile
+to ensure that it's going to be position-independent.
+
+> +
+> +    /*
+> +     * Notify all PEs that the code at exec_data has been altered.
+> +     *
+> +     * For completeness we could assert that we should fail when this is
+> +     * omitted, which works in user mode and on actual hardware as the
+> +     * modification won't "take," but doesn't work in system mode as the
+> +     * softmmu handles everything for us.
+> +     */
+
+There's no guarantee on actual hardware that omitting this
+flush will cause the test to fail. The hardware implementation
+is permitted to drop stuff from the cache any time it feels
+like it, and it might choose to do that right at this point.
+So any attempt to test "fails if we don't flush the icache"
+would be a flaky test. It would also fail on a hardware
+implementation where the icache and dcache are transparently
+coherent (which is a permitted implementation; the CTR_EL0
+DIC and IDC bits exist to tell software it can happily
+skip the cache ops).
+
+System mode QEMU works because we model an implementation
+with no caches (which is also permitted architecturally).
+
+> +    flush_icache(exec_data, PAYLOAD_SIZE);
+> +
+> +    for (i =3D 1; i < 10; i++) {
+> +        const int mov_w0_template =3D 0x52800000;
+> +
+> +        /* MOV W0, i */
+> +        if (copied_ptr(rw_data, exec_data, mov_w0_template | (i << 5)) !=
+=3D i) {
+> +            return 0;
+> +        }
+> +    }
+> +
+> +    return 1;
+> +}
+> +
+> +int compare_copied(char *rw_data, const char *exec_data,
+> +                   int (*reference_ptr)(int, int))
+> +{
+> +    CompareTestPtr copied_ptr =3D (CompareTestPtr)exec_data;
+> +    int a, b;
+> +
+> +    memcpy(rw_data, reference_ptr, PAYLOAD_SIZE);
+> +    flush_icache(exec_data, PAYLOAD_SIZE);
+> +
+> +    for (a =3D 1; a < 10; a++) {
+> +        for (b =3D 1; b < 10; b++) {
+> +            if (copied_ptr(a, b) !=3D reference_ptr(a, b)) {
+> +                return 0;
+> +            }
+> +        }
+> +    }
+> +
+> +    return 1;
+> +}
+> +
+> +int compare_alpha(int a, int b)
+> +{
+> +    return a + b;
+> +}
+> +
+> +int compare_beta(int a, int b)
+> +{
+> +    return a - b;
+> +}
+> +
+> +int compare_gamma(int a, int b)
+> +{
+> +    return a * b;
+> +}
+> +
+> +int compare_delta(int a, int b)
+> +{
+> +    return a / b;
+> +}
+
+I don't understand the purpose of all these functions.
+I was expecting the test to be something like
+ * write initial code
+ * execute it
+ * modify it
+ * execute again and check we got the changed version
+
+I don't see why we need four "compare" functions to do that.
+
+> +int main(int argc, char **argv)
+> +{
+> +    const char *shm_name =3D "qemu-test-tcg-aarch64-icivau";
+> +    int fd;
+> +
+> +    fd =3D shm_open(shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+> +
+> +    if (fd < 0) {
+> +        return EXIT_FAILURE;
+> +    }
+> +
+> +    /* Unlink early to avoid leaving garbage in case the test crashes. *=
+/
+> +    shm_unlink(shm_name);
+> +
+> +    if (ftruncate(fd, PAYLOAD_SIZE) =3D=3D 0) {
+> +        const char *exec_data;
+> +        char *rw_data;
+> +
+> +        rw_data =3D mmap(0, PAYLOAD_SIZE, PROT_READ | PROT_WRITE, MAP_SH=
+ARED,
+> +                       fd, 0);
+> +        exec_data =3D mmap(0, PAYLOAD_SIZE, PROT_READ | PROT_EXEC, MAP_S=
+HARED,
+> +                         fd, 0);
+> +
+> +        if (rw_data && exec_data) {
+> +            CompareTestPtr compare_tests[4] =3D {compare_alpha,
+> +                                               compare_beta,
+> +                                               compare_gamma,
+> +                                               compare_delta};
+> +            int success, i;
+> +
+> +            success =3D self_modification_test(rw_data, exec_data);
+> +
+> +            for (i =3D 0; i < 4; i++) {
+> +                success &=3D compare_copied(rw_data, exec_data, compare_=
+tests[i]);
+> +            }
+> +
+> +            if (success) {
+> +                return EXIT_SUCCESS;
+> +            }
+> +        }
+> +    }
+> +
+> +    return EXIT_FAILURE;
+> +}
+> --
+> 2.38.5
+
+thanks
+-- PMM
 
