@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20E2734C1E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 09:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D47B8734C25
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 09:15:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB90W-0005qu-UW; Mon, 19 Jun 2023 03:09:00 -0400
+	id 1qB95P-0006um-89; Mon, 19 Jun 2023 03:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qB90U-0005qe-Rg
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:08:58 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qB95G-0006u8-Np
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:13:54 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qB90S-0005gR-A0
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:08:58 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f9b258f3a2so3884695e9.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 00:08:55 -0700 (PDT)
+ id 1qB95D-0006WB-0k
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:13:53 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-30adc51b65cso3162807f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 00:13:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687158534; x=1689750534;
+ d=linaro.org; s=google; t=1687158829; x=1689750829;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8ttSWFnSjua/q/ayNYO2TQcjJdlDXxpArt2a4I5UjLQ=;
- b=vhIRN9h7ddkr44bGLi5LoPUAFgZbvoPbGliv7gs+MWpUlLqrUfiCGHlh9OLTZT+92M
- p4azFwNBbUDCEt/fm4KNf/YNuo8McHqg8f00vwUYBo5IQGMhUuX4YiUU9muH6frV01WJ
- 7hg2qJemQP0/RdSrEWHkaJzsDA4QF+BhaQKHrqnBjex3m4p0ZHIlUXPRuc3I+BulOzyf
- mIZJy/WZ+rTVTrj08LM/ce/K8LgX7zz8dNbgXhTB/MwCi+Md2ucJLajXcqE2zqfYvSVb
- jpGfanvOh9oXjKAXb2DDftRYaTAmOfZ2NUBX1hiw8jZ6Xz0n3KySmYnMfL3GbkzSyR7R
- xP2A==
+ bh=yNdJMnHWEfLdMYyai3/s7VnhMais+skJEXd3A2ljUug=;
+ b=Ubmi6Ydk89eKi1LbaHF78tUlFdIrIk17spOhyolIl3K6CR9HOnCtdEkZEhmS/yR3z1
+ PBvRHeAzEY2Ws23US8E24qE9setMbsQTSbMOqhTSF/rGZWDDRbUDk93sqcy2/nsDt8Oy
+ ribPY7nRl85jW9oKJkR6L4OIq8r899yoOOlqasqwTMFiuiF5Pqf5JS1yVa6FkVyvRb6v
+ 7FpYh4A2s+3FWrjPsjWasvwO3Okj8gt5nRpK7Hg7hyDYpEZmP6fy4kgjqGJ/bKivOx02
+ 58NeSZiUtahO74NY6kM0A2nwi504NsUzZXKUNpN6YncWeXqyeGQwzz3qv6TVULR11HrR
+ JSZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687158534; x=1689750534;
+ d=1e100.net; s=20221208; t=1687158829; x=1689750829;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8ttSWFnSjua/q/ayNYO2TQcjJdlDXxpArt2a4I5UjLQ=;
- b=DGbb951xcCfG7vPIjg4QyJR3ZGSktpju6sCj0lZ2nYdOhD0bkn8qpoGTCKZw9JlAz6
- am+OkM1onYLUsP6jA7bC7Jo3+eWyIHv2HpXr++7WOJK+0VJL18gSqKUlDZlMOWxJK876
- 04Sqtv70jsPxCVOt1Lcwp1dJfwWrfJxqfrzYquXlyON9yMU+d/hy2/5tWCtvc151JUSI
- 2ab0xnVx7s3ul9wiIBy5PnOjUqQQ1mXecI9yedNr6zCUbi5Km6SfYd75aQCwIsNEM+6n
- dXdgnhDk4xmZnEjXktaGA44/1+EG3cYAf0llfod+onTWy2IbdfWksnh/bts96EWd4rj7
- 1nJg==
-X-Gm-Message-State: AC+VfDziU/tO9vVMZXN7cwuhE4XhqIvyOR9h9uPa7FIb0Eg2wShf12D6
- QNw/qNwut6DxiexvHBxbRnWpmg==
-X-Google-Smtp-Source: ACHHUZ6muwDExxanKU3ute8PV529GOZi5I2MeEoXYRw+kD+sx4fIOM2/0kMvWKPyiVqZLX/8A0VdPw==
-X-Received: by 2002:a7b:cb56:0:b0:3f7:e48b:974d with SMTP id
- v22-20020a7bcb56000000b003f7e48b974dmr10143286wmj.27.1687158534054; 
- Mon, 19 Jun 2023 00:08:54 -0700 (PDT)
+ bh=yNdJMnHWEfLdMYyai3/s7VnhMais+skJEXd3A2ljUug=;
+ b=BP5WUHi758LqdSbo8pUTNeDXNMz1i3kH5TFq4jzC4+xAdEA1ZcdgqdxKJ573/pvZNz
+ 3EFCIz10WM7hPhNPstpb5+/WaKRj5XstpUiRrPhdHSv9euvpaE71BYrAqg5fY3Y6FTkv
+ gcufoUxo5MKOWKW0OJL77FfCBOeeeAKHDiDkT10fkvmdICQh6hu1PHOHhdb4VFt3cNBn
+ Dtb1XkdNSheerao+IWbJCvnef+fI4Q7iHnzT236w0MntNtn1yqJ6S5gwCIXq6z6LUe1l
+ zPI+3JvzSO9n410YcOFLBQWW4GOyRrapTYZNeyW5VsrAHe7oECp7XSJIO/hOQ29IJ/if
+ aaTQ==
+X-Gm-Message-State: AC+VfDxq9+NBdoR4CzuezXvc9XOm1opOJdse59hQ9/pDj9y/Z3B6zHQD
+ 4eSYwvGru3m5f0JBMRdD95hJUg==
+X-Google-Smtp-Source: ACHHUZ4sBrCwtnQrtUx3D3+cP1oXAjIdLW+wu/Qw65BnfBxVLaqODZKuC2Iy/whEzKpN+aKSrQINRQ==
+X-Received: by 2002:adf:f8c3:0:b0:311:1330:6d56 with SMTP id
+ f3-20020adff8c3000000b0031113306d56mr9003676wrq.67.1687158828813; 
+ Mon, 19 Jun 2023 00:13:48 -0700 (PDT)
 Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- s3-20020a7bc383000000b003f6132f95e6sm9755587wmj.35.2023.06.19.00.08.49
+ n16-20020adfe350000000b0030e5b1fffc3sm30782964wrj.9.2023.06.19.00.13.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 00:08:53 -0700 (PDT)
-Message-ID: <aec066a2-5588-c6c1-1da0-b7ade155735e@linaro.org>
-Date: Mon, 19 Jun 2023 09:08:41 +0200
+ Mon, 19 Jun 2023 00:13:48 -0700 (PDT)
+Message-ID: <95807a89-5852-b4c2-7c9f-713998d9fc89@linaro.org>
+Date: Mon, 19 Jun 2023 09:13:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 6/6] net: tap: Use qemu_close_range() to close fds
+Subject: Re: [PATCH v3 0/6] net/tap: Fix QEMU frozen issue when the maximum
+ number of file descriptors is very large
 Content-Language: en-US
 To: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org
-Cc: Zhangjin Wu <falcon@tinylab.org>, Jason Wang <jasowang@redhat.com>
-References: <20230616152737.23545-1-bmeng@tinylab.org>
- <20230616152737.23545-7-bmeng@tinylab.org>
+Cc: Zhangjin Wu <falcon@tinylab.org>, Alberto Faria <afaria@redhat.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Nikita Ivanov <nivanov@cloudlinux.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Xuzhou Cheng <xuzhou.cheng@windriver.com>
+References: <20230617053621.50359-1-bmeng@tinylab.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230616152737.23545-7-bmeng@tinylab.org>
+In-Reply-To: <20230617053621.50359-1-bmeng@tinylab.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,9 +104,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/16/23 17:27, Bin Meng wrote:
-> From: Zhangjin Wu<falcon@tinylab.org>
-> 
+On 6/17/23 07:36, Bin Meng wrote:
 > Current codes using a brute-force traversal of all file descriptors
 > do not scale on a system where the maximum number of file descriptors
 > is set to a very large value (e.g.: in a Docker container of Manjaro
@@ -113,22 +120,18 @@ On 6/16/23 17:27, Bin Meng wrote:
 > 
 > Modern Linux and BSDs have the close_range() call we can use to do the
 > job, and on Linux we have one more way to walk through /proc/self/fd
-> to complete the task efficiently, which is what qemu_close_range() does.
+> to complete the task efficiently, which is what qemu_close_range()
+> does, a new API we add in util/osdep.c.
 > 
-> Reported-by: Zhangjin Wu<falcon@tinylab.org>
-> Signed-off-by: Zhangjin Wu<falcon@tinylab.org>
-> Signed-off-by: Bin Meng<bmeng@tinylab.org>
+> V1 link:https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
 > 
-> ---
-> 
-> Changes in v2:
-> - Change to use qemu_close_range() to close fds for child process efficiently
-> - v1 link:https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
-> 
->   net/tap.c | 23 +++++++++++------------
->   1 file changed, 11 insertions(+), 12 deletions(-)
+> Changes in v3:
+> - fix win32 build failure
+> - limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Sorry, I didn't see this and sent some comments against v2.
+Though using _SC_OPEN_MAX was one of them, so that's nice.  :-)
+
 
 r~
 
