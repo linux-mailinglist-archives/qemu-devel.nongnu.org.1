@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9021734EB6
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D31734F21
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBAcy-0004Nz-SW; Mon, 19 Jun 2023 04:52:50 -0400
+	id 1qBApY-0007mW-3h; Mon, 19 Jun 2023 05:05:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <like.xu.linux@gmail.com>)
- id 1qBAcp-0004JA-RP
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:52:42 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qBApU-0007m6-Ek
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:05:44 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <like.xu.linux@gmail.com>)
- id 1qBAcn-0003XF-Rw
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:52:39 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1b52132181aso13878245ad.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 01:52:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qBApS-00075o-3y
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:05:44 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3112c11fdc9so1363692f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 02:05:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687164756; x=1689756756;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=o32zhHPH9dlxXlg+cTuJYce/UWbfkcquDipPvOEOnS0=;
- b=rX4AYXOcRmpTowP6pa8hgvZgRZW/8ttJaztoyr9rPMgotBNE9djJAL8t8ahcEZ9rHD
- qICpWZZ7GXIYKIPBjOT1OM8oVmAXNh/ObbesLWgk6n/ydZCGQ5A1vNnK+Cy8tdiBxXf0
- SmxpPE3Bhaf2zXOXtJIl2CGHdZsd/pb5rOfu5IKDm8er8HfBTS1NiUlS9I4s0cTlvSBa
- PktcAeV2KOx0g3jTigvthGtI4MxXuFFcXv7yMeg9ANe38m1yM9FyhtkU+hxV0+S8r4b6
- Wn7574gsL8BDvPSFwNZLYLtcqWm2f36wU54mEf1PVomCGrNa1J9zxR8L24OFrOb5grPU
- v6XA==
+ d=ventanamicro.com; s=google; t=1687165540; x=1689757540;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=zdNXyi0xZLAfWyndPmyW6cG6B2SU0eI8m2DtLuHRuyM=;
+ b=gI/9oJogWPYhRsoZhXCexUlqRIpveay1NkPFDIoPN0uV116sVcFmrSXePVGnSn8rZZ
+ MoCQ/LOeyegGA0Ee1W57ePGE3VkOzBQQUSKlrP2vg8HUC637XwbgHBXO3sJggWWdAU31
+ u+o7zDmw7+H4elfOesm2AskYW88fXrvkhSqYE1LNZmcJg1SUS+5LhJjWFaWHkt75bN1W
+ tYHuLtzj2WPYjNLoPTgZp+tvB0zazmBXvV96BY7AQ5+hhGmY7DMMohmItpPSERz992zg
+ t2kO+eE5R6qD6avWe8Jjw0ChbFsYCXcQIraC0RANaq0rgI5lKvqzPPQqNIHmMBX8j3v2
+ rYvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687164756; x=1689756756;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o32zhHPH9dlxXlg+cTuJYce/UWbfkcquDipPvOEOnS0=;
- b=PZYQQ42Ta6dUor+Cjye0nfSnCcVVNdj5rpgFJwGxA99FdQ50cSc3QZS1KVtVCRBI9M
- M65qEWjMJBrS6D0inuBKKaCLFRoMvafUjWLGONHxMwkfppZ1kup+I2OdNaNup7MBsY+1
- avgv6JRkCAABuDcoSOX5qsZCSfL3EsX9rPcB5lrjie7LuQzlGczbSXueieQRqMcCbn2Y
- pYo6QFZhcUf8j4btlETiQQkX+ICE7zbmNBDmyoSAjFjportBI64drYCwjv6GsKis7pp4
- hDL/ogJahZhIMhQFBy6LTSInH5hUPUPLiBthTECLwX6/B/lmRZN4lsEqp/221DQZ8vsx
- pODA==
-X-Gm-Message-State: AC+VfDzui+WhKnLNuYQGD7I8ThSZw0qHygcZrHyMalRX89qSRf3kskpU
- rZo4qrR/6E9aXSVMcxsKiAs=
-X-Google-Smtp-Source: ACHHUZ457fDHQcHQZeJbaCaNYKn6K1hwnN2BhiUC7y/R6VnJXGQlOND+/7n93OHM9VShzMn04QLVFw==
-X-Received: by 2002:a17:902:ec86:b0:1b0:378e:279f with SMTP id
- x6-20020a170902ec8600b001b0378e279fmr5972089plg.19.1687164755880; 
- Mon, 19 Jun 2023 01:52:35 -0700 (PDT)
-Received: from [192.168.255.10] ([103.7.29.32])
+ d=1e100.net; s=20221208; t=1687165540; x=1689757540;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zdNXyi0xZLAfWyndPmyW6cG6B2SU0eI8m2DtLuHRuyM=;
+ b=fi1LgCkq0W2KmNOMi20LQpezSQWTOrN/PhSRD07jvU7f+kCvjsqfrFc1s8PJqHJK7m
+ Nsr/rf7D/fzOH5V3AiBWnMiFoFzbUveZRZfihb11OIcmol3u2C50EFO0I+2v8SzggsUL
+ ZqefFP9EIztSv3cR+k3JwHF1dbDsETofEDWnqfPq0/ZiDg+iDH5rwMkYIWh2YQ5iZXBX
+ mBdHyfVjTjsuIufRZVcGCFeDygiMhjLjZwl9p8whZ0hafXyAuwl5+vTTXLzIgPDuUX9a
+ Ot7HKAG/JZICu4vP0z/IESx8W8kOpdl9d5hXjQHovk2STM6i3uy+VHVth+gekZ5zpQ3v
+ UK+w==
+X-Gm-Message-State: AC+VfDyf16c0P1RIXaMCZn0fi7YHnZlhfGiHbxyZUfUGLzI5F+KRYNWn
+ xTEfPEWI6mc/qxBXQoAqgx+Tbg==
+X-Google-Smtp-Source: ACHHUZ5fBJe+sLx9/Rs6XbLGiVn8CgwtZgtDBe6exJqTOJG76jnYDKocaa0B9doAcRiFOtFHwGMiSQ==
+X-Received: by 2002:adf:f5d0:0:b0:30e:5b63:7487 with SMTP id
+ k16-20020adff5d0000000b0030e5b637487mr6019430wrp.58.1687165539990; 
+ Mon, 19 Jun 2023 02:05:39 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
  by smtp.gmail.com with ESMTPSA id
- t11-20020a1709028c8b00b001ae0152d280sm19799901plo.193.2023.06.19.01.52.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 01:52:35 -0700 (PDT)
-Message-ID: <36d749a2-b349-e5f4-3683-a4d595bafec9@gmail.com>
-Date: Mon, 19 Jun 2023 16:52:27 +0800
+ e4-20020adfdbc4000000b0030ada01ca78sm30811934wrj.10.2023.06.19.02.05.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Jun 2023 02:05:38 -0700 (PDT)
+Date: Mon, 19 Jun 2023 11:05:37 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v2 11/18] target/riscv/cpu: add misa_ext_infos[]
+Message-ID: <20230619-d12af33f63215fa1890142b4@orel>
+References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
+ <20230613205857.495165-12-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH v2 0/2] target/i386/kvm: fix two svm pmu virtualization
- bugs
-Content-Language: en-US
-To: Dongli Zhang <dongli.zhang@oracle.com>, zhenyuw@linux.intel.com
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, joe.jin@oracle.com,
- groug@kaod.org, lyan@digitalocean.com, qemu-devel@nongnu.org,
- kvm list <kvm@vger.kernel.org>
-References: <20221202002256.39243-1-dongli.zhang@oracle.com>
- <895f5505-db8c-afa4-bfb1-26ecbe27690a@oracle.com>
- <eea7b6ba-c0bd-8a1e-b2a8-2f08c954628b@oracle.com>
-From: Like Xu <like.xu.linux@gmail.com>
-In-Reply-To: <eea7b6ba-c0bd-8a1e-b2a8-2f08c954628b@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=like.xu.linux@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230613205857.495165-12-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,120 +93,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I think we've been stuck here too long. Sorry Dongli.
+On Tue, Jun 13, 2023 at 05:58:50PM -0300, Daniel Henrique Barboza wrote:
+> Next patch will add KVM specific user properties for both MISA and
+> multi-letter extensions. For MISA extensions we want to make use of what
+> is already available in misa_ext_cfgs[] to avoid code repetition.
+> 
+> The new misa_ext_infos[] array will hold name and description for each
+> MISA extension that misa_ext_cfgs[] is declaring. We'll then use this
+> new array in KVM code to avoid duplicating strings.
+> 
+> There's nothing holding us back from doing the same with multi-letter
+> extensions. For now doing just with MISA extensions is enough.
+> 
+> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c | 44 ++++++++++++++++++--------------------------
+>  target/riscv/cpu.h | 22 +++++++++++++++++++++-
+>  2 files changed, 39 insertions(+), 27 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 0b25d53bbe..edaf052f25 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1562,33 +1562,25 @@ static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+>      visit_type_bool(v, name, &value, errp);
+>  }
+>  
+> +#define MISA_CFG(_bit, _enabled) \
+> +    {.name = misa_ext_infos[_bit].name, \
 
-+zhenyu, could you get someone to follow up on this, or I will start working on 
-that.
+Maybe just misa_ext_info[] for the name? 'infos' sounds odd to me.
 
-On 9/1/2023 9:19 am, Dongli Zhang wrote:
-> Ping?
-> 
-> About [PATCH v2 2/2], the bad thing is that the customer will not be able to
-> notice the issue, that is, the "Broken BIOS detected" in dmesg, immediately.
-> 
-> As a result, the customer VM many panic randomly anytime in the future (once
-> issue is encountered) if "/proc/sys/kernel/unknown_nmi_panic" is enabled.
-> 
-> Thank you very much!
-> 
-> Dongli Zhang
-> 
-> On 12/19/22 06:45, Dongli Zhang wrote:
->> Can I get feedback for this patchset, especially the [PATCH v2 2/2]?
->>
->> About the [PATCH v2 2/2], currently the issue impacts the usage of PMUs on AMD
->> VM, especially the below case:
->>
->> 1. Enable panic on nmi.
->> 2. Use perf to monitor the performance of VM. Although without a test, I think
->> the nmi watchdog has the same effect.
->> 3. A sudden system reset, or a kernel panic (kdump/kexec).
->> 4. After reboot, there will be random unknown NMI.
->> 5. Unfortunately, the "panic on nmi" may panic the VM randomly at any time.
->>
->> Thank you very much!
->>
->> Dongli Zhang
->>
->> On 12/1/22 16:22, Dongli Zhang wrote:
->>> This patchset is to fix two svm pmu virtualization bugs, x86 only.
->>>
->>> version 1:
->>> https://lore.kernel.org/all/20221119122901.2469-1-dongli.zhang@oracle.com/
->>>
->>> 1. The 1st bug is that "-cpu,-pmu" cannot disable svm pmu virtualization.
->>>
->>> To use "-cpu EPYC" or "-cpu host,-pmu" cannot disable the pmu
->>> virtualization. There is still below at the VM linux side ...
->>>
->>> [    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
->>>
->>> ... although we expect something like below.
->>>
->>> [    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
->>> [    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
->>>
->>> The 1st patch has introduced a new x86 only accel/kvm property
->>> "pmu-cap-disabled=true" to disable the pmu virtualization via
->>> KVM_PMU_CAP_DISABLE.
->>>
->>> I considered 'KVM_X86_SET_MSR_FILTER' initially before patchset v1.
->>> Since both KVM_X86_SET_MSR_FILTER and KVM_PMU_CAP_DISABLE are VM ioctl. I
->>> finally used the latter because it is easier to use.
->>>
->>>
->>> 2. The 2nd bug is that un-reclaimed perf events (after QEMU system_reset)
->>> at the KVM side may inject random unwanted/unknown NMIs to the VM.
->>>
->>> The svm pmu registers are not reset during QEMU system_reset.
->>>
->>> (1). The VM resets (e.g., via QEMU system_reset or VM kdump/kexec) while it
->>> is running "perf top". The pmu registers are not disabled gracefully.
->>>
->>> (2). Although the x86_cpu_reset() resets many registers to zero, the
->>> kvm_put_msrs() does not puts AMD pmu registers to KVM side. As a result,
->>> some pmu events are still enabled at the KVM side.
->>>
->>> (3). The KVM pmc_speculative_in_use() always returns true so that the events
->>> will not be reclaimed. The kvm_pmc->perf_event is still active.
->>>
->>> (4). After the reboot, the VM kernel reports below error:
->>>
->>> [    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
->>> [    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
->>>
->>> (5). In a worse case, the active kvm_pmc->perf_event is still able to
->>> inject unknown NMIs randomly to the VM kernel.
->>>
->>> [...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
->>>
->>> The 2nd patch is to fix the issue by resetting AMD pmu registers as well as
->>> Intel registers.
->>>
->>>
->>> This patchset does not cover PerfMonV2, until the below patchset is merged
->>> into the KVM side.
->>>
->>> [PATCH v3 0/8] KVM: x86: Add AMD Guest PerfMonV2 PMU support
->>> https://lore.kernel.org/all/20221111102645.82001-1-likexu@tencent.com/
->>>
->>>
->>> Dongli Zhang (2):
->>>        target/i386/kvm: introduce 'pmu-cap-disabled' to set KVM_PMU_CAP_DISABLE
->>>        target/i386/kvm: get and put AMD pmu registers
->>>
->>>   accel/kvm/kvm-all.c      |   1 +
->>>   include/sysemu/kvm_int.h |   1 +
->>>   qemu-options.hx          |   7 +++
->>>   target/i386/cpu.h        |   5 ++
->>>   target/i386/kvm/kvm.c    | 129 +++++++++++++++++++++++++++++++++++++++++-
->>>   5 files changed, 141 insertions(+), 2 deletions(-)
->>>
->>> Thank you very much!
->>>
->>> Dongli Zhang
->>>
->>>
-> 
-> 
+> +     .description = misa_ext_infos[_bit].description, \
+> +     .misa_bit = _bit, .enabled = _enabled}
+> +
+>  static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+> -    {.name = "a", .description = "Atomic instructions",
+> -     .misa_bit = RVA, .enabled = true},
+> -    {.name = "c", .description = "Compressed instructions",
+> -     .misa_bit = RVC, .enabled = true},
+> -    {.name = "d", .description = "Double-precision float point",
+> -     .misa_bit = RVD, .enabled = true},
+> -    {.name = "f", .description = "Single-precision float point",
+> -     .misa_bit = RVF, .enabled = true},
+> -    {.name = "i", .description = "Base integer instruction set",
+> -     .misa_bit = RVI, .enabled = true},
+> -    {.name = "e", .description = "Base integer instruction set (embedded)",
+> -     .misa_bit = RVE, .enabled = false},
+> -    {.name = "m", .description = "Integer multiplication and division",
+> -     .misa_bit = RVM, .enabled = true},
+> -    {.name = "s", .description = "Supervisor-level instructions",
+> -     .misa_bit = RVS, .enabled = true},
+> -    {.name = "u", .description = "User-level instructions",
+> -     .misa_bit = RVU, .enabled = true},
+> -    {.name = "h", .description = "Hypervisor",
+> -     .misa_bit = RVH, .enabled = true},
+> -    {.name = "x-j", .description = "Dynamic translated languages",
+> -     .misa_bit = RVJ, .enabled = false},
+> -    {.name = "v", .description = "Vector operations",
+> -     .misa_bit = RVV, .enabled = false},
+> -    {.name = "g", .description = "General purpose (IMAFD_Zicsr_Zifencei)",
+> -     .misa_bit = RVG, .enabled = false},
+> +    MISA_CFG(RVA, true),
+> +    MISA_CFG(RVC, true),
+> +    MISA_CFG(RVD, true),
+> +    MISA_CFG(RVF, true),
+> +    MISA_CFG(RVI, true),
+> +    MISA_CFG(RVE, false),
+> +    MISA_CFG(RVM, true),
+> +    MISA_CFG(RVS, true),
+> +    MISA_CFG(RVU, true),
+> +    MISA_CFG(RVH, true),
+> +    MISA_CFG(RVJ, false),
+> +    MISA_CFG(RVV, false),
+> +    MISA_CFG(RVG, false),
+>  };
+>  
+>  static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index e3e08d315f..6d2acea478 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -41,7 +41,7 @@
+>  
+>  #define RV(x) ((target_ulong)1 << (x - 'A'))
+>  
+> -/* Consider updating misa_ext_cfgs[] when adding new MISA bits here */
+> +/* Consider updating misa_ext_infos[] when adding new MISA bits here */
+
+Both arrays (_cfgs and _info) need consideration, right?
+
+>  #define RVI RV('I')
+>  #define RVE RV('E') /* E and I are mutually exclusive */
+>  #define RVM RV('M')
+> @@ -56,6 +56,26 @@
+>  #define RVJ RV('J')
+>  #define RVG RV('G')
+>  
+> +typedef struct misa_ext_info {
+> +    const char *name;
+> +    const char *description;
+> +} MISAExtInfo;
+> +
+> +static const MISAExtInfo misa_ext_infos[] = {
+> +    [RVA] = {"a", "Atomic instructions"},
+> +    [RVC] = {"c", "Compressed instructions"},
+> +    [RVD] = {"d", "Double-precision float point"},
+> +    [RVF] = {"f", "Single-precision float point"},
+> +    [RVI] = {"i", "Base integer instruction set"},
+> +    [RVE] = {"e", "Base integer instruction set (embedded)"},
+> +    [RVM] = {"m", "Integer multiplication and division"},
+> +    [RVS] = {"s", "Supervisor-level instructions"},
+> +    [RVU] = {"u", "User-level instructions"},
+> +    [RVH] = {"h", "Hypervisor"},
+> +    [RVJ] = {"x-j", "Dynamic translated languages"},
+> +    [RVV] = {"v", "Vector operations"},
+> +    [RVG] = {"g", "General purpose (IMAFD_Zicsr_Zifencei)"},
+> +};
+
+I'd export this array from target/riscv/cpu.c, rather than having each
+source file that includes this header get its own copy.
+
+Thanks,
+drew
 
