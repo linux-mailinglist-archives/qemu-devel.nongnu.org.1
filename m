@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2049A735BA6
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 17:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C43735BB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 17:58:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBHEz-00078g-KI; Mon, 19 Jun 2023 11:56:29 -0400
+	id 1qBHFI-0007dh-GX; Mon, 19 Jun 2023 11:56:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBHEw-00073x-T9
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:56:26 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBHF4-0007HD-6a
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:56:34 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBHEv-00053A-0w
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:56:26 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5186a157b85so5216465a12.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:56:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBHF2-000546-C8
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:56:33 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9889429a89eso247249866b.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687190183; x=1689782183;
+ d=linaro.org; s=google; t=1687190190; x=1689782190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z2jMOqP0txK9r7JLBWhB+MQlTl1Nm4HNVxv5EqHk7Co=;
- b=HvJ5gDfbl9YzJXddB419cG8Jy22v7qYW+IWMmXC/NguxSSjFaRbwjLywt/708UxNFa
- 631CEdOWHKNwQ9/WekHHt6bC5tShbjBsUIRTBwbf+A15Aj/A7w81s6SqMN3DdrNXhNIy
- GR8zMDHLYcDrTd0IGdbWohjS6NebK6xOjIQrgBhtdeHFRuz67Q7twvsRtsI4eTUJ4tgw
- yWc4y9p7JreLrr5Sr6xLheMXK6Mn6tgdelFKZgd3gHTcj2RhCyw+y9VNKoxe05EZLYHx
- HTKUyJ0+86MEmfTx9/N2pJy8IpYeHkCkmyGxKhnCEzPA1W9qv5IdtBK7ML5x35cwpzrg
- 275w==
+ bh=23Uq/LiawC+BbT2i2PShxSNrzbJwUdnbJp/ey1b/dd8=;
+ b=xA2RDmsm4MJbxXO3n3RZdsxZXOlKQ+3VRUqmbWnxLTPxVlm6YTdtJQkXANg6mxz48s
+ ZKdfnYdD7l6bq80NCeHewyoG9NjR6t34H6LSeW/lyQOOqDAmugy+T7iYCIALGGIdL7rU
+ 1W3U2VXq/MBstgMGRYkzogEUL8NKjFSzZZJupE4NO9eIep9YxQ4kcEHIiIQweC24Fmq7
+ /6Gi3ODqbYfeAMZ4slMjII/wLYcJAn7FBAzdS2RIFTC1l9qSpzpZ7cq9LeiB88TNbzu5
+ ZrnkszaHypgdE+rFGG3hz/NLCBN/YaHUNCoP6zsqjTk4QLdPsqfeCQShAEvuXQRc72xo
+ de5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687190183; x=1689782183;
+ d=1e100.net; s=20221208; t=1687190190; x=1689782190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z2jMOqP0txK9r7JLBWhB+MQlTl1Nm4HNVxv5EqHk7Co=;
- b=VEruCoIkWCClLXPHj8JgYJ4x2M1ThlOSM23XxwL4Uey3ogvBRvgYUxsIfkujQS68Kt
- ALW/8o7uJuUmIlB+olBohSFMfvpaxwns6dFOqhK5CIclbQJbXcegjHKEpArhf5Xke8Ce
- Er9T7lgdToQKiEQnBtfTauz4Fcftv8A3ekdIZ0Eodw9ZUIWfJX9SosYfaX7sHPtMw9qh
- yhcQJg5KiHdXIvWb0Cah3J+vjaEkRBMXdUuNKRbdsBYtEFuoUGxN7HvI1Dxl2tf+BQUh
- 2yl+F9BusKOrN5U8JKWRvqudZFrfQ5XB0DtSIOf0uKLLvPQ8Tgzar+Q+O/iQEOKiAzIT
- mvhQ==
-X-Gm-Message-State: AC+VfDy+J+rLQ92uoPhMvyxIbJ9H5yEDAS/mmfbqE0we88NmAV1e3OOu
- kRlmVqLH7/dNtcaxLoYNMYxkfKt6j8j9ny6hHK0X8w==
-X-Google-Smtp-Source: ACHHUZ5/TO4znGw5YV4zIxMYeL9r1Yxj/o6nIUf+wVYMOa/pxSpiYdMMCVbnbpn6dWcH7wRzWHNumQ==
-X-Received: by 2002:a17:907:1c07:b0:94a:8291:a1e3 with SMTP id
- nc7-20020a1709071c0700b0094a8291a1e3mr10347732ejc.74.1687190183292; 
- Mon, 19 Jun 2023 08:56:23 -0700 (PDT)
+ bh=23Uq/LiawC+BbT2i2PShxSNrzbJwUdnbJp/ey1b/dd8=;
+ b=ZWbB80c0Sb0hDPdkLDB4ES5pJFnMWLf3CiDfUsSkYYsOPbOIKi3hOnZ0HDxGUfDOpv
+ 7qRRbRct3nEjOPkjYJn3fyRspAhgTLuJCRx0dje7P3wpLZG5u9gcsstJI1Ssj1tpLKpa
+ 1NQWj5KFxAcLg6RhlUTkXewaDfRrnArTYW2EYBzBETI8N52ZQ4Pm96K9zWJSvxaYFlbz
+ HZjBdnCeH4YL4xAc1BF1BjH6J/Iu2gQjBBO0pnVXlO+2v9WvYfhJevlxJRo9Kr2XRi/P
+ k1qKbhTfAM/LVwfHqByDv+IS9NjjtRWf8q6/v9vAe4PC9uwFELLYJ/Vy5+AzRUfxVPEg
+ aIXg==
+X-Gm-Message-State: AC+VfDwTEfDYRwyiz3+YozKA7NRTv6rhCciZuhecJByAjdLUbSrTTpo9
+ NDLNB+Phn3bDBJvNqLvw4jjvoOBiIs5ojr0fbZUFxA==
+X-Google-Smtp-Source: ACHHUZ7fuhH2lmqr0PVRe0mbo8leTAi3syZ9HRJDzEEKRUCVVunug6soFk9f8V9JPGKCLT/82x+e3A==
+X-Received: by 2002:a17:907:2da6:b0:988:15f4:fdba with SMTP id
+ gt38-20020a1709072da600b0098815f4fdbamr5571371ejc.14.1687190190615; 
+ Mon, 19 Jun 2023 08:56:30 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- lo25-20020a170906fa1900b0098692f1b803sm4425152ejb.166.2023.06.19.08.56.21
+ qw19-20020a170906fcb300b00988c3e96294sm1283875ejb.30.2023.06.19.08.56.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jun 2023 08:56:22 -0700 (PDT)
+ Mon, 19 Jun 2023 08:56:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 20/34] target/arm/tcg: Reduce 'helper-sve.h.inc' inclusion
-Date: Mon, 19 Jun 2023 17:54:56 +0200
-Message-Id: <20230619155510.80991-8-philmd@linaro.org>
+Subject: [PATCH v3 21/34] target/arm/tcg: Extract crypto definitions to
+ 'helper-crypto.h.inc'
+Date: Mon, 19 Jun 2023 17:54:57 +0200
+Message-Id: <20230619155510.80991-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230619155510.80991-1-philmd@linaro.org>
 References: <20230619154302.80350-1-philmd@linaro.org>
@@ -69,8 +70,8 @@ References: <20230619154302.80350-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,93 +94,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of including helper-sve.h.inc via helper.h which
-is included by all TCG files, restrict it to the few files
-that require it.
+helper.h is used by all units, but not all require the crypto
+definitions. Move them to a new header; the next commit will
+remove it from the common helper.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/helper.h            | 1 -
- target/arm/tcg/sve_helper.c    | 4 ++++
- target/arm/tcg/translate-sme.c | 4 ++++
- target/arm/tcg/translate-sve.c | 6 ++++++
- target/arm/tcg/vec_helper.c    | 4 ++++
- 5 files changed, 18 insertions(+), 1 deletion(-)
+ target/arm/helper.h                | 37 ++------------------------
+ target/arm/tcg/helper-crypto.h.inc | 42 ++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 35 deletions(-)
+ create mode 100644 target/arm/tcg/helper-crypto.h.inc
 
 diff --git a/target/arm/helper.h b/target/arm/helper.h
-index f347305c0f..38d3d1a2f3 100644
+index 38d3d1a2f3..175589cbb4 100644
 --- a/target/arm/helper.h
 +++ b/target/arm/helper.h
-@@ -148,7 +148,6 @@ DEF_HELPER_FLAGS_3(crc32c, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32)
+@@ -108,44 +108,11 @@ DEF_HELPER_3(shr_cc, i32, env, i32, i32)
+ DEF_HELPER_3(sar_cc, i32, env, i32, i32)
+ DEF_HELPER_3(ror_cc, i32, env, i32, i32)
  
+-DEF_HELPER_FLAGS_4(crypto_aese, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_3(crypto_aesmc, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+-
+-DEF_HELPER_FLAGS_4(crypto_sha1su0, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha1c, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha1p, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha1m, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_3(crypto_sha1h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_3(crypto_sha1su1, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+-
+-DEF_HELPER_FLAGS_4(crypto_sha256h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha256h2, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_3(crypto_sha256su0, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha256su1, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-
+-DEF_HELPER_FLAGS_4(crypto_sha512h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha512h2, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_3(crypto_sha512su0, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sha512su1, TCG_CALL_NO_RWG,
+-                   void, ptr, ptr, ptr, i32)
+-
+-DEF_HELPER_FLAGS_4(crypto_sm3tt1a, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sm3tt1b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sm3tt2a, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sm3tt2b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sm3partw1, TCG_CALL_NO_RWG,
+-                   void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sm3partw2, TCG_CALL_NO_RWG,
+-                   void, ptr, ptr, ptr, i32)
+-
+-DEF_HELPER_FLAGS_4(crypto_sm4e, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-DEF_HELPER_FLAGS_4(crypto_sm4ekey, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-
+-DEF_HELPER_FLAGS_4(crypto_rax1, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+-
+ DEF_HELPER_FLAGS_3(crc32, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32)
+ DEF_HELPER_FLAGS_3(crc32c, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32)
+ 
++#include "tcg/helper-crypto.h.inc"
++
  #ifdef TARGET_AARCH64
  #include "tcg/helper-a64.h.inc"
--#include "tcg/helper-sve.h.inc"
  #include "tcg/helper-sme.h.inc"
- #endif
- 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 8a0d966aae..79a42af591 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -33,6 +33,10 @@
- #include "exec/helper-proto.h.inc"
- #undef  HELPER_H
- 
-+#define HELPER_H "tcg/helper-sve.h.inc"
-+#include "exec/helper-proto.h.inc"
-+#undef  HELPER_H
+diff --git a/target/arm/tcg/helper-crypto.h.inc b/target/arm/tcg/helper-crypto.h.inc
+new file mode 100644
+index 0000000000..d86f5002c4
+--- /dev/null
++++ b/target/arm/tcg/helper-crypto.h.inc
+@@ -0,0 +1,42 @@
++/*
++ * crypto_helper.c - emulate v8 Crypto Extensions instructions
++ *
++ * Copyright (C) 2013 - 2018 Linaro Ltd <ard.biesheuvel@linaro.org>
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
 +
- /* Return a value for NZCV as per the ARM PredTest pseudofunction.
-  *
-  * The return value has bit 31 set if N is set, bit 1 set if Z is clear,
-diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 24796e5d9e..e63b9883a9 100644
---- a/target/arm/tcg/translate-sme.c
-+++ b/target/arm/tcg/translate-sme.c
-@@ -25,6 +25,10 @@
- #include "exec/helper-gen.h.inc"
- #undef  HELPER_H
- 
-+#define HELPER_H "tcg/helper-sve.h.inc"
-+#include "exec/helper-gen.h.inc"
-+#undef  HELPER_H
++DEF_HELPER_FLAGS_4(crypto_aese, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(crypto_aesmc, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
 +
- /*
-  * Include the generated decoder.
-  */
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 605cce0979..87f92b4d1d 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -26,6 +26,12 @@
- #include "exec/helper-gen.h.inc"
- #undef  HELPER_H
- 
-+#define HELPER_H "tcg/helper-sve.h.inc"
-+#include "exec/helper-proto.h.inc"
-+#include "exec/helper-gen.h.inc"
-+#include "exec/helper-info.c.inc"
-+#undef  HELPER_H
++DEF_HELPER_FLAGS_4(crypto_sha1su0, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha1c, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha1p, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha1m, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(crypto_sha1h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(crypto_sha1su1, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
 +
- typedef void GVecGen2sFn(unsigned, uint32_t, uint32_t,
-                          TCGv_i64, uint32_t, uint32_t);
- 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index b0aaca38e7..99f81df9e1 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -37,6 +37,10 @@
- #include "exec/helper-proto.h.inc"
- #undef  HELPER_H
- 
-+#define HELPER_H "tcg/helper-sve.h.inc"
-+#include "exec/helper-proto.h.inc"
-+#undef  HELPER_H
++DEF_HELPER_FLAGS_4(crypto_sha256h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha256h2, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(crypto_sha256su0, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha256su1, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 +
- /*
-  * Data for expanding active predicate bits to bytes, for byte elements.
-  *
++DEF_HELPER_FLAGS_4(crypto_sha512h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha512h2, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(crypto_sha512su0, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sha512su1, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(crypto_sm3tt1a, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sm3tt1b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sm3tt2a, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sm3tt2b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sm3partw1, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sm3partw2, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(crypto_sm4e, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(crypto_sm4ekey, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(crypto_rax1, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 -- 
 2.38.1
 
