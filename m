@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36674735975
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FC8735971
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:25:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFnI-0004EN-WC; Mon, 19 Jun 2023 10:23:49 -0400
+	id 1qBFnK-0004FL-2w; Mon, 19 Jun 2023 10:23:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBFnC-0004Df-3w
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:23:42 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ id 1qBFnD-0004Dt-NL
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:23:45 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBFnA-0000jG-B8
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:23:41 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4f63ab1ac4aso4428948e87.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:23:39 -0700 (PDT)
+ id 1qBFnB-0000jd-3u
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:23:42 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f906d8fca3so19903885e9.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:23:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687184618; x=1689776618;
+ d=linaro.org; s=google; t=1687184620; x=1689776620;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5BMeKkCZ73ncSnRSQ8wFapQINfHHQYDpYeSup4OEv0g=;
- b=StgFz48uCx+29aZCuPdBk7TolilPjz6pkV4RLCWgmLBfA/PH29H3JJRO1Od5FzLwxq
- u1LujkyV3chv1WvKBzyC6y50VWf3C2gZMmmRZhIstL/lhijFHvnQXTMlup7Tqm126Rqa
- cJIhwvTGyQL4M/i1NClzx61ie8Qn3IroX1Q5GF+sKHomnfHQ5zSrqGkCk8XdjWH5l8qC
- 7TuyAzcBHWoWll8UXTeiulMlyzJj6gQSe5xSsX0gfA+tkznmwR1CpX6e9oVu5cbcSZbj
- EomW/qRznw1jzIJeWiPLkgt2A8y507dWnvYANp4eup5PBK/kllD5r/chZ6nEsnNkK5l5
- qtMw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=qMEBKL6knLVKab7hTTzt13ET959rfX68OW/IE4hZmWo=;
+ b=iL7duy8Mm1gdLHukDRVquaxKLu4bLM1ooJVce2XzoXPc1lcAdRCKzvsdCOstMpsjjd
+ z9KCJITAoO3MuzADbmiijkOFrKhrMKdS8Dc9FkD1BocsAUGe3O7F4sD17ueABJg18YjT
+ RjBngxskh9c5rSQAID3HhRkD8jLHw81BGDR8ouJNQ3rI29r8RHCkYotUibnkyCsQ+7ye
+ fy2w5ANlpQme/dR359aQFnSjEqkxkbc51jDcdB3ZgW+2nv5jlw+khEdPrQ0aGyTjVXOa
+ MaCJdIVbbM0lkWs0M2KN2YXQ1u44aii2JNWBNKO0rnY34itTGG1mWuu7Y296vUiH0UGt
+ r+1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687184618; x=1689776618;
+ d=1e100.net; s=20221208; t=1687184620; x=1689776620;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5BMeKkCZ73ncSnRSQ8wFapQINfHHQYDpYeSup4OEv0g=;
- b=LaDQZCX875Hzu3D7pCEJkTt7ByZeAydWc/5VXZzFjMLKCQElJ0bGfs/0JD+kIx1iXM
- iYQ2vQih3Ob1R/Rj2cOmxUmmFVCw3G9IiUEThUTZRHPUfd46SdKW5JwHLXZGbI8ODl2u
- Tx6phMTKtU1hRWtUPXU4zt9rL5JMlbG76m4lTnh4+lT63NJ+FnpCwh7KYNrmjeikEuRO
- gA2Tb1y0MYRKyYvbeq7Pnbxlopcdy3BDl9JHsdwrwnpxP5x2vP9RuOn+0Q7JwlouxrFa
- lcoYM6iu72NrfKxIxSSbtaKGniIGwt5mU6n+r5fqcA6quIm5KfT6ZY3HC+ow6FphBTXn
- hMbw==
-X-Gm-Message-State: AC+VfDwuoCBn6HMXczLpx+Io8TMeaYv95wF6luSS+GxLO3jrHUOnOPtK
- euEz/NGWcSaJeWlI5VWA2Da3yr3OkWba9dTJJ/NFNZQV
-X-Google-Smtp-Source: ACHHUZ5pTjQSEzrHyBXQudaj3As8CWTos97EyiP19H3PtZEGsZvvApugJjPkd8vmGnwuC0p+gCx6kg==
-X-Received: by 2002:a05:6512:55a:b0:4f3:94b5:3274 with SMTP id
- h26-20020a056512055a00b004f394b53274mr6201824lfl.63.1687184618283; 
- Mon, 19 Jun 2023 07:23:38 -0700 (PDT)
+ bh=qMEBKL6knLVKab7hTTzt13ET959rfX68OW/IE4hZmWo=;
+ b=jKdXX6ej+pPX8JsR5Ti7lcPNcVRluCGIrQ3HPwd9I7BsFCBmio2WhdwAd9Bcot1bvZ
+ 6wMbKbeHHYaqIBvjLl0Xm59XscYMqyHycthU4l9CaEdBJ32OYbB8rL5QCI0LmzD3SQfB
+ bGYn0VTe9QS1RSQNJUTzof55kCBqdM+1lFS760SWTsNSDCSnHv6EpiEADjCyFn4FmAsr
+ AY3aBhl+HZ8xbhZcVyG7UcNybY5z7YbPV6dH96FEnQ3sY1ug/KnJ/jHacDHFX6JODJqQ
+ mTArssA60wWv/QZSrVNOM53oD64Y9ro/cs8P3Gm6SKDbFj+sFPa+xWxyVYLGg7L1Fz3J
+ wodQ==
+X-Gm-Message-State: AC+VfDz6KhqTpvOeamlGu4S5omfidlKTtfZrakGwEbP4jU95L9sfp1zT
+ ap9pe1D+T7ZcE/63F735PPb+HYFGVQgJjlE5J5izuyUf
+X-Google-Smtp-Source: ACHHUZ6+G9RkA5fnzXwxBI8r4R3g1AjKgwpGd07jKy5r39ZXDN5AvDPXOutte/na/Dr5ir5qLHWkAg==
+X-Received: by 2002:a7b:cb4e:0:b0:3f7:f884:7be3 with SMTP id
+ v14-20020a7bcb4e000000b003f7f8847be3mr7275839wmj.4.1687184619815; 
+ Mon, 19 Jun 2023 07:23:39 -0700 (PDT)
 Received: from stoup.lan (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- k25-20020a7bc419000000b003f96d10eafbsm4143467wmi.12.2023.06.19.07.23.36
+ k25-20020a7bc419000000b003f96d10eafbsm4143467wmi.12.2023.06.19.07.23.38
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 07:23:38 -0700 (PDT)
+ Mon, 19 Jun 2023 07:23:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v3 1/5] target/microblaze: Define TCG_GUEST_DEFAULT_MO
-Date: Mon, 19 Jun 2023 16:23:29 +0200
-Message-Id: <20230619142333.429028-2-richard.henderson@linaro.org>
+Subject: [PATCH v3 2/5] tcg: Do not elide memory barriers for !CF_PARALLEL in
+ system mode
+Date: Mon, 19 Jun 2023 16:23:30 +0200
+Message-Id: <20230619142333.429028-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142333.429028-1-richard.henderson@linaro.org>
 References: <20230619142333.429028-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,34 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The microblaze architecture does not reorder instructions.
-While there is an MBAR wait-for-data-access instruction,
-this concerns synchronizing with DMA.
+The virtio devices require proper memory ordering between
+the vcpus and the iothreads.
 
-This should have been defined when enabling MTTCG.
-
-Cc: Alistair Francis <alistair.francis@wdc.com>
-Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
-Fixes: d449561b130 ("configure: microblaze: Enable mttcg")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/cpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tcg/tcg-op.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index 88324d0bc1..b474abcc2a 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -24,6 +24,9 @@
- #include "exec/cpu-defs.h"
- #include "qemu/cpu-float.h"
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index c07de5d9f8..7aadb37756 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -102,7 +102,19 @@ void tcg_gen_br(TCGLabel *l)
  
-+/* MicroBlaze is always in-order. */
-+#define TCG_GUEST_DEFAULT_MO  TCG_MO_ALL
+ void tcg_gen_mb(TCGBar mb_type)
+ {
+-    if (tcg_ctx->gen_tb->cflags & CF_PARALLEL) {
++#ifdef CONFIG_USER_ONLY
++    bool parallel = tcg_ctx->gen_tb->cflags & CF_PARALLEL;
++#else
++    /*
++     * It is tempting to elide the barrier in a uniprocessor context.
++     * However, even with a single cpu we have i/o threads running in
++     * parallel, and lack of memory order can result in e.g. virtio
++     * queue entries being read incorrectly.
++     */
++    bool parallel = true;
++#endif
 +
- typedef struct CPUArchState CPUMBState;
- #if !defined(CONFIG_USER_ONLY)
- #include "mmu.h"
++    if (parallel) {
+         tcg_gen_op1(INDEX_op_mb, mb_type);
+     }
+ }
 -- 
 2.34.1
 
