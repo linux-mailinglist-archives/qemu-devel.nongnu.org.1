@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611B47359F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410F77359F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:45:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBG6E-0000Xf-C6; Mon, 19 Jun 2023 10:43:22 -0400
+	id 1qBG7c-0001OI-3A; Mon, 19 Jun 2023 10:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBG6C-0000X7-CT
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:43:20 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qBG7a-0001O1-Cl
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:44:46 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBG6A-0006pD-P6
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:43:20 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3112f5ab0b1so1602628f8f.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:43:18 -0700 (PDT)
+ id 1qBG7Y-00079y-LT
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:44:46 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f87592ecaeso803588e87.0
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:44:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687185797; x=1689777797;
- h=content-transfer-encoding:in-reply-to:references:to:from
+ d=linaro.org; s=google; t=1687185881; x=1689777881;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NydlFdCa8bp/ItoaMG4FxtPj8oGkAMhF5pR9q6L2Qp0=;
- b=o2ygSXVJ+krLiXK+CoxqjI/J8aokDGx3yGyK5Mfoghqb1DqnWRUD4ZSbv17SmikjBk
- ORMf1MExz1TGwlfc+d3RgARDEGOrX21GZqdqDsutzPjbnXPTLTsl8vqxbyP5if374A9D
- NVRhxqLf+4jYNHtsDCwKQf0NfDyN+hp9fTZwbJ0o1H1XLK98U/IMtVpDmRgL9aOxR1Qo
- EACJI81r8xt9u7Kyz/nb8058wVrZzKo6iWw3pZUvLztgXuQ9KsDCin5t4K+UJHqESPYF
- +CJgVVJ82Ows0dDK/wIrd8gUAdaAeqKYeUY0NsFyBhwKUrE8e/aR417JdxWNYS4E5YEL
- +qAA==
+ bh=OGdtDTFYiQTDBFYfZ4oBFyIXPm72bZOjt2mRUQqE67k=;
+ b=p44dEAVpdmMaSE0FUIU8AqOaEN3P6W27jonTLs8KZVTgtdnXFgDlZkRV1B0rdujwxM
+ j679mlYtKoy3VPb6Qz/GQMhJWpEuq8U3qy7bBUiys9INPbfjNTFCy2RRqQ7Jm5twdsYT
+ EOGQz1jHBtUgLJNC2rwb8LZ5DHDguSuOCKj7mgwnM1znPALQH/pCKQuYTNRXY/yROHj/
+ SiztD3d2UbaZD3XcIS4zO0RRQLoCT69Tl3EaNhcc0g72yyKRKdk3uNDOcTxZt2u9TXi9
+ dIY4uyDAJ9XHqZpwTZQiCGsrqVHpSO2Te2TcI2y5UDKahSnBaQ3ZzFHblmyjqeG/kjNX
+ uWuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687185797; x=1689777797;
- h=content-transfer-encoding:in-reply-to:references:to:from
+ d=1e100.net; s=20221208; t=1687185881; x=1689777881;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NydlFdCa8bp/ItoaMG4FxtPj8oGkAMhF5pR9q6L2Qp0=;
- b=i//cd+QokCmWbcDwqdaWgsC/KM8+dkeXFMT9anoT0Aqj3Mz8791cOeLZvpmv6F/K7B
- +XerAP/SkK9NDmEm8Kr9csvSioWUfmsXJtYreKC9L40sDq5Vsw3QAZJYOWaaSdPAmSLJ
- Z6YHd/FQ/nCVkH8pyXxG1ZUJFv9Ld6R6J1FUWeP7Us9yB2lOotKCG0RYK9+cwsGiIEXW
- lSOtg4JK1GOqYn5+9qiMT+kRwM05djkj3m7/f9vlzXKjyP5GMIPq3wDX/oSZb3/+IosR
- H2Lk7XlOAw5sHC8HHZMqCJFNWTidxQLqyfDMcYKYNqhNDdVhm6LuxpB/Kc/zPcs7Iv2Y
- p0SQ==
-X-Gm-Message-State: AC+VfDwNH3uboavM1VzrvZbnHMS6AfaOLFSYJ+xSj84OlRnrNNIpNIvX
- asWiqj3I+x/CO2g403wbKvvpkJAqSyiHUDxrwpBpBeBJ
-X-Google-Smtp-Source: ACHHUZ4n8dTUAlO6uXhHVAMpbIEss4CSYy3refu5UwGc5HyvuRAP9idQ9E6hE3GwVtj35SiFvyJyNg==
-X-Received: by 2002:adf:e5c4:0:b0:30f:cb5e:6b1b with SMTP id
- a4-20020adfe5c4000000b0030fcb5e6b1bmr6583571wrn.11.1687185796844; 
- Mon, 19 Jun 2023 07:43:16 -0700 (PDT)
+ bh=OGdtDTFYiQTDBFYfZ4oBFyIXPm72bZOjt2mRUQqE67k=;
+ b=BS07tDGAMyEwiAn7qGnY3RKh+9CmvlgGOxz28L2CLA5J3E3zpIxBXBu0LGbmDD+Peg
+ VYcQndZw30UOw0qFXEiia3gUHW3oHBzVj8hdzRhs3zcMPP75u6NRmgrFn0YPpVuSORIP
+ BqI/WxFgV3MIA7+dTogHGIqx54sOxjYDkTXV9xII0zcAHONPRBQswx4dpNfD4AiWkfG4
+ c5bkMzQCth/16hXXAsyeB8/FRLvT0VEfLDDyu39QDzE5CmhSytvvhr2tf13ZNAetbHPn
+ dKh21jtl8Ce6XAdnohPtYJz2wcHOGtZIX4+5CJKjUDArUD3ijSQ13tFK9mHB73plrMY4
+ j3BA==
+X-Gm-Message-State: AC+VfDyvEIakaURlfAA/z6fKkTAL8CgOqXHdgNJ0Ojk3I9mk4U4+J+Hb
+ 4tN57/wkzlKUblKL35zs7EzMdg==
+X-Google-Smtp-Source: ACHHUZ6IhUIptRJFKrrxWOACHIgAZJuaTb9OWNO/FEVSRACuTDiv9XQzVo/urEC6LCGjwdd6ckDv1g==
+X-Received: by 2002:a05:6512:1319:b0:4f8:6625:f2ca with SMTP id
+ x25-20020a056512131900b004f86625f2camr2902268lfu.61.1687185881121; 
+ Mon, 19 Jun 2023 07:44:41 -0700 (PDT)
 Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- t12-20020adfe10c000000b00307acec258esm31740641wrz.3.2023.06.19.07.43.16
- for <qemu-devel@nongnu.org>
+ c6-20020a7bc846000000b003f8fb02c413sm9538346wml.8.2023.06.19.07.44.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 07:43:16 -0700 (PDT)
-Message-ID: <00a4e1d0-9c8f-a8a6-fe04-1923fee82466@linaro.org>
-Date: Mon, 19 Jun 2023 16:43:14 +0200
+ Mon, 19 Jun 2023 07:44:40 -0700 (PDT)
+Message-ID: <b46c3dc4-5017-97a3-3935-f8e1c6a7e72d@linaro.org>
+Date: Mon, 19 Jun 2023 16:44:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v3 0/5] tcg: Issue memory barriers for guest memory model
+Subject: Re: [PATCH v2 02/38] util: Add cpuinfo-ppc.c
 Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: ardb@kernel.org, berrange@redhat.com, qemu-ppc@nongnu.org,
+ qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
+References: <20230609022401.684157-1-richard.henderson@linaro.org>
+ <20230609022401.684157-3-richard.henderson@linaro.org>
+ <ed63d01a-4903-a233-ac80-6e8d10411a02@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20230619142333.429028-1-richard.henderson@linaro.org>
-In-Reply-To: <20230619142333.429028-1-richard.henderson@linaro.org>
+In-Reply-To: <ed63d01a-4903-a233-ac80-6e8d10411a02@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,35 +98,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/19/23 16:23, Richard Henderson wrote:
-> v1: https://lore.kernel.org/qemu-devel/20210316220735.2048137-1-richard.henderson@linaro.org/
-> v2: https://lore.kernel.org/qemu-devel/20230306015710.1868853-1-richard.henderson@linaro.org/
+On 6/19/23 12:37, Philippe Mathieu-Daudé wrote:
+> On 9/6/23 04:23, Richard Henderson wrote:
+>> Move the code from tcg/.  Fix a bug in that PPC_FEATURE2_ARCH_3_10
+>> is actually spelled PPC_FEATURE2_ARCH_3_1.
 > 
-> Changes for v3:
->    * Update for tcg-built-once.
->    * Require TCG_GUEST_DEFAULT_MO if TARGET_SUPPORTS_MTTCG.
+> This is rather confusing.
+> 
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   host/include/ppc/host/cpuinfo.h   | 29 ++++++++++++++++
+>>   host/include/ppc64/host/cpuinfo.h |  1 +
+>>   tcg/ppc/tcg-target.h              | 16 ++++-----
+>>   util/cpuinfo-ppc.c                | 57 +++++++++++++++++++++++++++++++
+>>   tcg/ppc/tcg-target.c.inc          | 44 +-----------------------
+>>   util/meson.build                  |  2 ++
+>>   6 files changed, 98 insertions(+), 51 deletions(-)
+>>   create mode 100644 host/include/ppc/host/cpuinfo.h
+>>   create mode 100644 host/include/ppc64/host/cpuinfo.h
+>>   create mode 100644 util/cpuinfo-ppc.c
+>>
+>> diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
+>> new file mode 100644
+>> index 0000000000..7ec252ef52
+>> --- /dev/null
+>> +++ b/host/include/ppc/host/cpuinfo.h
+>> @@ -0,0 +1,29 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Host specific cpu indentification for ppc.
+>> + */
+>> +
+>> +#ifndef HOST_CPUINFO_H
+>> +#define HOST_CPUINFO_H
+>> +
+>> +/* Digested version of <cpuid.h> */
+>> +
+>> +#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+>> +#define CPUINFO_V2_06           (1u << 1)
+>> +#define CPUINFO_V2_07           (1u << 2)
+>> +#define CPUINFO_V3_00           (1u << 3)
+>> +#define CPUINFO_V3_10           (1u << 4)
+> 
+> Could we define as CPUINFO_V3_1 ...
+> 
+>> +#define CPUINFO_ISEL            (1u << 5)
+>> +#define CPUINFO_ALTIVEC         (1u << 6)
+>> +#define CPUINFO_VSX             (1u << 7)
+> 
+> 
+>> -#define have_isa_2_06  (have_isa >= tcg_isa_2_06)
+>> -#define have_isa_2_07  (have_isa >= tcg_isa_2_07)
+>> -#define have_isa_3_00  (have_isa >= tcg_isa_3_00)
+>> -#define have_isa_3_10  (have_isa >= tcg_isa_3_10)
+>> +#define have_isa_2_06  (cpuinfo & CPUINFO_V2_06)
+>> +#define have_isa_2_07  (cpuinfo & CPUINFO_V2_07)
+>> +#define have_isa_3_00  (cpuinfo & CPUINFO_V3_00)
+>> +#define have_isa_3_10  (cpuinfo & CPUINFO_V3_10)
+> 
+> ... and have_isa_3_1 instead?
 
-I just noticed that patches 2,3,5 were reviewed (thanks phil)
-and I failed to copy the r-b.  I have now done so.
-
+I suppose we could, but they all line up this way.  :-)
 
 r~
 
-> Richard Henderson (5):
->    target/microblaze: Define TCG_GUEST_DEFAULT_MO
->    tcg: Do not elide memory barriers for !CF_PARALLEL in system mode
->    tcg: Elide memory barriers implied by the host memory model
->    tcg: Add host memory barriers to cpu_ldst.h interfaces
->    accel/tcg: Remove check_tcg_memory_orders_compatible
 > 
->   accel/tcg/internal.h    | 34 ++++++++++++++++++++++++++++++++++
->   target/microblaze/cpu.h |  3 +++
->   accel/tcg/cputlb.c      | 10 ++++++++++
->   accel/tcg/tcg-all.c     | 39 ++++++++++-----------------------------
->   accel/tcg/user-exec.c   | 10 ++++++++++
->   tcg/tcg-op.c            | 20 ++++++++++++++++++--
->   6 files changed, 85 insertions(+), 31 deletions(-)
-
-
+> Otherwise,
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
 
 
