@@ -2,66 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D02A735917
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4C0735974
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:25:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFSd-0000Zu-Ta; Mon, 19 Jun 2023 10:02:27 -0400
+	id 1qBFnI-0004Dw-MF; Mon, 19 Jun 2023 10:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBFSb-0000ZT-IF
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:02:25 -0400
+ id 1qBFnA-0004C1-B1
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:23:41 -0400
 Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBFSZ-0003BL-Rg
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:02:25 -0400
+ id 1qBFn8-0000iQ-M9
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:23:40 -0400
 Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f9002a1a39so19564675e9.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:02:20 -0700 (PDT)
+ 5b1f17b1804b1-3f9b4a71623so3162265e9.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687183339; x=1689775339;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ic2ReGah2UVp+gcQLs0X9D8a6Pz1giA0UurYzsdrHBE=;
- b=LtpvvRO4zt4quL1dEy5DnKcLc86AMrp+4xk5crZUGSCvXrabcjLTICz768Iwqs2eob
- FoP1BQLZQ4Jmk6JoDNilQD1rKybgnBn1JJt9ZHGUhFnWXYqrqfy5WC1bma1VArIlv5/A
- 4h5+BA3tblWo9Wjg0zaLyDjbOP1iwUDZ5um/uqfTfx/w+XXeVjSE/sDvNk54OpS4kViF
- EAjEaagevZZWOyKPdU3naaYqS4SN8YFlIJzUKU0ftaurxzhQmzzN4pmbgEuOkQMcO01A
- G6z9egEMpw9K5paaOZHqrn3DhAt2yYGCXYLkLu2/PeJwFLFd8IAwvp03IPPh6ZMbMKg8
- HaGg==
+ d=linaro.org; s=google; t=1687184616; x=1689776616;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zU9ou4hqLV5xqA32w7uJfBC6kax4N0nvvEuBAns+Vl8=;
+ b=wRFJbPt6G5GRAdCmwdWu/VFPJJPBdMZ+0DzX0iN6lA8swwgCjGqEXc/plhNjY/+34t
+ i0E47Yj3i65JFppyoLs5IIOLTyYWcr1NQb7xSSeXSTWbgi/NbXHc7ZgkyES6T5gstBMS
+ cmI7NO84fZjK/kIRO6pbIKp9tNRx6G4G7TENAtWdEkFcbewmjjLUwRk/7544DH1ypAek
+ 8D5nGfiHPgCc58ivtiq/wpowVeU/MOZqH5PqWKSqzT29h0mD+1W9QEjOe6zTwfHnR9/C
+ eIrPwAKfTCBoksL4qjAjpZZILVCj44xsaqJmAFrE+pggwHyOxUSSFOZsc3bstBObUVgr
+ Qo8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687183339; x=1689775339;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ic2ReGah2UVp+gcQLs0X9D8a6Pz1giA0UurYzsdrHBE=;
- b=j+n+rvKrj29EXSDRXmFqUMKxIy7TYoGIw/YO0Tkb9fq5FcttxYwnAf2dNFI78xcXoN
- kaxJJK6jRuplH49iwegaUYPrfHnY1Os1Ow1Cm96Rj+rBVc0d7kUtH/QSGL//v/dNBZjT
- uxVVK2HuVp2XhnDlSHF1G4hPDjb9YuZjx1BpN8Cznmm7Tog/DkJArdws+/RDDVK+HTeS
- hztrywbckJ9HP3WrvE686nzcVuiG2WeOF2DKJ8bcGBiKFN3qwWWe/de7iZ2KfNd474SJ
- NaO5NbIDTDWv9bSpbfrtpbrZl86qMcjT2lUGhCTlnecMUTnmKojiWMm57h/oLkIuEEjz
- s6ig==
-X-Gm-Message-State: AC+VfDz47Wc47++zz/7PcPkesmAknYcr0NYUdCwWMOTr2lc0J5hwWTSM
- UEp3IY5Qam+KBMPhMxDsQcrJ1RxOtUWqmSWFLKBEY8GO
-X-Google-Smtp-Source: ACHHUZ4vXYfSZ+sveoTYhrdMsrYsdZfVdqzAk1XO/TVSL57pa5PlRW2cIzxBHCbm+ntw7mVghQi5bw==
-X-Received: by 2002:a05:600c:246:b0:3f6:cfc7:8bc7 with SMTP id
- 6-20020a05600c024600b003f6cfc78bc7mr6769919wmj.17.1687183339279; 
- Mon, 19 Jun 2023 07:02:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687184616; x=1689776616;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zU9ou4hqLV5xqA32w7uJfBC6kax4N0nvvEuBAns+Vl8=;
+ b=gaKMpgR469iXKEfdE3hEMBUCIuhG9GDHxXAgMKBpc2QXe7nnqr/a+4jgl44c4LPKou
+ tbUpda9ExGGzcGsnSMONbl7S3BpxGix+dJVGUscmSuLGJabYiV573aazZoBzbROik15q
+ hOyz6zBxbxiczyUtiMOQosZ1tznikCfUs8cGu6Nc7q89+9PLu+vjQ/1felLHcp6SOzsY
+ +EOm4QPS+66EfE/a0QsuSt+DESl2C30/fj92QcoAo684/HfBCz8ZU0RX6ELkbPSyUANH
+ qDHfJNyPxClmdR+udrIZzpyuKhvKf6CHwE5lfprnZeVCiSEe8Dfu4mN3PgXl6JE9jNkj
+ 4x3w==
+X-Gm-Message-State: AC+VfDxVlO6N2r7t/TIWcfbuIiiAbxurNGuCyEcKzh7uBGsnTnw2//8O
+ fCMgdmcoUEuVo+tOjUklxmnAqxA7P/WKfhJ7staTGB+F
+X-Google-Smtp-Source: ACHHUZ7e7/EPpVDDs049uKhnUkWANJ/IAK1tMPuCBjXjEOm5Us/je82mRmTUrC6NRLXAtYOzht/J1Q==
+X-Received: by 2002:a1c:f718:0:b0:3f5:1728:bde9 with SMTP id
+ v24-20020a1cf718000000b003f51728bde9mr6822856wmh.2.1687184616662; 
+ Mon, 19 Jun 2023 07:23:36 -0700 (PDT)
 Received: from stoup.lan (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- k24-20020a7bc318000000b003f733c1129fsm10797816wmj.33.2023.06.19.07.02.18
+ k25-20020a7bc419000000b003f96d10eafbsm4143467wmi.12.2023.06.19.07.23.35
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 07:02:18 -0700 (PDT)
+ Mon, 19 Jun 2023 07:23:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH] target/arm: Restructure has_vfp_d32 test
-Date: Mon, 19 Jun 2023 16:02:16 +0200
-Message-Id: <20230619140216.402530-1-richard.henderson@linaro.org>
+Subject: [PATCH v3 0/5] tcg: Issue memory barriers for guest memory model
+Date: Mon, 19 Jun 2023 16:23:28 +0200
+Message-Id: <20230619142333.429028-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -89,67 +87,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One cannot test for feature aa32_simd_r32 without first
-testing if AArch32 mode is supported at all.  This leads to
+v1: https://lore.kernel.org/qemu-devel/20210316220735.2048137-1-richard.henderson@linaro.org/
+v2: https://lore.kernel.org/qemu-devel/20230306015710.1868853-1-richard.henderson@linaro.org/
 
-qemu-system-aarch64: ARM CPUs must have both VFP-D32 and Neon or neither
+Changes for v3:
+  * Update for tcg-built-once.
+  * Require TCG_GUEST_DEFAULT_MO if TARGET_SUPPORTS_MTTCG.
 
-for Apple M1 cpus.
 
-We already have a check for ARMv8-A never setting vfp-d32 true,
-so restructure the code so that AArch64 avoids the test entirely.
+r~
 
-Reported-by: Mads Ynddal <mads@ynddal.dk>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/cpu.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 353fc48567..706dbd37b1 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1402,25 +1402,27 @@ void arm_cpu_post_init(Object *obj)
-      * KVM does not currently allow us to lie to the guest about its
-      * ID/feature registers, so the guest always sees what the host has.
-      */
--    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)
--        ? cpu_isar_feature(aa64_fp_simd, cpu)
--        : cpu_isar_feature(aa32_vfp, cpu)) {
--        cpu->has_vfp = true;
--        if (!kvm_enabled()) {
--            qdev_property_add_static(DEVICE(obj), &arm_cpu_has_vfp_property);
-+    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
-+        if (cpu_isar_feature(aa64_fp_simd, cpu)) {
-+            cpu->has_vfp = true;
-+            cpu->has_vfp_d32 = true;
-+            if (tcg_enabled() || qtest_enabled()) {
-+                qdev_property_add_static(DEVICE(obj),
-+                                         &arm_cpu_has_vfp_property);
-+            }
-         }
--    }
--
--    if (cpu->has_vfp && cpu_isar_feature(aa32_simd_r32, cpu)) {
--        cpu->has_vfp_d32 = true;
--        if (!kvm_enabled()) {
-+    } else if (cpu_isar_feature(aa32_vfp, cpu)) {
-+        cpu->has_vfp = true;
-+        if (cpu_isar_feature(aa32_simd_r32, cpu)) {
-+            cpu->has_vfp_d32 = true;
-             /*
-              * The permitted values of the SIMDReg bits [3:0] on
-              * Armv8-A are either 0b0000 and 0b0010. On such CPUs,
-              * make sure that has_vfp_d32 can not be set to false.
-              */
--            if (!(arm_feature(&cpu->env, ARM_FEATURE_V8) &&
--                  !arm_feature(&cpu->env, ARM_FEATURE_M))) {
-+            if ((tcg_enabled() || qtest_enabled())
-+                && !(arm_feature(&cpu->env, ARM_FEATURE_V8)
-+                     && !arm_feature(&cpu->env, ARM_FEATURE_M))) {
-                 qdev_property_add_static(DEVICE(obj),
-                                          &arm_cpu_has_vfp_d32_property);
-             }
+Richard Henderson (5):
+  target/microblaze: Define TCG_GUEST_DEFAULT_MO
+  tcg: Do not elide memory barriers for !CF_PARALLEL in system mode
+  tcg: Elide memory barriers implied by the host memory model
+  tcg: Add host memory barriers to cpu_ldst.h interfaces
+  accel/tcg: Remove check_tcg_memory_orders_compatible
+
+ accel/tcg/internal.h    | 34 ++++++++++++++++++++++++++++++++++
+ target/microblaze/cpu.h |  3 +++
+ accel/tcg/cputlb.c      | 10 ++++++++++
+ accel/tcg/tcg-all.c     | 39 ++++++++++-----------------------------
+ accel/tcg/user-exec.c   | 10 ++++++++++
+ tcg/tcg-op.c            | 20 ++++++++++++++++++--
+ 6 files changed, 85 insertions(+), 31 deletions(-)
+
 -- 
 2.34.1
 
