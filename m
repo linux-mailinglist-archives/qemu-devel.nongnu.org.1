@@ -2,82 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5195734F7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8585734FBF
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 11:24:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBB2f-00039S-OE; Mon, 19 Jun 2023 05:19:21 -0400
+	id 1qBB7K-00071e-3y; Mon, 19 Jun 2023 05:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBB2b-00038I-U9
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:19:17 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBB2a-0001yO-Aq
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:19:17 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f6283d0d84so4061514e87.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 02:19:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687166354; x=1689758354;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VHlHQxlwsOWUk71VYo9wtJBVxxN3mr1x8H8MDl1D0DM=;
- b=imxgGqvOkOFG1f8RZKnvnY7P+BScuqsUEmqwth94f8GDAiqJ3z74o5NSpnt2nhUhq7
- KUrGWj+7JKQy+jdT0EStxbc8WlXzgfCSei+y7Mo9iEJaaFkk9L7ZXpi9FkCj2ZCPP1uE
- I3H3XMd4lbhxj7hnLtUGFQEjP0XTpDG7MQSujWZseOT+1wFCdgvd+JhbIlr2IWca/OMl
- DX2Syv40GOZogUrcydUec4WZDYWnb6eOsx6dwMaeXM7RDmGrWRes/uuqI9BxKFO9R9PS
- dRzEmzpcYoriXp4lql+Ua4To0AqXtGzu2A6i4ESg6rarv56nFme4jClkj/lmaZ5VzvKA
- YynQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687166354; x=1689758354;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VHlHQxlwsOWUk71VYo9wtJBVxxN3mr1x8H8MDl1D0DM=;
- b=LYCpkC9ROkZZhRgiJhtk1P/7yhv5nS4NAXrmOPwkH3OGw1izV9TfTPehzUsBcfzeQt
- eg7PdlIsAa6LXHI4l0CYq96PWyNZ6y1bE947UAxBsAZs+0D7Ywn/rLM8DPFghV7ZV05V
- T9KtxouDaLUY5P/vw/obS1MkWsJFQglYJY1zeZyNSb6NNmDtCqiLsfP4pWBxFNs9B98x
- rJjjPQO0VHdu9+ufUFppeSNAvROqkeRREtzKDcdz3I4zm7NvXjBPEcSzfa3o7bfBWPQo
- fQNskm0pn+hbPNGK2/izDv+kt7PHRYmpPJk4Rc/aaFQj8xUmVN6vhIKR+9yc8e/7dePG
- agIw==
-X-Gm-Message-State: AC+VfDxYbQzkvzKcSdGGDS1+Pq7BFzhDq9vvcMxX5iRUUL5i1H4zdaYg
- CbN5HwcTBjbmUWIogBnxmeTLGo845U4W2aEdpjEEGQ==
-X-Google-Smtp-Source: ACHHUZ72n9VeZP/1cL1SE8JdViElcIsw3q0S8fnveM09cYlOSGeLbCJrpaXz/VWaqLWf2MYIVvBlTQ==
-X-Received: by 2002:ac2:5b0c:0:b0:4f8:666b:9de8 with SMTP id
- v12-20020ac25b0c000000b004f8666b9de8mr2580890lfn.13.1687166354401; 
- Mon, 19 Jun 2023 02:19:14 -0700 (PDT)
-Received: from localhost.localdomain (194.red-95-127-33.staticip.rima-tde.net.
- [95.127.33.194]) by smtp.gmail.com with ESMTPSA id
- j15-20020a05600c2b8f00b003f4266965fbsm10101063wmc.5.2023.06.19.02.19.13
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jun 2023 02:19:14 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/2] accel/tcg: Make probe_access() a generic TCG helper
-Date: Mon, 19 Jun 2023 11:19:01 +0200
-Message-Id: <20230619091901.51607-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230619091901.51607-1-philmd@linaro.org>
-References: <20230619091901.51607-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qBB7H-00071M-L1
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:07 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qBB7F-0003Fl-26
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 05:24:06 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35J9MYSk027138; Mon, 19 Jun 2023 09:24:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=wFplvQ+st/Ax9xaSYSbveoi7bz/jQ/ap7BgMr/HRQYI=;
+ b=Ypnz7O39SMZfdrpLjC+o+j0m9wBVS6SzKxHEDteL6gX3Fy5jMSECJBlg1c/P6Bj4mcuv
+ alztmQblAR0aUceE9h46g306XEXoBCkEG3Y4K+k7IDj+MxB5h7XFu6m22+9H3T8cD85W
+ fHuhPElteuhTBLcqSv3eIdUoKbvu2dLJEMcb/rbxE6CWFfU9rx8QvtiV6d540JWetUMt
+ qinczsYAXlalu7EZnJ+9J9kAAaSsLeCfZKIqWMLl/z2CfEA4nUKfRgS/PiXm48XpSmGa
+ 4c/sGvlgZYn1VJcHa0Q9qKBheHOxslnp+RKiBHA4zv5NPBDIGi/02EHwWOsctOKFmhm4 bg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ramb60122-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jun 2023 09:24:01 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J9N0iC028370;
+ Mon, 19 Jun 2023 09:24:01 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ramb6011m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jun 2023 09:24:01 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J9LuqX009469;
+ Mon, 19 Jun 2023 09:23:59 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3r94f50xsr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jun 2023 09:23:59 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35J9NvlA22217454
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Jun 2023 09:23:57 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 110F820043;
+ Mon, 19 Jun 2023 09:23:57 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD94020040;
+ Mon, 19 Jun 2023 09:23:56 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Jun 2023 09:23:56 +0000 (GMT)
+Date: Mon, 19 Jun 2023 11:19:52 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Bin Meng <bmeng@tinylab.org>
+Cc: qemu-devel@nongnu.org, Zhangjin Wu <falcon@tinylab.org>, Juan Quintela
+ <quintela@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 5/6] util/async-teardown: Use qemu_close_range() to
+ close fds
+Message-ID: <20230619111952.0b7d86f2@p-imbrenda>
+In-Reply-To: <20230617053621.50359-6-bmeng@tinylab.org>
+References: <20230617053621.50359-1-bmeng@tinylab.org>
+ <20230617053621.50359-6-bmeng@tinylab.org>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Mr3p-3Apxh71kNkyu0mZsUz8Y0_COEES
+X-Proofpoint-GUID: vTTYgSYTXqCAzXsktA4OXQvcrAyALIHu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-19_06,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ mlxscore=0 priorityscore=1501 clxscore=1011 phishscore=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=740 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306190081
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,96 +118,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-probe_access() is not ARM specific and can be reused by
-other targets.
+On Sat, 17 Jun 2023 13:36:20 +0800
+Bin Meng <bmeng@tinylab.org> wrote:
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- accel/tcg/tcg-runtime.h    |  2 ++
- target/arm/helper.h        |  2 --
- accel/tcg/tcg-runtime.c    | 16 ++++++++++++++++
- target/arm/tcg/op_helper.c | 16 ----------------
- 4 files changed, 18 insertions(+), 18 deletions(-)
+> From: Zhangjin Wu <falcon@tinylab.org>
+> 
+> Based on the old close_all_open_fd() of util/async-teardown.c, a new
+> generic qemu_close_range() has been added in osdep.c.
+> 
+> Now, let's switch over to use the generic qemu_close_range().
+> 
+> Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> 
+> ---
+> 
+> Changes in v3:
+> - limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
+> 
+> Changes in v2:
+> - new patch: "util/async-teardown: Use qemu_close_range() to close fds"
+> 
+>  util/async-teardown.c | 42 ++----------------------------------------
+>  1 file changed, 2 insertions(+), 40 deletions(-)
+> 
+> diff --git a/util/async-teardown.c b/util/async-teardown.c
+> index 7e0177a8da..e102912f3f 100644
+> --- a/util/async-teardown.c
+> +++ b/util/async-teardown.c
+> @@ -29,44 +29,6 @@
+>  
+>  static pid_t the_ppid;
+>  
+> -/*
+> - * Close all open file descriptors.
+> - */
+> -static void close_all_open_fd(void)
+> -{
+> -    struct dirent *de;
+> -    int fd, dfd;
+> -    DIR *dir;
+> -
+> -#ifdef CONFIG_CLOSE_RANGE
+> -    int r = close_range(0, ~0U, 0);
+> -    if (!r) {
+> -        /* Success, no need to try other ways. */
+> -        return;
+> -    }
+> -#endif
+> -
+> -    dir = opendir("/proc/self/fd");
+> -    if (!dir) {
+> -        /* If /proc is not mounted, close fds one by one. */
+> -        int open_max = sysconf(_SC_OPEN_MAX), i;
+> -        for (i = 0; i < open_max; i++) {
+> -                close(i);
+> -        }
+> -        return;
+> -    }
+> -    /* Avoid closing the directory. */
+> -    dfd = dirfd(dir);
+> -
+> -    for (de = readdir(dir); de; de = readdir(dir)) {
+> -        fd = atoi(de->d_name);
+> -        if (fd != dfd) {
+> -            close(fd);
+> -        }
+> -    }
+> -    closedir(dir);
+> -}
+> -
+>  static void hup_handler(int signal)
+>  {
+>      /* Check every second if this process has been reparented. */
+> @@ -84,6 +46,7 @@ static int async_teardown_fn(void *arg)
+>      struct sigaction sa = { .sa_handler = hup_handler };
+>      sigset_t hup_signal;
+>      char name[16];
+> +    int open_max = sysconf(_SC_OPEN_MAX);
+>  
+>      /* Set a meaningful name for this process. */
+>      snprintf(name, 16, "cleanup/%d", the_ppid);
+> @@ -92,9 +55,8 @@ static int async_teardown_fn(void *arg)
+>      /*
+>       * Close all file descriptors that might have been inherited from the
+>       * main qemu process when doing clone, needed to make libvirt happy.
+> -     * Not using close_range for increased compatibility with older kernels.
+>       */
+> -    close_all_open_fd();
+> +    qemu_close_range(0, open_max - 1);
 
-diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
-index 39e68007f9..a93a5d87a5 100644
---- a/accel/tcg/tcg-runtime.h
-+++ b/accel/tcg/tcg-runtime.h
-@@ -28,6 +28,8 @@ DEF_HELPER_FLAGS_1(lookup_tb_ptr, TCG_CALL_NO_WG_SE, cptr, env)
- 
- DEF_HELPER_FLAGS_1(exit_atomic, TCG_CALL_NO_WG, noreturn, env)
- 
-+DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, i64, i32, i32, i32)
-+
- #ifndef IN_HELPER_PROTO
- /*
-  * Pass calls to memset directly to libc, without a thunk in qemu.
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index cee9462c73..4336571d88 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -101,8 +101,6 @@ DEF_HELPER_FLAGS_1(rebuild_hflags_a32_newel, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(rebuild_hflags_a32, TCG_CALL_NO_RWG, void, env, int)
- DEF_HELPER_FLAGS_2(rebuild_hflags_a64, TCG_CALL_NO_RWG, void, env, int)
- 
--DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, i64, i32, i32, i32)
--
- DEF_HELPER_1(vfp_get_fpscr, i32, env)
- DEF_HELPER_2(vfp_set_fpscr, void, env, i32)
- 
-diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
-index 9fa539ad3d..b241a11791 100644
---- a/accel/tcg/tcg-runtime.c
-+++ b/accel/tcg/tcg-runtime.c
-@@ -152,3 +152,19 @@ void HELPER(exit_atomic)(CPUArchState *env)
- {
-     cpu_loop_exit_atomic(env_cpu(env), GETPC());
- }
-+
-+void HELPER(probe_access)(CPUArchState *env, uint64_t ptr,
-+                          uint32_t access_type, uint32_t mmu_idx,
-+                          uint32_t size)
-+{
-+    uint32_t in_page = -((uint32_t)ptr | TARGET_PAGE_SIZE);
-+    uintptr_t ra = GETPC();
-+
-+    if (likely(size <= in_page)) {
-+        probe_access(env, ptr, size, access_type, mmu_idx, ra);
-+    } else {
-+        probe_access(env, ptr, in_page, access_type, mmu_idx, ra);
-+        probe_access(env, ptr + in_page, size - in_page,
-+                     access_type, mmu_idx, ra);
-+    }
-+}
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 6cb84bc994..d507a3df16 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -1009,22 +1009,6 @@ uint32_t HELPER(ror_cc)(CPUARMState *env, uint32_t x, uint32_t i)
-     }
- }
- 
--void HELPER(probe_access)(CPUArchState *env, uint64_t ptr,
--                          uint32_t access_type, uint32_t mmu_idx,
--                          uint32_t size)
--{
--    uint32_t in_page = -((uint32_t)ptr | TARGET_PAGE_SIZE);
--    uintptr_t ra = GETPC();
--
--    if (likely(size <= in_page)) {
--        probe_access(env, ptr, size, access_type, mmu_idx, ra);
--    } else {
--        probe_access(env, ptr, in_page, access_type, mmu_idx, ra);
--        probe_access(env, ptr + in_page, size - in_page,
--                     access_type, mmu_idx, ra);
--    }
--}
--
- /*
-  * This function corresponds to AArch64.vESBOperation().
-  * Note that the AArch32 version is not functionally different.
--- 
-2.38.1
+I think it would look easier to read if you just put the sysconf() call
+here and avoid an extra variable
+
+>  
+>      /* Set up a handler for SIGHUP and unblock SIGHUP. */
+>      sigaction(SIGHUP, &sa, NULL);
 
 
