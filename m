@@ -2,74 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7B3735178
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF42735177
 	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 12:06:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBBld-0005B3-U5; Mon, 19 Jun 2023 06:05:49 -0400
+	id 1qBBkh-0004h9-Jz; Mon, 19 Jun 2023 06:04:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qBBlM-0004pz-3L
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 06:05:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
+ id 1qBBke-0004gF-BN
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 06:04:48 -0400
+Received: from mailout2.samsung.com ([203.254.224.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qBBlH-00040I-0s
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 06:05:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687169121;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=owkVPtMWhrnuf7TboX+Z+H1wfjueQMR45stD/qpzSOQ=;
- b=hgIOltYdbby/B6R4lbmT/xyIcLBay5I3RSxQ23Zf3dNlpmkmhyb3hq557Fq0STRsYF3mcA
- VqqdyqYE974BX8gbhzjjBOA/I8NmO7/7+Sr8vBuQX/7OUhQuOqGFnrb6horhyphggLZBDf
- acejV7LVvF9RfXZK7NAmR0sDQlYJlqc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-644-27vZbXEjP7ynCOwc3mLuzg-1; Mon, 19 Jun 2023 06:05:18 -0400
-X-MC-Unique: 27vZbXEjP7ynCOwc3mLuzg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A380A805F30;
- Mon, 19 Jun 2023 10:05:17 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.14])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 786772166B27;
- Mon, 19 Jun 2023 10:05:15 +0000 (UTC)
-Date: Mon, 19 Jun 2023 10:23:25 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jeuk Kim <jeuk20.kim@samsung.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "fam@euphon.net" <fam@euphon.net>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "kwolf@redhat.com" <kwolf@redhat.com>,
- "hreitz@redhat.com" <hreitz@redhat.com>,
- Klaus Birkelund Jensen <k.jensen@samsung.com>, eblake@redhat.com
-Subject: Re: [PATCH v2 3/3] hw/ufs: Support for UFS logical unit
-Message-ID: <20230619082325.GB2497337@fedora>
-References: <CGME20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p2>
- <20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p2>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="FW8QP7VyUvLBJn7s"
-Content-Disposition: inline
-In-Reply-To: <20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p2>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
+ id 1qBBkY-0003gr-UQ
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 06:04:47 -0400
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+ by mailout2.samsung.com (KnoxPortal) with ESMTP id
+ 20230619100434epoutp02778962f9238aa3153872cf1f6bc7abbd~qB1V8dMoG0502705027epoutp02B
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 10:04:34 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
+ 20230619100434epoutp02778962f9238aa3153872cf1f6bc7abbd~qB1V8dMoG0502705027epoutp02B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1687169074;
+ bh=/FOB7PIT78U6tnFBG1TsEE/LDg7cj24xJ3fneHO/FNI=;
+ h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
+ b=K8L1M4icBdzZvNfUWuh8qb3t/hW4Vm2L35AMKNsIz9YvENhnQAQe5RUy6gFpLEBEW
+ Npjv7PcleOXob0kr2PS9riJNQZVaynR8gdJLyPm2yrW6qFok0zkLUi+jB5S0y1YlGt
+ zCQBnEnooFb4Mw8r/j4cdf2F8kkfE7Os/vscS9zA=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+ epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+ 20230619100433epcas2p4a9dd23b5fa07504aad491a6f88d18b36~qB1VsxxCU1918419184epcas2p4Y;
+ Mon, 19 Jun 2023 10:04:33 +0000 (GMT)
+Received: from epsmges2p2.samsung.com (unknown [182.195.36.98]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4Ql5350nprz4x9Pt; Mon, 19 Jun
+ 2023 10:04:33 +0000 (GMT)
+X-AuditID: b6c32a46-6fdfa70000009cc5-10-64902830436d
+Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
+ epsmges2p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 59.6A.40133.03820946; Mon, 19 Jun 2023 19:04:32 +0900 (KST)
+Mime-Version: 1.0
+Subject: Re: [PATCH v2 1/3] hw/ufs: Initial commit for emulated
+ Universal-Flash-Storage
+From: Jeuk Kim <jeuk20.kim@samsung.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kwolf@redhat.com"
+ <kwolf@redhat.com>, "hreitz@redhat.com" <hreitz@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "marcel.apfelbaum@gmail.com"
+ <marcel.apfelbaum@gmail.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "thuth@redhat.com"
+ <thuth@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>, Klaus Birkelund Jensen
+ <k.jensen@samsung.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+In-Reply-To: <20230616090718.GC2478180@fedora>
+X-CPGS-Detection: blocking_info_exchange
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20230619100432epcms2p4c3873273ba2a5b4b9a30534969f899b2@epcms2p4>
+Date: Mon, 19 Jun 2023 19:04:32 +0900
+X-CMS-MailID: 20230619100432epcms2p4c3873273ba2a5b4b9a30534969f899b2
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+X-CPGSPASS: Y
+X-CPGSPASS: Y
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrKJsWRmVeSWpSXmKPExsWy7bCmma6BxoQUgx8bLC3evFnDZPHykKbF
+ g7v9jBYnG/ewWiy5mGqxoK2d1eJl+wlmi/+/XrFa7N/2j9VizQphi1nv2tksjvfuYLF4Pek/
+ q8XKYzYOfB47Z91l97hzbQ+bx5Nrm5k83u+7yubRt2UVYwBrVLZNRmpiSmqRQmpecn5KZl66
+ rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtCZSgpliTmlQKGAxOJiJX07m6L80pJU
+ hYz84hJbpdSClJwC8wK94sTc4tK8dL281BIrQwMDI1OgwoTsjNerqgvOXGOueHllFmsDY8MH
+ pi5GTg4JAROJCaufsHUxcnEICexglDgxYx5jFyMHB6+AoMTfHcIgNcICkRITLu1jBLGFBBQk
+ 5mzrYIeIa0pMXz+RCaScTUBd4vRCcxBTBCh8o1sQZCKzwA4WiaOH/jJCrOKVmNH+lAXClpbY
+ vnwrWJxTQE/i+e6XbBBxDYkfy3qZIWxRiZur37LD2O+PzYeaIyLReu8sVI2gxIOfu6HikhKn
+ vj1mhbCnM0os+G8KcoSEwAJGiV/N06Ea9CWudWwEO4JXwFdiTd8xVpCjWQRUJS78UoEocZHY
+ /GgeWDmzgLzE9rdzmEFKmIH+Wr9LH8SUEFCWOHKLBaKCT6Lj8F92mA8bNv7Gyt4x7wk0wFUk
+ FjcfZp3AqDwLEcyzkOyahbBrASPzKkax1ILi3PTUYqMCI3jUJufnbmIEp1cttx2MU95+0DvE
+ yMTBeIhRgoNZSYQ3aG9fihBvSmJlVWpRfnxRaU5q8SFGU6AnJzJLiSbnAxN8Xkm8oYmlgYmZ
+ maG5kamBuZI475q7vSlCAumJJanZqakFqUUwfUwcnFINTHyZklztWqsjd7D8vtoQqzX52Jaf
+ 63TCF1vP3n5790ztHs/9j2svREq6CK+TfLWg5ISMM5PVQ3cRXZ/vDzx9i/2OJD7kt4z59+zC
+ HqNJiV8U5lWvK7A+elTh4PLl68UPn1XYIMJU9EllTgm3vtTZLBbZjeqFtnIBk6YrLez/K22v
+ e2ix4Pl6iXMKDB5zFtyunOhyNOOCb5aOo3bPK6+N7gXzKkp//3Z4X8RdeOKW3KsDrP3Ve3IX
+ 8JetC7h05h6XxlbzFSwPjm/kP97mdebSTGPxPDMVUbYGu0vxofGywUeDj0w6HVR3z+pkAp+P
+ t83RDa5nljf9q9FaHBd0nkXzl5BFrsF0zqOaTybobStSU2Ipzkg01GIuKk4EAKDH2uU4BAAA
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230616065821epcms2p473cc98e116f5dde77baaab5626c129ec
+References: <20230616090718.GC2478180@fedora>
+ <20230616065821epcms2p473cc98e116f5dde77baaab5626c129ec@epcms2p4>
+ <CGME20230616065821epcms2p473cc98e116f5dde77baaab5626c129ec@epcms2p4>
+Received-SPF: pass client-ip=203.254.224.25;
+ envelope-from=jeuk20.kim@samsung.com; helo=mailout2.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,2110 +118,1693 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: jeuk20.kim@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Jun 16, 2023, Stefan Hajnoczi wrote:
+>On Fri, Jun 16, 2023 at 03:58:21PM +0900, Jeuk Kim wrote:
+>> Universal Flash Storage (UFS) is a high-performance mass storage device
+>> with a serial interface. It is primarily used as a high-performance
+>> data storage device for embedded applications.
+>> 
+>> This commit contains code for UFS device to be recognized
+>> as a UFS PCI device.
+>> Patches to handle UFS logical unit and Transfer Request will follow.
+>> 
+>> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+>> ---
+>>  MAINTAINERS              |    6 +
+>>  hw/Kconfig               |    1 +
+>>  hw/meson.build           |    1 +
+>>  hw/ufs/Kconfig           |    4 +
+>>  hw/ufs/meson.build       |    1 +
+>>  hw/ufs/trace-events      |   33 ++
+>>  hw/ufs/trace.h           |    1 +
+>>  hw/ufs/ufs.c             |  305 +++++++++++
+>>  hw/ufs/ufs.h             |   42 ++
+>>  include/block/ufs.h      | 1048 ++++++++++++++++++++++++++++++++++++++
+>>  include/hw/pci/pci.h     |    1 +
+>>  include/hw/pci/pci_ids.h |    1 +
+>>  meson.build              |    1 +
+>>  13 files changed, 1445 insertions(+)
+>>  create mode 100644 hw/ufs/Kconfig
+>>  create mode 100644 hw/ufs/meson.build
+>>  create mode 100644 hw/ufs/trace-events
+>>  create mode 100644 hw/ufs/trace.h
+>>  create mode 100644 hw/ufs/ufs.c
+>>  create mode 100644 hw/ufs/ufs.h
+>>  create mode 100644 include/block/ufs.h
+>> 
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 88b5a7ee0a..91c2bfbb09 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -2231,6 +2231,12 @@ F: tests/qtest/nvme-test.c
+>>  F: docs/system/devices/nvme.rst
+>>  T: git git://git.infradead.org/qemu-nvme.git nvme-next
+>>  
+>> +ufs
+>> +M: Jeuk Kim <jeuk20.kim@samsung.com>
+>> +S: Supported
+>> +F: hw/ufs/*
+>> +F: include/block/ufs.h
+>
+>Thank you for stepping up as maintainer for UFS. The responsibilities of
+>maintainers are to:
+>
+>1. Review other people's patches that modify the code.
+>2. Send pull requests to the qemu.git maintainer or post your
+>   acknowledgement of patches so another maintainer can merge patches
+>   into a larger subsystem branch. For example, you could ack patches
+>   and Klaus could include them in his pull requests for the time being.
+>3. Ensure a basic level of testing and CI integration to prevent
+>   bitrot and regressions.
+>
+>For this last point, I suggest writing a libqos test that performs
+>device initialization and executes some basic I/O. Not all existing
+>emulated storage controllers have this level of testing, but I highly
+>recommend having an automated test case for your new device. There is
+>documentation on how to write tests here:
+>https://qemu.readthedocs.io/en/latest/devel/qtest.html
+>
+>An example test case is the AHCI (SATA) controller test:
+>https://gitlab.com/qemu-project/qemu/-/blob/master/tests/qtest/ahci-test.c
+>
 
---FW8QP7VyUvLBJn7s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'll keep the maintainer's responsibilities in mind.
+I'll prepare the libqos test in the next patch.
+Thank you!!
 
-On Fri, Jun 16, 2023 at 03:58:27PM +0900, Jeuk Kim wrote:
-> This commit adds support for ufs logical unit.
-> The LU handles processing for the SCSI command,
-> unit descriptor query request.
->=20
-> This commit enables the UFS device to process
-> IO requests.
+>>  megasas
+>>  M: Hannes Reinecke <hare@suse.com>
+>>  L: qemu-block@nongnu.org
+>> diff --git a/hw/Kconfig b/hw/Kconfig
+>> index ba62ff6417..9ca7b38c31 100644
+>> --- a/hw/Kconfig
+>> +++ b/hw/Kconfig
+>> @@ -38,6 +38,7 @@ source smbios/Kconfig
+>>  source ssi/Kconfig
+>>  source timer/Kconfig
+>>  source tpm/Kconfig
+>> +source ufs/Kconfig
+>>  source usb/Kconfig
+>>  source virtio/Kconfig
+>>  source vfio/Kconfig
+>> diff --git a/hw/meson.build b/hw/meson.build
+>> index c7ac7d3d75..f01fac4617 100644
+>> --- a/hw/meson.build
+>> +++ b/hw/meson.build
+>> @@ -37,6 +37,7 @@ subdir('smbios')
+>>  subdir('ssi')
+>>  subdir('timer')
+>>  subdir('tpm')
+>> +subdir('ufs')
+>>  subdir('usb')
+>>  subdir('vfio')
+>>  subdir('virtio')
+>> diff --git a/hw/ufs/Kconfig b/hw/ufs/Kconfig
+>> new file mode 100644
+>> index 0000000000..b7b3392e85
+>> --- /dev/null
+>> +++ b/hw/ufs/Kconfig
+>> @@ -0,0 +1,4 @@
+>> +config UFS_PCI
+>> +    bool
+>> +    default y if PCI_DEVICES
+>> +    depends on PCI
+>> diff --git a/hw/ufs/meson.build b/hw/ufs/meson.build
+>> new file mode 100644
+>> index 0000000000..c1d90eeea6
+>> --- /dev/null
+>> +++ b/hw/ufs/meson.build
+>> @@ -0,0 +1 @@
+>> +softmmu_ss.add(when: 'CONFIG_UFS_PCI', if_true: files('ufs.c'))
+>> diff --git a/hw/ufs/trace-events b/hw/ufs/trace-events
+>> new file mode 100644
+>> index 0000000000..17793929b1
+>> --- /dev/null
+>> +++ b/hw/ufs/trace-events
+>> @@ -0,0 +1,33 @@
+>> +# ufs.c
+>> +ufs_irq_raise(void) "INTx"
+>> +ufs_irq_lower(void) "INTx"
+>> +ufs_mmio_read(uint64_t addr, uint64_t data, unsigned size) "addr 0x%"PRIx64" data 0x%"PRIx64" size %d"
+>> +ufs_mmio_write(uint64_t addr, uint64_t data, unsigned size) "addr 0x%"PRIx64" data 0x%"PRIx64" size %d"
+>> +ufs_process_db(uint32_t slot) "UTRLDBR slot %"PRIu32""
+>> +ufs_process_req(uint32_t slot) "UTRLDBR slot %"PRIu32""
+>> +ufs_complete_req(uint32_t slot) "UTRLDBR slot %"PRIu32""
+>> +ufs_sendback_req(uint32_t slot) "UTRLDBR slot %"PRIu32""
+>> +ufs_exec_nop_cmd(uint32_t slot) "UTRLDBR slot %"PRIu32""
+>> +ufs_exec_scsi_cmd(uint32_t slot, uint8_t lun, uint8_t opcode) "slot %"PRIu32", lun 0x%"PRIx8", opcode 0x%"PRIx8""
+>> +ufs_exec_query_cmd(uint32_t slot, uint8_t opcode) "slot %"PRIu32", opcode 0x%"PRIx8""
+>> +ufs_process_uiccmd(uint32_t uiccmd, uint32_t ucmdarg1, uint32_t ucmdarg2, uint32_t ucmdarg3) "uiccmd 0x%"PRIx32", ucmdarg1 0x%"PRIx32", ucmdarg2 0x%"PRIx32", ucmdarg3 0x%"PRIx32""
+>> +
+>> +# error condition
+>> +ufs_err_memory_allocation(void) "failed to allocate memory"
+>> +ufs_err_dma_read_utrd(uint32_t slot, uint64_t addr) "failed to read utrd. UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
+>> +ufs_err_dma_read_req_upiu(uint32_t slot, uint64_t addr) "failed to read req upiu. UTRLDBR slot %"PRIu32", request upiu addr %"PRIu64""
+>> +ufs_err_dma_read_prdt(uint32_t slot, uint64_t addr) "failed to read prdt. UTRLDBR slot %"PRIu32", prdt addr %"PRIu64""
+>> +ufs_err_dma_write_utrd(uint32_t slot, uint64_t addr) "failed to write utrd. UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
+>> +ufs_err_dma_write_rsp_upiu(uint32_t slot, uint64_t addr) "failed to write rsp upiu. UTRLDBR slot %"PRIu32", response upiu addr %"PRIu64""
+>> +ufs_err_utrl_slot_busy(uint32_t slot) "UTRLDBR slot %"PRIu32" is busy"
+>> +ufs_err_unsupport_register_offset(uint32_t offset) "Register offset 0x%"PRIx32" is not yet supported"
+>> +ufs_err_invalid_register_offset(uint32_t offset) "Register offset 0x%"PRIx32" is invalid"
+>> +ufs_err_scsi_cmd_invalid_lun(uint8_t lun) "scsi command has invalid lun: 0x%"PRIx8""
+>> +ufs_err_query_flag_not_readable(uint8_t idn) "query flag idn 0x%"PRIx8" is denied to read"
+>> +ufs_err_query_flag_not_writable(uint8_t idn) "query flag idn 0x%"PRIx8" is denied to write"
+>> +ufs_err_query_attr_not_readable(uint8_t idn) "query attribute idn 0x%"PRIx8" is denied to read"
+>> +ufs_err_query_attr_not_writable(uint8_t idn) "query attribute idn 0x%"PRIx8" is denied to write"
+>> +ufs_err_query_invalid_opcode(uint8_t opcode) "query request has invalid opcode. opcode: 0x%"PRIx8""
+>> +ufs_err_query_invalid_idn(uint8_t opcode, uint8_t idn) "query request has invalid idn. opcode: 0x%"PRIx8", idn 0x%"PRIx8""
+>> +ufs_err_query_invalid_index(uint8_t opcode, uint8_t index) "query request has invalid index. opcode: 0x%"PRIx8", index 0x%"PRIx8""
+>> +ufs_err_invalid_trans_code(uint32_t slot, uint8_t trans_code) "request upiu has invalid transaction code. slot: %"PRIu32", trans_code: 0x%"PRIx8""
+>> diff --git a/hw/ufs/trace.h b/hw/ufs/trace.h
+>> new file mode 100644
+>> index 0000000000..2dbd6397c3
+>> --- /dev/null
+>> +++ b/hw/ufs/trace.h
+>> @@ -0,0 +1 @@
+>> +#include "trace/trace-hw_ufs.h"
+>> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+>> new file mode 100644
+>> index 0000000000..9dba1073a8
+>> --- /dev/null
+>> +++ b/hw/ufs/ufs.c
+>> @@ -0,0 +1,305 @@
+>> +/*
+>> + * QEMU Universal Flash Storage (UFS) Controller
+>> + *
+>> + * Copyright (c) 2023 Samsung Electronics Co., Ltd. All rights reserved.
+>> + *
+>> + * Written by Jeuk Kim <jeuk20.kim@samsung.com>
+>> + *
+>> + * This code is licensed under the GNU GPL v2 or later.
+>
+>Please use SPDX license identifiers in new files to make it easier for
+>license tooling:
+>
+> * SPDX-License-Identifier: GPL-2.0-or-later
+>
 
-Is UFS a SCSI Host Bus Adapter capable of exposing any SCSI device? The
-code is written as if UFS was a special-purpose SCSI bus that cannot
-handle regular SCSI devices already emulated by QEMU (like scsi-hd). As
-a result, it duplicates a lot of SCSI device code instead of just
-focussing on unwrapping/wrapping the SCSI commands and responses from
-the UFS interface.
+Okay, I'll fix it.
 
-Would it be possible to have:
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qapi/error.h"
+>> +#include "migration/vmstate.h"
+>> +#include "trace.h"
+>> +#include "ufs.h"
+>> +
+>> +/* The QEMU-UFS device follows spec version 3.1 */
+>> +#define UFS_SPEC_VER 0x00000310
+>> +#define UFS_MAX_NUTRS 32
+>> +#define UFS_MAX_NUTMRS 8
+>> +
+>> +static void ufs_irq_check(UfsHc *u)
+>> +{
+>> +    PCIDevice *pci = PCI_DEVICE(u);
+>> +    uint32_t is = ldl_le_p(&u->reg.is);
+>> +    uint32_t ie = ldl_le_p(&u->reg.ie);
+>> +
+>> +    if ((is & UFS_INTR_MASK) & ie) {
+>> +        trace_ufs_irq_raise();
+>> +        pci_irq_assert(pci);
+>> +    } else {
+>> +        trace_ufs_irq_lower();
+>> +        pci_irq_deassert(pci);
+>> +    }
+>> +}
+>
+>Old-school PCI interrupts! I'm surprised there are no MSI-X interrupts.
+>:)
+>
 
-  --device ufs,id=3D<bus-name>
-  --device scsi-hd,bus=3D<bus-name>
+I couldn't find anything MSI-X related in the ufs spec.
+I guess this is because UFS is primarily designed to be platform based rather than PCI :(
 
-?
+>> +
+>> +static void ufs_process_uiccmd(UfsHc *u, uint32_t val)
+>> +{
+>> +    uint32_t is = ldl_le_p(&u->reg.is);
+>> +    uint32_t hcs = ldl_le_p(&u->reg.hcs);
+>> +    uint32_t ucmdarg1 = ldl_le_p(&u->reg.ucmdarg1);
+>> +    uint32_t ucmdarg2 = ldl_le_p(&u->reg.ucmdarg2);
+>> +    uint32_t ucmdarg3 = ldl_le_p(&u->reg.ucmdarg3);
+>> +
+>> +    trace_ufs_process_uiccmd(val, ucmdarg1, ucmdarg2, ucmdarg3);
+>> +    /*
+>> +     * Only the essential uic commands for running drivers on Linux and Windows
+>> +     * are implemented.
+>> +     */
+>> +    switch (val) {
+>> +    case UIC_CMD_DME_LINK_STARTUP:
+>> +        hcs = FIELD_DP32(hcs, HCS, DP, 1);
+>> +        hcs = FIELD_DP32(hcs, HCS, UTRLRDY, 1);
+>> +        hcs = FIELD_DP32(hcs, HCS, UTMRLRDY, 1);
+>> +        ucmdarg2 = UIC_CMD_RESULT_SUCCESS;
+>> +        break;
+>> +    /* TODO: Revisit it when Power Management is implemented */
+>> +    case UIC_CMD_DME_HIBER_ENTER:
+>> +        is = FIELD_DP32(is, IS, UHES, 1);
+>> +        hcs = FIELD_DP32(hcs, HCS, UPMCRS, PWR_LOCAL);
+>> +        ucmdarg2 = UIC_CMD_RESULT_SUCCESS;
+>> +        break;
+>> +    case UIC_CMD_DME_HIBER_EXIT:
+>> +        is = FIELD_DP32(is, IS, UHXS, 1);
+>> +        hcs = FIELD_DP32(hcs, HCS, UPMCRS, PWR_LOCAL);
+>> +        ucmdarg2 = UIC_CMD_RESULT_SUCCESS;
+>> +        break;
+>> +    default:
+>> +        ucmdarg2 = UIC_CMD_RESULT_FAILURE;
+>> +    }
+>> +
+>> +    is = FIELD_DP32(is, IS, UCCS, 1);
+>> +
+>> +    stl_le_p(&u->reg.is, is);
+>> +    stl_le_p(&u->reg.hcs, hcs);
+>> +    stl_le_p(&u->reg.ucmdarg1, ucmdarg1);
+>> +    stl_le_p(&u->reg.ucmdarg2, ucmdarg2);
+>> +    stl_le_p(&u->reg.ucmdarg3, ucmdarg3);
+>> +
+>> +    ufs_irq_check(u);
+>> +}
+>> +
+>> +static void ufs_write_reg(UfsHc *u, hwaddr offset, uint32_t data, unsigned size)
+>> +{
+>> +    uint32_t is = ldl_le_p(&u->reg.is);
+>> +    uint32_t hcs = ldl_le_p(&u->reg.hcs);
+>> +    uint32_t hce = ldl_le_p(&u->reg.hce);
+>> +    uint32_t utrlcnr = ldl_le_p(&u->reg.utrlcnr);
+>> +    uint32_t utrlba, utmrlba;
+>> +
+>> +    switch (offset) {
+>> +    case A_IS:
+>> +        is &= ~data;
+>> +        stl_le_p(&u->reg.is, is);
+>> +        ufs_irq_check(u);
+>> +        break;
+>> +    case A_IE:
+>> +        stl_le_p(&u->reg.ie, data);
+>> +        ufs_irq_check(u);
+>> +        break;
+>> +    case A_HCE:
+>> +        if (!FIELD_EX32(hce, HCE, HCE) && FIELD_EX32(data, HCE, HCE)) {
+>> +            hcs = FIELD_DP32(hcs, HCS, UCRDY, 1);
+>> +            hce = FIELD_DP32(hce, HCE, HCE, 1);
+>> +            stl_le_p(&u->reg.hcs, hcs);
+>> +            stl_le_p(&u->reg.hce, hce);
+>> +        } else if (FIELD_EX32(hce, HCE, HCE) && !FIELD_EX32(data, HCE, HCE)) {
+>> +            hcs = 0;
+>> +            hce = FIELD_DP32(hce, HCE, HCE, 0);
+>> +            stl_le_p(&u->reg.hcs, hcs);
+>> +            stl_le_p(&u->reg.hce, hce);
+>> +        }
+>> +        break;
+>> +    case A_UTRLBA:
+>> +        utrlba = data & R_UTRLBA_UTRLBA_MASK;
+>> +        stl_le_p(&u->reg.utrlba, utrlba);
+>> +        break;
+>> +    case A_UTRLBAU:
+>> +        stl_le_p(&u->reg.utrlbau, data);
+>> +        break;
+>> +    case A_UTRLDBR:
+>> +        /* Not yet supported */
+>> +        break;
+>> +    case A_UTRLRSR:
+>> +        stl_le_p(&u->reg.utrlrsr, data);
+>> +        break;
+>> +    case A_UTRLCNR:
+>> +        utrlcnr &= ~data;
+>> +        stl_le_p(&u->reg.utrlcnr, utrlcnr);
+>> +        break;
+>> +    case A_UTMRLBA:
+>> +        utmrlba = data & R_UTMRLBA_UTMRLBA_MASK;
+>> +        stl_le_p(&u->reg.utmrlba, utmrlba);
+>> +        break;
+>> +    case A_UTMRLBAU:
+>> +        stl_le_p(&u->reg.utmrlbau, data);
+>> +        break;
+>> +    case A_UICCMD:
+>> +        ufs_process_uiccmd(u, data);
+>> +        break;
+>> +    case A_UCMDARG1:
+>> +        stl_le_p(&u->reg.ucmdarg1, data);
+>> +        break;
+>> +    case A_UCMDARG2:
+>> +        stl_le_p(&u->reg.ucmdarg2, data);
+>> +        break;
+>> +    case A_UCMDARG3:
+>> +        stl_le_p(&u->reg.ucmdarg3, data);
+>> +        break;
+>> +    case A_UTRLCLR:
+>> +    case A_UTMRLDBR:
+>> +    case A_UTMRLCLR:
+>> +    case A_UTMRLRSR:
+>> +        trace_ufs_err_unsupport_register_offset(offset);
+>> +        break;
+>> +    default:
+>> +        trace_ufs_err_invalid_register_offset(offset);
+>> +        break;
+>> +    }
+>> +}
+>> +
+>> +static uint64_t ufs_mmio_read(void *opaque, hwaddr addr, unsigned size)
+>> +{
+>> +    UfsHc *u = (UfsHc *)opaque;
+>> +    uint8_t *ptr = (uint8_t *)&u->reg;
+>> +    uint64_t value;
+>> +
+>> +    if (addr > sizeof(u->reg) - size) {
+>> +        trace_ufs_err_invalid_register_offset(addr);
+>> +        return 0;
+>> +    }
+>> +
+>> +    value = ldn_le_p(ptr + addr, size);
+>> +    trace_ufs_mmio_read(addr, value, size);
+>> +    return value;
+>> +}
+>> +
+>> +static void ufs_mmio_write(void *opaque, hwaddr addr, uint64_t data,
+>> +                           unsigned size)
+>> +{
+>> +    UfsHc *u = (UfsHc *)opaque;
+>> +
+>> +    if (addr > sizeof(u->reg) - size) {
+>> +        trace_ufs_err_invalid_register_offset(addr);
+>> +        return;
+>> +    }
+>> +
+>> +    trace_ufs_mmio_write(addr, data, size);
+>> +    ufs_write_reg(u, addr, data, size);
+>> +}
+>> +
+>> +static const MemoryRegionOps ufs_mmio_ops = {
+>> +    .read = ufs_mmio_read,
+>> +    .write = ufs_mmio_write,
+>> +    .endianness = DEVICE_LITTLE_ENDIAN,
+>> +    .impl = {
+>> +        .min_access_size = 4,
+>> +        .max_access_size = 4,
+>> +    },
+>> +};
+>> +
+>> +static bool ufs_check_constraints(UfsHc *u, Error **errp)
+>> +{
+>> +    if (u->params.nutrs > UFS_MAX_NUTRS) {
+>> +        error_setg(errp, "nutrs must be less than %d", UFS_MAX_NUTRS);
+>
+>Off-by-one: the if statement condition checks for <= but the error
+>message says <.
+>
 
-I think that would involve less code and be more flexible.
+Thanks, I'll fix it.
 
->=20
-> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
-> ---
->  hw/ufs/lu.c              | 1441 ++++++++++++++++++++++++++++++++++++++
->  hw/ufs/meson.build       |    2 +-
->  hw/ufs/trace-events      |   25 +
->  hw/ufs/ufs.c             |  252 ++++++-
->  hw/ufs/ufs.h             |   43 ++
->  include/scsi/constants.h |    1 +
->  6 files changed, 1757 insertions(+), 7 deletions(-)
->  create mode 100644 hw/ufs/lu.c
->=20
-> diff --git a/hw/ufs/lu.c b/hw/ufs/lu.c
-> new file mode 100644
-> index 0000000000..ef69de61a5
-> --- /dev/null
-> +++ b/hw/ufs/lu.c
-> @@ -0,0 +1,1441 @@
-> +/*
-> + * QEMU UFS Logical Unit
-> + *
-> + * Copyright (c) 2023 Samsung Electronics Co., Ltd. All rights reserved.
-> + *
-> + * Written by Jeuk Kim <jeuk20.kim@samsung.com>
-> + *
-> + * This code is licensed under the GNU GPL v2 or later.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/units.h"
-> +#include "qapi/error.h"
-> +#include "qemu/memalign.h"
-> +#include "hw/scsi/scsi.h"
-> +#include "scsi/constants.h"
-> +#include "sysemu/block-backend.h"
-> +#include "qemu/cutils.h"
-> +#include "trace.h"
-> +#include "ufs.h"
-> +
-> +/*
-> + * The code below handling SCSI commands is copied from hw/scsi/scsi-dis=
-k.c,
-> + * with minor adjustments to make it work for UFS.
-> + */
-> +
-> +#define SCSI_DMA_BUF_SIZE (128 * KiB)
-> +#define SCSI_MAX_INQUIRY_LEN 256
-> +#define SCSI_INQUIRY_DATA_SIZE 36
-> +#define SCSI_MAX_MODE_LEN 256
-> +
-> +typedef struct UfsSCSIReq {
-> +    SCSIRequest req;
-> +    /* Both sector and sector_count are in terms of BDRV_SECTOR_SIZE byt=
-es.  */
-> +    uint64_t sector;
-> +    uint32_t sector_count;
-> +    uint32_t buflen;
-> +    bool started;
-> +    bool need_fua_emulation;
-> +    struct iovec iov;
-> +    QEMUIOVector qiov;
-> +    BlockAcctCookie acct;
-> +} UfsSCSIReq;
-> +
-> +static void ufs_scsi_free_request(SCSIRequest *req)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +
-> +    qemu_vfree(r->iov.iov_base);
-> +}
-> +
-> +static void scsi_check_condition(UfsSCSIReq *r, SCSISense sense)
-> +{
-> +    trace_ufs_scsi_check_condition(r->req.tag, sense.key, sense.asc,
-> +                                   sense.ascq);
-> +    scsi_req_build_sense(&r->req, sense);
-> +    scsi_req_complete(&r->req, CHECK_CONDITION);
-> +}
-> +
-> +static int ufs_scsi_emulate_vpd_page(SCSIRequest *req, uint8_t *outbuf,
-> +                                     uint32_t outbuf_len)
-> +{
-> +    UfsHc *u =3D UFS(req->bus->qbus.parent);
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, req->dev);
-> +    uint8_t page_code =3D req->cmd.buf[2];
-> +    int start, buflen =3D 0;
-> +
-> +    if (outbuf_len < SCSI_INQUIRY_DATA_SIZE) {
-> +        return -1;
-> +    }
-> +
-> +    outbuf[buflen++] =3D lu->qdev.type & 0x1f;
-> +    outbuf[buflen++] =3D page_code;
-> +    outbuf[buflen++] =3D 0x00;
-> +    outbuf[buflen++] =3D 0x00;
-> +    start =3D buflen;
-> +
-> +    switch (page_code) {
-> +    case 0x00: /* Supported page codes, mandatory */
-> +    {
-> +        trace_ufs_scsi_emulate_vpd_page_00(req->cmd.xfer);
-> +        outbuf[buflen++] =3D 0x00; /* list of supported pages (this page=
-) */
-> +        if (u->params.serial) {
-> +            outbuf[buflen++] =3D 0x80; /* unit serial number */
-> +        }
-> +        outbuf[buflen++] =3D 0x87; /* mode page policy */
-> +        break;
-> +    }
-> +    case 0x80: /* Device serial number, optional */
-> +    {
-> +        int l;
-> +
-> +        if (!u->params.serial) {
-> +            trace_ufs_scsi_emulate_vpd_page_80_not_supported();
-> +            return -1;
-> +        }
-> +
-> +        l =3D strlen(u->params.serial);
-> +        if (l > SCSI_INQUIRY_DATA_SIZE) {
-> +            l =3D SCSI_INQUIRY_DATA_SIZE;
-> +        }
-> +
-> +        trace_ufs_scsi_emulate_vpd_page_80(req->cmd.xfer);
-> +        memcpy(outbuf + buflen, u->params.serial, l);
-> +        buflen +=3D l;
-> +        break;
-> +    }
-> +    case 0x87: /* Mode Page Policy, mandatory */
-> +    {
-> +        trace_ufs_scsi_emulate_vpd_page_87(req->cmd.xfer);
-> +        outbuf[buflen++] =3D 0x3f; /* apply to all mode pages and subpag=
-es */
-> +        outbuf[buflen++] =3D 0xff;
-> +        outbuf[buflen++] =3D 0; /* shared */
-> +        outbuf[buflen++] =3D 0;
-> +        break;
-> +    }
-> +    default:
-> +        return -1;
-> +    }
-> +    /* done with EVPD */
-> +    assert(buflen - start <=3D 255);
-> +    outbuf[start - 1] =3D buflen - start;
-> +    return buflen;
-> +}
-> +
-> +static int ufs_scsi_emulate_inquiry(SCSIRequest *req, uint8_t *outbuf,
-> +                                    uint32_t outbuf_len)
-> +{
-> +    int buflen =3D 0;
-> +
-> +    if (outbuf_len < SCSI_INQUIRY_DATA_SIZE) {
-> +        return -1;
-> +    }
-> +
-> +    if (req->cmd.buf[1] & 0x1) {
-> +        /* Vital product data */
-> +        return ufs_scsi_emulate_vpd_page(req, outbuf, outbuf_len);
-> +    }
-> +
-> +    /* Standard INQUIRY data */
-> +    if (req->cmd.buf[2] !=3D 0) {
-> +        return -1;
-> +    }
-> +
-> +    /* PAGE CODE =3D=3D 0 */
-> +    buflen =3D req->cmd.xfer;
-> +    if (buflen > SCSI_MAX_INQUIRY_LEN) {
-> +        buflen =3D SCSI_MAX_INQUIRY_LEN;
-> +    }
-> +
-> +    if (is_wlun(req->lun)) {
-> +        outbuf[0] =3D TYPE_WLUN;
-> +    } else {
-> +        outbuf[0] =3D 0;
-> +    }
-> +    outbuf[1] =3D 0;
-> +
-> +    strpadcpy((char *)&outbuf[16], 16, "QEMU UFS", ' ');
-> +    strpadcpy((char *)&outbuf[8], 8, "QEMU", ' ');
-> +
-> +    memset(&outbuf[32], 0, 4);
-> +
-> +    outbuf[2] =3D 0x06; /* SPC-4 */
-> +    outbuf[3] =3D 0x2;
-> +
-> +    if (buflen > SCSI_INQUIRY_DATA_SIZE) {
-> +        outbuf[4] =3D buflen - 5; /* Additional Length =3D (Len - 1) - 4=
- */
-> +    } else {
-> +        /*
-> +         * If the allocation length of CDB is too small, the additional
-> +         * length is not adjusted
-> +         */
-> +        outbuf[4] =3D SCSI_INQUIRY_DATA_SIZE - 5;
-> +    }
-> +
-> +    /* Support TCQ.  */
-> +    outbuf[7] =3D req->bus->info->tcq ? 0x02 : 0;
-> +    return buflen;
-> +}
-> +
-> +static int mode_sense_page(UfsLu *lu, int page, uint8_t **p_outbuf,
-> +                           int page_control)
-> +{
-> +    static const int mode_sense_valid[0x3f] =3D {
-> +        [MODE_PAGE_CACHING] =3D 1,
-> +        [MODE_PAGE_R_W_ERROR] =3D 1,
-> +        [MODE_PAGE_CONTROL] =3D 1,
-> +    };
-> +
-> +    uint8_t *p =3D *p_outbuf + 2;
-> +    int length;
-> +
-> +    assert(page < ARRAY_SIZE(mode_sense_valid));
-> +    if ((mode_sense_valid[page]) =3D=3D 0) {
-> +        return -1;
-> +    }
-> +
-> +    /*
-> +     * If Changeable Values are requested, a mask denoting those mode pa=
-rameters
-> +     * that are changeable shall be returned. As we currently don't supp=
-ort
-> +     * parameter changes via MODE_SELECT all bits are returned set to ze=
-ro.
-> +     * The buffer was already memset to zero by the caller of this funct=
-ion.
-> +     */
-> +    switch (page) {
-> +    case MODE_PAGE_CACHING:
-> +        length =3D 0x12;
-> +        if (page_control =3D=3D 1 || /* Changeable Values */
-> +            blk_enable_write_cache(lu->qdev.conf.blk)) {
-> +            p[0] =3D 4; /* WCE */
-> +        }
-> +        break;
-> +
-> +    case MODE_PAGE_R_W_ERROR:
-> +        length =3D 10;
-> +        if (page_control =3D=3D 1) { /* Changeable Values */
-> +            break;
-> +        }
-> +        p[0] =3D 0x80; /* Automatic Write Reallocation Enabled */
-> +        break;
-> +
-> +    case MODE_PAGE_CONTROL:
-> +        length =3D 10;
-> +        if (page_control =3D=3D 1) { /* Changeable Values */
-> +            break;
-> +        }
-> +        p[1] =3D 0x10; /* Queue Algorithm modifier */
-> +        p[8] =3D 0xff; /* Busy Timeout Period */
-> +        p[9] =3D 0xff;
-> +        break;
-> +
-> +    default:
-> +        return -1;
-> +    }
-> +
-> +    assert(length < 256);
-> +    (*p_outbuf)[0] =3D page;
-> +    (*p_outbuf)[1] =3D length;
-> +    *p_outbuf +=3D length + 2;
-> +    return length + 2;
-> +}
-> +
-> +static int ufs_scsi_emulate_mode_sense(UfsSCSIReq *r, uint8_t *outbuf)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +    bool dbd;
-> +    int page, buflen, ret, page_control;
-> +    uint8_t *p;
-> +    uint8_t dev_specific_param =3D 0;
-> +
-> +    dbd =3D (r->req.cmd.buf[1] & 0x8) !=3D 0;
-> +    if (!dbd) {
-> +        return -1;
-> +    }
-> +
-> +    page =3D r->req.cmd.buf[2] & 0x3f;
-> +    page_control =3D (r->req.cmd.buf[2] & 0xc0) >> 6;
-> +
-> +    trace_ufs_scsi_emulate_mode_sense((r->req.cmd.buf[0] =3D=3D MODE_SEN=
-SE) ? 6 :
-> +                                                                        =
-  10,
-> +                                      page, r->req.cmd.xfer, page_contro=
-l);
-> +    memset(outbuf, 0, r->req.cmd.xfer);
-> +    p =3D outbuf;
-> +
-> +    if (!blk_is_writable(lu->qdev.conf.blk)) {
-> +        dev_specific_param |=3D 0x80; /* Readonly.  */
-> +    }
-> +
-> +    p[2] =3D 0; /* Medium type.  */
-> +    p[3] =3D dev_specific_param;
-> +    p[6] =3D p[7] =3D 0; /* Block descriptor length.  */
-> +    p +=3D 8;
-> +
-> +    if (page_control =3D=3D 3) {
-> +        /* Saved Values */
-> +        scsi_check_condition(r, SENSE_CODE(SAVING_PARAMS_NOT_SUPPORTED));
-> +        return -1;
-> +    }
-> +
-> +    if (page =3D=3D 0x3f) {
-> +        for (page =3D 0; page <=3D 0x3e; page++) {
-> +            mode_sense_page(lu, page, &p, page_control);
-> +        }
-> +    } else {
-> +        ret =3D mode_sense_page(lu, page, &p, page_control);
-> +        if (ret =3D=3D -1) {
-> +            return -1;
-> +        }
-> +    }
-> +
-> +    buflen =3D p - outbuf;
-> +    /*
-> +     * The mode data length field specifies the length in bytes of the
-> +     * following data that is available to be transferred. The mode data
-> +     * length does not include itself.
-> +     */
-> +    outbuf[0] =3D ((buflen - 2) >> 8) & 0xff;
-> +    outbuf[1] =3D (buflen - 2) & 0xff;
-> +    return buflen;
-> +}
-> +
-> +/*
-> + * scsi_handle_rw_error has two return values.  False means that the err=
-or
-> + * must be ignored, true means that the error has been processed and the
-> + * caller should not do anything else for this request.  Note that
-> + * scsi_handle_rw_error always manages its reference counts, independent
-> + * of the return value.
-> + */
-> +static bool scsi_handle_rw_error(UfsSCSIReq *r, int ret, bool acct_faile=
-d)
-> +{
-> +    bool is_read =3D (r->req.cmd.mode =3D=3D SCSI_XFER_FROM_DEV);
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +    SCSISense sense =3D SENSE_CODE(NO_SENSE);
-> +    int error =3D 0;
-> +    bool req_has_sense =3D false;
-> +    BlockErrorAction action;
-> +    int status;
-> +
-> +    if (ret < 0) {
-> +        status =3D scsi_sense_from_errno(-ret, &sense);
-> +        error =3D -ret;
-> +    } else {
-> +        /* A passthrough command has completed with nonzero status.  */
-> +        status =3D ret;
-> +        if (status =3D=3D CHECK_CONDITION) {
-> +            req_has_sense =3D true;
-> +            error =3D scsi_sense_buf_to_errno(r->req.sense, sizeof(r->re=
-q.sense));
-> +        } else {
-> +            error =3D EINVAL;
-> +        }
-> +    }
-> +
-> +    /*
-> +     * Check whether the error has to be handled by the guest or should
-> +     * rather follow the rerror=3D/werror=3D settings.  Guest-handled er=
-rors
-> +     * are usually retried immediately, so do not post them to QMP and
-> +     * do not account them as failed I/O.
-> +     */
-> +    if (req_has_sense && scsi_sense_buf_is_guest_recoverable(
-> +                             r->req.sense, sizeof(r->req.sense))) {
-> +        action =3D BLOCK_ERROR_ACTION_REPORT;
-> +        acct_failed =3D false;
-> +    } else {
-> +        action =3D blk_get_error_action(lu->qdev.conf.blk, is_read, erro=
-r);
-> +        blk_error_action(lu->qdev.conf.blk, action, is_read, error);
-> +    }
-> +
-> +    switch (action) {
-> +    case BLOCK_ERROR_ACTION_REPORT:
-> +        if (acct_failed) {
-> +            block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct=
-);
-> +        }
-> +        if (!req_has_sense && status =3D=3D CHECK_CONDITION) {
-> +            scsi_req_build_sense(&r->req, sense);
-> +        }
-> +        scsi_req_complete(&r->req, status);
-> +        return true;
-> +
-> +    case BLOCK_ERROR_ACTION_IGNORE:
-> +        return false;
-> +
-> +    case BLOCK_ERROR_ACTION_STOP:
-> +        scsi_req_retry(&r->req);
-> +        return true;
-> +
-> +    default:
-> +        g_assert_not_reached();
-> +    }
-> +}
-> +
-> +static bool ufs_scsi_req_check_error(UfsSCSIReq *r, int ret, bool acct_f=
-ailed)
-> +{
-> +    if (r->req.io_canceled) {
-> +        scsi_req_cancel_complete(&r->req);
-> +        return true;
-> +    }
-> +
-> +    if (ret < 0) {
-> +        return scsi_handle_rw_error(r, ret, acct_failed);
-> +    }
-> +
-> +    return false;
-> +}
-> +
-> +static void scsi_aio_complete(void *opaque, int ret)
-> +{
-> +    UfsSCSIReq *r =3D (UfsSCSIReq *)opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
-> +    if (ufs_scsi_req_check_error(r, ret, true)) {
-> +        goto done;
-> +    }
-> +
-> +    block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    scsi_req_complete(&r->req, GOOD);
-> +
-> +done:
-> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static int32_t ufs_scsi_emulate_command(SCSIRequest *req, uint8_t *buf)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, req->dev);
-> +    uint8_t *outbuf;
-> +    int buflen;
-> +
-> +    switch (req->cmd.buf[0]) {
-> +    case INQUIRY:
-> +    case MODE_SENSE_10:
-> +    case START_STOP:
-> +    case REQUEST_SENSE:
-> +        break;
-> +
-> +    default:
-> +        if (!blk_is_available(lu->qdev.conf.blk)) {
-> +            scsi_check_condition(r, SENSE_CODE(NO_MEDIUM));
-> +            return 0;
-> +        }
-> +        break;
-> +    }
-> +
-> +    /*
-> +     * FIXME: we shouldn't return anything bigger than 4k, but the code
-> +     * requires the buffer to be as big as req->cmd.xfer in several
-> +     * places.  So, do not allow CDBs with a very large ALLOCATION
-> +     * LENGTH.  The real fix would be to modify scsi_read_data and
-> +     * dma_buf_read, so that they return data beyond the buflen
-> +     * as all zeros.
-> +     */
-> +    if (req->cmd.xfer > 65536) {
-> +        goto illegal_request;
-> +    }
-> +    r->buflen =3D MAX(4096, req->cmd.xfer);
-> +
-> +    if (!r->iov.iov_base) {
-> +        r->iov.iov_base =3D blk_blockalign(lu->qdev.conf.blk, r->buflen);
-> +    }
-> +
-> +    outbuf =3D r->iov.iov_base;
-> +    memset(outbuf, 0, r->buflen);
-> +    switch (req->cmd.buf[0]) {
-> +    case TEST_UNIT_READY:
-> +        assert(blk_is_available(lu->qdev.conf.blk));
-> +        break;
-> +    case INQUIRY:
-> +        buflen =3D ufs_scsi_emulate_inquiry(req, outbuf, r->buflen);
-> +        if (buflen < 0) {
-> +            goto illegal_request;
-> +        }
-> +        break;
-> +    case MODE_SENSE_10:
-> +        buflen =3D ufs_scsi_emulate_mode_sense(r, outbuf);
-> +        if (buflen < 0) {
-> +            goto illegal_request;
-> +        }
-> +        break;
-> +    case READ_CAPACITY_10:
-> +        /* The normal LEN field for this command is zero.  */
-> +        memset(outbuf, 0, 8);
-> +
-> +        outbuf[0] =3D (lu->qdev.max_lba >> 24) & 0xff;
-> +        outbuf[1] =3D (lu->qdev.max_lba >> 16) & 0xff;
-> +        outbuf[2] =3D (lu->qdev.max_lba >> 8) & 0xff;
-> +        outbuf[3] =3D lu->qdev.max_lba & 0xff;
-> +        outbuf[4] =3D (lu->qdev.blocksize >> 24) & 0xff;
-> +        outbuf[5] =3D (lu->qdev.blocksize >> 16) & 0xff;
-> +        outbuf[6] =3D (lu->qdev.blocksize >> 8) & 0xff;
-> +        outbuf[7] =3D lu->qdev.blocksize & 0xff;
-> +        break;
-> +    case REQUEST_SENSE:
-> +        /* Just return "NO SENSE".  */
-> +        buflen =3D scsi_convert_sense(NULL, 0, outbuf, r->buflen,
-> +                                    (req->cmd.buf[1] & 1) =3D=3D 0);
-> +        if (buflen < 0) {
-> +            goto illegal_request;
-> +        }
-> +        break;
-> +    case SYNCHRONIZE_CACHE:
-> +        /* The request is used as the AIO opaque value, so add a ref.  */
-> +        scsi_req_ref(&r->req);
-> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
-> +                         BLOCK_ACCT_FLUSH);
-> +        r->req.aiocb =3D blk_aio_flush(lu->qdev.conf.blk, scsi_aio_compl=
-ete, r);
-> +        return 0;
-> +    case VERIFY_10:
-> +        trace_ufs_scsi_emulate_command_VERIFY((req->cmd.buf[1] >> 1) & 3=
-);
-> +        if (req->cmd.buf[1] & 6) {
-> +            goto illegal_request;
-> +        }
-> +        break;
-> +    case SERVICE_ACTION_IN_16:
-> +        /* Service Action In subcommands. */
-> +        if ((req->cmd.buf[1] & 31) =3D=3D SAI_READ_CAPACITY_16) {
-> +            trace_ufs_scsi_emulate_command_SAI_16();
-> +            memset(outbuf, 0, req->cmd.xfer);
-> +
-> +            outbuf[0] =3D (lu->qdev.max_lba >> 56) & 0xff;
-> +            outbuf[1] =3D (lu->qdev.max_lba >> 48) & 0xff;
-> +            outbuf[2] =3D (lu->qdev.max_lba >> 40) & 0xff;
-> +            outbuf[3] =3D (lu->qdev.max_lba >> 32) & 0xff;
-> +            outbuf[4] =3D (lu->qdev.max_lba >> 24) & 0xff;
-> +            outbuf[5] =3D (lu->qdev.max_lba >> 16) & 0xff;
-> +            outbuf[6] =3D (lu->qdev.max_lba >> 8) & 0xff;
-> +            outbuf[7] =3D lu->qdev.max_lba & 0xff;
-> +            outbuf[8] =3D (lu->qdev.blocksize >> 24) & 0xff;
-> +            outbuf[9] =3D (lu->qdev.blocksize >> 16) & 0xff;
-> +            outbuf[10] =3D (lu->qdev.blocksize >> 8) & 0xff;
-> +            outbuf[11] =3D lu->qdev.blocksize & 0xff;
-> +            outbuf[12] =3D 0;
-> +            outbuf[13] =3D get_physical_block_exp(&lu->qdev.conf);
-> +
-> +            if (lu->unit_desc.provisioning_type =3D=3D 2 ||
-> +                lu->unit_desc.provisioning_type =3D=3D 3) {
-> +                outbuf[14] =3D 0x80;
-> +            }
-> +            /* Protection, exponent and lowest lba field left blank. */
-> +            break;
-> +        }
-> +        trace_ufs_scsi_emulate_command_SAI_unsupported();
-> +        goto illegal_request;
-> +    case MODE_SELECT_10:
-> +        trace_ufs_scsi_emulate_command_MODE_SELECT_10(r->req.cmd.xfer);
-> +        break;
-> +    case START_STOP:
-> +        /*
-> +         * TODO: START_STOP is not yet implemented. It always returns su=
-ccess.
-> +         * Revisit it when ufs power management is implemented.
-> +         */
-> +        trace_ufs_scsi_emulate_command_START_STOP();
-> +        break;
-> +    case FORMAT_UNIT:
-> +        trace_ufs_scsi_emulate_command_FORMAT_UNIT();
-> +        break;
-> +    case SEND_DIAGNOSTIC:
-> +        trace_ufs_scsi_emulate_command_SEND_DIAGNOSTIC();
-> +        break;
-> +    default:
-> +        trace_ufs_scsi_emulate_command_UNKNOWN(buf[0],
-> +                                               scsi_command_name(buf[0])=
-);
-> +        scsi_check_condition(r, SENSE_CODE(INVALID_OPCODE));
-> +        return 0;
-> +    }
-> +    assert(!r->req.aiocb);
-> +    r->iov.iov_len =3D MIN(r->buflen, req->cmd.xfer);
-> +    if (r->iov.iov_len =3D=3D 0) {
-> +        scsi_req_complete(&r->req, GOOD);
-> +    }
-> +    if (r->req.cmd.mode =3D=3D SCSI_XFER_TO_DEV) {
-> +        assert(r->iov.iov_len =3D=3D req->cmd.xfer);
-> +        return -r->iov.iov_len;
-> +    } else {
-> +        return r->iov.iov_len;
-> +    }
-> +
-> +illegal_request:
-> +    if (r->req.status =3D=3D -1) {
-> +        scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
-> +    }
-> +    return 0;
-> +}
-> +
-> +static void ufs_scsi_emulate_read_data(SCSIRequest *req)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +    int buflen =3D r->iov.iov_len;
-> +
-> +    if (buflen) {
-> +        trace_ufs_scsi_emulate_read_data(buflen);
-> +        r->iov.iov_len =3D 0;
-> +        r->started =3D true;
-> +        scsi_req_data(&r->req, buflen);
-> +        return;
-> +    }
-> +
-> +    /* This also clears the sense buffer for REQUEST SENSE.  */
-> +    scsi_req_complete(&r->req, GOOD);
-> +}
-> +
-> +static int ufs_scsi_check_mode_select(UfsLu *lu, int page, uint8_t *inbu=
-f,
-> +                                      int inlen)
-> +{
-> +    uint8_t mode_current[SCSI_MAX_MODE_LEN];
-> +    uint8_t mode_changeable[SCSI_MAX_MODE_LEN];
-> +    uint8_t *p;
-> +    int len, expected_len, changeable_len, i;
-> +
-> +    /*
-> +     * The input buffer does not include the page header, so it is
-> +     * off by 2 bytes.
-> +     */
-> +    expected_len =3D inlen + 2;
-> +    if (expected_len > SCSI_MAX_MODE_LEN) {
-> +        return -1;
-> +    }
-> +
-> +    /* MODE_PAGE_ALLS is only valid for MODE SENSE commands */
-> +    if (page =3D=3D MODE_PAGE_ALLS) {
-> +        return -1;
-> +    }
-> +
-> +    p =3D mode_current;
-> +    memset(mode_current, 0, inlen + 2);
-> +    len =3D mode_sense_page(lu, page, &p, 0);
-> +    if (len < 0 || len !=3D expected_len) {
-> +        return -1;
-> +    }
-> +
-> +    p =3D mode_changeable;
-> +    memset(mode_changeable, 0, inlen + 2);
-> +    changeable_len =3D mode_sense_page(lu, page, &p, 1);
-> +    assert(changeable_len =3D=3D len);
-> +
-> +    /*
-> +     * Check that unchangeable bits are the same as what MODE SENSE
-> +     * would return.
-> +     */
-> +    for (i =3D 2; i < len; i++) {
-> +        if (((mode_current[i] ^ inbuf[i - 2]) & ~mode_changeable[i]) !=
-=3D 0) {
-> +            return -1;
-> +        }
-> +    }
-> +    return 0;
-> +}
-> +
-> +static void ufs_scsi_apply_mode_select(UfsLu *lu, int page, uint8_t *p)
-> +{
-> +    switch (page) {
-> +    case MODE_PAGE_CACHING:
-> +        blk_set_enable_write_cache(lu->qdev.conf.blk, (p[0] & 4) !=3D 0);
-> +        break;
-> +
-> +    default:
-> +        break;
-> +    }
-> +}
-> +
-> +static int mode_select_pages(UfsSCSIReq *r, uint8_t *p, int len, bool ch=
-ange)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    while (len > 0) {
-> +        int page, page_len;
-> +
-> +        page =3D p[0] & 0x3f;
-> +        if (p[0] & 0x40) {
-> +            goto invalid_param;
-> +        } else {
-> +            if (len < 2) {
-> +                goto invalid_param_len;
-> +            }
-> +            page_len =3D p[1];
-> +            p +=3D 2;
-> +            len -=3D 2;
-> +        }
-> +
-> +        if (page_len > len) {
-> +            goto invalid_param_len;
-> +        }
-> +
-> +        if (!change) {
-> +            if (ufs_scsi_check_mode_select(lu, page, p, page_len) < 0) {
-> +                goto invalid_param;
-> +            }
-> +        } else {
-> +            ufs_scsi_apply_mode_select(lu, page, p);
-> +        }
-> +
-> +        p +=3D page_len;
-> +        len -=3D page_len;
-> +    }
-> +    return 0;
-> +
-> +invalid_param:
-> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM));
-> +    return -1;
-> +
-> +invalid_param_len:
-> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM_LEN));
-> +    return -1;
-> +}
-> +
-> +static void ufs_scsi_emulate_mode_select(UfsSCSIReq *r, uint8_t *inbuf)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +    uint8_t *p =3D inbuf;
-> +    int len =3D r->req.cmd.xfer;
-> +    int hdr_len =3D 8;
-> +    int bd_len;
-> +    int pass;
-> +
-> +    /* We only support PF=3D1, SP=3D0.  */
-> +    if ((r->req.cmd.buf[1] & 0x11) !=3D 0x10) {
-> +        goto invalid_field;
-> +    }
-> +
-> +    if (len < hdr_len) {
-> +        goto invalid_param_len;
-> +    }
-> +
-> +    bd_len =3D lduw_be_p(&p[6]);
-> +    if (bd_len !=3D 0) {
-> +        goto invalid_param;
-> +    }
-> +
-> +    len -=3D hdr_len;
-> +    p +=3D hdr_len;
-> +
-> +    /* Ensure no change is made if there is an error!  */
-> +    for (pass =3D 0; pass < 2; pass++) {
-> +        if (mode_select_pages(r, p, len, pass =3D=3D 1) < 0) {
-> +            assert(pass =3D=3D 0);
-> +            return;
-> +        }
-> +    }
-> +
-> +    if (!blk_enable_write_cache(lu->qdev.conf.blk)) {
-> +        /* The request is used as the AIO opaque value, so add a ref.  */
-> +        scsi_req_ref(&r->req);
-> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
-> +                         BLOCK_ACCT_FLUSH);
-> +        r->req.aiocb =3D blk_aio_flush(lu->qdev.conf.blk, scsi_aio_compl=
-ete, r);
-> +        return;
-> +    }
-> +
-> +    scsi_req_complete(&r->req, GOOD);
-> +    return;
-> +
-> +invalid_param:
-> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM));
-> +    return;
-> +
-> +invalid_param_len:
-> +    scsi_check_condition(r, SENSE_CODE(INVALID_PARAM_LEN));
-> +    return;
-> +
-> +invalid_field:
-> +    scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
-> +}
-> +
-> +/* sector_num and nb_sectors expected to be in qdev blocksize */
-> +static inline bool check_lba_range(UfsLu *lu, uint64_t sector_num,
-> +                                   uint32_t nb_sectors)
-> +{
-> +    /*
-> +     * The first line tests that no overflow happens when computing the =
-last
-> +     * sector.  The second line tests that the last accessed sector is in
-> +     * range.
-> +     *
-> +     * Careful, the computations should not underflow for nb_sectors =3D=
-=3D 0,
-> +     * and a 0-block read to the first LBA beyond the end of device is
-> +     * valid.
-> +     */
-> +    return (sector_num <=3D sector_num + nb_sectors &&
-> +            sector_num + nb_sectors <=3D lu->qdev.max_lba + 1);
-> +}
-> +
-> +static void ufs_scsi_emulate_write_data(SCSIRequest *req)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +
-> +    if (r->iov.iov_len) {
-> +        int buflen =3D r->iov.iov_len;
-> +        trace_ufs_scsi_emulate_write_data(buflen);
-> +        r->iov.iov_len =3D 0;
-> +        scsi_req_data(&r->req, buflen);
-> +        return;
-> +    }
-> +
-> +    switch (req->cmd.buf[0]) {
-> +    case MODE_SELECT_10:
-> +        /* This also clears the sense buffer for REQUEST SENSE.  */
-> +        ufs_scsi_emulate_mode_select(r, r->iov.iov_base);
-> +        break;
-> +    default:
-> +        abort();
-> +    }
-> +}
-> +
-> +/* Return a pointer to the data buffer.  */
-> +static uint8_t *ufs_scsi_get_buf(SCSIRequest *req)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +
-> +    return (uint8_t *)r->iov.iov_base;
-> +}
-> +
-> +static int32_t ufs_scsi_dma_command(SCSIRequest *req, uint8_t *buf)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, req->dev);
-> +    uint32_t len;
-> +    uint8_t command;
-> +
-> +    command =3D buf[0];
-> +
-> +    if (!blk_is_available(lu->qdev.conf.blk)) {
-> +        scsi_check_condition(r, SENSE_CODE(NO_MEDIUM));
-> +        return 0;
-> +    }
-> +
-> +    len =3D scsi_data_cdb_xfer(r->req.cmd.buf);
-> +    switch (command) {
-> +    case READ_6:
-> +    case READ_10:
-> +        trace_ufs_scsi_dma_command_READ(r->req.cmd.lba, len);
-> +        if (r->req.cmd.buf[1] & 0xe0) {
-> +            goto illegal_request;
-> +        }
-> +        if (!check_lba_range(lu, r->req.cmd.lba, len)) {
-> +            goto illegal_lba;
-> +        }
-> +        r->sector =3D r->req.cmd.lba * (lu->qdev.blocksize / BDRV_SECTOR=
-_SIZE);
-> +        r->sector_count =3D len * (lu->qdev.blocksize / BDRV_SECTOR_SIZE=
-);
-> +        break;
-> +    case WRITE_6:
-> +    case WRITE_10:
-> +        trace_ufs_scsi_dma_command_WRITE(r->req.cmd.lba, len);
-> +        if (!blk_is_writable(lu->qdev.conf.blk)) {
-> +            scsi_check_condition(r, SENSE_CODE(WRITE_PROTECTED));
-> +            return 0;
-> +        }
-> +        if (r->req.cmd.buf[1] & 0xe0) {
-> +            goto illegal_request;
-> +        }
-> +        if (!check_lba_range(lu, r->req.cmd.lba, len)) {
-> +            goto illegal_lba;
-> +        }
-> +        r->sector =3D r->req.cmd.lba * (lu->qdev.blocksize / BDRV_SECTOR=
-_SIZE);
-> +        r->sector_count =3D len * (lu->qdev.blocksize / BDRV_SECTOR_SIZE=
-);
-> +        break;
-> +    default:
-> +        abort();
-> +    illegal_request:
-> +        scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
-> +        return 0;
-> +    illegal_lba:
-> +        scsi_check_condition(r, SENSE_CODE(LBA_OUT_OF_RANGE));
-> +        return 0;
-> +    }
-> +    r->need_fua_emulation =3D ((r->req.cmd.buf[1] & 8) !=3D 0);
-> +    if (r->sector_count =3D=3D 0) {
-> +        scsi_req_complete(&r->req, GOOD);
-> +    }
-> +    assert(r->iov.iov_len =3D=3D 0);
-> +    if (r->req.cmd.mode =3D=3D SCSI_XFER_TO_DEV) {
-> +        return -r->sector_count * BDRV_SECTOR_SIZE;
-> +    } else {
-> +        return r->sector_count * BDRV_SECTOR_SIZE;
-> +    }
-> +}
-> +
-> +static void scsi_write_do_fua(UfsSCSIReq *r)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +    assert(!r->req.io_canceled);
-> +
-> +    if (r->need_fua_emulation) {
-> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
-> +                         BLOCK_ACCT_FLUSH);
-> +        r->req.aiocb =3D blk_aio_flush(lu->qdev.conf.blk, scsi_aio_compl=
-ete, r);
-> +        return;
-> +    }
-> +
-> +    scsi_req_complete(&r->req, GOOD);
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static void scsi_dma_complete_noio(UfsSCSIReq *r, int ret)
-> +{
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +    if (ufs_scsi_req_check_error(r, ret, false)) {
-> +        goto done;
-> +    }
-> +
-> +    r->sector +=3D r->sector_count;
-> +    r->sector_count =3D 0;
-> +    if (r->req.cmd.mode =3D=3D SCSI_XFER_TO_DEV) {
-> +        scsi_write_do_fua(r);
-> +        return;
-> +    } else {
-> +        scsi_req_complete(&r->req, GOOD);
-> +    }
-> +
-> +done:
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static void scsi_dma_complete(void *opaque, int ret)
-> +{
-> +    UfsSCSIReq *r =3D (UfsSCSIReq *)opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +
-> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
-> +    if (ret < 0) {
-> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    } else {
-> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    }
-> +    scsi_dma_complete_noio(r, ret);
-> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
-> +}
-> +
-> +static BlockAIOCB *scsi_dma_readv(int64_t offset, QEMUIOVector *iov,
-> +                                  BlockCompletionFunc *cb, void *cb_opaq=
-ue,
-> +                                  void *opaque)
-> +{
-> +    UfsSCSIReq *r =3D opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +    return blk_aio_preadv(lu->qdev.conf.blk, offset, iov, 0, cb, cb_opaq=
-ue);
-> +}
-> +
-> +static void scsi_init_iovec(UfsSCSIReq *r, size_t size)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    if (!r->iov.iov_base) {
-> +        r->buflen =3D size;
-> +        r->iov.iov_base =3D blk_blockalign(lu->qdev.conf.blk, r->buflen);
-> +    }
-> +    r->iov.iov_len =3D MIN(r->sector_count * BDRV_SECTOR_SIZE, r->buflen=
-);
-> +    qemu_iovec_init_external(&r->qiov, &r->iov, 1);
-> +}
-> +
-> +static void scsi_read_complete_noio(UfsSCSIReq *r, int ret)
-> +{
-> +    uint32_t n;
-> +
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +    if (ufs_scsi_req_check_error(r, ret, false)) {
-> +        goto done;
-> +    }
-> +
-> +    n =3D r->qiov.size / BDRV_SECTOR_SIZE;
-> +    r->sector +=3D n;
-> +    r->sector_count -=3D n;
-> +    scsi_req_data(&r->req, r->qiov.size);
-> +
-> +done:
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static void scsi_read_complete(void *opaque, int ret)
-> +{
-> +    UfsSCSIReq *r =3D (UfsSCSIReq *)opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +    trace_ufs_scsi_read_data_count(r->sector_count);
-> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
-> +    if (ret < 0) {
-> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    } else {
-> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +        trace_ufs_scsi_read_complete(r->req.tag, r->qiov.size);
-> +    }
-> +    scsi_read_complete_noio(r, ret);
-> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
-> +}
-> +
-> +/* Actually issue a read to the block device.  */
-> +static void scsi_do_read(UfsSCSIReq *r, int ret)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +    if (ufs_scsi_req_check_error(r, ret, false)) {
-> +        goto done;
-> +    }
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +
-> +    if (r->req.sg) {
-> +        dma_acct_start(lu->qdev.conf.blk, &r->acct, r->req.sg, BLOCK_ACC=
-T_READ);
-> +        r->req.residual -=3D r->req.sg->size;
-> +        r->req.aiocb =3D dma_blk_io(
-> +            blk_get_aio_context(lu->qdev.conf.blk), r->req.sg,
-> +            r->sector << BDRV_SECTOR_BITS, BDRV_SECTOR_SIZE, scsi_dma_re=
-adv, r,
-> +            scsi_dma_complete, r, DMA_DIRECTION_FROM_DEVICE);
-> +    } else {
-> +        scsi_init_iovec(r, SCSI_DMA_BUF_SIZE);
-> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct,
-> +                         r->qiov.size, BLOCK_ACCT_READ);
-> +        r->req.aiocb =3D scsi_dma_readv(r->sector << BDRV_SECTOR_BITS, &=
-r->qiov,
-> +                                      scsi_read_complete, r, r);
-> +    }
-> +
-> +done:
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static void scsi_do_read_cb(void *opaque, int ret)
-> +{
-> +    UfsSCSIReq *r =3D (UfsSCSIReq *)opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +
-> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
-> +    if (ret < 0) {
-> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    } else {
-> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    }
-> +    scsi_do_read(opaque, ret);
-> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
-> +}
-> +
-> +/* Read more data from scsi device into buffer.  */
-> +static void scsi_read_data(SCSIRequest *req)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +    bool first;
-> +
-> +    trace_ufs_scsi_read_data_count(r->sector_count);
-> +    if (r->sector_count =3D=3D 0) {
-> +        /* This also clears the sense buffer for REQUEST SENSE.  */
-> +        scsi_req_complete(&r->req, GOOD);
-> +        return;
-> +    }
-> +
-> +    /* No data transfer may already be in progress */
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    if (r->req.cmd.mode =3D=3D SCSI_XFER_TO_DEV) {
-> +        trace_ufs_scsi_read_data_invalid();
-> +        scsi_read_complete_noio(r, -EINVAL);
-> +        return;
-> +    }
-> +
-> +    if (!blk_is_available(req->dev->conf.blk)) {
-> +        scsi_read_complete_noio(r, -ENOMEDIUM);
-> +        return;
-> +    }
-> +
-> +    first =3D !r->started;
-> +    r->started =3D true;
-> +    if (first && r->need_fua_emulation) {
-> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct, 0,
-> +                         BLOCK_ACCT_FLUSH);
-> +        r->req.aiocb =3D blk_aio_flush(lu->qdev.conf.blk, scsi_do_read_c=
-b, r);
-> +    } else {
-> +        scsi_do_read(r, 0);
-> +    }
-> +}
-> +
-> +static void scsi_write_complete_noio(UfsSCSIReq *r, int ret)
-> +{
-> +    uint32_t n;
-> +
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +    if (ufs_scsi_req_check_error(r, ret, false)) {
-> +        goto done;
-> +    }
-> +
-> +    n =3D r->qiov.size / BDRV_SECTOR_SIZE;
-> +    r->sector +=3D n;
-> +    r->sector_count -=3D n;
-> +    if (r->sector_count =3D=3D 0) {
-> +        scsi_write_do_fua(r);
-> +        return;
-> +    } else {
-> +        scsi_init_iovec(r, SCSI_DMA_BUF_SIZE);
-> +        trace_ufs_scsi_write_complete_noio(r->req.tag, r->qiov.size);
-> +        scsi_req_data(&r->req, r->qiov.size);
-> +    }
-> +
-> +done:
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static void scsi_write_complete(void *opaque, int ret)
-> +{
-> +    UfsSCSIReq *r =3D (UfsSCSIReq *)opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +
-> +    aio_context_acquire(blk_get_aio_context(lu->qdev.conf.blk));
-> +    if (ret < 0) {
-> +        block_acct_failed(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    } else {
-> +        block_acct_done(blk_get_stats(lu->qdev.conf.blk), &r->acct);
-> +    }
-> +    scsi_write_complete_noio(r, ret);
-> +    aio_context_release(blk_get_aio_context(lu->qdev.conf.blk));
-> +}
-> +
-> +static BlockAIOCB *scsi_dma_writev(int64_t offset, QEMUIOVector *iov,
-> +                                   BlockCompletionFunc *cb, void *cb_opa=
-que,
-> +                                   void *opaque)
-> +{
-> +    UfsSCSIReq *r =3D opaque;
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +    return blk_aio_pwritev(lu->qdev.conf.blk, offset, iov, 0, cb, cb_opa=
-que);
-> +}
-> +
-> +static void scsi_write_data(SCSIRequest *req)
-> +{
-> +    UfsSCSIReq *r =3D DO_UPCAST(UfsSCSIReq, req, req);
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, r->req.dev);
-> +
-> +    /* No data transfer may already be in progress */
-> +    assert(r->req.aiocb =3D=3D NULL);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    if (r->req.cmd.mode !=3D SCSI_XFER_TO_DEV) {
-> +        trace_ufs_scsi_write_data_invalid();
-> +        scsi_write_complete_noio(r, -EINVAL);
-> +        return;
-> +    }
-> +
-> +    if (!r->req.sg && !r->qiov.size) {
-> +        /* Called for the first time.  Ask the driver to send us more da=
-ta.  */
-> +        r->started =3D true;
-> +        scsi_write_complete_noio(r, 0);
-> +        return;
-> +    }
-> +    if (!blk_is_available(req->dev->conf.blk)) {
-> +        scsi_write_complete_noio(r, -ENOMEDIUM);
-> +        return;
-> +    }
-> +
-> +    if (r->req.sg) {
-> +        dma_acct_start(lu->qdev.conf.blk, &r->acct, r->req.sg,
-> +                       BLOCK_ACCT_WRITE);
-> +        r->req.residual -=3D r->req.sg->size;
-> +        r->req.aiocb =3D dma_blk_io(
-> +            blk_get_aio_context(lu->qdev.conf.blk), r->req.sg,
-> +            r->sector << BDRV_SECTOR_BITS, BDRV_SECTOR_SIZE, scsi_dma_wr=
-itev, r,
-> +            scsi_dma_complete, r, DMA_DIRECTION_TO_DEVICE);
-> +    } else {
-> +        block_acct_start(blk_get_stats(lu->qdev.conf.blk), &r->acct,
-> +                         r->qiov.size, BLOCK_ACCT_WRITE);
-> +        r->req.aiocb =3D scsi_dma_writev(r->sector << BDRV_SECTOR_BITS, =
-&r->qiov,
-> +                                       scsi_write_complete, r, r);
-> +    }
-> +}
-> +
-> +static const SCSIReqOps ufs_scsi_emulate_reqops =3D {
-> +    .size =3D sizeof(UfsSCSIReq),
-> +    .free_req =3D ufs_scsi_free_request,
-> +    .send_command =3D ufs_scsi_emulate_command,
-> +    .read_data =3D ufs_scsi_emulate_read_data,
-> +    .write_data =3D ufs_scsi_emulate_write_data,
-> +    .get_buf =3D ufs_scsi_get_buf,
-> +};
-> +
-> +static const SCSIReqOps ufs_scsi_dma_reqops =3D {
-> +    .size =3D sizeof(UfsSCSIReq),
-> +    .free_req =3D ufs_scsi_free_request,
-> +    .send_command =3D ufs_scsi_dma_command,
-> +    .read_data =3D scsi_read_data,
-> +    .write_data =3D scsi_write_data,
-> +    .get_buf =3D ufs_scsi_get_buf,
-> +};
-> +
-> +/*
-> + * Following commands are not yet supported
-> + * PRE_FETCH(10),
-> + * UNMAP,
-> + * WRITE_BUFFER, READ_BUFFER,
-> + * SECURITY_PROTOCOL_IN, SECURITY_PROTOCOL_OUT
-> + */
-> +static const SCSIReqOps *const ufs_scsi_reqops_dispatch[256] =3D {
-> +    [TEST_UNIT_READY] =3D &ufs_scsi_emulate_reqops,
-> +    [INQUIRY] =3D &ufs_scsi_emulate_reqops,
-> +    [MODE_SENSE_10] =3D &ufs_scsi_emulate_reqops,
-> +    [START_STOP] =3D &ufs_scsi_emulate_reqops,
-> +    [READ_CAPACITY_10] =3D &ufs_scsi_emulate_reqops,
-> +    [REQUEST_SENSE] =3D &ufs_scsi_emulate_reqops,
-> +    [SYNCHRONIZE_CACHE] =3D &ufs_scsi_emulate_reqops,
-> +    [MODE_SELECT_10] =3D &ufs_scsi_emulate_reqops,
-> +    [VERIFY_10] =3D &ufs_scsi_emulate_reqops,
-> +    [FORMAT_UNIT] =3D &ufs_scsi_emulate_reqops,
-> +    [SERVICE_ACTION_IN_16] =3D &ufs_scsi_emulate_reqops,
-> +    [SEND_DIAGNOSTIC] =3D &ufs_scsi_emulate_reqops,
-> +
-> +    [READ_6] =3D &ufs_scsi_dma_reqops,
-> +    [READ_10] =3D &ufs_scsi_dma_reqops,
-> +    [WRITE_6] =3D &ufs_scsi_dma_reqops,
-> +    [WRITE_10] =3D &ufs_scsi_dma_reqops,
-> +};
-> +
-> +static SCSIRequest *scsi_new_request(SCSIDevice *dev, uint32_t tag,
-> +                                     uint32_t lun, uint8_t *buf,
-> +                                     void *hba_private)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, dev);
-> +    SCSIRequest *req;
-> +    const SCSIReqOps *ops;
-> +    uint8_t command;
-> +
-> +    command =3D buf[0];
-> +    ops =3D ufs_scsi_reqops_dispatch[command];
-> +    if (!ops) {
-> +        ops =3D &ufs_scsi_emulate_reqops;
-> +    }
-> +    req =3D scsi_req_alloc(ops, &lu->qdev, tag, lun, hba_private);
-> +
-> +    return req;
-> +}
-> +
-> +static Property ufs_lu_props[] =3D {
-> +    DEFINE_PROP_DRIVE_IOTHREAD("drive", UfsLu, qdev.conf.blk),
-> +    DEFINE_BLOCK_PROPERTIES_BASE(UfsLu, qdev.conf),
-> +    DEFINE_BLOCK_ERROR_PROPERTIES(UfsLu, qdev.conf),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +static bool ufs_lu_brdv_init(UfsLu *lu, Error **errp)
-> +{
-> +    SCSIDevice *dev =3D &lu->qdev;
-> +    bool read_only;
-> +
-> +    if (!lu->qdev.conf.blk) {
-> +        error_setg(errp, "drive property not set");
-> +        return false;
-> +    }
-> +
-> +    if (!blkconf_blocksizes(&lu->qdev.conf, errp)) {
-> +        return false;
-> +    }
-> +
-> +    if (blk_get_aio_context(lu->qdev.conf.blk) !=3D qemu_get_aio_context=
-() &&
-> +        !lu->qdev.hba_supports_iothread) {
-> +        error_setg(errp, "HBA does not support iothreads");
-> +        return false;
-> +    }
-> +
-> +    read_only =3D !blk_supports_write_perm(lu->qdev.conf.blk);
-> +
-> +    if (!blkconf_apply_backend_options(&dev->conf, read_only,
-> +                                       dev->type =3D=3D TYPE_DISK, errp)=
-) {
-> +        return false;
-> +    }
-> +
-> +    if (blk_is_sg(lu->qdev.conf.blk)) {
-> +        error_setg(errp, "unwanted /dev/sg*");
-> +        return false;
-> +    }
-> +
-> +    blk_iostatus_enable(lu->qdev.conf.blk);
-> +    return true;
-> +}
-> +
-> +static bool ufs_add_lu(UfsHc *u, UfsLu *lu, Error **errp)
-> +{
-> +    BlockBackend *blk =3D lu->qdev.conf.blk;
-> +    int64_t brdv_len =3D blk_getlength(blk);
-> +    uint64_t raw_dev_cap =3D
-> +        be64_to_cpu(u->geometry_desc.total_raw_device_capacity);
-> +
-> +    if (u->device_desc.number_lu >=3D UFS_MAX_LUS) {
-> +        error_setg(errp, "ufs host controller has too many logical units=
-=2E");
-> +        return false;
-> +    }
-> +
-> +    if (u->lus[lu->lun] !=3D NULL) {
-> +        error_setg(errp, "ufs logical unit %d already exists.", lu->lun);
-> +        return false;
-> +    }
-> +
-> +    u->lus[lu->lun] =3D lu;
-> +    u->device_desc.number_lu++;
-> +    raw_dev_cap +=3D (brdv_len >> UFS_GEOMETRY_CAPACITY_SHIFT);
-> +    u->geometry_desc.total_raw_device_capacity =3D cpu_to_be64(raw_dev_c=
-ap);
-> +    return true;
-> +}
-> +
-> +static inline uint8_t ufs_log2(uint64_t input)
-> +{
-> +    int log =3D 1;
-> +    while (input >> log) {
-> +        log++;
-> +    }
-> +    return log;
-> +}
-> +
-> +static void ufs_init_lu(UfsLu *lu)
-> +{
-> +    BlockBackend *blk =3D lu->qdev.conf.blk;
-> +    int64_t brdv_len =3D blk_getlength(blk);
-> +
-> +    lu->lun =3D lu->qdev.lun;
-> +    memset(&lu->unit_desc, 0, sizeof(lu->unit_desc));
-> +    lu->unit_desc.length =3D sizeof(UnitDescriptor);
-> +    lu->unit_desc.descriptor_idn =3D QUERY_DESC_IDN_UNIT;
-> +    lu->unit_desc.lu_enable =3D 0x01;
-> +    lu->unit_desc.logical_block_size =3D ufs_log2(lu->qdev.blocksize);
-> +    lu->unit_desc.unit_index =3D lu->qdev.lun;
-> +    lu->unit_desc.logical_block_count =3D
-> +        cpu_to_be64(brdv_len / (1 << lu->unit_desc.logical_block_size));
-> +}
-> +
-> +static bool ufs_lu_check_constraints(UfsLu *lu, Error **errp)
-> +{
-> +    if (!blk_is_available(lu->qdev.conf.blk)) {
-> +        error_setg(errp, "block backend not configured");
-> +        return false;
-> +    }
-> +
-> +    if (lu->qdev.channel !=3D 0) {
-> +        error_setg(errp, "ufs logical unit does not support channel");
-> +        return false;
-> +    }
-> +
-> +    if (lu->qdev.lun >=3D UFS_MAX_LUS) {
-> +        error_setg(errp, "lun must be between 1 and %d", UFS_MAX_LUS - 1=
-);
-> +        return false;
-> +    }
-> +
-> +    return true;
-> +}
-> +
-> +static void ufs_lu_realize(SCSIDevice *dev, Error **errp)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, dev);
-> +    BusState *s =3D qdev_get_parent_bus(&dev->qdev);
-> +    UfsHc *u =3D UFS(s->parent);
-> +    AioContext *ctx =3D NULL;
-> +    uint64_t nb_sectors, nb_blocks;
-> +
-> +    if (!ufs_lu_check_constraints(lu, errp)) {
-> +        return;
-> +    }
-> +
-> +    if (lu->qdev.conf.blk) {
-> +        ctx =3D blk_get_aio_context(lu->qdev.conf.blk);
-> +        aio_context_acquire(ctx);
-> +        if (!blkconf_blocksizes(&lu->qdev.conf, errp)) {
-> +            goto out;
-> +        }
-> +    }
-> +    lu->qdev.blocksize =3D lu->qdev.conf.logical_block_size;
-> +    blk_get_geometry(lu->qdev.conf.blk, &nb_sectors);
-> +    nb_blocks =3D nb_sectors / (lu->qdev.blocksize / BDRV_SECTOR_SIZE) -=
- 1;
-> +    if (nb_blocks > UINT32_MAX) {
-> +        nb_blocks =3D UINT32_MAX;
-> +    }
-> +    lu->qdev.max_lba =3D nb_blocks;
-> +    lu->qdev.type =3D TYPE_DISK;
-> +
-> +    ufs_init_lu(lu);
-> +    if (!ufs_add_lu(u, lu, errp)) {
-> +        goto out;
-> +    }
-> +
-> +    ufs_lu_brdv_init(lu, errp);
-> +out:
-> +    if (ctx) {
-> +        aio_context_release(ctx);
-> +    }
-> +}
-> +
-> +static void ufs_lu_unrealize(SCSIDevice *dev)
-> +{
-> +    UfsLu *lu =3D DO_UPCAST(UfsLu, qdev, dev);
-> +
-> +    blk_drain(lu->qdev.conf.blk);
-> +}
-> +
-> +static void ufs_wlu_realize(DeviceState *qdev, Error **errp)
-> +{
-> +    UfsWLu *wlu =3D UFSWLU(qdev);
-> +    SCSIDevice *dev =3D &wlu->qdev;
-> +
-> +    if (!is_wlun(dev->lun)) {
-> +        error_setg(errp, "not well-known logical unit number");
-> +        return;
-> +    }
-> +
-> +    QTAILQ_INIT(&dev->requests);
-> +}
-> +
-> +static void ufs_lu_class_init(ObjectClass *oc, void *data)
-> +{
-> +    DeviceClass *dc =3D DEVICE_CLASS(oc);
-> +    SCSIDeviceClass *sc =3D SCSI_DEVICE_CLASS(oc);
-> +
-> +    sc->realize =3D ufs_lu_realize;
-> +    sc->unrealize =3D ufs_lu_unrealize;
-> +    sc->alloc_req =3D scsi_new_request;
-> +    dc->bus_type =3D TYPE_UFS_BUS;
-> +    device_class_set_props(dc, ufs_lu_props);
-> +    dc->desc =3D "Virtual UFS logical unit";
-> +}
-> +
-> +static void ufs_wlu_class_init(ObjectClass *oc, void *data)
-> +{
-> +    DeviceClass *dc =3D DEVICE_CLASS(oc);
-> +    SCSIDeviceClass *sc =3D SCSI_DEVICE_CLASS(oc);
-> +
-> +    /*
-> +     * The realize() function of TYPE_SCSI_DEVICE causes a segmentation =
-fault
-> +     * if a block drive does not exist. Define a new realize function for
-> +     * well-known LUs that do not have a block drive.
-> +     */
-> +    dc->realize =3D ufs_wlu_realize;
-> +    sc->alloc_req =3D scsi_new_request;
-> +    dc->bus_type =3D TYPE_UFS_BUS;
-> +    dc->desc =3D "Virtual UFS well-known logical unit";
-> +}
-> +
-> +static const TypeInfo ufs_lu_info =3D {
-> +    .name =3D TYPE_UFS_LU,
-> +    .parent =3D TYPE_SCSI_DEVICE,
-> +    .class_init =3D ufs_lu_class_init,
-> +    .instance_size =3D sizeof(UfsLu),
-> +};
-> +
-> +static const TypeInfo ufs_wlu_info =3D {
-> +    .name =3D TYPE_UFS_WLU,
-> +    .parent =3D TYPE_SCSI_DEVICE,
-> +    .class_init =3D ufs_wlu_class_init,
-> +    .instance_size =3D sizeof(UfsWLu),
-> +};
-> +
-> +static void ufs_lu_register_types(void)
-> +{
-> +    type_register_static(&ufs_lu_info);
-> +    type_register_static(&ufs_wlu_info);
-> +}
-> +
-> +type_init(ufs_lu_register_types)
-> diff --git a/hw/ufs/meson.build b/hw/ufs/meson.build
-> index c1d90eeea6..9953b4fd9b 100644
-> --- a/hw/ufs/meson.build
-> +++ b/hw/ufs/meson.build
-> @@ -1 +1 @@
-> -softmmu_ss.add(when: 'CONFIG_UFS_PCI', if_true: files('ufs.c'))
-> +softmmu_ss.add(when: 'CONFIG_UFS_PCI', if_true: files('ufs.c', 'lu.c'))
-> diff --git a/hw/ufs/trace-events b/hw/ufs/trace-events
-> index 17793929b1..644a4c60bc 100644
-> --- a/hw/ufs/trace-events
-> +++ b/hw/ufs/trace-events
-> @@ -12,6 +12,31 @@ ufs_exec_scsi_cmd(uint32_t slot, uint8_t lun, uint8_t =
-opcode) "slot %"PRIu32", l
->  ufs_exec_query_cmd(uint32_t slot, uint8_t opcode) "slot %"PRIu32", opcod=
-e 0x%"PRIx8""
->  ufs_process_uiccmd(uint32_t uiccmd, uint32_t ucmdarg1, uint32_t ucmdarg2=
-, uint32_t ucmdarg3) "uiccmd 0x%"PRIx32", ucmdarg1 0x%"PRIx32", ucmdarg2 0x=
-%"PRIx32", ucmdarg3 0x%"PRIx32""
-> =20
-> +# lu.c
-> +ufs_scsi_check_condition(uint32_t tag, uint8_t key, uint8_t asc, uint8_t=
- ascq) "Command complete tag=3D0x%x sense=3D%d/%d/%d"
-> +ufs_scsi_read_complete(uint32_t tag, size_t size) "Data ready tag=3D0x%x=
- len=3D%zd"
-> +ufs_scsi_read_data_count(uint32_t sector_count) "Read sector_count=3D%d"
-> +ufs_scsi_read_data_invalid(void) "Data transfer direction invalid"
-> +ufs_scsi_write_complete_noio(uint32_t tag, size_t size) "Write complete =
-tag=3D0x%x more=3D%zd"
-> +ufs_scsi_write_data_invalid(void) "Data transfer direction invalid"
-> +ufs_scsi_emulate_vpd_page_00(size_t xfer) "Inquiry EVPD[Supported pages]=
- buffer size %zd"
-> +ufs_scsi_emulate_vpd_page_80_not_supported(void) "Inquiry EVPD[Serial nu=
-mber] not supported"
-> +ufs_scsi_emulate_vpd_page_80(size_t xfer) "Inquiry EVPD[Serial number] b=
-uffer size %zd"
-> +ufs_scsi_emulate_vpd_page_87(size_t xfer) "Inquiry EVPD[Mode Page Policy=
-] buffer size %zd"
-> +ufs_scsi_emulate_mode_sense(int cmd, int page, size_t xfer, int control)=
- "Mode Sense(%d) (page %d, xfer %zd, page_control %d)"
-> +ufs_scsi_emulate_read_data(int buflen) "Read buf_len=3D%d"
-> +ufs_scsi_emulate_write_data(int buflen) "Write buf_len=3D%d"
-> +ufs_scsi_emulate_command_START_STOP(void) "START STOP UNIT"
-> +ufs_scsi_emulate_command_FORMAT_UNIT(void) "FORMAT UNIT"
-> +ufs_scsi_emulate_command_SEND_DIAGNOSTIC(void) "SEND DIAGNOSTIC"
-> +ufs_scsi_emulate_command_SAI_16(void) "SAI READ CAPACITY(16)"
-> +ufs_scsi_emulate_command_SAI_unsupported(void) "Unsupported Service Acti=
-on In"
-> +ufs_scsi_emulate_command_MODE_SELECT_10(size_t xfer) "Mode Select(10) (l=
-en %zd)"
-> +ufs_scsi_emulate_command_VERIFY(int bytchk) "Verify (bytchk %d)"
-> +ufs_scsi_emulate_command_UNKNOWN(int cmd, const char *name) "Unknown SCS=
-I command (0x%2.2x=3D%s)"
-> +ufs_scsi_dma_command_READ(uint64_t lba, uint32_t len) "Read (block %" PR=
-Iu64 ", count %u)"
-> +ufs_scsi_dma_command_WRITE(uint64_t lba, int len) "Write (block %" PRIu6=
-4 ", count %u)"
-> +
->  # error condition
->  ufs_err_memory_allocation(void) "failed to allocate memory"
->  ufs_err_dma_read_utrd(uint32_t slot, uint64_t addr) "failed to read utrd=
-=2E UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
-> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-> index 10ecc8cd7b..d17f75446a 100644
-> --- a/hw/ufs/ufs.c
-> +++ b/hw/ufs/ufs.c
-> @@ -8,6 +8,19 @@
->   * This code is licensed under the GNU GPL v2 or later.
->   */
-> =20
-> +/**
-> + * Reference Specs: https://www.jedec.org/, 3.1
-> + *
-> + * Usage
-> + * -----
-> + *
-> + * Add options:
-> + *      -drive file=3D<file>,if=3Dnone,id=3D<drive_id>
-> + *      -device ufs,serial=3D<serial>,id=3D<bus_name>, \
-> + *              nutrs=3D<N[optional]>,nutmrs=3D<N[optional]>
-> + *      -device ufs-lu,drive=3D<drive_id>,bus=3D<bus_name>
-> + */
-> +
->  #include "qemu/osdep.h"
->  #include "qapi/error.h"
->  #include "migration/vmstate.h"
-> @@ -459,6 +472,19 @@ static const MemoryRegionOps ufs_mmio_ops =3D {
->      },
->  };
-> =20
-> +static QEMUSGList *ufs_get_sg_list(SCSIRequest *scsi_req)
-> +{
-> +    UfsRequest *req =3D scsi_req->hba_private;
-> +    return req->sg;
-> +}
-> +
-> +static void ufs_build_upiu_sense_data(UfsRequest *req, SCSIRequest *scsi=
-_req)
-> +{
-> +    req->rsp_upiu.sr.sense_data_len =3D cpu_to_be16(scsi_req->sense_len);
-> +    assert(scsi_req->sense_len <=3D SCSI_SENSE_LEN);
-> +    memcpy(req->rsp_upiu.sr.sense_data, scsi_req->sense, scsi_req->sense=
-_len);
-> +}
-> +
->  static void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type,
->                                    uint8_t flags, uint8_t response,
->                                    uint8_t scsi_status,
-> @@ -472,6 +498,98 @@ static void ufs_build_upiu_header(UfsRequest *req, u=
-int8_t trans_type,
->      req->rsp_upiu.header.data_segment_length =3D cpu_to_be16(data_segmen=
-t_length);
->  }
-> =20
-> +static void ufs_scsi_command_complete(SCSIRequest *scsi_req, size_t resi=
-d)
-> +{
-> +    UfsRequest *req =3D scsi_req->hba_private;
-> +    int16_t status =3D scsi_req->status;
-> +    uint32_t expected_len =3D be32_to_cpu(req->req_upiu.sc.exp_data_tran=
-sfer_len);
-> +    uint32_t transfered_len =3D scsi_req->cmd.xfer - resid;
-> +    uint8_t flags =3D 0, response =3D COMMAND_RESULT_SUCESS;
-> +    uint16_t data_segment_length;
-> +
-> +    if (expected_len > transfered_len) {
-> +        req->rsp_upiu.sr.residual_transfer_count =3D
-> +            cpu_to_be32(expected_len - transfered_len);
-> +        flags |=3D UFS_UPIU_FLAG_UNDERFLOW;
-> +    } else if (expected_len < transfered_len) {
-> +        req->rsp_upiu.sr.residual_transfer_count =3D
-> +            cpu_to_be32(transfered_len - expected_len);
-> +        flags |=3D UFS_UPIU_FLAG_OVERFLOW;
-> +    }
-> +
-> +    if (status !=3D 0) {
-> +        ufs_build_upiu_sense_data(req, scsi_req);
-> +        response =3D COMMAND_RESULT_FAIL;
-> +    }
-> +
-> +    data_segment_length =3D cpu_to_be16(scsi_req->sense_len +
-> +                                      sizeof(req->rsp_upiu.sr.sense_data=
-_len));
-> +    ufs_build_upiu_header(req, UPIU_TRANSACTION_RESPONSE, flags, respons=
-e,
-> +                          status, data_segment_length);
-> +
-> +    ufs_complete_req(req, UFS_REQUEST_SUCCESS);
-> +
-> +    scsi_req->hba_private =3D NULL;
-> +    scsi_req_unref(scsi_req);
-> +}
-> +
-> +static const struct SCSIBusInfo ufs_scsi_info =3D {
-> +    .tcq =3D true,
-> +    .max_target =3D 0,
-> +    .max_lun =3D UFS_MAX_LUS,
-> +    .max_channel =3D 0,
-> +
-> +    .get_sg_list =3D ufs_get_sg_list,
-> +    .complete =3D ufs_scsi_command_complete,
-> +};
-> +
-> +static UfsReqResult ufs_exec_scsi_cmd(UfsRequest *req)
-> +{
-> +    UfsHc *u =3D req->hc;
-> +    uint8_t lun =3D req->req_upiu.header.lun;
-> +    uint8_t task_tag =3D req->req_upiu.header.task_tag;
-> +    SCSIDevice *dev =3D NULL;
-> +
-> +    trace_ufs_exec_scsi_cmd(req->slot, lun, req->req_upiu.sc.cdb[0]);
-> +
-> +    if (!is_wlun(lun)) {
-> +        if (lun >=3D u->device_desc.number_lu) {
-> +            trace_ufs_err_scsi_cmd_invalid_lun(lun);
-> +            return UFS_REQUEST_ERROR;
-> +        } else if (u->lus[lun] =3D=3D NULL) {
-> +            trace_ufs_err_scsi_cmd_invalid_lun(lun);
-> +            return UFS_REQUEST_ERROR;
-> +        }
-> +    }
-> +
-> +    switch (lun) {
-> +    case UFS_UPIU_REPORT_LUNS_WLUN:
-> +        dev =3D &u->report_wlu->qdev;
-> +        break;
-> +    case UFS_UPIU_UFS_DEVICE_WLUN:
-> +        dev =3D &u->dev_wlu->qdev;
-> +        break;
-> +    case UFS_UPIU_BOOT_WLUN:
-> +        dev =3D &u->boot_wlu->qdev;
-> +        break;
-> +    case UFS_UPIU_RPMB_WLUN:
-> +        dev =3D &u->rpmb_wlu->qdev;
-> +        break;
-> +    default:
-> +        dev =3D &u->lus[lun]->qdev;
-> +    }
-> +
-> +    SCSIRequest *scsi_req =3D scsi_req_new(
-> +        dev, task_tag, lun, req->req_upiu.sc.cdb, UFS_CDB_SIZE, req);
-> +
-> +    uint32_t len =3D scsi_req_enqueue(scsi_req);
-> +    if (len) {
-> +        scsi_req_continue(scsi_req);
-> +    }
-> +
-> +    return UFS_REQUEST_NO_COMPLETE;
-> +}
-> +
->  static UfsReqResult ufs_exec_nop_cmd(UfsRequest *req)
->  {
->      trace_ufs_exec_nop_cmd(req->slot);
-> @@ -749,9 +867,11 @@ static const RpmbUnitDescriptor rpmb_unit_desc =3D {
-> =20
->  static QueryRespCode ufs_read_unit_desc(UfsRequest *req)
->  {
-> +    UfsHc *u =3D req->hc;
->      uint8_t lun =3D req->req_upiu.qr.index;
-> =20
-> -    if (lun !=3D UFS_UPIU_RPMB_WLUN && lun > UFS_MAX_LUS) {
-> +    if (lun !=3D UFS_UPIU_RPMB_WLUN &&
-> +        (lun > UFS_MAX_LUS || u->lus[lun] =3D=3D NULL)) {
->          trace_ufs_err_query_invalid_index(req->req_upiu.qr.opcode, lun);
->          return QUERY_RESULT_INVALID_INDEX;
->      }
-> @@ -759,8 +879,8 @@ static QueryRespCode ufs_read_unit_desc(UfsRequest *r=
-eq)
->      if (lun =3D=3D UFS_UPIU_RPMB_WLUN) {
->          memcpy(&req->rsp_upiu.qr.data, &rpmb_unit_desc, rpmb_unit_desc.l=
-ength);
->      } else {
-> -        /* unit descriptor is not yet supported */
-> -        return QUERY_RESULT_INVALID_INDEX;
-> +        memcpy(&req->rsp_upiu.qr.data, &u->lus[lun]->unit_desc,
-> +               sizeof(u->lus[lun]->unit_desc));
->      }
-> =20
->      return QUERY_RESULT_SUCCESS;
-> @@ -976,8 +1096,7 @@ static void ufs_exec_req(UfsRequest *req)
->          req_result =3D ufs_exec_nop_cmd(req);
->          break;
->      case UPIU_TRANSACTION_COMMAND:
-> -        /* Not yet implemented */
-> -        req_result =3D UFS_REQUEST_ERROR;
-> +        req_result =3D ufs_exec_scsi_cmd(req);
->          break;
->      case UPIU_TRANSACTION_QUERY_REQ:
->          req_result =3D ufs_exec_query_cmd(req);
-> @@ -988,7 +1107,14 @@ static void ufs_exec_req(UfsRequest *req)
->          req_result =3D UFS_REQUEST_ERROR;
->      }
-> =20
-> -    ufs_complete_req(req, req_result);
-> +    /*
-> +     * The ufs_complete_req for scsi commands is handled by the
-> +     * ufs_scsi_command_complete() callback function. Therefore, to avoid
-> +     * duplicate processing, ufs_complete_req() is not called for scsi c=
-ommands.
-> +     */
-> +    if (req_result !=3D UFS_REQUEST_NO_COMPLETE) {
-> +        ufs_complete_req(req, req_result);
-> +    }
->  }
-> =20
->  static void ufs_process_req(void *opaque)
-> @@ -1202,6 +1328,28 @@ static void ufs_init_hc(UfsHc *u)
->      u->flags.permanently_disable_fw_update =3D 1;
->  }
-> =20
-> +static bool ufs_init_wlu(UfsHc *u, UfsWLu **wlu, uint8_t wlun, Error **e=
-rrp)
-> +{
-> +    UfsWLu *new_wlu =3D UFSWLU(qdev_new(TYPE_UFS_WLU));
-> +
-> +    qdev_prop_set_uint32(DEVICE(new_wlu), "lun", wlun);
-> +
-> +    /*
-> +     * The well-known lu shares the same bus as the normal lu. If the we=
-ll-known
-> +     * lu writes the same channel value as the normal lu, the report wil=
-l be
-> +     * made not only for the normal lu but also for the well-known lu at
-> +     * REPORT_LUN time. To prevent this, the channel value of normal lu =
-is fixed
-> +     * to 0 and the channel value of well-known lu is fixed to 1.
-> +     */
-> +    qdev_prop_set_uint32(DEVICE(new_wlu), "channel", 1);
-> +    if (!qdev_realize_and_unref(DEVICE(new_wlu), BUS(&u->bus), errp)) {
-> +        return false;
-> +    }
-> +
-> +    *wlu =3D new_wlu;
-> +    return true;
-> +}
-> +
->  static void ufs_realize(PCIDevice *pci_dev, Error **errp)
->  {
->      UfsHc *u =3D UFS(pci_dev);
-> @@ -1210,15 +1358,55 @@ static void ufs_realize(PCIDevice *pci_dev, Error=
- **errp)
->          return;
->      }
-> =20
-> +    qbus_init(&u->bus, sizeof(UfsBus), TYPE_UFS_BUS, &pci_dev->qdev,
-> +              u->parent_obj.qdev.id);
-> +    u->bus.parent_bus.info =3D &ufs_scsi_info;
-> +
->      ufs_init_state(u);
->      ufs_init_hc(u);
->      ufs_init_pci(u, pci_dev);
-> +
-> +    if (!ufs_init_wlu(u, &u->report_wlu, UFS_UPIU_REPORT_LUNS_WLUN, errp=
-)) {
-> +        return;
-> +    }
-> +
-> +    if (!ufs_init_wlu(u, &u->dev_wlu, UFS_UPIU_UFS_DEVICE_WLUN, errp)) {
-> +        return;
-> +    }
-> +
-> +    if (!ufs_init_wlu(u, &u->boot_wlu, UFS_UPIU_BOOT_WLUN, errp)) {
-> +        return;
-> +    }
-> +
-> +    if (!ufs_init_wlu(u, &u->rpmb_wlu, UFS_UPIU_RPMB_WLUN, errp)) {
-> +        return;
-> +    }
->  }
-> =20
->  static void ufs_exit(PCIDevice *pci_dev)
->  {
->      UfsHc *u =3D UFS(pci_dev);
-> =20
-> +    if (u->dev_wlu) {
-> +        object_unref(OBJECT(u->dev_wlu));
-> +        u->dev_wlu =3D NULL;
-> +    }
-> +
-> +    if (u->report_wlu) {
-> +        object_unref(OBJECT(u->report_wlu));
-> +        u->report_wlu =3D NULL;
-> +    }
-> +
-> +    if (u->rpmb_wlu) {
-> +        object_unref(OBJECT(u->rpmb_wlu));
-> +        u->rpmb_wlu =3D NULL;
-> +    }
-> +
-> +    if (u->boot_wlu) {
-> +        object_unref(OBJECT(u->boot_wlu));
-> +        u->boot_wlu =3D NULL;
-> +    }
-> +
->      qemu_bh_delete(u->doorbell_bh);
->      qemu_bh_delete(u->complete_bh);
-> =20
-> @@ -1255,6 +1443,49 @@ static void ufs_class_init(ObjectClass *oc, void *=
-data)
->      dc->vmsd =3D &ufs_vmstate;
->  }
-> =20
-> +static bool ufs_bus_check_address(BusState *qbus, DeviceState *qdev,
-> +                                  Error **errp)
-> +{
-> +    SCSIDevice *dev =3D SCSI_DEVICE(qdev);
-> +    UfsBusClass *ubc =3D UFS_BUS_GET_CLASS(qbus);
-> +    UfsHc *u =3D UFS(qbus->parent);
-> +
-> +    if (strcmp(object_get_typename(OBJECT(dev)), TYPE_UFS_WLU) =3D=3D 0)=
- {
-> +        if (dev->lun !=3D UFS_UPIU_REPORT_LUNS_WLUN &&
-> +            dev->lun !=3D UFS_UPIU_UFS_DEVICE_WLUN &&
-> +            dev->lun !=3D UFS_UPIU_BOOT_WLUN && dev->lun !=3D UFS_UPIU_R=
-PMB_WLUN) {
-> +            error_setg(errp, "bad well-known lun: %d", dev->lun);
-> +            return false;
-> +        }
-> +
-> +        if ((dev->lun =3D=3D UFS_UPIU_REPORT_LUNS_WLUN && u->report_wlu =
-!=3D NULL) ||
-> +            (dev->lun =3D=3D UFS_UPIU_UFS_DEVICE_WLUN && u->dev_wlu !=3D=
- NULL) ||
-> +            (dev->lun =3D=3D UFS_UPIU_BOOT_WLUN && u->boot_wlu !=3D NULL=
-) ||
-> +            (dev->lun =3D=3D UFS_UPIU_RPMB_WLUN && u->rpmb_wlu !=3D NULL=
-)) {
-> +            error_setg(errp, "well-known lun %d already exists", dev->lu=
-n);
-> +            return false;
-> +        }
-> +
-> +        return true;
-> +    }
-> +
-> +    if (strcmp(object_get_typename(OBJECT(dev)), TYPE_UFS_LU) !=3D 0) {
-> +        error_setg(errp, "%s cannot be connected to ufs-bus",
-> +                   object_get_typename(OBJECT(dev)));
-> +        return false;
-> +    }
-> +
-> +    return ubc->parent_check_address(qbus, qdev, errp);
-> +}
-> +
-> +static void ufs_bus_class_init(ObjectClass *class, void *data)
-> +{
-> +    BusClass *bc =3D BUS_CLASS(class);
-> +    UfsBusClass *ubc =3D UFS_BUS_CLASS(class);
-> +    ubc->parent_check_address =3D bc->check_address;
-> +    bc->check_address =3D ufs_bus_check_address;
-> +}
-> +
->  static const TypeInfo ufs_info =3D {
->      .name =3D TYPE_UFS,
->      .parent =3D TYPE_PCI_DEVICE,
-> @@ -1263,9 +1494,18 @@ static const TypeInfo ufs_info =3D {
->      .interfaces =3D (InterfaceInfo[]){ { INTERFACE_PCIE_DEVICE }, {} },
->  };
-> =20
-> +static const TypeInfo ufs_bus_info =3D {
-> +    .name =3D TYPE_UFS_BUS,
-> +    .parent =3D TYPE_SCSI_BUS,
-> +    .class_init =3D ufs_bus_class_init,
-> +    .class_size =3D sizeof(UfsBusClass),
-> +    .instance_size =3D sizeof(UfsBus),
-> +};
-> +
->  static void ufs_register_types(void)
->  {
->      type_register_static(&ufs_info);
-> +    type_register_static(&ufs_bus_info);
->  }
-> =20
->  type_init(ufs_register_types)
-> diff --git a/hw/ufs/ufs.h b/hw/ufs/ufs.h
-> index 5d4fd818f9..6d2dc000e9 100644
-> --- a/hw/ufs/ufs.h
-> +++ b/hw/ufs/ufs.h
-> @@ -18,6 +18,18 @@
->  #define UFS_MAX_LUS 32
->  #define UFS_LOGICAL_BLK_SIZE 4096
-> =20
-> +typedef struct UfsBusClass {
-> +    BusClass parent_class;
-> +    bool (*parent_check_address)(BusState *bus, DeviceState *dev, Error =
-**errp);
-> +} UfsBusClass;
-> +
-> +typedef struct UfsBus {
-> +    SCSIBus parent_bus;
-> +} UfsBus;
-> +
-> +#define TYPE_UFS_BUS "ufs-bus"
-> +DECLARE_OBJ_CHECKERS(UfsBus, UfsBusClass, UFS_BUS, TYPE_UFS_BUS)
-> +
->  typedef enum UfsRequestState {
->      UFS_REQUEST_IDLE =3D 0,
->      UFS_REQUEST_READY =3D 1,
-> @@ -28,6 +40,7 @@ typedef enum UfsRequestState {
->  typedef enum UfsReqResult {
->      UFS_REQUEST_SUCCESS =3D 0,
->      UFS_REQUEST_ERROR =3D 1,
-> +    UFS_REQUEST_NO_COMPLETE =3D 2,
->  } UfsReqResult;
-> =20
->  typedef struct UfsRequest {
-> @@ -43,6 +56,17 @@ typedef struct UfsRequest {
->      QEMUSGList *sg;
->  } UfsRequest;
-> =20
-> +typedef struct UfsLu {
-> +    SCSIDevice qdev;
-> +    uint8_t lun;
-> +    UnitDescriptor unit_desc;
-> +} UfsLu;
-> +
-> +typedef struct UfsWLu {
-> +    SCSIDevice qdev;
-> +    uint8_t lun;
-> +} UfsWLu;
-> +
->  typedef struct UfsParams {
->      char *serial;
->      uint8_t nutrs; /* Number of UTP Transfer Request Slots */
-> @@ -51,12 +75,18 @@ typedef struct UfsParams {
-> =20
->  typedef struct UfsHc {
->      PCIDevice parent_obj;
-> +    UfsBus bus;
->      MemoryRegion iomem;
->      UfsReg reg;
->      UfsParams params;
->      uint32_t reg_size;
->      UfsRequest *req_list;
-> =20
-> +    UfsLu *lus[UFS_MAX_LUS];
-> +    UfsWLu *report_wlu;
-> +    UfsWLu *dev_wlu;
-> +    UfsWLu *boot_wlu;
-> +    UfsWLu *rpmb_wlu;
->      DeviceDescriptor device_desc;
->      GeometryDescriptor geometry_desc;
->      Attributes attributes;
-> @@ -70,6 +100,12 @@ typedef struct UfsHc {
->  #define TYPE_UFS "ufs"
->  #define UFS(obj) OBJECT_CHECK(UfsHc, (obj), TYPE_UFS)
-> =20
-> +#define TYPE_UFS_LU "ufs-lu"
-> +#define UFSLU(obj) OBJECT_CHECK(UfsLu, (obj), TYPE_UFS_LU)
-> +
-> +#define TYPE_UFS_WLU "ufs-wlu"
-> +#define UFSWLU(obj) OBJECT_CHECK(UfsWLu, (obj), TYPE_UFS_WLU)
-> +
->  typedef enum UfsQueryFlagPerm {
->      UFS_QUERY_FLAG_NONE =3D 0x0,
->      UFS_QUERY_FLAG_READ =3D 0x1,
-> @@ -84,4 +120,11 @@ typedef enum UfsQueryAttrPerm {
->      UFS_QUERY_ATTR_WRITE =3D 0x2,
->  } UfsQueryAttrPerm;
-> =20
-> +static inline bool is_wlun(uint8_t lun)
-> +{
-> +    return (lun =3D=3D UFS_UPIU_REPORT_LUNS_WLUN ||
-> +            lun =3D=3D UFS_UPIU_UFS_DEVICE_WLUN || lun =3D=3D UFS_UPIU_B=
-OOT_WLUN ||
-> +            lun =3D=3D UFS_UPIU_RPMB_WLUN);
-> +}
-> +
->  #endif /* HW_UFS_UFS_H */
-> diff --git a/include/scsi/constants.h b/include/scsi/constants.h
-> index 6a8bad556a..9b98451912 100644
-> --- a/include/scsi/constants.h
-> +++ b/include/scsi/constants.h
-> @@ -231,6 +231,7 @@
->  #define MODE_PAGE_FLEXIBLE_DISK_GEOMETRY      0x05
->  #define MODE_PAGE_CACHING                     0x08
->  #define MODE_PAGE_AUDIO_CTL                   0x0e
-> +#define MODE_PAGE_CONTROL                     0x0a
->  #define MODE_PAGE_POWER                       0x1a
->  #define MODE_PAGE_FAULT_FAIL                  0x1c
->  #define MODE_PAGE_TO_PROTECT                  0x1d
-> --=20
-> 2.34.1
->=20
+>> +        return false;
+>> +    }
+>> +
+>> +    if (u->params.nutmrs > UFS_MAX_NUTMRS) {
+>> +        error_setg(errp, "nutmrs must be less than %d", UFS_MAX_NUTMRS);
+>
+>Same here.
+>
 
---FW8QP7VyUvLBJn7s
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks, I'll fix it.
 
------BEGIN PGP SIGNATURE-----
+>> +        return false;
+>> +    }
+>> +
+>> +    return true;
+>> +}
+>> +
+>> +static void ufs_init_pci(UfsHc *u, PCIDevice *pci_dev)
+>> +{
+>> +    uint8_t *pci_conf = pci_dev->config;
+>> +
+>> +    pci_conf[PCI_INTERRUPT_PIN] = 1;
+>> +    pci_config_set_prog_interface(pci_conf, 0x1);
+>> +
+>> +    pci_config_set_vendor_id(pci_conf, PCI_VENDOR_ID_REDHAT);
+>> +    pci_config_set_device_id(pci_conf, PCI_DEVICE_ID_REDHAT_UFS);
+>> +
+>> +    pci_config_set_class(pci_conf, PCI_CLASS_STORAGE_UFS);
+>> +
+>> +    memory_region_init_io(&u->iomem, OBJECT(u), &ufs_mmio_ops, u, "ufs",
+>> +                          u->reg_size);
+>> +    pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &u->iomem);
+>> +    u->irq = pci_allocate_irq(pci_dev);
+>> +}
+>> +
+>> +static void ufs_init_hc(UfsHc *u)
+>> +{
+>> +    uint32_t cap = 0;
+>> +
+>> +    u->reg_size = pow2ceil(sizeof(UfsReg));
+>> +
+>> +    memset(&u->reg, 0, sizeof(u->reg));
+>> +    cap = FIELD_DP32(cap, CAP, NUTRS, (u->params.nutrs - 1));
+>> +    cap = FIELD_DP32(cap, CAP, RTT, 2);
+>> +    cap = FIELD_DP32(cap, CAP, NUTMRS, (u->params.nutmrs - 1));
+>> +    cap = FIELD_DP32(cap, CAP, AUTOH8, 0);
+>> +    cap = FIELD_DP32(cap, CAP, 64AS, 1);
+>> +    cap = FIELD_DP32(cap, CAP, OODDS, 0);
+>> +    cap = FIELD_DP32(cap, CAP, UICDMETMS, 0);
+>> +    cap = FIELD_DP32(cap, CAP, CS, 0);
+>> +    stl_le_p(&u->reg.cap, cap);
+>> +    stl_le_p(&u->reg.ver, UFS_SPEC_VER);
+>> +}
+>> +
+>> +static void ufs_realize(PCIDevice *pci_dev, Error **errp)
+>> +{
+>> +    UfsHc *u = UFS(pci_dev);
+>> +
+>> +    if (!ufs_check_constraints(u, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    ufs_init_hc(u);
+>> +    ufs_init_pci(u, pci_dev);
+>> +}
+>> +
+>> +static Property ufs_props[] = {
+>> +    DEFINE_PROP_STRING("serial", UfsHc, params.serial),
+>> +    DEFINE_PROP_UINT8("nutrs", UfsHc, params.nutrs, 32),
+>> +    DEFINE_PROP_UINT8("nutmrs", UfsHc, params.nutmrs, 8),
+>> +    DEFINE_PROP_END_OF_LIST(),
+>> +};
+>> +
+>> +static const VMStateDescription ufs_vmstate = {
+>> +    .name = "ufs",
+>> +    .unmigratable = 1,
+>> +};
+>> +
+>> +static void ufs_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(oc);
+>> +    PCIDeviceClass *pc = PCI_DEVICE_CLASS(oc);
+>> +
+>> +    pc->realize = ufs_realize;
+>> +    pc->class_id = PCI_CLASS_STORAGE_UFS;
+>
+>Why does ufs_init_pci() also call pci_config_set_class(pci_conf,
+>PCI_CLASS_STORAGE_UFS)? The following values can be removed from
+>ufs_init_pci() and initialized here instead:
+>
+>  pc->vendor_id = PCI_VENDOR_ID_REDHAT;
+>  pc->device_id = PCI_DEVICE_ID_REDHAT_UFS;
+>  pc->class_id = PCI_CLASS_STORAGE_UFS;
+>
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSQEH0ACgkQnKSrs4Gr
-c8jeTgf+JP7H4/n8ePtqren7MesGl7jqhMtmAkvSKh9Q7fC8IjPKvKK5N4nwWtTy
-Hmj9CFkm+WrH0je3fwAL0ul3NM+83rVdK9JBYTMg7GIiph7DKlGuaocNl9VFLPXz
-9fu22ZxcwnMi1TuEOhO03bMwZEPWpTOwOMcUs4Z/2eqmw8gDm73qa9JalrQbHSXo
-os4yFY47ttchlkMp3uOxTPdxytieSRntKg8IeCZed25FT8Ri/UrPntcurj62OVoW
-Z6lo3KQUgXzv13vkuOLXAkaoi274yqMWxQ0KT20vJFmHupoeiCpEoOc1a/k2xvEO
-A9RqK+cgBaVEQfN/wKfWeti1cbNxzA==
-=tJtf
------END PGP SIGNATURE-----
+It was my mistake.
+I'll fix it. Thanks!
 
---FW8QP7VyUvLBJn7s--
+>> +
+>> +    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
+>> +    dc->desc = "Universal Flash Storage";
+>> +    device_class_set_props(dc, ufs_props);
+>> +    dc->vmsd = &ufs_vmstate;
+>> +}
+>> +
+>> +static const TypeInfo ufs_info = {
+>> +    .name = TYPE_UFS,
+>> +    .parent = TYPE_PCI_DEVICE,
+>> +    .class_init = ufs_class_init,
+>> +    .instance_size = sizeof(UfsHc),
+>> +    .interfaces = (InterfaceInfo[]){ { INTERFACE_PCIE_DEVICE }, {} },
+>> +};
+>> +
+>> +static void ufs_register_types(void)
+>> +{
+>> +    type_register_static(&ufs_info);
+>> +}
+>> +
+>> +type_init(ufs_register_types)
+>> diff --git a/hw/ufs/ufs.h b/hw/ufs/ufs.h
+>> new file mode 100644
+>> index 0000000000..3c28f4e62d
+>> --- /dev/null
+>> +++ b/hw/ufs/ufs.h
+>> @@ -0,0 +1,42 @@
+>> +/*
+>> + * QEMU UFS
+>> + *
+>> + * Copyright (c) 2023 Samsung Electronics Co., Ltd. All rights reserved.
+>> + *
+>> + * Written by Jeuk Kim <jeuk20.kim@samsung.com>
+>> + *
+>> + * This code is licensed under the GNU GPL v2 or later.
+>> + */
+>> +
+>> +#ifndef HW_UFS_UFS_H
+>> +#define HW_UFS_UFS_H
+>> +
+>> +#include "hw/pci/pci_device.h"
+>> +#include "hw/scsi/scsi.h"
+>> +#include "block/ufs.h"
+>> +
+>> +#define UFS_MAX_LUS 32
+>> +#define UFS_LOGICAL_BLK_SIZE 4096
+>> +
+>> +typedef struct UfsParams {
+>> +    char *serial;
+>> +    uint8_t nutrs; /* Number of UTP Transfer Request Slots */
+>> +    uint8_t nutmrs; /* Number of UTP Task Management Request Slots */
+>> +} UfsParams;
+>> +
+>> +typedef struct UfsHc {
+>> +    PCIDevice parent_obj;
+>> +    MemoryRegion iomem;
+>> +    UfsReg reg;
+>> +    UfsParams params;
+>> +    uint32_t reg_size;
+>> +
+>> +    qemu_irq irq;
+>> +    QEMUBH *doorbell_bh;
+>> +    QEMUBH *complete_bh;
+>> +} UfsHc;
+>> +
+>> +#define TYPE_UFS "ufs"
+>> +#define UFS(obj) OBJECT_CHECK(UfsHc, (obj), TYPE_UFS)
+>> +
+>> +#endif /* HW_UFS_UFS_H */
+>> diff --git a/include/block/ufs.h b/include/block/ufs.h
+>> new file mode 100644
+>> index 0000000000..0e4c0e5d93
+>> --- /dev/null
+>> +++ b/include/block/ufs.h
+>> @@ -0,0 +1,1048 @@
+>> +#ifndef BLOCK_UFS_H
+>> +#define BLOCK_UFS_H
+>> +
+>> +#include "hw/registerfields.h"
+>> +
+>> +typedef struct QEMU_PACKED UfsReg {
+>> +    uint32_t cap;
+>> +    uint32_t rsvd0;
+>> +    uint32_t ver;
+>> +    uint32_t rsvd1;
+>> +    uint32_t hcpid;
+>> +    uint32_t hcmid;
+>> +    uint32_t ahit;
+>> +    uint32_t rsvd2;
+>> +    uint32_t is;
+>> +    uint32_t ie;
+>> +    uint32_t rsvd3[2];
+>> +    uint32_t hcs;
+>> +    uint32_t hce;
+>> +    uint32_t uecpa;
+>> +    uint32_t uecdl;
+>> +    uint32_t uecn;
+>> +    uint32_t uect;
+>> +    uint32_t uecdme;
+>> +    uint32_t utriacr;
+>> +    uint32_t utrlba;
+>> +    uint32_t utrlbau;
+>> +    uint32_t utrldbr;
+>> +    uint32_t utrlclr;
+>> +    uint32_t utrlrsr;
+>> +    uint32_t utrlcnr;
+>> +    uint32_t rsvd4[2];
+>> +    uint32_t utmrlba;
+>> +    uint32_t utmrlbau;
+>> +    uint32_t utmrldbr;
+>> +    uint32_t utmrlclr;
+>> +    uint32_t utmrlrsr;
+>> +    uint32_t rsvd5[3];
+>> +    uint32_t uiccmd;
+>> +    uint32_t ucmdarg1;
+>> +    uint32_t ucmdarg2;
+>> +    uint32_t ucmdarg3;
+>> +    uint32_t rsvd6[4];
+>> +    uint32_t rsvd7[4];
+>> +    uint32_t rsvd8[16];
+>> +    uint32_t ccap;
+>> +} UfsReg;
+>> +
+>> +REG32(CAP, offsetof(UfsReg, cap))
+>> +    FIELD(CAP, NUTRS, 0, 5)
+>> +    FIELD(CAP, RTT, 8, 8)
+>> +    FIELD(CAP, NUTMRS, 16, 3)
+>> +    FIELD(CAP, AUTOH8, 23, 1)
+>> +    FIELD(CAP, 64AS, 24, 1)
+>> +    FIELD(CAP, OODDS, 25, 1)
+>> +    FIELD(CAP, UICDMETMS, 26, 1)
+>> +    FIELD(CAP, CS, 28, 1)
+>> +REG32(VER, offsetof(UfsReg, ver))
+>> +REG32(HCPID, offsetof(UfsReg, hcpid))
+>> +REG32(HCMID, offsetof(UfsReg, hcmid))
+>> +REG32(AHIT, offsetof(UfsReg, ahit))
+>> +REG32(IS, offsetof(UfsReg, is))
+>> +    FIELD(IS, UTRCS, 0, 1)
+>> +    FIELD(IS, UDEPRI, 1, 1)
+>> +    FIELD(IS, UE, 2, 1)
+>> +    FIELD(IS, UTMS, 3, 1)
+>> +    FIELD(IS, UPMS, 4, 1)
+>> +    FIELD(IS, UHXS, 5, 1)
+>> +    FIELD(IS, UHES, 6, 1)
+>> +    FIELD(IS, ULLS, 7, 1)
+>> +    FIELD(IS, ULSS, 8, 1)
+>> +    FIELD(IS, UTMRCS, 9, 1)
+>> +    FIELD(IS, UCCS, 10, 1)
+>> +    FIELD(IS, DFES, 11, 1)
+>> +    FIELD(IS, UTPES, 12, 1)
+>> +    FIELD(IS, HCFES, 16, 1)
+>> +    FIELD(IS, SBFES, 17, 1)
+>> +    FIELD(IS, CEFES, 18, 1)
+>> +REG32(IE, offsetof(UfsReg, ie))
+>> +REG32(HCS, offsetof(UfsReg, hcs))
+>> +    FIELD(HCS, DP, 0, 1)
+>> +    FIELD(HCS, UTRLRDY, 1, 1)
+>> +    FIELD(HCS, UTMRLRDY, 2, 1)
+>> +    FIELD(HCS, UCRDY, 3, 1)
+>> +    FIELD(HCS, UPMCRS, 8, 3)
+>> +REG32(HCE, offsetof(UfsReg, hce))
+>> +    FIELD(HCE, HCE, 0, 1)
+>> +    FIELD(HCE, CGE, 1, 1)
+>> +REG32(UECPA, offsetof(UfsReg, uecpa))
+>> +REG32(UECDL, offsetof(UfsReg, uecdl))
+>> +REG32(UECN, offsetof(UfsReg, uecn))
+>> +REG32(UECT, offsetof(UfsReg, uect))
+>> +REG32(UECDME, offsetof(UfsReg, uecdme))
+>> +REG32(UTRIACR, offsetof(UfsReg, utriacr))
+>> +REG32(UTRLBA, offsetof(UfsReg, utrlba))
+>> +    FIELD(UTRLBA, UTRLBA, 9, 22)
+>> +REG32(UTRLBAU, offsetof(UfsReg, utrlbau))
+>> +REG32(UTRLDBR, offsetof(UfsReg, utrldbr))
+>> +REG32(UTRLCLR, offsetof(UfsReg, utrlclr))
+>> +REG32(UTRLRSR, offsetof(UfsReg, utrlrsr))
+>> +REG32(UTRLCNR, offsetof(UfsReg, utrlcnr))
+>> +REG32(UTMRLBA, offsetof(UfsReg, utmrlba))
+>> +    FIELD(UTMRLBA, UTMRLBA, 9, 22)
+>> +REG32(UTMRLBAU, offsetof(UfsReg, utmrlbau))
+>> +REG32(UTMRLDBR, offsetof(UfsReg, utmrldbr))
+>> +REG32(UTMRLCLR, offsetof(UfsReg, utmrlclr))
+>> +REG32(UTMRLRSR, offsetof(UfsReg, utmrlrsr))
+>> +REG32(UICCMD, offsetof(UfsReg, uiccmd))
+>> +REG32(UCMDARG1, offsetof(UfsReg, ucmdarg1))
+>> +REG32(UCMDARG2, offsetof(UfsReg, ucmdarg2))
+>> +REG32(UCMDARG3, offsetof(UfsReg, ucmdarg3))
+>> +REG32(CCAP, offsetof(UfsReg, ccap))
+>> +
+>> +#define UFS_INTR_MASK                                    \
+>> +    ((1 << R_IS_CEFES_SHIFT) | (1 << R_IS_SBFES_SHIFT) | \
+>> +     (1 << R_IS_HCFES_SHIFT) | (1 << R_IS_UTPES_SHIFT) | \
+>> +     (1 << R_IS_DFES_SHIFT) | (1 << R_IS_UCCS_SHIFT) |   \
+>> +     (1 << R_IS_UTMRCS_SHIFT) | (1 << R_IS_ULSS_SHIFT) | \
+>> +     (1 << R_IS_ULLS_SHIFT) | (1 << R_IS_UHES_SHIFT) |   \
+>> +     (1 << R_IS_UHXS_SHIFT) | (1 << R_IS_UPMS_SHIFT) |   \
+>> +     (1 << R_IS_UTMS_SHIFT) | (1 << R_IS_UE_SHIFT) |     \
+>> +     (1 << R_IS_UDEPRI_SHIFT) | (1 << R_IS_UTRCS_SHIFT))
+>> +
+>> +#define UFS_UPIU_HEADER_TRANSACTION_TYPE_SHIFT 24
+>> +#define UFS_UPIU_HEADER_TRANSACTION_TYPE_MASK 0xff
+>> +#define UFS_UPIU_HEADER_TRANSACTION_TYPE(dword0)                       \
+>> +    ((be32_to_cpu(dword0) >> UFS_UPIU_HEADER_TRANSACTION_TYPE_SHIFT) & \
+>> +     UFS_UPIU_HEADER_TRANSACTION_TYPE_MASK)
+>> +
+>> +#define UFS_UPIU_HEADER_QUERY_FUNC_SHIFT 16
+>> +#define UFS_UPIU_HEADER_QUERY_FUNC_MASK 0xff
+>> +#define UFS_UPIU_HEADER_QUERY_FUNC(dword1)                       \
+>> +    ((be32_to_cpu(dword1) >> UFS_UPIU_HEADER_QUERY_FUNC_SHIFT) & \
+>> +     UFS_UPIU_HEADER_QUERY_FUNC_MASK)
+>> +
+>> +#define UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_SHIFT 0
+>> +#define UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_MASK 0xffff
+>> +#define UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH(dword2)                       \
+>> +    ((be32_to_cpu(dword2) >> UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_SHIFT) & \
+>> +     UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_MASK)
+>> +
+>> +typedef struct QEMU_PACKED DeviceDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint8_t device;
+>> +    uint8_t device_class;
+>> +    uint8_t device_sub_class;
+>> +    uint8_t protocol;
+>> +    uint8_t number_lu;
+>> +    uint8_t number_wlu;
+>> +    uint8_t boot_enable;
+>> +    uint8_t descr_access_en;
+>> +    uint8_t init_power_mode;
+>> +    uint8_t high_priority_lun;
+>> +    uint8_t secure_removal_type;
+>> +    uint8_t security_lu;
+>> +    uint8_t background_ops_term_lat;
+>> +    uint8_t init_active_icc_level;
+>> +    uint16_t spec_version;
+>> +    uint16_t manufacture_date;
+>> +    uint8_t manufacturer_name;
+>> +    uint8_t product_name;
+>> +    uint8_t serial_number;
+>> +    uint8_t oem_id;
+>> +    uint16_t manufacturer_id;
+>> +    uint8_t ud_0_base_offset;
+>> +    uint8_t ud_config_p_length;
+>> +    uint8_t device_rtt_cap;
+>> +    uint16_t periodic_rtc_update;
+>> +    uint8_t ufs_features_support;
+>> +    uint8_t ffu_timeout;
+>> +    uint8_t queue_depth;
+>> +    uint16_t device_version;
+>> +    uint8_t num_secure_wp_area;
+>> +    uint32_t psa_max_data_size;
+>> +    uint8_t psa_state_timeout;
+>> +    uint8_t product_revision_level;
+>> +    uint8_t reserved[36];
+>> +    uint32_t extended_ufs_features_support;
+>> +    uint8_t write_booster_buffer_preserve_user_space_en;
+>> +    uint8_t write_booster_buffer_type;
+>> +    uint32_t num_shared_write_booster_buffer_alloc_units;
+>> +} DeviceDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED GeometryDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint8_t media_technology;
+>> +    uint8_t reserved;
+>> +    uint64_t total_raw_device_capacity;
+>> +    uint8_t max_number_lu;
+>> +    uint32_t segment_size;
+>> +    uint8_t allocation_unit_size;
+>> +    uint8_t min_addr_block_size;
+>> +    uint8_t optimal_read_block_size;
+>> +    uint8_t optimal_write_block_size;
+>> +    uint8_t max_in_buffer_size;
+>> +    uint8_t max_out_buffer_size;
+>> +    uint8_t rpmb_read_write_size;
+>> +    uint8_t dynamic_capacity_resource_policy;
+>> +    uint8_t data_ordering;
+>> +    uint8_t max_context_id_number;
+>> +    uint8_t sys_data_tag_unit_size;
+>> +    uint8_t sys_data_tag_res_size;
+>> +    uint8_t supported_sec_r_types;
+>> +    uint16_t supported_memory_types;
+>> +    uint32_t system_code_max_n_alloc_u;
+>> +    uint16_t system_code_cap_adj_fac;
+>> +    uint32_t non_persist_max_n_alloc_u;
+>> +    uint16_t non_persist_cap_adj_fac;
+>> +    uint32_t enhanced_1_max_n_alloc_u;
+>> +    uint16_t enhanced_1_cap_adj_fac;
+>> +    uint32_t enhanced_2_max_n_alloc_u;
+>> +    uint16_t enhanced_2_cap_adj_fac;
+>> +    uint32_t enhanced_3_max_n_alloc_u;
+>> +    uint16_t enhanced_3_cap_adj_fac;
+>> +    uint32_t enhanced_4_max_n_alloc_u;
+>> +    uint16_t enhanced_4_cap_adj_fac;
+>> +    uint32_t optimal_logical_block_size;
+>> +    uint8_t reserved2[7];
+>> +    uint32_t write_booster_buffer_max_n_alloc_units;
+>> +    uint8_t device_max_write_booster_l_us;
+>> +    uint8_t write_booster_buffer_cap_adj_fac;
+>> +    uint8_t supported_write_booster_buffer_user_space_reduction_types;
+>> +    uint8_t supported_write_booster_buffer_types;
+>> +} GeometryDescriptor;
+>> +
+>> +#define UFS_GEOMETRY_CAPACITY_SHIFT 9
+>> +
+>> +typedef struct QEMU_PACKED UnitDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint8_t unit_index;
+>> +    uint8_t lu_enable;
+>> +    uint8_t boot_lun_id;
+>> +    uint8_t lu_write_protect;
+>> +    uint8_t lu_queue_depth;
+>> +    uint8_t psa_sensitive;
+>> +    uint8_t memory_type;
+>> +    uint8_t data_reliability;
+>> +    uint8_t logical_block_size;
+>> +    uint64_t logical_block_count;
+>> +    uint32_t erase_block_size;
+>> +    uint8_t provisioning_type;
+>> +    uint64_t phy_mem_resource_count;
+>> +    uint16_t context_capabilities;
+>> +    uint8_t large_unit_granularity_m1;
+>> +    uint8_t reserved[6];
+>> +    uint32_t lu_num_write_booster_buffer_alloc_units;
+>> +} UnitDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED RpmbUnitDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint8_t unit_index;
+>> +    uint8_t lu_enable;
+>> +    uint8_t boot_lun_id;
+>> +    uint8_t lu_write_protect;
+>> +    uint8_t lu_queue_depth;
+>> +    uint8_t psa_sensitive;
+>> +    uint8_t memory_type;
+>> +    uint8_t reserved;
+>> +    uint8_t logical_block_size;
+>> +    uint64_t logical_block_count;
+>> +    uint32_t erase_block_size;
+>> +    uint8_t provisioning_type;
+>> +    uint64_t phy_mem_resource_count;
+>> +    uint8_t reserved2[3];
+>> +} RpmbUnitDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED PowerParametersDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint16_t active_icc_levels_vcc[16];
+>> +    uint16_t active_icc_levels_vccq[16];
+>> +    uint16_t active_icc_levels_vccq_2[16];
+>> +} PowerParametersDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED InterconnectDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint16_t bcd_unipro_version;
+>> +    uint16_t bcd_mphy_version;
+>> +} InterconnectDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED StringDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint16_t UC[126];
+>> +} StringDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED DeviceHealthDescriptor {
+>> +    uint8_t length;
+>> +    uint8_t descriptor_idn;
+>> +    uint8_t pre_eol_info;
+>> +    uint8_t device_life_time_est_a;
+>> +    uint8_t device_life_time_est_b;
+>> +    uint8_t vendor_prop_info[32];
+>> +    uint32_t refresh_total_count;
+>> +    uint32_t refresh_progress;
+>> +} DeviceHealthDescriptor;
+>> +
+>> +typedef struct QEMU_PACKED Flags {
+>> +    uint8_t reserved;
+>> +    uint8_t device_init;
+>> +    uint8_t permanent_wp_en;
+>> +    uint8_t power_on_wp_en;
+>> +    uint8_t background_ops_en;
+>> +    uint8_t device_life_span_mode_en;
+>> +    uint8_t purge_enable;
+>> +    uint8_t refresh_enable;
+>> +    uint8_t phy_resource_removal;
+>> +    uint8_t busy_rtc;
+>> +    uint8_t reserved2;
+>> +    uint8_t permanently_disable_fw_update;
+>> +    uint8_t reserved3[2];
+>> +    uint8_t wb_en;
+>> +    uint8_t wb_buffer_flush_en;
+>> +    uint8_t wb_buffer_flush_during_hibernate;
+>> +    uint8_t reserved4[2];
+>> +} Flags;
+>> +
+>> +typedef struct Attributes {
+>> +    uint8_t boot_lun_en;
+>> +    uint8_t reserved;
+>> +    uint8_t current_power_mode;
+>> +    uint8_t active_icc_level;
+>> +    uint8_t out_of_order_data_en;
+>> +    uint8_t background_op_status;
+>> +    uint8_t purge_status;
+>> +    uint8_t max_data_in_size;
+>> +    uint8_t max_data_out_size;
+>> +    uint32_t dyn_cap_needed;
+>> +    uint8_t ref_clk_freq;
+>> +    uint8_t config_descr_lock;
+>> +    uint8_t max_num_of_rtt;
+>> +    uint16_t exception_event_control;
+>> +    uint16_t exception_event_status;
+>> +    uint32_t seconds_passed;
+>> +    uint16_t context_conf;
+>> +    uint8_t device_ffu_status;
+>> +    uint8_t psa_state;
+>> +    uint32_t psa_data_size;
+>> +    uint8_t ref_clk_gating_wait_time;
+>> +    uint8_t device_case_rough_temperaure;
+>> +    uint8_t device_too_high_temp_boundary;
+>> +    uint8_t device_too_low_temp_boundary;
+>> +    uint8_t throttling_status;
+>> +    uint8_t wb_buffer_flush_status;
+>> +    uint8_t available_wb_buffer_size;
+>> +    uint8_t wb_buffer_life_time_est;
+>> +    uint32_t current_wb_buffer_size;
+>> +    uint8_t refresh_status;
+>> +    uint8_t refresh_freq;
+>> +    uint8_t refresh_unit;
+>> +    uint8_t refresh_method;
+>> +} Attributes;
+>> +
+>> +#define UFS_TRANSACTION_SPECIFIC_FIELD_SIZE 20
+>> +#define UFS_MAX_QUERY_DATA_SIZE 256
+>> +
+>> +/* Command response result code */
+>> +typedef enum CommandRespCode {
+>> +    COMMAND_RESULT_SUCESS = 0x00,
+>> +    COMMAND_RESULT_FAIL = 0x01,
+>> +} CommandRespCode;
+>> +
+>> +enum {
+>> +    UFS_UPIU_FLAG_UNDERFLOW = 0x20,
+>> +    UFS_UPIU_FLAG_OVERFLOW = 0x40,
+>> +};
+>> +
+>> +typedef struct QEMU_PACKED UtpUpiuHeader {
+>> +    uint8_t trans_type;
+>> +    uint8_t flags;
+>> +    uint8_t lun;
+>> +    uint8_t task_tag;
+>> +    uint8_t iid_cmd_set_type;
+>> +    uint8_t query_func;
+>> +    uint8_t response;
+>> +    uint8_t scsi_status;
+>> +    uint8_t ehs_len;
+>> +    uint8_t device_inf;
+>> +    uint16_t data_segment_length;
+>> +} UtpUpiuHeader;
+>> +
+>> +/*
+>> + * The code below is copied from the linux kernel
+>> + * ("include/uapi/scsi/scsi_bsg_ufs.h") and modified to fit the qemu style.
+>> + */
+>> +
+>> +typedef struct QEMU_PACKED UtpUpiuQuery {
+>> +    uint8_t opcode;
+>> +    uint8_t idn;
+>> +    uint8_t index;
+>> +    uint8_t selector;
+>> +    uint16_t reserved_osf;
+>> +    uint16_t length;
+>> +    uint32_t value;
+>> +    uint32_t reserved[2];
+>> +    /* EHS length should be 0. We don't have to worry about EHS area. */
+>> +    uint8_t data[UFS_MAX_QUERY_DATA_SIZE];
+>> +} UtpUpiuQuery;
+>> +
+>> +#define UFS_CDB_SIZE 16
+>> +
+>> +/*
+>> + * struct UtpUpiuCmd - Command UPIU structure
+>> + * @data_transfer_len: Data Transfer Length DW-3
+>> + * @cdb: Command Descriptor Block CDB DW-4 to DW-7
+>> + */
+>> +typedef struct QEMU_PACKED UtpUpiuCmd {
+>> +    uint32_t exp_data_transfer_len;
+>> +    __uint8_t cdb[UFS_CDB_SIZE];
+>
+>Why is this __uint8_t instead of uint8_t? Was the code copied from
+>another codebase and is the license GPLv2-or-later (this header file
+>doesn't contain a license identifier)?
+>
 
+It is taken from linux code that has a GPLv2 license.
+I'll modify __uint8_t to uint8_t and add the license statement with SPDX identifiers.
+
+>> +} UtpUpiuCmd;
+>> +
+>> +/*
+>> + * struct UtpUpiuReq - general upiu request structure
+>> + * @header:UPIU header structure DW-0 to DW-2
+>> + * @sc: fields structure for scsi command DW-3 to DW-7
+>> + * @qr: fields structure for query request DW-3 to DW-7
+>> + * @uc: use utp_upiu_query to host the 4 dwords of uic command
+>> + */
+>> +typedef struct QEMU_PACKED UtpUpiuReq {
+>> +    UtpUpiuHeader header;
+>> +    union {
+>> +        UtpUpiuCmd sc;
+>> +        UtpUpiuQuery qr;
+>> +    };
+>> +} UtpUpiuReq;
+>> +
+>> +/*
+>> + * The code below is copied from the linux kernel ("include/ufs/ufshci.h") and
+>> + * modified to fit the qemu style.
+>> + */
+>> +
+>> +enum {
+>> +    PWR_OK = 0x0,
+>> +    PWR_LOCAL = 0x01,
+>> +    PWR_REMOTE = 0x02,
+>> +    PWR_BUSY = 0x03,
+>> +    PWR_ERROR_CAP = 0x04,
+>> +    PWR_FATAL_ERROR = 0x05,
+>> +};
+>> +
+>> +/* UIC Commands */
+>> +enum uic_cmd_dme {
+>> +    UIC_CMD_DME_GET = 0x01,
+>> +    UIC_CMD_DME_SET = 0x02,
+>> +    UIC_CMD_DME_PEER_GET = 0x03,
+>> +    UIC_CMD_DME_PEER_SET = 0x04,
+>> +    UIC_CMD_DME_POWERON = 0x10,
+>> +    UIC_CMD_DME_POWEROFF = 0x11,
+>> +    UIC_CMD_DME_ENABLE = 0x12,
+>> +    UIC_CMD_DME_RESET = 0x14,
+>> +    UIC_CMD_DME_END_PT_RST = 0x15,
+>> +    UIC_CMD_DME_LINK_STARTUP = 0x16,
+>> +    UIC_CMD_DME_HIBER_ENTER = 0x17,
+>> +    UIC_CMD_DME_HIBER_EXIT = 0x18,
+>> +    UIC_CMD_DME_TEST_MODE = 0x1A,
+>> +};
+>> +
+>> +/* UIC Config result code / Generic error code */
+>> +enum {
+>> +    UIC_CMD_RESULT_SUCCESS = 0x00,
+>> +    UIC_CMD_RESULT_INVALID_ATTR = 0x01,
+>> +    UIC_CMD_RESULT_FAILURE = 0x01,
+>> +    UIC_CMD_RESULT_INVALID_ATTR_VALUE = 0x02,
+>> +    UIC_CMD_RESULT_READ_ONLY_ATTR = 0x03,
+>> +    UIC_CMD_RESULT_WRITE_ONLY_ATTR = 0x04,
+>> +    UIC_CMD_RESULT_BAD_INDEX = 0x05,
+>> +    UIC_CMD_RESULT_LOCKED_ATTR = 0x06,
+>> +    UIC_CMD_RESULT_BAD_TEST_FEATURE_INDEX = 0x07,
+>> +    UIC_CMD_RESULT_PEER_COMM_FAILURE = 0x08,
+>> +    UIC_CMD_RESULT_BUSY = 0x09,
+>> +    UIC_CMD_RESULT_DME_FAILURE = 0x0A,
+>> +};
+>> +
+>> +#define MASK_UIC_COMMAND_RESULT 0xFF
+>> +
+>> +/*
+>> + * Request Descriptor Definitions
+>> + */
+>> +
+>> +/* Transfer request command type */
+>> +enum {
+>> +    UTP_CMD_TYPE_SCSI = 0x0,
+>> +    UTP_CMD_TYPE_UFS = 0x1,
+>> +    UTP_CMD_TYPE_DEV_MANAGE = 0x2,
+>> +};
+>> +
+>> +/* To accommodate UFS2.0 required Command type */
+>> +enum {
+>> +    UTP_CMD_TYPE_UFS_STORAGE = 0x1,
+>> +};
+>> +
+>> +enum {
+>> +    UTP_SCSI_COMMAND = 0x00000000,
+>> +    UTP_NATIVE_UFS_COMMAND = 0x10000000,
+>> +    UTP_DEVICE_MANAGEMENT_FUNCTION = 0x20000000,
+>> +    UTP_REQ_DESC_INT_CMD = 0x01000000,
+>> +    UTP_REQ_DESC_CRYPTO_ENABLE_CMD = 0x00800000,
+>> +};
+>> +
+>> +/* UTP Transfer Request Data Direction (DD) */
+>> +enum {
+>> +    UTP_NO_DATA_TRANSFER = 0x00000000,
+>> +    UTP_HOST_TO_DEVICE = 0x02000000,
+>> +    UTP_DEVICE_TO_HOST = 0x04000000,
+>> +};
+>> +
+>> +/* Overall command status values */
+>> +enum UtpOcsCodes {
+>> +    OCS_SUCCESS = 0x0,
+>> +    OCS_INVALID_CMD_TABLE_ATTR = 0x1,
+>> +    OCS_INVALID_PRDT_ATTR = 0x2,
+>> +    OCS_MISMATCH_DATA_BUF_SIZE = 0x3,
+>> +    OCS_MISMATCH_RESP_UPIU_SIZE = 0x4,
+>> +    OCS_PEER_COMM_FAILURE = 0x5,
+>> +    OCS_ABORTED = 0x6,
+>> +    OCS_FATAL_ERROR = 0x7,
+>> +    OCS_DEVICE_FATAL_ERROR = 0x8,
+>> +    OCS_INVALID_CRYPTO_CONFIG = 0x9,
+>> +    OCS_GENERAL_CRYPTO_ERROR = 0xa,
+>> +    OCS_INVALID_COMMAND_STATUS = 0xf,
+>> +};
+>> +
+>> +enum {
+>> +    MASK_OCS = 0x0F,
+>> +};
+>> +
+>> +/*
+>> + * struct UfshcdSgEntry - UFSHCI PRD Entry
+>> + * @addr: Physical address; DW-0 and DW-1.
+>> + * @reserved: Reserved for future use DW-2
+>> + * @size: size of physical segment DW-3
+>> + */
+>> +typedef struct QEMU_PACKED UfshcdSgEntry {
+>> +    __le64 addr;
+>> +    __le32 reserved;
+>> +    __le32 size;
+>> +    /*
+>> +     * followed by variant-specific fields if
+>> +     * CONFIG_SCSI_UFS_VARIABLE_SG_ENTRY_SIZE has been defined.
+>> +     */
+>> +} UfshcdSgEntry;
+>> +
+>> +/*
+>> + * struct RequestDescHeader - Descriptor Header common to both UTRD and UTMRD
+>> + * @dword0: Descriptor Header DW0
+>> + * @dword1: Descriptor Header DW1
+>> + * @dword2: Descriptor Header DW2
+>> + * @dword3: Descriptor Header DW3
+>> + */
+>> +typedef struct QEMU_PACKED RequestDescHeader {
+>> +    __le32 dword_0;
+>> +    __le32 dword_1;
+>> +    __le32 dword_2;
+>> +    __le32 dword_3;
+>> +} RequestDescHeader;
+>
+>docs/devel/style.rst:Don't use Linux kernel internal types like u32, __u32 or __le32.
+>
+>Please use uint32_t.
+>
+
+Okay, I'll fix it.
+
+>> +
+>> +/*
+>> + * struct UtpTransferReqDesc - UTP Transfer Request Descriptor (UTRD)
+>> + * @header: UTRD header DW-0 to DW-3
+>> + * @command_desc_base_addr_lo: UCD base address low DW-4
+>> + * @command_desc_base_addr_hi: UCD base address high DW-5
+>> + * @response_upiu_length: response UPIU length DW-6
+>> + * @response_upiu_offset: response UPIU offset DW-6
+>> + * @prd_table_length: Physical region descriptor length DW-7
+>> + * @prd_table_offset: Physical region descriptor offset DW-7
+>> + */
+>> +typedef struct QEMU_PACKED UtpTransferReqDesc {
+>> +    /* DW 0-3 */
+>> +    RequestDescHeader header;
+>> +
+>> +    /* DW 4-5*/
+>> +    __le32 command_desc_base_addr_lo;
+>> +    __le32 command_desc_base_addr_hi;
+>> +
+>> +    /* DW 6 */
+>> +    __le16 response_upiu_length;
+>> +    __le16 response_upiu_offset;
+>> +
+>> +    /* DW 7 */
+>> +    __le16 prd_table_length;
+>> +    __le16 prd_table_offset;
+>> +} UtpTransferReqDesc;
+>> +
+>> +/*
+>> + * The code below is copied from the linux kernel ("include/ufs/ufs.h") and
+>> + * modified to fit the qemu style.
+>> + */
+>> +
+>> +#define GENERAL_UPIU_REQUEST_SIZE (sizeof(UtpUpiuReq))
+>> +#define QUERY_DESC_MAX_SIZE 255
+>> +#define QUERY_DESC_MIN_SIZE 2
+>> +#define QUERY_DESC_HDR_SIZE 2
+>> +#define QUERY_OSF_SIZE (GENERAL_UPIU_REQUEST_SIZE - (sizeof(UtpUpiuHeader)))
+>> +#define UFS_SENSE_SIZE 18
+>> +
+>> +#define UPIU_HEADER_DWORD(byte3, byte2, byte1, byte0) \
+>> +    cpu_to_be32((byte3 << 24) | (byte2 << 16) | (byte1 << 8) | (byte0))
+>> +/*
+>> + * UFS device may have standard LUs and LUN id could be from 0x00 to
+>> + * 0x7F. Standard LUs use "Peripheral Device Addressing Format".
+>> + * UFS device may also have the Well Known LUs (also referred as W-LU)
+>> + * which again could be from 0x00 to 0x7F. For W-LUs, device only use
+>> + * the "Extended Addressing Format" which means the W-LUNs would be
+>> + * from 0xc100 (SCSI_W_LUN_BASE) onwards.
+>> + * This means max. LUN number reported from UFS device could be 0xC17F.
+>> + */
+>> +#define UFS_UPIU_MAX_UNIT_NUM_ID 0x7F
+>> +#define UFS_UPIU_WLUN_ID (1 << 7)
+>> +
+>> +/* WriteBooster buffer is available only for the logical unit from 0 to 7 */
+>> +#define UFS_UPIU_MAX_WB_LUN_ID 8
+>> +
+>> +/*
+>> + * WriteBooster buffer lifetime has a limit setted by vendor.
+>> + * If it is over the limit, WriteBooster feature will be disabled.
+>> + */
+>> +#define UFS_WB_EXCEED_LIFETIME 0x0B
+>> +
+>> +/*
+>> + * In UFS Spec, the Extra Header Segment (EHS) starts from byte 32 in UPIU
+>> + * request/response packet
+>> + */
+>> +#define EHS_OFFSET_IN_RESPONSE 32
+>> +
+>> +/* Well known logical unit id in LUN field of UPIU */
+>> +enum {
+>> +    UFS_UPIU_REPORT_LUNS_WLUN = 0x81,
+>> +    UFS_UPIU_UFS_DEVICE_WLUN = 0xD0,
+>> +    UFS_UPIU_BOOT_WLUN = 0xB0,
+>> +    UFS_UPIU_RPMB_WLUN = 0xC4,
+>> +};
+>> +
+>> +/*
+>> + * UFS Protocol Information Unit related definitions
+>> + */
+>> +
+>> +/* Task management functions */
+>> +enum {
+>> +    UFS_ABORT_TASK = 0x01,
+>> +    UFS_ABORT_TASK_SET = 0x02,
+>> +    UFS_CLEAR_TASK_SET = 0x04,
+>> +    UFS_LOGICAL_RESET = 0x08,
+>> +    UFS_QUERY_TASK = 0x80,
+>> +    UFS_QUERY_TASK_SET = 0x81,
+>> +};
+>> +
+>> +/* UTP UPIU Transaction Codes Initiator to Target */
+>> +enum {
+>> +    UPIU_TRANSACTION_NOP_OUT = 0x00,
+>> +    UPIU_TRANSACTION_COMMAND = 0x01,
+>> +    UPIU_TRANSACTION_DATA_OUT = 0x02,
+>> +    UPIU_TRANSACTION_TASK_REQ = 0x04,
+>> +    UPIU_TRANSACTION_QUERY_REQ = 0x16,
+>> +};
+>> +
+>> +/* UTP UPIU Transaction Codes Target to Initiator */
+>> +enum {
+>> +    UPIU_TRANSACTION_NOP_IN = 0x20,
+>> +    UPIU_TRANSACTION_RESPONSE = 0x21,
+>> +    UPIU_TRANSACTION_DATA_IN = 0x22,
+>> +    UPIU_TRANSACTION_TASK_RSP = 0x24,
+>> +    UPIU_TRANSACTION_READY_XFER = 0x31,
+>> +    UPIU_TRANSACTION_QUERY_RSP = 0x36,
+>> +    UPIU_TRANSACTION_REJECT_UPIU = 0x3F,
+>> +};
+>> +
+>> +/* UPIU Read/Write flags */
+>> +enum {
+>> +    UPIU_CMD_FLAGS_NONE = 0x00,
+>> +    UPIU_CMD_FLAGS_WRITE = 0x20,
+>> +    UPIU_CMD_FLAGS_READ = 0x40,
+>> +};
+>> +
+>> +/* UPIU Task Attributes */
+>> +enum {
+>> +    UPIU_TASK_ATTR_SIMPLE = 0x00,
+>> +    UPIU_TASK_ATTR_ORDERED = 0x01,
+>> +    UPIU_TASK_ATTR_HEADQ = 0x02,
+>> +    UPIU_TASK_ATTR_ACA = 0x03,
+>> +};
+>> +
+>> +/* UPIU Query request function */
+>> +enum {
+>> +    UPIU_QUERY_FUNC_STANDARD_READ_REQUEST = 0x01,
+>> +    UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST = 0x81,
+>> +};
+>> +
+>> +/* Flag idn for Query Requests*/
+>> +enum flag_idn {
+>> +    QUERY_FLAG_IDN_FDEVICEINIT = 0x01,
+>> +    QUERY_FLAG_IDN_PERMANENT_WPE = 0x02,
+>> +    QUERY_FLAG_IDN_PWR_ON_WPE = 0x03,
+>> +    QUERY_FLAG_IDN_BKOPS_EN = 0x04,
+>> +    QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE = 0x05,
+>> +    QUERY_FLAG_IDN_PURGE_ENABLE = 0x06,
+>> +    QUERY_FLAG_IDN_REFRESH_ENABLE = 0x07,
+>> +    QUERY_FLAG_IDN_FPHYRESOURCEREMOVAL = 0x08,
+>> +    QUERY_FLAG_IDN_BUSY_RTC = 0x09,
+>> +    QUERY_FLAG_IDN_RESERVED3 = 0x0A,
+>> +    QUERY_FLAG_IDN_PERMANENTLY_DISABLE_FW_UPDATE = 0x0B,
+>> +    QUERY_FLAG_IDN_WB_EN = 0x0E,
+>> +    QUERY_FLAG_IDN_WB_BUFF_FLUSH_EN = 0x0F,
+>> +    QUERY_FLAG_IDN_WB_BUFF_FLUSH_DURING_HIBERN8 = 0x10,
+>> +    QUERY_FLAG_IDN_HPB_RESET = 0x11,
+>> +    QUERY_FLAG_IDN_HPB_EN = 0x12,
+>> +    QUERY_FLAG_IDN_COUNT,
+>> +};
+>> +
+>> +/* Attribute idn for Query requests */
+>> +enum attr_idn {
+>> +    QUERY_ATTR_IDN_BOOT_LU_EN = 0x00,
+>> +    QUERY_ATTR_IDN_MAX_HPB_SINGLE_CMD = 0x01,
+>> +    QUERY_ATTR_IDN_POWER_MODE = 0x02,
+>> +    QUERY_ATTR_IDN_ACTIVE_ICC_LVL = 0x03,
+>> +    QUERY_ATTR_IDN_OOO_DATA_EN = 0x04,
+>> +    QUERY_ATTR_IDN_BKOPS_STATUS = 0x05,
+>> +    QUERY_ATTR_IDN_PURGE_STATUS = 0x06,
+>> +    QUERY_ATTR_IDN_MAX_DATA_IN = 0x07,
+>> +    QUERY_ATTR_IDN_MAX_DATA_OUT = 0x08,
+>> +    QUERY_ATTR_IDN_DYN_CAP_NEEDED = 0x09,
+>> +    QUERY_ATTR_IDN_REF_CLK_FREQ = 0x0A,
+>> +    QUERY_ATTR_IDN_CONF_DESC_LOCK = 0x0B,
+>> +    QUERY_ATTR_IDN_MAX_NUM_OF_RTT = 0x0C,
+>> +    QUERY_ATTR_IDN_EE_CONTROL = 0x0D,
+>> +    QUERY_ATTR_IDN_EE_STATUS = 0x0E,
+>> +    QUERY_ATTR_IDN_SECONDS_PASSED = 0x0F,
+>> +    QUERY_ATTR_IDN_CNTX_CONF = 0x10,
+>> +    QUERY_ATTR_IDN_CORR_PRG_BLK_NUM = 0x11,
+>> +    QUERY_ATTR_IDN_RESERVED2 = 0x12,
+>> +    QUERY_ATTR_IDN_RESERVED3 = 0x13,
+>> +    QUERY_ATTR_IDN_FFU_STATUS = 0x14,
+>> +    QUERY_ATTR_IDN_PSA_STATE = 0x15,
+>> +    QUERY_ATTR_IDN_PSA_DATA_SIZE = 0x16,
+>> +    QUERY_ATTR_IDN_REF_CLK_GATING_WAIT_TIME = 0x17,
+>> +    QUERY_ATTR_IDN_CASE_ROUGH_TEMP = 0x18,
+>> +    QUERY_ATTR_IDN_HIGH_TEMP_BOUND = 0x19,
+>> +    QUERY_ATTR_IDN_LOW_TEMP_BOUND = 0x1A,
+>> +    QUERY_ATTR_IDN_THROTTLING_STATUS = 0x1B,
+>> +    QUERY_ATTR_IDN_WB_FLUSH_STATUS = 0x1C,
+>> +    QUERY_ATTR_IDN_AVAIL_WB_BUFF_SIZE = 0x1D,
+>> +    QUERY_ATTR_IDN_WB_BUFF_LIFE_TIME_EST = 0x1E,
+>> +    QUERY_ATTR_IDN_CURR_WB_BUFF_SIZE = 0x1F,
+>> +    QUERY_ATTR_IDN_REFRESH_STATUS = 0x2C,
+>> +    QUERY_ATTR_IDN_REFRESH_FREQ = 0x2D,
+>> +    QUERY_ATTR_IDN_REFRESH_UNIT = 0x2E,
+>> +    QUERY_ATTR_IDN_COUNT,
+>> +};
+>> +
+>> +/* Descriptor idn for Query requests */
+>> +enum desc_idn {
+>> +    QUERY_DESC_IDN_DEVICE = 0x0,
+>> +    QUERY_DESC_IDN_CONFIGURATION = 0x1,
+>> +    QUERY_DESC_IDN_UNIT = 0x2,
+>> +    QUERY_DESC_IDN_RFU_0 = 0x3,
+>> +    QUERY_DESC_IDN_INTERCONNECT = 0x4,
+>> +    QUERY_DESC_IDN_STRING = 0x5,
+>> +    QUERY_DESC_IDN_RFU_1 = 0x6,
+>> +    QUERY_DESC_IDN_GEOMETRY = 0x7,
+>> +    QUERY_DESC_IDN_POWER = 0x8,
+>> +    QUERY_DESC_IDN_HEALTH = 0x9,
+>> +    QUERY_DESC_IDN_MAX,
+>> +};
+>> +
+>> +enum desc_header_offset {
+>> +    QUERY_DESC_LENGTH_OFFSET = 0x00,
+>> +    QUERY_DESC_DESC_TYPE_OFFSET = 0x01,
+>> +};
+>> +
+>> +/* Unit descriptor parameters offsets in bytes*/
+>> +enum unit_desc_param {
+>> +    UNIT_DESC_PARAM_LEN = 0x0,
+>> +    UNIT_DESC_PARAM_TYPE = 0x1,
+>> +    UNIT_DESC_PARAM_UNIT_INDEX = 0x2,
+>> +    UNIT_DESC_PARAM_LU_ENABLE = 0x3,
+>> +    UNIT_DESC_PARAM_BOOT_LUN_ID = 0x4,
+>> +    UNIT_DESC_PARAM_LU_WR_PROTECT = 0x5,
+>> +    UNIT_DESC_PARAM_LU_Q_DEPTH = 0x6,
+>> +    UNIT_DESC_PARAM_PSA_SENSITIVE = 0x7,
+>> +    UNIT_DESC_PARAM_MEM_TYPE = 0x8,
+>> +    UNIT_DESC_PARAM_DATA_RELIABILITY = 0x9,
+>> +    UNIT_DESC_PARAM_LOGICAL_BLK_SIZE = 0xA,
+>> +    UNIT_DESC_PARAM_LOGICAL_BLK_COUNT = 0xB,
+>> +    UNIT_DESC_PARAM_ERASE_BLK_SIZE = 0x13,
+>> +    UNIT_DESC_PARAM_PROVISIONING_TYPE = 0x17,
+>> +    UNIT_DESC_PARAM_PHY_MEM_RSRC_CNT = 0x18,
+>> +    UNIT_DESC_PARAM_CTX_CAPABILITIES = 0x20,
+>> +    UNIT_DESC_PARAM_LARGE_UNIT_SIZE_M1 = 0x22,
+>> +    UNIT_DESC_PARAM_HPB_LU_MAX_ACTIVE_RGNS = 0x23,
+>> +    UNIT_DESC_PARAM_HPB_PIN_RGN_START_OFF = 0x25,
+>> +    UNIT_DESC_PARAM_HPB_NUM_PIN_RGNS = 0x27,
+>> +    UNIT_DESC_PARAM_WB_BUF_ALLOC_UNITS = 0x29,
+>> +};
+>> +
+>> +/* RPMB Unit descriptor parameters offsets in bytes*/
+>> +enum rpmb_unit_desc_param {
+>> +    RPMB_UNIT_DESC_PARAM_LEN = 0x0,
+>> +    RPMB_UNIT_DESC_PARAM_TYPE = 0x1,
+>> +    RPMB_UNIT_DESC_PARAM_UNIT_INDEX = 0x2,
+>> +    RPMB_UNIT_DESC_PARAM_LU_ENABLE = 0x3,
+>> +    RPMB_UNIT_DESC_PARAM_BOOT_LUN_ID = 0x4,
+>> +    RPMB_UNIT_DESC_PARAM_LU_WR_PROTECT = 0x5,
+>> +    RPMB_UNIT_DESC_PARAM_LU_Q_DEPTH = 0x6,
+>> +    RPMB_UNIT_DESC_PARAM_PSA_SENSITIVE = 0x7,
+>> +    RPMB_UNIT_DESC_PARAM_MEM_TYPE = 0x8,
+>> +    RPMB_UNIT_DESC_PARAM_REGION_EN = 0x9,
+>> +    RPMB_UNIT_DESC_PARAM_LOGICAL_BLK_SIZE = 0xA,
+>> +    RPMB_UNIT_DESC_PARAM_LOGICAL_BLK_COUNT = 0xB,
+>> +    RPMB_UNIT_DESC_PARAM_REGION0_SIZE = 0x13,
+>> +    RPMB_UNIT_DESC_PARAM_REGION1_SIZE = 0x14,
+>> +    RPMB_UNIT_DESC_PARAM_REGION2_SIZE = 0x15,
+>> +    RPMB_UNIT_DESC_PARAM_REGION3_SIZE = 0x16,
+>> +    RPMB_UNIT_DESC_PARAM_PROVISIONING_TYPE = 0x17,
+>> +    RPMB_UNIT_DESC_PARAM_PHY_MEM_RSRC_CNT = 0x18,
+>> +};
+>> +
+>> +/* Device descriptor parameters offsets in bytes*/
+>> +enum device_desc_param {
+>> +    DEVICE_DESC_PARAM_LEN = 0x0,
+>> +    DEVICE_DESC_PARAM_TYPE = 0x1,
+>> +    DEVICE_DESC_PARAM_DEVICE_TYPE = 0x2,
+>> +    DEVICE_DESC_PARAM_DEVICE_CLASS = 0x3,
+>> +    DEVICE_DESC_PARAM_DEVICE_SUB_CLASS = 0x4,
+>> +    DEVICE_DESC_PARAM_PRTCL = 0x5,
+>> +    DEVICE_DESC_PARAM_NUM_LU = 0x6,
+>> +    DEVICE_DESC_PARAM_NUM_WLU = 0x7,
+>> +    DEVICE_DESC_PARAM_BOOT_ENBL = 0x8,
+>> +    DEVICE_DESC_PARAM_DESC_ACCSS_ENBL = 0x9,
+>> +    DEVICE_DESC_PARAM_INIT_PWR_MODE = 0xA,
+>> +    DEVICE_DESC_PARAM_HIGH_PR_LUN = 0xB,
+>> +    DEVICE_DESC_PARAM_SEC_RMV_TYPE = 0xC,
+>> +    DEVICE_DESC_PARAM_SEC_LU = 0xD,
+>> +    DEVICE_DESC_PARAM_BKOP_TERM_LT = 0xE,
+>> +    DEVICE_DESC_PARAM_ACTVE_ICC_LVL = 0xF,
+>> +    DEVICE_DESC_PARAM_SPEC_VER = 0x10,
+>> +    DEVICE_DESC_PARAM_MANF_DATE = 0x12,
+>> +    DEVICE_DESC_PARAM_MANF_NAME = 0x14,
+>> +    DEVICE_DESC_PARAM_PRDCT_NAME = 0x15,
+>> +    DEVICE_DESC_PARAM_SN = 0x16,
+>> +    DEVICE_DESC_PARAM_OEM_ID = 0x17,
+>> +    DEVICE_DESC_PARAM_MANF_ID = 0x18,
+>> +    DEVICE_DESC_PARAM_UD_OFFSET = 0x1A,
+>> +    DEVICE_DESC_PARAM_UD_LEN = 0x1B,
+>> +    DEVICE_DESC_PARAM_RTT_CAP = 0x1C,
+>> +    DEVICE_DESC_PARAM_FRQ_RTC = 0x1D,
+>> +    DEVICE_DESC_PARAM_UFS_FEAT = 0x1F,
+>> +    DEVICE_DESC_PARAM_FFU_TMT = 0x20,
+>> +    DEVICE_DESC_PARAM_Q_DPTH = 0x21,
+>> +    DEVICE_DESC_PARAM_DEV_VER = 0x22,
+>> +    DEVICE_DESC_PARAM_NUM_SEC_WPA = 0x24,
+>> +    DEVICE_DESC_PARAM_PSA_MAX_DATA = 0x25,
+>> +    DEVICE_DESC_PARAM_PSA_TMT = 0x29,
+>> +    DEVICE_DESC_PARAM_PRDCT_REV = 0x2A,
+>> +    DEVICE_DESC_PARAM_HPB_VER = 0x40,
+>> +    DEVICE_DESC_PARAM_HPB_CONTROL = 0x42,
+>> +    DEVICE_DESC_PARAM_EXT_UFS_FEATURE_SUP = 0x4F,
+>> +    DEVICE_DESC_PARAM_WB_PRESRV_USRSPC_EN = 0x53,
+>> +    DEVICE_DESC_PARAM_WB_TYPE = 0x54,
+>> +    DEVICE_DESC_PARAM_WB_SHARED_ALLOC_UNITS = 0x55,
+>> +};
+>> +
+>> +/* Interconnect descriptor parameters offsets in bytes*/
+>> +enum interconnect_desc_param {
+>> +    INTERCONNECT_DESC_PARAM_LEN = 0x0,
+>> +    INTERCONNECT_DESC_PARAM_TYPE = 0x1,
+>> +    INTERCONNECT_DESC_PARAM_UNIPRO_VER = 0x2,
+>> +    INTERCONNECT_DESC_PARAM_MPHY_VER = 0x4,
+>> +};
+>> +
+>> +/* Geometry descriptor parameters offsets in bytes*/
+>> +enum geometry_desc_param {
+>> +    GEOMETRY_DESC_PARAM_LEN = 0x0,
+>> +    GEOMETRY_DESC_PARAM_TYPE = 0x1,
+>> +    GEOMETRY_DESC_PARAM_DEV_CAP = 0x4,
+>> +    GEOMETRY_DESC_PARAM_MAX_NUM_LUN = 0xC,
+>> +    GEOMETRY_DESC_PARAM_SEG_SIZE = 0xD,
+>> +    GEOMETRY_DESC_PARAM_ALLOC_UNIT_SIZE = 0x11,
+>> +    GEOMETRY_DESC_PARAM_MIN_BLK_SIZE = 0x12,
+>> +    GEOMETRY_DESC_PARAM_OPT_RD_BLK_SIZE = 0x13,
+>> +    GEOMETRY_DESC_PARAM_OPT_WR_BLK_SIZE = 0x14,
+>> +    GEOMETRY_DESC_PARAM_MAX_IN_BUF_SIZE = 0x15,
+>> +    GEOMETRY_DESC_PARAM_MAX_OUT_BUF_SIZE = 0x16,
+>> +    GEOMETRY_DESC_PARAM_RPMB_RW_SIZE = 0x17,
+>> +    GEOMETRY_DESC_PARAM_DYN_CAP_RSRC_PLC = 0x18,
+>> +    GEOMETRY_DESC_PARAM_DATA_ORDER = 0x19,
+>> +    GEOMETRY_DESC_PARAM_MAX_NUM_CTX = 0x1A,
+>> +    GEOMETRY_DESC_PARAM_TAG_UNIT_SIZE = 0x1B,
+>> +    GEOMETRY_DESC_PARAM_TAG_RSRC_SIZE = 0x1C,
+>> +    GEOMETRY_DESC_PARAM_SEC_RM_TYPES = 0x1D,
+>> +    GEOMETRY_DESC_PARAM_MEM_TYPES = 0x1E,
+>> +    GEOMETRY_DESC_PARAM_SCM_MAX_NUM_UNITS = 0x20,
+>> +    GEOMETRY_DESC_PARAM_SCM_CAP_ADJ_FCTR = 0x24,
+>> +    GEOMETRY_DESC_PARAM_NPM_MAX_NUM_UNITS = 0x26,
+>> +    GEOMETRY_DESC_PARAM_NPM_CAP_ADJ_FCTR = 0x2A,
+>> +    GEOMETRY_DESC_PARAM_ENM1_MAX_NUM_UNITS = 0x2C,
+>> +    GEOMETRY_DESC_PARAM_ENM1_CAP_ADJ_FCTR = 0x30,
+>> +    GEOMETRY_DESC_PARAM_ENM2_MAX_NUM_UNITS = 0x32,
+>> +    GEOMETRY_DESC_PARAM_ENM2_CAP_ADJ_FCTR = 0x36,
+>> +    GEOMETRY_DESC_PARAM_ENM3_MAX_NUM_UNITS = 0x38,
+>> +    GEOMETRY_DESC_PARAM_ENM3_CAP_ADJ_FCTR = 0x3C,
+>> +    GEOMETRY_DESC_PARAM_ENM4_MAX_NUM_UNITS = 0x3E,
+>> +    GEOMETRY_DESC_PARAM_ENM4_CAP_ADJ_FCTR = 0x42,
+>> +    GEOMETRY_DESC_PARAM_OPT_LOG_BLK_SIZE = 0x44,
+>> +    GEOMETRY_DESC_PARAM_HPB_REGION_SIZE = 0x48,
+>> +    GEOMETRY_DESC_PARAM_HPB_NUMBER_LU = 0x49,
+>> +    GEOMETRY_DESC_PARAM_HPB_SUBREGION_SIZE = 0x4A,
+>> +    GEOMETRY_DESC_PARAM_HPB_MAX_ACTIVE_REGS = 0x4B,
+>> +    GEOMETRY_DESC_PARAM_WB_MAX_ALLOC_UNITS = 0x4F,
+>> +    GEOMETRY_DESC_PARAM_WB_MAX_WB_LUNS = 0x53,
+>> +    GEOMETRY_DESC_PARAM_WB_BUFF_CAP_ADJ = 0x54,
+>> +    GEOMETRY_DESC_PARAM_WB_SUP_RED_TYPE = 0x55,
+>> +    GEOMETRY_DESC_PARAM_WB_SUP_WB_TYPE = 0x56,
+>> +};
+>> +
+>> +/* Health descriptor parameters offsets in bytes*/
+>> +enum health_desc_param {
+>> +    HEALTH_DESC_PARAM_LEN = 0x0,
+>> +    HEALTH_DESC_PARAM_TYPE = 0x1,
+>> +    HEALTH_DESC_PARAM_EOL_INFO = 0x2,
+>> +    HEALTH_DESC_PARAM_LIFE_TIME_EST_A = 0x3,
+>> +    HEALTH_DESC_PARAM_LIFE_TIME_EST_B = 0x4,
+>> +};
+>> +
+>> +/* WriteBooster buffer mode */
+>> +enum {
+>> +    WB_BUF_MODE_LU_DEDICATED = 0x0,
+>> +    WB_BUF_MODE_SHARED = 0x1,
+>> +};
+>> +
+>> +/*
+>> + * Logical Unit Write Protect
+>> + * 00h: LU not write protected
+>> + * 01h: LU write protected when fPowerOnWPEn =1
+>> + * 02h: LU permanently write protected when fPermanentWPEn =1
+>> + */
+>> +enum ufs_lu_wp_type {
+>> +    UFS_LU_NO_WP = 0x00,
+>> +    UFS_LU_POWER_ON_WP = 0x01,
+>> +    UFS_LU_PERM_WP = 0x02,
+>> +};
+>> +
+>> +/* UTP QUERY Transaction Specific Fields OpCode */
+>> +enum query_opcode {
+>> +    UPIU_QUERY_OPCODE_NOP = 0x0,
+>> +    UPIU_QUERY_OPCODE_READ_DESC = 0x1,
+>> +    UPIU_QUERY_OPCODE_WRITE_DESC = 0x2,
+>> +    UPIU_QUERY_OPCODE_READ_ATTR = 0x3,
+>> +    UPIU_QUERY_OPCODE_WRITE_ATTR = 0x4,
+>> +    UPIU_QUERY_OPCODE_READ_FLAG = 0x5,
+>> +    UPIU_QUERY_OPCODE_SET_FLAG = 0x6,
+>> +    UPIU_QUERY_OPCODE_CLEAR_FLAG = 0x7,
+>> +    UPIU_QUERY_OPCODE_TOGGLE_FLAG = 0x8,
+>> +};
+>> +
+>> +/* Query response result code */
+>> +typedef enum QueryRespCode {
+>> +    QUERY_RESULT_SUCCESS = 0x00,
+>> +    QUERY_RESULT_NOT_READABLE = 0xF6,
+>> +    QUERY_RESULT_NOT_WRITEABLE = 0xF7,
+>> +    QUERY_RESULT_ALREADY_WRITTEN = 0xF8,
+>> +    QUERY_RESULT_INVALID_LENGTH = 0xF9,
+>> +    QUERY_RESULT_INVALID_VALUE = 0xFA,
+>> +    QUERY_RESULT_INVALID_SELECTOR = 0xFB,
+>> +    QUERY_RESULT_INVALID_INDEX = 0xFC,
+>> +    QUERY_RESULT_INVALID_IDN = 0xFD,
+>> +    QUERY_RESULT_INVALID_OPCODE = 0xFE,
+>> +    QUERY_RESULT_GENERAL_FAILURE = 0xFF,
+>> +} QueryRespCode;
+>> +
+>> +/* UTP Transfer Request Command Type (CT) */
+>> +enum {
+>> +    UPIU_COMMAND_SET_TYPE_SCSI = 0x0,
+>> +    UPIU_COMMAND_SET_TYPE_UFS = 0x1,
+>> +    UPIU_COMMAND_SET_TYPE_QUERY = 0x2,
+>> +};
+>> +
+>> +/* Task management service response */
+>> +enum {
+>> +    UPIU_TASK_MANAGEMENT_FUNC_COMPL = 0x00,
+>> +    UPIU_TASK_MANAGEMENT_FUNC_NOT_SUPPORTED = 0x04,
+>> +    UPIU_TASK_MANAGEMENT_FUNC_SUCCEEDED = 0x08,
+>> +    UPIU_TASK_MANAGEMENT_FUNC_FAILED = 0x05,
+>> +    UPIU_INCORRECT_LOGICAL_UNIT_NO = 0x09,
+>> +};
+>> +
+>> +/* UFS device power modes */
+>> +enum ufs_dev_pwr_mode {
+>> +    UFS_ACTIVE_PWR_MODE = 1,
+>> +    UFS_SLEEP_PWR_MODE = 2,
+>> +    UFS_POWERDOWN_PWR_MODE = 3,
+>> +    UFS_DEEPSLEEP_PWR_MODE = 4,
+>> +};
+>> +
+>> +/*
+>> + * struct UtpCmdRsp - Response UPIU structure
+>> + * @residual_transfer_count: Residual transfer count DW-3
+>> + * @reserved: Reserved double words DW-4 to DW-7
+>> + * @sense_data_len: Sense data length DW-8 U16
+>> + * @sense_data: Sense data field DW-8 to DW-12
+>> + */
+>> +typedef struct QEMU_PACKED UtpCmdRsp {
+>> +    uint32_t residual_transfer_count;
+>> +    uint32_t reserved[4];
+>> +    uint16_t sense_data_len;
+>> +    uint8_t sense_data[UFS_SENSE_SIZE];
+>> +} UtpCmdRsp;
+>> +
+>> +/*
+>> + * struct UtpUpiuRsp - general upiu response structure
+>> + * @header: UPIU header structure DW-0 to DW-2
+>> + * @sr: fields structure for scsi command DW-3 to DW-12
+>> + * @qr: fields structure for query request DW-3 to DW-7
+>> + */
+>> +typedef struct QEMU_PACKED UtpUpiuRsp {
+>> +    UtpUpiuHeader header;
+>> +    union {
+>> +        UtpCmdRsp sr;
+>> +        UtpUpiuQuery qr;
+>> +    };
+>> +} UtpUpiuRsp;
+>> +
+>> +static inline void _ufs_check_size(void)
+>> +{
+>> +    QEMU_BUILD_BUG_ON(sizeof(UfsReg) != 0x104);
+>> +    QEMU_BUILD_BUG_ON(sizeof(DeviceDescriptor) != 89);
+>> +    QEMU_BUILD_BUG_ON(sizeof(GeometryDescriptor) != 87);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UnitDescriptor) != 45);
+>> +    QEMU_BUILD_BUG_ON(sizeof(RpmbUnitDescriptor) != 35);
+>> +    QEMU_BUILD_BUG_ON(sizeof(PowerParametersDescriptor) != 98);
+>> +    QEMU_BUILD_BUG_ON(sizeof(InterconnectDescriptor) != 6);
+>> +    QEMU_BUILD_BUG_ON(sizeof(StringDescriptor) != 254);
+>> +    QEMU_BUILD_BUG_ON(sizeof(DeviceHealthDescriptor) != 45);
+>> +    QEMU_BUILD_BUG_ON(sizeof(Flags) != 0x13);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuHeader) != 12);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuQuery) != 276);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuCmd) != 20);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuReq) != 288);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UfshcdSgEntry) != 16);
+>> +    QEMU_BUILD_BUG_ON(sizeof(RequestDescHeader) != 16);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpTransferReqDesc) != 32);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpCmdRsp) != 40);
+>> +    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuRsp) != 288);
+>> +}
+>> +#endif
+>> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+>> index e6d0574a29..1094274546 100644
+>> --- a/include/hw/pci/pci.h
+>> +++ b/include/hw/pci/pci.h
+>> @@ -114,6 +114,7 @@ extern bool pci_available;
+>>  #define PCI_DEVICE_ID_REDHAT_NVME        0x0010
+>>  #define PCI_DEVICE_ID_REDHAT_PVPANIC     0x0011
+>>  #define PCI_DEVICE_ID_REDHAT_ACPI_ERST   0x0012
+>> +#define PCI_DEVICE_ID_REDHAT_UFS         0x0013
+>
+>Please update docs/specs/pci-ids.rst in order to reserve this device ID.
+>
+
+Okay :)
+
+>>  #define PCI_DEVICE_ID_REDHAT_QXL         0x0100
+>>  
+>>  #define FMT_PCIBUS                      PRIx64
+>> diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
+>> index e4386ebb20..85469b9b53 100644
+>> --- a/include/hw/pci/pci_ids.h
+>> +++ b/include/hw/pci/pci_ids.h
+>> @@ -26,6 +26,7 @@
+>>  #define PCI_CLASS_STORAGE_SATA           0x0106
+>>  #define PCI_CLASS_STORAGE_SAS            0x0107
+>>  #define PCI_CLASS_STORAGE_EXPRESS        0x0108
+>> +#define PCI_CLASS_STORAGE_UFS            0x0109
+>>  #define PCI_CLASS_STORAGE_OTHER          0x0180
+>>  
+>>  #define PCI_BASE_CLASS_NETWORK           0x02
+>> diff --git a/meson.build b/meson.build
+>> index 34306a6205..6aeaa155db 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -3268,6 +3268,7 @@ if have_system
+>>      'hw/ssi',
+>>      'hw/timer',
+>>      'hw/tpm',
+>> +    'hw/ufs',
+>>      'hw/usb',
+>>      'hw/vfio',
+>>      'hw/virtio',
+>> -- 
+>> 2.34.1
+>> 
+
+I will create a new version of patches as soon as reviews of other patches are completed.
+Thank you for your detailed review!
 
