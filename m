@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7D9735B51
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 17:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8143735B58
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 17:44:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBH2W-0002KT-1S; Mon, 19 Jun 2023 11:43:36 -0400
+	id 1qBH2j-0002kC-4c; Mon, 19 Jun 2023 11:43:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2T-0002IC-J3
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:43:33 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2b-0002YS-Rf
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:43:41 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2R-00011P-4V
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:43:33 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-311167ba376so3345837f8f.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:43:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2W-00012Y-F7
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:43:41 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-311394406d0so1272106f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:43:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687189409; x=1689781409;
+ d=linaro.org; s=google; t=1687189415; x=1689781415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8mp+80uEQkt8/jSa2bwpDOFe4dhC6+cPTb9ADdk/0oE=;
- b=A5Ol5hrvszPQcwYBiIexbrSjN6hrfe8g5dZMa7rudjhOjqIqVs3oph7L56ul+PPqpU
- pHr+J4swS1Mn8DFbyVyJ5/ZB2BpZqciCTRVI1hvOQ+jf9XJjK00f6KXGh9IRqIEfMrFs
- IRck3/IU9Vld9qENJqRh41We70beNJN2oYETfEOvUetJP15W0TpIItTbZWmMg2qFDdkl
- wnPfaXsHGy9wtXUhPMcMyE3u+oYXXPim9NnD+QcM/4wJHW1CRCabzJhein+IQXsYhxG5
- wJL31u8DXoyvw10/i9wU1xWj8xfgx1jMnMQWO99E2z9qUyf+wFmcvACF/1FrjUst2shC
- DIMA==
+ bh=oIvtCmiWepPA7NXEFbXWWLePEDf5Lnkm5evgEG2zaNg=;
+ b=cxfzVFAPOJpJzi5oEeFN6Lqd+nIpRHS5RopmOkG+PEL3p2LAuul2//U33WP20BwQzp
+ gNR9yogU44Qwt8KQpEUdf0gI6hBgoMBbUQmdYVUY9AQYVO/wM3ai/9sD1408XwUJJ9Cg
+ GXGWwg+54MltU1Juh2X0Ycszb9bGcWeF7ANvp1PQVV3/JQdHs1sbiNvqma+ZaeqgedyX
+ Z8H+nfjAbbcDEYFb/vO8I6Ak1XhZk+Hp9/JEWxX1eoVgBfO+/msSAL+ZCSdic1ZDPuPZ
+ XRf28GyU5IPywUx2nLTyJTpJcBn95y1mR8Olab6XYWestRoRVsFeMDqzPMff+iWwEisQ
+ WwZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687189409; x=1689781409;
+ d=1e100.net; s=20221208; t=1687189415; x=1689781415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8mp+80uEQkt8/jSa2bwpDOFe4dhC6+cPTb9ADdk/0oE=;
- b=XBWpj2uRPnFA89q07a6UEMkCYBi0bytICHyWPWcdOX1rsyJDJ8JMnzyY+8x+T5jqzd
- qQcjL/T+jLP6nW0cmrlZ+Cbz3kxx3k1aZpSklVIy7tH4BqL/JoAtaGxh9gh/WlWh/906
- C7tYM674Mxl/E2x69VJ3gCLFOOMKuAXQ+3fK6I+vZqmBQRFusTgkIjoXFlJ9zKCJR+U6
- NzsQACJ19IAqIvdzC9Bvphe5YSRxPhroIKNEPNiRFFqZ6dOFZPp+HjDZcUG5onAFH6bR
- u47JLqRe1rhFE7JB09GhnRbZMqCptmsQzKc5Wx8TrB7iNwde47IOvQkhNuHDHx2cUCt3
- kwLw==
-X-Gm-Message-State: AC+VfDx7/n46Ugy6OnS+U+XK9YhwiAaQhk2xAsmeoYTPxLFFbWpItCiA
- H5dv4XDOurwzalLCS0eLSI10sLCgNRib2zvcc3w6Jg==
-X-Google-Smtp-Source: ACHHUZ6bkZp9UhHHO1qxbh26C/cpy2QZAjN/8zsqpV9XnHftLeVJi/U8xAuHFEdOdKGeodnL6iNP9A==
-X-Received: by 2002:a5d:664d:0:b0:30f:cc22:d832 with SMTP id
- f13-20020a5d664d000000b0030fcc22d832mr8216193wrw.11.1687189409343; 
- Mon, 19 Jun 2023 08:43:29 -0700 (PDT)
+ bh=oIvtCmiWepPA7NXEFbXWWLePEDf5Lnkm5evgEG2zaNg=;
+ b=iXD9KGxf8iLcbBkH2zkjdPuiqmP5jVr1HnJ+4UDN5N8mUxzZRTQY7mLMwEztlw/AJV
+ xDSZcH8fgkBySPjrm6dNxy0apAKwm6dgoH3W/ZWJ1u9Au+Y2KQZAMObjCHPOq6jGOkTv
+ OcSk2DxivB65nDEw2xxfeFBsoRcajX9M2iVyj9vGybRdfos96ilDoQpaMOCr0hXuZhG3
+ cRPp2BwaeK1Ljjk46oAOgFIy+VATmIOSwrNYJSp4vMW/ZizmtJIAN2xTqGVrP3uUPRAM
+ hJGi8ilyZiANy4e8txHGzSHRdet0FEd57Df6nzDLq48lLstKI1fAuuMPf71yNT3j24Jd
+ aBrA==
+X-Gm-Message-State: AC+VfDz3h8KVQTX8riw6mukTRYj4+zNXA3pT86TcTMrrXpzHzXEgIS3t
+ pZRxocaHlZSd44ALgYQLuiO3RtHLLvxS2a+64wJLFA==
+X-Google-Smtp-Source: ACHHUZ6hmbetpkWJ2hcOAQKmwr29u2nz+jcHEy+FLgaE1LteR4+MWMh08RBqtpoyO8gugPVOOE89wg==
+X-Received: by 2002:a5d:6406:0:b0:307:9f8:4f30 with SMTP id
+ z6-20020a5d6406000000b0030709f84f30mr6202912wru.70.1687189414966; 
+ Mon, 19 Jun 2023 08:43:34 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- s1-20020adfea81000000b003111a9a8dbfsm11417924wrm.44.2023.06.19.08.43.27
+ m7-20020a7bce07000000b003f9b155b148sm2928816wmc.34.2023.06.19.08.43.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jun 2023 08:43:29 -0700 (PDT)
+ Mon, 19 Jun 2023 08:43:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 01/34] target/arm/tcg: Remove CONFIG_TCG #ifdef'ry check
-Date: Mon, 19 Jun 2023 17:42:29 +0200
-Message-Id: <20230619154302.80350-2-philmd@linaro.org>
+Subject: [PATCH v3 02/34] target/arm/tcg: Rename helper template headers as
+ '.h.inc'
+Date: Mon, 19 Jun 2023 17:42:30 +0200
+Message-Id: <20230619154302.80350-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230619154302.80350-1-philmd@linaro.org>
 References: <20230619154302.80350-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,59 +93,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CONFIG_TCG is always defined within target/arm/tcg/.
+Since commit 139c1837db ("meson: rename included C source files
+to .c.inc"), QEMU standard procedure for included C files is to
+use *.c.inc.
+
+Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+about includes") this is documented as the Coding Style:
+
+  If you do use template header files they should be named with
+  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+  being included for expansion.
+
+Therefore rename the included templates as '.h.inc'.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/cpu32.c    | 4 +---
- target/arm/tcg/m_helper.c | 6 ------
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ target/arm/helper.h                               | 8 ++++----
+ target/arm/tcg/{helper-a64.h => helper-a64.h.inc} | 0
+ target/arm/tcg/{helper-mve.h => helper-mve.h.inc} | 0
+ target/arm/tcg/{helper-sme.h => helper-sme.h.inc} | 0
+ target/arm/tcg/{helper-sve.h => helper-sve.h.inc} | 0
+ 5 files changed, 4 insertions(+), 4 deletions(-)
+ rename target/arm/tcg/{helper-a64.h => helper-a64.h.inc} (100%)
+ rename target/arm/tcg/{helper-mve.h => helper-mve.h.inc} (100%)
+ rename target/arm/tcg/{helper-sme.h => helper-sme.h.inc} (100%)
+ rename target/arm/tcg/{helper-sve.h => helper-sve.h.inc} (100%)
 
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index 47d2e8e781..0672519b89 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -13,11 +13,9 @@
- #include "hw/core/tcg-cpu-ops.h"
- #include "internals.h"
- #include "target/arm/idau.h"
-+#include "cpregs.h"
- #if !defined(CONFIG_USER_ONLY)
- #include "hw/boards.h"
--#endif
--#include "cpregs.h"
--#if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
- #include "hw/intc/armv7m_nvic.h"
+diff --git a/target/arm/helper.h b/target/arm/helper.h
+index 3335c2b10b..4218d98b51 100644
+--- a/target/arm/helper.h
++++ b/target/arm/helper.h
+@@ -1039,9 +1039,9 @@ DEF_HELPER_FLAGS_5(gvec_uclamp_d, TCG_CALL_NO_RWG,
+                    void, ptr, ptr, ptr, ptr, i32)
+ 
+ #ifdef TARGET_AARCH64
+-#include "tcg/helper-a64.h"
+-#include "tcg/helper-sve.h"
+-#include "tcg/helper-sme.h"
++#include "tcg/helper-a64.h.inc"
++#include "tcg/helper-sve.h.inc"
++#include "tcg/helper-sme.h.inc"
  #endif
  
-diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index 9cef70e5c9..0891acc29c 100644
---- a/target/arm/tcg/m_helper.c
-+++ b/target/arm/tcg/m_helper.c
-@@ -15,10 +15,8 @@
- #include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "exec/exec-all.h"
--#ifdef CONFIG_TCG
- #include "exec/cpu_ldst.h"
- #include "semihosting/common-semi.h"
--#endif
- #if !defined(CONFIG_USER_ONLY)
- #include "hw/intc/armv7m_nvic.h"
- #endif
-@@ -2345,11 +2343,7 @@ void arm_v7m_cpu_do_interrupt(CPUState *cs)
-         qemu_log_mask(CPU_LOG_INT,
-                       "...handling as semihosting call 0x%x\n",
-                       env->regs[0]);
--#ifdef CONFIG_TCG
-         do_common_semihosting(cs);
--#else
--        g_assert_not_reached();
--#endif
-         env->regs[15] += env->thumb ? 2 : 4;
-         return;
-     case EXCP_BKPT:
+-#include "tcg/helper-mve.h"
++#include "tcg/helper-mve.h.inc"
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h.inc
+similarity index 100%
+rename from target/arm/tcg/helper-a64.h
+rename to target/arm/tcg/helper-a64.h.inc
+diff --git a/target/arm/tcg/helper-mve.h b/target/arm/tcg/helper-mve.h.inc
+similarity index 100%
+rename from target/arm/tcg/helper-mve.h
+rename to target/arm/tcg/helper-mve.h.inc
+diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h.inc
+similarity index 100%
+rename from target/arm/tcg/helper-sme.h
+rename to target/arm/tcg/helper-sme.h.inc
+diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h.inc
+similarity index 100%
+rename from target/arm/tcg/helper-sve.h
+rename to target/arm/tcg/helper-sve.h.inc
 -- 
 2.38.1
 
