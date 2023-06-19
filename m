@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C534735999
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233047359B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:36:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFtU-0001dJ-CW; Mon, 19 Jun 2023 10:30:12 -0400
+	id 1qBFtV-0001iB-ON; Mon, 19 Jun 2023 10:30:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsp-0000eE-KJ
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:31 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qBFss-0000ed-Ld
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:36 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsn-0002Fw-3T
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:31 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f8fe9dc27aso22162115e9.3
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:28 -0700 (PDT)
+ id 1qBFsn-0002GH-L2
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:32 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f906d8fca3so19973225e9.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687184968; x=1689776968;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7NGVfS5DtDEvRzAeh2tIxqusOp/nBTZ4y0VaCfreOUI=;
- b=TCecmzQ4uI3qKX4AN5uhqRdKZG+kTZf30LuPRxPDu0EUVIHu8xrBCIzDfZSOcSmu8A
- dif7ri655s3d/7jRapMFbFZNTazLVW3GgNvPy2mfUfLBx5u/s78QWwQGDG28fthjymOl
- XvjuQ0vmvu2RBg3WkUAGTszn7FHLKnYKqOJdX8d2anUxvLfJnzuox5rbTExjq0OpikIi
- 7fBUVIm8vU6HxUsms+UP9xKSrnCRIuRzz0CU1CF6bXWMBul2DJmouX/eXuGuTmaJHIoL
- ImxKH0PUlLA5fWXWKahH5vkY8GUfI/0SoUZEe8/wicf7zGpTJv8Z3LnNA3y8e+CDkF0d
- 6Ljw==
+ :reply-to; bh=y/asvDbpuEPmw7wglRXtLAabLlYBYvk+Qg+LSrFniF4=;
+ b=MTdNamwBkWtM0q8JofFLOkkEltIJOiuQSp86tZ2ehokJrFV8OVWBuPEJV04VPiY0+z
+ F28fWWjKuG28o8esZWvxiQZ6IpYaTjNTy07XbZQVNZDAgzYR05vrdNOEQk9oEf3rveu3
+ HWxT7B7qR9/80iQpHWAdYaX432Hjd0dbxKMwV7vsrgDUMrRhnyxgMnxY2MwajvL309hm
+ oyZmwfCBP+xKq6TNgXulLom9E8GZwZ3wdGRiEaDi7CaQ3Qs8HC7X5+JXj+0Iy+kL68Uq
+ 4Dj/fbG56OxPkjJ9ktkcqcZ4iJMvW3Nh0lwrrabPvoTyaDEHq1pdUwVgizOIKMfh20bW
+ 7kyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687184968; x=1689776968;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7NGVfS5DtDEvRzAeh2tIxqusOp/nBTZ4y0VaCfreOUI=;
- b=SdQWA011HnIykvJdt24paOogfOQAd2Tue5jV3pebJlsXQL2tltT4uCyJRTexQT1Ykb
- dgENguSgI4t2UB8o2xtBJXaAZGk5BIaDwFesdFFHZ+g+JeH9NP8XlHu2LmGHCQmHZUO3
- nzZg7663ysDCjQ1FdXXZNLJSfRUZOB/fJxzYzrJB07hQ1vzSD62ldsH1OsYyEcHZzGjx
- zyKLgm9teiycoMppXl/Ip4NcRII8dECabmHp1FmsXDkP4PMt8L98ju2WOkaSHL1lxpV5
- wZwhNAPzBKgkgSIpclNRxnH6z0tmxYpfeBTFCBeX00AGCtdXGnLhrMl+JPCGMNk5MCWi
- y9FQ==
-X-Gm-Message-State: AC+VfDwRae3Ope1d5mdDw/2O09Jt/Tn6ypc3+sHXkhZ52d3FhuZNQswD
- gvxD7WK26YuO4VMkfdUhtd+/tZOoIM5EGO7R5ec=
-X-Google-Smtp-Source: ACHHUZ5lcOOztqfqkWW1+Te0Lxs2aZbO7/4c0EEbuh4VXtDfQNbZe9cIo/UKQ8HqcIs5kKaMWzJ5Hg==
-X-Received: by 2002:a5d:6844:0:b0:30f:c22f:e901 with SMTP id
- o4-20020a5d6844000000b0030fc22fe901mr5526912wrw.26.1687184967734; 
- Mon, 19 Jun 2023 07:29:27 -0700 (PDT)
+ bh=y/asvDbpuEPmw7wglRXtLAabLlYBYvk+Qg+LSrFniF4=;
+ b=lMPm1pd5DnOso78YllYbgrG0toSICClgymTP4sloKmdzzlW77ou7HBe83t/Kd1TwMd
+ Li6SmcU8qkUyfrygkY0ZExhgFhTZU+corGtw/enpylkMjvtbL7w/Jj8FFLqmJnJjldqU
+ +mpvWi95yT4oeMzyYjhOjUvVtsz24apM1fNi0u934DuP2R/RsGMd7KxsFCn5lVZWy9nB
+ nKi7Ak3d+jBp7pIAlhfKPiERrtnkBEbYBbhMDbQbBzxd86/s2E3vBKyNXsOTHe66kvFe
+ vs8s3yIPx6eXMjgYkzL2KY6OIzsOjNVRZFKg68dEwLF0RhfhDIm1wU0SvpUm/PhrSKUk
+ 8s8w==
+X-Gm-Message-State: AC+VfDyR3xe3dS6rLbGHKwKiziv/k/mf6EtmWO1A/WetDbwkF3Q7LBPt
+ zTHbN8MTbM62IaS8WZePqmNzLo7bIFtXutuzh5k=
+X-Google-Smtp-Source: ACHHUZ5gAI5DKCTD+cxDIuou4d/eGWAXkhp1hwGBJgNWrauawfmwBrhxM5fgMXSHu2OA0Bhs+psaoA==
+X-Received: by 2002:a05:600c:22c2:b0:3f9:b19c:aab4 with SMTP id
+ 2-20020a05600c22c200b003f9b19caab4mr1646678wmg.6.1687184968171; 
+ Mon, 19 Jun 2023 07:29:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  a2-20020a05600c224200b003f9b53959a4sm429012wmm.43.2023.06.19.07.29.27
@@ -58,18 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 19 Jun 2023 07:29:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/33] hw/sd/allwinner-sdhost: Don't send non-boolean IRQ line
- levels
-Date: Mon, 19 Jun 2023 15:29:06 +0100
-Message-Id: <20230619142914.963184-26-peter.maydell@linaro.org>
+Subject: [PULL 26/33] hw/timer/nrf51_timer: Don't lose time when timer is
+ queried in tight loop
+Date: Mon, 19 Jun 2023 15:29:07 +0100
+Message-Id: <20230619142914.963184-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,35 +91,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU allows qemu_irq lines to transfer arbitrary integers.  However
-the convention is that for a simple IRQ line the values transferred
-are always 0 and 1.  The A10 SD controller device instead assumes a
-0-vs-non-0 convention, which happens to work with the interrupt
-controller it is wired up to.
+The nrf51_timer has a free-running counter which we implement using
+the pattern of using two fields (update_counter_ns, counter) to track
+the last point at which we calculated the counter value, and the
+counter value at that time.  Then we can find the current counter
+value by converting the difference in wall-clock time between then
+and now to a tick count that we need to add to the counter value.
 
-Coerce the value to boolean to follow our usual convention.
+Unfortunately the nrf51_timer's implementation of this has a bug
+which means it loses time every time update_counter() is called.
+After updating s->counter it always sets s->update_counter_ns to
+'now', even though the actual point when s->counter hit the new value
+will be some point in the past (half a tick, say).  In the worst case
+(guest code in a tight loop reading the counter, icount mode) the
+counter is continually queried less than a tick after it was last
+read, so s->counter never advances but s->update_counter_ns does, and
+the guest never makes forward progress.
 
+The fix for this is to only advance update_counter_ns to the
+timestamp of the last tick, not all the way to 'now'.  (This is the
+pattern used in hw/misc/mps2-fpgaio.c's counter.)
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-id: 20230606104609.3692557-3-peter.maydell@linaro.org
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Message-id: 20230606134917.3782215-1-peter.maydell@linaro.org
 ---
- hw/sd/allwinner-sdhost.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/timer/nrf51_timer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
-index 286e0095098..1a576d62ae2 100644
---- a/hw/sd/allwinner-sdhost.c
-+++ b/hw/sd/allwinner-sdhost.c
-@@ -193,7 +193,7 @@ static void allwinner_sdhost_update_irq(AwSdHostState *s)
-     }
+diff --git a/hw/timer/nrf51_timer.c b/hw/timer/nrf51_timer.c
+index 42be79c7363..50c6772383e 100644
+--- a/hw/timer/nrf51_timer.c
++++ b/hw/timer/nrf51_timer.c
+@@ -45,7 +45,12 @@ static uint32_t update_counter(NRF51TimerState *s, int64_t now)
+     uint32_t ticks = ns_to_ticks(s, now - s->update_counter_ns);
  
-     trace_allwinner_sdhost_update_irq(irq);
--    qemu_set_irq(s->irq, irq);
-+    qemu_set_irq(s->irq, !!irq);
+     s->counter = (s->counter + ticks) % BIT(bitwidths[s->bitmode]);
+-    s->update_counter_ns = now;
++    /*
++     * Only advance the sync time to the timestamp of the last tick,
++     * not all the way to 'now', so we don't lose time if we do
++     * multiple resyncs in a single tick.
++     */
++    s->update_counter_ns += ticks_to_ns(s, ticks);
+     return ticks;
  }
  
- static void allwinner_sdhost_update_transfer_cnt(AwSdHostState *s,
 -- 
 2.34.1
 
