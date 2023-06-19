@@ -2,93 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F3173565D
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C029E735663
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:04:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBDZb-00061r-JE; Mon, 19 Jun 2023 08:01:31 -0400
+	id 1qBDcD-00076g-Pj; Mon, 19 Jun 2023 08:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qBDZX-000610-21
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:01:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qBDZV-0007LX-72
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:01:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687176083;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=trdsiw/s4e2na4YZmKwH9nDWCJlMMVjXWI1MFINwNmw=;
- b=QLUA4mzTU8qG50HgQ/Uk8W756a3n2jqe0egzseJfvbPZWVPCJsweHMTBxYd1V7mvIF0RZG
- CL3FPXxqN15+mnOb0zkgGqRdAMIYxihkjJDCY9SWOkQH0/250lQWrYGUq0kJeICHZShr0P
- lFAPZzza5/hIVyNG7DK5cHzdxCjDmuI=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-3aUhRhElPq6hrZHugootnQ-1; Mon, 19 Jun 2023 08:01:21 -0400
-X-MC-Unique: 3aUhRhElPq6hrZHugootnQ-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-668728d5328so721613b3a.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 05:01:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBDc3-00076O-DD
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:04:04 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBDc0-0007sY-DG
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:04:02 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5189f49c315so3428048a12.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 05:03:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687176238; x=1689768238;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yrgcOcrpK+jiIpJ5+B6PKmWyy9++LCvABXodNiWcYnk=;
+ b=jANekh7JkEN+lbf//AQ1Y04UBksS3t8hi0BencKQkvdsNC5QPDX1WmesqDeZs7K0ta
+ lZm7JyZ63sNWJCEAVUZSnLyF01XKUjDJ6Irs7/J9L5qJW3cD9/r0TjcSnQaxMs4RyjCX
+ uzt8OvPK1ZzcgPC8G2QRQB/91tYbptnF0lLnZh3DFLIn5Hgiqd3VFS4FbhhbgvlkmTxu
+ rKfid89/iOPbN9G5VLRZdE4yZA78aZpCGJXktwWbwKQ2nMYw3qL66U/DhrGj08YO7Yew
+ I5iiPnImzFRCkeF74K46WSLSpcsJqemr/gaLX8MH+I8UJ75L00BzQwTF+0d2F3w6pONZ
+ bRlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687176080; x=1689768080;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1687176238; x=1689768238;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=trdsiw/s4e2na4YZmKwH9nDWCJlMMVjXWI1MFINwNmw=;
- b=dpoff8Cj92VCoPY27tyAv/QRvXPIdu/jVyKeCMV83KEg/suPfezddS5ZRBP1r74nSl
- HDmqmBqskofzB5B+NFEDKGMMWjL0IXvU02deotE1h+iViOCU7yggXhyRHI+fC2In3dqA
- Thd4ZJw4oisVMatQLrleACdXSnvDM1ATRukr0vQZDfNo+VC/kQOKZsSX3VsVP00OLFoV
- DNhAYldRRZJcuvsG5erdqGPGsTLxCCnX/HGmNKwfPggpKcFLDL8lQ1wW+CndnT+8rd4/
- D7Q8RYeg4764C+0ILmFJ+0c8ppqP4I5w4fbzZwybD3Y6gAwsTENzFSucBQVVaxAGaSln
- Sidg==
-X-Gm-Message-State: AC+VfDzlvDVndSTtxxa6jCFW9H8cPvib/2kSHNQusvLDmKKSNtlVKfND
- X5gRde4TXP4ksQTa6vI8HiyOpIo+VD3nldYFA6jpOQFC0UNYTxaYVsIgAa8CeDeu7/qQIlXBxPR
- 8Qys7qBLkpkYQhs4=
-X-Received: by 2002:a05:6a00:3989:b0:668:64fa:30f0 with SMTP id
- fi9-20020a056a00398900b0066864fa30f0mr8670006pfb.0.1687176080450; 
- Mon, 19 Jun 2023 05:01:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6jceYVjNpgy05Zb4myDt95l6ke7VepTvcCsfwnB0M5EMD2tKDm1xfaNFdbyA9GHcroCziiBg==
-X-Received: by 2002:a05:6a00:3989:b0:668:64fa:30f0 with SMTP id
- fi9-20020a056a00398900b0066864fa30f0mr8669956pfb.0.1687176080069; 
- Mon, 19 Jun 2023 05:01:20 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.121.2])
- by smtp.gmail.com with ESMTPSA id
- b5-20020aa78105000000b0063b6451cd01sm17434661pfi.121.2023.06.19.05.01.17
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 19 Jun 2023 05:01:19 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v2] hw/pci: prevent hotplug of devices on pcie-root-ports
- on the wrong slot
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
-Date: Mon, 19 Jun 2023 17:31:15 +0530
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, qemu-devel@nongnu.org
+ bh=yrgcOcrpK+jiIpJ5+B6PKmWyy9++LCvABXodNiWcYnk=;
+ b=cWBMU/BTnsuZf1YlmttnxocshtWZwLZxLqUq35uCTQ4niSiw4VM1/GDYefVlddHwtN
+ d7sUlhpQZs2SB/4wscpoUuJkTvVgSI4FcHhg97WBtXAUsdzoBetK+RUk40PATuY49aPF
+ 4HWVnzVRhbVws7CPjiT1cNN0rs0cbXb/gfCRiCr4AqEHvY7DWxNDp9waSpKMYZacWfG3
+ mybEa5IgmnWqj1CxunXXrLVYQuGqoo48jNWzRmW8Nx/vh75Iv8C8tJU5F87A0qrC6j8C
+ YV/Sckz3DyI6ofzxXJLMg94kuAIPdOECd8MavIt2rVlW4CYHR2nOu+8Va4dHturAkE0x
+ Vbwg==
+X-Gm-Message-State: AC+VfDyD4CDI5G19fF1LwszJYuXZ5ENYOskUyi+5f9e+t+YV41bYq8wb
+ OefM1DS1yv4t5zNERBzIzrfpT5KO977MUNwLrMy00Q==
+X-Google-Smtp-Source: ACHHUZ7/L0luIqMk9hcpy9KF1YmLMBVItW/Cwmuf3JxGLv+GBpKaLDsIwWIDZT5ld7l48emH15N1ZewdZBs6k+P2U3c=
+X-Received: by 2002:a05:6402:1651:b0:51a:1f10:8a6f with SMTP id
+ s17-20020a056402165100b0051a1f108a6fmr5857533edx.5.1687176238370; Mon, 19 Jun
+ 2023 05:03:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <j6_NJPGssQ1eBAedcPGs0eURXeMcehbzMcwJtaGvzN_FdUbQKyTP1cyEJWC759G72UNSVpX-QmQ4u6iJvZmt2c_vRO7rhryDQs9icVy5iEI=@laplante.io>
+In-Reply-To: <j6_NJPGssQ1eBAedcPGs0eURXeMcehbzMcwJtaGvzN_FdUbQKyTP1cyEJWC759G72UNSVpX-QmQ4u6iJvZmt2c_vRO7rhryDQs9icVy5iEI=@laplante.io>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 Jun 2023 13:03:46 +0100
+Message-ID: <CAFEAcA-L=LsAiLAeeQUH1AFFdNJw3D=mNtd4sQW7ZVDme4yhyw@mail.gmail.com>
+Subject: Re: Emulation of 'System OFF' mode in ARM nRF51 SoCs
+To: Chris Laplante <chris@laplante.io>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4C5219DB-B71A-4553-ABD7-26914D06BF50@redhat.com>
-References: <20230615051645.4798-1-anisinha@redhat.com>
- <20230615132659.6bcfcf0c@imammedo.users.ipa.redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,98 +86,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, 14 Jun 2023 at 14:02, Chris Laplante <chris@laplante.io> wrote:
+>
+> Hi all,
+>
+> I am working on improving nRF51 emulation. Specifically I want to impleme=
+nt the special "System OFF" mode. System OFF is a power saving mode. In thi=
+s mode, the system can only be woken up by a reset or a handful of peripher=
+als (most notably, GPIO via high/low level detection on configured pins). S=
+ystem reset is triggered upon wakeup.
+>
+> I've been digging into the QEMU mailing list and source code and have com=
+e to the conclusion that deep sleep and low power modes are not implemented=
+. There seems to be support for turning off ARM CPU cores, e.g. as used by =
+imx6_src.c. But that doesn't apply here because I only have one CPU.
 
+For QEMU, "power saving" is pretty irrelevant. We have a
+couple of different modes:
+ * CPU is executing instructions (i.e. it is powered on)
+ * CPU is not executing instructions because of some sort of
+   "halt" or "wfi" type instruction that means we should pause
+   until the next incoming interrupt
+ * CPU is not executing instructions because it is powered
+   off. When some external device in the system powers it on,
+   it will start up from reset.
 
-> On 15-Jun-2023, at 4:56 PM, Igor Mammedov <imammedo@redhat.com> wrote:
->=20
-> On Thu, 15 Jun 2023 10:46:45 +0530
-> Ani Sinha <anisinha@redhat.com> wrote:
->=20
->> PCIE root ports and other upstream ports only allow one device on =
-slot 0.
->> When hotplugging a device on a pcie root port, make sure that the =
-device
->> address passed always represents slot 0. Any other slot value would =
-be
->> illegal on a root port.
->>=20
->> CC: jusual@redhat.com
->> CC: imammedo@redhat.com
->> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> hw/pci/pci.c | 16 ++++++++++++++++
->> 1 file changed, 16 insertions(+)
->>=20
->> changelog:
->> v2: feedback from mst included.
->>=20
->> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->> index bf38905b7d..66999352cc 100644
->> --- a/hw/pci/pci.c
->> +++ b/hw/pci/pci.c
->> @@ -64,6 +64,7 @@ bool pci_available =3D true;
->> static char *pcibus_get_dev_path(DeviceState *dev);
->> static char *pcibus_get_fw_dev_path(DeviceState *dev);
->> static void pcibus_reset(BusState *qbus);
->> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>=20
->> static Property pci_props[] =3D {
->>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->> @@ -1182,6 +1183,11 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>     } else if (dev->hotplugged &&
->>                !pci_is_vf(pci_dev) &&
->>                pci_get_function_0(pci_dev)) {
->> +        /*
->> +         * populating function 0 triggers a bus scan from the guest =
-that
->> +         * exposes other non-zero functions. Hence we need to ensure =
-that
->> +         * function 0 is available.
->> +         */
->>         error_setg(errp, "PCI: slot %d function 0 already occupied by =
-%s,"
->>                    " new func %s cannot be exposed to guest.",
->>                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
->> @@ -1189,6 +1195,16 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>                    name);
->>=20
->>        return NULL;
->> +    } else if (dev->hotplugged &&
->> +               !pci_is_vf(pci_dev) &&
->> +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
->> +        /*
->> +         * If the device is being plugged into an upstream PCIE =
-port,
->=20
-> you probably mixing up downstream port with upstream one,
-> the only thing that could be plugged into upstream port
-> is PCIE switch.
->=20
-> Also I'm not sure that we should do this at all.
-> Looking at BZ it seems that QEMU crashes inside backend
-> and tear down/cleanup sequence is broken somewhere.
-> And that is the root cause, so I'd rather fix that 1st
-> and only after that consider adding workarounds if any
-> were necessary.
+The powerctl APIs work fine for single CPUs. Of course
+the external power controller device in the system which
+is calling the "power off" APIs needs to arrange to also call
+"power on" again later.
 
-I have sent an upstream patch "vhost-vdpa: do not cleanup the =
-vdpa/vhost-net structures if peer nic is present=E2=80=9D for the =
-backend vdpa cleanup issue.
+> So ultimately what I think I will try to implement is what the nRF51 refe=
+rence manual calls "Emulated System OFF mode". From the reference manual:
+>
+>     If the device is in debug interface mode, System OFF will be emulated=
+ to secure
+>     that all required resources needed for debugging are available during=
+ System OFF...
+>     Since the CPU is kept on in emulated System OFF mode, it is recommend=
+ed
+>     to add an infinite loop directly after entering System OFF, to preven=
+t the CPU from
+>     executing code that normally should not be executed.
 
->=20
->=20
->> +         * like a pcie root port, we only support one device at slot =
-0
->> +         */
->> +        error_setg(errp, "PCI: slot %d is not valid for %s",
->> +                   PCI_SLOT(devfn), name);
->> +        return NULL;
->>     }
->>=20
->>     pci_dev->devfn =3D devfn;
->=20
+The reference manual is very unclear about what this "emulated
+system off" mode actually does. I think that implementing
+real "system off" is probably simpler. For that you should be able
+to implement it something like this:
 
+ (1) the power management device implements the SYSTEMOFF register
+     to call arm_set_cpu_off() when a 1 is written
+ (2) make sure the GPIO device implements DETECT as a GPIO output
+     signal, ie an outbound qemu_irq (if we don't do this already
+     the functionality will need to be added to the device model)
+ (3) similarly for ANADETECT from the LPCOMP device
+ (4) Wire those qemu_irq GPIO outputs up to inputs on the
+     power management device. When the power management device
+     sees those signals go high and the CPU is in system off mode,
+     it should trigger the reset of the CPU by calling
+     arm_set_cpu_on_and_reset().
+
+NB: this doesn't exactly model the defined system-off behaviour,
+but it's probably close enough. Specifically, it will only reset
+the CPU itself -- all other devices in the SoC will retain their
+state across the power down. If you needed to implement the
+hw exact behaviour (only "retained registers" keep their state,
+others are reset, watchdog gets disabled, etc) you'd need to have
+the power management device tell the other devices to do a
+system-off reset in addition to dealing with powering the CPU
+off and on. It's probably not worth looking at this extra
+complication unless you really need it.
+
+thanks
+-- PMM
 
