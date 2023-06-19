@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698F1734E80
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8E6734E83
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:50:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBAZj-0001Ol-Vt; Mon, 19 Jun 2023 04:49:28 -0400
+	id 1qBAZl-0001TV-F7; Mon, 19 Jun 2023 04:49:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qBAZR-0001Fr-BU
+ id 1qBAZR-0001G2-Vk
  for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:49:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qBAZN-000259-Lr
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:49:07 -0400
+ id 1qBAZN-00025M-MJ
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:49:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687164538;
+ s=mimecast20190719; t=1687164541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KfmfqkW+a82RtbiHxgsBxYiNZNa9bE4b3igtJ1Gi6AE=;
- b=RWEb24SEiNMfypRU4B8ImZ1ihhS7hu+x4eOlpyWNRiOhyPqBj7gjGpew8N8yTLnR7aHfCe
- Th2HSbpQMWuc0TDSxLYzySnbQKrFY0m6AHv0K6e4rOdnW+85VDmWV836qYpRxBzXnXcj9h
- j5VKPzTpG9EJSjdF9qEmnpS+syjb3y4=
+ bh=yHn9LPLzaNF2tTMseWtcjwnqCWR/cMo2M3gd+EAUw4I=;
+ b=KSiS5gaBMXQ7Nvu/9JnfuglpXf9fkZmZjVf+BU9gHVIylDQUBCNkrZr9wv+7i/mN6xtf7M
+ dcavIjnBD3HvnBQTl3szYNYnuXLjKuzNgaDhY3sCXbhuxE31q+TkIXhILZLeUF22SSEEV8
+ q+ZKP9s54puq61W6TbpBJCg1HoXP71M=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-3-TSH4H4aBNN6IlV_LEg1R6g-1; Mon, 19 Jun 2023 04:48:56 -0400
-X-MC-Unique: TSH4H4aBNN6IlV_LEg1R6g-1
+ us-mta-330-rIy8hXVpOwuB-379krbNEQ-1; Mon, 19 Jun 2023 04:48:59 -0400
+X-MC-Unique: rIy8hXVpOwuB-379krbNEQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A0273C02B70
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:48:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5AC72A5957D
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:48:58 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.45.225.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 972FD40F01A;
- Mon, 19 Jun 2023 08:48:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1365D40F01A;
+ Mon, 19 Jun 2023 08:48:57 +0000 (UTC)
 From: Bilal Elmoussaoui <belmouss@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Bilal Elmoussaoui <belmouss@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 1/2] ui/touch: Move event handling to a common helper
-Date: Mon, 19 Jun 2023 10:48:13 +0200
-Message-ID: <20230619084841.453130-3-belmouss@redhat.com>
+Subject: [PATCH v3 2/2] ui/dbus: Expose a touch device interface
+Date: Mon, 19 Jun 2023 10:48:14 +0200
+Message-ID: <20230619084841.453130-4-belmouss@redhat.com>
 In-Reply-To: <20230619084841.453130-2-belmouss@redhat.com>
 References: <20230619084841.453130-2-belmouss@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=belmouss@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=belmouss@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,220 +80,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To share code between the GTK and DBus UI bakcends
-see the next commit for details
+So that clients making use of the DBus backend could
+send touch events through the new org.qemu.Display1.Touch
+interface
 
 Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/ui/console.h | 15 ++++++++++
- ui/console.c         | 65 ++++++++++++++++++++++++++++++++++++++++++++
- ui/gtk.c             | 61 ++++-------------------------------------
- 3 files changed, 85 insertions(+), 56 deletions(-)
+ ui/dbus-console.c    | 59 +++++++++++++++++++++++++++++++++++++++++++-
+ ui/dbus-display1.xml | 45 +++++++++++++++++++++++++++++++--
+ ui/trace-events      |  1 +
+ 3 files changed, 102 insertions(+), 3 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index ae5ec46..2093e2a 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -5,6 +5,7 @@
- #include "qom/object.h"
- #include "qemu/notify.h"
- #include "qapi/qapi-types-ui.h"
-+#include "ui/input.h"
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index f77bc49..bc97614 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -32,6 +32,8 @@
  
- #ifdef CONFIG_OPENGL
- # include <epoxy/gl.h>
-@@ -95,6 +96,20 @@ bool kbd_put_qcode_console(QemuConsole *s, int qcode, bool ctrl);
- void kbd_put_string_console(QemuConsole *s, const char *str, int len);
- void kbd_put_keysym(int keysym);
+ #include "dbus.h"
  
-+/* Touch devices */
-+typedef struct touch_slot {
-+    int x;
-+    int y;
-+    int tracking_id;
-+} touch_slot;
++static struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX];
 +
-+void console_handle_touch_event(QemuConsole *con,
-+                                struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX],
-+                                uint64_t num_slot,
-+                                int width, int height,
-+                                double x, double y,
-+                                InputMultiTouchType type,
-+                                Error **errp);
- /* consoles */
+ struct _DBusDisplayConsole {
+     GDBusObjectSkeleton parent_instance;
+     DisplayChangeListener dcl;
+@@ -44,6 +46,7 @@ struct _DBusDisplayConsole {
+     QKbdState *kbd;
  
- #define TYPE_QEMU_CONSOLE "qemu-console"
-diff --git a/ui/console.c b/ui/console.c
-index e173731..63e952e 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1635,6 +1635,71 @@ static bool console_compatible_with(QemuConsole *con,
-     return true;
+     QemuDBusDisplay1Mouse *iface_mouse;
++    QemuDBusDisplay1MultiTouch *iface_touch;
+     gboolean last_set;
+     guint last_x;
+     guint last_y;
+@@ -345,6 +348,46 @@ dbus_mouse_rel_motion(DBusDisplayConsole *ddc,
+     return DBUS_METHOD_INVOCATION_HANDLED;
  }
  
-+void console_handle_touch_event(QemuConsole *con,
-+                                struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX],
-+                                uint64_t num_slot,
-+                                int width, int height,
-+                                double x, double y,
-+                                InputMultiTouchType type,
-+                                Error **errp)
++static gboolean
++dbus_touch_send_event(DBusDisplayConsole *ddc,
++                      GDBusMethodInvocation *invocation,
++                      guint kind, uint64_t num_slot,
++                      double x, double y)
 +{
-+    struct touch_slot *slot;
-+    bool needs_sync = false;
-+    int update;
-+    int i;
++    Error *error = NULL;
++    int width, height;
++    trace_dbus_touch_send_event(kind, num_slot, x, y);
 +
-+    if (num_slot >= INPUT_EVENT_SLOTS_MAX) {
-+        error_setg(errp,
-+                   "Unexpected touch slot number: % " PRId64" >= %d",
-+                   num_slot, INPUT_EVENT_SLOTS_MAX);
-+        return;
++    if (kind != INPUT_MULTI_TOUCH_TYPE_BEGIN &&
++        kind != INPUT_MULTI_TOUCH_TYPE_UPDATE &&
++        kind != INPUT_MULTI_TOUCH_TYPE_CANCEL &&
++        kind != INPUT_MULTI_TOUCH_TYPE_END)
++    {
++        g_dbus_method_invocation_return_error(
++            invocation, DBUS_DISPLAY_ERROR,
++            DBUS_DISPLAY_ERROR_INVALID,
++            "Invalid touch event kind");
++        return DBUS_METHOD_INVOCATION_HANDLED;
 +    }
++    width = qemu_console_get_width(ddc->dcl.con, 0);
++    height = qemu_console_get_height(ddc->dcl.con, 0);
 +
-+    slot = &touch_slots[num_slot];
-+    slot->x = x;
-+    slot->y = y;
-+
-+    if (type == INPUT_MULTI_TOUCH_TYPE_BEGIN) {
-+        slot->tracking_id = num_slot;
++    console_handle_touch_event(ddc->dcl.con, touch_slots,
++                               num_slot, width, height,
++                               x, y, kind, &error);
++    if (error != NULL) {
++        g_dbus_method_invocation_return_error(
++            invocation, DBUS_DISPLAY_ERROR,
++            DBUS_DISPLAY_ERROR_INVALID,
++            error_get_pretty(error), NULL);
++        error_free(error);
++    } else {
++        qemu_dbus_display1_multi_touch_complete_send_event(ddc->iface_touch,
++                                                           invocation);
 +    }
-+
-+    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; ++i) {
-+        if (i == num_slot) {
-+            update = type;
-+        } else {
-+            update = INPUT_MULTI_TOUCH_TYPE_UPDATE;
-+        }
-+
-+        slot = &touch_slots[i];
-+
-+        if (slot->tracking_id == -1) {
-+            continue;
-+        }
-+
-+        if (update == INPUT_MULTI_TOUCH_TYPE_END) {
-+            slot->tracking_id = -1;
-+            qemu_input_queue_mtt(con, update, i, slot->tracking_id);
-+            needs_sync = true;
-+        } else {
-+            qemu_input_queue_mtt(con, update, i, slot->tracking_id);
-+            qemu_input_queue_btn(con, INPUT_BUTTON_TOUCH, true);
-+            qemu_input_queue_mtt_abs(con,
-+                                    INPUT_AXIS_X, (int) slot->x,
-+                                    0, width,
-+                                    i, slot->tracking_id);
-+            qemu_input_queue_mtt_abs(con,
-+                                    INPUT_AXIS_Y, (int) slot->y,
-+                                    0, height,
-+                                    i, slot->tracking_id);
-+            needs_sync = true;
-+        }
-+    }
-+
-+    if (needs_sync) {
-+        qemu_input_event_sync();
-+    }
++    return DBUS_METHOD_INVOCATION_HANDLED;
 +}
 +
- void qemu_console_set_display_gl_ctx(QemuConsole *con, DisplayGLCtx *gl)
- {
-     /* display has opengl support */
-diff --git a/ui/gtk.c b/ui/gtk.c
-index e50f950..e09e164 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -130,11 +130,6 @@ typedef struct VCChardev VCChardev;
- DECLARE_INSTANCE_CHECKER(VCChardev, VC_CHARDEV,
-                          TYPE_CHARDEV_VC)
+ static gboolean
+ dbus_mouse_set_pos(DBusDisplayConsole *ddc,
+                    GDBusMethodInvocation *invocation,
+@@ -440,7 +483,7 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
+     g_autofree char *label = NULL;
+     char device_addr[256] = "";
+     DBusDisplayConsole *ddc;
+-    int idx;
++    int idx, i;
  
--struct touch_slot {
--    int x;
--    int y;
--    int tracking_id;
--};
- static struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX];
+     assert(display);
+     assert(con);
+@@ -495,6 +538,20 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
+     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(ddc),
+         G_DBUS_INTERFACE_SKELETON(ddc->iface_mouse));
  
- bool gtk_use_gl_area;
-@@ -1068,27 +1063,12 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
-                                void *opaque)
- {
-     VirtualConsole *vc = opaque;
--    struct touch_slot *slot;
-     uint64_t num_slot = GPOINTER_TO_UINT(touch->sequence);
--    bool needs_sync = false;
--    int update;
-     int type = -1;
--    int i;
--
--    if (num_slot >= INPUT_EVENT_SLOTS_MAX) {
--        warn_report("gtk: unexpected touch slot number: % " PRId64" >= %d\n",
--                    num_slot, INPUT_EVENT_SLOTS_MAX);
--        return FALSE;
--    }
--
--    slot = &touch_slots[num_slot];
--    slot->x = touch->x;
--    slot->y = touch->y;
++    ddc->iface_touch = qemu_dbus_display1_multi_touch_skeleton_new();
++    g_object_connect(ddc->iface_touch,
++        "swapped-signal::handle-send-event", dbus_touch_send_event, ddc,
++        NULL);
++    qemu_dbus_display1_multi_touch_set_max_slots(ddc->iface_touch,
++                                                 INPUT_EVENT_SLOTS_MAX);
++    g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(ddc),
++        G_DBUS_INTERFACE_SKELETON(ddc->iface_touch));
++
++    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; i++) {
++        struct touch_slot *slot = &touch_slots[i];
++        slot->tracking_id = -1;
++    }
++
+     register_displaychangelistener(&ddc->dcl);
+     ddc->mouse_mode_notifier.notify = dbus_mouse_mode_change;
+     qemu_add_mouse_mode_change_notifier(&ddc->mouse_mode_notifier);
+diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+index c3b2293..cc0c9b6 100644
+--- a/ui/dbus-display1.xml
++++ b/ui/dbus-display1.xml
+@@ -39,8 +39,9 @@
+       "Text" (see :dbus:prop:`Type` and other properties).
  
-     switch (touch->type) {
-     case GDK_TOUCH_BEGIN:
-         type = INPUT_MULTI_TOUCH_TYPE_BEGIN;
--        slot->tracking_id = num_slot;
-         break;
-     case GDK_TOUCH_UPDATE:
-         type = INPUT_MULTI_TOUCH_TYPE_UPDATE;
-@@ -1099,44 +1079,13 @@ static gboolean gd_touch_event(GtkWidget *widget, GdkEventTouch *touch,
-         break;
-     default:
-         warn_report("gtk: unexpected touch event type\n");
-+        return FALSE;
-     }
+       Interactions with a console may be done with
+-      :dbus:iface:`org.qemu.Display1.Keyboard` and
+-      :dbus:iface:`org.qemu.Display1.Mouse` interfaces when available.
++      :dbus:iface:`org.qemu.Display1.Keyboard`,
++      :dbus:iface:`org.qemu.Display1.Mouse` and
++      :dbus:iface:`org.qemu.Display1.MultiTouch` interfaces when available.
+   -->
+   <interface name="org.qemu.Display1.Console">
+     <!--
+@@ -236,6 +237,46 @@
+     <property name="IsAbsolute" type="b" access="read"/>
+   </interface>
  
--    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; ++i) {
--        if (i == num_slot) {
--            update = type;
--        } else {
--            update = INPUT_MULTI_TOUCH_TYPE_UPDATE;
--        }
--
--        slot = &touch_slots[i];
--
--        if (slot->tracking_id == -1) {
--            continue;
--        }
--
--        if (update == INPUT_MULTI_TOUCH_TYPE_END) {
--            slot->tracking_id = -1;
--            qemu_input_queue_mtt(vc->gfx.dcl.con, update, i, slot->tracking_id);
--            needs_sync = true;
--        } else {
--            qemu_input_queue_mtt(vc->gfx.dcl.con, update, i, slot->tracking_id);
--            qemu_input_queue_btn(vc->gfx.dcl.con, INPUT_BUTTON_TOUCH, true);
--            qemu_input_queue_mtt_abs(vc->gfx.dcl.con,
--                                     INPUT_AXIS_X, (int) slot->x,
--                                     0, surface_width(vc->gfx.ds),
--                                     i, slot->tracking_id);
--            qemu_input_queue_mtt_abs(vc->gfx.dcl.con,
--                                     INPUT_AXIS_Y, (int) slot->y,
--                                     0, surface_height(vc->gfx.ds),
--                                     i, slot->tracking_id);
--            needs_sync = true;
--        }
--    }
--
--    if (needs_sync) {
--        qemu_input_event_sync();
--    }
--
-+    console_handle_touch_event(vc->gfx.dcl.con, touch_slots,
-+                               num_slot, surface_width(vc->gfx.ds),
-+                               surface_height(vc->gfx.ds), touch->x,
-+                               touch->y, type, &error_warn);
-     return TRUE;
- }
++  <!--
++      org.qemu.Display1.MultiTouch:
++
++      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
++      :dbus:iface:`~org.qemu.Display1.Console` documentation).
++
++      .. _dbus-kind-values:
++
++      **Kind values**::
++
++        Begin       = 0
++        Update      = 1
++        End         = 2
++        Cancel      = 3
++  -->
++  <interface name="org.qemu.Display1.MultiTouch">
++    <!--
++        SendEvent:
++        @kind: The touch event kind
++        @num_slot: The slot number.
++        @x: The x coordinates.
++        @y: The y coordinates.
++
++        Send a touch gesture event.
++    -->
++    <method name="SendEvent">
++      <arg type="u" name="kind" direction="in"/>
++      <arg type="t" name="num_slot" direction="in"/>
++      <arg type="d" name="x" direction="in"/>
++      <arg type="d" name="y" direction="in"/>
++    </method>
++
++    <!--
++        MaxSlots:
++
++        The maximum number of slots.
++    -->
++    <property name="MaxSlots" type="i" access="read"/>
++  </interface>
++
+   <!--
+       org.qemu.Display1.Listener:
  
+diff --git a/ui/trace-events b/ui/trace-events
+index 6747361..138a09c 100644
+--- a/ui/trace-events
++++ b/ui/trace-events
+@@ -154,6 +154,7 @@ dbus_mouse_press(unsigned int button) "button %u"
+ dbus_mouse_release(unsigned int button) "button %u"
+ dbus_mouse_set_pos(unsigned int x, unsigned int y) "x=%u, y=%u"
+ dbus_mouse_rel_motion(int dx, int dy) "dx=%d, dy=%d"
++dbus_touch_send_event(unsigned int kind, uint32_t num_slot, uint32_t x, uint32_t y) "kind=%u, num_slot=%u, x=%d, y=%d"
+ dbus_update(int x, int y, int w, int h) "x=%d, y=%d, w=%d, h=%d"
+ dbus_clipboard_grab_failed(void) ""
+ dbus_clipboard_register(const char *bus_name) "peer %s"
 -- 
 2.41.0
 
