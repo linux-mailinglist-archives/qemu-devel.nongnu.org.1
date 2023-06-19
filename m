@@ -2,69 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8E6734E83
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9021734EB6
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 10:54:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBAZl-0001TV-F7; Mon, 19 Jun 2023 04:49:29 -0400
+	id 1qBAcy-0004Nz-SW; Mon, 19 Jun 2023 04:52:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qBAZR-0001G2-Vk
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:49:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qBAZN-00025M-MJ
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:49:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687164541;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yHn9LPLzaNF2tTMseWtcjwnqCWR/cMo2M3gd+EAUw4I=;
- b=KSiS5gaBMXQ7Nvu/9JnfuglpXf9fkZmZjVf+BU9gHVIylDQUBCNkrZr9wv+7i/mN6xtf7M
- dcavIjnBD3HvnBQTl3szYNYnuXLjKuzNgaDhY3sCXbhuxE31q+TkIXhILZLeUF22SSEEV8
- q+ZKP9s54puq61W6TbpBJCg1HoXP71M=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-330-rIy8hXVpOwuB-379krbNEQ-1; Mon, 19 Jun 2023 04:48:59 -0400
-X-MC-Unique: rIy8hXVpOwuB-379krbNEQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5AC72A5957D
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:48:58 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.45.225.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1365D40F01A;
- Mon, 19 Jun 2023 08:48:57 +0000 (UTC)
-From: Bilal Elmoussaoui <belmouss@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Bilal Elmoussaoui <belmouss@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 2/2] ui/dbus: Expose a touch device interface
-Date: Mon, 19 Jun 2023 10:48:14 +0200
-Message-ID: <20230619084841.453130-4-belmouss@redhat.com>
-In-Reply-To: <20230619084841.453130-2-belmouss@redhat.com>
-References: <20230619084841.453130-2-belmouss@redhat.com>
+ (Exim 4.90_1) (envelope-from <like.xu.linux@gmail.com>)
+ id 1qBAcp-0004JA-RP
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:52:42 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <like.xu.linux@gmail.com>)
+ id 1qBAcn-0003XF-Rw
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 04:52:39 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1b52132181aso13878245ad.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 01:52:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687164756; x=1689756756;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o32zhHPH9dlxXlg+cTuJYce/UWbfkcquDipPvOEOnS0=;
+ b=rX4AYXOcRmpTowP6pa8hgvZgRZW/8ttJaztoyr9rPMgotBNE9djJAL8t8ahcEZ9rHD
+ qICpWZZ7GXIYKIPBjOT1OM8oVmAXNh/ObbesLWgk6n/ydZCGQ5A1vNnK+Cy8tdiBxXf0
+ SmxpPE3Bhaf2zXOXtJIl2CGHdZsd/pb5rOfu5IKDm8er8HfBTS1NiUlS9I4s0cTlvSBa
+ PktcAeV2KOx0g3jTigvthGtI4MxXuFFcXv7yMeg9ANe38m1yM9FyhtkU+hxV0+S8r4b6
+ Wn7574gsL8BDvPSFwNZLYLtcqWm2f36wU54mEf1PVomCGrNa1J9zxR8L24OFrOb5grPU
+ v6XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687164756; x=1689756756;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o32zhHPH9dlxXlg+cTuJYce/UWbfkcquDipPvOEOnS0=;
+ b=PZYQQ42Ta6dUor+Cjye0nfSnCcVVNdj5rpgFJwGxA99FdQ50cSc3QZS1KVtVCRBI9M
+ M65qEWjMJBrS6D0inuBKKaCLFRoMvafUjWLGONHxMwkfppZ1kup+I2OdNaNup7MBsY+1
+ avgv6JRkCAABuDcoSOX5qsZCSfL3EsX9rPcB5lrjie7LuQzlGczbSXueieQRqMcCbn2Y
+ pYo6QFZhcUf8j4btlETiQQkX+ICE7zbmNBDmyoSAjFjportBI64drYCwjv6GsKis7pp4
+ hDL/ogJahZhIMhQFBy6LTSInH5hUPUPLiBthTECLwX6/B/lmRZN4lsEqp/221DQZ8vsx
+ pODA==
+X-Gm-Message-State: AC+VfDzui+WhKnLNuYQGD7I8ThSZw0qHygcZrHyMalRX89qSRf3kskpU
+ rZo4qrR/6E9aXSVMcxsKiAs=
+X-Google-Smtp-Source: ACHHUZ457fDHQcHQZeJbaCaNYKn6K1hwnN2BhiUC7y/R6VnJXGQlOND+/7n93OHM9VShzMn04QLVFw==
+X-Received: by 2002:a17:902:ec86:b0:1b0:378e:279f with SMTP id
+ x6-20020a170902ec8600b001b0378e279fmr5972089plg.19.1687164755880; 
+ Mon, 19 Jun 2023 01:52:35 -0700 (PDT)
+Received: from [192.168.255.10] ([103.7.29.32])
+ by smtp.gmail.com with ESMTPSA id
+ t11-20020a1709028c8b00b001ae0152d280sm19799901plo.193.2023.06.19.01.52.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Jun 2023 01:52:35 -0700 (PDT)
+Message-ID: <36d749a2-b349-e5f4-3683-a4d595bafec9@gmail.com>
+Date: Mon, 19 Jun 2023 16:52:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=belmouss@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH v2 0/2] target/i386/kvm: fix two svm pmu virtualization
+ bugs
+Content-Language: en-US
+To: Dongli Zhang <dongli.zhang@oracle.com>, zhenyuw@linux.intel.com
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, joe.jin@oracle.com,
+ groug@kaod.org, lyan@digitalocean.com, qemu-devel@nongnu.org,
+ kvm list <kvm@vger.kernel.org>
+References: <20221202002256.39243-1-dongli.zhang@oracle.com>
+ <895f5505-db8c-afa4-bfb1-26ecbe27690a@oracle.com>
+ <eea7b6ba-c0bd-8a1e-b2a8-2f08c954628b@oracle.com>
+From: Like Xu <like.xu.linux@gmail.com>
+In-Reply-To: <eea7b6ba-c0bd-8a1e-b2a8-2f08c954628b@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=like.xu.linux@gmail.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,192 +99,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So that clients making use of the DBus backend could
-send touch events through the new org.qemu.Display1.Touch
-interface
+I think we've been stuck here too long. Sorry Dongli.
 
-Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- ui/dbus-console.c    | 59 +++++++++++++++++++++++++++++++++++++++++++-
- ui/dbus-display1.xml | 45 +++++++++++++++++++++++++++++++--
- ui/trace-events      |  1 +
- 3 files changed, 102 insertions(+), 3 deletions(-)
++zhenyu, could you get someone to follow up on this, or I will start working on 
+that.
 
-diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-index f77bc49..bc97614 100644
---- a/ui/dbus-console.c
-+++ b/ui/dbus-console.c
-@@ -32,6 +32,8 @@
- 
- #include "dbus.h"
- 
-+static struct touch_slot touch_slots[INPUT_EVENT_SLOTS_MAX];
-+
- struct _DBusDisplayConsole {
-     GDBusObjectSkeleton parent_instance;
-     DisplayChangeListener dcl;
-@@ -44,6 +46,7 @@ struct _DBusDisplayConsole {
-     QKbdState *kbd;
- 
-     QemuDBusDisplay1Mouse *iface_mouse;
-+    QemuDBusDisplay1MultiTouch *iface_touch;
-     gboolean last_set;
-     guint last_x;
-     guint last_y;
-@@ -345,6 +348,46 @@ dbus_mouse_rel_motion(DBusDisplayConsole *ddc,
-     return DBUS_METHOD_INVOCATION_HANDLED;
- }
- 
-+static gboolean
-+dbus_touch_send_event(DBusDisplayConsole *ddc,
-+                      GDBusMethodInvocation *invocation,
-+                      guint kind, uint64_t num_slot,
-+                      double x, double y)
-+{
-+    Error *error = NULL;
-+    int width, height;
-+    trace_dbus_touch_send_event(kind, num_slot, x, y);
-+
-+    if (kind != INPUT_MULTI_TOUCH_TYPE_BEGIN &&
-+        kind != INPUT_MULTI_TOUCH_TYPE_UPDATE &&
-+        kind != INPUT_MULTI_TOUCH_TYPE_CANCEL &&
-+        kind != INPUT_MULTI_TOUCH_TYPE_END)
-+    {
-+        g_dbus_method_invocation_return_error(
-+            invocation, DBUS_DISPLAY_ERROR,
-+            DBUS_DISPLAY_ERROR_INVALID,
-+            "Invalid touch event kind");
-+        return DBUS_METHOD_INVOCATION_HANDLED;
-+    }
-+    width = qemu_console_get_width(ddc->dcl.con, 0);
-+    height = qemu_console_get_height(ddc->dcl.con, 0);
-+
-+    console_handle_touch_event(ddc->dcl.con, touch_slots,
-+                               num_slot, width, height,
-+                               x, y, kind, &error);
-+    if (error != NULL) {
-+        g_dbus_method_invocation_return_error(
-+            invocation, DBUS_DISPLAY_ERROR,
-+            DBUS_DISPLAY_ERROR_INVALID,
-+            error_get_pretty(error), NULL);
-+        error_free(error);
-+    } else {
-+        qemu_dbus_display1_multi_touch_complete_send_event(ddc->iface_touch,
-+                                                           invocation);
-+    }
-+    return DBUS_METHOD_INVOCATION_HANDLED;
-+}
-+
- static gboolean
- dbus_mouse_set_pos(DBusDisplayConsole *ddc,
-                    GDBusMethodInvocation *invocation,
-@@ -440,7 +483,7 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-     g_autofree char *label = NULL;
-     char device_addr[256] = "";
-     DBusDisplayConsole *ddc;
--    int idx;
-+    int idx, i;
- 
-     assert(display);
-     assert(con);
-@@ -495,6 +538,20 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(ddc),
-         G_DBUS_INTERFACE_SKELETON(ddc->iface_mouse));
- 
-+    ddc->iface_touch = qemu_dbus_display1_multi_touch_skeleton_new();
-+    g_object_connect(ddc->iface_touch,
-+        "swapped-signal::handle-send-event", dbus_touch_send_event, ddc,
-+        NULL);
-+    qemu_dbus_display1_multi_touch_set_max_slots(ddc->iface_touch,
-+                                                 INPUT_EVENT_SLOTS_MAX);
-+    g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(ddc),
-+        G_DBUS_INTERFACE_SKELETON(ddc->iface_touch));
-+
-+    for (i = 0; i < INPUT_EVENT_SLOTS_MAX; i++) {
-+        struct touch_slot *slot = &touch_slots[i];
-+        slot->tracking_id = -1;
-+    }
-+
-     register_displaychangelistener(&ddc->dcl);
-     ddc->mouse_mode_notifier.notify = dbus_mouse_mode_change;
-     qemu_add_mouse_mode_change_notifier(&ddc->mouse_mode_notifier);
-diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
-index c3b2293..cc0c9b6 100644
---- a/ui/dbus-display1.xml
-+++ b/ui/dbus-display1.xml
-@@ -39,8 +39,9 @@
-       "Text" (see :dbus:prop:`Type` and other properties).
- 
-       Interactions with a console may be done with
--      :dbus:iface:`org.qemu.Display1.Keyboard` and
--      :dbus:iface:`org.qemu.Display1.Mouse` interfaces when available.
-+      :dbus:iface:`org.qemu.Display1.Keyboard`,
-+      :dbus:iface:`org.qemu.Display1.Mouse` and
-+      :dbus:iface:`org.qemu.Display1.MultiTouch` interfaces when available.
-   -->
-   <interface name="org.qemu.Display1.Console">
-     <!--
-@@ -236,6 +237,46 @@
-     <property name="IsAbsolute" type="b" access="read"/>
-   </interface>
- 
-+  <!--
-+      org.qemu.Display1.MultiTouch:
-+
-+      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
-+      :dbus:iface:`~org.qemu.Display1.Console` documentation).
-+
-+      .. _dbus-kind-values:
-+
-+      **Kind values**::
-+
-+        Begin       = 0
-+        Update      = 1
-+        End         = 2
-+        Cancel      = 3
-+  -->
-+  <interface name="org.qemu.Display1.MultiTouch">
-+    <!--
-+        SendEvent:
-+        @kind: The touch event kind
-+        @num_slot: The slot number.
-+        @x: The x coordinates.
-+        @y: The y coordinates.
-+
-+        Send a touch gesture event.
-+    -->
-+    <method name="SendEvent">
-+      <arg type="u" name="kind" direction="in"/>
-+      <arg type="t" name="num_slot" direction="in"/>
-+      <arg type="d" name="x" direction="in"/>
-+      <arg type="d" name="y" direction="in"/>
-+    </method>
-+
-+    <!--
-+        MaxSlots:
-+
-+        The maximum number of slots.
-+    -->
-+    <property name="MaxSlots" type="i" access="read"/>
-+  </interface>
-+
-   <!--
-       org.qemu.Display1.Listener:
- 
-diff --git a/ui/trace-events b/ui/trace-events
-index 6747361..138a09c 100644
---- a/ui/trace-events
-+++ b/ui/trace-events
-@@ -154,6 +154,7 @@ dbus_mouse_press(unsigned int button) "button %u"
- dbus_mouse_release(unsigned int button) "button %u"
- dbus_mouse_set_pos(unsigned int x, unsigned int y) "x=%u, y=%u"
- dbus_mouse_rel_motion(int dx, int dy) "dx=%d, dy=%d"
-+dbus_touch_send_event(unsigned int kind, uint32_t num_slot, uint32_t x, uint32_t y) "kind=%u, num_slot=%u, x=%d, y=%d"
- dbus_update(int x, int y, int w, int h) "x=%d, y=%d, w=%d, h=%d"
- dbus_clipboard_grab_failed(void) ""
- dbus_clipboard_register(const char *bus_name) "peer %s"
--- 
-2.41.0
-
+On 9/1/2023 9:19 am, Dongli Zhang wrote:
+> Ping?
+> 
+> About [PATCH v2 2/2], the bad thing is that the customer will not be able to
+> notice the issue, that is, the "Broken BIOS detected" in dmesg, immediately.
+> 
+> As a result, the customer VM many panic randomly anytime in the future (once
+> issue is encountered) if "/proc/sys/kernel/unknown_nmi_panic" is enabled.
+> 
+> Thank you very much!
+> 
+> Dongli Zhang
+> 
+> On 12/19/22 06:45, Dongli Zhang wrote:
+>> Can I get feedback for this patchset, especially the [PATCH v2 2/2]?
+>>
+>> About the [PATCH v2 2/2], currently the issue impacts the usage of PMUs on AMD
+>> VM, especially the below case:
+>>
+>> 1. Enable panic on nmi.
+>> 2. Use perf to monitor the performance of VM. Although without a test, I think
+>> the nmi watchdog has the same effect.
+>> 3. A sudden system reset, or a kernel panic (kdump/kexec).
+>> 4. After reboot, there will be random unknown NMI.
+>> 5. Unfortunately, the "panic on nmi" may panic the VM randomly at any time.
+>>
+>> Thank you very much!
+>>
+>> Dongli Zhang
+>>
+>> On 12/1/22 16:22, Dongli Zhang wrote:
+>>> This patchset is to fix two svm pmu virtualization bugs, x86 only.
+>>>
+>>> version 1:
+>>> https://lore.kernel.org/all/20221119122901.2469-1-dongli.zhang@oracle.com/
+>>>
+>>> 1. The 1st bug is that "-cpu,-pmu" cannot disable svm pmu virtualization.
+>>>
+>>> To use "-cpu EPYC" or "-cpu host,-pmu" cannot disable the pmu
+>>> virtualization. There is still below at the VM linux side ...
+>>>
+>>> [    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+>>>
+>>> ... although we expect something like below.
+>>>
+>>> [    0.596381] Performance Events: PMU not available due to virtualization, using software events only.
+>>> [    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
+>>>
+>>> The 1st patch has introduced a new x86 only accel/kvm property
+>>> "pmu-cap-disabled=true" to disable the pmu virtualization via
+>>> KVM_PMU_CAP_DISABLE.
+>>>
+>>> I considered 'KVM_X86_SET_MSR_FILTER' initially before patchset v1.
+>>> Since both KVM_X86_SET_MSR_FILTER and KVM_PMU_CAP_DISABLE are VM ioctl. I
+>>> finally used the latter because it is easier to use.
+>>>
+>>>
+>>> 2. The 2nd bug is that un-reclaimed perf events (after QEMU system_reset)
+>>> at the KVM side may inject random unwanted/unknown NMIs to the VM.
+>>>
+>>> The svm pmu registers are not reset during QEMU system_reset.
+>>>
+>>> (1). The VM resets (e.g., via QEMU system_reset or VM kdump/kexec) while it
+>>> is running "perf top". The pmu registers are not disabled gracefully.
+>>>
+>>> (2). Although the x86_cpu_reset() resets many registers to zero, the
+>>> kvm_put_msrs() does not puts AMD pmu registers to KVM side. As a result,
+>>> some pmu events are still enabled at the KVM side.
+>>>
+>>> (3). The KVM pmc_speculative_in_use() always returns true so that the events
+>>> will not be reclaimed. The kvm_pmc->perf_event is still active.
+>>>
+>>> (4). After the reboot, the VM kernel reports below error:
+>>>
+>>> [    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
+>>> [    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
+>>>
+>>> (5). In a worse case, the active kvm_pmc->perf_event is still able to
+>>> inject unknown NMIs randomly to the VM kernel.
+>>>
+>>> [...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
+>>>
+>>> The 2nd patch is to fix the issue by resetting AMD pmu registers as well as
+>>> Intel registers.
+>>>
+>>>
+>>> This patchset does not cover PerfMonV2, until the below patchset is merged
+>>> into the KVM side.
+>>>
+>>> [PATCH v3 0/8] KVM: x86: Add AMD Guest PerfMonV2 PMU support
+>>> https://lore.kernel.org/all/20221111102645.82001-1-likexu@tencent.com/
+>>>
+>>>
+>>> Dongli Zhang (2):
+>>>        target/i386/kvm: introduce 'pmu-cap-disabled' to set KVM_PMU_CAP_DISABLE
+>>>        target/i386/kvm: get and put AMD pmu registers
+>>>
+>>>   accel/kvm/kvm-all.c      |   1 +
+>>>   include/sysemu/kvm_int.h |   1 +
+>>>   qemu-options.hx          |   7 +++
+>>>   target/i386/cpu.h        |   5 ++
+>>>   target/i386/kvm/kvm.c    | 129 +++++++++++++++++++++++++++++++++++++++++-
+>>>   5 files changed, 141 insertions(+), 2 deletions(-)
+>>>
+>>> Thank you very much!
+>>>
+>>> Dongli Zhang
+>>>
+>>>
+> 
+> 
 
