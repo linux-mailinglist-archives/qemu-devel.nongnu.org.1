@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410F77359F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E1C7359F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:45:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBG7c-0001OI-3A; Mon, 19 Jun 2023 10:44:48 -0400
+	id 1qBG88-0001gg-NM; Mon, 19 Jun 2023 10:45:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBG7a-0001O1-Cl
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:44:46 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBG7Y-00079y-LT
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:44:46 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4f87592ecaeso803588e87.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:44:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687185881; x=1689777881;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OGdtDTFYiQTDBFYfZ4oBFyIXPm72bZOjt2mRUQqE67k=;
- b=p44dEAVpdmMaSE0FUIU8AqOaEN3P6W27jonTLs8KZVTgtdnXFgDlZkRV1B0rdujwxM
- j679mlYtKoy3VPb6Qz/GQMhJWpEuq8U3qy7bBUiys9INPbfjNTFCy2RRqQ7Jm5twdsYT
- EOGQz1jHBtUgLJNC2rwb8LZ5DHDguSuOCKj7mgwnM1znPALQH/pCKQuYTNRXY/yROHj/
- SiztD3d2UbaZD3XcIS4zO0RRQLoCT69Tl3EaNhcc0g72yyKRKdk3uNDOcTxZt2u9TXi9
- dIY4uyDAJ9XHqZpwTZQiCGsrqVHpSO2Te2TcI2y5UDKahSnBaQ3ZzFHblmyjqeG/kjNX
- uWuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687185881; x=1689777881;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OGdtDTFYiQTDBFYfZ4oBFyIXPm72bZOjt2mRUQqE67k=;
- b=BS07tDGAMyEwiAn7qGnY3RKh+9CmvlgGOxz28L2CLA5J3E3zpIxBXBu0LGbmDD+Peg
- VYcQndZw30UOw0qFXEiia3gUHW3oHBzVj8hdzRhs3zcMPP75u6NRmgrFn0YPpVuSORIP
- BqI/WxFgV3MIA7+dTogHGIqx54sOxjYDkTXV9xII0zcAHONPRBQswx4dpNfD4AiWkfG4
- c5bkMzQCth/16hXXAsyeB8/FRLvT0VEfLDDyu39QDzE5CmhSytvvhr2tf13ZNAetbHPn
- dKh21jtl8Ce6XAdnohPtYJz2wcHOGtZIX4+5CJKjUDArUD3ijSQ13tFK9mHB73plrMY4
- j3BA==
-X-Gm-Message-State: AC+VfDyvEIakaURlfAA/z6fKkTAL8CgOqXHdgNJ0Ojk3I9mk4U4+J+Hb
- 4tN57/wkzlKUblKL35zs7EzMdg==
-X-Google-Smtp-Source: ACHHUZ6IhUIptRJFKrrxWOACHIgAZJuaTb9OWNO/FEVSRACuTDiv9XQzVo/urEC6LCGjwdd6ckDv1g==
-X-Received: by 2002:a05:6512:1319:b0:4f8:6625:f2ca with SMTP id
- x25-20020a056512131900b004f86625f2camr2902268lfu.61.1687185881121; 
- Mon, 19 Jun 2023 07:44:41 -0700 (PDT)
-Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
- [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- c6-20020a7bc846000000b003f8fb02c413sm9538346wml.8.2023.06.19.07.44.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 07:44:40 -0700 (PDT)
-Message-ID: <b46c3dc4-5017-97a3-3935-f8e1c6a7e72d@linaro.org>
-Date: Mon, 19 Jun 2023 16:44:37 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qBG87-0001fB-3y
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:45:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qBG85-0007X1-Ez
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:45:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687185916;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PGchxwlSNZ3DTlOU8gVHA0bUX+njFGdzFVwSEEPTunM=;
+ b=Yj/FqyXnhfvdwLijuKTG1McQA2VdLsCW686ZMUnmQ2QKgr9w1LJQQO/jK6dvJVKeRufGAn
+ ePjvs4R9H5i8BpRDXf7goML25RYRhXxpUOP45pKPoHeixGECydt5kPQ/nHlNsJj8JMFg6G
+ SrMlQxwLVc+9k7ca2Tkd1zaQqHflFjc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-595-JUSiI6utP2K7LxyQUD2D4A-1; Mon, 19 Jun 2023 10:45:13 -0400
+X-MC-Unique: JUSiI6utP2K7LxyQUD2D4A-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B888101A52C;
+ Mon, 19 Jun 2023 14:45:12 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.41])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5CA6140C95A9;
+ Mon, 19 Jun 2023 14:45:10 +0000 (UTC)
+Date: Mon, 19 Jun 2023 16:45:10 +0200
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Jeuk Kim <jeuk20.kim@samsung.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "fam@euphon.net" <fam@euphon.net>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ "kwolf@redhat.com" <kwolf@redhat.com>,
+ "hreitz@redhat.com" <hreitz@redhat.com>,
+ Klaus Birkelund Jensen <k.jensen@samsung.com>,
+ "eblake@redhat.com" <eblake@redhat.com>
+Subject: Re: [PATCH v2 3/3] hw/ufs: Support for UFS logical unit
+Message-ID: <20230619144510.GG2497337@fedora>
+References: <20230619082325.GB2497337@fedora>
+ <20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p2>
+ <CGME20230616065827epcms2p2ad3eefa7762feafe673ff9c0a54ba007@epcms2p7>
+ <20230619111627epcms2p70ab099f30804d2819b72f105c6f28e19@epcms2p7>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 02/38] util: Add cpuinfo-ppc.c
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: ardb@kernel.org, berrange@redhat.com, qemu-ppc@nongnu.org,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-References: <20230609022401.684157-1-richard.henderson@linaro.org>
- <20230609022401.684157-3-richard.henderson@linaro.org>
- <ed63d01a-4903-a233-ac80-6e8d10411a02@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ed63d01a-4903-a233-ac80-6e8d10411a02@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="JaWWuMzZyq370s8L"
+Content-Disposition: inline
+In-Reply-To: <20230619111627epcms2p70ab099f30804d2819b72f105c6f28e19@epcms2p7>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,74 +88,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/19/23 12:37, Philippe Mathieu-Daudé wrote:
-> On 9/6/23 04:23, Richard Henderson wrote:
->> Move the code from tcg/.  Fix a bug in that PPC_FEATURE2_ARCH_3_10
->> is actually spelled PPC_FEATURE2_ARCH_3_1.
-> 
-> This is rather confusing.
-> 
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   host/include/ppc/host/cpuinfo.h   | 29 ++++++++++++++++
->>   host/include/ppc64/host/cpuinfo.h |  1 +
->>   tcg/ppc/tcg-target.h              | 16 ++++-----
->>   util/cpuinfo-ppc.c                | 57 +++++++++++++++++++++++++++++++
->>   tcg/ppc/tcg-target.c.inc          | 44 +-----------------------
->>   util/meson.build                  |  2 ++
->>   6 files changed, 98 insertions(+), 51 deletions(-)
->>   create mode 100644 host/include/ppc/host/cpuinfo.h
->>   create mode 100644 host/include/ppc64/host/cpuinfo.h
->>   create mode 100644 util/cpuinfo-ppc.c
->>
->> diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
->> new file mode 100644
->> index 0000000000..7ec252ef52
->> --- /dev/null
->> +++ b/host/include/ppc/host/cpuinfo.h
->> @@ -0,0 +1,29 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Host specific cpu indentification for ppc.
->> + */
->> +
->> +#ifndef HOST_CPUINFO_H
->> +#define HOST_CPUINFO_H
->> +
->> +/* Digested version of <cpuid.h> */
->> +
->> +#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
->> +#define CPUINFO_V2_06           (1u << 1)
->> +#define CPUINFO_V2_07           (1u << 2)
->> +#define CPUINFO_V3_00           (1u << 3)
->> +#define CPUINFO_V3_10           (1u << 4)
-> 
-> Could we define as CPUINFO_V3_1 ...
-> 
->> +#define CPUINFO_ISEL            (1u << 5)
->> +#define CPUINFO_ALTIVEC         (1u << 6)
->> +#define CPUINFO_VSX             (1u << 7)
-> 
-> 
->> -#define have_isa_2_06  (have_isa >= tcg_isa_2_06)
->> -#define have_isa_2_07  (have_isa >= tcg_isa_2_07)
->> -#define have_isa_3_00  (have_isa >= tcg_isa_3_00)
->> -#define have_isa_3_10  (have_isa >= tcg_isa_3_10)
->> +#define have_isa_2_06  (cpuinfo & CPUINFO_V2_06)
->> +#define have_isa_2_07  (cpuinfo & CPUINFO_V2_07)
->> +#define have_isa_3_00  (cpuinfo & CPUINFO_V3_00)
->> +#define have_isa_3_10  (cpuinfo & CPUINFO_V3_10)
-> 
-> ... and have_isa_3_1 instead?
 
-I suppose we could, but they all line up this way.  :-)
+--JaWWuMzZyq370s8L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-r~
+On Mon, Jun 19, 2023 at 08:16:27PM +0900, Jeuk Kim wrote:
+> On Fri, Jun 19, 2023, Stefan Hajnoczi wrote:
+> >On Fri, Jun 16, 2023 at 03:58:27PM +0900, Jeuk Kim wrote:
+> >> This commit adds support for ufs logical unit.
+> >> The LU handles processing for the SCSI command,
+> >> unit descriptor query request.
+> >>=20
+> >> This commit enables the UFS device to process
+> >> IO requests.
+> >
+> >Is UFS a SCSI Host Bus Adapter capable of exposing any SCSI device? The
+> >code is written as if UFS was a special-purpose SCSI bus that cannot
+> >handle regular SCSI devices already emulated by QEMU (like scsi-hd). As
+> >a result, it duplicates a lot of SCSI device code instead of just
+> >focussing on unwrapping/wrapping the SCSI commands and responses from
+> >the UFS interface.
+> >
+> >Would it be possible to have:
+> >
+> >  --device ufs,id=3D<bus-name>
+> >  --device scsi-hd,bus=3D<bus-name>
+> >
+> >?
+> >
+> >I think that would involve less code and be more flexible.
+> >
+>=20
+> Unfortunately, UFS is not a generic SCSI Host Bus Adapter.
+> UFS uses the SCSI specification to communicate with the driver,
+> but its behaviour is very different from that of a typical SCSI device.
+> (So it's intentional that UFS looks like a special-purpose SCSI bus.)
+>=20
+> For example, UFS has the well-known lu.
+> Unlike typical SCSI devices, where each lu is independent,
+> UFS can control other lu's through the well-known lu.
+>=20
+> Therefore, UFS can only work properly with ufs-lu, and not with
+> other scsi devices such as scsi-hd. :'(
+>=20
+> That's why I made the UFS bus and added the ufs_bus_check_address()
+> to prevent normal scsi devices and UFS from connecting to each other.
+>=20
+> Also, in the future, I will add more ufs-specific features
+> like hibernation and zoned, which are different from normal SCSI devices.
+>=20
+> So personally, I think we should define ufs-lu separately as we do now.
+> Is that okay?
 
-> 
-> Otherwise,
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
+Yes, I think that makes sense. Thanks for explaining.
+
+Paolo Bonzini is the QEMU SCSI emulation maintainer. He might have more
+thoughts about this. I have CCed him, but I think you can continue with
+the current approach unless Paolo decides to get involved in this patch
+series.
+
+Stefan
+
+--JaWWuMzZyq370s8L
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSQafYACgkQnKSrs4Gr
+c8jDoQgAnnlQrdzxI59/HdM55aRZLODQ8VWsgJFMnjF2q9aMxYKm+BS5iKbeRdmv
+xhNrx/ZkfAjyvRmp47+TYk7K5UAQhAXjSwLxXjLutuJIkWbyGC+hDMX9b3HET6yB
+ohyp05GXMN2Qqf1AKC8CGotnZ0dLUs0IMQyHghTHN1GxmaGoxXX9uyfmjDi/u5d1
+v/25py5hc/lkywVVdrnhxTuqqJmrfFMjAx5/Jcu+ugoUHOT/+2kNuBCgob55c48D
+TIhqyUF3AfHaJIC1h7ro97XhoyhkSZaG78xfNWimrVreQdP6CEMK00dR7BXrGtbw
+ueFuK8OSF/KOfbEoYmSonrvDuPjFmA==
+=Og+M
+-----END PGP SIGNATURE-----
+
+--JaWWuMzZyq370s8L--
 
 
