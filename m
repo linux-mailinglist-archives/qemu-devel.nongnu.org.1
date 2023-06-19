@@ -2,82 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039487356F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD757356F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:35:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBE57-0005fy-Q4; Mon, 19 Jun 2023 08:34:05 -0400
+	id 1qBE5K-0005gt-UR; Mon, 19 Jun 2023 08:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qBE53-0005fX-Sw
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:34:04 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qBE50-0007y6-2v
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:34:01 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30af56f5f52so2507660f8f.1
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 05:33:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687178036; x=1689770036;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Aq1eORVQbA3saDlGvSjo0IQaYEakPkUHZVoI6Wob8Bs=;
- b=eqeEwISyVrJzmm3WbNxIkAr1wDQehDf0w9eKO9nQW+eD5U4xgCh3XLOEdJ6e64grPS
- 9hZzeaBOmW7/biIY+DmQPTVEc+unIMu9XOzQjSn7MrErRqaogRdUEx0j7DoHtRJAvm8D
- JhE2O50JMAJum/7DWYzD22hI5wAemfXpoeq3TLZDsCc0RWfFcFO0swVWqalPYUx35Smn
- UCSG9uxjropIly9No5mTVvhe8rwiYpiOP6Tc9vgC+/HbRp6GL0f/an6ZbRSuOzQA0hra
- 34jGExT+N/ZbaO+djpYBpFpl6pjg572rKqNu7rzN9z4eqyGeszMTY2QGaaG8PKOBBFpf
- KKag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687178036; x=1689770036;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Aq1eORVQbA3saDlGvSjo0IQaYEakPkUHZVoI6Wob8Bs=;
- b=J2jDfryxC9Um2EhaPYb0iBfCN60rShhIDCVXHxnJlKoJQs+Pp6Fp17ZWGZYM4NVbS5
- yph0e3jtJaxxS9eSYSOKSpL3b9Mi4oXRrtrQpkA3rVzeBW+zIBSOGZ5tHd3rkhIzgcWR
- ntemUZo1Uir94t1SGXHuq55gB1uzxLEk+WLN92cNf/r2HbQxy+kdtEdeek6uGPGk8b5d
- 6CTgFFrUDN/LxRLx4H28v1mMFYD9A28DD7Q/ujBzjGOMFsEw8yo8w/0eN8+SVfhYWuwk
- nwoQ5BhtVqVnsEM+QM2fPxoKJw+wnEOJcXcnD2kMp7wCZTZBh9SOR0RPHHWI1dAZVg73
- bXNA==
-X-Gm-Message-State: AC+VfDy5yUSmIjdDZhKfpCMrNGsjsGc3/ANK5KUuDuyTL5FKqqJotUP/
- qQIbHu0QlhF1g0bh+afEBhJdfw==
-X-Google-Smtp-Source: ACHHUZ7BszJLVGWowu/qPdlfZUMtMUtb7bb8viSvI/vB6IuHoq46+n9fKMfVa8ocyZ7batgGZVgQcw==
-X-Received: by 2002:adf:df12:0:b0:30d:af7c:5046 with SMTP id
- y18-20020adfdf12000000b0030daf7c5046mr5631320wrl.60.1687178036296; 
- Mon, 19 Jun 2023 05:33:56 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- n16-20020adfe350000000b0030e5b1fffc3sm31650571wrj.9.2023.06.19.05.33.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Jun 2023 05:33:55 -0700 (PDT)
-Date: Mon, 19 Jun 2023 14:33:54 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v2 18/18] target/riscv/kvm.c: read/write
- (cbom|cboz)_blocksize in KVM
-Message-ID: <20230619-00d5750aac3bcc62aefa3e28@orel>
-References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
- <20230613205857.495165-19-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qBE5E-0005gg-Es
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:34:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qBE5C-0007zj-QD
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:34:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687178049;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=DpsuPSCeXnPhaQEkZCXd9JnvCbN7G/Uox/wQAoEUADs=;
+ b=ECwzr/JiNUV1bcUw4I9bzx3XUg7eqp4cM1EnI03DI57GUZoSdDQhZjlQNi5z6kpQgv0thO
+ jNjRRvk0xwT/r7s8D+YKyz6DkcQY07HI5/ZGVnigJd6+mjFI8nScYxoyfyAGCFzCmq4Zk/
+ vC2b5mr0+PlRQXJcDabM1vcYiGiwN0o=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-518-e4-WqtpxN-q4R6OATIAKZA-1; Mon, 19 Jun 2023 08:34:07 -0400
+X-MC-Unique: e4-WqtpxN-q4R6OATIAKZA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B71B43C108CB;
+ Mon, 19 Jun 2023 12:34:06 +0000 (UTC)
+Received: from virt-mtcollins-01.lab.eng.rdu2.redhat.com
+ (virt-mtcollins-01.lab.eng.rdu2.redhat.com [10.8.1.196])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A8675C1603B;
+ Mon, 19 Jun 2023 12:34:06 +0000 (UTC)
+From: Shaoqin Huang <shahuang@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Shaoqin Huang <shahuang@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PATCH v2] hw: Fix format for comments
+Date: Mon, 19 Jun 2023 08:34:04 -0400
+Message-Id: <20230619123404.831803-1-shahuang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230613205857.495165-19-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x434.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,144 +80,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 13, 2023 at 05:58:57PM -0300, Daniel Henrique Barboza wrote:
-> If we don't set a proper cbom_blocksize|cboz_blocksize in the FDT the
-> Linux Kernel will fail to detect the availability of the CBOM/CBOZ
-> extensions, regardless of the contents of the 'riscv,isa' DT prop.
-> 
-> The FDT is being written using the cpu->cfg.cbom|z_blocksize attributes,
-> so let's expose them as user properties like it is already done with
-> TCG.
-> 
-> This will also require us to determine proper blocksize values during
-> init() time since the FDT is already created during realize(). We'll
-> take a ride in kvm_riscv_init_multiext_cfg() to do it. Note that we
-> don't need to fetch both cbom and cboz blocksizes every time: check for
-> their parent extensions (icbom and icboz) and only read the blocksizes
-> if needed.
-> 
-> In contrast with cbom/z_blocksize properties from TCG, the user is not
-> able to set any value that is different from the 'host' value when
-> running KVM. KVM can be particularly harsh dealing with it: a ENOTSUPP
-> can be thrown for the mere attempt of executing kvm_set_one_reg() for
-> these 2 regs.
-> 
-> Hopefully, we don't need to call kvm_set_one_reg() for these regs.
-> We'll check if the user input matches the host value in
-> kvm_cpu_set_cbomz_blksize(), the set() accessor for both blocksize
-> properties. We'll fail fast since it's already known to not be
-> supported.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/kvm.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 70 insertions(+)
-> 
-> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> index 3a9f7b0722..ccd2375d8d 100644
-> --- a/target/riscv/kvm.c
-> +++ b/target/riscv/kvm.c
-> @@ -283,6 +283,42 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
->      kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
->  }
->  
-> +static KVMCPUConfig kvm_cbom_blocksize = {
-> +    .name = "cbom_blocksize",
-> +    .offset = CPUCFG(cbom_blocksize),
-> +    .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)
-> +};
-> +
-> +static KVMCPUConfig kvm_cboz_blocksize = {
-> +    .name = "cboz_blocksize",
-> +    .offset = CPUCFG(cboz_blocksize),
-> +    .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
-> +};
-> +
-> +static void kvm_cpu_set_cbomz_blksize(Object *obj, Visitor *v,
-> +                                      const char *name,
-> +                                      void *opaque, Error **errp)
-> +{
-> +    KVMCPUConfig *cbomz_cfg = opaque;
-> +    RISCVCPU *cpu = RISCV_CPU(obj);
-> +    uint16_t value, *host_val;
-> +
-> +    if (!visit_type_uint16(v, name, &value, errp)) {
-> +        return;
-> +    }
-> +
-> +    host_val = kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-> +
-> +    if (value != *host_val) {
-> +        error_report("Unable to set %s to a different value than "
-> +                     "the host (%u)",
-> +                     cbomz_cfg->name, *host_val);
-> +        exit(EXIT_FAILURE);
-> +    }
-> +
-> +    cbomz_cfg->user_set = true;
-> +}
-> +
->  static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
->  {
->      CPURISCVState *env = &cpu->env;
-> @@ -332,6 +368,14 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->                              kvm_cpu_set_multi_ext_cfg,
->                              NULL, multi_cfg);
->      }
-> +
-> +    object_property_add(cpu_obj, "cbom_blocksize", "uint16",
-> +                        NULL, kvm_cpu_set_cbomz_blksize,
-> +                        NULL, &kvm_cbom_blocksize);
-> +
-> +    object_property_add(cpu_obj, "cboz_blocksize", "uint16",
-> +                        NULL, kvm_cpu_set_cbomz_blksize,
-> +                        NULL, &kvm_cboz_blocksize);
->  }
->  
->  static int kvm_riscv_get_regs_core(CPUState *cs)
-> @@ -647,6 +691,24 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
->      env->misa_ext = env->misa_ext_mask;
->  }
->  
-> +static void kvm_riscv_read_cbomz_blksize(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-> +                                         KVMCPUConfig *cbomz_cfg)
-> +{
-> +    CPURISCVState *env = &cpu->env;
-> +    struct kvm_one_reg reg;
-> +    int ret;
-> +
-> +    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-> +                              cbomz_cfg->kvm_reg_id);
-> +    reg.addr = (uint64_t)kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-> +    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-> +    if (ret != 0) {
-> +        error_report("Unable to read KVM reg %s, error %d",
-> +                     cbomz_cfg->name, ret);
-> +        exit(EXIT_FAILURE);
-> +    }
-> +}
-> +
->  static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
->  {
->      CPURISCVState *env = &cpu->env;
-> @@ -678,6 +740,14 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
->  
->          kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
->      }
-> +
-> +    if (cpu->cfg.ext_icbom) {
-> +        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
-> +    }
-> +
-> +    if (cpu->cfg.ext_icboz) {
-> +        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-> +    }
->  }
->  
->  void kvm_riscv_init_user_properties(Object *cpu_obj)
-> -- 
-> 2.40.1
->
+Simply fix the #vcpus_count to @vcpus_count in CPUArchId comments. Whlie
+at it, reorder the parameters in comments to match the sequence of
+parameters which defined in the CPUArchId.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
+---
+ include/hw/boards.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index a385010909..e0497c2314 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -101,10 +101,10 @@ MemoryRegion *machine_consume_memdev(MachineState *machine,
+ /**
+  * CPUArchId:
+  * @arch_id - architecture-dependent CPU ID of present or possible CPU
++ * @vcpus_count - number of threads provided by @cpu object
++ * @props - CPU object properties, initialized by board
+  * @cpu - pointer to corresponding CPU object if it's present on NULL otherwise
+  * @type - QOM class name of possible @cpu object
+- * @props - CPU object properties, initialized by board
+- * #vcpus_count - number of threads provided by @cpu object
+  */
+ typedef struct CPUArchId {
+     uint64_t arch_id;
+-- 
+2.39.1
+
 
