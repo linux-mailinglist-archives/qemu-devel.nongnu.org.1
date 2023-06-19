@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EF9734C81
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 09:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBD9734C83
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 09:42:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qB9Wa-0006dL-5p; Mon, 19 Jun 2023 03:42:08 -0400
+	id 1qB9Wf-0006eC-ST; Mon, 19 Jun 2023 03:42:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qB9WX-0006cp-U4
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:42:05 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qB9Wc-0006df-VY
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:42:10 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qB9WW-0004Lz-FG
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:42:05 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f8f3786f1dso34314315e9.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 00:42:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qB9Wb-0004OS-HS
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 03:42:10 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3110ab7110aso3084111f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 00:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687160522; x=1689752522;
+ d=linaro.org; s=google; t=1687160527; x=1689752527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KL2PYuIs1BVHjdvTGwm0sXveXI5cCApLPfoCdqJW9L8=;
- b=fWsyd2ggatUTsIkjcwt5g1ZFmfbEYT42HpkS7K9Vjb1M1J28yMN6FBZOUOdi44fhFg
- xS0RUZvl5bZWbYbk3m8JXNMo4W0Gu33O2eIg0Gct8lhXlmVOl3eHEgJjM5RhScMjqJU3
- cx5seoqpzZi3GyiSTavTvlu1xp0vWECE65z8xoBFESVRvWiJ8LL9cQwi2yd1+C0Di3PB
- 2+JXhcWBfwI7somsJ3co4ABECoq9uGUHOZuK9prd29JPfYXri2IU/lfyYKPzzokD4Fdm
- UmirV6yTdr3aEUilCwlVaXC20kNAcghWzLCShHzAYjqxnBhnSD7kA+qMKQZQ9xloimgt
- Mi9w==
+ bh=YkXthOPn4E1631VSOfPiqw4sZJp9rt3aVw83F1yxbyc=;
+ b=mzlfo3m5LYpvP4ytqd3u+umd3HUv3UoWTWvc+meiDxyIoj/bv6hlN6Se8YNnUVIEhR
+ mx8ASvJWiAsEUqzZy5j+O4JwN+S+kRZU9g5SsK3aCw7Tw70pTYHokfMArDu79E8TQYBY
+ hWNke8QI58l9K/UoHtT1hk89d1oFLoqQNrqL3k5x8no9HpYcrFSDB2d/ipK9wZN1pjxz
+ /Nmex6QU/WLFXdmahMWe2jdHg2jhJNDeCdfAHITmr5kTSY7FUMJzmPkQYv6pCO8Cyolx
+ VU+yfzB0KOuy5S5JplBAs09oZ/INK9XJrtiycK8Yb72XlTNLkSwNLC+qGZcWZs0FQVra
+ 2Gfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687160522; x=1689752522;
+ d=1e100.net; s=20221208; t=1687160527; x=1689752527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KL2PYuIs1BVHjdvTGwm0sXveXI5cCApLPfoCdqJW9L8=;
- b=EotKvcx/+lIa7IkL8ug9yb2nz33lJJiGMtRFwtMd9Ol0SeEsRbkly6LU2Pu37loLgM
- esRWX3D+GqW5bUaMm3Abvz2uE7sN1+50D1XqV06QTs+JjXuFp5PRc1tU1+1VGsmFeb3l
- bMd3to1j5mFy7FgPyW5OpY8+WNrBvdSmQqo3vtzWJY8s+sTJGaq7kH4fUJNOGlJxuaUc
- ZiopsXXnbQyIVqVjTOmmul1IxBpy5smNcFqHQLDC4Snneum7ACOxOlKZ+DBINwfFCKID
- fyYbbqMrQPakB68ACa8lAckPN7miikDSr4PvRZr3nJytahD0CN0a7Kkh1m0k1geriqH0
- hstQ==
-X-Gm-Message-State: AC+VfDx3tswUQlrvgfe3erXbeXeeQ75CaDIQ5p9YnZihoDgXeUf7IU27
- uk0lVw+rZ4FjWMSPcyf3oo9CT0O72AgOkPBDWmPBAw==
-X-Google-Smtp-Source: ACHHUZ7gX1n45U+7t5jyD0FLAsJQGp97z0VG30yfL07LGEFIFabAZA+C4XfZuySz3dX9WB5Bi8z/qw==
-X-Received: by 2002:a7b:cb56:0:b0:3f7:e48b:974d with SMTP id
- v22-20020a7bcb56000000b003f7e48b974dmr10200835wmj.27.1687160522051; 
- Mon, 19 Jun 2023 00:42:02 -0700 (PDT)
+ bh=YkXthOPn4E1631VSOfPiqw4sZJp9rt3aVw83F1yxbyc=;
+ b=hmwF/LsL8veD5PUbkpw0lmu/aqN4AqIUQ3QfVWW/ILVimcPGNf2eDUFLhqsGCSr9Ea
+ BdpgUH0Ob+N43nPA5H8pR8V4GPwhFx41HsuwFFQk4FFDvBxdaNGQOJKFjYo02s5S9nuT
+ SkHVMDSj6499tkVhfXt2igw0e5NHcJ1+58vCjGmZgVg7+m5+1DJpm8edW/V5oHepXdgY
+ 3F3cdnjy7tAzFgeBBwxsf7yoMFXp6groljRaQAWl4koDpUV5DJn39s8oJOO09woSh8Ql
+ 12AQKrR+XVSf7UEW+fjNeD/q0KqjNEHZOTURtvUqqPtky8RT274Pb4W90byXQmRgHcS9
+ 4O3Q==
+X-Gm-Message-State: AC+VfDzahCoOt0lMVJyhXvy+h6CuCQJWFHFq4xOjrDCubyedUZRnYHty
+ KxhWRZGFjLKDuas7kV5lvIYguKMxMXUIje7Mg/tFJw==
+X-Google-Smtp-Source: ACHHUZ47L7Xp2XRwbbnqOyPJdjdKWRKBBPrC1VaKIqRJhlqW5dHNQfb6Saq9edGPaTKEkzx7KWMvfg==
+X-Received: by 2002:adf:f04c:0:b0:30f:c2a3:6281 with SMTP id
+ t12-20020adff04c000000b0030fc2a36281mr7297532wro.64.1687160527690; 
+ Mon, 19 Jun 2023 00:42:07 -0700 (PDT)
 Received: from localhost.localdomain (194.red-95-127-33.staticip.rima-tde.net.
  [95.127.33.194]) by smtp.gmail.com with ESMTPSA id
- e6-20020a05600c218600b003f9b3588192sm704769wme.8.2023.06.19.00.42.00
+ n6-20020a5d6b86000000b003111cbd8009sm9334752wrx.97.2023.06.19.00.42.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jun 2023 00:42:01 -0700 (PDT)
+ Mon, 19 Jun 2023 00:42:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
@@ -61,18 +61,17 @@ Cc: kvm@vger.kernel.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/4] hw/net/i82596: Include missing 'exec/address-spaces.h'
- header
-Date: Mon, 19 Jun 2023 09:41:50 +0200
-Message-Id: <20230619074153.44268-2-philmd@linaro.org>
+Subject: [PATCH 2/4] hw/dma/etraxfs: Include missing 'exec/memory.h' header
+Date: Mon, 19 Jun 2023 09:41:51 +0200
+Message-Id: <20230619074153.44268-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230619074153.44268-1-philmd@linaro.org>
 References: <20230619074153.44268-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hw/net/i82596.c access the global 'address_space_memory'
-calling the ld/st_phys() API. address_space_memory is
-declared in "exec/address-spaces.h". Currently this header
-is indirectly pulled in via another header. Explicitly include
-it to avoid when refactoring unrelated headers:
+The 'fs_dma_ctrl' structure has a MemoryRegion 'mmio' field
+which is initialized in etraxfs_dmac_init() calling
+memory_region_init_io() and memory_region_add_subregion().
 
-  hw/net/i82596.c:91:23: error: use of undeclared identifier 'address_space_memory'; did you mean 'address_space_destroy'?
-    return ldub_phys(&address_space_memory, addr);
-                      ^~~~~~~~~~~~~~~~~~~~
-                      address_space_destroy
+These functions are declared in "exec/memory.h", along with
+the MemoryRegion structure. Include the missing header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/i82596.c | 1 +
+ hw/dma/etraxfs_dma.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/net/i82596.c b/hw/net/i82596.c
-index ec21e2699a..9b9e3aa792 100644
---- a/hw/net/i82596.c
-+++ b/hw/net/i82596.c
-@@ -15,6 +15,7 @@
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
-+#include "exec/address-spaces.h"
- #include "qemu/module.h"
- #include "trace.h"
- #include "i82596.h"
+diff --git a/hw/dma/etraxfs_dma.c b/hw/dma/etraxfs_dma.c
+index a1068b19ea..9c0003de51 100644
+--- a/hw/dma/etraxfs_dma.c
++++ b/hw/dma/etraxfs_dma.c
+@@ -28,6 +28,7 @@
+ #include "qemu/main-loop.h"
+ #include "sysemu/runstate.h"
+ #include "exec/address-spaces.h"
++#include "exec/memory.h"
+ 
+ #include "hw/cris/etraxfs_dma.h"
+ 
 -- 
 2.38.1
 
