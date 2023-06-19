@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600C0735C8C
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 18:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE30735C8E
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 18:59:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBIAv-0003py-GW; Mon, 19 Jun 2023 12:56:21 -0400
+	id 1qBIDC-00057F-6F; Mon, 19 Jun 2023 12:58:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qBIAt-0003ob-PJ
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 12:56:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qBIAr-0005Or-CN
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 12:56:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687193776;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=9TaWdFIT78HQGbQBRiGxI8mzcYVoXQipdC27auca3p0=;
- b=IuHKYYy8wAXo2LhgOpXI+agrFUDfxH4mTv/I7jw5f5snJid/x4aetDdxpN0TdPo4pWj1m1
- vcuzqUnFpHUjWL41b4LxCANJhNXEgsg6ng8SDxe2D6EY17UJPtFdVEz+YboBohD//0xrO8
- ch7kRVFYysIXWjSw/MFRWlv7gU2Pde8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-290-ETPvEJIMNyi6zyF7zvSUrw-1; Mon, 19 Jun 2023 12:56:15 -0400
-X-MC-Unique: ETPvEJIMNyi6zyF7zvSUrw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 979053C11C94;
- Mon, 19 Jun 2023 16:56:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DD665492C1B;
- Mon, 19 Jun 2023 16:56:12 +0000 (UTC)
-Date: Mon, 19 Jun 2023 17:56:10 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, ardb@kernel.org, qemu-ppc@nongnu.org,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
-Subject: Re: [PATCH v2 06/38] crypto: Add aesenc_SB_SR_AK
-Message-ID: <ZJCIqmERcjqY+UMu@redhat.com>
-References: <20230609022401.684157-1-richard.henderson@linaro.org>
- <20230609022401.684157-7-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBIDA-00056z-6S
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 12:58:40 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBID8-00061U-BE
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 12:58:39 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31110aea814so3789767f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 09:58:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687193916; x=1689785916;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mG4aIRRtlKSAFaWPXJe2/TUtPNLg90ReSBB867DRGDQ=;
+ b=G73xPOI60TSEFLmGnV/lDqv6OyVuhVQ6qFhnNzZMkqaGp/zDWFiuXBA3Y60suZ7nFr
+ uvJIac2727tcR9kp+5LUsRWwMRR1I832VKzZ+hiKLv0LttSLHuQ+XSWAoyxoWYrGBQMN
+ GptWo3bGeKg/+2s0frvmFfm791IyWYt0UIQjtrtHCkRyQWYdSsK+obTbGZvtA4IASm+H
+ 18DFJ1RKqb1TMQTVloB5JLLwGK2rsfPQculnBCMyRcGn3uOBVQpMu83j4z17voTZcs89
+ 4NGlMDzj/vHBeKvTRVKtSQyiaThSJv+RFqKUcZ2O+whC7nhvkzpOoLIlWpeZeaqP9A08
+ ioFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687193916; x=1689785916;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mG4aIRRtlKSAFaWPXJe2/TUtPNLg90ReSBB867DRGDQ=;
+ b=CcBbwC04sXn4qR2UFvyU/g5KzWEsnZD1WVnZPhEobUdGN1i4E96om2EeSx4ZkwORvp
+ k/w17KJqme+p3/MSN0G6pOsta2el7J+0JWxSTZ3pGmt1A3ZLhOHZb4duPfBicUcMa7A2
+ 3ulIDTtk6FX+paNfWYoSSlL/uOncmqlnaVyjXcLiDZXOdthxbbDrx3ehHP/j8Zw/0tX8
+ Q+DP+6FOERVExKyofqs0P/WqiUf/OkljsHnALQaCoEudcwgAv958o8VWx9Aoi+/UJPaV
+ wAR1BwjNkd6ZIoWlp24iLZvoF5IsBvtL0TzkSsr9rnLmJILaFAAM6jhPc1csejaQ8uZV
+ zgow==
+X-Gm-Message-State: AC+VfDwC8T0pUNXOay3L2VVqh/b57ybXOBq8zZgK1dwLtZu7F7P6Ip/k
+ k/Zq3Wh3BQsVBqa4oG0dte+Pzg==
+X-Google-Smtp-Source: ACHHUZ5qDp4iJJWMLl2FQqFKsJHGlRxwTs3gBtzg8CFLBHU1xrYwhxwNB6AA7NuWRUGexv99ce6SAA==
+X-Received: by 2002:adf:e488:0:b0:30f:c580:2d0 with SMTP id
+ i8-20020adfe488000000b0030fc58002d0mr8545714wrm.35.1687193916531; 
+ Mon, 19 Jun 2023 09:58:36 -0700 (PDT)
+Received: from [192.168.69.129] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
+ [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
+ y10-20020adfe6ca000000b0030fd23381ffsm34184wrm.11.2023.06.19.09.58.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Jun 2023 09:58:36 -0700 (PDT)
+Message-ID: <11f7951f-4ee5-35ad-26fe-3949883cd8e7@linaro.org>
+Date: Mon, 19 Jun 2023 18:58:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230609022401.684157-7-richard.henderson@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/33] target-arm queue
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230619142914.963184-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,180 +90,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 07:23:29PM -0700, Richard Henderson wrote:
-> Start adding infrastructure for accelerating guest AES.
-> Begin with a SubBytes + ShiftRows + AddRoundKey primitive.
+On 6/19/23 16:28, Peter Maydell wrote:
+> Hi; here's a target-arm pullreq. Mostly this is some decodetree
+> conversion patches from me, plus a scattering of other bug fixes.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  host/include/generic/host/aes-round.h | 16 ++++++++++
->  include/crypto/aes-round.h            | 44 +++++++++++++++++++++++++++
->  crypto/aes.c                          | 44 +++++++++++++++++++++++++++
->  3 files changed, 104 insertions(+)
->  create mode 100644 host/include/generic/host/aes-round.h
->  create mode 100644 include/crypto/aes-round.h
+> thanks
+> -- PMM
 > 
-> diff --git a/host/include/generic/host/aes-round.h b/host/include/generic/host/aes-round.h
-> new file mode 100644
-> index 0000000000..19c8505e2b
-> --- /dev/null
-> +++ b/host/include/generic/host/aes-round.h
-
-Could we put these files under a 'crypto/' subdirectory eg
-
-  host/include/generic/host/crypto/aes-round.h
-
-and then add
-
-  host/include/*/host/crypto
-
-to MAINTAINERS for 'crypto'.
-
-> @@ -0,0 +1,16 @@
-> +/*
-> + * No host specific aes acceleration.
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef GENERIC_HOST_AES_ROUND_H
-> +#define GENERIC_HOST_AES_ROUND_H
-
-To match the extra sub-dir GENERIC_HOST_CRYPTO_AES_ROUND_H
-
-> +
-> +#define HAVE_AES_ACCEL  false
-> +#define ATTR_AES_ACCEL
-> +
-> +void aesenc_SB_SR_AK_accel(AESState *, const AESState *,
-> +                           const AESState *, bool)
-> +    QEMU_ERROR("unsupported accel");
-> +
-> +#endif
-> diff --git a/include/crypto/aes-round.h b/include/crypto/aes-round.h
-> new file mode 100644
-> index 0000000000..15ea1f42bc
-> --- /dev/null
-> +++ b/include/crypto/aes-round.h
-> @@ -0,0 +1,44 @@
-> +/*
-> + * AES round fragments, generic version
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Copyright (C) 2023 Linaro, Ltd.
-> + */
-> +
-> +#ifndef CRYPTO_AES_ROUND_H
-> +#define CRYPTO_AES_ROUND_H
-> +
-> +/* Hosts with acceleration will usually need a 16-byte vector type. */
-> +typedef uint8_t AESStateVec __attribute__((vector_size(16)));
-> +
-> +typedef union {
-> +    uint8_t b[16];
-> +    uint32_t w[4];
-> +    uint64_t d[4];
-> +    AESStateVec v;
-> +} AESState;
-> +
-> +#include "host/aes-round.h"
-> +
-> +/*
-> + * Perform SubBytes + ShiftRows.
-> + */
-> +
-> +void aesenc_SB_SR_AK_gen(AESState *ret, const AESState *st,
-> +                         const AESState *rk);
-> +void aesenc_SB_SR_AK_genrev(AESState *ret, const AESState *st,
-> +                            const AESState *rk);
-> +
-> +static inline void aesenc_SB_SR_AK(AESState *r, const AESState *st,
-> +                                   const AESState *rk, bool be)
-> +{
-> +    if (HAVE_AES_ACCEL) {
-> +        aesenc_SB_SR_AK_accel(r, st, rk, be);
-> +    } else if (HOST_BIG_ENDIAN == be) {
-> +        aesenc_SB_SR_AK_gen(r, st, rk);
-> +    } else {
-> +        aesenc_SB_SR_AK_genrev(r, st, rk);
-> +    }
-> +}
-> +
-> +#endif /* CRYPTO_AES_ROUND_H */
-> diff --git a/crypto/aes.c b/crypto/aes.c
-> index cdf937883d..896f6f44f1 100644
-> --- a/crypto/aes.c
-> +++ b/crypto/aes.c
-> @@ -29,6 +29,7 @@
->   */
->  #include "qemu/osdep.h"
->  #include "crypto/aes.h"
-> +#include "crypto/aes-round.h"
->  
->  typedef uint32_t u32;
->  typedef uint8_t u8;
-> @@ -1249,6 +1250,49 @@ static const u32 rcon[] = {
->          0x1B000000, 0x36000000, /* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
->  };
->  
-> +/* Perform SubBytes + ShiftRows + AddRoundKey. */
-> +static inline void
-> +aesenc_SB_SR_AK_swap(AESState *ret, const AESState *st,
-> +                     const AESState *rk, bool swap)
-> +{
-> +    const int swap_b = swap ? 15 : 0;
-> +    AESState t;
-> +
-> +    t.b[swap_b ^ 0x0] = AES_sbox[st->b[swap_b ^ AES_SH_0]];
-> +    t.b[swap_b ^ 0x1] = AES_sbox[st->b[swap_b ^ AES_SH_1]];
-> +    t.b[swap_b ^ 0x2] = AES_sbox[st->b[swap_b ^ AES_SH_2]];
-> +    t.b[swap_b ^ 0x3] = AES_sbox[st->b[swap_b ^ AES_SH_3]];
-> +    t.b[swap_b ^ 0x4] = AES_sbox[st->b[swap_b ^ AES_SH_4]];
-> +    t.b[swap_b ^ 0x5] = AES_sbox[st->b[swap_b ^ AES_SH_5]];
-> +    t.b[swap_b ^ 0x6] = AES_sbox[st->b[swap_b ^ AES_SH_6]];
-> +    t.b[swap_b ^ 0x7] = AES_sbox[st->b[swap_b ^ AES_SH_7]];
-> +    t.b[swap_b ^ 0x8] = AES_sbox[st->b[swap_b ^ AES_SH_8]];
-> +    t.b[swap_b ^ 0x9] = AES_sbox[st->b[swap_b ^ AES_SH_9]];
-> +    t.b[swap_b ^ 0xa] = AES_sbox[st->b[swap_b ^ AES_SH_A]];
-> +    t.b[swap_b ^ 0xb] = AES_sbox[st->b[swap_b ^ AES_SH_B]];
-> +    t.b[swap_b ^ 0xc] = AES_sbox[st->b[swap_b ^ AES_SH_C]];
-> +    t.b[swap_b ^ 0xd] = AES_sbox[st->b[swap_b ^ AES_SH_D]];
-> +    t.b[swap_b ^ 0xe] = AES_sbox[st->b[swap_b ^ AES_SH_E]];
-> +    t.b[swap_b ^ 0xf] = AES_sbox[st->b[swap_b ^ AES_SH_F]];
-> +
-> +    /*
-> +     * Perform the AddRoundKey with generic vectors.
-> +     * This may be expanded to either host integer or host vector code.
-> +     * The key and output endianness match, so no bswap required.
-> +     */
-> +    ret->v = t.v ^ rk->v;
-> +}
-> +
-> +void aesenc_SB_SR_AK_gen(AESState *r, const AESState *s, const AESState *k)
-> +{
-> +    aesenc_SB_SR_AK_swap(r, s, k, false);
-> +}
-> +
-> +void aesenc_SB_SR_AK_genrev(AESState *r, const AESState *s, const AESState *k)
-> +{
-> +    aesenc_SB_SR_AK_swap(r, s, k, true);
-> +}
-> +
->  /**
->   * Expand the cipher key into the encryption key schedule.
->   */
-> -- 
-> 2.34.1
+> The following changes since commit e3660cc1e3cb136af50c0eaaeac27943c2438d1d:
 > 
+>    Merge tag 'pull-loongarch-20230616' of https://gitlab.com/gaosong/qemu into staging (2023-06-16 12:30:16 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20230619
+> 
+> for you to fetch changes up to 074259c0f2ac40042dce766d870318cc22f388eb:
+> 
+>    hw/misc/bcm2835_property: Handle CORE_CLK_ID firmware property (2023-06-19 15:27:21 +0100)
+> 
+> ----------------------------------------------------------------
+> target-arm queue:
+>   * Fix return value from LDSMIN/LDSMAX 8/16 bit atomics
+>   * Return correct result for LDG when ATA=0
+>   * Conversion of system insns, loads and stores to decodetree
+>   * hw/intc/allwinner-a10-pic: Handle IRQ levels other than 0 or 1
+>   * hw/sd/allwinner-sdhost: Don't send non-boolean IRQ line levels
+>   * hw/timer/nrf51_timer: Don't lose time when timer is queried in tight loop
+>   * hw/arm/Kconfig: sbsa-ref uses Bochs display
+>   * imx_serial: set wake bit when we receive a data byte
+>   * docs: sbsa: document board to firmware interface
+>   * hw/misc/bcm2835_property: avoid hard-coded constants
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+
+
+r~
 
 
