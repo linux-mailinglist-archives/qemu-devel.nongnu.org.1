@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADAE735B60
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 17:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF07735B5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 17:44:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBH2s-0003LE-DZ; Mon, 19 Jun 2023 11:43:58 -0400
+	id 1qBH2w-0003ev-R4; Mon, 19 Jun 2023 11:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2n-00033O-FH
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:43:53 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2u-0003Yx-Em
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:44:00 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2k-00016X-UJ
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:43:53 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f9b4a715d9so4146605e9.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:43:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBH2r-000180-Go
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 11:44:00 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-31109cd8d8cso3342367f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 08:43:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687189429; x=1689781429;
+ d=linaro.org; s=google; t=1687189436; x=1689781436;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VS+s8yk8BlqPwYNXE59CP7hfYn/0yx3Nq7M676cAi8E=;
- b=ErirXTs2t3YpgYIhKM12D0UimVZeqrq3cBjOH9DwNLzWur+LkOwIU2QjB7RTiqzcbe
- qe3knXGhWB8rzMGi+EZGqf3mQ05l5s/9oWPtcjywOxgWxCYAq/lYfIY25Ex5MrGaNKBc
- xD7SyItUrQ8T0SDjnGYODn5/JENJ/JuWGWcPk4WL0tFn18Zcr5VNbk0NXadp4esPCT9p
- 466KODdbdq/uSme+cpba3Ss2bJJ+p/cSEtFs8gyZt4QY7IdikjEb8VUyfde7CGvkmZMt
- 5f5WrLldUAZIMeGX9gs/1lwtXh/bxIoKPJe4u6JwsNmVF/gFlejNEEWZRea4qEE31uQy
- NJPQ==
+ bh=PL1Zih1O88caRvf7sSFHzFYcTBs6PNvq9qmGaaGGlCI=;
+ b=F3p1GJvOBzRYX+oQcB4KOcPwohuyiC/NwphpH6cw202L2pMbS/VpDmgY0p9ntiSoPm
+ 7iBr5Yt/+X/1JTQxkgHktCCQIbvK9hDw756Z1mpFNWAaugidIedFX+LMI7XVNNwiJE8j
+ UxjMYvKurjlVt+c62jImob2r2Y75v7hsUxFhKG8JF76gy4BTfO1POG+UIeBw7XoE/vA0
+ r24EhkVeS3tAZLRbIanQVylhuRfPoH0Vj3shMc8/sfRRf/gnBjf37QgWp2FbD7mTjjqM
+ xe/hxAQheHw8wfNE/CwunRb0Mc5NxtT4ZPCn3UZvMsb/B9zVfRjzv8CNSHVBkdM6E5vC
+ DHyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687189429; x=1689781429;
+ d=1e100.net; s=20221208; t=1687189436; x=1689781436;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VS+s8yk8BlqPwYNXE59CP7hfYn/0yx3Nq7M676cAi8E=;
- b=jtPOmq6ZbT+zaxXdSRiYQ7tbr2GBU0ACLfgRMMzDAa80wA1GdH8/BYnVHUWUDRCMmp
- zdQrwyCLYg1xTbcZ984SgHo/UBL+OJO/Ow0AJIsLx6xk0opD9Jj7FkM2fxXpOOtLZe8D
- VM/cR0ZI1GbOB12SPNrRM8iYRRadROJGlswJ14JEQZckBkPflKxfqiEFf6iyruT2yY+t
- pJ8Z8y9bDtfpUWZH/xgKLNy0KotjS/mQoLFMIPDJtfIHBqGCESE4n/HtYVSzIBH1NWHe
- UgPqqy53+JgVpJ0vEKvYFtOu+Q8CKijICPh7wO2ycpbZf1mZthYFHxjJKELHrRTcJQMR
- AyjQ==
-X-Gm-Message-State: AC+VfDydX6ZKL2QzDyHYsRXJPvTKpN26B6WHsNnpey9k/0xS/vVpH+kO
- 1R/hw5NEvJNqW0UIeccO5sJ+9Mq/+AJ1Ev5IIiuM0Q==
-X-Google-Smtp-Source: ACHHUZ5NG+D3q4xK73dlj23Qov/QQdKzAJLZ9+eiKFmFwVF1yoXxzVPH9oAyzdiPd6m6jHIlHFeX4Q==
-X-Received: by 2002:a05:600c:22d4:b0:3f7:3634:e21b with SMTP id
- 20-20020a05600c22d400b003f73634e21bmr8553909wmg.2.1687189429046; 
- Mon, 19 Jun 2023 08:43:49 -0700 (PDT)
+ bh=PL1Zih1O88caRvf7sSFHzFYcTBs6PNvq9qmGaaGGlCI=;
+ b=fEOHxBcx7qNl2v/WcOeKMnHuKxArhyOE5QIPJILaBAueIPd/YTuZbW0WmFS+YAEPaM
+ 7jRwz34zCQDEnO61V3OEdTHmFw91cieTF5KVpbFjIIUoyRW51CyJTEnMjX6Xrsoi+Hn6
+ iB2wQWvH/g7oOWN3AW43x35Gh9r7xdnY5EW8tTTUPqkLMwB2u2QEGhHlZrWs6K4H/Bsz
+ aE0hW8S6m9ozQMtxybvcJyxMJDkXNnatbZGmU6qknQqGkee3AnxlB/lT3K6o2cNIjZNe
+ ICzwN7a1x/G3Fo15FyN/25iXh2W+SixMYb1lwEETx4g366Fw3ofVyDR3BETHBAfSricT
+ 745Q==
+X-Gm-Message-State: AC+VfDylZW6pS/qJqIpFOqSOW4aOVvpuW82UgTbZkXDHjsAEA4THDLYA
+ 35TknebSDMOneO4SXbVw3Qtri12yyviUfRffQstgfQ==
+X-Google-Smtp-Source: ACHHUZ5mU/Nmlsulsj63qnvP5wU2uDsKDNCD3p4yp30v73MWWmVZW+aZKnG4fMf1KNg1jVN7ztql6w==
+X-Received: by 2002:adf:f203:0:b0:30f:b65a:e5a1 with SMTP id
+ p3-20020adff203000000b0030fb65ae5a1mr7603171wro.38.1687189435752; 
+ Mon, 19 Jun 2023 08:43:55 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- f20-20020a7bcd14000000b003f7f2a1484csm72244wmj.5.2023.06.19.08.43.46
+ j3-20020a5d4643000000b0030fd23381ffsm12913966wrs.11.2023.06.19.08.43.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Jun 2023 08:43:48 -0700 (PDT)
+ Mon, 19 Jun 2023 08:43:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 04/34] target/arm/tcg: Fix iwmmxt-related code style
-Date: Mon, 19 Jun 2023 17:42:32 +0200
-Message-Id: <20230619154302.80350-5-philmd@linaro.org>
+Subject: [PATCH v3 05/34] target/arm/tcg: Expose some iwmmxt methods in
+ 'translate.h'
+Date: Mon, 19 Jun 2023 17:42:33 +0200
+Message-Id: <20230619154302.80350-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230619154302.80350-1-philmd@linaro.org>
 References: <20230619154302.80350-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,618 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to be able to move the iwmmxt-related code,
-fix its style to avoid:
-
-  ERROR: braces {} are necessary for all arms of this statement
-  ERROR: space prohibited before that '++' (ctx:WxB)
+Expose a few methods and variables before extracting iwmmxt
+code from translate.c.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate.c | 227 +++++++++++++++++++++++--------------
- 1 file changed, 141 insertions(+), 86 deletions(-)
+ target/arm/tcg/translate.h | 6 ++++++
+ target/arm/tcg/translate.c | 8 ++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index d1cacff0b2..3d7c55d3b6 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -165,6 +165,7 @@ typedef struct DisasCompare {
+ } DisasCompare;
+ 
+ /* Share the TCG temporaries common between 32 and 64 bit modes.  */
++extern TCGv_i32 cpu_R[16];
+ extern TCGv_i32 cpu_NF, cpu_ZF, cpu_CF, cpu_VF;
+ extern TCGv_i64 cpu_exclusive_addr;
+ extern TCGv_i64 cpu_exclusive_val;
+@@ -298,6 +299,11 @@ static inline int curr_insn_len(DisasContext *s)
+ /* CPU state was modified dynamically; no need to exit, but do not chain. */
+ #define DISAS_UPDATE_NOCHAIN  DISAS_TARGET_10
+ 
++/* These are TCG temporaries used only by the legacy iwMMXt decoder */
++extern TCGv_i64 cpu_V0, cpu_V1, cpu_M0;
++int disas_iwmmxt_insn(DisasContext *s, uint32_t insn);
++int disas_dsp_insn(DisasContext *s, uint32_t insn);
++
+ #ifdef TARGET_AARCH64
+ void a64_translate_init(void);
+ void gen_a64_update_pc(DisasContext *s, target_long diff);
 diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 13c88ba1b9..3238463f13 100644
+index 3238463f13..aaa479521e 100644
 --- a/target/arm/tcg/translate.c
 +++ b/target/arm/tcg/translate.c
-@@ -1441,10 +1441,11 @@ static inline int gen_iwmmxt_address(DisasContext *s, uint32_t insn,
-     offset = (insn & 0xff) << ((insn >> 7) & 2);
-     if (insn & (1 << 24)) {
-         /* Pre indexed */
--        if (insn & (1 << 23))
-+        if (insn & (1 << 23)) {
-             tcg_gen_addi_i32(tmp, tmp, offset);
--        else
-+        } else {
-             tcg_gen_addi_i32(tmp, tmp, -offset);
-+        }
-         tcg_gen_mov_i32(dest, tmp);
-         if (insn & (1 << 21)) {
-             store_reg(s, rd, tmp);
-@@ -1452,13 +1453,15 @@ static inline int gen_iwmmxt_address(DisasContext *s, uint32_t insn,
-     } else if (insn & (1 << 21)) {
-         /* Post indexed */
-         tcg_gen_mov_i32(dest, tmp);
--        if (insn & (1 << 23))
-+        if (insn & (1 << 23)) {
-             tcg_gen_addi_i32(tmp, tmp, offset);
--        else
-+        } else {
-             tcg_gen_addi_i32(tmp, tmp, -offset);
-+        }
-         store_reg(s, rd, tmp);
--    } else if (!(insn & (1 << 23)))
-+    } else if (!(insn & (1 << 23))) {
-         return 1;
-+    }
-     return 0;
- }
+@@ -45,9 +45,9 @@
+ #define ENABLE_ARCH_8     arm_dc_feature(s, ARM_FEATURE_V8)
  
-@@ -1483,8 +1486,10 @@ static inline int gen_iwmmxt_shift(uint32_t insn, uint32_t mask, TCGv_i32 dest)
-     return 0;
- }
- 
--/* Disassemble an iwMMXt instruction.  Returns nonzero if an error occurred
--   (ie. an undefined instruction).  */
-+/*
-+ * Disassemble an iwMMXt instruction.
-+ * Returns nonzero if an error occurred (ie. an undefined instruction).
-+ */
- static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
+ /* These are TCG temporaries used only by the legacy iwMMXt decoder */
+-static TCGv_i64 cpu_V0, cpu_V1, cpu_M0;
++TCGv_i64 cpu_V0, cpu_V1, cpu_M0;
+ /* These are TCG globals which alias CPUARMState fields */
+-static TCGv_i32 cpu_R[16];
++TCGv_i32 cpu_R[16];
+ TCGv_i32 cpu_CF, cpu_NF, cpu_VF, cpu_ZF;
+ TCGv_i64 cpu_exclusive_addr;
+ TCGv_i64 cpu_exclusive_val;
+@@ -1490,7 +1490,7 @@ static inline int gen_iwmmxt_shift(uint32_t insn, uint32_t mask, TCGv_i32 dest)
+  * Disassemble an iwMMXt instruction.
+  * Returns nonzero if an error occurred (ie. an undefined instruction).
+  */
+-static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
++int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
  {
      int rd, wrd;
-@@ -1570,8 +1575,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         return 0;
-     }
- 
--    if ((insn & 0x0f000000) != 0x0e000000)
-+    if ((insn & 0x0f000000) != 0x0e000000) {
-         return 1;
-+    }
- 
-     switch (((insn >> 12) & 0xf00) | ((insn >> 4) & 0xff)) {
-     case 0x000:                                                 /* WOR */
-@@ -1586,8 +1592,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_set_cup();
-         break;
-     case 0x011:                                                 /* TMCR */
--        if (insn & 0xf)
-+        if (insn & 0xf) {
-             return 1;
-+        }
-         rd = (insn >> 12) & 0xf;
-         wrd = (insn >> 16) & 0xf;
-         switch (wrd) {
-@@ -1627,8 +1634,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_set_cup();
-         break;
-     case 0x111:                                                 /* TMRC */
--        if (insn & 0xf)
-+        if (insn & 0xf) {
-             return 1;
-+        }
-         rd = (insn >> 12) & 0xf;
-         wrd = (insn >> 16) & 0xf;
-         tmp = iwmmxt_load_creg(wrd);
-@@ -1662,10 +1670,11 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         rd0 = (insn >> 0) & 0xf;
-         rd1 = (insn >> 16) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
--        if (insn & (1 << 21))
-+        if (insn & (1 << 21)) {
-             gen_op_iwmmxt_maddsq_M0_wRn(rd1);
--        else
-+        } else {
-             gen_op_iwmmxt_madduq_M0_wRn(rd1);
-+        }
-         gen_op_iwmmxt_movq_wRn_M0(wrd);
-         gen_op_iwmmxt_set_mup();
-         break;
-@@ -1718,12 +1727,14 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         rd0 = (insn >> 16) & 0xf;
-         rd1 = (insn >> 0) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
--        if (insn & (1 << 22))
-+        if (insn & (1 << 22)) {
-             gen_op_iwmmxt_sadw_M0_wRn(rd1);
--        else
-+        } else {
-             gen_op_iwmmxt_sadb_M0_wRn(rd1);
--        if (!(insn & (1 << 20)))
-+        }
-+        if (!(insn & (1 << 20))) {
-             gen_op_iwmmxt_addl_M0_wRn(wrd);
-+        }
-         gen_op_iwmmxt_movq_wRn_M0(wrd);
-         gen_op_iwmmxt_set_mup();
-         break;
-@@ -1733,15 +1744,17 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         rd1 = (insn >> 0) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         if (insn & (1 << 21)) {
--            if (insn & (1 << 20))
-+            if (insn & (1 << 20)) {
-                 gen_op_iwmmxt_mulshw_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_mulslw_M0_wRn(rd1);
-+            }
-         } else {
--            if (insn & (1 << 20))
-+            if (insn & (1 << 20)) {
-                 gen_op_iwmmxt_muluhw_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_mululw_M0_wRn(rd1);
-+            }
-         }
-         gen_op_iwmmxt_movq_wRn_M0(wrd);
-         gen_op_iwmmxt_set_mup();
-@@ -1751,10 +1764,11 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         rd0 = (insn >> 16) & 0xf;
-         rd1 = (insn >> 0) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
--        if (insn & (1 << 21))
-+        if (insn & (1 << 21)) {
-             gen_op_iwmmxt_macsw_M0_wRn(rd1);
--        else
-+        } else {
-             gen_op_iwmmxt_macuw_M0_wRn(rd1);
-+        }
-         if (!(insn & (1 << 20))) {
-             iwmmxt_load_reg(cpu_V1, wrd);
-             tcg_gen_add_i64(cpu_M0, cpu_M0, cpu_V1);
-@@ -1790,15 +1804,17 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         rd1 = (insn >> 0) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         if (insn & (1 << 22)) {
--            if (insn & (1 << 20))
-+            if (insn & (1 << 20)) {
-                 gen_op_iwmmxt_avgw1_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_avgw0_M0_wRn(rd1);
-+            }
-         } else {
--            if (insn & (1 << 20))
-+            if (insn & (1 << 20)) {
-                 gen_op_iwmmxt_avgb1_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_avgb0_M0_wRn(rd1);
-+            }
-         }
-         gen_op_iwmmxt_movq_wRn_M0(wrd);
-         gen_op_iwmmxt_set_mup();
-@@ -1817,8 +1833,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_set_mup();
-         break;
-     case 0x601: case 0x605: case 0x609: case 0x60d:     /* TINSR */
--        if (((insn >> 6) & 3) == 3)
-+        if (((insn >> 6) & 3) == 3) {
-             return 1;
-+        }
-         rd = (insn >> 12) & 0xf;
-         wrd = (insn >> 16) & 0xf;
-         tmp = load_reg(s, rd);
-@@ -1846,8 +1863,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-     case 0x107: case 0x507: case 0x907: case 0xd07:     /* TEXTRM */
-         rd = (insn >> 12) & 0xf;
-         wrd = (insn >> 16) & 0xf;
--        if (rd == 15 || ((insn >> 22) & 3) == 3)
-+        if (rd == 15 || ((insn >> 22) & 3) == 3) {
-             return 1;
-+        }
-         gen_op_iwmmxt_movq_M0_wRn(wrd);
-         tmp = tcg_temp_new_i32();
-         switch ((insn >> 22) & 3) {
-@@ -1877,8 +1895,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         store_reg(s, rd, tmp);
-         break;
-     case 0x117: case 0x517: case 0x917: case 0xd17:     /* TEXTRC */
--        if ((insn & 0x000ff008) != 0x0003f000 || ((insn >> 22) & 3) == 3)
-+        if ((insn & 0x000ff008) != 0x0003f000 || ((insn >> 22) & 3) == 3) {
-             return 1;
-+        }
-         tmp = iwmmxt_load_creg(ARM_IWMMXT_wCASF);
-         switch ((insn >> 22) & 3) {
-         case 0:
-@@ -1895,8 +1914,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_set_nzcv(tmp);
-         break;
-     case 0x401: case 0x405: case 0x409: case 0x40d:     /* TBCST */
--        if (((insn >> 6) & 3) == 3)
-+        if (((insn >> 6) & 3) == 3) {
-             return 1;
-+        }
-         rd = (insn >> 12) & 0xf;
-         wrd = (insn >> 16) & 0xf;
-         tmp = load_reg(s, rd);
-@@ -1915,20 +1935,21 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_set_mup();
-         break;
-     case 0x113: case 0x513: case 0x913: case 0xd13:     /* TANDC */
--        if ((insn & 0x000ff00f) != 0x0003f000 || ((insn >> 22) & 3) == 3)
-+        if ((insn & 0x000ff00f) != 0x0003f000 || ((insn >> 22) & 3) == 3) {
-             return 1;
-+        }
-         tmp = iwmmxt_load_creg(ARM_IWMMXT_wCASF);
-         tmp2 = tcg_temp_new_i32();
-         tcg_gen_mov_i32(tmp2, tmp);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            for (i = 0; i < 7; i ++) {
-+            for (i = 0; i < 7; i++) {
-                 tcg_gen_shli_i32(tmp2, tmp2, 4);
-                 tcg_gen_and_i32(tmp, tmp, tmp2);
-             }
-             break;
-         case 1:
--            for (i = 0; i < 3; i ++) {
-+            for (i = 0; i < 3; i++) {
-                 tcg_gen_shli_i32(tmp2, tmp2, 8);
-                 tcg_gen_and_i32(tmp, tmp, tmp2);
-             }
-@@ -1961,20 +1982,21 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_set_mup();
-         break;
-     case 0x115: case 0x515: case 0x915: case 0xd15:     /* TORC */
--        if ((insn & 0x000ff00f) != 0x0003f000 || ((insn >> 22) & 3) == 3)
-+        if ((insn & 0x000ff00f) != 0x0003f000 || ((insn >> 22) & 3) == 3) {
-             return 1;
-+        }
-         tmp = iwmmxt_load_creg(ARM_IWMMXT_wCASF);
-         tmp2 = tcg_temp_new_i32();
-         tcg_gen_mov_i32(tmp2, tmp);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            for (i = 0; i < 7; i ++) {
-+            for (i = 0; i < 7; i++) {
-                 tcg_gen_shli_i32(tmp2, tmp2, 4);
-                 tcg_gen_or_i32(tmp, tmp, tmp2);
-             }
-             break;
-         case 1:
--            for (i = 0; i < 3; i ++) {
-+            for (i = 0; i < 3; i++) {
-                 tcg_gen_shli_i32(tmp2, tmp2, 8);
-                 tcg_gen_or_i32(tmp, tmp, tmp2);
-             }
-@@ -1989,8 +2011,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-     case 0x103: case 0x503: case 0x903: case 0xd03:     /* TMOVMSK */
-         rd = (insn >> 12) & 0xf;
-         rd0 = (insn >> 16) & 0xf;
--        if ((insn & 0xf) != 0 || ((insn >> 22) & 3) == 3)
-+        if ((insn & 0xf) != 0 || ((insn >> 22) & 3) == 3) {
-             return 1;
-+        }
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         tmp = tcg_temp_new_i32();
-         switch ((insn >> 22) & 3) {
-@@ -2014,22 +2037,25 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_cmpgtsb_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_cmpgtub_M0_wRn(rd1);
-+            }
-             break;
-         case 1:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_cmpgtsw_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_cmpgtuw_M0_wRn(rd1);
-+            }
-             break;
-         case 2:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_cmpgtsl_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_cmpgtul_M0_wRn(rd1);
-+            }
-             break;
-         case 3:
-             return 1;
-@@ -2045,22 +2071,25 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_unpacklsb_M0();
--            else
-+            } else {
-                 gen_op_iwmmxt_unpacklub_M0();
-+            }
-             break;
-         case 1:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_unpacklsw_M0();
--            else
-+            } else {
-                 gen_op_iwmmxt_unpackluw_M0();
-+            }
-             break;
-         case 2:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_unpacklsl_M0();
--            else
-+            } else {
-                 gen_op_iwmmxt_unpacklul_M0();
-+            }
-             break;
-         case 3:
-             return 1;
-@@ -2076,22 +2105,25 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_unpackhsb_M0();
--            else
-+            } else {
-                 gen_op_iwmmxt_unpackhub_M0();
-+            }
-             break;
-         case 1:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_unpackhsw_M0();
--            else
-+            } else {
-                 gen_op_iwmmxt_unpackhuw_M0();
-+            }
-             break;
-         case 2:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_unpackhsl_M0();
--            else
-+            } else {
-                 gen_op_iwmmxt_unpackhul_M0();
-+            }
-             break;
-         case 3:
-             return 1;
-@@ -2102,8 +2134,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         break;
-     case 0x204: case 0x604: case 0xa04: case 0xe04:     /* WSRL */
-     case 0x214: case 0x614: case 0xa14: case 0xe14:
--        if (((insn >> 22) & 3) == 0)
-+        if (((insn >> 22) & 3) == 0) {
-             return 1;
-+        }
-         wrd = (insn >> 12) & 0xf;
-         rd0 = (insn >> 16) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-@@ -2128,8 +2161,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         break;
-     case 0x004: case 0x404: case 0x804: case 0xc04:     /* WSRA */
-     case 0x014: case 0x414: case 0x814: case 0xc14:
--        if (((insn >> 22) & 3) == 0)
-+        if (((insn >> 22) & 3) == 0) {
-             return 1;
-+        }
-         wrd = (insn >> 12) & 0xf;
-         rd0 = (insn >> 16) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-@@ -2154,8 +2188,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         break;
-     case 0x104: case 0x504: case 0x904: case 0xd04:     /* WSLL */
-     case 0x114: case 0x514: case 0x914: case 0xd14:
--        if (((insn >> 22) & 3) == 0)
-+        if (((insn >> 22) & 3) == 0) {
-             return 1;
-+        }
-         wrd = (insn >> 12) & 0xf;
-         rd0 = (insn >> 16) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-@@ -2180,8 +2215,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         break;
-     case 0x304: case 0x704: case 0xb04: case 0xf04:     /* WROR */
-     case 0x314: case 0x714: case 0xb14: case 0xf14:
--        if (((insn >> 22) & 3) == 0)
-+        if (((insn >> 22) & 3) == 0) {
-             return 1;
-+        }
-         wrd = (insn >> 12) & 0xf;
-         rd0 = (insn >> 16) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-@@ -2218,22 +2254,25 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_minsb_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_minub_M0_wRn(rd1);
-+            }
-             break;
-         case 1:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_minsw_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_minuw_M0_wRn(rd1);
-+            }
-             break;
-         case 2:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_minsl_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_minul_M0_wRn(rd1);
-+            }
-             break;
-         case 3:
-             return 1;
-@@ -2249,22 +2288,25 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         switch ((insn >> 22) & 3) {
-         case 0:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_maxsb_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_maxub_M0_wRn(rd1);
-+            }
-             break;
-         case 1:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_maxsw_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_maxuw_M0_wRn(rd1);
-+            }
-             break;
-         case 2:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_maxsl_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_maxul_M0_wRn(rd1);
-+            }
-             break;
-         case 3:
-             return 1;
-@@ -2387,30 +2429,34 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-     case 0x408: case 0x508: case 0x608: case 0x708:
-     case 0x808: case 0x908: case 0xa08: case 0xb08:
-     case 0xc08: case 0xd08: case 0xe08: case 0xf08:
--        if (!(insn & (1 << 20)) || ((insn >> 22) & 3) == 0)
-+        if (!(insn & (1 << 20)) || ((insn >> 22) & 3) == 0) {
-             return 1;
-+        }
-         wrd = (insn >> 12) & 0xf;
-         rd0 = (insn >> 16) & 0xf;
-         rd1 = (insn >> 0) & 0xf;
-         gen_op_iwmmxt_movq_M0_wRn(rd0);
-         switch ((insn >> 22) & 3) {
-         case 1:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_packsw_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_packuw_M0_wRn(rd1);
-+            }
-             break;
-         case 2:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_packsl_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_packul_M0_wRn(rd1);
-+            }
-             break;
-         case 3:
--            if (insn & (1 << 21))
-+            if (insn & (1 << 21)) {
-                 gen_op_iwmmxt_packsq_M0_wRn(rd1);
--            else
-+            } else {
-                 gen_op_iwmmxt_packuq_M0_wRn(rd1);
-+            }
-             break;
-         }
-         gen_op_iwmmxt_movq_wRn_M0(wrd);
-@@ -2424,8 +2470,9 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-         wrd = (insn >> 5) & 0xf;
-         rd0 = (insn >> 12) & 0xf;
-         rd1 = (insn >> 0) & 0xf;
--        if (rd0 == 0xf || rd1 == 0xf)
-+        if (rd0 == 0xf || rd1 == 0xf) {
-             return 1;
-+        }
-         gen_op_iwmmxt_movq_M0_wRn(wrd);
-         tmp = load_reg(s, rd0);
-         tmp2 = load_reg(s, rd1);
-@@ -2437,10 +2484,12 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-             gen_helper_iwmmxt_muladdsw(cpu_M0, cpu_M0, tmp, tmp2);
-             break;
-         case 0xc: case 0xd: case 0xe: case 0xf:                 /* TMIAxy */
--            if (insn & (1 << 16))
-+            if (insn & (1 << 16)) {
-                 tcg_gen_shri_i32(tmp, tmp, 16);
--            if (insn & (1 << 17))
-+            }
-+            if (insn & (1 << 17)) {
-                 tcg_gen_shri_i32(tmp2, tmp2, 16);
-+            }
-             gen_helper_iwmmxt_muladdswl(cpu_M0, cpu_M0, tmp, tmp2);
-             break;
-         default:
-@@ -2456,8 +2505,10 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
-     return 0;
- }
- 
--/* Disassemble an XScale DSP instruction.  Returns nonzero if an error occurred
--   (ie. an undefined instruction).  */
-+/*
-+ * Disassemble an XScale DSP instruction.
-+ * Returns nonzero if an error occurred (ie. an undefined instruction).
-+ */
- static int disas_dsp_insn(DisasContext *s, uint32_t insn)
+     int rdhi, rdlo, rd0, rd1, i;
+@@ -2509,7 +2509,7 @@ static int disas_iwmmxt_insn(DisasContext *s, uint32_t insn)
+  * Disassemble an XScale DSP instruction.
+  * Returns nonzero if an error occurred (ie. an undefined instruction).
+  */
+-static int disas_dsp_insn(DisasContext *s, uint32_t insn)
++int disas_dsp_insn(DisasContext *s, uint32_t insn)
  {
      int acc, rd0, rd1, rdhi, rdlo;
-@@ -2469,8 +2520,9 @@ static int disas_dsp_insn(DisasContext *s, uint32_t insn)
-         rd1 = insn & 0xf;
-         acc = (insn >> 5) & 7;
- 
--        if (acc != 0)
-+        if (acc != 0) {
-             return 1;
-+        }
- 
-         tmp = load_reg(s, rd0);
-         tmp2 = load_reg(s, rd1);
-@@ -2485,10 +2537,12 @@ static int disas_dsp_insn(DisasContext *s, uint32_t insn)
-         case 0xd:                                       /* MIABT */
-         case 0xe:                                       /* MIATB */
-         case 0xf:                                       /* MIATT */
--            if (insn & (1 << 16))
-+            if (insn & (1 << 16)) {
-                 tcg_gen_shri_i32(tmp, tmp, 16);
--            if (insn & (1 << 17))
-+            }
-+            if (insn & (1 << 17)) {
-                 tcg_gen_shri_i32(tmp2, tmp2, 16);
-+            }
-             gen_helper_iwmmxt_muladdswl(cpu_M0, cpu_M0, tmp, tmp2);
-             break;
-         default:
-@@ -2505,8 +2559,9 @@ static int disas_dsp_insn(DisasContext *s, uint32_t insn)
-         rdlo = (insn >> 12) & 0xf;
-         acc = insn & 7;
- 
--        if (acc != 0)
-+        if (acc != 0) {
-             return 1;
-+        }
- 
-         if (insn & ARM_CP_RW_BIT) {                     /* MRA */
-             iwmmxt_load_reg(cpu_V0, acc);
+     TCGv_i32 tmp, tmp2;
 -- 
 2.38.1
 
