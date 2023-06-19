@@ -2,197 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE9D735D05
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 19:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC26F735D17
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 19:37:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBIdM-00030x-P0; Mon, 19 Jun 2023 13:25:44 -0400
+	id 1qBIn3-0006pa-8h; Mon, 19 Jun 2023 13:35:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1qBIdH-00030c-Lc
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 13:25:41 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1qBIdD-0004am-Fy
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 13:25:38 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35J9nZ2o013645; Mon, 19 Jun 2023 17:25:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=8+pxZZuu8A/uaazVdGSFd/L+goF+KhNbhECCXBjCpX8=;
- b=jmcm2C55XkGRU8glFbHGeT1PyCY8/kmhZx4cF1pMGxRD+mYXbuwrnwDJJC+N2Z2b00Xw
- /ri7LD2/j6/jgfv+6niziHDVM2DhplGFJa8xMQchrA8uFTMf4xXDeeSUqtO+f5P2Hi1k
- uxwwBPSnp34mSsgc+H2+htpln4iBdQhEkhzT0E7Bdhl3+pP7CDz2l7aEOLXZTbBGMMPo
- byUpd1hK4+e4maEaOqr3ew8JAwKl8APm0EqmlQo1bnsJZyTc7J1Hd4iW+IEnNGiuCNS9
- +sq3z4nFyFc5QmS6e1k7IbKL8gX/KhqnNCXmB9YWGs1XqoOhxQZLLv0uMF0JnnBL/ghF pA== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r94qa33cu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Jun 2023 17:25:25 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35JFXfgS038637; Mon, 19 Jun 2023 17:25:23 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10lp2107.outbound.protection.outlook.com [104.47.58.107])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r9393ng1v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Jun 2023 17:25:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cUrTu0/rDTfx+sVfnxEIJwd95myr+nJePkmGKRWSXdYQcAZjTeuYUfqyVSvMTD8ejNTYbi/Ub+Q5Z/vN9ukxgOx8gUASgPdbuvt8Wvn7F+UNSN8EyohS0NNkjkX0hkwAGRimOXLGrD+i/skmpN9mxMluogsmed1Dh+WKJlfZUYtUoHRzrBCjkApDp8OIOHZGb6UF1pXFYB3Ndlio48ec7I4Z1eViPCyfU2HkOgMdFNajpcWqbGdjJNtAvOAZBbfJXEGSRWXC3FozzjuGlrf247BsYfsZ6mIhnu3fr2PmhueZJtk1qZShWmoeKttNdzkA6ya06nY3Fw5WhZ++LTXTjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8+pxZZuu8A/uaazVdGSFd/L+goF+KhNbhECCXBjCpX8=;
- b=EVIbFc7iZ6pHvkP/Voys5J1pzO7glKOgI1P+2Vms/aJ9/amosTCYFdNR7lrIrjGTCueGAjWSYzb/MU5NMMt/Su5dc+fn4JgJ31nt6fyhyBocqaKLEWf35eVDD0cy4NiZ4Yr08uS9uVIM1/CQstTlqDlkbr/w38l2gMPBQKZMX6wwHv1TWZwJ7cxcl9PAxjIxVUMCtXWhKNKrjdqWaSSvIGKubawE+JPF8jzk/3dpQywGXIaPrDA744ZLRPchgrYfJne1O3aTT+rl9r+QhhrOZPDb90XxP1b3KtShXNrHtpOb+AWznS1Z9d01eTfyncYeru0hXPIiDMg4yz7h/uqcmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qBIn1-0006pQ-30
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 13:35:43 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qBImz-00078p-8R
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 13:35:42 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f9002a1a39so22199675e9.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 10:35:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8+pxZZuu8A/uaazVdGSFd/L+goF+KhNbhECCXBjCpX8=;
- b=reAoUbOwlrPm2uus7tlwCTfuimde1BlUmE8esoxqq9b6RPYz/N+cyibVKC8JRNYWvPAbgYcZ3iJKlYLCZomHnwYLRIabOAeuLsHZm3g99zZkm3ayHHc9fiYK8NkgK1DOz3U57EEVyJa4jgTL7n2XsTJ9ujz+jntlroLW15nmmOo=
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20)
- by IA1PR10MB7386.namprd10.prod.outlook.com (2603:10b6:208:42e::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.35; Mon, 19 Jun
- 2023 17:25:16 +0000
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::96aa:8e73:85a9:98b9]) by BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::96aa:8e73:85a9:98b9%4]) with mapi id 15.20.6500.036; Mon, 19 Jun 2023
- 17:25:22 +0000
-Message-ID: <13b5f736-6ddd-cfc1-d861-fa9063943029@oracle.com>
-Date: Mon, 19 Jun 2023 10:25:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 0/2] target/i386/kvm: fix two svm pmu virtualization
- bugs
-To: Like Xu <like.xu.linux@gmail.com>, zhenyuw@linux.intel.com
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, joe.jin@oracle.com,
- groug@kaod.org, lyan@digitalocean.com, qemu-devel@nongnu.org,
- kvm list <kvm@vger.kernel.org>
-References: <20221202002256.39243-1-dongli.zhang@oracle.com>
- <895f5505-db8c-afa4-bfb1-26ecbe27690a@oracle.com>
- <eea7b6ba-c0bd-8a1e-b2a8-2f08c954628b@oracle.com>
- <36d749a2-b349-e5f4-3683-a4d595bafec9@gmail.com>
-Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <36d749a2-b349-e5f4-3683-a4d595bafec9@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR04CA0010.namprd04.prod.outlook.com
- (2603:10b6:a03:217::15) To BYAPR10MB2663.namprd10.prod.outlook.com
- (2603:10b6:a02:a9::20)
+ d=linaro.org; s=google; t=1687196139; x=1689788139;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9zEzts6RXKAJ46k9Q5CwNMEezTjRsjw1Gsy5X2hQs7I=;
+ b=eXHVvNRG9K6tZAcSPXEUNaj/KDYrhNBRBcQ7FKk1BpESGepl/EE+o6LcaQYJNr2tBU
+ 7z2omfRbUrmFe1coMKA8VKSjdAtjjEy+AMVEPgRYAz/33Ly3tpjlQnOjzhSnuuz/a5yL
+ S1oQlZUP+OtP9GX0yft1RcMTca1NVvZC8Wh/HRhRwjTwzFyf/REofzqPcmyfyhVI/slF
+ 64354JMiI1gKKBwP7rJGmO37rJRzE/Zqo+JXOaKu1oibr7caud0WOPdpBfvU6nJu/EQh
+ RgQoBuFZE7/bLSaWFLtmnLpYrINc8ADnngEl3uitWOqZnqqPby7oG2X/CFm3dQpvJhX/
+ tYcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687196139; x=1689788139;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=9zEzts6RXKAJ46k9Q5CwNMEezTjRsjw1Gsy5X2hQs7I=;
+ b=Y65bA7EEaCXR4ocuSGoKcQRUaL+hpmd4S4dIwwOQfmjQX3Ez3FWUA7f7/HmA5Sulzh
+ yM178oIcAd9udSnfZGUcqlbQ6y1UotnwTbXPO/s4WCg7BG4fV9MhK9TwJa4SJ7A2hHrP
+ QSt2hhliqjVm5dTmk6Jcdx96nUydTjHoM/3W4T7asbT6dq1Kz+CJICT9mQoy65hg4M3g
+ BLFtdJrh8rHEUEcolxpcNHqXCMjK44TyU/Ae/Rk3R9lhp/UD5y6HJ1li3KYr3+jt2nGM
+ 0wHHd3P78Elk4L1FlIbyj4HaiVpZeFdA/UOas+vrd/eLnMnBtA4fyWEcqbLZu6fJRkFz
+ EdCA==
+X-Gm-Message-State: AC+VfDxYSMmg1nYQEorlffWCOnRxa8znn05cB7uU4a4BtjpltJBCKYj6
+ klY9CaTvEX5ugeYKRfgaes9aOl7jHxRv7Onw1ls=
+X-Google-Smtp-Source: ACHHUZ4CU5A1wD++zjJYoFgJOf81s4q4+/AY9rMU89eyWnGykejMHNR3mLifT5WVuaSdHmTnnFb0Xg==
+X-Received: by 2002:a5d:6ad1:0:b0:311:18ce:152b with SMTP id
+ u17-20020a5d6ad1000000b0031118ce152bmr6269936wrw.61.1687196139305; 
+ Mon, 19 Jun 2023 10:35:39 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ j17-20020a5d5651000000b003093a412310sm60683wrw.92.2023.06.19.10.35.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Jun 2023 10:35:38 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 442331FFBB;
+ Mon, 19 Jun 2023 18:35:38 +0100 (BST)
+References: <20230610171959.928544-1-richard.henderson@linaro.org>
+ <87ttvee4tf.fsf@linaro.org>
+ <ba4c99fc-7b3d-3969-260c-96c7c244cc46@linaro.org>
+ <1199d248-8aee-4e93-95cd-ad8847ed2255@linaro.org>
+User-agent: mu4e 1.11.6; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] tests/plugin: Remove duplicate insn log from libinsn.so
+Date: Mon, 19 Jun 2023 18:34:03 +0100
+In-reply-to: <1199d248-8aee-4e93-95cd-ad8847ed2255@linaro.org>
+Message-ID: <87mt0vjqxi.fsf@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:EE_|IA1PR10MB7386:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f5a34c1-de04-4641-010c-08db70ea297d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qxFhkLb/yyd2LzcY3MxOQDlZ8zLqO/dWYMFqB+PggJZWiqv4YqOkq+AJ52KwvAV0+oPRD9LYQzWTa36Mx334+8DFfh4PA67WF3N4YjiQ0QeHdmH7zskfaic/JYvlZRKetJkiCQ/kL4zkJ83+tRq5/+ANxzZ8ABSRvOAplkvUI0fWHpBpZzX55l4qV7x8M/pTBKfkw0cUMZ0/pWk9RRtuqzyjg5ImwTuiKkVeqc/+5cjC8gDZdFlGTE9ieHJ83yLpFFDK0sUf5e16nOJOPlwk50EAJkSUCmZ1Bj5ouo6tjswOts+1XClaHiTG05XeEBR3qemnsvsO8zb9OVt7iD/oNqU0TrYTWPCX78+n5pYmzMFfPQ99ghXpybfYTLsrVlOyZS0CkGbLdY3Ap3ZDFm6qWyzcik9K58fAUyWbTS+nG4lGZPN3tBTwXFojiGutnlXqtnC3mbSyFAkNUdKQlFvRMg+xXSNU8vvdPEKZ0f1BNQXbViEWbuVfseFz7aF5PBq45lw+zAljVlceFgaOEeAEzvu16cOXeTCEOrMWUxZj5k0OfLeSSgzOUGtnBtm1x8auY1p267yFhHNj8hLzeohCPNrFquHiEEtlgkchJUTCkEYO9YCKYg7t3fkGtzLR5/W6sCriCKrDberZEz2Xq4AtImNe7ZPIoBwNIFeCYg65xCYkLr3kiA5sJ86z3f8EBEw8
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR10MB2663.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(396003)(39860400002)(346002)(376002)(366004)(451199021)(2616005)(83380400001)(31696002)(86362001)(44832011)(31686004)(2906002)(5660300002)(4326008)(66556008)(186003)(66946007)(8936002)(8676002)(66476007)(26005)(966005)(478600001)(38100700002)(36756003)(41300700001)(53546011)(6506007)(6512007)(6486002)(6666004)(316002)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?THVQWllMemx4VWVqNFI2WDZDTkhQUm5GWG1tT0tnanl4bEhlcXIybUgxcVBu?=
- =?utf-8?B?aTRZcSs0R2xxOTFXS3B5c0VPZkM0VUpQdExFMnVoMERlSjhZZHpJRFJpTmps?=
- =?utf-8?B?TitkdUl0bE8rTkZ6T3lkelhnY0IvZFRDS3UvMTVlSG9hYzBLQ1VNZjZPN0c1?=
- =?utf-8?B?R0ZIMm9EVEliVnlGV1FlWGdlZGV2S2dGbitBczJOV3RyZVRkeStxSk9lSmVy?=
- =?utf-8?B?T0hKUnBZVEdKY1d1cEJzR1hiRDZMaHBpNTloTTFxckw1SzVYaUJXVkxFcDVi?=
- =?utf-8?B?QlhTOGV1clRIdjZrMmhwUENmKzUwVTR1WTdRcGJRellUeDQ0d2xzaGJzMHFJ?=
- =?utf-8?B?OThVdkhSKy85YmVqVmJCWkxJbWtpWDRWbllYMEdmWDJrQUZqTExraEhLY2Ns?=
- =?utf-8?B?Q0kwT3oyQzdrTHV3MUY3dExuUFZjNDFFL0lYM09XQ1BNMlBpL3FIclZPbm9s?=
- =?utf-8?B?MHRQdXJDUjBNZnBEdjRCMEp3NGZRR3l1dnBFcFJPTGJEWnlXUnk1K09SaUt4?=
- =?utf-8?B?bG8yZVY5NXNtaVIwYU5aVnRpdHd6TGNuR3liL3BRcGZ4dFFNQ3lma25RZUtK?=
- =?utf-8?B?ZU0wSEJjS1l0cmg4aFJZcVlBWXQ2WW1yZDhyN3k2dVZ5ZUx6V1RhNXhaUk5j?=
- =?utf-8?B?WENsNXhJejdTYysvVGQvWjF5Q2FadDl6eERrN0s3S1dUdVgzWWI2dUxWSHla?=
- =?utf-8?B?QnJuWkJ4Y1lvWWE3NHY0SDZKYXpmMEp1Sk0xOUMxLy9lT240N3krcGVIWmRo?=
- =?utf-8?B?aWlkTzdIVFVwWmtqcXFXUTFjTEovbUI3dmNlZVFaSGFlSXBXc28xL3NwRXpY?=
- =?utf-8?B?dlNEVk1iU1orNjV5YWxnQWxZN3ducTdLai9yKytIWG5UR09iNUlLWXJ6cUt2?=
- =?utf-8?B?YXJUWWM2YjFwaHAyMmpGTTg2eXhBSGltWHZzcFppWWpESzAzRTNIMGE4dm82?=
- =?utf-8?B?SFlYMEQzVFM5c3Rwcms5bkJCUzIxb00veUpNY3k2WWtnZEdCSGI3Vkh4dUpX?=
- =?utf-8?B?amNVRXdOWnNWcXROK0hodFBPdHZXbUVsZVNwL3hwTkc3cEU4dzVtVFR1TDJP?=
- =?utf-8?B?cWJFcjBrRGxjVlAybFY4S3FiUmoxeW82MWZ5cS8wZGJJODllZUN5V2syRElo?=
- =?utf-8?B?bFBpSkwvd1ROeEQ5bEtrSHpYbmY1Q0FzQkhFUmg0eWtSVFRKbU5CZ2t4Kzk5?=
- =?utf-8?B?Wnh0bUxwajFuM2duUmYrbWNPSjAzQTZKZDVVaGhxTU5SU2lWZTlqU0pLUjcx?=
- =?utf-8?B?TmFSeDJmbXlwZTVrdzlSOVhyaWFVUHBzcUJTZ09Rc0VQNU5DTUg0c3dnSDNC?=
- =?utf-8?B?TzJ6Rk0rRFM0ajlmVm5NT0FvRGVkOXQ5aW9NVHdzc1NyV3phc0U4bHZObEhP?=
- =?utf-8?B?NHMxTzc3SDVBYzRuSDlSZm91UlRBSWxMc3JBL3paZGVMOS9lOEhIUXo0M3Jn?=
- =?utf-8?B?UmRON2tpQ2Q1MmJQYXoyMVZKN0MyKzRPeS9QZHpJL2MwdDQrQ3RBYmExM3VK?=
- =?utf-8?B?WXk2L0tIem16QlJwaVY3eXRjaEVhNVp2WEV1dU9QdnZ5dnRjL1N2VnVxdFN4?=
- =?utf-8?B?ZkVqbEkrbmRDL2dDZlJUeVp6QmlCVWdycnFxNWorUy9SQnlvbXF3QnAzVlg4?=
- =?utf-8?B?eDRHajRPbGNzeGhxWU9UM1R1Q0lnK1gzaWg1bFZaNU9sa085dTByaFYwMy9X?=
- =?utf-8?B?dlFxMkJGMG0vQVNCVFYvcmcwbUdXR1hJLzd2QVBLMGtzNlQwNkhLV25sVDFC?=
- =?utf-8?B?MUlaRHl1MUFpQ1NqamZwK1ZxbXo2Qit3aGJqYmJlQWUydHNUaEpZNlk3R0NY?=
- =?utf-8?B?R0hhYlp2RDBuNnFGQVBDelM3Qi9nbG1VakVIdW0wc1FPNFRMdnduV0ZyWGt4?=
- =?utf-8?B?eEJsazhJNU82NENGS3hoU3ovZml3VFcrbU84NGxDRnlVbkFOenFnaEZ2TjFS?=
- =?utf-8?B?UktTV1F1U012NUFaM2k5M1g4SVF5SFVwN0t1dmx5QjZHaEhZQWZDcTZNZEdK?=
- =?utf-8?B?WEErZitsUzlkR1phZEpkZFFUNmNNOG5nenphK0g5VzIzLzQ0T0hyZUJnWWpN?=
- =?utf-8?B?WGlIOVArR2s1aTVvbytlU2hQWTJZbWpBWXNXb3Z3Sm8rN2pEWXQ1eFVjNUlm?=
- =?utf-8?Q?Sw/3MX5OSorTVvRuWzgQimA7c?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?cVhVbldmc2dBai9CVG1LaXhQWnhDV0NycTlWV0ZjRG1zZGdyMjRYeTJMWnAv?=
- =?utf-8?B?aDlHQ1FtMERqUjQ1YkNWMDhuSStmbWRxM0VLN25oOWJiTTJGYllIU210QXI3?=
- =?utf-8?B?WEliMko0TFlRQWxmcFFPU3E0dVkvcUlONnFtZ3dwbFNUN0JKbHJTZXFLSkZT?=
- =?utf-8?B?TnBSTUlOdHByalliZmU0NHNJaTZ2TVpMOGJTZW9XdzFXZjk3K3Jlak9QUmVN?=
- =?utf-8?B?ODdzalJGM0JBbXdrSTE0T3JoWFZQQXExRWQvdnJndmR0bkcyUHg5ZGJHSXYv?=
- =?utf-8?B?MmM0bTFrWlZaK21TSmd3Zk0xdk13RUQxWGV1dDFXUVV1eU5uTWFRODRPcVdC?=
- =?utf-8?B?bXFYYTc0OHY0aTBLczF6OGZKbHp1alZaa2xGZkYvMW5kME96OUd3WnROczVZ?=
- =?utf-8?B?SkwvcnBiRjMrak5sVDBDdUxuMnNDV1NyQjIrT2FXcEFoVGJZSU1GbkMxaXJH?=
- =?utf-8?B?Qit4OVFjU0I3UWRISE5ROGdrT2doWHBoVzY2dHM1OW1SVVJkQVhjK1pEMjY2?=
- =?utf-8?B?VnZZSy8rd3BjM240N2JST2Y5dXBtZFl6VFlqTXpsK0xLdUozcXBRNVJnOTJO?=
- =?utf-8?B?ZS9FRnBUWHY4SGZ4Ry9YK3ZHT0dablFpUExHbVJPSFdEMkdBZHlreGx5VFda?=
- =?utf-8?B?QlJTbUttN3VKMDM2MnFhenRpblZqT1BQaDdWTlF6VzFiWjg1MVYrbzRQS1lD?=
- =?utf-8?B?ekFHa1dxLzRtZm9kbmRmVzdZWmxHU3hyMVFUc1drdmgvdDhtM0pxZnYxTkgr?=
- =?utf-8?B?K0wyRExvd0VGbEl3YVU0ZHR6NFRDNDlwOTR6b0liblNpb3A0eUNrZDE3eGJx?=
- =?utf-8?B?RG5KRUdkQlF6andkUjJGOU94ZlVSY25LZWo3bEhiK1pQZ3JlbmdDeW55N0ln?=
- =?utf-8?B?cU9oUmxQZTB0eUYzSFUrcHdQMUxsdVFjamRDbHQ1dTc2U0lSTklXaEM4azdq?=
- =?utf-8?B?UnJsZ3BMWXZxdGlxT25CamV0TDFaSVRkd0ZKUjBadDg1UnljZytsbHBMM0Za?=
- =?utf-8?B?bFpNOFRWUlhDdTJSWE1HWE93ZWxYUnlWOUdQYmV0RU5NWWxMWUcxdVhRZS84?=
- =?utf-8?B?T0ZvU3JITXZSV3JMVVJWdEVnNjFGMmQzZi9OZVdveDlOOUZ5by94RjdyUGxa?=
- =?utf-8?B?eU1rQUVZd0JuNmFJQkVxRmVsbWpOS2dYNlEyeUZ1Ykg4cGs2bVozZGFYb2w0?=
- =?utf-8?B?eXRyeUlkbGhFRmVEUncvTWw1dzgyejdEcU9sYWhpcVZaWE8zWEpiVWxGNjBN?=
- =?utf-8?B?TFcwUjc1U3BHZmlWNWlPZ1o3THc4THhQZUVzL1BpNEp4eWxQUT09?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f5a34c1-de04-4641-010c-08db70ea297d
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2663.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2023 17:25:22.5159 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a0ToDqKR55lm9V8becwAApN/20W5eMrxjQhtsZEbLHkElkmZJUacoQQkaJYtIxqKWwPR6LV6uxXYqFN9jlgYKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7386
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-19_11,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- bulkscore=0 suspectscore=0
- adultscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306190160
-X-Proofpoint-GUID: sUw21IhFeGdss1SQUAsVhAV_9gAR6NCb
-X-Proofpoint-ORIG-GUID: sUw21IhFeGdss1SQUAsVhAV_9gAR6NCb
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -209,135 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Like and zhenyu,
 
-Thank you very much! That will be very helpful.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-In order to help the review, I will rebase the patchset on top of the most
-recent QEMU.
+> On 6/12/23 04:50, Richard Henderson wrote:
+>> On 6/11/23 02:14, Alex Benn=C3=A9e wrote:
+>>>
+>>> Richard Henderson <richard.henderson@linaro.org> writes:
+>>>
+>>>> This is a perfectly natural occurrence for x86 "rep movb",
+>>>> where the "rep" prefix forms a counted loop of the one insn.
+>>>>
+>>>> During the tests/tcg/multiarch/memory test, this logging is
+>>>> triggered over 350000 times.=C2=A0 Within the context of cross-i386-tci
+>>>> build, which is already slow by nature, the logging is sufficient
+>>>> to push the test into timeout.
+>>>
+>>> How does this get triggered because I added these:
+>>>
+>>> # non-inline runs will trigger the duplicate instruction heuristics in =
+libinsn.so
+>>> run-plugin-%-with-libinsn.so:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0$(call run-test, $@, \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(QEMU) -monitor none -display none \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -chardev file$(C=
+OMMA)path=3D$@.out$(COMMA)id=3Doutput \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -plugin ../../plugin/libinsn.so$(CO=
+MMA)inline=3Don \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 -d plugin -D $*-with-libinsn.so.pout \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(QEMU_OPTS) $*)
+>>>
+>>> to prevent the callback versions from being called for x86. The original
+>>> intent of the check was to detect failures due to cpu_io_recompile, see
+>>> e025d799af (tests/plugin: expand insn test to detect duplicate instruct=
+ions)
+>> I have no idea how, but it's happening.
+>>=20
+>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> ---
+>>>> Irritatingly, it doesn't timeout locally, so I used staging to double-=
+check:
+>>>>
+>>>> Fail: https://gitlab.com/qemu-project/qemu/-/jobs/4450754282#L5062
+>>>> Pass: https://gitlab.com/qemu-project/qemu/-/jobs/4450927108
+>> Note that in the pass case, we don't even log that the test ran.
+>
+> Any further thoughts on this?  Otherwise I'll merge it to get rid of
+> the cross-i386-tci failure...
+>
+>
+> r~
 
-Thank you very much!
+I'm happy to drop the feature from the plugin but the clean-up also
+needs to be applied to the run-plugin-%-with-libinsn.so: rules for i386
+and x86_64.
 
-Dongli Zhang
-
-On 6/19/23 01:52, Like Xu wrote:
-> I think we've been stuck here too long. Sorry Dongli.
-> 
-> +zhenyu, could you get someone to follow up on this, or I will start working on
-> that.
-> 
-> On 9/1/2023 9:19 am, Dongli Zhang wrote:
->> Ping?
->>
->> About [PATCH v2 2/2], the bad thing is that the customer will not be able to
->> notice the issue, that is, the "Broken BIOS detected" in dmesg, immediately.
->>
->> As a result, the customer VM many panic randomly anytime in the future (once
->> issue is encountered) if "/proc/sys/kernel/unknown_nmi_panic" is enabled.
->>
->> Thank you very much!
->>
->> Dongli Zhang
->>
->> On 12/19/22 06:45, Dongli Zhang wrote:
->>> Can I get feedback for this patchset, especially the [PATCH v2 2/2]?
->>>
->>> About the [PATCH v2 2/2], currently the issue impacts the usage of PMUs on AMD
->>> VM, especially the below case:
->>>
->>> 1. Enable panic on nmi.
->>> 2. Use perf to monitor the performance of VM. Although without a test, I think
->>> the nmi watchdog has the same effect.
->>> 3. A sudden system reset, or a kernel panic (kdump/kexec).
->>> 4. After reboot, there will be random unknown NMI.
->>> 5. Unfortunately, the "panic on nmi" may panic the VM randomly at any time.
->>>
->>> Thank you very much!
->>>
->>> Dongli Zhang
->>>
->>> On 12/1/22 16:22, Dongli Zhang wrote:
->>>> This patchset is to fix two svm pmu virtualization bugs, x86 only.
->>>>
->>>> version 1:
->>>> https://lore.kernel.org/all/20221119122901.2469-1-dongli.zhang@oracle.com/
->>>>
->>>> 1. The 1st bug is that "-cpu,-pmu" cannot disable svm pmu virtualization.
->>>>
->>>> To use "-cpu EPYC" or "-cpu host,-pmu" cannot disable the pmu
->>>> virtualization. There is still below at the VM linux side ...
->>>>
->>>> [    0.510611] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
->>>>
->>>> ... although we expect something like below.
->>>>
->>>> [    0.596381] Performance Events: PMU not available due to virtualization,
->>>> using software events only.
->>>> [    0.600972] NMI watchdog: Perf NMI watchdog permanently disabled
->>>>
->>>> The 1st patch has introduced a new x86 only accel/kvm property
->>>> "pmu-cap-disabled=true" to disable the pmu virtualization via
->>>> KVM_PMU_CAP_DISABLE.
->>>>
->>>> I considered 'KVM_X86_SET_MSR_FILTER' initially before patchset v1.
->>>> Since both KVM_X86_SET_MSR_FILTER and KVM_PMU_CAP_DISABLE are VM ioctl. I
->>>> finally used the latter because it is easier to use.
->>>>
->>>>
->>>> 2. The 2nd bug is that un-reclaimed perf events (after QEMU system_reset)
->>>> at the KVM side may inject random unwanted/unknown NMIs to the VM.
->>>>
->>>> The svm pmu registers are not reset during QEMU system_reset.
->>>>
->>>> (1). The VM resets (e.g., via QEMU system_reset or VM kdump/kexec) while it
->>>> is running "perf top". The pmu registers are not disabled gracefully.
->>>>
->>>> (2). Although the x86_cpu_reset() resets many registers to zero, the
->>>> kvm_put_msrs() does not puts AMD pmu registers to KVM side. As a result,
->>>> some pmu events are still enabled at the KVM side.
->>>>
->>>> (3). The KVM pmc_speculative_in_use() always returns true so that the events
->>>> will not be reclaimed. The kvm_pmc->perf_event is still active.
->>>>
->>>> (4). After the reboot, the VM kernel reports below error:
->>>>
->>>> [    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS
->>>> detected, complain to your hardware vendor.
->>>> [    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR
->>>> c0010200 is 530076)
->>>>
->>>> (5). In a worse case, the active kvm_pmc->perf_event is still able to
->>>> inject unknown NMIs randomly to the VM kernel.
->>>>
->>>> [...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
->>>>
->>>> The 2nd patch is to fix the issue by resetting AMD pmu registers as well as
->>>> Intel registers.
->>>>
->>>>
->>>> This patchset does not cover PerfMonV2, until the below patchset is merged
->>>> into the KVM side.
->>>>
->>>> [PATCH v3 0/8] KVM: x86: Add AMD Guest PerfMonV2 PMU support
->>>> https://lore.kernel.org/all/20221111102645.82001-1-likexu@tencent.com/
->>>>
->>>>
->>>> Dongli Zhang (2):
->>>>        target/i386/kvm: introduce 'pmu-cap-disabled' to set KVM_PMU_CAP_DISABLE
->>>>        target/i386/kvm: get and put AMD pmu registers
->>>>
->>>>   accel/kvm/kvm-all.c      |   1 +
->>>>   include/sysemu/kvm_int.h |   1 +
->>>>   qemu-options.hx          |   7 +++
->>>>   target/i386/cpu.h        |   5 ++
->>>>   target/i386/kvm/kvm.c    | 129 +++++++++++++++++++++++++++++++++++++++++-
->>>>   5 files changed, 141 insertions(+), 2 deletions(-)
->>>>
->>>> Thank you very much!
->>>>
->>>> Dongli Zhang
->>>>
->>>>
->>
->>
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
