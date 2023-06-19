@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BE6735695
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB617356DC
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 14:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBDrx-0001yK-Ne; Mon, 19 Jun 2023 08:20:29 -0400
+	id 1qBDz6-0003iv-UZ; Mon, 19 Jun 2023 08:27:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBDrh-0001vm-NU
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:20:17 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBDrf-000403-Pi
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:20:13 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5196a728d90so4669744a12.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 05:20:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687177208; x=1689769208;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=yDYZb4o9XOdkmRjG7w7LjTTpmTBjUr2xgA3AghCByUk=;
- b=q9so1MiYdIvbrw830FlHq7SdI+u36PCaPuYI6Pf1+lGkCNtZ3Wzc0FGmV/0subM015
- hT/CfQxe369TzoL3RGYWK9f1MSQyRvhS4IP3SL3e5KcZ7HzJ24V/5jkIGstDdG/PUOUZ
- EBYEgUHuHxSwWNrUCKrLFILwN746UtaRUnDL6RdUOaqagmdUwEj/ccoryvUieX8Z28Lu
- +YXGQXga1TGIsZXlOCw2T0EF4I+6Uza6uvAuLTF3NGaP/p/qYt4KU4fudYDIRUx8NYOc
- ItEx/jYdnCCFHD4qj/+wk8Wyf7AO0Iyb9olZekAR9BvYAvZTiG9Woc1HT8vJoaJmk1GE
- QRug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687177208; x=1689769208;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yDYZb4o9XOdkmRjG7w7LjTTpmTBjUr2xgA3AghCByUk=;
- b=ABF0jL3TyFjG7eCOfWjyQFn1xJFpapwL0ARZSUdGFRUk2JF083sJiv+7Tmpl+vTre8
- GsRwPbbESUiuKi6Za7RPaLYq9vggOJCVXedClt/qwLz2HZ6j44qQ3o/ZXVUAGDsWmP7/
- JJYtMU/VwjeN8yt3YdNY0TwuotUadMyzvRHrokB3RjnDJGe50U9kSNTYu6yUWtyJGQPu
- rFPC/jgpgC4yoWUkSruhvKw23ZWTPkDSpVI6RgIeJ5t0DRLNa3TApR63CH3hRVN8gxGl
- a8n1NIywIh4piK4FBFufJsHEuYBnv0svqJE8zxOTfhOTzFlrC75MLzx+rfgUbOC3EGKg
- Ex0Q==
-X-Gm-Message-State: AC+VfDxaTJau4xTGho/qczrsokzhTM4Duv1gzxUqFPZgIMilwxrueEE6
- jfYDPcc2hjOyHbPDfpDCTprXyZA2NY54qUraT6faGQh1sBfDGvoD
-X-Google-Smtp-Source: ACHHUZ4bJ1vmLJq8bN74jdINdAEtrYZ8Jjqxc+bXjaQGfQ0vZkYS1MEDn+pOTQ4t+7BtCv4UX6QVcRTDm4/6Na7w5e4=
-X-Received: by 2002:aa7:d901:0:b0:518:4a5b:56a with SMTP id
- a1-20020aa7d901000000b005184a5b056amr5912611edr.32.1687177208591; Mon, 19 Jun
- 2023 05:20:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qBDyw-0003ib-89
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:27:43 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qBDyP-00061G-Hi
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 08:27:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=N/o21fn9c5ozsRFqIxOt51/Osm9o3U35QBTDRNrLa1w=; b=QxABxpMDK58ZBYby80g6o5Bwy3
+ QumFq8GaGM/VqJVBaZBxM2KdCZjrLLLFvQ51Xuvr1Jz2LWUyncNLwlrD3JI6Rwjnl6RDVtwSi/87N
+ kUra0nhpXzGz9PvByH+gGUsq4pPZr1FnmAMgsWiYdyfcXCAnpiCtXHFhCoj8BgFddYYb7IWeIXwTK
+ r9N52cc0clZpiPudr7myPYMqUCzSh0PzdP98PXKOH8rAXNEPvdwMDCueGfv2F36Di3V+aEEvH3Ooy
+ xuyIRm4+7MbA56GzYkKCOOcGPnlpg38pavy/fjXkohMRTyvWueuHTQhv9gwLUrIzJn5HP7YPIZgZH
+ R7nrBNgKvvHJ6xlSuFqtpYsWcrlmtjAykBxURD6wmQ3szT8kKug4P2Pi31jSpenhdfgMAcOywmNF3
+ ytjqjw9pi9YfFTix6j//3Efir9MQPB65V2yxZDuLHgBxHNgCK3i/lEBUU/npGxJJhGmpyMZkjPSj7
+ +aLpgm1NSPU5fEizv8B1rrg5WEwbOfpfxmfHINWa1pha+qXNPPs891v6MsVqhrYBgytoKxkPDiaou
+ lWiQzWLrfFvEDz+Hh2iJadSeLK4vKoLKim0VQ8n1h8+UupcFkWfHE0XwrLCrnpbQrckrmWrlt6/wi
+ gk8eRwGm+AEtAGnI+X+mRDkIalZdHSMKaJodJfvqw=;
+Received: from host86-130-37-216.range86-130.btcentralplus.com
+ ([86.130.37.216] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qBDyA-0007hA-TE; Mon, 19 Jun 2023 13:26:59 +0100
+Message-ID: <341ff172-03b4-e8b5-40c7-1517a6ed3c57@ilande.co.uk>
+Date: Mon, 19 Jun 2023 13:26:56 +0100
 MIME-Version: 1.0
-References: <20221201102728.69751-1-akihiko.odaki@daynix.com>
- <CAFEAcA_ORM9CpDCvPMs1XcZVhh_4fKE2wnaS_tp1s4DzZCHsXQ@mail.gmail.com>
- <a3cc1116-272d-a8e5-a131-7becf98115e0@daynix.com>
- <ed62645a-ec48-14ff-4b7e-15314a0da30e@daynix.com>
-In-Reply-To: <ed62645a-ec48-14ff-4b7e-15314a0da30e@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 19 Jun 2023 13:19:57 +0100
-Message-ID: <CAFEAcA-pOKf1r+1BzURpv5FnFS79D2V=SSeY_a2Wene1wf+P1A@mail.gmail.com>
-Subject: Re: [PATCH] accel/kvm/kvm-all: Handle register access errors
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ laurent@vivier.eu, qemu-devel@nongnu.org
+References: <20230604131450.428797-1-mark.cave-ayland@ilande.co.uk>
+ <20230604131450.428797-8-mark.cave-ayland@ilande.co.uk>
+ <d6b7f5ff-d51d-f821-5c2a-20ae7c2d0cc4@linaro.org>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <d6b7f5ff-d51d-f821-5c2a-20ae7c2d0cc4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.130.37.216
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v3 07/23] q800: move GLUE device into separate q800-glue.c
+ file
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,59 +84,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 10 Jun 2023 at 04:51, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->
-> On 2022/12/01 20:00, Akihiko Odaki wrote:
-> > On 2022/12/01 19:40, Peter Maydell wrote:
-> >> On Thu, 1 Dec 2022 at 10:27, Akihiko Odaki <akihiko.odaki@daynix.com>
-> >> wrote:
-> >>>
-> >>> A register access error typically means something seriously wrong
-> >>> happened so that anything bad can happen after that and recovery is
-> >>> impossible.
-> >>> Even failing one register access is catastorophic as
-> >>> architecture-specific code are not written so that it torelates such
-> >>> failures.
-> >>>
-> >>> Make sure the VM stop and nothing worse happens if such an error occurs.
-> >>>
-> >>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >>
-> >> In a similar vein there was also
-> >> https://lore.kernel.org/all/20220617144857.34189-1-peterx@redhat.com/
-> >> back in June, which on the one hand was less comprehensive but on
-> >> the other does the plumbing to pass the error upwards rather than
-> >> reporting it immediately at point of failure.
-> >>
-> >> I'm in principle in favour but suspect we'll run into some corner
-> >> cases where we were happily ignoring not-very-important failures
-> >> (eg if you're running Linux as the host OS on a Mac M1 and your
-> >> host kernel doesn't have this fix:
-> >> https://lore.kernel.org/all/YnHz6Cw5ONR2e+KA@google.com/T/
-> >> then QEMU will go from "works by sheer luck" to "consistently
-> >> hits this error check"). So we should aim to land this extra
-> >> error checking early in the release cycle so we have plenty of
-> >> time to deal with any bug reports we get about it.
+On 05/06/2023 13:41, Philippe Mathieu-Daudé wrote:
 
-> > Actually I found this problem when I tried to run QEMU with KVM on M2
-> > MacBook Air and encountered a failure described and fixed at:
-> > https://lore.kernel.org/all/20221201104914.28944-2-akihiko.odaki@daynix.com/
-> >
-> > Although the affected register was not really important, QEMU couldn't
-> > run the guest well enough because kvm_arch_put_registers for ARM64 is
-> > written in a way that it fails early. I guess the situation is not so
-> > different for other architectures as well.
-> >
-> > I still agree that this should be postponed until a new release cycle
-> > starts as register saving/restoring is too important to fail.
+> On 4/6/23 15:14, Mark Cave-Ayland wrote:
+>> This will allow the q800-glue.h header to be included separately so that the
+>> GLUE device can be referenced externally.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+>> ---
+>>   MAINTAINERS                 |   2 +
+>>   hw/m68k/meson.build         |   2 +-
+>>   hw/m68k/q800-glue.c         | 252 ++++++++++++++++++++++++++++++++++++
+>>   hw/m68k/q800.c              | 238 +---------------------------------
+>>   include/hw/m68k/q800-glue.h |  50 +++++++
+>>   5 files changed, 306 insertions(+), 238 deletions(-)
+>>   create mode 100644 hw/m68k/q800-glue.c
+>>   create mode 100644 include/hw/m68k/q800-glue.h
+> 
+> 
+>> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+>> new file mode 100644
+>> index 0000000000..793bdb110c
+>> --- /dev/null
+>> +++ b/hw/m68k/q800-glue.c
+>> @@ -0,0 +1,252 @@
+>> +/*
+>> + * QEMU q800 logic glue
+> 
+> Although mentioned later, could we describe as "GLUE (General
+> Logic Unit)" here?
 
-> Hi,
->
-> QEMU 8.0 is already released so I think it's time to revisit this.
+Sure, I can fix this in v4.
 
-Two months ago would have been a better time :-) We're heading up
-towards softfreeze for 8.1 in about three weeks from now.
+>> + *
+>> + * Permission is hereby granted, free of charge, to any person obtaining a copy
+>> + * of this software and associated documentation files (the "Software"), to deal
+>> + * in the Software without restriction, including without limitation the rights
+>> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+>> + * copies of the Software, and to permit persons to whom the Software is
+>> + * furnished to do so, subject to the following conditions:
+>> + *
+>> + * The above copyright notice and this permission notice shall be included in
+>> + * all copies or substantial portions of the Software.
+>> + *
+>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+>> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+>> + * THE SOFTWARE.
+> 
+> Or simpler:
+> 
+>    * SPDX-License-Identifier: MIT
 
-thanks
--- PMM
+Thanks, I didn't realise that we could do this. In this particular case the header is 
+simply a copy of the one from q800.c where the code originated from, so my thinking 
+is that it makes sense to leave this for now and consider a wider update for the m68k 
+machines as a follow-up.
+
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "cpu.h"
+>> +#include "hw/m68k/q800-glue.h"
+>> +#include "hw/boards.h"
+>> +#include "hw/irq.h"
+>> +#include "hw/nmi.h"
+>> +#include "hw/qdev-properties.h"
+>> +#include "migration/vmstate.h"
+>> +
+>> +/*
+>> + * The GLUE (General Logic Unit) is an Apple custom integrated circuit chip
+>> + * that performs a variety of functions (RAM management, clock generation, ...).
+>> + * The GLUE chip receives interrupt requests from various devices,
+>> + * assign priority to each, and asserts one or more interrupt line to the
+>> + * CPU.
+>> + */
+> 
+> 
+>> +static const TypeInfo glue_info = {
+>> +    .name = TYPE_GLUE,
+>> +    .parent = TYPE_SYS_BUS_DEVICE,
+>> +    .instance_size = sizeof(GLUEState),
+>> +    .instance_init = glue_init,
+>> +    .instance_finalize = glue_finalize,
+>> +    .class_init = glue_class_init,
+>> +    .interfaces = (InterfaceInfo[]) {
+>> +         { TYPE_NMI },
+>> +         { }
+>> +    },
+>> +};
+>> +
+>> +static void glue_register_types(void)
+>> +{
+>> +    type_register_static(&glue_info);
+>> +}
+>  > +
+>  > +type_init(glue_register_types)
+> 
+> Soon DEFINE_TYPES() will be recommended over type_init().
+
+I see, I'll add this as a separate patch in v4.
+
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Thanks!
+
+
+ATB,
+
+Mark.
+
 
