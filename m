@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF2E7359B6
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 623A1735994
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 16:33:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFtP-0001En-Re; Mon, 19 Jun 2023 10:30:08 -0400
+	id 1qBFtg-0002Dy-Va; Mon, 19 Jun 2023 10:30:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsl-0000bi-1C
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:27 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qBFsm-0000dO-MV
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:28 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBFsi-0002DU-Vu
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:26 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f9b258f3a2so8620755e9.0
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:24 -0700 (PDT)
+ id 1qBFsj-0002Dk-KB
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 10:29:28 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f9002a1a39so19962895e9.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 07:29:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687184963; x=1689776963;
+ d=linaro.org; s=google; t=1687184964; x=1689776964;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=grRrhMxoKNz9VHeMIDBGTUawovkjPz3zJ6U9jbCL8Ps=;
- b=L9z/Lr4/nKaNQS6DUjUehMP1i96lbcwsiaINO7Z6UiiOxh2qSSlnNXkuTDkFU3Ex4N
- ohVlYSi9BQ7Qg6dxhUOWCtEw2cDyn3X+hGFBRka4zGww8u28b1mTbXxfpmZLh1zeCUIy
- fP4LHBzRs9iXEWMpvuI47Y23KfnCKDFfTeC1fdKq2Da7tTGhWr8gjICu3JoeAMzuXu3x
- r6EqHgVLIX30K+dVtXs49htiG2TjRDhge9WzzhTPlK/42e5hZk2RSRAT3hnUL0qGZ8s5
- dcDn1Rk6dsW2m8t8eDV4/SqFJ7ORyDvlCuK6GCPg9eXqXZdgqBJqQ6N6hvkqpd/s5h0+
- itiw==
+ :reply-to; bh=2H1PoVsZkBVF3PXsxyEPbgjiOcccDMExHKaHncVAW8U=;
+ b=sO8SGO7J+kL/DIN1Amv+89jnCm5GOnSgmMSy6B5GEl/CpRSViUaGovAOeCpmdZ1uM+
+ K6KnsNd/H0YXBd2PWW4xaakJwaNy+pGmoayrqFRzfV6na2JCfLlqZTacy4ZXoryW28xF
+ Yr+Km+5NK8aEJi+UrX7vTvyRFhByIY/Jt8MmmMy9k6vUISHMYWLOfCMWd5r1IFn0O7P+
+ kmYDeOGKm5xe7U5hay4BNousQjYS9SKRw92wpeCo/B/1FRACI13dw0p1NQamYez3luAm
+ uCIHXxYUHuqTMy1VvkMCuWn1+gYLqzE73GY0lymNrOvdNfEtxXuYK0i6t1d1ID87/Vla
+ UO2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687184963; x=1689776963;
+ d=1e100.net; s=20221208; t=1687184964; x=1689776964;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=grRrhMxoKNz9VHeMIDBGTUawovkjPz3zJ6U9jbCL8Ps=;
- b=TW/fPscCpl0huR9mHgY4aiJmQL5v2l2QoeMzTx3dul+sZXTBnJs5izFTvnMjiZaJ0E
- /lsb3pqE3xxkV5tpAHL6j2u8BKwx0SNmoQZ8H5sFGp0PR7VTViBBqPR45t4gngbPPJJV
- 0kntKNhgkZdPavymN1ZsiOVVsDvoqV3rf7XVqb3Bi+bvkqL/OLKuWoHZed+8uEZSOiwa
- BOEJCJlgSBFbMW6OnnIgiG4DMHK86/czmYFEZ3dEJpDPlImQXVPaEdC7oqbe+xzbXcW6
- 8CdtUrQW2uM9rJn+KUrl+xnV5hqX6PnTScCLjn2nb/4uc+0TCLf74JHKKcORMCnXrIDo
- O5Ng==
-X-Gm-Message-State: AC+VfDwhLYuAJ8Yr+xtnDHjsxHfZ+AQoUNT1ghI2SJcngZiL5uT3N0gu
- 2TRqYwfFEyRUfSzCT436qvd+fXslTtZfnpqDw7w=
-X-Google-Smtp-Source: ACHHUZ6MIw47EsEyFiyWlnlKa5FVb/QBClQRwA0Y6CBrgIDJfHtvhs3nIPqFOjobm99qbmeRJx5RYg==
-X-Received: by 2002:a7b:c34d:0:b0:3f7:b1df:26d with SMTP id
- l13-20020a7bc34d000000b003f7b1df026dmr11376578wmj.38.1687184963564; 
+ bh=2H1PoVsZkBVF3PXsxyEPbgjiOcccDMExHKaHncVAW8U=;
+ b=RRvjotM4Lekx/Au7o1eG9FYYrlghnEJYQ/CeUBxm3Xwqq2JUHnxY6LET+3/a/H2Hk6
+ 461ypemFFJwuUgPnHb6ZkO12s2GC6W6O7XkWhPV2ZBo2NaNjRXYxN6Dkaq6DqVWh2jmf
+ Q4KUEES/nAvcKt/Q5fUlL50SUzNaWoBQCjPDvHbmtxR5ZTadJWJTHZb2FODlswjj3iTj
+ lBoJVaZTFepiVBiY48He/+JlUJ52t5AET0GXxEcXQRQjWwKSakvnESRpyKhJ4uNEB9Co
+ QzykNfUX1wKUZK1BFhoxx0rWGxL5cCFXiXtU35omA9/c29drr1tRPrJriz+15JpqFkiQ
+ +9Vw==
+X-Gm-Message-State: AC+VfDxXqjhROsNJS9d1HBd/P22w3uFJyqBm5KAErmIRB97+knHXNlor
+ 5AK2pDqijblpfr1UfddYME8F2bw7+r0M7quzAOs=
+X-Google-Smtp-Source: ACHHUZ7lGP6iS53U92rHKy9JO1PmVcImb1QZaaAkAT27wf5VUNdllTwacF1xt2xhtUCt6ChN+a0IMg==
+X-Received: by 2002:a7b:c84f:0:b0:3f8:fed0:1c5c with SMTP id
+ c15-20020a7bc84f000000b003f8fed01c5cmr5496970wml.8.1687184963958; 
  Mon, 19 Jun 2023 07:29:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 19 Jun 2023 07:29:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/33] target/arm: Convert LDR/STR with 12-bit immediate to
- decodetree
-Date: Mon, 19 Jun 2023 15:28:57 +0100
-Message-Id: <20230619142914.963184-17-peter.maydell@linaro.org>
+Subject: [PULL 17/33] target/arm: Convert LDR/STR reg+reg to decodetree
+Date: Mon, 19 Jun 2023 15:28:58 +0100
+Message-Id: <20230619142914.963184-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230619142914.963184-1-peter.maydell@linaro.org>
 References: <20230619142914.963184-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,89 +90,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the LDR and STR instructions which use a 12-bit immediate
-offset to decodetree. We can reuse the existing LDR and STR
-trans functions for these.
+Convert the LDR and STR instructions which take a register
+plus register offset to decodetree.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-14-peter.maydell@linaro.org
+Message-id: 20230602155223.2040685-15-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  25 ++++++++
- target/arm/tcg/translate-a64.c | 104 +++++----------------------------
- 2 files changed, 41 insertions(+), 88 deletions(-)
+ target/arm/tcg/a64.decode      |  22 +++++
+ target/arm/tcg/translate-a64.c | 173 +++++++++++++++------------------
+ 2 files changed, 103 insertions(+), 92 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index d55c09684a7..d6b31c10838 100644
+index d6b31c10838..5c086d6af6d 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -395,3 +395,28 @@ STR_v_i         sz:2 111 1 00 00 0 ......... 11 ..... ..... @ldst_imm_pre sign=0
- STR_v_i         00 111 1 00 10 0 ......... 11 ..... ..... @ldst_imm_pre sign=0 ext=0 sz=4
- LDR_v_i         sz:2 111 1 00 01 0 ......... 11 ..... ..... @ldst_imm_pre sign=0 ext=0
- LDR_v_i         00 111 1 00 11 0 ......... 11 ..... ..... @ldst_imm_pre sign=0 ext=0 sz=4
+@@ -420,3 +420,25 @@ STR_v_i         sz:2 111 1 01 00 ............ ..... ..... @ldst_uimm sign=0 ext=
+ STR_v_i         00 111 1 01 10 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=4
+ LDR_v_i         sz:2 111 1 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=0
+ LDR_v_i         00 111 1 01 11 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=4
 +
-+# Load/store with an unsigned 12 bit immediate, which is scaled by the
-+# element size. The function gets the sz:imm and returns the scaled immediate.
-+%uimm_scaled   10:12 sz:3 !function=uimm_scaled
-+
-+@ldst_uimm      .. ... . .. .. ............ rn:5 rt:5 &ldst_imm unpriv=0 p=0 w=0 imm=%uimm_scaled
-+
-+STR_i           sz:2 111 0 01 00 ............ ..... ..... @ldst_uimm sign=0 ext=0
-+LDR_i           00 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=0
-+LDR_i           01 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=1
-+LDR_i           10 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=2
-+LDR_i           11 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=3
-+LDR_i           00 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=0
-+LDR_i           01 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=1
-+LDR_i           10 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=2
-+LDR_i           00 111 0 01 11 ............ ..... ..... @ldst_uimm sign=1 ext=1 sz=0
-+LDR_i           01 111 0 01 11 ............ ..... ..... @ldst_uimm sign=1 ext=1 sz=1
++# Load/store with register offset
++&ldst rm rn rt sign ext sz opt s
++@ldst           .. ... . .. .. . rm:5 opt:3 s:1 .. rn:5 rt:5 &ldst
++STR             sz:2 111 0 00 00 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
++LDR             00 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=1 sz=0
++LDR             01 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=1 sz=1
++LDR             10 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=1 sz=2
++LDR             11 111 0 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=3
++LDR             00 111 0 00 10 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=0 sz=0
++LDR             01 111 0 00 10 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=0 sz=1
++LDR             10 111 0 00 10 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=0 sz=2
++LDR             00 111 0 00 11 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=1 sz=0
++LDR             01 111 0 00 11 1 ..... ... . 10 ..... ..... @ldst sign=1 ext=1 sz=1
 +
 +# PRFM
-+NOP             11 111 0 01 10 ------------ ----- -----
++NOP             11 111 0 00 10 1 ----- -1- - 10 ----- -----
 +
-+STR_v_i         sz:2 111 1 01 00 ............ ..... ..... @ldst_uimm sign=0 ext=0
-+STR_v_i         00 111 1 01 10 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=4
-+LDR_v_i         sz:2 111 1 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=0
-+LDR_v_i         00 111 1 01 11 ............ ..... ..... @ldst_uimm sign=0 ext=0 sz=4
++STR_v           sz:2 111 1 00 00 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
++STR_v           00 111 1 00 10 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=4
++LDR_v           sz:2 111 1 00 01 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0
++LDR_v           00 111 1 00 11 1 ..... ... . 10 ..... ..... @ldst sign=0 ext=0 sz=4
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a1ddb1a9cdd..82da83d9733 100644
+index 82da83d9733..2d5e920c7bb 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -46,6 +46,22 @@ enum a64_shift_type {
-     A64_SHIFT_TYPE_ROR = 3
- };
- 
-+/*
-+ * Helpers for extracting complex instruction fields
-+ */
-+
-+/*
-+ * For load/store with an unsigned 12 bit immediate scaled by the element
-+ * size. The input has the immediate field in bits [14:3] and the element
-+ * size in [2:0].
-+ */
-+static int uimm_scaled(DisasContext *s, int x)
-+{
-+    unsigned imm = x >> 3;
-+    unsigned scale = extract32(x, 0, 3);
-+    return imm << scale;
-+}
-+
- /*
-  * Include the generated decoders.
-  */
-@@ -3234,91 +3250,6 @@ static void disas_ldst_reg_roffset(DisasContext *s, uint32_t insn,
-     }
+@@ -3150,104 +3150,95 @@ static bool trans_LDR_v_i(DisasContext *s, arg_ldst_imm *a)
+     return true;
  }
  
 -/*
-- * Load/store (unsigned immediate)
+- * Load/store (register offset)
 - *
-- * 31 30 29   27  26 25 24 23 22 21        10 9     5
-- * +----+-------+---+-----+-----+------------+-------+------+
-- * |size| 1 1 1 | V | 0 1 | opc |   imm12    |  Rn   |  Rt  |
-- * +----+-------+---+-----+-----+------------+-------+------+
+- * 31 30 29   27  26 25 24 23 22 21  20  16 15 13 12 11 10 9  5 4  0
+- * +----+-------+---+-----+-----+---+------+-----+--+-----+----+----+
+- * |size| 1 1 1 | V | 0 0 | opc | 1 |  Rm  | opt | S| 1 0 | Rn | Rt |
+- * +----+-------+---+-----+-----+---+------+-----+--+-----+----+----+
 - *
 - * For non-vector:
 - *   size: 00-> byte, 01 -> 16 bit, 10 -> 32bit, 11 -> 64bit
@@ -181,23 +153,37 @@ index a1ddb1a9cdd..82da83d9733 100644
 - * For vector:
 - *   size is opc<1>:size<1:0> so 100 -> 128 bit; 110 and 111 unallocated
 - *   opc<0>: 0 -> store, 1 -> load
-- * Rn: base address register (inc SP)
-- * Rt: target register
+- * V: 1 -> vector/simd
+- * opt: extend encoding (see DecodeRegExtend)
+- * S: if S=1 then scale (essentially index by sizeof(size))
+- * Rt: register to transfer into/out of
+- * Rn: address register or SP for base
+- * Rm: offset register or ZR for offset
 - */
--static void disas_ldst_reg_unsigned_imm(DisasContext *s, uint32_t insn,
--                                        int opc,
--                                        int size,
--                                        int rt,
--                                        bool is_vector)
--{
+-static void disas_ldst_reg_roffset(DisasContext *s, uint32_t insn,
+-                                   int opc,
+-                                   int size,
+-                                   int rt,
+-                                   bool is_vector)
++static void op_addr_ldst_pre(DisasContext *s, arg_ldst *a,
++                             TCGv_i64 *clean_addr, TCGv_i64 *dirty_addr,
++                             bool is_store, MemOp memop)
+ {
 -    int rn = extract32(insn, 5, 5);
--    unsigned int imm12 = extract32(insn, 10, 12);
--    unsigned int offset;
--    TCGv_i64 clean_addr, dirty_addr;
--    bool is_store;
+-    int shift = extract32(insn, 12, 1);
+-    int rm = extract32(insn, 16, 5);
+-    int opt = extract32(insn, 13, 3);
 -    bool is_signed = false;
+-    bool is_store = false;
 -    bool is_extended = false;
+-    TCGv_i64 tcg_rm, clean_addr, dirty_addr;
 -    MemOp memop;
++    TCGv_i64 tcg_rm;
+ 
+-    if (extract32(opt, 1, 1) == 0) {
+-        unallocated_encoding(s);
+-        return;
+-    }
 -
 -    if (is_vector) {
 -        size |= (opc & 2) << 1;
@@ -226,14 +212,29 @@ index a1ddb1a9cdd..82da83d9733 100644
 -    }
 -
 -    if (rn == 31) {
--        gen_check_sp_alignment(s);
--    }
++    if (a->rn == 31) {
+         gen_check_sp_alignment(s);
+     }
 -    dirty_addr = read_cpu_reg_sp(s, rn, 1);
--    offset = imm12 << size;
--    tcg_gen_addi_i64(dirty_addr, dirty_addr, offset);
--
--    clean_addr = gen_mte_check1(s, dirty_addr, is_store, rn != 31, memop);
--
++    *dirty_addr = read_cpu_reg_sp(s, a->rn, 1);
+ 
+-    tcg_rm = read_cpu_reg(s, rm, 1);
+-    ext_and_shift_reg(tcg_rm, tcg_rm, opt, shift ? size : 0);
++    tcg_rm = read_cpu_reg(s, a->rm, 1);
++    ext_and_shift_reg(tcg_rm, tcg_rm, a->opt, a->s ? a->sz : 0);
+ 
+-    tcg_gen_add_i64(dirty_addr, dirty_addr, tcg_rm);
++    tcg_gen_add_i64(*dirty_addr, *dirty_addr, tcg_rm);
++    *clean_addr = gen_mte_check1(s, *dirty_addr, is_store, true, memop);
++}
+ 
+-    clean_addr = gen_mte_check1(s, dirty_addr, is_store, true, memop);
++static bool trans_LDR(DisasContext *s, arg_ldst *a)
++{
++    TCGv_i64 clean_addr, dirty_addr, tcg_rt;
++    bool iss_sf = ldst_iss_sf(a->sz, a->sign, a->ext);
++    MemOp memop;
+ 
 -    if (is_vector) {
 -        if (is_store) {
 -            do_fp_st(s, rt, clean_addr, memop);
@@ -243,28 +244,100 @@ index a1ddb1a9cdd..82da83d9733 100644
 -    } else {
 -        TCGv_i64 tcg_rt = cpu_reg(s, rt);
 -        bool iss_sf = disas_ldst_compute_iss_sf(size, is_signed, opc);
+-
 -        if (is_store) {
--            do_gpr_st(s, tcg_rt, clean_addr, memop, true, rt, iss_sf, false);
+-            do_gpr_st(s, tcg_rt, clean_addr, memop,
+-                      true, rt, iss_sf, false);
 -        } else {
 -            do_gpr_ld(s, tcg_rt, clean_addr, memop,
 -                      is_extended, true, rt, iss_sf, false);
 -        }
--    }
--}
--
- /* Atomic memory operations
-  *
-  *  31  30      27  26    24    22  21   16   15    12    10    5     0
-@@ -3618,9 +3549,6 @@ static void disas_ldst_reg(DisasContext *s, uint32_t insn)
-             return;
-         }
-         break;
--    case 1:
--        disas_ldst_reg_unsigned_imm(s, insn, opc, size, rt, is_vector);
--        return;
++    if (extract32(a->opt, 1, 1) == 0) {
++        return false;
      }
-     unallocated_encoding(s);
++
++    memop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
++    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, false, memop);
++    tcg_rt = cpu_reg(s, a->rt);
++    do_gpr_ld(s, tcg_rt, clean_addr, memop,
++              a->ext, true, a->rt, iss_sf, false);
++    return true;
++}
++
++static bool trans_STR(DisasContext *s, arg_ldst *a)
++{
++    TCGv_i64 clean_addr, dirty_addr, tcg_rt;
++    bool iss_sf = ldst_iss_sf(a->sz, a->sign, a->ext);
++    MemOp memop;
++
++    if (extract32(a->opt, 1, 1) == 0) {
++        return false;
++    }
++
++    memop = finalize_memop(s, a->sz);
++    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, true, memop);
++    tcg_rt = cpu_reg(s, a->rt);
++    do_gpr_st(s, tcg_rt, clean_addr, memop, true, a->rt, iss_sf, false);
++    return true;
++}
++
++static bool trans_LDR_v(DisasContext *s, arg_ldst *a)
++{
++    TCGv_i64 clean_addr, dirty_addr;
++    MemOp memop;
++
++    if (extract32(a->opt, 1, 1) == 0) {
++        return false;
++    }
++
++    if (!fp_access_check(s)) {
++        return true;
++    }
++
++    memop = finalize_memop_asimd(s, a->sz);
++    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, false, memop);
++    do_fp_ld(s, a->rt, clean_addr, memop);
++    return true;
++}
++
++static bool trans_STR_v(DisasContext *s, arg_ldst *a)
++{
++    TCGv_i64 clean_addr, dirty_addr;
++    MemOp memop;
++
++    if (extract32(a->opt, 1, 1) == 0) {
++        return false;
++    }
++
++    if (!fp_access_check(s)) {
++        return true;
++    }
++
++    memop = finalize_memop_asimd(s, a->sz);
++    op_addr_ldst_pre(s, a, &clean_addr, &dirty_addr, true, memop);
++    do_fp_st(s, a->rt, clean_addr, memop);
++    return true;
  }
+ 
+ /* Atomic memory operations
+@@ -3528,7 +3519,6 @@ static void disas_ldst_ldapr_stlr(DisasContext *s, uint32_t insn)
+ static void disas_ldst_reg(DisasContext *s, uint32_t insn)
+ {
+     int rt = extract32(insn, 0, 5);
+-    int opc = extract32(insn, 22, 2);
+     bool is_vector = extract32(insn, 26, 1);
+     int size = extract32(insn, 30, 2);
+ 
+@@ -3542,8 +3532,7 @@ static void disas_ldst_reg(DisasContext *s, uint32_t insn)
+             disas_ldst_atomic(s, insn, size, rt, is_vector);
+             return;
+         case 2:
+-            disas_ldst_reg_roffset(s, insn, opc, size, rt, is_vector);
+-            return;
++            break;
+         default:
+             disas_ldst_pac(s, insn, size, rt, is_vector);
+             return;
 -- 
 2.34.1
 
