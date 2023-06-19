@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA457358DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5A47358E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Jun 2023 15:47:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBFCh-0001JF-H3; Mon, 19 Jun 2023 09:45:59 -0400
+	id 1qBFDK-0001s3-D1; Mon, 19 Jun 2023 09:46:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBFCb-0001Es-6j
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:45:53 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBFDI-0001r8-HX
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:46:36 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBFCY-00069B-9L
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:45:51 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4f004cc54f4so4571482e87.3
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:45:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBFDG-0006IA-U6
+ for qemu-devel@nongnu.org; Mon, 19 Jun 2023 09:46:36 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b46773e427so30466881fa.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 06:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687182345; x=1689774345;
+ d=linaro.org; s=google; t=1687182393; x=1689774393;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=E5wJmBO5+DR2SHTj2u5rPzmt7ogdWieraXdORYTOYSo=;
- b=CgEQJwT63BL5caiK9PtE/5P7NaObTVFuNvaNlwPPxdB66vZKaWObAU8DwRjdKWIL9k
- 3H2KHIE0JS+12jljCWgyJokEoVo9MJhDQkbcFPzxXS4Z/94bhCjFLLOZVsdzKzRJz7WC
- aXpUytZ7xM7w0ieAK2xqZe/Rg+KxdjXlqpjV/aE4G0+lf5+r3JjVbMe1+k9+cV+6NzkY
- aMF+49bsI8XrNeMGtDBFayI3ep9yrt+x27P5dtTezePTICu2GNiJDE8Eip9REwjpFO0o
- zejS2NkApYmAHjKQ/SCqj+/rBH5J9tuXdZaLe0soexRXo0e5z/0JguM0PCEG7OW0di6w
- iA4A==
+ bh=RZAFf7a7CQepa6D+gIU51FI4q5YibaV1KpSK1tAnOSk=;
+ b=kIrei8YLpsn2Cya3HB6gW+DFnTb3qQ5INGhMEdriy3TwpwRjHiGzcLqo9gTpnHetLv
+ sY29UnIgZ+Ig2K+kjQnTgmcKK7eBpqIrixC0H2NLiOyVxHie0XoBa4cFnMuQjC4aDxJM
+ CiMUdxDi+DpkYuNWyYkuwzwrOkyQ4BiLJaJO6LngkQLoL54lMzh0ZikSOZm/mtz+C7in
+ JRulSNc8j2TNngbKqgWb9P8tjVvEFdU3Nj2FnY1QbZ8neKDfgukUdfwxpd4N3pYjPGM5
+ tC0Jqw/rSoYdINzkWQYpvGVN9oGJOGueAVkxsjUIe/2Vz/c5VUmBroVatiuRwqdQaeRj
+ LMkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687182345; x=1689774345;
+ d=1e100.net; s=20221208; t=1687182393; x=1689774393;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E5wJmBO5+DR2SHTj2u5rPzmt7ogdWieraXdORYTOYSo=;
- b=FHaflXQrFmzHCaCSR+Jczv5e08thXlVbbOLjexhz5mRd1K9Mgg7dhx58Q2xcaEdHFR
- HrPA0EsSOzEJ/IP8n8fX6k+FNLSx60JVpiqXmEew/w6gTxOY92fpSX8WhVbwM3eAFAFz
- /ClzrDDzklG4vkDH0mNP2I6KjozzRrFuZA0fBMit8Nujpq87z3iSVEzrgDf4HzoZFcKg
- IkxHVPh+OYeui/51s7GPFPqKFdwJgV9zh1sUhgwwZpddoGfvbXjCzbXfdFjNUGIAAvn2
- CXdWPCMeKXLTkAbCmcO6OY585J8Dreh8j68EaIMWscp8HE8tHhhpf6zPRDb1abJFp97k
- 7BmQ==
-X-Gm-Message-State: AC+VfDwpT8IwpsWost7iGJAhzCCL/ko3Q2brzyc4RLW1/GGqfMhA3/gO
- e0dbjNTPSYkWYMyEHdUQbmDivQ==
-X-Google-Smtp-Source: ACHHUZ6lGEMCwVh518g627Y9EsheA+h5EI1c1ZPGWlcuKWrshZFl/Q33qMqroaOIZ0GKAsCQPcF0cg==
-X-Received: by 2002:a19:d611:0:b0:4f8:42a9:70b3 with SMTP id
- n17-20020a19d611000000b004f842a970b3mr5202513lfg.58.1687182344940; 
- Mon, 19 Jun 2023 06:45:44 -0700 (PDT)
+ bh=RZAFf7a7CQepa6D+gIU51FI4q5YibaV1KpSK1tAnOSk=;
+ b=jGZMqtdM41GDHzV3esE5XqdF4q3fUtvMCkSVk+UBkmya7NXE4yhG+MfO04dR+srZPc
+ rZMRu9jQ4OcPmxp4qwK/FqGXENe6hJHB21hPBOk2E+fiU1cM2pRPgnBjGZdCeS+5+dkC
+ nXvecrRvF3IHstycaOUTYqDGPFRgGV0XFQNFbbxSrbzfXAvNpchUeB5R+ooHVQUMZPNj
+ uzWRyEzfHEZ0227jgTbpcnIQisFKcoSpeU4e/ntzgGCROofBEzxFdHmdSjGugVKgmtM2
+ 8vyLPOPApcheldADW1gt55YPb0r8H8+h5cjR8XQKTPvs0z5uShsZyl+/0bMeFKyeGg1U
+ ZfmQ==
+X-Gm-Message-State: AC+VfDwUI0P9nrSabBIu+E1suZJnBL5XVcmOtze9q3louo/+HYD9v02x
+ Dq1RNw9NOmKnNufBL7sjxzwZYg==
+X-Google-Smtp-Source: ACHHUZ5JFE1GnE5mBt8DS0BGosQ1RMIwoD93ASbajwFvqHmHlIZTY80s6L+VPOL+NUZl4/kzjqCWkg==
+X-Received: by 2002:a2e:9011:0:b0:2b4:5c50:f60a with SMTP id
+ h17-20020a2e9011000000b002b45c50f60amr5081641ljg.7.1687182393057; 
+ Mon, 19 Jun 2023 06:46:33 -0700 (PDT)
 Received: from [192.168.69.115] (sar95-h02-176-184-10-225.dsl.sta.abo.bbox.fr.
  [176.184.10.225]) by smtp.gmail.com with ESMTPSA id
- j10-20020aa7c40a000000b0051a315d6e1bsm4114446edq.70.2023.06.19.06.45.41
+ bk4-20020a170906b0c400b0096f675ce45csm14657406ejb.182.2023.06.19.06.46.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 06:45:44 -0700 (PDT)
-Message-ID: <84c0f59c-659a-25b5-d2f1-4309be445743@linaro.org>
-Date: Mon, 19 Jun 2023 15:45:39 +0200
+ Mon, 19 Jun 2023 06:46:32 -0700 (PDT)
+Message-ID: <327c9d66-2adf-921f-50ca-e856d362a3c1@linaro.org>
+Date: Mon, 19 Jun 2023 15:46:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 32/38] crypto: Remove AES_shifts, AES_ishifts
+Subject: Re: [PATCH v2 31/38] target/ppc: Use aesdec_ISB_ISR_AK_IMC
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: ardb@kernel.org, berrange@redhat.com, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com
 References: <20230609022401.684157-1-richard.henderson@linaro.org>
- <20230609022401.684157-33-richard.henderson@linaro.org>
+ <20230609022401.684157-32-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230609022401.684157-33-richard.henderson@linaro.org>
+In-Reply-To: <20230609022401.684157-32-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,13 +95,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/6/23 04:23, Richard Henderson wrote:
-> These arrays are no longer used, replaced by AES_SH_*, AES_ISH_*.
+> This implements the VNCIPHER instruction.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/crypto/aes.h |  4 ----
->   crypto/aes.c         | 14 --------------
->   2 files changed, 18 deletions(-)
+>   target/ppc/int_helper.c | 19 ++++---------------
+>   1 file changed, 4 insertions(+), 15 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
