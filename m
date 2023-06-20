@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9AEC736BB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 14:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8CB736BCB
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 14:20:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBaFj-0001UW-QT; Tue, 20 Jun 2023 08:14:31 -0400
+	id 1qBaKj-00057z-HG; Tue, 20 Jun 2023 08:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBaFh-0001Qc-Jq
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:14:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBaFf-0002xQ-Qd
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:14:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687263267;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pr+4LVY6eewLJ1yOdvykAeX8DZOF5/XHdNMp3WfZrHE=;
- b=jRJ5P/kSN1GxO62ZAzQ4UkAXVRpUsqZiyfNwb8fVdyExRlhu3+RX0NYiAWzbQLSfP1TG+H
- 4h3WK3Vv3FDIqy5o6oIFpe5srjzxA4OGWf0UCTwM8xANWkUm0NZ4D2hMoj8jpGFpFcSWKL
- mRsNyIwmKzCMr3I8kHDT+XhzqP3cX4g=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-NSQnkwwBM-iF8ZZuUuDrsw-1; Tue, 20 Jun 2023 08:14:25 -0400
-X-MC-Unique: NSQnkwwBM-iF8ZZuUuDrsw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31283f4d22fso70663f8f.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 05:14:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBaKi-00057o-DH
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:19:40 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBaKg-0004I5-Qf
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:19:40 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-519f6e1a16cso5459902a12.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 05:19:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687263577; x=1689855577;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=mA2xlTq8TaGIAGIEbsI/d42ixyZvwolv+wdO+4hgEi4=;
+ b=k7GQTkPuKABvjkr0sWxfnZVd2S0csdXaROw4+OvpQlMcGzrwMkYFv5mUvb/XgVvHCa
+ lHHVBgLkB0lCk+F3s/VrLQuGG8WppPpGozww4EOHutFOblWs77F8eoBA615TvvLFRRpj
+ 3RFvmhEVsNik4aQtToZuZy92GitcW0BfrwJTWJ0fEYUD3B6aNUOSRvVY4Rs3BYr8/SWx
+ 2jtoiv8mXM6F4r8k3pPHp4zLTVpQIHPDMF8sW/hVwEX/AwgGdaPD88DLXmuYyWZjC0EF
+ Kr0ayGYEIxjIICa8yTIaJPRjRVgCLwH1HDcRH9ZL34MeupBynOZI7kwZuUVlepCnCnr8
+ mwbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687263264; x=1689855264;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pr+4LVY6eewLJ1yOdvykAeX8DZOF5/XHdNMp3WfZrHE=;
- b=JDngnwHXFkxT7xRXRHOyouh1v8QAUKD/1KS/srSld+CULiTrCM0wfVZ/Qtns16DlXv
- dpDE91NyLI20esma2KJexRj/Y/sdRgIijWuk37zWAHI0hDQ9RSX/qB82Vv28Q4Lb4ZSp
- W6uor7UP5zuU/D1QkHZ+TmAT2JXUEfmAV3DP/V4jKB+mVnFerckFahvz+EZ992HhDAMK
- 2eNu2D90VUqbZReY3tRO2LG4b0dTs/mRzdScFcRD8FduwhsDRiwBGDrNk9j8+xt09x75
- RVLqRQw/j0I4TwHIZ5UiZ311vB81YIrT6yC5HmKrodlx266Sh1c3tN37/jwir6niJMdR
- VVrQ==
-X-Gm-Message-State: AC+VfDwapdkBt1HzE3QOhK01hFj82ujfERTw1HZ9iIHwPMMkLDqDvmHH
- yRYfuH89Qg2ow2Hpkx8DVAjeG6EKYd5yLOD3ARidMGqJrjeeIYedQyjhl4kM5Rago9x9qYSS/uo
- czyrgohkwsKP9sMA=
-X-Received: by 2002:a5d:4008:0:b0:2ff:f37:9d0f with SMTP id
- n8-20020a5d4008000000b002ff0f379d0fmr7842103wrp.57.1687263264518; 
- Tue, 20 Jun 2023 05:14:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Rls+hfH74V2vI3IAnShQfKQUGXN7YXzhS5ltXO992Dp4rvOX6JPIfu8Y0zmzJk775pJwrgw==
-X-Received: by 2002:a5d:4008:0:b0:2ff:f37:9d0f with SMTP id
- n8-20020a5d4008000000b002ff0f379d0fmr7842087wrp.57.1687263264224; 
- Tue, 20 Jun 2023 05:14:24 -0700 (PDT)
-Received: from redhat.com ([2.52.15.156]) by smtp.gmail.com with ESMTPSA id
- l15-20020a7bc44f000000b003f90846d8a7sm9378822wmi.6.2023.06.20.05.14.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 05:14:23 -0700 (PDT)
-Date: Tue, 20 Jun 2023 08:14:20 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v4] hw/pci: enforce use of slot only slot 0 when devices
- have an upstream PCIE port
-Message-ID: <20230620081131-mutt-send-email-mst@kernel.org>
-References: <20230620071805.4400-1-anisinha@redhat.com>
- <20230620105942.0e551fe8@imammedo.users.ipa.redhat.com>
+ d=1e100.net; s=20221208; t=1687263577; x=1689855577;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mA2xlTq8TaGIAGIEbsI/d42ixyZvwolv+wdO+4hgEi4=;
+ b=ZV3RKfqJ152zGpjCfgAiQwkwf76e393/7bPAzxToAiJVg0nWrZrAfu6xGWLtZCw5Pi
+ CbqXBWFjufSLlKL/Pa9Vw3hz2pmP1RkMcc4iXyw3JbBF+DYyXfoqpP2MFpd034fxo2Cu
+ dWB2gVGWnvHWfZOS18fXupXrMYnHjNP9iCNWzmHQSxVdB4Nkto/Y5amiVFJLsYMmUQZs
+ pSowbma3rgnrxaLNr0Iu1qSpHB0KCDmmbf5Z6QYJdfRoIKdKPrOoh6aZ7LukQ0OhiX46
+ Ato7D3H8idAlJuq/Xjk0PYA18APo5/ddYglVwG3OQSnCpu4pMdj3EwDX2Rsvz6mUJpVd
+ jUCA==
+X-Gm-Message-State: AC+VfDz1szCj4+QDDbWk04a4vbCcLLmicLoNPqciju0r2fMMfKrwO4EI
+ xxhE7cACwrWhKjdlAn4WBCWYkIJHhNAiOMPcvwC0Mw==
+X-Google-Smtp-Source: ACHHUZ4nV1eIZlM4IizwJ8hN2qXgwlhPF7pJckO5uZBcMrr+2J72rYRqgJYnfngqAR7VwLmf6HuazoNOZ/FyM668Gf8=
+X-Received: by 2002:aa7:c6d9:0:b0:51a:3850:e846 with SMTP id
+ b25-20020aa7c6d9000000b0051a3850e846mr6981167eds.7.1687263576983; Tue, 20 Jun
+ 2023 05:19:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230620105942.0e551fe8@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230307182707.2298618-1-dwmw2@infradead.org>
+ <20230307182707.2298618-6-dwmw2@infradead.org>
+ <CAFEAcA9gzJGMqsEY5TuNmb74RskgUTMW+XcqGV53n3SsKyVVXg@mail.gmail.com>
+ <CAFEAcA9aFv5c4S=Pyf3dMU-v9FnNJqWTQ7ZbiDQLTjh8Qou71g@mail.gmail.com>
+In-Reply-To: <CAFEAcA9aFv5c4S=Pyf3dMU-v9FnNJqWTQ7ZbiDQLTjh8Qou71g@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 13:19:26 +0100
+Message-ID: <CAFEAcA--FqeioUdPb9sr5fEy3q0H0swcp+rbGxoNbhgMkYdC+A@mail.gmail.com>
+Subject: Re: [PULL 05/27] hw/xen: Watches on XenStore transactions
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Paul Durrant <paul@xen.org>, Joao Martins <joao.m.martins@oracle.com>,
+ Ankur Arora <ankur.a.arora@oracle.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, vikram.garhwal@amd.com, 
+ Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org, 
+ Juan Quintela <quintela@redhat.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,87 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 10:59:42AM +0200, Igor Mammedov wrote:
-> On Tue, 20 Jun 2023 12:48:05 +0530
-> Ani Sinha <anisinha@redhat.com> wrote:
-> 
-> > When a device has an upstream PCIE port, we can only use slot 0. Non-zero slots
-> > are invalid. 
-> > This change ensures that we throw an error if the user
-> > tries to hotplug a device with an upstream PCIE port to a non-zero slot.
-> 
-> Isn't the same true for coldplugged devices?
-> Why you limit it only to hotplug?
-> 
-> > 
-> > CC: jusual@redhat.com
-> > CC: imammedo@redhat.com
-> > Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> > ---
-> >  hw/pci/pci.c | 18 ++++++++++++++++++
-> >  1 file changed, 18 insertions(+)
-> > 
-> > changelog:
-> > v2: addressed issue with multifunction pcie root ports. Should allow
-> > hotplug on functions other than function 0.
-> > v3: improved commit message.
-> > v4: improve commit message and code comments further. Some more
-> > improvements might come in v5. No claims made here that this is
-> > the final one :-)
-> > 
-> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > index bf38905b7d..30ce6a78cb 100644
-> > --- a/hw/pci/pci.c
-> > +++ b/hw/pci/pci.c
-> > @@ -64,6 +64,7 @@ bool pci_available = true;
-> >  static char *pcibus_get_dev_path(DeviceState *dev);
-> >  static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> >  static void pcibus_reset(BusState *qbus);
-> > +static bool pcie_has_upstream_port(PCIDevice *dev);
-> >  
-> >  static Property pci_props[] = {
-> >      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> > @@ -1182,6 +1183,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >      } else if (dev->hotplugged &&
-> >                 !pci_is_vf(pci_dev) &&
-> >                 pci_get_function_0(pci_dev)) {
-> > +        /*
-> > +         * populating function 0 triggers a bus scan from the guest that
-> > +         * exposes other non-zero functions. Hence we need to ensure that
-> > +         * function 0 wasn't added yet.
-> > +         */
-> >          error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
-> >                     " new func %s cannot be exposed to guest.",
-> >                     PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
-> > @@ -1189,6 +1195,18 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >                     name);
-> >  
-> >         return NULL;
-> > +    } else if (dev->hotplugged &&
-> > +               !pci_is_vf(pci_dev) &&
-> > +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> > +        /*
-> > +         * If the device has an upstream PCIE port, like a pcie root port,
-> > +         * we only support functions on slot 0.
-> > +         */
-> > +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> > +                   " only functions on slot 0 is supported for devices"
-> > +                   " with an upstream PCIE port.",
-> 
-> upstream port language is confusing here and elsewhere you mention it.
-> It would be better to use root-port instead.
+On Fri, 2 Jun 2023 at 18:06, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Tue, 2 May 2023 at 18:08, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >
+> > On Tue, 7 Mar 2023 at 18:27, David Woodhouse <dwmw2@infradead.org> wrote:
+> > >
+> > > From: David Woodhouse <dwmw@amazon.co.uk>
 
-No i do not think this is specific to root ports.
-it is technically any non-integrated express device but we also plug
-pci devices into express ports as a hack.
-so checking where device is plugged (this is what pcie_has_upstream_port
-does) seems like a reasonable approach.
+> > Hi; Coverity's "is there missing error handling?"
+> > heuristic fired for a change in this code (CID 1508359):
+> >
+> > >  static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
+> > >  {
+> > > +    struct walk_op op;
+> > > +    XsNode **n;
+> > > +
+> > >      if (s->root_tx != tx->base_tx) {
+> > >          return EAGAIN;
+> > >      }
+> > > @@ -720,10 +861,18 @@ static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
+> > >      s->root_tx = tx->tx_id;
+> > >      s->nr_nodes = tx->nr_nodes;
+> > >
+> > > +    init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
+> >
+> > This is the only call to init_walk_op() which ignores its
+> > return value. Intentional, or missing error handling?
+>
+> Hi -- I was going through the unclassified Coverity issues
+> again today, and this one's still on the list. Is this a
+> bug, or intentional?
 
-> > +                   PCI_SLOT(devfn), name);
-> > +        return NULL;
-> >      }
-> >  
-> >      pci_dev->devfn = devfn;
+Ping^3 -- is this a false positive, or something to be fixed?
+It would be nice to be able to classify the coverity issue
+appropriately.
 
+thanks
+-- PMM
 
