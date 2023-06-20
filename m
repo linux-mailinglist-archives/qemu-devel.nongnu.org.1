@@ -2,51 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4827D736A16
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C85B736A18
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBZ2w-0006vs-Ab; Tue, 20 Jun 2023 06:57:14 -0400
+	id 1qBZ3a-0007Fo-T6; Tue, 20 Jun 2023 06:57:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qBZ2s-0006vQ-71; Tue, 20 Jun 2023 06:57:10 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qBZ2q-0000bT-AJ; Tue, 20 Jun 2023 06:57:09 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 1957B74645F;
- Tue, 20 Jun 2023 12:56:58 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DD5C374638A; Tue, 20 Jun 2023 12:56:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id DBBF4746377;
- Tue, 20 Jun 2023 12:56:57 +0200 (CEST)
-Date: Tue, 20 Jun 2023 12:56:57 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
-cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 6/9] ppc/sam460ex: Report an error when run with KVM
-In-Reply-To: <18f5f4d7-87af-9413-4a8f-1780841f4629@kaod.org>
-Message-ID: <bbc96b0a-0f80-a966-cf45-5910100fc62e@eik.bme.hu>
-References: <20230620055911.187065-1-clg@kaod.org>
- <20230620055911.187065-7-clg@kaod.org>
- <043c152d-ca2f-4796-b1ce-816fe9999e91@eik.bme.hu>
- <18f5f4d7-87af-9413-4a8f-1780841f4629@kaod.org>
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBZ3Y-0007EH-8H; Tue, 20 Jun 2023 06:57:52 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBZ3V-0000he-KS; Tue, 20 Jun 2023 06:57:51 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-666ed230c81so3078907b3a.0; 
+ Tue, 20 Jun 2023 03:57:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687258666; x=1689850666;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AwiU0NZRbNgBahqPdOO3ID7YQKsvDvALEYol6NiywmI=;
+ b=XRu5P0FvK4Myv0Bzdawg3YrF4d2k1CdguxMJjFcJn+8B7ujJlmZQFl+5hmvPu5J6z3
+ WLlzHQNuOjTvEz1pb9Ier94YzGjUDb0zZRUin59eH7PZ5xAWjxz3bas9AB4TRwpaeOq4
+ 9ehFJO1Qugx9YygvykfC1KiSN6SO2+VAS8V/ED3UCyJWwrK6jLw8kqN0Zgf+auV8jWI8
+ nL9Kcgp2ykUsUOlyjuSO87NwwBnsWcPDvKiyf1IqsZTsFODWI7+xouQ4jqvZViD5njnb
+ dlmA8iA9sMQXxrQxSsrjLQZA2Bjni6ty76ngThie1BEh3761HDaB+2LFycYvfX5ZrDxu
+ oXBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687258666; x=1689850666;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AwiU0NZRbNgBahqPdOO3ID7YQKsvDvALEYol6NiywmI=;
+ b=cYY2TxONMM5TPazCCMr0ZjOpLq18FHU4Dcr7TnlKeTBaCtGQ3TpvAnhaxp9CAvK0AC
+ 3CHcxRKUbgLU3NwVUESLQZeFAKpC81+ruxfGDLQmSJwZsDAQqn1rAUtbzYW5vCLsgAmA
+ 9GtQghIq6aPGqnww4Lc/rpNI/5lzo9tq6yuMM5mWVtMDkB5YHYBiFmaifS1Kzwieq/T8
+ uK2cyNLtnDgDJoKyLiL5asYRXyIYRkoKI9ziezoObf8AKhIj2AwkRurM9OLiSi6+TLCV
+ Kh/DrnrvBCzfjqC19NuWjq1yCvwJsMZ/vKnP4tS/96i6S7qyzD5TD9DW0ot2Cm6uDsW/
+ Zpdw==
+X-Gm-Message-State: AC+VfDx/L34WF4MMwf2BPRB480XOhScs1qXsDgcuMgeWU5E0KwiXShv8
+ Yx5kqIOC41uZ6lMv3S21j5rZXoXpmA4=
+X-Google-Smtp-Source: ACHHUZ5GljTkW9vSfLHjND5f5/RBi3JWBklp2KEdwjVI2883fQDdH0v6SmrWV0TZIM7eHzdYFV+BRw==
+X-Received: by 2002:a05:6a20:4304:b0:122:2e73:3f28 with SMTP id
+ h4-20020a056a20430400b001222e733f28mr3904469pzk.24.1687258665874; 
+ Tue, 20 Jun 2023 03:57:45 -0700 (PDT)
+Received: from wheely.local0.net ([124.170.190.103])
+ by smtp.gmail.com with ESMTPSA id
+ n13-20020aa78a4d000000b0064fabbc047dsm1126412pfa.55.2023.06.20.03.57.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 03:57:45 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PATCH v2 0/4] ppc/spapr: Nested HV fix and tidying
+Date: Tue, 20 Jun 2023 20:57:33 +1000
+Message-Id: <20230620105737.160451-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1143671347-1687258617=:73461"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,97 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+To prepare for some later changes to nested-HV I would like to get
+these cleanups done and move nested to its own file. This is
+rebased and patch 4 has some nested function definitions and
+structs in spapr_nested.h that Harsh suggested.
 
---3866299591-1143671347-1687258617=:73461
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Thanks,
+Nick
 
-On Tue, 20 Jun 2023, Cédric Le Goater wrote:
-> On 6/20/23 12:42, BALATON Zoltan wrote:
->> On Tue, 20 Jun 2023, Cédric Le Goater wrote:
->>> The 'sam460ex' machine never supported KVM. This piece of code was
->>> inherited from another model.
->> 
->> This is the same as for pegasos2, it might work on a BookE host if KVM-PR 
->> on that host is still supported so please keep this around unless there's a 
->> known problem that can't be fixed.
->
-> That sounds like a lot of 'if' for 2 decade old HW and an abandoned HV
-> implementation. Nevertheless, if KVM is supported one day, we can remove
-> easily the couple of lines below. I am sure there will be more changes.
->
-> Same comment for the pegasos2,
+Nicholas Piggin (4):
+  ppc/spapr: H_ENTER_NESTED should restore host XER ca field
+  ppc/spapr: Add a nested state struct
+  ppc/spapr: load and store l2 state with helper functions
+  ppc/spapr: Move spapr nested HV to a new file
 
-If you disable it then nobody can test it so it can't be supported. I need 
-people to be able to test it to support it so please leave this enabled. 
-(People using these machines don't normally compile their binaries from 
-source and don't want to.)
+ hw/ppc/meson.build              |   1 +
+ hw/ppc/spapr.c                  |   1 +
+ hw/ppc/spapr_hcall.c            | 335 +--------------------------
+ hw/ppc/spapr_nested.c           | 395 ++++++++++++++++++++++++++++++++
+ include/hw/ppc/spapr.h          |  62 -----
+ include/hw/ppc/spapr_cpu_core.h |   5 +-
+ include/hw/ppc/spapr_nested.h   | 102 +++++++++
+ 7 files changed, 504 insertions(+), 397 deletions(-)
+ create mode 100644 hw/ppc/spapr_nested.c
+ create mode 100644 include/hw/ppc/spapr_nested.h
 
-Regards,
-BALATON Zoltan
+-- 
+2.40.1
 
-> Thanks,
->
-> C.
->
->> 
->> Regards,
->> BALATON Zoltan
->> 
->>> Cc: BALATON Zoltan <balaton@eik.bme.hu>
->>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>> ---
->>> hw/ppc/sam460ex.c | 15 ++++++---------
->>> 1 file changed, 6 insertions(+), 9 deletions(-)
->>> 
->>> diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
->>> index cf065aae0eae..24f25e5897b7 100644
->>> --- a/hw/ppc/sam460ex.c
->>> +++ b/hw/ppc/sam460ex.c
->>> @@ -18,7 +18,6 @@
->>> #include "qapi/error.h"
->>> #include "hw/boards.h"
->>> #include "sysemu/kvm.h"
->>> -#include "kvm_ppc.h"
->>> #include "sysemu/device_tree.h"
->>> #include "sysemu/block-backend.h"
->>> #include "hw/loader.h"
->>> @@ -165,14 +164,6 @@ static int sam460ex_load_device_tree(MachineState 
->>> *machine,
->>>     qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
->>>                             machine->kernel_cmdline);
->>> 
->>> -    /* Copy data from the host device tree into the guest. Since the 
->>> guest can
->>> -     * directly access the timebase without host involvement, we must 
->>> expose
->>> -     * the correct frequencies. */
->>> -    if (kvm_enabled()) {
->>> -        tb_freq = kvmppc_get_tbfreq();
->>> -        clock_freq = kvmppc_get_clockfreq();
->>> -    }
->>> -
->>>     qemu_fdt_setprop_cell(fdt, "/cpus/cpu@0", "clock-frequency",
->>>                               clock_freq);
->>>     qemu_fdt_setprop_cell(fdt, "/cpus/cpu@0", "timebase-frequency",
->>> @@ -283,6 +274,12 @@ static void sam460ex_init(MachineState *machine)
->>>     uint8_t *spd_data;
->>>     int success;
->>> 
->>> +    if (kvm_enabled()) {
->>> +        error_report("machine %s does not support the KVM accelerator",
->>> +                     MACHINE_GET_CLASS(machine)->name);
->>> +        exit(EXIT_FAILURE);
->>> +    }
->>> +
->>>     cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
->>>     env = &cpu->env;
->>>     if (env->mmu_model != POWERPC_MMU_BOOKE) {
->>> 
->
->
->
---3866299591-1143671347-1687258617=:73461--
 
