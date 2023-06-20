@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD50736FD8
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD6F737062
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:23:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBcxv-0001FJ-PA; Tue, 20 Jun 2023 11:08:19 -0400
+	id 1qBdBY-0004qD-Bl; Tue, 20 Jun 2023 11:22:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBcxu-0001ES-0A
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:08:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBdBU-0004pI-3s
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:22:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBcxs-0005hI-Kn
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:08:17 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBdBS-0001Dt-Py
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:22:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687273695;
+ s=mimecast20190719; t=1687274537;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6F1oEqrndWj1RP/Af7EeRetzQoR+rF2Q+zBIDPxrJOw=;
- b=OnXfhHRNTxBoX5GI5tGn2PlamKci5H8zDV06XY0MXLIg5LaPjqCF33O7/cG15Q4TNtb3iA
- QTePu8jWocp3U0PtN0HY0oQs0e5RtP1laYA+uYVT5VLXKr/L5v27EvaIT/u2Blmibw8nCr
- xNh8p2fvAh5JL1FpdMh8sW+YhqQS6Wg=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rGbhxxHbnPrUEW3QUWfLKCqfzqoF0qDPi9nWOyrRyIw=;
+ b=Y08eRzcpG9FQEWUsaMQKCfaUO5354Xf0NMqoeIiLIKlOBzL0w8qwRlgPOxOGaYaSwxNxiT
+ e/qIzXVQj9+nRMnr4U0rAuihuD/Z1Tn/OL9PPKqtOV3bFLikcDE92U+TDLlA4oWkO0bo/P
+ GQFvBr4lJW7ta+ulxNy7KP9njvAw/Os=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-ReOamY-YOqmtsLZrUn-ryg-1; Tue, 20 Jun 2023 11:08:00 -0400
-X-MC-Unique: ReOamY-YOqmtsLZrUn-ryg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-62dd9986b76so9618786d6.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:07:52 -0700 (PDT)
+ us-mta-601-Wx3mrP1SN1yz1Z0lw4QOnA-1; Tue, 20 Jun 2023 11:12:22 -0400
+X-MC-Unique: Wx3mrP1SN1yz1Z0lw4QOnA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-3f8283a3a7aso12123231cf.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:11:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687273671; x=1689865671;
+ d=1e100.net; s=20221208; t=1687273914; x=1689865914;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6F1oEqrndWj1RP/Af7EeRetzQoR+rF2Q+zBIDPxrJOw=;
- b=D1HahlYBh9XuXEB1+Kmd/7WS9/qxXeZ8yHLSmDX2XqBBKfqtvI4rEQra5bfa7rlzUC
- BJSTUmofZ5Kr5uPoDn9tXm8MUAc9SFY0VNQrquiricPjbGjoEQ9UpXC1v5ZfehRwNoWN
- OaqOaUTbJwLCEk5+rv/3aRKCXmksjHwmLsRDUEQnM0adgxFQdBKTZozYXk2RAA4OOXRE
- bH3XiSlTtxHdtIvDzfxVppxDz1EaK+96ME/ejA5pJSr01oupfVrmUSszE3RKIF1Fb1Mh
- TzV+ZHi7Wmfx6mzffxOj6Mw1z/reCYKkgJWgGoVw+C1HnNXXbQl0CTJ3GmV9AsCT82/K
- ULaA==
-X-Gm-Message-State: AC+VfDwEszgmN0/dndxVehz9dinBXnSZEvT1kIiIFytCoNuHTQQQDkTi
- KB66gKnO1w1rg2GwodVYdN4/gVOBgmUlmfzQ2lEsvnqd0GDtcyZNihrfcHa8ibhOw5Koxmj8Omh
- e39soUsx5eaNHlFXzE0kKrk8=
-X-Received: by 2002:a05:6214:401a:b0:62d:eda3:4333 with SMTP id
- kd26-20020a056214401a00b0062deda34333mr15324171qvb.0.1687273671354; 
- Tue, 20 Jun 2023 08:07:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5nFZa+8+s/khp+YKMqJTNiFy426J25oe04idAF/XJahu0dpQTASfquKdiPfhL9az6Xr/R4Dg==
-X-Received: by 2002:a05:6214:401a:b0:62d:eda3:4333 with SMTP id
- kd26-20020a056214401a00b0062deda34333mr15324148qvb.0.1687273671054; 
- Tue, 20 Jun 2023 08:07:51 -0700 (PDT)
+ bh=rGbhxxHbnPrUEW3QUWfLKCqfzqoF0qDPi9nWOyrRyIw=;
+ b=Qb+S2+C2mBffkkqS4L1szKTDr3ZbPNUt3MOvWsVinK4ZXFNJ818cBB2MjLuMqI/od8
+ CnLcr86AHy+iu4q4n5m4fb9aw1V/qLMISIOP1U9ohTRs6NNXLh3gYscJRy1FSVpzayYN
+ QzvxrJvh27ilPZ5l2Ccqh6hbMhvmLOLwc1KpQR+4uZXogBShe6lI8ByPJjjvf93WKLM5
+ rOQZ1yfiEWLi29uCou3IewCqFr9NOE+V/rfndSUoYO9oO+I//aaPLIEVJMpK5xqX9sMs
+ qAyTuDUgCso03O8HGr1KnNVz8+Fmx8/d8iWR01CP1ecR/DCwm4bzZQ4jgUzflg3DLlzl
+ iCcA==
+X-Gm-Message-State: AC+VfDy8oR8bHtj7a0jbOOSVJjclOKCsO8kssiYsGGTbgZ0spxYR+Gy0
+ 4g0WdASI4dNuxSr+p0mLwp4Y4kA8TQZedEUclW4imI8vKtTI0bJlz9vqOJbfsA1zCPv/69XCDOO
+ 0b4GxKAuTsUrdJ28=
+X-Received: by 2002:a05:622a:612:b0:3f6:a8e2:127b with SMTP id
+ z18-20020a05622a061200b003f6a8e2127bmr15085846qta.5.1687273913802; 
+ Tue, 20 Jun 2023 08:11:53 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7oxFZNEc436PK1GQ7CMfwzOWMzMy/w9DaB+kglCSVn6CvMcaxUDw5/SL+cvLrPV1+Fremy3Q==
+X-Received: by 2002:a05:622a:612:b0:3f6:a8e2:127b with SMTP id
+ z18-20020a05622a061200b003f6a8e2127bmr15085829qta.5.1687273913568; 
+ Tue, 20 Jun 2023 08:11:53 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a16-20020a0ce350000000b006262e5c96d0sm1304769qvm.129.2023.06.20.08.07.49
+ y1-20020a05622a004100b003e0945575dasm1225771qtw.1.2023.06.20.08.11.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 08:07:50 -0700 (PDT)
-Date: Tue, 20 Jun 2023 11:07:48 -0400
+ Tue, 20 Jun 2023 08:11:53 -0700 (PDT)
+Date: Tue, 20 Jun 2023 11:11:51 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,14 +68,15 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 07/42] migration-test: Create kvm_opts
-Message-ID: <ZJHAxEt8MLImNOC3@x1n>
+Subject: Re: [PATCH 08/42] migration-test: bootpath is the same for all tests
+ and for all archs
+Message-ID: <ZJHBt4ywEc80d7Vo@x1n>
 References: <20230608224943.3877-1-quintela@redhat.com>
- <20230608224943.3877-8-quintela@redhat.com>
+ <20230608224943.3877-9-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230608224943.3877-8-quintela@redhat.com>
+In-Reply-To: <20230608224943.3877-9-quintela@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -100,8 +101,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 09, 2023 at 12:49:08AM +0200, Juan Quintela wrote:
-> So arch_dirty_ring option becomes one option like the others.
+On Fri, Jun 09, 2023 at 12:49:09AM +0200, Juan Quintela wrote:
+> So just make it a global variable.
 > 
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 
