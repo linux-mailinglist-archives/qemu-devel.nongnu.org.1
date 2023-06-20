@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E177370A9
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9BD7370A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:38:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdR8-0008UU-AV; Tue, 20 Jun 2023 11:38:30 -0400
+	id 1qBdQx-0008EF-A9; Tue, 20 Jun 2023 11:38:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qBdQx-0008K9-T9
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:38:23 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBdQr-00087K-0o
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:38:15 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qBdQw-0007ul-0l
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:38:19 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-311394406d0so2409808f8f.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:38:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBdQo-0007rY-0X
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:38:12 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-519f6e1a16cso5749223a12.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:38:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687275496; x=1689867496;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1687275487; x=1689867487;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HIEOhBvNPHE/Cf38AWPzOiuTpYIgaV7uqF9dbB5fE0E=;
- b=YuWVc4b9b8vFFitNgxoXzk5E9zYP84TUmNvA+4PXI+Bu9IJamuHDj6IAkU2ZTFZM3q
- KsrN73oiOUF61NybouWLL8GurN44/AqfbS7iGZHd/fmB0xFXz+Wdb9bLHfZihUn6PgDQ
- VOEg7QqhLMksk0uNTAAWbP/zhFWm6kt5uXqOTWK09XJa2MGDOnf/S43Hnt058RjzyXyr
- QAUfFqgGPdhg2zO3ZwxGZ0tdonqjOdI3xDcRGB1sy/KFpR8hWthrwfg/uar7UD09F0p0
- PuN9ig66gJCX+rNmt+LGxZ7OU95AECvM+JESrVsQUzR8a90dobiFUtULP/w4p/RNF5Ww
- PmIw==
+ bh=MoGjPgk/uRWlVcWLSh1TXKixNJ0OTYRcu7/yn7yeKEU=;
+ b=wg/qrnfOyXMhQ3PoKqOxz4GOk1oFPe5eFIc8AEaRPPDsu4mY7yV/MYEodDFGeEKmew
+ DmWJOVomXdg6/TeC+nSbL3NjQX8zcUtn5xFMbUbQlQX1eTrADqiuaRxsDT7j1z5FKavS
+ t6Cijnr1zm7aXFvT9aXP7cBzLQ7vNGfQ8/ulP5pbDA8mJzjKhPr71vbu3LTDeK/UP2Tw
+ A5JcFYZuWE3RuYs/FM1RBQLZH5YyNsBYP0OJONs3ZxjFYibD+VARXaQNL1wBJElT2HO6
+ sGOiU8rIP0pmPRl/d8Hu9DJAHGgmUCbuZYoDFOLP8GK8pjc2957NyrktnGzhGTMdlowq
+ RaAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687275496; x=1689867496;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=HIEOhBvNPHE/Cf38AWPzOiuTpYIgaV7uqF9dbB5fE0E=;
- b=eLow88hubbs3O04hZ5nx82kovgpA6CMGpToCoz1IQWNplT+KLUgrC4uXXkbAdoUdAX
- U1UdSU4c33E+Vi2lfC5qM9wxc8G60w8yT6HK+qju+czycF8p+u3KVew2vGj6qsmfF3gd
- vxvCM9/pO6qK0qoyiqIHQWnzMhDQnSESSfebYiuj33SsLsiqeHe2bCWh5fRX/YHJke+p
- iWd+XD3Pd7xwEZZVWWUeP0ByfDReK/4QhlNsihfB4Yu2itczQ0B6GizqD6YasHc6VOcf
- thldYbc4Spj09Y2HN9cYm+FL8Pi9mqlckpFOEW7K3fpR3lLJfz5hlbhTmOootSoWMP+k
- B7YA==
-X-Gm-Message-State: AC+VfDzOJmwWRBtudZtTXnwFJ4+ALUwWZeNgt112B+C2CSOBtjxrA/a/
- JXG6cHaOwAjs/KPJH8L7CIFHqdo8xk5nKWDXBCA=
-X-Google-Smtp-Source: ACHHUZ79JX66iT3cvTcaEC/wCo/EUWm7CPLPtWa+Hefye8BCGxpilAbeym7gCgpxSamxCykJw+PbfA==
-X-Received: by 2002:adf:efcc:0:b0:309:3c0c:b2c1 with SMTP id
- i12-20020adfefcc000000b003093c0cb2c1mr8795469wrp.23.1687275496441; 
- Tue, 20 Jun 2023 08:38:16 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- y17-20020a056000109100b0030c6751a49dsm2199167wrw.115.2023.06.20.08.38.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 08:38:16 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id B0D881FFBB;
- Tue, 20 Jun 2023 16:38:15 +0100 (BST)
-References: <20230620150335.814005-1-alex.bennee@linaro.org>
- <CAFEAcA9jWuxVVb-+rbv4dEF+0_P1+5z7Z6HQajGv5Jg3yje11g@mail.gmail.com>
-User-agent: mu4e 1.11.6; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH] qemu-keymap: properly check return from
- xkb_keymap_mod_get_index
-Date: Tue, 20 Jun 2023 16:37:28 +0100
-In-reply-to: <CAFEAcA9jWuxVVb-+rbv4dEF+0_P1+5z7Z6HQajGv5Jg3yje11g@mail.gmail.com>
-Message-ID: <87bkhai1p4.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1687275487; x=1689867487;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MoGjPgk/uRWlVcWLSh1TXKixNJ0OTYRcu7/yn7yeKEU=;
+ b=IPTOPlvOmB3SbybqED8rk54XA4Om2BTd/xZg5sdhwN5pP0GPKwy19rGxvn4KvfokMo
+ ks+MVHAA/j7CT92f4i792OhsmiABSr4zeEIecRfV9cJrWjQP5I4S0sxTOORD0wwO04h0
+ q25FssCroQzvNiSrdqE9DuIPeRtROhdN/XITBVCBWm47NveT4XHvUNgoMaO0GJf804I+
+ cl4lgg/0Jydd0bpFkP/Hileo5IL+mVw1r/3kCnEOKu/+tzPfFuHhsfXUOYSXzuCY+lAB
+ yI2ESkbevTLjDLBsQE7kpgKp1W5kbn8f4iSihWhKh2UUqVM9rzJSQwtoYdOeWXiGbAw+
+ Sp0w==
+X-Gm-Message-State: AC+VfDySb637KGWMfp6H5YDh4KhyTKL3vHxdoLeHsd759KIx9ngxbPaw
+ 64idh0dr2Ju1mp0IwPkWrgGpga3K5ZrDP9oPOHbFLw==
+X-Google-Smtp-Source: ACHHUZ5RQu/KrtxTKBcZw4tLQ2esizgg5gbEutgXh6FzGL2dOjgcuK9LfJXy4crj1Rl6CixOtLDnYNLu9Yt72Z0E/LY=
+X-Received: by 2002:aa7:d7c4:0:b0:51b:c626:7d71 with SMTP id
+ e4-20020aa7d7c4000000b0051bc6267d71mr2546886eds.14.1687275487599; Tue, 20 Jun
+ 2023 08:38:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230619171437.357374-1-alex.bennee@linaro.org>
+ <20230619171437.357374-2-alex.bennee@linaro.org>
+In-Reply-To: <20230619171437.357374-2-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 16:37:56 +0100
+Message-ID: <CAFEAcA8jVCMn+CmOWOA5a2HWu5NQtN96qES2-BMtf6PNnNqgtA@mail.gmail.com>
+Subject: Re: [PATCH 1/5] docs/devel: add some front matter to the devel index
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Peter Xu <peterx@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Juan Quintela <quintela@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Leonardo Bras <leobras@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,58 +95,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Peter Maydell <peter.maydell@linaro.org> writes:
-
-> On Tue, 20 Jun 2023 at 16:04, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->>
->> We can return XKB_MOD_INVALID which rightly gets flagged by sanitisers
->> as an overly wide shift attempt.
->>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>  qemu-keymap.c | 24 ++++++++++++++++--------
->>  1 file changed, 16 insertions(+), 8 deletions(-)
+On Mon, 19 Jun 2023 at 18:14, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
 >
-> Looking at the code that works with the mask values
-> we are getting here, I think this ought to work
-> (if there's no AltGr modifier then the 0 mask means
-> the key state will be the same in normal and with the
-> altgr mask supplied, which we already check for).
-> Did you eyeball the output, though?
+> Give an overview of the most useful bits of the devel documentation to
+> read depending on what the developer wants to do.
 >
-> Also, which keymap runs into this? Is it every keymap
-> for some new version of the xkb data (which would imply
-> that the problem is that the AltGr modifier has changed
-> name), or is it only one specific keymap that happens
-> to have no AltGr key?
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-ar maybe? it only got flagged in clang-system once fedora was updated (I
-assume with better sanitizers):
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-  [2773/3696] Generating pc-bios/keymaps/ar with a custom command
-  FAILED: pc-bios/keymaps/ar=20
-  /builds/stsquad/qemu/build/qemu-keymap -f pc-bios/keymaps/ar -l ar
-  ../qemu-keymap.c:223:16: runtime error: shift exponent 4294967295 is too =
-large for 32-bit type 'int'
-  SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../qemu-keymap.c:=
-223:16 in=20
-  [2774/3696] Generating pc-bios/edk2-x86_64-code.fd with a custom command =
-(wrapped by meson to capture output)
-  [2775/3696] Generating pc-bios/edk2-x86_64-secure-code.fd with a custom c=
-ommand (wrapped by meson to capture output)
-  ninja: build stopped: subcommand failed.
-  make: *** [Makefile:153: run-ninja] Error 1
-
-https://gitlab.com/stsquad/qemu/-/jobs/4500683186#L3957
-
->
-> thanks
-> -- PMM
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+thanks
+-- PMM
 
