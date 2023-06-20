@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8CB736BCB
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 14:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A7A736BE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 14:26:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBaKj-00057z-HG; Tue, 20 Jun 2023 08:19:41 -0400
+	id 1qBaQN-0001Nc-Sc; Tue, 20 Jun 2023 08:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBaKi-00057o-DH
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:19:40 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBaQM-0001NT-AL
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:25:30 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBaKg-0004I5-Qf
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:19:40 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-519f6e1a16cso5459902a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 05:19:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBaQI-0005Tf-Tn
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:25:29 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2b45e6e1b73so57219031fa.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 05:25:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687263577; x=1689855577;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mA2xlTq8TaGIAGIEbsI/d42ixyZvwolv+wdO+4hgEi4=;
- b=k7GQTkPuKABvjkr0sWxfnZVd2S0csdXaROw4+OvpQlMcGzrwMkYFv5mUvb/XgVvHCa
- lHHVBgLkB0lCk+F3s/VrLQuGG8WppPpGozww4EOHutFOblWs77F8eoBA615TvvLFRRpj
- 3RFvmhEVsNik4aQtToZuZy92GitcW0BfrwJTWJ0fEYUD3B6aNUOSRvVY4Rs3BYr8/SWx
- 2jtoiv8mXM6F4r8k3pPHp4zLTVpQIHPDMF8sW/hVwEX/AwgGdaPD88DLXmuYyWZjC0EF
- Kr0ayGYEIxjIICa8yTIaJPRjRVgCLwH1HDcRH9ZL34MeupBynOZI7kwZuUVlepCnCnr8
- mwbQ==
+ d=linaro.org; s=google; t=1687263923; x=1689855923;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hUvAjl0B+G7IkEYAnOQaoOXTpDVXtO0HT4lWTYMYebo=;
+ b=vjegNW8rHnqFBhqW4Gm8kELzRh6j2GmR1GiuRbmeDANaGnlFfvWuEh7fELa48UO0ML
+ ruQwDVPqdvxlGvtb9ja4uez6OpvedOT7HgwEZ2cNruaQ7PUDLfQNl2kwCAMFUBwpmSB+
+ 262Q8Ynv/6RMimJyZW7SvghARQ2fWE1so8KNaSMbD/712/zCmUx8wqHWqpyBlLs05GA+
+ Um15TCO9CWuRv5qkQ1knmzu3YENNrPCDXCnvl73heqB8388JGMhUTDH1x8Ce56uQM17l
+ 1xaYaI7bJABdCU/vIwrM9fKRmac/GsoEEvI0jM5dv4RKxkZaR/Rm/7v5rPuJBWq+hR1D
+ yzDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687263577; x=1689855577;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mA2xlTq8TaGIAGIEbsI/d42ixyZvwolv+wdO+4hgEi4=;
- b=ZV3RKfqJ152zGpjCfgAiQwkwf76e393/7bPAzxToAiJVg0nWrZrAfu6xGWLtZCw5Pi
- CbqXBWFjufSLlKL/Pa9Vw3hz2pmP1RkMcc4iXyw3JbBF+DYyXfoqpP2MFpd034fxo2Cu
- dWB2gVGWnvHWfZOS18fXupXrMYnHjNP9iCNWzmHQSxVdB4Nkto/Y5amiVFJLsYMmUQZs
- pSowbma3rgnrxaLNr0Iu1qSpHB0KCDmmbf5Z6QYJdfRoIKdKPrOoh6aZ7LukQ0OhiX46
- Ato7D3H8idAlJuq/Xjk0PYA18APo5/ddYglVwG3OQSnCpu4pMdj3EwDX2Rsvz6mUJpVd
- jUCA==
-X-Gm-Message-State: AC+VfDz1szCj4+QDDbWk04a4vbCcLLmicLoNPqciju0r2fMMfKrwO4EI
- xxhE7cACwrWhKjdlAn4WBCWYkIJHhNAiOMPcvwC0Mw==
-X-Google-Smtp-Source: ACHHUZ4nV1eIZlM4IizwJ8hN2qXgwlhPF7pJckO5uZBcMrr+2J72rYRqgJYnfngqAR7VwLmf6HuazoNOZ/FyM668Gf8=
-X-Received: by 2002:aa7:c6d9:0:b0:51a:3850:e846 with SMTP id
- b25-20020aa7c6d9000000b0051a3850e846mr6981167eds.7.1687263576983; Tue, 20 Jun
- 2023 05:19:36 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687263923; x=1689855923;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hUvAjl0B+G7IkEYAnOQaoOXTpDVXtO0HT4lWTYMYebo=;
+ b=IFCEAnraS2j5npPh9K5YdRZqoZU1JHL60RkeG+7VtSRcIEf09jjxOOwRPXe3iMbq6T
+ T6AFQuyopNJm3oe5pJCzbkJCLPGlxXnX6ItqFUeGL8sFI6Pp6yl2eqp2tpy+CoxLmFu/
+ bIn8M/4NarmzuxZtC8s3wWYPcEx1eJACizrUcW+2h4nNPIGgXB7tqS1F+b5ep3ABe/hn
+ 9QXz5CbJuA6vcSwBxRlcWYiyzbesPXOU7YJMqgT6VyTjetl1DlEIITmwSi6GAAv1IACo
+ tYx9maBjg9qRQs79s2t1HubmmZxlSeJQXWE3I7vZeqsbCJ4YgeTYAT1IaWBr8p8rcPq7
+ 0WcA==
+X-Gm-Message-State: AC+VfDzdyds+9KEaEDkxN4SJ3mIAUNZ8hKTocHHST0thETRSFg3YO4HW
+ aXD1q19cPnAKo/ksEkd/2p1IAmw2PiqMfx7lc5ICFSk1
+X-Google-Smtp-Source: ACHHUZ65woA7OdqVW1gkv+LSxmX/oyVmLgXda4FzOsuNysMbhlMEUPSmZrExJda9D2h7ZpwbaEwDHw==
+X-Received: by 2002:a2e:9bd9:0:b0:2af:29d2:2ffe with SMTP id
+ w25-20020a2e9bd9000000b002af29d22ffemr7795146ljj.15.1687263922585; 
+ Tue, 20 Jun 2023 05:25:22 -0700 (PDT)
+Received: from [192.168.69.129] ([176.176.183.29])
+ by smtp.gmail.com with ESMTPSA id
+ n20-20020a170906725400b009878b0b5302sm1326218ejk.98.2023.06.20.05.25.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jun 2023 05:25:22 -0700 (PDT)
+Message-ID: <47d12e8b-493a-e58c-54a1-47bd919c7e20@linaro.org>
+Date: Tue, 20 Jun 2023 14:25:20 +0200
 MIME-Version: 1.0
-References: <20230307182707.2298618-1-dwmw2@infradead.org>
- <20230307182707.2298618-6-dwmw2@infradead.org>
- <CAFEAcA9gzJGMqsEY5TuNmb74RskgUTMW+XcqGV53n3SsKyVVXg@mail.gmail.com>
- <CAFEAcA9aFv5c4S=Pyf3dMU-v9FnNJqWTQ7ZbiDQLTjh8Qou71g@mail.gmail.com>
-In-Reply-To: <CAFEAcA9aFv5c4S=Pyf3dMU-v9FnNJqWTQ7ZbiDQLTjh8Qou71g@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Jun 2023 13:19:26 +0100
-Message-ID: <CAFEAcA--FqeioUdPb9sr5fEy3q0H0swcp+rbGxoNbhgMkYdC+A@mail.gmail.com>
-Subject: Re: [PULL 05/27] hw/xen: Watches on XenStore transactions
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Paul Durrant <paul@xen.org>, Joao Martins <joao.m.martins@oracle.com>,
- Ankur Arora <ankur.a.arora@oracle.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, vikram.garhwal@amd.com, 
- Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org, 
- Juan Quintela <quintela@redhat.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v1 04/46] target/loongarch: Implement xvadd/xvsub
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20230620093814.123650-1-gaosong@loongson.cn>
+ <20230620093814.123650-5-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230620093814.123650-5-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,42 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2 Jun 2023 at 18:06, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Tue, 2 May 2023 at 18:08, Peter Maydell <peter.maydell@linaro.org> wrote:
-> >
-> > On Tue, 7 Mar 2023 at 18:27, David Woodhouse <dwmw2@infradead.org> wrote:
-> > >
-> > > From: David Woodhouse <dwmw@amazon.co.uk>
+On 6/20/23 11:37, Song Gao wrote:
+> +static bool gvec_xxx(DisasContext *ctx, arg_xxx *a, MemOp mop,
+> +                     void (*func)(unsigned, uint32_t, uint32_t,
+> +                                  uint32_t, uint32_t, uint32_t))
+> +{
+> +    uint32_t xd_ofs, xj_ofs, xk_ofs;
+> +
+> +    CHECK_ASXE;
+> +
+> +    xd_ofs = vec_full_offset(a->xd);
+> +    xj_ofs = vec_full_offset(a->xj);
+> +    xk_ofs = vec_full_offset(a->xk);
+> +
+> +    func(mop, xd_ofs, xj_ofs, xk_ofs, 32, ctx->vl / 8);
+> +    return true;
+> +}
 
-> > Hi; Coverity's "is there missing error handling?"
-> > heuristic fired for a change in this code (CID 1508359):
-> >
-> > >  static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
-> > >  {
-> > > +    struct walk_op op;
-> > > +    XsNode **n;
-> > > +
-> > >      if (s->root_tx != tx->base_tx) {
-> > >          return EAGAIN;
-> > >      }
-> > > @@ -720,10 +861,18 @@ static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
-> > >      s->root_tx = tx->tx_id;
-> > >      s->nr_nodes = tx->nr_nodes;
-> > >
-> > > +    init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
-> >
-> > This is the only call to init_walk_op() which ignores its
-> > return value. Intentional, or missing error handling?
->
-> Hi -- I was going through the unclassified Coverity issues
-> again today, and this one's still on the list. Is this a
-> bug, or intentional?
+Comparing gvec_xxx vs gvec_vvv for LSX,
 
-Ping^3 -- is this a false positive, or something to be fixed?
-It would be nice to be able to classify the coverity issue
-appropriately.
+>     func(mop, vd_ofs, vj_ofs, vk_ofs, 16, ctx->vl/8);
 
-thanks
--- PMM
+gvec_vvv will write 16 bytes of output, followed by 16 bytes of zero to satisfy vl / 8.
+
+I presume this is the intended behaviour of mixing LSX with LASX, that the high 128-bits 
+that are not considered by the LSX instruction are zeroed on write?
+
+Which means that your macros from patch 1,
+
+> +#if HOST_BIG_ENDIAN
+...
+> +#define XB(x)  XB[31 - (x)]
+> +#define XH(x)  XH[15 - (x)]
+
+are incorrect.  We need big-endian within the Int128, but little-endian ordering of the 
+two Int128. This can be done with
+
+#define XB(x)  XB[(x) ^ 15]
+#define XH(x)  XH[(x) ^ 7]
+
+etc.
+
+It would be nice to share more code with trans_lsx.c, if possible.
+
+
+r~
 
