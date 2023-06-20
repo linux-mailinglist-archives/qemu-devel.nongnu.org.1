@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAB8736CBB
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B4B736CB7
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBb24-0002jF-Ne; Tue, 20 Jun 2023 09:04:28 -0400
+	id 1qBb1r-0002f9-83; Tue, 20 Jun 2023 09:04:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBb21-0002iW-Nn
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:04:26 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBb1o-0002eZ-Us
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:04:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBb20-0006tl-9R
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:04:25 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBb1m-0006qO-V1
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:04:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687266263;
+ s=mimecast20190719; t=1687266249;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9gikf4BE2vltak5Ude6T1zo0pu9yDG/S+fZmZfG7HRA=;
- b=ZCp0BLqKr78Ua7//vIHIIO1HPAttlpmbtTXzWHMoE8dwEcYVxdv64Z9O90YfE3vhFMjb5z
- ZOMkqEdApk0/gwZNecMHud8MgASxJTrvJFHVG0Ol76EgftTpxkoKBsv8qiKX0dmURAF2I+
- jFJhI3e7reoRZfhp5UDwFJUkBzZMtNo=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+uVChHehTSj/KFWUtBjAS9n/YLbw7wl8kGYZAi8Fb9U=;
+ b=CBH0/TB2xUJ2Es7KzLgSEaWGykvj44no1Hy06hGe+on5aK/YqSpb4+ayeO8mXvQOIcj3ul
+ 21VUivHME0wy8seuPyz2NVNWI42BE0Cy8qJCDIRJePPpt5DFa64sfTuzSgUKLE4mTooQSV
+ QkS8IvPj5vItIGywx8fthIz400kkuTo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-278-z3Djug2QPWW3k3QjP9XUpA-1; Tue, 20 Jun 2023 09:04:21 -0400
-X-MC-Unique: z3Djug2QPWW3k3QjP9XUpA-1
+ us-mta-62-PyYTVGgxMkuFEaIlnf-Jsg-1; Tue, 20 Jun 2023 09:04:06 -0400
+X-MC-Unique: PyYTVGgxMkuFEaIlnf-Jsg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C9B23C0F67B;
- Tue, 20 Jun 2023 13:04:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6C01489C7FD;
+ Tue, 20 Jun 2023 13:04:04 +0000 (UTC)
 Received: from t480s.fritz.box (unknown [10.39.193.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 506622166B26;
- Tue, 20 Jun 2023 13:04:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8DB022166B26;
+ Tue, 20 Jun 2023 13:04:02 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -48,10 +48,10 @@ Cc: David Hildenbrand <david@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peng Tao <tao.peng@linux.alibaba.com>
-Subject: [PATCH v1 2/4] virtio-mem: Skip most of virtio_mem_unplug_all()
- without plugged memory
-Date: Tue, 20 Jun 2023 15:03:52 +0200
-Message-Id: <20230620130354.322180-3-david@redhat.com>
+Subject: [PATCH v1 3/4] migration/ram: Expose ramblock_is_ignored() as
+ migrate_ram_is_ignored()
+Date: Tue, 20 Jun 2023 15:03:53 +0200
+Message-Id: <20230620130354.322180-4-david@redhat.com>
 In-Reply-To: <20230620130354.322180-1-david@redhat.com>
 References: <20230620130354.322180-1-david@redhat.com>
 MIME-Version: 1.0
@@ -82,54 +82,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Already when starting QEMU we perform one system reset that ends up
-triggering virtio_mem_unplug_all() with no actual memory plugged yet.
-That, in turn will trigger ram_block_discard_range() and perform some
-other actions that are not required in that case.
+virtio-mem wants to know whether it should not mess with the RAMBlock
+content (e.g., discard RAM, preallocate memory) on incoming migration.
 
-Let's optimize virtio_mem_unplug_all() for the case that no memory is
-plugged. This will be beneficial for x-ignore-shared support as well.
+So let's expose that function as migrate_ram_is_ignored() in
+migration/misc.h
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/virtio/virtio-mem.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/migration/misc.h |  1 +
+ migration/postcopy-ram.c |  2 +-
+ migration/ram.c          | 14 +++++++-------
+ migration/ram.h          |  3 +--
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 538b695c29..9f6169af32 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -606,20 +606,20 @@ static int virtio_mem_unplug_all(VirtIOMEM *vmem)
- {
-     RAMBlock *rb = vmem->memdev->mr.ram_block;
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index 5ebe13b4b9..7dcc0b5c2c 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -40,6 +40,7 @@ int precopy_notify(PrecopyNotifyReason reason, Error **errp);
  
--    if (virtio_mem_is_busy()) {
--        return -EBUSY;
--    }
--
--    if (ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb))) {
--        return -EBUSY;
--    }
--    virtio_mem_notify_unplug_all(vmem);
--
--    bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
-     if (vmem->size) {
-+        if (virtio_mem_is_busy()) {
-+            return -EBUSY;
-+        }
-+        if (ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb))) {
-+            return -EBUSY;
-+        }
-+        virtio_mem_notify_unplug_all(vmem);
-+
-+        bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
-         vmem->size = 0;
-         notifier_list_notify(&vmem->size_change_notifiers, &vmem->size);
+ void ram_mig_init(void);
+ void qemu_guest_free_page_hint(void *addr, size_t len);
++bool migrate_ram_is_ignored(RAMBlock *block);
+ 
+ /* migration/block.c */
+ 
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index 5615ec29eb..29aea9456d 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -408,7 +408,7 @@ bool postcopy_ram_supported_by_host(MigrationIncomingState *mis, Error **errp)
+     /*
+      * We don't support postcopy with some type of ramblocks.
+      *
+-     * NOTE: we explicitly ignored ramblock_is_ignored() instead we checked
++     * NOTE: we explicitly ignored migrate_ram_is_ignored() instead we checked
+      * all possible ramblocks.  This is because this function can be called
+      * when creating the migration object, during the phase RAM_MIGRATABLE
+      * is not even properly set for all the ramblocks.
+diff --git a/migration/ram.c b/migration/ram.c
+index 5283a75f02..0ada6477e8 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -194,7 +194,7 @@ static bool postcopy_preempt_active(void)
+     return migrate_postcopy_preempt() && migration_in_postcopy();
+ }
+ 
+-bool ramblock_is_ignored(RAMBlock *block)
++bool migrate_ram_is_ignored(RAMBlock *block)
+ {
+     return !qemu_ram_is_migratable(block) ||
+            (migrate_ignore_shared() && qemu_ram_is_shared(block)
+@@ -696,7 +696,7 @@ static void pss_find_next_dirty(PageSearchStatus *pss)
+     unsigned long size = rb->used_length >> TARGET_PAGE_BITS;
+     unsigned long *bitmap = rb->bmap;
+ 
+-    if (ramblock_is_ignored(rb)) {
++    if (migrate_ram_is_ignored(rb)) {
+         /* Points directly to the end, so we know no dirty page */
+         pss->page = size;
+         return;
+@@ -780,7 +780,7 @@ unsigned long colo_bitmap_find_dirty(RAMState *rs, RAMBlock *rb,
+ 
+     *num = 0;
+ 
+-    if (ramblock_is_ignored(rb)) {
++    if (migrate_ram_is_ignored(rb)) {
+         return size;
      }
-+
-     trace_virtio_mem_unplugged_all();
-     virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
-     return 0;
+ 
+@@ -2260,7 +2260,7 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
+     unsigned long start_page = pss->page;
+     int res;
+ 
+-    if (ramblock_is_ignored(pss->block)) {
++    if (migrate_ram_is_ignored(pss->block)) {
+         error_report("block %s should not be migrated !", pss->block->idstr);
+         return 0;
+     }
+@@ -3347,7 +3347,7 @@ static inline RAMBlock *ram_block_from_stream(MigrationIncomingState *mis,
+         return NULL;
+     }
+ 
+-    if (ramblock_is_ignored(block)) {
++    if (migrate_ram_is_ignored(block)) {
+         error_report("block %s should not be migrated !", id);
+         return NULL;
+     }
+@@ -3958,7 +3958,7 @@ static int ram_load_precopy(QEMUFile *f)
+                     }
+                     if (migrate_ignore_shared()) {
+                         hwaddr addr = qemu_get_be64(f);
+-                        if (ramblock_is_ignored(block) &&
++                        if (migrate_ram_is_ignored(block) &&
+                             block->mr->addr != addr) {
+                             error_report("Mismatched GPAs for block %s "
+                                          "%" PRId64 "!= %" PRId64,
+@@ -4254,7 +4254,7 @@ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
+     RAMBlock *rb = qemu_ram_block_from_host(host, false, &offset);
+     Error *err = NULL;
+ 
+-    if (ramblock_is_ignored(rb)) {
++    if (migrate_ram_is_ignored(rb)) {
+         return;
+     }
+ 
+diff --git a/migration/ram.h b/migration/ram.h
+index ea1f3c25b5..145c915ca7 100644
+--- a/migration/ram.h
++++ b/migration/ram.h
+@@ -36,11 +36,10 @@
+ extern XBZRLECacheStats xbzrle_counters;
+ extern CompressionStats compression_counters;
+ 
+-bool ramblock_is_ignored(RAMBlock *block);
+ /* Should be holding either ram_list.mutex, or the RCU lock. */
+ #define RAMBLOCK_FOREACH_NOT_IGNORED(block)            \
+     INTERNAL_RAMBLOCK_FOREACH(block)                   \
+-        if (ramblock_is_ignored(block)) {} else
++        if (migrate_ram_is_ignored(block)) {} else
+ 
+ #define RAMBLOCK_FOREACH_MIGRATABLE(block)             \
+     INTERNAL_RAMBLOCK_FOREACH(block)                   \
 -- 
 2.40.1
 
