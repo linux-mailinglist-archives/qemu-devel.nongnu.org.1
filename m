@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166C4737228
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D58E973722F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:58:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBedB-0007w0-UF; Tue, 20 Jun 2023 12:55:01 -0400
+	id 1qBef2-0001DZ-RQ; Tue, 20 Jun 2023 12:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBed7-0007uv-F4; Tue, 20 Jun 2023 12:54:57 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBeeu-0001D1-Cj
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:56:48 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBed5-00069s-OZ; Tue, 20 Jun 2023 12:54:57 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1b50d7b4aaaso21519355ad.3; 
- Tue, 20 Jun 2023 09:54:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBeer-00071R-PL
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:56:47 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51a1d539ffaso9369776a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:56:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687280093; x=1689872093;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4QP1abaxkkYbrV6B8GhKmCODns4qIHDBEp80+ZYA6tU=;
- b=IcalvPFLl0SdcCd+TP7nPLh7W1qTMJx4AEQaMhU6udTNVtWbVtlP3b9vdfRdBP7MGv
- yndzhsgOGWqBxegQyzfKMn3yBLFg4W74J+FBMYJ5dW2PnzE/Lu8cKIc042HfdvC9T0MQ
- kO58zAw2mis+50xd5xMzzjlzNKZXFOL3IEDkfh3x5pBwAGT7Ojnojw/u6SMtTxKO+8Bf
- 0jciSkE/HjFY9m8T9J854X+PFITsJj54n8M8IbcIjFcegc8tzzuQW8UV5bErLD9+nFlO
- 8UlmSem4VsxA1KGrZtLsop2dW6N3Pk2A7qSnp+i/0cd4BRrjsixh9AhpyTF6+nkQEiL9
- mDAg==
+ d=linaro.org; s=google; t=1687280204; x=1689872204;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=mtoiq8V8RVz0iq+mEEj4y9c41TbCJb4zjY86cCBuwt4=;
+ b=R1+zNCVqZHT+I8gxcD3JOvh6g7DgkO2gcRz45dqw3E25pwmMSdbpXfCudZGEd6jRlN
+ P3UBn55htOWwx7i4WpD/KQmY1YSs2lb3nHEFgvZB7oYegkArnJZ0/72Ij4slgwu8bwpe
+ Q4+V9qGc41h9OuGMM9SUgTWenJWmdyWG+WJ/wYH3QQBmGexQ7k0amgMiui9490RbvOY6
+ o+ZKVegEyadErs5qm93DuN8+05gUrONSVFv7nj3HBhByCVjfHpeHmE57G1H+VR8esj59
+ RB/nti6ZkAN+95HM3p9q1DMW1c2T2mRF/rMBcNSdC0OJNkOflu5f5NeYc4A1tzShIIZW
+ P73g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687280093; x=1689872093;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=4QP1abaxkkYbrV6B8GhKmCODns4qIHDBEp80+ZYA6tU=;
- b=IX8CyxTyR/8n6P4pop0HEhbl2xZAs89RgPabe3WtD6mV363Pis5TnNPyRAHzY1prkL
- Wd7qy0sL0WLkCL2dgyAIlhHKhXiurdFklLjLQ3sjGc5FUP3hMe/oMKOqMbx1aAAjNbkz
- Tf/aBd9XFGGak56DgktfdiLiTCf19dcHrsKmCF2ciE/oDW79t1aVAMqpTUOfo2LrEatl
- t2/Na/uXx2xkxPZmyRt7XIty5VsCPNWMaBUNSHaer2kctk7eIm8Bx7iDB8M9ni7xgRGb
- kd5xBG8mMiKTs77DVuqaoRc8+cilynkBjUePPWNB1uhcMK2ZYGnStokqlrlwPLsp6wcl
- VGww==
-X-Gm-Message-State: AC+VfDxaKO3KisRMqj6WZS4nRTsj3InudTfI1LZ3WsUfPWk+j6aK6ZjF
- MaSI/FVFa1uQus8IUWY0/As=
-X-Google-Smtp-Source: ACHHUZ4pxcPBfBdYz1Via7MELhyvTSETbXM+kPMvzwD0GdCEeP/4XqYGv3V7FXCtnCcnrJftjeQOtw==
-X-Received: by 2002:a17:903:25cf:b0:1b0:499f:7a8d with SMTP id
- jc15-20020a17090325cf00b001b0499f7a8dmr7718715plb.9.1687280093425; 
- Tue, 20 Jun 2023 09:54:53 -0700 (PDT)
-Received: from localhost ([124.170.190.103]) by smtp.gmail.com with ESMTPSA id
- u14-20020a170902e80e00b001a95f632340sm1884726plg.46.2023.06.20.09.54.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 09:54:53 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Jun 2023 02:54:47 +1000
-Message-Id: <CTHMVFHEA2B4.3968LCTW14GHR@wheely>
-Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
- "Anushree Mathur" <anushree.mathur@linux.vnet.ibm.com>, "Fabiano Rosas"
- <farosas@suse.de>
-Subject: Re: [PATCH 1/4] target/ppc: Fix instruction loading endianness in
- alignment interrupt
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>
-X-Mailer: aerc 0.14.0
-References: <20230620131044.169110-1-npiggin@gmail.com>
- <20230620131044.169110-2-npiggin@gmail.com>
- <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
-In-Reply-To: <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+ d=1e100.net; s=20221208; t=1687280204; x=1689872204;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mtoiq8V8RVz0iq+mEEj4y9c41TbCJb4zjY86cCBuwt4=;
+ b=b9zSsQZq4fJ7AncVotzpkHtjyR7AWSwkhHHZS1qQPdJsjqc4TCBTanRDpEYx6JqYqm
+ 4IxP69rr6AuCSqdDOUwi6b6Gza36vXLZJ/FULAEbxQhWEvWtZ3FPxUkFlKX/Yvy2d97F
+ USdRTNAr/4lkoDtxuvZ103OhWkbfn417gGPU1RREzhjeZFntksXB0RJI1RW2JyAgUR6R
+ Eng0YtFhZipS5Wga8fR5JH7KBVu64OZaRuaV/dh18kw8Ayl3A7RdxWibbfSQ/1t2CycH
+ dDPogVz3v6mHmMpRArj89wFmwl+C1OOpzUuvhXaWMdER0B8beKG+pFIbBA9+7+L8wcZD
+ cIFA==
+X-Gm-Message-State: AC+VfDxxT+1UqZwnndBtylELk8Y3VJEcS4MlHXUsFgb7XzpdjOw944VR
+ kC/kdWbbuHKftlgXt36RaOjG/YC8LlYuwN/R0Q9gXwn37ATzcPQR
+X-Google-Smtp-Source: ACHHUZ7tGq/BsfuI6WbZO/I2srke4AfSJqE2Nq18PFE8YstFhAQU+HAKD0VvHDFXh+UvjLYF6CKD0xunGQap/+0j4lU=
+X-Received: by 2002:a05:6402:27cb:b0:514:94be:323c with SMTP id
+ c11-20020a05640227cb00b0051494be323cmr15102350ede.10.1687280203729; Tue, 20
+ Jun 2023 09:56:43 -0700 (PDT)
+MIME-Version: 1.0
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 17:56:33 +0100
+Message-ID: <CAFEAcA_UkPyic7U8eJkzBdBNoQowMToJkK-ro9re51zwn9-CMw@mail.gmail.com>
+Subject: 'make check-tcg' fails with an assert in qemu_plugin_vcpu_init_hook
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,87 +82,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 21, 2023 at 12:26 AM AEST, BALATON Zoltan wrote:
-> On Tue, 20 Jun 2023, Nicholas Piggin wrote:
-> > powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
-> > after cpu_ldl_code(). This corrects DSISR bits in alignment
-> > interrupts when running in little endian mode.
-> >
-> > Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
-> > 1 file changed, 21 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> > index 12d8a7257b..a2801f6e6b 100644
-> > --- a/target/ppc/excp_helper.c
-> > +++ b/target/ppc/excp_helper.c
-> > @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
-> >                   env->nip);
-> > }
-> >
-> > +#ifdef CONFIG_TCG
-> > +/* Return true iff byteswap is needed to load instruction */
-> > +static inline bool insn_need_byteswap(CPUArchState *env)
-> > +{
-> > +    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is s=
-et */
-> > +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
-> > +}
->
-> Don't other places typically use FIELD_EX64 to test for msr bits now? If=
-=20
+$ make -C build/x86 check-tcg
+make: Entering directory '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86'
+[...]
+  TEST    munmap-pthread on arm
+**
+ERROR:../../plugins/core.c:221:qemu_plugin_vcpu_init_hook: assertion
+failed: (success)
+**
+ERROR:../../accel/tcg/cpu-exec.c:1024:cpu_exec_setjmp: assertion
+failed: (cpu == current_cpu)
 
-Yeah I should use that, good point. There's at least another case in
-that file that doesn't use it but I probably added that too :/
+Here's the backtrace:
 
-> this really only tests for the LE bit and used only once do we need a new=
-=20
-> function for that? I don't quite like trivial one line functions unless i=
-t=20
-> does something more complex Because if just makes code harder to read as =
-I=20
-> have to look up what these do when I could just see it right away where i=
-t=20
-> used without these functions.
+#0  __pthread_kill_implementation (no_tid=0, signo=6,
+threadid=140737332028096) at ./nptl/pthread_kill.c:44
+#1  __pthread_kill_internal (signo=6, threadid=140737332028096) at
+./nptl/pthread_kill.c:78
+#2  __GI___pthread_kill (threadid=140737332028096,
+signo=signo@entry=6) at ./nptl/pthread_kill.c:89
+#3  0x00007ffff6fc1476 in __GI_raise (sig=sig@entry=6) at
+../sysdeps/posix/raise.c:26
+#4  0x00007ffff6fa77f3 in __GI_abort () at ./stdlib/abort.c:79
+#5  0x00007ffff7497b57 in g_assertion_message (domain=<optimised out>,
+file=<optimised out>, line=<optimised out>,
+    func=0x555555800d50 <__func__.3> "qemu_plugin_vcpu_init_hook",
+message=<optimised out>) at ../../../glib/gtestutils.c:3253
+#6  0x00007ffff74f170f in g_assertion_message_expr (domain=0x0,
+file=0x555555800ccf "../../plugins/core.c", line=221,
+    func=0x555555800d50 <__func__.3> "qemu_plugin_vcpu_init_hook",
+expr=<optimised out>) at ../../../glib/gtestutils.c:3279
+#7  0x00005555556e5747 in qemu_plugin_vcpu_init_hook
+(cpu=0x5555559d0450) at ../../plugins/core.c:221
+#8  0x00005555556a9cc3 in cpu_exec_realizefn (cpu=0x5555559d0450,
+errp=0x7fffffffc630) at ../../cpu.c:153
+#9  0x00005555555a44ef in arm_cpu_realizefn (dev=0x5555559d0450,
+errp=0x7fffffffc780) at ../../target/arm/cpu.c:1673
+#10 0x000055555572ef2e in device_set_realized (obj=0x5555559d0450,
+value=true, errp=0x7fffffffc9b8) at ../../hw/core/qdev.c:510
+#11 0x000055555573931b in property_set_bool (obj=0x5555559d0450,
+v=0x5555559c0d40, name=0x55555580ef41 "realized",
+opaque=0x555555924870,
+    errp=0x7fffffffc9b8) at ../../qom/object.c:2285
+#12 0x0000555555737212 in object_property_set (obj=0x5555559d0450,
+name=0x55555580ef41 "realized", v=0x5555559c0d40, errp=0x7fffffffc9b8)
+    at ../../qom/object.c:1420
+#13 0x000055555573b861 in object_property_set_qobject
+(obj=0x5555559d0450, name=0x55555580ef41 "realized",
+value=0x55555592bc90, errp=0x7fffffffc9b8)
+    at ../../qom/qom-qobject.c:28
+#14 0x0000555555737591 in object_property_set_bool
+(obj=0x5555559d0450, name=0x55555580ef41 "realized", value=true,
+errp=0x7fffffffc9b8)
+    at ../../qom/object.c:1489
+#15 0x000055555572e6bc in qdev_realize (dev=0x5555559d0450, bus=0x0,
+errp=0x7fffffffc9b8) at ../../hw/core/qdev.c:292
+#16 0x000055555559a65c in cpu_create (typename=0x55555591c5c0
+"max-arm-cpu") at ../../hw/core/cpu-common.c:61
+#17 0x00005555556f1712 in cpu_copy (env=0x555555953d80) at
+../../linux-user/main.c:231
+#18 0x0000555555711c4e in do_fork (env=0x555555953d80, flags=4001536,
+newsp=1073734008, parent_tidptr=1073735528, newtls=1073736832,
+    child_tidptr=1073735528) at ../../linux-user/syscall.c:6672
+#19 0x000055555571cdea in do_syscall1 (cpu_env=0x555555953d80,
+num=120, arg1=4001536, arg2=1073734008, arg3=1073735528,
+arg4=1073736832,
+    arg5=1073735528, arg6=1082129932, arg7=0, arg8=0) at
+../../linux-user/syscall.c:10869
+#20 0x00005555557243f2 in do_syscall (cpu_env=0x555555953d80, num=120,
+arg1=4001536, arg2=1073734008, arg3=1073735528, arg4=1073736832,
+    arg5=1073735528, arg6=1082129932, arg7=0, arg8=0) at
+../../linux-user/syscall.c:13610
+#21 0x00005555555a1616 in cpu_loop (env=0x555555953d80) at
+../../linux-user/arm/cpu_loop.c:434
+#22 0x00005555556f2ee0 in main (argc=2, argv=0x7fffffffde68,
+envp=0x7fffffffde80) at ../../linux-user/main.c:973
 
-It's based on mem_helper.c, which is familiar pattern/name so I=20
-might keep it. Maybe not, I'll check. I'm on the fence.
+AFAICT this is happening because we try to insert an entry
+into the plugin.cpu_ht hash table whose key is cpu->cpu_index.
+But in this "new thread" codepath, the new thread's
+cpu_index is 0, which is the same as the old thread's
+cpu_index...
 
-> > +
-> > +static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
-> > +{
-> > +    uint32_t insn =3D cpu_ldl_code(env, addr);
-> > +
-> > +    if (insn_need_byteswap(env)) {
-> > +        insn =3D bswap32(insn);
-> > +    }
-> > +
-> > +    return insn;
-> > +}
-> > +#endif
->
-> Along the same lines I'm not sure this wrapper is needed unless this is a=
-=20
-> recurring operation. Otherwise you could just add the if and the comment=
-=20
-> below at the single place where this is needed. If this will be needed at=
-=20
-> more places later then adding a function may make sense but otherwise I'd=
-=20
-> avoid making code tangled with single line functions defined away from=20
-> where they are used as it's simpler to just have the if and swap at the=
-=20
-> single place where it's needed than adding two new functions that I'd had=
-=20
-> to look up and comprehend first to see what's happening. (It also would b=
-e=20
-> just 3 lines instead of 20 that way.)
+The assertion in cpu-exec.c is interesting too and may or
+may not be relevant.
 
-It does get used in a couple more places later. Few-line
-"abstraction" used once isn't necessarily wrong though.
-
-Thanks,
-Nick
+thanks
+-- PMM
 
