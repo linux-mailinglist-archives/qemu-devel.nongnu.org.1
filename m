@@ -2,58 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B357365BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B56377365EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWO4-0007p9-FU; Tue, 20 Jun 2023 04:06:52 -0400
+	id 1qBWXO-0001Fi-4N; Tue, 20 Jun 2023 04:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
- id 1qBWO2-0007ob-6b; Tue, 20 Jun 2023 04:06:50 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
- id 1qBWNz-0001WL-Vu; Tue, 20 Jun 2023 04:06:49 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QlfNf0Rm5z4wjF;
- Tue, 20 Jun 2023 18:06:42 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QlfNb4CgBz4wjC;
- Tue, 20 Jun 2023 18:06:39 +1000 (AEST)
-Message-ID: <45ed27fb-9d06-a323-a1fa-90435067ba91@kaod.org>
-Date: Tue, 20 Jun 2023 10:06:34 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBWXC-0001D6-08
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:16:18 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBWXA-0003nK-5w
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:16:17 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-988e6fc41ccso170590366b.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:16:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687248974; x=1689840974;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GmJDGJJlkA2GivjH5EJMWL239y4z1jUH4kX5hcFkTlI=;
+ b=CNjrjnDsBq+ZtWF/mCUovMcnTU+fu15kXKvnK0hR57qOJHgEJmYNKtrsRlaQQHqcBc
+ Tsc+Lp2tr3Z+Ng2zQNQtiJTFV1iclwb+Ku5sjy8LIWdRjCVL5+Z7ywuN+6DPdQneeNIX
+ H7JyTFPdJfxduHXR33UfPi+o8NMH2uj9ZBv2/ErWgiDqBNQEaAZmEj17lF62pq1BkPyw
+ r1YBtRGBvAVi6pPD/gG4ZpR7K+9igTBfdLDUpimFLisJAm/+ZMMaZHO9zodLUoSkLp1m
+ ey1te+A4DHBKo4XlNMkDpMQbzhwSHPwJ6wSNUDzW5db2CAfJkkGYLYCzc5U+xPoa+d41
+ 2f9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687248974; x=1689840974;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GmJDGJJlkA2GivjH5EJMWL239y4z1jUH4kX5hcFkTlI=;
+ b=UCilGGC5nhrHKe+TdKoqUMg8TTiRWtzclJUVkTnJwVCiAffDe8pUNmCAK7CqulzEX0
+ jYLtlUt/qiyyxAKqYZ02nasSHNWzlq9Y7YT9UzETlczppPyNME85FznVYLIt1eb5kvZ1
+ FPIlD73ufSYlgqZzxr4323WDTQSuwdIfD0CRb0/bSnoCGi+3US24WKJ3d/7veJ+hEgBq
+ UNfJKkwFR0eR0Gb5VufcmeBhtgJ//x7U7qdLXspwPT45PYr+v6d5LXy1xA2bhBwPB/7H
+ WQ6uRpxhxM+8F2osBKRmvM/750w1dt8mi9LVUrDzFj39lk+sy7ooZmKp2I50QTqiMbB7
+ ni3Q==
+X-Gm-Message-State: AC+VfDyRrDTNJaQE0rXclfmor5Eo2qWLG7Vn1cSGa7zFcSPahN8tEU2x
+ idccYh5GYG8sOXzskw30hHaKeq9DPLZvkJyCj2e07A==
+X-Google-Smtp-Source: ACHHUZ7ETb8h8N9D0eWOS21wHebIZRZxpgXhgJYbRk2e7VTE35fj/rfWgZdfSPA4j1v6j8qOMFvo0g==
+X-Received: by 2002:a17:907:9692:b0:988:71c8:9f44 with SMTP id
+ hd18-20020a170907969200b0098871c89f44mr4801788ejc.2.1687248974119; 
+ Tue, 20 Jun 2023 01:16:14 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.183.29])
+ by smtp.gmail.com with ESMTPSA id
+ u9-20020a17090617c900b0098768661505sm935598eje.117.2023.06.20.01.16.12
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 20 Jun 2023 01:16:13 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
+ qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ kvm@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] target/riscv: Remove unuseful KVM stubs
+Date: Tue, 20 Jun 2023 10:16:11 +0200
+Message-Id: <20230620081611.88158-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] hw/ppc/spapr: Test whether TCG is enabled with
- tcg_enabled()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
-References: <20230620074802.86898-1-philmd@linaro.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230620074802.86898-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=rj0j=CI=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,41 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 09:48, Philippe Mathieu-Daudé wrote:
-> Although the PPC target only supports the TCG and KVM
-> accelerators, QEMU supports more. We can no assume that
-> '!kvm == tcg', so test for the correct accelerator. This
-> also eases code review, because here we don't care about
-> KVM, we really want to test for TCG.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Since we always check whether KVM is enabled before calling
+kvm_riscv_reset_vcpu() and kvm_riscv_set_irq(), their call
+is elided by the compiler when KVM is not available.
+Therefore the stubs are not even linked. Remove them.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/riscv/kvm-stub.c  | 30 ------------------------------
+ target/riscv/kvm.c       |  4 +---
+ target/riscv/meson.build |  2 +-
+ 3 files changed, 2 insertions(+), 34 deletions(-)
+ delete mode 100644 target/riscv/kvm-stub.c
 
-> ---
->   hw/ppc/spapr.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index dcb7f1c70a..c4b666587b 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2524,7 +2524,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
->       int ret;
->       unsigned int smp_threads = ms->smp.threads;
->   
-> -    if (!kvm_enabled() && (smp_threads > 1)) {
-> +    if (tcg_enabled() && (smp_threads > 1)) {
->           error_setg(errp, "TCG cannot support more than 1 thread/core "
->                      "on a pseries machine");
->           return;
+diff --git a/target/riscv/kvm-stub.c b/target/riscv/kvm-stub.c
+deleted file mode 100644
+index 4e8fc31a21..0000000000
+--- a/target/riscv/kvm-stub.c
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * QEMU KVM RISC-V specific function stubs
+- *
+- * Copyright (c) 2020 Huawei Technologies Co., Ltd
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms and conditions of the GNU General Public License,
+- * version 2 or later, as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+- * more details.
+- *
+- * You should have received a copy of the GNU General Public License along with
+- * this program.  If not, see <http://www.gnu.org/licenses/>.
+- */
+-#include "qemu/osdep.h"
+-#include "cpu.h"
+-#include "kvm_riscv.h"
+-
+-void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+-{
+-    abort();
+-}
+-
+-void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+-{
+-    abort();
+-}
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 0f932a5b96..52884bbe15 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -503,9 +503,7 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+ {
+     CPURISCVState *env = &cpu->env;
+ 
+-    if (!kvm_enabled()) {
+-        return;
+-    }
++    assert(kvm_enabled());
+     env->pc = cpu->env.kernel_addr;
+     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index e1ff6d9b95..37fc2cf487 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -22,7 +22,7 @@ riscv_ss.add(files(
+   'crypto_helper.c',
+   'zce_helper.c'
+ ))
+-riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
++riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
+ 
+ riscv_softmmu_ss = ss.source_set()
+ riscv_softmmu_ss.add(files(
+-- 
+2.38.1
 
-Nick,
-
-You might want to include this patch in the series adding SMT support
-to pseries/spapr :
-
-   https://patchew.org/QEMU/20230605112323.179259-1-npiggin@gmail.com/
-
-C.
 
