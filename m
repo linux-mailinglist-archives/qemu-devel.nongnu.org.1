@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27AA736828
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B867736817
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:43:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXp3-00079n-7l; Tue, 20 Jun 2023 05:38:49 -0400
+	id 1qBXpH-0007C8-3s; Tue, 20 Jun 2023 05:39:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBXp1-00079F-Ij
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:47 -0400
+ id 1qBXp3-00079u-0d
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:49 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBXov-0006Mp-RK
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:44 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qBXox-0006N5-0j
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:48 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxNumUc5FkuyUHAA--.12676S3;
- Tue, 20 Jun 2023 17:38:28 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cx_eqVc5FkviUHAA--.14882S3;
+ Tue, 20 Jun 2023 17:38:29 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxduSGc5FkzIQhAA--.28394S26; 
+ AQAAf8BxduSGc5FkzIQhAA--.28394S27; 
  Tue, 20 Jun 2023 17:38:28 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v1 24/46] target/loongarch: Implement LASX logic instructions
-Date: Tue, 20 Jun 2023 17:37:52 +0800
-Message-Id: <20230620093814.123650-25-gaosong@loongson.cn>
+Subject: [PATCH v1 25/46] target/loongarch: Implement xvsll xvsrl xvsra xvrotr
+Date: Tue, 20 Jun 2023 17:37:53 +0800
+Message-Id: <20230620093814.123650-26-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230620093814.123650-1-gaosong@loongson.cn>
 References: <20230620093814.123650-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S26
+X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S27
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,154 +63,156 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XV{AND/OR/XOR/NOR/ANDN/ORN}.V;
-- XV{AND/OR/XOR/NOR}I.B.
+- XVSLL[I].{B/H/W/D};
+- XVSRL[I].{B/H/W/D};
+- XVSRA[I].{B/H/W/D};
+- XVROTR[I].{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 12 ++++++
- target/loongarch/helper.h                    |  2 +
- target/loongarch/insn_trans/trans_lasx.c.inc | 42 ++++++++++++++++++++
- target/loongarch/insns.decode                | 13 ++++++
- target/loongarch/lasx_helper.c               | 11 +++++
- 5 files changed, 80 insertions(+)
+ target/loongarch/disas.c                     | 36 ++++++++++++++++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 36 ++++++++++++++++++++
+ target/loongarch/insns.decode                | 33 ++++++++++++++++++
+ 3 files changed, 105 insertions(+)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 82a9826eb7..2f1da9db80 100644
+index 2f1da9db80..0c1c7a7e6e 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -2028,6 +2028,18 @@ INSN_LASX(xvmsknz_b,         xx)
+@@ -2040,6 +2040,42 @@ INSN_LASX(xvori_b,           xx_i)
+ INSN_LASX(xvxori_b,          xx_i)
+ INSN_LASX(xvnori_b,          xx_i)
  
- INSN_LASX(xvldi,             x_i)
- 
-+INSN_LASX(xvand_v,           xxx)
-+INSN_LASX(xvor_v,            xxx)
-+INSN_LASX(xvxor_v,           xxx)
-+INSN_LASX(xvnor_v,           xxx)
-+INSN_LASX(xvandn_v,          xxx)
-+INSN_LASX(xvorn_v,           xxx)
++INSN_LASX(xvsll_b,           xxx)
++INSN_LASX(xvsll_h,           xxx)
++INSN_LASX(xvsll_w,           xxx)
++INSN_LASX(xvsll_d,           xxx)
++INSN_LASX(xvslli_b,          xx_i)
++INSN_LASX(xvslli_h,          xx_i)
++INSN_LASX(xvslli_w,          xx_i)
++INSN_LASX(xvslli_d,          xx_i)
 +
-+INSN_LASX(xvandi_b,          xx_i)
-+INSN_LASX(xvori_b,           xx_i)
-+INSN_LASX(xvxori_b,          xx_i)
-+INSN_LASX(xvnori_b,          xx_i)
++INSN_LASX(xvsrl_b,           xxx)
++INSN_LASX(xvsrl_h,           xxx)
++INSN_LASX(xvsrl_w,           xxx)
++INSN_LASX(xvsrl_d,           xxx)
++INSN_LASX(xvsrli_b,          xx_i)
++INSN_LASX(xvsrli_h,          xx_i)
++INSN_LASX(xvsrli_w,          xx_i)
++INSN_LASX(xvsrli_d,          xx_i)
++
++INSN_LASX(xvsra_b,           xxx)
++INSN_LASX(xvsra_h,           xxx)
++INSN_LASX(xvsra_w,           xxx)
++INSN_LASX(xvsra_d,           xxx)
++INSN_LASX(xvsrai_b,          xx_i)
++INSN_LASX(xvsrai_h,          xx_i)
++INSN_LASX(xvsrai_w,          xx_i)
++INSN_LASX(xvsrai_d,          xx_i)
++
++INSN_LASX(xvrotr_b,          xxx)
++INSN_LASX(xvrotr_h,          xxx)
++INSN_LASX(xvrotr_w,          xxx)
++INSN_LASX(xvrotr_d,          xxx)
++INSN_LASX(xvrotri_b,         xx_i)
++INSN_LASX(xvrotri_h,         xx_i)
++INSN_LASX(xvrotri_w,         xx_i)
++INSN_LASX(xvrotri_d,         xx_i)
 +
  INSN_LASX(xvreplgr2vr_b,     xr)
  INSN_LASX(xvreplgr2vr_h,     xr)
  INSN_LASX(xvreplgr2vr_w,     xr)
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index b7ba78ee06..4e0a900318 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -929,3 +929,5 @@ DEF_HELPER_3(xvmskltz_w, void, env, i32, i32)
- DEF_HELPER_3(xvmskltz_d, void, env, i32, i32)
- DEF_HELPER_3(xvmskgez_b, void, env, i32, i32)
- DEF_HELPER_3(xvmsknz_b, void, env, i32, i32)
-+
-+DEF_HELPER_FLAGS_4(xvnori_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index bf277e1fd9..d48f76f118 100644
+index d48f76f118..5d7deb312e 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -1935,6 +1935,48 @@ static bool trans_xvldi(DisasContext *ctx, arg_xvldi * a)
-     return true;
- }
+@@ -1977,6 +1977,42 @@ static void do_xvnori_b(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
  
-+TRANS(xvand_v, gvec_xxx, MO_64, tcg_gen_gvec_and)
-+TRANS(xvor_v, gvec_xxx, MO_64, tcg_gen_gvec_or)
-+TRANS(xvxor_v, gvec_xxx, MO_64, tcg_gen_gvec_xor)
-+TRANS(xvnor_v, gvec_xxx, MO_64, tcg_gen_gvec_nor)
+ TRANS(xvnori_b, gvec_xx_i, MO_8, do_xvnori_b)
+ 
++TRANS(xvsll_b, gvec_xxx, MO_8, tcg_gen_gvec_shlv)
++TRANS(xvsll_h, gvec_xxx, MO_16, tcg_gen_gvec_shlv)
++TRANS(xvsll_w, gvec_xxx, MO_32, tcg_gen_gvec_shlv)
++TRANS(xvsll_d, gvec_xxx, MO_64, tcg_gen_gvec_shlv)
++TRANS(xvslli_b, gvec_xx_i, MO_8, tcg_gen_gvec_shli)
++TRANS(xvslli_h, gvec_xx_i, MO_16, tcg_gen_gvec_shli)
++TRANS(xvslli_w, gvec_xx_i, MO_32, tcg_gen_gvec_shli)
++TRANS(xvslli_d, gvec_xx_i, MO_64, tcg_gen_gvec_shli)
 +
-+static bool trans_xvandn_v(DisasContext *ctx, arg_xxx * a)
-+{
-+    uint32_t xd_ofs, xj_ofs, xk_ofs;
++TRANS(xvsrl_b, gvec_xxx, MO_8, tcg_gen_gvec_shrv)
++TRANS(xvsrl_h, gvec_xxx, MO_16, tcg_gen_gvec_shrv)
++TRANS(xvsrl_w, gvec_xxx, MO_32, tcg_gen_gvec_shrv)
++TRANS(xvsrl_d, gvec_xxx, MO_64, tcg_gen_gvec_shrv)
++TRANS(xvsrli_b, gvec_xx_i, MO_8, tcg_gen_gvec_shri)
++TRANS(xvsrli_h, gvec_xx_i, MO_16, tcg_gen_gvec_shri)
++TRANS(xvsrli_w, gvec_xx_i, MO_32, tcg_gen_gvec_shri)
++TRANS(xvsrli_d, gvec_xx_i, MO_64, tcg_gen_gvec_shri)
 +
-+    CHECK_ASXE;
++TRANS(xvsra_b, gvec_xxx, MO_8, tcg_gen_gvec_sarv)
++TRANS(xvsra_h, gvec_xxx, MO_16, tcg_gen_gvec_sarv)
++TRANS(xvsra_w, gvec_xxx, MO_32, tcg_gen_gvec_sarv)
++TRANS(xvsra_d, gvec_xxx, MO_64, tcg_gen_gvec_sarv)
++TRANS(xvsrai_b, gvec_xx_i, MO_8, tcg_gen_gvec_sari)
++TRANS(xvsrai_h, gvec_xx_i, MO_16, tcg_gen_gvec_sari)
++TRANS(xvsrai_w, gvec_xx_i, MO_32, tcg_gen_gvec_sari)
++TRANS(xvsrai_d, gvec_xx_i, MO_64, tcg_gen_gvec_sari)
 +
-+    xd_ofs = vec_full_offset(a->xd);
-+    xj_ofs = vec_full_offset(a->xj);
-+    xk_ofs = vec_full_offset(a->xk);
-+
-+    tcg_gen_gvec_andc(MO_64, xd_ofs, xk_ofs, xj_ofs, 32, ctx->vl / 8);
-+    return true;
-+}
-+TRANS(xvorn_v, gvec_xxx, MO_64, tcg_gen_gvec_orc)
-+TRANS(xvandi_b, gvec_xx_i, MO_8, tcg_gen_gvec_andi)
-+TRANS(xvori_b, gvec_xx_i, MO_8, tcg_gen_gvec_ori)
-+TRANS(xvxori_b, gvec_xx_i, MO_8, tcg_gen_gvec_xori)
-+
-+static void do_xvnori_b(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
-+                        int64_t imm, uint32_t oprsz, uint32_t maxsz)
-+{
-+    static const TCGOpcode vecop_list[] = {
-+        INDEX_op_nor_vec, 0
-+        };
-+    static const GVecGen2i op = {
-+       .fni8 = gen_vnori_b,
-+       .fniv = gen_vnori,
-+       .fnoi = gen_helper_xvnori_b,
-+       .opt_opc = vecop_list,
-+       .vece = MO_8
-+    };
-+
-+    tcg_gen_gvec_2i(xd_ofs, xj_ofs, oprsz, maxsz, imm, &op);
-+}
-+
-+TRANS(xvnori_b, gvec_xx_i, MO_8, do_xvnori_b)
++TRANS(xvrotr_b, gvec_xxx, MO_8, tcg_gen_gvec_rotrv)
++TRANS(xvrotr_h, gvec_xxx, MO_16, tcg_gen_gvec_rotrv)
++TRANS(xvrotr_w, gvec_xxx, MO_32, tcg_gen_gvec_rotrv)
++TRANS(xvrotr_d, gvec_xxx, MO_64, tcg_gen_gvec_rotrv)
++TRANS(xvrotri_b, gvec_xx_i, MO_8, tcg_gen_gvec_rotri)
++TRANS(xvrotri_h, gvec_xx_i, MO_16, tcg_gen_gvec_rotri)
++TRANS(xvrotri_w, gvec_xx_i, MO_32, tcg_gen_gvec_rotri)
++TRANS(xvrotri_d, gvec_xx_i, MO_64, tcg_gen_gvec_rotri)
 +
  static bool gvec_dupx(DisasContext *ctx, arg_xr *a, MemOp mop)
  {
      TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index fbd0dd229a..ce2ad47b88 100644
+index ce2ad47b88..03c3aa0019 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1320,6 +1320,7 @@ vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
- @xx_ui4          .... ........ ..... . imm:4 xj:5 xd:5    &xx_i
- @xx_ui5            .... ........ ..... imm:5 xj:5 xd:5    &xx_i
- @xx_ui6             .... ........ .... imm:6 xj:5 xd:5    &xx_i
-+@xx_ui8               .... ........ .. imm:8 xj:5 xd:5    &xx_i
+@@ -1641,6 +1641,39 @@ xvori_b          0111 01111101 01 ........ ..... .....    @xx_ui8
+ xvxori_b         0111 01111101 10 ........ ..... .....    @xx_ui8
+ xvnori_b         0111 01111101 11 ........ ..... .....    @xx_ui8
  
- xvadd_b          0111 01000000 10100 ..... ..... .....    @xxx
- xvadd_h          0111 01000000 10101 ..... ..... .....    @xxx
-@@ -1628,6 +1629,18 @@ xvmsknz_b        0111 01101001 11000 11000 ..... .....    @xx
- 
- xvldi            0111 01111110 00 ............. .....     @x_i13
- 
-+xvand_v          0111 01010010 01100 ..... ..... .....    @xxx
-+xvor_v           0111 01010010 01101 ..... ..... .....    @xxx
-+xvxor_v          0111 01010010 01110 ..... ..... .....    @xxx
-+xvnor_v          0111 01010010 01111 ..... ..... .....    @xxx
-+xvandn_v         0111 01010010 10000 ..... ..... .....    @xxx
-+xvorn_v          0111 01010010 10001 ..... ..... .....    @xxx
-+
-+xvandi_b         0111 01111101 00 ........ ..... .....    @xx_ui8
-+xvori_b          0111 01111101 01 ........ ..... .....    @xx_ui8
-+xvxori_b         0111 01111101 10 ........ ..... .....    @xx_ui8
-+xvnori_b         0111 01111101 11 ........ ..... .....    @xx_ui8
++xvsll_b          0111 01001110 10000 ..... ..... .....    @xxx
++xvsll_h          0111 01001110 10001 ..... ..... .....    @xxx
++xvsll_w          0111 01001110 10010 ..... ..... .....    @xxx
++xvsll_d          0111 01001110 10011 ..... ..... .....    @xxx
++xvslli_b         0111 01110010 11000 01 ... ..... .....   @xx_ui3
++xvslli_h         0111 01110010 11000 1 .... ..... .....   @xx_ui4
++xvslli_w         0111 01110010 11001 ..... ..... .....    @xx_ui5
++xvslli_d         0111 01110010 1101 ...... ..... .....    @xx_ui6
++xvsrl_b          0111 01001110 10100 ..... ..... .....    @xxx
++xvsrl_h          0111 01001110 10101 ..... ..... .....    @xxx
++xvsrl_w          0111 01001110 10110 ..... ..... .....    @xxx
++xvsrl_d          0111 01001110 10111 ..... ..... .....    @xxx
++xvsrli_b         0111 01110011 00000 01 ... ..... .....   @xx_ui3
++xvsrli_h         0111 01110011 00000 1 .... ..... .....   @xx_ui4
++xvsrli_w         0111 01110011 00001 ..... ..... .....    @xx_ui5
++xvsrli_d         0111 01110011 0001 ...... ..... .....    @xx_ui6
++xvsra_b          0111 01001110 11000 ..... ..... .....    @xxx
++xvsra_h          0111 01001110 11001 ..... ..... .....    @xxx
++xvsra_w          0111 01001110 11010 ..... ..... .....    @xxx
++xvsra_d          0111 01001110 11011 ..... ..... .....    @xxx
++xvsrai_b         0111 01110011 01000 01 ... ..... .....   @xx_ui3
++xvsrai_h         0111 01110011 01000 1 .... ..... .....   @xx_ui4
++xvsrai_w         0111 01110011 01001 ..... ..... .....    @xx_ui5
++xvsrai_d         0111 01110011 0101 ...... ..... .....    @xx_ui6
++xvrotr_b         0111 01001110 11100 ..... ..... .....    @xxx
++xvrotr_h         0111 01001110 11101 ..... ..... .....    @xxx
++xvrotr_w         0111 01001110 11110 ..... ..... .....    @xxx
++xvrotr_d         0111 01001110 11111 ..... ..... .....    @xxx
++xvrotri_b        0111 01101010 00000 01 ... ..... .....   @xx_ui3
++xvrotri_h        0111 01101010 00000 1 .... ..... .....   @xx_ui4
++xvrotri_w        0111 01101010 00001 ..... ..... .....    @xx_ui5
++xvrotri_d        0111 01101010 0001 ...... ..... .....    @xx_ui6
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @xr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @xr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @xr
-diff --git a/target/loongarch/lasx_helper.c b/target/loongarch/lasx_helper.c
-index 6aec554645..8e8860c1bb 100644
---- a/target/loongarch/lasx_helper.c
-+++ b/target/loongarch/lasx_helper.c
-@@ -804,3 +804,14 @@ void HELPER(xvmsknz_b)(CPULoongArchState *env, uint32_t xd, uint32_t xj)
-         Xd->XD(2 * i + 1) = 0;
-     }
- }
-+
-+void HELPER(xvnori_b)(void *xd, void *xj, uint64_t imm, uint32_t v)
-+{
-+    int i;
-+    XReg *Xd = (XReg *)xd;
-+    XReg *Xj = (XReg *)xj;
-+
-+    for (i = 0; i < LASX_LEN / 8; i++) {
-+        Xd->XB(i) = ~(Xj->XB(i) | (uint8_t)imm);
-+    }
-+}
 -- 
 2.39.1
 
