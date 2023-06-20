@@ -2,75 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE905736DEE
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B60736E39
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:02:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBbme-0007S2-1B; Tue, 20 Jun 2023 09:52:36 -0400
+	id 1qBbvA-0001qF-Ae; Tue, 20 Jun 2023 10:01:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBbmb-0007RN-R0
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:52:33 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBbma-0003Z9-Aq
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:52:33 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51a4088c4ebso4531719a12.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 06:52:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687269150; x=1689861150;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=/L6k17gpEI8D2h8BVhU/DBfxSXfsmLSiexMsP6WVg/0=;
- b=ZGtY9CySt4DtRMfzFBjsgxq104cF+hOvdgAK0EbP/H/rfqLnouMzpM+muXVHEqlH/P
- Oz24HDoga46sreGhkAR04n+Rzx63WlONX5eUi/r6EKijIS5qH0xRxCFTEDMKEU+QnEdk
- P8OCmWDGYYMoUoVySBjlbAgPjcnVw9yzuMDVv7tYSEpIkZZOQeJbMQ9Pci6LaKw0z9mQ
- gRFH4tGLeWWoTRkxFuVEdxvtc4HQGrdFATH8WwMHf8KvJmNX5WP429BwrBMf4qpRa7Es
- Tx04IBpCuLGqi7ToS14cg0dEMzkpS49c22uu6f1CFsBSV/DA94c1QHAreyLui+gGY4ZF
- wGOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687269150; x=1689861150;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/L6k17gpEI8D2h8BVhU/DBfxSXfsmLSiexMsP6WVg/0=;
- b=ftwIjg5O5lV3JSVnqMH+UyKYt8fMpv0Op884M7/emmNpNqz3vX5P78/5A6r6PUbP+1
- EctsANRoegycENk+S6yk/et2dw1l8+ByffbW9f+hLSy1KKJOVIxjpAQenGbSvuZhmWVt
- 3YdqQnHZHyxKAUPLHqTbojn2RNBpADT/eTOblLnRHBesld7hpNIAWoB3Gv1cPZnhtEYU
- Pr0z/P+ac1e4MMqSx28y10WvT5BYXPjFH0xjl+pos3ok1IYniF4Tf8MUrIzdBOLbWmsE
- gca+807i89Ke0R7ZmtAMZpHMdL6sOQOEu2UNYlAJp9lUZeG7wV9+rxyD3bm48bwsiYGi
- aIbw==
-X-Gm-Message-State: AC+VfDyFznqDuX3lO+jougZHBUVfMfYPHZGXB0BsdhmaGbGG3VWTmH9P
- s00fqYKlydXGJRSRxHNbXnl89hV5pGnC644OL2Smfg==
-X-Google-Smtp-Source: ACHHUZ5LvzPOg+1FksvjYQ3n2IaTxoL8fv38+aoPmD2oNcBIDa58qfm9R6my7rScxyBIOqfeYQyVJUA1RCxkqwo5Z5w=
-X-Received: by 2002:a05:6402:481:b0:514:666b:1e04 with SMTP id
- k1-20020a056402048100b00514666b1e04mr7692584edv.35.1687269150511; Tue, 20 Jun
- 2023 06:52:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBbv2-0001oQ-WC
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:01:18 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBbv0-00062v-Es
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:01:16 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id DCBDC746377;
+ Tue, 20 Jun 2023 16:01:01 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 9842D74632B; Tue, 20 Jun 2023 16:01:01 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9733B745720;
+ Tue, 20 Jun 2023 16:01:01 +0200 (CEST)
+Date: Tue, 20 Jun 2023 16:01:01 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org, 
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2] hw/acpi: Fix PM control register access
+In-Reply-To: <20230620092546-mutt-send-email-mst@kernel.org>
+Message-ID: <253333ff-161b-185a-4daa-6407f876229d@eik.bme.hu>
+References: <20230607200125.A9988746377@zero.eik.bme.hu>
+ <c080f8f6-b1d4-4ffb-7fcb-f29c7ddaf980@ilande.co.uk>
+ <20230608111241-mutt-send-email-mst@kernel.org>
+ <a37ca4bf-ad22-9086-b3a8-3c0d4f55da27@eik.bme.hu>
+ <alpine.LMD.2.03.2306200248390.24060@eik.bme.hu>
+ <20230620092546-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-References: <20230620124418.805717-1-richard.henderson@linaro.org>
- <20230620124418.805717-21-richard.henderson@linaro.org>
-In-Reply-To: <20230620124418.805717-21-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Jun 2023 14:52:19 +0100
-Message-ID: <CAFEAcA-MpN2kM3c4F=ihSEgetSQJVd0T9-BTUakTu=CAc+4HTQ@mail.gmail.com>
-Subject: Re: [PATCH v5 20/20] target/arm: Add cpu properties for enabling
- FEAT_RME
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,21 +65,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023 at 13:46, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Tue, 20 Jun 2023, Michael S. Tsirkin wrote:
+> On Tue, Jun 20, 2023 at 02:50:55AM +0200, BALATON Zoltan wrote:
+>> On Thu, 8 Jun 2023, BALATON Zoltan wrote:
+>>> On Thu, 8 Jun 2023, Michael S. Tsirkin wrote:
+>>>> On Thu, Jun 08, 2023 at 12:37:08PM +0100, Mark Cave-Ayland wrote:
+>>>>> On 07/06/2023 21:01, BALATON Zoltan wrote:
+>>>>>
+>>>>>> On pegasos2 which has ACPI as part of VT8231 south bridge the board
+>>>>>> firmware writes PM control register by accessing the second byte so
+>>>>>> addr will be 1. This wasn't handled correctly and the write went to
+>>>>>> addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
+>>>>>> only once and does not take addr into account and handle non-zero
+>>>>>> address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
+>>>>>> pegasos2 firmware.
+>>>>>>
+>>>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>>>>> ---
+>>>>>>   hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
+>>>>>>   1 file changed, 26 insertions(+), 26 deletions(-)
+>>>>>>
+>>>>>> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+>>>>>> index 6da275c599..00b1e79a30 100644
+>>>>>> --- a/hw/acpi/core.c
+>>>>>> +++ b/hw/acpi/core.c
+>>>>>> @@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
+>>>>>>   }
+>>>>>>   /* ACPI PM1aCNT */
+>>>>>> -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
+>>>>>> -{
+>>>>>> -    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+>>>>>> -
+>>>>>> -    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
+>>>>>> -        /* change suspend type */
+>>>>>> -        uint16_t sus_typ = (val >> 10) & 7;
+>>>>>> -        switch (sus_typ) {
+>>>>>> -        case 0: /* soft power off */
+>>>>>> -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+>>>>>> -            break;
+>>>>>> -        case 1:
+>>>>>> -            qemu_system_suspend_request();
+>>>>>> -            break;
+>>>>>> -        default:
+>>>>>> -            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
+>>>>>> -                qapi_event_send_suspend_disk();
+>>>>>> -
+>>>>>> qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+>>>>>> -            }
+>>>>>> -            break;
+>>>>>> -        }
+>>>>>> -    }
+>>>>>> -}
+>>>>>> -
+>>>>>>   void acpi_pm1_cnt_update(ACPIREGS *ar,
+>>>>>>                            bool sci_enable, bool sci_disable)
+>>>>>>   {
+>>>>>> @@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
+>>>>>>   static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr
+>>>>>> addr, unsigned width)
+>>>>>>   {
+>>>>>>       ACPIREGS *ar = opaque;
+>>>>>> -    return ar->pm1.cnt.cnt;
+>>>>>> +    return ar->pm1.cnt.cnt >> addr * 8;
+>>>>>
+>>>>> This shift here...
+>>>>>
+>>>>>>   }
+>>>>>>   static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
+>>>>>>                                 unsigned width)
+>>>>>>   {
+>>>>>> -    acpi_pm1_cnt_write(opaque, val);
+>>>>>> +    ACPIREGS *ar = opaque;
+>>>>>> +
+>>>>>> +    if (addr == 1) {
+>>>>>> +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
+>>>>>> +    }
+>>>>>
+>>>>> and this shift here look similar to my workaround in https://patchew.org/QEMU/20230524211104.686087-1-mark.cave-ayland@ilande.co.uk/20230524211104.686087-31-mark.cave-ayland@ilande.co.uk/
+>>>>> which is a symptom of https://gitlab.com/qemu-project/qemu/-/issues/360.
+>>>>>
+>>>>> Whilst there is no imminent fix for the above issue, it may be worth a few
+>>>>> mins to determine if this is the same issue and if so document it with
+>>>>> comments accordingly as I did so that the workaround can be removed at a
+>>>>> later date.
+>>>>
+>>>> So I will add
+>>>> this triggers a but in memory core,
+>>>> (see
+>>>> https://gitlab.com/qemu-project/qemu/-/issues/360 for more detail)
+>>>>
+>>>> ?
+>>>
+>>> Apart from the typo but -> bug I'm not sure this is related to that
+>>> issue but in any case this does not trigger but works around some
+>>> possible bug so maybe "This work around may be related to issue URL" or
+>>> something like that maybe? I'm also not sure what comment to add where
+>>> so I'd appreciate if you can handle this on merging.
+>>
+>> Ping? Is this queued somewhere or will it be merged? Maybe Adding Buglink
+>> tag to commit message could be sufficient or just mentioning the link in the
+>> commit message. I'm still not sure what the best way to do that so I hope
+>> you could take care of that.
+>>
+>> Regards,
+>> BALATON Zoltan
 >
-> Add an x-rme cpu property to enable FEAT_RME.
-> Add an x-l0gptsz property to set GPCCR_EL3.L0GPTSZ,
-> for testing various possible configurations.
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/360
+>
+> ?
 
-Looks OK to me, but I think we should document these
-(including that they're experimental and future syntax for
-enabling RME will change) in the "TCG VCPU Features"
-section of docs/system/arm/cpu-features.rst.
+Fixes means it would close the ticket but this patch does not fix that 
+issue just may be related to it so that's why Buglink may be more 
+appropriate but I'm not sure either. So maybe just add a sentence to the 
+commit message saying:
 
-We could mention in the commit message here why we're
-making them experimental x- properties too.
+"This may be related to URL.."
 
-thanks
--- PMM
+Regards,
+BALATON Zoltan
+
+>
+>>>>>> +    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+>>>>>> +
+>>>>>> +    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
+>>>>>> +        /* change suspend type */
+>>>>>> +        uint16_t sus_typ = (val >> 10) & 7;
+>>>>>> +        switch (sus_typ) {
+>>>>>> +        case 0: /* soft power off */
+>>>>>> +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+>>>>>> +            break;
+>>>>>> +        case 1:
+>>>>>> +            qemu_system_suspend_request();
+>>>>>> +            break;
+>>>>>> +        default:
+>>>>>> +            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
+>>>>>> +                qapi_event_send_suspend_disk();
+>>>>>> +
+>>>>>> qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+>>>>>> +            }
+>>>>>> +            break;
+>>>>>> +        }
+>>>>>> +    }
+>>>>>>   }
+>>>>>>   static const MemoryRegionOps acpi_pm_cnt_ops = {
+>>>>>
+>>>>>
+>>>>> ATB,
+>>>>>
+>>>>> Mark.
+>>>>
+>>>>
+>>>
+>>>
+>
+>
 
