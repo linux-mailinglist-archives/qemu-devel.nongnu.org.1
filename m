@@ -2,83 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316AF736BA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 14:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3519736BA7
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 14:11:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBaCO-00072i-5N; Tue, 20 Jun 2023 08:11:04 -0400
+	id 1qBaCX-00073K-Qa; Tue, 20 Jun 2023 08:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBaCL-00072P-Eb
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:11:01 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBaCJ-0002MM-PJ
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:11:01 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-988aefaa44eso316669566b.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 05:10:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687263057; x=1689855057;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0XBjVlzdu44bpsTFRFCHJYPtSoJe7rD1scO2Qs+zChs=;
- b=OsMXHScPVgZhNTc0M2olpXX86uJ5V83ukVtpjrmpF+nW+wEXfD9WrJ3lGKl5UKFBiH
- 0brLkSkmZawaKMJ1wDC3oshaSFsfPMMXkq1tQqIFFU4qT2F5X7/hxWfCzBLGGvsA9lSo
- YwauXe/8zAQ9cikQlTwDEO8NWgAaXDCMDw0cQwvrTOL9fX4/mr5lwakBBLpWEEoRsAGt
- a8fmD3RfvmrP/OGQM5TX1qHxPvR9q5IgM9ADZ8hJkq5HhI/Gf9/xpbmTMLlCm9ToZiAv
- 25OqlWVOJXCal7/4DIbB1RlnPpciVvpCUYRwQp0fD7CViBX0b46mZhuGOdPJRigao1GO
- nVOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687263057; x=1689855057;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0XBjVlzdu44bpsTFRFCHJYPtSoJe7rD1scO2Qs+zChs=;
- b=YPaN75Qxe9Z3tFQrvYimmKDQ7pWXh+eXrb/281yJ+4YW3dRBQKHCKrn5CgBK4xosHa
- mDbKga431fAvsQwCyDJEy5f9sjSc20fe4tHnWpEvnaR7/0vhg7HBkKm9yOmHw7aqeWna
- eLyoyHuAhfktX88vCkiR8FpcIVE7qsj/QgNfwRoFUdTji+mlSDaxXphYYW+CGwqv2WnK
- JRRGNiXJU5TQpZd6+B8h6hCFNpOu4Or9C8WSSuC6gTYxBlAq9FZMbdToRoL9te8tO9ZE
- crnO8PGUjKZaBN8txr93TESJefritnGcu0/W8ZPXRvgTNP0yZaPIQgVIog0V2WD9vvAC
- KOKw==
-X-Gm-Message-State: AC+VfDxQroX/W3Iamjp3hl+Ia+/jGs0qfRcDdvje43MPOUbYf7Wh81r+
- lRp+z6uDHxBz9j8Q6k4SZvkDEg==
-X-Google-Smtp-Source: ACHHUZ6Xe4DOJk+4NFXvQegVJ4xc5nLC2Va6jx42yWBaAkOzvPpw2nEIdaIkwCHDcCEJ0dVzmof+kg==
-X-Received: by 2002:a17:907:7d86:b0:96a:928c:d391 with SMTP id
- oz6-20020a1709077d8600b0096a928cd391mr12192235ejc.4.1687263057070; 
- Tue, 20 Jun 2023 05:10:57 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- lf4-20020a170906ae4400b0098822e05eddsm1286769ejb.100.2023.06.20.05.10.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 05:10:56 -0700 (PDT)
-Message-ID: <36ef5d68-0bfe-16b6-3ae6-5a5817f16211@linaro.org>
-Date: Tue, 20 Jun 2023 14:10:54 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qBaCV-000737-Gl
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:11:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qBaCR-0002NR-T4
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 08:11:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687263067;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=gqgwrtcJCe8OdJc7XKKsrM1TYQHhYh4C4wj6lwUDqMg=;
+ b=De7ceZfOc0qhiKu15jgHacp3F3EnpVrYYWHfAKuGwVk2mxre4HSBFDEUxYiviMOxJbjWS3
+ seu+m4B8GzlnY6x1gfNrqFGKqgKowJoKWxT1pdqte9Dt861xfucY5ITeAwtzz9NVqZlRy8
+ t6HrKl3RM1cQRWcAifTlwiEH/shY/8c=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-272-cvlOHUuPODyianvJ2qk9TA-1; Tue, 20 Jun 2023 08:11:04 -0400
+X-MC-Unique: cvlOHUuPODyianvJ2qk9TA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF8D53810795;
+ Tue, 20 Jun 2023 12:11:03 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.44])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7C59E2166B26;
+ Tue, 20 Jun 2023 12:10:57 +0000 (UTC)
+Date: Tue, 20 Jun 2023 13:10:55 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+Message-ID: <ZJGXT4z95dMx0rd7@redhat.com>
+References: <20230612193344.3796-1-quintela@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
+ <875y7sflqb.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v1 03/46] target/loongarch: Add CHECK_ASXE maccro for
- check LASX enable
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230620093814.123650-1-gaosong@loongson.cn>
- <20230620093814.123650-4-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230620093814.123650-4-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <875y7sflqb.fsf@secure.mitica>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,18 +84,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 11:37, Song Gao wrote:
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu.c                       |  2 ++
->   target/loongarch/cpu.h                       |  2 ++
->   target/loongarch/insn_trans/trans_lasx.c.inc | 10 ++++++++++
->   3 files changed, 14 insertions(+)
+On Mon, Jun 12, 2023 at 10:51:08PM +0200, Juan Quintela wrote:
+> Peter Xu <peterx@redhat.com> wrote:
+> > On Mon, Jun 12, 2023 at 09:33:42PM +0200, Juan Quintela wrote:
+> >> Only "defer" is recommended.  After setting all migation parameters,
+> >> start incoming migration with "migrate-incoming uri" command.
+> >> 
+> >> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> >> ---
+> >>  docs/about/deprecated.rst | 7 +++++++
+> >>  softmmu/vl.c              | 2 ++
+> >>  2 files changed, 9 insertions(+)
+> >> 
+> >> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> >> index 47e98dc95e..518672722d 100644
+> >> --- a/docs/about/deprecated.rst
+> >> +++ b/docs/about/deprecated.rst
+> >> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
+> >>  ``blk`` functionality can be acchieved using
+> >>  ``migrate_set_parameter block-incremental true``.
+> >>  
+> >> +``-incoming uri`` (since 8.1)
+> >> +'''''''''''''''''''''''''''''
+> >> +
+> >> +Everything except ``-incoming defer`` are deprecated.  This allows to
+> >> +setup parameters before launching the proper migration with
+> >> +``migrate-incoming uri``.
+> >> +
+> >> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> >> index b0b96f67fa..7fe865ab59 100644
+> >> --- a/softmmu/vl.c
+> >> +++ b/softmmu/vl.c
+> >> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
+> >>      if (incoming) {
+> >>          Error *local_err = NULL;
+> >>          if (strcmp(incoming, "defer") != 0) {
+> >> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
+> >> +                        " set the uri with migrate-incoming.", incoming);
+> >
+> > I still use uri for all my scripts, alongside with "-global migration.xxx"
+> > and it works.
+> 
+> You know what you are doing (TM).
+> And remember that we don't support -gobal migration.x-foo.
+> Yes, I know, we should drop the "x-" prefixes.
+> 
+> > Shall we just leave it there?  Or is deprecating it helps us in any form?
+> 
+> See the patches two weeks ago when people complained that lisen(.., num)
+> was too low.  And there are other parameters that work the same way
+> (that I convenientely had forgotten).  So the easiest way to get things
+> right is to use "defer" always.  Using -incoming "uri" should only be
+> for people that "know what they are doing", so we had to ways to do it:
+> - review all migration options and see which ones work without defer
+>   and document it
+> - deprecate everything that is not defer.
+> 
+> Anything else is not going to be very user unfriendly.
+> What do you think.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+In some cases it is worth having a convenience option for user friendliness.
 
-r~
+In this case, however, users are already needing to use QMP/HMP on the
+source side to set migration parameters. I think it is reasonable to say
+that doing *exactly* the same with QMP/HMP on the destination side is
+actually more friendly than requiring use of -global on the dest side
+which is different syntax.
+
+We don't document the way to use -global with migration parameters so
+when people see '-incoming' I think we are steering them into a trap,
+making it look like -incoming is sufficient on its own. Hence that user's
+mistake recently about not setting migration parameters.
+
+Overall I agree with deprecating  '-incoming' != 'defer', as I think it
+will better guide users to following the correct steps, as is not a
+usability burden as they're already using QMP/HMP on the source side.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
