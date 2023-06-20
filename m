@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998FB737061
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDB7737063
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdBB-0004hR-3l; Tue, 20 Jun 2023 11:22:01 -0400
+	id 1qBdC5-0005uO-1A; Tue, 20 Jun 2023 11:22:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBdB8-0004hG-Pt
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:21:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBdB7-00017w-EF
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:21:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687274516;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mxsHRpCScjNK3qW6Px4WYHxDdiL9eVOnoANNUjIHHk4=;
- b=gwXtgQyYmURC/MKv6uD+epG8O8LDirK9yfPUCcUObCaD3ya5gWfpHRmuiLsZU6XpUsDRrr
- zVoui6Zhvyi6wsdeoEGYK+ES58r9EZ2/mWrW14FAweGtVy/BDozaB4OKNcNDTyLvFTg0pc
- s1OxCLidBlmgL6UE3bepIiCwBXreuoY=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-dMbZxJSkN9OUgMyEYWPK7w-1; Tue, 20 Jun 2023 11:21:36 -0400
-X-MC-Unique: dMbZxJSkN9OUgMyEYWPK7w-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-62ff893f03bso11634476d6.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:21:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qBdBu-0005La-44
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:22:47 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qBdBr-0001LK-Az
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:22:45 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3112f256941so2862402f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:22:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1687274559; x=1689866559; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=cLXgodAGXBj+v2zu9ZxU3lUOFEwsOiyp9aYqfTOHlKM=;
+ b=oVNBfboTGA3fTDGNC8IWvnIki9nqNQkyOgaHo2nL/a+lnN2vNIYpjh4kz2zuceE82g
+ fLRcynv1myMWA/i32yKMp/GKwupjM69Ze9D8fZIYRSRb1Wgk8A2qatfzsklaYgkTRvgm
+ Tt8BHb0ae3Ez+wTlTkSnaa+dhLJpDwJLplNej//cDt02jhMTIgWfrBG8WSwl/bYZBBV9
+ vlVLVEnAmHQLOG4JSykvnNwdls9Qv8TZ8IaAYPb7lDnWk/NPeEbJO4U59vyOvmsJdbRN
+ Rx88MukXhu3cTKU94TB8XhSVW+l4jyc7MvIYuXPGPGRekNqG5RKzH5p7XQH5A7GEteA7
+ F/Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687274489; x=1689866489;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mxsHRpCScjNK3qW6Px4WYHxDdiL9eVOnoANNUjIHHk4=;
- b=KSlUe+o54oMy+b6QjxmR9q5Uzbe9JNgwlvP0XZxRBPCYs/oNhro9F9DNEyBNMj9pQW
- gM+DTf0cZ5UsYmLt6IVhrJc0iVvWicG+muRrhLMUrAGf7lhH1DwM2mwnEXbqgNKhZ9Jm
- zhx08KpuPYF03iHB2DRE2q39733YfD2VDE+oIZkRKVqRkqOPMU4p0efPFDzJwAn3jV5L
- As0zCiddjlTr39eWMUhF5bUf5foTFk+qtt5aX1Ox0U8F0GPhgryh2WkfMMUjh8sIY/FU
- b4BvKK0ERD/rRj4EeMJ2+hL83daGU8qt7TZbjP0EOojjKrqM4AK5YNQFs3hcq1x0Hfcg
- 7aIw==
-X-Gm-Message-State: AC+VfDwZPCio9N0C5XTOFedo1G8e636vhwq9ClIsHBKALIZjZEKw3ny+
- 0N7Y5Px4Ak3GBG2IG0r7xGCXOnPDjUUMh9pQoWaU7nEqqapvaO7HPAbe46bhjdqMb7G4iaW5D2L
- aNspZBiE1HAID6eM=
-X-Received: by 2002:ad4:5c83:0:b0:61b:6b8e:16e0 with SMTP id
- o3-20020ad45c83000000b0061b6b8e16e0mr15600684qvh.1.1687274489321; 
- Tue, 20 Jun 2023 08:21:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5gGrwFcr2BRS3CoSo9tLc9fDvAF1dRL3t2uiWb+M6NDUZkV7A+uLcD9zQRWr2HyYDmtSLM2g==
-X-Received: by 2002:ad4:5c83:0:b0:61b:6b8e:16e0 with SMTP id
- o3-20020ad45c83000000b0061b6b8e16e0mr15600666qvh.1.1687274489097; 
- Tue, 20 Jun 2023 08:21:29 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- j5-20020a0cf505000000b0062b76c29978sm1381608qvm.6.2023.06.20.08.21.28
+ d=1e100.net; s=20221208; t=1687274559; x=1689866559;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cLXgodAGXBj+v2zu9ZxU3lUOFEwsOiyp9aYqfTOHlKM=;
+ b=GEN5Gvj1Jxo5MWX0qVfJPHkRsIWuvhWrB4dzWzQk9C7QUxq/L0L4FsrwWuBENMYQRF
+ I8rLFrZFEPOyZtwxxtJ60DNjzXT52gOuV6aEt0Bs9+nqq45kr5kCd5GYhP91DGWdV03W
+ opBzo1sniXNA/pckFJhOo1CSOX8gCd4QBl4rrBnq8H1/KQKqywKTPRQVmnqovqH83lXL
+ QTvttzy+HLrIEWiQAoYW2S1lxB//uHYRTL+4dZf7WYoKHU/009l/IQTpOd8jPD/w1Nsn
+ hMGHnr3hs3mD/Gb75QZ1ZP29cBgwRGegQ0e0d9e1SVY0A0E6I5o0QMJVXfFbfCtPXZZ8
+ k3Og==
+X-Gm-Message-State: AC+VfDzvpjQ1I9PadAZSPYRzxNfdP2imAWOcImpKyd8yu25/Wc0nrROZ
+ z0mA1b7QG5H77wleSsUzi8sHyfzqwloI4OwSyRw=
+X-Google-Smtp-Source: ACHHUZ6dhtS9ZBZ9s1b+tPXU4OrZig7K+lp5+nFi8/F5u1osef5WXmjAEx0UbTQiIozs2WUaLNneRA==
+X-Received: by 2002:a5d:4fc1:0:b0:30f:c1ab:a039 with SMTP id
+ h1-20020a5d4fc1000000b0030fc1aba039mr8273718wrw.40.1687274558850; 
+ Tue, 20 Jun 2023 08:22:38 -0700 (PDT)
+Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ f1-20020adfdb41000000b0030ae499da59sm2195145wrj.111.2023.06.20.08.22.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 08:21:28 -0700 (PDT)
-Date: Tue, 20 Jun 2023 11:21:27 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 11/42] migration-test: Update test_ignore_shared to use
- args
-Message-ID: <ZJHD94Moce7KPqzq@x1n>
-References: <20230608224943.3877-1-quintela@redhat.com>
- <20230608224943.3877-12-quintela@redhat.com>
+ Tue, 20 Jun 2023 08:22:38 -0700 (PDT)
+Message-ID: <8dcd36274bcf4493abb8d872868af6df12d32c5a.camel@rivosinc.com>
+Subject: Re: [PATCH 1/2] target/riscv: Add Zacas ISA extension support
+From: Rob Bradford <rbradford@rivosinc.com>
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, Alistair
+ Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>
+Date: Tue, 20 Jun 2023 16:22:37 +0100
+In-Reply-To: <6e6e4cdb-fb24-286c-f493-0cce73f38615@iscas.ac.cn>
+References: <20230602121638.36342-1-rbradford@rivosinc.com>
+ <20230602121638.36342-2-rbradford@rivosinc.com>
+ <6e6e4cdb-fb24-286c-f493-0cce73f38615@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 (3.48.1-1.module_f38+16663+080ec715) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230608224943.3877-12-quintela@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,48 +96,394 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 09, 2023 at 12:49:12AM +0200, Juan Quintela wrote:
-> It missed this treatment:
-> 
-> commit 11f1a4ce14803f15d59cff42a4cfb7ac50d36bd0
-> Author: Juan Quintela <quintela@redhat.com>
-> Date:   Mon Nov 29 18:57:51 2021 +0100
-> 
->     migration-test: Check for shared memory like for everything else
-> 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+On Fri, 2023-06-02 at 23:04 +0800, Weiwei Li wrote:
+>=20
+> On 2023/6/2 20:16, Rob Bradford wrote:
+> > This commit adds support for the the amocas.{w,d,q} instructions
+> > behind
+> > a new property to enable that instruction.
+> >=20
+> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > ---
+>=20
+> I also implemented an initial version for this extension without any=20
+> tests a few days ago.
+>=20
+> You can find it in
+> https://github.com/plctlab/plct-qemu/tree/plct-zacas-dev.
 
-This is still under "#if 0" block.. and the old code doesn't even compile,
-but the change looks fine.
+Hi, thank you for sharing this! Sorry for the delay in response. I had
+a chance to test your version and found a small issue with the .Q
+implementation when I tested it.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Here is the fix:
 
-> ---
->  tests/qtest/migration-test.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 743aa873e6..7178c8e679 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -1597,8 +1597,11 @@ static void test_ignore_shared(void)
->  {
->      g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
->      QTestState *from, *to;
-> +    MigrateStart args = {
-> +        .use_shmem = true
-> +    };
->  
-> -    if (test_migrate_start(&from, &to, uri, false, true, NULL, NULL)) {
-> +    if (test_migrate_start(&from, &to, uri, &args)) {
->          return;
->      }
->  
-> -- 
-> 2.40.1
-> 
+diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc
+b/target/riscv/insn_trans/trans_rvzacas.c.inc
+index c063079c6a..e556f48da8 100644
+--- a/target/riscv/insn_trans/trans_rvzacas.c.inc
++++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
+@@ -129,11 +129,12 @@ static bool trans_amocas_q(DisasContext *ctx,
+arg_amocas_q *a)
+     TCGv_i128 src2 =3D tcg_temp_new_i128();
+     TCGv_i64 src2l =3D get_gpr(ctx, a->rs2, EXT_NONE);
+     TCGv_i64 src2h =3D get_gpr(ctx, a->rs2 =3D=3D 0 ? 0 : a->rs2 + 1,
+EXT_NONE);
+-    TCGv_i64 destl =3D get_gpr(ctx, a->rs2, EXT_NONE);
+-    TCGv_i64 desth =3D get_gpr(ctx, a->rs2 =3D=3D 0 ? 0 : a->rs2 + 1,
+EXT_NONE);
++    TCGv_i64 destl =3D get_gpr(ctx, a->rd, EXT_NONE);
++    TCGv_i64 desth =3D get_gpr(ctx, a->rd =3D=3D 0 ? 0 : a->rd + 1,
+EXT_NONE);
+    =20
+     tcg_gen_concat_i64_i128(src2, src2l, src2h);
+     tcg_gen_concat_i64_i128(dest, destl, desth);
++    decode_save_opc(ctx);
+     tcg_gen_atomic_cmpxchg_i128(dest, src1, dest, src2, ctx->mem_idx,
+                                 (MO_ALIGN | MO_TEUO));
 
--- 
-Peter Xu
+Since you already have an implementation ready i'm happy for your
+version to be the one included.
+
+>=20
+> Hope it can help you.
+>=20
+> > =C2=A0 target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +
+> > =C2=A0 target/riscv/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > =C2=A0 target/riscv/insn32.decode=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 5 +
+> > =C2=A0 target/riscv/insn_trans/trans_rvzacas.c.inc | 146
+> > ++++++++++++++++++++
+> > =C2=A0 target/riscv/translate.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ |=C2=A0=C2=A0 1 +
+> > =C2=A0 5 files changed, 157 insertions(+)
+> > =C2=A0 create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
+> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > index db0875fb43..e99833eb4a 100644
+> > --- a/target/riscv/cpu.c
+> > +++ b/target/riscv/cpu.c
+> > @@ -82,6 +82,7 @@ static const struct isa_ext_data isa_edata_arr[]
+> > =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1=
+_10_0, ext_icsr),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSIO=
+N_1_10_0,
+> > ext_ifencei),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VER=
+SION_1_10_0,
+> > ext_zihintpause),
+> > +=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_=
+zacas),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1=
+_12_0, ext_zawrs),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_1=
+1_0, ext_zfh),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_=
+1_11_0, ext_zfhmin),
+> > @@ -1604,6 +1605,9 @@ static Property riscv_cpu_extensions[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("x-zvfh", RISCVCPU, cfg=
+.ext_zvfh, false),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, =
+cfg.ext_zvfhmin,
+> > false),
+> > =C2=A0=20
+> > +=C2=A0=C2=A0=C2=A0 /* Atomic CAS (Zacas) */
+> > +=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("x-zacas", RISCVCPU, cfg.ext_zacas=
+, false),
+> > +
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_END_OF_LIST(),
+> > =C2=A0 };
+> > =C2=A0=20
+> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> > index de7e43126a..ac4d9e8e9c 100644
+> > --- a/target/riscv/cpu.h
+> > +++ b/target/riscv/cpu.h
+> > @@ -436,6 +436,7 @@ struct RISCVCPUConfig {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_smaia;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_ssaia;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool ext_sscofpmf;
+> > +=C2=A0=C2=A0=C2=A0 bool ext_zacas;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool rvv_ta_all_1s;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool rvv_ma_all_1s;
+> > =C2=A0=20
+> > diff --git a/target/riscv/insn32.decode
+> > b/target/riscv/insn32.decode
+> > index 73d5d1b045..97d17ee520 100644
+> > --- a/target/riscv/insn32.decode
+> > +++ b/target/riscv/insn32.decode
+> > @@ -255,6 +255,11 @@ amomax_d=C2=A0=C2=A0 10100 . . ..... ..... 011 ...=
+..
+> > 0101111 @atom_st
+> > =C2=A0 amominu_d=C2=A0 11000 . . ..... ..... 011 ..... 0101111 @atom_st
+> > =C2=A0 amomaxu_d=C2=A0 11100 . . ..... ..... 011 ..... 0101111 @atom_st
+> > =C2=A0=20
+> > +# *** Zacas Extension
+> > +amocas_w=C2=A0=C2=A0 00101 . . ..... ..... 010 ..... 0101111 @atom_st
+> > +amocas_d=C2=A0=C2=A0 00101 . . ..... ..... 011 ..... 0101111 @atom_st
+> > +amocas_q=C2=A0=C2=A0 00101 . . ..... ..... 100 ..... 0101111 @atom_st
+> > +
+> > =C2=A0 # *** RV32F Standard Extension ***
+> > =C2=A0 flw=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ............=C2=A0=
+=C2=A0 ..... 010 ..... 0000111 @i
+> > =C2=A0 fsw=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .......=C2=A0 ....=
+. ..... 010 ..... 0100111 @s
+> > diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc
+> > b/target/riscv/insn_trans/trans_rvzacas.c.inc
+> > new file mode 100644
+> > index 0000000000..3f1b58ee8a
+> > --- /dev/null
+> > +++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
+> > @@ -0,0 +1,146 @@
+> > +/*
+> > + * RISC-V translation routines for Zacas extension
+> > + *
+> > + * Copyright (c) 2023 Rivos Inc
+> > + *
+> > + * This program is free software; you can redistribute it and/or
+> > modify it
+> > + * under the terms and conditions of the GNU General Public
+> > License,
+> > + * version 2 or later, as published by the Free Software
+> > Foundation.
+> > + *
+> > + * This program is distributed in the hope it will be useful, but
+> > WITHOUT
+> > + * ANY WARRANTY; without even the implied warranty of
+> > MERCHANTABILITY or
+> > + * FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the GNU General Public
+> > License for
+> > + * more details.
+> > + *
+> > + * You should have received a copy of the GNU General Public
+> > License along with
+> > + * this program.=C2=A0 If not, see <http://www.gnu.org/licenses/>.
+> > + */
+> > +
+> > +#define REQUIRE_ZACAS(ctx) do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+> > +=C2=A0=C2=A0=C2=A0 if (!ctx->cfg_ptr->ext_zacas) {=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+> > +=C2=A0=C2=A0=C2=A0 }=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+> > +} while (0)
+> > +
+> > +static bool amocas_tl(DisasContext *ctx, arg_atomic *a, MemOp mop)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 TCGv retv =3D dest_gpr(ctx, a->rd);
+> > +=C2=A0=C2=A0=C2=A0 TCGv addr =3D get_address(ctx, a->rs1, 0);
+> > +=C2=A0=C2=A0=C2=A0 TCGv newv =3D get_gpr(ctx, a->rs2, EXT_ZERO);
+> > +=C2=A0=C2=A0=C2=A0 TCGv cmpv =3D get_gpr(ctx, a->rd, EXT_ZERO);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_tl(retv, addr, cmpv, newv, c=
+tx-
+> > >mem_idx, mop);
+> > +=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, retv);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 return true;
+> > +}
+> > +
+> > +#if TARGET_LONG_BITS =3D=3D 32
+> > +static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +=C2=A0=C2=A0=C2=A0 return amocas_tl(ctx, a, MO_TESL | MO_ALIGN);
+> > +}
+> > +#else
+> > +static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_64BIT(ctx);
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +=C2=A0=C2=A0=C2=A0 ctx->ol =3D MXL_RV32;
+> > +=C2=A0=C2=A0=C2=A0 return amocas_tl(ctx, a, MO_TESL | MO_ALIGN);
+> > +}
+> > +#endif
+>=20
+> This seems unnecessary to use different trans function for RV32 and
+> RV64.
+>=20
+> tcg_gen_atomic_cmpxchg_tl itself will do the actually cmp and xchg=20
+> operation based on size in memop
+>=20
+> instead of the target long size.
+
+Thank you - I can see from your version how this would work.
+
+>=20
+> > +
+> > +#if TARGET_LONG_BITS =3D=3D 32
+> We commonly use TARGET_RISCV32 instead of TARGET_LONG_BITS in similar
+> cases.
+
+Noted - thank you. Richard in another thread also pointed out my
+version didn't handle dynamic xlen correctly.
+
+
+> > +static bool trans_amocas_d(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 retv, newv, cmpv;
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i32 cmpv_l, cmpv_h, newv_l, newv_h;
+> > +=C2=A0=C2=A0=C2=A0 TCGv addr;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (a->rd % 2 =3D=3D 1 || a->rs2 % 2 =3D=3D 1) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 addr =3D get_address(ctx, a->rs1, 0);
+> > +=C2=A0=C2=A0=C2=A0 cmpv_l =3D get_gpr(ctx, a->rd, 0);
+> It's better to use EXT_NONE instead of 0 in this and following cases.
+
+Noted!
+
+> > +=C2=A0=C2=A0=C2=A0 cmpv_h =3D a->rd =3D=3D 0 ? get_gpr(ctx, 0, 0) : ge=
+t_gpr(ctx, a->rd
+> > + 1, 0);
+> We can use ctx->zero for get_gpr(ctx, 0, 0) directly here.
+
+Thanks!
+
+> > +=C2=A0=C2=A0=C2=A0 cmpv =3D tcg_temp_new_i64();
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i32_i64(cmpv, cmpv_l, cmpv_h);
+> > +=C2=A0=C2=A0=C2=A0 newv_l =3D get_gpr(ctx, a->rs2, 0);
+> > +=C2=A0=C2=A0=C2=A0 newv_h =3D a->rs2 =3D=3D 0 ? get_gpr(ctx, 0, 0) : g=
+et_gpr(ctx, a-
+> > >rs2 + 1, 0);
+> > +=C2=A0=C2=A0=C2=A0 newv =3D tcg_temp_new_i64();
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i32_i64(newv, newv_l, newv_h);
+> > +=C2=A0=C2=A0=C2=A0 retv =3D tcg_temp_new_i64();
+> > +
+> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_i64(retv, addr, cmpv, newv, =
+ctx-
+> > >mem_idx,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MO_TESQ | MO_ALIGN);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (a->rd !=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 TCGv_i32 retv_l =3D tcg_tem=
+p_new_i32();
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 TCGv_i32 retv_h =3D tcg_tem=
+p_new_i32();
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_extr_i64_i32(retv_l=
+, retv_h, retv);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, ret=
+v_l);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd + 1,=
+ retv_h);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 return true;
+> > +}
+> > +#else
+> > +static bool trans_amocas_d(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_64BIT(ctx);
+> This seems not correct.=C2=A0 amocas_d can work on RV32, so I think it ca=
+n
+> also work on RV64 with xl =3D 32
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +=C2=A0=C2=A0=C2=A0 return amocas_tl(ctx, a, MO_TESQ | MO_ALIGN);
+> > +}
+> > +#endif
+> > +
+> > +#if TARGET_LONG_BITS =3D=3D 32
+> > +static bool trans_amocas_q(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 return false;
+> > +}
+>=20
+> This case is unnecessary.
+>=20
+> We can just add REQUIRE_64BIT(ctx) in following trans_amocas_q
+>=20
+
+Thank you for the review - this was my first TCG patch and i've learnt
+a lot from that.
+
+Cheers,
+
+Rob
+
+> > +#else
+> > +static bool trans_amocas_q(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i128 retv, newv, cmpv;
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 cmpv_l, cmpv_h, newv_l, newv_h;
+> > +=C2=A0=C2=A0=C2=A0 TCGv addr;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_64BIT(ctx);
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (a->rd % 2 =3D=3D 1 || a->rs2 % 2 =3D=3D 1) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 addr =3D get_address(ctx, a->rs1, 0);
+> > +=C2=A0=C2=A0=C2=A0 cmpv_l =3D get_gpr(ctx, a->rd, 0);
+> > +=C2=A0=C2=A0=C2=A0 cmpv_h =3D a->rd =3D=3D 0 ? get_gpr(ctx, 0, 0) : ge=
+t_gpr(ctx, a->rd
+> > + 1, 0);
+> > +=C2=A0=C2=A0=C2=A0 cmpv =3D tcg_temp_new_i128();
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i64_i128(cmpv, cmpv_l, cmpv_h);
+> > +=C2=A0=C2=A0=C2=A0 newv_l =3D get_gpr(ctx, a->rs2, 0);
+> > +=C2=A0=C2=A0=C2=A0 newv_h =3D a->rs2 =3D=3D 0 ? get_gpr(ctx, 0, 0) : g=
+et_gpr(ctx, a-
+> > >rs2 + 1, 0);
+> > +=C2=A0=C2=A0=C2=A0 newv =3D tcg_temp_new_i128();
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i64_i128(newv, newv_l, newv_h);
+> > +=C2=A0=C2=A0=C2=A0 retv =3D tcg_temp_new_i128();
+> > +
+> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_i128(retv, addr, cmpv, newv,=
+ ctx-
+> > >mem_idx,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MO_TEUO | MO_ALIGN);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (a->rd !=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 TCGv_i64 retv_l =3D tcg_tem=
+p_new_i64();
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 TCGv_i64 retv_h =3D tcg_tem=
+p_new_i64();
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_extr_i128_i64(retv_=
+l, retv_h, retv);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, ret=
+v_l);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd + 1,=
+ retv_h);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 return true;
+> > +}
+> > +#endif
+> > diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> > index 928da0d3f0..55438f5ebf 100644
+> > --- a/target/riscv/translate.c
+> > +++ b/target/riscv/translate.c
+> > @@ -1074,6 +1074,7 @@ static uint32_t opcode_at(DisasContextBase
+> > *dcbase, target_ulong pc)
+> > =C2=A0 #include "insn_trans/trans_rvv.c.inc"
+> > =C2=A0 #include "insn_trans/trans_rvb.c.inc"
+> > =C2=A0 #include "insn_trans/trans_rvzicond.c.inc"
+> > +#include "insn_trans/trans_rvzacas.c.inc"
+> > =C2=A0 #include "insn_trans/trans_rvzawrs.c.inc"
+> > =C2=A0 #include "insn_trans/trans_rvzicbo.c.inc"
+> > =C2=A0 #include "insn_trans/trans_rvzfh.c.inc"
+>=20
 
 
