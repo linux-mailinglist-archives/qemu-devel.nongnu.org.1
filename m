@@ -2,87 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C340736995
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F40736998
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:41:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBYnb-00078N-Mt; Tue, 20 Jun 2023 06:41:24 -0400
+	id 1qBYnj-0007f2-Js; Tue, 20 Jun 2023 06:41:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYnX-00071C-T4
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:41:19 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYnV-0004nW-8Q
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:41:19 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-983f499fc81so552680766b.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687257658; x=1689849658;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l2B88WAxDKTAhmdEJd5y+99JCn30leL/D9HthiGd4RI=;
- b=XkaNEWZruAaMFG4PXvw6iTi4wUvFjPfHIxl9Cb6TXpBNywyqikDBxEGDITNPuxepJS
- pdTLPFlQDYOFwsOngHqNX1ICGnsgIYW7CgaeC7/y93J4JAQZTMs2RvgvBirEcABNz38g
- CX/bxKEvVHlQTcnQx3InxX2DrocxTxhf27rhpx9liE8GcZfb2d7EkyXOm4HvEZihvJTu
- 8VF0PeRTNo6zdH2UVkHtd9l3duNer3oEyBMYtnoal4oP7e1I4Xn1IAPi55DUOoEzPAgS
- 3IiEJCw/JDgFJ5CzG1bgVeSzLt5K1d2wtKqEtdnCQxRM2h28YS0NRGyhvdxONrSd6r8o
- AWNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687257658; x=1689849658;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l2B88WAxDKTAhmdEJd5y+99JCn30leL/D9HthiGd4RI=;
- b=Gm3uSix3I9CKkzMsbYWUoa1hdX0Npo4FSzo/Kd/bNPWB6yF1Fs/DpKu6Dzv3MYPjQV
- XFGvax43zUVWhE9zQk4lbKBDjrUlFYV3fO7aHd2TeTUSl1WzLF56cdV5i4Baj5Zw6cts
- z8svdJTLqBG+FN1KqwCkaXhVZEjyZp/V6tmRAG6Ntb+sU4w074C/N7WjSGluINQDg25/
- 2LNjc5czSneikGkF/Ctn49C+wAxhMIKVWojyWDyWSQlG4MKxgEqoiu2EH1Oplm196U0h
- i43gEtfhgBNfCUFI/ZbrRpTc0dVYy1F0MqM1cAetMah3C1dwdcYlERY9QsnewzJz1tFa
- C6RA==
-X-Gm-Message-State: AC+VfDzt/zBd7scqoQyBdgEpr045Db9XKfIYyWd6PMXgQLajNeZxSTlp
- 8a95mMwoyZ/q+rfoimlWEfDSyg==
-X-Google-Smtp-Source: ACHHUZ43kgMScfssFBLodIJRFVXmiWF0h7taa1SbhSB3aHp7/KHSHgF6MrYi52SCunARuTXCrh0nGQ==
-X-Received: by 2002:a17:907:e8b:b0:988:9b29:564f with SMTP id
- ho11-20020a1709070e8b00b009889b29564fmr5763597ejc.40.1687257658644; 
- Tue, 20 Jun 2023 03:40:58 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- m6-20020a170906258600b009871b3f961asm1141363ejb.58.2023.06.20.03.40.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 03:40:58 -0700 (PDT)
-Message-ID: <19a70379-f24f-6152-808a-139dbc1293b0@linaro.org>
-Date: Tue, 20 Jun 2023 12:40:56 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 26/34] target/arm/tcg: Extract MemTag definitions to
- 'helper-mte.h.inc'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBYng-0007VV-Bm; Tue, 20 Jun 2023 06:41:28 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBYne-0004rk-4p; Tue, 20 Jun 2023 06:41:28 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id D20D5746377;
+ Tue, 20 Jun 2023 12:41:13 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 9EE9C746335; Tue, 20 Jun 2023 12:41:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9CF8A745720;
+ Tue, 20 Jun 2023 12:41:13 +0200 (CEST)
+Date: Tue, 20 Jun 2023 12:41:13 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
  qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20230619154302.80350-1-philmd@linaro.org>
- <20230619155510.80991-1-philmd@linaro.org>
- <20230619155510.80991-14-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230619155510.80991-14-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Subject: Re: [PATCH 5/9] ppc/pegasos2: Report an error when run with KVM
+In-Reply-To: <20230620055911.187065-6-clg@kaod.org>
+Message-ID: <614aa943-1d0d-81ae-f7b0-298e1a19cc81@eik.bme.hu>
+References: <20230620055911.187065-1-clg@kaod.org>
+ <20230620055911.187065-6-clg@kaod.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="3866299591-1767328446-1687257673=:73461"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,21 +60,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/19/23 17:55, Philippe Mathieu-Daudé wrote:
-> helper.h is used by all units, but not all require the crypto
-> definitions. Move them to a new header, which we only include
-> where necessary, removing the need for "exec/helper-proto.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-1767328446-1687257673=:73461
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 20 Jun 2023, Cédric Le Goater wrote:
+> The 'pegasos2' machine never supported KVM. This piece of code was
+> inherited from another model.
+
+Why? These machines are supposed to run with KVM they were just not tested 
+yet. I think pegasos2 should work on a G4 host with KVM-PR but you need to 
+use the firmware rom for -bios now because VOF uses sc 1 which will not 
+work with KVM on G4, it's only supported with TCG. (I plan to solve this 
+eventually when needed by replacing that with another hypercall method 
+such as OSI used by MOL but that would need two vof binaries or carry 
+some unneeded code if using single binary.)
+
+So please drop this patch.
+
+Regards,
+BALATON Zoltan
+
+> Cc: BALATON Zoltan <balaton@eik.bme.hu>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
->   target/arm/tcg/helper-a64.h.inc | 16 ----------------
->   target/arm/tcg/helper-mte.h.inc | 23 +++++++++++++++++++++++
->   target/arm/tcg/mte_helper.c     |  4 +++-
->   target/arm/tcg/translate-a64.c  |  6 ++++++
->   4 files changed, 32 insertions(+), 17 deletions(-)
->   create mode 100644 target/arm/tcg/helper-mte.h.inc
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
+> hw/ppc/pegasos2.c | 7 ++++++-
+> 1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+> index af5489de26ed..830323cc7849 100644
+> --- a/hw/ppc/pegasos2.c
+> +++ b/hw/ppc/pegasos2.c
+> @@ -29,7 +29,6 @@
+> #include "qemu/log.h"
+> #include "qemu/error-report.h"
+> #include "sysemu/kvm.h"
+> -#include "kvm_ppc.h"
+> #include "exec/address-spaces.h"
+> #include "qom/qom-qobject.h"
+> #include "qapi/qmp/qdict.h"
+> @@ -120,6 +119,12 @@ static void pegasos2_init(MachineState *machine)
+>     int i, sz;
+>     uint8_t *spd_data;
+>
+> +    if (kvm_enabled()) {
+> +        error_report("machine %s does not support the KVM accelerator",
+> +                     MACHINE_GET_CLASS(machine)->name);
+> +        exit(EXIT_FAILURE);
+> +    }
+> +
+>     /* init CPU */
+>     pm->cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
+>     env = &pm->cpu->env;
+>
+--3866299591-1767328446-1687257673=:73461--
 
