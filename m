@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69ECC736E8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 321A2736EA4
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:27:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBcFH-0006o0-Eb; Tue, 20 Jun 2023 10:22:11 -0400
+	id 1qBcJu-0008I0-2k; Tue, 20 Jun 2023 10:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBcFE-0006nl-6t
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:22:08 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBcFC-0002xh-H8
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:22:07 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-510d6b939bfso6585345a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 07:22:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687270923; x=1689862923;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pbOPG7on5lx6uqj6I4Y3QLuj6yiZJ76vCcdEvuAj/KM=;
- b=sQhTwHdhHCYJjcFTPv4PqlKBVDPyb09IQFVRL7aqvroFOMculcopO5bNLq3YsV1mp4
- vhRmos67eE6Jy3nPd+ert/nZ5StQ9QIEUywkTdjFH2bFbSCo3wknRNDsjwWu4hnmGIot
- 0b/th6jVsANiWdUbx9JdKBA8zzFMQTlKL5DGwQYmU+2gqYCLB20VRmw7ri+RDKwroPnX
- T1ztkBTa6g+yfGXIUojekTWe/UypQPMEutDhf3Siu/5Tfy39HIV2Ltq5dy6u+OTBdsLD
- w7XwmkvO9KjFVMjBSMRk0Z3cvY8uYCrOwFmlpqGzHQLpu8sKtmt5KE4Zgg7YG1853eKc
- A+yA==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qBcJn-0008He-F5
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:26:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qBcJm-0003xn-1V
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:26:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687271208;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=FPpYquacaALJ41zl0aQayZGpY0MOvg2TLdFRHge69Z4=;
+ b=LBMbwJml5HkVhTpW978h+5n6J27TTsjPXOSimJDktkqnD6u6fTQ70iSHjkO5yK2RzVWyx0
+ /I5qFh6iyCfWVR4guQkNhUDtc1HHdhRKGIAp8HJ74Xkr2h2hFsJtA7HFxZserApzphM35s
+ Rj5NTls2nIf95ulfcGmMrcy0cOqCrPQ=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-164-3Oj_1tGvOGeSpmoVrCKRsw-1; Tue, 20 Jun 2023 10:26:38 -0400
+X-MC-Unique: 3Oj_1tGvOGeSpmoVrCKRsw-1
+Received: by mail-il1-f197.google.com with SMTP id
+ e9e14a558f8ab-342832d50f2so12454345ab.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 07:26:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687270923; x=1689862923;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pbOPG7on5lx6uqj6I4Y3QLuj6yiZJ76vCcdEvuAj/KM=;
- b=PggcyqBlmE8TQgfHKfW2NaRTMhkG3q+z8VM4xRHI+XjSIFXqHY9Oc4efqkw0TSzR8b
- SpqoyQqFu5k5BAidf6kdKiPnPlaD3dRb/mBU1CWg9ePDDdSIb4EqtfOLwC5w0fcNWPAv
- 2D3G7mM/KNS0ww3X+Y2hoYUMt9dxFVDwhdHNHlcoLwsfjc+VAZGDZw5lUScO9LjVNFiW
- +rPiXkuUXQJ8eZuhcYBhb7JgDOV1uzxFxs5VtShuJcPTpNXYpB+E6iVGorCO4B7ItnnU
- qBUVz2Qa7d9DCFjASPkUh0b06LGgLsf3reMzNyLEC9ih4ZfKJ6NrdMHPnb+Il7EaYWXK
- XI6w==
-X-Gm-Message-State: AC+VfDxMBxFXgCx0H1qtcZGw+fG7/C9Qv2ORK/04wGVLEGUEiqAYCjyH
- qWqmPgadedro0nnvBj87q1MO8w==
-X-Google-Smtp-Source: ACHHUZ5VkN/NSovxtD0M5SFeR4LtaWUPnmsIQTSvhAYTCNUqhkcB6JHrwEDbQE7k63x5ltWamhL1Bg==
-X-Received: by 2002:aa7:c44d:0:b0:518:72d8:2cc5 with SMTP id
- n13-20020aa7c44d000000b0051872d82cc5mr8624704edr.33.1687270923427; 
- Tue, 20 Jun 2023 07:22:03 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- d7-20020a056402516700b00514bcbfd9e0sm1263625ede.46.2023.06.20.07.22.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 07:22:02 -0700 (PDT)
-Message-ID: <a313b36b-dcc1-f812-ccbd-afed1cbd523b@linaro.org>
-Date: Tue, 20 Jun 2023 16:22:01 +0200
+ d=1e100.net; s=20221208; t=1687271160; x=1689863160;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FPpYquacaALJ41zl0aQayZGpY0MOvg2TLdFRHge69Z4=;
+ b=MN7y4yz/XJ2N7qr3YV8N7w8rE+Z+3egpUtNaxm6r55zMAfYbzNOuQoznV7bthy0u+R
+ GkF1Fu+d7+uyqOY9dZhMq7Ow8MQRsPD05wwLfyd48WuI2WerKezMJR6HCMKg6rIuS65/
+ MxF1NT/c5MJXBZ3ck3u9CBviCUwgjYNLq1hUGigRlw8+/5+ujcdjWl/TlvoNZMubDQDb
+ nrGgUABUctRYHhKLhtp4yxGtEwKB9gzAUlerWagvPZPptN91lMFl2/sY65zv7yRU7Ia4
+ iK8/U7RZy3+a6UbSuZ6BVHcH003dyt5vSRvQAuIjD250W+tZgxRT9SVeNWertc68Ga4J
+ xl1A==
+X-Gm-Message-State: AC+VfDxV2wg3vJcRvEp58XAdRodHDZ1sdGXggbUZJRaaprQ2neaf5woh
+ yUAdmymEu8nIu9Jj2srR5YBL8CfNP8U/QEg6sS3hfcNWYbBo0uGjGepVSggG64d4cFhaJoqdg+r
+ q62FvFUZx0RIa1ow=
+X-Received: by 2002:a92:dc4d:0:b0:33b:363d:27eb with SMTP id
+ x13-20020a92dc4d000000b0033b363d27ebmr8091571ilq.30.1687271160146; 
+ Tue, 20 Jun 2023 07:26:00 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6+nDoeB+YHX1VEv2jesBIwye3iOY4KgzjFtCwempaa8pRaPEGSbdMqjDoDKp/R6WspVVP98w==
+X-Received: by 2002:a92:dc4d:0:b0:33b:363d:27eb with SMTP id
+ x13-20020a92dc4d000000b0033b363d27ebmr8091554ilq.30.1687271159822; 
+ Tue, 20 Jun 2023 07:25:59 -0700 (PDT)
+Received: from localhost.localdomain ([116.72.143.94])
+ by smtp.googlemail.com with ESMTPSA id
+ b1-20020a630c01000000b00534684201b0sm1493280pgl.27.2023.06.20.07.25.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 07:25:59 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Ani Sinha <anisinha@redhat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH] hw/pci: add comment explaining the reason for checking
+ function 0 in hotplug
+Date: Tue, 20 Jun 2023 19:55:51 +0530
+Message-Id: <20230620142551.115394-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 4/5] tcg: Add host memory barriers to cpu_ldst.h
- interfaces
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230619142333.429028-1-richard.henderson@linaro.org>
- <20230619142333.429028-5-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230619142333.429028-5-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,17 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/6/23 16:23, Richard Henderson wrote:
-> Bring the helpers into line with the rest of tcg in respecting
-> guest memory ordering.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/internal.h  | 34 ++++++++++++++++++++++++++++++++++
->   accel/tcg/cputlb.c    | 10 ++++++++++
->   accel/tcg/user-exec.c | 10 ++++++++++
->   3 files changed, 54 insertions(+)
+This change is cosmetic. A comment is added explaining why we need to check for
+the availability of function 0 when we hotplug a device.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+CC: mst@redhat.com
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/pci/pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index bf38905b7d..847e534f68 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1179,6 +1179,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+                    PCI_SLOT(devfn), PCI_FUNC(devfn), name,
+                    bus->devices[devfn]->name, bus->devices[devfn]->qdev.id);
+         return NULL;
++    /*
++     * Populating function 0 triggers a scan from the guest that
++     * exposes other non-zero functions. Hence we need to ensure that
++     * function 0 wasn't added yet.
++     */
+     } else if (dev->hotplugged &&
+                !pci_is_vf(pci_dev) &&
+                pci_get_function_0(pci_dev)) {
+-- 
+2.39.1
 
 
