@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35C2736DDE
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE905736DEE
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBbjJ-00060a-Am; Tue, 20 Jun 2023 09:49:09 -0400
+	id 1qBbme-0007S2-1B; Tue, 20 Jun 2023 09:52:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBbjH-00060L-Sw
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:49:07 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBbmb-0007RN-R0
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:52:33 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBbjG-0002ho-5t
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:49:07 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51878f8e541so5597744a12.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 06:49:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBbma-0003Z9-Aq
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:52:33 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-51a4088c4ebso4531719a12.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 06:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687268944; x=1689860944;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l9B1kbqvGKKBlTNv1dLqyYrMZXESaFeswbBEfhWYLe4=;
- b=cOGiNHMV1BXRskSGR6Km/Ys7YrqqrYpW/hEVAIhIZ6StlsFJSA6oUb7+0Z7YXn4T5D
- zxojC2Y1EP2M+fMGkllbz98xd01uT7wFdOFFHfn7hBcQQo+LF170y+dlaDjQ7lKUlvTP
- YEMBcFHb5Jwv4rxz1yQeKDLHMD7WXLDNNPHR1XuXZfX/LrGvwWXJiXg5rajMj/r/NZyq
- jRY0rSOotBzSfR3llSaVSl3BX2TKdCUC28DoVwHt7MgG+7XyHUnpUZMM/ptbIMSEqRLx
- dpaYqrVT9qp3Du/syQ69e32we8QBIutjM3kDXCwnz7SMSiuCtb80vvJOsaMA65Pk4qEE
- x8dQ==
+ d=linaro.org; s=google; t=1687269150; x=1689861150;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/L6k17gpEI8D2h8BVhU/DBfxSXfsmLSiexMsP6WVg/0=;
+ b=ZGtY9CySt4DtRMfzFBjsgxq104cF+hOvdgAK0EbP/H/rfqLnouMzpM+muXVHEqlH/P
+ Oz24HDoga46sreGhkAR04n+Rzx63WlONX5eUi/r6EKijIS5qH0xRxCFTEDMKEU+QnEdk
+ P8OCmWDGYYMoUoVySBjlbAgPjcnVw9yzuMDVv7tYSEpIkZZOQeJbMQ9Pci6LaKw0z9mQ
+ gRFH4tGLeWWoTRkxFuVEdxvtc4HQGrdFATH8WwMHf8KvJmNX5WP429BwrBMf4qpRa7Es
+ Tx04IBpCuLGqi7ToS14cg0dEMzkpS49c22uu6f1CFsBSV/DA94c1QHAreyLui+gGY4ZF
+ wGOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687268944; x=1689860944;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l9B1kbqvGKKBlTNv1dLqyYrMZXESaFeswbBEfhWYLe4=;
- b=EYjfj7H6lArdEaIFbyVmVs1B94DMh2QqOKudXB9ZVrlwgJMfDsirKtV2FFsP8dKUbc
- T5Rr68Sm7J468SalkO512Z3IfCTX480tup+B4Pktf0urJnRouUAri+e2G7HSjKK2zZQ7
- kAnlgcCcwIKJxIauaMJyrpILT2NO3PCI6ZqLiFW47A+Kdx2LtW+d4cjOVGIbkj/Kd9EQ
- LnKpVaGwd/3nuHdZKGBPiMnf3ylClrt8TdAkRM//cogzcCl97Mc1Uh0NjI4Qt3rvJUHi
- I5nhE1eq7rHhxfQ+7vuzRedTa6yYqvnskmr8uaxhP2/bv7OBhZILz1VgqvE6QeRY3tr6
- SlWQ==
-X-Gm-Message-State: AC+VfDyP0wW95uoZXvhj9gXHvhssO/LCoBseCToWHjJrIE9k6ow4YwVA
- 4jjK6AyPX/4+cpXqvdPVxVxUKZMj9GFFFoi8NxCG7L8w
-X-Google-Smtp-Source: ACHHUZ535sXypMsvdbW8sfX4QDQctuyITtNCJ3Uz3Ogn83OqHdBkqEJ8P3HMsqdDhfAomjwc9om8Yw==
-X-Received: by 2002:a17:907:805:b0:989:450:e57d with SMTP id
- wv5-20020a170907080500b009890450e57dmr2291735ejb.73.1687268944387; 
- Tue, 20 Jun 2023 06:49:04 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- c13-20020a170906340d00b0096a27dbb5b2sm1404762ejb.209.2023.06.20.06.49.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 06:49:04 -0700 (PDT)
-Message-ID: <650c6208-5827-2574-499f-0d450b277964@linaro.org>
-Date: Tue, 20 Jun 2023 15:49:01 +0200
+ d=1e100.net; s=20221208; t=1687269150; x=1689861150;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/L6k17gpEI8D2h8BVhU/DBfxSXfsmLSiexMsP6WVg/0=;
+ b=ftwIjg5O5lV3JSVnqMH+UyKYt8fMpv0Op884M7/emmNpNqz3vX5P78/5A6r6PUbP+1
+ EctsANRoegycENk+S6yk/et2dw1l8+ByffbW9f+hLSy1KKJOVIxjpAQenGbSvuZhmWVt
+ 3YdqQnHZHyxKAUPLHqTbojn2RNBpADT/eTOblLnRHBesld7hpNIAWoB3Gv1cPZnhtEYU
+ Pr0z/P+ac1e4MMqSx28y10WvT5BYXPjFH0xjl+pos3ok1IYniF4Tf8MUrIzdBOLbWmsE
+ gca+807i89Ke0R7ZmtAMZpHMdL6sOQOEu2UNYlAJp9lUZeG7wV9+rxyD3bm48bwsiYGi
+ aIbw==
+X-Gm-Message-State: AC+VfDyFznqDuX3lO+jougZHBUVfMfYPHZGXB0BsdhmaGbGG3VWTmH9P
+ s00fqYKlydXGJRSRxHNbXnl89hV5pGnC644OL2Smfg==
+X-Google-Smtp-Source: ACHHUZ5LvzPOg+1FksvjYQ3n2IaTxoL8fv38+aoPmD2oNcBIDa58qfm9R6my7rScxyBIOqfeYQyVJUA1RCxkqwo5Z5w=
+X-Received: by 2002:a05:6402:481:b0:514:666b:1e04 with SMTP id
+ k1-20020a056402048100b00514666b1e04mr7692584edv.35.1687269150511; Tue, 20 Jun
+ 2023 06:52:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] target/arm: Fix sve prediate store, 8 <= VQ <= 15
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Mark Rutland <mark.rutland@arm.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230620134659.817559-1-richard.henderson@linaro.org>
-In-Reply-To: <20230620134659.817559-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230620124418.805717-1-richard.henderson@linaro.org>
+ <20230620124418.805717-21-richard.henderson@linaro.org>
+In-Reply-To: <20230620124418.805717-21-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 14:52:19 +0100
+Message-ID: <CAFEAcA-MpN2kM3c4F=ihSEgetSQJVd0T9-BTUakTu=CAc+4HTQ@mail.gmail.com>
+Subject: Re: [PATCH v5 20/20] target/arm: Add cpu properties for enabling
+ FEAT_RME
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -95,19 +86,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 15:46, Richard Henderson wrote:
-> Brown bag time: store instead of load results in uninitialized temp.
-> 
-> Reported-by: Mark Rutland<mark.rutland@arm.com>
-> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sve_{ld, st}r")
-> Tested-by: Alex Bennée<alex.bennee@linaro.org>
-> Signed-off-by: Richard Henderson<richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/translate-sve.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, 20 Jun 2023 at 13:46, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Add an x-rme cpu property to enable FEAT_RME.
+> Add an x-l0gptsz property to set GPCCR_EL3.L0GPTSZ,
+> for testing various possible configurations.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1704
+Looks OK to me, but I think we should document these
+(including that they're experimental and future syntax for
+enabling RME will change) in the "TCG VCPU Features"
+section of docs/system/arm/cpu-features.rst.
 
+We could mention in the commit message here why we're
+making them experimental x- properties too.
 
-r~
+thanks
+-- PMM
 
