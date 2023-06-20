@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277F5736832
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 046697367F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:40:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXqZ-0003Iz-B7; Tue, 20 Jun 2023 05:40:23 -0400
+	id 1qBXpR-0007H0-7S; Tue, 20 Jun 2023 05:39:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBXqR-0002j5-EN
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:40:16 -0400
+ id 1qBXp5-0007B2-6e
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:51 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBXqM-0006aM-Gc
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:40:15 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qBXp1-0006O8-Lu
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:50 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxIuibc5FkzyUHAA--.621S3;
+ by gateway (Coremail) with SMTP id _____8AxHuubc5Fk0SUHAA--.14789S3;
  Tue, 20 Jun 2023 17:38:35 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxduSGc5FkzIQhAA--.28394S35; 
- Tue, 20 Jun 2023 17:38:34 +0800 (CST)
+ AQAAf8BxduSGc5FkzIQhAA--.28394S36; 
+ Tue, 20 Jun 2023 17:38:35 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v1 33/46] target/loongarch: Implement xvpcnt
-Date: Tue, 20 Jun 2023 17:38:01 +0800
-Message-Id: <20230620093814.123650-34-gaosong@loongson.cn>
+Subject: [PATCH v1 34/46] target/loongarch: Implement xvbitclr xvbitset
+ xvbitrev
+Date: Tue, 20 Jun 2023 17:38:02 +0800
+Message-Id: <20230620093814.123650-35-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230620093814.123650-1-gaosong@loongson.cn>
 References: <20230620093814.123650-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S35
+X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S36
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,103 +64,476 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- VPCNT.{B/H/W/D}.
+- XVBITCLR[I].{B/H/W/D};
+- XVBITSET[I].{B/H/W/D};
+- XVBITREV[I].{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     |  5 +++++
- target/loongarch/helper.h                    |  5 +++++
- target/loongarch/insn_trans/trans_lasx.c.inc |  5 +++++
- target/loongarch/insns.decode                |  5 +++++
- target/loongarch/lasx_helper.c               | 17 +++++++++++++++++
- 5 files changed, 37 insertions(+)
+ target/loongarch/disas.c                     |  25 ++
+ target/loongarch/helper.h                    |  27 ++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 246 +++++++++++++++++++
+ target/loongarch/insns.decode                |  27 ++
+ target/loongarch/lasx_helper.c               |  51 ++++
+ target/loongarch/lsx_helper.c                |   4 -
+ target/loongarch/vec.h                       |   4 +
+ 7 files changed, 380 insertions(+), 4 deletions(-)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 99636ca56c..b7a322651f 100644
+index b7a322651f..60d265a9f2 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -2204,6 +2204,11 @@ INSN_LASX(xvclz_h,           xx)
- INSN_LASX(xvclz_w,           xx)
- INSN_LASX(xvclz_d,           xx)
+@@ -2209,6 +2209,31 @@ INSN_LASX(xvpcnt_h,          xx)
+ INSN_LASX(xvpcnt_w,          xx)
+ INSN_LASX(xvpcnt_d,          xx)
  
-+INSN_LASX(xvpcnt_b,          xx)
-+INSN_LASX(xvpcnt_h,          xx)
-+INSN_LASX(xvpcnt_w,          xx)
-+INSN_LASX(xvpcnt_d,          xx)
++INSN_LASX(xvbitclr_b,        xxx)
++INSN_LASX(xvbitclr_h,        xxx)
++INSN_LASX(xvbitclr_w,        xxx)
++INSN_LASX(xvbitclr_d,        xxx)
++INSN_LASX(xvbitclri_b,       xx_i)
++INSN_LASX(xvbitclri_h,       xx_i)
++INSN_LASX(xvbitclri_w,       xx_i)
++INSN_LASX(xvbitclri_d,       xx_i)
++INSN_LASX(xvbitset_b,        xxx)
++INSN_LASX(xvbitset_h,        xxx)
++INSN_LASX(xvbitset_w,        xxx)
++INSN_LASX(xvbitset_d,        xxx)
++INSN_LASX(xvbitseti_b,       xx_i)
++INSN_LASX(xvbitseti_h,       xx_i)
++INSN_LASX(xvbitseti_w,       xx_i)
++INSN_LASX(xvbitseti_d,       xx_i)
++INSN_LASX(xvbitrev_b,        xxx)
++INSN_LASX(xvbitrev_h,        xxx)
++INSN_LASX(xvbitrev_w,        xxx)
++INSN_LASX(xvbitrev_d,        xxx)
++INSN_LASX(xvbitrevi_b,       xx_i)
++INSN_LASX(xvbitrevi_h,       xx_i)
++INSN_LASX(xvbitrevi_w,       xx_i)
++INSN_LASX(xvbitrevi_d,       xx_i)
 +
  INSN_LASX(xvreplgr2vr_b,     xr)
  INSN_LASX(xvreplgr2vr_h,     xr)
  INSN_LASX(xvreplgr2vr_w,     xr)
 diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index 950a73ec6f..a434443819 100644
+index a434443819..294ac477fc 100644
 --- a/target/loongarch/helper.h
 +++ b/target/loongarch/helper.h
-@@ -1059,3 +1059,8 @@ DEF_HELPER_3(xvclz_b, void, env, i32, i32)
- DEF_HELPER_3(xvclz_h, void, env, i32, i32)
- DEF_HELPER_3(xvclz_w, void, env, i32, i32)
- DEF_HELPER_3(xvclz_d, void, env, i32, i32)
+@@ -1064,3 +1064,30 @@ DEF_HELPER_3(xvpcnt_b, void, env, i32, i32)
+ DEF_HELPER_3(xvpcnt_h, void, env, i32, i32)
+ DEF_HELPER_3(xvpcnt_w, void, env, i32, i32)
+ DEF_HELPER_3(xvpcnt_d, void, env, i32, i32)
 +
-+DEF_HELPER_3(xvpcnt_b, void, env, i32, i32)
-+DEF_HELPER_3(xvpcnt_h, void, env, i32, i32)
-+DEF_HELPER_3(xvpcnt_w, void, env, i32, i32)
-+DEF_HELPER_3(xvpcnt_d, void, env, i32, i32)
++DEF_HELPER_FLAGS_4(xvbitclr_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitclr_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitclr_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitclr_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitclri_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitclri_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitclri_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitclri_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++
++DEF_HELPER_FLAGS_4(xvbitset_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitset_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitset_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitset_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitseti_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitseti_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitseti_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitseti_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++
++DEF_HELPER_FLAGS_4(xvbitrev_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitrev_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitrev_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitrev_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvbitrevi_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitrevi_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitrevi_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
++DEF_HELPER_FLAGS_4(xvbitrevi_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index fa7dafa7f9..616d296432 100644
+index 616d296432..e87e000478 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -2153,6 +2153,11 @@ TRANS(xvclz_h, gen_xx, gen_helper_xvclz_h)
- TRANS(xvclz_w, gen_xx, gen_helper_xvclz_w)
- TRANS(xvclz_d, gen_xx, gen_helper_xvclz_d)
+@@ -2158,6 +2158,252 @@ TRANS(xvpcnt_h, gen_xx, gen_helper_xvpcnt_h)
+ TRANS(xvpcnt_w, gen_xx, gen_helper_xvpcnt_w)
+ TRANS(xvpcnt_d, gen_xx, gen_helper_xvpcnt_d)
  
-+TRANS(xvpcnt_b, gen_xx, gen_helper_xvpcnt_b)
-+TRANS(xvpcnt_h, gen_xx, gen_helper_xvpcnt_h)
-+TRANS(xvpcnt_w, gen_xx, gen_helper_xvpcnt_w)
-+TRANS(xvpcnt_d, gen_xx, gen_helper_xvpcnt_d)
++static void do_xvbitclr(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                        uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shlv_vec, INDEX_op_andc_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vbitclr,
++            .fno = gen_helper_xvbitclr_b,
++            .opt_opc = vecop_list,
++            .vece = MO_8
++        },
++        {
++            .fniv = gen_vbitclr,
++            .fno = gen_helper_xvbitclr_h,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fniv = gen_vbitclr,
++            .fno = gen_helper_xvbitclr_w,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fniv = gen_vbitclr,
++            .fno = gen_helper_xvbitclr_d,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvbitclr_b, gvec_xxx, MO_8, do_xvbitclr)
++TRANS(xvbitclr_h, gvec_xxx, MO_16, do_xvbitclr)
++TRANS(xvbitclr_w, gvec_xxx, MO_32, do_xvbitclr)
++TRANS(xvbitclr_d, gvec_xxx, MO_64, do_xvbitclr)
++
++static void do_xvbitclri(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                         int64_t imm, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shli_vec, INDEX_op_andc_vec, 0
++        };
++    static const GVecGen2i op[4] = {
++        {
++            .fniv = gen_vbitclri,
++            .fnoi = gen_helper_xvbitclri_b,
++            .opt_opc = vecop_list,
++            .vece = MO_8
++        },
++        {
++            .fniv = gen_vbitclri,
++            .fnoi = gen_helper_xvbitclri_h,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fniv = gen_vbitclri,
++            .fnoi = gen_helper_xvbitclri_w,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fniv = gen_vbitclri,
++            .fnoi = gen_helper_xvbitclri_d,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++    };
++
++    tcg_gen_gvec_2i(xd_ofs, xj_ofs, oprsz, maxsz, imm, &op[vece]);
++}
++
++TRANS(xvbitclri_b, gvec_xx_i, MO_8, do_xvbitclri)
++TRANS(xvbitclri_h, gvec_xx_i, MO_16, do_xvbitclri)
++TRANS(xvbitclri_w, gvec_xx_i, MO_32, do_xvbitclri)
++TRANS(xvbitclri_d, gvec_xx_i, MO_64, do_xvbitclri)
++
++static void do_xvbitset(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                        uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shlv_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vbitset,
++            .fno = gen_helper_xvbitset_b,
++            .opt_opc = vecop_list,
++            .vece = MO_8
++        },
++        {
++            .fniv = gen_vbitset,
++            .fno = gen_helper_xvbitset_h,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fniv = gen_vbitset,
++            .fno = gen_helper_xvbitset_w,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fniv = gen_vbitset,
++            .fno = gen_helper_xvbitset_d,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvbitset_b, gvec_xxx, MO_8, do_xvbitset)
++TRANS(xvbitset_h, gvec_xxx, MO_16, do_xvbitset)
++TRANS(xvbitset_w, gvec_xxx, MO_32, do_xvbitset)
++TRANS(xvbitset_d, gvec_xxx, MO_64, do_xvbitset)
++
++static void do_xvbitseti(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                         int64_t imm, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shli_vec, 0
++        };
++    static const GVecGen2i op[4] = {
++        {
++            .fniv = gen_vbitseti,
++            .fnoi = gen_helper_xvbitseti_b,
++            .opt_opc = vecop_list,
++            .vece = MO_8
++        },
++        {
++            .fniv = gen_vbitseti,
++            .fnoi = gen_helper_xvbitseti_h,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fniv = gen_vbitseti,
++            .fnoi = gen_helper_xvbitseti_w,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fniv = gen_vbitseti,
++            .fnoi = gen_helper_xvbitseti_d,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++    };
++
++    tcg_gen_gvec_2i(xd_ofs, xj_ofs, oprsz, maxsz, imm, &op[vece]);
++}
++
++TRANS(xvbitseti_b, gvec_xx_i, MO_8, do_xvbitseti)
++TRANS(xvbitseti_h, gvec_xx_i, MO_16, do_xvbitseti)
++TRANS(xvbitseti_w, gvec_xx_i, MO_32, do_xvbitseti)
++TRANS(xvbitseti_d, gvec_xx_i, MO_64, do_xvbitseti)
++
++static void do_xvbitrev(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                        uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shlv_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vbitrev,
++            .fno = gen_helper_xvbitrev_b,
++            .opt_opc = vecop_list,
++            .vece = MO_8
++        },
++        {
++            .fniv = gen_vbitrev,
++            .fno = gen_helper_xvbitrev_h,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fniv = gen_vbitrev,
++            .fno = gen_helper_xvbitrev_w,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fniv = gen_vbitrev,
++            .fno = gen_helper_xvbitrev_d,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvbitrev_b, gvec_xxx, MO_8, do_xvbitrev)
++TRANS(xvbitrev_h, gvec_xxx, MO_16, do_xvbitrev)
++TRANS(xvbitrev_w, gvec_xxx, MO_32, do_xvbitrev)
++TRANS(xvbitrev_d, gvec_xxx, MO_64, do_xvbitrev)
++
++static void do_xvbitrevi(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                         int64_t imm, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shli_vec, 0
++        };
++    static const GVecGen2i op[4] = {
++        {
++            .fniv = gen_vbitrevi,
++            .fnoi = gen_helper_xvbitrevi_b,
++            .opt_opc = vecop_list,
++            .vece = MO_8
++        },
++        {
++            .fniv = gen_vbitrevi,
++            .fnoi = gen_helper_xvbitrevi_h,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fniv = gen_vbitrevi,
++            .fnoi = gen_helper_xvbitrevi_w,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fniv = gen_vbitrevi,
++            .fnoi = gen_helper_xvbitrevi_d,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++    };
++
++    tcg_gen_gvec_2i(xd_ofs, xj_ofs, oprsz, maxsz, imm, &op[vece]);
++}
++
++TRANS(xvbitrevi_b, gvec_xx_i, MO_8, do_xvbitrevi)
++TRANS(xvbitrevi_h, gvec_xx_i, MO_16, do_xvbitrevi)
++TRANS(xvbitrevi_w, gvec_xx_i, MO_32, do_xvbitrevi)
++TRANS(xvbitrevi_d, gvec_xx_i, MO_64, do_xvbitrevi)
 +
  static bool gvec_dupx(DisasContext *ctx, arg_xr *a, MemOp mop)
  {
      TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 91de5a3815..7d49ddb0ea 100644
+index 7d49ddb0ea..47374054c6 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1802,6 +1802,11 @@ xvclz_h          0111 01101001 11000 00101 ..... .....    @xx
- xvclz_w          0111 01101001 11000 00110 ..... .....    @xx
- xvclz_d          0111 01101001 11000 00111 ..... .....    @xx
+@@ -1807,6 +1807,33 @@ xvpcnt_h         0111 01101001 11000 01001 ..... .....    @xx
+ xvpcnt_w         0111 01101001 11000 01010 ..... .....    @xx
+ xvpcnt_d         0111 01101001 11000 01011 ..... .....    @xx
  
-+xvpcnt_b         0111 01101001 11000 01000 ..... .....    @xx
-+xvpcnt_h         0111 01101001 11000 01001 ..... .....    @xx
-+xvpcnt_w         0111 01101001 11000 01010 ..... .....    @xx
-+xvpcnt_d         0111 01101001 11000 01011 ..... .....    @xx
++xvbitclr_b       0111 01010000 11000 ..... ..... .....    @xxx
++xvbitclr_h       0111 01010000 11001 ..... ..... .....    @xxx
++xvbitclr_w       0111 01010000 11010 ..... ..... .....    @xxx
++xvbitclr_d       0111 01010000 11011 ..... ..... .....    @xxx
++xvbitclri_b      0111 01110001 00000 01 ... ..... .....   @xx_ui3
++xvbitclri_h      0111 01110001 00000 1 .... ..... .....   @xx_ui4
++xvbitclri_w      0111 01110001 00001 ..... ..... .....    @xx_ui5
++xvbitclri_d      0111 01110001 0001 ...... ..... .....    @xx_ui6
++
++xvbitset_b       0111 01010000 11100 ..... ..... .....    @xxx
++xvbitset_h       0111 01010000 11101 ..... ..... .....    @xxx
++xvbitset_w       0111 01010000 11110 ..... ..... .....    @xxx
++xvbitset_d       0111 01010000 11111 ..... ..... .....    @xxx
++xvbitseti_b      0111 01110001 01000 01 ... ..... .....   @xx_ui3
++xvbitseti_h      0111 01110001 01000 1 .... ..... .....   @xx_ui4
++xvbitseti_w      0111 01110001 01001 ..... ..... .....    @xx_ui5
++xvbitseti_d      0111 01110001 0101 ...... ..... .....    @xx_ui6
++
++xvbitrev_b       0111 01010001 00000 ..... ..... .....    @xxx
++xvbitrev_h       0111 01010001 00001 ..... ..... .....    @xxx
++xvbitrev_w       0111 01010001 00010 ..... ..... .....    @xxx
++xvbitrev_d       0111 01010001 00011 ..... ..... .....    @xxx
++xvbitrevi_b      0111 01110001 10000 01 ... ..... .....   @xx_ui3
++xvbitrevi_h      0111 01110001 10000 1 .... ..... .....   @xx_ui4
++xvbitrevi_w      0111 01110001 10001 ..... ..... .....    @xx_ui5
++xvbitrevi_d      0111 01110001 1001 ...... ..... .....    @xx_ui6
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @xr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @xr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @xr
 diff --git a/target/loongarch/lasx_helper.c b/target/loongarch/lasx_helper.c
-index 122c460fb5..f04817984b 100644
+index f04817984b..7092835d30 100644
 --- a/target/loongarch/lasx_helper.c
 +++ b/target/loongarch/lasx_helper.c
-@@ -2102,3 +2102,20 @@ XDO_2OP(xvclz_b, 8, UXB, DO_CLZ_B)
- XDO_2OP(xvclz_h, 16, UXH, DO_CLZ_H)
- XDO_2OP(xvclz_w, 32, UXW, DO_CLZ_W)
- XDO_2OP(xvclz_d, 64, UXD, DO_CLZ_D)
+@@ -2119,3 +2119,54 @@ XVPCNT(xvpcnt_b, 8, UXB, ctpop8)
+ XVPCNT(xvpcnt_h, 16, UXH, ctpop16)
+ XVPCNT(xvpcnt_w, 32, UXW, ctpop32)
+ XVPCNT(xvpcnt_d, 64, UXD, ctpop64)
 +
-+#define XVPCNT(NAME, BIT, E, FN)                                    \
-+void HELPER(NAME)(CPULoongArchState *env, uint32_t xd, uint32_t xj) \
-+{                                                                   \
-+    int i;                                                          \
-+    XReg *Xd = &(env->fpr[xd].xreg);                                \
-+    XReg *Xj = &(env->fpr[xj].xreg);                                \
-+                                                                    \
-+    for (i = 0; i < LASX_LEN / BIT; i++) {                          \
-+        Xd->E(i) = FN(Xj->E(i));                                    \
-+    }                                                               \
++#define XDO_BIT(NAME, BIT, E, DO_OP)                        \
++void HELPER(NAME)(void *xd, void *xj, void *xk, uint32_t v) \
++{                                                           \
++    int i;                                                  \
++    XReg *Xd = (XReg *)xd;                                  \
++    XReg *Xj = (XReg *)xj;                                  \
++    XReg *Xk = (XReg *)xk;                                  \
++                                                            \
++    for (i = 0; i < LASX_LEN / BIT; i++) {                  \
++        Xd->E(i) = DO_OP(Xj->E(i), Xk->E(i) % BIT);         \
++    }                                                       \
 +}
 +
-+XVPCNT(xvpcnt_b, 8, UXB, ctpop8)
-+XVPCNT(xvpcnt_h, 16, UXH, ctpop16)
-+XVPCNT(xvpcnt_w, 32, UXW, ctpop32)
-+XVPCNT(xvpcnt_d, 64, UXD, ctpop64)
++XDO_BIT(xvbitclr_b, 8, UXB, DO_BITCLR)
++XDO_BIT(xvbitclr_h, 16, UXH, DO_BITCLR)
++XDO_BIT(xvbitclr_w, 32, UXW, DO_BITCLR)
++XDO_BIT(xvbitclr_d, 64, UXD, DO_BITCLR)
++XDO_BIT(xvbitset_b, 8, UXB, DO_BITSET)
++XDO_BIT(xvbitset_h, 16, UXH, DO_BITSET)
++XDO_BIT(xvbitset_w, 32, UXW, DO_BITSET)
++XDO_BIT(xvbitset_d, 64, UXD, DO_BITSET)
++XDO_BIT(xvbitrev_b, 8, UXB, DO_BITREV)
++XDO_BIT(xvbitrev_h, 16, UXH, DO_BITREV)
++XDO_BIT(xvbitrev_w, 32, UXW, DO_BITREV)
++XDO_BIT(xvbitrev_d, 64, UXD, DO_BITREV)
++
++#define XDO_BITI(NAME, BIT, E, DO_OP)                           \
++void HELPER(NAME)(void *xd, void *xj, uint64_t imm, uint32_t v) \
++{                                                               \
++    int i;                                                      \
++    XReg *Xd = (XReg *)xd;                                      \
++    XReg *Xj = (XReg *)xj;                                      \
++                                                                \
++    for (i = 0; i < LASX_LEN / BIT; i++) {                      \
++        Xd->E(i) = DO_OP(Xj->E(i), imm);                        \
++    }                                                           \
++}
++
++XDO_BITI(xvbitclri_b, 8, UXB, DO_BITCLR)
++XDO_BITI(xvbitclri_h, 16, UXH, DO_BITCLR)
++XDO_BITI(xvbitclri_w, 32, UXW, DO_BITCLR)
++XDO_BITI(xvbitclri_d, 64, UXD, DO_BITCLR)
++XDO_BITI(xvbitseti_b, 8, UXB, DO_BITSET)
++XDO_BITI(xvbitseti_h, 16, UXH, DO_BITSET)
++XDO_BITI(xvbitseti_w, 32, UXW, DO_BITSET)
++XDO_BITI(xvbitseti_d, 64, UXD, DO_BITSET)
++XDO_BITI(xvbitrevi_b, 8, UXB, DO_BITREV)
++XDO_BITI(xvbitrevi_h, 16, UXH, DO_BITREV)
++XDO_BITI(xvbitrevi_w, 32, UXW, DO_BITREV)
++XDO_BITI(xvbitrevi_d, 64, UXD, DO_BITREV)
+diff --git a/target/loongarch/lsx_helper.c b/target/loongarch/lsx_helper.c
+index e1b448a2e6..b9fdcd3ed7 100644
+--- a/target/loongarch/lsx_helper.c
++++ b/target/loongarch/lsx_helper.c
+@@ -1937,10 +1937,6 @@ VPCNT(vpcnt_h, 16, UH, ctpop16)
+ VPCNT(vpcnt_w, 32, UW, ctpop32)
+ VPCNT(vpcnt_d, 64, UD, ctpop64)
+ 
+-#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
+-#define DO_BITSET(a, bit) (a | 1ull << bit)
+-#define DO_BITREV(a, bit) (a ^ (1ull << bit))
+-
+ #define DO_BIT(NAME, BIT, E, DO_OP)                         \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v) \
+ {                                                           \
+diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+index db5704dd05..4d9c4eb85f 100644
+--- a/target/loongarch/vec.h
++++ b/target/loongarch/vec.h
+@@ -86,6 +86,10 @@
+ #define DO_CLZ_W(N)  (clz32(N))
+ #define DO_CLZ_D(N)  (clz64(N))
+ 
++#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
++#define DO_BITSET(a, bit) (a | 1ull << bit)
++#define DO_BITREV(a, bit) (a ^ (1ull << bit))
++
+ uint64_t do_vmskltz_b(int64_t val);
+ uint64_t do_vmskltz_h(int64_t val);
+ uint64_t do_vmskltz_w(int64_t val);
 -- 
 2.39.1
 
