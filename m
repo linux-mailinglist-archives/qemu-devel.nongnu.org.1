@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3665737548
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4E0737558
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhIg-0008Rw-UB; Tue, 20 Jun 2023 15:46:03 -0400
+	id 1qBhIq-0000SU-9y; Tue, 20 Jun 2023 15:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf76-00046y-Cd
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:25:56 -0400
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ id 1qBf7S-0004D0-KX
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:19 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf74-0006Zx-RZ
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:25:56 -0400
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-56d304e5f83so55358637b3.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:25:54 -0700 (PDT)
+ id 1qBf7B-0006aX-Mt
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:03 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6b597fd6bc8so659920a34.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687281953; x=1689873953;
+ d=gmail.com; s=20221208; t=1687281960; x=1689873960;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JkXrXUCl9XejgHeWNoDJ4ecPxbS0VZq3G8Aoj6DU1mE=;
- b=BluWLSfvwI+/zgM8cEPwJz2RJFOpN9nh+nRRnTUhGkZQfDM4nVXICadsMfcu63FyLC
- kvlVgwGq+2fcv7ouynfVjqpfGKkrr6S1i+Ch0fBYdjr6k7s7zKnMy07Eyh5FhQAarhEX
- 08gDjjCvZhhSJgP0LL8bi4iCSiWNu2ibCBVD5bZmYcY/+UrNEK6ztqTBo6qZuaKtUx5M
- vOD47+QxCLKQafeMBh0j8GXCtvfBXFIQf6Q2iRbxI5273OsvZtm27G1DiTUkRO1QKLiG
- C53qZAG1W8afpp+d1y9gh1gV78COR0HWB3OsftCf2ecZaWzD8vfdLsxIROFozoIdf9hI
- MyjA==
+ bh=salVN4/DwfM12DBpbogZGFIHGYUuCVTErT2SvlIft0k=;
+ b=Npq/CriQstxHUhO/i5mR5+HGoDQNPQzbcY9pWCUOt6XZxM3ZfkAirPjDbaN6bhBFqz
+ 0B57bAb8TWqmKG2fVE0TEncN2U8WdI67hI6wLsMwIXL1x7wvlXAq2dNk3aYsmCIUzb8F
+ XQN1JXvtNMmFehEicfBmmwVUINHP3UdMhytnfMepedzsKGcW7eKA2AQQpNKIrzNgKbIV
+ TxasJg/QNt1+ePkwwhODNk8wDVDcvNU1xUaC5d43F89RdP3a96XjQFhtP4yzLOcV5z7w
+ 5Fl5kyD/dNjoGxI/sfOTcrzdgrHQjzt8B5REFZ+KQ6Rqt1CSQZac5Z3EFDe0iVJjAPu0
+ 32Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687281953; x=1689873953;
+ d=1e100.net; s=20221208; t=1687281960; x=1689873960;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JkXrXUCl9XejgHeWNoDJ4ecPxbS0VZq3G8Aoj6DU1mE=;
- b=LYzBqYG2n98GGx4XIofzwxVXZ5J8u90S5ymbmciIBDZV+lkL9XdlqQqNdlGRHTHbhX
- cppbNQHwuA8Jg+VRdIzf57pTMtNTYthmg0OKdyByaVces9tzlER25PD/fOQh4hQ9mEJE
- ePoSbaYN049PKwto37fwCRVk3P69TJtlY2w1P8WToxY1boQqfkskgRZuAhUIk4TfAN+R
- 90BjyquiJ1IE9ZXniVAWwiM+WCivcYk68+Wpa8CHHiBkoPXlbV4AFG6slhtonsHMyQ6J
- eMds7l4Mi4BM9ixr3x2fYmqi8nelk7LhABU9v4fHJhqFncFdVPJNBOnhndhxvCLChqce
- wPRA==
-X-Gm-Message-State: AC+VfDxFUO9E28xYP+y25AIN2fYAB/kaLACp15oYVGl/grwL5hO6z+hY
- wowI2ENiagQbXXf5Gx2bpT55pxCDTBZssg==
-X-Google-Smtp-Source: ACHHUZ5AmQXnhHA56yrF+So0ut59LSENG1l5M48qJUexNYXE94tSgCH5l/sGECpkTwNXZ9EO4PxbnQ==
-X-Received: by 2002:a81:4f54:0:b0:56f:f565:c037 with SMTP id
- d81-20020a814f54000000b0056ff565c037mr14037065ywb.7.1687281953509; 
- Tue, 20 Jun 2023 10:25:53 -0700 (PDT)
+ bh=salVN4/DwfM12DBpbogZGFIHGYUuCVTErT2SvlIft0k=;
+ b=EzK3HwDTY49bvL+mcT5Rsc5Ya1M2S7A4eqOt6TeLrx/rrk8xWl8+EVakKwWa51DUwH
+ e+nLJli8/q1LomE+QedxnzllIFGwRFhKa6eJ8jC+9yKTh+/8lpnXOuxo6BdahUDhU/gZ
+ FvcH9H5cvTdUcKASPzqWzjVJoE+hrwfHipwVcqpK1D+PNhpPhydiFiSJJglNZmHw9eII
+ YCe3wQQyaUb7ygi5GKBqlR/zWyDYsjKVwIHzri0YKX6yq4qdTEVeoMtcn1i/GEWCY332
+ X3J1BUKdQLmw0M6nRX1DQg7w7/b1LETmArZAgpeq03enrDypNwETiAciLWaNT3S/QMgM
+ eIEg==
+X-Gm-Message-State: AC+VfDyDhzvJZB7pbSsdWUQWKawo7zxqG2axvW05ASq0XPziMhAADhO9
+ KDlz3M/zexQqLDrjR+uR87HKCqQGoCYaqw==
+X-Google-Smtp-Source: ACHHUZ77nN0ksHRtMX5b4gsTJcyM0fnyBlToU62+FIET+BcL7Oc2T0GrXQc+TYltsjJ/0F5bObH8UA==
+X-Received: by 2002:a05:6358:9fa9:b0:129:c9f4:a716 with SMTP id
+ fy41-20020a0563589fa900b00129c9f4a716mr3820592rwb.30.1687281959749; 
+ Tue, 20 Jun 2023 10:25:59 -0700 (PDT)
 Received: from joel-Precision-7920-Tower.. ([24.53.71.1])
  by smtp.gmail.com with ESMTPSA id
- e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.25.52
+ e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.25.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 10:25:53 -0700 (PDT)
+ Tue, 20 Jun 2023 10:25:59 -0700 (PDT)
 From: Joel Upham <jupham125@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Joel Upham <jupham125@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v1 02/23] pc/q35: Apply PCI bus BSEL property for Xen PCI
- device hotplug
-Date: Tue, 20 Jun 2023 13:24:36 -0400
-Message-Id: <fc1a6594429e549af90037e0ba0a256680a95cf6.1687278381.git.jupham125@gmail.com>
+Subject: [PATCH v1 03/23] q35/acpi/xen: Provide ACPI PCI hotplug interface for
+ Xen on Q35
+Date: Tue, 20 Jun 2023 13:24:37 -0400
+Message-Id: <5e066d5cfb355656a8704f4d07ba697507613568.1687278381.git.jupham125@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1687278381.git.jupham125@gmail.com>
 References: <cover.1687278381.git.jupham125@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=jupham125@gmail.com; helo=mail-yw1-x1130.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=jupham125@gmail.com; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,76 +96,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Q35 we still need to assign BSEL property to bus(es) for PCI device
-add/hotplug to work.
-Extend acpi_set_pci_info() function to support Q35 as well. This patch adds new (trivial)
-function find_q35() which returns root PCIBus object on Q35, in a way
-similar to what find_i440fx does.
+This patch allows to use ACPI PCI hotplug functionality for Xen on Q35.
+All added code depends on xen_enabled(), so no functionality change for
+non-Xen usage.
+
+We need to call the acpi_set_pci_info function from ich9_pm_init as well,
+so it was made globally visible again (as it was before).
 
 Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
 Signed-off-by: Joel Upham <jupham125@gmail.com>
 ---
- hw/acpi/pcihp.c      | 4 +++-
- hw/pci-host/q35.c    | 9 +++++++++
- include/hw/i386/pc.h | 3 +++
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ hw/acpi/ich9.c          | 10 ++++++++++
+ hw/acpi/pcihp.c         |  2 +-
+ include/hw/acpi/pcihp.h |  2 ++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index cdd6f775a1..f4e39d7a9c 100644
---- a/hw/acpi/pcihp.c
-+++ b/hw/acpi/pcihp.c
-@@ -40,6 +40,7 @@
- #include "qapi/error.h"
- #include "qom/qom-qobject.h"
- #include "trace.h"
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 25e2c7243e..1c236be1c7 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -39,6 +39,8 @@
+ #include "hw/southbridge/ich9.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
++#include "hw/xen/xen.h"
 +#include "sysemu/xen.h"
  
- #define ACPI_PCIHP_SIZE 0x0018
- #define PCI_UP_BASE 0x0000
-@@ -84,7 +85,8 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
-     bool is_bridge = IS_PCI_BRIDGE(br);
+ //#define DEBUG
  
-     /* hotplugged bridges can't be described in ACPI ignore them */
--    if (qbus_is_hotpluggable(BUS(bus))) {
-+    /* Xen requires hotplugging to the root device, even on the Q35 chipset */
-+    if (qbus_is_hotpluggable(BUS(bus)) || xen_enabled()) {
-         if (!is_bridge || (!br->hotplugged && info->has_bridge_hotplug)) {
-             bus_bsel = g_malloc(sizeof *bus_bsel);
- 
-diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-index fd18920e7f..fe5fc0f47c 100644
---- a/hw/pci-host/q35.c
-+++ b/hw/pci-host/q35.c
-@@ -259,6 +259,15 @@ static void q35_host_initfn(Object *obj)
-                              qdev_prop_allow_set_link_before_realize, 0);
+@@ -67,6 +69,10 @@ static void ich9_gpe_writeb(void *opaque, hwaddr addr, uint64_t val,
+     ICH9LPCPMRegs *pm = opaque;
+     acpi_gpe_ioport_writeb(&pm->acpi_regs, addr, val);
+     acpi_update_sci(&pm->acpi_regs, pm->irq);
++
++    if (xen_enabled()) {
++        acpi_pcihp_reset(&pm->acpi_pci_hotplug);
++    }
  }
  
-+PCIBus *find_q35(void)
-+{
-+    PCIHostState *s = OBJECT_CHECK(PCIHostState,
-+                                   object_resolve_path("/machine/q35", NULL),
-+                                   TYPE_PCI_HOST_BRIDGE);
-+    return s ? s->bus : NULL;
-+}
-+
-+
- static const TypeInfo q35_host_info = {
-     .name       = TYPE_Q35_HOST_DEVICE,
-     .parent     = TYPE_PCIE_HOST_BRIDGE,
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index c661e9cc80..550f8fa221 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -196,6 +196,9 @@ void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
- /* sgx.c */
- void pc_machine_init_sgx_epc(PCMachineState *pcms);
+ static const MemoryRegionOps ich9_gpe_ops = {
+@@ -332,6 +338,10 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+     pm->powerdown_notifier.notify = pm_powerdown_req;
+     qemu_register_powerdown_notifier(&pm->powerdown_notifier);
  
-+/* q35.c */
-+PCIBus *find_q35(void);
++    if (xen_enabled()) {
++            acpi_set_pci_info(true);
++    }
 +
- extern GlobalProperty pc_compat_8_0[];
- extern const size_t pc_compat_8_0_len;
+     legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
+         OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
  
+diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+index f4e39d7a9c..5b065d670c 100644
+--- a/hw/acpi/pcihp.c
++++ b/hw/acpi/pcihp.c
+@@ -99,7 +99,7 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
+     return info;
+ }
+ 
+-static void acpi_set_pci_info(bool has_bridge_hotplug)
++void acpi_set_pci_info(bool has_bridge_hotplug)
+ {
+     static bool bsel_is_set;
+     Object *host = acpi_get_i386_pci_host();
+diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+index ef59810c17..d35a517c9e 100644
+--- a/include/hw/acpi/pcihp.h
++++ b/include/hw/acpi/pcihp.h
+@@ -72,6 +72,8 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+ /* Called on reset */
+ void acpi_pcihp_reset(AcpiPciHpState *s);
+ 
++void acpi_set_pci_info(bool has_bridge_hotplug);
++
+ void build_append_pcihp_slots(Aml *parent_scope, PCIBus *bus);
+ 
+ extern const VMStateDescription vmstate_acpi_pcihp_pci_status;
 -- 
 2.34.1
 
